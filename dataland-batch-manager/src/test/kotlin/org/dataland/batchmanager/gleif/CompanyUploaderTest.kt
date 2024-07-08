@@ -230,32 +230,27 @@ class CompanyUploaderTest {
             return Stream.of(
                 Arguments.of(
                     "/sampleResponseLeiIdentifierAlreadyExists.json",
-                    1,
-                    dummyGleifCompanyInformation1,
+                    1, dummyGleifCompanyInformation1,
                     dummyGleifCompanyInformation1.toCompanyPatch(),
                 ),
                 Arguments.of(
                     "/sampleResponseLeiIdentifierAlreadyExists.json",
-                    1,
-                    dummyNorthDataCompanyInformation3,
+                    1, dummyNorthDataCompanyInformation3,
                     dummyNorthDataCompanyInformation3.toCompanyPatch(),
                 ),
                 Arguments.of(
                     "/sampleResponseCompanyRegistrationNumberIdentifierAlreadyExists.json",
-                    1,
-                    dummyNorthDataCompanyInformation3,
+                    1, dummyNorthDataCompanyInformation3,
                     dummyNorthDataCompanyInformation3.toCompanyPatch(setOf("CompanyRegistrationNumber")),
                 ),
                 Arguments.of(
                     "/sampleResponseMultipleIdentifierAlreadyExists.json",
-                    0,
-                    dummyNorthDataCompanyInformation3,
+                    0, dummyNorthDataCompanyInformation3,
                     dummyNorthDataCompanyInformation3.toCompanyPatch(),
                 ),
                 Arguments.of(
                     "/sampleResponseMultipleIdentifierAlreadyExistsSameCompany.json",
-                    1,
-                    dummyNorthDataCompanyInformation3,
+                    1, dummyNorthDataCompanyInformation3,
                     dummyNorthDataCompanyInformation3.toCompanyPatch(),
                 ),
             )

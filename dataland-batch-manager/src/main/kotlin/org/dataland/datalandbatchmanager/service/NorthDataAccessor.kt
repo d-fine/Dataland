@@ -1,7 +1,6 @@
 package org.dataland.datalandbatchmanager.service
 
 import org.slf4j.LoggerFactory
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Component
 import java.io.File
@@ -12,8 +11,7 @@ import java.net.URI
  */
 @Component
 class NorthDataAccessor(
-    @Value("\${northdata.download.baseurl}") private val gleifBaseUrl: String,
-    @Autowired private val externalFileDownload: ExternalFileDownload,
+    @Value("\${northdata.download.baseurl}") private val northdataBaseUrl: String,
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
 
@@ -31,10 +29,10 @@ class NorthDataAccessor(
 
     private fun downloadFileFromNorthdata(urlSuffx: String, targetFile: File, fileDescription: String) {
         logger.info("Starting download of $fileDescription.")
-        val downloadUrl = URI("$gleifBaseUrl/$urlSuffx").toURL()
+        val downloadUrl = URI("$northdataBaseUrl/$urlSuffx").toURL()
         logger.info(
             "Would attempt to download file from $downloadUrl, " +
-                "but doing nothing for now",
+                " to $targetFile, but doing nothing for now",
         )
         logger.info("Download of $fileDescription completed.")
     }
