@@ -17,8 +17,8 @@ import kotlin.reflect.full.memberProperties
  * @param dataMetaInformationManager required here to find companyIds for dataIds
  * @param companyRolesControllerApi gets company role assignments from the community manager
  */
-@Service("CompanyOwnershipChecker")
-class CompanyOwnershipChecker(
+@Service("CompanyRoleChecker")
+class CompanyRoleChecker(
     @Autowired private val dataMetaInformationManager: DataMetaInformationManager,
     @Autowired private val companyRolesControllerApi: CompanyRolesControllerApi,
     @Autowired private val companyQueryManager: CompanyQueryManager,
@@ -29,11 +29,11 @@ class CompanyOwnershipChecker(
      * @param companyId the ID of the company
      * @return a Boolean indicating whether the user is company owner or not
      */
-    fun isCurrentUserCompanyOwnerForCompany(companyId: String): Boolean {
+    fun doesCurrentUserHaveGivenRoleForCompany(companyId: String, role: CompanyRole): Boolean {
         val userId = DatalandAuthentication.fromContext().userId
         return try {
             companyRolesControllerApi.hasUserCompanyRole(
-                CompanyRole.CompanyOwner, UUID.fromString(companyId),
+                role, UUID.fromString(companyId),
                 UUID.fromString(userId),
             )
             true
@@ -52,9 +52,9 @@ class CompanyOwnershipChecker(
      * @param dataId of the framework dataset
      * @return a Boolean indicating whether the user is company owner of the company associated with the dataset
      */
-    fun isCurrentUserCompanyOwnerForCompanyOfDataId(dataId: String): Boolean {
+    fun doesCurrentUserHaveGivenRoleForCompanyOfDataId(dataId: String, role: CompanyRole): Boolean {
         val companyId = dataMetaInformationManager.getDataMetaInformationByDataId(dataId).company.companyId
-        return isCurrentUserCompanyOwnerForCompany(companyId)
+        return doesCurrentUserHaveGivenRoleForCompany(companyId, role)
     }
 
     /**

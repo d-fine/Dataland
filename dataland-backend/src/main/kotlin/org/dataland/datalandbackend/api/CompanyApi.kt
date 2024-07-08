@@ -272,11 +272,11 @@ interface CompanyApi {
     @PreAuthorize(
         "hasRole('ROLE_ADMIN') or " +
             "(hasRole('ROLE_USER') and " +
-            "@CompanyOwnershipChecker.isCurrentUserCompanyOwnerForCompany(#companyId) and " +
-            "@CompanyOwnershipChecker.areOnlyAuthorizedFieldsPatched(#companyInformationPatch)) or " +
+            "@CompanyRoleChecker.doesCurrentUserHaveGivenRoleForCompany(#companyId, T(org.dataland.datalandcommunitymanager.model.companyRoles.CompanyRole).CompanyOwner) and " +
+            "@CompanyRoleChecker.areOnlyAuthorizedFieldsPatched(#companyInformationPatch)) or " +
             "(hasRole('ROLE_UPLOADER') and " +
-            "@CompanyOwnershipChecker.isCompanyExistentAndWithoutOwner(#companyId) and " +
-            "@CompanyOwnershipChecker.areOnlyAuthorizedFieldsPatched(#companyInformationPatch))",
+            "@CompanyRoleChecker.isCompanyExistentAndWithoutOwner(#companyId) and " +
+            "@CompanyRoleChecker.areOnlyAuthorizedFieldsPatched(#companyInformationPatch))",
     )
     fun patchCompanyById(
         @PathVariable("companyId") companyId: String,
