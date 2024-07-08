@@ -40,6 +40,14 @@ class QaEventListenerQaServiceTest(
 
     val dataId = "TestDataId"
     val noIdPayload = JSONObject(mapOf("identifier" to "", "comment" to "test")).toString()
+    val qaAcceptedNoIdPayload = JSONObject(
+        mapOf(
+            "identifier" to "",
+            "validationResult" to QaStatus.Accepted,
+            "reviewerId" to "",
+        ),
+    ).toString()
+
     val correlationId = "correlationId"
     private fun getAutomatedQaCompletedMessage(
         identifier: String,
@@ -110,7 +118,10 @@ class QaEventListenerQaServiceTest(
     @Test
     fun `check an exception is thrown in reading out message from data quality assured queue when dataId is empty`() {
         val thrown = assertThrows<AmqpRejectAndDontRequeueException> {
-            qaEventListenerQaService.addDataToReviewHistory(noIdPayload, correlationId, MessageType.ManualQaRequested)
+            qaEventListenerQaService.addDataToReviewHistory(
+                qaAcceptedNoIdPayload,
+                correlationId, MessageType.QaCompleted,
+            )
         }
         Assertions.assertEquals("Message was rejected: Provided data ID is empty", thrown.message)
     }
