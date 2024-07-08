@@ -65,7 +65,7 @@ class NorthdataDataIngestor(
      */
     @Synchronized
     fun processNorthdataFile(downloadFile: (file: File) -> Unit) {
-        val zipFile = File(javaClass.getResource("/NorthdataTestData.zip")!!.path)
+        val zipFile = File("/NorthdataTestData.zip")
         val duration = measureTime {
             try {
                 downloadFile(zipFile)
