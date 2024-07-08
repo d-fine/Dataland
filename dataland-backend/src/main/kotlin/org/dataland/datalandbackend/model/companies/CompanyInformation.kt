@@ -26,7 +26,7 @@ data class CompanyInformation(
     val companyName: String,
 
     val companyAlternativeNames: List<String>?,
-
+    @field:Schema(example = "\n[\"Test@test.com\"\n]")
     val companyContactDetails: List<String>?,
 
     val companyLegalForm: String?,

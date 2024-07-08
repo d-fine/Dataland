@@ -3363,8 +3363,12 @@
           "companyContactDetails": {
             "type": "array",
             "nullable": true,
+            "example": [
+              "Test@test.com"
+            ],
             "items": {
-              "type": "string"
+              "type": "string",
+              "example": "[\"Test@test.com\"]"
             }
           },
           "companyLegalForm": {
@@ -14524,15 +14528,15 @@
         ],
         "type": "object",
         "properties": {
-          "companyId": {
-            "type": "string"
+          "sector": {
+            "type": "string",
+            "nullable": true
           },
           "companyName": {
             "type": "string"
           },
-          "sector": {
-            "type": "string",
-            "nullable": true
+          "companyId": {
+            "type": "string"
           },
           "headquarters": {
             "type": "string"
@@ -14565,10 +14569,10 @@
         ],
         "type": "object",
         "properties": {
-          "companyId": {
+          "companyName": {
             "type": "string"
           },
-          "companyName": {
+          "companyId": {
             "type": "string"
           }
         }
