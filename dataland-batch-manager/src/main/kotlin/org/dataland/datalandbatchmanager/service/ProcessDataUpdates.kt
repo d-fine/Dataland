@@ -11,7 +11,6 @@ import org.springframework.stereotype.Component
 import java.io.File
 import java.net.ConnectException
 import java.time.Instant
-import java.util.*
 
 /**
  * Class to execute scheduled tasks, like the import of the GLEIF or NorthData golden copy files
@@ -63,16 +62,8 @@ class ProcessDataUpdates(
     fun processFullGoldenCopyFileIfEnabled() {
         val flagFileGleif = allGleifCompaniesIngestFlagFilePath?.let { File(it) }
         if (allGleifCompaniesForceIngest || flagFileGleif?.exists() == true) {
-            if (flagFileGleif?.exists() == true) {
-                logger.info("Found collect all companies flag. Deleting it.")
-                if (!flagFileGleif.delete()) {
-                    logger.error(
-                        "Unable to delete flag file $flagFileGleif. Manually remove it or import will " +
-                            "be triggered after service restart again.",
-                    )
-                }
-            }
-
+            logger.info("Found flag file or force ingest flag for GLEIF.")
+            logFlagFileFoundAndDelete(flagFileGleif)
             if (savedIsinMappingFile.exists() && (!savedIsinMappingFile.delete())) {
                 throw FileSystemException(
                     file = savedIsinMappingFile,
@@ -92,6 +83,18 @@ class ProcessDataUpdates(
         }
     }
 
+    private fun logFlagFileFoundAndDelete(flagFile: File?) {
+        if (flagFile?.exists() == true) {
+            logger.info("Found collect all companies flag. Deleting it.")
+            if (!flagFile.delete()) {
+                logger.error(
+                    "Unable to delete flag file $flagFile. Manually remove it or import will " +
+                        "be triggered after service restart again.",
+                )
+            }
+        }
+    }
+
     /**
      * Downloads the entire NorthData golden copy file and uploads all included companies to the Dataland Backend.
      * Does so only if the property "dataland.dataland-batch-manager.get-all-northdata-companies" is set.
@@ -99,15 +102,8 @@ class ProcessDataUpdates(
     fun processNorthDataFullGoldenCopyFileIfEnabled() {
         val flagFileNorthData = allNorthDataCompaniesIngestFlagFilePath?.let { File(it) }
         if (allNorthDataCompaniesForceIngest || flagFileNorthData?.exists() == true) {
-            if (flagFileNorthData?.exists() == true) {
-                logger.info("Found collect all companies flag. Deleting it.")
-                if (!flagFileNorthData.delete()) {
-                    logger.error(
-                        "Unable to delete flag file $flagFileNorthData. Manually remove it or import will " +
-                            "be triggered after service restart again.",
-                    )
-                }
-            }
+            logger.info("Found flag file or force ingest flag for NorthData.")
+            logFlagFileFoundAndDelete(flagFileNorthData)
             waitForBackend()
             logger.info("Retrieving all company data available via NorthData.")
             northdataDataIngestor.processNorthdataFile(northDataAccessor::getFullGoldenCopy)
