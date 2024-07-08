@@ -14532,16 +14532,16 @@
             "type": "string",
             "nullable": true
           },
-          "companyName": {
+          "headquarters": {
+            "type": "string"
+          },
+          "countryCode": {
             "type": "string"
           },
           "companyId": {
             "type": "string"
           },
-          "headquarters": {
-            "type": "string"
-          },
-          "countryCode": {
+          "companyName": {
             "type": "string"
           },
           "lei": {
