@@ -27,14 +27,15 @@
         ],
         "summary": "Gets the QA review status of an uploaded dataset for a given identifier.",
         "description": "Gets the QA review status of an uploaded dataset for a given identifier.",
-        "operationId": "getDatasetByIdentifier",
+        "operationId": "getDatasetById",
         "parameters": [
           {
             "name": "dataId",
             "in": "path",
             "required": true,
             "schema": {
-              "type": "string"
+              "type": "string",
+              "format": "uuid"
             }
           }
         ],

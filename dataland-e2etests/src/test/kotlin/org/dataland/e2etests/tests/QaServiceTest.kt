@@ -183,7 +183,8 @@ class QaServiceTest {
         usersWithAccessToReviewHistory.forEach {
             apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(it)
             assertDoesNotThrow {
-                val reviewInformationResponse = apiAccessor.qaServiceControllerApi.getDatasetByIdentifier(dataId)
+                val reviewInformationResponse =
+                    apiAccessor.qaServiceControllerApi.getDatasetById(UUID.fromString(dataId))
                 if (it == TechnicalUser.Admin) {
                     assertEquals(TechnicalUser.Reviewer.technicalUserId, reviewInformationResponse.reviewerKeycloakId)
                 } else {
@@ -195,7 +196,7 @@ class QaServiceTest {
         usersWithoutAccessToReviewHistory.forEach {
             apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(it)
             val exception = assertThrows<QaServiceClientException> {
-                apiAccessor.qaServiceControllerApi.getDatasetByIdentifier(dataId)
+                apiAccessor.qaServiceControllerApi.getDatasetById(UUID.fromString(dataId))
             }
             assertEquals("Client error : 403 ", exception.message)
         }
@@ -211,13 +212,14 @@ class QaServiceTest {
         val dataId = uploadDatasetAndValidatePendingState(TechnicalUser.Reader)
         reviewDatasetAndValidateItIsNotReviewable(dataId, QaServiceQaStatus.Accepted)
         awaitQaStatusChange(dataId, BackendQaStatus.Accepted)
-        val reviewInformationResponse = apiAccessor.qaServiceControllerApi.getDatasetByIdentifier(dataId)
+        val reviewInformationResponse =
+            apiAccessor.qaServiceControllerApi.getDatasetById(UUID.fromString(dataId))
         assertEquals(null, reviewInformationResponse.reviewerKeycloakId)
         assertEquals(dataId, reviewInformationResponse.dataId)
 
         apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Uploader)
         val exception = assertThrows<QaServiceClientException> {
-            apiAccessor.qaServiceControllerApi.getDatasetByIdentifier(dataId)
+            apiAccessor.qaServiceControllerApi.getDatasetById(UUID.fromString(dataId))
         }
         assertEquals("Client error : 403 ", exception.message)
     }
