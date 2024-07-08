@@ -183,7 +183,10 @@ class QaEventListenerQaService(
         val reviewerId = qaCompletedMessage.reviewerId
         messageUtils.rejectMessageOnException {
             logger.info("Received data with DataId: $dataId on QA message queue with Correlation Id: $correlationId")
-            logger.info("Assigning quality status $validationResult and reviewerId $reviewerId to dataset with ID $dataId")
+            logger.info(
+                "Assigning quality status $validationResult and " +
+                    "reviewerId $reviewerId to dataset with ID $dataId",
+            )
             reviewHistoryRepository.save(
                 ReviewInformationEntity(
                     dataId = dataId,

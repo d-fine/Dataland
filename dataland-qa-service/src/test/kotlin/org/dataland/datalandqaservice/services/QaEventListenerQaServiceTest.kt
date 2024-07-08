@@ -41,7 +41,11 @@ class QaEventListenerQaServiceTest(
     val dataId = "TestDataId"
     val noIdPayload = JSONObject(mapOf("identifier" to "", "comment" to "test")).toString()
     val correlationId = "correlationId"
-    private fun getAutomatedQaCompletedMessage(identifier: String, validationResult: QaStatus, message: String?): String {
+    private fun getAutomatedQaCompletedMessage(
+        identifier: String,
+        validationResult: QaStatus,
+        message: String?,
+    ): String {
         return JSONObject(
             mapOf(
                 "identifier" to identifier, "validationResult" to validationResult, "reviewerId" to "automated-qa",
@@ -115,7 +119,9 @@ class QaEventListenerQaServiceTest(
     fun `check an that the automated qa result is stored correctly in the review history repository`() {
         val acceptedData = "acceptedDataId"
         val automatedQaAcceptedMessage = getAutomatedQaCompletedMessage(acceptedData, QaStatus.Accepted, "accepted")
-        qaEventListenerQaService.addDataToReviewHistory(automatedQaAcceptedMessage, correlationId, MessageType.QaCompleted)
+        qaEventListenerQaService.addDataToReviewHistory(
+            automatedQaAcceptedMessage, correlationId, MessageType.QaCompleted,
+        )
         testReviewHistoryRepository.findById(acceptedData).ifPresent {
             Assertions.assertEquals("automated-qa", it.reviewerKeycloakId)
             Assertions.assertEquals(acceptedData, it.dataId)
@@ -125,7 +131,9 @@ class QaEventListenerQaServiceTest(
 
         val rejectedData = "rejectedDataId"
         val automatedQaRejectedMessage = getAutomatedQaCompletedMessage(rejectedData, QaStatus.Rejected, "rejected")
-        qaEventListenerQaService.addDataToReviewHistory(automatedQaRejectedMessage, correlationId, MessageType.QaCompleted)
+        qaEventListenerQaService.addDataToReviewHistory(
+            automatedQaRejectedMessage, correlationId, MessageType.QaCompleted,
+        )
         testReviewHistoryRepository.findById(rejectedData).ifPresent {
             Assertions.assertEquals("automated-qa", it.reviewerKeycloakId)
             Assertions.assertEquals(rejectedData, it.dataId)

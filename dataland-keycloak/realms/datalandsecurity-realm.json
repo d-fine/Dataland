@@ -742,7 +742,7 @@
         "TERMS_AND_CONDITIONS"
       ],
       "realmRoles": [
-        "ROLE_READER",
+        "ROLE_ADMIN",
         "default-roles-datalandsecurity"
       ],
       "notBefore": 0,
