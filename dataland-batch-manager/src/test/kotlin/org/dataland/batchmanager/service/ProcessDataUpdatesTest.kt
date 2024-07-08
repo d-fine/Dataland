@@ -129,7 +129,7 @@ class ProcessDataUpdatesTest {
 
         processDataUpdates.processExternalCompanyDataIfEnabled()
 
-        val numberOfDownloadedFiles = 4
+        val numberOfDownloadedFiles = 3
         mockStaticFile.verify({ File.createTempFile(any(), any()) }, times(numberOfDownloadedFiles))
         verify(mockGleifCsvParser, times(1)).readGleifCompanyDataFromBufferedReader((any() ?: emptyBufferedReader))
         verify(mockGleifCsvParser, times(1)).readGleifRelationshipDataFromBufferedReader((any() ?: emptyBufferedReader))

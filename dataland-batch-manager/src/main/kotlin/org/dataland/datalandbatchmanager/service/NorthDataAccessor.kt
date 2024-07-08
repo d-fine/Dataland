@@ -32,7 +32,10 @@ class NorthDataAccessor(
     private fun downloadFileFromNorthdata(urlSuffx: String, targetFile: File, fileDescription: String) {
         logger.info("Starting download of $fileDescription.")
         val downloadUrl = URI("$gleifBaseUrl/$urlSuffx").toURL()
-        externalFileDownload.downloadFile(downloadUrl, targetFile)
+        logger.info(
+            "Would attempt to download file from $downloadUrl, " +
+                "but doing nothing for now",
+        )
         logger.info("Download of $fileDescription completed.")
     }
 }

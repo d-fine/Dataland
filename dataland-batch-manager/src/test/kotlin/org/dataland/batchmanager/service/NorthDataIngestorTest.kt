@@ -8,7 +8,7 @@ import org.dataland.datalandbatchmanager.service.NorthdataDataIngestor
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
-import org.mockito.Mockito.anyString
+import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.mock
 import org.mockito.Mockito.mockStatic
 import org.mockito.Mockito.times
@@ -48,9 +48,8 @@ class NorthDataIngestorTest {
         val mockStaticFile = mockStatic(File::class.java)
 
         val mockFile = mock(File::class.java)
-        `when`(File.createTempFile(anyString(), anyString())).thenReturn(mockFile)
         val emptyBufferedReader = BufferedReader(BufferedReader.nullReader())
-        `when`(mockCsvParser.getCsvStreamFromNorthDataZipFile(mockFile)).thenReturn(emptyBufferedReader)
+        `when`(mockCsvParser.getCsvStreamFromNorthDataZipFile(any() ?: mockFile)).thenReturn(emptyBufferedReader)
         `when`(mockCsvParser.readNorthDataFromBufferedReader(emptyBufferedReader)).thenReturn(infoIterable)
 
         val northDataIngestor = NorthdataDataIngestor(mockCompanyUploader, mockCsvParser)
