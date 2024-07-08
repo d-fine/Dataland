@@ -22,6 +22,7 @@ import org.springframework.http.ResponseEntity
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.transaction.annotation.Transactional
 import org.springframework.web.bind.annotation.RestController
+import java.util.*
 import java.util.UUID.randomUUID
 import kotlin.jvm.optionals.getOrElse
 
@@ -44,7 +45,8 @@ class QaController(
     }
 
     @Transactional
-    override fun getDatasetByIdentifier(identifier: String): ResponseEntity<ReviewInformationResponse> {
+    override fun getDatasetById(dataId: UUID): ResponseEntity<ReviewInformationResponse> {
+        val identifier = dataId.toString()
         logger.info("Received request to respond with the status of a dataset with the identifier $identifier")
 
         val reviewHistoryEntity = reviewHistoryRepository.findById(identifier).orElse(null)

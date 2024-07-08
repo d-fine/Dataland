@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestParam
+import java.util.*
 
 /**
  * Defines the restful dataland qa service API
@@ -61,8 +62,8 @@ interface QaApi {
             "or hasRole('ROLE_ADMIN') " +
             "or @SecurityUtilsService.isUserAskingQaReviewStatusOfUploadedDataset(#dataId)",
     )
-    fun getDatasetByIdentifier(
-        @PathVariable("dataId") dataId: String,
+    fun getDatasetById(
+        @PathVariable("dataId") dataId: UUID,
     ): ResponseEntity<ReviewInformationResponse>
 
     /**
