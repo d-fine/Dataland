@@ -12,6 +12,7 @@ import org.junit.jupiter.api.assertThrows
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class AdminDataManipulationControllerTest {
+    // TODO test name should be changed if we also change the AdminDataManipulationApi in productive code
 
     private val apiAccessor = ApiAccessor()
     private val documentManagerAccessor = DocumentManagerAccessor()
