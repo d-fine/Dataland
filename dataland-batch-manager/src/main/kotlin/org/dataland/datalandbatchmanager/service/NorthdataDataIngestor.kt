@@ -71,9 +71,7 @@ class NorthdataDataIngestor(
                 downloadFile(zipFile)
                 updateNorthData(zipFile)
             } finally {
-                if (!zipFile.delete()) {
-                    logger.error("Unable to delete temporary file $zipFile")
-                }
+                logger.error("Not deleting $zipFile now, remember to change this.")
             }
         }
         logger.info("Finished processing of Northdata file $zipFile in ${formatExecutionTime(duration)}.")
