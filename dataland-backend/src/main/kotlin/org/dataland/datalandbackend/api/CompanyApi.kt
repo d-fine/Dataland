@@ -272,7 +272,7 @@ interface CompanyApi {
     @PreAuthorize(
         "hasRole('ROLE_ADMIN') or " +
             "(hasRole('ROLE_USER') and " +
-            "@CompanyRoleChecker.doesCurrentUserHaveGivenRoleForCompany(#companyId, T(org.dataland.datalandcommunitymanager.model.companyRoles.CompanyRole).CompanyOwner) and " +
+            "@CompanyRoleChecker.doesCurrentUserHaveGivenRoleForCompany(#companyId, T(org.dataland.datalandcommunitymanager.openApiClient.model.CompanyRole).CompanyOwner) and " +
             "@CompanyRoleChecker.areOnlyAuthorizedFieldsPatched(#companyInformationPatch)) or " +
             "(hasRole('ROLE_UPLOADER') and " +
             "@CompanyRoleChecker.isCompanyExistentAndWithoutOwner(#companyId) and " +

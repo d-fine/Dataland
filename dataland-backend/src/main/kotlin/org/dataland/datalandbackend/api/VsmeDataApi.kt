@@ -46,7 +46,7 @@ interface VsmeDataApi {
     @PostMapping(produces = [MediaType.APPLICATION_JSON_VALUE], consumes = [MediaType.MULTIPART_FORM_DATA_VALUE])
     @PreAuthorize(
         "(hasRole('ROLE_USER') " +
-            "and @CompanyRoleChecker.doesCurrentUserHaveGivenRoleForCompany(#companyAssociatedVsmeData.companyId, T(org.dataland.datalandcommunitymanager.model.companyRoles.CompanyRole).CompanyOwner))",
+            "and @CompanyRoleChecker.doesCurrentUserHaveGivenRoleForCompany(#companyAssociatedVsmeData.companyId, T(org.dataland.datalandcommunitymanager.openApiClient.model.CompanyRole).CompanyOwner))",
     )
     fun postVsmeJsonAndDocuments(
         @RequestPart(value = "companyAssociatedVsmeData") companyAssociatedVsmeData: CompanyAssociatedData<VsmeData>,
@@ -73,7 +73,7 @@ interface VsmeDataApi {
     )
     @PreAuthorize(
         "(hasRole('ROLE_USER') " +
-            "and @CompanyRoleChecker.doesCurrentUserHaveGivenRoleForCompany(#dataId, T(org.dataland.datalandcommunitymanager.model.companyRoles.CompanyRole).CompanyOwner))",
+            "and @CompanyRoleChecker.doesCurrentUserHaveGivenRoleForCompany(#dataId, T(org.dataland.datalandcommunitymanager.openApiClient.model.CompanyRole).CompanyOwner))",
     )
     fun getCompanyAssociatedVsmeData(@PathVariable("dataId") dataId: String):
         ResponseEntity<CompanyAssociatedData<VsmeData>>
@@ -105,7 +105,7 @@ interface VsmeDataApi {
     )
     @PreAuthorize(
         "(hasRole('ROLE_USER') " +
-            "and @CompanyRoleChecker.doesCurrentUserHaveGivenRoleForCompany(#dataId, T(org.dataland.datalandcommunitymanager.model.companyRoles.CompanyRole).CompanyOwner))",
+            "and @CompanyRoleChecker.doesCurrentUserHaveGivenRoleForCompany(#dataId, T(org.dataland.datalandcommunitymanager.openApiClient.model.CompanyRole).CompanyOwner))",
     )
     fun getPrivateDocument(
         @RequestParam("dataId") dataId: String,
@@ -137,7 +137,7 @@ interface VsmeDataApi {
     )
     @PreAuthorize(
         "(hasRole('ROLE_USER') " +
-            "and @CompanyRoleChecker.doesCurrentUserHaveGivenRoleForCompany(#companyId, T(org.dataland.datalandcommunitymanager.model.companyRoles.CompanyRole).CompanyOwner))",
+            "and @CompanyRoleChecker.doesCurrentUserHaveGivenRoleForCompany(#companyId, T(org.dataland.datalandcommunitymanager.openApiClient.model.CompanyRole).CompanyOwner))",
     )
     fun getFrameworkDatasetsForCompany(
         @PathVariable("companyId") companyId: String,

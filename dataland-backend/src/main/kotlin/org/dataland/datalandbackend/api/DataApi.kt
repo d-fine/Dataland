@@ -44,7 +44,7 @@ interface DataApi<T> {
     @PreAuthorize(
         "hasRole('ROLE_UPLOADER') or " +
             "(hasRole('ROLE_USER') and " +
-            "@CompanyRoleChecker.doesCurrentUserHaveGivenRoleForCompany(#companyAssociatedData.companyId, T(org.dataland.datalandcommunitymanager.model.companyRoles.CompanyRole).CompanyOwner))",
+            "@CompanyRoleChecker.doesCurrentUserHaveGivenRoleForCompany(#companyAssociatedData.companyId, T(org.dataland.datalandcommunitymanager.openApiClient.model.CompanyRole).CompanyOwner))",
     )
     fun postCompanyAssociatedData(
         @Valid @RequestBody
