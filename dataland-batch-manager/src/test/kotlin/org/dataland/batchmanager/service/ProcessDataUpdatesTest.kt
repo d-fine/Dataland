@@ -119,7 +119,7 @@ class ProcessDataUpdatesTest {
 
     @Test
     fun `test ingestion performs successfully if a file is provided`() {
-        val (emptyBufferedReader, mockStaticFile) = commonMock(oldFile)
+        val (emptyBufferedReader, mockStaticFile) = mockFileIngestion(oldFile)
         `when`(File.createTempFile(anyString(), anyString())).thenReturn(mock(File::class.java))
 
         val mockFileUtils = mockStatic(FileUtils::class.java)
@@ -141,13 +141,13 @@ class ProcessDataUpdatesTest {
     @Test
     fun `test error when mapping file still exists`() {
         val mockOldIsinFile = mock(File::class.java)
-        commonMock(mockOldIsinFile)
+        mockFileIngestion(mockOldIsinFile)
         `when`(mockOldIsinFile.exists()).thenReturn(true)
         `when`(mockOldIsinFile.delete()).thenReturn(false)
         assertThrows<FileSystemException> { processDataUpdates.processFullGoldenCopyFileIfEnabled() }
     }
 
-    private fun commonMock(isinMappingFile: File): Pair<BufferedReader, MockedStatic<File>> {
+    private fun mockFileIngestion(isinMappingFile: File): Pair<BufferedReader, MockedStatic<File>> {
         val flagFileGleif = File.createTempFile("test", ".csv")
         val flagFileNorthdata = File.createTempFile("test2", ".csv")
         val bufferedReader = BufferedReader(BufferedReader.nullReader())
@@ -169,5 +169,4 @@ class ProcessDataUpdatesTest {
         val mockStaticFile = mockStatic(File::class.java)
         return Pair(bufferedReader, mockStaticFile)
     }
-// TODO commonMock is duplicated here, needs to be refactored
 }
