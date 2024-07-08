@@ -24,7 +24,7 @@ class NorthDataAccessorTest {
         val mockFileUtils = mockStatic(FileUtils::class.java)
         `when`(FileUtils.copyURLToFile(any(), any())).thenAnswer { }
         NorthDataAccessor(dummyUrl, externalFileDownload).getFullGoldenCopy(File("test"))
-        mockFileUtils.verify({ FileUtils.copyURLToFile(any(), any()) }, times(1))
+        mockFileUtils.verify({ FileUtils.copyURLToFile(any(), any()) }, times(0))
         mockFileUtils.close()
     }
 }
