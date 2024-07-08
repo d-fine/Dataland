@@ -15,6 +15,7 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
 import org.junit.jupiter.api.assertDoesNotThrow
 import org.junit.jupiter.api.assertThrows
+import org.slf4j.LoggerFactory
 import java.util.*
 import java.util.concurrent.TimeUnit
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException as BackendClientException
@@ -33,6 +34,8 @@ class QaServiceTest {
     companion object {
         private const val SLEEP_DURATION_MS: Long = 500
     }
+
+    private val logger = LoggerFactory.getLogger(javaClass)
 
     @BeforeAll
     fun postCompany() {
@@ -148,6 +151,10 @@ class QaServiceTest {
         }
         apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reviewer)
         val reviewQueue = apiAccessor.qaServiceControllerApi.getUnreviewedDatasetsIds()
+
+        logger.info(listOfDataIdsAsExpectedFromReviewQueue.toString())
+        logger.info(reviewQueue.toString())
+
         assertTrue(listOfDataIdsAsExpectedFromReviewQueue.toTypedArray().contentDeepEquals(reviewQueue.toTypedArray()))
     }
 
