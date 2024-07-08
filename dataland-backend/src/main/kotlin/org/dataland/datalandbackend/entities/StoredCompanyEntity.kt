@@ -72,18 +72,7 @@ data class StoredCompanyEntity(
 ) : ApiModelConversion<StoredCompany> {
     @JsonValue
     override fun toApiModel(viewingUser: DatalandAuthentication?): StoredCompany {
-        val identifierMap = mutableMapOf<IdentifierType, MutableList<String>>()
-        for (identifierType in IdentifierType.entries) {
-            identifierMap[identifierType] = mutableListOf()
-        }
-
-        for (identifier in identifiers) {
-            val entry = identifierMap[identifier.identifierType]
-            requireNotNull(entry)
-            entry.add(identifier.identifierValue)
-        }
-
-        identifierMap.values.forEach { it.sort() }
+        val identifierMap = createIdentifierMap()
 
         return StoredCompany(
             companyId = companyId,
@@ -104,5 +93,21 @@ data class StoredCompanyEntity(
             ),
             dataRegisteredByDataland = dataRegisteredByDataland.map { it.toApiModel(viewingUser) }.toMutableList(),
         )
+    }
+
+    private fun createIdentifierMap(): MutableMap<IdentifierType, MutableList<String>> {
+        val identifierMap = mutableMapOf<IdentifierType, MutableList<String>>()
+        for (identifierType in IdentifierType.entries) {
+            identifierMap[identifierType] = mutableListOf()
+        }
+
+        for (identifier in identifiers) {
+            val entry = identifierMap[identifier.identifierType]
+            requireNotNull(entry)
+            entry.add(identifier.identifierValue)
+        }
+
+        identifierMap.values.forEach { it.sort() }
+        return identifierMap
     }
 }
