@@ -10,13 +10,13 @@
     v-model:visible="dialogIsVisible"
   >
     <template #header>
-      <h2 v-if="!claimIsSubmitted" class="m-0">Claim dataset ownership for your company.</h2>
+      <h2 v-if="!claimIsSubmitted" class="m-0">Claim ownership for your company.</h2>
       <h2 v-else class="m-0">Thank you for claiming company ownership for {{ companyName }}.</h2>
     </template>
 
     <div v-if="!claimIsSubmitted">
       <p data-test="claimOwnershipDialogMessage">
-        Are you responsible for the datasets of {{ companyName }}? Claim dataset ownership in order to ensure high
+        Are you responsible for the datasets of {{ companyName }}? Claim company ownership in order to ensure high
         quality and transparency over your company's data.
       </p>
       <p>Feel free to share any additional information with us:</p>

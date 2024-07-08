@@ -21,7 +21,7 @@ describe('Component test for ClaimOwnershipPanel', () => {
       cy.get('#claimOwnerShipDialog').should('exist').should('be.visible');
       cy.get("[data-test='claimOwnershipDialogMessage']").should(
         'contain.text',
-        'Are you responsible for the datasets of TestClaimOwnershipDialogMessage? Claim dataset ownership in order to ensure high'
+        'Are you responsible for the datasets of TestClaimOwnershipDialogMessage? Claim company ownership in order to ensure high'
       );
 
       cy.get("textarea[name='claimOwnershipMessage']")

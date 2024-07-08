@@ -65,7 +65,7 @@ class Vsme {
     }
 
     @BeforeAll
-    fun postCompanyAndSetDataOwnership() {
+    fun postCompanyAndSetCompanyOwnership() {
         companyId = apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId
         apiAccessor.companyRolesControllerApi.assignCompanyRole(
             CompanyRole.CompanyOwner,
@@ -103,7 +103,7 @@ class Vsme {
     }
 
     @Test
-    fun `post VSME data with documents and check if data and documents can be retrieved by the data owner`() {
+    fun `post VSME data with documents and check if data and documents can be retrieved by the company owner`() {
         val vsmeData = setReferencedReports(testVsmeData, FileInfos(hashAlpha, fileNameAlpha))
         val companyAssociatedDataVsmeData = CompanyAssociatedDataVsmeData(companyId, "2023", vsmeData)
         val dataMetaInfoInResponse = postVsmeDataset(

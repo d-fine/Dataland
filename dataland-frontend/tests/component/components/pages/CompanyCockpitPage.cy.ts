@@ -135,7 +135,7 @@ describe('Component test for the company cockpit', () => {
   }
   /**
    * Validates the vsme framework summary panel
-   * @param isCompanyOwner is the current user company data owner
+   * @param isCompanyOwner is the current user company owner
    */
   function validateVsmeFrameworkSummaryPanel(isCompanyOwner: boolean): void {
     const frameworkName = 'vsme';
