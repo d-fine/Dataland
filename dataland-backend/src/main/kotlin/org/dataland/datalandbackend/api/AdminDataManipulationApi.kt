@@ -37,8 +37,13 @@ fun interface AdminDataManipulationApi {
     @PreAuthorize(
         "hasRole('ROLE_ADMIN') or " +
             "(hasRole('ROLE_USER') and " +
-            "(@CompanyRoleChecker.doesCurrentUserHaveGivenRoleForCompanyOfDataId(#dataId, T(org.dataland.datalandcommunitymanager.openApiClient.model.CompanyRole).CompanyOwner) or " +
-            "@CompanyRoleChecker.doesCurrentUserHaveGivenRoleForCompanyOfDataId(#dataId, T(org.dataland.datalandcommunitymanager.openApiClient.model.CompanyRole).DataUploader)))",
+            "(@CompanyRoleChecker.doesCurrentUserHaveGivenRoleForCompanyOfDataId(" +
+            "#dataId, T(org.dataland.datalandcommunitymanager.openApiClient.model.CompanyRole).CompanyOwner" +
+            ") or " +
+            "@CompanyRoleChecker.doesCurrentUserHaveGivenRoleForCompanyOfDataId(" +
+            "#dataId, T(org.dataland.datalandcommunitymanager.openApiClient.model.CompanyRole).DataUploader" +
+            "))" +
+            ")",
     )
     fun deleteCompanyAssociatedData(
         @PathVariable("dataId")

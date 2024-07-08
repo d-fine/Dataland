@@ -69,7 +69,8 @@ class CompanyRolesManager(
         }
     }
 
-    private fun saveCompanyRoleAssignment(companyRole: CompanyRole, companyId: String, userId: String): CompanyRoleAssignmentEntity {
+    private fun saveCompanyRoleAssignment(companyRole: CompanyRole, companyId: String, userId: String):
+        CompanyRoleAssignmentEntity {
         return companyRoleAssignmentRepository.save(
             CompanyRoleAssignmentEntity(companyRole = companyRole, companyId = companyId, userId = userId),
         )
