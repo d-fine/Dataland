@@ -77,7 +77,7 @@ interface VsmeDataApi {
     )
     @PreAuthorize(
         "(hasRole('ROLE_USER') " +
-            "and @CompanyRoleChecker.doesCurrentUserHaveGivenRoleForCompany(" +
+            "and @CompanyRoleChecker.doesCurrentUserHaveGivenRoleForCompanyOfDataId(" +
             "#dataId, " +
             "T(org.dataland.datalandcommunitymanager.openApiClient.model.CompanyRole).CompanyOwner" +
             ")" +
@@ -113,7 +113,7 @@ interface VsmeDataApi {
     )
     @PreAuthorize(
         "(hasRole('ROLE_USER') " +
-            "and @CompanyRoleChecker.doesCurrentUserHaveGivenRoleForCompany(" +
+            "and @CompanyRoleChecker.doesCurrentUserHaveGivenRoleForCompanyOfDataId(" +
             "#dataId, " +
             "T(org.dataland.datalandcommunitymanager.openApiClient.model.CompanyRole).CompanyOwner" +
             ")" +

@@ -24,10 +24,10 @@ class CompanyRoleChecker(
     @Autowired private val companyQueryManager: CompanyQueryManager,
 ) {
     /**
-     * Method to check whether the currently authenticated user is company owner of a specified company and therefore
-     * has uploader rights for this company
+     * Method to check whether the currently authenticated user has a company role for a specified company.
      * @param companyId the ID of the company
-     * @return a Boolean indicating whether the user is company owner or not
+     * @param role for which the check shall happen
+     * @return a Boolean indicating whether the user has the role or not
      */
     fun doesCurrentUserHaveGivenRoleForCompany(companyId: String, role: CompanyRole): Boolean {
         val userId = DatalandAuthentication.fromContext().userId
@@ -47,10 +47,11 @@ class CompanyRoleChecker(
     }
 
     /**
-     * Method to check whether the currently authenticated user is company owner of the specified company that is
+     * Method to check whether the currently authenticated user has the role for the specified company that is
      * associated with a specific framework dataset.
      * @param dataId of the framework dataset
-     * @return a Boolean indicating whether the user is company owner of the company associated with the dataset
+     * @param role to check for
+     * @return a Boolean indicating whether the user has the role for the company associated with the dataset
      */
     fun doesCurrentUserHaveGivenRoleForCompanyOfDataId(dataId: String, role: CompanyRole): Boolean {
         val companyId = dataMetaInformationManager.getDataMetaInformationByDataId(dataId).company.companyId
