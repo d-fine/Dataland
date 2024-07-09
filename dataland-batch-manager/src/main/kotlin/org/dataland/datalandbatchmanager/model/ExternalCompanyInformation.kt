@@ -17,7 +17,7 @@ interface ExternalCompanyInformation {
     /**
      * Method to transform the external data structure to a CopmanyInformationPatch.
      * It accepts a list of identifiers already present on dataland to decide how to update the company information.
-     * @param conflictingIdentifiers the set of conflicting identifiers causing the patch to be called
+     * @param conflictingIdentifiers the set of conflicting identifiers
      * @return the Dataland CompanyInformationPatch object or null if no update is applicable
      */
     fun toCompanyPatch(conflictingIdentifiers: Set<String?>? = null): CompanyInformationPatch?

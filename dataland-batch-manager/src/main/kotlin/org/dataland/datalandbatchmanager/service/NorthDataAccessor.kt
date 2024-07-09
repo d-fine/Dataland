@@ -7,7 +7,7 @@ import java.io.File
 import java.net.URI
 
 /**
- * The class to download the zipped GLEIF golden copy CSV files
+ * The class to download the NothData csv files
  */
 @Component
 class NorthDataAccessor(

@@ -15,7 +15,7 @@ import java.net.URL
 const val ZIP_BUFFER_SIZE = 8192
 
 /**
- * The class to download the zipped GLEIF golden copy CSV files
+ * The utility class to download external files
  */
 @Component
 class ExternalFileDownload(
