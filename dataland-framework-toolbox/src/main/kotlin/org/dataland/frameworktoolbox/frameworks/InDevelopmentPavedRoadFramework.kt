@@ -1,7 +1,12 @@
 package org.dataland.frameworktoolbox.frameworks
 
 import org.dataland.frameworktoolbox.SpringConfig
+import org.dataland.frameworktoolbox.intermediate.components.ReportPreuploadComponent
+import org.dataland.frameworktoolbox.specific.datamodel.Annotation
+import org.dataland.frameworktoolbox.specific.datamodel.FrameworkDataModelBuilder
+import org.dataland.frameworktoolbox.specific.datamodel.elements.ReferencedReportValidatorBuilder
 import org.dataland.frameworktoolbox.specific.frameworkregistryimports.FrameworkRegistryImportsUpdater
+import org.dataland.frameworktoolbox.specific.viewconfig.elements.getKotlinFieldAccessor
 import org.dataland.frameworktoolbox.template.ExcelTemplate
 import org.dataland.frameworktoolbox.utils.DatalandRepository
 import org.dataland.frameworktoolbox.utils.diagnostic.DiagnosticManager
@@ -36,6 +41,8 @@ abstract class InDevelopmentPavedRoadFramework(
         val dataModel = generateDataModel(framework)
         customizeDataModel(dataModel)
 
+        insertReferencedReportValidatorIfNeeded(dataModel)
+
         @Suppress("TooGenericExceptionCaught")
         try {
             dataModel.build(
@@ -45,6 +52,36 @@ abstract class InDevelopmentPavedRoadFramework(
             )
         } catch (ex: Exception) {
             logger.error("Could not build framework data-model!", ex)
+        }
+    }
+
+    private fun insertReferencedReportValidatorIfNeeded(dataModel: FrameworkDataModelBuilder) {
+        logger.info(
+            "Searching for report preupload component to determine " +
+                "if a referenced report validator is needed.",
+        )
+        val referencedReports = framework.root.nestedChildren.find { it is ReportPreuploadComponent }
+        if (referencedReports != null) {
+            val referencedReportsPath = referencedReports.getKotlinFieldAccessor()
+            val extendedDocumentFileReferences =
+                framework.root.nestedChildren.flatMap { it.getExtendedDocumentReference() }.toList()
+            logger.info(
+                "The validator will check for ${extendedDocumentFileReferences.size} " +
+                    "extended document file references.",
+            )
+            val validatorPackage = dataModel.rootPackageBuilder.addPackage("validator")
+            val referencedReportValidatorBuilder = ReferencedReportValidatorBuilder(
+                validatorPackage,
+                dataModel.rootDataModelClass,
+                framework.identifier,
+                referencedReportsPath,
+                extendedDocumentFileReferences,
+            )
+            validatorPackage.childElements.add(referencedReportValidatorBuilder)
+
+            dataModel.rootDataModelClass.annotations.add(
+                Annotation(referencedReportValidatorBuilder.fullyQualifiedName),
+            )
         }
     }
 

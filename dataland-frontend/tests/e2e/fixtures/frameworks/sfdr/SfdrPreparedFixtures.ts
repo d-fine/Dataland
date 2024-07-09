@@ -15,6 +15,7 @@ export function generateSfdrPreparedFixtures(): Array<FixtureData<SfdrData>> {
     manipulateFixtureForTwoSfdrDataSetsInDifferentYears,
     manipulateFixtureForOneFilledSubcategory,
     generateFixtureWithBrokenFileReference,
+    generateFixtureWithIncompleteReferencedReport,
   ];
   const preparedFixturesBeforeManipulation = generateFixtureDataset<SfdrData>(
     generateSfdrData,
@@ -197,5 +198,18 @@ function generateFixtureWithBrokenFileReference(input: FixtureData<SfdrData>): F
   input.companyInformation.companyName = 'TestForBrokenFileReference';
   input.t.environmental!.greenhouseGasEmissions!.scope2GhgEmissionsInTonnes!.dataSource!.fileReference =
     brokenFileReference;
+  return input;
+}
+
+/**
+ * Generates an SFDR dataset with a incomplete referenced report list
+ * @param input Fixture data to be manipulated
+ * @returns the dataset
+ */
+function generateFixtureWithIncompleteReferencedReport(input: FixtureData<SfdrData>): FixtureData<SfdrData> {
+  input.companyInformation.companyName = 'TestForIncompleteReferencedReport';
+  input.t.general.general.referencedReports = {
+    notReferencedFile: { fileReference: 'invalidFileReference', fileName: 'notReferencedFile' },
+  };
   return input;
 }

@@ -14566,10 +14566,10 @@
           "companyId": {
             "type": "string"
           },
-          "headquarters": {
+          "countryCode": {
             "type": "string"
           },
-          "countryCode": {
+          "headquarters": {
             "type": "string"
           },
           "sector": {
