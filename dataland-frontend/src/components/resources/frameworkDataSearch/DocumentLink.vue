@@ -91,15 +91,17 @@ export default defineComponent({
           undefined,
           apiClientProvider.axiosInstance
         );
+        let downloadCompleted = false;
         await privateDataControllerApi
           .getPrivateDocument(this.dataId, fileReference, {
             responseType: 'arraybuffer',
             onDownloadProgress: (progressEvent) => {
-              if (progressEvent.total != null)
+              if (!downloadCompleted && progressEvent.total != null)
                 this.percentCompleted = Math.round((progressEvent.loaded * 100) / progressEvent.total);
             },
           })
           .then((getDocumentsFromStorageResponse) => {
+            downloadCompleted = true;
             this.percentCompleted = 100;
             const fileExtension = this.getFileExtensionFromHeaders(getDocumentsFromStorageResponse.headers);
             const mimeType = this.getMimeTypeFromHeaders(getDocumentsFromStorageResponse.headers);
@@ -119,15 +121,17 @@ export default defineComponent({
     async handlePublicDocumentDownload(fileReference: string, docUrl: HTMLAnchorElement) {
       const documentControllerApi = new ApiClientProvider(assertDefined(this.getKeycloakPromise)()).apiClients
         .documentController;
+      let downloadCompleted = false;
       await documentControllerApi
         .getDocument(fileReference, {
           responseType: 'arraybuffer',
           onDownloadProgress: (progressEvent) => {
-            if (progressEvent.total != null)
+            if (!downloadCompleted && progressEvent.total != null)
               this.percentCompleted = Math.round((progressEvent.loaded * 100) / progressEvent.total);
           },
         })
         .then((getDocumentsFromStorageResponse) => {
+          downloadCompleted = true;
           this.percentCompleted = 100;
           const fileExtension = this.getFileExtensionFromHeaders(getDocumentsFromStorageResponse.headers);
           const mimeType = this.getMimeTypeFromHeaders(getDocumentsFromStorageResponse.headers);
