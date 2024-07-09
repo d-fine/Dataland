@@ -1,5 +1,6 @@
 package org.dataland.e2etests.tests
 
+import org.dataland.communitymanager.openApiClient.model.CompanyRole
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
 import org.dataland.e2etests.auth.TechnicalUser
 import org.dataland.e2etests.utils.ApiAccessor
@@ -9,10 +10,10 @@ import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
 import org.junit.jupiter.api.assertThrows
+import java.util.*
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-class GeneralDataManipulationControllerTest {
-    // TODO test name should be changed if we also change the AdminDataManipulationApi in productive code
+class DataDeletionControllerTest {
 
     private val apiAccessor = ApiAccessor()
     private val documentManagerAccessor = DocumentManagerAccessor()
@@ -22,6 +23,7 @@ class GeneralDataManipulationControllerTest {
 
     private val testCompanyInformation = apiAccessor.testDataProviderForEuTaxonomyDataForNonFinancials
         .getCompanyInformationWithoutIdentifiers(1).first()
+    private val dataReaderUserId = UUID.fromString("18b67ecc-1176-4506-8414-1e81661017ca")
 
     @BeforeAll
     fun postTestDocuments() {
@@ -34,7 +36,7 @@ class GeneralDataManipulationControllerTest {
             testCompanyInformation,
             testDataEuTaxonomyNonFinancials,
         )
-        val response = apiAccessor.generalDataManipulationControllerApi.deleteCompanyAssociatedDataWithHttpInfo(
+        val response = apiAccessor.dataDeletionControllerApi.deleteCompanyAssociatedDataWithHttpInfo(
             mapOfIds.getValue("dataId"),
         )
         assertEquals("200", response.statusCode.toString())
@@ -51,13 +53,34 @@ class GeneralDataManipulationControllerTest {
 
             val exception =
                 assertThrows<ClientException> {
-                    apiAccessor.generalDataManipulationControllerApi.deleteCompanyAssociatedData(
+                    apiAccessor.dataDeletionControllerApi.deleteCompanyAssociatedData(
 
                         mapOfIds.getValue("dataId"),
 
                     )
                 }
             assertEquals("Client error : 403 ", exception.message)
+        }
+    }
+
+    @Test
+    fun `delete data as a company owner and company data uploader`() {
+        for (companyRole in arrayOf(CompanyRole.CompanyOwner, CompanyRole.DataUploader)) {
+            val mapOfIds = apiAccessor.uploadOneCompanyAndEuTaxonomyDataForNonFinancials(
+                testCompanyInformation,
+                testDataEuTaxonomyNonFinancials,
+            )
+            apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
+            apiAccessor.companyRolesControllerApi.assignCompanyRole(
+                companyRole,
+                UUID.fromString(mapOfIds.getValue("companyId")),
+                dataReaderUserId,
+            )
+            apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader)
+            val response = apiAccessor.dataDeletionControllerApi.deleteCompanyAssociatedDataWithHttpInfo(
+                mapOfIds.getValue("dataId"),
+            )
+            assertEquals("200", response.statusCode.toString())
         }
     }
 }

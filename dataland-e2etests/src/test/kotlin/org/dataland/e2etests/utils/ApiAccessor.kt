@@ -3,9 +3,9 @@ package org.dataland.e2etests.utils
 import org.dataland.communitymanager.openApiClient.api.CompanyRolesControllerApi
 import org.dataland.communitymanager.openApiClient.api.RequestControllerApi
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
+import org.dataland.datalandbackend.openApiClient.api.DataDeletionControllerApi
 import org.dataland.datalandbackend.openApiClient.api.EuTaxonomyDataForFinancialsControllerApi
 import org.dataland.datalandbackend.openApiClient.api.EutaxonomyNonFinancialsDataControllerApi
-import org.dataland.datalandbackend.openApiClient.api.GeneralDataManipulationControllerApi
 import org.dataland.datalandbackend.openApiClient.api.LksgDataControllerApi
 import org.dataland.datalandbackend.openApiClient.api.MetaDataControllerApi
 import org.dataland.datalandbackend.openApiClient.api.P2pDataControllerApi
@@ -58,7 +58,7 @@ class ApiAccessor {
     val unauthorizedEuTaxonomyDataNonFinancialsControllerApi = UnauthorizedEuTaxonomyDataNonFinancialsControllerApi()
     val testDataProviderForEuTaxonomyDataForNonFinancials =
         FrameworkTestDataProvider(EutaxonomyNonFinancialsData::class.java)
-    val generalDataManipulationControllerApi = GeneralDataManipulationControllerApi(BASE_PATH_TO_DATALAND_BACKEND)
+    val dataDeletionControllerApi = DataDeletionControllerApi(BASE_PATH_TO_DATALAND_BACKEND)
     fun euTaxonomyNonFinancialsUploaderFunction(
         companyId: String,
         euTaxonomyNonFinancialsData: EutaxonomyNonFinancialsData,
