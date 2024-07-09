@@ -11,7 +11,7 @@ import org.junit.jupiter.api.TestInstance
 import org.junit.jupiter.api.assertThrows
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-class AdminDataManipulationControllerTest {
+class GeneralDataManipulationControllerTest {
     // TODO test name should be changed if we also change the AdminDataManipulationApi in productive code
 
     private val apiAccessor = ApiAccessor()
@@ -34,7 +34,7 @@ class AdminDataManipulationControllerTest {
             testCompanyInformation,
             testDataEuTaxonomyNonFinancials,
         )
-        val response = apiAccessor.adminDataManipulationControllerApi.deleteCompanyAssociatedDataWithHttpInfo(
+        val response = apiAccessor.generalDataManipulationControllerApi.deleteCompanyAssociatedDataWithHttpInfo(
             mapOfIds.getValue("dataId"),
         )
         assertEquals("200", response.statusCode.toString())
@@ -51,7 +51,7 @@ class AdminDataManipulationControllerTest {
 
             val exception =
                 assertThrows<ClientException> {
-                    apiAccessor.adminDataManipulationControllerApi.deleteCompanyAssociatedData(
+                    apiAccessor.generalDataManipulationControllerApi.deleteCompanyAssociatedData(
 
                         mapOfIds.getValue("dataId"),
 
