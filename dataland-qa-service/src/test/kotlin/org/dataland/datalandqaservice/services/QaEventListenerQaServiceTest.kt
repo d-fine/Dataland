@@ -14,6 +14,7 @@ import org.dataland.datalandqaservice.org.dataland.datalandqaservice.repositorie
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.repositories.ReviewQueueRepository
 import org.json.JSONObject
 import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
@@ -42,14 +43,6 @@ class QaEventListenerQaServiceTest(
 
     val dataId = "TestDataId"
     val noIdPayload = JSONObject(mapOf("identifier" to "", "comment" to "test")).toString()
-    val qaAcceptedNoIdPayload = JSONObject(
-        mapOf(
-            "identifier" to "",
-            "validationResult" to QaStatus.Accepted,
-            "reviewerId" to "",
-        ),
-    ).toString()
-
     val correlationId = "correlationId"
     private fun getAutomatedQaCompletedMessage(
         identifier: String,
@@ -119,8 +112,9 @@ class QaEventListenerQaServiceTest(
 
     @Test
     fun `check an exception is thrown in reading out message from data quality assured queue when dataId is empty`() {
+        val qaAcceptedNoIdPayload = getAutomatedQaCompletedMessage("", QaStatus.Accepted, "test message")
         val thrown = assertThrows<AmqpRejectAndDontRequeueException> {
-            qaEventListenerQaService.addDataToReviewHistory(
+            qaEventListenerQaService.addDataReviewFromAutomatedQaToReviewHistoryRepository(
                 qaAcceptedNoIdPayload,
                 correlationId, MessageType.QaCompleted,
             )
@@ -132,7 +126,7 @@ class QaEventListenerQaServiceTest(
     fun `check an that the automated qa result is stored correctly in the review history repository`() {
         val acceptedData = "acceptedDataId"
         val automatedQaAcceptedMessage = getAutomatedQaCompletedMessage(acceptedData, QaStatus.Accepted, "accepted")
-        qaEventListenerQaService.addDataToReviewHistory(
+        qaEventListenerQaService.addDataReviewFromAutomatedQaToReviewHistoryRepository(
             automatedQaAcceptedMessage, correlationId, MessageType.QaCompleted,
         )
         testReviewHistoryRepository.findById(acceptedData).ifPresent {
@@ -144,7 +138,7 @@ class QaEventListenerQaServiceTest(
 
         val rejectedData = "rejectedDataId"
         val automatedQaRejectedMessage = getAutomatedQaCompletedMessage(rejectedData, QaStatus.Rejected, "rejected")
-        qaEventListenerQaService.addDataToReviewHistory(
+        qaEventListenerQaService.addDataReviewFromAutomatedQaToReviewHistoryRepository(
             automatedQaRejectedMessage, correlationId, MessageType.QaCompleted,
         )
         testReviewHistoryRepository.findById(rejectedData).ifPresent {
@@ -153,5 +147,20 @@ class QaEventListenerQaServiceTest(
             Assertions.assertEquals(QaStatus.Rejected, it.qaStatus)
             Assertions.assertEquals("rejected", it.message)
         }
+    }
+
+    @Test
+    fun `check an that only automated qa results are stored correctly in the review history repository`() {
+        val dataId = "thisIdShouldntBeStored"
+        val qaCompletedMessage = JSONObject(
+            mapOf(
+                "identifier" to dataId, "validationResult" to QaStatus.Accepted, "reviewerId" to "someReviewerId",
+                "message" to "test message",
+            ),
+        ).toString()
+        qaEventListenerQaService.addDataReviewFromAutomatedQaToReviewHistoryRepository(
+            qaCompletedMessage, correlationId, MessageType.QaCompleted,
+        )
+        assertTrue(testReviewHistoryRepository.findById(dataId).isEmpty)
     }
 }

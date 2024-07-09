@@ -168,7 +168,8 @@ class QaEventListenerQaService(
             ),
         ],
     )
-    fun addDataToReviewHistory(
+    @Transactional
+    fun addDataReviewFromAutomatedQaToReviewHistoryRepository(
         @Payload messageAsJsonString: String,
         @Header(MessageHeaderKey.CorrelationId) correlationId: String,
         @Header(MessageHeaderKey.Type) type: String,
@@ -176,12 +177,12 @@ class QaEventListenerQaService(
         messageUtils.validateMessageType(type, MessageType.QaCompleted)
         val qaCompletedMessage = objectMapper.readValue(messageAsJsonString, QaCompletedMessage::class.java)
         val dataId = qaCompletedMessage.identifier
-        if (dataId.isEmpty()) {
-            throw MessageQueueRejectException("Provided data ID is empty")
-        }
         val validationResult = qaCompletedMessage.validationResult
         val reviewerId = qaCompletedMessage.reviewerId
         if (reviewerId != "automated-qa") return
+        if (dataId.isEmpty()) {
+            throw MessageQueueRejectException("Provided data ID is empty")
+        }
         messageUtils.rejectMessageOnException {
             logger.info("Received data with DataId: $dataId on QA message queue with Correlation Id: $correlationId")
             logger.info(
