@@ -3288,7 +3288,7 @@
     "/data/{dataId}": {
       "delete": {
         "tags": [
-          "data-deletion-controller"
+          "admin-data-manipulation-controller"
         ],
         "summary": "Delete a data set.",
         "description": "The data is removed from the data store.",
@@ -14516,17 +14516,6 @@
         ],
         "type": "object",
         "properties": {
-          "lei": {
-            "type": "string",
-            "nullable": true
-          },
-          "sector": {
-            "type": "string",
-            "nullable": true
-          },
-          "companyName": {
-            "type": "string"
-          },
           "companyId": {
             "type": "string"
           },
@@ -14535,6 +14524,17 @@
           },
           "countryCode": {
             "type": "string"
+          },
+          "sector": {
+            "type": "string",
+            "nullable": true
+          },
+          "companyName": {
+            "type": "string"
+          },
+          "lei": {
+            "type": "string",
+            "nullable": true
           }
         }
       },
@@ -14557,10 +14557,10 @@
         ],
         "type": "object",
         "properties": {
-          "companyName": {
+          "companyId": {
             "type": "string"
           },
-          "companyId": {
+          "companyName": {
             "type": "string"
           }
         }
