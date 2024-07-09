@@ -35,7 +35,7 @@ class SingleDataRequestManagerTest {
     private lateinit var dataRequestRepositoryMock: DataRequestRepository
     private lateinit var singleDataRequestEmailMessageSenderMock: SingleDataRequestEmailMessageSender
     private lateinit var authenticationMock: DatalandJwtAuthentication
-    private lateinit var dataRequestProcessingUtilsMock: DataRequestProcessingUtils
+    private lateinit var utilsMock: DataRequestProcessingUtils
     private lateinit var securityUtilsServiceMock: SecurityUtilsService
     private lateinit var mockCompanyIdValidator: CompanyIdValidator
 
@@ -54,7 +54,7 @@ class SingleDataRequestManagerTest {
     @BeforeEach
     fun setupSingleDataRequestManager() {
         singleDataRequestEmailMessageSenderMock = mock(SingleDataRequestEmailMessageSender::class.java)
-        dataRequestProcessingUtilsMock = createDataRequestProcessingUtilsMock()
+        utilsMock = createDataRequestProcessingUtilsMock()
         securityUtilsServiceMock = mock(SecurityUtilsService::class.java)
         mockCompanyIdValidator = mock(CompanyIdValidator::class.java)
         dataRequestRepositoryMock = createDataRequestRepositoryMock()
@@ -63,7 +63,7 @@ class SingleDataRequestManagerTest {
             dataRequestRepository = dataRequestRepositoryMock,
             companyIdValidator = mockCompanyIdValidator,
             singleDataRequestEmailMessageSender = singleDataRequestEmailMessageSenderMock,
-            dataRequestProcessingUtils = dataRequestProcessingUtilsMock,
+            utils = utilsMock,
             securityUtilsService = securityUtilsServiceMock,
             maxRequestsForUser,
         )

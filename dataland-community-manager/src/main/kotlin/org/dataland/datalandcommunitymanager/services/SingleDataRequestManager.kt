@@ -33,7 +33,7 @@ constructor(
     @Autowired private val dataRequestRepository: DataRequestRepository,
     @Autowired private val companyIdValidator: CompanyIdValidator,
     @Autowired private val singleDataRequestEmailMessageSender: SingleDataRequestEmailMessageSender,
-    @Autowired private val dataRequestProcessingUtils: DataRequestProcessingUtils,
+    @Autowired private val utils: DataRequestProcessingUtils,
     @Autowired private val securityUtilsService: SecurityUtilsService,
     @Value("\${dataland.community-manager.max-number-of-data-requests-per-day-for-role-user}") val maxRequestsForUser:
     Int,
@@ -56,15 +56,10 @@ constructor(
         val reportingPeriodsOfStoredDataRequests = mutableListOf<String>()
         val reportingPeriodsOfDuplicateDataRequests = mutableListOf<String>()
         singleDataRequest.reportingPeriods.forEach { reportingPeriod ->
-            if (dataRequestProcessingUtils.existsDataRequestWithNonFinalStatus(
-                    companyId,
-                    singleDataRequest.dataType,
-                    reportingPeriod,
-                )
-            ) {
+            if (utils.existsDataRequestWithNonFinalStatus(companyId, singleDataRequest.dataType, reportingPeriod)) {
                 reportingPeriodsOfDuplicateDataRequests.add(reportingPeriod)
             } else {
-                dataRequestProcessingUtils.storeDataRequestEntityAsOpen(
+                utils.storeDataRequestEntityAsOpen(
                     companyId, singleDataRequest.dataType, reportingPeriod,
                     singleDataRequest.contacts.takeIf { !it.isNullOrEmpty() },
                     singleDataRequest.message.takeIf { !it.isNullOrBlank() },
@@ -82,7 +77,7 @@ constructor(
     }
 
     private fun checkSingleDataRequest(singleDataRequest: SingleDataRequest, companyId: String) {
-        dataRequestProcessingUtils.throwExceptionIfNotJwtAuth()
+        utils.throwExceptionIfNotJwtAuth()
         validateSingleDataRequestContent(singleDataRequest)
         performQuotaCheckForNonPremiumUser(singleDataRequest.reportingPeriods.size, companyId)
     }
@@ -140,7 +135,7 @@ constructor(
             companyIdValidator.checkIfCompanyIdIsValidAndReturnName(companyIdentifier)
             companyIdentifier
         } else {
-            dataRequestProcessingUtils.getDatalandCompanyIdForIdentifierValue(companyIdentifier)
+            utils.getDatalandCompanyIdForIdentifierValue(companyIdentifier)
         }
         if (datalandCompanyId == null) {
             throw InvalidInputApiException(
