@@ -182,6 +182,21 @@ class CompanyRolesControllerTest {
     }
 
     @Test
+    fun `check that company data uploaders can upload data`() {
+        val firstCompanyId = uploadCompanyAndReturnCompanyId()
+
+        jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader)
+        assertAccessDeniedWhenUploadingFrameworkData(firstCompanyId, frameworkSampleData, false)
+
+        jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
+        assignCompanyRole(CompanyRole.DataUploader, firstCompanyId, dataReaderUserId)
+        assertDoesNotThrow { hasUserCompanyRole(CompanyRole.DataUploader, firstCompanyId, dataReaderUserId) }
+
+        jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader)
+        assertDoesNotThrow { uploadEuTaxoData(firstCompanyId, frameworkSampleData) }
+    }
+
+    @Test
     fun `assure that users without keycloak admin role can always find out their role of a company`() {
         val companyId = uploadCompanyAndReturnCompanyId()
 
