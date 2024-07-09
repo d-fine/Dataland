@@ -22,14 +22,15 @@ data class ReviewInformationEntity(
     /**
      * Converts the ReviewInformationEntity into a ReviewInformationResponse that is used in a response for a
      * GET Request.
-     * The ReviewInformationResponse can optionally hide the reviewerKeycloakId and this function respects this.
+     * The ReviewInformationResponse can optionally hide the reviewerKeycloakId by setting showReviewerKeycloakId
+     * to false.
      */
-    fun toReviewInformationResponse(shouldHideReviewKeycloakId: Boolean): ReviewInformationResponse {
+    fun toReviewInformationResponse(showReviewerKeycloakId: Boolean): ReviewInformationResponse {
         return ReviewInformationResponse(
             dataId,
             receptionTime,
             qaStatus,
-            if (shouldHideReviewKeycloakId) null else reviewerKeycloakId,
+            if (showReviewerKeycloakId) reviewerKeycloakId else null,
             message,
         )
     }

@@ -53,7 +53,7 @@ class QaController(
 
         return if (reviewHistoryEntity != null) {
             val userIsAdmin = DatalandAuthentication.fromContext().roles.contains(DatalandRealmRole.ROLE_ADMIN)
-            val response = reviewHistoryEntity.toReviewInformationResponse(!userIsAdmin)
+            val response = reviewHistoryEntity.toReviewInformationResponse(userIsAdmin)
             ResponseEntity.ok(response)
         } else {
             ResponseEntity.notFound().build()
