@@ -66,11 +66,13 @@ class TemplateEmailMessageListener(
             "Received template email message of type ${message.emailTemplateType.name} " +
                 "with correlationId $correlationId.",
         )
+        val jsonMessage = objectMapper.readTree(jsonString)
+        val receiver = jsonMessage["receiver"]["email"].asText() // todo
         messageQueueUtils.rejectMessageOnException {
             val templateEmailFactory = getMatchingEmailFactory(message)
             emailSender.sendEmailWithoutTestReceivers(
                 templateEmailFactory.buildEmail(
-                    receiverEmail = message.receiver.toString(), // todo
+                    receiverEmail = receiver,
                     properties = message.properties,
                 ),
             )
