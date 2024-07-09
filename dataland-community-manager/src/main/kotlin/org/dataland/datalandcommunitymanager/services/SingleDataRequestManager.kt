@@ -25,12 +25,16 @@ import java.util.*
  * Implementation of a request manager service for all operations concerning the processing of single data requests
  */
 @Service("SingleDataRequestManager")
-class SingleDataRequestManager(
-    @Autowired private val dataRequestLogger: DataRequestLogger,
+class SingleDataRequestManager
+@Suppress("LongParameterList")
+constructor(
+    @Autowired
+    private val dataRequestLogger: DataRequestLogger,
     @Autowired private val dataRequestRepository: DataRequestRepository,
     @Autowired private val companyIdValidator: CompanyIdValidator,
     @Autowired private val singleDataRequestEmailMessageSender: SingleDataRequestEmailMessageSender,
-    @Autowired private val utils: DataRequestProcessingUtils,
+    @Autowired private val dataRequestProcessingUtils: DataRequestProcessingUtils,
+    @Autowired private val securityUtilsService: SecurityUtilsService,
     @Value("\${dataland.community-manager.max-number-of-data-requests-per-day-for-role-user}") val maxRequestsForUser:
     Int,
 ) {
@@ -43,19 +47,24 @@ class SingleDataRequestManager(
      */
     @Transactional
     fun processSingleDataRequest(singleDataRequest: SingleDataRequest): SingleDataRequestResponse {
-        checkSingleDataRequest(singleDataRequest)
+        val companyId = findDatalandCompanyIdForCompanyIdentifier(singleDataRequest.companyIdentifier)
         val correlationId = UUID.randomUUID().toString()
+        checkSingleDataRequest(singleDataRequest, companyId)
         dataRequestLogger.logMessageForReceivingSingleDataRequest(
             singleDataRequest.companyIdentifier, DatalandAuthentication.fromContext().userId, correlationId,
         )
-        val companyId = findDatalandCompanyIdForCompanyIdentifier(singleDataRequest.companyIdentifier)
         val reportingPeriodsOfStoredDataRequests = mutableListOf<String>()
         val reportingPeriodsOfDuplicateDataRequests = mutableListOf<String>()
         singleDataRequest.reportingPeriods.forEach { reportingPeriod ->
-            if (utils.existsDataRequestWithNonFinalStatus(companyId, singleDataRequest.dataType, reportingPeriod)) {
+            if (dataRequestProcessingUtils.existsDataRequestWithNonFinalStatus(
+                    companyId,
+                    singleDataRequest.dataType,
+                    reportingPeriod,
+                )
+            ) {
                 reportingPeriodsOfDuplicateDataRequests.add(reportingPeriod)
             } else {
-                utils.storeDataRequestEntityAsOpen(
+                dataRequestProcessingUtils.storeDataRequestEntityAsOpen(
                     companyId, singleDataRequest.dataType, reportingPeriod,
                     singleDataRequest.contacts.takeIf { !it.isNullOrEmpty() },
                     singleDataRequest.message.takeIf { !it.isNullOrBlank() },
@@ -72,23 +81,23 @@ class SingleDataRequestManager(
         )
     }
 
-    private fun checkSingleDataRequest(singleDataRequest: SingleDataRequest) {
-        utils.throwExceptionIfNotJwtAuth()
+    private fun checkSingleDataRequest(singleDataRequest: SingleDataRequest, companyId: String) {
+        dataRequestProcessingUtils.throwExceptionIfNotJwtAuth()
         validateSingleDataRequestContent(singleDataRequest)
-        performQuotaCheckForNonPremiumUser(singleDataRequest)
+        performQuotaCheckForNonPremiumUser(singleDataRequest.reportingPeriods.size, companyId)
     }
 
-    private fun performQuotaCheckForNonPremiumUser(singleDataRequest: SingleDataRequest) {
+    private fun performQuotaCheckForNonPremiumUser(numberOfReportingPeriods: Int, companyId: String) {
         val userInfo = DatalandAuthentication.fromContext()
-        if (!userInfo.roles.contains(DatalandRealmRole.ROLE_PREMIUM_USER)) {
+        if (!userInfo.roles.contains(DatalandRealmRole.ROLE_PREMIUM_USER) &&
+            !securityUtilsService.isUserMemberOfTheCompany(UUID.fromString(companyId))
+        ) {
             val numberOfDataRequestsPerformedByUserFromTimestamp =
                 dataRequestRepository.getNumberOfDataRequestsPerformedByUserFromTimestamp(
                     userInfo.userId, getEpochTimeStartOfDay(),
                 )
 
-            val numberOfReportingPeriodsInCurrentDataRequest = singleDataRequest.reportingPeriods.size
-
-            if (numberOfDataRequestsPerformedByUserFromTimestamp + numberOfReportingPeriodsInCurrentDataRequest
+            if (numberOfDataRequestsPerformedByUserFromTimestamp + numberOfReportingPeriods
                 > maxRequestsForUser
             ) {
                 throw QuotaExceededException(
@@ -131,7 +140,7 @@ class SingleDataRequestManager(
             companyIdValidator.checkIfCompanyIdIsValidAndReturnName(companyIdentifier)
             companyIdentifier
         } else {
-            utils.getDatalandCompanyIdForIdentifierValue(companyIdentifier)
+            dataRequestProcessingUtils.getDatalandCompanyIdForIdentifierValue(companyIdentifier)
         }
         if (datalandCompanyId == null) {
             throw InvalidInputApiException(
