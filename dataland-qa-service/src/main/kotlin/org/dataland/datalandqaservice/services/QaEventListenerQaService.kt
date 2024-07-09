@@ -181,6 +181,7 @@ class QaEventListenerQaService(
         }
         val validationResult = qaCompletedMessage.validationResult
         val reviewerId = qaCompletedMessage.reviewerId
+        if (reviewerId != "automated-qa") return
         messageUtils.rejectMessageOnException {
             logger.info("Received data with DataId: $dataId on QA message queue with Correlation Id: $correlationId")
             logger.info(
