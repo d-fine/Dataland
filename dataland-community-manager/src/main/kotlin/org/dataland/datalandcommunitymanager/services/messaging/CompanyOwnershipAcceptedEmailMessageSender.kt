@@ -50,7 +50,7 @@ class CompanyOwnershipAcceptedEmailMessageSender(
         )
         val message = TemplateEmailMessage(
             TemplateEmailMessage.Type.SuccessfullyClaimedOwnership,
-            newCompanyOwnerEmail,
+            TemplateEmailMessage.EmailAddressEmailRecipient(newCompanyOwnerEmail),
             properties,
         )
         cloudEventMessageHandler.buildCEMessageAndSendToQueue(

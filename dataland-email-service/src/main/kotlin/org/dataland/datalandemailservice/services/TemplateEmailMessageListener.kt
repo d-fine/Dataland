@@ -70,7 +70,7 @@ class TemplateEmailMessageListener(
             val templateEmailFactory = getMatchingEmailFactory(message)
             emailSender.sendEmailWithoutTestReceivers(
                 templateEmailFactory.buildEmail(
-                    receiverEmail = message.receiver,
+                    receiverEmail = message.receiver.toString(), // todo
                     properties = message.properties,
                 ),
             )

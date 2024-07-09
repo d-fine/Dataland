@@ -103,7 +103,7 @@ class DataRequestResponseEmailSender(
         val properties = getProperties(dataRequestEntity, staleDaysThreshold)
         val message = TemplateEmailMessage(
             emailTemplateType = emailType,
-            receiver = getUserEmailById(dataRequestEntity.userId),
+            receiver = TemplateEmailMessage.EmailAddressEmailRecipient(getUserEmailById(dataRequestEntity.userId)),
             properties = properties,
         )
         cloudEventMessageHandler.buildCEMessageAndSendToQueue(
