@@ -24,7 +24,7 @@ class CompanyRoleChecker(
     @Autowired private val companyQueryManager: CompanyQueryManager,
 ) {
     /**
-     * Method to check whether the currently authenticated user has a company role for a specified company.
+     * Checks whether the currently authenticated user has a company role for a specified company.
      * @param companyId the ID of the company
      * @param role for which the check shall happen
      * @return a Boolean indicating whether the user has the role or not
@@ -47,7 +47,21 @@ class CompanyRoleChecker(
     }
 
     /**
-     * Method to check whether the currently authenticated user has the role for the specified company that is
+     * Checks whether the current user has any company role for the companyId
+     * @param companyId to check the roles for
+     * @returns a boolean stating if the user has any company role for the company
+     */
+    fun doesCurrentUserHaveAnyRoleForCompany(companyId: String): Boolean {
+        val userId = UUID.fromString(DatalandAuthentication.fromContext().userId)
+        val roles = companyRolesControllerApi.getCompanyRoleAssignments(
+            companyId = UUID.fromString(companyId),
+            userId = userId,
+        )
+        return roles.isNotEmpty()
+    }
+
+    /**
+     * Checks whether the currently authenticated user has the role for the specified company that is
      * associated with a specific framework dataset.
      * @param dataId of the framework dataset
      * @param role to check for
@@ -59,7 +73,17 @@ class CompanyRoleChecker(
     }
 
     /**
-     * Method to check whether a given company has at least one company owner
+     * Checks whether the current user has any company role for the companyId associated with the dataId
+     * @param dataId of the dataset to get the associated company for
+     * @returns a boolean stating if the user has any company role for the company associated with the dataId
+     */
+    fun doesCurrentUserHaveAnyRoleForCompanyOfDataId(dataId: String): Boolean {
+        val companyId = dataMetaInformationManager.getDataMetaInformationByDataId(dataId).company.companyId
+        return doesCurrentUserHaveAnyRoleForCompany(companyId)
+    }
+
+    /**
+     * Checks whether a given company has at least one company owner
      * @param companyId the ID of the company
      * @return a Boolean indicating whether the company has at least one company owner
      */

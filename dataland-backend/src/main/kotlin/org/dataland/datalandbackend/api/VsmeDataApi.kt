@@ -45,10 +45,14 @@ interface VsmeDataApi {
     )
     @PostMapping(produces = [MediaType.APPLICATION_JSON_VALUE], consumes = [MediaType.MULTIPART_FORM_DATA_VALUE])
     @PreAuthorize(
-        "(hasRole('ROLE_USER') " +
-            "and @CompanyRoleChecker.doesCurrentUserHaveGivenRoleForCompany(" +
+        "hasRole('ROLE_USER') and " +
+            "(@CompanyRoleChecker.doesCurrentUserHaveGivenRoleForCompany(" +
             "#companyAssociatedVsmeData.companyId, " +
             "T(org.dataland.datalandcommunitymanager.openApiClient.model.CompanyRole).CompanyOwner" +
+            ") or" +
+            "@CompanyRoleChecker.doesCurrentUserHaveGivenRoleForCompany(" +
+            "#companyAssociatedVsmeData.companyId, " +
+            "T(org.dataland.datalandcommunitymanager.openApiClient.model.CompanyRole).DataUploader" +
             ")" +
             ")",
     )
@@ -76,12 +80,8 @@ interface VsmeDataApi {
         produces = ["application/json"],
     )
     @PreAuthorize(
-        "(hasRole('ROLE_USER') " +
-            "and @CompanyRoleChecker.doesCurrentUserHaveGivenRoleForCompanyOfDataId(" +
-            "#dataId, " +
-            "T(org.dataland.datalandcommunitymanager.openApiClient.model.CompanyRole).CompanyOwner" +
-            ")" +
-            ")",
+        "hasRole('ROLE_USER') and " +
+            "@CompanyRoleChecker.doesCurrentUserHaveAnyRoleForCompanyOfDataId(#dataId)",
     )
     fun getCompanyAssociatedVsmeData(@PathVariable("dataId") dataId: String):
         ResponseEntity<CompanyAssociatedData<VsmeData>>
@@ -112,12 +112,8 @@ interface VsmeDataApi {
         ],
     )
     @PreAuthorize(
-        "(hasRole('ROLE_USER') " +
-            "and @CompanyRoleChecker.doesCurrentUserHaveGivenRoleForCompanyOfDataId(" +
-            "#dataId, " +
-            "T(org.dataland.datalandcommunitymanager.openApiClient.model.CompanyRole).CompanyOwner" +
-            ")" +
-            ")",
+        "hasRole('ROLE_USER') and " +
+            "@CompanyRoleChecker.doesCurrentUserHaveAnyRoleForCompanyOfDataId(#dataId)",
     )
     fun getPrivateDocument(
         @RequestParam("dataId") dataId: String,
@@ -148,12 +144,8 @@ interface VsmeDataApi {
         produces = ["application/json"],
     )
     @PreAuthorize(
-        "(hasRole('ROLE_USER') " +
-            "and @CompanyRoleChecker.doesCurrentUserHaveGivenRoleForCompany(" +
-            "#companyId, " +
-            "T(org.dataland.datalandcommunitymanager.openApiClient.model.CompanyRole).CompanyOwner" +
-            ")" +
-            ")",
+        "hasRole('ROLE_USER') and " +
+            "@CompanyRoleChecker.doesCurrentUserHaveAnyRoleForCompany(#companyId)",
     )
     fun getFrameworkDatasetsForCompany(
         @PathVariable("companyId") companyId: String,
