@@ -12,7 +12,6 @@ import java.io.FileNotFoundException
 import java.io.IOException
 import java.net.SocketException
 import java.net.URL
-import java.util.zip.ZipInputStream
 const val ZIP_BUFFER_SIZE = 8192
 
 /**
@@ -75,33 +74,5 @@ class ExternalFileDownload(
         if (counter >= MAX_RETRIES) {
             throw FileNotFoundException("Unable to download file behind $url after $MAX_RETRIES attempts.")
         }
-    }
-
-    /**
-     * Extracts CSV file from Zip file
-     * @param zipFile the zip file
-     * @return CSV file inside Zip file
-     */
-    fun getCsvFileFromZip(zipFile: File, prefixForCsvFile: String): File {
-        val csvFile = File.createTempFile(prefixForCsvFile, ".csv")
-        csvFile.deleteOnExit()
-
-        ZipInputStream(zipFile.inputStream()).use { zipInputStream ->
-            val zipEntry = zipInputStream.nextEntry
-            require(zipEntry?.name?.endsWith(".csv") ?: false) {
-                "The downloaded ZIP file does not contain the CSV file in the first position"
-            }
-
-            csvFile.outputStream().use { csvOutputStream ->
-                val buffer = ByteArray(ZIP_BUFFER_SIZE)
-                var bytesRead: Int
-
-                while (zipInputStream.read(buffer).also { bytesRead = it } != -1) {
-                    csvOutputStream.write(buffer, 0, bytesRead)
-                }
-            }
-        }
-
-        return csvFile
     }
 }

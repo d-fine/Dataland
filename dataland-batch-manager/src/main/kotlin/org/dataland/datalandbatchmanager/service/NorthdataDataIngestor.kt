@@ -1,7 +1,7 @@
 package org.dataland.datalandbatchmanager.service
 
 import org.dataland.datalandbatchmanager.model.NorthDataCompanyInformation
-import org.dataland.datalandbatchmanager.service.GleifGoldenCopyIngestor.Companion.UPLOAD_THREAT_POOL_SIZE
+import org.dataland.datalandbatchmanager.service.GleifGoldenCopyIngestor.Companion.UPLOAD_THREAD_POOL_SIZE
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
@@ -20,16 +20,15 @@ import kotlin.time.measureTime
 @Component
 class NorthdataDataIngestor(
     @Autowired private val companyUploader: CompanyUploader,
-    @Autowired private val csvParser: GleifCsvParser,
+    @Autowired private val csvParser: CsvParser,
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
 
     private fun filterAndTriggerUpload(northDataCompanyInformation: NorthDataCompanyInformation) {
+        var update = false
         when (northDataCompanyInformation.status) {
-            "terminated" -> return
-            "active", "liquidation", "" -> {
-                companyUploader.uploadOrPatchSingleCompany(northDataCompanyInformation)
-            }
+            "terminated" -> update = false
+            "active", "liquidation", "" -> update = true
             else -> {
                 logger.info(
                     "Found unexpected status code for NorthDataCompanyInformation " +
@@ -38,13 +37,24 @@ class NorthdataDataIngestor(
                 )
             }
         }
+        if ((northDataCompanyInformation.registerId == "") &&
+            (northDataCompanyInformation.vatId == "") &&
+            (northDataCompanyInformation.lei == "")
+        ) {
+            update = false
+            logger.info(
+                "Neither registerId nor vatId nor LEI provided for company with name " +
+                    northDataCompanyInformation.companyName,
+            )
+        }
+        if (update) companyUploader.uploadOrPatchSingleCompany(northDataCompanyInformation)
     }
 
-    private fun updateNorthData(zipFile: File) {
+    private fun updateCompaniesFromNorthDataFile(zipFile: File) {
         val northStream = csvParser.getCsvStreamFromNorthDataZipFile(zipFile)
         val northDataIterable = csvParser.readNorthDataFromBufferedReader(northStream)
 
-        val uploadThreadPool = ForkJoinPool(UPLOAD_THREAT_POOL_SIZE)
+        val uploadThreadPool = ForkJoinPool(UPLOAD_THREAD_POOL_SIZE)
         try {
             uploadThreadPool.submit {
                 StreamSupport.stream(northDataIterable.spliterator(), true)
@@ -67,7 +77,7 @@ class NorthdataDataIngestor(
         val duration = measureTime {
             try {
                 downloadFile(zipFile)
-                updateNorthData(zipFile)
+                updateCompaniesFromNorthDataFile(zipFile)
             } finally {
                 logger.error("Not deleting $zipFile now, remember to change this.")
             }

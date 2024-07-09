@@ -77,7 +77,8 @@ data class NorthDataCompanyInformation(
         if (conflictingIdentifiers != null) {
             val hasLei = conflictingIdentifiers.contains(IdentifierType.Lei.value)
             val hasRegisterId = conflictingIdentifiers.contains(IdentifierType.CompanyRegistrationNumber.value)
-            if (!hasLei && hasRegisterId) returnFullPatch = true
+            val hasVatId = conflictingIdentifiers.contains(IdentifierType.VatNumber.value)
+            if (!hasLei && (hasRegisterId || hasVatId)) returnFullPatch = true
         }
 
         val identifiers: MutableMap<String, List<String>> = HashMap()

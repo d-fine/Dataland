@@ -16,7 +16,7 @@ import java.util.zip.ZipInputStream
  * Class to read in the zipped CSV file and return buffered GleifCompanyInformation objects
  */
 @Component
-class GleifCsvParser {
+class CsvParser {
     /**
      * Reads the zipped CSV file and returns the content as buffered reader
      * @param zipFile The file containing the CSV file to be parsed

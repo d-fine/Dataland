@@ -4,7 +4,7 @@ import org.dataland.datalandbackend.openApiClient.model.CompanyInformation
 import org.dataland.datalandbackend.openApiClient.model.CompanyInformationPatch
 import org.dataland.datalandbackend.openApiClient.model.IdentifierType
 import org.dataland.datalandbatchmanager.model.NorthDataCompanyInformation
-import org.dataland.datalandbatchmanager.service.GleifCsvParser
+import org.dataland.datalandbatchmanager.service.CsvParser
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import java.io.File
@@ -53,11 +53,11 @@ class NorthDataMappingTest {
     )
 
     @Test
-    fun `test north data data type`() {
+    fun `test north data parsing and conversion`() {
         val zipFile = File("./build/resources/test/testHierarchicalFile.zip")
 
-        val bufferedReader = GleifCsvParser().getCsvStreamFromNorthDataZipFile(zipFile)
-        val iterable = GleifCsvParser().readNorthDataFromBufferedReader(bufferedReader)
+        val bufferedReader = CsvParser().getCsvStreamFromNorthDataZipFile(zipFile)
+        val iterable = CsvParser().readNorthDataFromBufferedReader(bufferedReader)
         val onlyElement = iterable.iterator().next()
         assertEquals(expectedNorthDataCompanyInformation, onlyElement)
         assertEquals(expectedCompanyInformation, onlyElement.toCompanyPost())
