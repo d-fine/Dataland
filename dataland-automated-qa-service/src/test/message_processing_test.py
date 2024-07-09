@@ -27,7 +27,7 @@ def mock_resource() -> Mock:
 
 
 def build_qa_completed_message_body(qa_result: QaStatus) -> bytes:
-    message = {"identifier": "dummy-id", "validationResult": qa_result, "reviewerId": "automated-qa"}
+    message = {"identifier": "dummy-id", "validationResult": qa_result, "reviewerId": "automated-qa-service"}
     return json.dumps(message).encode("UTF-8")
 
 

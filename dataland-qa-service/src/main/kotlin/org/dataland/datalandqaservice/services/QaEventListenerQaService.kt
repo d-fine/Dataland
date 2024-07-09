@@ -41,6 +41,7 @@ class QaEventListenerQaService(
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
 
+    private val reviewerIdAutomatedQaService = "automated-qa-service"
     private data class ForwardedQaMessage(
         val identifier: String,
         val comment: String,
@@ -136,7 +137,7 @@ class QaEventListenerQaService(
             )
             val messageToSend = objectMapper.writeValueAsString(
                 QaCompletedMessage(
-                    documentId, QaStatus.Accepted, "automated-qa", null,
+                    documentId, QaStatus.Accepted, reviewerIdAutomatedQaService, null,
                 ),
             )
             cloudEventMessageHandler.buildCEMessageAndSendToQueue(
@@ -179,7 +180,7 @@ class QaEventListenerQaService(
         val dataId = qaCompletedMessage.identifier
         val validationResult = qaCompletedMessage.validationResult
         val reviewerId = qaCompletedMessage.reviewerId
-        if (reviewerId != "automated-qa") return
+        if (reviewerId != reviewerIdAutomatedQaService) return
         if (dataId.isEmpty()) {
             throw MessageQueueRejectException("Provided data ID is empty")
         }
