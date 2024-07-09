@@ -21,7 +21,7 @@ class SecurityUtilsService(
     /**
      * This function checks whether the user uploaded the dataset with the corresponding identifier.
      */
-    fun isUserAskingQaReviewStatusOfUploadedDataset(dataId: UUID): Boolean {
+    fun userAskingQaReviewStatusOfOwnDataset(dataId: UUID): Boolean {
         logger.info("Checking if user created the dataset $dataId")
         try {
             val dataMetaInformation = metaDataControllerApi.getDataMetaInfo(dataId.toString())

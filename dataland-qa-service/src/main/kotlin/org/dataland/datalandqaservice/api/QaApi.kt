@@ -41,16 +41,17 @@ interface QaApi {
 
     /**
      * A method to get the QA review status of an uploaded dataset for a given identifier
-     * @param identifier the identifier
+     * @param dataId the dataId
      */
     @Operation(
-        summary = "Gets the QA review status of an uploaded dataset for a given identifier.",
-        description = "Gets the QA review status of an uploaded dataset for a given identifier.",
+        summary = "Gets the QA review status of an uploaded dataset for a given id.",
+        description = "Get the QA review status of your uploaded dataset for a given id." +
+            "Admins and reviewer can get the review status for all datasets.",
     )
     @ApiResponses(
         value = [
-            ApiResponse(responseCode = "200", description = "Found a QA review status corresponding the identifier."),
-            ApiResponse(responseCode = "404", description = "Found no QA review status corresponding the identifier."),
+            ApiResponse(responseCode = "200", description = "Found a QA review status corresponding the id."),
+            ApiResponse(responseCode = "404", description = "Found no QA review status corresponding the id."),
         ],
     )
     @GetMapping(
@@ -60,7 +61,7 @@ interface QaApi {
     @PreAuthorize(
         "hasRole('ROLE_REVIEWER') " +
             "or hasRole('ROLE_ADMIN') " +
-            "or @SecurityUtilsService.isUserAskingQaReviewStatusOfUploadedDataset(#dataId)",
+            "or @SecurityUtilsService.userAskingQaReviewStatusOfOwnDataset(#dataId)",
     )
     fun getDatasetById(
         @PathVariable("dataId") dataId: UUID,
