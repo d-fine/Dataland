@@ -25,8 +25,8 @@
         "tags": [
           "qa-controller"
         ],
-        "summary": "Gets the QA review status of an uploaded dataset for a given identifier.",
-        "description": "Gets the QA review status of an uploaded dataset for a given identifier.",
+        "summary": "Gets the QA review status of an uploaded dataset for a given id.",
+        "description": "Get the QA review status of uploaded dataset for a given id.Users can get the review status of their own datasets.Admins and reviewer can get the review status for all datasets.",
         "operationId": "getDatasetById",
         "parameters": [
           {
@@ -40,8 +40,8 @@
           }
         ],
         "responses": {
-          "404": {
-            "description": "Found no QA review status corresponding the identifier.",
+          "200": {
+            "description": "Found a QA review status corresponding the id.",
             "content": {
               "application/json": {
                 "schema": {
@@ -50,8 +50,8 @@
               }
             }
           },
-          "200": {
-            "description": "Found a QA review status corresponding the identifier.",
+          "404": {
+            "description": "Found no QA review status corresponding the id.",
             "content": {
               "application/json": {
                 "schema": {
