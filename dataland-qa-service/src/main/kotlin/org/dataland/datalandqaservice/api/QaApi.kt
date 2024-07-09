@@ -45,7 +45,8 @@ interface QaApi {
      */
     @Operation(
         summary = "Gets the QA review status of an uploaded dataset for a given id.",
-        description = "Get the QA review status of your uploaded dataset for a given id." +
+        description = "Get the QA review status of uploaded dataset for a given id." +
+            "Users can get the review status of their own datasets." +
             "Admins and reviewer can get the review status for all datasets.",
     )
     @ApiResponses(
