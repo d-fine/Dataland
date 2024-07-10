@@ -82,10 +82,12 @@ class TemplateEmailMessageListener(
     }
 
     private fun getEmailAddressByRecipient(receiver: JsonNode): String {
-        return if (receiver["type"].asText() == "address") {
-            receiver["email"].asText()
-        } else {
-            keycloakUserControllerApiService.getEmailAddress(receiver["userId"].asText())
+        return when (receiver["type"].asText()) {
+            "address" -> receiver["email"].asText()
+            "user" -> keycloakUserControllerApiService.getEmailAddress(receiver["userId"].asText())
+            else -> {
+                throw IllegalArgumentException("Invalid receiver type: ${receiver["type"].asText()}")
+            }
         }
     }
 
