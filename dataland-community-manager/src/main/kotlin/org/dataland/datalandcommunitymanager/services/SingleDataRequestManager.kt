@@ -28,8 +28,7 @@ import java.util.*
 class SingleDataRequestManager
 @Suppress("LongParameterList")
 constructor(
-    @Autowired
-    private val dataRequestLogger: DataRequestLogger,
+    @Autowired private val dataRequestLogger: DataRequestLogger,
     @Autowired private val dataRequestRepository: DataRequestRepository,
     @Autowired private val companyIdValidator: CompanyIdValidator,
     @Autowired private val singleDataRequestEmailMessageSender: SingleDataRequestEmailMessageSender,
