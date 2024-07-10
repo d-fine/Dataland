@@ -116,7 +116,7 @@ class QaEventListenerQaServiceTest(
         val thrown = assertThrows<AmqpRejectAndDontRequeueException> {
             qaEventListenerQaService.addDataReviewFromAutomatedQaToReviewHistoryRepository(
                 qaAcceptedNoIdPayload,
-                correlationId, MessageType.ManualQaRequested,
+                correlationId, MessageType.PersistAutomatedQaResult,
             )
         }
         Assertions.assertEquals("Message was rejected: Provided data ID is empty", thrown.message)
@@ -127,7 +127,7 @@ class QaEventListenerQaServiceTest(
         val acceptedData = "acceptedDataId"
         val automatedQaAcceptedMessage = getPersistAutomatedQaResultMessage(acceptedData, QaStatus.Accepted, "accepted")
         qaEventListenerQaService.addDataReviewFromAutomatedQaToReviewHistoryRepository(
-            automatedQaAcceptedMessage, correlationId, MessageType.ManualQaRequested,
+            automatedQaAcceptedMessage, correlationId, MessageType.PersistAutomatedQaResult,
         )
         testReviewHistoryRepository.findById(acceptedData).ifPresent {
             Assertions.assertEquals(AUTOMATED_QA, it.reviewerKeycloakId)
@@ -139,7 +139,7 @@ class QaEventListenerQaServiceTest(
         val rejectedData = "rejectedDataId"
         val automatedQaRejectedMessage = getPersistAutomatedQaResultMessage(rejectedData, QaStatus.Rejected, "rejected")
         qaEventListenerQaService.addDataReviewFromAutomatedQaToReviewHistoryRepository(
-            automatedQaRejectedMessage, correlationId, MessageType.ManualQaRequested,
+            automatedQaRejectedMessage, correlationId, MessageType.PersistAutomatedQaResult,
         )
         testReviewHistoryRepository.findById(rejectedData).ifPresent {
             Assertions.assertEquals(AUTOMATED_QA, it.reviewerKeycloakId)
@@ -159,7 +159,7 @@ class QaEventListenerQaServiceTest(
             ),
         ).toString()
         qaEventListenerQaService.addDataReviewFromAutomatedQaToReviewHistoryRepository(
-            persistAutomatedQaResultMessage, correlationId, MessageType.ManualQaRequested,
+            persistAutomatedQaResultMessage, correlationId, MessageType.PersistAutomatedQaResult,
         )
         assertTrue(testReviewHistoryRepository.findById(dataId).isEmpty)
     }
