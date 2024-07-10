@@ -1,6 +1,7 @@
 package org.dataland.datalandcommunitymanager.services
 
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
+import org.dataland.datalandcommunitymanager.services.messaging.CompanyOwnershipAcceptedEmailMessageSender
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
 import org.dataland.datalandmessagequeueutils.constants.ExchangeName
 import org.dataland.datalandmessagequeueutils.constants.MessageType
@@ -28,14 +29,13 @@ class CompanyOwnershipAcceptedEmailMessageSenderTest {
     private val correlationId = UUID.randomUUID().toString()
     private val companyId = "59f05156-e1ba-4ea8-9d1e-d4833f6c7afc"
     private val userId = "1234-221-1111elf"
-    private val userEmail = "$userId@example.com"
     private val numberOfOpenDataRequestsForCompany = "0"
 
     @BeforeEach
     fun setupAuthentication() {
         val mockSecurityContext = mock(SecurityContext::class.java)
         authenticationMock = AuthenticationMock.mockJwtAuthentication(
-            userEmail,
+            "userEmail",
             userId,
             setOf(DatalandRealmRole.ROLE_USER),
         )
@@ -46,37 +46,23 @@ class CompanyOwnershipAcceptedEmailMessageSenderTest {
 
     @Test
     fun `validate that the output of the external email message sender is correctly build for all frameworks`() {
-//        todo
-        //        mockCloudEventMessageHandlerAndSetChecks()
-//
-//        val dataRequestQueryManager = mock(DataRequestQueryManager::class.java)
-//        val companyOwnershipAcceptedEmailMessageSender =
-//            CompanyOwnershipAcceptedEmailMessageSender(
-//                cloudEventMessageHandlerMock,
-//                objectMapper,
-//                dataRequestQueryManager,
-//                authenticatedOkHttpClientMock,
-//                keycloakBaseUrlMock,
-//            )
-//
-//        val mockCall: Call = mock(Call::class.java)
-//        val mockResponse: Response = mock(Response::class.java)
-//        val mockResponseBody: ResponseBody = mock(ResponseBody::class.java)
-//
-//        val jsonStringRepresentation = "{\"email\": \"${userEmail}\", \"id\": \"${userId}\"}"
-//
-//        Mockito.`when`(authenticatedOkHttpClientMock.newCall(any(Request::class.java))).thenReturn(mockCall)
-//        Mockito.`when`(mockCall.execute()).thenReturn(mockResponse)
-//        Mockito.`when`(mockResponse.body).thenReturn(mockResponseBody)
-//        Mockito.`when`(mockResponse.body!!.string()).thenReturn(jsonStringRepresentation)
-//
-//        companyOwnershipAcceptedEmailMessageSender
-//            .sendCompanyOwnershipAcceptanceExternalEmailMessage(
-//                newCompanyOwnerId = userId,
-//                datalandCompanyId = companyId,
-//                companyName = companyName,
-//                correlationId = correlationId,
-//            )
+        mockCloudEventMessageHandlerAndSetChecks()
+
+        val dataRequestQueryManager = mock(DataRequestQueryManager::class.java)
+        val companyOwnershipAcceptedEmailMessageSender =
+            CompanyOwnershipAcceptedEmailMessageSender(
+                cloudEventMessageHandlerMock,
+                objectMapper,
+                dataRequestQueryManager,
+            )
+
+        companyOwnershipAcceptedEmailMessageSender
+            .sendCompanyOwnershipAcceptanceExternalEmailMessage(
+                newCompanyOwnerId = userId,
+                datalandCompanyId = companyId,
+                companyName = companyName,
+                correlationId = correlationId,
+            )
     }
 
     private fun mockCloudEventMessageHandlerAndSetChecks() {
@@ -97,7 +83,7 @@ class CompanyOwnershipAcceptedEmailMessageSenderTest {
             val arg5 = it.getArgument<String>(4)
             checkProperties(arg1.properties)
             Assertions.assertEquals(TemplateEmailMessage.Type.SuccessfullyClaimedOwnership, arg1.emailTemplateType)
-            Assertions.assertEquals(userEmail, arg1.receiver)
+            Assertions.assertEquals(TemplateEmailMessage.UserIdRecipient(userId), arg1.receiver)
             Assertions.assertEquals(MessageType.SendTemplateEmail, arg2)
             Assertions.assertEquals(correlationId, arg3)
             Assertions.assertEquals(ExchangeName.SendEmail, arg4)
