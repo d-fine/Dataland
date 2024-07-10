@@ -1,10 +1,6 @@
 package org.dataland.datalandcommunitymanager.services.messaging
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties
-import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.databind.ObjectMapper
-import okhttp3.OkHttpClient
-import okhttp3.Request
 import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
 import org.dataland.datalandcommunitymanager.services.DataRequestQueryManager
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
@@ -13,8 +9,6 @@ import org.dataland.datalandmessagequeueutils.constants.MessageType
 import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
 import org.dataland.datalandmessagequeueutils.messages.TemplateEmailMessage
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.beans.factory.annotation.Qualifier
-import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Component
 
 /**
@@ -26,8 +20,6 @@ class CompanyOwnershipAcceptedEmailMessageSender(
     @Autowired private val cloudEventMessageHandler: CloudEventMessageHandler,
     @Autowired private val objectMapper: ObjectMapper,
     @Autowired private val dataRequestQueryManager: DataRequestQueryManager,
-    @Qualifier("AuthenticatedOkHttpClient") val authenticatedOkHttpClient: OkHttpClient,
-    @Value("\${dataland.keycloak.base-url}") private val keycloakBaseUrl: String,
 ) {
     /**
      * Function that generates the message object for company ownership request acceptance mails

@@ -1,12 +1,6 @@
 package org.dataland.datalandcommunitymanager.services
 
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
-import okhttp3.Call
-import okhttp3.OkHttpClient
-import okhttp3.Request
-import okhttp3.Response
-import okhttp3.ResponseBody
-import org.dataland.datalandcommunitymanager.services.messaging.CompanyOwnershipAcceptedEmailMessageSender
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
 import org.dataland.datalandmessagequeueutils.constants.ExchangeName
 import org.dataland.datalandmessagequeueutils.constants.MessageType
@@ -37,9 +31,6 @@ class CompanyOwnershipAcceptedEmailMessageSenderTest {
     private val userEmail = "$userId@example.com"
     private val numberOfOpenDataRequestsForCompany = "0"
 
-    private val authenticatedOkHttpClientMock = mock(OkHttpClient::class.java)
-    private val keycloakBaseUrlMock = "http://test"
-
     @BeforeEach
     fun setupAuthentication() {
         val mockSecurityContext = mock(SecurityContext::class.java)
@@ -56,7 +47,7 @@ class CompanyOwnershipAcceptedEmailMessageSenderTest {
     @Test
     fun `validate that the output of the external email message sender is correctly build for all frameworks`() {
 //        todo
-    //        mockCloudEventMessageHandlerAndSetChecks()
+        //        mockCloudEventMessageHandlerAndSetChecks()
 //
 //        val dataRequestQueryManager = mock(DataRequestQueryManager::class.java)
 //        val companyOwnershipAcceptedEmailMessageSender =

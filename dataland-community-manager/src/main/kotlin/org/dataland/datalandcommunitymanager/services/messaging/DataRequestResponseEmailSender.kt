@@ -8,7 +8,6 @@ import org.dataland.datalandmessagequeueutils.constants.ExchangeName
 import org.dataland.datalandmessagequeueutils.constants.MessageType
 import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
 import org.dataland.datalandmessagequeueutils.messages.TemplateEmailMessage
-import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
@@ -45,15 +44,6 @@ class DataRequestResponseEmailSender(
         val dateFormat = SimpleDateFormat("dd MMM yyyy, HH:mm")
         dateFormat.timeZone = TimeZone.getTimeZone("Europe/Berlin")
         return dateFormat.format(creationTimestamp)
-    }
-
-    /**
-     * Method to retrieve userEmail by userId
-     * @param userId dataland userId
-     * @returns userEmail as string
-     */
-    private fun getUserEmailById(userId: String): String {
-        return "dummyEmail"
     }
 
     /**

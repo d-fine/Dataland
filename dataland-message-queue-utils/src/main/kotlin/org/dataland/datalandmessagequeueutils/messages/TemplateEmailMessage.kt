@@ -22,7 +22,7 @@ data class TemplateEmailMessage(
     }
 
     /**
-     * sealed class that either represents a email or a keycloak user
+     * sealed class that either represents an email or a keycloak user
      */
     @JsonTypeInfo(
         use = JsonTypeInfo.Id.NAME,
@@ -34,6 +34,14 @@ data class TemplateEmailMessage(
         JsonSubTypes.Type(value = UserIdRecipient::class, name = "user"),
     )
     sealed class EmailRecipient
+
+    /**
+     * data class that represents an email recipient as email
+     */
     data class EmailAddressEmailRecipient(val email: String) : EmailRecipient()
+
+    /**
+     * data class that represents an email recipient as userId
+     */
     data class UserIdRecipient(val userId: String) : EmailRecipient()
 }

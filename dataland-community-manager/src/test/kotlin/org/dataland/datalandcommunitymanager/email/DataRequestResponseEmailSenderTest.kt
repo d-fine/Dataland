@@ -1,29 +1,29 @@
-//package org.dataland.datalandcommunitymanager.email
+// package org.dataland.datalandcommunitymanager.email
 //
-//import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
-//import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
-//import org.dataland.datalandbackend.openApiClient.model.CompanyInformation
-//import org.dataland.datalandcommunitymanager.entities.DataRequestEntity
-//import org.dataland.datalandemailservice.services.KeycloakUserControllerApiService
-//import org.dataland.datalandcommunitymanager.services.messaging.DataRequestResponseEmailSender
-//import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
-//import org.dataland.datalandmessagequeueutils.constants.ExchangeName
-//import org.dataland.datalandmessagequeueutils.constants.MessageType
-//import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
-//import org.dataland.datalandmessagequeueutils.messages.TemplateEmailMessage
-//import org.dataland.keycloakAdapter.auth.DatalandRealmRole
-//import org.dataland.keycloakAdapter.utils.AuthenticationMock
-//import org.junit.jupiter.api.Assertions.assertEquals
-//import org.junit.jupiter.api.BeforeEach
-//import org.junit.jupiter.api.Test
-//import org.mockito.ArgumentMatchers
-//import org.mockito.Mockito.mock
-//import org.mockito.Mockito.`when`
-//import org.springframework.security.core.context.SecurityContext
-//import org.springframework.security.core.context.SecurityContextHolder
-//import java.util.*
+// import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
+// import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
+// import org.dataland.datalandbackend.openApiClient.model.CompanyInformation
+// import org.dataland.datalandcommunitymanager.entities.DataRequestEntity
+// import org.dataland.datalandemailservice.services.KeycloakUserControllerApiService
+// import org.dataland.datalandcommunitymanager.services.messaging.DataRequestResponseEmailSender
+// import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
+// import org.dataland.datalandmessagequeueutils.constants.ExchangeName
+// import org.dataland.datalandmessagequeueutils.constants.MessageType
+// import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
+// import org.dataland.datalandmessagequeueutils.messages.TemplateEmailMessage
+// import org.dataland.keycloakAdapter.auth.DatalandRealmRole
+// import org.dataland.keycloakAdapter.utils.AuthenticationMock
+// import org.junit.jupiter.api.Assertions.assertEquals
+// import org.junit.jupiter.api.BeforeEach
+// import org.junit.jupiter.api.Test
+// import org.mockito.ArgumentMatchers
+// import org.mockito.Mockito.mock
+// import org.mockito.Mockito.`when`
+// import org.springframework.security.core.context.SecurityContext
+// import org.springframework.security.core.context.SecurityContextHolder
+// import java.util.*
 //
-//class DataRequestResponseEmailSenderTest {
+// class DataRequestResponseEmailSenderTest {
 //    private val reportingPeriod = "2022"
 //    private val companyId = "59f05156-e1ba-4ea8-9d1e-d4833f6c7afc"
 //    private val userId = "1234-221-1111elf"
@@ -186,4 +186,4 @@
 //            )
 //        }
 //    }
-//}
+// }
