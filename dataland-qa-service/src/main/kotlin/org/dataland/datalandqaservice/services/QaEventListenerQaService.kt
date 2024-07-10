@@ -194,8 +194,7 @@ class QaEventListenerQaService(
             val reviewerId = persistAutomatedQaResultMessage.reviewerId
             messageUtils.rejectMessageOnException {
                 logger.info(
-                    "Received data with DataId: $dataId on QA message queue " +
-                        "with Correlation Id: $correlationId",
+                    "Received data with DataId: $dataId on QA message queue with Correlation Id: $correlationId",
                 )
                 logger.info(
                     "Assigning quality status $validationResult and " +
