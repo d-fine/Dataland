@@ -121,7 +121,7 @@ def _send_persist_automated_qa_result_message(
         channel=channel,
         exchange=p.mq_manual_qa_requested_exchange,
         routing_key="persistAutomatedQaResult",
-        message_type="Persist automated Qa Result",
+        message_type="Persist automated QA result",
         message=message_to_send,
         correlation_id=correlation_id,
     )
