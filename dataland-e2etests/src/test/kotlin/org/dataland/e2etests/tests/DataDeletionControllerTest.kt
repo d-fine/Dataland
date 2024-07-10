@@ -1,17 +1,14 @@
 package org.dataland.e2etests.tests
 
 import org.dataland.communitymanager.openApiClient.model.CompanyRole
-import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
-import org.dataland.e2etests.READER_USER_ID
 import org.dataland.e2etests.auth.TechnicalUser
 import org.dataland.e2etests.utils.ApiAccessor
 import org.dataland.e2etests.utils.DocumentManagerAccessor
-import org.junit.jupiter.api.Assertions.assertEquals
+import org.dataland.e2etests.utils.ExceptionUtils.assertAccessDeniedWrapper
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
 import org.junit.jupiter.api.assertDoesNotThrow
-import org.junit.jupiter.api.assertThrows
 import java.util.*
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
@@ -26,7 +23,7 @@ class DataDeletionControllerTest {
     private val testCompanyInformation = apiAccessor.testDataProviderForEuTaxonomyDataForNonFinancials
         .getCompanyInformationWithoutIdentifiers(1).first()
 
-    private val dataReaderUserId = UUID.fromString(READER_USER_ID)
+    private val dataReaderUserId = UUID.fromString(TechnicalUser.Reader.technicalUserId)
 
     @BeforeAll
     fun postTestDocuments() {
@@ -79,14 +76,5 @@ class DataDeletionControllerTest {
             }
             }
         }
-    }
-
-    private fun assertAccessDeniedWrapper(
-        operation: () -> Unit,
-    ) {
-        val expectedAccessDeniedClientException = assertThrows<ClientException> {
-            operation()
-        }
-        assertEquals("Client error : 403 ", expectedAccessDeniedClientException.message)
     }
 }

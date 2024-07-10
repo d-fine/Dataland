@@ -5,8 +5,6 @@ import org.dataland.communitymanager.openApiClient.infrastructure.ClientExceptio
 import org.dataland.communitymanager.openApiClient.model.CompanyRole
 import org.dataland.communitymanager.openApiClient.model.CompanyRoleAssignment
 import org.dataland.datalandbackend.openApiClient.model.EutaxonomyNonFinancialsData
-import org.dataland.e2etests.READER_USER_ID
-import org.dataland.e2etests.UPLOADER_USER_ID
 import org.dataland.e2etests.auth.GlobalAuth
 import org.dataland.e2etests.auth.JwtAuthenticationHelper
 import org.dataland.e2etests.auth.TechnicalUser
@@ -29,8 +27,8 @@ class CompanyRolesControllerTest {
     private val documentManagerAccessor = DocumentManagerAccessor()
     val jwtHelper = JwtAuthenticationHelper()
 
-    private val dataReaderUserId = UUID.fromString(READER_USER_ID)
-    private val dataUploaderUserId = UUID.fromString(UPLOADER_USER_ID)
+    private val dataReaderUserId = UUID.fromString(TechnicalUser.Reader.technicalUserId)
+    private val dataUploaderUserId = UUID.fromString(TechnicalUser.Uploader.technicalUserId)
     private val frameworkSampleData = apiAccessor.testDataProviderForEuTaxonomyDataForNonFinancials
         .getTData(1)[0]
 
