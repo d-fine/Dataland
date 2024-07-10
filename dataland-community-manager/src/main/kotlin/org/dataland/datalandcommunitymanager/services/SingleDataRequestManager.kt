@@ -108,8 +108,7 @@ constructor(
         val zoneId = ZoneId.of("Europe/Berlin")
         val instantNowZoned = instantNow.atZone(zoneId)
         val startOfDay = instantNowZoned.toLocalDate().atStartOfDay(zoneId)
-        val startOfDayTimestampMillis = startOfDay.toInstant().toEpochMilli()
-        return startOfDayTimestampMillis
+        return startOfDay.toInstant().toEpochMilli()
     }
 
     private fun validateSingleDataRequestContent(singleDataRequest: SingleDataRequest) {
@@ -137,14 +136,11 @@ constructor(
         } else {
             utils.getDatalandCompanyIdForIdentifierValue(companyIdentifier)
         }
-        if (datalandCompanyId == null) {
-            throw InvalidInputApiException(
-                "The specified company is unknown to Dataland.",
-                "The company with identifier: $companyIdentifier is unknown to Dataland.",
-            )
-        } else {
-            return datalandCompanyId
-        }
+
+        return datalandCompanyId ?: throw InvalidInputApiException(
+            "The specified company is unknown to Dataland.",
+            "The company with identifier: $companyIdentifier is unknown to Dataland.",
+        )
     }
 
     private fun sendSingleDataRequestEmailMessage(
