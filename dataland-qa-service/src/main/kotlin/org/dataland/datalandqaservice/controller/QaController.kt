@@ -47,7 +47,10 @@ class QaController(
     @Transactional
     override fun getDatasetById(dataId: UUID): ResponseEntity<ReviewInformationResponse> {
         val identifier = dataId.toString()
-        logger.info("Received request to respond with the status of a dataset with the identifier $identifier")
+        logger.info(
+            "Received request to respond with the review information " +
+                "of the dataset with identifier $identifier",
+        )
 
         val reviewHistoryEntity = reviewHistoryRepository.findById(identifier).orElse(null)
 

@@ -46,6 +46,13 @@ class QaEventListenerQaService(
         val identifier: String,
         val comment: String,
     )
+    private data class PersistAutomatedQaResultMessage(
+        val identifier: String,
+        val validationResult: QaStatus,
+        val reviewerId: String,
+        val resourceType: String,
+        val message: String?,
+    )
 
     /**
      * Method to retrieve message from dataStored exchange and constructing new one for qualityAssured exchange
@@ -157,15 +164,15 @@ class QaEventListenerQaService(
         bindings = [
             QueueBinding(
                 value = Queue(
-                    "dataQualityAssuredQaService",
+                    "persistAutomatedQaResult",
                     arguments = [
                         Argument(name = "x-dead-letter-exchange", value = ExchangeName.DeadLetter),
                         Argument(name = "x-dead-letter-routing-key", value = "deadLetterKey"),
                         Argument(name = "defaultRequeueRejected", value = "false"),
                     ],
                 ),
-                exchange = Exchange(ExchangeName.DataQualityAssured, declare = "false"),
-                key = [RoutingKeyNames.data],
+                exchange = Exchange(ExchangeName.ManualQaRequested, declare = "false"),
+                key = [RoutingKeyNames.persistAutomatedQaResult],
             ),
         ],
     )
@@ -175,30 +182,35 @@ class QaEventListenerQaService(
         @Header(MessageHeaderKey.CorrelationId) correlationId: String,
         @Header(MessageHeaderKey.Type) type: String,
     ) {
-        messageUtils.validateMessageType(type, MessageType.QaCompleted)
-        val qaCompletedMessage = objectMapper.readValue(messageAsJsonString, QaCompletedMessage::class.java)
-        val dataId = qaCompletedMessage.identifier
-        val validationResult = qaCompletedMessage.validationResult
-        val reviewerId = qaCompletedMessage.reviewerId
-        if (reviewerId != reviewerIdAutomatedQaService) return
-        if (dataId.isEmpty()) {
-            throw MessageQueueRejectException("Provided data ID is empty")
-        }
-        messageUtils.rejectMessageOnException {
-            logger.info("Received data with DataId: $dataId on QA message queue with Correlation Id: $correlationId")
-            logger.info(
-                "Assigning quality status $validationResult and " +
-                    "reviewerId $reviewerId to dataset with ID $dataId",
-            )
-            reviewHistoryRepository.save(
-                ReviewInformationEntity(
-                    dataId = dataId,
-                    receptionTime = System.currentTimeMillis(),
-                    qaStatus = validationResult,
-                    reviewerKeycloakId = reviewerId,
-                    message = qaCompletedMessage.message,
-                ),
-            )
+        messageUtils.validateMessageType(type, MessageType.ManualQaRequested)
+        val persistAutomatedQaResultMessage =
+            objectMapper.readValue(messageAsJsonString, PersistAutomatedQaResultMessage::class.java)
+        if (persistAutomatedQaResultMessage.resourceType == "data") {
+            val dataId = persistAutomatedQaResultMessage.identifier
+            if (dataId.isEmpty()) {
+                throw MessageQueueRejectException("Provided data ID is empty")
+            }
+            val validationResult = persistAutomatedQaResultMessage.validationResult
+            val reviewerId = persistAutomatedQaResultMessage.reviewerId
+            messageUtils.rejectMessageOnException {
+                logger.info(
+                    "Received data with DataId: $dataId on QA message queue " +
+                        "with Correlation Id: $correlationId",
+                )
+                logger.info(
+                    "Assigning quality status $validationResult and " +
+                        "reviewerId $reviewerId to dataset with ID $dataId",
+                )
+                reviewHistoryRepository.save(
+                    ReviewInformationEntity(
+                        dataId = dataId,
+                        receptionTime = System.currentTimeMillis(),
+                        qaStatus = validationResult,
+                        reviewerKeycloakId = reviewerId,
+                        message = persistAutomatedQaResultMessage.message,
+                    ),
+                )
+            }
         }
     }
 }

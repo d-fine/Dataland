@@ -106,6 +106,24 @@ def _send_qa_completed_message(
         correlation_id=correlation_id,
     )
 
+def _send_persist_automated_qa_result_message(
+    channel: BlockingChannel,
+    resource_type: str,
+    data_id: str,
+    status: QaStatus,
+    correlation_id: str,
+    reviewer_id: str,
+) -> None:
+    message_to_send = {"identifier": data_id, "validationResult": status, "reviewerId": reviewer_id, "resourceType": resource_type }
+    _send_message(
+        channel=channel,
+        exchange=p.mq_manual_qa_requested_exchange,
+        routing_key="persistAutomatedQaResult",
+        message_type=p.mq_qa_completed_type,
+        message=message_to_send,
+        correlation_id=correlation_id,
+    )
+
 
 def process_qa_request(
     channel: BlockingChannel,
@@ -137,12 +155,28 @@ def process_qa_request(
     if bypass_qa:
         logging.info(f"Bypassing QA for {resource_type} with ID {resource.id}. (Correlation ID: {correlation_id})")
         _send_qa_completed_message(channel, routing_key, resource.id, QaStatus.ACCEPTED, correlation_id)
+        _send_persist_automated_qa_result_message(
+            channel,
+            resource_type,
+            resource.id,
+            QaStatus.ACCEPTED,
+            correlation_id,
+            "bypass-qa",
+        )
     else:
         logging.info(f"Evaluating {resource_type} with ID {resource.id}. (Correlation ID: {correlation_id})")
         try:
             validation_result = validate(resource, correlation_id)
             _assert_status_is_valid_for_qa_completion(validation_result)
             _send_qa_completed_message(channel, routing_key, resource.id, validation_result, correlation_id)
+            _send_persist_automated_qa_result_message(
+                channel,
+                resource_type,
+                resource.id,
+                validation_result,
+                correlation_id,
+                "automated-qa-service",
+            )
         except AutomaticQaNotPossibleError as e:
             message_to_send = {"identifier": resource.id, "comment": e.comment}
             _send_message(
