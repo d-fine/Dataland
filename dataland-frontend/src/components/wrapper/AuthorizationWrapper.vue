@@ -3,7 +3,7 @@
     v-if="!hasUserRequiredKeycloakRole && waitingForCompanyRoleAssignments"
     class="d-center-div text-center px-7 py-4"
   >
-    <p class="font-medium text-xl">Checking for company ownership...</p>
+    <p class="font-medium text-xl">Checking for user roles...</p>
     <em class="pi pi-spinner pi-spin" aria-hidden="true" style="z-index: 20; color: #e67f3f" />
   </div>
   <div v-if="(hasUserRequiredKeycloakRole && !isFrameworkPrivate) || isUserCompanyOwnerOrUploader">
@@ -34,6 +34,7 @@ import TheContent from '@/components/generics/TheContent.vue';
 import MiddleCenterDiv from '@/components/wrapper/MiddleCenterDivWrapper.vue';
 import { hasUserCompanyRoleForCompany } from '@/utils/CompanyRolesUtils';
 import { CompanyRole } from '@clients/communitymanager';
+import { getAllPrivateFrameworkIdentifiers } from '@/frameworks/BasePrivateFrameworkRegistry';
 
 export default defineComponent({
   name: 'AuthorizationWrapper',
@@ -52,6 +53,7 @@ export default defineComponent({
       required: true,
     },
     companyId: String,
+    dataType: String,
   },
   setup() {
     return {
@@ -59,6 +61,7 @@ export default defineComponent({
     };
   },
   mounted: function () {
+    this.setIfFrameworkIsPrivate();
     void this.setUserPermissions();
   },
   methods: {
@@ -78,6 +81,17 @@ export default defineComponent({
       this.isUserCompanyOwnerOrUploader = isCompanyOwner || isDataUploader;
       this.hasUserRequiredKeycloakRole = await checkIfUserHasRole(this.requiredRole, this.getKeycloakPromise);
       this.waitingForCompanyRoleAssignments = false;
+    },
+
+    /**
+     * This method determines if a framework is private or not
+     * @returns boolean if the framework is private or not
+     */
+    setIfFrameworkIsPrivate() {
+      if (this.dataType) {
+        this.isFrameworkPrivate = getAllPrivateFrameworkIdentifiers().includes(this.dataType);
+        return this.isFrameworkPrivate;
+      }
     },
   },
 });
