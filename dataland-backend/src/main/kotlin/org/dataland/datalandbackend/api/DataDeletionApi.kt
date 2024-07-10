@@ -37,10 +37,10 @@ fun interface DataDeletionApi {
     @PreAuthorize(
         "hasRole('ROLE_ADMIN') or " +
             "(hasRole('ROLE_USER') and " +
-            "(@CompanyRoleChecker.doesCurrentUserHaveGivenRoleForCompanyOfDataId(" +
+            "(@CompanyRoleChecker.hasCurrentUserGivenRoleForCompanyOfDataId(" +
             "#dataId, T(org.dataland.datalandcommunitymanager.openApiClient.model.CompanyRole).CompanyOwner" +
             ") or " +
-            "@CompanyRoleChecker.doesCurrentUserHaveGivenRoleForCompanyOfDataId(" +
+            "@CompanyRoleChecker.hasCurrentUserGivenRoleForCompanyOfDataId(" +
             "#dataId, T(org.dataland.datalandcommunitymanager.openApiClient.model.CompanyRole).DataUploader" +
             "))" +
             ")",

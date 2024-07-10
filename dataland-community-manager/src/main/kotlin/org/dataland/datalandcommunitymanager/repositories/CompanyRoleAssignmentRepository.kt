@@ -42,5 +42,5 @@ interface CompanyRoleAssignmentRepository : JpaRepository<CompanyRoleAssignmentE
             "WHERE roleAssignment.companyId = :companyId " +
             "AND roleAssignment.userId = :userId",
     )
-    fun deleteAllByCompanyIdAndUserId(companyId: String, userId: String)
+    fun deleteAllRolesByCompanyIdAndUserId(companyId: String, userId: String)
 }

@@ -46,11 +46,11 @@ interface VsmeDataApi {
     @PostMapping(produces = [MediaType.APPLICATION_JSON_VALUE], consumes = [MediaType.MULTIPART_FORM_DATA_VALUE])
     @PreAuthorize(
         "hasRole('ROLE_USER') and " +
-            "(@CompanyRoleChecker.doesCurrentUserHaveGivenRoleForCompany(" +
+            "(@CompanyRoleChecker.hasCurrentUserGivenRoleForCompany(" +
             "#companyAssociatedVsmeData.companyId, " +
             "T(org.dataland.datalandcommunitymanager.openApiClient.model.CompanyRole).CompanyOwner" +
             ") or" +
-            "@CompanyRoleChecker.doesCurrentUserHaveGivenRoleForCompany(" +
+            "@CompanyRoleChecker.hasCurrentUserGivenRoleForCompany(" +
             "#companyAssociatedVsmeData.companyId, " +
             "T(org.dataland.datalandcommunitymanager.openApiClient.model.CompanyRole).DataUploader" +
             ")" +
@@ -81,7 +81,7 @@ interface VsmeDataApi {
     )
     @PreAuthorize(
         "hasRole('ROLE_USER') and " +
-            "@CompanyRoleChecker.doesCurrentUserHaveAnyRoleForCompanyOfDataId(#dataId)",
+            "@CompanyRoleChecker.hasCurrentUserAnyRoleForCompany(#dataId)",
     )
     fun getCompanyAssociatedVsmeData(@PathVariable("dataId") dataId: String):
         ResponseEntity<CompanyAssociatedData<VsmeData>>
@@ -113,7 +113,7 @@ interface VsmeDataApi {
     )
     @PreAuthorize(
         "hasRole('ROLE_USER') and " +
-            "@CompanyRoleChecker.doesCurrentUserHaveAnyRoleForCompanyOfDataId(#dataId)",
+            "@CompanyRoleChecker.hasCurrentUserAnyRoleForCompanyOfDataId(#dataId)",
     )
     fun getPrivateDocument(
         @RequestParam("dataId") dataId: String,
@@ -145,7 +145,7 @@ interface VsmeDataApi {
     )
     @PreAuthorize(
         "hasRole('ROLE_USER') and " +
-            "@CompanyRoleChecker.doesCurrentUserHaveAnyRoleForCompany(#companyId)",
+            "@CompanyRoleChecker.hasCurrentUserAnyRoleForCompany(#companyId)",
     )
     fun getFrameworkDatasetsForCompany(
         @PathVariable("companyId") companyId: String,
