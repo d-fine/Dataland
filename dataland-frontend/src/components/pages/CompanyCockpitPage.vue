@@ -108,7 +108,7 @@ export default defineComponent({
         | undefined,
       FRAMEWORKS_WITH_VIEW_PAGE,
       isUserCompanyOwnerOrUploader: false,
-      isUserDatalandUploader: false,
+      isUserKeycloakUploader: false,
       isAnyCompanyOwnerExisting: false,
       footerContent,
     };
@@ -146,7 +146,7 @@ export default defineComponent({
      * @returns a boolean as result of this check
      */
     isUserAllowedToUploadForFramework(framework: DataTypeEnum): boolean {
-      return this.isUserCompanyOwnerOrUploader || (this.isFrameworkPublic(framework) && this.isUserDatalandUploader);
+      return this.isUserCompanyOwnerOrUploader || (this.isFrameworkPublic(framework) && this.isUserKeycloakUploader);
     },
 
     /**
@@ -169,7 +169,7 @@ export default defineComponent({
       ]);
       this.isUserCompanyOwnerOrUploader = isCompanyOwner || isDataUploader;
 
-      this.isUserDatalandUploader = await checkIfUserHasRole(KEYCLOAK_ROLE_UPLOADER, this.getKeycloakPromise);
+      this.isUserKeycloakUploader = await checkIfUserHasRole(KEYCLOAK_ROLE_UPLOADER, this.getKeycloakPromise);
     },
   },
 });
