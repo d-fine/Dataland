@@ -3,12 +3,14 @@
     <p class="font-medium text-xl">Checking for company ownership...</p>
     <em class="pi pi-spinner pi-spin" aria-hidden="true" style="z-index: 20; color: #e67f3f" />
   </div>
-  <div v-if="(hasUserRequiredRole && !isFrameworkPrivate) || isUserCompanyOwner">
+  <div v-if="(hasUserRequiredRole && !isFrameworkPrivate) || isUserCompanyOwnerOrUploader">
     <slot></slot>
   </div>
 
   <TheContent
-    v-if="!waitingForCompanyOwnershipData && !isUserCompanyOwner && (!hasUserRequiredRole || isFrameworkPrivate)"
+    v-if="
+      !waitingForCompanyOwnershipData && !isUserCompanyOwnerOrUploader && (!hasUserRequiredRole || isFrameworkPrivate)
+    "
     class="paper-section flex"
   >
     <MiddleCenterDiv class="col-12">
@@ -35,7 +37,7 @@ export default defineComponent({
   data() {
     return {
       hasUserRequiredRole: null as boolean | null,
-      isUserCompanyOwner: null as boolean | null,
+      isUserCompanyOwnerOrUploader: null as boolean | null,
       waitingForCompanyOwnershipData: true,
       isFrameworkPrivate: null as boolean | null,
     };
@@ -45,7 +47,7 @@ export default defineComponent({
       type: String,
       required: true,
     },
-    allowCompanyOwnerForCompanyId: String,
+    companyId: String,
     dataType: String,
   },
   setup() {
@@ -62,21 +64,22 @@ export default defineComponent({
      * @returns a promise that resolves to void, so the successful execution of the function can be awaited
      */
     async checkUserPermissions(): Promise<void> {
-      if (this.checkIsFrameworkPrivate() && this.allowCompanyOwnerForCompanyId) {
-        this.isUserCompanyOwner = await hasUserCompanyRoleForCompany(
-          CompanyRole.CompanyOwner,
-          this.allowCompanyOwnerForCompanyId,
-          this.getKeycloakPromise
-        );
+      if (this.checkIsFrameworkPrivate() && this.companyId) {
+        const [isCompanyOwner, isDataUploader] = await Promise.all([
+          hasUserCompanyRoleForCompany(CompanyRole.CompanyOwner, this.companyId, this.getKeycloakPromise),
+          hasUserCompanyRoleForCompany(CompanyRole.DataUploader, this.companyId, this.getKeycloakPromise),
+        ]);
+        this.isUserCompanyOwnerOrUploader = isCompanyOwner || isDataUploader;
+
         this.waitingForCompanyOwnershipData = false;
       } else {
         this.hasUserRequiredRole = await checkIfUserHasRole(this.requiredRole, this.getKeycloakPromise);
-        if (!this.hasUserRequiredRole && this.allowCompanyOwnerForCompanyId) {
-          this.isUserCompanyOwner = await hasUserCompanyRoleForCompany(
-            CompanyRole.CompanyOwner,
-            this.allowCompanyOwnerForCompanyId,
-            this.getKeycloakPromise
-          );
+        if (!this.hasUserRequiredRole && this.companyId) {
+          const [isCompanyOwner, isDataUploader] = await Promise.all([
+            hasUserCompanyRoleForCompany(CompanyRole.CompanyOwner, this.companyId, this.getKeycloakPromise),
+            hasUserCompanyRoleForCompany(CompanyRole.DataUploader, this.companyId, this.getKeycloakPromise),
+          ]);
+          this.isUserCompanyOwnerOrUploader = isCompanyOwner || isDataUploader;
           this.waitingForCompanyOwnershipData = false;
         } else {
           this.waitingForCompanyOwnershipData = false;
