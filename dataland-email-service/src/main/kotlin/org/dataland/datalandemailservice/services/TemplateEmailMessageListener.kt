@@ -69,8 +69,7 @@ class TemplateEmailMessageListener(
                 "with correlationId $correlationId.",
         )
 
-        val receiverEmailAddress = getEmailAddressByRecipient(objectMapper.readTree(jsonString)["receiver"]) //todo
-        logger.info("receiverEmailAddress is:$receiverEmailAddress")
+        val receiverEmailAddress = getEmailAddressByRecipient(objectMapper.readTree(jsonString)["receiver"])
         messageQueueUtils.rejectMessageOnException {
             val templateEmailFactory = getMatchingEmailFactory(message)
             emailSender.sendEmailWithoutTestReceivers(
@@ -82,10 +81,12 @@ class TemplateEmailMessageListener(
         }
     }
 
-    private fun getEmailAddressByRecipient(receiver: JsonNode) : String {
-        return if(receiver["type"].asText() == "address") receiver["email"].asText()
-        else keycloakUserControllerApiService.getEmailAddress(receiver["user"].asText())
-
+    private fun getEmailAddressByRecipient(receiver: JsonNode): String {
+        return if (receiver["type"].asText() == "address") {
+            receiver["email"].asText()
+        } else {
+            keycloakUserControllerApiService.getEmailAddress(receiver["userId"].asText())
+        }
     }
 
     private fun getMatchingEmailFactory(message: TemplateEmailMessage): TemplateEmailFactory {
