@@ -7,6 +7,7 @@ import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.RequestBody.Companion.asRequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
+import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
 import org.dataland.datalandbackend.openApiClient.infrastructure.Serializer.moshi
 import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataVsmeData
 import org.dataland.datalandbackend.openApiClient.model.DataMetaInformation
@@ -71,7 +72,8 @@ class CustomVsmeDataControllerApi(private val token: String) {
                 documents,
             ),
         ).execute()
-        require(response.isSuccessful) { "Request failed, response is: $response" }
+        if (response.code == 403) { throw ClientException("Client error : 403 ") }
+        require(response.isSuccessful) { "Request failed with unexpected reason, response is: $response" }
         val responseBodyAsString = response.body!!.string()
         return transferJsonToDataMetaInformation(responseBodyAsString)
     }

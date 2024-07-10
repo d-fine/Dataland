@@ -8,7 +8,6 @@ import org.dataland.documentmanager.openApiClient.api.DocumentControllerApi
 import org.dataland.documentmanager.openApiClient.infrastructure.ClientException
 import org.dataland.documentmanager.openApiClient.model.DocumentUploadResponse
 import org.dataland.e2etests.BASE_PATH_TO_DOCUMENT_MANAGER
-import org.dataland.e2etests.READER_USER_ID
 import org.dataland.e2etests.auth.TechnicalUser
 import org.dataland.e2etests.utils.ApiAccessor
 import org.junit.jupiter.api.Assertions.assertEquals
@@ -100,7 +99,7 @@ class DocumentControllerTest {
         apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
         val testCompanyIdString = apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId
         val testCompanyId = UUID.fromString(testCompanyIdString)
-        val dataReaderId = UUID.fromString(READER_USER_ID)
+        val dataReaderId = UUID.fromString(TechnicalUser.Reader.technicalUserId)
 
         removeAllCompanyOwnershipsFromUser(dataReaderId)
 

@@ -35,14 +35,14 @@ class JwtAuthenticationHelper {
             .build()
     }
 
-    fun requestToken(username: String, password: String): String {
+    private fun requestToken(username: String, password: String): String {
         val response = client.newCall(buildTokenRequest(username, password)).execute()
         require(response.isSuccessful) { "Token request failed, response is: $response" }
         val responseBodyAsJsonString = response.body!!.string()
         return JSONObject(responseBodyAsJsonString).getString("access_token")!!.trim('"')
     }
 
-    private fun obtainJwtForTechnicalUser(technicalUser: TechnicalUser): String {
+    fun obtainJwtForTechnicalUser(technicalUser: TechnicalUser): String {
         val token = when (technicalUser) {
             TechnicalUser.Admin -> requestToken(ADMIN_USER_NAME, ADMIN_USER_PASSWORD)
             TechnicalUser.Reader -> requestToken(READER_USER_NAME, READER_USER_PASSWORD)
