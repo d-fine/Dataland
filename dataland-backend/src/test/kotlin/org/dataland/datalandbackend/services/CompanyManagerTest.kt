@@ -178,7 +178,7 @@ class CompanyManagerTest(
         headquarters = "Frankfurt",
         headquartersPostalCode = "60313",
         sector = null,
-        sectorClassification = null,
+        sectorCodeWz = null,
         website = null,
         identifiers = mapOf(),
         isTeaserCompany = false,

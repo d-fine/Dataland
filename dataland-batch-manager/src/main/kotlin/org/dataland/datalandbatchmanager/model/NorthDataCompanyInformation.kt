@@ -60,7 +60,7 @@ data class NorthDataCompanyInformation(
             headquarters = headquarters,
             headquartersPostalCode = headquartersPostalCode,
             sector = null,
-            sectorClassification = sector,
+            sectorCodeWz = sector,
             website = null,
             identifiers = identifiers,
             parentCompanyLei = null,
@@ -87,7 +87,7 @@ data class NorthDataCompanyInformation(
 
         if (!returnFullPatch) {
             return CompanyInformationPatch(
-                sectorClassification = sector,
+                sectorCodeWz = sector,
                 identifiers = identifiers,
             )
         }
@@ -97,7 +97,7 @@ data class NorthDataCompanyInformation(
             countryCode = countryCode,
             headquarters = headquarters,
             headquartersPostalCode = headquartersPostalCode,
-            sectorClassification = sector,
+            sectorCodeWz = sector,
             identifiers = identifiers,
         )
     }

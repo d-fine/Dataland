@@ -60,7 +60,7 @@ class CompanyUploaderTest {
             headquarters = null,
             headquartersPostalCode = null,
             sector = null,
-            sectorClassification = null,
+            sectorCodeWz = null,
             identifiers = mapOf("Isin" to listOf("1111", "1112", "1113")),
             countryCode = null,
             website = null,

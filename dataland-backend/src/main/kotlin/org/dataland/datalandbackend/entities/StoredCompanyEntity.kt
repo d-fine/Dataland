@@ -49,8 +49,8 @@ data class StoredCompanyEntity(
     @Column(name = "sector")
     var sector: String?,
 
-    @Column(name = "sector_classification")
-    var sectorClassification: String?,
+    @Column(name = "sector_code_wz")
+    var sectorCodeWz: String?,
 
     @OneToMany(mappedBy = "company")
     var identifiers: MutableList<CompanyIdentifierEntity>,
@@ -84,7 +84,7 @@ data class StoredCompanyEntity(
                 headquarters = headquarters,
                 headquartersPostalCode = headquartersPostalCode,
                 sector = sector,
-                sectorClassification = sectorClassification,
+                sectorCodeWz = sectorCodeWz,
                 identifiers = identifierMap,
                 countryCode = countryCode,
                 isTeaserCompany = isTeaserCompany,

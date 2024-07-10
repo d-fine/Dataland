@@ -12,7 +12,7 @@ import java.io.File
 class NorthDataMappingTest {
     private val testCompanyName = "test Gmbh"
     private val testHeadquarters = "Osnabrück"
-    private val testSectorClassification = "73.11.0"
+    private val testSectorCodeWz = "73.11.0"
     private val expectedNorthDataCompanyInformation = NorthDataCompanyInformation(
         companyName = testCompanyName,
         headquarters = testHeadquarters,
@@ -23,7 +23,7 @@ class NorthDataMappingTest {
         street = "Test Weg 22",
         vatId = "",
         status = "active",
-        sector = testSectorClassification,
+        sector = testSectorCodeWz,
     )
 
     private val expectedIdentifiers = mapOf(
@@ -33,13 +33,13 @@ class NorthDataMappingTest {
         companyName = testCompanyName,
         headquarters = testHeadquarters,
         headquartersPostalCode = "49078",
-        sectorClassification = testSectorClassification,
+        sectorCodeWz = testSectorCodeWz,
         identifiers = expectedIdentifiers,
         countryCode = "DE",
     )
 
     private val expectedMinimalCompanyInformationPatch = CompanyInformationPatch(
-        sectorClassification = testSectorClassification,
+        sectorCodeWz = testSectorCodeWz,
         identifiers = expectedIdentifiers,
     )
 
@@ -47,7 +47,7 @@ class NorthDataMappingTest {
         companyName = testCompanyName,
         headquarters = testHeadquarters,
         headquartersPostalCode = "49078",
-        sectorClassification = testSectorClassification,
+        sectorCodeWz = testSectorCodeWz,
         identifiers = expectedIdentifiers,
         countryCode = "DE",
     )
