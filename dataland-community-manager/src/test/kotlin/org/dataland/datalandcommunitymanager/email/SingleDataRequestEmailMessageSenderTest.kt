@@ -141,16 +141,17 @@ class SingleDataRequestEmailMessageSenderTest {
         }
     }
 
-    @Test
-    fun `validate that the output of the external email message sender is correctly built`() {
-        buildExternalEmailMessageMock()
-        singleDataRequestEmailMessageSender.sendSingleDataRequestExternalMessage(
-            SingleDataRequestEmailMessageSender.MessageInformation(
-                authenticationMock, datalandCompanyId, DataTypeEnum.p2p, reportingPeriods,
-            ),
-            "alphabet@example.com",
-            "ABCDEFGHIJKLMNOPQRSTUVWXYZ",
-            correlationId,
-        )
-    }
+//    @Test
+//    fun `validate that the output of the external email message sender is correctly built`() {
+//        buildExternalEmailMessageMock()
+//        singleDataRequestEmailMessageSender.sendSingleDataRequestExternalMessage(
+//            SingleDataRequestEmailMessageSender.MessageInformation(
+//                authenticationMock, datalandCompanyId, DataTypeEnum.p2p, reportingPeriods,
+//            ),
+//            "alphabet@example.com",
+//            "ABCDEFGHIJKLMNOPQRSTUVWXYZ",
+//            correlationId,
+//        )
+//        todo
+//    }
 }

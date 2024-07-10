@@ -1,5 +1,6 @@
 package org.dataland.datalandemailservice.services
 
+import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandemailservice.email.EmailSender
 import org.dataland.datalandemailservice.services.templateemail.TemplateEmailFactory
@@ -30,6 +31,7 @@ class TemplateEmailMessageListener(
     @Autowired private val messageQueueUtils: MessageQueueUtils,
     @Autowired private val objectMapper: ObjectMapper,
     @Autowired private val templateEmailFactories: List<TemplateEmailFactory>,
+    @Autowired private val keycloakUserControllerApiService: KeycloakUserControllerApiService,
 ) {
     private val logger = LoggerFactory.getLogger(TemplateEmailMessageListener::class.java)
 
@@ -66,17 +68,24 @@ class TemplateEmailMessageListener(
             "Received template email message of type ${message.emailTemplateType.name} " +
                 "with correlationId $correlationId.",
         )
-        val jsonMessage = objectMapper.readTree(jsonString)
-        val receiver = jsonMessage["receiver"]["email"].asText() // todo
+
+        val receiverEmailAddress = getEmailAddressByRecipient(objectMapper.readTree(jsonString)["receiver"]) //todo
+        logger.info("receiverEmailAddress is:$receiverEmailAddress")
         messageQueueUtils.rejectMessageOnException {
             val templateEmailFactory = getMatchingEmailFactory(message)
             emailSender.sendEmailWithoutTestReceivers(
                 templateEmailFactory.buildEmail(
-                    receiverEmail = receiver,
+                    receiverEmail = receiverEmailAddress,
                     properties = message.properties,
                 ),
             )
         }
+    }
+
+    private fun getEmailAddressByRecipient(receiver: JsonNode) : String {
+        return if(receiver["type"].asText() == "address") receiver["email"].asText()
+        else keycloakUserControllerApiService.getEmailAddress(receiver["user"].asText())
+
     }
 
     private fun getMatchingEmailFactory(message: TemplateEmailMessage): TemplateEmailFactory {

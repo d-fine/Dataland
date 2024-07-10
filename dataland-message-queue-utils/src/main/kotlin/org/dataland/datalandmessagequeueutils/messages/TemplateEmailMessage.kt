@@ -31,9 +31,9 @@ data class TemplateEmailMessage(
     )
     @JsonSubTypes(
         JsonSubTypes.Type(value = EmailAddressEmailRecipient::class, name = "address"),
-        JsonSubTypes.Type(value = UserEmailRecipient::class, name = "user"),
+        JsonSubTypes.Type(value = UserIdRecipient::class, name = "user"),
     )
     sealed class EmailRecipient
     data class EmailAddressEmailRecipient(val email: String) : EmailRecipient()
-    data class UserEmailRecipient(val userId: String) : EmailRecipient()
+    data class UserIdRecipient(val userId: String) : EmailRecipient()
 }
