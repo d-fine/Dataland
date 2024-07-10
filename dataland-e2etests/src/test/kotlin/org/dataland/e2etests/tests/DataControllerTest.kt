@@ -1,5 +1,6 @@
 package org.dataland.e2etests.tests
 
+import org.dataland.communitymanager.openApiClient.model.CompanyRole
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
 import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataEutaxonomyNonFinancialsData
 import org.dataland.e2etests.auth.TechnicalUser
@@ -10,14 +11,17 @@ import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
+import org.junit.jupiter.api.assertDoesNotThrow
 import org.junit.jupiter.api.assertThrows
 import java.lang.IllegalArgumentException
+import java.util.*
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class DataControllerTest {
 
     private val apiAccessor = ApiAccessor()
     private val documentManagerAccessor = DocumentManagerAccessor()
+    private val dataReaderUserId = UUID.fromString("18b67ecc-1176-4506-8414-1e81661017ca")
 
     private val testDataEuTaxonomyNonFinancials = apiAccessor.testDataProviderForEuTaxonomyDataForNonFinancials
         .getTData(1).first()
@@ -106,5 +110,28 @@ class DataControllerTest {
                     )
             }
         assertEquals("Client error : 403 ", exception.message)
+    }
+
+    @Test
+    fun `post a data set for a company as the company uploader and retrieve success message`() {
+        val companyId = apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId
+        apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
+        apiAccessor.companyRolesControllerApi.assignCompanyRole(
+            CompanyRole.DataUploader,
+            UUID.fromString(companyId),
+            dataReaderUserId,
+        )
+        apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader)
+        assertDoesNotThrow {
+            apiAccessor.dataControllerApiForEuTaxonomyNonFinancials
+                .postCompanyAssociatedEutaxonomyNonFinancialsData(
+                    CompanyAssociatedDataEutaxonomyNonFinancialsData(
+                        companyId,
+                        "",
+                        testDataEuTaxonomyNonFinancials,
+                    ),
+                    true,
+                )
+        }
     }
 }
