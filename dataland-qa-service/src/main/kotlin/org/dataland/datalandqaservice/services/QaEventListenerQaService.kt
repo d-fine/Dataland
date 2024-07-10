@@ -164,7 +164,7 @@ class QaEventListenerQaService(
         bindings = [
             QueueBinding(
                 value = Queue(
-                    "manualQaRequestedDocumentQaService",
+                    "persistAutomatedQaResult",
                     arguments = [
                         Argument(name = "x-dead-letter-exchange", value = ExchangeName.DeadLetter),
                         Argument(name = "x-dead-letter-routing-key", value = "deadLetterKey"),
@@ -182,7 +182,7 @@ class QaEventListenerQaService(
         @Header(MessageHeaderKey.CorrelationId) correlationId: String,
         @Header(MessageHeaderKey.Type) type: String,
     ) {
-        messageUtils.validateMessageType(type, MessageType.ManualQaRequested)
+        messageUtils.validateMessageType(type, MessageType.PersistAutomatedQaResult)
         val persistAutomatedQaResultMessage =
             objectMapper.readValue(messageAsJsonString, PersistAutomatedQaResultMessage::class.java)
         if (persistAutomatedQaResultMessage.resourceType == "data") {
