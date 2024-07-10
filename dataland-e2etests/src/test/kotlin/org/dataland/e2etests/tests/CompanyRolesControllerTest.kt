@@ -180,18 +180,25 @@ class CompanyRolesControllerTest {
     }
 
     @Test
-    fun `check that company data uploaders can upload data`() {
-        val firstCompanyId = uploadCompanyAndReturnCompanyId()
+    fun `check that keycloak reader role can only upload data as company owner or company data uploader`() {
+        val companyId = uploadCompanyAndReturnCompanyId()
+        val rolesThatCanUploadPublicData = listOf(CompanyRole.CompanyOwner, CompanyRole.DataUploader)
 
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader)
-        assertAccessDeniedWhenUploadingFrameworkData(firstCompanyId, frameworkSampleData, false)
+        assertAccessDeniedWhenUploadingFrameworkData(companyId, frameworkSampleData, false)
 
-        jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
-        assignCompanyRole(CompanyRole.DataUploader, firstCompanyId, dataReaderUserId)
-        assertDoesNotThrow { hasUserCompanyRole(CompanyRole.DataUploader, firstCompanyId, dataReaderUserId) }
+        for (role in CompanyRole.values()) {
+            jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
+            assignCompanyRole(role, companyId, dataReaderUserId)
 
-        jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader)
-        assertDoesNotThrow { uploadEuTaxoData(firstCompanyId, frameworkSampleData) }
+            jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader)
+            if (rolesThatCanUploadPublicData.contains(role)) {
+                assertDoesNotThrow { hasUserCompanyRole(role, companyId, dataReaderUserId) }
+                assertDoesNotThrow { uploadEuTaxoData(companyId, frameworkSampleData) }
+            } else {
+                assertAccessDeniedWhenUploadingFrameworkData(companyId, frameworkSampleData)
+            }
+        }
     }
 
     @Test
