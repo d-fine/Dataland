@@ -44,7 +44,7 @@ class QaEventListenerQaServiceTest(
     val dataId = "TestDataId"
     val noIdPayload = JSONObject(mapOf("identifier" to "", "comment" to "test")).toString()
     val correlationId = "correlationId"
-    private fun getAutomatedQaCompletedMessage(
+    private fun getPersistAutomatedQaResultMessage(
         identifier: String,
         validationResult: QaStatus,
         message: String?,
@@ -52,7 +52,7 @@ class QaEventListenerQaServiceTest(
         return JSONObject(
             mapOf(
                 "identifier" to identifier, "validationResult" to validationResult, "reviewerId" to AUTOMATED_QA,
-                "message" to message.toString(),
+                "resourceType" to "data", "message" to message,
             ),
         ).toString()
     }
@@ -112,11 +112,11 @@ class QaEventListenerQaServiceTest(
 
     @Test
     fun `check an exception is thrown in reading out message from data quality assured queue when dataId is empty`() {
-        val qaAcceptedNoIdPayload = getAutomatedQaCompletedMessage("", QaStatus.Accepted, "test message")
+        val qaAcceptedNoIdPayload = getPersistAutomatedQaResultMessage("", QaStatus.Accepted, "test message")
         val thrown = assertThrows<AmqpRejectAndDontRequeueException> {
             qaEventListenerQaService.addDataReviewFromAutomatedQaToReviewHistoryRepository(
                 qaAcceptedNoIdPayload,
-                correlationId, MessageType.QaCompleted,
+                correlationId, MessageType.ManualQaRequested,
             )
         }
         Assertions.assertEquals("Message was rejected: Provided data ID is empty", thrown.message)
@@ -125,9 +125,9 @@ class QaEventListenerQaServiceTest(
     @Test
     fun `check an that the automated qa result is stored correctly in the review history repository`() {
         val acceptedData = "acceptedDataId"
-        val automatedQaAcceptedMessage = getAutomatedQaCompletedMessage(acceptedData, QaStatus.Accepted, "accepted")
+        val automatedQaAcceptedMessage = getPersistAutomatedQaResultMessage(acceptedData, QaStatus.Accepted, "accepted")
         qaEventListenerQaService.addDataReviewFromAutomatedQaToReviewHistoryRepository(
-            automatedQaAcceptedMessage, correlationId, MessageType.QaCompleted,
+            automatedQaAcceptedMessage, correlationId, MessageType.ManualQaRequested,
         )
         testReviewHistoryRepository.findById(acceptedData).ifPresent {
             Assertions.assertEquals(AUTOMATED_QA, it.reviewerKeycloakId)
@@ -137,9 +137,9 @@ class QaEventListenerQaServiceTest(
         }
 
         val rejectedData = "rejectedDataId"
-        val automatedQaRejectedMessage = getAutomatedQaCompletedMessage(rejectedData, QaStatus.Rejected, "rejected")
+        val automatedQaRejectedMessage = getPersistAutomatedQaResultMessage(rejectedData, QaStatus.Rejected, "rejected")
         qaEventListenerQaService.addDataReviewFromAutomatedQaToReviewHistoryRepository(
-            automatedQaRejectedMessage, correlationId, MessageType.QaCompleted,
+            automatedQaRejectedMessage, correlationId, MessageType.ManualQaRequested,
         )
         testReviewHistoryRepository.findById(rejectedData).ifPresent {
             Assertions.assertEquals(AUTOMATED_QA, it.reviewerKeycloakId)
@@ -152,14 +152,14 @@ class QaEventListenerQaServiceTest(
     @Test
     fun `check an that only automated qa results are stored correctly in the review history repository`() {
         val dataId = "thisIdShouldntBeStored"
-        val qaCompletedMessage = JSONObject(
+        val persistAutomatedQaResultMessage = JSONObject(
             mapOf(
                 "identifier" to dataId, "validationResult" to QaStatus.Accepted, "reviewerId" to "someReviewerId",
-                "message" to "test message",
+                "resourceType" to "notData", "message" to "test message",
             ),
         ).toString()
         qaEventListenerQaService.addDataReviewFromAutomatedQaToReviewHistoryRepository(
-            qaCompletedMessage, correlationId, MessageType.QaCompleted,
+            persistAutomatedQaResultMessage, correlationId, MessageType.ManualQaRequested,
         )
         assertTrue(testReviewHistoryRepository.findById(dataId).isEmpty)
     }
