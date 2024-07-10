@@ -107,8 +107,8 @@ export default defineComponent({
         | { [key in DataTypeEnum]: AggregatedFrameworkDataSummary }
         | undefined,
       FRAMEWORKS_WITH_VIEW_PAGE,
-      isUserCompanyOwner: false,
-      isUserUploader: false,
+      isUserCompanyOwnerOrUploader: false,
+      isUserDatalandUploader: false,
       isAnyCompanyOwnerExisting: false,
       footerContent,
     };
@@ -137,7 +137,7 @@ export default defineComponent({
       if (!this.authenticated) {
         return false;
       }
-      return this.isUserCompanyOwner || this.isFrameworkPublic(framework);
+      return this.isUserCompanyOwnerOrUploader || this.isFrameworkPublic(framework);
     },
 
     /**
@@ -146,7 +146,7 @@ export default defineComponent({
      * @returns a boolean as result of this check
      */
     isUserAllowedToUploadForFramework(framework: DataTypeEnum): boolean {
-      return this.isUserCompanyOwner || (this.isFrameworkPublic(framework) && this.isUserUploader);
+      return this.isUserCompanyOwnerOrUploader || (this.isFrameworkPublic(framework) && this.isUserDatalandUploader);
     },
 
     /**
@@ -163,12 +163,13 @@ export default defineComponent({
      */
     async setUserRights() {
       this.isAnyCompanyOwnerExisting = await hasCompanyAtLeastOneCompanyOwner(this.companyId, this.getKeycloakPromise);
-      this.isUserCompanyOwner = await hasUserCompanyRoleForCompany(
-        CompanyRole.CompanyOwner,
-        this.companyId,
-        this.getKeycloakPromise
-      );
-      this.isUserUploader = await checkIfUserHasRole(KEYCLOAK_ROLE_UPLOADER, this.getKeycloakPromise);
+      const [isCompanyOwner, isDataUploader] = await Promise.all([
+        hasUserCompanyRoleForCompany(CompanyRole.CompanyOwner, this.companyId, this.getKeycloakPromise),
+        hasUserCompanyRoleForCompany(CompanyRole.DataUploader, this.companyId, this.getKeycloakPromise),
+      ]);
+      this.isUserCompanyOwnerOrUploader = isCompanyOwner || isDataUploader;
+
+      this.isUserDatalandUploader = await checkIfUserHasRole(KEYCLOAK_ROLE_UPLOADER, this.getKeycloakPromise);
     },
   },
 });
