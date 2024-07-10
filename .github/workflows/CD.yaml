@@ -12,6 +12,10 @@ on:
         description: 'Load the full GLEIF Golden Copy File into the database'
         required: false
         type: boolean
+      loadNorthDataGoldenCopy:
+        description: 'Load the full NorthData Golden Copy File into the database'
+        required: false
+        type: boolean
       ignoreExternalStorageError:
         description: 'Ignore errors due to external factors on startup of the external storage'
         required: false
@@ -168,6 +172,7 @@ jobs:
           RABBITMQ_PASS: ${{ secrets.RABBITMQ_PASS }}
           RABBITMQ_PASS_HASH: ${{ secrets.RABBITMQ_PASS_HASH }}
           LOAD_GLEIF_GOLDEN_COPY: ${{ github.event.inputs.loadGleifGoldenCopy }}
+          LOAD_NORTHDATA_GOLDEN_COPY: ${{ github.event.inputs.loadNorthDataGoldenCopy }}
           BACKEND_MIGRATION_BASELINE_VERSION: ${{ vars.BACKEND_MIGRATION_BASELINE_VERSION }}
           COMMUNITY_MANAGER_MIGRATION_BASELINE_VERSION: ${{ vars.COMMUNITY_MANAGER_MIGRATION_BASELINE_VERSION }}
           DOCUMENT_MANAGER_MIGRATION_BASELINE_VERSION: ${{ vars.DOCUMENT_MANAGER_MIGRATION_BASELINE_VERSION }}

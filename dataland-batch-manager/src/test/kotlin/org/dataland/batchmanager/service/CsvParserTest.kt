@@ -1,12 +1,12 @@
 package org.dataland.batchmanager.service
 
 import org.dataland.batchmanager.utils.ZipFileCreator
-import org.dataland.datalandbatchmanager.service.GleifCsvParser
+import org.dataland.datalandbatchmanager.service.CsvParser
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import java.io.File
 
-class GleifCsvParserTest {
+class CsvParserTest {
     @Test
     fun `test if zip files can be read`() {
         val fileContent = "some;csv;content"
@@ -14,7 +14,7 @@ class GleifCsvParserTest {
 
         ZipFileCreator.createZipFile(zipFile, fileContent)
 
-        val bufferedReader = GleifCsvParser().getCsvStreamFromZip(zipFile)
+        val bufferedReader = CsvParser().getCsvStreamFromZip(zipFile)
         assertEquals(bufferedReader.readLine(), fileContent)
     }
 }

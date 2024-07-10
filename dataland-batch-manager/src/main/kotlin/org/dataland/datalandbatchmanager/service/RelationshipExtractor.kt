@@ -1,6 +1,5 @@
 package org.dataland.datalandbatchmanager.service
 
-import com.fasterxml.jackson.databind.MappingIterator
 import org.dataland.datalandbatchmanager.model.GleifRelationshipInformation
 import org.dataland.datalandbatchmanager.model.GleifRelationshipTypes
 import org.springframework.stereotype.Component
@@ -17,7 +16,7 @@ class RelationshipExtractor {
      *  according to a simple logic.
      *  @return The final mapping of child LEI to parent LEI as MutableMap<String, String>
      */
-    fun prepareFinalParentMapping(gleifParser: MappingIterator<GleifRelationshipInformation>): Map<String, String> {
+    fun prepareFinalParentMapping(gleifParser: Iterable<GleifRelationshipInformation>): Map<String, String> {
         val mappings = parseCsvToGroupedMap(gleifParser)
 
         val localFinalParentMapping = mappings[GleifRelationshipTypes.IS_ULTIMATELY_CONSOLIDATED_BY] ?: mutableMapOf()
@@ -54,7 +53,7 @@ class RelationshipExtractor {
      * relationship type: Map of RelationshipType - (Map of startLEI - endLEI)
      * @param gleifParser The iterator returned from the csv reader to loop through the GleifRelationshipInformation
      */
-    private fun parseCsvToGroupedMap(gleifParser: MappingIterator<GleifRelationshipInformation>):
+    private fun parseCsvToGroupedMap(gleifParser: Iterable<GleifRelationshipInformation>):
         MutableMap<GleifRelationshipTypes, MutableMap<String, String>> {
         val mappings = mutableMapOf<GleifRelationshipTypes, MutableMap<String, String>>()
         gleifParser.forEach { entry ->
