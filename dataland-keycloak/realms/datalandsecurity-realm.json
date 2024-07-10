@@ -1340,7 +1340,7 @@
       "enabled": true,
       "alwaysDisplayInConsole": false,
       "clientAuthenticatorType": "client-secret",
-      "secret": "password",
+      "secret": "${DATALAND_EMAIL_SERVICE_CLIENT_SECRET}",
       "redirectUris": [
         "/*"
       ],
