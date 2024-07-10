@@ -130,7 +130,7 @@ class DataControllerTest {
                         "",
                         testDataEuTaxonomyNonFinancials,
                     ),
-                    true,
+                    false,
                 )
         }
     }

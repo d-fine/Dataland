@@ -49,8 +49,8 @@ interface DataApi<T> {
             "T(org.dataland.datalandcommunitymanager.openApiClient.model.CompanyRole).CompanyOwner" +
             ") or " +
             "@CompanyRoleChecker.doesCurrentUserHaveGivenRoleForCompany(" +
-            "            #companyAssociatedData.companyId, " +
-            "            T(org.dataland.datalandcommunitymanager.openApiClient.model.CompanyRole).DataUploader" +
+            "#companyAssociatedData.companyId, " +
+            "T(org.dataland.datalandcommunitymanager.openApiClient.model.CompanyRole).DataUploader" +
             ")" +
             ")" +
             ")",
