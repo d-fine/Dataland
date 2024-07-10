@@ -85,7 +85,6 @@ export default defineComponent({
 
     /**
      * This method sets if the data type in the props is private or not
-     * @returns boolean if the framework is private or not
      */
     setIfFrameworkIsPrivate() {
       if (this.dataType) {
