@@ -7,7 +7,7 @@ import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
 import org.dataland.datalandbackend.openApiClient.infrastructure.ServerException
 import org.dataland.datalandbackend.openApiClient.model.CompanyInformationPatch
 import org.dataland.datalandbackend.openApiClient.model.IdentifierType
-import org.dataland.datalandbatchmanager.model.GleifCompanyCombinedInformation
+import org.dataland.datalandbatchmanager.model.ExternalCompanyInformation
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
@@ -30,32 +30,38 @@ class CompanyUploader(
     private val logger = LoggerFactory.getLogger(javaClass)
 
     @Suppress("ReturnCount")
-    private fun checkForDuplicateIdentifierAndGetConflictingCompanyId(exception: ClientException): String? {
+    private fun checkForDuplicateIdentifierAndGetConflictingCompanyId(exception: ClientException):
+        Pair<String?, Set<String?>?> {
         if (exception.statusCode != HttpStatus.BAD_REQUEST.value()) {
-            return null
+            return Pair(null, null)
         }
 
         val exceptionResponse = exception.response!! as ClientError<*>
         val exceptionBodyString = exceptionResponse.body.toString()
 
         val errorResponseBody = objectMapper.readTree(exceptionBodyString)
-        val firstError = errorResponseBody.get("errors")?.get(0)
+        val firstError = errorResponseBody["errors"]?.get(0)
         if (firstError?.get("errorType")?.textValue() != "duplicate-company-identifier") {
-            return null
+            return Pair(null, null)
         }
 
-        val conflictingIdentifiers = firstError.get("metaInformation")
-        if (conflictingIdentifiers == null || !conflictingIdentifiers.isArray || conflictingIdentifiers.size() != 1) {
-            return null
+        val conflictingIdentifiers = firstError["metaInformation"]
+        if (conflictingIdentifiers == null || !conflictingIdentifiers.isArray || conflictingIdentifiers.size() == 0) {
+            return Pair(null, null)
         }
 
-        val conflictingIdentifier = conflictingIdentifiers.get(0)
-        val conflictingIdentifierType = conflictingIdentifier.get("identifierType")?.textValue()
-        if (conflictingIdentifierType != IdentifierType.Lei.value) {
-            return null
+        val conflictingIdentifierTypes: MutableSet<String?> = mutableSetOf()
+        val conflictingCompanyIds: MutableSet<String?> = mutableSetOf()
+        conflictingIdentifiers.forEach {
+            conflictingIdentifierTypes.add(it["identifierType"]?.textValue())
+            conflictingCompanyIds.add(it["companyId"]?.textValue())
         }
 
-        return conflictingIdentifier.get("companyId")?.textValue()
+        if (conflictingCompanyIds.size != 1) {
+            logger.error("Found conflicting identifiers for two different companies $conflictingCompanyIds")
+            return Pair(null, null)
+        }
+        return Pair(conflictingCompanyIds.first(), conflictingIdentifierTypes)
     }
 
     private fun retryOnCommonApiErrors(functionToExecute: () -> Unit) {
@@ -84,20 +90,20 @@ class CompanyUploader(
      * This function absorbs errors and logs them.
      */
     fun uploadOrPatchSingleCompany(
-        companyInformation: GleifCompanyCombinedInformation,
+        companyInformation: ExternalCompanyInformation,
     ) {
         var patchCompanyId: String? = null
+        var allConflictingIdentifiers: Set<String?>? = null
         retryOnCommonApiErrors {
             try {
-                logger.info(
-                    "Uploading company data for ${companyInformation.gleifCompanyInformation.companyName} " +
-                        "(LEI: ${companyInformation.gleifCompanyInformation.lei})",
-                )
+                logger.info("Uploading company data for ${companyInformation.getNameAndIdentifier()} ")
                 companyDataControllerApi.postCompany(companyInformation.toCompanyPost())
             } catch (exception: ClientException) {
-                val conflictingCompanyId = checkForDuplicateIdentifierAndGetConflictingCompanyId(exception)
+                val (conflictingCompanyId, conflictingIdentifiers) =
+                    checkForDuplicateIdentifierAndGetConflictingCompanyId(exception)
                 if (conflictingCompanyId != null) {
                     patchCompanyId = conflictingCompanyId
+                    allConflictingIdentifiers = conflictingIdentifiers
                 } else {
                     throw exception
                 }
@@ -106,11 +112,10 @@ class CompanyUploader(
 
         patchCompanyId?.let {
             logger.info(
-                "Company Data for Company ${companyInformation.gleifCompanyInformation.companyName} " +
-                    "(LEI: ${companyInformation.gleifCompanyInformation.lei}) " +
+                "Company Data for Company ${companyInformation.getNameAndIdentifier()}" +
                     "already present on Dataland. Proceeding to patch company with id $it",
             )
-            patchSingleCompany(it, companyInformation)
+            patchSingleCompany(it, companyInformation, allConflictingIdentifiers)
         }
     }
 
@@ -119,12 +124,14 @@ class CompanyUploader(
      */
     private fun patchSingleCompany(
         companyId: String,
-        companyInformation: GleifCompanyCombinedInformation,
+        companyInformation: ExternalCompanyInformation,
+        conflictingIdentifiers: Set<String?>?,
     ) {
+        val companyPatch = companyInformation.toCompanyPatch(conflictingIdentifiers) ?: return
         retryOnCommonApiErrors {
             companyDataControllerApi.patchCompanyById(
                 companyId,
-                companyInformation.toCompanyPatch(),
+                companyPatch,
             )
         }
     }
