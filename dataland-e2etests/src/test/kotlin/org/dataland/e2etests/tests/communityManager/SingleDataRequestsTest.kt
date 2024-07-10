@@ -46,7 +46,7 @@ class SingleDataRequestsTest {
     val jwtHelper = JwtAuthenticationHelper()
     private val requestControllerApi = RequestControllerApi(BASE_PATH_TO_COMMUNITY_MANAGER)
     private val maxRequestsForUser = 10
-    private val dataReaderUserId = UUID.fromString("18b67ecc-1176-4506-8414-1e81661017ca")
+    private val dataReaderUserId = UUID.fromString(TechnicalUser.Reader.technicalUserId)
 
     @BeforeEach
     fun authenticateAsPremiumUser() {
