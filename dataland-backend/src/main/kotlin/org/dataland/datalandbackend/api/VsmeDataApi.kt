@@ -81,7 +81,7 @@ interface VsmeDataApi {
     )
     @PreAuthorize(
         "hasRole('ROLE_USER') and " +
-            "@CompanyRoleChecker.hasCurrentUserAnyRoleForCompany(#dataId)",
+            "@CompanyRoleChecker.hasCurrentUserAnyRoleForCompanyOfDataId(#dataId)",
     )
     fun getCompanyAssociatedVsmeData(@PathVariable("dataId") dataId: String):
         ResponseEntity<CompanyAssociatedData<VsmeData>>
