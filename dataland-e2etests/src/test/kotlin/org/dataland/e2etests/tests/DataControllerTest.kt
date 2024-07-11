@@ -63,7 +63,7 @@ class DataControllerTest {
         )
     }
 
-    /*@Test
+    @Test
     fun `post a dummy company as teaser company and a data set for it and test if unauthorized access is possible`() {
         val mapOfIds = apiAccessor.uploadOneCompanyAndEuTaxonomyDataForNonFinancials(
             testCompanyInformationTeaser,
@@ -81,7 +81,7 @@ class DataControllerTest {
             getDataByIdResponse,
             "The posted data does not equal the expected test data.",
         )
-    }*/
+    }
 
     @Test
     fun `post a dummy company and a data set for it and test if unauthorized access is denied`() {

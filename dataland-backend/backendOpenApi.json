@@ -14572,10 +14572,14 @@
         ],
         "type": "object",
         "properties": {
-          "headquarters": {
-            "type": "string"
+          "lei": {
+            "type": "string",
+            "nullable": true
           },
           "countryCode": {
+            "type": "string"
+          },
+          "headquarters": {
             "type": "string"
           },
           "companyName": {
@@ -14585,10 +14589,6 @@
             "type": "string"
           },
           "sector": {
-            "type": "string",
-            "nullable": true
-          },
-          "lei": {
             "type": "string",
             "nullable": true
           }
