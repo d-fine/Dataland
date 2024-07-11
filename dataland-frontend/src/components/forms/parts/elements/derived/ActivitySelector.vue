@@ -44,12 +44,11 @@
       dataTest="selectNaceCodes"
       name="naceCodes"
       :emptyMessage="`No NACE code available for ${selectedActivities.name} Activity`"
-      :validation="naceCodesForActivities.length ? 'required' : ''"
       validation-label="NACE codes for Activity"
       description="The NACE codes associated with this activity"
       label="NACE codes"
       :placeholder="
-        selectedActivityValue ? 'Chose NACE codes for Activity' : 'Please select an activity before selecting NACE code'
+        selectedActivityValue ? 'Choose NACE codes for Activity' : 'Please select an activity before selecting NACE code'
       "
       :options="naceCodesForActivities"
       inputClass="long"
