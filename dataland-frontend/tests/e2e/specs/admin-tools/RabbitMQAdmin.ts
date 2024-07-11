@@ -15,7 +15,7 @@ const queues = [
   'dataQualityAssuredCommunityManagerDataManager',
   'dataStoredBackendPrivateDataManager',
   'manualQaRequestedPersistAutomatedQaResult',
-  'requestReceivedEurodatDataStore',
+  'privateRequestReceivedEurodatDataStore',
   'sendInternalEmailService',
   'sendTemplateEmailService',
 ];
