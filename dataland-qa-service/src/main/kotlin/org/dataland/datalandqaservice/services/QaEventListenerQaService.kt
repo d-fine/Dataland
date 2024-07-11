@@ -162,7 +162,7 @@ class QaEventListenerQaService(
         bindings = [
             QueueBinding(
                 value = Queue(
-                    "persistAutomatedQaResultQaService",
+                    "manualQaRequestedPersistAutomatedQaResultQaService",
                     arguments = [
                         Argument(name = "x-dead-letter-exchange", value = ExchangeName.DeadLetter),
                         Argument(name = "x-dead-letter-routing-key", value = "deadLetterKey"),
