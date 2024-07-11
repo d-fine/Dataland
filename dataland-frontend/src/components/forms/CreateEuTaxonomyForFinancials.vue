@@ -348,6 +348,8 @@ import DataPointFormWithToggle from '@/components/forms/parts/kpiSelection/DataP
 import { uploadFiles, type DocumentToUpload, getFileName, getFileReferenceByFileName } from '@/utils/FileUploadUtils';
 import { isValidFileName, noReportLabel } from '@/utils/DataSource';
 import SingleSelectFormElement from '@/components/forms/parts/elements/basic/SingleSelectFormElement.vue';
+import { hasUserCompanyRoleForCompany } from '@/utils/CompanyRolesUtils';
+import { CompanyRole } from '@clients/communitymanager';
 
 export default defineComponent({
   setup() {
@@ -653,8 +655,17 @@ export default defineComponent({
         const euTaxonomyDataForFinancialsControllerApi = new ApiClientProvider(
           assertDefined(this.getKeycloakPromise)()
         ).getUnifiedFrameworkDataController(DataTypeEnum.EutaxonomyFinancials);
-        this.postEuTaxonomyDataForFinancialsResponse =
-          await euTaxonomyDataForFinancialsControllerApi.postFrameworkData(clonedFormInputsModel);
+
+        const isCompanyOwner = await hasUserCompanyRoleForCompany(
+          CompanyRole.CompanyOwner,
+          this.companyAssociatedEsgQuestionnaireData.companyId,
+          this.getKeycloakPromise
+        );
+
+        this.postEuTaxonomyDataForFinancialsResponse = await euTaxonomyDataForFinancialsControllerApi.postFrameworkData(
+          clonedFormInputsModel,
+          isCompanyOwner
+        );
         this.$emit('datasetCreated');
       } catch (error) {
         this.messageCount++;

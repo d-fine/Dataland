@@ -177,6 +177,9 @@ import YesNoExtendedDataPointFormField from '@/components/forms/parts/fields/Yes
 import { getFilledKpis } from '@/utils/DataPoint';
 import { type PublicFrameworkDataApi } from '@/utils/api/UnifiedFrameworkDataApi';
 import { getBasePublicFrameworkDefinition } from '@/frameworks/BasePublicFrameworkRegistry';
+import { hasUserCompanyRoleForCompany } from '@/utils/CompanyRolesUtils';
+import { CompanyRole } from '@clients/communitymanager';
+
 export default defineComponent({
   setup() {
     return {
@@ -327,8 +330,16 @@ export default defineComponent({
         }
 
         const euTaxonomyForNonFinancialsDataControllerApi = this.buildEuTaxonomyNonFinancialsDataApi();
+
+        const isCompanyOwner = await hasUserCompanyRoleForCompany(
+          CompanyRole.CompanyOwner,
+          this.companyAssociatedEsgQuestionnaireData.companyId,
+          this.getKeycloakPromise
+        );
+
         await euTaxonomyForNonFinancialsDataControllerApi!.postFrameworkData(
-          this.companyAssociatedEutaxonomyNonFinancialsData
+          this.companyAssociatedEutaxonomyNonFinancialsData,
+          isCompanyOwner
         );
         this.$emit('datasetCreated');
         this.dataDate = undefined;

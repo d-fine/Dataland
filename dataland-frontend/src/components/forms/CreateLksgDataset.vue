@@ -150,6 +150,8 @@ import GeneralViolationsAssessmentsFormField from '@/components/forms/parts/fiel
 import GrievanceMechanismAssessmentsFormField from '@/components/forms/parts/fields/GrievanceMechanismAssessmentsFormField.vue';
 import { getBasePublicFrameworkDefinition } from '@/frameworks/BasePublicFrameworkRegistry';
 import { type PublicFrameworkDataApi } from '@/utils/api/UnifiedFrameworkDataApi';
+import { hasUserCompanyRoleForCompany } from '@/utils/CompanyRolesUtils';
+import { CompanyRole } from '@clients/communitymanager';
 
 export default defineComponent({
   setup() {
@@ -284,7 +286,14 @@ export default defineComponent({
           await uploadFiles(Array.from(this.fieldSpecificDocuments.values()), assertDefined(this.getKeycloakPromise));
         }
         const lksgDataControllerApi = this.buildLksgDataApi();
-        await lksgDataControllerApi!.postFrameworkData(this.companyAssociatedLksgData);
+
+        const isCompanyOwner = await hasUserCompanyRoleForCompany(
+          CompanyRole.CompanyOwner,
+          this.companyAssociatedEsgQuestionnaireData.companyId,
+          this.getKeycloakPromise
+        );
+
+        await lksgDataControllerApi!.postFrameworkData(this.companyAssociatedLksgData, isCompanyOwner);
         this.$emit('datasetCreated');
         this.dataDate = undefined;
         this.message = 'Upload successfully executed.';
