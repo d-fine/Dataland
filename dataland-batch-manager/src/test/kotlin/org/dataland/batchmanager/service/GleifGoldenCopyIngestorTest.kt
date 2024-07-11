@@ -1,11 +1,11 @@
 package org.dataland.batchmanager.service
 
-import com.fasterxml.jackson.databind.MappingIterator
-import org.apache.commons.io.FileUtils
 import org.dataland.datalandbackend.openApiClient.api.ActuatorApi
+import org.dataland.datalandbatchmanager.model.GleifCompanyCombinedInformation
+import org.dataland.datalandbatchmanager.model.GleifCompanyInformation
 import org.dataland.datalandbatchmanager.service.CompanyUploader
+import org.dataland.datalandbatchmanager.service.CsvParser
 import org.dataland.datalandbatchmanager.service.GleifApiAccessor
-import org.dataland.datalandbatchmanager.service.GleifCsvParser
 import org.dataland.datalandbatchmanager.service.GleifGoldenCopyIngestor
 import org.dataland.datalandbatchmanager.service.IsinDeltaBuilder
 import org.dataland.datalandbatchmanager.service.RelationshipExtractor
@@ -26,12 +26,13 @@ import org.mockito.Mockito.verify
 import org.mockito.Mockito.`when`
 import java.io.BufferedReader
 import java.io.File
+import java.io.FileReader
 import java.io.PrintWriter
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class GleifGoldenCopyIngestorTest {
     private val mockGleifApiAccessor = mock(GleifApiAccessor::class.java)
-    private val mockGleifCsvParser = mock(GleifCsvParser::class.java)
+    private val mockCsvParser = mock(CsvParser::class.java)
     private val mockCompanyUploader = mock(CompanyUploader::class.java)
     private val mockActuatorApi = mock(ActuatorApi::class.java)
     private val mockIsinDeltaBuilder = mock(IsinDeltaBuilder::class.java)
@@ -41,7 +42,7 @@ class GleifGoldenCopyIngestorTest {
     private lateinit var oldFile: File
     private lateinit var newFile: File
 
-    val oldContent = """
+    private val oldContent = """
             LEI,ISIN
             1000,1111
             1000,1112
@@ -53,7 +54,7 @@ class GleifGoldenCopyIngestorTest {
             6000,6667
         """
 
-    val newContent = """
+    private val newContent = """
             LEI,ISIN
             1000,1111
             1000,1112
@@ -65,6 +66,12 @@ class GleifGoldenCopyIngestorTest {
             6000,6666
             6000,6667
         """
+
+    private val emptyGleifCompanyCombinedInformation = GleifCompanyCombinedInformation(
+        GleifCompanyInformation(
+            headquarters = "", companyName = "", headquartersPostalCode = "", lei = "", countryCode = "",
+        ),
+    )
 
     @BeforeEach
     fun setup() {
@@ -91,7 +98,7 @@ class GleifGoldenCopyIngestorTest {
     @BeforeEach
     fun setupTest() {
         reset(mockGleifApiAccessor)
-        reset(mockGleifCsvParser)
+        reset(mockCsvParser)
         reset(mockCompanyUploader)
         reset(mockActuatorApi)
         reset(mockIsinDeltaBuilder)
@@ -99,59 +106,34 @@ class GleifGoldenCopyIngestorTest {
     }
 
     @Test
-    fun `test ingestion is not executed if no flag file is provided`() {
-        val mockStaticFile = mockStatic(File::class.java)
-        companyIngestor = GleifGoldenCopyIngestor(
-            mockGleifApiAccessor, mockGleifCsvParser, mockCompanyUploader, mockActuatorApi, mockIsinDeltaBuilder,
-            mockRelationshipExtractor,
-            false, null, oldFile,
-        )
-        companyIngestor.processFullGoldenCopyFileIfEnabled()
-        mockStaticFile.verify({ File.createTempFile(any(), any()) }, times(0))
-        mockStaticFile.close()
-    }
-
-    @Test
-    fun `test ingestion performs successfully if a file is provided`() {
-        val (emptyBufferedReader, mockStaticFile) = commonMock()
-        `when`(File.createTempFile(anyString(), anyString())).thenReturn(mock(File::class.java))
-        val mockFileUtils = mockStatic(FileUtils::class.java)
-        companyIngestor.processFullGoldenCopyFileIfEnabled()
-
-        val numberOfDownloadedFiles = 3
-        mockStaticFile.verify({ File.createTempFile(any(), any()) }, times(numberOfDownloadedFiles))
-        verify(mockGleifCsvParser, times(1)).readGleifDataFromBufferedReader(any() ?: emptyBufferedReader)
-        verify(mockGleifCsvParser, times(1)).readGleifRelationshipDataFromBufferedReader(any() ?: emptyBufferedReader)
-        mockStaticFile.close()
-        mockFileUtils.close()
-    }
-
-    @Test
     fun `test GLEIF LEI file update process`() {
-        val (emptyBufferedReader, mockStaticFile) = commonMock()
-        `when`(File.createTempFile(anyString(), anyString())).thenReturn(mock(File::class.java))
+        val (bufferedReader, mockStaticFile) = commonMock()
+
+        val mockFile = mock(File::class.java)
+        `when`(File.createTempFile(anyString(), anyString())).thenReturn(mockFile)
+        `when`(mockCsvParser.getCsvStreamFromZip(mockFile)).thenReturn(bufferedReader)
+        `when`(mockCsvParser.readGleifCompanyDataFromBufferedReader(bufferedReader)).thenReturn(
+            CsvParser().readGleifCompanyDataFromBufferedReader(bufferedReader),
+        )
+
         companyIngestor.prepareGleifDeltaFile()
-        verify(mockGleifCsvParser, times(1)).readGleifDataFromBufferedReader(any() ?: emptyBufferedReader)
+
+        verify(mockGleifApiAccessor, times(1)).getLastMonthGoldenCopyDelta(mockFile)
+        verify(mockCompanyUploader, times(1))
+            .uploadOrPatchSingleCompany(any() ?: emptyGleifCompanyCombinedInformation)
+
         mockStaticFile.close()
     }
 
     private fun commonMock(): Pair<BufferedReader, MockedStatic<File>> {
-        val flagFile = File.createTempFile("test", ".csv")
-        val emptyBufferedReader = BufferedReader(BufferedReader.nullReader())
-        `when`(
-            mockGleifCsvParser.readGleifDataFromBufferedReader(
-                any()
-                    ?: emptyBufferedReader,
-            ),
-        )
-            .thenReturn(MappingIterator.emptyIterator())
+        val bufferedReader = BufferedReader(FileReader("./build/resources/test/GleifTestData.csv"))
         companyIngestor = GleifGoldenCopyIngestor(
-            mockGleifApiAccessor, mockGleifCsvParser, mockCompanyUploader, mockActuatorApi, mockIsinDeltaBuilder,
+            mockGleifApiAccessor, mockCsvParser, mockCompanyUploader, mockIsinDeltaBuilder,
             mockRelationshipExtractor,
-            false, flagFile.absolutePath, oldFile,
+            oldFile,
         )
         val mockStaticFile = mockStatic(File::class.java)
-        return Pair(emptyBufferedReader, mockStaticFile)
+        return Pair(bufferedReader, mockStaticFile)
     }
 
     @Test
@@ -160,9 +142,9 @@ class GleifGoldenCopyIngestorTest {
         flagFile.deleteOnExit()
         val newLines: List<String> = File(newFile.toString()).useLines { lines -> lines.take(5).toList() }
         companyIngestor = GleifGoldenCopyIngestor(
-            mockGleifApiAccessor, mockGleifCsvParser, mockCompanyUploader, mockActuatorApi, mockIsinDeltaBuilder,
+            mockGleifApiAccessor, mockCsvParser, mockCompanyUploader, mockIsinDeltaBuilder,
             mockRelationshipExtractor,
-            false, flagFile.absolutePath, oldFile,
+            oldFile,
         )
 
         assert(newFile.exists())
@@ -181,9 +163,9 @@ class GleifGoldenCopyIngestorTest {
         val flagFile = File.createTempFile("flagFile", ".csv")
         flagFile.deleteOnExit()
         companyIngestor = GleifGoldenCopyIngestor(
-            mockGleifApiAccessor, mockGleifCsvParser, mockCompanyUploader, mockActuatorApi, mockIsinDeltaBuilder,
+            mockGleifApiAccessor, mockCsvParser, mockCompanyUploader, mockIsinDeltaBuilder,
             mockRelationshipExtractor,
-            false, flagFile.absolutePath, oldFile,
+            oldFile,
         )
 
         val newMappingFile = spy(
