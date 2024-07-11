@@ -120,7 +120,7 @@ class DataRequestResponseEmailSenderTest {
             val arg4 = it.getArgument<String>(3)
             val arg5 = it.getArgument<String>(4)
             assertEquals(emailMessageType, arg1.emailTemplateType)
-            assertEquals(TemplateEmailMessage.UserIdRecipient(userId), arg1.receiver)
+            assertEquals(TemplateEmailMessage.UserIdEmailRecipient(userId), arg1.receiver)
             checkPropertiesOfDataRequestResponseEmail(
                 dataRequestId, arg1.properties, dataType, dataTypeDescription,
             )

@@ -83,7 +83,7 @@ class CompanyOwnershipAcceptedEmailMessageSenderTest {
             val arg5 = it.getArgument<String>(4)
             checkProperties(arg1.properties)
             Assertions.assertEquals(TemplateEmailMessage.Type.SuccessfullyClaimedOwnership, arg1.emailTemplateType)
-            Assertions.assertEquals(TemplateEmailMessage.UserIdRecipient(userId), arg1.receiver)
+            Assertions.assertEquals(TemplateEmailMessage.UserIdEmailRecipient(userId), arg1.receiver)
             Assertions.assertEquals(MessageType.SendTemplateEmail, arg2)
             Assertions.assertEquals(correlationId, arg3)
             Assertions.assertEquals(ExchangeName.SendEmail, arg4)

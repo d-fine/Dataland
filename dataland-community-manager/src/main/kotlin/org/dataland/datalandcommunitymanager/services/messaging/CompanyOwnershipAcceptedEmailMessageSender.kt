@@ -41,7 +41,7 @@ class CompanyOwnershipAcceptedEmailMessageSender(
         )
         val message = TemplateEmailMessage(
             TemplateEmailMessage.Type.SuccessfullyClaimedOwnership,
-            TemplateEmailMessage.UserIdRecipient(newCompanyOwnerId),
+            TemplateEmailMessage.UserIdEmailRecipient(newCompanyOwnerId),
             properties,
         )
         cloudEventMessageHandler.buildCEMessageAndSendToQueue(
@@ -66,30 +66,4 @@ class CompanyOwnershipAcceptedEmailMessageSender(
             status = RequestStatus.Open,
         ).filter { it.count > 0 }.size
     }
-
-//    @JsonIgnoreProperties(ignoreUnknown = true)
-//    private data class User(
-//        @JsonProperty("email")
-//        val email: String?,
-//
-//        @JsonProperty("id")
-//        val userId: String,
-//    )
-//
-//    /**
-//     * Gets the email address of a new company owner in keycloak given the user id
-//     * @param userIdCompanyOwner of the new company owner
-//     * @returns the email address
-//     */
-//    fun getEmailAddressCompanyOwner(userIdCompanyOwner: String): String {
-//        val request = Request.Builder()
-//            .url("$keycloakBaseUrl/admin/realms/datalandsecurity/users/$userIdCompanyOwner")
-//            .build()
-//        val response = authenticatedOkHttpClient.newCall(request).execute()
-//        val parsedResponseBody = objectMapper.readValue(
-//            response.body!!.string(),
-//            User::class.java,
-//        )
-//        return parsedResponseBody.email ?: ""
-//    }
 }
