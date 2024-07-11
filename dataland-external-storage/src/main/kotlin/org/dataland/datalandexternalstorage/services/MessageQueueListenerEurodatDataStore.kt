@@ -38,7 +38,7 @@ class MessageQueueListenerEurodatDataStore(
 
 //
     /**
-     * Method that listens to the storage_queue and stores data into the EuroDaT database in case there is a message
+     * Methode that listens to the storage_queue and stores data into the EuroDaT database in case there is a message
      * on the storage_queue
      * @param payload the content of the message
      * @param correlationId the correlation ID of the current user process
