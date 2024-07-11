@@ -30,6 +30,13 @@ describe('As a developer, I expect the RabbitMQ GUI console to be available to m
     cy.get('input[type=submit]').should('contain.value', 'Login').click();
     cy.get('#logout').contains('Log out').should('contain.value', 'Log out');
     cy.get("ul[id='tabs'").find("a[href='#/queues']").click();
+    cy.contains('table th', 'Overview')
+        .invoke('parents', 'table')
+        .find('tbody tr')
+        .its('length')
+        .then(rowCount => {
+          cy.wrap(queues.length).should('eq', rowCount)
+        });
     cy.get('table[class=list]')
       .should('exist')
       .then(() => {
