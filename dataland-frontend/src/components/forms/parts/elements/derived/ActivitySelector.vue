@@ -48,9 +48,7 @@
       description="The NACE codes associated with this activity"
       label="NACE codes"
       :placeholder="
-        selectedActivityValue
-          ? 'Choose NACE codes for Activity'
-          : 'Please select an activity before selecting NACE code'
+        selectedActivityValue ? 'Choose NACE codes for Activity' : 'Please select an activity before selecting NACE code'
       "
       :options="naceCodesForActivities"
       inputClass="long"
