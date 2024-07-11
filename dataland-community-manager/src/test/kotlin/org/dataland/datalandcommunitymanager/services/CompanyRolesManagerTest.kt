@@ -65,8 +65,6 @@ class CompanyRolesManagerTest {
             companyOwnershipAcceptedEmailMessageSender
                 .getNumberOfOpenDataRequestsForCompany(any(String::class.java)),
         ).thenReturn(5)
-        `when`(companyOwnershipAcceptedEmailMessageSender.getEmailAddressCompanyOwner(any(String::class.java)))
-            .thenReturn("test@example.com")
 
         mockCompanyDataControllerApi = mock(CompanyDataControllerApi::class.java)
         mockCompanyIdValidator = CompanyIdValidator(mockCompanyDataControllerApi)
