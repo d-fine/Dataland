@@ -20,7 +20,7 @@ const queues = [
   'sendTemplateEmailService',
 ];
 
-describe('As a developer, I expect the RabbitMQ GUI console to be available to me. Also check if all expected channels exist.', () => {
+describe('A a developer, I expect the RabbitMQ GUI console to be available to me. Also check if all expected channels exist.', () => {
   it('Checks if the RabbitMQ Management GUI is available and the login page is shown. Then check that all expected queues exist.', () => {
     cy.visit('http://dataland-admin:6789/rabbitmq');
     cy.get('input[name=username]').should('exist').type(getStringCypressEnv('RABBITMQ_USER'));
