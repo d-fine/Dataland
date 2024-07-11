@@ -59,7 +59,12 @@ fi
 
 if [[ $LOAD_GLEIF_GOLDEN_COPY == true ]]; then
   echo "Setting flag indicating that the full GLEIF Golden Copy File should be imported"
-  ssh ubuntu@"$target_server_url" "mkdir -p $location/dataland-batch-manager/config; touch $location/dataland-batch-manager/config/perform_full_golden_copy_download_flag"
+  ssh ubuntu@"$target_server_url" "mkdir -p $location/dataland-batch-manager/config; touch $location/dataland-batch-manager/config/perform_gleif_full_golden_copy_download_flag"
+fi
+
+if [[ $LOAD_NORTHDATA_GOLDEN_COPY == true ]]; then
+  echo "Setting flag indicating that the full NorthData Golden Copy File should be imported"
+  ssh ubuntu@"$target_server_url" "mkdir -p $location/dataland-batch-manager/config; touch $location/dataland-batch-manager/config/perform_northdata_full_golden_copy_download_flag"
 fi
 
 

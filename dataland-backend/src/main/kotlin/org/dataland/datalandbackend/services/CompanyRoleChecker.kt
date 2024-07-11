@@ -29,7 +29,7 @@ class CompanyRoleChecker(
      * @param role for which the check shall happen
      * @return a Boolean indicating whether the user has the role or not
      */
-    fun doesCurrentUserHaveGivenRoleForCompany(companyId: String, role: CompanyRole): Boolean {
+    fun hasCurrentUserGivenRoleForCompany(companyId: String, role: CompanyRole): Boolean {
         val userId = DatalandAuthentication.fromContext().userId
         return try {
             companyRolesControllerApi.hasUserCompanyRole(
@@ -51,7 +51,7 @@ class CompanyRoleChecker(
      * @param companyId to check the roles for
      * @returns a boolean stating if the user has any company role for the company
      */
-    fun doesCurrentUserHaveAnyRoleForCompany(companyId: String): Boolean {
+    fun hasCurrentUserAnyRoleForCompany(companyId: String): Boolean {
         val userId = UUID.fromString(DatalandAuthentication.fromContext().userId)
         val roles = companyRolesControllerApi.getCompanyRoleAssignments(
             companyId = UUID.fromString(companyId),
@@ -67,9 +67,9 @@ class CompanyRoleChecker(
      * @param role to check for
      * @return a Boolean indicating whether the user has the role for the company associated with the dataset
      */
-    fun doesCurrentUserHaveGivenRoleForCompanyOfDataId(dataId: String, role: CompanyRole): Boolean {
+    fun hasCurrentUserGivenRoleForCompanyOfDataId(dataId: String, role: CompanyRole): Boolean {
         val companyId = dataMetaInformationManager.getDataMetaInformationByDataId(dataId).company.companyId
-        return doesCurrentUserHaveGivenRoleForCompany(companyId, role)
+        return hasCurrentUserGivenRoleForCompany(companyId, role)
     }
 
     /**
@@ -77,9 +77,9 @@ class CompanyRoleChecker(
      * @param dataId of the dataset to get the associated company for
      * @returns a boolean stating if the user has any company role for the company associated with the dataId
      */
-    fun doesCurrentUserHaveAnyRoleForCompanyOfDataId(dataId: String): Boolean {
+    fun hasCurrentUserAnyRoleForCompanyOfDataId(dataId: String): Boolean {
         val companyId = dataMetaInformationManager.getDataMetaInformationByDataId(dataId).company.companyId
-        return doesCurrentUserHaveAnyRoleForCompany(companyId)
+        return hasCurrentUserAnyRoleForCompany(companyId)
     }
 
     /**

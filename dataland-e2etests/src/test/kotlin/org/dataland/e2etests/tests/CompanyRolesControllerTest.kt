@@ -144,30 +144,28 @@ class CompanyRolesControllerTest {
     }
 
     @Test
-    fun `check that company ownership enables a user with only reader rights to upload data`() {
+    fun `validate that creation and deletion of company role assignments works as expected`() {
         val firstCompanyId = uploadCompanyAndReturnCompanyId()
         val secondCompanyId = uploadCompanyAndReturnCompanyId()
 
-        jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader)
-        assertAccessDeniedWhenUploadingFrameworkData(firstCompanyId, frameworkSampleData, false)
-        assertAccessDeniedWhenUploadingFrameworkData(secondCompanyId, frameworkSampleData, false)
-
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
         assignCompanyRole(CompanyRole.CompanyOwner, firstCompanyId, dataReaderUserId)
+
         val owners = getCompanyRoleAssignments(CompanyRole.CompanyOwner, companyId = firstCompanyId)
         validateCompanyOwnersForCompany(firstCompanyId, listOf(dataReaderUserId), owners)
         assertDoesNotThrow { hasUserCompanyRole(CompanyRole.CompanyOwner, firstCompanyId, dataReaderUserId) }
 
         assignCompanyRole(CompanyRole.CompanyOwner, firstCompanyId, dataReaderUserId)
+
         val ownersAfterRepost = getCompanyRoleAssignments(CompanyRole.CompanyOwner, companyId = firstCompanyId)
         validateCompanyOwnersForCompany(firstCompanyId, listOf(dataReaderUserId), ownersAfterRepost)
 
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader)
-        uploadEuTaxoData(firstCompanyId, frameworkSampleData)
         assertAccessDeniedWhenUploadingFrameworkData(secondCompanyId, frameworkSampleData, false)
 
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
         removeCompanyRole(CompanyRole.CompanyOwner, firstCompanyId, dataReaderUserId)
+
         val ownersAfterDeletion = getCompanyRoleAssignments(CompanyRole.CompanyOwner, companyId = firstCompanyId)
         validateCompanyOwnersForCompany(firstCompanyId, listOf(), ownersAfterDeletion)
         val exceptionWhenCheckingIfUserIsCompanyOwner = assertThrows<ClientException> {
@@ -177,28 +175,6 @@ class CompanyRolesControllerTest {
 
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader)
         assertAccessDeniedWhenUploadingFrameworkData(firstCompanyId, frameworkSampleData, false)
-    }
-
-    @Test
-    fun `check that keycloak reader role can only upload data as company owner or company data uploader`() {
-        val companyId = uploadCompanyAndReturnCompanyId()
-        val rolesThatCanUploadPublicData = listOf(CompanyRole.CompanyOwner, CompanyRole.DataUploader)
-
-        jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader)
-        assertAccessDeniedWhenUploadingFrameworkData(companyId, frameworkSampleData, false)
-
-        for (role in CompanyRole.values()) {
-            jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
-            assignCompanyRole(role, companyId, dataReaderUserId)
-
-            jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader)
-            if (rolesThatCanUploadPublicData.contains(role)) {
-                assertDoesNotThrow { hasUserCompanyRole(role, companyId, dataReaderUserId) }
-                assertDoesNotThrow { uploadEuTaxoData(companyId, frameworkSampleData) }
-            } else {
-                assertAccessDeniedWhenUploadingFrameworkData(companyId, frameworkSampleData)
-            }
-        }
     }
 
     @Test

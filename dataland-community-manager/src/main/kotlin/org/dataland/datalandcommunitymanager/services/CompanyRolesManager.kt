@@ -77,7 +77,7 @@ class CompanyRolesManager(
     }
 
     private fun deleteAllCompanyRoleAssignmentsForCompanyAndUser(companyId: String, userId: String) {
-        companyRoleAssignmentRepository.deleteAllByCompanyIdAndUserId(companyId, userId)
+        companyRoleAssignmentRepository.deleteAllRolesByCompanyIdAndUserId(companyId, userId)
     }
 
     /**

@@ -108,8 +108,9 @@ export default defineComponent({
         | undefined,
       FRAMEWORKS_WITH_VIEW_PAGE,
       isUserCompanyOwnerOrUploader: false,
-      isUserDatalandUploader: false,
+      isUserKeycloakUploader: false,
       isAnyCompanyOwnerExisting: false,
+      hasUserAnyRoleInCompany: false,
       footerContent,
     };
   },
@@ -137,7 +138,7 @@ export default defineComponent({
       if (!this.authenticated) {
         return false;
       }
-      return this.isUserCompanyOwnerOrUploader || this.isFrameworkPublic(framework);
+      return this.hasUserAnyRoleInCompany || this.isFrameworkPublic(framework);
     },
 
     /**
@@ -146,7 +147,7 @@ export default defineComponent({
      * @returns a boolean as result of this check
      */
     isUserAllowedToUploadForFramework(framework: DataTypeEnum): boolean {
-      return this.isUserCompanyOwnerOrUploader || (this.isFrameworkPublic(framework) && this.isUserDatalandUploader);
+      return this.isUserCompanyOwnerOrUploader || (this.isFrameworkPublic(framework) && this.isUserKeycloakUploader);
     },
 
     /**
@@ -163,13 +164,14 @@ export default defineComponent({
      */
     async setUserRights() {
       this.isAnyCompanyOwnerExisting = await hasCompanyAtLeastOneCompanyOwner(this.companyId, this.getKeycloakPromise);
-      const [isCompanyOwner, isDataUploader] = await Promise.all([
-        hasUserCompanyRoleForCompany(CompanyRole.CompanyOwner, this.companyId, this.getKeycloakPromise),
-        hasUserCompanyRoleForCompany(CompanyRole.DataUploader, this.companyId, this.getKeycloakPromise),
-      ]);
+      const companyRoles = Object.values(CompanyRole);
+      const [isCompanyOwner, isDataUploader, isMemberAdmin, isMember] = await Promise.all(
+        companyRoles.map((role) => hasUserCompanyRoleForCompany(role, this.companyId, this.getKeycloakPromise))
+      );
       this.isUserCompanyOwnerOrUploader = isCompanyOwner || isDataUploader;
+      this.hasUserAnyRoleInCompany = this.isUserCompanyOwnerOrUploader || isMemberAdmin || isMember;
 
-      this.isUserDatalandUploader = await checkIfUserHasRole(KEYCLOAK_ROLE_UPLOADER, this.getKeycloakPromise);
+      this.isUserKeycloakUploader = await checkIfUserHasRole(KEYCLOAK_ROLE_UPLOADER, this.getKeycloakPromise);
     },
   },
 });

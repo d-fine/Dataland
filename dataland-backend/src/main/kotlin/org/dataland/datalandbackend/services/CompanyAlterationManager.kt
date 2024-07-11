@@ -44,6 +44,7 @@ class CompanyAlterationManager(
             headquarters = companyInformation.headquarters,
             headquartersPostalCode = companyInformation.headquartersPostalCode,
             sector = companyInformation.sector,
+            sectorCodeWz = companyInformation.sectorCodeWz,
             identifiers = mutableListOf(),
             dataRegisteredByDataland = mutableListOf(),
             countryCode = companyInformation.countryCode,
@@ -130,6 +131,7 @@ class CompanyAlterationManager(
      * @param patch the patch to apply to the company
      * @return the updated company information object
      */
+    @Suppress("CyclomaticComplexMethod")
     @Transactional
     fun patchCompany(companyId: String, patch: CompanyInformationPatch): StoredCompanyEntity {
         val companyEntity = companyQueryManager.getCompanyById(companyId)
@@ -140,6 +142,7 @@ class CompanyAlterationManager(
         patch.headquarters?.let { companyEntity.headquarters = it }
         patch.headquartersPostalCode?.let { companyEntity.headquartersPostalCode = it }
         patch.sector?.let { companyEntity.sector = it }
+        patch.sectorCodeWz?.let { companyEntity.sectorCodeWz = it }
         patch.countryCode?.let { companyEntity.countryCode = it }
         patch.website?.let { companyEntity.website = it }
         patch.isTeaserCompany?.let { companyEntity.isTeaserCompany = it }
@@ -178,6 +181,7 @@ class CompanyAlterationManager(
         storedCompanyEntity.headquarters = companyInformation.headquarters
         storedCompanyEntity.headquartersPostalCode = companyInformation.headquartersPostalCode
         storedCompanyEntity.sector = companyInformation.sector
+        storedCompanyEntity.sectorCodeWz = companyInformation.sectorCodeWz
         storedCompanyEntity.countryCode = companyInformation.countryCode
         storedCompanyEntity.website = companyInformation.website
         storedCompanyEntity.isTeaserCompany = companyInformation.isTeaserCompany ?: false

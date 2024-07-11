@@ -46,7 +46,7 @@ class SingleDataRequestsTest {
     val jwtHelper = JwtAuthenticationHelper()
     private val requestControllerApi = RequestControllerApi(BASE_PATH_TO_COMMUNITY_MANAGER)
     private val maxRequestsForUser = 10
-    private val dataReaderUserId = UUID.fromString("18b67ecc-1176-4506-8414-1e81661017ca")
+    private val dataReaderUserId = UUID.fromString(TechnicalUser.Reader.technicalUserId)
 
     @BeforeEach
     fun authenticateAsPremiumUser() {
@@ -338,7 +338,6 @@ class SingleDataRequestsTest {
     fun `post several single data requests as a company member and check that no quota is applied`() {
         val stringThatMatchesThePermIdRegex = System.currentTimeMillis().toString()
         val companyId = getIdForUploadedCompanyWithIdentifiers(permId = stringThatMatchesThePermIdRegex)
-        jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader)
         val reportingPeriods = (2000..(2000 + maxRequestsForUser + 1)).map { it.toString() }.toSet()
         val singleDataRequest = SingleDataRequest(
             companyIdentifier = stringThatMatchesThePermIdRegex,
@@ -347,15 +346,17 @@ class SingleDataRequestsTest {
             contacts = setOf("someContact@example.com", "simpleString@example.com"),
             message = "This is a test. The current timestamp is ${System.currentTimeMillis()}",
         )
-        assertThrows<ClientException> {
-            requestControllerApi.postSingleDataRequest(singleDataRequest)
-        }
+
+        jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader)
+        assertThrows<ClientException> { requestControllerApi.postSingleDataRequest(singleDataRequest) }
+
         apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
         apiAccessor.companyRolesControllerApi.assignCompanyRole(
             CompanyRole.Member,
             UUID.fromString(companyId),
             dataReaderUserId,
         )
+
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader)
         assertDoesNotThrow { requestControllerApi.postSingleDataRequest(singleDataRequest) }
     }
