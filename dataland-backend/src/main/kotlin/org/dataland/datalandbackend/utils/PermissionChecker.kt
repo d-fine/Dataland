@@ -7,8 +7,11 @@ import org.dataland.keycloakAdapter.auth.DatalandRealmRole
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 
+/**
+ * Class holding utility functions for checking QA bypass permission
+ */
 @Service
-class PermissionChecks(
+class PermissionChecker(
     @Autowired private val companyRoleChecker: CompanyRoleChecker,
 ) {
     /**
