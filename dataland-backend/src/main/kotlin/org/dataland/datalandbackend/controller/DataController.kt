@@ -32,7 +32,7 @@ abstract class DataController<T>(
     var dataMetaInformationManager: DataMetaInformationManager,
     var objectMapper: ObjectMapper,
     private val clazz: Class<T>,
-    @Autowired private val permissionChecks: PermissionChecker,
+    @Autowired private val permissionChecker: PermissionChecker,
 ) : DataApi<T> {
     private val dataType = DataType.of(clazz)
     private val logger = LoggerFactory.getLogger(javaClass)
@@ -41,7 +41,7 @@ abstract class DataController<T>(
     override fun postCompanyAssociatedData(companyAssociatedData: CompanyAssociatedData<T>, bypassQa: Boolean):
         ResponseEntity<DataMetaInformation> {
         val companyId = companyAssociatedData.companyId
-        if (bypassQa && !permissionChecks.canUserBypassQa(DatalandAuthentication.fromContextOrNull(), companyId)) {
+        if (bypassQa && !permissionChecker.canUserBypassQa(DatalandAuthentication.fromContextOrNull(), companyId)) {
             throw AccessDeniedException(logMessageBuilder.bypassQaDeniedExceptionMessage)
         }
         val reportingPeriod = companyAssociatedData.reportingPeriod
