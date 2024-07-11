@@ -3,7 +3,7 @@ import { ApiClientProvider } from '@/services/ApiClients';
 import { type AxiosError } from 'axios';
 import { waitForAndReturnResolvedKeycloakPromise } from '@/utils/KeycloakUtils';
 import { isCompanyIdValid } from '@/utils/ValidationsUtils';
-import { type CompanyRole } from '@clients/communitymanager';
+import { type CompanyRole, type CompanyRoleAssignment } from '@clients/communitymanager';
 
 /**
  * Check if current user has a certain company role for a company
@@ -40,16 +40,16 @@ export async function hasUserCompanyRoleForCompany(
 /**
  * Get the Information about company ownership
  * @param companyId identifier of the company
- * @param keyCloakPromiseGetter getter for a keycloak promise
+ * @param keycloakPromiseGetter getter for a keycloak promise
  * @returns a promise which resolves to a boolean if the company has at least one company owner
  */
 export async function hasCompanyAtLeastOneCompanyOwner(
   companyId: string,
-  keyCloakPromiseGetter?: () => Promise<Keycloak>
+  keycloakPromiseGetter?: () => Promise<Keycloak>
 ): Promise<boolean> {
-  if (keyCloakPromiseGetter && isCompanyIdValid(companyId)) {
+  if (keycloakPromiseGetter && isCompanyIdValid(companyId)) {
     try {
-      await new ApiClientProvider(keyCloakPromiseGetter()).apiClients.companyRolesController.hasCompanyAtLeastOneOwner(
+      await new ApiClientProvider(keycloakPromiseGetter()).apiClients.companyRolesController.hasCompanyAtLeastOneOwner(
         companyId
       );
       return true;
@@ -60,4 +60,35 @@ export async function hasCompanyAtLeastOneCompanyOwner(
       throw error;
     }
   } else return false;
+}
+
+/**
+ * Get company role assignments for the currently logged in user
+ * @param companyId defines the company for which to check
+ * @param keycloakPromiseGetter getter for a keycloak promise
+ * @returns a promise which resolves to an array of company role assignments for this user and company
+ */
+export async function getCompanyRoleAssignmentsForCurrentUserAndCompany(
+  companyId: string,
+  keycloakPromiseGetter?: () => Promise<Keycloak>
+): Promise<Array<CompanyRoleAssignment>> {
+  if (keycloakPromiseGetter) {
+    const resolvedKeycloakPromise = await waitForAndReturnResolvedKeycloakPromise(keycloakPromiseGetter);
+    const userId = resolvedKeycloakPromise?.idTokenParsed?.sub;
+    if (userId) {
+      try {
+        const response = await new ApiClientProvider(
+          keycloakPromiseGetter()
+        ).apiClients.companyRolesController.getCompanyRoleAssignments(undefined, companyId, userId);
+        return response.data;
+      } catch (error) {
+        if ((error as AxiosError)?.response?.status == 403) {
+          return [];
+        }
+        throw error;
+      }
+    } else {
+      return [];
+    }
+  } else return [];
 }

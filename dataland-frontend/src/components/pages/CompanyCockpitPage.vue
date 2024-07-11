@@ -39,7 +39,10 @@ import CompanyInfoSheet from '@/components/general/CompanyInfoSheet.vue';
 import { FRAMEWORKS_WITH_VIEW_PAGE, PRIVATE_FRAMEWORKS } from '@/utils/Constants';
 import ClaimOwnershipPanel from '@/components/resources/companyCockpit/ClaimOwnershipPanel.vue';
 import { checkIfUserHasRole, KEYCLOAK_ROLE_UPLOADER } from '@/utils/KeycloakUtils';
-import { hasCompanyAtLeastOneCompanyOwner, hasUserCompanyRoleForCompany } from '@/utils/CompanyRolesUtils';
+import {
+  getCompanyRoleAssignmentsForCurrentUserAndCompany,
+  hasCompanyAtLeastOneCompanyOwner,
+} from '@/utils/CompanyRolesUtils';
 import { isCompanyIdValid } from '@/utils/ValidationsUtils';
 import { assertDefined } from '@/utils/TypeScriptUtils';
 import { CompanyRole } from '@clients/communitymanager';
@@ -160,17 +163,16 @@ export default defineComponent({
     },
 
     /**
-     * Set user access rights and ownership info
+     * Set user access rights
      */
     async setUserRights() {
       this.isAnyCompanyOwnerExisting = await hasCompanyAtLeastOneCompanyOwner(this.companyId, this.getKeycloakPromise);
-      const companyRoles = Object.values(CompanyRole);
-      const [isCompanyOwner, isDataUploader, isMemberAdmin, isMember] = await Promise.all(
-        companyRoles.map((role) => hasUserCompanyRoleForCompany(role, this.companyId, this.getKeycloakPromise))
-      );
-      this.isUserCompanyOwnerOrUploader = isCompanyOwner || isDataUploader;
-      this.hasUserAnyRoleInCompany = this.isUserCompanyOwnerOrUploader || isMemberAdmin || isMember;
-
+      const roles = (
+        await getCompanyRoleAssignmentsForCurrentUserAndCompany(this.companyId, this.getKeycloakPromise)
+      ).map((it) => it.companyRole);
+      this.hasUserAnyRoleInCompany = roles.length > 0;
+      this.isUserCompanyOwnerOrUploader =
+        roles.includes(CompanyRole.CompanyOwner) || roles.includes(CompanyRole.DataUploader);
       this.isUserKeycloakUploader = await checkIfUserHasRole(KEYCLOAK_ROLE_UPLOADER, this.getKeycloakPromise);
     },
   },
