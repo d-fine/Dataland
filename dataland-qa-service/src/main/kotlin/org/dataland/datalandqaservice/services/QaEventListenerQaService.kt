@@ -143,9 +143,7 @@ class QaEventListenerQaService(
                 "Received document with Hash: $documentId on QA message queue with Correlation Id: $correlationId",
             )
             val messageToSend = objectMapper.writeValueAsString(
-                QaCompletedMessage(
-                    documentId, QaStatus.Accepted, reviewerIdAutomatedQaService, null,
-                ),
+                QaCompletedMessage(documentId, QaStatus.Accepted, reviewerIdAutomatedQaService, null),
             )
             cloudEventMessageHandler.buildCEMessageAndSendToQueue(
                 messageToSend, MessageType.QaCompleted, correlationId, ExchangeName.DataQualityAssured,
