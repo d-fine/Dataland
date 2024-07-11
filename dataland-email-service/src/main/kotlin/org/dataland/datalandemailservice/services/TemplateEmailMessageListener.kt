@@ -69,7 +69,7 @@ class TemplateEmailMessageListener(
                 "with correlationId $correlationId.",
         )
 
-        val receiverEmailAddress = getEmailAddressByRecipient(objectMapper.readTree(jsonString)["receiver"])
+        val receiverEmailAddress = getEmailAddressByRecipient(objectMapper.readTree(jsonString).get("receiver"))
         messageQueueUtils.rejectMessageOnException {
             val templateEmailFactory = getMatchingEmailFactory(message)
             emailSender.sendEmailWithoutTestReceivers(
@@ -81,12 +81,12 @@ class TemplateEmailMessageListener(
         }
     }
 
-    private fun getEmailAddressByRecipient(receiver: JsonNode): String {
-        return when (receiver["type"].asText()) {
-            "address" -> receiver["email"].asText()
-            "user" -> keycloakUserControllerApiService.getEmailAddress(receiver["userId"].asText())
+    private fun getEmailAddressByRecipient(receiver: JsonNode?): String {
+        return when (val receiverType = receiver?.get("type")?.asText()) {
+            "address" -> receiver.get("email").asText()
+            "user" -> keycloakUserControllerApiService.getEmailAddress(receiver.get("userId").asText())
             else -> {
-                throw IllegalArgumentException("Invalid receiver type: ${receiver["type"].asText()}")
+                throw IllegalArgumentException("Invalid receiver type: $receiverType")
             }
         }
     }
