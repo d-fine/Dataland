@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 
 /**
- * Class holding utility functions for checking QA bypass permission
+ * Class holding utility functions for checking DataController related permissions
  */
 @Service
 class PermissionChecker(
