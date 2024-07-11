@@ -1,4 +1,4 @@
-package org.dataland.datalandcommunitymanager.services
+package org.dataland.datalandemailservice.services
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonProperty

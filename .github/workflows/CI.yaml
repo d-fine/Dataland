@@ -236,6 +236,7 @@ jobs:
           DATALAND_COMMUNITY_MANAGER_CLIENT_SECRET: "password"
           DATALAND_BACKEND_CLIENT_SECRET: "password"
           DATALAND_DOCUMENT_MANAGER_CLIENT_SECRET: "password"
+          DATALAND_EMAIL_SERVICE_CLIENT_SECRET: "password"
         run: testing/verifyOpenApiFiles.sh
       - name: verify no it.only exists
         if: always()
@@ -369,6 +370,7 @@ jobs:
           DATALAND_QA_SERVICE_CLIENT_SECRET: "password"
           DATALAND_BATCH_MANAGER_CLIENT_SECRET: "password"
           DATALAND_COMMUNITY_MANAGER_CLIENT_SECRET: "password"
+          DATALAND_EMAIL_SERVICE_CLIENT_SECRET: "password"
           DATALAND_DOCUMENT_MANAGER_CLIENT_SECRET: "password"
           DATALAND_BACKEND_CLIENT_SECRET: "password"
           DATALAND_AUTOMATED_QA_SERVICE_CLIENT_SECRET: "password"
