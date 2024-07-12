@@ -293,7 +293,12 @@ export default defineComponent({
           this.getKeycloakPromise
         );
 
-        await lksgDataControllerApi!.postFrameworkData(this.companyAssociatedLksgData, isCompanyOwner);
+        if (isCompanyOwner) {
+          await lksgDataControllerApi!.postFrameworkData(this.companyAssociatedLksgData, true);
+        } else {
+          await lksgDataControllerApi!.postFrameworkData(this.companyAssociatedLksgData);
+        }
+
         this.$emit('datasetCreated');
         this.dataDate = undefined;
         this.message = 'Upload successfully executed.';

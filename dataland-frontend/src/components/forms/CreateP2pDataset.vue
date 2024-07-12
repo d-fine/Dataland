@@ -268,7 +268,12 @@ export default defineComponent({
           this.getKeycloakPromise
         );
 
-        await p2pDataControllerApi.postFrameworkData(this.companyAssociatedP2pData, isCompanyOwner);
+        if (isCompanyOwner) {
+          await p2pDataControllerApi.postFrameworkData(this.companyAssociatedP2pData, true);
+        } else {
+          await p2pDataControllerApi.postFrameworkData(this.companyAssociatedP2pData);
+        }
+
         this.$emit('datasetCreated');
         this.dataDate = undefined;
         this.message = 'Upload successfully executed.';

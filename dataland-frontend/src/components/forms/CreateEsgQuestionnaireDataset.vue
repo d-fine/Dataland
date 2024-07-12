@@ -308,10 +308,17 @@ export default defineComponent({
           this.getKeycloakPromise
         );
 
-        await assertDefined(esgQuestionnaireDataControllerApi).postFrameworkData(
-          this.companyAssociatedEsgQuestionnaireData,
-          isCompanyOwner
-        );
+        if (isCompanyOwner) {
+          await assertDefined(esgQuestionnaireDataControllerApi).postFrameworkData(
+            this.companyAssociatedEsgQuestionnaireData,
+            true
+          );
+        } else {
+          await assertDefined(esgQuestionnaireDataControllerApi).postFrameworkData(
+            this.companyAssociatedEsgQuestionnaireData
+          );
+        }
+
         this.$emit('datasetCreated');
         this.dataDate = undefined;
         this.message = 'Upload successfully executed.';

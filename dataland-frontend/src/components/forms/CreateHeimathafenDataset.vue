@@ -292,7 +292,12 @@ export default defineComponent({
           this.getKeycloakPromise
         );
 
-        await heimathafenDataControllerApi.postFrameworkData(this.companyAssociatedHeimathafenData, isCompanyOwner);
+        if (isCompanyOwner) {
+          await heimathafenDataControllerApi.postFrameworkData(this.companyAssociatedHeimathafenData, true);
+        } else {
+          await heimathafenDataControllerApi.postFrameworkData(this.companyAssociatedHeimathafenData);
+        }
+
         this.$emit('datasetCreated');
         this.dataDate = undefined;
         this.message = 'Upload successfully executed.';

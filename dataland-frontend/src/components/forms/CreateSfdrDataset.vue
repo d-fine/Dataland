@@ -316,7 +316,12 @@ export default defineComponent({
           this.getKeycloakPromise
         );
 
-        await sfdrDataControllerApi.postFrameworkData(this.companyAssociatedSfdrData, isCompanyOwner);
+        if (isCompanyOwner) {
+          await sfdrDataControllerApi.postFrameworkData(this.companyAssociatedSfdrData, true);
+        } else {
+          await sfdrDataControllerApi.postFrameworkData(this.companyAssociatedSfdrData);
+        }
+
         this.$emit('datasetCreated');
         this.dataDate = undefined;
         this.message = 'Upload successfully executed.';

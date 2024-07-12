@@ -337,10 +337,17 @@ export default defineComponent({
           this.getKeycloakPromise
         );
 
-        await euTaxonomyForNonFinancialsDataControllerApi!.postFrameworkData(
-          this.companyAssociatedEutaxonomyNonFinancialsData,
-          isCompanyOwner
-        );
+        if (isCompanyOwner) {
+          await euTaxonomyForNonFinancialsDataControllerApi!.postFrameworkData(
+            this.companyAssociatedEutaxonomyNonFinancialsData,
+            true
+          );
+        } else {
+          await euTaxonomyForNonFinancialsDataControllerApi!.postFrameworkData(
+            this.companyAssociatedEutaxonomyNonFinancialsData
+          );
+        }
+
         this.$emit('datasetCreated');
         this.dataDate = undefined;
         this.message = 'Upload successfully executed.';
