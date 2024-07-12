@@ -92,7 +92,7 @@ class SingleDataRequestEmailMessageSender(
         )
         val message = TemplateEmailMessage(
             emailTemplateType = TemplateEmailMessage.Type.ClaimOwnership,
-            receiver = receiver,
+            receiver = TemplateEmailMessage.EmailAddressEmailRecipient(receiver),
             properties = properties,
         )
         cloudEventMessageHandler.buildCEMessageAndSendToQueue(

@@ -417,12 +417,12 @@ class CompanyRolesControllerTest {
         currentAssignments = getCompanyRoleAssignments(companyId = companyId, userId = dataUploaderUserId)
         assertEquals(1, currentAssignments.size)
         assertEquals(
-            currentAssignments.first(),
             CompanyRoleAssignment(
                 companyRole = CompanyRole.Member,
                 companyId = companyId.toString(),
                 userId = dataUploaderUserId.toString(),
             ),
+            currentAssignments.first(),
         )
     }
 

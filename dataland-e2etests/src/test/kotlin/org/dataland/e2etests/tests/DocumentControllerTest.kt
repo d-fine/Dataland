@@ -95,42 +95,42 @@ class DocumentControllerTest {
     }
 
     @Test
-    fun `test that users without keycloak uploader role can upload documents only if assigned company owner role`() {
+    fun `test that users without keycloak uploader role can upload documents with certain company roles`() {
         apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
         val testCompanyIdString = apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId
         val testCompanyId = UUID.fromString(testCompanyIdString)
         val dataReaderId = UUID.fromString(TechnicalUser.Reader.technicalUserId)
+        val companyRolesAllowedToPostDocument = listOf(CompanyRole.CompanyOwner, CompanyRole.DataUploader)
 
-        removeAllCompanyOwnershipsFromUser(dataReaderId)
-
-        apiAccessor.companyRolesControllerApi.assignCompanyRole(
-            CompanyRole.CompanyOwner,
-            testCompanyId,
-            dataReaderId,
-        )
+        removeAllRolesFromUser(dataReaderId)
 
         apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader)
-        assertDoesNotThrow { uploadDocument(pdfDocument, TechnicalUser.Reader) }
+        assertThrows<ClientException> { uploadDocument(pdfDocument, TechnicalUser.Reader) }
+        for (role in CompanyRole.values()) {
+            apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
+            apiAccessor.companyRolesControllerApi.assignCompanyRole(role, testCompanyId, dataReaderId)
 
-        apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
-        removeAllCompanyOwnershipsFromUser(dataReaderId)
+            apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader)
+            if (role in companyRolesAllowedToPostDocument) {
+                assertDoesNotThrow { uploadDocument(pdfDocument, TechnicalUser.Reader) }
+            } else {
+                assertThrows<ClientException> { uploadDocument(pdfDocument, TechnicalUser.Reader) }
+            }
 
-        apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader)
-        val clientException = assertThrows<ClientException> {
-            uploadDocument(pdfDocument, TechnicalUser.Reader)
+            apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
+            removeAllRolesFromUser(dataReaderId)
         }
-        assertEquals("Client error : 403 ", clientException.message)
     }
 
-    private fun removeAllCompanyOwnershipsFromUser(userId: UUID) {
-        val companiesOwnedByUser = apiAccessor.companyRolesControllerApi.getCompanyRoleAssignments(
-            CompanyRole.CompanyOwner,
+    private fun removeAllRolesFromUser(userId: UUID) {
+        val rolesOfUser = apiAccessor.companyRolesControllerApi.getCompanyRoleAssignments(
+            null,
             null,
             userId,
         )
-        companiesOwnedByUser.forEach {
+        rolesOfUser.forEach {
             apiAccessor.companyRolesControllerApi.removeCompanyRole(
-                CompanyRole.CompanyOwner,
+                it.companyRole,
                 UUID.fromString(it.companyId),
                 userId,
             )
