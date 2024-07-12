@@ -37,6 +37,7 @@ class SingleDataRequestManagerTest {
     private lateinit var singleDataRequestEmailMessageSenderMock: SingleDataRequestEmailMessageSender
     private lateinit var authenticationMock: DatalandJwtAuthentication
     private lateinit var utilsMock: DataRequestProcessingUtils
+    private lateinit var securityUtilsServiceMock: SecurityUtilsService
     private lateinit var mockCompanyIdValidator: CompanyIdValidator
 
     private val companyIdRegexSafeCompanyId = UUID.randomUUID().toString()
@@ -56,6 +57,7 @@ class SingleDataRequestManagerTest {
     fun setupSingleDataRequestManager() {
         singleDataRequestEmailMessageSenderMock = mock(SingleDataRequestEmailMessageSender::class.java)
         utilsMock = createDataRequestProcessingUtilsMock()
+        securityUtilsServiceMock = mock(SecurityUtilsService::class.java)
         mockCompanyIdValidator = mock(CompanyIdValidator::class.java)
         dataRequestRepositoryMock = createDataRequestRepositoryMock()
         singleDataRequestManagerMock = SingleDataRequestManager(
@@ -64,6 +66,7 @@ class SingleDataRequestManagerTest {
             companyIdValidator = mockCompanyIdValidator,
             singleDataRequestEmailMessageSender = singleDataRequestEmailMessageSenderMock,
             utils = utilsMock,
+            securityUtilsService = securityUtilsServiceMock,
             maxRequestsForUser,
         )
         `when`(mockCompanyIdValidator.checkIfCompanyIdIsValidAndReturnName(anyString())).thenReturn("some-company-name")

@@ -45,8 +45,16 @@ interface VsmeDataApi {
     )
     @PostMapping(produces = [MediaType.APPLICATION_JSON_VALUE], consumes = [MediaType.MULTIPART_FORM_DATA_VALUE])
     @PreAuthorize(
-        "(hasRole('ROLE_USER') " +
-            "and @CompanyOwnershipChecker.isCurrentUserCompanyOwnerForCompany(#companyAssociatedVsmeData.companyId))",
+        "hasRole('ROLE_USER') and " +
+            "(@CompanyRoleChecker.hasCurrentUserGivenRoleForCompany(" +
+            "#companyAssociatedVsmeData.companyId, " +
+            "T(org.dataland.datalandcommunitymanager.openApiClient.model.CompanyRole).CompanyOwner" +
+            ") or" +
+            "@CompanyRoleChecker.hasCurrentUserGivenRoleForCompany(" +
+            "#companyAssociatedVsmeData.companyId, " +
+            "T(org.dataland.datalandcommunitymanager.openApiClient.model.CompanyRole).DataUploader" +
+            ")" +
+            ")",
     )
     fun postVsmeJsonAndDocuments(
         @RequestPart(value = "companyAssociatedVsmeData") companyAssociatedVsmeData: CompanyAssociatedData<VsmeData>,
@@ -72,8 +80,8 @@ interface VsmeDataApi {
         produces = ["application/json"],
     )
     @PreAuthorize(
-        "(hasRole('ROLE_USER') " +
-            "and @CompanyOwnershipChecker.isCurrentUserCompanyOwnerForCompanyOfDataId(#dataId))",
+        "hasRole('ROLE_USER') and " +
+            "@CompanyRoleChecker.hasCurrentUserAnyRoleForCompanyOfDataId(#dataId)",
     )
     fun getCompanyAssociatedVsmeData(@PathVariable("dataId") dataId: String):
         ResponseEntity<CompanyAssociatedData<VsmeData>>
@@ -104,8 +112,8 @@ interface VsmeDataApi {
         ],
     )
     @PreAuthorize(
-        "(hasRole('ROLE_USER') " +
-            "and @CompanyOwnershipChecker.isCurrentUserCompanyOwnerForCompanyOfDataId(#dataId))",
+        "hasRole('ROLE_USER') and " +
+            "@CompanyRoleChecker.hasCurrentUserAnyRoleForCompanyOfDataId(#dataId)",
     )
     fun getPrivateDocument(
         @RequestParam("dataId") dataId: String,
@@ -136,8 +144,8 @@ interface VsmeDataApi {
         produces = ["application/json"],
     )
     @PreAuthorize(
-        "(hasRole('ROLE_USER') " +
-            "and @CompanyOwnershipChecker.isCurrentUserCompanyOwnerForCompany(#companyId))",
+        "hasRole('ROLE_USER') and " +
+            "@CompanyRoleChecker.hasCurrentUserAnyRoleForCompany(#companyId)",
     )
     fun getFrameworkDatasetsForCompany(
         @PathVariable("companyId") companyId: String,

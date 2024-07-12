@@ -25,12 +25,15 @@ import java.util.*
  * Implementation of a request manager service for all operations concerning the processing of single data requests
  */
 @Service("SingleDataRequestManager")
-class SingleDataRequestManager(
+class SingleDataRequestManager
+@Suppress("LongParameterList")
+constructor(
     @Autowired private val dataRequestLogger: DataRequestLogger,
     @Autowired private val dataRequestRepository: DataRequestRepository,
     @Autowired private val companyIdValidator: CompanyIdValidator,
     @Autowired private val singleDataRequestEmailMessageSender: SingleDataRequestEmailMessageSender,
     @Autowired private val utils: DataRequestProcessingUtils,
+    @Autowired private val securityUtilsService: SecurityUtilsService,
     @Value("\${dataland.community-manager.max-number-of-data-requests-per-day-for-role-user}") val maxRequestsForUser:
     Int,
 ) {
@@ -43,12 +46,12 @@ class SingleDataRequestManager(
      */
     @Transactional
     fun processSingleDataRequest(singleDataRequest: SingleDataRequest): SingleDataRequestResponse {
-        checkSingleDataRequest(singleDataRequest)
+        val companyId = findDatalandCompanyIdForCompanyIdentifier(singleDataRequest.companyIdentifier)
         val correlationId = UUID.randomUUID().toString()
+        checkSingleDataRequest(singleDataRequest, companyId)
         dataRequestLogger.logMessageForReceivingSingleDataRequest(
             singleDataRequest.companyIdentifier, DatalandAuthentication.fromContext().userId, correlationId,
         )
-        val companyId = findDatalandCompanyIdForCompanyIdentifier(singleDataRequest.companyIdentifier)
         val reportingPeriodsOfStoredDataRequests = mutableListOf<String>()
         val reportingPeriodsOfDuplicateDataRequests = mutableListOf<String>()
         singleDataRequest.reportingPeriods.forEach { reportingPeriod ->
@@ -72,23 +75,23 @@ class SingleDataRequestManager(
         )
     }
 
-    private fun checkSingleDataRequest(singleDataRequest: SingleDataRequest) {
+    private fun checkSingleDataRequest(singleDataRequest: SingleDataRequest, companyId: String) {
         utils.throwExceptionIfNotJwtAuth()
         validateSingleDataRequestContent(singleDataRequest)
-        performQuotaCheckForNonPremiumUser(singleDataRequest)
+        performQuotaCheckForNonPremiumUser(singleDataRequest.reportingPeriods.size, companyId)
     }
 
-    private fun performQuotaCheckForNonPremiumUser(singleDataRequest: SingleDataRequest) {
+    private fun performQuotaCheckForNonPremiumUser(numberOfReportingPeriods: Int, companyId: String) {
         val userInfo = DatalandAuthentication.fromContext()
-        if (!userInfo.roles.contains(DatalandRealmRole.ROLE_PREMIUM_USER)) {
+        if (!userInfo.roles.contains(DatalandRealmRole.ROLE_PREMIUM_USER) &&
+            !securityUtilsService.isUserMemberOfTheCompany(UUID.fromString(companyId))
+        ) {
             val numberOfDataRequestsPerformedByUserFromTimestamp =
                 dataRequestRepository.getNumberOfDataRequestsPerformedByUserFromTimestamp(
                     userInfo.userId, getEpochTimeStartOfDay(),
                 )
 
-            val numberOfReportingPeriodsInCurrentDataRequest = singleDataRequest.reportingPeriods.size
-
-            if (numberOfDataRequestsPerformedByUserFromTimestamp + numberOfReportingPeriodsInCurrentDataRequest
+            if (numberOfDataRequestsPerformedByUserFromTimestamp + numberOfReportingPeriods
                 > maxRequestsForUser
             ) {
                 throw QuotaExceededException(
@@ -104,8 +107,7 @@ class SingleDataRequestManager(
         val zoneId = ZoneId.of("Europe/Berlin")
         val instantNowZoned = instantNow.atZone(zoneId)
         val startOfDay = instantNowZoned.toLocalDate().atStartOfDay(zoneId)
-        val startOfDayTimestampMillis = startOfDay.toInstant().toEpochMilli()
-        return startOfDayTimestampMillis
+        return startOfDay.toInstant().toEpochMilli()
     }
 
     private fun validateSingleDataRequestContent(singleDataRequest: SingleDataRequest) {
@@ -133,14 +135,11 @@ class SingleDataRequestManager(
         } else {
             utils.getDatalandCompanyIdAndNameForIdentifierValue(companyIdentifier)?.companyId
         }
-        if (datalandCompanyId == null) {
-            throw InvalidInputApiException(
-                "The specified company is unknown to Dataland.",
-                "The company with identifier: $companyIdentifier is unknown to Dataland.",
-            )
-        } else {
-            return datalandCompanyId
-        }
+
+        return datalandCompanyId ?: throw InvalidInputApiException(
+            "The specified company is unknown to Dataland.",
+            "The company with identifier: $companyIdentifier is unknown to Dataland.",
+        )
     }
 
     private fun sendSingleDataRequestEmailMessage(

@@ -16,12 +16,13 @@ import {
 } from '@/utils/KeycloakUtils';
 import { setMobileDeviceViewport } from '@sharedUtils/TestSetupUtils';
 import { computed } from 'vue';
+import { CompanyRole } from '@clients/communitymanager';
 
 describe('Component test for the company cockpit', () => {
   let companyInformationForTest: CompanyInformation;
   let mockMapOfDataTypeToAggregatedFrameworkDataSummary: Map<DataTypeEnum, AggregatedFrameworkDataSummary>;
   const dummyCompanyId = '550e8400-e29b-11d4-a716-446655440000';
-  const companyOwnerId = 'mock-company-owner-id';
+  const dummyUserId = 'mock-user-id';
 
   before(function () {
     cy.fixture('CompanyInformationWithHeimathafenData').then(function (jsonContent) {
@@ -37,10 +38,34 @@ describe('Component test for the company cockpit', () => {
   });
 
   /**
-   * Mocks the three requests that happen when the company cockpit page is being mounted
-   * @param hasCompanyAtLeastOneOwner has the company at least one company owner
+   * Generates a company role assignment
+   * @param companyRole in the mock assignment
+   * @param companyId of the company associated with the mock assignment
+   * @param userId of the user that shall be associated with the mock assignment
+   * @returns a mock company role assignment
    */
-  function mockRequestsOnMounted(hasCompanyAtLeastOneOwner: boolean = false): void {
+  function generateCompanyRoleAssignment(
+    companyRole: CompanyRole,
+    companyId: string,
+    userId: string
+  ): CompanyRoleAssignment {
+    return {
+      companyRole: companyRole,
+      companyId: companyId,
+      userId: userId,
+    };
+  }
+
+  /**
+   * Mocks the requests that happen when the company cockpit page is being mounted
+   * @param hasCompanyAtLeastOneOwner has the company at least one company owner
+   * @param companyRoleOfCurrentUser the company role that the user has who is visiting the cockpit page
+   */
+  function mockRequestsOnMounted(hasCompanyAtLeastOneOwner: boolean, companyRoleOfCurrentUser?: CompanyRole): void {
+    const mockCompanyRoleAssignments = companyRoleOfCurrentUser
+      ? [generateCompanyRoleAssignment(companyRoleOfCurrentUser, dummyCompanyId, dummyUserId)]
+      : [];
+
     cy.intercept(`**/api/companies/*/info`, {
       body: companyInformationForTest,
       times: 1,
@@ -49,9 +74,9 @@ describe('Component test for the company cockpit', () => {
       body: mockMapOfDataTypeToAggregatedFrameworkDataSummary,
       times: 1,
     }).as('fetchAggregatedFrameworkMetaInfo');
-    cy.intercept(`**/community/company-role-assignments/*/*/${companyOwnerId}`, {
-      statusCode: 200,
-    });
+    cy.intercept(`**/community/company-role-assignments?*`, {
+      body: mockCompanyRoleAssignments,
+    }).as('fetchCompanyRoleAssignments');
     const hasCompanyAtLeastOneOwnerStatusCode = hasCompanyAtLeastOneOwner ? 200 : 404;
     cy.intercept('**/community/company-ownership/*', {
       statusCode: hasCompanyAtLeastOneOwnerStatusCode,
@@ -135,7 +160,7 @@ describe('Component test for the company cockpit', () => {
   }
   /**
    * Validates the vsme framework summary panel
-   * @param isCompanyOwner is the current user company data owner
+   * @param isCompanyOwner is the current user company owner
    */
   function validateVsmeFrameworkSummaryPanel(isCompanyOwner: boolean): void {
     const frameworkName = 'vsme';
@@ -206,7 +231,7 @@ describe('Component test for the company cockpit', () => {
     cy.get('[data-test="singleDataRequestButton"]').should(isButtonExpected ? 'exist' : 'not.exist');
   }
 
-  it('Check for expected elements from a non-logged-in users perspective for a company without company owner', () => {
+  it('Check for expected elements for a non-logged-in user and for a company without company owner', () => {
     const hasCompanyAtLeastOneOwner = false;
     const isClaimOwnershipPanelExpected = true;
     const isProvideDataButtonExpected = false;
@@ -220,7 +245,7 @@ describe('Component test for the company cockpit', () => {
       validateFrameworkSummaryPanels(isProvideDataButtonExpected);
     });
   });
-  it('Check for expected company ownership elements from a non-logged-in users perspective for a company with a company owner', () => {
+  it('Check for expected company ownership elements for a non-logged-in users and for a company with a company owner', () => {
     const hasCompanyAtLeastOneOwner = true;
     const isClaimOwnershipPanelExpected = false;
     mockRequestsOnMounted(hasCompanyAtLeastOneOwner);
@@ -231,7 +256,7 @@ describe('Component test for the company cockpit', () => {
     });
   });
 
-  it('Check for all expected elements from a logged-in users perspective with read-only rights for a company with company owner', () => {
+  it('Check for all expected elements for a logged-in reader-user for a company with company owner', () => {
     const hasCompanyAtLeastOneOwner = true;
     const isClaimOwnershipPanelExpected = false;
     const isProvideDataButtonExpected = false;
@@ -248,7 +273,7 @@ describe('Component test for the company cockpit', () => {
     });
   });
 
-  it('Check for all expected elements from a logged-in users perspective with uploader-rights for a company without company owner', () => {
+  it('Check for all expected elements for a logged-in uploader-user and for a company without company owner', () => {
     const hasCompanyAtLeastOneOwner = false;
     const isClaimOwnershipPanelExpected = true;
     const isProvideDataButtonExpected = true;
@@ -262,13 +287,14 @@ describe('Component test for the company cockpit', () => {
       validateFrameworkSummaryPanels(isProvideDataButtonExpected);
     });
   });
-  it('Check for all expected elements from a logged-in company owner perspective with uploader-rights for a company with company owner', () => {
+  it('Check for all expected elements for a logged-in uploader-user with company ownership for a company with company owner', () => {
     const hasCompanyAtLeastOneOwner = true;
+    const companyRoleOfCurrentUser = CompanyRole.CompanyOwner;
     const isClaimOwnershipPanelExpected = false;
     const isProvideDataButtonExpected = true;
     const isSingleDataRequestButtonExpected = true;
-    mockRequestsOnMounted(hasCompanyAtLeastOneOwner);
-    mountCompanyCockpitWithAuthentication(true, false, [KEYCLOAK_ROLE_UPLOADER], companyOwnerId).then(() => {
+    mockRequestsOnMounted(hasCompanyAtLeastOneOwner, companyRoleOfCurrentUser);
+    mountCompanyCockpitWithAuthentication(true, false, [KEYCLOAK_ROLE_UPLOADER], dummyUserId).then(() => {
       waitForRequestsOnMounted();
       validateBackButtonExistence(false);
       validateSearchBarExistence(true);
@@ -278,11 +304,11 @@ describe('Component test for the company cockpit', () => {
       validateSingleDataRequestButton(isSingleDataRequestButtonExpected);
     });
   });
-  it('Check for some expected elements from a logged-in premium user perspective for a company without company owner', () => {
+  it('Check for some expected elements for a logged-in premium-user and for a company without company owner', () => {
     const hasCompanyAtLeastOneOwner = false;
     const isSingleDataRequestButtonExpected = true;
     mockRequestsOnMounted(hasCompanyAtLeastOneOwner);
-    mountCompanyCockpitWithAuthentication(true, false, [KEYCLOAK_ROLE_PREMIUM_USER], companyOwnerId).then(() => {
+    mountCompanyCockpitWithAuthentication(true, false, [KEYCLOAK_ROLE_PREMIUM_USER], dummyUserId).then(() => {
       waitForRequestsOnMounted();
       validateSingleDataRequestButton(isSingleDataRequestButtonExpected);
     });
@@ -290,9 +316,10 @@ describe('Component test for the company cockpit', () => {
 
   it('Check the Vsme summary panel behaviour if the user is company owner', () => {
     const hasCompanyAtLeastOneOwner = true;
+    const companyRoleOfCurrentUser = CompanyRole.CompanyOwner;
     KEYCLOAK_ROLES.forEach((keycloakRole: string) => {
-      mockRequestsOnMounted(hasCompanyAtLeastOneOwner);
-      mountCompanyCockpitWithAuthentication(true, false, [keycloakRole], companyOwnerId).then(() => {
+      mockRequestsOnMounted(hasCompanyAtLeastOneOwner, companyRoleOfCurrentUser);
+      mountCompanyCockpitWithAuthentication(true, false, [keycloakRole], dummyUserId).then(() => {
         waitForRequestsOnMounted();
         validateVsmeFrameworkSummaryPanel(true);
       });
@@ -309,7 +336,7 @@ describe('Component test for the company cockpit', () => {
     });
   });
 
-  it('Check for all expected elements from a mobile users perspective with uploader-rights for a company without company owner', () => {
+  it('Check for all expected elements for a uploader-user on a mobile device for a company without company owner', () => {
     const scrollDurationInMs = 300;
     setMobileDeviceViewport();
     const hasCompanyAtLeastOneOwner = false;

@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping
 @SecurityRequirement(name = "default-bearer-auth")
 @SecurityRequirement(name = "default-oauth")
 @RequestMapping("/data/{dataId}")
-fun interface AdminDataManipulationApi {
+fun interface DataDeletionApi {
 
     /**
      * A method to delete data via Dataland into a data store
@@ -34,7 +34,17 @@ fun interface AdminDataManipulationApi {
         ],
     )
     @DeleteMapping()
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize(
+        "hasRole('ROLE_ADMIN') or " +
+            "(hasRole('ROLE_USER') and " +
+            "(@CompanyRoleChecker.hasCurrentUserGivenRoleForCompanyOfDataId(" +
+            "#dataId, T(org.dataland.datalandcommunitymanager.openApiClient.model.CompanyRole).CompanyOwner" +
+            ") or " +
+            "@CompanyRoleChecker.hasCurrentUserGivenRoleForCompanyOfDataId(" +
+            "#dataId, T(org.dataland.datalandcommunitymanager.openApiClient.model.CompanyRole).DataUploader" +
+            "))" +
+            ")",
+    )
     fun deleteCompanyAssociatedData(
         @PathVariable("dataId")
         @Valid

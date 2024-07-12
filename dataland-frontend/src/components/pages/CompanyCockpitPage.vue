@@ -39,7 +39,10 @@ import CompanyInfoSheet from '@/components/general/CompanyInfoSheet.vue';
 import { FRAMEWORKS_WITH_VIEW_PAGE, PRIVATE_FRAMEWORKS } from '@/utils/Constants';
 import ClaimOwnershipPanel from '@/components/resources/companyCockpit/ClaimOwnershipPanel.vue';
 import { checkIfUserHasRole, KEYCLOAK_ROLE_UPLOADER } from '@/utils/KeycloakUtils';
-import { hasCompanyAtLeastOneCompanyOwner, hasUserCompanyRoleForCompany } from '@/utils/CompanyRolesUtils';
+import {
+  getCompanyRoleAssignmentsForCurrentUserAndCompany,
+  hasCompanyAtLeastOneCompanyOwner,
+} from '@/utils/CompanyRolesUtils';
 import { isCompanyIdValid } from '@/utils/ValidationsUtils';
 import { assertDefined } from '@/utils/TypeScriptUtils';
 import { CompanyRole } from '@clients/communitymanager';
@@ -107,9 +110,10 @@ export default defineComponent({
         | { [key in DataTypeEnum]: AggregatedFrameworkDataSummary }
         | undefined,
       FRAMEWORKS_WITH_VIEW_PAGE,
-      isUserCompanyOwner: false,
-      isUserUploader: false,
+      isUserCompanyOwnerOrUploader: false,
+      isUserKeycloakUploader: false,
       isAnyCompanyOwnerExisting: false,
+      hasUserAnyRoleInCompany: false,
       footerContent,
     };
   },
@@ -137,7 +141,7 @@ export default defineComponent({
       if (!this.authenticated) {
         return false;
       }
-      return this.isUserCompanyOwner || this.isFrameworkPublic(framework);
+      return this.hasUserAnyRoleInCompany || this.isFrameworkPublic(framework);
     },
 
     /**
@@ -146,7 +150,7 @@ export default defineComponent({
      * @returns a boolean as result of this check
      */
     isUserAllowedToUploadForFramework(framework: DataTypeEnum): boolean {
-      return this.isUserCompanyOwner || (this.isFrameworkPublic(framework) && this.isUserUploader);
+      return this.isUserCompanyOwnerOrUploader || (this.isFrameworkPublic(framework) && this.isUserKeycloakUploader);
     },
 
     /**
@@ -159,16 +163,17 @@ export default defineComponent({
     },
 
     /**
-     * Set user access rights and ownership info
+     * Set user access rights
      */
     async setUserRights() {
       this.isAnyCompanyOwnerExisting = await hasCompanyAtLeastOneCompanyOwner(this.companyId, this.getKeycloakPromise);
-      this.isUserCompanyOwner = await hasUserCompanyRoleForCompany(
-        CompanyRole.CompanyOwner,
-        this.companyId,
-        this.getKeycloakPromise
-      );
-      this.isUserUploader = await checkIfUserHasRole(KEYCLOAK_ROLE_UPLOADER, this.getKeycloakPromise);
+      const roles = (
+        await getCompanyRoleAssignmentsForCurrentUserAndCompany(this.companyId, this.getKeycloakPromise)
+      ).map((it) => it.companyRole);
+      this.hasUserAnyRoleInCompany = roles.length > 0;
+      this.isUserCompanyOwnerOrUploader =
+        roles.includes(CompanyRole.CompanyOwner) || roles.includes(CompanyRole.DataUploader);
+      this.isUserKeycloakUploader = await checkIfUserHasRole(KEYCLOAK_ROLE_UPLOADER, this.getKeycloakPromise);
     },
   },
 });

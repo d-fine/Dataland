@@ -3,7 +3,7 @@
     <div class="next-to-each-other vertical-middle">
       <h2 class="claim-panel-text" data-test="claimOwnershipPanelHeading">Responsible for {{ companyName }}?</h2>
       <h2 class="link --underlined claim-panel-text" @click="openDialog" data-test="claimOwnershipPanelLink">
-        Claim company dataset ownership.
+        Claim company ownership.
       </h2>
     </div>
   </div>
