@@ -2,6 +2,7 @@ package org.dataland.datalandcommunitymanager.email
 
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
+import org.dataland.datalandbackend.openApiClient.model.CompanyIdAndName
 import org.dataland.datalandbackend.openApiClient.model.CompanyInformation
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandcommunitymanager.model.dataRequest.BulkDataRequest
@@ -38,7 +39,11 @@ class BulkDataRequestEmailMessageSenderTest {
         dataTypes = setOf(DataTypeEnum.p2p, DataTypeEnum.lksg),
         reportingPeriods = setOf("2020, 2023"),
     )
-    private val acceptedCompanyIdentifiers = listOf("AR8756188701,9856177321")
+    private val acceptedCompanyIdentifiers = listOf(
+        CompanyIdAndName("AR8756188701,9856177321", companyName),
+    )
+    private val expectedFormatting = "<a href=\"https://dataland.com/companies/AR8756188701,9856177321\">" +
+        "Company Name</a> (AR8756188701,9856177321)"
     private lateinit var bulkDataRequestEmailMessageSender: BulkDataRequestEmailMessageSender
 
     @BeforeEach
@@ -97,7 +102,7 @@ class BulkDataRequestEmailMessageSenderTest {
             arg1.properties.getValue("Requested Frameworks"),
         )
         Assertions.assertEquals(
-            acceptedCompanyIdentifiers.joinToString(", "),
+            expectedFormatting,
             arg1.properties.getValue("Accepted Companies (Dataland ID)"),
         )
         Assertions.assertEquals(MessageType.SendInternalEmail, arg2)
