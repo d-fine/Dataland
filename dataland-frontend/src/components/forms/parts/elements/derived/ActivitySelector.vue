@@ -105,6 +105,7 @@ export default defineComponent({
 
     naceCodesForActivities() {
       if (this.selectedActivities?.naceCodes) {
+        //@ts-ignore
         this.$refs.multiSelectFormFieldRef?.$refs.multiSelectFormElementRef.clearSelections();
         return (this.selectedActivities.naceCodes as Array<string>).map((naceCode: string) => {
           const naceCodeWithoutLetter: string = naceCode.substring(1);
@@ -115,6 +116,7 @@ export default defineComponent({
           return { label: convertedNaceCode, value: naceCode };
         }) as Array<DropdownOption>;
       } else {
+        //@ts-ignore
         this.$refs.multiSelectFormFieldRef?.$refs.multiSelectFormElementRef.clearSelections();
         return [];
       }
