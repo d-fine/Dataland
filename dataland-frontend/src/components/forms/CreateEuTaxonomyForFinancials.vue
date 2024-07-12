@@ -659,7 +659,7 @@ export default defineComponent({
 
         const isCompanyOwner = await hasUserCompanyRoleForCompany(
           CompanyRole.CompanyOwner,
-          this.companyAssociatedEuTaxonomyData.companyId,
+          this.formInputsModel.companyId,
           this.getKeycloakPromise
         );
 
