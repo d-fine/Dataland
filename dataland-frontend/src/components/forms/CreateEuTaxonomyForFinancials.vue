@@ -408,6 +408,7 @@ export default defineComponent({
         { label: 'Assurance', value: 'assurance' },
         { label: 'Add KPIs', value: 'addKpis' },
       ],
+      onThisPageLinks: [] as { label: string; value: string }[],
       financialServiceOptionsInDropdown: [
         {
           label: 'Credit Institution',
@@ -666,7 +667,7 @@ export default defineComponent({
             await euTaxonomyDataForFinancialsControllerApi.postFrameworkData(clonedFormInputsModel, true);
         } else {
           this.postEuTaxonomyDataForFinancialsResponse =
-            await euTaxonomyDataForFinancialsControllerApi.postFrameworkData(clonedFormInputsModel, isCompanyOwner);
+            await euTaxonomyDataForFinancialsControllerApi.postFrameworkData(clonedFormInputsModel);
         }
 
         this.$emit('datasetCreated');
