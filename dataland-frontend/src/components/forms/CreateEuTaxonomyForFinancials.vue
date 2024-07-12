@@ -350,7 +350,6 @@ import { isValidFileName, noReportLabel } from '@/utils/DataSource';
 import SingleSelectFormElement from '@/components/forms/parts/elements/basic/SingleSelectFormElement.vue';
 import { hasUserCompanyRoleForCompany } from '@/utils/CompanyRolesUtils';
 import { CompanyRole } from '@clients/communitymanager';
-import { type ClickableLink } from '@/types/CustomPropTypes';
 
 export default defineComponent({
   setup() {
@@ -409,7 +408,6 @@ export default defineComponent({
         { label: 'Assurance', value: 'assurance' },
         { label: 'Add KPIs', value: 'addKpis' },
       ],
-      onThisPageLinks: [] as ClickableLink[],
       financialServiceOptionsInDropdown: [
         {
           label: 'Credit Institution',
