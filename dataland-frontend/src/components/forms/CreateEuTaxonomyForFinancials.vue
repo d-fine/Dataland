@@ -406,7 +406,7 @@ export default defineComponent({
         { label: 'Assurance', value: 'assurance' },
         { label: 'Add KPIs', value: 'addKpis' },
       ],
-      onThisPageLinks: [] as { label: string; value: string }[],
+      onThisPageLinks: [] as ClickableLink[],
       financialServiceOptionsInDropdown: [
         {
           label: 'Credit Institution',

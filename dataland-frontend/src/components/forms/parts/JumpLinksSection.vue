@@ -10,15 +10,14 @@
 </template>
 
 <script lang="ts">
-// @ts-nocheck
-import { defineComponent } from 'vue';
+import { defineComponent, type PropType } from 'vue';
 import { smoothScroll } from '@/utils/SmoothScroll';
 
 export default defineComponent({
   name: 'JumpLinksSection',
   props: {
     onThisPageLinks: {
-      type: Array,
+      type: Array as PropType<ClickableLink[]>,
       required: true,
     },
   },
