@@ -131,7 +131,7 @@ class SingleDataRequestManager(
             companyIdValidator.checkIfCompanyIdIsValidAndReturnName(companyIdentifier)
             companyIdentifier
         } else {
-            utils.getDatalandCompanyIdAndNameForIdentifierValue(companyIdentifier)!!.companyId
+            utils.getDatalandCompanyIdAndNameForIdentifierValue(companyIdentifier)?.companyId
         }
         if (datalandCompanyId == null) {
             throw InvalidInputApiException(
