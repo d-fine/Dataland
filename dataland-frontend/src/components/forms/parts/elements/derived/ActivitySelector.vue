@@ -105,8 +105,13 @@ export default defineComponent({
 
     naceCodesForActivities() {
       if (this.selectedActivities?.naceCodes) {
-        // @ts-ignore
-        this.$refs.multiSelectFormFieldRef?.$refs.multiSelectFormElementRef.clearSelections();
+        const multiSelectFormFieldRef = this.$refs.multiSelectFormFieldRef as
+          | {
+              $refs: { multiSelectFormElementRef: { clearSelections: () => void } };
+            }
+          | undefined;
+
+        multiSelectFormFieldRef?.$refs.multiSelectFormElementRef.clearSelections();
         return (this.selectedActivities.naceCodes as Array<string>).map((naceCode: string) => {
           const naceCodeWithoutLetter: string = naceCode.substring(1);
           const convertedNaceCode = convertNace(
@@ -116,8 +121,12 @@ export default defineComponent({
           return { label: convertedNaceCode, value: naceCode };
         }) as Array<DropdownOption>;
       } else {
-        // @ts-ignore
-        this.$refs.multiSelectFormFieldRef?.$refs.multiSelectFormElementRef.clearSelections();
+        const multiSelectFormFieldRef = this.$refs.multiSelectFormFieldRef as
+          | {
+              $refs: { multiSelectFormElementRef: { clearSelections: () => void } };
+            }
+          | undefined;
+        multiSelectFormFieldRef?.$refs.multiSelectFormElementRef.clearSelections();
         return [];
       }
     },
