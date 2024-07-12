@@ -21,7 +21,8 @@ import org.springframework.stereotype.Component
 class BulkDataRequestEmailMessageSender(
     @Autowired private val cloudEventMessageHandler: CloudEventMessageHandler,
     @Autowired private val objectMapper: ObjectMapper,
-    @Value("\${dataland.community-manager.proxy-primary-url}") private val proxyPrimaryUrl: String,
+    @Value("\${dataland.community-manager.proxy-primary-url:local-dev.dataland.com}")
+    private val proxyPrimaryUrl: String,
 ) : DataRequestEmailMessageSenderBase() {
     /**
      * Function that generates the message object for bulk data request mails
