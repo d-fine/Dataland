@@ -35,7 +35,7 @@ class BulkDataRequestManager(
         dataRequestLogger.logMessageForBulkDataRequest(correlationId)
         val acceptedIdentifiers = mutableListOf<String>()
         val rejectedIdentifiers = mutableListOf<String>()
-        val userProvidedIdentifierToDatalandCompanyIdMapping = mutableMapOf<String, String>()
+        val userProvidedIdentifierToDatalandCompanyIdMapping = mutableMapOf<String, CompanyIdAndName>()
         for (userProvidedIdentifier in bulkDataRequest.companyIdentifiers) {
             val datalandCompanyIdAndName =
                 utils.getDatalandCompanyIdAndNameForIdentifierValue(userProvidedIdentifier, returnOnlyUnique = true)
@@ -43,8 +43,7 @@ class BulkDataRequestManager(
                 rejectedIdentifiers.add(userProvidedIdentifier)
                 continue
             }
-            userProvidedIdentifierToDatalandCompanyIdMapping[userProvidedIdentifier] =
-                formatCompanyIdAndNameForInfoMail(datalandCompanyIdAndName)
+            userProvidedIdentifierToDatalandCompanyIdMapping[userProvidedIdentifier] = datalandCompanyIdAndName
             acceptedIdentifiers.add(userProvidedIdentifier)
             storeDataRequests(
                 dataTypes = bulkDataRequest.dataTypes,
@@ -57,11 +56,6 @@ class BulkDataRequestManager(
             bulkDataRequest, userProvidedIdentifierToDatalandCompanyIdMapping.values.toList(), correlationId,
         )
         return buildResponseForBulkDataRequest(bulkDataRequest, rejectedIdentifiers, acceptedIdentifiers)
-    }
-
-    private fun formatCompanyIdAndNameForInfoMail(companyIdAndName: CompanyIdAndName): String {
-        return "<a href=\"https://dataland.com/companies/${companyIdAndName.companyId}\">" +
-            "${companyIdAndName.companyName}</a> (${companyIdAndName.companyId})"
     }
 
     private fun storeDataRequests(
@@ -155,12 +149,12 @@ class BulkDataRequestManager(
 
     private fun sendBulkDataRequestInternalEmailMessage(
         bulkDataRequest: BulkDataRequest,
-        acceptedDatalandCompanyIds: List<String>,
+        acceptedDatalandCompanyIdsAndNames: List<CompanyIdAndName>,
         correlationId: String,
     ) {
         emailMessageSender.sendBulkDataRequestInternalMessage(
             bulkDataRequest,
-            acceptedDatalandCompanyIds,
+            acceptedDatalandCompanyIdsAndNames,
             correlationId,
         )
         dataRequestLogger.logMessageForSendBulkDataRequestEmailMessage(correlationId)
