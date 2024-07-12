@@ -1,4 +1,4 @@
-interface ClickableLink {
+export interface ClickableLink {
   value: string;
   label: string;
 }

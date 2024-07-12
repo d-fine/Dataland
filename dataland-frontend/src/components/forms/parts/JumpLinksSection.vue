@@ -12,6 +12,7 @@
 <script lang="ts">
 import { defineComponent, type PropType } from 'vue';
 import { smoothScroll } from '@/utils/SmoothScroll';
+import { type ClickableLink } from '@/types/CustomPropTypes';
 
 export default defineComponent({
   name: 'JumpLinksSection',

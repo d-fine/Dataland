@@ -348,6 +348,7 @@ import DataPointFormWithToggle from '@/components/forms/parts/kpiSelection/DataP
 import { uploadFiles, type DocumentToUpload, getFileName, getFileReferenceByFileName } from '@/utils/FileUploadUtils';
 import { isValidFileName, noReportLabel } from '@/utils/DataSource';
 import SingleSelectFormElement from '@/components/forms/parts/elements/basic/SingleSelectFormElement.vue';
+import { type ClickableLink } from '@/types/CustomPropTypes';
 
 export default defineComponent({
   setup() {
