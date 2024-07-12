@@ -11,6 +11,7 @@ import org.dataland.datalandmessagequeueutils.messages.InternalEmailMessage
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.dataland.keycloakAdapter.auth.DatalandJwtAuthentication
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Component
 
 /**
@@ -20,6 +21,7 @@ import org.springframework.stereotype.Component
 class BulkDataRequestEmailMessageSender(
     @Autowired private val cloudEventMessageHandler: CloudEventMessageHandler,
     @Autowired private val objectMapper: ObjectMapper,
+    @Value("dataland.community-manager.proxy-primary-url") val proxyPrimaryUrl: String,
 ) : DataRequestEmailMessageSenderBase() {
     /**
      * Function that generates the message object for bulk data request mails
@@ -56,7 +58,7 @@ class BulkDataRequestEmailMessageSender(
     }
 
     private fun formatCompanyIdAndNameForInfoMail(companyIdAndName: CompanyIdAndName): String {
-        return "<a href=\"https://dataland.com/companies/${companyIdAndName.companyId}\">" +
+        return "<a href=\"https://$proxyPrimaryUrl/companies/${companyIdAndName.companyId}\">" +
             "${companyIdAndName.companyName}</a> (${companyIdAndName.companyId})"
     }
 }

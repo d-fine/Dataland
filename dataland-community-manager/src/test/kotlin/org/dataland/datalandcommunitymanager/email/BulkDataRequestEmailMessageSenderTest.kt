@@ -28,6 +28,7 @@ class BulkDataRequestEmailMessageSenderTest {
     val objectMapper = jacksonObjectMapper()
     private lateinit var authenticationMock: DatalandJwtAuthentication
     private val cloudEventMessageHandlerMock = Mockito.mock(CloudEventMessageHandler::class.java)
+    private val mockProxyPrimaryUrl = "mockurl.dataland.com"
     private val correlationId = UUID.randomUUID().toString()
     private val companyName = "Company Name"
     private val bulkDataRequest = BulkDataRequest(
@@ -42,7 +43,7 @@ class BulkDataRequestEmailMessageSenderTest {
     private val acceptedCompanyIdentifiers = listOf(
         CompanyIdAndName("AR8756188701,9856177321", companyName),
     )
-    private val expectedFormatting = "<a href=\"https://dataland.com/companies/AR8756188701,9856177321\">" +
+    private val expectedFormatting = "<a href=\"https://mockurl.dataland.com/companies/AR8756188701,9856177321\">" +
         "Company Name</a> (AR8756188701,9856177321)"
     private lateinit var bulkDataRequestEmailMessageSender: BulkDataRequestEmailMessageSender
 
@@ -64,6 +65,7 @@ class BulkDataRequestEmailMessageSenderTest {
         bulkDataRequestEmailMessageSender = BulkDataRequestEmailMessageSender(
             cloudEventMessageHandler = cloudEventMessageHandlerMock,
             objectMapper = objectMapper,
+            proxyPrimaryUrl = mockProxyPrimaryUrl,
         )
     }
 
