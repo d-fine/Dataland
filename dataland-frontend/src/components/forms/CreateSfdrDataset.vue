@@ -312,7 +312,7 @@ export default defineComponent({
 
         const isCompanyOwner = await hasUserCompanyRoleForCompany(
           CompanyRole.CompanyOwner,
-          this.companyAssociatedEsgQuestionnaireData.companyId,
+          this.companyAssociatedSfdrData.companyId,
           this.getKeycloakPromise
         );
 
