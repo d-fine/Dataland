@@ -186,6 +186,8 @@ class DataManagerTest(
             QaCompletedMessage(
                 identifier = "",
                 validationResult = QaStatus.Accepted,
+                reviewerId = "",
+                message = null,
             ),
         )
         val thrown = assertThrows<MessageQueueRejectException> {

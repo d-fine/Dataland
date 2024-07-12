@@ -10,7 +10,9 @@ import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
 import org.dataland.datalandmessagequeueutils.exceptions.MessageQueueRejectException
 import org.dataland.datalandmessagequeueutils.messages.QaCompletedMessage
 import org.dataland.datalandmessagequeueutils.utils.MessageQueueUtils
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.ReviewInformationEntity
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.ReviewQueueEntity
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.repositories.ReviewHistoryRepository
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.repositories.ReviewQueueRepository
 import org.slf4j.LoggerFactory
 import org.springframework.amqp.rabbit.annotation.Argument
@@ -30,17 +32,26 @@ import java.time.Instant
  * @param cloudEventMessageHandler service for managing CloudEvents messages
  */
 @Component
-class QaService(
+class QaEventListenerQaService(
     @Autowired var cloudEventMessageHandler: CloudEventMessageHandler,
     @Autowired var objectMapper: ObjectMapper,
     @Autowired var messageUtils: MessageQueueUtils,
     @Autowired val reviewQueueRepository: ReviewQueueRepository,
+    @Autowired val reviewHistoryRepository: ReviewHistoryRepository,
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
 
+    private val reviewerIdAutomatedQaService = "automated-qa-service"
     private data class ForwardedQaMessage(
         val identifier: String,
         val comment: String,
+    )
+    private data class PersistAutomatedQaResultMessage(
+        val identifier: String,
+        val validationResult: QaStatus,
+        val reviewerId: String,
+        val resourceType: String,
+        val message: String?,
     )
 
     /**
@@ -122,8 +133,8 @@ class QaService(
         @Header(MessageHeaderKey.Type) type: String,
     ) {
         messageUtils.validateMessageType(type, MessageType.ManualQaRequested)
-        val message = objectMapper.readValue(messageAsJsonString, ForwardedQaMessage::class.java)
-        val documentId = message.identifier
+        val forwardedQaMessage = objectMapper.readValue(messageAsJsonString, ForwardedQaMessage::class.java)
+        val documentId = forwardedQaMessage.identifier
         if (documentId.isEmpty()) {
             throw MessageQueueRejectException("Provided document ID is empty")
         }
@@ -132,12 +143,70 @@ class QaService(
                 "Received document with Hash: $documentId on QA message queue with Correlation Id: $correlationId",
             )
             val messageToSend = objectMapper.writeValueAsString(
-                QaCompletedMessage(documentId, QaStatus.Accepted),
+                QaCompletedMessage(documentId, QaStatus.Accepted, reviewerIdAutomatedQaService, null),
             )
             cloudEventMessageHandler.buildCEMessageAndSendToQueue(
                 messageToSend, MessageType.QaCompleted, correlationId, ExchangeName.DataQualityAssured,
                 RoutingKeyNames.document,
             )
+        }
+    }
+
+    /**
+     * Method to retrieve qa completed message and store the
+     * @param messageAsJsonString the message body as json string
+     * @param correlationId the correlation ID of the current user process
+     * @param type the type of the message
+     */
+    @RabbitListener(
+        bindings = [
+            QueueBinding(
+                value = Queue(
+                    "manualQaRequestedPersistAutomatedQaResultQaService",
+                    arguments = [
+                        Argument(name = "x-dead-letter-exchange", value = ExchangeName.DeadLetter),
+                        Argument(name = "x-dead-letter-routing-key", value = "deadLetterKey"),
+                        Argument(name = "defaultRequeueRejected", value = "false"),
+                    ],
+                ),
+                exchange = Exchange(ExchangeName.ManualQaRequested, declare = "false"),
+                key = [RoutingKeyNames.persistAutomatedQaResult],
+            ),
+        ],
+    )
+    @Transactional
+    fun addDataReviewFromAutomatedQaToReviewHistoryRepository(
+        @Payload messageAsJsonString: String,
+        @Header(MessageHeaderKey.CorrelationId) correlationId: String,
+        @Header(MessageHeaderKey.Type) type: String,
+    ) {
+        messageUtils.validateMessageType(type, MessageType.PersistAutomatedQaResult)
+        val persistAutomatedQaResultMessage =
+            objectMapper.readValue(messageAsJsonString, PersistAutomatedQaResultMessage::class.java)
+        if (persistAutomatedQaResultMessage.resourceType == "data") {
+            val dataId = persistAutomatedQaResultMessage.identifier
+            if (dataId.isEmpty()) {
+                throw MessageQueueRejectException("Provided data ID is empty")
+            }
+            val validationResult = persistAutomatedQaResultMessage.validationResult
+            val reviewerId = persistAutomatedQaResultMessage.reviewerId
+            messageUtils.rejectMessageOnException {
+                logger.info(
+                    "Received data with DataId: $dataId on QA message queue with Correlation Id: $correlationId",
+                )
+                logger.info(
+                    "Assigning quality status $validationResult and reviewerId $reviewerId to dataset with ID $dataId",
+                )
+                reviewHistoryRepository.save(
+                    ReviewInformationEntity(
+                        dataId = dataId,
+                        receptionTime = System.currentTimeMillis(),
+                        qaStatus = validationResult,
+                        reviewerKeycloakId = reviewerId,
+                        message = persistAutomatedQaResultMessage.message,
+                    ),
+                )
+            }
         }
     }
 }
