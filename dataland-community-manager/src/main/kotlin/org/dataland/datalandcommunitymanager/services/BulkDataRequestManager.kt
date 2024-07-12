@@ -1,5 +1,6 @@
 package org.dataland.datalandcommunitymanager.services
 
+import org.dataland.datalandbackend.openApiClient.model.CompanyIdAndName
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandcommunitymanager.model.dataRequest.BulkDataRequest
@@ -36,18 +37,19 @@ class BulkDataRequestManager(
         val rejectedIdentifiers = mutableListOf<String>()
         val userProvidedIdentifierToDatalandCompanyIdMapping = mutableMapOf<String, String>()
         for (userProvidedIdentifier in bulkDataRequest.companyIdentifiers) {
-            val datalandCompanyId =
-                utils.getDatalandCompanyIdForIdentifierValue(userProvidedIdentifier, returnOnlyUnique = true)
-            if (datalandCompanyId == null) {
+            val datalandCompanyIdAndName =
+                utils.getDatalandCompanyIdAndNameForIdentifierValue(userProvidedIdentifier, returnOnlyUnique = true)
+            if (datalandCompanyIdAndName == null) {
                 rejectedIdentifiers.add(userProvidedIdentifier)
                 continue
             }
-            userProvidedIdentifierToDatalandCompanyIdMapping[userProvidedIdentifier] = datalandCompanyId
+            userProvidedIdentifierToDatalandCompanyIdMapping[userProvidedIdentifier] =
+                formatCompanyIdAndNameForInfoMail(datalandCompanyIdAndName)
             acceptedIdentifiers.add(userProvidedIdentifier)
             storeDataRequests(
                 dataTypes = bulkDataRequest.dataTypes,
                 reportingPeriods = bulkDataRequest.reportingPeriods,
-                datalandCompanyId = datalandCompanyId,
+                datalandCompanyId = datalandCompanyIdAndName.companyId,
             )
         }
         if (acceptedIdentifiers.isEmpty()) throwInvalidInputApiExceptionBecauseAllIdentifiersRejected()
@@ -55,6 +57,11 @@ class BulkDataRequestManager(
             bulkDataRequest, userProvidedIdentifierToDatalandCompanyIdMapping.values.toList(), correlationId,
         )
         return buildResponseForBulkDataRequest(bulkDataRequest, rejectedIdentifiers, acceptedIdentifiers)
+    }
+
+    private fun formatCompanyIdAndNameForInfoMail(companyIdAndName: CompanyIdAndName): String {
+        return "<a href=\"https://dataland.com/companies/${companyIdAndName.companyId}\">" +
+            "${companyIdAndName.companyName}</a> (${companyIdAndName.companyId})"
     }
 
     private fun storeDataRequests(

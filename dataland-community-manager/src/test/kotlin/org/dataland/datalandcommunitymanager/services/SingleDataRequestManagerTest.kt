@@ -1,5 +1,6 @@
 package org.dataland.datalandcommunitymanager.services
 
+import org.dataland.datalandbackend.openApiClient.model.CompanyIdAndName
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandbackendutils.exceptions.QuotaExceededException
 import org.dataland.datalandcommunitymanager.entities.DataRequestEntity
@@ -39,6 +40,7 @@ class SingleDataRequestManagerTest {
     private lateinit var mockCompanyIdValidator: CompanyIdValidator
 
     private val companyIdRegexSafeCompanyId = UUID.randomUUID().toString()
+    private val dummyCompanyIdAndName = CompanyIdAndName("Dummy Company AG", companyIdRegexSafeCompanyId)
     private val maxRequestsForUser = 10
 
     private val sampleRequest = SingleDataRequest(
@@ -118,8 +120,8 @@ class SingleDataRequestManagerTest {
                 userId = "user-id",
             )
         }
-        `when`(utilsMock.getDatalandCompanyIdForIdentifierValue(anyString(), anyBoolean()))
-            .thenReturn(companyIdRegexSafeCompanyId)
+        `when`(utilsMock.getDatalandCompanyIdAndNameForIdentifierValue(anyString(), anyBoolean()))
+            .thenReturn(dummyCompanyIdAndName)
         return utilsMock
     }
 
