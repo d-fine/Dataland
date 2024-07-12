@@ -1,6 +1,6 @@
 import { type TreeNode } from 'primevue/treenode';
 // Content is based on https://ec.europa.eu/sustainable-finance-taxonomy/assets/taxonomy.json
-export const activityTree: Array<TreeNode> = [
+export const activityTree: Array<ActivityNode> = [
   {
     name: 'Forestry',
     key: '1',
@@ -1445,3 +1445,13 @@ export const activityTree: Array<TreeNode> = [
     ],
   },
 ];
+
+export class ActivityNode implements TreeNode {
+  name?: string;
+  value?: string;
+  key?: string;
+  sector?: string;
+  type?: string;
+  naceCodes?: Array<string>;
+  children?: ActivityNode[];
+}
