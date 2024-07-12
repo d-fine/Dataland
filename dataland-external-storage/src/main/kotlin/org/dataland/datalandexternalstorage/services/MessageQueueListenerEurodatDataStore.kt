@@ -48,7 +48,7 @@ class MessageQueueListenerEurodatDataStore(
         bindings = [
             QueueBinding(
                 value = Queue(
-                    "requestReceivedEurodatDataStore",
+                    "privateRequestReceivedEurodatDataStore",
                     arguments = [
                         Argument(name = "x-dead-letter-exchange", value = ExchangeName.DeadLetter),
                         Argument(name = "x-dead-letter-routing-key", value = "deadLetterKey"),
