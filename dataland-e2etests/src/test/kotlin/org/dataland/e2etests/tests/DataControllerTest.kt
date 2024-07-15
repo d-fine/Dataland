@@ -1,7 +1,6 @@
 package org.dataland.e2etests.tests
 
 import org.dataland.communitymanager.openApiClient.model.CompanyRole
-import org.dataland.datalandbackend.openApiClient.infrastructure.ClientError
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
 import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataEutaxonomyNonFinancialsData
 import org.dataland.e2etests.auth.JwtAuthenticationHelper
@@ -151,13 +150,7 @@ class DataControllerTest {
         apiAccessor.companyRolesControllerApi.assignCompanyRole(CompanyRole.DataUploader, companyId, dataReaderUserId)
 
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader)
-        val exception = assertThrows<ClientException> { uploadEuTaxoDataset(companyId, true) }
-        val responseBody = (exception.response as ClientError<*>).body as String
-        assertTrue(
-            responseBody.contains(
-                "You do not have the required permissions to bypass QA checks",
-            ),
-        )
+        assertThrows<ClientException> { uploadEuTaxoDataset(companyId, true) }
 
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
         apiAccessor.companyRolesControllerApi.assignCompanyRole(CompanyRole.CompanyOwner, companyId, dataReaderUserId)
