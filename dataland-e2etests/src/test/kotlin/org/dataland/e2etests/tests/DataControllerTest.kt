@@ -124,6 +124,16 @@ class DataControllerTest {
     }
 
     @Test
+    fun `assure that bypassQa is allowed for Dataland Keycloak admin`() {
+        val companyId = UUID.fromString(
+            apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId,
+        )
+
+        jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
+        assertDoesNotThrow { uploadEuTaxoDataset(companyId, true) }
+    }
+
+    @Test
     fun `assure that bypassQa is forbidden for users unless they are a company owner`() {
         val companyId = UUID.fromString(
             apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId,

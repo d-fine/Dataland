@@ -23,11 +23,7 @@ class PermissionChecker(
      */
     fun canUserBypassQa(viewingUser: DatalandAuthentication?, companyId: String): Boolean {
         return (
-            (
-                viewingUser?.roles?.contains(DatalandRealmRole.ROLE_UPLOADER) ?: false &&
-                    viewingUser?.roles?.contains(DatalandRealmRole.ROLE_REVIEWER) ?: false
-                ) ||
-                (viewingUser?.roles?.contains(DatalandRealmRole.ROLE_ADMIN) ?: false) ||
+            viewingUser?.roles?.contains(DatalandRealmRole.ROLE_ADMIN) ?: false ||
                 companyRoleChecker.hasCurrentUserGivenRoleForCompany(companyId, CompanyRole.CompanyOwner)
             )
     }
