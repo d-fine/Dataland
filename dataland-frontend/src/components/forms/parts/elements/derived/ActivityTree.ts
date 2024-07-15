@@ -1446,7 +1446,7 @@ export const activityTree: Array<ActivityNode> = [
   },
 ];
 
-export class ActivityNode implements TreeNode {
+export interface ActivityNode extends TreeNode {
   name?: string;
   value?: string;
   key?: string;
