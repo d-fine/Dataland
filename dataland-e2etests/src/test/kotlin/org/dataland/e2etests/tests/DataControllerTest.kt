@@ -1,6 +1,7 @@
 package org.dataland.e2etests.tests
 
 import org.dataland.communitymanager.openApiClient.model.CompanyRole
+import org.dataland.datalandbackend.openApiClient.infrastructure.ClientError
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
 import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataEutaxonomyNonFinancialsData
 import org.dataland.e2etests.auth.JwtAuthenticationHelper
@@ -24,6 +25,7 @@ class DataControllerTest {
     private val apiAccessor = ApiAccessor()
     private val documentManagerAccessor = DocumentManagerAccessor()
     private val dataReaderUserId = UUID.fromString(TechnicalUser.Reader.technicalUserId)
+    private val dataReviewerUserId = UUID.fromString(TechnicalUser.Reviewer.technicalUserId)
 
     val jwtHelper = JwtAuthenticationHelper()
 
@@ -124,10 +126,16 @@ class DataControllerTest {
     }
 
     @Test
-    fun `assure that bypassQa is allowed for Dataland Keycloak admin`() {
+    fun `assure that bypassQa is allowed for Dataland Keycloak admin or reviewer`() {
         val companyId = UUID.fromString(
             apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId,
         )
+
+        jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
+        apiAccessor.companyRolesControllerApi.assignCompanyRole(CompanyRole.DataUploader, companyId, dataReviewerUserId)
+
+        jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reviewer)
+        assertDoesNotThrow { uploadEuTaxoDataset(companyId, true) }
 
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
         assertDoesNotThrow { uploadEuTaxoDataset(companyId, true) }
@@ -139,8 +147,17 @@ class DataControllerTest {
             apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId,
         )
 
+        jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
+        apiAccessor.companyRolesControllerApi.assignCompanyRole(CompanyRole.DataUploader, companyId, dataReaderUserId)
+
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader)
-        assertThrows<ClientException> { uploadEuTaxoDataset(companyId, true) }
+        val exception = assertThrows<ClientException> { uploadEuTaxoDataset(companyId, true) }
+        val responseBody = (exception.response as ClientError<*>).body as String
+        assertTrue(
+            responseBody.contains(
+                "You do not have the required permissions to bypass QA checks",
+            ),
+        )
 
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
         apiAccessor.companyRolesControllerApi.assignCompanyRole(CompanyRole.CompanyOwner, companyId, dataReaderUserId)
