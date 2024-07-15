@@ -74,16 +74,6 @@ class CompanyRolesControllerTest {
         assertEquals("Client error : 403 ", expectedAccessDeniedClientException.message)
     }
 
-    private fun uploadEuTaxoDataWithQaBypass(companyId: UUID, dataSet: EutaxonomyNonFinancialsData) {
-        val reportingPeriod = "2022"
-        apiAccessor.euTaxonomyNonFinancialsUploaderFunction(
-            companyId.toString(),
-            dataSet,
-            reportingPeriod,
-            true,
-        )
-    }
-
     private fun assertErrorCodeInCommunityManagerClientException(
         communityManagerClientException: CommunityManagerClientException,
         expectedErrorCode: Number,
@@ -255,19 +245,6 @@ class CompanyRolesControllerTest {
             expectedClientExceptionWhenCallingGetCompanyOwnersEndpoint,
             403,
         )
-    }
-
-    @Test
-    fun `assure that bypassQa is forbidden for users unless they are a company owner`() {
-        val companyId = uploadCompanyAndReturnCompanyId()
-
-        jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader)
-        assertAccessDeniedWhenUploadingFrameworkData(companyId, frameworkSampleData, true)
-
-        jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
-        assignCompanyRole(CompanyRole.CompanyOwner, companyId, dataReaderUserId)
-
-        assertDoesNotThrow { uploadEuTaxoDataWithQaBypass(companyId, frameworkSampleData) }
     }
 
     @Test

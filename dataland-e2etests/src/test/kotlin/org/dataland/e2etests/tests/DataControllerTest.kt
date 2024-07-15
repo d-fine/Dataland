@@ -1,6 +1,7 @@
 package org.dataland.e2etests.tests
 
 import org.dataland.communitymanager.openApiClient.model.CompanyRole
+import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
 import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataEutaxonomyNonFinancialsData
 import org.dataland.e2etests.auth.JwtAuthenticationHelper
 import org.dataland.e2etests.auth.TechnicalUser
@@ -104,7 +105,7 @@ class DataControllerTest {
         val rolesThatCanUploadPublicData = listOf(CompanyRole.CompanyOwner, CompanyRole.DataUploader)
 
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader)
-        assertAccessDeniedWrapper { uploadEuTaxoDataset(companyId) }
+        assertAccessDeniedWrapper { uploadEuTaxoDataset(companyId, false) }
 
         for (role in CompanyRole.values()) {
             jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
@@ -115,19 +116,35 @@ class DataControllerTest {
                 assertDoesNotThrow {
                     apiAccessor.companyRolesControllerApi.hasUserCompanyRole(role, companyId, dataReaderUserId)
                 }
-                assertDoesNotThrow { uploadEuTaxoDataset(companyId) }
+                assertDoesNotThrow { uploadEuTaxoDataset(companyId, false) }
             } else {
-                assertAccessDeniedWrapper { uploadEuTaxoDataset(companyId) }
+                assertAccessDeniedWrapper { uploadEuTaxoDataset(companyId, false) }
             }
         }
     }
 
-    private fun uploadEuTaxoDataset(companyId: UUID) {
+    @Test
+    fun `assure that bypassQa is forbidden for users unless they are a company owner`() {
+        val companyId = UUID.fromString(
+            apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId,
+        )
+
+        jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader)
+        assertThrows<ClientException> { uploadEuTaxoDataset(companyId, true) }
+
+        jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
+        apiAccessor.companyRolesControllerApi.assignCompanyRole(CompanyRole.CompanyOwner, companyId, dataReaderUserId)
+
+        jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader)
+        assertDoesNotThrow { uploadEuTaxoDataset(companyId, true) }
+    }
+
+    private fun uploadEuTaxoDataset(companyId: UUID, bypassQa: Boolean) {
         apiAccessor.euTaxonomyNonFinancialsUploaderFunction(
             companyId.toString(),
             testDataEuTaxonomyNonFinancials,
             "2022",
-            false,
+            bypassQa,
         )
     }
 }
