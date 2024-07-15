@@ -41,7 +41,7 @@ abstract class DataController<T>(
     override fun postCompanyAssociatedData(companyAssociatedData: CompanyAssociatedData<T>, bypassQa: Boolean):
         ResponseEntity<DataMetaInformation> {
         val companyId = companyAssociatedData.companyId
-        if (bypassQa && !permissionChecker.canUserBypassQa(DatalandAuthentication.fromContextOrNull(), companyId)) {
+        if (bypassQa && !permissionChecker.canUserBypassQa(companyId)) {
             throw AccessDeniedException(logMessageBuilder.bypassQaDeniedExceptionMessage)
         }
         val reportingPeriod = companyAssociatedData.reportingPeriod
