@@ -16,14 +16,13 @@ class PermissionChecker(
 ) {
     /**
      * A user can bypass QA if
-     * (a) the user has the uploader and QA role
-     * (b) the user is an admin
-     * (c) the user owns the company
+     * (a) the user has the QA role or is an admin
+     * (b) the user owns the company
      * This function checks these conditions
      */
     fun canUserBypassQa(viewingUser: DatalandAuthentication?, companyId: String): Boolean {
         return (
-            viewingUser?.roles?.contains(DatalandRealmRole.ROLE_ADMIN) ?: false ||
+            viewingUser?.roles?.contains(DatalandRealmRole.ROLE_REVIEWER) ?: false ||
                 companyRoleChecker.hasCurrentUserGivenRoleForCompany(companyId, CompanyRole.CompanyOwner)
             )
     }
