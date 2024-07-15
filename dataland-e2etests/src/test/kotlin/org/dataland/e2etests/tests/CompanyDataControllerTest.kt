@@ -31,7 +31,7 @@ class CompanyDataControllerTest {
         .getCompanyInformationWithRandomIdentifiers(1).first()
     private val checkOtherCompanyTrue = "Other Company true"
     private val checkOtherCompanyFalse = "Other Company false"
-    private val dataReaderUserId = UUID.fromString("18b67ecc-1176-4506-8414-1e81661017ca")
+    private val dataReaderUserId = UUID.fromString(TechnicalUser.Reader.technicalUserId)
     private val fullPatchObject = CompanyInformationPatch(
         companyContactDetails = listOf("NewcompanyContactDetails@example.com"),
         companyName = "New-companyName",

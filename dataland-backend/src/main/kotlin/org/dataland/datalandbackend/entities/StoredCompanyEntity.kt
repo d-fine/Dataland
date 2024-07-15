@@ -49,6 +49,9 @@ data class StoredCompanyEntity(
     @Column(name = "sector")
     var sector: String?,
 
+    @Column(name = "sector_code_wz")
+    var sectorCodeWz: String?,
+
     @OneToMany(mappedBy = "company")
     var identifiers: MutableList<CompanyIdentifierEntity>,
 
@@ -69,6 +72,30 @@ data class StoredCompanyEntity(
 ) : ApiModelConversion<StoredCompany> {
     @JsonValue
     override fun toApiModel(viewingUser: DatalandAuthentication?): StoredCompany {
+        val identifierMap = createIdentifierMap()
+
+        return StoredCompany(
+            companyId = companyId,
+            companyInformation = CompanyInformation(
+                companyName = companyName,
+                companyAlternativeNames = companyAlternativeNames,
+                companyLegalForm = companyLegalForm,
+                companyContactDetails = companyContactDetails,
+                headquarters = headquarters,
+                headquartersPostalCode = headquartersPostalCode,
+                sector = sector,
+                sectorCodeWz = sectorCodeWz,
+                identifiers = identifierMap,
+                countryCode = countryCode,
+                isTeaserCompany = isTeaserCompany,
+                website = website,
+                parentCompanyLei = parentCompanyLei,
+            ),
+            dataRegisteredByDataland = dataRegisteredByDataland.map { it.toApiModel(viewingUser) }.toMutableList(),
+        )
+    }
+
+    private fun createIdentifierMap(): MutableMap<IdentifierType, MutableList<String>> {
         val identifierMap = mutableMapOf<IdentifierType, MutableList<String>>()
         for (identifierType in IdentifierType.entries) {
             identifierMap[identifierType] = mutableListOf()
@@ -81,24 +108,6 @@ data class StoredCompanyEntity(
         }
 
         identifierMap.values.forEach { it.sort() }
-
-        return StoredCompany(
-            companyId = companyId,
-            companyInformation = CompanyInformation(
-                companyName = companyName,
-                companyAlternativeNames = companyAlternativeNames,
-                companyLegalForm = companyLegalForm,
-                companyContactDetails = companyContactDetails,
-                headquarters = headquarters,
-                headquartersPostalCode = headquartersPostalCode,
-                sector = sector,
-                identifiers = identifierMap,
-                countryCode = countryCode,
-                isTeaserCompany = isTeaserCompany,
-                website = website,
-                parentCompanyLei = parentCompanyLei,
-            ),
-            dataRegisteredByDataland = dataRegisteredByDataland.map { it.toApiModel(viewingUser) }.toMutableList(),
-        )
+        return identifierMap
     }
 }

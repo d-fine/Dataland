@@ -1,0 +1,49 @@
+{
+  "general": {
+    "assurance": {
+      "value": "None",
+      "provider": null,
+      "dataSource": {
+        "page": 801,
+        "fileName": "IntegratedReport",
+        "fileReference": "20a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+        "tagName": "partnerships"
+      }
+    },
+    "referencedReports": {
+      "SustainabilityReport": {
+        "fileReference": "10a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+        "fileName": "SustainabilityReport",
+        "publicationDate": null
+      },
+      "IntegratedReport": {
+        "fileReference": "20a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+        "fileName": "IntegratedReport"
+      },
+      "ESEFReport": {
+        "fileReference": "30a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+        "fileName": "ESEFReport",
+        "publicationDate": "2023-08-13"
+      },
+      "AnnualReport": {
+        "fileReference": "40a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+        "fileName": "AnnualReport",
+        "publicationDate": "2023-11-05"
+      }
+    }
+  },
+  "opex": {
+    "totalAmount": {
+      "value": null,
+      "dataSource": {
+        "page": 801,
+        "fileName": "SustainabilityReport",
+        "fileReference": "10a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+        "tagName": "partnerships"
+      },
+      "comment": "program digital hard drive",
+      "quality": "Incomplete",
+      "currency": "LRD"
+    }
+  }
+}

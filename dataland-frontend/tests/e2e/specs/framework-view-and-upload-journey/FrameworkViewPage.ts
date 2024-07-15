@@ -88,9 +88,9 @@ describeIf(
       cy.wait('@searchCompanies');
       cy.wait('@fetchFilters');
       const companySelector = 'span:contains(VIEW)';
-      cy.get(companySelector).first().click();
       // eslint-disable-next-line cypress/no-unnecessary-waiting
       cy.wait(100);
+      cy.get(companySelector).first().click();
     }
 
     /**

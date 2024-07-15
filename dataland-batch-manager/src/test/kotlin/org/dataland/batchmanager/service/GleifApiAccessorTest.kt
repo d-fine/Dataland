@@ -6,6 +6,7 @@ import okhttp3.Request
 import okhttp3.Response
 import okhttp3.ResponseBody
 import org.apache.commons.io.FileUtils
+import org.dataland.datalandbatchmanager.service.ExternalFileDownload
 import org.dataland.datalandbatchmanager.service.GleifApiAccessor
 import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.Assertions
@@ -31,7 +32,9 @@ import java.net.SocketException
 class GleifApiAccessorTest {
 
     lateinit var mockFileUtils: MockedStatic<FileUtils>
+
     val mockHttpClient: OkHttpClient = mock(OkHttpClient::class.java)
+    val externalFileDownload = ExternalFileDownload(mockHttpClient)
 
     val dummyUrl = "https://dummy.com"
 
@@ -55,7 +58,7 @@ class GleifApiAccessorTest {
     fun `test download failure if there are socket exceptions`() {
         `when`(FileUtils.copyURLToFile(any(), any())).thenThrow(SocketException("Test Exception"))
         assertThrows<FileNotFoundException> {
-            GleifApiAccessor(mockHttpClient, dummyUrl, dummyUrl).getFullGoldenCopy(File("test"))
+            GleifApiAccessor(dummyUrl, dummyUrl, externalFileDownload).getFullGoldenCopy(File("test"))
         }
         mockFileUtils.verify({ FileUtils.copyURLToFile(any(), any()) }, times(3))
     }
@@ -63,28 +66,28 @@ class GleifApiAccessorTest {
     @Test
     fun `test if download of full golden copy works`() {
         `when`(FileUtils.copyURLToFile(any(), any())).thenAnswer { }
-        GleifApiAccessor(mockHttpClient, dummyUrl, dummyUrl).getFullGoldenCopy(File("test"))
+        GleifApiAccessor(dummyUrl, dummyUrl, externalFileDownload).getFullGoldenCopy(File("test"))
         mockFileUtils.verify({ FileUtils.copyURLToFile(any(), any()) }, times(1))
     }
 
     @Test
     fun `test if download of full golden copy relationships works`() {
         `when`(FileUtils.copyURLToFile(any(), any())).thenAnswer { }
-        GleifApiAccessor(mockHttpClient, dummyUrl, dummyUrl).getFullGoldenCopyOfRelationships(File("test"))
+        GleifApiAccessor(dummyUrl, dummyUrl, externalFileDownload).getFullGoldenCopyOfRelationships(File("test"))
         mockFileUtils.verify({ FileUtils.copyURLToFile(any(), any()) }, times(1))
     }
 
     @Test
     fun `test if download of delta file works`() {
         `when`(FileUtils.copyURLToFile(any(), any())).thenAnswer { }
-        GleifApiAccessor(mockHttpClient, dummyUrl, dummyUrl).getLastMonthGoldenCopyDelta(File("test"))
+        GleifApiAccessor(dummyUrl, dummyUrl, externalFileDownload).getLastMonthGoldenCopyDelta(File("test"))
         mockFileUtils.verify({ FileUtils.copyURLToFile(any(), any()) }, times(1))
     }
 
     @Test
     fun `test for LEI ISIN mapping if unzip works and csv emerges`() {
         val providedTestFile = File(javaClass.getResource("/testApiAccessor.zip")!!.path)
-        val gleifApiAccessorMock = spy(GleifApiAccessor(mockHttpClient, dummyUrl, dummyUrl))
+        val gleifApiAccessorMock = spy(GleifApiAccessor(dummyUrl, dummyUrl, externalFileDownload))
 
         val mockResponseBody = mock(ResponseBody::class.java)
         doReturn(providedTestFile.readBytes()).`when`(mockResponseBody).bytes()

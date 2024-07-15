@@ -1,0 +1,141 @@
+{
+  "financialServicesTypes": [
+    "InsuranceOrReinsurance",
+    "AssetManagement"
+  ],
+  "eligibilityKpis": {
+    "AssetManagement": {
+      "taxonomyEligibleActivityInPercent": {
+        "value": null,
+        "comment": "bypass solid state hard drive",
+        "dataSource": {
+          "page": 874,
+          "tagName": "deliverables",
+          "fileName": "SustainabilityReport",
+          "fileReference": "20a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
+        }
+      },
+      "taxonomyNonEligibleActivityInPercent": {
+        "value": 98.39,
+        "quality": "Estimated",
+        "comment": null,
+        "dataSource": {
+          "page": 1046,
+          "tagName": "synergies",
+          "fileName": "IntegratedReport",
+          "fileReference": "10a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
+        }
+      },
+      "derivativesInPercent": null,
+      "banksAndIssuersInPercent": {
+        "value": 47.04,
+        "quality": "Audited",
+        "comment": "connect optical sensor",
+        "dataSource": {
+          "page": 63,
+          "tagName": "markets",
+          "fileName": "ESEFReport",
+          "fileReference": "30a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
+        }
+      },
+      "investmentNonNfrdInPercent": {
+        "value": 47.03,
+        "quality": "Estimated",
+        "comment": "connect optical array",
+        "dataSource": {
+          "page": 773,
+          "tagName": "applications",
+          "fileName": "ESEFReport",
+          "fileReference": "30a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
+        }
+      }
+    },
+    "InsuranceOrReinsurance": {
+      "taxonomyEligibleActivityInPercent": null,
+      "taxonomyNonEligibleActivityInPercent": {
+        "value": 67.09,
+        "quality": "Incomplete",
+        "comment": "compress haptic circuit",
+        "dataSource": null
+      },
+      "derivativesInPercent": {
+        "value": null,
+        "comment": "navigate solid state monitor",
+        "dataSource": {
+          "page": 896,
+          "tagName": "interfaces",
+          "fileName": "IntegratedReport",
+          "fileReference": "10a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
+        }
+      },
+      "banksAndIssuersInPercent": {
+        "value": 49.41,
+        "quality": "Audited",
+        "comment": null,
+        "dataSource": {
+          "page": 1062,
+          "tagName": "relationships",
+          "fileName": "SustainabilityReport",
+          "fileReference": "20a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
+        }
+      },
+      "investmentNonNfrdInPercent": {
+        "value": 54.34,
+        "quality": "Incomplete",
+        "comment": "connect digital panel",
+        "dataSource": {
+          "page": 392,
+          "tagName": "systems",
+          "fileName": "IntegratedReport",
+          "fileReference": "10a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
+        }
+      }
+    }
+  },
+  "creditInstitutionKpis": null,
+  "investmentFirmKpis": null,
+  "insuranceKpis": {
+    "taxonomyEligibleNonLifeInsuranceActivitiesInPercent": {
+      "value": null,
+      "comment": "program optical pixel",
+      "dataSource": {
+        "page": 246,
+        "tagName": "technologies",
+        "fileName": "ESEFReport",
+        "fileReference": "30a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
+      }
+    }
+  },
+  "fiscalYearDeviation": "Deviation",
+  "fiscalYearEnd": "2023-12-14",
+  "scopeOfEntities": "No",
+  "nfrdMandatory": "No",
+  "euTaxonomyActivityLevelReporting": null,
+  "assurance": {
+    "value": "ReasonableAssurance",
+    "dataSource": {
+      "page": 733,
+      "tagName": "models",
+      "fileName": "IntegratedReport",
+      "fileReference": "10a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
+    },
+    "provider": "Gislason - Barton"
+  },
+  "numberOfEmployees": null,
+  "referencedReports": {
+    "ESEFReport": {
+      "fileReference": "30a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+      "reportDate": "2023-05-18"
+    },
+    "SustainabilityReport": {
+      "fileReference": "20a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+      "fileName": null,
+      "reportDate": "2023-11-11"
+    },
+    "IntegratedReport": {
+      "fileReference": "10a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+      "fileName": "",
+      "reportDate": "2023-05-02"
+    }
+  }
+}

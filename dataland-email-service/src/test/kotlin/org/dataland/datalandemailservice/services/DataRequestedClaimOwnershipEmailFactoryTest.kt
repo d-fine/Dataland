@@ -99,7 +99,7 @@ class DataRequestedClaimOwnershipEmailFactoryTest {
         assertTrue(email.content.textContent.contains(contactMessage))
         assertTrue(
             email.content.textContent.contains(
-                "\n\nRegister as a data owner on $proxyPrimaryUrl/companies/$companyId",
+                "\n\nRegister as a company owner on $proxyPrimaryUrl/companies/$companyId",
             ),
         )
     }

@@ -55,7 +55,7 @@ class DataRequestedClaimOwnershipEmailFactory(
                     it.append(properties[keys.message])
                 }
             }
-            .append("\n\nRegister as a data owner on $proxyPrimaryUrl/companies/${properties[keys.companyId]}")
+            .append("\n\nRegister as a company owner on $proxyPrimaryUrl/companies/${properties[keys.companyId]}")
             .toString()
     }
 }
