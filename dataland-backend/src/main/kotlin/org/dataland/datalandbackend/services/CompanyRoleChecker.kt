@@ -6,6 +6,7 @@ import org.dataland.datalandcommunitymanager.openApiClient.api.CompanyRolesContr
 import org.dataland.datalandcommunitymanager.openApiClient.infrastructure.ClientException
 import org.dataland.datalandcommunitymanager.openApiClient.model.CompanyRole
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
+import org.dataland.keycloakAdapter.auth.DatalandRealmRole
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
@@ -120,9 +121,31 @@ class CompanyRoleChecker(
             throw InsufficientRightsApiException(
                 "Invalid alteration attempt",
                 "You do not have the required permission to change the following fields:" +
-                    " ${unauthorizedFields.joinToString(", ")}",
+                    " ${unauthorizedFields.joinToString(", ")}.\n" +
+                    " You are only allowed to change the fields \"website\" and \"companyContactDetails\".",
             )
         }
         return true
+    }
+
+    /**
+     * A user can bypass QA if
+     * (a) the user has the uploader and QA role
+     * (b) the user is an admin
+     * This function checks these conditions
+     */
+    fun canUserBypassQa(authenticationContext: DatalandAuthentication?, companyId: String): Boolean {
+        val isDatalandReviewer = authenticationContext?.roles?.contains(DatalandRealmRole.ROLE_REVIEWER)
+        if (isDatalandReviewer == true) {
+            return true
+        }
+        val companyIdUUID = UUID.fromString(companyId)
+        val userIdUUID = UUID.fromString(DatalandAuthentication.fromContext().userId)
+        val isCompanyDataUploader =
+            (
+                companyRolesControllerApi.hasUserCompanyRole(CompanyRole.CompanyOwner, companyIdUUID, userIdUUID) ||
+                    companyRolesControllerApi.hasUserCompanyRole(CompanyRole.DataUploader, companyIdUUID, userIdUUID)
+                )
+        return isCompanyDataUploader
     }
 }
