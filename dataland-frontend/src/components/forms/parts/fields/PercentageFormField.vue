@@ -21,13 +21,13 @@
 
 <script lang="ts">
 // @ts-nocheck
-import UploadFormHeader from "@/components/forms/parts/elements/basic/UploadFormHeader.vue";
-import { defineComponent } from "vue";
-import { FormKit } from "@formkit/vue";
-import { FormFieldPropsWithPlaceholder } from "@/components/forms/parts/fields/FormFieldProps";
+import UploadFormHeader from '@/components/forms/parts/elements/basic/UploadFormHeader.vue';
+import { defineComponent } from 'vue';
+import { FormKit } from '@formkit/vue';
+import { FormFieldPropsWithPlaceholder } from '@/components/forms/parts/fields/FormFieldProps';
 
 export default defineComponent({
-  name: "PercentageFormField",
+  name: 'PercentageFormField',
   components: { FormKit, UploadFormHeader },
   computed: {
     percentageFieldValue: {
@@ -35,7 +35,7 @@ export default defineComponent({
         return this.percentageFieldValueBind;
       },
       set(newValue: string) {
-        this.$emit("update:percentageFieldValueBind", newValue);
+        this.$emit('update:percentageFieldValueBind', newValue);
       },
     },
   },

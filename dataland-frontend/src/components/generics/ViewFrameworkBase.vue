@@ -96,33 +96,34 @@
 </template>
 
 <script lang="ts">
-import TheContent from "@/components/generics/TheContent.vue";
-import TheHeader from "@/components/generics/TheHeader.vue";
-import MarginWrapper from "@/components/wrapper/MarginWrapper.vue";
-import { ApiClientProvider } from "@/services/ApiClients";
-import { assertDefined } from "@/utils/TypeScriptUtils";
-import type Keycloak from "keycloak-js";
-import PrimeButton from "primevue/button";
-import Dropdown, { type DropdownChangeEvent } from "primevue/dropdown";
-import { computed, defineComponent, inject, type PropType, ref } from "vue";
+import TheContent from '@/components/generics/TheContent.vue';
+import TheHeader from '@/components/generics/TheHeader.vue';
+import MarginWrapper from '@/components/wrapper/MarginWrapper.vue';
+import { ApiClientProvider } from '@/services/ApiClients';
+import { assertDefined } from '@/utils/TypeScriptUtils';
+import type Keycloak from 'keycloak-js';
+import PrimeButton from 'primevue/button';
+import Dropdown, { type DropdownChangeEvent } from 'primevue/dropdown';
+import { computed, defineComponent, inject, type PropType, ref } from 'vue';
 
-import TheFooter from "@/components/generics/TheFooter.vue";
-import { ARRAY_OF_FRAMEWORKS_WITH_UPLOAD_FORM, ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE } from "@/utils/Constants";
-import { KEYCLOAK_ROLE_REVIEWER, KEYCLOAK_ROLE_UPLOADER, checkIfUserHasRole } from "@/utils/KeycloakUtils";
-import { humanizeStringOrNumber } from "@/utils/StringFormatter";
-import { type DataMetaInformation, type CompanyInformation, type DataTypeEnum } from "@clients/backend";
+import TheFooter from '@/components/generics/TheFooter.vue';
+import { FRAMEWORKS_WITH_EDIT_FUNCTIONALITY, FRAMEWORKS_WITH_VIEW_PAGE } from '@/utils/Constants';
+import { KEYCLOAK_ROLE_REVIEWER, KEYCLOAK_ROLE_UPLOADER, checkIfUserHasRole } from '@/utils/KeycloakUtils';
+import { humanizeStringOrNumber } from '@/utils/StringFormatter';
+import { type DataMetaInformation, type CompanyInformation, type DataTypeEnum } from '@clients/backend';
 
-import SelectReportingPeriodDialog from "@/components/general/SelectReportingPeriodDialog.vue";
-import OverlayPanel from "primevue/overlaypanel";
-import QualityAssuranceButtons from "@/components/resources/frameworkDataSearch/QualityAssuranceButtons.vue";
-import CompanyInfoSheet from "@/components/general/CompanyInfoSheet.vue";
-import type FrameworkDataSearchBar from "@/components/resources/frameworkDataSearch/FrameworkDataSearchBar.vue";
-import InputSwitch from "primevue/inputswitch";
-import { isUserDataOwnerForCompany } from "@/utils/DataOwnerUtils";
-import { ReportingPeriodTableActions, type ReportingPeriodTableEntry } from "@/utils/PremadeDropdownDatasets";
+import SelectReportingPeriodDialog from '@/components/general/SelectReportingPeriodDialog.vue';
+import OverlayPanel from 'primevue/overlaypanel';
+import QualityAssuranceButtons from '@/components/resources/frameworkDataSearch/QualityAssuranceButtons.vue';
+import CompanyInfoSheet from '@/components/general/CompanyInfoSheet.vue';
+import type FrameworkDataSearchBar from '@/components/resources/frameworkDataSearch/FrameworkDataSearchBar.vue';
+import InputSwitch from 'primevue/inputswitch';
+import { hasUserCompanyRoleForCompany } from '@/utils/CompanyRolesUtils';
+import { ReportingPeriodTableActions, type ReportingPeriodTableEntry } from '@/utils/PremadeDropdownDatasets';
+import { CompanyRole } from '@clients/communitymanager';
 
 export default defineComponent({
-  name: "ViewFrameworkBase",
+  name: 'ViewFrameworkBase',
   components: {
     CompanyInfoSheet,
     TheContent,
@@ -136,7 +137,7 @@ export default defineComponent({
     QualityAssuranceButtons,
     InputSwitch,
   },
-  emits: ["updateActiveDataMetaInfoForChosenFramework"],
+  emits: ['updateActiveDataMetaInfoForChosenFramework'],
   props: {
     companyID: {
       type: String,
@@ -156,14 +157,14 @@ export default defineComponent({
   },
   setup() {
     return {
-      getKeycloakPromise: inject<() => Promise<Keycloak>>("getKeycloakPromise"),
+      getKeycloakPromise: inject<() => Promise<Keycloak>>('getKeycloakPromise'),
       frameworkDataSearchBar: ref<typeof FrameworkDataSearchBar>(),
     };
   },
   data() {
     return {
       fetchedCompanyInformation: {} as CompanyInformation,
-      chosenDataTypeInDropdown: "",
+      chosenDataTypeInDropdown: '',
       dataTypesInDropdown: [] as { label: string; value: string }[],
       humanizeStringOrNumber,
       windowScrollHandler: (): void => {
@@ -191,28 +192,28 @@ export default defineComponent({
       return ReportingPeriodTableActions;
     },
     isReviewableByCurrentUser() {
-      return this.hasUserReviewerRights && this.singleDataMetaInfoToDisplay?.qaStatus === "Pending";
+      return this.hasUserReviewerRights && this.singleDataMetaInfoToDisplay?.qaStatus === 'Pending';
     },
     isEditableByCurrentUser() {
       return (
         this.hasUserUploaderRights &&
-        ARRAY_OF_FRAMEWORKS_WITH_UPLOAD_FORM.includes(this.dataType) &&
+        FRAMEWORKS_WITH_EDIT_FUNCTIONALITY.includes(this.dataType) &&
         (!this.singleDataMetaInfoToDisplay ||
           this.singleDataMetaInfoToDisplay.currentlyActive ||
-          this.singleDataMetaInfoToDisplay.qaStatus === "Rejected")
+          this.singleDataMetaInfoToDisplay.qaStatus === 'Rejected')
       );
     },
     targetLinkForAddingNewDataset() {
-      return `/companies/${this.companyID ?? ""}/frameworks/upload`;
+      return `/companies/${this.companyID ?? ''}/frameworks/upload`;
     },
   },
   created() {
-    this.chosenDataTypeInDropdown = this.dataType ?? "";
+    this.chosenDataTypeInDropdown = this.dataType ?? '';
     void this.getFrameworkDropdownOptionsAndActiveDataMetaInfoForEmit();
 
     void this.setViewPageAttributesForUser();
 
-    window.addEventListener("scroll", this.windowScrollHandler);
+    window.addEventListener('scroll', this.windowScrollHandler);
   },
   methods: {
     /**
@@ -231,7 +232,7 @@ export default defineComponent({
         this.gotoUpdateForm(
           this.singleDataMetaInfoToDisplay.companyId,
           this.singleDataMetaInfoToDisplay.dataType,
-          this.singleDataMetaInfoToDisplay.dataId,
+          this.singleDataMetaInfoToDisplay.dataId
         );
       } else if (this.mapOfReportingPeriodToActiveDataset.size > 1 && !this.singleDataMetaInfoToDisplay) {
         const panel = this.$refs.reportingPeriodsOverlayPanel as OverlayPanel;
@@ -242,7 +243,7 @@ export default defineComponent({
         this.gotoUpdateForm(
           assertDefined(this.companyID),
           this.dataType,
-          Array.from(this.mapOfReportingPeriodToActiveDataset.values())[0].dataId,
+          Array.from(this.mapOfReportingPeriodToActiveDataset.values())[0].dataId
         );
       }
     },
@@ -254,7 +255,7 @@ export default defineComponent({
      */
     gotoUpdateForm(companyID: string, dataType: DataTypeEnum, dataId: string) {
       void this.$router.push(
-        `/companies/${assertDefined(companyID)}/frameworks/${assertDefined(dataType)}/upload?templateDataId=${dataId}`,
+        `/companies/${assertDefined(companyID)}/frameworks/${assertDefined(dataType)}/upload?templateDataId=${dataId}`
       );
     },
     /**
@@ -299,7 +300,7 @@ export default defineComponent({
       ];
       const listOfDistinctAvailableAndViewableFrameworksForCompany: string[] = [];
       setOfAvailableFrameworksForCompany.forEach((dataType) => {
-        if (ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE.includes(dataType)) {
+        if (FRAMEWORKS_WITH_VIEW_PAGE.includes(dataType)) {
           listOfDistinctAvailableAndViewableFrameworksForCompany.push(dataType);
         }
       });
@@ -316,7 +317,7 @@ export default defineComponent({
      * @param listOfActiveDataMetaInfo The list to be used as input for the map.
      */
     setMapOfReportingPeriodToActiveDatasetFromListOfActiveMetaDataInfo(
-      listOfActiveDataMetaInfo: DataMetaInformation[],
+      listOfActiveDataMetaInfo: DataMetaInformation[]
     ) {
       this.mapOfReportingPeriodToActiveDataset = new Map<string, DataMetaInformation>();
       listOfActiveDataMetaInfo.forEach((dataMetaInfo: DataMetaInformation) => {
@@ -324,7 +325,7 @@ export default defineComponent({
           if (dataMetaInfo.currentlyActive) {
             this.mapOfReportingPeriodToActiveDataset.set(dataMetaInfo.reportingPeriod, dataMetaInfo);
           } else {
-            throw TypeError("Received inactive dataset meta info from Dataland Backend");
+            throw TypeError('Received inactive dataset meta info from Dataland Backend');
           }
         }
       });
@@ -343,12 +344,12 @@ export default defineComponent({
         const apiResponse = await metaDataControllerApi.getListOfDataMetaInfo(this.companyID);
         const listOfActiveDataMetaInfoPerFrameworkAndReportingPeriod = apiResponse.data;
         this.getDistinctAvailableFrameworksAndPutThemSortedIntoDropdown(
-          listOfActiveDataMetaInfoPerFrameworkAndReportingPeriod,
+          listOfActiveDataMetaInfoPerFrameworkAndReportingPeriod
         );
         this.setMapOfReportingPeriodToActiveDatasetFromListOfActiveMetaDataInfo(
-          listOfActiveDataMetaInfoPerFrameworkAndReportingPeriod,
+          listOfActiveDataMetaInfoPerFrameworkAndReportingPeriod
         );
-        this.$emit("updateActiveDataMetaInfoForChosenFramework", this.mapOfReportingPeriodToActiveDataset);
+        this.$emit('updateActiveDataMetaInfoForChosenFramework', this.mapOfReportingPeriodToActiveDataset);
         this.isDataProcessedSuccessfully = true;
       } catch (error) {
         this.isDataProcessedSuccessfully = false;
@@ -371,9 +372,11 @@ export default defineComponent({
         })
         .then(() => {
           if (!this.hasUserUploaderRights) {
-            return isUserDataOwnerForCompany(this.companyID, this.getKeycloakPromise).then((hasUserUploaderRights) => {
-              this.hasUserUploaderRights = hasUserUploaderRights;
-            });
+            return hasUserCompanyRoleForCompany(CompanyRole.CompanyOwner, this.companyID, this.getKeycloakPromise).then(
+              (hasUserUploaderRights) => {
+                this.hasUserUploaderRights = hasUserUploaderRights;
+              }
+            );
           }
         });
     },

@@ -1,14 +1,21 @@
 <template>
-  <div v-if="!hasUserRequiredRole && waitingForDataOwnershipData" class="d-center-div text-center px-7 py-4">
-    <p class="font-medium text-xl">Checking for data ownership...</p>
+  <div
+    v-if="!hasUserRequiredKeycloakRole && waitingForCompanyRoleAssignments"
+    class="d-center-div text-center px-7 py-4"
+  >
+    <p class="font-medium text-xl">Checking for user roles...</p>
     <em class="pi pi-spinner pi-spin" aria-hidden="true" style="z-index: 20; color: #e67f3f" />
   </div>
-  <div v-if="hasUserRequiredRole || isUserDataOwner">
+  <div v-if="(hasUserRequiredKeycloakRole && !isFrameworkPrivate) || isUserCompanyOwnerOrUploader">
     <slot></slot>
   </div>
 
   <TheContent
-    v-if="!waitingForDataOwnershipData && !isUserDataOwner && !hasUserRequiredRole"
+    v-if="
+      !waitingForCompanyRoleAssignments &&
+      !isUserCompanyOwnerOrUploader &&
+      (!hasUserRequiredKeycloakRole || isFrameworkPrivate)
+    "
     class="paper-section flex"
   >
     <MiddleCenterDiv class="col-12">
@@ -20,21 +27,24 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, inject } from "vue";
-import type Keycloak from "keycloak-js";
-import { checkIfUserHasRole } from "@/utils/KeycloakUtils";
-import { isUserDataOwnerForCompany } from "@/utils/DataOwnerUtils";
-import TheContent from "@/components/generics/TheContent.vue";
-import MiddleCenterDiv from "@/components/wrapper/MiddleCenterDivWrapper.vue";
+import { defineComponent, inject } from 'vue';
+import type Keycloak from 'keycloak-js';
+import { checkIfUserHasRole } from '@/utils/KeycloakUtils';
+import TheContent from '@/components/generics/TheContent.vue';
+import MiddleCenterDiv from '@/components/wrapper/MiddleCenterDivWrapper.vue';
+import { hasUserCompanyRoleForCompany } from '@/utils/CompanyRolesUtils';
+import { CompanyRole } from '@clients/communitymanager';
+import { getAllPrivateFrameworkIdentifiers } from '@/frameworks/BasePrivateFrameworkRegistry';
 
 export default defineComponent({
-  name: "AuthorizationWrapper",
+  name: 'AuthorizationWrapper',
   components: { TheContent, MiddleCenterDiv },
   data() {
     return {
-      hasUserRequiredRole: null as boolean | null,
-      isUserDataOwner: null as boolean | null,
-      waitingForDataOwnershipData: true,
+      hasUserRequiredKeycloakRole: null as boolean | null,
+      isUserCompanyOwnerOrUploader: null as boolean | null,
+      waitingForCompanyRoleAssignments: true,
+      isFrameworkPrivate: null as boolean | null,
     };
   },
   props: {
@@ -42,31 +52,43 @@ export default defineComponent({
       type: String,
       required: true,
     },
-    allowDataOwnerForCompanyId: String,
+    companyId: String,
+    dataType: String,
   },
   setup() {
     return {
-      getKeycloakPromise: inject<() => Promise<Keycloak>>("getKeycloakPromise"),
+      getKeycloakPromise: inject<() => Promise<Keycloak>>('getKeycloakPromise'),
     };
   },
   mounted: function () {
-    void this.checkUserPermissions();
+    this.setIfFrameworkIsPrivate();
+    void this.setUserPermissions();
   },
   methods: {
     /**
      * Set if the user is allowed to upload data for the current company
      * @returns a promise that resolves to void, so the successful execution of the function can be awaited
      */
-    async checkUserPermissions(): Promise<void> {
-      this.hasUserRequiredRole = await checkIfUserHasRole(this.requiredRole, this.getKeycloakPromise);
-      if (!this.hasUserRequiredRole && this.allowDataOwnerForCompanyId) {
-        this.isUserDataOwner = await isUserDataOwnerForCompany(
-          this.allowDataOwnerForCompanyId,
-          this.getKeycloakPromise,
-        );
-        this.waitingForDataOwnershipData = false;
-      } else {
-        this.waitingForDataOwnershipData = false;
+    async setUserPermissions(): Promise<void> {
+      let isCompanyOwner = false;
+      let isDataUploader = false;
+      if (this.companyId) {
+        [isCompanyOwner, isDataUploader] = await Promise.all([
+          hasUserCompanyRoleForCompany(CompanyRole.CompanyOwner, this.companyId, this.getKeycloakPromise),
+          hasUserCompanyRoleForCompany(CompanyRole.DataUploader, this.companyId, this.getKeycloakPromise),
+        ]);
+      }
+      this.isUserCompanyOwnerOrUploader = isCompanyOwner || isDataUploader;
+      this.hasUserRequiredKeycloakRole = await checkIfUserHasRole(this.requiredRole, this.getKeycloakPromise);
+      this.waitingForCompanyRoleAssignments = false;
+    },
+
+    /**
+     * This method sets if the data type in the props is private or not
+     */
+    setIfFrameworkIsPrivate() {
+      if (this.dataType) {
+        this.isFrameworkPrivate = getAllPrivateFrameworkIdentifiers().includes(this.dataType);
       }
     },
   },

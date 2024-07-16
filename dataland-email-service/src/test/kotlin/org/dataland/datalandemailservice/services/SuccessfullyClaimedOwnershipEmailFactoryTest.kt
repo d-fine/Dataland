@@ -52,10 +52,7 @@ class SuccessfullyClaimedOwnershipEmailFactoryTest {
         assertTrue(email.content.htmlContent.contains("DATALAND"))
         assertTrue(email.content.htmlContent.contains("Great news!"))
         assertTrue(
-            email.content.htmlContent.contains(
-                "You've successfully claimed data " +
-                    "ownership for",
-            ),
+            email.content.htmlContent.contains("You've successfully claimed company ownership for"),
         )
         assertTrue(
             email.content.htmlContent.contains(
@@ -63,9 +60,7 @@ class SuccessfullyClaimedOwnershipEmailFactoryTest {
                     "company overview, view your data requests, and provide data.",
             ),
         )
-        assertTrue(
-            email.content.htmlContent.contains("Please note, that "),
-        )
+        assertTrue(email.content.htmlContent.contains("Please note, that "))
         assertTrue(email.content.htmlContent.contains("open data requests"))
         assertTrue(email.content.htmlContent.contains(numberOfOpenDataRequestsForCompany))
         assertTrue(email.content.htmlContent.contains("Copyright"))

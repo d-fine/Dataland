@@ -7,15 +7,20 @@
   "separateMajorMinor": true,
   "separateMultipleMajor": true,
   "minimumReleaseAge": "14 days",
+  "updateNotScheduled": false,
   "schedule": [
     "after 8pm every weekday",
-    "before 8am every weekday",
+    "before 5am every weekday",
     "every weekend"
   ],
   "packageRules": [
     {
       "matchUpdateTypes": ["major"],
       "labels": ["dependencies", "MAJOR"]
+    },
+    {
+      "groupName": "formkit-packages",
+      "matchPackagePatterns": ["^@formkit/"]
     }
   ]
 }

@@ -1,6 +1,7 @@
 package org.dataland.e2etests.tests
 
 import org.awaitility.Awaitility
+import org.dataland.communitymanager.openApiClient.model.CompanyRole
 import org.dataland.datalandbackendutils.model.DocumentType
 import org.dataland.datalandbackendutils.utils.sha256
 import org.dataland.documentmanager.openApiClient.api.DocumentControllerApi
@@ -13,11 +14,13 @@ import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertDoesNotThrow
 import org.junit.jupiter.api.assertThrows
 import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import java.io.File
+import java.util.UUID
 import java.util.concurrent.TimeUnit
 
 class DocumentControllerTest {
@@ -91,13 +94,59 @@ class DocumentControllerTest {
         assertEquals(HttpStatus.NOT_FOUND.value(), exception.statusCode)
     }
 
+    @Test
+    fun `test that users without keycloak uploader role can upload documents with certain company roles`() {
+        apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
+        val testCompanyIdString = apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId
+        val testCompanyId = UUID.fromString(testCompanyIdString)
+        val dataReaderId = UUID.fromString(TechnicalUser.Reader.technicalUserId)
+        val companyRolesAllowedToPostDocument = listOf(CompanyRole.CompanyOwner, CompanyRole.DataUploader)
+
+        removeAllRolesFromUser(dataReaderId)
+
+        apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader)
+        assertThrows<ClientException> { uploadDocument(pdfDocument, TechnicalUser.Reader) }
+        for (role in CompanyRole.values()) {
+            apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
+            apiAccessor.companyRolesControllerApi.assignCompanyRole(role, testCompanyId, dataReaderId)
+
+            apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader)
+            if (role in companyRolesAllowedToPostDocument) {
+                assertDoesNotThrow { uploadDocument(pdfDocument, TechnicalUser.Reader) }
+            } else {
+                assertThrows<ClientException> { uploadDocument(pdfDocument, TechnicalUser.Reader) }
+            }
+
+            apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
+            removeAllRolesFromUser(dataReaderId)
+        }
+    }
+
+    private fun removeAllRolesFromUser(userId: UUID) {
+        val rolesOfUser = apiAccessor.companyRolesControllerApi.getCompanyRoleAssignments(
+            null,
+            null,
+            userId,
+        )
+        rolesOfUser.forEach {
+            apiAccessor.companyRolesControllerApi.removeCompanyRole(
+                it.companyRole,
+                UUID.fromString(it.companyId),
+                userId,
+            )
+        }
+    }
+
     /**
      * uploads a document
      * @param document document to upload
      * @returns the upload response
      */
-    private fun uploadDocument(document: File): DocumentUploadResponse {
-        apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Uploader)
+    private fun uploadDocument(
+        document: File,
+        technicalUser: TechnicalUser = TechnicalUser.Uploader,
+    ): DocumentUploadResponse {
+        apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(technicalUser)
         val expectedHash = document.readBytes().sha256()
         val uploadResponse = documentControllerClient.postDocument(document)
         assertEquals(expectedHash, uploadResponse.documentId)

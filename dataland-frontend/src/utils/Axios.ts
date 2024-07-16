@@ -1,4 +1,4 @@
-import { type RawAxiosResponseHeaders } from "axios";
+import { type RawAxiosResponseHeaders } from 'axios';
 
 /**
  * Retrieve a header from the headers object if it is a single string
@@ -8,7 +8,7 @@ import { type RawAxiosResponseHeaders } from "axios";
  */
 export function getHeaderIfItIsASingleString(headers: RawAxiosResponseHeaders, header: string): string | undefined {
   const headerValue = headers[header];
-  if (typeof headerValue === "string") {
+  if (typeof headerValue === 'string') {
     return headerValue;
   }
   return undefined;

@@ -1,5 +1,6 @@
 package org.dataland.e2etests.tests
 
+import org.dataland.communitymanager.openApiClient.model.CompanyRole
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientError
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
 import org.dataland.datalandbackend.openApiClient.model.AggregatedFrameworkDataSummary
@@ -30,6 +31,23 @@ class CompanyDataControllerTest {
         .getCompanyInformationWithRandomIdentifiers(1).first()
     private val checkOtherCompanyTrue = "Other Company true"
     private val checkOtherCompanyFalse = "Other Company false"
+    private val dataReaderUserId = UUID.fromString(TechnicalUser.Reader.technicalUserId)
+    private val fullPatchObject = CompanyInformationPatch(
+        companyContactDetails = listOf("NewcompanyContactDetails@example.com"),
+        companyName = "New-companyName",
+        companyAlternativeNames = listOf("New-companyAlternativeNames"),
+        companyLegalForm = "New-companyLegalForm",
+        headquarters = "New-headquarters",
+        headquartersPostalCode = "New-headquartersPostalCode",
+        sector = "New-sector",
+        countryCode = "New-countryCode",
+        isTeaserCompany = false,
+        website = "New-website",
+        parentCompanyLei = "New-parentCompanyLei",
+        identifiers = mapOf(
+            IdentifierType.Duns.value to listOf("Test-DUNS${UUID.randomUUID()}"),
+        ),
+    )
 
     @BeforeAll
     fun postTestDocuments() {
@@ -126,7 +144,7 @@ class CompanyDataControllerTest {
             patchObject,
         )
         assertEquals(
-            patchObject.companyAlternativeNames!!, updatedCompany.companyInformation.companyAlternativeNames,
+            patchObject.companyAlternativeNames, updatedCompany.companyInformation.companyAlternativeNames,
             "The company alternative names should have been updated",
         )
     }
@@ -400,6 +418,188 @@ class CompanyDataControllerTest {
             expectedCompanyInformation,
             apiAccessor.companyDataControllerApi.getCompanyInfo(uploadInfo.actualStoredCompany.companyId),
             "Dataland does not contain the posted company.",
+        )
+    }
+
+    @Test
+    fun `check that an exception is thrown if the contactDetails does not have the valid format`() {
+        val uploadInfo = apiAccessor.uploadNCompaniesWithoutIdentifiers(1).first()
+        val companyId = uploadInfo.actualStoredCompany.companyId
+        val patchObject = CompanyInformationPatch(
+            companyContactDetails = listOf("Email-without-proper-format"),
+        )
+        apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
+
+        assertThrows<ClientException> {
+            apiAccessor.companyDataControllerApi.patchCompanyById(
+                companyId,
+                patchObject,
+            )
+        }
+    }
+
+    @Test
+    fun `check that the Dataland uploader can patch contactDetails and website of a company without an owner`() {
+        val uploadInfo = apiAccessor.uploadNCompaniesWithoutIdentifiers(1).first()
+        val companyId = uploadInfo.actualStoredCompany.companyId
+        val patchObject = CompanyInformationPatch(
+            companyContactDetails = listOf("Email1@example.com", "Email2@example.com"),
+            website = "New-Website",
+        )
+        apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Uploader)
+        val updatedCompany = apiAccessor.companyDataControllerApi.patchCompanyById(
+            companyId,
+            patchObject,
+        )
+        assertEquals(
+            patchObject.companyContactDetails, updatedCompany.companyInformation.companyContactDetails,
+            "The company contact details should have been updated",
+        )
+        assertEquals(
+            patchObject.website, updatedCompany.companyInformation.website,
+            "The company website should have been updated",
+        )
+    }
+
+    @Test
+    fun `check that the Dataland uploader cannot patch contactDetails or website if the company has a companyOwner`() {
+        val uploadInfo = apiAccessor.uploadNCompaniesWithoutIdentifiers(1).first()
+        val ownerId = UUID.fromString("18b67ecc-1176-4506-8414-1e81661017ca")
+        val originalCompany = uploadInfo.actualStoredCompany
+        val companyId = originalCompany.companyId
+
+        apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
+        apiAccessor.companyRolesControllerApi.assignCompanyRole(
+            CompanyRole.CompanyOwner,
+            UUID.fromString(companyId),
+            ownerId,
+        )
+
+        val patchObject = CompanyInformationPatch(
+            companyContactDetails = listOf("Email3@example.com"),
+            website = "New-Website-2",
+        )
+        apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Uploader)
+
+        val exception = assertThrows<ClientException> {
+            apiAccessor.companyDataControllerApi.patchCompanyById(
+                companyId,
+                patchObject,
+            )
+        }
+
+        assertTrue(exception.statusCode == 403, "The exception should indicate unauthorized access (HTTP 403)")
+
+        val companyAfterAttempt = apiAccessor.companyDataControllerApi.getCompanyById(companyId)
+        assertEquals(
+            originalCompany.companyInformation.companyContactDetails,
+            companyAfterAttempt.companyInformation.companyContactDetails,
+            "The company contact details should not have been updated",
+        )
+    }
+
+    @Test
+    fun `check that the Dataland uploader cannot patch unallowed fields`() {
+        val uploadInfo = apiAccessor.uploadNCompaniesWithoutIdentifiers(1).first()
+        val originalCompany = uploadInfo.actualStoredCompany
+        val companyId = originalCompany.companyId
+        apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Uploader)
+
+        assertThrows<ClientException> {
+            apiAccessor.companyDataControllerApi.patchCompanyById(
+                companyId,
+                fullPatchObject,
+            )
+        }
+
+        val companyAfterAttempt = apiAccessor.companyDataControllerApi.getCompanyById(companyId)
+        assertEquals(
+            originalCompany.companyInformation.companyContactDetails,
+            companyAfterAttempt.companyInformation.companyContactDetails,
+            "The company contact details should not have been updated",
+        )
+        assertEquals(
+            originalCompany.companyInformation.companyName,
+            companyAfterAttempt.companyInformation.companyName,
+            "The company name should not have been updated",
+        )
+    }
+
+    @Test
+    fun `check that the a company owner can patch contact details and website of their own company`() {
+        val uploadInfo = apiAccessor.uploadNCompaniesWithoutIdentifiers(1).first()
+        val originalCompany = uploadInfo.actualStoredCompany
+        val companyId = originalCompany.companyId
+        apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
+        apiAccessor.companyRolesControllerApi.assignCompanyRole(
+            CompanyRole.CompanyOwner,
+            UUID.fromString(companyId),
+            dataReaderUserId,
+        )
+
+        val patchObject = CompanyInformationPatch(
+            website = "New-Website-3",
+            companyContactDetails = listOf("Email1@example.com"),
+        )
+        apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader)
+        val updatedCompany = apiAccessor.companyDataControllerApi.patchCompanyById(
+            companyId,
+            patchObject,
+        )
+        assertEquals(
+            patchObject.companyContactDetails, updatedCompany.companyInformation.companyContactDetails,
+            "The company contact details should have been updated",
+        )
+        assertEquals(
+            patchObject.website, updatedCompany.companyInformation.website,
+            "The company name should have been updated by the company owner",
+        )
+    }
+
+    @Test
+    fun `check that the company owner cannot patch unallowed fields`() {
+        val uploadInfo = apiAccessor.uploadNCompaniesWithoutIdentifiers(1).first()
+        val originalCompany = uploadInfo.actualStoredCompany
+        val companyId = originalCompany.companyId
+        apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
+        apiAccessor.companyRolesControllerApi.assignCompanyRole(
+            CompanyRole.CompanyOwner,
+            UUID.fromString(companyId),
+            dataReaderUserId,
+        )
+
+        apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader)
+
+        val exception = assertThrows<ClientException> {
+            apiAccessor.companyDataControllerApi.patchCompanyById(
+                companyId,
+                fullPatchObject,
+            )
+        }
+        val responseBody = (exception.response as ClientError<*>).body as String
+        assertTrue(
+            responseBody.contains(
+                "You do not have the required permission to change the following fields",
+            ),
+        )
+    }
+
+    @Test
+    fun `check that patching with an invalid company ID and invalid patch fields returns an exception`() {
+        apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Uploader)
+
+        val exception = assertThrows<ClientException> {
+            apiAccessor.companyDataControllerApi.patchCompanyById(
+                UUID.randomUUID().toString(),
+                fullPatchObject,
+            )
+        }
+
+        val responseBody = (exception.response as ClientError<*>).body as String
+        assertTrue(
+            responseBody.contains(
+                "Dataland does not know the company ID",
+            ),
         )
     }
 }

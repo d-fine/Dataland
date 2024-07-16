@@ -152,6 +152,15 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
     fun fetchAlternativeNames(companies: List<StoredCompanyEntity>): List<StoredCompanyEntity>
 
     /**
+     * Used for pre-fetching the company contact details field of a list of stored companies
+     */
+    @Query(
+        "SELECT DISTINCT company FROM StoredCompanyEntity company " +
+            "LEFT JOIN FETCH company.companyContactDetails WHERE company IN :companies",
+    )
+    fun fetchCompanyContactDetails(companies: List<StoredCompanyEntity>): List<StoredCompanyEntity>
+
+    /**
      * Used for pre-fetching the dataStoredByDataland field of a list of stored companies
      */
     @Query(

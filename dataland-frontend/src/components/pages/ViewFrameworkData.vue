@@ -12,14 +12,14 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
-import { DataTypeEnum } from "@clients/backend";
-import ViewMultipleDatasetsDisplayBase from "@/components/generics/ViewMultipleDatasetsDisplayBase.vue";
-import AuthenticationWrapper from "@/components/wrapper/AuthenticationWrapper.vue";
-import { getAllFrameworkIdentifiers } from "@/frameworks/FrontendFrameworkRegistry";
+import { defineComponent } from 'vue';
+import { DataTypeEnum } from '@clients/backend';
+import ViewMultipleDatasetsDisplayBase from '@/components/generics/ViewMultipleDatasetsDisplayBase.vue';
+import AuthenticationWrapper from '@/components/wrapper/AuthenticationWrapper.vue';
+import { getAllFrameworkIdentifiers } from '@/frameworks/FrontendFrameworkRegistry';
 
 export default defineComponent({
-  name: "ViewFrameworkData",
+  name: 'ViewFrameworkData',
   components: { AuthenticationWrapper, ViewMultipleDatasetsDisplayBase },
   props: {
     companyId: {
@@ -46,7 +46,7 @@ export default defineComponent({
      * Navigate to the not found page.
      */
     gotoNotFound() {
-      void this.$router.push("/nocontent");
+      void this.$router.push('/nocontent');
     },
   },
   mounted() {
@@ -59,14 +59,7 @@ export default defineComponent({
   },
   computed: {
     multiViewFrameworks(): string[] {
-      const standardMultiViewFrameworks = [
-        DataTypeEnum.EutaxonomyFinancials,
-        DataTypeEnum.EutaxonomyNonFinancials,
-        DataTypeEnum.Lksg,
-        DataTypeEnum.Sfdr,
-        DataTypeEnum.P2p,
-        DataTypeEnum.Sme,
-      ] as string[];
+      const standardMultiViewFrameworks = [DataTypeEnum.EutaxonomyFinancials, DataTypeEnum.P2p] as string[];
 
       for (const frameworkId of getAllFrameworkIdentifiers()) {
         standardMultiViewFrameworks.push(frameworkId);

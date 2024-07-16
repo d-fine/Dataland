@@ -1,5 +1,5 @@
-import { type AmountWithCurrency } from "@clients/backend";
-import { roundNumber } from "@/utils/NumberConversionUtils";
+import { type AmountWithCurrency } from '@clients/backend';
+import { roundNumber } from '@/utils/NumberConversionUtils';
 
 /**
  * Formats a percentage number by rounding it and afterward making it a string with a
@@ -10,7 +10,7 @@ import { roundNumber } from "@/utils/NumberConversionUtils";
  */
 export function formatPercentageNumberAsString(percentageNumber?: number | null, precision = 2): string {
   if (percentageNumber == undefined) {
-    return "";
+    return '';
   }
   return `${roundNumber(percentageNumber, precision)} %`;
 }
@@ -22,15 +22,15 @@ export function formatPercentageNumberAsString(percentageNumber?: number | null,
  */
 export function formatAmountWithCurrency(amountWithCurrency: AmountWithCurrency | null | undefined): string {
   if (amountWithCurrency?.amount == undefined) {
-    return "";
+    return '';
   }
   if (amountWithCurrency?.amount === 0) {
-    return `0 ${(amountWithCurrency?.currency ?? "").trim()}`;
+    return `0 ${(amountWithCurrency?.currency ?? '').trim()}`;
   }
-  return `${amountWithCurrency.amount.toLocaleString("en-GB", {
+  return `${amountWithCurrency.amount.toLocaleString('en-GB', {
     minimumFractionDigits: 2,
     maximumFractionDigits: 2,
-  })}${amountWithCurrency.currency ? " " + amountWithCurrency.currency : ""}`;
+  })}${amountWithCurrency.currency ? ' ' + amountWithCurrency.currency : ''}`;
 }
 
 /**
@@ -40,12 +40,12 @@ export function formatAmountWithCurrency(amountWithCurrency: AmountWithCurrency 
  */
 export function formatNumberToReadableFormat(value: number | undefined | null): string {
   if (value == undefined) {
-    return "";
+    return '';
   }
   if (value == 0) {
-    return "0";
+    return '0';
   }
-  return value.toLocaleString("en-GB", {
+  return value.toLocaleString('en-GB', {
     maximumFractionDigits: 2,
   });
 }

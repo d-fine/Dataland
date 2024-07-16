@@ -84,28 +84,28 @@
 </template>
 
 <script lang="ts">
-import AuthenticationWrapper from "@/components/wrapper/AuthenticationWrapper.vue";
-import TheHeader from "@/components/generics/TheHeader.vue";
-import TheContent from "@/components/generics/TheContent.vue";
-import { type FrameworkDataSearchFilterInterface } from "@/utils/SearchCompaniesForFrameworkDataPageDataRequester";
-import FrameworkDataSearchBar from "@/components/resources/frameworkDataSearch/FrameworkDataSearchBar.vue";
-import PrimeButton from "primevue/button";
-import FrameworkDataSearchResults from "@/components/resources/frameworkDataSearch/FrameworkDataSearchResults.vue";
-import { type RouteLocationNormalizedLoaded, useRoute } from "vue-router";
-import { defineComponent, inject, ref } from "vue";
-import { type DataTypeEnum, type BasicCompanyInformation } from "@clients/backend";
-import FrameworkDataSearchFilters from "@/components/resources/frameworkDataSearch/FrameworkDataSearchFilters.vue";
-import { parseQueryParamArray } from "@/utils/QueryParserUtils";
-import { arraySetEquals } from "@/utils/ArrayUtils";
-import { ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE } from "@/utils/Constants";
-import TheFooter from "@/components/generics/TheNewFooter.vue";
-import contentData from "@/assets/content.json";
-import type { Content, Page } from "@/types/ContentTypes";
-import type Keycloak from "keycloak-js";
-import BulkDataRequestButton from "@/components/resources/frameworkDataSearch/BulkDataRequestButton.vue";
-import { checkIfUserHasRole, KEYCLOAK_ROLE_UPLOADER } from "@/utils/KeycloakUtils";
-import DatasetsTabMenu from "@/components/general/DatasetsTabMenu.vue";
-import NewDatasetButton from "@/components/general/NewDatasetButton.vue";
+import AuthenticationWrapper from '@/components/wrapper/AuthenticationWrapper.vue';
+import TheHeader from '@/components/generics/TheHeader.vue';
+import TheContent from '@/components/generics/TheContent.vue';
+import { type FrameworkDataSearchFilterInterface } from '@/utils/SearchCompaniesForFrameworkDataPageDataRequester';
+import FrameworkDataSearchBar from '@/components/resources/frameworkDataSearch/FrameworkDataSearchBar.vue';
+import PrimeButton from 'primevue/button';
+import FrameworkDataSearchResults from '@/components/resources/frameworkDataSearch/FrameworkDataSearchResults.vue';
+import { type RouteLocationNormalizedLoaded, useRoute } from 'vue-router';
+import { defineComponent, inject, ref } from 'vue';
+import { type DataTypeEnum, type BasicCompanyInformation } from '@clients/backend';
+import FrameworkDataSearchFilters from '@/components/resources/frameworkDataSearch/FrameworkDataSearchFilters.vue';
+import { parseQueryParamArray } from '@/utils/QueryParserUtils';
+import { arraySetEquals } from '@/utils/ArrayUtils';
+import { FRAMEWORKS_WITH_VIEW_PAGE } from '@/utils/Constants';
+import TheFooter from '@/components/generics/TheNewFooter.vue';
+import contentData from '@/assets/content.json';
+import type { Content, Page } from '@/types/ContentTypes';
+import type Keycloak from 'keycloak-js';
+import BulkDataRequestButton from '@/components/resources/frameworkDataSearch/BulkDataRequestButton.vue';
+import { checkIfUserHasRole, KEYCLOAK_ROLE_UPLOADER } from '@/utils/KeycloakUtils';
+import DatasetsTabMenu from '@/components/general/DatasetsTabMenu.vue';
+import NewDatasetButton from '@/components/general/NewDatasetButton.vue';
 
 export default defineComponent({
   setup() {
@@ -114,10 +114,10 @@ export default defineComponent({
       frameworkDataSearchBar: ref<typeof FrameworkDataSearchBar>(),
       frameworkDataSearchFilters: ref<typeof FrameworkDataSearchFilters>(),
       searchResults: ref(),
-      getKeycloakPromise: inject<() => Promise<Keycloak>>("getKeycloakPromise"),
+      getKeycloakPromise: inject<() => Promise<Keycloak>>('getKeycloakPromise'),
     };
   },
-  name: "SearchCompaniesForFrameworkData",
+  name: 'SearchCompaniesForFrameworkData',
   components: {
     NewDatasetButton,
     BulkDataRequestButton,
@@ -132,7 +132,7 @@ export default defineComponent({
     TheFooter,
   },
   created() {
-    window.addEventListener("scroll", this.windowScrollHandler);
+    window.addEventListener('scroll', this.windowScrollHandler);
     checkIfUserHasRole(KEYCLOAK_ROLE_UPLOADER, this.getKeycloakPromise)
       .then((hasUserUploaderRights) => {
         this.hasUserUploaderRights = hasUserUploaderRights;
@@ -142,7 +142,7 @@ export default defineComponent({
   },
   data() {
     const content: Content = contentData;
-    const footerPage: Page | undefined = content.pages.find((page) => page.url === "/");
+    const footerPage: Page | undefined = content.pages.find((page) => page.url === '/');
     const footerContent = footerPage?.sections;
     return {
       searchBarToggled: false,
@@ -151,19 +151,19 @@ export default defineComponent({
       footerContent,
       resultsArray: [] as Array<BasicCompanyInformation>,
       latestScrollPosition: 0,
-      currentSearchBarInput: "",
+      currentSearchBarInput: '',
       currentFilteredFrameworks: [] as Array<DataTypeEnum>,
       currentFilteredCountryCodes: [] as Array<string>,
       currentFilteredSectors: [] as Array<string>,
       currentCombinedFilter: {
-        companyNameFilter: "",
+        companyNameFilter: '',
         frameworkFilter: [],
         sectorFilter: [],
         countryCodeFilter: [],
       } as FrameworkDataSearchFilterInterface,
       scrollEmittedByToggleSearchBar: false,
       hiddenSearchBarHeight: 0,
-      searchBarId: "search_bar_top",
+      searchBarId: 'search_bar_top',
       rowsPerPage: 100,
       currentPage: 0,
       totalRecords: 0,
@@ -203,7 +203,7 @@ export default defineComponent({
       const totalSearchResults = this.totalRecords;
       if (!this.waitingForDataToDisplay) {
         if (totalSearchResults === 0) {
-          return "No results";
+          return 'No results';
         } else {
           const startIndex = this.currentPage * this.rowsPerPage;
           const endIndex =
@@ -213,7 +213,7 @@ export default defineComponent({
           return `${startIndex + 1}-${endIndex + 1} of ${totalSearchResults} results`;
         }
       } else {
-        return "loading...";
+        return 'loading...';
       }
     },
   },
@@ -243,7 +243,7 @@ export default defineComponent({
       } else {
         if (this.searchBarToggled) {
           this.searchBarToggled = false;
-          this.searchBarId = "search_bar_top";
+          this.searchBarId = 'search_bar_top';
           window.scrollBy(0, this.hiddenSearchBarHeight);
         }
         if (this.latestScrollPosition > windowScrollY) {
@@ -269,9 +269,9 @@ export default defineComponent({
     getQueryFrameworks(route: RouteLocationNormalizedLoaded): Array<DataTypeEnum> {
       const queryFrameworks = route.query.framework;
       if (queryFrameworks) {
-        const allowedDataTypeEnumValues = ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE as Array<string>;
+        const allowedDataTypeEnumValues = FRAMEWORKS_WITH_VIEW_PAGE as Array<string>;
         return parseQueryParamArray(queryFrameworks).filter((singleFrameworkInQueryParam) =>
-          allowedDataTypeEnumValues.includes(singleFrameworkInQueryParam),
+          allowedDataTypeEnumValues.includes(singleFrameworkInQueryParam)
         ) as Array<DataTypeEnum>;
       } else {
         return [];
@@ -311,7 +311,7 @@ export default defineComponent({
       if (queryInput) {
         return queryInput;
       }
-      return "";
+      return '';
     },
     /**
      * Updates the combined filter object if any of the local filters no longer match the combined filter object.
@@ -366,7 +366,7 @@ export default defineComponent({
     handleCompanyQuery(
       companiesReceived: Array<BasicCompanyInformation>,
       chunkIndex: number,
-      totalNumberOfCompanies: number,
+      totalNumberOfCompanies: number
     ) {
       this.totalRecords = totalNumberOfCompanies;
       this.resultsArray = companiesReceived;
@@ -375,7 +375,7 @@ export default defineComponent({
       this.waitingForDataToDisplay = false;
       this.searchBarToggled = false;
 
-      const queryInput = this.currentSearchBarInput == "" ? undefined : this.currentSearchBarInput;
+      const queryInput = this.currentSearchBarInput == '' ? undefined : this.currentSearchBarInput;
 
       const queryFrameworks = this.currentFilteredFrameworks.length == 0 ? undefined : this.currentFilteredFrameworks;
 
@@ -384,7 +384,7 @@ export default defineComponent({
 
       const querySectors = this.currentFilteredSectors.length == 0 ? undefined : this.currentFilteredSectors;
       return this.$router.push({
-        name: "Search Companies for Framework Data",
+        name: 'Search Companies for Framework Data',
         query: {
           input: queryInput,
           framework: queryFrameworks,
@@ -413,11 +413,11 @@ export default defineComponent({
       }
       window.scrollBy(0, -this.hiddenSearchBarHeight);
       await this.$nextTick();
-      this.searchBarId = "search_bar_scrolled";
+      this.searchBarId = 'search_bar_scrolled';
     },
   },
   unmounted() {
-    window.removeEventListener("scroll", this.windowScrollHandler);
+    window.removeEventListener('scroll', this.windowScrollHandler);
   },
 });
 </script>

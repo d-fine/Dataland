@@ -8,7 +8,6 @@ import org.dataland.datalandbackend.repositories.CompanyIdentifierRepository
 import org.dataland.datalandbackend.services.CompanyAlterationManager
 import org.dataland.datalandbackend.services.CompanyBaseManager
 import org.dataland.datalandbackend.services.CompanyQueryManager
-import org.dataland.datalandbackend.services.DataOwnersManager
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
 import org.dataland.keycloakAdapter.utils.AuthenticationMock
@@ -31,18 +30,19 @@ internal class CompanyDataControllerTest(
     @Autowired val companyAlterationManager: CompanyAlterationManager,
     @Autowired val companyQueryManager: CompanyQueryManager,
     @Autowired val companyIdentifierRepositoryInterface: CompanyIdentifierRepository,
-    @Autowired val dataOwnersManager: DataOwnersManager,
     @Autowired val companyBaseManager: CompanyBaseManager,
 ) {
     private final val testLei = "testLei"
     val companyWithTestLei = CompanyInformation(
         companyName = "Test Company",
         companyAlternativeNames = null,
+        companyContactDetails = null,
         companyLegalForm = null,
         countryCode = "DE",
         headquarters = "Berlin",
         headquartersPostalCode = "8",
         sector = null,
+        sectorCodeWz = null,
         website = null,
         isTeaserCompany = null,
         identifiers = mapOf(
@@ -58,7 +58,6 @@ internal class CompanyDataControllerTest(
             companyAlterationManager,
             companyQueryManager,
             companyIdentifierRepositoryInterface,
-            dataOwnersManager,
             companyBaseManager,
         )
         val expectedCompanyId = companyController.postCompany(

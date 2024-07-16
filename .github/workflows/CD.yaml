@@ -12,6 +12,10 @@ on:
         description: 'Load the full GLEIF Golden Copy File into the database'
         required: false
         type: boolean
+      loadNorthDataGoldenCopy:
+        description: 'Load the full NorthData Golden Copy File into the database'
+        required: false
+        type: boolean
       ignoreExternalStorageError:
         description: 'Ignore errors due to external factors on startup of the external storage'
         required: false
@@ -139,7 +143,10 @@ jobs:
           KEYCLOAK_DATALAND_ADMIN_VALUE: ${{ secrets.KEYCLOAK_DATALAND_ADMIN_VALUE }}
           KEYCLOAK_DATALAND_ADMIN_SALT: ${{ secrets.KEYCLOAK_DATALAND_ADMIN_SALT }}
           DATALAND_BATCH_MANAGER_CLIENT_SECRET: ${{ secrets.DATALAND_BATCH_MANAGER_CLIENT_SECRET }}
+          DATALAND_QA_SERVICE_CLIENT_SECRET: ${{ secrets.DATALAND_QA_SERVICE_CLIENT_SECRET }}
           DATALAND_COMMUNITY_MANAGER_CLIENT_SECRET: ${{ secrets.DATALAND_COMMUNITY_MANAGER_CLIENT_SECRET }}
+          DATALAND_DOCUMENT_MANAGER_CLIENT_SECRET: ${{ secrets.DATALAND_DOCUMENT_MANAGER_CLIENT_SECRET }}
+          DATALAND_EMAIL_SERVICE_CLIENT_SECRET: ${{ secrets.DATALAND_EMAIL_SERVICE_CLIENT_SECRET  }}
           DATALAND_BACKEND_CLIENT_SECRET: ${{ secrets.DATALAND_BACKEND_CLIENT_SECRET }}
           DATALAND_AUTOMATED_QA_SERVICE_CLIENT_SECRET: ${{ secrets.DATALAND_AUTOMATED_QA_SERVICE_CLIENT_SECRET }}
           KEYCLOAK_READER_VALUE: ${{ secrets.KEYCLOAK_READER_VALUE }}
@@ -166,6 +173,7 @@ jobs:
           RABBITMQ_PASS: ${{ secrets.RABBITMQ_PASS }}
           RABBITMQ_PASS_HASH: ${{ secrets.RABBITMQ_PASS_HASH }}
           LOAD_GLEIF_GOLDEN_COPY: ${{ github.event.inputs.loadGleifGoldenCopy }}
+          LOAD_NORTHDATA_GOLDEN_COPY: ${{ github.event.inputs.loadNorthDataGoldenCopy }}
           BACKEND_MIGRATION_BASELINE_VERSION: ${{ vars.BACKEND_MIGRATION_BASELINE_VERSION }}
           COMMUNITY_MANAGER_MIGRATION_BASELINE_VERSION: ${{ vars.COMMUNITY_MANAGER_MIGRATION_BASELINE_VERSION }}
           DOCUMENT_MANAGER_MIGRATION_BASELINE_VERSION: ${{ vars.DOCUMENT_MANAGER_MIGRATION_BASELINE_VERSION }}

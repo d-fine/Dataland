@@ -4,9 +4,7 @@ import org.dataland.communitymanager.openApiClient.api.RequestControllerApi
 import org.dataland.communitymanager.openApiClient.model.RequestStatus
 import org.dataland.communitymanager.openApiClient.model.SingleDataRequest
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
-import org.dataland.e2etests.ADMIN_USER_ID
 import org.dataland.e2etests.BASE_PATH_TO_COMMUNITY_MANAGER
-import org.dataland.e2etests.PREMIUM_USER_ID
 import org.dataland.e2etests.auth.JwtAuthenticationHelper
 import org.dataland.e2etests.auth.TechnicalUser
 import org.dataland.e2etests.utils.ApiAccessor
@@ -60,10 +58,10 @@ class QueryDataRequestsTest {
 
     @Test
     fun `query data requests with data type filter and assert that the expected results are being retrieved`() {
-        val smeDataRequests = requestControllerApi.getDataRequests(
-            dataType = RequestControllerApi.DataTypeGetDataRequests.sme,
+        val vsmeDataRequests = requestControllerApi.getDataRequests(
+            dataType = RequestControllerApi.DataTypeGetDataRequests.vsme,
         ).filter { it.creationTimestamp > timestampBeforePost }
-        assertEquals(0, smeDataRequests.size)
+        assertEquals(0, vsmeDataRequests.size)
 
         val p2pDataRequests = requestControllerApi.getDataRequests(
             dataType = RequestControllerApi.DataTypeGetDataRequests.p2p,
@@ -147,15 +145,19 @@ class QueryDataRequestsTest {
 
     @Test
     fun `query data requests with user id filter and assert that the expected results are being retrieved`() {
-        val dataRequestsByAdmin = requestControllerApi.getDataRequests(userId = ADMIN_USER_ID).filter {
+        val dataRequestsByAdmin = requestControllerApi.getDataRequests(
+            userId = TechnicalUser.Admin.technicalUserId,
+        ).filter {
             it.creationTimestamp > timestampBeforePost
         }
         assertEquals(0, dataRequestsByAdmin.size)
 
-        val dataRequestsByPremiumUser = requestControllerApi.getDataRequests(userId = PREMIUM_USER_ID).filter {
+        val dataRequestsByPremiumUser = requestControllerApi.getDataRequests(
+            userId = TechnicalUser.PremiumUser.technicalUserId,
+        ).filter {
             it.creationTimestamp > timestampBeforePost
         }
         assertEquals(3, dataRequestsByPremiumUser.size)
-        dataRequestsByPremiumUser.forEach { assertEquals(PREMIUM_USER_ID, it.userId) }
+        dataRequestsByPremiumUser.forEach { assertEquals(TechnicalUser.PremiumUser.technicalUserId, it.userId) }
     }
 }

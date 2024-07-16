@@ -51,20 +51,20 @@
 
 <script lang="ts">
 // @ts-nocheck
-import Tree from "primevue/tree";
-import { type TreeNode } from "primevue/treenode";
-import InputText from "primevue/inputtext";
-import OverlayPanel from "primevue/overlaypanel";
-import Checkbox from "primevue/checkbox";
+import Tree from 'primevue/tree';
+import { type TreeNode } from 'primevue/treenode';
+import InputText from 'primevue/inputtext';
+import OverlayPanel from 'primevue/overlaypanel';
+import Checkbox from 'primevue/checkbox';
 
-import { filterNodes, naceCodeMap, naceCodeTree } from "@/components/forms/parts/elements/derived/NaceCodeTree";
-import Tooltip from "primevue/tooltip";
-import { defineComponent, type PropType, ref } from "vue";
-import { assertDefined } from "@/utils/TypeScriptUtils";
+import { filterNodes, naceCodeMap, naceCodeTree } from '@/components/forms/parts/elements/derived/NaceCodeTree';
+import Tooltip from 'primevue/tooltip';
+import { defineComponent, type PropType, ref } from 'vue';
+import { assertDefined } from '@/utils/TypeScriptUtils';
 
 export default defineComponent({
-  name: "NaceCodeSelector",
-  emits: ["update:modelValue"],
+  name: 'NaceCodeSelector',
+  emits: ['update:modelValue'],
   directives: {
     tooltip: Tooltip,
   },
@@ -142,7 +142,7 @@ export default defineComponent({
      */
     updateModelValue(selectedTreeNodeSet: Set<string>) {
       const newModelValue = [...selectedTreeNodeSet].sort((a, b) => a.localeCompare(b));
-      this.$emit("update:modelValue", newModelValue);
+      this.$emit('update:modelValue', newModelValue);
     },
     /**
      * Returns the label of a node with the provided NACE code
@@ -156,7 +156,7 @@ export default defineComponent({
   data() {
     return {
       filteredTreeValues: naceCodeTree,
-      searchFilter: "",
+      searchFilter: '',
       expandedTreeKeys: {},
       selectedTreeNodes: new Set<string>(),
       selectedChildrenCounter: new Map<string, number>(),

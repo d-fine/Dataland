@@ -11,7 +11,7 @@
 
 .p-dialog {
   border-radius: 0;
-  box-shadow: 0 0 14px 0 rgba(0, 0, 0, .1);
+  box-shadow: 0 0 14px 0 rgba(0, 0, 0, 0.1);
   border: 0 none;
   background: $card-background;
   max-width: 80%;
@@ -30,8 +30,11 @@
       color: $card-background;
       border: none;
       background: $brown-lighter;
-      transition: background-color .2s, color .2s, box-shadow .2s;
-      margin-left: .5rem;
+      transition:
+        background-color 0.2s,
+        color 0.2s,
+        box-shadow 0.2s;
+      margin-left: 0.5rem;
       border-radius: 1rem;
 
       &:enabled:hover {
@@ -62,7 +65,7 @@
     text-align: right;
 
     button {
-      margin: 0 .5rem 0 0;
+      margin: 0 0.5rem 0 0;
       width: auto;
     }
   }
@@ -101,27 +104,27 @@
 }
 
 .p-component-overlay-enter {
-  animation: p-component-overlay-enter-animation 150ms forwards
+  animation: p-component-overlay-enter-animation 150ms forwards;
 }
 
 .p-component-overlay-leave {
-  animation: p-component-overlay-leave-animation 150ms forwards
+  animation: p-component-overlay-leave-animation 150ms forwards;
 }
 
 @keyframes p-component-overlay-enter-animation {
   from {
-    background-color: transparent
+    background-color: transparent;
   }
   to {
-    background-color: var(--maskbg)
+    background-color: var(--maskbg);
   }
 }
 
 @keyframes p-component-overlay-leave-animation {
   from {
-    background-color: var(--maskbg)
+    background-color: var(--maskbg);
   }
   to {
-    background-color: transparent
+    background-color: transparent;
   }
 }

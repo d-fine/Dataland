@@ -25,10 +25,10 @@
 </template>
 
 <script lang="ts">
-import LegalPage from "@/components/generics/LegalPage.vue";
+import LegalPage from '@/components/generics/LegalPage.vue';
 
 export default {
-  name: "TheImprint",
+  name: 'TheImprint',
   components: { LegalPage },
 };
 </script>

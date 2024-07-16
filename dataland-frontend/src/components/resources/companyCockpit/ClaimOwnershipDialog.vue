@@ -10,13 +10,13 @@
     v-model:visible="dialogIsVisible"
   >
     <template #header>
-      <h2 v-if="!claimIsSubmitted" class="m-0">Claim dataset ownership for your company.</h2>
-      <h2 v-else class="m-0">Thank you for claiming data ownership for {{ companyName }}.</h2>
+      <h2 v-if="!claimIsSubmitted" class="m-0">Claim ownership for your company.</h2>
+      <h2 v-else class="m-0">Thank you for claiming company ownership for {{ companyName }}.</h2>
     </template>
 
     <div v-if="!claimIsSubmitted">
       <p data-test="claimOwnershipDialogMessage">
-        Are you responsible for the datasets of {{ companyName }}? Claim dataset ownership in order to ensure high
+        Are you responsible for the datasets of {{ companyName }}? Claim company ownership in order to ensure high
         quality and transparency over your company's data.
       </p>
       <p>Feel free to share any additional information with us:</p>
@@ -45,19 +45,19 @@
 </template>
 
 <script lang="ts">
-import PrimeDialog from "primevue/dialog";
-import PrimeButton from "primevue/button";
-import { ApiClientProvider } from "@/services/ApiClients";
-import { assertDefined } from "@/utils/TypeScriptUtils";
-import { inject, defineComponent } from "vue";
-import type Keycloak from "keycloak-js";
-import { FormKit } from "@formkit/vue";
+import PrimeDialog from 'primevue/dialog';
+import PrimeButton from 'primevue/button';
+import { ApiClientProvider } from '@/services/ApiClients';
+import { assertDefined } from '@/utils/TypeScriptUtils';
+import { inject, defineComponent } from 'vue';
+import type Keycloak from 'keycloak-js';
+import { FormKit } from '@formkit/vue';
 
 export default defineComponent({
-  name: "ClaimOwnershipDialog",
+  name: 'ClaimOwnershipDialog',
   setup() {
     return {
-      getKeycloakPromise: inject<() => Promise<Keycloak>>("getKeycloakPromise"),
+      getKeycloakPromise: inject<() => Promise<Keycloak>>('getKeycloakPromise'),
     };
   },
   components: {
@@ -67,7 +67,7 @@ export default defineComponent({
   },
   data() {
     return {
-      claimOwnershipMessage: "",
+      claimOwnershipMessage: '',
       dialogIsVisible: false,
     };
   },
@@ -91,21 +91,21 @@ export default defineComponent({
       default: false,
     },
   },
-  emits: ["claimSubmitted", "closeDialog"],
+  emits: ['claimSubmitted', 'closeDialog'],
   methods: {
     /**
-     * Makes the API request in order to post the request for data ownership
+     * Makes the API request in order to post the request for company ownership
      */
     async submitInput(): Promise<void> {
-      const companyDataControllerApi = new ApiClientProvider(assertDefined(this.getKeycloakPromise)()).backendClients
-        .companyDataController;
+      const companyRolesControllerApi = new ApiClientProvider(assertDefined(this.getKeycloakPromise)()).apiClients
+        .companyRolesController;
       try {
-        const axiosResponse = await companyDataControllerApi.postDataOwnershipRequest(
+        const axiosResponse = await companyRolesControllerApi.postCompanyOwnershipRequest(
           this.companyId,
-          this.claimOwnershipMessage ? this.claimOwnershipMessage : undefined,
+          this.claimOwnershipMessage ? this.claimOwnershipMessage : undefined
         );
         if (axiosResponse.status == 200) {
-          this.$emit("claimSubmitted");
+          this.$emit('claimSubmitted');
         }
       } catch (error) {
         console.error(error);
@@ -116,7 +116,7 @@ export default defineComponent({
      */
     closeDialog(): void {
       this.dialogIsVisible = false;
-      this.$emit("closeDialog");
+      this.$emit('closeDialog');
     },
   },
   watch: {

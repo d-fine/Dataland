@@ -60,7 +60,7 @@
                   </div>
                   <div class="summary-section border-bottom py-5">
                     <h6 class="summary-section-heading m-0">{{ summarySectionFrameworksHeading }}</h6>
-                    <p class="summary-section-data m-0 mt-3">{{ humanizedSelectedFrameworks.join(", ") }}</p>
+                    <p class="summary-section-data m-0 mt-3">{{ humanizedSelectedFrameworks.join(', ') }}</p>
                   </div>
 
                   <div
@@ -70,7 +70,7 @@
                   >
                     <h6 class="summary-section-heading m-0" data-test="identifiersHeading">
                       <em class="material-icons info-icon green-text">check_circle</em>
-                      {{ summarySectionIdentifiersHeading(acceptedCompanyIdentifiers, "REQUESTED") }}
+                      {{ summarySectionIdentifiersHeading(acceptedCompanyIdentifiers, 'REQUESTED') }}
                     </h6>
                     <p class="summary-section-data m-0 mt-3" data-test="identifiersList">
                       <template v-for="identifier in acceptedCompanyIdentifiers" :key="identifier">
@@ -86,7 +86,7 @@
                   >
                     <h6 class="summary-section-heading m-0" data-test="identifiersHeading">
                       <em class="material-icons info-icon red-text">error</em>
-                      {{ summarySectionIdentifiersHeading(rejectedCompanyIdentifiers, "REJECTED") }}
+                      {{ summarySectionIdentifiersHeading(rejectedCompanyIdentifiers, 'REJECTED') }}
                     </h6>
                     <p class="summary-section-data m-0 mt-3" data-test="identifiersList">
                       <template v-for="identifier in rejectedCompanyIdentifiers" :key="identifier">
@@ -205,29 +205,29 @@
 
 <script lang="ts">
 // @ts-nocheck
-import { FormKit } from "@formkit/vue";
-import PrimeButton from "primevue/button";
-import { defineComponent, inject } from "vue";
-import type Keycloak from "keycloak-js";
-import { type DataTypeEnum, type ErrorResponse } from "@clients/backend";
-import { ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE } from "@/utils/Constants";
-import TheContent from "@/components/generics/TheContent.vue";
-import TheHeader from "@/components/generics/TheHeader.vue";
-import AuthenticationWrapper from "@/components/wrapper/AuthenticationWrapper.vue";
-import TheFooter from "@/components/generics/TheNewFooter.vue";
-import contentData from "@/assets/content.json";
-import type { Content, Page } from "@/types/ContentTypes";
-import MultiSelectFormFieldBindData from "@/components/forms/parts/fields/MultiSelectFormFieldBindData.vue";
-import { assertDefined } from "@/utils/TypeScriptUtils";
-import { ApiClientProvider } from "@/services/ApiClients";
-import { humanizeStringOrNumber } from "@/utils/StringFormatter";
-import { AxiosError } from "axios";
-import BasicFormSection from "@/components/general/BasicFormSection.vue";
-import ToggleChipFormInputs from "@/components/general/ToggleChipFormInputs.vue";
-import { type BulkDataRequest, type BulkDataRequestDataTypesEnum } from "@clients/communitymanager";
+import { FormKit } from '@formkit/vue';
+import PrimeButton from 'primevue/button';
+import { defineComponent, inject } from 'vue';
+import type Keycloak from 'keycloak-js';
+import { type DataTypeEnum, type ErrorResponse } from '@clients/backend';
+import { FRAMEWORKS_WITH_VIEW_PAGE } from '@/utils/Constants';
+import TheContent from '@/components/generics/TheContent.vue';
+import TheHeader from '@/components/generics/TheHeader.vue';
+import AuthenticationWrapper from '@/components/wrapper/AuthenticationWrapper.vue';
+import TheFooter from '@/components/generics/TheNewFooter.vue';
+import contentData from '@/assets/content.json';
+import type { Content, Page } from '@/types/ContentTypes';
+import MultiSelectFormFieldBindData from '@/components/forms/parts/fields/MultiSelectFormFieldBindData.vue';
+import { assertDefined } from '@/utils/TypeScriptUtils';
+import { ApiClientProvider } from '@/services/ApiClients';
+import { humanizeStringOrNumber } from '@/utils/StringFormatter';
+import { AxiosError } from 'axios';
+import BasicFormSection from '@/components/general/BasicFormSection.vue';
+import ToggleChipFormInputs from '@/components/general/ToggleChipFormInputs.vue';
+import { type BulkDataRequest, type BulkDataRequestDataTypesEnum } from '@clients/communitymanager';
 
 export default defineComponent({
-  name: "BulkDataRequest",
+  name: 'BulkDataRequest',
   components: {
     MultiSelectFormFieldBindData,
     AuthenticationWrapper,
@@ -241,34 +241,34 @@ export default defineComponent({
   },
   setup() {
     return {
-      getKeycloakPromise: inject<() => Promise<Keycloak>>("getKeycloakPromise"),
+      getKeycloakPromise: inject<() => Promise<Keycloak>>('getKeycloakPromise'),
     };
   },
 
   data() {
     const content: Content = contentData;
-    const footerPage: Page | undefined = content.pages.find((page) => page.url === "/");
+    const footerPage: Page | undefined = content.pages.find((page) => page.url === '/');
     const footerContent = footerPage?.sections;
     return {
       bulkDataRequestModel: {},
       availableFrameworks: [] as { value: DataTypeEnum; label: string }[],
       selectedFrameworks: [] as Array<DataTypeEnum>,
-      identifiersInString: "",
+      identifiersInString: '',
       identifiers: [] as Array<string>,
       acceptedCompanyIdentifiers: [] as Array<string>,
       rejectedCompanyIdentifiers: [] as Array<string>,
       submittingSucceeded: false,
       submittingInProgress: false,
       postBulkDataRequestObjectProcessed: false,
-      message: "",
+      message: '',
       footerContent,
       selectedReportingPeriodsError: false,
       reportingPeriods: [
-        { name: "2024", value: false },
-        { name: "2023", value: false },
-        { name: "2022", value: false },
-        { name: "2021", value: false },
-        { name: "2020", value: false },
+        { name: '2024', value: false },
+        { name: '2023', value: false },
+        { name: '2022', value: false },
+        { name: '2021', value: false },
+        { name: '2020', value: false },
       ],
     };
   },
@@ -283,15 +283,15 @@ export default defineComponent({
         .map((reportingPeriod) => reportingPeriod.name);
     },
     humanizedReportingPeriods(): string {
-      return this.selectedReportingPeriods.join(", ");
+      return this.selectedReportingPeriods.join(', ');
     },
     summarySectionReportingPeriodsHeading(): string {
       const len = this.reportingPeriods.filter((reportingPeriod) => reportingPeriod.value).length;
-      return `${len} REPORTING PERIOD${len > 1 ? "S" : ""}`;
+      return `${len} REPORTING PERIOD${len > 1 ? 'S' : ''}`;
     },
     summarySectionFrameworksHeading(): string {
       const len = this.selectedFrameworks.length;
-      return `${len} FRAMEWORK${len > 1 ? "S" : ""}`;
+      return `${len} FRAMEWORK${len > 1 ? 'S' : ''}`;
     },
   },
 
@@ -311,10 +311,10 @@ export default defineComponent({
      * @param statusText optional text identifying the status of the heading
      * @returns a formatted heading
      */
-    summarySectionIdentifiersHeading(items: string[], statusText = ""): string {
+    summarySectionIdentifiersHeading(items: string[], statusText = ''): string {
       const numberOfItems = items.length;
-      const messageSegments = [items.length, statusText, `IDENTIFIER${numberOfItems > 1 ? "S" : ""}`];
-      return messageSegments.filter((segment) => !!segment).join(" ");
+      const messageSegments = [items.length, statusText, `IDENTIFIER${numberOfItems > 1 ? 'S' : ''}`];
+      return messageSegments.filter((segment) => !!segment).join(' ');
     },
     /**
      * Remove framework from selected frameworks from array
@@ -338,10 +338,10 @@ export default defineComponent({
      * Converts the string inside the identifiers field into a list of identifiers
      */
     processInput() {
-      const uniqueIdentifiers = new Set(this.identifiersInString.replace(/(\r\n|\n|\r|;| )/gm, ",").split(","));
-      uniqueIdentifiers.delete("");
+      const uniqueIdentifiers = new Set(this.identifiersInString.replace(/(\r\n|\n|\r|;| )/gm, ',').split(','));
+      uniqueIdentifiers.delete('');
       this.identifiers = [...uniqueIdentifiers];
-      this.identifiersInString = this.identifiers.join(", ");
+      this.identifiersInString = this.identifiers.join(', ');
     },
 
     /**
@@ -368,7 +368,7 @@ export default defineComponent({
           this.message = responseMessages ? responseMessages[0].message : error.message;
         } else {
           this.message =
-            "An unexpected error occurred. Please try again or contact the support team if the issue persists.";
+            'An unexpected error occurred. Please try again or contact the support team if the issue persists.';
         }
       } finally {
         this.submittingInProgress = false;
@@ -380,7 +380,7 @@ export default defineComponent({
      * Populates the availableFrameworks property in the format expected by the dropdown filter
      */
     retrieveAvailableFrameworks() {
-      this.availableFrameworks = ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE.map((dataTypeEnum: DataTypeEnum) => {
+      this.availableFrameworks = FRAMEWORKS_WITH_VIEW_PAGE.map((dataTypeEnum: DataTypeEnum) => {
         return {
           value: dataTypeEnum,
           label: humanizeStringOrNumber(dataTypeEnum),
@@ -392,7 +392,7 @@ export default defineComponent({
      * Go to RequestedDatasetsPage
      */
     goToMyRequests() {
-      void this.$router.push("/requests");
+      void this.$router.push('/requests');
     },
   },
   mounted() {

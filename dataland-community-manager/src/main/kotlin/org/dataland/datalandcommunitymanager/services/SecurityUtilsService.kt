@@ -1,6 +1,8 @@
 package org.dataland.datalandcommunitymanager.services
 
+import org.dataland.datalandcommunitymanager.model.companyRoles.CompanyRole
 import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
+import org.dataland.datalandcommunitymanager.repositories.CompanyRoleAssignmentRepository
 import org.dataland.datalandcommunitymanager.repositories.DataRequestRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.core.context.SecurityContextHolder
@@ -15,7 +17,23 @@ import java.util.UUID
 @Service("SecurityUtilsService")
 class SecurityUtilsService(
     @Autowired private val dataRequestRepository: DataRequestRepository,
+    @Autowired private val companyRoleAssignmentRepository: CompanyRoleAssignmentRepository,
 ) {
+    private val roleModificationPermissionsMap = mapOf(
+        CompanyRole.CompanyOwner to enumValues<CompanyRole>().toList(),
+        CompanyRole.DataUploader to emptyList(),
+        CompanyRole.MemberAdmin to listOf(CompanyRole.MemberAdmin, CompanyRole.Member),
+        CompanyRole.Member to emptyList(),
+    )
+
+    /**
+     * Returns true if and only if the currently authenticated user is asking for him/herself
+     */
+    fun isUserRequestingForOwnId(userIdRequester: String): Boolean {
+        val userIdAuthenticated = SecurityContextHolder.getContext().authentication.name
+        return userIdAuthenticated == userIdRequester
+    }
+
     /**
      * Returns true if and only if the currently authenticated user is asking for his/her own request
      */
@@ -70,5 +88,40 @@ class SecurityUtilsService(
             currentRequestStatus == RequestStatus.Open ||
                 (currentRequestStatus == RequestStatus.Answered && requestStatusToPatch == RequestStatus.Open)
             )
+    }
+
+    /**
+     * Returns true if the user is member of the company
+     * @param companyId dataland companyId
+     */
+    @Transactional
+    fun isUserMemberOfTheCompany(
+        companyId: UUID?,
+    ): Boolean {
+        val userId = SecurityContextHolder.getContext().authentication.name
+        if (companyId == null || userId == null) return false
+        return companyRoleAssignmentRepository.getCompanyRoleAssignmentsByProvidedParameters(
+            companyId = companyId.toString(), userId = userId, companyRole = null,
+        ).isNotEmpty()
+    }
+
+    /**
+     * Returns true if the user has the rights to add/remove the companyRole
+     * @param companyId dataland companyId
+     * @param companyRoleToModify the companyRole to add/remove
+     */
+    @Transactional
+    fun hasUserPermissionToModifyTheCompanyRole(
+        companyId: UUID,
+        companyRoleToModify: CompanyRole,
+    ): Boolean {
+        val userId = SecurityContextHolder.getContext().authentication.name ?: return false
+        val userCompanyRoles =
+            companyRoleAssignmentRepository.getCompanyRoleAssignmentsByProvidedParameters(
+                companyId = companyId.toString(), userId = userId, companyRole = null,
+            )
+        return userCompanyRoles.any {
+            roleModificationPermissionsMap[it.companyRole]?.contains(companyRoleToModify) == true
+        }
     }
 }

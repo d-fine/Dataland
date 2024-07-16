@@ -1,54 +1,54 @@
-import { describeIf } from "@e2e/support/TestUtility";
-import { searchBasicCompanyInformationForDataType } from "@e2e/utils/GeneralApiUtils";
-import { getKeycloakToken } from "@e2e/utils/Auth";
-import { reader_name, reader_pw } from "@e2e/utils/Cypress";
-import { checkFooter } from "@sharedUtils/ElementChecks";
-import { ARRAY_OF_PUBLIC_FRAMEWORKS, PRIVATE_FRAMEWORKS } from "@/utils/Constants";
-import { type DataTypeEnum } from "@clients/backend";
+import { describeIf } from '@e2e/support/TestUtility';
+import { searchBasicCompanyInformationForDataType } from '@e2e/utils/GeneralApiUtils';
+import { getKeycloakToken } from '@e2e/utils/Auth';
+import { reader_name, reader_pw } from '@e2e/utils/Cypress';
+import { checkFooter } from '@sharedUtils/ElementChecks';
+import { PUBLIC_FRAMEWORKS, PRIVATE_FRAMEWORKS } from '@/utils/Constants';
+import { type DataTypeEnum } from '@clients/backend';
 
 describeIf(
-  "As a user, I expect the footer section to be present and contain relevant legal links for public frameworks",
+  'As a user, I expect the footer section to be present and contain relevant legal links for public frameworks',
   {
-    executionEnvironments: ["developmentLocal", "ci", "developmentCd"],
+    executionEnvironments: ['developmentLocal', 'ci', 'developmentCd'],
     onlyExecuteWhenEurodatIsLive: false,
   },
   () => {
-    describe("Checks that the footer section is present on many pages", () => {
+    describe('Checks that the footer section is present on many pages', () => {
       beforeEach(() => {
         cy.ensureLoggedIn();
       });
 
       it(`Checks that the footer is present on /companies`, () => {
-        cy.visitAndCheckAppMount("/companies");
+        cy.visitAndCheckAppMount('/companies');
         checkFooter();
       });
-      ARRAY_OF_PUBLIC_FRAMEWORKS.forEach((framework) => {
+      PUBLIC_FRAMEWORKS.forEach((framework) => {
         checkFooterComponent(framework);
       });
     });
-  },
+  }
 );
 describeIf(
-  "As a user, I expect the footer section to be present and contain relevant legal links for private frameworks",
+  'As a user, I expect the footer section to be present and contain relevant legal links for private frameworks',
   {
-    executionEnvironments: ["developmentLocal", "ci", "developmentCd"],
+    executionEnvironments: ['developmentLocal', 'ci', 'developmentCd'],
     onlyExecuteWhenEurodatIsLive: true,
   },
   () => {
-    describe("Checks that the footer section is present on many pages", () => {
+    describe('Checks that the footer section is present on many pages', () => {
       beforeEach(() => {
         cy.ensureLoggedIn();
       });
 
       it(`Checks that the footer is present on /companies`, () => {
-        cy.visitAndCheckAppMount("/companies");
+        cy.visitAndCheckAppMount('/companies');
         checkFooter();
       });
       PRIVATE_FRAMEWORKS.forEach((framework) => {
         checkFooterComponent(framework);
       });
     });
-  },
+  }
 );
 
 /**

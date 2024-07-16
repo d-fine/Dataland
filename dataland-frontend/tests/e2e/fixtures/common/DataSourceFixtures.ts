@@ -1,6 +1,6 @@
-import { faker } from "@faker-js/faker";
-import { type ExtendedDocumentReference } from "@clients/backend";
-import { pickOneElement, type ReferencedDocuments } from "@e2e/fixtures/FixtureUtils";
+import { faker } from '@faker-js/faker';
+import { type ExtendedDocumentReference } from '@clients/backend';
+import { pickOneElement, type ReferencedDocuments } from '@e2e/fixtures/FixtureUtils';
 
 /**
  * Generates a random data source referencing a random report from the provided referencedReports

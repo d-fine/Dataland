@@ -5,10 +5,10 @@
 }
 form {
   text-align: left;
-  [data-type="text"],
-  [data-type="select"],
-  [data-type="number"],
-  [data-type="textarea"] {
+  [data-type='text'],
+  [data-type='select'],
+  [data-type='number'],
+  [data-type='textarea'] {
     .formkit-inner {
       font-size: $input-text-fs;
       border-radius: 0;
@@ -34,14 +34,14 @@ form {
 input {
   font-family: $ibm-plex-sans;
   font-size: $input-text-fs;
-  &[type="submit"],
-  &[type="reset"] {
+  &[type='submit'],
+  &[type='reset'] {
     border-radius: $radius-none;
   }
 }
 
-input[type="checkbox"],
-input[type="radio"] {
+input[type='checkbox'],
+input[type='radio'] {
   display: grid;
   place-content: center;
   -webkit-appearance: none;
@@ -55,7 +55,7 @@ input[type="radio"] {
   border-radius: 50%;
   cursor: pointer;
   &::before {
-    content: "";
+    content: '';
     width: 5px;
     height: 10px;
     border: solid $input-text-border-hover;
@@ -344,7 +344,7 @@ input[type="radio"] {
     .p-checkbox {
       margin-right: 0.5rem;
       &::after {
-        content: "Select All";
+        content: 'Select All';
         margin-left: 0.5rem;
         z-index: -2;
       }
@@ -414,10 +414,10 @@ input[type="radio"] {
   .p-inputswitch-slider {
     background: $inputswitch-singlecolor-slider-bg;
     transition:
-            background-color 0.2s,
-            color 0.2s,
-            border-color 0.2s,
-            box-shadow 0.2s;
+      background-color 0.2s,
+      color 0.2s,
+      border-color 0.2s,
+      box-shadow 0.2s;
     border-radius: 30px;
     &::before {
       background: $bg-text-primary;
@@ -491,8 +491,8 @@ input[type="radio"] {
   }
 }
 .uploadFormWrapper {
-  input[type="checkbox"],
-  input[type="radio"] {
+  input[type='checkbox'],
+  input[type='radio'] {
     display: grid;
     place-content: center;
     margin: 0;
@@ -501,15 +501,15 @@ input[type="radio"] {
     cursor: pointer;
     margin-right: 10px;
   }
-  input[type="checkbox"] {
+  input[type='checkbox'] {
     background-color: $input-text-bg;
     border: 2px solid $input-checked-color;
     border-radius: 2px;
   }
-  input[type="checkbox"]:not(.p-radiobutton):checked {
+  input[type='checkbox']:not(.p-radiobutton):checked {
     background-color: $input-checked-color;
   }
-  input[type="radio"],
+  input[type='radio'],
   input.p-radiobutton {
     background-color: white;
     border: 2px solid $input-label-color;
@@ -522,9 +522,9 @@ input[type="radio"] {
   input.p-radiobutton:checked {
     border: 3px solid $input-label-color;
   }
-  input[type="checkbox"]::before,
-  input[type="radio"]::before {
-    content: "";
+  input[type='checkbox']::before,
+  input[type='radio']::before {
+    content: '';
     width: 5px;
     height: 7px;
     border-width: 0 2px 2px 0;
@@ -532,21 +532,21 @@ input[type="radio"] {
     margin-top: -2px;
     display: none;
   }
-  input[type="checkbox"]::before {
+  input[type='checkbox']::before {
     border-style: solid;
     border-color: $input-text-bg;
   }
-  input[type="radio"]::before,
+  input[type='radio']::before,
   input.p-radiobutton::before {
     border-style: solid;
     border-color: $input-label-color;
   }
-  input[type="checkbox"]:checked::before,
-  input[type="radio"]:checked::before {
+  input[type='checkbox']:checked::before,
+  input[type='radio']:checked::before {
     display: block;
   }
-  label[data-checked="true"] {
-    input[type="radio"]::before,
+  label[data-checked='true'] {
+    input[type='radio']::before,
     input.p-radiobutton::before {
       display: block;
     }
@@ -647,7 +647,7 @@ input[type="radio"] {
       color: #ee1a1a;
     }
     .asterisk:before {
-      content: " ";
+      content: ' ';
       display: inline-block;
       width: 0.25rem;
     }
@@ -674,7 +674,7 @@ input[type="radio"] {
     margin-bottom: 1rem;
   }
   .formkit-message {
-    &[data-message-type="ui"] {
+    &[data-message-type='ui'] {
       text-align: center;
       width: 100%;
       padding: 2rem;
@@ -742,7 +742,7 @@ input[type="radio"] {
   }
 }
 .no-ui-message {
-  [data-message-type="ui"] {
+  [data-message-type='ui'] {
     display: none;
   }
 }
@@ -850,10 +850,11 @@ input[type="radio"] {
 .p-input-filled .p-radiobutton .p-radiobutton-box.p-highlight {
   background: #e67f3f;
 }
-.header-separator, p.header-separator {
+.header-separator,
+p.header-separator {
   margin: 0.5rem 0;
   padding: 0.5rem 0;
-  border-top: 1px solid #E0DFDE;
+  border-top: 1px solid #e0dfde;
 }
 .red-border {
   border: 1px solid $input-error;

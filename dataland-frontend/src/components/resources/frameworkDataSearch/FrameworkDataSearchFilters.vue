@@ -56,31 +56,31 @@
 </style>
 
 <script lang="ts">
-import { defineComponent, inject, ref } from "vue";
-import { type ApiClientProvider } from "@/services/ApiClients";
-import { getCountryNameFromCountryCode } from "@/utils/CountryCodeConverter";
-import FrameworkDataSearchDropdownFilter from "@/components/resources/frameworkDataSearch/FrameworkDataSearchDropdownFilter.vue";
-import { type DataTypeEnum } from "@clients/backend";
-import { humanizeStringOrNumber } from "@/utils/StringFormatter";
-import { assertDefined } from "@/utils/TypeScriptUtils";
-import { ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE } from "@/utils/Constants";
+import { defineComponent, inject, ref } from 'vue';
+import { type ApiClientProvider } from '@/services/ApiClients';
+import { getCountryNameFromCountryCode } from '@/utils/CountryCodeConverter';
+import FrameworkDataSearchDropdownFilter from '@/components/resources/frameworkDataSearch/FrameworkDataSearchDropdownFilter.vue';
+import { type DataTypeEnum } from '@clients/backend';
+import { humanizeStringOrNumber } from '@/utils/StringFormatter';
+import { assertDefined } from '@/utils/TypeScriptUtils';
+import { FRAMEWORKS_WITH_VIEW_PAGE } from '@/utils/Constants';
 import {
   type CountryCodeSelectableItem,
   type FrameworkSelectableItem,
   type SelectableItem,
-} from "@/utils/FrameworkDataSearchDropDownFilterTypes";
-import { getFrontendFrameworkDefinition } from "@/frameworks/FrontendFrameworkRegistry";
+} from '@/utils/FrameworkDataSearchDropDownFilterTypes';
+import { getFrontendFrameworkDefinition } from '@/frameworks/FrontendFrameworkRegistry';
 
 export default defineComponent({
-  name: "FrameworkDataSearchFilters",
+  name: 'FrameworkDataSearchFilters',
   components: { FrameworkDataSearchDropdownFilter },
-  emits: ["update:selectedCountryCodes", "update:selectedFrameworks", "update:selectedSectors"],
+  emits: ['update:selectedCountryCodes', 'update:selectedFrameworks', 'update:selectedSectors'],
   setup() {
     return {
       sectorFilter: ref(),
       countryFilter: ref(),
       frameworkFilter: ref(),
-      apiClientProvider: inject<ApiClientProvider>("apiClientProvider"),
+      apiClientProvider: inject<ApiClientProvider>('apiClientProvider'),
     };
   },
   props: {
@@ -112,39 +112,39 @@ export default defineComponent({
     selectedCountriesInt: {
       get(): Array<CountryCodeSelectableItem> {
         return this.availableCountries.filter((countryCodeSelectableItem) =>
-          this.selectedCountryCodes.includes(countryCodeSelectableItem.countryCode),
+          this.selectedCountryCodes.includes(countryCodeSelectableItem.countryCode)
         );
       },
       set(newValue: Array<CountryCodeSelectableItem>) {
         this.$emit(
-          "update:selectedCountryCodes",
-          newValue.map((countryCodeSelectableItem) => countryCodeSelectableItem.countryCode),
+          'update:selectedCountryCodes',
+          newValue.map((countryCodeSelectableItem) => countryCodeSelectableItem.countryCode)
         );
       },
     },
     selectedFrameworksInt: {
       get(): Array<FrameworkSelectableItem> {
         return this.availableFrameworks.filter((frameworkSelectableItem) =>
-          this.selectedFrameworks.includes(frameworkSelectableItem.frameworkDataType),
+          this.selectedFrameworks.includes(frameworkSelectableItem.frameworkDataType)
         );
       },
       set(newValue: Array<FrameworkSelectableItem>) {
         this.$emit(
-          "update:selectedFrameworks",
-          newValue.map((frameworkSelectableItem) => frameworkSelectableItem.frameworkDataType),
+          'update:selectedFrameworks',
+          newValue.map((frameworkSelectableItem) => frameworkSelectableItem.frameworkDataType)
         );
       },
     },
     selectedSectorsInt: {
       get(): Array<SelectableItem> {
         return this.availableSectors.filter((selectableItem) =>
-          this.selectedSectors.includes(selectableItem.displayName),
+          this.selectedSectors.includes(selectableItem.displayName)
         );
       },
       set(newValue: Array<SelectableItem>) {
         this.$emit(
-          "update:selectedSectors",
-          newValue.map((selectableItem) => selectableItem.displayName),
+          'update:selectedSectors',
+          newValue.map((selectableItem) => selectableItem.displayName)
         );
       },
     },
@@ -199,7 +199,7 @@ export default defineComponent({
      * Populates the availableFrameworks property in the format expected by the dropdown filter
      */
     retrieveAvailableFrameworks() {
-      this.availableFrameworks = ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE.map((dataTypeEnum) => {
+      this.availableFrameworks = FRAMEWORKS_WITH_VIEW_PAGE.map((dataTypeEnum) => {
         let displayName = humanizeStringOrNumber(dataTypeEnum);
         const frameworkDefinition = getFrontendFrameworkDefinition(dataTypeEnum);
         if (frameworkDefinition) {

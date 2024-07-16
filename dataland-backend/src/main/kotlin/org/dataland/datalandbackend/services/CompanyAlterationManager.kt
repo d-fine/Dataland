@@ -39,10 +39,12 @@ class CompanyAlterationManager(
             companyId = companyId,
             companyName = companyInformation.companyName,
             companyAlternativeNames = companyInformation.companyAlternativeNames,
+            companyContactDetails = companyInformation.companyContactDetails,
             companyLegalForm = companyInformation.companyLegalForm,
             headquarters = companyInformation.headquarters,
             headquartersPostalCode = companyInformation.headquartersPostalCode,
             sector = companyInformation.sector,
+            sectorCodeWz = companyInformation.sectorCodeWz,
             identifiers = mutableListOf(),
             dataRegisteredByDataland = mutableListOf(),
             countryCode = companyInformation.countryCode,
@@ -129,15 +131,18 @@ class CompanyAlterationManager(
      * @param patch the patch to apply to the company
      * @return the updated company information object
      */
+    @Suppress("CyclomaticComplexMethod")
     @Transactional
     fun patchCompany(companyId: String, patch: CompanyInformationPatch): StoredCompanyEntity {
         val companyEntity = companyQueryManager.getCompanyById(companyId)
         logger.info("Patching Company ${companyEntity.companyName} with ID $companyId")
         patch.companyName?.let { companyEntity.companyName = it }
+        patch.companyContactDetails?.let { companyEntity.companyContactDetails = it }
         patch.companyLegalForm?.let { companyEntity.companyLegalForm = it }
         patch.headquarters?.let { companyEntity.headquarters = it }
         patch.headquartersPostalCode?.let { companyEntity.headquartersPostalCode = it }
         patch.sector?.let { companyEntity.sector = it }
+        patch.sectorCodeWz?.let { companyEntity.sectorCodeWz = it }
         patch.countryCode?.let { companyEntity.countryCode = it }
         patch.website?.let { companyEntity.website = it }
         patch.isTeaserCompany?.let { companyEntity.isTeaserCompany = it }
@@ -171,10 +176,12 @@ class CompanyAlterationManager(
         val storedCompanyEntity = companyQueryManager.getCompanyById(companyId)
         logger.info("Updating Company ${storedCompanyEntity.companyName} with ID $companyId")
         storedCompanyEntity.companyName = companyInformation.companyName
+        storedCompanyEntity.companyContactDetails = companyInformation.companyContactDetails
         storedCompanyEntity.companyLegalForm = companyInformation.companyLegalForm
         storedCompanyEntity.headquarters = companyInformation.headquarters
         storedCompanyEntity.headquartersPostalCode = companyInformation.headquartersPostalCode
         storedCompanyEntity.sector = companyInformation.sector
+        storedCompanyEntity.sectorCodeWz = companyInformation.sectorCodeWz
         storedCompanyEntity.countryCode = companyInformation.countryCode
         storedCompanyEntity.website = companyInformation.website
         storedCompanyEntity.isTeaserCompany = companyInformation.isTeaserCompany ?: false

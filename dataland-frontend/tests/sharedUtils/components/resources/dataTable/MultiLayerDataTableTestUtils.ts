@@ -5,7 +5,7 @@
  * @returns the table row element
  */
 export function getSectionHead(label: string, isExpectedToBeVisible = true): Cypress.Chainable {
-  return cy.get(`tr[data-section-label='${label}']${isExpectedToBeVisible ? ":visible" : ""}`);
+  return cy.get(`tr[data-section-label='${label}']${isExpectedToBeVisible ? ':visible' : ''}`);
 }
 
 /**
@@ -17,7 +17,7 @@ export function getSectionHead(label: string, isExpectedToBeVisible = true): Cyp
  */
 export function getCellValueContainer(label: string, datasetIdx = 0, isExpectedToBeVisible = true): Cypress.Chainable {
   return cy.get(
-    `td[data-cell-label='${label}'][data-dataset-index='${datasetIdx}']${isExpectedToBeVisible ? ":visible" : ""}`,
+    `td[data-cell-label='${label}'][data-dataset-index='${datasetIdx}']${isExpectedToBeVisible ? ':visible' : ''}`
   );
 }
 
@@ -39,13 +39,13 @@ export function getCellRowHeaderContainer(label: string): Cypress.Chainable {
  */
 export function getSectionHeadAndCheckIconForHiddenDisplay(
   label: string,
-  isIconExpectedToBeVisible: boolean,
+  isIconExpectedToBeVisible: boolean
 ): Cypress.Chainable {
   const sectionHead = getSectionHead(label);
   if (isIconExpectedToBeVisible) {
-    sectionHead.find("i[data-test=hidden-icon]").should("be.visible");
+    sectionHead.find('i[data-test=hidden-icon]').should('be.visible');
   } else {
-    sectionHead.find("i[data-test=hidden-icon]").should("not.exist");
+    sectionHead.find('i[data-test=hidden-icon]').should('not.exist');
   }
   return getSectionHead(label);
 }
@@ -61,13 +61,13 @@ export function getSectionHeadAndCheckIconForHiddenDisplay(
 export function getCellValueContainerAndCheckIconForHiddenDisplay(
   label: string,
   isIconExpectedToBeVisible: boolean,
-  datasetIdx = 0,
+  datasetIdx = 0
 ): Cypress.Chainable {
   const cellValueContainer = getCellValueContainer(label, datasetIdx);
   if (isIconExpectedToBeVisible) {
-    cellValueContainer.find("i[data-test=hidden-icon]").should("be.visible");
+    cellValueContainer.find('i[data-test=hidden-icon]').should('be.visible');
   } else {
-    cellValueContainer.find("i[data-test=hidden-icon]").should("not.exist");
+    cellValueContainer.find('i[data-test=hidden-icon]').should('not.exist');
   }
   return getCellValueContainer(label, datasetIdx);
 }
@@ -76,9 +76,9 @@ export function getCellValueContainerAndCheckIconForHiddenDisplay(
  * @param reportingYear year to check
  */
 export function checkReportingYearToolTip(reportingYear: string): void {
-  const expectedTextInToolTip = "Dataset published on Dataland:";
-  cy.get(`.material-icons[title="${reportingYear}"]`).trigger("mouseenter", "center");
-  cy.get(".p-tooltip").should("be.visible").contains(expectedTextInToolTip);
-  cy.get(`.material-icons[title="${reportingYear}"]`).trigger("mouseleave");
-  cy.get(".p-tooltip").should("not.exist");
+  const expectedTextInToolTip = 'Publication date of the dataset on Dataland:';
+  cy.get(`.material-icons[title="${reportingYear}"]`).trigger('mouseenter', 'center');
+  cy.get('.p-tooltip').should('be.visible').contains(expectedTextInToolTip);
+  cy.get(`.material-icons[title="${reportingYear}"]`).trigger('mouseleave');
+  cy.get('.p-tooltip').should('not.exist');
 }

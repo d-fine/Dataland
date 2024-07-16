@@ -1,11 +1,11 @@
-import { login } from "@e2e/utils/Auth";
+import { login } from '@e2e/utils/Auth';
 
-describe("As a user I expect Dataland to use PKCE flow to prevent auth loss", () => {
+describe('As a user I expect Dataland to use PKCE flow to prevent auth loss', () => {
   it(`Test that code_verifier is sent along with token request`, () => {
-    cy.intercept("/keycloak/realms/datalandsecurity/protocol/openid-connect/token").as("tokenRequest");
+    cy.intercept('/keycloak/realms/datalandsecurity/protocol/openid-connect/token').as('tokenRequest');
     login();
-    cy.wait("@tokenRequest", { timeout: Cypress.env("short_timeout_in_ms") as number })
-      .its("request.body")
-      .should("contain", "code_verifier");
+    cy.wait('@tokenRequest', { timeout: Cypress.env('short_timeout_in_ms') as number })
+      .its('request.body')
+      .should('contain', 'code_verifier');
   });
 });

@@ -1,5 +1,5 @@
-import { ensureLoggedIn, getKeycloakToken } from "@e2e/utils/Auth";
-import { browserThen } from "@e2e/utils/Cypress";
+import { ensureLoggedIn, getKeycloakToken } from '@e2e/utils/Auth';
+import { browserThen } from '@e2e/utils/Cypress';
 
 declare global {
   // eslint-disable-next-line @typescript-eslint/no-namespace
@@ -19,10 +19,10 @@ declare global {
  * @returns the cypress chainable
  */
 export function visitAndCheckAppMount(endpoint: string): Cypress.Chainable<JQuery> {
-  return cy.visit(endpoint).get("#app").should("exist");
+  return cy.visit(endpoint).get('#app').should('exist');
 }
 
-Cypress.Commands.add("visitAndCheckAppMount", visitAndCheckAppMount);
-Cypress.Commands.add("ensureLoggedIn", ensureLoggedIn);
-Cypress.Commands.add("getKeycloakToken", getKeycloakToken);
-Cypress.Commands.add("browserThen", browserThen);
+Cypress.Commands.add('visitAndCheckAppMount', visitAndCheckAppMount);
+Cypress.Commands.add('ensureLoggedIn', ensureLoggedIn);
+Cypress.Commands.add('getKeycloakToken', getKeycloakToken);
+Cypress.Commands.add('browserThen', browserThen);

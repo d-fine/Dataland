@@ -25,31 +25,31 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, inject } from "vue";
-import { type DynamicDialogInstance } from "primevue/dynamicdialogoptions";
-import PrimeButton from "primevue/button";
-import { ApiClientProvider } from "@/services/ApiClients";
-import { assertDefined } from "@/utils/TypeScriptUtils";
-import type Keycloak from "keycloak-js";
-import MiddleCenterDiv from "@/components/wrapper/MiddleCenterDivWrapper.vue";
-import SuccessMessage from "@/components/messages/SuccessMessage.vue";
-import FailMessage from "@/components/messages/FailMessage.vue";
-import { QaStatus } from "@clients/backend";
+import { defineComponent, inject } from 'vue';
+import { type DynamicDialogInstance } from 'primevue/dynamicdialogoptions';
+import PrimeButton from 'primevue/button';
+import { ApiClientProvider } from '@/services/ApiClients';
+import { assertDefined } from '@/utils/TypeScriptUtils';
+import type Keycloak from 'keycloak-js';
+import MiddleCenterDiv from '@/components/wrapper/MiddleCenterDivWrapper.vue';
+import SuccessMessage from '@/components/messages/SuccessMessage.vue';
+import FailMessage from '@/components/messages/FailMessage.vue';
+import { QaStatus } from '@clients/backend';
 
 export default defineComponent({
   components: { PrimeButton, FailMessage, SuccessMessage, MiddleCenterDiv },
-  inject: ["dialogRef"],
-  name: "QADatasetModal",
+  inject: ['dialogRef'],
+  name: 'QADatasetModal',
   setup() {
     return {
-      getKeycloakPromise: inject<() => Promise<Keycloak>>("getKeycloakPromise"),
+      getKeycloakPromise: inject<() => Promise<Keycloak>>('getKeycloakPromise'),
     };
   },
   data() {
     return {
-      dataId: "",
+      dataId: '',
       qaStatus: QaStatus.Pending as QaStatus,
-      message: "",
+      message: '',
       reviewSubmitted: false,
       reviewSuccessful: false,
     };

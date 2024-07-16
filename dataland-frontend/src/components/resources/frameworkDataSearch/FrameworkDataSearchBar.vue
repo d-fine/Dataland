@@ -51,20 +51,20 @@
 </template>
 
 <script lang="ts">
-import AutoComplete from "primevue/autocomplete";
-import SearchResultHighlighter from "@/components/resources/frameworkDataSearch/SearchResultHighlighter.vue";
+import AutoComplete from 'primevue/autocomplete';
+import SearchResultHighlighter from '@/components/resources/frameworkDataSearch/SearchResultHighlighter.vue';
 import {
   getCompanyDataForFrameworkDataSearchPage,
   type FrameworkDataSearchFilterInterface,
   getNumberOfCompaniesForFrameworkDataSearchPage,
   getCompanyDataForFrameworkDataSearchPageWithoutFilters,
-} from "@/utils/SearchCompaniesForFrameworkDataPageDataRequester";
-import { defineComponent, inject, ref } from "vue";
-import type Keycloak from "keycloak-js";
-import { useRoute } from "vue-router";
-import { assertDefined } from "@/utils/TypeScriptUtils";
-import { ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE } from "@/utils/Constants";
-import { type BasicCompanyInformation, type DataTypeEnum } from "@clients/backend";
+} from '@/utils/SearchCompaniesForFrameworkDataPageDataRequester';
+import { defineComponent, inject, ref } from 'vue';
+import type Keycloak from 'keycloak-js';
+import { useRoute } from 'vue-router';
+import { assertDefined } from '@/utils/TypeScriptUtils';
+import { FRAMEWORKS_WITH_VIEW_PAGE } from '@/utils/Constants';
+import { type BasicCompanyInformation, type DataTypeEnum } from '@clients/backend';
 
 /**
  * This interface defines the internal state of the autocomplete component
@@ -81,19 +81,19 @@ export interface AutoCompleteInternalState {
 export default defineComponent({
   setup() {
     return {
-      getKeycloakPromise: inject<() => Promise<Keycloak>>("getKeycloakPromise"),
+      getKeycloakPromise: inject<() => Promise<Keycloak>>('getKeycloakPromise'),
       autocomplete: ref<InstanceType<typeof AutoComplete> & AutoCompleteInternalState>(),
     };
   },
-  name: "FrameworkDataSearchBar",
+  name: 'FrameworkDataSearchBar',
   components: { AutoComplete, SearchResultHighlighter },
 
-  emits: ["companies-received", "search-confirmed"],
+  emits: ['companies-received', 'search-confirmed'],
 
   props: {
     searchBarId: {
       type: String,
-      default: "framework_data_search_bar_standard",
+      default: 'framework_data_search_bar_standard',
     },
     chunkSize: {
       type: Number,
@@ -107,8 +107,8 @@ export default defineComponent({
       type: Object as () => FrameworkDataSearchFilterInterface,
       default(): FrameworkDataSearchFilterInterface {
         return {
-          companyNameFilter: "",
-          frameworkFilter: ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE,
+          companyNameFilter: '',
+          frameworkFilter: FRAMEWORKS_WITH_VIEW_PAGE,
           sectorFilter: [],
           countryCodeFilter: [],
         };
@@ -124,7 +124,7 @@ export default defineComponent({
     },
   },
   mounted() {
-    this.searchBarInput = this.filter?.companyNameFilter ?? "";
+    this.searchBarInput = this.filter?.companyNameFilter ?? '';
     void this.queryCompany();
     if (!this.route.query.input) {
       this.focusOnSearchBar();
@@ -140,7 +140,7 @@ export default defineComponent({
     },
     filter: {
       handler() {
-        this.searchBarInput = this.filter?.companyNameFilter ?? "";
+        this.searchBarInput = this.filter?.companyNameFilter ?? '';
         void this.queryCompany();
       },
       deep: true,
@@ -156,8 +156,8 @@ export default defineComponent({
     return {
       wereKeysPressed: false,
       currentFocusedOptionIndex: -1,
-      searchBarInput: "",
-      latestValidSearchString: "",
+      searchBarInput: '',
+      latestValidSearchString: '',
       autocompleteArray: [] as Array<object>,
       autocompleteArrayDisplayed: [] as Array<object>,
       route: useRoute(),
@@ -176,7 +176,7 @@ export default defineComponent({
      * @param currentSearchString the potentially new search string
      */
     saveCurrentSearchStringIfValid(currentSearchString: string | object) {
-      if (currentSearchString && typeof currentSearchString === "string") {
+      if (currentSearchString && typeof currentSearchString === 'string') {
         this.latestValidSearchString = currentSearchString;
       }
     },
@@ -220,7 +220,7 @@ export default defineComponent({
       if (this.currentFocusedOptionIndex === -1 && this.wereKeysPressed) {
         this.autocomplete?.hide();
         this.autocomplete?.$refs.focusInput.blur();
-        this.$emit("search-confirmed", this.searchBarInput);
+        this.$emit('search-confirmed', this.searchBarInput);
         void this.queryCompany();
       }
     },
@@ -234,7 +234,7 @@ export default defineComponent({
       if (this.emitSearchResultsArray) {
         const resultsArray = await this.getCompanies(chunkIndex);
         const totalNumberOfCompanies = await this.getTotalNumberOfCompanies();
-        this.$emit("companies-received", resultsArray, chunkIndex, totalNumberOfCompanies);
+        this.$emit('companies-received', resultsArray, chunkIndex, totalNumberOfCompanies);
       }
     },
     /**
@@ -250,7 +250,7 @@ export default defineComponent({
         new Set(this.filter?.sectorFilter),
         assertDefined(this.getKeycloakPromise)(),
         this.chunkSize,
-        chunkIndex,
+        chunkIndex
       );
     },
     /**
@@ -263,7 +263,7 @@ export default defineComponent({
         new Set(this.filter?.frameworkFilter),
         new Set(this.filter?.countryCodeFilter),
         new Set(this.filter?.sectorFilter),
-        assertDefined(this.getKeycloakPromise)(),
+        assertDefined(this.getKeycloakPromise)()
       );
     },
     /**
@@ -277,13 +277,13 @@ export default defineComponent({
         areAllFiltersDeactivated(
           this.filter?.frameworkFilter,
           this.filter?.countryCodeFilter,
-          this.filter?.sectorFilter,
+          this.filter?.sectorFilter
         )
       ) {
         this.autocompleteArray = await getCompanyDataForFrameworkDataSearchPageWithoutFilters(
           companyName.query,
           assertDefined(this.getKeycloakPromise)(),
-          this.maxNumOfDisplayedAutocompleteEntries,
+          this.maxNumOfDisplayedAutocompleteEntries
         );
       } else {
         this.autocompleteArray = await getCompanyDataForFrameworkDataSearchPage(
@@ -293,7 +293,7 @@ export default defineComponent({
           new Set(this.filter?.sectorFilter),
           assertDefined(this.getKeycloakPromise)(),
           this.maxNumOfDisplayedAutocompleteEntries,
-          0,
+          0
         );
       }
       this.autocompleteArrayDisplayed = this.autocompleteArray;
@@ -311,7 +311,7 @@ export default defineComponent({
 function areAllFiltersDeactivated(
   frameworkFilter: Array<DataTypeEnum>,
   countryCodeFilter: Array<string>,
-  sectorFilter: Array<string>,
+  sectorFilter: Array<string>
 ): boolean {
   return !(frameworkFilter.length + countryCodeFilter.length + sectorFilter.length);
 }

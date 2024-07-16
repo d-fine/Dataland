@@ -1,5 +1,5 @@
-import ReportDataTable from "@/components/general/ReportDataTable.vue";
-import type { CompanyReport } from "@clients/backend";
+import ReportDataTable from '@/components/general/ReportDataTable.vue';
+import type { CompanyReport } from '@clients/backend';
 
 /**
  * Opens a modal to display the details of the selected report.
@@ -29,7 +29,7 @@ function constructModalOptions(report: CompanyReport, reportName: string): Modal
 
   return {
     props: {
-      header: "Report Details",
+      header: 'Report Details',
       modal: true,
       dismissableMask: true,
     },
@@ -52,8 +52,7 @@ interface ModalOptions {
 
 interface ComponentContext {
   $dialog: {
-    //eslint-disable-next-line@typescript-eslint/ban-ts-comment
-    //@ts-ignore
+    //eslint-disable-next-line @typescript-eslint/no-explicit-any
     open(component: any, options: any): void;
   };
 }

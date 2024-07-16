@@ -14,7 +14,7 @@ import org.dataland.datalandbackend.openApiClient.model.IdentifierType
 import org.dataland.datalandbackend.openApiClient.model.LksgData
 import org.dataland.datalandbackend.openApiClient.model.PathwaysToParisData
 import org.dataland.datalandbackend.openApiClient.model.SfdrData
-import org.dataland.datalandbackend.openApiClient.model.SmeData
+import org.dataland.datalandbackend.openApiClient.model.VsmeData
 import java.io.File
 import java.math.BigDecimal
 import java.time.LocalDate
@@ -47,8 +47,8 @@ class FrameworkTestDataProvider<T> (private val clazz: Class<T>) {
             File("./build/resources/test/CompanyInformationWithLksgData.json"),
         SfdrData::class.java to
             File("./build/resources/test/CompanyInformationWithSfdrData.json"),
-        SmeData::class.java to
-            File("./build/resources/test/CompanyInformationWithSmeData.json"),
+        VsmeData::class.java to
+            File("./build/resources/test/CompanyInformationWithVsmeData.json"),
         PathwaysToParisData::class.java to
             File("./build/resources/test/CompanyInformationWithP2pData.json"),
     )
@@ -89,6 +89,17 @@ class FrameworkTestDataProvider<T> (private val clazz: Class<T>) {
     private fun companyListForTestingSfdrSpecificValidation(): List<CompanyInformationWithT<T>> {
         return convertJsonToList(File("./build/resources/test/CompanyInformationWithSfdrPreparedFixtures.json"))
     }
+    private fun companyListForTestingEuTaxonomyNonFinancialsSpecificValidation(): List<CompanyInformationWithT<T>> {
+        return convertJsonToList(
+            File("./build/resources/test/CompanyInformationWithEutaxonomyNonFinancialsPreparedFixtures.json"),
+        )
+    }
+
+    private fun companyListForTestingEuTaxonomyFinancialsSpecificValidation(): List<CompanyInformationWithT<T>> {
+        return convertJsonToList(
+            File("./build/resources/test/CompanyInformationWithEuTaxonomyDataForFinancialsPreparedFixtures.json"),
+        )
+    }
 
     fun getSpecificCompanyByNameFromLksgPreparedFixtures(companyName: String): CompanyInformationWithT<T>? {
         return companyListForTestingLksgSpecificValidation().find {
@@ -98,6 +109,22 @@ class FrameworkTestDataProvider<T> (private val clazz: Class<T>) {
 
     fun getSpecificCompanyByNameFromSfdrPreparedFixtures(companyName: String): CompanyInformationWithT<T>? {
         return companyListForTestingSfdrSpecificValidation().find {
+            it.companyInformation.companyName == companyName
+        }
+    }
+
+    fun getSpecificCompanyByNameFromEuTaxonomyNonFinancialsPreparedFixtures(
+        companyName: String,
+    ): CompanyInformationWithT<T>? {
+        return companyListForTestingEuTaxonomyNonFinancialsSpecificValidation().find {
+            it.companyInformation.companyName == companyName
+        }
+    }
+
+    fun getSpecificCompanyByNameFromEuTaxonomyFinancialsPreparedFixtures(
+        companyName: String,
+    ): CompanyInformationWithT<T>? {
+        return companyListForTestingEuTaxonomyFinancialsSpecificValidation().find {
             it.companyInformation.companyName == companyName
         }
     }

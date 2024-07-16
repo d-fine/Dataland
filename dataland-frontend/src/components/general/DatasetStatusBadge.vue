@@ -4,12 +4,12 @@
   </div>
 </template>
 <script lang="ts">
-import { defineComponent } from "vue";
-import { DatasetStatus } from "@/components/resources/datasetOverview/DatasetTableInfo";
-import { assertDefined } from "@/utils/TypeScriptUtils";
+import { defineComponent } from 'vue';
+import { DatasetStatus } from '@/components/resources/datasetOverview/DatasetTableInfo';
+import { assertDefined } from '@/utils/TypeScriptUtils';
 
 export default defineComponent({
-  name: "DatasetStatusBadge",
+  name: 'DatasetStatusBadge',
   data() {
     return {
       assertDefined,
@@ -30,10 +30,10 @@ export default defineComponent({
 });
 
 class BadgeProperties {
-  static readonly Approved = new BadgeProperties("green", "APPROVED");
-  static readonly Pending = new BadgeProperties("yellow", "PENDING");
-  static readonly Rejected = new BadgeProperties("red", "REJECTED");
-  static readonly Superseded = new BadgeProperties("brown", "SUPERSEDED");
+  static readonly Approved = new BadgeProperties('green', 'APPROVED');
+  static readonly Pending = new BadgeProperties('yellow', 'PENDING');
+  static readonly Rejected = new BadgeProperties('red', 'REJECTED');
+  static readonly Superseded = new BadgeProperties('brown', 'SUPERSEDED');
 
   readonly color: string;
   readonly text: string;

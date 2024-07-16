@@ -30,7 +30,7 @@ import java.util.*
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class SingleDataRequestEmailMessageSenderTest {
-    val objectMapper = jacksonObjectMapper()
+    private val objectMapper = jacksonObjectMapper()
     private lateinit var authenticationMock: DatalandJwtAuthentication
     private val cloudEventMessageHandlerMock = mock(CloudEventMessageHandler::class.java)
     private val companyName = "Test Inc."
@@ -127,7 +127,7 @@ class SingleDataRequestEmailMessageSenderTest {
             val arg5 = it.getArgument<String>(4)
 
             assertEquals(TemplateEmailMessage.Type.ClaimOwnership, arg1.emailTemplateType)
-            assertEquals("alphabet@example.com", arg1.receiver)
+            assertEquals(TemplateEmailMessage.EmailAddressEmailRecipient(email = "alphabet@example.com"), arg1.receiver)
             assertEquals(datalandCompanyId, arg1.properties.getValue("companyId"))
             assertEquals(companyName, arg1.properties.getValue("companyName"))
             assertEquals(authenticationMock.username, arg1.properties.getValue("requesterEmail"))

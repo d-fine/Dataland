@@ -1,9 +1,9 @@
 import {
   type AvailableMLDTDisplayObjectTypes,
   MLDTDisplayComponentName,
-} from "@/components/resources/dataTable/MultiLayerDataTableCellDisplayer";
-import { getFieldValueFromFrameworkDataset } from "@/components/resources/dataTable/conversion/Utils";
-import { formatPercentageNumberAsString } from "@/utils/Formatter";
+} from '@/components/resources/dataTable/MultiLayerDataTableCellDisplayer';
+import { getFieldValueFromFrameworkDataset } from '@/components/resources/dataTable/conversion/Utils';
+import { formatPercentageNumberAsString } from '@/utils/Formatter';
 
 /**
  * Returns a value factory that returns the value of the field as a nicely formatted percentage.

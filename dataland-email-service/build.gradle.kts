@@ -40,6 +40,7 @@ dependencies {
     implementation(libs.freemarker)
     testImplementation(Spring.boot.test)
     testImplementation(Testing.mockito.core)
+    implementation(libs.okhttp)
     kapt(Spring.boot.configurationProcessor)
 }
 

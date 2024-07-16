@@ -1,8 +1,8 @@
-import { generateFixtureDataset } from "@e2e/fixtures/FixtureUtils";
-import { type FixtureData } from "@sharedUtils/Fixtures";
-import { type EuTaxonomyDataForFinancials, QualityOptions } from "@clients/backend";
-import { EuFinancialsGenerator, generateEuTaxonomyDataForFinancials } from "./EuTaxonomyDataForFinancialsFixtures";
-import { generatePercentageValue } from "@e2e/fixtures/common/NumberFixtures";
+import { generateFixtureDataset } from '@e2e/fixtures/FixtureUtils';
+import { type FixtureData } from '@sharedUtils/Fixtures';
+import { type EuTaxonomyDataForFinancials, QualityOptions } from '@clients/backend';
+import { EuFinancialsGenerator, generateEuTaxonomyDataForFinancials } from './EuTaxonomyDataForFinancialsFixtures';
+import { generatePercentageValue } from '@e2e/fixtures/common/NumberFixtures';
 
 type generatorFunction = (input: FixtureData<EuTaxonomyDataForFinancials>) => FixtureData<EuTaxonomyDataForFinancials>;
 
@@ -18,13 +18,14 @@ export function generateEuTaxonomyForFinancialsPreparedFixtures(): Array<Fixture
     createInsuranceCompany,
     createAssetManagementCompany,
     createAllValuesCompany,
+    createCompanyWithBrokenFileReference,
     createGeneratorForCreditInstitutionWithEligibleActivitySetToValue(26),
     createGeneratorForCreditInstitutionWithEligibleActivitySetToValue(29),
     createGeneratorForCreditInstitutionWithEligibleActivitySetToValue(29.2),
   ];
   const fixtureBase = generateFixtureDataset<EuTaxonomyDataForFinancials>(
     generateEuTaxonomyDataForFinancials,
-    creationFunctions.length,
+    creationFunctions.length
   );
   const preparedFixtures = [];
   for (let i = 0; i < creationFunctions.length; i++) {
@@ -39,12 +40,12 @@ export function generateEuTaxonomyForFinancialsPreparedFixtures(): Array<Fixture
  * @returns the modified fixture
  */
 function createCreditInstitutionDualFieldSubmission(
-  input: FixtureData<EuTaxonomyDataForFinancials>,
+  input: FixtureData<EuTaxonomyDataForFinancials>
 ): FixtureData<EuTaxonomyDataForFinancials> {
   const dataGenerator = new EuFinancialsGenerator(0);
   dataGenerator.reports = input.t.referencedReports!;
-  input.companyInformation.companyName = "credit-institution-dual-field-submission";
-  input.t = dataGenerator.generateEuTaxonomyDataForFinancialsWithTypes(["CreditInstitution"]);
+  input.companyInformation.companyName = 'credit-institution-dual-field-submission';
+  input.t = dataGenerator.generateEuTaxonomyDataForFinancialsWithTypes(['CreditInstitution']);
   input.t.creditInstitutionKpis = {
     interbankLoansInPercent: dataGenerator.randomExtendedDataPoint(generatePercentageValue()),
     tradingPortfolioInPercent: dataGenerator.randomExtendedDataPoint(generatePercentageValue()),
@@ -59,12 +60,12 @@ function createCreditInstitutionDualFieldSubmission(
  * @returns the modified fixture
  */
 function createCreditInstitutionSingleFieldSubmission(
-  input: FixtureData<EuTaxonomyDataForFinancials>,
+  input: FixtureData<EuTaxonomyDataForFinancials>
 ): FixtureData<EuTaxonomyDataForFinancials> {
   const dataGenerator = new EuFinancialsGenerator(0);
   dataGenerator.reports = input.t.referencedReports!;
-  input.companyInformation.companyName = "credit-institution-single-field-submission";
-  input.t = dataGenerator.generateEuTaxonomyDataForFinancialsWithTypes(["CreditInstitution"]);
+  input.companyInformation.companyName = 'credit-institution-single-field-submission';
+  input.t = dataGenerator.generateEuTaxonomyDataForFinancialsWithTypes(['CreditInstitution']);
   input.t.creditInstitutionKpis = {
     tradingPortfolioAndInterbankLoansInPercent: dataGenerator.randomExtendedDataPoint(generatePercentageValue()),
     greenAssetRatioInPercent: dataGenerator.randomExtendedDataPoint(generatePercentageValue()),
@@ -78,10 +79,10 @@ function createCreditInstitutionSingleFieldSubmission(
  * @returns the modified fixture
  */
 function createInsuranceCompany(
-  input: FixtureData<EuTaxonomyDataForFinancials>,
+  input: FixtureData<EuTaxonomyDataForFinancials>
 ): FixtureData<EuTaxonomyDataForFinancials> {
-  input.companyInformation.companyName = "insurance-company";
-  input.t = new EuFinancialsGenerator().generateEuTaxonomyDataForFinancialsWithTypes(["InsuranceOrReinsurance"]);
+  input.companyInformation.companyName = 'insurance-company';
+  input.t = new EuFinancialsGenerator().generateEuTaxonomyDataForFinancialsWithTypes(['InsuranceOrReinsurance']);
   return input;
 }
 
@@ -91,10 +92,10 @@ function createInsuranceCompany(
  * @returns the modified fixture
  */
 function createAssetManagementCompany(
-  input: FixtureData<EuTaxonomyDataForFinancials>,
+  input: FixtureData<EuTaxonomyDataForFinancials>
 ): FixtureData<EuTaxonomyDataForFinancials> {
-  input.companyInformation.companyName = "asset-management-company";
-  input.t = new EuFinancialsGenerator().generateEuTaxonomyDataForFinancialsWithTypes(["AssetManagement"]);
+  input.companyInformation.companyName = 'asset-management-company';
+  input.t = new EuFinancialsGenerator().generateEuTaxonomyDataForFinancialsWithTypes(['AssetManagement']);
   return input;
 }
 
@@ -104,12 +105,12 @@ function createAssetManagementCompany(
  * @returns the modified fixture
  */
 function createAssetManagementAndInsuranceCompany(
-  input: FixtureData<EuTaxonomyDataForFinancials>,
+  input: FixtureData<EuTaxonomyDataForFinancials>
 ): FixtureData<EuTaxonomyDataForFinancials> {
-  input.companyInformation.companyName = "asset-management-insurance-company";
+  input.companyInformation.companyName = 'asset-management-insurance-company';
   input.t = new EuFinancialsGenerator().generateEuTaxonomyDataForFinancialsWithTypes([
-    "AssetManagement",
-    "InsuranceOrReinsurance",
+    'AssetManagement',
+    'InsuranceOrReinsurance',
   ]);
   return input;
 }
@@ -120,15 +121,15 @@ function createAssetManagementAndInsuranceCompany(
  * @returns the modified fixture
  */
 function createAllValuesCompany(
-  input: FixtureData<EuTaxonomyDataForFinancials>,
+  input: FixtureData<EuTaxonomyDataForFinancials>
 ): FixtureData<EuTaxonomyDataForFinancials> {
   const dataGenerator = new EuFinancialsGenerator(0);
-  input.companyInformation.companyName = "company-for-all-types";
+  input.companyInformation.companyName = 'company-for-all-types';
   input.t = dataGenerator.generateEuTaxonomyDataForFinancialsWithTypes([
-    "InvestmentFirm",
-    "AssetManagement",
-    "InsuranceOrReinsurance",
-    "CreditInstitution",
+    'InvestmentFirm',
+    'AssetManagement',
+    'InsuranceOrReinsurance',
+    'CreditInstitution',
   ]);
   //Overwrite the section for Credit Institution since the tests require dual and single field submission at once
   input.t.creditInstitutionKpis = {
@@ -139,6 +140,19 @@ function createAllValuesCompany(
   };
   return input;
 }
+/**
+ * Creates a fixture of a company that is an asset management and insurance company
+ * @param input the base fixture to modify
+ * @returns the modified fixture
+ */
+function createCompanyWithBrokenFileReference(
+  input: FixtureData<EuTaxonomyDataForFinancials>
+): FixtureData<EuTaxonomyDataForFinancials> {
+  input = createAllValuesCompany(input);
+  input.companyInformation.companyName = 'TestForIncompleteReferencedReport';
+  input.t.referencedReports = null;
+  return input;
+}
 
 /**
  * Higher order function which returns a function that creates a fixture of a credit institution, but sets the value
@@ -147,11 +161,11 @@ function createAllValuesCompany(
  * @returns a generator function that creates a dataset with the "eligbile activity" value set accordingly
  */
 function createGeneratorForCreditInstitutionWithEligibleActivitySetToValue(
-  eligibleActivityValue: number,
+  eligibleActivityValue: number
 ): (input: FixtureData<EuTaxonomyDataForFinancials>) => FixtureData<EuTaxonomyDataForFinancials> {
   return (input) => {
-    input.companyInformation.companyName = "eligible-activity-Point-" + eligibleActivityValue.toString();
-    input.t = new EuFinancialsGenerator().generateEuTaxonomyDataForFinancialsWithTypes(["CreditInstitution"]);
+    input.companyInformation.companyName = 'eligible-activity-Point-' + eligibleActivityValue.toString();
+    input.t = new EuFinancialsGenerator().generateEuTaxonomyDataForFinancialsWithTypes(['CreditInstitution']);
     input.t.eligibilityKpis = {
       CreditInstitution: {
         taxonomyEligibleActivityInPercent: {

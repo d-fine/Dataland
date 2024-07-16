@@ -1,7 +1,7 @@
 <template>
   <AuthenticationWrapper>
     <TheHeader />
-    <AuthorizationWrapper :required-role="KEYCLOAK_ROLE_UPLOADER" :allow-data-owner-for-company-id="companyID">
+    <AuthorizationWrapper :required-role="KEYCLOAK_ROLE_UPLOADER" :company-id="companyID">
       <TheContent>
         <MarginWrapper class="mb-2">
           <BackButton id="backButton" label="BACK" />
@@ -14,7 +14,7 @@
               <div id="euTaxonomyContainer" class="col-9 flex">
                 <div id="euTaxonomyLabel" class="col-3 p-3">
                   <h3>EU Taxonomy</h3>
-                  <p>{{ buildSubtitle("EU Taxonomy") }}</p>
+                  <p>{{ buildSubtitle('EU Taxonomy') }}</p>
                 </div>
                 <div class="col-9 d-card">
                   <div id="eutaxonomyDataSetsContainer">
@@ -77,29 +77,29 @@
 </template>
 
 <script lang="ts">
-import { ApiClientProvider } from "@/services/ApiClients";
-import { defineComponent, inject } from "vue";
-import type Keycloak from "keycloak-js";
-import { assertDefined } from "@/utils/TypeScriptUtils";
-import TheContent from "@/components/generics/TheContent.vue";
-import AuthenticationWrapper from "@/components/wrapper/AuthenticationWrapper.vue";
-import TheHeader from "@/components/generics/TheHeader.vue";
-import BackButton from "@/components/general/BackButton.vue";
-import Card from "primevue/card";
-import CompanyInformation from "@/components/pages/CompanyInformation.vue";
-import { type DataMetaInformation, DataTypeEnum } from "@clients/backend";
-import MetaInfoPerCompanyAndFramework from "@/components/resources/chooseFrameworkForDataUpload/MetaInfoPerCompanyAndFramework.vue";
-import AuthorizationWrapper from "@/components/wrapper/AuthorizationWrapper.vue";
-import TheFooter from "@/components/generics/TheNewFooter.vue";
-import contentData from "@/assets/content.json";
-import type { Content, Page } from "@/types/ContentTypes";
-import { humanizeStringOrNumber } from "@/utils/StringFormatter";
-import { KEYCLOAK_ROLE_UPLOADER } from "@/utils/KeycloakUtils";
-import MarginWrapper from "@/components/wrapper/MarginWrapper.vue";
-import { ARRAY_OF_SUPPORTED_FRAMEWORKS } from "@/utils/Constants";
+import { ApiClientProvider } from '@/services/ApiClients';
+import { defineComponent, inject } from 'vue';
+import type Keycloak from 'keycloak-js';
+import { assertDefined } from '@/utils/TypeScriptUtils';
+import TheContent from '@/components/generics/TheContent.vue';
+import AuthenticationWrapper from '@/components/wrapper/AuthenticationWrapper.vue';
+import TheHeader from '@/components/generics/TheHeader.vue';
+import BackButton from '@/components/general/BackButton.vue';
+import Card from 'primevue/card';
+import CompanyInformation from '@/components/pages/CompanyInformation.vue';
+import { type DataMetaInformation, DataTypeEnum } from '@clients/backend';
+import MetaInfoPerCompanyAndFramework from '@/components/resources/chooseFrameworkForDataUpload/MetaInfoPerCompanyAndFramework.vue';
+import AuthorizationWrapper from '@/components/wrapper/AuthorizationWrapper.vue';
+import TheFooter from '@/components/generics/TheNewFooter.vue';
+import contentData from '@/assets/content.json';
+import type { Content, Page } from '@/types/ContentTypes';
+import { humanizeStringOrNumber } from '@/utils/StringFormatter';
+import { KEYCLOAK_ROLE_UPLOADER } from '@/utils/KeycloakUtils';
+import MarginWrapper from '@/components/wrapper/MarginWrapper.vue';
+import { FRONTEND_SUPPORTED_FRAMEWORKS } from '@/utils/Constants';
 
 export default defineComponent({
-  name: "ChooseFramework",
+  name: 'ChooseFramework',
   components: {
     MarginWrapper,
     TheFooter,
@@ -114,7 +114,7 @@ export default defineComponent({
   },
   setup() {
     return {
-      getKeycloakPromise: inject<() => Promise<Keycloak>>("getKeycloakPromise"),
+      getKeycloakPromise: inject<() => Promise<Keycloak>>('getKeycloakPromise'),
     };
   },
 
@@ -124,14 +124,14 @@ export default defineComponent({
 
   data() {
     const content: Content = contentData;
-    const footerPage: Page | undefined = content.pages.find((page) => page.url === "/");
+    const footerPage: Page | undefined = content.pages.find((page) => page.url === '/');
     const footerContent = footerPage?.sections;
     return {
-      allFrameworksExceptEuTaxonomy: ARRAY_OF_SUPPORTED_FRAMEWORKS.filter(
+      allFrameworksExceptEuTaxonomy: FRONTEND_SUPPORTED_FRAMEWORKS.filter(
         (frameworkName) =>
           [DataTypeEnum.EutaxonomyFinancials as string, DataTypeEnum.EutaxonomyNonFinancials as string].indexOf(
-            frameworkName,
-          ) === -1,
+            frameworkName
+          ) === -1
       ),
       waitingForData: true,
       DataTypeEnum,
@@ -163,7 +163,7 @@ export default defineComponent({
      * @returns the sorted list of data meta information
      */
     sortListOfDataMetaInfoAlphabeticallyByReportingPeriod(
-      listOfDataMetaInfo: DataMetaInformation[],
+      listOfDataMetaInfo: DataMetaInformation[]
     ): DataMetaInformation[] {
       listOfDataMetaInfo.sort((dataMetaInfoA, dataMetaInfoB) => {
         if (dataMetaInfoA.reportingPeriod > dataMetaInfoB.reportingPeriod) return -1;
@@ -179,7 +179,7 @@ export default defineComponent({
      */
     sortListOfDataMetaInfoByUploadTime(listOfDataMetaInfo: Array<DataMetaInformation>): Array<DataMetaInformation> {
       return listOfDataMetaInfo.sort(
-        (dataMetaInfoA, dataMetaInfoB) => dataMetaInfoB.uploadTime - dataMetaInfoA.uploadTime,
+        (dataMetaInfoA, dataMetaInfoB) => dataMetaInfoB.uploadTime - dataMetaInfoA.uploadTime
       );
     },
 
@@ -191,7 +191,7 @@ export default defineComponent({
      * @returns a map with the distinct reporting periods as keys and arrays of data meta info for that period as values
      */
     groupListOfDataMetaInfoAsMapOfReportingPeriodToListOfDataMetaInfo(
-      listOfDataMetaInfo: DataMetaInformation[],
+      listOfDataMetaInfo: DataMetaInformation[]
     ): Map<string, DataMetaInformation[]> {
       return listOfDataMetaInfo.reduce((groups, dataMetaInfo) => {
         groups.get(dataMetaInfo.reportingPeriod)
@@ -212,13 +212,13 @@ export default defineComponent({
         this.sortListOfDataMetaInfoAlphabeticallyByReportingPeriod(listOfDataMetaInfo);
       const mapOfReportingPeriodToListOfDataMetaInfo =
         this.groupListOfDataMetaInfoAsMapOfReportingPeriodToListOfDataMetaInfo(
-          listOfDataMetaInfoSortedByReportingPeriod,
+          listOfDataMetaInfoSortedByReportingPeriod
         );
       const resultArray: DataMetaInformation[] = [];
       Array.from(mapOfReportingPeriodToListOfDataMetaInfo.values()).forEach(
         (listOfDataMetaInfoForUniqueReportingPeriod) => {
           resultArray.push(...this.sortListOfDataMetaInfoByUploadTime(listOfDataMetaInfoForUniqueReportingPeriod));
-        },
+        }
       );
       return resultArray;
     },

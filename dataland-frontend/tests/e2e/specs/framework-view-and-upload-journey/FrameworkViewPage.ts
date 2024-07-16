@@ -1,34 +1,34 @@
-import { describeIf } from "@e2e/support/TestUtility";
-import { admin_name, admin_pw, uploader_name, uploader_pw } from "@e2e/utils/Cypress";
-import { getKeycloakToken } from "@e2e/utils/Auth";
-import { type FixtureData, getPreparedFixture } from "@sharedUtils/Fixtures";
-import { validateCompanyCockpitPage, verifySearchResultTableExists } from "@sharedUtils/ElementChecks";
+import { describeIf } from '@e2e/support/TestUtility';
+import { admin_name, admin_pw, uploader_name, uploader_pw } from '@e2e/utils/Cypress';
+import { getKeycloakToken } from '@e2e/utils/Auth';
+import { type FixtureData, getPreparedFixture } from '@sharedUtils/Fixtures';
+import { validateCompanyCockpitPage, verifySearchResultTableExists } from '@sharedUtils/ElementChecks';
 import {
   DataTypeEnum,
   type EuTaxonomyDataForFinancials,
   type LksgData,
   type SfdrData,
   type PathwaysToParisData,
-} from "@clients/backend";
-import { generateDummyCompanyInformation, uploadCompanyViaApi } from "@e2e/utils/CompanyUpload";
-import { humanizeStringOrNumber } from "@/utils/StringFormatter";
+} from '@clients/backend';
+import { generateDummyCompanyInformation, uploadCompanyViaApi } from '@e2e/utils/CompanyUpload';
+import { humanizeStringOrNumber } from '@/utils/StringFormatter';
 import {
   uploadFrameworkDataForLegacyFramework,
   uploadFrameworkDataForPublicToolboxFramework,
-} from "@e2e/utils/FrameworkUpload";
-import { getCellValueContainer } from "@sharedUtils/components/resources/dataTable/MultiLayerDataTableTestUtils";
-import LksgBaseFrameworkDefinition from "@/frameworks/lksg/BaseFrameworkDefinition";
-import SfdrBaseFrameworkDefinition from "@/frameworks/sfdr/BaseFrameworkDefinition";
+} from '@e2e/utils/FrameworkUpload';
+import { getCellValueContainer } from '@sharedUtils/components/resources/dataTable/MultiLayerDataTableTestUtils';
+import LksgBaseFrameworkDefinition from '@/frameworks/lksg/BaseFrameworkDefinition';
+import SfdrBaseFrameworkDefinition from '@/frameworks/sfdr/BaseFrameworkDefinition';
 
 describeIf(
-  "As a user, I expect to search and select companies, see their company-cockpits and dataset-view-pages, " +
-    "and to navigate between those pages as well as the available datasets for one specific company",
+  'As a user, I expect to search and select companies, see their company-cockpits and dataset-view-pages, ' +
+    'and to navigate between those pages as well as the available datasets for one specific company',
   {
-    executionEnvironments: ["developmentLocal", "ci", "developmentCd"],
+    executionEnvironments: ['developmentLocal', 'ci', 'developmentCd'],
   },
   function (): void {
     const uniqueCompanyMarker = Date.now().toString();
-    const nameOfCompanyAlpha = "company-alpha-with-four-different-framework-types-" + uniqueCompanyMarker;
+    const nameOfCompanyAlpha = 'company-alpha-with-four-different-framework-types-' + uniqueCompanyMarker;
     const expectedFrameworkDropdownItemsForAlpha = new Set<string>([
       humanizeStringOrNumber(DataTypeEnum.EutaxonomyFinancials),
       humanizeStringOrNumber(DataTypeEnum.P2p),
@@ -39,15 +39,15 @@ describeIf(
 
     let dataIdOfSupersededLksg2023ForAlpha: string;
 
-    const nameOfCompanyBeta = "company-beta-with-eutaxo-and-lksg-data-" + uniqueCompanyMarker;
+    const nameOfCompanyBeta = 'company-beta-with-eutaxo-and-lksg-data-' + uniqueCompanyMarker;
     let companyIdOfBeta: string;
 
-    const frameworkDropdownSelector = "div#chooseFrameworkDropdown";
-    const dropdownItemsSelector = "div.p-dropdown-items-wrapper li";
-    const dropdownPanelSelector = "div.p-dropdown-panel";
+    const frameworkDropdownSelector = 'div#chooseFrameworkDropdown';
+    const dropdownItemsSelector = 'div.p-dropdown-items-wrapper li';
+    const dropdownPanelSelector = 'div.p-dropdown-panel';
 
-    const nonExistingDataId = "abcd123123123123123-non-existing";
-    const nonExistingCompanyId = "ABC-non-existing";
+    const nonExistingDataId = 'abcd123123123123123-non-existing';
+    const nonExistingCompanyId = 'ABC-non-existing';
 
     /**
      * Checks if the framework summary panel for the given framework is visible with the correct number of reporting
@@ -59,11 +59,11 @@ describeIf(
     function validateFrameworkSummaryPanel(
       frameworkName: DataTypeEnum,
       expectedNumberOfReportingPeriods: number,
-      clickIt: boolean,
+      clickIt: boolean
     ): void {
       const selector = `span[data-test="${frameworkName}-panel-value"]`;
       cy.get(selector)
-        .should("have.text", expectedNumberOfReportingPeriods.toString())
+        .should('have.text', expectedNumberOfReportingPeriods.toString())
         .then(($element) => {
           if (clickIt) {
             cy.wrap($element).click({ force: true });
@@ -79,17 +79,18 @@ describeIf(
      */
     function visitSearchPageWithQueryParamsAndClickOnFirstSearchResult(
       frameworkQueryParam: string,
-      searchStringQueryParam: string,
+      searchStringQueryParam: string
     ): void {
-      cy.intercept({ url: "/api/companies*", times: 2 }).as("searchCompanies");
-      cy.intercept({ url: "/api/companies/meta-information" }).as("fetchFilters");
+      cy.intercept({ url: '/api/companies*', times: 2 }).as('searchCompanies');
+      cy.intercept({ url: '/api/companies/meta-information' }).as('fetchFilters');
       cy.visit(`/companies?input=${searchStringQueryParam}&framework=${frameworkQueryParam}`);
       verifySearchResultTableExists();
-      cy.wait("@searchCompanies");
-      cy.wait("@fetchFilters");
-      const companySelector = "span:contains(VIEW)";
-      cy.get(companySelector).first().click();
+      cy.wait('@searchCompanies');
+      cy.wait('@fetchFilters');
+      const companySelector = 'span:contains(VIEW)';
+      // eslint-disable-next-line cypress/no-unnecessary-waiting
       cy.wait(100);
+      cy.get(companySelector).first().click();
     }
 
     /**
@@ -101,17 +102,17 @@ describeIf(
     function typeCompanyNameIntoSearchBarAndSelectFirstSuggestion(
       companyName: string,
       expectedCompanyId: string,
-      isOnViewPage: boolean,
+      isOnViewPage: boolean
     ): void {
-      const searchBarSelector = isOnViewPage ? "input#company_search_bar_standard" : "input#search_bar_top";
+      const searchBarSelector = isOnViewPage ? 'input#company_search_bar_standard' : 'input#search_bar_top';
       cy.intercept({
-        url: `/api/companies${isOnViewPage ? "/names" : ""}?*`,
+        url: `/api/companies${isOnViewPage ? '/names' : ''}?*`,
         times: 1,
-      }).as("autocompleteSuggestions");
+      }).as('autocompleteSuggestions');
       cy.get(searchBarSelector).click();
       cy.get(searchBarSelector).type(companyName, { force: true });
-      cy.wait("@autocompleteSuggestions", { timeout: Cypress.env("long_timeout_in_ms") as number });
-      const companySelector = ".p-autocomplete-item";
+      cy.wait('@autocompleteSuggestions', { timeout: Cypress.env('long_timeout_in_ms') as number });
+      const companySelector = '.p-autocomplete-item';
       cy.get(companySelector).first().click({ force: true });
     }
 
@@ -121,16 +122,16 @@ describeIf(
      * @param expectedChosenFramework The framework wich is expected to be currently set
      */
     function validateChosenFramework(expectedChosenFramework: string): void {
-      cy.url().should("contain", `/frameworks/${expectedChosenFramework}`);
+      cy.url().should('contain', `/frameworks/${expectedChosenFramework}`);
       cy.get('[data-test="frameworkDataTableTitle"]').should(
-        "contain",
-        humanizeStringOrNumber(expectedChosenFramework),
+        'contain',
+        humanizeStringOrNumber(expectedChosenFramework)
       );
-      cy.get("h2:contains('Checking if')").should("not.exist");
+      cy.get("h2:contains('Checking if')").should('not.exist');
       cy.get(frameworkDropdownSelector)
-        .find(".p-dropdown-label")
-        .should("have.text", humanizeStringOrNumber(expectedChosenFramework));
-      cy.get("table").should("exist");
+        .find('.p-dropdown-label')
+        .should('have.text', humanizeStringOrNumber(expectedChosenFramework));
+      cy.get('table').should('exist');
     }
 
     /**
@@ -139,22 +140,21 @@ describeIf(
      */
     function validateFrameworkDropdownOptions(expectedDropdownOptions: Set<string>): void {
       // Click anywhere and assert that there is no currently open dropdown modal (fix for flakyness)
-      cy.get("body").click(0, 0);
-      cy.get(dropdownPanelSelector).should("not.exist");
+      cy.get('body').click(0, 0);
+      cy.get(dropdownPanelSelector).should('not.exist');
 
       cy.get(frameworkDropdownSelector).click();
       let optionsCounter = 0;
-      cy.get(dropdownItemsSelector).should("exist");
-      cy.get(`${dropdownItemsSelector}:contains("No available options")`).should("not.exist");
-      cy.get(dropdownItemsSelector).should("exist");
-      cy.get(dropdownItemsSelector)
-        .each((item) => {
-          expect(expectedDropdownOptions.has(item.text())).to.equal(true);
-          optionsCounter++;
-        })
-        .then(() => {
-          expect(expectedDropdownOptions.size).to.equal(optionsCounter);
-        });
+      cy.get(dropdownItemsSelector).should('exist');
+      cy.get(`${dropdownItemsSelector}:contains("No available options")`).should('not.exist');
+      cy.get(dropdownItemsSelector).should('exist');
+      cy.get(dropdownItemsSelector).each((item) => {
+        expect(expectedDropdownOptions.has(item.text())).to.equal(true);
+        optionsCounter++;
+      });
+      cy.then(() => {
+        expect(expectedDropdownOptions.size).to.equal(optionsCounter);
+      });
       cy.get(frameworkDropdownSelector).click({ force: true });
     }
 
@@ -163,11 +163,11 @@ describeIf(
      *
      */
     function validateNoErrorMessagesAreShown(): void {
-      getElementAndAssertExistence("noDataForThisFrameworkPresentErrorIndicator", "not.exist");
-      getElementAndAssertExistence("noDataForThisDataIdPresentErrorIndicator", "not.exist");
-      getElementAndAssertExistence("noDataForThisReportingPeriodPresentErrorIndicator", "not.exist");
-      getElementAndAssertExistence("noCompanyWithThisIdErrorIndicator", "not.exist");
-      getElementAndAssertExistence("noDataCouldBeLoadedErrorIndicator", "not.exist");
+      getElementAndAssertExistence('noDataForThisFrameworkPresentErrorIndicator', 'not.exist');
+      getElementAndAssertExistence('noDataForThisDataIdPresentErrorIndicator', 'not.exist');
+      getElementAndAssertExistence('noDataForThisReportingPeriodPresentErrorIndicator', 'not.exist');
+      getElementAndAssertExistence('noCompanyWithThisIdErrorIndicator', 'not.exist');
+      getElementAndAssertExistence('noDataCouldBeLoadedErrorIndicator', 'not.exist');
     }
 
     /**
@@ -208,7 +208,7 @@ describeIf(
      */
     function validateDisplayStatusContainerAndGetButton(
       expectedTextInContainer: string,
-      expectedButtonText: string,
+      expectedButtonText: string
     ): Cypress.Chainable {
       return cy
         .get(`[data-test="datasetDisplayStatusContainer"]:contains(${expectedTextInContainer})`)
@@ -220,10 +220,10 @@ describeIf(
      * @param expectedColumnHeaders The expected values in the headers of the LkSG dataset columns
      */
     function validateColumnHeadersOfDisplayedLksgDatasets(expectedColumnHeaders: string[]): void {
-      cy.get(".p-column-title").each((element, index, elements) => {
+      cy.get('.p-column-title').each((element, index, elements) => {
         expect(elements).to.have.length(expectedColumnHeaders.length + 1);
         if (index == 0) {
-          expect(element.text()).to.equal("KPIs");
+          expect(element.text()).to.equal('KPIs');
         } else {
           expect(element.text()).to.include(expectedColumnHeaders[index - 1]);
         }
@@ -236,7 +236,7 @@ describeIf(
      */
     function validateDataDatesOfDisplayedLksgDatasets(expectedDataDates: string[]): void {
       for (let i = 0; i < expectedDataDates.length; i++) {
-        getCellValueContainer("Data Date", i).should("have.text", expectedDataDates[i]);
+        getCellValueContainer('Data Date', i).should('have.text', expectedDataDates[i]);
       }
     }
 
@@ -254,31 +254,33 @@ describeIf(
               LksgBaseFrameworkDefinition,
               token,
               companyIdOfAlpha,
-              "2023",
-              getPreparedFixture("LkSG-date-2023-04-18", lksgPreparedFixtures).t,
+              '2023',
+              getPreparedFixture('LkSG-date-2023-04-18', lksgPreparedFixtures).t
             ).then((dataMetaInformation) => {
               dataIdOfSupersededLksg2023ForAlpha = dataMetaInformation.dataId;
             });
           })
           .then(() => {
+            // eslint-disable-next-line cypress/no-unnecessary-waiting
             return cy.wait(timeDelayInMillisecondsBeforeNextUploadToAssureDifferentTimestamps).then(() => {
               return uploadFrameworkDataForPublicToolboxFramework(
                 LksgBaseFrameworkDefinition,
                 token,
                 companyIdOfAlpha,
-                "2023",
-                getPreparedFixture("LkSG-date-2023-06-22", lksgPreparedFixtures).t,
+                '2023',
+                getPreparedFixture('LkSG-date-2023-06-22', lksgPreparedFixtures).t
               );
             });
           })
           .then(() => {
+            // eslint-disable-next-line cypress/no-unnecessary-waiting
             return cy.wait(timeDelayInMillisecondsBeforeNextUploadToAssureDifferentTimestamps).then(() => {
               return uploadFrameworkDataForPublicToolboxFramework(
                 LksgBaseFrameworkDefinition,
                 token,
                 companyIdOfAlpha,
-                "2022",
-                getPreparedFixture("LkSG-date-2022-07-30", lksgPreparedFixtures).t,
+                '2022',
+                getPreparedFixture('LkSG-date-2022-07-30', lksgPreparedFixtures).t
               );
             });
           })
@@ -287,8 +289,8 @@ describeIf(
               SfdrBaseFrameworkDefinition,
               token,
               companyIdOfAlpha,
-              "2019",
-              getPreparedFixture("companyWithOneFilledSfdrSubcategory", sfdrPreparedFixtures).t,
+              '2019',
+              getPreparedFixture('companyWithOneFilledSfdrSubcategory', sfdrPreparedFixtures).t
             );
           })
           .then(() => {
@@ -296,8 +298,8 @@ describeIf(
               DataTypeEnum.EutaxonomyFinancials,
               token,
               companyIdOfAlpha,
-              "2019",
-              getPreparedFixture("eligible-activity-Point-29", euTaxoFinancialPreparedFixtures).t,
+              '2019',
+              getPreparedFixture('eligible-activity-Point-29', euTaxoFinancialPreparedFixtures).t
             );
           })
           .then(() => {
@@ -305,8 +307,8 @@ describeIf(
               DataTypeEnum.P2p,
               token,
               companyIdOfAlpha,
-              "2015",
-              p2pFixtures[0].t,
+              '2015',
+              p2pFixtures[0].t
             );
           });
       });
@@ -325,8 +327,8 @@ describeIf(
               LksgBaseFrameworkDefinition,
               token,
               companyIdOfBeta,
-              "2015",
-              getPreparedFixture("LkSG-date-2022-07-30", lksgPreparedFixtures).t,
+              '2015',
+              getPreparedFixture('LkSG-date-2022-07-30', lksgPreparedFixtures).t
             );
           })
           .then(async () => {
@@ -334,8 +336,8 @@ describeIf(
               DataTypeEnum.P2p,
               token,
               companyIdOfBeta,
-              "2014",
-              p2pFixtures[1].t,
+              '2014',
+              p2pFixtures[1].t
             );
           });
       });
@@ -347,16 +349,16 @@ describeIf(
     let sfdrPreparedFixtures: Array<FixtureData<SfdrData>>;
 
     before(() => {
-      cy.fixture("CompanyInformationWithEuTaxonomyDataForFinancialsPreparedFixtures").then(function (jsonContent) {
+      cy.fixture('CompanyInformationWithEuTaxonomyDataForFinancialsPreparedFixtures').then(function (jsonContent) {
         euTaxoFinancialPreparedFixtures = jsonContent as Array<FixtureData<EuTaxonomyDataForFinancials>>;
       });
-      cy.fixture("CompanyInformationWithP2pData").then(function (jsonContent) {
+      cy.fixture('CompanyInformationWithP2pData').then(function (jsonContent) {
         p2pFixtures = jsonContent as Array<FixtureData<PathwaysToParisData>>;
       });
-      cy.fixture("CompanyInformationWithLksgPreparedFixtures").then(function (jsonContent) {
+      cy.fixture('CompanyInformationWithLksgPreparedFixtures').then(function (jsonContent) {
         lksgPreparedFixtures = jsonContent as Array<FixtureData<LksgData>>;
       });
-      cy.fixture("CompanyInformationWithSfdrPreparedFixtures").then(function (jsonContent) {
+      cy.fixture('CompanyInformationWithSfdrPreparedFixtures').then(function (jsonContent) {
         sfdrPreparedFixtures = jsonContent as Array<FixtureData<SfdrData>>;
       });
 
@@ -364,7 +366,7 @@ describeIf(
       uploadCompanyBetaAndData();
     });
 
-    it("Check that clicking an autocomplete suggestion on the search page redirects the user to the company cockpit", () => {
+    it('Check that clicking an autocomplete suggestion on the search page redirects the user to the company cockpit', () => {
       cy.ensureLoggedIn(uploader_name, uploader_pw);
       cy.visit(`/companies?framework=${DataTypeEnum.Lksg}`);
       verifySearchResultTableExists();
@@ -378,8 +380,8 @@ describeIf(
     });
 
     it(
-      "Check that clicking a search result on the search page or an autocomplete suggestion on the view page" +
-        " redirects the user to the company cockpit",
+      'Check that clicking a search result on the search page or an autocomplete suggestion on the view page' +
+        ' redirects the user to the company cockpit',
       () => {
         cy.ensureLoggedIn(uploader_name, uploader_pw);
         visitSearchPageWithQueryParamsAndClickOnFirstSearchResult(DataTypeEnum.P2p, nameOfCompanyAlpha);
@@ -394,10 +396,10 @@ describeIf(
         typeCompanyNameIntoSearchBarAndSelectFirstSuggestion(nameOfCompanyBeta, companyIdOfBeta, true);
 
         validateCompanyCockpitPage(nameOfCompanyBeta, companyIdOfBeta);
-      },
+      }
     );
 
-    it("Check that using back-button and dropdowns on the view-page work as expected", () => {
+    it('Check that using back-button and dropdowns on the view-page work as expected', () => {
       cy.ensureLoggedIn();
       cy.visit(`/companies/${companyIdOfAlpha}/frameworks/${DataTypeEnum.EutaxonomyFinancials}`);
       validateNoErrorMessagesAreShown();
@@ -427,16 +429,16 @@ describeIf(
       cy.ensureLoggedIn();
       cy.visit(`/companies/${companyIdOfAlpha}/frameworks/${DataTypeEnum.EutaxonomyFinancials}/${nonExistingDataId}`);
 
-      getElementAndAssertExistence("noDataForThisDataIdPresentErrorIndicator", "exist");
-      getElementAndAssertExistence("claimOwnershipPanelLink", "not.exist");
+      getElementAndAssertExistence('noDataForThisDataIdPresentErrorIndicator', 'exist');
+      getElementAndAssertExistence('claimOwnershipPanelLink', 'not.exist');
 
       cy.visit(
-        `/companies/${nonExistingCompanyId}/frameworks/${DataTypeEnum.Lksg}/${dataIdOfSupersededLksg2023ForAlpha}`,
+        `/companies/${nonExistingCompanyId}/frameworks/${DataTypeEnum.Lksg}/${dataIdOfSupersededLksg2023ForAlpha}`
       );
 
-      getElementAndAssertExistence("noCompanyWithThisIdErrorIndicator", "not.exist");
-      getElementAndAssertExistence("noDataCouldBeLoadedErrorIndicator", "not.exist");
-      getElementAndAssertExistence("claimOwnershipPanelLink", "not.exist");
+      getElementAndAssertExistence('noCompanyWithThisIdErrorIndicator', 'not.exist');
+      getElementAndAssertExistence('noDataCouldBeLoadedErrorIndicator', 'not.exist');
+      getElementAndAssertExistence('claimOwnershipPanelLink', 'not.exist');
 
       typeCompanyNameIntoSearchBarAndSelectFirstSuggestion(nameOfCompanyBeta, companyIdOfBeta, true);
 
@@ -444,54 +446,54 @@ describeIf(
 
       clickBackButton();
 
-      getElementAndAssertExistence("noCompanyWithThisIdErrorIndicator", "exist");
-      getElementAndAssertExistence("noDataCouldBeLoadedErrorIndicator", "exist");
+      getElementAndAssertExistence('noCompanyWithThisIdErrorIndicator', 'exist');
+      getElementAndAssertExistence('noDataCouldBeLoadedErrorIndicator', 'exist');
     });
 
-    it("Check if the version change bar works as expected on several framework view pages", () => {
+    it('Check if the version change bar works as expected on several framework view pages', () => {
       cy.ensureLoggedIn(uploader_name, uploader_pw);
       cy.visit(`/companies/${companyIdOfAlpha}/frameworks/${DataTypeEnum.Lksg}/${dataIdOfSupersededLksg2023ForAlpha}`);
 
-      cy.contains("2023-04-18").should("exist");
-      validateColumnHeadersOfDisplayedLksgDatasets(["2023"]);
-      validateDataDatesOfDisplayedLksgDatasets(["2023-04-18"]);
-      validateDisplayStatusContainerAndGetButton("This dataset is superseded", "View Active").click();
+      cy.contains('2023-04-18').should('exist');
+      validateColumnHeadersOfDisplayedLksgDatasets(['2023']);
+      validateDataDatesOfDisplayedLksgDatasets(['2023-04-18']);
+      validateDisplayStatusContainerAndGetButton('This dataset is superseded', 'View Active').click();
 
       cy.url().should(
-        "contain",
-        `/companies/${companyIdOfAlpha}/frameworks/${DataTypeEnum.Lksg}/reportingPeriods/2023`,
+        'contain',
+        `/companies/${companyIdOfAlpha}/frameworks/${DataTypeEnum.Lksg}/reportingPeriods/2023`
       );
-      cy.contains("2023-06-22").should("exist");
-      validateColumnHeadersOfDisplayedLksgDatasets(["2023"]);
-      validateDataDatesOfDisplayedLksgDatasets(["2023-06-22"]);
-      validateDisplayStatusContainerAndGetButton("You are only viewing a single available dataset", "View All").click();
+      cy.contains('2023-06-22').should('exist');
+      validateColumnHeadersOfDisplayedLksgDatasets(['2023']);
+      validateDataDatesOfDisplayedLksgDatasets(['2023-06-22']);
+      validateDisplayStatusContainerAndGetButton('You are only viewing a single available dataset', 'View All').click();
 
-      cy.url().should("contain", `/companies/${companyIdOfAlpha}/frameworks/${DataTypeEnum.Lksg}`);
-      cy.contains("2022-07-30").should("exist");
-      validateColumnHeadersOfDisplayedLksgDatasets(["2023", "2022"]);
-      validateDataDatesOfDisplayedLksgDatasets(["2023-06-22", "2022-07-30"]);
-      cy.contains("This dataset is superseded").should("not.exist");
-      getElementAndAssertExistence("datasetDisplayStatusContainer", "not.exist");
+      cy.url().should('contain', `/companies/${companyIdOfAlpha}/frameworks/${DataTypeEnum.Lksg}`);
+      cy.contains('2022-07-30').should('exist');
+      validateColumnHeadersOfDisplayedLksgDatasets(['2023', '2022']);
+      validateDataDatesOfDisplayedLksgDatasets(['2023-06-22', '2022-07-30']);
+      cy.contains('This dataset is superseded').should('not.exist');
+      getElementAndAssertExistence('datasetDisplayStatusContainer', 'not.exist');
       clickBackButton();
 
       cy.url().should(
-        "contain",
-        `/companies/${companyIdOfAlpha}/frameworks/${DataTypeEnum.Lksg}/reportingPeriods/2023`,
+        'contain',
+        `/companies/${companyIdOfAlpha}/frameworks/${DataTypeEnum.Lksg}/reportingPeriods/2023`
       );
-      cy.contains("2022-07-30").should("not.exist");
-      validateColumnHeadersOfDisplayedLksgDatasets(["2023"]);
-      validateDataDatesOfDisplayedLksgDatasets(["2023-06-22"]);
-      validateDisplayStatusContainerAndGetButton("You are only viewing a single available dataset", "View All");
+      cy.contains('2022-07-30').should('not.exist');
+      validateColumnHeadersOfDisplayedLksgDatasets(['2023']);
+      validateDataDatesOfDisplayedLksgDatasets(['2023-06-22']);
+      validateDisplayStatusContainerAndGetButton('You are only viewing a single available dataset', 'View All');
       clickBackButton();
 
       cy.url().should(
-        "contain",
-        `/companies/${companyIdOfAlpha}/frameworks/${DataTypeEnum.Lksg}/${dataIdOfSupersededLksg2023ForAlpha}`,
+        'contain',
+        `/companies/${companyIdOfAlpha}/frameworks/${DataTypeEnum.Lksg}/${dataIdOfSupersededLksg2023ForAlpha}`
       );
-      cy.contains("2023-04-18").should("exist");
-      validateColumnHeadersOfDisplayedLksgDatasets(["2023"]);
-      validateDataDatesOfDisplayedLksgDatasets(["2023-04-18"]);
-      validateDisplayStatusContainerAndGetButton("This dataset is superseded", "View Active");
+      cy.contains('2023-04-18').should('exist');
+      validateColumnHeadersOfDisplayedLksgDatasets(['2023']);
+      validateDataDatesOfDisplayedLksgDatasets(['2023-04-18']);
+      validateDisplayStatusContainerAndGetButton('This dataset is superseded', 'View Active');
     });
-  },
+  }
 );

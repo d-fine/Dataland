@@ -1,15 +1,13 @@
 package org.dataland.datalandcommunitymanager.services
 
-import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
-import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.exceptions.QuotaExceededException
-import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandbackendutils.utils.validateIsEmailAddress
 import org.dataland.datalandcommunitymanager.model.dataRequest.SingleDataRequest
 import org.dataland.datalandcommunitymanager.model.dataRequest.SingleDataRequestResponse
 import org.dataland.datalandcommunitymanager.repositories.DataRequestRepository
 import org.dataland.datalandcommunitymanager.services.messaging.SingleDataRequestEmailMessageSender
+import org.dataland.datalandcommunitymanager.utils.CompanyIdValidator
 import org.dataland.datalandcommunitymanager.utils.DataRequestLogger
 import org.dataland.datalandcommunitymanager.utils.DataRequestProcessingUtils
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
@@ -17,7 +15,6 @@ import org.dataland.keycloakAdapter.auth.DatalandJwtAuthentication
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
-import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.time.Instant
@@ -28,12 +25,15 @@ import java.util.*
  * Implementation of a request manager service for all operations concerning the processing of single data requests
  */
 @Service("SingleDataRequestManager")
-class SingleDataRequestManager(
+class SingleDataRequestManager
+@Suppress("LongParameterList")
+constructor(
     @Autowired private val dataRequestLogger: DataRequestLogger,
     @Autowired private val dataRequestRepository: DataRequestRepository,
-    @Autowired private val companyApi: CompanyDataControllerApi,
+    @Autowired private val companyIdValidator: CompanyIdValidator,
     @Autowired private val singleDataRequestEmailMessageSender: SingleDataRequestEmailMessageSender,
     @Autowired private val utils: DataRequestProcessingUtils,
+    @Autowired private val securityUtilsService: SecurityUtilsService,
     @Value("\${dataland.community-manager.max-number-of-data-requests-per-day-for-role-user}") val maxRequestsForUser:
     Int,
 ) {
@@ -46,12 +46,12 @@ class SingleDataRequestManager(
      */
     @Transactional
     fun processSingleDataRequest(singleDataRequest: SingleDataRequest): SingleDataRequestResponse {
-        checkSingleDataRequest(singleDataRequest)
+        val companyId = findDatalandCompanyIdForCompanyIdentifier(singleDataRequest.companyIdentifier)
         val correlationId = UUID.randomUUID().toString()
+        checkSingleDataRequest(singleDataRequest, companyId)
         dataRequestLogger.logMessageForReceivingSingleDataRequest(
             singleDataRequest.companyIdentifier, DatalandAuthentication.fromContext().userId, correlationId,
         )
-        val companyId = findDatalandCompanyIdForCompanyIdentifier(singleDataRequest.companyIdentifier)
         val reportingPeriodsOfStoredDataRequests = mutableListOf<String>()
         val reportingPeriodsOfDuplicateDataRequests = mutableListOf<String>()
         singleDataRequest.reportingPeriods.forEach { reportingPeriod ->
@@ -75,23 +75,23 @@ class SingleDataRequestManager(
         )
     }
 
-    private fun checkSingleDataRequest(singleDataRequest: SingleDataRequest) {
+    private fun checkSingleDataRequest(singleDataRequest: SingleDataRequest, companyId: String) {
         utils.throwExceptionIfNotJwtAuth()
         validateSingleDataRequestContent(singleDataRequest)
-        performQuotaCheckForNonPremiumUser(singleDataRequest)
+        performQuotaCheckForNonPremiumUser(singleDataRequest.reportingPeriods.size, companyId)
     }
 
-    private fun performQuotaCheckForNonPremiumUser(singleDataRequest: SingleDataRequest) {
+    private fun performQuotaCheckForNonPremiumUser(numberOfReportingPeriods: Int, companyId: String) {
         val userInfo = DatalandAuthentication.fromContext()
-        if (!userInfo.roles.contains(DatalandRealmRole.ROLE_PREMIUM_USER)) {
+        if (!userInfo.roles.contains(DatalandRealmRole.ROLE_PREMIUM_USER) &&
+            !securityUtilsService.isUserMemberOfTheCompany(UUID.fromString(companyId))
+        ) {
             val numberOfDataRequestsPerformedByUserFromTimestamp =
                 dataRequestRepository.getNumberOfDataRequestsPerformedByUserFromTimestamp(
                     userInfo.userId, getEpochTimeStartOfDay(),
                 )
 
-            val numberOfReportingPeriodsInCurrentDataRequest = singleDataRequest.reportingPeriods.size
-
-            if (numberOfDataRequestsPerformedByUserFromTimestamp + numberOfReportingPeriodsInCurrentDataRequest
+            if (numberOfDataRequestsPerformedByUserFromTimestamp + numberOfReportingPeriods
                 > maxRequestsForUser
             ) {
                 throw QuotaExceededException(
@@ -107,8 +107,7 @@ class SingleDataRequestManager(
         val zoneId = ZoneId.of("Europe/Berlin")
         val instantNowZoned = instantNow.atZone(zoneId)
         val startOfDay = instantNowZoned.toLocalDate().atStartOfDay(zoneId)
-        val startOfDayTimestampMillis = startOfDay.toInstant().toEpochMilli()
-        return startOfDayTimestampMillis
+        return startOfDay.toInstant().toEpochMilli()
     }
 
     private fun validateSingleDataRequestContent(singleDataRequest: SingleDataRequest) {
@@ -130,20 +129,17 @@ class SingleDataRequestManager(
     }
 
     private fun findDatalandCompanyIdForCompanyIdentifier(companyIdentifier: String): String {
-        val datalandCompanyId = if (companyIdRegex.matches(companyIdentifier)) {
-            checkIfCompanyIsValid(companyIdentifier)
+        val datalandCompanyId: String? = if (companyIdRegex.matches(companyIdentifier)) {
+            companyIdValidator.checkIfCompanyIdIsValidAndReturnName(companyIdentifier)
             companyIdentifier
         } else {
-            utils.getDatalandCompanyIdForIdentifierValue(companyIdentifier)
+            utils.getDatalandCompanyIdAndNameForIdentifierValue(companyIdentifier)?.companyId
         }
-        if (datalandCompanyId == null) {
-            throw InvalidInputApiException(
-                "The specified company is unknown to Dataland.",
-                "The company with identifier: $companyIdentifier is unknown to Dataland.",
-            )
-        } else {
-            return datalandCompanyId
-        }
+
+        return datalandCompanyId ?: throw InvalidInputApiException(
+            "The specified company is unknown to Dataland.",
+            "The company with identifier: $companyIdentifier is unknown to Dataland.",
+        )
     }
 
     private fun sendSingleDataRequestEmailMessage(
@@ -182,19 +178,6 @@ class SingleDataRequestManager(
                 contactMessage = singleDataRequest.message,
                 correlationId = correlationId,
             )
-        }
-    }
-
-    private fun checkIfCompanyIsValid(companyId: String) {
-        try {
-            companyApi.getCompanyById(companyId)
-        } catch (e: ClientException) {
-            if (e.statusCode == HttpStatus.NOT_FOUND.value()) {
-                throw ResourceNotFoundApiException(
-                    "Company not found",
-                    "Dataland-backend does not know the company ID $companyId",
-                )
-            }
         }
     }
 

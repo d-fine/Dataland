@@ -32,11 +32,11 @@
 
 <script lang="ts">
 // @ts-nocheck
-import { defineComponent, type PropType } from "vue";
-import Dropdown from "primevue/dropdown";
-import { type DropdownOption } from "@/utils/PremadeDropdownDatasets";
-import { isStringArray } from "@/utils/TypeScriptUtils";
-import { DropdownOptionFormFieldProps } from "@/components/forms/parts/fields/FormFieldProps";
+import { defineComponent, type PropType } from 'vue';
+import Dropdown from 'primevue/dropdown';
+import { type DropdownOption } from '@/utils/PremadeDropdownDatasets';
+import { isStringArray } from '@/utils/TypeScriptUtils';
+import { DropdownOptionFormFieldProps } from '@/components/forms/parts/fields/FormFieldProps';
 
 export type OptionType = string[] | DropdownOption[] | Record<string, string>;
 
@@ -60,11 +60,11 @@ export function convertOptionTypeToDropdownOptions(options: OptionType | null | 
 }
 
 export default defineComponent({
-  name: "SingleSelectFormElement",
+  name: 'SingleSelectFormElement',
   components: { Dropdown },
   props: {
     ...DropdownOptionFormFieldProps,
-    inputClass: { type: String, default: "long" },
+    inputClass: { type: String, default: 'long' },
     deselectRemovedOptionsOnShrinkage: {
       type: Boolean,
       default: true,
@@ -92,7 +92,7 @@ export default defineComponent({
       selectedOption: this.modelValue as string | null,
     };
   },
-  emits: ["update:modelValue"],
+  emits: ['update:modelValue'],
   watch: {
     modelValue(newValue: string) {
       this.selectedOption = newValue;
@@ -105,11 +105,11 @@ export default defineComponent({
       if (!this.deselectRemovedOptionsOnShrinkage) return;
 
       const currentValueIsAllowedOnOldData = convertOptionTypeToDropdownOptions(oldInput).some(
-        (it) => it.value == this.selectedOption,
+        (it) => it.value == this.selectedOption
       );
 
       const currentValueIsAllowedOnNewData = convertOptionTypeToDropdownOptions(newInput).some(
-        (it) => it.value == this.selectedOption,
+        (it) => it.value == this.selectedOption
       );
 
       if (currentValueIsAllowedOnOldData && !currentValueIsAllowedOnNewData) {
@@ -145,7 +145,7 @@ export default defineComponent({
      */
     setSelectedOption(newValue: string | null) {
       this.selectedOption = newValue;
-      this.$emit("update:modelValue", newValue);
+      this.$emit('update:modelValue', newValue);
     },
     /**
      * Handler for changes in the dropdown component

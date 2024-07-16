@@ -12,7 +12,7 @@ export type Equals<X, Y> = (<T>() => T extends X ? 1 : 2) extends <T>() => T ext
  */
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export function assertNever(input: never): never {
-  throw new Error("This function should not be called as its input is never");
+  throw new Error('This function should not be called as its input is never');
 }
 
 /**
@@ -22,7 +22,7 @@ export function assertNever(input: never): never {
  */
 export function assertDefined<T>(input: T | undefined | null): T {
   if (input === undefined || input === null) {
-    throw new Error("Assertion error: Input was supposed to be non-null but is.");
+    throw new Error('Assertion error: Input was supposed to be non-null but is.');
   } else {
     return input;
   }
@@ -34,5 +34,14 @@ export function assertDefined<T>(input: T | undefined | null): T {
  * @returns true iff the input is a string array
  */
 export function isStringArray(input: unknown): input is string[] {
-  return Array.isArray(input) && input.every((it) => typeof it === "string");
+  return Array.isArray(input) && input.every((it) => typeof it === 'string');
+}
+
+/**
+ * Verifies that the input is a string in a typescript typesafe manner
+ * @param input the input to check
+ * @returns true iff the input is a string
+ */
+export function isString(input: unknown): input is string {
+  return typeof input === 'string';
 }

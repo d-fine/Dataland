@@ -17,16 +17,16 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, type PropType } from "vue";
+import { defineComponent, type PropType } from 'vue';
 import {
   KEYCLOAK_ROLE_USER,
   KEYCLOAK_ROLE_UPLOADER,
   KEYCLOAK_ROLE_REVIEWER,
   KEYCLOAK_ROLE_ADMIN,
-} from "@/utils/KeycloakUtils";
+} from '@/utils/KeycloakUtils';
 
 export default defineComponent({
-  name: "UserRolesBadges",
+  name: 'UserRolesBadges',
   props: {
     userRoles: {
       type: Array as PropType<string[]>,

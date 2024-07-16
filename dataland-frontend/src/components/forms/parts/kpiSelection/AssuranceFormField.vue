@@ -78,26 +78,26 @@
 
 <script lang="ts">
 // @ts-nocheck
-import { defineComponent, nextTick } from "vue";
-import { FormKit } from "@formkit/vue";
-import { BaseFormFieldProps } from "@/components/forms/parts/fields/FormFieldProps";
-import UploadFormHeader from "@/components/forms/parts/elements/basic/UploadFormHeader.vue";
+import { defineComponent, nextTick } from 'vue';
+import { FormKit } from '@formkit/vue';
+import { BaseFormFieldProps } from '@/components/forms/parts/fields/FormFieldProps';
+import UploadFormHeader from '@/components/forms/parts/elements/basic/UploadFormHeader.vue';
 import {
   euTaxonomyKpiInfoMappings,
   euTaxonomyKpiNameMappings,
-} from "@/components/forms/parts/kpiSelection/EuTaxonomyKPIsModel";
-import { humanizeStringOrNumber } from "@/utils/StringFormatter";
-import { AssuranceDataPointValueEnum } from "@clients/backend";
-import { type ObjectType } from "@/utils/UpdateObjectUtils";
-import { getFileName, getFileReferenceByFileName } from "@/utils/FileUploadUtils";
-import { isValidFileName, noReportLabel } from "@/utils/DataSource";
-import SingleSelectFormField from "@/components/forms/parts/fields/SingleSelectFormField.vue";
+} from '@/components/forms/parts/kpiSelection/EuTaxonomyKPIsModel';
+import { humanizeStringOrNumber } from '@/utils/StringFormatter';
+import { AssuranceDataPointValueEnum } from '@clients/backend';
+import { type ObjectType } from '@/utils/UpdateObjectUtils';
+import { getFileName, getFileReferenceByFileName } from '@/utils/FileUploadUtils';
+import { isValidFileName, noReportLabel } from '@/utils/DataSource';
+import SingleSelectFormField from '@/components/forms/parts/fields/SingleSelectFormField.vue';
 
 export default defineComponent({
-  name: "AssuranceFormField",
+  name: 'AssuranceFormField',
   inject: {
     injectReportsNameAndReferences: {
-      from: "namesAndReferencesOfAllCompanyReportsForTheDataset",
+      from: 'namesAndReferencesOfAllCompanyReportsForTheDataset',
       default: {} as ObjectType,
     },
   },
@@ -112,7 +112,7 @@ export default defineComponent({
         LimitedAssurance: humanizeStringOrNumber(AssuranceDataPointValueEnum.LimitedAssurance),
         ReasonableAssurance: humanizeStringOrNumber(AssuranceDataPointValueEnum.ReasonableAssurance),
       },
-      currentReportValue: "",
+      currentReportValue: '',
       reportPageNumber: undefined as string | undefined,
       noReportLabel: noReportLabel,
       isValidFileName: isValidFileName,

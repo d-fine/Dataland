@@ -13,13 +13,13 @@
 </template>
 
 <script lang="ts">
-import UploadFormHeader from "@/components/forms/parts/elements/basic/UploadFormHeader.vue";
-import { defineComponent } from "vue";
-import { FormKit } from "@formkit/vue";
-import { FormFieldPropsWithPlaceholder } from "@/components/forms/parts/fields/FormFieldProps";
+import UploadFormHeader from '@/components/forms/parts/elements/basic/UploadFormHeader.vue';
+import { defineComponent } from 'vue';
+import { FormKit } from '@formkit/vue';
+import { FormFieldPropsWithPlaceholder } from '@/components/forms/parts/fields/FormFieldProps';
 
 export default defineComponent({
-  name: "InputTextFormField",
+  name: 'InputTextFormField',
   components: { FormKit, UploadFormHeader },
   props: FormFieldPropsWithPlaceholder,
 });

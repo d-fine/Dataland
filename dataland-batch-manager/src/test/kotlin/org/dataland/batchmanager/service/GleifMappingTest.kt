@@ -4,7 +4,7 @@ import org.dataland.datalandbackend.openApiClient.model.CompanyInformation
 import org.dataland.datalandbackend.openApiClient.model.IdentifierType
 import org.dataland.datalandbatchmanager.model.GleifCompanyCombinedInformation
 import org.dataland.datalandbatchmanager.model.GleifCompanyInformation
-import org.dataland.datalandbatchmanager.service.GleifCsvParser
+import org.dataland.datalandbatchmanager.service.CsvParser
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import org.springframework.context.annotation.ComponentScan
@@ -23,6 +23,7 @@ class GleifMappingTest {
 
     private val expectedCompanyInformation = CompanyInformation(
         companyName = expectedGleifCompanyInformation.companyName,
+        companyContactDetails = null,
         companyAlternativeNames = null,
         companyLegalForm = null,
         countryCode = expectedGleifCompanyInformation.countryCode,
@@ -38,8 +39,17 @@ class GleifMappingTest {
     @Test
     fun `check that parsing the test file results in the expected company information objects`() {
         val input = BufferedReader(FileReader("./build/resources/test/GleifTestData.csv"))
-        val gleifCompanyInformation = GleifCsvParser().readGleifDataFromBufferedReader(input).next()
+        var gleifCompanyInformation = GleifCompanyInformation("", "", "", "", "")
+        val gleifIterable = CsvParser().readGleifCompanyDataFromBufferedReader(input)
+        gleifIterable.forEach {
+            gleifCompanyInformation = GleifCompanyInformation(
+                it.companyName, it.headquarters,
+                it.headquartersPostalCode, it.lei, it.countryCode,
+            )
+        }
+        println(gleifCompanyInformation.companyName)
         val companyInformation = GleifCompanyCombinedInformation(gleifCompanyInformation).toCompanyPost()
+        println(companyInformation)
         Assertions.assertEquals(
             expectedGleifCompanyInformation,
             gleifCompanyInformation,
