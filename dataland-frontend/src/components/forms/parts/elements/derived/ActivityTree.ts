@@ -56,8 +56,8 @@ export const activityTree: Array<ActivityNode> = [
         type: 'child',
       },
       {
-        name: 'Conservation, including restoration, of habitats[1], ecosystems[2] and species',
-        value: 'ConservationIncludingRestorationOfHabitats1Ecosystems2AndSpecies',
+        name: 'Conservation, including restoration, of habitats, ecosystems and species',
+        value: 'ConservationIncludingRestorationOfHabitatsEcosystemsAndSpecies',
         key: '2.2',
         sector: 'Environmental protection and restoration activities',
         type: 'child',
