@@ -15,7 +15,6 @@ import org.dataland.datalandbackend.utils.PermissionChecker
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.slf4j.LoggerFactory
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.AccessDeniedException
 import java.time.Instant
@@ -32,7 +31,7 @@ abstract class DataController<T>(
     var dataMetaInformationManager: DataMetaInformationManager,
     var objectMapper: ObjectMapper,
     private val clazz: Class<T>,
-    @Autowired private val permissionChecker: PermissionChecker,
+    private val permissionChecker: PermissionChecker,
 ) : DataApi<T> {
     private val dataType = DataType.of(clazz)
     private val logger = LoggerFactory.getLogger(javaClass)
