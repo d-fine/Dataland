@@ -9,3 +9,5 @@ import io.swagger.v3.oas.annotations.media.Schema
     enumAsRef = true,
 )
 enum class RequestStatus { Open, Answered, Resolved, Withdrawn, Closed }
+//TODO here new status have to be added: Revoked, Granted, Declined, Pending
+//TODO could lead to confusion when to use which status

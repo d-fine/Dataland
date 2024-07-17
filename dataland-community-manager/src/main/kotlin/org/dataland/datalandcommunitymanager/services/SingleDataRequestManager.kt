@@ -71,7 +71,7 @@ constructor(
             }
             if(singleDataRequest.dataType == DataTypeEnum.vsme) {
                 //TODO Check ob es einen Datensatz für die Reporting Period und VSME gibt
-                //TODO CHeck ob der Nutzer schon Zugriff darauf hat
+                //TODO Check ob der Nutzer schon Zugriff darauf hat
                 //TODO Wenn ja, erstelle einen neuen data request für reporting period und vsme und erstelle access request
                 //TODO Wenn nicht erstelle access request
             }
