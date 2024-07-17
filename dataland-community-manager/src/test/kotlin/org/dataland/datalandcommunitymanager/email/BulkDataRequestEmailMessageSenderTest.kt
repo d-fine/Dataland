@@ -41,7 +41,7 @@ class BulkDataRequestEmailMessageSenderTest {
         reportingPeriods = setOf("2020, 2023"),
     )
     private val acceptedCompanyIdentifiers = listOf(
-        CompanyIdAndName(companyId="AR8756188701,9856177321", companyName=companyName),
+        CompanyIdAndName(companyId = "AR8756188701,9856177321", companyName = companyName),
     )
     private val expectedFormatting = "<a href=\"https://mockurl.dataland.com/companies/AR8756188701,9856177321\">" +
         "Company Name</a> (AR8756188701,9856177321)"

@@ -51,6 +51,7 @@ class DataManagerTest(
     @Autowired val companyQueryManager: CompanyQueryManager,
     @Autowired val companyAlterationManager: CompanyAlterationManager,
     @Autowired val dataManagerUtils: DataManagerUtils,
+    @Autowired val companyRoleChecker: CompanyRoleChecker,
 ) {
     val mockStorageClient: StorageControllerApi = mock(StorageControllerApi::class.java)
     val mockCloudEventMessageHandler: CloudEventMessageHandler = mock(CloudEventMessageHandler::class.java)
@@ -65,7 +66,7 @@ class DataManagerTest(
     fun reset() {
         dataManager = DataManager(
             objectMapper, companyQueryManager, dataMetaInformationManager,
-            mockStorageClient, mockCloudEventMessageHandler, dataManagerUtils,
+            mockStorageClient, mockCloudEventMessageHandler, dataManagerUtils, companyRoleChecker,
         )
         spyDataManager = spy(dataManager)
         messageQueueListenerDataManager = MessageQueueListenerDataManager(
@@ -244,7 +245,7 @@ class DataManagerTest(
         )
         dataManager = DataManager(
             objectMapper, companyQueryManager, mockDataMetaInformationManager,
-            mockStorageClient, mockCloudEventMessageHandler, dataManagerUtils,
+            mockStorageClient, mockCloudEventMessageHandler, dataManagerUtils, companyRoleChecker,
         )
         assertThrows<ResourceNotFoundApiException> {
             dataManager.getPublicDataSet(
