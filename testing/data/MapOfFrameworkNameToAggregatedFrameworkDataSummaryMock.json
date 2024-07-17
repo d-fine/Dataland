@@ -1,29 +1,26 @@
 {
-	"integrationTesting": {
+	"eutaxonomy-financials": {
 		"numberOfProvidedReportingPeriods": 19
 	},
-	"eutaxonomy-financials": {
+	"eutaxonomy-non-financials": {
 		"numberOfProvidedReportingPeriods": 7
 	},
-	"eutaxonomy-non-financials": {
-		"numberOfProvidedReportingPeriods": 14
-	},
 	"lksg": {
-		"numberOfProvidedReportingPeriods": 29
+		"numberOfProvidedReportingPeriods": 14
 	},
 	"p2p": {
-		"numberOfProvidedReportingPeriods": 14
+		"numberOfProvidedReportingPeriods": 29
 	},
 	"sfdr": {
-		"numberOfProvidedReportingPeriods": 26
+		"numberOfProvidedReportingPeriods": 14
 	},
 	"vsme": {
-		"numberOfProvidedReportingPeriods": 22
+		"numberOfProvidedReportingPeriods": 26
 	},
 	"esg-questionnaire": {
-		"numberOfProvidedReportingPeriods": 15
+		"numberOfProvidedReportingPeriods": 22
 	},
 	"heimathafen": {
-		"numberOfProvidedReportingPeriods": 14
+		"numberOfProvidedReportingPeriods": 15
 	}
 }
