@@ -7,6 +7,7 @@ import org.dataland.e2etests.BASE_PATH_TO_DATALAND_BACKEND
 import org.dataland.e2etests.auth.JwtAuthenticationHelper
 import org.dataland.e2etests.auth.TechnicalUser
 import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 
@@ -24,5 +25,11 @@ class UserUploadsControllerTest {
             getUserUploads(TechnicalUser.Admin.technicalUserId, TechnicalUser.Uploader)
         }
         assertEquals("Client error : 403 ", exception.message)
+    }
+
+    @Test
+    fun `check that a reading user has no uploads`() {
+        val shouldBeEmpty = getUserUploads(TechnicalUser.Reviewer.technicalUserId, TechnicalUser.Reviewer)
+        assertTrue(shouldBeEmpty.isEmpty())
     }
 }

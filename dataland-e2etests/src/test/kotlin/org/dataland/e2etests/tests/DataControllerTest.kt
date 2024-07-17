@@ -24,7 +24,6 @@ class DataControllerTest {
     private val apiAccessor = ApiAccessor()
     private val documentManagerAccessor = DocumentManagerAccessor()
     private val dataReaderUserId = UUID.fromString(TechnicalUser.Reader.technicalUserId)
-    private val dataReviewerUserId = UUID.fromString(TechnicalUser.Reviewer.technicalUserId)
 
     val jwtHelper = JwtAuthenticationHelper()
 
@@ -125,28 +124,13 @@ class DataControllerTest {
     }
 
     @Test
-    fun `assure that bypassQa is allowed for Dataland Keycloak admin or reviewer`() {
+    fun `assure bypassQA is forbidden for users unless they are the company owner or Dataland admin`() {
         val companyId = UUID.fromString(
             apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId,
         )
-
-        jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
-        apiAccessor.companyRolesControllerApi.assignCompanyRole(CompanyRole.DataUploader, companyId, dataReviewerUserId)
-
-        jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reviewer)
-        assertDoesNotThrow { uploadEuTaxoDataset(companyId, true) }
-
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
         assertDoesNotThrow { uploadEuTaxoDataset(companyId, true) }
-    }
 
-    @Test
-    fun `assure bypassQA is forbidden for users with reader rights unless they are the company owner`() {
-        val companyId = UUID.fromString(
-            apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId,
-        )
-
-        jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
         apiAccessor.companyRolesControllerApi.assignCompanyRole(CompanyRole.DataUploader, companyId, dataReaderUserId)
 
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader)
