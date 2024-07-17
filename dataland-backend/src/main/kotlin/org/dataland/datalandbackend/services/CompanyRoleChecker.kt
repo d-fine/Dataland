@@ -88,8 +88,7 @@ class CompanyRoleChecker(
      * @param companyId the ID of the company
      * @return a Boolean indicating whether the company has at least one company owner
      */
-    fun isCompanyExistentAndWithoutOwner(companyId: String): Boolean {
-        companyQueryManager.verifyCompanyIdExists(companyId)
+    fun isCompanyWithoutOwner(companyId: String): Boolean {
         return try {
             companyRolesControllerApi.hasCompanyAtLeastOneOwner(UUID.fromString(companyId))
             false
@@ -103,8 +102,8 @@ class CompanyRoleChecker(
     }
 
     /**
-     * Method to check whether the patch contains only fields
-     * that are allowed to be altered by a non-keycloak-admin-user
+     * Checks whether the patch contains only fields that are allowed to be altered by a non-keycloak-admin-user and
+     * throws and error if not
      * @param patch the fields to be patched
      * @return a Boolean indicating whether the patch complies with the access requirements
      */
@@ -121,8 +120,8 @@ class CompanyRoleChecker(
             throw InsufficientRightsApiException(
                 "Invalid alteration attempt",
                 "You do not have the required permission to change the following fields:" +
-                    " ${unauthorizedFields.joinToString(", ")}.\n" +
-                    " You are only allowed to change the fields \"website\" and \"companyContactDetails\".",
+                    " ${unauthorizedFields.joinToString(", ")}." +
+                    " You are only allowed to change the fields website and companyContactDetails.",
             )
         }
         return true
@@ -133,16 +132,56 @@ class CompanyRoleChecker(
      * (a) the user has reviewer-rights
      * (b) the user has the company uploader or company owner role for the company associated with the data upload
      * This function checks these conditions.
-     * @param authenticationContext is the current auth context of this thread
      * @param companyId of the company associated with the data upload for which Qa shall be bypassed
      * @returns a boolean that states if the user is allowed to bypass Qa or not
      */
-    fun canUserBypassQa(authenticationContext: DatalandAuthentication?, companyId: String): Boolean {
-        val userUUID = UUID.fromString(DatalandAuthentication.fromContext().userId)
+    fun canUserBypassQa(companyId: String): Boolean {
+        val authContext = DatalandAuthentication.fromContext()
+        val userUUID = UUID.fromString(authContext.userId)
+
         val companyUUID = UUID.fromString(companyId)
 
-        return authenticationContext?.roles?.contains(DatalandRealmRole.ROLE_REVIEWER) == true ||
+        val isUserReviewer = authContext.roles.contains(DatalandRealmRole.ROLE_REVIEWER)
+        val isUserCompanyOwnerOrUploader =
             companyRolesControllerApi.getCompanyRoleAssignments(null, companyUUID, userUUID)
                 .any { it.companyRole == CompanyRole.CompanyOwner || it.companyRole == CompanyRole.DataUploader }
+
+        return isUserReviewer || isUserCompanyOwnerOrUploader
+    }
+
+    /**
+     * Checks if the requesting user has the rights to do the desired patch of the company
+     * @param companyInformationPatch contains the patched data
+     * @param companyId defines the company that will be patched
+     * @returns a boolean that states if the user is allowed to do the patch or not
+     */
+    fun canUserPatchFieldsForCompany(companyInformationPatch: CompanyInformationPatch, companyId: String): Boolean {
+        companyQueryManager.verifyCompanyIdExists(companyId)
+        val companyUUID = UUID.fromString(companyId)
+        val authContext = DatalandAuthentication.fromContext()
+        val userUUID = UUID.fromString(authContext.userId)
+        val keycloakRoles = authContext.roles
+
+        if (keycloakRoles.contains(DatalandRealmRole.ROLE_ADMIN)) {
+            return true
+        }
+
+        val companyRoles = companyRolesControllerApi.getCompanyRoleAssignments(null, companyUUID, userUUID)
+            .map { it.companyRole }
+
+        return if (companyRoles.contains(CompanyRole.CompanyOwner)) {
+            areOnlyAuthorizedFieldsPatched(companyInformationPatch)
+        } else if (keycloakRoles.contains(DatalandRealmRole.ROLE_UPLOADER)) {
+            if (!isCompanyWithoutOwner(companyId)) {
+                throw InsufficientRightsApiException(
+                    "Insufficient rights for patch",
+                    "You cannot patch this company because the company ownership for it has been claimed by at least " +
+                        "one Dataland user.",
+                )
+            }
+            areOnlyAuthorizedFieldsPatched(companyInformationPatch)
+        } else {
+            false
+        }
     }
 }

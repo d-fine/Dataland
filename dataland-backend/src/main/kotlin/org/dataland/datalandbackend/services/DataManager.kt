@@ -13,7 +13,6 @@ import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandl
 import org.dataland.datalandmessagequeueutils.constants.ActionType
 import org.dataland.datalandmessagequeueutils.constants.ExchangeName
 import org.dataland.datalandmessagequeueutils.constants.MessageType
-import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.json.JSONObject
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -62,11 +61,7 @@ constructor(
         correlationId: String,
     ):
         String {
-        if (bypassQa && !companyRoleChecker.canUserBypassQa(
-                DatalandAuthentication.fromContextOrNull(),
-                storableDataSet.companyId,
-            )
-        ) {
+        if (bypassQa && !companyRoleChecker.canUserBypassQa(storableDataSet.companyId)) {
             throw AccessDeniedException(logMessageBuilder.bypassQaDeniedExceptionMessage)
         }
         val dataId = IdUtils.generateUUID()
