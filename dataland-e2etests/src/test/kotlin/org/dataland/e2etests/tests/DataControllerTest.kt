@@ -141,7 +141,7 @@ class DataControllerTest {
     }
 
     @Test
-    fun `assure that bypassQa is forbidden for users unless they are a company owner`() {
+    fun `assure bypassQA is forbidden for users with reader rights unless they are the company owner`() {
         val companyId = UUID.fromString(
             apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId,
         )
