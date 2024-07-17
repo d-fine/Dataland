@@ -448,7 +448,6 @@ export default defineComponent({
     collectDataToSend(): SingleDataRequest {
       return {
         companyIdentifier: this.companyIdentifier,
-        // @ts-ignore
         dataType: this.frameworkName,
         // as unknown as Set<string> cast required to ensure proper json is created
         reportingPeriods: this.selectedReportingPeriods as unknown as Set<string>,
