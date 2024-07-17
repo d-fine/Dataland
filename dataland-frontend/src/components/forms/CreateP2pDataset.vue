@@ -268,11 +268,7 @@ export default defineComponent({
           this.getKeycloakPromise
         );
 
-        if (isCompanyOwner) {
-          await p2pDataControllerApi.postFrameworkData(this.companyAssociatedP2pData, true);
-        } else {
-          await p2pDataControllerApi.postFrameworkData(this.companyAssociatedP2pData);
-        }
+        await p2pDataControllerApi.postFrameworkData(this.companyAssociatedP2pData, isCompanyOwner);
 
         this.$emit('datasetCreated');
         this.dataDate = undefined;

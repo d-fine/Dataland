@@ -316,11 +316,7 @@ export default defineComponent({
           this.getKeycloakPromise
         );
 
-        if (isCompanyOwner) {
-          await sfdrDataControllerApi.postFrameworkData(this.companyAssociatedSfdrData, true);
-        } else {
-          await sfdrDataControllerApi.postFrameworkData(this.companyAssociatedSfdrData);
-        }
+        await sfdrDataControllerApi.postFrameworkData(this.companyAssociatedSfdrData, isCompanyOwner);
 
         this.$emit('datasetCreated');
         this.dataDate = undefined;

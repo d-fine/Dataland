@@ -308,16 +308,10 @@ export default defineComponent({
           this.getKeycloakPromise
         );
 
-        if (isCompanyOwner) {
-          await assertDefined(esgQuestionnaireDataControllerApi).postFrameworkData(
-            this.companyAssociatedEsgQuestionnaireData,
-            true
-          );
-        } else {
-          await assertDefined(esgQuestionnaireDataControllerApi).postFrameworkData(
-            this.companyAssociatedEsgQuestionnaireData
-          );
-        }
+        await assertDefined(esgQuestionnaireDataControllerApi).postFrameworkData(
+          this.companyAssociatedEsgQuestionnaireData,
+          isCompanyOwner
+        );
 
         this.$emit('datasetCreated');
         this.dataDate = undefined;

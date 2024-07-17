@@ -9,6 +9,7 @@ import {
   EuTaxonomyDataForFinancialsControllerApi,
 } from '@clients/backend';
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from '@e2e/utils/CompanyUpload';
+import { assignCompanyOwnershipToDatalandAdmin } from '@e2e/utils/CompanyRolesUtils';
 import { submitButton } from '@sharedUtils/components/SubmitButton';
 import { uploadFrameworkDataForLegacyFramework } from '@e2e/utils/FrameworkUpload';
 import { compareObjectKeysAndValuesDeep } from '@e2e/utils/GeneralUtils';
@@ -33,6 +34,7 @@ describeIf(
   function (): void {
     beforeEach(() => {
       cy.ensureLoggedIn(admin_name, admin_pw);
+      Cypress.env('excludeBypassQaIntercept', true);
     });
 
     it(
@@ -42,52 +44,55 @@ describeIf(
         const testCompanyName = 'Company-Created-In-Eu-Taxonomy-Financials-Blanket-Test-Company';
         getKeycloakToken(admin_name, admin_pw).then((token: string) => {
           return uploadCompanyViaApi(token, generateDummyCompanyInformation(testCompanyName)).then((storedCompany) => {
-            return uploadFrameworkDataForLegacyFramework(
-              DataTypeEnum.EutaxonomyFinancials,
-              token,
-              storedCompany.companyId,
-              '2023',
-              euTaxonomyFinancialsFixtureForTest.t,
-              true
-            ).then((dataMetaInformation) => {
-              cy.intercept(`**/api/data/${DataTypeEnum.EutaxonomyFinancials}/${dataMetaInformation.dataId}`).as(
-                'fetchDataForPrefill'
-              );
-              cy.visitAndCheckAppMount(
-                '/companies/' +
-                  storedCompany.companyId +
-                  '/frameworks/' +
-                  DataTypeEnum.EutaxonomyFinancials +
-                  '/upload?templateDataId=' +
-                  dataMetaInformation.dataId
-              );
-              cy.wait('@fetchDataForPrefill', { timeout: Cypress.env('medium_timeout_in_ms') as number });
-              cy.get('h1').should('contain', testCompanyName);
-              cy.intercept({
-                url: `**/api/data/${DataTypeEnum.EutaxonomyFinancials}`,
-                times: 1,
-              }).as('postCompanyAssociatedData');
-              submitButton.clickButton();
-              cy.wait('@postCompanyAssociatedData', { timeout: Cypress.env('medium_timeout_in_ms') as number }).then(
-                (postInterception) => {
-                  cy.url().should('eq', getBaseUrl() + '/datasets');
-                  const dataMetaInformationOfReuploadedDataset = postInterception.response?.body as DataMetaInformation;
-                  return new EuTaxonomyDataForFinancialsControllerApi(new Configuration({ accessToken: token }))
-                    .getCompanyAssociatedEuTaxonomyDataForFinancials(dataMetaInformationOfReuploadedDataset.dataId)
-                    .then((axiosResponse) => {
-                      const frontendSubmittedEuTaxonomyFinancialsDataset = axiosResponse.data
-                        .data as unknown as EuTaxonomyDataForFinancials;
+            return assignCompanyOwnershipToDatalandAdmin(token, storedCompany.companyId).then(() => {
+              return uploadFrameworkDataForLegacyFramework(
+                DataTypeEnum.EutaxonomyFinancials,
+                token,
+                storedCompany.companyId,
+                '2023',
+                euTaxonomyFinancialsFixtureForTest.t,
+                true
+              ).then((dataMetaInformation) => {
+                cy.intercept(`**/api/data/${DataTypeEnum.EutaxonomyFinancials}/${dataMetaInformation.dataId}`).as(
+                  'fetchDataForPrefill'
+                );
+                cy.visitAndCheckAppMount(
+                  '/companies/' +
+                    storedCompany.companyId +
+                    '/frameworks/' +
+                    DataTypeEnum.EutaxonomyFinancials +
+                    '/upload?templateDataId=' +
+                    dataMetaInformation.dataId
+                );
+                cy.wait('@fetchDataForPrefill', { timeout: Cypress.env('medium_timeout_in_ms') as number });
+                cy.get('h1').should('contain', testCompanyName);
+                cy.intercept({
+                  url: `**/api/data/${DataTypeEnum.EutaxonomyFinancials}?bypassQa=true`,
+                  times: 1,
+                }).as('postCompanyAssociatedData');
+                submitButton.clickButton();
+                cy.wait('@postCompanyAssociatedData', { timeout: Cypress.env('medium_timeout_in_ms') as number }).then(
+                  (postInterception) => {
+                    cy.url().should('eq', getBaseUrl() + '/datasets');
+                    const dataMetaInformationOfReuploadedDataset = postInterception.response
+                      ?.body as DataMetaInformation;
+                    return new EuTaxonomyDataForFinancialsControllerApi(new Configuration({ accessToken: token }))
+                      .getCompanyAssociatedEuTaxonomyDataForFinancials(dataMetaInformationOfReuploadedDataset.dataId)
+                      .then((axiosResponse) => {
+                        const frontendSubmittedEuTaxonomyFinancialsDataset = axiosResponse.data
+                          .data as unknown as EuTaxonomyDataForFinancials;
 
-                      frontendSubmittedEuTaxonomyFinancialsDataset.financialServicesTypes?.sort();
-                      euTaxonomyFinancialsFixtureForTest.t.financialServicesTypes?.sort();
+                        frontendSubmittedEuTaxonomyFinancialsDataset.financialServicesTypes?.sort();
+                        euTaxonomyFinancialsFixtureForTest.t.financialServicesTypes?.sort();
 
-                      compareObjectKeysAndValuesDeep(
-                        euTaxonomyFinancialsFixtureForTest.t as unknown as Record<string, object>,
-                        frontendSubmittedEuTaxonomyFinancialsDataset as Record<string, object>
-                      );
-                    });
-                }
-              );
+                        compareObjectKeysAndValuesDeep(
+                          euTaxonomyFinancialsFixtureForTest.t as unknown as Record<string, object>,
+                          frontendSubmittedEuTaxonomyFinancialsDataset as Record<string, object>
+                        );
+                      });
+                  }
+                );
+              });
             });
           });
         });

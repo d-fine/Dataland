@@ -292,11 +292,7 @@ export default defineComponent({
           this.getKeycloakPromise
         );
 
-        if (isCompanyOwner) {
-          await heimathafenDataControllerApi.postFrameworkData(this.companyAssociatedHeimathafenData, true);
-        } else {
-          await heimathafenDataControllerApi.postFrameworkData(this.companyAssociatedHeimathafenData);
-        }
+        await heimathafenDataControllerApi.postFrameworkData(this.companyAssociatedHeimathafenData, isCompanyOwner);
 
         this.$emit('datasetCreated');
         this.dataDate = undefined;

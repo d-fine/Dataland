@@ -663,13 +663,10 @@ export default defineComponent({
           this.getKeycloakPromise
         );
 
-        if (isCompanyOwner) {
-          this.postEuTaxonomyDataForFinancialsResponse =
-            await euTaxonomyDataForFinancialsControllerApi.postFrameworkData(clonedFormInputsModel, true);
-        } else {
-          this.postEuTaxonomyDataForFinancialsResponse =
-            await euTaxonomyDataForFinancialsControllerApi.postFrameworkData(clonedFormInputsModel);
-        }
+        this.postEuTaxonomyDataForFinancialsResponse = await euTaxonomyDataForFinancialsControllerApi.postFrameworkData(
+          clonedFormInputsModel,
+          isCompanyOwner
+        );
 
         this.$emit('datasetCreated');
       } catch (error) {

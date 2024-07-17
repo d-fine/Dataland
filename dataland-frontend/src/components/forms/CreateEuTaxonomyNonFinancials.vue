@@ -337,16 +337,10 @@ export default defineComponent({
           this.getKeycloakPromise
         );
 
-        if (isCompanyOwner) {
-          await euTaxonomyForNonFinancialsDataControllerApi!.postFrameworkData(
-            this.companyAssociatedEutaxonomyNonFinancialsData,
-            true
-          );
-        } else {
-          await euTaxonomyForNonFinancialsDataControllerApi!.postFrameworkData(
-            this.companyAssociatedEutaxonomyNonFinancialsData
-          );
-        }
+        await euTaxonomyForNonFinancialsDataControllerApi!.postFrameworkData(
+          this.companyAssociatedEutaxonomyNonFinancialsData,
+          isCompanyOwner
+        );
 
         this.$emit('datasetCreated');
         this.dataDate = undefined;

@@ -1,5 +1,5 @@
 import { describeIf } from '@e2e/support/TestUtility';
-import { admin_name, admin_pw, admin_userId, getBaseUrl } from '@e2e/utils/Cypress';
+import { admin_name, admin_pw, getBaseUrl } from '@e2e/utils/Cypress';
 import { getKeycloakToken } from '@e2e/utils/Auth';
 import {
   Configuration,
@@ -11,12 +11,11 @@ import {
 } from '@clients/backend';
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from '@e2e/utils/CompanyUpload';
 import { type FixtureData, getPreparedFixture } from '@sharedUtils/Fixtures';
-import { assignCompanyRole } from '@e2e/utils/CompanyRolesUtils';
+import { assignCompanyOwnershipToDatalandAdmin } from '@e2e/utils/CompanyRolesUtils';
 import { submitButton } from '@sharedUtils/components/SubmitButton';
 import { uploadFrameworkDataForPublicToolboxFramework } from '@e2e/utils/FrameworkUpload';
 import { compareObjectKeysAndValuesDeep } from '@e2e/utils/GeneralUtils';
 import EuTaxonomyNonFinancialsBaseFrameworkDefinition from '@/frameworks/eutaxonomy-non-financials/BaseFrameworkDefinition';
-import { CompanyRole } from '@clients/communitymanager';
 
 let euTaxonomyForNonFinancialsFixtureForTest: FixtureData<EutaxonomyNonFinancialsData>;
 before(function () {
@@ -40,15 +39,6 @@ describeIf(
       Cypress.env('excludeBypassQaIntercept', true);
     });
 
-    /**
-     * Assigns company ownership to the Dataland admin
-     * @param token
-     * @param companyId of the company for which the dataset is being uploaded
-     */
-    function assignCompanyOwnershipToDatalandAdmin(token: string, companyId: string): void {
-      assignCompanyRole(token, CompanyRole.CompanyOwner, companyId, admin_userId);
-    }
-
     it(
       'Create a company and an EU taxonomy for non-financials dataset via api, then re-upload it with the ' +
         'upload form in Edit mode and assure that it worked by validating a couple of values',
@@ -58,60 +48,61 @@ describeIf(
 
         getKeycloakToken(admin_name, admin_pw).then((token: string) => {
           return uploadCompanyViaApi(token, generateDummyCompanyInformation(testCompanyName)).then((storedCompany) => {
-            assignCompanyOwnershipToDatalandAdmin(token, storedCompany.companyId);
-            return uploadFrameworkDataForPublicToolboxFramework(
-              EuTaxonomyNonFinancialsBaseFrameworkDefinition,
-              token,
-              storedCompany.companyId,
-              '2021',
-              euTaxonomyForNonFinancialsFixtureForTest.t
-            ).then((dataMetaInformation) => {
-              let dataSetFromPrefillRequest: EutaxonomyNonFinancialsData;
-              cy.ensureLoggedIn(admin_name, admin_pw);
-              cy.intercept({
-                url: `api/data/${dataMetaInformation.dataType}/${dataMetaInformation.dataId}`,
-                times: 1,
-              }).as('getDataToPrefillForm');
-              cy.visitAndCheckAppMount(
-                '/companies/' +
-                  storedCompany.companyId +
-                  '/frameworks/' +
-                  DataTypeEnum.EutaxonomyNonFinancials +
-                  '/upload?templateDataId=' +
-                  dataMetaInformation.dataId
-              );
+            return assignCompanyOwnershipToDatalandAdmin(token, storedCompany.companyId).then(() => {
+              return uploadFrameworkDataForPublicToolboxFramework(
+                EuTaxonomyNonFinancialsBaseFrameworkDefinition,
+                token,
+                storedCompany.companyId,
+                '2021',
+                euTaxonomyForNonFinancialsFixtureForTest.t
+              ).then((dataMetaInformation) => {
+                let dataSetFromPrefillRequest: EutaxonomyNonFinancialsData;
+                cy.ensureLoggedIn(admin_name, admin_pw);
+                cy.intercept({
+                  url: `api/data/${dataMetaInformation.dataType}/${dataMetaInformation.dataId}`,
+                  times: 1,
+                }).as('getDataToPrefillForm');
+                cy.visitAndCheckAppMount(
+                  '/companies/' +
+                    storedCompany.companyId +
+                    '/frameworks/' +
+                    DataTypeEnum.EutaxonomyNonFinancials +
+                    '/upload?templateDataId=' +
+                    dataMetaInformation.dataId
+                );
 
-              cy.wait('@getDataToPrefillForm', { timeout: Cypress.env('medium_timeout_in_ms') as number }).then(
-                (interception) => {
-                  dataSetFromPrefillRequest = (
-                    interception.response?.body as CompanyAssociatedDataEutaxonomyNonFinancialsData
-                  ).data;
-                  console.log(dataSetFromPrefillRequest.toString());
-                }
-              );
-              cy.get('h1').should('contain', testCompanyName);
-              cy.intercept({
-                url: `**/api/data/${DataTypeEnum.EutaxonomyNonFinancials}`,
-                times: 1,
-              }).as('postCompanyAssociatedData');
-              submitButton.clickButton();
-              cy.wait('@postCompanyAssociatedData', { timeout: Cypress.env('medium_timeout_in_ms') as number }).then(
-                (interception) => {
-                  cy.url().should('eq', getBaseUrl() + '/datasets');
-                  const dataMetaInformationOfReuploadedDataset = interception.response?.body as DataMetaInformation;
-                  return new EutaxonomyNonFinancialsDataControllerApi(new Configuration({ accessToken: token }))
-                    .getCompanyAssociatedEutaxonomyNonFinancialsData(dataMetaInformationOfReuploadedDataset.dataId)
-                    .then((axiosResponse) => {
-                      const reuploadedDatasetFromBackend = axiosResponse.data.data;
-                      compareObjectKeysAndValuesDeep(
-                        dataSetFromPrefillRequest as Record<string, object>,
-                        reuploadedDatasetFromBackend as Record<string, object>
-                      );
-                      cy.url().should('eq', getBaseUrl() + '/datasets');
-                      cy.get('[data-test="datasets-table"]').should('be.visible');
-                    });
-                }
-              );
+                cy.wait('@getDataToPrefillForm', { timeout: Cypress.env('medium_timeout_in_ms') as number }).then(
+                  (interception) => {
+                    dataSetFromPrefillRequest = (
+                      interception.response?.body as CompanyAssociatedDataEutaxonomyNonFinancialsData
+                    ).data;
+                    console.log(dataSetFromPrefillRequest.toString());
+                  }
+                );
+                cy.get('h1').should('contain', testCompanyName);
+                cy.intercept({
+                  url: `**/api/data/${DataTypeEnum.EutaxonomyNonFinancials}?bypassQa=true`,
+                  times: 1,
+                }).as('postCompanyAssociatedData');
+                submitButton.clickButton();
+                cy.wait('@postCompanyAssociatedData', { timeout: Cypress.env('medium_timeout_in_ms') as number }).then(
+                  (interception) => {
+                    cy.url().should('eq', getBaseUrl() + '/datasets');
+                    const dataMetaInformationOfReuploadedDataset = interception.response?.body as DataMetaInformation;
+                    return new EutaxonomyNonFinancialsDataControllerApi(new Configuration({ accessToken: token }))
+                      .getCompanyAssociatedEutaxonomyNonFinancialsData(dataMetaInformationOfReuploadedDataset.dataId)
+                      .then((axiosResponse) => {
+                        const reuploadedDatasetFromBackend = axiosResponse.data.data;
+                        compareObjectKeysAndValuesDeep(
+                          dataSetFromPrefillRequest as Record<string, object>,
+                          reuploadedDatasetFromBackend as Record<string, object>
+                        );
+                        cy.url().should('eq', getBaseUrl() + '/datasets');
+                        cy.get('[data-test="datasets-table"]').should('be.visible');
+                      });
+                  }
+                );
+              });
             });
           });
         });

@@ -11,6 +11,7 @@ import {
 } from '@clients/backend';
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from '@e2e/utils/CompanyUpload';
 import { type FixtureData, getPreparedFixture } from '@sharedUtils/Fixtures';
+import { assignCompanyOwnershipToDatalandAdmin } from '@e2e/utils/CompanyRolesUtils';
 import { uploadFrameworkDataForPublicToolboxFramework } from '@e2e/utils/FrameworkUpload';
 import { submitButton } from '@sharedUtils/components/SubmitButton';
 import { compareObjectKeysAndValuesDeep } from '@e2e/utils/GeneralUtils';
@@ -32,6 +33,11 @@ describeIf(
         lksgFixtureWithNoNullFields = getPreparedFixture('lksg-all-fields', preparedFixturesLksg);
         lksgFixtureWithMinimalFields = getPreparedFixture('lksg-almost-only-nulls', preparedFixturesLksg);
       });
+      Cypress.env('excludeBypassQaIntercept', true);
+    });
+
+    afterEach(function () {
+      Cypress.env('excludeBypassQaIntercept', false);
     });
 
     it(
@@ -43,41 +49,44 @@ describeIf(
         const testCompanyName = 'Company-Created-In-Lksg-Blanket-Test' + uniqueCompanyMarker;
         getKeycloakToken(admin_name, admin_pw).then((token: string) => {
           return uploadCompanyViaApi(token, generateDummyCompanyInformation(testCompanyName)).then((storedCompany) => {
-            return uploadFrameworkDataForPublicToolboxFramework(
-              LksgBaseFrameworkDefinition,
-              token,
-              storedCompany.companyId,
-              '2021',
-              lksgFixtureWithNoNullFields.t
-            ).then((dataMetaInformation) => {
-              interceptsAndSubmitsDataset(storedCompany, dataMetaInformation, testCompanyName);
-              cy.wait('@postCompanyAssociatedData', { timeout: Cypress.env('medium_timeout_in_ms') as number }).then(
-                (postInterception) => {
-                  cy.url().should('eq', getBaseUrl() + '/datasets');
-                  const dataMetaInformationOfReuploadedDataset = postInterception.response?.body as DataMetaInformation;
-                  return new LksgDataControllerApi(new Configuration({ accessToken: token }))
-                    .getCompanyAssociatedLksgData(dataMetaInformationOfReuploadedDataset.dataId)
-                    .then((axiosGetResponse) => {
-                      let frontendSubmittedLksgDataset = axiosGetResponse.data.data;
-                      let originallyUploadedLksgDataset = lksgFixtureWithNoNullFields.t;
+            return assignCompanyOwnershipToDatalandAdmin(token, storedCompany.companyId).then(() => {
+              return uploadFrameworkDataForPublicToolboxFramework(
+                LksgBaseFrameworkDefinition,
+                token,
+                storedCompany.companyId,
+                '2021',
+                lksgFixtureWithNoNullFields.t
+              ).then((dataMetaInformation) => {
+                interceptsAndSubmitsDataset(storedCompany, dataMetaInformation, testCompanyName);
+                cy.wait('@postCompanyAssociatedData', { timeout: Cypress.env('medium_timeout_in_ms') as number }).then(
+                  (postInterception) => {
+                    cy.url().should('eq', getBaseUrl() + '/datasets');
+                    const dataMetaInformationOfReuploadedDataset = postInterception.response
+                      ?.body as DataMetaInformation;
+                    return new LksgDataControllerApi(new Configuration({ accessToken: token }))
+                      .getCompanyAssociatedLksgData(dataMetaInformationOfReuploadedDataset.dataId)
+                      .then((axiosGetResponse) => {
+                        let frontendSubmittedLksgDataset = axiosGetResponse.data.data;
+                        let originallyUploadedLksgDataset = lksgFixtureWithNoNullFields.t;
 
-                      frontendSubmittedLksgDataset.general?.productionSpecific?.specificProcurement?.sort();
-                      frontendSubmittedLksgDataset.governance?.riskManagementOwnOperations?.identifiedRisks?.sort();
-                      frontendSubmittedLksgDataset = sortComplaintsRiskObject(frontendSubmittedLksgDataset);
-                      frontendSubmittedLksgDataset.governance?.generalViolations?.humanRightsOrEnvironmentalViolationsDefinition?.sort();
+                        frontendSubmittedLksgDataset.general?.productionSpecific?.specificProcurement?.sort();
+                        frontendSubmittedLksgDataset.governance?.riskManagementOwnOperations?.identifiedRisks?.sort();
+                        frontendSubmittedLksgDataset = sortComplaintsRiskObject(frontendSubmittedLksgDataset);
+                        frontendSubmittedLksgDataset.governance?.generalViolations?.humanRightsOrEnvironmentalViolationsDefinition?.sort();
 
-                      originallyUploadedLksgDataset.general?.productionSpecific?.specificProcurement?.sort();
-                      originallyUploadedLksgDataset.governance?.riskManagementOwnOperations?.identifiedRisks?.sort();
-                      originallyUploadedLksgDataset = sortComplaintsRiskObject(originallyUploadedLksgDataset);
-                      originallyUploadedLksgDataset.governance?.generalViolations?.humanRightsOrEnvironmentalViolationsDefinition?.sort();
+                        originallyUploadedLksgDataset.general?.productionSpecific?.specificProcurement?.sort();
+                        originallyUploadedLksgDataset.governance?.riskManagementOwnOperations?.identifiedRisks?.sort();
+                        originallyUploadedLksgDataset = sortComplaintsRiskObject(originallyUploadedLksgDataset);
+                        originallyUploadedLksgDataset.governance?.generalViolations?.humanRightsOrEnvironmentalViolationsDefinition?.sort();
 
-                      compareObjectKeysAndValuesDeep(
-                        originallyUploadedLksgDataset as unknown as Record<string, object>,
-                        frontendSubmittedLksgDataset as unknown as Record<string, object>
-                      );
-                    });
-                }
-              );
+                        compareObjectKeysAndValuesDeep(
+                          originallyUploadedLksgDataset as unknown as Record<string, object>,
+                          frontendSubmittedLksgDataset as unknown as Record<string, object>
+                        );
+                      });
+                  }
+                );
+              });
             });
           });
         });
@@ -107,7 +116,7 @@ describeIf(
       cy.wait('@getCompanyInformation', { timeout: Cypress.env('medium_timeout_in_ms') as number });
       cy.get('h1').should('contain', testCompanyName);
       cy.intercept({
-        url: `**/api/data/${DataTypeEnum.Lksg}`,
+        url: `**/api/data/${DataTypeEnum.Lksg}*`,
         times: 1,
       }).as('postCompanyAssociatedData');
       submitButton.clickButton();
