@@ -130,22 +130,19 @@ class CompanyRoleChecker(
 
     /**
      * A user can bypass QA if
-     * (a) the user has the uploader and QA role
-     * (b) the user is an admin
-     * This function checks these conditions
+     * (a) the user has reviewer-rights
+     * (b) the user has the company uploader or company owner role for the company associated with the data upload
+     * This function checks these conditions.
+     * @param authenticationContext is the current auth context of this thread
+     * @param companyId of the company associated with the data upload for which Qa shall be bypassed
+     * @returns a boolean that states if the user is allowed to bypass Qa or not
      */
     fun canUserBypassQa(authenticationContext: DatalandAuthentication?, companyId: String): Boolean {
-        val isDatalandReviewer = authenticationContext?.roles?.contains(DatalandRealmRole.ROLE_REVIEWER)
-        if (isDatalandReviewer == true) {
-            return true
-        }
-        val companyIdUUID = UUID.fromString(companyId)
-        val userIdUUID = UUID.fromString(DatalandAuthentication.fromContext().userId)
-        val isCompanyDataUploader =
-            (
-                companyRolesControllerApi.hasUserCompanyRole(CompanyRole.CompanyOwner, companyIdUUID, userIdUUID) ||
-                    companyRolesControllerApi.hasUserCompanyRole(CompanyRole.DataUploader, companyIdUUID, userIdUUID)
-                )
-        return isCompanyDataUploader
+        val userUUID = UUID.fromString(DatalandAuthentication.fromContext().userId)
+        val companyUUID = UUID.fromString(companyId)
+
+        return authenticationContext?.roles?.contains(DatalandRealmRole.ROLE_REVIEWER) == true ||
+            companyRolesControllerApi.getCompanyRoleAssignments(null, companyUUID, userUUID)
+                .any { it.companyRole == CompanyRole.CompanyOwner || it.companyRole == CompanyRole.DataUploader }
     }
 }
