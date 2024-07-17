@@ -99,7 +99,7 @@ describe('Component tests for the CreateSfdrDataset that test report uploading',
     }
 
     cy.intercept(`**/documents/*`, cy.spy().as('documentExists'));
-    cy.intercept('POST', `/api/data/${dataType}`, {
+    cy.intercept('POST', `/api/data/${dataType}*`, {
       statusCode: 200,
     });
     cy.mountWithPlugins(createDataset, {
