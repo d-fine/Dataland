@@ -581,6 +581,7 @@
             "schema": {
               "type": "string",
               "enum": [
+                "integrationTesting",
                 "eutaxonomy-financials",
                 "eutaxonomy-non-financials",
                 "lksg",
@@ -811,6 +812,7 @@
               "items": {
                 "type": "string",
                 "enum": [
+                  "integrationTesting",
                   "eutaxonomy-financials",
                   "eutaxonomy-non-financials",
                   "lksg",
@@ -1220,6 +1222,7 @@
             "type": "string",
             "example": "p2p",
             "enum": [
+              "integrationTesting",
               "eutaxonomy-financials",
               "eutaxonomy-non-financials",
               "lksg",
@@ -1309,6 +1312,7 @@
             "items": {
               "type": "string",
               "enum": [
+                "integrationTesting",
                 "eutaxonomy-financials",
                 "eutaxonomy-non-financials",
                 "lksg",
@@ -1546,6 +1550,7 @@
           "dataType": {
             "type": "string",
             "enum": [
+              "integrationTesting",
               "eutaxonomy-financials",
               "eutaxonomy-non-financials",
               "lksg",
