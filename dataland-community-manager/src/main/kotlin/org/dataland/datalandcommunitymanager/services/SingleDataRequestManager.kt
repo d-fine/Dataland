@@ -129,11 +129,11 @@ constructor(
     }
 
     private fun findDatalandCompanyIdForCompanyIdentifier(companyIdentifier: String): String {
-        val datalandCompanyId = if (companyIdRegex.matches(companyIdentifier)) {
+        val datalandCompanyId: String? = if (companyIdRegex.matches(companyIdentifier)) {
             companyIdValidator.checkIfCompanyIdIsValidAndReturnName(companyIdentifier)
             companyIdentifier
         } else {
-            utils.getDatalandCompanyIdForIdentifierValue(companyIdentifier)
+            utils.getDatalandCompanyIdAndNameForIdentifierValue(companyIdentifier)?.companyId
         }
 
         return datalandCompanyId ?: throw InvalidInputApiException(
