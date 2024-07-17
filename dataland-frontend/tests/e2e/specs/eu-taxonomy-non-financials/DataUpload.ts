@@ -97,7 +97,7 @@ describeIf(
       selectItemFromDropdownByValue(cy.get('div[name="opex"] div[name="fileName"]'), `${TEST_PDF_FILE_NAME}2`);
       cy.intercept({ url: `**/documents/*`, method: 'HEAD', times: 1 }).as('documentExists');
       cy.intercept(`**/documents/`, cy.spy().as('postDocument'));
-      cy.intercept(`**/api/data/${DataTypeEnum.EutaxonomyNonFinancials}`).as('postCompanyAssociatedData');
+      cy.intercept(`**/api/data/${DataTypeEnum.EutaxonomyNonFinancials}*`).as('postCompanyAssociatedData');
       cy.get('button[data-test="submitButton"]').click();
 
       cy.wait('@documentExists', { timeout: Cypress.env('short_timeout_in_ms') as number })
