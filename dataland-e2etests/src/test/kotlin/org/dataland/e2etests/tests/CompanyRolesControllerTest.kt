@@ -76,6 +76,10 @@ class CompanyRolesControllerTest {
         assertEquals("Client error : 403 ", expectedAccessDeniedClientException.message)
     }
 
+    private fun uploadEuTaxoDataWithBypassQa(companyId: UUID) {
+        apiAccessor.euTaxonomyNonFinancialsUploaderFunction(companyId.toString(), frameworkSampleData, "2021", true)
+    }
+
     private fun assertErrorCodeInCommunityManagerClientException(
         communityManagerClientException: CommunityManagerClientException,
         expectedErrorCode: Number,
@@ -250,28 +254,25 @@ class CompanyRolesControllerTest {
     }
 
     @Test
-    fun `assure bypassQa is only allowed for keycloak admin and company owner and company data uploader`() {
+    fun `assure bypassQa is only allowed for user with keycloak uploader and keycloak reviewer rights`() {
         val companyId = uploadCompanyAndReturnCompanyId()
-        assertTrue(REVIEWER_EXTENDED_ROLES.size == 1)
-        assertTrue(UPLOADER_EXTENDED_ROLES.size == 1)
+        assertTrue(REVIEWER_EXTENDED_ROLES.size == 1 || UPLOADER_EXTENDED_ROLES.size == 1)
 
         for (technicalUser in TechnicalUser.values()) {
             jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(technicalUser)
             val isUserKeycloakReviewer = technicalUser.roles.contains(REVIEWER_EXTENDED_ROLES.first())
             val isUserKeycloakUploader = technicalUser.roles.contains(UPLOADER_EXTENDED_ROLES.first())
             if (isUserKeycloakReviewer && isUserKeycloakUploader) {
-                assertDoesNotThrow {
-                    apiAccessor.euTaxonomyNonFinancialsUploaderFunction(
-                        companyId.toString(),
-                        frameworkSampleData,
-                        "2020",
-                        true,
-                    )
-                }
+                assertDoesNotThrow { uploadEuTaxoDataWithBypassQa(companyId) }
             } else {
                 assertAccessDeniedWhenUploadingFrameworkData(companyId, frameworkSampleData, true)
             }
         }
+    }
+
+    @Test
+    fun `assure bypassQa for keycloak reader user is only allowed as company owner or company data uploader`() {
+        val companyId = uploadCompanyAndReturnCompanyId()
 
         val companyRolesAllowedToUploadData = listOf(CompanyRole.CompanyOwner, CompanyRole.DataUploader)
         for (role in CompanyRole.values()) {
@@ -280,14 +281,7 @@ class CompanyRolesControllerTest {
 
             jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader)
             if (companyRolesAllowedToUploadData.contains(role)) {
-                assertDoesNotThrow {
-                    apiAccessor.euTaxonomyNonFinancialsUploaderFunction(
-                        companyId.toString(),
-                        frameworkSampleData,
-                        "2020",
-                        true,
-                    )
-                }
+                assertDoesNotThrow { uploadEuTaxoDataWithBypassQa(companyId) }
             } else {
                 assertAccessDeniedWhenUploadingFrameworkData(companyId, frameworkSampleData, true)
             }
