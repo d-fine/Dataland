@@ -3,10 +3,10 @@
   "configMigration": true,
   "extends": ["config:best-practices"],
   "labels": ["dependencies"],
-  "separateMinorPatch": true,
+  "separateMinorPatch": false,
   "separateMajorMinor": true,
   "separateMultipleMajor": true,
-  "minimumReleaseAge": "14 days",
+  "minimumReleaseAge": "5 days",
   "updateNotScheduled": false,
   "schedule": [
     "after 8pm every weekday",
