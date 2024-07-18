@@ -16,10 +16,11 @@ import kotlin.reflect.KClass
 @Constraint(validatedBy = [ReferencedReportsListConstraintValidator::class])
 @Target(AnnotationTarget.FIELD, AnnotationTarget.CLASS)
 annotation class ReferencedReportsListValidator(
-val message: String = "The list of referenced reports is not complete.",
-val groups: Array<KClass<*>> = [],
-val payload: Array<KClass<out Payload>> = [],
-    )
+    val message: String = "The list of referenced reports is not complete. Please ensure that any file used as a " +
+        "data source in the dataset is included in the list of referenced reports.",
+    val groups: Array<KClass<*>> = [],
+    val payload: Array<KClass<out Payload>> = [],
+)
 
 /**
 * Class holding the validation logic for referenced reports list. It checks if the referenced reports list is complete
