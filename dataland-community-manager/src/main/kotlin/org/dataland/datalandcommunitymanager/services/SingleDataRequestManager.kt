@@ -56,9 +56,9 @@ constructor(
         val reportingPeriodsOfStoredDataRequests = mutableListOf<String>()
         val reportingPeriodsOfDuplicateDataRequests = mutableListOf<String>()
         singleDataRequest.reportingPeriods.forEach { reportingPeriod ->
-            //TODO Logik um zu erkennen, ob die angefragten daten schon auf dataland existieren, wenn private framework prüfen ob schon zugriff besteht
-            //TODO Mit extra Schleife für private framework. Wenn privater Datensatz existiert und ein access request dafür reinkommt
-            //TODO erstelle nur einen access request kein data request. Erstelle den data request erst dann wenn bereits Zugriff für die den Datensatz bestand
+            // TODO Logik um zu erkennen, ob die angefragten daten schon auf dataland existieren, wenn private framework prüfen ob schon zugriff besteht
+            // TODO Mit extra Schleife für private framework. Wenn privater Datensatz existiert und ein access request dafür reinkommt
+            // TODO erstelle nur einen access request kein data request. Erstelle den data request erst dann wenn bereits Zugriff für die den Datensatz bestand
             if (utils.existsDataRequestWithNonFinalStatus(companyId, singleDataRequest.dataType, reportingPeriod)) {
                 reportingPeriodsOfDuplicateDataRequests.add(reportingPeriod)
             } else {
@@ -69,11 +69,11 @@ constructor(
                 )
                 reportingPeriodsOfStoredDataRequests.add(reportingPeriod)
             }
-            if(singleDataRequest.dataType == DataTypeEnum.vsme) {
-                //TODO Check ob es einen Datensatz für die Reporting Period und VSME gibt
-                //TODO Check ob der Nutzer schon Zugriff darauf hat
-                //TODO Wenn ja, erstelle einen neuen data request für reporting period und vsme und erstelle access request
-                //TODO Wenn nicht erstelle access request
+            if (singleDataRequest.dataType == DataTypeEnum.vsme) {
+                // TODO Check ob es einen Datensatz für die Reporting Period und VSME gibt
+                // TODO Check ob der Nutzer schon Zugriff darauf hat
+                // TODO Wenn ja, erstelle einen neuen data request für reporting period und vsme und erstelle access request
+                // TODO Wenn nicht erstelle access request
             }
         }
         sendSingleDataRequestEmailMessage(
