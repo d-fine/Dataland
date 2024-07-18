@@ -209,7 +209,7 @@ services:
     # https://github.com/docker/for-win/issues/8861
     restart: always
     profiles: [ "developmentContainerFrontend" ]
-    image: node:20.11.1
+    image: node:20.11.1@sha256:e06aae17c40c7a6b5296ca6f942a02e6737ae61bbbf3e2158624bb0f887991b5
     networks:
       internal:
         aliases:
@@ -520,7 +520,7 @@ services:
   eurodat-client:
     restart: always
     profiles: [ "production", "development" ]
-    image: registry.gitlab.com/eurodat/trustee-platform/client-controller:v0.0.34
+    image: registry.gitlab.com/eurodat/trustee-platform/client-controller:v0.0.34@sha256:ac78891e34ce7f14b8e20811043cf9749f2dfbb827350459d98024a195da8b23
     networks:
       - internal
     expose:
@@ -542,7 +542,7 @@ services:
   dummy-eurodat-db:
     restart: always
     profiles: [ "testing" ]
-    image: postgres:alpine
+    image: postgres:alpine@sha256:de3d7b6e4b5b3fe899e997579d6dfe95a99539d154abe03f0b6839133ed05065
     networks:
       - internal
     tmpfs: /var/lib/postgresql/data
