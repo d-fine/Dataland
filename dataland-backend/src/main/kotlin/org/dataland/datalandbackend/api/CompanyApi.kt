@@ -270,16 +270,8 @@ interface CompanyApi {
         produces = ["application/json"],
     )
     @PreAuthorize(
-        "hasRole('ROLE_ADMIN') or " +
-            "(hasRole('ROLE_USER') and " +
-            "@CompanyRoleChecker.hasCurrentUserGivenRoleForCompany(" +
-            "#companyId, T(org.dataland.datalandcommunitymanager.openApiClient.model.CompanyRole).CompanyOwner" +
-            ") and " +
-            "@CompanyRoleChecker.areOnlyAuthorizedFieldsPatched(#companyInformationPatch)" +
-            ") or " +
-            "(hasRole('ROLE_UPLOADER') and " +
-            "@CompanyRoleChecker.isCompanyExistentAndWithoutOwner(#companyId) and " +
-            "@CompanyRoleChecker.areOnlyAuthorizedFieldsPatched(#companyInformationPatch))",
+        "hasRole('ROLE_USER') and " +
+            "@CompanyRoleChecker.canUserPatchFieldsForCompany(#companyInformationPatch, #companyId)",
     )
     fun patchCompanyById(
         @PathVariable("companyId") companyId: String,

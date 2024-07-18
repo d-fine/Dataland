@@ -44,7 +44,7 @@ export enum ActivityName {
   CompostingOfBioWaste = 'Composting of bio-waste',
   ComputerProgrammingConsultancyAndRelatedActivities = 'Computer programming, consultancy and related activities',
   ConservationForestry = 'Conservation forestry',
-  ConservationIncludingRestorationOfHabitats1Ecosystems2AndSpecies = 'Conservation, including restoration, of habitats[1], ecosystems[2] and species',
+  ConservationIncludingRestorationOfHabitatsEcosystemsAndSpecies = 'Conservation, including restoration, of habitats, ecosystems and species',
   ConstructionAndSafeOperationOfNewNuclearPowerPlantsForTheGenerationOfElectricityAndOrHeatIncludingForHydrogenProductionUsingBestAvailableTechnologies = 'Construction and safe operation of new nuclear power plants, for the generation of electricity and/or heat, including for hydrogen production, using best-available technologies',
   ConstructionExtensionAndOperationOfWasteWaterCollectionAndTreatment = 'Construction, extension and operation of waste water collection and treatment',
   ConstructionExtensionAndOperationOfWaterCollectionTreatmentAndSupplySystems = 'Construction, extension and operation of water collection, treatment and supply systems',
