@@ -34,7 +34,6 @@ class ComponentGroupApiImplTests {
         class ComponentBaseWithInvalidConstructor(
             identifier: String,
             parent: FieldNodeParent,
-            additionalRequiredVariable: Boolean,
         ) : ComponentBase(identifier, parent)
 
         val componentGroup = DemoComponentGroupApiImpl()

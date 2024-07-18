@@ -42,7 +42,6 @@ class YesNoComponent(
             is NoDocumentSupport -> "YesNoFormField"
             is SimpleDocumentSupport -> "YesNoBaseDataPointFormField"
             is ExtendedDocumentSupport -> "YesNoExtendedDataPointFormField"
-            else -> throw IllegalArgumentException("YesNoComponent does not support document support '$documentSupport")
         }
         uploadCategoryBuilder.addStandardUploadConfigCell(
             component = this,
