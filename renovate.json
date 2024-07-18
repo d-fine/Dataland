@@ -21,6 +21,11 @@
     {
       "groupName": "formkit-packages",
       "matchPackagePatterns": ["^@formkit/"]
+    },
+    {
+      "groupName": "kotlin-packages",
+      "matchPackagePatterns": ["detekt"],
+      "matchSourceUrls": ["https://github.com/JetBrains/kotlin"]
     }
   ]
 }
