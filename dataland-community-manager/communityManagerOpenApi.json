@@ -503,6 +503,14 @@
             }
           },
           {
+            "name": "accessStatus",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/AccessStatus"
+            }
+          },
+          {
             "name": "contacts",
             "in": "query",
             "required": false,
@@ -1396,8 +1404,18 @@
           "Closed"
         ]
       },
+      "AccessStatus": {
+        "type": "string",
+        "enum": [
+          "Declined",
+          "Granted",
+          "Pending",
+          "Revoked"
+        ]
+      },
       "StoredDataRequest": {
         "required": [
+          "accessStatus",
           "creationTimestamp",
           "dataRequestId",
           "dataRequestStatusHistory",
@@ -1448,6 +1466,9 @@
           },
           "requestStatus": {
             "$ref": "#/components/schemas/RequestStatus"
+          },
+          "accessStatus": {
+            "$ref": "#/components/schemas/AccessStatus"
           }
         }
       },
@@ -1487,11 +1508,15 @@
           "creationTimestamp": {
             "type": "integer",
             "format": "int64"
+          },
+          "accessStatus": {
+            "$ref": "#/components/schemas/AccessStatus"
           }
         }
       },
       "ExtendedStoredDataRequest": {
         "required": [
+          "accessStatus",
           "companyName",
           "creationTimestamp",
           "dataRequestId",
@@ -1532,6 +1557,9 @@
           },
           "requestStatus": {
             "$ref": "#/components/schemas/RequestStatus"
+          },
+          "accessStatus": {
+            "$ref": "#/components/schemas/AccessStatus"
           }
         }
       },
