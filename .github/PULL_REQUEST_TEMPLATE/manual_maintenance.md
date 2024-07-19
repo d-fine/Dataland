@@ -9,6 +9,10 @@ creation URL (or simply copy this md file into the description)
 
 ### Dependency updates
 
+- Updating Node from 20.11.1 to 20.12.2 causes the frontend and e2e containers to fail (https://jira.d-fine.dev/browse/DALA-3865) This line can be deleted when issue is resolved
+
+
+
 - [ ] Take a look at the dependency dashboard and see which updates are to be applied. For a detailed description of the process,
 consult the internal Dataland Wiki.
 
