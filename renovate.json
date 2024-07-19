@@ -27,5 +27,8 @@
       "matchPackagePatterns": ["detekt","kotlin"],
       "matchSourceUrls": ["https://github.com/JetBrains/kotlin"]
     }
-  ]
+  ],
+  "gradle" : {
+    "fileMatch": ["^versions.properties$"]
+  }
 }
