@@ -316,6 +316,7 @@ export default defineComponent({
           RequestStatus.Withdrawn as RequestStatus,
           undefined,
           undefined,
+          undefined,
           this.getKeycloakPromise
         );
       } catch (error) {
