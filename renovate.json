@@ -26,6 +26,10 @@
       "groupName": "kotlin-packages",
       "matchPackagePatterns": ["detekt","kotlin"],
       "matchSourceUrls": ["https://github.com/JetBrains/kotlin"]
+    },
+    {
+      "groupName": "cloudevents",
+      "matchPackagePatterns": ["cloudevents"]
     }
   ],
   "gradle" : {
