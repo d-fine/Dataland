@@ -1,5 +1,5 @@
 import type Keycloak from 'keycloak-js';
-import { type ExtendedStoredDataRequest, RequestStatus } from '@clients/communitymanager';
+import { type AccessStatus, type ExtendedStoredDataRequest, RequestStatus } from '@clients/communitymanager';
 import { ApiClientProvider } from '@/services/ApiClients';
 import { type DataTypeEnum } from '@clients/backend';
 
@@ -41,6 +41,7 @@ export async function getAnsweredDataRequestsForViewPage(
  * Patches the RequestStatus of a StoredDataRequest
  * @param dataRequestId the dataland dataRequestId
  * @param requestStatus the desired requestStatus
+ * @param accessStatus the desired access status
  * @param contacts set of email contacts
  * @param message context of the email
  * @param keycloakPromiseGetter the getter-function which returns a Keycloak-Promise
@@ -48,6 +49,7 @@ export async function getAnsweredDataRequestsForViewPage(
 export async function patchDataRequest(
   dataRequestId: string,
   requestStatus: RequestStatus | undefined,
+  accessStatus: AccessStatus | undefined,
   contacts: Set<string> | undefined,
   message: string | undefined,
   keycloakPromiseGetter?: () => Promise<Keycloak>
@@ -57,6 +59,7 @@ export async function patchDataRequest(
       await new ApiClientProvider(keycloakPromiseGetter()).apiClients.requestController.patchDataRequest(
         dataRequestId,
         requestStatus,
+        accessStatus,
         contacts,
         message
       );
