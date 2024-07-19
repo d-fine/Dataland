@@ -189,7 +189,7 @@ tika-core = "org.apache.tika:tika-core:2.9.2"
 
 tika-parsers = "org.apache.tika:tika-parsers:2.9.2"
 
-poi = "org.apache.poi:poi:5.2.5"
+poi = "org.apache.poi:poi:5.3.0"
 
 poi-ooxml = "org.apache.poi:poi-ooxml:5.3.0"
 
