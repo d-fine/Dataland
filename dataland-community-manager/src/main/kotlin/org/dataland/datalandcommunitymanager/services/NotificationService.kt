@@ -2,7 +2,6 @@ package org.dataland.datalandcommunitymanager.services
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandbackend.openApiClient.api.MetaDataControllerApi
-import org.dataland.datalandbackend.openApiClient.model.DataMetaInformation
 import org.dataland.datalandcommunitymanager.entities.ElementaryEventEntity
 import org.dataland.datalandcommunitymanager.entities.NotificationEventEntity
 import org.dataland.datalandcommunitymanager.events.EventType
@@ -26,23 +25,23 @@ import org.springframework.beans.factory.annotation.Value
 import org.springframework.messaging.handler.annotation.Header
 import org.springframework.messaging.handler.annotation.Payload
 import org.springframework.stereotype.Service
+import java.time.Duration
 import java.time.Instant
-import java.time.LocalDateTime
 
 @Service("NotificationService")
 class NotificationService
-    @Suppress("LongParameterList")
-    constructor(
-    @Autowired var metaDataControllerApi: MetaDataControllerApi,
+@Suppress("LongParameterList")
+constructor(
     @Autowired var cloudEventMessageHandler: CloudEventMessageHandler,
-    @Autowired var objectMapper: ObjectMapper,
-    @Autowired var messageUtils: MessageQueueUtils,
     @Autowired var elementaryEventRepository: ElementaryEventRepository,
+    @Autowired var messageUtils: MessageQueueUtils,
+    @Autowired var metaDataControllerApi: MetaDataControllerApi,
     @Autowired var notificationEventRepository: NotificationEventRepository,
+    @Autowired var objectMapper: ObjectMapper,
     @Value("\${dataland.community-manager.notification-threshold-days:30}")
     val notificationThresholdDays: Int,
     @Value("\${dataland.community-manager.notification-elementaryevents-threshold:10}")
-    val elementaryEventsThreshold: String,
+    val elementaryEventsThreshold: Int,
 ) {
     /**
      * Method that listens to the storage_queue and stores data into the database in case there is a message on the
@@ -66,12 +65,12 @@ class NotificationService
                 key = [""],
             ),
         ],
-    )
-    fun listenToDataUpload(
+    ) //TODO: Online SingleDataRequests?
+    fun processDataUploadEvent(
         @Payload payload: String,
         @Header(MessageHeaderKey.CorrelationId) correlationId: String,
         @Header(MessageHeaderKey.Type) type: String,
-    ): Boolean {
+    ) {
         messageUtils.validateMessageType(type, MessageType.PublicDataReceived)
         val dataId = JSONObject(payload).getString("dataId")
         val actionType = JSONObject(payload).getString("actionType")
@@ -79,40 +78,107 @@ class NotificationService
             throw MessageQueueRejectException("Provided data ID is empty.")
         }
 
-        //TODO validate ActionType
-
-        saveElementaryEvent(dataId)
-
-        if (triggerNotificationEvent()){
-            buildNotificationEntry()
-            updateElementaryEventsWithNotificationEvent()
+        //TODO: StorePrivateData reachable?
+        if (actionType.isEmpty() or
+            (actionType !== ActionType.StorePublicData && actionType !== ActionType.StorePrivateDataAndDocuments)
+        ) {
+            return
         }
 
+        val companyIdOfUpload = metaDataControllerApi.getDataMetaInfo(dataId).companyId
 
-        //TODO
-        return false
+        val previouslyUnsentElementaryEvents = getUnsentElementaryEventsForCompany(companyIdOfUpload)
+
+        val elementaryEvent = createAndSaveElementaryEvent(dataId)
+
+        when {
+            isLastNotificationEventForCompanyOlderThanThreshold(companyIdOfUpload) &&
+                previouslyUnsentElementaryEvents.isEmpty()
+            -> singleNotificationResponse(elementaryEvent)
+            isLastNotificationEventForCompanyOlderThanThreshold(companyIdOfUpload) &&
+                previouslyUnsentElementaryEvents.isNotEmpty()
+            -> {
+                val allUnsentElementaryEvents = previouslyUnsentElementaryEvents.toMutableList()
+                allUnsentElementaryEvents.add(elementaryEvent)
+                summaryNotificationResponse(allUnsentElementaryEvents)
+            }
+            !isLastNotificationEventForCompanyOlderThanThreshold(companyIdOfUpload) &&
+                previouslyUnsentElementaryEvents.size + 1 >= elementaryEventsThreshold
+            -> {
+                val allUnsentElementaryEvents = previouslyUnsentElementaryEvents.toMutableList()
+                allUnsentElementaryEvents.add(elementaryEvent)
+                summaryNotificationResponse(allUnsentElementaryEvents)
+            }
+        }
     }
 
-    private fun saveElementaryEvent(dataId: String) {
+    fun singleNotificationResponse(elementaryEvent: ElementaryEventEntity) {
+        val newNotificationEvent = NotificationEventEntity(
+            elementaryEvents = mutableListOf(elementaryEvent),
+            companyId = elementaryEvent.companyId,
+            creationTimestamp = Instant.now().toEpochMilli(),
+        )
+
+        notificationEventRepository.saveAndFlush(newNotificationEvent)
+        elementaryEvent.notificationEvent = newNotificationEvent
+        elementaryEventRepository.saveAndFlush(elementaryEvent)
+        sendSingleEmailMessageToQueue()
+    }
+
+    fun summaryNotificationResponse(elementaryEvents: List<ElementaryEventEntity>) {
+        val newNotificationEvent = NotificationEventEntity(
+            elementaryEvents = elementaryEvents,
+            companyId = elementaryEvents.first().companyId,
+            creationTimestamp = Instant.now().toEpochMilli(),
+        )
+
+        notificationEventRepository.saveAndFlush(newNotificationEvent)
+        elementaryEvents.forEach { it.notificationEvent = newNotificationEvent }
+        elementaryEventRepository.saveAllAndFlush(elementaryEvents)
+        sendSummaryEmailMessageToQueue()
+    }
+
+    /**
+     * Function saves elementaryEvent for dataUpload and returns saved element
+     */
+    private fun createAndSaveElementaryEvent(dataId: String): ElementaryEventEntity {
         val dataMetaInformation = metaDataControllerApi.getDataMetaInfo(dataId)
 
-        elementaryEventRepository.save(ElementaryEventEntity(
-            eventType = EventType.uploadEvent,
-            companyId = dataMetaInformation.companyId,
-            framework = dataMetaInformation.dataType,
-            creationTimestamp = Instant.now().toEpochMilli(),
-            notificationEvent = null,
-        ))
+        return elementaryEventRepository.saveAndFlush(
+            ElementaryEventEntity(
+                eventType = EventType.UploadEvent,
+                companyId = dataMetaInformation.companyId,
+                framework = dataMetaInformation.dataType,
+                reportingPeriod = dataMetaInformation.reportingPeriod,
+                creationTimestamp = Instant.now().toEpochMilli(),
+                notificationEvent = null,
+            ),
+        )
     }
 
-    private fun triggerNotificationEvent(): Boolean {
+    /**
+     * Function retrieves all elementaryEvents for a specific company which
+     * have not been sent by a previous notification event
+     * @param companyId
+     * @return list of elementaryEvents
+     */
+    private fun getUnsentElementaryEventsForCompany(companyId: String): List<ElementaryEventEntity> {
+        return elementaryEventRepository.findAllByCompanyIdAndNotificationEventIsNull(companyId)
+    }
 
-        return false
+    /**
+     * Function retrieves all elementaryEvents for a specific company which
+     * have not been sent by a previous notification event
+     * @param companyId
+     * @return list of elementaryEvents
+     */
+    private fun isLastNotificationEventForCompanyOlderThanThreshold(companyId: String): Boolean {
+        val lastNotificationEvent = notificationEventRepository.findNotificationEventByCompanyId(companyId)
+            .maxByOrNull { it.creationTimestamp }
+        return lastNotificationEvent == null || Duration.between(Instant.ofEpochMilli(lastNotificationEvent.creationTimestamp), Instant.now())
+            .toDays() > notificationThresholdDays
     }
 
     fun sendSingleEmailMessageToQueue() {}
-
     fun sendSummaryEmailMessageToQueue() {}
-
-
 }

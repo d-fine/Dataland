@@ -14,7 +14,7 @@ import java.util.UUID
 
 @Entity
 @Table(name = "elementary_events")
-data class ElementaryEventEntity (
+data class ElementaryEventEntity(
     @Id
     @Column(name = "event_id")
     val elementaryEventId: String = UUID.randomUUID().toString(),
@@ -30,10 +30,13 @@ data class ElementaryEventEntity (
     @Enumerated(EnumType.STRING)
     val framework: DataTypeEnum,
 
-    //TODO Perhaps remove later
+    @Column(name = "reporting_period")
+    val reportingPeriod: String,
+
+    // TODO Perhaps remove later
     val creationTimestamp: Long,
 
     @ManyToOne(optional = true)
-    @JoinColumn(name = "notification_event_id")
+    @JoinColumn(name = "notification_event")
     var notificationEvent: NotificationEventEntity?,
 )
