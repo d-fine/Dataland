@@ -161,7 +161,7 @@ spring-rabbit = "org.springframework.amqp:spring-rabbit:_"
 
 cloudevents-api = "io.cloudevents:cloudevents-api:3.0.0"
 
-cloudevents-json-jackson = "io.cloudevents:cloudevents-json-jackson:3.0.0"
+cloudevents-json-jackson = "io.cloudevents:cloudevents-json-jackson:4.0.1"
 
 cloudevents-core = "io.cloudevents:cloudevents-core:3.0.0"
 
