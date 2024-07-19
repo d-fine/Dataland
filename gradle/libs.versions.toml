@@ -165,7 +165,7 @@ cloudevents-api = "io.cloudevents:cloudevents-api:3.0.0"
 
 cloudevents-json-jackson = "io.cloudevents:cloudevents-json-jackson:3.0.0"
 
-cloudevents-core = "io.cloudevents:cloudevents-core:3.0.0"
+cloudevents-core = "io.cloudevents:cloudevents-core:4.0.1"
 
 spring-cloud-function-context = "org.springframework.cloud:spring-cloud-function-context:4.1.2"
 
