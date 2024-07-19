@@ -6,6 +6,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import jakarta.validation.Valid
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
+import org.dataland.datalandcommunitymanager.model.dataRequest.AccessStatus
 import org.dataland.datalandcommunitymanager.model.dataRequest.AggregatedDataRequest
 import org.dataland.datalandcommunitymanager.model.dataRequest.BulkDataRequest
 import org.dataland.datalandcommunitymanager.model.dataRequest.BulkDataRequestResponse
@@ -176,6 +177,7 @@ interface RequestApi {
     fun patchDataRequest(
         @PathVariable dataRequestId: UUID,
         @RequestParam requestStatus: RequestStatus?,
+        @RequestParam accessStatus: AccessStatus?,
         @RequestParam contacts: Set<String>?,
         @RequestParam message: String?,
     ): ResponseEntity<StoredDataRequest>

@@ -5,6 +5,7 @@ import jakarta.persistence.Entity
 import jakarta.persistence.Id
 import jakarta.persistence.OneToMany
 import jakarta.persistence.Table
+import org.dataland.datalandcommunitymanager.model.dataRequest.AccessStatus
 import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
 import org.dataland.datalandcommunitymanager.model.dataRequest.StoredDataRequest
 import org.dataland.datalandcommunitymanager.model.dataRequest.StoredDataRequestMessageObject
@@ -42,6 +43,8 @@ data class DataRequestEntity(
 ) {
     val requestStatus: RequestStatus
         get() = (dataRequestStatusHistory.maxByOrNull { it.creationTimestamp }?.requestStatus) ?: RequestStatus.Open
+    val accessStatus: AccessStatus
+        get() = (dataRequestStatusHistory.maxByOrNull { it.creationTimestamp }?.accessStatus) ?: AccessStatus.Pending
     constructor(
         userId: String,
         dataType: String,
@@ -103,5 +106,6 @@ data class DataRequestEntity(
             .map { it.toStoredDataRequestStatusObject() },
         lastModifiedDate = lastModifiedDate,
         requestStatus = requestStatus,
+        accessStatus = accessStatus,
     )
 }

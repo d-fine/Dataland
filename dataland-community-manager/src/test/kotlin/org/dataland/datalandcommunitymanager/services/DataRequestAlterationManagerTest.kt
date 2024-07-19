@@ -210,6 +210,7 @@ class DataRequestAlterationManagerTest {
         dataRequestAlterationManager.patchDataRequest(
             dataRequestId = dataRequestId,
             requestStatus = null,
+            accessStatus = null,
             dummyMessage.contacts,
             dummyMessage.message,
         )

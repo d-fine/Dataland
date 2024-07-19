@@ -4,6 +4,7 @@ import org.dataland.datalandbackend.openApiClient.api.MetaDataControllerApi
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandcommunitymanager.entities.DataRequestEntity
 import org.dataland.datalandcommunitymanager.exceptions.DataRequestNotFoundApiException
+import org.dataland.datalandcommunitymanager.model.dataRequest.AccessStatus
 import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
 import org.dataland.datalandcommunitymanager.model.dataRequest.StoredDataRequest
 import org.dataland.datalandcommunitymanager.model.dataRequest.StoredDataRequestMessageObject
@@ -48,6 +49,7 @@ class DataRequestAlterationManager(
     fun patchDataRequest(
         dataRequestId: String,
         requestStatus: RequestStatus? = null,
+        accessStatus: AccessStatus? = null,
         contacts: Set<String>? = null,
         message: String? = null,
         correlationId: String? = null,
@@ -59,7 +61,12 @@ class DataRequestAlterationManager(
         dataRequestEntity.lastModifiedDate = modificationTime
         dataRequestRepository.save(dataRequestEntity)
         if (requestStatus != null && requestStatus != dataRequestEntity.requestStatus) {
-            val requestStatusObject = listOf(StoredDataRequestStatusObject(requestStatus, modificationTime))
+            val requestStatusObject = listOf(
+                StoredDataRequestStatusObject(
+                    requestStatus, modificationTime,
+                    accessStatus,
+                ),
+            )
             dataRequestEntity.associateRequestStatus(requestStatusObject)
             dataRequestHistoryManager.saveStatusHistory(dataRequestEntity.dataRequestStatusHistory)
             dataRequestLogger.logMessageForPatchingRequestStatus(dataRequestId, requestStatus)

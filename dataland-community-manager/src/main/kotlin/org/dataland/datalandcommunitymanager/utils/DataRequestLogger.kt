@@ -1,6 +1,7 @@
 package org.dataland.datalandcommunitymanager.utils
 
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
+import org.dataland.datalandcommunitymanager.model.dataRequest.AccessStatus
 import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
 import org.dataland.datalandcommunitymanager.services.BulkDataRequestManager
 import org.dataland.datalandcommunitymanager.services.SingleDataRequestManager
@@ -69,6 +70,23 @@ class DataRequestLogger {
             "The following data request already exists for the requesting user and therefore " +
                 "is not being recreated: (companyId: $companyId, framework: $framework, " +
                 "reportingPeriod: $reportingPeriod, requestStatus: $requestStatus)",
+        )
+    }
+
+    /**
+     * Logs an appropriate message when it has been checked if a specific data request already exists and that check
+     * returned "true".
+     */
+    fun logMessageForCheckingIfUserHasAccessToDataset(
+        companyId: String,
+        framework: DataTypeEnum,
+        reportingPeriod: String,
+        accessStatus: AccessStatus,
+    ) {
+        bulkDataRequestLogger.info(
+            "The following data request already exists for the requesting user and therefore " +
+                "is not being recreated: (companyId: $companyId, framework: $framework, " +
+                "reportingPeriod: $reportingPeriod, requestStatus: $accessStatus)",
         )
     }
 

@@ -32,6 +32,8 @@ data class ExtendedStoredDataRequest(
     val lastModifiedDate: Long,
 
     val requestStatus: RequestStatus,
+
+    val accessStatus: AccessStatus,
 ) {
     constructor(dataRequestEntity: DataRequestEntity, companyName: String) : this(
         dataRequestEntity.dataRequestId,
@@ -43,5 +45,6 @@ data class ExtendedStoredDataRequest(
         companyName,
         dataRequestEntity.lastModifiedDate,
         dataRequestEntity.requestStatus,
+        dataRequestEntity.accessStatus,
     )
 }

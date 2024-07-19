@@ -32,4 +32,6 @@ data class StoredDataRequest(
     val lastModifiedDate: Long,
 
     val requestStatus: RequestStatus,
+
+    val accessStatus: AccessStatus,
 )

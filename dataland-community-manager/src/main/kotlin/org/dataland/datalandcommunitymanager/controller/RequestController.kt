@@ -2,6 +2,7 @@ package org.dataland.datalandcommunitymanager.controller
 
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandcommunitymanager.api.RequestApi
+import org.dataland.datalandcommunitymanager.model.dataRequest.AccessStatus
 import org.dataland.datalandcommunitymanager.model.dataRequest.AggregatedDataRequest
 import org.dataland.datalandcommunitymanager.model.dataRequest.BulkDataRequest
 import org.dataland.datalandcommunitymanager.model.dataRequest.BulkDataRequestResponse
@@ -91,6 +92,7 @@ class RequestController(
     override fun patchDataRequest(
         dataRequestId: UUID,
         requestStatus: RequestStatus?,
+        accessStatus: AccessStatus?,
         contacts: Set<String>?,
         message: String?,
     ): ResponseEntity<StoredDataRequest> {
@@ -98,6 +100,7 @@ class RequestController(
             dataRequestAlterationManager.patchDataRequest(
                 dataRequestId.toString(),
                 requestStatus,
+                accessStatus,
                 contacts,
                 message,
             ),

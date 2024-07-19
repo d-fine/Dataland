@@ -49,6 +49,7 @@ class DataRequestTimeSchedulerTest {
             RequestStatusEntity(
                 statusHistoryId = UUID.randomUUID().toString(),
                 requestStatus = status,
+                accessStatus = null,
                 creationTimestamp = 0,
                 dataRequest = dataRequestEntity,
             ),

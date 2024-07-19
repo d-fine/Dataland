@@ -4,6 +4,7 @@ import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.exceptions.QuotaExceededException
 import org.dataland.datalandbackendutils.utils.validateIsEmailAddress
+import org.dataland.datalandcommunitymanager.model.dataRequest.AccessStatus
 import org.dataland.datalandcommunitymanager.model.dataRequest.SingleDataRequest
 import org.dataland.datalandcommunitymanager.model.dataRequest.SingleDataRequestResponse
 import org.dataland.datalandcommunitymanager.repositories.DataRequestRepository
@@ -49,31 +50,49 @@ constructor(
     fun processSingleDataRequest(singleDataRequest: SingleDataRequest): SingleDataRequestResponse {
         val companyId = findDatalandCompanyIdForCompanyIdentifier(singleDataRequest.companyIdentifier)
         val correlationId = UUID.randomUUID().toString()
+        val userId = DatalandAuthentication.fromContext().userId
         checkSingleDataRequest(singleDataRequest, companyId)
         dataRequestLogger.logMessageForReceivingSingleDataRequest(
-            singleDataRequest.companyIdentifier, DatalandAuthentication.fromContext().userId, correlationId,
+            singleDataRequest.companyIdentifier, userId, correlationId,
         )
         val reportingPeriodsOfStoredDataRequests = mutableListOf<String>()
         val reportingPeriodsOfDuplicateDataRequests = mutableListOf<String>()
         singleDataRequest.reportingPeriods.forEach { reportingPeriod ->
-            // TODO Logik um zu erkennen, ob die angefragten daten schon auf dataland existieren, wenn private framework prüfen ob schon zugriff besteht
-            // TODO Mit extra Schleife für private framework. Wenn privater Datensatz existiert und ein access request dafür reinkommt
-            // TODO erstelle nur einen access request kein data request. Erstelle den data request erst dann wenn bereits Zugriff für die den Datensatz bestand
-            if (utils.existsDataRequestWithNonFinalStatus(companyId, singleDataRequest.dataType, reportingPeriod)) {
-                reportingPeriodsOfDuplicateDataRequests.add(reportingPeriod)
-            } else {
-                utils.storeDataRequestEntityAsOpen(
-                    companyId, singleDataRequest.dataType, reportingPeriod,
-                    singleDataRequest.contacts.takeIf { !it.isNullOrEmpty() },
-                    singleDataRequest.message.takeIf { !it.isNullOrBlank() },
-                )
-                reportingPeriodsOfStoredDataRequests.add(reportingPeriod)
-            }
-            if (singleDataRequest.dataType == DataTypeEnum.vsme) {
+            // TODO maybe introcude a Private and Public Framework List as we did in the frontend
+            if (singleDataRequest.dataType == DataTypeEnum.vsme &&
+                !utils.matchingDatasetExists(
+                    companyId=companyId, reportingPeriod=reportingPeriod,
+                    dataType =
+                    singleDataRequest.dataType,
+                ).isNullOrEmpty() &&
+                !utils.hasAccessToPrivateDataset(
+                    companyId=companyId, reportingPeriod=reportingPeriod,
+                    dataType =
+                    singleDataRequest.dataType,
+                    userId = userId, accessStatus = AccessStatus.Granted,
+                ).isNullOrEmpty()
+            ) {
                 // TODO Check ob es einen Datensatz für die Reporting Period und VSME gibt
                 // TODO Check ob der Nutzer schon Zugriff darauf hat
-                // TODO Wenn ja, erstelle einen neuen data request für reporting period und vsme und erstelle access request
+                // TODO Wenn ja, erstelle einen neuen data request für reporting period und vsme und erstelle access
+                //  request
                 // TODO Wenn nicht erstelle access request
+                // TODO Logik um zu erkennen, ob die angefragten daten schon auf dataland existieren, wenn private
+                //  framework prüfen ob schon zugriff besteht
+                // TODO Mit extra Schleife für private framework. Wenn privater Datensatz existiert und ein access
+                //  request dafür reinkommt
+                // TODO erstelle nur einen access request kein data request. Erstelle den data request erst dann wenn
+                //  bereits Zugriff für die den Datensatz bestand
+                if (utils.existsDataRequestWithNonFinalStatus(companyId, singleDataRequest.dataType, reportingPeriod)) {
+                    reportingPeriodsOfDuplicateDataRequests.add(reportingPeriod)
+                } else {
+                    utils.storeDataRequestEntityAsOpen(
+                        companyId, singleDataRequest.dataType, reportingPeriod,
+                        singleDataRequest.contacts.takeIf { !it.isNullOrEmpty() },
+                        singleDataRequest.message.takeIf { !it.isNullOrBlank() },
+                    )
+                    reportingPeriodsOfStoredDataRequests.add(reportingPeriod)
+                }
             }
         }
         sendSingleDataRequestEmailMessage(

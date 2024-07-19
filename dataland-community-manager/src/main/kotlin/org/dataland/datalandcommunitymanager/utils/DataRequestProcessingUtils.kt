@@ -1,12 +1,14 @@
 package org.dataland.datalandcommunitymanager.utils
 
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
+import org.dataland.datalandbackend.openApiClient.api.MetaDataControllerApi
 import org.dataland.datalandbackend.openApiClient.model.CompanyIdAndName
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandbackendutils.exceptions.AuthenticationMethodNotSupportedException
 import org.dataland.datalandbackendutils.exceptions.ConflictApiException
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandcommunitymanager.entities.DataRequestEntity
+import org.dataland.datalandcommunitymanager.model.dataRequest.AccessStatus
 import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
 import org.dataland.datalandcommunitymanager.model.dataRequest.StoredDataRequestMessageObject
 import org.dataland.datalandcommunitymanager.model.dataRequest.StoredDataRequestStatusObject
@@ -27,6 +29,7 @@ class DataRequestProcessingUtils(
     @Autowired private val dataRequestHistoryManager: DataRequestHistoryManager,
     @Autowired private val dataRequestLogger: DataRequestLogger,
     @Autowired private val companyApi: CompanyDataControllerApi,
+    @Autowired private val metaDataApi: MetaDataControllerApi,
 ) {
     /**
      * We want to avoid users from using other authentication methods than jwt-authentication, such as
@@ -95,7 +98,7 @@ class DataRequestProcessingUtils(
         )
         dataRequestRepository.save(dataRequestEntity)
 
-        val requestStatusObject = listOf(StoredDataRequestStatusObject(RequestStatus.Open, creationTime))
+        val requestStatusObject = listOf(StoredDataRequestStatusObject(RequestStatus.Open, creationTime, null))
         dataRequestEntity.associateRequestStatus(requestStatusObject)
         dataRequestHistoryManager.saveStatusHistory(dataRequestEntity.dataRequestStatusHistory)
 
@@ -177,6 +180,57 @@ class DataRequestProcessingUtils(
             true
         }
     }
+
+    /**
+     * This method checks if a dataset exists for the specified parameters
+     * @param companyId the dataland companyId of the company from which data is requested
+     * @param reportingPeriod the reportingPeriod for which data is requested
+     * @param dataType the framework dataType for which data is requested
+     */
+    fun matchingDatasetExists(companyId: String, reportingPeriod: String, dataType: DataTypeEnum): String {
+        return metaDataApi.getListOfDataMetaInfo(
+            companyId = companyId,
+            dataType = dataType,
+            showOnlyActive = true,
+            reportingPeriod = reportingPeriod,
+        )[0].dataId
+    }
+
+    /**
+     * This method checks if the requesting user has access to the information for a specific company, reporting period
+     * and data type
+     * @param companyId the companyId for which the access status should be checked
+     * @param reportingPeriod the reportingPeriod for which the access status should be checked
+     * @param dataType the framework dataType for which the access status should be checked
+     * @param userId the userId for which the access status should be checked
+     * @param accessStatus the accessStatus for which the check should be conducted
+     */
+    fun hasAccessToPrivateDataset(
+        companyId: String,
+        reportingPeriod: String,
+        dataType: DataTypeEnum,
+        userId: String,
+        accessStatus: AccessStatus,
+    ): List<DataRequestEntity>? {
+        val foundAccess = dataRequestRepository
+            .findByUserIdAndDatalandCompanyIdAndDataTypeAndReportingPeriod(
+                userId, companyId, dataType.name, reportingPeriod,
+            )?.filter {
+            it.accessStatus == accessStatus
+        }
+        if (foundAccess != null) {
+            dataRequestLogger.logMessageForCheckingIfUserHasAccessToDataset(
+                companyId,
+                dataType,
+                reportingPeriod,
+                accessStatus,
+            )
+        }
+        // TODO Test if this only checks the toplevel value of accessStatus or if this goes through the requestHistory
+        //  and checks if there was at least on Granted accessStatus
+        // TODO if it his the second case logic has to be adapted
+        return foundAccess
+    }
 }
 
 /**
@@ -186,4 +240,5 @@ class DataRequestProcessingUtils(
  */
 fun getDataTypeEnumForFrameworkName(frameworkName: String): DataTypeEnum? {
     return DataTypeEnum.entries.find { it.value == frameworkName }
+    // TODO Why is this function not part of the class?
 }
