@@ -1,6 +1,7 @@
 package org.dataland.datalandcommunitymanager.utils
 
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
+import org.dataland.datalandbackend.openApiClient.model.CompanyIdAndName
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandbackendutils.exceptions.AuthenticationMethodNotSupportedException
 import org.dataland.datalandbackendutils.exceptions.ConflictApiException
@@ -44,14 +45,14 @@ class DataRequestProcessingUtils(
      * exception will be thrown (default)
      * @return the company ID or null
      */
-    fun getDatalandCompanyIdForIdentifierValue(
+    fun getDatalandCompanyIdAndNameForIdentifierValue(
         identifierValue: String,
         returnOnlyUnique: Boolean = false,
-    ): String? {
+    ): CompanyIdAndName? {
         val matchingCompanyIdsAndNamesOnDataland =
             companyApi.getCompaniesBySearchString(identifierValue)
-        val datalandCompanyId = if (matchingCompanyIdsAndNamesOnDataland.size == 1) {
-            matchingCompanyIdsAndNamesOnDataland.first().companyId
+        val datalandCompanyIdAndName = if (matchingCompanyIdsAndNamesOnDataland.size == 1) {
+            matchingCompanyIdsAndNamesOnDataland.first()
         } else if (matchingCompanyIdsAndNamesOnDataland.size > 1 && !returnOnlyUnique) {
             throw InvalidInputApiException(
                 summary = "No unique identifier. Multiple companies could be found.",
@@ -61,8 +62,11 @@ class DataRequestProcessingUtils(
             null
         }
         dataRequestLogger
-            .logMessageWhenCrossReferencingIdentifierValueWithDatalandCompanyId(identifierValue, datalandCompanyId)
-        return datalandCompanyId
+            .logMessageWhenCrossReferencingIdentifierValueWithDatalandCompanyId(
+                identifierValue,
+                datalandCompanyIdAndName?.companyId,
+            )
+        return datalandCompanyIdAndName
     }
 
     /**

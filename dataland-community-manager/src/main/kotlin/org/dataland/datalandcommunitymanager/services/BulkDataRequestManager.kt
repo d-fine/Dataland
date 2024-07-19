@@ -1,5 +1,6 @@
 package org.dataland.datalandcommunitymanager.services
 
+import org.dataland.datalandbackend.openApiClient.model.CompanyIdAndName
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandcommunitymanager.model.dataRequest.BulkDataRequest
@@ -34,20 +35,20 @@ class BulkDataRequestManager(
         dataRequestLogger.logMessageForBulkDataRequest(correlationId)
         val acceptedIdentifiers = mutableListOf<String>()
         val rejectedIdentifiers = mutableListOf<String>()
-        val userProvidedIdentifierToDatalandCompanyIdMapping = mutableMapOf<String, String>()
+        val userProvidedIdentifierToDatalandCompanyIdMapping = mutableMapOf<String, CompanyIdAndName>()
         for (userProvidedIdentifier in bulkDataRequest.companyIdentifiers) {
-            val datalandCompanyId =
-                utils.getDatalandCompanyIdForIdentifierValue(userProvidedIdentifier, returnOnlyUnique = true)
-            if (datalandCompanyId == null) {
+            val datalandCompanyIdAndName =
+                utils.getDatalandCompanyIdAndNameForIdentifierValue(userProvidedIdentifier, returnOnlyUnique = true)
+            if (datalandCompanyIdAndName == null) {
                 rejectedIdentifiers.add(userProvidedIdentifier)
                 continue
             }
-            userProvidedIdentifierToDatalandCompanyIdMapping[userProvidedIdentifier] = datalandCompanyId
+            userProvidedIdentifierToDatalandCompanyIdMapping[userProvidedIdentifier] = datalandCompanyIdAndName
             acceptedIdentifiers.add(userProvidedIdentifier)
             storeDataRequests(
                 dataTypes = bulkDataRequest.dataTypes,
                 reportingPeriods = bulkDataRequest.reportingPeriods,
-                datalandCompanyId = datalandCompanyId,
+                datalandCompanyId = datalandCompanyIdAndName.companyId,
             )
         }
         if (acceptedIdentifiers.isEmpty()) throwInvalidInputApiExceptionBecauseAllIdentifiersRejected()
@@ -148,12 +149,12 @@ class BulkDataRequestManager(
 
     private fun sendBulkDataRequestInternalEmailMessage(
         bulkDataRequest: BulkDataRequest,
-        acceptedDatalandCompanyIds: List<String>,
+        acceptedDatalandCompanyIdsAndNames: List<CompanyIdAndName>,
         correlationId: String,
     ) {
         emailMessageSender.sendBulkDataRequestInternalMessage(
             bulkDataRequest,
-            acceptedDatalandCompanyIds,
+            acceptedDatalandCompanyIdsAndNames,
             correlationId,
         )
         dataRequestLogger.logMessageForSendBulkDataRequestEmailMessage(correlationId)

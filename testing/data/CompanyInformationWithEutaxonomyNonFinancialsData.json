@@ -845,7 +845,7 @@
 						"minimumSafeguards": "Yes"
 					},
 					{
-						"activityName": "ConservationIncludingRestorationOfHabitats1Ecosystems2AndSpecies",
+						"activityName": "ConservationIncludingRestorationOfHabitatsEcosystemsAndSpecies",
 						"naceCodes": [],
 						"share": {
 							"relativeShareInPercent": 14.2,
@@ -5232,7 +5232,7 @@
 						"minimumSafeguards": "No"
 					},
 					{
-						"activityName": "ConservationIncludingRestorationOfHabitats1Ecosystems2AndSpecies",
+						"activityName": "ConservationIncludingRestorationOfHabitatsEcosystemsAndSpecies",
 						"naceCodes": [],
 						"share": {
 							"relativeShareInPercent": 75.86,
@@ -7768,7 +7768,7 @@
 						"minimumSafeguards": "No"
 					},
 					{
-						"activityName": "ConservationIncludingRestorationOfHabitats1Ecosystems2AndSpecies",
+						"activityName": "ConservationIncludingRestorationOfHabitatsEcosystemsAndSpecies",
 						"naceCodes": [],
 						"share": {
 							"relativeShareInPercent": 47.52,
@@ -23614,7 +23614,7 @@
 						"minimumSafeguards": "No"
 					},
 					{
-						"activityName": "ConservationIncludingRestorationOfHabitats1Ecosystems2AndSpecies",
+						"activityName": "ConservationIncludingRestorationOfHabitatsEcosystemsAndSpecies",
 						"naceCodes": [],
 						"share": {
 							"relativeShareInPercent": 83.39,
@@ -26746,7 +26746,7 @@
 				},
 				"nonAlignedActivities": [
 					{
-						"activityName": "ConservationIncludingRestorationOfHabitats1Ecosystems2AndSpecies",
+						"activityName": "ConservationIncludingRestorationOfHabitatsEcosystemsAndSpecies",
 						"naceCodes": [],
 						"share": {
 							"relativeShareInPercent": null,
@@ -28402,7 +28402,7 @@
 				},
 				"nonAlignedActivities": [
 					{
-						"activityName": "ConservationIncludingRestorationOfHabitats1Ecosystems2AndSpecies",
+						"activityName": "ConservationIncludingRestorationOfHabitatsEcosystemsAndSpecies",
 						"naceCodes": [],
 						"share": {
 							"relativeShareInPercent": 40.89,
