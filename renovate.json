@@ -6,7 +6,7 @@
   "separateMinorPatch": true,
   "separateMajorMinor": true,
   "separateMultipleMajor": true,
-  "minimumReleaseAge": "14 days",
+  "minimumReleaseAge": "5 days",
   "updateNotScheduled": false,
   "schedule": [
     "after 8pm every weekday",
@@ -24,7 +24,7 @@
     },
     {
       "groupName": "kotlin-packages",
-      "matchPackagePatterns": ["detekt"],
+      "matchPackagePatterns": ["detekt","kotlin"],
       "matchSourceUrls": ["https://github.com/JetBrains/kotlin"]
     }
   ]
