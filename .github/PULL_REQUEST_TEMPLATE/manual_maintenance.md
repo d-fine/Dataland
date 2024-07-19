@@ -9,6 +9,8 @@ creation URL (or simply copy this md file into the description)
 
 ### Dependency updates
 
+Updating **ES-Lint** to 9.0.0 is not compatible with current @vue/eslint-config-typescript version. With future versions, compatibility might be restored. This paragraph can be deleted when the issue in the feature branch is resolved
+
 - [ ] Take a look at the dependency dashboard and see which updates are to be applied. For a detailed description of the process,
 consult the internal Dataland Wiki.
 
