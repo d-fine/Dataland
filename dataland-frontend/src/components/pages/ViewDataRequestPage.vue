@@ -330,7 +330,14 @@ export default defineComponent({
      */
     addMessage() {
       if (this.hasValidEmailForm) {
-        patchDataRequest(this.requestId, undefined, this.emailContacts, this.emailMessage, this.getKeycloakPromise)
+        patchDataRequest(
+          this.requestId,
+          undefined,
+          undefined,
+          this.emailContacts,
+          this.emailMessage,
+          this.getKeycloakPromise
+        )
           .then(() => {
             this.getRequest().catch((error) => console.error(error));
             this.showNewMessageDialog = false;
