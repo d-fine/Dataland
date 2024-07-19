@@ -9,6 +9,7 @@ creation URL (or simply copy this md file into the description)
 
 ### Dependency updates
 
+- updating primevue > 3.44.0 leads to several failing tests. more detailed info: https://jira.d-fine.dev/browse/DALA-3674. this line can be deleted after issue is resoled
 - [ ] Take a look at the dependency dashboard and see which updates are to be applied. For a detailed description of the process,
 consult the internal Dataland Wiki.
 
