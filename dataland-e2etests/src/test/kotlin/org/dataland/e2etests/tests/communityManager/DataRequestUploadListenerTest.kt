@@ -2,6 +2,7 @@ package org.dataland.e2etests.tests.communityManager
 
 import org.dataland.communitymanager.openApiClient.infrastructure.ClientError
 import org.dataland.communitymanager.openApiClient.infrastructure.ClientException
+import org.dataland.communitymanager.openApiClient.model.AccessStatus
 import org.dataland.communitymanager.openApiClient.model.ExtendedStoredDataRequest
 import org.dataland.communitymanager.openApiClient.model.RequestStatus
 import org.dataland.communitymanager.openApiClient.model.SingleDataRequest
@@ -115,12 +116,13 @@ class DataRequestUploadListenerTest {
         technicalUser: TechnicalUser,
         dataRequestId: UUID,
         requestStatus: RequestStatus?,
+        accesStatus: AccessStatus?,
         contacts: Set<String>? = null,
         message: String? = null,
     ) {
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(technicalUser)
         val clientException = assertThrows<ClientException> {
-            requestControllerApi.patchDataRequest(dataRequestId, requestStatus, contacts, message)
+            requestControllerApi.patchDataRequest(dataRequestId, requestStatus, accesStatus, contacts, message)
         }
         assertEquals("Client error : 403 ", clientException.message)
     }
@@ -130,7 +132,7 @@ class DataRequestUploadListenerTest {
         val dataRequestId = postSingleDataRequestAsTechnicalUserAndReturnDataRequestId(TechnicalUser.PremiumUser)
 
         authenticateAsTechnicalUserAndAssertThatPatchingOfDataRequestIsForbidden(
-            TechnicalUser.PremiumUser, dataRequestId, RequestStatus.Resolved,
+            TechnicalUser.PremiumUser, dataRequestId, RequestStatus.Resolved, null,
         )
 
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
@@ -150,7 +152,7 @@ class DataRequestUploadListenerTest {
         val dataRequestId = postSingleDataRequestAsTechnicalUserAndReturnDataRequestId(TechnicalUser.PremiumUser)
         RequestStatus.entries.forEach {
             authenticateAsTechnicalUserAndAssertThatPatchingOfDataRequestIsForbidden(
-                TechnicalUser.Reader, dataRequestId, it,
+                TechnicalUser.Reader, dataRequestId, it, null,
             )
         }
     }
@@ -163,7 +165,7 @@ class DataRequestUploadListenerTest {
         patchDataRequestAndAssertNewStatusAndLastModifiedUpdated(dataRequestId, RequestStatus.Answered)
 
         authenticateAsTechnicalUserAndAssertThatPatchingOfDataRequestIsForbidden(
-            TechnicalUser.PremiumUser, dataRequestId, RequestStatus.Resolved,
+            TechnicalUser.PremiumUser, dataRequestId, RequestStatus.Resolved, null,
         )
     }
 
@@ -175,7 +177,7 @@ class DataRequestUploadListenerTest {
 
         RequestStatus.entries.forEach {
             authenticateAsTechnicalUserAndAssertThatPatchingOfDataRequestIsForbidden(
-                TechnicalUser.PremiumUser, dataRequestId, it,
+                TechnicalUser.PremiumUser, dataRequestId, it, null,
             )
         }
 
@@ -184,7 +186,7 @@ class DataRequestUploadListenerTest {
 
         RequestStatus.entries.forEach {
             authenticateAsTechnicalUserAndAssertThatPatchingOfDataRequestIsForbidden(
-                TechnicalUser.PremiumUser, dataRequestId, it,
+                TechnicalUser.PremiumUser, dataRequestId, it, null,
             )
         }
     }
@@ -242,7 +244,7 @@ class DataRequestUploadListenerTest {
     fun `add a message to an open request do not change the status and assert success`() {
         val dataRequestId = postSingleDataRequestAsTechnicalUserAndReturnDataRequestId(TechnicalUser.PremiumUser)
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.PremiumUser)
-        val newMessageDataRequest = requestControllerApi.patchDataRequest(dataRequestId, null, contacts, message)
+        val newMessageDataRequest = requestControllerApi.patchDataRequest(dataRequestId, null, null, contacts, message)
 
         assertEquals(
             message, newMessageDataRequest.messageHistory.last().message,
@@ -262,7 +264,7 @@ class DataRequestUploadListenerTest {
 
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.PremiumUser)
         val newMessageAndOpenDataRequest =
-            requestControllerApi.patchDataRequest(dataRequestId, RequestStatus.Open, contacts, message)
+            requestControllerApi.patchDataRequest(dataRequestId, RequestStatus.Open, null, contacts, message)
         assertEquals(
             message, newMessageAndOpenDataRequest.messageHistory.last().message,
             "The message was not patched correctly.",
@@ -287,7 +289,7 @@ class DataRequestUploadListenerTest {
             patchDataRequestAndAssertNewStatusAndLastModifiedUpdated(dataRequestId, it)
 
             authenticateAsTechnicalUserAndAssertThatPatchingOfDataRequestIsForbidden(
-                TechnicalUser.PremiumUser, dataRequestId, null, contacts, message,
+                TechnicalUser.PremiumUser, dataRequestId, null, null, contacts, message,
             )
         }
     }

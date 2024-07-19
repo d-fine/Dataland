@@ -72,6 +72,8 @@ constructor(
                     userId = userId, accessStatus = AccessStatus.Granted,
                 ).isNullOrEmpty()
             ) {
+                // TODO add logic
+            } else {
                 // TODO Check ob es einen Datensatz für die Reporting Period und VSME gibt
                 // TODO Check ob der Nutzer schon Zugriff darauf hat
                 // TODO Wenn ja, erstelle einen neuen data request für reporting period und vsme und erstelle access
