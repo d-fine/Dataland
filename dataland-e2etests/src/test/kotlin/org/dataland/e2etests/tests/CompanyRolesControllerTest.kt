@@ -5,6 +5,8 @@ import org.dataland.communitymanager.openApiClient.infrastructure.ClientExceptio
 import org.dataland.communitymanager.openApiClient.model.CompanyRole
 import org.dataland.communitymanager.openApiClient.model.CompanyRoleAssignment
 import org.dataland.datalandbackend.openApiClient.model.EutaxonomyNonFinancialsData
+import org.dataland.e2etests.REVIEWER_EXTENDED_ROLES
+import org.dataland.e2etests.UPLOADER_EXTENDED_ROLES
 import org.dataland.e2etests.auth.GlobalAuth
 import org.dataland.e2etests.auth.JwtAuthenticationHelper
 import org.dataland.e2etests.auth.TechnicalUser
@@ -72,6 +74,10 @@ class CompanyRolesControllerTest {
             )
         }
         assertEquals("Client error : 403 ", expectedAccessDeniedClientException.message)
+    }
+
+    private fun uploadEuTaxoDataWithBypassQa(companyId: UUID) {
+        apiAccessor.euTaxonomyNonFinancialsUploaderFunction(companyId.toString(), frameworkSampleData, "2021", true)
     }
 
     private fun assertErrorCodeInCommunityManagerClientException(
@@ -245,6 +251,41 @@ class CompanyRolesControllerTest {
             expectedClientExceptionWhenCallingGetCompanyOwnersEndpoint,
             403,
         )
+    }
+
+    @Test
+    fun `assure bypassQa is only allowed for user with keycloak uploader and keycloak reviewer rights`() {
+        val companyId = uploadCompanyAndReturnCompanyId()
+        assertTrue(REVIEWER_EXTENDED_ROLES.size == 1 || UPLOADER_EXTENDED_ROLES.size == 1)
+
+        for (technicalUser in TechnicalUser.values()) {
+            jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(technicalUser)
+            val isUserKeycloakReviewer = technicalUser.roles.contains(REVIEWER_EXTENDED_ROLES.first())
+            val isUserKeycloakUploader = technicalUser.roles.contains(UPLOADER_EXTENDED_ROLES.first())
+            if (isUserKeycloakReviewer && isUserKeycloakUploader) {
+                assertDoesNotThrow { uploadEuTaxoDataWithBypassQa(companyId) }
+            } else {
+                assertAccessDeniedWhenUploadingFrameworkData(companyId, frameworkSampleData, true)
+            }
+        }
+    }
+
+    @Test
+    fun `assure bypassQa for keycloak reader user is only allowed as company owner or company data uploader`() {
+        val companyId = uploadCompanyAndReturnCompanyId()
+
+        val companyRolesAllowedToUploadData = listOf(CompanyRole.CompanyOwner, CompanyRole.DataUploader)
+        for (role in CompanyRole.values()) {
+            jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
+            assignCompanyRole(role, companyId, dataReaderUserId)
+
+            jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader)
+            if (companyRolesAllowedToUploadData.contains(role)) {
+                assertDoesNotThrow { uploadEuTaxoDataWithBypassQa(companyId) }
+            } else {
+                assertAccessDeniedWhenUploadingFrameworkData(companyId, frameworkSampleData, true)
+            }
+        }
     }
 
     @Test

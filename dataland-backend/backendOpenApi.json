@@ -11312,7 +11312,7 @@
           "CompostingOfBioWaste",
           "ComputerProgrammingConsultancyAndRelatedActivities",
           "ConservationForestry",
-          "ConservationIncludingRestorationOfHabitats1Ecosystems2AndSpecies",
+          "ConservationIncludingRestorationOfHabitatsEcosystemsAndSpecies",
           "ConstructionAndSafeOperationOfNewNuclearPowerPlantsForTheGenerationOfElectricityAndOrHeatIncludingForHydrogenProductionUsingBestAvailableTechnologies",
           "ConstructionExtensionAndOperationOfWasteWaterCollectionAndTreatment",
           "ConstructionExtensionAndOperationOfWaterCollectionTreatmentAndSupplySystems",
@@ -14572,10 +14572,6 @@
         ],
         "type": "object",
         "properties": {
-          "lei": {
-            "type": "string",
-            "nullable": true
-          },
           "countryCode": {
             "type": "string"
           },
@@ -14589,6 +14585,10 @@
             "type": "string"
           },
           "sector": {
+            "type": "string",
+            "nullable": true
+          },
+          "lei": {
             "type": "string",
             "nullable": true
           }

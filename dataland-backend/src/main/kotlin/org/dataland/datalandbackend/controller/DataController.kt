@@ -45,15 +45,14 @@ abstract class DataController<T>(
         }
         val reportingPeriod = companyAssociatedData.reportingPeriod
         val userId = DatalandAuthentication.fromContext().userId
-        val uploadTime = Instant.now().toEpochMilli()
         logger.info(logMessageBuilder.postCompanyAssociatedDataMessage(userId, dataType, companyId, reportingPeriod))
-        val correlationId = generateCorrelationId(companyId = companyAssociatedData.companyId, dataId = null)
+
+        val uploadTime = Instant.now().toEpochMilli()
         val datasetToStore = buildStorableDataset(companyAssociatedData, userId, uploadTime)
-        val dataIdOfPostedData = dataManager.processDataStorageRequest(
-            datasetToStore,
-            bypassQa, correlationId,
-        )
+        val correlationId = generateCorrelationId(companyId = companyAssociatedData.companyId, dataId = null)
+        val dataIdOfPostedData = dataManager.processDataStorageRequest(datasetToStore, bypassQa, correlationId)
         logger.info(logMessageBuilder.postCompanyAssociatedDataSuccessMessage(companyId, correlationId))
+
         return ResponseEntity.ok(
             DataMetaInformation(
                 dataId = dataIdOfPostedData, companyId = companyId, dataType = dataType,
