@@ -11,7 +11,7 @@ import {
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from '@e2e/utils/CompanyUpload';
 import { uploadGenericFrameworkData } from '@e2e/utils/FrameworkUpload';
 import { type FixtureData, getPreparedFixture } from '@sharedUtils/Fixtures';
-import { assignCompanyOwnershipToDatalandAdmin } from '@e2e/utils/CompanyRolesUtils';
+import { assignCompanyOwnershipToDatalandAdmin, isDatasetApproved } from '@e2e/utils/CompanyRolesUtils';
 import { getBasePublicFrameworkDefinition } from '@/frameworks/BasePublicFrameworkRegistry';
 import { submitButton } from '@sharedUtils/components/SubmitButton';
 import { compareObjectKeysAndValuesDeep } from '@e2e/utils/GeneralUtils';
@@ -79,6 +79,7 @@ describeIf(
                     timeout: Cypress.env('medium_timeout_in_ms') as number,
                   }).then((postInterception) => {
                     cy.url().should('eq', getBaseUrl() + '/datasets');
+                    isDatasetApproved();
                     const dataMetaInformationOfReuploadedDataset = postInterception.response
                       ?.body as DataMetaInformation;
                     return new EsgQuestionnaireDataControllerApi(new Configuration({ accessToken: token }))

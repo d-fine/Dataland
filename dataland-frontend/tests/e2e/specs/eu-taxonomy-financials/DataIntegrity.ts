@@ -9,7 +9,7 @@ import {
   EuTaxonomyDataForFinancialsControllerApi,
 } from '@clients/backend';
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from '@e2e/utils/CompanyUpload';
-import { assignCompanyOwnershipToDatalandAdmin } from '@e2e/utils/CompanyRolesUtils';
+import { assignCompanyOwnershipToDatalandAdmin, isDatasetApproved } from '@e2e/utils/CompanyRolesUtils';
 import { submitButton } from '@sharedUtils/components/SubmitButton';
 import { uploadFrameworkDataForLegacyFramework } from '@e2e/utils/FrameworkUpload';
 import { compareObjectKeysAndValuesDeep } from '@e2e/utils/GeneralUtils';
@@ -74,6 +74,7 @@ describeIf(
                 cy.wait('@postCompanyAssociatedData', { timeout: Cypress.env('medium_timeout_in_ms') as number }).then(
                   (postInterception) => {
                     cy.url().should('eq', getBaseUrl() + '/datasets');
+                    isDatasetApproved();
                     const dataMetaInformationOfReuploadedDataset = postInterception.response
                       ?.body as DataMetaInformation;
                     return new EuTaxonomyDataForFinancialsControllerApi(new Configuration({ accessToken: token }))

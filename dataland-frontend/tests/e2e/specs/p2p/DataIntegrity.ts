@@ -13,7 +13,7 @@ import { submitButton } from '@sharedUtils/components/SubmitButton';
 import { uploadFrameworkDataForLegacyFramework } from '@e2e/utils/FrameworkUpload';
 import { compareObjectKeysAndValuesDeep } from '@e2e/utils/GeneralUtils';
 import { type FixtureData, getPreparedFixture } from '@sharedUtils/Fixtures';
-import { assignCompanyOwnershipToDatalandAdmin } from '@e2e/utils/CompanyRolesUtils';
+import { assignCompanyOwnershipToDatalandAdmin, isDatasetApproved } from '@e2e/utils/CompanyRolesUtils';
 
 let p2pFixtureForTest: FixtureData<PathwaysToParisData>;
 before(function () {
@@ -69,6 +69,7 @@ describeIf(
                 cy.wait('@postCompanyAssociatedData', { timeout: Cypress.env('medium_timeout_in_ms') as number }).then(
                   (postInterception) => {
                     cy.url().should('eq', getBaseUrl() + '/datasets');
+                    isDatasetApproved();
                     const dataMetaInformationOfReuploadedDataset = postInterception.response
                       ?.body as DataMetaInformation;
                     return new P2pDataControllerApi(new Configuration({ accessToken: token }))

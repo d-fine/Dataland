@@ -41,3 +41,10 @@ export async function assignCompanyOwnershipToDatalandAdmin(
   const apiResponse = await assignCompanyRole(token, CompanyRole.CompanyOwner, companyId, admin_userId);
   return apiResponse;
 }
+
+/**
+ * Checks that the QA status of the uploaded dataset is automatically set to APPROVED
+ */
+export function isDatasetApproved(): void {
+  cy.get('[data-test="qa-status"]').first().should('have.text', 'APPROVED');
+}
