@@ -20,6 +20,7 @@ import org.dataland.datalandmessagequeueutils.exceptions.MessageQueueRejectExcep
 import org.dataland.datalandmessagequeueutils.messages.TemplateEmailMessage
 import org.dataland.datalandmessagequeueutils.utils.MessageQueueUtils
 import org.json.JSONObject
+import org.slf4j.LoggerFactory
 import org.springframework.amqp.rabbit.annotation.Argument
 import org.springframework.amqp.rabbit.annotation.Exchange
 import org.springframework.amqp.rabbit.annotation.Queue
@@ -52,6 +53,7 @@ constructor(
     @Value("\${dataland.community-manager.proxy-primary-url:local-dev.dataland.com}")
     private val proxyPrimaryUrl: String,
 ) {
+    private val logger = LoggerFactory.getLogger(this.javaClass)
 
     /* TODO Emanuel: Ich glaube wir müssen noch einen RabbitListener für die private data queue einführen. Der
     schaut dann halt auf die andere queue (für private data), ruft aber dieselben Funktionen hier auf wie in
@@ -69,7 +71,7 @@ constructor(
         bindings = [
             QueueBinding(
                 value = Queue(
-                    "requestReceivedInternalStorageDatabaseDataStore",
+                    "requestReceivedCommunityManagerNotificationService",
                     arguments = [
                         Argument(name = "x-dead-letter-exchange", value = ExchangeName.DeadLetter),
                         Argument(name = "x-dead-letter-routing-key", value = "deadLetterKey"),
@@ -89,16 +91,19 @@ constructor(
         messageUtils.validateMessageType(type, MessageType.PublicDataReceived)
         val dataId = JSONObject(payload).getString("dataId")
         val actionType = JSONObject(payload).getString("actionType")
+
         if (dataId.isEmpty()) {
             throw MessageQueueRejectException("Provided data ID is empty.")
         }
-        if (actionType !== ActionType.StorePublicData) {
+        if (actionType != ActionType.StorePublicData) {
             throw MessageQueueRejectException("Provided action type is unexpected.")
         }
 
         // TODO Der Teil ab hier muss ausglagert werden, und dann verwenden wir ihn sowohl für den Listener auf die
         // "public" queue, als auch für die "private" queue
-        val companyMetadata = metaDataControllerApi.getDataMetaInfo(dataId)
+        logger.info("Processing a data upload elementary event.") // TODO better logging
+
+        val companyMetadata = metaDataControllerApi.getDataMetaInfo(dataId) // TODO problematisch
         val companyIdOfUpload = UUID.fromString(companyMetadata.companyId)
 
         // TODO Emanuel: Get only those which match the elementary event type (data upload)
