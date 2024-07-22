@@ -1,6 +1,5 @@
 package org.dataland.datalandcommunitymanager.events
 
-enum class EventType {
+enum class ElementaryEventType {
     UploadEvent,
-    RequestEvent,
 }
