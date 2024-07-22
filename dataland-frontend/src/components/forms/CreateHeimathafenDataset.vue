@@ -148,9 +148,7 @@ import { getFilledKpis } from '@/utils/DataPoint';
 import { heimathafenDataModel } from '@/frameworks/heimathafen/UploadConfig';
 import { getBasePublicFrameworkDefinition } from '@/frameworks/BasePublicFrameworkRegistry';
 import { type PublicFrameworkDataApi } from '@/utils/api/UnifiedFrameworkDataApi';
-import { hasUserCompanyRoleForCompany } from '@/utils/CompanyRolesUtils';
-import { CompanyRole } from '@clients/communitymanager';
-
+import { canUserBypassQA } from '@/utils/CompanyRolesUtils';
 export default defineComponent({
   setup() {
     return {
@@ -286,8 +284,7 @@ export default defineComponent({
         }
         const heimathafenDataControllerApi = this.buildHeimathafenDataApi();
 
-        const isCompanyOwner = await hasUserCompanyRoleForCompany(
-          CompanyRole.CompanyOwner,
+        const isCompanyOwner = canUserBypassQA(
           this.companyAssociatedHeimathafenData.companyId,
           this.getKeycloakPromise
         );
