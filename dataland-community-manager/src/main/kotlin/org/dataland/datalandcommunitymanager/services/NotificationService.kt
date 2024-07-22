@@ -55,14 +55,48 @@ constructor(
 ) {
     private val logger = LoggerFactory.getLogger(this.javaClass)
 
-    /* TODO Emanuel: Ich glaube wir müssen noch einen RabbitListener für die private data queue einführen. Der
-    schaut dann halt auf die andere queue (für private data), ruft aber dieselben Funktionen hier auf wie in
-    "processPublicDataUploadEvent"
-    */
+    /**
+     * Method that listens to private data storage requests, persists them as elementary events and potentially
+     * creates a notification event if specific requirements are met
+     * @param payload the content of the message
+     * @param correlationId the correlation ID of the current user process
+     * @param type the type of the message
+     */
+    @RabbitListener(
+        bindings = [
+            QueueBinding(
+                value = Queue(
+                    "requestReceivedCommunityManagerNotificationService",
+                    arguments = [
+                        Argument(name = "x-dead-letter-exchange", value = ExchangeName.DeadLetter),
+                        Argument(name = "x-dead-letter-routing-key", value = "deadLetterKey"),
+                        Argument(name = "defaultRequeueRejected", value = "false"),
+                    ],
+                ),
+                exchange = Exchange(ExchangeName.PrivateRequestReceived, declare = "false"),
+                key = [""],
+            ),
+        ],
+    )
+    fun processPrivateDataUploadEvent(
+        @Payload payload: String,
+        @Header(MessageHeaderKey.CorrelationId) correlationId: String,
+        @Header(MessageHeaderKey.Type) type: String,
+    ) {
+        messageUtils.validateMessageType(type, MessageType.PrivateDataReceived)
+
+        val dataId = JSONObject(payload).getString("dataId")
+        validateDataId(dataId)
+
+        val actionType = JSONObject(payload).getString("actionType")
+        validateActionType(ActionType.StorePrivateDataAndDocuments, actionType)
+    }
+
+    // TODO same code as for public
 
     /**
-     * Method that listens to the storage_queue and, creates and persists new elementaryEvents, and creates and persists
-     * a new single or summary notification event if necessary i.e. specific trigger requirements are met
+     * Method that listens to public data storage requests and, creates and persists new elementaryEvents,
+     * and creates and persists a new single or summary notification event if specific trigger requirements are met
      * @param payload the content of the message
      * @param correlationId the correlation ID of the current user process
      * @param type the type of the message
@@ -83,27 +117,23 @@ constructor(
             ),
         ],
     )
-    fun processDataUploadEvent( // TODO Emanuel: wird wsl zu "prcoessPublicDataUploadEvent"
+    fun processPublicDataUploadEvent(
         @Payload payload: String,
         @Header(MessageHeaderKey.CorrelationId) correlationId: String,
         @Header(MessageHeaderKey.Type) type: String,
     ) {
         messageUtils.validateMessageType(type, MessageType.PublicDataReceived)
         val dataId = JSONObject(payload).getString("dataId")
-        val actionType = JSONObject(payload).getString("actionType")
+        validateDataId(dataId)
 
-        if (dataId.isEmpty()) {
-            throw MessageQueueRejectException("Provided data ID is empty.")
-        }
-        if (actionType != ActionType.StorePublicData) {
-            throw MessageQueueRejectException("Provided action type is unexpected.")
-        }
+        val actionType = JSONObject(payload).getString("actionType")
+        validateActionType(ActionType.StorePublicData, actionType)
 
         // TODO Der Teil ab hier muss ausglagert werden, und dann verwenden wir ihn sowohl für den Listener auf die
         // "public" queue, als auch für die "private" queue
         logger.info("Processing a data upload elementary event.") // TODO better logging
 
-        val companyMetadata = metaDataControllerApi.getDataMetaInfo(dataId) // TODO problematisch
+        val companyMetadata = metaDataControllerApi.getDataMetaInfo(dataId) // TODO Emanuel: problem => lets discuss
         val companyIdOfUpload = UUID.fromString(companyMetadata.companyId)
 
         // TODO Emanuel: Get only those which match the elementary event type (data upload)
@@ -298,11 +328,23 @@ constructor(
                 .toDays() > notificationThresholdDays
     }
 
-    private fun getListOfFrameWorksAndYearsFromElementaryEvents(elementaryEvents: List<ElementaryEventEntity>): List<FrameworkAndYear> {
+    private fun getListOfFrameWorksAndYearsFromElementaryEvents(elementaryEvents: List<ElementaryEventEntity>): List<FrameworkAndYear> { // TODO unused???
         val frameworkAndYears = mutableListOf<FrameworkAndYear>()
         for (elementaryEvent in elementaryEvents) {
             frameworkAndYears.add(FrameworkAndYear(elementaryEvent.framework, elementaryEvent.reportingPeriod))
         }
         return frameworkAndYears
+    }
+
+    private fun validateActionType(expectedActionType: String, actualActionType: String) {
+        if (actualActionType != expectedActionType) {
+            throw MessageQueueRejectException("Expected action type $expectedActionType, but was $actualActionType.")
+        }
+    }
+
+    private fun validateDataId(dataId: String) {
+        if (dataId.isEmpty()) {
+            throw MessageQueueRejectException("Provided data ID is empty.")
+        }
     }
 }
