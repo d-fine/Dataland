@@ -94,25 +94,25 @@ constructor(
         when {
             isLastNotificationEventForCompanyOlderThanThreshold(companyIdOfUpload) &&
                 previouslyUnsentElementaryEvents.isEmpty()
-            -> singleNotificationResponse(elementaryEvent)
+            -> createAndSendSingleNotificationResponse(elementaryEvent)
             isLastNotificationEventForCompanyOlderThanThreshold(companyIdOfUpload) &&
                 previouslyUnsentElementaryEvents.isNotEmpty()
             -> {
                 val allUnsentElementaryEvents = previouslyUnsentElementaryEvents.toMutableList()
                 allUnsentElementaryEvents.add(elementaryEvent)
-                summaryNotificationResponse(allUnsentElementaryEvents)
+                createAndSendSummaryNotificationResponse(allUnsentElementaryEvents)
             }
             !isLastNotificationEventForCompanyOlderThanThreshold(companyIdOfUpload) &&
                 previouslyUnsentElementaryEvents.size + 1 >= elementaryEventsThreshold
             -> {
                 val allUnsentElementaryEvents = previouslyUnsentElementaryEvents.toMutableList()
                 allUnsentElementaryEvents.add(elementaryEvent)
-                summaryNotificationResponse(allUnsentElementaryEvents)
+                createAndSendSummaryNotificationResponse(allUnsentElementaryEvents)
             }
         }
     }
 
-    fun singleNotificationResponse(elementaryEvent: ElementaryEventEntity) {
+    fun createAndSendSingleNotificationResponse(elementaryEvent: ElementaryEventEntity) {
         val newNotificationEvent = NotificationEventEntity(
             elementaryEvents = mutableListOf(elementaryEvent),
             companyId = elementaryEvent.companyId,
@@ -125,7 +125,7 @@ constructor(
         sendSingleEmailMessageToQueue()
     }
 
-    fun summaryNotificationResponse(elementaryEvents: List<ElementaryEventEntity>) {
+    fun createAndSendSummaryNotificationResponse(elementaryEvents: List<ElementaryEventEntity>) {
         val newNotificationEvent = NotificationEventEntity(
             elementaryEvents = elementaryEvents,
             companyId = elementaryEvents.first().companyId,
@@ -175,7 +175,8 @@ constructor(
     private fun isLastNotificationEventForCompanyOlderThanThreshold(companyId: String): Boolean {
         val lastNotificationEvent = notificationEventRepository.findNotificationEventByCompanyId(companyId)
             .maxByOrNull { it.creationTimestamp }
-        return lastNotificationEvent == null || Duration.between(Instant.ofEpochMilli(lastNotificationEvent.creationTimestamp), Instant.now())
+        return lastNotificationEvent == null ||
+                Duration.between(Instant.ofEpochMilli(lastNotificationEvent.creationTimestamp), Instant.now())
             .toDays() > notificationThresholdDays
     }
 
