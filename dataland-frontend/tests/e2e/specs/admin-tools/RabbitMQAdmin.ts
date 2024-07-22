@@ -4,6 +4,7 @@ const queues = [
   'dataQualityAssuredBackendDataManager',
   'requestReceivedInternalStorageDatabaseDataStore',
   'requestReceivedCommunityManagerNotificationService',
+    'privateRequestReceivedCommunityManagerNotificationService',
   'dataStoredBackendDataManager',
   'dataStoredDocumentManager',
   'deadLetterQueue',

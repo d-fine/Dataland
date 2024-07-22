@@ -65,7 +65,7 @@ constructor(
         bindings = [
             QueueBinding(
                 value = Queue(
-                    "requestReceivedCommunityManagerNotificationService",
+                    "privateRequestReceivedCommunityManagerNotificationService",
                     arguments = [
                         Argument(name = "x-dead-letter-exchange", value = ExchangeName.DeadLetter),
                         Argument(name = "x-dead-letter-routing-key", value = "deadLetterKey"),
@@ -89,9 +89,11 @@ constructor(
 
         val actionType = JSONObject(payload).getString("actionType")
         validateActionType(ActionType.StorePrivateDataAndDocuments, actionType)
-    }
 
-    // TODO same code as for public
+        logger.info("Processing elementary event: Request for storage of private framework data.")
+
+        createNotificationEventForDataUploadsIfRequriementsMet(dataId, correlationId)
+    }
 
     /**
      * Method that listens to public data storage requests and, creates and persists new elementaryEvents,
@@ -128,42 +130,69 @@ constructor(
         val actionType = JSONObject(payload).getString("actionType")
         validateActionType(ActionType.StorePublicData, actionType)
 
-        // TODO Der Teil ab hier muss ausglagert werden, und dann verwenden wir ihn sowohl für den Listener auf die
-        // "public" queue, als auch für die "private" queue
-        logger.info("Processing a data upload elementary event.") // TODO better logging
+        logger.info("Processing elementary event: Request for storage of public framework data.")
 
-        val companyMetadata = metaDataControllerApi.getDataMetaInfo(dataId) // TODO Emanuel: problem => lets discuss
-        val companyIdOfUpload = UUID.fromString(companyMetadata.companyId)
+        createNotificationEventForDataUploadsIfRequriementsMet(dataId, correlationId)
+    }
 
-        // TODO Emanuel: Get only those which match the elementary event type (data upload)
-        val previouslyUnsentElementaryEvents = getUnsentElementaryEventsForCompany(companyIdOfUpload)
+    fun createNotificationEventForDataUploadsIfRequriementsMet(dataIdOfUpload: String, correlationId: String) {
+        val dataMetaInfo = metaDataControllerApi.getDataMetaInfo(dataIdOfUpload) // TODO Emanuel: problem => lets discuss
+        val companyId = UUID.fromString(dataMetaInfo.companyId)
 
-        val elementaryEvent = createAndSaveElementaryEvent(companyMetadata)
+        val newlyCreatedElementaryEvent = createAndSaveElementaryEvent(dataMetaInfo, ElementaryEventType.UploadEvent)
+        val previouslyUnprocessedElementaryEvents =
+            getUnprocessedElementaryEventsForCompany(companyId, ElementaryEventType.UploadEvent)
 
-        // TODO Emanuel: The "decision-function" needs to be in a separate function so I can test it better in unit test
-        when {
-            isLastNotificationEventForCompanyOlderThanThreshold(companyIdOfUpload) &&
-                previouslyUnsentElementaryEvents.isEmpty()
-            -> {
-                createAndSendSingleNotificationResponse(elementaryEvent)
+        val notificationEmailScope =
+            determineNotificationEmailScope(companyId, previouslyUnprocessedElementaryEvents)
+
+        if (notificationEmailScope != null) {
+            createNotificationEventAndSendEmailMessageToQueue(
+                notificationEmailScope,
+                newlyCreatedElementaryEvent,
+                previouslyUnprocessedElementaryEvents,
+                correlationId,
+            )
+        }
+    }
+
+    enum class NotificationEmailScope { Single, Summary } // TODO maybe we should put it in separate file
+
+    private fun determineNotificationEmailScope(
+        companyIdOfDataUpload: UUID,
+        previouslyUnsentElementaryEvents: List<ElementaryEventEntity>,
+    ): NotificationEmailScope? {
+        val isLastNotificationEventOlderThanThreshold =
+            isLastNotificationEventOlderThanThreshold(companyIdOfDataUpload, ElementaryEventType.UploadEvent)
+
+        return when {
+            isLastNotificationEventOlderThanThreshold && previouslyUnsentElementaryEvents.isEmpty() ->
+                NotificationEmailScope.Single
+
+            isLastNotificationEventOlderThanThreshold ||
+                previouslyUnsentElementaryEvents.size + 1 >= elementaryEventsThreshold ->
+                NotificationEmailScope.Summary
+
+            else -> null
+        }
+    }
+
+    private fun createNotificationEventAndSendEmailMessageToQueue(
+        scope: NotificationEmailScope,
+        elementaryEvent: ElementaryEventEntity,
+        previouslyUnprocessedElementaryEvents: List<ElementaryEventEntity>,
+        correlationId: String,
+    ) {
+        val allUnprocessedElementaryEvents = previouslyUnprocessedElementaryEvents + elementaryEvent
+
+        when (scope) {
+            NotificationEmailScope.Single -> {
+                createNotificationEventForSingleElementaryEvent(elementaryEvent)
                 sendSingleEmailMessageToQueue(elementaryEvent, correlationId)
             }
-
-            isLastNotificationEventForCompanyOlderThanThreshold(companyIdOfUpload) &&
-                previouslyUnsentElementaryEvents.isNotEmpty()
-            -> {
-                val allUnsentElementaryEvents = previouslyUnsentElementaryEvents.toMutableList()
-                allUnsentElementaryEvents.add(elementaryEvent)
-                createAndSendSummaryNotificationResponse(allUnsentElementaryEvents)
-                sendSummaryEmailMessageToQueue(allUnsentElementaryEvents, correlationId)
-            }
-            !isLastNotificationEventForCompanyOlderThanThreshold(companyIdOfUpload) &&
-                previouslyUnsentElementaryEvents.size + 1 >= elementaryEventsThreshold
-            -> {
-                val allUnsentElementaryEvents = previouslyUnsentElementaryEvents.toMutableList()
-                allUnsentElementaryEvents.add(elementaryEvent)
-                createAndSendSummaryNotificationResponse(allUnsentElementaryEvents)
-                sendSummaryEmailMessageToQueue(allUnsentElementaryEvents, correlationId)
+            NotificationEmailScope.Summary -> {
+                createNotificationEventForMultipleElementaryEvents(allUnprocessedElementaryEvents)
+                sendSummaryEmailMessageToQueue(allUnprocessedElementaryEvents, correlationId)
             }
         }
     }
@@ -171,13 +200,13 @@ constructor(
     /**
      * Creates and persists a new elementaryEvent for dataUpload and returns this element
      */
-    private fun createAndSaveElementaryEvent(companyMetadata: DataMetaInformation): ElementaryEventEntity {
-        return elementaryEventRepository.saveAndFlush(
+    private fun createAndSaveElementaryEvent(dataMetaInfo: DataMetaInformation, elementaryEventType: ElementaryEventType): ElementaryEventEntity {
+        return elementaryEventRepository.saveAndFlush( // TODO simple "save" might be sufficient => research
             ElementaryEventEntity(
-                elementaryEventType = ElementaryEventType.UploadEvent,
-                companyId = UUID.fromString(companyMetadata.companyId),
-                framework = companyMetadata.dataType,
-                reportingPeriod = companyMetadata.reportingPeriod,
+                elementaryEventType = elementaryEventType,
+                companyId = UUID.fromString(dataMetaInfo.companyId),
+                framework = dataMetaInfo.dataType,
+                reportingPeriod = dataMetaInfo.reportingPeriod,
                 creationTimestamp = Instant.now().toEpochMilli(),
                 notificationEvent = null,
             ),
@@ -188,10 +217,11 @@ constructor(
      * Creates and persists a new notification event and sends internal single mail message to queue.
      * The elementaryEvent to be sent as part of this notification is updated accordingly.
      */
-    fun createAndSendSingleNotificationResponse(elementaryEvent: ElementaryEventEntity) {
+    // TODO Emanuel: Ich glaube die Funktion ist unnötig
+    fun createNotificationEventForSingleElementaryEvent(elementaryEvent: ElementaryEventEntity) {
         val newNotificationEvent = NotificationEventEntity(
             companyId = elementaryEvent.companyId,
-            elementaryEventType = ElementaryEventType.UploadEvent,
+            elementaryEventType = elementaryEvent.elementaryEventType,
             creationTimestamp = Instant.now().toEpochMilli(),
             elementaryEvents = mutableListOf(elementaryEvent),
         )
@@ -205,10 +235,10 @@ constructor(
      * Creates and persists a new notification event and sends internal summary mail message to queue.
      * The elementaryEvents to be sent as part of this notification are updated accordingly.
      */
-    fun createAndSendSummaryNotificationResponse(elementaryEvents: List<ElementaryEventEntity>) {
+    fun createNotificationEventForMultipleElementaryEvents(elementaryEvents: List<ElementaryEventEntity>) {
         val newNotificationEvent = NotificationEventEntity(
             companyId = elementaryEvents.first().companyId,
-            elementaryEventType = ElementaryEventType.UploadEvent,
+            elementaryEventType = elementaryEvents.first().elementaryEventType,
             creationTimestamp = Instant.now().toEpochMilli(),
             elementaryEvents = elementaryEvents,
         )
@@ -256,12 +286,13 @@ constructor(
         correlationId: String,
     ) {
         val companyInfo = companyDataControllerApi.getCompanyInfo(elementaryEvents.first().companyId.toString())
+        val firstElementaryEvent = elementaryEvents.first()
         val properties = mapOf(
             "companyName" to companyInfo.companyName,
-            "companyId" to elementaryEvents.first().companyId.toString(),
+            "companyId" to firstElementaryEvent.companyId.toString(),
             "frameworks" to createFrameworkAndYearStringFromElementaryEvents(elementaryEvents),
             "baseUrl" to proxyPrimaryUrl,
-            "numberOfDays" to getTimePassedSinceLastNotificationEvent(elementaryEvents.first().companyId).toString(),
+            "numberOfDays" to getTimePassedSinceLastNotificationEvent(firstElementaryEvent.companyId, firstElementaryEvent.elementaryEventType).toString(),
         )
 
         companyInfo.companyContactDetails?.forEach {
@@ -283,31 +314,38 @@ constructor(
 
     /**
      * Retrieves all elementaryEvents for a specific company which have not been sent by a previous notification event
-     * @param companyId
+     * @param companyId TODO
      * @return list of elementaryEvents
      */
     // TODO Emanuel: We should only get those which also match the expected elementary event type
-    private fun getUnsentElementaryEventsForCompany(companyId: UUID): List<ElementaryEventEntity> {
-        return elementaryEventRepository.findAllByCompanyIdAndNotificationEventIsNull(companyId)
+    private fun getUnprocessedElementaryEventsForCompany(companyId: UUID, elementaryEventType: ElementaryEventType): List<ElementaryEventEntity> {
+        return elementaryEventRepository.findAllByCompanyIdAndElementaryEventTypeAndNotificationEventIsNull(
+            companyId,
+            elementaryEventType,
+        )
     }
 
     /**
      * Gets last notification event for a specific company
-     * @param companyId
+     * @param companyId TODO
+     * @param elementaryEventType TODO
      * @return last notificationEvent (null if no previous notification event for this company exists)
      */
-    private fun getLastNotificationEventOrNull(companyId: UUID): NotificationEventEntity? {
-        return notificationEventRepository.findNotificationEventByCompanyId(companyId)
+    private fun getLastNotificationEventOrNull(
+        companyId: UUID,
+        elementaryEventType: ElementaryEventType,
+    ): NotificationEventEntity? {
+        return notificationEventRepository.findNotificationEventByCompanyIdAndElementaryEventType(companyId, elementaryEventType)
             .maxByOrNull { it.creationTimestamp }
     }
 
     /**
      * Gets time passed in days since last notification event for a specific company
-     * @param companyId
+     * @param companyId TODO
      * @return time passed in days as Int
      */
-    private fun getTimePassedSinceLastNotificationEvent(companyId: UUID): Long {
-        val lastNotificationEvent = getLastNotificationEventOrNull(companyId)
+    private fun getTimePassedSinceLastNotificationEvent(companyId: UUID, elementaryEventType: ElementaryEventType): Long {
+        val lastNotificationEvent = getLastNotificationEventOrNull(companyId, elementaryEventType)
         return if (lastNotificationEvent == null) {
             elementaryEventsThreshold.toLong()
         } else {
@@ -320,8 +358,11 @@ constructor(
      * @param companyId
      * @return if last notification event for company is older than threshold in days
      */
-    private fun isLastNotificationEventForCompanyOlderThanThreshold(companyId: UUID): Boolean {
-        val lastNotificationEvent = getLastNotificationEventOrNull(companyId)
+    private fun isLastNotificationEventOlderThanThreshold(
+        companyId: UUID,
+        elementaryEventType: ElementaryEventType,
+    ): Boolean {
+        val lastNotificationEvent = getLastNotificationEventOrNull(companyId, elementaryEventType)
         return lastNotificationEvent == null ||
             Duration.between(Instant.ofEpochMilli(lastNotificationEvent.creationTimestamp), Instant.now())
                 .toDays() > notificationThresholdDays
