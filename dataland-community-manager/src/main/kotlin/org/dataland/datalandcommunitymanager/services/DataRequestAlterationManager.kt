@@ -60,17 +60,20 @@ class DataRequestAlterationManager(
         val modificationTime = Instant.now().toEpochMilli()
         dataRequestEntity.lastModifiedDate = modificationTime
         dataRequestRepository.save(dataRequestEntity)
-        if (requestStatus != null && requestStatus != dataRequestEntity.requestStatus) {
+
+        val newRequestStatus = requestStatus ?: dataRequestEntity.requestStatus
+        val newAccessStatus = accessStatus ?: dataRequestEntity.accessStatus
+        //Maybe only allow accessStatus if requestStatus is answered
+        if (newRequestStatus != dataRequestEntity.requestStatus || newAccessStatus != dataRequestEntity.accessStatus) {
             val requestStatusObject = listOf(
-                StoredDataRequestStatusObject(
-                    requestStatus, modificationTime,
-                    accessStatus,
-                ),
+                StoredDataRequestStatusObject(newRequestStatus, modificationTime, newAccessStatus),
             )
-            // TODO patching of access status needs to be integrated
+
             dataRequestEntity.associateRequestStatus(requestStatusObject)
             dataRequestHistoryManager.saveStatusHistory(dataRequestEntity.dataRequestStatusHistory)
-            dataRequestLogger.logMessageForPatchingRequestStatus(dataRequestId, requestStatus)
+            dataRequestLogger.logMessageForPatchingRequestStatusOrAccessStatus(
+                dataRequestId, newRequestStatus, newAccessStatus,
+            )
             if (contacts != null) {
                 dataRequestHistoryManager.detachDataRequestEntity(dataRequestEntity)
             }
