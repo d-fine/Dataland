@@ -148,7 +148,8 @@ import { getFilledKpis } from '@/utils/DataPoint';
 import { heimathafenDataModel } from '@/frameworks/heimathafen/UploadConfig';
 import { getBasePublicFrameworkDefinition } from '@/frameworks/BasePublicFrameworkRegistry';
 import { type PublicFrameworkDataApi } from '@/utils/api/UnifiedFrameworkDataApi';
-import { canUserBypassQA } from '@/utils/CompanyRolesUtils';
+import { hasUserCompanyOwnerOrDataUploaderRole } from '@/utils/CompanyRolesUtils';
+
 export default defineComponent({
   setup() {
     return {
@@ -284,12 +285,15 @@ export default defineComponent({
         }
         const heimathafenDataControllerApi = this.buildHeimathafenDataApi();
 
-        const isCompanyOwner = canUserBypassQA(
+        const isCompanyOwnerOrDataUploader = await hasUserCompanyOwnerOrDataUploaderRole(
           this.companyAssociatedHeimathafenData.companyId,
           this.getKeycloakPromise
         );
 
-        await heimathafenDataControllerApi.postFrameworkData(this.companyAssociatedHeimathafenData, isCompanyOwner);
+        await heimathafenDataControllerApi.postFrameworkData(
+          this.companyAssociatedHeimathafenData,
+          isCompanyOwnerOrDataUploader
+        );
 
         this.$emit('datasetCreated');
         this.dataDate = undefined;

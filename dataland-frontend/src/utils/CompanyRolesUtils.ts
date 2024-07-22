@@ -39,17 +39,30 @@ export async function hasUserCompanyRoleForCompany(
 }
 
 /**
- * Bypasses the QA step if the user is the company owner or data uploader
- * @param companyId of the company for which the role shall be assigned to the user
- * @param keycloakPromise the Keycloak promise
- * @returns whether bypassQA should be bypassed
+ * Check if current user has either CompanyOwner or DataUploader role for a company
+ * @param companyId of the company
+ * @param keycloakPromiseGetter the getter-function which returns a Keycloak-Promise
+ * @returns a promise, which resolves to a boolean
  */
-export async function canUserBypassQA(companyId: string, keycloakPromise: () => Promise<Keycloak>): Promise<Boolean> {
-  return (
-    hasUserCompanyRoleForCompany(CompanyRole.CompanyOwner, companyId, keycloakPromise) ||
-    hasUserCompanyRoleForCompany(CompanyRole.DataUploader, companyId, keycloakPromise)
+export async function hasUserCompanyOwnerOrDataUploaderRole(
+  companyId: string,
+  keycloakPromiseGetter?: () => Promise<Keycloak>
+): Promise<boolean> {
+  const hasCompanyOwnerRole = await hasUserCompanyRoleForCompany(
+    CompanyRole.CompanyOwner,
+    companyId,
+    keycloakPromiseGetter
   );
+
+  const hasDataUploaderRole = await hasUserCompanyRoleForCompany(
+    CompanyRole.DataUploader,
+    companyId,
+    keycloakPromiseGetter
+  );
+
+  return hasCompanyOwnerRole || hasDataUploaderRole;
 }
+
 /**
  * Get the Information about company ownership
  * @param companyId identifier of the company
