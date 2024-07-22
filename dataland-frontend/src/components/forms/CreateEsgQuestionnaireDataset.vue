@@ -154,7 +154,7 @@ import ListOfBaseDataPointsFormField from '@/components/forms/parts/fields/ListO
 import { getFilledKpis } from '@/utils/DataPoint';
 import { getBasePublicFrameworkDefinition } from '@/frameworks/BasePublicFrameworkRegistry';
 import { type PublicFrameworkDataApi } from '@/utils/api/UnifiedFrameworkDataApi';
-import { hasUserCompanyRoleForCompany } from '@/utils/CompanyRolesUtils';
+import { hasUserCompanyOwnerOrDataUploaderRole, hasUserCompanyRoleForCompany } from '@/utils/CompanyRolesUtils';
 import { CompanyRole } from '@clients/communitymanager';
 
 export default defineComponent({
@@ -302,15 +302,14 @@ export default defineComponent({
         }
         const esgQuestionnaireDataControllerApi = this.buildEsgQuestionnaireDataApi();
 
-        const isCompanyOwner = await hasUserCompanyRoleForCompany(
-          CompanyRole.CompanyOwner,
+        const isCompanyOwnerOrDataUploader = await hasUserCompanyOwnerOrDataUploaderRole(
           this.companyAssociatedEsgQuestionnaireData.companyId,
           this.getKeycloakPromise
         );
 
         await assertDefined(esgQuestionnaireDataControllerApi).postFrameworkData(
           this.companyAssociatedEsgQuestionnaireData,
-          isCompanyOwner
+          isCompanyOwnerOrDataUploader
         );
 
         this.$emit('datasetCreated');

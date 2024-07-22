@@ -349,7 +349,7 @@ import { uploadFiles, type DocumentToUpload, getFileName, getFileReferenceByFile
 import { isValidFileName, noReportLabel } from '@/utils/DataSource';
 import SingleSelectFormElement from '@/components/forms/parts/elements/basic/SingleSelectFormElement.vue';
 import { type ClickableLink } from '@/types/CustomPropTypes';
-import { hasUserCompanyRoleForCompany } from '@/utils/CompanyRolesUtils';
+import { hasUserCompanyOwnerOrDataUploaderRole, hasUserCompanyRoleForCompany } from '@/utils/CompanyRolesUtils';
 import { CompanyRole } from '@clients/communitymanager';
 
 export default defineComponent({
@@ -657,15 +657,14 @@ export default defineComponent({
           assertDefined(this.getKeycloakPromise)()
         ).getUnifiedFrameworkDataController(DataTypeEnum.EutaxonomyFinancials);
 
-        const isCompanyOwner = await hasUserCompanyRoleForCompany(
-          CompanyRole.CompanyOwner,
+        const isCompanyOwnerOrDataUploader = await hasUserCompanyOwnerOrDataUploaderRole(
           this.formInputsModel.companyId,
           this.getKeycloakPromise
         );
 
         this.postEuTaxonomyDataForFinancialsResponse = await euTaxonomyDataForFinancialsControllerApi.postFrameworkData(
           clonedFormInputsModel,
-          isCompanyOwner
+          isCompanyOwnerOrDataUploader
         );
 
         this.$emit('datasetCreated');

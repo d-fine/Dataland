@@ -147,7 +147,7 @@ import BaseDataPointFormField from '@/components/forms/parts/elements/basic/Base
 import { getFilledKpis } from '@/utils/DataPoint';
 import { type PublicFrameworkDataApi } from '@/utils/api/UnifiedFrameworkDataApi';
 import { getBasePublicFrameworkDefinition } from '@/frameworks/BasePublicFrameworkRegistry';
-import { hasUserCompanyRoleForCompany } from '@/utils/CompanyRolesUtils';
+import { hasUserCompanyOwnerOrDataUploaderRole, hasUserCompanyRoleForCompany } from '@/utils/CompanyRolesUtils';
 import { CompanyRole } from '@clients/communitymanager';
 
 const referenceableReportsFieldId = 'referenceableReports';
@@ -310,13 +310,12 @@ export default defineComponent({
 
         const sfdrDataControllerApi = this.buildSfdrDataApi();
 
-        const isCompanyOwner = await hasUserCompanyRoleForCompany(
-          CompanyRole.CompanyOwner,
+        const isCompanyOwnerOrDataUploader = await hasUserCompanyOwnerOrDataUploaderRole(
           this.companyAssociatedSfdrData.companyId,
           this.getKeycloakPromise
         );
 
-        await sfdrDataControllerApi.postFrameworkData(this.companyAssociatedSfdrData, isCompanyOwner);
+        await sfdrDataControllerApi.postFrameworkData(this.companyAssociatedSfdrData, isCompanyOwnerOrDataUploader);
 
         this.$emit('datasetCreated');
         this.dataDate = undefined;
