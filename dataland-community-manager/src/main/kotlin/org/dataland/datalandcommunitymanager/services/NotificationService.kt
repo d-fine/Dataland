@@ -88,6 +88,10 @@ constructor(
             throw MessageQueueRejectException("Provided action type is unexpected.")
         }
 
+        // TODO Der Teil ab hier muss ausglagert werden, und dann verwenden wir ihn sowohl für den Listener auf die
+        // "public" queue, als auch für die "private" queue
+
+
         val companyIdOfUpload = metaDataControllerApi.getDataMetaInfo(dataId).companyId
 
         // TODO Emanuel: Get only those which match the elementary event type (data upload)
