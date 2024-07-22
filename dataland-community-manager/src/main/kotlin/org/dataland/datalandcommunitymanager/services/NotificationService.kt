@@ -50,7 +50,6 @@ constructor(
     "processPublicDataUploadEvent"
     */
 
-
     /**
      * Method that listens to the storage_queue and stores data into the database in case there is a message on the
      * storage_queue //TODO wrong description
@@ -91,10 +90,12 @@ constructor(
 
         val companyIdOfUpload = metaDataControllerApi.getDataMetaInfo(dataId).companyId
 
+        // TODO Emanuel: Get only those which match the elementary event type (data upload)
         val previouslyUnsentElementaryEvents = getUnsentElementaryEventsForCompany(companyIdOfUpload)
 
         val elementaryEvent = createAndSaveElementaryEvent(dataId)
 
+        // TODO Emanuel: The "decision-function" needs to be in a seperate function so I can test it better in unit test
         when {
             isLastNotificationEventForCompanyOlderThanThreshold(companyIdOfUpload) &&
                 previouslyUnsentElementaryEvents.isEmpty()
@@ -168,6 +169,7 @@ constructor(
      * @param companyId
      * @return list of elementaryEvents
      */
+    // TODO Emanuel: We should only get those which also match the expected elementary event type
     private fun getUnsentElementaryEventsForCompany(companyId: String): List<ElementaryEventEntity> {
         return elementaryEventRepository.findAllByCompanyIdAndNotificationEventIsNull(companyId)
     }
