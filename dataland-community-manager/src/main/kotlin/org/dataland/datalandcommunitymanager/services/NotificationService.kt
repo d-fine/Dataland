@@ -44,6 +44,13 @@ constructor(
     @Value("\${dataland.community-manager.notification-elementaryevents-threshold:10}")
     val elementaryEventsThreshold: Int,
 ) {
+
+    /* TODO Emanuel: Ich glaube wir müssen noch einen RabbitListener für die private data queue einführen. Der
+    schaut dann halt auf die andere queue (für private data), ruft aber dieselben Funktionen hier auf wie in
+    "processPublicDataUploadEvent"
+    */
+
+
     /**
      * Method that listens to the storage_queue and stores data into the database in case there is a message on the
      * storage_queue //TODO wrong description
@@ -67,7 +74,7 @@ constructor(
             ),
         ],
     )
-    fun processDataUploadEvent(
+    fun processDataUploadEvent( // TODO Emanuel: wird wsl zu "prcoessPublicDataUploadEvent"
         @Payload payload: String,
         @Header(MessageHeaderKey.CorrelationId) correlationId: String,
         @Header(MessageHeaderKey.Type) type: String,
@@ -78,12 +85,8 @@ constructor(
         if (dataId.isEmpty()) {
             throw MessageQueueRejectException("Provided data ID is empty.")
         }
-
-        // TODO: StorePrivateData reachable?
-        if (actionType.isEmpty() or
-            (actionType !== ActionType.StorePublicData && actionType !== ActionType.StorePrivateDataAndDocuments)
-        ) {
-            return
+        if (actionType !== ActionType.StorePublicData) {
+            throw MessageQueueRejectException("Provided action type is unexpected.")
         }
 
         val companyIdOfUpload = metaDataControllerApi.getDataMetaInfo(dataId).companyId
