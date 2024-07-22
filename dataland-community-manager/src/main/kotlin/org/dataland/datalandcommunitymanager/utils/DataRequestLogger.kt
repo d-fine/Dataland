@@ -83,10 +83,10 @@ class DataRequestLogger {
         reportingPeriod: String,
         accessStatus: AccessStatus,
     ) {
-        bulkDataRequestLogger.info(
+        singleDataRequestLogger.info(
             "The following data request already exists for the requesting user and therefore " +
                 "is not being recreated: (companyId: $companyId, framework: $framework, " +
-                "reportingPeriod: $reportingPeriod, requestStatus: $accessStatus)",
+                "reportingPeriod: $reportingPeriod, accessStatus: $accessStatus)",
         )
     }
 

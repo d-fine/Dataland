@@ -265,6 +265,8 @@ class DataRequestProcessingUtils(
         companyId: String,
         dataType: DataTypeEnum,
         reportingPeriod: String,
+        contacts: Set<String>?,
+        message: String?,
     ) {
         val existingRequestsOfUser = dataRequestRepository
             .findByUserIdAndDatalandCompanyIdAndDataTypeAndReportingPeriod(
@@ -290,10 +292,63 @@ class DataRequestProcessingUtils(
                 dataRequestHistoryManager.saveStatusHistory(dataRequestEntity.dataRequestStatusHistory)
                 dataRequestLogger.logMessageForPatchingAccessStatus(dataRequestId, AccessStatus.Pending)
             }
+        } else {
+            storeAccessRequestEntityAsPending(
+                companyId, dataType, reportingPeriod,
+                contacts.takeIf { !it.isNullOrEmpty() },
+                message.takeIf { !it.isNullOrBlank() },
+            )
         }
-        //TODO
+        // TODO
         // Request identifizieren, access status patchen
         // Nur neuen excess request erstellen wenn Staus auf null oder Declined ist, Access und Pending raus filtern
+    }
+
+    /**
+     * Stores a DataRequestEntity from all necessary parameters
+     * @param datalandCompanyId the companyID in Dataland
+     * @param dataType the enum entry corresponding to the framework
+     * @param reportingPeriod the reporting period
+     * @param contacts a list of email addresses to inform about the potentially stored data request
+     * @param message a message to equip the notification with
+     */
+    fun storeAccessRequestEntityAsPending(
+        datalandCompanyId: String,
+        dataType: DataTypeEnum,
+        reportingPeriod: String,
+        contacts: Set<String>? = null,
+        message: String? = null,
+    ): DataRequestEntity {
+        val creationTime = Instant.now().toEpochMilli()
+
+        val dataRequestEntity = DataRequestEntity(
+            DatalandAuthentication.fromContext().userId,
+            dataType.value,
+            reportingPeriod,
+            datalandCompanyId,
+            creationTime,
+        )
+        dataRequestRepository.save(dataRequestEntity)
+        // TODO discuss how to handle the request status in the case that the data was already available and only
+        // access was required
+        // TODO Refactor with storeDataRequestEntityAsOpend as both are very similiar
+        val requestStatusObject = listOf(
+            StoredDataRequestStatusObject(
+                RequestStatus.Closed, creationTime,
+                AccessStatus.Pending,
+            ),
+        )
+        dataRequestEntity.associateRequestStatus(requestStatusObject)
+        dataRequestHistoryManager.saveStatusHistory(dataRequestEntity.dataRequestStatusHistory)
+
+        if (!contacts.isNullOrEmpty()) {
+            val messageHistory = listOf(StoredDataRequestMessageObject(contacts, message, creationTime))
+            dataRequestEntity.associateMessages(messageHistory)
+            dataRequestHistoryManager.saveMessageHistory(dataRequestEntity.messageHistory)
+        }
+        dataRequestLogger.logMessageForStoringDataRequest(dataRequestEntity.dataRequestId)
+
+        return dataRequestEntity
     }
 }
 
