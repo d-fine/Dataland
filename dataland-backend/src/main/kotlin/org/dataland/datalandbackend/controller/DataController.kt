@@ -11,7 +11,6 @@ import org.dataland.datalandbackend.services.DataManager
 import org.dataland.datalandbackend.services.DataMetaInformationManager
 import org.dataland.datalandbackend.services.LogMessageBuilder
 import org.dataland.datalandbackend.utils.IdUtils.generateCorrelationId
-import org.dataland.datalandbackend.utils.PermissionChecker
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.slf4j.LoggerFactory
@@ -31,7 +30,6 @@ abstract class DataController<T>(
     var dataMetaInformationManager: DataMetaInformationManager,
     var objectMapper: ObjectMapper,
     private val clazz: Class<T>,
-    private val permissionChecker: PermissionChecker,
 ) : DataApi<T> {
     private val dataType = DataType.of(clazz)
     private val logger = LoggerFactory.getLogger(javaClass)
@@ -40,9 +38,6 @@ abstract class DataController<T>(
     override fun postCompanyAssociatedData(companyAssociatedData: CompanyAssociatedData<T>, bypassQa: Boolean):
         ResponseEntity<DataMetaInformation> {
         val companyId = companyAssociatedData.companyId
-        if (bypassQa && !permissionChecker.canUserBypassQa(companyId)) {
-            throw AccessDeniedException(logMessageBuilder.bypassQaDeniedExceptionMessage)
-        }
         val reportingPeriod = companyAssociatedData.reportingPeriod
         val userId = DatalandAuthentication.fromContext().userId
         logger.info(logMessageBuilder.postCompanyAssociatedDataMessage(userId, dataType, companyId, reportingPeriod))

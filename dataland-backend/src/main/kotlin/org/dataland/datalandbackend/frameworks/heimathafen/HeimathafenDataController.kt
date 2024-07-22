@@ -10,7 +10,6 @@ import org.dataland.datalandbackend.model.metainformation.DataAndMetaInformation
 import org.dataland.datalandbackend.model.metainformation.DataMetaInformation
 import org.dataland.datalandbackend.services.DataManager
 import org.dataland.datalandbackend.services.DataMetaInformationManager
-import org.dataland.datalandbackend.utils.PermissionChecker
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.RequestMapping
@@ -27,13 +26,11 @@ class HeimathafenDataController(
     @Autowired var myDataManager: DataManager,
     @Autowired var myMetaDataManager: DataMetaInformationManager,
     @Autowired var myObjectMapper: ObjectMapper,
-    @Autowired var myPermissionChecker: PermissionChecker,
 ) : DataController<HeimathafenData>(
     myDataManager,
     myMetaDataManager,
     myObjectMapper,
     HeimathafenData::class.java,
-    myPermissionChecker,
 ) {
     @Operation(operationId = "getCompanyAssociatedHeimathafenData")
     override fun getCompanyAssociatedData(dataId: String):
