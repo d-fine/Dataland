@@ -33,7 +33,6 @@ import org.springframework.stereotype.Service
 import java.time.Duration
 import java.time.Instant
 import java.util.*
-import javax.xml.crypto.KeySelector
 
 @Service("NotificationService")
 class NotificationService
@@ -328,13 +327,14 @@ constructor(
                 .toDays() > notificationThresholdDays
     }
 
-    private fun createFrameworkAndYearStringFromElementaryEvents(elementaryEvents: List<ElementaryEventEntity>): String{
-        val frameworkAndYears = elementaryEvents.groupBy (
+    private fun createFrameworkAndYearStringFromElementaryEvents(elementaryEvents: List<ElementaryEventEntity>): String {
+        val frameworkAndYears = elementaryEvents.groupBy(
             keySelector = { it.framework },
-            valueTransform = { it.reportingPeriod }
+            valueTransform = { it.reportingPeriod },
         ).mapValues { (_, years) -> years.sorted() }
         return frameworkAndYears.entries.joinToString(", ") {
-            (framework, years) -> "$framework: ${years.joinToString(" ")}"
+                (framework, years) ->
+            "$framework: ${years.joinToString(" ") }"
         }
     }
 
