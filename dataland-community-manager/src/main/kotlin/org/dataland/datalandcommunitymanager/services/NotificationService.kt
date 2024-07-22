@@ -7,7 +7,6 @@ import org.dataland.datalandbackend.openApiClient.model.DataMetaInformation
 import org.dataland.datalandcommunitymanager.entities.ElementaryEventEntity
 import org.dataland.datalandcommunitymanager.entities.NotificationEventEntity
 import org.dataland.datalandcommunitymanager.events.ElementaryEventType
-import org.dataland.datalandcommunitymanager.model.FrameworkAndYear
 import org.dataland.datalandcommunitymanager.repositories.ElementaryEventRepository
 import org.dataland.datalandcommunitymanager.repositories.NotificationEventRepository
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
@@ -34,6 +33,7 @@ import org.springframework.stereotype.Service
 import java.time.Duration
 import java.time.Instant
 import java.util.*
+import javax.xml.crypto.KeySelector
 
 @Service("NotificationService")
 class NotificationService
@@ -260,7 +260,7 @@ constructor(
         val properties = mapOf(
             "companyName" to companyInfo.companyName,
             "companyId" to elementaryEvents.first().companyId.toString(),
-            // "frameworks" to getListOfFrameWorksAndYearsFromElementaryEvents(elementaryEvents),
+            "frameworks" to createFrameworkAndYearStringFromElementaryEvents(elementaryEvents),
             "baseUrl" to proxyPrimaryUrl,
             "numberOfDays" to getTimePassedSinceLastNotificationEvent(elementaryEvents.first().companyId).toString(),
         )
@@ -328,12 +328,14 @@ constructor(
                 .toDays() > notificationThresholdDays
     }
 
-    private fun getListOfFrameWorksAndYearsFromElementaryEvents(elementaryEvents: List<ElementaryEventEntity>): List<FrameworkAndYear> { // TODO unused???
-        val frameworkAndYears = mutableListOf<FrameworkAndYear>()
-        for (elementaryEvent in elementaryEvents) {
-            frameworkAndYears.add(FrameworkAndYear(elementaryEvent.framework, elementaryEvent.reportingPeriod))
+    private fun createFrameworkAndYearStringFromElementaryEvents(elementaryEvents: List<ElementaryEventEntity>): String{
+        val frameworkAndYears = elementaryEvents.groupBy (
+            keySelector = { it.framework },
+            valueTransform = { it.reportingPeriod }
+        ).mapValues { (_, years) -> years.sorted() }
+        return frameworkAndYears.entries.joinToString(", ") {
+            (framework, years) -> "$framework: ${years.joinToString(" ")}"
         }
-        return frameworkAndYears
     }
 
     private fun validateActionType(expectedActionType: String, actualActionType: String) {
