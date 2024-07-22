@@ -3,7 +3,7 @@ import { ApiClientProvider } from '@/services/ApiClients';
 import { type AxiosError } from 'axios';
 import { waitForAndReturnResolvedKeycloakPromise } from '@/utils/KeycloakUtils';
 import { isCompanyIdValid } from '@/utils/ValidationsUtils';
-import { type CompanyRole, type CompanyRoleAssignment } from '@clients/communitymanager';
+import { CompanyRole, type CompanyRoleAssignment } from '@clients/communitymanager';
 
 /**
  * Check if current user has a certain company role for a company
@@ -36,6 +36,19 @@ export async function hasUserCompanyRoleForCompany(
       }
     } else return false;
   } else return false;
+}
+
+/**
+ * Bypasses the QA step if the user is the company owner or data uploader
+ * @param companyId of the company for which the role shall be assigned to the user
+ * @param keycloakPromise the Keycloak promise
+ * @returns whether bypassQA should be bypassed
+ */
+export async function canUserBypassQA(companyId: string, keycloakPromise: () => Promise<Keycloak>): Promise<Boolean> {
+  return (
+    hasUserCompanyRoleForCompany(CompanyRole.CompanyOwner, companyId, keycloakPromise) ||
+    hasUserCompanyRoleForCompany(CompanyRole.DataUploader, companyId, keycloakPromise)
+  );
 }
 /**
  * Get the Information about company ownership
