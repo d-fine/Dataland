@@ -573,6 +573,89 @@
         ]
       }
     },
+    "/requests/dataset-access/{companyId}/{dataType}/{reportingPeriod}": {
+      "head": {
+        "tags": [
+          "request-controller"
+        ],
+        "summary": "This head request checks whether the logged-in user has a access to dataset.",
+        "description": "This head request checks whether the logged-in user has a access to dataset.",
+        "operationId": "hasAccessToDataset",
+        "parameters": [
+          {
+            "name": "companyId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "dataType",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "eutaxonomy-financials",
+                "eutaxonomy-non-financials",
+                "lksg",
+                "p2p",
+                "sfdr",
+                "vsme",
+                "esg-questionnaire",
+                "heimathafen"
+              ]
+            }
+          },
+          {
+            "name": "reportingPeriod",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "If the user can access the dataset."
+          },
+          "404": {
+            "description": "Either the specified dataset does not exist or the user cannot access the dataset."
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
     "/requests": {
       "get": {
         "tags": [
@@ -1415,7 +1498,6 @@
       },
       "StoredDataRequest": {
         "required": [
-          "accessStatus",
           "creationTimestamp",
           "dataRequestId",
           "dataRequestStatusHistory",
@@ -1516,7 +1598,6 @@
       },
       "ExtendedStoredDataRequest": {
         "required": [
-          "accessStatus",
           "companyName",
           "creationTimestamp",
           "dataRequestId",
