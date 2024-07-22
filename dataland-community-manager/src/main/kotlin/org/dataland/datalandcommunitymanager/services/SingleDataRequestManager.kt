@@ -15,6 +15,7 @@ import org.dataland.datalandcommunitymanager.utils.DataRequestProcessingUtils
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.dataland.keycloakAdapter.auth.DatalandJwtAuthentication
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
+import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
@@ -41,6 +42,9 @@ constructor(
 ) {
     val companyIdRegex = Regex("^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}\$")
 
+    // TODO Debugging Remove this again
+    private val logger = LoggerFactory.getLogger(javaClass)
+
     /**
      * Processes a single data request from a user
      * @param singleDataRequest info provided by a user in order to request a single dataset on Dataland
@@ -59,6 +63,23 @@ constructor(
         val reportingPeriodsOfDuplicateDataRequests = mutableListOf<String>()
         singleDataRequest.reportingPeriods.forEach { reportingPeriod ->
             // TODO maybe introduce a Private and Public Framework List as we did in the frontend
+            logger.info(singleDataRequest.dataType.toString())
+            logger.info(companyId)
+            logger.info(reportingPeriod)
+            logger.info(userId)
+            val testVariable1 = utils.matchingDatasetExists(
+                companyId = companyId, reportingPeriod = reportingPeriod,
+                dataType =
+                singleDataRequest.dataType,
+            )
+            val testVariable2 = !utils.findRequestsByAccessStatus(
+                companyId=companyId, reportingPeriod=reportingPeriod,
+                dataType =
+                singleDataRequest.dataType,
+                userId = userId, accessStatus = AccessStatus.Granted,
+            ).isNullOrEmpty()
+            logger.info(testVariable1.toString())
+            logger.info(testVariable2.toString())
             if (singleDataRequest.dataType == DataTypeEnum.vsme &&
                 utils.matchingDatasetExists(
                     companyId = companyId, reportingPeriod = reportingPeriod,
@@ -72,6 +93,10 @@ constructor(
                     userId = userId, accessStatus = AccessStatus.Granted,
                 ).isNullOrEmpty()
             ) {
+                utils.createAccessRequestToPrivateDataset(
+                    userId = userId, companyId = companyId,
+                    dataType = singleDataRequest.dataType, reportingPeriod = reportingPeriod,
+                )
                 // TODO add logic
             } else {
                 // TODO Check ob es einen Datensatz für die Reporting Period und VSME gibt
@@ -85,6 +110,8 @@ constructor(
                 //  request dafür reinkommt
                 // TODO erstelle nur einen access request kein data request. Erstelle den data request erst dann wenn
                 //  bereits Zugriff für die den Datensatz bestand
+                // TODO why is the accessStatus field set to PENDING for a new request, should only be pending after
+                // data is been provided
                 if (utils.existsDataRequestWithNonFinalStatus(companyId, singleDataRequest.dataType, reportingPeriod)) {
                     reportingPeriodsOfDuplicateDataRequests.add(reportingPeriod)
                 } else {

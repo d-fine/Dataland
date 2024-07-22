@@ -43,8 +43,8 @@ data class DataRequestEntity(
 ) {
     val requestStatus: RequestStatus
         get() = (dataRequestStatusHistory.maxByOrNull { it.creationTimestamp }?.requestStatus) ?: RequestStatus.Open
-    val accessStatus: AccessStatus
-        get() = (dataRequestStatusHistory.maxByOrNull { it.creationTimestamp }?.accessStatus) ?: AccessStatus.Pending
+    val accessStatus: AccessStatus?
+        get() = (dataRequestStatusHistory.maxByOrNull { it.creationTimestamp }?.accessStatus)
     constructor(
         userId: String,
         dataType: String,

@@ -67,6 +67,7 @@ class DataRequestAlterationManager(
                     accessStatus,
                 ),
             )
+            // TODO patching of access status needs to be integrated
             dataRequestEntity.associateRequestStatus(requestStatusObject)
             dataRequestHistoryManager.saveStatusHistory(dataRequestEntity.dataRequestStatusHistory)
             dataRequestLogger.logMessageForPatchingRequestStatus(dataRequestId, requestStatus)

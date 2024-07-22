@@ -33,7 +33,7 @@ data class ExtendedStoredDataRequest(
 
     val requestStatus: RequestStatus,
 
-    val accessStatus: AccessStatus,
+    val accessStatus: AccessStatus?,
 ) {
     constructor(dataRequestEntity: DataRequestEntity, companyName: String) : this(
         dataRequestEntity.dataRequestId,

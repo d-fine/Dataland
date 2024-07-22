@@ -8,6 +8,7 @@ import org.dataland.datalandbackendutils.exceptions.AuthenticationMethodNotSuppo
 import org.dataland.datalandbackendutils.exceptions.ConflictApiException
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandcommunitymanager.entities.DataRequestEntity
+import org.dataland.datalandcommunitymanager.exceptions.DataRequestNotFoundApiException
 import org.dataland.datalandcommunitymanager.model.dataRequest.AccessStatus
 import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
 import org.dataland.datalandcommunitymanager.model.dataRequest.StoredDataRequestMessageObject
@@ -19,6 +20,7 @@ import org.dataland.keycloakAdapter.auth.DatalandJwtAuthentication
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import java.time.Instant
+import kotlin.jvm.optionals.getOrElse
 
 /**
  * Class holding utility functions used by the both the bulk and the single data request manager
@@ -249,6 +251,49 @@ class DataRequestProcessingUtils(
     ): Boolean {
         return !findRequestsByAccessStatus(companyId, reportingPeriod, dataType, userId, AccessStatus.Granted)
             .isNullOrEmpty()
+    }
+
+    /**
+     * This method is used to request access to a private dataset
+     * @param userId the userId of the user requesting access to the dataset
+     * @param companyId the companyId of the company to which the dataset belongs
+     * @param dataType the datatype of the dataset to which access was requested
+     * @param reportingPeriod the reportingPeriod of the dataset to which access was requested
+     */
+    fun createAccessRequestToPrivateDataset(
+        userId: String,
+        companyId: String,
+        dataType: DataTypeEnum,
+        reportingPeriod: String,
+    ) {
+        val existingRequestsOfUser = dataRequestRepository
+            .findByUserIdAndDatalandCompanyIdAndDataTypeAndReportingPeriod(
+                userId, companyId, dataType.name, reportingPeriod,
+            )
+        if (!existingRequestsOfUser.isNullOrEmpty()) {
+            val dataRequestId = existingRequestsOfUser[0].dataRequestId
+            val dataRequestEntity = dataRequestRepository.findById(dataRequestId).getOrElse {
+                throw DataRequestNotFoundApiException(dataRequestId)
+            }
+            val modificationTime = Instant.now().toEpochMilli()
+            dataRequestEntity.lastModifiedDate = modificationTime
+            dataRequestRepository.save(dataRequestEntity)
+            if (dataRequestEntity.accessStatus == null || dataRequestEntity.accessStatus == AccessStatus.Declined) {
+                val requestStatusObject = listOf(
+                    StoredDataRequestStatusObject(
+                        dataRequestEntity.requestStatus, modificationTime,
+                        AccessStatus.Pending,
+                    ),
+                )
+
+                dataRequestEntity.associateRequestStatus(requestStatusObject)
+                dataRequestHistoryManager.saveStatusHistory(dataRequestEntity.dataRequestStatusHistory)
+                dataRequestLogger.logMessageForPatchingAccessStatus(dataRequestId, AccessStatus.Pending)
+            }
+        }
+        //TODO
+        // Request identifizieren, access status patchen
+        // Nur neuen excess request erstellen wenn Staus auf null oder Declined ist, Access und Pending raus filtern
     }
 }
 
