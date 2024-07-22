@@ -133,8 +133,7 @@ import YesNoNaBaseDataPointFormField from '@/components/forms/parts/fields/YesNo
 import YesNoExtendedDataPointFormField from '@/components/forms/parts/fields/YesNoExtendedDataPointFormField.vue';
 import { type DocumentToUpload, uploadFiles } from '@/utils/FileUploadUtils';
 import { getFilledKpis } from '@/utils/DataPoint';
-import { hasUserCompanyOwnerOrDataUploaderRole, hasUserCompanyRoleForCompany } from '@/utils/CompanyRolesUtils';
-import { CompanyRole } from '@clients/communitymanager';
+import { hasUserCompanyOwnerOrDataUploaderRole } from '@/utils/CompanyRolesUtils';
 
 export default defineComponent({
   setup() {

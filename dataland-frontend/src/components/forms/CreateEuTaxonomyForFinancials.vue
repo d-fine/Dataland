@@ -349,8 +349,7 @@ import { uploadFiles, type DocumentToUpload, getFileName, getFileReferenceByFile
 import { isValidFileName, noReportLabel } from '@/utils/DataSource';
 import SingleSelectFormElement from '@/components/forms/parts/elements/basic/SingleSelectFormElement.vue';
 import { type ClickableLink } from '@/types/CustomPropTypes';
-import { hasUserCompanyOwnerOrDataUploaderRole, hasUserCompanyRoleForCompany } from '@/utils/CompanyRolesUtils';
-import { CompanyRole } from '@clients/communitymanager';
+import { hasUserCompanyOwnerOrDataUploaderRole } from '@/utils/CompanyRolesUtils';
 
 export default defineComponent({
   setup() {

@@ -154,8 +154,7 @@ import ListOfBaseDataPointsFormField from '@/components/forms/parts/fields/ListO
 import { getFilledKpis } from '@/utils/DataPoint';
 import { getBasePublicFrameworkDefinition } from '@/frameworks/BasePublicFrameworkRegistry';
 import { type PublicFrameworkDataApi } from '@/utils/api/UnifiedFrameworkDataApi';
-import { hasUserCompanyOwnerOrDataUploaderRole, hasUserCompanyRoleForCompany } from '@/utils/CompanyRolesUtils';
-import { CompanyRole } from '@clients/communitymanager';
+import { hasUserCompanyOwnerOrDataUploaderRole } from '@/utils/CompanyRolesUtils';
 
 export default defineComponent({
   setup() {
