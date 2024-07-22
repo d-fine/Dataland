@@ -91,8 +91,7 @@ constructor(
         // TODO Der Teil ab hier muss ausglagert werden, und dann verwenden wir ihn sowohl für den Listener auf die
         // "public" queue, als auch für die "private" queue
 
-
-        val companyIdOfUpload = metaDataControllerApi.getDataMetaInfo(dataId).companyId
+        val companyIdOfUpload = UUID.fromString(metaDataControllerApi.getDataMetaInfo(dataId).companyId)
 
         // TODO Emanuel: Get only those which match the elementary event type (data upload)
         val previouslyUnsentElementaryEvents = getUnsentElementaryEventsForCompany(companyIdOfUpload)
@@ -174,7 +173,7 @@ constructor(
      * @return list of elementaryEvents
      */
     // TODO Emanuel: We should only get those which also match the expected elementary event type
-    private fun getUnsentElementaryEventsForCompany(companyId: String): List<ElementaryEventEntity> {
+    private fun getUnsentElementaryEventsForCompany(companyId: UUID): List<ElementaryEventEntity> {
         return elementaryEventRepository.findAllByCompanyIdAndNotificationEventIsNull(companyId)
     }
 
@@ -184,7 +183,7 @@ constructor(
      * @param companyId
      * @return list of elementaryEvents
      */
-    private fun isLastNotificationEventForCompanyOlderThanThreshold(companyId: String): Boolean {
+    private fun isLastNotificationEventForCompanyOlderThanThreshold(companyId: UUID): Boolean {
         val lastNotificationEvent = notificationEventRepository.findNotificationEventByCompanyId(companyId)
             .maxByOrNull { it.creationTimestamp }
         return lastNotificationEvent == null ||

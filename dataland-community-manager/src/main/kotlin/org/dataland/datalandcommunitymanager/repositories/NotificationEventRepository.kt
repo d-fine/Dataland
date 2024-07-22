@@ -2,8 +2,9 @@ package org.dataland.datalandcommunitymanager.repositories
 
 import org.dataland.datalandcommunitymanager.entities.NotificationEventEntity
 import org.springframework.data.jpa.repository.JpaRepository
+import java.util.UUID
 
-interface NotificationEventRepository : JpaRepository<NotificationEventEntity, String> {
+interface NotificationEventRepository : JpaRepository<NotificationEventEntity, UUID> {
 
-    fun findNotificationEventByCompanyId(companyId: String): List<NotificationEventEntity>
+    fun findNotificationEventByCompanyId(companyId: UUID): List<NotificationEventEntity>
 }
