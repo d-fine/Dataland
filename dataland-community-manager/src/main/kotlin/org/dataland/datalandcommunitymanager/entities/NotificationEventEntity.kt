@@ -1,6 +1,5 @@
 package org.dataland.datalandcommunitymanager.entities
 
-import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.EnumType
 import jakarta.persistence.Enumerated
@@ -14,7 +13,6 @@ import java.util.UUID
 @Table(name = "notification_events")
 data class NotificationEventEntity(
     @Id
-    @Column(name = "notification_event_id")
     val notificationEventId: UUID = UUID.randomUUID(),
 
     val companyId: UUID,
