@@ -184,14 +184,13 @@ constructor(
         correlationId: String,
     ) {
         val allUnprocessedElementaryEvents = previouslyUnprocessedElementaryEvents + elementaryEvent
+        createNotificationEvent(allUnprocessedElementaryEvents)
 
         when (scope) {
             NotificationEmailScope.Single -> {
-                createNotificationEventForSingleElementaryEvent(elementaryEvent)
                 sendSingleEmailMessageToQueue(elementaryEvent, correlationId)
             }
             NotificationEmailScope.Summary -> {
-                createNotificationEventForMultipleElementaryEvents(allUnprocessedElementaryEvents)
                 sendSummaryEmailMessageToQueue(allUnprocessedElementaryEvents, correlationId)
             }
         }
@@ -214,38 +213,16 @@ constructor(
     }
 
     /**
-     * Creates and persists a new notification event and sends internal single mail message to queue.
-     * The elementaryEvent to be sent as part of this notification is updated accordingly.
+     * Creates and persists a new notification event.
      */
-    // TODO Emanuel: Ich glaube die Funktion ist unnötig
-    fun createNotificationEventForSingleElementaryEvent(elementaryEvent: ElementaryEventEntity) {
-        val newNotificationEvent = NotificationEventEntity(
-            companyId = elementaryEvent.companyId,
-            elementaryEventType = elementaryEvent.elementaryEventType,
-            creationTimestamp = Instant.now().toEpochMilli(),
-            elementaryEvents = mutableListOf(elementaryEvent),
-        )
-
-        notificationEventRepository.saveAndFlush(newNotificationEvent)
-        elementaryEvent.notificationEvent = newNotificationEvent
-        elementaryEventRepository.saveAndFlush(elementaryEvent)
-    }
-
-    /**
-     * Creates and persists a new notification event and sends internal summary mail message to queue.
-     * The elementaryEvents to be sent as part of this notification are updated accordingly.
-     */
-    fun createNotificationEventForMultipleElementaryEvents(elementaryEvents: List<ElementaryEventEntity>) {
+    fun createNotificationEvent(elementaryEvents: List<ElementaryEventEntity>) {
         val newNotificationEvent = NotificationEventEntity(
             companyId = elementaryEvents.first().companyId,
             elementaryEventType = elementaryEvents.first().elementaryEventType,
             creationTimestamp = Instant.now().toEpochMilli(),
             elementaryEvents = elementaryEvents,
         )
-
         notificationEventRepository.saveAndFlush(newNotificationEvent)
-        elementaryEvents.forEach { it.notificationEvent = newNotificationEvent }
-        elementaryEventRepository.saveAllAndFlush(elementaryEvents)
     }
 
     /**
