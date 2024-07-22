@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandbackend.openApiClient.api.MetaDataControllerApi
 import org.dataland.datalandcommunitymanager.entities.ElementaryEventEntity
 import org.dataland.datalandcommunitymanager.entities.NotificationEventEntity
-import org.dataland.datalandcommunitymanager.events.EventType
+import org.dataland.datalandcommunitymanager.events.ElementaryEventType
 import org.dataland.datalandcommunitymanager.repositories.ElementaryEventRepository
 import org.dataland.datalandcommunitymanager.repositories.NotificationEventRepository
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
@@ -27,16 +27,17 @@ import org.springframework.messaging.handler.annotation.Payload
 import org.springframework.stereotype.Service
 import java.time.Duration
 import java.time.Instant
+import java.util.UUID
 
 @Service("NotificationService")
 class NotificationService
 @Suppress("LongParameterList")
 constructor(
     @Autowired var cloudEventMessageHandler: CloudEventMessageHandler,
-    @Autowired var elementaryEventRepository: ElementaryEventRepository,
     @Autowired var messageUtils: MessageQueueUtils,
-    @Autowired var metaDataControllerApi: MetaDataControllerApi,
+    @Autowired var elementaryEventRepository: ElementaryEventRepository,
     @Autowired var notificationEventRepository: NotificationEventRepository,
+    @Autowired var metaDataControllerApi: MetaDataControllerApi,
     @Autowired var objectMapper: ObjectMapper,
     @Value("\${dataland.community-manager.notification-threshold-days:30}")
     val notificationThresholdDays: Int,
@@ -45,7 +46,7 @@ constructor(
 ) {
     /**
      * Method that listens to the storage_queue and stores data into the database in case there is a message on the
-     * storage_queue
+     * storage_queue //TODO wrong description
      * @param payload the content of the message
      * @param correlationId the correlation ID of the current user process
      * @param type the type of the message
@@ -65,7 +66,7 @@ constructor(
                 key = [""],
             ),
         ],
-    ) //TODO: Online SingleDataRequests?
+    )
     fun processDataUploadEvent(
         @Payload payload: String,
         @Header(MessageHeaderKey.CorrelationId) correlationId: String,
@@ -78,7 +79,7 @@ constructor(
             throw MessageQueueRejectException("Provided data ID is empty.")
         }
 
-        //TODO: StorePrivateData reachable?
+        // TODO: StorePrivateData reachable?
         if (actionType.isEmpty() or
             (actionType !== ActionType.StorePublicData && actionType !== ActionType.StorePrivateDataAndDocuments)
         ) {
@@ -114,9 +115,10 @@ constructor(
 
     fun createAndSendSingleNotificationResponse(elementaryEvent: ElementaryEventEntity) {
         val newNotificationEvent = NotificationEventEntity(
-            elementaryEvents = mutableListOf(elementaryEvent),
             companyId = elementaryEvent.companyId,
+            elementaryEventType = ElementaryEventType.UploadEvent,
             creationTimestamp = Instant.now().toEpochMilli(),
+            elementaryEvents = mutableListOf(elementaryEvent),
         )
 
         notificationEventRepository.saveAndFlush(newNotificationEvent)
@@ -127,9 +129,10 @@ constructor(
 
     fun createAndSendSummaryNotificationResponse(elementaryEvents: List<ElementaryEventEntity>) {
         val newNotificationEvent = NotificationEventEntity(
-            elementaryEvents = elementaryEvents,
             companyId = elementaryEvents.first().companyId,
+            elementaryEventType = ElementaryEventType.UploadEvent,
             creationTimestamp = Instant.now().toEpochMilli(),
+            elementaryEvents = elementaryEvents,
         )
 
         notificationEventRepository.saveAndFlush(newNotificationEvent)
@@ -146,8 +149,8 @@ constructor(
 
         return elementaryEventRepository.saveAndFlush(
             ElementaryEventEntity(
-                eventType = EventType.UploadEvent,
-                companyId = dataMetaInformation.companyId,
+                elementaryEventType = ElementaryEventType.UploadEvent,
+                companyId = UUID.fromString(dataMetaInformation.companyId),
                 framework = dataMetaInformation.dataType,
                 reportingPeriod = dataMetaInformation.reportingPeriod,
                 creationTimestamp = Instant.now().toEpochMilli(),
@@ -176,8 +179,8 @@ constructor(
         val lastNotificationEvent = notificationEventRepository.findNotificationEventByCompanyId(companyId)
             .maxByOrNull { it.creationTimestamp }
         return lastNotificationEvent == null ||
-                Duration.between(Instant.ofEpochMilli(lastNotificationEvent.creationTimestamp), Instant.now())
-            .toDays() > notificationThresholdDays
+            Duration.between(Instant.ofEpochMilli(lastNotificationEvent.creationTimestamp), Instant.now())
+                .toDays() > notificationThresholdDays
     }
 
     fun sendSingleEmailMessageToQueue() {}

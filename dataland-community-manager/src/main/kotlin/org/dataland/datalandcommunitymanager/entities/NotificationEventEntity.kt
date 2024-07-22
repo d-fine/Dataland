@@ -2,27 +2,30 @@ package org.dataland.datalandcommunitymanager.entities
 
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
+import jakarta.persistence.EnumType
+import jakarta.persistence.Enumerated
 import jakarta.persistence.Id
 import jakarta.persistence.OneToMany
 import jakarta.persistence.Table
+import org.dataland.datalandcommunitymanager.events.ElementaryEventType
 import java.util.UUID
 
 @Entity
-@Table(name = "notification_event")
+@Table(name = "notification_events")
 data class NotificationEventEntity(
     @Id
     @Column(name = "notification_event_id")
-    val notificationEventId: String = UUID.randomUUID().toString(),
+    val notificationEventId: UUID = UUID.randomUUID(),
 
-    @OneToMany
-    @Column(columnDefinition = "TEXT")
-    val elementaryEvents: List<ElementaryEventEntity>,
+    val companyId: UUID,
 
-    @Column(columnDefinition = "TEXT")
-    val companyId: String,
+    @Enumerated(EnumType.STRING)
+    val elementaryEventType: ElementaryEventType,
 
-    @Column(columnDefinition = "LONG")
     val creationTimestamp: Long,
+
+    @OneToMany(mappedBy = "notificationEvent")
+    val elementaryEvents: List<ElementaryEventEntity>,
 ) {
     init {
         require(elementaryEvents.isNotEmpty())
