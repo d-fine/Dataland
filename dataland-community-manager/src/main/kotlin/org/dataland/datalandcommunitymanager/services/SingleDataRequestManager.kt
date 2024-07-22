@@ -65,7 +65,7 @@ constructor(
                     dataType =
                     singleDataRequest.dataType,
                 ) &&
-                !utils.hasAccessToPrivateDataset(
+                !utils.findRequestsByAccessStatus(
                     companyId=companyId, reportingPeriod=reportingPeriod,
                     dataType =
                     singleDataRequest.dataType,

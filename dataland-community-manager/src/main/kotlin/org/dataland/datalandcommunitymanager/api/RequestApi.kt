@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RequestMethod
 import org.springframework.web.bind.annotation.RequestParam
 import java.util.UUID
 
@@ -205,4 +206,34 @@ interface RequestApi {
         @RequestParam reportingPeriod: String?,
         @RequestParam datalandCompanyId: String?,
     ): ResponseEntity<List<StoredDataRequest>>
+
+    /**
+     * A method to check if the logged-in user can access a specific dataset.
+     * The dataset is specified by a companyId, dataType and a reportingPeriod.
+     * @param companyId of the company for which the user might have the role
+     * @param dataType of the corresponding framework
+     * @param reportingPeriod of the dataset
+     */
+    @Operation(
+        summary = "This head request checks whether the logged-in user has a access to dataset.",
+        description = "This head request checks whether the logged-in user has a access to dataset.",
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "200", description = "If the user can access the dataset."),
+            ApiResponse(
+                responseCode = "404",
+                description = "Either the specified dataset does not exist or the user cannot access the dataset.",
+            ),
+        ],
+    )
+    @RequestMapping(
+        method = [RequestMethod.HEAD],
+        value = ["/dataset-access/{companyId}/{dataType}/{reportingPeriod}"],
+    )
+    fun hasAccessToDataset(
+        @PathVariable("companyId") companyId: UUID,
+        @PathVariable("dataType") dataType: DataTypeEnum,
+        @PathVariable("reportingPeriod") reportingPeriod: String,
+    )
 }

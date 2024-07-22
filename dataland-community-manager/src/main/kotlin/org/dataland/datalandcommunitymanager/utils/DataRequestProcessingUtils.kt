@@ -198,15 +198,14 @@ class DataRequestProcessingUtils(
     }
 
     /**
-     * This method checks if the requesting user has access to the information for a specific company, reporting period
-     * and data type
+     * This method finds all DataRequestsEntity for a specified dataset that have a specific accessStatus.
      * @param companyId the companyId for which the access status should be checked
      * @param reportingPeriod the reportingPeriod for which the access status should be checked
      * @param dataType the framework dataType for which the access status should be checked
      * @param userId the userId for which the access status should be checked
      * @param accessStatus the accessStatus for which the check should be conducted
      */
-    fun hasAccessToPrivateDataset(
+    fun findRequestsByAccessStatus(
         companyId: String,
         reportingPeriod: String,
         dataType: DataTypeEnum,
@@ -232,6 +231,24 @@ class DataRequestProcessingUtils(
         // TODO if it his the second case logic has to be adapted
         // TODO name of this method is not quite right in regards to the inputs
         return foundAccess
+    }
+
+    /**
+     * This method checks if the requesting user has granted access to the information for a specific company,
+     * reporting period and data type
+     * @param companyId the companyId for which the access status should be checked
+     * @param reportingPeriod the reportingPeriod for which the access status should be checked
+     * @param dataType the framework dataType for which the access status should be checked
+     * @param userId the userId for which the access status should be checked
+     */
+    fun hasAccessToPrivateDataset(
+        companyId: String,
+        reportingPeriod: String,
+        dataType: DataTypeEnum,
+        userId: String,
+    ): Boolean {
+        return !findRequestsByAccessStatus(companyId, reportingPeriod, dataType, userId, AccessStatus.Granted)
+            .isNullOrEmpty()
     }
 }
 
