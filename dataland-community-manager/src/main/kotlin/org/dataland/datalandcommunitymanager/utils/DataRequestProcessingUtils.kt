@@ -187,13 +187,14 @@ class DataRequestProcessingUtils(
      * @param reportingPeriod the reportingPeriod for which data is requested
      * @param dataType the framework dataType for which data is requested
      */
-    fun matchingDatasetExists(companyId: String, reportingPeriod: String, dataType: DataTypeEnum): String {
-        return metaDataApi.getListOfDataMetaInfo(
+    fun matchingDatasetExists(companyId: String, reportingPeriod: String, dataType: DataTypeEnum): Boolean {
+        val matchingDatasets = metaDataApi.getListOfDataMetaInfo(
             companyId = companyId,
             dataType = dataType,
             showOnlyActive = true,
             reportingPeriod = reportingPeriod,
-        )[0].dataId
+        )
+        return matchingDatasets.isNotEmpty()
     }
 
     /**
@@ -229,6 +230,7 @@ class DataRequestProcessingUtils(
         // TODO Test if this only checks the toplevel value of accessStatus or if this goes through the requestHistory
         //  and checks if there was at least on Granted accessStatus
         // TODO if it his the second case logic has to be adapted
+        // TODO name of this method is not quite right in regards to the inputs
         return foundAccess
     }
 }
