@@ -10,8 +10,4 @@ data class ElementaryEventPayloadMetaInfo(
     val companyId: UUID,
     val framework: DataTypeEnum,
     val reportingPeriod: String,
-) {
-    init {
-        require(reportingPeriod.isNotEmpty()) { "Reporting period cannot be empty." }
-    }
-}
+)

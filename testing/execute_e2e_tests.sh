@@ -55,7 +55,7 @@ timeout 90 sh -c "docker logs dala-e2e-test-qa-service-1 --follow" > /dev/null
 docker cp dala-e2e-test-qa-service-1:/jacoco.exec ./qa-service-bootRun-${CYPRESS_TEST_GROUP}.exec
 
 docker exec dala-e2e-test-community-manager-1 pkill -f java
-timeout 300 sh -c "docker logs dala-e2e-test-community-manager-1 --follow" > /dev/null
+timeout 90 sh -c "docker logs dala-e2e-test-community-manager-1 --follow" > /dev/null
 docker cp dala-e2e-test-community-manager-1:/jacoco.exec ./community-manager-bootRun-${CYPRESS_TEST_GROUP}.exec
 
 docker exec dala-e2e-test-email-service-1 pkill -f java
