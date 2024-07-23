@@ -158,7 +158,7 @@ constructor(
 
     enum class NotificationEmailScope { Single, Summary } // TODO maybe we should put it in separate file
 
-    private fun determineNotificationEmailScope(
+    fun determineNotificationEmailScope(
         companyIdOfDataUpload: UUID,
         previouslyUnsentElementaryEvents: List<ElementaryEventEntity>,
     ): NotificationEmailScope? {
