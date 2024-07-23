@@ -28,12 +28,13 @@ import java.util.*
 @Service("NotificationService")
 class NotificationService
 @Suppress("LongParameterList")
+@Autowired
 constructor(
-    @Autowired var cloudEventMessageHandler: CloudEventMessageHandler,
-    @Autowired var notificationEventRepository: NotificationEventRepository,
-    @Autowired var elementaryEventRepository: ElementaryEventRepository,
-    @Autowired var companyDataControllerApi: CompanyDataControllerApi,
-    @Autowired var objectMapper: ObjectMapper,
+    private val cloudEventMessageHandler: CloudEventMessageHandler,
+    private val notificationEventRepository: NotificationEventRepository,
+    private val elementaryEventRepository: ElementaryEventRepository,
+    private val companyDataControllerApi: CompanyDataControllerApi,
+    private val objectMapper: ObjectMapper,
     @Value("\${dataland.community-manager.notification-threshold-days:30}")
     private val notificationThresholdDays: Int,
     @Value("\${dataland.community-manager.notification-elementaryevents-threshold:10}")
@@ -54,14 +55,10 @@ constructor(
      */
     @Transactional
     fun notifyOfElementaryEvents(elementaryEvents: List<ElementaryEventEntity>, correlationId: String) {
-        val notificationEmailType =
-            checkNotificationRequirementsAndDetermineNotificationEmailType(elementaryEvents)
-
-        if (notificationEmailType != null) {
+        checkNotificationRequirementsAndDetermineNotificationEmailType(elementaryEvents)?.let { notificationEmailType ->
             logger.info(
                 "Requirements for notification event are met. " +
-                    "Creating notification event and sending notification emails. " +
-                    "CorrelationId: $correlationId",
+                    "Creating notification event and sending notification emails. CorrelationId: $correlationId",
             )
             createNotificationEventAndReferenceIt(elementaryEvents)
             sendEmailMessageToQueue(notificationEmailType, elementaryEvents, correlationId)
@@ -77,18 +74,13 @@ constructor(
         elementaryEvents: List<ElementaryEventEntity>,
     ): NotificationEmailType? {
         val companyIdOfEvents = elementaryEvents.first().companyId
-
         val isLastNotificationEventOlderThanThreshold =
             isLastNotificationEventOlderThanThreshold(companyIdOfEvents, ElementaryEventType.UploadEvent)
 
         return when {
-            isLastNotificationEventOlderThanThreshold && elementaryEvents.size == 1 ->
-                NotificationEmailType.Single
-
-            isLastNotificationEventOlderThanThreshold ||
-                elementaryEvents.size >= elementaryEventsThreshold ->
+            isLastNotificationEventOlderThanThreshold && elementaryEvents.size == 1 -> NotificationEmailType.Single
+            isLastNotificationEventOlderThanThreshold || elementaryEvents.size >= elementaryEventsThreshold ->
                 NotificationEmailType.Summary
-
             else -> null
         }
     }
@@ -98,12 +90,12 @@ constructor(
      * event into the associated elementary events.
      */
     private fun createNotificationEventAndReferenceIt(elementaryEvents: List<ElementaryEventEntity>) {
-        val notificationEventToStore = NotificationEventEntity(
+        val notificationEvent = NotificationEventEntity(
             companyId = elementaryEvents.first().companyId,
             elementaryEventType = elementaryEvents.first().elementaryEventType,
             creationTimestamp = Instant.now().toEpochMilli(),
         )
-        val savedNotificationEvent = notificationEventRepository.saveAndFlush(notificationEventToStore)
+        val savedNotificationEvent = notificationEventRepository.saveAndFlush(notificationEvent)
         elementaryEvents.forEach {
             it.notificationEvent = savedNotificationEvent
             elementaryEventRepository.saveAndFlush(it)
@@ -119,12 +111,8 @@ constructor(
         correlationId: String,
     ) {
         when (notificationEmailType) {
-            NotificationEmailType.Single -> {
-                sendSingleEmailMessageToQueue(elementaryEvents.first(), correlationId)
-            }
-            NotificationEmailType.Summary -> {
-                sendSummaryEmailMessageToQueue(elementaryEvents, correlationId)
-            }
+            NotificationEmailType.Single -> sendSingleEmailMessageToQueue(elementaryEvents.first(), correlationId)
+            NotificationEmailType.Summary -> sendSummaryEmailMessageToQueue(elementaryEvents, correlationId)
         }
     }
 
