@@ -19,7 +19,8 @@ import java.time.Instant
 import java.util.*
 
 /**
- * Manages the creation of notification events
+ * Service that handles creation of notification events and sending notifications to interested parties
+ * in case of elementary events
  */
 @Service("NotificationService")
 class NotificationService
@@ -163,7 +164,7 @@ constructor(
         companyInfo.companyContactDetails?.forEach {
                 contactAddress ->
             val message = TemplateEmailMessage(
-                emailTemplateType = TemplateEmailMessage.Type.SingleNotification,
+                emailTemplateType = TemplateEmailMessage.Type.SummaryNotification,
                 receiver = TemplateEmailMessage.EmailAddressEmailRecipient(contactAddress),
                 properties = properties,
             )
