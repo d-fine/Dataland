@@ -63,7 +63,7 @@ class DataRequestAlterationManager(
 
         val newRequestStatus = requestStatus ?: dataRequestEntity.requestStatus
         val newAccessStatus = accessStatus ?: dataRequestEntity.accessStatus
-        //Maybe only allow accessStatus if requestStatus is answered
+        // Maybe only allow accessStatus if requestStatus is answered
         if (newRequestStatus != dataRequestEntity.requestStatus || newAccessStatus != dataRequestEntity.accessStatus) {
             val requestStatusObject = listOf(
                 StoredDataRequestStatusObject(newRequestStatus, modificationTime, newAccessStatus),
@@ -168,4 +168,7 @@ class DataRequestAlterationManager(
                 "reporting period ${metaData.reportingPeriod} and framework ${metaData.dataType.name}",
         )
     }
+    // TODO need to add logic to create a AccessRequest.Pending to the request if it was uploaded for a private
+//  framework
+    // TODO and there was no access granted before
 }

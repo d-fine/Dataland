@@ -260,6 +260,7 @@ class DataRequestProcessingUtils(
      * @param dataType the datatype of the dataset to which access was requested
      * @param reportingPeriod the reportingPeriod of the dataset to which access was requested
      */
+    // TODO Discuss if this is the right place for the method
     fun createAccessRequestToPrivateDataset(
         userId: String,
         companyId: String,
