@@ -66,7 +66,7 @@ class PrivateDataUploadProcessor(
     ) {
         messageUtils.validateMessageType(type, MessageType.PrivateDataReceived)
         val elementaryEventMetaInfo =
-            validatePayloadAndReturnElementaryEventMetaInfo(payload, ActionType.StorePublicData)
+            validatePayloadAndReturnElementaryEventMetaInfo(payload, ActionType.StorePrivateDataAndDocuments)
 
         logger.info(
             "Processing elementary event: Request for storage of private framework data. " +

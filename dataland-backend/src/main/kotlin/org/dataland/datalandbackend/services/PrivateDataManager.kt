@@ -175,7 +175,7 @@ class PrivateDataManager(
             mapOf(
                 "dataId" to dataId,
                 "companyId" to companyId,
-                "framework" to framework,
+                "framework" to framework.toString(),
                 "reportingPeriod" to reportingPeriod,
                 "actionType" to
                     ActionType.StorePrivateDataAndDocuments,

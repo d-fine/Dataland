@@ -5,6 +5,7 @@ import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandcommunitymanager.entities.ElementaryEventEntity
 import org.dataland.datalandcommunitymanager.entities.NotificationEventEntity
 import org.dataland.datalandcommunitymanager.events.ElementaryEventType
+import org.dataland.datalandcommunitymanager.repositories.ElementaryEventRepository
 import org.dataland.datalandcommunitymanager.repositories.NotificationEventRepository
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
 import org.dataland.datalandmessagequeueutils.constants.ExchangeName
@@ -15,6 +16,7 @@ import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 import java.time.Duration
 import java.time.Instant
 import java.util.*
@@ -29,6 +31,7 @@ class NotificationService
 constructor(
     @Autowired var cloudEventMessageHandler: CloudEventMessageHandler,
     @Autowired var notificationEventRepository: NotificationEventRepository,
+    @Autowired var elementaryEventRepository: ElementaryEventRepository,
     @Autowired var companyDataControllerApi: CompanyDataControllerApi,
     @Autowired var objectMapper: ObjectMapper,
     @Value("\${dataland.community-manager.notification-threshold-days:30}")
@@ -49,6 +52,7 @@ constructor(
      * Checks if notification event shall be created or not.
      * If yes, it creates it and sends a message to the queue to trigger notification emails.
      */
+    @Transactional
     fun notifyOfElementaryEvents(elementaryEvents: List<ElementaryEventEntity>, correlationId: String) {
         val notificationEmailType =
             checkNotificationRequirementsAndDetermineNotificationEmailType(elementaryEvents)
@@ -59,7 +63,7 @@ constructor(
                     "Creating notification event and sending notification emails. " +
                     "CorrelationId: $correlationId",
             )
-            createNotificationEvent(elementaryEvents)
+            createNotificationEventAndReferenceIt(elementaryEvents)
             sendEmailMessageToQueue(notificationEmailType, elementaryEvents, correlationId)
         }
     }
@@ -90,16 +94,21 @@ constructor(
     }
 
     /**
-     * Creates and persists a new notification event.
+     * Creates and persists a new notification event and also puts the reference to this newly created notification
+     * event into the associated elementary events.
      */
-    private fun createNotificationEvent(elementaryEvents: List<ElementaryEventEntity>) {
-        val newNotificationEvent = NotificationEventEntity(
+    private fun createNotificationEventAndReferenceIt(elementaryEvents: List<ElementaryEventEntity>) {
+        val notificationEventToStore = NotificationEventEntity(
             companyId = elementaryEvents.first().companyId,
             elementaryEventType = elementaryEvents.first().elementaryEventType,
             creationTimestamp = Instant.now().toEpochMilli(),
             elementaryEvents = elementaryEvents,
         )
-        notificationEventRepository.saveAndFlush(newNotificationEvent)
+        val savedNotificationEvent = notificationEventRepository.saveAndFlush(notificationEventToStore)
+        elementaryEvents.forEach {
+            it.notificationEvent = savedNotificationEvent
+            elementaryEventRepository.saveAndFlush(it)
+        }
     }
 
     /**
