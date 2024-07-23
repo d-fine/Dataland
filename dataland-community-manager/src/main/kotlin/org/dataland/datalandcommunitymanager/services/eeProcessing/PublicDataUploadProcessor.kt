@@ -28,7 +28,7 @@ import java.util.*
 /**
 * Defines the processing of public framework data upload events as elementary events
 */
-@Component
+@Component("PublicDataUploadProcessor")
 class PublicDataUploadProcessor(
     @Autowired val messageUtils: MessageQueueUtils,
     @Autowired val notificationService: NotificationService,
