@@ -96,7 +96,7 @@ class NotificationServiceTest {
         )
     }
 
-    private fun createNotificationEventForDataUploadsEntity(
+    private fun createNotificationEventEntityForDataUploads(
         creationTimeInDaysBeforeNow: Long,
         elementaryEventEntities: List<ElementaryEventEntity>,
     ): NotificationEventEntity {
@@ -108,7 +108,7 @@ class NotificationServiceTest {
         )
     }
 
-    private fun setupNotificationEventRepoMock(
+    private fun setNotificationEventRepoMockReturnValue(
         notificationEventEntitiesToReturn: List<NotificationEventEntity>,
     ) {
         `when`(
@@ -122,44 +122,41 @@ class NotificationServiceTest {
 
     @Test
     fun `single mail if no notification event in last 30 days and no unprocessed elementary events`() {
-        setupNotificationEventRepoMock(emptyList())
-
+        setNotificationEventRepoMockReturnValue(emptyList())
         val unprocessedElementaryEvents = emptyList<ElementaryEventEntity>()
 
         val notificationEmailScope =
             notificationService.determineNotificationEmailScope(testCompanyId, unprocessedElementaryEvents)
-
         assertEquals(NotificationService.NotificationEmailScope.Single, notificationEmailScope)
     }
 
     @Test
-    fun `summary mail if no notification event in last 30 days but one unprocessed elementary event`() {
+    fun `summary mail if no notification event in last 30 days and one unprocessed elementary event`() {
         val processedElementaryEvents = listOf(
-            createUploadElementaryEventEntity(31),
-            createUploadElementaryEventEntity(32),
+            createUploadElementaryEventEntity(41),
+            createUploadElementaryEventEntity(42),
         )
-        val notificationEvent = createNotificationEventForDataUploadsEntity(31, processedElementaryEvents)
+        val notificationEvent = createNotificationEventEntityForDataUploads(41, processedElementaryEvents)
         processedElementaryEvents.forEach { it.notificationEvent = notificationEvent }
-        setupNotificationEventRepoMock(listOf(notificationEvent))
+        setNotificationEventRepoMockReturnValue(listOf(notificationEvent))
 
         val unprocessedElementaryEvents = listOf(
-            createUploadElementaryEventEntity(29),
+            createUploadElementaryEventEntity(35),
         )
         val notificationEmailScope =
             notificationService.determineNotificationEmailScope(testCompanyId, unprocessedElementaryEvents)
-
         assertEquals(NotificationService.NotificationEmailScope.Summary, notificationEmailScope)
     }
 
     @Test
-    fun `no mail if one notification event in last 30 days and unprocessed elementary events less than threshold`() {
+    fun `no mail if one notification event in last 30 days but unprocessed elementary events less than threshold`() {
         val processedElementaryEvents = listOf(
             createUploadElementaryEventEntity(29),
             createUploadElementaryEventEntity(30),
         )
-        val notificationEvent = createNotificationEventForDataUploadsEntity(29, processedElementaryEvents)
+        val notificationEvent = createNotificationEventEntityForDataUploads(29, processedElementaryEvents)
         processedElementaryEvents.forEach { it.notificationEvent = notificationEvent }
-        setupNotificationEventRepoMock(listOf(notificationEvent))
+        setNotificationEventRepoMockReturnValue(listOf(notificationEvent))
 
         val unprocessedElementaryEvents = mutableListOf<ElementaryEventEntity>()
         for (creationTimeInDaysBeforeNow in 28 downTo 21) {
@@ -184,9 +181,9 @@ class NotificationServiceTest {
         val processedElementaryEvents = (29 downTo 12).map { creationTimeInDaysBeforeNow ->
             createUploadElementaryEventEntity(creationTimeInDaysBeforeNow)
         }
-        val notificationEvent = createNotificationEventForDataUploadsEntity(10, processedElementaryEvents)
+        val notificationEvent = createNotificationEventEntityForDataUploads(10, processedElementaryEvents)
         processedElementaryEvents.forEach { it.notificationEvent = notificationEvent }
-        setupNotificationEventRepoMock(listOf(notificationEvent))
+        setNotificationEventRepoMockReturnValue(listOf(notificationEvent))
 
         val unprocessedElementaryEvents = (10 downTo 3).map { creationTimeInDaysBeforeNow ->
             createUploadElementaryEventEntity(creationTimeInDaysBeforeNow)
