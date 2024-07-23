@@ -220,7 +220,7 @@ import { type Content, type Page } from '@/types/ContentTypes';
 import contentData from '@/assets/content.json';
 import CompanyInfoSheet from '@/components/general/CompanyInfoSheet.vue';
 import { type CompanyInformation, type DataTypeEnum, type ErrorResponse } from '@clients/backend';
-import { type SingleDataRequest } from '@clients/communitymanager';
+import { type SingleDataRequest, type SingleDataRequestDataTypeEnum } from '@clients/communitymanager';
 import PrimeButton from 'primevue/button';
 import type Keycloak from 'keycloak-js';
 import { AxiosError } from 'axios';
@@ -276,7 +276,7 @@ export default defineComponent({
       footerContent,
       fetchedCompanyInformation: {} as CompanyInformation,
       frameworkOptions: [] as { value: DataTypeEnum; label: string }[],
-      frameworkName: this.$route.query.preSelectedFramework as DataTypeEnum,
+      frameworkName: this.$route.query.preSelectedFramework as SingleDataRequestDataTypeEnum,
       contactsAsString: '',
       allowAccessDataRequesterMessage: false,
       dataRequesterMessage: dataRequesterMessageAccessDisabledText,
@@ -448,7 +448,6 @@ export default defineComponent({
     collectDataToSend(): SingleDataRequest {
       return {
         companyIdentifier: this.companyIdentifier,
-        // @ts-ignore
         dataType: this.frameworkName,
         // as unknown as Set<string> cast required to ensure proper json is created
         reportingPeriods: this.selectedReportingPeriods as unknown as Set<string>,

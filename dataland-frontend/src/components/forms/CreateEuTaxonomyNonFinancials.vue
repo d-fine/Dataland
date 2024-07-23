@@ -177,6 +177,8 @@ import YesNoExtendedDataPointFormField from '@/components/forms/parts/fields/Yes
 import { getFilledKpis } from '@/utils/DataPoint';
 import { type PublicFrameworkDataApi } from '@/utils/api/UnifiedFrameworkDataApi';
 import { getBasePublicFrameworkDefinition } from '@/frameworks/BasePublicFrameworkRegistry';
+import { hasUserCompanyOwnerOrDataUploaderRole } from '@/utils/CompanyRolesUtils';
+
 export default defineComponent({
   setup() {
     return {
@@ -327,9 +329,17 @@ export default defineComponent({
         }
 
         const euTaxonomyForNonFinancialsDataControllerApi = this.buildEuTaxonomyNonFinancialsDataApi();
-        await euTaxonomyForNonFinancialsDataControllerApi!.postFrameworkData(
-          this.companyAssociatedEutaxonomyNonFinancialsData
+
+        const isCompanyOwnerOrDataUploader = await hasUserCompanyOwnerOrDataUploaderRole(
+          this.companyAssociatedEutaxonomyNonFinancialsData.companyId,
+          this.getKeycloakPromise
         );
+
+        await euTaxonomyForNonFinancialsDataControllerApi!.postFrameworkData(
+          this.companyAssociatedEutaxonomyNonFinancialsData,
+          isCompanyOwnerOrDataUploader
+        );
+
         this.$emit('datasetCreated');
         this.dataDate = undefined;
         this.message = 'Upload successfully executed.';
