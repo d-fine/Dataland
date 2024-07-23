@@ -1,6 +1,6 @@
 <#macro if if then else><#if if>${then}<#else>${else}</#if></#macro>
 
-<#-- This is a template for the IR engament email triggered by a single data upload
+<#-- This is a template for the IR engament email containing a summary of data uploaded for a company
  The following fields are needed
   - companyName
   - companyId
