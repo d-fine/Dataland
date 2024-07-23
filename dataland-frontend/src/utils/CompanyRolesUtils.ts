@@ -42,7 +42,7 @@ export async function hasUserCompanyRoleForCompany(
  * Check if current user is either the company Owner or a company data uploader
  * @param companyId of the company
  * @param keycloakPromiseGetter the getter-function which returns a Keycloak-Promise
- * @returns a promise, which resolves to a booleann
+ * @returns a promise, which resolves to a booleannn
  */
 export async function hasUserCompanyOwnerOrDataUploaderRole(
   companyId: string,
