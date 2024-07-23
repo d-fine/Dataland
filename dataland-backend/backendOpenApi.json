@@ -427,6 +427,144 @@
         ]
       }
     },
+    "/data/lksgmini": {
+      "post": {
+        "tags": [
+          "lksgmini-data-controller"
+        ],
+        "operationId": "postCompanyAssociatedLksgminiData",
+        "parameters": [
+          {
+            "name": "bypassQa",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": false
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CompanyAssociatedDataLksgminiData"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully added data to the data store.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DataMetaInformation"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
+    "/data/lksgmedium": {
+      "post": {
+        "tags": [
+          "lksgmedium-data-controller"
+        ],
+        "operationId": "postCompanyAssociatedLksgmediumData",
+        "parameters": [
+          {
+            "name": "bypassQa",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": false
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CompanyAssociatedDataLksgmediumData"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully added data to the data store.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DataMetaInformation"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
     "/data/lksg": {
       "post": {
         "tags": [
@@ -1951,6 +2089,278 @@
                   "type": "array",
                   "items": {
                     "$ref": "#/components/schemas/DataAndMetaInformationPathwaysToParisData"
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
+    "/data/lksgmini/{dataId}": {
+      "get": {
+        "tags": [
+          "lksgmini-data-controller"
+        ],
+        "operationId": "getCompanyAssociatedLksgminiData",
+        "parameters": [
+          {
+            "name": "dataId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved data set.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CompanyAssociatedDataLksgminiData"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
+    "/data/lksgmini/companies/{companyId}": {
+      "get": {
+        "tags": [
+          "lksgmini-data-controller"
+        ],
+        "operationId": "getAllCompanyLksgminiData",
+        "parameters": [
+          {
+            "name": "companyId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "showOnlyActive",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": true
+            }
+          },
+          {
+            "name": "reportingPeriod",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved framework datasets with meta info.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/DataAndMetaInformationLksgminiData"
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
+    "/data/lksgmedium/{dataId}": {
+      "get": {
+        "tags": [
+          "lksgmedium-data-controller"
+        ],
+        "operationId": "getCompanyAssociatedLksgmediumData",
+        "parameters": [
+          {
+            "name": "dataId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved data set.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CompanyAssociatedDataLksgmediumData"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
+    "/data/lksgmedium/companies/{companyId}": {
+      "get": {
+        "tags": [
+          "lksgmedium-data-controller"
+        ],
+        "operationId": "getAllCompanyLksgmediumData",
+        "parameters": [
+          {
+            "name": "companyId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "showOnlyActive",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": true
+            }
+          },
+          {
+            "name": "reportingPeriod",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved framework datasets with meta info.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/DataAndMetaInformationLksgmediumData"
                   }
                 }
               }
@@ -7046,6 +7456,296 @@
             "allOf": [
               {
                 "$ref": "#/components/schemas/P2pCement"
+              }
+            ]
+          }
+        }
+      },
+      "CompanyAssociatedDataLksgminiData": {
+        "required": [
+          "companyId",
+          "data",
+          "reportingPeriod"
+        ],
+        "type": "object",
+        "properties": {
+          "companyId": {
+            "type": "string"
+          },
+          "reportingPeriod": {
+            "type": "string"
+          },
+          "data": {
+            "$ref": "#/components/schemas/LksgminiData"
+          }
+        }
+      },
+      "LksgminiData": {
+        "required": [
+          "general"
+        ],
+        "type": "object",
+        "properties": {
+          "general": {
+            "$ref": "#/components/schemas/LksgminiGeneral"
+          },
+          "governance": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/LksgminiGovernance"
+              }
+            ]
+          }
+        }
+      },
+      "LksgminiGeneral": {
+        "required": [
+          "masterData"
+        ],
+        "type": "object",
+        "properties": {
+          "masterData": {
+            "$ref": "#/components/schemas/LksgminiGeneralMasterData"
+          }
+        }
+      },
+      "LksgminiGeneralMasterData": {
+        "required": [
+          "dataDate"
+        ],
+        "type": "object",
+        "properties": {
+          "dataDate": {
+            "type": "string",
+            "format": "date"
+          },
+          "headOfficeInGermany": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
+          },
+          "groupOfCompanies": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
+          },
+          "groupOfCompaniesName": {
+            "type": "string",
+            "nullable": true
+          },
+          "industry": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "LksgminiGovernance": {
+        "type": "object",
+        "properties": {
+          "generalViolations": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/LksgminiGovernanceGeneralViolations"
+              }
+            ]
+          }
+        }
+      },
+      "LksgminiGovernanceGeneralViolations": {
+        "type": "object",
+        "properties": {
+          "legalProceedings": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
+          },
+          "humanRightsOrEnvironmentalViolations": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
+          }
+        }
+      },
+      "CompanyAssociatedDataLksgmediumData": {
+        "required": [
+          "companyId",
+          "data",
+          "reportingPeriod"
+        ],
+        "type": "object",
+        "properties": {
+          "companyId": {
+            "type": "string"
+          },
+          "reportingPeriod": {
+            "type": "string"
+          },
+          "data": {
+            "$ref": "#/components/schemas/LksgmediumData"
+          }
+        }
+      },
+      "LksgmediumData": {
+        "required": [
+          "general"
+        ],
+        "type": "object",
+        "properties": {
+          "general": {
+            "$ref": "#/components/schemas/LksgmediumGeneral"
+          },
+          "governance": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/LksgmediumGovernance"
+              }
+            ]
+          },
+          "social": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/LksgmediumSocial"
+              }
+            ]
+          }
+        }
+      },
+      "LksgmediumGeneral": {
+        "required": [
+          "masterData"
+        ],
+        "type": "object",
+        "properties": {
+          "masterData": {
+            "$ref": "#/components/schemas/LksgmediumGeneralMasterData"
+          }
+        }
+      },
+      "LksgmediumGeneralMasterData": {
+        "required": [
+          "dataDate"
+        ],
+        "type": "object",
+        "properties": {
+          "dataDate": {
+            "type": "string",
+            "format": "date"
+          },
+          "headOfficeInGermany": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
+          },
+          "groupOfCompanies": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
+          },
+          "groupOfCompaniesName": {
+            "type": "string",
+            "nullable": true
+          },
+          "industry": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "LksgmediumGovernance": {
+        "type": "object",
+        "properties": {
+          "generalViolations": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/LksgmediumGovernanceGeneralViolations"
+              }
+            ]
+          }
+        }
+      },
+      "LksgmediumGovernanceGeneralViolations": {
+        "type": "object",
+        "properties": {
+          "legalProceedings": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
+          },
+          "humanRightsOrEnvironmentalViolations": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
+          }
+        }
+      },
+      "LksgmediumSocial": {
+        "type": "object",
+        "properties": {
+          "childLabor": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/LksgmediumSocialChildLabor"
+              }
+            ]
+          }
+        }
+      },
+      "LksgmediumSocialChildLabor": {
+        "type": "object",
+        "properties": {
+          "worstFormsOfChildLaborForms": {
+            "type": "string",
+            "nullable": true
+          },
+          "measuresForPreventionOfEmploymentUnderLocalMinimumAge": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
+          },
+          "employmentUnderLocalMinimumAgePreventionEmploymentContracts": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
               }
             ]
           }
@@ -14488,6 +15188,36 @@
           }
         }
       },
+      "DataAndMetaInformationLksgminiData": {
+        "required": [
+          "data",
+          "metaInfo"
+        ],
+        "type": "object",
+        "properties": {
+          "metaInfo": {
+            "$ref": "#/components/schemas/DataMetaInformation"
+          },
+          "data": {
+            "$ref": "#/components/schemas/LksgminiData"
+          }
+        }
+      },
+      "DataAndMetaInformationLksgmediumData": {
+        "required": [
+          "data",
+          "metaInfo"
+        ],
+        "type": "object",
+        "properties": {
+          "metaInfo": {
+            "$ref": "#/components/schemas/DataMetaInformation"
+          },
+          "data": {
+            "$ref": "#/components/schemas/LksgmediumData"
+          }
+        }
+      },
       "DataAndMetaInformationLksgData": {
         "required": [
           "data",
@@ -14572,16 +15302,16 @@
         ],
         "type": "object",
         "properties": {
-          "countryCode": {
-            "type": "string"
-          },
-          "headquarters": {
-            "type": "string"
-          },
           "companyName": {
             "type": "string"
           },
           "companyId": {
+            "type": "string"
+          },
+          "countryCode": {
+            "type": "string"
+          },
+          "headquarters": {
             "type": "string"
           },
           "sector": {
@@ -14678,7 +15408,9 @@
           "sfdr",
           "vsme",
           "esg-questionnaire",
-          "heimathafen"
+          "heimathafen",
+          "lksgmini",
+          "lksgmedium"
         ]
       },
       "ErrorDetails": {

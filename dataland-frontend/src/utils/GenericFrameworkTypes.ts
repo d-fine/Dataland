@@ -7,6 +7,8 @@ import {
   type SfdrData,
   type VsmeData,
   type EutaxonomyNonFinancialsData,
+  type LksgminiData,
+  type LksgmediumData,
 } from '@clients/backend';
 
 export interface Category {
@@ -51,4 +53,6 @@ export type FrameworkData =
   | SfdrData
   | VsmeData
   | EsgQuestionnaireData
-  | PathwaysToParisData;
+  | PathwaysToParisData
+  | LksgminiData
+  | LksgmediumData;

@@ -1,0 +1,3300 @@
+[
+	{
+		"companyInformation": {
+			"companyName": "Rohan, Cremin and Reynolds",
+			"headquarters": "Mannboro",
+			"headquartersPostalCode": "25735-5446",
+			"sector": "portals",
+			"identifiers": {
+				"Lei": [],
+				"Isin": [
+					"gk2OvIfm7dfk",
+					"VcHzbiHnIlUJ"
+				],
+				"PermId": [
+					"PtShXTocLa"
+				],
+				"Ticker": [],
+				"Duns": [],
+				"VatNumber": [],
+				"CompanyRegistrationNumber": [
+					"V6s7YVUp5maB7Hr"
+				]
+			},
+			"countryCode": "CF",
+			"companyContactDetails": [
+				"Nels83@example.com",
+				"Karelle26@example.com"
+			],
+			"companyAlternativeNames": [
+				"Murazik, Lesch and Connelly",
+				"Reichert LLC"
+			],
+			"companyLegalForm": "Limited Liability Partnership (LLP)",
+			"website": "https://rare-hake.name/",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"general": {
+				"masterData": {
+					"dataDate": "2024-10-29",
+					"headOfficeInGermany": "No",
+					"groupOfCompanies": "No",
+					"groupOfCompaniesName": "bandwidth",
+					"industry": [
+						"47.89",
+						"51.21"
+					]
+				}
+			},
+			"governance": {
+				"generalViolations": {
+					"legalProceedings": "Yes",
+					"humanRightsOrEnvironmentalViolations": "No"
+				}
+			},
+			"social": {
+				"childLabor": {
+					"worstFormsOfChildLaborForms": "blockchains",
+					"measuresForPreventionOfEmploymentUnderLocalMinimumAge": "Yes",
+					"employmentUnderLocalMinimumAgePreventionEmploymentContracts": "Yes"
+				}
+			}
+		},
+		"reportingPeriod": "2024"
+	},
+	{
+		"companyInformation": {
+			"companyName": "Roob - Kassulke",
+			"headquarters": "Darianaboro",
+			"headquartersPostalCode": "30325",
+			"sector": "initiatives",
+			"identifiers": {
+				"Lei": [],
+				"Isin": [
+					"YzyavRVY3L8c",
+					"tH7FtvmPObIf"
+				],
+				"PermId": [],
+				"Ticker": [],
+				"Duns": [],
+				"VatNumber": [
+					"fyRPSCd9m"
+				],
+				"CompanyRegistrationNumber": []
+			},
+			"countryCode": "NU",
+			"companyContactDetails": [
+				"Santos.Hilpert26@example.com"
+			],
+			"companyAlternativeNames": [],
+			"companyLegalForm": "Partnership without Limited Liability",
+			"website": "https://flat-neighbourhood.name/",
+			"isTeaserCompany": false,
+			"parentCompanyLei": null
+		},
+		"t": {
+			"general": {
+				"masterData": {
+					"dataDate": "2024-09-26",
+					"headOfficeInGermany": "Yes",
+					"groupOfCompanies": "Yes",
+					"groupOfCompaniesName": "action-items",
+					"industry": []
+				}
+			},
+			"governance": {
+				"generalViolations": {
+					"legalProceedings": "No",
+					"humanRightsOrEnvironmentalViolations": "Yes"
+				}
+			},
+			"social": {
+				"childLabor": {
+					"worstFormsOfChildLaborForms": null,
+					"measuresForPreventionOfEmploymentUnderLocalMinimumAge": "Yes",
+					"employmentUnderLocalMinimumAgePreventionEmploymentContracts": null
+				}
+			}
+		},
+		"reportingPeriod": "2024"
+	},
+	{
+		"companyInformation": {
+			"companyName": "Hodkiewicz Inc",
+			"headquarters": "East Colleenfurt",
+			"headquartersPostalCode": null,
+			"sector": "functionalities",
+			"identifiers": {
+				"Lei": [],
+				"Isin": [
+					"nzaoso1LkxnC"
+				],
+				"PermId": [
+					"MdDqLKRa6q"
+				],
+				"Ticker": [
+					"ZyX6b1T"
+				],
+				"Duns": [
+					"Eido6yqdU"
+				],
+				"VatNumber": [],
+				"CompanyRegistrationNumber": []
+			},
+			"countryCode": "SM",
+			"companyContactDetails": [],
+			"companyAlternativeNames": [
+				"Gibson - Okuneva",
+				"Jast, Senger and Torp",
+				"Quigley - Schultz",
+				"Stoltenberg and Sons"
+			],
+			"companyLegalForm": null,
+			"website": "https://jam-packed-bias.org/",
+			"isTeaserCompany": false,
+			"parentCompanyLei": null
+		},
+		"t": {
+			"general": {
+				"masterData": {
+					"dataDate": "2024-11-13",
+					"headOfficeInGermany": "Yes",
+					"groupOfCompanies": "Yes",
+					"groupOfCompaniesName": "networks",
+					"industry": [
+						"02.10",
+						"27",
+						"43",
+						"56.30",
+						"72.11"
+					]
+				}
+			},
+			"governance": {
+				"generalViolations": {
+					"legalProceedings": "Yes",
+					"humanRightsOrEnvironmentalViolations": "No"
+				}
+			},
+			"social": {
+				"childLabor": {
+					"worstFormsOfChildLaborForms": "bandwidth",
+					"measuresForPreventionOfEmploymentUnderLocalMinimumAge": null,
+					"employmentUnderLocalMinimumAgePreventionEmploymentContracts": "Yes"
+				}
+			}
+		},
+		"reportingPeriod": "2021"
+	},
+	{
+		"companyInformation": {
+			"companyName": "Prohaska - Dooley",
+			"headquarters": "Sandrinefort",
+			"headquartersPostalCode": "23878-4969",
+			"sector": "e-commerce",
+			"identifiers": {
+				"Lei": [
+					"nn54gGHdBKYkABWAiMZV"
+				],
+				"Isin": [
+					"DuYWElUN8SnH",
+					"X02U3Gu5TytP"
+				],
+				"PermId": [],
+				"Ticker": [],
+				"Duns": [
+					"xBgkC0PFf"
+				],
+				"VatNumber": [
+					"h8DmxADjE"
+				],
+				"CompanyRegistrationNumber": [
+					"u4DV2nbpzofoIlE"
+				]
+			},
+			"countryCode": "CM",
+			"companyContactDetails": [
+				"Antonetta.OKon51@example.com",
+				"Blanca.OConner79@example.com",
+				"Hershel.Koss47@example.com",
+				"Chesley_Fritsch@example.com",
+				"Neva.Cartwright@example.com"
+			],
+			"companyAlternativeNames": [
+				"Aufderhar, Auer and Cummings",
+				"Johnson Group",
+				"Price LLC"
+			],
+			"companyLegalForm": "Limited Liability Partnership (LLP)",
+			"website": null,
+			"isTeaserCompany": false,
+			"parentCompanyLei": null
+		},
+		"t": {
+			"general": {
+				"masterData": {
+					"dataDate": "2024-10-04",
+					"headOfficeInGermany": null,
+					"groupOfCompanies": null,
+					"groupOfCompaniesName": "methodologies",
+					"industry": [
+						"08.9",
+						"11.01",
+						"30.9",
+						"47.73",
+						"95.2"
+					]
+				}
+			},
+			"governance": {
+				"generalViolations": {
+					"legalProceedings": "Yes",
+					"humanRightsOrEnvironmentalViolations": "No"
+				}
+			},
+			"social": {
+				"childLabor": {
+					"worstFormsOfChildLaborForms": "lifetime value",
+					"measuresForPreventionOfEmploymentUnderLocalMinimumAge": "Yes",
+					"employmentUnderLocalMinimumAgePreventionEmploymentContracts": "No"
+				}
+			}
+		},
+		"reportingPeriod": "2022"
+	},
+	{
+		"companyInformation": {
+			"companyName": "Doyle - Harvey",
+			"headquarters": "North Briaport",
+			"headquartersPostalCode": null,
+			"sector": "e-commerce",
+			"identifiers": {
+				"Lei": [
+					"DSMM1VsLdK3kslp8v4y2"
+				],
+				"Isin": [
+					"j6HuGhjJPcTH",
+					"efBP7ygiSFj8"
+				],
+				"PermId": [],
+				"Ticker": [],
+				"Duns": [
+					"Y3yhr2hJp"
+				],
+				"VatNumber": [
+					"cSEm2zvng"
+				],
+				"CompanyRegistrationNumber": []
+			},
+			"countryCode": "CC",
+			"companyContactDetails": [
+				"Dante_Pfannerstill@example.com",
+				"Macy_Mertz@example.com",
+				"Daren.Jenkins@example.com",
+				"Mathias_Hyatt45@example.com"
+			],
+			"companyAlternativeNames": [],
+			"companyLegalForm": "GmbH & Co. KG",
+			"website": null,
+			"isTeaserCompany": false,
+			"parentCompanyLei": "nn54gGHdBKYkABWAiMZV"
+		},
+		"t": {
+			"general": {
+				"masterData": {
+					"dataDate": "2024-10-22",
+					"headOfficeInGermany": "No",
+					"groupOfCompanies": null,
+					"groupOfCompaniesName": "ROI",
+					"industry": [
+						"32.5",
+						"47.78"
+					]
+				}
+			},
+			"governance": {
+				"generalViolations": {
+					"legalProceedings": "No",
+					"humanRightsOrEnvironmentalViolations": null
+				}
+			},
+			"social": {
+				"childLabor": {
+					"worstFormsOfChildLaborForms": "partnerships",
+					"measuresForPreventionOfEmploymentUnderLocalMinimumAge": "No",
+					"employmentUnderLocalMinimumAgePreventionEmploymentContracts": null
+				}
+			}
+		},
+		"reportingPeriod": "2024"
+	},
+	{
+		"companyInformation": {
+			"companyName": "Price LLC",
+			"headquarters": "Port Destineeberg",
+			"headquartersPostalCode": "99897",
+			"sector": "applications",
+			"identifiers": {
+				"Lei": [
+					"3lvpqM3FxpwnyUVOFEac"
+				],
+				"Isin": [
+					"XtTiFMcVg34i"
+				],
+				"PermId": [],
+				"Ticker": [
+					"yX04mVN"
+				],
+				"Duns": [
+					"Joga7PD0a"
+				],
+				"VatNumber": [],
+				"CompanyRegistrationNumber": [
+					"KfkGAxzH56xjA9P"
+				]
+			},
+			"countryCode": "SB",
+			"companyContactDetails": [
+				"Roma_Weber-Hudson@example.com",
+				"Helene26@example.com",
+				"Breanne.Greenholt@example.com",
+				"Megane13@example.com",
+				"Julian.Skiles75@example.com"
+			],
+			"companyAlternativeNames": [
+				"Hagenes, Maggio and Sipes",
+				"Hoppe - Kuhn",
+				"Metz Inc",
+				"Trantow Inc"
+			],
+			"companyLegalForm": null,
+			"website": null,
+			"isTeaserCompany": false,
+			"parentCompanyLei": "DSMM1VsLdK3kslp8v4y2"
+		},
+		"t": {
+			"general": {
+				"masterData": {
+					"dataDate": "2024-09-12",
+					"headOfficeInGermany": "No",
+					"groupOfCompanies": "Yes",
+					"groupOfCompaniesName": "convergence",
+					"industry": null
+				}
+			},
+			"governance": {
+				"generalViolations": {
+					"legalProceedings": "Yes",
+					"humanRightsOrEnvironmentalViolations": "No"
+				}
+			},
+			"social": {
+				"childLabor": {
+					"worstFormsOfChildLaborForms": "applications",
+					"measuresForPreventionOfEmploymentUnderLocalMinimumAge": "Yes",
+					"employmentUnderLocalMinimumAgePreventionEmploymentContracts": "Yes"
+				}
+			}
+		},
+		"reportingPeriod": "2023"
+	},
+	{
+		"companyInformation": {
+			"companyName": "Zemlak - Stracke",
+			"headquarters": "Alhambra",
+			"headquartersPostalCode": null,
+			"sector": "functionalities",
+			"identifiers": {
+				"Lei": [],
+				"Isin": [
+					"qu1Zy0zpjZZd"
+				],
+				"PermId": [],
+				"Ticker": [
+					"3XyOCXB"
+				],
+				"Duns": [
+					"zyQdBizDZ"
+				],
+				"VatNumber": [
+					"1pjCmJzpv"
+				],
+				"CompanyRegistrationNumber": [
+					"ye4jO3W55KyRgLm"
+				]
+			},
+			"countryCode": "MW",
+			"companyContactDetails": [],
+			"companyAlternativeNames": [
+				"Kihn and Sons"
+			],
+			"companyLegalForm": "Public Limited Company (PLC)",
+			"website": "https://cultured-opposition.name/",
+			"isTeaserCompany": false,
+			"parentCompanyLei": "3lvpqM3FxpwnyUVOFEac"
+		},
+		"t": {
+			"general": {
+				"masterData": {
+					"dataDate": "2024-06-08",
+					"headOfficeInGermany": "Yes",
+					"groupOfCompanies": null,
+					"groupOfCompaniesName": "initiatives",
+					"industry": null
+				}
+			},
+			"governance": {
+				"generalViolations": {
+					"legalProceedings": "Yes",
+					"humanRightsOrEnvironmentalViolations": "No"
+				}
+			},
+			"social": {
+				"childLabor": {
+					"worstFormsOfChildLaborForms": null,
+					"measuresForPreventionOfEmploymentUnderLocalMinimumAge": "Yes",
+					"employmentUnderLocalMinimumAgePreventionEmploymentContracts": "Yes"
+				}
+			}
+		},
+		"reportingPeriod": "2020"
+	},
+	{
+		"companyInformation": {
+			"companyName": "Maggio, Lockman and Ebert",
+			"headquarters": "Greenville",
+			"headquartersPostalCode": "58429",
+			"sector": "metrics",
+			"identifiers": {
+				"Lei": [],
+				"Isin": [
+					"TKp1aDi6yjoh",
+					"sRGVje8g6T6z"
+				],
+				"PermId": [],
+				"Ticker": [],
+				"Duns": [
+					"N909uK9WK"
+				],
+				"VatNumber": [
+					"FWGzveEDA"
+				],
+				"CompanyRegistrationNumber": [
+					"Ij4hCLynfCXVBMT"
+				]
+			},
+			"countryCode": "MR",
+			"companyContactDetails": [
+				"Lucio_Krajcik@example.com",
+				"Trevion56@example.com",
+				"Delmer_Mohr@example.com",
+				"Donato_Hudson@example.com",
+				"Beryl_Doyle@example.com"
+			],
+			"companyAlternativeNames": [
+				"Abbott - Hermiston",
+				"Wolf - Graham"
+			],
+			"companyLegalForm": "Partnership without Limited Liability",
+			"website": "https://puzzled-deputy.net/",
+			"isTeaserCompany": false,
+			"parentCompanyLei": null
+		},
+		"t": {
+			"general": {
+				"masterData": {
+					"dataDate": "2024-09-30",
+					"headOfficeInGermany": "Yes",
+					"groupOfCompanies": "No",
+					"groupOfCompaniesName": "synergies",
+					"industry": [
+						"32.99"
+					]
+				}
+			},
+			"governance": {
+				"generalViolations": {
+					"legalProceedings": "No",
+					"humanRightsOrEnvironmentalViolations": "No"
+				}
+			},
+			"social": {
+				"childLabor": {
+					"worstFormsOfChildLaborForms": "deliverables",
+					"measuresForPreventionOfEmploymentUnderLocalMinimumAge": "No",
+					"employmentUnderLocalMinimumAgePreventionEmploymentContracts": "No"
+				}
+			}
+		},
+		"reportingPeriod": "2024"
+	},
+	{
+		"companyInformation": {
+			"companyName": "Schuppe Group",
+			"headquarters": "Mishawaka",
+			"headquartersPostalCode": "64252-4517",
+			"sector": "metrics",
+			"identifiers": {
+				"Lei": [
+					"Iz6MqEN8IWnr2fBY3Nom"
+				],
+				"Isin": [
+					"4hIz8jSiiaOc",
+					"MwHEOZo1lSuj"
+				],
+				"PermId": [
+					"45iXmRzb0I"
+				],
+				"Ticker": [],
+				"Duns": [
+					"H01edJV91"
+				],
+				"VatNumber": [
+					"ef0JNzuWZ"
+				],
+				"CompanyRegistrationNumber": [
+					"jUmhb9GvQnAYlL0"
+				]
+			},
+			"countryCode": "GQ",
+			"companyContactDetails": [
+				"John80@example.com",
+				"Wilson.Blanda60@example.com",
+				"Easton.Balistreri@example.com",
+				"Keyon.Bergnaum73@example.com"
+			],
+			"companyAlternativeNames": [
+				"Barton, Nikolaus and Bogan",
+				"Lang, Marquardt and Prohaska",
+				"Littel Inc"
+			],
+			"companyLegalForm": null,
+			"website": "https://gregarious-voyage.name",
+			"isTeaserCompany": false,
+			"parentCompanyLei": null
+		},
+		"t": {
+			"general": {
+				"masterData": {
+					"dataDate": "2024-03-14",
+					"headOfficeInGermany": "No",
+					"groupOfCompanies": "No",
+					"groupOfCompaniesName": "initiatives",
+					"industry": [
+						"11.05",
+						"26.2",
+						"26.80",
+						"73.12",
+						"81.21"
+					]
+				}
+			},
+			"governance": {
+				"generalViolations": {
+					"legalProceedings": "Yes",
+					"humanRightsOrEnvironmentalViolations": "Yes"
+				}
+			},
+			"social": {
+				"childLabor": {
+					"worstFormsOfChildLaborForms": "markets",
+					"measuresForPreventionOfEmploymentUnderLocalMinimumAge": null,
+					"employmentUnderLocalMinimumAgePreventionEmploymentContracts": null
+				}
+			}
+		},
+		"reportingPeriod": "2024"
+	},
+	{
+		"companyInformation": {
+			"companyName": "Cassin - Brown",
+			"headquarters": "Fort Elvie",
+			"headquartersPostalCode": "32474-3777",
+			"sector": null,
+			"identifiers": {
+				"Lei": [],
+				"Isin": [
+					"0j6PWV2wOwDt",
+					"VdoMNCxsKcbD"
+				],
+				"PermId": [
+					"5gdNsOpcpO"
+				],
+				"Ticker": [],
+				"Duns": [],
+				"VatNumber": [
+					"szqNEauqW"
+				],
+				"CompanyRegistrationNumber": []
+			},
+			"countryCode": "AF",
+			"companyContactDetails": null,
+			"companyAlternativeNames": [
+				"Berge - Gerlach",
+				"Runolfsson Inc"
+			],
+			"companyLegalForm": "GmbH",
+			"website": null,
+			"isTeaserCompany": false,
+			"parentCompanyLei": "Iz6MqEN8IWnr2fBY3Nom"
+		},
+		"t": {
+			"general": {
+				"masterData": {
+					"dataDate": "2024-11-18",
+					"headOfficeInGermany": "No",
+					"groupOfCompanies": "Yes",
+					"groupOfCompaniesName": "schemas",
+					"industry": null
+				}
+			},
+			"governance": {
+				"generalViolations": {
+					"legalProceedings": "No",
+					"humanRightsOrEnvironmentalViolations": "Yes"
+				}
+			},
+			"social": {
+				"childLabor": {
+					"worstFormsOfChildLaborForms": "portals",
+					"measuresForPreventionOfEmploymentUnderLocalMinimumAge": "Yes",
+					"employmentUnderLocalMinimumAgePreventionEmploymentContracts": "No"
+				}
+			}
+		},
+		"reportingPeriod": "2020"
+	},
+	{
+		"companyInformation": {
+			"companyName": "Labadie LLC",
+			"headquarters": "Arvelland",
+			"headquartersPostalCode": "21423",
+			"sector": "convergence",
+			"identifiers": {
+				"Lei": [],
+				"Isin": [
+					"AEtWOuPQRfRJ",
+					"GSo0GknBVAkG"
+				],
+				"PermId": [],
+				"Ticker": [
+					"7NfLYSX"
+				],
+				"Duns": [
+					"wnLdnsq1i"
+				],
+				"VatNumber": [
+					"Qzjb9cTyP"
+				],
+				"CompanyRegistrationNumber": [
+					"dgP2otvqlQt68Vi"
+				]
+			},
+			"countryCode": "SH",
+			"companyContactDetails": [
+				"Thelma.Kreiger96@example.com",
+				"Nathan.Bins@example.com",
+				"Delphia.Heaney2@example.com",
+				"Raphaelle97@example.com",
+				"Mona25@example.com"
+			],
+			"companyAlternativeNames": [
+				"Koelpin Group",
+				"Wiegand - Oberbrunner"
+			],
+			"companyLegalForm": "Private Limited Company (Ltd)",
+			"website": "https://pesky-invoice.net/",
+			"isTeaserCompany": false,
+			"parentCompanyLei": null
+		},
+		"t": {
+			"general": {
+				"masterData": {
+					"dataDate": "2024-03-28",
+					"headOfficeInGermany": "Yes",
+					"groupOfCompanies": "No",
+					"groupOfCompaniesName": "solutions",
+					"industry": [
+						"27.11",
+						"35.13",
+						"38.12",
+						"46.2",
+						"87.2"
+					]
+				}
+			},
+			"governance": {
+				"generalViolations": {
+					"legalProceedings": "Yes",
+					"humanRightsOrEnvironmentalViolations": "No"
+				}
+			},
+			"social": {
+				"childLabor": {
+					"worstFormsOfChildLaborForms": "communities",
+					"measuresForPreventionOfEmploymentUnderLocalMinimumAge": null,
+					"employmentUnderLocalMinimumAgePreventionEmploymentContracts": "No"
+				}
+			}
+		},
+		"reportingPeriod": "2021"
+	},
+	{
+		"companyInformation": {
+			"companyName": "VonRueden Group",
+			"headquarters": "Smithamstead",
+			"headquartersPostalCode": "94384",
+			"sector": "deliverables",
+			"identifiers": {
+				"Lei": [],
+				"Isin": [
+					"ccnKqPpVdtf4",
+					"rVfSNrh5vxjY"
+				],
+				"PermId": [
+					"uAy94Dml70"
+				],
+				"Ticker": [
+					"8IbgvnH"
+				],
+				"Duns": [],
+				"VatNumber": [
+					"bgo0f9yN2"
+				],
+				"CompanyRegistrationNumber": []
+			},
+			"countryCode": "NA",
+			"companyContactDetails": [
+				"Jerald_Hermann@example.com",
+				"Eulah82@example.com",
+				"Juvenal_Mills71@example.com",
+				"Annabell.Lakin@example.com"
+			],
+			"companyAlternativeNames": [
+				"Brekke, Carroll and Fay",
+				"Dach, Brekke and Rodriguez",
+				"Ondricka, Littel and Kertzmann",
+				"Purdy, O'Hara and Murphy"
+			],
+			"companyLegalForm": "Public Limited Company (PLC)",
+			"website": "https://glass-supplement.net",
+			"isTeaserCompany": false,
+			"parentCompanyLei": null
+		},
+		"t": {
+			"general": {
+				"masterData": {
+					"dataDate": "2024-07-25",
+					"headOfficeInGermany": "Yes",
+					"groupOfCompanies": "No",
+					"groupOfCompaniesName": "technologies",
+					"industry": [
+						"22",
+						"37.0",
+						"46.23",
+						"47.51",
+						"55.10"
+					]
+				}
+			},
+			"governance": {
+				"generalViolations": {
+					"legalProceedings": "No",
+					"humanRightsOrEnvironmentalViolations": "No"
+				}
+			},
+			"social": {
+				"childLabor": {
+					"worstFormsOfChildLaborForms": "eyeballs",
+					"measuresForPreventionOfEmploymentUnderLocalMinimumAge": "No",
+					"employmentUnderLocalMinimumAgePreventionEmploymentContracts": "Yes"
+				}
+			}
+		},
+		"reportingPeriod": "2020"
+	},
+	{
+		"companyInformation": {
+			"companyName": "Blick Inc",
+			"headquarters": "Ullrichside",
+			"headquartersPostalCode": "75552",
+			"sector": "technologies",
+			"identifiers": {
+				"Lei": [],
+				"Isin": [
+					"SWFA9LI3Z6Eg"
+				],
+				"PermId": [],
+				"Ticker": [],
+				"Duns": [
+					"LXfzjJcz1"
+				],
+				"VatNumber": [
+					"pLAqrSIHc"
+				],
+				"CompanyRegistrationNumber": []
+			},
+			"countryCode": "GP",
+			"companyContactDetails": [
+				"Cullen_OKeefe@example.com",
+				"Charles.Fritsch@example.com",
+				"Kathryne_Carroll@example.com"
+			],
+			"companyAlternativeNames": [
+				"Cormier, Bauch and Ferry",
+				"Marvin, Abshire and Harber"
+			],
+			"companyLegalForm": "Limited Liability Partnership (LLP)",
+			"website": "https://murky-villa.info/",
+			"isTeaserCompany": false,
+			"parentCompanyLei": null
+		},
+		"t": {
+			"general": {
+				"masterData": {
+					"dataDate": "2024-11-20",
+					"headOfficeInGermany": "Yes",
+					"groupOfCompanies": "No",
+					"groupOfCompaniesName": "interfaces",
+					"industry": []
+				}
+			},
+			"governance": {
+				"generalViolations": {
+					"legalProceedings": "No",
+					"humanRightsOrEnvironmentalViolations": "No"
+				}
+			},
+			"social": {
+				"childLabor": {
+					"worstFormsOfChildLaborForms": "systems",
+					"measuresForPreventionOfEmploymentUnderLocalMinimumAge": null,
+					"employmentUnderLocalMinimumAgePreventionEmploymentContracts": "Yes"
+				}
+			}
+		},
+		"reportingPeriod": "2023"
+	},
+	{
+		"companyInformation": {
+			"companyName": "Veum LLC",
+			"headquarters": "Bauchboro",
+			"headquartersPostalCode": "47277",
+			"sector": null,
+			"identifiers": {
+				"Lei": [
+					"pSoWfsEsm1EcvSglXjx4"
+				],
+				"Isin": [
+					"NgILX8ZjjTwP",
+					"aQYtfVYsUpz5"
+				],
+				"PermId": [],
+				"Ticker": [],
+				"Duns": [
+					"kLZ8pkGvI"
+				],
+				"VatNumber": [
+					"g6Yt7GcM3"
+				],
+				"CompanyRegistrationNumber": [
+					"XaNqAFbSWDeTpHW"
+				]
+			},
+			"countryCode": "TR",
+			"companyContactDetails": [
+				"Marcus_Daniel76@example.com",
+				"Everardo.Luettgen@example.com",
+				"Stephany82@example.com"
+			],
+			"companyAlternativeNames": [
+				"Johnson, Toy and Langworth",
+				"Stanton - Douglas",
+				"Weissnat Group"
+			],
+			"companyLegalForm": "Limited Liability Partnership (LLP)",
+			"website": null,
+			"isTeaserCompany": false,
+			"parentCompanyLei": null
+		},
+		"t": {
+			"general": {
+				"masterData": {
+					"dataDate": "2024-04-06",
+					"headOfficeInGermany": "Yes",
+					"groupOfCompanies": "No",
+					"groupOfCompaniesName": "initiatives",
+					"industry": [
+						"01.13",
+						"32.4"
+					]
+				}
+			},
+			"governance": {
+				"generalViolations": {
+					"legalProceedings": "Yes",
+					"humanRightsOrEnvironmentalViolations": "Yes"
+				}
+			},
+			"social": {
+				"childLabor": {
+					"worstFormsOfChildLaborForms": "partnerships",
+					"measuresForPreventionOfEmploymentUnderLocalMinimumAge": null,
+					"employmentUnderLocalMinimumAgePreventionEmploymentContracts": "Yes"
+				}
+			}
+		},
+		"reportingPeriod": "2024"
+	},
+	{
+		"companyInformation": {
+			"companyName": "Bins and Sons",
+			"headquarters": "Lauderhill",
+			"headquartersPostalCode": "21816",
+			"sector": "technologies",
+			"identifiers": {
+				"Lei": [],
+				"Isin": [
+					"DKqneWUNuiHj",
+					"hfqz5UIrpFqC"
+				],
+				"PermId": [],
+				"Ticker": [
+					"Mvc8RE9"
+				],
+				"Duns": [
+					"hbEVUhGsl"
+				],
+				"VatNumber": [],
+				"CompanyRegistrationNumber": [
+					"xIinG9bvxaZDPla"
+				]
+			},
+			"countryCode": "CC",
+			"companyContactDetails": [
+				"Evert.Brekke@example.com",
+				"Gillian91@example.com",
+				"Fanny.Funk@example.com",
+				"Devan.Lubowitz21@example.com",
+				"Kelsi_Gleichner58@example.com"
+			],
+			"companyAlternativeNames": [
+				"Russel, Jenkins and Mosciski"
+			],
+			"companyLegalForm": "GmbH & Co. KG",
+			"website": "https://runny-impression.com/",
+			"isTeaserCompany": false,
+			"parentCompanyLei": "pSoWfsEsm1EcvSglXjx4"
+		},
+		"t": {
+			"general": {
+				"masterData": {
+					"dataDate": "2024-11-05",
+					"headOfficeInGermany": "No",
+					"groupOfCompanies": "No",
+					"groupOfCompaniesName": "functionalities",
+					"industry": [
+						"21.1",
+						"46.64"
+					]
+				}
+			},
+			"governance": {
+				"generalViolations": {
+					"legalProceedings": "No",
+					"humanRightsOrEnvironmentalViolations": "Yes"
+				}
+			},
+			"social": {
+				"childLabor": {
+					"worstFormsOfChildLaborForms": "systems",
+					"measuresForPreventionOfEmploymentUnderLocalMinimumAge": "No",
+					"employmentUnderLocalMinimumAgePreventionEmploymentContracts": "Yes"
+				}
+			}
+		},
+		"reportingPeriod": "2020"
+	},
+	{
+		"companyInformation": {
+			"companyName": "Langworth Inc",
+			"headquarters": "Hyattton",
+			"headquartersPostalCode": "32522",
+			"sector": "methodologies",
+			"identifiers": {
+				"Lei": [
+					"AUkEwHQwDUbXJdHT3cZk"
+				],
+				"Isin": [
+					"KuAlWDklwZEC"
+				],
+				"PermId": [
+					"CWOOWGrwus"
+				],
+				"Ticker": [
+					"Vwq6x2h"
+				],
+				"Duns": [
+					"GaH1uXNW5"
+				],
+				"VatNumber": [],
+				"CompanyRegistrationNumber": []
+			},
+			"countryCode": "RW",
+			"companyContactDetails": [
+				"Jayda.Windler@example.com",
+				"Donnie.Heathcote91@example.com",
+				"Alvah34@example.com",
+				"Soledad36@example.com",
+				"Lula_Langworth@example.com"
+			],
+			"companyAlternativeNames": [
+				"Boyle, Beer and Morissette",
+				"Brakus and Sons",
+				"Emard, Lemke and Schulist",
+				"Ward, Treutel and Ullrich"
+			],
+			"companyLegalForm": "Limited Liability Partnership (LLP)",
+			"website": null,
+			"isTeaserCompany": false,
+			"parentCompanyLei": null
+		},
+		"t": {
+			"general": {
+				"masterData": {
+					"dataDate": "2024-05-25",
+					"headOfficeInGermany": "No",
+					"groupOfCompanies": "Yes",
+					"groupOfCompaniesName": "partnerships",
+					"industry": []
+				}
+			},
+			"governance": {
+				"generalViolations": {
+					"legalProceedings": "No",
+					"humanRightsOrEnvironmentalViolations": "No"
+				}
+			},
+			"social": {
+				"childLabor": {
+					"worstFormsOfChildLaborForms": "lifetime value",
+					"measuresForPreventionOfEmploymentUnderLocalMinimumAge": "No",
+					"employmentUnderLocalMinimumAgePreventionEmploymentContracts": "No"
+				}
+			}
+		},
+		"reportingPeriod": "2023"
+	},
+	{
+		"companyInformation": {
+			"companyName": "Powlowski Inc",
+			"headquarters": "McDermottside",
+			"headquartersPostalCode": null,
+			"sector": "portals",
+			"identifiers": {
+				"Lei": [
+					"GAJGOuKGF2YUoH3QrzH3"
+				],
+				"Isin": [
+					"6NCYQgBPgwlH",
+					"VngL4fxHXxO5"
+				],
+				"PermId": [
+					"c1rstUHnGo"
+				],
+				"Ticker": [],
+				"Duns": [],
+				"VatNumber": [
+					"NCEuxIgdB"
+				],
+				"CompanyRegistrationNumber": [
+					"mcCj6k2L2o65PM2"
+				]
+			},
+			"countryCode": "SI",
+			"companyContactDetails": null,
+			"companyAlternativeNames": [
+				"Baumbach and Sons",
+				"Feest, Collier and Johnson",
+				"Renner LLC",
+				"Rosenbaum - Ondricka"
+			],
+			"companyLegalForm": "AG",
+			"website": "https://stunning-lathe.biz/",
+			"isTeaserCompany": false,
+			"parentCompanyLei": "AUkEwHQwDUbXJdHT3cZk"
+		},
+		"t": {
+			"general": {
+				"masterData": {
+					"dataDate": "2024-10-25",
+					"headOfficeInGermany": "No",
+					"groupOfCompanies": "Yes",
+					"groupOfCompaniesName": null,
+					"industry": [
+						"18.20",
+						"25.11",
+						"46.61"
+					]
+				}
+			},
+			"governance": {
+				"generalViolations": {
+					"legalProceedings": "Yes",
+					"humanRightsOrEnvironmentalViolations": "Yes"
+				}
+			},
+			"social": {
+				"childLabor": {
+					"worstFormsOfChildLaborForms": "content",
+					"measuresForPreventionOfEmploymentUnderLocalMinimumAge": "Yes",
+					"employmentUnderLocalMinimumAgePreventionEmploymentContracts": null
+				}
+			}
+		},
+		"reportingPeriod": "2022"
+	},
+	{
+		"companyInformation": {
+			"companyName": "Ernser LLC",
+			"headquarters": "Rosariocester",
+			"headquartersPostalCode": "45708",
+			"sector": "partnerships",
+			"identifiers": {
+				"Lei": [
+					"nzo4a8PV4sJ9n5mEbBof"
+				],
+				"Isin": [
+					"NRHAHa7Jb0hb",
+					"vrpViXHylBap"
+				],
+				"PermId": [],
+				"Ticker": [
+					"A5ZtuOY"
+				],
+				"Duns": [
+					"ozjMGNeq4"
+				],
+				"VatNumber": [],
+				"CompanyRegistrationNumber": [
+					"AQXiq30Mufrz9Qi"
+				]
+			},
+			"countryCode": "SC",
+			"companyContactDetails": [
+				"Garnett12@example.com",
+				"Brandy_DAmore16@example.com",
+				"Stefanie52@example.com",
+				"Alexandrine.Keebler@example.com"
+			],
+			"companyAlternativeNames": [
+				"Hermiston LLC",
+				"Homenick, Kris and Kuhlman",
+				"Hoppe LLC",
+				"Lueilwitz - Beatty"
+			],
+			"companyLegalForm": null,
+			"website": "https://flickering-fiberglass.name",
+			"isTeaserCompany": false,
+			"parentCompanyLei": "GAJGOuKGF2YUoH3QrzH3"
+		},
+		"t": {
+			"general": {
+				"masterData": {
+					"dataDate": "2024-04-13",
+					"headOfficeInGermany": "Yes",
+					"groupOfCompanies": "No",
+					"groupOfCompaniesName": null,
+					"industry": [
+						"46.72",
+						"50.4",
+						"74.3",
+						"82.92"
+					]
+				}
+			},
+			"governance": {
+				"generalViolations": {
+					"legalProceedings": "Yes",
+					"humanRightsOrEnvironmentalViolations": "No"
+				}
+			},
+			"social": {
+				"childLabor": {
+					"worstFormsOfChildLaborForms": "lifetime value",
+					"measuresForPreventionOfEmploymentUnderLocalMinimumAge": "No",
+					"employmentUnderLocalMinimumAgePreventionEmploymentContracts": "No"
+				}
+			}
+		},
+		"reportingPeriod": "2020"
+	},
+	{
+		"companyInformation": {
+			"companyName": "Gottlieb LLC",
+			"headquarters": "Fort Eric",
+			"headquartersPostalCode": "22128-5814",
+			"sector": "relationships",
+			"identifiers": {
+				"Lei": [
+					"ljUN4uBCeW72fkcx1zcn"
+				],
+				"Isin": [
+					"vaNeJPnvCTnI",
+					"47BkyUbdne36"
+				],
+				"PermId": [],
+				"Ticker": [],
+				"Duns": [],
+				"VatNumber": [
+					"5SFTugVYl"
+				],
+				"CompanyRegistrationNumber": [
+					"5quhtiMIM6lIU4r"
+				]
+			},
+			"countryCode": "ZA",
+			"companyContactDetails": [],
+			"companyAlternativeNames": [
+				"Cruickshank and Sons",
+				"Halvorson Inc",
+				"Tremblay, Moore and Purdy"
+			],
+			"companyLegalForm": "Partnership without Limited Liability",
+			"website": null,
+			"isTeaserCompany": false,
+			"parentCompanyLei": "nzo4a8PV4sJ9n5mEbBof"
+		},
+		"t": {
+			"general": {
+				"masterData": {
+					"dataDate": "2024-04-17",
+					"headOfficeInGermany": "Yes",
+					"groupOfCompanies": "No",
+					"groupOfCompaniesName": null,
+					"industry": null
+				}
+			},
+			"governance": {
+				"generalViolations": {
+					"legalProceedings": null,
+					"humanRightsOrEnvironmentalViolations": "No"
+				}
+			},
+			"social": {
+				"childLabor": {
+					"worstFormsOfChildLaborForms": "solutions",
+					"measuresForPreventionOfEmploymentUnderLocalMinimumAge": "No",
+					"employmentUnderLocalMinimumAgePreventionEmploymentContracts": "No"
+				}
+			}
+		},
+		"reportingPeriod": "2022"
+	},
+	{
+		"companyInformation": {
+			"companyName": "Stokes - MacGyver",
+			"headquarters": "Moisesport",
+			"headquartersPostalCode": "60094",
+			"sector": "channels",
+			"identifiers": {
+				"Lei": [],
+				"Isin": [
+					"7RbInsKwAbGh"
+				],
+				"PermId": [],
+				"Ticker": [],
+				"Duns": [],
+				"VatNumber": [
+					"PnQSj9NLn"
+				],
+				"CompanyRegistrationNumber": []
+			},
+			"countryCode": "GM",
+			"companyContactDetails": [
+				"Rossie.Leannon93@example.com",
+				"Margarita22@example.com",
+				"Cleta_Stehr@example.com",
+				"Albert_Howell@example.com",
+				"Geovany_Shields59@example.com"
+			],
+			"companyAlternativeNames": [
+				"Abbott, Abbott and Lesch",
+				"Lakin Group",
+				"Langosh Group"
+			],
+			"companyLegalForm": "GmbH & Co. KG",
+			"website": "https://mediocre-facility.net",
+			"isTeaserCompany": false,
+			"parentCompanyLei": "ljUN4uBCeW72fkcx1zcn"
+		},
+		"t": {
+			"general": {
+				"masterData": {
+					"dataDate": "2024-01-29",
+					"headOfficeInGermany": "No",
+					"groupOfCompanies": "Yes",
+					"groupOfCompaniesName": "experiences",
+					"industry": [
+						"49.1"
+					]
+				}
+			},
+			"governance": {
+				"generalViolations": {
+					"legalProceedings": "Yes",
+					"humanRightsOrEnvironmentalViolations": "No"
+				}
+			},
+			"social": {
+				"childLabor": {
+					"worstFormsOfChildLaborForms": "blockchains",
+					"measuresForPreventionOfEmploymentUnderLocalMinimumAge": "No",
+					"employmentUnderLocalMinimumAgePreventionEmploymentContracts": "Yes"
+				}
+			}
+		},
+		"reportingPeriod": "2024"
+	},
+	{
+		"companyInformation": {
+			"companyName": "Nitzsche, Olson and Jakubowski",
+			"headquarters": "Mosciskichester",
+			"headquartersPostalCode": "54861-4579",
+			"sector": "niches",
+			"identifiers": {
+				"Lei": [],
+				"Isin": [
+					"IUFOuDFIkJQr",
+					"2Mx8fH71DtvB"
+				],
+				"PermId": [],
+				"Ticker": [],
+				"Duns": [],
+				"VatNumber": [],
+				"CompanyRegistrationNumber": [
+					"htWk7ZKtSxiE0pG"
+				]
+			},
+			"countryCode": "ML",
+			"companyContactDetails": null,
+			"companyAlternativeNames": [],
+			"companyLegalForm": "Limited Liability Partnership (LLP)",
+			"website": null,
+			"isTeaserCompany": false,
+			"parentCompanyLei": null
+		},
+		"t": {
+			"general": {
+				"masterData": {
+					"dataDate": "2024-10-16",
+					"headOfficeInGermany": "Yes",
+					"groupOfCompanies": "No",
+					"groupOfCompaniesName": "action-items",
+					"industry": [
+						"55.30",
+						"64.20",
+						"82.2"
+					]
+				}
+			},
+			"governance": {
+				"generalViolations": {
+					"legalProceedings": "No",
+					"humanRightsOrEnvironmentalViolations": "No"
+				}
+			},
+			"social": {
+				"childLabor": {
+					"worstFormsOfChildLaborForms": null,
+					"measuresForPreventionOfEmploymentUnderLocalMinimumAge": "Yes",
+					"employmentUnderLocalMinimumAgePreventionEmploymentContracts": null
+				}
+			}
+		},
+		"reportingPeriod": "2022"
+	},
+	{
+		"companyInformation": {
+			"companyName": "O'Connell - Upton",
+			"headquarters": "Raleigh",
+			"headquartersPostalCode": "01201-3897",
+			"sector": "experiences",
+			"identifiers": {
+				"Lei": [],
+				"Isin": [
+					"0AYHOOgQkr87"
+				],
+				"PermId": [],
+				"Ticker": [],
+				"Duns": [
+					"xV4dWPHcr"
+				],
+				"VatNumber": [],
+				"CompanyRegistrationNumber": []
+			},
+			"countryCode": "CX",
+			"companyContactDetails": [
+				"Audra50@example.com",
+				"Maxwell_Smith46@example.com",
+				"Rossie31@example.com",
+				"Jayden_Jakubowski41@example.com"
+			],
+			"companyAlternativeNames": [
+				"Carroll, Ryan and Cassin",
+				"Gottlieb and Sons",
+				"Lind - Botsford"
+			],
+			"companyLegalForm": "AG",
+			"website": "https://big-hearted-labour.name",
+			"isTeaserCompany": false,
+			"parentCompanyLei": null
+		},
+		"t": {
+			"general": {
+				"masterData": {
+					"dataDate": "2024-04-28",
+					"headOfficeInGermany": "No",
+					"groupOfCompanies": "Yes",
+					"groupOfCompaniesName": "metrics",
+					"industry": [
+						"01.16",
+						"20.42",
+						"59.13",
+						"62.01"
+					]
+				}
+			},
+			"governance": {
+				"generalViolations": {
+					"legalProceedings": null,
+					"humanRightsOrEnvironmentalViolations": null
+				}
+			},
+			"social": {
+				"childLabor": {
+					"worstFormsOfChildLaborForms": "relationships",
+					"measuresForPreventionOfEmploymentUnderLocalMinimumAge": "No",
+					"employmentUnderLocalMinimumAgePreventionEmploymentContracts": "No"
+				}
+			}
+		},
+		"reportingPeriod": "2022"
+	},
+	{
+		"companyInformation": {
+			"companyName": "Legros Group",
+			"headquarters": "Gracecester",
+			"headquartersPostalCode": null,
+			"sector": "architectures",
+			"identifiers": {
+				"Lei": [
+					"mrBMJ3OBdj5bQDTN8OhY"
+				],
+				"Isin": [
+					"UaieNQjZYnCc"
+				],
+				"PermId": [
+					"JrL3hZ5K6N"
+				],
+				"Ticker": [
+					"9Cn6rtA"
+				],
+				"Duns": [
+					"XK9YW4UXg"
+				],
+				"VatNumber": [
+					"rFh8c76D6"
+				],
+				"CompanyRegistrationNumber": []
+			},
+			"countryCode": "MY",
+			"companyContactDetails": [
+				"Jaron.Stoltenberg39@example.com"
+			],
+			"companyAlternativeNames": [
+				"Boehm LLC",
+				"Hamill, Turcotte and Goyette",
+				"VonRueden - Predovic"
+			],
+			"companyLegalForm": "Sole Trader",
+			"website": "https://spiffy-derivative.org/",
+			"isTeaserCompany": false,
+			"parentCompanyLei": null
+		},
+		"t": {
+			"general": {
+				"masterData": {
+					"dataDate": "2024-07-01",
+					"headOfficeInGermany": "No",
+					"groupOfCompanies": "Yes",
+					"groupOfCompaniesName": "e-commerce",
+					"industry": [
+						"01.42",
+						"14.39",
+						"20.17",
+						"53.2",
+						"Q"
+					]
+				}
+			},
+			"governance": {
+				"generalViolations": {
+					"legalProceedings": null,
+					"humanRightsOrEnvironmentalViolations": "Yes"
+				}
+			},
+			"social": {
+				"childLabor": {
+					"worstFormsOfChildLaborForms": "eyeballs",
+					"measuresForPreventionOfEmploymentUnderLocalMinimumAge": null,
+					"employmentUnderLocalMinimumAgePreventionEmploymentContracts": "Yes"
+				}
+			}
+		},
+		"reportingPeriod": "2024"
+	},
+	{
+		"companyInformation": {
+			"companyName": "Oberbrunner Group",
+			"headquarters": "Pico Rivera",
+			"headquartersPostalCode": "26098",
+			"sector": "paradigms",
+			"identifiers": {
+				"Lei": [],
+				"Isin": [
+					"WP1m01epaErH"
+				],
+				"PermId": [],
+				"Ticker": [
+					"SXwUvDL"
+				],
+				"Duns": [
+					"ZoJ9kgG0c"
+				],
+				"VatNumber": [],
+				"CompanyRegistrationNumber": [
+					"JJ1YGcCvpzhdBJL"
+				]
+			},
+			"countryCode": "GP",
+			"companyContactDetails": null,
+			"companyAlternativeNames": [],
+			"companyLegalForm": "Partnership without Limited Liability",
+			"website": "https://aware-antelope.com/",
+			"isTeaserCompany": false,
+			"parentCompanyLei": "mrBMJ3OBdj5bQDTN8OhY"
+		},
+		"t": {
+			"general": {
+				"masterData": {
+					"dataDate": "2024-10-21",
+					"headOfficeInGermany": "No",
+					"groupOfCompanies": "Yes",
+					"groupOfCompaniesName": "interfaces",
+					"industry": [
+						"26.8"
+					]
+				}
+			},
+			"governance": {
+				"generalViolations": {
+					"legalProceedings": "Yes",
+					"humanRightsOrEnvironmentalViolations": "Yes"
+				}
+			},
+			"social": {
+				"childLabor": {
+					"worstFormsOfChildLaborForms": "e-markets",
+					"measuresForPreventionOfEmploymentUnderLocalMinimumAge": "Yes",
+					"employmentUnderLocalMinimumAgePreventionEmploymentContracts": "No"
+				}
+			}
+		},
+		"reportingPeriod": "2022"
+	},
+	{
+		"companyInformation": {
+			"companyName": "Yost, Wolff and Dietrich",
+			"headquarters": "Shaniafort",
+			"headquartersPostalCode": "63064",
+			"sector": null,
+			"identifiers": {
+				"Lei": [
+					"OfUMHQiQ0qNxmBtiOqsc"
+				],
+				"Isin": [
+					"Kbo4DGC7jZvG"
+				],
+				"PermId": [],
+				"Ticker": [
+					"vCoeAtx"
+				],
+				"Duns": [],
+				"VatNumber": [
+					"NxMz6YrsU"
+				],
+				"CompanyRegistrationNumber": [
+					"L6qFDk194RX18ry"
+				]
+			},
+			"countryCode": "DM",
+			"companyContactDetails": [
+				"Prince52@example.com",
+				"Maryam.Terry@example.com",
+				"Gilbert23@example.com",
+				"Ryleigh_Schulist@example.com",
+				"Aiyana76@example.com"
+			],
+			"companyAlternativeNames": [],
+			"companyLegalForm": "Private Limited Company (Ltd)",
+			"website": null,
+			"isTeaserCompany": false,
+			"parentCompanyLei": null
+		},
+		"t": {
+			"general": {
+				"masterData": {
+					"dataDate": "2024-11-25",
+					"headOfficeInGermany": null,
+					"groupOfCompanies": "Yes",
+					"groupOfCompaniesName": null,
+					"industry": null
+				}
+			},
+			"governance": {
+				"generalViolations": {
+					"legalProceedings": null,
+					"humanRightsOrEnvironmentalViolations": "No"
+				}
+			},
+			"social": {
+				"childLabor": {
+					"worstFormsOfChildLaborForms": null,
+					"measuresForPreventionOfEmploymentUnderLocalMinimumAge": null,
+					"employmentUnderLocalMinimumAgePreventionEmploymentContracts": "Yes"
+				}
+			}
+		},
+		"reportingPeriod": "2021"
+	},
+	{
+		"companyInformation": {
+			"companyName": "Leannon, Schulist and Rempel",
+			"headquarters": "West Torrey",
+			"headquartersPostalCode": "77579-9794",
+			"sector": "lifetime value",
+			"identifiers": {
+				"Lei": [
+					"3utKCKtWls8D0eqTHl5S"
+				],
+				"Isin": [
+					"z5NP4QGR9RTn"
+				],
+				"PermId": [],
+				"Ticker": [
+					"zGpHB45"
+				],
+				"Duns": [],
+				"VatNumber": [
+					"zhIANHix7"
+				],
+				"CompanyRegistrationNumber": []
+			},
+			"countryCode": "LR",
+			"companyContactDetails": [
+				"Elenor34@example.com",
+				"Kendrick.Johnston41@example.com",
+				"Cornelius.Frami@example.com",
+				"Tamara.Fahey@example.com"
+			],
+			"companyAlternativeNames": [
+				"Cummings and Sons",
+				"Spinka, Stiedemann and Huel"
+			],
+			"companyLegalForm": "GmbH",
+			"website": null,
+			"isTeaserCompany": false,
+			"parentCompanyLei": "OfUMHQiQ0qNxmBtiOqsc"
+		},
+		"t": {
+			"general": {
+				"masterData": {
+					"dataDate": "2024-10-04",
+					"headOfficeInGermany": "No",
+					"groupOfCompanies": null,
+					"groupOfCompaniesName": "ROI",
+					"industry": null
+				}
+			},
+			"governance": {
+				"generalViolations": {
+					"legalProceedings": "No",
+					"humanRightsOrEnvironmentalViolations": "Yes"
+				}
+			},
+			"social": {
+				"childLabor": {
+					"worstFormsOfChildLaborForms": "e-business",
+					"measuresForPreventionOfEmploymentUnderLocalMinimumAge": null,
+					"employmentUnderLocalMinimumAgePreventionEmploymentContracts": "No"
+				}
+			}
+		},
+		"reportingPeriod": "2021"
+	},
+	{
+		"companyInformation": {
+			"companyName": "Koelpin LLC",
+			"headquarters": "Lillaview",
+			"headquartersPostalCode": "77017-8568",
+			"sector": "interfaces",
+			"identifiers": {
+				"Lei": [
+					"CIPKx75I7lq0WuLYp89s"
+				],
+				"Isin": [
+					"q2hDEXoq0glF"
+				],
+				"PermId": [
+					"TcwUP3sqvM"
+				],
+				"Ticker": [
+					"3Bv4gOJ"
+				],
+				"Duns": [
+					"UTVN9ctpV"
+				],
+				"VatNumber": [],
+				"CompanyRegistrationNumber": []
+			},
+			"countryCode": "CG",
+			"companyContactDetails": [
+				"Colleen_Rempel@example.com"
+			],
+			"companyAlternativeNames": [
+				"Beier and Sons"
+			],
+			"companyLegalForm": "Limited Liability Partnership (LLP)",
+			"website": null,
+			"isTeaserCompany": false,
+			"parentCompanyLei": "3utKCKtWls8D0eqTHl5S"
+		},
+		"t": {
+			"general": {
+				"masterData": {
+					"dataDate": "2025-01-07",
+					"headOfficeInGermany": "Yes",
+					"groupOfCompanies": "Yes",
+					"groupOfCompaniesName": "niches",
+					"industry": [
+						"24.1",
+						"68.32"
+					]
+				}
+			},
+			"governance": {
+				"generalViolations": {
+					"legalProceedings": "Yes",
+					"humanRightsOrEnvironmentalViolations": null
+				}
+			},
+			"social": {
+				"childLabor": {
+					"worstFormsOfChildLaborForms": "mindshare",
+					"measuresForPreventionOfEmploymentUnderLocalMinimumAge": "Yes",
+					"employmentUnderLocalMinimumAgePreventionEmploymentContracts": "Yes"
+				}
+			}
+		},
+		"reportingPeriod": "2022"
+	},
+	{
+		"companyInformation": {
+			"companyName": "Graham - Bauch",
+			"headquarters": "Cartermouth",
+			"headquartersPostalCode": "02735-8509",
+			"sector": "eyeballs",
+			"identifiers": {
+				"Lei": [
+					"3kgEfABe13o5TcYL0TpR"
+				],
+				"Isin": [
+					"DczQmU9QRHiq"
+				],
+				"PermId": [
+					"tALWVnIDcS"
+				],
+				"Ticker": [
+					"QUCfAVB"
+				],
+				"Duns": [
+					"wQI2TGh7l"
+				],
+				"VatNumber": [],
+				"CompanyRegistrationNumber": [
+					"I1m53myz7AS1rSg"
+				]
+			},
+			"countryCode": "SM",
+			"companyContactDetails": [
+				"Alexane.Huels73@example.com",
+				"Autumn97@example.com",
+				"Bud.Wuckert@example.com",
+				"Amara.Reichel@example.com",
+				"Clarissa87@example.com"
+			],
+			"companyAlternativeNames": [],
+			"companyLegalForm": null,
+			"website": "https://limited-fiddle.com",
+			"isTeaserCompany": false,
+			"parentCompanyLei": "CIPKx75I7lq0WuLYp89s"
+		},
+		"t": {
+			"general": {
+				"masterData": {
+					"dataDate": "2024-04-02",
+					"headOfficeInGermany": "Yes",
+					"groupOfCompanies": "Yes",
+					"groupOfCompaniesName": null,
+					"industry": null
+				}
+			},
+			"governance": {
+				"generalViolations": {
+					"legalProceedings": "No",
+					"humanRightsOrEnvironmentalViolations": null
+				}
+			},
+			"social": {
+				"childLabor": {
+					"worstFormsOfChildLaborForms": "applications",
+					"measuresForPreventionOfEmploymentUnderLocalMinimumAge": "Yes",
+					"employmentUnderLocalMinimumAgePreventionEmploymentContracts": "Yes"
+				}
+			}
+		},
+		"reportingPeriod": "2024"
+	},
+	{
+		"companyInformation": {
+			"companyName": "Little and Sons",
+			"headquarters": "North Devin",
+			"headquartersPostalCode": "72257-7811",
+			"sector": "deliverables",
+			"identifiers": {
+				"Lei": [
+					"7WUkYEQW7wLEBGQkaYug"
+				],
+				"Isin": [
+					"PiLyNFMx8vxy"
+				],
+				"PermId": [],
+				"Ticker": [
+					"bg5IKUx"
+				],
+				"Duns": [
+					"1iber4yKH"
+				],
+				"VatNumber": [],
+				"CompanyRegistrationNumber": [
+					"P1bEeDodF3D8Nkm"
+				]
+			},
+			"countryCode": "NI",
+			"companyContactDetails": [
+				"Elfrieda_Runte82@example.com"
+			],
+			"companyAlternativeNames": [
+				"Beer - Streich",
+				"Hamill, Gottlieb and Casper",
+				"Mosciski - Zulauf"
+			],
+			"companyLegalForm": "Limited Liability Partnership (LLP)",
+			"website": "https://clever-bladder.info/",
+			"isTeaserCompany": false,
+			"parentCompanyLei": "3kgEfABe13o5TcYL0TpR"
+		},
+		"t": {
+			"general": {
+				"masterData": {
+					"dataDate": "2024-10-29",
+					"headOfficeInGermany": "No",
+					"groupOfCompanies": "Yes",
+					"groupOfCompaniesName": null,
+					"industry": [
+						"01.2",
+						"10.7",
+						"32.50",
+						"33",
+						"47.3"
+					]
+				}
+			},
+			"governance": {
+				"generalViolations": {
+					"legalProceedings": null,
+					"humanRightsOrEnvironmentalViolations": "Yes"
+				}
+			},
+			"social": {
+				"childLabor": {
+					"worstFormsOfChildLaborForms": "e-markets",
+					"measuresForPreventionOfEmploymentUnderLocalMinimumAge": "No",
+					"employmentUnderLocalMinimumAgePreventionEmploymentContracts": "No"
+				}
+			}
+		},
+		"reportingPeriod": "2021"
+	},
+	{
+		"companyInformation": {
+			"companyName": "Mante, Flatley and Dare",
+			"headquarters": "South Catherine",
+			"headquartersPostalCode": "11845",
+			"sector": null,
+			"identifiers": {
+				"Lei": [],
+				"Isin": [
+					"d02r3hNVHVB9"
+				],
+				"PermId": [
+					"BGFXPjCHTp"
+				],
+				"Ticker": [],
+				"Duns": [],
+				"VatNumber": [],
+				"CompanyRegistrationNumber": []
+			},
+			"countryCode": "VG",
+			"companyContactDetails": [
+				"Kaleigh.Boyer@example.com"
+			],
+			"companyAlternativeNames": [
+				"Armstrong, Johnson and Dooley"
+			],
+			"companyLegalForm": null,
+			"website": "https://this-defense.net/",
+			"isTeaserCompany": false,
+			"parentCompanyLei": "7WUkYEQW7wLEBGQkaYug"
+		},
+		"t": {
+			"general": {
+				"masterData": {
+					"dataDate": "2024-12-16",
+					"headOfficeInGermany": "Yes",
+					"groupOfCompanies": "Yes",
+					"groupOfCompaniesName": "blockchains",
+					"industry": []
+				}
+			},
+			"governance": {
+				"generalViolations": {
+					"legalProceedings": "Yes",
+					"humanRightsOrEnvironmentalViolations": "No"
+				}
+			},
+			"social": {
+				"childLabor": {
+					"worstFormsOfChildLaborForms": "metrics",
+					"measuresForPreventionOfEmploymentUnderLocalMinimumAge": "No",
+					"employmentUnderLocalMinimumAgePreventionEmploymentContracts": null
+				}
+			}
+		},
+		"reportingPeriod": "2021"
+	},
+	{
+		"companyInformation": {
+			"companyName": "Torphy, Schaden and Koss",
+			"headquarters": "Laredo",
+			"headquartersPostalCode": null,
+			"sector": "paradigms",
+			"identifiers": {
+				"Lei": [],
+				"Isin": [
+					"A9U0i5gr5EHr"
+				],
+				"PermId": [],
+				"Ticker": [
+					"gVwVkTK"
+				],
+				"Duns": [],
+				"VatNumber": [
+					"HEDteAZhf"
+				],
+				"CompanyRegistrationNumber": [
+					"IqdeCZ987gQDnjF"
+				]
+			},
+			"countryCode": "DM",
+			"companyContactDetails": null,
+			"companyAlternativeNames": [
+				"Beier, Fahey and Okuneva",
+				"Okuneva and Sons"
+			],
+			"companyLegalForm": "Limited Liability Partnership (LLP)",
+			"website": "https://unfolded-spec.net/",
+			"isTeaserCompany": false,
+			"parentCompanyLei": null
+		},
+		"t": {
+			"general": {
+				"masterData": {
+					"dataDate": "2024-08-05",
+					"headOfficeInGermany": "Yes",
+					"groupOfCompanies": "No",
+					"groupOfCompaniesName": null,
+					"industry": [
+						"30.11"
+					]
+				}
+			},
+			"governance": {
+				"generalViolations": {
+					"legalProceedings": "Yes",
+					"humanRightsOrEnvironmentalViolations": "Yes"
+				}
+			},
+			"social": {
+				"childLabor": {
+					"worstFormsOfChildLaborForms": "interfaces",
+					"measuresForPreventionOfEmploymentUnderLocalMinimumAge": null,
+					"employmentUnderLocalMinimumAgePreventionEmploymentContracts": "Yes"
+				}
+			}
+		},
+		"reportingPeriod": "2024"
+	},
+	{
+		"companyInformation": {
+			"companyName": "Cormier - Tremblay",
+			"headquarters": "South Emil",
+			"headquartersPostalCode": "99270",
+			"sector": "metrics",
+			"identifiers": {
+				"Lei": [],
+				"Isin": [
+					"5PCQJ0cfzRk7"
+				],
+				"PermId": [
+					"CAqNBJAG1W"
+				],
+				"Ticker": [],
+				"Duns": [
+					"WL8393gTQ"
+				],
+				"VatNumber": [
+					"8JhEnXMoF"
+				],
+				"CompanyRegistrationNumber": [
+					"Gd6INnvFpmNnvtX"
+				]
+			},
+			"countryCode": "EE",
+			"companyContactDetails": null,
+			"companyAlternativeNames": [],
+			"companyLegalForm": "Private Limited Company (Ltd)",
+			"website": null,
+			"isTeaserCompany": false,
+			"parentCompanyLei": null
+		},
+		"t": {
+			"general": {
+				"masterData": {
+					"dataDate": "2024-06-26",
+					"headOfficeInGermany": null,
+					"groupOfCompanies": "No",
+					"groupOfCompaniesName": "bandwidth",
+					"industry": [
+						"01.42",
+						"28.9",
+						"47.73",
+						"65.12",
+						"68"
+					]
+				}
+			},
+			"governance": {
+				"generalViolations": {
+					"legalProceedings": "No",
+					"humanRightsOrEnvironmentalViolations": "Yes"
+				}
+			},
+			"social": {
+				"childLabor": {
+					"worstFormsOfChildLaborForms": "synergies",
+					"measuresForPreventionOfEmploymentUnderLocalMinimumAge": "Yes",
+					"employmentUnderLocalMinimumAgePreventionEmploymentContracts": null
+				}
+			}
+		},
+		"reportingPeriod": "2021"
+	},
+	{
+		"companyInformation": {
+			"companyName": "Lindgren, Parker and Schmeler",
+			"headquarters": "D'Amoreburgh",
+			"headquartersPostalCode": "91397",
+			"sector": "architectures",
+			"identifiers": {
+				"Lei": [
+					"azRx0U8xWPrWjPNqFChc"
+				],
+				"Isin": [
+					"qFv2ViBTLxCY"
+				],
+				"PermId": [],
+				"Ticker": [
+					"FENKLIa"
+				],
+				"Duns": [
+					"SxrwpnXOk"
+				],
+				"VatNumber": [
+					"bP9TkIKNB"
+				],
+				"CompanyRegistrationNumber": []
+			},
+			"countryCode": "RW",
+			"companyContactDetails": [
+				"Michael.Dach26@example.com",
+				"Garnet_Donnelly@example.com",
+				"Verlie56@example.com",
+				"David.Welch@example.com",
+				"Raquel48@example.com"
+			],
+			"companyAlternativeNames": [
+				"Murray, Botsford and Rice",
+				"Nitzsche and Sons",
+				"Quitzon LLC",
+				"Rohan Group"
+			],
+			"companyLegalForm": "Partnership without Limited Liability",
+			"website": "https://bare-salesman.com",
+			"isTeaserCompany": false,
+			"parentCompanyLei": null
+		},
+		"t": {
+			"general": {
+				"masterData": {
+					"dataDate": "2024-07-11",
+					"headOfficeInGermany": "No",
+					"groupOfCompanies": "Yes",
+					"groupOfCompaniesName": "metrics",
+					"industry": [
+						"93.21"
+					]
+				}
+			},
+			"governance": {
+				"generalViolations": {
+					"legalProceedings": "Yes",
+					"humanRightsOrEnvironmentalViolations": "No"
+				}
+			},
+			"social": {
+				"childLabor": {
+					"worstFormsOfChildLaborForms": "networks",
+					"measuresForPreventionOfEmploymentUnderLocalMinimumAge": "Yes",
+					"employmentUnderLocalMinimumAgePreventionEmploymentContracts": "Yes"
+				}
+			}
+		},
+		"reportingPeriod": "2022"
+	},
+	{
+		"companyInformation": {
+			"companyName": "Simonis - Monahan",
+			"headquarters": "Edinburg",
+			"headquartersPostalCode": null,
+			"sector": "ROI",
+			"identifiers": {
+				"Lei": [],
+				"Isin": [
+					"oTDpQcQH2Hgf"
+				],
+				"PermId": [
+					"eXfSdN9lKF"
+				],
+				"Ticker": [],
+				"Duns": [
+					"YRnAKD3Au"
+				],
+				"VatNumber": [],
+				"CompanyRegistrationNumber": []
+			},
+			"countryCode": "IS",
+			"companyContactDetails": null,
+			"companyAlternativeNames": [
+				"Becker, Howell and Donnelly",
+				"Bednar, McKenzie and Tillman",
+				"Beer, Yost and Davis",
+				"Orn, Rice and Hermiston"
+			],
+			"companyLegalForm": "AG",
+			"website": "https://flawed-riot.net",
+			"isTeaserCompany": false,
+			"parentCompanyLei": "azRx0U8xWPrWjPNqFChc"
+		},
+		"t": {
+			"general": {
+				"masterData": {
+					"dataDate": "2024-07-08",
+					"headOfficeInGermany": "Yes",
+					"groupOfCompanies": null,
+					"groupOfCompaniesName": "synergies",
+					"industry": [
+						"01.70",
+						"26.52"
+					]
+				}
+			},
+			"governance": {
+				"generalViolations": {
+					"legalProceedings": "No",
+					"humanRightsOrEnvironmentalViolations": "No"
+				}
+			},
+			"social": {
+				"childLabor": {
+					"worstFormsOfChildLaborForms": "interfaces",
+					"measuresForPreventionOfEmploymentUnderLocalMinimumAge": "No",
+					"employmentUnderLocalMinimumAgePreventionEmploymentContracts": "No"
+				}
+			}
+		},
+		"reportingPeriod": "2024"
+	},
+	{
+		"companyInformation": {
+			"companyName": "Kris Inc",
+			"headquarters": "Terryland",
+			"headquartersPostalCode": "81243",
+			"sector": "interfaces",
+			"identifiers": {
+				"Lei": [],
+				"Isin": [
+					"bjinUHmWBhwN"
+				],
+				"PermId": [
+					"yLe0q5BKBm"
+				],
+				"Ticker": [],
+				"Duns": [
+					"Md0WkMra7"
+				],
+				"VatNumber": [],
+				"CompanyRegistrationNumber": []
+			},
+			"countryCode": "MX",
+			"companyContactDetails": [
+				"Cydney.Halvorson@example.com",
+				"Ezra.Padberg@example.com",
+				"Syble_Funk@example.com"
+			],
+			"companyAlternativeNames": [
+				"Roob - Schowalter"
+			],
+			"companyLegalForm": "Sole Trader",
+			"website": null,
+			"isTeaserCompany": false,
+			"parentCompanyLei": null
+		},
+		"t": {
+			"general": {
+				"masterData": {
+					"dataDate": "2024-08-03",
+					"headOfficeInGermany": "No",
+					"groupOfCompanies": "Yes",
+					"groupOfCompaniesName": null,
+					"industry": [
+						"01.2",
+						"33.12",
+						"47.61",
+						"59.20"
+					]
+				}
+			},
+			"governance": {
+				"generalViolations": {
+					"legalProceedings": "No",
+					"humanRightsOrEnvironmentalViolations": "No"
+				}
+			},
+			"social": {
+				"childLabor": {
+					"worstFormsOfChildLaborForms": "solutions",
+					"measuresForPreventionOfEmploymentUnderLocalMinimumAge": "No",
+					"employmentUnderLocalMinimumAgePreventionEmploymentContracts": "No"
+				}
+			}
+		},
+		"reportingPeriod": "2021"
+	},
+	{
+		"companyInformation": {
+			"companyName": "Wuckert LLC",
+			"headquarters": "Schuylerbury",
+			"headquartersPostalCode": "45359-0712",
+			"sector": "portals",
+			"identifiers": {
+				"Lei": [],
+				"Isin": [
+					"Dv1Y9BhVcryB",
+					"jANRnTPOIHeT"
+				],
+				"PermId": [
+					"lSv8eEBUD8"
+				],
+				"Ticker": [
+					"mKKl5nx"
+				],
+				"Duns": [],
+				"VatNumber": [
+					"LY3KJmdjW"
+				],
+				"CompanyRegistrationNumber": [
+					"UYNHxzrjV4oPc0i"
+				]
+			},
+			"countryCode": "TD",
+			"companyContactDetails": [
+				"Emie_Durgan29@example.com",
+				"Frankie_Johnson61@example.com",
+				"Ole_Bins@example.com"
+			],
+			"companyAlternativeNames": [
+				"Kiehn and Sons",
+				"Mills Group",
+				"Schaden - Ward",
+				"Weber and Sons"
+			],
+			"companyLegalForm": "Limited Liability Partnership (LLP)",
+			"website": "https://oval-flash.info",
+			"isTeaserCompany": false,
+			"parentCompanyLei": null
+		},
+		"t": {
+			"general": {
+				"masterData": {
+					"dataDate": "2024-09-14",
+					"headOfficeInGermany": "No",
+					"groupOfCompanies": null,
+					"groupOfCompaniesName": null,
+					"industry": [
+						"19.2"
+					]
+				}
+			},
+			"governance": {
+				"generalViolations": {
+					"legalProceedings": "No",
+					"humanRightsOrEnvironmentalViolations": "No"
+				}
+			},
+			"social": {
+				"childLabor": {
+					"worstFormsOfChildLaborForms": null,
+					"measuresForPreventionOfEmploymentUnderLocalMinimumAge": "No",
+					"employmentUnderLocalMinimumAgePreventionEmploymentContracts": "No"
+				}
+			}
+		},
+		"reportingPeriod": "2021"
+	},
+	{
+		"companyInformation": {
+			"companyName": "Thiel - Buckridge",
+			"headquarters": "Pascaleland",
+			"headquartersPostalCode": "92828",
+			"sector": "schemas",
+			"identifiers": {
+				"Lei": [],
+				"Isin": [
+					"Ko1X4tUImFMf",
+					"g37uIpETOIdt"
+				],
+				"PermId": [],
+				"Ticker": [],
+				"Duns": [],
+				"VatNumber": [],
+				"CompanyRegistrationNumber": []
+			},
+			"countryCode": "CY",
+			"companyContactDetails": [
+				"Noel_Nader@example.com",
+				"Rogers.VonRueden@example.com",
+				"Colt_Lemke@example.com"
+			],
+			"companyAlternativeNames": [
+				"Armstrong - Tillman",
+				"Crooks, Hermann and Mertz",
+				"Feest Inc",
+				"Grady Inc"
+			],
+			"companyLegalForm": "Private Limited Company (Ltd)",
+			"website": "https://everlasting-extremist.com",
+			"isTeaserCompany": false,
+			"parentCompanyLei": null
+		},
+		"t": {
+			"general": {
+				"masterData": {
+					"dataDate": "2024-05-04",
+					"headOfficeInGermany": "Yes",
+					"groupOfCompanies": "No",
+					"groupOfCompaniesName": "networks",
+					"industry": []
+				}
+			},
+			"governance": {
+				"generalViolations": {
+					"legalProceedings": "Yes",
+					"humanRightsOrEnvironmentalViolations": "Yes"
+				}
+			},
+			"social": {
+				"childLabor": {
+					"worstFormsOfChildLaborForms": "partnerships",
+					"measuresForPreventionOfEmploymentUnderLocalMinimumAge": "No",
+					"employmentUnderLocalMinimumAgePreventionEmploymentContracts": null
+				}
+			}
+		},
+		"reportingPeriod": "2024"
+	},
+	{
+		"companyInformation": {
+			"companyName": "Thompson Inc",
+			"headquarters": "Zettacester",
+			"headquartersPostalCode": null,
+			"sector": "web services",
+			"identifiers": {
+				"Lei": [],
+				"Isin": [
+					"LzUzfKGHIoWg"
+				],
+				"PermId": [
+					"jpAJRxdcwA"
+				],
+				"Ticker": [],
+				"Duns": [],
+				"VatNumber": [],
+				"CompanyRegistrationNumber": [
+					"uLSezJYpjgHbi2X"
+				]
+			},
+			"countryCode": "SV",
+			"companyContactDetails": [
+				"Orlando77@example.com",
+				"Jackeline.Emard74@example.com"
+			],
+			"companyAlternativeNames": [
+				"Wuckert Inc"
+			],
+			"companyLegalForm": "Partnership without Limited Liability",
+			"website": null,
+			"isTeaserCompany": false,
+			"parentCompanyLei": null
+		},
+		"t": {
+			"general": {
+				"masterData": {
+					"dataDate": "2024-07-02",
+					"headOfficeInGermany": null,
+					"groupOfCompanies": "Yes",
+					"groupOfCompaniesName": "e-markets",
+					"industry": null
+				}
+			},
+			"governance": {
+				"generalViolations": {
+					"legalProceedings": "Yes",
+					"humanRightsOrEnvironmentalViolations": "No"
+				}
+			},
+			"social": {
+				"childLabor": {
+					"worstFormsOfChildLaborForms": "methodologies",
+					"measuresForPreventionOfEmploymentUnderLocalMinimumAge": "Yes",
+					"employmentUnderLocalMinimumAgePreventionEmploymentContracts": null
+				}
+			}
+		},
+		"reportingPeriod": "2024"
+	},
+	{
+		"companyInformation": {
+			"companyName": "Carter Group",
+			"headquarters": "North Cliffordfort",
+			"headquartersPostalCode": "76227-4837",
+			"sector": "niches",
+			"identifiers": {
+				"Lei": [
+					"qjDQe1liUTpF0kVo6UGY"
+				],
+				"Isin": [
+					"aur1dErYu6cm",
+					"XcSXGTfus61F"
+				],
+				"PermId": [
+					"pqrAv7WJTV"
+				],
+				"Ticker": [],
+				"Duns": [],
+				"VatNumber": [
+					"kPu5SYGHq"
+				],
+				"CompanyRegistrationNumber": []
+			},
+			"countryCode": "TH",
+			"companyContactDetails": null,
+			"companyAlternativeNames": [
+				"Brakus LLC",
+				"Friesen - Streich",
+				"Huels, Wehner and Schimmel"
+			],
+			"companyLegalForm": "Public Limited Company (PLC)",
+			"website": "https://any-cloud.org/",
+			"isTeaserCompany": false,
+			"parentCompanyLei": null
+		},
+		"t": {
+			"general": {
+				"masterData": {
+					"dataDate": "2024-07-15",
+					"headOfficeInGermany": "No",
+					"groupOfCompanies": "Yes",
+					"groupOfCompaniesName": "e-commerce",
+					"industry": null
+				}
+			},
+			"governance": {
+				"generalViolations": {
+					"legalProceedings": null,
+					"humanRightsOrEnvironmentalViolations": "No"
+				}
+			},
+			"social": {
+				"childLabor": {
+					"worstFormsOfChildLaborForms": "mindshare",
+					"measuresForPreventionOfEmploymentUnderLocalMinimumAge": "Yes",
+					"employmentUnderLocalMinimumAgePreventionEmploymentContracts": "Yes"
+				}
+			}
+		},
+		"reportingPeriod": "2022"
+	},
+	{
+		"companyInformation": {
+			"companyName": "Bergnaum - Hermiston",
+			"headquarters": "Murraymouth",
+			"headquartersPostalCode": "74003",
+			"sector": null,
+			"identifiers": {
+				"Lei": [],
+				"Isin": [
+					"IONcUk2iA4vz"
+				],
+				"PermId": [],
+				"Ticker": [
+					"aTqZrJv"
+				],
+				"Duns": [],
+				"VatNumber": [
+					"LQCLMfvCi"
+				],
+				"CompanyRegistrationNumber": [
+					"FE6VftiMQCMSJiA"
+				]
+			},
+			"countryCode": "SA",
+			"companyContactDetails": [
+				"Cecelia.Dooley79@example.com",
+				"Trystan_Dietrich@example.com",
+				"Dexter.Boyle64@example.com",
+				"Darron16@example.com",
+				"Caterina99@example.com"
+			],
+			"companyAlternativeNames": [],
+			"companyLegalForm": "Public Limited Company (PLC)",
+			"website": "https://metallic-ruffle.info",
+			"isTeaserCompany": false,
+			"parentCompanyLei": "qjDQe1liUTpF0kVo6UGY"
+		},
+		"t": {
+			"general": {
+				"masterData": {
+					"dataDate": "2024-11-30",
+					"headOfficeInGermany": "No",
+					"groupOfCompanies": "Yes",
+					"groupOfCompaniesName": "web services",
+					"industry": [
+						"32.1",
+						"46.49"
+					]
+				}
+			},
+			"governance": {
+				"generalViolations": {
+					"legalProceedings": "Yes",
+					"humanRightsOrEnvironmentalViolations": "Yes"
+				}
+			},
+			"social": {
+				"childLabor": {
+					"worstFormsOfChildLaborForms": null,
+					"measuresForPreventionOfEmploymentUnderLocalMinimumAge": "No",
+					"employmentUnderLocalMinimumAgePreventionEmploymentContracts": null
+				}
+			}
+		},
+		"reportingPeriod": "2021"
+	},
+	{
+		"companyInformation": {
+			"companyName": "Oberbrunner - Mayer",
+			"headquarters": "Lake Sanford",
+			"headquartersPostalCode": "26695",
+			"sector": "methodologies",
+			"identifiers": {
+				"Lei": [
+					"eLOKBHdgjHgUpCoAzXen"
+				],
+				"Isin": [
+					"ic71sRXoaBp5"
+				],
+				"PermId": [],
+				"Ticker": [],
+				"Duns": [],
+				"VatNumber": [],
+				"CompanyRegistrationNumber": [
+					"W09c9IdVHQVMddT"
+				]
+			},
+			"countryCode": "LY",
+			"companyContactDetails": [
+				"Brant_Schulist@example.com"
+			],
+			"companyAlternativeNames": [
+				"Jast, Hansen and Goldner",
+				"Lindgren, Wuckert and Satterfield",
+				"Wisozk LLC"
+			],
+			"companyLegalForm": null,
+			"website": "https://several-mortise.net/",
+			"isTeaserCompany": false,
+			"parentCompanyLei": null
+		},
+		"t": {
+			"general": {
+				"masterData": {
+					"dataDate": "2024-06-20",
+					"headOfficeInGermany": "Yes",
+					"groupOfCompanies": "No",
+					"groupOfCompaniesName": "solutions",
+					"industry": [
+						"25.92",
+						"26.6",
+						"30.9",
+						"56.1",
+						"71.11"
+					]
+				}
+			},
+			"governance": {
+				"generalViolations": {
+					"legalProceedings": "No",
+					"humanRightsOrEnvironmentalViolations": "Yes"
+				}
+			},
+			"social": {
+				"childLabor": {
+					"worstFormsOfChildLaborForms": "infrastructures",
+					"measuresForPreventionOfEmploymentUnderLocalMinimumAge": null,
+					"employmentUnderLocalMinimumAgePreventionEmploymentContracts": null
+				}
+			}
+		},
+		"reportingPeriod": "2024"
+	},
+	{
+		"companyInformation": {
+			"companyName": "Kilback, Dickens and Watsica",
+			"headquarters": "Alizeshire",
+			"headquartersPostalCode": "60699-9696",
+			"sector": null,
+			"identifiers": {
+				"Lei": [
+					"nnCKmBHAFzqNx2238F2E"
+				],
+				"Isin": [
+					"RZXf3xD6Cck8"
+				],
+				"PermId": [],
+				"Ticker": [],
+				"Duns": [
+					"l3ju7gI9I"
+				],
+				"VatNumber": [],
+				"CompanyRegistrationNumber": [
+					"Hg4PcmBoyBYapJ4"
+				]
+			},
+			"countryCode": "AF",
+			"companyContactDetails": null,
+			"companyAlternativeNames": [
+				"Block, Bayer and Kihn",
+				"Lowe Inc",
+				"Nolan - Bins",
+				"O'Reilly - Hettinger"
+			],
+			"companyLegalForm": "Private Limited Company (Ltd)",
+			"website": "https://unique-soliloquy.com",
+			"isTeaserCompany": false,
+			"parentCompanyLei": "eLOKBHdgjHgUpCoAzXen"
+		},
+		"t": {
+			"general": {
+				"masterData": {
+					"dataDate": "2024-12-18",
+					"headOfficeInGermany": "Yes",
+					"groupOfCompanies": null,
+					"groupOfCompaniesName": "bandwidth",
+					"industry": null
+				}
+			},
+			"governance": {
+				"generalViolations": {
+					"legalProceedings": "Yes",
+					"humanRightsOrEnvironmentalViolations": "Yes"
+				}
+			},
+			"social": {
+				"childLabor": {
+					"worstFormsOfChildLaborForms": "users",
+					"measuresForPreventionOfEmploymentUnderLocalMinimumAge": "No",
+					"employmentUnderLocalMinimumAgePreventionEmploymentContracts": "Yes"
+				}
+			}
+		},
+		"reportingPeriod": "2023"
+	},
+	{
+		"companyInformation": {
+			"companyName": "Bernhard, Lowe and Kirlin",
+			"headquarters": "Javonteberg",
+			"headquartersPostalCode": "50056",
+			"sector": "content",
+			"identifiers": {
+				"Lei": [
+					"MS01dpe9y1B6k3pzfXfT"
+				],
+				"Isin": [
+					"oEKCZ4S38vnt"
+				],
+				"PermId": [],
+				"Ticker": [
+					"lgQ3uuV"
+				],
+				"Duns": [],
+				"VatNumber": [
+					"wCKdIuPmc"
+				],
+				"CompanyRegistrationNumber": []
+			},
+			"countryCode": "SV",
+			"companyContactDetails": [
+				"Hellen_Metz@example.com"
+			],
+			"companyAlternativeNames": [
+				"Bosco - Breitenberg"
+			],
+			"companyLegalForm": "GmbH & Co. KG",
+			"website": null,
+			"isTeaserCompany": false,
+			"parentCompanyLei": "nnCKmBHAFzqNx2238F2E"
+		},
+		"t": {
+			"general": {
+				"masterData": {
+					"dataDate": "2024-07-07",
+					"headOfficeInGermany": "Yes",
+					"groupOfCompanies": "Yes",
+					"groupOfCompaniesName": "relationships",
+					"industry": null
+				}
+			},
+			"governance": {
+				"generalViolations": {
+					"legalProceedings": "No",
+					"humanRightsOrEnvironmentalViolations": "No"
+				}
+			},
+			"social": {
+				"childLabor": {
+					"worstFormsOfChildLaborForms": "interfaces",
+					"measuresForPreventionOfEmploymentUnderLocalMinimumAge": "No",
+					"employmentUnderLocalMinimumAgePreventionEmploymentContracts": null
+				}
+			}
+		},
+		"reportingPeriod": "2022"
+	},
+	{
+		"companyInformation": {
+			"companyName": "Morar Group",
+			"headquarters": "Americostad",
+			"headquartersPostalCode": "93060-4937",
+			"sector": "markets",
+			"identifiers": {
+				"Lei": [],
+				"Isin": [
+					"azCcfhwd1FRC"
+				],
+				"PermId": [],
+				"Ticker": [],
+				"Duns": [
+					"uf8XNCpvU"
+				],
+				"VatNumber": [],
+				"CompanyRegistrationNumber": []
+			},
+			"countryCode": "BD",
+			"companyContactDetails": null,
+			"companyAlternativeNames": [
+				"Rogahn Group"
+			],
+			"companyLegalForm": "Partnership without Limited Liability",
+			"website": "https://merry-pear.info/",
+			"isTeaserCompany": false,
+			"parentCompanyLei": "MS01dpe9y1B6k3pzfXfT"
+		},
+		"t": {
+			"general": {
+				"masterData": {
+					"dataDate": "2024-10-21",
+					"headOfficeInGermany": "No",
+					"groupOfCompanies": "No",
+					"groupOfCompaniesName": "e-markets",
+					"industry": [
+						"14.1",
+						"81"
+					]
+				}
+			},
+			"governance": {
+				"generalViolations": {
+					"legalProceedings": null,
+					"humanRightsOrEnvironmentalViolations": "Yes"
+				}
+			},
+			"social": {
+				"childLabor": {
+					"worstFormsOfChildLaborForms": "technologies",
+					"measuresForPreventionOfEmploymentUnderLocalMinimumAge": "Yes",
+					"employmentUnderLocalMinimumAgePreventionEmploymentContracts": "No"
+				}
+			}
+		},
+		"reportingPeriod": "2024"
+	},
+	{
+		"companyInformation": {
+			"companyName": "Romaguera - Harber",
+			"headquarters": "West Santino",
+			"headquartersPostalCode": null,
+			"sector": "e-commerce",
+			"identifiers": {
+				"Lei": [
+					"AUFA4KbAJIrDCnvjuKLU"
+				],
+				"Isin": [
+					"C0KhHiVoTsFR"
+				],
+				"PermId": [
+					"4oDILRi6rp"
+				],
+				"Ticker": [
+					"uK5jhrq"
+				],
+				"Duns": [
+					"TwMgU4EWP"
+				],
+				"VatNumber": [
+					"4BRmQ3mP7"
+				],
+				"CompanyRegistrationNumber": []
+			},
+			"countryCode": "PE",
+			"companyContactDetails": null,
+			"companyAlternativeNames": [],
+			"companyLegalForm": "Private Limited Company (Ltd)",
+			"website": "https://overjoyed-parsley.name",
+			"isTeaserCompany": false,
+			"parentCompanyLei": null
+		},
+		"t": {
+			"general": {
+				"masterData": {
+					"dataDate": "2024-02-05",
+					"headOfficeInGermany": "Yes",
+					"groupOfCompanies": "No",
+					"groupOfCompaniesName": "partnerships",
+					"industry": null
+				}
+			},
+			"governance": {
+				"generalViolations": {
+					"legalProceedings": null,
+					"humanRightsOrEnvironmentalViolations": null
+				}
+			},
+			"social": {
+				"childLabor": {
+					"worstFormsOfChildLaborForms": "deliverables",
+					"measuresForPreventionOfEmploymentUnderLocalMinimumAge": "No",
+					"employmentUnderLocalMinimumAgePreventionEmploymentContracts": null
+				}
+			}
+		},
+		"reportingPeriod": "2024"
+	},
+	{
+		"companyInformation": {
+			"companyName": "Kreiger LLC",
+			"headquarters": "Waukesha",
+			"headquartersPostalCode": null,
+			"sector": null,
+			"identifiers": {
+				"Lei": [
+					"rWqqBsQwFHAvSreb4tvY"
+				],
+				"Isin": [
+					"0eUpRYe2msJQ"
+				],
+				"PermId": [],
+				"Ticker": [],
+				"Duns": [],
+				"VatNumber": [],
+				"CompanyRegistrationNumber": [
+					"GnHoJuHgZxRyi2j"
+				]
+			},
+			"countryCode": "SC",
+			"companyContactDetails": [
+				"Rita_Reilly52@example.com",
+				"Marques_Tremblay81@example.com",
+				"Mossie_Johnson75@example.com",
+				"Gennaro.Runolfsdottir15@example.com"
+			],
+			"companyAlternativeNames": [
+				"Harris Inc",
+				"Labadie - Parisian",
+				"Schiller LLC",
+				"Schmeler - Kub"
+			],
+			"companyLegalForm": null,
+			"website": "https://different-cottage.net",
+			"isTeaserCompany": false,
+			"parentCompanyLei": "AUFA4KbAJIrDCnvjuKLU"
+		},
+		"t": {
+			"general": {
+				"masterData": {
+					"dataDate": "2024-09-04",
+					"headOfficeInGermany": "Yes",
+					"groupOfCompanies": "No",
+					"groupOfCompaniesName": null,
+					"industry": null
+				}
+			},
+			"governance": {
+				"generalViolations": {
+					"legalProceedings": "No",
+					"humanRightsOrEnvironmentalViolations": null
+				}
+			},
+			"social": {
+				"childLabor": {
+					"worstFormsOfChildLaborForms": null,
+					"measuresForPreventionOfEmploymentUnderLocalMinimumAge": "Yes",
+					"employmentUnderLocalMinimumAgePreventionEmploymentContracts": "No"
+				}
+			}
+		},
+		"reportingPeriod": "2023"
+	},
+	{
+		"companyInformation": {
+			"companyName": "Luettgen - Howe",
+			"headquarters": "Cleveland Heights",
+			"headquartersPostalCode": "49793",
+			"sector": "technologies",
+			"identifiers": {
+				"Lei": [
+					"hYGu4TupZac78sDgxqyo"
+				],
+				"Isin": [
+					"F3xhIMG2IXEP",
+					"kz8uRBa6wlqt"
+				],
+				"PermId": [],
+				"Ticker": [
+					"Undq9eg"
+				],
+				"Duns": [],
+				"VatNumber": [
+					"QeGyTqorj"
+				],
+				"CompanyRegistrationNumber": [
+					"Ov4imTU09MEz0hy"
+				]
+			},
+			"countryCode": "BW",
+			"companyContactDetails": [
+				"Myrl75@example.com",
+				"Angelo_Bailey38@example.com",
+				"Darian_Sauer78@example.com"
+			],
+			"companyAlternativeNames": [],
+			"companyLegalForm": "Private Limited Company (Ltd)",
+			"website": "https://active-artist.biz",
+			"isTeaserCompany": false,
+			"parentCompanyLei": "rWqqBsQwFHAvSreb4tvY"
+		},
+		"t": {
+			"general": {
+				"masterData": {
+					"dataDate": "2024-06-04",
+					"headOfficeInGermany": "Yes",
+					"groupOfCompanies": "No",
+					"groupOfCompaniesName": null,
+					"industry": [
+						"23.5",
+						"39",
+						"66.30",
+						"95"
+					]
+				}
+			},
+			"governance": {
+				"generalViolations": {
+					"legalProceedings": "No",
+					"humanRightsOrEnvironmentalViolations": "Yes"
+				}
+			},
+			"social": {
+				"childLabor": {
+					"worstFormsOfChildLaborForms": "technologies",
+					"measuresForPreventionOfEmploymentUnderLocalMinimumAge": "Yes",
+					"employmentUnderLocalMinimumAgePreventionEmploymentContracts": "Yes"
+				}
+			}
+		},
+		"reportingPeriod": "2021"
+	},
+	{
+		"companyInformation": {
+			"companyName": "Heller - Hudson",
+			"headquarters": "Smithambury",
+			"headquartersPostalCode": null,
+			"sector": "e-commerce",
+			"identifiers": {
+				"Lei": [
+					"mQqlpsjakT1EiOfNHk0V"
+				],
+				"Isin": [
+					"OuVTN4dWF1uv",
+					"FFfZL42nWOOs"
+				],
+				"PermId": [
+					"Vf93mEvd5G"
+				],
+				"Ticker": [
+					"8faJtoA"
+				],
+				"Duns": [],
+				"VatNumber": [
+					"QdVsrkv6J"
+				],
+				"CompanyRegistrationNumber": []
+			},
+			"countryCode": "SH",
+			"companyContactDetails": null,
+			"companyAlternativeNames": [
+				"Emmerich, Vandervort and Cremin",
+				"Heaney, Schiller and Parisian",
+				"Kilback - Goodwin",
+				"Towne Inc"
+			],
+			"companyLegalForm": "Public Limited Company (PLC)",
+			"website": null,
+			"isTeaserCompany": false,
+			"parentCompanyLei": "hYGu4TupZac78sDgxqyo"
+		},
+		"t": {
+			"general": {
+				"masterData": {
+					"dataDate": "2024-04-25",
+					"headOfficeInGermany": "No",
+					"groupOfCompanies": "Yes",
+					"groupOfCompaniesName": "networks",
+					"industry": [
+						"06.10",
+						"47.26"
+					]
+				}
+			},
+			"governance": {
+				"generalViolations": {
+					"legalProceedings": null,
+					"humanRightsOrEnvironmentalViolations": null
+				}
+			},
+			"social": {
+				"childLabor": {
+					"worstFormsOfChildLaborForms": "relationships",
+					"measuresForPreventionOfEmploymentUnderLocalMinimumAge": "Yes",
+					"employmentUnderLocalMinimumAgePreventionEmploymentContracts": "Yes"
+				}
+			}
+		},
+		"reportingPeriod": "2022"
+	},
+	{
+		"companyInformation": {
+			"companyName": "Hauck - Jerde",
+			"headquarters": "Riverside",
+			"headquartersPostalCode": "40888-5931",
+			"sector": "lifetime value",
+			"identifiers": {
+				"Lei": [],
+				"Isin": [
+					"Rhm6q6mpWQG7",
+					"wAsyFZsruY7t"
+				],
+				"PermId": [],
+				"Ticker": [],
+				"Duns": [],
+				"VatNumber": [],
+				"CompanyRegistrationNumber": []
+			},
+			"countryCode": "NL",
+			"companyContactDetails": [
+				"Kiley_Beahan@example.com",
+				"Aubree_Lebsack89@example.com",
+				"Jalon.Leuschke@example.com",
+				"Paula.Langosh99@example.com",
+				"Joe.Rice37@example.com"
+			],
+			"companyAlternativeNames": [
+				"Raynor LLC",
+				"Runolfsdottir and Sons",
+				"Wiegand Inc",
+				"Willms, Stamm and Kulas"
+			],
+			"companyLegalForm": "Limited Liability Partnership (LLP)",
+			"website": "https://admirable-self-confidence.net/",
+			"isTeaserCompany": false,
+			"parentCompanyLei": "mQqlpsjakT1EiOfNHk0V"
+		},
+		"t": {
+			"general": {
+				"masterData": {
+					"dataDate": "2024-05-06",
+					"headOfficeInGermany": "No",
+					"groupOfCompanies": "Yes",
+					"groupOfCompaniesName": "architectures",
+					"industry": [
+						"01.42",
+						"26.80",
+						"33.14",
+						"43.99"
+					]
+				}
+			},
+			"governance": {
+				"generalViolations": {
+					"legalProceedings": "Yes",
+					"humanRightsOrEnvironmentalViolations": "No"
+				}
+			},
+			"social": {
+				"childLabor": {
+					"worstFormsOfChildLaborForms": null,
+					"measuresForPreventionOfEmploymentUnderLocalMinimumAge": "Yes",
+					"employmentUnderLocalMinimumAgePreventionEmploymentContracts": "Yes"
+				}
+			}
+		},
+		"reportingPeriod": "2024"
+	},
+	{
+		"companyInformation": {
+			"companyName": "Okuneva Group",
+			"headquarters": "Kovacekville",
+			"headquartersPostalCode": "40048",
+			"sector": "action-items",
+			"identifiers": {
+				"Lei": [],
+				"Isin": [
+					"hCor9Ts4Sa1s"
+				],
+				"PermId": [],
+				"Ticker": [],
+				"Duns": [
+					"5GX4obBaE"
+				],
+				"VatNumber": [
+					"WGlE4i3SA"
+				],
+				"CompanyRegistrationNumber": []
+			},
+			"countryCode": "AI",
+			"companyContactDetails": [
+				"Madelynn_Lesch@example.com",
+				"Antonina.Heller@example.com",
+				"Abbigail87@example.com"
+			],
+			"companyAlternativeNames": [],
+			"companyLegalForm": "Limited Liability Partnership (LLP)",
+			"website": "https://extra-large-yourself.info",
+			"isTeaserCompany": false,
+			"parentCompanyLei": null
+		},
+		"t": {
+			"general": {
+				"masterData": {
+					"dataDate": "2024-11-10",
+					"headOfficeInGermany": null,
+					"groupOfCompanies": "No",
+					"groupOfCompaniesName": "methodologies",
+					"industry": [
+						"30.30",
+						"38.11",
+						"46.63",
+						"64.3",
+						"84.30"
+					]
+				}
+			},
+			"governance": {
+				"generalViolations": {
+					"legalProceedings": "Yes",
+					"humanRightsOrEnvironmentalViolations": "No"
+				}
+			},
+			"social": {
+				"childLabor": {
+					"worstFormsOfChildLaborForms": "models",
+					"measuresForPreventionOfEmploymentUnderLocalMinimumAge": "No",
+					"employmentUnderLocalMinimumAgePreventionEmploymentContracts": "No"
+				}
+			}
+		},
+		"reportingPeriod": "2021"
+	}
+]

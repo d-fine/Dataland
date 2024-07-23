@@ -1,0 +1,11 @@
+Field Identifier,Category,Sub-Category,Field Name,Tooltip - upload page,Tooltip - view page (if different from upload page),Component,Options,Unit,Document-Support,Dependency,Show when value is,Mandatory Field
+1,General,Master Data,Data Date,The date until when the information collected is valid,,Date,,,,,,Yes
+2,General,Master Data,Head Office in Germany,"Is your head office, administrative headquarters, registered office, or subsidiary located in Germany?",,Yes/No,,,,,,
+3,General,Master Data,Group of Companies,Do you belong to a group of companies?,,Yes/No,,,,,,
+4,General,Master Data,Group of Companies Name,"If yes, name of company group",,String,,,,3,Yes,
+5,General,Master Data,Industry,In which industry is your company primarily active (select all that apply)?,,NACE codes,,,,,,
+55,Governance,General violations,Legal Proceedings,Has your company been involved in legal disputes in the last 5 years (including currently ongoing disputes) with third parties regarding human rights and environmental violations?,,Yes/No,,,,,,
+56,Governance,General violations,Human Rights or Environmental Violations,Have there been any human rights or environmental violations on your company’s part in the last 5 years?,,Yes/No,,,,,,
+71,Social,Child labor,Worst Forms of Child Labor Forms,Which of these worst forms of child labor are not prevented?,,String,,,,,,
+72,Social,Child labor,Measures for  Prevention of Employment Under Local Minimum Age ,Does your company take measures to prevent the employment of children under the local minimum age?,,Yes/No,,,,,,
+73,Social,Child labor,Employment Under Local Minimum Age Prevention -  Employment Contracts,"Do you have a formal recruitment process, including employment contracts?",,Yes/No,,,,72,Yes,
