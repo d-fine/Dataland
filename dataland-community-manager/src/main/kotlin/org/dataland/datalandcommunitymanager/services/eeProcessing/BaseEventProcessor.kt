@@ -10,6 +10,9 @@ import org.springframework.messaging.handler.annotation.Payload
 import java.time.Instant
 import java.util.*
 
+/**
+ * Base class to define basic functionalities required for processing elementary events on message queues
+ */
 abstract class BaseEventProcessor {
     abstract val elementaryEventRepository: ElementaryEventRepository
 

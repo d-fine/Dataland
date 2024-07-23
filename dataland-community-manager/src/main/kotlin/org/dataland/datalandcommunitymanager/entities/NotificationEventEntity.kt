@@ -9,6 +9,9 @@ import jakarta.persistence.Table
 import org.dataland.datalandcommunitymanager.events.ElementaryEventType
 import java.util.UUID
 
+/**
+ * The database entity for storing a single notification event in the database
+ */
 @Entity
 @Table(name = "notification_events")
 data class NotificationEventEntity(

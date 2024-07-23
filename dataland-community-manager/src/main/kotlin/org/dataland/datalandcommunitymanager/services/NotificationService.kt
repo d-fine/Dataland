@@ -18,6 +18,9 @@ import java.time.Duration
 import java.time.Instant
 import java.util.*
 
+/**
+ * Manages the creation of notification events
+ */
 @Service("NotificationService")
 class NotificationService
 @Suppress("LongParameterList")
@@ -33,8 +36,15 @@ constructor(
     @Value("\${dataland.community-manager.proxy-primary-url:local-dev.dataland.com}")
     private val proxyPrimaryUrl: String,
 ) {
+    /**
+     * Enum that contains all possible types of notification emails that might be triggered.
+     */
     enum class NotificationEmailType { Single, Summary }
 
+    /**
+     * Checks if notification event shall be created or not.
+     * If yes, it creates it and sends a message to the queue to trigger notification emails.
+     */
     fun notifyOfElementaryEvents(elementaryEvents: List<ElementaryEventEntity>, correlationId: String) {
         val notificationEmailType =
             checkNotificationRequirementsAndDetermineNotificationEmailType(elementaryEvents)
@@ -45,6 +55,11 @@ constructor(
         }
     }
 
+    /**
+     * Checks if the requirements for creating a notification event are met.
+     * If yes, it returns the type of notification mail that shall be sent.
+     * Else it simply returns null.
+     */
     fun checkNotificationRequirementsAndDetermineNotificationEmailType(
         elementaryEvents: List<ElementaryEventEntity>,
     ): NotificationEmailType? {
@@ -140,7 +155,9 @@ constructor(
             "companyId" to firstElementaryEvent.companyId.toString(),
             "frameworks" to createFrameworkAndYearStringFromElementaryEvents(elementaryEvents),
             "baseUrl" to proxyPrimaryUrl,
-            "numberOfDays" to getTimePassedSinceLastNotificationEvent(firstElementaryEvent.companyId, firstElementaryEvent.elementaryEventType).toString(),
+            "numberOfDays" to getTimePassedSinceLastNotificationEvent(
+                firstElementaryEvent.companyId, firstElementaryEvent.elementaryEventType,
+            ).toString(),
         )
 
         companyInfo.companyContactDetails?.forEach {
@@ -170,7 +187,10 @@ constructor(
         companyId: UUID,
         elementaryEventType: ElementaryEventType,
     ): NotificationEventEntity? {
-        return notificationEventRepository.findNotificationEventByCompanyIdAndElementaryEventType(companyId, elementaryEventType)
+        return notificationEventRepository.findNotificationEventByCompanyIdAndElementaryEventType(
+            companyId,
+            elementaryEventType,
+        )
             .maxByOrNull { it.creationTimestamp }
     }
 
@@ -179,7 +199,10 @@ constructor(
      * @param companyId TODO
      * @return time passed in days as Int
      */
-    private fun getTimePassedSinceLastNotificationEvent(companyId: UUID, elementaryEventType: ElementaryEventType): Long {
+    private fun getTimePassedSinceLastNotificationEvent(
+        companyId: UUID,
+        elementaryEventType: ElementaryEventType,
+    ): Long {
         val lastNotificationEvent = getLastNotificationEventOrNull(companyId, elementaryEventType)
         return if (lastNotificationEvent == null) {
             elementaryEventsThreshold.toLong()
@@ -203,7 +226,9 @@ constructor(
                 .toDays() > notificationThresholdDays
     }
 
-    private fun createFrameworkAndYearStringFromElementaryEvents(elementaryEvents: List<ElementaryEventEntity>): String {
+    private fun createFrameworkAndYearStringFromElementaryEvents(
+        elementaryEvents: List<ElementaryEventEntity>,
+    ): String {
         val frameworkAndYears = elementaryEvents.groupBy(
             keySelector = { it.framework },
             valueTransform = { it.reportingPeriod },

@@ -25,6 +25,9 @@ import org.springframework.messaging.handler.annotation.Payload
 import org.springframework.stereotype.Component
 import java.util.*
 
+/**
+ * Defines the processing of private framework data upload events as elementary events
+ */
 @Component
 class PrivateDataUploadProcessor(
     @Autowired val messageUtils: MessageQueueUtils,
@@ -70,7 +73,9 @@ class PrivateDataUploadProcessor(
         }
         val actionType = JSONObject(payload).getString("actionType")
         if (actionType != ActionType.StorePrivateDataAndDocuments) {
-            throw MessageQueueRejectException("Expected action type ${ActionType.StorePrivateDataAndDocuments}, but was $actionType.")
+            throw MessageQueueRejectException(
+                "Expected action type ${ActionType.StorePrivateDataAndDocuments}, but was $actionType.",
+            )
         }
 
         logger.info("Processing elementary event: Request for storage of private framework data.")

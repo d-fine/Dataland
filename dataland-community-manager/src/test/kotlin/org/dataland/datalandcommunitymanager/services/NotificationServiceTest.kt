@@ -84,7 +84,8 @@ class NotificationServiceTest {
             companyId = testCompanyId,
             framework = testDataType,
             reportingPeriod = testReportingPeriod,
-            creationTimestamp = Instant.now().minus(creationTimeInDaysBeforeNow.toLong(), ChronoUnit.DAYS).toEpochMilli(),
+            creationTimestamp =
+            Instant.now().minus(creationTimeInDaysBeforeNow.toLong(), ChronoUnit.DAYS).toEpochMilli(),
             notificationEvent = notificationEventEntity,
         )
     }
@@ -119,7 +120,9 @@ class NotificationServiceTest {
         val unprocessedElementaryEvents = emptyList<ElementaryEventEntity>()
 
         val notificationEmailType =
-            notificationService.checkNotificationRequirementsAndDetermineNotificationEmailType(unprocessedElementaryEvents)
+            notificationService.checkNotificationRequirementsAndDetermineNotificationEmailType(
+                unprocessedElementaryEvents,
+            )
         assertEquals(NotificationService.NotificationEmailType.Single, notificationEmailType)
     }
 
@@ -137,7 +140,9 @@ class NotificationServiceTest {
             createUploadElementaryEventEntity(35),
         )
         val notificationEmailType =
-            notificationService.checkNotificationRequirementsAndDetermineNotificationEmailType(unprocessedElementaryEvents)
+            notificationService.checkNotificationRequirementsAndDetermineNotificationEmailType(
+                unprocessedElementaryEvents,
+            )
         assertEquals(NotificationService.NotificationEmailType.Summary, notificationEmailType)
     }
 
@@ -158,14 +163,18 @@ class NotificationServiceTest {
             )
         }
         val notificationEmailTypeForNineElementaryEvents =
-            notificationService.checkNotificationRequirementsAndDetermineNotificationEmailType(unprocessedElementaryEvents)
+            notificationService.checkNotificationRequirementsAndDetermineNotificationEmailType(
+                unprocessedElementaryEvents,
+            )
         assertEquals(null, notificationEmailTypeForNineElementaryEvents)
 
         unprocessedElementaryEvents.add(
             createUploadElementaryEventEntity(29),
         )
         val notificationEmailTypeForTenElementaryEvents =
-            notificationService.checkNotificationRequirementsAndDetermineNotificationEmailType(unprocessedElementaryEvents)
+            notificationService.checkNotificationRequirementsAndDetermineNotificationEmailType(
+                unprocessedElementaryEvents,
+            )
         assertEquals(NotificationService.NotificationEmailType.Summary, notificationEmailTypeForTenElementaryEvents)
     }
 
@@ -183,7 +192,9 @@ class NotificationServiceTest {
         }
 
         val notificationEmailTypeForNineUnprocessedElementaryEvents =
-            notificationService.checkNotificationRequirementsAndDetermineNotificationEmailType(unprocessedElementaryEvents)
+            notificationService.checkNotificationRequirementsAndDetermineNotificationEmailType(
+                unprocessedElementaryEvents,
+            )
 
         assertEquals(null, notificationEmailTypeForNineUnprocessedElementaryEvents)
     }

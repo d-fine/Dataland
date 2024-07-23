@@ -25,6 +25,9 @@ import org.springframework.messaging.handler.annotation.Payload
 import org.springframework.stereotype.Component
 import java.util.*
 
+/**
+* Defines the processing of public framework data upload events as elementary events
+*/
 @Component
 class PublicDataUploadProcessor(
     @Autowired val messageUtils: MessageQueueUtils,
@@ -69,7 +72,9 @@ class PublicDataUploadProcessor(
         }
         val actionType = JSONObject(payload).getString("actionType")
         if (actionType != ActionType.StorePublicData) {
-            throw MessageQueueRejectException("Expected action type ${ActionType.StorePublicData}, but was $actionType.")
+            throw MessageQueueRejectException(
+                "Expected action type ${ActionType.StorePublicData}, but was $actionType.",
+            )
         }
 
         logger.info("Processing elementary event: Request for storage of public framework data.")

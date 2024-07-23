@@ -11,6 +11,9 @@ import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandcommunitymanager.events.ElementaryEventType
 import java.util.UUID
 
+/**
+ * The database entity for storing a single elementary event in the database
+ */
 @Entity
 @Table(name = "elementary_events")
 data class ElementaryEventEntity(
