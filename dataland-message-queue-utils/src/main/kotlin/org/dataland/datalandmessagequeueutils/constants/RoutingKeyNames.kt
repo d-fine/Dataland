@@ -10,4 +10,6 @@ object RoutingKeyNames {
     const val internalEmail = "internalEmail"
     const val templateEmail = "templateEmail"
     const val persistAutomatedQaResult = "persistAutomatedQaResult"
+    const val metaDataPersisted = "metaDataPersisted"
+    const val privateDataAndDocument = "privateDataAndDocument"
 }

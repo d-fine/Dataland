@@ -63,7 +63,10 @@ class DataRequestAlterationManager(
 
         val newRequestStatus = requestStatus ?: dataRequestEntity.requestStatus
         val newAccessStatus = accessStatus ?: dataRequestEntity.accessStatus
-        // TODO  Maybe only allow accessStatus if requestStatus is answered
+        // TODO  check sending out notification emails to the company owner if a new accessStatus =
+        //  Pending request is stored
+        // TODO check sending out notificaiton emails to the requester once accessStatus is set to Granted,
+        //  maybe Revoked and Declined
         if (newRequestStatus != dataRequestEntity.requestStatus || newAccessStatus != dataRequestEntity.accessStatus) {
             val requestStatusObject = listOf(
                 StoredDataRequestStatusObject(newRequestStatus, modificationTime, newAccessStatus),
@@ -162,20 +165,17 @@ class DataRequestAlterationManager(
         )
         dataRequestEntities.forEach {
             if (it.dataType == DataTypeEnum.vsme.name && it.accessStatus != AccessStatus.Granted) {
-                patchDataRequest(it.dataRequestId, RequestStatus.Answered, AccessStatus.Pending, correlationId = correlationId)
-                logger.info("Ich bin hier")
+                patchDataRequest(
+                    it.dataRequestId, RequestStatus.Answered, AccessStatus.Pending,
+                    correlationId = correlationId,
+                )
             } else {
                 patchDataRequest(it.dataRequestId, RequestStatus.Answered, correlationId = correlationId)
-                logger.info("Und jetzt bin ich hier")
             }
-            // TODO check if necessary patchAccessStatus(it.dataRequestId, AccessStatus.Pending)
         }
         logger.info(
             "Changed Request Status for company Id ${metaData.companyId}, " +
                 "reporting period ${metaData.reportingPeriod} and framework ${metaData.dataType.name}",
         )
     }
-    // TODO need to add logic to create a AccessRequest.Pending to the request if it was uploaded for a private
-//  framework
-    // TODO and there was no access granted before
 }

@@ -1,5 +1,6 @@
 package org.dataland.datalandbackend.services
 
+import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
 import org.dataland.datalandmessagequeueutils.constants.ExchangeName
 import org.dataland.datalandmessagequeueutils.constants.MessageHeaderKey
 import org.dataland.datalandmessagequeueutils.constants.MessageType
@@ -28,6 +29,7 @@ import java.util.*
 class MessageQueueListenerPrivateDataManager(
     @Autowired private val messageQueueUtils: MessageQueueUtils,
     @Autowired private val privateDataManager: PrivateDataManager,
+    @Autowired private val cloudEventMessageHandler: CloudEventMessageHandler,
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
 
@@ -71,6 +73,14 @@ class MessageQueueListenerPrivateDataManager(
             privateDataManager.persistMappingInfo(dataId, correlationId)
             privateDataManager.persistMetaInfo(dataId, correlationId)
             privateDataManager.removeRelatedEntriesFromInMemoryStorages(dataId, correlationId)
+            cloudEventMessageHandler.buildCEMessageAndSendToQueue(
+                dataId, MessageType.PrivateDataReceived, correlationId,
+                ExchangeName.PrivateRequestReceived, RoutingKeyNames.metaDataPersisted,
+            )
+            logger.info(
+                "Persisting of meta data information is done. Sending out message for dataId $dataId and " +
+                    "correlationId $correlationId was sent",
+            )
         }
     }
 }

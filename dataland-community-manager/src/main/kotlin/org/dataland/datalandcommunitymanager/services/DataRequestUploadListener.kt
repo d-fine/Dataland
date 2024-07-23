@@ -9,7 +9,6 @@ import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
 import org.dataland.datalandmessagequeueutils.exceptions.MessageQueueRejectException
 import org.dataland.datalandmessagequeueutils.messages.QaCompletedMessage
 import org.dataland.datalandmessagequeueutils.utils.MessageQueueUtils
-import org.json.JSONObject
 import org.slf4j.LoggerFactory
 import org.springframework.amqp.rabbit.annotation.Argument
 import org.springframework.amqp.rabbit.annotation.Exchange
@@ -89,25 +88,25 @@ class DataRequestUploadListener(
         bindings = [
             QueueBinding(
                 value = Queue(
-                    "privateItemStoredCommunityManagerDataManager",
+                    "privateRequestReceivedCommunityManagerDataManager",
                     arguments = [
                         Argument(name = "x-dead-letter-exchange", value = ExchangeName.DeadLetter),
                         Argument(name = "x-dead-letter-routing-key", value = "deadLetterKey"),
                         Argument(name = "defaultRequeueRejected", value = "false"),
                     ],
                 ),
-                exchange = Exchange(ExchangeName.PrivateItemStored, declare = "false"),
-                key = [RoutingKeyNames.data],
+                exchange = Exchange(ExchangeName.PrivateRequestReceived, declare = "false"),
+                key = [RoutingKeyNames.metaDataPersisted],
             ),
         ],
     )
     @Transactional
     fun changeRequestStatusAfterPrivateDataUpload(
-        @Payload payload: String,
+        @Payload dataId: String,
         @Header(MessageHeaderKey.Type) type: String,
         @Header(MessageHeaderKey.CorrelationId) id: String,
     ) {
-        val dataId = JSONObject(payload).getString("dataId")
+        messageUtils.validateMessageType(type, MessageType.PrivateDataReceived)
         if (dataId.isEmpty()) {
             throw MessageQueueRejectException("Provided data ID is empty")
         }
