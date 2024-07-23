@@ -11,6 +11,7 @@ import org.dataland.datalandmessagequeueutils.constants.ExchangeName
 import org.dataland.datalandmessagequeueutils.constants.MessageType
 import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
 import org.dataland.datalandmessagequeueutils.messages.TemplateEmailMessage
+import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
@@ -37,6 +38,8 @@ constructor(
     @Value("\${dataland.community-manager.proxy-primary-url:local-dev.dataland.com}")
     private val proxyPrimaryUrl: String,
 ) {
+    private val logger = LoggerFactory.getLogger(this.javaClass)
+
     /**
      * Enum that contains all possible types of notification emails that might be triggered.
      */
@@ -51,6 +54,11 @@ constructor(
             checkNotificationRequirementsAndDetermineNotificationEmailType(elementaryEvents)
 
         if (notificationEmailType != null) {
+            logger.info(
+                "Requirements for notification event are met. " +
+                    "Creating notification event and sending notification emails. " +
+                    "CorrelationId: $correlationId",
+            )
             createNotificationEvent(elementaryEvents)
             sendEmailMessageToQueue(notificationEmailType, elementaryEvents, correlationId)
         }
