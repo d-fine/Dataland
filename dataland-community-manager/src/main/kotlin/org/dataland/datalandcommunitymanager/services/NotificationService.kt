@@ -102,7 +102,6 @@ constructor(
             companyId = elementaryEvents.first().companyId,
             elementaryEventType = elementaryEvents.first().elementaryEventType,
             creationTimestamp = Instant.now().toEpochMilli(),
-            elementaryEvents = elementaryEvents,
         )
         val savedNotificationEvent = notificationEventRepository.saveAndFlush(notificationEventToStore)
         elementaryEvents.forEach {

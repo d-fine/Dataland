@@ -4,7 +4,6 @@ import jakarta.persistence.Entity
 import jakarta.persistence.EnumType
 import jakarta.persistence.Enumerated
 import jakarta.persistence.Id
-import jakarta.persistence.OneToMany
 import jakarta.persistence.Table
 import org.dataland.datalandcommunitymanager.events.ElementaryEventType
 import java.util.UUID
@@ -24,11 +23,4 @@ data class NotificationEventEntity(
     val elementaryEventType: ElementaryEventType,
 
     val creationTimestamp: Long,
-
-    @OneToMany(mappedBy = "notificationEvent")
-    val elementaryEvents: List<ElementaryEventEntity>,
-) {
-    init {
-        require(elementaryEvents.isNotEmpty())
-    }
-}
+)

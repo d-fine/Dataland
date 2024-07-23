@@ -10,6 +10,7 @@ import org.dataland.datalandbackend.openApiClient.model.QaStatus
 import org.dataland.datalandcommunitymanager.entities.ElementaryEventEntity
 import org.dataland.datalandcommunitymanager.entities.NotificationEventEntity
 import org.dataland.datalandcommunitymanager.events.ElementaryEventType
+import org.dataland.datalandcommunitymanager.repositories.ElementaryEventRepository
 import org.dataland.datalandcommunitymanager.repositories.NotificationEventRepository
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
 import org.junit.jupiter.api.Assertions.assertEquals
@@ -55,6 +56,7 @@ class NotificationServiceTest {
     fun setupNotificationService() {
         val cloudEventMessageHandlerMock = mock(CloudEventMessageHandler::class.java)
         val notificationEventRepository = mock(NotificationEventRepository::class.java)
+        val elementaryEventRepository = mock(ElementaryEventRepository::class.java)
         val metaDataControllerApiMock = mock(MetaDataControllerApi::class.java)
         val companyDataControllerApiMock = mock(CompanyDataControllerApi::class.java)
         val objectMapper = ObjectMapper()
@@ -65,6 +67,7 @@ class NotificationServiceTest {
         notificationService = NotificationService(
             cloudEventMessageHandlerMock,
             notificationEventRepository,
+            elementaryEventRepository,
             companyDataControllerApiMock,
             objectMapper,
             notificationThresholdDays,
@@ -92,13 +95,11 @@ class NotificationServiceTest {
 
     private fun createNotificationEventEntityForDataUploads(
         creationTimeInDaysBeforeNow: Long,
-        elementaryEventEntities: List<ElementaryEventEntity>,
     ): NotificationEventEntity {
         return NotificationEventEntity(
             companyId = testCompanyId,
             elementaryEventType = ElementaryEventType.UploadEvent,
             creationTimestamp = Instant.now().minus(creationTimeInDaysBeforeNow, ChronoUnit.DAYS).toEpochMilli(),
-            elementaryEvents = elementaryEventEntities,
         )
     }
 
@@ -115,12 +116,12 @@ class NotificationServiceTest {
     }
 
     @Test
-    fun `single mail if no notification event in last 30 days and no past unprocessed elementary events`() {
+    fun `single mail if no notification event in last 30 days and one unprocessed elementary event`() {
         setNotificationEventRepoMockReturnValue(emptyList())
+
         val unprocessedElementaryEvents = listOf(
             createUploadElementaryEventEntity(0),
         )
-
         val notificationEmailType =
             notificationService.checkNotificationRequirementsAndDetermineNotificationEmailType(
                 unprocessedElementaryEvents,
@@ -129,13 +130,8 @@ class NotificationServiceTest {
     }
 
     @Test
-    fun `summary mail if no notification event in last 30 days and one past unprocessed elementary event`() {
-        val processedElementaryEvents = listOf(
-            createUploadElementaryEventEntity(400),
-            createUploadElementaryEventEntity(401),
-        )
-        val notificationEvent = createNotificationEventEntityForDataUploads(400, processedElementaryEvents)
-        processedElementaryEvents.forEach { it.notificationEvent = notificationEvent }
+    fun `summary mail if no notification event in last 30 days and two unprocessed elementary events`() {
+        val notificationEvent = createNotificationEventEntityForDataUploads(400)
         setNotificationEventRepoMockReturnValue(listOf(notificationEvent))
 
         val unprocessedElementaryEvents = listOf(
@@ -150,13 +146,8 @@ class NotificationServiceTest {
     }
 
     @Test
-    fun `no mail if one notification event in last 30 days but unprocessed elementary events less than threshold`() {
-        val processedElementaryEvents = listOf(
-            createUploadElementaryEventEntity(29),
-            createUploadElementaryEventEntity(30),
-        )
-        val notificationEvent = createNotificationEventEntityForDataUploads(29, processedElementaryEvents)
-        processedElementaryEvents.forEach { it.notificationEvent = notificationEvent }
+    fun `summary mail if notification event in last 30 days and unprocessed elementary events reach threshold`() {
+        val notificationEvent = createNotificationEventEntityForDataUploads(29)
         setNotificationEventRepoMockReturnValue(listOf(notificationEvent))
 
         val unprocessedElementaryEvents = mutableListOf<ElementaryEventEntity>()
@@ -179,26 +170,5 @@ class NotificationServiceTest {
                 unprocessedElementaryEvents,
             )
         assertEquals(NotificationService.NotificationEmailType.Summary, notificationEmailTypeForTenElementaryEvents)
-    }
-
-    @Test
-    fun `no mail if notification event with many elementary events in last 30 days but threshold still not reached`() {
-        val processedElementaryEvents = (29 downTo 12).map { creationTimeInDaysBeforeNow ->
-            createUploadElementaryEventEntity(creationTimeInDaysBeforeNow)
-        }
-        val notificationEvent = createNotificationEventEntityForDataUploads(12, processedElementaryEvents)
-        processedElementaryEvents.forEach { it.notificationEvent = notificationEvent }
-        setNotificationEventRepoMockReturnValue(listOf(notificationEvent))
-
-        val unprocessedElementaryEvents = (9 downTo 1).map { creationTimeInDaysBeforeNow ->
-            createUploadElementaryEventEntity(creationTimeInDaysBeforeNow)
-        }
-
-        val notificationEmailTypeForNineUnprocessedElementaryEvents =
-            notificationService.checkNotificationRequirementsAndDetermineNotificationEmailType(
-                unprocessedElementaryEvents,
-            )
-
-        assertEquals(null, notificationEmailTypeForNineUnprocessedElementaryEvents)
     }
 }
