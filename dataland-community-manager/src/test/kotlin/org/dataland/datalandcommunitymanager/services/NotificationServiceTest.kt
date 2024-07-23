@@ -10,10 +10,8 @@ import org.dataland.datalandbackend.openApiClient.model.QaStatus
 import org.dataland.datalandcommunitymanager.entities.ElementaryEventEntity
 import org.dataland.datalandcommunitymanager.entities.NotificationEventEntity
 import org.dataland.datalandcommunitymanager.events.ElementaryEventType
-import org.dataland.datalandcommunitymanager.repositories.ElementaryEventRepository
 import org.dataland.datalandcommunitymanager.repositories.NotificationEventRepository
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
-import org.dataland.datalandmessagequeueutils.utils.MessageQueueUtils
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
@@ -56,8 +54,6 @@ class NotificationServiceTest {
     @BeforeAll
     fun setupNotificationService() {
         val cloudEventMessageHandlerMock = mock(CloudEventMessageHandler::class.java)
-        val messageQueueUtils = mock(MessageQueueUtils::class.java)
-        val elementaryEventRepository = mock(ElementaryEventRepository::class.java)
         val notificationEventRepository = mock(NotificationEventRepository::class.java)
         val metaDataControllerApiMock = mock(MetaDataControllerApi::class.java)
         val companyDataControllerApiMock = mock(CompanyDataControllerApi::class.java)
@@ -68,10 +64,7 @@ class NotificationServiceTest {
 
         notificationService = NotificationService(
             cloudEventMessageHandlerMock,
-            messageQueueUtils,
-            elementaryEventRepository,
             notificationEventRepository,
-            metaDataControllerApiMock,
             companyDataControllerApiMock,
             objectMapper,
             notificationThresholdDays,
@@ -125,9 +118,9 @@ class NotificationServiceTest {
         setNotificationEventRepoMockReturnValue(emptyList())
         val unprocessedElementaryEvents = emptyList<ElementaryEventEntity>()
 
-        val notificationEmailScope =
-            notificationService.determineNotificationEmailScope(testCompanyId, unprocessedElementaryEvents)
-        assertEquals(NotificationService.NotificationEmailScope.Single, notificationEmailScope)
+        val notificationEmailType =
+            notificationService.checkNotificationRequirementsAndDetermineNotificationEmailType(unprocessedElementaryEvents)
+        assertEquals(NotificationService.NotificationEmailType.Single, notificationEmailType)
     }
 
     @Test
@@ -143,9 +136,9 @@ class NotificationServiceTest {
         val unprocessedElementaryEvents = listOf(
             createUploadElementaryEventEntity(35),
         )
-        val notificationEmailScope =
-            notificationService.determineNotificationEmailScope(testCompanyId, unprocessedElementaryEvents)
-        assertEquals(NotificationService.NotificationEmailScope.Summary, notificationEmailScope)
+        val notificationEmailType =
+            notificationService.checkNotificationRequirementsAndDetermineNotificationEmailType(unprocessedElementaryEvents)
+        assertEquals(NotificationService.NotificationEmailType.Summary, notificationEmailType)
     }
 
     @Test
@@ -164,16 +157,16 @@ class NotificationServiceTest {
                 createUploadElementaryEventEntity(creationTimeInDaysBeforeNow),
             )
         }
-        val notificationEmailScopeForNineElementaryEvents =
-            notificationService.determineNotificationEmailScope(testCompanyId, unprocessedElementaryEvents)
-        assertEquals(null, notificationEmailScopeForNineElementaryEvents)
+        val notificationEmailTypeForNineElementaryEvents =
+            notificationService.checkNotificationRequirementsAndDetermineNotificationEmailType(unprocessedElementaryEvents)
+        assertEquals(null, notificationEmailTypeForNineElementaryEvents)
 
         unprocessedElementaryEvents.add(
             createUploadElementaryEventEntity(29),
         )
-        val notificationEmailScopeForTenElementaryEvents =
-            notificationService.determineNotificationEmailScope(testCompanyId, unprocessedElementaryEvents)
-        assertEquals(NotificationService.NotificationEmailScope.Summary, notificationEmailScopeForTenElementaryEvents)
+        val notificationEmailTypeForTenElementaryEvents =
+            notificationService.checkNotificationRequirementsAndDetermineNotificationEmailType(unprocessedElementaryEvents)
+        assertEquals(NotificationService.NotificationEmailType.Summary, notificationEmailTypeForTenElementaryEvents)
     }
 
     @Test
@@ -189,9 +182,9 @@ class NotificationServiceTest {
             createUploadElementaryEventEntity(creationTimeInDaysBeforeNow)
         }
 
-        val notificationEmailScopeForNineUnprocessedElementaryEvents =
-            notificationService.determineNotificationEmailScope(testCompanyId, unprocessedElementaryEvents)
+        val notificationEmailTypeForNineUnprocessedElementaryEvents =
+            notificationService.checkNotificationRequirementsAndDetermineNotificationEmailType(unprocessedElementaryEvents)
 
-        assertEquals(null, notificationEmailScopeForNineUnprocessedElementaryEvents)
+        assertEquals(null, notificationEmailTypeForNineUnprocessedElementaryEvents)
     }
 }
