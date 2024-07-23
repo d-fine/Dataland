@@ -9,6 +9,8 @@ creation URL (or simply copy this md file into the description)
 
 ### Dependency updates
 
+- Known issue on the 'problematic updates' wiki page. Ticket already exists (https://jira.d-fine.dev/browse/DALA-3675).
+
 - [ ] Take a look at the dependency dashboard and see which updates are to be applied. For a detailed description of the process,
 consult the internal Dataland Wiki.
 
