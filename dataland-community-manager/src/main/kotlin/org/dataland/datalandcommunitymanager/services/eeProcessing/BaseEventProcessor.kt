@@ -1,8 +1,8 @@
 package org.dataland.datalandcommunitymanager.services.eeProcessing
 
-import org.dataland.datalandbackend.openApiClient.model.DataMetaInformation
 import org.dataland.datalandcommunitymanager.entities.ElementaryEventEntity
 import org.dataland.datalandcommunitymanager.events.ElementaryEventType
+import org.dataland.datalandcommunitymanager.model.elementaryEventProcessing.ElementaryEventPayloadMetaInfo
 import org.dataland.datalandcommunitymanager.repositories.ElementaryEventRepository
 import org.dataland.datalandmessagequeueutils.constants.MessageHeaderKey
 import org.springframework.messaging.handler.annotation.Header
@@ -30,15 +30,15 @@ abstract class BaseEventProcessor {
      * Create and persist new elementary event
      */
     protected fun createAndSaveElementaryEvent(
-        dataMetaInfo: DataMetaInformation,
+        elementaryEventPayloadMetaInfo: ElementaryEventPayloadMetaInfo,
         elementaryEventType: ElementaryEventType,
     ) {
         elementaryEventRepository.saveAndFlush(
             ElementaryEventEntity(
                 elementaryEventType = elementaryEventType,
-                companyId = UUID.fromString(dataMetaInfo.companyId),
-                framework = dataMetaInfo.dataType,
-                reportingPeriod = dataMetaInfo.reportingPeriod,
+                companyId = elementaryEventPayloadMetaInfo.companyId,
+                framework = elementaryEventPayloadMetaInfo.framework,
+                reportingPeriod = elementaryEventPayloadMetaInfo.reportingPeriod,
                 creationTimestamp = Instant.now().toEpochMilli(),
                 notificationEvent = null,
             ),

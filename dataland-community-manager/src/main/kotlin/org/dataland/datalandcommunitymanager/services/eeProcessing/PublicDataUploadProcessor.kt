@@ -1,18 +1,17 @@
 package org.dataland.datalandcommunitymanager.services.eeProcessing
 
 import org.dataland.datalandbackend.openApiClient.api.MetaDataControllerApi
-import org.dataland.datalandbackend.openApiClient.model.DataMetaInformation
 import org.dataland.datalandcommunitymanager.entities.ElementaryEventEntity
 import org.dataland.datalandcommunitymanager.events.ElementaryEventType
+import org.dataland.datalandcommunitymanager.model.elementaryEventProcessing.ElementaryEventPayloadMetaInfo
 import org.dataland.datalandcommunitymanager.repositories.ElementaryEventRepository
 import org.dataland.datalandcommunitymanager.services.NotificationService
+import org.dataland.datalandcommunitymanager.utils.PayloadValidator.validatePayloadAndReturnElementaryEventMetaInfo
 import org.dataland.datalandmessagequeueutils.constants.ActionType
 import org.dataland.datalandmessagequeueutils.constants.ExchangeName
 import org.dataland.datalandmessagequeueutils.constants.MessageHeaderKey
 import org.dataland.datalandmessagequeueutils.constants.MessageType
-import org.dataland.datalandmessagequeueutils.exceptions.MessageQueueRejectException
 import org.dataland.datalandmessagequeueutils.utils.MessageQueueUtils
-import org.json.JSONObject
 import org.slf4j.LoggerFactory
 import org.springframework.amqp.rabbit.annotation.Argument
 import org.springframework.amqp.rabbit.annotation.Exchange
@@ -66,31 +65,20 @@ class PublicDataUploadProcessor(
         @Header(MessageHeaderKey.Type) type: String,
     ) {
         messageUtils.validateMessageType(type, MessageType.PublicDataReceived)
-        val dataId = JSONObject(payload).getString("dataId")
-        if (dataId.isEmpty()) {
-            throw MessageQueueRejectException("Provided data ID is empty.")
-        }
-        val actionType = JSONObject(payload).getString("actionType")
-        if (actionType != ActionType.StorePublicData) {
-            throw MessageQueueRejectException(
-                "Expected action type ${ActionType.StorePublicData}, but was $actionType.",
-            )
-        }
+        val elementaryEventMetaInfo =
+            validatePayloadAndReturnElementaryEventMetaInfo(payload, ActionType.StorePrivateDataAndDocuments)
 
-        logger.info("Processing elementary event: Request for storage of public framework data.")
-
-        val dataMetaInfo = metaDataControllerApi.getDataMetaInfo(dataId) // TODO Emanuel: problem => lets discuss
-        val companyId = UUID.fromString(dataMetaInfo.companyId)
-
-        createAndSaveElementaryUploadEvent(dataMetaInfo)
-
-        val unprocessedElementaryEvents = getUnprocessedElementaryEventsForCompany(companyId)
-
+        logger.info(
+            "Processing elementary event: Request for storage of public framework data. " +
+                "CorrelationId: $correlationId",
+        )
+        createAndSaveElementaryUploadEvent(elementaryEventMetaInfo)
+        val unprocessedElementaryEvents = getUnprocessedElementaryEventsForCompany(elementaryEventMetaInfo.companyId)
         notificationService.notifyOfElementaryEvents(unprocessedElementaryEvents, correlationId)
     }
 
-    private fun createAndSaveElementaryUploadEvent(dataMetaInfo: DataMetaInformation) =
-        super.createAndSaveElementaryEvent(dataMetaInfo, ElementaryEventType.UploadEvent)
+    private fun createAndSaveElementaryUploadEvent(elementaryEventPayloadMetaInfo: ElementaryEventPayloadMetaInfo) =
+        super.createAndSaveElementaryEvent(elementaryEventPayloadMetaInfo, ElementaryEventType.UploadEvent)
 
     private fun getUnprocessedElementaryEventsForCompany(companyId: UUID): List<ElementaryEventEntity> =
         super.getUnprocessedElementaryEventsForCompany(companyId, ElementaryEventType.UploadEvent)
