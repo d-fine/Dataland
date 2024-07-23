@@ -183,9 +183,9 @@ constructor(
     }
 
     /**
-     * Gets last notification event for a specific company
-     * @param companyId TODO
-     * @param elementaryEventType TODO
+     * Gets last notification event for a specific company and elementary event type
+     * @param companyId for which a notification event might have happened
+     * @param elementaryEventType of the elementary events for which the notification event was created
      * @return last notificationEvent (null if no previous notification event for this company exists)
      */
     private fun getLastNotificationEventOrNull(
@@ -201,8 +201,9 @@ constructor(
 
     /**
      * Gets time passed in days since last notification event for a specific company
-     * @param companyId TODO
-     * @return time passed in days as Int
+     * @param companyId for which a notification event might have happened
+     * @param elementaryEventType of the elementary events for which the notification event was created
+     * @return time passed in days
      */
     private fun getTimePassedSinceLastNotificationEvent(
         companyId: UUID,
@@ -210,7 +211,7 @@ constructor(
     ): Long {
         val lastNotificationEvent = getLastNotificationEventOrNull(companyId, elementaryEventType)
         return if (lastNotificationEvent == null) {
-            elementaryEventsThreshold.toLong()
+            elementaryEventsThreshold.toLong() // TODO Emanuel: Wieso?  Wäre das nicht eigentlich "0" ? Oder "null"?
         } else {
             Duration.between(Instant.ofEpochMilli(lastNotificationEvent.creationTimestamp), Instant.now()).toDays()
         }
