@@ -9,6 +9,7 @@ import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
 import org.dataland.datalandmessagequeueutils.exceptions.MessageQueueRejectException
 import org.dataland.datalandmessagequeueutils.messages.QaCompletedMessage
 import org.dataland.datalandmessagequeueutils.utils.MessageQueueUtils
+import org.json.JSONObject
 import org.slf4j.LoggerFactory
 import org.springframework.amqp.rabbit.annotation.Argument
 import org.springframework.amqp.rabbit.annotation.Exchange
@@ -76,4 +77,43 @@ class DataRequestUploadListener(
             dataRequestAlterationManager.patchRequestStatusFromOpenToAnsweredByDataId(dataId, correlationId = id)
         }
     }
+
+    // TODO listener to more than one queue?
+    /**
+     * Checks if for a given dataset there are open requests with matching company identifier, reporting period
+     * and data type and sets their status to answered
+     * @param payload the message describing the result of the completed QA process
+     * @param type the type of the message
+     */
+    @RabbitListener(
+        bindings = [
+            QueueBinding(
+                value = Queue(
+                    "privateItemStoredCommunityManagerDataManager",
+                    arguments = [
+                        Argument(name = "x-dead-letter-exchange", value = ExchangeName.DeadLetter),
+                        Argument(name = "x-dead-letter-routing-key", value = "deadLetterKey"),
+                        Argument(name = "defaultRequeueRejected", value = "false"),
+                    ],
+                ),
+                exchange = Exchange(ExchangeName.PrivateItemStored, declare = "false"),
+                key = [RoutingKeyNames.data],
+            ),
+        ],
+    )
+    @Transactional
+    fun changeRequestStatusAfterPrivateDataUpload(
+        @Payload payload: String,
+        @Header(MessageHeaderKey.Type) type: String,
+        @Header(MessageHeaderKey.CorrelationId) id: String,
+    ) {
+        val dataId = JSONObject(payload).getString("dataId")
+        if (dataId.isEmpty()) {
+            throw MessageQueueRejectException("Provided data ID is empty")
+        }
+        messageUtils.rejectMessageOnException {
+            dataRequestAlterationManager.patchRequestStatusFromOpenToAnsweredByDataId(dataId, correlationId = id)
+        }
+    }
 }
+backend -> externalstorage -> backend & community
