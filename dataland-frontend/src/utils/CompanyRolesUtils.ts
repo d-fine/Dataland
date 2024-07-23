@@ -3,7 +3,7 @@ import { ApiClientProvider } from '@/services/ApiClients';
 import { type AxiosError } from 'axios';
 import { waitForAndReturnResolvedKeycloakPromise } from '@/utils/KeycloakUtils';
 import { isCompanyIdValid } from '@/utils/ValidationsUtils';
-import { type CompanyRole, type CompanyRoleAssignment } from '@clients/communitymanager';
+import { CompanyRole, type CompanyRoleAssignment } from '@clients/communitymanager';
 
 /**
  * Check if current user has a certain company role for a company
@@ -37,6 +37,32 @@ export async function hasUserCompanyRoleForCompany(
     } else return false;
   } else return false;
 }
+
+/**
+ * Check if current user is either the company Owner or a company data uploader
+ * @param companyId of the company
+ * @param keycloakPromiseGetter the getter-function which returns a Keycloak-Promise
+ * @returns a promise, which resolves to a boolean
+ */
+export async function hasUserCompanyOwnerOrDataUploaderRole(
+  companyId: string,
+  keycloakPromiseGetter?: () => Promise<Keycloak>
+): Promise<boolean> {
+  const hasCompanyOwnerRole = await hasUserCompanyRoleForCompany(
+    CompanyRole.CompanyOwner,
+    companyId,
+    keycloakPromiseGetter
+  );
+
+  const hasCompanyDataUploaderRole = await hasUserCompanyRoleForCompany(
+    CompanyRole.DataUploader,
+    companyId,
+    keycloakPromiseGetter
+  );
+
+  return hasCompanyOwnerRole || hasCompanyDataUploaderRole;
+}
+
 /**
  * Get the Information about company ownership
  * @param companyId identifier of the company

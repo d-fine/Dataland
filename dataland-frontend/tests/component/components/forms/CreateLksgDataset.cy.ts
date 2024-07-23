@@ -57,7 +57,7 @@ describe('Test YesNoBaseDataPointFormField for entries', () => {
         .find("li:contains('Albania')")
         .click();
       cy.get("h5:contains('Subcontracting Companies Industries in Albania')").should('exist');
-      cy.intercept('**/api/data/lksg', (request) => {
+      cy.intercept('**/api/data/lksg*', (request) => {
         const body = request.body as CompanyAssociatedDataLksgData;
         expect(body.data.general.productionSpecific?.subcontractingCompaniesCountries).to.deep.equal({
           DE: ['A', 'G'],
