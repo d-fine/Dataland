@@ -121,35 +121,6 @@
         }
       }
     },
-    "/api/v1/client-controller/apps/{workflowName}": {
-      "get": {
-        "tags": [
-          "Client Controller Resource"
-        ],
-        "parameters": [
-          {
-            "name": "workflowName",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/WorkflowGetResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/api/v1/client-controller/credential-service/database/external/{transactionId}": {
       "get": {
         "tags": [
@@ -286,7 +257,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Unit"
+                  "$ref": "#/components/schemas/SafeDepositDatabaseResponse"
                 }
               }
             }
@@ -446,35 +417,6 @@
           }
         }
       },
-      "Unit": {
-        "type": "object"
-      },
-      "WorkflowGetResponse": {
-        "required": [
-          "metadata",
-          "status"
-        ],
-        "type": "object",
-        "properties": {
-          "metadata": {
-            "$ref": "#/components/schemas/WorkflowMetadata"
-          },
-          "status": {
-            "$ref": "#/components/schemas/WorkflowStatus"
-          }
-        }
-      },
-      "WorkflowMetadata": {
-        "required": [
-          "name"
-        ],
-        "type": "object",
-        "properties": {
-          "name": {
-            "type": "string"
-          }
-        }
-      },
       "WorkflowRequest": {
         "required": [
           "workflowDefinitionId"
@@ -504,36 +446,6 @@
             "type": "string"
           }
         }
-      },
-      "WorkflowStatus": {
-        "required": [
-          "phase",
-          "startedAt",
-          "finishedAt"
-        ],
-        "type": "object",
-        "properties": {
-          "phase": {
-            "$ref": "#/components/schemas/WorkflowStatusPhase"
-          },
-          "startedAt": {
-            "type": "string"
-          },
-          "finishedAt": {
-            "type": "string"
-          }
-        }
-      },
-      "WorkflowStatusPhase": {
-        "enum": [
-          "UNKNOWN",
-          "PENDING",
-          "RUNNING",
-          "SUCCEEDED",
-          "FAILED",
-          "ERROR"
-        ],
-        "type": "string"
       }
     }
   }
