@@ -30,11 +30,11 @@ class NotificationService
 @Suppress("LongParameterList")
 @Autowired
 constructor(
-    private val cloudEventMessageHandler: CloudEventMessageHandler,
-    private val notificationEventRepository: NotificationEventRepository,
-    private val elementaryEventRepository: ElementaryEventRepository,
-    private val companyDataControllerApi: CompanyDataControllerApi,
-    private val objectMapper: ObjectMapper,
+    val cloudEventMessageHandler: CloudEventMessageHandler,
+    val notificationEventRepository: NotificationEventRepository,
+    val elementaryEventRepository: ElementaryEventRepository,
+    val companyDataControllerApi: CompanyDataControllerApi,
+    val objectMapper: ObjectMapper,
     @Value("\${dataland.community-manager.notification-threshold-days:30}")
     private val notificationThresholdDays: Int,
     @Value("\${dataland.community-manager.notification-elementaryevents-threshold:10}")
