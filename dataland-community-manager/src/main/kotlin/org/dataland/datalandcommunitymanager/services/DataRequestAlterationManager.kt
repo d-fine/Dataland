@@ -63,7 +63,7 @@ class DataRequestAlterationManager(
 
         val newRequestStatus = requestStatus ?: dataRequestEntity.requestStatus
         val newAccessStatus = accessStatus ?: dataRequestEntity.accessStatus
-        // Maybe only allow accessStatus if requestStatus is answered
+        //TODO  Maybe only allow accessStatus if requestStatus is answered
         if (newRequestStatus != dataRequestEntity.requestStatus || newAccessStatus != dataRequestEntity.accessStatus) {
             val requestStatusObject = listOf(
                 StoredDataRequestStatusObject(newRequestStatus, modificationTime, newAccessStatus),
@@ -162,6 +162,7 @@ class DataRequestAlterationManager(
         )
         dataRequestEntities.forEach {
             patchDataRequest(it.dataRequestId, RequestStatus.Answered, correlationId = correlationId)
+            //TODO check if necessary patchAccessStatus(it.dataRequestId, AccessStatus.Pending)
         }
         logger.info(
             "Changed Request Status for company Id ${metaData.companyId}, " +
