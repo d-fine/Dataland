@@ -1,20 +1,20 @@
 <template>
   <Card class="col-12 page-wrapper-card p-3">
-    <template #title>New Dataset - LkSG Mini</template>
+    <template #title>New Dataset - LksgMini</template>
     <template #content>
       <div v-if="waitingForData" class="d-center-div text-center px-7 py-4">
-        <p class="font-medium text-xl">Loading LkSG data...</p>
+        <p class="font-medium text-xl">Loading LksgMini data...</p>
         <em class="pi pi-spinner pi-spin" aria-hidden="true" style="z-index: 20; color: #e67f3f" />
       </div>
       <div v-else class="grid uploadFormWrapper">
         <div id="uploadForm" class="text-left uploadForm col-9">
           <FormKit
-            v-model="CompanyAssociatedDataLksgminiData"
+            v-model="companyAssociatedLksgMiniData"
             :actions="false"
             type="form"
             :id="formId"
             :name="formId"
-            @submit="postLkSGData"
+            @submit="postLksgMiniData"
             @submit-invalid="checkCustomInputs"
           >
             <FormKit type="hidden" name="companyId" :model-value="companyID" />
@@ -24,44 +24,45 @@
               <FormKit
                 type="group"
                 v-for="category in lksgminiDataModel"
-                :key="category"
+                :key="category.name"
                 :label="category.label"
                 :name="category.name"
               >
-                <div
-                  class="uploadFormSection grid"
-                  v-for="subcategory in category.subcategories"
-                  :key="subcategory.name"
-                >
+                <div class="" v-for="subcategory in category.subcategories" :key="subcategory.name">
                   <template v-if="subcategoryVisibility.get(subcategory) ?? true">
-                    <div class="col-3 p-3 topicLabel">
-                      <h4 :id="subcategory.name" class="anchor title">{{ subcategory.label }}</h4>
-                      <div :class="`p-badge badge-${category.color}`">
-                        <span>{{ category.label.toUpperCase() }}</span>
+                    <div class="uploadFormSection grid">
+                      <div class="col-3 p-3 topicLabel">
+                        <h4 :id="subcategory.name" class="anchor title">{{ subcategory.label }}</h4>
+                        <div :class="`p-badge badge-${category.color}`">
+                          <span>{{ category.label.toUpperCase() }}</span>
+                        </div>
                       </div>
-                    </div>
 
-                    <div class="col-9 formFields">
-                      <FormKit v-for="field in subcategory.fields" :key="field" type="group" :name="subcategory.name">
-                        <component
-                          v-if="field.showIf(CompanyAssociatedDataLksgminiData.data)"
-                          :is="field.component"
-                          :label="field.label"
-                          :placeholder="field.placeholder"
-                          :description="field.description"
-                          :name="field.name"
-                          :options="field.options"
-                          :required="field.required"
-                          :validation="field.validation"
-                          :validation-label="field.validationLabel"
-                          :data-test="field.name"
-                          :shouldDisableCheckboxes="true"
-                          @field-specific-documents-updated="
-                            updateDocumentList(`${category.name}.${subcategory.name}.${field.name}`, $event)
-                          "
-                          :ref="field.name"
-                        />
-                      </FormKit>
+                      <div class="col-9 formFields">
+                        <FormKit v-for="field in subcategory.fields" :key="field" type="group" :name="subcategory.name">
+                          <component
+                            v-if="field.showIf(companyAssociatedLksgMiniData.data)"
+                            :is="field.component"
+                            :label="field.label"
+                            :placeholder="field.placeholder"
+                            :description="field.description"
+                            :name="field.name"
+                            :options="field.options"
+                            :required="field.required"
+                            :validation="field.validation"
+                            :validation-label="field.validationLabel"
+                            :validationMessages="getValidationMessageForFirstQuestion(field)"
+                            :reportingPeriod="yearOfDataDate"
+                            :data-test="field.name"
+                            :unit="field.unit"
+                            :shouldDisableCheckboxes="true"
+                            @field-specific-documents-updated="
+                              updateDocumentList(`${category.name}.${subcategory.name}.${field.name}`, $event)
+                            "
+                            :ref="field.name"
+                          />
+                        </FormKit>
+                      </div>
                     </div>
                   </template>
                 </div>
@@ -71,16 +72,16 @@
         </div>
         <SubmitSideBar>
           <SubmitButton :formId="formId" />
-          <div v-if="postLkSGDataProcessed">
+          <div v-if="postLksgMiniDataProcessed">
             <SuccessMessage v-if="uploadSucceded" :messageId="messageCounter" />
             <FailMessage v-else :message="message" :messageId="messageCounter" />
           </div>
 
           <h4 id="topicTitles" class="title pt-3">On this page</h4>
           <ul>
-            <li v-for="category in lksgminiDataModel" :key="category.name">
+            <li v-for="category in lksgminiDataModel" :key="category">
               <ul>
-                <li v-for="subcategory in category.subcategories" :key="subcategory.name">
+                <li v-for="subcategory in category.subcategories" :key="subcategory">
                   <a
                     v-if="subcategoryVisibility.get(subcategory) ?? true"
                     @click="smoothScroll(`#${subcategory.name}`)"
@@ -100,16 +101,16 @@
 import { FormKit } from '@formkit/vue';
 import { ApiClientProvider } from '@/services/ApiClients';
 import Card from 'primevue/card';
-import { defineComponent, inject, computed } from 'vue';
+import { computed, defineComponent, inject } from 'vue';
 import type Keycloak from 'keycloak-js';
 import { assertDefined } from '@/utils/TypeScriptUtils';
+import Tooltip from 'primevue/tooltip';
 import PrimeButton from 'primevue/button';
 import UploadFormHeader from '@/components/forms/parts/elements/basic/UploadFormHeader.vue';
 import YesNoFormField from '@/components/forms/parts/fields/YesNoFormField.vue';
 import Calendar from 'primevue/calendar';
 import SuccessMessage from '@/components/messages/SuccessMessage.vue';
 import FailMessage from '@/components/messages/FailMessage.vue';
-import { lksgminiDataModel } from '@/frameworks/lksgmini/UploadConfig';
 import { type CompanyAssociatedDataLksgminiData, DataTypeEnum, type LksgminiData } from '@clients/backend';
 import { useRoute } from 'vue-router';
 import { checkCustomInputs } from '@/utils/ValidationsUtils';
@@ -125,29 +126,26 @@ import RadioButtonsFormField from '@/components/forms/parts/fields/RadioButtonsF
 import SubmitButton from '@/components/forms/parts/SubmitButton.vue';
 import SubmitSideBar from '@/components/forms/parts/SubmitSideBar.vue';
 import YesNoNaFormField from '@/components/forms/parts/fields/YesNoNaFormField.vue';
+import UploadReports from '@/components/forms/parts/UploadReports.vue';
 import PercentageFormField from '@/components/forms/parts/fields/PercentageFormField.vue';
 import ProductionSitesFormField from '@/components/forms/parts/fields/ProductionSitesFormField.vue';
-import LksgSubcontractingCompaniesFormField from '@/components/forms/parts/fields/LksgSubcontractingCompaniesFormField.vue';
-import { objectDropNull } from '@/utils/UpdateObjectUtils';
+import { objectDropNull, type ObjectType } from '@/utils/UpdateObjectUtils';
 import { smoothScroll } from '@/utils/SmoothScroll';
 import { type DocumentToUpload, uploadFiles } from '@/utils/FileUploadUtils';
 import MostImportantProductsFormField from '@/components/forms/parts/fields/MostImportantProductsFormField.vue';
-import { type Subcategory } from '@/utils/GenericFrameworkTypes';
+import { type Field, type Subcategory } from '@/utils/GenericFrameworkTypes';
 import ProcurementCategoriesFormField from '@/components/forms/parts/fields/ProcurementCategoriesFormField.vue';
 import { createSubcategoryVisibilityMap } from '@/utils/UploadFormUtils';
+import { formatAxiosErrorMessage } from '@/utils/AxiosErrorMessageFormatter';
 import IntegerExtendedDataPointFormField from '@/components/forms/parts/fields/IntegerExtendedDataPointFormField.vue';
 import BigDecimalExtendedDataPointFormField from '@/components/forms/parts/fields/BigDecimalExtendedDataPointFormField.vue';
 import CurrencyDataPointFormField from '@/components/forms/parts/fields/CurrencyDataPointFormField.vue';
+import YesNoExtendedDataPointFormField from '@/components/forms/parts/fields/YesNoExtendedDataPointFormField.vue';
 import YesNoBaseDataPointFormField from '@/components/forms/parts/fields/YesNoBaseDataPointFormField.vue';
 import YesNoNaBaseDataPointFormField from '@/components/forms/parts/fields/YesNoNaBaseDataPointFormField.vue';
-import YesNoExtendedDataPointFormField from '@/components/forms/parts/fields/YesNoExtendedDataPointFormField.vue';
+import ListOfBaseDataPointsFormField from '@/components/forms/parts/fields/ListOfBaseDataPointsFormField.vue';
 import { getFilledKpis } from '@/utils/DataPoint';
-import { formatAxiosErrorMessage } from '@/utils/AxiosErrorMessageFormatter';
-import AmountWithCurrencyFormField from '@/components/forms/parts/fields/AmountWithCurrencyFormField.vue';
-import BigDecimalBaseDataPointFormField from '@/components/forms/parts/fields/BigDecimalBaseDataPointFormField.vue';
-import RiskAssessmentsFormField from '@/components/forms/parts/fields/RiskAssessmentsFormField.vue';
-import GeneralViolationsAssessmentsFormField from '@/components/forms/parts/fields/GeneralViolationsAssessmentsFormField.vue';
-import GrievanceMechanismAssessmentsFormField from '@/components/forms/parts/fields/GrievanceMechanismAssessmentsFormField.vue';
+import { lksgminiDataModel } from '@/frameworks/lksgmini/UploadConfig';
 import { getBasePublicFrameworkDefinition } from '@/frameworks/BasePublicFrameworkRegistry';
 import { type PublicFrameworkDataApi } from '@/utils/api/UnifiedFrameworkDataApi';
 
@@ -179,50 +177,49 @@ export default defineComponent({
     RadioButtonsFormField,
     PercentageFormField,
     ProductionSitesFormField,
-    RiskAssessmentsFormField,
-    GeneralViolationsAssessmentsFormField,
-    GrievanceMechanismAssessmentsFormField,
     MostImportantProductsFormField,
     ProcurementCategoriesFormField,
+    UploadReports,
     IntegerExtendedDataPointFormField,
     BigDecimalExtendedDataPointFormField,
     CurrencyDataPointFormField,
-    AmountWithCurrencyFormField,
     YesNoFormField,
     YesNoNaFormField,
     YesNoBaseDataPointFormField,
     YesNoNaBaseDataPointFormField,
     YesNoExtendedDataPointFormField,
-    BigDecimalBaseDataPointFormField,
-    LksgSubcontractingCompaniesFormField,
+    ListOfBaseDataPointsFormField,
+  },
+  directives: {
+    tooltip: Tooltip,
   },
   emits: ['datasetCreated'],
   data() {
     return {
-      formId: 'createLkSGForm',
+      formId: 'createLksgMiniForm',
       waitingForData: true,
       dataDate: undefined as Date | undefined,
-      CompanyAssociatedDataLksgminiData: {} as CompanyAssociatedDataLksgminiData,
-      lksgminiDataModel,
+      companyAssociatedLksgMiniData: {} as CompanyAssociatedDataLksgminiData,
+      lksgminiDataModel: lksgminiDataModel,
       route: useRoute(),
       message: '',
+      listOfFilledKpis: [] as Array<string>,
       smoothScroll: smoothScroll,
       uploadSucceded: false,
-      postLkSGDataProcessed: false,
+      postLksgMiniDataProcessed: false,
       messageCounter: 0,
       checkCustomInputs,
       fieldSpecificDocuments: new Map() as Map<string, DocumentToUpload>,
-      listOfFilledKpis: [] as Array<string>,
     };
   },
   computed: {
     yearOfDataDate: {
       get(): string {
-        const currentDate = this.CompanyAssociatedDataLksgminiData.data?.general?.masterData?.dataDate;
-        if (currentDate === undefined) {
+        const currentYear: string = this.companyAssociatedLksgMiniData.reportingPeriod;
+        if (currentYear == undefined) {
           return '';
         } else {
-          return currentDate.split('-')[0];
+          return currentYear;
         }
       },
       set() {
@@ -230,7 +227,7 @@ export default defineComponent({
       },
     },
     subcategoryVisibility(): Map<Subcategory, boolean> {
-      return createSubcategoryVisibilityMap(this.lksgminiDataModel, this.CompanyAssociatedDataLksgminiData.data);
+      return createSubcategoryVisibilityMap(this.lksgminiDataModel, this.companyAssociatedLksgMiniData.data);
     },
   },
   props: {
@@ -242,56 +239,58 @@ export default defineComponent({
   created() {
     const dataId = this.route.query.templateDataId;
     if (dataId && typeof dataId === 'string') {
-      void this.loadLKSGData(dataId);
+      void this.loadLksgMiniData(dataId);
     } else {
       this.waitingForData = false;
     }
   },
   methods: {
     /**
-     * Builds an api to get and upload Lksg data
+     * Builds an api to get and upload LksgMini data
      * @returns the api
      */
-    buildLksgDataApi(): PublicFrameworkDataApi<LksgminiData> | undefined {
+    buildLksgMiniDataApi(): PublicFrameworkDataApi<LksgminiData> {
       const apiClientProvider = new ApiClientProvider(assertDefined(this.getKeycloakPromise)());
-      const frameworkDefinition = getBasePublicFrameworkDefinition(DataTypeEnum.Lksg);
+      const frameworkDefinition = getBasePublicFrameworkDefinition(DataTypeEnum.Lksgmini);
       if (frameworkDefinition) {
         return frameworkDefinition.getPublicFrameworkApiClient(undefined, apiClientProvider.axiosInstance);
-      } else return undefined;
+      }
     },
 
     /**
-     * Loads the LkSG-Dataset identified by the provided dataId and pre-configures the form to contain the data
+     * Loads the LksgMini-Dataset identified by the provided dataId and pre-configures the form to contain the data
      * from the dataset
      * @param dataId the id of the dataset to load
      */
-    async loadLKSGData(dataId: string): Promise<void> {
+    async loadLksgMiniData(dataId: string): Promise<void> {
       this.waitingForData = true;
-      const lksgDataControllerApi = this.buildLksgDataApi();
-      const dataResponse = await lksgDataControllerApi!.getFrameworkData(dataId);
-      const lksgResponseData = dataResponse.data;
-      this.listOfFilledKpis = getFilledKpis(lksgResponseData.data);
-      this.CompanyAssociatedDataLksgminiData = objectDropNull(lksgResponseData);
+      const lksgMiniDataControllerApi = this.buildLksgMiniDataApi();
+      const dataResponse = await lksgMiniDataControllerApi.getFrameworkData(dataId);
+      const lksgMiniResponseData = dataResponse.data;
+      this.listOfFilledKpis = getFilledKpis(lksgMiniResponseData.data);
+      this.companyAssociatedLksgMiniData = objectDropNull(
+        lksgMiniResponseData as ObjectType
+      ) as CompanyAssociatedDataLksgMiniData;
       this.waitingForData = false;
     },
     /**
-     * Sends data to add LkSG data
+     * Sends data to add LksgMini data
      */
-    async postLkSGData(): Promise<void> {
+    async postLksgMiniData(): Promise<void> {
       this.messageCounter++;
       try {
         if (this.fieldSpecificDocuments.size > 0) {
           await uploadFiles(Array.from(this.fieldSpecificDocuments.values()), assertDefined(this.getKeycloakPromise));
         }
-        const lksgDataControllerApi = this.buildLksgDataApi();
-        await lksgDataControllerApi!.postFrameworkData(this.CompanyAssociatedDataLksgminiData);
+        const lksgMiniDataControllerApi = this.buildLksgMiniDataApi();
+        await lksgMiniDataControllerApi.postFrameworkData(this.companyAssociatedLksgMiniData);
         this.$emit('datasetCreated');
         this.dataDate = undefined;
         this.message = 'Upload successfully executed.';
         this.uploadSucceded = true;
       } catch (error) {
         console.error(error);
-        if ((error as Error).message) {
+        if (error.message) {
           this.message = formatAxiosErrorMessage(error as Error);
         } else {
           this.message =
@@ -299,12 +298,13 @@ export default defineComponent({
         }
         this.uploadSucceded = false;
       } finally {
-        this.postLkSGDataProcessed = true;
+        this.postLksgMiniDataProcessed = true;
       }
     },
+
     /**
-     * updates the list of certificates that were uploaded in the corresponding formfields on change
-     * @param fieldName the name of the formfield as a key
+     * updates the list of certificates that were uploaded in the corresponding form fields on change
+     * @param fieldName the name of the form field as a key
      * @param document the certificate as combined object of reference id and file content
      */
     updateDocumentList(fieldName: string, document: DocumentToUpload) {
@@ -312,6 +312,17 @@ export default defineComponent({
         this.fieldSpecificDocuments.set(fieldName, document);
       } else {
         this.fieldSpecificDocuments.delete(fieldName);
+      }
+    },
+    /**
+     * If the passed field is the first field of the LksgMini frameworks first category and subcategory, a custom
+     * validation message is returned for the "is"-validation for that field.
+     * @param field that potentially could be the first field of the LksgMini framework
+     * @returns an object expected by FormKit in order to customize the validation message of a field
+     */
+    getValidationMessageForFirstQuestion(field: Field): { is: string } | undefined {
+      if (field.name === lksgminiDataModel[0].subcategories[0].fields[0].name) {
+        return { is: 'Sie müssen "Ja" wählen, um den Datensatz abschicken zu können.' };
       }
     },
   },

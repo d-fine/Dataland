@@ -2,12 +2,9 @@ package org.dataland.frameworktoolbox.frameworks.lksg
 
 import org.dataland.frameworktoolbox.frameworks.PavedRoadFramework
 import org.dataland.frameworktoolbox.intermediate.Framework
-import org.dataland.frameworktoolbox.intermediate.components.SingleSelectComponent
-import org.dataland.frameworktoolbox.intermediate.components.support.SelectionOption
 import org.dataland.frameworktoolbox.intermediate.group.ComponentGroup
 import org.dataland.frameworktoolbox.intermediate.group.ComponentGroupApi
 import org.dataland.frameworktoolbox.intermediate.group.edit
-import org.dataland.frameworktoolbox.intermediate.group.get
 import org.dataland.frameworktoolbox.specific.viewconfig.elements.LabelBadgeColor
 import org.springframework.stereotype.Component
 import java.io.File

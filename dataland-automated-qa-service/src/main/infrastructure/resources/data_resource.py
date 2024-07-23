@@ -37,6 +37,12 @@ from dataland_backend_api_documentation_client.models.company_associated_data_es
 from dataland_backend_api_documentation_client.models.company_associated_data_heimathafen_data import (
     CompanyAssociatedDataHeimathafenData,
 )
+from dataland_backend_api_documentation_client.models.company_associated_data_lksgmini_data import (
+    CompanyAssociatedDataLksgMiniData,
+)
+from dataland_backend_api_documentation_client.models.company_associated_data_lksgmedium_data import (
+    CompanyAssociatedDataLksgMediumData,
+)
 
 from dataland_backend_api_documentation_client.client import AuthenticatedClient
 from dataland_backend_api_documentation_client.models.data_meta_information import (
@@ -70,6 +76,8 @@ def _get_data(data_type: DataTypeEnum, data_id: str, client: AuthenticatedClient
         DataTypeEnum.VSME: CompanyAssociatedDataVsmeData,
         DataTypeEnum.ESG_QUESTIONNAIRE: CompanyAssociatedDataEsgQuestionnaireData,
         DataTypeEnum.HEIMATHAFEN: CompanyAssociatedDataHeimathafenData,
+        DataTypeEnum.LKSGMINI: CompanyAssociatedDataLksgMiniData,
+        DataTypeEnum.LKSGMEDIUM: CompanyAssociatedDataLksgMediumData,
     }
     response = client.get_httpx_client().request(method="get", url=f"/data/{data_type}/{data_id}")
     if response.status_code == HTTPStatus.OK:

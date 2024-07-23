@@ -43,6 +43,8 @@ import MarginWrapper from '@/components/wrapper/MarginWrapper.vue';
 import CreateHeimathafenDataset from '@/components/forms/CreateHeimathafenDataset.vue';
 import CreateLksgDataset from '@/components/forms/CreateLksgDataset.vue';
 import CreateVsmeDataset from '@/components/forms/CreateVsmeDataset.vue';
+import CreateLksgMiniDataset from "@/components/forms/CreateLksgMiniDataset.vue";
+import CreateLksgMediumDataset from "@/components/forms/CreateLksgMediumDataset.vue";
 
 export default defineComponent({
   name: 'UploadFormWrapper',
@@ -95,6 +97,10 @@ export default defineComponent({
           return CreateEsgQuestionnaireDataset;
         case `${DataTypeEnum.Vsme}`:
           return CreateVsmeDataset;
+        case `${DataTypeEnum.Lksgmini}`:
+          return CreateLksgMiniDataset;
+        case `${DataTypeEnum.Lksgmedium}`:
+          return CreateLksgMediumDataset;
         default:
           return null;
       }
