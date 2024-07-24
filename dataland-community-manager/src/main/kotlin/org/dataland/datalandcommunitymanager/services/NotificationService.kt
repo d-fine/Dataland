@@ -239,9 +239,9 @@ constructor(
             keySelector = { it.framework },
             valueTransform = { it.reportingPeriod },
         ).mapValues { (_, years) -> years.sorted() }
-        return frameworkAndYears.entries.joinToString(", ") {
-                (framework, years) ->
-            "$framework: ${years.joinToString(" ") }"
+
+        return frameworkAndYears.entries.joinToString("\n") { (framework, years) ->
+            "$framework: ${years.joinToString(" ")}"
         }
     }
 }

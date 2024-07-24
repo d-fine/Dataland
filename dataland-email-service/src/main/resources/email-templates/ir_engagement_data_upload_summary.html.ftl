@@ -36,54 +36,8 @@
     </tr>
     <tr>
         <td colspan="3">
-            <table style="background-color: #f6f6f6; border-collapse: collapse; padding: 0; margin: 0; width: 520px">
-                <tbody>
-                <tr>
-                    <td style="text-align: left; width: 20px; height: 13px; padding: 0">
-                    </td>
-                    <td style="text-align: right; width: 480px; padding: 0;">
-                    </td>
-                    <td style="text-align: right; width: 20px; padding: 0">
-                    </td>
-                </tr>
-                <#list frameworks as framework>
-                <tr>
-                    <td rowspan="10">&nbsp;</td>
-                    <td style="height: 7px"></td>
-                    <td rowspan="10">&nbsp;</td>
-                </tr>
-                <tr>
-                    <td>Framework</td>
-                </tr>
-                <tr>
-                    <td style="font-size: 5px; height: 5px">&nbsp;</td>
-                </tr>
-                <tr>
-                    <td style="font-weight: bold; font-size:19px">${framework.name}</td>
-                </tr>
-                <tr>
-                    <td style="height: 20px">&nbsp;</td>
-                </tr>
-                <tr>
-                    <td>Reporting year</td>
-                </tr>
-                <tr>
-                    <td style="font-size: 5px; height: 5px">&nbsp;</td>
-                </tr>
-                <tr>
-                    <td style="font-weight: bold; font-size:19px">${framework.year}</td>
-                </tr>
-                <#if !framework?is_last>
-                <tr>
-                    <td style="border-bottom:1px solid #e3e3e3; height: 20px">&nbsp;</td>
-                </tr>
-                </#if>
-                <tr>
-                    <td style="font-size: 5px; height: 13px">&nbsp;</td>
-                </tr>
-                </#list>
-                </tbody>
-            </table>
+            <p>Framework: Reporting Periods</p>
+            <pre style="background-color: #f6f6f6; padding: 10px; white-space: pre-wrap;">${frameworks}</pre>
         </td>
     </tr>
     <tr>

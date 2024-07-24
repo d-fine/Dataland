@@ -41,19 +41,12 @@ class SummaryNotificationEmailFactory(
     }
 
     override fun buildTextContent(properties: Map<String, String?>): String {
-        val frameworks = properties[keys.frameworks]?.let { frameworksString ->
-            convertFrameworksStringToList(frameworksString)
-        } ?: emptyList()
-
         return StringBuilder().apply {
             append("Exciting news! 📣\n")
             append("Multiple datasets for ${properties[keys.companyName]} have been uploaded to Dataland\n")
             append("in the last ${properties[keys.numberOfDays]} days!\n\n")
 
-            frameworks.forEach { (name, year) ->
-                append("Framework: $name\n")
-                append("Reporting year: $year\n\n")
-            }
+            append("${properties[keys.frameworks]}\n\n")
 
             append("How to proceed?\n")
             append("1. Gain sovereignty over your data by claiming company ownership.\n")
@@ -65,13 +58,5 @@ class SummaryNotificationEmailFactory(
             append("Claiming ownership process usually requires 1-2 business days.\n")
             append("You will be notified by email.\n")
         }.toString()
-    }
-
-    private fun convertFrameworksStringToList(frameworksString: String): List<Pair<String, String>> {
-        return frameworksString.split(", ").flatMap { frameworkString ->
-            val parts = frameworkString.split(": ")
-            val name = parts[0]
-            parts[1].split(" ").map { year -> name to year }
-        }
     }
 }
