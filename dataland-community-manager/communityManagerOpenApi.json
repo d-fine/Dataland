@@ -1493,11 +1493,13 @@
           "Declined",
           "Granted",
           "Pending",
-          "Revoked"
+          "Revoked",
+          "Public"
         ]
       },
       "StoredDataRequest": {
         "required": [
+          "accessStatus",
           "creationTimestamp",
           "dataRequestId",
           "dataRequestStatusHistory",
@@ -1579,6 +1581,7 @@
       },
       "StoredDataRequestStatusObject": {
         "required": [
+          "accessStatus",
           "creationTimestamp",
           "status"
         ],

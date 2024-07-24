@@ -286,7 +286,10 @@ class DataRequestProcessingUtils(
             val modificationTime = Instant.now().toEpochMilli()
             dataRequestEntity.lastModifiedDate = modificationTime
             dataRequestRepository.save(dataRequestEntity)
-            if (dataRequestEntity.accessStatus == null || dataRequestEntity.accessStatus == AccessStatus.Declined) {
+            //TODO discuss if declined should be removed from this condition
+            if (dataRequestEntity.accessStatus == AccessStatus.Revoked || dataRequestEntity.accessStatus ==
+                AccessStatus.Declined || dataRequestEntity.accessStatus == AccessStatus.Public
+            ) {
                 val requestStatusObject = listOf(
                     StoredDataRequestStatusObject(
                         dataRequestEntity.requestStatus, modificationTime,
@@ -335,8 +338,6 @@ class DataRequestProcessingUtils(
             creationTime,
         )
         dataRequestRepository.save(dataRequestEntity)
-        // TODO discuss how to handle the request status in the case that the data was already available and only
-        // access was required
         // TODO Refactor with storeDataRequestEntityAsOpend as both are very similiar
         val requestStatusObject = listOf(
             StoredDataRequestStatusObject(
