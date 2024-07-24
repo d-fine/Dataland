@@ -30,7 +30,6 @@ data class ElementaryEventEntity(
 
     val reportingPeriod: String,
 
-    // TODO Perhaps remove later
     val creationTimestamp: Long,
 
     @ManyToOne(optional = true)

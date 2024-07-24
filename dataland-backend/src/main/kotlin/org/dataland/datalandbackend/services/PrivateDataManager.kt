@@ -89,13 +89,7 @@ class PrivateDataManager(
         val documentHashes = documents?.takeIf { it.isNotEmpty() }
             ?.let { storeDocumentsInMemoryAndReturnTheirHashes(dataId, it, correlationId) }
             ?: mutableMapOf()
-        sendReceptionMessage(
-            dataId,
-            storableDataSet.companyId,
-            storableDataSet.dataType,
-            storableDataSet.reportingPeriod,
-            correlationId, documentHashes,
-        )
+        sendReceptionMessage(dataId, storableDataSet, correlationId, documentHashes)
         return metaInfoEntity.toApiModel(userAuthentication)
     }
 
@@ -161,9 +155,7 @@ class PrivateDataManager(
 
     private fun sendReceptionMessage(
         dataId: String,
-        companyId: String,
-        framework: DataType,
-        reportingPeriod: String,
+        storableDataset: StorableDataSet,
         correlationId: String,
         documentHashes: Map<String, String>,
     ) {
@@ -174,11 +166,10 @@ class PrivateDataManager(
         val payload = JSONObject(
             mapOf(
                 "dataId" to dataId,
-                "companyId" to companyId,
-                "framework" to framework.toString(),
-                "reportingPeriod" to reportingPeriod,
-                "actionType" to
-                    ActionType.StorePrivateDataAndDocuments,
+                "companyId" to storableDataset.companyId,
+                "framework" to storableDataset.dataType.toString(),
+                "reportingPeriod" to storableDataset.reportingPeriod,
+                "actionType" to ActionType.StorePrivateDataAndDocuments,
                 "documentHashes" to documentHashes,
             ),
         ).toString()
@@ -186,9 +177,7 @@ class PrivateDataManager(
             payload, MessageType.PrivateDataReceived, correlationId,
             ExchangeName.PrivateRequestReceived,
         )
-        logger.info(
-            "Message to EuroDaT-storage-service for dataId $dataId and correlationId $correlationId was sent",
-        )
+        logger.info("Message to EuroDaT-storage-service for dataId $dataId and correlationId $correlationId was sent")
     }
 
     /**
