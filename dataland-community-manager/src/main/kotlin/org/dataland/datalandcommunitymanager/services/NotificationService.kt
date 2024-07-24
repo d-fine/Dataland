@@ -2,6 +2,7 @@ package org.dataland.datalandcommunitymanager.services
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
+import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandcommunitymanager.entities.ElementaryEventEntity
 import org.dataland.datalandcommunitymanager.entities.NotificationEventEntity
 import org.dataland.datalandcommunitymanager.events.ElementaryEventType
@@ -34,6 +35,7 @@ constructor(
     val notificationEventRepository: NotificationEventRepository,
     val elementaryEventRepository: ElementaryEventRepository,
     val companyDataControllerApi: CompanyDataControllerApi,
+    val companyRolesManager: CompanyRolesManager,
     val objectMapper: ObjectMapper,
     @Value("\${dataland.community-manager.notification-threshold-days:30}")
     private val notificationThresholdDays: Int,
@@ -62,7 +64,9 @@ constructor(
                         "Creating notification event and sending notification emails. CorrelationId: $correlationId",
                 )
                 createNotificationEventAndReferenceIt(elementaryEvents)
-                sendEmailMessageToQueue(notificationEmailType, elementaryEvents, correlationId)
+                if (!hasCompanyOwner(elementaryEvents.first().companyId)) {
+                    sendEmailMessageToQueue(notificationEmailType, elementaryEvents, correlationId)
+                }
             }
     }
 
@@ -155,6 +159,7 @@ constructor(
         correlationId: String,
     ) {
         val companyInfo = companyDataControllerApi.getCompanyInfo(elementaryEvents.first().companyId.toString())
+
         val firstElementaryEvent = elementaryEvents.first()
         val properties = mapOf(
             "companyName" to companyInfo.companyName,
@@ -229,6 +234,15 @@ constructor(
         return lastNotificationEvent == null ||
             Duration.between(Instant.ofEpochMilli(lastNotificationEvent.creationTimestamp), Instant.now())
                 .toDays() > notificationThresholdDays
+    }
+
+    fun hasCompanyOwner(companyId: UUID): Boolean {
+        try {
+            companyRolesManager.validateIfCompanyHasAtLeastOneCompanyOwner(companyId.toString())
+        } catch (e: ResourceNotFoundApiException) {
+            return false
+        }
+        return true
     }
 
     /**
