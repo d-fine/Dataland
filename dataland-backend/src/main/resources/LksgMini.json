@@ -1,0 +1,17 @@
+{
+  "general": {
+    "masterData": {
+      "dataDate": "ID11",
+      "headOfficeInGermany": "ID2",
+      "groupOfCompanies": "ID3",
+      "groupOfCompaniesName": "ID4",
+      "industry": "ID5"
+    }
+  },
+  "governance": {
+    "generalViolations": {
+      "legalProceedings": "ID6",
+      "humanRightsOrEnvironmentalViolations": "ID7"
+    }
+  }
+}

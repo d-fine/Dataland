@@ -1,0 +1,24 @@
+{
+  "general": {
+    "masterData": {
+      "dataDate": "ID1",
+      "headOfficeInGermany": "ID2",
+      "groupOfCompanies": "ID3",
+      "groupOfCompaniesName": "ID4",
+      "industry": "ID5"
+    }
+  },
+  "governance": {
+    "generalViolations": {
+      "legalProceedings": "ID6",
+      "humanRightsOrEnvironmentalViolations": "ID7"
+    }
+  },
+  "social": {
+    "childLabor": {
+      "worstFormsOfChildLaborForms": "ID8",
+      "measuresForPreventionOfEmploymentUnderLocalMinimumAge": "ID9",
+      "employmentUnderLocalMinimumAgePreventionEmploymentContracts": "ID10"
+    }
+  }
+}
