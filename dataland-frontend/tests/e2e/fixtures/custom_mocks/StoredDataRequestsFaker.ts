@@ -74,7 +74,7 @@ export function generateStoredDataRequest(): StoredDataRequest {
     {
       status: RequestStatus.Open,
       creationTimestamp: creationTime,
-      accessStatus: undefined,
+      accessStatus: AccessStatus.Public,
     },
     {
       status: status,

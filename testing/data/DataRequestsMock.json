@@ -57,7 +57,8 @@
 		"dataRequestStatusHistory": [
 			{
 				"status": "Open",
-				"creationTimestamp": 137
+				"creationTimestamp": 137,
+				"accessStatus": "Public"
 			},
 			{
 				"status": "Withdrawn",
@@ -127,17 +128,18 @@
 		"dataRequestStatusHistory": [
 			{
 				"status": "Open",
-				"creationTimestamp": 271
+				"creationTimestamp": 271,
+				"accessStatus": "Public"
 			},
 			{
 				"status": "Resolved",
 				"creationTimestamp": 642,
-				"accessStatus": "Revoked"
+				"accessStatus": "Public"
 			}
 		],
 		"lastModifiedDate": 642,
 		"requestStatus": "Open",
-		"accessStatus": "Revoked"
+		"accessStatus": "Public"
 	},
 	{
 		"dataRequestId": "9be2ddb8-8834-4b23-ab30-b33afc8d679c",
@@ -174,17 +176,18 @@
 		"dataRequestStatusHistory": [
 			{
 				"status": "Open",
-				"creationTimestamp": 97
+				"creationTimestamp": 97,
+				"accessStatus": "Public"
 			},
 			{
 				"status": "Resolved",
 				"creationTimestamp": 617,
-				"accessStatus": "Revoked"
+				"accessStatus": "Public"
 			}
 		],
 		"lastModifiedDate": 617,
 		"requestStatus": "Answered",
-		"accessStatus": "Revoked"
+		"accessStatus": "Public"
 	},
 	{
 		"dataRequestId": "10ad826b-ed87-44f7-b90f-079e984b2e23",
@@ -241,7 +244,8 @@
 		"dataRequestStatusHistory": [
 			{
 				"status": "Open",
-				"creationTimestamp": 239
+				"creationTimestamp": 239,
+				"accessStatus": "Public"
 			},
 			{
 				"status": "Closed",
@@ -304,7 +308,8 @@
 		"dataRequestStatusHistory": [
 			{
 				"status": "Open",
-				"creationTimestamp": 337
+				"creationTimestamp": 337,
+				"accessStatus": "Public"
 			},
 			{
 				"status": "Resolved",
