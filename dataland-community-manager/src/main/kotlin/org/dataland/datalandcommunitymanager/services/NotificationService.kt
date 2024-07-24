@@ -160,7 +160,7 @@ constructor(
             "companyId" to firstElementaryEvent.companyId.toString(),
             "frameworks" to createFrameworkAndYearStringFromElementaryEvents(elementaryEvents),
             "baseUrl" to proxyPrimaryUrl,
-            "numberOfDays" to getTimePassedSinceLastNotificationEvent(
+            "numberOfDays" to getDaysPassedSinceLastNotificationEvent(
                 firstElementaryEvent.companyId, firstElementaryEvent.elementaryEventType,
             ).toString(),
         )
@@ -200,19 +200,17 @@ constructor(
     }
 
     /**
-     * Gets time passed in days since last notification event for a specific company
+     * Gets days passed since last notification event for a specific company. If there was no last notification
+     * event, it returns "null".
      * @param companyId for which a notification event might have happened
      * @param elementaryEventType of the elementary events for which the notification event was created
-     * @return time passed in days
+     * @return time passed in days, or null if there is no last notification event
      */
-    private fun getTimePassedSinceLastNotificationEvent(
+    private fun getDaysPassedSinceLastNotificationEvent(
         companyId: UUID,
         elementaryEventType: ElementaryEventType,
-    ): Long {
-        val lastNotificationEvent = getLastNotificationEventOrNull(companyId, elementaryEventType)
-        return if (lastNotificationEvent == null) {
-            elementaryEventsThreshold.toLong() // TODO Emanuel: Wieso?  Wäre das nicht eigentlich "0" ? Oder "null"?
-        } else {
+    ): Long? {
+        return getLastNotificationEventOrNull(companyId, elementaryEventType)?.let { lastNotificationEvent ->
             Duration.between(Instant.ofEpochMilli(lastNotificationEvent.creationTimestamp), Instant.now()).toDays()
         }
     }

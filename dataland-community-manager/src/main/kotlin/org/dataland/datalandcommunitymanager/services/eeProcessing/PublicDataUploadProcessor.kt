@@ -1,6 +1,5 @@
 package org.dataland.datalandcommunitymanager.services.eeProcessing
 
-import org.dataland.datalandbackend.openApiClient.api.MetaDataControllerApi
 import org.dataland.datalandcommunitymanager.entities.ElementaryEventEntity
 import org.dataland.datalandcommunitymanager.events.ElementaryEventType
 import org.dataland.datalandcommunitymanager.model.elementaryEventProcessing.ElementaryEventPayloadMetaInfo
@@ -31,16 +30,15 @@ import java.util.*
 class PublicDataUploadProcessor(
     @Autowired val messageUtils: MessageQueueUtils,
     @Autowired val notificationService: NotificationService,
-    @Autowired val metaDataControllerApi: MetaDataControllerApi,
     @Autowired override val elementaryEventRepository: ElementaryEventRepository,
 ) : BaseEventProcessor() {
     private val logger = LoggerFactory.getLogger(this.javaClass)
 
     /**
-     * Method that listens to public data storage requests and, creates and persists new elementaryEvents,
-     * and creates and persists a new single or summary notification event if specific trigger requirements are met
-     * @param payload the content of the message
-     * @param correlationId the correlation ID of the current user process
+     * Method that listens to public data storage requests, persists them as elementary events and asks the
+     * Notification service to potentially send notifications
+     * @param payload content of the public data storage message
+     * @param correlationId the correlation ID of the current user process that has triggered this message
      * @param type the type of the message
      */
     @RabbitListener(
