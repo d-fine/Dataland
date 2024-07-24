@@ -252,8 +252,8 @@ class NotificationServiceTest {
         elementaryEvents.add(createUploadElementaryEventEntity(15, DataTypeEnum.lksg, "2020"))
 
         val expectedOutputString =
-            "${DataTypeEnum.heimathafen}: 2021 2021 2023, " +
-                "${DataTypeEnum.sfdr}: 2024, " +
+            "${DataTypeEnum.heimathafen}: 2021 2021 2023\n" +
+                "${DataTypeEnum.sfdr}: 2024\n" +
                 "${DataTypeEnum.lksg}: 2020"
 
         val outputString = notificationService.createFrameworkAndYearStringFromElementaryEvents(elementaryEvents)
