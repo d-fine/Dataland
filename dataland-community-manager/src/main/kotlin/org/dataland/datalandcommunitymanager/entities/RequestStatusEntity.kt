@@ -25,7 +25,7 @@ data class RequestStatusEntity(
     val requestStatus: RequestStatus,
 
     @Enumerated(EnumType.STRING)
-    val accessStatus: AccessStatus?,
+    val accessStatus: AccessStatus,
 
     val creationTimestamp: Long,
 

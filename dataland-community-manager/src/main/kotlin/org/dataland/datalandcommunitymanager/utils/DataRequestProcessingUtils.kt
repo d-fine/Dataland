@@ -100,7 +100,12 @@ class DataRequestProcessingUtils(
         )
         dataRequestRepository.save(dataRequestEntity)
 
-        val requestStatusObject = listOf(StoredDataRequestStatusObject(RequestStatus.Open, creationTime, null))
+        val requestStatusObject = listOf(
+            StoredDataRequestStatusObject(
+                RequestStatus.Open, creationTime,
+                AccessStatus.Public,
+            ),
+        )
         dataRequestEntity.associateRequestStatus(requestStatusObject)
         dataRequestHistoryManager.saveStatusHistory(dataRequestEntity.dataRequestStatusHistory)
 
@@ -335,7 +340,7 @@ class DataRequestProcessingUtils(
         // TODO Refactor with storeDataRequestEntityAsOpend as both are very similiar
         val requestStatusObject = listOf(
             StoredDataRequestStatusObject(
-                RequestStatus.Closed, creationTime,
+                RequestStatus.Answered, creationTime,
                 AccessStatus.Pending,
             ),
         )

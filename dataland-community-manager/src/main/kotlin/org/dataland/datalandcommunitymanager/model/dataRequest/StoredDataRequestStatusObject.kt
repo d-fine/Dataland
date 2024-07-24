@@ -11,5 +11,5 @@ data class StoredDataRequestStatusObject(
 
     val creationTimestamp: Long,
 
-    val accessStatus: AccessStatus?,
+    val accessStatus: AccessStatus,
 )

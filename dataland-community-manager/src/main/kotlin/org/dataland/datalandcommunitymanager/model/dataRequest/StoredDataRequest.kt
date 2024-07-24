@@ -33,5 +33,5 @@ data class StoredDataRequest(
 
     val requestStatus: RequestStatus,
 
-    val accessStatus: AccessStatus?,
+    val accessStatus: AccessStatus,
 )

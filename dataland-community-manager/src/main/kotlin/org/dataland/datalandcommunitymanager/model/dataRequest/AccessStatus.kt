@@ -8,4 +8,4 @@ import io.swagger.v3.oas.annotations.media.Schema
 @Schema(
     enumAsRef = true,
 )
-enum class AccessStatus { Declined, Granted, Pending, Revoked }
+enum class AccessStatus { Declined, Granted, Pending, Revoked, Public }
