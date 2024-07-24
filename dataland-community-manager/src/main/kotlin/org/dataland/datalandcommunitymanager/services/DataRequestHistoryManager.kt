@@ -42,9 +42,24 @@ class DataRequestHistoryManager(
      * Method to store the request message history
      * @param dataRequestMessageHistory list of request message entities
      */
-
     @Transactional
     fun saveMessageHistory(dataRequestMessageHistory: List<MessageEntity>) {
         messageRepository.saveAllAndFlush(dataRequestMessageHistory)
+    }
+
+    /**
+     * Persists a new dataRequestStatus to the associated EntityManager.
+     */
+    @Transactional
+    fun persistRequestStatus(dataRequestStatus: RequestStatusEntity) {
+        entityManager.persist(dataRequestStatus)
+    }
+
+    /**
+     * Persists a new message to the associated EntityManager.
+     */
+    @Transactional
+    fun persistMessage(message: MessageEntity) {
+        entityManager.persist(message)
     }
 }

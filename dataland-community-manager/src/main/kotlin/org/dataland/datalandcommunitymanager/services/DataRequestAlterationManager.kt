@@ -2,7 +2,11 @@ package org.dataland.datalandcommunitymanager.services
 
 import org.dataland.datalandbackend.openApiClient.api.MetaDataControllerApi
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
+import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
+import org.dataland.datalandbackendutils.utils.isEmailAddress
 import org.dataland.datalandcommunitymanager.entities.DataRequestEntity
+import org.dataland.datalandcommunitymanager.entities.MessageEntity
+import org.dataland.datalandcommunitymanager.entities.RequestStatusEntity
 import org.dataland.datalandcommunitymanager.exceptions.DataRequestNotFoundApiException
 import org.dataland.datalandcommunitymanager.model.dataRequest.AccessStatus
 import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
@@ -57,43 +61,70 @@ class DataRequestAlterationManager(
         val dataRequestEntity = dataRequestRepository.findById(dataRequestId).getOrElse {
             throw DataRequestNotFoundApiException(dataRequestId)
         }
+        val areContactsEmails = contacts?.all { it.isEmailAddress() } ?: true
+        if (!areContactsEmails) {
+            throw InvalidInputApiException(
+                "The contacts field should only contain email adresses.",
+                "The contacts field should only contain email adresses.",
+            )
+        }
+
         val modificationTime = Instant.now().toEpochMilli()
-        dataRequestEntity.lastModifiedDate = modificationTime
-        dataRequestRepository.save(dataRequestEntity)
+        var anyChanges = false
 
         val newRequestStatus = requestStatus ?: dataRequestEntity.requestStatus
         val newAccessStatus = accessStatus ?: dataRequestEntity.accessStatus
         // TODO  check sending out notification emails to the company owner if a new accessStatus =
         //  Pending request is stored
-        // TODO check sending out notificaiton emails to the requester once accessStatus is set to Granted,
+        // TODO check sending out notification emails to the requester once accessStatus is set to Granted,
         //  maybe Revoked and Declined
         if (newRequestStatus != dataRequestEntity.requestStatus || newAccessStatus != dataRequestEntity.accessStatus) {
-            val requestStatusObject = listOf(
-                StoredDataRequestStatusObject(newRequestStatus, modificationTime, newAccessStatus),
-            )
-
-            dataRequestEntity.associateRequestStatus(requestStatusObject)
-            dataRequestHistoryManager.saveStatusHistory(dataRequestEntity.dataRequestStatusHistory)
-            dataRequestLogger.logMessageForPatchingRequestStatusOrAccessStatus(
-                dataRequestId, newRequestStatus, newAccessStatus,
-            )
-            if (contacts != null) {
-                dataRequestHistoryManager.detachDataRequestEntity(dataRequestEntity)
-            }
+            anyChanges = true
+            addNewRequestStatusToHistory(dataRequestEntity, newRequestStatus, newAccessStatus, modificationTime)
         }
         if (contacts != null) {
-            val messageHistory = listOf(StoredDataRequestMessageObject(contacts, message, modificationTime))
-            dataRequestEntity.associateMessages(messageHistory)
-            dataRequestHistoryManager.saveMessageHistory(dataRequestEntity.messageHistory)
-            this.sendSingleDataRequestEmail(dataRequestEntity, contacts, message)
-            dataRequestLogger.logMessageForPatchingRequestMessage(dataRequestId)
+            anyChanges = true
+            addNewMessageToHistory(dataRequestEntity, contacts, message, modificationTime)
         }
         if (requestStatus == RequestStatus.Closed || requestStatus == RequestStatus.Answered) {
             sendEmailBecauseOfStatusChanged(
                 dataRequestEntity, requestStatus, correlationId ?: UUID.randomUUID().toString(),
             )
         }
+        if (anyChanges) dataRequestEntity.lastModifiedDate = modificationTime
         return dataRequestEntity.toStoredDataRequest()
+    }
+
+    private fun addNewMessageToHistory(
+        dataRequestEntity: DataRequestEntity,
+        contacts: Set<String>,
+        message: String?,
+        modificationTime: Long,
+    ) {
+        val requestMessageObject = StoredDataRequestMessageObject(contacts, message, modificationTime)
+        val requestMessageEntity = MessageEntity(requestMessageObject, dataRequestEntity)
+
+        dataRequestHistoryManager.persistMessage(requestMessageEntity)
+        dataRequestEntity.addToMessageToHistory(requestMessageEntity)
+
+        dataRequestLogger.logMessageForPatchingRequestMessage(dataRequestEntity.dataRequestId)
+    }
+
+    private fun addNewRequestStatusToHistory(
+        dataRequestEntity: DataRequestEntity,
+        requestStatus: RequestStatus,
+        accessStatus: AccessStatus,
+        modificationTime: Long,
+    ) {
+        val requestStatusObject = StoredDataRequestStatusObject(requestStatus, modificationTime, accessStatus)
+        val requestStatusEntity = RequestStatusEntity(requestStatusObject, dataRequestEntity)
+
+        dataRequestHistoryManager.persistRequestStatus(requestStatusEntity)
+        dataRequestEntity.addToRequestStatusHistory(requestStatusEntity)
+
+        dataRequestLogger.logMessageForPatchingRequestStatusOrAccessStatus(
+            dataRequestEntity.dataRequestId, requestStatus, accessStatus,
+        )
     }
 
     /**
