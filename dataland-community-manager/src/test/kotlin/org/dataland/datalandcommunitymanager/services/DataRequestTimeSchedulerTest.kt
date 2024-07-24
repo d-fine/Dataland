@@ -2,6 +2,7 @@ package org.dataland.datalandcommunitymanager.services
 
 import org.dataland.datalandcommunitymanager.entities.DataRequestEntity
 import org.dataland.datalandcommunitymanager.entities.RequestStatusEntity
+import org.dataland.datalandcommunitymanager.model.dataRequest.AccessStatus
 import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
 import org.dataland.datalandcommunitymanager.repositories.DataRequestRepository
 import org.dataland.datalandcommunitymanager.utils.GetDataRequestsSearchFilter
@@ -32,6 +33,7 @@ class DataRequestTimeSchedulerTest {
     private fun getDataRequestEntity(
         requestId: String,
         status: RequestStatus,
+        accessStatus: AccessStatus,
         lastModifiedDate: Long,
     ): DataRequestEntity {
         val dataRequestEntity = DataRequestEntity(
@@ -49,7 +51,7 @@ class DataRequestTimeSchedulerTest {
             RequestStatusEntity(
                 statusHistoryId = UUID.randomUUID().toString(),
                 requestStatus = status,
-                accessStatus = null,
+                accessStatus = accessStatus,
                 creationTimestamp = 0,
                 dataRequest = dataRequestEntity,
             ),
@@ -78,8 +80,8 @@ class DataRequestTimeSchedulerTest {
     fun `validate that two stale and answered data requests are patched`() {
         `when`(dataRequestRepository.searchDataRequestEntity(any(GetDataRequestsSearchFilter::class.java))).thenReturn(
             listOf(
-                getDataRequestEntity(dataRequestIdStaleAndAnswered, RequestStatus.Answered, staleLastModified),
-                getDataRequestEntity(dataRequestIdStaleAndAnswered, RequestStatus.Answered, staleLastModified),
+                getDataRequestEntity(dataRequestIdStaleAndAnswered, RequestStatus.Answered, AccessStatus.Public, staleLastModified),
+                getDataRequestEntity(dataRequestIdStaleAndAnswered, RequestStatus.Answered, AccessStatus.Public, staleLastModified),
             ),
         )
         dataRequestTimeScheduler.patchStaleAnsweredRequestToClosed()
@@ -94,7 +96,7 @@ class DataRequestTimeSchedulerTest {
         reset(dataRequestRepository)
         val dataRequestEntities = mutableListOf<DataRequestEntity>()
         for (status in RequestStatus.entries) {
-            val dataRequestEntity = getDataRequestEntity(dummyDataRequestId, status, Instant.now().toEpochMilli())
+            val dataRequestEntity = getDataRequestEntity(dummyDataRequestId, status, AccessStatus.Public, Instant.now().toEpochMilli())
             dataRequestEntities.add(dataRequestEntity)
         }
         `when`(dataRequestRepository.searchDataRequestEntity(any(GetDataRequestsSearchFilter::class.java))).thenReturn(
