@@ -1,4 +1,4 @@
-package org.dataland.datalandcommunitymanager.services.eeProcessing
+package org.dataland.datalandcommunitymanager.services.elementaryEventProcessing
 
 import org.dataland.datalandcommunitymanager.entities.ElementaryEventEntity
 import org.dataland.datalandcommunitymanager.events.ElementaryEventType
@@ -32,7 +32,7 @@ class PublicDataUploadProcessor(
     @Autowired val notificationService: NotificationService,
     @Autowired override val elementaryEventRepository: ElementaryEventRepository,
 ) : BaseEventProcessor() {
-    private val logger = LoggerFactory.getLogger(this.javaClass)
+    override val logger = LoggerFactory.getLogger(this.javaClass)
 
     /**
      * Method that listens to public data storage requests, persists them as elementary events and asks the
@@ -62,13 +62,17 @@ class PublicDataUploadProcessor(
         @Header(MessageHeaderKey.CorrelationId) correlationId: String,
         @Header(MessageHeaderKey.Type) type: String,
     ) {
+        runProcessingLogicIfFeatureFlagEnabled(payload,correlationId,type)
+    }
+
+    override fun runProcessingLogic(payload: String, correlationId: String, type: String) {
         messageUtils.validateMessageType(type, MessageType.PublicDataReceived)
         val elementaryEventMetaInfo =
             validatePayloadAndReturnElementaryEventMetaInfo(payload, ActionType.StorePublicData)
 
         logger.info(
             "Processing elementary event: Request for storage of public framework data. " +
-                "CorrelationId: $correlationId",
+                    "CorrelationId: $correlationId",
         )
         createAndSaveElementaryUploadEvent(elementaryEventMetaInfo)
         val unprocessedElementaryEvents = getUnprocessedElementaryEventsForCompany(elementaryEventMetaInfo.companyId)
