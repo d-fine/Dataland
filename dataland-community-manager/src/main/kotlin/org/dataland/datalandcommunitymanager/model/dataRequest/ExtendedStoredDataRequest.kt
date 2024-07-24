@@ -13,6 +13,7 @@ import org.dataland.datalandcommunitymanager.entities.DataRequestEntity
  * @param companyName the name of the company for this data request
  * @param lastModifiedDate the date when the data request has been modified the last time
  * @param requestStatus the current status of the data request
+ * @param accessStatus the current access status of the data request
  */
 data class ExtendedStoredDataRequest(
     val dataRequestId: String,
@@ -33,7 +34,7 @@ data class ExtendedStoredDataRequest(
 
     val requestStatus: RequestStatus,
 
-    val accessStatus: AccessStatus?,
+    val accessStatus: AccessStatus,
 ) {
     constructor(dataRequestEntity: DataRequestEntity, companyName: String) : this(
         dataRequestEntity.dataRequestId,
