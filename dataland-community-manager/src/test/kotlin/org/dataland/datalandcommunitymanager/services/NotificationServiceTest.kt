@@ -58,6 +58,8 @@ class NotificationServiceTest {
 
     @BeforeAll
     fun setupNotificationService() {
+        assertAssumptionsForTests()
+
         val cloudEventMessageHandlerMock = mock(CloudEventMessageHandler::class.java)
         val notificationEventRepository = mock(NotificationEventRepository::class.java)
         val elementaryEventRepository = mock(ElementaryEventRepository::class.java)
@@ -78,7 +80,9 @@ class NotificationServiceTest {
         )
         `when`(metaDataControllerApiMock.getDataMetaInfo(anyString())).thenReturn(testDataMetaInformation)
         `when`(companyDataControllerApiMock.getCompanyInfo(testCompanyId.toString())).thenReturn(testCompanyInformation)
+    }
 
+    private fun assertAssumptionsForTests() {
         assertEquals(
             30,
             notificationThresholdDays,
