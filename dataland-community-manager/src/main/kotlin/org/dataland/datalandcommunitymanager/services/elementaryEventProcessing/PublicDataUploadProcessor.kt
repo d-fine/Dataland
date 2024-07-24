@@ -62,7 +62,7 @@ class PublicDataUploadProcessor(
         @Header(MessageHeaderKey.CorrelationId) correlationId: String,
         @Header(MessageHeaderKey.Type) type: String,
     ) {
-        runProcessingLogicIfFeatureFlagEnabled(payload,correlationId,type)
+        runProcessingLogicIfFeatureFlagEnabled(payload, correlationId, type)
     }
 
     override fun runProcessingLogic(payload: String, correlationId: String, type: String) {
@@ -72,7 +72,7 @@ class PublicDataUploadProcessor(
 
         logger.info(
             "Processing elementary event: Request for storage of public framework data. " +
-                    "CorrelationId: $correlationId",
+                "CorrelationId: $correlationId",
         )
         createAndSaveElementaryUploadEvent(elementaryEventMetaInfo)
         val unprocessedElementaryEvents = getUnprocessedElementaryEventsForCompany(elementaryEventMetaInfo.companyId)

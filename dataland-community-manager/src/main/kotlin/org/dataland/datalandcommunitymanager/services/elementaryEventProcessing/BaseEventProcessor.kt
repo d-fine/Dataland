@@ -38,8 +38,8 @@ abstract class BaseEventProcessor {
     abstract fun runProcessingLogic(payload: String, correlationId: String, type: String)
 
     /**
-    * Checks if the feature flag is enabled, and if yes, it executes the processingLogic passed to it.
-    */
+     * Checks if the feature flag is enabled, and if yes, it executes the processingLogic passed to it.
+     */
     fun runProcessingLogicIfFeatureFlagEnabled(
         payload: String,
         correlationId: String,
@@ -62,7 +62,6 @@ abstract class BaseEventProcessor {
             if (!it) logger.info("Notification service feature flag is disabled. Skipping elementary event processing.")
         }
     }
-
 
     /**
      * Create and persist new elementary event
