@@ -1,6 +1,5 @@
 package org.dataland.datalandcommunitymanager.services.eeProcessing
 
-import org.dataland.datalandbackend.openApiClient.api.MetaDataControllerApi
 import org.dataland.datalandcommunitymanager.entities.ElementaryEventEntity
 import org.dataland.datalandcommunitymanager.events.ElementaryEventType
 import org.dataland.datalandcommunitymanager.model.elementaryEventProcessing.ElementaryEventPayloadMetaInfo
@@ -31,7 +30,6 @@ import java.util.*
 class PublicDataUploadProcessor(
     @Autowired val messageUtils: MessageQueueUtils,
     @Autowired val notificationService: NotificationService,
-    @Autowired val metaDataControllerApi: MetaDataControllerApi,
     @Autowired override val elementaryEventRepository: ElementaryEventRepository,
 ) : BaseEventProcessor() {
     private val logger = LoggerFactory.getLogger(this.javaClass)
