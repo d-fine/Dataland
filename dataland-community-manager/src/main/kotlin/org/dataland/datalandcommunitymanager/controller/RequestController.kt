@@ -20,6 +20,7 @@ import org.dataland.datalandcommunitymanager.utils.DataRequestProcessingUtils
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
+import org.springframework.transaction.annotation.Transactional
 import org.springframework.web.bind.annotation.RestController
 import java.util.UUID
 
@@ -93,6 +94,7 @@ class RequestController(
         )
     }
 
+    @Transactional
     override fun hasAccessToDataset(companyId: UUID, dataType: DataTypeEnum, reportingPeriod: String) {
         // only the vsme framework is private
         if (dataType != DataTypeEnum.vsme) {
