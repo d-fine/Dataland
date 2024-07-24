@@ -286,7 +286,7 @@ class DataRequestProcessingUtils(
             val modificationTime = Instant.now().toEpochMilli()
             dataRequestEntity.lastModifiedDate = modificationTime
             dataRequestRepository.save(dataRequestEntity)
-            //TODO discuss if declined should be removed from this condition
+            // TODO discuss if declined should be removed from this condition
             if (dataRequestEntity.accessStatus == AccessStatus.Revoked || dataRequestEntity.accessStatus ==
                 AccessStatus.Declined || dataRequestEntity.accessStatus == AccessStatus.Public
             ) {
