@@ -45,7 +45,7 @@ describe('Component tests for the Eu Taxonomy for financials that test dependent
       {
         method: 'POST',
         times: 1,
-        url: `/api/data/${DataTypeEnum.EutaxonomyFinancials}`,
+        url: `/api/data/${DataTypeEnum.EutaxonomyFinancials}*`,
       },
       {
         statusCode: 200,

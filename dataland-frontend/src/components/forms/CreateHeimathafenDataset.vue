@@ -148,6 +148,7 @@ import { getFilledKpis } from '@/utils/DataPoint';
 import { heimathafenDataModel } from '@/frameworks/heimathafen/UploadConfig';
 import { getBasePublicFrameworkDefinition } from '@/frameworks/BasePublicFrameworkRegistry';
 import { type PublicFrameworkDataApi } from '@/utils/api/UnifiedFrameworkDataApi';
+import { hasUserCompanyOwnerOrDataUploaderRole } from '@/utils/CompanyRolesUtils';
 
 export default defineComponent({
   setup() {
@@ -283,7 +284,17 @@ export default defineComponent({
           await uploadFiles(Array.from(this.fieldSpecificDocuments.values()), assertDefined(this.getKeycloakPromise));
         }
         const heimathafenDataControllerApi = this.buildHeimathafenDataApi();
-        await heimathafenDataControllerApi.postFrameworkData(this.companyAssociatedHeimathafenData);
+
+        const isCompanyOwnerOrDataUploader = await hasUserCompanyOwnerOrDataUploaderRole(
+          this.companyAssociatedHeimathafenData.companyId,
+          this.getKeycloakPromise
+        );
+
+        await heimathafenDataControllerApi.postFrameworkData(
+          this.companyAssociatedHeimathafenData,
+          isCompanyOwnerOrDataUploader
+        );
+
         this.$emit('datasetCreated');
         this.dataDate = undefined;
         this.message = 'Upload successfully executed.';
