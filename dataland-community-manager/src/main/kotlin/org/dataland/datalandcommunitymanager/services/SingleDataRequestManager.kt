@@ -77,21 +77,7 @@ constructor(
                     dataType = singleDataRequest.dataType, reportingPeriod = reportingPeriod,
                     contacts = singleDataRequest.contacts, message = singleDataRequest.message,
                 )
-                // TODO add logic
             } else {
-                // TODO Check ob es einen Datensatz für die Reporting Period und VSME gibt
-                // TODO Check ob der Nutzer schon Zugriff darauf hat
-                // TODO Wenn ja, erstelle einen neuen data request für reporting period und vsme und erstelle access
-                //  request
-                // TODO Wenn nicht erstelle access request
-                // TODO Logik um zu erkennen, ob die angefragten daten schon auf dataland existieren, wenn private
-                //  framework prüfen ob schon zugriff besteht
-                // TODO Mit extra Schleife für private framework. Wenn privater Datensatz existiert und ein access
-                //  request dafür reinkommt
-                // TODO erstelle nur einen access request kein data request. Erstelle den data request erst dann wenn
-                //  bereits Zugriff für die den Datensatz bestand
-                // TODO why is the accessStatus field set to PENDING for a new request, should only be pending after
-                // data is been provided
                 if (utils.existsDataRequestWithNonFinalStatus(companyId, singleDataRequest.dataType, reportingPeriod)) {
                     reportingPeriodsOfDuplicateDataRequests.add(reportingPeriod)
                 } else {
@@ -104,6 +90,8 @@ constructor(
                 }
             }
         }
+        // TODO Maybe move this following logic into the else clause above, for only access request add its own sending
+        // TODO email function with an appropriate message
         sendSingleDataRequestEmailMessage(
             DatalandAuthentication.fromContext() as DatalandJwtAuthentication, singleDataRequest,
             companyId, correlationId,
