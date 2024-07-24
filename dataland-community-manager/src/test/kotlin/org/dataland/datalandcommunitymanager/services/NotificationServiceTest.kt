@@ -14,6 +14,8 @@ import org.dataland.datalandcommunitymanager.repositories.ElementaryEventReposit
 import org.dataland.datalandcommunitymanager.repositories.NotificationEventRepository
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
 import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertFalse
+import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
@@ -28,6 +30,8 @@ import java.util.UUID
 class NotificationServiceTest {
 
     private lateinit var notificationService: NotificationService
+    val notificationThresholdDays = 30
+    val elementaryEventsThreshold = 10
 
     private val testCompanyId = UUID.randomUUID()
     private val testDataType = DataTypeEnum.heimathafen
@@ -60,8 +64,6 @@ class NotificationServiceTest {
         val metaDataControllerApiMock = mock(MetaDataControllerApi::class.java)
         val companyDataControllerApiMock = mock(CompanyDataControllerApi::class.java)
         val objectMapper = ObjectMapper()
-        val notificationThresholdDays = 30
-        val elementaryEventsThreshold = 10
         val proxyPrimaryUrl = "dummy"
 
         notificationService = NotificationService(
@@ -76,20 +78,32 @@ class NotificationServiceTest {
         )
         `when`(metaDataControllerApiMock.getDataMetaInfo(anyString())).thenReturn(testDataMetaInformation)
         `when`(companyDataControllerApiMock.getCompanyInfo(testCompanyId.toString())).thenReturn(testCompanyInformation)
+
+        assertEquals(
+            30,
+            notificationThresholdDays,
+            "The tests in this file only work with the assumption that the notification threshold is 30 days.",
+        )
+        assertEquals(
+            10,
+            elementaryEventsThreshold,
+            "The tests in this file only work with the assumption that the elementary events threshold is 10.",
+        )
     }
 
     private fun createUploadElementaryEventEntity(
         creationTimeInDaysBeforeNow: Int,
-        notificationEventEntity: NotificationEventEntity? = null,
+        framework: DataTypeEnum = testDataType,
+        reportingPeriod: String = testReportingPeriod,
     ): ElementaryEventEntity {
         return ElementaryEventEntity(
             elementaryEventType = ElementaryEventType.UploadEvent,
             companyId = testCompanyId,
-            framework = testDataType,
-            reportingPeriod = testReportingPeriod,
+            framework = framework,
+            reportingPeriod = reportingPeriod,
             creationTimestamp =
             Instant.now().minus(creationTimeInDaysBeforeNow.toLong(), ChronoUnit.DAYS).toEpochMilli(),
-            notificationEvent = notificationEventEntity,
+            notificationEvent = null,
         )
     }
 
@@ -170,5 +184,80 @@ class NotificationServiceTest {
                 unprocessedElementaryEvents,
             )
         assertEquals(NotificationService.NotificationEmailType.Summary, notificationEmailTypeForTenElementaryEvents)
+    }
+
+    @Test
+    fun `getting the last notification event for a company and elementary event type works as expected`() {
+        val expectedLastNotificationEvent = createNotificationEventEntityForDataUploads(12)
+        val notificationEvents = mutableListOf<NotificationEventEntity>()
+        notificationEvents.add(expectedLastNotificationEvent)
+        notificationEvents.add(createNotificationEventEntityForDataUploads(29))
+        notificationEvents.add(createNotificationEventEntityForDataUploads(45))
+        setNotificationEventRepoMockReturnValue(notificationEvents)
+
+        val lastNotificationEvent =
+            notificationService.getLastNotificationEventOrNull(testCompanyId, ElementaryEventType.UploadEvent)
+
+        assertEquals(expectedLastNotificationEvent, lastNotificationEvent)
+    }
+
+    @Test
+    fun `counting the days passed since the last notifiation event works as expected`() {
+        val expectedDaysPassed: Long = 12
+        val notificationEvents = mutableListOf<NotificationEventEntity>()
+        notificationEvents.add(createNotificationEventEntityForDataUploads(expectedDaysPassed))
+        notificationEvents.add(createNotificationEventEntityForDataUploads(29))
+        notificationEvents.add(createNotificationEventEntityForDataUploads(45))
+        setNotificationEventRepoMockReturnValue(notificationEvents)
+
+        val daysPassedSinceLastNotificationEvent =
+            notificationService.getDaysPassedSinceLastNotificationEvent(testCompanyId, ElementaryEventType.UploadEvent)
+
+        assertEquals(expectedDaysPassed, daysPassedSinceLastNotificationEvent)
+    }
+
+    @Test
+    fun `asserting that the check if last notification event is older than threshold works as expected`() {
+        val notificationEvents = mutableListOf<NotificationEventEntity>()
+        notificationEvents.add(createNotificationEventEntityForDataUploads(31))
+        notificationEvents.add(createNotificationEventEntityForDataUploads(32))
+        notificationEvents.add(createNotificationEventEntityForDataUploads(45))
+        setNotificationEventRepoMockReturnValue(notificationEvents)
+
+        assertTrue(
+            notificationService.isLastNotificationEventOlderThanThreshold(
+                testCompanyId,
+                ElementaryEventType.UploadEvent,
+            ),
+        )
+
+        notificationEvents.add(createNotificationEventEntityForDataUploads(30))
+        setNotificationEventRepoMockReturnValue(notificationEvents)
+
+        assertFalse(
+            notificationService.isLastNotificationEventOlderThanThreshold(
+                testCompanyId,
+                ElementaryEventType.UploadEvent,
+            ),
+        )
+    }
+
+    @Test
+    fun `check if the conversion of frameworks and reporting periods to a single string works as expected`() {
+        val elementaryEvents = mutableListOf<ElementaryEventEntity>()
+        elementaryEvents.add(createUploadElementaryEventEntity(5, DataTypeEnum.heimathafen, "2021"))
+        elementaryEvents.add(createUploadElementaryEventEntity(6, DataTypeEnum.heimathafen, "2021"))
+        elementaryEvents.add(createUploadElementaryEventEntity(8, DataTypeEnum.heimathafen, "2023"))
+        elementaryEvents.add(createUploadElementaryEventEntity(12, DataTypeEnum.sfdr, "2024"))
+        elementaryEvents.add(createUploadElementaryEventEntity(15, DataTypeEnum.lksg, "2020"))
+
+        val expectedOutputString =
+            "${DataTypeEnum.heimathafen}: 2021 2021 2023, " +
+                "${DataTypeEnum.sfdr}: 2024, " +
+                "${DataTypeEnum.lksg}: 2020"
+
+        val outputString = notificationService.createFrameworkAndYearStringFromElementaryEvents(elementaryEvents)
+
+        assertEquals(expectedOutputString, outputString)
     }
 }

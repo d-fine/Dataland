@@ -55,14 +55,15 @@ constructor(
      */
     @Transactional
     fun notifyOfElementaryEvents(elementaryEvents: List<ElementaryEventEntity>, correlationId: String) {
-        checkNotificationRequirementsAndDetermineNotificationEmailType(elementaryEvents)?.let { notificationEmailType ->
-            logger.info(
-                "Requirements for notification event are met. " +
-                    "Creating notification event and sending notification emails. CorrelationId: $correlationId",
-            )
-            createNotificationEventAndReferenceIt(elementaryEvents)
-            sendEmailMessageToQueue(notificationEmailType, elementaryEvents, correlationId)
-        }
+        checkNotificationRequirementsAndDetermineNotificationEmailType(elementaryEvents)
+            ?.let { notificationEmailType ->
+                logger.info(
+                    "Requirements for notification event are met. " +
+                        "Creating notification event and sending notification emails. CorrelationId: $correlationId",
+                )
+                createNotificationEventAndReferenceIt(elementaryEvents)
+                sendEmailMessageToQueue(notificationEmailType, elementaryEvents, correlationId)
+            }
     }
 
     /**
@@ -188,7 +189,7 @@ constructor(
      * @param elementaryEventType of the elementary events for which the notification event was created
      * @return last notificationEvent (null if no previous notification event for this company exists)
      */
-    private fun getLastNotificationEventOrNull(
+    fun getLastNotificationEventOrNull(
         companyId: UUID,
         elementaryEventType: ElementaryEventType,
     ): NotificationEventEntity? {
@@ -206,7 +207,7 @@ constructor(
      * @param elementaryEventType of the elementary events for which the notification event was created
      * @return time passed in days, or null if there is no last notification event
      */
-    private fun getDaysPassedSinceLastNotificationEvent(
+    fun getDaysPassedSinceLastNotificationEvent(
         companyId: UUID,
         elementaryEventType: ElementaryEventType,
     ): Long? {
@@ -220,7 +221,7 @@ constructor(
      * @param companyId
      * @return if last notification event for company is older than threshold in days
      */
-    private fun isLastNotificationEventOlderThanThreshold(
+    fun isLastNotificationEventOlderThanThreshold(
         companyId: UUID,
         elementaryEventType: ElementaryEventType,
     ): Boolean {
@@ -230,7 +231,12 @@ constructor(
                 .toDays() > notificationThresholdDays
     }
 
-    private fun createFrameworkAndYearStringFromElementaryEvents(
+    /**
+     * Summarizes meta info from multiple elementary events by writing one single string.
+     * @param elementaryEvents that need to be summarized
+     * @returns the summary-string
+     */
+    fun createFrameworkAndYearStringFromElementaryEvents(
         elementaryEvents: List<ElementaryEventEntity>,
     ): String {
         val frameworkAndYears = elementaryEvents.groupBy(
