@@ -215,11 +215,11 @@ export default defineComponent({
   computed: {
     yearOfDataDate: {
       get(): string {
-        const currentYear: string = this.companyAssociatedLksgMediumData.reportingPeriod;
-        if (currentYear == undefined) {
+        const currentDate: string = this.companyAssociatedLksgMediumData.data?.general?.masterData?.dataDate;
+        if (currentDate == undefined) {
           return '';
         } else {
-          return currentYear;
+          return currentDate.split('-')[0];
         }
       },
       set() {

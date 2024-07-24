@@ -1,6 +1,8 @@
 package org.dataland.datalandbackend.services
 
+import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.ObjectMapper
+import java.io.FileNotFoundException
 import org.dataland.datalandbackend.entities.DataMetaInformationEntity
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.StorableDataSet
@@ -21,6 +23,7 @@ import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Propagation
 import org.springframework.transaction.annotation.Transactional
 import java.util.concurrent.ConcurrentHashMap
+import org.dataland.datalandbackend.model.datapoints.DataPoint
 
 /**
  * Implementation of a data manager for Dataland including metadata storages
@@ -47,6 +50,35 @@ constructor(
     private val logMessageBuilder = LogMessageBuilder()
     private val publicDataInMemoryStorage = ConcurrentHashMap<String, String>()
 
+
+
+    fun readJsonFile(filename: String): String {
+        val classLoader = Thread.currentThread().contextClassLoader
+        val inputStream = classLoader.getResourceAsStream(filename)
+        return inputStream?.bufferedReader()?.use { it.readText() } ?: throw FileNotFoundException("File $filename not found")
+    }
+
+    fun getJsonNodeFromString(json: String): JsonNode {
+        return ObjectMapper().readTree(json)
+    }
+
+    fun identifyDatapointsInDataset(jsonNode: JsonNode, fieldName: String, results: MutableMap<String, String>) {
+        if (jsonNode.isObject) {
+            val fields = jsonNode.fields()
+            while (fields.hasNext()) {
+                val jsonField = fields.next()
+                identifyDatapointsInDataset(jsonField.value, "$fieldName.${jsonField.key}", results)
+            }
+        } else {
+            if (jsonNode.toString() == "null" || jsonNode.toString() == "[]") {
+                logger.info("Ignore leave $fieldName with null value.")
+            } else {
+                logger.info("Found leaf node $fieldName with value $jsonNode")
+                results[fieldName] = jsonNode.toString()
+            }
+        }
+    }
+
     /**
      * Method to make the data manager add data to a data store, store metadata in Dataland and sending messages to the
      * relevant message queues
@@ -64,9 +96,41 @@ constructor(
         if (bypassQa && !companyRoleChecker.canUserBypassQa(storableDataSet.companyId)) {
             throw AccessDeniedException(logMessageBuilder.bypassQaDeniedExceptionMessage)
         }
-        val dataId = IdUtils.generateUUID()
-        storeMetaDataFrom(dataId, storableDataSet, correlationId)
-        storeDataSetInTemporaryStoreAndSendMessage(dataId, storableDataSet, bypassQa, correlationId)
+        val reportingPeriod = storableDataSet.reportingPeriod
+        val companyId = storableDataSet.companyId
+        val userId = storableDataSet.uploaderUserId
+        val uploadTime = storableDataSet.uploadTime
+
+        logger.info(storableDataSet.toString())
+        val json = readJsonFile("${storableDataSet.dataType}.json")
+        logger.info(json)
+        val testJson = getJsonNodeFromString(json)
+        logger.info("Search for definition leaves")
+        val definition = mutableMapOf<String, String>()
+        identifyDatapointsInDataset(testJson, storableDataSet.dataType.toString(), definition)
+        logger.info(definition.toString())
+        val dataJson = getJsonNodeFromString(storableDataSet.data)
+        logger.info("Search for data leaves")
+        val data = mutableMapOf<String, String>()
+        identifyDatapointsInDataset(dataJson, storableDataSet.dataType.toString(), data)
+        logger.info(data.toString())
+
+        var dataId = "dummy"
+        data.forEach {
+            if (definition.containsKey(it.key)) {
+                logger.info("Created storable data point")
+                val storableDataPoint =
+                    DataPoint(it.value, definition.getValue(it.key), reportingPeriod, companyId, userId, uploadTime)
+                logger.info(storableDataPoint.toString())
+                dataId = IdUtils.generateUUID()
+                storeMetaDataFrom(dataId, storableDataPoint, correlationId)
+                storeDataSetInTemporaryStoreAndSendMessage(dataId, storableDataPoint, bypassQa, correlationId)
+            } else {
+                logger.error("No ID found for ${it.value} in the framework definition.")
+            }
+
+        }
+
         return dataId
     }
 
@@ -74,25 +138,25 @@ constructor(
      * Persists the data meta-information to the database ensuring that the database transaction
      * ends directly after this function returns so that a MQ-Message might be sent out after this function completes
      * @param dataId The dataId of the dataset to store
-     * @param storableDataSet the dataset to store
+     * @param storableDataPoint the dataset to store
      * @param correlationId the correlation id of the insertion process
      */
     @Transactional(propagation = Propagation.NEVER)
-    fun storeMetaDataFrom(dataId: String, storableDataSet: StorableDataSet, correlationId: String) {
-        val company = dataManagerUtils.getCompanyByCompanyId(storableDataSet.companyId)
+    fun storeMetaDataFrom(dataId: String, storableDataPoint: DataPoint, correlationId: String) {
+        val company = dataManagerUtils.getCompanyByCompanyId(storableDataPoint.companyId)
         logger.info(
-            "Sending StorableDataSet of type ${storableDataSet.dataType} for company ID " +
-                "'${storableDataSet.companyId}', Company Name ${company.companyName} to storage Interface. " +
+            "Sending StorableDataSet of type ${storableDataPoint.dataPointId} for company ID " +
+                "'${storableDataPoint.companyId}', Company Name ${company.companyName} to storage Interface. " +
                 "Correlation ID: $correlationId",
         )
 
         val metaData = DataMetaInformationEntity(
             dataId,
             company,
-            storableDataSet.dataType.toString(),
-            storableDataSet.uploaderUserId,
-            storableDataSet.uploadTime,
-            storableDataSet.reportingPeriod,
+            storableDataPoint.dataPointId,
+            storableDataPoint.uploaderUserId,
+            storableDataPoint.uploadTime,
+            storableDataPoint.reportingPeriod,
             null,
             QaStatus.Pending,
         )
@@ -117,18 +181,18 @@ constructor(
     /**
      * Method to temporarily store a data set in a hash map and send a message to the storage_queue
      * @param dataId The id of the inserted data set
-     * @param storableDataSet The data set to store
+     * @param storableDataPoint The data set to store
      * @param bypassQa Whether the data set should be sent to QA or not
      * @param correlationId The correlation id of the request initiating the storing of data
      * @return ID of the stored data set
      */
     fun storeDataSetInTemporaryStoreAndSendMessage(
         dataId: String,
-        storableDataSet: StorableDataSet,
+        storableDataPoint: DataPoint,
         bypassQa: Boolean,
         correlationId: String,
     ) {
-        publicDataInMemoryStorage[dataId] = objectMapper.writeValueAsString(storableDataSet)
+        publicDataInMemoryStorage[dataId] = objectMapper.writeValueAsString(storableDataPoint)
         val payload = JSONObject(
             mapOf(
                 "dataId" to dataId, "bypassQa" to bypassQa,
@@ -141,8 +205,8 @@ constructor(
             ExchangeName.RequestReceived,
         )
         logger.info(
-            "Stored StorableDataSet of type '${storableDataSet.dataType}' " +
-                "for company ID '${storableDataSet.companyId}' in temporary storage. " +
+            "Stored StorableDataSet of type '${storableDataPoint.dataPointId}' " +
+                "for company ID '${storableDataPoint.companyId}' in temporary storage. " +
                 "Data ID '$dataId'. Correlation ID: '$correlationId'.",
         )
     }
