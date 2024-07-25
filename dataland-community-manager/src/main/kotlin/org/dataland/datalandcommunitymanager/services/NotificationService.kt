@@ -40,7 +40,7 @@ constructor(
     val objectMapper: ObjectMapper,
     @Value("\${dataland.community-manager.notification-threshold-days:30}")
     private val notificationThresholdDays: Int,
-    @Value("\${dataland.community-manager.notification-elementaryevents-threshold:3")
+    @Value("\${dataland.community-manager.notification-elementaryevents-threshold:10}")
     private val elementaryEventsThreshold: Int,
     @Value("\${dataland.community-manager.proxy-primary-url:local-dev.dataland.com}")
     private val proxyPrimaryUrl: String,
