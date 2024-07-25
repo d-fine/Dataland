@@ -7,6 +7,7 @@ import org.dataland.datalandbackend.openApiClient.model.QaStatus
 import org.dataland.datalandcommunitymanager.entities.DataRequestEntity
 import org.dataland.datalandcommunitymanager.entities.MessageEntity
 import org.dataland.datalandcommunitymanager.entities.RequestStatusEntity
+import org.dataland.datalandcommunitymanager.model.dataRequest.AccessStatus
 import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
 import org.dataland.datalandcommunitymanager.model.dataRequest.StoredDataRequestMessageObject
 import org.dataland.datalandcommunitymanager.repositories.DataRequestRepository
@@ -142,7 +143,7 @@ class DataRequestAlterationManagerTest {
     }
 
     @Test
-    fun `validate that a request response email is send when a request status is patched to answered or closed`() {
+    fun `validate that a request response email is sent when a request status is patched to answered or closed`() {
         dataRequestAlterationManager.patchDataRequest(
             dataRequestId = dataRequestId,
             requestStatus = RequestStatus.Answered,
@@ -172,7 +173,26 @@ class DataRequestAlterationManagerTest {
     }
 
     @Test
-    fun `validate that a response email is not send when a request status is patched to any but answered or closed`() {
+    fun `validate that no email is sent and the history is updated when an access status is patched`() {
+        dataRequestAlterationManager.patchDataRequest(
+            dataRequestId = dataRequestId,
+            requestStatus = null,
+            accessStatus = AccessStatus.Pending,
+        )
+
+        verify(historyManager, times(1))
+            .persistRequestStatus(
+                any(RequestStatusEntity::class.java),
+            )
+        verifyNoInteractions(dataRequestResponseEmailMessageSender)
+        verify(historyManager, times(0))
+            .persistMessage(
+                any(MessageEntity::class.java),
+            )
+    }
+
+    @Test
+    fun `validate that a response email is not sent when a request status is patched to any but answered or closed`() {
         for (requestStatus in RequestStatus.entries) {
             if (requestStatus == RequestStatus.Answered || requestStatus == RequestStatus.Closed) {
                 continue
@@ -191,7 +211,7 @@ class DataRequestAlterationManagerTest {
     }
 
     @Test
-    fun `validate that an request answered email is send when request statuses are patched from open to answered`() {
+    fun `validate that a request answered email is sent when request statuses are patched from open to answered`() {
         dataRequestAlterationManager.patchRequestStatusFromOpenToAnsweredByDataId(metaData.dataId, correlationId)
         dummyDataRequestEntities.forEach {
             verify(dataRequestResponseEmailMessageSender)
