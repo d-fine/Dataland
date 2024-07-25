@@ -90,7 +90,7 @@ interface DataRequestRepository : JpaRepository<DataRequestEntity, String> {
             ") AND " +
             "(:#{#searchFilter.requestStatus} IS NULL " +
             "OR rs.requestStatus = :#{#searchFilter.requestStatus}) AND " +
-            "(:#{#searchFilter.accesStatus} IS NULL " +
+            "(:#{#searchFilter.accessStatus} IS NULL " +
             "OR rs.accessStatus = :#{#searchFilter.accessStatus}) AND " +
             "(:#{#searchFilter.reportingPeriodFilterLength} = 0 " +
             "OR d.reportingPeriod = :#{#searchFilter.reportingPeriodFilter}) AND " +
