@@ -40,10 +40,10 @@ class SummaryNotificationEmailFactory(
         return "New data for ${properties[keys.companyName]} on Dataland"
     }
 
+    // TODO Emanuel:input is always the same. doesnt make sense.  It
     private fun formatDuration(daysPassed: String): String? {
-        return when {
-            daysPassed == null -> null
-            daysPassed == "0" -> "24 hours"
+        return when (daysPassed) {
+            "0" -> "24 hours"
             else -> "$daysPassed days"
         }
     }
