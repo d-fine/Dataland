@@ -5,6 +5,8 @@ import org.dataland.datalandbackend.openApiClient.model.DataMetaInformation
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandbackend.openApiClient.model.QaStatus
 import org.dataland.datalandcommunitymanager.entities.DataRequestEntity
+import org.dataland.datalandcommunitymanager.entities.MessageEntity
+import org.dataland.datalandcommunitymanager.entities.RequestStatusEntity
 import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
 import org.dataland.datalandcommunitymanager.model.dataRequest.StoredDataRequestMessageObject
 import org.dataland.datalandcommunitymanager.repositories.DataRequestRepository
@@ -160,12 +162,12 @@ class DataRequestAlterationManagerTest {
                 any(DataRequestEntity::class.java), any(TemplateEmailMessage.Type::class.java), anyString(),
             )
         verify(historyManager, times(2))
-            .saveStatusHistory(
-                anyList(),
+            .persistRequestStatus(
+                any(RequestStatusEntity::class.java),
             )
         verify(historyManager, times(0))
-            .saveMessageHistory(
-                anyList(),
+            .persistMessage(
+                any(MessageEntity::class.java),
             )
     }
 
@@ -196,12 +198,12 @@ class DataRequestAlterationManagerTest {
                 .sendDataRequestResponseEmail(it, TemplateEmailMessage.Type.DataRequestedAnswered, correlationId)
         }
         verify(historyManager, times(dummyDataRequestEntities.size))
-            .saveStatusHistory(
-                anyList(),
+            .persistRequestStatus(
+                any(RequestStatusEntity::class.java),
             )
         verify(historyManager, times(0))
-            .saveMessageHistory(
-                anyList(),
+            .persistMessage(
+                any(MessageEntity::class.java),
             )
     }
 
@@ -222,13 +224,13 @@ class DataRequestAlterationManagerTest {
             )
 
         verify(historyManager, times(1))
-            .saveMessageHistory(
-                anyList(),
+            .persistMessage(
+                any(MessageEntity::class.java),
             )
 
         verify(historyManager, times(0))
-            .saveStatusHistory(
-                anyList(),
+            .persistRequestStatus(
+                any(RequestStatusEntity::class.java),
             )
     }
     private fun <T> any(type: Class<T>): T = Mockito.any<T>(type)
