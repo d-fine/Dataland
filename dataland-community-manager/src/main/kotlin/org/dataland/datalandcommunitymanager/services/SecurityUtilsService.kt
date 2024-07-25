@@ -6,6 +6,7 @@ import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
 import org.dataland.datalandcommunitymanager.repositories.CompanyRoleAssignmentRepository
 import org.dataland.datalandcommunitymanager.repositories.DataRequestRepository
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
+import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.stereotype.Service
@@ -23,6 +24,7 @@ class SecurityUtilsService(
     @Autowired private val companyRolesManager: CompanyRolesManager,
     @Autowired private val dataRequestQueryManager: DataRequestQueryManager,
 ) {
+    private val logger = LoggerFactory.getLogger(javaClass)
     private val roleModificationPermissionsMap = mapOf(
         CompanyRole.CompanyOwner to enumValues<CompanyRole>().toList(),
         CompanyRole.DataUploader to emptyList(),
@@ -145,6 +147,7 @@ class SecurityUtilsService(
             )
             true
         } catch (e: ResourceNotFoundApiException) {
+            logger.error("The user is not the company owner for the specified company. Catched error: $e")
             false
         }
     }

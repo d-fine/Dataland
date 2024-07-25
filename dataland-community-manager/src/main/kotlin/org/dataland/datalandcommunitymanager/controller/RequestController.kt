@@ -18,7 +18,6 @@ import org.dataland.datalandcommunitymanager.services.DataRequestAlterationManag
 import org.dataland.datalandcommunitymanager.services.DataRequestQueryManager
 import org.dataland.datalandcommunitymanager.services.SingleDataRequestManager
 import org.dataland.datalandcommunitymanager.utils.DataRequestProcessingUtils
-import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
 import org.springframework.transaction.annotation.Transactional
@@ -38,7 +37,6 @@ class RequestController(
     @Autowired private val dataRequestAlterationManager: DataRequestAlterationManager,
     @Autowired private val dataRequestProcessingUtils: DataRequestProcessingUtils,
 ) : RequestApi {
-    private val logger = LoggerFactory.getLogger(javaClass)
     override fun postBulkDataRequest(bulkDataRequest: BulkDataRequest): ResponseEntity<BulkDataRequestResponse> {
         return ResponseEntity.ok(
             bulkDataRequestManager.processBulkDataRequest(bulkDataRequest),
@@ -103,11 +101,6 @@ class RequestController(
             if (dataTypeEnum != DataTypeEnum.vsme) {
                 return
             }
-            // TODO remove logging
-            logger.info(dataTypeEnum.toString())
-            logger.info(userId.toString())
-            logger.info(companyId.toString())
-            logger.info(reportingPeriod)
             val hasAccess = dataRequestProcessingUtils.hasAccessToPrivateDataset(
                 companyId.toString(), reportingPeriod, dataTypeEnum, userId.toString(),
             )
