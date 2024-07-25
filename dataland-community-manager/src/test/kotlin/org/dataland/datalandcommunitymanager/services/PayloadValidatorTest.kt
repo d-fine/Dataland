@@ -1,7 +1,7 @@
 package org.dataland.datalandcommunitymanager.services
 
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
-import org.dataland.datalandcommunitymanager.model.elementaryEventProcessing.ElementaryEventPayloadMetaInfo
+import org.dataland.datalandcommunitymanager.model.elementaryEventProcessing.ElementaryEventBasicInfo
 import org.dataland.datalandcommunitymanager.utils.PayloadValidator
 import org.dataland.datalandmessagequeueutils.constants.ActionType
 import org.dataland.datalandmessagequeueutils.exceptions.MessageQueueRejectException
@@ -22,7 +22,7 @@ class PayloadValidatorTest {
         ).toString()
 
         val exception = assertThrows<MessageQueueRejectException> {
-            payloadValidator.validatePayloadAndReturnElementaryEventMetaInfo(payload, "")
+            payloadValidator.validatePayloadAndReturnElementaryEventBasicInfo(payload, "")
         }
 
         assertEquals("Message was rejected: The dataId in the message payload is empty.", exception.message)
@@ -40,7 +40,7 @@ class PayloadValidatorTest {
         ).toString()
 
         val exception = assertThrows<MessageQueueRejectException> {
-            payloadValidator.validatePayloadAndReturnElementaryEventMetaInfo(payload, expectedActionType)
+            payloadValidator.validatePayloadAndReturnElementaryEventBasicInfo(payload, expectedActionType)
         }
 
         assertEquals(
@@ -65,9 +65,9 @@ class PayloadValidatorTest {
         ).toString()
 
         val actualElementaryEventMetaInfo =
-            payloadValidator.validatePayloadAndReturnElementaryEventMetaInfo(payload, ActionType.StorePublicData)
+            payloadValidator.validatePayloadAndReturnElementaryEventBasicInfo(payload, ActionType.StorePublicData)
         val expectedElementaryEventMetaInfo =
-            ElementaryEventPayloadMetaInfo(dummyCompanyId, DataTypeEnum.heimathafen, dummyReportingPeriod)
+            ElementaryEventBasicInfo(dummyCompanyId, DataTypeEnum.heimathafen, dummyReportingPeriod)
 
         assertEquals(expectedElementaryEventMetaInfo, actualElementaryEventMetaInfo)
     }
