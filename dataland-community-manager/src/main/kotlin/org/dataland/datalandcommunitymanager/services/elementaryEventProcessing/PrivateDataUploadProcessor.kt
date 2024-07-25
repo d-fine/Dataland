@@ -1,15 +1,14 @@
 package org.dataland.datalandcommunitymanager.services.elementaryEventProcessing
 
 import org.dataland.datalandcommunitymanager.events.ElementaryEventType
-import org.dataland.datalandcommunitymanager.model.elementaryEventProcessing.ElementaryEventBasicInfo
 import org.dataland.datalandcommunitymanager.repositories.ElementaryEventRepository
 import org.dataland.datalandcommunitymanager.services.NotificationService
-import org.dataland.datalandcommunitymanager.utils.PayloadValidator.validatePayloadAndReturnElementaryEventBasicInfo
 import org.dataland.datalandmessagequeueutils.constants.ActionType
 import org.dataland.datalandmessagequeueutils.constants.ExchangeName
 import org.dataland.datalandmessagequeueutils.constants.MessageHeaderKey
 import org.dataland.datalandmessagequeueutils.constants.MessageType
 import org.dataland.datalandmessagequeueutils.utils.MessageQueueUtils
+import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.amqp.rabbit.annotation.Argument
 import org.springframework.amqp.rabbit.annotation.Exchange
@@ -25,13 +24,17 @@ import java.util.*
 /**
  * Defines the processing of private framework data upload events as elementary events
  */
-@Component
+@Component("PrivateDataUploadProcessor")
 class PrivateDataUploadProcessor(
-    @Autowired val messageUtils: MessageQueueUtils,
-    @Autowired val notificationService: NotificationService,
-    @Autowired override val elementaryEventRepository: ElementaryEventRepository,
-) : BaseEventProcessor() {
-    override val logger = LoggerFactory.getLogger(this.javaClass)
+    @Autowired messageUtils: MessageQueueUtils,
+    @Autowired notificationService: NotificationService,
+    @Autowired elementaryEventRepository: ElementaryEventRepository,
+) : BaseEventProcessor(messageUtils, notificationService, elementaryEventRepository) {
+
+    override var elementaryEventType = ElementaryEventType.UploadEvent
+    override var messageType = MessageType.PrivateDataReceived
+    override var actionType = ActionType.StorePrivateDataAndDocuments
+    override var logger: Logger = LoggerFactory.getLogger(this.javaClass)
 
     /**
      * Method that listens to private data storage requests, persists them as elementary events and asks the
@@ -61,22 +64,6 @@ class PrivateDataUploadProcessor(
         @Header(MessageHeaderKey.CorrelationId) correlationId: String,
         @Header(MessageHeaderKey.Type) type: String,
     ) {
-        super.runProcessingLogicIfFeatureFlagEnabled(payload, correlationId, type)
+        super.processEvent(payload, correlationId, type)
     }
-
-    override fun runProcessingLogic(payload: String, correlationId: String, type: String) {
-        messageUtils.validateMessageType(type, MessageType.PrivateDataReceived)
-        val elementaryEventBasicInfo =
-            validatePayloadAndReturnElementaryEventBasicInfo(payload, ActionType.StorePrivateDataAndDocuments)
-
-        logger.info(
-            "Processing elementary event: Request for storage of private framework data. " +
-                "CorrelationId: $correlationId",
-        )
-        val storedElementaryEvent = createAndSaveElementaryUploadEvent(elementaryEventBasicInfo)
-        notificationService.notifyOfElementaryEvents(storedElementaryEvent, correlationId)
-    }
-
-    private fun createAndSaveElementaryUploadEvent(elementaryEventBasicInfo: ElementaryEventBasicInfo) =
-        super.createAndSaveElementaryEvent(elementaryEventBasicInfo, ElementaryEventType.UploadEvent)
 }

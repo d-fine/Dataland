@@ -65,6 +65,7 @@ class NotificationServiceTest {
         val elementaryEventRepository = mock(ElementaryEventRepository::class.java)
         val metaDataControllerApiMock = mock(MetaDataControllerApi::class.java)
         val companyDataControllerApiMock = mock(CompanyDataControllerApi::class.java)
+        val companyRolesManagerMock = mock(CompanyRolesManager::class.java)
         val objectMapper = ObjectMapper()
         val proxyPrimaryUrl = "dummy"
 
@@ -73,6 +74,7 @@ class NotificationServiceTest {
             notificationEventRepository,
             elementaryEventRepository,
             companyDataControllerApiMock,
+            companyRolesManagerMock,
             objectMapper,
             notificationThresholdDays,
             elementaryEventsThreshold,
