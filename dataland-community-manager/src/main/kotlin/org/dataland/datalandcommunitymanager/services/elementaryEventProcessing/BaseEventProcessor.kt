@@ -1,6 +1,7 @@
 package org.dataland.datalandcommunitymanager.services.elementaryEventProcessing
 
 import org.dataland.datalandcommunitymanager.entities.ElementaryEventEntity
+import org.dataland.datalandcommunitymanager.events.ElementaryEventType
 import org.dataland.datalandcommunitymanager.model.elementaryEventProcessing.ElementaryEventBasicInfo
 import org.dataland.datalandcommunitymanager.repositories.ElementaryEventRepository
 import org.dataland.datalandmessagequeueutils.constants.MessageHeaderKey
@@ -65,10 +66,11 @@ abstract class BaseEventProcessor {
      */
     protected fun createAndSaveElementaryEvent(
         elementaryEventBasicInfo: ElementaryEventBasicInfo,
+        elementaryEventType: ElementaryEventType,
     ): ElementaryEventEntity {
         return elementaryEventRepository.saveAndFlush(
             ElementaryEventEntity(
-                elementaryEventType = elementaryEventBasicInfo.elementaryEventType,
+                elementaryEventType = elementaryEventType,
                 companyId = elementaryEventBasicInfo.companyId,
                 framework = elementaryEventBasicInfo.framework,
                 reportingPeriod = elementaryEventBasicInfo.reportingPeriod,
