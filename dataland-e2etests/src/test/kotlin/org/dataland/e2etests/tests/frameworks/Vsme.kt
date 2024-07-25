@@ -1,6 +1,9 @@
 package org.dataland.e2etests.tests.frameworks
 
+import org.dataland.communitymanager.openApiClient.api.RequestControllerApi
+import org.dataland.communitymanager.openApiClient.model.AccessStatus
 import org.dataland.communitymanager.openApiClient.model.CompanyRole
+import org.dataland.communitymanager.openApiClient.model.SingleDataRequest
 import org.dataland.datalandbackend.openApiClient.api.VsmeDataControllerApi
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
 import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataVsmeData
@@ -8,6 +11,7 @@ import org.dataland.datalandbackend.openApiClient.model.CompanyReport
 import org.dataland.datalandbackend.openApiClient.model.DataMetaInformation
 import org.dataland.datalandbackend.openApiClient.model.VsmeData
 import org.dataland.datalandbackendutils.utils.sha256
+import org.dataland.e2etests.BASE_PATH_TO_COMMUNITY_MANAGER
 import org.dataland.e2etests.BASE_PATH_TO_DATALAND_BACKEND
 import org.dataland.e2etests.auth.TechnicalUser
 import org.dataland.e2etests.customApiControllers.CustomVsmeDataControllerApi
@@ -34,6 +38,8 @@ class Vsme {
     private val apiAccessor = ApiAccessor()
 
     private val vsmeDataControllerApi = VsmeDataControllerApi(BASE_PATH_TO_DATALAND_BACKEND)
+
+    private val requestControllerApi = RequestControllerApi(BASE_PATH_TO_COMMUNITY_MANAGER)
 
     private val testVsmeData = FrameworkTestDataProvider(VsmeData::class.java).getTData(1).first()
 
@@ -234,14 +240,45 @@ class Vsme {
     @Test
     fun `post a VSME dataset and verify that a normal user with access status granted can retrieve the data`() {
         val vsmeData = setReferencedReports(testVsmeData, FileInfos(hashAlpha, fileNameAlpha))
-        val companyAssociatedVsmeData = CompanyAssociatedDataVsmeData(companyId, "2022", vsmeData)
+        val companyAssociatedDataVsmeData = CompanyAssociatedDataVsmeData(companyId, "2022", vsmeData)
         val dataId =
             postVsmeDataset(
-                companyAssociatedVsmeData, listOf(dummyFileAlpha, dummyFileAlpha), TechnicalUser.Uploader,
+                companyAssociatedDataVsmeData, listOf(dummyFileAlpha, dummyFileAlpha), TechnicalUser.Uploader,
             ).dataId
+        apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader)
+        val vsmeDataRequest = SingleDataRequest(
+            companyIdentifier = companyId, reportingPeriods = setOf("2022"),
+            dataType = SingleDataRequest.DataType.vsme,
+        )
+
+        requestControllerApi.postSingleDataRequest(vsmeDataRequest)
+        val requestId = requestControllerApi.getDataRequestsForRequestingUser()[0].dataRequestId
+
+        apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Uploader)
+        requestControllerApi.patchDataRequest(
+            dataRequestId = UUID.fromString(requestId),
+            accessStatus = AccessStatus.Granted,
+        )
+
+        apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader)
+        val retrievedCompanyAssociatedVsmeData = executeDataRetrievalWithRetries(
+            vsmeDataControllerApi::getCompanyAssociatedVsmeData, dataId,
+        )
+
+        assertEquals(companyAssociatedDataVsmeData, retrievedCompanyAssociatedVsmeData)
+        val downloadedFile = vsmeDataControllerApi.getPrivateDocument(dataId, hashAlpha)
+
+        assertEquals(hashAlpha, downloadedFile.readBytes().sha256())
+
+        apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Uploader)
+        requestControllerApi.patchDataRequest(
+            dataRequestId = UUID.fromString(requestId),
+            accessStatus = AccessStatus.Revoked,
+        )
+
+        apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader)
+        assertAccessDeniedWrapper { vsmeDataControllerApi.getCompanyAssociatedVsmeData(dataId) }
     }
-    // TODO retrieve access as a normal user who was given access to the dataset, continue working here once
-    // TODO authorization logic in the community manager has been updated
 
     private fun setReferencedReports(dataset: VsmeData, fileInfoToSetAsReport: FileInfos?): VsmeData {
         val newReferencedReports = fileInfoToSetAsReport?.let {
