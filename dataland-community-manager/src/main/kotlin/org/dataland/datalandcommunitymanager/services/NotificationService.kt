@@ -57,10 +57,7 @@ constructor(
      * If yes, it creates it and sends a message to the queue to trigger notification emails.
      */
     @Transactional
-    fun notifyOfElementaryEvents(
-        latestElementaryEvent: ElementaryEventEntity,
-        correlationId: String,
-    ) {
+    fun notifyOfElementaryEvents(latestElementaryEvent: ElementaryEventEntity, correlationId: String) {
         val unprocessedElementaryEvents =
             elementaryEventRepository.findAllByCompanyIdAndElementaryEventTypeAndNotificationEventIsNull(
                 latestElementaryEvent.companyId,
