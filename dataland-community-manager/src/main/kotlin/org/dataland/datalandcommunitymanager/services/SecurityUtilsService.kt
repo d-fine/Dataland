@@ -149,7 +149,7 @@ class SecurityUtilsService(
     fun isUserCompanyOwnerForCompanyId(
         companyId: String?,
     ): Boolean {
-        return if(companyId.isNullOrBlank()){
+        return if (companyId.isNullOrBlank()) {
             false
         } else {
             val userId = DatalandAuthentication.fromContext().userId
