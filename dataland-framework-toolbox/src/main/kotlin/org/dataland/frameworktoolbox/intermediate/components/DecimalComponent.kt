@@ -27,7 +27,10 @@ open class DecimalComponent(
         dataClassBuilder.addPropertyWithDocumentSupport(
             documentSupport,
             identifier,
-            TypeReference(fullyQualifiedNameOfKotlinType, isNullable),
+            TypeReference(
+                "java.math.BigDecimal",
+                isNullable,
+            ),
             annotations,
         )
     }

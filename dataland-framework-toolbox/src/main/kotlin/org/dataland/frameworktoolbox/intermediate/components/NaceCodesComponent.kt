@@ -18,7 +18,7 @@ import org.dataland.frameworktoolbox.utils.typescript.TypeScriptImport
 class NaceCodesComponent(
     identifier: String,
     parent: FieldNodeParent,
-) : ComponentBase(identifier, parent, "String") {
+) : ComponentBase(identifier, parent) {
 
     override fun generateDefaultDataModel(dataClassBuilder: DataClassBuilder) {
         requireDocumentSupportIn(setOf(NoDocumentSupport))

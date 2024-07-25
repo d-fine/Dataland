@@ -2,6 +2,7 @@ package org.dataland.frameworktoolbox.intermediate.components
 
 import org.apache.commons.text.StringEscapeUtils.escapeEcmaScript
 import org.dataland.frameworktoolbox.intermediate.FieldNodeParent
+import org.dataland.frameworktoolbox.intermediate.components.basecomponents.SimpleKotlinBackedBaseComponent
 import org.dataland.frameworktoolbox.intermediate.components.support.SelectionOption
 import org.dataland.frameworktoolbox.intermediate.datapoints.NoDocumentSupport
 import org.dataland.frameworktoolbox.specific.datamodel.TypeReference
@@ -21,10 +22,11 @@ import org.dataland.frameworktoolbox.utils.typescript.TypeScriptImport
 open class Iso2CountryCodesMultiSelectComponent(
     identifier: String,
     parent: FieldNodeParent,
-) : ComponentBase(identifier, parent, "List") {
+) : ComponentBase(identifier, parent) {
 
     var options: Set<SelectionOption> = mutableSetOf()
     var filePathOfPremadeDropdownDatasets: String = "@/utils/PremadeDropdownDatasets"
+
     override fun generateDefaultDataModel(dataClassBuilder: DataClassBuilder) {
         requireDocumentSupportIn(setOf(NoDocumentSupport))
         dataClassBuilder.addProperty(

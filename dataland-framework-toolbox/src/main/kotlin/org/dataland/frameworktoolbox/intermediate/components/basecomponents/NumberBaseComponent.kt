@@ -7,6 +7,7 @@ import org.dataland.frameworktoolbox.intermediate.components.addStandardCellWith
 import org.dataland.frameworktoolbox.specific.datamodel.Annotation
 import org.dataland.frameworktoolbox.specific.datamodel.annotations.MaximumValueAnnotation
 import org.dataland.frameworktoolbox.specific.datamodel.annotations.MinimumValueAnnotation
+import org.dataland.frameworktoolbox.specific.datamodel.elements.DataClassBuilder
 import org.dataland.frameworktoolbox.specific.viewconfig.elements.SectionConfigBuilder
 import org.dataland.frameworktoolbox.specific.viewconfig.elements.getTypescriptFieldAccessor
 import org.dataland.frameworktoolbox.specific.viewconfig.functional.FrameworkDisplayValueLambda
@@ -19,8 +20,7 @@ import org.dataland.frameworktoolbox.utils.typescript.TypeScriptImport
 open class NumberBaseComponent(
     identifier: String,
     parent: FieldNodeParent,
-    fullyQualifiedNameOfKotlinType: String = "java.math.BigDecimal",
-) : ComponentBase(identifier, parent, fullyQualifiedNameOfKotlinType) {
+) : ComponentBase(identifier, parent) {
     open var constantUnitSuffix: String? = null
 
     /**

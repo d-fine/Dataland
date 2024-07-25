@@ -3,6 +3,7 @@ package org.dataland.frameworktoolbox.intermediate
 import org.dataland.frameworktoolbox.intermediate.group.TopLevelComponentGroup
 import org.dataland.frameworktoolbox.specific.datamodel.FrameworkDataModelBuilder
 import org.dataland.frameworktoolbox.specific.fixturegenerator.FrameworkFixtureGeneratorBuilder
+import org.dataland.frameworktoolbox.specific.qamodel.FrameworkQaModelBuilder
 import org.dataland.frameworktoolbox.specific.uploadconfig.FrameworkUploadConfigBuilder
 import org.dataland.frameworktoolbox.specific.viewconfig.FrameworkViewConfigBuilder
 
@@ -29,6 +30,19 @@ class Framework(
         }
 
         return frameworkDataModelBuilder
+    }
+
+    /**
+     * Generate a Kotlin QA DataModel for this framework In-Memory.
+     */
+    fun generateQaModel(): FrameworkQaModelBuilder {
+        val frameworkQaModelBuilder = FrameworkQaModelBuilder(this)
+
+        root.children.forEach {
+            it.generateQaModel(frameworkQaModelBuilder.rootDataModelClass)
+        }
+
+        return frameworkQaModelBuilder
     }
 
     /**

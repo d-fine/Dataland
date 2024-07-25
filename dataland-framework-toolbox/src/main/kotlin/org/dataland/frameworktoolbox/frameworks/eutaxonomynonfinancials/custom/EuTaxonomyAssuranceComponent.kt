@@ -5,6 +5,7 @@ import org.dataland.frameworktoolbox.intermediate.FieldNodeParent
 import org.dataland.frameworktoolbox.intermediate.components.ComponentBase
 import org.dataland.frameworktoolbox.intermediate.components.addStandardCellWithValueGetterFactory
 import org.dataland.frameworktoolbox.intermediate.components.addStandardUploadConfigCell
+import org.dataland.frameworktoolbox.intermediate.components.basecomponents.SimpleKotlinBackedBaseComponent
 import org.dataland.frameworktoolbox.intermediate.components.requireDocumentSupportIn
 import org.dataland.frameworktoolbox.intermediate.datapoints.NoDocumentSupport
 import org.dataland.frameworktoolbox.specific.fixturegenerator.elements.FixtureSectionBuilder
@@ -21,7 +22,7 @@ import org.dataland.frameworktoolbox.utils.typescript.TypeScriptImport
 class EuTaxonomyAssuranceComponent(
     identifier: String,
     parent: FieldNodeParent,
-) : ComponentBase(
+) : SimpleKotlinBackedBaseComponent(
     identifier, parent,
     "org.dataland.datalandbackend.frameworks" +
         ".eutaxonomynonfinancials.custom.AssuranceDataPoint",

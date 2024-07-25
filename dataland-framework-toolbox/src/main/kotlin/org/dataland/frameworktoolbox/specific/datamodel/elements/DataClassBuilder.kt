@@ -7,6 +7,7 @@ import org.dataland.frameworktoolbox.utils.DatalandRepository
 import org.dataland.frameworktoolbox.utils.LoggerDelegate
 import org.dataland.frameworktoolbox.utils.freemarker.FreeMarker
 import java.io.FileWriter
+import java.nio.file.Path
 import javax.lang.model.SourceVersion
 import kotlin.io.path.div
 
@@ -28,6 +29,9 @@ data class DataClassBuilder(
 ) : DataModelElement {
 
     private val logger by LoggerDelegate()
+
+    override val empty: Boolean
+        get() = properties.isEmpty()
 
     val fullyQualifiedName: String
         get() = parentPackage.fullyQualifiedName + "." + name
@@ -70,13 +74,13 @@ data class DataClassBuilder(
         )
     }
 
-    override fun build(into: DatalandRepository) {
+    override fun build(into: Path) {
         require(SourceVersion.isName(fullyQualifiedName)) {
             "The class-identifier '$fullyQualifiedName' is not a valid java identifier"
         }
         require(!name[0].isLowerCase()) { "The class-name '$name' does not start with an upper-case letter" }
 
-        val classPath = into.backendKotlinSrc / "${fullyQualifiedName.replace(".", "/")}.kt"
+        val classPath = into / "${fullyQualifiedName.replace(".", "/")}.kt"
         logger.trace("Building class '{}' into '{}'", fullyQualifiedName, classPath)
 
         val freemarkerTemplate = FreeMarker.configuration

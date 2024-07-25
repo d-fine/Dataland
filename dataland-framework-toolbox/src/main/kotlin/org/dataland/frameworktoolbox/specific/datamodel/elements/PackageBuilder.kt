@@ -4,6 +4,7 @@ import org.dataland.frameworktoolbox.intermediate.components.support.SelectionOp
 import org.dataland.frameworktoolbox.specific.datamodel.Annotation
 import org.dataland.frameworktoolbox.utils.DatalandRepository
 import org.dataland.frameworktoolbox.utils.LoggerDelegate
+import java.nio.file.Path
 import javax.lang.model.SourceVersion
 import kotlin.io.path.div
 
@@ -21,6 +22,9 @@ data class PackageBuilder(
 ) : DataModelElement {
 
     private val logger by LoggerDelegate()
+
+    override val empty: Boolean
+        get() = childElements.all { it.empty }
 
     val fullyQualifiedName: String
         get() = (parentPackage?.fullyQualifiedName?.plus(".") ?: "") + name
@@ -77,12 +81,12 @@ data class PackageBuilder(
         return "$name/\n" + childElements.joinToString("\n") { it.toString().prependIndent("  ") }
     }
 
-    override fun build(into: DatalandRepository) {
+    override fun build(into: Path) {
         require(SourceVersion.isName(fullyQualifiedName)) {
             "The package path '$fullyQualifiedName' is not a valid java identifier"
         }
 
-        val packagePath = into.backendKotlinSrc / fullyQualifiedName.replace(".", "/")
+        val packagePath = into / fullyQualifiedName.replace(".", "/")
 
         logger.trace("Building package '{}' into '{}'", fullyQualifiedName, packagePath)
 

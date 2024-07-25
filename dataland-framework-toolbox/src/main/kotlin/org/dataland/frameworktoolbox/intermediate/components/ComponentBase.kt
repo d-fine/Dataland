@@ -13,6 +13,7 @@ import org.dataland.frameworktoolbox.intermediate.logic.FrameworkConditional
 import org.dataland.frameworktoolbox.specific.datamodel.TypeReference
 import org.dataland.frameworktoolbox.specific.datamodel.elements.DataClassBuilder
 import org.dataland.frameworktoolbox.specific.fixturegenerator.elements.FixtureSectionBuilder
+import org.dataland.frameworktoolbox.specific.qamodel.addQaPropertyWithDocumentSupport
 import org.dataland.frameworktoolbox.specific.uploadconfig.elements.UploadCategoryBuilder
 import org.dataland.frameworktoolbox.specific.viewconfig.elements.SectionConfigBuilder
 import org.dataland.frameworktoolbox.specific.viewconfig.elements.getKotlinFieldAccessor
@@ -29,7 +30,6 @@ import org.dataland.frameworktoolbox.utils.capitalizeEn
 open class ComponentBase(
     var identifier: String,
     override var parent: FieldNodeParent,
-    var fullyQualifiedNameOfKotlinType: String = "",
 ) : TreeNode<FieldNodeParent> {
 
     /**
@@ -53,6 +53,12 @@ open class ComponentBase(
      * The dataModelGenerator allows users to overwrite the DataClass generation of this specific component instance
      */
     var dataModelGenerator: ((dataClassBuilder: DataClassBuilder) -> Unit)? = null
+
+    /**
+     * The qaModelGenerator allows users to overwrite the DataClass generation of this specific component instance
+     * for the QA model
+     */
+    var qaModelGenerator: ((dataClassBuilder: DataClassBuilder) -> Unit)? = null
 
     /**
      * The viewConfigGenerator allows users to overwrite the ViewConfig generation of this specific component instance
@@ -128,18 +134,39 @@ open class ComponentBase(
      * generator
      */
     open fun generateDefaultDataModel(dataClassBuilder: DataClassBuilder) {
-        dataClassBuilder.addPropertyWithDocumentSupport(
-            documentSupport,
-            identifier,
-            TypeReference(fullyQualifiedNameOfKotlinType, isNullable),
-        )
+        throw IllegalStateException("This component did not implement Data model generation.")
     }
 
     /**
      * Build this component instance into the provided Kotlin DataClass
      */
     fun generateDataModel(dataClassBuilder: DataClassBuilder) {
-        return dataModelGenerator?.let { it(dataClassBuilder) } ?: generateDefaultDataModel(dataClassBuilder)
+        val localDataModelGenerator = dataModelGenerator
+        if (localDataModelGenerator != null) {
+            require(qaModelGenerator != null) { "You should always overwrite qaModelGenerator when using dataModelGenerator" }
+            localDataModelGenerator(dataClassBuilder)
+        }
+        generateDefaultDataModel(dataClassBuilder)
+    }
+
+    /**
+     * Build this component instance into the provided Kotlin DataClass using the default
+     * generator
+     */
+    open fun generateDefaultQaModel(dataClassBuilder: DataClassBuilder) {
+        // throw IllegalStateException("This component did not implement QA model generation.")
+    }
+
+    /**
+     * Build this component instance into the provided Kotlin DataClass
+     */
+    fun generateQaModel(dataClassBuilder: DataClassBuilder) {
+        val localQaModelGenerator = qaModelGenerator
+        if (localQaModelGenerator != null) {
+            require(dataModelGenerator != null) { "You should always overwrite dataModelGenerator when using qaModelGenerator" }
+            localQaModelGenerator(dataClassBuilder)
+        }
+        generateDefaultQaModel(dataClassBuilder)
     }
 
     /**
