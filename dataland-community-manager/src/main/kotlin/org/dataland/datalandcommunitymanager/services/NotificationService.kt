@@ -167,7 +167,7 @@ constructor(
             "companyId" to firstElementaryEvent.companyId.toString(),
             "frameworks" to createFrameworkAndYearStringFromElementaryEvents(elementaryEvents),
             "baseUrl" to proxyPrimaryUrl,
-            "duration" to getDaysPassedSinceLastNotificationEvent(
+            "numberOfDays" to getDaysPassedSinceLastNotificationEvent(
                 firstElementaryEvent.companyId, firstElementaryEvent.elementaryEventType,
             ).toString(),
         )
@@ -211,20 +211,14 @@ constructor(
      * event, it returns "null".
      * @param companyId for which a notification event might have happened
      * @param elementaryEventType of the elementary events for which the notification event was created
-     * @return time passed, or null if there is no last notification event
+     * @return time passed in days, or null if there is no last notification event
      */
     fun getDaysPassedSinceLastNotificationEvent(
         companyId: UUID,
         elementaryEventType: ElementaryEventType,
-    ): String? {
-        val daysPassed = getLastNotificationEventOrNull(companyId, elementaryEventType)?.let { lastNotificationEvent ->
+    ): Long? {
+        return getLastNotificationEventOrNull(companyId, elementaryEventType)?.let { lastNotificationEvent ->
             Duration.between(Instant.ofEpochMilli(lastNotificationEvent.creationTimestamp), Instant.now()).toDays()
-        }
-
-        return when {
-            daysPassed == null -> null
-            daysPassed == 0L -> "24 hours"
-            else -> "$daysPassed days"
         }
     }
 
