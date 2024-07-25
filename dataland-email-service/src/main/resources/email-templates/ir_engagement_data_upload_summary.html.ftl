@@ -6,7 +6,7 @@
   - companyId
   - frameworks list of (name and year)
   - baseUrl (something like https://dataland.com)
-  - numberOfDays
+  - duration
  -->
 
 <!DOCTYPE html>
@@ -29,7 +29,7 @@
     </tr>
     <tr>
         <td colspan="3">Exciting news! 📣
-            <br> Multiple datasets for ${companyName} have been uploaded to Dataland in the last ${numberOfDays} days!</td>
+            <br> Multiple datasets for ${companyName} have been uploaded to Dataland in the last ${duration}!</td>
     </tr>
     <tr>
         <td colspan="3" style="height: 20px">&nbsp;</td>

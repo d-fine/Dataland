@@ -8,6 +8,7 @@ import org.dataland.datalandcommunitymanager.events.ElementaryEventType
 import org.dataland.datalandcommunitymanager.model.companyRoles.CompanyRole
 import org.dataland.datalandcommunitymanager.repositories.ElementaryEventRepository
 import org.dataland.datalandcommunitymanager.repositories.NotificationEventRepository
+import org.dataland.datalandcommunitymanager.utils.readableFrameworkNameMapping
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
 import org.dataland.datalandmessagequeueutils.constants.ExchangeName
 import org.dataland.datalandmessagequeueutils.constants.MessageType
@@ -39,7 +40,7 @@ constructor(
     val objectMapper: ObjectMapper,
     @Value("\${dataland.community-manager.notification-threshold-days:30}")
     private val notificationThresholdDays: Int,
-    @Value("\${dataland.community-manager.notification-elementaryevents-threshold:10}")
+    @Value("\${dataland.community-manager.notification-elementaryevents-threshold:3")
     private val elementaryEventsThreshold: Int,
     @Value("\${dataland.community-manager.proxy-primary-url:local-dev.dataland.com}")
     private val proxyPrimaryUrl: String,
@@ -166,7 +167,7 @@ constructor(
             "companyId" to firstElementaryEvent.companyId.toString(),
             "frameworks" to createFrameworkAndYearStringFromElementaryEvents(elementaryEvents),
             "baseUrl" to proxyPrimaryUrl,
-            "numberOfDays" to getDaysPassedSinceLastNotificationEvent(
+            "duration" to getDaysPassedSinceLastNotificationEvent(
                 firstElementaryEvent.companyId, firstElementaryEvent.elementaryEventType,
             ).toString(),
         )
@@ -210,14 +211,20 @@ constructor(
      * event, it returns "null".
      * @param companyId for which a notification event might have happened
      * @param elementaryEventType of the elementary events for which the notification event was created
-     * @return time passed in days, or null if there is no last notification event
+     * @return time passed, or null if there is no last notification event
      */
     fun getDaysPassedSinceLastNotificationEvent(
         companyId: UUID,
         elementaryEventType: ElementaryEventType,
-    ): Long? {
-        return getLastNotificationEventOrNull(companyId, elementaryEventType)?.let { lastNotificationEvent ->
+    ): String? {
+        val daysPassed = getLastNotificationEventOrNull(companyId, elementaryEventType)?.let { lastNotificationEvent ->
             Duration.between(Instant.ofEpochMilli(lastNotificationEvent.creationTimestamp), Instant.now()).toDays()
+        }
+
+        return when {
+            daysPassed == null -> null
+            daysPassed == 0L -> "24 hours"
+            else -> "$daysPassed days"
         }
     }
 
@@ -260,10 +267,11 @@ constructor(
         val frameworkAndYears = elementaryEvents.groupBy(
             keySelector = { it.framework },
             valueTransform = { it.reportingPeriod },
-        ).mapValues { (_, years) -> years.sorted() }
+        ).mapValues { (_, years) -> years.toSortedSet() }
 
-        return frameworkAndYears.entries.joinToString("\n") { (framework, years) ->
-            "$framework: ${years.joinToString(" ")}"
+        return frameworkAndYears.entries.joinToString("<br>") { (framework, years) ->
+            val readableFramework = readableFrameworkNameMapping[framework] ?: framework.toString()
+            "$readableFramework: ${years.joinToString(", ")}"
         }
     }
 }
