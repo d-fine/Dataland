@@ -1,6 +1,7 @@
 package org.dataland.datalandcommunitymanager.controller
 
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
+import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandcommunitymanager.api.RequestApi
 import org.dataland.datalandcommunitymanager.model.dataRequest.AccessStatus
@@ -17,9 +18,9 @@ import org.dataland.datalandcommunitymanager.services.DataRequestAlterationManag
 import org.dataland.datalandcommunitymanager.services.DataRequestQueryManager
 import org.dataland.datalandcommunitymanager.services.SingleDataRequestManager
 import org.dataland.datalandcommunitymanager.utils.DataRequestProcessingUtils
-import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
+import org.springframework.transaction.annotation.Transactional
 import org.springframework.web.bind.annotation.RestController
 import java.util.UUID
 
@@ -36,7 +37,6 @@ class RequestController(
     @Autowired private val dataRequestAlterationManager: DataRequestAlterationManager,
     @Autowired private val dataRequestProcessingUtils: DataRequestProcessingUtils,
 ) : RequestApi {
-
     override fun postBulkDataRequest(bulkDataRequest: BulkDataRequest): ResponseEntity<BulkDataRequestResponse> {
         return ResponseEntity.ok(
             bulkDataRequestManager.processBulkDataRequest(bulkDataRequest),
@@ -93,23 +93,29 @@ class RequestController(
         )
     }
 
-    override fun hasAccessToDataset(companyId: UUID, dataType: DataTypeEnum, reportingPeriod: String) {
-        // only the vsme framework is private
-        if (dataType != DataTypeEnum.vsme) {
-            return
-        }
+    @Transactional
+    override fun hasAccessToDataset(companyId: UUID, dataType: String, reportingPeriod: String, userId: UUID) {
+        // TODO only the vsme framework is private
+        val dataTypeEnum = DataTypeEnum.decode(dataType)
+        if (dataTypeEnum != null) {
+            if (dataTypeEnum != DataTypeEnum.vsme) {
+                return
+            }
+            val hasAccess = dataRequestProcessingUtils.hasAccessToPrivateDataset(
+                companyId.toString(), reportingPeriod, dataTypeEnum, userId.toString(),
+            )
 
-        val userId = DatalandAuthentication.fromContext().userId
-
-        val hasAccess = dataRequestProcessingUtils.hasAccessToPrivateDataset(
-            companyId.toString(), reportingPeriod, dataType, userId,
-        )
-
-        if (!hasAccess) {
-            throw ResourceNotFoundApiException(
-                "The user has no access to the dataset or the dataset does not exists.",
-                "The user $userId cannot access the dataset for the company $companyId, for the data type $dataType " +
-                    "and the reporting period $reportingPeriod. The dataset may not exists.",
+            if (!hasAccess) {
+                throw ResourceNotFoundApiException(
+                    "The user has no access to the dataset or the dataset does not exists.",
+                    "The user $userId cannot access the dataset for the company $companyId, for the data type " +
+                        "$dataType and the reporting period $reportingPeriod. The dataset may not exists.",
+                )
+            }
+        } else {
+            throw InvalidInputApiException(
+                "The provided input did not match expected values.",
+                "The $dataType was not recognized by the system. Please check your input",
             )
         }
     }

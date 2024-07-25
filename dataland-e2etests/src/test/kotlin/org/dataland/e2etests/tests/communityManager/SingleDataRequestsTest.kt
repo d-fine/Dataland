@@ -84,6 +84,8 @@ class SingleDataRequestsTest {
         }
     }
 
+    // TODO add a test to the accessStatus tests that tests that a company owner which is a normal dataland user can
+    // TODO also use the patch endpoint to patch accessStatus of a request
     @Test
     fun `post single data request for companyId with invalid format and assert exception`() {
         val invalidCompanyIdentifier = "invalid-identifier-${Instant.now().toEpochMilli()}"

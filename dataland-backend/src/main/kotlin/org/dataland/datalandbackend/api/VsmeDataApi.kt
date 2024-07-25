@@ -82,7 +82,8 @@ interface VsmeDataApi {
     // TODO change to new access logic
     @PreAuthorize(
         "hasRole('ROLE_USER') and " +
-            "@CompanyRoleChecker.hasCurrentUserAnyRoleForCompanyOfDataId(#dataId)",
+            "(@CompanyRoleChecker.hasCurrentUserAnyRoleForCompanyOfDataId(#dataId) or " +
+            "@PrivateDataAccessChecker.hasUserAccessToPrivateResources(#dataId))",
     )
     fun getCompanyAssociatedVsmeData(@PathVariable("dataId") dataId: String):
         ResponseEntity<CompanyAssociatedData<VsmeData>>
@@ -115,7 +116,8 @@ interface VsmeDataApi {
     // TODO change to new access logic
     @PreAuthorize(
         "hasRole('ROLE_USER') and " +
-            "@CompanyRoleChecker.hasCurrentUserAnyRoleForCompanyOfDataId(#dataId)",
+            "(@CompanyRoleChecker.hasCurrentUserAnyRoleForCompanyOfDataId(#dataId) or " +
+            "@PrivateDataAccessChecker.hasUserAccessToPrivateResources(#dataId))",
     )
     fun getPrivateDocument(
         @RequestParam("dataId") dataId: String,

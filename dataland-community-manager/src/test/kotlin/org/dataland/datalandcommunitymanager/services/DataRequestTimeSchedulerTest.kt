@@ -80,8 +80,14 @@ class DataRequestTimeSchedulerTest {
     fun `validate that two stale and answered data requests are patched`() {
         `when`(dataRequestRepository.searchDataRequestEntity(any(GetDataRequestsSearchFilter::class.java))).thenReturn(
             listOf(
-                getDataRequestEntity(dataRequestIdStaleAndAnswered, RequestStatus.Answered, AccessStatus.Public, staleLastModified),
-                getDataRequestEntity(dataRequestIdStaleAndAnswered, RequestStatus.Answered, AccessStatus.Public, staleLastModified),
+                getDataRequestEntity(
+                    dataRequestIdStaleAndAnswered, RequestStatus.Answered, AccessStatus.Public,
+                    staleLastModified,
+                ),
+                getDataRequestEntity(
+                    dataRequestIdStaleAndAnswered, RequestStatus.Answered, AccessStatus.Public,
+                    staleLastModified,
+                ),
             ),
         )
         dataRequestTimeScheduler.patchStaleAnsweredRequestToClosed()
@@ -96,7 +102,10 @@ class DataRequestTimeSchedulerTest {
         reset(dataRequestRepository)
         val dataRequestEntities = mutableListOf<DataRequestEntity>()
         for (status in RequestStatus.entries) {
-            val dataRequestEntity = getDataRequestEntity(dummyDataRequestId, status, AccessStatus.Public, Instant.now().toEpochMilli())
+            val dataRequestEntity = getDataRequestEntity(
+                dummyDataRequestId, status, AccessStatus.Public,
+                Instant.now().toEpochMilli(),
+            )
             dataRequestEntities.add(dataRequestEntity)
         }
         `when`(dataRequestRepository.searchDataRequestEntity(any(GetDataRequestsSearchFilter::class.java))).thenReturn(
