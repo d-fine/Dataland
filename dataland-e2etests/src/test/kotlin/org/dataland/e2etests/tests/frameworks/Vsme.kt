@@ -231,6 +231,18 @@ class Vsme {
         assertEquals(hashAlpha, downloadedFile.readBytes().sha256())
     }
 
+    @Test
+    fun `post a VSME dataset and verify that a normal user with access status granted can retrieve the data`() {
+        val vsmeData = setReferencedReports(testVsmeData, FileInfos(hashAlpha, fileNameAlpha))
+        val companyAssociatedVsmeData = CompanyAssociatedDataVsmeData(companyId, "2022", vsmeData)
+        val dataId =
+            postVsmeDataset(
+                companyAssociatedVsmeData, listOf(dummyFileAlpha, dummyFileAlpha), TechnicalUser.Uploader,
+            ).dataId
+    }
+    // TODO retrieve access as a normal user who was given access to the dataset, continue working here once
+    // TODO authorization logic in the community manager has been updated
+
     private fun setReferencedReports(dataset: VsmeData, fileInfoToSetAsReport: FileInfos?): VsmeData {
         val newReferencedReports = fileInfoToSetAsReport?.let {
             mapOf(
