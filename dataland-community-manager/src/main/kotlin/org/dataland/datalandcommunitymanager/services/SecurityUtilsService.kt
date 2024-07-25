@@ -135,15 +135,25 @@ class SecurityUtilsService(
      * Returns true if the requesting user is company
      * @param requestId the requestId for which a company ownership check should be done
      */
-    fun isUserCompanyOwner(
+    fun isUserCompanyOwnerForRequestId(
         requestId: String,
     ): Boolean {
-        val userId = DatalandAuthentication.fromContext().userId
         val requestEntity = dataRequestQueryManager.getDataRequestById(requestId)
+        return isUserCompanyOwnerForCompanyId(requestEntity.datalandCompanyId)
+    }
+
+    /**
+     * Returns true if the requesting user is company
+     * @param companyId the company Id for which ownership should be tested
+     */
+    fun isUserCompanyOwnerForCompanyId(
+        companyId: String,
+    ): Boolean {
+        val userId = DatalandAuthentication.fromContext().userId
         return try {
             companyRolesManager.validateIfCompanyRoleForCompanyIsAssignedToUser(
                 companyRole = CompanyRole.CompanyOwner,
-                companyId = requestEntity.datalandCompanyId, userId = userId,
+                companyId = companyId, userId = userId,
             )
             true
         } catch (e: ResourceNotFoundApiException) {

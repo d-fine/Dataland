@@ -79,6 +79,7 @@ class RequestController(
         dataType: DataTypeEnum?,
         userId: String?,
         requestStatus: RequestStatus?,
+        accessStatus: AccessStatus?,
         reportingPeriod: String?,
         datalandCompanyId: String?,
     ): ResponseEntity<List<StoredDataRequest>> {
@@ -87,6 +88,7 @@ class RequestController(
                 dataType,
                 userId,
                 requestStatus,
+                accessStatus,
                 reportingPeriod,
                 datalandCompanyId,
             ),

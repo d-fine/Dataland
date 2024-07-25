@@ -154,7 +154,6 @@ interface RequestApi {
      * @return the modified data request
      */
 
-    // TODO data owner should only be allowed to change access status of a request
     @Operation(
         summary = "Updates a data request.",
         description = "Updates status and message history of data request given data request id.",
@@ -175,7 +174,7 @@ interface RequestApi {
             "@SecurityUtilsService.isRequestMessageHistoryChangeableByUser(" +
             "#dataRequestId, #requestStatus, #contacts,#message)" +
             ") or" +
-            "@SecurityUtilsService.isUserCompanyOwner(#dataRequestId) and" +
+            "@SecurityUtilsService.isUserCompanyOwnerForRequestId(#dataRequestId) and" +
             "@SecurityUtilsService.areOnlyAuthorizedFieldsPatched(#requestStatus, #contacts, #message) ",
     )
     fun patchDataRequest(
@@ -201,11 +200,15 @@ interface RequestApi {
     @GetMapping(
         produces = ["application/json"],
     )
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize(
+        "hasRole('ROLE_ADMIN') or" +
+            "@SecurityUtilsService.isUserCompanyOwnerForCompanyId(#datalandCompanyId)",
+    )
     fun getDataRequests(
         @RequestParam dataType: DataTypeEnum?,
         @RequestParam userId: String?,
         @RequestParam requestStatus: RequestStatus?,
+        @RequestParam accessStatus: AccessStatus?,
         @RequestParam reportingPeriod: String?,
         @RequestParam datalandCompanyId: String?,
     ): ResponseEntity<List<StoredDataRequest>>
