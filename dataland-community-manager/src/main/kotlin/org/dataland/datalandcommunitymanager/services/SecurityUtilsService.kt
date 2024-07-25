@@ -1,9 +1,11 @@
 package org.dataland.datalandcommunitymanager.services
 
+import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandcommunitymanager.model.companyRoles.CompanyRole
 import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
 import org.dataland.datalandcommunitymanager.repositories.CompanyRoleAssignmentRepository
 import org.dataland.datalandcommunitymanager.repositories.DataRequestRepository
+import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.stereotype.Service
@@ -18,6 +20,8 @@ import java.util.UUID
 class SecurityUtilsService(
     @Autowired private val dataRequestRepository: DataRequestRepository,
     @Autowired private val companyRoleAssignmentRepository: CompanyRoleAssignmentRepository,
+    @Autowired private val companyRolesManager: CompanyRolesManager,
+    @Autowired private val dataRequestQueryManager: DataRequestQueryManager,
 ) {
     private val roleModificationPermissionsMap = mapOf(
         CompanyRole.CompanyOwner to enumValues<CompanyRole>().toList(),
@@ -123,5 +127,36 @@ class SecurityUtilsService(
         return userCompanyRoles.any {
             roleModificationPermissionsMap[it.companyRole]?.contains(companyRoleToModify) == true
         }
+    }
+
+    /**
+     * Returns true if the requesting user is company
+     * @param requestId the requestId for which a company ownership check should be done
+     */
+    fun isUserCompanyOwner(
+        requestId: String,
+    ): Boolean {
+        val userId = DatalandAuthentication.fromContext().userId
+        val requestEntity = dataRequestQueryManager.getDataRequestById(requestId)
+        return try {
+            companyRolesManager.validateIfCompanyRoleForCompanyIsAssignedToUser(
+                companyRole = CompanyRole.CompanyOwner,
+                companyId = requestEntity.datalandCompanyId, userId = userId,
+            )
+            true
+        } catch (e: ResourceNotFoundApiException) {
+            false
+        }
+    }
+
+    /**
+     * This method checks that only access status of a request entity can be patched
+     * @param requestStatus the request status of the patch request
+     * @param contacts the contacts of the patch request
+     * @param message the message of the patch request
+     */
+    fun areOnlyAuthorizedFieldsPatched(requestStatus: RequestStatus?, contacts: Set<String>?, message: String?):
+        Boolean {
+        return requestStatus == null && contacts.isNullOrEmpty() && message.isNullOrBlank()
     }
 }

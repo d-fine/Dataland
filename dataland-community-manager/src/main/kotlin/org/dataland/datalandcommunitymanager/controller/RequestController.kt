@@ -103,6 +103,7 @@ class RequestController(
             if (dataTypeEnum != DataTypeEnum.vsme) {
                 return
             }
+            // TODO remove logging
             logger.info(dataTypeEnum.toString())
             logger.info(userId.toString())
             logger.info(companyId.toString())

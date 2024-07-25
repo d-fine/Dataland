@@ -154,6 +154,7 @@ interface RequestApi {
      * @return the modified data request
      */
 
+    // TODO data owner should only be allowed to change access status of a request
     @Operation(
         summary = "Updates a data request.",
         description = "Updates status and message history of data request given data request id.",
@@ -173,7 +174,9 @@ interface RequestApi {
             "@SecurityUtilsService.isRequestStatusChangeableByUser(#dataRequestId, #requestStatus) and " +
             "@SecurityUtilsService.isRequestMessageHistoryChangeableByUser(" +
             "#dataRequestId, #requestStatus, #contacts,#message)" +
-            ")",
+            ") or" +
+            "@SecurityUtilsService.isUserCompanyOwner(#dataRequestId) and" +
+            "@SecurityUtilsService.areOnlyAuthorizedFieldsPatched(#requestStatus, #contacts, #message) ",
     )
     fun patchDataRequest(
         @PathVariable dataRequestId: UUID,
