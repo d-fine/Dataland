@@ -229,11 +229,12 @@ interface RequestApi {
     )
     @RequestMapping(
         method = [RequestMethod.HEAD],
-        value = ["/dataset-access/{companyId}/{dataType}/{reportingPeriod}"],
+        value = ["/dataset-access/{companyId}/{dataType}/{reportingPeriod}/{userId}"],
     )
     fun hasAccessToDataset(
         @PathVariable("companyId") companyId: UUID,
-        @PathVariable("dataType") dataType: DataTypeEnum,
+        @PathVariable("dataType") dataType: String,
         @PathVariable("reportingPeriod") reportingPeriod: String,
+        @PathVariable("userId") userId: UUID,
     )
 }

@@ -99,11 +99,15 @@ class DataRequestProcessingUtils(
             creationTime,
         )
         dataRequestRepository.save(dataRequestEntity)
-
+        val accessStatus = if (dataType == DataTypeEnum.vsme) {
+            AccessStatus.Pending
+        } else {
+            AccessStatus.Public
+        }
         val requestStatusObject = listOf(
             StoredDataRequestStatusObject(
                 RequestStatus.Open, creationTime,
-                AccessStatus.Public,
+                accessStatus,
             ),
         )
         dataRequestEntity.associateRequestStatus(requestStatusObject)
@@ -254,6 +258,7 @@ class DataRequestProcessingUtils(
         dataType: DataTypeEnum,
         userId: String,
     ): Boolean {
+        // TODO head endpoint currently throws a 500 error
         return !findRequestsByAccessStatus(companyId, reportingPeriod, dataType, userId, AccessStatus.Granted)
             .isNullOrEmpty()
     }
@@ -335,7 +340,7 @@ class DataRequestProcessingUtils(
             creationTime,
         )
         dataRequestRepository.save(dataRequestEntity)
-        // TODO Refactor with storeDataRequestEntityAsOpend as both are very similiar
+        // TODO Refactor with storeDataRequestEntityAsOpend as both are very similar
         val requestStatusObject = listOf(
             StoredDataRequestStatusObject(
                 RequestStatus.Answered, creationTime,

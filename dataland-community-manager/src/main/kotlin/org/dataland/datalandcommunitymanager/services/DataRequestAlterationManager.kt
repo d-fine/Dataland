@@ -85,6 +85,8 @@ class DataRequestAlterationManager(
         if (contacts != null) {
             anyChanges = true
             addNewMessageToHistory(dataRequestEntity, contacts, message, modificationTime)
+            this.sendSingleDataRequestEmail(dataRequestEntity, contacts, message)
+            dataRequestLogger.logMessageForPatchingRequestMessage(dataRequestId)
         }
         if (requestStatus == RequestStatus.Closed || requestStatus == RequestStatus.Answered) {
             sendEmailBecauseOfStatusChanged(

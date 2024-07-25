@@ -573,7 +573,7 @@
         ]
       }
     },
-    "/requests/dataset-access/{companyId}/{dataType}/{reportingPeriod}": {
+    "/requests/dataset-access/{companyId}/{dataType}/{reportingPeriod}/{userId}": {
       "head": {
         "tags": [
           "request-controller"
@@ -596,17 +596,7 @@
             "in": "path",
             "required": true,
             "schema": {
-              "type": "string",
-              "enum": [
-                "eutaxonomy-financials",
-                "eutaxonomy-non-financials",
-                "lksg",
-                "p2p",
-                "sfdr",
-                "vsme",
-                "esg-questionnaire",
-                "heimathafen"
-              ]
+              "type": "string"
             }
           },
           {
@@ -615,6 +605,15 @@
             "required": true,
             "schema": {
               "type": "string"
+            }
+          },
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
             }
           }
         ],
