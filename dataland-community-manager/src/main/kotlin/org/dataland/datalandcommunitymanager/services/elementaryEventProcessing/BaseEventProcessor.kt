@@ -1,8 +1,7 @@
 package org.dataland.datalandcommunitymanager.services.elementaryEventProcessing
 
 import org.dataland.datalandcommunitymanager.entities.ElementaryEventEntity
-import org.dataland.datalandcommunitymanager.events.ElementaryEventType
-import org.dataland.datalandcommunitymanager.model.elementaryEventProcessing.ElementaryEventPayloadMetaInfo
+import org.dataland.datalandcommunitymanager.model.elementaryEventProcessing.ElementaryEventBasicInfo
 import org.dataland.datalandcommunitymanager.repositories.ElementaryEventRepository
 import org.dataland.datalandmessagequeueutils.constants.MessageHeaderKey
 import org.springframework.beans.factory.annotation.Value
@@ -51,11 +50,9 @@ abstract class BaseEventProcessor {
         correlationId: String,
         type: String,
     ) {
-        println("The setting is read as: $notificationFeatureFlagString")
         if (!isNotificationServiceEnabled()) {
             return
         }
-        println("++-+-+-+CONTINUE")
         runProcessingLogic(payload, correlationId, type)
     }
 
@@ -72,32 +69,17 @@ abstract class BaseEventProcessor {
      * Create and persist new elementary event
      */
     protected fun createAndSaveElementaryEvent(
-        elementaryEventPayloadMetaInfo: ElementaryEventPayloadMetaInfo,
-        elementaryEventType: ElementaryEventType,
-    ) {
-        elementaryEventRepository.saveAndFlush(
+        elementaryEventBasicInfo: ElementaryEventBasicInfo,
+    ): ElementaryEventEntity {
+        return elementaryEventRepository.saveAndFlush(
             ElementaryEventEntity(
-                elementaryEventType = elementaryEventType,
-                companyId = elementaryEventPayloadMetaInfo.companyId,
-                framework = elementaryEventPayloadMetaInfo.framework,
-                reportingPeriod = elementaryEventPayloadMetaInfo.reportingPeriod,
+                elementaryEventType = elementaryEventBasicInfo.elementaryEventType,
+                companyId = elementaryEventBasicInfo.companyId,
+                framework = elementaryEventBasicInfo.framework,
+                reportingPeriod = elementaryEventBasicInfo.reportingPeriod,
                 creationTimestamp = Instant.now().toEpochMilli(),
                 notificationEvent = null,
             ),
         )
     }
-
-    /**
-     * Retrieve unprocessed elementary events for companyId from ElementaryEventRepository
-     * @param companyId companyId of elementaryEvents returned
-     * @return List of corresponding elementaryEvents
-     */
-    protected fun getUnprocessedElementaryEventsForCompany(
-        companyId: UUID,
-        elementaryEventType: ElementaryEventType,
-    ): List<ElementaryEventEntity> =
-        elementaryEventRepository.findAllByCompanyIdAndElementaryEventTypeAndNotificationEventIsNull(
-            companyId,
-            elementaryEventType,
-        )
 }

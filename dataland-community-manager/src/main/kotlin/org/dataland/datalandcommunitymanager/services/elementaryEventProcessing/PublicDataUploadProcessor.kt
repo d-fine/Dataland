@@ -1,11 +1,9 @@
 package org.dataland.datalandcommunitymanager.services.elementaryEventProcessing
 
-import org.dataland.datalandcommunitymanager.entities.ElementaryEventEntity
-import org.dataland.datalandcommunitymanager.events.ElementaryEventType
-import org.dataland.datalandcommunitymanager.model.elementaryEventProcessing.ElementaryEventPayloadMetaInfo
+import org.dataland.datalandcommunitymanager.model.elementaryEventProcessing.ElementaryEventBasicInfo
 import org.dataland.datalandcommunitymanager.repositories.ElementaryEventRepository
 import org.dataland.datalandcommunitymanager.services.NotificationService
-import org.dataland.datalandcommunitymanager.utils.PayloadValidator.validatePayloadAndReturnElementaryEventMetaInfo
+import org.dataland.datalandcommunitymanager.utils.PayloadValidator.validatePayloadAndReturnElementaryEventBasicInfo
 import org.dataland.datalandmessagequeueutils.constants.ActionType
 import org.dataland.datalandmessagequeueutils.constants.ExchangeName
 import org.dataland.datalandmessagequeueutils.constants.MessageHeaderKey
@@ -26,7 +24,7 @@ import java.util.*
 /**
 * Defines the processing of public framework data upload events as elementary events
 */
-@Component("PublicDataUploadProcessor")
+@Component
 class PublicDataUploadProcessor(
     @Autowired val messageUtils: MessageQueueUtils,
     @Autowired val notificationService: NotificationService,
@@ -67,21 +65,17 @@ class PublicDataUploadProcessor(
 
     override fun runProcessingLogic(payload: String, correlationId: String, type: String) {
         messageUtils.validateMessageType(type, MessageType.PublicDataReceived)
-        val elementaryEventMetaInfo =
-            validatePayloadAndReturnElementaryEventMetaInfo(payload, ActionType.StorePublicData)
+        val elementaryEventBasicInfo =
+            validatePayloadAndReturnElementaryEventBasicInfo(payload, ActionType.StorePublicData)
 
         logger.info(
             "Processing elementary event: Request for storage of public framework data. " +
                 "CorrelationId: $correlationId",
         )
-        createAndSaveElementaryUploadEvent(elementaryEventMetaInfo)
-        val unprocessedElementaryEvents = getUnprocessedElementaryEventsForCompany(elementaryEventMetaInfo.companyId)
-        notificationService.notifyOfElementaryEvents(unprocessedElementaryEvents, correlationId)
+        val storedElementaryEvent = createAndSaveElementaryUploadEvent(elementaryEventBasicInfo)
+        notificationService.notifyOfElementaryEvents(storedElementaryEvent, correlationId)
     }
 
-    private fun createAndSaveElementaryUploadEvent(elementaryEventPayloadMetaInfo: ElementaryEventPayloadMetaInfo) =
-        super.createAndSaveElementaryEvent(elementaryEventPayloadMetaInfo, ElementaryEventType.UploadEvent)
-
-    private fun getUnprocessedElementaryEventsForCompany(companyId: UUID): List<ElementaryEventEntity> =
-        super.getUnprocessedElementaryEventsForCompany(companyId, ElementaryEventType.UploadEvent)
+    private fun createAndSaveElementaryUploadEvent(elementaryEventBasicInfo: ElementaryEventBasicInfo) =
+        super.createAndSaveElementaryEvent(elementaryEventBasicInfo)
 }

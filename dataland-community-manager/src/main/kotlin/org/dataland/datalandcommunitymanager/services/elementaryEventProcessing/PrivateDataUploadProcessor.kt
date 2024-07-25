@@ -1,17 +1,14 @@
 package org.dataland.datalandcommunitymanager.services.elementaryEventProcessing
 
-import org.dataland.datalandcommunitymanager.entities.ElementaryEventEntity
-import org.dataland.datalandcommunitymanager.events.ElementaryEventType
-import org.dataland.datalandcommunitymanager.model.elementaryEventProcessing.ElementaryEventPayloadMetaInfo
+import org.dataland.datalandcommunitymanager.model.elementaryEventProcessing.ElementaryEventBasicInfo
 import org.dataland.datalandcommunitymanager.repositories.ElementaryEventRepository
 import org.dataland.datalandcommunitymanager.services.NotificationService
-import org.dataland.datalandcommunitymanager.utils.PayloadValidator.validatePayloadAndReturnElementaryEventMetaInfo
+import org.dataland.datalandcommunitymanager.utils.PayloadValidator.validatePayloadAndReturnElementaryEventBasicInfo
 import org.dataland.datalandmessagequeueutils.constants.ActionType
 import org.dataland.datalandmessagequeueutils.constants.ExchangeName
 import org.dataland.datalandmessagequeueutils.constants.MessageHeaderKey
 import org.dataland.datalandmessagequeueutils.constants.MessageType
 import org.dataland.datalandmessagequeueutils.utils.MessageQueueUtils
-import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.amqp.rabbit.annotation.Argument
 import org.springframework.amqp.rabbit.annotation.Exchange
@@ -33,7 +30,7 @@ class PrivateDataUploadProcessor(
     @Autowired val notificationService: NotificationService,
     @Autowired override val elementaryEventRepository: ElementaryEventRepository,
 ) : BaseEventProcessor() {
-    override val logger: Logger = LoggerFactory.getLogger(this.javaClass)
+    override val logger = LoggerFactory.getLogger(this.javaClass)
 
     /**
      * Method that listens to private data storage requests, persists them as elementary events and asks the
@@ -68,21 +65,17 @@ class PrivateDataUploadProcessor(
 
     override fun runProcessingLogic(payload: String, correlationId: String, type: String) {
         messageUtils.validateMessageType(type, MessageType.PrivateDataReceived)
-        val elementaryEventMetaInfo =
-            validatePayloadAndReturnElementaryEventMetaInfo(payload, ActionType.StorePrivateDataAndDocuments)
+        val elementaryEventBasicInfo =
+            validatePayloadAndReturnElementaryEventBasicInfo(payload, ActionType.StorePrivateDataAndDocuments)
 
         logger.info(
             "Processing elementary event: Request for storage of private framework data. " +
                 "CorrelationId: $correlationId",
         )
-        createAndSaveElementaryUploadEvent(elementaryEventMetaInfo)
-        val unprocessedElementaryEvents = getUnprocessedElementaryEventsForCompany(elementaryEventMetaInfo.companyId)
-        notificationService.notifyOfElementaryEvents(unprocessedElementaryEvents, correlationId)
+        val storedElementaryEvent = createAndSaveElementaryUploadEvent(elementaryEventBasicInfo)
+        notificationService.notifyOfElementaryEvents(storedElementaryEvent, correlationId)
     }
 
-    private fun createAndSaveElementaryUploadEvent(elementaryEventPayloadMetaInfo: ElementaryEventPayloadMetaInfo) =
-        super.createAndSaveElementaryEvent(elementaryEventPayloadMetaInfo, ElementaryEventType.UploadEvent)
-
-    private fun getUnprocessedElementaryEventsForCompany(companyId: UUID): List<ElementaryEventEntity> =
-        super.getUnprocessedElementaryEventsForCompany(companyId, ElementaryEventType.UploadEvent)
+    private fun createAndSaveElementaryUploadEvent(elementaryEventBasicInfo: ElementaryEventBasicInfo) =
+        super.createAndSaveElementaryEvent(elementaryEventBasicInfo)
 }
