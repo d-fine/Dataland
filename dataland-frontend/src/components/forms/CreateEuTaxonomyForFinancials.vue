@@ -349,6 +349,7 @@ import { uploadFiles, type DocumentToUpload, getFileName, getFileReferenceByFile
 import { isValidFileName, noReportLabel } from '@/utils/DataSource';
 import SingleSelectFormElement from '@/components/forms/parts/elements/basic/SingleSelectFormElement.vue';
 import { type ClickableLink } from '@/types/CustomPropTypes';
+import { hasUserCompanyOwnerOrDataUploaderRole } from '@/utils/CompanyRolesUtils';
 
 export default defineComponent({
   setup() {
@@ -654,8 +655,17 @@ export default defineComponent({
         const euTaxonomyDataForFinancialsControllerApi = new ApiClientProvider(
           assertDefined(this.getKeycloakPromise)()
         ).getUnifiedFrameworkDataController(DataTypeEnum.EutaxonomyFinancials);
-        this.postEuTaxonomyDataForFinancialsResponse =
-          await euTaxonomyDataForFinancialsControllerApi.postFrameworkData(clonedFormInputsModel);
+
+        const isCompanyOwnerOrDataUploader = await hasUserCompanyOwnerOrDataUploaderRole(
+          this.formInputsModel.companyId,
+          this.getKeycloakPromise
+        );
+
+        this.postEuTaxonomyDataForFinancialsResponse = await euTaxonomyDataForFinancialsControllerApi.postFrameworkData(
+          clonedFormInputsModel,
+          isCompanyOwnerOrDataUploader
+        );
+
         this.$emit('datasetCreated');
       } catch (error) {
         this.messageCount++;

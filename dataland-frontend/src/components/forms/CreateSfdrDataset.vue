@@ -147,6 +147,7 @@ import BaseDataPointFormField from '@/components/forms/parts/elements/basic/Base
 import { getFilledKpis } from '@/utils/DataPoint';
 import { type PublicFrameworkDataApi } from '@/utils/api/UnifiedFrameworkDataApi';
 import { getBasePublicFrameworkDefinition } from '@/frameworks/BasePublicFrameworkRegistry';
+import { hasUserCompanyOwnerOrDataUploaderRole } from '@/utils/CompanyRolesUtils';
 
 const referenceableReportsFieldId = 'referenceableReports';
 
@@ -307,7 +308,14 @@ export default defineComponent({
         await uploadFiles(documentsToUpload, assertDefined(this.getKeycloakPromise));
 
         const sfdrDataControllerApi = this.buildSfdrDataApi();
-        await sfdrDataControllerApi.postFrameworkData(this.companyAssociatedSfdrData);
+
+        const isCompanyOwnerOrDataUploader = await hasUserCompanyOwnerOrDataUploaderRole(
+          this.companyAssociatedSfdrData.companyId,
+          this.getKeycloakPromise
+        );
+
+        await sfdrDataControllerApi.postFrameworkData(this.companyAssociatedSfdrData, isCompanyOwnerOrDataUploader);
+
         this.$emit('datasetCreated');
         this.dataDate = undefined;
         this.message = 'Upload successfully executed.';
