@@ -21,7 +21,13 @@ abstract class BaseEventProcessor {
     abstract val logger: org.slf4j.Logger
 
     @Value("\${dataland.community-manager.notification-feature-flag:false}")
-    val notificationFeatureFlag: Boolean = false
+    var notificationFeatureFlagString: String? = null
+    final val notificationFeatureFlag: Boolean = try {
+        notificationFeatureFlagString?.takeIf { it.isNotEmpty() }?.toBoolean() ?: false
+    } catch (e: IllegalArgumentException) {
+        logger.error(e.message, e)
+        false
+    }
 
     /**
      * Rabbit-MQ listener function to handle incoming elementary events
@@ -45,8 +51,7 @@ abstract class BaseEventProcessor {
         correlationId: String,
         type: String,
     ) {
-        println("The Setting is read as: $notificationFeatureFlag")
-        println(isNotificationServiceEnabled())
+        println("The setting is read as: $notificationFeatureFlagString")
         if (!isNotificationServiceEnabled()) {
             return
         }

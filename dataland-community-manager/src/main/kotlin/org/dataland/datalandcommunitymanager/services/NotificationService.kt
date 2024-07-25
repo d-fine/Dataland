@@ -2,10 +2,10 @@ package org.dataland.datalandcommunitymanager.services
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
-import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandcommunitymanager.entities.ElementaryEventEntity
 import org.dataland.datalandcommunitymanager.entities.NotificationEventEntity
 import org.dataland.datalandcommunitymanager.events.ElementaryEventType
+import org.dataland.datalandcommunitymanager.model.companyRoles.CompanyRole
 import org.dataland.datalandcommunitymanager.repositories.ElementaryEventRepository
 import org.dataland.datalandcommunitymanager.repositories.NotificationEventRepository
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
@@ -236,13 +236,17 @@ constructor(
                 .toDays() > notificationThresholdDays
     }
 
+    /**
+     * checks if company has owner (if company has owner, notifications are created but not sent)
+     */
     fun hasCompanyOwner(companyId: UUID): Boolean {
-        try {
-            companyRolesManager.validateIfCompanyHasAtLeastOneCompanyOwner(companyId.toString())
-        } catch (e: ResourceNotFoundApiException) {
-            return false
-        }
-        return true
+        val companyOwner = companyRolesManager.getCompanyRoleAssignmentsByParameters(
+            companyRole = CompanyRole.CompanyOwner,
+            companyId = companyId.toString(),
+            userId = null,
+        )
+
+        return companyOwner.isNotEmpty()
     }
 
     /**

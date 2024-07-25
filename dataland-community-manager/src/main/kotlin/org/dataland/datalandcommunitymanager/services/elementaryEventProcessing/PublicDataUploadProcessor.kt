@@ -62,7 +62,7 @@ class PublicDataUploadProcessor(
         @Header(MessageHeaderKey.CorrelationId) correlationId: String,
         @Header(MessageHeaderKey.Type) type: String,
     ) {
-        runProcessingLogicIfFeatureFlagEnabled(payload, correlationId, type)
+        super.runProcessingLogicIfFeatureFlagEnabled(payload, correlationId, type)
     }
 
     override fun runProcessingLogic(payload: String, correlationId: String, type: String) {
