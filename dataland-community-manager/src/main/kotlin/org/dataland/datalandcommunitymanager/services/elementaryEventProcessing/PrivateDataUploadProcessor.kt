@@ -1,5 +1,6 @@
 package org.dataland.datalandcommunitymanager.services.elementaryEventProcessing
 
+import org.dataland.datalandcommunitymanager.events.ElementaryEventType
 import org.dataland.datalandcommunitymanager.model.elementaryEventProcessing.ElementaryEventBasicInfo
 import org.dataland.datalandcommunitymanager.repositories.ElementaryEventRepository
 import org.dataland.datalandcommunitymanager.services.NotificationService
@@ -77,5 +78,5 @@ class PrivateDataUploadProcessor(
     }
 
     private fun createAndSaveElementaryUploadEvent(elementaryEventBasicInfo: ElementaryEventBasicInfo) =
-        super.createAndSaveElementaryEvent(elementaryEventBasicInfo)
+        super.createAndSaveElementaryEvent(elementaryEventBasicInfo, ElementaryEventType.UploadEvent)
 }

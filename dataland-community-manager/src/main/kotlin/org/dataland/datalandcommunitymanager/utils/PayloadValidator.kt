@@ -1,7 +1,7 @@
 package org.dataland.datalandcommunitymanager.utils
 
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
-import org.dataland.datalandcommunitymanager.model.elementaryEventProcessing.ElementaryEventPayloadMetaInfo
+import org.dataland.datalandcommunitymanager.model.elementaryEventProcessing.ElementaryEventBasicInfo
 import org.dataland.datalandmessagequeueutils.exceptions.MessageQueueRejectException
 import org.json.JSONObject
 import java.util.*
@@ -17,10 +17,10 @@ object PayloadValidator {
      * @param expectedActionType the expected action type in the payload
      * @returns an object that contains meta info about the elementary event associated with the payload
      */
-    fun validatePayloadAndReturnElementaryEventMetaInfo(
+    fun validatePayloadAndReturnElementaryEventBasicInfo(
         payload: String,
         expectedActionType: String,
-    ): ElementaryEventPayloadMetaInfo {
+    ): ElementaryEventBasicInfo {
         val payloadJsonObject = JSONObject(payload)
 
         val dataId = payloadJsonObject.getString("dataId")
@@ -40,7 +40,7 @@ object PayloadValidator {
         val frameworkAsEnum = DataTypeEnum.decode(framework)!!
         val reportingPeriod = payloadJsonObject.getString("reportingPeriod")
 
-        return ElementaryEventPayloadMetaInfo(
+        return ElementaryEventBasicInfo(
             companyId = companyId,
             framework = frameworkAsEnum,
             reportingPeriod = reportingPeriod,
