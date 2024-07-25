@@ -4,52 +4,68 @@ import org.dataland.datalandcommunitymanager.entities.ElementaryEventEntity
 import org.dataland.datalandcommunitymanager.events.ElementaryEventType
 import org.dataland.datalandcommunitymanager.model.elementaryEventProcessing.ElementaryEventBasicInfo
 import org.dataland.datalandcommunitymanager.repositories.ElementaryEventRepository
+import org.dataland.datalandcommunitymanager.services.NotificationService
+import org.dataland.datalandcommunitymanager.utils.PayloadValidator.validatePayloadAndReturnElementaryEventBasicInfo
 import org.dataland.datalandmessagequeueutils.constants.MessageHeaderKey
+import org.dataland.datalandmessagequeueutils.constants.MessageType
+import org.dataland.datalandmessagequeueutils.utils.MessageQueueUtils
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.messaging.handler.annotation.Header
 import org.springframework.messaging.handler.annotation.Payload
 import org.springframework.stereotype.Component
 import java.time.Instant
-import java.util.*
 
 /**
  * Base class to define basic functionalities required for processing elementary events on message queues
  */
 @Component
-abstract class BaseEventProcessor {
-    abstract val elementaryEventRepository: ElementaryEventRepository
-    abstract val logger: org.slf4j.Logger
-
+abstract class BaseEventProcessor(
+    @Autowired val messageUtils: MessageQueueUtils,
+    @Autowired val notificationService: NotificationService,
+    @Autowired val elementaryEventRepository: ElementaryEventRepository,
+) {
     @Value("\${dataland.community-manager.notification-feature-flag:false}")
     var notificationFeatureFlagString: String? = null
     final val notificationFeatureFlag: Boolean = notificationFeatureFlagString?.toBooleanStrictOrNull() ?: false
 
+    lateinit var elementaryEventType: ElementaryEventType
+    lateinit var messageType: String
+    lateinit var actionType: String
+    lateinit var logger: org.slf4j.Logger
+
     /**
-     * Rabbit-MQ listener function to handle incoming elementary events
+     * Rabbit-MQ listener function to handle incoming elementary events.
+     * Processes and persists incoming elementary events and potentially triggers notifications
      */
-    abstract fun processEvent(
+    fun processEvent(
         @Payload payload: String,
         @Header(MessageHeaderKey.CorrelationId) correlationId: String,
         @Header(MessageHeaderKey.Type) type: String,
-    )
-
-    /**
-     * Actual processing logic to persists incoming elementary events and potentially trigger notifications
-     */
-    abstract fun runProcessingLogic(payload: String, correlationId: String, type: String)
-
-    /**
-     * Checks if the feature flag is enabled, and if yes, it executes the processingLogic passed to it.
-     */
-    fun runProcessingLogicIfFeatureFlagEnabled(
-        payload: String,
-        correlationId: String,
-        type: String,
     ) {
         if (!isNotificationServiceEnabled()) {
             return
         }
-        runProcessingLogic(payload, correlationId, type)
+
+        messageUtils.validateMessageType(type, messageType)
+
+        val elementaryEventMetaInfo =
+            validatePayloadAndReturnElementaryEventBasicInfo(payload, actionType)
+
+        val privateOrPublic = when (messageType) {
+            MessageType.PrivateDataReceived -> "private"
+            MessageType.PublicDataReceived -> "public"
+            else -> ""
+        }
+
+        logger.info(
+            "Processing elementary event: Request for storage of $privateOrPublic framework data. " +
+                "CorrelationId: $correlationId",
+        )
+
+        val storedElementaryEvent = createAndSaveElementaryEvent(elementaryEventMetaInfo, elementaryEventType)
+
+        notificationService.notifyOfElementaryEvents(storedElementaryEvent, correlationId)
     }
 
     /**
