@@ -21,12 +21,7 @@ abstract class BaseEventProcessor {
 
     @Value("\${dataland.community-manager.notification-feature-flag:false}")
     var notificationFeatureFlagString: String? = null
-    final val notificationFeatureFlag: Boolean = try {
-        notificationFeatureFlagString?.takeIf { it.isNotEmpty() }?.toBoolean() ?: false
-    } catch (e: IllegalArgumentException) {
-        logger.error(e.message, e)
-        false
-    }
+    final val notificationFeatureFlag: Boolean = notificationFeatureFlagString?.toBooleanStrictOrNull() ?: false
 
     /**
      * Rabbit-MQ listener function to handle incoming elementary events

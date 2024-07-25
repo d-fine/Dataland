@@ -8,6 +8,7 @@ import org.dataland.datalandcommunitymanager.events.ElementaryEventType
 import org.dataland.datalandcommunitymanager.model.companyRoles.CompanyRole
 import org.dataland.datalandcommunitymanager.repositories.ElementaryEventRepository
 import org.dataland.datalandcommunitymanager.repositories.NotificationEventRepository
+import org.dataland.datalandcommunitymanager.utils.readableFrameworkNameMapping
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
 import org.dataland.datalandmessagequeueutils.constants.ExchangeName
 import org.dataland.datalandmessagequeueutils.constants.MessageType
@@ -288,10 +289,11 @@ constructor(
         val frameworkAndYears = elementaryEvents.groupBy(
             keySelector = { it.framework },
             valueTransform = { it.reportingPeriod },
-        ).mapValues { (_, years) -> years.sorted() }
+        ).mapValues { (_, years) -> years.toSortedSet() }
 
-        return frameworkAndYears.entries.joinToString("\n") { (framework, years) ->
-            "$framework: ${years.joinToString(" ")}"
+        return frameworkAndYears.entries.joinToString("<br>") { (framework, years) ->
+            val readableFramework = readableFrameworkNameMapping[framework] ?: framework.toString()
+            "$readableFramework: ${years.joinToString(", ")}"
         }
     }
 }

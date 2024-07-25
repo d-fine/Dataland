@@ -40,11 +40,19 @@ class SummaryNotificationEmailFactory(
         return "New data for ${properties[keys.companyName]} on Dataland"
     }
 
+    private fun formatDuration(daysPassed: String): String? {
+        return when {
+            daysPassed == null -> null
+            daysPassed == "0" -> "24 hours"
+            else -> "$daysPassed days"
+        }
+    }
     override fun buildTextContent(properties: Map<String, String?>): String {
+        val duration = formatDuration(keys.numberOfDays)
         return StringBuilder().apply {
             append("Exciting news! 📣\n")
             append("Multiple datasets for ${properties[keys.companyName]} have been uploaded to Dataland\n")
-            append("in the last ${properties[keys.numberOfDays]} days!\n\n")
+            append("in the last ${duration}\n\n")
 
             append("${properties[keys.frameworks]}\n\n")
 
