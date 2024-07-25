@@ -1,7 +1,6 @@
 package org.dataland.e2etests.tests.communityManager.accessRequests
 
 import org.dataland.communitymanager.openApiClient.api.RequestControllerApi
-import org.dataland.communitymanager.openApiClient.infrastructure.ResponseType
 import org.dataland.communitymanager.openApiClient.model.AccessStatus
 import org.dataland.communitymanager.openApiClient.model.CompanyRole
 import org.dataland.communitymanager.openApiClient.model.RequestStatus
@@ -20,10 +19,7 @@ import org.dataland.e2etests.customApiControllers.CustomVsmeDataControllerApi
 import org.dataland.e2etests.tests.frameworks.Vsme.FileInfos
 import org.dataland.e2etests.utils.ApiAccessor
 import org.dataland.e2etests.utils.FrameworkTestDataProvider
-import org.dataland.e2etests.utils.communityManager.getNewlyStoredRequestsAfterTimestamp
-import org.dataland.e2etests.utils.communityManager.retrieveTimeAndWaitOneMillisecond
 import org.junit.jupiter.api.Assertions.*
-import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
 import java.io.File
@@ -52,12 +48,13 @@ class accessToActiveMatchingDatasetTest {
     @Test
     fun privateFrameworkHasAccess() {
         //TODO perhaps put the upload vsme files structure into a before all
+        companyId = apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId
+        /*
         val threeMegabytes = 3 * 1000 * 1000
         dummyFileAlpha = File("dummyFileAlpha.txt")
         dummyFileAlpha.writeBytes(ByteArray(threeMegabytes))
         hashAlpha = dummyFileAlpha.readBytes().sha256()
 
-        companyId = apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
         apiAccessor.companyRolesControllerApi.assignCompanyRole(
             CompanyRole.CompanyOwner,
@@ -67,8 +64,9 @@ class accessToActiveMatchingDatasetTest {
 
         val vsmeData = setReferencedReports(testVsmeData, FileInfos(hashAlpha, fileNameAlpha))
         val companyAssociatedVsmeData = CompanyAssociatedDataVsmeData(companyId, "2022", vsmeData)
-        postVsmeDataset(companyAssociatedVsmeData, listOf(dummyFileAlpha), TechnicalUser.Uploader)
-
+        postVsmeDataset(companyAssociatedVsmeData, listOf(dummyFileAlpha), TechnicalUser.Admin)
+        */
+        createVSMEDataAndPostAsAdminCompanyOwner(companyId)
 
 
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader)
@@ -90,9 +88,102 @@ class accessToActiveMatchingDatasetTest {
 
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader)
 
-        assertEquals(requestControllerApi.getDataRequestsForRequestingUser()[0].accessStatus, AccessStatus.Granted)
+        assertEquals(AccessStatus.Granted, requestControllerApi.getDataRequestsForRequestingUser()[0].accessStatus)
 
     }
+
+    @Test
+    fun privateFrameworkHasNoAccessNoMatchingDataset() {
+
+        jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader)
+
+        val singleDataRequest = SingleDataRequest(
+            companyIdentifier = apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId,
+            dataType = SingleDataRequest.DataType.vsme,
+            reportingPeriods = setOf("2022"),
+            contacts = setOf("someContact@example.com"),
+            message = "This is a test. The current timestamp is ${System.currentTimeMillis()}",
+        )
+
+        requestControllerApi.postSingleDataRequest(singleDataRequest)
+        val recentReaderDataRequest = requestControllerApi.getDataRequestsForRequestingUser()[0]
+        //todo variable aus den beiden unteren Zeilen
+        assertEquals(AccessStatus.Pending, recentReaderDataRequest.accessStatus)
+        assertEquals(RequestStatus.Open, recentReaderDataRequest.requestStatus)
+
+    }
+
+    @Test
+    fun privateFrameworkHasNoAccessHasMatchingDataset() {
+        companyId = apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId
+        createVSMEDataAndPostAsAdminCompanyOwner(companyId)
+
+        jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader)
+
+        val singleDataRequest = SingleDataRequest(
+            companyIdentifier = companyId,
+            dataType = SingleDataRequest.DataType.vsme,
+            reportingPeriods = setOf("2022"),
+            contacts = setOf("someContact@example.com"),
+            message = "This is a test. The current timestamp is ${System.currentTimeMillis()}",
+        )
+
+        requestControllerApi.postSingleDataRequest(singleDataRequest)
+        val recentReaderDataRequest = requestControllerApi.getDataRequestsForRequestingUser()[0]
+        //todo Testen ob bei abfrage eines vorhandenen Datensatzes der Requeststus automatisch auf Answered gesetzt wird.
+        assertEquals(AccessStatus.Pending, recentReaderDataRequest.accessStatus)
+        assertEquals(RequestStatus.Answered, recentReaderDataRequest.requestStatus)
+    }
+
+
+
+    @Test
+    fun privateFrameworkCompanyOwnerPrivateRequestAnswer() {
+
+        jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader)
+        companyId = apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId
+
+        val singleDataRequest = SingleDataRequest(
+            companyIdentifier = companyId,
+            dataType = SingleDataRequest.DataType.vsme,
+            reportingPeriods = setOf("2022"),
+            contacts = setOf("someContact@example.com"),
+            message = "This is a test. The current timestamp is ${System.currentTimeMillis()}",
+        )
+
+        requestControllerApi.postSingleDataRequest(singleDataRequest)
+        var recentReaderDataRequest = requestControllerApi.getDataRequestsForRequestingUser()[0]
+
+        assertEquals(AccessStatus.Pending, recentReaderDataRequest.accessStatus)
+        assertEquals(RequestStatus.Open, recentReaderDataRequest.requestStatus)
+
+        createVSMEDataAndPostAsAdminCompanyOwner(companyId)
+
+        jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader)
+        recentReaderDataRequest = requestControllerApi.getDataRequestsForRequestingUser()[0]
+
+        assertEquals(AccessStatus.Pending, recentReaderDataRequest.accessStatus)
+        assertEquals(RequestStatus.Answered, recentReaderDataRequest.requestStatus)
+
+    }
+
+    private fun createVSMEDataAndPostAsAdminCompanyOwner(companyId: String) {
+        val threeMegabytes = 3 * 1000 * 1000
+        dummyFileAlpha = File("dummyFileAlpha.txt")
+        dummyFileAlpha.writeBytes(ByteArray(threeMegabytes))
+        hashAlpha = dummyFileAlpha.readBytes().sha256()
+
+        jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
+        apiAccessor.companyRolesControllerApi.assignCompanyRole(
+            CompanyRole.CompanyOwner,
+            UUID.fromString(companyId),
+            UUID.fromString(TechnicalUser.Admin.technicalUserId),
+        )
+        val vsmeData = setReferencedReports(testVsmeData, FileInfos(hashAlpha, fileNameAlpha))
+        val companyAssociatedVsmeData = CompanyAssociatedDataVsmeData(companyId, "2022", vsmeData)
+        postVsmeDataset(companyAssociatedVsmeData, listOf(dummyFileAlpha), TechnicalUser.Admin)
+    }
+
 
     private fun setReferencedReports(dataset: VsmeData, fileInfoToSetAsReport: FileInfos?): VsmeData {
         val newReferencedReports = fileInfoToSetAsReport?.let {
@@ -124,58 +215,6 @@ class accessToActiveMatchingDatasetTest {
             companyAssociatedDataVsmeData,
             documents,
         )
-    }
-
-
-
-    @Test
-    fun privateFrameworkHasNoAccessNoMatchingDataset() {
-
-        jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader)
-
-        val stringThatMatchesThePermIdRegex = System.currentTimeMillis().toString()
-
-        val singleDataRequest = SingleDataRequest(
-            companyIdentifier = stringThatMatchesThePermIdRegex,
-            dataType = SingleDataRequest.DataType.vsme,
-            reportingPeriods = setOf("2022"),
-            contacts = setOf("someContact@example.com"),
-            message = "This is a test. The current timestamp is ${System.currentTimeMillis()}",
-        )
-
-        requestControllerApi.postSingleDataRequest(singleDataRequest)
-        //todo variable aus den beiden unteren Zeilen
-        assertEquals(requestControllerApi.getDataRequestsForRequestingUser()[0].accessStatus, AccessStatus.Pending)
-        assertEquals(requestControllerApi.getDataRequestsForRequestingUser()[0].requestStatus, RequestStatus.Open)
-
-    }
-
-
-    @Test
-    fun privateFrameworkHasNoAccessHasMatchingDataset() {
-
-        // as admin upload correct data which will be requested
-
-        jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader)
-
-        val stringThatMatchesThePermIdRegex = System.currentTimeMillis().toString()
-
-        val singleDataRequest = SingleDataRequest(
-            companyIdentifier = stringThatMatchesThePermIdRegex,
-            dataType = SingleDataRequest.DataType.vsme,
-            reportingPeriods = setOf("2022"),
-            contacts = setOf("someContact@example.com"),
-            message = "This is a test. The current timestamp is ${System.currentTimeMillis()}",
-        )
-
-        requestControllerApi.postSingleDataRequest(singleDataRequest)
-
-        assertEquals(requestControllerApi.getDataRequestById(UUID.fromString(companyId)).accessStatus, AccessStatus.Pending)
-
-        // check that there is no matching dataset and check if the request is being processed
-        val checkRequestDoesntExist = requestControllerApi.getDataRequestById(UUID.fromString(singleDataRequest.companyIdentifier))
-        assertEquals(ResponseType.Success, checkRequestDoesntExist)
-
     }
 
 
