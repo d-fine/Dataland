@@ -363,10 +363,15 @@ class NotificationServiceTest {
 
         setTheReturnValueForNotificationEventRepoQuery(listOf(lastNotificationEvent))
         mockBuildingMessageAndSendingItToQueueForSingleMail()
-        notificationService.sendEmailMessageToQueue(
+        notificationService.sendEmailMessagesToQueue(
             NotificationService.NotificationEmailType.Single,
-            latestElementaryEvent,
-            unprocessedElementaryEvents,
+            notificationService.buildEmailProperties(
+                testCompanyInformation.companyName,
+                NotificationService.NotificationEmailType.Single,
+                latestElementaryEvent,
+                unprocessedElementaryEvents,
+            ),
+            testCompanyInformation.companyContactDetails!!,
             testCorrelationId,
         )
     }
@@ -408,7 +413,7 @@ class NotificationServiceTest {
     fun `validate that the output of the external email message sender is correctly built`() {
         val latestElementaryEvent = createUploadElementaryEventEntity(10, DataTypeEnum.lksg, "2020")
 
-        val elementaryEvents = listOf(
+        val unprocessedElementaryEvents = listOf(
             latestElementaryEvent,
             createUploadElementaryEventEntity(11, DataTypeEnum.sfdr, "2021"),
             createUploadElementaryEventEntity(12, DataTypeEnum.vsme, "2022"),
@@ -417,10 +422,15 @@ class NotificationServiceTest {
 
         setTheReturnValueForNotificationEventRepoQuery(listOf(lastNotificationEvent))
         mockBuildingMessageAndSendingItToQueueForSummaryMail()
-        notificationService.sendEmailMessageToQueue(
+        notificationService.sendEmailMessagesToQueue(
             NotificationService.NotificationEmailType.Summary,
-            latestElementaryEvent,
-            elementaryEvents,
+            notificationService.buildEmailProperties(
+                testCompanyInformation.companyName,
+                NotificationService.NotificationEmailType.Summary,
+                latestElementaryEvent,
+                unprocessedElementaryEvents,
+            ),
+            testCompanyInformation.companyContactDetails!!,
             testCorrelationId,
         )
     }
