@@ -1,11 +1,12 @@
 package org.dataland.datalandcommunitymanager.services.elementaryEventProcessing
 
+import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandcommunitymanager.entities.ElementaryEventEntity
 import org.dataland.datalandcommunitymanager.events.ElementaryEventType
 import org.dataland.datalandcommunitymanager.model.elementaryEventProcessing.ElementaryEventBasicInfo
 import org.dataland.datalandcommunitymanager.repositories.ElementaryEventRepository
 import org.dataland.datalandcommunitymanager.services.NotificationService
-import org.dataland.datalandcommunitymanager.utils.PayloadValidator.validatePayloadAndReturnElementaryEventBasicInfo
+import org.dataland.datalandcommunitymanager.utils.PayloadValidator
 import org.dataland.datalandmessagequeueutils.constants.MessageHeaderKey
 import org.dataland.datalandmessagequeueutils.constants.MessageType
 import org.dataland.datalandmessagequeueutils.utils.MessageQueueUtils
@@ -24,6 +25,8 @@ abstract class BaseEventProcessor(
     @Autowired val messageUtils: MessageQueueUtils,
     @Autowired val notificationService: NotificationService,
     @Autowired val elementaryEventRepository: ElementaryEventRepository,
+    @Autowired val payloadValidator: PayloadValidator,
+    @Autowired val objectMapper: ObjectMapper,
 ) {
     @Value("\${dataland.community-manager.notification-feature-flag:false}")
     var notificationFeatureFlagAsString: String? = null
@@ -47,9 +50,8 @@ abstract class BaseEventProcessor(
         }
 
         messageUtils.validateMessageType(type, messageType)
-
-        val elementaryEventMetaInfo =
-            validatePayloadAndReturnElementaryEventBasicInfo(payload, actionType)
+        payloadValidator.validatePayloadOfDataUploadMessage(payload, actionType)
+        val elementaryEventBasicInfo = payloadValidator.parseElementaryEventBasicInfo(payload)
 
         val privateOrPublic = when (messageType) {
             MessageType.PrivateDataReceived -> "private"
@@ -62,7 +64,7 @@ abstract class BaseEventProcessor(
                 "CorrelationId: $correlationId",
         )
 
-        val storedElementaryEvent = createAndSaveElementaryEvent(elementaryEventMetaInfo, elementaryEventType)
+        val storedElementaryEvent = createAndSaveElementaryEvent(elementaryEventBasicInfo, elementaryEventType)
 
         notificationService.notifyOfElementaryEvents(storedElementaryEvent, correlationId)
     }

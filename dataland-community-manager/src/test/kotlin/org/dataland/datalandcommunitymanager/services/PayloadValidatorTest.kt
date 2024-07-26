@@ -1,5 +1,6 @@
 package org.dataland.datalandcommunitymanager.services
 
+import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandcommunitymanager.model.elementaryEventProcessing.ElementaryEventBasicInfo
 import org.dataland.datalandcommunitymanager.utils.PayloadValidator
@@ -8,12 +9,13 @@ import org.dataland.datalandmessagequeueutils.exceptions.MessageQueueRejectExcep
 import org.json.JSONObject
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertDoesNotThrow
 import org.junit.jupiter.api.assertThrows
 import java.util.UUID
 
 class PayloadValidatorTest {
 
-    private val payloadValidator = PayloadValidator
+    private val payloadValidator = PayloadValidator(jacksonObjectMapper())
 
     @Test
     fun `empty dataId leads to rejection exception`() {
@@ -22,7 +24,7 @@ class PayloadValidatorTest {
         ).toString()
 
         val exception = assertThrows<MessageQueueRejectException> {
-            payloadValidator.validatePayloadAndReturnElementaryEventBasicInfo(payload, "")
+            payloadValidator.validatePayloadOfDataUploadMessage(payload, "")
         }
 
         assertEquals("Message was rejected: The dataId in the message payload is empty.", exception.message)
@@ -40,7 +42,7 @@ class PayloadValidatorTest {
         ).toString()
 
         val exception = assertThrows<MessageQueueRejectException> {
-            payloadValidator.validatePayloadAndReturnElementaryEventBasicInfo(payload, expectedActionType)
+            payloadValidator.validatePayloadOfDataUploadMessage(payload, expectedActionType)
         }
 
         assertEquals(
@@ -63,12 +65,11 @@ class PayloadValidatorTest {
                 "actionType" to ActionType.StorePublicData,
             ),
         ).toString()
-
-        val actualElementaryEventMetaInfo =
-            payloadValidator.validatePayloadAndReturnElementaryEventBasicInfo(payload, ActionType.StorePublicData)
-        val expectedElementaryEventMetaInfo =
+        assertDoesNotThrow { payloadValidator.validatePayloadOfDataUploadMessage(payload, ActionType.StorePublicData) }
+        val actualElementaryEventBasicInfo = payloadValidator.parseElementaryEventBasicInfo(payload)
+        val expectedElementaryEventBasicInfo =
             ElementaryEventBasicInfo(dummyCompanyId, DataTypeEnum.heimathafen, dummyReportingPeriod)
 
-        assertEquals(expectedElementaryEventMetaInfo, actualElementaryEventMetaInfo)
+        assertEquals(expectedElementaryEventBasicInfo, actualElementaryEventBasicInfo)
     }
 }

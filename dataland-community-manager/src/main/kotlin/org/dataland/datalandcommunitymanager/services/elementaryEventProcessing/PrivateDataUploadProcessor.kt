@@ -1,8 +1,10 @@
 package org.dataland.datalandcommunitymanager.services.elementaryEventProcessing
 
+import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandcommunitymanager.events.ElementaryEventType
 import org.dataland.datalandcommunitymanager.repositories.ElementaryEventRepository
 import org.dataland.datalandcommunitymanager.services.NotificationService
+import org.dataland.datalandcommunitymanager.utils.PayloadValidator
 import org.dataland.datalandmessagequeueutils.constants.ActionType
 import org.dataland.datalandmessagequeueutils.constants.ExchangeName
 import org.dataland.datalandmessagequeueutils.constants.MessageHeaderKey
@@ -29,7 +31,9 @@ class PrivateDataUploadProcessor(
     @Autowired messageUtils: MessageQueueUtils,
     @Autowired notificationService: NotificationService,
     @Autowired elementaryEventRepository: ElementaryEventRepository,
-) : BaseEventProcessor(messageUtils, notificationService, elementaryEventRepository) {
+    @Autowired payloadValidator: PayloadValidator,
+    @Autowired objectMapper: ObjectMapper,
+) : BaseEventProcessor(messageUtils, notificationService, elementaryEventRepository, payloadValidator, objectMapper) {
 
     override var elementaryEventType = ElementaryEventType.UploadEvent
     override var messageType = MessageType.PrivateDataReceived
