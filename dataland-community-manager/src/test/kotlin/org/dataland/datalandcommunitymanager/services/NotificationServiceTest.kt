@@ -393,10 +393,7 @@ class NotificationServiceTest {
 
             assertEquals(testCompanyInformation.companyName, arg1.properties["companyName"])
             assertEquals(testCompanyId.toString(), arg1.properties["companyId"])
-            assertEquals(
-                "LkSG: 2020<br>SFDR: 2021<br>VSME: 2022",
-                arg1.properties["frameworks"],
-            )
+            assertEquals("LkSG: 2020<br>SFDR: 2021<br>VSME: 2022", arg1.properties["frameworks"])
             assertEquals(testProxyPrimaryUrl, arg1.properties["baseUrl"])
             assertEquals("10", arg1.properties["numberOfDays"])
 
