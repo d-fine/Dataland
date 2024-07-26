@@ -35,6 +35,7 @@ constructor(
     @Autowired private val companyIdValidator: CompanyIdValidator,
     @Autowired private val singleDataRequestEmailMessageSender: SingleDataRequestEmailMessageSender,
     @Autowired private val utils: DataRequestProcessingUtils,
+    @Autowired private val dataAccessManager: DataAccessManager,
     @Autowired private val securityUtilsService: SecurityUtilsService,
     @Value("\${dataland.community-manager.max-number-of-data-requests-per-day-for-role-user}") val maxRequestsForUser:
     Int,
@@ -65,14 +66,14 @@ constructor(
                     dataType =
                     singleDataRequest.dataType,
                 ) &&
-                utils.findRequestsByAccessStatus(
+                dataAccessManager.findRequestsByAccessStatus(
                     companyId = companyId, reportingPeriod = reportingPeriod,
                     dataType =
                     singleDataRequest.dataType,
                     userId = userId, accessStatus = AccessStatus.Granted,
                 ).isNullOrEmpty()
             ) {
-                utils.createAccessRequestToPrivateDataset(
+                dataAccessManager.createAccessRequestToPrivateDataset(
                     userId = userId, companyId = companyId,
                     dataType = singleDataRequest.dataType, reportingPeriod = reportingPeriod,
                     contacts = singleDataRequest.contacts, message = singleDataRequest.message,

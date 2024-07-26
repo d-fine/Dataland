@@ -66,6 +66,7 @@ class SingleDataRequestManagerTest {
             companyIdValidator = mockCompanyIdValidator,
             singleDataRequestEmailMessageSender = singleDataRequestEmailMessageSenderMock,
             utils = utilsMock,
+            dataAccessManager = mock(DataAccessManager::class.java),
             securityUtilsService = securityUtilsServiceMock,
             maxRequestsForUser,
         )

@@ -4,6 +4,7 @@ import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandcommunitymanager.entities.DataRequestEntity
 import org.dataland.datalandcommunitymanager.exceptions.DataRequestNotFoundApiException
+import org.dataland.datalandcommunitymanager.model.dataRequest.AccessStatus
 import org.dataland.datalandcommunitymanager.model.dataRequest.AggregatedDataRequest
 import org.dataland.datalandcommunitymanager.model.dataRequest.ExtendedStoredDataRequest
 import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
@@ -115,6 +116,7 @@ class DataRequestQueryManager(
         dataType: DataTypeEnum?,
         userId: String?,
         requestStatus: RequestStatus?,
+        accessStatus: AccessStatus?,
         reportingPeriod: String?,
         datalandCompanyId: String?,
     ): List<StoredDataRequest>? {
@@ -122,6 +124,7 @@ class DataRequestQueryManager(
             dataTypeFilter = dataType?.value ?: "",
             userIdFilter = userId ?: "",
             requestStatus = requestStatus,
+            accessStatus = accessStatus,
             reportingPeriodFilter = reportingPeriod ?: "",
             datalandCompanyIdFilter = datalandCompanyId ?: "",
         )

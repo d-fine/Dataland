@@ -699,6 +699,14 @@
             }
           },
           {
+            "name": "accessStatus",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/AccessStatus"
+            }
+          },
+          {
             "name": "reportingPeriod",
             "in": "query",
             "required": false,

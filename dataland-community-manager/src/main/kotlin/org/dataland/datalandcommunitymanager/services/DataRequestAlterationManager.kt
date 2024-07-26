@@ -2,21 +2,17 @@ package org.dataland.datalandcommunitymanager.services
 
 import org.dataland.datalandbackend.openApiClient.api.MetaDataControllerApi
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
-import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
-import org.dataland.datalandbackendutils.utils.isEmailAddress
+import org.dataland.datalandbackendutils.utils.validateIsEmailAddress
 import org.dataland.datalandcommunitymanager.entities.DataRequestEntity
-import org.dataland.datalandcommunitymanager.entities.MessageEntity
-import org.dataland.datalandcommunitymanager.entities.RequestStatusEntity
 import org.dataland.datalandcommunitymanager.exceptions.DataRequestNotFoundApiException
 import org.dataland.datalandcommunitymanager.model.dataRequest.AccessStatus
 import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
 import org.dataland.datalandcommunitymanager.model.dataRequest.StoredDataRequest
-import org.dataland.datalandcommunitymanager.model.dataRequest.StoredDataRequestMessageObject
-import org.dataland.datalandcommunitymanager.model.dataRequest.StoredDataRequestStatusObject
 import org.dataland.datalandcommunitymanager.repositories.DataRequestRepository
 import org.dataland.datalandcommunitymanager.services.messaging.DataRequestResponseEmailSender
 import org.dataland.datalandcommunitymanager.services.messaging.SingleDataRequestEmailMessageSender
 import org.dataland.datalandcommunitymanager.utils.DataRequestLogger
+import org.dataland.datalandcommunitymanager.utils.DataRequestProcessingUtils
 import org.dataland.datalandcommunitymanager.utils.GetDataRequestsSearchFilter
 import org.dataland.datalandmessagequeueutils.messages.TemplateEmailMessage
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
@@ -39,7 +35,7 @@ class DataRequestAlterationManager(
     @Autowired private val dataRequestResponseEmailMessageSender: DataRequestResponseEmailSender,
     @Autowired private val singleDataRequestEmailMessageSender: SingleDataRequestEmailMessageSender,
     @Autowired private val metaDataControllerApi: MetaDataControllerApi,
-    @Autowired private val dataRequestHistoryManager: DataRequestHistoryManager,
+    @Autowired private val utils: DataRequestProcessingUtils,
 ) {
     private val logger = LoggerFactory.getLogger(SingleDataRequestManager::class.java)
 
@@ -61,13 +57,7 @@ class DataRequestAlterationManager(
         val dataRequestEntity = dataRequestRepository.findById(dataRequestId).getOrElse {
             throw DataRequestNotFoundApiException(dataRequestId)
         }
-        val areContactsEmails = contacts?.all { it.isEmailAddress() } ?: true
-        if (!areContactsEmails) {
-            throw InvalidInputApiException(
-                "The contacts field should only contain email adresses.",
-                "The contacts field should only contain email adresses.",
-            )
-        }
+        contacts?.forEach { it.validateIsEmailAddress() }
 
         val modificationTime = Instant.now().toEpochMilli()
         var anyChanges = false
@@ -80,13 +70,16 @@ class DataRequestAlterationManager(
         //  maybe Revoked and Declined
         if (newRequestStatus != dataRequestEntity.requestStatus || newAccessStatus != dataRequestEntity.accessStatus) {
             anyChanges = true
-            addNewRequestStatusToHistory(dataRequestEntity, newRequestStatus, newAccessStatus, modificationTime)
+            utils.addNewRequestStatusToHistory(dataRequestEntity, newRequestStatus, newAccessStatus, modificationTime)
+            dataRequestLogger.logMessageForPatchingRequestStatusOrAccessStatus(
+                dataRequestEntity.dataRequestId, newRequestStatus, newAccessStatus,
+            )
         }
         if (contacts != null) {
             anyChanges = true
-            addNewMessageToHistory(dataRequestEntity, contacts, message, modificationTime)
+            utils.addNewMessageToHistory(dataRequestEntity, contacts, message, modificationTime)
             this.sendSingleDataRequestEmail(dataRequestEntity, contacts, message)
-            dataRequestLogger.logMessageForPatchingRequestMessage(dataRequestId)
+            dataRequestLogger.logMessageForPatchingRequestMessage(dataRequestEntity.dataRequestId)
         }
         if (requestStatus == RequestStatus.Closed || requestStatus == RequestStatus.Answered) {
             sendEmailBecauseOfStatusChanged(
@@ -95,38 +88,6 @@ class DataRequestAlterationManager(
         }
         if (anyChanges) dataRequestEntity.lastModifiedDate = modificationTime
         return dataRequestEntity.toStoredDataRequest()
-    }
-
-    private fun addNewMessageToHistory(
-        dataRequestEntity: DataRequestEntity,
-        contacts: Set<String>,
-        message: String?,
-        modificationTime: Long,
-    ) {
-        val requestMessageObject = StoredDataRequestMessageObject(contacts, message, modificationTime)
-        val requestMessageEntity = MessageEntity(requestMessageObject, dataRequestEntity)
-
-        dataRequestHistoryManager.persistMessage(requestMessageEntity)
-        dataRequestEntity.addToMessageToHistory(requestMessageEntity)
-
-        dataRequestLogger.logMessageForPatchingRequestMessage(dataRequestEntity.dataRequestId)
-    }
-
-    private fun addNewRequestStatusToHistory(
-        dataRequestEntity: DataRequestEntity,
-        requestStatus: RequestStatus,
-        accessStatus: AccessStatus,
-        modificationTime: Long,
-    ) {
-        val requestStatusObject = StoredDataRequestStatusObject(requestStatus, modificationTime, accessStatus)
-        val requestStatusEntity = RequestStatusEntity(requestStatusObject, dataRequestEntity)
-
-        dataRequestHistoryManager.persistRequestStatus(requestStatusEntity)
-        dataRequestEntity.addToRequestStatusHistory(requestStatusEntity)
-
-        dataRequestLogger.logMessageForPatchingRequestStatusOrAccessStatus(
-            dataRequestEntity.dataRequestId, requestStatus, accessStatus,
-        )
     }
 
     /**
@@ -188,12 +149,13 @@ class DataRequestAlterationManager(
      * @param dataId the id of the uploaded dataset
      * @param correlationId dataland correlationId
      */
+    // TODO check if this logic works as intended after accessStatus was added with null value
     @Transactional
     fun patchRequestStatusFromOpenToAnsweredByDataId(dataId: String, correlationId: String) {
         val metaData = metaDataControllerApi.getDataMetaInfo(dataId)
         val dataRequestEntities = dataRequestRepository.searchDataRequestEntity(
             GetDataRequestsSearchFilter(
-                metaData.dataType.value, "", RequestStatus.Open, metaData.reportingPeriod, metaData.companyId,
+                metaData.dataType.value, "", RequestStatus.Open, null, metaData.reportingPeriod, metaData.companyId,
             ),
         )
         dataRequestEntities.forEach {

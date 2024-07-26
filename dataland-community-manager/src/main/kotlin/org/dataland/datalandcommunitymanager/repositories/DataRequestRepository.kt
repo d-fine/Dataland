@@ -71,7 +71,7 @@ interface DataRequestRepository : JpaRepository<DataRequestEntity, String> {
 
     /**
      * A function for searching for data request information by dataType, userID, requestID, requestStatus,
-     * reportingPeriod or dataRequestCompanyIdentifierValue
+     * accessStatus, reportingPeriod or dataRequestCompanyIdentifierValue
      * @param searchFilter takes the input params to check ofr
      * @returns the data request
      */
@@ -90,6 +90,8 @@ interface DataRequestRepository : JpaRepository<DataRequestEntity, String> {
             ") AND " +
             "(:#{#searchFilter.requestStatus} IS NULL " +
             "OR rs.requestStatus = :#{#searchFilter.requestStatus}) AND " +
+            "(:#{#searchFilter.accessStatus} IS NULL " +
+            "OR rs.accessStatus = :#{#searchFilter.accessStatus}) AND " +
             "(:#{#searchFilter.reportingPeriodFilterLength} = 0 " +
             "OR d.reportingPeriod = :#{#searchFilter.reportingPeriodFilter}) AND " +
             "(:#{#searchFilter.datalandCompanyIdFilterLength} = 0 " +
