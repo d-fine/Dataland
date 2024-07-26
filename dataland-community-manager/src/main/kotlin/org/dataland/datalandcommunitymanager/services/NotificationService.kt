@@ -65,7 +65,7 @@ constructor(
                 latestElementaryEvent.elementaryEventType,
             )
         val companyInfo = companyDataControllerApi.getCompanyInfo(companyId.toString())
-
+        val emailReceivers = companyInfo.companyContactDetails
         determineNotificationEmailType(latestElementaryEvent, unprocessedElementaryEvents)
             ?.let { notificationEmailType ->
                 logger.info(
@@ -75,14 +75,14 @@ constructor(
 
                 createNotificationEventAndReferenceIt(latestElementaryEvent, unprocessedElementaryEvents)
 
-                if (!hasCompanyOwner(companyId) && !companyInfo.companyContactDetails.isNullOrEmpty()) {
-                    val templateTypeAndProperties = buildTemplateTypeAndProperties(
+                if (!hasCompanyOwner(companyId) && !emailReceivers.isNullOrEmpty()) {
+                    val emailProperties = buildEmailProperties(
                         companyInfo.companyName,
                         notificationEmailType,
                         latestElementaryEvent,
                         unprocessedElementaryEvents,
                     )
-                    sendEmailMessageToQueue(companyInfo.companyContactDetails, templateTypeAndProperties, correlationId)
+                    sendEmailMessagesToQueue(notificationEmailType, emailProperties, emailReceivers, correlationId)
                 }
             }
     }
@@ -158,37 +158,41 @@ constructor(
         )
     }
 
-    private fun buildTemplateTypeAndProperties(
+    /**
+     * Builds the properties of the email to send.
+     */
+    fun buildEmailProperties(
         companyName: String,
         notificationEmailType: NotificationEmailType,
         latestElementaryEvent: ElementaryEventEntity,
         unprocessedElementaryEvents: List<ElementaryEventEntity>,
-    ): Pair<TemplateEmailMessage.Type, Map<String, String>> {
-        return when (notificationEmailType) { // TODO
-            NotificationEmailType.Single -> {
-                val props = buildSingleMailProperties(companyName, latestElementaryEvent)
-                Pair(TemplateEmailMessage.Type.SingleNotification, props)
-            }
+    ): Map<String, String> {
+        return when (notificationEmailType) {
+            NotificationEmailType.Single -> { buildSingleMailProperties(companyName, latestElementaryEvent) }
             NotificationEmailType.Summary -> {
-                val props = buildSummaryMailProperties(companyName, latestElementaryEvent, unprocessedElementaryEvents)
-                Pair(TemplateEmailMessage.Type.SummaryNotification, props)
+                buildSummaryMailProperties(companyName, latestElementaryEvent, unprocessedElementaryEvents)
             }
         }
     }
 
     /**
-     * Sends message to queue in order to make the email service send a mail
+     * Sends messages to queue in order to make the email service send mails to all receivers.
      */
-    fun sendEmailMessageToQueue(
+    fun sendEmailMessagesToQueue(
+        notificationEmailType: NotificationEmailType,
+        emailProperties: Map<String, String>,
         emailReceivers: List<String>,
-        templateTypeAndProperties: Pair<TemplateEmailMessage.Type, Map<String, String>>,
         correlationId: String,
     ) {
+        val templateEmailMessage = when (notificationEmailType) {
+            NotificationEmailType.Single -> { TemplateEmailMessage.Type.SingleNotification }
+            NotificationEmailType.Summary -> { TemplateEmailMessage.Type.SummaryNotification }
+        }
         emailReceivers.forEach { contactAddress ->
             val message = TemplateEmailMessage(
-                emailTemplateType = templateTypeAndProperties.first,
+                emailTemplateType = templateEmailMessage,
                 receiver = TemplateEmailMessage.EmailAddressEmailRecipient(contactAddress),
-                properties = templateTypeAndProperties.second,
+                properties = emailProperties,
             )
             cloudEventMessageHandler.buildCEMessageAndSendToQueue(
                 objectMapper.writeValueAsString(message),
