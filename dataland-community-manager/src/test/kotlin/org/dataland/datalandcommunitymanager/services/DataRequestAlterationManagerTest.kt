@@ -5,8 +5,6 @@ import org.dataland.datalandbackend.openApiClient.model.DataMetaInformation
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandbackend.openApiClient.model.QaStatus
 import org.dataland.datalandcommunitymanager.entities.DataRequestEntity
-import org.dataland.datalandcommunitymanager.entities.MessageEntity
-import org.dataland.datalandcommunitymanager.entities.RequestStatusEntity
 import org.dataland.datalandcommunitymanager.model.dataRequest.AccessStatus
 import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
 import org.dataland.datalandcommunitymanager.model.dataRequest.StoredDataRequestMessageObject
@@ -14,6 +12,7 @@ import org.dataland.datalandcommunitymanager.repositories.DataRequestRepository
 import org.dataland.datalandcommunitymanager.services.messaging.DataRequestResponseEmailSender
 import org.dataland.datalandcommunitymanager.services.messaging.SingleDataRequestEmailMessageSender
 import org.dataland.datalandcommunitymanager.utils.DataRequestLogger
+import org.dataland.datalandcommunitymanager.utils.DataRequestProcessingUtils
 import org.dataland.datalandcommunitymanager.utils.GetDataRequestsSearchFilter
 import org.dataland.datalandmessagequeueutils.messages.TemplateEmailMessage
 import org.dataland.keycloakAdapter.auth.DatalandJwtAuthentication
@@ -21,7 +20,7 @@ import org.dataland.keycloakAdapter.auth.DatalandRealmRole
 import org.dataland.keycloakAdapter.utils.AuthenticationMock
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import org.mockito.ArgumentMatchers.anyList
+import org.mockito.ArgumentMatchers.anySet
 import org.mockito.ArgumentMatchers.anyString
 import org.mockito.Mockito
 import org.mockito.Mockito.doNothing
@@ -42,7 +41,7 @@ class DataRequestAlterationManagerTest {
     private lateinit var dataRequestRepository: DataRequestRepository
     private lateinit var singleDataRequestEmailMessageSender: SingleDataRequestEmailMessageSender
     private lateinit var metaDataControllerApi: MetaDataControllerApi
-    private lateinit var historyManager: DataRequestHistoryManager
+    private lateinit var processingUtils: DataRequestProcessingUtils
     private val dataRequestId = UUID.randomUUID().toString()
     private val correlationId = UUID.randomUUID().toString()
     private val dummyDataRequestEntities: List<DataRequestEntity> = listOf(
@@ -90,14 +89,18 @@ class DataRequestAlterationManagerTest {
             dataRequestRepository.searchDataRequestEntity(
                 searchFilter = GetDataRequestsSearchFilter(
                     metaData.dataType.value, "",
-                    RequestStatus.Open, null,metaData.reportingPeriod, metaData.companyId,
+                    RequestStatus.Open, null, metaData.reportingPeriod, metaData.companyId,
                 ),
             ),
         ).thenReturn(dummyDataRequestEntities)
-        historyManager = mock(DataRequestHistoryManager::class.java)
-        doNothing().`when`(historyManager).saveMessageHistory(anyList())
-        doNothing().`when`(historyManager).saveStatusHistory(anyList())
-        doNothing().`when`(historyManager).detachDataRequestEntity(any(DataRequestEntity::class.java))
+
+        processingUtils = mock(DataRequestProcessingUtils::class.java)
+        doNothing().`when`(processingUtils).addNewRequestStatusToHistory(
+            any(DataRequestEntity::class.java), any(RequestStatus::class.java), any(AccessStatus::class.java), any(Long::class.java),
+        )
+        doNothing().`when`(processingUtils).addNewMessageToHistory(
+            any(DataRequestEntity::class.java), anySet(), anyString(), any(Long::class.java),
+        )
     }
 
     @BeforeEach
@@ -125,7 +128,7 @@ class DataRequestAlterationManagerTest {
             dataRequestResponseEmailMessageSender = dataRequestResponseEmailMessageSender,
             metaDataControllerApi = metaDataControllerApi,
             singleDataRequestEmailMessageSender = singleDataRequestEmailMessageSender,
-            dataRequestHistoryManager = historyManager,
+            utils = processingUtils,
         )
     }
 
@@ -162,13 +165,13 @@ class DataRequestAlterationManagerTest {
             .sendDataRequestResponseEmail(
                 any(DataRequestEntity::class.java), any(TemplateEmailMessage.Type::class.java), anyString(),
             )
-        verify(historyManager, times(2))
-            .persistRequestStatus(
-                any(RequestStatusEntity::class.java),
+        verify(processingUtils, times(2))
+            .addNewRequestStatusToHistory(
+                any(DataRequestEntity::class.java), any(RequestStatus::class.java), any(AccessStatus::class.java), any(Long::class.java),
             )
-        verify(historyManager, times(0))
-            .persistMessage(
-                any(MessageEntity::class.java),
+        verify(processingUtils, times(0))
+            .addNewMessageToHistory(
+                any(DataRequestEntity::class.java), anySet(), anyString(), any(Long::class.java),
             )
     }
 
@@ -180,14 +183,14 @@ class DataRequestAlterationManagerTest {
             accessStatus = AccessStatus.Pending,
         )
 
-        verify(historyManager, times(1))
-            .persistRequestStatus(
-                any(RequestStatusEntity::class.java),
+        verify(processingUtils, times(1))
+            .addNewRequestStatusToHistory(
+                any(DataRequestEntity::class.java), any(RequestStatus::class.java), any(AccessStatus::class.java), any(Long::class.java),
             )
         verifyNoInteractions(dataRequestResponseEmailMessageSender)
-        verify(historyManager, times(0))
-            .persistMessage(
-                any(MessageEntity::class.java),
+        verify(processingUtils, times(0))
+            .addNewMessageToHistory(
+                any(DataRequestEntity::class.java), anySet(), anyString(), any(Long::class.java),
             )
     }
 
@@ -203,9 +206,9 @@ class DataRequestAlterationManagerTest {
                 null,
             )
         }
-        verify(historyManager, times(0))
-            .saveMessageHistory(
-                anyList(),
+        verify(processingUtils, times(0))
+            .addNewMessageToHistory(
+                any(DataRequestEntity::class.java), anySet(), anyString(), any(Long::class.java),
             )
         verifyNoInteractions(dataRequestResponseEmailMessageSender)
     }
@@ -217,13 +220,13 @@ class DataRequestAlterationManagerTest {
             verify(dataRequestResponseEmailMessageSender)
                 .sendDataRequestResponseEmail(it, TemplateEmailMessage.Type.DataRequestedAnswered, correlationId)
         }
-        verify(historyManager, times(dummyDataRequestEntities.size))
-            .persistRequestStatus(
-                any(RequestStatusEntity::class.java),
+        verify(processingUtils, times(dummyDataRequestEntities.size))
+            .addNewRequestStatusToHistory(
+                any(DataRequestEntity::class.java), any(RequestStatus::class.java), any(AccessStatus::class.java), any(Long::class.java),
             )
-        verify(historyManager, times(0))
-            .persistMessage(
-                any(MessageEntity::class.java),
+        verify(processingUtils, times(0))
+            .addNewMessageToHistory(
+                any(DataRequestEntity::class.java), anySet(), anyString(), any(Long::class.java),
             )
     }
 
@@ -243,14 +246,14 @@ class DataRequestAlterationManagerTest {
                 anyString(), anyString(), anyString(),
             )
 
-        verify(historyManager, times(1))
-            .persistMessage(
-                any(MessageEntity::class.java),
+        verify(processingUtils, times(1))
+            .addNewMessageToHistory(
+                any(DataRequestEntity::class.java), anySet(), anyString(), any(Long::class.java),
             )
 
-        verify(historyManager, times(0))
-            .persistRequestStatus(
-                any(RequestStatusEntity::class.java),
+        verify(processingUtils, times(0))
+            .addNewRequestStatusToHistory(
+                any(DataRequestEntity::class.java), any(RequestStatus::class.java), any(AccessStatus::class.java), any(Long::class.java),
             )
     }
     private fun <T> any(type: Class<T>): T = Mockito.any<T>(type)

@@ -1,5 +1,7 @@
 package org.dataland.datalandcommunitymanager.utils
 
+import jakarta.persistence.EntityManager
+import jakarta.persistence.PersistenceContext
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.api.MetaDataControllerApi
 import org.dataland.datalandbackend.openApiClient.model.CompanyIdAndName
@@ -8,19 +10,18 @@ import org.dataland.datalandbackendutils.exceptions.AuthenticationMethodNotSuppo
 import org.dataland.datalandbackendutils.exceptions.ConflictApiException
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandcommunitymanager.entities.DataRequestEntity
-import org.dataland.datalandcommunitymanager.exceptions.DataRequestNotFoundApiException
+import org.dataland.datalandcommunitymanager.entities.MessageEntity
+import org.dataland.datalandcommunitymanager.entities.RequestStatusEntity
 import org.dataland.datalandcommunitymanager.model.dataRequest.AccessStatus
 import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
 import org.dataland.datalandcommunitymanager.model.dataRequest.StoredDataRequestMessageObject
 import org.dataland.datalandcommunitymanager.model.dataRequest.StoredDataRequestStatusObject
 import org.dataland.datalandcommunitymanager.repositories.DataRequestRepository
-import org.dataland.datalandcommunitymanager.services.DataRequestHistoryManager
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.dataland.keycloakAdapter.auth.DatalandJwtAuthentication
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import java.time.Instant
-import kotlin.jvm.optionals.getOrElse
 
 /**
  * Class holding utility functions used by the both the bulk and the single data request manager
@@ -28,7 +29,7 @@ import kotlin.jvm.optionals.getOrElse
 @Service
 class DataRequestProcessingUtils(
     @Autowired private val dataRequestRepository: DataRequestRepository,
-    @Autowired private val dataRequestHistoryManager: DataRequestHistoryManager,
+    @PersistenceContext private var entityManager: EntityManager,
     @Autowired private val dataRequestLogger: DataRequestLogger,
     @Autowired private val companyApi: CompanyDataControllerApi,
     @Autowired private val metaDataApi: MetaDataControllerApi,
@@ -98,29 +99,58 @@ class DataRequestProcessingUtils(
             datalandCompanyId,
             creationTime,
         )
-        dataRequestRepository.save(dataRequestEntity)
+        entityManager.persist(dataRequestEntity)
         val accessStatus = if (dataType == DataTypeEnum.vsme) {
             AccessStatus.Pending
         } else {
             AccessStatus.Public
         }
-        val requestStatusObject = listOf(
-            StoredDataRequestStatusObject(
-                RequestStatus.Open, creationTime,
-                accessStatus,
-            ),
-        )
-        dataRequestEntity.associateRequestStatus(requestStatusObject)
-        dataRequestHistoryManager.saveStatusHistory(dataRequestEntity.dataRequestStatusHistory)
+        addNewRequestStatusToHistory(dataRequestEntity, RequestStatus.Open, accessStatus, creationTime)
 
         if (!contacts.isNullOrEmpty()) {
-            val messageHistory = listOf(StoredDataRequestMessageObject(contacts, message, creationTime))
-            dataRequestEntity.associateMessages(messageHistory)
-            dataRequestHistoryManager.saveMessageHistory(dataRequestEntity.messageHistory)
+            addNewMessageToHistory(dataRequestEntity, contacts, message, creationTime)
         }
         dataRequestLogger.logMessageForStoringDataRequest(dataRequestEntity.dataRequestId)
 
         return dataRequestEntity
+    }
+
+    /**
+     * For a given dataRequestEntity, this function adds and persists a new entry to
+     * the messageHistory of the dataRequestEntity.
+     * The new entry contains a set of contacts, an optional message and a modificationTime.
+     * This function should be called within a transaction.
+     */
+    fun addNewMessageToHistory(
+        dataRequestEntity: DataRequestEntity,
+        contacts: Set<String>,
+        message: String?,
+        modificationTime: Long,
+    ) {
+        val requestMessageObject = StoredDataRequestMessageObject(contacts, message, modificationTime)
+        val requestMessageEntity = MessageEntity(requestMessageObject, dataRequestEntity)
+
+        entityManager.persist(requestMessageEntity)
+        dataRequestEntity.addToMessageToHistory(requestMessageEntity)
+    }
+
+    /**
+     * For a given dataRequestEntity, this function adds and persists a new entry to
+     * the requestStatusHistory of the dataRequestEntity.
+     * The new entry contains a requestStatis, an accessStatus and a modificationTime.
+     * This function should be called within a transaction.
+     */
+    fun addNewRequestStatusToHistory(
+        dataRequestEntity: DataRequestEntity,
+        requestStatus: RequestStatus,
+        accessStatus: AccessStatus,
+        modificationTime: Long,
+    ) {
+        val requestStatusObject = StoredDataRequestStatusObject(requestStatus, modificationTime, accessStatus)
+        val requestStatusEntity = RequestStatusEntity(requestStatusObject, dataRequestEntity)
+
+        entityManager.persist(requestStatusEntity)
+        dataRequestEntity.addToRequestStatusHistory(requestStatusEntity)
     }
 
     /**
@@ -206,158 +236,6 @@ class DataRequestProcessingUtils(
             reportingPeriod = reportingPeriod,
         )
         return matchingDatasets.isNotEmpty()
-    }
-
-    /**
-     * This method finds all DataRequestsEntity for a specified dataset that have a specific accessStatus.
-     * @param companyId the companyId for which the access status should be checked
-     * @param reportingPeriod the reportingPeriod for which the access status should be checked
-     * @param dataType the framework dataType for which the access status should be checked
-     * @param userId the userId for which the access status should be checked
-     * @param accessStatus the accessStatus for which the check should be conducted
-     */
-    fun findRequestsByAccessStatus(
-        companyId: String,
-        reportingPeriod: String,
-        dataType: DataTypeEnum,
-        userId: String,
-        accessStatus: AccessStatus,
-    ): List<DataRequestEntity>? {
-        val foundAccess = dataRequestRepository
-            .findByUserIdAndDatalandCompanyIdAndDataTypeAndReportingPeriod(
-                userId, companyId, dataType.name, reportingPeriod,
-            )?.filter {
-            it.accessStatus == accessStatus
-        }
-        if (foundAccess != null) {
-            dataRequestLogger.logMessageForCheckingIfUserHasAccessToDataset(
-                companyId,
-                dataType,
-                reportingPeriod,
-                accessStatus,
-            )
-        }
-        // TODO Test if this only checks the toplevel value of accessStatus or if this goes through the requestHistory
-        //  and checks if there was at least on Granted accessStatus
-        // TODO if it his the second case logic has to be adapted
-        // TODO name of this method is not quite right in regards to the inputs
-        return foundAccess
-    }
-
-    /**
-     * This method checks if the requesting user has granted access to the information for a specific company,
-     * reporting period and data type
-     * @param companyId the companyId for which the access status should be checked
-     * @param reportingPeriod the reportingPeriod for which the access status should be checked
-     * @param dataType the framework dataType for which the access status should be checked
-     * @param userId the userId for which the access status should be checked
-     */
-    fun hasAccessToPrivateDataset(
-        companyId: String,
-        reportingPeriod: String,
-        dataType: DataTypeEnum,
-        userId: String,
-    ): Boolean {
-        // TODO head endpoint currently throws a 500 error
-        return !findRequestsByAccessStatus(companyId, reportingPeriod, dataType, userId, AccessStatus.Granted)
-            .isNullOrEmpty()
-    }
-
-    /**
-     * This method is used to request access to a private dataset
-     * @param userId the userId of the user requesting access to the dataset
-     * @param companyId the companyId of the company to which the dataset belongs
-     * @param dataType the datatype of the dataset to which access was requested
-     * @param reportingPeriod the reportingPeriod of the dataset to which access was requested
-     */
-    // TODO Discuss if this is the right place for the method
-    fun createAccessRequestToPrivateDataset(
-        userId: String,
-        companyId: String,
-        dataType: DataTypeEnum,
-        reportingPeriod: String,
-        contacts: Set<String>?,
-        message: String?,
-    ) {
-        val existingRequestsOfUser = dataRequestRepository
-            .findByUserIdAndDatalandCompanyIdAndDataTypeAndReportingPeriod(
-                userId, companyId, dataType.name, reportingPeriod,
-            )
-        if (!existingRequestsOfUser.isNullOrEmpty()) {
-            val dataRequestId = existingRequestsOfUser[0].dataRequestId
-            val dataRequestEntity = dataRequestRepository.findById(dataRequestId).getOrElse {
-                throw DataRequestNotFoundApiException(dataRequestId)
-            }
-            val modificationTime = Instant.now().toEpochMilli()
-            dataRequestEntity.lastModifiedDate = modificationTime
-            dataRequestRepository.save(dataRequestEntity)
-            // TODO discuss if declined should be removed from this condition
-            if (dataRequestEntity.accessStatus == AccessStatus.Revoked || dataRequestEntity.accessStatus ==
-                AccessStatus.Declined || dataRequestEntity.accessStatus == AccessStatus.Public
-            ) {
-                val requestStatusObject = listOf(
-                    StoredDataRequestStatusObject(
-                        dataRequestEntity.requestStatus, modificationTime,
-                        AccessStatus.Pending,
-                    ),
-                )
-
-                dataRequestEntity.associateRequestStatus(requestStatusObject)
-                dataRequestHistoryManager.saveStatusHistory(dataRequestEntity.dataRequestStatusHistory)
-                dataRequestLogger.logMessageForPatchingAccessStatus(dataRequestId, AccessStatus.Pending)
-            }
-        } else {
-            storeAccessRequestEntityAsPending(
-                companyId, dataType, reportingPeriod,
-                contacts.takeIf { !it.isNullOrEmpty() },
-                message.takeIf { !it.isNullOrBlank() },
-            )
-        }
-    }
-
-    /**
-     * Stores a DataRequestEntity from all necessary parameters
-     * @param datalandCompanyId the companyID in Dataland
-     * @param dataType the enum entry corresponding to the framework
-     * @param reportingPeriod the reporting period
-     * @param contacts a list of email addresses to inform about the potentially stored data request
-     * @param message a message to equip the notification with
-     */
-    fun storeAccessRequestEntityAsPending(
-        datalandCompanyId: String,
-        dataType: DataTypeEnum,
-        reportingPeriod: String,
-        contacts: Set<String>? = null,
-        message: String? = null,
-    ): DataRequestEntity {
-        val creationTime = Instant.now().toEpochMilli()
-
-        val dataRequestEntity = DataRequestEntity(
-            DatalandAuthentication.fromContext().userId,
-            dataType.value,
-            reportingPeriod,
-            datalandCompanyId,
-            creationTime,
-        )
-        dataRequestRepository.save(dataRequestEntity)
-        // TODO Refactor with storeDataRequestEntityAsOpend as both are very similar
-        val requestStatusObject = listOf(
-            StoredDataRequestStatusObject(
-                RequestStatus.Answered, creationTime,
-                AccessStatus.Pending,
-            ),
-        )
-        dataRequestEntity.associateRequestStatus(requestStatusObject)
-        dataRequestHistoryManager.saveStatusHistory(dataRequestEntity.dataRequestStatusHistory)
-
-        if (!contacts.isNullOrEmpty()) {
-            val messageHistory = listOf(StoredDataRequestMessageObject(contacts, message, creationTime))
-            dataRequestEntity.associateMessages(messageHistory)
-            dataRequestHistoryManager.saveMessageHistory(dataRequestEntity.messageHistory)
-        }
-        dataRequestLogger.logMessageForStoringDataRequest(dataRequestEntity.dataRequestId)
-
-        return dataRequestEntity
     }
 }
 
