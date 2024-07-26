@@ -81,6 +81,7 @@ class accessToActiveMatchingDatasetTest {
             message = "This is a test. The current timestamp is ${System.currentTimeMillis()}",
         )
         requestControllerApi.postSingleDataRequest(singleDataRequest)
+        //requestControllerApi.postSingleDataRequest(singleDataRequest)
 
         val dataRequestReader = requestControllerApi.getDataRequestsForRequestingUser()
 
@@ -108,10 +109,11 @@ class accessToActiveMatchingDatasetTest {
         )
 
         requestControllerApi.postSingleDataRequest(singleDataRequest)
-        val recentReaderDataRequest = requestControllerApi.getDataRequestsForRequestingUser()[0]
+        //val recentReaderDataRequest = requestControllerApi.getDataRequestsForRequestingUser()[0]
+        val recentReaderDataRequest = requestControllerApi.getDataRequestsForRequestingUser().maxByOrNull { it.creationTimestamp }
         //todo variable aus den beiden unteren Zeilen
-        assertEquals(AccessStatus.Pending, recentReaderDataRequest.accessStatus)
-        assertEquals(RequestStatus.Open, recentReaderDataRequest.requestStatus)
+        assertEquals(AccessStatus.Pending, recentReaderDataRequest?.accessStatus)
+        assertEquals(RequestStatus.Open, recentReaderDataRequest?.requestStatus)
 
     }
 
@@ -130,20 +132,21 @@ class accessToActiveMatchingDatasetTest {
             message = "This is a test. The current timestamp is ${System.currentTimeMillis()}",
         )
 
-        //val timestampBeforeSingleRequest = retrieveTimeAndWaitOneMillisecond()
-        requestControllerApi.postSingleDataRequest(singleDataRequest)
+        val timestampBeforeSingleRequest = retrieveTimeAndWaitOneMillisecond()
         //requestControllerApi.postSingleDataRequest(singleDataRequest)
-        val recentReaderDataRequest = requestControllerApi.getDataRequestsForRequestingUser().maxByOrNull { it.creationTimestamp } //getNewlyStoredRequestsAfterTimestamp(timestampBeforeSingleRequest)[0] // requestControllerApi.getDataRequestsForRequestingUser()[0]
+        requestControllerApi.postSingleDataRequest(singleDataRequest)
+        //val recentReaderDataRequest = requestControllerApi.getDataRequestsForRequestingUser().maxByOrNull { it.creationTimestamp } //
+        val recentReaderDataRequest = getNewlyStoredRequestsAfterTimestamp(timestampBeforeSingleRequest)[0] // requestControllerApi.getDataRequestsForRequestingUser()[0]
         val recentReaderDataRequest2 = requestControllerApi.getDataRequestsForRequestingUser() //.maxByOrNull { it.creationTimestamp } //getNewlyStoredRequestsAfterTimestamp(timestampBeforeSingleRequest)[0] // requestControllerApi.getDataRequestsForRequestingUser()[0]
 
 
-        println(recentReaderDataRequest?.creationTimestamp?.let { Date(it) })
+        println("t1" + recentReaderDataRequest.creationTimestamp?.let { Date(it) })
 
-        println(recentReaderDataRequest2.forEach{ it.creationTimestamp } )
+        println("t2" + recentReaderDataRequest2.forEach{ Date(it.creationTimestamp) } )
 
-        assertEquals(AccessStatus.Pending, recentReaderDataRequest?.accessStatus)
+        assertEquals(AccessStatus.Pending, recentReaderDataRequest.accessStatus)
         // maybe Request status is not set to answered if there is a matching dataset
-        assertEquals(RequestStatus.Answered, recentReaderDataRequest?.requestStatus)
+        assertEquals(RequestStatus.Answered, recentReaderDataRequest.requestStatus)
     }
 
 
@@ -163,18 +166,20 @@ class accessToActiveMatchingDatasetTest {
         )
 
         requestControllerApi.postSingleDataRequest(singleDataRequest)
-        var recentReaderDataRequest = requestControllerApi.getDataRequestsForRequestingUser()[0]
+        //var recentReaderDataRequest = requestControllerApi.getDataRequestsForRequestingUser()[0]
+        var recentReaderDataRequest = requestControllerApi.getDataRequestsForRequestingUser().maxByOrNull { it.creationTimestamp }
 
-        assertEquals(AccessStatus.Pending, recentReaderDataRequest.accessStatus)
-        assertEquals(RequestStatus.Open, recentReaderDataRequest.requestStatus)
+        assertEquals(AccessStatus.Pending, recentReaderDataRequest?.accessStatus)
+        assertEquals(RequestStatus.Open, recentReaderDataRequest?.requestStatus)
 
         createVSMEDataAndPostAsAdminCompanyOwner(companyId)
 
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader)
-        recentReaderDataRequest = requestControllerApi.getDataRequestsForRequestingUser()[0]
+        //recentReaderDataRequest = requestControllerApi.getDataRequestsForRequestingUser()[0]
+        recentReaderDataRequest = requestControllerApi.getDataRequestsForRequestingUser().maxByOrNull { it.creationTimestamp }
 
-        assertEquals(AccessStatus.Pending, recentReaderDataRequest.accessStatus)
-        assertEquals(RequestStatus.Answered, recentReaderDataRequest.requestStatus)
+        assertEquals(AccessStatus.Pending, recentReaderDataRequest?.accessStatus)
+        assertEquals(RequestStatus.Answered, recentReaderDataRequest?.requestStatus)
 
     }
 
