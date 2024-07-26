@@ -41,9 +41,9 @@ class SummaryNotificationEmailFactory(
     }
 
     private fun formatDuration(numberOfDays: String?): String {
-        return when (numberOfDays) {
+        if (numberOfDays == null) return "days"
+        return when (numberOfDays.trim()) {
             "0" -> "24 hours"
-            null -> "days"
             else -> "$numberOfDays days"
         }
     }
