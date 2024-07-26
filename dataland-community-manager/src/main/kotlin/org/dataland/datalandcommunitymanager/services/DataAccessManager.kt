@@ -8,6 +8,7 @@ import org.dataland.datalandcommunitymanager.exceptions.DataRequestNotFoundApiEx
 import org.dataland.datalandcommunitymanager.model.dataRequest.AccessStatus
 import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
 import org.dataland.datalandcommunitymanager.repositories.DataRequestRepository
+import org.dataland.datalandcommunitymanager.utils.AccessRequestLogger
 import org.dataland.datalandcommunitymanager.utils.DataRequestLogger
 import org.dataland.datalandcommunitymanager.utils.DataRequestProcessingUtils
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
@@ -25,6 +26,7 @@ class DataAccessManager(
     @Autowired private val dataRequestRepository: DataRequestRepository,
     @Autowired private val dataRequestLogger: DataRequestLogger,
     @Autowired private val dataRequestProcessingUtils: DataRequestProcessingUtils,
+    @Autowired private val accessRequestLogger: AccessRequestLogger,
 ) {
 
     /**
@@ -46,7 +48,7 @@ class DataAccessManager(
             )?.any { it.accessStatus == AccessStatus.Granted } ?: false
 
         if (hasAccess) {
-            dataRequestLogger.logMessageForCheckingIfUserHasAccessToDataset(
+            accessRequestLogger.logMessageForCheckingIfUserHasAccessToDataset(
                 companyId,
                 dataType,
                 reportingPeriod,
@@ -128,7 +130,7 @@ class DataAccessManager(
                     dataRequestEntity, dataRequestEntity.requestStatus, AccessStatus.Pending, modificationTime,
                 )
 
-                dataRequestLogger.logMessageForPatchingAccessStatus(dataRequestId, AccessStatus.Pending)
+                accessRequestLogger.logMessageForPatchingAccessStatus(dataRequestId, AccessStatus.Pending)
             }
         } else {
             storeAccessRequestEntityAsPending(

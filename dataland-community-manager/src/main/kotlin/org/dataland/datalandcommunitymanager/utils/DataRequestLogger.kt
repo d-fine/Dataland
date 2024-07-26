@@ -74,21 +74,6 @@ class DataRequestLogger {
     }
 
     /**
-     * Logs an appropriate message when it has been checked if a specific data request already exists and that check
-     * returned "true".
-     */
-    fun logMessageForCheckingIfUserHasAccessToDataset(
-        companyId: String,
-        framework: DataTypeEnum,
-        reportingPeriod: String,
-    ) {
-        singleDataRequestLogger.info(
-            "Access for the dataset (companyId: $companyId, framework: $framework, " +
-                "reportingPeriod: $reportingPeriod) is granted",
-        )
-    }
-
-    /**
      * Logs an appropriate message when it has been checked if an identifier value can be cross-referenced with a
      * companyId that already exists on Dataland.
      */
@@ -124,13 +109,6 @@ class DataRequestLogger {
             "Patching request $dataRequestId with " +
                 "RequestStatus $requestStatus and AccessStatus $accessStatus",
         )
-    }
-
-    /**
-     * Logs an appropriate message when the status of a data request is updated
-     */
-    fun logMessageForPatchingAccessStatus(dataRequestId: String, accessStatus: AccessStatus) {
-        singleDataRequestLogger.info("Patching request $dataRequestId with status $accessStatus")
     }
 
     /**
