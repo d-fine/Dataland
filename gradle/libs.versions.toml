@@ -48,7 +48,7 @@ junit-jupiter = "5.10.3"
 
 gradle-tooling = "org.gradle:gradle-tooling-api:8.8"
 
-detekt-cli = "io.gitlab.arturbosch.detekt:detekt-cli:_"
+detekt-cli = "io.gitlab.arturbosch.detekt:detekt-cli:1.23.6"
 
 kotlin-compiler-embeddable = { group = "org.jetbrains.kotlin", name = "kotlin-compiler-embeddable", version.ref = "kotlin" }
 
@@ -60,19 +60,19 @@ springdoc-openapi-starter-webmvc-ui = "org.springdoc:springdoc-openapi-starter-w
 
 okhttp = { group = "com.squareup.okhttp3", name = "okhttp", version.ref = "okhttp3" }
 
-log4j = "org.apache.logging.log4j:log4j:_"
-log4j-core = "org.apache.logging.log4j:log4j-core:_"
-log4j-slf4j2-impl = "org.apache.logging.log4j:log4j-slf4j2-impl:_"
+log4j = "org.apache.logging.log4j:log4j:2.23.1"
+log4j-core = "org.apache.logging.log4j:log4j-core:2.23.1"
+log4j-slf4j2-impl = "org.apache.logging.log4j:log4j-slf4j2-impl:2.23.1"
 
-log4j-api = "org.apache.logging.log4j:log4j-api:_"
+log4j-api = "org.apache.logging.log4j:log4j-api:2.23.1"
 
-log4j-to-slf4j = "org.apache.logging.log4j:log4j-to-slf4j:_"
+log4j-to-slf4j = "org.apache.logging.log4j:log4j-to-slf4j:2.23.1"
 
-logback-classic = "ch.qos.logback:logback-classic:_"
+logback-classic = "ch.qos.logback:logback-classic:1.5.6"
 
-logback-core = "ch.qos.logback:logback-core:_"
+logback-core = "ch.qos.logback:logback-core:1.5.6"
 
-slf4j-api = "org.slf4j:slf4j-api:_"
+slf4j-api = "org.slf4j:slf4j-api:2.0.13"
 
 spring-boot-starter-web = { module = "org.springframework.boot:spring-boot-starter-web" }
 
@@ -84,7 +84,7 @@ spring-boot-starter-validation = { module = "org.springframework.boot:spring-boo
 
 spring-boot-starter-security = { module = "org.springframework.boot:spring-boot-starter-security" }
 
-postgresql = "org.postgresql:postgresql:_"
+postgresql = "org.postgresql:postgresql:42.7.3"
 
 h2 = "com.h2database:h2:2.2.224"
 
@@ -110,8 +110,8 @@ spring-boot-starter-amqp = { module = "org.springframework.boot:spring-boot-star
 
 mailjet-client = "com.mailjet:mailjet-client:5.2.5"
 
-flyway = "org.flywaydb:flyway-database-postgresql:_"
-flyway-core = "org.flywaydb:flyway-core:_"
+flyway = "org.flywaydb:flyway-database-postgresql:10.14.0"
+flyway-core = "org.flywaydb:flyway-core:10.14.0"
 
 kotlin-serialization-compiler-plugin-embeddable = { group = "org.jetbrains.kotlin", name = "kotlin-serialization-compiler-plugin-embeddable", version.ref = "kotlin" }
 
@@ -119,9 +119,9 @@ mockito-core = { group = "org.mockito", name = "mockito-core", version.ref = "mo
 
 spring-security-test = { module = "org.springframework.security:spring-security-test" }
 
-spring-security-crypto = "org.springframework.security:spring-security-crypto:_"
+spring-security-crypto = "org.springframework.security:spring-security-crypto:6.3.0"
 
-spring-security-web = "org.springframework.security:spring-security-web:_"
+spring-security-web = "org.springframework.security:spring-security-web:6.3.0"
 
 jakarta-servlet-api = "jakarta.servlet:jakarta.servlet-api:6.1.0"
 
@@ -129,20 +129,20 @@ bcpkix-jdk15on = "org.bouncycastle:bcpkix-jdk15on:1.70"
 
 bcprov-jdk15on = "org.bouncycastle:bcprov-jdk15on:1.70"
 
-jackson-dataformat-csv = "com.fasterxml.jackson.dataformat:jackson-dataformat-csv:_"
+jackson-dataformat-csv = "com.fasterxml.jackson.dataformat:jackson-dataformat-csv:2.17.1"
 
-jackson-module-kotlin = "com.fasterxml.jackson.module:jackson-module-kotlin:_"
+jackson-module-kotlin = "com.fasterxml.jackson.module:jackson-module-kotlin:2.17.1"
 
-commons-io = "commons-io:commons-io:_"
+commons-io = "commons-io:commons-io:2.16.1"
 
-commons-codec = "commons-codec:commons-codec:_"
-commons-text = "org.apache.commons:commons-text:_"
+commons-codec = "commons-codec:commons-codec:1.17.0"
+commons-text = "org.apache.commons:commons-text:1.12.0"
 
-pdfbox = "org.apache.pdfbox:pdfbox:_"
+pdfbox = "org.apache.pdfbox:pdfbox:3.0.2"
 
 mockito-inline = { group = "org.mockito", name = "mockito-inline", version.ref = "mockito" }
 
-mockito-kotlin = "org.mockito.kotlin:mockito-kotlin:_"
+mockito-kotlin = "org.mockito.kotlin:mockito-kotlin:5.3.1"
 
 junit-jupiter = { group = "org.junit.jupiter", name = "junit-jupiter", version.ref = "junit-jupiter" }
 
@@ -152,12 +152,12 @@ kotlin-reflect = { group = "org.jetbrains.kotlin", name = "kotlin-reflect", vers
 
 json = "org.json:json:20240303"
 
-spring-context = "org.springframework:spring-context:_"
-spring-test = "org.springframework:spring-test:_"
+spring-context = "org.springframework:spring-context:6.1.8"
+spring-test = "org.springframework:spring-test:6.1.8"
 
-spring-boot = "org.springframework.boot:spring-boot:_"
+spring-boot = "org.springframework.boot:spring-boot:3.3.0"
 
-spring-rabbit = "org.springframework.amqp:spring-rabbit:_"
+spring-rabbit = "org.springframework.amqp:spring-rabbit:3.1.5"
 
 cloudevents-api = "io.cloudevents:cloudevents-api:4.0.1"
 
@@ -167,14 +167,16 @@ cloudevents-core = "io.cloudevents:cloudevents-core:4.0.1"
 
 spring-cloud-function-context = "org.springframework.cloud:spring-cloud-function-context:4.1.2"
 
-spring-amqp = "org.springframework.amqp:spring-amqp:_"
+spring-amqp = "org.springframework.amqp:spring-amqp:3.1.5"
 
 spring-rabbit-test = { module = "org.springframework.amqp:spring-rabbit-test" }
+#TODO duplicate?
+springdoc-openapi-ui = "org.springdoc:springdoc-openapi-starter-webmvc-ui:2.5.0"
+#TODO duplicate?
+jackson-kotlin = "com.fasterxml.jackson.module:jackson-module-kotlin:2.17.1"
+freemarker = "org.freemarker:freemarker:2.3.33"
 
-springdoc-openapi-ui = "org.springdoc:springdoc-openapi-starter-webmvc-ui:_"
-jackson-kotlin = "com.fasterxml.jackson.module:jackson-module-kotlin:_"
-freemarker = "org.freemarker:freemarker:_"
-
+#TODO duplicate?
 flyway-database-postgresql = "org.flywaydb:flyway-database-postgresql:10.15.0"
 
 jodconverter-core = "org.jodconverter:jodconverter-core:4.4.7"
