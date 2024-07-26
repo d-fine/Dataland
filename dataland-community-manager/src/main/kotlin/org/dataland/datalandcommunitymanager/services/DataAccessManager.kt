@@ -4,7 +4,6 @@ import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandcommunitymanager.entities.DataRequestEntity
-import org.dataland.datalandcommunitymanager.exceptions.DataRequestNotFoundApiException
 import org.dataland.datalandcommunitymanager.model.dataRequest.AccessStatus
 import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
 import org.dataland.datalandcommunitymanager.repositories.DataRequestRepository
@@ -16,7 +15,6 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.time.Instant
-import kotlin.jvm.optionals.getOrElse
 
 /**
  * The DataAccessManager contains methods for the data access logic.
@@ -115,10 +113,8 @@ class DataAccessManager(
                 userId, companyId, dataType.name, reportingPeriod,
             )
         if (!existingRequestsOfUser.isNullOrEmpty()) {
-            val dataRequestId = existingRequestsOfUser[0].dataRequestId
-            val dataRequestEntity = dataRequestRepository.findById(dataRequestId).getOrElse {
-                throw DataRequestNotFoundApiException(dataRequestId)
-            }
+            val dataRequestEntity = existingRequestsOfUser[0]
+
             val modificationTime = Instant.now().toEpochMilli()
             dataRequestEntity.lastModifiedDate = modificationTime
             dataRequestRepository.save(dataRequestEntity)
@@ -130,7 +126,9 @@ class DataAccessManager(
                     dataRequestEntity, dataRequestEntity.requestStatus, AccessStatus.Pending, modificationTime,
                 )
 
-                accessRequestLogger.logMessageForPatchingAccessStatus(dataRequestId, AccessStatus.Pending)
+                accessRequestLogger.logMessageForPatchingAccessStatus(
+                    dataRequestEntity.dataRequestId, AccessStatus.Pending,
+                )
             }
         } else {
             storeAccessRequestEntityAsPending(
