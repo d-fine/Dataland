@@ -26,8 +26,7 @@ abstract class BaseEventProcessor(
     @Autowired val elementaryEventRepository: ElementaryEventRepository,
 ) {
     @Value("\${dataland.community-manager.notification-feature-flag:false}")
-    var notificationFeatureFlagString: String? = null
-    final val notificationFeatureFlag: Boolean = notificationFeatureFlagString?.toBooleanStrictOrNull() ?: false
+    var notificationFeatureFlagAsString: String? = null
 
     lateinit var elementaryEventType: ElementaryEventType
     lateinit var messageType: String
@@ -72,9 +71,15 @@ abstract class BaseEventProcessor(
      * Returns the app prop setting if the notification service feature shall be enabled or not
      */
     private fun isNotificationServiceEnabled(): Boolean {
-        return notificationFeatureFlag.also {
-            if (!it) logger.info("Notification service feature flag is disabled. Skipping elementary event processing.")
-        }
+        return notificationFeatureFlagAsString?.toBooleanStrictOrNull() ?: false
+            .also {
+                if (!it) {
+                    logger.info(
+                        "Notification service feature flag is disabled." +
+                            "Skipping elementary event processing.",
+                    )
+                }
+            }
     }
 
     /**
