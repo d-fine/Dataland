@@ -128,8 +128,35 @@ constructor(
         }
     }
 
+    private fun buildPropertiesForSingleMail(companyName: String, latestElementaryEvent: ElementaryEventEntity):
+        Map<String, String> {
+        return mapOf(
+            "companyName" to companyName,
+            "companyId" to latestElementaryEvent.companyId.toString(),
+            "framework" to latestElementaryEvent.framework.toString(),
+            "year" to latestElementaryEvent.reportingPeriod,
+            "baseUrl" to proxyPrimaryUrl,
+        )
+    }
+
+    private fun buildPropertiesForSummaryMail(
+        companyName: String,
+        latestElementaryEvent: ElementaryEventEntity,
+        unprocessedElementaryEvents: List<ElementaryEventEntity>,
+    ): Map<String, String> {
+        return mapOf(
+            "companyName" to companyName,
+            "companyId" to latestElementaryEvent.companyId.toString(),
+            "frameworks" to createFrameworkAndYearStringFromElementaryEvents(unprocessedElementaryEvents),
+            "baseUrl" to proxyPrimaryUrl,
+            "numberOfDays" to getDaysPassedSinceLastNotificationEvent(
+                latestElementaryEvent.companyId, latestElementaryEvent.elementaryEventType,
+            ).toString(),
+        )
+    }
+
     /**
-     * decides which type of email notification message to send, builds templateProperties, and sends message to queue
+     * Sends message to queue in order to make the email service send a mail
      */
     fun sendEmailMessageToQueue(
         notificationEmailType: NotificationEmailType,
@@ -138,29 +165,20 @@ constructor(
         correlationId: String,
     ) {
         val companyInfo = companyDataControllerApi.getCompanyInfo(latestElementaryEvent.companyId.toString())
+        val companyName = companyInfo.companyName
         val templateTypeAndProperties = when (notificationEmailType) {
             NotificationEmailType.Single -> {
-                val properties = mapOf(
-                    "companyName" to companyInfo.companyName,
-                    "companyId" to latestElementaryEvent.companyId.toString(),
-                    "framework" to latestElementaryEvent.framework.toString(),
-                    "year" to latestElementaryEvent.reportingPeriod,
-                    "baseUrl" to proxyPrimaryUrl,
+                Pair(
+                    TemplateEmailMessage.Type.SingleNotification,
+                    buildPropertiesForSingleMail(companyName, latestElementaryEvent),
                 )
-                Pair(TemplateEmailMessage.Type.SingleNotification, properties)
             }
 
             NotificationEmailType.Summary -> {
-                val properties = mapOf(
-                    "companyName" to companyInfo.companyName,
-                    "companyId" to latestElementaryEvent.companyId.toString(),
-                    "frameworks" to createFrameworkAndYearStringFromElementaryEvents(unprocessedElementaryEvents),
-                    "baseUrl" to proxyPrimaryUrl,
-                    "numberOfDays" to getDaysPassedSinceLastNotificationEvent(
-                        latestElementaryEvent.companyId, latestElementaryEvent.elementaryEventType,
-                    ).toString(),
+                Pair(
+                    TemplateEmailMessage.Type.SummaryNotification,
+                    buildPropertiesForSummaryMail(companyName, latestElementaryEvent, unprocessedElementaryEvents),
                 )
-                Pair(TemplateEmailMessage.Type.SummaryNotification, properties)
             }
         }
 
