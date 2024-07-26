@@ -63,7 +63,7 @@ constructor(
                 latestElementaryEvent.companyId,
                 latestElementaryEvent.elementaryEventType,
             )
-        checkNotificationRequirementsAndDetermineNotificationEmailType(
+        determineNotificationEmailType(
             latestElementaryEvent,
             unprocessedElementaryEvents,
         )
@@ -89,7 +89,7 @@ constructor(
      * If yes, it returns the type of notification mail that shall be sent.
      * Else it simply returns null.
      */
-    fun checkNotificationRequirementsAndDetermineNotificationEmailType(
+    fun determineNotificationEmailType(
         latestElementaryEvent: ElementaryEventEntity,
         unprocessedElementaryEvents: List<ElementaryEventEntity>,
     ): NotificationEmailType? {
@@ -129,7 +129,7 @@ constructor(
     }
 
     /**
-     * decides which type of email notification message to send and delegates sending to corresponding method
+     * decides which type of email notification message to send, builds templateProperties, and sends message to queue
      */
     fun sendEmailMessageToQueue(
         notificationEmailType: NotificationEmailType,
@@ -137,72 +137,38 @@ constructor(
         unprocessedElementaryEvents: List<ElementaryEventEntity>,
         correlationId: String,
     ) {
-        when (notificationEmailType) {
-            NotificationEmailType.Single -> sendSingleEmailMessageToQueue(latestElementaryEvent, correlationId)
-            NotificationEmailType.Summary -> sendSummaryEmailMessageToQueue(
-                latestElementaryEvent,
-                unprocessedElementaryEvents,
-                correlationId,
-            )
-        }
-    }
-
-    /**
-     * Sends singleNotification Template Email Message to Queue
-     */
-    private fun sendSingleEmailMessageToQueue(
-        elementaryEvent: ElementaryEventEntity,
-        correlationId: String,
-    ) {
-        val companyInfo = companyDataControllerApi.getCompanyInfo(elementaryEvent.companyId.toString())
-        val properties = mapOf(
-            "companyName" to companyInfo.companyName,
-            "companyId" to elementaryEvent.companyId.toString(),
-            "framework" to elementaryEvent.framework.toString(),
-            "year" to elementaryEvent.reportingPeriod,
-            "baseUrl" to proxyPrimaryUrl,
-        )
-
-        companyInfo.companyContactDetails?.forEach {
-                contactAddress ->
-            val message = TemplateEmailMessage(
-                emailTemplateType = TemplateEmailMessage.Type.SingleNotification,
-                receiver = TemplateEmailMessage.EmailAddressEmailRecipient(contactAddress),
-                properties = properties,
-            )
-            cloudEventMessageHandler.buildCEMessageAndSendToQueue(
-                objectMapper.writeValueAsString(message),
-                MessageType.SendTemplateEmail,
-                correlationId,
-                ExchangeName.SendEmail,
-                RoutingKeyNames.templateEmail,
-            )
-        }
-    }
-
-    private fun sendSummaryEmailMessageToQueue(
-        latestElementaryEvent: ElementaryEventEntity,
-        unprocessedElementaryEvents: List<ElementaryEventEntity>,
-        correlationId: String,
-    ) {
         val companyInfo = companyDataControllerApi.getCompanyInfo(latestElementaryEvent.companyId.toString())
+        val templateTypeAndProperties = when (notificationEmailType) {
+            NotificationEmailType.Single -> {
+                val properties = mapOf(
+                    "companyName" to companyInfo.companyName,
+                    "companyId" to latestElementaryEvent.companyId.toString(),
+                    "framework" to latestElementaryEvent.framework.toString(),
+                    "year" to latestElementaryEvent.reportingPeriod,
+                    "baseUrl" to proxyPrimaryUrl,
+                )
+                Pair(TemplateEmailMessage.Type.SingleNotification, properties)
+            }
 
-        val properties = mapOf(
-            "companyName" to companyInfo.companyName,
-            "companyId" to latestElementaryEvent.companyId.toString(),
-            "frameworks" to createFrameworkAndYearStringFromElementaryEvents(unprocessedElementaryEvents),
-            "baseUrl" to proxyPrimaryUrl,
-            "numberOfDays" to getDaysPassedSinceLastNotificationEvent(
-                latestElementaryEvent.companyId, latestElementaryEvent.elementaryEventType,
-            ).toString(),
-        )
+            NotificationEmailType.Summary -> {
+                val properties = mapOf(
+                    "companyName" to companyInfo.companyName,
+                    "companyId" to latestElementaryEvent.companyId.toString(),
+                    "frameworks" to createFrameworkAndYearStringFromElementaryEvents(unprocessedElementaryEvents),
+                    "baseUrl" to proxyPrimaryUrl,
+                    "numberOfDays" to getDaysPassedSinceLastNotificationEvent(
+                        latestElementaryEvent.companyId, latestElementaryEvent.elementaryEventType,
+                    ).toString(),
+                )
+                Pair(TemplateEmailMessage.Type.SummaryNotification, properties)
+            }
+        }
 
-        companyInfo.companyContactDetails?.forEach {
-                contactAddress ->
+        companyInfo.companyContactDetails?.forEach { contactAddress ->
             val message = TemplateEmailMessage(
-                emailTemplateType = TemplateEmailMessage.Type.SummaryNotification,
+                emailTemplateType = templateTypeAndProperties.first,
                 receiver = TemplateEmailMessage.EmailAddressEmailRecipient(contactAddress),
-                properties = properties,
+                properties = templateTypeAndProperties.second,
             )
             cloudEventMessageHandler.buildCEMessageAndSendToQueue(
                 objectMapper.writeValueAsString(message),

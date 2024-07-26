@@ -159,7 +159,7 @@ class NotificationServiceTest {
         val unprocessedElementaryEvents = listOf(latestElementaryEvent)
 
         val notificationEmailType =
-            notificationService.checkNotificationRequirementsAndDetermineNotificationEmailType(
+            notificationService.determineNotificationEmailType(
                 latestElementaryEvent, unprocessedElementaryEvents,
             )
         assertEquals(NotificationService.NotificationEmailType.Single, notificationEmailType)
@@ -176,7 +176,7 @@ class NotificationServiceTest {
             latestElementaryEvent,
         )
         val notificationEmailType =
-            notificationService.checkNotificationRequirementsAndDetermineNotificationEmailType(
+            notificationService.determineNotificationEmailType(
                 latestElementaryEvent,
                 unprocessedElementaryEvents,
             )
@@ -196,7 +196,7 @@ class NotificationServiceTest {
             )
         }
         val notificationEmailTypeForNineElementaryEvents =
-            notificationService.checkNotificationRequirementsAndDetermineNotificationEmailType(
+            notificationService.determineNotificationEmailType(
                 latestElementaryEvent,
                 unprocessedElementaryEvents,
             )
@@ -208,7 +208,7 @@ class NotificationServiceTest {
             newLatestElementaryEvent,
         )
         val notificationEmailTypeForTenElementaryEvents =
-            notificationService.checkNotificationRequirementsAndDetermineNotificationEmailType(
+            notificationService.determineNotificationEmailType(
                 newLatestElementaryEvent,
                 unprocessedElementaryEvents,
             )
