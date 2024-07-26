@@ -40,15 +40,15 @@ class SummaryNotificationEmailFactory(
         return "New data for ${properties[keys.companyName]} on Dataland"
     }
 
-    // TODO Emanuel:input is always the same. doesnt make sense.  It
-    private fun formatDuration(daysPassed: String): String? {
-        return when (daysPassed) {
+    private fun formatDuration(numberOfDays: String?): String {
+        return when (numberOfDays) {
             "0" -> "24 hours"
-            else -> "$daysPassed days"
+            null -> "days"
+            else -> "$numberOfDays days"
         }
     }
     override fun buildTextContent(properties: Map<String, String?>): String {
-        val duration = formatDuration(keys.numberOfDays)
+        val duration = formatDuration(properties[keys.numberOfDays])
         return StringBuilder().apply {
             append("Exciting news! 📣\n")
             append("Multiple datasets for ${properties[keys.companyName]} have been uploaded to Dataland\n")
