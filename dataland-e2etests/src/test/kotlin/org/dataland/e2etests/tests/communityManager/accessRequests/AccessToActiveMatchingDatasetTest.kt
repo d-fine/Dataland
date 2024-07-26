@@ -5,20 +5,19 @@ import org.dataland.communitymanager.openApiClient.model.AccessStatus
 import org.dataland.communitymanager.openApiClient.model.CompanyRole
 import org.dataland.communitymanager.openApiClient.model.RequestStatus
 import org.dataland.communitymanager.openApiClient.model.SingleDataRequest
-import org.dataland.datalandbackend.openApiClient.api.VsmeDataControllerApi
 import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataVsmeData
 import org.dataland.datalandbackend.openApiClient.model.CompanyReport
 import org.dataland.datalandbackend.openApiClient.model.DataMetaInformation
 import org.dataland.datalandbackend.openApiClient.model.VsmeData
 import org.dataland.datalandbackendutils.utils.sha256
 import org.dataland.e2etests.BASE_PATH_TO_COMMUNITY_MANAGER
-import org.dataland.e2etests.BASE_PATH_TO_DATALAND_BACKEND
 import org.dataland.e2etests.auth.JwtAuthenticationHelper
 import org.dataland.e2etests.auth.TechnicalUser
 import org.dataland.e2etests.customApiControllers.CustomVsmeDataControllerApi
 import org.dataland.e2etests.tests.frameworks.Vsme.FileInfos
 import org.dataland.e2etests.utils.ApiAccessor
 import org.dataland.e2etests.utils.FrameworkTestDataProvider
+import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
@@ -32,18 +31,19 @@ class AccessToActiveMatchingDatasetTest {
     val apiAccessor = ApiAccessor()
     private val requestControllerApi = RequestControllerApi(BASE_PATH_TO_COMMUNITY_MANAGER)
     val jwtHelper = JwtAuthenticationHelper()
-    private val testDataEuTaxonomyNonFinancials = apiAccessor.testDataProviderForEuTaxonomyDataForNonFinancials
-        .getTData(1).first()
 
-    private val testCompanyInformation = apiAccessor.testDataProviderForEuTaxonomyDataForNonFinancials
-        .getCompanyInformationWithoutIdentifiers(1).first()
-
-    private val vsmeDataControllerApi = VsmeDataControllerApi(BASE_PATH_TO_DATALAND_BACKEND)
     private val testVsmeData = FrameworkTestDataProvider(VsmeData::class.java).getTData(1).first()
     private lateinit var dummyFileAlpha: File
     private val fileNameAlpha = "Report-Alpha"
     private lateinit var hashAlpha: String
+
+    private val timeSleep: Long = 3000
     lateinit var companyId: String
+
+    @AfterAll
+    fun deleteDummyFiles() {
+        assertTrue(dummyFileAlpha.delete())
+    }
 
     @Test
     fun privateFrameworkHasAccess() {
@@ -51,28 +51,18 @@ class AccessToActiveMatchingDatasetTest {
         companyId = apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId
         createVSMEDataAndPostAsAdminCompanyOwner(companyId)
 
-
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader)
 
-        val singleDataRequest = SingleDataRequest(
-            companyIdentifier = companyId,
-            dataType = SingleDataRequest.DataType.vsme,
-            reportingPeriods = setOf("2022"),
-            contacts = setOf("someContact@example.com"),
-            message = "This is a test. The current timestamp is ${System.currentTimeMillis()}",
-        )
+        val singleDataRequest = setSingleDataVSMERequest(companyId)
         requestControllerApi.postSingleDataRequest(singleDataRequest)
-        Thread.sleep(3000)
-        //requestControllerApi.postSingleDataRequest(singleDataRequest)
+        Thread.sleep(timeSleep)
 
         val dataRequestReader = requestControllerApi.getDataRequestsForRequestingUser()
 
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
-
         requestControllerApi.patchDataRequest(UUID.fromString(dataRequestReader[0].dataRequestId), accessStatus = AccessStatus.Granted)
 
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader)
-
         assertEquals(AccessStatus.Granted, requestControllerApi.getDataRequestsForRequestingUser()[0].accessStatus)
 
     }
@@ -82,19 +72,12 @@ class AccessToActiveMatchingDatasetTest {
 
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader)
 
-        val singleDataRequest = SingleDataRequest(
-            companyIdentifier = apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId,
-            dataType = SingleDataRequest.DataType.vsme,
-            reportingPeriods = setOf("2022"),
-            contacts = setOf("someContact@example.com"),
-            message = "This is a test. The current timestamp is ${System.currentTimeMillis()}",
-        )
+        val singleDataRequest = setSingleDataVSMERequest(apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId)
 
         requestControllerApi.postSingleDataRequest(singleDataRequest)
-        Thread.sleep(3000)
+        Thread.sleep(timeSleep)
         //val recentReaderDataRequest = requestControllerApi.getDataRequestsForRequestingUser()[0]
         val recentReaderDataRequest = requestControllerApi.getDataRequestsForRequestingUser().maxByOrNull { it.creationTimestamp }
-        println("t2 " + recentReaderDataRequest?.creationTimestamp?.let { Date(it) })
         //todo variable aus den beiden unteren Zeilen
         assertEquals(AccessStatus.Pending, recentReaderDataRequest?.accessStatus)
         assertEquals(RequestStatus.Open, recentReaderDataRequest?.requestStatus)
@@ -108,28 +91,15 @@ class AccessToActiveMatchingDatasetTest {
 
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader)
 
-        val singleDataRequest = SingleDataRequest(
-            companyIdentifier = companyId,
-            dataType = SingleDataRequest.DataType.vsme,
-            reportingPeriods = setOf("2022"),
-            contacts = setOf("someContact@example.com"),
-            message = "This is a test. The current timestamp is ${System.currentTimeMillis()}",
-        )
+        val singleDataRequest = setSingleDataVSMERequest(companyId)
         requestControllerApi.postSingleDataRequest(singleDataRequest)
         // TODO Maybe find different solution to Thread.sleep
-        Thread.sleep(3000)
+        Thread.sleep(timeSleep)
         val recentReaderDataRequest = requestControllerApi.getDataRequestsForRequestingUser().maxByOrNull { it.creationTimestamp } //
-        // requestControllerApi.getDataRequestsForRequestingUser()[0]
-
-        println("t3 " + recentReaderDataRequest?.creationTimestamp?.let { Date(it) })
-
 
         assertEquals(AccessStatus.Pending, recentReaderDataRequest?.accessStatus)
-        // maybe Request status is not set to answered if there is a matching dataset
         assertEquals(RequestStatus.Answered, recentReaderDataRequest?.requestStatus)
     }
-
-
 
     @Test
     fun privateFrameworkCompanyOwnerPrivateRequestAnswer() {
@@ -137,19 +107,12 @@ class AccessToActiveMatchingDatasetTest {
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader)
         companyId = apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId
 
-        val singleDataRequest = SingleDataRequest(
-            companyIdentifier = companyId,
-            dataType = SingleDataRequest.DataType.vsme,
-            reportingPeriods = setOf("2022"),
-            contacts = setOf("someContact@example.com"),
-            message = "This is a test. The current timestamp is ${System.currentTimeMillis()}",
-        )
+        val singleDataRequest = setSingleDataVSMERequest(companyId)
 
         requestControllerApi.postSingleDataRequest(singleDataRequest)
-        Thread.sleep(3000)
+        Thread.sleep(timeSleep)
         //var recentReaderDataRequest = requestControllerApi.getDataRequestsForRequestingUser()[0]
         var recentReaderDataRequest = requestControllerApi.getDataRequestsForRequestingUser().maxByOrNull { it.creationTimestamp }
-        println("t4-1 " + recentReaderDataRequest?.creationTimestamp?.let { Date(it) })
 
         assertEquals(AccessStatus.Pending, recentReaderDataRequest?.accessStatus)
         assertEquals(RequestStatus.Open, recentReaderDataRequest?.requestStatus)
@@ -157,13 +120,35 @@ class AccessToActiveMatchingDatasetTest {
         createVSMEDataAndPostAsAdminCompanyOwner(companyId)
 
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader)
-        //recentReaderDataRequest = requestControllerApi.getDataRequestsForRequestingUser()[0]
+        Thread.sleep(timeSleep)
         recentReaderDataRequest = requestControllerApi.getDataRequestsForRequestingUser().maxByOrNull { it.creationTimestamp }
-        println("t4-2 " + recentReaderDataRequest?.creationTimestamp?.let { Date(it) })
 
         assertEquals(AccessStatus.Pending, recentReaderDataRequest?.accessStatus)
-        // is an internap process not etting these to the correct status?
         assertEquals(RequestStatus.Answered, recentReaderDataRequest?.requestStatus)
+    }
+
+    @Test
+    fun privateFrameworkCompanyOwnerManagesNewRequestDeclined() {
+        companyId = apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId
+        createVSMEDataAndPostAsAdminCompanyOwner(companyId)
+
+        jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader)
+
+        val singleDataRequest = setSingleDataVSMERequest(companyId)
+        requestControllerApi.postSingleDataRequest(singleDataRequest)
+        // TODO Maybe find different solution to Thread.sleep
+        Thread.sleep(timeSleep)
+        var recentReaderDataRequest = requestControllerApi.getDataRequestsForRequestingUser().maxByOrNull { it.creationTimestamp }
+
+        assertEquals(AccessStatus.Pending, recentReaderDataRequest?.accessStatus)
+
+        jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader)
+        requestControllerApi.patchDataRequest(UUID.fromString(recentReaderDataRequest?.dataRequestId), accessStatus = AccessStatus.Declined)
+        Thread.sleep(timeSleep)
+
+        recentReaderDataRequest = requestControllerApi.getDataRequestsForRequestingUser().maxByOrNull { it.creationTimestamp }
+
+        assertEquals(AccessStatus.Declined, recentReaderDataRequest?.accessStatus)
     }
 
     private fun createVSMEDataAndPostAsAdminCompanyOwner(companyId: String) {
@@ -184,6 +169,15 @@ class AccessToActiveMatchingDatasetTest {
         postVsmeDataset(companyAssociatedVsmeData, listOf(dummyFileAlpha), TechnicalUser.Admin)
     }
 
+    private fun setSingleDataVSMERequest(companyId: String):SingleDataRequest{
+        return SingleDataRequest(
+            companyIdentifier = companyId,
+            dataType = SingleDataRequest.DataType.vsme,
+            reportingPeriods = setOf("2022"),
+            contacts = setOf("someContact@example.com"),
+            message = "This is a test. The current timestamp is ${System.currentTimeMillis()}",
+        )
+    }
 
     private fun setReferencedReports(dataset: VsmeData, fileInfoToSetAsReport: FileInfos?): VsmeData {
         val newReferencedReports = fileInfoToSetAsReport?.let {
@@ -216,7 +210,4 @@ class AccessToActiveMatchingDatasetTest {
             documents,
         )
     }
-
-
-
 }
