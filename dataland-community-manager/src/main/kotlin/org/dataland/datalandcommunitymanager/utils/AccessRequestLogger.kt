@@ -7,7 +7,7 @@ import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
 
 /**
- * Implementation of a request manager service for all operations concerning the processing of data requests
+ * Implementation of a request manager service for all operations concerning the processing of data requestst
  */
 @Service("AccessRequestLogger")
 class AccessRequestLogger {
