@@ -19,8 +19,6 @@ import org.dataland.e2etests.customApiControllers.CustomVsmeDataControllerApi
 import org.dataland.e2etests.tests.frameworks.Vsme.FileInfos
 import org.dataland.e2etests.utils.ApiAccessor
 import org.dataland.e2etests.utils.FrameworkTestDataProvider
-import org.dataland.e2etests.utils.communityManager.getNewlyStoredRequestsAfterTimestamp
-import org.dataland.e2etests.utils.communityManager.retrieveTimeAndWaitOneMillisecond
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
@@ -29,7 +27,7 @@ import java.time.LocalDate
 import java.util.*
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-class accessToActiveMatchingDatasetTest {
+class AccessToActiveMatchingDatasetTest {
 
     val apiAccessor = ApiAccessor()
     private val requestControllerApi = RequestControllerApi(BASE_PATH_TO_COMMUNITY_MANAGER)
@@ -51,23 +49,6 @@ class accessToActiveMatchingDatasetTest {
     fun privateFrameworkHasAccess() {
         //TODO perhaps put the upload vsme files structure into a before all
         companyId = apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId
-        /*
-        val threeMegabytes = 3 * 1000 * 1000
-        dummyFileAlpha = File("dummyFileAlpha.txt")
-        dummyFileAlpha.writeBytes(ByteArray(threeMegabytes))
-        hashAlpha = dummyFileAlpha.readBytes().sha256()
-
-        jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
-        apiAccessor.companyRolesControllerApi.assignCompanyRole(
-            CompanyRole.CompanyOwner,
-            UUID.fromString(companyId),
-            UUID.fromString(TechnicalUser.Admin.technicalUserId),
-        )
-
-        val vsmeData = setReferencedReports(testVsmeData, FileInfos(hashAlpha, fileNameAlpha))
-        val companyAssociatedVsmeData = CompanyAssociatedDataVsmeData(companyId, "2022", vsmeData)
-        postVsmeDataset(companyAssociatedVsmeData, listOf(dummyFileAlpha), TechnicalUser.Admin)
-        */
         createVSMEDataAndPostAsAdminCompanyOwner(companyId)
 
 
@@ -81,6 +62,7 @@ class accessToActiveMatchingDatasetTest {
             message = "This is a test. The current timestamp is ${System.currentTimeMillis()}",
         )
         requestControllerApi.postSingleDataRequest(singleDataRequest)
+        Thread.sleep(3000)
         //requestControllerApi.postSingleDataRequest(singleDataRequest)
 
         val dataRequestReader = requestControllerApi.getDataRequestsForRequestingUser()
@@ -109,8 +91,10 @@ class accessToActiveMatchingDatasetTest {
         )
 
         requestControllerApi.postSingleDataRequest(singleDataRequest)
+        Thread.sleep(3000)
         //val recentReaderDataRequest = requestControllerApi.getDataRequestsForRequestingUser()[0]
         val recentReaderDataRequest = requestControllerApi.getDataRequestsForRequestingUser().maxByOrNull { it.creationTimestamp }
+        println("t2 " + recentReaderDataRequest?.creationTimestamp?.let { Date(it) })
         //todo variable aus den beiden unteren Zeilen
         assertEquals(AccessStatus.Pending, recentReaderDataRequest?.accessStatus)
         assertEquals(RequestStatus.Open, recentReaderDataRequest?.requestStatus)
@@ -131,22 +115,18 @@ class accessToActiveMatchingDatasetTest {
             contacts = setOf("someContact@example.com"),
             message = "This is a test. The current timestamp is ${System.currentTimeMillis()}",
         )
-
-        val timestampBeforeSingleRequest = retrieveTimeAndWaitOneMillisecond()
-        //requestControllerApi.postSingleDataRequest(singleDataRequest)
         requestControllerApi.postSingleDataRequest(singleDataRequest)
-        //val recentReaderDataRequest = requestControllerApi.getDataRequestsForRequestingUser().maxByOrNull { it.creationTimestamp } //
-        val recentReaderDataRequest = getNewlyStoredRequestsAfterTimestamp(timestampBeforeSingleRequest)[0] // requestControllerApi.getDataRequestsForRequestingUser()[0]
-        val recentReaderDataRequest2 = requestControllerApi.getDataRequestsForRequestingUser() //.maxByOrNull { it.creationTimestamp } //getNewlyStoredRequestsAfterTimestamp(timestampBeforeSingleRequest)[0] // requestControllerApi.getDataRequestsForRequestingUser()[0]
+        // TODO Maybe find different solution to Thread.sleep
+        Thread.sleep(3000)
+        val recentReaderDataRequest = requestControllerApi.getDataRequestsForRequestingUser().maxByOrNull { it.creationTimestamp } //
+        // requestControllerApi.getDataRequestsForRequestingUser()[0]
+
+        println("t3 " + recentReaderDataRequest?.creationTimestamp?.let { Date(it) })
 
 
-        println("t1" + recentReaderDataRequest.creationTimestamp?.let { Date(it) })
-
-        println("t2" + recentReaderDataRequest2.forEach{ Date(it.creationTimestamp) } )
-
-        assertEquals(AccessStatus.Pending, recentReaderDataRequest.accessStatus)
+        assertEquals(AccessStatus.Pending, recentReaderDataRequest?.accessStatus)
         // maybe Request status is not set to answered if there is a matching dataset
-        assertEquals(RequestStatus.Answered, recentReaderDataRequest.requestStatus)
+        assertEquals(RequestStatus.Answered, recentReaderDataRequest?.requestStatus)
     }
 
 
@@ -166,8 +146,10 @@ class accessToActiveMatchingDatasetTest {
         )
 
         requestControllerApi.postSingleDataRequest(singleDataRequest)
+        Thread.sleep(3000)
         //var recentReaderDataRequest = requestControllerApi.getDataRequestsForRequestingUser()[0]
         var recentReaderDataRequest = requestControllerApi.getDataRequestsForRequestingUser().maxByOrNull { it.creationTimestamp }
+        println("t4-1 " + recentReaderDataRequest?.creationTimestamp?.let { Date(it) })
 
         assertEquals(AccessStatus.Pending, recentReaderDataRequest?.accessStatus)
         assertEquals(RequestStatus.Open, recentReaderDataRequest?.requestStatus)
@@ -177,10 +159,11 @@ class accessToActiveMatchingDatasetTest {
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader)
         //recentReaderDataRequest = requestControllerApi.getDataRequestsForRequestingUser()[0]
         recentReaderDataRequest = requestControllerApi.getDataRequestsForRequestingUser().maxByOrNull { it.creationTimestamp }
+        println("t4-2 " + recentReaderDataRequest?.creationTimestamp?.let { Date(it) })
 
         assertEquals(AccessStatus.Pending, recentReaderDataRequest?.accessStatus)
+        // is an internap process not etting these to the correct status?
         assertEquals(RequestStatus.Answered, recentReaderDataRequest?.requestStatus)
-
     }
 
     private fun createVSMEDataAndPostAsAdminCompanyOwner(companyId: String) {
