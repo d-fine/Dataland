@@ -58,28 +58,31 @@ constructor(
      */
     @Transactional
     fun notifyOfElementaryEvents(latestElementaryEvent: ElementaryEventEntity, correlationId: String) {
+        val companyId = latestElementaryEvent.companyId
         val unprocessedElementaryEvents =
             elementaryEventRepository.findAllByCompanyIdAndElementaryEventTypeAndNotificationEventIsNull(
-                latestElementaryEvent.companyId,
+                companyId,
                 latestElementaryEvent.elementaryEventType,
             )
-        determineNotificationEmailType(
-            latestElementaryEvent,
-            unprocessedElementaryEvents,
-        )
+        val companyInfo = companyDataControllerApi.getCompanyInfo(companyId.toString())
+
+        determineNotificationEmailType(latestElementaryEvent, unprocessedElementaryEvents)
             ?.let { notificationEmailType ->
                 logger.info(
                     "Requirements for notification event are met. " +
                         "Creating notification event and sending notification emails. CorrelationId: $correlationId",
                 )
+
                 createNotificationEventAndReferenceIt(latestElementaryEvent, unprocessedElementaryEvents)
-                if (!hasCompanyOwner(latestElementaryEvent.companyId)) {
-                    sendEmailMessageToQueue(
+
+                if (!hasCompanyOwner(companyId) && !companyInfo.companyContactDetails.isNullOrEmpty()) {
+                    val templateTypeAndProperties = buildTemplateTypeAndProperties(
+                        companyInfo.companyName,
                         notificationEmailType,
                         latestElementaryEvent,
                         unprocessedElementaryEvents,
-                        correlationId,
                     )
+                    sendEmailMessageToQueue(companyInfo.companyContactDetails, templateTypeAndProperties, correlationId)
                 }
             }
     }
@@ -128,7 +131,7 @@ constructor(
         }
     }
 
-    private fun buildPropertiesForSingleMail(companyName: String, latestElementaryEvent: ElementaryEventEntity):
+    private fun buildSingleMailProperties(companyName: String, latestElementaryEvent: ElementaryEventEntity):
         Map<String, String> {
         return mapOf(
             "companyName" to companyName,
@@ -139,7 +142,7 @@ constructor(
         )
     }
 
-    private fun buildPropertiesForSummaryMail(
+    private fun buildSummaryMailProperties(
         companyName: String,
         latestElementaryEvent: ElementaryEventEntity,
         unprocessedElementaryEvents: List<ElementaryEventEntity>,
@@ -155,34 +158,33 @@ constructor(
         )
     }
 
+    private fun buildTemplateTypeAndProperties(
+        companyName: String,
+        notificationEmailType: NotificationEmailType,
+        latestElementaryEvent: ElementaryEventEntity,
+        unprocessedElementaryEvents: List<ElementaryEventEntity>,
+    ): Pair<TemplateEmailMessage.Type, Map<String, String>> {
+        return when (notificationEmailType) { // TODO
+            NotificationEmailType.Single -> {
+                val props = buildSingleMailProperties(companyName, latestElementaryEvent)
+                Pair(TemplateEmailMessage.Type.SingleNotification, props)
+            }
+            NotificationEmailType.Summary -> {
+                val props = buildSummaryMailProperties(companyName, latestElementaryEvent, unprocessedElementaryEvents)
+                Pair(TemplateEmailMessage.Type.SummaryNotification, props)
+            }
+        }
+    }
+
     /**
      * Sends message to queue in order to make the email service send a mail
      */
     fun sendEmailMessageToQueue(
-        notificationEmailType: NotificationEmailType,
-        latestElementaryEvent: ElementaryEventEntity,
-        unprocessedElementaryEvents: List<ElementaryEventEntity>,
+        emailReceivers: List<String>,
+        templateTypeAndProperties: Pair<TemplateEmailMessage.Type, Map<String, String>>,
         correlationId: String,
     ) {
-        val companyInfo = companyDataControllerApi.getCompanyInfo(latestElementaryEvent.companyId.toString())
-        val companyName = companyInfo.companyName
-        val templateTypeAndProperties = when (notificationEmailType) {
-            NotificationEmailType.Single -> {
-                Pair(
-                    TemplateEmailMessage.Type.SingleNotification,
-                    buildPropertiesForSingleMail(companyName, latestElementaryEvent),
-                )
-            }
-
-            NotificationEmailType.Summary -> {
-                Pair(
-                    TemplateEmailMessage.Type.SummaryNotification,
-                    buildPropertiesForSummaryMail(companyName, latestElementaryEvent, unprocessedElementaryEvents),
-                )
-            }
-        }
-
-        companyInfo.companyContactDetails?.forEach { contactAddress ->
+        emailReceivers.forEach { contactAddress ->
             val message = TemplateEmailMessage(
                 emailTemplateType = templateTypeAndProperties.first,
                 receiver = TemplateEmailMessage.EmailAddressEmailRecipient(contactAddress),
