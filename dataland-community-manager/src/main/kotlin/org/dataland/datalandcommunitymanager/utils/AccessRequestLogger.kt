@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service
 /**
  * Implementation of a request manager service for all operations concerning the processing of data requests
  */
-@Service("DataRequestLogger")
+@Service("AccessRequestLogger")
 class AccessRequestLogger {
 
     private val singleDataRequestLogger = LoggerFactory.getLogger(SingleDataRequestManager::class.java)

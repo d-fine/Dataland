@@ -18,7 +18,8 @@ import org.dataland.e2etests.tests.frameworks.Vsme.FileInfos
 import org.dataland.e2etests.utils.ApiAccessor
 import org.dataland.e2etests.utils.FrameworkTestDataProvider
 import org.junit.jupiter.api.AfterAll
-import org.junit.jupiter.api.Assertions.*
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
 import java.io.File
@@ -47,7 +48,7 @@ class AccessToActiveMatchingDatasetTest {
 
     @Test
     fun privateFrameworkHasAccess() {
-        //TODO perhaps put the upload vsme files structure into a before all
+        // TODO perhaps put the upload vsme files structure into a before all
         companyId = apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId
         createVSMEDataAndPostAsAdminCompanyOwner(companyId)
 
@@ -60,28 +61,33 @@ class AccessToActiveMatchingDatasetTest {
         val dataRequestReader = requestControllerApi.getDataRequestsForRequestingUser()
 
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
-        requestControllerApi.patchDataRequest(UUID.fromString(dataRequestReader[0].dataRequestId), accessStatus = AccessStatus.Granted)
+        requestControllerApi.patchDataRequest(
+            UUID.fromString(dataRequestReader[0].dataRequestId),
+            accessStatus = AccessStatus.Granted,
+        )
 
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader)
         assertEquals(AccessStatus.Granted, requestControllerApi.getDataRequestsForRequestingUser()[0].accessStatus)
-
     }
 
     @Test
     fun privateFrameworkHasNoAccessNoMatchingDataset() {
-
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader)
 
-        val singleDataRequest = setSingleDataVSMERequest(apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId)
+        val singleDataRequest = setSingleDataVSMERequest(
+            apiAccessor.uploadOneCompanyWithRandomIdentifier()
+                .actualStoredCompany.companyId,
+        )
 
         requestControllerApi.postSingleDataRequest(singleDataRequest)
         Thread.sleep(timeSleep)
-        //val recentReaderDataRequest = requestControllerApi.getDataRequestsForRequestingUser()[0]
-        val recentReaderDataRequest = requestControllerApi.getDataRequestsForRequestingUser().maxByOrNull { it.creationTimestamp }
-        //todo variable aus den beiden unteren Zeilen
+        // val recentReaderDataRequest = requestControllerApi.getDataRequestsForRequestingUser()[0]
+        val recentReaderDataRequest = requestControllerApi.getDataRequestsForRequestingUser().maxByOrNull {
+            it.creationTimestamp
+        }
+        // todo variable aus den beiden unteren Zeilen
         assertEquals(AccessStatus.Pending, recentReaderDataRequest?.accessStatus)
         assertEquals(RequestStatus.Open, recentReaderDataRequest?.requestStatus)
-
     }
 
     @Test
@@ -95,7 +101,9 @@ class AccessToActiveMatchingDatasetTest {
         requestControllerApi.postSingleDataRequest(singleDataRequest)
         // TODO Maybe find different solution to Thread.sleep
         Thread.sleep(timeSleep)
-        val recentReaderDataRequest = requestControllerApi.getDataRequestsForRequestingUser().maxByOrNull { it.creationTimestamp } //
+        val recentReaderDataRequest = requestControllerApi.getDataRequestsForRequestingUser().maxByOrNull {
+            it.creationTimestamp
+        } //
 
         assertEquals(AccessStatus.Pending, recentReaderDataRequest?.accessStatus)
         assertEquals(RequestStatus.Answered, recentReaderDataRequest?.requestStatus)
@@ -103,7 +111,6 @@ class AccessToActiveMatchingDatasetTest {
 
     @Test
     fun privateFrameworkCompanyOwnerPrivateRequestAnswer() {
-
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader)
         companyId = apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId
 
@@ -111,8 +118,10 @@ class AccessToActiveMatchingDatasetTest {
 
         requestControllerApi.postSingleDataRequest(singleDataRequest)
         Thread.sleep(timeSleep)
-        //var recentReaderDataRequest = requestControllerApi.getDataRequestsForRequestingUser()[0]
-        var recentReaderDataRequest = requestControllerApi.getDataRequestsForRequestingUser().maxByOrNull { it.creationTimestamp }
+        // var recentReaderDataRequest = requestControllerApi.getDataRequestsForRequestingUser()[0]
+        var recentReaderDataRequest = requestControllerApi.getDataRequestsForRequestingUser().maxByOrNull {
+            it.creationTimestamp
+        }
 
         assertEquals(AccessStatus.Pending, recentReaderDataRequest?.accessStatus)
         assertEquals(RequestStatus.Open, recentReaderDataRequest?.requestStatus)
@@ -121,7 +130,9 @@ class AccessToActiveMatchingDatasetTest {
 
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader)
         Thread.sleep(timeSleep)
-        recentReaderDataRequest = requestControllerApi.getDataRequestsForRequestingUser().maxByOrNull { it.creationTimestamp }
+        recentReaderDataRequest = requestControllerApi.getDataRequestsForRequestingUser().maxByOrNull {
+            it.creationTimestamp
+        }
 
         assertEquals(AccessStatus.Pending, recentReaderDataRequest?.accessStatus)
         assertEquals(RequestStatus.Answered, recentReaderDataRequest?.requestStatus)
@@ -138,15 +149,22 @@ class AccessToActiveMatchingDatasetTest {
         requestControllerApi.postSingleDataRequest(singleDataRequest)
         // TODO Maybe find different solution to Thread.sleep
         Thread.sleep(timeSleep)
-        var recentReaderDataRequest = requestControllerApi.getDataRequestsForRequestingUser().maxByOrNull { it.creationTimestamp }
+        var recentReaderDataRequest = requestControllerApi.getDataRequestsForRequestingUser().maxByOrNull {
+            it.creationTimestamp
+        }
 
         assertEquals(AccessStatus.Pending, recentReaderDataRequest?.accessStatus)
 
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader)
-        requestControllerApi.patchDataRequest(UUID.fromString(recentReaderDataRequest?.dataRequestId), accessStatus = AccessStatus.Declined)
+        requestControllerApi.patchDataRequest(
+            UUID.fromString(recentReaderDataRequest?.dataRequestId),
+            accessStatus = AccessStatus.Declined,
+        )
         Thread.sleep(timeSleep)
 
-        recentReaderDataRequest = requestControllerApi.getDataRequestsForRequestingUser().maxByOrNull { it.creationTimestamp }
+        recentReaderDataRequest = requestControllerApi.getDataRequestsForRequestingUser().maxByOrNull {
+            it.creationTimestamp
+        }
 
         assertEquals(AccessStatus.Declined, recentReaderDataRequest?.accessStatus)
     }
@@ -164,12 +182,12 @@ class AccessToActiveMatchingDatasetTest {
             UUID.fromString(TechnicalUser.Admin.technicalUserId),
         )
         val vsmeData = setReferencedReports(testVsmeData, FileInfos(hashAlpha, fileNameAlpha))
-        //TODO clean up code duplication with functions in vsme.kt
+        // TODO clean up code duplication with functions in vsme.kt
         val companyAssociatedVsmeData = CompanyAssociatedDataVsmeData(companyId, "2022", vsmeData)
         postVsmeDataset(companyAssociatedVsmeData, listOf(dummyFileAlpha), TechnicalUser.Admin)
     }
 
-    private fun setSingleDataVSMERequest(companyId: String):SingleDataRequest{
+    private fun setSingleDataVSMERequest(companyId: String): SingleDataRequest {
         return SingleDataRequest(
             companyIdentifier = companyId,
             dataType = SingleDataRequest.DataType.vsme,
