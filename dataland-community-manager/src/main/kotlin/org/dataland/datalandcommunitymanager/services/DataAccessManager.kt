@@ -17,6 +17,9 @@ import org.springframework.transaction.annotation.Transactional
 import java.time.Instant
 import kotlin.jvm.optionals.getOrElse
 
+/**
+ * The DataAccessManager contains methods for the data access logic.
+ */
 @Service
 class DataAccessManager(
     @Autowired private val dataRequestRepository: DataRequestRepository,
@@ -30,34 +33,26 @@ class DataAccessManager(
      * @param reportingPeriod the reportingPeriod for which the access status should be checked
      * @param dataType the framework dataType for which the access status should be checked
      * @param userId the userId for which the access status should be checked
-     * @param accessStatus the accessStatus for which the check should be conducted
      */
-    fun findRequestsByAccessStatus(
+    fun hasAccessToPrivateDataset(
         companyId: String,
         reportingPeriod: String,
         dataType: DataTypeEnum,
         userId: String,
-        accessStatus: AccessStatus,
-    ): List<DataRequestEntity>? {
-        val foundAccess = dataRequestRepository
+    ): Boolean {
+        val hasAccess = dataRequestRepository
             .findByUserIdAndDatalandCompanyIdAndDataTypeAndReportingPeriod(
                 userId, companyId, dataType.name, reportingPeriod,
-            )?.filter {
-            it.accessStatus == accessStatus
-        }
-        if (foundAccess != null) {
+            )?.any { it.accessStatus == AccessStatus.Granted } ?: false
+
+        if (hasAccess) {
             dataRequestLogger.logMessageForCheckingIfUserHasAccessToDataset(
                 companyId,
                 dataType,
                 reportingPeriod,
-                accessStatus,
             )
         }
-        // TODO Test if this only checks the toplevel value of accessStatus or if this goes through the requestHistory
-        //  and checks if there was at least on Granted accessStatus
-        // TODO if it his the second case logic has to be adapted
-        // TODO name of this method is not quite right in regards to the inputs
-        return foundAccess
+        return hasAccess
     }
 
     /**
@@ -70,7 +65,7 @@ class DataAccessManager(
      * @param userId the userId for which the access status should be checked
      */
     @Transactional
-    fun hasAccessToPrivateDataset(
+    fun headAccessToDataset(
         companyId: String,
         reportingPeriod: String,
         dataType: String,
@@ -86,10 +81,10 @@ class DataAccessManager(
             return
         }
 
-        val grantedAccessStatuses =
-            findRequestsByAccessStatus(companyId, reportingPeriod, dataTypeEnum, userId, AccessStatus.Granted)
+        val hasAccess =
+            hasAccessToPrivateDataset(companyId, reportingPeriod, dataTypeEnum, userId)
 
-        if (!grantedAccessStatuses.isNullOrEmpty()) {
+        if (!hasAccess) {
             throw ResourceNotFoundApiException(
                 "The user has no access to the dataset or the dataset does not exists.",
                 "The user $userId cannot access the dataset for the company $companyId, for the data type " +

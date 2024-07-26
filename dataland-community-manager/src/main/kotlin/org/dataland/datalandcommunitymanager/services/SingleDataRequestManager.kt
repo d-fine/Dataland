@@ -4,7 +4,6 @@ import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.exceptions.QuotaExceededException
 import org.dataland.datalandbackendutils.utils.validateIsEmailAddress
-import org.dataland.datalandcommunitymanager.model.dataRequest.AccessStatus
 import org.dataland.datalandcommunitymanager.model.dataRequest.SingleDataRequest
 import org.dataland.datalandcommunitymanager.model.dataRequest.SingleDataRequestResponse
 import org.dataland.datalandcommunitymanager.repositories.DataRequestRepository
@@ -66,12 +65,9 @@ constructor(
                     dataType =
                     singleDataRequest.dataType,
                 ) &&
-                dataAccessManager.findRequestsByAccessStatus(
-                    companyId = companyId, reportingPeriod = reportingPeriod,
-                    dataType =
-                    singleDataRequest.dataType,
-                    userId = userId, accessStatus = AccessStatus.Granted,
-                ).isNullOrEmpty()
+                dataAccessManager.hasAccessToPrivateDataset(
+                    companyId, reportingPeriod, singleDataRequest.dataType, userId,
+                )
             ) {
                 dataAccessManager.createAccessRequestToPrivateDataset(
                     userId = userId, companyId = companyId,

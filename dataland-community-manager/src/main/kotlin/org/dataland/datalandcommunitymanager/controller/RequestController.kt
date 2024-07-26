@@ -93,7 +93,7 @@ class RequestController(
     }
 
     override fun hasAccessToDataset(companyId: UUID, dataType: String, reportingPeriod: String, userId: UUID) {
-        dataAccessManager.hasAccessToPrivateDataset(companyId.toString(), reportingPeriod, dataType, userId.toString())
+        dataAccessManager.headAccessToDataset(companyId.toString(), reportingPeriod, dataType, userId.toString())
     }
 
     override fun patchDataRequest(

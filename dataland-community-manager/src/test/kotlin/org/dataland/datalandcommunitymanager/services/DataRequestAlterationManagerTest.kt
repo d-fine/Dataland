@@ -96,7 +96,8 @@ class DataRequestAlterationManagerTest {
 
         processingUtils = mock(DataRequestProcessingUtils::class.java)
         doNothing().`when`(processingUtils).addNewRequestStatusToHistory(
-            any(DataRequestEntity::class.java), any(RequestStatus::class.java), any(AccessStatus::class.java), any(Long::class.java),
+            any(DataRequestEntity::class.java), any(RequestStatus::class.java),
+            any(AccessStatus::class.java), any(Long::class.java),
         )
         doNothing().`when`(processingUtils).addNewMessageToHistory(
             any(DataRequestEntity::class.java), anySet(), anyString(), any(Long::class.java),
@@ -167,7 +168,8 @@ class DataRequestAlterationManagerTest {
             )
         verify(processingUtils, times(2))
             .addNewRequestStatusToHistory(
-                any(DataRequestEntity::class.java), any(RequestStatus::class.java), any(AccessStatus::class.java), any(Long::class.java),
+                any(DataRequestEntity::class.java), any(RequestStatus::class.java),
+                any(AccessStatus::class.java), any(Long::class.java),
             )
         verify(processingUtils, times(0))
             .addNewMessageToHistory(
@@ -185,7 +187,8 @@ class DataRequestAlterationManagerTest {
 
         verify(processingUtils, times(1))
             .addNewRequestStatusToHistory(
-                any(DataRequestEntity::class.java), any(RequestStatus::class.java), any(AccessStatus::class.java), any(Long::class.java),
+                any(DataRequestEntity::class.java), any(RequestStatus::class.java),
+                any(AccessStatus::class.java), any(Long::class.java),
             )
         verifyNoInteractions(dataRequestResponseEmailMessageSender)
         verify(processingUtils, times(0))
@@ -222,7 +225,8 @@ class DataRequestAlterationManagerTest {
         }
         verify(processingUtils, times(dummyDataRequestEntities.size))
             .addNewRequestStatusToHistory(
-                any(DataRequestEntity::class.java), any(RequestStatus::class.java), any(AccessStatus::class.java), any(Long::class.java),
+                any(DataRequestEntity::class.java), any(RequestStatus::class.java),
+                any(AccessStatus::class.java), any(Long::class.java),
             )
         verify(processingUtils, times(0))
             .addNewMessageToHistory(
@@ -253,7 +257,8 @@ class DataRequestAlterationManagerTest {
 
         verify(processingUtils, times(0))
             .addNewRequestStatusToHistory(
-                any(DataRequestEntity::class.java), any(RequestStatus::class.java), any(AccessStatus::class.java), any(Long::class.java),
+                any(DataRequestEntity::class.java), any(RequestStatus::class.java),
+                any(AccessStatus::class.java), any(Long::class.java),
             )
     }
     private fun <T> any(type: Class<T>): T = Mockito.any<T>(type)

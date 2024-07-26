@@ -81,12 +81,10 @@ class DataRequestLogger {
         companyId: String,
         framework: DataTypeEnum,
         reportingPeriod: String,
-        accessStatus: AccessStatus,
     ) {
         singleDataRequestLogger.info(
-            "The following data request already exists for the requesting user and therefore " +
-                "is not being recreated: (companyId: $companyId, framework: $framework, " +
-                "reportingPeriod: $reportingPeriod, accessStatus: $accessStatus)",
+            "Access for the dataset (companyId: $companyId, framework: $framework, " +
+                "reportingPeriod: $reportingPeriod) is granted",
         )
     }
 
