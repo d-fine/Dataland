@@ -143,6 +143,15 @@ class NotificationServiceTest {
             )
     }
 
+    private fun parseJsonStringIntoTemplateEmailMessage(
+        jsonString: String,
+    ): TemplateEmailMessage {
+        return notificationService.objectMapper.readValue(
+            jsonString,
+            TemplateEmailMessage::class.java,
+        )
+    }
+
     @Test
     fun `single mail if no notification event in last 30 days and one unprocessed elementary event`() {
         setTheReturnValueForNotificationEventRepoQuery(emptyList())
@@ -324,10 +333,7 @@ class NotificationServiceTest {
                 anyString(),
             ),
         ).then {
-            val arg1 = notificationService.objectMapper.readValue(
-                it.getArgument<String>(0),
-                TemplateEmailMessage::class.java,
-            )
+            val arg1 = parseJsonStringIntoTemplateEmailMessage(it.getArgument(0))
             val arg2 = it.getArgument<String>(1)
             val arg3 = it.getArgument<String>(2)
             val arg4 = it.getArgument<String>(3)
@@ -376,10 +382,7 @@ class NotificationServiceTest {
                 anyString(),
             ),
         ).then {
-            val arg1 = notificationService.objectMapper.readValue(
-                it.getArgument<String>(0),
-                TemplateEmailMessage::class.java,
-            )
+            val arg1 = parseJsonStringIntoTemplateEmailMessage(it.getArgument(0))
             val arg2 = it.getArgument<String>(1)
             val arg3 = it.getArgument<String>(2)
             val arg4 = it.getArgument<String>(3)
