@@ -252,14 +252,13 @@ class Vsme {
         )
 
         requestControllerApi.postSingleDataRequest(vsmeDataRequest)
-        val requestId = requestControllerApi.getDataRequestsForRequestingUser()[0].dataRequestId
-
+        val requestId = requestControllerApi.getDataRequestsForRequestingUser().maxByOrNull { it.creationTimestamp }
+            ?.dataRequestId
         apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Uploader)
         requestControllerApi.patchDataRequest(
             dataRequestId = UUID.fromString(requestId),
             accessStatus = AccessStatus.Granted,
         )
-
         apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader)
         val retrievedCompanyAssociatedVsmeData = executeDataRetrievalWithRetries(
             vsmeDataControllerApi::getCompanyAssociatedVsmeData, dataId,
