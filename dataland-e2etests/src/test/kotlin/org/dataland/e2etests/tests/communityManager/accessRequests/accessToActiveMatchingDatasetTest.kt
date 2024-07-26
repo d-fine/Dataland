@@ -19,6 +19,8 @@ import org.dataland.e2etests.customApiControllers.CustomVsmeDataControllerApi
 import org.dataland.e2etests.tests.frameworks.Vsme.FileInfos
 import org.dataland.e2etests.utils.ApiAccessor
 import org.dataland.e2etests.utils.FrameworkTestDataProvider
+import org.dataland.e2etests.utils.communityManager.getNewlyStoredRequestsAfterTimestamp
+import org.dataland.e2etests.utils.communityManager.retrieveTimeAndWaitOneMillisecond
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
@@ -78,8 +80,8 @@ class accessToActiveMatchingDatasetTest {
             contacts = setOf("someContact@example.com"),
             message = "This is a test. The current timestamp is ${System.currentTimeMillis()}",
         )
-
         requestControllerApi.postSingleDataRequest(singleDataRequest)
+
         val dataRequestReader = requestControllerApi.getDataRequestsForRequestingUser()
 
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
@@ -128,11 +130,20 @@ class accessToActiveMatchingDatasetTest {
             message = "This is a test. The current timestamp is ${System.currentTimeMillis()}",
         )
 
+        //val timestampBeforeSingleRequest = retrieveTimeAndWaitOneMillisecond()
         requestControllerApi.postSingleDataRequest(singleDataRequest)
-        val recentReaderDataRequest = requestControllerApi.getDataRequestsForRequestingUser()[0]
-        //todo Testen ob bei abfrage eines vorhandenen Datensatzes der Requeststus automatisch auf Answered gesetzt wird.
-        assertEquals(AccessStatus.Pending, recentReaderDataRequest.accessStatus)
-        assertEquals(RequestStatus.Answered, recentReaderDataRequest.requestStatus)
+        //requestControllerApi.postSingleDataRequest(singleDataRequest)
+        val recentReaderDataRequest = requestControllerApi.getDataRequestsForRequestingUser().maxByOrNull { it.creationTimestamp } //getNewlyStoredRequestsAfterTimestamp(timestampBeforeSingleRequest)[0] // requestControllerApi.getDataRequestsForRequestingUser()[0]
+        val recentReaderDataRequest2 = requestControllerApi.getDataRequestsForRequestingUser() //.maxByOrNull { it.creationTimestamp } //getNewlyStoredRequestsAfterTimestamp(timestampBeforeSingleRequest)[0] // requestControllerApi.getDataRequestsForRequestingUser()[0]
+
+
+        println(recentReaderDataRequest?.creationTimestamp?.let { Date(it) })
+
+        println(recentReaderDataRequest2.forEach{ it.creationTimestamp } )
+
+        assertEquals(AccessStatus.Pending, recentReaderDataRequest?.accessStatus)
+        // maybe Request status is not set to answered if there is a matching dataset
+        assertEquals(RequestStatus.Answered, recentReaderDataRequest?.requestStatus)
     }
 
 
@@ -180,6 +191,7 @@ class accessToActiveMatchingDatasetTest {
             UUID.fromString(TechnicalUser.Admin.technicalUserId),
         )
         val vsmeData = setReferencedReports(testVsmeData, FileInfos(hashAlpha, fileNameAlpha))
+        //TODO clean up code duplication with functions in vsme.kt
         val companyAssociatedVsmeData = CompanyAssociatedDataVsmeData(companyId, "2022", vsmeData)
         postVsmeDataset(companyAssociatedVsmeData, listOf(dummyFileAlpha), TechnicalUser.Admin)
     }
