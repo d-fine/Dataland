@@ -47,7 +47,7 @@ class NotificationEmailFactoriesTest {
 
         val frameworks = "framework-alpha, framework-beta"
         val numberOfDays = "12"
-        val properties = mapOf(
+        val properties = mutableMapOf(
             "companyName" to dummyCompanyName,
             "companyId" to dummyCompanyId,
             "frameworks" to frameworks,
@@ -65,5 +65,12 @@ class NotificationEmailFactoriesTest {
         assertTrue(mail.content.textContent.contains(frameworks))
         assertTrue(mail.content.textContent.contains("$numberOfDays days"))
         assertTrue(mail.content.textContent.contains(proxyPrimaryUrl))
+
+        properties["numberOfDays"] = "0"
+        assertTrue(
+            summaryNotificationEmailFactory.buildEmail(receiverEmail, properties).content.textContent.contains(
+                "24 hours",
+            ),
+        )
     }
 }
