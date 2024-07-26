@@ -11,6 +11,5 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 class SfdrQaReportController(
     @Autowired objectMapper: ObjectMapper,
-)
-    : QaReportController<SfdrData>(objectMapper, SfdrData::class.java) {
-}
+) :
+    QaReportController<SfdrData>(objectMapper, SfdrData::class.java)

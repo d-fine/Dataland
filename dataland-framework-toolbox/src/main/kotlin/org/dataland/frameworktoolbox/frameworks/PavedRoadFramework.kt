@@ -207,7 +207,7 @@ abstract class PavedRoadFramework(
         customizeQaModel(qaModel)
 
         qaModel.build(
-            into = datalandProject
+            into = datalandProject,
         )
     }
 

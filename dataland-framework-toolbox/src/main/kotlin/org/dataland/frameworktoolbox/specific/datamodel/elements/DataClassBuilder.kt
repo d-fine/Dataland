@@ -3,7 +3,6 @@ package org.dataland.frameworktoolbox.specific.datamodel.elements
 import org.dataland.frameworktoolbox.specific.datamodel.Annotation
 import org.dataland.frameworktoolbox.specific.datamodel.ClassProperty
 import org.dataland.frameworktoolbox.specific.datamodel.TypeReference
-import org.dataland.frameworktoolbox.utils.DatalandRepository
 import org.dataland.frameworktoolbox.utils.LoggerDelegate
 import org.dataland.frameworktoolbox.utils.freemarker.FreeMarker
 import java.io.FileWriter

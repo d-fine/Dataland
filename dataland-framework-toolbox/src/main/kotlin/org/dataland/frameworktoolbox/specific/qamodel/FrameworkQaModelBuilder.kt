@@ -1,6 +1,5 @@
 package org.dataland.frameworktoolbox.specific.qamodel
 
-import org.dataland.frameworktoolbox.specific.datamodel.Annotation
 import org.dataland.frameworktoolbox.intermediate.Framework
 import org.dataland.frameworktoolbox.specific.datamodel.elements.DataClassBuilder
 import org.dataland.frameworktoolbox.specific.datamodel.elements.PackageBuilder
@@ -9,8 +8,6 @@ import org.dataland.frameworktoolbox.utils.LoggerDelegate
 import org.dataland.frameworktoolbox.utils.Naming.getNameFromLabel
 import org.dataland.frameworktoolbox.utils.Naming.removeUnallowedJavaIdentifierCharacters
 import org.dataland.frameworktoolbox.utils.capitalizeEn
-import org.dataland.frameworktoolbox.utils.freemarker.FreeMarker
-import java.io.FileWriter
 import kotlin.io.path.div
 
 /**
@@ -34,10 +31,8 @@ class FrameworkQaModelBuilder(
     val rootDataModelClass: DataClassBuilder = rootPackageBuilder.addClass(
         "${getNameFromLabel(framework.identifier).capitalizeEn()}Data",
         "The root QA data-model for the ${framework.identifier.capitalizeEn()} Framework",
-        mutableListOf(
-        ),
+        mutableListOf(),
     )
-
 
     fun build(into: DatalandRepository) {
         logger.info("Starting to build to QA data-model into the dataland-repository at ${into.path}")

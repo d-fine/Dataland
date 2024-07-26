@@ -10,8 +10,8 @@ import org.dataland.frameworktoolbox.specific.qamodel.addQaPropertyWithDocumentS
 open class SimpleKotlinBackedBaseComponent(
     identifier: String,
     parent: FieldNodeParent,
-    var fullyQualifiedNameOfKotlinType: String
-): ComponentBase(identifier, parent) {
+    var fullyQualifiedNameOfKotlinType: String,
+) : ComponentBase(identifier, parent) {
     // This method has been marked final to prevent accidental overwriting of generateDefaultDataModel
     // without overwriting generateDefaultQaModel. If you need to overwrite this method, please extend from ComponentBase
     final override fun generateDefaultDataModel(dataClassBuilder: DataClassBuilder) {

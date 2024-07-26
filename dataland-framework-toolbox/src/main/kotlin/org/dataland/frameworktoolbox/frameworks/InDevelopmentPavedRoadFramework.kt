@@ -66,7 +66,7 @@ abstract class InDevelopmentPavedRoadFramework(
         @Suppress("TooGenericExceptionCaught")
         try {
             qaModel.build(
-                into = datalandProject
+                into = datalandProject,
             )
         } catch (ex: Exception) {
             logger.error("Could not build framework QA data-model!", ex)

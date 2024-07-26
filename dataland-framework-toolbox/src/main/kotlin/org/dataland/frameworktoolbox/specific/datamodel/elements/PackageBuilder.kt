@@ -2,7 +2,6 @@ package org.dataland.frameworktoolbox.specific.datamodel.elements
 
 import org.dataland.frameworktoolbox.intermediate.components.support.SelectionOption
 import org.dataland.frameworktoolbox.specific.datamodel.Annotation
-import org.dataland.frameworktoolbox.utils.DatalandRepository
 import org.dataland.frameworktoolbox.utils.LoggerDelegate
 import java.nio.file.Path
 import javax.lang.model.SourceVersion

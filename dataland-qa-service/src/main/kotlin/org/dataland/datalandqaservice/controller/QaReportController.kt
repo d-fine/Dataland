@@ -6,7 +6,6 @@ import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.repor
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.reports.QaReportWithMetaInformation
 import java.util.*
 
-
 open class QaReportController<QaReportType>(
     var objectMapper: ObjectMapper,
     private val clazz: Class<QaReportType>,
@@ -17,6 +16,9 @@ open class QaReportController<QaReportType>(
 
     override fun getQaReport(dataId: UUID, qaReportId: UUID): QaReportWithMetaInformation<QaReportType> {
         TODO("Not yet implemented")
+        // who has the rights? here or in api with preauthorize?
+        // why not use ResponseEntity like the DataControllers?
+        // what is correlationId and do we need it here?
     }
 
     override fun updateQaReport(dataId: UUID, qaReportId: UUID): QaReportWithMetaInformation<QaReportType> {
