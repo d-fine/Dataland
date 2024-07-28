@@ -68,6 +68,7 @@ interface QaReportApi<QaReportType> {
     @PreAuthorize("hasRole('ROLE_REVIEWER')")
     fun updateQaReport(@PathVariable("dataId") dataId: UUID, @PathVariable("qaReportId") qaReportId: UUID): ResponseEntity<QaReportWithMetaInformation<QaReportType>>
 
+    //why do we need the dataId?
     /**
      * A method to retrieve a QA report by the data Id and report Id
      * @param dataId identifier used to uniquely specify data in the data store
