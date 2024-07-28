@@ -43,6 +43,8 @@ class SummaryNotificationEmailFactory(
     private fun formatDuration(numberOfDays: String?): String {
         logger.info(numberOfDays)
         if (numberOfDays == null) return "days"
+        logger.info("Characters")
+        numberOfDays.forEach { logger.info(it.code.toString()) }
         return when (numberOfDays.trim()) {
             "0" -> "24 hours"
             else -> "$numberOfDays days"
