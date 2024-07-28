@@ -70,7 +70,7 @@ plugins {
     alias(libs.plugins.com.gorylenko.gradle.git.properties) apply false
     alias(libs.plugins.org.openapi.generator) apply false
     alias(libs.plugins.com.github.ben.manes.versions)
-    id("org.jetbrains.kotlin.plugin.jpa") apply false
+    kotlin("plugin.jpa") apply false
     kotlin("plugin.serialization") apply false
 }
 
