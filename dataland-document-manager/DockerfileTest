@@ -1,5 +1,5 @@
 ARG DATALAND_DOCUMENT_MANAGER_BASE_VERSION
-FROM ghcr.io/d-fine/dataland/dataland_document_manager_base:${DATALAND_DOCUMENT_MANAGER_BASE_VERSION} as builder
+FROM ghcr.io/d-fine/dataland/dataland_document_manager_base:${DATALAND_DOCUMENT_MANAGER_BASE_VERSION} AS builder
 
 FROM eclipse-temurin:21.0.3_9-jre-alpine@sha256:f05c742dd20051b104b939370f7db4d6eb420cc7fd842aeb4e2446837da3bd03
 RUN apk add --no-cache libreoffice-writer libreoffice-impress
