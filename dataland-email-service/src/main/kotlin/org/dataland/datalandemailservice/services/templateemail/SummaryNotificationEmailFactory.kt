@@ -41,6 +41,7 @@ class SummaryNotificationEmailFactory(
     }
 
     private fun formatDuration(numberOfDays: String?): String {
+        logger.info(numberOfDays)
         if (numberOfDays == null) return "days"
         return when (numberOfDays.trim()) {
             "0" -> "24 hours"
@@ -48,6 +49,10 @@ class SummaryNotificationEmailFactory(
         }
     }
     override fun buildTextContent(properties: Map<String, String?>): String {
+        logger.info("properties.toString()")
+        logger.info(properties.toString())
+        logger.info("properties[keys.numberOfDays]")
+        logger.info(properties[keys.numberOfDays])
         val duration = formatDuration(properties[keys.numberOfDays])
         return StringBuilder().apply {
             append("Exciting news! 📣\n")
