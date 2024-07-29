@@ -1,7 +1,5 @@
 package org.dataland.datalandcommunitymanager.utils
 
-import jakarta.persistence.EntityManager
-import jakarta.persistence.PersistenceContext
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.api.MetaDataControllerApi
 import org.dataland.datalandbackend.openApiClient.model.CompanyIdAndName
@@ -17,6 +15,8 @@ import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
 import org.dataland.datalandcommunitymanager.model.dataRequest.StoredDataRequestMessageObject
 import org.dataland.datalandcommunitymanager.model.dataRequest.StoredDataRequestStatusObject
 import org.dataland.datalandcommunitymanager.repositories.DataRequestRepository
+import org.dataland.datalandcommunitymanager.repositories.MessageRepository
+import org.dataland.datalandcommunitymanager.repositories.RequestStatusRepository
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.dataland.keycloakAdapter.auth.DatalandJwtAuthentication
 import org.springframework.beans.factory.annotation.Autowired
@@ -29,7 +29,8 @@ import java.time.Instant
 @Service
 class DataRequestProcessingUtils(
     @Autowired private val dataRequestRepository: DataRequestRepository,
-    @PersistenceContext private var entityManager: EntityManager,
+    @Autowired private var requestStatusRepository: RequestStatusRepository,
+    @Autowired private var messageRepository: MessageRepository,
     @Autowired private val dataRequestLogger: DataRequestLogger,
     @Autowired private val companyApi: CompanyDataControllerApi,
     @Autowired private val metaDataApi: MetaDataControllerApi,
@@ -99,7 +100,8 @@ class DataRequestProcessingUtils(
             datalandCompanyId,
             creationTime,
         )
-        entityManager.persist(dataRequestEntity)
+        // TODO Make sure the .save command now works without issues. Try patching existing requests
+        dataRequestRepository.save(dataRequestEntity)
         val accessStatus = if (dataType == DataTypeEnum.vsme) {
             AccessStatus.Pending
         } else {
@@ -129,8 +131,8 @@ class DataRequestProcessingUtils(
     ) {
         val requestMessageObject = StoredDataRequestMessageObject(contacts, message, modificationTime)
         val requestMessageEntity = MessageEntity(requestMessageObject, dataRequestEntity)
-
-        entityManager.persist(requestMessageEntity)
+        // TODO Make sure the .save command now works without issues. Try patching existing requests
+        messageRepository.save(requestMessageEntity)
         dataRequestEntity.addToMessageToHistory(requestMessageEntity)
     }
 
@@ -149,7 +151,8 @@ class DataRequestProcessingUtils(
         val requestStatusObject = StoredDataRequestStatusObject(requestStatus, modificationTime, accessStatus)
         val requestStatusEntity = RequestStatusEntity(requestStatusObject, dataRequestEntity)
 
-        entityManager.persist(requestStatusEntity)
+        // TODO Make sure the .save command now works without issues. Try patching existing requests
+        requestStatusRepository.save(requestStatusEntity)
         dataRequestEntity.addToRequestStatusHistory(requestStatusEntity)
     }
 
