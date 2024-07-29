@@ -6,14 +6,11 @@ import org.dataland.communitymanager.openApiClient.model.CompanyRole
 import org.dataland.communitymanager.openApiClient.model.RequestStatus
 import org.dataland.communitymanager.openApiClient.model.SingleDataRequest
 import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataVsmeData
-import org.dataland.datalandbackend.openApiClient.model.CompanyReport
-import org.dataland.datalandbackend.openApiClient.model.DataMetaInformation
 import org.dataland.datalandbackend.openApiClient.model.VsmeData
 import org.dataland.datalandbackendutils.utils.sha256
 import org.dataland.e2etests.BASE_PATH_TO_COMMUNITY_MANAGER
 import org.dataland.e2etests.auth.JwtAuthenticationHelper
 import org.dataland.e2etests.auth.TechnicalUser
-import org.dataland.e2etests.customApiControllers.CustomVsmeDataControllerApi
 import org.dataland.e2etests.tests.frameworks.Vsme.FileInfos
 import org.dataland.e2etests.utils.ApiAccessor
 import org.dataland.e2etests.utils.FrameworkTestDataProvider
@@ -23,13 +20,14 @@ import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
 import java.io.File
-import java.time.LocalDate
 import java.util.*
+import org.dataland.e2etests.utils.VsmeUtils
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class AccessToActiveMatchingDatasetTest {
 
     val apiAccessor = ApiAccessor()
+    val vsmeUtils = VsmeUtils()
     private val requestControllerApi = RequestControllerApi(BASE_PATH_TO_COMMUNITY_MANAGER)
     val jwtHelper = JwtAuthenticationHelper()
 
@@ -181,10 +179,10 @@ class AccessToActiveMatchingDatasetTest {
             UUID.fromString(companyId),
             UUID.fromString(TechnicalUser.Admin.technicalUserId),
         )
-        val vsmeData = setReferencedReports(testVsmeData, FileInfos(hashAlpha, fileNameAlpha))
+        val vsmeData = vsmeUtils.setReferencedReports(testVsmeData, FileInfos(hashAlpha, fileNameAlpha))
         // TODO clean up code duplication with functions in vsme.kt
         val companyAssociatedVsmeData = CompanyAssociatedDataVsmeData(companyId, "2022", vsmeData)
-        postVsmeDataset(companyAssociatedVsmeData, listOf(dummyFileAlpha), TechnicalUser.Admin)
+        vsmeUtils.postVsmeDataset(companyAssociatedVsmeData, listOf(dummyFileAlpha), TechnicalUser.Admin)
     }
 
     private fun setSingleDataVSMERequest(companyId: String): SingleDataRequest {
@@ -194,38 +192,6 @@ class AccessToActiveMatchingDatasetTest {
             reportingPeriods = setOf("2022"),
             contacts = setOf("someContact@example.com"),
             message = "This is a test. The current timestamp is ${System.currentTimeMillis()}",
-        )
-    }
-
-    private fun setReferencedReports(dataset: VsmeData, fileInfoToSetAsReport: FileInfos?): VsmeData {
-        val newReferencedReports = fileInfoToSetAsReport?.let {
-            mapOf(
-                it.fileName to CompanyReport(
-                    fileReference = it.fileReference,
-                    fileName = it.fileName,
-                    publicationDate = LocalDate.now(),
-                ),
-            )
-        }
-        return dataset.copy(
-            basic = dataset.basic?.copy(
-                basisForPreparation = dataset.basic?.basisForPreparation?.copy(
-                    referencedReports = newReferencedReports,
-                ),
-            ),
-        )
-    }
-
-    private fun postVsmeDataset(
-        companyAssociatedDataVsmeData: CompanyAssociatedDataVsmeData,
-        documents: List<File> = listOf(),
-        user: TechnicalUser,
-    ): DataMetaInformation {
-        val keycloakToken = apiAccessor.jwtHelper.obtainJwtForTechnicalUser(user)
-        val customVsmeDataControllerApi = CustomVsmeDataControllerApi(keycloakToken)
-        return customVsmeDataControllerApi.postCompanyAssociatedDataVsmeData(
-            companyAssociatedDataVsmeData,
-            documents,
         )
     }
 }
