@@ -252,7 +252,7 @@ class Vsme {
         )
 
         requestControllerApi.postSingleDataRequest(vsmeDataRequest)
-        Thread.sleep(5000)
+        Thread.sleep(10000)
         val requestId = requestControllerApi.getDataRequestsForRequestingUser().maxByOrNull { it.creationTimestamp }
             ?.dataRequestId
         apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Uploader)
