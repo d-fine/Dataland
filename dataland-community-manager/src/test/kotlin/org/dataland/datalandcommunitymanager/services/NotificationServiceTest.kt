@@ -12,6 +12,7 @@ import org.dataland.datalandcommunitymanager.entities.NotificationEventEntity
 import org.dataland.datalandcommunitymanager.events.ElementaryEventType
 import org.dataland.datalandcommunitymanager.repositories.ElementaryEventRepository
 import org.dataland.datalandcommunitymanager.repositories.NotificationEventRepository
+import org.dataland.datalandcommunitymanager.utils.readableFrameworkNameMapping
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
 import org.dataland.datalandmessagequeueutils.constants.ExchangeName
 import org.dataland.datalandmessagequeueutils.constants.MessageType
@@ -344,7 +345,7 @@ class NotificationServiceTest {
 
             assertEquals(testCompanyInformation.companyName, arg1.properties["companyName"])
             assertEquals(testCompanyId.toString(), arg1.properties["companyId"])
-            assertEquals(testDataType.toString(), arg1.properties["framework"])
+            assertEquals(readableFrameworkNameMapping.getValue(testDataType), arg1.properties["framework"])
             assertEquals(testReportingPeriod, arg1.properties["year"])
             assertEquals(testProxyPrimaryUrl, arg1.properties["baseUrl"])
 
