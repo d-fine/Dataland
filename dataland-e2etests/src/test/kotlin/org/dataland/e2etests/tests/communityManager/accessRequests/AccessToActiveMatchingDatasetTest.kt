@@ -4,7 +4,6 @@ import org.dataland.communitymanager.openApiClient.api.RequestControllerApi
 import org.dataland.communitymanager.openApiClient.model.AccessStatus
 import org.dataland.communitymanager.openApiClient.model.CompanyRole
 import org.dataland.communitymanager.openApiClient.model.RequestStatus
-import org.dataland.communitymanager.openApiClient.model.SingleDataRequest
 import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataVsmeData
 import org.dataland.datalandbackend.openApiClient.model.VsmeData
 import org.dataland.datalandbackendutils.utils.sha256
@@ -52,7 +51,7 @@ class AccessToActiveMatchingDatasetTest {
 
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.PremiumUser)
 
-        val singleDataRequest = setSingleDataVSMERequest(companyId)
+        val singleDataRequest = vsmeUtils.setSingleDataVSMERequest(companyId, setOf("2022"))
         requestControllerApi.postSingleDataRequest(singleDataRequest)
         Thread.sleep(timeSleep)
 
@@ -72,9 +71,10 @@ class AccessToActiveMatchingDatasetTest {
     fun privateFrameworkHasNoAccessNoMatchingDataset() {
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.PremiumUser)
 
-        val singleDataRequest = setSingleDataVSMERequest(
+        val singleDataRequest = vsmeUtils.setSingleDataVSMERequest(
             apiAccessor.uploadOneCompanyWithRandomIdentifier()
                 .actualStoredCompany.companyId,
+            setOf("2022"),
         )
 
         requestControllerApi.postSingleDataRequest(singleDataRequest)
@@ -95,7 +95,7 @@ class AccessToActiveMatchingDatasetTest {
 
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.PremiumUser)
 
-        val singleDataRequest = setSingleDataVSMERequest(companyId)
+        val singleDataRequest = vsmeUtils.setSingleDataVSMERequest(companyId, setOf("2022"))
         requestControllerApi.postSingleDataRequest(singleDataRequest)
         // TODO Maybe find different solution to Thread.sleep
         Thread.sleep(timeSleep)
@@ -112,7 +112,7 @@ class AccessToActiveMatchingDatasetTest {
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.PremiumUser)
         companyId = apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId
 
-        val singleDataRequest = setSingleDataVSMERequest(companyId)
+        val singleDataRequest = vsmeUtils.setSingleDataVSMERequest(companyId, setOf("2022"))
 
         requestControllerApi.postSingleDataRequest(singleDataRequest)
         Thread.sleep(timeSleep)
@@ -143,7 +143,7 @@ class AccessToActiveMatchingDatasetTest {
 
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.PremiumUser)
 
-        val singleDataRequest = setSingleDataVSMERequest(companyId)
+        val singleDataRequest = vsmeUtils.setSingleDataVSMERequest(companyId, setOf("2022"))
         requestControllerApi.postSingleDataRequest(singleDataRequest)
         // TODO Maybe find different solution to Thread.sleep
         Thread.sleep(timeSleep)
@@ -183,15 +183,5 @@ class AccessToActiveMatchingDatasetTest {
         // TODO clean up code duplication with functions in vsme.kt
         val companyAssociatedVsmeData = CompanyAssociatedDataVsmeData(companyId, "2022", vsmeData)
         vsmeUtils.postVsmeDataset(companyAssociatedVsmeData, listOf(dummyFileAlpha), TechnicalUser.Admin)
-    }
-
-    private fun setSingleDataVSMERequest(companyId: String): SingleDataRequest {
-        return SingleDataRequest(
-            companyIdentifier = companyId,
-            dataType = SingleDataRequest.DataType.vsme,
-            reportingPeriods = setOf("2022"),
-            contacts = setOf("someContact@example.com"),
-            message = "This is a test. The current timestamp is ${System.currentTimeMillis()}",
-        )
     }
 }

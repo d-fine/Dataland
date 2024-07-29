@@ -3,7 +3,6 @@ package org.dataland.e2etests.tests.frameworks
 import org.dataland.communitymanager.openApiClient.api.RequestControllerApi
 import org.dataland.communitymanager.openApiClient.model.AccessStatus
 import org.dataland.communitymanager.openApiClient.model.CompanyRole
-import org.dataland.communitymanager.openApiClient.model.SingleDataRequest
 import org.dataland.datalandbackend.openApiClient.api.VsmeDataControllerApi
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
 import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataVsmeData
@@ -246,15 +245,7 @@ class Vsme {
                 companyAssociatedDataVsmeData, listOf(dummyFileAlpha, dummyFileAlpha), TechnicalUser.Uploader,
             ).dataId
         apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.PremiumUser)
-        val vsmeDataRequest = SingleDataRequest(
-            companyIdentifier = companyId, reportingPeriods = setOf("2022"),
-            dataType = SingleDataRequest.DataType.vsme,
-        )
-
-        requestControllerApi.postSingleDataRequest(vsmeDataRequest)
-        Thread.sleep(10000)
-        val requestId = requestControllerApi.getDataRequestsForRequestingUser().maxByOrNull { it.creationTimestamp }
-            ?.dataRequestId
+        val requestId = createSingleDataVsmeRequest()
         apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Uploader)
         requestControllerApi.patchDataRequest(
             dataRequestId = UUID.fromString(requestId),
@@ -278,6 +269,15 @@ class Vsme {
 
         apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.PremiumUser)
         assertAccessDeniedWrapper { vsmeDataControllerApi.getCompanyAssociatedVsmeData(dataId) }
+    }
+
+    private fun createSingleDataVsmeRequest(): String? {
+        val vsmeDataRequest = vsmeUtils.setSingleDataVSMERequest(companyId, setOf("2022"))
+
+        requestControllerApi.postSingleDataRequest(vsmeDataRequest)
+        Thread.sleep(1000)
+        return requestControllerApi.getDataRequestsForRequestingUser().maxByOrNull { it.creationTimestamp }
+            ?.dataRequestId
     }
 
     private fun <T>executeDataRetrievalWithRetries(action: (dataId: String) -> T, dataId: String): T? {

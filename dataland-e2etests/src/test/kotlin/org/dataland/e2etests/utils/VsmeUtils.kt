@@ -1,5 +1,6 @@
 package org.dataland.e2etests.utils
 
+import org.dataland.communitymanager.openApiClient.model.SingleDataRequest
 import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataVsmeData
 import org.dataland.datalandbackend.openApiClient.model.CompanyReport
 import org.dataland.datalandbackend.openApiClient.model.DataMetaInformation
@@ -43,6 +44,15 @@ class VsmeUtils {
                     referencedReports = newReferencedReports,
                 ),
             ),
+        )
+    }
+    fun setSingleDataVSMERequest(companyId: String, reportingPeriods: Set<String>): SingleDataRequest {
+        return SingleDataRequest(
+            companyIdentifier = companyId,
+            dataType = SingleDataRequest.DataType.vsme,
+            reportingPeriods = reportingPeriods,
+            contacts = setOf("someContact@example.com"),
+            message = "This is a test. The current timestamp is ${System.currentTimeMillis()}",
         )
     }
 }
