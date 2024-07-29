@@ -67,7 +67,7 @@ describe('Component tests for the CreateP2pDataset that test dependent fields', 
 
       cy.get('div[data-test="emissionIntensityOfElectricityInCorrespondingUnit"] input').type('222');
 
-      cy.intercept('POST', '**/api/data/p2p', (request) => {
+      cy.intercept('POST', '**/api/data/p2p*', (request) => {
         request.reply(200, {});
       }).as('postP2pData');
       submitButton.clickButton();

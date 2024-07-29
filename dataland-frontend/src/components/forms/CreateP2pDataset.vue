@@ -133,6 +133,7 @@ import YesNoNaBaseDataPointFormField from '@/components/forms/parts/fields/YesNo
 import YesNoExtendedDataPointFormField from '@/components/forms/parts/fields/YesNoExtendedDataPointFormField.vue';
 import { type DocumentToUpload, uploadFiles } from '@/utils/FileUploadUtils';
 import { getFilledKpis } from '@/utils/DataPoint';
+import { hasUserCompanyOwnerOrDataUploaderRole } from '@/utils/CompanyRolesUtils';
 
 export default defineComponent({
   setup() {
@@ -259,7 +260,14 @@ export default defineComponent({
         const p2pDataControllerApi = new ApiClientProvider(
           assertDefined(this.getKeycloakPromise)()
         ).getUnifiedFrameworkDataController(DataTypeEnum.P2p);
-        await p2pDataControllerApi.postFrameworkData(this.companyAssociatedP2pData);
+
+        const isCompanyOwnerOrDataUploader = await hasUserCompanyOwnerOrDataUploaderRole(
+          this.companyAssociatedP2pData.companyId,
+          this.getKeycloakPromise
+        );
+
+        await p2pDataControllerApi.postFrameworkData(this.companyAssociatedP2pData, isCompanyOwnerOrDataUploader);
+
         this.$emit('datasetCreated');
         this.dataDate = undefined;
         this.message = 'Upload successfully executed.';
