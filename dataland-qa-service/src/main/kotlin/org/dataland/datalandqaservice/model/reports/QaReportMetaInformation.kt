@@ -13,13 +13,13 @@ import java.util.*
  */
 data class QaReportMetaInformation(
     @field:JsonProperty(required = true)
-    val dataId: UUID,
+    val dataId: String,
 
     @field:JsonProperty(required = true)
-    val qaReportId: UUID,
+    val qaReportId: String,
 
     @field:JsonProperty(required = true)
-    val reporterUserId: UUID,
+    val reporterUserId: String,
 
     @field:JsonProperty(required = true)
     val uploadTime: Long,

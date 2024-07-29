@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
-import java.util.UUID
+import org.springframework.web.bind.annotation.RequestParam
 
 /**
  * Defines the restful dataland Qa Report API
@@ -42,7 +42,7 @@ interface QaReportApi<QaReportType> {
     )
     @PreAuthorize("hasRole('ROLE_REVIEWER')")
     fun createQaReport(
-        @PathVariable("dataId") dataId: UUID,
+        @PathVariable("dataId") dataId: String,
         @RequestBody qaReport: QaReportType,
     ): ResponseEntity<QaReportMetaInformation>
 
@@ -66,9 +66,8 @@ interface QaReportApi<QaReportType> {
         produces = ["application/json"],
     )
     @PreAuthorize("hasRole('ROLE_REVIEWER')")
-    fun updateQaReport(@PathVariable("dataId") dataId: UUID, @PathVariable("qaReportId") qaReportId: UUID): ResponseEntity<QaReportWithMetaInformation<QaReportType>>
+    fun updateQaReport(@PathVariable("dataId") dataId: String, @PathVariable("qaReportId") qaReportId: String): ResponseEntity<QaReportWithMetaInformation<QaReportType>>
 
-    //why do we need the dataId?
     /**
      * A method to retrieve a QA report by the data Id and report Id
      * @param dataId identifier used to uniquely specify data in the data store
@@ -89,10 +88,10 @@ interface QaReportApi<QaReportType> {
         produces = ["application/json"],
     )
     @PreAuthorize("hasRole('ROLE_USER')")
-    fun getQaReport(@PathVariable("dataId") dataId: UUID, @PathVariable("qaReportId") qaReportId: UUID): ResponseEntity<QaReportWithMetaInformation<QaReportType>>
+    fun getQaReport(@PathVariable("dataId") dataId: String, @PathVariable("qaReportId") qaReportId: String): ResponseEntity<QaReportWithMetaInformation<QaReportType>>
 
     /**
-     * A method to retrieve all QA reports associated with a data Id
+     * A method to retrieve all QA reports associated with a data ID or reporter user ID
      * @param dataId identifier used to uniquely specify data in the data store
      * @return information about all QA reports associated with the data id
      */
@@ -110,5 +109,8 @@ interface QaReportApi<QaReportType> {
         produces = ["application/json"],
     )
     @PreAuthorize("hasRole('ROLE_USER')")
-    fun getAllQaReportsForDataset(@PathVariable("dataId") dataId: UUID): ResponseEntity<List<QaReportWithMetaInformation<QaReportType>>>
+    fun getAllQaReportsForDataset(
+        @PathVariable("dataId") dataId: String,
+        @RequestParam(required = false) reporterUserId: String?,
+    ): ResponseEntity<List<QaReportWithMetaInformation<QaReportType>>>
 }

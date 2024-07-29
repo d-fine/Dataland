@@ -5,23 +5,22 @@ import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.Qa
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.repositories.QaReportMetaInformationRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
-import java.util.*
 
 /**
  * A service class for managing QA report meta-information
  */
 @Component("QaReportMetaInformationManager")
-class QaReportMetaInformationManager (
+class QaReportMetaInformationManager(
     @Autowired private val qaReportMetaInformationRepository: QaReportMetaInformationRepository,
 ) {
 
     /**
-     * Method to make the data manager get meta info about one specific QA report
+     * Method to make the QA report manager get meta info about one specific QA report
      * @param qaReportId filters the requested meta info to one specific QA report ID
      * @return meta info about QA report behind the qaReportId
      */
-    fun getDataMetaInformationByQaReportId(qaReportId: UUID): QaReportMetaInformationEntity {
-        return qaReportMetaInformationRepository.findById(qaReportId.toString()).orElseThrow {
+    fun getDataMetaInformationByQaReportId(qaReportId: String): QaReportMetaInformationEntity {
+        return qaReportMetaInformationRepository.findById(qaReportId).orElseThrow {
             ResourceNotFoundApiException(
                 "QA report not found",
                 "No QA report with the id: $qaReportId could be found.",
@@ -29,4 +28,15 @@ class QaReportMetaInformationManager (
         }
     }
 
+    /**
+     * Method to make the QA report manager get all meta infos associated with a data set
+     * @param dataId filters the requested meta info to one specific data ID
+     * @return a list of meta info about QA reports associated to the data set
+     */
+    fun searchQaReportMetaInfo(
+        dataId: String,
+        reporterUserId: String?,
+    ): List<QaReportMetaInformationEntity> {
+        return qaReportMetaInformationRepository.searchQaReportMetaInformation(dataId, reporterUserId)
+    }
 }
