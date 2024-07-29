@@ -4,6 +4,7 @@ import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
+import jakarta.validation.Valid
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.reports.QaReportMetaInformation
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.reports.QaReportWithMetaInformation
 import org.springframework.http.ResponseEntity
@@ -41,7 +42,7 @@ interface QaReportApi<QaReportType> {
         produces = ["application/json"],
     )
     @PreAuthorize("hasRole('ROLE_REVIEWER')")
-    fun createQaReport(
+    fun postQaReport(
         @PathVariable("dataId") dataId: String,
         @RequestBody qaReport: QaReportType,
     ): ResponseEntity<QaReportMetaInformation>
@@ -66,7 +67,12 @@ interface QaReportApi<QaReportType> {
         produces = ["application/json"],
     )
     @PreAuthorize("hasRole('ROLE_REVIEWER')")
-    fun updateQaReport(@PathVariable("dataId") dataId: String, @PathVariable("qaReportId") qaReportId: String): ResponseEntity<QaReportWithMetaInformation<QaReportType>>
+    fun updateQaReport(
+        @PathVariable("dataId") dataId: String,
+        @PathVariable("qaReportId") qaReportId: String,
+        @Valid @RequestBody
+        qaReport: QaReportType,
+    ): ResponseEntity<QaReportWithMetaInformation<QaReportType>>
 
     /**
      * A method to retrieve a QA report by the data Id and report Id

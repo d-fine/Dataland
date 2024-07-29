@@ -26,6 +26,20 @@ class QaLogMessageBuilder {
     }
 
     /**
+     * Generates a message to inform that a QA report for a specific dataset shall be posted
+     * @param reporterUserId The ID of the user who requests the post
+     * @param dataId The ID of the dataset for which a QA report shall be posted
+     * @returns the message to log
+     */
+    fun postQaReportMessage(
+        dataId: String,
+        reporterUserId: String,
+    ): String {
+        return "Received a request from user '$reporterUserId' to post a QA report " +
+            "for data ID '$dataId'"
+    }
+
+    /**
      * Generates a message to inform that a request was received to return a QA report by its ID
      * @param dataId The ID of the dataset for which the report shall be returned
      * @param qaReportId The ID of the report that shall be returned

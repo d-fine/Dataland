@@ -1,13 +1,18 @@
 package org.dataland.datalandqaservice.org.dataland.datalandqaservice.services
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import org.dataland.datalandbackendutils.exceptions.InsufficientRightsApiException
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.QaReportEntity
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.repositories.QaReportRepository
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.utils.IdUtils
+import org.dataland.keycloakAdapter.auth.DatalandAuthentication
+import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
+import java.time.Instant
 
 /**
  * A service class for managing QA report meta-information
@@ -16,7 +21,9 @@ import org.springframework.stereotype.Service
 class QaReportManager(
     @Autowired private val objectMapper: ObjectMapper,
     @Autowired private val qaReportRepository: QaReportRepository,
+    @Autowired private val qaReportManager: QaReportManager,
 ) {
+    private val logger = LoggerFactory.getLogger(javaClass)
 
     /**
      * Method to make the QA report manager create a new QA report
@@ -27,8 +34,8 @@ class QaReportManager(
      * @param uploadTime the time the QA report was uploaded
      * @return the created QA report
      */
-    fun createQaReport(
-        report: Any,
+    fun <QaReportType> createQaReport(
+        report: QaReportType,
         dataId: String,
         dataType: String,
         reporterUserId: String,
@@ -45,6 +52,41 @@ class QaReportManager(
                 uploadTime = uploadTime,
             ),
         )
+    }
+
+    /**
+     * Method to put the information of a company.
+     * @param dataId the ID of the data set the QA report is associated with
+     * @param qaReportId the ID of the QA report to be updated
+     * @param dataType the type of the data set the QA report is associated with
+     * @param qaReport the new QA report content to be stored
+     * @return the updated company information object
+     */
+    @Transactional
+    fun <QaReportType> putQaReport(
+        qaReportId: String,
+        dataId: String,
+        dataType: String,
+        qaReport: QaReportType,
+    ): QaReportEntity {
+        val storedQaReportEntity = qaReportRepository.findById(qaReportId).orElseThrow {
+            ResourceNotFoundApiException(
+                "QA report not found",
+                "No QA report with the id: $qaReportId could be found.",
+            )
+        }
+        if (storedQaReportEntity.reporterUserId != DatalandAuthentication.fromContext().userId) {
+            throw InsufficientRightsApiException(
+                "Missing required access rights",
+                "You do not have the required access rights to update QA report with the id: $qaReportId",
+            )
+        }
+        logger.info("Updating QA report with ID $qaReportId")
+        storedQaReportEntity.qaReport = objectMapper.writeValueAsString(qaReport)
+        //ToDO: discuss if we want to know when it was originally uploaded and when the latest update was
+        storedQaReportEntity.uploadTime = Instant.now().toEpochMilli()
+
+        return qaReportRepository.save(storedQaReportEntity)
     }
 
     /**

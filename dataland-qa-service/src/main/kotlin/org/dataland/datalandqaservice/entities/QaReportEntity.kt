@@ -24,7 +24,7 @@ data class QaReportEntity(
     val qaReportId: String,
 
     @Column(name = "qa_report", nullable = false)
-    val qaReport: String,
+    var qaReport: String,
 
     @Column(name = "data_id", nullable = false)
     var dataId: String,

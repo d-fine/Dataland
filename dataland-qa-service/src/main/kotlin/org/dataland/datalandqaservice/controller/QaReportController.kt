@@ -9,7 +9,7 @@ import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.Qa
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.slf4j.LoggerFactory
 import org.springframework.http.ResponseEntity
-import java.util.*
+import java.time.Instant
 
 open class QaReportController<QaReportType>(
     private val objectMapper: ObjectMapper,
@@ -19,9 +19,19 @@ open class QaReportController<QaReportType>(
 ) : QaReportApi<QaReportType> {
     private val logger = LoggerFactory.getLogger(javaClass)
     private val qaLogMessageBuilder = QaLogMessageBuilder()
-
-    override fun createQaReport(dataId: String, qaReport: QaReportType): ResponseEntity<QaReportMetaInformation> {
-        TODO("Not yet implemented")
+    override fun postQaReport(dataId: String, qaReport: QaReportType): ResponseEntity<QaReportMetaInformation> {
+        val reporterUserId = DatalandAuthentication.fromContext().userId
+        logger.info(qaLogMessageBuilder.postQaReportMessage(dataId, reporterUserId))
+        val uploadTime = Instant.now().toEpochMilli()
+        val reportEntity = qaReportManager.createQaReport(
+            report = qaReport,
+            dataId = dataId,
+            dataType = dataType,
+            reporterUserId = reporterUserId,
+            uploadTime = uploadTime,
+        )
+        val apiModel = reportEntity.toApiModel(DatalandAuthentication.fromContextOrNull())
+        return ResponseEntity.ok(apiModel)
     }
 
     override fun getQaReport(
@@ -34,8 +44,10 @@ open class QaReportController<QaReportType>(
         return ResponseEntity.ok(apiModel)
     }
 
-    override fun updateQaReport(dataId: String, qaReportId: String): ResponseEntity<QaReportWithMetaInformation<QaReportType>> {
-        TODO("Not yet implemented")
+    override fun updateQaReport(dataId: String, qaReportId: String, qaReport: QaReportType): ResponseEntity<QaReportWithMetaInformation<QaReportType>> {
+        val updatedReportEntity = qaReportManager.putQaReport(qaReportId, dataId, dataType, qaReport)
+        val apiModel = updatedReportEntity.toFullApiModel(objectMapper, clazz, DatalandAuthentication.fromContextOrNull())
+        return ResponseEntity.ok(apiModel)
     }
 
     override fun getAllQaReportsForDataset(
