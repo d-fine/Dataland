@@ -2,6 +2,7 @@
 package org.dataland.datalandqaservice.frameworks.sfdr.model.environmental.greenhouseGasEmissions
 
 import jakarta.validation.Valid
+import org.dataland.datalandbackend.openApiClient.model.CurrencyDataPoint
 import org.dataland.datalandbackend.openApiClient.model.ExtendedDataPointBigDecimal
 import org.dataland.datalandbackend.openApiClient.model.ExtendedDataPointYesNoNoEvidenceFound
 import org.dataland.datalandqaservice.model.reports.QaReportDataPoint
@@ -43,11 +44,9 @@ data class SfdrEnvironmentalGreenhouseGasEmissions(
     @field:Valid()
     val scope1And2And3GhgEmissionsMarketBasedInTonnes: QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
 
-    @field:Valid()
-    val enterpriseValue: QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
+    val enterpriseValue: CurrencyDataPoint? = null,
 
-    @field:Valid()
-    val totalRevenue: QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
+    val totalRevenue: CurrencyDataPoint? = null,
 
     @field:Valid()
     val carbonFootprintInTonnesPerMillionEURRevenue: QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,

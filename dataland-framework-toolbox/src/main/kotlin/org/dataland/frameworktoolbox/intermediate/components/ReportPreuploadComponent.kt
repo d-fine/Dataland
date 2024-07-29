@@ -41,6 +41,10 @@ class ReportPreuploadComponent(
         )
     }
 
+    override fun generateDefaultQaModel(dataClassBuilder: DataClassBuilder) {
+        // Component not represented in QA model
+    }
+
     override fun generateDefaultViewConfig(sectionConfigBuilder: SectionConfigBuilder) {
         // Component not displayed on view page
     }

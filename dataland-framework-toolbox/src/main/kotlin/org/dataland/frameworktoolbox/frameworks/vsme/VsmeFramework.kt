@@ -25,7 +25,7 @@ class VsmeFramework : PavedRoadFramework(
     File("./dataland-framework-toolbox/inputs/vsme/vsme.xlsx"),
     order = 6,
     isPrivateFramework = true,
-    enabledFeatures = FrameworkGenerationFeatures.allExcept(FrameworkGenerationFeatures.QaModel)
+    enabledFeatures = FrameworkGenerationFeatures.allExcept(FrameworkGenerationFeatures.QaModel),
 ) {
     override fun getComponentGenerationUtils(): ComponentGenerationUtils {
         return VsmeComponentGenerationUtils()

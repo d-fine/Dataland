@@ -20,7 +20,8 @@ class HeimathafenFramework : PavedRoadFramework(
     explanation = "Das Heimathafen Framework",
     File("./dataland-framework-toolbox/inputs/heimathafen/dataDictionary-Heimathafen.csv"),
     order = 8,
-    enabledFeatures = FrameworkGenerationFeatures.allExcept(FrameworkGenerationFeatures.QaModel)
+    enabledFeatures =
+    FrameworkGenerationFeatures.allExcept(FrameworkGenerationFeatures.QaModel),
 ) {
     override fun getComponentGenerationUtils(): ComponentGenerationUtils {
         return ComponentGenerationUtilsForGermanFrameworks()

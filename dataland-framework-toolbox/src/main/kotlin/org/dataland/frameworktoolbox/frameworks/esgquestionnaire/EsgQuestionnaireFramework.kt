@@ -37,7 +37,8 @@ class EsgQuestionnaireFramework : PavedRoadFramework(
         "Gesamtverbands der Versicherer und des Bundesverbands Öffentlicher Banken",
     File("./dataland-framework-toolbox/inputs/esg-questionnaire/esg-questionnaire.xlsx"),
     order = 7,
-    enabledFeatures = FrameworkGenerationFeatures.allExcept(FrameworkGenerationFeatures.QaModel)
+    enabledFeatures =
+    FrameworkGenerationFeatures.allExcept(FrameworkGenerationFeatures.QaModel),
 ) {
 
     override fun configureDiagnostics(diagnosticManager: DiagnosticManager) {

@@ -8,7 +8,6 @@ import org.dataland.frameworktoolbox.utils.LoggerDelegate
 import org.dataland.frameworktoolbox.utils.Naming.getNameFromLabel
 import org.dataland.frameworktoolbox.utils.Naming.removeUnallowedJavaIdentifierCharacters
 import org.dataland.frameworktoolbox.utils.capitalizeEn
-import kotlin.io.path.div
 
 /**
  * A FrameworkDataModelBuilder converts an Intermediate-Representation framework to a Kotlin-DataModel for QA
@@ -34,6 +33,10 @@ class FrameworkQaModelBuilder(
         mutableListOf(),
     )
 
+    /**
+     * Builds the QA data-model into the given Dataland Repository
+     * @param into the Dataland Repository to build the QA data-model into
+     */
     fun build(into: DatalandRepository) {
         logger.info("Starting to build to QA data-model into the dataland-repository at ${into.path}")
         rootPackageBuilder.build(into.qaKotlinSrc)

@@ -2,7 +2,9 @@
 package org.dataland.datalandqaservice.frameworks.sfdr.model.social.socialAndEmployeeMatters
 
 import jakarta.validation.Valid
+import org.dataland.datalandbackend.openApiClient.model.CurrencyDataPoint
 import org.dataland.datalandbackend.openApiClient.model.ExtendedDataPointBigDecimal
+import org.dataland.datalandbackend.openApiClient.model.ExtendedDataPointBigInteger
 import org.dataland.datalandbackend.openApiClient.model.ExtendedDataPointYesNoNoEvidenceFound
 import org.dataland.datalandqaservice.model.reports.QaReportDataPoint
 
@@ -62,20 +64,18 @@ data class SfdrSocialSocialAndEmployeeMatters(
     val oecdGuidelinesForMultinationalEnterprisesGrievanceHandling:
     QaReportDataPoint<ExtendedDataPointYesNoNoEvidenceFound?>? = null,
 
-    @field:Valid()
-    val averageGrossHourlyEarningsMaleEmployees: QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
+    val averageGrossHourlyEarningsMaleEmployees: CurrencyDataPoint? = null,
 
-    @field:Valid()
-    val averageGrossHourlyEarningsFemaleEmployees: QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
+    val averageGrossHourlyEarningsFemaleEmployees: CurrencyDataPoint? = null,
 
     @field:Valid()
     val unadjustedGenderPayGapInPercent: QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
 
     @field:Valid()
-    val femaleBoardMembers: QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
+    val femaleBoardMembers: QaReportDataPoint<ExtendedDataPointBigInteger?>? = null,
 
     @field:Valid()
-    val maleBoardMembers: QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
+    val maleBoardMembers: QaReportDataPoint<ExtendedDataPointBigInteger?>? = null,
 
     @field:Valid()
     val boardGenderDiversityInPercent: QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
@@ -102,10 +102,10 @@ data class SfdrSocialSocialAndEmployeeMatters(
     val whistleblowerProtectionPolicy: QaReportDataPoint<ExtendedDataPointYesNoNoEvidenceFound?>? = null,
 
     @field:Valid()
-    val reportedIncidentsOfDiscrimination: QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
+    val reportedIncidentsOfDiscrimination: QaReportDataPoint<ExtendedDataPointBigInteger?>? = null,
 
     @field:Valid()
-    val sanctionedIncidentsOfDiscrimination: QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
+    val sanctionedIncidentsOfDiscrimination: QaReportDataPoint<ExtendedDataPointBigInteger?>? = null,
 
     @field:Valid()
     val ceoToEmployeePayGapRatio: QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,

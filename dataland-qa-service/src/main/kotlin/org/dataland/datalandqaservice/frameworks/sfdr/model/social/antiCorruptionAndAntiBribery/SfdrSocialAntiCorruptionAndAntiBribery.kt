@@ -2,7 +2,8 @@
 package org.dataland.datalandqaservice.frameworks.sfdr.model.social.antiCorruptionAndAntiBribery
 
 import jakarta.validation.Valid
-import org.dataland.datalandbackend.openApiClient.model.ExtendedDataPointBigDecimal
+import org.dataland.datalandbackend.openApiClient.model.CurrencyDataPoint
+import org.dataland.datalandbackend.openApiClient.model.ExtendedDataPointBigInteger
 import org.dataland.datalandqaservice.model.reports.QaReportDataPoint
 
 /**
@@ -10,12 +11,11 @@ import org.dataland.datalandqaservice.model.reports.QaReportDataPoint
  */
 data class SfdrSocialAntiCorruptionAndAntiBribery(
     @field:Valid()
-    val casesOfInsufficientActionAgainstBriberyAndCorruption: QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
+    val casesOfInsufficientActionAgainstBriberyAndCorruption: QaReportDataPoint<ExtendedDataPointBigInteger?>? = null,
 
     @field:Valid()
-    val reportedConvictionsOfBriberyAndCorruption: QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
+    val reportedConvictionsOfBriberyAndCorruption: QaReportDataPoint<ExtendedDataPointBigInteger?>? = null,
 
-    @field:Valid()
-    val totalAmountOfReportedFinesOfBriberyAndCorruption: QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
+    val totalAmountOfReportedFinesOfBriberyAndCorruption: CurrencyDataPoint? = null,
 
 )

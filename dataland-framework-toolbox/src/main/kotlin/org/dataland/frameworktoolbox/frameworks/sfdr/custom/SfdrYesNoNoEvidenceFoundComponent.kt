@@ -19,7 +19,11 @@ import org.dataland.frameworktoolbox.utils.typescript.TypeScriptImport
 class SfdrYesNoNoEvidenceFoundComponent(
     identifier: String,
     parent: FieldNodeParent,
-) : SimpleKotlinBackedBaseComponent(identifier, parent, "org.dataland.datalandbackend.model.enums.commons.YesNoNoEvidenceFound") {
+) : SimpleKotlinBackedBaseComponent(
+    identifier,
+    parent,
+    "org.dataland.datalandbackend.model.enums.commons.YesNoNoEvidenceFound",
+) {
 
     override fun generateDefaultViewConfig(sectionConfigBuilder: SectionConfigBuilder) {
         requireDocumentSupportIn(setOf(ExtendedDocumentSupport))

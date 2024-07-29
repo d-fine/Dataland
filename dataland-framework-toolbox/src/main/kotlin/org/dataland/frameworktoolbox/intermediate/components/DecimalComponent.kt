@@ -9,6 +9,7 @@ import org.dataland.frameworktoolbox.intermediate.datapoints.addPropertyWithDocu
 import org.dataland.frameworktoolbox.specific.datamodel.TypeReference
 import org.dataland.frameworktoolbox.specific.datamodel.elements.DataClassBuilder
 import org.dataland.frameworktoolbox.specific.fixturegenerator.elements.FixtureSectionBuilder
+import org.dataland.frameworktoolbox.specific.qamodel.addQaPropertyWithDocumentSupport
 import org.dataland.frameworktoolbox.specific.uploadconfig.elements.UploadCategoryBuilder
 
 /**
@@ -32,6 +33,17 @@ open class DecimalComponent(
                 isNullable,
             ),
             annotations,
+        )
+    }
+
+    override fun generateDefaultQaModel(dataClassBuilder: DataClassBuilder) {
+        dataClassBuilder.addQaPropertyWithDocumentSupport(
+            documentSupport,
+            identifier,
+            TypeReference(
+                "java.math.BigDecimal",
+                isNullable,
+            ),
         )
     }
 

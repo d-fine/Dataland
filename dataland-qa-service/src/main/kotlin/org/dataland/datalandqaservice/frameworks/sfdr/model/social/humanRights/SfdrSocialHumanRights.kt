@@ -2,7 +2,7 @@
 package org.dataland.datalandqaservice.frameworks.sfdr.model.social.humanRights
 
 import jakarta.validation.Valid
-import org.dataland.datalandbackend.openApiClient.model.ExtendedDataPointBigDecimal
+import org.dataland.datalandbackend.openApiClient.model.ExtendedDataPointBigInteger
 import org.dataland.datalandbackend.openApiClient.model.ExtendedDataPointYesNoNoEvidenceFound
 import org.dataland.datalandqaservice.model.reports.QaReportDataPoint
 
@@ -26,6 +26,6 @@ data class SfdrSocialHumanRights(
     val reportedForcedOrCompulsoryLabourIncidents: QaReportDataPoint<ExtendedDataPointYesNoNoEvidenceFound?>? = null,
 
     @field:Valid()
-    val numberOfReportedIncidentsOfHumanRightsViolations: QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
+    val numberOfReportedIncidentsOfHumanRightsViolations: QaReportDataPoint<ExtendedDataPointBigInteger?>? = null,
 
 )

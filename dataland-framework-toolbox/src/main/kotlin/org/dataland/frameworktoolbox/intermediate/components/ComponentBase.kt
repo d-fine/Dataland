@@ -23,6 +23,7 @@ import org.dataland.frameworktoolbox.utils.capitalizeEn
  * @param identifier the camelCase identifier of the component
  * @param parent the parent node in the hierarchy
  */
+@Suppress("TooManyFunctions")
 @ComponentMarker
 open class ComponentBase(
     var identifier: String,
@@ -140,7 +141,6 @@ open class ComponentBase(
     fun generateDataModel(dataClassBuilder: DataClassBuilder) {
         val localDataModelGenerator = dataModelGenerator
         if (localDataModelGenerator != null) {
-            require(qaModelGenerator != null) { "You should always overwrite qaModelGenerator when using dataModelGenerator" }
             localDataModelGenerator(dataClassBuilder)
         }
         generateDefaultDataModel(dataClassBuilder)
@@ -151,7 +151,7 @@ open class ComponentBase(
      * generator
      */
     open fun generateDefaultQaModel(dataClassBuilder: DataClassBuilder) {
-        // throw IllegalStateException("This component did not implement QA model generation.")
+        throw IllegalStateException("This component did not implement QA model generation.")
     }
 
     /**
@@ -160,9 +160,12 @@ open class ComponentBase(
     fun generateQaModel(dataClassBuilder: DataClassBuilder) {
         val localQaModelGenerator = qaModelGenerator
         if (localQaModelGenerator != null) {
-            require(dataModelGenerator != null) { "You should always overwrite dataModelGenerator when using qaModelGenerator" }
             localQaModelGenerator(dataClassBuilder)
         }
+        require(dataModelGenerator == null || qaModelGenerator != null) {
+            "You should always overwrite dataModelGenerator when using qaModelGenerator"
+        }
+
         generateDefaultQaModel(dataClassBuilder)
     }
 
