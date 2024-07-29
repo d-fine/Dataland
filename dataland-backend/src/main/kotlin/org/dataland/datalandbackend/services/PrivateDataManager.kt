@@ -90,7 +90,7 @@ class PrivateDataManager(
         val documentHashes = documents?.takeIf { it.isNotEmpty() }
             ?.let { storeDocumentsInMemoryAndReturnTheirHashes(dataId, it, correlationId) }
             ?: mutableMapOf()
-        sendReceptionMessage(dataId, correlationId, documentHashes)
+        sendReceptionMessage(dataId, storableDataSet, correlationId, documentHashes)
         return metaInfoEntity.toApiModel(userAuthentication)
     }
 
@@ -156,6 +156,7 @@ class PrivateDataManager(
 
     private fun sendReceptionMessage(
         dataId: String,
+        storableDataset: StorableDataSet,
         correlationId: String,
         documentHashes: Map<String, String>,
     ) {
@@ -166,8 +167,10 @@ class PrivateDataManager(
         val payload = JSONObject(
             mapOf(
                 "dataId" to dataId,
-                "actionType" to
-                    ActionType.StorePrivateDataAndDocuments,
+                "companyId" to storableDataset.companyId,
+                "framework" to storableDataset.dataType.toString(),
+                "reportingPeriod" to storableDataset.reportingPeriod,
+                "actionType" to ActionType.StorePrivateDataAndDocuments,
                 "documentHashes" to documentHashes,
             ),
         ).toString()
@@ -175,9 +178,7 @@ class PrivateDataManager(
             payload, MessageType.PrivateDataReceived, correlationId,
             ExchangeName.PrivateRequestReceived, RoutingKeyNames.privateDataAndDocument,
         )
-        logger.info(
-            "Message to EuroDaT-storage-service for dataId $dataId and correlationId $correlationId was sent",
-        )
+        logger.info("Message to EuroDaT-storage-service for dataId $dataId and correlationId $correlationId was sent")
     }
 
     /**
