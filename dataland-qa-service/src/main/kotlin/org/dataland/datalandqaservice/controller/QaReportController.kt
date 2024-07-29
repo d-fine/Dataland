@@ -18,9 +18,8 @@ open class QaReportController<QaReportType>(
     }
 
     override fun getQaReport(dataId: UUID, qaReportId: UUID): ResponseEntity<QaReportWithMetaInformation<QaReportType>> {
-        TODO("Not yet implemented")
         //Since we are only starting with Sfdr, we don't need to check for private frameworks (vsme)
-        val metaInfoEntity = qaReportMetaInformationManager.getDataMetaInformationByDataId(qaReportId)
+        val metaInfoEntity = qaReportMetaInformationManager.getDataMetaInformationByQaReportId(qaReportId)
         val qaReportWithMetaInformation = QaReportWithMetaInformation(
             metaInfo = QaReportMetaInformation(
                 dataId = metaInfoEntity.dataId,
@@ -37,7 +36,7 @@ open class QaReportController<QaReportType>(
         TODO("Not yet implemented")
     }
 
-    override fun getQaReports(dataId: UUID): ResponseEntity<List<QaReportWithMetaInformation<QaReportType>>> {
-        TODO("Not yet implemented")
+    override fun getAllQaReportsForDataset(dataId: UUID): ResponseEntity<List<QaReportWithMetaInformation<QaReportType>>> {
+
     }
 }

@@ -20,7 +20,7 @@ class QaReportMetaInformationManager (
      * @param qaReportId filters the requested meta info to one specific QA report ID
      * @return meta info about QA report behind the qaReportId
      */
-    fun getDataMetaInformationByDataId(qaReportId: UUID): QaReportMetaInformationEntity {
+    fun getDataMetaInformationByQaReportId(qaReportId: UUID): QaReportMetaInformationEntity {
         return qaReportMetaInformationRepository.findById(qaReportId.toString()).orElseThrow {
             ResourceNotFoundApiException(
                 "QA report not found",

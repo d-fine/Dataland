@@ -110,5 +110,5 @@ interface QaReportApi<QaReportType> {
         produces = ["application/json"],
     )
     @PreAuthorize("hasRole('ROLE_USER')")
-    fun getQaReports(@PathVariable("dataId") dataId: UUID): ResponseEntity<List<QaReportWithMetaInformation<QaReportType>>>
+    fun getAllQaReportsForDataset(@PathVariable("dataId") dataId: UUID): ResponseEntity<List<QaReportWithMetaInformation<QaReportType>>>
 }
