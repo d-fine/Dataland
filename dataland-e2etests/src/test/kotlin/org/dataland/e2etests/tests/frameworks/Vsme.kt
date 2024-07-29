@@ -245,7 +245,7 @@ class Vsme {
             postVsmeDataset(
                 companyAssociatedDataVsmeData, listOf(dummyFileAlpha, dummyFileAlpha), TechnicalUser.Uploader,
             ).dataId
-        apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader)
+        apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.PremiumUser)
         val vsmeDataRequest = SingleDataRequest(
             companyIdentifier = companyId, reportingPeriods = setOf("2022"),
             dataType = SingleDataRequest.DataType.vsme,
@@ -260,7 +260,7 @@ class Vsme {
             dataRequestId = UUID.fromString(requestId),
             accessStatus = AccessStatus.Granted,
         )
-        apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader)
+        apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.PremiumUser)
         val retrievedCompanyAssociatedVsmeData = executeDataRetrievalWithRetries(
             vsmeDataControllerApi::getCompanyAssociatedVsmeData, dataId,
         )
@@ -276,7 +276,7 @@ class Vsme {
             accessStatus = AccessStatus.Revoked,
         )
 
-        apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader)
+        apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.PremiumUser)
         assertAccessDeniedWrapper { vsmeDataControllerApi.getCompanyAssociatedVsmeData(dataId) }
     }
 
