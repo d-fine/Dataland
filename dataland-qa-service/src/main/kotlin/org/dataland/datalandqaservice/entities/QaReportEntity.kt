@@ -9,7 +9,6 @@ import org.dataland.datalandqaservice.org.dataland.datalandqaservice.interfaces.
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.reports.QaReportMetaInformation
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.reports.QaReportWithMetaInformation
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
-import org.dataland.keycloakAdapter.auth.DatalandRealmRole
 
 /**
  * The database entity for storing metadata regarding QA reports uploaded to dataland
@@ -23,7 +22,7 @@ data class QaReportEntity(
     @Column(name = "qa_report_id")
     val qaReportId: String,
 
-    @Column(name = "qa_report", nullable = false)
+    @Column(name = "qa_report", columnDefinition = "TEXT", nullable = false)
     var qaReport: String,
 
     @Column(name = "data_id", nullable = false)
@@ -37,6 +36,9 @@ data class QaReportEntity(
 
     @Column(name = "upload_time", nullable = false)
     var uploadTime: Long,
+
+    @Column(name = "active", nullable = false)
+    var active: Boolean,
 ) : ApiModelConversion<QaReportMetaInformation> {
 
     /**
@@ -59,17 +61,13 @@ data class QaReportEntity(
     }
 
     override fun toApiModel(viewingUser: DatalandAuthentication?): QaReportMetaInformation {
-        val displayUploaderUserId = viewingUser != null && (
-            viewingUser.roles.contains(DatalandRealmRole.ROLE_ADMIN) ||
-                viewingUser.userId == reporterUserId
-            )
-
         return QaReportMetaInformation(
             dataId = dataId,
             qaReportId = qaReportId,
-            reporterUserId = if (displayUploaderUserId) reporterUserId else null,
+            reporterUserId = reporterUserId,
             uploadTime = uploadTime,
             dataType = dataType,
+            active = active,
         )
     }
 }

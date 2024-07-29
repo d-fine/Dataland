@@ -11,6 +11,9 @@ import org.slf4j.LoggerFactory
 import org.springframework.http.ResponseEntity
 import java.time.Instant
 
+/**
+ * A REST controller for the QA report API.
+ */
 open class QaReportController<QaReportType>(
     private val objectMapper: ObjectMapper,
     private val qaReportManager: QaReportManager,
@@ -19,6 +22,7 @@ open class QaReportController<QaReportType>(
 ) : QaReportApi<QaReportType> {
     private val logger = LoggerFactory.getLogger(javaClass)
     private val qaLogMessageBuilder = QaLogMessageBuilder()
+
     override fun postQaReport(dataId: String, qaReport: QaReportType): ResponseEntity<QaReportMetaInformation> {
         val reporterUserId = DatalandAuthentication.fromContext().userId
         logger.info(qaLogMessageBuilder.postQaReportMessage(dataId, reporterUserId))
@@ -44,18 +48,28 @@ open class QaReportController<QaReportType>(
         return ResponseEntity.ok(apiModel)
     }
 
-    override fun updateQaReport(dataId: String, qaReportId: String, qaReport: QaReportType): ResponseEntity<QaReportWithMetaInformation<QaReportType>> {
-        val updatedReportEntity = qaReportManager.putQaReport(qaReportId, dataId, dataType, qaReport)
-        val apiModel = updatedReportEntity.toFullApiModel(objectMapper, clazz, DatalandAuthentication.fromContextOrNull())
-        return ResponseEntity.ok(apiModel)
+    override fun markQaReportInactive(dataId: String, qaReportId: String) {
+        qaReportManager.setQaReportStatus(
+            dataId = dataId,
+            dataType = dataType,
+            qaReportId = qaReportId,
+            active = false,
+            requestingUser = DatalandAuthentication.fromContext(),
+        )
     }
 
     override fun getAllQaReportsForDataset(
         dataId: String,
+        showInactive: Boolean?,
         reporterUserId: String?,
     ): ResponseEntity<List<QaReportWithMetaInformation<QaReportType>>> {
         logger.info(qaLogMessageBuilder.getAllQaReportsForDataIdMessage(dataId, reporterUserId))
-        val reportEntities = qaReportManager.searchQaReportMetaInfo(dataId, dataType, reporterUserId)
+        val reportEntities = qaReportManager.searchQaReportMetaInfo(
+            dataId = dataId,
+            dataType = dataType,
+            reporterUserId = reporterUserId,
+            showInactive = showInactive ?: false,
+        )
         val apiModel = reportEntities.map {
             it.toFullApiModel(objectMapper, clazz, DatalandAuthentication.fromContextOrNull())
         }

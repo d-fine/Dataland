@@ -3,7 +3,10 @@ package org.dataland.datalandqaservice.org.dataland.datalandqaservice.services
 import org.springframework.stereotype.Component
 import java.util.*
 
-@Component("QaLogMessageBuilder")
+/**
+ * A builder for log messages related to QA reports.
+ */
+@Component
 class QaLogMessageBuilder {
 
     /**
@@ -55,18 +58,7 @@ class QaLogMessageBuilder {
      * @returns the message to log
      */
     fun getAllQaReportsForDataIdMessage(dataId: String, reviewerId: String?): String {
-        return "Received a request to get all QA report information for dataId '$dataId' (and reviewer id: $reviewerId)."
-    }
-
-    /**
-     * Generates a message to inform that a QA report has been successfully returned
-     * @param dataId The ID of the dataset for which the report shall be returned
-     * @param qaReportId The ID of the report that shall be returned
-     * @param correlationId The correlation ID in association with this operation
-     * @returns the message to log
-     */
-    fun getQaReportSuccessMessage(qaReportId: String, dataId: String, correlationId: String): String {
-        return "Received QA report with qaReportId '$qaReportId' for dataId '$dataId' " +
-            "Correlation ID '$correlationId'"
+        return "Received a request to get all QA report information for dataId '$dataId' " +
+            "(and reviewer id: $reviewerId)."
     }
 }

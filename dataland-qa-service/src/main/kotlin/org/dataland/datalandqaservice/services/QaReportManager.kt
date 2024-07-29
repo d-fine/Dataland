@@ -1,6 +1,8 @@
 package org.dataland.datalandqaservice.org.dataland.datalandqaservice.services
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import org.dataland.datalandbackend.openApiClient.api.MetaDataControllerApi
+import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
 import org.dataland.datalandbackendutils.exceptions.InsufficientRightsApiException
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
@@ -10,9 +12,9 @@ import org.dataland.datalandqaservice.org.dataland.datalandqaservice.utils.IdUti
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
-import java.time.Instant
 
 /**
  * A service class for managing QA report meta-information
@@ -20,10 +22,36 @@ import java.time.Instant
 @Service
 class QaReportManager(
     @Autowired private val objectMapper: ObjectMapper,
+    @Autowired private val metaDataControllerApi: MetaDataControllerApi,
     @Autowired private val qaReportRepository: QaReportRepository,
-    @Autowired private val qaReportManager: QaReportManager,
+    @Autowired private val qaReportSecurityPolicy: QaReportSecurityPolicy,
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
+
+    private fun ensureDatalandDataExists(dataId: String, dataType: String) {
+        try {
+            val dataMetaInfo = metaDataControllerApi.getDataMetaInfo(dataId)
+
+            if (dataMetaInfo.dataType.value != dataType) {
+                throw InvalidInputApiException(
+                    "Data type mismatch",
+                    "The requested data set '$dataId' is of type '${dataMetaInfo.dataType}'," +
+                        " but the expected type is '$dataType'.",
+                )
+            }
+        } catch (ex: ClientException) {
+            val exceptionToThrow = if (ex.statusCode == HttpStatus.NOT_FOUND.value()) {
+                ResourceNotFoundApiException(
+                    "Dataset '$dataId' not found",
+                    "No data set with the id: $dataId could be found.",
+                    ex,
+                )
+            } else {
+                ex
+            }
+            throw exceptionToThrow
+        }
+    }
 
     /**
      * Method to make the QA report manager create a new QA report
@@ -34,6 +62,7 @@ class QaReportManager(
      * @param uploadTime the time the QA report was uploaded
      * @return the created QA report
      */
+    @Transactional
     fun <QaReportType> createQaReport(
         report: QaReportType,
         dataId: String,
@@ -41,7 +70,9 @@ class QaReportManager(
         reporterUserId: String,
         uploadTime: Long,
     ): QaReportEntity {
+        ensureDatalandDataExists(dataId, dataType)
         val qaReportId = IdUtils.generateUUID()
+        qaReportRepository.markAllReportsInactiveByDataIdAndReportingUserId(dataId, reporterUserId)
         return qaReportRepository.save(
             QaReportEntity(
                 qaReportId = qaReportId,
@@ -50,41 +81,40 @@ class QaReportManager(
                 dataType = dataType,
                 reporterUserId = reporterUserId,
                 uploadTime = uploadTime,
+                active = true,
             ),
         )
     }
 
     /**
-     * Method to put the information of a company.
-     * @param dataId the ID of the data set the QA report is associated with
+     * Method to set the status of a QA report
      * @param qaReportId the ID of the QA report to be updated
+     * @param dataId the ID of the data set the QA report is associated with
      * @param dataType the type of the data set the QA report is associated with
-     * @param qaReport the new QA report content to be stored
-     * @return the updated company information object
+     * @param active the new status of the QA report
+     * @param requestingUser the user requesting the change
+     * @return the updated QA report
      */
-    @Transactional
-    fun <QaReportType> putQaReport(
+    fun setQaReportStatus(
         qaReportId: String,
         dataId: String,
         dataType: String,
-        qaReport: QaReportType,
+        active: Boolean,
+        requestingUser: DatalandAuthentication,
     ): QaReportEntity {
-        val storedQaReportEntity = qaReportRepository.findById(qaReportId).orElseThrow {
-            ResourceNotFoundApiException(
-                "QA report not found",
-                "No QA report with the id: $qaReportId could be found.",
+        val storedQaReportEntity = getQaReportById(dataId, dataType, qaReportId)
+        if (qaReportSecurityPolicy.userCanChangeReportActiveStatus(
+                storedQaReportEntity,
+                requestingUser,
             )
-        }
-        if (storedQaReportEntity.reporterUserId != DatalandAuthentication.fromContext().userId) {
+        ) {
             throw InsufficientRightsApiException(
                 "Missing required access rights",
                 "You do not have the required access rights to update QA report with the id: $qaReportId",
             )
         }
-        logger.info("Updating QA report with ID $qaReportId")
-        storedQaReportEntity.qaReport = objectMapper.writeValueAsString(qaReport)
-        //ToDO: discuss if we want to know when it was originally uploaded and when the latest update was
-        storedQaReportEntity.uploadTime = Instant.now().toEpochMilli()
+        logger.info("Setting report with ID $qaReportId to active=$active")
+        storedQaReportEntity.active = active
 
         return qaReportRepository.save(storedQaReportEntity)
     }
@@ -128,9 +158,14 @@ class QaReportManager(
     fun searchQaReportMetaInfo(
         dataId: String,
         dataType: String,
+        showInactive: Boolean,
         reporterUserId: String?,
     ): List<QaReportEntity> {
-        val searchResults = qaReportRepository.searchQaReportMetaInformation(dataId, reporterUserId)
+        val searchResults = qaReportRepository.searchQaReportMetaInformation(
+            dataId = dataId,
+            reporterUserId = reporterUserId,
+            showInactive = showInactive,
+        )
         val wrongDataType = searchResults.find { it.dataType != dataType }
         if (wrongDataType != null) {
             throw InvalidInputApiException(

@@ -8,6 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
+/**
+ * A REST controller for the SFDR QA report API.
+ */
 @RequestMapping("/data/sfdr")
 @RestController
 class SfdrQaReportController(

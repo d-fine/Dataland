@@ -26,4 +26,7 @@ data class QaReportMetaInformation(
 
     @field:JsonProperty(required = true)
     val uploadTime: Long,
+
+    @field:JsonProperty(required = true)
+    val active: Boolean,
 )

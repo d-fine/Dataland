@@ -4,15 +4,14 @@ import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
-import jakarta.validation.Valid
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.reports.QaReportMetaInformation
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.reports.QaReportWithMetaInformation
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
+import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestParam
 
@@ -23,18 +22,19 @@ import org.springframework.web.bind.annotation.RequestParam
 @SecurityRequirement(name = "default-oauth")
 interface QaReportApi<QaReportType> {
     /**
-     * A method to store QA reports for a specific dataset on Dataland
+     * A method to store QA reports for a specific dataset on Dataland.
+     * The new uploaded QA report is marked as active. All other QA reports for the same dataset are marked as inactive.
      * @param dataId identifier used to uniquely specify data in the data store
      * @param qaReport the QA report to be stored
      * @return meta info about the stored QA report including the ID of the created entry
      */
     @Operation(
         summary = "Upload new QA report.",
-        description = "The uploaded QA report is added to the ****, the generated report id is returned.",
+        description = "The uploaded QA report is added to the database, the generated report id is returned.",
     )
     @ApiResponses(
         value = [
-            ApiResponse(responseCode = "200", description = "Successfully added QA report to *****."),
+            ApiResponse(responseCode = "200", description = "Successfully added QA report to dataland."),
         ],
     )
     @PostMapping(
@@ -48,31 +48,25 @@ interface QaReportApi<QaReportType> {
     ): ResponseEntity<QaReportMetaInformation>
 
     /**
-     * A method to update a QA report completely
+     * A method to mark a QA report as inactive. Inactive QA reports are still shown in the QA report list.
      * @param dataId identifier used to uniquely specify data in the data store
-     * @param qaReportId identifier used to identify the QA report to be updated
-     * @return updated information about the QA report
+     * @param qaReportId identifier used to identify the QA report to be retrieved
      */
     @Operation(
-        summary = "update a QA report.",
-        description = "Entirely replace the QA report, the information of the new report is returned.",
+        summary = "Mark QA report as inactive.",
+        description = "The specified QA report is marked as inactive.",
     )
     @ApiResponses(
         value = [
-            ApiResponse(responseCode = "200", description = "Successfully updated QA report."),
+            ApiResponse(responseCode = "200", description = "Successfully marked QA report as inactive."),
         ],
     )
-    @PutMapping(
+    @DeleteMapping(
         value = ["/{dataId}/reports/{qaReportId}"],
         produces = ["application/json"],
     )
     @PreAuthorize("hasRole('ROLE_REVIEWER')")
-    fun updateQaReport(
-        @PathVariable("dataId") dataId: String,
-        @PathVariable("qaReportId") qaReportId: String,
-        @Valid @RequestBody
-        qaReport: QaReportType,
-    ): ResponseEntity<QaReportWithMetaInformation<QaReportType>>
+    fun markQaReportInactive(@PathVariable("dataId") dataId: String, @PathVariable("qaReportId") qaReportId: String)
 
     /**
      * A method to retrieve a QA report by the data Id and report Id
@@ -94,11 +88,16 @@ interface QaReportApi<QaReportType> {
         produces = ["application/json"],
     )
     @PreAuthorize("hasRole('ROLE_USER')")
-    fun getQaReport(@PathVariable("dataId") dataId: String, @PathVariable("qaReportId") qaReportId: String): ResponseEntity<QaReportWithMetaInformation<QaReportType>>
+    fun getQaReport(
+        @PathVariable("dataId") dataId: String,
+        @PathVariable("qaReportId") qaReportId: String,
+    ): ResponseEntity<QaReportWithMetaInformation<QaReportType>>
 
     /**
      * A method to retrieve all QA reports associated with a data ID or reporter user ID
      * @param dataId identifier used to uniquely specify data in the data store
+     * @param showInactive flag to indicate if inactive QA reports should be included in the response
+     * @param reporterUserId show only QA reports uploaded by the given user
      * @return information about all QA reports associated with the data id
      */
     @Operation(
@@ -117,6 +116,7 @@ interface QaReportApi<QaReportType> {
     @PreAuthorize("hasRole('ROLE_USER')")
     fun getAllQaReportsForDataset(
         @PathVariable("dataId") dataId: String,
+        @RequestParam(required = false) showInactive: Boolean?,
         @RequestParam(required = false) reporterUserId: String?,
     ): ResponseEntity<List<QaReportWithMetaInformation<QaReportType>>>
 }
