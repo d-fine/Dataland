@@ -62,16 +62,16 @@ plugins {
     alias(libs.plugins.com.github.node.gradle.node) apply false
     alias(libs.plugins.org.springframework.boot) apply false
     alias(libs.plugins.org.jlleitschuh.gradle.ktlint)
-    kotlin("jvm")
-    kotlin("plugin.spring") apply false
+    alias(libs.plugins.org.jetbrains.kotlin.jvm)
+    alias(libs.plugins.org.jetbrains.kotlin.plugin.spring)
+    alias(libs.plugins.org.jetbrains.kotlin.plugin.jpa) apply false
+    alias(libs.plugins.org.jetbrains.kotlin.plugin.serialization) apply false
     alias(libs.plugins.org.sonarqube)
     jacoco
     alias(libs.plugins.org.springdoc.openapi.gradle.plugin) apply false
     alias(libs.plugins.com.gorylenko.gradle.git.properties) apply false
     alias(libs.plugins.org.openapi.generator) apply false
     alias(libs.plugins.com.github.ben.manes.versions)
-    kotlin("plugin.jpa") apply false
-    kotlin("plugin.serialization") apply false
 }
 
 sonar {
