@@ -56,7 +56,8 @@ class SummaryNotificationEmailFactory(
         logger.info("properties[keys.numberOfDays]")
         logger.info(properties[keys.numberOfDays])
         val duration = formatDuration(properties[keys.numberOfDays])
-        return StringBuilder().apply {
+        logger.info(duration)
+        val text = StringBuilder().apply {
             append("Exciting news! 📣\n")
             append("Multiple datasets for ${properties[keys.companyName]} have been uploaded to Dataland\n")
             append("in the last ${duration}\n\n")
@@ -73,5 +74,7 @@ class SummaryNotificationEmailFactory(
             append("Claiming ownership process usually requires 1-2 business days.\n")
             append("You will be notified by email.\n")
         }.toString()
+        logger.info(text)
+        return text
     }
 }
