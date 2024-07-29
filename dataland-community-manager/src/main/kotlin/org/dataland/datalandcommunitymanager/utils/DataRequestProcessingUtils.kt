@@ -246,5 +246,4 @@ class DataRequestProcessingUtils(
  */
 fun getDataTypeEnumForFrameworkName(frameworkName: String): DataTypeEnum? {
     return DataTypeEnum.entries.find { it.value == frameworkName }
-    // TODO Why is this function not part of the class?
 }

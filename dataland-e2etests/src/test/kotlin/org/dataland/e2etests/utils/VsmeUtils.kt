@@ -10,7 +10,6 @@ import org.dataland.e2etests.tests.frameworks.Vsme.FileInfos
 import java.io.File
 import java.time.LocalDate
 
-
 class VsmeUtils {
 
     val apiAccessor = ApiAccessor()
@@ -46,6 +45,4 @@ class VsmeUtils {
             ),
         )
     }
-
-
 }

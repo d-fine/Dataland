@@ -15,6 +15,7 @@ import org.dataland.e2etests.auth.TechnicalUser
 import org.dataland.e2etests.utils.ApiAccessor
 import org.dataland.e2etests.utils.ExceptionUtils.assertAccessDeniedWrapper
 import org.dataland.e2etests.utils.FrameworkTestDataProvider
+import org.dataland.e2etests.utils.VsmeUtils
 import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
@@ -27,7 +28,6 @@ import org.springframework.http.HttpStatus
 import java.io.File
 import java.math.BigDecimal
 import java.util.UUID
-import org.dataland.e2etests.utils.VsmeUtils
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class Vsme {
@@ -173,7 +173,8 @@ class Vsme {
         var vsmeData = vsmeUtils.setReferencedReports(testVsmeData, null)
         val companyAssociatedVsmeDataAlpha =
             generateVsmeDataWithSetNumberOfEmployeesInHeadCount(companyId, "2022", vsmeData, BigDecimal(1))
-        val dataIdAlpha = vsmeUtils.postVsmeDataset(companyAssociatedVsmeDataAlpha, user = TechnicalUser.Uploader).dataId
+        val dataIdAlpha = vsmeUtils.postVsmeDataset(companyAssociatedVsmeDataAlpha, user = TechnicalUser.Uploader)
+            .dataId
 
         apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Uploader)
         val retrievedCompanyAssociatedVsmeDataAlpha = executeDataRetrievalWithRetries(

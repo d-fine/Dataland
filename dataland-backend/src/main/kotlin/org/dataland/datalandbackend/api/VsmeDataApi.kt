@@ -79,7 +79,6 @@ interface VsmeDataApi {
         value = ["/{dataId}"],
         produces = ["application/json"],
     )
-    // TODO change to new access logic
     @PreAuthorize(
         "hasRole('ROLE_USER') and " +
             "(@CompanyRoleChecker.hasCurrentUserAnyRoleForCompanyOfDataId(#dataId) or " +
@@ -113,7 +112,6 @@ interface VsmeDataApi {
             "application/pdf",
         ],
     )
-    // TODO change to new access logic
     @PreAuthorize(
         "hasRole('ROLE_USER') and " +
             "(@CompanyRoleChecker.hasCurrentUserAnyRoleForCompanyOfDataId(#dataId) or " +

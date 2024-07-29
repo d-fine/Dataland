@@ -58,7 +58,6 @@ constructor(
         val reportingPeriodsOfStoredDataRequests = mutableListOf<String>()
         val reportingPeriodsOfDuplicateDataRequests = mutableListOf<String>()
         singleDataRequest.reportingPeriods.forEach { reportingPeriod ->
-            // TODO maybe introduce a Private and Public Framework List as we did in the frontend
             if (singleDataRequest.dataType == DataTypeEnum.vsme &&
                 utils.matchingDatasetExists(
                     companyId = companyId, reportingPeriod = reportingPeriod,

@@ -14,6 +14,7 @@ import org.dataland.e2etests.auth.TechnicalUser
 import org.dataland.e2etests.tests.frameworks.Vsme.FileInfos
 import org.dataland.e2etests.utils.ApiAccessor
 import org.dataland.e2etests.utils.FrameworkTestDataProvider
+import org.dataland.e2etests.utils.VsmeUtils
 import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
@@ -21,7 +22,6 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
 import java.io.File
 import java.util.*
-import org.dataland.e2etests.utils.VsmeUtils
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class AccessToActiveMatchingDatasetTest {

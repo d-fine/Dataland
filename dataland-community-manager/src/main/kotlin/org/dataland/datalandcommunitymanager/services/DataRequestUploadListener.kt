@@ -77,7 +77,6 @@ class DataRequestUploadListener(
         }
     }
 
-    // TODO listener to more than one queue?
     /**
      * Checks if for a given dataset there are open requests with matching company identifier, reporting period
      * and data type and sets their status to answered
