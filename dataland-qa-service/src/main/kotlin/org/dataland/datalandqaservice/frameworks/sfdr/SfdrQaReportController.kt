@@ -1,8 +1,9 @@
-package org.dataland.datalandqaservice.org.dataland.datalandqaservice.frameworks
+package org.dataland.datalandqaservice.org.dataland.datalandqaservice.frameworks.sfdr
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandqaservice.frameworks.sfdr.model.SfdrData
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.controller.QaReportController
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.QaReportManager
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
@@ -11,5 +12,5 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 class SfdrQaReportController(
     @Autowired objectMapper: ObjectMapper,
-) :
-    QaReportController<SfdrData>(objectMapper, SfdrData::class.java)
+    @Autowired qaReportManager: QaReportManager,
+) : QaReportController<SfdrData>(objectMapper, qaReportManager, SfdrData::class.java, "sfdr")

@@ -36,6 +36,15 @@ class QaLogMessageBuilder {
     }
 
     /**
+     * Generates a message to inform that a request was received to return a QA report by its data id
+     * @param dataId The ID of the dataset for which the report shall be returned
+     * @returns the message to log
+     */
+    fun getAllQaReportsForDataIdMessage(dataId: String, reviewerId: String?): String {
+        return "Received a request to get all QA report information for dataId '$dataId' (and reviewer id: $reviewerId)."
+    }
+
+    /**
      * Generates a message to inform that a QA report has been successfully returned
      * @param dataId The ID of the dataset for which the report shall be returned
      * @param qaReportId The ID of the report that shall be returned

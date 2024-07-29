@@ -16,10 +16,13 @@ data class QaReportMetaInformation(
     val dataId: String,
 
     @field:JsonProperty(required = true)
-    val qaReportId: String,
+    val dataType: String,
 
     @field:JsonProperty(required = true)
-    val reporterUserId: String,
+    val qaReportId: String,
+
+    @field:JsonProperty()
+    val reporterUserId: String?,
 
     @field:JsonProperty(required = true)
     val uploadTime: Long,
