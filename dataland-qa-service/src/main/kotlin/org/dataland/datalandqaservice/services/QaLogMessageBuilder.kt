@@ -1,7 +1,6 @@
 package org.dataland.datalandqaservice.org.dataland.datalandqaservice.services
 
 import org.springframework.stereotype.Component
-import java.util.*
 
 /**
  * A builder for log messages related to QA reports.
@@ -63,12 +62,13 @@ class QaLogMessageBuilder {
     }
 
     /**
-     * Generates a message to inform that a request was received to mark a QA report as inactive
+     * Generates a message to inform that a request was received to mark a QA report as active or inactive
      * @param qaReportId The ID of the report that shall be marked as inactive
      * @param dataId The ID of the dataset for which the report shall be marked as inactive
+     * @param active The status the report shall be marked with
      * @returns the message to log
      */
-    fun requestMarkQaReportInactiveMessage(qaReportId: String, dataId: String): String {
-        return "Received a request to mark QA report with ID '$qaReportId' for data ID '$dataId' as inactive."
+    fun requestChangeQaReportStatus(qaReportId: String, dataId: String, active: Boolean): String {
+        return "Received a request to mark QA report with ID '$qaReportId' for data ID '$dataId' as active=$active."
     }
 }

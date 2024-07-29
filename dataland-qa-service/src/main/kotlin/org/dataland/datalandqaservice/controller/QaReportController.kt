@@ -3,6 +3,7 @@ package org.dataland.datalandqaservice.org.dataland.datalandqaservice.controller
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.api.QaReportApi
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.reports.QaReportMetaInformation
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.reports.QaReportStatusPatch
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.reports.QaReportWithMetaInformation
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.QaLogMessageBuilder
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.QaReportManager
@@ -48,13 +49,13 @@ open class QaReportController<QaReportType>(
         return ResponseEntity.ok(apiModel)
     }
 
-    override fun markQaReportInactive(dataId: String, qaReportId: String) {
-        logger.info(qaLogMessageBuilder.requestMarkQaReportInactiveMessage(qaReportId, dataId))
+    override fun setQaReportStatus(dataId: String, qaReportId: String, patch: QaReportStatusPatch) {
+        logger.info(qaLogMessageBuilder.requestChangeQaReportStatus(qaReportId, dataId, patch.active))
         qaReportManager.setQaReportStatus(
             dataId = dataId,
             dataType = dataType,
             qaReportId = qaReportId,
-            active = false,
+            active = patch.active,
             requestingUser = DatalandAuthentication.fromContext(),
         )
     }
