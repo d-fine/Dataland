@@ -52,7 +52,7 @@ class AccessToActiveMatchingDatasetTest {
         companyId = apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId
         createVSMEDataAndPostAsAdminCompanyOwner(companyId)
 
-        jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader)
+        jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.PremiumUser)
 
         val singleDataRequest = setSingleDataVSMERequest(companyId)
         requestControllerApi.postSingleDataRequest(singleDataRequest)
@@ -66,13 +66,13 @@ class AccessToActiveMatchingDatasetTest {
             accessStatus = AccessStatus.Granted,
         )
 
-        jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader)
+        jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.PremiumUser)
         assertEquals(AccessStatus.Granted, requestControllerApi.getDataRequestsForRequestingUser()[0].accessStatus)
     }
 
     @Test
     fun privateFrameworkHasNoAccessNoMatchingDataset() {
-        jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader)
+        jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.PremiumUser)
 
         val singleDataRequest = setSingleDataVSMERequest(
             apiAccessor.uploadOneCompanyWithRandomIdentifier()
@@ -95,7 +95,7 @@ class AccessToActiveMatchingDatasetTest {
         companyId = apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId
         createVSMEDataAndPostAsAdminCompanyOwner(companyId)
 
-        jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader)
+        jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.PremiumUser)
 
         val singleDataRequest = setSingleDataVSMERequest(companyId)
         requestControllerApi.postSingleDataRequest(singleDataRequest)
@@ -111,7 +111,7 @@ class AccessToActiveMatchingDatasetTest {
 
     @Test
     fun privateFrameworkCompanyOwnerPrivateRequestAnswer() {
-        jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader)
+        jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.PremiumUser)
         companyId = apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId
 
         val singleDataRequest = setSingleDataVSMERequest(companyId)
@@ -128,7 +128,7 @@ class AccessToActiveMatchingDatasetTest {
 
         createVSMEDataAndPostAsAdminCompanyOwner(companyId)
 
-        jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader)
+        jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.PremiumUser)
         Thread.sleep(timeSleep)
         recentReaderDataRequest = requestControllerApi.getDataRequestsForRequestingUser().maxByOrNull {
             it.creationTimestamp
@@ -143,7 +143,7 @@ class AccessToActiveMatchingDatasetTest {
         companyId = apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId
         createVSMEDataAndPostAsAdminCompanyOwner(companyId)
 
-        jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader)
+        jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.PremiumUser)
 
         val singleDataRequest = setSingleDataVSMERequest(companyId)
         requestControllerApi.postSingleDataRequest(singleDataRequest)
@@ -155,7 +155,7 @@ class AccessToActiveMatchingDatasetTest {
 
         assertEquals(AccessStatus.Pending, recentReaderDataRequest?.accessStatus)
 
-        jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader)
+        jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.PremiumUser)
         requestControllerApi.patchDataRequest(
             UUID.fromString(recentReaderDataRequest?.dataRequestId),
             accessStatus = AccessStatus.Declined,
