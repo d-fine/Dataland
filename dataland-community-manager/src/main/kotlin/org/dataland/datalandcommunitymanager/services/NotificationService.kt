@@ -132,11 +132,11 @@ constructor(
     }
 
     private fun buildSingleMailProperties(companyName: String, latestElementaryEvent: ElementaryEventEntity):
-        Map<String, String> {
+        Map<String, String?> {
         return mapOf(
             "companyName" to companyName,
             "companyId" to latestElementaryEvent.companyId.toString(),
-            "framework" to latestElementaryEvent.framework.toString(),
+            "framework" to readableFrameworkNameMapping[latestElementaryEvent.framework],
             "year" to latestElementaryEvent.reportingPeriod,
             "baseUrl" to proxyPrimaryUrl,
         )
@@ -146,7 +146,7 @@ constructor(
         companyName: String,
         latestElementaryEvent: ElementaryEventEntity,
         unprocessedElementaryEvents: List<ElementaryEventEntity>,
-    ): Map<String, String> {
+    ): Map<String, String?> {
         return mapOf(
             "companyName" to companyName,
             "companyId" to latestElementaryEvent.companyId.toString(),
@@ -166,7 +166,7 @@ constructor(
         notificationEmailType: NotificationEmailType,
         latestElementaryEvent: ElementaryEventEntity,
         unprocessedElementaryEvents: List<ElementaryEventEntity>,
-    ): Map<String, String> {
+    ): Map<String, String?> {
         return when (notificationEmailType) {
             NotificationEmailType.Single -> { buildSingleMailProperties(companyName, latestElementaryEvent) }
             NotificationEmailType.Summary -> {
@@ -180,7 +180,7 @@ constructor(
      */
     fun sendEmailMessagesToQueue(
         notificationEmailType: NotificationEmailType,
-        emailProperties: Map<String, String>,
+        emailProperties: Map<String, String?>,
         emailReceivers: List<String>,
         correlationId: String,
     ) {
