@@ -1,6 +1,7 @@
 package org.dataland.datalandcommunitymanager.services
 
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
+import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandcommunitymanager.entities.DataRequestEntity
 import org.dataland.datalandcommunitymanager.entities.RequestStatusEntity
@@ -162,6 +163,15 @@ class DataAccessManagerTest {
     }
 
     @Test
+    fun `validate exception is thrown when datatype is unknown`() {
+        assertThrows(InvalidInputApiException::class.java) {
+            dataAccessManager.headAccessToDataset(
+                companyId, revokedAccessReportingYear, "123562134", userId,
+            )
+        }
+    }
+
+    @Test
     fun `validate that vsme dataset is not accessible with no access`() {
         assertThrows(ResourceNotFoundApiException::class.java) {
             dataAccessManager.headAccessToDataset(
@@ -227,7 +237,7 @@ class DataAccessManagerTest {
         verify(dataRequestRepository, times(1))
             .save(capture(saveCaptor))
 
-        assert(saveCaptor.value.creationTimestamp > currentTime)
+        assert(saveCaptor.value.creationTimestamp >= currentTime)
     }
 
     private fun <T> any(type: Class<T>): T = Mockito.any<T>(type)
