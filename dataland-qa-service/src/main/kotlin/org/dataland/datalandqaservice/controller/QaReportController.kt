@@ -49,6 +49,7 @@ open class QaReportController<QaReportType>(
     }
 
     override fun markQaReportInactive(dataId: String, qaReportId: String) {
+        logger.info(qaLogMessageBuilder.requestMarkQaReportInactiveMessage(qaReportId, dataId))
         qaReportManager.setQaReportStatus(
             dataId = dataId,
             dataType = dataType,

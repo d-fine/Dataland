@@ -61,4 +61,14 @@ class QaLogMessageBuilder {
         return "Received a request to get all QA report information for dataId '$dataId' " +
             "(and reviewer id: $reviewerId)."
     }
+
+    /**
+     * Generates a message to inform that a request was received to mark a QA report as inactive
+     * @param qaReportId The ID of the report that shall be marked as inactive
+     * @param dataId The ID of the dataset for which the report shall be marked as inactive
+     * @returns the message to log
+     */
+    fun requestMarkQaReportInactiveMessage(qaReportId: String, dataId: String): String {
+        return "Received a request to mark QA report with ID '$qaReportId' for data ID '$dataId' as inactive."
+    }
 }
