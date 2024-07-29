@@ -190,6 +190,7 @@ jobs:
           QUARKUS_REST_CLIENT_TRUST_STORE_PASSWORD: ${{ secrets.QUARKUS_REST_CLIENT_TRUST_STORE_PASSWORD}}
           BACKEND_URL: ${{ secrets.BACKEND_URL }}
           IGNORE_EXTERNAL_STORAGE_ERROR: ${{ github.event.inputs.ignoreExternalStorageError }}
+          COMMUNITY_MANAGER_NOTIFICATION_SERVICE_FEATURE_FLAG: ${{ vars.COMMUNITY_MANAGER_NOTIFICATION_SERVICE_FEATURE_FLAG }}
       - uses: ./.github/workflows/dockerLogs
         if: always()
         with:
