@@ -5,7 +5,7 @@ import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Component
 
 /**
- * Generate an email to inform about a summary of data uploads
+ * Generate an email to inform about a summary of data uploadst
  */
 @Component
 class SummaryNotificationEmailFactory(
