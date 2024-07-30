@@ -28,8 +28,6 @@ plugins {
 dependencies {
     implementation(project(":dataland-backend-utils"))
     implementation(project(":dataland-message-queue-utils"))
-    implementation(libs.flyway)
-    implementation(libs.flyway.core)
     implementation(Spring.boot.web)
     implementation(Spring.boot.actuator)
     implementation(Spring.boot.amqp)
