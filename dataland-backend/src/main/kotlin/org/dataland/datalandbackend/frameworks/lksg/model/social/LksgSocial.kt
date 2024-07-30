@@ -3,14 +3,23 @@ package org.dataland.datalandbackend.frameworks.lksg.model.social
 
 import jakarta.validation.Valid
 import org.dataland.datalandbackend.frameworks.lksg.model.social.childLabor.LksgSocialChildLabor
-import org.dataland.datalandbackend.frameworks.lksg.model.social.contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption.LksgSocialContaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption
-import org.dataland.datalandbackend.frameworks.lksg.model.social.disregardForFreedomOfAssociation.LksgSocialDisregardForFreedomOfAssociation
-import org.dataland.datalandbackend.frameworks.lksg.model.social.disregardForOccupationalHealthSafety.LksgSocialDisregardForOccupationalHealthSafety
+import org.dataland.datalandbackend.frameworks.lksg.model.social
+    .contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption
+    .LksgSocialContaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption
+import org.dataland.datalandbackend.frameworks.lksg.model.social.disregardForFreedomOfAssociation
+    .LksgSocialDisregardForFreedomOfAssociation
+import org.dataland.datalandbackend.frameworks.lksg.model.social.disregardForOccupationalHealthSafety
+    .LksgSocialDisregardForOccupationalHealthSafety
 import org.dataland.datalandbackend.frameworks.lksg.model.social.forcedLaborSlavery.LksgSocialForcedLaborSlavery
-import org.dataland.datalandbackend.frameworks.lksg.model.social.unequalTreatmentOfEmployment.LksgSocialUnequalTreatmentOfEmployment
-import org.dataland.datalandbackend.frameworks.lksg.model.social.unlawfulEvictionDeprivationOfLandForestAndWater.LksgSocialUnlawfulEvictionDeprivationOfLandForestAndWater
-import org.dataland.datalandbackend.frameworks.lksg.model.social.useOfPrivatePublicSecurityForcesWithDisregardForHumanRights.LksgSocialUseOfPrivatePublicSecurityForcesWithDisregardForHumanRights
-import org.dataland.datalandbackend.frameworks.lksg.model.social.withholdingAdequateWages.LksgSocialWithholdingAdequateWages
+import org.dataland.datalandbackend.frameworks.lksg.model.social.unequalTreatmentOfEmployment
+    .LksgSocialUnequalTreatmentOfEmployment
+import org.dataland.datalandbackend.frameworks.lksg.model.social.unlawfulEvictionDeprivationOfLandForestAndWater
+    .LksgSocialUnlawfulEvictionDeprivationOfLandForestAndWater
+import org.dataland.datalandbackend.frameworks.lksg.model.social
+    .useOfPrivatePublicSecurityForcesWithDisregardForHumanRights
+    .LksgSocialUseOfPrivatePublicSecurityForcesWithDisregardForHumanRights
+import org.dataland.datalandbackend.frameworks.lksg.model.social.withholdingAdequateWages
+    .LksgSocialWithholdingAdequateWages
 
 /**
  * The data-model for the Social section
