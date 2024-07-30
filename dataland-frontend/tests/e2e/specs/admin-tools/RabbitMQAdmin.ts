@@ -20,7 +20,7 @@ const queues = [
   'privateRequestReceivedEurodatDataStore',
   'sendInternalEmailService',
   'sendTemplateEmailService',
-  'privateRequestReceivedCommunityManagerDataManager',
+  'privateRequestReceivedCommunityManager',
 ];
 
 describe('As a developer, I expect the RabbitMQ GUI console to be available to me. Also check if all expected channels exist.', () => {
