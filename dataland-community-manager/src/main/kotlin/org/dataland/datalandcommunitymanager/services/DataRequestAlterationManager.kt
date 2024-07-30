@@ -9,6 +9,7 @@ import org.dataland.datalandcommunitymanager.model.dataRequest.AccessStatus
 import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
 import org.dataland.datalandcommunitymanager.model.dataRequest.StoredDataRequest
 import org.dataland.datalandcommunitymanager.repositories.DataRequestRepository
+import org.dataland.datalandcommunitymanager.services.messaging.AccessRequestEmailSender
 import org.dataland.datalandcommunitymanager.services.messaging.DataRequestResponseEmailSender
 import org.dataland.datalandcommunitymanager.services.messaging.SingleDataRequestEmailMessageSender
 import org.dataland.datalandcommunitymanager.utils.DataRequestLogger
@@ -34,6 +35,7 @@ class DataRequestAlterationManager(
     @Autowired private val dataRequestLogger: DataRequestLogger,
     @Autowired private val dataRequestResponseEmailMessageSender: DataRequestResponseEmailSender,
     @Autowired private val singleDataRequestEmailMessageSender: SingleDataRequestEmailMessageSender,
+    @Autowired private val accessRequestEmailSender: AccessRequestEmailSender,
     @Autowired private val metaDataControllerApi: MetaDataControllerApi,
     @Autowired private val utils: DataRequestProcessingUtils,
 ) {
@@ -81,12 +83,25 @@ class DataRequestAlterationManager(
             this.sendSingleDataRequestEmail(dataRequestEntity, contacts, message)
             dataRequestLogger.logMessageForPatchingRequestMessage(dataRequestEntity.dataRequestId)
         }
+        if (anyChanges) dataRequestEntity.lastModifiedDate = modificationTime
+
+        // TODO move email send to own function
         if (requestStatus == RequestStatus.Closed || requestStatus == RequestStatus.Answered) {
             sendEmailBecauseOfStatusChanged(
                 dataRequestEntity, requestStatus, correlationId ?: UUID.randomUUID().toString(),
             )
         }
-        if (anyChanges) dataRequestEntity.lastModifiedDate = modificationTime
+        if (accessStatus == AccessStatus.Granted) {
+            accessRequestEmailSender.notifyRequesterAboutGrantedRequest(
+            dataRequestEntity, correlationId ?: UUID.randomUUID().toString(),
+            )
+        }
+        if (requestStatus == RequestStatus.Answered && accessStatus == AccessStatus.Pending) {
+            accessRequestEmailSender.notifyCompanyOwnerOrContactsAboutNewRequest(
+            dataRequestEntity, correlationId ?: UUID.randomUUID().toString(),
+            )
+        }
+
         return dataRequestEntity.toStoredDataRequest()
     }
 
