@@ -7,7 +7,8 @@ import org.dataland.datalandbackend.frameworks.esgquestionnaire.model.allgemein.
 import org.dataland.datalandbackend.frameworks.esgquestionnaire.model.general.EsgQuestionnaireGeneral
 import org.dataland.datalandbackend.frameworks.esgquestionnaire.model.soziales.EsgQuestionnaireSoziales
 import org.dataland.datalandbackend.frameworks.esgquestionnaire.model.umwelt.EsgQuestionnaireUmwelt
-import org.dataland.datalandbackend.frameworks.esgquestionnaire.model.unternehmensfuehrungGovernance.EsgQuestionnaireUnternehmensfuehrungGovernance
+import org.dataland.datalandbackend.frameworks.esgquestionnaire.model.unternehmensfuehrungGovernance
+    .EsgQuestionnaireUnternehmensfuehrungGovernance
 
 /**
  * The root data-model for the Esg-questionnaire Framework

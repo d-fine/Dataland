@@ -139,11 +139,7 @@ open class ComponentBase(
      * Build this component instance into the provided Kotlin DataClass
      */
     fun generateDataModel(dataClassBuilder: DataClassBuilder) {
-        val localDataModelGenerator = dataModelGenerator
-        if (localDataModelGenerator != null) {
-            localDataModelGenerator(dataClassBuilder)
-        }
-        generateDefaultDataModel(dataClassBuilder)
+        return dataModelGenerator?.let { it(dataClassBuilder) } ?: generateDefaultDataModel(dataClassBuilder)
     }
 
     /**
@@ -159,14 +155,14 @@ open class ComponentBase(
      */
     fun generateQaModel(dataClassBuilder: DataClassBuilder) {
         val localQaModelGenerator = qaModelGenerator
-        if (localQaModelGenerator != null) {
-            localQaModelGenerator(dataClassBuilder)
-        }
-        require(dataModelGenerator == null || qaModelGenerator != null) {
+        require(dataModelGenerator == null || localQaModelGenerator != null) {
             "You should always overwrite dataModelGenerator when using qaModelGenerator"
         }
-
-        generateDefaultQaModel(dataClassBuilder)
+        if (localQaModelGenerator != null) {
+            localQaModelGenerator(dataClassBuilder)
+        } else {
+            generateDefaultQaModel(dataClassBuilder)
+        }
     }
 
     /**
