@@ -49,13 +49,13 @@ open class QaReportController<QaReportType>(
         return ResponseEntity.ok(apiModel)
     }
 
-    override fun setQaReportStatus(dataId: String, qaReportId: String, patch: QaReportStatusPatch) {
-        logger.info(qaLogMessageBuilder.requestChangeQaReportStatus(qaReportId, dataId, patch.active))
+    override fun setQaReportStatus(dataId: String, qaReportId: String, statusPatch: QaReportStatusPatch) {
+        logger.info(qaLogMessageBuilder.requestChangeQaReportStatus(qaReportId, dataId, statusPatch.active))
         qaReportManager.setQaReportStatus(
             dataId = dataId,
             dataType = dataType,
             qaReportId = qaReportId,
-            active = patch.active,
+            active = statusPatch.active,
             requestingUser = DatalandAuthentication.fromContext(),
         )
     }
