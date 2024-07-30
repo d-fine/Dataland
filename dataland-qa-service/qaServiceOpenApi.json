@@ -875,13 +875,7 @@
             "type": "string"
           },
           "verdict": {
-            "type": "string",
-            "enum": [
-              "QaAccepted",
-              "QaRejected",
-              "QaInconclusive",
-              "QaNotAttempted"
-            ]
+            "$ref": "#/components/schemas/QaReportDataPointVerdict"
           },
           "correctedData": {
             "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
@@ -900,13 +894,7 @@
             "type": "string"
           },
           "verdict": {
-            "type": "string",
-            "enum": [
-              "QaAccepted",
-              "QaRejected",
-              "QaInconclusive",
-              "QaNotAttempted"
-            ]
+            "$ref": "#/components/schemas/QaReportDataPointVerdict"
           },
           "correctedData": {
             "$ref": "#/components/schemas/ExtendedDataPointBigInteger"
@@ -925,18 +913,21 @@
             "type": "string"
           },
           "verdict": {
-            "type": "string",
-            "enum": [
-              "QaAccepted",
-              "QaRejected",
-              "QaInconclusive",
-              "QaNotAttempted"
-            ]
+            "$ref": "#/components/schemas/QaReportDataPointVerdict"
           },
           "correctedData": {
             "$ref": "#/components/schemas/ExtendedDataPointYesNoNoEvidenceFound"
           }
         }
+      },
+      "QaReportDataPointVerdict": {
+        "type": "string",
+        "enum": [
+          "QaAccepted",
+          "QaRejected",
+          "QaInconclusive",
+          "QaNotAttempted"
+        ]
       },
       "SfdrData": {
         "type": "object",

@@ -1,8 +1,13 @@
 package org.dataland.datalandqaservice.model.reports
 
+import io.swagger.v3.oas.annotations.media.Schema
+
 /**
  * The verdict of a QA report data point
  */
+@Schema(
+    enumAsRef = true,
+)
 enum class QaReportDataPointVerdict {
     /**
      * The data point was accepted
