@@ -132,6 +132,9 @@ constructor(
         val payload = JSONObject(
             mapOf(
                 "dataId" to dataId, "bypassQa" to bypassQa,
+                "companyId" to storableDataSet.companyId,
+                "framework" to storableDataSet.dataType.toString(),
+                "reportingPeriod" to storableDataSet.reportingPeriod,
                 "actionType" to
                     ActionType.StorePublicData,
             ),
