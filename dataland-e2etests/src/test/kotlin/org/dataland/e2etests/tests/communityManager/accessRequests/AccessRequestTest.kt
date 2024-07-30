@@ -36,7 +36,7 @@ class AccessRequestTest {
     private val fileNameAlpha = "Report-Alpha"
     private lateinit var hashAlpha: String
 
-    private val timeSleep: Long = 1
+    private val timeSleep: Long = 3000
     lateinit var companyId: String
 
     @Test
@@ -186,7 +186,6 @@ class AccessRequestTest {
                     dataRequestId = UUID.fromString(recentReaderDataRequest?.dataRequestId),
                     accessStatus = AccessStatus.Declined,
                 )
-                Thread.sleep(3000)
                 assertEquals(AccessStatus.Declined, responseBody.accessStatus)
             } else {
                 val responseException = assertThrows<ClientException> {
