@@ -2,6 +2,7 @@ package org.dataland.frameworktoolbox.specific.datamodel.elements
 
 import org.dataland.frameworktoolbox.specific.datamodel.Annotation
 import org.dataland.frameworktoolbox.specific.datamodel.ClassProperty
+import org.dataland.frameworktoolbox.specific.datamodel.ImportFormatter
 import org.dataland.frameworktoolbox.specific.datamodel.TypeReference
 import org.dataland.frameworktoolbox.utils.LoggerDelegate
 import org.dataland.frameworktoolbox.utils.freemarker.FreeMarker
@@ -69,6 +70,7 @@ data class DataClassBuilder(
             "properties" to properties,
             "annotations" to annotations,
             "imports" to imports.filter { it.contains(".") },
+            "import_formatter" to ImportFormatter,
             "comment_lines" to comment.lines(),
         )
     }
