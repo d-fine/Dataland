@@ -1,6 +1,7 @@
 package org.dataland.e2etests.tests.communityManager.accessRequests
 
 import org.dataland.communitymanager.openApiClient.api.RequestControllerApi
+import org.dataland.communitymanager.openApiClient.infrastructure.ClientException
 import org.dataland.communitymanager.openApiClient.model.AccessStatus
 import org.dataland.communitymanager.openApiClient.model.CompanyRole
 import org.dataland.communitymanager.openApiClient.model.RequestStatus
@@ -14,11 +15,11 @@ import org.dataland.e2etests.tests.frameworks.Vsme.FileInfos
 import org.dataland.e2etests.utils.ApiAccessor
 import org.dataland.e2etests.utils.FrameworkTestDataProvider
 import org.dataland.e2etests.utils.VsmeUtils
-import org.junit.jupiter.api.AfterAll
+import org.dataland.e2etests.utils.communityManager.assertAccessDeniedResponseBodyInCommunityManagerClientException
 import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
+import org.junit.jupiter.api.assertThrows
 import java.io.File
 import java.util.*
 
@@ -163,6 +164,36 @@ class AccessToActiveMatchingDatasetTest {
 
         assertEquals(AccessStatus.Declined, recentReaderDataRequest?.accessStatus)
         dummyFileAlpha.delete()
+    }
+
+    @Test
+    fun `assures that user without proper rights are not able to patch the accessStatus of their own requests`() {
+        companyId = apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId
+        createVSMEDataAndPostAsAdminCompanyOwner(companyId)
+        TechnicalUser.entries.forEach {
+            jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(it)
+            val singleDataRequest = vsmeUtils.setSingleDataVSMERequest(companyId, setOf("2022"))
+            requestControllerApi.postSingleDataRequest(singleDataRequest)
+            Thread.sleep(timeSleep)
+            val recentReaderDataRequest = requestControllerApi.getDataRequestsForRequestingUser().maxByOrNull {
+                it.creationTimestamp
+            }
+            if (it == TechnicalUser.Admin) {
+                val responseBody = requestControllerApi.patchDataRequest(
+                    UUID.fromString(recentReaderDataRequest?.dataRequestId),
+                    accessStatus = AccessStatus.Declined,
+                )
+                assertEquals(AccessStatus.Declined, responseBody.accessStatus)
+            } else {
+                val responseException = assertThrows<ClientException> {
+                    requestControllerApi.patchDataRequest(
+                        UUID.fromString(recentReaderDataRequest?.dataRequestId),
+                        accessStatus = AccessStatus.Declined,
+                    )
+                }
+                assertAccessDeniedResponseBodyInCommunityManagerClientException(responseException)
+            }
+        }
     }
 
     private fun createVSMEDataAndPostAsAdminCompanyOwner(companyId: String) {

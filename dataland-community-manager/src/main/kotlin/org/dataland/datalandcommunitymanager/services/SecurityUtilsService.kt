@@ -2,6 +2,7 @@ package org.dataland.datalandcommunitymanager.services
 
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandcommunitymanager.model.companyRoles.CompanyRole
+import org.dataland.datalandcommunitymanager.model.dataRequest.AccessStatus
 import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
 import org.dataland.datalandcommunitymanager.repositories.CompanyRoleAssignmentRepository
 import org.dataland.datalandcommunitymanager.repositories.DataRequestRepository
@@ -129,6 +130,17 @@ class SecurityUtilsService(
         return userCompanyRoles.any {
             roleModificationPermissionsMap[it.companyRole]?.contains(companyRoleToModify) == true
         }
+    }
+
+    /**
+     * Returns false if the user tries to patch the accessStatus of their own request without having the proper rights
+     * @param accessStatus the accessStatus of the patch
+     */
+    @Transactional
+    fun noAccessStatusPatch(
+        accessStatus: AccessStatus?,
+    ): Boolean {
+        return accessStatus == null
     }
 
     /**

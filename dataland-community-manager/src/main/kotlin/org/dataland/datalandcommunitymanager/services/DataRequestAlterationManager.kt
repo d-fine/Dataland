@@ -93,12 +93,12 @@ class DataRequestAlterationManager(
         }
         if (accessStatus == AccessStatus.Granted) {
             accessRequestEmailSender.notifyRequesterAboutGrantedRequest(
-            dataRequestEntity, correlationId ?: UUID.randomUUID().toString(),
+                dataRequestEntity, correlationId ?: UUID.randomUUID().toString(),
             )
         }
         if (requestStatus == RequestStatus.Answered && accessStatus == AccessStatus.Pending) {
             accessRequestEmailSender.notifyCompanyOwnerOrContactsAboutNewRequest(
-            dataRequestEntity, correlationId ?: UUID.randomUUID().toString(),
+                dataRequestEntity, correlationId ?: UUID.randomUUID().toString(),
             )
         }
 

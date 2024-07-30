@@ -154,6 +154,7 @@ interface RequestApi {
      * @return the modified data request
      */
 
+    // TODO currently user are able to grant themselves access to their own access requests
     @Operation(
         summary = "Updates a data request.",
         description = "Updates status and message history of data request given data request id.",
@@ -171,6 +172,7 @@ interface RequestApi {
         "hasRole('ROLE_ADMIN') or " +
             "(@SecurityUtilsService.isUserAskingForOwnRequest(#dataRequestId) and " +
             "@SecurityUtilsService.isRequestStatusChangeableByUser(#dataRequestId, #requestStatus) and " +
+            "@SecurityUtilsService.noAccessStatusPatch(#accessStatus) and " +
             "@SecurityUtilsService.isRequestMessageHistoryChangeableByUser(" +
             "#dataRequestId, #requestStatus, #contacts,#message)" +
             ") or" +
