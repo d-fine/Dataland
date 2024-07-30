@@ -4,8 +4,10 @@ package org.dataland.datalandqaservice.frameworks.sfdr.model.environmental
 import jakarta.validation.Valid
 import org.dataland.datalandqaservice.frameworks.sfdr.model.environmental.biodiversity.SfdrEnvironmentalBiodiversity
 import org.dataland.datalandqaservice.frameworks.sfdr.model.environmental.emissions.SfdrEnvironmentalEmissions
-import org.dataland.datalandqaservice.frameworks.sfdr.model.environmental.energyPerformance.SfdrEnvironmentalEnergyPerformance
-import org.dataland.datalandqaservice.frameworks.sfdr.model.environmental.greenhouseGasEmissions.SfdrEnvironmentalGreenhouseGasEmissions
+import org.dataland.datalandqaservice.frameworks.sfdr.model.environmental.energyPerformance
+    .SfdrEnvironmentalEnergyPerformance
+import org.dataland.datalandqaservice.frameworks.sfdr.model.environmental.greenhouseGasEmissions
+    .SfdrEnvironmentalGreenhouseGasEmissions
 import org.dataland.datalandqaservice.frameworks.sfdr.model.environmental.waste.SfdrEnvironmentalWaste
 import org.dataland.datalandqaservice.frameworks.sfdr.model.environmental.water.SfdrEnvironmentalWater
 

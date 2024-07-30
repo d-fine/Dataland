@@ -20,90 +20,21 @@
     }
   ],
   "paths": {
-    "/data/sfdr/{dataId}/reports/{qaReportId}": {
-      "get": {
-        "tags": [
-          "sfdr-qa-report-controller"
-        ],
-        "summary": "retrieve a QA report.",
-        "description": "retrieve the information about a QA report.",
-        "operationId": "getQaReport",
-        "parameters": [
-          {
-            "name": "dataId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            }
-          },
-          {
-            "name": "qaReportId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successfully retrieved QA report.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/QaReportWithMetaInformationSfdrData"
-                }
-              }
-            }
-          },
-          "default": {
-            "description": "An error occurred",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "headers": {
-              "WWW-Authenticate": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "default-oauth": []
-          },
-          {
-            "default-bearer-auth": []
-          }
-        ]
-      },
+    "/data/sfdr/{dataId}/reports/{qaReportId}/status": {
       "put": {
         "tags": [
           "sfdr-qa-report-controller"
         ],
-        "summary": "update a QA report.",
-        "description": "Entirely replace the QA report, the information of the new report is returned.",
-        "operationId": "updateQaReport",
+        "summary": "Change the status of a QA report.",
+        "description": "The specified QA report is marked as active or inactive.",
+        "operationId": "setQaReportStatus",
         "parameters": [
           {
             "name": "dataId",
             "in": "path",
             "required": true,
             "schema": {
-              "type": "string",
-              "format": "uuid"
+              "type": "string"
             }
           },
           {
@@ -111,21 +42,23 @@
             "in": "path",
             "required": true,
             "schema": {
-              "type": "string",
-              "format": "uuid"
+              "type": "string"
             }
           }
         ],
-        "responses": {
-          "200": {
-            "description": "Successfully updated QA report.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/QaReportWithMetaInformationSfdrData"
-                }
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/QaReportStatusPatch"
               }
             }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully marked QA report as active or inactive."
           },
           "default": {
             "description": "An error occurred",
@@ -310,8 +243,23 @@
             "in": "path",
             "required": true,
             "schema": {
-              "type": "string",
-              "format": "uuid"
+              "type": "string"
+            }
+          },
+          {
+            "name": "showInactive",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "reporterUserId",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
             }
           }
         ],
@@ -364,16 +312,15 @@
           "sfdr-qa-report-controller"
         ],
         "summary": "Upload new QA report.",
-        "description": "The uploaded QA report is added to the ****, the generated report id is returned.",
-        "operationId": "createQaReport",
+        "description": "The uploaded QA report is added to the database, the generated report id is returned.",
+        "operationId": "postQaReport",
         "parameters": [
           {
             "name": "dataId",
             "in": "path",
             "required": true,
             "schema": {
-              "type": "string",
-              "format": "uuid"
+              "type": "string"
             }
           }
         ],
@@ -389,7 +336,7 @@
         },
         "responses": {
           "200": {
-            "description": "Successfully added QA report to *****.",
+            "description": "Successfully added QA report to dataland.",
             "content": {
               "application/json": {
                 "schema": {
@@ -447,6 +394,74 @@
                   "items": {
                     "type": "string"
                   }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
+    "/data/sfdr/{dataId}/reports/{qaReportId}": {
+      "get": {
+        "tags": [
+          "sfdr-qa-report-controller"
+        ],
+        "summary": "retrieve a QA report.",
+        "description": "retrieve the information about a QA report.",
+        "operationId": "getQaReport",
+        "parameters": [
+          {
+            "name": "dataId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "qaReportId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved QA report.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/QaReportWithMetaInformationSfdrData"
                 }
               }
             }
@@ -707,6 +722,25 @@
   },
   "components": {
     "schemas": {
+      "QaReportStatusPatch": {
+        "required": [
+          "active"
+        ],
+        "type": "object",
+        "properties": {
+          "active": {
+            "type": "boolean"
+          }
+        }
+      },
+      "QaStatus": {
+        "type": "string",
+        "enum": [
+          "Pending",
+          "Accepted",
+          "Rejected"
+        ]
+      },
       "CurrencyDataPoint": {
         "type": "object",
         "properties": {
@@ -901,48 +935,6 @@
           },
           "correctedData": {
             "$ref": "#/components/schemas/ExtendedDataPointYesNoNoEvidenceFound"
-          }
-        }
-      },
-      "QaReportMetaInformation": {
-        "required": [
-          "dataId",
-          "qaReportId",
-          "reporterUserId",
-          "uploadTime"
-        ],
-        "type": "object",
-        "properties": {
-          "dataId": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "qaReportId": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "reporterUserId": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "uploadTime": {
-            "type": "integer",
-            "format": "int64"
-          }
-        }
-      },
-      "QaReportWithMetaInformationSfdrData": {
-        "required": [
-          "metaInfo",
-          "report"
-        ],
-        "type": "object",
-        "properties": {
-          "metaInfo": {
-            "$ref": "#/components/schemas/QaReportMetaInformation"
-          },
-          "report": {
-            "$ref": "#/components/schemas/SfdrData"
           }
         }
       },
@@ -1355,13 +1347,36 @@
           }
         }
       },
-      "QaStatus": {
-        "type": "string",
-        "enum": [
-          "Pending",
-          "Accepted",
-          "Rejected"
-        ]
+      "QaReportMetaInformation": {
+        "required": [
+          "active",
+          "dataId",
+          "dataType",
+          "qaReportId",
+          "uploadTime"
+        ],
+        "type": "object",
+        "properties": {
+          "dataId": {
+            "type": "string"
+          },
+          "dataType": {
+            "type": "string"
+          },
+          "qaReportId": {
+            "type": "string"
+          },
+          "reporterUserId": {
+            "type": "string"
+          },
+          "uploadTime": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "active": {
+            "type": "boolean"
+          }
+        }
       },
       "ReviewInformationResponse": {
         "required": [
@@ -1386,6 +1401,21 @@
           },
           "message": {
             "type": "string"
+          }
+        }
+      },
+      "QaReportWithMetaInformationSfdrData": {
+        "required": [
+          "metaInfo",
+          "report"
+        ],
+        "type": "object",
+        "properties": {
+          "metaInfo": {
+            "$ref": "#/components/schemas/QaReportMetaInformation"
+          },
+          "report": {
+            "$ref": "#/components/schemas/SfdrData"
           }
         }
       },
