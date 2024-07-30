@@ -35,16 +35,11 @@ class AccessToActiveMatchingDatasetTest {
     private val fileNameAlpha = "Report-Alpha"
     private lateinit var hashAlpha: String
 
-    private val timeSleep: Long = 3000
+    private val timeSleep: Long = 1000
     lateinit var companyId: String
 
-    @AfterAll
-    fun deleteDummyFiles() {
-        assertTrue(dummyFileAlpha.delete())
-    }
-
     @Test
-    fun privateFrameworkHasAccess() {
+    fun `premium User private request has access`() {
         // TODO perhaps put the upload vsme files structure into a before all
         companyId = apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId
         createVSMEDataAndPostAsAdminCompanyOwner(companyId)
@@ -65,6 +60,7 @@ class AccessToActiveMatchingDatasetTest {
 
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.PremiumUser)
         assertEquals(AccessStatus.Granted, requestControllerApi.getDataRequestsForRequestingUser()[0].accessStatus)
+        dummyFileAlpha.delete()
     }
 
     @Test
@@ -79,11 +75,9 @@ class AccessToActiveMatchingDatasetTest {
 
         requestControllerApi.postSingleDataRequest(singleDataRequest)
         Thread.sleep(timeSleep)
-        // val recentReaderDataRequest = requestControllerApi.getDataRequestsForRequestingUser()[0]
         val recentReaderDataRequest = requestControllerApi.getDataRequestsForRequestingUser().maxByOrNull {
             it.creationTimestamp
         }
-        // todo variable aus den beiden unteren Zeilen
         assertEquals(AccessStatus.Pending, recentReaderDataRequest?.accessStatus)
         assertEquals(RequestStatus.Open, recentReaderDataRequest?.requestStatus)
     }
@@ -97,14 +91,15 @@ class AccessToActiveMatchingDatasetTest {
 
         val singleDataRequest = vsmeUtils.setSingleDataVSMERequest(companyId, setOf("2022"))
         requestControllerApi.postSingleDataRequest(singleDataRequest)
-        // TODO Maybe find different solution to Thread.sleep
         Thread.sleep(timeSleep)
         val recentReaderDataRequest = requestControllerApi.getDataRequestsForRequestingUser().maxByOrNull {
             it.creationTimestamp
-        } //
+        }
 
         assertEquals(AccessStatus.Pending, recentReaderDataRequest?.accessStatus)
         assertEquals(RequestStatus.Answered, recentReaderDataRequest?.requestStatus)
+
+        dummyFileAlpha.delete()
     }
 
     @Test
@@ -116,7 +111,6 @@ class AccessToActiveMatchingDatasetTest {
 
         requestControllerApi.postSingleDataRequest(singleDataRequest)
         Thread.sleep(timeSleep)
-        // var recentReaderDataRequest = requestControllerApi.getDataRequestsForRequestingUser()[0]
         var recentReaderDataRequest = requestControllerApi.getDataRequestsForRequestingUser().maxByOrNull {
             it.creationTimestamp
         }
@@ -134,6 +128,8 @@ class AccessToActiveMatchingDatasetTest {
 
         assertEquals(AccessStatus.Pending, recentReaderDataRequest?.accessStatus)
         assertEquals(RequestStatus.Answered, recentReaderDataRequest?.requestStatus)
+
+        dummyFileAlpha.delete()
     }
 
     @Test
@@ -146,25 +142,27 @@ class AccessToActiveMatchingDatasetTest {
         val singleDataRequest = vsmeUtils.setSingleDataVSMERequest(companyId, setOf("2022"))
         requestControllerApi.postSingleDataRequest(singleDataRequest)
         // TODO Maybe find different solution to Thread.sleep
-        Thread.sleep(timeSleep)
+        Thread.sleep(2700)
         var recentReaderDataRequest = requestControllerApi.getDataRequestsForRequestingUser().maxByOrNull {
             it.creationTimestamp
         }
 
         assertEquals(AccessStatus.Pending, recentReaderDataRequest?.accessStatus)
 
-        jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.PremiumUser)
+        jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
         requestControllerApi.patchDataRequest(
             UUID.fromString(recentReaderDataRequest?.dataRequestId),
             accessStatus = AccessStatus.Declined,
         )
-        Thread.sleep(timeSleep)
 
+        jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.PremiumUser)
+        Thread.sleep(timeSleep)
         recentReaderDataRequest = requestControllerApi.getDataRequestsForRequestingUser().maxByOrNull {
             it.creationTimestamp
         }
 
         assertEquals(AccessStatus.Declined, recentReaderDataRequest?.accessStatus)
+        dummyFileAlpha.delete()
     }
 
     private fun createVSMEDataAndPostAsAdminCompanyOwner(companyId: String) {
@@ -180,7 +178,6 @@ class AccessToActiveMatchingDatasetTest {
             UUID.fromString(TechnicalUser.Admin.technicalUserId),
         )
         val vsmeData = vsmeUtils.setReferencedReports(testVsmeData, FileInfos(hashAlpha, fileNameAlpha))
-        // TODO clean up code duplication with functions in vsme.kt
         val companyAssociatedVsmeData = CompanyAssociatedDataVsmeData(companyId, "2022", vsmeData)
         vsmeUtils.postVsmeDataset(companyAssociatedVsmeData, listOf(dummyFileAlpha), TechnicalUser.Admin)
     }
