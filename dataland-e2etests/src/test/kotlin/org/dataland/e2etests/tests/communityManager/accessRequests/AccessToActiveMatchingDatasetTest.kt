@@ -186,6 +186,7 @@ class AccessToActiveMatchingDatasetTest {
                     dataRequestId = UUID.fromString(recentReaderDataRequest?.dataRequestId),
                     accessStatus = AccessStatus.Declined,
                 )
+                Thread.sleep(3000)
                 assertEquals(AccessStatus.Declined, responseBody.accessStatus)
             } else {
                 val responseException = assertThrows<ClientException> {
