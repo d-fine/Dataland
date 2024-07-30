@@ -15,13 +15,10 @@ import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.datalandinternalstorage.openApiClient.api.StorageControllerApi
 import org.dataland.datalandinternalstorage.openApiClient.infrastructure.ClientException
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
-import org.dataland.datalandmessagequeueutils.constants.ActionType
-import org.dataland.datalandmessagequeueutils.constants.ExchangeName
 import org.dataland.datalandmessagequeueutils.constants.MessageType
 import org.dataland.datalandmessagequeueutils.exceptions.MessageQueueRejectException
 import org.dataland.datalandmessagequeueutils.messages.QaCompletedMessage
 import org.dataland.datalandmessagequeueutils.utils.MessageQueueUtils
-import org.json.JSONObject
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -207,23 +204,14 @@ class DataManagerTest(
 
     @Test
     fun `check an exception is thrown during storing a data set when sending notification to message queue fails`() {
-        val storableEuTaxonomyDataSetForNonFinancials: StorableDataSet =
+        val storableEuTaxonomyDataSetForNonFinancials =
             addCompanyAndReturnStorableEuTaxonomyDataSetForNonFinancialsForIt()
 
-        val payload = JSONObject(
-            mapOf(
-                "dataId" to dataUUId, "bypassQa" to false,
-                "actionType" to
-                    ActionType.StorePublicData,
-            ),
-        ).toString()
         `when`(
             mockCloudEventMessageHandler.buildCEMessageAndSendToQueue(
-                payload, MessageType.PublicDataReceived, correlationId, ExchangeName.RequestReceived,
+                anyString(), anyString(), anyString(), anyString(), anyString(),
             ),
-        ).thenThrow(
-            AmqpException::class.java,
-        )
+        ).thenThrow(AmqpException::class.java)
         assertThrows<AmqpException> {
             spyDataManager.storeDataSetInTemporaryStoreAndSendMessage(
                 dataUUId, storableEuTaxonomyDataSetForNonFinancials, false, correlationId,

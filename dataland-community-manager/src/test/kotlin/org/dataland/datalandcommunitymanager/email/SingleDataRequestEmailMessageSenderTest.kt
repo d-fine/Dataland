@@ -68,7 +68,7 @@ class SingleDataRequestEmailMessageSenderTest {
         reset(cloudEventMessageHandlerMock)
     }
 
-    private fun buildInternalEmailMessageMock() {
+    private fun mockBuildingMessageAndSendingItToQueueForInternalMails() {
         `when`(
             cloudEventMessageHandlerMock.buildCEMessageAndSendToQueue(
                 anyString(),
@@ -101,7 +101,7 @@ class SingleDataRequestEmailMessageSenderTest {
 
     @Test
     fun `validate that the output of the internal email message sender is correctly built`() {
-        buildInternalEmailMessageMock()
+        mockBuildingMessageAndSendingItToQueueForInternalMails()
         singleDataRequestEmailMessageSender.sendSingleDataRequestInternalMessage(
             SingleDataRequestEmailMessageSender.MessageInformation(
                 authenticationMock, datalandCompanyId, DataTypeEnum.lksg, reportingPeriods,
@@ -110,7 +110,7 @@ class SingleDataRequestEmailMessageSenderTest {
         )
     }
 
-    private fun buildExternalEmailMessageMock() {
+    private fun mockBuildingMessageAndSendingItToQueueForExternalMails() {
         `when`(
             cloudEventMessageHandlerMock.buildCEMessageAndSendToQueue(
                 anyString(),
@@ -143,7 +143,7 @@ class SingleDataRequestEmailMessageSenderTest {
 
     @Test
     fun `validate that the output of the external email message sender is correctly built`() {
-        buildExternalEmailMessageMock()
+        mockBuildingMessageAndSendingItToQueueForExternalMails()
         singleDataRequestEmailMessageSender.sendSingleDataRequestExternalMessage(
             SingleDataRequestEmailMessageSender.MessageInformation(
                 authenticationMock, datalandCompanyId, DataTypeEnum.p2p, reportingPeriods,

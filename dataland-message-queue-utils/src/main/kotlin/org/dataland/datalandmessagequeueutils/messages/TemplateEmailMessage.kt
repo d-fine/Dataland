@@ -19,6 +19,8 @@ data class TemplateEmailMessage(
         DataRequestedAnswered,
         DataRequestClosed,
         SuccessfullyClaimedOwnership,
+        SingleNotification,
+        SummaryNotification,
     }
 
     /**
