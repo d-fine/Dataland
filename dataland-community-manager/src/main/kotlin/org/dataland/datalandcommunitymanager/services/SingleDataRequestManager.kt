@@ -57,6 +57,31 @@ constructor(
         )
         val reportingPeriodsOfStoredDataRequests = mutableListOf<String>()
         val reportingPeriodsOfDuplicateDataRequests = mutableListOf<String>()
+        createAccessOrDataRequest(
+            singleDataRequest,
+            companyId,
+            userId,
+            reportingPeriodsOfDuplicateDataRequests,
+            reportingPeriodsOfStoredDataRequests,
+        )
+        // TODO Maybe move this following logic into the else clause above, for only access request add its own sending
+        // TODO email function with an appropriate message
+        sendSingleDataRequestEmailMessage(
+            DatalandAuthentication.fromContext() as DatalandJwtAuthentication, singleDataRequest,
+            companyId, correlationId,
+        )
+        return buildResponseForSingleDataRequest(
+            singleDataRequest, reportingPeriodsOfStoredDataRequests, reportingPeriodsOfDuplicateDataRequests,
+        )
+    }
+
+    private fun createAccessOrDataRequest(
+        singleDataRequest: SingleDataRequest,
+        companyId: String,
+        userId: String,
+        reportingPeriodsOfDuplicateDataRequests: MutableList<String>,
+        reportingPeriodsOfStoredDataRequests: MutableList<String>,
+    ) {
         singleDataRequest.reportingPeriods.forEach { reportingPeriod ->
             if (singleDataRequest.dataType == DataTypeEnum.vsme &&
                 utils.matchingDatasetExists(
@@ -86,15 +111,6 @@ constructor(
                 }
             }
         }
-        // TODO Maybe move this following logic into the else clause above, for only access request add its own sending
-        // TODO email function with an appropriate message
-        sendSingleDataRequestEmailMessage(
-            DatalandAuthentication.fromContext() as DatalandJwtAuthentication, singleDataRequest,
-            companyId, correlationId,
-        )
-        return buildResponseForSingleDataRequest(
-            singleDataRequest, reportingPeriodsOfStoredDataRequests, reportingPeriodsOfDuplicateDataRequests,
-        )
     }
 
     private fun checkSingleDataRequest(singleDataRequest: SingleDataRequest, companyId: String) {
