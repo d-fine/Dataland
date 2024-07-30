@@ -24,7 +24,7 @@ import java.io.File
 import java.util.*
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-class AccessToActiveMatchingDatasetTest {
+class AccessRequestTest {
 
     val apiAccessor = ApiAccessor()
     val vsmeUtils = VsmeUtils()
@@ -36,12 +36,11 @@ class AccessToActiveMatchingDatasetTest {
     private val fileNameAlpha = "Report-Alpha"
     private lateinit var hashAlpha: String
 
-    private val timeSleep: Long = 1000
+    private val timeSleep: Long = 1
     lateinit var companyId: String
 
     @Test
-    fun `premium User private request has access`() {
-        // TODO perhaps put the upload vsme files structure into a before all
+    fun `premium User makes private request, has access to active dataset`() {
         companyId = apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId
         createVSMEDataAndPostAsAdminCompanyOwner(companyId)
 
@@ -60,12 +59,14 @@ class AccessToActiveMatchingDatasetTest {
         )
 
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.PremiumUser)
+
+        Thread.sleep(timeSleep)
         assertEquals(AccessStatus.Granted, requestControllerApi.getDataRequestsForRequestingUser()[0].accessStatus)
         dummyFileAlpha.delete()
     }
 
     @Test
-    fun privateFrameworkHasNoAccessNoMatchingDataset() {
+    fun `premium User makes private request, has no access to active dataset, no matching dataset`() {
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.PremiumUser)
 
         val singleDataRequest = vsmeUtils.setSingleDataVSMERequest(
@@ -84,7 +85,7 @@ class AccessToActiveMatchingDatasetTest {
     }
 
     @Test
-    fun privateFrameworkHasNoAccessHasMatchingDataset() {
+    fun `premium User makes private request, has no access to active dataset, matching dataset exists`() {
         companyId = apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId
         createVSMEDataAndPostAsAdminCompanyOwner(companyId)
 
@@ -104,7 +105,7 @@ class AccessToActiveMatchingDatasetTest {
     }
 
     @Test
-    fun privateFrameworkCompanyOwnerPrivateRequestAnswer() {
+    fun `Comapny owner gets private request`() {
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.PremiumUser)
         companyId = apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId
 
@@ -134,7 +135,7 @@ class AccessToActiveMatchingDatasetTest {
     }
 
     @Test
-    fun privateFrameworkCompanyOwnerManagesNewRequestDeclined() {
+    fun `Company owner gets new access request, declines access`() {
         companyId = apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId
         createVSMEDataAndPostAsAdminCompanyOwner(companyId)
 
@@ -142,8 +143,7 @@ class AccessToActiveMatchingDatasetTest {
 
         val singleDataRequest = vsmeUtils.setSingleDataVSMERequest(companyId, setOf("2022"))
         requestControllerApi.postSingleDataRequest(singleDataRequest)
-        // TODO Maybe find different solution to Thread.sleep
-        Thread.sleep(2700)
+        Thread.sleep(timeSleep)
         var recentReaderDataRequest = requestControllerApi.getDataRequestsForRequestingUser().maxByOrNull {
             it.creationTimestamp
         }
