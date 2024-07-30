@@ -86,8 +86,7 @@ constructor(
             if (singleDataRequest.dataType == DataTypeEnum.vsme &&
                 utils.matchingDatasetExists(
                     companyId = companyId, reportingPeriod = reportingPeriod,
-                    dataType =
-                    singleDataRequest.dataType,
+                    dataType = singleDataRequest.dataType,
                 ) &&
                 !dataAccessManager.hasAccessToPrivateDataset(
                     companyId, reportingPeriod, singleDataRequest.dataType, userId,
