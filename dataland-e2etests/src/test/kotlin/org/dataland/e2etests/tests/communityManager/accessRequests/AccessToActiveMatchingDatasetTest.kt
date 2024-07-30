@@ -169,8 +169,8 @@ class AccessToActiveMatchingDatasetTest {
     @Test
     fun `assures that user without proper rights are not able to patch the accessStatus of their own requests`() {
         companyId = apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId
-        TechnicalUser.entries.forEach {
-            jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(it)
+        TechnicalUser.entries.forEach { technicalUser ->
+            jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(technicalUser)
             val singleDataRequest = vsmeUtils.setSingleDataVSMERequest(
                 companyId = companyId,
                 reportingPeriods = setOf("2022"),
@@ -178,9 +178,10 @@ class AccessToActiveMatchingDatasetTest {
             requestControllerApi.postSingleDataRequest(singleDataRequest = singleDataRequest)
             Thread.sleep(timeSleep)
             val recentReaderDataRequest = requestControllerApi.getDataRequestsForRequestingUser().maxByOrNull {
-                it.creationTimestamp
+                    request ->
+                request.creationTimestamp
             }
-            if (it == TechnicalUser.Admin) {
+            if (technicalUser == TechnicalUser.Admin) {
                 val responseBody = requestControllerApi.patchDataRequest(
                     dataRequestId = UUID.fromString(recentReaderDataRequest?.dataRequestId),
                     accessStatus = AccessStatus.Declined,
