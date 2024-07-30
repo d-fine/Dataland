@@ -36,7 +36,7 @@ class AccessRequestTest {
     private val fileNameAlpha = "Report-Alpha"
     private lateinit var hashAlpha: String
 
-    private val timeSleep: Long = 3000
+    private val timeSleep: Long = 10000
     lateinit var companyId: String
 
     @Test
