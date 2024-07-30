@@ -25,7 +25,7 @@ class PercentageComponent(
         dataClassBuilder.addPropertyWithDocumentSupport(
             documentSupport,
             identifier,
-            TypeReference("java.math.BigInteger", isNullable),
+            TypeReference("java.math.BigDecimal", isNullable),
             listOf(),
         )
     }
