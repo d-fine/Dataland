@@ -38,9 +38,9 @@ class DataAccessManagerTest {
 
     private lateinit var dataAccessManager: DataAccessManager
 
-    private lateinit var dataRequestRepository: DataRequestRepository
+    private lateinit var mockDataRequestRepository: DataRequestRepository
     private lateinit var dataRequestLogger: DataRequestLogger
-    private lateinit var dataRequestProcessingUtils: DataRequestProcessingUtils
+    private lateinit var mockDataRequestProcessingUtils: DataRequestProcessingUtils
     private lateinit var accessRequestLogger: AccessRequestLogger
 
     private lateinit var authenticationMock: DatalandJwtAuthentication
@@ -97,8 +97,31 @@ class DataAccessManagerTest {
 
     @BeforeEach
     fun setup() {
-        dataRequestRepository = mock(DataRequestRepository::class.java)
+        mockDataRequestRepository = createDataRequestRepository()
 
+        accessRequestLogger = mock(AccessRequestLogger::class.java)
+        dataRequestLogger = mock(DataRequestLogger::class.java)
+        mockDataRequestProcessingUtils = createRequestProcessingUtils()
+
+        dataAccessManager = DataAccessManager(
+            mockDataRequestRepository, dataRequestLogger, mockDataRequestProcessingUtils, accessRequestLogger,
+        )
+    }
+
+    private fun createRequestProcessingUtils(): DataRequestProcessingUtils {
+        val dataRequestProcessingUtils = mock(DataRequestProcessingUtils::class.java)
+        doNothing().`when`(dataRequestProcessingUtils).addNewRequestStatusToHistory(
+            any(DataRequestEntity::class.java), any(RequestStatus::class.java),
+            any(AccessStatus::class.java), any(Long::class.java),
+        )
+        doNothing().`when`(dataRequestProcessingUtils).addNewMessageToHistory(
+            any(DataRequestEntity::class.java), anySet(), anyString(), any(Long::class.java),
+        )
+        return dataRequestProcessingUtils
+    }
+
+    private fun createDataRequestRepository(): DataRequestRepository {
+        val dataRequestRepository = mock(DataRequestRepository::class.java)
         `when`(
             dataRequestRepository.findByUserIdAndDatalandCompanyIdAndDataTypeAndReportingPeriod(
                 userId, companyId, DataTypeEnum.vsme.toString(), grantedAccessReportingYear,
@@ -116,22 +139,7 @@ class DataAccessManagerTest {
                 userId, companyId, DataTypeEnum.vsme.toString(), noRequestReportingYear,
             ),
         ).thenReturn(listOf())
-
-        accessRequestLogger = mock(AccessRequestLogger::class.java)
-        dataRequestLogger = mock(DataRequestLogger::class.java)
-        dataRequestProcessingUtils = mock(DataRequestProcessingUtils::class.java)
-
-        doNothing().`when`(dataRequestProcessingUtils).addNewRequestStatusToHistory(
-            any(DataRequestEntity::class.java), any(RequestStatus::class.java),
-            any(AccessStatus::class.java), any(Long::class.java),
-        )
-        doNothing().`when`(dataRequestProcessingUtils).addNewMessageToHistory(
-            any(DataRequestEntity::class.java), anySet(), anyString(), any(Long::class.java),
-        )
-
-        dataAccessManager = DataAccessManager(
-            dataRequestRepository, dataRequestLogger, dataRequestProcessingUtils, accessRequestLogger,
-        )
+        return dataRequestRepository
     }
 
     @BeforeEach
@@ -195,18 +203,18 @@ class DataAccessManagerTest {
             userId, companyId, DataTypeEnum.vsme, revokedAccessReportingYear, null, null,
         )
 
-        verify(dataRequestProcessingUtils, times(1))
+        verify(mockDataRequestProcessingUtils, times(1))
             .addNewRequestStatusToHistory(
                 any(DataRequestEntity::class.java), any(RequestStatus::class.java),
                 eq(AccessStatus.Pending), any(Long::class.java),
             )
-        verify(dataRequestProcessingUtils, times(0))
+        verify(mockDataRequestProcessingUtils, times(0))
             .addNewMessageToHistory(
                 any(DataRequestEntity::class.java), anySet(), anyString(), any(Long::class.java),
             )
 
         val saveCaptor = ArgumentCaptor.forClass(DataRequestEntity::class.java)
-        verify(dataRequestRepository, times(1))
+        verify(mockDataRequestRepository, times(1))
             .save(capture(saveCaptor))
 
         assertEquals(0, saveCaptor.value.creationTimestamp)
@@ -223,18 +231,18 @@ class DataAccessManagerTest {
             userId, companyId, DataTypeEnum.vsme, noRequestReportingYear, contacts, message,
         )
 
-        verify(dataRequestProcessingUtils, times(1))
+        verify(mockDataRequestProcessingUtils, times(1))
             .addNewRequestStatusToHistory(
                 any(DataRequestEntity::class.java), any(RequestStatus::class.java),
                 eq(AccessStatus.Pending), any(Long::class.java),
             )
-        verify(dataRequestProcessingUtils, times(1))
+        verify(mockDataRequestProcessingUtils, times(1))
             .addNewMessageToHistory(
                 any(DataRequestEntity::class.java), eq(contacts), eq(message), any(Long::class.java),
             )
 
         val saveCaptor = ArgumentCaptor.forClass(DataRequestEntity::class.java)
-        verify(dataRequestRepository, times(1))
+        verify(mockDataRequestRepository, times(1))
             .save(capture(saveCaptor))
 
         assert(saveCaptor.value.creationTimestamp >= currentTime)

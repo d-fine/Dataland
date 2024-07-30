@@ -79,15 +79,15 @@ class DataRequestUploadListener(
 
     /**
      * Checks if for a given dataset there are open requests with matching company identifier, reporting period
-     * and data type and sets their status to answered
-     * @param payload the message describing the result of the completed QA process
+     * and data type and sets their status to answered and handles the update of the access status
+     * @param dataId the dataId of the uploaded data
      * @param type the type of the message
      */
     @RabbitListener(
         bindings = [
             QueueBinding(
                 value = Queue(
-                    "privateRequestReceivedCommunityManagerDataManager",
+                    "privateRequestReceivedCommunityManager",
                     arguments = [
                         Argument(name = "x-dead-letter-exchange", value = ExchangeName.DeadLetter),
                         Argument(name = "x-dead-letter-routing-key", value = "deadLetterKey"),
