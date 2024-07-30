@@ -172,22 +172,25 @@ class AccessToActiveMatchingDatasetTest {
         createVSMEDataAndPostAsAdminCompanyOwner(companyId)
         TechnicalUser.entries.forEach {
             jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(it)
-            val singleDataRequest = vsmeUtils.setSingleDataVSMERequest(companyId, setOf("2022"))
-            requestControllerApi.postSingleDataRequest(singleDataRequest)
+            val singleDataRequest = vsmeUtils.setSingleDataVSMERequest(
+                companyId = companyId,
+                reportingPeriods = setOf("2022"),
+            )
+            requestControllerApi.postSingleDataRequest(singleDataRequest = singleDataRequest)
             Thread.sleep(timeSleep)
             val recentReaderDataRequest = requestControllerApi.getDataRequestsForRequestingUser().maxByOrNull {
                 it.creationTimestamp
             }
             if (it == TechnicalUser.Admin) {
                 val responseBody = requestControllerApi.patchDataRequest(
-                    UUID.fromString(recentReaderDataRequest?.dataRequestId),
+                    dataRequestId = UUID.fromString(recentReaderDataRequest?.dataRequestId),
                     accessStatus = AccessStatus.Declined,
                 )
                 assertEquals(AccessStatus.Declined, responseBody.accessStatus)
             } else {
                 val responseException = assertThrows<ClientException> {
                     requestControllerApi.patchDataRequest(
-                        UUID.fromString(recentReaderDataRequest?.dataRequestId),
+                        dataRequestId = UUID.fromString(recentReaderDataRequest?.dataRequestId),
                         accessStatus = AccessStatus.Declined,
                     )
                 }
