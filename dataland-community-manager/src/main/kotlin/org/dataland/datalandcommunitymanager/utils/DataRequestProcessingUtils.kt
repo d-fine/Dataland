@@ -100,7 +100,6 @@ class DataRequestProcessingUtils(
             datalandCompanyId,
             creationTime,
         )
-        // TODO Make sure the .save command now works without issues. Try patching existing requests
         dataRequestRepository.save(dataRequestEntity)
         val accessStatus = if (dataType == DataTypeEnum.vsme) {
             AccessStatus.Pending
@@ -131,7 +130,6 @@ class DataRequestProcessingUtils(
     ) {
         val requestMessageObject = StoredDataRequestMessageObject(contacts, message, modificationTime)
         val requestMessageEntity = MessageEntity(requestMessageObject, dataRequestEntity)
-        // TODO Make sure the .save command now works without issues. Try patching existing requests
         messageRepository.save(requestMessageEntity)
         dataRequestEntity.addToMessageToHistory(requestMessageEntity)
     }
@@ -151,7 +149,6 @@ class DataRequestProcessingUtils(
         val requestStatusObject = StoredDataRequestStatusObject(requestStatus, modificationTime, accessStatus)
         val requestStatusEntity = RequestStatusEntity(requestStatusObject, dataRequestEntity)
 
-        // TODO Make sure the .save command now works without issues. Try patching existing requests
         requestStatusRepository.save(requestStatusEntity)
         dataRequestEntity.addToRequestStatusHistory(requestStatusEntity)
     }
