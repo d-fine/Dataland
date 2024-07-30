@@ -36,7 +36,7 @@ class AccessRequestTest {
     private val fileNameAlpha = "Report-Alpha"
     private lateinit var hashAlpha: String
 
-    private val timeSleep: Long = 10000
+    private val timeSleep: Long = 3000
     lateinit var companyId: String
 
     @Test
@@ -175,7 +175,6 @@ class AccessRequestTest {
                 companyId = companyId,
                 reportingPeriods = setOf("2022"),
             )
-            Thread.sleep(timeSleep)
             requestControllerApi.postSingleDataRequest(singleDataRequest = singleDataRequest)
             Thread.sleep(timeSleep)
             val recentReaderDataRequest = requestControllerApi.getDataRequestsForRequestingUser().maxByOrNull {
