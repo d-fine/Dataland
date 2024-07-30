@@ -175,6 +175,7 @@ class AccessRequestTest {
                 companyId = companyId,
                 reportingPeriods = setOf("2022"),
             )
+            Thread.sleep(timeSleep)
             requestControllerApi.postSingleDataRequest(singleDataRequest = singleDataRequest)
             Thread.sleep(timeSleep)
             val recentReaderDataRequest = requestControllerApi.getDataRequestsForRequestingUser().maxByOrNull {
