@@ -19,7 +19,7 @@ describe('check that the progress spinner works correctly for the document link 
       },
     }).then(() => {
       validateNoIcons();
-      cy.get("[data-test='download-link']").should('exist').click();
+      cy.get("[data-test='Report-Download-Test']").should('exist').click();
       cy.wait('@downloadComplete').then(() => {
         validateNoIcons();
       });
