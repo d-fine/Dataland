@@ -23,16 +23,12 @@
       "matchPackagePatterns": ["^@formkit/"]
     },
     {
-      "groupName": "kotlin-packages",
-      "matchPackagePatterns": ["detekt","kotlin"],
-      "matchSourceUrls": ["https://github.com/JetBrains/kotlin"]
-    },
-    {
       "groupName": "cloudevents",
       "matchPackagePatterns": ["cloudevents"]
+    },
+    {
+      "extends": ["monorepo:kotlin"],
+      "matchPackagePatterns": ["detekt"]
     }
-  ],
-  "gradle" : {
-    "fileMatch": ["^versions.properties$"]
-  }
+  ]
 }
