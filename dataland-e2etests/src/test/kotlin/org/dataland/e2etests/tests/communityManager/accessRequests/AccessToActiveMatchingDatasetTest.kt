@@ -169,7 +169,6 @@ class AccessToActiveMatchingDatasetTest {
     @Test
     fun `assures that user without proper rights are not able to patch the accessStatus of their own requests`() {
         companyId = apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId
-        createVSMEDataAndPostAsAdminCompanyOwner(companyId)
         TechnicalUser.entries.forEach {
             jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(it)
             val singleDataRequest = vsmeUtils.setSingleDataVSMERequest(
