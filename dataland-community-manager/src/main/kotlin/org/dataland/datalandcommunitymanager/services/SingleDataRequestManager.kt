@@ -76,11 +76,8 @@ constructor(
                 reportingPeriodsOfStoredDataRequests,
             )
         }
-        sendSingleDataAndAccessRequestEmailMessage(
-            preprocessedRequest,
-            reportingPeriodsOfStoredDataRequests,
-            reportingPeriodsOfStoredAccessRequests,
-        )
+        sendSingleDataRequestEmailMessage(preprocessedRequest, reportingPeriodsOfStoredDataRequests)
+        sendDataAccessRequestEmailMessage(preprocessedRequest, reportingPeriodsOfStoredAccessRequests)
 
         // TODO should we patch ResponseForSingleDataRequest to include access request?
         return buildResponseForSingleDataRequest(
@@ -225,15 +222,14 @@ constructor(
         )
     }
 
-    private fun sendSingleDataAndAccessRequestEmailMessage(
+    private fun sendSingleDataRequestEmailMessage(
         preprocessedRequest: PreprocessedRequest,
         reportingPeriodsOfStoredDataRequests: Set<String>,
-        reportingPeriodsOfStoredAccessRequests: Set<String>,
     ) {
-        val userAuthentication = DatalandAuthentication.fromContext() as DatalandJwtAuthentication
+        if (reportingPeriodsOfStoredDataRequests.isEmpty()) return
 
         val messageInformation = SingleDataRequestEmailMessageSender.MessageInformation(
-            userAuthentication = userAuthentication,
+            userAuthentication = DatalandAuthentication.fromContext() as DatalandJwtAuthentication,
             datalandCompanyId = preprocessedRequest.companyId,
             dataType = preprocessedRequest.dataType,
             reportingPeriods = reportingPeriodsOfStoredDataRequests,
@@ -253,12 +249,22 @@ constructor(
                 )
             }
         }
+    }
 
-        // TODO also send access request email
-        // datalandJwtAuthentication.firstName
-        // datalandJwtAuthentication.lastName
-        // datalandJwtAuthentication.username // aka email address
-        // accessRequestEmailSender.notifyCompanyOwnerAboutNewRequest()
+    private fun sendDataAccessRequestEmailMessage(
+        preprocessedRequest: PreprocessedRequest,
+        reportingPeriodsOfStoredAccessRequests: Set<String>,
+    ) {
+        if (reportingPeriodsOfStoredAccessRequests.isEmpty()) return
+
+        accessRequestEmailSender.notifyCompanyOwnerAboutNewRequest(
+            AccessRequestEmailSender.RequestEmailInformation(
+                preprocessedRequest.userId, preprocessedRequest.message,
+                preprocessedRequest.companyId, preprocessedRequest.dataType.toString(),
+                reportingPeriodsOfStoredAccessRequests,
+            ),
+            preprocessedRequest.correlationId,
+        )
     }
 
     private fun buildResponseForSingleDataRequest(

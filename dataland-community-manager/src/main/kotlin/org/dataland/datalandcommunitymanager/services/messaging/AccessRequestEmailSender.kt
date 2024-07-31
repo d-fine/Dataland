@@ -33,7 +33,7 @@ class AccessRequestEmailSender(
         val message: String?,
         val datalandCompanyId: String,
         val dataType: String,
-        val reportingPeriod: String,
+        val reportingPeriods: Set<String>,
     )
 
     fun notifyCompanyOwnerAboutNewRequest(emailInformation: RequestEmailInformation, correlationId: String) {

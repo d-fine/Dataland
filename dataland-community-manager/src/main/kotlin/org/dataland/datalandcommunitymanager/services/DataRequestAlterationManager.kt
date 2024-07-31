@@ -117,7 +117,8 @@ class DataRequestAlterationManager(
             accessRequestEmailSender.notifyCompanyOwnerAboutNewRequest(
                 AccessRequestEmailSender.RequestEmailInformation(
                     dataRequestEntity.userId, dataRequestEntity.messageHistory.last().message,
-                    dataRequestEntity.datalandCompanyId, dataRequestEntity.dataType, dataRequestEntity.reportingPeriod,
+                    dataRequestEntity.datalandCompanyId, dataRequestEntity.dataType,
+                    setOf(dataRequestEntity.reportingPeriod),
                 ),
                 correlationId,
             )
