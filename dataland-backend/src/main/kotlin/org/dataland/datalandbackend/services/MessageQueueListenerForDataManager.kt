@@ -29,8 +29,8 @@ import java.util.*
  * @param messageQueueUtils contains utils to be used to handle messages for the message queue
  * @param dataManager the dataManager service for public data
 */
-@Component("MessageQueueListenerDataManager")
-class MessageQueueListenerDataManager(
+@Component("MessageQueueListenerForDataManager")
+class MessageQueueListenerForDataManager(
     @Autowired private val objectMapper: ObjectMapper,
     @Autowired private val metaDataManager: DataMetaInformationManager,
     @Autowired private val messageQueueUtils: MessageQueueUtils,
