@@ -94,15 +94,15 @@ constructor(
         singleDataRequest: SingleDataRequest,
         companyId: String,
         reportingPeriod: String,
-        userId: String
+        userId: String,
     ) = singleDataRequest.dataType == DataTypeEnum.vsme &&
-            utils.matchingDatasetExists(
-                companyId = companyId, reportingPeriod = reportingPeriod,
-                dataType = singleDataRequest.dataType,
-            ) &&
-            !dataAccessManager.hasAccessToPrivateDataset(
-                companyId, reportingPeriod, singleDataRequest.dataType, userId,
-            )
+        utils.matchingDatasetExists(
+            companyId = companyId, reportingPeriod = reportingPeriod,
+            dataType = singleDataRequest.dataType,
+        ) &&
+        !dataAccessManager.hasAccessToPrivateDataset(
+            companyId, reportingPeriod, singleDataRequest.dataType, userId,
+        )
 
     private fun checkSingleDataRequest(singleDataRequest: SingleDataRequest, companyId: String) {
         utils.throwExceptionIfNotJwtAuth()

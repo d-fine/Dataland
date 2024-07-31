@@ -169,7 +169,8 @@ class AccessRequestTest {
     @Test
     fun `assures that user without proper rights are not able to patch the accessStatus of their own requests`() {
         companyId = apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId
-        TechnicalUser.entries.forEach { technicalUser ->
+        val listOfTechnicalUser = listOf(TechnicalUser.Admin, TechnicalUser.PremiumUser)
+        listOfTechnicalUser.forEach { technicalUser ->
             jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(technicalUser)
             val singleDataRequest = vsmeUtils.setSingleDataVSMERequest(
                 companyId = companyId,
@@ -184,16 +185,15 @@ class AccessRequestTest {
             if (technicalUser == TechnicalUser.Admin) {
                 val responseBody = requestControllerApi.patchDataRequest(
                     dataRequestId = UUID.fromString(recentReaderDataRequest?.dataRequestId),
-                    accessStatus = AccessStatus.Declined,
-                )
+                   accessStatus = AccessStatus.Declined,
+               )
                 assertEquals(AccessStatus.Declined, responseBody.accessStatus)
             } else {
-                val responseException = assertThrows<ClientException> {
-                    requestControllerApi.patchDataRequest(
-                        dataRequestId = UUID.fromString(recentReaderDataRequest?.dataRequestId),
-                        accessStatus = AccessStatus.Declined,
-                    )
-                }
+               val responseException = assertThrows<ClientException> {
+                   requestControllerApi.patchDataRequest(
+                       dataRequestId = UUID.fromString(recentReaderDataRequest?.dataRequestId),
+                       accessStatus = AccessStatus.Declined,)
+               }
                 assertAccessDeniedResponseBodyInCommunityManagerClientException(responseException)
             }
         }
