@@ -98,7 +98,9 @@ class DataRequestAlterationManager(
         }
         if (requestStatus == RequestStatus.Answered && accessStatus == AccessStatus.Pending) {
             accessRequestEmailSender.notifyCompanyOwnerOrContactsAboutNewRequest(
-                dataRequestEntity, correlationId ?: UUID.randomUUID().toString(),
+                dataRequestEntity,
+                DatalandAuthentication.fromContext() as DatalandJwtAuthentication,
+                correlationId ?: UUID.randomUUID().toString(),
             )
         }
 
