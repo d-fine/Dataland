@@ -90,14 +90,17 @@ class DataRequestAlterationManager(
         dataRequestEntity: DataRequestEntity,
         requestStatus: RequestStatus?,
         accessStatus: AccessStatus?,
-        correlationId: String?
+        correlationId: String?,
     ) {
         val correlationId = correlationId ?: UUID.randomUUID().toString()
         if (requestStatus == RequestStatus.Answered || requestStatus == RequestStatus.Closed) {
             dataRequestResponseEmailMessageSender.sendDataRequestResponseEmail(
                 dataRequestEntity,
-                if (requestStatus == RequestStatus.Answered) TemplateEmailMessage.Type.DataRequestedAnswered
-                else TemplateEmailMessage.Type.DataRequestClosed,
+                if (requestStatus == RequestStatus.Answered) {
+                    TemplateEmailMessage.Type.DataRequestedAnswered
+                } else {
+                    TemplateEmailMessage.Type.DataRequestClosed
+                },
                 correlationId,
             )
         }
@@ -105,15 +108,17 @@ class DataRequestAlterationManager(
             accessRequestEmailSender.notifyRequesterAboutGrantedRequest(
                 AccessRequestEmailSender.GrantedEmailInformation(
                     dataRequestEntity.datalandCompanyId, dataRequestEntity.dataType,
-                    dataRequestEntity.reportingPeriod, dataRequestEntity.userId),
-                correlationId
+                    dataRequestEntity.reportingPeriod, dataRequestEntity.userId,
+                ),
+                correlationId,
             )
         }
         if (requestStatus == RequestStatus.Answered && accessStatus == AccessStatus.Pending) {
             accessRequestEmailSender.notifyCompanyOwnerAboutNewRequest(
                 AccessRequestEmailSender.RequestEmailInformation(
                     dataRequestEntity.userId, dataRequestEntity.messageHistory.last().message,
-                    dataRequestEntity.datalandCompanyId, dataRequestEntity.dataType, dataRequestEntity.reportingPeriod),
+                    dataRequestEntity.datalandCompanyId, dataRequestEntity.dataType, dataRequestEntity.reportingPeriod,
+                ),
                 correlationId,
             )
         }

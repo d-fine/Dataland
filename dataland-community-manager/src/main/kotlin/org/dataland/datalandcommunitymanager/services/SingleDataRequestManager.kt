@@ -49,7 +49,7 @@ constructor(
         val dataType: DataTypeEnum,
         val contacts: Set<String>?,
         val message: String?,
-        val correlationId: String
+        val correlationId: String,
     )
 
     /**
@@ -73,7 +73,7 @@ constructor(
                 reportingPeriod, preprocessedRequest,
                 reportingPeriodsOfStoredAccessRequests,
                 reportingPeriodsOfDuplicateDataRequests,
-                reportingPeriodsOfStoredDataRequests
+                reportingPeriodsOfStoredDataRequests,
             )
         }
         sendSingleDataAndAccessRequestEmailMessage(
@@ -89,7 +89,7 @@ constructor(
         )
     }
 
-    fun preprocessSingleDataRequest(singleDataRequest: SingleDataRequest) : PreprocessedRequest {
+    fun preprocessSingleDataRequest(singleDataRequest: SingleDataRequest): PreprocessedRequest {
         val companyId = findDatalandCompanyIdForCompanyIdentifier(singleDataRequest.companyIdentifier)
         val contacts = singleDataRequest.contacts.takeIf { !it.isNullOrEmpty() }
         val message = singleDataRequest.message.takeIf { !it.isNullOrBlank() }
@@ -101,7 +101,10 @@ constructor(
         validateSingleDataRequestContent(singleDataRequest)
         performQuotaCheckForNonPremiumUser(singleDataRequest.reportingPeriods.size, companyId)
 
-        return PreprocessedRequest(companyId, userId, singleDataRequest.dataType, contacts, message, correlationId)
+        return PreprocessedRequest(
+            companyId = companyId, userId = userId, dataType = singleDataRequest.dataType,
+            contacts = contacts, message = message, correlationId = correlationId,
+        )
     }
 
     private fun processReportingPeriod(
@@ -109,31 +112,34 @@ constructor(
         preprocessedRequest: PreprocessedRequest,
         reportingPeriodsOfStoredAccessRequests: MutableSet<String>,
         reportingPeriodsOfDuplicateDataRequests: MutableSet<String>,
-        reportingPeriodsOfStoredDataRequests: MutableSet<String>
+        reportingPeriodsOfStoredDataRequests: MutableSet<String>,
     ) {
         if (shouldCreateAccessRequestToPrivateDataset(
-                preprocessedRequest.dataType,
-                preprocessedRequest.companyId,
-                reportingPeriod,
-                preprocessedRequest.userId
+                dataType = preprocessedRequest.dataType,
+                companyId = preprocessedRequest.companyId,
+                reportingPeriod = reportingPeriod,
+                userId = preprocessedRequest.userId,
             )
         ) {
             dataAccessManager.createAccessRequestToPrivateDataset(
-                preprocessedRequest.userId, preprocessedRequest.companyId, preprocessedRequest.dataType, reportingPeriod,
-                preprocessedRequest.contacts, preprocessedRequest.message,
+                userId = preprocessedRequest.userId, companyId = preprocessedRequest.companyId,
+                dataType = preprocessedRequest.dataType, reportingPeriod = reportingPeriod,
+                contacts = preprocessedRequest.contacts, message = preprocessedRequest.message,
             )
             reportingPeriodsOfStoredAccessRequests.add(reportingPeriod)
         } else {
             if (utils.existsDataRequestWithNonFinalStatus(
-                    preprocessedRequest.companyId,
-                    preprocessedRequest.dataType,
-                    reportingPeriod)) {
+                    companyId = preprocessedRequest.companyId,
+                    framework = preprocessedRequest.dataType,
+                    reportingPeriod = reportingPeriod,
+                )
+            ) {
                 reportingPeriodsOfDuplicateDataRequests.add(reportingPeriod)
             } else {
                 utils.storeDataRequestEntityAsOpen(
-                    preprocessedRequest.companyId, preprocessedRequest.dataType, reportingPeriod,
-                    preprocessedRequest.contacts,
-                    preprocessedRequest.message,
+                    datalandCompanyId = preprocessedRequest.companyId, dataType = preprocessedRequest.dataType,
+                    reportingPeriod = reportingPeriod, contacts = preprocessedRequest.contacts,
+                    message = preprocessedRequest.message,
                 )
                 reportingPeriodsOfStoredDataRequests.add(reportingPeriod)
             }
@@ -144,15 +150,19 @@ constructor(
         dataType: DataTypeEnum,
         companyId: String,
         reportingPeriod: String,
-        userId: String
-    ) = dataType == DataTypeEnum.vsme &&
-            utils.matchingDatasetExists(
-                companyId = companyId, reportingPeriod = reportingPeriod,
-                dataType = dataType,
-            ) &&
-            !dataAccessManager.hasAccessToPrivateDataset(
-                companyId, reportingPeriod, dataType, userId,
-            )
+        userId: String,
+
+    ): Boolean {
+        val matchingDatasetExists = utils.matchingDatasetExists(
+            companyId = companyId, reportingPeriod = reportingPeriod,
+            dataType = dataType,
+        )
+        val hasAccessToPrivateDataset = dataAccessManager.hasAccessToPrivateDataset(
+            companyId = companyId,
+            reportingPeriod = reportingPeriod, dataType = dataType, userId = userId,
+        )
+        return(dataType == DataTypeEnum.vsme && matchingDatasetExists && !hasAccessToPrivateDataset)
+    }
 
     private fun performQuotaCheckForNonPremiumUser(numberOfReportingPeriods: Int, companyId: String) {
         val userInfo = DatalandAuthentication.fromContext()
@@ -223,14 +233,16 @@ constructor(
         val userAuthentication = DatalandAuthentication.fromContext() as DatalandJwtAuthentication
 
         val messageInformation = SingleDataRequestEmailMessageSender.MessageInformation(
-            userAuthentication,
-            preprocessedRequest.companyId,
-            preprocessedRequest.dataType,
-            reportingPeriodsOfStoredDataRequests)
+            userAuthentication = userAuthentication,
+            datalandCompanyId = preprocessedRequest.companyId,
+            dataType = preprocessedRequest.dataType,
+            reportingPeriods = reportingPeriodsOfStoredDataRequests,
+        )
 
         if (preprocessedRequest.contacts.isNullOrEmpty()) {
             singleDataRequestEmailMessageSender.sendSingleDataRequestInternalMessage(
-                messageInformation, preprocessedRequest.correlationId,)
+                messageInformation, preprocessedRequest.correlationId,
+            )
         } else {
             preprocessedRequest.contacts.forEach { contactEmail ->
                 singleDataRequestEmailMessageSender.sendSingleDataRequestExternalMessage(

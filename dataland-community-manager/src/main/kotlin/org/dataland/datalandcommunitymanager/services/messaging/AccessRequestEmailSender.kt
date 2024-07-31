@@ -9,14 +9,14 @@ import org.springframework.stereotype.Service
 @Service("AccessRequestEmailSender")
 class AccessRequestEmailSender(
     @Autowired private val companyRolesManager: CompanyRolesManager,
-    @Autowired private val keycloakUserControllerApiService: KeycloakUserControllerApiService
+    @Autowired private val keycloakUserControllerApiService: KeycloakUserControllerApiService,
 ) {
 
     data class GrantedEmailInformation(
         val datalandCompanyId: String,
         val dataType: String,
         val reportingPeriod: String,
-        val userId: String
+        val userId: String,
     )
 
     fun notifyRequesterAboutGrantedRequest(emailInformation: GrantedEmailInformation, correlationId: String) {
@@ -37,7 +37,6 @@ class AccessRequestEmailSender(
     )
 
     fun notifyCompanyOwnerAboutNewRequest(emailInformation: RequestEmailInformation, correlationId: String) {
-
         val user = keycloakUserControllerApiService.getUser(emailInformation.requesterUserId)
 
         // was ist mit dem company name?
