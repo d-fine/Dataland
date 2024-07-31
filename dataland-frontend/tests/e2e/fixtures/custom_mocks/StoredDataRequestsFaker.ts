@@ -100,7 +100,7 @@ export function generateStoredDataRequest(): StoredDataRequest {
  * Manipulates the request
  * @param input request to be manipulated
  * @param requestStatus the desired status
- * @param accessStatus the desired assess status
+ * @param accessStatus the desired access status
  * @param reportingPeriod the desired reporting period
  * @param dataType the desired framework
  * @param companyId the desired company id
