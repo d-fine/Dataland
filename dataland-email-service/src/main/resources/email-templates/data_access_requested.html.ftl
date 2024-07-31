@@ -30,7 +30,8 @@
         <td rowspan="15" style="width: 40px">&nbsp;</td>
     </tr>
     <tr>
-        <td colspan="3">Exciting news! 📣<br>Data for ${companyName} has been uploaded to Dataland!</td>
+        <td colspan="3">Hello, <br>
+            A Dataland user has requested access to the data of your company on Dataland.</td>
     </tr>
     <tr>
         <td colspan="3" style="height: 20px">&nbsp;</td>

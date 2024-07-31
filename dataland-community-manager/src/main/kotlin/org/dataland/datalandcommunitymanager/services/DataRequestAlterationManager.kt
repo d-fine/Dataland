@@ -77,7 +77,7 @@ class DataRequestAlterationManager(
                 dataRequestEntity.dataRequestId, newRequestStatus, newAccessStatus,
             )
         }
-        if (contacts != null) {
+        if (contacts != null) { // TODO contacts could be empty!, see processSingleDataRequest
             anyChanges = true
             utils.addMessageToMessageHistory(dataRequestEntity, contacts, message, modificationTime)
             this.sendSingleDataRequestEmail(dataRequestEntity, contacts, message)
@@ -85,53 +85,42 @@ class DataRequestAlterationManager(
         }
         if (anyChanges) dataRequestEntity.lastModifiedDate = modificationTime
 
-        // TODO move email send to own function
-        // TODO what is with a notification to the company owner when a reqeust is reopened?
-        if (requestStatus == RequestStatus.Closed || requestStatus == RequestStatus.Answered) {
-            sendEmailBecauseOfStatusChanged(
-                dataRequestEntity, requestStatus, correlationId ?: UUID.randomUUID().toString(),
-            )
-        }
-        if (accessStatus == AccessStatus.Granted) {
-            accessRequestEmailSender.notifyRequesterAboutGrantedRequest(
-                dataRequestEntity, correlationId ?: UUID.randomUUID().toString(),
-            )
-        }
-        if (requestStatus == RequestStatus.Answered && accessStatus == AccessStatus.Pending) {
-            accessRequestEmailSender.notifyCompanyOwnerOrContactsAboutNewRequest(
-                dataRequestEntity,
-                DatalandAuthentication.fromContext() as DatalandJwtAuthentication,
-                correlationId ?: UUID.randomUUID().toString(),
-            )
-        }
+        sendEmailsWhenStatusChanged(dataRequestEntity, requestStatus, accessStatus, correlationId)
 
         return dataRequestEntity.toStoredDataRequest()
     }
 
-    /**
-     * Method to send email if the status changed
-     * @param dataRequestEntity the id of the request entity
-     * @param status the patched request status
-     */
-    private fun sendEmailBecauseOfStatusChanged(
+    private fun sendEmailsWhenStatusChanged(
         dataRequestEntity: DataRequestEntity,
-        status: RequestStatus,
-        correlationId: String,
+        requestStatus: RequestStatus?,
+        accessStatus: AccessStatus?,
+        correlationId: String?
     ) {
-        when (status) {
-            RequestStatus.Answered -> {
-                dataRequestResponseEmailMessageSender.sendDataRequestResponseEmail(
-                    dataRequestEntity, TemplateEmailMessage.Type.DataRequestedAnswered, correlationId,
-                )
-            }
-            RequestStatus.Closed -> {
-                dataRequestResponseEmailMessageSender.sendDataRequestResponseEmail(
-                    dataRequestEntity, TemplateEmailMessage.Type.DataRequestClosed, correlationId,
-                )
-            }
-            else -> {
-                throw IllegalArgumentException("Unable to send email. Unexpected status provided: $status")
-            }
+        val correlationId = correlationId ?: UUID.randomUUID().toString()
+        if (requestStatus == RequestStatus.Answered || requestStatus == RequestStatus.Closed) {
+            dataRequestResponseEmailMessageSender.sendDataRequestResponseEmail(
+                dataRequestEntity,
+                if (requestStatus == RequestStatus.Answered) TemplateEmailMessage.Type.DataRequestedAnswered
+                else TemplateEmailMessage.Type.DataRequestClosed,
+                correlationId,
+            )
+        }
+        if (accessStatus == AccessStatus.Granted) {
+            accessRequestEmailSender.notifyRequesterAboutGrantedRequest(
+                AccessRequestEmailSender.GrantedEmailInformation(
+                    dataRequestEntity.datalandCompanyId, dataRequestEntity.dataType,
+                    dataRequestEntity.reportingPeriod, dataRequestEntity.userId),
+                correlationId
+            )
+        }
+        if (requestStatus == RequestStatus.Answered && accessStatus == AccessStatus.Pending) {
+            val authentication = DatalandAuthentication.fromContext()
+            accessRequestEmailSender.notifyCompanyOwnerAboutNewRequest(
+                AccessRequestEmailSender.RequestEmailInformation(
+                    dataRequestEntity.userId, dataRequestEntity.messageHistory.last().message,
+                    dataRequestEntity.datalandCompanyId, dataRequestEntity.dataType, dataRequestEntity.reportingPeriod),
+                correlationId,
+            )
         }
     }
 

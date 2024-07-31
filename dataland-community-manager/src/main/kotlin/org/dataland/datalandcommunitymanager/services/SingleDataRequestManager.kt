@@ -7,6 +7,7 @@ import org.dataland.datalandbackendutils.utils.validateIsEmailAddress
 import org.dataland.datalandcommunitymanager.model.dataRequest.SingleDataRequest
 import org.dataland.datalandcommunitymanager.model.dataRequest.SingleDataRequestResponse
 import org.dataland.datalandcommunitymanager.repositories.DataRequestRepository
+import org.dataland.datalandcommunitymanager.services.messaging.AccessRequestEmailSender
 import org.dataland.datalandcommunitymanager.services.messaging.SingleDataRequestEmailMessageSender
 import org.dataland.datalandcommunitymanager.utils.CompanyIdValidator
 import org.dataland.datalandcommunitymanager.utils.DataRequestLogger
@@ -35,11 +36,21 @@ constructor(
     @Autowired private val singleDataRequestEmailMessageSender: SingleDataRequestEmailMessageSender,
     @Autowired private val utils: DataRequestProcessingUtils,
     @Autowired private val dataAccessManager: DataAccessManager,
+    @Autowired private val accessRequestEmailSender: AccessRequestEmailSender,
     @Autowired private val securityUtilsService: SecurityUtilsService,
     @Value("\${dataland.community-manager.max-number-of-data-requests-per-day-for-role-user}") val maxRequestsForUser:
     Int,
 ) {
     val companyIdRegex = Regex("^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}\$")
+
+    data class PreprocessedRequest(
+        val companyId: String,
+        val userId: String,
+        val dataType: DataTypeEnum,
+        val contacts: Set<String>?,
+        val message: String?,
+        val correlationId: String
+    )
 
     /**
      * Processes a single data request from a user
@@ -48,67 +59,100 @@ constructor(
      */
     @Transactional
     fun processSingleDataRequest(singleDataRequest: SingleDataRequest): SingleDataRequestResponse {
-        val companyId = findDatalandCompanyIdForCompanyIdentifier(singleDataRequest.companyIdentifier)
-        val correlationId = UUID.randomUUID().toString()
-        val userId = DatalandAuthentication.fromContext().userId
-        checkSingleDataRequest(singleDataRequest, companyId)
+        val preprocessedRequest = preprocessSingleDataRequest(singleDataRequest)
+
         dataRequestLogger.logMessageForReceivingSingleDataRequest(
-            singleDataRequest.companyIdentifier, userId, correlationId,
+            singleDataRequest.companyIdentifier, preprocessedRequest.userId, preprocessedRequest.correlationId,
         )
-        val reportingPeriodsOfStoredDataRequests = mutableListOf<String>()
-        val reportingPeriodsOfDuplicateDataRequests = mutableListOf<String>()
-        val reportingPeriodsOfAccessDataRequests = mutableListOf<String>()
+        val reportingPeriodsOfStoredDataRequests = mutableSetOf<String>()
+        val reportingPeriodsOfDuplicateDataRequests = mutableSetOf<String>()
+        val reportingPeriodsOfStoredAccessRequests = mutableSetOf<String>()
 
         singleDataRequest.reportingPeriods.forEach { reportingPeriod ->
-            if (shouldCreateAccessRequestToPrivateDataset(singleDataRequest, companyId, reportingPeriod, userId)) {
-                dataAccessManager.createAccessRequestToPrivateDataset(
-                    userId, companyId, singleDataRequest.dataType, reportingPeriod,
-                    singleDataRequest.contacts, singleDataRequest.message,
-                )
-                reportingPeriodsOfAccessDataRequests.add(reportingPeriod)
-            } else {
-                if (utils.existsDataRequestWithNonFinalStatus(companyId, singleDataRequest.dataType, reportingPeriod)) {
-                    reportingPeriodsOfDuplicateDataRequests.add(reportingPeriod)
-                } else {
-                    utils.storeDataRequestEntityAsOpen(
-                        companyId, singleDataRequest.dataType, reportingPeriod,
-                        singleDataRequest.contacts.takeIf { !it.isNullOrEmpty() },
-                        singleDataRequest.message.takeIf { !it.isNullOrBlank() },
-                    )
-                    reportingPeriodsOfStoredDataRequests.add(reportingPeriod)
-                }
-            }
+            processReportingPeriod(
+                reportingPeriod, preprocessedRequest,
+                reportingPeriodsOfStoredAccessRequests,
+                reportingPeriodsOfDuplicateDataRequests,
+                reportingPeriodsOfStoredDataRequests
+            )
         }
-        // TODO adjust sendSingleDataRequestEmailMessage to only send emails for reportingPeriodsOfAccessDataRequests
-        // TODO send access request email for reportingPeriodsOfAccessDataRequests
-        sendSingleDataRequestEmailMessage(
-            DatalandAuthentication.fromContext() as DatalandJwtAuthentication, singleDataRequest,
-            companyId, correlationId,
+        sendSingleDataAndAccessRequestEmailMessage(
+            preprocessedRequest,
+            reportingPeriodsOfStoredDataRequests,
+            reportingPeriodsOfStoredAccessRequests,
         )
+
+        // TODO should we patch ResponseForSingleDataRequest to include access request?
         return buildResponseForSingleDataRequest(
-            singleDataRequest, reportingPeriodsOfStoredDataRequests, reportingPeriodsOfDuplicateDataRequests,
+            singleDataRequest,
+            reportingPeriodsOfStoredDataRequests.toList(), reportingPeriodsOfDuplicateDataRequests.toList(),
         )
     }
 
-    private fun shouldCreateAccessRequestToPrivateDataset(
-        singleDataRequest: SingleDataRequest,
-        companyId: String,
-        reportingPeriod: String,
-        userId: String,
-    ) = singleDataRequest.dataType == DataTypeEnum.vsme &&
-        utils.matchingDatasetExists(
-            companyId = companyId, reportingPeriod = reportingPeriod,
-            dataType = singleDataRequest.dataType,
-        ) &&
-        !dataAccessManager.hasAccessToPrivateDataset(
-            companyId, reportingPeriod, singleDataRequest.dataType, userId,
-        )
+    fun preprocessSingleDataRequest(singleDataRequest: SingleDataRequest) : PreprocessedRequest {
+        val companyId = findDatalandCompanyIdForCompanyIdentifier(singleDataRequest.companyIdentifier)
+        val contacts = singleDataRequest.contacts.takeIf { !it.isNullOrEmpty() }
+        val message = singleDataRequest.message.takeIf { !it.isNullOrBlank() }
+        val userId = DatalandAuthentication.fromContext().userId
+        val correlationId = UUID.randomUUID().toString()
 
-    private fun checkSingleDataRequest(singleDataRequest: SingleDataRequest, companyId: String) {
+        // TODO check if COMPANY_OWNER exists for company if the keyword is included
         utils.throwExceptionIfNotJwtAuth()
         validateSingleDataRequestContent(singleDataRequest)
         performQuotaCheckForNonPremiumUser(singleDataRequest.reportingPeriods.size, companyId)
+
+        return PreprocessedRequest(companyId, userId, singleDataRequest.dataType, contacts, message, correlationId)
     }
+
+    private fun processReportingPeriod(
+        reportingPeriod: String,
+        preprocessedRequest: PreprocessedRequest,
+        reportingPeriodsOfStoredAccessRequests: MutableSet<String>,
+        reportingPeriodsOfDuplicateDataRequests: MutableSet<String>,
+        reportingPeriodsOfStoredDataRequests: MutableSet<String>
+    ) {
+        if (shouldCreateAccessRequestToPrivateDataset(
+                preprocessedRequest.dataType,
+                preprocessedRequest.companyId,
+                reportingPeriod,
+                preprocessedRequest.userId
+            )
+        ) {
+            dataAccessManager.createAccessRequestToPrivateDataset(
+                preprocessedRequest.userId, preprocessedRequest.companyId, preprocessedRequest.dataType, reportingPeriod,
+                preprocessedRequest.contacts, preprocessedRequest.message,
+            )
+            reportingPeriodsOfStoredAccessRequests.add(reportingPeriod)
+        } else {
+            if (utils.existsDataRequestWithNonFinalStatus(
+                    preprocessedRequest.companyId,
+                    preprocessedRequest.dataType,
+                    reportingPeriod)) {
+                reportingPeriodsOfDuplicateDataRequests.add(reportingPeriod)
+            } else {
+                utils.storeDataRequestEntityAsOpen(
+                    preprocessedRequest.companyId, preprocessedRequest.dataType, reportingPeriod,
+                    preprocessedRequest.contacts,
+                    preprocessedRequest.message,
+                )
+                reportingPeriodsOfStoredDataRequests.add(reportingPeriod)
+            }
+        }
+    }
+
+    private fun shouldCreateAccessRequestToPrivateDataset(
+        dataType: DataTypeEnum,
+        companyId: String,
+        reportingPeriod: String,
+        userId: String
+    ) = dataType == DataTypeEnum.vsme &&
+            utils.matchingDatasetExists(
+                companyId = companyId, reportingPeriod = reportingPeriod,
+                dataType = dataType,
+            ) &&
+            !dataAccessManager.hasAccessToPrivateDataset(
+                companyId, reportingPeriod, dataType, userId,
+            )
 
     private fun performQuotaCheckForNonPremiumUser(numberOfReportingPeriods: Int, companyId: String) {
         val userInfo = DatalandAuthentication.fromContext()
@@ -171,43 +215,38 @@ constructor(
         )
     }
 
-    private fun sendSingleDataRequestEmailMessage(
-        userAuthentication: DatalandJwtAuthentication,
-        singleDataRequest: SingleDataRequest,
-        datalandCompanyId: String,
-        correlationId: String,
+    private fun sendSingleDataAndAccessRequestEmailMessage(
+        preprocessedRequest: PreprocessedRequest,
+        reportingPeriodsOfStoredDataRequests: Set<String>,
+        reportingPeriodsOfStoredAccessRequests: Set<String>,
     ) {
+        val userAuthentication = DatalandAuthentication.fromContext() as DatalandJwtAuthentication
+
         val messageInformation = SingleDataRequestEmailMessageSender.MessageInformation(
             userAuthentication,
-            datalandCompanyId,
-            singleDataRequest.dataType,
-            singleDataRequest.reportingPeriods,
-        )
-        if (
-            singleDataRequest.contacts.isNullOrEmpty()
-        ) {
-            singleDataRequestEmailMessageSender.sendSingleDataRequestInternalMessage(
-                messageInformation,
-                correlationId,
-            )
-            return
-        }
-        sendExternalEmailMessages(messageInformation, singleDataRequest, correlationId)
-    }
+            preprocessedRequest.companyId,
+            preprocessedRequest.dataType,
+            reportingPeriodsOfStoredDataRequests)
 
-    private fun sendExternalEmailMessages(
-        messageInformation: SingleDataRequestEmailMessageSender.MessageInformation,
-        singleDataRequest: SingleDataRequest,
-        correlationId: String,
-    ) {
-        singleDataRequest.contacts?.forEach { contactEmail ->
-            singleDataRequestEmailMessageSender.sendSingleDataRequestExternalMessage(
-                messageInformation = messageInformation,
-                receiver = contactEmail,
-                contactMessage = singleDataRequest.message,
-                correlationId = correlationId,
-            )
+        if (preprocessedRequest.contacts.isNullOrEmpty()) {
+            singleDataRequestEmailMessageSender.sendSingleDataRequestInternalMessage(
+                messageInformation, preprocessedRequest.correlationId,)
+        } else {
+            preprocessedRequest.contacts.forEach { contactEmail ->
+                singleDataRequestEmailMessageSender.sendSingleDataRequestExternalMessage(
+                    messageInformation = messageInformation,
+                    receiver = contactEmail,
+                    contactMessage = preprocessedRequest.message,
+                    correlationId = preprocessedRequest.correlationId,
+                )
+            }
         }
+
+        // TODO also send access request email
+        // datalandJwtAuthentication.firstName
+        // datalandJwtAuthentication.lastName
+        // datalandJwtAuthentication.username // aka email address
+        // accessRequestEmailSender.notifyCompanyOwnerAboutNewRequest()
     }
 
     private fun buildResponseForSingleDataRequest(
