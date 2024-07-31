@@ -119,6 +119,8 @@ class DataAccessManager(
             dataRequestEntity.lastModifiedDate = modificationTime
             dataRequestRepository.save(dataRequestEntity)
             // TODO discuss if declined should be removed from this condition
+            // TODO check what happens if AccessStatus.Public is removed
+            // TODO check if at some point private data runs into public status
             if (dataRequestEntity.accessStatus == AccessStatus.Revoked || dataRequestEntity.accessStatus ==
                 AccessStatus.Declined || dataRequestEntity.accessStatus == AccessStatus.Public
             ) {

@@ -14,7 +14,7 @@ import org.dataland.e2etests.auth.TechnicalUser
 import org.dataland.e2etests.utils.ApiAccessor
 import org.dataland.e2etests.utils.ExceptionUtils.assertAccessDeniedWrapper
 import org.dataland.e2etests.utils.FrameworkTestDataProvider
-import org.dataland.e2etests.utils.VsmeUtils
+import org.dataland.e2etests.utils.VsmeTestUtils
 import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
@@ -41,7 +41,7 @@ class Vsme {
 
     private val dataAdminUserId = UUID.fromString(TechnicalUser.Admin.technicalUserId)
 
-    private val vsmeUtils = VsmeUtils()
+    private val vsmeTestUtils = VsmeTestUtils()
 
     private lateinit var dummyFileAlpha: File
     private lateinit var hashAlpha: String
@@ -84,10 +84,10 @@ class Vsme {
 
     @Test
     fun `post VSME data check its meta info persistence and that data is only accessible for company role holders `() {
-        val vsmeData = vsmeUtils.setReferencedReports(testVsmeData, FileInfos(hashAlpha, fileNameAlpha))
+        val vsmeData = vsmeTestUtils.setReferencedReports(testVsmeData, FileInfos(hashAlpha, fileNameAlpha))
         val companyAssociatedVsmeData = CompanyAssociatedDataVsmeData(companyId, "2022", vsmeData)
         val dataMetaInfoInResponse =
-            vsmeUtils.postVsmeDataset(companyAssociatedVsmeData, listOf(dummyFileAlpha), TechnicalUser.Uploader)
+            vsmeTestUtils.postVsmeDataset(companyAssociatedVsmeData, listOf(dummyFileAlpha), TechnicalUser.Uploader)
         val persistedDataMetaInfo = executeDataRetrievalWithRetries(
             apiAccessor.metaDataControllerApi::getDataMetaInfo, dataMetaInfoInResponse.dataId,
         )
@@ -128,11 +128,17 @@ class Vsme {
 
             if (rolesThatShouldBeAllowedToPost.contains(role)) {
                 assertDoesNotThrow {
-                    vsmeUtils.postVsmeDataset(companyAssociatedVsmeData, listOf(dummyFileAlpha), TechnicalUser.Admin)
+                    vsmeTestUtils.postVsmeDataset(
+                        companyAssociatedVsmeData, listOf(dummyFileAlpha),
+                        TechnicalUser.Admin,
+                    )
                 }
             } else {
                 assertAccessDeniedWrapper {
-                    vsmeUtils.postVsmeDataset(companyAssociatedVsmeData, listOf(dummyFileAlpha), TechnicalUser.Admin)
+                    vsmeTestUtils.postVsmeDataset(
+                        companyAssociatedVsmeData, listOf(dummyFileAlpha),
+                        TechnicalUser.Admin,
+                    )
                 }
             }
 
@@ -146,9 +152,9 @@ class Vsme {
 
     @Test
     fun `post VSME data with documents and check if data and documents match the uploaded data and documents`() {
-        val vsmeData = vsmeUtils.setReferencedReports(testVsmeData, FileInfos(hashAlpha, fileNameAlpha))
+        val vsmeData = vsmeTestUtils.setReferencedReports(testVsmeData, FileInfos(hashAlpha, fileNameAlpha))
         val companyAssociatedDataVsmeData = CompanyAssociatedDataVsmeData(companyId, "2023", vsmeData)
-        val dataMetaInfoInResponse = vsmeUtils.postVsmeDataset(
+        val dataMetaInfoInResponse = vsmeTestUtils.postVsmeDataset(
             companyAssociatedDataVsmeData,
             listOf(dummyFileAlpha, dummyFileBeta),
             TechnicalUser.Uploader,
@@ -169,10 +175,10 @@ class Vsme {
 
     @Test
     fun `post two VSME datasets for the same reporting period and company and assert correct handling`() {
-        var vsmeData = vsmeUtils.setReferencedReports(testVsmeData, null)
+        var vsmeData = vsmeTestUtils.setReferencedReports(testVsmeData, null)
         val companyAssociatedVsmeDataAlpha =
             generateVsmeDataWithSetNumberOfEmployeesInHeadCount(companyId, "2022", vsmeData, BigDecimal(1))
-        val dataIdAlpha = vsmeUtils.postVsmeDataset(companyAssociatedVsmeDataAlpha, user = TechnicalUser.Uploader)
+        val dataIdAlpha = vsmeTestUtils.postVsmeDataset(companyAssociatedVsmeDataAlpha, user = TechnicalUser.Uploader)
             .dataId
 
         apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Uploader)
@@ -185,12 +191,12 @@ class Vsme {
                 ?.numberOfEmployeesInHeadcount,
         )
 
-        vsmeData = vsmeUtils.setReferencedReports(testVsmeData, FileInfos(hashAlpha, fileNameAlpha))
+        vsmeData = vsmeTestUtils.setReferencedReports(testVsmeData, FileInfos(hashAlpha, fileNameAlpha))
         val companyAssociatedVsmeDataBeta =
             generateVsmeDataWithSetNumberOfEmployeesInHeadCount(companyId, "2022", vsmeData, BigDecimal(2))
 
         val dataIdBeta =
-            vsmeUtils.postVsmeDataset(
+            vsmeTestUtils.postVsmeDataset(
                 companyAssociatedVsmeDataBeta, listOf(dummyFileAlpha, dummyFileBeta), TechnicalUser.Uploader,
             )
                 .dataId
@@ -220,10 +226,10 @@ class Vsme {
 
     @Test
     fun `post an VSME dataset with duplicate file and assert that the downloaded file is unique and correct`() {
-        val vsmeData = vsmeUtils.setReferencedReports(testVsmeData, FileInfos(hashAlpha, fileNameAlpha))
+        val vsmeData = vsmeTestUtils.setReferencedReports(testVsmeData, FileInfos(hashAlpha, fileNameAlpha))
         val companyAssociatedVsmeData = CompanyAssociatedDataVsmeData(companyId, "2022", vsmeData)
         val dataId =
-            vsmeUtils.postVsmeDataset(
+            vsmeTestUtils.postVsmeDataset(
                 companyAssociatedVsmeData, listOf(dummyFileAlpha, dummyFileAlpha), TechnicalUser.Uploader,
             ).dataId
 
@@ -238,10 +244,10 @@ class Vsme {
 
     @Test
     fun `post a VSME dataset and verify that a normal user with access status granted can retrieve the data`() {
-        val vsmeData = vsmeUtils.setReferencedReports(testVsmeData, FileInfos(hashAlpha, fileNameAlpha))
+        val vsmeData = vsmeTestUtils.setReferencedReports(testVsmeData, FileInfos(hashAlpha, fileNameAlpha))
         val companyAssociatedDataVsmeData = CompanyAssociatedDataVsmeData(companyId, "2022", vsmeData)
         val dataId =
-            vsmeUtils.postVsmeDataset(
+            vsmeTestUtils.postVsmeDataset(
                 companyAssociatedDataVsmeData, listOf(dummyFileAlpha, dummyFileAlpha), TechnicalUser.Uploader,
             ).dataId
         apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.PremiumUser)
@@ -272,7 +278,7 @@ class Vsme {
     }
 
     private fun createSingleDataVsmeRequest(): String? {
-        val vsmeDataRequest = vsmeUtils.setSingleDataVSMERequest(companyId, setOf("2022"))
+        val vsmeDataRequest = vsmeTestUtils.setSingleDataVsmeRequest(companyId, setOf("2022"))
 
         requestControllerApi.postSingleDataRequest(vsmeDataRequest)
         Thread.sleep(1000)

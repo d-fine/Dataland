@@ -11,7 +11,7 @@ import org.dataland.e2etests.tests.frameworks.Vsme.FileInfos
 import java.io.File
 import java.time.LocalDate
 
-class VsmeUtils {
+class VsmeTestUtils {
 
     val apiAccessor = ApiAccessor()
 
@@ -46,7 +46,7 @@ class VsmeUtils {
             ),
         )
     }
-    fun setSingleDataVSMERequest(companyId: String, reportingPeriods: Set<String>): SingleDataRequest {
+    fun setSingleDataVsmeRequest(companyId: String, reportingPeriods: Set<String>): SingleDataRequest {
         return SingleDataRequest(
             companyIdentifier = companyId,
             dataType = SingleDataRequest.DataType.vsme,

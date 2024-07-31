@@ -11,8 +11,8 @@ import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
 import org.dataland.datalandcommunitymanager.model.dataRequest.StoredDataRequest
 import org.dataland.datalandcommunitymanager.repositories.DataRequestRepository
 import org.dataland.datalandcommunitymanager.utils.DataRequestLogger
+import org.dataland.datalandcommunitymanager.utils.DataRequestProcessingUtils
 import org.dataland.datalandcommunitymanager.utils.GetDataRequestsSearchFilter
-import org.dataland.datalandcommunitymanager.utils.getDataTypeEnumForFrameworkName
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
@@ -27,6 +27,7 @@ class DataRequestQueryManager(
     @Autowired private val dataRequestRepository: DataRequestRepository,
     @Autowired private val dataRequestLogger: DataRequestLogger,
     @Autowired private val companyDataControllerApi: CompanyDataControllerApi,
+    @Autowired private val processingUtils: DataRequestProcessingUtils,
 ) {
 
     /** This method retrieves all the data requests for the current user from the database and logs a message.
@@ -79,7 +80,7 @@ class DataRequestQueryManager(
             )
         val aggregatedDataRequests = aggregatedDataRequestEntities.map { aggregatedDataRequestEntity ->
             AggregatedDataRequest(
-                getDataTypeEnumForFrameworkName(aggregatedDataRequestEntity.dataType),
+                processingUtils.getDataTypeEnumForFrameworkName(aggregatedDataRequestEntity.dataType),
                 aggregatedDataRequestEntity.reportingPeriod,
                 aggregatedDataRequestEntity.datalandCompanyId,
                 aggregatedDataRequestEntity.requestStatus,

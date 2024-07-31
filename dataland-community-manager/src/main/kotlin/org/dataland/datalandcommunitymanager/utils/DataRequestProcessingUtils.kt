@@ -237,13 +237,13 @@ class DataRequestProcessingUtils(
         )
         return matchingDatasets.isNotEmpty()
     }
-}
 
-/**
- * Finds the entry in the DataType enum corresponding to a provided framework name
- * @param frameworkName the name of the framework
- * @return the corresponding enum entry
- */
-fun getDataTypeEnumForFrameworkName(frameworkName: String): DataTypeEnum? {
-    return DataTypeEnum.entries.find { it.value == frameworkName }
+    /**
+     * Finds the entry in the DataType enum corresponding to a provided framework name
+     * @param frameworkName the name of the framework
+     * @return the corresponding enum entry
+     */
+    fun getDataTypeEnumForFrameworkName(frameworkName: String): DataTypeEnum? {
+        return DataTypeEnum.entries.find { it.value == frameworkName }
+    }
 }

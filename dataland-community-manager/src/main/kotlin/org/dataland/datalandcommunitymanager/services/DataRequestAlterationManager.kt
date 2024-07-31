@@ -86,6 +86,7 @@ class DataRequestAlterationManager(
         if (anyChanges) dataRequestEntity.lastModifiedDate = modificationTime
 
         // TODO move email send to own function
+        // TODO what is with a notification to the company owner when a reqeust is reopened?
         if (requestStatus == RequestStatus.Closed || requestStatus == RequestStatus.Answered) {
             sendEmailBecauseOfStatusChanged(
                 dataRequestEntity, requestStatus, correlationId ?: UUID.randomUUID().toString(),

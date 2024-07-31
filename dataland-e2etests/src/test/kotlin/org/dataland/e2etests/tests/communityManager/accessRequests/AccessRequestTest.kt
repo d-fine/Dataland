@@ -14,7 +14,7 @@ import org.dataland.e2etests.auth.TechnicalUser
 import org.dataland.e2etests.tests.frameworks.Vsme.FileInfos
 import org.dataland.e2etests.utils.ApiAccessor
 import org.dataland.e2etests.utils.FrameworkTestDataProvider
-import org.dataland.e2etests.utils.VsmeUtils
+import org.dataland.e2etests.utils.VsmeTestUtils
 import org.dataland.e2etests.utils.communityManager.assertAccessDeniedResponseBodyInCommunityManagerClientException
 import org.dataland.e2etests.utils.communityManager.getNewlyStoredRequestsAfterTimestamp
 import org.dataland.e2etests.utils.communityManager.retrieveTimeAndWaitOneMillisecond
@@ -29,7 +29,7 @@ import java.util.*
 class AccessRequestTest {
 
     val apiAccessor = ApiAccessor()
-    val vsmeUtils = VsmeUtils()
+    val vsmeTestUtils = VsmeTestUtils()
     private val requestControllerApi = RequestControllerApi(BASE_PATH_TO_COMMUNITY_MANAGER)
     val jwtHelper = JwtAuthenticationHelper()
 
@@ -47,7 +47,7 @@ class AccessRequestTest {
 
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.PremiumUser)
 
-        val singleDataRequest = vsmeUtils.setSingleDataVSMERequest(companyId, setOf("2022"))
+        val singleDataRequest = vsmeTestUtils.setSingleDataVsmeRequest(companyId, setOf("2022"))
         val timestampBeforeSingleRequest = retrieveTimeAndWaitOneMillisecond()
         requestControllerApi.postSingleDataRequest(singleDataRequest)
 
@@ -64,7 +64,8 @@ class AccessRequestTest {
 
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.PremiumUser)
 
-        val newlyStoredRequestsSecond = requestControllerApi.getDataRequestsForRequestingUser().filter { storedDataRequest ->
+        val newlyStoredRequestsSecond = requestControllerApi.getDataRequestsForRequestingUser().filter {
+                storedDataRequest ->
             storedDataRequest.lastModifiedDate > timestampBeforeSingleRequestSecond
         }
 
@@ -76,7 +77,7 @@ class AccessRequestTest {
     fun `premium User makes private request, has no access to active dataset, no matching dataset`() {
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.PremiumUser)
 
-        val singleDataRequest = vsmeUtils.setSingleDataVSMERequest(
+        val singleDataRequest = vsmeTestUtils.setSingleDataVsmeRequest(
             apiAccessor.uploadOneCompanyWithRandomIdentifier()
                 .actualStoredCompany.companyId,
             setOf("2022"),
@@ -96,7 +97,7 @@ class AccessRequestTest {
 
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.PremiumUser)
 
-        val singleDataRequest = vsmeUtils.setSingleDataVSMERequest(companyId, setOf("2022"))
+        val singleDataRequest = vsmeTestUtils.setSingleDataVsmeRequest(companyId, setOf("2022"))
         val timestampBeforeSingleRequest = retrieveTimeAndWaitOneMillisecond()
         requestControllerApi.postSingleDataRequest(singleDataRequest)
 
@@ -113,7 +114,7 @@ class AccessRequestTest {
         companyId = apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId
 
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.PremiumUser)
-        val singleDataRequest = vsmeUtils.setSingleDataVSMERequest(companyId, setOf("2022"))
+        val singleDataRequest = vsmeTestUtils.setSingleDataVsmeRequest(companyId, setOf("2022"))
         val timestampBeforeSingleRequest = retrieveTimeAndWaitOneMillisecond()
         requestControllerApi.postSingleDataRequest(singleDataRequest)
 
@@ -144,7 +145,7 @@ class AccessRequestTest {
 
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.PremiumUser)
 
-        val singleDataRequest = vsmeUtils.setSingleDataVSMERequest(companyId, setOf("2022"))
+        val singleDataRequest = vsmeTestUtils.setSingleDataVsmeRequest(companyId, setOf("2022"))
         val timestampBeforeSingleRequest = retrieveTimeAndWaitOneMillisecond()
         requestControllerApi.postSingleDataRequest(singleDataRequest)
 
@@ -162,7 +163,8 @@ class AccessRequestTest {
         )
 
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.PremiumUser)
-        val newlyStoredRequestsSecond = requestControllerApi.getDataRequestsForRequestingUser().filter { storedDataRequest ->
+        val newlyStoredRequestsSecond = requestControllerApi.getDataRequestsForRequestingUser().filter {
+                storedDataRequest ->
             storedDataRequest.lastModifiedDate > timestampBeforeSingleRequestSecond
         }
 
@@ -176,7 +178,7 @@ class AccessRequestTest {
         val listOfTechnicalUser = listOf(TechnicalUser.Admin, TechnicalUser.PremiumUser)
         listOfTechnicalUser.forEach { technicalUser ->
             jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(technicalUser)
-            val singleDataRequest = vsmeUtils.setSingleDataVSMERequest(
+            val singleDataRequest = vsmeTestUtils.setSingleDataVsmeRequest(
                 companyId = companyId,
                 reportingPeriods = setOf("2022"),
             )
@@ -214,8 +216,8 @@ class AccessRequestTest {
             UUID.fromString(companyId),
             UUID.fromString(TechnicalUser.Admin.technicalUserId),
         )
-        val vsmeData = vsmeUtils.setReferencedReports(testVsmeData, FileInfos(hashAlpha, fileNameAlpha))
+        val vsmeData = vsmeTestUtils.setReferencedReports(testVsmeData, FileInfos(hashAlpha, fileNameAlpha))
         val companyAssociatedVsmeData = CompanyAssociatedDataVsmeData(companyId, "2022", vsmeData)
-        vsmeUtils.postVsmeDataset(companyAssociatedVsmeData, listOf(dummyFileAlpha), TechnicalUser.Admin)
+        vsmeTestUtils.postVsmeDataset(companyAssociatedVsmeData, listOf(dummyFileAlpha), TechnicalUser.Admin)
     }
 }
