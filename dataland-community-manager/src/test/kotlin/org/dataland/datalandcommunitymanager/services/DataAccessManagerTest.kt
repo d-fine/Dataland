@@ -165,7 +165,7 @@ class DataAccessManagerTest {
 
         dataTypes.forEach {
             assertDoesNotThrow {
-                dataAccessManager.headAccessToDataset(companyId, grantedAccessReportingYear, it.toString(), userId)
+                dataAccessManager.hasAccessToDataset(companyId, grantedAccessReportingYear, it.toString(), userId)
             }
         }
     }
@@ -173,7 +173,7 @@ class DataAccessManagerTest {
     @Test
     fun `validate exception is thrown when datatype is unknown`() {
         assertThrows(InvalidInputApiException::class.java) {
-            dataAccessManager.headAccessToDataset(
+            dataAccessManager.hasAccessToDataset(
                 companyId, revokedAccessReportingYear, "123562134", userId,
             )
         }
@@ -182,7 +182,7 @@ class DataAccessManagerTest {
     @Test
     fun `validate that vsme dataset is not accessible with no access`() {
         assertThrows(ResourceNotFoundApiException::class.java) {
-            dataAccessManager.headAccessToDataset(
+            dataAccessManager.hasAccessToDataset(
                 companyId, revokedAccessReportingYear, DataTypeEnum.vsme.toString(), userId,
             )
         }
@@ -191,7 +191,7 @@ class DataAccessManagerTest {
     @Test
     fun `validate that vsme dataset is accessible with granted access`() {
         assertDoesNotThrow {
-            dataAccessManager.headAccessToDataset(
+            dataAccessManager.hasAccessToDataset(
                 companyId, grantedAccessReportingYear, DataTypeEnum.vsme.toString(), userId,
             )
         }

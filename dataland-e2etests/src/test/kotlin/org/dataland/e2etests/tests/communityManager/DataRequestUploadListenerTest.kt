@@ -122,7 +122,10 @@ class DataRequestUploadListenerTest {
     ) {
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(technicalUser)
         val clientException = assertThrows<ClientException> {
-            requestControllerApi.patchDataRequest(dataRequestId, requestStatus, accessStatus, contacts, message)
+            requestControllerApi.patchDataRequest(
+                dataRequestId = dataRequestId, requestStatus = requestStatus,
+                accessStatus = accessStatus, contacts = contacts, message = message,
+            )
         }
         assertEquals("Client error : 403 ", clientException.message)
     }
@@ -132,7 +135,8 @@ class DataRequestUploadListenerTest {
         val dataRequestId = postSingleDataRequestAsTechnicalUserAndReturnDataRequestId(TechnicalUser.PremiumUser)
 
         authenticateAsTechnicalUserAndAssertThatPatchingOfDataRequestIsForbidden(
-            TechnicalUser.PremiumUser, dataRequestId, RequestStatus.Resolved, null,
+            technicalUser = TechnicalUser.PremiumUser, dataRequestId = dataRequestId,
+            requestStatus = RequestStatus.Resolved, accessStatus = null,
         )
 
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
@@ -152,7 +156,8 @@ class DataRequestUploadListenerTest {
         val dataRequestId = postSingleDataRequestAsTechnicalUserAndReturnDataRequestId(TechnicalUser.PremiumUser)
         RequestStatus.entries.forEach {
             authenticateAsTechnicalUserAndAssertThatPatchingOfDataRequestIsForbidden(
-                TechnicalUser.Reader, dataRequestId, it, null,
+                technicalUser = TechnicalUser.Reader, dataRequestId = dataRequestId, requestStatus = it,
+                accessStatus = null,
             )
         }
     }
@@ -165,7 +170,8 @@ class DataRequestUploadListenerTest {
         patchDataRequestAndAssertNewStatusAndLastModifiedUpdated(dataRequestId, RequestStatus.Answered)
 
         authenticateAsTechnicalUserAndAssertThatPatchingOfDataRequestIsForbidden(
-            TechnicalUser.PremiumUser, dataRequestId, RequestStatus.Resolved, null,
+            technicalUser = TechnicalUser.PremiumUser, dataRequestId = dataRequestId,
+            requestStatus = RequestStatus.Resolved, accessStatus = null,
         )
     }
 
@@ -177,7 +183,8 @@ class DataRequestUploadListenerTest {
 
         RequestStatus.entries.forEach {
             authenticateAsTechnicalUserAndAssertThatPatchingOfDataRequestIsForbidden(
-                TechnicalUser.PremiumUser, dataRequestId, it, null,
+                technicalUser = TechnicalUser.PremiumUser, dataRequestId = dataRequestId, requestStatus = it,
+                accessStatus = null,
             )
         }
 
@@ -186,7 +193,8 @@ class DataRequestUploadListenerTest {
 
         RequestStatus.entries.forEach {
             authenticateAsTechnicalUserAndAssertThatPatchingOfDataRequestIsForbidden(
-                TechnicalUser.PremiumUser, dataRequestId, it, null,
+                technicalUser = TechnicalUser.PremiumUser, dataRequestId = dataRequestId, requestStatus = it,
+                accessStatus = null,
             )
         }
     }
@@ -289,7 +297,8 @@ class DataRequestUploadListenerTest {
             patchDataRequestAndAssertNewStatusAndLastModifiedUpdated(dataRequestId, it)
 
             authenticateAsTechnicalUserAndAssertThatPatchingOfDataRequestIsForbidden(
-                TechnicalUser.PremiumUser, dataRequestId, null, null, contacts, message,
+                technicalUser = TechnicalUser.PremiumUser, dataRequestId = dataRequestId, requestStatus = null,
+                accessStatus = null, contacts = contacts, message = message,
             )
         }
     }

@@ -227,6 +227,7 @@ class DataRequestProcessingUtils(
      * @param companyId the dataland companyId of the company from which data is requested
      * @param reportingPeriod the reportingPeriod for which data is requested
      * @param dataType the framework dataType for which data is requested
+     * @return true if matching datasets were found
      */
     fun matchingDatasetExists(companyId: String, reportingPeriod: String, dataType: DataTypeEnum): Boolean {
         val matchingDatasets = metaDataApi.getListOfDataMetaInfo(

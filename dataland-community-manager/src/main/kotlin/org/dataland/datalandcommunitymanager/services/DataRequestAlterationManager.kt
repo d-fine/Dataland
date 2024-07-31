@@ -173,17 +173,23 @@ class DataRequestAlterationManager(
         val metaData = metaDataControllerApi.getDataMetaInfo(dataId)
         val dataRequestEntities = dataRequestRepository.searchDataRequestEntity(
             GetDataRequestsSearchFilter(
-                metaData.dataType.value, "", RequestStatus.Open, null, metaData.reportingPeriod, metaData.companyId,
+                dataTypeFilter = metaData.dataType.value, userIdFilter = "", requestStatus = RequestStatus.Open,
+                accessStatus = null, reportingPeriodFilter = metaData.reportingPeriod,
+                datalandCompanyIdFilter = metaData.companyId,
             ),
         )
         dataRequestEntities.forEach {
             if (it.dataType == DataTypeEnum.vsme.name && it.accessStatus != AccessStatus.Granted) {
                 patchDataRequest(
-                    it.dataRequestId, RequestStatus.Answered, AccessStatus.Pending,
+                    dataRequestId = it.dataRequestId, requestStatus = RequestStatus.Answered,
+                    accessStatus = AccessStatus.Pending,
                     correlationId = correlationId,
                 )
             } else {
-                patchDataRequest(it.dataRequestId, RequestStatus.Answered, correlationId = correlationId)
+                patchDataRequest(
+                    dataRequestId = it.dataRequestId, requestStatus = RequestStatus.Answered,
+                    correlationId = correlationId,
+                )
             }
         }
         logger.info(
