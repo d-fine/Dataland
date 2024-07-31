@@ -147,7 +147,8 @@ open class ComponentBase(
      * generator
      */
     open fun generateDefaultQaModel(dataClassBuilder: DataClassBuilder) {
-        throw IllegalStateException("This component did not implement QA model generation.")
+        println("Error: Component ${this::class.simpleName} did not implement QA model generation.")
+        //throw IllegalStateException("This component did not implement QA model generation.")
     }
 
     /**

@@ -45,6 +45,10 @@ class EuTaxonomyAlignedActivitiesComponent(
         )
     }
 
+    override fun generateDefaultQaModel(dataClassBuilder: DataClassBuilder) {
+        // Ignored as no datapoint at the moment.
+    }
+
     override fun generateDefaultDataModel(dataClassBuilder: DataClassBuilder) {
         dataClassBuilder.addProperty(
             identifier,
