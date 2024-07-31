@@ -223,12 +223,12 @@ interface RequestApi {
      * @param reportingPeriod of the dataset
      */
     @Operation(
-        summary = "This head request checks whether the logged-in user has a access to dataset.",
-        description = "This head request checks whether the logged-in user has a access to dataset.",
+        summary = "This head request checks whether the logged-in user has access to dataset.",
+        description = "This head request checks whether the logged-in user has access to dataset.",
     )
     @ApiResponses(
         value = [
-            ApiResponse(responseCode = "200", description = "If the user can access the dataset."),
+            ApiResponse(responseCode = "200", description = "The user can access the dataset."),
             ApiResponse(
                 responseCode = "404",
                 description = "Either the specified dataset does not exist or the user cannot access the dataset.",

@@ -131,7 +131,7 @@ class DataRequestProcessingUtils(
         val requestMessageObject = StoredDataRequestMessageObject(contacts, message, modificationTime)
         val requestMessageEntity = MessageEntity(requestMessageObject, dataRequestEntity)
         messageRepository.save(requestMessageEntity)
-        dataRequestEntity.addToMessageToHistory(requestMessageEntity)
+        dataRequestEntity.addRequestEventToMessageHistory(requestMessageEntity)
     }
 
     /**
@@ -150,7 +150,7 @@ class DataRequestProcessingUtils(
         val requestStatusEntity = RequestStatusEntity(requestStatusObject, dataRequestEntity)
 
         requestStatusRepository.save(requestStatusEntity)
-        dataRequestEntity.addToRequestStatusHistory(requestStatusEntity)
+        dataRequestEntity.addToDataRequestStatusHistory(requestStatusEntity)
     }
 
     /**

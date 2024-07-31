@@ -79,7 +79,7 @@ class MessageQueueListenerPrivateDataManager(
             )
             logger.info(
                 "Persisting of meta data information is done. Sending out message for dataId $dataId and " +
-                    "correlationId $correlationId was sent",
+                    "correlationId $correlationId .",
             )
         }
     }

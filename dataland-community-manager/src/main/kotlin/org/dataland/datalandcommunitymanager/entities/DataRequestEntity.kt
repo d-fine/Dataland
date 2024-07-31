@@ -79,7 +79,7 @@ data class DataRequestEntity(
      * Adds a messageEntity to the messageHistory.
      * Note, this is not automatically saved in the database, you also need to persist the messageEntity.
      */
-    fun addToMessageToHistory(messageEntity: MessageEntity) {
+    fun addRequestEventToMessageHistory(messageEntity: MessageEntity) {
         this.messageHistory += messageEntity
     }
 
@@ -99,7 +99,7 @@ data class DataRequestEntity(
      * Adds a requestStatusEntity to the dataRequestStatusHistory.
      * Note, this is not automatically saved in the database, you also need to persist the requestStatusEntity.
      */
-    fun addToRequestStatusHistory(requestStatusEntity: RequestStatusEntity) {
+    fun addToDataRequestStatusHistory(requestStatusEntity: RequestStatusEntity) {
         this.dataRequestStatusHistory += requestStatusEntity
     }
 
