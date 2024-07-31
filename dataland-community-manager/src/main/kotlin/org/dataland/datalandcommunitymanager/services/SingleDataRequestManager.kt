@@ -58,47 +58,14 @@ constructor(
         val reportingPeriodsOfStoredDataRequests = mutableListOf<String>()
         val reportingPeriodsOfDuplicateDataRequests = mutableListOf<String>()
         val reportingPeriodsOfAccessDataRequests = mutableListOf<String>()
-        // TODO also fill reportingPeriodsOfAccessDataRequests
-        createAccessOrDataRequest(
-            singleDataRequest,
-            companyId,
-            userId,
-            reportingPeriodsOfDuplicateDataRequests,
-            reportingPeriodsOfStoredDataRequests,
-        )
-        // TODO adjust sendSingleDataRequestEmailMessage to only send emails for reportingPeriodsOfAccessDataRequests
-        // TODO send access request email for reportingPeriodsOfAccessDataRequests
-        sendSingleDataRequestEmailMessage(
-            DatalandAuthentication.fromContext() as DatalandJwtAuthentication, singleDataRequest,
-            companyId, correlationId,
-        )
-        return buildResponseForSingleDataRequest(
-            singleDataRequest, reportingPeriodsOfStoredDataRequests, reportingPeriodsOfDuplicateDataRequests,
-        )
-    }
 
-    private fun createAccessOrDataRequest(
-        singleDataRequest: SingleDataRequest,
-        companyId: String,
-        userId: String,
-        reportingPeriodsOfDuplicateDataRequests: MutableList<String>,
-        reportingPeriodsOfStoredDataRequests: MutableList<String>,
-    ) {
         singleDataRequest.reportingPeriods.forEach { reportingPeriod ->
-            if (singleDataRequest.dataType == DataTypeEnum.vsme &&
-                utils.matchingDatasetExists(
-                    companyId = companyId, reportingPeriod = reportingPeriod,
-                    dataType = singleDataRequest.dataType,
-                ) &&
-                !dataAccessManager.hasAccessToPrivateDataset(
-                    companyId, reportingPeriod, singleDataRequest.dataType, userId,
-                )
-            ) {
+            if (shouldCreateAccessRequestToPrivateDataset(singleDataRequest, companyId, reportingPeriod, userId)) {
                 dataAccessManager.createAccessRequestToPrivateDataset(
-                    userId = userId, companyId = companyId,
-                    dataType = singleDataRequest.dataType, reportingPeriod = reportingPeriod,
-                    contacts = singleDataRequest.contacts, message = singleDataRequest.message,
+                    userId, companyId, singleDataRequest.dataType, reportingPeriod,
+                    singleDataRequest.contacts, singleDataRequest.message,
                 )
+                reportingPeriodsOfAccessDataRequests.add(reportingPeriod)
             } else {
                 if (utils.existsDataRequestWithNonFinalStatus(companyId, singleDataRequest.dataType, reportingPeriod)) {
                     reportingPeriodsOfDuplicateDataRequests.add(reportingPeriod)
@@ -112,7 +79,30 @@ constructor(
                 }
             }
         }
+        // TODO adjust sendSingleDataRequestEmailMessage to only send emails for reportingPeriodsOfAccessDataRequests
+        // TODO send access request email for reportingPeriodsOfAccessDataRequests
+        sendSingleDataRequestEmailMessage(
+            DatalandAuthentication.fromContext() as DatalandJwtAuthentication, singleDataRequest,
+            companyId, correlationId,
+        )
+        return buildResponseForSingleDataRequest(
+            singleDataRequest, reportingPeriodsOfStoredDataRequests, reportingPeriodsOfDuplicateDataRequests,
+        )
     }
+
+    private fun shouldCreateAccessRequestToPrivateDataset(
+        singleDataRequest: SingleDataRequest,
+        companyId: String,
+        reportingPeriod: String,
+        userId: String
+    ) = singleDataRequest.dataType == DataTypeEnum.vsme &&
+            utils.matchingDatasetExists(
+                companyId = companyId, reportingPeriod = reportingPeriod,
+                dataType = singleDataRequest.dataType,
+            ) &&
+            !dataAccessManager.hasAccessToPrivateDataset(
+                companyId, reportingPeriod, singleDataRequest.dataType, userId,
+            )
 
     private fun checkSingleDataRequest(singleDataRequest: SingleDataRequest, companyId: String) {
         utils.throwExceptionIfNotJwtAuth()
