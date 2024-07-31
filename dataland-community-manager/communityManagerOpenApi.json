@@ -578,8 +578,8 @@
         "tags": [
           "request-controller"
         ],
-        "summary": "This head request checks whether the logged-in user has a access to dataset.",
-        "description": "This head request checks whether the logged-in user has a access to dataset.",
+        "summary": "This head request checks whether the logged-in user has access to dataset.",
+        "description": "This head request checks whether the logged-in user has access to dataset.",
         "operationId": "hasAccessToDataset",
         "parameters": [
           {
@@ -619,7 +619,7 @@
         ],
         "responses": {
           "200": {
-            "description": "If the user can access the dataset."
+            "description": "The user can access the dataset."
           },
           "404": {
             "description": "Either the specified dataset does not exist or the user cannot access the dataset."
@@ -1500,8 +1500,8 @@
           "Declined",
           "Granted",
           "Pending",
-          "Revoked",
-          "Public"
+          "Public",
+          "Revoked"
         ]
       },
       "StoredDataRequest": {
