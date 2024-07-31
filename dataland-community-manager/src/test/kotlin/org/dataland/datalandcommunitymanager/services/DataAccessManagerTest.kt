@@ -45,12 +45,12 @@ class DataAccessManagerTest {
 
     private lateinit var authenticationMock: DatalandJwtAuthentication
 
-    private var companyId = "companyId"
-    private var userId = "userId"
+    private val companyId = "companyId"
+    private val userId = "userId"
 
-    private var revokedAccessReportingYear = "2023"
-    private var grantedAccessReportingYear = "2022"
-    private var noRequestReportingYear = "2021"
+    private val revokedAccessReportingYear = "2023"
+    private val grantedAccessReportingYear = "2022"
+    private val noRequestReportingYear = "2021"
 
     private fun setupVsmeRequestWithGrantedAccess(): List<DataRequestEntity> {
         val dataRequest = DataRequestEntity(
@@ -62,10 +62,12 @@ class DataAccessManagerTest {
         )
 
         val requestStatus1 = RequestStatusEntity(
-            UUID.randomUUID().toString(), RequestStatus.Answered, AccessStatus.Pending, 0, dataRequest,
+            statusHistoryId = UUID.randomUUID().toString(), requestStatus = RequestStatus.Answered,
+            accessStatus = AccessStatus.Pending, creationTimestamp = 0, dataRequest = dataRequest,
         )
         val requestStatus2 = RequestStatusEntity(
-            UUID.randomUUID().toString(), RequestStatus.Answered, AccessStatus.Granted, 1, dataRequest,
+            statusHistoryId = UUID.randomUUID().toString(), requestStatus = RequestStatus.Answered,
+            accessStatus = AccessStatus.Granted, creationTimestamp = 1, dataRequest = dataRequest,
         )
         dataRequest.dataRequestStatusHistory = listOf(requestStatus1, requestStatus2).shuffled()
 
@@ -82,13 +84,16 @@ class DataAccessManagerTest {
         )
 
         val requestStatus1 = RequestStatusEntity(
-            UUID.randomUUID().toString(), RequestStatus.Answered, AccessStatus.Pending, 0, dataRequest,
+            statusHistoryId = UUID.randomUUID().toString(), requestStatus = RequestStatus.Answered,
+            accessStatus = AccessStatus.Pending, creationTimestamp = 0, dataRequest = dataRequest,
         )
         val requestStatus2 = RequestStatusEntity(
-            UUID.randomUUID().toString(), RequestStatus.Answered, AccessStatus.Granted, 1, dataRequest,
+            statusHistoryId = UUID.randomUUID().toString(), requestStatus = RequestStatus.Answered,
+            accessStatus = AccessStatus.Granted, creationTimestamp = 1, dataRequest = dataRequest,
         )
         val requestStatus3 = RequestStatusEntity(
-            UUID.randomUUID().toString(), RequestStatus.Answered, AccessStatus.Revoked, 2, dataRequest,
+            statusHistoryId = UUID.randomUUID().toString(), requestStatus = RequestStatus.Answered,
+            accessStatus = AccessStatus.Revoked, creationTimestamp = 2, dataRequest = dataRequest,
         )
         dataRequest.dataRequestStatusHistory = listOf(requestStatus1, requestStatus2, requestStatus3).shuffled()
 
@@ -104,18 +109,20 @@ class DataAccessManagerTest {
         mockDataRequestProcessingUtils = createRequestProcessingUtils()
 
         dataAccessManager = DataAccessManager(
-            mockDataRequestRepository, dataRequestLogger, mockDataRequestProcessingUtils, accessRequestLogger,
+            dataRequestRepository = mockDataRequestRepository, dataRequestLogger = dataRequestLogger,
+            dataRequestProcessingUtils = mockDataRequestProcessingUtils, accessRequestLogger = accessRequestLogger,
         )
     }
 
     private fun createRequestProcessingUtils(): DataRequestProcessingUtils {
         val dataRequestProcessingUtils = mock(DataRequestProcessingUtils::class.java)
         doNothing().`when`(dataRequestProcessingUtils).addNewRequestStatusToHistory(
-            any(DataRequestEntity::class.java), any(RequestStatus::class.java),
-            any(AccessStatus::class.java), any(Long::class.java),
+            dataRequestEntity = any(DataRequestEntity::class.java), requestStatus = any(RequestStatus::class.java),
+            accessStatus = any(AccessStatus::class.java), modificationTime = any(Long::class.java),
         )
         doNothing().`when`(dataRequestProcessingUtils).addMessageToMessageHistory(
-            any(DataRequestEntity::class.java), anySet(), anyString(), any(Long::class.java),
+            dataRequestEntity = any(DataRequestEntity::class.java), contacts = anySet(), message = anyString(),
+            modificationTime = any(Long::class.java),
         )
         return dataRequestProcessingUtils
     }
@@ -124,19 +131,22 @@ class DataAccessManagerTest {
         val dataRequestRepository = mock(DataRequestRepository::class.java)
         `when`(
             dataRequestRepository.findByUserIdAndDatalandCompanyIdAndDataTypeAndReportingPeriod(
-                userId, companyId, DataTypeEnum.vsme.toString(), grantedAccessReportingYear,
+                userId = userId, datalandCompanyId = companyId, dataType = DataTypeEnum.vsme.toString(),
+                reportingPeriod = grantedAccessReportingYear,
             ),
         ).thenReturn(setupVsmeRequestWithGrantedAccess())
 
         `when`(
             dataRequestRepository.findByUserIdAndDatalandCompanyIdAndDataTypeAndReportingPeriod(
-                userId, companyId, DataTypeEnum.vsme.toString(), revokedAccessReportingYear,
+                userId = userId, datalandCompanyId = companyId, dataType = DataTypeEnum.vsme.toString(),
+                reportingPeriod = revokedAccessReportingYear,
             ),
         ).thenReturn(setupVsmeRequestWithRevokedAccess())
 
         `when`(
             dataRequestRepository.findByUserIdAndDatalandCompanyIdAndDataTypeAndReportingPeriod(
-                userId, companyId, DataTypeEnum.vsme.toString(), noRequestReportingYear,
+                userId = userId, datalandCompanyId = companyId, dataType = DataTypeEnum.vsme.toString(),
+                reportingPeriod = noRequestReportingYear,
             ),
         ).thenReturn(listOf())
         return dataRequestRepository
@@ -146,9 +156,9 @@ class DataAccessManagerTest {
     fun setupSecurityMock() {
         val mockSecurityContext = mock(SecurityContext::class.java)
         authenticationMock = AuthenticationMock.mockJwtAuthentication(
-            "user@example.com",
-            "1234-221-1111elf",
-            setOf(DatalandRealmRole.ROLE_USER),
+            username = "user@example.com",
+            userId = "1234-221-1111elf",
+            roles = setOf(DatalandRealmRole.ROLE_USER),
         )
         `when`(mockSecurityContext.authentication).thenReturn(authenticationMock)
         `when`(authenticationMock.credentials).thenReturn("")
@@ -174,7 +184,8 @@ class DataAccessManagerTest {
     fun `validate exception is thrown when datatype is unknown`() {
         assertThrows(InvalidInputApiException::class.java) {
             dataAccessManager.hasAccessToDataset(
-                companyId, revokedAccessReportingYear, "123562134", userId,
+                companyId = companyId, reportingPeriod = revokedAccessReportingYear, dataType = "123562134",
+                userId = userId,
             )
         }
     }
@@ -183,7 +194,8 @@ class DataAccessManagerTest {
     fun `validate that vsme dataset is not accessible with no access`() {
         assertThrows(ResourceNotFoundApiException::class.java) {
             dataAccessManager.hasAccessToDataset(
-                companyId, revokedAccessReportingYear, DataTypeEnum.vsme.toString(), userId,
+                companyId = companyId, reportingPeriod = revokedAccessReportingYear,
+                dataType = DataTypeEnum.vsme.toString(), userId = userId,
             )
         }
     }
@@ -192,7 +204,8 @@ class DataAccessManagerTest {
     fun `validate that vsme dataset is accessible with granted access`() {
         assertDoesNotThrow {
             dataAccessManager.hasAccessToDataset(
-                companyId, grantedAccessReportingYear, DataTypeEnum.vsme.toString(), userId,
+                companyId = companyId, reportingPeriod = grantedAccessReportingYear,
+                dataType = DataTypeEnum.vsme.toString(), userId = userId,
             )
         }
     }
@@ -200,17 +213,19 @@ class DataAccessManagerTest {
     @Test
     fun `validate that accessStatus is set to pending for existing data request`() {
         dataAccessManager.createAccessRequestToPrivateDataset(
-            userId, companyId, DataTypeEnum.vsme, revokedAccessReportingYear, null, null,
+            userId = userId, companyId = companyId, dataType = DataTypeEnum.vsme,
+            reportingPeriod = revokedAccessReportingYear, contacts = null, message = null,
         )
 
         verify(mockDataRequestProcessingUtils, times(1))
             .addNewRequestStatusToHistory(
-                any(DataRequestEntity::class.java), any(RequestStatus::class.java),
-                eq(AccessStatus.Pending), any(Long::class.java),
+                dataRequestEntity = any(DataRequestEntity::class.java), requestStatus = any(RequestStatus::class.java),
+                accessStatus = eq(AccessStatus.Pending), modificationTime = any(Long::class.java),
             )
         verify(mockDataRequestProcessingUtils, times(0))
             .addMessageToMessageHistory(
-                any(DataRequestEntity::class.java), anySet(), anyString(), any(Long::class.java),
+                dataRequestEntity = any(DataRequestEntity::class.java), contacts = anySet(), message = anyString(),
+                modificationTime = any(Long::class.java),
             )
 
         val saveCaptor = ArgumentCaptor.forClass(DataRequestEntity::class.java)
@@ -228,17 +243,19 @@ class DataAccessManagerTest {
         val currentTime = Instant.now().toEpochMilli()
 
         dataAccessManager.createAccessRequestToPrivateDataset(
-            userId, companyId, DataTypeEnum.vsme, noRequestReportingYear, contacts, message,
+            userId = userId, companyId = companyId, dataType = DataTypeEnum.vsme,
+            reportingPeriod = noRequestReportingYear, contacts = contacts, message = message,
         )
 
         verify(mockDataRequestProcessingUtils, times(1))
             .addNewRequestStatusToHistory(
-                any(DataRequestEntity::class.java), any(RequestStatus::class.java),
-                eq(AccessStatus.Pending), any(Long::class.java),
+                dataRequestEntity = any(DataRequestEntity::class.java), requestStatus = any(RequestStatus::class.java),
+                accessStatus = eq(AccessStatus.Pending), modificationTime = any(Long::class.java),
             )
         verify(mockDataRequestProcessingUtils, times(1))
             .addMessageToMessageHistory(
-                any(DataRequestEntity::class.java), eq(contacts), eq(message), any(Long::class.java),
+                dataRequestEntity = any(DataRequestEntity::class.java), contacts = eq(contacts), message = eq(message),
+                modificationTime = any(Long::class.java),
             )
 
         val saveCaptor = ArgumentCaptor.forClass(DataRequestEntity::class.java)
