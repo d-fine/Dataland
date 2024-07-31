@@ -114,7 +114,6 @@ class DataRequestAlterationManager(
             )
         }
         if (requestStatus == RequestStatus.Answered && accessStatus == AccessStatus.Pending) {
-            val authentication = DatalandAuthentication.fromContext()
             accessRequestEmailSender.notifyCompanyOwnerAboutNewRequest(
                 AccessRequestEmailSender.RequestEmailInformation(
                     dataRequestEntity.userId, dataRequestEntity.messageHistory.last().message,
