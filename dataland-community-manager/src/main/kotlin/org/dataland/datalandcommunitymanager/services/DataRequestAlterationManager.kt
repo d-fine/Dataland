@@ -66,10 +66,6 @@ class DataRequestAlterationManager(
 
         val newRequestStatus = requestStatus ?: dataRequestEntity.requestStatus
         val newAccessStatus = accessStatus ?: dataRequestEntity.accessStatus
-        // TODO  check sending out notification emails to the company owner if a new accessStatus =
-        //  Pending request is stored
-        // TODO check sending out notification emails to the requester once accessStatus is set to Granted,
-        //  maybe Revoked and Declined
         if (newRequestStatus != dataRequestEntity.requestStatus || newAccessStatus != dataRequestEntity.accessStatus) {
             anyChanges = true
             utils.addNewRequestStatusToHistory(dataRequestEntity, newRequestStatus, newAccessStatus, modificationTime)
