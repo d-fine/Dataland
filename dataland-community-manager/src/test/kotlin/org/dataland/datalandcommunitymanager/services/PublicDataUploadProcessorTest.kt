@@ -52,7 +52,7 @@ class PublicDataUploadProcessorTest {
     }
 
     @Test
-    fun `non-empty dataId leads to valid return of dataId`() {
+    fun `non empty dataId leads to valid return of dataId`() {
         val dummyId = "123"
         val payload = JSONObject(
             mapOf("identifier" to dummyId),
