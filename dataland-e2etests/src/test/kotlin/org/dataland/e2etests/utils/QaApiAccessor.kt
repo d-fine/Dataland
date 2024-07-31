@@ -4,10 +4,20 @@ import org.awaitility.Awaitility.await
 import org.dataland.datalandbackend.openApiClient.api.MetaDataControllerApi
 import org.dataland.datalandbackend.openApiClient.model.DataMetaInformation
 import org.dataland.datalandbackend.openApiClient.model.QaStatus
+import org.dataland.datalandqaservice.openApiClient.api.SfdrQaReportControllerApi
+import org.dataland.datalandqaservice.openApiClient.model.ExtendedDataPointYesNoNoEvidenceFound
+import org.dataland.datalandqaservice.openApiClient.model.QaReportDataPointExtendedDataPointYesNoNoEvidenceFound
+import org.dataland.datalandqaservice.openApiClient.model.QaReportDataPointVerdict
+import org.dataland.datalandqaservice.openApiClient.model.SfdrData
+import org.dataland.datalandqaservice.openApiClient.model.SfdrEnvironmental
+import org.dataland.datalandqaservice.openApiClient.model.SfdrEnvironmentalBiodiversity
+import org.dataland.e2etests.BASE_PATH_TO_QA_SERVICE
 import java.lang.NullPointerException
 import java.util.concurrent.TimeUnit
 
 class QaApiAccessor {
+    val sfdrQaReportControllerApi = SfdrQaReportControllerApi(BASE_PATH_TO_QA_SERVICE)
+
     /**
      * Wait until QaStatus is accepted for all Upload Infos or throw error. The metadata of the provided uploadInfos
      * are updated in the process.
@@ -68,5 +78,24 @@ class QaApiAccessor {
         return metaDatas.all { metaData ->
             return (metaDataControllerApi.getDataMetaInfo(metaData.dataId).qaStatus == QaStatus.Accepted)
         }
+    }
+
+    fun createQaSfdrData(): SfdrData {
+        return SfdrData(
+            environmental = SfdrEnvironmental(
+                biodiversity = SfdrEnvironmentalBiodiversity(
+                    primaryForestAndWoodedLandOfNativeSpeciesExposure =
+                    QaReportDataPointExtendedDataPointYesNoNoEvidenceFound(
+                        comment = "some comment",
+                        verdict = QaReportDataPointVerdict.QaInconclusive,
+                        correctedData = ExtendedDataPointYesNoNoEvidenceFound(
+                            value = ExtendedDataPointYesNoNoEvidenceFound.Value.Yes,
+                            quality = ExtendedDataPointYesNoNoEvidenceFound.Quality.Estimated,
+                        ),
+                    ),
+                ),
+            ),
+
+        )
     }
 }
