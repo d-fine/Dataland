@@ -16,6 +16,8 @@ import org.dataland.e2etests.utils.ApiAccessor
 import org.dataland.e2etests.utils.FrameworkTestDataProvider
 import org.dataland.e2etests.utils.VsmeUtils
 import org.dataland.e2etests.utils.communityManager.assertAccessDeniedResponseBodyInCommunityManagerClientException
+import org.dataland.e2etests.utils.communityManager.getNewlyStoredRequestsAfterTimestamp
+import org.dataland.e2etests.utils.communityManager.retrieveTimeAndWaitOneMillisecond
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
@@ -36,7 +38,6 @@ class AccessRequestTest {
     private val fileNameAlpha = "Report-Alpha"
     private lateinit var hashAlpha: String
 
-    private val timeSleep: Long = 3000
     lateinit var companyId: String
 
     @Test
@@ -47,21 +48,27 @@ class AccessRequestTest {
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.PremiumUser)
 
         val singleDataRequest = vsmeUtils.setSingleDataVSMERequest(companyId, setOf("2022"))
+        val timestampBeforeSingleRequest = retrieveTimeAndWaitOneMillisecond()
         requestControllerApi.postSingleDataRequest(singleDataRequest)
-        Thread.sleep(timeSleep)
 
-        val dataRequestReader = requestControllerApi.getDataRequestsForRequestingUser()
+        val dataRequestId = UUID.fromString(
+            getNewlyStoredRequestsAfterTimestamp(timestampBeforeSingleRequest)[0].dataRequestId,
+        )
 
+        val timestampBeforeSingleRequestSecond = retrieveTimeAndWaitOneMillisecond()
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
         requestControllerApi.patchDataRequest(
-            UUID.fromString(dataRequestReader[0].dataRequestId),
+            dataRequestId,
             accessStatus = AccessStatus.Granted,
         )
 
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.PremiumUser)
 
-        Thread.sleep(timeSleep)
-        assertEquals(AccessStatus.Granted, requestControllerApi.getDataRequestsForRequestingUser()[0].accessStatus)
+        val newlyStoredRequestsSecond = requestControllerApi.getDataRequestsForRequestingUser().filter { storedDataRequest ->
+            storedDataRequest.lastModifiedDate > timestampBeforeSingleRequestSecond
+        }
+
+        assertEquals(AccessStatus.Granted, newlyStoredRequestsSecond[0].accessStatus)
         dummyFileAlpha.delete()
     }
 
@@ -74,14 +81,12 @@ class AccessRequestTest {
                 .actualStoredCompany.companyId,
             setOf("2022"),
         )
-
+        val timestampBeforeSingleRequest = retrieveTimeAndWaitOneMillisecond()
         requestControllerApi.postSingleDataRequest(singleDataRequest)
-        Thread.sleep(timeSleep)
-        val recentReaderDataRequest = requestControllerApi.getDataRequestsForRequestingUser().maxByOrNull {
-            it.creationTimestamp
-        }
-        assertEquals(AccessStatus.Pending, recentReaderDataRequest?.accessStatus)
-        assertEquals(RequestStatus.Open, recentReaderDataRequest?.requestStatus)
+
+        val newlyStoredRequests = getNewlyStoredRequestsAfterTimestamp(timestampBeforeSingleRequest)
+        assertEquals(AccessStatus.Pending, newlyStoredRequests[0].accessStatus)
+        assertEquals(RequestStatus.Open, newlyStoredRequests[0].requestStatus)
     }
 
     @Test
@@ -92,44 +97,42 @@ class AccessRequestTest {
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.PremiumUser)
 
         val singleDataRequest = vsmeUtils.setSingleDataVSMERequest(companyId, setOf("2022"))
+        val timestampBeforeSingleRequest = retrieveTimeAndWaitOneMillisecond()
         requestControllerApi.postSingleDataRequest(singleDataRequest)
-        Thread.sleep(timeSleep)
-        val recentReaderDataRequest = requestControllerApi.getDataRequestsForRequestingUser().maxByOrNull {
-            it.creationTimestamp
-        }
 
-        assertEquals(AccessStatus.Pending, recentReaderDataRequest?.accessStatus)
-        assertEquals(RequestStatus.Answered, recentReaderDataRequest?.requestStatus)
+        val newlyStoredRequests = getNewlyStoredRequestsAfterTimestamp(timestampBeforeSingleRequest)
+
+        assertEquals(AccessStatus.Pending, newlyStoredRequests[0].accessStatus)
+        assertEquals(RequestStatus.Answered, newlyStoredRequests[0].requestStatus)
 
         dummyFileAlpha.delete()
     }
 
     @Test
     fun `Comapny owner gets private request`() {
-        jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.PremiumUser)
         companyId = apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId
 
+        jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.PremiumUser)
         val singleDataRequest = vsmeUtils.setSingleDataVSMERequest(companyId, setOf("2022"))
-
+        val timestampBeforeSingleRequest = retrieveTimeAndWaitOneMillisecond()
         requestControllerApi.postSingleDataRequest(singleDataRequest)
-        Thread.sleep(timeSleep)
-        var recentReaderDataRequest = requestControllerApi.getDataRequestsForRequestingUser().maxByOrNull {
-            it.creationTimestamp
-        }
 
-        assertEquals(AccessStatus.Pending, recentReaderDataRequest?.accessStatus)
-        assertEquals(RequestStatus.Open, recentReaderDataRequest?.requestStatus)
+        val newlyStoredRequests = getNewlyStoredRequestsAfterTimestamp(timestampBeforeSingleRequest)
 
+        assertEquals(AccessStatus.Pending, newlyStoredRequests[0].accessStatus)
+        assertEquals(RequestStatus.Open, newlyStoredRequests[0].requestStatus)
+
+        val timestampBeforeSingleRequestSecond = retrieveTimeAndWaitOneMillisecond()
         createVSMEDataAndPostAsAdminCompanyOwner(companyId)
 
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.PremiumUser)
-        Thread.sleep(timeSleep)
-        recentReaderDataRequest = requestControllerApi.getDataRequestsForRequestingUser().maxByOrNull {
-            it.creationTimestamp
+
+        val newlyStoredRequests2 = requestControllerApi.getDataRequestsForRequestingUser().filter { storedDataRequest ->
+            storedDataRequest.lastModifiedDate > timestampBeforeSingleRequestSecond
         }
 
-        assertEquals(AccessStatus.Pending, recentReaderDataRequest?.accessStatus)
-        assertEquals(RequestStatus.Answered, recentReaderDataRequest?.requestStatus)
+        assertEquals(AccessStatus.Pending, newlyStoredRequests2[0].accessStatus)
+        assertEquals(RequestStatus.Answered, newlyStoredRequests2[0].requestStatus)
 
         dummyFileAlpha.delete()
     }
@@ -142,27 +145,28 @@ class AccessRequestTest {
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.PremiumUser)
 
         val singleDataRequest = vsmeUtils.setSingleDataVSMERequest(companyId, setOf("2022"))
+        val timestampBeforeSingleRequest = retrieveTimeAndWaitOneMillisecond()
         requestControllerApi.postSingleDataRequest(singleDataRequest)
-        Thread.sleep(timeSleep)
-        var recentReaderDataRequest = requestControllerApi.getDataRequestsForRequestingUser().maxByOrNull {
-            it.creationTimestamp
-        }
 
-        assertEquals(AccessStatus.Pending, recentReaderDataRequest?.accessStatus)
+        val newlyStoredRequests = getNewlyStoredRequestsAfterTimestamp(timestampBeforeSingleRequest)
+        assertEquals(AccessStatus.Pending, newlyStoredRequests[0].accessStatus)
 
+        val timestampBeforeSingleRequestSecond = retrieveTimeAndWaitOneMillisecond()
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
+        val dataRequestId = UUID.fromString(
+            newlyStoredRequests[0].dataRequestId,
+        )
         requestControllerApi.patchDataRequest(
-            UUID.fromString(recentReaderDataRequest?.dataRequestId),
+            dataRequestId,
             accessStatus = AccessStatus.Declined,
         )
 
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.PremiumUser)
-        Thread.sleep(timeSleep)
-        recentReaderDataRequest = requestControllerApi.getDataRequestsForRequestingUser().maxByOrNull {
-            it.creationTimestamp
+        val newlyStoredRequestsSecond = requestControllerApi.getDataRequestsForRequestingUser().filter { storedDataRequest ->
+            storedDataRequest.lastModifiedDate > timestampBeforeSingleRequestSecond
         }
 
-        assertEquals(AccessStatus.Declined, recentReaderDataRequest?.accessStatus)
+        assertEquals(AccessStatus.Declined, newlyStoredRequestsSecond[0].accessStatus)
         dummyFileAlpha.delete()
     }
 
@@ -176,24 +180,23 @@ class AccessRequestTest {
                 companyId = companyId,
                 reportingPeriods = setOf("2022"),
             )
+            val timestampBeforeSingleRequest = retrieveTimeAndWaitOneMillisecond()
             requestControllerApi.postSingleDataRequest(singleDataRequest = singleDataRequest)
-            Thread.sleep(timeSleep)
-            val recentReaderDataRequest = requestControllerApi.getDataRequestsForRequestingUser().maxByOrNull {
-                    request ->
-                request.creationTimestamp
-            }
+            val newlyStoredRequests = getNewlyStoredRequestsAfterTimestamp(timestampBeforeSingleRequest)
+
             if (technicalUser == TechnicalUser.Admin) {
                 val responseBody = requestControllerApi.patchDataRequest(
-                    dataRequestId = UUID.fromString(recentReaderDataRequest?.dataRequestId),
-                   accessStatus = AccessStatus.Declined,
-               )
+                    dataRequestId = UUID.fromString(newlyStoredRequests[0].dataRequestId),
+                    accessStatus = AccessStatus.Declined,
+                )
                 assertEquals(AccessStatus.Declined, responseBody.accessStatus)
             } else {
-               val responseException = assertThrows<ClientException> {
-                   requestControllerApi.patchDataRequest(
-                       dataRequestId = UUID.fromString(recentReaderDataRequest?.dataRequestId),
-                       accessStatus = AccessStatus.Declined,)
-               }
+                val responseException = assertThrows<ClientException> {
+                    requestControllerApi.patchDataRequest(
+                        dataRequestId = UUID.fromString(newlyStoredRequests[0].dataRequestId),
+                        accessStatus = AccessStatus.Declined,
+                    )
+                }
                 assertAccessDeniedResponseBodyInCommunityManagerClientException(responseException)
             }
         }
