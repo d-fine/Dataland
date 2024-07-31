@@ -41,14 +41,15 @@ class DataAccessManager(
     ): Boolean {
         val hasAccess = dataRequestRepository
             .findByUserIdAndDatalandCompanyIdAndDataTypeAndReportingPeriod(
-                userId, companyId, dataType.name, reportingPeriod,
+                userId = userId, datalandCompanyId = companyId, dataType = dataType.name,
+                reportingPeriod = reportingPeriod,
             )?.any { it.accessStatus == AccessStatus.Granted } ?: false
 
         if (hasAccess) {
             accessRequestLogger.logMessageForCheckingIfUserHasAccessToDataset(
-                companyId,
-                dataType,
-                reportingPeriod,
+                companyId = companyId,
+                framework = dataType,
+                reportingPeriod = reportingPeriod,
             )
         }
         return hasAccess
@@ -110,7 +111,8 @@ class DataAccessManager(
     ) {
         val existingRequestsOfUser = dataRequestRepository
             .findByUserIdAndDatalandCompanyIdAndDataTypeAndReportingPeriod(
-                userId, companyId, dataType.name, reportingPeriod,
+                userId = userId, datalandCompanyId = companyId, dataType = dataType.name,
+                reportingPeriod = reportingPeriod,
             )
         if (!existingRequestsOfUser.isNullOrEmpty()) {
             val dataRequestEntity = existingRequestsOfUser[0]
@@ -125,7 +127,8 @@ class DataAccessManager(
                 AccessStatus.Declined || dataRequestEntity.accessStatus == AccessStatus.Public
             ) {
                 dataRequestProcessingUtils.addNewRequestStatusToHistory(
-                    dataRequestEntity, dataRequestEntity.requestStatus, AccessStatus.Pending, modificationTime,
+                    dataRequestEntity = dataRequestEntity, requestStatus = dataRequestEntity.requestStatus,
+                    accessStatus = AccessStatus.Pending, modificationTime = modificationTime,
                 )
 
                 accessRequestLogger.logMessageForPatchingAccessStatus(
@@ -134,9 +137,9 @@ class DataAccessManager(
             }
         } else {
             storeAccessRequestEntityAsPending(
-                companyId, dataType, reportingPeriod,
-                contacts.takeIf { !it.isNullOrEmpty() },
-                message.takeIf { !it.isNullOrBlank() },
+                datalandCompanyId = companyId, dataType = dataType, reportingPeriod = reportingPeriod,
+                contacts = contacts.takeIf { !it.isNullOrEmpty() },
+                message = message.takeIf { !it.isNullOrBlank() },
             )
         }
     }
@@ -159,20 +162,24 @@ class DataAccessManager(
         val creationTime = Instant.now().toEpochMilli()
 
         val dataRequestEntity = DataRequestEntity(
-            DatalandAuthentication.fromContext().userId,
-            dataType.value,
-            reportingPeriod,
-            datalandCompanyId,
-            creationTime,
+            userId = DatalandAuthentication.fromContext().userId,
+            dataType = dataType.value,
+            reportingPeriod = reportingPeriod,
+            datalandCompanyId = datalandCompanyId,
+            creationTimestamp = creationTime,
         )
         dataRequestRepository.save(dataRequestEntity)
 
         dataRequestProcessingUtils.addNewRequestStatusToHistory(
-            dataRequestEntity, RequestStatus.Answered, AccessStatus.Pending, creationTime,
+            dataRequestEntity = dataRequestEntity, requestStatus = RequestStatus.Answered,
+            accessStatus = AccessStatus.Pending, modificationTime = creationTime,
         )
 
         if (!contacts.isNullOrEmpty()) {
-            dataRequestProcessingUtils.addNewMessageToHistory(dataRequestEntity, contacts, message, creationTime)
+            dataRequestProcessingUtils.addMessageToMessageHistory(
+                dataRequestEntity = dataRequestEntity,
+                contacts = contacts, message = message, modificationTime = creationTime,
+            )
         }
         dataRequestLogger.logMessageForStoringDataRequest(dataRequestEntity.dataRequestId)
 

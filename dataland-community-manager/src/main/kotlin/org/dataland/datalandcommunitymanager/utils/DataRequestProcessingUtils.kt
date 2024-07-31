@@ -109,7 +109,7 @@ class DataRequestProcessingUtils(
         addNewRequestStatusToHistory(dataRequestEntity, RequestStatus.Open, accessStatus, creationTime)
 
         if (!contacts.isNullOrEmpty()) {
-            addNewMessageToHistory(dataRequestEntity, contacts, message, creationTime)
+            addMessageToMessageHistory(dataRequestEntity, contacts, message, creationTime)
         }
         dataRequestLogger.logMessageForStoringDataRequest(dataRequestEntity.dataRequestId)
 
@@ -122,7 +122,7 @@ class DataRequestProcessingUtils(
      * The new entry contains a set of contacts, an optional message and a modificationTime.
      * This function should be called within a transaction.
      */
-    fun addNewMessageToHistory(
+    fun addMessageToMessageHistory(
         dataRequestEntity: DataRequestEntity,
         contacts: Set<String>,
         message: String?,

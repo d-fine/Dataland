@@ -114,7 +114,7 @@ class DataAccessManagerTest {
             any(DataRequestEntity::class.java), any(RequestStatus::class.java),
             any(AccessStatus::class.java), any(Long::class.java),
         )
-        doNothing().`when`(dataRequestProcessingUtils).addNewMessageToHistory(
+        doNothing().`when`(dataRequestProcessingUtils).addMessageToMessageHistory(
             any(DataRequestEntity::class.java), anySet(), anyString(), any(Long::class.java),
         )
         return dataRequestProcessingUtils
@@ -209,7 +209,7 @@ class DataAccessManagerTest {
                 eq(AccessStatus.Pending), any(Long::class.java),
             )
         verify(mockDataRequestProcessingUtils, times(0))
-            .addNewMessageToHistory(
+            .addMessageToMessageHistory(
                 any(DataRequestEntity::class.java), anySet(), anyString(), any(Long::class.java),
             )
 
@@ -237,7 +237,7 @@ class DataAccessManagerTest {
                 eq(AccessStatus.Pending), any(Long::class.java),
             )
         verify(mockDataRequestProcessingUtils, times(1))
-            .addNewMessageToHistory(
+            .addMessageToMessageHistory(
                 any(DataRequestEntity::class.java), eq(contacts), eq(message), any(Long::class.java),
             )
 

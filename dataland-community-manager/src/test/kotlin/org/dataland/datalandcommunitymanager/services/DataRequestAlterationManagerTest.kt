@@ -99,7 +99,7 @@ class DataRequestAlterationManagerTest {
             any(DataRequestEntity::class.java), any(RequestStatus::class.java),
             any(AccessStatus::class.java), any(Long::class.java),
         )
-        doNothing().`when`(processingUtils).addNewMessageToHistory(
+        doNothing().`when`(processingUtils).addMessageToMessageHistory(
             any(DataRequestEntity::class.java), anySet(), anyString(), any(Long::class.java),
         )
     }
@@ -172,7 +172,7 @@ class DataRequestAlterationManagerTest {
                 any(AccessStatus::class.java), any(Long::class.java),
             )
         verify(processingUtils, times(0))
-            .addNewMessageToHistory(
+            .addMessageToMessageHistory(
                 any(DataRequestEntity::class.java), anySet(), anyString(), any(Long::class.java),
             )
     }
@@ -192,7 +192,7 @@ class DataRequestAlterationManagerTest {
             )
         verifyNoInteractions(dataRequestResponseEmailMessageSender)
         verify(processingUtils, times(0))
-            .addNewMessageToHistory(
+            .addMessageToMessageHistory(
                 any(DataRequestEntity::class.java), anySet(), anyString(), any(Long::class.java),
             )
     }
@@ -210,7 +210,7 @@ class DataRequestAlterationManagerTest {
             )
         }
         verify(processingUtils, times(0))
-            .addNewMessageToHistory(
+            .addMessageToMessageHistory(
                 any(DataRequestEntity::class.java), anySet(), anyString(), any(Long::class.java),
             )
         verifyNoInteractions(dataRequestResponseEmailMessageSender)
@@ -229,7 +229,7 @@ class DataRequestAlterationManagerTest {
                 any(AccessStatus::class.java), any(Long::class.java),
             )
         verify(processingUtils, times(0))
-            .addNewMessageToHistory(
+            .addMessageToMessageHistory(
                 any(DataRequestEntity::class.java), anySet(), anyString(), any(Long::class.java),
             )
     }
@@ -251,7 +251,7 @@ class DataRequestAlterationManagerTest {
             )
 
         verify(processingUtils, times(1))
-            .addNewMessageToHistory(
+            .addMessageToMessageHistory(
                 any(DataRequestEntity::class.java), anySet(), anyString(), any(Long::class.java),
             )
 

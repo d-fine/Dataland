@@ -79,7 +79,7 @@ class DataRequestAlterationManager(
         }
         if (contacts != null) {
             anyChanges = true
-            utils.addNewMessageToHistory(dataRequestEntity, contacts, message, modificationTime)
+            utils.addMessageToMessageHistory(dataRequestEntity, contacts, message, modificationTime)
             this.sendSingleDataRequestEmail(dataRequestEntity, contacts, message)
             dataRequestLogger.logMessageForPatchingRequestMessage(dataRequestEntity.dataRequestId)
         }
