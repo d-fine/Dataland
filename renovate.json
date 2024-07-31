@@ -25,10 +25,6 @@
     {
       "groupName": "cloudevents",
       "matchPackagePatterns": ["cloudevents"]
-    },
-    {
-      "extends": ["monorepo:kotlin"],
-      "matchPackagePatterns": ["detekt"]
     }
   ]
 }
