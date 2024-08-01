@@ -6,6 +6,7 @@ import org.dataland.datalandbackendutils.exceptions.QuotaExceededException
 import org.dataland.datalandcommunitymanager.entities.DataRequestEntity
 import org.dataland.datalandcommunitymanager.model.dataRequest.SingleDataRequest
 import org.dataland.datalandcommunitymanager.repositories.DataRequestRepository
+import org.dataland.datalandcommunitymanager.services.messaging.AccessRequestEmailSender
 import org.dataland.datalandcommunitymanager.services.messaging.SingleDataRequestEmailMessageSender
 import org.dataland.datalandcommunitymanager.utils.CompanyIdValidator
 import org.dataland.datalandcommunitymanager.utils.DataRequestLogger
@@ -39,6 +40,7 @@ class SingleDataRequestManagerTest {
     private lateinit var utilsMock: DataRequestProcessingUtils
     private lateinit var securityUtilsServiceMock: SecurityUtilsService
     private lateinit var mockCompanyIdValidator: CompanyIdValidator
+    private lateinit var accessRequestEmailSender: AccessRequestEmailSender
 
     private val companyIdRegexSafeCompanyId = UUID.randomUUID().toString()
     private val dummyCompanyIdAndName = CompanyIdAndName("Dummy Company AG", companyIdRegexSafeCompanyId)
@@ -60,6 +62,7 @@ class SingleDataRequestManagerTest {
         securityUtilsServiceMock = mock(SecurityUtilsService::class.java)
         mockCompanyIdValidator = mock(CompanyIdValidator::class.java)
         dataRequestRepositoryMock = createDataRequestRepositoryMock()
+        accessRequestEmailSender = mock(AccessRequestEmailSender::class.java)
         singleDataRequestManagerMock = SingleDataRequestManager(
             dataRequestLogger = mock(DataRequestLogger::class.java),
             dataRequestRepository = dataRequestRepositoryMock,
@@ -67,6 +70,7 @@ class SingleDataRequestManagerTest {
             singleDataRequestEmailMessageSender = singleDataRequestEmailMessageSenderMock,
             utils = utilsMock,
             dataAccessManager = mock(DataAccessManager::class.java),
+            accessRequestEmailSender = accessRequestEmailSender,
             securityUtilsService = securityUtilsServiceMock,
             maxRequestsForUser,
         )

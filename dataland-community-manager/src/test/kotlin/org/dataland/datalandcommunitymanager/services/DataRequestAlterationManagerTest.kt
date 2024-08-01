@@ -9,6 +9,7 @@ import org.dataland.datalandcommunitymanager.model.dataRequest.AccessStatus
 import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
 import org.dataland.datalandcommunitymanager.model.dataRequest.StoredDataRequestMessageObject
 import org.dataland.datalandcommunitymanager.repositories.DataRequestRepository
+import org.dataland.datalandcommunitymanager.services.messaging.AccessRequestEmailSender
 import org.dataland.datalandcommunitymanager.services.messaging.DataRequestResponseEmailSender
 import org.dataland.datalandcommunitymanager.services.messaging.SingleDataRequestEmailMessageSender
 import org.dataland.datalandcommunitymanager.utils.DataRequestLogger
@@ -42,6 +43,8 @@ class DataRequestAlterationManagerTest {
     private lateinit var singleDataRequestEmailMessageSender: SingleDataRequestEmailMessageSender
     private lateinit var metaDataControllerApi: MetaDataControllerApi
     private lateinit var processingUtils: DataRequestProcessingUtils
+    private lateinit var accessRequestEmailSender: AccessRequestEmailSender
+
     private val dataRequestId = UUID.randomUUID().toString()
     private val correlationId = UUID.randomUUID().toString()
     private val dummyDataRequestEntities: List<DataRequestEntity> = listOf(
@@ -123,10 +126,13 @@ class DataRequestAlterationManagerTest {
                 dummyDataRequestEntity, TemplateEmailMessage.Type.DataRequestedAnswered, correlationId,
             )
 
+        accessRequestEmailSender = mock(AccessRequestEmailSender::class.java)
+
         dataRequestAlterationManager = DataRequestAlterationManager(
             dataRequestRepository = dataRequestRepository,
             dataRequestLogger = mock(DataRequestLogger::class.java),
             dataRequestResponseEmailMessageSender = dataRequestResponseEmailMessageSender,
+            accessRequestEmailSender = accessRequestEmailSender,
             metaDataControllerApi = metaDataControllerApi,
             singleDataRequestEmailMessageSender = singleDataRequestEmailMessageSender,
             utils = processingUtils,
