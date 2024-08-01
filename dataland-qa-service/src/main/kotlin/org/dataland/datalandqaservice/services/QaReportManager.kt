@@ -103,7 +103,7 @@ class QaReportManager(
         requestingUser: DatalandAuthentication,
     ): QaReportEntity {
         val storedQaReportEntity = getQaReportById(dataId, dataType, qaReportId)
-        if (qaReportSecurityPolicy.userCanChangeReportActiveStatus(
+        if (!qaReportSecurityPolicy.userCanChangeReportActiveStatus(
                 storedQaReportEntity,
                 requestingUser,
             )
