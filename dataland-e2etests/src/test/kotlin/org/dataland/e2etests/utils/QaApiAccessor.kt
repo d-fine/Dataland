@@ -5,6 +5,9 @@ import org.dataland.datalandbackend.openApiClient.api.MetaDataControllerApi
 import org.dataland.datalandbackend.openApiClient.model.DataMetaInformation
 import org.dataland.datalandbackend.openApiClient.model.QaStatus
 import org.dataland.datalandqaservice.openApiClient.api.SfdrQaReportControllerApi
+import org.dataland.datalandqaservice.openApiClient.model.ExtendedDataPointYesNoNoEvidenceFound
+import org.dataland.datalandqaservice.openApiClient.model.QaReportDataPointExtendedDataPointYesNoNoEvidenceFound
+import org.dataland.datalandqaservice.openApiClient.model.QaReportDataPointVerdict
 import org.dataland.datalandqaservice.openApiClient.model.SfdrData
 import org.dataland.datalandqaservice.openApiClient.model.SfdrEnvironmental
 import org.dataland.datalandqaservice.openApiClient.model.SfdrEnvironmentalBiodiversity
@@ -106,7 +109,7 @@ class QaApiAccessor {
         )
     }
 
-    /*fun createQaSfdrDataWithOneFullQaDataPoint(): SfdrData {
+    fun createQaSfdrDataWithOneFullQaDataPoint(): SfdrData {
         return SfdrData(
             environmental = SfdrEnvironmental(
                 biodiversity = SfdrEnvironmentalBiodiversity(
@@ -123,5 +126,5 @@ class QaApiAccessor {
             ),
 
         )
-    }*/
+    }
 }
