@@ -11,7 +11,7 @@ import org.json.JSONObject
  * This migration script updates the existing EU taxonomy non-financials datasets and migrates all
  * existing BaseDataPoints to ExtendedDataPoints.
  */
-class V19__MigrateEutaxonomyOnlyExtendedDatapoints : BaseJavaMigration() {
+class V19__MigrateEutaxonomyNonFinancialsExtendedDatapoints : BaseJavaMigration() {
     private val relevantFields = listOf(
         "scopeOfEntities",
         "nfrdMandatory",
@@ -64,7 +64,7 @@ class V19__MigrateEutaxonomyOnlyExtendedDatapoints : BaseJavaMigration() {
      * Migrate a DataTableEntity so that certain BaseDataPoints are turned into ExtendedDataPoints.
      * @param dataTableEntity DataTableEntity
      */
-    fun migrateEutaxonomyData(dataTableEntity: DataTableEntity) {
+    fun migrateEutaxonomyNonFinancialsData(dataTableEntity: DataTableEntity) {
         val dataset = dataTableEntity.dataJsonObject
         dataset.keys().forEach {
             checkRecursivelyForBaseDataPoint(dataset, it)
@@ -75,7 +75,7 @@ class V19__MigrateEutaxonomyOnlyExtendedDatapoints : BaseJavaMigration() {
         migrateCompanyAssociatedDataOfDatatype(
             context = context,
             dataType = "eutaxonomy-non-financials",
-            migrate = this::migrateEutaxonomyData,
+            migrate = this::migrateEutaxonomyNonFinancialsData,
         )
     }
 }
