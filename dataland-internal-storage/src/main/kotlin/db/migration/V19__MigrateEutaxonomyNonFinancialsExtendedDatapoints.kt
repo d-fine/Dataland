@@ -27,6 +27,7 @@ class V19__MigrateEutaxonomyNonFinancialsExtendedDatapoints : BaseJavaMigration(
         "substantialContributionToTransitionToACircularEconomyInPercent",
         "substantialContributionToPollutionPreventionAndControlInPercent",
         "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent",
+        "absoluteShare",
     )
 
     /**
