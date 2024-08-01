@@ -9,10 +9,10 @@ class V19__MigrateEutaxonomyOnlyExtendedDatapointsTest {
     @Test
     fun `dummy test for EU taxonomy data`() {
         TestUtils().testMigrationOfSingleDataset(
-            frameworkEutaxonomyNonFinancials,
-            "V19/BaseInput.json",
-            "V19/BaseExpectedInput.json",
-            V19__MigrateEutaxonomyOnlyExtendedDatapoints()::migrateEutaxonomyData,
+            dataType = frameworkEutaxonomyNonFinancials,
+            oldDataFileLocation = "V19/BaseInput.json",
+            migratedDataFileLocation = "V19/BaseExpectedInput.json",
+            migration = V19__MigrateEutaxonomyOnlyExtendedDatapoints()::migrateEutaxonomyData,
         )
     }
 }
