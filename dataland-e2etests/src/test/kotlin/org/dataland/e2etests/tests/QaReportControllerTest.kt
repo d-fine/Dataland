@@ -109,6 +109,37 @@ class QaReportControllerTest {
     }
 
     @Test
+    fun `check that using invalid ids on the get endpoint produces the expected exception messages`() {
+        val dataId1 = postSfdrDatasetAndRetrieveDataId()
+        val dataId2 = postSfdrDatasetAndRetrieveDataId()
+        val sfdrData = qaApiAccessor.createQaSfdrDataWithOneFullQaDataPoint()
+        apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reviewer)
+        val qaReportMetaInfo = qaApiAccessor.sfdrQaReportControllerApi.postQaReport(dataId1, sfdrData)
+        val qaReportId = qaReportMetaInfo.qaReportId
+        val falseQaReportId = UUID.randomUUID().toString()
+        val exception1 = assertThrows<ClientException> {
+            qaApiAccessor.sfdrQaReportControllerApi.getQaReport(dataId1, falseQaReportId)
+        }
+        val responseBody1 = (exception1.response as ClientError<*>).body as String
+        Assertions.assertTrue(
+            responseBody1.contains(
+                "No QA report with the id: $falseQaReportId could be found",
+            ),
+        )
+
+        val exception2 = assertThrows<ClientException> {
+            qaApiAccessor.sfdrQaReportControllerApi.getQaReport(dataId2, qaReportId)
+        }
+        val responseBody2 = (exception2.response as ClientError<*>).body as String
+        Assertions.assertTrue(
+            responseBody2.contains(
+                "The requested Qa Report '$qaReportId' is not associated with data '$dataId2'," +
+                    " but with data '$dataId1'.",
+            ),
+        )
+    }
+
+    @Test
     fun `try posting a QA report with an incorrect data type and data id and assert an exception is thrown`() {
         postSfdrDatasetAndRetrieveDataId()
         /* ------> can be readded after we have eu taxo data <---------
@@ -129,15 +160,15 @@ class QaReportControllerTest {
         */
 
         val sfdrData = qaApiAccessor.createQaSfdrDataWithOneFullQaDataPoint()
-        val falseId = UUID.randomUUID().toString()
+        val falseDataId = UUID.randomUUID().toString()
         apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reviewer)
         val exception2 = assertThrows<ClientException> {
-            qaApiAccessor.sfdrQaReportControllerApi.postQaReport(falseId, sfdrData)
+            qaApiAccessor.sfdrQaReportControllerApi.postQaReport(falseDataId, sfdrData)
         }
         val responseBody2 = (exception2.response as ClientError<*>).body as String
         Assertions.assertTrue(
             responseBody2.contains(
-                "No data set with the id: $falseId could be found.",
+                "No data set with the id: $falseDataId could be found.",
             ),
         )
     }
