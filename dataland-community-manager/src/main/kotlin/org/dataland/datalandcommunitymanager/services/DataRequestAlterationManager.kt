@@ -2,8 +2,8 @@ package org.dataland.datalandcommunitymanager.services
 
 import org.dataland.datalandbackend.openApiClient.api.MetaDataControllerApi
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
-import org.dataland.datalandbackendutils.utils.validateIsEmailAddress
 import org.dataland.datalandcommunitymanager.entities.DataRequestEntity
+import org.dataland.datalandcommunitymanager.entities.MessageEntity
 import org.dataland.datalandcommunitymanager.exceptions.DataRequestNotFoundApiException
 import org.dataland.datalandcommunitymanager.model.dataRequest.AccessStatus
 import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
@@ -59,7 +59,9 @@ class DataRequestAlterationManager(
         val dataRequestEntity = dataRequestRepository.findById(dataRequestId).getOrElse {
             throw DataRequestNotFoundApiException(dataRequestId)
         }
-        contacts?.forEach { it.validateIsEmailAddress() }
+        val filteredContacts = contacts.takeIf { !it.isNullOrEmpty() }
+        val filteredMessage = message.takeIf { !it.isNullOrEmpty() }
+        filteredContacts?.forEach { MessageEntity.validateContact(it) }
 
         val modificationTime = Instant.now().toEpochMilli()
         var anyChanges = false
@@ -73,10 +75,10 @@ class DataRequestAlterationManager(
                 dataRequestEntity.dataRequestId, newRequestStatus, newAccessStatus,
             )
         }
-        if (contacts != null) { // TODO contacts could be empty!, see processSingleDataRequest
+        if (filteredContacts != null) {
             anyChanges = true
-            utils.addMessageToMessageHistory(dataRequestEntity, contacts, message, modificationTime)
-            this.sendSingleDataRequestEmail(dataRequestEntity, contacts, message)
+            utils.addMessageToMessageHistory(dataRequestEntity, filteredContacts, filteredMessage, modificationTime)
+            this.sendSingleDataRequestEmail(dataRequestEntity, filteredContacts, filteredMessage)
             dataRequestLogger.logMessageForPatchingRequestMessage(dataRequestEntity.dataRequestId)
         }
         if (anyChanges) dataRequestEntity.lastModifiedDate = modificationTime
@@ -119,6 +121,7 @@ class DataRequestAlterationManager(
                     dataRequestEntity.userId, dataRequestEntity.messageHistory.last().message,
                     dataRequestEntity.datalandCompanyId, dataRequestEntity.dataType,
                     setOf(dataRequestEntity.reportingPeriod),
+                    dataRequestEntity.messageHistory.last().contactsAsSet()
                 ),
                 correlationId,
             )
@@ -137,19 +140,17 @@ class DataRequestAlterationManager(
         message: String?,
     ) {
         val correlationId = UUID.randomUUID().toString()
-        contacts.forEach {
-            singleDataRequestEmailMessageSender.sendSingleDataRequestExternalMessage(
-                messageInformation = SingleDataRequestEmailMessageSender.MessageInformation(
-                    dataType = DataTypeEnum.decode(dataRequestEntity.dataType)!!,
-                    reportingPeriods = setOf(dataRequestEntity.reportingPeriod),
-                    datalandCompanyId = dataRequestEntity.datalandCompanyId,
-                    userAuthentication = DatalandAuthentication.fromContext() as DatalandJwtAuthentication,
-                ),
-                receiver = it,
-                contactMessage = message,
-                correlationId = correlationId,
-            )
-        }
+        singleDataRequestEmailMessageSender.sendSingleDataRequestExternalMessage(
+            messageInformation = SingleDataRequestEmailMessageSender.MessageInformation(
+                dataType = DataTypeEnum.decode(dataRequestEntity.dataType)!!,
+                reportingPeriods = setOf(dataRequestEntity.reportingPeriod),
+                datalandCompanyId = dataRequestEntity.datalandCompanyId,
+                userAuthentication = DatalandAuthentication.fromContext() as DatalandJwtAuthentication,
+            ),
+            receiverSet = contacts,
+            contactMessage = message,
+            correlationId = correlationId,
+        )
     }
 
     /**

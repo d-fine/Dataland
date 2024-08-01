@@ -1,6 +1,6 @@
 package org.dataland.datalandcommunitymanager.services.messaging
 
-import org.dataland.datalandcommunitymanager.model.companyRoles.CompanyRole
+import org.dataland.datalandcommunitymanager.entities.MessageEntity
 import org.dataland.datalandcommunitymanager.services.CompanyRolesManager
 import org.dataland.datalandcommunitymanager.services.KeycloakUserControllerApiService
 import org.springframework.beans.factory.annotation.Autowired
@@ -34,34 +34,20 @@ class AccessRequestEmailSender(
         val datalandCompanyId: String,
         val dataType: String,
         val reportingPeriods: Set<String>,
+        val contacts: Set<String>
     )
 
     fun notifyCompanyOwnerAboutNewRequest(emailInformation: RequestEmailInformation, correlationId: String) {
+
+
         val user = keycloakUserControllerApiService.getUser(emailInformation.requesterUserId)
 
-        // was ist mit dem company name?
+        val contacts = emailInformation.contacts + setOf(MessageEntity.COMPANY_OWNER_KEYWORD)
 
-        // get reciever
-        // set email
+        val receiver = emailInformation.contacts.flatMap {
+            MessageEntity.realizeContact(it, companyRolesManager, emailInformation.datalandCompanyId)
+        }
 
-        // die logik muss woanders rein, da wir das ja generischer umsetzen
-        val companyOwnerList = companyRolesManager.getCompanyRoleAssignmentsByParameters(
-            companyRole = CompanyRole.CompanyOwner,
-            companyId = emailInformation.datalandCompanyId,
-            userId = null,
-        )
-
-        // send email to companyOwnerList[0].userId
-        // haben evtl. namen und nachnamen des users
-        // haben auf jeden fall die email Adresse
-        // Message irgendwie bekommen
-
-        // die haben eine user id an die wir schicken koennen
-        // an die schicken wir die email
-        // ansonsten an die contacts?
-        // dataRequestEntity.messageHistory.last().contacts
-        // ohne contacts keinen eintrag in die history
-        // also contacts sollten irgendwie da sein, aber wenn die kein owner sind
         return
     }
 }

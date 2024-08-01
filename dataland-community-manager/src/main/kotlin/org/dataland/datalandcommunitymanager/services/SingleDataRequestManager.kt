@@ -3,7 +3,7 @@ package org.dataland.datalandcommunitymanager.services
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.exceptions.QuotaExceededException
-import org.dataland.datalandbackendutils.utils.validateIsEmailAddress
+import org.dataland.datalandcommunitymanager.entities.MessageEntity
 import org.dataland.datalandcommunitymanager.model.dataRequest.SingleDataRequest
 import org.dataland.datalandcommunitymanager.model.dataRequest.SingleDataRequestResponse
 import org.dataland.datalandcommunitymanager.repositories.DataRequestRepository
@@ -93,7 +93,6 @@ constructor(
         val userId = DatalandAuthentication.fromContext().userId
         val correlationId = UUID.randomUUID().toString()
 
-        // TODO check if COMPANY_OWNER exists for company if the keyword is included
         utils.throwExceptionIfNotJwtAuth()
         validateSingleDataRequestContent(singleDataRequest)
         performQuotaCheckForNonPremiumUser(singleDataRequest.reportingPeriods.size, companyId)
@@ -198,7 +197,7 @@ constructor(
             )
         }
 
-        singleDataRequest.contacts?.forEach { it.validateIsEmailAddress() }
+        singleDataRequest.contacts?.forEach { MessageEntity.validateContact(it) }
         if (singleDataRequest.contacts.isNullOrEmpty() && !singleDataRequest.message.isNullOrBlank()) {
             throw InvalidInputApiException(
                 "No recipients provided for the message",
@@ -240,14 +239,12 @@ constructor(
                 messageInformation, preprocessedRequest.correlationId,
             )
         } else {
-            preprocessedRequest.contacts.forEach { contactEmail ->
-                singleDataRequestEmailMessageSender.sendSingleDataRequestExternalMessage(
-                    messageInformation = messageInformation,
-                    receiver = contactEmail,
-                    contactMessage = preprocessedRequest.message,
-                    correlationId = preprocessedRequest.correlationId,
-                )
-            }
+            singleDataRequestEmailMessageSender.sendSingleDataRequestExternalMessage(
+                messageInformation = messageInformation,
+                receiverSet = preprocessedRequest.contacts,
+                contactMessage = preprocessedRequest.message,
+                correlationId = preprocessedRequest.correlationId,
+            )
         }
     }
 
@@ -262,6 +259,7 @@ constructor(
                 preprocessedRequest.userId, preprocessedRequest.message,
                 preprocessedRequest.companyId, preprocessedRequest.dataType.toString(),
                 reportingPeriodsOfStoredAccessRequests,
+                preprocessedRequest.contacts ?: setOf()
             ),
             preprocessedRequest.correlationId,
         )

@@ -138,8 +138,8 @@ class DataAccessManager(
         } else {
             storeAccessRequestEntityAsPending(
                 datalandCompanyId = companyId, dataType = dataType, reportingPeriod = reportingPeriod,
-                contacts = contacts.takeIf { !it.isNullOrEmpty() },
-                message = message.takeIf { !it.isNullOrBlank() },
+                contacts = contacts,
+                message = message,
             )
         }
     }

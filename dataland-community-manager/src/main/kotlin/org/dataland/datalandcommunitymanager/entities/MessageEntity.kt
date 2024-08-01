@@ -6,8 +6,12 @@ import jakarta.persistence.Id
 import jakarta.persistence.JoinColumn
 import jakarta.persistence.ManyToOne
 import jakarta.persistence.Table
+import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.utils.isEmailAddress
+import org.dataland.datalandcommunitymanager.model.companyRoles.CompanyRole
 import org.dataland.datalandcommunitymanager.model.dataRequest.StoredDataRequestMessageObject
+import org.dataland.datalandcommunitymanager.services.CompanyRolesManager
+import org.dataland.datalandmessagequeueutils.messages.TemplateEmailMessage
 import java.util.UUID
 
 /**
@@ -33,11 +37,47 @@ data class MessageEntity(
 ) {
     companion object {
         private const val emailSeparator = ";"
+
+        const val COMPANY_OWNER_KEYWORD = "COMPANY_OWNER"
+
+        fun isContact(contact: String) : Boolean {
+            return contact.isEmailAddress() || contact == COMPANY_OWNER_KEYWORD
+        }
+
+        fun validateContact(contact: String) {
+            // TODO do we want to check whether we want to validate if a company owner exists?
+
+            if (!isContact(contact))
+                throw InvalidInputApiException(
+                    "Invalid contact $contact",
+                    "The provided contact $contact is not valid. " +
+                            "Please specify a valid email address or $COMPANY_OWNER_KEYWORD.")
+        }
+
+        fun realizeContact(contact: String, companyRolesManager: CompanyRolesManager, companyId: String
+        ) : List<TemplateEmailMessage.EmailRecipient> {
+
+            if (contact.isEmailAddress()) {
+                return listOf(TemplateEmailMessage.EmailAddressEmailRecipient(contact))
+            }
+
+            if (contact == COMPANY_OWNER_KEYWORD) {
+                val companyOwnerList = companyRolesManager.getCompanyRoleAssignmentsByParameters(
+                    companyRole = CompanyRole.CompanyOwner,
+                    companyId = companyId,
+                    userId = null,
+                )
+                return companyOwnerList.map { TemplateEmailMessage.UserIdEmailRecipient(it.userId) }
+            }
+
+            return listOf()
+        }
+
     }
 
     init {
         require(contacts.isNotEmpty())
-        require(contacts.split(emailSeparator).all { it.isEmailAddress() })
+        require(contacts.split(emailSeparator).all { isContact(it) })
         require(message?.isNotBlank() ?: true)
     }
 
@@ -57,8 +97,15 @@ data class MessageEntity(
      * @returns the generated message object
      */
     fun toStoredDataRequestMessageObject() = StoredDataRequestMessageObject(
-        contacts = contacts.split(emailSeparator).toSet(),
+        contacts = contactsAsSet(),
         message = message,
         creationTimestamp = creationTimestamp,
     )
+
+    /**
+     * Returns the contacts as a set of strings.
+     */
+    fun contactsAsSet(): Set<String> {
+        return contacts.split(emailSeparator).toSet()
+    }
 }
