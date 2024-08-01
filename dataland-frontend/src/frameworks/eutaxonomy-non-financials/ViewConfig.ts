@@ -5,16 +5,15 @@ import { type AvailableMLDTDisplayObjectTypes } from '@/components/resources/dat
 import { formatPercentageForDatatable } from '@/components/resources/dataTable/conversion/PercentageValueGetterFactory';
 import { wrapDisplayValueWithDatapointInformation } from '@/components/resources/dataTable/conversion/DataPoints';
 import { formatEuTaxonomyNonFinancialsAlignedActivitiesDataForTable } from '@/components/resources/dataTable/conversion/EuTaxonomyNonFinancialsAlignedActivitiesDataGetterFactory';
-import { formatStringForDatatable } from '@/components/resources/dataTable/conversion/PlainStringValueGetterFactory';
-import { formatAmountWithCurrency } from '@/utils/Formatter';
-import { formatNonAlignedActivitiesForDataTable } from '@/components/resources/dataTable/conversion/EutaxonomyNonAlignedActivitiesValueGetterFactory';
 import { formatCurrencyForDisplay } from '@/components/resources/dataTable/conversion/CurrencyDataPointValueGetterFactory';
+import { formatNonAlignedActivitiesForDataTable } from '@/components/resources/dataTable/conversion/EutaxonomyNonAlignedActivitiesValueGetterFactory';
 import { formatNumberForDatatable } from '@/components/resources/dataTable/conversion/NumberValueGetterFactory';
 import {
   formatAssuranceProviderForDataTable,
   formatAssuranceForDataTable,
 } from '@/components/resources/dataTable/conversion/EutaxonomyAssuranceValueGetterFactory';
 import { formatYesNoValueForDatatable } from '@/components/resources/dataTable/conversion/YesNoValueGetterFactory';
+import { formatStringForDatatable } from '@/components/resources/dataTable/conversion/PlainStringValueGetterFactory';
 import { getOriginalNameFromTechnicalName } from '@/components/resources/dataTable/conversion/Utils';
 export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonFinancialsData> = [
   {
@@ -54,7 +53,11 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
         explanation: 'Are all Group legal entities covered in the reports?',
         shouldDisplay: (): boolean => true,
         valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
-          formatYesNoValueForDatatable(dataset.general?.scopeOfEntities),
+          wrapDisplayValueWithDatapointInformation(
+            formatYesNoValueForDatatable(dataset.general?.scopeOfEntities?.value),
+            'Scope Of Entities',
+            dataset.general?.scopeOfEntities
+          ),
       },
       {
         type: 'cell',
@@ -62,7 +65,11 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
         explanation: 'Is the NFRD mandatory for your company?',
         shouldDisplay: (): boolean => true,
         valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
-          formatYesNoValueForDatatable(dataset.general?.nfrdMandatory),
+          wrapDisplayValueWithDatapointInformation(
+            formatYesNoValueForDatatable(dataset.general?.nfrdMandatory?.value),
+            'NFRD Mandatory',
+            dataset.general?.nfrdMandatory
+          ),
       },
       {
         type: 'cell',
@@ -70,7 +77,11 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
         explanation: 'Activity level disclosure',
         shouldDisplay: (): boolean => true,
         valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
-          formatYesNoValueForDatatable(dataset.general?.euTaxonomyActivityLevelReporting),
+          wrapDisplayValueWithDatapointInformation(
+            formatYesNoValueForDatatable(dataset.general?.euTaxonomyActivityLevelReporting?.value),
+            'EU Taxonomy Activity Level Reporting',
+            dataset.general?.euTaxonomyActivityLevelReporting
+          ),
       },
       {
         type: 'cell',
@@ -94,7 +105,11 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
         explanation: 'Total number of employees (including temporary workers with assignment duration >6 months)',
         shouldDisplay: (): boolean => true,
         valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
-          formatNumberForDatatable(dataset.general?.numberOfEmployees, ''),
+          wrapDisplayValueWithDatapointInformation(
+            formatNumberForDatatable(dataset.general?.numberOfEmployees?.value, ''),
+            'Number Of Employees',
+            dataset.general?.numberOfEmployees
+          ),
       },
     ],
     labelBadgeColor: 'orange',
@@ -138,7 +153,7 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
               'Absolute value and share of the revenue that is not part of a plan to meet the DNSH criteria and make substantial contribution to any environmental objective',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(formatAmountWithCurrency(dataset.revenue?.nonEligibleShare?.absoluteShare)),
+              formatCurrencyForDisplay(dataset.revenue?.nonEligibleShare?.absoluteShare, 'Absolute Share'),
           },
         ],
       },
@@ -168,7 +183,7 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
               'Absolute value of the total eligible revenue in same currency than total revenue. Is part of the total revenue where the economic activity meets taxonomy criteria for substantial contribution to climate change mitigation and does no serious harm to the other environmental objectives (DNSH criteria).',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(formatAmountWithCurrency(dataset.revenue?.eligibleShare?.absoluteShare)),
+              formatCurrencyForDisplay(dataset.revenue?.eligibleShare?.absoluteShare, 'Absolute Share'),
           },
         ],
       },
@@ -198,7 +213,7 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
               'Absolute value of the revenue that is associated with non taxonomy-aligned but eligible activities',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(formatAmountWithCurrency(dataset.revenue?.nonAlignedShare?.absoluteShare)),
+              formatCurrencyForDisplay(dataset.revenue?.nonAlignedShare?.absoluteShare, 'Absolute Share'),
           },
         ],
       },
@@ -236,7 +251,7 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
               'Absolute value of the total eligible revenue that is taxonomy-aligned, i.e., generated by an eligible economic activity that is making a substantial contribution to at least one of the climate and environmental objectives, while also doing no significant harm to the remaining objectives and meeting minimum standards on human rights and labour standards. In same currency than total revenue.',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(formatAmountWithCurrency(dataset.revenue?.alignedShare?.absoluteShare)),
+              formatCurrencyForDisplay(dataset.revenue?.alignedShare?.absoluteShare, 'Absolute Share'),
           },
         ],
       },
@@ -408,7 +423,7 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
               'Absolute value of the CapEx that is not part of a plan to meet the DNSH criteria and make substantial contribution to any environmental objective',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(formatAmountWithCurrency(dataset.capex?.nonEligibleShare?.absoluteShare)),
+              formatCurrencyForDisplay(dataset.capex?.nonEligibleShare?.absoluteShare, 'Absolute Share'),
           },
         ],
       },
@@ -438,7 +453,7 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
               'Absolute value of the total CapEx where the economic activity meets taxonomy criteria for substantial contribution to climate change mitigation and does no serious harm to the other environmental objectives (DNSH criteria)',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(formatAmountWithCurrency(dataset.capex?.eligibleShare?.absoluteShare)),
+              formatCurrencyForDisplay(dataset.capex?.eligibleShare?.absoluteShare, 'Absolute Share'),
           },
         ],
       },
@@ -468,7 +483,7 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
               'Absolute value of the CapEx that is associated with non taxonomy-aligned but eligible activities',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(formatAmountWithCurrency(dataset.capex?.nonAlignedShare?.absoluteShare)),
+              formatCurrencyForDisplay(dataset.capex?.nonAlignedShare?.absoluteShare, 'Absolute Share'),
           },
         ],
       },
@@ -506,7 +521,7 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
               'Absolute value of CapEx that is taxonomy-aligned, i.e., generated by an eligible economic activity that is making a substantial contribution to at least one of the climate and environmental objectives, while also doing no significant harm to the remaining objectives and meeting minimum standards on human rights and labour standards.',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(formatAmountWithCurrency(dataset.capex?.alignedShare?.absoluteShare)),
+              formatCurrencyForDisplay(dataset.capex?.alignedShare?.absoluteShare, 'Absolute Share'),
           },
         ],
       },
@@ -678,7 +693,7 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
               'Absolute value of the OpEx that is not part of a plan to meet the DNSH criteria and make substantial contribution to any environmental objective',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(formatAmountWithCurrency(dataset.opex?.nonEligibleShare?.absoluteShare)),
+              formatCurrencyForDisplay(dataset.opex?.nonEligibleShare?.absoluteShare, 'Absolute Share'),
           },
         ],
       },
@@ -708,7 +723,7 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
               'Absolute value of the OpEx that is part of a plan to meet the DNSH criteria and make substantial contribution to any environmental objective',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(formatAmountWithCurrency(dataset.opex?.eligibleShare?.absoluteShare)),
+              formatCurrencyForDisplay(dataset.opex?.eligibleShare?.absoluteShare, 'Absolute Share'),
           },
         ],
       },
@@ -738,7 +753,7 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
               'Absolute value of the OpEx that is associated with non taxonomy-aligned but eligible activities',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(formatAmountWithCurrency(dataset.opex?.nonAlignedShare?.absoluteShare)),
+              formatCurrencyForDisplay(dataset.opex?.nonAlignedShare?.absoluteShare, 'Absolute Share'),
           },
         ],
       },
@@ -776,7 +791,7 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
               'Absolute value of the OpEx that is associated with taxonomy-aligned activities. i.e., for an eligible economic activity that is making a substantial contribution to at least one of the climate and environmental objectives, while also doing no significant harm to the remaining objectives and meeting minimum standards on human rights and labour standards',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(formatAmountWithCurrency(dataset.opex?.alignedShare?.absoluteShare)),
+              formatCurrencyForDisplay(dataset.opex?.alignedShare?.absoluteShare, 'Absolute Share'),
           },
         ],
       },

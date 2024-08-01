@@ -2,8 +2,8 @@
 package org.dataland.datalandbackend.frameworks.eutaxonomynonfinancials.model.revenue.nonAlignedShare
 
 import jakarta.validation.Valid
+import org.dataland.datalandbackend.model.datapoints.CurrencyDataPoint
 import org.dataland.datalandbackend.model.datapoints.ExtendedDataPoint
-import org.dataland.datalandbackend.model.generics.AmountWithCurrency
 import java.math.BigDecimal
 
 /**
@@ -13,6 +13,7 @@ data class EutaxonomyNonFinancialsRevenueNonAlignedShare(
     @field:Valid()
     val relativeShareInPercent: ExtendedDataPoint<BigDecimal?>? = null,
 
-    val absoluteShare: AmountWithCurrency? = null,
+    @field:Valid()
+    val absoluteShare: CurrencyDataPoint? = null,
 
 )

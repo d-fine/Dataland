@@ -11765,7 +11765,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/AmountWithCurrency"
+                "$ref": "#/components/schemas/CurrencyDataPoint"
               }
             ]
           }
@@ -11786,7 +11786,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/AmountWithCurrency"
+                "$ref": "#/components/schemas/CurrencyDataPoint"
               }
             ]
           }
@@ -11807,7 +11807,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/AmountWithCurrency"
+                "$ref": "#/components/schemas/CurrencyDataPoint"
               }
             ]
           }
@@ -11828,7 +11828,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/AmountWithCurrency"
+                "$ref": "#/components/schemas/CurrencyDataPoint"
               }
             ]
           }
@@ -11891,7 +11891,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/YesNoNa"
+                "$ref": "#/components/schemas/ExtendedDataPointYesNoNa"
               }
             ]
           },
@@ -11899,7 +11899,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/YesNo"
+                "$ref": "#/components/schemas/ExtendedDataPointYesNo"
               }
             ]
           },
@@ -11907,7 +11907,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/YesNo"
+                "$ref": "#/components/schemas/ExtendedDataPointYesNo"
               }
             ]
           },
@@ -11920,8 +11920,12 @@
             ]
           },
           "numberOfEmployees": {
-            "type": "number",
-            "nullable": true
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
           },
           "referencedReports": {
             "type": "object",
@@ -12078,7 +12082,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/AmountWithCurrency"
+                "$ref": "#/components/schemas/CurrencyDataPoint"
               }
             ]
           }
@@ -12099,7 +12103,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/AmountWithCurrency"
+                "$ref": "#/components/schemas/CurrencyDataPoint"
               }
             ]
           }
@@ -12120,7 +12124,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/AmountWithCurrency"
+                "$ref": "#/components/schemas/CurrencyDataPoint"
               }
             ]
           }
@@ -12141,7 +12145,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/AmountWithCurrency"
+                "$ref": "#/components/schemas/CurrencyDataPoint"
               }
             ]
           }
@@ -12285,7 +12289,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/AmountWithCurrency"
+                "$ref": "#/components/schemas/CurrencyDataPoint"
               }
             ]
           }
@@ -12306,7 +12310,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/AmountWithCurrency"
+                "$ref": "#/components/schemas/CurrencyDataPoint"
               }
             ]
           }
@@ -12327,7 +12331,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/AmountWithCurrency"
+                "$ref": "#/components/schemas/CurrencyDataPoint"
               }
             ]
           }
@@ -12348,7 +12352,73 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/AmountWithCurrency"
+                "$ref": "#/components/schemas/CurrencyDataPoint"
+              }
+            ]
+          }
+        }
+      },
+      "ExtendedDataPointYesNo": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
+          },
+          "quality": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/QualityOptions"
+              }
+            ]
+          },
+          "comment": {
+            "type": "string",
+            "nullable": true
+          },
+          "dataSource": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDocumentReference"
+              }
+            ]
+          }
+        }
+      },
+      "ExtendedDataPointYesNoNa": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNoNa"
+              }
+            ]
+          },
+          "quality": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/QualityOptions"
+              }
+            ]
+          },
+          "comment": {
+            "type": "string",
+            "nullable": true
+          },
+          "dataSource": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDocumentReference"
               }
             ]
           }
@@ -14716,9 +14786,11 @@
         ],
         "type": "object",
         "properties": {
-          "sector": {
-            "type": "string",
-            "nullable": true
+          "headquarters": {
+            "type": "string"
+          },
+          "countryCode": {
+            "type": "string"
           },
           "companyId": {
             "type": "string"
@@ -14726,11 +14798,9 @@
           "companyName": {
             "type": "string"
           },
-          "countryCode": {
-            "type": "string"
-          },
-          "headquarters": {
-            "type": "string"
+          "sector": {
+            "type": "string",
+            "nullable": true
           },
           "lei": {
             "type": "string",
