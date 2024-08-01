@@ -5,12 +5,19 @@ import org.dataland.datalandbackend.openApiClient.api.MetaDataControllerApi
 import org.dataland.datalandbackend.openApiClient.model.DataMetaInformation
 import org.dataland.datalandbackend.openApiClient.model.QaStatus
 import org.dataland.datalandqaservice.openApiClient.api.SfdrQaReportControllerApi
-import org.dataland.datalandqaservice.openApiClient.model.ExtendedDataPointYesNoNoEvidenceFound
-import org.dataland.datalandqaservice.openApiClient.model.QaReportDataPointExtendedDataPointYesNoNoEvidenceFound
-import org.dataland.datalandqaservice.openApiClient.model.QaReportDataPointVerdict
 import org.dataland.datalandqaservice.openApiClient.model.SfdrData
 import org.dataland.datalandqaservice.openApiClient.model.SfdrEnvironmental
 import org.dataland.datalandqaservice.openApiClient.model.SfdrEnvironmentalBiodiversity
+import org.dataland.datalandqaservice.openApiClient.model.SfdrEnvironmentalEmissions
+import org.dataland.datalandqaservice.openApiClient.model.SfdrEnvironmentalEnergyPerformance
+import org.dataland.datalandqaservice.openApiClient.model.SfdrEnvironmentalGreenhouseGasEmissions
+import org.dataland.datalandqaservice.openApiClient.model.SfdrEnvironmentalWaste
+import org.dataland.datalandqaservice.openApiClient.model.SfdrEnvironmentalWater
+import org.dataland.datalandqaservice.openApiClient.model.SfdrSocial
+import org.dataland.datalandqaservice.openApiClient.model.SfdrSocialAntiCorruptionAndAntiBribery
+import org.dataland.datalandqaservice.openApiClient.model.SfdrSocialGreenSecurities
+import org.dataland.datalandqaservice.openApiClient.model.SfdrSocialHumanRights
+import org.dataland.datalandqaservice.openApiClient.model.SfdrSocialSocialAndEmployeeMatters
 import org.dataland.e2etests.BASE_PATH_TO_QA_SERVICE
 import java.lang.NullPointerException
 import java.util.concurrent.TimeUnit
@@ -80,7 +87,26 @@ class QaApiAccessor {
         }
     }
 
-    fun createQaSfdrData(): SfdrData {
+    fun createFullQaSfdrData(): SfdrData {
+        return SfdrData(
+            environmental = SfdrEnvironmental(
+                greenhouseGasEmissions = SfdrEnvironmentalGreenhouseGasEmissions(),
+                energyPerformance = SfdrEnvironmentalEnergyPerformance(),
+                biodiversity = SfdrEnvironmentalBiodiversity(),
+                water = SfdrEnvironmentalWater(),
+                waste = SfdrEnvironmentalWaste(),
+                emissions = SfdrEnvironmentalEmissions(),
+            ),
+            social = SfdrSocial(
+                socialAndEmployeeMatters = SfdrSocialSocialAndEmployeeMatters(),
+                greenSecurities = SfdrSocialGreenSecurities(),
+                humanRights = SfdrSocialHumanRights(),
+                antiCorruptionAndAntiBribery = SfdrSocialAntiCorruptionAndAntiBribery(),
+            ),
+        )
+    }
+
+    /*fun createQaSfdrDataWithOneFullQaDataPoint(): SfdrData {
         return SfdrData(
             environmental = SfdrEnvironmental(
                 biodiversity = SfdrEnvironmentalBiodiversity(
@@ -97,5 +123,5 @@ class QaApiAccessor {
             ),
 
         )
-    }
+    }*/
 }

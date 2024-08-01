@@ -41,7 +41,7 @@ class QaReportControllerTest {
     @Test
     fun `post a QA report and check that the report can be retrieved`() {
         val dataId = postSfdrDatasetAndRetrieveDataId()
-        val sfdrData = qaApiAccessor.createQaSfdrData()
+        val sfdrData = qaApiAccessor.createFullQaSfdrData()
         apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reviewer)
         val qaReportMetaInfo = qaApiAccessor.sfdrQaReportControllerApi.postQaReport(dataId, sfdrData)
 
