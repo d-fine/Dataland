@@ -5,6 +5,7 @@ import db.migration.utils.getOrJavaNull
 import db.migration.utils.migrateCompanyAssociatedDataOfDatatype
 import org.flywaydb.core.api.migration.BaseJavaMigration
 import org.flywaydb.core.api.migration.Context
+import org.json.JSONArray
 import org.json.JSONObject
 
 /**
@@ -20,14 +21,13 @@ class V19__MigrateEutaxonomyNonFinancialsExtendedDatapoints : BaseJavaMigration(
         "enablingShareInPercent",
         "transitionalShareInPercent",
         "relativeShareInPercent",
-        "totalAmount",
         "substantialContributionToClimateChangeMitigationInPercent",
         "substantialContributionToClimateChangeAdaptationInPercent",
         "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent",
         "substantialContributionToTransitionToACircularEconomyInPercent",
         "substantialContributionToPollutionPreventionAndControlInPercent",
         "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent",
-        "absoluteShare",
+        //   "absoluteShare",
     )
 
     /**
@@ -46,11 +46,37 @@ class V19__MigrateEutaxonomyNonFinancialsExtendedDatapoints : BaseJavaMigration(
      * @param dataset JSONObject
      * @param objectName key corresponding to the JSON object
      */
-    private fun checkRecursivelyForBaseDataPoint(
-        dataset: JSONObject,
-        objectName: String,
-    ) {
-        val obj = dataset.getOrJavaNull(objectName)
+    /**
+     private fun checkRecursivelyForBaseDataPoint(
+     dataset: JSONObject,
+     objectName: String,
+     ) {
+     val obj = dataset.getOrJavaNull(objectName)
+     if (obj !== null && obj is JSONObject) {
+     obj.keys().forEach {
+     if (it in relevantFields) {
+     createNestedJsonObject(obj, it)
+     }
+     checkRecursivelyForBaseDataPoint(obj, it)
+     }
+     }
+     }
+     */
+    private fun checkRecursivelyForBaseDataPointsInJsonArray(jsonArray: JSONArray) {
+        for (i in 0 until jsonArray.length()) {
+            val element = jsonArray[i]
+            if (element != null && element is JSONObject) {
+                element.keys().forEach {
+                    if (it in relevantFields) {
+                        createNestedJsonObject(element, it)
+                    }
+                    checkRecursivelyForBaseDataPoint(element, it)
+                }
+            }
+        }
+    }
+    private fun checkRecursivelyForBaseDataPointInJsonObject(jsonObject: JSONObject, key: String) {
+        val obj = jsonObject.getOrJavaNull(key)
         if (obj !== null && obj is JSONObject) {
             obj.keys().forEach {
                 if (it in relevantFields) {
@@ -58,6 +84,17 @@ class V19__MigrateEutaxonomyNonFinancialsExtendedDatapoints : BaseJavaMigration(
                 }
                 checkRecursivelyForBaseDataPoint(obj, it)
             }
+        } else if (obj != null && obj is JSONArray) {
+            checkRecursivelyForBaseDataPointsInJsonArray(obj)
+        }
+    }
+    private fun checkRecursivelyForBaseDataPoint(
+        dataset: Any,
+        key: String,
+    ) {
+        when (dataset) {
+            is JSONObject -> checkRecursivelyForBaseDataPointInJsonObject(dataset, key)
+            is JSONArray -> checkRecursivelyForBaseDataPointsInJsonArray(dataset)
         }
     }
 
