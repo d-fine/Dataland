@@ -44,6 +44,8 @@ mockito = "5.12.0"
 
 junit-jupiter = "5.10.3"
 
+log4j = "2.23.1"
+
 [libraries]
 
 gradle-tooling = "org.gradle:gradle-tooling-api:8.8"
@@ -58,13 +60,11 @@ ktlint = "com.pinterest:ktlint:_"
 
 okhttp = { group = "com.squareup.okhttp3", name = "okhttp", version.ref = "okhttp3" }
 
-log4j = "org.apache.logging.log4j:log4j:2.23.1"
-log4j-core = "org.apache.logging.log4j:log4j-core:2.23.1"
-log4j-slf4j2-impl = "org.apache.logging.log4j:log4j-slf4j2-impl:2.23.1"
-
-log4j-api = "org.apache.logging.log4j:log4j-api:2.23.1"
-
-log4j-to-slf4j = "org.apache.logging.log4j:log4j-to-slf4j:2.23.1"
+log4j = { group = "org.apache.logging.log4j", name = "log4j", version.ref = "log4j" }
+log4j-core = { group = "org.apache.logging.log4j", name = "log4j-core", version.ref = "log4j" }
+log4j-slf4j2-impl = { group = "org.apache.logging.log4j", name = "log4j-slf4j2-impl", version.ref = "log4j" }
+log4j-api = { group = "org.apache.logging.log4j", name = "log4j-api", version.ref = "log4j" }
+log4j-to-slf4j = { group = "org.apache.logging.log4j", name = "log4j-to-slf4j", version.ref = "log4j" }
 
 logback-classic = "ch.qos.logback:logback-classic:1.5.6"
 
