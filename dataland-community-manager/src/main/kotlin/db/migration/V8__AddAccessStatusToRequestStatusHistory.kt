@@ -17,7 +17,7 @@ class V8__AddAccessStatusToRequestStatusHistory : BaseJavaMigration() {
     private fun addAccessStatusToStatusHistoryTable(context: Context) {
         context.connection.createStatement().execute(
             "ALTER TABLE request_status_history" +
-                "ADD COLUMN accessStatus varchar(255) NOT NULL DEFAULT 'Public',",
+                "ADD COLUMN accessStatus varchar(255) NOT NULL,",
         )
     }
     private fun migrateSmeToVsme(context: Context) {
