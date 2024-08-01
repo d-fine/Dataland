@@ -1,9 +1,10 @@
 // @ts-nocheck
 import DocumentLink from '@/components/resources/frameworkDataSearch/DocumentLink.vue';
+import DataPointDataTable from '@/components/general/DataPointDataTable.vue';
 import { minimalKeycloakMock } from '@ct/testUtils/Keycloak';
 import { DataTypeEnum } from '@clients/backend';
 
-describe('check that the progress spinner works correctly for the document link component', function (): void {
+describe('check that the document link component works and is displayed correctly', function (): void {
   it('Check that there are no icons before and after triggering a download', function (): void {
     cy.intercept('**/documents/dummyFile**', {
       statusCode: 200,
@@ -19,7 +20,7 @@ describe('check that the progress spinner works correctly for the document link 
       },
     }).then(() => {
       validateNoIcons();
-      cy.get("[data-test='download-link']").should('exist').click();
+      cy.get("[data-test='Report-Download-Test']").should('exist').click();
       cy.wait('@downloadComplete').then(() => {
         validateNoIcons();
       });
@@ -106,6 +107,34 @@ describe('check that the progress spinner works correctly for the document link 
         .then(() => {
           validateNoIcons();
         });
+    });
+  });
+  it('Check that the label does not display "page" when page number is null', function (): void {
+    cy.mountWithPlugins(DataPointDataTable, {
+      keycloak: minimalKeycloakMock({}),
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      props: {},
+      data() {
+        return {
+          dialogData: {
+            dataPointDisplay: {
+              value: 'Some Value',
+              quality: 'Some quality',
+              dataSource: {
+                fileName: 'FileName',
+                page: null,
+              },
+              comment: 'Some comment',
+            },
+            dataId: '12345',
+            dataType: DataTypeEnum.Heimathafen,
+          },
+        };
+      },
+    }).then(() => {
+      cy.get("[data-test='Report-Download-FileName']").should('contain', 'FileName');
+      cy.get("[data-test='Report-Download-FileName']").should('not.contain', 'page null');
     });
   });
 });
