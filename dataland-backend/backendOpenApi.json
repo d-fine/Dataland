@@ -14572,23 +14572,23 @@
         ],
         "type": "object",
         "properties": {
-          "countryCode": {
-            "type": "string"
-          },
-          "headquarters": {
-            "type": "string"
-          },
           "companyId": {
             "type": "string"
           },
           "companyName": {
             "type": "string"
           },
-          "sector": {
+          "headquarters": {
+            "type": "string"
+          },
+          "countryCode": {
+            "type": "string"
+          },
+          "lei": {
             "type": "string",
             "nullable": true
           },
-          "lei": {
+          "sector": {
             "type": "string",
             "nullable": true
           }
