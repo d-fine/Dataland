@@ -47,14 +47,14 @@ abstract class BaseEventProcessor(
             return
         }
 
-        val privateOrPublicString = when (messageType) {
+        val visibilityType = when (messageType) {
             MessageType.PrivateDataReceived -> "private"
             MessageType.QaCompleted -> "public"
             else -> ""
         }
 
         logger.info(
-            "Processing elementary event: Request for storage of $privateOrPublicString framework data. " +
+            "Processing elementary event: Request for storage of $visibilityType framework data. " +
                 "CorrelationId: $correlationId",
         )
 
@@ -83,8 +83,8 @@ abstract class BaseEventProcessor(
     }
 
     /**
-     * Each EventProcessor listens to a messageQueue which will contain payload. The content of this payload depends
-     * on the service having sent the message. Thus, the payload validation needs to be done in child classes
+     * Each EventProcessor listens to a different messageQueue which will contain different message payloads.
+     * Thus, the payload validation needs to be implemented in the child classes.
      * @param payload: JSON-ish object/string to validate
      * @throws MessageQueueRejectException if the validation fails
      */
@@ -94,7 +94,7 @@ abstract class BaseEventProcessor(
     /**
      * Parses a message payload from the rabbit mq as object.
      * The object mapper itself throws errors if parsing is not possible.
-     * @param payload the content of the message
+     * @param jsonString the content of the message
      * @returns an object that contains basic info about the elementary event associated with the payload
      */
     fun createElementaryEventBasicInfo(jsonString: String): ElementaryEventBasicInfo {
@@ -108,14 +108,10 @@ abstract class BaseEventProcessor(
      * Returns the app prop setting if the notification service feature shall be enabled or not
      */
     private fun isNotificationServiceEnabled(): Boolean {
-        return notificationFeatureFlagAsString?.toBooleanStrictOrNull() ?: false
-            .also {
-                if (!it) {
-                    logger.info(
-                        "Notification service feature flag is disabled." +
-                            "Skipping elementary event processing.",
-                    )
-                }
-            }
+        val isNotificationServiceEnabled = notificationFeatureFlagAsString?.toBooleanStrictOrNull() ?: false
+        if (!isNotificationServiceEnabled) {
+            logger.info("Notification service feature flag is disabled. Skipping elementary event processing.")
+        }
+        return isNotificationServiceEnabled
     }
 }
