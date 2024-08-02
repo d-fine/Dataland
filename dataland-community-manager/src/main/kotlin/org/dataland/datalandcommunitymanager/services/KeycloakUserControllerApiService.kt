@@ -31,12 +31,12 @@ class KeycloakUserControllerApiService(
         @JsonProperty("id")
         val userId: String,
 
-        /*@JsonProperty("firstName") // TODO check if this is right
+        @JsonProperty("firstName") // TODO check if this is right
         val firstName: String?,
 
         @JsonProperty("lastName") // TODO check if this right
         val lastName: String?,
-*/
+
     )
 
     /**
