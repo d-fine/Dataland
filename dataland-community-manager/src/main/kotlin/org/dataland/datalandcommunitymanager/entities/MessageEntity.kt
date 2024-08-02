@@ -90,7 +90,6 @@ data class MessageEntity(
                 )
                 companyOwnerList.map { TemplateEmailMessage.UserIdEmailRecipient(it.userId) }
             } else {
-
                 listOf()
             }
         }

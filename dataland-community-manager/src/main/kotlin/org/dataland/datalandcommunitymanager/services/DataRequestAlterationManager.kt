@@ -2,22 +2,15 @@ package org.dataland.datalandcommunitymanager.services
 
 import org.dataland.datalandbackend.openApiClient.api.MetaDataControllerApi
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
-import org.dataland.datalandcommunitymanager.entities.DataRequestEntity
 import org.dataland.datalandcommunitymanager.entities.MessageEntity
 import org.dataland.datalandcommunitymanager.exceptions.DataRequestNotFoundApiException
 import org.dataland.datalandcommunitymanager.model.dataRequest.AccessStatus
 import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
 import org.dataland.datalandcommunitymanager.model.dataRequest.StoredDataRequest
 import org.dataland.datalandcommunitymanager.repositories.DataRequestRepository
-import org.dataland.datalandcommunitymanager.services.messaging.AccessRequestEmailSender
-import org.dataland.datalandcommunitymanager.services.messaging.DataRequestResponseEmailSender
-import org.dataland.datalandcommunitymanager.services.messaging.SingleDataRequestEmailMessageSender
 import org.dataland.datalandcommunitymanager.utils.DataRequestLogger
 import org.dataland.datalandcommunitymanager.utils.DataRequestProcessingUtils
 import org.dataland.datalandcommunitymanager.utils.GetDataRequestsSearchFilter
-import org.dataland.datalandmessagequeueutils.messages.TemplateEmailMessage
-import org.dataland.keycloakAdapter.auth.DatalandAuthentication
-import org.dataland.keycloakAdapter.auth.DatalandJwtAuthentication
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
@@ -33,9 +26,7 @@ import kotlin.jvm.optionals.getOrElse
 class DataRequestAlterationManager(
     @Autowired private val dataRequestRepository: DataRequestRepository,
     @Autowired private val dataRequestLogger: DataRequestLogger,
-    @Autowired private val dataRequestResponseEmailMessageSender: DataRequestResponseEmailSender,
-    @Autowired private val singleDataRequestEmailMessageSender: SingleDataRequestEmailMessageSender,
-    @Autowired private val accessRequestEmailSender: AccessRequestEmailSender,
+    @Autowired private val requestEmailManager: RequestEmailManager,
     @Autowired private val metaDataControllerApi: MetaDataControllerApi,
     @Autowired private val utils: DataRequestProcessingUtils,
 ) {
@@ -78,71 +69,16 @@ class DataRequestAlterationManager(
         if (filteredContacts != null) {
             anyChanges = true
             utils.addMessageToMessageHistory(dataRequestEntity, filteredContacts, filteredMessage, modificationTime)
-            this.sendSingleDataRequestEmail(dataRequestEntity, filteredContacts, filteredMessage)
+            // TODO check that this.requestEmailManager.sendSingleDataRequestEmail still works the same as
+            // TODO this.sendSingleDataRequestEmail
+            this.requestEmailManager.sendSingleDataRequestEmail(dataRequestEntity, filteredContacts, filteredMessage)
             dataRequestLogger.logMessageForPatchingRequestMessage(dataRequestEntity.dataRequestId)
         }
         if (anyChanges) dataRequestEntity.lastModifiedDate = modificationTime
 
-        sendEmailsWhenStatusChanged(dataRequestEntity, requestStatus, accessStatus, correlationId)
+        requestEmailManager.sendEmailsWhenStatusChanged(dataRequestEntity, requestStatus, accessStatus, correlationId)
 
         return dataRequestEntity.toStoredDataRequest()
-    }
-
-    private fun sendEmailsWhenStatusChanged(
-        dataRequestEntity: DataRequestEntity,
-        requestStatus: RequestStatus?,
-        accessStatus: AccessStatus?,
-        correlationId: String?,
-    ) {
-        val correlationId = correlationId ?: UUID.randomUUID().toString()
-        if (requestStatus == RequestStatus.Answered || requestStatus == RequestStatus.Closed) {
-            dataRequestResponseEmailMessageSender.sendDataRequestResponseEmail(
-                dataRequestEntity,
-                if (requestStatus == RequestStatus.Answered) {
-                    TemplateEmailMessage.Type.DataRequestedAnswered
-                } else {
-                    TemplateEmailMessage.Type.DataRequestClosed
-                },
-                correlationId,
-            )
-        }
-        if (accessStatus == AccessStatus.Granted) {
-            accessRequestEmailSender.notifyRequesterAboutGrantedRequest(
-                AccessRequestEmailSender.GrantedEmailInformation(dataRequestEntity),
-                correlationId,
-            )
-        }
-        if (requestStatus == RequestStatus.Answered && accessStatus == AccessStatus.Pending) {
-            accessRequestEmailSender.notifyCompanyOwnerAboutNewRequest(
-                AccessRequestEmailSender.RequestEmailInformation(dataRequestEntity),
-                correlationId,
-            )
-        }
-    }
-
-    /**
-     * Method to send email if the message history is updated
-     * @param dataRequestEntity the id of the request entity
-     * @param contacts set of email addresses
-     * @param message string content of the email
-     */
-    private fun sendSingleDataRequestEmail(
-        dataRequestEntity: DataRequestEntity,
-        contacts: Set<String>,
-        message: String?,
-    ) {
-        val correlationId = UUID.randomUUID().toString()
-        singleDataRequestEmailMessageSender.sendSingleDataRequestExternalMessage(
-            messageInformation = SingleDataRequestEmailMessageSender.MessageInformation(
-                dataType = DataTypeEnum.decode(dataRequestEntity.dataType)!!,
-                reportingPeriods = setOf(dataRequestEntity.reportingPeriod),
-                datalandCompanyId = dataRequestEntity.datalandCompanyId,
-                userAuthentication = DatalandAuthentication.fromContext() as DatalandJwtAuthentication,
-            ),
-            receiverSet = contacts,
-            contactMessage = message,
-            correlationId = correlationId,
-        )
     }
 
     /**

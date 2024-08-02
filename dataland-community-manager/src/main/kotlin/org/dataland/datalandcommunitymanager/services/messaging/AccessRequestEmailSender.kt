@@ -113,7 +113,8 @@ class AccessRequestEmailSender(
         val reportingPeriods = emailInformation.reportingPeriods.toList().sorted().joinToString(", ")
 
         val requester = keycloakUserControllerApiService.getUser(emailInformation.requesterUserId)
-
+        // TODO remove this println again only here to make detekt happy for now
+        println(requester)
         val contacts = emailInformation.contacts + setOf(MessageEntity.COMPANY_OWNER_KEYWORD)
 
         val receiverList = emailInformation.contacts.flatMap {
