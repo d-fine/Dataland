@@ -71,8 +71,12 @@ class V19__MigrateEutaxonomyNonFinancialsExtendedDatapoints : BaseJavaMigration(
      */
     private fun checkRecursivelyForBaseDataPointsInJsonObject(jsonObject: JSONObject, key: String) {
         val obj = jsonObject.getOrJavaNull(key)
-        if (obj !== null && obj is JSONObject) checkForRelevantFieldsInJsonObjectKeys(obj)
-        else if (obj != null && obj is JSONArray) checkRecursivelyForBaseDataPointsInJsonArray(obj)
+        if (obj !== null && obj is JSONObject) {
+            checkForRelevantFieldsInJsonObjectKeys(obj)
+        }
+        else if (obj != null && obj is JSONArray) {
+            checkRecursivelyForBaseDataPointsInJsonArray(obj)
+        }
     }
 
     /**
