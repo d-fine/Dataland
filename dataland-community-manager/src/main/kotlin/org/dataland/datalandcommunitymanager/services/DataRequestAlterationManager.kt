@@ -108,21 +108,13 @@ class DataRequestAlterationManager(
         }
         if (accessStatus == AccessStatus.Granted) {
             accessRequestEmailSender.notifyRequesterAboutGrantedRequest(
-                AccessRequestEmailSender.GrantedEmailInformation(
-                    dataRequestEntity.datalandCompanyId, dataRequestEntity.dataType,
-                    dataRequestEntity.reportingPeriod, dataRequestEntity.userId,
-                ),
+                AccessRequestEmailSender.GrantedEmailInformation(dataRequestEntity),
                 correlationId,
             )
         }
         if (requestStatus == RequestStatus.Answered && accessStatus == AccessStatus.Pending) {
             accessRequestEmailSender.notifyCompanyOwnerAboutNewRequest(
-                AccessRequestEmailSender.RequestEmailInformation(
-                    dataRequestEntity.userId, dataRequestEntity.messageHistory.last().message,
-                    dataRequestEntity.datalandCompanyId, dataRequestEntity.dataType,
-                    setOf(dataRequestEntity.reportingPeriod),
-                    dataRequestEntity.messageHistory.last().contactsAsSet(),
-                ),
+                AccessRequestEmailSender.RequestEmailInformation(dataRequestEntity),
                 correlationId,
             )
         }

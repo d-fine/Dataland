@@ -4,6 +4,7 @@ import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.model.CompanyInformation
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
+import org.dataland.datalandcommunitymanager.services.CompanyRolesManager
 import org.dataland.datalandcommunitymanager.services.messaging.SingleDataRequestEmailMessageSender
 import org.dataland.datalandcommunitymanager.utils.readableFrameworkNameMapping
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
@@ -33,6 +34,8 @@ class SingleDataRequestEmailMessageSenderTest {
     private val objectMapper = jacksonObjectMapper()
     private lateinit var authenticationMock: DatalandJwtAuthentication
     private val cloudEventMessageHandlerMock = mock(CloudEventMessageHandler::class.java)
+    private lateinit var companyRolesManager: CompanyRolesManager
+
     private val companyName = "Test Inc."
     private val reportingPeriods = setOf("2022", "2023")
     private val reportingPeriodsAsString = "2022, 2023"
@@ -56,10 +59,12 @@ class SingleDataRequestEmailMessageSenderTest {
         val companyInfoMock = mock(CompanyInformation::class.java)
         `when`(companyInfoMock.companyName).thenReturn(companyName)
         `when`(companyApiMock.getCompanyInfo(anyString())).thenReturn(companyInfoMock)
+        companyRolesManager = mock(CompanyRolesManager::class.java)
         singleDataRequestEmailMessageSender = SingleDataRequestEmailMessageSender(
             cloudEventMessageHandler = cloudEventMessageHandlerMock,
             objectMapper = objectMapper,
             companyApi = companyApiMock,
+            companyRolesManager = companyRolesManager,
         )
     }
 
@@ -148,7 +153,7 @@ class SingleDataRequestEmailMessageSenderTest {
             SingleDataRequestEmailMessageSender.MessageInformation(
                 authenticationMock, datalandCompanyId, DataTypeEnum.p2p, reportingPeriods,
             ),
-            "alphabet@example.com",
+            setOf("alphabet@example.com"),
             "ABCDEFGHIJKLMNOPQRSTUVWXYZ",
             correlationId,
         )

@@ -1,15 +1,14 @@
 <#macro if if then else><#if if>${then}<#else>${else}</#if></#macro>
 
-
-<#-- TODO need to adpapt
- This is a template for the IR engament email triggered by a single data upload
- The following fields are needed
-  - companyName
-  - companyId
-  - framework (the framework name)
-  - year (the year of the upload)
-  - baseUrl (something like https://dataland.com)
- -->
+<#--!
+Following fields are required:
+- baseUrl
+- dataRequestId
+- companyName
+- dataTypeDescription or dataType
+- reportingPeriod
+- creationDate
+-->
 
 <!DOCTYPE html>
 <html>
@@ -30,58 +29,18 @@
         <td rowspan="15" style="width: 40px">&nbsp;</td>
     </tr>
     <tr>
-        <td colspan="3">Exciting news! 📣<br>Data for ${companyName} has been uploaded to Dataland!</td>
+        <td colspan="3">Great news! 📣 <br>You have now access to the following dataset on Dataland.</td>
     </tr>
     <tr>
         <td colspan="3" style="height: 20px">&nbsp;</td>
     </tr>
     <tr>
         <td colspan="3">
-            <table style="background-color: #f6f6f6; border-collapse: collapse; padding: 0; margin: 0; width: 520px">
-                <tbody>
-                <tr>
-                    <td style="text-align: left; width: 20px; height: 13px; padding: 0">
-                    </td>
-                    <td style="text-align: right; width: 480px; padding: 0;">
-                    </td>
-                    <td style="text-align: right; width: 20px; padding: 0">
-                    </td>
-                </tr>
-                <tr>
-                    <td rowspan="11">&nbsp;</td>
-                    <td style="height: 7px"></td>
-                    <td rowspan="11">&nbsp;</td>
-                </tr>
-                <tr>
-                    <td>Framework</td>
-                </tr>
-                <tr>
-                    <td style="font-size: 5px; height: 5px">&nbsp;</td>
-                </tr>
-                <tr>
-                    <td style="font-weight: bold; font-size:19px">${framework}</td>
-                </tr>
-                <tr>
-                    <td style="height: 20px">&nbsp;</td>
-                </tr>
-                <tr>
-                    <td>Reporting year</td>
-                </tr>
-                <tr>
-                    <td style="font-size: 5px; height: 5px">&nbsp;</td>
-                </tr>
-                <tr>
-                    <td style="font-weight: bold; font-size:19px">${year}</td>
-                </tr>
-                <tr>
-                    <td style="height: 20px"></td>
-                </tr>
-                </tbody>
-            </table>
+            <#include "./general/display_request.ftl">
         </td>
     </tr>
     <tr>
-        <td colspan="3" style="height: 40px">&nbsp;</td>
+        <td colspan="3" style="height: 20px">&nbsp;</td>
     </tr>
 
     <tr>
@@ -93,8 +52,8 @@
     <tr>
         <td colspan="3">
             <ol style="line-height: 25px;">
-                <li>Gain sovereignty over your data by claiming company ownership.</li>
-                <li>Inspect, add, correct, remove data of your company.</li>
+                <li>Review the provided data on Dataland.</li>
+                <li>Close or reopen your data request.</li>
             </ol>
         </td>
     </tr>
@@ -104,27 +63,29 @@
     <tr>
         <td style="text-align: left; padding:0; margin:0; border: 0; height: 54px; width: 26px"></td>
         <td style="background-color: #ff5c00; text-align: center; padding:0; margin:0; border: 0; height: 54px; width: 468px;">
-            <a href="${baseUrl}/companies/${companyId}" target="_blank" style="border: 0 none; line-height: 30px; color: #ffffff; font-size: 18px; width: 100%; display: block; text-decoration: none;">
-                CLAIM COMPANY OWNERSHIP
+            <a href="${baseUrl}/requests/${dataRequestId}" target="_blank" style="border: 0 none; line-height: 30px; color: #ffffff; font-size: 18px; width: 100%; display: block; text-decoration: none;">
+                REVIEW THE PROVIDED DATA
             </a>
         </td>
         <td style="background-color: #ffffff; text-align: right; padding:0; margin:0; border: 0; height: 54px; width: 26px"></td>
     </tr>
-
     <tr>
         <td colspan="3" style="height: 20px">&nbsp;</td>
     </tr>
     <tr>
-        <td colspan="3">Claiming ownership process usually requires 1-2 business days.<br />
-            You will be notified by email</td>
+        <td colspan="3" style="font-size: 5px; height: 5px">&nbsp;</td>
     </tr>
+    <#-- TODO do we want this?<tr>
+        <td colspan="3"> Without any actions,
+            your data request will be set to closed automatically
+            in <b>${closedInDays} days</b>.</td>
+
+    </tr>-->
     <tr>
         <td colspan="3" style="height: 20px">&nbsp;</td>
     </tr>
     </tbody>
 </table>
-
-<#include "./general/why_me.ftl">
 <#include "./general/footer.ftl">
 
 </body>

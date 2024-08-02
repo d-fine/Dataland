@@ -14,14 +14,10 @@ import org.dataland.datalandcommunitymanager.utils.DataRequestProcessingUtils
 import org.dataland.keycloakAdapter.auth.DatalandJwtAuthentication
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
 import org.dataland.keycloakAdapter.utils.AuthenticationMock
-import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertThrows
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertDoesNotThrow
-import org.mockito.ArgumentCaptor
-import org.mockito.ArgumentMatchers
-import org.mockito.Mockito
 import org.mockito.Mockito.anySet
 import org.mockito.Mockito.anyString
 import org.mockito.Mockito.doNothing
@@ -29,6 +25,9 @@ import org.mockito.Mockito.mock
 import org.mockito.Mockito.times
 import org.mockito.Mockito.verify
 import org.mockito.Mockito.`when`
+import org.mockito.kotlin.any
+import org.mockito.kotlin.argThat
+import org.mockito.kotlin.eq
 import org.springframework.security.core.context.SecurityContext
 import org.springframework.security.core.context.SecurityContextHolder
 import java.time.Instant
@@ -117,12 +116,12 @@ class DataAccessManagerTest {
     private fun createRequestProcessingUtils(): DataRequestProcessingUtils {
         val dataRequestProcessingUtils = mock(DataRequestProcessingUtils::class.java)
         doNothing().`when`(dataRequestProcessingUtils).addNewRequestStatusToHistory(
-            dataRequestEntity = any(DataRequestEntity::class.java), requestStatus = any(RequestStatus::class.java),
-            accessStatus = any(AccessStatus::class.java), modificationTime = any(Long::class.java),
+            dataRequestEntity = any(), requestStatus = any(),
+            accessStatus = any(), modificationTime = any(),
         )
         doNothing().`when`(dataRequestProcessingUtils).addMessageToMessageHistory(
-            dataRequestEntity = any(DataRequestEntity::class.java), contacts = anySet(), message = anyString(),
-            modificationTime = any(Long::class.java),
+            dataRequestEntity = any(), contacts = anySet(), message = anyString(),
+            modificationTime = any(),
         )
         return dataRequestProcessingUtils
     }
@@ -219,20 +218,17 @@ class DataAccessManagerTest {
 
         verify(mockDataRequestProcessingUtils, times(1))
             .addNewRequestStatusToHistory(
-                dataRequestEntity = any(DataRequestEntity::class.java), requestStatus = any(RequestStatus::class.java),
-                accessStatus = eq(AccessStatus.Pending), modificationTime = any(Long::class.java),
+                dataRequestEntity = any(), requestStatus = any(),
+                accessStatus = eq(AccessStatus.Pending), modificationTime = any(),
             )
         verify(mockDataRequestProcessingUtils, times(0))
             .addMessageToMessageHistory(
-                dataRequestEntity = any(DataRequestEntity::class.java), contacts = anySet(), message = anyString(),
-                modificationTime = any(Long::class.java),
+                dataRequestEntity = any(), contacts = anySet(), message = anyString(),
+                modificationTime = any(),
             )
 
-        val saveCaptor = ArgumentCaptor.forClass(DataRequestEntity::class.java)
         verify(mockDataRequestRepository, times(1))
-            .save(capture(saveCaptor))
-
-        assertEquals(0, saveCaptor.value.creationTimestamp)
+            .save(argThat { creationTimestamp == 0L })
     }
 
     @Test
@@ -249,24 +245,16 @@ class DataAccessManagerTest {
 
         verify(mockDataRequestProcessingUtils, times(1))
             .addNewRequestStatusToHistory(
-                dataRequestEntity = any(DataRequestEntity::class.java), requestStatus = any(RequestStatus::class.java),
-                accessStatus = eq(AccessStatus.Pending), modificationTime = any(Long::class.java),
+                dataRequestEntity = any(), requestStatus = any(),
+                accessStatus = eq(AccessStatus.Pending), modificationTime = any(),
             )
         verify(mockDataRequestProcessingUtils, times(1))
             .addMessageToMessageHistory(
-                dataRequestEntity = any(DataRequestEntity::class.java), contacts = eq(contacts), message = eq(message),
-                modificationTime = any(Long::class.java),
+                dataRequestEntity = any(), contacts = eq(contacts), message = eq(message),
+                modificationTime = any(),
             )
 
-        val saveCaptor = ArgumentCaptor.forClass(DataRequestEntity::class.java)
         verify(mockDataRequestRepository, times(1))
-            .save(capture(saveCaptor))
-
-        assert(saveCaptor.value.creationTimestamp >= currentTime)
+            .save(argThat { creationTimestamp >= currentTime })
     }
-
-// TODO review comment why not import those?
-    private fun <T> any(type: Class<T>): T = Mockito.any<T>(type)
-    private fun <T> eq(value: T): T = ArgumentMatchers.eq(value) ?: value
-    private fun <T> capture(argumentCaptor: ArgumentCaptor<T>): T = argumentCaptor.capture()
 }

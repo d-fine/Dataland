@@ -23,17 +23,18 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.mockito.ArgumentMatchers.anySet
 import org.mockito.ArgumentMatchers.anyString
-import org.mockito.Mockito
 import org.mockito.Mockito.doNothing
 import org.mockito.Mockito.mock
 import org.mockito.Mockito.times
 import org.mockito.Mockito.verify
 import org.mockito.Mockito.verifyNoInteractions
 import org.mockito.Mockito.`when`
+import org.mockito.kotlin.any
 import org.springframework.security.core.context.SecurityContext
 import org.springframework.security.core.context.SecurityContextHolder
 import java.time.Instant
 import java.util.*
+
 class DataRequestAlterationManagerTest {
 
     private lateinit var dataRequestAlterationManager: DataRequestAlterationManager
@@ -99,11 +100,11 @@ class DataRequestAlterationManagerTest {
 
         processingUtils = mock(DataRequestProcessingUtils::class.java)
         doNothing().`when`(processingUtils).addNewRequestStatusToHistory(
-            any(DataRequestEntity::class.java), any(RequestStatus::class.java),
-            any(AccessStatus::class.java), any(Long::class.java),
+            any(), any(),
+            any(), any(),
         )
         doNothing().`when`(processingUtils).addMessageToMessageHistory(
-            any(DataRequestEntity::class.java), anySet(), anyString(), any(Long::class.java),
+            any(), anySet(), anyString(), any(),
         )
     }
 
@@ -113,8 +114,8 @@ class DataRequestAlterationManagerTest {
         singleDataRequestEmailMessageSender = mock(SingleDataRequestEmailMessageSender::class.java)
         doNothing().`when`(singleDataRequestEmailMessageSender)
             .sendSingleDataRequestExternalMessage(
-                any(SingleDataRequestEmailMessageSender.MessageInformation::class.java),
-                anyString(), anyString(), anyString(),
+                any(),
+                anySet(), anyString(), anyString(),
             )
         metaDataControllerApi = mock(MetaDataControllerApi::class.java)
         `when`(metaDataControllerApi.getDataMetaInfo(metaData.dataId))
@@ -161,7 +162,7 @@ class DataRequestAlterationManagerTest {
         )
         verify(dataRequestResponseEmailMessageSender, times(1))
             .sendDataRequestResponseEmail(
-                any(DataRequestEntity::class.java), any(TemplateEmailMessage.Type::class.java), anyString(),
+                any(), any(), anyString(),
             )
         dataRequestAlterationManager.patchDataRequest(
             dataRequestId = dataRequestId,
@@ -170,16 +171,16 @@ class DataRequestAlterationManagerTest {
         )
         verify(dataRequestResponseEmailMessageSender, times(2))
             .sendDataRequestResponseEmail(
-                any(DataRequestEntity::class.java), any(TemplateEmailMessage.Type::class.java), anyString(),
+                any(), any(), anyString(),
             )
         verify(processingUtils, times(2))
             .addNewRequestStatusToHistory(
-                any(DataRequestEntity::class.java), any(RequestStatus::class.java),
-                any(AccessStatus::class.java), any(Long::class.java),
+                any(), any(),
+                any(), any(),
             )
         verify(processingUtils, times(0))
             .addMessageToMessageHistory(
-                any(DataRequestEntity::class.java), anySet(), anyString(), any(Long::class.java),
+                any(), anySet(), anyString(), any(),
             )
     }
 
@@ -193,13 +194,13 @@ class DataRequestAlterationManagerTest {
 
         verify(processingUtils, times(1))
             .addNewRequestStatusToHistory(
-                any(DataRequestEntity::class.java), any(RequestStatus::class.java),
-                any(AccessStatus::class.java), any(Long::class.java),
+                any(), any(),
+                any(), any(),
             )
         verifyNoInteractions(dataRequestResponseEmailMessageSender)
         verify(processingUtils, times(0))
             .addMessageToMessageHistory(
-                any(DataRequestEntity::class.java), anySet(), anyString(), any(Long::class.java),
+                any(), anySet(), anyString(), any(),
             )
     }
 
@@ -217,7 +218,7 @@ class DataRequestAlterationManagerTest {
         }
         verify(processingUtils, times(0))
             .addMessageToMessageHistory(
-                any(DataRequestEntity::class.java), anySet(), anyString(), any(Long::class.java),
+                any(), anySet(), anyString(), any(),
             )
         verifyNoInteractions(dataRequestResponseEmailMessageSender)
     }
@@ -231,12 +232,12 @@ class DataRequestAlterationManagerTest {
         }
         verify(processingUtils, times(dummyDataRequestEntities.size))
             .addNewRequestStatusToHistory(
-                any(DataRequestEntity::class.java), any(RequestStatus::class.java),
-                any(AccessStatus::class.java), any(Long::class.java),
+                any(), any(),
+                any(), any(),
             )
         verify(processingUtils, times(0))
             .addMessageToMessageHistory(
-                any(DataRequestEntity::class.java), anySet(), anyString(), any(Long::class.java),
+                any(), anySet(), anyString(), any(),
             )
     }
 
@@ -252,20 +253,19 @@ class DataRequestAlterationManagerTest {
 
         verify(singleDataRequestEmailMessageSender, times(1))
             .sendSingleDataRequestExternalMessage(
-                any(SingleDataRequestEmailMessageSender.MessageInformation::class.java),
-                anyString(), anyString(), anyString(),
+                any(),
+                anySet(), anyString(), anyString(),
             )
 
         verify(processingUtils, times(1))
             .addMessageToMessageHistory(
-                any(DataRequestEntity::class.java), anySet(), anyString(), any(Long::class.java),
+                any(), anySet(), anyString(), any(),
             )
 
         verify(processingUtils, times(0))
             .addNewRequestStatusToHistory(
-                any(DataRequestEntity::class.java), any(RequestStatus::class.java),
-                any(AccessStatus::class.java), any(Long::class.java),
+                any(), any(),
+                any(), any(),
             )
     }
-    private fun <T> any(type: Class<T>): T = Mockito.any<T>(type)
 }

@@ -5,11 +5,11 @@ import jakarta.persistence.Entity
 import jakarta.persistence.Id
 import jakarta.persistence.OneToMany
 import jakarta.persistence.Table
+import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandcommunitymanager.model.dataRequest.AccessStatus
 import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
 import org.dataland.datalandcommunitymanager.model.dataRequest.StoredDataRequest
-import org.dataland.datalandcommunitymanager.model.dataRequest.StoredDataRequestMessageObject
-import org.dataland.datalandcommunitymanager.model.dataRequest.StoredDataRequestStatusObject
+import org.dataland.datalandcommunitymanager.utils.readableFrameworkNameMapping
 import java.util.*
 
 /**
@@ -64,35 +64,11 @@ data class DataRequestEntity(
     )
 
     /**
-     * Associates a message history
-     * This must be done after creation and storage of the DataRequestEntity
-     * due to cross dependencies between entities
-     * @param messageHistory a list of ordered message objects
-     */
-    fun associateMessages(messageHistory: List<StoredDataRequestMessageObject>) {
-        this.messageHistory = messageHistory.map {
-            MessageEntity(it, this)
-        }
-    }
-
-    /**
      * Adds a messageEntity to the messageHistory.
      * Note, this is not automatically saved in the database, you also need to persist the messageEntity.
      */
     fun addRequestEventToMessageHistory(messageEntity: MessageEntity) {
         this.messageHistory += messageEntity
-    }
-
-    /**
-     * Associates a request status history
-     * This must be done after creation and storage of the DataRequestEntity
-     * due to cross dependencies between entities
-     * @param requestStatusHistory a list of ordered request status objects
-     */
-    fun associateRequestStatus(requestStatusHistory: List<StoredDataRequestStatusObject>) {
-        this.dataRequestStatusHistory = requestStatusHistory.map {
-            RequestStatusEntity(it, this)
-        }
     }
 
     /**
@@ -124,4 +100,9 @@ data class DataRequestEntity(
         requestStatus = requestStatus,
         accessStatus = accessStatus,
     )
+
+    fun getDataTypeDescription(): String {
+        return DataTypeEnum.entries.find { it.value == dataType }.let { readableFrameworkNameMapping[it] }
+            ?: dataType
+    }
 }
