@@ -139,7 +139,7 @@ class AccessRequestTest {
     }
 
     @Test
-    fun `Company owner gets new access request, declines access`() {
+    fun `company owner gets new access request, declines access`() {
         companyId = apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId
         createVSMEDataAndPostAsAdminCompanyOwner(companyId)
 
