@@ -19,7 +19,6 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertDoesNotThrow
 import org.junit.jupiter.api.assertThrows
-import org.mockito.ArgumentMatchers.any
 import org.mockito.ArgumentMatchers.anyBoolean
 import org.mockito.ArgumentMatchers.anyLong
 import org.mockito.ArgumentMatchers.anyString
@@ -27,6 +26,8 @@ import org.mockito.Mockito.mock
 import org.mockito.Mockito.times
 import org.mockito.Mockito.verify
 import org.mockito.Mockito.`when`
+import org.mockito.kotlin.any
+import org.mockito.kotlin.argThat
 import org.springframework.security.core.context.SecurityContext
 import org.springframework.security.core.context.SecurityContextHolder
 import java.util.UUID
@@ -110,7 +111,7 @@ class SingleDataRequestManagerTest {
         `when`(
             utilsMock.storeDataRequestEntityAsOpen(
                 anyString(),
-                any() ?: DataTypeEnum.lksg,
+                any(),
                 anyString(),
                 any(),
                 any(),
@@ -204,20 +205,18 @@ class SingleDataRequestManagerTest {
         singleDataRequestManagerMock.processSingleDataRequest(
             request,
         )
-        val dummyMessageInformation = SingleDataRequestEmailMessageSender.MessageInformation(
-            dataType = DataTypeEnum.lksg, reportingPeriods = setOf("2024"),
-            userAuthentication = authenticationMock, datalandCompanyId = companyIdRegexSafeCompanyId,
-        )
-        verify(singleDataRequestEmailMessageSenderMock, times(expectedExternalMessagesSent))
+
+        val numberOfTimesExternalMessageIsSend = if (expectedExternalMessagesSent >= 1) 1 else 0
+        verify(singleDataRequestEmailMessageSenderMock, times(numberOfTimesExternalMessageIsSend))
             .sendSingleDataRequestExternalMessage(
-                any() ?: dummyMessageInformation,
-                anyString(),
+                any(),
+                argThat { size == expectedExternalMessagesSent },
                 any(),
                 anyString(),
             )
         verify(singleDataRequestEmailMessageSenderMock, times(expectedInternalMessagesSent))
             .sendSingleDataRequestInternalMessage(
-                any() ?: dummyMessageInformation,
+                any(),
                 anyString(),
             )
     }
