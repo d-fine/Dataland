@@ -670,6 +670,9 @@
       "terms_and_conditions"
     ],
     "realmRoles" : [ "ROLE_REVIEWER", "default-roles-datalandsecurity" ],
+    "clientRoles": {
+      "realm-management": ["view-users"]
+    },
     "notBefore": 0,
     "groups" : [ ]
   }, {

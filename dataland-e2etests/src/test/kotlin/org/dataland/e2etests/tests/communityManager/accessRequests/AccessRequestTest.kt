@@ -110,7 +110,7 @@ class AccessRequestTest {
     }
 
     @Test
-    fun `comapny owner gets private request`() {
+    fun `company owner gets private request`() {
         companyId = apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId
 
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.PremiumUser)
@@ -127,11 +127,11 @@ class AccessRequestTest {
         createVSMEDataAndPostAsAdminCompanyOwner(companyId)
 
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.PremiumUser)
-
+        Thread.sleep(1000)
         val newlyStoredRequests2 = requestControllerApi.getDataRequestsForRequestingUser().filter { storedDataRequest ->
             storedDataRequest.lastModifiedDate > timestampBeforeSingleRequestSecond
         }
-
+        println(newlyStoredRequests2)
         assertEquals(AccessStatus.Pending, newlyStoredRequests2[0].accessStatus)
         assertEquals(RequestStatus.Answered, newlyStoredRequests2[0].requestStatus)
 
