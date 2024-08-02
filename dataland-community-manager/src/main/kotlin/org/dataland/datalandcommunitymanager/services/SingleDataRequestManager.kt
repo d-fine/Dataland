@@ -43,6 +43,9 @@ constructor(
 ) {
     val companyIdRegex = Regex("^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}\$")
 
+    /**
+     * Data structure holding the process request information
+     */
     data class PreprocessedRequest(
         val companyId: String,
         val userId: String,
@@ -86,6 +89,11 @@ constructor(
         )
     }
 
+    /**
+     * This method process single requests
+     * @param singleDataRequest is the singlerequest which should be prcessed
+     * @return the processed single request
+     */
     fun preprocessSingleDataRequest(singleDataRequest: SingleDataRequest): PreprocessedRequest {
         val companyId = findDatalandCompanyIdForCompanyIdentifier(singleDataRequest.companyIdentifier)
         val contacts = singleDataRequest.contacts.takeIf { !it.isNullOrEmpty() }

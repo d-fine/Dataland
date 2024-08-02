@@ -40,10 +40,20 @@ data class MessageEntity(
 
         const val COMPANY_OWNER_KEYWORD = "COMPANY_OWNER"
 
+        /**
+         * This method checks if a contact is either a valid email address or represents the company owner
+         * @param contact which should be checked if it is an email address or the company owner keyword
+         * @return true if either it was confirmed that it is a email address or the company owner keyword
+         */
         fun isContact(contact: String): Boolean {
             return contact.isEmailAddress() || contact == COMPANY_OWNER_KEYWORD
         }
 
+        /**
+         * This method checks whether a given contact is valid or not. If it is not valid then an invalid input
+         * exception is thrown
+         * @param contact the contact which should be checked for validity
+         */
         fun validateContact(contact: String) {
             // TODO do we want to check whether we want to validate if a company owner exists?
 
@@ -56,11 +66,19 @@ data class MessageEntity(
             }
         }
 
+        /**
+         * This method adds an contact email address of the user id of a company owner to the email recipient list
+         * @param contact is either an email address or the company owner keyword
+         * @param companyRolesManager is the service to handle all tasks in regards to company roles for users
+         * @param companyId the company id for which the company owner should be determined
+         * @return a list containing email address and/or the user ids of relevant company owners
+         */
         fun realizeContact(
             contact: String,
             companyRolesManager: CompanyRolesManager,
             companyId: String,
         ): List<TemplateEmailMessage.EmailRecipient> {
+            // TODO have you confirmed that this correctly can build a list containing more than one entry?
             if (contact.isEmailAddress()) {
                 return listOf(TemplateEmailMessage.EmailAddressEmailRecipient(contact))
             }

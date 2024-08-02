@@ -4,6 +4,9 @@ import org.dataland.datalandmessagequeueutils.messages.TemplateEmailMessage
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Component
 
+/**
+ * This class manages the generation of email for requesting access
+ */
 @Component
 class DataAccessRequestedEmailFactory(
     @Value("\${dataland.proxy.primary.url}") proxyPrimaryUrl: String,

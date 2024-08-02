@@ -16,6 +16,9 @@ import org.springframework.stereotype.Service
 import java.text.SimpleDateFormat
 import java.util.*
 
+/**
+ * This class manages the notification of requesters and company owners about access requests
+ */
 @Service("AccessRequestEmailSender")
 class AccessRequestEmailSender(
     @Autowired private val companyRolesManager: CompanyRolesManager,
@@ -24,7 +27,9 @@ class AccessRequestEmailSender(
     @Autowired private val objectMapper: ObjectMapper,
     @Autowired private val companyApi: CompanyDataControllerApi,
 ) {
-
+    /**
+     * Data structure holding the granted access email information
+     */
     data class GrantedEmailInformation(
         val datalandCompanyId: String,
         val dataTypeDescription: String,
@@ -44,6 +49,11 @@ class AccessRequestEmailSender(
             )
     }
 
+    /**
+     * This method notifies the requester once access to the requested dataset was granted
+     * @param emailInformation the email information of the company owner
+     * @param correlationId the correlationId of the operation
+     */
     fun notifyRequesterAboutGrantedRequest(emailInformation: GrantedEmailInformation, correlationId: String) {
         val companyName = companyApi.getCompanyInfo(emailInformation.datalandCompanyId).companyName
 
@@ -72,6 +82,9 @@ class AccessRequestEmailSender(
         )
     }
 
+    /**
+     Data structure holding the request access email information
+     */
     data class RequestEmailInformation(
         val requesterUserId: String,
         val message: String?,
@@ -91,6 +104,11 @@ class AccessRequestEmailSender(
             )
     }
 
+    /**
+     * This method notifies the company owner about new pending access requests
+     * @param emailInformation the requesters email information
+     * @param correlationId the correlationId of the operation
+     */
     fun notifyCompanyOwnerAboutNewRequest(emailInformation: RequestEmailInformation, correlationId: String) {
         val reportingPeriods = emailInformation.reportingPeriods.toList().sorted().joinToString(", ")
 

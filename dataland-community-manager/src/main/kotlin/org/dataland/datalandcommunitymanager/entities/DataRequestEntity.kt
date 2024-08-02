@@ -101,6 +101,10 @@ data class DataRequestEntity(
         accessStatus = accessStatus,
     )
 
+    /**
+     * This method returns the appropriate description for a given datatype enum
+     * @return datatype description
+     */
     fun getDataTypeDescription(): String {
         return DataTypeEnum.entries.find { it.value == dataType }.let { readableFrameworkNameMapping[it] }
             ?: dataType

@@ -4,6 +4,9 @@ import org.dataland.datalandmessagequeueutils.messages.TemplateEmailMessage
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Component
 
+/**
+ * This class manages the generation of the access granted emails
+ */
 @Component
 class DataAccessGrantedEmailFactory(
     @Value("\${dataland.proxy.primary.url}") proxyPrimaryUrl: String,
@@ -14,7 +17,9 @@ class DataAccessGrantedEmailFactory(
     senderEmail = senderEmail,
     senderName = senderName,
 ) {
-
+    /**
+     * The keys component holds constants used for generation access granted emails
+     */
     companion object Keys {
         const val BASE_URL = "baseUrl"
         const val DATA_REQUEST_ID = "dataRequestId"

@@ -20,6 +20,9 @@ class KeycloakUserControllerApiService(
     @Qualifier("AuthenticatedOkHttpClient") val authenticatedOkHttpClient: OkHttpClient,
     @Value("\${dataland.keycloak.base-url}") private val keycloakBaseUrl: String,
 ) {
+    /**
+     * This data class contains information about the keycloak user
+     */
     @JsonIgnoreProperties(ignoreUnknown = true)
     data class User(
         @JsonProperty("email")
