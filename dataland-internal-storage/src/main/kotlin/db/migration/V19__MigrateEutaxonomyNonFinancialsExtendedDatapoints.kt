@@ -27,40 +27,23 @@ class V19__MigrateEutaxonomyNonFinancialsExtendedDatapoints : BaseJavaMigration(
         "substantialContributionToTransitionToACircularEconomyInPercent",
         "substantialContributionToPollutionPreventionAndControlInPercent",
         "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent",
-        //   "absoluteShare",
+        "absoluteShare",
     )
 
     /**
      * Create a nested JSON object from a JSON object and a key.
-     * @param json JSON object
+     * @param jsonObject JSON object
      * @param key key corresponding to the JSON object
      */
-    private fun createNestedJsonObject(json: JSONObject, key: String) {
+    private fun createNestedJsonObject(jsonObject: JSONObject, key: String) {
         val nestedJson = JSONObject()
-        nestedJson.put("value", json.getOrJavaNull(key))
-        json.put(key, nestedJson)
+        nestedJson.put("value", jsonObject.getOrJavaNull(key))
+        jsonObject.put(key, nestedJson)
     }
 
     /**
-     * Find all relevant fields and make them extended data points.
-     * @param dataset JSONObject
-     * @param objectName key corresponding to the JSON object
-     */
-    /**
-     private fun checkRecursivelyForBaseDataPoint(
-     dataset: JSONObject,
-     objectName: String,
-     ) {
-     val obj = dataset.getOrJavaNull(objectName)
-     if (obj !== null && obj is JSONObject) {
-     obj.keys().forEach {
-     if (it in relevantFields) {
-     createNestedJsonObject(obj, it)
-     }
-     checkRecursivelyForBaseDataPoint(obj, it)
-     }
-     }
-     }
+     * Check recursively for BaseDataPoints in a JSON array.
+     * @param jsonArray JSON array
      */
     private fun checkRecursivelyForBaseDataPointsInJsonArray(jsonArray: JSONArray) {
         for (i in 0 until jsonArray.length()) {
@@ -70,31 +53,28 @@ class V19__MigrateEutaxonomyNonFinancialsExtendedDatapoints : BaseJavaMigration(
                     if (it in relevantFields) {
                         createNestedJsonObject(element, it)
                     }
-                    checkRecursivelyForBaseDataPoint(element, it)
+                    checkRecursivelyForBaseDataPointsInJsonObject(element, it)
                 }
             }
         }
     }
-    private fun checkRecursivelyForBaseDataPointInJsonObject(jsonObject: JSONObject, key: String) {
+
+    /**
+     * Check recursively for BaseDataPoints in a JSON object.
+     * @param jsonObject JSON object
+     * @param key key corresponding to the JSON object
+     */
+    private fun checkRecursivelyForBaseDataPointsInJsonObject(jsonObject: JSONObject, key: String) {
         val obj = jsonObject.getOrJavaNull(key)
         if (obj !== null && obj is JSONObject) {
             obj.keys().forEach {
                 if (it in relevantFields) {
                     createNestedJsonObject(obj, it)
                 }
-                checkRecursivelyForBaseDataPoint(obj, it)
+                checkRecursivelyForBaseDataPointsInJsonObject(obj, it)
             }
         } else if (obj != null && obj is JSONArray) {
             checkRecursivelyForBaseDataPointsInJsonArray(obj)
-        }
-    }
-    private fun checkRecursivelyForBaseDataPoint(
-        dataset: Any,
-        key: String,
-    ) {
-        when (dataset) {
-            is JSONObject -> checkRecursivelyForBaseDataPointInJsonObject(dataset, key)
-            is JSONArray -> checkRecursivelyForBaseDataPointsInJsonArray(dataset)
         }
     }
 
@@ -103,11 +83,11 @@ class V19__MigrateEutaxonomyNonFinancialsExtendedDatapoints : BaseJavaMigration(
      * @param dataTableEntity DataTableEntity
      */
     fun migrateEutaxonomyNonFinancialsData(dataTableEntity: DataTableEntity) {
-        val dataset = dataTableEntity.dataJsonObject
-        dataset.keys().forEach {
-            checkRecursivelyForBaseDataPoint(dataset, it)
+        val jsonObject = dataTableEntity.dataJsonObject
+        jsonObject.keys().forEach {
+            checkRecursivelyForBaseDataPointsInJsonObject(jsonObject, it)
         }
-        dataTableEntity.companyAssociatedData.put("data", dataset.toString())
+        dataTableEntity.companyAssociatedData.put("data", jsonObject.toString())
     }
     override fun migrate(context: Context?) {
         migrateCompanyAssociatedDataOfDatatype(

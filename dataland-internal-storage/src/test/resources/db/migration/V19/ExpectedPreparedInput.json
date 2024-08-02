@@ -90,8 +90,10 @@
             "value": 18.65
           },
           "absoluteShare": {
-            "amount": 7779293763.45,
-            "currency": "AWG"
+            "value": {
+              "amount": 7779293763.45,
+              "currency": "AWG"
+            }
           }
         },
         "eligibleShare": {
@@ -99,8 +101,10 @@
             "value": 37.89
           },
           "absoluteShare": {
-            "amount": 5164293898.27,
-            "currency": "KPW"
+            "value":  {
+              "amount": 5164293898.27,
+              "currency": "KPW"
+            }
           }
         },
         "nonAlignedShare": {
@@ -108,8 +112,10 @@
             "value": 95.56
           },
           "absoluteShare": {
-            "amount": 6781355396.38,
-            "currency": "NPR"
+            "value": {
+              "amount": 6781355396.38,
+              "currency": "NPR"
+            }
           }
         },
         "nonAlignedActivities": [],
@@ -118,8 +124,10 @@
             "value": 17.52
           },
           "absoluteShare": {
-            "amount": 2740879552.44,
-            "currency": "MYR"
+            "value": {
+              "amount": 2740879552.44,
+              "currency": "MYR"
+            }
           }
         },
         "substantialContributionToClimateChangeMitigationInPercent": {
@@ -166,8 +174,10 @@
             "value": 96.7
           },
           "absoluteShare": {
-            "amount": 6257506390.1,
-            "currency": "LSL"
+            "value": {
+              "amount": 6257506390.1,
+              "currency": "LSL"
+            }
           }
         },
         "eligibleShare": {
@@ -175,8 +185,10 @@
             "value": 31.56
           },
           "absoluteShare": {
-            "amount": 5575042148.12,
-            "currency": "HUF"
+            "value": {
+              "amount": 5575042148.12,
+              "currency": "HUF"
+            }
           }
         },
         "nonAlignedShare": {
@@ -184,8 +196,10 @@
             "value": 61.69
           },
           "absoluteShare": {
-            "amount": 8187157462.82,
-            "currency": "RON"
+            "value": {
+              "amount": 8187157462.82,
+              "currency": "RON"
+            }
           }
         },
         "nonAlignedActivities": [
@@ -200,8 +214,10 @@
                 "value": 51.76
               },
               "absoluteShare": {
-                "amount": 5775148600.81,
-                "currency": "THB"
+                "value": {
+                  "amount": 5775148600.81,
+                  "currency": "THB"
+                }
               }
             }
           },
@@ -216,8 +232,10 @@
                 "value": 10.48
               },
               "absoluteShare": {
-                "amount": 3651916955.13,
-                "currency": "BAM"
+                "value": {
+                  "amount": 3651916955.13,
+                  "currency": "BAM"
+                }
               }
             }
           }
@@ -227,8 +245,10 @@
             "value": 72.48
           },
           "absoluteShare": {
-            "amount": 3726277526,
-            "currency": "XAF"
+            "value": {
+              "amount": 3726277526,
+              "currency": "XAF"
+            }
           }
         },
         "substantialContributionToClimateChangeMitigationInPercent": {
@@ -261,8 +281,10 @@
                 "value": 2.8
               },
               "absoluteShare": {
-                "amount": 1481051335.57,
-                "currency": "CHF"
+                "value": {
+                  "amount": 1481051335.57,
+                  "currency": "CHF"
+                }
               }
             },
             "substantialContributionToClimateChangeMitigationInPercent": {
@@ -301,8 +323,10 @@
                 "value": 41.09
               },
               "absoluteShare": {
-                "amount": 199003929.73,
-                "currency": "BIF"
+                "value": {
+                  "amount": 199003929.73,
+                  "currency": "BIF"
+                }
               }
             },
             "substantialContributionToClimateChangeMitigationInPercent": {
@@ -341,8 +365,10 @@
                 "value": 80.81
               },
               "absoluteShare": {
-                "amount": 5586450139.53,
-                "currency": "XCD"
+                "value": {
+                  "amount": 5586450139.53,
+                  "currency": "XCD"
+                }
               }
             },
             "substantialContributionToClimateChangeMitigationInPercent": {
@@ -382,8 +408,10 @@
                 "value": 85.71
               },
               "absoluteShare": {
-                "amount": 2029363890.18,
-                "currency": "YER"
+                "value": {
+                  "amount": 2029363890.18,
+                  "currency": "YER"
+                }
               }
             },
             "substantialContributionToClimateChangeMitigationInPercent": {
@@ -438,8 +466,10 @@
             "value": 28.4
           },
           "absoluteShare": {
-            "amount": 6225360329.26,
-            "currency": "BYN"
+            "value": {
+              "amount": 6225360329.26,
+              "currency": "BYN"
+            }
           }
         },
         "eligibleShare": {
@@ -447,8 +477,10 @@
             "value": 74.21
           },
           "absoluteShare": {
-            "amount": 4412246665.45,
-            "currency": "ETB"
+            "value": {
+              "amount": 4412246665.45,
+              "currency": "ETB"
+            }
           }
         },
         "nonAlignedShare": {
@@ -456,8 +488,10 @@
             "value": 77.78
           },
           "absoluteShare": {
-            "amount": 6276129959.15,
-            "currency": "THB"
+            "value": {
+              "amount": 6276129959.15,
+              "currency": "THB"
+            }
           }
         },
         "nonAlignedActivities": [
@@ -471,8 +505,10 @@
                 "value": 46.85
               },
               "absoluteShare": {
-                "amount": 9344113084.96,
-                "currency": "NOK"
+                "value": {
+                  "amount": 9344113084.96,
+                  "currency": "NOK"
+                }
               }
             }
           },
@@ -486,8 +522,10 @@
                 "value": 85.94
               },
               "absoluteShare": {
-                "amount": 7821699846.54,
-                "currency": "IRR"
+                "value": {
+                  "amount": 7821699846.54,
+                  "currency": "IRR"
+                }
               }
             }
           }
@@ -497,8 +535,10 @@
             "value": 80.33
           },
           "absoluteShare": {
-            "amount": 4128246170,
-            "currency": "ISK"
+            "value": {
+              "amount": 4128246170,
+              "currency": "ISK"
+            }
           }
         },
         "substantialContributionToClimateChangeMitigationInPercent": {
@@ -528,8 +568,10 @@
                 "value": 92.86
               },
               "absoluteShare": {
-                "amount": 1153179106.76,
-                "currency": "NIO"
+                "value": {
+                  "amount": 1153179106.76,
+                  "currency": "NIO"
+                }
               }
             },
             "substantialContributionToClimateChangeMitigationInPercent": {
@@ -568,8 +610,10 @@
                 "value": 97.05
               },
               "absoluteShare": {
-                "amount": 668982409.4,
-                "currency": "BWP"
+                "value": {
+                  "amount": 668982409.4,
+                  "currency": "BWP"
+                }
               }
             },
             "substantialContributionToClimateChangeMitigationInPercent": {
@@ -608,8 +652,10 @@
                 "value": 78.45
               },
               "absoluteShare": {
-                "amount": 7573001733.98,
-                "currency": "TWD"
+                "value": {
+                  "amount": 7573001733.98,
+                  "currency": "TWD"
+                }
               }
             },
             "substantialContributionToClimateChangeMitigationInPercent": {
@@ -749,8 +795,10 @@
             "value": 49.04
           },
           "absoluteShare": {
-            "amount": 1171352593.22,
-            "currency": "BZD"
+            "value": {
+              "amount": 1171352593.22,
+              "currency": "BZD"
+            }
           }
         },
         "eligibleShare": {
@@ -758,8 +806,10 @@
             "value": 93.88
           },
           "absoluteShare": {
-            "amount": 2140728728.84,
-            "currency": "ANG"
+            "value": {
+              "amount": 2140728728.84,
+              "currency": "ANG"
+            }
           }
         },
         "nonAlignedShare": {
@@ -767,8 +817,10 @@
             "value": 70.34
           },
           "absoluteShare": {
-            "amount": 7424645242.28,
-            "currency": "KMF"
+            "value": {
+              "amount": 7424645242.28,
+              "currency": "KMF"
+            }
           }
         },
         "nonAlignedActivities": [
@@ -782,8 +834,10 @@
                 "value": 76.29
               },
               "absoluteShare": {
-                "amount": 9346870377.2,
-                "currency": "CRC"
+                "value": {
+                  "amount": 9346870377.2,
+                  "currency": "CRC"
+                }
               }
             }
           },
@@ -797,8 +851,10 @@
                 "value": 86.34
               },
               "absoluteShare": {
-                "amount": 4184210244.57,
-                "currency": "SBD"
+                "value": {
+                  "amount": 4184210244.57,
+                  "currency": "SBD"
+                }
               }
             }
           }
@@ -808,8 +864,10 @@
             "value": 22.21
           },
           "absoluteShare": {
-            "amount": 4423959611.45,
-            "currency": "MOP"
+            "value": {
+              "amount": 4423959611.45,
+              "currency": "MOP"
+            }
           }
         },
         "substantialContributionToClimateChangeMitigationInPercent": {
@@ -842,8 +900,10 @@
                 "value": 96.24
               },
               "absoluteShare": {
-                "amount": 8324641513.18,
-                "currency": "MKD"
+                "value": {
+                  "amount": 8324641513.18,
+                  "currency": "MKD"
+                }
               }
             },
             "substantialContributionToClimateChangeMitigationInPercent": {
@@ -882,8 +942,10 @@
                 "value": 69.24
               },
               "absoluteShare": {
-                "amount": 1092358203.6,
-                "currency": "NIO"
+                "value": {
+                  "amount": 1092358203.6,
+                  "currency": "NIO"
+                }
               }
             },
             "substantialContributionToClimateChangeMitigationInPercent": {
@@ -922,8 +984,10 @@
                 "value": 52.3
               },
               "absoluteShare": {
-                "amount": 5147721900.14,
-                "currency": "MRU"
+                "value": {
+                  "amount": 5147721900.14,
+                  "currency": "MRU"
+                }
               }
             },
             "substantialContributionToClimateChangeMitigationInPercent": {
@@ -974,8 +1038,10 @@
                 "value": 51.61
               },
               "absoluteShare": {
-                "amount": 6216739190.28,
-                "currency": "LSL"
+                "value": {
+                  "amount": 6216739190.28,
+                  "currency": "LSL"
+                }
               }
             },
             "substantialContributionToClimateChangeMitigationInPercent": {
@@ -1012,8 +1078,10 @@
                 "value": 56.2
               },
               "absoluteShare": {
-                "amount": 4851433013.1,
-                "currency": "ISK"
+                "value": {
+                  "amount": 4851433013.1,
+                  "currency": "ISK"
+                }
               }
             },
             "substantialContributionToClimateChangeMitigationInPercent": {
@@ -1052,8 +1120,10 @@
                 "value": 29.25
               },
               "absoluteShare": {
-                "amount": 3866413387,
-                "currency": "JMD"
+                "value": {
+                  "amount": 3866413387,
+                  "currency": "JMD"
+                }
               }
             },
             "substantialContributionToClimateChangeMitigationInPercent": {
@@ -1094,8 +1164,10 @@
                 "value": 60.25
               },
               "absoluteShare": {
-                "amount": 4150244363.12,
-                "currency": "MZN"
+                "value": {
+                  "amount": 4150244363.12,
+                  "currency": "MZN"
+                }
               }
             },
             "substantialContributionToClimateChangeMitigationInPercent": {
@@ -1136,8 +1208,10 @@
                 "value": 32.97
               },
               "absoluteShare": {
-                "amount": 9481176990.09,
-                "currency": "NZD"
+                "value": {
+                  "amount": 9481176990.09,
+                  "currency": "NZD"
+                }
               }
             },
             "substantialContributionToClimateChangeMitigationInPercent": {
@@ -1176,8 +1250,10 @@
                 "value": 93.57
               },
               "absoluteShare": {
-                "amount": 6407415205.61,
-                "currency": "SZL"
+                "value": {
+                  "amount": 6407415205.61,
+                  "currency": "SZL"
+                }
               }
             },
             "substantialContributionToClimateChangeMitigationInPercent": {
@@ -1232,8 +1308,10 @@
             "value": 14.46
           },
           "absoluteShare": {
-            "amount": 7793474812.06,
-            "currency": "NGN"
+            "value": {
+              "amount": 7793474812.06,
+              "currency": "NGN"
+            }
           }
         },
         "eligibleShare": {
@@ -1241,8 +1319,10 @@
             "value": 85.5
           },
           "absoluteShare": {
-            "amount": 5848586680.37,
-            "currency": "LBP"
+            "value": {
+              "amount": 5848586680.37,
+              "currency": "LBP"
+            }
           }
         },
         "nonAlignedShare": {
@@ -1250,8 +1330,10 @@
             "value": 83.48
           },
           "absoluteShare": {
-            "amount": 6601496404.04,
-            "currency": "GTQ"
+            "value": {
+              "amount": 6601496404.04,
+              "currency": "GTQ"
+            }
           }
         },
         "nonAlignedActivities": [
@@ -1270,8 +1352,10 @@
                 "value": 51.28
               },
               "absoluteShare": {
-                "amount": 6297106153.8,
-                "currency": "MUR"
+                "value": {
+                  "amount": 6297106153.8,
+                  "currency": "MUR"
+                }
               }
             }
           }
@@ -1281,8 +1365,10 @@
             "value": 29.56
           },
           "absoluteShare": {
-            "amount": 7722404727.25,
-            "currency": "GHS"
+            "value": {
+              "amount": 7722404727.25,
+              "currency": "GHS"
+            }
           }
         },
         "substantialContributionToClimateChangeMitigationInPercent": {
@@ -1329,8 +1415,10 @@
             "value": 12.42
           },
           "absoluteShare": {
-            "amount": 2665309167.93,
-            "currency": "MVR"
+            "value": {
+              "amount": 2665309167.93,
+              "currency": "MVR"
+            }
           }
         },
         "eligibleShare": {
@@ -1338,8 +1426,10 @@
             "value": 93.53
           },
           "absoluteShare": {
-            "amount": 8249407943.81,
-            "currency": "SAR"
+            "value": {
+              "amount": 8249407943.81,
+              "currency": "SAR"
+            }
           }
         },
         "nonAlignedShare": {
@@ -1347,8 +1437,10 @@
             "value": 73.47
           },
           "absoluteShare": {
-            "amount": 7438692289.87,
-            "currency": "UZS"
+            "value": {
+              "amount": 7438692289.87,
+              "currency": "UZS"
+            }
           }
         },
         "nonAlignedActivities": [
@@ -1362,8 +1454,10 @@
                 "value": 72.65
               },
               "absoluteShare": {
-                "amount": 5005698304.16,
-                "currency": "MUR"
+                "value": {
+                  "amount": 5005698304.16,
+                  "currency": "MUR"
+                }
               }
             }
           }
@@ -1373,8 +1467,10 @@
             "value": 79.77
           },
           "absoluteShare": {
-            "amount": 335029098.2,
-            "currency": "LYD"
+            "value": {
+              "amount": 335029098.2,
+              "currency": "LYD"
+            }
           }
         },
         "substantialContributionToClimateChangeMitigationInPercent": {
@@ -1407,8 +1503,10 @@
                 "value": 38.62
               },
               "absoluteShare": {
-                "amount": 9406202447.14,
-                "currency": "UYU"
+                "value": {
+                  "amount": 9406202447.14,
+                  "currency": "UYU"
+                }
               }
             },
             "substantialContributionToClimateChangeMitigationInPercent": {
@@ -1447,8 +1545,10 @@
                 "value": 71.53
               },
               "absoluteShare": {
-                "amount": 1005761793.34,
-                "currency": "NOK"
+                "value": {
+                  "amount": 1005761793.34,
+                  "currency": "NOK"
+                }
               }
             },
             "substantialContributionToClimateChangeMitigationInPercent": {
@@ -1487,8 +1587,10 @@
                 "value": 37.17
               },
               "absoluteShare": {
-                "amount": 3077205033.04,
-                "currency": "NPR"
+                "value": {
+                  "amount": 3077205033.04,
+                  "currency": "NPR"
+                }
               }
             },
             "substantialContributionToClimateChangeMitigationInPercent": {
@@ -1530,8 +1632,10 @@
                 "value": 86.53
               },
               "absoluteShare": {
-                "amount": 1684464027.64,
-                "currency": "NGN"
+                "value": {
+                  "amount": 1684464027.64,
+                  "currency": "NGN"
+                }
               }
             },
             "substantialContributionToClimateChangeMitigationInPercent": {
@@ -1571,8 +1675,10 @@
                 "value": 33.9
               },
               "absoluteShare": {
-                "amount": 3626330418.05,
-                "currency": "UAH"
+                "value": {
+                  "amount": 3626330418.05,
+                  "currency": "UAH"
+                }
               }
             },
             "substantialContributionToClimateChangeMitigationInPercent": {
@@ -1612,8 +1718,10 @@
                 "value": 73.69
               },
               "absoluteShare": {
-                "amount": 1647504356.22,
-                "currency": "CUP"
+                "value": {
+                  "amount": 1647504356.22,
+                  "currency": "CUP"
+                }
               }
             },
             "substantialContributionToClimateChangeMitigationInPercent": {
@@ -1652,8 +1760,10 @@
                 "value": 99.46
               },
               "absoluteShare": {
-                "amount": 7258942630.14,
-                "currency": "FJD"
+                "value": {
+                  "amount": 7258942630.14,
+                  "currency": "FJD"
+                }
               }
             },
             "substantialContributionToClimateChangeMitigationInPercent": {
@@ -1798,8 +1908,10 @@
             "value": 77.62
           },
           "absoluteShare": {
-            "amount": 9245988768.53,
-            "currency": "BND"
+            "value": {
+              "amount": 9245988768.53,
+              "currency": "BND"
+            }
           }
         },
         "eligibleShare": {
@@ -1807,8 +1919,10 @@
             "value": 9.24
           },
           "absoluteShare": {
-            "amount": 2894364539.53,
-            "currency": "HTG"
+            "value": {
+              "amount": 2894364539.53,
+              "currency": "HTG"
+            }
           }
         },
         "nonAlignedShare": {
@@ -1816,8 +1930,10 @@
             "value": 59.74
           },
           "absoluteShare": {
-            "amount": 282065481.87,
-            "currency": "NAD"
+            "value": {
+              "amount": 282065481.87,
+              "currency": "NAD"
+            }
           }
         },
         "nonAlignedActivities": [],
@@ -1826,8 +1942,10 @@
             "value": 92.26
           },
           "absoluteShare": {
-            "amount": 2379091817.42,
-            "currency": "SCR"
+            "value": {
+              "amount": 2379091817.42,
+              "currency": "SCR"
+            }
           }
         },
         "substantialContributionToClimateChangeMitigationInPercent": {
@@ -1874,8 +1992,10 @@
             "value": 95.11
           },
           "absoluteShare": {
-            "amount": 8437894126.4,
-            "currency": "MXN"
+            "value": {
+              "amount": 8437894126.4,
+              "currency": "MXN"
+            }
           }
         },
         "eligibleShare": {
@@ -1883,8 +2003,10 @@
             "value": 24.05
           },
           "absoluteShare": {
-            "amount": 2557849884.03,
-            "currency": "CDF"
+            "value": {
+              "amount": 2557849884.03,
+              "currency": "CDF"
+            }
           }
         },
         "nonAlignedShare": {
@@ -1892,8 +2014,10 @@
             "value": 5.39
           },
           "absoluteShare": {
-            "amount": 7666255047.08,
-            "currency": "YER"
+            "value": {
+              "amount": 7666255047.08,
+              "currency": "YER"
+            }
           }
         },
         "nonAlignedActivities": [
@@ -1918,8 +2042,10 @@
                 "value": 54.32
               },
               "absoluteShare": {
-                "amount": 2357698772.1,
-                "currency": "JOD"
+                "value": {
+                  "amount": 2357698772.1,
+                  "currency": "JOD"
+                }
               }
             }
           },
@@ -1933,8 +2059,10 @@
                 "value": 18.06
               },
               "absoluteShare": {
-                "amount": 1253244397.23,
-                "currency": "GMD"
+                "value": {
+                  "amount": 1253244397.23,
+                  "currency": "GMD"
+                }
               }
             }
           },
@@ -1948,8 +2076,10 @@
                 "value": 64.26
               },
               "absoluteShare": {
-                "amount": 7378926975.65,
-                "currency": "BGN"
+                "value": {
+                  "amount": 7378926975.65,
+                  "currency": "BGN"
+                }
               }
             }
           }
@@ -1959,8 +2089,10 @@
             "value": 66.6
           },
           "absoluteShare": {
-            "amount": 6866672087.93,
-            "currency": "MYR"
+            "value": {
+              "amount": 6866672087.93,
+              "currency": "MYR"
+            }
           }
         },
         "substantialContributionToClimateChangeMitigationInPercent": {
@@ -1992,8 +2124,10 @@
                 "value": 41.64
               },
               "absoluteShare": {
-                "amount": 1688808291.22,
-                "currency": "SYP"
+                "value": {
+                  "amount": 1688808291.22,
+                  "currency": "SYP"
+                }
               }
             },
             "substantialContributionToClimateChangeMitigationInPercent": {
@@ -2032,8 +2166,10 @@
                 "value": 40.04
               },
               "absoluteShare": {
-                "amount": 3388778923.54,
-                "currency": "JOD"
+                "value": {
+                  "amount": 3388778923.54,
+                  "currency": "JOD"
+                }
               }
             },
             "substantialContributionToClimateChangeMitigationInPercent": {
@@ -2073,8 +2209,10 @@
                 "value": 71.13
               },
               "absoluteShare": {
-                "amount": 8835761342.2,
-                "currency": "AMD"
+                "value": {
+                  "amount": 8835761342.2,
+                  "currency": "AMD"
+                }
               }
             },
             "substantialContributionToClimateChangeMitigationInPercent": {
@@ -2113,8 +2251,10 @@
                 "value": 57.69
               },
               "absoluteShare": {
-                "amount": 7790809262.08,
-                "currency": "SBD"
+                "value": {
+                  "amount": 7790809262.08,
+                  "currency": "SBD"
+                }
               }
             },
             "substantialContributionToClimateChangeMitigationInPercent": {
@@ -2156,8 +2296,10 @@
                 "value": 76.46
               },
               "absoluteShare": {
-                "amount": 8326346408.58,
-                "currency": "BND"
+                "value": {
+                  "amount": 8326346408.58,
+                  "currency": "BND"
+                }
               }
             },
             "substantialContributionToClimateChangeMitigationInPercent": {
@@ -2196,8 +2338,10 @@
                 "value": 16.55
               },
               "absoluteShare": {
-                "amount": 3611736390.74,
-                "currency": "HNL"
+                "value": {
+                  "amount": 3611736390.74,
+                  "currency": "HNL"
+                }
               }
             },
             "substantialContributionToClimateChangeMitigationInPercent": {
@@ -2252,8 +2396,10 @@
             "value": 37.97
           },
           "absoluteShare": {
-            "amount": 7159233670.68,
-            "currency": "VUV"
+            "value": {
+              "amount": 7159233670.68,
+              "currency": "VUV"
+            }
           }
         },
         "eligibleShare": {
@@ -2261,8 +2407,10 @@
             "value": 56.84
           },
           "absoluteShare": {
-            "amount": 5718538034.71,
-            "currency": "TZS"
+            "value": {
+              "amount": 5718538034.71,
+              "currency": "TZS"
+            }
           }
         },
         "nonAlignedShare": {
@@ -2270,8 +2418,10 @@
             "value": 20.04
           },
           "absoluteShare": {
-            "amount": 2811007201.67,
-            "currency": "NGN"
+            "value": {
+              "amount": 2811007201.67,
+              "currency": "NGN"
+            }
           }
         },
         "nonAlignedActivities": [
@@ -2302,8 +2452,10 @@
                 "value": 39.57
               },
               "absoluteShare": {
-                "amount": 6295191321.99,
-                "currency": "UAH"
+                "value": {
+                  "amount": 6295191321.99,
+                  "currency": "UAH"
+                }
               }
             }
           }
@@ -2313,8 +2465,10 @@
             "value": 93.82
           },
           "absoluteShare": {
-            "amount": 9179200790.83,
-            "currency": "PKR"
+            "value": {
+              "amount": 9179200790.83,
+              "currency": "PKR"
+            }
           }
         },
         "substantialContributionToClimateChangeMitigationInPercent": {
@@ -2346,8 +2500,10 @@
                 "value": 22.44
               },
               "absoluteShare": {
-                "amount": 7305048273.41,
-                "currency": "BZD"
+                "value": {
+                  "amount": 7305048273.41,
+                  "currency": "BZD"
+                }
               }
             },
             "substantialContributionToClimateChangeMitigationInPercent": {
@@ -2388,8 +2544,10 @@
                 "value": 33.29
               },
               "absoluteShare": {
-                "amount": 4425637084.06,
-                "currency": "IDR"
+                "value": {
+                  "amount": 4425637084.06,
+                  "currency": "IDR"
+                }
               }
             },
             "substantialContributionToClimateChangeMitigationInPercent": {
@@ -2428,8 +2586,10 @@
                 "value": 32.76
               },
               "absoluteShare": {
-                "amount": 8043987464.63,
-                "currency": "CHF"
+                "value": {
+                  "amount": 8043987464.63,
+                  "currency": "CHF"
+                }
               }
             },
             "substantialContributionToClimateChangeMitigationInPercent": {
@@ -2466,8 +2626,10 @@
                 "value": 42.53
               },
               "absoluteShare": {
-                "amount": 6315689026.38,
-                "currency": "AOA"
+                "value": {
+                  "amount": 6315689026.38,
+                  "currency": "AOA"
+                }
               }
             },
             "substantialContributionToClimateChangeMitigationInPercent": {
@@ -2506,8 +2668,10 @@
                 "value": 8.43
               },
               "absoluteShare": {
-                "amount": 7064579599.54,
-                "currency": "ZAR"
+                "value": {
+                  "amount": 7064579599.54,
+                  "currency": "ZAR"
+                }
               }
             },
             "substantialContributionToClimateChangeMitigationInPercent": {
@@ -2634,8 +2798,10 @@
             "value": 54.38
           },
           "absoluteShare": {
-            "amount": 7565940697.68,
-            "currency": "XAF"
+            "value": {
+              "amount": 7565940697.68,
+              "currency": "XAF"
+            }
           }
         },
         "eligibleShare": {
@@ -2643,8 +2809,10 @@
             "value": 46.6
           },
           "absoluteShare": {
-            "amount": 9289055317.64,
-            "currency": "NAD"
+            "value": {
+              "amount": 9289055317.64,
+              "currency": "NAD"
+            }
           }
         },
         "nonAlignedShare": {
@@ -2652,8 +2820,10 @@
             "value": 57.4
           },
           "absoluteShare": {
-            "amount": 2152996461.37,
-            "currency": "OMR"
+            "value": {
+              "amount": 2152996461.37,
+              "currency": "OMR"
+            }
           }
         },
         "nonAlignedActivities": [
@@ -2667,8 +2837,10 @@
                 "value": 28.33
               },
               "absoluteShare": {
-                "amount": 8557521225.89,
-                "currency": "BGN"
+                "value": {
+                  "amount": 8557521225.89,
+                  "currency": "BGN"
+                }
               }
             }
           },
@@ -2685,8 +2857,10 @@
                 "value": 32.52
               },
               "absoluteShare": {
-                "amount": 7194484723.73,
-                "currency": "NOK"
+                "value": {
+                  "amount": 7194484723.73,
+                  "currency": "NOK"
+                }
               }
             }
           }
@@ -2696,8 +2870,10 @@
             "value": 56.2
           },
           "absoluteShare": {
-            "amount": 349668613.63,
-            "currency": "OMR"
+            "value": {
+              "amount": 349668613.63,
+              "currency": "OMR"
+            }
           }
         },
         "substantialContributionToClimateChangeMitigationInPercent": {
@@ -2729,8 +2905,10 @@
                 "value": 24.88
               },
               "absoluteShare": {
-                "amount": 9969913491.52,
-                "currency": "LAK"
+                "value": {
+                  "amount": 9969913491.52,
+                  "currency": "LAK"
+                }
               }
             },
             "substantialContributionToClimateChangeMitigationInPercent": {
@@ -2773,8 +2951,10 @@
                 "value": 69.18
               },
               "absoluteShare": {
-                "amount": 6930103190.25,
-                "currency": "AUD"
+                "value": {
+                  "amount": 6930103190.25,
+                  "currency": "AUD"
+                }
               }
             },
             "substantialContributionToClimateChangeMitigationInPercent": {
@@ -2813,8 +2993,10 @@
                 "value": 61.28
               },
               "absoluteShare": {
-                "amount": 8870195685.89,
-                "currency": "KGS"
+                "value": {
+                  "amount": 8870195685.89,
+                  "currency": "KGS"
+                }
               }
             },
             "substantialContributionToClimateChangeMitigationInPercent": {
@@ -2853,8 +3035,10 @@
                 "value": 61.05
               },
               "absoluteShare": {
-                "amount": 5723199942.15,
-                "currency": "AOA"
+                "value": {
+                  "amount": 5723199942.15,
+                  "currency": "AOA"
+                }
               }
             },
             "substantialContributionToClimateChangeMitigationInPercent": {
@@ -2909,8 +3093,10 @@
             "value": 28.48
           },
           "absoluteShare": {
-            "amount": 609726291.15,
-            "currency": "BND"
+            "value": {
+              "amount": 609726291.15,
+              "currency": "BND"
+            }
           }
         },
         "eligibleShare": {
@@ -2918,8 +3104,10 @@
             "value": 41.54
           },
           "absoluteShare": {
-            "amount": 9313059889.25,
-            "currency": "XCD"
+            "value": {
+              "amount": 9313059889.25,
+              "currency": "XCD"
+            }
           }
         },
         "nonAlignedShare": {
@@ -2927,8 +3115,10 @@
             "value": 94.49
           },
           "absoluteShare": {
-            "amount": 6407753292.01,
-            "currency": "KES"
+            "value": {
+              "amount": 6407753292.01,
+              "currency": "KES"
+            }
           }
         },
         "nonAlignedActivities": [],
@@ -2937,8 +3127,10 @@
             "value": 40.32
           },
           "absoluteShare": {
-            "amount": 3712124384.47,
-            "currency": "BWP"
+            "value": {
+              "amount": 3712124384.47,
+              "currency": "BWP"
+            }
           }
         },
         "substantialContributionToClimateChangeMitigationInPercent": {
@@ -2970,8 +3162,10 @@
                 "value": 60.43
               },
               "absoluteShare": {
-                "amount": 7130624344.57,
-                "currency": "DJF"
+                "value": {
+                  "amount": 7130624344.57,
+                  "currency": "DJF"
+                }
               }
             },
             "substantialContributionToClimateChangeMitigationInPercent": {
@@ -3010,8 +3204,10 @@
                 "value": 89.07
               },
               "absoluteShare": {
-                "amount": 8986819644.93,
-                "currency": "IRR"
+                "value": {
+                  "amount": 8986819644.93,
+                  "currency": "IRR"
+                }
               }
             },
             "substantialContributionToClimateChangeMitigationInPercent": {
@@ -3050,8 +3246,10 @@
                 "value": 31.31
               },
               "absoluteShare": {
-                "amount": 8986200306.1,
-                "currency": "BWP"
+                "value": {
+                  "amount": 8986200306.1,
+                  "currency": "BWP"
+                }
               }
             },
             "substantialContributionToClimateChangeMitigationInPercent": {
@@ -3091,8 +3289,10 @@
                 "value": 19.69
               },
               "absoluteShare": {
-                "amount": 6472879699.43,
-                "currency": "ISK"
+                "value": {
+                  "amount": 6472879699.43,
+                  "currency": "ISK"
+                }
               }
             },
             "substantialContributionToClimateChangeMitigationInPercent": {
@@ -3131,8 +3331,10 @@
                 "value": 50.75
               },
               "absoluteShare": {
-                "amount": 456208221.14,
-                "currency": "GMD"
+                "value": {
+                  "amount": 456208221.14,
+                  "currency": "GMD"
+                }
               }
             },
             "substantialContributionToClimateChangeMitigationInPercent": {
@@ -3171,8 +3373,10 @@
                 "value": 98.17
               },
               "absoluteShare": {
-                "amount": 223248084.07,
-                "currency": "BAM"
+                "value": {
+                  "amount": 223248084.07,
+                  "currency": "BAM"
+                }
               }
             },
             "substantialContributionToClimateChangeMitigationInPercent": {
@@ -3212,8 +3416,10 @@
                 "value": 32.06
               },
               "absoluteShare": {
-                "amount": 8152041754.22,
-                "currency": "MZN"
+                "value": {
+                  "amount": 8152041754.22,
+                  "currency": "MZN"
+                }
               }
             },
             "substantialContributionToClimateChangeMitigationInPercent": {
@@ -3268,8 +3474,10 @@
             "value": 63.45
           },
           "absoluteShare": {
-            "amount": 6924676541.24,
-            "currency": "CAD"
+            "value": {
+              "amount": 6924676541.24,
+              "currency": "CAD"
+            }
           }
         },
         "eligibleShare": {
@@ -3277,8 +3485,10 @@
             "value": 39.78
           },
           "absoluteShare": {
-            "amount": 4404400659.26,
-            "currency": "TTD"
+            "value": {
+              "amount": 4404400659.26,
+              "currency": "TTD"
+            }
           }
         },
         "nonAlignedShare": {
@@ -3286,8 +3496,10 @@
             "value": 98.15
           },
           "absoluteShare": {
-            "amount": 792838104.53,
-            "currency": "KZT"
+            "value": {
+              "amount": 792838104.53,
+              "currency": "KZT"
+            }
           }
         },
         "nonAlignedActivities": [],
@@ -3296,8 +3508,10 @@
             "value": 70.65
           },
           "absoluteShare": {
-            "amount": 7585318430.8,
-            "currency": "SDG"
+            "value": {
+              "amount": 7585318430.8,
+              "currency": "SDG"
+            }
           }
         },
         "substantialContributionToClimateChangeMitigationInPercent": {
@@ -3329,8 +3543,10 @@
                 "value": 82.26
               },
               "absoluteShare": {
-                "amount": 8817977088.04,
-                "currency": "ETB"
+                "value": {
+                  "amount": 8817977088.04,
+                  "currency": "ETB"
+                }
               }
             },
             "substantialContributionToClimateChangeMitigationInPercent": {
@@ -3369,8 +3585,10 @@
                 "value": 22.32
               },
               "absoluteShare": {
-                "amount": 575693242.71,
-                "currency": "NGN"
+                "value": {
+                  "amount": 575693242.71,
+                  "currency": "NGN"
+                }
               }
             },
             "substantialContributionToClimateChangeMitigationInPercent": {
@@ -3409,8 +3627,10 @@
                 "value": 12.5
               },
               "absoluteShare": {
-                "amount": 1965887437.11,
-                "currency": "NZD"
+                "value": {
+                  "amount": 1965887437.11,
+                  "currency": "NZD"
+                }
               }
             },
             "substantialContributionToClimateChangeMitigationInPercent": {
