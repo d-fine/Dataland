@@ -29,7 +29,6 @@ class V19__MigrateEutaxonomyNonFinancialsExtendedDatapoints : BaseJavaMigration(
         "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent",
         "absoluteShare",
     )
-
     /**
      * Create a nested JSON object from a JSON object and a key.
      * @param jsonObject JSON object
@@ -42,23 +41,25 @@ class V19__MigrateEutaxonomyNonFinancialsExtendedDatapoints : BaseJavaMigration(
     }
 
     /**
+     * Check if the keys of a JSON object are relevant fields and, if so, created a nested JSON object.
+     * @param jsonObject JSON object
+     */
+    private fun checkForRelevantFieldsInJsonObjectKeys(jsonObject: JSONObject) {
+        jsonObject.keys().forEach {
+            if (it in relevantFields) createNestedJsonObject(jsonObject, it)
+            checkRecursivelyForBaseDataPointsInJsonObject(jsonObject, it)
+        }
+    }
+    /**
      * Check recursively for BaseDataPoints in a JSON array.
      * @param jsonArray JSON array
      */
     private fun checkRecursivelyForBaseDataPointsInJsonArray(jsonArray: JSONArray) {
         for (i in 0 until jsonArray.length()) {
             val element = jsonArray[i]
-            if (element != null && element is JSONObject) {
-                element.keys().forEach {
-                    if (it in relevantFields) {
-                        createNestedJsonObject(element, it)
-                    }
-                    checkRecursivelyForBaseDataPointsInJsonObject(element, it)
-                }
-            }
+            if (element != null && element is JSONObject) checkForRelevantFieldsInJsonObjectKeys(element)
         }
     }
-
     /**
      * Check recursively for BaseDataPoints in a JSON object.
      * @param jsonObject JSON object
@@ -66,16 +67,8 @@ class V19__MigrateEutaxonomyNonFinancialsExtendedDatapoints : BaseJavaMigration(
      */
     private fun checkRecursivelyForBaseDataPointsInJsonObject(jsonObject: JSONObject, key: String) {
         val obj = jsonObject.getOrJavaNull(key)
-        if (obj !== null && obj is JSONObject) {
-            obj.keys().forEach {
-                if (it in relevantFields) {
-                    createNestedJsonObject(obj, it)
-                }
-                checkRecursivelyForBaseDataPointsInJsonObject(obj, it)
-            }
-        } else if (obj != null && obj is JSONArray) {
-            checkRecursivelyForBaseDataPointsInJsonArray(obj)
-        }
+        if (obj !== null && obj is JSONObject) checkForRelevantFieldsInJsonObjectKeys(obj)
+        else if (obj != null && obj is JSONArray) checkRecursivelyForBaseDataPointsInJsonArray(obj)
     }
 
     /**
