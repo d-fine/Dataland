@@ -89,6 +89,7 @@ class QaReportManager(
     /**
      * Method to set the status of a QA report
      * @param qaReportId the ID of the QA report to be updated
+     * @param dataId the ID of the data set the QA report is associated with
      * @param dataType the type of the data set the QA report is associated with
      * @param active the new status of the QA report
      * @param requestingUser the user requesting the change
@@ -96,11 +97,12 @@ class QaReportManager(
      */
     fun setQaReportStatus(
         qaReportId: String,
+        dataId: String,
         dataType: String,
         active: Boolean,
         requestingUser: DatalandAuthentication,
     ): QaReportEntity {
-        val storedQaReportEntity = getQaReportById(dataType, qaReportId)
+        val storedQaReportEntity = getQaReportById(dataId, dataType, qaReportId)
         if (!qaReportSecurityPolicy.userCanChangeReportActiveStatus(
                 storedQaReportEntity,
                 requestingUser,
@@ -122,11 +124,18 @@ class QaReportManager(
      * @param qaReportId filters the requested meta info to one specific QA report ID
      * @return meta info about QA report behind the qaReportId
      */
-    fun getQaReportById(dataType: String, qaReportId: String): QaReportEntity {
+    fun getQaReportById(dataId: String, dataType: String, qaReportId: String): QaReportEntity {
         val dataEntity = qaReportRepository.findById(qaReportId).orElseThrow {
             ResourceNotFoundApiException(
                 "QA report not found",
                 "No QA report with the id: $qaReportId could be found.",
+            )
+        }
+        if (dataEntity.dataId != dataId) {
+            throw InvalidInputApiException(
+                "QA report '$qaReportId' not associated with data '$dataId'",
+                "The requested Qa Report '$qaReportId' is not associated with data '$dataId'," +
+                    " but with data '${dataEntity.dataId}'.",
             )
         }
 

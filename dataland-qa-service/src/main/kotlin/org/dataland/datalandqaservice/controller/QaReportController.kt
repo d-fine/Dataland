@@ -3,6 +3,7 @@ package org.dataland.datalandqaservice.org.dataland.datalandqaservice.controller
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.api.QaReportApi
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.reports.QaReportMetaInformation
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.reports.QaReportStatusPatch
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.reports.QaReportWithMetaInformation
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.QaLogMessageBuilder
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.QaReportManager
@@ -39,20 +40,22 @@ open class QaReportController<QaReportType>(
     }
 
     override fun getQaReport(
+        dataId: String,
         qaReportId: String,
     ): ResponseEntity<QaReportWithMetaInformation<QaReportType>> {
-        logger.info(qaLogMessageBuilder.getQaReportMessage(qaReportId))
-        val reportEntity = qaReportManager.getQaReportById(dataType, qaReportId)
+        logger.info(qaLogMessageBuilder.getQaReportMessage(qaReportId, dataId))
+        val reportEntity = qaReportManager.getQaReportById(dataId, dataType, qaReportId)
         val apiModel = reportEntity.toFullApiModel(objectMapper, clazz, DatalandAuthentication.fromContextOrNull())
         return ResponseEntity.ok(apiModel)
     }
 
-    override fun setQaReportStatus(qaReportId: String, status: Boolean) {
-        logger.info(qaLogMessageBuilder.requestChangeQaReportStatus(qaReportId, status))
+    override fun setQaReportStatus(dataId: String, qaReportId: String, statusPatch: QaReportStatusPatch) {
+        logger.info(qaLogMessageBuilder.requestChangeQaReportStatus(qaReportId, dataId, statusPatch.active))
         qaReportManager.setQaReportStatus(
+            dataId = dataId,
             dataType = dataType,
             qaReportId = qaReportId,
-            active = status,
+            active = statusPatch.active,
             requestingUser = DatalandAuthentication.fromContext(),
         )
     }

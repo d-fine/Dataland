@@ -5,13 +5,14 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.reports.QaReportMetaInformation
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.reports.QaReportStatusPatch
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.reports.QaReportWithMetaInformation
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PatchMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestParam
 
@@ -49,6 +50,7 @@ interface QaReportApi<QaReportType> {
 
     /**
      * A method to change the status of a QA report. Inactive QA reports are still shown in the QA report list.
+     * @param dataId identifier used to uniquely specify data in the data store
      * @param qaReportId identifier used to identify the QA report to be retrieved
      */
     @Operation(
@@ -60,18 +62,20 @@ interface QaReportApi<QaReportType> {
             ApiResponse(responseCode = "200", description = "Successfully marked QA report as active or inactive."),
         ],
     )
-    @PatchMapping(
-        value = ["/reports/{qaReportId}/status"],
+    @PutMapping(
+        value = ["/{dataId}/reports/{qaReportId}/status"],
         produces = ["application/json"],
     )
     @PreAuthorize("hasRole('ROLE_REVIEWER')")
     fun setQaReportStatus(
+        @PathVariable("dataId") dataId: String,
         @PathVariable("qaReportId") qaReportId: String,
-        @RequestBody status: Boolean,
+        @RequestBody statusPatch: QaReportStatusPatch,
     )
 
     /**
      * A method to retrieve a QA report by the data Id and report Id
+     * @param dataId identifier used to uniquely specify data in the data store
      * @param qaReportId identifier used to identify the QA report to be retrieved
      * @return information about the QA report
      */
@@ -85,11 +89,12 @@ interface QaReportApi<QaReportType> {
         ],
     )
     @GetMapping(
-        value = ["/reports/{qaReportId}"],
+        value = ["/{dataId}/reports/{qaReportId}"],
         produces = ["application/json"],
     )
     @PreAuthorize("hasRole('ROLE_USER')")
     fun getQaReport(
+        @PathVariable("dataId") dataId: String,
         @PathVariable("qaReportId") qaReportId: String,
     ): ResponseEntity<QaReportWithMetaInformation<QaReportType>>
 
