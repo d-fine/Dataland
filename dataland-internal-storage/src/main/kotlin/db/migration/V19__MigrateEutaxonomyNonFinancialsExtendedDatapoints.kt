@@ -13,6 +13,7 @@ import org.json.JSONObject
  * existing BaseDataPoints to ExtendedDataPoints.
  */
 class V19__MigrateEutaxonomyNonFinancialsExtendedDatapoints : BaseJavaMigration() {
+
     private val relevantFields = listOf(
         "scopeOfEntities",
         "nfrdMandatory",
@@ -29,6 +30,7 @@ class V19__MigrateEutaxonomyNonFinancialsExtendedDatapoints : BaseJavaMigration(
         "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent",
         "absoluteShare",
     )
+
     /**
      * Create a nested JSON object from a JSON object and a key.
      * @param jsonObject JSON object
@@ -50,6 +52,7 @@ class V19__MigrateEutaxonomyNonFinancialsExtendedDatapoints : BaseJavaMigration(
             checkRecursivelyForBaseDataPointsInJsonObject(jsonObject, it)
         }
     }
+
     /**
      * Check recursively for BaseDataPoints in a JSON array.
      * @param jsonArray JSON array
@@ -60,6 +63,7 @@ class V19__MigrateEutaxonomyNonFinancialsExtendedDatapoints : BaseJavaMigration(
             if (element != null && element is JSONObject) checkForRelevantFieldsInJsonObjectKeys(element)
         }
     }
+
     /**
      * Check recursively for BaseDataPoints in a JSON object.
      * @param jsonObject JSON object
@@ -82,6 +86,7 @@ class V19__MigrateEutaxonomyNonFinancialsExtendedDatapoints : BaseJavaMigration(
         }
         dataTableEntity.companyAssociatedData.put("data", jsonObject.toString())
     }
+
     override fun migrate(context: Context?) {
         migrateCompanyAssociatedDataOfDatatype(
             context = context,
