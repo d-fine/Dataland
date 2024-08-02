@@ -47,8 +47,8 @@ class QaLogMessageBuilder {
      * @param qaReportId The ID of the report that shall be returned
      * @returns the message to log
      */
-    fun getQaReportMessage(qaReportId: String, dataId: String): String {
-        return "Received a request to get QA report information with dataId '$dataId' and qaReportId '$qaReportId'. "
+    fun getQaReportMessage(qaReportId: String): String {
+        return "Received a request to get QA report information with qaReportId '$qaReportId'. "
     }
 
     /**
@@ -68,7 +68,7 @@ class QaLogMessageBuilder {
      * @param active The status the report shall be marked with
      * @returns the message to log
      */
-    fun requestChangeQaReportStatus(qaReportId: String, dataId: String, active: Boolean): String {
-        return "Received a request to mark QA report with ID '$qaReportId' for data ID '$dataId' as active=$active."
+    fun requestChangeQaReportStatus(qaReportId: String, active: Boolean): String {
+        return "Received a request to mark QA report with ID '$qaReportId' as active=$active."
     }
 }
