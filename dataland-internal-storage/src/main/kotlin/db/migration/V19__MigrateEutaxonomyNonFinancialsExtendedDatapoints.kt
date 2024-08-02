@@ -79,6 +79,8 @@ class V19__MigrateEutaxonomyNonFinancialsExtendedDatapoints : BaseJavaMigration(
             checkForRelevantFieldsInJsonObjectKeys(obj)
         } else if (obj != null && obj is JSONArray) {
             checkRecursivelyForBaseDataPointsInJsonArray(obj)
+        } else {
+            // Do nothing
         }
     }
 
