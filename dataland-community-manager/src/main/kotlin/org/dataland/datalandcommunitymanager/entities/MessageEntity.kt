@@ -79,20 +79,20 @@ data class MessageEntity(
             companyId: String,
         ): List<TemplateEmailMessage.EmailRecipient> {
             // TODO have you confirmed that this correctly can build a list containing more than one entry?
-            if (contact.isEmailAddress()) {
-                return listOf(TemplateEmailMessage.EmailAddressEmailRecipient(contact))
-            }
-
-            if (contact == COMPANY_OWNER_KEYWORD) {
+            // TODO @Laurin i have refactored this to only one return, is this fine for you?
+            return if (contact.isEmailAddress()) {
+                listOf(TemplateEmailMessage.EmailAddressEmailRecipient(contact))
+            } else if (contact == COMPANY_OWNER_KEYWORD) {
                 val companyOwnerList = companyRolesManager.getCompanyRoleAssignmentsByParameters(
                     companyRole = CompanyRole.CompanyOwner,
                     companyId = companyId,
                     userId = null,
                 )
-                return companyOwnerList.map { TemplateEmailMessage.UserIdEmailRecipient(it.userId) }
-            }
+                companyOwnerList.map { TemplateEmailMessage.UserIdEmailRecipient(it.userId) }
+            } else {
 
-            return listOf()
+                listOf()
+            }
         }
     }
 
