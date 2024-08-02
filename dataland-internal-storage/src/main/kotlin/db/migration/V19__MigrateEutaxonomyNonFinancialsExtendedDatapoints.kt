@@ -48,7 +48,9 @@ class V19__MigrateEutaxonomyNonFinancialsExtendedDatapoints : BaseJavaMigration(
      */
     private fun checkForRelevantFieldsInJsonObjectKeys(jsonObject: JSONObject) {
         jsonObject.keys().forEach {
-            if (it in relevantFields) createNestedJsonObject(jsonObject, it)
+            if (it in relevantFields) {
+                createNestedJsonObject(jsonObject, it)
+            }
             checkRecursivelyForBaseDataPointsInJsonObject(jsonObject, it)
         }
     }
@@ -60,7 +62,9 @@ class V19__MigrateEutaxonomyNonFinancialsExtendedDatapoints : BaseJavaMigration(
     private fun checkRecursivelyForBaseDataPointsInJsonArray(jsonArray: JSONArray) {
         for (i in 0 until jsonArray.length()) {
             val element = jsonArray[i]
-            if (element != null && element is JSONObject) checkForRelevantFieldsInJsonObjectKeys(element)
+            if (element != null && element is JSONObject) {
+                checkForRelevantFieldsInJsonObjectKeys(element)
+            }
         }
     }
 
@@ -73,8 +77,7 @@ class V19__MigrateEutaxonomyNonFinancialsExtendedDatapoints : BaseJavaMigration(
         val obj = jsonObject.getOrJavaNull(key)
         if (obj !== null && obj is JSONObject) {
             checkForRelevantFieldsInJsonObjectKeys(obj)
-        }
-        else if (obj != null && obj is JSONArray) {
+        } else if (obj != null && obj is JSONArray) {
             checkRecursivelyForBaseDataPointsInJsonArray(obj)
         }
     }
