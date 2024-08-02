@@ -40,23 +40,27 @@ data class MessageEntity(
 
         const val COMPANY_OWNER_KEYWORD = "COMPANY_OWNER"
 
-        fun isContact(contact: String) : Boolean {
+        fun isContact(contact: String): Boolean {
             return contact.isEmailAddress() || contact == COMPANY_OWNER_KEYWORD
         }
 
         fun validateContact(contact: String) {
             // TODO do we want to check whether we want to validate if a company owner exists?
 
-            if (!isContact(contact))
+            if (!isContact(contact)) {
                 throw InvalidInputApiException(
                     "Invalid contact $contact",
                     "The provided contact $contact is not valid. " +
-                            "Please specify a valid email address or $COMPANY_OWNER_KEYWORD.")
+                        "Please specify a valid email address or $COMPANY_OWNER_KEYWORD.",
+                )
+            }
         }
 
-        fun realizeContact(contact: String, companyRolesManager: CompanyRolesManager, companyId: String
-        ) : List<TemplateEmailMessage.EmailRecipient> {
-
+        fun realizeContact(
+            contact: String,
+            companyRolesManager: CompanyRolesManager,
+            companyId: String,
+        ): List<TemplateEmailMessage.EmailRecipient> {
             if (contact.isEmailAddress()) {
                 return listOf(TemplateEmailMessage.EmailAddressEmailRecipient(contact))
             }
@@ -72,7 +76,6 @@ data class MessageEntity(
 
             return listOf()
         }
-
     }
 
     init {

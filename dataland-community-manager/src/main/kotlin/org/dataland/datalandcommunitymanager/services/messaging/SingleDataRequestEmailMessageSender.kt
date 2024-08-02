@@ -24,7 +24,7 @@ class SingleDataRequestEmailMessageSender(
     @Autowired private val cloudEventMessageHandler: CloudEventMessageHandler,
     @Autowired private val objectMapper: ObjectMapper,
     @Autowired val companyApi: CompanyDataControllerApi,
-    @Autowired private val companyRolesManager: CompanyRolesManager
+    @Autowired private val companyRolesManager: CompanyRolesManager,
 ) : DataRequestEmailMessageSenderBase() {
     /**
      * Data structure holding the shared information of the sent messages

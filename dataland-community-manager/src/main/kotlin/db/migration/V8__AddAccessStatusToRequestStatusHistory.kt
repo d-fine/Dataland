@@ -24,7 +24,7 @@ class V8__AddAccessStatusToRequestStatusHistory : BaseJavaMigration() {
     private fun makeAccessStatusRowNonNullable(context: Context) {
         context.connection.createStatement().execute(
             "ALTER TABLE request_status_history " +
-                    "ALTER COLUMN access_status SET NOT NULL ",
+                "ALTER COLUMN access_status SET NOT NULL ",
         )
     }
     private fun migrateSmeToVsme(context: Context) {
@@ -57,7 +57,7 @@ class V8__AddAccessStatusToRequestStatusHistory : BaseJavaMigration() {
 
         while (requestsForVsmeDataType.next()) {
             val requestId = requestsForVsmeDataType.getString("data_request_id")
-            //TODO happy to discuss the access status value for existing vsme requests
+            // TODO happy to discuss the access status value for existing vsme requests
             val preparedStatement = context.connection.prepareStatement(query)
             preparedStatement.setString(1, "Declined")
             preparedStatement.setString(2, requestId)
@@ -66,5 +66,4 @@ class V8__AddAccessStatusToRequestStatusHistory : BaseJavaMigration() {
         }
         requestsForVsmeDataType.close()
     }
-
 }

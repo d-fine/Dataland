@@ -259,7 +259,7 @@ constructor(
                 preprocessedRequest.userId, preprocessedRequest.message,
                 preprocessedRequest.companyId, preprocessedRequest.dataType.toString(),
                 reportingPeriodsOfStoredAccessRequests,
-                preprocessedRequest.contacts ?: setOf()
+                preprocessedRequest.contacts ?: setOf(),
             ),
             preprocessedRequest.correlationId,
         )

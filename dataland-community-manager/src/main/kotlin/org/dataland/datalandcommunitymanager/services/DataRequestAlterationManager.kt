@@ -121,7 +121,7 @@ class DataRequestAlterationManager(
                     dataRequestEntity.userId, dataRequestEntity.messageHistory.last().message,
                     dataRequestEntity.datalandCompanyId, dataRequestEntity.dataType,
                     setOf(dataRequestEntity.reportingPeriod),
-                    dataRequestEntity.messageHistory.last().contactsAsSet()
+                    dataRequestEntity.messageHistory.last().contactsAsSet(),
                 ),
                 correlationId,
             )

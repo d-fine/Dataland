@@ -34,12 +34,10 @@ class AccessRequestEmailSender(
         val datalandCompanyId: String,
         val dataType: String,
         val reportingPeriods: Set<String>,
-        val contacts: Set<String>
+        val contacts: Set<String>,
     )
 
     fun notifyCompanyOwnerAboutNewRequest(emailInformation: RequestEmailInformation, correlationId: String) {
-
-
         val user = keycloakUserControllerApiService.getUser(emailInformation.requesterUserId)
 
         val contacts = emailInformation.contacts + setOf(MessageEntity.COMPANY_OWNER_KEYWORD)
