@@ -134,12 +134,12 @@
 			{
 				"status": "Resolved",
 				"creationTimestamp": 642,
-				"accessStatus": "Public"
+				"accessStatus": "Revoked"
 			}
 		],
 		"lastModifiedDate": 642,
 		"requestStatus": "Open",
-		"accessStatus": "Public"
+		"accessStatus": "Revoked"
 	},
 	{
 		"dataRequestId": "9be2ddb8-8834-4b23-ab30-b33afc8d679c",
@@ -182,12 +182,12 @@
 			{
 				"status": "Resolved",
 				"creationTimestamp": 617,
-				"accessStatus": "Public"
+				"accessStatus": "Revoked"
 			}
 		],
 		"lastModifiedDate": 617,
 		"requestStatus": "Answered",
-		"accessStatus": "Public"
+		"accessStatus": "Revoked"
 	},
 	{
 		"dataRequestId": "10ad826b-ed87-44f7-b90f-079e984b2e23",
