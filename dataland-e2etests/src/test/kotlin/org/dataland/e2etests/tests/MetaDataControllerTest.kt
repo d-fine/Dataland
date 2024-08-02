@@ -208,8 +208,13 @@ class MetaDataControllerTest {
         )
         val newNumberOfEmployees = (frameworkDataAlpha.general!!.numberOfEmployees!!.value ?: BigDecimal.ZERO) +
             BigDecimal.ONE
-        val frameworkDataBeta = frameworkDataAlpha.copy()
-        frameworkDataBeta.general!!.numberOfEmployees!!.value = newNumberOfEmployees
+        val frameworkDataBeta = frameworkDataAlpha.copy(
+            general = frameworkDataAlpha.general!!.copy(
+                numberOfEmployees = frameworkDataAlpha.general!!.numberOfEmployees!!.copy(
+                    value = newNumberOfEmployees,
+                ),
+            ),
+        )
         apiAccessor.uploadSingleFrameworkDataSet(
             companyId = companyId,
             frameworkData = frameworkDataBeta,
