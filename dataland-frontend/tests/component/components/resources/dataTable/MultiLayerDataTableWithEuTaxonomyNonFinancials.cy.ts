@@ -76,7 +76,7 @@ describe('Component test for the Eu-Taxonomy-Non-Financials view page', () => {
     );
   });
 
-  it.only('Check if the view page for non-financials displays data correctly in its custom fields', () => {
+  it('Check if the view page for non-financials displays data correctly in its custom fields', () => {
     mountMLDTFrameworkPanelFromFakeFixture(
       DataTypeEnum.EutaxonomyNonFinancials,
       eutaxonomyNonFinancialsViewConfiguration,
@@ -106,7 +106,7 @@ describe('Component test for the Eu-Taxonomy-Non-Financials view page', () => {
 
       getCellValueContainer('Relative Share in Percent', 1)
         .invoke('text')
-        .should('contains', `${betaTotalAlignedCapexPercentage} %`);
+        .should('contains', `${betaTotalAlignedCapexPercentage} %`); // the code breaks here
 
       getCellValueContainer('Absolute Share', 2)
         .invoke('text')
