@@ -90,8 +90,8 @@ constructor(
     }
 
     /**
-     * This method process single requests
-     * @param singleDataRequest is the singlerequest which should be prcessed
+     * This method preprocesses a singleDataProcess
+     * @param singleDataRequest is the single data process which should be preprocessed
      * @return the processed single request
      */
     fun preprocessSingleDataRequest(singleDataRequest: SingleDataRequest): PreprocessedRequest {

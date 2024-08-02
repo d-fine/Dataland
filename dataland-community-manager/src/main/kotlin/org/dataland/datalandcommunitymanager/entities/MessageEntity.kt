@@ -67,9 +67,9 @@ data class MessageEntity(
         }
 
         /**
-         * This method adds an contact email address of the user id of a company owner to the email recipient list
+         * This method adds a contact email address of the user id or a company owner to the email recipient list
          * @param contact is either an email address or the company owner keyword
-         * @param companyRolesManager is the service to handle all tasks in regards to company roles for users
+         * @param companyRolesManager is the service to handle all tasks in regard to company roles for users
          * @param companyId the company id for which the company owner should be determined
          * @return a list containing email address and/or the user ids of relevant company owners
          */
