@@ -41,7 +41,7 @@ class AccessRequestTest {
     lateinit var companyId: String
 
     @Test
-    fun `premium User makes private request, has access to active dataset`() {
+    fun `premium User makes private request and has access to active dataset`() {
         companyId = apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId
         createVSMEDataAndPostAsAdminCompanyOwner(companyId)
 
@@ -74,7 +74,7 @@ class AccessRequestTest {
     }
 
     @Test
-    fun `premium User makes private request, has no access to active dataset, no matching dataset`() {
+    fun `premium User makes private request and has no access to active dataset and no matching dataset`() {
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.PremiumUser)
 
         val singleDataRequest = vsmeTestUtils.setSingleDataVsmeRequest(
@@ -91,7 +91,7 @@ class AccessRequestTest {
     }
 
     @Test
-    fun `premium User makes private request, has no access to active dataset, matching dataset exists`() {
+    fun `premium User makes private request and has no access to active dataset and matching dataset exists`() {
         companyId = apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId
         createVSMEDataAndPostAsAdminCompanyOwner(companyId)
 
@@ -110,7 +110,7 @@ class AccessRequestTest {
     }
 
     @Test
-    fun `Comapny owner gets private request`() {
+    fun `comapny owner gets private request`() {
         companyId = apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId
 
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.PremiumUser)
@@ -139,7 +139,7 @@ class AccessRequestTest {
     }
 
     @Test
-    fun `company owner gets new access request, declines access`() {
+    fun `company owner gets new access request and declines access`() {
         companyId = apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId
         createVSMEDataAndPostAsAdminCompanyOwner(companyId)
 
