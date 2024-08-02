@@ -1,7 +1,9 @@
 {
   "general": {
     "fiscalYearDeviation": "NoDeviation",
-    "fiscalYearEnd": "2024-05-08",
+    "fiscalYearEnd": {
+      "value": "2024-05-08"
+    },
     "scopeOfEntities":  {
       "value": "Yes"
     },

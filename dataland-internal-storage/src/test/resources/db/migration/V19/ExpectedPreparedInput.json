@@ -41,7 +41,9 @@
     "t": {
       "general": {
         "fiscalYearDeviation": "NoDeviation",
-        "fiscalYearEnd": "2024-03-18",
+        "fiscalYearEnd": {
+          "value": "2024-03-18"
+        },
         "scopeOfEntities": {
           "value": "Yes"
         },
@@ -746,7 +748,9 @@
     "t": {
       "general": {
         "fiscalYearDeviation": "Deviation",
-        "fiscalYearEnd": "2024-02-04",
+        "fiscalYearEnd": {
+          "value": "2024-02-04"
+        },
         "scopeOfEntities": {
           "value": "No"
         },
@@ -1849,7 +1853,9 @@
     "t": {
       "general": {
         "fiscalYearDeviation": "Deviation",
-        "fiscalYearEnd": "2024-11-11",
+        "fiscalYearEnd": {
+          "value": "2024-11-11"
+        },
         "scopeOfEntities": {
           "value": "Yes"
         },
@@ -2755,7 +2761,9 @@
     "t": {
       "general": {
         "fiscalYearDeviation": "Deviation",
-        "fiscalYearEnd": "2024-12-05",
+        "fiscalYearEnd": {
+          "value": "2024-12-05"
+        },
         "scopeOfEntities": {
           "value": "Yes"
         },
