@@ -45,7 +45,11 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
         explanation: 'The date at which the fiscal year ends.',
         shouldDisplay: (): boolean => true,
         valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
-          formatStringForDatatable(dataset.general?.fiscalYearEnd),
+          wrapDisplayValueWithDatapointInformation(
+            formatStringForDatatable(dataset.general?.fiscalYearEnd?.value),
+            'Fiscal Year End',
+            dataset.general?.fiscalYearEnd
+          ),
       },
       {
         type: 'cell',

@@ -38,7 +38,7 @@ export function generateEutaxonomyNonFinancialsData(
       fiscalYearDeviation: dataGenerator.valueOrNull(
         pickOneElement(Object.values(EutaxonomyNonFinancialsGeneralFiscalYearDeviationOptions))
       ),
-      fiscalYearEnd: dataGenerator.randomFutureDate(),
+      fiscalYearEnd: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFutureDate()),
       scopeOfEntities: dataGenerator.randomExtendedDataPoint(dataGenerator.randomYesNoNa()),
       nfrdMandatory: dataGenerator.randomExtendedDataPoint(dataGenerator.randomYesNo()),
       euTaxonomyActivityLevelReporting: dataGenerator.randomExtendedDataPoint(dataGenerator.randomYesNo()),

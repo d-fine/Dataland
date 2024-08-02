@@ -11883,9 +11883,12 @@
             ]
           },
           "fiscalYearEnd": {
-            "type": "string",
-            "format": "date",
-            "nullable": true
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointLocalDate"
+              }
+            ]
           },
           "scopeOfEntities": {
             "nullable": true,
@@ -12353,6 +12356,36 @@
             "allOf": [
               {
                 "$ref": "#/components/schemas/CurrencyDataPoint"
+              }
+            ]
+          }
+        }
+      },
+      "ExtendedDataPointLocalDate": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "type": "string",
+            "format": "date",
+            "nullable": true
+          },
+          "quality": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/QualityOptions"
+              }
+            ]
+          },
+          "comment": {
+            "type": "string",
+            "nullable": true
+          },
+          "dataSource": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDocumentReference"
               }
             ]
           }
@@ -14786,21 +14819,21 @@
         ],
         "type": "object",
         "properties": {
-          "headquarters": {
-            "type": "string"
+          "sector": {
+            "type": "string",
+            "nullable": true
           },
-          "countryCode": {
+          "companyName": {
             "type": "string"
           },
           "companyId": {
             "type": "string"
           },
-          "companyName": {
+          "headquarters": {
             "type": "string"
           },
-          "sector": {
-            "type": "string",
-            "nullable": true
+          "countryCode": {
+            "type": "string"
           },
           "lei": {
             "type": "string",
@@ -14827,10 +14860,10 @@
         ],
         "type": "object",
         "properties": {
-          "companyId": {
+          "companyName": {
             "type": "string"
           },
-          "companyName": {
+          "companyId": {
             "type": "string"
           }
         }
