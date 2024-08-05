@@ -970,9 +970,6 @@
         ]
       },
       "SfdrData": {
-        "required": [
-          "general"
-        ],
         "type": "object",
         "properties": {
           "general": {
@@ -1205,9 +1202,6 @@
         }
       },
       "SfdrGeneral": {
-        "required": [
-          "general"
-        ],
         "type": "object",
         "properties": {
           "general": {
