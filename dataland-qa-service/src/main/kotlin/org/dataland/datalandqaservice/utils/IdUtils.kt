@@ -1,7 +1,5 @@
 package org.dataland.datalandqaservice.org.dataland.datalandqaservice.utils
 
-import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.QaLogMessageBuilder
-import org.slf4j.LoggerFactory
 import java.util.UUID
 
 /**
@@ -9,29 +7,9 @@ import java.util.UUID
  */
 object IdUtils {
 
-    private val logger = LoggerFactory.getLogger(javaClass)
-    private val logMessageBuilder = QaLogMessageBuilder()
-
     /**
      * Generates a UUID-string
      * @returns the generated UUID as a string
      */
     fun generateUUID(): String = UUID.randomUUID().toString()
-
-    /**
-     * Generates a correlationId as UUID-string and writes a log to make it traceable and express its association
-     * with a qaReportId or dataId
-     * @returns the correlationId
-     */
-    fun generateCorrelationId(qaReportId: String?, dataId: String?): String {
-        val correlationId = generateUUID()
-        logger.info(
-            logMessageBuilder.generateCorrelationIdMessage(
-                correlationId = correlationId,
-                qaReportId = qaReportId,
-                dataId = dataId,
-            ),
-        )
-        return correlationId
-    }
 }

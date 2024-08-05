@@ -60,12 +60,12 @@ abstract class InDevelopmentPavedRoadFramework(
         if (!enabledFeatures.contains(FrameworkGenerationFeatures.QaModel)) {
             return
         }
-        val qaModel = FrameworkQaModelBuilder(framework)
-        customizeQaModel(qaModel)
+        val qaModelBuilder = FrameworkQaModelBuilder(framework)
+        customizeQaModel(qaModelBuilder)
 
         @Suppress("TooGenericExceptionCaught")
         try {
-            qaModel.build(
+            qaModelBuilder.build(
                 into = datalandProject,
             )
         } catch (ex: Exception) {

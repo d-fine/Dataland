@@ -9,25 +9,6 @@ import org.springframework.stereotype.Component
 class QaLogMessageBuilder {
 
     /**
-     * Generates a message to inform that a correlationId has generated been for an operation and potentially
-     * logs the qaReportId and/or dataId in association with this operation to improve traceability.
-     * @param correlationId that has been generated
-     * @param qaReportId associated with the operation
-     * @param dataId associated with the operation
-     * @returns the message to log
-     */
-    fun generateCorrelationIdMessage(correlationId: String, qaReportId: String?, dataId: String?): String {
-        val parts = mutableListOf<String>()
-
-        dataId?.let { parts.add("dataId: $it") }
-        qaReportId?.let { parts.add("qaReportId: $it") }
-
-        val idParts = parts.joinToString(" and ")
-
-        return "Generated correlationId '$correlationId' for an operation associated with $idParts."
-    }
-
-    /**
      * Generates a message to inform that a QA report for a specific dataset shall be posted
      * @param reporterUserId The ID of the user who requests the post
      * @param dataId The ID of the dataset for which a QA report shall be posted

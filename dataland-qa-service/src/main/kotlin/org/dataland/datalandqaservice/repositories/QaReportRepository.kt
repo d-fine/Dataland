@@ -17,10 +17,10 @@ interface QaReportRepository : JpaRepository<QaReportEntity, String> {
      * @param reporterUserId show only QA reports uploaded by the given user
      */
     @Query(
-        "SELECT qaReportMetaInformation FROM QaReportEntity qaReportMetaInformation " +
-            "WHERE qaReportMetaInformation.dataId = :dataId " +
-            "AND (:showInactive = TRUE OR qaReportMetaInformation.active = TRUE) " +
-            "AND (:reporterUserId IS NULL OR qaReportMetaInformation.reporterUserId = :reporterUserId)",
+        "SELECT qaReport FROM QaReportEntity qaReport " +
+            "WHERE qaReport.dataId = :dataId " +
+            "AND (:showInactive = TRUE OR qaReport.active = TRUE) " +
+            "AND (:reporterUserId IS NULL OR qaReport.reporterUserId = :reporterUserId)",
     )
     fun searchQaReportMetaInformation(
         @Param("dataId") dataId: String,
