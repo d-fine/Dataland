@@ -120,6 +120,7 @@ class AccessRequestTest {
         createVSMEDataAndPostAsAdminCompanyOwner(companyId)
         val timestampBeforeSingleRequestSecond = retrieveTimeAndWaitOneMillisecond()
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.PremiumUser)
+        Thread.sleep(1000)
         val newlyStoredRequestsSecond = requestControllerApi.getDataRequestsForRequestingUser().filter {
                 storedDataRequest ->
             storedDataRequest.lastModifiedDate > timestampBeforeSingleRequestSecond
