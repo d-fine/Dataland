@@ -1,15 +1,17 @@
 <#macro if if then else><#if if>${then}<#else>${else}</#if></#macro>
 
-
-<#-- TODO Need to adapt
- This is a template for the IR engament email triggered by a single data upload
- The following fields are needed
-  - companyName
-  - companyId
-  - framework (the framework name)
-  - year (the year of the upload)
-  - baseUrl (something like https://dataland.com)
- -->
+<!--
+Fields:
+firstName
+lastName
+companyName
+requesterEmail
+reportingPeriods
+dataTyp
+baseUrl
+companyId
+message
+-->
 
 <!DOCTYPE html>
 <html>
@@ -30,8 +32,8 @@
         <td rowspan="15" style="width: 40px">&nbsp;</td>
     </tr>
     <tr>
-        <td colspan="3">Hello, <br>
-            A Dataland user has requested access to the data of your company on Dataland.</td>
+        <td colspan="3">Exciting news! 📣<br>Your data are in high demand on Dataland!
+            <#if firstName?? || lastName??>The user <#if firstName??>${firstName} </#if><#if lastName??>${lastName} </#if><#else>A user </#if>is requesting access to your data from ${companyName} on dataland.</td>
     </tr>
     <tr>
         <td colspan="3" style="height: 20px">&nbsp;</td>
@@ -49,9 +51,9 @@
                     </td>
                 </tr>
                 <tr>
-                    <td rowspan="11">&nbsp;</td>
+                    <td rowspan="<@if message?? 18 14 />">&nbsp;</td>
                     <td style="height: 7px"></td>
-                    <td rowspan="11">&nbsp;</td>
+                    <td rowspan="<@if message?? 18 14 />">&nbsp;</td>
                 </tr>
                 <tr>
                     <td>Framework</td>
@@ -60,22 +62,61 @@
                     <td style="font-size: 5px; height: 5px">&nbsp;</td>
                 </tr>
                 <tr>
-                    <td style="font-weight: bold; font-size:19px">${framework}</td>
+                    <td style="font-weight: bold; font-size:19px">${dataType}</td>
                 </tr>
                 <tr>
                     <td style="height: 20px">&nbsp;</td>
                 </tr>
                 <tr>
-                    <td>Reporting year</td>
+                    <td>Reporting year(s)</td>
                 </tr>
                 <tr>
                     <td style="font-size: 5px; height: 5px">&nbsp;</td>
                 </tr>
                 <tr>
-                    <td style="font-weight: bold; font-size:19px">${year}</td>
+                    <td style="font-weight: bold; font-size:19px">${reportingPeriods}</td>
                 </tr>
                 <tr>
-                    <td style="height: 20px"></td>
+                    <td style="border-bottom:1px solid #e3e3e3; height: 20px">&nbsp;</td>
+                </tr>
+                <tr>
+                    <td style="height: 20px">&nbsp;</td>
+                </tr>
+                <tr>
+                    <td style="color:#8c8c8c">From:</td>
+                </tr>
+                <tr>
+                    <td style="font-size: 5px; height: 5px">&nbsp;</td>
+                </tr>
+                <tr>
+                    <td style="font-weight: bold; color: #FF6813; text-decoration: none; border: 0 none;">
+                        <a href="mailto:${requesterEmail}" style="font-weight: bold; color: black; text-decoration: none; border: 0 none;">
+                            ${requesterEmail}
+                        </a>
+                    </td>
+                </tr>
+                <#if message??>
+                    <tr>
+                        <td style="height: 20px">&nbsp;</td>
+                    </tr>
+                    <tr>
+                        <td style="color:#8c8c8c">Message:</td>
+                    </tr>
+                    <tr>
+                        <td style="font-size: 5px; height: 5px">&nbsp;</td>
+                    </tr>
+                    <tr>
+                        <td style="font-weight: bold;">${message}</td>
+                    </tr>
+                </#if>
+                <tr>
+                    <td style="height: 7px"></td>
+                </tr>
+
+                <tr>
+                    <td style="text-align: left; width: 20px; height: 13px; padding: 0"></td>
+                    <td style="text-align: right; width: 480px; padding: 0"></td>
+                    <td style="text-align: right; width: 20px; padding: 0"></td>
                 </tr>
                 </tbody>
             </table>
@@ -94,8 +135,8 @@
     <tr>
         <td colspan="3">
             <ol style="line-height: 25px;">
-                <li>Gain sovereignty over your data by claiming company ownership.</li>
-                <li>Inspect, add, correct, remove data of your company.</li>
+                <li>Verify the access request on dataland.</li>
+                <li>If you want to share the dataset, grant access.</li>
             </ol>
         </td>
     </tr>
@@ -106,19 +147,12 @@
         <td style="text-align: left; padding:0; margin:0; border: 0; height: 54px; width: 26px"></td>
         <td style="background-color: #ff5c00; text-align: center; padding:0; margin:0; border: 0; height: 54px; width: 468px;">
             <a href="${baseUrl}/companies/${companyId}" target="_blank" style="border: 0 none; line-height: 30px; color: #ffffff; font-size: 18px; width: 100%; display: block; text-decoration: none;">
-                CLAIM COMPANY OWNERSHIP
+                VERIFY AND GRANT ACCESS ON DATALAND
             </a>
         </td>
         <td style="background-color: #ffffff; text-align: right; padding:0; margin:0; border: 0; height: 54px; width: 26px"></td>
     </tr>
 
-    <tr>
-        <td colspan="3" style="height: 20px">&nbsp;</td>
-    </tr>
-    <tr>
-        <td colspan="3">Claiming ownership process usually requires 1-2 business days.<br />
-            You will be notified by email</td>
-    </tr>
     <tr>
         <td colspan="3" style="height: 20px">&nbsp;</td>
     </tr>

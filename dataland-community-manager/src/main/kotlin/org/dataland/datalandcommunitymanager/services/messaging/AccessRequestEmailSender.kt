@@ -111,18 +111,22 @@ class AccessRequestEmailSender(
      */
     fun notifyCompanyOwnerAboutNewRequest(emailInformation: RequestEmailInformation, correlationId: String) {
         val reportingPeriods = emailInformation.reportingPeriods.toList().sorted().joinToString(", ")
-
+        val companyName = companyApi.getCompanyInfo(emailInformation.datalandCompanyId).companyName
         val requester = keycloakUserControllerApiService.getUser(emailInformation.requesterUserId)
-        // TODO remove this println again only here to make detekt happy for now
-        println(requester)
         val contacts = emailInformation.contacts + setOf(MessageEntity.COMPANY_OWNER_KEYWORD)
-
-        val receiverList = emailInformation.contacts.flatMap {
+        val receiverList = contacts.flatMap {
             MessageEntity.realizeContact(it, companyRolesManager, emailInformation.datalandCompanyId)
         }
-
-        val properties = mapOf("ert" to "abs") // TODO FIll them an make template
-
+        val properties = mutableMapOf(
+            "companyId" to emailInformation.datalandCompanyId,
+            "companyName" to companyName,
+            "dataType" to emailInformation.dataTypeDescription,
+            "reportingPeriods" to reportingPeriods,
+            "requesterEmail" to requester.email,
+            "firstName" to requester.firstName.takeIf { it?.isNotBlank() ?: false },
+            "lastName" to requester.lastName.takeIf { it?.isNotBlank() ?: false },
+            "message" to emailInformation.message.takeIf { it?.isNotBlank() ?: false },
+        )
         receiverList.forEach {
             val message = TemplateEmailMessage(
                 emailTemplateType = TemplateEmailMessage.Type.DataAccessRequested,
