@@ -73,15 +73,18 @@ internal class MetaDataControllerTest(
         val metaInfo = dataMetaInformationManager.storeDataMetaInformation(
             DataMetaInformationEntity(
                 dataId = "data-id-for-testing-user-access-to-rejected-datasets", company = storedCompany,
-                dataType = DataType.of(SfdrData::class.java).toString(), uploaderUserId = "uploader-user-id",
+                dataType = DataType.of(SfdrData::class.java).toString(),
+                uploaderUserId = "uploader-user-id-of-rejected-dataset",
                 uploadTime = 0, reportingPeriod = "reporting-period", currentlyActive = null,
                 qaStatus = QaStatus.Rejected,
             ),
         )
         mockSecurityContext(userId = "reader-user-id", roles = expectedSetOfRolesForReader)
         assertMetaDataNotVisible(metaInfo)
-        mockSecurityContext(userId = "uploader-user-id", roles = expectedSetOfRolesForUploader)
+        mockSecurityContext(userId = "uploader-user-id-of-rejected-dataset", roles = expectedSetOfRolesForUploader)
         assertMetaDataVisible(metaInfo)
+        mockSecurityContext(userId = "different-uploader-user-id", roles = expectedSetOfRolesForUploader)
+        assertMetaDataNotVisible(metaInfo)
         mockSecurityContext(userId = "admin-user-id", roles = expectedSetOfRolesForAdmin)
         assertMetaDataVisible(metaInfo)
         mockSecurityContext(userId = "reviewer-user-id", roles = expectedSetOfRolesForAdmin)
