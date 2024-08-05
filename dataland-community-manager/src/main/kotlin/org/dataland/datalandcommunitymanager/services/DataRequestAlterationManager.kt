@@ -29,6 +29,7 @@ class DataRequestAlterationManager(
     @Autowired private val requestEmailManager: RequestEmailManager,
     @Autowired private val metaDataControllerApi: MetaDataControllerApi,
     @Autowired private val utils: DataRequestProcessingUtils,
+    @Autowired private val companyRolesManager: CompanyRolesManager,
 ) {
     private val logger = LoggerFactory.getLogger(SingleDataRequestManager::class.java)
 
@@ -52,8 +53,9 @@ class DataRequestAlterationManager(
         }
         val filteredContacts = contacts.takeIf { !it.isNullOrEmpty() }
         val filteredMessage = message.takeIf { !it.isNullOrEmpty() }
-        filteredContacts?.forEach { MessageEntity.validateContact(it) }
-
+        filteredContacts?.forEach {
+            MessageEntity.validateContact(it, companyRolesManager, dataRequestEntity.datalandCompanyId)
+        }
         val modificationTime = Instant.now().toEpochMilli()
         var anyChanges = false
 
@@ -69,13 +71,10 @@ class DataRequestAlterationManager(
         if (filteredContacts != null) {
             anyChanges = true
             utils.addMessageToMessageHistory(dataRequestEntity, filteredContacts, filteredMessage, modificationTime)
-            // TODO check that this.requestEmailManager.sendSingleDataRequestEmail still works the same as
-            // TODO this.sendSingleDataRequestEmail
             this.requestEmailManager.sendSingleDataRequestEmail(dataRequestEntity, filteredContacts, filteredMessage)
             dataRequestLogger.logMessageForPatchingRequestMessage(dataRequestEntity.dataRequestId)
         }
         if (anyChanges) dataRequestEntity.lastModifiedDate = modificationTime
-
         requestEmailManager.sendEmailsWhenStatusChanged(dataRequestEntity, requestStatus, accessStatus, correlationId)
 
         return dataRequestEntity.toStoredDataRequest()

@@ -38,6 +38,7 @@ constructor(
     @Autowired private val dataAccessManager: DataAccessManager,
     @Autowired private val accessRequestEmailSender: AccessRequestEmailSender,
     @Autowired private val securityUtilsService: SecurityUtilsService,
+    @Autowired private val companyRolesManager: CompanyRolesManager,
     @Value("\${dataland.community-manager.max-number-of-data-requests-per-day-for-role-user}") val maxRequestsForUser:
     Int,
 ) {
@@ -202,7 +203,9 @@ constructor(
             )
         }
 
-        singleDataRequest.contacts?.forEach { MessageEntity.validateContact(it) }
+        singleDataRequest.contacts?.forEach {
+            MessageEntity.validateContact(it, companyRolesManager, singleDataRequest.companyIdentifier)
+        }
         if (singleDataRequest.contacts.isNullOrEmpty() && !singleDataRequest.message.isNullOrBlank()) {
             throw InvalidInputApiException(
                 "No recipients provided for the message",
