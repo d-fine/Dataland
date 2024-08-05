@@ -123,11 +123,9 @@ class DataAccessManager(
             val modificationTime = Instant.now().toEpochMilli()
             dataRequestEntity.lastModifiedDate = modificationTime
             dataRequestRepository.save(dataRequestEntity)
-            // TODO discuss if declined should be removed from this condition
-            // TODO check what happens if AccessStatus.Public is removed
-            // TODO check if at some point private data runs into public status
+            // TODO question to the reviewer, should AccessStatus.Public also be checked?
             if (dataRequestEntity.accessStatus == AccessStatus.Revoked || dataRequestEntity.accessStatus ==
-                AccessStatus.Declined || dataRequestEntity.accessStatus == AccessStatus.Public
+                AccessStatus.Declined
             ) {
                 dataRequestProcessingUtils.addNewRequestStatusToHistory(
                     dataRequestEntity = dataRequestEntity, requestStatus = dataRequestEntity.requestStatus,

@@ -117,9 +117,9 @@ class AccessRequestTest {
         assertEquals(AccessStatus.Pending, newlyStoredRequests[0].accessStatus)
         assertEquals(RequestStatus.Open, newlyStoredRequests[0].requestStatus)
 
-        val timestampBeforeSingleRequestSecond = retrieveTimeAndWaitOneMillisecond()
-        createVSMEDataAndPostAsAdminCompanyOwner(companyId)
 
+        createVSMEDataAndPostAsAdminCompanyOwner(companyId)
+        val timestampBeforeSingleRequestSecond = retrieveTimeAndWaitOneMillisecond()
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.PremiumUser)
         val newlyStoredRequestsSecond = requestControllerApi.getDataRequestsForRequestingUser().filter {
                 storedDataRequest ->
