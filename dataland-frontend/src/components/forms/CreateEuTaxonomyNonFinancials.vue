@@ -174,6 +174,9 @@ import CurrencyDataPointFormField from '@/components/forms/parts/fields/Currency
 import YesNoBaseDataPointFormField from '@/components/forms/parts/fields/YesNoBaseDataPointFormField.vue';
 import YesNoNaBaseDataPointFormField from '@/components/forms/parts/fields/YesNoNaBaseDataPointFormField.vue';
 import YesNoExtendedDataPointFormField from '@/components/forms/parts/fields/YesNoExtendedDataPointFormField.vue';
+import YesNoNaExtendedDataPointFormField from '@/components/forms/parts/fields/YesNoNaExtendedDataPointFormField.vue';
+import DateExtendedDataPointFormField from '@/components/forms/parts/fields/DateExtendedDataPointFormField.vue';
+import PercentageExtendedDataPointFormField from '@/components/forms/parts/fields/PercentageExtendedDataPointFormField.vue';
 import { getFilledKpis } from '@/utils/DataPoint';
 import { type PublicFrameworkDataApi } from '@/utils/api/UnifiedFrameworkDataApi';
 import { getBasePublicFrameworkDefinition } from '@/frameworks/BasePublicFrameworkRegistry';
@@ -220,6 +223,9 @@ export default defineComponent({
     YesNoBaseDataPointFormField,
     YesNoNaBaseDataPointFormField,
     YesNoExtendedDataPointFormField,
+    YesNoNaExtendedDataPointFormField,
+    DateExtendedDataPointFormField,
+    PercentageExtendedDataPointFormField,
   },
   directives: {
     tooltip: Tooltip,
@@ -271,7 +277,7 @@ export default defineComponent({
     const dataId = this.route.query.templateDataId;
     if (dataId && typeof dataId === 'string' && dataId !== '') {
       this.editMode = true;
-      void this.loadEutaxonomyNonFinancialsData(dataId);
+      this.loadEutaxonomyNonFinancialsData(dataId);
     } else {
       this.waitingForData = false;
     }

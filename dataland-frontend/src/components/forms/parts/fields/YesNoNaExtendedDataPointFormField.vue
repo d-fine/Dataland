@@ -35,7 +35,7 @@ export default defineComponent({
     ...FormFieldPropsWithPlaceholder,
     isDataPointToggleable: {
       type: Boolean,
-      default: true,
+      default: false,
     },
   },
   methods: {

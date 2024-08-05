@@ -8,14 +8,15 @@
     :input-class="inputClass"
     :check-value-validity="hasDataPointProperValue"
     :isDataPointToggleable="isDataPointToggleable"
+    placeholder="Value in %"
+    v-model="percentageFieldValue"
+    :outerClass="inputClass"
   >
     <div class="mb-2">
-      <DateFormField
+      <PercentageFormField
         :name="'value'"
         :validation-label="validationLabel"
         :validation="validation"
-        :placeholder="placeholder"
-        :today-as-max="todayAsMax"
         :input-class="inputClass"
       />
     </div>
@@ -27,12 +28,12 @@
 import { defineComponent } from 'vue';
 import { BaseFormFieldProps } from '@/components/forms/parts/fields/FormFieldProps';
 import ExtendedDataPointFormField from '@/components/forms/parts/elements/basic/ExtendedDataPointFormField.vue';
-import DateFormField from '@/components/forms/parts/fields/DateFormField.vue';
+import PercentageFormField from '@/components/forms/parts/fields/PercentageFormField.vue';
 import { hasDataPointProperValue } from '@/utils/DataPoint';
 
 export default defineComponent({
-  name: 'DateExtendedDataPointFormField',
-  components: { DateFormField, ExtendedDataPointFormField },
+  name: 'PercentageExtendedDataPointFormField',
+  components: { PercentageFormField, ExtendedDataPointFormField },
   props: {
     ...BaseFormFieldProps,
     isDataPointToggleable: {
