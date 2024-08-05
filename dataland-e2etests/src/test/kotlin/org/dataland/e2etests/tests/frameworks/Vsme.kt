@@ -121,9 +121,7 @@ class Vsme {
 
         for (role in CompanyRole.values()) {
             apiAccessor.companyRolesControllerApi.assignCompanyRole(
-                role,
-                companyId = UUID.fromString(companyId),
-                userId = dataAdminUserId,
+                role, companyId = UUID.fromString(companyId), userId = dataAdminUserId,
             )
 
             if (rolesThatShouldBeAllowedToPost.contains(role)) {
@@ -143,9 +141,7 @@ class Vsme {
             }
 
             apiAccessor.companyRolesControllerApi.removeCompanyRole(
-                role,
-                companyId = UUID.fromString(companyId),
-                userId = dataAdminUserId,
+                role, companyId = UUID.fromString(companyId), userId = dataAdminUserId,
             )
         }
     }

@@ -117,7 +117,6 @@ class AccessRequestTest {
         assertEquals(AccessStatus.Pending, newlyStoredRequests[0].accessStatus)
         assertEquals(RequestStatus.Open, newlyStoredRequests[0].requestStatus)
 
-
         createVSMEDataAndPostAsAdminCompanyOwner(companyId)
         val timestampBeforeSingleRequestSecond = retrieveTimeAndWaitOneMillisecond()
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.PremiumUser)
