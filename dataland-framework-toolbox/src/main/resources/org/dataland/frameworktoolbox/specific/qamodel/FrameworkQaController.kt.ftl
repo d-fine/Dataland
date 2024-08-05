@@ -4,6 +4,7 @@ package org.dataland.datalandqaservice.org.dataland.datalandqaservice.frameworks
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.controller.QaReportController
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.QaReportManager
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.QaReportSecurityPolicy
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
@@ -18,4 +19,11 @@ import org.springframework.web.bind.annotation.RestController
 class ${frameworkDataType.shortenedQualifier}QaReportController(
 @Autowired objectMapper: ObjectMapper,
 @Autowired qaReportManager: QaReportManager,
-) : QaReportController<${frameworkDataType.shortenedQualifier}>(objectMapper, qaReportManager, ${frameworkDataType.shortenedQualifier}::class.java, "${frameworkIdentifier}")
+@Autowired qaReportSecurityPolicy: QaReportSecurityPolicy,
+) : QaReportController<${frameworkDataType.shortenedQualifier}>(
+    objectMapper = objectMapper,
+    qaReportManager = qaReportManager,
+    qaReportSecurityPolicy = qaReportSecurityPolicy,
+    clazz = ${frameworkDataType.shortenedQualifier}::class.java,
+    dataType = "${frameworkIdentifier}",
+)

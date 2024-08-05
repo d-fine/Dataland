@@ -39,8 +39,8 @@ class FrameworkQaModelBuilder(
     private fun buildFrameworkSpecificApiController(into: DatalandRepository) {
         logger.trace("Building the framework-specific QA Controller")
         val targetPath = into.qaKotlinSrc /
-                frameworkBasePackageQualifier.replace(".", "/") /
-                "${rootDataModelClass.name}QaReportController.kt"
+            frameworkBasePackageQualifier.replace(".", "/") /
+            "${rootDataModelClass.name}QaReportController.kt"
         logger.trace("Building framework QA controller for '{}' into '{}'", framework.identifier, targetPath)
         val freemarkerTemplate = FreeMarker.configuration
             .getTemplate("/specific/qamodel/FrameworkQaController.kt.ftl")
