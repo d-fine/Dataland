@@ -31,10 +31,10 @@ class KeycloakUserControllerApiService(
         @JsonProperty("id")
         val userId: String,
 
-        @JsonProperty("firstName") // TODO check if this is right
+        @JsonProperty("firstName")
         val firstName: String?,
 
-        @JsonProperty("lastName") // TODO check if this right
+        @JsonProperty("lastName")
         val lastName: String?,
 
     )
@@ -48,10 +48,11 @@ class KeycloakUserControllerApiService(
         val request = Request.Builder()
             .url("$keycloakBaseUrl/admin/realms/datalandsecurity/users/$userId")
             .build()
-        val response = authenticatedOkHttpClient.newCall(request).execute()
-        return objectMapper.readValue(
-            response.body!!.string(),
+        val response = authenticatedOkHttpClient.newCall(request).execute().body!!.string()
+        val user = objectMapper.readValue(
+            response,
             User::class.java,
         )
+        return user
     }
 }

@@ -55,7 +55,7 @@ data class MessageEntity(
          * @param contact the contact which should be checked for validity
          */
         fun validateContact(contact: String) {
-            // TODO do we want to check whether we want to validate if a company owner exists?
+            // TODO we want to check whether we want to validate if a company owner exists!
 
             if (!isContact(contact)) {
                 throw InvalidInputApiException(
@@ -78,8 +78,6 @@ data class MessageEntity(
             companyRolesManager: CompanyRolesManager,
             companyId: String,
         ): List<TemplateEmailMessage.EmailRecipient> {
-            // TODO have you confirmed that this correctly can build a list containing more than one entry?
-            // TODO @Laurin i have refactored this to only one return, is this fine for you?
             return if (contact.isEmailAddress()) {
                 listOf(TemplateEmailMessage.EmailAddressEmailRecipient(contact))
             } else if (contact == COMPANY_OWNER_KEYWORD) {
