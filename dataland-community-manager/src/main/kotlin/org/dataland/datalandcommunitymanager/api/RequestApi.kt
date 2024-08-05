@@ -154,7 +154,6 @@ interface RequestApi {
      * @return the modified data request
      */
 
-    // TODO currently user are able to grant themselves access to their own access requests
     @Operation(
         summary = "Updates a data request.",
         description = "Updates status and message history of data request given data request id.",
