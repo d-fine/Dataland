@@ -62,7 +62,7 @@ class ComponentGroup(
         if (!groupClass.empty) {
             dataClassBuilder.addProperty(
                 identifier,
-                groupClass.getTypeReference(isNullable),
+                groupClass.getTypeReference(groupClass.allNullable),
                 listOf(ValidAnnotation),
             )
         }

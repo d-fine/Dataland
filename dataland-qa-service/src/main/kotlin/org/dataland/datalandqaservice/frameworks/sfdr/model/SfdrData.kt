@@ -11,7 +11,7 @@ import org.dataland.datalandqaservice.frameworks.sfdr.model.social.SfdrSocial
  */
 data class SfdrData(
     @field:Valid()
-    val general: SfdrGeneral,
+    val general: SfdrGeneral? = null,
 
     @field:Valid()
     val environmental: SfdrEnvironmental? = null,

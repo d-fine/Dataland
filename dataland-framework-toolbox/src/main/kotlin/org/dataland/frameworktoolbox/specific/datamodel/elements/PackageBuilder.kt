@@ -25,6 +25,9 @@ data class PackageBuilder(
     override val empty: Boolean
         get() = childElements.all { it.empty }
 
+    override val allNullable: Boolean
+        get() = childElements.all { it.allNullable }
+
     val fullyQualifiedName: String
         get() = (parentPackage?.fullyQualifiedName?.plus(".") ?: "") + name
 

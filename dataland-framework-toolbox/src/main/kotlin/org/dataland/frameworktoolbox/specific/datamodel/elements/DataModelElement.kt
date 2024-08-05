@@ -11,6 +11,7 @@ sealed interface DataModelElement {
     val parentPackage: PackageBuilder?
 
     val empty: Boolean
+    val allNullable: Boolean
 
     /**
      * Build this DataModelElement into the provided Dataland repository.

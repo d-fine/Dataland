@@ -33,6 +33,9 @@ data class DataClassBuilder(
     override val empty: Boolean
         get() = properties.isEmpty()
 
+    override val allNullable: Boolean
+        get() = properties.all { it.type.nullable }
+
     val fullyQualifiedName: String
         get() = parentPackage.fullyQualifiedName + "." + name
 

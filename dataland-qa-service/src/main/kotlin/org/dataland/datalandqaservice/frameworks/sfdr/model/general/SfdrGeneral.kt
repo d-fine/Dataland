@@ -9,6 +9,6 @@ import org.dataland.datalandqaservice.frameworks.sfdr.model.general.general.Sfdr
  */
 data class SfdrGeneral(
     @field:Valid()
-    val general: SfdrGeneralGeneral,
+    val general: SfdrGeneralGeneral? = null,
 
 )

@@ -29,6 +29,9 @@ data class EnumBuilder(
     override val empty: Boolean
         get() = options.isEmpty()
 
+    override val allNullable: Boolean
+        get() = true
+
     val fullyQualifiedName: String
         get() = parentPackage.fullyQualifiedName + "." + name
 

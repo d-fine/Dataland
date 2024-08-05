@@ -27,6 +27,9 @@ data class ReferencedReportValidatorBuilder(
     override val empty: Boolean
         get() = extendedDocumentFileReferences.isEmpty()
 
+    override val allNullable: Boolean
+        get() = true
+
     val fullyQualifiedName: String
         get() = parentPackage.fullyQualifiedName + "." + name
 

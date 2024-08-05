@@ -203,10 +203,10 @@ abstract class PavedRoadFramework(
         if (!enabledFeatures.contains(FrameworkGenerationFeatures.QaModel)) {
             return
         }
-        val qaModel = generateQaModel(framework)
-        customizeQaModel(qaModel)
+        val qaModelBuilder = generateQaModel(framework)
+        customizeQaModel(qaModelBuilder)
 
-        qaModel.build(
+        qaModelBuilder.build(
             into = datalandProject,
         )
     }
