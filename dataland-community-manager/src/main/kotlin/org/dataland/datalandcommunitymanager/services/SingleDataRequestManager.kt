@@ -83,7 +83,6 @@ constructor(
         sendSingleDataRequestEmailMessage(preprocessedRequest, reportingPeriodsOfStoredDataRequests)
         sendDataAccessRequestEmailMessage(preprocessedRequest, reportingPeriodsOfStoredAccessRequests)
 
-        // TODO should we patch ResponseForSingleDataRequest to include access request?
         return buildResponseForSingleDataRequest(
             singleDataRequest,
             reportingPeriodsOfStoredDataRequests.toList(), reportingPeriodsOfDuplicateDataRequests.toList(),

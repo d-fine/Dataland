@@ -42,6 +42,7 @@ class SingleDataRequestManagerTest {
     private lateinit var securityUtilsServiceMock: SecurityUtilsService
     private lateinit var mockCompanyIdValidator: CompanyIdValidator
     private lateinit var accessRequestEmailSender: AccessRequestEmailSender
+    private lateinit var companyRolesManager: CompanyRolesManager
 
     private val companyIdRegexSafeCompanyId = UUID.randomUUID().toString()
     private val dummyCompanyIdAndName = CompanyIdAndName("Dummy Company AG", companyIdRegexSafeCompanyId)
@@ -64,6 +65,7 @@ class SingleDataRequestManagerTest {
         mockCompanyIdValidator = mock(CompanyIdValidator::class.java)
         dataRequestRepositoryMock = createDataRequestRepositoryMock()
         accessRequestEmailSender = mock(AccessRequestEmailSender::class.java)
+        companyRolesManager = mock(CompanyRolesManager::class.java)
         singleDataRequestManagerMock = SingleDataRequestManager(
             dataRequestLogger = mock(DataRequestLogger::class.java),
             dataRequestRepository = dataRequestRepositoryMock,
@@ -73,6 +75,7 @@ class SingleDataRequestManagerTest {
             dataAccessManager = mock(DataAccessManager::class.java),
             accessRequestEmailSender = accessRequestEmailSender,
             securityUtilsService = securityUtilsServiceMock,
+            companyRolesManager = companyRolesManager,
             maxRequestsForUser,
         )
         `when`(mockCompanyIdValidator.checkIfCompanyIdIsValidAndReturnName(anyString())).thenReturn("some-company-name")
