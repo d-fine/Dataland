@@ -151,6 +151,16 @@ class QaReportManager(
     }
 
     /**
+     * Deletes all QA reports for a specific dataId.
+     */
+    @Transactional
+    fun deleteAllQaReportsForDataId(
+        dataId: String,
+    ) {
+        qaReportRepository.deleteAllByDataId(dataId)
+    }
+
+    /**
      * Method to make the QA report manager get all meta infos associated with a data set
      * @param dataId filters the requested meta info to one specific data ID
      * @return a list of meta info about QA reports associated to the data set
