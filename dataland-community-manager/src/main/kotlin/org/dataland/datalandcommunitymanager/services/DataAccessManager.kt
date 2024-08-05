@@ -13,6 +13,7 @@ import org.dataland.datalandcommunitymanager.utils.DataRequestProcessingUtils
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 import java.time.Instant
 
 /**
@@ -33,6 +34,7 @@ class DataAccessManager(
      * @param dataType the framework dataType for which the access status should be checked
      * @param userId the userId for which the access status should be checked
      */
+    @Transactional
     fun hasAccessToPrivateDataset(
         companyId: String,
         reportingPeriod: String,
@@ -66,6 +68,7 @@ class DataAccessManager(
      * @param dataType the framework dataType for which the access status should be checked
      * @param userId the userId for which the access status should be checked
      */
+    @Transactional
     fun hasAccessToDataset(
         companyId: String,
         reportingPeriod: String,

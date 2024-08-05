@@ -47,7 +47,7 @@ class AccessRequestTest {
         createVSMEDataAndPostAsAdminCompanyOwner(companyId)
 
         val timestampBeforeSingleRequest = postVSMERequestWithTimestampForTechnicalUser(
-            TechnicalUser.PremiumUser, companyId, "2022"
+            TechnicalUser.PremiumUser, companyId, "2022",
         )
 
         val dataRequestId = UUID.fromString(
@@ -93,7 +93,7 @@ class AccessRequestTest {
         createVSMEDataAndPostAsAdminCompanyOwner(companyId)
 
         val timestampBeforeSingleRequest = postVSMERequestWithTimestampForTechnicalUser(
-            TechnicalUser.PremiumUser, companyId, "2022"
+            TechnicalUser.PremiumUser, companyId, "2022",
         )
 
         val newlyStoredRequests = getNewlyStoredRequestsAfterTimestamp(timestampBeforeSingleRequest)
@@ -109,7 +109,7 @@ class AccessRequestTest {
         companyId = apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId
 
         val timestampBeforeSingleRequest = postVSMERequestWithTimestampForTechnicalUser(
-            TechnicalUser.PremiumUser, companyId, "2022"
+            TechnicalUser.PremiumUser, companyId, "2022",
         )
 
         val newlyStoredRequests = getNewlyStoredRequestsAfterTimestamp(timestampBeforeSingleRequest)
@@ -122,7 +122,8 @@ class AccessRequestTest {
 
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.PremiumUser)
         val newlyStoredRequestsSecond = requestControllerApi.getDataRequestsForRequestingUser().filter {
-            storedDataRequest -> storedDataRequest.lastModifiedDate > timestampBeforeSingleRequestSecond
+                storedDataRequest ->
+            storedDataRequest.lastModifiedDate > timestampBeforeSingleRequestSecond
         }
         assertEquals(AccessStatus.Pending, newlyStoredRequestsSecond[0].accessStatus)
         assertEquals(RequestStatus.Answered, newlyStoredRequestsSecond[0].requestStatus)
@@ -136,7 +137,7 @@ class AccessRequestTest {
         createVSMEDataAndPostAsAdminCompanyOwner(companyId)
 
         val timestampBeforeSingleRequest = postVSMERequestWithTimestampForTechnicalUser(
-            TechnicalUser.PremiumUser, companyId, "2022"
+            TechnicalUser.PremiumUser, companyId, "2022",
         )
 
         val newlyStoredRequests = getNewlyStoredRequestsAfterTimestamp(timestampBeforeSingleRequest)
@@ -212,7 +213,9 @@ class AccessRequestTest {
     }
 
     private fun postVSMERequestWithTimestampForTechnicalUser(
-        technicalUser: TechnicalUser, companyId: String, year: String
+        technicalUser: TechnicalUser,
+        companyId: String,
+        year: String,
     ): Long {
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(technicalUser)
         val singleDataRequest = vsmeTestUtils.setSingleDataVsmeRequest(companyId, setOf(year))
