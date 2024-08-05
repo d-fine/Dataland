@@ -30,7 +30,6 @@ class DataRequestTimeScheduler(
     /**
      * Cron job that identifies stale answered requests, patches them to closed and triggers an email notification
      */
-    // TODO make sure this still works after adding accessStatus with null
     @Scheduled(cron = "0 0 12 * * *")
     fun patchStaleAnsweredRequestToClosed() {
         val correlationId = UUID.randomUUID().toString()
@@ -51,6 +50,4 @@ class DataRequestTimeScheduler(
             alterationManager.patchDataRequest(it.dataRequestId, RequestStatus.Closed)
         }
     }
-    // TODO do we need something similar for the access requests if they are too long in the status pending
-    // TODO that they are moved to .Declined when they are pending too long?
 }

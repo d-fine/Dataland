@@ -86,7 +86,6 @@ class DataRequestAlterationManager(
      * @param dataId the id of the uploaded dataset
      * @param correlationId dataland correlationId
      */
-    // TODO check if this logic works as intended after accessStatus was added with null value
     @Transactional
     fun patchRequestStatusFromOpenToAnsweredByDataId(dataId: String, correlationId: String) {
         val metaData = metaDataControllerApi.getDataMetaInfo(dataId)

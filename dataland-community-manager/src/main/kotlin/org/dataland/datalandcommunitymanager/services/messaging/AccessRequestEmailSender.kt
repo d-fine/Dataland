@@ -129,16 +129,12 @@ class AccessRequestEmailSender(
         )
         receiverList.forEach {
             val message = TemplateEmailMessage(
-                emailTemplateType = TemplateEmailMessage.Type.DataAccessRequested,
-                receiver = it,
+                emailTemplateType = TemplateEmailMessage.Type.DataAccessRequested, receiver = it,
                 properties = properties,
             )
             cloudEventMessageHandler.buildCEMessageAndSendToQueue(
-                objectMapper.writeValueAsString(message),
-                MessageType.SendTemplateEmail,
-                correlationId,
-                ExchangeName.SendEmail,
-                RoutingKeyNames.templateEmail,
+                objectMapper.writeValueAsString(message), MessageType.SendTemplateEmail, correlationId,
+                ExchangeName.SendEmail, RoutingKeyNames.templateEmail,
             )
         }
     }

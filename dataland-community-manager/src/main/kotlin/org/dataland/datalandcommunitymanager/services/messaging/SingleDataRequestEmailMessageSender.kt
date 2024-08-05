@@ -83,12 +83,8 @@ class SingleDataRequestEmailMessageSender(
             "companyId" to messageInformation.datalandCompanyId,
             "companyName" to companyName,
             "requesterEmail" to messageInformation.userAuthentication.username,
-            "firstName" to messageInformation.userAuthentication.firstName.takeIf {
-                it.isNotBlank()
-            },
-            "lastName" to messageInformation.userAuthentication.lastName.takeIf {
-                it.isNotBlank()
-            },
+            "firstName" to messageInformation.userAuthentication.firstName.takeIf { it.isNotBlank() },
+            "lastName" to messageInformation.userAuthentication.lastName.takeIf { it.isNotBlank() },
             "dataType" to readableFrameworkNameMapping.getValue(messageInformation.dataType),
             "reportingPeriods" to formatReportingPeriods(messageInformation.reportingPeriods),
             "message" to contactMessage.takeIf { !contactMessage.isNullOrBlank() },
@@ -100,16 +96,11 @@ class SingleDataRequestEmailMessageSender(
 
         receiverList.forEach {
             val message = TemplateEmailMessage(
-                emailTemplateType = TemplateEmailMessage.Type.ClaimOwnership,
-                receiver = it,
-                properties = properties,
+                emailTemplateType = TemplateEmailMessage.Type.ClaimOwnership, receiver = it, properties = properties,
             )
             cloudEventMessageHandler.buildCEMessageAndSendToQueue(
-                objectMapper.writeValueAsString(message),
-                MessageType.SendTemplateEmail,
-                correlationId,
-                ExchangeName.SendEmail,
-                RoutingKeyNames.templateEmail,
+                objectMapper.writeValueAsString(message), MessageType.SendTemplateEmail, correlationId,
+                ExchangeName.SendEmail, RoutingKeyNames.templateEmail,
             )
         }
     }
