@@ -23,7 +23,7 @@
     "/data/sfdr/{dataId}/reports/{qaReportId}/status": {
       "put": {
         "tags": [
-          "sfdr-qa-report-controller"
+          "sfdr-data-qa-report-controller"
         ],
         "summary": "Change the status of a QA report.",
         "description": "The specified QA report is marked as active or inactive.",
@@ -232,7 +232,7 @@
     "/data/sfdr/{dataId}/reports": {
       "get": {
         "tags": [
-          "sfdr-qa-report-controller"
+          "sfdr-data-qa-report-controller"
         ],
         "summary": "retrieve all QA reports.",
         "description": "retrieve all QA reports associated to given dataset.",
@@ -309,7 +309,7 @@
       },
       "post": {
         "tags": [
-          "sfdr-qa-report-controller"
+          "sfdr-data-qa-report-controller"
         ],
         "summary": "Upload new QA report.",
         "description": "The uploaded QA report is added to the database, the generated report id is returned.",
@@ -432,7 +432,7 @@
     "/data/sfdr/{dataId}/reports/{qaReportId}": {
       "get": {
         "tags": [
-          "sfdr-qa-report-controller"
+          "sfdr-data-qa-report-controller"
         ],
         "summary": "retrieve a QA report.",
         "description": "retrieve the information about a QA report.",
