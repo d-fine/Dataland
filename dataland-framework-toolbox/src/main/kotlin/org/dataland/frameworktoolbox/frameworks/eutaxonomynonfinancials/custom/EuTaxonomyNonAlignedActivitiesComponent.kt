@@ -39,10 +39,6 @@ class EuTaxonomyNonAlignedActivitiesComponent(
         )
     }
 
-    override fun generateDefaultQaModel(dataClassBuilder: DataClassBuilder) {
-        // Ignored as no datapoint at the moment.
-    }
-
     override fun generateDefaultUploadConfig(uploadCategoryBuilder: UploadCategoryBuilder) {
         uploadCategoryBuilder.addStandardUploadConfigCell(
             component = this,

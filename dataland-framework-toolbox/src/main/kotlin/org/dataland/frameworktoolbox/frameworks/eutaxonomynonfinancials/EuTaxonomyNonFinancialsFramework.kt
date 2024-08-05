@@ -23,7 +23,7 @@ class EuTaxonomyNonFinancialsFramework : PavedRoadFramework(
     ),
     order = 2,
     enabledFeatures =
-    FrameworkGenerationFeatures.allExcept(FrameworkGenerationFeatures.UploadPage),
+    FrameworkGenerationFeatures.allExcept(FrameworkGenerationFeatures.UploadPage, FrameworkGenerationFeatures.QaModel),
 ) {
 
     private fun configureComponentGroupColorsAndExpansion(root: ComponentGroupApi) {
