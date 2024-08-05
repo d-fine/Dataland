@@ -254,8 +254,7 @@ class Vsme {
         val requestId = createSingleDataVsmeRequest()
         apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Uploader)
         requestControllerApi.patchDataRequest(
-            dataRequestId = UUID.fromString(requestId),
-            accessStatus = AccessStatus.Granted,
+            dataRequestId = UUID.fromString(requestId), accessStatus = AccessStatus.Granted,
         )
         apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.PremiumUser)
         val retrievedCompanyAssociatedVsmeData = executeDataRetrievalWithRetries(
@@ -269,8 +268,7 @@ class Vsme {
 
         apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Uploader)
         requestControllerApi.patchDataRequest(
-            dataRequestId = UUID.fromString(requestId),
-            accessStatus = AccessStatus.Revoked,
+            dataRequestId = UUID.fromString(requestId), accessStatus = AccessStatus.Revoked,
         )
 
         apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.PremiumUser)
