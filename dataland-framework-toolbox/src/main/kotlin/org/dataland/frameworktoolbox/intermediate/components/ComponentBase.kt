@@ -155,6 +155,8 @@ open class ComponentBase(
      */
     fun generateQaModel(dataClassBuilder: DataClassBuilder) {
         val localQaModelGenerator = qaModelGenerator
+
+        // dataModelGenerator != null ==> localQaModelGenerator != null
         require(dataModelGenerator == null || localQaModelGenerator != null) {
             "You should always overwrite dataModelGenerator when using qaModelGenerator"
         }

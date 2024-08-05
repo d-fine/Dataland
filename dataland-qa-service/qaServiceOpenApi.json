@@ -741,6 +741,24 @@
           "Rejected"
         ]
       },
+      "CompanyReport": {
+        "required": [
+          "fileReference"
+        ],
+        "type": "object",
+        "properties": {
+          "fileReference": {
+            "type": "string"
+          },
+          "fileName": {
+            "type": "string"
+          },
+          "publicationDate": {
+            "type": "string",
+            "format": "date"
+          }
+        }
+      },
       "CurrencyDataPoint": {
         "type": "object",
         "properties": {
@@ -920,6 +938,28 @@
           }
         }
       },
+      "QaReportDataPointMapStringCompanyReport": {
+        "required": [
+          "comment",
+          "correctedData",
+          "verdict"
+        ],
+        "type": "object",
+        "properties": {
+          "comment": {
+            "type": "string"
+          },
+          "verdict": {
+            "$ref": "#/components/schemas/QaReportDataPointVerdict"
+          },
+          "correctedData": {
+            "type": "object",
+            "additionalProperties": {
+              "$ref": "#/components/schemas/CompanyReport"
+            }
+          }
+        }
+      },
       "QaReportDataPointVerdict": {
         "type": "string",
         "enum": [
@@ -930,8 +970,14 @@
         ]
       },
       "SfdrData": {
+        "required": [
+          "general"
+        ],
         "type": "object",
         "properties": {
+          "general": {
+            "$ref": "#/components/schemas/SfdrGeneral"
+          },
           "environmental": {
             "$ref": "#/components/schemas/SfdrEnvironmental"
           },
@@ -1155,6 +1201,25 @@
           },
           "highWaterStressAreaExposure": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointYesNoNoEvidenceFound"
+          }
+        }
+      },
+      "SfdrGeneral": {
+        "required": [
+          "general"
+        ],
+        "type": "object",
+        "properties": {
+          "general": {
+            "$ref": "#/components/schemas/SfdrGeneralGeneral"
+          }
+        }
+      },
+      "SfdrGeneralGeneral": {
+        "type": "object",
+        "properties": {
+          "referencedReports": {
+            "$ref": "#/components/schemas/QaReportDataPointMapStringCompanyReport"
           }
         }
       },

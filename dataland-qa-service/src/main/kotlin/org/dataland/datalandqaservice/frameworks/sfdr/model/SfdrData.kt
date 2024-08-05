@@ -3,12 +3,16 @@ package org.dataland.datalandqaservice.frameworks.sfdr.model
 
 import jakarta.validation.Valid
 import org.dataland.datalandqaservice.frameworks.sfdr.model.environmental.SfdrEnvironmental
+import org.dataland.datalandqaservice.frameworks.sfdr.model.general.SfdrGeneral
 import org.dataland.datalandqaservice.frameworks.sfdr.model.social.SfdrSocial
 
 /**
  * The root QA data-model for the Sfdr Framework
  */
 data class SfdrData(
+    @field:Valid()
+    val general: SfdrGeneral,
+
     @field:Valid()
     val environmental: SfdrEnvironmental? = null,
 
