@@ -19,6 +19,7 @@ import org.dataland.e2etests.utils.communityManager.assertAccessDeniedResponseBo
 import org.dataland.e2etests.utils.communityManager.getNewlyStoredRequestsAfterTimestamp
 import org.dataland.e2etests.utils.communityManager.retrieveTimeAndWaitOneMillisecond
 import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
 import org.junit.jupiter.api.assertThrows
@@ -45,7 +46,9 @@ class AccessRequestTest {
         companyId = apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId
         createVSMEDataAndPostAsAdminCompanyOwner(companyId)
 
-        val timestampBeforeSingleRequest = postVSMERequestWithTimestamp(TechnicalUser.PremiumUser, companyId, "2022")
+        val timestampBeforeSingleRequest = postVSMERequestWithTimestampForTechnicalUser(
+            TechnicalUser.PremiumUser, companyId, "2022"
+        )
 
         val dataRequestId = UUID.fromString(
             getNewlyStoredRequestsAfterTimestamp(timestampBeforeSingleRequest)[0].dataRequestId,
@@ -57,16 +60,14 @@ class AccessRequestTest {
             dataRequestId,
             accessStatus = AccessStatus.Granted,
         )
-
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.PremiumUser)
 
         val newlyStoredRequestsSecond = requestControllerApi.getDataRequestsForRequestingUser().filter {
                 storedDataRequest ->
             storedDataRequest.lastModifiedDate > timestampBeforeSingleRequestSecond
         }
-
         assertEquals(AccessStatus.Granted, newlyStoredRequestsSecond[0].accessStatus)
-        dummyFileAlpha.delete()
+        assertTrue(dummyFileAlpha.delete())
     }
 
     @Test
@@ -91,21 +92,25 @@ class AccessRequestTest {
         companyId = apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId
         createVSMEDataAndPostAsAdminCompanyOwner(companyId)
 
-        val timestampBeforeSingleRequest = postVSMERequestWithTimestamp(TechnicalUser.PremiumUser, companyId, "2022")
+        val timestampBeforeSingleRequest = postVSMERequestWithTimestampForTechnicalUser(
+            TechnicalUser.PremiumUser, companyId, "2022"
+        )
 
         val newlyStoredRequests = getNewlyStoredRequestsAfterTimestamp(timestampBeforeSingleRequest)
 
         assertEquals(AccessStatus.Pending, newlyStoredRequests[0].accessStatus)
         assertEquals(RequestStatus.Answered, newlyStoredRequests[0].requestStatus)
 
-        dummyFileAlpha.delete()
+        assertTrue(dummyFileAlpha.delete())
     }
 
     @Test
     fun `company owner gets private request`() {
         companyId = apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId
 
-        val timestampBeforeSingleRequest = postVSMERequestWithTimestamp(TechnicalUser.PremiumUser, companyId, "2022")
+        val timestampBeforeSingleRequest = postVSMERequestWithTimestampForTechnicalUser(
+            TechnicalUser.PremiumUser, companyId, "2022"
+        )
 
         val newlyStoredRequests = getNewlyStoredRequestsAfterTimestamp(timestampBeforeSingleRequest)
 
@@ -116,13 +121,13 @@ class AccessRequestTest {
         createVSMEDataAndPostAsAdminCompanyOwner(companyId)
 
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.PremiumUser)
-        val newlyStoredRequestsSecond = requestControllerApi.getDataRequestsForRequestingUser().filter { storedDataRequest ->
-            storedDataRequest.lastModifiedDate > timestampBeforeSingleRequestSecond
+        val newlyStoredRequestsSecond = requestControllerApi.getDataRequestsForRequestingUser().filter {
+            storedDataRequest -> storedDataRequest.lastModifiedDate > timestampBeforeSingleRequestSecond
         }
         assertEquals(AccessStatus.Pending, newlyStoredRequestsSecond[0].accessStatus)
         assertEquals(RequestStatus.Answered, newlyStoredRequestsSecond[0].requestStatus)
 
-        dummyFileAlpha.delete()
+        assertTrue(dummyFileAlpha.delete())
     }
 
     @Test
@@ -130,7 +135,9 @@ class AccessRequestTest {
         companyId = apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId
         createVSMEDataAndPostAsAdminCompanyOwner(companyId)
 
-        val timestampBeforeSingleRequest = postVSMERequestWithTimestamp(TechnicalUser.PremiumUser, companyId, "2022")
+        val timestampBeforeSingleRequest = postVSMERequestWithTimestampForTechnicalUser(
+            TechnicalUser.PremiumUser, companyId, "2022"
+        )
 
         val newlyStoredRequests = getNewlyStoredRequestsAfterTimestamp(timestampBeforeSingleRequest)
         assertEquals(AccessStatus.Pending, newlyStoredRequests[0].accessStatus)
@@ -152,7 +159,7 @@ class AccessRequestTest {
         }
 
         assertEquals(AccessStatus.Declined, newlyStoredRequestsSecond[0].accessStatus)
-        dummyFileAlpha.delete()
+        assertTrue(dummyFileAlpha.delete())
     }
 
     @Test
@@ -204,7 +211,9 @@ class AccessRequestTest {
         vsmeTestUtils.postVsmeDataset(companyAssociatedVsmeData, listOf(dummyFileAlpha), TechnicalUser.Admin)
     }
 
-    private fun postVSMERequestWithTimestamp(technicalUser: TechnicalUser, companyId: String, year: String): Long {
+    private fun postVSMERequestWithTimestampForTechnicalUser(
+        technicalUser: TechnicalUser, companyId: String, year: String
+    ): Long {
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(technicalUser)
         val singleDataRequest = vsmeTestUtils.setSingleDataVsmeRequest(companyId, setOf(year))
         val timestampBeforeSingleRequest = retrieveTimeAndWaitOneMillisecond()
