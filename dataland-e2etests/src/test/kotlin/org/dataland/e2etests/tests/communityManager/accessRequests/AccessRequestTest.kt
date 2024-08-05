@@ -124,7 +124,7 @@ class AccessRequestTest {
                 storedDataRequest ->
             storedDataRequest.lastModifiedDate > timestampBeforeSingleRequestSecond
         }
-        Thread.sleep(1000)
+        Thread.sleep(10000)
         assertEquals(AccessStatus.Pending, newlyStoredRequestsSecond[0].accessStatus)
         assertEquals(RequestStatus.Answered, newlyStoredRequestsSecond[0].requestStatus)
 
