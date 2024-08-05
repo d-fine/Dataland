@@ -45,8 +45,14 @@ data class MessageEntity(
          * @param contact which should be checked if it is an email address or the company owner keyword
          * @return true if either it was confirmed that it is a email address or the company owner keyword
          */
-        fun isContact(contact: String): Boolean {
-            return contact.isEmailAddress() || contact == COMPANY_OWNER_KEYWORD
+        private fun isContact(contact: String, companyRolesManager: CompanyRolesManager, companyId: String): Boolean {
+            return contact.isEmailAddress() ||
+                (
+                    contact == COMPANY_OWNER_KEYWORD && companyRolesManager.getCompanyRoleAssignmentsByParameters(
+                        CompanyRole.CompanyOwner, companyId, null,
+                    )
+                        .isNotEmpty()
+                    )
         }
 
         /**
@@ -54,14 +60,12 @@ data class MessageEntity(
          * exception is thrown
          * @param contact the contact which should be checked for validity
          */
-        fun validateContact(contact: String) {
-            // TODO we want to check whether we want to validate if a company owner exists!
-
-            if (!isContact(contact)) {
+        fun validateContact(contact: String, companyRolesManager: CompanyRolesManager, companyId: String) {
+            if (!isContact(contact, companyRolesManager, companyId)) {
                 throw InvalidInputApiException(
                     "Invalid contact $contact",
                     "The provided contact $contact is not valid. " +
-                        "Please specify a valid email address or $COMPANY_OWNER_KEYWORD.",
+                        "Please specify a valid email address or when a company owner exists $COMPANY_OWNER_KEYWORD.",
                 )
             }
         }
@@ -95,7 +99,7 @@ data class MessageEntity(
 
     init {
         require(contacts.isNotEmpty())
-        require(contacts.split(emailSeparator).all { isContact(it) })
+        require(contacts.split(emailSeparator).all { it.isEmailAddress() || it == COMPANY_OWNER_KEYWORD })
         require(message?.isNotBlank() ?: true)
     }
 
