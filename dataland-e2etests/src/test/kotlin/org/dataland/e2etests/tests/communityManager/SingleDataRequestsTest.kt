@@ -218,10 +218,11 @@ class SingleDataRequestsTest {
             }
             check400ClientExceptionErrorMessage(clientException)
             val responseBody = (clientException.response as ClientError<*>).body as String
-            assertTrue(responseBody.contains("Invalid email address \\\"${it[0]}\\\""))
+            assertTrue(responseBody.contains("Invalid contact ${it[0]}"))
             assertTrue(
                 responseBody.contains(
-                    "The email address \\\"${it[0]}\\\" you have provided has an invalid format.",
+                    "The provided contact ${it[0]} is not valid. Please specify a valid email address " +
+                        "or when a company owner exists COMPANY_OWNER.",
                 ),
             )
         }
