@@ -156,7 +156,7 @@ import SubmitButton from '@/components/forms/parts/SubmitButton.vue';
 import SubmitSideBar from '@/components/forms/parts/SubmitSideBar.vue';
 import YesNoNaFormField from '@/components/forms/parts/fields/YesNoNaFormField.vue';
 import UploadReports from '@/components/forms/parts/UploadReports.vue';
-import FinancialShareFormField from '@/components/forms/parts/kpiSelection/FinancialShareFormField.vue';
+import FinancialShareExtendedDataPointFormField from '@/components/forms/parts/kpiSelection/FinancialShareExtendedDataPointFormField.vue';
 import AlignedActivitiesFormField from '@/components/forms/parts/kpiSelection/AlignedActivitiesFormField.vue';
 import NonAlignedActivitiesFormField from '@/components/forms/parts/kpiSelection/NonAlignedActivitiesFormField.vue';
 import AssuranceFormField from '@/components/forms/parts/kpiSelection/AssuranceFormField.vue';
@@ -211,7 +211,7 @@ export default defineComponent({
     RadioButtonsFormField,
     PercentageFormField,
     UploadReports,
-    FinancialShareFormField,
+    FinancialShareExtendedDataPointFormField,
     AlignedActivitiesFormField,
     AssuranceFormField,
     NonAlignedActivitiesFormField,

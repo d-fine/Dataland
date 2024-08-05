@@ -49,8 +49,15 @@ class V19__MigrateEutaxonomyNonFinancialsExtendedDatapoints : BaseJavaMigration(
      */
     private fun checkForRelevantFieldsInJsonObjectKeys(jsonObject: JSONObject) {
         jsonObject.keys().forEach {
-            if (it in relevantFields) {
+            if (it == "absoluteShare") {
+                val absoluteShare = jsonObject[it] as JSONObject
+                val amount = absoluteShare["amount"]
+                absoluteShare.remove("amount")
+                absoluteShare.put("value", amount)
+            } else if (it in relevantFields) {
                 createNestedJsonObject(jsonObject, it)
+            } else {
+                // Do nothing
             }
             checkRecursivelyForBaseDataPointsInJsonObject(jsonObject, it)
         }

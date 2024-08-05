@@ -16,6 +16,7 @@
         <NumberFormField
           :name="'value'"
           :validation-label="validationLabel"
+          :v-bind="{ placeholder: customPlaceholder }"
           :validation="validation"
           :unit="unit"
           input-class="col-12"
@@ -61,6 +62,10 @@ export default defineComponent({
     ...FormFieldPropsWithPlaceholder,
     unit: {
       type: String,
+    },
+    customPlaceholder: {
+      type: String,
+      default: 'Absolute Value',
     },
   },
   methods: {

@@ -1,7 +1,7 @@
 <template>
   <div data-test="activityFormElement">
     <ActivitySelector />
-    <FinancialShareFormField
+    <FinancialShareExtendedDataPointFormField
       name="share"
       label="Share"
       description="Relative and absolute share of the underlying cash flow"
@@ -20,7 +20,7 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import FinancialShareFormField from '@/components/forms/parts/kpiSelection/FinancialShareFormField.vue';
+import FinancialShareExtendedDataPointFormField from '@/components/forms/parts/kpiSelection/FinancialShareExtendedDataPointFormField.vue';
 import ObjectivesFormField from '@/components/forms/parts/kpiSelection/ObjectivesFormField.vue';
 import ActivitySelector from '@/components/forms/parts/elements/derived/ActivitySelector.vue';
 import YesNoFormField from '@/components/forms/parts/fields/YesNoFormField.vue';
@@ -30,7 +30,7 @@ export default defineComponent({
   components: {
     YesNoFormField,
     ActivitySelector,
-    FinancialShareFormField,
+    FinancialShareExtendedDataPointFormField,
     ObjectivesFormField,
   },
 });
