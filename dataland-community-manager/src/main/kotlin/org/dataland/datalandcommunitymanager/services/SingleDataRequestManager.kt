@@ -119,10 +119,8 @@ constructor(
         reportingPeriodsOfStoredDataRequests: MutableSet<String>,
     ) {
         if (shouldCreateAccessRequestToPrivateDataset(
-                dataType = preprocessedRequest.dataType,
-                companyId = preprocessedRequest.companyId,
-                reportingPeriod = reportingPeriod,
-                userId = preprocessedRequest.userId,
+                dataType = preprocessedRequest.dataType, companyId = preprocessedRequest.companyId,
+                reportingPeriod = reportingPeriod, userId = preprocessedRequest.userId,
             )
         ) {
             dataAccessManager.createAccessRequestToPrivateDataset(
@@ -133,8 +131,7 @@ constructor(
             reportingPeriodsOfStoredAccessRequests.add(reportingPeriod)
         } else {
             if (utils.existsDataRequestWithNonFinalStatus(
-                    companyId = preprocessedRequest.companyId,
-                    framework = preprocessedRequest.dataType,
+                    companyId = preprocessedRequest.companyId, framework = preprocessedRequest.dataType,
                     reportingPeriod = reportingPeriod,
                 )
             ) {
