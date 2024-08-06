@@ -57,7 +57,6 @@ class V8__AddAccessStatusToRequestStatusHistory : BaseJavaMigration() {
 
         while (requestsForVsmeDataType.next()) {
             val requestId = requestsForVsmeDataType.getString("data_request_id")
-            // TODO happy to discuss the access status value for existing vsme requests
             val preparedStatement = context.connection.prepareStatement(query)
             preparedStatement.setString(1, "Declined")
             preparedStatement.setString(2, requestId)

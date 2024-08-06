@@ -123,7 +123,6 @@ class DataAccessManager(
             val modificationTime = Instant.now().toEpochMilli()
             dataRequestEntity.lastModifiedDate = modificationTime
             dataRequestRepository.save(dataRequestEntity)
-            // TODO question to the reviewer, should AccessStatus.Public also be checked?
             if (dataRequestEntity.accessStatus == AccessStatus.Revoked || dataRequestEntity.accessStatus ==
                 AccessStatus.Declined
             ) {
