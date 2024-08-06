@@ -1,13 +1,14 @@
 package org.dataland.e2etests.tests
 
+import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandqaservice.openApiClient.infrastructure.ClientException
 import org.dataland.datalandqaservice.openApiClient.model.QaReportMetaInformation
-import org.dataland.datalandqaservice.openApiClient.model.SfdrData
 import org.dataland.e2etests.auth.GlobalAuth.withTechnicalUser
 import org.dataland.e2etests.auth.TechnicalUser
 import org.dataland.e2etests.utils.ApiAccessor
 import org.dataland.e2etests.utils.DocumentManagerAccessor
 import org.dataland.e2etests.utils.QaApiAccessor
+import org.dataland.e2etests.utils.QaReportTestDataProvider
 import org.dataland.e2etests.utils.UploadConfiguration
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeAll
@@ -16,6 +17,7 @@ import org.junit.jupiter.api.TestInstance
 import org.junit.jupiter.api.assertThrows
 import org.springframework.http.HttpStatus
 import java.util.*
+import org.dataland.datalandqaservice.openApiClient.model.SfdrData as SfdrQaReport
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class QaReportControllerTest {
@@ -23,8 +25,8 @@ class QaReportControllerTest {
     private val documentManagerAccessor = DocumentManagerAccessor()
     private val qaApiAccessor = QaApiAccessor()
 
-    private val listOfOneSfdrDataSet = apiAccessor.testDataProviderForSfdrData.getTData(1)
-    private val listOfOneCompanyInformation = apiAccessor.testDataProviderForSfdrData
+    private val testSfdrDataset = apiAccessor.testDataProviderForSfdrData.getTData(1)
+    private val testCompanyInformation = apiAccessor.testDataProviderForSfdrData
         .getCompanyInformationWithoutIdentifiers(1)
 
     @BeforeAll
@@ -32,19 +34,20 @@ class QaReportControllerTest {
         documentManagerAccessor.uploadAllTestDocumentsAndAssurePersistence()
     }
 
-    private fun postEmptyQaReportForNewDataId(bypassQa: Boolean): QaReportMetaInformation {
-        val listOfUploadInfo = apiAccessor.uploadCompanyAndFrameworkDataForOneFramework(
-            listOfOneCompanyInformation,
-            listOfOneSfdrDataSet,
+    private fun postSfdrQaReportForNewDataId(
+        sfdrQaReport: SfdrQaReport = SfdrQaReport(),
+        bypassQa: Boolean,
+    ): QaReportMetaInformation {
+        val uploadInfo = apiAccessor.uploadCompanyAndFrameworkDataForOneFramework(
+            testCompanyInformation,
+            testSfdrDataset,
             apiAccessor::sfdrUploaderFunction,
             uploadConfig = UploadConfiguration(bypassQa = bypassQa),
             ensureQaPassed = bypassQa,
         )
+        val dataIdOfUpload = uploadInfo.first().actualStoredDataMetaInfo!!.dataId
         return withTechnicalUser(TechnicalUser.Admin) {
-            qaApiAccessor.sfdrQaReportControllerApi.postQaReport(
-                listOfUploadInfo[0].actualStoredDataMetaInfo!!.dataId,
-                SfdrData(),
-            )
+            qaApiAccessor.sfdrQaReportControllerApi.postQaReport(dataIdOfUpload, sfdrQaReport)
         }
     }
 
@@ -70,7 +73,7 @@ class QaReportControllerTest {
 
     @Test
     fun `post a qa report and check retrieval permissions`() {
-        val reportMetaInfo = postEmptyQaReportForNewDataId(bypassQa = false)
+        val reportMetaInfo = postSfdrQaReportForNewDataId(bypassQa = false)
 
         withTechnicalUser(TechnicalUser.Admin) { assertCanAccessQaDataset(reportMetaInfo) }
         withTechnicalUser(TechnicalUser.Reviewer) { assertCanAccessQaDataset(reportMetaInfo) }
@@ -80,7 +83,7 @@ class QaReportControllerTest {
 
     @Test
     fun `post a qa report and check that it is deleted with the dataset`() {
-        val reportMetaInfo = postEmptyQaReportForNewDataId(bypassQa = true)
+        val reportMetaInfo = postSfdrQaReportForNewDataId(bypassQa = true)
         withTechnicalUser(TechnicalUser.Admin) {
             assertCanAccessQaDataset(reportMetaInfo)
             apiAccessor.dataDeletionControllerApi.deleteCompanyAssociatedData(reportMetaInfo.dataId)
@@ -95,31 +98,23 @@ class QaReportControllerTest {
         }
     }
 
-// TODO
-//    @Test
-//    fun `Post a QA report and check that the report can be retrieved`() {
-//        val dataId = postSfdrDatasetAndRetrieveDataId()
-//        val sfdrData = qaApiAccessor.createFullQaSfdrData()
-//        apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reviewer)
-//        val qaReportMetaInfo = qaApiAccessor.sfdrQaReportControllerApi.postQaReport(dataId, sfdrData)
-//
-//        val retrievedReport = qaApiAccessor.sfdrQaReportControllerApi.getQaReport(
-//            dataId = dataId,
-//            qaReportId = qaReportMetaInfo.qaReportId,
-//        )
-//
-//        assertEquals(retrievedReport.metaInfo.reporterUserId, dataReviewerUserId)
-//        assertEquals(retrievedReport.metaInfo.dataId, dataId)
-//        assertEquals(retrievedReport.metaInfo.dataType, "sfdr")
-//        assertEquals(retrievedReport.report, sfdrData, "the uploaded and retrieved reports do not match")
-//    }
-//
+    @Test
+    fun `Post a QA report and check that the report can be retrieved`() {
+        val qaReportTestDataProvider = QaReportTestDataProvider(SfdrQaReport::class.java)
+        val sfdrQaReportWithOneCorrection = qaReportTestDataProvider.getTData(1).first()
 
-//
-//    private fun postSfdrDatasetAndRetrieveDataId(): String {
-//        apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
-//        return apiAccessor.dataControllerApiForSfdrData.postCompanyAssociatedSfdrData(
-//            dummyCompanyAssociatedData, true,
-//        ).dataId
-//    }
+        val sfdrQaReportMetaInfo = postSfdrQaReportForNewDataId(sfdrQaReportWithOneCorrection, true)
+
+        val userUploadingTheQaReport = TechnicalUser.Admin
+        withTechnicalUser(userUploadingTheQaReport) {
+            val retrievedReport = qaApiAccessor.sfdrQaReportControllerApi.getQaReport(
+                sfdrQaReportMetaInfo.dataId,
+                sfdrQaReportMetaInfo.qaReportId,
+            )
+            assertEquals(userUploadingTheQaReport.technicalUserId, retrievedReport.metaInfo.reporterUserId)
+            assertEquals(sfdrQaReportMetaInfo.dataId, retrievedReport.metaInfo.dataId)
+            assertEquals(DataTypeEnum.sfdr.value, retrievedReport.metaInfo.dataType)
+            assertEquals(sfdrQaReportWithOneCorrection, retrievedReport.report)
+        }
+    }
 }
