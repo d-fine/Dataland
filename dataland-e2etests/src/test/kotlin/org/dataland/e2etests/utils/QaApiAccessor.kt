@@ -73,43 +73,4 @@ class QaApiAccessor {
             return (metaDataControllerApi.getDataMetaInfo(metaData.dataId).qaStatus == QaStatus.Accepted)
         }
     }
-
-// TODO
-//    fun createFullQaSfdrData(): SfdrData {
-//        return SfdrData(
-//            environmental = SfdrEnvironmental(
-//                greenhouseGasEmissions = SfdrEnvironmentalGreenhouseGasEmissions(),
-//                energyPerformance = SfdrEnvironmentalEnergyPerformance(),
-//                biodiversity = SfdrEnvironmentalBiodiversity(),
-//                water = SfdrEnvironmentalWater(),
-//                waste = SfdrEnvironmentalWaste(),
-//                emissions = SfdrEnvironmentalEmissions(),
-//            ),
-//            social = SfdrSocial(
-//                socialAndEmployeeMatters = SfdrSocialSocialAndEmployeeMatters(),
-//                greenSecurities = SfdrSocialGreenSecurities(),
-//                humanRights = SfdrSocialHumanRights(),
-//                antiCorruptionAndAntiBribery = SfdrSocialAntiCorruptionAndAntiBribery(),
-//            ),
-//        )
-//    }
-//
-//    fun createQaSfdrDataWithOneFullQaDataPoint(): SfdrData {
-//        return SfdrData(
-//            environmental = SfdrEnvironmental(
-//                biodiversity = SfdrEnvironmentalBiodiversity(
-//                    primaryForestAndWoodedLandOfNativeSpeciesExposure =
-//                    QaReportDataPointExtendedDataPointYesNoNoEvidenceFound(
-//                        comment = "some comment",
-//                        verdict = QaReportDataPointVerdict.QaInconclusive,
-//                        correctedData = ExtendedDataPointYesNoNoEvidenceFound(
-//                            value = ExtendedDataPointYesNoNoEvidenceFound.Value.Yes,
-//                            quality = ExtendedDataPointYesNoNoEvidenceFound.Quality.Estimated,
-//                        ),
-//                    ),
-//                ),
-//            ),
-//
-//        )
-//    }
 }
