@@ -2,6 +2,7 @@ package org.dataland.datalandexternalstorage.services
 
 import jakarta.annotation.PostConstruct
 import org.dataland.datalandeurodatclient.openApiClient.api.SafeDepositDatabaseResourceApi
+import org.dataland.datalandeurodatclient.openApiClient.infrastructure.ClientException
 import org.dataland.datalandeurodatclient.openApiClient.model.SafeDepositDatabaseRequest
 import org.dataland.datalandeurodatclient.openApiClient.model.SafeDepositDatabaseResponse
 import org.dataland.datalandexternalstorage.utils.EurodatDataStoreUtils.retryWrapperMethod
@@ -54,10 +55,14 @@ class EurodatSafeDepositBoxInitializer(
     }
 
     private fun isSafeDepositBoxAvailable() {
-        if (postSafeDepositBoxCreationRequest().response.contains("Database already exists")) {
-            logger.info("Safe deposit box exists.")
-        } else {
-            throw IllegalArgumentException("Received unexpected response when trying to create safe deposit box.")
+        try {
+            postSafeDepositBoxCreationRequest()
+        } catch (exception: Exception) {
+            if (exception is ClientException && exception.statusCode == 409) {
+                logger.info("SafeDepositBox already exists.")
+            } else {
+                throw exception
+            }
         }
     }
 
