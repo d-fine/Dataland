@@ -63,7 +63,8 @@ class AccessRequestTest {
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.PremiumUser)
 
         val newlyStoredRequestsSecond = requestControllerApi.getDataRequestsForRequestingUser().filter {
-                storedDataRequest -> storedDataRequest.lastModifiedDate > timestampBeforeSingleRequestSecond
+                storedDataRequest ->
+            storedDataRequest.lastModifiedDate > timestampBeforeSingleRequestSecond
         }
         assertEquals(AccessStatus.Granted, newlyStoredRequestsSecond[0].accessStatus)
         assertTrue(dummyFileAlpha.delete())
@@ -168,7 +169,8 @@ class AccessRequestTest {
         val listOfTechnicalUser = listOf(TechnicalUser.Admin, TechnicalUser.PremiumUser)
         listOfTechnicalUser.forEach { technicalUser ->
             val timestampBeforeSingleRequest = postVSMERequestWithTimestampForTechnicalUser(
-                technicalUser, companyId,"2022")
+                technicalUser, companyId, "2022",
+            )
 
             val newlyStoredRequests = getNewlyStoredRequestsAfterTimestamp(timestampBeforeSingleRequest)
 
