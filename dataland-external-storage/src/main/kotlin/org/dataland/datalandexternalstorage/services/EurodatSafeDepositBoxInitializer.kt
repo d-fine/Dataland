@@ -1,7 +1,6 @@
 package org.dataland.datalandexternalstorage.services
 
 import jakarta.annotation.PostConstruct
-import java.net.HttpURLConnection
 import org.dataland.datalandeurodatclient.openApiClient.api.SafeDepositDatabaseResourceApi
 import org.dataland.datalandeurodatclient.openApiClient.infrastructure.ClientException
 import org.dataland.datalandeurodatclient.openApiClient.model.SafeDepositDatabaseRequest
@@ -12,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
 import org.springframework.stereotype.Component
+import java.net.HttpURLConnection
 
 /**
  * Simple implementation of the initialization of the eurodat minabo safedepositbox
