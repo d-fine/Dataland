@@ -3,6 +3,7 @@ package org.dataland.datalandqaservice.frameworks.eutaxonomynonfinancials.model
 
 import jakarta.validation.Valid
 import org.dataland.datalandqaservice.frameworks.eutaxonomynonfinancials.model.capex.EutaxonomyNonFinancialsCapex
+import org.dataland.datalandqaservice.frameworks.eutaxonomynonfinancials.model.general.EutaxonomyNonFinancialsGeneral
 import org.dataland.datalandqaservice.frameworks.eutaxonomynonfinancials.model.opex.EutaxonomyNonFinancialsOpex
 import org.dataland.datalandqaservice.frameworks.eutaxonomynonfinancials.model.revenue.EutaxonomyNonFinancialsRevenue
 
@@ -10,6 +11,9 @@ import org.dataland.datalandqaservice.frameworks.eutaxonomynonfinancials.model.r
  * The root QA data-model for the Eutaxonomy-non-financials Framework
  */
 data class EutaxonomyNonFinancialsData(
+    @field:Valid()
+    val general: EutaxonomyNonFinancialsGeneral? = null,
+
     @field:Valid()
     val revenue: EutaxonomyNonFinancialsRevenue? = null,
 
