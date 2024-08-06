@@ -55,7 +55,7 @@ class QaReportControllerTest(
         }
     }
 
-    private fun createEmptyQaReport(): QaReportMetaInformation {
+    private fun createMockDataIdForAnSfdrDataset(): String {
         val dataId = UUID.randomUUID().toString()
         Mockito.`when`(metaDataControllerApi.getDataMetaInfo(dataId)).thenReturn(
             DataMetaInformation(
@@ -68,6 +68,11 @@ class QaReportControllerTest(
                 uploadTime = 0,
             ),
         )
+        return dataId
+    }
+
+    private fun createEmptyQaReport(existingDataId: String? = null): QaReportMetaInformation {
+        val dataId = existingDataId ?: createMockDataIdForAnSfdrDataset()
         return qaReportController.postQaReport(dataId, SfdrData()).body!!
     }
 
@@ -158,7 +163,27 @@ class QaReportControllerTest(
     }
 
     @Test
-    fun `posting a qa report for a non-matching data type should fail`() {
+    fun `check that the reviewer user id filter works`() {
+        val dataId = createMockDataIdForAnSfdrDataset()
+        withReviewerAuthentication("reviewer-1") {
+            createEmptyQaReport(dataId)
+            assertEquals(
+                1,
+                qaReportController.getAllQaReportsForDataset(
+                    dataId, false, "reviewer-1",
+                ).body!!.size,
+            )
+            assertEquals(
+                0,
+                qaReportController.getAllQaReportsForDataset(
+                    dataId, false, "other-reviewer",
+                ).body!!.size,
+            )
+        }
+    }
+
+    @Test
+    fun `posting a qa report for a non matching data type should fail`() {
         withReviewerAuthentication {
             val dataId = UUID.randomUUID().toString()
             Mockito.`when`(metaDataControllerApi.getDataMetaInfo(dataId)).thenReturn(
@@ -183,7 +208,7 @@ class QaReportControllerTest(
     }
 
     @Test
-    fun `requesting a qa report for a non-matching data type should fail`() {
+    fun `requesting a qa report for a non matching data type should fail`() {
         val dataId = UUID.randomUUID().toString()
         val reportId = UUID.randomUUID().toString()
         qaReportRepository.save(

@@ -38,7 +38,7 @@ open class QaReportController<QaReportType>(
             reporterUserId = reportingUser.userId,
             uploadTime = uploadTime,
         )
-        val apiModel = reportEntity.toApiModel(reportingUser)
+        val apiModel = reportEntity.toMetaInformationApiModel()
         return ResponseEntity.ok(apiModel)
     }
 
@@ -50,7 +50,7 @@ open class QaReportController<QaReportType>(
         logger.info(qaLogMessageBuilder.getQaReportMessage(qaReportId, dataId))
         qaReportSecurityPolicy.ensureUserCanViewQaReportForDataId(dataId, user)
         val reportEntity = qaReportManager.getQaReportById(dataId, dataType, qaReportId)
-        val apiModel = reportEntity.toFullApiModel(objectMapper, clazz, user)
+        val apiModel = reportEntity.toFullApiModel(objectMapper, clazz)
         return ResponseEntity.ok(apiModel)
     }
 
@@ -82,7 +82,7 @@ open class QaReportController<QaReportType>(
             showInactive = showInactive ?: false,
         )
         val apiModel = reportEntities.map {
-            it.toFullApiModel(objectMapper, clazz, user)
+            it.toFullApiModel(objectMapper, clazz)
         }
 
         return ResponseEntity.ok(apiModel)

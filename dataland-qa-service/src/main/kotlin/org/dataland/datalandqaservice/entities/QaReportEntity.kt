@@ -5,10 +5,8 @@ import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.Id
 import jakarta.persistence.Table
-import org.dataland.datalandqaservice.org.dataland.datalandqaservice.interfaces.ApiModelConversion
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.reports.QaReportMetaInformation
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.reports.QaReportWithMetaInformation
-import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 
 /**
  * The database entity for storing metadata regarding QA reports uploaded to dataland
@@ -39,7 +37,7 @@ data class QaReportEntity(
 
     @Column(name = "active", nullable = false)
     var active: Boolean,
-) : ApiModelConversion<QaReportMetaInformation> {
+) {
 
     /**
      * Method to convert the QA report entity to a model containing
@@ -51,16 +49,20 @@ data class QaReportEntity(
     fun <ReportType> toFullApiModel(
         objectMapper: ObjectMapper,
         clazz: Class<ReportType>,
-        viewingUser: DatalandAuthentication?,
     ): QaReportWithMetaInformation<ReportType> {
         val report = objectMapper.readValue(qaReport, clazz)
         return QaReportWithMetaInformation(
-            metaInfo = toApiModel(viewingUser),
+            metaInfo = toMetaInformationApiModel(),
             report = report,
         )
     }
 
-    override fun toApiModel(viewingUser: DatalandAuthentication?): QaReportMetaInformation {
+    /**
+     * Method to convert the QA report entity to a model containing
+     * only the meta information of the report
+     * @param viewingUser the user viewing the report
+     */
+    fun toMetaInformationApiModel(): QaReportMetaInformation {
         return QaReportMetaInformation(
             dataId = dataId,
             qaReportId = qaReportId,

@@ -39,22 +39,24 @@ class QaReportSecurityPolicy(
             userAuthenticatedMetadataController.getDataMetaInfo(dataId)
             return
         } catch (apiRequestException: ClientException) {
-            val exceptionToRelay = if (apiRequestException.statusCode == HttpStatus.UNAUTHORIZED.value() ||
-                apiRequestException.statusCode == HttpStatus.FORBIDDEN.value()
-            ) {
-                InsufficientRightsApiException(
-                    "Missing required access rights",
-                    "You do not have the required access rights to view the data id: $dataId",
-                    apiRequestException,
-                )
-            } else if (apiRequestException.statusCode == HttpStatus.NOT_FOUND.value()) {
-                ResourceNotFoundApiException(
-                    "Data id not found",
-                    "No data id with the id: $dataId could be found.",
-                    apiRequestException,
-                )
-            } else {
-                apiRequestException
+            val exceptionToRelay = when (apiRequestException.statusCode) {
+                HttpStatus.FORBIDDEN.value() -> {
+                    InsufficientRightsApiException(
+                        "Missing required access rights",
+                        "You do not have the required access rights to view the data id: $dataId",
+                        apiRequestException,
+                    )
+                }
+
+                HttpStatus.NOT_FOUND.value() -> {
+                    ResourceNotFoundApiException(
+                        "Data id not found",
+                        "No data id with the id: $dataId could be found.",
+                        apiRequestException,
+                    )
+                }
+
+                else -> apiRequestException
             }
             throw exceptionToRelay
         }

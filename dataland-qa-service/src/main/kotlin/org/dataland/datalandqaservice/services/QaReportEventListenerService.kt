@@ -33,8 +33,8 @@ class QaReportEventListenerService(
     private val logger = LoggerFactory.getLogger(javaClass)
 
     /**
-     * Method that listens to the storage_queue and stores data into the database in case there is a message on the
-     * storage_queue
+     * Method that listens to the Request Received queue for potential data deletion messages
+     * and deletes the corresponding QA reports accordingly
      * @param payload the content of the message
      * @param correlationId the correlation ID of the current user process
      * @param type the type of the message
