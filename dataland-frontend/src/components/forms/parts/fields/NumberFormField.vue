@@ -71,6 +71,7 @@ export default defineComponent({
     },
     /**
      * Determines the value of the placeholder
+     * @returns the placeholder
      */
     determinePlaceholder() {
       if (this.placeholder) {
