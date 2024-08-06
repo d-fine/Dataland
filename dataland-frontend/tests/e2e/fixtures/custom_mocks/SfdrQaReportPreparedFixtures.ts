@@ -8,7 +8,9 @@ import {
 } from '@clients/qaservice';
 
 /**
- * TODO
+ * Generates sfdr qa report prepared fixtures by generating random sfdr-qa-reports and
+ * afterwards manipulating some fields via manipulator-functions to set specific values for those fields.
+ * @returns the prepared fixtures
  */
 export function generateSfdrQaReportPreparedFixtures(): Array<FixtureData<SfdrQaReport>> {
   const preparedFixtures = [];
@@ -22,8 +24,8 @@ export function generateSfdrQaReportPreparedFixtures(): Array<FixtureData<SfdrQa
 }
 
 /**
- * TODO
- * @param input
+ * Modifies the passed fixture to contain a specific company name to identify it amongst all fixtures.
+ * @param input generated prepared fixture to modify
  */
 function manipulateFixtureForSfdrDatasetWithOneCorrection(input: FixtureData<SfdrQaReport>): FixtureData<SfdrQaReport> {
   input.companyInformation.companyName = 'sfdr-qa-report-with-one-correction';
@@ -31,7 +33,8 @@ function manipulateFixtureForSfdrDatasetWithOneCorrection(input: FixtureData<Sfd
 }
 
 /**
- * TODO
+ * Generates a qa-report for sfdr with a correction for one specific field.
+ * @returns the generated sfdr qa report
  */
 function generateSfdrQaReportWithCorrectionForPrimaryForestAndWoodedLand(): SfdrQaReport {
   return {
