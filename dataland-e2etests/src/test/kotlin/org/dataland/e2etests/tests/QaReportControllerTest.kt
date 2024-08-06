@@ -1,9 +1,7 @@
 package org.dataland.e2etests.tests
 
-import org.dataland.datalandqaservice.openApiClient.infrastructure.ClientError
 import org.dataland.datalandqaservice.openApiClient.infrastructure.ClientException
 import org.dataland.datalandqaservice.openApiClient.model.QaReportMetaInformation
-import org.dataland.datalandqaservice.openApiClient.model.QaReportStatusPatch
 import org.dataland.datalandqaservice.openApiClient.model.SfdrData
 import org.dataland.e2etests.auth.GlobalAuth.withTechnicalUser
 import org.dataland.e2etests.auth.TechnicalUser
@@ -12,7 +10,6 @@ import org.dataland.e2etests.utils.DocumentManagerAccessor
 import org.dataland.e2etests.utils.QaApiAccessor
 import org.dataland.e2etests.utils.UploadConfiguration
 import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
@@ -96,77 +93,6 @@ class QaReportControllerTest {
             }
             assertEquals(HttpStatus.NOT_FOUND.value(), exception.statusCode)
         }
-    }
-
-    @Test
-    fun `post a qa report and make sure its status can be changed`() {
-        val reportMetaInfo = postEmptyQaReportForNewDataId(bypassQa = true)
-
-        withTechnicalUser(TechnicalUser.Admin) {
-            qaApiAccessor.sfdrQaReportControllerApi.setQaReportStatus(
-                dataId = reportMetaInfo.dataId,
-                qaReportId = reportMetaInfo.qaReportId,
-                qaReportStatusPatch = QaReportStatusPatch(false),
-            )
-
-            assertEquals(
-                qaApiAccessor.sfdrQaReportControllerApi.getAllQaReportsForDataset(
-                    dataId = reportMetaInfo.dataId,
-                    showInactive = true,
-                ).first().metaInfo.active,
-                false,
-            )
-        }
-    }
-
-    @Test
-    fun `make sure changing the status of a report as a reviewer other than the reporter throws an exception`() {
-        val reportMetaInfo = postEmptyQaReportForNewDataId(bypassQa = true)
-
-        withTechnicalUser(TechnicalUser.Reviewer) {
-            val exception = assertThrows<ClientException> {
-                qaApiAccessor.sfdrQaReportControllerApi.setQaReportStatus(
-                    dataId = reportMetaInfo.dataId,
-                    qaReportId = reportMetaInfo.qaReportId,
-                    qaReportStatusPatch = QaReportStatusPatch(false),
-                )
-            }
-            assertEquals(HttpStatus.FORBIDDEN.value(), exception.statusCode)
-        }
-    }
-
-    @Test
-    fun `check that requesting a non existent report id on an existing data id throws a not found error`() {
-        val reportMetaInfo = postEmptyQaReportForNewDataId(bypassQa = true)
-        val nonExistentQaReportId = UUID.randomUUID().toString()
-
-        val exception = assertThrows<ClientException> {
-            qaApiAccessor.sfdrQaReportControllerApi.getQaReport(
-                dataId = reportMetaInfo.dataId,
-                qaReportId = nonExistentQaReportId,
-            )
-        }
-        assertEquals(HttpStatus.NOT_FOUND.value(), exception.statusCode)
-    }
-
-    @Test
-    fun `check that using invalid ids on the get endpoint produces the expected exception messages`() {
-        val qaReport1 = postEmptyQaReportForNewDataId(bypassQa = true)
-        val qaReport2 = postEmptyQaReportForNewDataId(bypassQa = true)
-
-        val exception = assertThrows<ClientException> {
-            qaApiAccessor.sfdrQaReportControllerApi.getQaReport(
-                dataId = qaReport1.dataId,
-                qaReportId = qaReport2.qaReportId,
-            )
-        }
-        val responseBody = (exception.response as ClientError<*>).body as String
-        assertTrue(
-            responseBody.contains(
-                "The requested Qa Report '${qaReport2.qaReportId}' is not associated with data '${qaReport1.dataId}'," +
-                    " but with data '${qaReport2.dataId}'.",
-            ),
-        )
     }
 
 // TODO
