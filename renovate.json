@@ -1,8 +1,12 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "configMigration": true,
-  "extends": ["config:best-practices"],
-  "labels": ["dependencies"],
+  "extends": [
+    "config:best-practices"
+  ],
+  "labels": [
+    "dependencies"
+  ],
   "separateMinorPatch": true,
   "separateMajorMinor": true,
   "separateMultipleMajor": true,
@@ -15,16 +19,25 @@
   ],
   "packageRules": [
     {
-      "matchUpdateTypes": ["major"],
-      "labels": ["dependencies", "MAJOR"]
+      "matchUpdateTypes": [
+        "major"
+      ],
+      "labels": [
+        "dependencies",
+        "MAJOR"
+      ]
     },
     {
       "groupName": "formkit-packages",
-      "matchPackagePatterns": ["^@formkit/"]
+      "matchPackageNames": [
+        "/^@formkit//"
+      ]
     },
     {
       "groupName": "cloudevents",
-      "matchPackagePatterns": ["cloudevents"]
+      "matchPackageNames": [
+        "/cloudevents/"
+      ]
     }
   ]
 }
