@@ -1,0 +1,57 @@
+[
+	{
+		"companyInformation": {
+			"companyName": "sfdr-qa-report-with-one-correction",
+			"headquarters": "Schillerfield",
+			"headquartersPostalCode": null,
+			"sector": "partnerships",
+			"identifiers": {
+				"Lei": [],
+				"Isin": [
+					"Qon9hEXd5ufF"
+				],
+				"PermId": [
+					"6737HGeUGS"
+				],
+				"Ticker": [],
+				"Duns": [],
+				"VatNumber": [
+					"EiPzYyHl6"
+				],
+				"CompanyRegistrationNumber": [
+					"vVZRklmfBFn06sk"
+				]
+			},
+			"countryCode": "CO",
+			"companyContactDetails": [
+				"Priscilla.Yost@example.com",
+				"Heaven.Runolfsdottir@example.com",
+				"Bernie47@example.com",
+				"Isidro.Smith16@example.com"
+			],
+			"companyAlternativeNames": [
+				"Gutmann LLC",
+				"Lynch Group",
+				"Weimann, Marks and Fay"
+			],
+			"companyLegalForm": null,
+			"website": null,
+			"isTeaserCompany": false
+		},
+		"t": {
+			"environmental": {
+				"biodiversity": {
+					"primaryForestAndWoodedLandOfNativeSpeciesExposure": {
+						"comment": "some comment",
+						"verdict": "QaInconclusive",
+						"correctedData": {
+							"value": "Yes",
+							"quality": "Estimated"
+						}
+					}
+				}
+			}
+		},
+		"reportingPeriod": "2023"
+	}
+]
