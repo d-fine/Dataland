@@ -48,12 +48,7 @@ class DataAccessRequestedEmailFactory(
     override fun buildTextContent(properties: Map<String, String?>): String {
         val hasMultipleReportingPeriods = properties[REPORTING_PERIODS]?.contains(",") ?: false
 
-        val userStringStart =
-            if (properties[FIRST_NAME] != null || properties[LAST_NAME] != null) {
-                "The user ${properties[FIRST_NAME] ?: ""} ${properties[LAST_NAME] ?: ""}"
-            } else {
-                "A user"
-            }
+        val userStringStart = buildUserStringStart(properties)
 
         val messageString = if (properties[MESSAGE] != null) {
             """
@@ -80,5 +75,15 @@ class DataAccessRequestedEmailFactory(
             You can verify the access request and grant access to your data on Dataland: 
             $proxyPrimaryUrl/companies/${properties[COMPANY_ID]}.
         """.trimIndent()
+    }
+
+    private fun buildUserStringStart(properties: Map<String, String?>): String {
+        val userStringStart =
+            if (properties[FIRST_NAME] != null || properties[LAST_NAME] != null) {
+                "The user ${properties[FIRST_NAME] ?: ""} ${properties[LAST_NAME] ?: ""}"
+            } else {
+                "A user"
+            }
+        return userStringStart
     }
 }
