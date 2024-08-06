@@ -26,6 +26,7 @@ export function generateSfdrQaReportPreparedFixtures(): Array<FixtureData<SfdrQa
 /**
  * Modifies the passed fixture to contain a specific company name to identify it amongst all fixtures.
  * @param input generated prepared fixture to modify
+ * @returns the modified fixture dataset
  */
 function manipulateFixtureForSfdrDatasetWithOneCorrection(input: FixtureData<SfdrQaReport>): FixtureData<SfdrQaReport> {
   input.companyInformation.companyName = 'sfdr-qa-report-with-one-correction';
