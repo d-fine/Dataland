@@ -3,7 +3,10 @@ package org.dataland.datalandcommunitymanager.services
 import org.dataland.datalandbackend.openApiClient.model.CompanyIdAndName
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandbackendutils.exceptions.QuotaExceededException
+import org.dataland.datalandcommunitymanager.entities.CompanyRoleAssignmentEntity
 import org.dataland.datalandcommunitymanager.entities.DataRequestEntity
+import org.dataland.datalandcommunitymanager.entities.MessageEntity
+import org.dataland.datalandcommunitymanager.model.companyRoles.CompanyRole
 import org.dataland.datalandcommunitymanager.model.dataRequest.SingleDataRequest
 import org.dataland.datalandcommunitymanager.repositories.DataRequestRepository
 import org.dataland.datalandcommunitymanager.services.messaging.AccessRequestEmailSender
@@ -28,6 +31,7 @@ import org.mockito.Mockito.verify
 import org.mockito.Mockito.`when`
 import org.mockito.kotlin.any
 import org.mockito.kotlin.argThat
+import org.mockito.kotlin.verifyNoInteractions
 import org.springframework.security.core.context.SecurityContext
 import org.springframework.security.core.context.SecurityContextHolder
 import java.util.UUID
@@ -43,6 +47,7 @@ class SingleDataRequestManagerTest {
     private lateinit var mockCompanyIdValidator: CompanyIdValidator
     private lateinit var accessRequestEmailSender: AccessRequestEmailSender
     private lateinit var companyRolesManager: CompanyRolesManager
+    private lateinit var dataAccessManager: DataAccessManager
 
     private val companyIdRegexSafeCompanyId = UUID.randomUUID().toString()
     private val dummyCompanyIdAndName = CompanyIdAndName("Dummy Company AG", companyIdRegexSafeCompanyId)
@@ -66,13 +71,14 @@ class SingleDataRequestManagerTest {
         dataRequestRepositoryMock = createDataRequestRepositoryMock()
         accessRequestEmailSender = mock(AccessRequestEmailSender::class.java)
         companyRolesManager = mock(CompanyRolesManager::class.java)
+        dataAccessManager = mock(DataAccessManager::class.java)
         singleDataRequestManagerMock = SingleDataRequestManager(
             dataRequestLogger = mock(DataRequestLogger::class.java),
             dataRequestRepository = dataRequestRepositoryMock,
             companyIdValidator = mockCompanyIdValidator,
             singleDataRequestEmailMessageSender = singleDataRequestEmailMessageSenderMock,
             utils = utilsMock,
-            dataAccessManager = mock(DataAccessManager::class.java),
+            dataAccessManager = dataAccessManager,
             accessRequestEmailSender = accessRequestEmailSender,
             securityUtilsService = securityUtilsServiceMock,
             companyRolesManager = companyRolesManager,
@@ -222,5 +228,56 @@ class SingleDataRequestManagerTest {
                 any(),
                 anyString(),
             )
+    }
+
+    @Test
+    fun `validate that access request is created and email is send`() {
+        val reportingPeriod = "2020"
+        val userId = "1234-221-1111elf"
+        val contacts = setOf(MessageEntity.COMPANY_OWNER_KEYWORD)
+        val message = "MESSAGE"
+        val request = SingleDataRequest(
+            companyIdentifier = companyIdRegexSafeCompanyId,
+            dataType = DataTypeEnum.vsme,
+            reportingPeriods = setOf(reportingPeriod),
+            contacts = contacts,
+            message = message,
+        )
+
+        `when`(
+            companyRolesManager
+                .getCompanyRoleAssignmentsByParameters(
+                    CompanyRole.CompanyOwner, companyIdRegexSafeCompanyId, null,
+                ),
+        ).thenReturn(
+            listOf(CompanyRoleAssignmentEntity(CompanyRole.CompanyOwner, companyIdRegexSafeCompanyId, "123")),
+        )
+
+        `when`(
+            utilsMock
+                .matchingDatasetExists(companyIdRegexSafeCompanyId, reportingPeriod, DataTypeEnum.vsme),
+        ).thenReturn(true)
+
+        `when`(
+            dataAccessManager
+                .hasAccessToPrivateDataset(
+                    companyIdRegexSafeCompanyId, reportingPeriod, DataTypeEnum.vsme, userId,
+                ),
+        ).thenReturn(false)
+
+        singleDataRequestManagerMock.processSingleDataRequest(request)
+
+        verify(dataAccessManager, times(1))
+            .createAccessRequestToPrivateDataset(
+                userId, companyIdRegexSafeCompanyId, DataTypeEnum.vsme, reportingPeriod, contacts, message,
+            )
+
+        verify(accessRequestEmailSender, times(1))
+            .notifyCompanyOwnerAboutNewRequest(any(), any())
+
+        verifyNoInteractions(singleDataRequestEmailMessageSenderMock)
+
+        verify(utilsMock, times(0))
+            .storeDataRequestEntityAsOpen(any(), any(), any(), any(), any())
     }
 }
