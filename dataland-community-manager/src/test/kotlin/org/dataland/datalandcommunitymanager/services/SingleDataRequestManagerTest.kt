@@ -237,11 +237,8 @@ class SingleDataRequestManagerTest {
         val contacts = setOf(MessageEntity.COMPANY_OWNER_KEYWORD)
         val message = "MESSAGE"
         val request = SingleDataRequest(
-            companyIdentifier = companyIdRegexSafeCompanyId,
-            dataType = DataTypeEnum.vsme,
-            reportingPeriods = setOf(reportingPeriod),
-            contacts = contacts,
-            message = message,
+            companyIdentifier = companyIdRegexSafeCompanyId, dataType = DataTypeEnum.vsme,
+            reportingPeriods = setOf(reportingPeriod), contacts = contacts, message = message,
         )
 
         `when`(
@@ -267,6 +264,15 @@ class SingleDataRequestManagerTest {
 
         singleDataRequestManagerMock.processSingleDataRequest(request)
 
+        verifyExpectedBehaviour(userId, reportingPeriod, contacts, message)
+    }
+
+    private fun verifyExpectedBehaviour(
+        userId: String,
+        reportingPeriod: String,
+        contacts: Set<String>,
+        message: String,
+    ) {
         verify(dataAccessManager, times(1))
             .createAccessRequestToPrivateDataset(
                 userId, companyIdRegexSafeCompanyId, DataTypeEnum.vsme, reportingPeriod, contacts, message,
