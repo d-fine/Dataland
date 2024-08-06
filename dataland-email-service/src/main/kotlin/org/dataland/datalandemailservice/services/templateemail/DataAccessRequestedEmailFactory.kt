@@ -69,11 +69,16 @@ class DataAccessRequestedEmailFactory(
             Your data are in high demand on Dataland! 
             $userStringStart is requesting access to your data from ${properties[COMPANY_NAME]} on dataland.
             
-            The user is asking for your ${properties[DATA_TYPE]} data for the year${if (hasMultipleReportingPeriods) "s" else ""}.
+            The user is asking for your ${properties[DATA_TYPE]} data for the year${if (hasMultipleReportingPeriods) {
+            "s"
+        } else {
+            ""
+        }}.
             You can contact the user with their Email-Address ${properties[REQUESTER_EMAIL]}.
             $messageString
             
-            You can verify the access request and grant access to your data on Dataland: $proxyPrimaryUrl/companies/${properties[COMPANY_ID]}.
+            You can verify the access request and grant access to your data on Dataland: 
+            $proxyPrimaryUrl/companies/${properties[COMPANY_ID]}.
         """.trimIndent()
     }
 }
