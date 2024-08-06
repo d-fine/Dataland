@@ -1,6 +1,7 @@
 package org.dataland.datalandexternalstorage.services
 
 import jakarta.annotation.PostConstruct
+import java.net.HttpURLConnection
 import org.dataland.datalandeurodatclient.openApiClient.api.SafeDepositDatabaseResourceApi
 import org.dataland.datalandeurodatclient.openApiClient.infrastructure.ClientException
 import org.dataland.datalandeurodatclient.openApiClient.model.SafeDepositDatabaseRequest
@@ -44,7 +45,7 @@ class EurodatSafeDepositBoxInitializer(
                 isSafeDepositBoxAvailable()
             } } catch (e: Exception) {
                 logger.error(
-                    "An error occurred while trying to create the eurodat safedepositbox$: ${e.message}.",
+                    "An error occurred while trying to create the EuroDaT SafeDepositBox: ${e.message}.",
                 )
             }
         } else {
@@ -57,8 +58,8 @@ class EurodatSafeDepositBoxInitializer(
     private fun isSafeDepositBoxAvailable() {
         try {
             postSafeDepositBoxCreationRequest()
-        } catch (exception: Exception) {
-            if (exception is ClientException && exception.statusCode == 409) {
+        } catch (exception: ClientException) {
+            if (exception.statusCode == HttpURLConnection.HTTP_CONFLICT) {
                 logger.info("SafeDepositBox already exists.")
             } else {
                 throw exception
