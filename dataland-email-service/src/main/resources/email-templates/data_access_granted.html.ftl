@@ -75,12 +75,6 @@ Following fields are required:
     <tr>
         <td colspan="3" style="font-size: 5px; height: 5px">&nbsp;</td>
     </tr>
-    <#-- TODO do we want this?<tr>
-        <td colspan="3"> Without any actions,
-            your data request will be set to closed automatically
-            in <b>${closedInDays} days</b>.</td>
-
-    </tr>-->
     <tr>
         <td colspan="3" style="height: 20px">&nbsp;</td>
     </tr>

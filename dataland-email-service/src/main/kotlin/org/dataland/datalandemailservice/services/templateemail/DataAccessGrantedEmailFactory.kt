@@ -54,11 +54,6 @@ class DataAccessGrantedEmailFactory(
             .append("Request created: ${properties[CREATION_DATE]} \n\n")
             .append("Review the provided data on Dataland:\n")
             .append("$proxyPrimaryUrl/requests/${properties[DATA_REQUEST_ID]}")
-            // TODO remove commented out code
-            // .append(
-            //    "\nWithout any actions, your data request will be set to closed " +
-            //            "automatically in ${properties[Keys.CLOSED_IN_DAYS]} days.",
-            // )
             .toString()
     }
 }
