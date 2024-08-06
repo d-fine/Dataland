@@ -7,7 +7,7 @@
         :name="name"
         :validation-label="validationLabel ?? label"
         :validation="`number|${validation}`"
-        placeholder="Value in %"
+        :placeholder="placeholder"
         v-model="percentageFieldValue"
         :outerClass="inputClass"
       >
@@ -24,7 +24,7 @@
 import UploadFormHeader from '@/components/forms/parts/elements/basic/UploadFormHeader.vue';
 import { defineComponent } from 'vue';
 import { FormKit } from '@formkit/vue';
-import { FormFieldPropsWithPlaceholder } from '@/components/forms/parts/fields/FormFieldProps';
+import { BaseFormFieldProps } from '@/components/forms/parts/fields/FormFieldProps';
 
 export default defineComponent({
   name: 'PercentageFormField',
@@ -40,9 +40,13 @@ export default defineComponent({
     },
   },
   props: {
-    ...FormFieldPropsWithPlaceholder,
+    ...BaseFormFieldProps,
     percentageFieldValueBind: {
       type: [String, Number],
+    },
+    placeholder: {
+      type: String,
+      default: 'Value in %',
     },
   },
 });

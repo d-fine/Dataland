@@ -103,27 +103,27 @@ describe('Component tests for the Eu Taxonomy for non financials that test depen
     cy.get('[data-test="fiscalYearEnd"] button').should('have.class', 'p-datepicker-trigger').click();
     cy.get('div.p-datepicker').find('button[aria-label="Next Month"]').click();
     cy.get('div.p-datepicker').find('span:contains("11")').click();
-    cy.get('input[name="fiscalYearEnd"]').invoke('val').should('contain', '11');
+    cy.get('div[data-test="fiscalYearEnd"] input[name="value"]').invoke('val').should('contain', '11');
     cy.get('div[data-test="fiscalYearDeviation"]')
       .find('input[id="fiscalYearDeviationfiscalYearDeviation-option-deviation"]')
       .check();
     cy.get('div[data-test="submitSideBar"] li:last a').click();
-    cy.get('div[data-test="scopeOfEntities"]').find('input[id="scopeOfEntities-option-yes"]').check();
-    cy.get('div[data-test="euTaxonomyActivityLevelReporting"]')
-      .find('input[id="euTaxonomyActivityLevelReporting-option-yes"]')
-      .check();
-    cy.get('input[name="numberOfEmployees"]').clear().type('-13');
+    cy.get('div[data-test="scopeOfEntities"] input[type="checkbox"][value="Yes"]').check();
+    cy.get('div[data-test="euTaxonomyActivityLevelReporting"] input[type="checkbox"][value="Yes"]').check();
+    cy.get('div[data-test="numberOfEmployees"] input[name="value"]').clear().type('-13');
     cy.get('em[title="Number Of Employees"]').click();
     cy.get(`[data-message-type="validation"]`).should('contain', 'at least 0').should('exist');
-    cy.get('input[name="numberOfEmployees"]').clear().type('333');
-    cy.get('div[data-test="nfrdMandatory"]').find('input[id="nfrdMandatory-option-yes"]').check();
+    cy.get('div[data-test="numberOfEmployees"] input[name="value"]').clear().type('333');
+    cy.get('div[data-test="nfrdMandatory"] input[type="checkbox"][value="Yes"]').click();
     selectItemFromDropdownByIndex(cy.get('div[name="value"'), 2);
     cy.get('input[name="provider"]').clear().type('Assurance Provider');
-    selectItemFromDropdownByValue(cy.get('div[label="General"] div[name="fileName"]'), reports[0]);
-    cy.get('div[label="General"] input[name="page"]').first().clear().type('-13');
-    cy.get('div[label="General"] em[title="Page"]').click();
+    cy.get('div[label="General"] div[name="fileName"]').each((reportField) =>
+      selectItemFromDropdownByValue(cy.wrap(reportField), reports[0])
+    );
+    cy.get('div[label="General"] input[name="page"]:not([type="hidden"])').last().clear().type('-13');
+    cy.get('div[label="General"] em[title="Page"]:not([type="hidden"])').last().click();
     cy.get(`[data-message-type="validation"]`).should('contain', 'at least 0').should('exist');
-    cy.get('div[label="General"] input[name="page"]').first().clear().type('3');
+    cy.get('div[label="General"] input[name="page"]:not([type="hidden"])').last().clear().type('3');
   }
 
   /**
@@ -146,64 +146,81 @@ describe('Component tests for the Eu Taxonomy for non financials that test depen
     selectItemFromDropdownByIndex(cy.get('div[label="Revenue"] div[data-test="totalAmount"] div[name="quality"]'), 2);
     cy.get('div[label="Revenue"] div[data-test="totalAmount"] textarea[name="comment"]').clear().type('just a comment');
 
-    cy.get('div[label="Revenue"] input[name="relativeShareInPercent"]').eq(0).clear().type('a');
+    cy.get('div[label="Revenue"] div[data-test="relativeShareInPercent"] input[name="value"]').eq(0).clear().type('a');
     cy.get('div[label="Revenue"] em[title="Eligible Revenue"]').click();
     cy.get(`div[label="Revenue"] [data-message-type="validation"]`)
       .should('contain', 'must be a number')
       .should('exist');
-    cy.get('div[label="Revenue"] input[name="relativeShareInPercent"]').eq(0).clear().type('120');
-    cy.get('div[label="Revenue"] em[title="Eligible Revenue"]').click();
+    cy.get('div[label="Revenue"] div[data-test="relativeShareInPercent"] input[name="value"]')
+      .eq(0)
+      .clear()
+      .type('120');
+    cy.get('div[label="Revenue"] em[title="Eligible Revenue"]').eq(0).click();
     cy.get(`div[label="Revenue"] [data-message-type="validation"]`)
       .should('contain', 'must be between 0 and 100')
       .should('exist');
-    cy.get('div[label="Revenue"] input[name="relativeShareInPercent"]').eq(0).clear().type('25');
-    cy.get('div[label="Revenue"] input[name="amount"]').eq(0).clear().type('5000');
+    cy.get('div[label="Revenue"] div[data-test="relativeShareInPercent"] input[name="value"]').eq(0).clear().type('25');
+    cy.get('div[label="Revenue"] div[data-test="absoluteShare"] input[name="value"]').eq(0).clear().type('5000');
     selectItemFromDropdownByIndex(cy.get('div[label="Revenue"] div[name="currency"]').eq(0), 5);
-    cy.get('div[label="Revenue"] input[name="relativeShareInPercent"]').eq(1).clear().type('50');
-    cy.get('div[label="Revenue"] input[name="amount"]').eq(1).clear().type('4000');
+    cy.get('div[label="Revenue"] div[data-test="relativeShareInPercent"] input[name="value"]').eq(1).clear().type('50');
+    cy.get('div[label="Revenue"] div[data-test="absoluteShare"] input[name="value"]').eq(1).clear().type('4000');
     selectItemFromDropdownByIndex(cy.get('div[label="Revenue"] div[name="currency"]').eq(1), 51);
-    cy.get('div[label="Revenue"] input[name="substantialContributionToClimateChangeMitigationInPercent"]')
+    cy.get(
+      'div[label="Revenue"] div[data-test="substantialContributionToClimateChangeMitigationInPercent"] input[name="value"]'
+    )
       .clear()
       .type('a');
     cy.get('div[label="Revenue"] em[title="Eligible Revenue"]').click();
     cy.get(`div[label="Revenue"] [data-message-type="validation"]`)
       .should('contain', 'must be a number')
       .should('exist');
-    cy.get('div[label="Revenue"] input[name="substantialContributionToClimateChangeMitigationInPercent"]')
+    cy.get(
+      'div[label="Revenue"] div[data-test="substantialContributionToClimateChangeMitigationInPercent"] input[name="value"]'
+    )
       .clear()
       .type('-12');
     cy.get('div[label="Revenue"] em[title="Eligible Revenue"]').click();
     cy.get(`div[label="Revenue"] [data-message-type="validation"]`)
       .should('contain', 'must be between 0 and 100')
       .should('exist');
-    cy.get('div[label="Revenue"] input[name="substantialContributionToClimateChangeMitigationInPercent"]')
-      .clear()
-      .type('15');
-    cy.get('div[label="Revenue"] input[name="substantialContributionToClimateChangeAdaptationInPercent"]')
-      .clear()
-      .type('15');
     cy.get(
-      'div[label="Revenue"] input[name="substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent"]'
+      'div[label="Revenue"] div[data-test="substantialContributionToClimateChangeMitigationInPercent"] input[name="value"]'
     )
       .clear()
       .type('15');
-    cy.get('div[label="Revenue"] input[name="substantialContributionToTransitionToACircularEconomyInPercent"]')
+    cy.get(
+      'div[label="Revenue"] div[data-test="substantialContributionToClimateChangeMitigationInPercent"] input[name="value"]'
+    )
       .clear()
       .type('15');
-    cy.get('div[label="Revenue"] input[name="substantialContributionToPollutionPreventionAndControlInPercent"]')
+    cy.get(
+      'div[label="Revenue"] div[data-test="substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent"] input[name="value"]'
+    )
       .clear()
       .type('15');
-    cy.get('div[label="Revenue"] input[name="substantialContributionToClimateChangeAdaptationInPercent"]')
+    cy.get(
+      'div[label="Revenue"] div[data-test="substantialContributionToTransitionToACircularEconomyInPercent"] input[name="value"]'
+    )
       .clear()
       .type('15');
-    cy.get('div[label="Revenue"] input[name="relativeShareInPercent"]').eq(2).clear().type('11');
-    cy.get('div[label="Revenue"] input[name="amount"]').eq(2).clear().type('12000');
+    cy.get(
+      'div[label="Revenue"] div[data-test="substantialContributionToPollutionPreventionAndControlInPercent"] input[name="value"]'
+    )
+      .clear()
+      .type('15');
+    cy.get(
+      'div[label="Revenue"] div[data-test="substantialContributionToClimateChangeAdaptationInPercent"] input[name="value"]'
+    )
+      .clear()
+      .type('15');
+    cy.get('div[label="Revenue"] div[data-test="relativeShareInPercent"] input[name="value"]').eq(2).clear().type('11');
+    cy.get('div[label="Revenue"] div[data-test="absoluteShare"] input[name="value"]').eq(2).clear().type('12000');
     selectItemFromDropdownByIndex(cy.get('div[label="Revenue"] div[name="currency"]').eq(2), 51);
-    cy.get('div[label="Revenue"] input[name="relativeShareInPercent"]').eq(3).clear().type('13');
-    cy.get('div[label="Revenue"] input[name="amount"]').eq(3).clear().type('13000');
+    cy.get('div[label="Revenue"] div[data-test="relativeShareInPercent"] input[name="value"]').eq(3).clear().type('13');
+    cy.get('div[label="Revenue"] div[data-test="absoluteShare"] input[name="value"]').eq(3).clear().type('13000');
     selectItemFromDropdownByIndex(cy.get('div[label="Revenue"] div[name="currency"]').eq(3), 53);
-    cy.get('div[label="Revenue"] input[name="enablingShareInPercent"]').clear().type('12');
-    cy.get('div[label="Revenue"] input[name="transitionalShareInPercent"]').clear().type('12');
+    cy.get('div[label="Revenue"] div[data-test="enablingShareInPercent"] input[name="value"]').clear().type('12');
+    cy.get('div[label="Revenue"] div[data-test="transitionalShareInPercent"] input[name="value"]').clear().type('12');
   }
 
   /**
@@ -256,10 +273,18 @@ describe('Component tests for the Eu Taxonomy for non financials that test depen
         },
         general: {
           fiscalYearDeviation: 'Deviation',
-          fiscalYearEnd: '2023-09-11',
-          scopeOfEntities: 'Yes',
-          nfrdMandatory: 'Yes',
-          euTaxonomyActivityLevelReporting: 'Yes',
+          fiscalYearEnd: {
+            value: '2023-09-11',
+          },
+          scopeOfEntities: {
+            value: 'Yes',
+          },
+          nfrdMandatory: {
+            value: 'Yes',
+          },
+          euTaxonomyActivityLevelReporting: {
+            value: 'Yes',
+          },
           assurance: {
             value: 'None',
             provider: 'Assurance Provider',
@@ -269,7 +294,9 @@ describe('Component tests for the Eu Taxonomy for non financials that test depen
               page: 1,
             },
           },
-          numberOfEmployees: 333,
+          numberOfEmployees: {
+            value: 333,
+          },
           referencedReports: {
             [`${TEST_PDF_FILE_NAME}FileCopy`]: {
               fileReference: 'bbebf6077b4ab868fd3e5f83ac70c864fc301c9ab9b3e1a53f52ac8a31b97ff7',

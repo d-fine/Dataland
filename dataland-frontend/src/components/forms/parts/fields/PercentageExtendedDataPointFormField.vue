@@ -5,10 +5,12 @@
     :description="description"
     :label="label"
     :required="required"
+    :validation-label="validationLabel"
+    :validation="validation"
     :input-class="inputClass"
     :check-value-validity="hasDataPointProperValue"
     :isDataPointToggleable="isDataPointToggleable"
-    placeholder="Value in %"
+    :placeholder="placeholder"
     v-model="percentageFieldValue"
     :outerClass="inputClass"
   >
@@ -18,6 +20,7 @@
         :validation-label="validationLabel"
         :validation="validation"
         :input-class="inputClass"
+        :placeholder="placeholder"
       />
     </div>
   </ExtendedDataPointFormField>
@@ -39,6 +42,10 @@ export default defineComponent({
     isDataPointToggleable: {
       type: Boolean,
       default: false,
+    },
+    placeholder: {
+      type: String,
+      default: 'Value in %',
     },
   },
   methods: { hasDataPointProperValue },

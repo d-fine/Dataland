@@ -39,7 +39,6 @@ export default defineComponent({
     },
     isDataPointToggleable: {
       type: Boolean,
-      // TODO is it okay to have No. of Employees toggleable?
       default: true,
     },
   },

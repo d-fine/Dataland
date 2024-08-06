@@ -7,7 +7,7 @@
           name="relativeShareInPercent"
           label="Relative Share"
           validation-label="Relative Value"
-          validation="number|between:0,100"
+          validation="between:0,100"
           placeholder="Relative Value in %"
           outerClass="short"
           data-test="relativeShareInPercent"
@@ -15,9 +15,9 @@
         <CurrencyDataPointFormField
           name="absoluteShare"
           label="Absolute Share"
-          data-test="absoluteValue"
+          placeholder="Absolute Value"
+          data-test="absoluteShare"
           :isDataPointToggleable="isDataPointToggleable"
-          :placeholder="placeholder"
         />
       </div>
     </div>
@@ -40,10 +40,6 @@ export default defineComponent({
     isDataPointToggleable: {
       type: Boolean,
       default: false,
-    },
-    placeholder: {
-      type: String,
-      default: 'Absolute Value',
     },
   },
 });

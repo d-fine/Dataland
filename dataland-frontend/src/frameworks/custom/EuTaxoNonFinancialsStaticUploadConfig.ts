@@ -74,6 +74,7 @@ export const eutaxonomyNonFinancialsDataModel = [
             description: 'Total number of employees (including temporary workers with assignment duration >6 months)',
             unit: '',
             component: 'BigDecimalExtendedDataPointFormField',
+            isDataPointToggleable: false,
             required: false,
             showIf: (): boolean => true,
             validation: 'min:0',
@@ -117,7 +118,6 @@ export const eutaxonomyNonFinancialsDataModel = [
             description:
               "Total Revenue for the financial year. I.e. income arising in the course of an entity's ordinary activities., the amounts derived from the sale of products and the provision of services after deducting sales rebates and value added tax and other taxes directly linked to turnover. Overall turnover is equivalent to a firm's total revenues over some period of time",
             unit: '',
-            placeholder: 'Absolute Value',
             component: 'CurrencyDataPointFormField',
             required: false,
             showIf: (): boolean => true,

@@ -7,6 +7,9 @@
     :required="required"
     :input-class="inputClass"
     :check-value-validity="hasDataPointProperValue"
+    :placeholder="placeholder"
+    :validation="validation"
+    :validation-label="validationLabel"
   >
     <div class="grid">
       <div class="col-12">
@@ -15,9 +18,9 @@
       <div class="col-4">
         <NumberFormField
           :name="'value'"
-          :validation-label="validationLabel"
-          :v-bind="{ placeholder: customPlaceholder }"
+          :placeholder="placeholder"
           :validation="validation"
+          :validation-label="validationLabel"
           :unit="unit"
           input-class="col-12"
         />
@@ -28,6 +31,7 @@
           placeholder="Currency"
           :options="getDataset(DropdownDatasetIdentifier.CurrencyCodes)"
           input-class="long"
+          data-test="currency"
         />
       </div>
     </div>
@@ -62,10 +66,6 @@ export default defineComponent({
     ...FormFieldPropsWithPlaceholder,
     unit: {
       type: String,
-    },
-    customPlaceholder: {
-      type: String,
-      default: 'Absolute Value',
     },
   },
   methods: {
