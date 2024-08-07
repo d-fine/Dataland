@@ -12,6 +12,7 @@ import org.dataland.datalandcommunitymanager.services.messaging.SingleDataReques
 import org.dataland.datalandcommunitymanager.utils.CompanyIdValidator
 import org.dataland.datalandcommunitymanager.utils.DataRequestLogger
 import org.dataland.datalandcommunitymanager.utils.DataRequestProcessingUtils
+import org.dataland.datalandcommunitymanager.utils.ReportingPeriodKeys
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.dataland.keycloakAdapter.auth.DatalandJwtAuthentication
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
@@ -68,25 +69,34 @@ constructor(
         dataRequestLogger.logMessageForReceivingSingleDataRequest(
             singleDataRequest.companyIdentifier, preprocessedRequest.userId, preprocessedRequest.correlationId,
         )
-        val reportingPeriodsOfStoredDataRequests = mutableSetOf<String>()
-        val reportingPeriodsOfDuplicateDataRequests = mutableSetOf<String>()
-        val reportingPeriodsOfStoredAccessRequests = mutableSetOf<String>()
+
+        val reportingPeriodsMap = mutableMapOf<String, MutableList<String>>()
 
         singleDataRequest.reportingPeriods.forEach { reportingPeriod ->
-            processReportingPeriod(
+            val processedReportingPeriod = processReportingPeriod(
                 reportingPeriod, preprocessedRequest,
-                reportingPeriodsOfStoredAccessRequests,
-                reportingPeriodsOfDuplicateDataRequests,
-                reportingPeriodsOfStoredDataRequests,
             )
+            processedReportingPeriod.forEach { (key, value) ->
+                reportingPeriodsMap.getOrPut(key) { mutableListOf() }.add(value)
+            }
         }
-        sendSingleDataRequestEmailMessage(preprocessedRequest, reportingPeriodsOfStoredDataRequests)
-        sendDataAccessRequestEmailMessage(preprocessedRequest, reportingPeriodsOfStoredAccessRequests)
+
+        sendSingleDataRequestEmailMessage(
+            preprocessedRequest,
+            reportingPeriodsMap[ReportingPeriodKeys.ReportingPeriodsOfStoredDataRequests],
+        )
+        sendDataAccessRequestEmailMessage(
+            preprocessedRequest,
+            reportingPeriodsMap[ReportingPeriodKeys.ReportingPeriodsOfDataAccessRequests],
+        )
 
         return buildResponseForSingleDataRequest(
             singleDataRequest,
-            reportingPeriodsOfStoredDataRequests.toList(), reportingPeriodsOfDuplicateDataRequests.toList(),
+            reportingPeriodsMap[ReportingPeriodKeys.ReportingPeriodsOfStoredDataRequests]?.toList() ?: listOf(),
+            reportingPeriodsMap[ReportingPeriodKeys.ReportingPeriodsOfDublicateDataRequests]?.toList() ?: listOf(),
+            reportingPeriodsMap[ReportingPeriodKeys.ReportingPeriodsOfDataAccessRequests]?.toList() ?: listOf(),
         )
+        // TODO add here reporting periods for access requests
     }
 
     /**
@@ -114,10 +124,7 @@ constructor(
     private fun processReportingPeriod(
         reportingPeriod: String,
         preprocessedRequest: PreprocessedRequest,
-        reportingPeriodsOfStoredAccessRequests: MutableSet<String>,
-        reportingPeriodsOfDuplicateDataRequests: MutableSet<String>,
-        reportingPeriodsOfStoredDataRequests: MutableSet<String>,
-    ) {
+    ): Map<String, String> {
         if (shouldCreateAccessRequestToPrivateDataset(
                 dataType = preprocessedRequest.dataType, companyId = preprocessedRequest.companyId,
                 reportingPeriod = reportingPeriod, userId = preprocessedRequest.userId,
@@ -128,21 +135,21 @@ constructor(
                 dataType = preprocessedRequest.dataType, reportingPeriod = reportingPeriod,
                 contacts = preprocessedRequest.contacts, message = preprocessedRequest.message,
             )
-            reportingPeriodsOfStoredAccessRequests.add(reportingPeriod)
+            return mutableMapOf(ReportingPeriodKeys.ReportingPeriodsOfDataAccessRequests to reportingPeriod)
         } else {
-            if (utils.existsDataRequestWithNonFinalStatus(
+            return if (utils.existsDataRequestWithNonFinalStatus(
                     companyId = preprocessedRequest.companyId, framework = preprocessedRequest.dataType,
                     reportingPeriod = reportingPeriod,
                 )
             ) {
-                reportingPeriodsOfDuplicateDataRequests.add(reportingPeriod)
+                mutableMapOf(ReportingPeriodKeys.ReportingPeriodsOfDublicateDataRequests to reportingPeriod)
             } else {
                 utils.storeDataRequestEntityAsOpen(
                     datalandCompanyId = preprocessedRequest.companyId, dataType = preprocessedRequest.dataType,
                     reportingPeriod = reportingPeriod, contacts = preprocessedRequest.contacts,
                     message = preprocessedRequest.message,
                 )
-                reportingPeriodsOfStoredDataRequests.add(reportingPeriod)
+                mutableMapOf(ReportingPeriodKeys.ReportingPeriodsOfStoredDataRequests to reportingPeriod)
             }
         }
     }
@@ -230,52 +237,57 @@ constructor(
 
     private fun sendSingleDataRequestEmailMessage(
         preprocessedRequest: PreprocessedRequest,
-        reportingPeriodsOfStoredDataRequests: Set<String>,
+        reportingPeriodsOfStoredDataRequests: MutableList<String>?,
     ) {
-        if (reportingPeriodsOfStoredDataRequests.isEmpty()) return
-
-        val messageInformation = SingleDataRequestEmailMessageSender.MessageInformation(
-            userAuthentication = DatalandAuthentication.fromContext() as DatalandJwtAuthentication,
-            datalandCompanyId = preprocessedRequest.companyId,
-            dataType = preprocessedRequest.dataType,
-            reportingPeriods = reportingPeriodsOfStoredDataRequests,
-        )
-
-        if (preprocessedRequest.contacts.isNullOrEmpty()) {
-            singleDataRequestEmailMessageSender.sendSingleDataRequestInternalMessage(
-                messageInformation, preprocessedRequest.correlationId,
-            )
+        if (reportingPeriodsOfStoredDataRequests.isNullOrEmpty()) {
+            return
         } else {
-            singleDataRequestEmailMessageSender.sendSingleDataRequestExternalMessage(
-                messageInformation = messageInformation,
-                receiverSet = preprocessedRequest.contacts,
-                contactMessage = preprocessedRequest.message,
-                correlationId = preprocessedRequest.correlationId,
+            val messageInformation = SingleDataRequestEmailMessageSender.MessageInformation(
+                userAuthentication = DatalandAuthentication.fromContext() as DatalandJwtAuthentication,
+                datalandCompanyId = preprocessedRequest.companyId,
+                dataType = preprocessedRequest.dataType,
+                reportingPeriods = reportingPeriodsOfStoredDataRequests.toSet(),
             )
+
+            if (preprocessedRequest.contacts.isNullOrEmpty()) {
+                singleDataRequestEmailMessageSender.sendSingleDataRequestInternalMessage(
+                    messageInformation, preprocessedRequest.correlationId,
+                )
+            } else {
+                singleDataRequestEmailMessageSender.sendSingleDataRequestExternalMessage(
+                    messageInformation = messageInformation,
+                    receiverSet = preprocessedRequest.contacts,
+                    contactMessage = preprocessedRequest.message,
+                    correlationId = preprocessedRequest.correlationId,
+                )
+            }
         }
     }
 
     private fun sendDataAccessRequestEmailMessage(
         preprocessedRequest: PreprocessedRequest,
-        reportingPeriodsOfStoredAccessRequests: Set<String>,
+        reportingPeriodsOfStoredAccessRequests: MutableList<String>?,
     ) {
-        if (reportingPeriodsOfStoredAccessRequests.isEmpty()) return
-
-        accessRequestEmailSender.notifyCompanyOwnerAboutNewRequest(
-            AccessRequestEmailSender.RequestEmailInformation(
-                preprocessedRequest.userId, preprocessedRequest.message,
-                preprocessedRequest.companyId, preprocessedRequest.dataType.toString(),
-                reportingPeriodsOfStoredAccessRequests,
-                preprocessedRequest.contacts ?: setOf(),
-            ),
-            preprocessedRequest.correlationId,
-        )
+        if (reportingPeriodsOfStoredAccessRequests.isNullOrEmpty()) {
+            return
+        } else {
+            accessRequestEmailSender.notifyCompanyOwnerAboutNewRequest(
+                AccessRequestEmailSender.RequestEmailInformation(
+                    preprocessedRequest.userId, preprocessedRequest.message,
+                    preprocessedRequest.companyId, preprocessedRequest.dataType.toString(),
+                    reportingPeriodsOfStoredAccessRequests.toSet(),
+                    preprocessedRequest.contacts ?: setOf(),
+                ),
+                preprocessedRequest.correlationId,
+            )
+        }
     }
 
     private fun buildResponseForSingleDataRequest(
         singleDataRequest: SingleDataRequest,
         reportingPeriodsOfStoredDataRequests: List<String>,
         reportingPeriodsOfDuplicateDataRequests: List<String>,
+        reportingPeriodOfStoredAccessRequests: List<String>,
     ): SingleDataRequestResponse {
         return SingleDataRequestResponse(
             buildResponseMessageForSingleDataRequest(
@@ -284,6 +296,7 @@ constructor(
             ),
             reportingPeriodsOfStoredDataRequests,
             reportingPeriodsOfDuplicateDataRequests,
+            reportingPeriodOfStoredAccessRequests,
         )
     }
 
