@@ -33,17 +33,19 @@ data class EutaxonomyNonFinancialsOpex(
     @field:Valid()
     val alignedShare: EutaxonomyNonFinancialsOpexAlignedShare? = null,
 
-    val substantialContributionToClimateChangeMitigationInPercent: BigDecimal? = null,
+    val substantialContributionToClimateChangeMitigationInPercentAligned: BigDecimal? = null,
 
-    val substantialContributionToClimateChangeAdaptationInPercent: BigDecimal? = null,
+    val substantialContributionToClimateChangeAdaptationInPercentAligned: BigDecimal? = null,
 
-    val substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent: BigDecimal? = null,
+    val substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned:
+    BigDecimal? = null,
 
-    val substantialContributionToTransitionToACircularEconomyInPercent: BigDecimal? = null,
+    val substantialContributionToTransitionToACircularEconomyInPercentAligned: BigDecimal? = null,
 
-    val substantialContributionToPollutionPreventionAndControlInPercent: BigDecimal? = null,
+    val substantialContributionToPollutionPreventionAndControlInPercentAligned: BigDecimal? = null,
 
-    val substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent: BigDecimal? = null,
+    val substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned:
+    BigDecimal? = null,
 
     val alignedActivities: MutableList<EuTaxonomyAlignedActivity>? = null,
 

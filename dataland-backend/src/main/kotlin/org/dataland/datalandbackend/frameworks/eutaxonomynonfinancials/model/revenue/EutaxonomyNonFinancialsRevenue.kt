@@ -33,17 +33,63 @@ data class EutaxonomyNonFinancialsRevenue(
     @field:Valid()
     val alignedShare: EutaxonomyNonFinancialsRevenueAlignedShare? = null,
 
-    val substantialContributionToClimateChangeMitigationInPercent: BigDecimal? = null,
+    val substantialContributionToClimateChangeMitigationInPercentEligible: BigDecimal? = null,
 
-    val substantialContributionToClimateChangeAdaptationInPercent: BigDecimal? = null,
+    val substantialContributionToClimateChangeMitigationInPercentAligned: BigDecimal? = null,
 
-    val substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent: BigDecimal? = null,
+    val substantialContributionToClimateChangeMitigationInPercentOfWhichUseOfProceeds: BigDecimal? = null,
 
-    val substantialContributionToTransitionToACircularEconomyInPercent: BigDecimal? = null,
+    val substantialContributionToClimateChangeMitigationInPercentEnablingShare: BigDecimal? = null,
 
-    val substantialContributionToPollutionPreventionAndControlInPercent: BigDecimal? = null,
+    val substantialContributionToClimateChangeMitigationInPercentTransitionalShare: BigDecimal? = null,
 
-    val substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent: BigDecimal? = null,
+    val substantialContributionToClimateChangeAdaptationInPercentEligible: BigDecimal? = null,
+
+    val substantialContributionToClimateChangeAdaptationInPercentAligned: BigDecimal? = null,
+
+    val substantialContributionToClimateChangeAdaptationInPercentOfWhichUseOfProceeds: BigDecimal? = null,
+
+    val substantialContributionToClimateChangeAdaptationInPercentEnablingShare: BigDecimal? = null,
+
+    val substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentEligible:
+    BigDecimal? = null,
+
+    val substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned:
+    BigDecimal? = null,
+
+    val substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentOfWhichUseOfProceeds:
+    BigDecimal? = null,
+
+    val substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentEnablingShare:
+    BigDecimal? = null,
+
+    val substantialContributionToTransitionToACircularEconomyInPercentEligible: BigDecimal? = null,
+
+    val substantialContributionToTransitionToACircularEconomyInPercentAligned: BigDecimal? = null,
+
+    val substantialContributionToTransitionToACircularEconomyInPercentOfWhichUseOfProceeds: BigDecimal? = null,
+
+    val substantialContributionToTransitionToACircularEconomyInPercentEnablingShare: BigDecimal? = null,
+
+    val substantialContributionToPollutionPreventionAndControlInPercentEligible: BigDecimal? = null,
+
+    val substantialContributionToPollutionPreventionAndControlInPercentAligned: BigDecimal? = null,
+
+    val substantialContributionToPollutionPreventionAndControlInPercentOfWhichUseOfProceeds: BigDecimal? = null,
+
+    val substantialContributionToPollutionPreventionAndControlInPercentEnablingShare: BigDecimal? = null,
+
+    val substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentEligible:
+    BigDecimal? = null,
+
+    val substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned:
+    BigDecimal? = null,
+
+    val substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentOfWhichUseOfProceeds:
+    BigDecimal? = null,
+
+    val substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentEnablingShare:
+    BigDecimal? = null,
 
     val alignedActivities: MutableList<EuTaxonomyAlignedActivity>? = null,
 
