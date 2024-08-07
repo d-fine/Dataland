@@ -8,7 +8,6 @@ import org.dataland.datalandcommunitymanager.entities.RequestStatusEntity
 import org.dataland.datalandcommunitymanager.model.dataRequest.AccessStatus
 import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
 import org.dataland.datalandcommunitymanager.repositories.DataRequestRepository
-import org.dataland.datalandcommunitymanager.utils.AccessRequestLogger
 import org.dataland.datalandcommunitymanager.utils.DataRequestLogger
 import org.dataland.datalandcommunitymanager.utils.DataRequestProcessingUtils
 import org.dataland.keycloakAdapter.auth.DatalandJwtAuthentication
@@ -40,7 +39,6 @@ class DataAccessManagerTest {
     private lateinit var mockDataRequestRepository: DataRequestRepository
     private lateinit var dataRequestLogger: DataRequestLogger
     private lateinit var mockDataRequestProcessingUtils: DataRequestProcessingUtils
-    private lateinit var accessRequestLogger: AccessRequestLogger
 
     private lateinit var authenticationMock: DatalandJwtAuthentication
 
@@ -103,13 +101,12 @@ class DataAccessManagerTest {
     fun setup() {
         mockDataRequestRepository = createDataRequestRepository()
 
-        accessRequestLogger = mock(AccessRequestLogger::class.java)
         dataRequestLogger = mock(DataRequestLogger::class.java)
         mockDataRequestProcessingUtils = createRequestProcessingUtils()
 
         dataAccessManager = DataAccessManager(
             dataRequestRepository = mockDataRequestRepository, dataRequestLogger = dataRequestLogger,
-            dataRequestProcessingUtils = mockDataRequestProcessingUtils, accessRequestLogger = accessRequestLogger,
+            dataRequestProcessingUtils = mockDataRequestProcessingUtils,
         )
     }
 

@@ -7,10 +7,10 @@ import org.dataland.datalandcommunitymanager.entities.DataRequestEntity
 import org.dataland.datalandcommunitymanager.model.dataRequest.AccessStatus
 import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
 import org.dataland.datalandcommunitymanager.repositories.DataRequestRepository
-import org.dataland.datalandcommunitymanager.utils.AccessRequestLogger
 import org.dataland.datalandcommunitymanager.utils.DataRequestLogger
 import org.dataland.datalandcommunitymanager.utils.DataRequestProcessingUtils
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
+import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -24,8 +24,8 @@ class DataAccessManager(
     @Autowired private val dataRequestRepository: DataRequestRepository,
     @Autowired private val dataRequestLogger: DataRequestLogger,
     @Autowired private val dataRequestProcessingUtils: DataRequestProcessingUtils,
-    @Autowired private val accessRequestLogger: AccessRequestLogger,
 ) {
+    private val logger = LoggerFactory.getLogger(javaClass)
 
     /**
      * This method finds all DataRequestsEntity for a specified dataset that have a specific accessStatus.
@@ -48,10 +48,9 @@ class DataAccessManager(
             )?.any { it.accessStatus == AccessStatus.Granted } ?: false
 
         if (hasAccess) {
-            accessRequestLogger.logMessageForCheckingIfUserHasAccessToDataset(
-                companyId = companyId,
-                framework = dataType,
-                reportingPeriod = reportingPeriod,
+            logger.info(
+                "Access for the dataset (companyId: $companyId, framework: $dataType, " +
+                    "reportingPeriod: $reportingPeriod) is granted",
             )
         }
         return hasAccess
@@ -130,10 +129,7 @@ class DataAccessManager(
                     dataRequestEntity = dataRequestEntity, requestStatus = dataRequestEntity.requestStatus,
                     accessStatus = AccessStatus.Pending, modificationTime = modificationTime,
                 )
-
-                accessRequestLogger.logMessageForPatchingAccessStatus(
-                    dataRequestEntity.dataRequestId, AccessStatus.Pending,
-                )
+                logger.info("Patching request $dataRequestEntity.dataRequestId with status ${AccessStatus.Pending}")
             }
         } else {
             storeAccessRequestEntityAsPending(
