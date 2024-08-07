@@ -181,4 +181,50 @@ class DataAccessManager(
 
         return dataRequestEntity
     }
+
+    /**
+     * Checks whether a access already exists on Dataland in pending status
+     * @param companyId the company ID of the data request
+     * @param framework the framework of the data request
+     * @param reportingPeriod the reporting period of the data request
+     * @return true if the access request already exists in pending status for the current user, false otherwise
+     */
+    fun existsAccessRequestWithNonPendingStatus(
+        companyId: String,
+        framework: DataTypeEnum,
+        reportingPeriod: String,
+    ): Boolean {
+        val pendingDataRequests = findAlreadyExistingAccessRequestForCurrentUser(
+            companyId = companyId, framework = framework, reportingPeriod = reportingPeriod,
+            accessStatus =
+            AccessStatus.Pending,
+        )
+
+        return (!pendingDataRequests.isNullOrEmpty())
+        // TODO also non granted
+    }
+
+    /**
+     * Retrieves the access requests on Dataland for the provided specifications and the current user
+     * @param companyId the company ID of the access requests
+     * @param framework the framework of the access requests
+     * @param reportingPeriod the reporting period of the access requests
+     * @param accessStatus the access status of the request
+     * @return a list of the found data requests, or null if none was found
+     */
+    fun findAlreadyExistingAccessRequestForCurrentUser(
+        companyId: String,
+        framework: DataTypeEnum,
+        reportingPeriod: String,
+        accessStatus: AccessStatus,
+    ): List<DataRequestEntity>? {
+        val requestingUserId = DatalandAuthentication.fromContext().userId
+        val foundRequests = dataRequestRepository
+            .findByUserIdAndDatalandCompanyIdAndDataTypeAndReportingPeriod(
+                requestingUserId, companyId, framework.name, reportingPeriod,
+            )?.filter {
+            it.accessStatus == accessStatus
+        }
+        return foundRequests
+    }
 }

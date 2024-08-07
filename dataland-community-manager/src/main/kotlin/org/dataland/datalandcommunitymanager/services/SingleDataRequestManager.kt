@@ -96,7 +96,6 @@ constructor(
             reportingPeriodsMap[ReportingPeriodKeys.ReportingPeriodsOfDublicateDataRequests]?.toList() ?: listOf(),
             reportingPeriodsMap[ReportingPeriodKeys.ReportingPeriodsOfDataAccessRequests]?.toList() ?: listOf(),
         )
-        // TODO add here reporting periods for access requests
     }
 
     /**
@@ -140,6 +139,9 @@ constructor(
             return if (utils.existsDataRequestWithNonFinalStatus(
                     companyId = preprocessedRequest.companyId, framework = preprocessedRequest.dataType,
                     reportingPeriod = reportingPeriod,
+                ) || dataAccessManager.existsAccessRequestWithNonPendingStatus(
+                    companyId = preprocessedRequest.companyId, framework = preprocessedRequest.dataType,
+                    reportingPeriod = reportingPeriod,
                 )
             ) {
                 mutableMapOf(ReportingPeriodKeys.ReportingPeriodsOfDublicateDataRequests to reportingPeriod)
@@ -169,7 +171,14 @@ constructor(
             companyId = companyId,
             reportingPeriod = reportingPeriod, dataType = dataType, userId = userId,
         )
-        return(dataType == DataTypeEnum.vsme && matchingDatasetExists && !hasAccessToPrivateDataset)
+        val accessRequestAlreadyInPendingStatus = dataAccessManager.existsAccessRequestWithNonPendingStatus(
+            companyId = companyId, framework = dataType,
+            reportingPeriod = reportingPeriod,
+        )
+        return(
+            dataType == DataTypeEnum.vsme && matchingDatasetExists && !hasAccessToPrivateDataset &&
+                !accessRequestAlreadyInPendingStatus
+            )
     }
 
     private fun performQuotaCheckForNonPremiumUser(numberOfReportingPeriods: Int, companyId: String) {
