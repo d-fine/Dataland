@@ -115,7 +115,7 @@ class AccessRequestEmailSender(
         val requester = keycloakUserControllerApiService.getUser(emailInformation.requesterUserId)
         val contacts = emailInformation.contacts + setOf(MessageEntity.COMPANY_OWNER_KEYWORD)
         val receiverList = contacts.flatMap {
-            MessageEntity.realizeContact(it, companyRolesManager, emailInformation.datalandCompanyId)
+            MessageEntity.addContact(it, companyRolesManager, emailInformation.datalandCompanyId)
         }
         val properties = mutableMapOf(
             "companyId" to emailInformation.datalandCompanyId,

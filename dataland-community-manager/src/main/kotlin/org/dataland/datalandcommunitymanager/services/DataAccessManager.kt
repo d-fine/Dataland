@@ -58,7 +58,7 @@ class DataAccessManager(
     }
 
     /**
-     * This method checks if the requesting user has granted access to the information for a specific company,
+     * This method checks if the requesting user has been granted access to the information for a specific company,
      * reporting period and data type.
      * If the datatype input has no correspond entry in the datatype enum class then an exception thrown
      * If datatype is not vsme the method returns

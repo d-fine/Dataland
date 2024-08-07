@@ -77,7 +77,7 @@ data class MessageEntity(
          * @param companyId the company id for which the company owner should be determined
          * @return a list containing email address and/or the user ids of relevant company owners
          */
-        fun realizeContact(
+        fun addContact(
             contact: String,
             companyRolesManager: CompanyRolesManager,
             companyId: String,

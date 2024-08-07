@@ -96,18 +96,18 @@ constructor(
      */
     fun preprocessSingleDataRequest(singleDataRequest: SingleDataRequest): PreprocessedRequest {
         val companyId = findDatalandCompanyIdForCompanyIdentifier(singleDataRequest.companyIdentifier)
-        val contacts = singleDataRequest.contacts.takeIf { !it.isNullOrEmpty() }
-        val message = singleDataRequest.message.takeIf { !it.isNullOrBlank() }
-        val userId = DatalandAuthentication.fromContext().userId
-        val correlationId = UUID.randomUUID().toString()
 
         utils.throwExceptionIfNotJwtAuth()
         validateSingleDataRequestContent(singleDataRequest)
         performQuotaCheckForNonPremiumUser(singleDataRequest.reportingPeriods.size, companyId)
 
         return PreprocessedRequest(
-            companyId = companyId, userId = userId, dataType = singleDataRequest.dataType,
-            contacts = contacts, message = message, correlationId = correlationId,
+            companyId = companyId,
+            userId = DatalandAuthentication.fromContext().userId,
+            dataType = singleDataRequest.dataType,
+            contacts = singleDataRequest.contacts.takeIf { !it.isNullOrEmpty() },
+            message = singleDataRequest.message.takeIf { !it.isNullOrBlank() },
+            correlationId = UUID.randomUUID().toString(),
         )
     }
 

@@ -91,7 +91,7 @@ class SingleDataRequestEmailMessageSender(
         )
 
         val receiverList = receiverSet.flatMap {
-            MessageEntity.realizeContact(it, companyRolesManager, messageInformation.datalandCompanyId)
+            MessageEntity.addContact(it, companyRolesManager, messageInformation.datalandCompanyId)
         }
 
         receiverList.forEach {
