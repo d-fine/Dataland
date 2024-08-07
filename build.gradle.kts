@@ -125,6 +125,9 @@ sonar {
                 // backend
                 "dataland-backend/src/main/kotlin/db/migration/V1_1__CreateBackendTables.kt," +
 
+                // qa-service
+                "dataland-qa-service/src/main/kotlin/org/dataland/datalandqaservice/frameworks/sfdr/*" +
+
                 // toolbox
                 "dataland-framework-toolbox/src/main/kotlin/org/dataland/frameworktoolbox/intermediate/components" +
                 "/Iso2CountryCodesMultiSelectComponent.kt," +
