@@ -97,8 +97,11 @@ describeIf(
         { force: true }
       );
       uploadReports.fillAllFormsOfReportsSelectedForUpload();
-      selectItemFromDropdownByValue(cy.get('div[name="capex"] div[name="fileName"]'), differentFileNameForSameFile);
-      selectItemFromDropdownByValue(cy.get('div[name="opex"] div[name="fileName"]'), `${TEST_PDF_FILE_NAME}2`);
+      selectItemFromDropdownByValue(
+        cy.get('div[name="capex"] div[name="fileName"]').eq(0),
+        differentFileNameForSameFile
+      );
+      selectItemFromDropdownByValue(cy.get('div[name="opex"] div[name="fileName"]').eq(0), `${TEST_PDF_FILE_NAME}2`);
       cy.intercept({ url: `**/documents/*`, method: 'HEAD', times: 1 }).as('documentExists');
       cy.intercept(`**/documents/`, cy.spy().as('postDocument'));
       cy.intercept(`**/api/data/${DataTypeEnum.EutaxonomyNonFinancials}*`).as('postCompanyAssociatedData');
@@ -137,7 +140,7 @@ describeIf(
               selectItemFromDropdownByIndex(cy.get(`${revenueSelectorPrefix} div[name="currency"]`), 1);
               selectItemFromDropdownByIndex(cy.get(`${revenueSelectorPrefix} div[name="quality"]`), 1);
               selectItemFromDropdownByValue(
-                cy.get(`${revenueSelectorPrefix} div[name="fileName"]`),
+                cy.get(`${revenueSelectorPrefix} div[name="fileName"]`).eq(0),
                 TEST_PDF_FILE_NAME
               );
 
@@ -148,7 +151,7 @@ describeIf(
               selectItemFromDropdownByIndex(cy.get(`${capexSelectorPrefix} div[name="currency"]`), 10);
               selectItemFromDropdownByIndex(cy.get(`${capexSelectorPrefix} div[name="quality"]`), 1);
               selectItemFromDropdownByValue(
-                cy.get(`${capexSelectorPrefix} div[name="fileName"]`),
+                cy.get(`${capexSelectorPrefix} div[name="fileName"]`).eq(0),
                 `${TEST_PDF_FILE_NAME}2`
               );
 
