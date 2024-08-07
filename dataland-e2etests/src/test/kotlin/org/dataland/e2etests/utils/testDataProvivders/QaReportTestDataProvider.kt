@@ -1,4 +1,4 @@
-package org.dataland.e2etests.utils
+package org.dataland.e2etests.utils.testDataProvivders
 
 import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.Moshi
@@ -20,7 +20,7 @@ class QaReportTestDataProvider<T> (private val clazz: Class<T>) {
     )
 
     private val moshi: Moshi = Moshi.Builder().add(KotlinJsonAdapterFactory())
-        .add(BigDecimalAdapter).add(LocalDateAdapter).build() // TODO adapters needed?
+        .add(BigDecimalAdapter).add(LocalDateAdapter).build()
 
     private fun getJsonFileForTesting(): File {
         return jsonFilesForTesting[clazz]

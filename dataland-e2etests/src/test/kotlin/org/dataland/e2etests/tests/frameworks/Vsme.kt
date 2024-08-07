@@ -13,7 +13,7 @@ import org.dataland.e2etests.auth.TechnicalUser
 import org.dataland.e2etests.customApiControllers.CustomVsmeDataControllerApi
 import org.dataland.e2etests.utils.ApiAccessor
 import org.dataland.e2etests.utils.ExceptionUtils.assertAccessDeniedWrapper
-import org.dataland.e2etests.utils.FrameworkTestDataProvider
+import org.dataland.e2etests.utils.testDataProvivders.FrameworkTestDataProvider
 import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue

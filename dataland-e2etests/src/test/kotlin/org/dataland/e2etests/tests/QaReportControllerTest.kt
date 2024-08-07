@@ -8,8 +8,8 @@ import org.dataland.e2etests.auth.TechnicalUser
 import org.dataland.e2etests.utils.ApiAccessor
 import org.dataland.e2etests.utils.DocumentManagerAccessor
 import org.dataland.e2etests.utils.QaApiAccessor
-import org.dataland.e2etests.utils.QaReportTestDataProvider
 import org.dataland.e2etests.utils.UploadConfiguration
+import org.dataland.e2etests.utils.testDataProvivders.QaReportTestDataProvider
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
@@ -99,7 +99,7 @@ class QaReportControllerTest {
     }
 
     @Test
-    fun `Post a QA report and check that the report can be retrieved`() {
+    fun `post a QA report and check that the report can be retrieved`() {
         val qaReportTestDataProvider = QaReportTestDataProvider(SfdrQaReport::class.java)
         val sfdrQaReportWithOneCorrection = qaReportTestDataProvider.getTData(1).first()
 

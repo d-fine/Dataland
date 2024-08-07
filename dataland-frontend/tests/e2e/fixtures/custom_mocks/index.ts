@@ -40,11 +40,6 @@ export function exportCustomMocks(): void {
   );
   fs.writeFileSync(
     '../testing/data/SfdrQaReportPreparedFixtures.json',
-    JSON.stringify(
-      generateSfdrQaReportPreparedFixtures(),
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-return
-      (_key, value) => (value instanceof Set ? Array.from(value) : value), //TODO line might not be required
-      '\t'
-    )
+    JSON.stringify(generateSfdrQaReportPreparedFixtures(), null, '\t')
   );
 }
