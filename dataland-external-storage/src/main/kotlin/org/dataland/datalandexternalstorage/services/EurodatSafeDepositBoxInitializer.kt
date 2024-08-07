@@ -2,6 +2,7 @@ package org.dataland.datalandexternalstorage.services
 
 import jakarta.annotation.PostConstruct
 import org.dataland.datalandeurodatclient.openApiClient.api.SafeDepositDatabaseResourceApi
+import org.dataland.datalandeurodatclient.openApiClient.infrastructure.ClientException
 import org.dataland.datalandeurodatclient.openApiClient.model.SafeDepositDatabaseRequest
 import org.dataland.datalandeurodatclient.openApiClient.model.SafeDepositDatabaseResponse
 import org.dataland.datalandexternalstorage.utils.EurodatDataStoreUtils.retryWrapperMethod
@@ -10,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
 import org.springframework.stereotype.Component
+import java.net.HttpURLConnection
 
 /**
  * Simple implementation of the initialization of the eurodat minabo safedepositbox
@@ -43,7 +45,7 @@ class EurodatSafeDepositBoxInitializer(
                 isSafeDepositBoxAvailable()
             } } catch (e: Exception) {
                 logger.error(
-                    "An error occurred while trying to create the eurodat safedepositbox$: ${e.message}.",
+                    "An error occurred while trying to create the EuroDaT SafeDepositBox: ${e.message}.",
                 )
             }
         } else {
@@ -54,10 +56,14 @@ class EurodatSafeDepositBoxInitializer(
     }
 
     private fun isSafeDepositBoxAvailable() {
-        if (postSafeDepositBoxCreationRequest().response.contains("Database already exists")) {
-            logger.info("Safe deposit box exists.")
-        } else {
-            throw IllegalArgumentException("Received unexpected response when trying to create safe deposit box.")
+        try {
+            postSafeDepositBoxCreationRequest()
+        } catch (exception: ClientException) {
+            if (exception.statusCode == HttpURLConnection.HTTP_CONFLICT) {
+                logger.info("SafeDepositBox already exists.")
+            } else {
+                throw exception
+            }
         }
     }
 
