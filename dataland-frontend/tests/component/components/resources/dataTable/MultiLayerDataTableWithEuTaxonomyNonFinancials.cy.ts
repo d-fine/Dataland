@@ -77,7 +77,6 @@ describe('Component test for the Eu-Taxonomy-Non-Financials view page', () => {
   });
 
   it('Check if the view page for non-financials displays data correctly in its custom fields', () => {
-    cy.log("Test1")
     mountMLDTFrameworkPanelFromFakeFixture(
       DataTypeEnum.EutaxonomyNonFinancials,
       eutaxonomyNonFinancialsViewConfiguration,
@@ -98,8 +97,6 @@ describe('Component test for the Eu-Taxonomy-Non-Financials view page', () => {
         assertDefined(gammaCapex.substantialContributionToClimateChangeMitigationInPercentEligible),
         2
       );
-      cy.log("See Numbers: " + gammaContributionToClimateChangeMitigation)
-      cy.log("Checkpoint")
       getSectionHead('Revenue').should('exist');
       getCellValueContainer('Total Amount', 0)
         .invoke('text')
