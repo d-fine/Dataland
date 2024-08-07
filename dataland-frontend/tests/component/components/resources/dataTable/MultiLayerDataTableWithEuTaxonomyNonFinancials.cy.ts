@@ -77,6 +77,7 @@ describe('Component test for the Eu-Taxonomy-Non-Financials view page', () => {
   });
 
   it('Check if the view page for non-financials displays data correctly in its custom fields', () => {
+    cy.log("Test1")
     mountMLDTFrameworkPanelFromFakeFixture(
       DataTypeEnum.EutaxonomyNonFinancials,
       eutaxonomyNonFinancialsViewConfiguration,
@@ -94,10 +95,11 @@ describe('Component test for the Eu-Taxonomy-Non-Financials view page', () => {
         assertDefined(gammaCapex.alignedShare?.absoluteShare)
       );
       const gammaContributionToClimateChangeMitigation = roundNumber(
-        assertDefined(gammaCapex.substantialContributionToClimateChangeMitigationInPercent),
+        assertDefined(gammaCapex.substantialContributionToClimateChangeMitigationInPercentEligible),
         2
       );
-
+      cy.log("See Numbers: " + gammaContributionToClimateChangeMitigation)
+      cy.log("Checkpoint")
       getSectionHead('Revenue').should('exist');
       getCellValueContainer('Total Amount', 0)
         .invoke('text')
@@ -111,7 +113,7 @@ describe('Component test for the Eu-Taxonomy-Non-Financials view page', () => {
       getCellValueContainer('Absolute Share', 2)
         .invoke('text')
         .should('contains', `${gammaTotalAlignedCapexAbsoluteShareString}`);
-      getCellValueContainer('Substantial Contribution to Climate Change Mitigation In Percent', 2)
+      getCellValueContainer('Substantial Contribution to Climate Change Mitigation In Percent - Eligible', 2)
         .invoke('text')
         .should('contains', `${gammaContributionToClimateChangeMitigation} %`);
       getCellValueContainer('Total Amount', 2)
