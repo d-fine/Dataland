@@ -42,5 +42,4 @@ gitinfo
 **/secret_files/
 client.env
 keystore.jks
-test.jks
 tls.crt
