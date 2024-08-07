@@ -389,7 +389,7 @@
 						"quality": "Audited"
 					},
 					"biodiversityProtectionPolicy": {
-						"value": "No",
+						"value": "Yes",
 						"dataSource": {
 							"page": 785,
 							"fileName": "SustainabilityReport",
@@ -536,7 +536,7 @@
 					},
 					"environmentalPolicy": null,
 					"corruptionLegalProceedings": {
-						"value": "No",
+						"value": "Yes",
 						"dataSource": {
 							"page": 329,
 							"fileName": "AnnualReport",
@@ -558,7 +558,7 @@
 						"quality": "Audited"
 					},
 					"humanRightsDueDiligencePolicy": {
-						"value": "No",
+						"value": "Yes",
 						"dataSource": {
 							"page": 1102,
 							"fileName": "AnnualReport",
@@ -580,7 +580,7 @@
 						"quality": "Reported"
 					},
 					"policyAgainstForcedLabour": {
-						"value": "NoEvidenceFound",
+						"value": "No",
 						"dataSource": {
 							"page": 544,
 							"fileName": "IntegratedReport",
@@ -602,13 +602,13 @@
 						"quality": "Incomplete"
 					},
 					"iso14001Certificate": {
-						"value": "NoEvidenceFound",
+						"value": "No",
 						"dataSource": null,
 						"comment": "compress wireless protocol",
 						"quality": "Estimated"
 					},
 					"policyAgainstBriberyAndCorruption": {
-						"value": "No",
+						"value": "Yes",
 						"dataSource": {
 							"page": 377,
 							"fileName": "AnnualReport",
@@ -630,7 +630,7 @@
 						"quality": "Audited"
 					},
 					"technologiesExpertiseTransferPolicy": {
-						"value": "NoEvidenceFound",
+						"value": "No",
 						"dataSource": {
 							"page": 925,
 							"fileName": "AnnualReport",
@@ -774,7 +774,7 @@
 					},
 					"grievanceHandlingMechanism": null,
 					"whistleblowerProtectionPolicy": {
-						"value": "NoEvidenceFound",
+						"value": "No",
 						"dataSource": {
 							"page": 263,
 							"fileName": "IntegratedReport",
@@ -1009,7 +1009,7 @@
 						"quality": "Estimated"
 					},
 					"rareOrEndangeredEcosystemsExposure": {
-						"value": "NoEvidenceFound",
+						"value": "No",
 						"dataSource": {
 							"page": 674,
 							"fileName": "SustainabilityReport",
@@ -1066,7 +1066,7 @@
 					},
 					"threatenedSpeciesExposure": null,
 					"biodiversityProtectionPolicy": {
-						"value": "NoEvidenceFound",
+						"value": "No",
 						"dataSource": {
 							"page": 69,
 							"fileName": "SustainabilityReport",
@@ -1077,7 +1077,7 @@
 						"quality": "Reported"
 					},
 					"deforestationPolicy": {
-						"value": "NoEvidenceFound",
+						"value": "No",
 						"dataSource": {
 							"page": 594,
 							"fileName": "SustainabilityReport",
@@ -1582,7 +1582,7 @@
 				},
 				"biodiversity": {
 					"primaryForestAndWoodedLandOfNativeSpeciesExposure": {
-						"value": "No",
+						"value": "Yes",
 						"dataSource": {
 							"page": 262,
 							"fileName": "IntegratedReport",
@@ -1641,7 +1641,7 @@
 						"quality": "Incomplete"
 					},
 					"biodiversityProtectionPolicy": {
-						"value": "NoEvidenceFound",
+						"value": "No",
 						"dataSource": {
 							"page": 688,
 							"fileName": "ESEFReport",
@@ -1709,7 +1709,7 @@
 						"quality": "Reported"
 					},
 					"waterManagementPolicy": {
-						"value": "No",
+						"value": "Yes",
 						"dataSource": null,
 						"comment": "input auxiliary pixel",
 						"quality": "Incomplete"
@@ -1776,7 +1776,7 @@
 				"socialAndEmployeeMatters": {
 					"humanRightsLegalProceedings": null,
 					"iloCoreLabourStandards": {
-						"value": "No",
+						"value": "Yes",
 						"dataSource": {
 							"page": 722,
 							"fileName": "IntegratedReport",
@@ -1822,7 +1822,7 @@
 					},
 					"policyAgainstChildLabour": null,
 					"policyAgainstForcedLabour": {
-						"value": "NoEvidenceFound",
+						"value": "No",
 						"dataSource": null,
 						"comment": "index mobile protocol",
 						"quality": "Incomplete"
@@ -1851,7 +1851,7 @@
 						"quality": "Audited"
 					},
 					"fairBusinessMarketingAdvertisingPolicy": {
-						"value": "NoEvidenceFound",
+						"value": "No",
 						"dataSource": {
 							"page": 917,
 							"fileName": "SustainabilityReport",
@@ -1868,7 +1868,7 @@
 						"quality": null
 					},
 					"fairCompetitionPolicy": {
-						"value": "No",
+						"value": "Yes",
 						"dataSource": {
 							"page": 344,
 							"fileName": "ESEFReport",
@@ -1960,7 +1960,7 @@
 					},
 					"boardGenderDiversityInPercent": null,
 					"controversialWeaponsExposure": {
-						"value": "No",
+						"value": "Yes",
 						"dataSource": {
 							"page": 721,
 							"fileName": "ESEFReport",
@@ -1984,7 +1984,7 @@
 						"quality": "Reported"
 					},
 					"supplierCodeOfConduct": {
-						"value": "NoEvidenceFound",
+						"value": "No",
 						"dataSource": null,
 						"comment": "synthesize auxiliary microchip",
 						"quality": null
@@ -2038,7 +2038,7 @@
 				},
 				"greenSecurities": {
 					"securitiesNotCertifiedAsGreen": {
-						"value": "No",
+						"value": "Yes",
 						"dataSource": null,
 						"comment": "back up wireless transmitter",
 						"quality": "Estimated"
@@ -2057,7 +2057,7 @@
 						"quality": "Estimated"
 					},
 					"humanRightsDueDiligence": {
-						"value": "No",
+						"value": "Yes",
 						"dataSource": {
 							"page": 144,
 							"fileName": "AnnualReport",
@@ -2080,7 +2080,7 @@
 						"quality": "Estimated"
 					},
 					"reportedForcedOrCompulsoryLabourIncidents": {
-						"value": "No",
+						"value": "Yes",
 						"dataSource": {
 							"page": 285,
 							"fileName": "AnnualReport",
@@ -2623,7 +2623,7 @@
 						"quality": "Incomplete"
 					},
 					"rareOrEndangeredEcosystemsExposure": {
-						"value": "No",
+						"value": "Yes",
 						"dataSource": null,
 						"comment": "override online protocol",
 						"quality": "Incomplete"
@@ -2680,7 +2680,7 @@
 						"quality": "Audited"
 					},
 					"biodiversityProtectionPolicy": {
-						"value": "No",
+						"value": "Yes",
 						"dataSource": {
 							"page": 1108,
 							"fileName": "ESEFReport",
@@ -2691,7 +2691,7 @@
 						"quality": "Audited"
 					},
 					"deforestationPolicy": {
-						"value": "NoEvidenceFound",
+						"value": "No",
 						"dataSource": {
 							"page": 961,
 							"fileName": "IntegratedReport",
@@ -2754,7 +2754,7 @@
 						"quality": "Audited"
 					},
 					"highWaterStressAreaExposure": {
-						"value": "NoEvidenceFound",
+						"value": "No",
 						"dataSource": {
 							"page": 1123,
 							"fileName": "AnnualReport",
@@ -2814,7 +2814,7 @@
 						"quality": "Audited"
 					},
 					"carbonReductionInitiatives": {
-						"value": "No",
+						"value": "Yes",
 						"dataSource": {
 							"page": 307,
 							"fileName": "ESEFReport",
@@ -2851,7 +2851,7 @@
 						"quality": "Incomplete"
 					},
 					"environmentalPolicy": {
-						"value": "NoEvidenceFound",
+						"value": "No",
 						"dataSource": {
 							"page": 469,
 							"fileName": "AnnualReport",
@@ -2862,7 +2862,7 @@
 						"quality": "Reported"
 					},
 					"corruptionLegalProceedings": {
-						"value": "NoEvidenceFound",
+						"value": "No",
 						"dataSource": null,
 						"comment": "bypass auxiliary driver",
 						"quality": "Estimated"
@@ -2907,7 +2907,7 @@
 						"quality": "Estimated"
 					},
 					"policyAgainstDiscriminationInTheWorkplace": {
-						"value": "NoEvidenceFound",
+						"value": "No",
 						"dataSource": {
 							"page": 787,
 							"fileName": "SustainabilityReport",
@@ -3018,7 +3018,7 @@
 						"quality": "Audited"
 					},
 					"controversialWeaponsExposure": {
-						"value": "No",
+						"value": "Yes",
 						"dataSource": {
 							"page": 571,
 							"fileName": "SustainabilityReport",
@@ -3136,7 +3136,7 @@
 						"quality": "Estimated"
 					},
 					"traffickingInHumanBeingsPolicy": {
-						"value": "NoEvidenceFound",
+						"value": "No",
 						"dataSource": {
 							"page": 193,
 							"fileName": "AnnualReport",
@@ -3803,7 +3803,7 @@
 						"quality": "Incomplete"
 					},
 					"manufactureOfAgrochemicalPesticidesProducts": {
-						"value": "NoEvidenceFound",
+						"value": "No",
 						"dataSource": {
 							"page": 439,
 							"fileName": "AnnualReport",
@@ -3814,7 +3814,7 @@
 						"quality": "Incomplete"
 					},
 					"landDegradationDesertificationSoilSealingExposure": {
-						"value": "NoEvidenceFound",
+						"value": "No",
 						"dataSource": {
 							"page": 6,
 							"fileName": "IntegratedReport",
@@ -3847,7 +3847,7 @@
 						"quality": "Reported"
 					},
 					"threatenedSpeciesExposure": {
-						"value": "No",
+						"value": "Yes",
 						"dataSource": {
 							"page": 251,
 							"fileName": "ESEFReport",
@@ -3869,7 +3869,7 @@
 						"quality": "Incomplete"
 					},
 					"deforestationPolicy": {
-						"value": "No",
+						"value": "Yes",
 						"dataSource": {
 							"page": 530,
 							"fileName": "ESEFReport",
@@ -3926,7 +3926,7 @@
 						"quality": "Estimated"
 					},
 					"waterManagementPolicy": {
-						"value": "NoEvidenceFound",
+						"value": "No",
 						"dataSource": {
 							"page": 153,
 							"fileName": "AnnualReport",
@@ -4007,7 +4007,7 @@
 						"quality": "Reported"
 					},
 					"carbonReductionInitiatives": {
-						"value": "No",
+						"value": "Yes",
 						"dataSource": {
 							"page": 25,
 							"fileName": "AnnualReport",
@@ -4121,7 +4121,7 @@
 						"quality": "Estimated"
 					},
 					"iso14001Certificate": {
-						"value": "NoEvidenceFound",
+						"value": "No",
 						"dataSource": {
 							"page": 238,
 							"fileName": "IntegratedReport",
@@ -4165,7 +4165,7 @@
 						"quality": "Reported"
 					},
 					"fairCompetitionPolicy": {
-						"value": "No",
+						"value": "Yes",
 						"dataSource": {
 							"page": 1,
 							"fileName": "ESEFReport",
@@ -4176,7 +4176,7 @@
 						"quality": "Estimated"
 					},
 					"violationOfTaxRulesAndRegulation": {
-						"value": "No",
+						"value": "Yes",
 						"dataSource": {
 							"page": 461,
 							"fileName": "IntegratedReport",
@@ -4343,7 +4343,7 @@
 						"quality": "Reported"
 					},
 					"whistleblowerProtectionPolicy": {
-						"value": "NoEvidenceFound",
+						"value": "No",
 						"dataSource": {
 							"page": 144,
 							"fileName": "IntegratedReport",
@@ -4400,7 +4400,7 @@
 				},
 				"greenSecurities": {
 					"securitiesNotCertifiedAsGreen": {
-						"value": "NoEvidenceFound",
+						"value": "No",
 						"dataSource": {
 							"page": 550,
 							"fileName": "AnnualReport",
@@ -4424,7 +4424,7 @@
 						"quality": "Incomplete"
 					},
 					"humanRightsDueDiligence": {
-						"value": "NoEvidenceFound",
+						"value": "No",
 						"dataSource": {
 							"page": 193,
 							"fileName": "IntegratedReport",
@@ -4435,7 +4435,7 @@
 						"quality": "Estimated"
 					},
 					"traffickingInHumanBeingsPolicy": {
-						"value": "No",
+						"value": "Yes",
 						"dataSource": {
 							"page": 880,
 							"fileName": "ESEFReport",
@@ -4752,7 +4752,7 @@
 						"quality": "Estimated"
 					},
 					"fossilFuelSectorExposure": {
-						"value": "No",
+						"value": "Yes",
 						"dataSource": {
 							"page": 842,
 							"fileName": "SustainabilityReport",
@@ -5019,7 +5019,7 @@
 				},
 				"biodiversity": {
 					"primaryForestAndWoodedLandOfNativeSpeciesExposure": {
-						"value": "NoEvidenceFound",
+						"value": "No",
 						"dataSource": {
 							"page": 817,
 							"fileName": "SustainabilityReport",
@@ -5041,7 +5041,7 @@
 						"quality": "Audited"
 					},
 					"rareOrEndangeredEcosystemsExposure": {
-						"value": "No",
+						"value": "Yes",
 						"dataSource": {
 							"page": 371,
 							"fileName": "SustainabilityReport",
@@ -5052,7 +5052,7 @@
 						"quality": "Reported"
 					},
 					"highlyBiodiverseGrasslandExposure": {
-						"value": "No",
+						"value": "Yes",
 						"dataSource": {
 							"page": 942,
 							"fileName": "SustainabilityReport",
@@ -5063,7 +5063,7 @@
 						"quality": "Incomplete"
 					},
 					"manufactureOfAgrochemicalPesticidesProducts": {
-						"value": "No",
+						"value": "Yes",
 						"dataSource": {
 							"page": 1008,
 							"fileName": "SustainabilityReport",
@@ -5085,7 +5085,7 @@
 						"quality": "Estimated"
 					},
 					"sustainableAgriculturePolicy": {
-						"value": "NoEvidenceFound",
+						"value": "No",
 						"dataSource": {
 							"page": 55,
 							"fileName": "SustainabilityReport",
@@ -5096,7 +5096,7 @@
 						"quality": "Incomplete"
 					},
 					"sustainableOceansAndSeasPolicy": {
-						"value": "No",
+						"value": "Yes",
 						"dataSource": {
 							"page": 796,
 							"fileName": "SustainabilityReport",
@@ -5107,7 +5107,7 @@
 						"quality": "Incomplete"
 					},
 					"threatenedSpeciesExposure": {
-						"value": "NoEvidenceFound",
+						"value": "No",
 						"dataSource": {
 							"page": 915,
 							"fileName": "SustainabilityReport",
@@ -5118,7 +5118,7 @@
 						"quality": "Reported"
 					},
 					"biodiversityProtectionPolicy": {
-						"value": "No",
+						"value": "Yes",
 						"dataSource": {
 							"page": 1085,
 							"fileName": "AnnualReport",
@@ -5129,7 +5129,7 @@
 						"quality": "Reported"
 					},
 					"deforestationPolicy": {
-						"value": "NoEvidenceFound",
+						"value": "No",
 						"dataSource": {
 							"page": 832,
 							"fileName": "AnnualReport",
@@ -5197,7 +5197,7 @@
 						"quality": "Audited"
 					},
 					"highWaterStressAreaExposure": {
-						"value": "NoEvidenceFound",
+						"value": "No",
 						"dataSource": {
 							"page": 1073,
 							"fileName": "AnnualReport",
@@ -5267,7 +5267,7 @@
 						"quality": "Estimated"
 					},
 					"carbonReductionInitiatives": {
-						"value": "No",
+						"value": "Yes",
 						"dataSource": {
 							"page": 508,
 							"fileName": "SustainabilityReport",
@@ -5293,7 +5293,7 @@
 						"quality": "Audited"
 					},
 					"iloCoreLabourStandards": {
-						"value": "NoEvidenceFound",
+						"value": "No",
 						"dataSource": {
 							"page": 849,
 							"fileName": "SustainabilityReport",
@@ -5304,7 +5304,7 @@
 						"quality": "Reported"
 					},
 					"environmentalPolicy": {
-						"value": "NoEvidenceFound",
+						"value": "No",
 						"dataSource": {
 							"page": 1197,
 							"fileName": "SustainabilityReport",
@@ -5326,7 +5326,7 @@
 						"quality": "Estimated"
 					},
 					"transparencyDisclosurePolicy": {
-						"value": "No",
+						"value": "Yes",
 						"dataSource": {
 							"page": 858,
 							"fileName": "SustainabilityReport",
@@ -5337,7 +5337,7 @@
 						"quality": "Estimated"
 					},
 					"humanRightsDueDiligencePolicy": {
-						"value": "No",
+						"value": "Yes",
 						"dataSource": {
 							"page": 993,
 							"fileName": "AnnualReport",
@@ -5381,7 +5381,7 @@
 						"quality": "Audited"
 					},
 					"iso14001Certificate": {
-						"value": "NoEvidenceFound",
+						"value": "No",
 						"dataSource": {
 							"page": 662,
 							"fileName": "AnnualReport",
@@ -5414,7 +5414,7 @@
 						"quality": "Reported"
 					},
 					"technologiesExpertiseTransferPolicy": {
-						"value": "No",
+						"value": "Yes",
 						"dataSource": {
 							"page": 1070,
 							"fileName": "SustainabilityReport",
@@ -5447,7 +5447,7 @@
 						"quality": "Audited"
 					},
 					"unGlobalCompactPrinciplesCompliancePolicy": {
-						"value": "NoEvidenceFound",
+						"value": "No",
 						"dataSource": {
 							"page": 515,
 							"fileName": "AnnualReport",
@@ -5660,7 +5660,7 @@
 				},
 				"greenSecurities": {
 					"securitiesNotCertifiedAsGreen": {
-						"value": "NoEvidenceFound",
+						"value": "No",
 						"dataSource": {
 							"page": 9,
 							"fileName": "SustainabilityReport",
@@ -5673,7 +5673,7 @@
 				},
 				"humanRights": {
 					"humanRightsPolicy": {
-						"value": "No",
+						"value": "Yes",
 						"dataSource": {
 							"page": 397,
 							"fileName": "SustainabilityReport",
@@ -5684,7 +5684,7 @@
 						"quality": "Reported"
 					},
 					"humanRightsDueDiligence": {
-						"value": "NoEvidenceFound",
+						"value": "No",
 						"dataSource": {
 							"page": 738,
 							"fileName": "AnnualReport",
@@ -5695,7 +5695,7 @@
 						"quality": "Estimated"
 					},
 					"traffickingInHumanBeingsPolicy": {
-						"value": "NoEvidenceFound",
+						"value": "No",
 						"dataSource": {
 							"page": 800,
 							"fileName": "SustainabilityReport",
@@ -6327,7 +6327,7 @@
 				},
 				"biodiversity": {
 					"primaryForestAndWoodedLandOfNativeSpeciesExposure": {
-						"value": "No",
+						"value": "Yes",
 						"dataSource": {
 							"page": 260,
 							"fileName": "SustainabilityReport",
@@ -6349,7 +6349,7 @@
 						"quality": "Estimated"
 					},
 					"rareOrEndangeredEcosystemsExposure": {
-						"value": "NoEvidenceFound",
+						"value": "No",
 						"dataSource": {
 							"page": 58,
 							"fileName": "AnnualReport",
@@ -6371,7 +6371,7 @@
 						"quality": "Estimated"
 					},
 					"manufactureOfAgrochemicalPesticidesProducts": {
-						"value": "NoEvidenceFound",
+						"value": "No",
 						"dataSource": {
 							"page": 428,
 							"fileName": "ESEFReport",
@@ -6382,7 +6382,7 @@
 						"quality": "Audited"
 					},
 					"landDegradationDesertificationSoilSealingExposure": {
-						"value": "NoEvidenceFound",
+						"value": "No",
 						"dataSource": {
 							"page": 959,
 							"fileName": "ESEFReport",
@@ -6393,7 +6393,7 @@
 						"quality": "Incomplete"
 					},
 					"sustainableAgriculturePolicy": {
-						"value": "No",
+						"value": "Yes",
 						"dataSource": {
 							"page": 129,
 							"fileName": "IntegratedReport",
@@ -6404,7 +6404,7 @@
 						"quality": "Audited"
 					},
 					"sustainableOceansAndSeasPolicy": {
-						"value": "No",
+						"value": "Yes",
 						"dataSource": {
 							"page": 360,
 							"fileName": "IntegratedReport",
@@ -6494,7 +6494,7 @@
 						"quality": "Reported"
 					},
 					"waterManagementPolicy": {
-						"value": "No",
+						"value": "Yes",
 						"dataSource": {
 							"page": 511,
 							"fileName": "ESEFReport",
@@ -6656,7 +6656,7 @@
 						"quality": "Estimated"
 					},
 					"policyAgainstChildLabour": {
-						"value": "No",
+						"value": "Yes",
 						"dataSource": {
 							"page": 1063,
 							"fileName": "ESEFReport",
@@ -6667,7 +6667,7 @@
 						"quality": "Reported"
 					},
 					"policyAgainstForcedLabour": {
-						"value": "NoEvidenceFound",
+						"value": "No",
 						"dataSource": {
 							"page": 85,
 							"fileName": "ESEFReport",
@@ -6678,7 +6678,7 @@
 						"quality": "Reported"
 					},
 					"policyAgainstDiscriminationInTheWorkplace": {
-						"value": "NoEvidenceFound",
+						"value": "No",
 						"dataSource": {
 							"page": 57,
 							"fileName": "SustainabilityReport",
@@ -6700,7 +6700,7 @@
 						"quality": "Reported"
 					},
 					"policyAgainstBriberyAndCorruption": {
-						"value": "No",
+						"value": "Yes",
 						"dataSource": {
 							"page": 130,
 							"fileName": "AnnualReport",
@@ -6733,7 +6733,7 @@
 						"quality": "Estimated"
 					},
 					"fairCompetitionPolicy": {
-						"value": "NoEvidenceFound",
+						"value": "No",
 						"dataSource": {
 							"page": 716,
 							"fileName": "IntegratedReport",
@@ -6744,7 +6744,7 @@
 						"quality": "Estimated"
 					},
 					"violationOfTaxRulesAndRegulation": {
-						"value": "No",
+						"value": "Yes",
 						"dataSource": {
 							"page": 659,
 							"fileName": "ESEFReport",
@@ -6755,7 +6755,7 @@
 						"quality": "Estimated"
 					},
 					"unGlobalCompactPrinciplesCompliancePolicy": {
-						"value": "NoEvidenceFound",
+						"value": "No",
 						"dataSource": {
 							"page": 1142,
 							"fileName": "IntegratedReport",
@@ -6766,7 +6766,7 @@
 						"quality": "Audited"
 					},
 					"oecdGuidelinesForMultinationalEnterprisesGrievanceHandling": {
-						"value": "NoEvidenceFound",
+						"value": "No",
 						"dataSource": {
 							"page": 53,
 							"fileName": "IntegratedReport",
@@ -6845,7 +6845,7 @@
 						"quality": "Incomplete"
 					},
 					"controversialWeaponsExposure": {
-						"value": "NoEvidenceFound",
+						"value": "No",
 						"dataSource": {
 							"page": 380,
 							"fileName": "ESEFReport",
@@ -6856,7 +6856,7 @@
 						"quality": "Audited"
 					},
 					"workplaceAccidentPreventionPolicy": {
-						"value": "No",
+						"value": "Yes",
 						"dataSource": {
 							"page": 998,
 							"fileName": "ESEFReport",
@@ -6889,7 +6889,7 @@
 						"quality": "Incomplete"
 					},
 					"supplierCodeOfConduct": {
-						"value": "NoEvidenceFound",
+						"value": "No",
 						"dataSource": {
 							"page": 970,
 							"fileName": "ESEFReport",
@@ -6900,7 +6900,7 @@
 						"quality": "Audited"
 					},
 					"grievanceHandlingMechanism": {
-						"value": "NoEvidenceFound",
+						"value": "No",
 						"dataSource": {
 							"page": 612,
 							"fileName": "AnnualReport",
@@ -6981,7 +6981,7 @@
 				},
 				"humanRights": {
 					"humanRightsPolicy": {
-						"value": "No",
+						"value": "Yes",
 						"dataSource": {
 							"page": 788,
 							"fileName": "SustainabilityReport",
@@ -7696,7 +7696,7 @@
 						"quality": "Estimated"
 					},
 					"rareOrEndangeredEcosystemsExposure": {
-						"value": "No",
+						"value": "Yes",
 						"dataSource": {
 							"page": 225,
 							"fileName": "IntegratedReport",
@@ -7707,7 +7707,7 @@
 						"quality": "Estimated"
 					},
 					"highlyBiodiverseGrasslandExposure": {
-						"value": "NoEvidenceFound",
+						"value": "No",
 						"dataSource": {
 							"page": 300,
 							"fileName": "IntegratedReport",
@@ -7718,7 +7718,7 @@
 						"quality": "Incomplete"
 					},
 					"manufactureOfAgrochemicalPesticidesProducts": {
-						"value": "No",
+						"value": "Yes",
 						"dataSource": {
 							"page": 567,
 							"fileName": "IntegratedReport",
@@ -7751,7 +7751,7 @@
 						"quality": "Audited"
 					},
 					"sustainableOceansAndSeasPolicy": {
-						"value": "NoEvidenceFound",
+						"value": "No",
 						"dataSource": {
 							"page": 718,
 							"fileName": "IntegratedReport",
@@ -7762,7 +7762,7 @@
 						"quality": "Reported"
 					},
 					"threatenedSpeciesExposure": {
-						"value": "No",
+						"value": "Yes",
 						"dataSource": {
 							"page": 617,
 							"fileName": "IntegratedReport",
@@ -7922,7 +7922,7 @@
 						"quality": "Incomplete"
 					},
 					"carbonReductionInitiatives": {
-						"value": "NoEvidenceFound",
+						"value": "No",
 						"dataSource": {
 							"page": 824,
 							"fileName": "IntegratedReport",
@@ -7959,7 +7959,7 @@
 						"quality": "Incomplete"
 					},
 					"environmentalPolicy": {
-						"value": "NoEvidenceFound",
+						"value": "No",
 						"dataSource": {
 							"page": 989,
 							"fileName": "IntegratedReport",
@@ -7970,7 +7970,7 @@
 						"quality": "Estimated"
 					},
 					"corruptionLegalProceedings": {
-						"value": "NoEvidenceFound",
+						"value": "No",
 						"dataSource": {
 							"page": 87,
 							"fileName": "IntegratedReport",
@@ -7981,7 +7981,7 @@
 						"quality": "Reported"
 					},
 					"transparencyDisclosurePolicy": {
-						"value": "No",
+						"value": "Yes",
 						"dataSource": {
 							"page": 823,
 							"fileName": "IntegratedReport",
@@ -7992,7 +7992,7 @@
 						"quality": "Incomplete"
 					},
 					"humanRightsDueDiligencePolicy": {
-						"value": "NoEvidenceFound",
+						"value": "No",
 						"dataSource": {
 							"page": 292,
 							"fileName": "IntegratedReport",
@@ -8003,7 +8003,7 @@
 						"quality": "Estimated"
 					},
 					"policyAgainstChildLabour": {
-						"value": "NoEvidenceFound",
+						"value": "No",
 						"dataSource": {
 							"page": 579,
 							"fileName": "IntegratedReport",
@@ -8047,7 +8047,7 @@
 						"quality": "Audited"
 					},
 					"policyAgainstBriberyAndCorruption": {
-						"value": "NoEvidenceFound",
+						"value": "No",
 						"dataSource": {
 							"page": 320,
 							"fileName": "IntegratedReport",
@@ -8058,7 +8058,7 @@
 						"quality": "Audited"
 					},
 					"fairBusinessMarketingAdvertisingPolicy": {
-						"value": "NoEvidenceFound",
+						"value": "No",
 						"dataSource": {
 							"page": 831,
 							"fileName": "IntegratedReport",
@@ -8080,7 +8080,7 @@
 						"quality": "Estimated"
 					},
 					"fairCompetitionPolicy": {
-						"value": "NoEvidenceFound",
+						"value": "No",
 						"dataSource": {
 							"page": 1025,
 							"fileName": "IntegratedReport",
@@ -8091,7 +8091,7 @@
 						"quality": "Reported"
 					},
 					"violationOfTaxRulesAndRegulation": {
-						"value": "No",
+						"value": "Yes",
 						"dataSource": {
 							"page": 909,
 							"fileName": "IntegratedReport",
@@ -8192,7 +8192,7 @@
 						"quality": "Estimated"
 					},
 					"controversialWeaponsExposure": {
-						"value": "NoEvidenceFound",
+						"value": "No",
 						"dataSource": {
 							"page": 1011,
 							"fileName": "IntegratedReport",
@@ -8203,7 +8203,7 @@
 						"quality": "Estimated"
 					},
 					"workplaceAccidentPreventionPolicy": {
-						"value": "No",
+						"value": "Yes",
 						"dataSource": {
 							"page": 727,
 							"fileName": "IntegratedReport",
@@ -8236,7 +8236,7 @@
 						"quality": "Estimated"
 					},
 					"supplierCodeOfConduct": {
-						"value": "NoEvidenceFound",
+						"value": "No",
 						"dataSource": {
 							"page": 841,
 							"fileName": "IntegratedReport",
@@ -8328,7 +8328,7 @@
 				},
 				"humanRights": {
 					"humanRightsPolicy": {
-						"value": "NoEvidenceFound",
+						"value": "No",
 						"dataSource": {
 							"page": 1175,
 							"fileName": "IntegratedReport",
@@ -8339,7 +8339,7 @@
 						"quality": "Reported"
 					},
 					"humanRightsDueDiligence": {
-						"value": "NoEvidenceFound",
+						"value": "No",
 						"dataSource": {
 							"page": 150,
 							"fileName": "IntegratedReport",
@@ -8350,7 +8350,7 @@
 						"quality": "Reported"
 					},
 					"traffickingInHumanBeingsPolicy": {
-						"value": "No",
+						"value": "Yes",
 						"dataSource": {
 							"page": 158,
 							"fileName": "IntegratedReport",
@@ -8361,7 +8361,7 @@
 						"quality": "Incomplete"
 					},
 					"reportedChildLabourIncidents": {
-						"value": "NoEvidenceFound",
+						"value": "No",
 						"dataSource": {
 							"page": 920,
 							"fileName": "IntegratedReport",
@@ -9027,7 +9027,7 @@
 				},
 				"biodiversity": {
 					"primaryForestAndWoodedLandOfNativeSpeciesExposure": {
-						"value": "NoEvidenceFound",
+						"value": "No",
 						"dataSource": {
 							"page": 163,
 							"fileName": "SustainabilityReport",
@@ -9038,7 +9038,7 @@
 						"quality": "Reported"
 					},
 					"protectedAreasExposure": {
-						"value": "NoEvidenceFound",
+						"value": "No",
 						"dataSource": {
 							"page": 134,
 							"fileName": "SustainabilityReport",
@@ -9071,7 +9071,7 @@
 						"quality": "Reported"
 					},
 					"manufactureOfAgrochemicalPesticidesProducts": {
-						"value": "No",
+						"value": "Yes",
 						"dataSource": {
 							"page": 273,
 							"fileName": "AnnualReport",
@@ -9093,7 +9093,7 @@
 						"quality": "Audited"
 					},
 					"sustainableAgriculturePolicy": {
-						"value": "NoEvidenceFound",
+						"value": "No",
 						"dataSource": {
 							"page": 720,
 							"fileName": "IntegratedReport",
@@ -9104,7 +9104,7 @@
 						"quality": "Estimated"
 					},
 					"sustainableOceansAndSeasPolicy": {
-						"value": "No",
+						"value": "Yes",
 						"dataSource": {
 							"page": 453,
 							"fileName": "IntegratedReport",
@@ -9115,7 +9115,7 @@
 						"quality": "Audited"
 					},
 					"threatenedSpeciesExposure": {
-						"value": "NoEvidenceFound",
+						"value": "No",
 						"dataSource": {
 							"page": 448,
 							"fileName": "SustainabilityReport",
@@ -9126,7 +9126,7 @@
 						"quality": "Audited"
 					},
 					"biodiversityProtectionPolicy": {
-						"value": "NoEvidenceFound",
+						"value": "No",
 						"dataSource": {
 							"page": 1072,
 							"fileName": "AnnualReport",
@@ -9137,7 +9137,7 @@
 						"quality": "Estimated"
 					},
 					"deforestationPolicy": {
-						"value": "NoEvidenceFound",
+						"value": "No",
 						"dataSource": {
 							"page": 936,
 							"fileName": "IntegratedReport",
@@ -9194,7 +9194,7 @@
 						"quality": "Reported"
 					},
 					"waterManagementPolicy": {
-						"value": "NoEvidenceFound",
+						"value": "No",
 						"dataSource": {
 							"page": 484,
 							"fileName": "IntegratedReport",
@@ -9205,7 +9205,7 @@
 						"quality": "Incomplete"
 					},
 					"highWaterStressAreaExposure": {
-						"value": "No",
+						"value": "Yes",
 						"dataSource": {
 							"page": 1179,
 							"fileName": "IntegratedReport",
@@ -9290,7 +9290,7 @@
 			"social": {
 				"socialAndEmployeeMatters": {
 					"humanRightsLegalProceedings": {
-						"value": "NoEvidenceFound",
+						"value": "No",
 						"dataSource": {
 							"page": 418,
 							"fileName": "AnnualReport",
@@ -9345,7 +9345,7 @@
 						"quality": "Reported"
 					},
 					"humanRightsDueDiligencePolicy": {
-						"value": "NoEvidenceFound",
+						"value": "No",
 						"dataSource": {
 							"page": 943,
 							"fileName": "AnnualReport",
@@ -9356,7 +9356,7 @@
 						"quality": "Estimated"
 					},
 					"policyAgainstChildLabour": {
-						"value": "NoEvidenceFound",
+						"value": "No",
 						"dataSource": {
 							"page": 689,
 							"fileName": "AnnualReport",
@@ -9367,7 +9367,7 @@
 						"quality": "Audited"
 					},
 					"policyAgainstForcedLabour": {
-						"value": "NoEvidenceFound",
+						"value": "No",
 						"dataSource": {
 							"page": 1138,
 							"fileName": "SustainabilityReport",
@@ -9378,7 +9378,7 @@
 						"quality": "Incomplete"
 					},
 					"policyAgainstDiscriminationInTheWorkplace": {
-						"value": "NoEvidenceFound",
+						"value": "No",
 						"dataSource": {
 							"page": 494,
 							"fileName": "IntegratedReport",
@@ -9389,7 +9389,7 @@
 						"quality": "Incomplete"
 					},
 					"iso14001Certificate": {
-						"value": "No",
+						"value": "Yes",
 						"dataSource": {
 							"page": 924,
 							"fileName": "IntegratedReport",
@@ -9400,7 +9400,7 @@
 						"quality": "Reported"
 					},
 					"policyAgainstBriberyAndCorruption": {
-						"value": "No",
+						"value": "Yes",
 						"dataSource": {
 							"page": 547,
 							"fileName": "AnnualReport",
@@ -9411,7 +9411,7 @@
 						"quality": "Estimated"
 					},
 					"fairBusinessMarketingAdvertisingPolicy": {
-						"value": "NoEvidenceFound",
+						"value": "No",
 						"dataSource": {
 							"page": 1155,
 							"fileName": "AnnualReport",
@@ -9545,7 +9545,7 @@
 						"quality": "Incomplete"
 					},
 					"controversialWeaponsExposure": {
-						"value": "NoEvidenceFound",
+						"value": "No",
 						"dataSource": {
 							"page": 678,
 							"fileName": "SustainabilityReport",
@@ -9600,7 +9600,7 @@
 						"quality": "Audited"
 					},
 					"grievanceHandlingMechanism": {
-						"value": "NoEvidenceFound",
+						"value": "No",
 						"dataSource": {
 							"page": 996,
 							"fileName": "AnnualReport",
@@ -9611,7 +9611,7 @@
 						"quality": "Incomplete"
 					},
 					"whistleblowerProtectionPolicy": {
-						"value": "NoEvidenceFound",
+						"value": "No",
 						"dataSource": {
 							"page": 946,
 							"fileName": "AnnualReport",
@@ -9681,7 +9681,7 @@
 				},
 				"humanRights": {
 					"humanRightsPolicy": {
-						"value": "NoEvidenceFound",
+						"value": "No",
 						"dataSource": {
 							"page": 576,
 							"fileName": "AnnualReport",
@@ -9692,7 +9692,7 @@
 						"quality": "Incomplete"
 					},
 					"humanRightsDueDiligence": {
-						"value": "NoEvidenceFound",
+						"value": "No",
 						"dataSource": {
 							"page": 97,
 							"fileName": "AnnualReport",
@@ -9703,7 +9703,7 @@
 						"quality": "Incomplete"
 					},
 					"traffickingInHumanBeingsPolicy": {
-						"value": "NoEvidenceFound",
+						"value": "No",
 						"dataSource": {
 							"page": 679,
 							"fileName": "IntegratedReport",
@@ -9714,7 +9714,7 @@
 						"quality": "Audited"
 					},
 					"reportedChildLabourIncidents": {
-						"value": "No",
+						"value": "Yes",
 						"dataSource": {
 							"page": 349,
 							"fileName": "SustainabilityReport",
@@ -9725,7 +9725,7 @@
 						"quality": "Reported"
 					},
 					"reportedForcedOrCompulsoryLabourIncidents": {
-						"value": "NoEvidenceFound",
+						"value": "No",
 						"dataSource": {
 							"page": 165,
 							"fileName": "AnnualReport",
@@ -10306,7 +10306,7 @@
 				},
 				"biodiversity": {
 					"primaryForestAndWoodedLandOfNativeSpeciesExposure": {
-						"value": "NoEvidenceFound",
+						"value": "No",
 						"dataSource": {
 							"page": 1089,
 							"fileName": "AnnualReport",
@@ -10328,7 +10328,7 @@
 						"quality": "Estimated"
 					},
 					"rareOrEndangeredEcosystemsExposure": {
-						"value": "NoEvidenceFound",
+						"value": "No",
 						"dataSource": {
 							"page": 797,
 							"fileName": "IntegratedReport",
@@ -10339,7 +10339,7 @@
 						"quality": "Audited"
 					},
 					"highlyBiodiverseGrasslandExposure": {
-						"value": "NoEvidenceFound",
+						"value": "No",
 						"dataSource": {
 							"page": 278,
 							"fileName": "SustainabilityReport",
@@ -10361,7 +10361,7 @@
 						"quality": "Incomplete"
 					},
 					"landDegradationDesertificationSoilSealingExposure": {
-						"value": "NoEvidenceFound",
+						"value": "No",
 						"dataSource": {
 							"page": 691,
 							"fileName": "IntegratedReport",
@@ -10473,7 +10473,7 @@
 						"quality": "Reported"
 					},
 					"waterManagementPolicy": {
-						"value": "NoEvidenceFound",
+						"value": "No",
 						"dataSource": {
 							"page": 798,
 							"fileName": "SustainabilityReport",
@@ -10484,7 +10484,7 @@
 						"quality": "Reported"
 					},
 					"highWaterStressAreaExposure": {
-						"value": "NoEvidenceFound",
+						"value": "No",
 						"dataSource": {
 							"page": 549,
 							"fileName": "AnnualReport",
@@ -10554,7 +10554,7 @@
 						"quality": "Audited"
 					},
 					"carbonReductionInitiatives": {
-						"value": "No",
+						"value": "Yes",
 						"dataSource": {
 							"page": 865,
 							"fileName": "IntegratedReport",
@@ -10569,7 +10569,7 @@
 			"social": {
 				"socialAndEmployeeMatters": {
 					"humanRightsLegalProceedings": {
-						"value": "No",
+						"value": "Yes",
 						"dataSource": {
 							"page": 1042,
 							"fileName": "AnnualReport",
@@ -10613,7 +10613,7 @@
 						"quality": "Audited"
 					},
 					"transparencyDisclosurePolicy": {
-						"value": "NoEvidenceFound",
+						"value": "No",
 						"dataSource": {
 							"page": 646,
 							"fileName": "AnnualReport",
@@ -10624,7 +10624,7 @@
 						"quality": "Audited"
 					},
 					"humanRightsDueDiligencePolicy": {
-						"value": "No",
+						"value": "Yes",
 						"dataSource": {
 							"page": 65,
 							"fileName": "AnnualReport",
@@ -10635,7 +10635,7 @@
 						"quality": "Incomplete"
 					},
 					"policyAgainstChildLabour": {
-						"value": "NoEvidenceFound",
+						"value": "No",
 						"dataSource": {
 							"page": 1013,
 							"fileName": "AnnualReport",
@@ -10646,7 +10646,7 @@
 						"quality": "Reported"
 					},
 					"policyAgainstForcedLabour": {
-						"value": "NoEvidenceFound",
+						"value": "No",
 						"dataSource": {
 							"page": 1054,
 							"fileName": "AnnualReport",
@@ -10657,7 +10657,7 @@
 						"quality": "Estimated"
 					},
 					"policyAgainstDiscriminationInTheWorkplace": {
-						"value": "NoEvidenceFound",
+						"value": "No",
 						"dataSource": {
 							"page": 689,
 							"fileName": "IntegratedReport",
@@ -10668,7 +10668,7 @@
 						"quality": "Reported"
 					},
 					"iso14001Certificate": {
-						"value": "No",
+						"value": "Yes",
 						"dataSource": {
 							"page": 872,
 							"fileName": "IntegratedReport",
@@ -10679,7 +10679,7 @@
 						"quality": "Incomplete"
 					},
 					"policyAgainstBriberyAndCorruption": {
-						"value": "NoEvidenceFound",
+						"value": "No",
 						"dataSource": {
 							"page": 1178,
 							"fileName": "SustainabilityReport",
@@ -10690,7 +10690,7 @@
 						"quality": "Reported"
 					},
 					"fairBusinessMarketingAdvertisingPolicy": {
-						"value": "NoEvidenceFound",
+						"value": "No",
 						"dataSource": {
 							"page": 788,
 							"fileName": "IntegratedReport",
@@ -10712,7 +10712,7 @@
 						"quality": "Reported"
 					},
 					"fairCompetitionPolicy": {
-						"value": "NoEvidenceFound",
+						"value": "No",
 						"dataSource": {
 							"page": 191,
 							"fileName": "SustainabilityReport",
@@ -10723,7 +10723,7 @@
 						"quality": "Audited"
 					},
 					"violationOfTaxRulesAndRegulation": {
-						"value": "NoEvidenceFound",
+						"value": "No",
 						"dataSource": {
 							"page": 87,
 							"fileName": "IntegratedReport",
@@ -10734,7 +10734,7 @@
 						"quality": "Estimated"
 					},
 					"unGlobalCompactPrinciplesCompliancePolicy": {
-						"value": "No",
+						"value": "Yes",
 						"dataSource": {
 							"page": 279,
 							"fileName": "SustainabilityReport",
@@ -10745,7 +10745,7 @@
 						"quality": "Incomplete"
 					},
 					"oecdGuidelinesForMultinationalEnterprisesGrievanceHandling": {
-						"value": "NoEvidenceFound",
+						"value": "No",
 						"dataSource": {
 							"page": 1182,
 							"fileName": "IntegratedReport",
@@ -10835,7 +10835,7 @@
 						"quality": "Incomplete"
 					},
 					"workplaceAccidentPreventionPolicy": {
-						"value": "NoEvidenceFound",
+						"value": "No",
 						"dataSource": {
 							"page": 739,
 							"fileName": "IntegratedReport",
@@ -10868,7 +10868,7 @@
 						"quality": "Estimated"
 					},
 					"supplierCodeOfConduct": {
-						"value": "No",
+						"value": "Yes",
 						"dataSource": {
 							"page": 1172,
 							"fileName": "AnnualReport",
@@ -10947,7 +10947,7 @@
 				},
 				"greenSecurities": {
 					"securitiesNotCertifiedAsGreen": {
-						"value": "NoEvidenceFound",
+						"value": "No",
 						"dataSource": {
 							"page": 547,
 							"fileName": "IntegratedReport",
@@ -10960,7 +10960,7 @@
 				},
 				"humanRights": {
 					"humanRightsPolicy": {
-						"value": "NoEvidenceFound",
+						"value": "No",
 						"dataSource": {
 							"page": 226,
 							"fileName": "SustainabilityReport",
@@ -11623,7 +11623,7 @@
 				},
 				"biodiversity": {
 					"primaryForestAndWoodedLandOfNativeSpeciesExposure": {
-						"value": "NoEvidenceFound",
+						"value": "No",
 						"dataSource": {
 							"page": 50,
 							"fileName": "AnnualReport",
@@ -11656,7 +11656,7 @@
 						"quality": "Estimated"
 					},
 					"highlyBiodiverseGrasslandExposure": {
-						"value": "NoEvidenceFound",
+						"value": "No",
 						"dataSource": {
 							"page": 210,
 							"fileName": "AnnualReport",
@@ -11667,7 +11667,7 @@
 						"quality": "Reported"
 					},
 					"manufactureOfAgrochemicalPesticidesProducts": {
-						"value": "NoEvidenceFound",
+						"value": "No",
 						"dataSource": {
 							"page": 733,
 							"fileName": "AnnualReport",
@@ -11678,7 +11678,7 @@
 						"quality": "Reported"
 					},
 					"landDegradationDesertificationSoilSealingExposure": {
-						"value": "No",
+						"value": "Yes",
 						"dataSource": {
 							"page": 152,
 							"fileName": "AnnualReport",
@@ -11722,7 +11722,7 @@
 						"quality": "Estimated"
 					},
 					"biodiversityProtectionPolicy": {
-						"value": "NoEvidenceFound",
+						"value": "No",
 						"dataSource": {
 							"page": 356,
 							"fileName": "AnnualReport",
@@ -11733,7 +11733,7 @@
 						"quality": "Reported"
 					},
 					"deforestationPolicy": {
-						"value": "NoEvidenceFound",
+						"value": "No",
 						"dataSource": {
 							"page": 378,
 							"fileName": "AnnualReport",
@@ -11790,7 +11790,7 @@
 						"quality": "Estimated"
 					},
 					"waterManagementPolicy": {
-						"value": "NoEvidenceFound",
+						"value": "No",
 						"dataSource": {
 							"page": 1123,
 							"fileName": "AnnualReport",
@@ -11801,7 +11801,7 @@
 						"quality": "Audited"
 					},
 					"highWaterStressAreaExposure": {
-						"value": "NoEvidenceFound",
+						"value": "No",
 						"dataSource": {
 							"page": 93,
 							"fileName": "AnnualReport",
@@ -11871,7 +11871,7 @@
 						"quality": "Estimated"
 					},
 					"carbonReductionInitiatives": {
-						"value": "NoEvidenceFound",
+						"value": "No",
 						"dataSource": {
 							"page": 164,
 							"fileName": "AnnualReport",
@@ -11897,7 +11897,7 @@
 						"quality": "Reported"
 					},
 					"iloCoreLabourStandards": {
-						"value": "NoEvidenceFound",
+						"value": "No",
 						"dataSource": {
 							"page": 1099,
 							"fileName": "AnnualReport",
@@ -11908,7 +11908,7 @@
 						"quality": "Estimated"
 					},
 					"environmentalPolicy": {
-						"value": "NoEvidenceFound",
+						"value": "No",
 						"dataSource": {
 							"page": 820,
 							"fileName": "AnnualReport",
@@ -11952,7 +11952,7 @@
 						"quality": "Audited"
 					},
 					"policyAgainstChildLabour": {
-						"value": "NoEvidenceFound",
+						"value": "No",
 						"dataSource": {
 							"page": 117,
 							"fileName": "AnnualReport",
@@ -11963,7 +11963,7 @@
 						"quality": "Estimated"
 					},
 					"policyAgainstForcedLabour": {
-						"value": "NoEvidenceFound",
+						"value": "No",
 						"dataSource": {
 							"page": 746,
 							"fileName": "AnnualReport",
@@ -11974,7 +11974,7 @@
 						"quality": "Incomplete"
 					},
 					"policyAgainstDiscriminationInTheWorkplace": {
-						"value": "No",
+						"value": "Yes",
 						"dataSource": {
 							"page": 450,
 							"fileName": "AnnualReport",
@@ -11985,7 +11985,7 @@
 						"quality": "Incomplete"
 					},
 					"iso14001Certificate": {
-						"value": "NoEvidenceFound",
+						"value": "No",
 						"dataSource": {
 							"page": 617,
 							"fileName": "AnnualReport",
@@ -11996,7 +11996,7 @@
 						"quality": "Estimated"
 					},
 					"policyAgainstBriberyAndCorruption": {
-						"value": "No",
+						"value": "Yes",
 						"dataSource": {
 							"page": 331,
 							"fileName": "AnnualReport",
@@ -12141,7 +12141,7 @@
 						"quality": "Audited"
 					},
 					"controversialWeaponsExposure": {
-						"value": "NoEvidenceFound",
+						"value": "No",
 						"dataSource": {
 							"page": 273,
 							"fileName": "AnnualReport",
@@ -12152,7 +12152,7 @@
 						"quality": "Audited"
 					},
 					"workplaceAccidentPreventionPolicy": {
-						"value": "No",
+						"value": "Yes",
 						"dataSource": {
 							"page": 1200,
 							"fileName": "AnnualReport",
@@ -12196,7 +12196,7 @@
 						"quality": "Incomplete"
 					},
 					"grievanceHandlingMechanism": {
-						"value": "NoEvidenceFound",
+						"value": "No",
 						"dataSource": {
 							"page": 88,
 							"fileName": "AnnualReport",
@@ -12207,7 +12207,7 @@
 						"quality": "Reported"
 					},
 					"whistleblowerProtectionPolicy": {
-						"value": "NoEvidenceFound",
+						"value": "No",
 						"dataSource": {
 							"page": 1042,
 							"fileName": "AnnualReport",
@@ -12288,7 +12288,7 @@
 						"quality": "Reported"
 					},
 					"humanRightsDueDiligence": {
-						"value": "NoEvidenceFound",
+						"value": "No",
 						"dataSource": {
 							"page": 1043,
 							"fileName": "AnnualReport",
@@ -12299,7 +12299,7 @@
 						"quality": "Incomplete"
 					},
 					"traffickingInHumanBeingsPolicy": {
-						"value": "No",
+						"value": "Yes",
 						"dataSource": {
 							"page": 502,
 							"fileName": "AnnualReport",
