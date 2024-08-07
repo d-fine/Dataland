@@ -1,6 +1,8 @@
 {
   "general": {
-    "fiscalYearDeviation": "NoDeviation",
+    "fiscalYearDeviation": {
+      "value": "NoDeviation"
+    },
     "fiscalYearEnd": {
       "value": "2024-05-08"
     },

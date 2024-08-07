@@ -11878,7 +11878,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/EutaxonomyNonFinancialsGeneralFiscalYearDeviationOptions"
+                "$ref": "#/components/schemas/ExtendedDataPointEutaxonomyNonFinancialsGeneralFiscalYearDeviationOptions"
               }
             ]
           },
@@ -12356,6 +12356,39 @@
             "allOf": [
               {
                 "$ref": "#/components/schemas/CurrencyDataPoint"
+              }
+            ]
+          }
+        }
+      },
+      "ExtendedDataPointEutaxonomyNonFinancialsGeneralFiscalYearDeviationOptions": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/EutaxonomyNonFinancialsGeneralFiscalYearDeviationOptions"
+              }
+            ]
+          },
+          "quality": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/QualityOptions"
+              }
+            ]
+          },
+          "comment": {
+            "type": "string",
+            "nullable": true
+          },
+          "dataSource": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDocumentReference"
               }
             ]
           }
@@ -14819,21 +14852,21 @@
         ],
         "type": "object",
         "properties": {
+          "lei": {
+            "type": "string",
+            "nullable": true
+          },
           "companyName": {
             "type": "string"
           },
           "companyId": {
             "type": "string"
           },
-          "countryCode": {
-            "type": "string"
-          },
           "headquarters": {
             "type": "string"
           },
-          "lei": {
-            "type": "string",
-            "nullable": true
+          "countryCode": {
+            "type": "string"
           },
           "sector": {
             "type": "string",

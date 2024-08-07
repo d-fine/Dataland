@@ -2,7 +2,6 @@ package org.dataland.frameworktoolbox.intermediate.components
 
 import org.dataland.frameworktoolbox.intermediate.FieldNodeParent
 import org.dataland.frameworktoolbox.intermediate.components.support.SelectionOption
-import org.dataland.frameworktoolbox.intermediate.datapoints.NoDocumentSupport
 import org.dataland.frameworktoolbox.intermediate.datapoints.addPropertyWithDocumentSupport
 import org.dataland.frameworktoolbox.specific.datamodel.elements.DataClassBuilder
 import org.dataland.frameworktoolbox.specific.fixturegenerator.elements.FixtureSectionBuilder
@@ -33,7 +32,7 @@ open class SingleSelectComponent(
     }
 
     var options: Set<SelectionOption> = mutableSetOf()
-    var enumName = "${camelCaseComponentIdentifier}Options"
+    private var enumName = "${camelCaseComponentIdentifier}Options"
     var uploadMode: UploadMode = UploadMode.Dropdown
 
     override fun generateDefaultDataModel(dataClassBuilder: DataClassBuilder) {
@@ -43,9 +42,9 @@ open class SingleSelectComponent(
             comment = "Enum class for the single-select-field $identifier",
         )
         dataClassBuilder.addPropertyWithDocumentSupport(
-            documentSupport,
-            identifier,
-            enum.getTypeReference(isNullable),
+            documentSupport = documentSupport,
+            name = identifier,
+            type = enum.getTypeReference(isNullable),
         )
     }
 
@@ -75,7 +74,6 @@ open class SingleSelectComponent(
     }
 
     override fun generateDefaultUploadConfig(uploadCategoryBuilder: UploadCategoryBuilder) {
-        requireDocumentSupportIn(setOf(NoDocumentSupport))
         uploadCategoryBuilder.addStandardUploadConfigCell(
             frameworkUploadOptions = FrameworkUploadOptions(
                 body = generateTsCodeForOptionsOfSelectionFormFields(this.options),
@@ -103,8 +101,7 @@ open class SingleSelectComponent(
 
     private fun generateReturnStatement(): String {
         return "return formatStringForDatatable(\n" +
-            "${getTypescriptFieldAccessor()} ? " +
-            "getOriginalNameFromTechnicalName(${getTypescriptFieldAccessor()}, mappings) : \"\"\n" +
+            "${getTypescriptFieldAccessor()}?.value" +
             ")\n"
     }
 }

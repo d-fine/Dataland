@@ -35,8 +35,10 @@ export function generateEutaxonomyNonFinancialsData(
   const dataGenerator = new EutaxonomyNonFinancialsGenerator(nullProbability);
   return {
     general: {
-      fiscalYearDeviation: dataGenerator.valueOrNull(
-        pickOneElement(Object.values(EutaxonomyNonFinancialsGeneralFiscalYearDeviationOptions))
+      fiscalYearDeviation: dataGenerator.randomExtendedDataPoint(
+        dataGenerator.valueOrNull(
+          pickOneElement(Object.values(EutaxonomyNonFinancialsGeneralFiscalYearDeviationOptions))
+        )
       ),
       fiscalYearEnd: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFutureDate()),
       scopeOfEntities: dataGenerator.randomExtendedDataPoint(dataGenerator.randomYesNoNa()),

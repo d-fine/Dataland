@@ -1,5 +1,5 @@
 Field Identifier,Category,Sub-Category,Field Name,Tooltip,Component,Options,Unit,Document-Support,Dependency,Show when value is,Mandatory Field
-0,General,,Fiscal Year Deviation,Does the fiscal year deviate from the calendar year?,Single-Select Radio Button,Deviation | No Deviation,,,,,
+0,General,,Fiscal Year Deviation,Does the fiscal year deviate from the calendar year?,Single-Select Radio Button,Deviation | No Deviation,,Extended,,,
 ,General,,Fiscal Year End,The date at which the fiscal year ends.,Date,,,Extended,,,
 1,General,,Scope Of Entities,Are all Group legal entities covered in the reports?,Yes/No/NA, ,,Extended,,,
 2,General,,NFRD Mandatory,Is the NFRD mandatory for your company?,Yes/No, ,,Extended,,,

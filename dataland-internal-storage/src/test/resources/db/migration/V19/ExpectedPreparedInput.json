@@ -40,7 +40,9 @@
     },
     "t": {
       "general": {
-        "fiscalYearDeviation": "NoDeviation",
+        "fiscalYearDeviation": {
+          "value": "NoDeviation"
+        },
         "fiscalYearEnd": {
           "value": "2024-03-18"
         },
@@ -701,7 +703,9 @@
     },
     "t": {
       "general": {
-        "fiscalYearDeviation": "Deviation",
+        "fiscalYearDeviation": {
+          "value": "Deviation"
+        },
         "fiscalYearEnd": {
           "value": "2024-02-04"
         },
@@ -1742,7 +1746,9 @@
     },
     "t": {
       "general": {
-        "fiscalYearDeviation": "Deviation",
+        "fiscalYearDeviation": {
+          "value": "Deviation"
+        },
         "fiscalYearEnd": {
           "value": "2024-11-11"
         },
@@ -2596,7 +2602,9 @@
     },
     "t": {
       "general": {
-        "fiscalYearDeviation": "Deviation",
+        "fiscalYearDeviation": {
+          "value": "Deviation"
+        },
         "fiscalYearEnd": {
           "value": "2024-12-05"
         },

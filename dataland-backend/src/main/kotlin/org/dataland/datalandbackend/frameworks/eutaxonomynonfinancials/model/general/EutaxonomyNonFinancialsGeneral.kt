@@ -16,7 +16,8 @@ import java.time.LocalDate
  * The data-model for the General section
  */
 data class EutaxonomyNonFinancialsGeneral(
-    val fiscalYearDeviation: EutaxonomyNonFinancialsGeneralFiscalYearDeviationOptions? = null,
+    @field:Valid()
+    val fiscalYearDeviation: ExtendedDataPoint<EutaxonomyNonFinancialsGeneralFiscalYearDeviationOptions?>? = null,
 
     @field:Valid()
     val fiscalYearEnd: ExtendedDataPoint<LocalDate?>? = null,
