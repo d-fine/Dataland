@@ -71,7 +71,7 @@ class QaServiceTest {
         awaitQaStatusChange(dataId, BackendQaStatus.Rejected)
         canUserSeeUploaderData(dataId, TechnicalUser.Reader, false)
         canUserSeeUploaderData(dataId, TechnicalUser.Uploader, true, true)
-        canUserSeeUploaderData(dataId, TechnicalUser.Reviewer, false)
+        canUserSeeUploaderData(dataId, TechnicalUser.Reviewer, true, false)
         canUserSeeUploaderData(dataId, TechnicalUser.Admin, true, true)
     }
 

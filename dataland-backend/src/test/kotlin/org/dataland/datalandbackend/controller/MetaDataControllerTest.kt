@@ -5,6 +5,7 @@ import jakarta.transaction.Transactional
 import org.dataland.datalandbackend.DatalandBackend
 import org.dataland.datalandbackend.entities.DataMetaInformationEntity
 import org.dataland.datalandbackend.frameworks.lksg.model.LksgData
+import org.dataland.datalandbackend.frameworks.sfdr.model.SfdrData
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.services.CompanyAlterationManager
 import org.dataland.datalandbackend.services.DataMetaInformationManager
@@ -37,10 +38,13 @@ internal class MetaDataControllerTest(
 ) {
     val testDataProvider = TestDataProvider(objectMapper)
 
-    val expectedSetOfRolesForReader = setOf(DatalandRealmRole.ROLE_USER)
-    val expectedSetOfRolesForUploader = setOf(DatalandRealmRole.ROLE_USER, DatalandRealmRole.ROLE_UPLOADER)
-    val expectedSetOfRolesForAdmin =
-        setOf(DatalandRealmRole.ROLE_USER, DatalandRealmRole.ROLE_UPLOADER, DatalandRealmRole.ROLE_ADMIN)
+    private final val expectedSetOfRolesForReader = setOf(DatalandRealmRole.ROLE_USER)
+    private final val expectedSetOfRolesForUploader = expectedSetOfRolesForReader +
+        setOf(DatalandRealmRole.ROLE_UPLOADER)
+    private final val expectedSetOfRolesForReviewer = expectedSetOfRolesForReader +
+        setOf(DatalandRealmRole.ROLE_REVIEWER)
+    private final val expectedSetOfRolesForAdmin = expectedSetOfRolesForReader + expectedSetOfRolesForUploader +
+        expectedSetOfRolesForReviewer + setOf(DatalandRealmRole.ROLE_ADMIN)
 
     @Test
     fun `ensure that meta info about a pending dataset can only be retrieved by authorized users`() {
@@ -59,6 +63,31 @@ internal class MetaDataControllerTest(
         mockSecurityContext(userId = "uploader-user-id", roles = expectedSetOfRolesForUploader)
         assertMetaDataVisible(metaInfo)
         mockSecurityContext(userId = "admin-user-id", roles = expectedSetOfRolesForAdmin)
+        assertMetaDataVisible(metaInfo)
+    }
+
+    @Test
+    fun `ensure that meta info about a rejected dataset can only be retrieved by authorized users`() {
+        val testCompanyInformation = testDataProvider.getCompanyInformationWithoutIdentifiers(1).last()
+        val storedCompany = companyManager.addCompany(testCompanyInformation)
+        val metaInfo = dataMetaInformationManager.storeDataMetaInformation(
+            DataMetaInformationEntity(
+                dataId = "data-id-for-testing-user-access-to-rejected-datasets", company = storedCompany,
+                dataType = DataType.of(SfdrData::class.java).toString(),
+                uploaderUserId = "uploader-user-id-of-rejected-dataset",
+                uploadTime = 0, reportingPeriod = "reporting-period", currentlyActive = null,
+                qaStatus = QaStatus.Rejected,
+            ),
+        )
+        mockSecurityContext(userId = "reader-user-id", roles = expectedSetOfRolesForReader)
+        assertMetaDataNotVisible(metaInfo)
+        mockSecurityContext(userId = "uploader-user-id-of-rejected-dataset", roles = expectedSetOfRolesForUploader)
+        assertMetaDataVisible(metaInfo)
+        mockSecurityContext(userId = "different-uploader-user-id", roles = expectedSetOfRolesForUploader)
+        assertMetaDataNotVisible(metaInfo)
+        mockSecurityContext(userId = "admin-user-id", roles = expectedSetOfRolesForAdmin)
+        assertMetaDataVisible(metaInfo)
+        mockSecurityContext(userId = "reviewer-user-id", roles = expectedSetOfRolesForAdmin)
         assertMetaDataVisible(metaInfo)
     }
 
