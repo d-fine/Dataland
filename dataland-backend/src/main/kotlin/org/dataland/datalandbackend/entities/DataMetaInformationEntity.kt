@@ -58,7 +58,7 @@ data class DataMetaInformationEntity(
      * A user can view information about the dataset / the dataset itself if
      * (a) the dataset is QAd
      * (b) the user has uploaded the dataset
-     * (c) the user is an admin
+     * (c) the user is an admin or a reviewer
      * This function checks these conditions
      */
     fun isDatasetViewableByUser(viewingUser: DatalandAuthentication?): Boolean {
