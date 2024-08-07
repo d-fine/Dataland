@@ -125,9 +125,6 @@ sonar {
                 // backend
                 "dataland-backend/src/main/kotlin/db/migration/V1_1__CreateBackendTables.kt," +
 
-                // qa-service
-                "dataland-qa-service/src/main/kotlin/org/dataland/datalandqaservice/frameworks/sfdr/*" +
-
                 // toolbox
                 "dataland-framework-toolbox/src/main/kotlin/org/dataland/frameworktoolbox/intermediate/components" +
                 "/Iso2CountryCodesMultiSelectComponent.kt," +
@@ -155,7 +152,10 @@ sonar {
                 // backend
                 "dataland-backend/src/main/kotlin/org/dataland/datalandbackend/frameworks/**," +
                 "dataland-backend/src/main/kotlin/org/dataland/datalandbackend/model/enums/eutaxonomy/nonfinancials/" +
-                "Activity.kt",
+                "Activity.kt," +
+
+                // qa-service
+                "dataland-qa-service/src/main/kotlin/org/dataland/datalandqaservice/frameworks/sfdr/**",
         )
     }
 }
