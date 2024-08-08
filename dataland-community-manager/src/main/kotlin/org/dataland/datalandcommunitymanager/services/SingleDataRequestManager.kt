@@ -124,7 +124,7 @@ constructor(
         reportingPeriod: String,
         preprocessedRequest: PreprocessedRequest,
     ): Map<String, String> {
-        if (shouldCreateAccessRequestToPrivateDataset(
+        return if (shouldCreateAccessRequestToPrivateDataset(
                 dataType = preprocessedRequest.dataType, companyId = preprocessedRequest.companyId,
                 reportingPeriod = reportingPeriod, userId = preprocessedRequest.userId,
             )
@@ -134,25 +134,23 @@ constructor(
                 dataType = preprocessedRequest.dataType, reportingPeriod = reportingPeriod,
                 contacts = preprocessedRequest.contacts, message = preprocessedRequest.message,
             )
-            return mutableMapOf(ReportingPeriodKeys.ReportingPeriodsOfDataAccessRequests to reportingPeriod)
+            mutableMapOf(ReportingPeriodKeys.ReportingPeriodsOfDataAccessRequests to reportingPeriod)
+        } else if (utils.existsDataRequestWithNonFinalStatus(
+                companyId = preprocessedRequest.companyId, framework = preprocessedRequest.dataType,
+                reportingPeriod = reportingPeriod,
+            ) || dataAccessManager.existsAccessRequestWithNonPendingStatus(
+                companyId = preprocessedRequest.companyId, framework = preprocessedRequest.dataType,
+                reportingPeriod = reportingPeriod,
+            )
+        ) {
+            mutableMapOf(ReportingPeriodKeys.ReportingPeriodsOfDublicateDataRequests to reportingPeriod)
         } else {
-            return if (utils.existsDataRequestWithNonFinalStatus(
-                    companyId = preprocessedRequest.companyId, framework = preprocessedRequest.dataType,
-                    reportingPeriod = reportingPeriod,
-                ) || dataAccessManager.existsAccessRequestWithNonPendingStatus(
-                    companyId = preprocessedRequest.companyId, framework = preprocessedRequest.dataType,
-                    reportingPeriod = reportingPeriod,
-                )
-            ) {
-                mutableMapOf(ReportingPeriodKeys.ReportingPeriodsOfDublicateDataRequests to reportingPeriod)
-            } else {
-                utils.storeDataRequestEntityAsOpen(
-                    datalandCompanyId = preprocessedRequest.companyId, dataType = preprocessedRequest.dataType,
-                    reportingPeriod = reportingPeriod, contacts = preprocessedRequest.contacts,
-                    message = preprocessedRequest.message,
-                )
-                mutableMapOf(ReportingPeriodKeys.ReportingPeriodsOfStoredDataRequests to reportingPeriod)
-            }
+            utils.storeDataRequestEntityAsOpen(
+                datalandCompanyId = preprocessedRequest.companyId, dataType = preprocessedRequest.dataType,
+                reportingPeriod = reportingPeriod, contacts = preprocessedRequest.contacts,
+                message = preprocessedRequest.message,
+            )
+            mutableMapOf(ReportingPeriodKeys.ReportingPeriodsOfStoredDataRequests to reportingPeriod)
         }
     }
 
