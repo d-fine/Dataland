@@ -44,5 +44,5 @@ class DataAccessGrantedEmailFactory(
 
     override fun buildTextContent(properties: Map<String, String?>): String {
         return ""
-}
+    }
 }
