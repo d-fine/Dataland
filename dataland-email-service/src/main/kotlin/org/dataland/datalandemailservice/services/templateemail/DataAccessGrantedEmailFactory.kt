@@ -43,17 +43,6 @@ class DataAccessGrantedEmailFactory(
     }
 
     override fun buildTextContent(properties: Map<String, String?>): String {
-        return StringBuilder()
-            .append(
-                "Great news!\n" +
-                    "You have now access to the following dataset on Dataland..\n\n",
-            )
-            .append("Company: ${properties[COMPANY_NAME]} \n")
-            .append("Framework: ${properties[DATA_TYPE]} \n")
-            .append("Reporting period: ${properties[REPORTING_PERIOD]} \n\n")
-            .append("Request created: ${properties[CREATION_DATE]} \n\n")
-            .append("Review the provided data on Dataland:\n")
-            .append("$proxyPrimaryUrl/requests/${properties[DATA_REQUEST_ID]}")
-            .toString()
-    }
+        return ""
+}
 }
