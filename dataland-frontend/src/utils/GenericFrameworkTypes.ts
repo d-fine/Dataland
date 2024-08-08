@@ -37,6 +37,8 @@ export interface Field {
 
   // input field specific values
   placeholder?: string;
+  // is a DataPoint toggleable?
+  isDataPointToggleable?: boolean;
 
   // selection specific values
   options?: DropdownOption[];

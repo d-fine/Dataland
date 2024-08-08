@@ -177,6 +177,7 @@ import YesNoExtendedDataPointFormField from '@/components/forms/parts/fields/Yes
 import YesNoNaExtendedDataPointFormField from '@/components/forms/parts/fields/YesNoNaExtendedDataPointFormField.vue';
 import DateExtendedDataPointFormField from '@/components/forms/parts/fields/DateExtendedDataPointFormField.vue';
 import PercentageExtendedDataPointFormField from '@/components/forms/parts/fields/PercentageExtendedDataPointFormField.vue';
+import RadioButtonsExtendedDataPointFormField from '@/components/forms/parts/fields/RadioButtonsExtendedDataPointFormField.vue';
 import { getFilledKpis } from '@/utils/DataPoint';
 import { type PublicFrameworkDataApi } from '@/utils/api/UnifiedFrameworkDataApi';
 import { getBasePublicFrameworkDefinition } from '@/frameworks/BasePublicFrameworkRegistry';
@@ -226,6 +227,7 @@ export default defineComponent({
     YesNoNaExtendedDataPointFormField,
     DateExtendedDataPointFormField,
     PercentageExtendedDataPointFormField,
+    RadioButtonsExtendedDataPointFormField,
   },
   directives: {
     tooltip: Tooltip,
