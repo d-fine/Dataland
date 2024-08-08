@@ -1358,6 +1358,7 @@
         "required": [
           "message",
           "reportingPeriodsOfDuplicateDataRequests",
+          "reportingPeriodsOfStoredAccessRequests",
           "reportingPeriodsOfStoredDataRequests"
         ],
         "type": "object",
@@ -1372,6 +1373,12 @@
             }
           },
           "reportingPeriodsOfDuplicateDataRequests": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "reportingPeriodsOfStoredAccessRequests": {
             "type": "array",
             "items": {
               "type": "string"
