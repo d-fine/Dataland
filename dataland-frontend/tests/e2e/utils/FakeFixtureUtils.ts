@@ -11,7 +11,7 @@ import {
   type ExtendedDocumentReference,
   QualityOptions,
   type YesNo,
-  type YesNoNa
+  type YesNoNa,
 } from '@clients/backend';
 import { generateCurrencyValue, generateFloat, generatePercentageValue } from '@e2e/fixtures/common/NumberFixtures';
 import { generateReferencedDocuments, getReferencedDocumentId } from '@e2e/utils/DocumentReference';
