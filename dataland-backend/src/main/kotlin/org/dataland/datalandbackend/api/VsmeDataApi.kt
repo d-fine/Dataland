@@ -147,7 +147,8 @@ interface VsmeDataApi {
     )
     @PreAuthorize(
         "hasRole('ROLE_USER') and " +
-            "@CompanyRoleChecker.hasCurrentUserAnyRoleForCompany(#companyId)",
+            "(@CompanyRoleChecker.hasCurrentUserAnyRoleForCompany(#companyId) or" +
+            "@PrivateDataAccessChecker.hasUserAccessToAtLeastOnePrivateResourceForCompany(#companyId))",
     )
     fun getFrameworkDatasetsForCompany(
         @PathVariable("companyId") companyId: String,
