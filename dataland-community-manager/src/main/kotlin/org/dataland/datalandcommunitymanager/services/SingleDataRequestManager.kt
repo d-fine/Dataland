@@ -244,7 +244,7 @@ constructor(
 
     private fun sendSingleDataRequestEmailMessage(
         preprocessedRequest: PreprocessedRequest,
-        reportingPeriodsOfStoredDataRequests: MutableList<String>?,
+        reportingPeriodsOfStoredDataRequests: List<String>?,
     ) {
         if (reportingPeriodsOfStoredDataRequests.isNullOrEmpty()) {
             return
@@ -273,7 +273,7 @@ constructor(
 
     private fun sendDataAccessRequestEmailMessage(
         preprocessedRequest: PreprocessedRequest,
-        reportingPeriodsOfStoredAccessRequests: MutableList<String>?,
+        reportingPeriodsOfStoredAccessRequests: List<String>?,
     ) {
         if (reportingPeriodsOfStoredAccessRequests.isNullOrEmpty()) {
             return
