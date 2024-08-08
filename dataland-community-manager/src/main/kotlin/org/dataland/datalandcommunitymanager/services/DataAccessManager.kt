@@ -129,7 +129,7 @@ class DataAccessManager(
                     dataRequestEntity = dataRequestEntity, requestStatus = dataRequestEntity.requestStatus,
                     accessStatus = AccessStatus.Pending, modificationTime = modificationTime,
                 )
-                logger.info("Patching request $dataRequestEntity.dataRequestId with status ${AccessStatus.Pending}")
+                logger.info("Patching request ${dataRequestEntity.dataRequestId} with status ${AccessStatus.Pending}")
             }
         } else {
             storeAccessRequestEntityAsPending(
