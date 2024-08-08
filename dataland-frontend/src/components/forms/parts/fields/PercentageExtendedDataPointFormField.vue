@@ -11,7 +11,6 @@
     :check-value-validity="hasDataPointProperValue"
     :isDataPointToggleable="isDataPointToggleable"
     :placeholder="placeholder"
-    v-model="percentageFieldValue"
     :outerClass="inputClass"
   >
     <div class="mb-2">
@@ -28,11 +27,11 @@
 
 <script lang="ts">
 // @ts-nocheck
-import { defineComponent } from 'vue';
-import { BaseFormFieldProps } from '@/components/forms/parts/fields/FormFieldProps';
+import {defineComponent} from 'vue';
+import {BaseFormFieldProps} from '@/components/forms/parts/fields/FormFieldProps';
 import ExtendedDataPointFormField from '@/components/forms/parts/elements/basic/ExtendedDataPointFormField.vue';
 import PercentageFormField from '@/components/forms/parts/fields/PercentageFormField.vue';
-import { hasDataPointProperValue } from '@/utils/DataPoint';
+import {hasDataPointProperValue} from '@/utils/DataPoint';
 
 export default defineComponent({
   name: 'PercentageExtendedDataPointFormField',

@@ -1,13 +1,13 @@
 // @ts-nocheck
 import CreateEuTaxonomyNonFinancials from '@/components/forms/CreateEuTaxonomyNonFinancials.vue';
-import { minimalKeycloakMock } from '@ct/testUtils/Keycloak';
-import { TEST_PDF_FILE_BASEPATH, TEST_PDF_FILE_NAME } from '@sharedUtils/ConstantsForPdfs';
-import { type CompanyAssociatedDataEutaxonomyNonFinancialsData } from '@clients/backend';
-import { submitButton } from '@sharedUtils/components/SubmitButton';
+import {minimalKeycloakMock} from '@ct/testUtils/Keycloak';
+import {TEST_PDF_FILE_BASEPATH, TEST_PDF_FILE_NAME} from '@sharedUtils/ConstantsForPdfs';
+import {type CompanyAssociatedDataEutaxonomyNonFinancialsData} from '@clients/backend';
+import {submitButton} from '@sharedUtils/components/SubmitButton';
 import DataPointFormWithToggle from '@/components/forms/parts/kpiSelection/DataPointFormWithToggle.vue';
-import { UploadReports } from '@sharedUtils/components/UploadReports';
-import { selectItemFromDropdownByIndex, selectItemFromDropdownByValue } from '@sharedUtils/Dropdown';
-import { getFilledKpis } from '@/utils/DataPoint';
+import {UploadReports} from '@sharedUtils/components/UploadReports';
+import {selectItemFromDropdownByIndex, selectItemFromDropdownByValue} from '@sharedUtils/Dropdown';
+import {getFilledKpis} from '@/utils/DataPoint';
 
 describe('Component tests for the Eu Taxonomy for non financials that test dependent fields', () => {
   const uploadReports = new UploadReports('referencedReports');
@@ -104,9 +104,7 @@ describe('Component tests for the Eu Taxonomy for non financials that test depen
     cy.get('div.p-datepicker').find('button[aria-label="Next Month"]').click();
     cy.get('div.p-datepicker').find('span:contains("11")').click();
     cy.get('div[data-test="fiscalYearEnd"] input[name="value"]').invoke('val').should('contain', '11');
-    cy.get('div[data-test="fiscalYearDeviation"]')
-      .find('input[id="fiscalYearDeviationfiscalYearDeviation-option-deviation"]')
-      .check();
+    cy.get('div[data-test="fiscalYearDeviation"] input[type="checkbox"][value="Deviation"]').check();
     cy.get('div[data-test="submitSideBar"] li:last a').click();
     cy.get('div[data-test="scopeOfEntities"] input[type="checkbox"][value="Yes"]').check();
     cy.get('div[data-test="euTaxonomyActivityLevelReporting"] input[type="checkbox"][value="Yes"]').check();
@@ -272,7 +270,9 @@ describe('Component tests for the Eu Taxonomy for non financials that test depen
           },
         },
         general: {
-          fiscalYearDeviation: 'Deviation',
+          fiscalYearDeviation: {
+            value: 'Deviation',
+          },
           fiscalYearEnd: {
             value: '2023-09-11',
           },

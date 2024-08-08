@@ -1,4 +1,4 @@
-import { type Category } from '@/utils/GenericFrameworkTypes';
+import {type Category} from '@/utils/GenericFrameworkTypes';
 
 export const eutaxonomyNonFinancialsDataModel = [
   {
@@ -16,7 +16,7 @@ export const eutaxonomyNonFinancialsDataModel = [
             label: 'Fiscal Year Deviation',
             description: 'Does the fiscal year deviate from the calendar year?',
             unit: '',
-            component: 'RadioButtonsFormField',
+            component: 'RadioButtonsExtendedDataPointFormField',
             options: [
               {
                 label: 'Deviation',
