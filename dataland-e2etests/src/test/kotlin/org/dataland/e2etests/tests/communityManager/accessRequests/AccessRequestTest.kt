@@ -13,7 +13,7 @@ import org.dataland.e2etests.auth.JwtAuthenticationHelper
 import org.dataland.e2etests.auth.TechnicalUser
 import org.dataland.e2etests.tests.frameworks.Vsme.FileInfos
 import org.dataland.e2etests.utils.ApiAccessor
-import org.dataland.e2etests.utils.FrameworkTestDataProvider
+import org.dataland.e2etests.utils.testDataProvivders.FrameworkTestDataProvider
 import org.dataland.e2etests.utils.VsmeTestUtils
 import org.dataland.e2etests.utils.communityManager.assertAccessDeniedResponseBodyInCommunityManagerClientException
 import org.dataland.e2etests.utils.communityManager.getNewlyStoredRequestsAfterTimestamp
