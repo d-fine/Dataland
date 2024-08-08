@@ -22,6 +22,7 @@ class PrivateDataAccessChecker(
     @Autowired private val requestManager: RequestControllerApi,
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
+
     /**
      * Checks whether the user who is currently authenticated has access to a certain dataset.
      * @param dataId the ID of the dataset
@@ -53,10 +54,11 @@ class PrivateDataAccessChecker(
      * @return a Boolean indicating whether the user has access or not
      */
     fun hasUserAccessToAtLeastOnePrivateResourceForCompany(companyId: String): Boolean {
-        val metaDataEntities = dataMetaInformationManager.searchDataMetaInfo(companyId = companyId,
-            dataType = DataType.of(VsmeData::class.java), showOnlyActive = true, reportingPeriod = null)
+        val metaDataEntities = dataMetaInformationManager.searchDataMetaInfo(
+            companyId = companyId,
+            dataType = DataType.of(VsmeData::class.java), showOnlyActive = true, reportingPeriod = null,
+        )
         val userId = DatalandAuthentication.fromContext().userId
-        var atLeastOneAccess = false
         if (!metaDataEntities.isNullOrEmpty()) {
             metaDataEntities.forEach { metaDataEntity ->
                 try {
@@ -69,13 +71,16 @@ class PrivateDataAccessChecker(
                     return true
                 } catch (clientException: ClientException) {
                     if (clientException.statusCode == HttpStatus.NOT_FOUND.value()) {
-                        atLeastOneAccess = false
+                        logger.info(
+                            "User $userId has no access to dataset ${metaDataEntity.dataId} of datatype " +
+                                "${metaDataEntity.dataType} for the company ${metaDataEntity.company.companyId}",
+                        )
                     } else {
                         throw clientException
                     }
                 }
             }
         }
-        return atLeastOneAccess
+        return false
     }
 }
