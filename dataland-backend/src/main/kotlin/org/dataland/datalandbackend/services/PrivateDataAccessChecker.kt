@@ -59,25 +59,23 @@ class PrivateDataAccessChecker(
             dataType = DataType.of(VsmeData::class.java), showOnlyActive = true, reportingPeriod = null,
         )
         val userId = DatalandAuthentication.fromContext().userId
-        if (!metaDataEntities.isNullOrEmpty()) {
-            metaDataEntities.forEach { metaDataEntity ->
-                try {
-                    requestManager.hasAccessToDataset(
-                        UUID.fromString(companyId),
-                        metaDataEntity.dataType.toString(), metaDataEntity.reportingPeriod,
-                        UUID.fromString(userId),
+        metaDataEntities.forEach { metaDataEntity ->
+            try {
+                requestManager.hasAccessToDataset(
+                    UUID.fromString(companyId),
+                    metaDataEntity.dataType.toString(), metaDataEntity.reportingPeriod,
+                    UUID.fromString(userId),
 
+                )
+                return true
+            } catch (clientException: ClientException) {
+                if (clientException.statusCode == HttpStatus.NOT_FOUND.value()) {
+                    logger.info(
+                        "User $userId has no access to dataset ${metaDataEntity.dataId} of datatype " +
+                            "${metaDataEntity.dataType} for the company ${metaDataEntity.company.companyId}",
                     )
-                    return true
-                } catch (clientException: ClientException) {
-                    if (clientException.statusCode == HttpStatus.NOT_FOUND.value()) {
-                        logger.info(
-                            "User $userId has no access to dataset ${metaDataEntity.dataId} of datatype " +
-                                "${metaDataEntity.dataType} for the company ${metaDataEntity.company.companyId}",
-                        )
-                    } else {
-                        throw clientException
-                    }
+                } else {
+                    throw clientException
                 }
             }
         }
