@@ -35,7 +35,10 @@ class DataRequestTimeScheduler(
         val correlationId = UUID.randomUUID().toString()
         logger.info("Searching for stale answered data request. CorrelationId: $correlationId")
         val thresholdTime = Instant.now().minus(Duration.ofDays(staleDaysThreshold)).toEpochMilli()
-        val searchFilterForAnsweredDataRequests = GetDataRequestsSearchFilter("", "", RequestStatus.Answered, "", "")
+        val searchFilterForAnsweredDataRequests = GetDataRequestsSearchFilter(
+            "", "",
+            RequestStatus.Answered, null, "", "",
+        )
         val staleAnsweredRequests =
             dataRequestRepository.searchDataRequestEntity(searchFilterForAnsweredDataRequests)
                 .filter { it.lastModifiedDate < thresholdTime }

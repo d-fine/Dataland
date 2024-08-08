@@ -20,6 +20,7 @@ import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandl
 import org.dataland.datalandmessagequeueutils.constants.ActionType
 import org.dataland.datalandmessagequeueutils.constants.ExchangeName
 import org.dataland.datalandmessagequeueutils.constants.MessageType
+import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.json.JSONObject
 import org.slf4j.LoggerFactory
@@ -175,7 +176,7 @@ class PrivateDataManager(
         ).toString()
         cloudEventMessageHandler.buildCEMessageAndSendToQueue(
             payload, MessageType.PrivateDataReceived, correlationId,
-            ExchangeName.PrivateRequestReceived,
+            ExchangeName.PrivateRequestReceived, RoutingKeyNames.privateDataAndDocument,
         )
         logger.info("Message to EuroDaT-storage-service for dataId $dataId and correlationId $correlationId was sent")
     }

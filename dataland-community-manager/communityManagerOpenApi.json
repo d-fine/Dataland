@@ -503,6 +503,14 @@
             }
           },
           {
+            "name": "accessStatus",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/AccessStatus"
+            }
+          },
+          {
             "name": "contacts",
             "in": "query",
             "required": false,
@@ -533,6 +541,88 @@
                 }
               }
             }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
+    "/requests/dataset-access/{companyId}/{dataType}/{reportingPeriod}/{userId}": {
+      "head": {
+        "tags": [
+          "request-controller"
+        ],
+        "summary": "This head request checks whether the logged-in user has access to dataset.",
+        "description": "This head request checks whether the logged-in user has access to dataset.",
+        "operationId": "hasAccessToDataset",
+        "parameters": [
+          {
+            "name": "companyId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "dataType",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "reportingPeriod",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The user can access the dataset."
+          },
+          "404": {
+            "description": "Either the specified dataset does not exist or the user cannot access the dataset."
           },
           "default": {
             "description": "An error occurred",
@@ -606,6 +696,14 @@
             "required": false,
             "schema": {
               "$ref": "#/components/schemas/RequestStatus"
+            }
+          },
+          {
+            "name": "accessStatus",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/AccessStatus"
             }
           },
           {
@@ -1260,6 +1358,7 @@
         "required": [
           "message",
           "reportingPeriodsOfDuplicateDataRequests",
+          "reportingPeriodsOfStoredAccessRequests",
           "reportingPeriodsOfStoredDataRequests"
         ],
         "type": "object",
@@ -1274,6 +1373,12 @@
             }
           },
           "reportingPeriodsOfDuplicateDataRequests": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "reportingPeriodsOfStoredAccessRequests": {
             "type": "array",
             "items": {
               "type": "string"
@@ -1396,8 +1501,19 @@
           "Closed"
         ]
       },
+      "AccessStatus": {
+        "type": "string",
+        "enum": [
+          "Declined",
+          "Granted",
+          "Pending",
+          "Public",
+          "Revoked"
+        ]
+      },
       "StoredDataRequest": {
         "required": [
+          "accessStatus",
           "creationTimestamp",
           "dataRequestId",
           "dataRequestStatusHistory",
@@ -1448,6 +1564,9 @@
           },
           "requestStatus": {
             "$ref": "#/components/schemas/RequestStatus"
+          },
+          "accessStatus": {
+            "$ref": "#/components/schemas/AccessStatus"
           }
         }
       },
@@ -1476,6 +1595,7 @@
       },
       "StoredDataRequestStatusObject": {
         "required": [
+          "accessStatus",
           "creationTimestamp",
           "status"
         ],
@@ -1487,11 +1607,15 @@
           "creationTimestamp": {
             "type": "integer",
             "format": "int64"
+          },
+          "accessStatus": {
+            "$ref": "#/components/schemas/AccessStatus"
           }
         }
       },
       "ExtendedStoredDataRequest": {
         "required": [
+          "accessStatus",
           "companyName",
           "creationTimestamp",
           "dataRequestId",
@@ -1532,6 +1656,9 @@
           },
           "requestStatus": {
             "$ref": "#/components/schemas/RequestStatus"
+          },
+          "accessStatus": {
+            "$ref": "#/components/schemas/AccessStatus"
           }
         }
       },

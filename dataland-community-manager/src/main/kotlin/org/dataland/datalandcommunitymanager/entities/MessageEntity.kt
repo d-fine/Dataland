@@ -6,8 +6,12 @@ import jakarta.persistence.Id
 import jakarta.persistence.JoinColumn
 import jakarta.persistence.ManyToOne
 import jakarta.persistence.Table
+import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.utils.isEmailAddress
+import org.dataland.datalandcommunitymanager.model.companyRoles.CompanyRole
 import org.dataland.datalandcommunitymanager.model.dataRequest.StoredDataRequestMessageObject
+import org.dataland.datalandcommunitymanager.services.CompanyRolesManager
+import org.dataland.datalandmessagequeueutils.messages.TemplateEmailMessage
 import java.util.UUID
 
 /**
@@ -33,11 +37,69 @@ data class MessageEntity(
 ) {
     companion object {
         private const val emailSeparator = ";"
+
+        const val COMPANY_OWNER_KEYWORD = "COMPANY_OWNER"
+
+        /**
+         * This method checks if a contact is either a valid email address or represents the company owner
+         * @param contact which should be checked if it is an email address or the company owner keyword
+         * @return true if either it was confirmed that it is a email address or the company owner keyword
+         */
+        private fun isContact(contact: String, companyRolesManager: CompanyRolesManager, companyId: String): Boolean {
+            return contact.isEmailAddress() ||
+                (
+                    contact == COMPANY_OWNER_KEYWORD && companyRolesManager.getCompanyRoleAssignmentsByParameters(
+                        CompanyRole.CompanyOwner, companyId, null,
+                    )
+                        .isNotEmpty()
+                    )
+        }
+
+        /**
+         * This method checks whether a given contact is valid or not. If it is not valid then an invalid input
+         * exception is thrown
+         * @param contact the contact which should be checked for validity
+         */
+        fun validateContact(contact: String, companyRolesManager: CompanyRolesManager, companyId: String) {
+            if (!isContact(contact, companyRolesManager, companyId)) {
+                throw InvalidInputApiException(
+                    "Invalid contact $contact",
+                    "The provided contact $contact is not valid. " +
+                        "Please specify a valid email address or when a company owner exists $COMPANY_OWNER_KEYWORD.",
+                )
+            }
+        }
+
+        /**
+         * This method adds a contact email address of the user id or a company owner to the email recipient list
+         * @param contact is either an email address or the company owner keyword
+         * @param companyRolesManager is the service to handle all tasks in regard to company roles for users
+         * @param companyId the company id for which the company owner should be determined
+         * @return a list containing email address and/or the user ids of relevant company owners
+         */
+        fun addContact(
+            contact: String,
+            companyRolesManager: CompanyRolesManager,
+            companyId: String,
+        ): List<TemplateEmailMessage.EmailRecipient> {
+            return if (contact.isEmailAddress()) {
+                listOf(TemplateEmailMessage.EmailAddressEmailRecipient(contact))
+            } else if (contact == COMPANY_OWNER_KEYWORD) {
+                val companyOwnerList = companyRolesManager.getCompanyRoleAssignmentsByParameters(
+                    companyRole = CompanyRole.CompanyOwner,
+                    companyId = companyId,
+                    userId = null,
+                )
+                companyOwnerList.map { TemplateEmailMessage.UserIdEmailRecipient(it.userId) }
+            } else {
+                listOf()
+            }
+        }
     }
 
     init {
         require(contacts.isNotEmpty())
-        require(contacts.split(emailSeparator).all { it.isEmailAddress() })
+        require(contacts.split(emailSeparator).all { it.isEmailAddress() || it == COMPANY_OWNER_KEYWORD })
         require(message?.isNotBlank() ?: true)
     }
 
@@ -57,8 +119,15 @@ data class MessageEntity(
      * @returns the generated message object
      */
     fun toStoredDataRequestMessageObject() = StoredDataRequestMessageObject(
-        contacts = contacts.split(emailSeparator).toSet(),
+        contacts = contactsAsSet(),
         message = message,
         creationTimestamp = creationTimestamp,
     )
+
+    /**
+     * Returns the contacts as a set of strings.
+     */
+    fun contactsAsSet(): Set<String> {
+        return contacts.split(emailSeparator).toSet()
+    }
 }
