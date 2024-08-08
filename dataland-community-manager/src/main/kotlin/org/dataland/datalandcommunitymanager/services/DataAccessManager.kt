@@ -201,7 +201,6 @@ class DataAccessManager(
         )
 
         return (!pendingDataRequests.isNullOrEmpty())
-        // TODO also non granted
     }
 
     /**
