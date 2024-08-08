@@ -97,19 +97,20 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
             explanation: 'What share of the total number of employees in your company is made up by temporary workers?',
             shouldDisplay: (dataset: LksgData): boolean =>
               dataset.general?.masterData?.seasonalOrMigrantWorkers == 'Yes',
-            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => {
-              const mappings = {
-                Smaller10: '<10%',
-                Between10And25: '10-25%',
-                Between25And50: '25-50%',
-                Greater50: '>50%',
-              };
-              return formatStringForDatatable(
-                dataset.general?.masterData?.shareOfTemporaryWorkers
-                  ? getOriginalNameFromTechnicalName(dataset.general?.masterData?.shareOfTemporaryWorkers, mappings)
-                  : ''
-              );
-            },
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
+              ((): AvailableMLDTDisplayObjectTypes => {
+                const mappings = {
+                  Smaller10: '<10%',
+                  Between10And25: '10-25%',
+                  Between25And50: '25-50%',
+                  Greater50: '>50%',
+                };
+                return formatStringForDatatable(
+                  dataset.general?.masterData?.shareOfTemporaryWorkers
+                    ? getOriginalNameFromTechnicalName(dataset.general?.masterData?.shareOfTemporaryWorkers, mappings)
+                    : ''
+                );
+              })(),
           },
           {
             type: 'cell',
@@ -210,18 +211,19 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
             explanation: 'Does your business focus predominantly on national or international markets?',
             shouldDisplay: (dataset: LksgData): boolean =>
               dataset.general?.productionSpecific?.manufacturingCompany == 'Yes',
-            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => {
-              const mappings = {
-                National: 'National',
-                International: 'International',
-                Both: 'Both',
-              };
-              return formatStringForDatatable(
-                dataset.general?.productionSpecific?.market
-                  ? getOriginalNameFromTechnicalName(dataset.general?.productionSpecific?.market, mappings)
-                  : ''
-              );
-            },
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
+              ((): AvailableMLDTDisplayObjectTypes => {
+                const mappings = {
+                  National: 'National',
+                  International: 'International',
+                  Both: 'Both',
+                };
+                return formatStringForDatatable(
+                  dataset.general?.productionSpecific?.market
+                    ? getOriginalNameFromTechnicalName(dataset.general?.productionSpecific?.market, mappings)
+                    : ''
+                );
+              })(),
           },
           {
             type: 'cell',

@@ -83,7 +83,7 @@ describe('Component test for the Eu-Taxonomy-Non-Financials view page', () => {
       fixturesForTests
     ).then(() => {
       const betaTotalAlignedCapexPercentage = roundNumber(
-        assertDefined(betaCapex.alignedShare?.relativeShareInPercent),
+        assertDefined(betaCapex.alignedShare?.relativeShareInPercent?.value),
         2
       );
       const gammaCapexTotalAmountFormattedString = formatAmountWithCurrency({
@@ -91,10 +91,10 @@ describe('Component test for the Eu-Taxonomy-Non-Financials view page', () => {
         currency: assertDefined(gammaCapexTotalAmount.currency),
       });
       const gammaTotalAlignedCapexAbsoluteShareString = formatAmountWithCurrency(
-        assertDefined(gammaCapex.alignedShare?.absoluteShare)
+        assertDefined(gammaCapex.alignedShare?.absoluteShare?.value)
       );
       const gammaContributionToClimateChangeMitigation = roundNumber(
-        assertDefined(gammaCapex.substantialContributionToClimateChangeMitigationInPercent),
+        assertDefined(gammaCapex.substantialContributionToClimateChangeMitigationInPercent?.value),
         2
       );
 

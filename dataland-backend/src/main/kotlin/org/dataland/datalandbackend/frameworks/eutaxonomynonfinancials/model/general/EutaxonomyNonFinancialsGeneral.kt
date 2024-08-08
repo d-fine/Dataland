@@ -4,6 +4,7 @@ package org.dataland.datalandbackend.frameworks.eutaxonomynonfinancials.model.ge
 import io.swagger.v3.oas.annotations.media.Schema
 import jakarta.validation.Valid
 import org.dataland.datalandbackend.frameworks.eutaxonomynonfinancials.custom.AssuranceDataPoint
+import org.dataland.datalandbackend.model.datapoints.ExtendedDataPoint
 import org.dataland.datalandbackend.model.documents.CompanyReport
 import org.dataland.datalandbackend.model.enums.commons.YesNo
 import org.dataland.datalandbackend.model.enums.commons.YesNoNa
@@ -15,19 +16,25 @@ import java.time.LocalDate
  * The data-model for the General section
  */
 data class EutaxonomyNonFinancialsGeneral(
-    val fiscalYearDeviation: EutaxonomyNonFinancialsGeneralFiscalYearDeviationOptions? = null,
+    @field:Valid()
+    val fiscalYearDeviation: ExtendedDataPoint<EutaxonomyNonFinancialsGeneralFiscalYearDeviationOptions?>? = null,
 
-    val fiscalYearEnd: LocalDate? = null,
+    @field:Valid()
+    val fiscalYearEnd: ExtendedDataPoint<LocalDate?>? = null,
 
-    val scopeOfEntities: YesNoNa? = null,
+    @field:Valid()
+    val scopeOfEntities: ExtendedDataPoint<YesNoNa?>? = null,
 
-    val nfrdMandatory: YesNo? = null,
+    @field:Valid()
+    val nfrdMandatory: ExtendedDataPoint<YesNo?>? = null,
 
-    val euTaxonomyActivityLevelReporting: YesNo? = null,
+    @field:Valid()
+    val euTaxonomyActivityLevelReporting: ExtendedDataPoint<YesNo?>? = null,
 
     val assurance: AssuranceDataPoint? = null,
 
-    val numberOfEmployees: BigDecimal? = null,
+    @field:Valid()
+    val numberOfEmployees: ExtendedDataPoint<BigDecimal?>? = null,
 
     @field:Schema(example = JsonExampleFormattingConstants.REFERENCED_REPORTS_DEFAULT_VALUE)
     @field:Valid()

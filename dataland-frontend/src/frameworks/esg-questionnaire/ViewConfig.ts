@@ -157,22 +157,23 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
             explanation: 'In welchen Zeitabständen werden die Berichte erstellt?',
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
               dataset.allgemein?.esgBerichte?.nachhaltigkeitsberichte == 'Yes',
-            valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes => {
-              const mappings = {
-                Jaehrlich: 'jährlich',
-                Halbjaehrlich: 'halbjährlich',
-                Vierteljaehrlich: 'vierteljährlich',
-                Monatlich: 'monatlich',
-              };
-              return formatStringForDatatable(
-                dataset.allgemein?.esgBerichte?.frequenzDerBerichterstattung
-                  ? getOriginalNameFromTechnicalName(
-                      dataset.allgemein?.esgBerichte?.frequenzDerBerichterstattung,
-                      mappings
-                    )
-                  : ''
-              );
-            },
+            valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
+              ((): AvailableMLDTDisplayObjectTypes => {
+                const mappings = {
+                  Jaehrlich: 'jährlich',
+                  Halbjaehrlich: 'halbjährlich',
+                  Vierteljaehrlich: 'vierteljährlich',
+                  Monatlich: 'monatlich',
+                };
+                return formatStringForDatatable(
+                  dataset.allgemein?.esgBerichte?.frequenzDerBerichterstattung
+                    ? getOriginalNameFromTechnicalName(
+                        dataset.allgemein?.esgBerichte?.frequenzDerBerichterstattung,
+                        mappings
+                      )
+                    : ''
+                );
+              })(),
           },
           {
             type: 'cell',
@@ -418,22 +419,23 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
               'Wie spiegeln sich die Anreizmechanismen für den Bereich Umwelt in der jährlichen Zielsetzung für das Management wieder?',
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
               dataset.allgemein?.fuehrungsstandards?.oekologischeSozialeFuehrungsstandardsOderPrinzipien == 'Yes',
-            valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes => {
-              const mappings = {
-                Nein: 'Nein',
-                JaAufsichtsrat: 'Ja, Aufsichtsrat',
-                JaGeschaeftsleitung: 'Ja, Geschäftsleitung',
-                JaAufsichtsratUndGeschaeftsleitung: 'Ja, Aufsichtsrat und Geschäftsleitung',
-              };
-              return formatStringForDatatable(
-                dataset.allgemein?.fuehrungsstandards?.anreizmechanismenFuerDasManagementUmwelt
-                  ? getOriginalNameFromTechnicalName(
-                      dataset.allgemein?.fuehrungsstandards?.anreizmechanismenFuerDasManagementUmwelt,
-                      mappings
-                    )
-                  : ''
-              );
-            },
+            valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
+              ((): AvailableMLDTDisplayObjectTypes => {
+                const mappings = {
+                  Nein: 'Nein',
+                  JaAufsichtsrat: 'Ja, Aufsichtsrat',
+                  JaGeschaeftsleitung: 'Ja, Geschäftsleitung',
+                  JaAufsichtsratUndGeschaeftsleitung: 'Ja, Aufsichtsrat und Geschäftsleitung',
+                };
+                return formatStringForDatatable(
+                  dataset.allgemein?.fuehrungsstandards?.anreizmechanismenFuerDasManagementUmwelt
+                    ? getOriginalNameFromTechnicalName(
+                        dataset.allgemein?.fuehrungsstandards?.anreizmechanismenFuerDasManagementUmwelt,
+                        mappings
+                      )
+                    : ''
+                );
+              })(),
           },
           {
             type: 'cell',
@@ -442,22 +444,23 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
               'Wie spiegeln sich die Anreizmechanismen für den Bereich Soziales in der jährlichen Zielsetzung für das Management wieder?',
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
               dataset.allgemein?.fuehrungsstandards?.oekologischeSozialeFuehrungsstandardsOderPrinzipien == 'Yes',
-            valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes => {
-              const mappings = {
-                Nein: 'Nein',
-                JaAufsichtsrat: 'Ja, Aufsichtsrat',
-                JaGeschaeftsleitung: 'Ja, Geschäftsleitung',
-                JaAufsichtsratUndGeschaeftsleitung: 'Ja, Aufsichtsrat und Geschäftsleitung',
-              };
-              return formatStringForDatatable(
-                dataset.allgemein?.fuehrungsstandards?.anreizmechanismenFuerDasManagementSoziales
-                  ? getOriginalNameFromTechnicalName(
-                      dataset.allgemein?.fuehrungsstandards?.anreizmechanismenFuerDasManagementSoziales,
-                      mappings
-                    )
-                  : ''
-              );
-            },
+            valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
+              ((): AvailableMLDTDisplayObjectTypes => {
+                const mappings = {
+                  Nein: 'Nein',
+                  JaAufsichtsrat: 'Ja, Aufsichtsrat',
+                  JaGeschaeftsleitung: 'Ja, Geschäftsleitung',
+                  JaAufsichtsratUndGeschaeftsleitung: 'Ja, Aufsichtsrat und Geschäftsleitung',
+                };
+                return formatStringForDatatable(
+                  dataset.allgemein?.fuehrungsstandards?.anreizmechanismenFuerDasManagementSoziales
+                    ? getOriginalNameFromTechnicalName(
+                        dataset.allgemein?.fuehrungsstandards?.anreizmechanismenFuerDasManagementSoziales,
+                        mappings
+                      )
+                    : ''
+                );
+              })(),
           },
         ],
       },
@@ -492,17 +495,18 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
             explanation: 'Sind die Rechtsstreitigkeiten mit Bezug zu "E" noch offen oder bereits geklärt?',
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
               dataset.allgemein?.rechtsstreitigkeiten?.rechtsstreitigkeitenMitBezugZuE == 'Yes',
-            valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes => {
-              const mappings = {
-                Offen: 'offen',
-                Geklaert: 'geklärt',
-              };
-              return formatStringForDatatable(
-                dataset.allgemein?.rechtsstreitigkeiten?.statusZuE
-                  ? getOriginalNameFromTechnicalName(dataset.allgemein?.rechtsstreitigkeiten?.statusZuE, mappings)
-                  : ''
-              );
-            },
+            valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
+              ((): AvailableMLDTDisplayObjectTypes => {
+                const mappings = {
+                  Offen: 'offen',
+                  Geklaert: 'geklärt',
+                };
+                return formatStringForDatatable(
+                  dataset.allgemein?.rechtsstreitigkeiten?.statusZuE
+                    ? getOriginalNameFromTechnicalName(dataset.allgemein?.rechtsstreitigkeiten?.statusZuE, mappings)
+                    : ''
+                );
+              })(),
           },
           {
             type: 'cell',
@@ -530,17 +534,18 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
             explanation: 'Sind die Rechtsstreitigkeiten mit Bezug zu "S" noch offen oder bereits geklärt?',
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
               dataset.allgemein?.rechtsstreitigkeiten?.rechtsstreitigkeitenMitBezugZuS == 'Yes',
-            valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes => {
-              const mappings = {
-                Offen: 'offen',
-                Geklaert: 'geklärt',
-              };
-              return formatStringForDatatable(
-                dataset.allgemein?.rechtsstreitigkeiten?.statusZuS
-                  ? getOriginalNameFromTechnicalName(dataset.allgemein?.rechtsstreitigkeiten?.statusZuS, mappings)
-                  : ''
-              );
-            },
+            valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
+              ((): AvailableMLDTDisplayObjectTypes => {
+                const mappings = {
+                  Offen: 'offen',
+                  Geklaert: 'geklärt',
+                };
+                return formatStringForDatatable(
+                  dataset.allgemein?.rechtsstreitigkeiten?.statusZuS
+                    ? getOriginalNameFromTechnicalName(dataset.allgemein?.rechtsstreitigkeiten?.statusZuS, mappings)
+                    : ''
+                );
+              })(),
           },
           {
             type: 'cell',
@@ -568,17 +573,18 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
             explanation: 'Sind die Rechtsstreitigkeiten mit Bezug zu "G" noch offen oder bereits geklärt?',
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
               dataset.allgemein?.rechtsstreitigkeiten?.rechtsstreitigkeitenMitBezugZuG == 'Yes',
-            valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes => {
-              const mappings = {
-                Offen: 'offen',
-                Geklaert: 'geklärt',
-              };
-              return formatStringForDatatable(
-                dataset.allgemein?.rechtsstreitigkeiten?.statusZuG
-                  ? getOriginalNameFromTechnicalName(dataset.allgemein?.rechtsstreitigkeiten?.statusZuG, mappings)
-                  : ''
-              );
-            },
+            valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
+              ((): AvailableMLDTDisplayObjectTypes => {
+                const mappings = {
+                  Offen: 'offen',
+                  Geklaert: 'geklärt',
+                };
+                return formatStringForDatatable(
+                  dataset.allgemein?.rechtsstreitigkeiten?.statusZuG
+                    ? getOriginalNameFromTechnicalName(dataset.allgemein?.rechtsstreitigkeiten?.statusZuG, mappings)
+                    : ''
+                );
+              })(),
           },
           {
             type: 'cell',
@@ -1108,17 +1114,18 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
             explanation: 'Wird der EU-Taxonomie Bericht auf Basis NFRD oder auf Basis CSRD erstellt?',
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
-            valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes => {
-              const mappings = {
-                Nfrd: 'NFRD',
-                Csrd: 'CSRD',
-              };
-              return formatStringForDatatable(
-                dataset.umwelt?.taxonomie?.taxonomieBerichterstattung
-                  ? getOriginalNameFromTechnicalName(dataset.umwelt?.taxonomie?.taxonomieBerichterstattung, mappings)
-                  : ''
-              );
-            },
+            valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
+              ((): AvailableMLDTDisplayObjectTypes => {
+                const mappings = {
+                  Nfrd: 'NFRD',
+                  Csrd: 'CSRD',
+                };
+                return formatStringForDatatable(
+                  dataset.umwelt?.taxonomie?.taxonomieBerichterstattung
+                    ? getOriginalNameFromTechnicalName(dataset.umwelt?.taxonomie?.taxonomieBerichterstattung, mappings)
+                    : ''
+                );
+              })(),
           },
           {
             type: 'cell',
@@ -1482,18 +1489,19 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
             explanation: 'Wie werden die Audits zur Einhaltung von Arbeitsstandards durchgeführt?',
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
               dataset.soziales?.audit?.auditsZurEinhaltungVonArbeitsstandards == 'Yes',
-            valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes => {
-              const mappings = {
-                InterneAnhoerung: 'Interne Anhörung',
-                PruefungDurchDritte: 'Prüfung durch Dritte',
-                SowohlInternAlsAuchVonDrittanbietern: 'Sowohl intern als auch von Drittanbietern',
-              };
-              return formatStringForDatatable(
-                dataset.soziales?.audit?.artDesAudits
-                  ? getOriginalNameFromTechnicalName(dataset.soziales?.audit?.artDesAudits, mappings)
-                  : ''
-              );
-            },
+            valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
+              ((): AvailableMLDTDisplayObjectTypes => {
+                const mappings = {
+                  InterneAnhoerung: 'Interne Anhörung',
+                  PruefungDurchDritte: 'Prüfung durch Dritte',
+                  SowohlInternAlsAuchVonDrittanbietern: 'Sowohl intern als auch von Drittanbietern',
+                };
+                return formatStringForDatatable(
+                  dataset.soziales?.audit?.artDesAudits
+                    ? getOriginalNameFromTechnicalName(dataset.soziales?.audit?.artDesAudits, mappings)
+                    : ''
+                );
+              })(),
           },
           {
             type: 'cell',

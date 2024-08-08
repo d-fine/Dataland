@@ -189,7 +189,7 @@ class MetaDataControllerTest {
                 activeDatasets[0].dataId,
             )
         assertTrue(
-            (retrievedDataset.data.general!!.numberOfEmployees == newNumberOfEmployees),
+            (retrievedDataset.data.general!!.numberOfEmployees!!.value == newNumberOfEmployees),
             "The active dataset does not have numberOfEmployees of the old one plus 1.",
         )
     }
@@ -206,9 +206,14 @@ class MetaDataControllerTest {
             reportingPeriod = reportingPeriod,
             uploadFunction = apiAccessor::euTaxonomyNonFinancialsUploaderFunction,
         )
-        val newNumberOfEmployees = (frameworkDataAlpha.general!!.numberOfEmployees ?: BigDecimal.ZERO) + BigDecimal.ONE
+        val newNumberOfEmployees = (frameworkDataAlpha.general!!.numberOfEmployees!!.value ?: BigDecimal.ZERO) +
+            BigDecimal.ONE
         val frameworkDataBeta = frameworkDataAlpha.copy(
-            general = frameworkDataAlpha.general!!.copy(numberOfEmployees = newNumberOfEmployees),
+            general = frameworkDataAlpha.general!!.copy(
+                numberOfEmployees = frameworkDataAlpha.general!!.numberOfEmployees!!.copy(
+                    value = newNumberOfEmployees,
+                ),
+            ),
         )
         apiAccessor.uploadSingleFrameworkDataSet(
             companyId = companyId,

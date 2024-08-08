@@ -156,7 +156,7 @@ import SubmitButton from '@/components/forms/parts/SubmitButton.vue';
 import SubmitSideBar from '@/components/forms/parts/SubmitSideBar.vue';
 import YesNoNaFormField from '@/components/forms/parts/fields/YesNoNaFormField.vue';
 import UploadReports from '@/components/forms/parts/UploadReports.vue';
-import FinancialShareFormField from '@/components/forms/parts/kpiSelection/FinancialShareFormField.vue';
+import FinancialShareExtendedDataPointFormField from '@/components/forms/parts/kpiSelection/FinancialShareExtendedDataPointFormField.vue';
 import AlignedActivitiesFormField from '@/components/forms/parts/kpiSelection/AlignedActivitiesFormField.vue';
 import NonAlignedActivitiesFormField from '@/components/forms/parts/kpiSelection/NonAlignedActivitiesFormField.vue';
 import AssuranceFormField from '@/components/forms/parts/kpiSelection/AssuranceFormField.vue';
@@ -174,6 +174,10 @@ import CurrencyDataPointFormField from '@/components/forms/parts/fields/Currency
 import YesNoBaseDataPointFormField from '@/components/forms/parts/fields/YesNoBaseDataPointFormField.vue';
 import YesNoNaBaseDataPointFormField from '@/components/forms/parts/fields/YesNoNaBaseDataPointFormField.vue';
 import YesNoExtendedDataPointFormField from '@/components/forms/parts/fields/YesNoExtendedDataPointFormField.vue';
+import YesNoNaExtendedDataPointFormField from '@/components/forms/parts/fields/YesNoNaExtendedDataPointFormField.vue';
+import DateExtendedDataPointFormField from '@/components/forms/parts/fields/DateExtendedDataPointFormField.vue';
+import PercentageExtendedDataPointFormField from '@/components/forms/parts/fields/PercentageExtendedDataPointFormField.vue';
+import RadioButtonsExtendedDataPointFormField from '@/components/forms/parts/fields/RadioButtonsExtendedDataPointFormField.vue';
 import { getFilledKpis } from '@/utils/DataPoint';
 import { type PublicFrameworkDataApi } from '@/utils/api/UnifiedFrameworkDataApi';
 import { getBasePublicFrameworkDefinition } from '@/frameworks/BasePublicFrameworkRegistry';
@@ -208,7 +212,7 @@ export default defineComponent({
     RadioButtonsFormField,
     PercentageFormField,
     UploadReports,
-    FinancialShareFormField,
+    FinancialShareExtendedDataPointFormField,
     AlignedActivitiesFormField,
     AssuranceFormField,
     NonAlignedActivitiesFormField,
@@ -220,6 +224,10 @@ export default defineComponent({
     YesNoBaseDataPointFormField,
     YesNoNaBaseDataPointFormField,
     YesNoExtendedDataPointFormField,
+    YesNoNaExtendedDataPointFormField,
+    DateExtendedDataPointFormField,
+    PercentageExtendedDataPointFormField,
+    RadioButtonsExtendedDataPointFormField,
   },
   directives: {
     tooltip: Tooltip,
@@ -271,7 +279,7 @@ export default defineComponent({
     const dataId = this.route.query.templateDataId;
     if (dataId && typeof dataId === 'string' && dataId !== '') {
       this.editMode = true;
-      void this.loadEutaxonomyNonFinancialsData(dataId);
+      this.loadEutaxonomyNonFinancialsData(dataId);
     } else {
       this.waitingForData = false;
     }
