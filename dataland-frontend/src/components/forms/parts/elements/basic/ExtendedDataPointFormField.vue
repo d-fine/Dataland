@@ -155,6 +155,7 @@ export default defineComponent({
     return {
       isMounted: false,
       dataPointIsAvailable: (this.injectlistOfFilledKpis as unknown as Array<string>).includes(this.name as string),
+      //ToDo introduce a human readable mapping for the new quality option NoDataFound
       qualityOptions: Object.values(QualityOptions).map((qualityOption: string) => ({
         label: qualityOption,
         value: qualityOption,
