@@ -12,6 +12,8 @@ import org.dataland.e2etests.auth.JwtAuthenticationHelper
 import org.dataland.e2etests.auth.TechnicalUser
 import org.dataland.e2etests.utils.ApiAccessor
 import org.dataland.e2etests.utils.DocumentManagerAccessor
+import org.dataland.e2etests.utils.communityManager.assertAccessDeniedResponseBodyInCommunityManagerClientException
+import org.dataland.e2etests.utils.communityManager.assertErrorCodeInCommunityManagerClientException
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeAll
@@ -80,13 +82,6 @@ class CompanyRolesControllerTest {
         apiAccessor.euTaxonomyNonFinancialsUploaderFunction(companyId.toString(), frameworkSampleData, "2021", true)
     }
 
-    private fun assertErrorCodeInCommunityManagerClientException(
-        communityManagerClientException: CommunityManagerClientException,
-        expectedErrorCode: Number,
-    ) {
-        assertEquals("Client error : $expectedErrorCode ", communityManagerClientException.message)
-    }
-
     private fun assertCompanyNotFoundResponseBodyInCommunityManagerClientException(
         communityManagerClientException: CommunityManagerClientException,
         companyId: UUID,
@@ -99,14 +94,6 @@ class CompanyRolesControllerTest {
                 "\"Dataland does not know the company ID $companyId\"",
             ),
         )
-    }
-
-    private fun assertAccessDeniedResponseBodyInCommunityManagerClientException(
-        communityManagerClientException: CommunityManagerClientException,
-    ) {
-        assertErrorCodeInCommunityManagerClientException(communityManagerClientException, 403)
-        val responseBody = (communityManagerClientException.response as ClientError<*>).body as String
-        assertTrue(responseBody.contains("Access Denied"))
     }
 
     private fun assignCompanyRole(companyRole: CompanyRole, companyId: UUID, userId: UUID): CompanyRoleAssignment {

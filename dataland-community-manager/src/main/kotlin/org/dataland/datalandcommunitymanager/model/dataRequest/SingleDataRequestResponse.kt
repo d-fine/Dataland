@@ -18,4 +18,7 @@ data class SingleDataRequestResponse(
 
     @field:JsonProperty(required = true)
     val reportingPeriodsOfDuplicateDataRequests: List<String>,
+
+    @field:JsonProperty(required = true)
+    val reportingPeriodsOfStoredAccessRequests: List<String>,
 )
