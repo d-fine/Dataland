@@ -1,9 +1,7 @@
 import { generateFixtureDataset } from '@e2e/fixtures/FixtureUtils';
 import { type SfdrData, YesNo } from '@clients/backend';
-import { generateSfdrData, generateSfdrFixtures } from './SfdrDataFixtures';
+import { generateSfdrFixtures } from './SfdrDataFixtures';
 import { type FixtureData } from '@sharedUtils/Fixtures';
-
-type generatorFunction = (input: FixtureData<SfdrData>) => FixtureData<SfdrData>;
 
 /**
  * Generates SFDR prepared fixtures by generating random SFDR datasets and afterward manipulating some fields
@@ -11,35 +9,34 @@ type generatorFunction = (input: FixtureData<SfdrData>) => FixtureData<SfdrData>
  * @returns the prepared fixtures
  */
 export function generateSfdrPreparedFixtures(): Array<FixtureData<SfdrData>> {
-  const manipulatorFunctions: Array<generatorFunction> = [
-    manipulateFixtureForTwoSfdrDataSetsInDifferentYears,
-    manipulateFixtureForOneFilledSubcategory,
-    generateFixtureWithBrokenFileReference,
-    generateFixtureWithIncompleteReferencedReport,
-  ];
-  const preparedFixturesBeforeManipulation = generateFixtureDataset<SfdrData>(
-    generateSfdrData,
-    manipulatorFunctions.length
-  );
   const preparedFixtures = [];
-  for (let i = 0; i < manipulatorFunctions.length; i++) {
-    preparedFixtures.push(manipulatorFunctions[i](preparedFixturesBeforeManipulation[i]));
-  }
 
+  preparedFixtures.push(manipulateFixtureForTwoSfdrDataSetsInDifferentYears(generateSfdrDataWithoutNulls()));
+  preparedFixtures.push(manipulateFixtureForOneFilledSubcategory(generateSfdrDataWithoutNulls()));
+  preparedFixtures.push(generateFixtureWithBrokenFileReference(generateSfdrDataWithoutNulls()));
+  preparedFixtures.push(generateFixtureWithIncompleteReferencedReport(generateSfdrDataWithoutNulls()));
   preparedFixtures.push(
     manipulateFixtureForSfdrDatasetWithLotsOfNulls(
       generateFixtureDataset<SfdrData>(generateOneSfdrDatasetWithManyNulls, 1)[0]
     )
   );
-  preparedFixtures.push(manipulateFixtureForNoNullFields(generateSfdrFixtures(1, 0)[0]));
-  preparedFixtures.push(manipulateFixtureForInvalidCurrencyInput(generateSfdrFixtures(1, 0)[0]));
-  preparedFixtures.push(manipulateFixtureForInvalidBigDecimalDataPointInput(generateSfdrFixtures(1, 0)[0]));
-  preparedFixtures.push(manipulateFixtureForInvalidLongDataPointInput(generateSfdrFixtures(1, 0)[0]));
-  preparedFixtures.push(manipulateFixtureForEmptyStringDocumentReference(generateSfdrFixtures(1, 0)[0]));
-  preparedFixtures.push(manipulateFixtureForInvalidPercentageInput(generateSfdrFixtures(1, 0)[0]));
-  preparedFixtures.push(manipulateFixtureForTwoInvalidInputs(generateSfdrFixtures(1, 0)[0]));
+  preparedFixtures.push(manipulateFixtureForNoNullFields(generateSfdrDataWithoutNulls()));
+  preparedFixtures.push(manipulateFixtureForInvalidCurrencyInput(generateSfdrDataWithoutNulls()));
+  preparedFixtures.push(manipulateFixtureForInvalidBigDecimalDataPointInput(generateSfdrDataWithoutNulls()));
+  preparedFixtures.push(manipulateFixtureForInvalidLongDataPointInput(generateSfdrDataWithoutNulls()));
+  preparedFixtures.push(manipulateFixtureForEmptyStringDocumentReference(generateSfdrDataWithoutNulls()));
+  preparedFixtures.push(manipulateFixtureForInvalidPercentageInput(generateSfdrDataWithoutNulls()));
+  preparedFixtures.push(manipulateFixtureForTwoInvalidInputs(generateSfdrDataWithoutNulls()));
 
   return preparedFixtures;
+}
+
+/**
+ * Helper function to get one SFDR data set without null entries
+ * @returns One SFDR fixture data set without null entries in the data
+ */
+function generateSfdrDataWithoutNulls(): FixtureData<SfdrData> {
+  return generateSfdrFixtures(1, 0)[0]
 }
 
 /**
