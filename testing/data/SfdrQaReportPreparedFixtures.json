@@ -2,40 +2,26 @@
 	{
 		"companyInformation": {
 			"companyName": "sfdr-qa-report-with-one-correction",
-			"headquarters": "Schillerfield",
-			"headquartersPostalCode": null,
-			"sector": "partnerships",
+			"headquarters": "D'Amoreworth",
+			"headquartersPostalCode": "44380",
+			"sector": "initiatives",
 			"identifiers": {
 				"Lei": [],
 				"Isin": [
-					"Qon9hEXd5ufF"
+					"0mD4x6MKUdFi",
+					"My2jlcOrf81j"
 				],
-				"PermId": [
-					"6737HGeUGS"
-				],
+				"PermId": [],
 				"Ticker": [],
 				"Duns": [],
-				"VatNumber": [
-					"EiPzYyHl6"
-				],
-				"CompanyRegistrationNumber": [
-					"vVZRklmfBFn06sk"
-				]
+				"VatNumber": [],
+				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "CO",
-			"companyContactDetails": [
-				"Priscilla.Yost@example.com",
-				"Heaven.Runolfsdottir@example.com",
-				"Bernie47@example.com",
-				"Isidro.Smith16@example.com"
-			],
-			"companyAlternativeNames": [
-				"Gutmann LLC",
-				"Lynch Group",
-				"Weimann, Marks and Fay"
-			],
-			"companyLegalForm": null,
-			"website": null,
+			"countryCode": "GL",
+			"companyContactDetails": [],
+			"companyAlternativeNames": [],
+			"companyLegalForm": "Limited Liability Partnership (LLP)",
+			"website": "https://definitive-state.name/",
 			"isTeaserCompany": false
 		},
 		"t": {
@@ -52,6 +38,6 @@
 				}
 			}
 		},
-		"reportingPeriod": "2023"
+		"reportingPeriod": "2021"
 	}
 ]
