@@ -36,7 +36,7 @@ export function generateSfdrPreparedFixtures(): Array<FixtureData<SfdrData>> {
  * @returns One SFDR fixture data set without null entries in the data
  */
 function generateSfdrDataWithoutNulls(): FixtureData<SfdrData> {
-  return generateSfdrFixtures(1, 0)[0]
+  return generateSfdrFixtures(1, 0)[0];
 }
 
 /**
