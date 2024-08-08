@@ -2,6 +2,7 @@ package org.dataland.frameworktoolbox.intermediate.components
 
 import org.dataland.frameworktoolbox.intermediate.FieldNodeParent
 import org.dataland.frameworktoolbox.intermediate.components.support.SelectionOption
+import org.dataland.frameworktoolbox.intermediate.datapoints.ExtendedDocumentSupport
 import org.dataland.frameworktoolbox.intermediate.datapoints.addPropertyWithDocumentSupport
 import org.dataland.frameworktoolbox.specific.datamodel.elements.DataClassBuilder
 import org.dataland.frameworktoolbox.specific.fixturegenerator.elements.FixtureSectionBuilder
@@ -53,10 +54,10 @@ open class SingleSelectComponent(
             this,
             documentSupport.getFrameworkDisplayValueLambda(
                 FrameworkDisplayValueLambda(
-                    "{\n" +
+                    "((): AvailableMLDTDisplayObjectTypes =>{\n" +
                         generateTsCodeForSelectOptionsMappingObject(options) +
                         generateReturnStatement() +
-                        "}",
+                        "})()",
                     setOf(
                         TypeScriptImport(
                             "formatStringForDatatable",
@@ -100,8 +101,12 @@ open class SingleSelectComponent(
     }
 
     private fun generateReturnStatement(): String {
+        val fieldAccessor = getTypescriptFieldAccessor()
+        val dataPointValueAccessor =
+            if (documentSupport == ExtendedDocumentSupport) "$fieldAccessor?.value" else fieldAccessor
         return "return formatStringForDatatable(\n" +
-            "${getTypescriptFieldAccessor()}?.value" +
+            "$dataPointValueAccessor ? " +
+            "getOriginalNameFromTechnicalName($dataPointValueAccessor, mappings) : \"\"\n" +
             ")\n"
     }
 }

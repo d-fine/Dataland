@@ -27,21 +27,22 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
         label: 'Fiscal Year Deviation',
         explanation: 'Does the fiscal year deviate from the calendar year?',
         shouldDisplay: (): boolean => true,
-        valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes => {
-          const mappings = {
-            Deviation: 'Deviation',
-            NoDeviation: 'No Deviation',
-          };
-
-          const technicalName = dataset.general?.fiscalYearDeviation?.value;
-          const stringToDisplay = technicalName ? mappings[technicalName] : technicalName;
-
-          return wrapDisplayValueWithDatapointInformation(
-            formatStringForDatatable(stringToDisplay),
+        valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
+          wrapDisplayValueWithDatapointInformation(
+            ((): AvailableMLDTDisplayObjectTypes => {
+              const mappings = {
+                Deviation: 'Deviation',
+                NoDeviation: 'No Deviation',
+              };
+              return formatStringForDatatable(
+                dataset.general?.fiscalYearDeviation?.value
+                  ? getOriginalNameFromTechnicalName(dataset.general?.fiscalYearDeviation?.value, mappings)
+                  : ''
+              );
+            })(),
             'Fiscal Year Deviation',
             dataset.general?.fiscalYearDeviation
-          );
-        },
+          ),
       },
       {
         type: 'cell',
