@@ -5,10 +5,11 @@ import jakarta.persistence.Entity
 import jakarta.persistence.Id
 import jakarta.persistence.OneToMany
 import jakarta.persistence.Table
+import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
+import org.dataland.datalandcommunitymanager.model.dataRequest.AccessStatus
 import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
 import org.dataland.datalandcommunitymanager.model.dataRequest.StoredDataRequest
-import org.dataland.datalandcommunitymanager.model.dataRequest.StoredDataRequestMessageObject
-import org.dataland.datalandcommunitymanager.model.dataRequest.StoredDataRequestStatusObject
+import org.dataland.datalandcommunitymanager.utils.readableFrameworkNameMapping
 import java.util.*
 
 /**
@@ -42,6 +43,8 @@ data class DataRequestEntity(
 ) {
     val requestStatus: RequestStatus
         get() = (dataRequestStatusHistory.maxByOrNull { it.creationTimestamp }?.requestStatus) ?: RequestStatus.Open
+    val accessStatus: AccessStatus
+        get() = (dataRequestStatusHistory.maxByOrNull { it.creationTimestamp }?.accessStatus) ?: AccessStatus.Public
     constructor(
         userId: String,
         dataType: String,
@@ -61,27 +64,19 @@ data class DataRequestEntity(
     )
 
     /**
-     * Associates a message history
-     * This must be done after creation and storage of the DataRequestEntity
-     * due to cross dependencies between entities
-     * @param messageHistory a list of ordered message objects
+     * Adds a messageEntity to the messageHistory.
+     * Note, this is not automatically saved in the database, you also need to persist the messageEntity.
      */
-    fun associateMessages(messageHistory: List<StoredDataRequestMessageObject>) {
-        this.messageHistory = messageHistory.map {
-            MessageEntity(it, this)
-        }
+    fun addRequestEventToMessageHistory(messageEntity: MessageEntity) {
+        this.messageHistory += messageEntity
     }
 
     /**
-     * Associates a request status history
-     * This must be done after creation and storage of the DataRequestEntity
-     * due to cross dependencies between entities
-     * @param requestStatusHistory a list of ordered request status objects
+     * Adds a requestStatusEntity to the dataRequestStatusHistory.
+     * Note, this is not automatically saved in the database, you also need to persist the requestStatusEntity.
      */
-    fun associateRequestStatus(requestStatusHistory: List<StoredDataRequestStatusObject>) {
-        this.dataRequestStatusHistory = requestStatusHistory.map {
-            RequestStatusEntity(it, this)
-        }
+    fun addToDataRequestStatusHistory(requestStatusEntity: RequestStatusEntity) {
+        this.dataRequestStatusHistory += requestStatusEntity
     }
 
     /**
@@ -103,5 +98,15 @@ data class DataRequestEntity(
             .map { it.toStoredDataRequestStatusObject() },
         lastModifiedDate = lastModifiedDate,
         requestStatus = requestStatus,
+        accessStatus = accessStatus,
     )
+
+    /**
+     * This method returns the appropriate description for a given datatype enum
+     * @return datatype description
+     */
+    fun getDataTypeDescription(): String {
+        return DataTypeEnum.entries.find { it.value == dataType }.let { readableFrameworkNameMapping[it] }
+            ?: dataType
+    }
 }

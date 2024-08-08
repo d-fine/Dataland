@@ -59,7 +59,7 @@ function humanizeViaMapping(rawText: string): string {
     lksg: 'LkSG',
     sfdr: 'SFDR',
     sme: 'SME',
-    p2p: 'WWF Pathway to Paris',
+    p2p: 'WWF Pathways to Paris',
     inhouseproduction: 'In-house Production',
     contractprocessing: 'Contract Processing',
     hvcplastics: 'HVC Plastics',

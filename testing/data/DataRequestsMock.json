@@ -1,11 +1,11 @@
 [
 	{
-		"dataRequestId": "1684b55a-fc76-422d-8cd1-d82848f4702c",
-		"userId": "e5b8c732-91ca-44c0-938f-ba73ef473ed9",
+		"dataRequestId": "684b55af-c762-42dc-bd1d-82848f4702c0",
+		"userId": "5b8c7329-1ca4-4c03-98fb-a73ef473ed96",
 		"creationTimestamp": 137,
-		"dataType": "lksg",
-		"reportingPeriod": "2022",
-		"datalandCompanyId": "c18c96b8-a7f8-4958-b3ac-0b4404cdff81",
+		"dataType": "p2p",
+		"reportingPeriod": "2023",
+		"datalandCompanyId": "18c96b8a-7f89-4583-9ac0-b4404cdff81d",
 		"messageHistory": [
 			{
 				"contacts": [
@@ -57,29 +57,32 @@
 		"dataRequestStatusHistory": [
 			{
 				"status": "Open",
-				"creationTimestamp": 137
+				"creationTimestamp": 137,
+				"accessStatus": "Public"
 			},
 			{
 				"status": "Withdrawn",
-				"creationTimestamp": 977
+				"creationTimestamp": 977,
+				"accessStatus": "Declined"
 			}
 		],
 		"lastModifiedDate": 977,
-		"requestStatus": "Withdrawn"
+		"requestStatus": "Withdrawn",
+		"accessStatus": "Declined"
 	},
 	{
-		"dataRequestId": "c33cd22f-69bc-4371-ad90-3162ee3f255b",
-		"userId": "48f63271-c293-414a-9d6e-8cdbe6c83074",
-		"creationTimestamp": 252,
+		"dataRequestId": "63271c29-314a-4d6e-b8cd-be6c830744d7",
+		"userId": "fed8cc68-93da-48ab-80d3-196dc876efae",
+		"creationTimestamp": 271,
 		"dataType": "lksg",
 		"reportingPeriod": "2021",
 		"datalandCompanyId": "Mock-Company-Id",
 		"messageHistory": [
 			{
 				"contacts": [
-					"Triston.Feest@example.com",
-					"Eldred28@example.com",
-					"Brent_Fay-Ledner@example.com",
+					"Eleanore.Lowe@example.com",
+					"Ozella13@example.com",
+					"Webster_Ledner@example.com",
 					"Kali80@example.com",
 					"Clemens_Keeling@example.com"
 				],
@@ -104,169 +107,218 @@
 				],
 				"message": "copy solid state microchip",
 				"creationTimestamp": 3945
+			},
+			{
+				"contacts": [
+					"Rosalind.Rolfson79@example.com",
+					"Robb58@example.com",
+					"Melvina.Doyle@example.com"
+				],
+				"message": "program multi-byte driver",
+				"creationTimestamp": 2306
+			},
+			{
+				"contacts": [
+					"Gerard94@example.com"
+				],
+				"message": "hack cross-platform array",
+				"creationTimestamp": 7399
 			}
 		],
 		"dataRequestStatusHistory": [
 			{
 				"status": "Open",
-				"creationTimestamp": 252
+				"creationTimestamp": 271,
+				"accessStatus": "Public"
 			},
 			{
-				"status": "Answered",
-				"creationTimestamp": 922
+				"status": "Resolved",
+				"creationTimestamp": 642,
+				"accessStatus": "Revoked"
 			}
 		],
-		"lastModifiedDate": 922,
-		"requestStatus": "Open"
+		"lastModifiedDate": 642,
+		"requestStatus": "Open",
+		"accessStatus": "Revoked"
 	},
 	{
-		"dataRequestId": "c603394d-148f-40f9-9414-49494d700432",
-		"userId": "383988fa-f947-4d57-a19c-3af507f337d9",
-		"creationTimestamp": 362,
+		"dataRequestId": "9be2ddb8-8834-4b23-ab30-b33afc8d679c",
+		"userId": "ecbdbb5b-5986-4d38-b6a7-e77109624404",
+		"creationTimestamp": 97,
 		"dataType": "lksg",
 		"reportingPeriod": "2022",
 		"datalandCompanyId": "Mock-Company-Id",
 		"messageHistory": [
 			{
 				"contacts": [
-					"Shawna_Haag@example.com",
-					"Ewald_Schmidt28@example.com"
+					"Bernice.Glover@example.com",
+					"Lila.Schuppe@example.com"
 				],
-				"message": "back up 1080p card",
-				"creationTimestamp": 3728
+				"message": "back up open-source microchip",
+				"creationTimestamp": 1776
+			},
+			{
+				"contacts": [
+					"Cynthia_Frami@example.com",
+					"Johann27@example.com"
+				],
+				"message": "connect neural array",
+				"creationTimestamp": 4681
+			},
+			{
+				"contacts": [
+					"Lindsay_Dietrich@example.com"
+				],
+				"message": "navigate auxiliary sensor",
+				"creationTimestamp": 9708
 			}
 		],
 		"dataRequestStatusHistory": [
 			{
 				"status": "Open",
-				"creationTimestamp": 362
+				"creationTimestamp": 97,
+				"accessStatus": "Public"
 			},
 			{
-				"status": "Open",
-				"creationTimestamp": 570
+				"status": "Resolved",
+				"creationTimestamp": 617,
+				"accessStatus": "Revoked"
 			}
 		],
-		"lastModifiedDate": 570,
-		"requestStatus": "Answered"
+		"lastModifiedDate": 617,
+		"requestStatus": "Answered",
+		"accessStatus": "Revoked"
 	},
 	{
-		"dataRequestId": "ca06960d-3c2f-4cb6-bbda-6259f83144bf",
-		"userId": "c6c12d16-7e4d-48ed-a1bc-14a0e35183f1",
-		"creationTimestamp": 377,
+		"dataRequestId": "10ad826b-ed87-44f7-b90f-079e984b2e23",
+		"userId": "037ba791-15cb-407f-ad5b-a8decf8155c5",
+		"creationTimestamp": 239,
 		"dataType": "lksg",
 		"reportingPeriod": "2024",
 		"datalandCompanyId": "Mock-Company-Id",
 		"messageHistory": [
 			{
 				"contacts": [
-					"Gage_Herman@example.com",
-					"Gavin.Dietrich@example.com",
-					"Margret.Torphy@example.com",
-					"Arden.Mueller@example.com"
+					"Demarcus57@example.com",
+					"Evalyn.Flatley22@example.com",
+					"Holly.Waelchi13@example.com",
+					"Rhianna_Bruen@example.com"
 				],
-				"message": "copy virtual driver",
-				"creationTimestamp": 2633
+				"message": "hack 1080p bandwidth",
+				"creationTimestamp": 4977
 			},
 			{
 				"contacts": [
-					"Ignacio_Kassulke92@example.com",
-					"Erik.Marquardt11@example.com",
-					"Kyle.Halvorson@example.com",
-					"Efren_Stamm55@example.com",
-					"Alexandria.Gulgowski@example.com"
+					"Markus.Homenick@example.com",
+					"Adela97@example.com",
+					"Nikolas64@example.com",
+					"Harold_Halvorson@example.com",
+					"Julia.Bogan70@example.com"
 				],
-				"message": "input 1080p card",
-				"creationTimestamp": 1845
+				"message": "parse neural application",
+				"creationTimestamp": 4036
 			},
 			{
 				"contacts": [
-					"Odie95@example.com"
+					"Blaise.Swift45@example.com",
+					"Torrance_Schumm@example.com",
+					"Rashawn28@example.com",
+					"Marguerite.Watsica9@example.com",
+					"Kade_Wilkinson20@example.com"
 				],
-				"message": "generate multi-byte array",
-				"creationTimestamp": 1880
+				"message": "navigate back-end system",
+				"creationTimestamp": 2340
 			},
 			{
 				"contacts": [
-					"Carey_Farrell@example.com",
-					"Theo_Gleichner39@example.com"
+					"Lauriane45@example.com",
+					"Alice92@example.com",
+					"Aniyah_Keeling@example.com",
+					"Amely.Dibbert18@example.com",
+					"Simeon_Swift@example.com"
 				],
-				"message": "hack bluetooth monitor",
-				"creationTimestamp": 1421
+				"message": "bypass online transmitter",
+				"creationTimestamp": 5975
 			}
 		],
 		"dataRequestStatusHistory": [
 			{
 				"status": "Open",
-				"creationTimestamp": 377
+				"creationTimestamp": 239,
+				"accessStatus": "Public"
 			},
 			{
-				"status": "Resolved",
-				"creationTimestamp": 549
+				"status": "Closed",
+				"creationTimestamp": 548,
+				"accessStatus": "Declined"
 			}
 		],
-		"lastModifiedDate": 549,
-		"requestStatus": "Answered"
+		"lastModifiedDate": 548,
+		"requestStatus": "Answered",
+		"accessStatus": "Declined"
 	},
 	{
-		"dataRequestId": "8d69a912-6867-4c6b-a107-d3aa7ffb5003",
-		"userId": "3562e7cf-a2b0-49cc-bd82-9de6f75399aa",
-		"creationTimestamp": 366,
+		"dataRequestId": "6d612554-4472-4efc-8dd6-624af3174a2d",
+		"userId": "202ba3ea-dfa7-43e6-bba2-e534c87947a4",
+		"creationTimestamp": 337,
 		"dataType": "eutaxonomy-non-financials",
 		"reportingPeriod": "1996",
 		"datalandCompanyId": "550e8400-e29b-11d4-a716-446655440000",
 		"messageHistory": [
 			{
 				"contacts": [
-					"Jason.Metz@example.com"
+					"Jackson.Willms-Ritchie5@example.com",
+					"Curtis.Ebert14@example.com",
+					"Teagan17@example.com",
+					"Matilda83@example.com"
 				],
-				"message": "parse back-end bandwidth",
-				"creationTimestamp": 612
+				"message": "generate back-end pixel",
+				"creationTimestamp": 8457
 			},
 			{
 				"contacts": [
-					"Rashawn_Cole@example.com",
-					"Stephanie.Kutch@example.com",
-					"Watson_Mitchell1@example.com",
-					"Jairo_Vandervort@example.com"
+					"Herman.Koelpin@example.com",
+					"Lauriane_Murray@example.com",
+					"Jerad.Swaniawski@example.com",
+					"Freda.OKeefe@example.com",
+					"Daisy33@example.com"
 				],
-				"message": "compress wireless panel",
-				"creationTimestamp": 8925
+				"message": "bypass haptic program",
+				"creationTimestamp": 4176
 			},
 			{
 				"contacts": [
-					"Consuelo.Abbott74@example.com"
+					"Elouise71@example.com",
+					"Fleta55@example.com",
+					"Milo79@example.com",
+					"Retta80@example.com",
+					"Carlotta_Walker0@example.com"
 				],
-				"message": "calculate online pixel",
-				"creationTimestamp": 1051
+				"message": "bypass bluetooth matrix",
+				"creationTimestamp": 3130
 			},
 			{
 				"contacts": [
-					"Gail.Ratke94@example.com"
+					"Barrett23@example.com"
 				],
-				"message": "program virtual monitor",
-				"creationTimestamp": 6341
-			},
-			{
-				"contacts": [
-					"Rossie7@example.com",
-					"Erwin_Schamberger@example.com",
-					"Emelia.Von63@example.com"
-				],
-				"message": "calculate primary bus",
-				"creationTimestamp": 647
+				"message": "compress bluetooth firewall",
+				"creationTimestamp": 64
 			}
 		],
 		"dataRequestStatusHistory": [
 			{
 				"status": "Open",
-				"creationTimestamp": 366
+				"creationTimestamp": 337,
+				"accessStatus": "Public"
 			},
 			{
-				"status": "Open",
-				"creationTimestamp": 891
+				"status": "Resolved",
+				"creationTimestamp": 795,
+				"accessStatus": "Pending"
 			}
 		],
-		"lastModifiedDate": 891,
-		"requestStatus": "Answered"
+		"lastModifiedDate": 795,
+		"requestStatus": "Answered",
+		"accessStatus": "Pending"
 	}
 ]

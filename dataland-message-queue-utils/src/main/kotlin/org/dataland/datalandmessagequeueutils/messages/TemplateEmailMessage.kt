@@ -21,6 +21,8 @@ data class TemplateEmailMessage(
         SuccessfullyClaimedOwnership,
         SingleNotification,
         SummaryNotification,
+        DataAccessRequested,
+        DataAccessGranted,
     }
 
     /**

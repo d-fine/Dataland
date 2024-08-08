@@ -1,5 +1,6 @@
 package org.dataland.datalandcommunitymanager.utils
 
+import org.dataland.datalandcommunitymanager.model.dataRequest.AccessStatus
 import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
 
 /**
@@ -10,6 +11,7 @@ data class GetDataRequestsSearchFilter(
     val dataTypeFilter: String,
     val userIdFilter: String,
     val requestStatus: RequestStatus?,
+    val accessStatus: AccessStatus?,
     val reportingPeriodFilter: String,
     val datalandCompanyIdFilter: String,
 ) {

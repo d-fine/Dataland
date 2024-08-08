@@ -56,6 +56,7 @@ dependencies {
     testImplementation(Spring.boot.test)
     testImplementation(Testing.mockito.core)
     testImplementation(Spring.security.spring_security_test)
+    testImplementation(libs.mockito.kotlin)
 }
 
 openApi {
