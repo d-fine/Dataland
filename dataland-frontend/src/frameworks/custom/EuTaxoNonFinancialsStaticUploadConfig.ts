@@ -74,7 +74,6 @@ export const eutaxonomyNonFinancialsDataModel = [
             description: 'Total number of employees (including temporary workers with assignment duration >6 months)',
             unit: '',
             component: 'BigDecimalExtendedDataPointFormField',
-            isDataPointToggleable: false,
             required: false,
             showIf: (): boolean => true,
             validation: 'min:0',
