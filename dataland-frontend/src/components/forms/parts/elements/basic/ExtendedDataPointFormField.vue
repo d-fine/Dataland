@@ -102,7 +102,6 @@
             <SingleSelectFormElement
               name="quality"
               v-model="qualityValue"
-              :disabled="!isDataQualityRequired"
               validation-label="Data quality"
               placeholder="Data quality"
               :options="computeQualityOption"
@@ -132,7 +131,6 @@ import { QualityOptions } from '@clients/backend';
 import { FormFieldPropsWithPlaceholder } from '@/components/forms/parts/fields/FormFieldProps';
 import { type ObjectType } from '@/utils/UpdateObjectUtils';
 import { getFileName, getFileReferenceByFileName } from '@/utils/FileUploadUtils';
-import { assertDefined } from '@/utils/TypeScriptUtils';
 import { disabledOnMoreThanOne } from '@/utils/FormKitPlugins';
 import { type ExtendedDataPoint } from '@/utils/DataPoint';
 import { isValidFileName, noReportLabel } from '@/utils/DataSource';
@@ -179,12 +177,6 @@ export default defineComponent({
     showDataPointFields(): boolean {
       return this.dataPointIsAvailable || !this.isDataPointToggleable;
     },
-    isDataValueProvided(): boolean {
-      return (assertDefined(this.checkValueValidity) as (dataPoint: unknown) => boolean)(this.dataPoint);
-    },
-    isDataQualityRequired(): boolean {
-      return this.isDataValueProvided;
-    },
     computeQualityOption(): object {
       return this.qualityOptions;
     },
@@ -200,10 +192,6 @@ export default defineComponent({
   },
   props: {
     ...FormFieldPropsWithPlaceholder,
-    checkValueValidity: {
-      type: Function as unknown as () => (dataPoint: unknown) => boolean,
-      default: (): boolean => false,
-    },
     isDataPointToggleable: {
       type: Boolean,
       default: true,
@@ -218,9 +206,6 @@ export default defineComponent({
     },
   },
   watch: {
-    isDataValueProvided(isDataValueProvided: boolean) {
-      this.handleBlurValue(isDataValueProvided);
-    },
     currentValue(newVal: string) {
       if (!this.firstAssignmentWhileEditModeWasDone) {
         this.setCheckboxValue(newVal);
@@ -240,15 +225,6 @@ export default defineComponent({
     setCheckboxValue(newCheckboxValue: string) {
       if (newCheckboxValue && newCheckboxValue !== '') {
         this.checkboxValue = [newCheckboxValue];
-      }
-    },
-    /**
-     * Handle blur event on value input.
-     * @param isDataValueProvided boolean which gives information whether data is provided or not
-     */
-    handleBlurValue(isDataValueProvided: boolean) {
-      if (!isDataValueProvided && !this.isYesNoVariant) {
-        this.qualityValue = null;
       }
     },
     /**
