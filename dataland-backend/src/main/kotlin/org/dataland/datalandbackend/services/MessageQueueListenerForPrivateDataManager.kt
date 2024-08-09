@@ -6,7 +6,6 @@ import org.dataland.datalandmessagequeueutils.constants.ExchangeName
 import org.dataland.datalandmessagequeueutils.constants.MessageHeaderKey
 import org.dataland.datalandmessagequeueutils.constants.MessageType
 import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
-import org.dataland.datalandmessagequeueutils.exceptions.MessageQueueRejectException
 import org.dataland.datalandmessagequeueutils.utils.MessageQueueUtils
 import org.json.JSONObject
 import org.slf4j.LoggerFactory
@@ -71,7 +70,7 @@ class MessageQueueListenerForPrivateDataManager(
             privateDataManager.persistMappingInfo(dataId, correlationId)
             val metaData = privateDataManager.persistMetaInfo(dataId, correlationId)
             privateDataManager.removeRelatedEntriesFromInMemoryStorages(dataId, correlationId)
-            val payload = JSONObject(
+            val outboundPayload = JSONObject(
                 mapOf(
                     "dataId" to dataId,
                     "actionType" to ActionType.StorePrivateDataAndDocuments,
@@ -81,7 +80,7 @@ class MessageQueueListenerForPrivateDataManager(
                 ),
             ).toString()
             cloudEventMessageHandler.buildCEMessageAndSendToQueue(
-                payload, MessageType.PrivateDataReceived, correlationId,
+                outboundPayload, MessageType.PrivateDataReceived, correlationId,
                 ExchangeName.PrivateRequestReceived, RoutingKeyNames.metaDataPersisted,
             )
             logger.info(
