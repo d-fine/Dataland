@@ -228,13 +228,13 @@ class PrivateDataManager(
      * @param dataId the dataId for which the metaDataInformation should be persisted
      * @param correlationId the correlationId of the storing process
      */
-    fun persistMetaInfo(dataId: String, correlationId: String) {
+    fun persistMetaInfo(dataId: String, correlationId: String): DataMetaInformationEntity {
         logger.info(
             "Persisting meta info for dataId $dataId and correlationId $correlationId",
         )
         val dataMetaInfoEntityForDataId = metaInfoEntityInMemoryStorage[dataId]
         metaDataManager.setNewDatasetActiveAndOldDatasetInactive(dataMetaInfoEntityForDataId!!)
-        metaDataManager.storeDataMetaInformation(dataMetaInfoEntityForDataId)
+        return metaDataManager.storeDataMetaInformation(dataMetaInfoEntityForDataId)
     }
 
     private fun removeDocumentsAndHashesFromInMemoryStorages(
