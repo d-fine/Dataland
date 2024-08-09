@@ -18,8 +18,7 @@ class QaLogMessageBuilder {
         dataId: String,
         reporterUserId: String,
     ): String {
-        return "Received a request from user '$reporterUserId' to post a QA report " +
-            "for data ID '$dataId'"
+        return "Received a request from user '$reporterUserId' to post a QA report for data ID '$dataId'"
     }
 
     /**

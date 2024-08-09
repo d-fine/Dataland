@@ -57,12 +57,11 @@ open class QaReportController<QaReportType>(
     override fun setQaReportStatus(dataId: String, qaReportId: String, statusPatch: QaReportStatusPatch) {
         val user = DatalandAuthentication.fromContext()
         logger.info(qaLogMessageBuilder.requestChangeQaReportStatus(qaReportId, dataId, statusPatch.active))
-        qaReportSecurityPolicy.ensureUserCanViewQaReportForDataId(dataId, user)
         qaReportManager.setQaReportStatus(
             dataId = dataId,
             dataType = dataType,
             qaReportId = qaReportId,
-            active = statusPatch.active,
+            statusToSet = statusPatch.active,
             requestingUser = user,
         )
     }

@@ -90,7 +90,7 @@ class QaReportManager(
      * @param qaReportId the ID of the QA report to be updated
      * @param dataId the ID of the data set the QA report is associated with
      * @param dataType the type of the data set the QA report is associated with
-     * @param active the new status of the QA report
+     * @param statusToSet the new status of the QA report
      * @param requestingUser the user requesting the change
      * @return the updated QA report
      */
@@ -98,22 +98,18 @@ class QaReportManager(
         qaReportId: String,
         dataId: String,
         dataType: String,
-        active: Boolean,
+        statusToSet: Boolean,
         requestingUser: DatalandAuthentication,
     ): QaReportEntity {
         val storedQaReportEntity = getQaReportById(dataId, dataType, qaReportId)
-        if (!qaReportSecurityPolicy.userCanChangeReportActiveStatus(
-                storedQaReportEntity,
-                requestingUser,
-            )
-        ) {
+        if (!qaReportSecurityPolicy.canUserSetQaReportStatus(storedQaReportEntity, requestingUser)) {
             throw InsufficientRightsApiException(
                 "Missing required access rights",
                 "You do not have the required access rights to update QA report with the id: $qaReportId",
             )
         }
-        logger.info("Setting report with ID $qaReportId to active=$active")
-        storedQaReportEntity.active = active
+        logger.info("Setting report with ID $qaReportId to active=$statusToSet")
+        storedQaReportEntity.active = statusToSet
 
         return qaReportRepository.save(storedQaReportEntity)
     }

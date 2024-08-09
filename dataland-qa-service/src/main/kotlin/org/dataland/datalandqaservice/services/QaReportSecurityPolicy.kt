@@ -23,7 +23,7 @@ class QaReportSecurityPolicy(
      * @param user the user requesting the change
      * @return true if the user can change the active status of the report, false otherwise
      */
-    fun userCanChangeReportActiveStatus(report: QaReportEntity, user: DatalandAuthentication): Boolean {
+    fun canUserSetQaReportStatus(report: QaReportEntity, user: DatalandAuthentication): Boolean {
         return report.reporterUserId == user.userId || user.roles.contains(DatalandRealmRole.ROLE_ADMIN)
     }
 
