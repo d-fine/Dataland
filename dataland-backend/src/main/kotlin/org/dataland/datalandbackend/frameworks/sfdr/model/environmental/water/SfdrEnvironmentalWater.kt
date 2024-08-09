@@ -3,7 +3,7 @@ package org.dataland.datalandbackend.frameworks.sfdr.model.environmental.water
 
 import jakarta.validation.Valid
 import org.dataland.datalandbackend.model.datapoints.ExtendedDataPoint
-import org.dataland.datalandbackend.model.enums.commons.YesNoNoEvidenceFound
+import org.dataland.datalandbackend.model.enums.commons.YesNo
 import org.dataland.datalandbackend.validator.MinimumValue
 import java.math.BigDecimal
 
@@ -28,9 +28,9 @@ data class SfdrEnvironmentalWater(
     val relativeWaterUsageInCubicMetersPerMillionEURRevenue: ExtendedDataPoint<BigDecimal?>? = null,
 
     @field:Valid()
-    val waterManagementPolicy: ExtendedDataPoint<YesNoNoEvidenceFound?>? = null,
+    val waterManagementPolicy: ExtendedDataPoint<YesNo?>? = null,
 
     @field:Valid()
-    val highWaterStressAreaExposure: ExtendedDataPoint<YesNoNoEvidenceFound?>? = null,
+    val highWaterStressAreaExposure: ExtendedDataPoint<YesNo?>? = null,
 
 )

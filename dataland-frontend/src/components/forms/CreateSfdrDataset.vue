@@ -140,7 +140,6 @@ import IntegerExtendedDataPointFormField from '@/components/forms/parts/fields/I
 import BigDecimalExtendedDataPointFormField from '@/components/forms/parts/fields/BigDecimalExtendedDataPointFormField.vue';
 import CurrencyDataPointFormField from '@/components/forms/parts/fields/CurrencyDataPointFormField.vue';
 import YesNoExtendedDataPointFormField from '@/components/forms/parts/fields/YesNoExtendedDataPointFormField.vue';
-import YesNoNoEvidenceFoundExtendedDataPointFormField from '@/components/forms/parts/fields/YesNoNoEvidenceFoundExtendedDataPointFormField.vue';
 import YesNoBaseDataPointFormField from '@/components/forms/parts/fields/YesNoBaseDataPointFormField.vue';
 import YesNoNaBaseDataPointFormField from '@/components/forms/parts/fields/YesNoNaBaseDataPointFormField.vue';
 import BaseDataPointFormField from '@/components/forms/parts/elements/basic/BaseDataPointFormField.vue';
@@ -192,7 +191,6 @@ export default defineComponent({
     YesNoBaseDataPointFormField,
     YesNoNaBaseDataPointFormField,
     YesNoExtendedDataPointFormField,
-    YesNoNoEvidenceFoundExtendedDataPointFormField,
   },
   directives: {
     tooltip: Tooltip,
