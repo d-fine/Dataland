@@ -8,6 +8,7 @@ import org.dataland.datalandmessagequeueutils.constants.ActionType
 import org.dataland.datalandmessagequeueutils.constants.ExchangeName
 import org.dataland.datalandmessagequeueutils.constants.MessageHeaderKey
 import org.dataland.datalandmessagequeueutils.constants.MessageType
+import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
 import org.dataland.datalandmessagequeueutils.exceptions.MessageQueueRejectException
 import org.dataland.datalandmessagequeueutils.utils.MessageQueueUtils
 import org.json.JSONObject
@@ -59,7 +60,7 @@ class PrivateDataUploadProcessor(
                     ],
                 ),
                 exchange = Exchange(ExchangeName.PrivateRequestReceived, declare = "false"),
-                key = [""],
+                key = [RoutingKeyNames.metaDataPersisted],
             ),
         ],
     )
