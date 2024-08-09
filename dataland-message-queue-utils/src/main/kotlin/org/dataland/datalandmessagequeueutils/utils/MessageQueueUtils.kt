@@ -1,6 +1,7 @@
 package org.dataland.datalandmessagequeueutils.utils
 
 import org.dataland.datalandmessagequeueutils.exceptions.MessageQueueRejectException
+import org.json.JSONObject
 import org.springframework.stereotype.Component
 
 /**
@@ -32,5 +33,17 @@ class MessageQueueUtils {
                 "Message has type \"$messageType\" but type \"$expectedType\" was expected",
             )
         }
+    }
+
+    /**
+     * Extracts the data ID from a message payload. Throws
+     * @throws MessageQueueRejectException if no data ID is found
+     */
+    fun getDataId(payload: String): String {
+        val dataId = JSONObject(payload).getString("dataId")
+        if (dataId.isEmpty()) {
+            throw MessageQueueRejectException("Provided data ID is empty")
+        }
+        return dataId
     }
 }
