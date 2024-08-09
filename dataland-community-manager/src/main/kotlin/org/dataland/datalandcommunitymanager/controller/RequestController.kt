@@ -2,6 +2,7 @@ package org.dataland.datalandcommunitymanager.controller
 
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandcommunitymanager.api.RequestApi
+import org.dataland.datalandcommunitymanager.model.dataRequest.AccessStatus
 import org.dataland.datalandcommunitymanager.model.dataRequest.AggregatedDataRequest
 import org.dataland.datalandcommunitymanager.model.dataRequest.BulkDataRequest
 import org.dataland.datalandcommunitymanager.model.dataRequest.BulkDataRequestResponse
@@ -11,6 +12,7 @@ import org.dataland.datalandcommunitymanager.model.dataRequest.SingleDataRequest
 import org.dataland.datalandcommunitymanager.model.dataRequest.SingleDataRequestResponse
 import org.dataland.datalandcommunitymanager.model.dataRequest.StoredDataRequest
 import org.dataland.datalandcommunitymanager.services.BulkDataRequestManager
+import org.dataland.datalandcommunitymanager.services.DataAccessManager
 import org.dataland.datalandcommunitymanager.services.DataRequestAlterationManager
 import org.dataland.datalandcommunitymanager.services.DataRequestQueryManager
 import org.dataland.datalandcommunitymanager.services.SingleDataRequestManager
@@ -30,8 +32,8 @@ class RequestController(
     @Autowired private val singleDataRequestManager: SingleDataRequestManager,
     @Autowired private val dataRequestQueryManager: DataRequestQueryManager,
     @Autowired private val dataRequestAlterationManager: DataRequestAlterationManager,
+    @Autowired private val dataAccessManager: DataAccessManager,
 ) : RequestApi {
-
     override fun postBulkDataRequest(bulkDataRequest: BulkDataRequest): ResponseEntity<BulkDataRequestResponse> {
         return ResponseEntity.ok(
             bulkDataRequestManager.processBulkDataRequest(bulkDataRequest),
@@ -74,6 +76,7 @@ class RequestController(
         dataType: DataTypeEnum?,
         userId: String?,
         requestStatus: RequestStatus?,
+        accessStatus: AccessStatus?,
         reportingPeriod: String?,
         datalandCompanyId: String?,
     ): ResponseEntity<List<StoredDataRequest>> {
@@ -82,15 +85,21 @@ class RequestController(
                 dataType,
                 userId,
                 requestStatus,
+                accessStatus,
                 reportingPeriod,
                 datalandCompanyId,
             ),
         )
     }
 
+    override fun hasAccessToDataset(companyId: UUID, dataType: String, reportingPeriod: String, userId: UUID) {
+        dataAccessManager.hasAccessToDataset(companyId.toString(), reportingPeriod, dataType, userId.toString())
+    }
+
     override fun patchDataRequest(
         dataRequestId: UUID,
         requestStatus: RequestStatus?,
+        accessStatus: AccessStatus?,
         contacts: Set<String>?,
         message: String?,
     ): ResponseEntity<StoredDataRequest> {
@@ -98,6 +107,7 @@ class RequestController(
             dataRequestAlterationManager.patchDataRequest(
                 dataRequestId.toString(),
                 requestStatus,
+                accessStatus,
                 contacts,
                 message,
             ),

@@ -1,6 +1,7 @@
 package org.dataland.e2etests.utils.communityManager
 
 import org.dataland.communitymanager.openApiClient.api.RequestControllerApi
+import org.dataland.communitymanager.openApiClient.infrastructure.ClientError
 import org.dataland.communitymanager.openApiClient.infrastructure.ClientException
 import org.dataland.communitymanager.openApiClient.model.AggregatedDataRequest
 import org.dataland.communitymanager.openApiClient.model.BulkDataRequest
@@ -263,4 +264,17 @@ fun getNewlyStoredRequestsAfterTimestamp(timestamp: Long): List<ExtendedStoredDa
 
 fun getMessageHistoryOfRequest(dataRequestId: String): List<StoredDataRequestMessageObject> {
     return requestControllerApi.getDataRequestById(UUID.fromString(dataRequestId)).messageHistory
+}
+fun assertAccessDeniedResponseBodyInCommunityManagerClientException(
+    communityManagerClientException: ClientException,
+) {
+    assertErrorCodeInCommunityManagerClientException(communityManagerClientException, 403)
+    val responseBody = (communityManagerClientException.response as ClientError<*>).body as String
+    assertTrue(responseBody.contains("Access Denied"))
+}
+fun assertErrorCodeInCommunityManagerClientException(
+    communityManagerClientException: ClientException,
+    expectedErrorCode: Number,
+) {
+    assertEquals("Client error : $expectedErrorCode ", communityManagerClientException.message)
 }

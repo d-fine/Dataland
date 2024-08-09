@@ -17,10 +17,8 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.util.*
-
 /**
  * Service that handles all operations associated with company roles
- *
  */
 @Service("CompanyRolesManager")
 class CompanyRolesManager(
