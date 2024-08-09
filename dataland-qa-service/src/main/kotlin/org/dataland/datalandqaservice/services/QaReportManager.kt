@@ -71,11 +71,10 @@ class QaReportManager(
         uploadTime: Long,
     ): QaReportEntity {
         ensureDatalandDataExists(dataId, dataType)
-        val qaReportId = IdUtils.generateUUID()
         qaReportRepository.markAllReportsInactiveByDataIdAndReportingUserId(dataId, reporterUserId)
         return qaReportRepository.save(
             QaReportEntity(
-                qaReportId = qaReportId,
+                qaReportId = IdUtils.generateUUID(),
                 qaReport = objectMapper.writeValueAsString(report),
                 dataId = dataId,
                 dataType = dataType,
