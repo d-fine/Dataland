@@ -137,6 +137,7 @@ import { disabledOnMoreThanOne } from '@/utils/FormKitPlugins';
 import { type ExtendedDataPoint } from '@/utils/DataPoint';
 import { isValidFileName, noReportLabel } from '@/utils/DataSource';
 import SingleSelectFormElement from '@/components/forms/parts/elements/basic/SingleSelectFormElement.vue';
+import { humanizeStringOrNumber } from '@/utils/StringFormatter';
 
 export default defineComponent({
   name: 'ExtendedDataPointFormField',
@@ -155,9 +156,8 @@ export default defineComponent({
     return {
       isMounted: false,
       dataPointIsAvailable: (this.injectlistOfFilledKpis as unknown as Array<string>).includes(this.name as string),
-      //ToDo introduce a human readable mapping for the new quality option NoDataFound
       qualityOptions: Object.values(QualityOptions).map((qualityOption: string) => ({
-        label: qualityOption,
+        label: humanizeStringOrNumber(qualityOption),
         value: qualityOption,
       })),
       qualityValue: null as null | string,
