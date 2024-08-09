@@ -56,16 +56,13 @@ class MessageQueueListenerForPrivateDataManager(
             ),
         ],
     )
-    fun processStoredPrivateSmeData(
+    fun processStoredPrivateVsmeData(
         @Payload payload: String,
         @Header(MessageHeaderKey.CorrelationId) correlationId: String,
         @Header(MessageHeaderKey.Type) type: String,
     ) {
         messageQueueUtils.validateMessageType(type, MessageType.PrivateDataStored)
-        val dataId = JSONObject(payload).getString("dataId")
-        if (dataId.isEmpty()) {
-            throw MessageQueueRejectException("Provided data ID is empty")
-        }
+        val dataId = messageQueueUtils.getDataId(payload)
         logger.info(
             "Received message that dataset with dataId $dataId and correlationId $correlationId was successfully " +
                 "stored on EuroDaT. Starting to persist mapping info, meta info and clearing in-memory-storages",
