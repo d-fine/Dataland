@@ -62,7 +62,9 @@ export function generateEutaxonomyNonFinancialsData(
         relativeShareInPercent: dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
         absoluteShare: dataGenerator.randomCurrencyDataPoint(),
       },
-      nonAlignedActivities: dataGenerator.randomArray(() => dataGenerator.generateActivity(), 0, 2),
+      nonAlignedActivities: dataGenerator.randomExtendedDataPoint(
+        dataGenerator.randomArray(() => dataGenerator.generateActivity(), 0, 2)
+      ),
       alignedShare: {
         relativeShareInPercent: dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
         absoluteShare: dataGenerator.randomCurrencyDataPoint(),
@@ -83,7 +85,9 @@ export function generateEutaxonomyNonFinancialsData(
       ),
       substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent:
         dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
-      alignedActivities: dataGenerator.randomArray(() => dataGenerator.generateAlignedActivity(), 0, 10),
+      alignedActivities: dataGenerator.randomExtendedDataPoint(
+        dataGenerator.randomArray(() => dataGenerator.generateAlignedActivity(), 0, 10)
+      ),
       enablingShareInPercent: dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
       transitionalShareInPercent: dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
     },
@@ -101,7 +105,9 @@ export function generateEutaxonomyNonFinancialsData(
         relativeShareInPercent: dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
         absoluteShare: dataGenerator.randomCurrencyDataPoint(),
       },
-      nonAlignedActivities: dataGenerator.randomArray(() => dataGenerator.generateActivity(), 0, 2),
+      nonAlignedActivities: dataGenerator.randomExtendedDataPoint(
+        dataGenerator.randomArray(() => dataGenerator.generateActivity(), 0, 2)
+      ),
       alignedShare: {
         relativeShareInPercent: dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
         absoluteShare: dataGenerator.randomCurrencyDataPoint(),
@@ -122,7 +128,9 @@ export function generateEutaxonomyNonFinancialsData(
       ),
       substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent:
         dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
-      alignedActivities: dataGenerator.randomArray(() => dataGenerator.generateAlignedActivity(), 0, 10),
+      alignedActivities: dataGenerator.randomExtendedDataPoint(
+        dataGenerator.randomArray(() => dataGenerator.generateAlignedActivity(), 0, 10)
+      ),
       enablingShareInPercent: dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
       transitionalShareInPercent: dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
     },
@@ -140,7 +148,9 @@ export function generateEutaxonomyNonFinancialsData(
         relativeShareInPercent: dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
         absoluteShare: dataGenerator.randomCurrencyDataPoint(),
       },
-      nonAlignedActivities: dataGenerator.randomArray(() => dataGenerator.generateActivity(), 0, 2),
+      nonAlignedActivities: dataGenerator.randomExtendedDataPoint(
+        dataGenerator.randomArray(() => dataGenerator.generateActivity(), 0, 2)
+      ),
       alignedShare: {
         relativeShareInPercent: dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
         absoluteShare: dataGenerator.randomCurrencyDataPoint(),
@@ -161,7 +171,9 @@ export function generateEutaxonomyNonFinancialsData(
       ),
       substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent:
         dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
-      alignedActivities: dataGenerator.randomArray(() => dataGenerator.generateAlignedActivity(), 0, 10),
+      alignedActivities: dataGenerator.randomExtendedDataPoint(
+        dataGenerator.randomArray(() => dataGenerator.generateAlignedActivity(), 0, 10)
+      ),
       enablingShareInPercent: dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
       transitionalShareInPercent: dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
     },

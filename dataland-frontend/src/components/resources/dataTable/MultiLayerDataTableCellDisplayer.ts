@@ -10,6 +10,7 @@ export enum MLDTDisplayComponentName {
   HighlightHiddenCellDisplay = 'HighlightHiddenCellDisplay',
   DataPointDisplayComponent = 'DataPointDisplayComponent',
   DataPointWrapperDisplayComponent = 'DataPointWrapperDisplayComponent',
+  ModalLinkWithDataSourceDisplayComponent = "ModalLinkWithDataSourceDisplayComponent"
 }
 
 export type MLDTDisplayComponentTypes = {
@@ -20,6 +21,13 @@ export type MLDTDisplayComponentTypes = {
     fieldLabel: string;
   } & DataPointDisplay;
   [MLDTDisplayComponentName.ModalLinkDisplayComponent]: {
+    label: string;
+    // Ignored as "any" type comes from DynamicDialog
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    modalComponent: any;
+    modalOptions?: DynamicDialogOptions;
+  };
+  [MLDTDisplayComponentName.ModalLinkWithDataSourceDisplayComponent]: {
     label: string;
     // Ignored as "any" type comes from DynamicDialog
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
