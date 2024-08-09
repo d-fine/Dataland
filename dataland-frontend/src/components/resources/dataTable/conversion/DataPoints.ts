@@ -9,7 +9,7 @@ import { getFieldValueFromFrameworkDataset } from '@/components/resources/dataTa
 import { type BaseDocumentReference, type ExtendedDocumentReference } from '@clients/backend';
 import { NO_DATA_PROVIDED, ONLY_AUXILIARY_DATA_PROVIDED } from '@/utils/Constants';
 import { formatStringForDatatable } from '@/components/resources/dataTable/conversion/PlainStringValueGetterFactory';
-import {humanizeStringOrNumber} from "@/utils/StringFormatter";
+import { humanizeStringOrNumber } from '@/utils/StringFormatter';
 /**
  * Checks if a given data point has a valid reference set
  * @param dataPoint the datapoint whose reference to check
