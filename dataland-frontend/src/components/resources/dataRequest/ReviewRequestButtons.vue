@@ -130,6 +130,7 @@ import { type DataMetaInformation, type DataTypeEnum, type ErrorResponse } from 
 import SelectReportingPeriodDialog from '@/components/general/SelectReportingPeriodDialog.vue';
 import { ReportingPeriodTableActions, type ReportingPeriodTableEntry } from '@/utils/PremadeDropdownDatasets';
 import {
+  type AccessStatus,
   type ExtendedStoredDataRequest,
   RequestStatus,
   type StoredDataRequestMessageObject,
@@ -300,17 +301,26 @@ export default defineComponent({
      * Trys to patch DataRequest, displays possible error message
      * @param dataRequestId DataRequest to be closed
      * @param requestStatusToPatch desired requestStatus
+     * @param accessStatus the access status of a request
      * @param contacts set of email contacts
      * @param message context of the email
      */
     async patchDataRequest(
       dataRequestId: string,
       requestStatusToPatch: RequestStatus,
+      accessStatus?: AccessStatus,
       contacts?: Set<string>,
       message?: string
     ) {
       try {
-        await patchDataRequest(dataRequestId, requestStatusToPatch, contacts, message, this.getKeycloakPromise);
+        await patchDataRequest(
+          dataRequestId,
+          requestStatusToPatch,
+          accessStatus,
+          contacts,
+          message,
+          this.getKeycloakPromise
+        );
       } catch (e) {
         let errorMessage =
           'An unexpected error occurred. Please try again or contact the support team if the issue persists.';
@@ -371,6 +381,7 @@ export default defineComponent({
         await this.patchDataRequest(
           this.currentChosenDataRequestId,
           RequestStatus.Open,
+          undefined,
           this.emailContacts,
           this.emailMessage
         );

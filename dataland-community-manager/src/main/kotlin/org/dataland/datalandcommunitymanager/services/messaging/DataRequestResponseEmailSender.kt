@@ -46,25 +46,6 @@ class DataRequestResponseEmailSender(
         return dateFormat.format(creationTimestamp)
     }
 
-    /**
-     * Method to retrieve human-readable dataType
-     * @param dataType dataland dataType
-     * @returns human-readable dataType as string
-     */
-    private fun getDataTypeDescription(dataType: String): String {
-        return when (dataType) {
-            "eutaxonomy-financials" -> "EU Taxonomy for financial companies"
-            "eutaxonomy-non-financials" -> "EU Taxonomy for non-financial companies"
-            "lksg" -> "LkSG"
-            "sfdr" -> "SFDR"
-            "sme" -> "SME"
-            "p2p" -> "WWF Pathways to Paris"
-            "esg-questionnaire" -> "ESG Questionnaire"
-            "heimathafen" -> "Heimathafen"
-            else -> dataType
-        }
-    }
-
     private fun getProperties(dataRequestEntity: DataRequestEntity, staleDaysThreshold: String): Map<String, String> {
         return mapOf(
             "companyId" to dataRequestEntity.datalandCompanyId,
@@ -72,7 +53,7 @@ class DataRequestResponseEmailSender(
             "dataType" to dataRequestEntity.dataType,
             "reportingPeriod" to dataRequestEntity.reportingPeriod,
             "creationDate" to convertUnitTimeInMsToDate(dataRequestEntity.creationTimestamp),
-            "dataTypeDescription" to getDataTypeDescription(dataRequestEntity.dataType),
+            "dataTypeDescription" to dataRequestEntity.getDataTypeDescription(),
             "dataRequestId" to dataRequestEntity.dataRequestId,
             "closedInDays" to staleDaysThreshold,
         )

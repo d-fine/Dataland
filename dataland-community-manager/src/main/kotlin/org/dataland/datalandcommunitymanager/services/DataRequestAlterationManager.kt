@@ -2,20 +2,15 @@ package org.dataland.datalandcommunitymanager.services
 
 import org.dataland.datalandbackend.openApiClient.api.MetaDataControllerApi
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
-import org.dataland.datalandcommunitymanager.entities.DataRequestEntity
+import org.dataland.datalandcommunitymanager.entities.MessageEntity
 import org.dataland.datalandcommunitymanager.exceptions.DataRequestNotFoundApiException
+import org.dataland.datalandcommunitymanager.model.dataRequest.AccessStatus
 import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
 import org.dataland.datalandcommunitymanager.model.dataRequest.StoredDataRequest
-import org.dataland.datalandcommunitymanager.model.dataRequest.StoredDataRequestMessageObject
-import org.dataland.datalandcommunitymanager.model.dataRequest.StoredDataRequestStatusObject
 import org.dataland.datalandcommunitymanager.repositories.DataRequestRepository
-import org.dataland.datalandcommunitymanager.services.messaging.DataRequestResponseEmailSender
-import org.dataland.datalandcommunitymanager.services.messaging.SingleDataRequestEmailMessageSender
 import org.dataland.datalandcommunitymanager.utils.DataRequestLogger
+import org.dataland.datalandcommunitymanager.utils.DataRequestProcessingUtils
 import org.dataland.datalandcommunitymanager.utils.GetDataRequestsSearchFilter
-import org.dataland.datalandmessagequeueutils.messages.TemplateEmailMessage
-import org.dataland.keycloakAdapter.auth.DatalandAuthentication
-import org.dataland.keycloakAdapter.auth.DatalandJwtAuthentication
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
@@ -31,10 +26,10 @@ import kotlin.jvm.optionals.getOrElse
 class DataRequestAlterationManager(
     @Autowired private val dataRequestRepository: DataRequestRepository,
     @Autowired private val dataRequestLogger: DataRequestLogger,
-    @Autowired private val dataRequestResponseEmailMessageSender: DataRequestResponseEmailSender,
-    @Autowired private val singleDataRequestEmailMessageSender: SingleDataRequestEmailMessageSender,
+    @Autowired private val requestEmailManager: RequestEmailManager,
     @Autowired private val metaDataControllerApi: MetaDataControllerApi,
-    @Autowired private val dataRequestHistoryManager: DataRequestHistoryManager,
+    @Autowired private val utils: DataRequestProcessingUtils,
+    @Autowired private val companyRolesManager: CompanyRolesManager,
 ) {
     private val logger = LoggerFactory.getLogger(SingleDataRequestManager::class.java)
 
@@ -48,6 +43,7 @@ class DataRequestAlterationManager(
     fun patchDataRequest(
         dataRequestId: String,
         requestStatus: RequestStatus? = null,
+        accessStatus: AccessStatus? = null,
         contacts: Set<String>? = null,
         message: String? = null,
         correlationId: String? = null,
@@ -55,85 +51,33 @@ class DataRequestAlterationManager(
         val dataRequestEntity = dataRequestRepository.findById(dataRequestId).getOrElse {
             throw DataRequestNotFoundApiException(dataRequestId)
         }
+        val filteredContacts = contacts.takeIf { !it.isNullOrEmpty() }
+        val filteredMessage = message.takeIf { !it.isNullOrEmpty() }
+        filteredContacts?.forEach {
+            MessageEntity.validateContact(it, companyRolesManager, dataRequestEntity.datalandCompanyId)
+        }
         val modificationTime = Instant.now().toEpochMilli()
-        dataRequestEntity.lastModifiedDate = modificationTime
-        dataRequestRepository.save(dataRequestEntity)
-        if (requestStatus != null && requestStatus != dataRequestEntity.requestStatus) {
-            val requestStatusObject = listOf(StoredDataRequestStatusObject(requestStatus, modificationTime))
-            dataRequestEntity.associateRequestStatus(requestStatusObject)
-            dataRequestHistoryManager.saveStatusHistory(dataRequestEntity.dataRequestStatusHistory)
-            dataRequestLogger.logMessageForPatchingRequestStatus(dataRequestId, requestStatus)
-            if (contacts != null) {
-                dataRequestHistoryManager.detachDataRequestEntity(dataRequestEntity)
-            }
-        }
-        if (contacts != null) {
-            val messageHistory = listOf(StoredDataRequestMessageObject(contacts, message, modificationTime))
-            dataRequestEntity.associateMessages(messageHistory)
-            dataRequestHistoryManager.saveMessageHistory(dataRequestEntity.messageHistory)
-            this.sendSingleDataRequestEmail(dataRequestEntity, contacts, message)
-            dataRequestLogger.logMessageForPatchingRequestMessage(dataRequestId)
-        }
-        if (requestStatus == RequestStatus.Closed || requestStatus == RequestStatus.Answered) {
-            sendEmailBecauseOfStatusChanged(
-                dataRequestEntity, requestStatus, correlationId ?: UUID.randomUUID().toString(),
+        var anyChanges = false
+
+        val newRequestStatus = requestStatus ?: dataRequestEntity.requestStatus
+        val newAccessStatus = accessStatus ?: dataRequestEntity.accessStatus
+        if (newRequestStatus != dataRequestEntity.requestStatus || newAccessStatus != dataRequestEntity.accessStatus) {
+            anyChanges = true
+            utils.addNewRequestStatusToHistory(dataRequestEntity, newRequestStatus, newAccessStatus, modificationTime)
+            dataRequestLogger.logMessageForPatchingRequestStatusOrAccessStatus(
+                dataRequestEntity.dataRequestId, newRequestStatus, newAccessStatus,
             )
         }
+        if (filteredContacts != null) {
+            anyChanges = true
+            utils.addMessageToMessageHistory(dataRequestEntity, filteredContacts, filteredMessage, modificationTime)
+            this.requestEmailManager.sendSingleDataRequestEmail(dataRequestEntity, filteredContacts, filteredMessage)
+            dataRequestLogger.logMessageForPatchingRequestMessage(dataRequestEntity.dataRequestId)
+        }
+        if (anyChanges) dataRequestEntity.lastModifiedDate = modificationTime
+        requestEmailManager.sendEmailsWhenStatusChanged(dataRequestEntity, requestStatus, accessStatus, correlationId)
+
         return dataRequestEntity.toStoredDataRequest()
-    }
-
-    /**
-     * Method to send email if the status changed
-     * @param dataRequestEntity the id of the request entity
-     * @param status the patched request status
-     */
-    private fun sendEmailBecauseOfStatusChanged(
-        dataRequestEntity: DataRequestEntity,
-        status: RequestStatus,
-        correlationId: String,
-    ) {
-        when (status) {
-            RequestStatus.Answered -> {
-                dataRequestResponseEmailMessageSender.sendDataRequestResponseEmail(
-                    dataRequestEntity, TemplateEmailMessage.Type.DataRequestedAnswered, correlationId,
-                )
-            }
-            RequestStatus.Closed -> {
-                dataRequestResponseEmailMessageSender.sendDataRequestResponseEmail(
-                    dataRequestEntity, TemplateEmailMessage.Type.DataRequestClosed, correlationId,
-                )
-            }
-            else -> {
-                throw IllegalArgumentException("Unable to send email. Unexpected status provided: $status")
-            }
-        }
-    }
-
-    /**
-     * Method to send email if the message history is updated
-     * @param dataRequestEntity the id of the request entity
-     * @param contacts set of email addresses
-     * @param message string content of the email
-     */
-    private fun sendSingleDataRequestEmail(
-        dataRequestEntity: DataRequestEntity,
-        contacts: Set<String>,
-        message: String?,
-    ) {
-        val correlationId = UUID.randomUUID().toString()
-        contacts.forEach {
-            singleDataRequestEmailMessageSender.sendSingleDataRequestExternalMessage(
-                messageInformation = SingleDataRequestEmailMessageSender.MessageInformation(
-                    dataType = DataTypeEnum.decode(dataRequestEntity.dataType)!!,
-                    reportingPeriods = setOf(dataRequestEntity.reportingPeriod),
-                    datalandCompanyId = dataRequestEntity.datalandCompanyId,
-                    userAuthentication = DatalandAuthentication.fromContext() as DatalandJwtAuthentication,
-                ),
-                receiver = it,
-                contactMessage = message,
-                correlationId = correlationId,
-            )
-        }
     }
 
     /**
@@ -146,11 +90,24 @@ class DataRequestAlterationManager(
         val metaData = metaDataControllerApi.getDataMetaInfo(dataId)
         val dataRequestEntities = dataRequestRepository.searchDataRequestEntity(
             GetDataRequestsSearchFilter(
-                metaData.dataType.value, "", RequestStatus.Open, metaData.reportingPeriod, metaData.companyId,
+                dataTypeFilter = metaData.dataType.value, userIdFilter = "", requestStatus = RequestStatus.Open,
+                accessStatus = null, reportingPeriodFilter = metaData.reportingPeriod,
+                datalandCompanyIdFilter = metaData.companyId,
             ),
         )
         dataRequestEntities.forEach {
-            patchDataRequest(it.dataRequestId, RequestStatus.Answered, correlationId = correlationId)
+            if (it.dataType == DataTypeEnum.vsme.name && it.accessStatus != AccessStatus.Granted) {
+                patchDataRequest(
+                    dataRequestId = it.dataRequestId, requestStatus = RequestStatus.Answered,
+                    accessStatus = AccessStatus.Pending,
+                    correlationId = correlationId,
+                )
+            } else {
+                patchDataRequest(
+                    dataRequestId = it.dataRequestId, requestStatus = RequestStatus.Answered,
+                    correlationId = correlationId,
+                )
+            }
         }
         logger.info(
             "Changed Request Status for company Id ${metaData.companyId}, " +
