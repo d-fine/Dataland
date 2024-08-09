@@ -1,39 +1,28 @@
 <template>
-  <ExtendedDataPointFormField
-    ref="extendedDataPointFormField"
-    :name="name"
-    :description="description"
-    :label="label"
-    :required="required"
-    :validation-label="validationLabel"
-    :validation="validation"
-    :check-value-validity="hasDataPointProperValue"
-    :isDataPointToggleable="isDataPointToggleable"
-    :input-class="inputClass"
-  >
-    <div class="form-field">
-      <CheckboxesListFormElement
-        :name="name"
-        :validation="validation"
-        :validation-label="validationLabel ?? label"
-        :options="options"
-        :field-name="name"
-      />
-    </div>
-  </ExtendedDataPointFormField>
+  <div class="mb-3" :data-test="name">
+    <ExtendedDataPointFormField
+      :name="name"
+      :description="description"
+      :label="label"
+      :required="required"
+      :input-class="inputClass"
+      :options="options"
+      :check-value-validity="hasDataPointProperValue"
+      :isDataPointToggleable="isDataPointToggleable"
+    />
+  </div>
 </template>
 
 <script lang="ts">
 // @ts-nocheck
 import { defineComponent } from 'vue';
-import CheckboxesListFormElement from '@/components/forms/parts/elements/basic/CheckboxesListFormElement.vue';
 import { OptionsFormFieldProps } from '@/components/forms/parts/fields/FormFieldProps';
 import { hasDataPointProperValue } from '@/utils/DataPoint';
 import ExtendedDataPointFormField from '@/components/forms/parts/elements/basic/ExtendedDataPointFormField.vue';
 
 export default defineComponent({
   name: 'RadioButtonsExtendedDataPointFormField',
-  components: { CheckboxesListFormElement, ExtendedDataPointFormField },
+  components: { ExtendedDataPointFormField },
   props: {
     ...OptionsFormFieldProps,
     isDataPointToggleable: {
