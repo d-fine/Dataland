@@ -60,7 +60,7 @@ export default defineComponent({
     ModalLinkDisplayComponent,
     DataPointDisplayComponent,
     FreeTextDisplayComponent,
-    ModalLinkWithDataSourceDisplayComponent
+    ModalLinkWithDataSourceDisplayComponent,
   },
   props: {
     content: {

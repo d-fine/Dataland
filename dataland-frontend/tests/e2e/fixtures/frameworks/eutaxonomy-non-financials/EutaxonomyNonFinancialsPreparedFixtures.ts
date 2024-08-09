@@ -85,16 +85,12 @@ function createCompanyGammaWithAllFieldsDefined(
   input.reportingPeriod = '2021';
   input.t = generateEutaxonomyNonFinancialsData(0);
   const eutaxoNonFinancialsGenerator = new EutaxonomyNonFinancialsGenerator(0);
-  const someNonAlignedActivities = eutaxoNonFinancialsGenerator.randomExtendedDataPoint(eutaxoNonFinancialsGenerator.randomArray(
-    () => eutaxoNonFinancialsGenerator.generateActivity(),
-    1,
-    4
-  ));
-  const someAlignedActivities = eutaxoNonFinancialsGenerator.randomExtendedDataPoint(eutaxoNonFinancialsGenerator.randomArray(
-    () => eutaxoNonFinancialsGenerator.generateAlignedActivity(),
-    1,
-    10
-  ));
+  const someNonAlignedActivities = eutaxoNonFinancialsGenerator.randomExtendedDataPoint(
+    eutaxoNonFinancialsGenerator.randomArray(() => eutaxoNonFinancialsGenerator.generateActivity(), 1, 4)
+  );
+  const someAlignedActivities = eutaxoNonFinancialsGenerator.randomExtendedDataPoint(
+    eutaxoNonFinancialsGenerator.randomArray(() => eutaxoNonFinancialsGenerator.generateAlignedActivity(), 1, 10)
+  );
 
   const modifiedInput = { ...input };
   if (modifiedInput.t.capex?.nonAlignedActivities) {

@@ -10,7 +10,7 @@ export enum MLDTDisplayComponentName {
   HighlightHiddenCellDisplay = 'HighlightHiddenCellDisplay',
   DataPointDisplayComponent = 'DataPointDisplayComponent',
   DataPointWrapperDisplayComponent = 'DataPointWrapperDisplayComponent',
-  ModalLinkWithDataSourceDisplayComponent = "ModalLinkWithDataSourceDisplayComponent"
+  ModalLinkWithDataSourceDisplayComponent = 'ModalLinkWithDataSourceDisplayComponent',
 }
 
 export type MLDTDisplayComponentTypes = {

@@ -8,7 +8,7 @@ import {
 import { type EuTaxonomyAlignedActivity } from '@clients/backend';
 import AlignedActivitiesDataTable from '@/components/general/AlignedActivitiesDataTable.vue';
 import { euTaxonomyNonFinancialsModalColumnHeaders } from '@/components/resources/dataTable/conversion/EutaxonomyNonAlignedActivitiesValueGetterFactory';
-import {type ExtendedDataPoint} from "@/utils/DataPoint";
+import { type ExtendedDataPoint } from '@/utils/DataPoint';
 
 /**
  * Formats a EuTaxonomyAlignedActivities component for display in the table using a modal
@@ -38,13 +38,12 @@ export function formatEuTaxonomyNonFinancialsAlignedActivitiesDataForTable(
             listOfRowContents: input.value,
             kpiKeyOfTable: 'alignedActivities',
             columnHeaders: euTaxonomyNonFinancialsModalColumnHeaders,
-
           },
           source: {
             dataSource: input.dataSource,
             comment: input.comment,
             quality: input.quality,
-          }
+          },
         },
       },
     };

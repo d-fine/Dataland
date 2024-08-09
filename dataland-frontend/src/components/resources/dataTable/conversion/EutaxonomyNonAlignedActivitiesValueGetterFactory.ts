@@ -4,9 +4,9 @@ import {
   type MLDTDisplayObject,
   MLDTDisplayObjectForEmptyString,
 } from '@/components/resources/dataTable/MultiLayerDataTableCellDisplayer';
-import {type EuTaxonomyActivity } from '@clients/backend';
+import { type EuTaxonomyActivity } from '@clients/backend';
 import NonAlignedActivitiesDataTable from '@/components/general/NonAlignedActivitiesDataTable.vue';
-import {type ExtendedDataPoint} from "@/utils/DataPoint";
+import { type ExtendedDataPoint } from '@/utils/DataPoint';
 
 export const euTaxonomyNonFinancialsModalColumnHeaders = {
   alignedActivities: {
@@ -77,7 +77,7 @@ export function formatNonAlignedActivitiesForDataTable(
           dataSource: nonAlignedActivities.dataSource,
           comment: nonAlignedActivities.comment,
           quality: nonAlignedActivities.quality,
-        }
+        },
       },
     },
   };
