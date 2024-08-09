@@ -1,12 +1,12 @@
 import { type DropdownOption } from '@/utils/PremadeDropdownDatasets';
 import {
-  type EuTaxonomyDataForFinancials,
   type EsgQuestionnaireData,
+  type EuTaxonomyDataForFinancials,
+  type EutaxonomyNonFinancialsData,
   type LksgData,
   type PathwaysToParisData,
   type SfdrData,
   type VsmeData,
-  type EutaxonomyNonFinancialsData,
 } from '@clients/backend';
 
 export interface Category {
@@ -37,8 +37,6 @@ export interface Field {
 
   // input field specific values
   placeholder?: string;
-  // is a DataPoint toggleable?
-  isDataPointToggleable?: boolean;
 
   // selection specific values
   options?: DropdownOption[];
