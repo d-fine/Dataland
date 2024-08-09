@@ -1,8 +1,8 @@
 package org.dataland.frameworktoolbox.specific.datamodel.elements
 
-import org.dataland.frameworktoolbox.utils.DatalandRepository
 import org.dataland.frameworktoolbox.utils.freemarker.FreeMarker
 import java.io.FileWriter
+import java.nio.file.Path
 import kotlin.io.path.div
 
 /**
@@ -24,11 +24,17 @@ data class ReferencedReportValidatorBuilder(
 
     override val name: String = "ReferencedReportsListValidator"
 
+    override val empty: Boolean
+        get() = extendedDocumentFileReferences.isEmpty()
+
+    override val allNullable: Boolean
+        get() = true
+
     val fullyQualifiedName: String
         get() = parentPackage.fullyQualifiedName + "." + name
 
-    override fun build(into: DatalandRepository) {
-        val classPath = into.backendKotlinSrc / "${fullyQualifiedName.replace(".", "/")}.kt"
+    override fun build(into: Path) {
+        val classPath = into / "${fullyQualifiedName.replace(".", "/")}.kt"
 
         val freemarkerTemplate = FreeMarker.configuration.getTemplate(
             "/specific/datamodel/elements/ValidateReferencedReportsList.kt.ftl",

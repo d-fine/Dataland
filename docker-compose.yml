@@ -420,6 +420,8 @@ services:
       DATALAND_QA_SERVICE_CLIENT_SECRET: ${DATALAND_QA_SERVICE_CLIENT_SECRET}
     depends_on:
       - qa-service-db
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
   qa-service-db:
     restart: always
     profiles: [ "production", "testing", "development" ]

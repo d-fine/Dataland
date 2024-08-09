@@ -1,6 +1,6 @@
 package org.dataland.frameworktoolbox.specific.datamodel.elements
 
-import org.dataland.frameworktoolbox.utils.DatalandRepository
+import java.nio.file.Path
 
 /**
  * A DataModelElement is part of a Kotlin DataModel hierarchy (e.g., DataClasses, Enums, ...)
@@ -10,8 +10,11 @@ sealed interface DataModelElement {
     val name: String
     val parentPackage: PackageBuilder?
 
+    val empty: Boolean
+    val allNullable: Boolean
+
     /**
      * Build this DataModelElement into the provided Dataland repository.
      */
-    fun build(into: DatalandRepository)
+    fun build(into: Path)
 }

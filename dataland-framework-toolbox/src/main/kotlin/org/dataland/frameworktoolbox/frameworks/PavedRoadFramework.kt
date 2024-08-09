@@ -8,6 +8,7 @@ import org.dataland.frameworktoolbox.specific.datamodel.FrameworkDataModelBuilde
 import org.dataland.frameworktoolbox.specific.datamodel.elements.ReferencedReportValidatorBuilder
 import org.dataland.frameworktoolbox.specific.fixturegenerator.FrameworkFixtureGeneratorBuilder
 import org.dataland.frameworktoolbox.specific.frameworkregistryimports.FrameworkRegistryImportsUpdater
+import org.dataland.frameworktoolbox.specific.qamodel.FrameworkQaModelBuilder
 import org.dataland.frameworktoolbox.specific.uploadconfig.FrameworkUploadConfigBuilder
 import org.dataland.frameworktoolbox.specific.viewconfig.FrameworkViewConfigBuilder
 import org.dataland.frameworktoolbox.specific.viewconfig.elements.getKotlinFieldAccessor
@@ -123,6 +124,21 @@ abstract class PavedRoadFramework(
     }
 
     /**
+     * Generate the QA-model for the framework
+     */
+    open fun generateQaModel(framework: Framework): FrameworkQaModelBuilder {
+        return framework.generateQaModel()
+    }
+
+    /**
+     * Can be overwritten to programmatically customize the QA dataModel
+     * (to e.g, change the JVM type of certain fields)
+     */
+    open fun customizeQaModel(dataModel: FrameworkQaModelBuilder) {
+        // Empty as it's just a customization endpoint
+    }
+
+    /**
      * Generate the view-model for the framework
      */
     open fun generateViewModel(framework: Framework): FrameworkViewConfigBuilder {
@@ -180,6 +196,18 @@ abstract class PavedRoadFramework(
             into = datalandProject,
             buildApiController = enabledFeatures.contains(FrameworkGenerationFeatures.BackendApiController),
             privateFrameworkBoolean = isPrivateFramework,
+        )
+    }
+
+    private fun compileQaModel(datalandProject: DatalandRepository) {
+        if (!enabledFeatures.contains(FrameworkGenerationFeatures.QaModel)) {
+            return
+        }
+        val qaModelBuilder = generateQaModel(framework)
+        customizeQaModel(qaModelBuilder)
+
+        qaModelBuilder.build(
+            into = datalandProject,
         )
     }
 
@@ -253,6 +281,7 @@ abstract class PavedRoadFramework(
         customizeHighLevelIntermediateRepresentation(frameworkIntermediateRepresentation)
 
         compileDataModel(datalandProject)
+        compileQaModel(datalandProject)
         compileViewModel(datalandProject)
         compileUploadModel(datalandProject)
         compileFixtureGenerator(datalandProject)

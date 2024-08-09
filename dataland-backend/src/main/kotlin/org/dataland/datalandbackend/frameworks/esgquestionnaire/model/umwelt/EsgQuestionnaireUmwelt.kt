@@ -2,15 +2,22 @@
 package org.dataland.datalandbackend.frameworks.esgquestionnaire.model.umwelt
 
 import jakarta.validation.Valid
-import org.dataland.datalandbackend.frameworks.esgquestionnaire.model.umwelt.abfallproduktion.EsgQuestionnaireUmweltAbfallproduktion
-import org.dataland.datalandbackend.frameworks.esgquestionnaire.model.umwelt.biodiversitaet.EsgQuestionnaireUmweltBiodiversitaet
-import org.dataland.datalandbackend.frameworks.esgquestionnaire.model.umwelt.energieeffizienzImmobilienanlagen.EsgQuestionnaireUmweltEnergieeffizienzImmobilienanlagen
-import org.dataland.datalandbackend.frameworks.esgquestionnaire.model.umwelt.energieverbrauch.EsgQuestionnaireUmweltEnergieverbrauch
-import org.dataland.datalandbackend.frameworks.esgquestionnaire.model.umwelt.fossileBrennstoffe.EsgQuestionnaireUmweltFossileBrennstoffe
+import org.dataland.datalandbackend.frameworks.esgquestionnaire.model.umwelt.abfallproduktion
+    .EsgQuestionnaireUmweltAbfallproduktion
+import org.dataland.datalandbackend.frameworks.esgquestionnaire.model.umwelt.biodiversitaet
+    .EsgQuestionnaireUmweltBiodiversitaet
+import org.dataland.datalandbackend.frameworks.esgquestionnaire.model.umwelt.energieeffizienzImmobilienanlagen
+    .EsgQuestionnaireUmweltEnergieeffizienzImmobilienanlagen
+import org.dataland.datalandbackend.frameworks.esgquestionnaire.model.umwelt.energieverbrauch
+    .EsgQuestionnaireUmweltEnergieverbrauch
+import org.dataland.datalandbackend.frameworks.esgquestionnaire.model.umwelt.fossileBrennstoffe
+    .EsgQuestionnaireUmweltFossileBrennstoffe
 import org.dataland.datalandbackend.frameworks.esgquestionnaire.model.umwelt.produktion.EsgQuestionnaireUmweltProduktion
 import org.dataland.datalandbackend.frameworks.esgquestionnaire.model.umwelt.taxonomie.EsgQuestionnaireUmweltTaxonomie
-import org.dataland.datalandbackend.frameworks.esgquestionnaire.model.umwelt.treibhausgasemissionen.EsgQuestionnaireUmweltTreibhausgasemissionen
-import org.dataland.datalandbackend.frameworks.esgquestionnaire.model.umwelt.wasserverbrauch.EsgQuestionnaireUmweltWasserverbrauch
+import org.dataland.datalandbackend.frameworks.esgquestionnaire.model.umwelt.treibhausgasemissionen
+    .EsgQuestionnaireUmweltTreibhausgasemissionen
+import org.dataland.datalandbackend.frameworks.esgquestionnaire.model.umwelt.wasserverbrauch
+    .EsgQuestionnaireUmweltWasserverbrauch
 
 /**
  * The data-model for the Umwelt section

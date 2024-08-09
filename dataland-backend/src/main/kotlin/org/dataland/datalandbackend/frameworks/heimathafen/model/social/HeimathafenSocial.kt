@@ -2,11 +2,15 @@
 package org.dataland.datalandbackend.frameworks.heimathafen.model.social
 
 import jakarta.validation.Valid
-import org.dataland.datalandbackend.frameworks.heimathafen.model.social.kontroverseGeschaeftsfelder.HeimathafenSocialKontroverseGeschaeftsfelder
-import org.dataland.datalandbackend.frameworks.heimathafen.model.social.kontroverseGeschaeftsfelderWaffen.HeimathafenSocialKontroverseGeschaeftsfelderWaffen
-import org.dataland.datalandbackend.frameworks.heimathafen.model.social.nachhaltigskeitsrisiken.HeimathafenSocialNachhaltigskeitsrisiken
+import org.dataland.datalandbackend.frameworks.heimathafen.model.social.kontroverseGeschaeftsfelder
+    .HeimathafenSocialKontroverseGeschaeftsfelder
+import org.dataland.datalandbackend.frameworks.heimathafen.model.social.kontroverseGeschaeftsfelderWaffen
+    .HeimathafenSocialKontroverseGeschaeftsfelderWaffen
+import org.dataland.datalandbackend.frameworks.heimathafen.model.social.nachhaltigskeitsrisiken
+    .HeimathafenSocialNachhaltigskeitsrisiken
 import org.dataland.datalandbackend.frameworks.heimathafen.model.social.paiSozial.HeimathafenSocialPaiSozial
-import org.dataland.datalandbackend.frameworks.heimathafen.model.social.paiSozialesAufDemLand.HeimathafenSocialPaiSozialesAufDemLand
+import org.dataland.datalandbackend.frameworks.heimathafen.model.social.paiSozialesAufDemLand
+    .HeimathafenSocialPaiSozialesAufDemLand
 import org.dataland.datalandbackend.frameworks.heimathafen.model.social.sfdr.HeimathafenSocialSfdr
 
 /**

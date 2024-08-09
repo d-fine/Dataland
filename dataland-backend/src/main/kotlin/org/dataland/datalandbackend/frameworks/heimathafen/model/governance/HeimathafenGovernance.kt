@@ -2,9 +2,12 @@
 package org.dataland.datalandbackend.frameworks.heimathafen.model.governance
 
 import jakarta.validation.Valid
-import org.dataland.datalandbackend.frameworks.heimathafen.model.governance.bestechungUndKorruption.HeimathafenGovernanceBestechungUndKorruption
-import org.dataland.datalandbackend.frameworks.heimathafen.model.governance.goodGovernance.HeimathafenGovernanceGoodGovernance
-import org.dataland.datalandbackend.frameworks.heimathafen.model.governance.goodGovernanceUngc.HeimathafenGovernanceGoodGovernanceUngc
+import org.dataland.datalandbackend.frameworks.heimathafen.model.governance.bestechungUndKorruption
+    .HeimathafenGovernanceBestechungUndKorruption
+import org.dataland.datalandbackend.frameworks.heimathafen.model.governance.goodGovernance
+    .HeimathafenGovernanceGoodGovernance
+import org.dataland.datalandbackend.frameworks.heimathafen.model.governance.goodGovernanceUngc
+    .HeimathafenGovernanceGoodGovernanceUngc
 
 /**
  * The data-model for the Governance section

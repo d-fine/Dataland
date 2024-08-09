@@ -8,6 +8,7 @@ import org.dataland.frameworktoolbox.specific.datamodel.TypeReference
 import org.dataland.frameworktoolbox.specific.datamodel.annotations.ValidAnnotation
 import org.dataland.frameworktoolbox.specific.datamodel.elements.DataClassBuilder
 import org.dataland.frameworktoolbox.specific.fixturegenerator.elements.FixtureSectionBuilder
+import org.dataland.frameworktoolbox.specific.qamodel.getBackendClientTypeReference
 import org.dataland.frameworktoolbox.specific.uploadconfig.elements.UploadCategoryBuilder
 import org.dataland.frameworktoolbox.specific.viewconfig.elements.SectionConfigBuilder
 import org.dataland.frameworktoolbox.specific.viewconfig.elements.getTypescriptFieldAccessor
@@ -33,6 +34,18 @@ class CurrencyComponent(
             identifier,
             TypeReference("org.dataland.datalandbackend.model.datapoints.CurrencyDataPoint", isNullable),
             annotations,
+        )
+    }
+
+    override fun generateDefaultQaModel(dataClassBuilder: DataClassBuilder) {
+        requireDocumentSupportIn(setOf(ExtendedDocumentSupport))
+        val backendCurrencyDatapoint = TypeReference(
+            "org.dataland.datalandbackend.model.datapoints.CurrencyDataPoint",
+            isNullable,
+        )
+        dataClassBuilder.addProperty(
+            identifier,
+            backendCurrencyDatapoint.getBackendClientTypeReference(),
         )
     }
 

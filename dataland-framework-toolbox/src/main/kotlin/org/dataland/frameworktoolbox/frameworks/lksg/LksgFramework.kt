@@ -1,5 +1,6 @@
 package org.dataland.frameworktoolbox.frameworks.lksg
 
+import org.dataland.frameworktoolbox.frameworks.FrameworkGenerationFeatures
 import org.dataland.frameworktoolbox.frameworks.PavedRoadFramework
 import org.dataland.frameworktoolbox.intermediate.Framework
 import org.dataland.frameworktoolbox.intermediate.components.SingleSelectComponent
@@ -22,6 +23,8 @@ class LksgFramework : PavedRoadFramework(
     explanation = "Lieferkettensorgfaltspflichtengesetz",
     File("./dataland-framework-toolbox/inputs/lksg/lksg.xlsx"),
     order = 3,
+    enabledFeatures =
+    FrameworkGenerationFeatures.allExcept(FrameworkGenerationFeatures.QaModel),
 ) {
 
     override fun customizeHighLevelIntermediateRepresentation(framework: Framework) {

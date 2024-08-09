@@ -2,7 +2,8 @@
 package org.dataland.datalandbackend.frameworks.esgquestionnaire.model.general
 
 import jakarta.validation.Valid
-import org.dataland.datalandbackend.frameworks.esgquestionnaire.model.general.masterData.EsgQuestionnaireGeneralMasterData
+import org.dataland.datalandbackend.frameworks.esgquestionnaire.model.general.masterData
+    .EsgQuestionnaireGeneralMasterData
 
 /**
  * The data-model for the General section

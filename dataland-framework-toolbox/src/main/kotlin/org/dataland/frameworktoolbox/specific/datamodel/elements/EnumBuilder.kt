@@ -2,10 +2,10 @@ package org.dataland.frameworktoolbox.specific.datamodel.elements
 
 import org.dataland.frameworktoolbox.intermediate.components.support.SelectionOption
 import org.dataland.frameworktoolbox.specific.datamodel.TypeReference
-import org.dataland.frameworktoolbox.utils.DatalandRepository
 import org.dataland.frameworktoolbox.utils.LoggerDelegate
 import org.dataland.frameworktoolbox.utils.freemarker.FreeMarker
 import java.io.FileWriter
+import java.nio.file.Path
 import javax.lang.model.SourceVersion
 import kotlin.io.path.div
 
@@ -25,6 +25,12 @@ data class EnumBuilder(
 ) : DataModelElement {
 
     private val logger by LoggerDelegate()
+
+    override val empty: Boolean
+        get() = options.isEmpty()
+
+    override val allNullable: Boolean
+        get() = true
 
     val fullyQualifiedName: String
         get() = parentPackage.fullyQualifiedName + "." + name
@@ -46,7 +52,7 @@ data class EnumBuilder(
         )
     }
 
-    override fun build(into: DatalandRepository) {
+    override fun build(into: Path) {
         require(SourceVersion.isName(fullyQualifiedName)) {
             "The enum-identifier '$fullyQualifiedName' is not a valid java identifier"
         }
@@ -59,7 +65,7 @@ data class EnumBuilder(
 
         require(!name[0].isLowerCase()) { "The enum-name '$name' does not start with an upper-case letter" }
 
-        val classPath = into.backendKotlinSrc / "${fullyQualifiedName.replace(".", "/")}.kt"
+        val classPath = into / "${fullyQualifiedName.replace(".", "/")}.kt"
         logger.trace("Building enum '{}' into '{}'", fullyQualifiedName, classPath)
 
         val freemarkerTemplate = FreeMarker.configuration

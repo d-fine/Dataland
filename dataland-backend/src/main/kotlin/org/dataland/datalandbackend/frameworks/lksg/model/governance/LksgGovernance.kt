@@ -2,10 +2,13 @@
 package org.dataland.datalandbackend.frameworks.lksg.model.governance
 
 import jakarta.validation.Valid
-import org.dataland.datalandbackend.frameworks.lksg.model.governance.certificationsPoliciesAndResponsibilities.LksgGovernanceCertificationsPoliciesAndResponsibilities
+import org.dataland.datalandbackend.frameworks.lksg.model.governance.certificationsPoliciesAndResponsibilities
+    .LksgGovernanceCertificationsPoliciesAndResponsibilities
 import org.dataland.datalandbackend.frameworks.lksg.model.governance.generalViolations.LksgGovernanceGeneralViolations
-import org.dataland.datalandbackend.frameworks.lksg.model.governance.grievanceMechanismOwnOperations.LksgGovernanceGrievanceMechanismOwnOperations
-import org.dataland.datalandbackend.frameworks.lksg.model.governance.riskManagementOwnOperations.LksgGovernanceRiskManagementOwnOperations
+import org.dataland.datalandbackend.frameworks.lksg.model.governance.grievanceMechanismOwnOperations
+    .LksgGovernanceGrievanceMechanismOwnOperations
+import org.dataland.datalandbackend.frameworks.lksg.model.governance.riskManagementOwnOperations
+    .LksgGovernanceRiskManagementOwnOperations
 
 /**
  * The data-model for the Governance section

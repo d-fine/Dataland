@@ -4,7 +4,8 @@ package org.dataland.datalandbackend.frameworks.lksg.model.general
 import jakarta.validation.Valid
 import org.dataland.datalandbackend.frameworks.lksg.model.general.masterData.LksgGeneralMasterData
 import org.dataland.datalandbackend.frameworks.lksg.model.general.productionSpecific.LksgGeneralProductionSpecific
-import org.dataland.datalandbackend.frameworks.lksg.model.general.productionSpecificOwnOperations.LksgGeneralProductionSpecificOwnOperations
+import org.dataland.datalandbackend.frameworks.lksg.model.general.productionSpecificOwnOperations
+    .LksgGeneralProductionSpecificOwnOperations
 
 /**
  * The data-model for the General section

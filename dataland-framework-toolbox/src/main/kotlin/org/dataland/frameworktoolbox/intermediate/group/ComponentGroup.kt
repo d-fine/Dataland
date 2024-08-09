@@ -48,6 +48,30 @@ class ComponentGroup(
         )
     }
 
+    override fun generateDefaultQaModel(dataClassBuilder: DataClassBuilder) {
+        val groupPackage = dataClassBuilder.parentPackage.addPackage(identifier)
+        val groupClass = groupPackage.addClass(
+            camelCaseComponentIdentifier,
+            "The QA-model for the ${identifier.capitalizeEn()} section",
+        )
+
+        children.forEach {
+            it.generateQaModel(groupClass)
+        }
+
+        if (!groupClass.empty) {
+            dataClassBuilder.addProperty(
+                identifier,
+                groupClass.getTypeReference(groupClass.allNullable),
+                listOf(ValidAnnotation),
+            )
+        }
+
+        if (groupPackage.empty) {
+            dataClassBuilder.parentPackage.childElements.remove(groupPackage)
+        }
+    }
+
     override fun generateDefaultViewConfig(sectionConfigBuilder: SectionConfigBuilder) {
         val localLabel = label
         require(!localLabel.isNullOrBlank()) {

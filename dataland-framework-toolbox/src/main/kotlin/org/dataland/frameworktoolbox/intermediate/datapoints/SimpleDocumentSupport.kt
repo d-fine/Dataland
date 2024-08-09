@@ -19,6 +19,10 @@ data object SimpleDocumentSupport : DocumentSupport {
         )
     }
 
+    override fun getQaJvmTypeReference(innerType: TypeReference, nullable: Boolean): TypeReference? {
+        return null
+    }
+
     override fun getFrameworkDisplayValueLambda(
         innerLambda: FrameworkDisplayValueLambda,
         fieldLabel: String?,

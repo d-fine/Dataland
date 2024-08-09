@@ -3,10 +3,14 @@ package org.dataland.datalandbackend.frameworks.esgquestionnaire.model.soziales
 
 import jakarta.validation.Valid
 import org.dataland.datalandbackend.frameworks.esgquestionnaire.model.soziales.audit.EsgQuestionnaireSozialesAudit
-import org.dataland.datalandbackend.frameworks.esgquestionnaire.model.soziales.einkommensgleichheit.EsgQuestionnaireSozialesEinkommensgleichheit
-import org.dataland.datalandbackend.frameworks.esgquestionnaire.model.soziales.geschlechterdiversitaet.EsgQuestionnaireSozialesGeschlechterdiversitaet
-import org.dataland.datalandbackend.frameworks.esgquestionnaire.model.soziales.sicherheitUndWeiterbildung.EsgQuestionnaireSozialesSicherheitUndWeiterbildung
-import org.dataland.datalandbackend.frameworks.esgquestionnaire.model.soziales.unternehmensstrukturaenderungen.EsgQuestionnaireSozialesUnternehmensstrukturaenderungen
+import org.dataland.datalandbackend.frameworks.esgquestionnaire.model.soziales.einkommensgleichheit
+    .EsgQuestionnaireSozialesEinkommensgleichheit
+import org.dataland.datalandbackend.frameworks.esgquestionnaire.model.soziales.geschlechterdiversitaet
+    .EsgQuestionnaireSozialesGeschlechterdiversitaet
+import org.dataland.datalandbackend.frameworks.esgquestionnaire.model.soziales.sicherheitUndWeiterbildung
+    .EsgQuestionnaireSozialesSicherheitUndWeiterbildung
+import org.dataland.datalandbackend.frameworks.esgquestionnaire.model.soziales.unternehmensstrukturaenderungen
+    .EsgQuestionnaireSozialesUnternehmensstrukturaenderungen
 
 /**
  * The data-model for the Soziales section

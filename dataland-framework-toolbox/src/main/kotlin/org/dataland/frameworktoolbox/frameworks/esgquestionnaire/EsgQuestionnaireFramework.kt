@@ -2,6 +2,7 @@ package org.dataland.frameworktoolbox.frameworks.esgquestionnaire
 
 import ComponentGenerationUtilsForGermanFrameworks
 import org.apache.commons.text.StringEscapeUtils.escapeEcmaScript
+import org.dataland.frameworktoolbox.frameworks.FrameworkGenerationFeatures
 import org.dataland.frameworktoolbox.frameworks.PavedRoadFramework
 import org.dataland.frameworktoolbox.intermediate.Framework
 import org.dataland.frameworktoolbox.intermediate.components.DateComponent
@@ -36,6 +37,8 @@ class EsgQuestionnaireFramework : PavedRoadFramework(
         "Gesamtverbands der Versicherer und des Bundesverbands Öffentlicher Banken",
     File("./dataland-framework-toolbox/inputs/esg-questionnaire/esg-questionnaire.xlsx"),
     order = 7,
+    enabledFeatures =
+    FrameworkGenerationFeatures.allExcept(FrameworkGenerationFeatures.QaModel),
 ) {
 
     override fun configureDiagnostics(diagnosticManager: DiagnosticManager) {

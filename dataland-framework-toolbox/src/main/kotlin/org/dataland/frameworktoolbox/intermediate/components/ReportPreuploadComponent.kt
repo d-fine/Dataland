@@ -7,6 +7,7 @@ import org.dataland.frameworktoolbox.specific.datamodel.TypeReference
 import org.dataland.frameworktoolbox.specific.datamodel.annotations.ValidAnnotation
 import org.dataland.frameworktoolbox.specific.datamodel.elements.DataClassBuilder
 import org.dataland.frameworktoolbox.specific.fixturegenerator.elements.FixtureSectionBuilder
+import org.dataland.frameworktoolbox.specific.qamodel.getBackendClientTypeReference
 import org.dataland.frameworktoolbox.specific.uploadconfig.elements.UploadCategoryBuilder
 import org.dataland.frameworktoolbox.specific.viewconfig.elements.SectionConfigBuilder
 
@@ -18,6 +19,8 @@ class ReportPreuploadComponent(
     parent: FieldNodeParent,
 ) : ComponentBase(identifier, parent) {
 
+    private val companyReportType = TypeReference("org.dataland.datalandbackend.model.documents.CompanyReport", false)
+
     override fun generateDefaultDataModel(dataClassBuilder: DataClassBuilder) {
         requireDocumentSupportIn(setOf(NoDocumentSupport))
         dataClassBuilder.addProperty(
@@ -26,7 +29,7 @@ class ReportPreuploadComponent(
                 "Map", isNullable,
                 listOf(
                     TypeReference("String", false),
-                    TypeReference("org.dataland.datalandbackend.model.documents.CompanyReport", false),
+                    companyReportType,
                 ),
             ),
             listOf(
@@ -38,6 +41,26 @@ class ReportPreuploadComponent(
                 ),
                 ValidAnnotation,
             ),
+        )
+    }
+
+    override fun generateDefaultQaModel(dataClassBuilder: DataClassBuilder) {
+        dataClassBuilder.addProperty(
+            identifier,
+            TypeReference(
+                "org.dataland.datalandqaservice.model.reports.QaReportDataPoint",
+                true,
+                listOf(
+                    TypeReference(
+                        "Map", false,
+                        listOf(
+                            TypeReference("String", false),
+                            companyReportType.getBackendClientTypeReference(),
+                        ),
+                    ),
+                ),
+            ),
+
         )
     }
 

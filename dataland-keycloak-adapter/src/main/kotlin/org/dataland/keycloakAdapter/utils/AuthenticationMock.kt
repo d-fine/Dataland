@@ -3,12 +3,36 @@ package org.dataland.keycloakAdapter.utils
 import org.dataland.keycloakAdapter.auth.DatalandJwtAuthentication
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
 import org.mockito.Mockito
+import org.mockito.Mockito.`when`
+import org.springframework.security.core.context.SecurityContext
+import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.oauth2.jwt.Jwt
 
 /**
  * This object holds a method to mock the authentication via JWT
  */
 object AuthenticationMock {
+    /**
+     * This method mocks a JWT to authenticate for a given user
+     * and executes a block of code with the mocked authentication
+     */
+    inline fun <T> withAuthenticationMock(
+        username: String,
+        userId: String,
+        roles: Set<DatalandRealmRole>,
+        tokenValue: String = "",
+        block: () -> T,
+    ): T {
+        val auth = mockJwtAuthentication(username, userId, roles, tokenValue)
+        val mockSecurityContext = Mockito.mock(SecurityContext::class.java)
+        `when`(mockSecurityContext.authentication).thenReturn(auth)
+        val oldSecurityContext = SecurityContextHolder.getContext()
+        SecurityContextHolder.setContext(mockSecurityContext)
+        val returnValue = block()
+        SecurityContextHolder.setContext(oldSecurityContext)
+        return returnValue
+    }
+
     /**
      * This method mocks a JWT to authenticate for a given user
      * @param username the username

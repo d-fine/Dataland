@@ -23,7 +23,6 @@ class SfdrHighImpactClimateSectors(
     identifier: String,
     parent: FieldNodeParent,
 ) : ComponentBase(identifier, parent) {
-
     override fun generateDefaultDataModel(dataClassBuilder: DataClassBuilder) {
         requireDocumentSupportIn(setOf(NoDocumentSupport))
         dataClassBuilder.addProperty(
@@ -49,6 +48,28 @@ class SfdrHighImpactClimateSectors(
                     "example = JsonExampleFormattingConstants.HIGH_IMPACT_CLIMATE_SECTORS_DEFAULT_VALUE",
                     applicationTargetPrefix = "field",
                     additionalImports = setOf("org.dataland.datalandbackend.utils.JsonExampleFormattingConstants"),
+                ),
+            ),
+        )
+    }
+
+    override fun generateDefaultQaModel(dataClassBuilder: DataClassBuilder) {
+        requireDocumentSupportIn(setOf(NoDocumentSupport))
+        dataClassBuilder.addProperty(
+            identifier,
+            TypeReference(
+                "Map", true,
+                listOf(
+                    TypeReference(
+                        "org.dataland.datalandqaservice.frameworks.sfdr." +
+                            "custom.HighImpactClimateSector",
+                        false,
+                    ),
+                    TypeReference(
+                        "org.dataland.datalandqaservice.frameworks.sfdr." +
+                            "custom.SfdrHighImpactClimateSectorEnergyConsumption",
+                        false,
+                    ),
                 ),
             ),
         )

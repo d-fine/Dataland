@@ -3,7 +3,7 @@ package ${package}
 <#if imports?size != 0>
 
 <#list imports as import>
-import ${import}
+${import_formatter.splitLongImport(import)}
 </#list>
 </#if>
 

@@ -1,5 +1,6 @@
 package org.dataland.frameworktoolbox.frameworks.vsme
 
+import org.dataland.frameworktoolbox.frameworks.FrameworkGenerationFeatures
 import org.dataland.frameworktoolbox.frameworks.PavedRoadFramework
 import org.dataland.frameworktoolbox.frameworks.vsme.custom.DependsOnComponentCustomValue
 import org.dataland.frameworktoolbox.intermediate.Framework
@@ -24,6 +25,7 @@ class VsmeFramework : PavedRoadFramework(
     File("./dataland-framework-toolbox/inputs/vsme/vsme.xlsx"),
     order = 6,
     isPrivateFramework = true,
+    enabledFeatures = FrameworkGenerationFeatures.allExcept(FrameworkGenerationFeatures.QaModel),
 ) {
     override fun getComponentGenerationUtils(): ComponentGenerationUtils {
         return VsmeComponentGenerationUtils()

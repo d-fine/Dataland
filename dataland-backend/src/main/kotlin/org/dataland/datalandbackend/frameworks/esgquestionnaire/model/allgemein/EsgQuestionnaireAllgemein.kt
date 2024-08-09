@@ -2,18 +2,28 @@
 package org.dataland.datalandbackend.frameworks.esgquestionnaire.model.allgemein
 
 import jakarta.validation.Valid
-import org.dataland.datalandbackend.frameworks.esgquestionnaire.model.allgemein.akkreditierungen.EsgQuestionnaireAllgemeinAkkreditierungen
-import org.dataland.datalandbackend.frameworks.esgquestionnaire.model.allgemein.anleihen.EsgQuestionnaireAllgemeinAnleihen
-import org.dataland.datalandbackend.frameworks.esgquestionnaire.model.allgemein.esgBerichte.EsgQuestionnaireAllgemeinEsgBerichte
-import org.dataland.datalandbackend.frameworks.esgquestionnaire.model.allgemein.esgZiele.EsgQuestionnaireAllgemeinEsgZiele
-import org.dataland.datalandbackend.frameworks.esgquestionnaire.model.allgemein.fuehrungsstandards.EsgQuestionnaireAllgemeinFuehrungsstandards
-import org.dataland.datalandbackend.frameworks.esgquestionnaire.model.allgemein.oecdLeitsaetze.EsgQuestionnaireAllgemeinOecdLeitsaetze
+import org.dataland.datalandbackend.frameworks.esgquestionnaire.model.allgemein.akkreditierungen
+    .EsgQuestionnaireAllgemeinAkkreditierungen
+import org.dataland.datalandbackend.frameworks.esgquestionnaire.model.allgemein.anleihen
+    .EsgQuestionnaireAllgemeinAnleihen
+import org.dataland.datalandbackend.frameworks.esgquestionnaire.model.allgemein.esgBerichte
+    .EsgQuestionnaireAllgemeinEsgBerichte
+import org.dataland.datalandbackend.frameworks.esgquestionnaire.model.allgemein.esgZiele
+    .EsgQuestionnaireAllgemeinEsgZiele
+import org.dataland.datalandbackend.frameworks.esgquestionnaire.model.allgemein.fuehrungsstandards
+    .EsgQuestionnaireAllgemeinFuehrungsstandards
+import org.dataland.datalandbackend.frameworks.esgquestionnaire.model.allgemein.oecdLeitsaetze
+    .EsgQuestionnaireAllgemeinOecdLeitsaetze
 import org.dataland.datalandbackend.frameworks.esgquestionnaire.model.allgemein.rating.EsgQuestionnaireAllgemeinRating
-import org.dataland.datalandbackend.frameworks.esgquestionnaire.model.allgemein.rechtsstreitigkeiten.EsgQuestionnaireAllgemeinRechtsstreitigkeiten
+import org.dataland.datalandbackend.frameworks.esgquestionnaire.model.allgemein.rechtsstreitigkeiten
+    .EsgQuestionnaireAllgemeinRechtsstreitigkeiten
 import org.dataland.datalandbackend.frameworks.esgquestionnaire.model.allgemein.risiken.EsgQuestionnaireAllgemeinRisiken
-import org.dataland.datalandbackend.frameworks.esgquestionnaire.model.allgemein.sektoren.EsgQuestionnaireAllgemeinSektoren
-import org.dataland.datalandbackend.frameworks.esgquestionnaire.model.allgemein.sonstige.EsgQuestionnaireAllgemeinSonstige
-import org.dataland.datalandbackend.frameworks.esgquestionnaire.model.allgemein.unGlobalConceptPrinzipien.EsgQuestionnaireAllgemeinUnGlobalConceptPrinzipien
+import org.dataland.datalandbackend.frameworks.esgquestionnaire.model.allgemein.sektoren
+    .EsgQuestionnaireAllgemeinSektoren
+import org.dataland.datalandbackend.frameworks.esgquestionnaire.model.allgemein.sonstige
+    .EsgQuestionnaireAllgemeinSonstige
+import org.dataland.datalandbackend.frameworks.esgquestionnaire.model.allgemein.unGlobalConceptPrinzipien
+    .EsgQuestionnaireAllgemeinUnGlobalConceptPrinzipien
 
 /**
  * The data-model for the Allgemein section

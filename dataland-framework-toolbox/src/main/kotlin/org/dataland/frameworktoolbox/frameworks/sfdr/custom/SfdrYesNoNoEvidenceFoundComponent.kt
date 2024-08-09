@@ -1,9 +1,9 @@
 package org.dataland.frameworktoolbox.frameworks.sfdr.custom
 
 import org.dataland.frameworktoolbox.intermediate.FieldNodeParent
-import org.dataland.frameworktoolbox.intermediate.components.ComponentBase
 import org.dataland.frameworktoolbox.intermediate.components.addStandardCellWithValueGetterFactory
 import org.dataland.frameworktoolbox.intermediate.components.addStandardUploadConfigCell
+import org.dataland.frameworktoolbox.intermediate.components.basecomponents.SimpleKotlinBackedBaseComponent
 import org.dataland.frameworktoolbox.intermediate.components.requireDocumentSupportIn
 import org.dataland.frameworktoolbox.intermediate.datapoints.ExtendedDocumentSupport
 import org.dataland.frameworktoolbox.specific.fixturegenerator.elements.FixtureSectionBuilder
@@ -19,7 +19,11 @@ import org.dataland.frameworktoolbox.utils.typescript.TypeScriptImport
 class SfdrYesNoNoEvidenceFoundComponent(
     identifier: String,
     parent: FieldNodeParent,
-) : ComponentBase(identifier, parent, "org.dataland.datalandbackend.model.enums.commons.YesNoNoEvidenceFound") {
+) : SimpleKotlinBackedBaseComponent(
+    identifier,
+    parent,
+    "org.dataland.datalandbackend.model.enums.commons.YesNoNoEvidenceFound",
+) {
 
     override fun generateDefaultViewConfig(sectionConfigBuilder: SectionConfigBuilder) {
         requireDocumentSupportIn(setOf(ExtendedDocumentSupport))
