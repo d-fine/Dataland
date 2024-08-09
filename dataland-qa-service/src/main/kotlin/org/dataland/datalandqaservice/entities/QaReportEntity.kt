@@ -40,11 +40,9 @@ data class QaReportEntity(
 ) {
 
     /**
-     * Method to convert the QA report entity to a model containing
-     * the report and its meta information
+     * Method to convert the QA report entity to a model containing the report and its meta information
      * @param objectMapper the object mapper to use for deserialization
      * @param clazz the class of the report to deserialize
-     * @param viewingUser the user viewing the report
      */
     fun <ReportType> toFullApiModel(
         objectMapper: ObjectMapper,
@@ -58,9 +56,7 @@ data class QaReportEntity(
     }
 
     /**
-     * Method to convert the QA report entity to a model containing
-     * only the meta information of the report
-     * @param viewingUser the user viewing the report
+     * Method to convert the QA report entity to a model containing only the meta information of the report
      */
     fun toMetaInformationApiModel(): QaReportMetaInformation {
         return QaReportMetaInformation(
