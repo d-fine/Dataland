@@ -3,7 +3,7 @@ import { getStringCypressEnv } from '@e2e/utils/Cypress';
 const queues = [
   'dataQualityAssuredBackendDataManager',
   'requestReceivedInternalStorageDatabaseDataStore',
-  'requestReceivedCommunityManagerNotificationService',
+  'dataQualityAssuredCommunityManagerNotificationService',
   'privateRequestReceivedCommunityManagerNotificationService',
   'dataStoredBackendDataManager',
   'dataStoredDocumentManager',

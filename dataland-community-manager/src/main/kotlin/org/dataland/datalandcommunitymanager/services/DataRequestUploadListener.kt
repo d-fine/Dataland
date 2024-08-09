@@ -9,6 +9,7 @@ import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
 import org.dataland.datalandmessagequeueutils.exceptions.MessageQueueRejectException
 import org.dataland.datalandmessagequeueutils.messages.QaCompletedMessage
 import org.dataland.datalandmessagequeueutils.utils.MessageQueueUtils
+import org.json.JSONObject
 import org.slf4j.LoggerFactory
 import org.springframework.amqp.rabbit.annotation.Argument
 import org.springframework.amqp.rabbit.annotation.Exchange
@@ -101,11 +102,13 @@ class DataRequestUploadListener(
     )
     @Transactional
     fun changeRequestStatusAfterPrivateDataUpload(
-        @Payload dataId: String,
+        @Payload payload: String,
         @Header(MessageHeaderKey.Type) type: String,
         @Header(MessageHeaderKey.CorrelationId) id: String,
     ) {
         messageUtils.validateMessageType(type, MessageType.PrivateDataReceived)
+        val payloadJsonObject = JSONObject(payload)
+        val dataId = payloadJsonObject.getString("dataId")
         if (dataId.isEmpty()) {
             throw MessageQueueRejectException("Provided data ID is empty")
         }
