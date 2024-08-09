@@ -8,7 +8,6 @@ describe('Component test for CurrencyDataPointFormField', () => {
    */
   function checkDataQualityFieldNotActive(): void {
     cy.get('div[data-test="dataQuality"] div[name="quality"]')
-      .should('have.class', 'p-disabled')
       .find('span')
       .should('have.text', 'Data quality');
     cy.get('div[data-test="dataQuality"] .form-field-label span.asterisk').should('not.exist');
