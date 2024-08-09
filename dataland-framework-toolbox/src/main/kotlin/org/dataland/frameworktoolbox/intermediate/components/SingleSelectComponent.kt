@@ -22,14 +22,14 @@ open class SingleSelectComponent(
     identifier: String,
     parent: FieldNodeParent,
 ) : ComponentBase(identifier, parent) {
-
     /**
      * The UploadMode of a SingleSelectComponent determines the form element styling for the upload
      * page (i.e., dropdown or radio buttons?)
      */
     enum class UploadMode(val component: String) {
         Dropdown("SingleSelectFormField"),
-        RadioButtons("RadioButtonsExtendedDataPointFormField"),
+        RadioButtons("RadioButtonsFormField"),
+        RadioButtonsExtended("RadioButtonsExtendedFormField"),
     }
 
     var options: Set<SelectionOption> = mutableSetOf()

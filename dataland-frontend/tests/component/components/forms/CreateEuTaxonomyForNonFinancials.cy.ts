@@ -1,13 +1,13 @@
 // @ts-nocheck
 import CreateEuTaxonomyNonFinancials from '@/components/forms/CreateEuTaxonomyNonFinancials.vue';
-import {minimalKeycloakMock} from '@ct/testUtils/Keycloak';
-import {TEST_PDF_FILE_BASEPATH, TEST_PDF_FILE_NAME} from '@sharedUtils/ConstantsForPdfs';
-import {type CompanyAssociatedDataEutaxonomyNonFinancialsData} from '@clients/backend';
-import {submitButton} from '@sharedUtils/components/SubmitButton';
+import { minimalKeycloakMock } from '@ct/testUtils/Keycloak';
+import { TEST_PDF_FILE_BASEPATH, TEST_PDF_FILE_NAME } from '@sharedUtils/ConstantsForPdfs';
+import { type CompanyAssociatedDataEutaxonomyNonFinancialsData } from '@clients/backend';
+import { submitButton } from '@sharedUtils/components/SubmitButton';
 import DataPointFormWithToggle from '@/components/forms/parts/kpiSelection/DataPointFormWithToggle.vue';
-import {UploadReports} from '@sharedUtils/components/UploadReports';
-import {selectItemFromDropdownByIndex, selectItemFromDropdownByValue} from '@sharedUtils/Dropdown';
-import {getFilledKpis} from '@/utils/DataPoint';
+import { UploadReports } from '@sharedUtils/components/UploadReports';
+import { selectItemFromDropdownByIndex, selectItemFromDropdownByValue } from '@sharedUtils/Dropdown';
+import { getFilledKpis } from '@/utils/DataPoint';
 
 describe('Component tests for the Eu Taxonomy for non financials that test dependent fields', () => {
   const uploadReports = new UploadReports('referencedReports');

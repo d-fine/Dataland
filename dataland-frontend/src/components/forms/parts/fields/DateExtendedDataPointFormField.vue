@@ -24,11 +24,11 @@
 
 <script lang="ts">
 // @ts-nocheck
-import {defineComponent} from 'vue';
-import {DateFormFieldProps} from '@/components/forms/parts/fields/FormFieldProps';
+import { defineComponent } from 'vue';
+import { DateFormFieldProps } from '@/components/forms/parts/fields/FormFieldProps';
 import ExtendedDataPointFormField from '@/components/forms/parts/elements/basic/ExtendedDataPointFormField.vue';
 import DateFormField from '@/components/forms/parts/fields/DateFormField.vue';
-import {hasDataPointProperValue} from '@/utils/DataPoint';
+import { hasDataPointProperValue } from '@/utils/DataPoint';
 
 export default defineComponent({
   name: 'DateExtendedDataPointFormField',
