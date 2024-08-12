@@ -75,7 +75,7 @@ describe('Component test for the Eu-Taxonomy-Non-Financials view page', () => {
     );
   });
 
-  it.only('Check if the view page for non-financials displays data correctly in its custom fields', () => {
+  it('Check if the view page for non-financials displays data correctly in its custom fields', () => {
     mountMLDTFrameworkPanelFromFakeFixture(
       DataTypeEnum.EutaxonomyNonFinancials,
       eutaxonomyNonFinancialsViewConfiguration,
