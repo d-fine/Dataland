@@ -9,7 +9,6 @@
     :validation="validation"
     :input-class="inputClass"
     :check-value-validity="hasDataPointProperValue"
-    :isDataPointToggleable="isDataPointToggleable"
     :placeholder="placeholder"
     :outerClass="inputClass"
   >
@@ -37,10 +36,6 @@ export default defineComponent({
   components: { PercentageFormField, ExtendedDataPointFormField },
   props: {
     ...BaseFormFieldProps,
-    isDataPointToggleable: {
-      type: Boolean,
-      default: false,
-    },
     placeholder: {
       type: String,
       default: 'Value in %',

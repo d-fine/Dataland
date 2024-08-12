@@ -17,7 +17,6 @@
           label="Absolute Share"
           placeholder="Absolute Value"
           data-test="absoluteShare"
-          :isDataPointToggleable="isDataPointToggleable"
         />
       </div>
     </div>
@@ -37,10 +36,6 @@ export default defineComponent({
   components: { CurrencyDataPointFormField, PercentageExtendedDataPointFormField, FormKit, UploadFormHeader },
   props: {
     ...BaseFormFieldProps,
-    isDataPointToggleable: {
-      type: Boolean,
-      default: false,
-    },
   },
 });
 </script>

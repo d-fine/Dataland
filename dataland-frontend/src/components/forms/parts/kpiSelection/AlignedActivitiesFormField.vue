@@ -7,7 +7,6 @@
     :required="required"
     :input-class="inputClass"
     :check-value-validity="hasDataPointProperValue"
-    :isDataPointToggleable="isDataPointToggleable"
   >
     <FormListFormField
       name="value"
@@ -34,10 +33,6 @@ export default defineComponent({
   methods: { hasDataPointProperValue },
   props: {
     ...BaseFormFieldProps,
-    isDataPointToggleable: {
-      type: Boolean,
-      default: false,
-    },
   },
   components: {
     ExtendedDataPointFormField,
