@@ -7,9 +7,7 @@ describe('Component test for CurrencyDataPointFormField', () => {
    * Ensures that the data quality field is inactive and that the field is not shown as required with an asterix
    */
   function checkDataQualityFieldNotActive(): void {
-    cy.get('div[data-test="dataQuality"] div[name="quality"]')
-      .find('span')
-      .should('have.text', 'Data quality');
+    cy.get('div[data-test="dataQuality"] div[name="quality"]').find('span').should('have.text', 'Data quality');
     cy.get('div[data-test="dataQuality"] .form-field-label span.asterisk').should('not.exist');
   }
 
