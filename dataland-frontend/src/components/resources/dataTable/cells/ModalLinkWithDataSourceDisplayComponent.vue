@@ -10,9 +10,9 @@
 
     <div
       v-if="
-        content.displayValue.modalOptions?.data.dataSource ||
-        content.displayValue.modalOptions?.data.quality ||
-        content.displayValue.modalOptions?.data.comment
+        content.displayValue.modalOptions?.data.dataPointDisplay.dataSource ||
+        content.displayValue.modalOptions?.data.dataPointDisplay.quality ||
+        content.displayValue.modalOptions?.data.dataPointDisplay.comment
       "
     >
       <a @click="$dialog.open(DataPointDataTable, modalDataSourceOptions)" class="link"
@@ -49,11 +49,6 @@ export default defineComponent({
     modalDataSourceOptions() {
       let updatedDataSourceModalOptions = this.content.displayValue.modalOptions;
       updatedDataSourceModalOptions!.props!.header = 'Data Source and Quality';
-      updatedDataSourceModalOptions!.data.dataPointDisplay = {
-        quality: updatedDataSourceModalOptions?.data.quality,
-        dataSource: updatedDataSourceModalOptions?.data.dataSource,
-        comment: updatedDataSourceModalOptions?.data.comment,
-      };
       return updatedDataSourceModalOptions;
     },
   },
