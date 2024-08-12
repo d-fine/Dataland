@@ -4,6 +4,7 @@ import AlignedActivitiesFormField from '@/components/forms/parts/kpiSelection/Al
 describe('Component test for ActivitiesFormField', () => {
   it('ActivitiesFormField component works correctly', () => {
     cy.mountWithPlugins(AlignedActivitiesFormField, {});
+    cy.get('div[data-test="dataPointToggleButton"]').should('exist').click();
     cy.get('button[data-test="addNewProductButton"]').should('exist').click();
     cy.get('button[data-test="addNewProductButton"]').should('exist').click();
     cy.get('button[data-test="dataTestChooseActivityButton"]').should('have.length', 2);

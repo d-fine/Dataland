@@ -31,6 +31,11 @@ describeIf(
      * Fills all the required fields of the eu-taxonomy upload form for non-financial companies to enable submit button
      */
     function fillRequiredEutaxonomyNonFinancialsFields(): void {
+      cy.get(
+        'div[data-test="fiscalYearEnd"] div[data-test="toggleDataPointWrapper"] div[data-test="dataPointToggleButton"]'
+      )
+        .should('exist')
+        .click();
       cy.get('[data-test="fiscalYearEnd"] button').should('have.class', 'p-datepicker-trigger').click();
       cy.get('div.p-datepicker').find('button[aria-label="Next Month"]').first().click();
       cy.get('div.p-datepicker').find('span:contains("11")').click();

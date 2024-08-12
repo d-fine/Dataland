@@ -1,6 +1,6 @@
 <template>
   <FormKit type="group" :name="name">
-    <div class="mb-3 form-field">
+    <div class="mb-3 form-field" :data-test="name">
       <UploadFormHeader :label="label" :description="description ?? ''" :is-required="required" />
       <div>
         <PercentageExtendedDataPointFormField
