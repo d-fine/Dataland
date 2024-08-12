@@ -14,7 +14,6 @@
 </template>
 
 <script lang="ts">
-// @ts-nocheck
 import { defineComponent } from 'vue';
 import { OptionsFormFieldProps } from '@/components/forms/parts/fields/FormFieldProps';
 import { hasDataPointProperValue } from '@/utils/DataPoint';
