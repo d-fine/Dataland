@@ -1,9 +1,9 @@
 <template>
-    <div class="table-cell-alignment">
-  <a @click="$dialog.open(content.displayValue.modalComponent, modalDataOptions)" class="link"
-    >{{ content.displayValue.label }}
-    <em class="pl-2 material-icons" aria-hidden="true" title=""> dataset </em>
-  </a>
+  <div class="table-cell-alignment">
+    <a @click="$dialog.open(content.displayValue.modalComponent, modalDataOptions)" class="link"
+      >{{ content.displayValue.label }}
+      <em class="pl-2 material-icons" aria-hidden="true" title=""> dataset </em>
+    </a>
 
     <div
       v-if="
