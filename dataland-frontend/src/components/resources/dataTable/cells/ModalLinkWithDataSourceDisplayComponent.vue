@@ -1,6 +1,9 @@
 <template>
   <div class="table-cell-alignment">
-    <a @click="$dialog.open(content.displayValue.modalComponent, modalDataOptions)" class="link"
+    <a
+      @click="$dialog.open(content.displayValue.modalComponent, modalDataOptions)"
+      class="link"
+      data-test="activityLink"
       >{{ content.displayValue.label }}
       <em class="pl-2 material-icons" aria-hidden="true" title=""> dataset </em>
     </a>

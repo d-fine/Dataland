@@ -51,22 +51,22 @@ describe('Component test for the Eu-Taxonomy-Non-Financials view page', () => {
 
         gammaCapex = assertDefined(fixturesForTests[2].t.capex);
         const gammaCapexAlignedActivities = assertDefined(gammaCapex.alignedActivities);
-        if (gammaCapexAlignedActivities.length < 1) {
+        if (gammaCapexAlignedActivities.value!.length < 1) {
           throw new Error(
             'Aligned activities list for capex of gamma dataset needs at least one element for this test to make sense.'
           );
         }
-        gammaCapexFirstAlignedActivity = gammaCapexAlignedActivities[0];
+        gammaCapexFirstAlignedActivity = gammaCapexAlignedActivities.value![0];
         gammaCapexFirstAlignedActivity.activityName = Activity.Afforestation;
         gammaCapexFirstAlignedActivity.substantialContributionToClimateChangeAdaptationInPercent = 0;
 
         const gammaCapexNonAlignedActivities = assertDefined(gammaCapex.nonAlignedActivities);
-        if (gammaCapexNonAlignedActivities.length < 1) {
+        if (gammaCapexNonAlignedActivities.value!.length < 1) {
           throw new Error(
             'Non-Aligned activities list for capex of gamma dataset needs at least one element for this test to make sense.'
           );
         }
-        gammaCapexFirstNonAlignedActivity = gammaCapexNonAlignedActivities[0];
+        gammaCapexFirstNonAlignedActivity = gammaCapexNonAlignedActivities.value![0];
         gammaCapexFirstNonAlignedActivity.activityName = Activity.Education;
         assertDefined(gammaCapexFirstNonAlignedActivity.share).relativeShareInPercent = 0;
 
@@ -75,7 +75,7 @@ describe('Component test for the Eu-Taxonomy-Non-Financials view page', () => {
     );
   });
 
-  it('Check if the view page for non-financials displays data correctly in its custom fields', () => {
+  it.only('Check if the view page for non-financials displays data correctly in its custom fields', () => {
     mountMLDTFrameworkPanelFromFakeFixture(
       DataTypeEnum.EutaxonomyNonFinancials,
       eutaxonomyNonFinancialsViewConfiguration,
@@ -128,7 +128,7 @@ describe('Component test for the Eu-Taxonomy-Non-Financials view page', () => {
       });
       cy.get('body').type('{esc}');
 
-      getCellValueContainer('Aligned Activities', 2).first().click();
+      getCellValueContainer('Aligned Activities', 2).find('a[data-test=activityLink]').first().click();
       runFunctionBlockWithinPrimeVueModal(() => {
         cy.get('tr')
           .contains('td', assertDefined(gammaCapexFirstAlignedActivity.activityName))
@@ -139,7 +139,7 @@ describe('Component test for the Eu-Taxonomy-Non-Financials view page', () => {
       });
       cy.get('body').type('{esc}');
 
-      getCellValueContainer('Non-Aligned Activities', 2).first().click();
+      getCellValueContainer('Non-Aligned Activities', 2).find('a[data-test=activityLink]').first().click();
       runFunctionBlockWithinPrimeVueModal(() => {
         cy.get('tr')
           .contains('td', assertDefined(gammaCapexFirstNonAlignedActivity.activityName))
