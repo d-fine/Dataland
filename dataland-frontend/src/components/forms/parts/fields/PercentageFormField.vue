@@ -20,7 +20,6 @@
 </template>
 
 <script lang="ts">
-// @ts-nocheck
 import UploadFormHeader from '@/components/forms/parts/elements/basic/UploadFormHeader.vue';
 import { defineComponent } from 'vue';
 import { FormKit } from '@formkit/vue';
@@ -31,8 +30,8 @@ export default defineComponent({
   components: { FormKit, UploadFormHeader },
   computed: {
     percentageFieldValue: {
-      get(): string {
-        return this.percentageFieldValueBind;
+      get(): string | undefined {
+        return this.percentageFieldValueBind?.toString();
       },
       set(newValue: string) {
         this.$emit('update:percentageFieldValueBind', newValue);
