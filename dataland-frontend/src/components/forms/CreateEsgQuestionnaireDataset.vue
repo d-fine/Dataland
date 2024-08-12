@@ -96,7 +96,6 @@
   </Card>
 </template>
 <script lang="ts">
-// @ts-nocheck
 import { FormKit } from '@formkit/vue';
 import { ApiClientProvider } from '@/services/ApiClients';
 import Card from 'primevue/card';
@@ -285,9 +284,7 @@ export default defineComponent({
       const dataResponse = await assertDefined(esgQuestionnaireDataControllerApi).getFrameworkData(dataId);
       const esgQuestionnaireResponseData = dataResponse.data;
       this.listOfFilledKpis = getFilledKpis(esgQuestionnaireResponseData.data);
-      this.companyAssociatedEsgQuestionnaireData = objectDropNull(
-        esgQuestionnaireResponseData as ObjectType
-      ) as CompanyAssociatedDataEsgQuestionnaireData;
+      this.companyAssociatedEsgQuestionnaireData = objectDropNull(esgQuestionnaireResponseData);
       this.waitingForData = false;
     },
     /**
