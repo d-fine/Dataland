@@ -6,6 +6,7 @@ import org.dataland.frameworktoolbox.specific.datamodel.Annotation
 import org.dataland.frameworktoolbox.specific.datamodel.FrameworkDataModelBuilder
 import org.dataland.frameworktoolbox.specific.datamodel.elements.ReferencedReportValidatorBuilder
 import org.dataland.frameworktoolbox.specific.frameworkregistryimports.FrameworkRegistryImportsUpdater
+import org.dataland.frameworktoolbox.specific.qamodel.FrameworkQaModelBuilder
 import org.dataland.frameworktoolbox.specific.viewconfig.elements.getKotlinFieldAccessor
 import org.dataland.frameworktoolbox.template.ExcelTemplate
 import org.dataland.frameworktoolbox.utils.DatalandRepository
@@ -52,6 +53,23 @@ abstract class InDevelopmentPavedRoadFramework(
             )
         } catch (ex: Exception) {
             logger.error("Could not build framework data-model!", ex)
+        }
+    }
+
+    private fun compileQaModel(datalandProject: DatalandRepository) {
+        if (!enabledFeatures.contains(FrameworkGenerationFeatures.QaModel)) {
+            return
+        }
+        val qaModelBuilder = FrameworkQaModelBuilder(framework)
+        customizeQaModel(qaModelBuilder)
+
+        @Suppress("TooGenericExceptionCaught")
+        try {
+            qaModelBuilder.build(
+                into = datalandProject,
+            )
+        } catch (ex: Exception) {
+            logger.error("Could not build framework QA data-model!", ex)
         }
     }
 
@@ -146,6 +164,7 @@ abstract class InDevelopmentPavedRoadFramework(
         customizeHighLevelIntermediateRepresentation(frameworkIntermediateRepresentation)
 
         compileDataModel(datalandProject)
+        compileQaModel(datalandProject)
         compileViewModel(datalandProject)
         compileUploadModel(datalandProject)
         compileFixtureGenerator(datalandProject)

@@ -158,6 +158,224 @@
         ]
       }
     },
+    "/data/sfdr/{dataId}/reports": {
+      "get": {
+        "tags": [
+          "sfdr-data-qa-report-controller"
+        ],
+        "summary": "Retrieve all QA reports.",
+        "description": "Retrieve all QA reports associated to given dataset.",
+        "operationId": "getAllQaReportsForDataset",
+        "parameters": [
+          {
+            "name": "dataId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "showInactive",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "reporterUserId",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved all QA reports.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/QaReportWithMetaInformationSfdrData"
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      },
+      "post": {
+        "tags": [
+          "sfdr-data-qa-report-controller"
+        ],
+        "summary": "Upload new QA report.",
+        "description": "The uploaded QA report is added to the database, the generated report id is returned.",
+        "operationId": "postQaReport",
+        "parameters": [
+          {
+            "name": "dataId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SfdrData"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully added QA report to dataland.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/QaReportMetaInformation"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
+    "/data/sfdr/{dataId}/reports/{qaReportId}/status": {
+      "patch": {
+        "tags": [
+          "sfdr-data-qa-report-controller"
+        ],
+        "summary": "Change the status of a QA report.",
+        "description": "The specified QA report is marked as active or inactive.",
+        "operationId": "setQaReportStatus",
+        "parameters": [
+          {
+            "name": "dataId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "qaReportId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/QaReportStatusPatch"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully marked QA report as active or inactive."
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
     "/datasets": {
       "get": {
         "tags": [
@@ -176,6 +394,74 @@
                   "items": {
                     "type": "string"
                   }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
+    "/data/sfdr/{dataId}/reports/{qaReportId}": {
+      "get": {
+        "tags": [
+          "sfdr-data-qa-report-controller"
+        ],
+        "summary": "Retrieve a QA report.",
+        "description": "Retrieve the information about a QA report.",
+        "operationId": "getQaReport",
+        "parameters": [
+          {
+            "name": "dataId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "qaReportId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved QA report.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/QaReportWithMetaInformationSfdrData"
                 }
               }
             }
@@ -444,6 +730,704 @@
           "Rejected"
         ]
       },
+      "CompanyReport": {
+        "required": [
+          "fileReference"
+        ],
+        "type": "object",
+        "properties": {
+          "fileReference": {
+            "type": "string"
+          },
+          "fileName": {
+            "type": "string"
+          },
+          "publicationDate": {
+            "type": "string",
+            "format": "date"
+          }
+        }
+      },
+      "CurrencyDataPoint": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "type": "number"
+          },
+          "quality": {
+            "type": "string",
+            "enum": [
+              "Audited",
+              "Reported",
+              "Estimated",
+              "Incomplete"
+            ]
+          },
+          "comment": {
+            "type": "string"
+          },
+          "dataSource": {
+            "$ref": "#/components/schemas/ExtendedDocumentReference"
+          },
+          "currency": {
+            "type": "string"
+          }
+        }
+      },
+      "ExtendedDataPointBigDecimal": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "type": "number"
+          },
+          "quality": {
+            "type": "string",
+            "enum": [
+              "Audited",
+              "Reported",
+              "Estimated",
+              "Incomplete"
+            ]
+          },
+          "comment": {
+            "type": "string"
+          },
+          "dataSource": {
+            "$ref": "#/components/schemas/ExtendedDocumentReference"
+          }
+        }
+      },
+      "ExtendedDataPointBigInteger": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "quality": {
+            "type": "string",
+            "enum": [
+              "Audited",
+              "Reported",
+              "Estimated",
+              "Incomplete"
+            ]
+          },
+          "comment": {
+            "type": "string"
+          },
+          "dataSource": {
+            "$ref": "#/components/schemas/ExtendedDocumentReference"
+          }
+        }
+      },
+      "ExtendedDataPointYesNoNoEvidenceFound": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "type": "string",
+            "enum": [
+              "Yes",
+              "No",
+              "NoEvidenceFound"
+            ]
+          },
+          "quality": {
+            "type": "string",
+            "enum": [
+              "Audited",
+              "Reported",
+              "Estimated",
+              "Incomplete"
+            ]
+          },
+          "comment": {
+            "type": "string"
+          },
+          "dataSource": {
+            "$ref": "#/components/schemas/ExtendedDocumentReference"
+          }
+        }
+      },
+      "ExtendedDocumentReference": {
+        "required": [
+          "fileReference"
+        ],
+        "type": "object",
+        "properties": {
+          "fileReference": {
+            "type": "string"
+          },
+          "page": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "tagName": {
+            "type": "string"
+          },
+          "fileName": {
+            "type": "string"
+          }
+        }
+      },
+      "QaReportDataPointExtendedDataPointBigDecimal": {
+        "required": [
+          "comment",
+          "correctedData",
+          "verdict"
+        ],
+        "type": "object",
+        "properties": {
+          "comment": {
+            "type": "string"
+          },
+          "verdict": {
+            "$ref": "#/components/schemas/QaReportDataPointVerdict"
+          },
+          "correctedData": {
+            "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+          }
+        }
+      },
+      "QaReportDataPointExtendedDataPointBigInteger": {
+        "required": [
+          "comment",
+          "correctedData",
+          "verdict"
+        ],
+        "type": "object",
+        "properties": {
+          "comment": {
+            "type": "string"
+          },
+          "verdict": {
+            "$ref": "#/components/schemas/QaReportDataPointVerdict"
+          },
+          "correctedData": {
+            "$ref": "#/components/schemas/ExtendedDataPointBigInteger"
+          }
+        }
+      },
+      "QaReportDataPointExtendedDataPointYesNoNoEvidenceFound": {
+        "required": [
+          "comment",
+          "correctedData",
+          "verdict"
+        ],
+        "type": "object",
+        "properties": {
+          "comment": {
+            "type": "string"
+          },
+          "verdict": {
+            "$ref": "#/components/schemas/QaReportDataPointVerdict"
+          },
+          "correctedData": {
+            "$ref": "#/components/schemas/ExtendedDataPointYesNoNoEvidenceFound"
+          }
+        }
+      },
+      "QaReportDataPointMapStringCompanyReport": {
+        "required": [
+          "comment",
+          "correctedData",
+          "verdict"
+        ],
+        "type": "object",
+        "properties": {
+          "comment": {
+            "type": "string"
+          },
+          "verdict": {
+            "$ref": "#/components/schemas/QaReportDataPointVerdict"
+          },
+          "correctedData": {
+            "type": "object",
+            "additionalProperties": {
+              "$ref": "#/components/schemas/CompanyReport"
+            }
+          }
+        }
+      },
+      "QaReportDataPointVerdict": {
+        "type": "string",
+        "enum": [
+          "QaAccepted",
+          "QaRejected",
+          "QaInconclusive",
+          "QaNotAttempted"
+        ]
+      },
+      "SfdrData": {
+        "type": "object",
+        "properties": {
+          "general": {
+            "$ref": "#/components/schemas/SfdrGeneral"
+          },
+          "environmental": {
+            "$ref": "#/components/schemas/SfdrEnvironmental"
+          },
+          "social": {
+            "$ref": "#/components/schemas/SfdrSocial"
+          }
+        }
+      },
+      "SfdrEnvironmental": {
+        "type": "object",
+        "properties": {
+          "greenhouseGasEmissions": {
+            "$ref": "#/components/schemas/SfdrEnvironmentalGreenhouseGasEmissions"
+          },
+          "energyPerformance": {
+            "$ref": "#/components/schemas/SfdrEnvironmentalEnergyPerformance"
+          },
+          "biodiversity": {
+            "$ref": "#/components/schemas/SfdrEnvironmentalBiodiversity"
+          },
+          "water": {
+            "$ref": "#/components/schemas/SfdrEnvironmentalWater"
+          },
+          "waste": {
+            "$ref": "#/components/schemas/SfdrEnvironmentalWaste"
+          },
+          "emissions": {
+            "$ref": "#/components/schemas/SfdrEnvironmentalEmissions"
+          }
+        }
+      },
+      "SfdrEnvironmentalBiodiversity": {
+        "type": "object",
+        "properties": {
+          "primaryForestAndWoodedLandOfNativeSpeciesExposure": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointYesNoNoEvidenceFound"
+          },
+          "protectedAreasExposure": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointYesNoNoEvidenceFound"
+          },
+          "rareOrEndangeredEcosystemsExposure": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointYesNoNoEvidenceFound"
+          },
+          "highlyBiodiverseGrasslandExposure": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointYesNoNoEvidenceFound"
+          },
+          "manufactureOfAgrochemicalPesticidesProducts": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointYesNoNoEvidenceFound"
+          },
+          "landDegradationDesertificationSoilSealingExposure": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointYesNoNoEvidenceFound"
+          },
+          "sustainableAgriculturePolicy": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointYesNoNoEvidenceFound"
+          },
+          "sustainableOceansAndSeasPolicy": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointYesNoNoEvidenceFound"
+          },
+          "threatenedSpeciesExposure": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointYesNoNoEvidenceFound"
+          },
+          "biodiversityProtectionPolicy": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointYesNoNoEvidenceFound"
+          },
+          "deforestationPolicy": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointYesNoNoEvidenceFound"
+          }
+        }
+      },
+      "SfdrEnvironmentalEmissions": {
+        "type": "object",
+        "properties": {
+          "emissionsOfInorganicPollutantsInTonnes": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          },
+          "emissionsOfAirPollutantsInTonnes": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          },
+          "emissionsOfOzoneDepletionSubstancesInTonnes": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          },
+          "carbonReductionInitiatives": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointYesNoNoEvidenceFound"
+          }
+        }
+      },
+      "SfdrEnvironmentalEnergyPerformance": {
+        "type": "object",
+        "properties": {
+          "renewableEnergyProductionInGWh": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          },
+          "renewableEnergyConsumptionInGWh": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          },
+          "nonRenewableEnergyProductionInGWh": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          },
+          "relativeNonRenewableEnergyProductionInPercent": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          },
+          "nonRenewableEnergyConsumptionInGWh": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          },
+          "relativeNonRenewableEnergyConsumptionInPercent": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          },
+          "applicableHighImpactClimateSectors": {
+            "type": "object",
+            "additionalProperties": {
+              "$ref": "#/components/schemas/SfdrHighImpactClimateSectorEnergyConsumption"
+            }
+          },
+          "totalHighImpactClimateSectorEnergyConsumptionInGWh": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          },
+          "nonRenewableEnergyConsumptionFossilFuelsInGWh": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          },
+          "nonRenewableEnergyConsumptionCrudeOilInGWh": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          },
+          "nonRenewableEnergyConsumptionNaturalGasInGWh": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          },
+          "nonRenewableEnergyConsumptionLigniteInGWh": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          },
+          "nonRenewableEnergyConsumptionCoalInGWh": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          },
+          "nonRenewableEnergyConsumptionNuclearEnergyInGWh": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          },
+          "nonRenewableEnergyConsumptionOtherInGWh": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          }
+        }
+      },
+      "SfdrEnvironmentalGreenhouseGasEmissions": {
+        "type": "object",
+        "properties": {
+          "scope1GhgEmissionsInTonnes": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          },
+          "scope2GhgEmissionsInTonnes": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          },
+          "scope2GhgEmissionsLocationBasedInTonnes": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          },
+          "scope2GhgEmissionsMarketBasedInTonnes": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          },
+          "scope1And2GhgEmissionsInTonnes": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          },
+          "scope1And2GhgEmissionsLocationBasedInTonnes": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          },
+          "scope1And2GhgEmissionsMarketBasedInTonnes": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          },
+          "scope3GhgEmissionsInTonnes": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          },
+          "scope1And2And3GhgEmissionsInTonnes": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          },
+          "scope1And2And3GhgEmissionsLocationBasedInTonnes": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          },
+          "scope1And2And3GhgEmissionsMarketBasedInTonnes": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          },
+          "enterpriseValue": {
+            "$ref": "#/components/schemas/CurrencyDataPoint"
+          },
+          "totalRevenue": {
+            "$ref": "#/components/schemas/CurrencyDataPoint"
+          },
+          "carbonFootprintInTonnesPerMillionEURRevenue": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          },
+          "ghgIntensityInTonnesPerMillionEURRevenue": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          },
+          "fossilFuelSectorExposure": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointYesNoNoEvidenceFound"
+          }
+        }
+      },
+      "SfdrEnvironmentalWaste": {
+        "type": "object",
+        "properties": {
+          "hazardousAndRadioactiveWasteInTonnes": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          },
+          "nonRecycledWasteInTonnes": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          }
+        }
+      },
+      "SfdrEnvironmentalWater": {
+        "type": "object",
+        "properties": {
+          "emissionsToWaterInTonnes": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          },
+          "waterConsumptionInCubicMeters": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          },
+          "waterReusedInCubicMeters": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          },
+          "relativeWaterUsageInCubicMetersPerMillionEURRevenue": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          },
+          "waterManagementPolicy": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointYesNoNoEvidenceFound"
+          },
+          "highWaterStressAreaExposure": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointYesNoNoEvidenceFound"
+          }
+        }
+      },
+      "SfdrGeneral": {
+        "type": "object",
+        "properties": {
+          "general": {
+            "$ref": "#/components/schemas/SfdrGeneralGeneral"
+          }
+        }
+      },
+      "SfdrGeneralGeneral": {
+        "type": "object",
+        "properties": {
+          "referencedReports": {
+            "$ref": "#/components/schemas/QaReportDataPointMapStringCompanyReport"
+          }
+        }
+      },
+      "SfdrHighImpactClimateSectorEnergyConsumption": {
+        "type": "object",
+        "properties": {
+          "highImpactClimateSectorEnergyConsumptionInGWh": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          },
+          "highImpactClimateSectorEnergyConsumptionInGWhPerMillionEURRevenue": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          }
+        }
+      },
+      "SfdrSocial": {
+        "type": "object",
+        "properties": {
+          "socialAndEmployeeMatters": {
+            "$ref": "#/components/schemas/SfdrSocialSocialAndEmployeeMatters"
+          },
+          "greenSecurities": {
+            "$ref": "#/components/schemas/SfdrSocialGreenSecurities"
+          },
+          "humanRights": {
+            "$ref": "#/components/schemas/SfdrSocialHumanRights"
+          },
+          "antiCorruptionAndAntiBribery": {
+            "$ref": "#/components/schemas/SfdrSocialAntiCorruptionAndAntiBribery"
+          }
+        }
+      },
+      "SfdrSocialAntiCorruptionAndAntiBribery": {
+        "type": "object",
+        "properties": {
+          "casesOfInsufficientActionAgainstBriberyAndCorruption": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigInteger"
+          },
+          "reportedConvictionsOfBriberyAndCorruption": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigInteger"
+          },
+          "totalAmountOfReportedFinesOfBriberyAndCorruption": {
+            "$ref": "#/components/schemas/CurrencyDataPoint"
+          }
+        }
+      },
+      "SfdrSocialGreenSecurities": {
+        "type": "object",
+        "properties": {
+          "securitiesNotCertifiedAsGreen": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointYesNoNoEvidenceFound"
+          }
+        }
+      },
+      "SfdrSocialHumanRights": {
+        "type": "object",
+        "properties": {
+          "humanRightsPolicy": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointYesNoNoEvidenceFound"
+          },
+          "humanRightsDueDiligence": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointYesNoNoEvidenceFound"
+          },
+          "traffickingInHumanBeingsPolicy": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointYesNoNoEvidenceFound"
+          },
+          "reportedChildLabourIncidents": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointYesNoNoEvidenceFound"
+          },
+          "reportedForcedOrCompulsoryLabourIncidents": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointYesNoNoEvidenceFound"
+          },
+          "numberOfReportedIncidentsOfHumanRightsViolations": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigInteger"
+          }
+        }
+      },
+      "SfdrSocialSocialAndEmployeeMatters": {
+        "type": "object",
+        "properties": {
+          "humanRightsLegalProceedings": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointYesNoNoEvidenceFound"
+          },
+          "iloCoreLabourStandards": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointYesNoNoEvidenceFound"
+          },
+          "environmentalPolicy": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointYesNoNoEvidenceFound"
+          },
+          "corruptionLegalProceedings": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointYesNoNoEvidenceFound"
+          },
+          "transparencyDisclosurePolicy": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointYesNoNoEvidenceFound"
+          },
+          "humanRightsDueDiligencePolicy": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointYesNoNoEvidenceFound"
+          },
+          "policyAgainstChildLabour": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointYesNoNoEvidenceFound"
+          },
+          "policyAgainstForcedLabour": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointYesNoNoEvidenceFound"
+          },
+          "policyAgainstDiscriminationInTheWorkplace": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointYesNoNoEvidenceFound"
+          },
+          "iso14001Certificate": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointYesNoNoEvidenceFound"
+          },
+          "policyAgainstBriberyAndCorruption": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointYesNoNoEvidenceFound"
+          },
+          "fairBusinessMarketingAdvertisingPolicy": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointYesNoNoEvidenceFound"
+          },
+          "technologiesExpertiseTransferPolicy": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointYesNoNoEvidenceFound"
+          },
+          "fairCompetitionPolicy": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointYesNoNoEvidenceFound"
+          },
+          "violationOfTaxRulesAndRegulation": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointYesNoNoEvidenceFound"
+          },
+          "unGlobalCompactPrinciplesCompliancePolicy": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointYesNoNoEvidenceFound"
+          },
+          "oecdGuidelinesForMultinationalEnterprisesGrievanceHandling": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointYesNoNoEvidenceFound"
+          },
+          "averageGrossHourlyEarningsMaleEmployees": {
+            "$ref": "#/components/schemas/CurrencyDataPoint"
+          },
+          "averageGrossHourlyEarningsFemaleEmployees": {
+            "$ref": "#/components/schemas/CurrencyDataPoint"
+          },
+          "unadjustedGenderPayGapInPercent": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          },
+          "femaleBoardMembers": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigInteger"
+          },
+          "maleBoardMembers": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigInteger"
+          },
+          "boardGenderDiversityInPercent": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          },
+          "controversialWeaponsExposure": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointYesNoNoEvidenceFound"
+          },
+          "workplaceAccidentPreventionPolicy": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointYesNoNoEvidenceFound"
+          },
+          "rateOfAccidentsInPercent": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          },
+          "workdaysLostInDays": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          },
+          "supplierCodeOfConduct": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointYesNoNoEvidenceFound"
+          },
+          "grievanceHandlingMechanism": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointYesNoNoEvidenceFound"
+          },
+          "whistleblowerProtectionPolicy": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointYesNoNoEvidenceFound"
+          },
+          "reportedIncidentsOfDiscrimination": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigInteger"
+          },
+          "sanctionedIncidentsOfDiscrimination": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigInteger"
+          },
+          "ceoToEmployeePayGapRatio": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          },
+          "excessiveCeoPayRatioInPercent": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          }
+        }
+      },
+      "QaReportMetaInformation": {
+        "required": [
+          "active",
+          "dataId",
+          "dataType",
+          "qaReportId",
+          "uploadTime"
+        ],
+        "type": "object",
+        "properties": {
+          "dataId": {
+            "type": "string"
+          },
+          "dataType": {
+            "type": "string"
+          },
+          "qaReportId": {
+            "type": "string"
+          },
+          "reporterUserId": {
+            "type": "string"
+          },
+          "uploadTime": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "active": {
+            "type": "boolean"
+          }
+        }
+      },
+      "QaReportStatusPatch": {
+        "required": [
+          "active"
+        ],
+        "type": "object",
+        "properties": {
+          "active": {
+            "type": "boolean"
+          }
+        }
+      },
       "ReviewInformationResponse": {
         "required": [
           "dataId",
@@ -467,6 +1451,21 @@
           },
           "message": {
             "type": "string"
+          }
+        }
+      },
+      "QaReportWithMetaInformationSfdrData": {
+        "required": [
+          "metaInfo",
+          "report"
+        ],
+        "type": "object",
+        "properties": {
+          "metaInfo": {
+            "$ref": "#/components/schemas/QaReportMetaInformation"
+          },
+          "report": {
+            "$ref": "#/components/schemas/SfdrData"
           }
         }
       },

@@ -1,4 +1,4 @@
-package org.dataland.e2etests.utils
+package org.dataland.e2etests.utils.testDataProvivders
 
 import org.dataland.datalandbackend.openApiClient.model.CompanyInformation
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum

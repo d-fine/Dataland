@@ -34,6 +34,8 @@ import org.dataland.e2etests.auth.TechnicalUser
 import org.dataland.e2etests.customApiControllers.UnauthorizedCompanyDataControllerApi
 import org.dataland.e2etests.customApiControllers.UnauthorizedEuTaxonomyDataNonFinancialsControllerApi
 import org.dataland.e2etests.customApiControllers.UnauthorizedMetaDataControllerApi
+import org.dataland.e2etests.utils.testDataProvivders.FrameworkTestDataProvider
+import org.dataland.e2etests.utils.testDataProvivders.GeneralTestDataProvider
 
 class ApiAccessor {
 

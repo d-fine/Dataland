@@ -77,7 +77,7 @@ class FrameworkDataModelBuilder(
      */
     fun build(into: DatalandRepository, buildApiController: Boolean, privateFrameworkBoolean: Boolean) {
         logger.info("Starting to build to backend data-model into the dataland-repository at ${into.path}")
-        rootPackageBuilder.build(into)
+        rootPackageBuilder.build(into.backendKotlinSrc)
 
         if (buildApiController) {
             buildFrameworkSpecificApiController(into, privateFrameworkBoolean)
