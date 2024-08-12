@@ -200,7 +200,7 @@ export default defineComponent({
   props: {
     ...FormFieldPropsWithPlaceholder,
     checkValueValidity: {
-      type: Function as unknown as () => (dataPoint: unknown) => boolean,
+      type: Function as () => (dataPoint: ExtendedDataPoint<unknown>) => boolean,
       default: (): boolean => false,
     },
     isDataPointToggleable: {
