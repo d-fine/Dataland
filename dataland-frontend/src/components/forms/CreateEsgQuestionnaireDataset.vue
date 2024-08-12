@@ -131,7 +131,7 @@ import YesNoNaFormField from '@/components/forms/parts/fields/YesNoNaFormField.v
 import UploadReports from '@/components/forms/parts/UploadReports.vue';
 import PercentageFormField from '@/components/forms/parts/fields/PercentageFormField.vue';
 import ProductionSitesFormField from '@/components/forms/parts/fields/ProductionSitesFormField.vue';
-import { objectDropNull, type ObjectType } from '@/utils/UpdateObjectUtils';
+import { objectDropNull } from '@/utils/UpdateObjectUtils';
 import { smoothScroll } from '@/utils/SmoothScroll';
 import { type DocumentToUpload, uploadFiles } from '@/utils/FileUploadUtils';
 import MostImportantProductsFormField from '@/components/forms/parts/fields/MostImportantProductsFormField.vue';

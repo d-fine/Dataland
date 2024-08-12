@@ -7,7 +7,7 @@ import DataPointFormWithToggle from '@/components/forms/parts/kpiSelection/DataP
 import { UploadReports } from '@sharedUtils/components/UploadReports';
 import { selectItemFromDropdownByIndex, selectItemFromDropdownByValue } from '@sharedUtils/Dropdown';
 import { getFilledKpis } from '@/utils/DataPoint';
-import { getMountingFunction } from '../../testUtils/Mount';
+import { getMountingFunction } from '@ct/testUtils/Mount';
 
 describe('Component tests for the Eu Taxonomy for non financials that test dependent fields', () => {
   const uploadReports = new UploadReports('referencedReports');
@@ -318,11 +318,13 @@ describe('Component tests for the Eu Taxonomy for non financials that test depen
     cy.stub(DataPointFormWithToggle);
     getMountingFunction({
       keycloak: minimalKeycloakMock(),
-    })(CreateEuTaxonomyNonFinancials, {
-      props: {
-        companyID: 'company-id-does-not-matter-in-this-test',
+      dialogOptions: {
+        mountWithDialog: true,
+        propsToPassToTheMountedComponent: {
+          companyID: 'company-id-does-not-matter-in-this-test',
+        },
       },
-    }).then(() => {
+    })(CreateEuTaxonomyNonFinancials).then(() => {
       checkFileWithExistingFilenameOpensDialogWithWarning();
       checkFileWithIllegalCharacterOpensDialogWithWarning();
       checkExistingFilenameDialogDidNotBreakSubsequentSelection();
