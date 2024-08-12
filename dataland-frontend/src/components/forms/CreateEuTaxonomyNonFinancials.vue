@@ -120,7 +120,6 @@
   </Card>
 </template>
 <script lang="ts">
-// @ts-nocheck
 import { FormKit } from '@formkit/vue';
 import { ApiClientProvider } from '@/services/ApiClients';
 import Card from 'primevue/card';
@@ -315,9 +314,7 @@ export default defineComponent({
         this.reportingPeriod = new Date(euTaxonomyNonFinancialsResponseData.reportingPeriod);
       }
       this.referencedReportsForPrefill = euTaxonomyNonFinancialsResponseData.data.general?.referencedReports ?? {};
-      this.companyAssociatedEutaxonomyNonFinancialsData = objectDropNull(
-        euTaxonomyNonFinancialsResponseData as ObjectType
-      ) as CompanyAssociatedDataEutaxonomyNonFinancialsData;
+      this.companyAssociatedEutaxonomyNonFinancialsData = objectDropNull(euTaxonomyNonFinancialsResponseData);
       this.waitingForData = false;
     },
 
