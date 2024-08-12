@@ -26,7 +26,7 @@ export type DataPointDisplay = {
  * @param dataPoint.value the value of the potential data point
  * @returns the result of the evaluation
  */
-export function hasDataPointProperValue(dataPoint: { value: unknown }): boolean {
+export function hasDataPointProperValue(dataPoint: ExtendedDataPoint<unknown>): boolean {
   return dataPoint.value != undefined && dataPoint.value != '';
 }
 
