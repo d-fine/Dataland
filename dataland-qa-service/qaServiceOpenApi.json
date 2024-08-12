@@ -20,77 +20,6 @@
     }
   ],
   "paths": {
-    "/data/sfdr/{dataId}/reports/{qaReportId}/status": {
-      "put": {
-        "tags": [
-          "sfdr-data-qa-report-controller"
-        ],
-        "summary": "Change the status of a QA report.",
-        "description": "The specified QA report is marked as active or inactive.",
-        "operationId": "setQaReportStatus",
-        "parameters": [
-          {
-            "name": "dataId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "qaReportId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/QaReportStatusPatch"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "Successfully marked QA report as active or inactive."
-          },
-          "default": {
-            "description": "An error occurred",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "headers": {
-              "WWW-Authenticate": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "default-oauth": []
-          },
-          {
-            "default-bearer-auth": []
-          }
-        ]
-      }
-    },
     "/datasets/{dataId}": {
       "get": {
         "tags": [
@@ -234,8 +163,8 @@
         "tags": [
           "sfdr-data-qa-report-controller"
         ],
-        "summary": "retrieve all QA reports.",
-        "description": "retrieve all QA reports associated to given dataset.",
+        "summary": "Retrieve all QA reports.",
+        "description": "Retrieve all QA reports associated to given dataset.",
         "operationId": "getAllQaReportsForDataset",
         "parameters": [
           {
@@ -376,6 +305,77 @@
         ]
       }
     },
+    "/data/sfdr/{dataId}/reports/{qaReportId}/status": {
+      "patch": {
+        "tags": [
+          "sfdr-data-qa-report-controller"
+        ],
+        "summary": "Change the status of a QA report.",
+        "description": "The specified QA report is marked as active or inactive.",
+        "operationId": "setQaReportStatus",
+        "parameters": [
+          {
+            "name": "dataId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "qaReportId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/QaReportStatusPatch"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully marked QA report as active or inactive."
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
     "/datasets": {
       "get": {
         "tags": [
@@ -434,8 +434,8 @@
         "tags": [
           "sfdr-data-qa-report-controller"
         ],
-        "summary": "retrieve a QA report.",
-        "description": "retrieve the information about a QA report.",
+        "summary": "Retrieve a QA report.",
+        "description": "Retrieve the information about a QA report.",
         "operationId": "getQaReport",
         "parameters": [
           {
@@ -722,17 +722,6 @@
   },
   "components": {
     "schemas": {
-      "QaReportStatusPatch": {
-        "required": [
-          "active"
-        ],
-        "type": "object",
-        "properties": {
-          "active": {
-            "type": "boolean"
-          }
-        }
-      },
       "QaStatus": {
         "type": "string",
         "enum": [
@@ -1423,6 +1412,17 @@
             "type": "integer",
             "format": "int64"
           },
+          "active": {
+            "type": "boolean"
+          }
+        }
+      },
+      "QaReportStatusPatch": {
+        "required": [
+          "active"
+        ],
+        "type": "object",
+        "properties": {
           "active": {
             "type": "boolean"
           }
