@@ -10,9 +10,9 @@ import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.repor
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PatchMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestParam
 
@@ -62,7 +62,7 @@ interface QaReportApi<QaReportType> {
             ApiResponse(responseCode = "200", description = "Successfully marked QA report as active or inactive."),
         ],
     )
-    @PutMapping(
+    @PatchMapping(
         value = ["/{dataId}/reports/{qaReportId}/status"],
         produces = ["application/json"],
     )
@@ -80,8 +80,8 @@ interface QaReportApi<QaReportType> {
      * @return information about the QA report
      */
     @Operation(
-        summary = "retrieve a QA report.",
-        description = "retrieve the information about a QA report.",
+        summary = "Retrieve a QA report.",
+        description = "Retrieve the information about a QA report.",
     )
     @ApiResponses(
         value = [
@@ -106,8 +106,8 @@ interface QaReportApi<QaReportType> {
      * @return information about all QA reports associated with the data id
      */
     @Operation(
-        summary = "retrieve all QA reports.",
-        description = "retrieve all QA reports associated to given dataset.",
+        summary = "Retrieve all QA reports.",
+        description = "Retrieve all QA reports associated to given dataset.",
     )
     @ApiResponses(
         value = [
