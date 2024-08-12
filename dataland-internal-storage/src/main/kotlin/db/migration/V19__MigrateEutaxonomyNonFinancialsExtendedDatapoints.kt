@@ -31,6 +31,8 @@ class V19__MigrateEutaxonomyNonFinancialsExtendedDatapoints : BaseJavaMigration(
         "absoluteShare",
         "fiscalYearEnd",
         "fiscalYearDeviation",
+        "alignedActivities",
+        "nonAlignedActivities",
     )
 
     /**
