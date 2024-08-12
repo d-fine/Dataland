@@ -16,6 +16,9 @@ data class TypeReference(
     val imports: Set<String>
         get() = setOf(fullyQualifiedName) + (genericTypeParameters?.flatMap { it.imports } ?: emptySet())
 
+    val name: String =
+        fullyQualifiedName.substringAfterLast(".")
+
     val shortenedQualifier: String
         get() {
             val optionalSuffix = if (nullable) "?" else ""

@@ -121,10 +121,10 @@ export function calculateReferenceableFiles(inputArray: DocumentToUpload[] | Sto
  * @returns fileReference of the given fileName
  */
 export function getFileReferenceByFileName(
-  currentReportValue: string,
+  currentReportValue: string | null,
   injectReportsNameAndReferences: ObjectType
 ): string {
-  if (currentReportValue in injectReportsNameAndReferences) {
+  if (currentReportValue && currentReportValue in injectReportsNameAndReferences) {
     const value = injectReportsNameAndReferences[currentReportValue];
     if (typeof value === 'string') {
       return value;

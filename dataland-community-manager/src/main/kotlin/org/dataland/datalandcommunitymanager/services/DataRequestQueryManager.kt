@@ -4,14 +4,15 @@ import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandcommunitymanager.entities.DataRequestEntity
 import org.dataland.datalandcommunitymanager.exceptions.DataRequestNotFoundApiException
+import org.dataland.datalandcommunitymanager.model.dataRequest.AccessStatus
 import org.dataland.datalandcommunitymanager.model.dataRequest.AggregatedDataRequest
 import org.dataland.datalandcommunitymanager.model.dataRequest.ExtendedStoredDataRequest
 import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
 import org.dataland.datalandcommunitymanager.model.dataRequest.StoredDataRequest
 import org.dataland.datalandcommunitymanager.repositories.DataRequestRepository
 import org.dataland.datalandcommunitymanager.utils.DataRequestLogger
+import org.dataland.datalandcommunitymanager.utils.DataRequestProcessingUtils
 import org.dataland.datalandcommunitymanager.utils.GetDataRequestsSearchFilter
-import org.dataland.datalandcommunitymanager.utils.getDataTypeEnumForFrameworkName
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
@@ -26,6 +27,7 @@ class DataRequestQueryManager(
     @Autowired private val dataRequestRepository: DataRequestRepository,
     @Autowired private val dataRequestLogger: DataRequestLogger,
     @Autowired private val companyDataControllerApi: CompanyDataControllerApi,
+    @Autowired private val processingUtils: DataRequestProcessingUtils,
 ) {
 
     /** This method retrieves all the data requests for the current user from the database and logs a message.
@@ -78,7 +80,7 @@ class DataRequestQueryManager(
             )
         val aggregatedDataRequests = aggregatedDataRequestEntities.map { aggregatedDataRequestEntity ->
             AggregatedDataRequest(
-                getDataTypeEnumForFrameworkName(aggregatedDataRequestEntity.dataType),
+                processingUtils.getDataTypeEnumForFrameworkName(aggregatedDataRequestEntity.dataType),
                 aggregatedDataRequestEntity.reportingPeriod,
                 aggregatedDataRequestEntity.datalandCompanyId,
                 aggregatedDataRequestEntity.requestStatus,
@@ -115,6 +117,7 @@ class DataRequestQueryManager(
         dataType: DataTypeEnum?,
         userId: String?,
         requestStatus: RequestStatus?,
+        accessStatus: AccessStatus?,
         reportingPeriod: String?,
         datalandCompanyId: String?,
     ): List<StoredDataRequest>? {
@@ -122,6 +125,7 @@ class DataRequestQueryManager(
             dataTypeFilter = dataType?.value ?: "",
             userIdFilter = userId ?: "",
             requestStatus = requestStatus,
+            accessStatus = accessStatus,
             reportingPeriodFilter = reportingPeriod ?: "",
             datalandCompanyIdFilter = datalandCompanyId ?: "",
         )

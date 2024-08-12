@@ -91,7 +91,7 @@ class DataRequestResponseEmailSenderTest {
             listOf("eutaxonomy-non-financials", "EU Taxonomy for non-financial companies"),
             listOf("lksg", "LkSG"),
             listOf("sfdr", "SFDR"),
-            listOf("sme", "SME"),
+            listOf("vsme", "VSME"),
             listOf("esg-questionnaire", "ESG Questionnaire"),
             listOf("heimathafen", "Heimathafen"),
         )

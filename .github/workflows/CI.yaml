@@ -138,6 +138,8 @@ jobs:
           cache: gradle
       - name: Build framework '${{ matrix.framework }}'
         run: ./gradlew dataland-framework-toolbox:runCoverage --args='${{ matrix.framework }}' --no-daemon --stacktrace
+        env:
+          DATALAND_QA_SERVICE_CLIENT_SECRET: "dummy"
       - name: Verify that there are no changed (git-tracked) files
         run: ./testing/verify_that_no_git_tracked_files_changed.sh
       - run: mv ./dataland-framework-toolbox/build/jacoco/runCoverage.exec ./dataland-framework-toolbox/build/jacoco/runCoverage-${{ matrix.framework }}.exec

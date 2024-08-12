@@ -32,6 +32,14 @@ sealed interface DocumentSupport {
     fun getJvmTypeReference(innerType: TypeReference, nullable: Boolean): TypeReference
 
     /**
+     * Calculate the JVM type-reference for a QA-DataPoint of type innerType given the current DocumentSupport
+     * requirements
+     * @param innerType the type of the datapoint
+     * @param nullable true iff the datapoint should be nullable
+     */
+    fun getQaJvmTypeReference(innerType: TypeReference, nullable: Boolean): TypeReference?
+
+    /**
      * Calculate a list of annotations that must be applied to JVM-types in the backend using this
      * document-support class.
      */

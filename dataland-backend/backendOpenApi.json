@@ -11663,12 +11663,11 @@
             ]
           },
           "nonAlignedActivities": {
+            "type": "array",
             "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ExtendedDataPointListEuTaxonomyActivity"
-              }
-            ]
+            "items": {
+              "$ref": "#/components/schemas/EuTaxonomyActivity"
+            }
           },
           "alignedShare": {
             "nullable": true,
@@ -11727,12 +11726,11 @@
             ]
           },
           "alignedActivities": {
+            "type": "array",
             "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ExtendedDataPointListEuTaxonomyAlignedActivity"
-              }
-            ]
+            "items": {
+              "$ref": "#/components/schemas/EuTaxonomyAlignedActivity"
+            }
           },
           "enablingShareInPercent": {
             "nullable": true,
@@ -11985,12 +11983,11 @@
             ]
           },
           "nonAlignedActivities": {
+            "type": "array",
             "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ExtendedDataPointListEuTaxonomyActivity"
-              }
-            ]
+            "items": {
+              "$ref": "#/components/schemas/EuTaxonomyActivity"
+            }
           },
           "alignedShare": {
             "nullable": true,
@@ -12049,12 +12046,11 @@
             ]
           },
           "alignedActivities": {
+            "type": "array",
             "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ExtendedDataPointListEuTaxonomyAlignedActivity"
-              }
-            ]
+            "items": {
+              "$ref": "#/components/schemas/EuTaxonomyAlignedActivity"
+            }
           },
           "enablingShareInPercent": {
             "nullable": true,
@@ -12194,12 +12190,11 @@
             ]
           },
           "nonAlignedActivities": {
+            "type": "array",
             "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ExtendedDataPointListEuTaxonomyActivity"
-              }
-            ]
+            "items": {
+              "$ref": "#/components/schemas/EuTaxonomyActivity"
+            }
           },
           "alignedShare": {
             "nullable": true,
@@ -12258,12 +12253,11 @@
             ]
           },
           "alignedActivities": {
+            "type": "array",
             "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ExtendedDataPointListEuTaxonomyAlignedActivity"
-              }
-            ]
+            "items": {
+              "$ref": "#/components/schemas/EuTaxonomyAlignedActivity"
+            }
           },
           "enablingShareInPercent": {
             "nullable": true,
@@ -12377,70 +12371,6 @@
                 "$ref": "#/components/schemas/EutaxonomyNonFinancialsGeneralFiscalYearDeviationOptions"
               }
             ]
-          },
-          "quality": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/QualityOptions"
-              }
-            ]
-          },
-          "comment": {
-            "type": "string",
-            "nullable": true
-          },
-          "dataSource": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ExtendedDocumentReference"
-              }
-            ]
-          }
-        }
-      },
-      "ExtendedDataPointListEuTaxonomyActivity": {
-        "type": "object",
-        "properties": {
-          "value": {
-            "type": "array",
-            "nullable": true,
-            "items": {
-              "$ref": "#/components/schemas/EuTaxonomyActivity"
-            }
-          },
-          "quality": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/QualityOptions"
-              }
-            ]
-          },
-          "comment": {
-            "type": "string",
-            "nullable": true
-          },
-          "dataSource": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ExtendedDocumentReference"
-              }
-            ]
-          }
-        }
-      },
-      "ExtendedDataPointListEuTaxonomyAlignedActivity": {
-        "type": "object",
-        "properties": {
-          "value": {
-            "type": "array",
-            "nullable": true,
-            "items": {
-              "$ref": "#/components/schemas/EuTaxonomyAlignedActivity"
-            }
           },
           "quality": {
             "nullable": true,
@@ -14922,13 +14852,10 @@
         ],
         "type": "object",
         "properties": {
-          "companyId": {
-            "type": "string"
-          },
           "companyName": {
             "type": "string"
           },
-          "countryCode": {
+          "companyId": {
             "type": "string"
           },
           "headquarters": {
@@ -14937,6 +14864,9 @@
           "sector": {
             "type": "string",
             "nullable": true
+          },
+          "countryCode": {
+            "type": "string"
           },
           "lei": {
             "type": "string",
@@ -14963,10 +14893,10 @@
         ],
         "type": "object",
         "properties": {
-          "companyId": {
+          "companyName": {
             "type": "string"
           },
-          "companyName": {
+          "companyId": {
             "type": "string"
           }
         }

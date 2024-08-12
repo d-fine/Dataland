@@ -77,7 +77,7 @@ export default defineComponent({
       const dataSource = this.dialogData.dataPointDisplay.dataSource;
       if (!dataSource) return '';
       if ('page' in dataSource) {
-        return `${dataSource.fileName}, page ${dataSource.page}`;
+        return dataSource.page === null ? `${dataSource.fileName}` : `${dataSource.fileName}, page ${dataSource.page}`;
       } else {
         return dataSource.fileName ?? '';
       }

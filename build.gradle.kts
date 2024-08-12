@@ -57,21 +57,21 @@ dependencies {
 java.sourceCompatibility = jvmVersion
 
 plugins {
-    id("com.github.jk1.dependency-license-report")
-    id("io.gitlab.arturbosch.detekt")
-    id("com.github.node-gradle.node") apply false
-    id("org.springframework.boot") apply false
-    id("org.jlleitschuh.gradle.ktlint")
-    kotlin("jvm")
-    kotlin("plugin.spring") apply false
-    id("org.sonarqube")
+    alias(libs.plugins.com.github.jk1.dependency.license.report)
+    alias(libs.plugins.io.gitlab.arturbosch.detekt)
+    alias(libs.plugins.com.github.node.gradle.node) apply false
+    alias(libs.plugins.org.springframework.boot) apply false
+    alias(libs.plugins.org.jlleitschuh.gradle.ktlint)
+    alias(libs.plugins.org.jetbrains.kotlin.jvm)
+    alias(libs.plugins.org.jetbrains.kotlin.plugin.spring) apply false
+    alias(libs.plugins.org.sonarqube)
     jacoco
-    id("org.springdoc.openapi-gradle-plugin") apply false
-    id("com.gorylenko.gradle-git-properties") apply false
-    id("org.openapi.generator") apply false
-    id("com.github.ben-manes.versions")
-    id("org.jetbrains.kotlin.plugin.jpa") apply false
-    kotlin("plugin.serialization") apply false
+    alias(libs.plugins.org.springdoc.openapi.gradle.plugin) apply false
+    alias(libs.plugins.com.gorylenko.gradle.git.properties) apply false
+    alias(libs.plugins.org.openapi.generator) apply false
+    alias(libs.plugins.com.github.ben.manes.versions)
+    alias(libs.plugins.org.jetbrains.kotlin.plugin.jpa) apply false
+    alias(libs.plugins.org.jetbrains.kotlin.plugin.serialization) apply false
 }
 
 sonar {
@@ -152,7 +152,10 @@ sonar {
                 // backend
                 "dataland-backend/src/main/kotlin/org/dataland/datalandbackend/frameworks/**," +
                 "dataland-backend/src/main/kotlin/org/dataland/datalandbackend/model/enums/eutaxonomy/nonfinancials/" +
-                "Activity.kt",
+                "Activity.kt," +
+
+                // qa-service
+                "dataland-qa-service/src/main/kotlin/org/dataland/datalandqaservice/frameworks/**",
         )
     }
 }

@@ -1,9 +1,7 @@
-// @ts-nocheck
 import ShowMultipleReportsBanner from '@/components/resources/frameworkDataSearch/ShowMultipleReportsBanner.vue';
 import { minimalKeycloakMock } from '@ct/testUtils/Keycloak';
 import {
   Activity,
-  type CompanyReport,
   type CurrencyDataPoint,
   DataTypeEnum,
   type EuTaxonomyActivity,
@@ -22,6 +20,7 @@ import {
   getSectionHead,
 } from '@sharedUtils/components/resources/dataTable/MultiLayerDataTableTestUtils';
 import { runFunctionBlockWithinPrimeVueModal } from '@sharedUtils/ElementChecks';
+import { getMountingFunction } from '@ct/testUtils/Mount';
 
 describe('Component test for the Eu-Taxonomy-Non-Financials view page', () => {
   let fixturesForTests: FixtureData<EutaxonomyNonFinancialsData>[];
@@ -90,9 +89,10 @@ describe('Component test for the Eu-Taxonomy-Non-Financials view page', () => {
         amount: assertDefined(gammaCapexTotalAmount.value),
         currency: assertDefined(gammaCapexTotalAmount.currency),
       });
-      const gammaTotalAlignedCapexAbsoluteShareString = formatAmountWithCurrency(
-        assertDefined(gammaCapex.alignedShare?.absoluteShare?.value)
-      );
+      const gammaTotalAlignedCapexAbsoluteShareString = formatAmountWithCurrency({
+        amount: assertDefined(gammaCapex.alignedShare?.absoluteShare?.value),
+        currency: assertDefined(gammaCapex.alignedShare?.absoluteShare?.currency),
+      });
       const gammaContributionToClimateChangeMitigation = roundNumber(
         assertDefined(gammaCapex.substantialContributionToClimateChangeMitigationInPercent?.value),
         2
@@ -156,21 +156,19 @@ describe('Component test for the Eu-Taxonomy-Non-Financials view page', () => {
 
   it('Checks if the reports banner and the corresponding modal is properly displayed', () => {
     const allReportingPeriods = fixturesForTests.map((it) => it.reportingPeriod);
-    const allReports = fixturesForTests.map((it) => assertDefined(it.t.general).referencedReports);
+    const allReports = fixturesForTests.map((it) => assertDefined(it.t.general?.referencedReports));
     const expectedLatestReportingPeriod = allReportingPeriods[0];
-    const nameOfFirstReportOfExpectedLatestReportingPeriod = Object.keys(
-      allReports[0] as Record<string, CompanyReport>
-    )[0];
-    cy.mountWithDialog(
-      ShowMultipleReportsBanner,
-      {
-        keycloak: minimalKeycloakMock({}),
+    const nameOfFirstReportOfExpectedLatestReportingPeriod = Object.keys(allReports[0])[0];
+    getMountingFunction({
+      keycloak: minimalKeycloakMock(),
+      dialogOptions: {
+        mountWithDialog: true,
+        propsToPassToTheMountedComponent: {
+          reports: allReports,
+          reportingPeriods: allReportingPeriods,
+        },
       },
-      {
-        reports: allReports,
-        reportingPeriods: allReportingPeriods,
-      }
-    ).then(() => {
+    })(ShowMultipleReportsBanner).then(() => {
       cy.get(`[data-test="frameworkNewDataTableTitle"`).contains(
         `Data extracted from the company report. Company Reports (${expectedLatestReportingPeriod})`
       );

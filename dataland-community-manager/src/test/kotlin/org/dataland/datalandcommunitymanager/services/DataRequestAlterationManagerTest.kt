@@ -5,41 +5,42 @@ import org.dataland.datalandbackend.openApiClient.model.DataMetaInformation
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandbackend.openApiClient.model.QaStatus
 import org.dataland.datalandcommunitymanager.entities.DataRequestEntity
+import org.dataland.datalandcommunitymanager.model.dataRequest.AccessStatus
 import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
 import org.dataland.datalandcommunitymanager.model.dataRequest.StoredDataRequestMessageObject
 import org.dataland.datalandcommunitymanager.repositories.DataRequestRepository
-import org.dataland.datalandcommunitymanager.services.messaging.DataRequestResponseEmailSender
-import org.dataland.datalandcommunitymanager.services.messaging.SingleDataRequestEmailMessageSender
 import org.dataland.datalandcommunitymanager.utils.DataRequestLogger
+import org.dataland.datalandcommunitymanager.utils.DataRequestProcessingUtils
 import org.dataland.datalandcommunitymanager.utils.GetDataRequestsSearchFilter
-import org.dataland.datalandmessagequeueutils.messages.TemplateEmailMessage
 import org.dataland.keycloakAdapter.auth.DatalandJwtAuthentication
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
 import org.dataland.keycloakAdapter.utils.AuthenticationMock
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import org.mockito.ArgumentMatchers.anyList
+import org.mockito.ArgumentMatchers.anySet
 import org.mockito.ArgumentMatchers.anyString
-import org.mockito.Mockito
 import org.mockito.Mockito.doNothing
 import org.mockito.Mockito.mock
 import org.mockito.Mockito.times
 import org.mockito.Mockito.verify
-import org.mockito.Mockito.verifyNoInteractions
 import org.mockito.Mockito.`when`
+import org.mockito.kotlin.any
+import org.mockito.kotlin.eq
 import org.springframework.security.core.context.SecurityContext
 import org.springframework.security.core.context.SecurityContextHolder
 import java.time.Instant
 import java.util.*
+
 class DataRequestAlterationManagerTest {
 
     private lateinit var dataRequestAlterationManager: DataRequestAlterationManager
-    private lateinit var dataRequestResponseEmailMessageSender: DataRequestResponseEmailSender
     private lateinit var authenticationMock: DatalandJwtAuthentication
     private lateinit var dataRequestRepository: DataRequestRepository
-    private lateinit var singleDataRequestEmailMessageSender: SingleDataRequestEmailMessageSender
     private lateinit var metaDataControllerApi: MetaDataControllerApi
-    private lateinit var historyManager: DataRequestHistoryManager
+    private lateinit var processingUtils: DataRequestProcessingUtils
+    private lateinit var requestEmailManager: RequestEmailManager
+    private lateinit var companyRolesManager: CompanyRolesManager
+
     private val dataRequestId = UUID.randomUUID().toString()
     private val correlationId = UUID.randomUUID().toString()
     private val dummyDataRequestEntities: List<DataRequestEntity> = listOf(
@@ -87,42 +88,39 @@ class DataRequestAlterationManagerTest {
             dataRequestRepository.searchDataRequestEntity(
                 searchFilter = GetDataRequestsSearchFilter(
                     metaData.dataType.value, "",
-                    RequestStatus.Open, metaData.reportingPeriod, metaData.companyId,
+                    RequestStatus.Open, null, metaData.reportingPeriod, metaData.companyId,
                 ),
             ),
         ).thenReturn(dummyDataRequestEntities)
-        historyManager = mock(DataRequestHistoryManager::class.java)
-        doNothing().`when`(historyManager).saveMessageHistory(anyList())
-        doNothing().`when`(historyManager).saveStatusHistory(anyList())
-        doNothing().`when`(historyManager).detachDataRequestEntity(any(DataRequestEntity::class.java))
+
+        processingUtils = mock(DataRequestProcessingUtils::class.java)
+        doNothing().`when`(processingUtils).addNewRequestStatusToHistory(
+            any(), any(),
+            any(), any(),
+        )
+        doNothing().`when`(processingUtils).addMessageToMessageHistory(
+            any(), anySet(), anyString(), any(),
+        )
     }
 
     @BeforeEach
     fun setupDataRequestAlterationManager() {
         mockRepos()
-        singleDataRequestEmailMessageSender = mock(SingleDataRequestEmailMessageSender::class.java)
-        doNothing().`when`(singleDataRequestEmailMessageSender)
-            .sendSingleDataRequestExternalMessage(
-                any(SingleDataRequestEmailMessageSender.MessageInformation::class.java),
-                anyString(), anyString(), anyString(),
-            )
+
+        requestEmailManager = mock(RequestEmailManager::class.java)
+        companyRolesManager = mock(CompanyRolesManager::class.java)
+
         metaDataControllerApi = mock(MetaDataControllerApi::class.java)
         `when`(metaDataControllerApi.getDataMetaInfo(metaData.dataId))
             .thenReturn(metaData)
-        dataRequestResponseEmailMessageSender = mock(DataRequestResponseEmailSender::class.java)
-
-        doNothing().`when`(dataRequestResponseEmailMessageSender)
-            .sendDataRequestResponseEmail(
-                dummyDataRequestEntity, TemplateEmailMessage.Type.DataRequestedAnswered, correlationId,
-            )
 
         dataRequestAlterationManager = DataRequestAlterationManager(
             dataRequestRepository = dataRequestRepository,
             dataRequestLogger = mock(DataRequestLogger::class.java),
-            dataRequestResponseEmailMessageSender = dataRequestResponseEmailMessageSender,
             metaDataControllerApi = metaDataControllerApi,
-            singleDataRequestEmailMessageSender = singleDataRequestEmailMessageSender,
-            dataRequestHistoryManager = historyManager,
+            requestEmailManager = requestEmailManager,
+            companyRolesManager = companyRolesManager,
+            utils = processingUtils,
         )
     }
 
@@ -140,68 +138,71 @@ class DataRequestAlterationManagerTest {
     }
 
     @Test
-    fun `validate that a request response email is send when a request status is patched to answered or closed`() {
+    fun `validate that a request response email is sent when a request status is patched to answered or closed`() {
         dataRequestAlterationManager.patchDataRequest(
             dataRequestId = dataRequestId,
             requestStatus = RequestStatus.Answered,
             null,
         )
-        verify(dataRequestResponseEmailMessageSender, times(1))
-            .sendDataRequestResponseEmail(
-                any(DataRequestEntity::class.java), any(TemplateEmailMessage.Type::class.java), anyString(),
+        verify(requestEmailManager, times(1))
+            .sendEmailsWhenStatusChanged(
+                any(), eq(RequestStatus.Answered), eq(null), eq(null),
             )
         dataRequestAlterationManager.patchDataRequest(
             dataRequestId = dataRequestId,
             requestStatus = RequestStatus.Closed,
             null,
         )
-        verify(dataRequestResponseEmailMessageSender, times(2))
-            .sendDataRequestResponseEmail(
-                any(DataRequestEntity::class.java), any(TemplateEmailMessage.Type::class.java), anyString(),
+        verify(requestEmailManager, times(1))
+            .sendEmailsWhenStatusChanged(
+                any(), eq(RequestStatus.Closed), eq(null), eq(null),
             )
-        verify(historyManager, times(2))
-            .saveStatusHistory(
-                anyList(),
+        verify(processingUtils, times(2))
+            .addNewRequestStatusToHistory(
+                any(), any(),
+                any(), any(),
             )
-        verify(historyManager, times(0))
-            .saveMessageHistory(
-                anyList(),
+        verify(processingUtils, times(0))
+            .addMessageToMessageHistory(
+                any(), anySet(), anyString(), any(),
             )
     }
 
     @Test
-    fun `validate that a response email is not send when a request status is patched to any but answered or closed`() {
-        for (requestStatus in RequestStatus.entries) {
-            if (requestStatus == RequestStatus.Answered || requestStatus == RequestStatus.Closed) {
-                continue
-            }
-            dataRequestAlterationManager.patchDataRequest(
-                dataRequestId = dataRequestId,
-                requestStatus = requestStatus,
-                null,
+    fun `validate that no email is sent and the history is updated when an access status is patched`() {
+        dataRequestAlterationManager.patchDataRequest(
+            dataRequestId = dataRequestId,
+            requestStatus = null,
+            accessStatus = AccessStatus.Pending,
+        )
+
+        verify(processingUtils, times(1))
+            .addNewRequestStatusToHistory(
+                any(), any(),
+                any(), any(),
             )
-        }
-        verify(historyManager, times(0))
-            .saveMessageHistory(
-                anyList(),
+
+        verify(processingUtils, times(0))
+            .addMessageToMessageHistory(
+                any(), anySet(), anyString(), any(),
             )
-        verifyNoInteractions(dataRequestResponseEmailMessageSender)
     }
 
     @Test
-    fun `validate that an request answered email is send when request statuses are patched from open to answered`() {
+    fun `validate that a request answered email is sent when request statuses are patched from open to answered`() {
         dataRequestAlterationManager.patchRequestStatusFromOpenToAnsweredByDataId(metaData.dataId, correlationId)
         dummyDataRequestEntities.forEach {
-            verify(dataRequestResponseEmailMessageSender)
-                .sendDataRequestResponseEmail(it, TemplateEmailMessage.Type.DataRequestedAnswered, correlationId)
+            verify(requestEmailManager)
+                .sendEmailsWhenStatusChanged(eq(it), eq(RequestStatus.Answered), eq(null), anyString())
         }
-        verify(historyManager, times(dummyDataRequestEntities.size))
-            .saveStatusHistory(
-                anyList(),
+        verify(processingUtils, times(dummyDataRequestEntities.size))
+            .addNewRequestStatusToHistory(
+                any(), any(),
+                any(), any(),
             )
-        verify(historyManager, times(0))
-            .saveMessageHistory(
-                anyList(),
+        verify(processingUtils, times(0))
+            .addMessageToMessageHistory(
+                any(), anySet(), anyString(), any(),
             )
     }
 
@@ -210,25 +211,25 @@ class DataRequestAlterationManagerTest {
         dataRequestAlterationManager.patchDataRequest(
             dataRequestId = dataRequestId,
             requestStatus = null,
+            accessStatus = null,
             dummyMessage.contacts,
             dummyMessage.message,
         )
 
-        verify(singleDataRequestEmailMessageSender, times(1))
-            .sendSingleDataRequestExternalMessage(
-                any(SingleDataRequestEmailMessageSender.MessageInformation::class.java),
-                anyString(), anyString(), anyString(),
+        verify(requestEmailManager, times(1))
+            .sendSingleDataRequestEmail(
+                any(), anySet(), anyString(),
             )
 
-        verify(historyManager, times(1))
-            .saveMessageHistory(
-                anyList(),
+        verify(processingUtils, times(1))
+            .addMessageToMessageHistory(
+                any(), anySet(), anyString(), any(),
             )
 
-        verify(historyManager, times(0))
-            .saveStatusHistory(
-                anyList(),
+        verify(processingUtils, times(0))
+            .addNewRequestStatusToHistory(
+                any(), any(),
+                any(), any(),
             )
     }
-    private fun <T> any(type: Class<T>): T = Mockito.any<T>(type)
 }

@@ -4,6 +4,7 @@ import { generateMetaInfoDataForOneCompany } from '@e2e/fixtures/custom_mocks/Da
 import { generateMapOfFrameworkNameToAggregatedFrameworkDataSummary } from '@e2e/fixtures/custom_mocks/MapOfDataTypeToAggregatedFrameworkDataSummaryFaker';
 import { generateListOfDataSearchStoredCompany } from '@e2e/fixtures/custom_mocks/DataSearchStoredCompanyFaker';
 import { generateStoredDataRequests } from '@e2e/fixtures/custom_mocks/StoredDataRequestsFaker';
+import { generateSfdrQaReportPreparedFixtures } from '@e2e/fixtures/custom_mocks/SfdrQaReportPreparedFixtures';
 
 /**
  * Generates mocks that are not only dataset mocks
@@ -36,5 +37,9 @@ export function exportCustomMocks(): void {
       (_key, value) => (value instanceof Set ? Array.from(value) : value),
       '\t'
     )
+  );
+  fs.writeFileSync(
+    '../testing/data/SfdrQaReportPreparedFixtures.json',
+    JSON.stringify(generateSfdrQaReportPreparedFixtures(), null, '\t')
   );
 }
