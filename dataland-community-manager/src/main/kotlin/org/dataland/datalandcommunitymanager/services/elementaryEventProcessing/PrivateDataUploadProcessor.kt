@@ -4,12 +4,14 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandcommunitymanager.events.ElementaryEventType
 import org.dataland.datalandcommunitymanager.repositories.ElementaryEventRepository
 import org.dataland.datalandcommunitymanager.services.NotificationService
-import org.dataland.datalandcommunitymanager.utils.PayloadValidator
 import org.dataland.datalandmessagequeueutils.constants.ActionType
 import org.dataland.datalandmessagequeueutils.constants.ExchangeName
 import org.dataland.datalandmessagequeueutils.constants.MessageHeaderKey
 import org.dataland.datalandmessagequeueutils.constants.MessageType
+import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
+import org.dataland.datalandmessagequeueutils.exceptions.MessageQueueRejectException
 import org.dataland.datalandmessagequeueutils.utils.MessageQueueUtils
+import org.json.JSONObject
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.amqp.rabbit.annotation.Argument
@@ -31,9 +33,8 @@ class PrivateDataUploadProcessor(
     @Autowired messageUtils: MessageQueueUtils,
     @Autowired notificationService: NotificationService,
     @Autowired elementaryEventRepository: ElementaryEventRepository,
-    @Autowired payloadValidator: PayloadValidator,
     @Autowired objectMapper: ObjectMapper,
-) : BaseEventProcessor(messageUtils, notificationService, elementaryEventRepository, payloadValidator, objectMapper) {
+) : BaseEventProcessor(messageUtils, notificationService, elementaryEventRepository, objectMapper) {
 
     override var elementaryEventType = ElementaryEventType.UploadEvent
     override var messageType = MessageType.PrivateDataReceived
@@ -59,15 +60,39 @@ class PrivateDataUploadProcessor(
                     ],
                 ),
                 exchange = Exchange(ExchangeName.PrivateRequestReceived, declare = "false"),
-                key = [""],
+                key = [RoutingKeyNames.metaDataPersisted],
             ),
         ],
     )
-    override fun processEvent(
+    fun processEvent(
         @Payload payload: String,
         @Header(MessageHeaderKey.CorrelationId) correlationId: String,
         @Header(MessageHeaderKey.Type) type: String,
     ) {
-        super.processEvent(payload, correlationId, type)
+        validateIncomingPayloadAndReturnDataId(payload, type)
+
+        super.processEvent(
+            createElementaryEventBasicInfo(payload),
+            correlationId,
+            type,
+        )
+    }
+
+    override fun validateIncomingPayloadAndReturnDataId(payload: String, messageType: String): String {
+        messageUtils.validateMessageType(messageType, this.messageType)
+
+        val payloadJsonObject = JSONObject(payload)
+
+        val actionType = payloadJsonObject.getString("actionType")
+
+        if (actionType != this.actionType) {
+            throw MessageQueueRejectException(
+                "Expected action type ${this.actionType}, but was $actionType.",
+            )
+        }
+
+        return payloadJsonObject.getString("dataId")
+            .takeIf { it.isNotEmpty() }
+            ?: throw MessageQueueRejectException("The dataId in the message payload is empty.")
     }
 }

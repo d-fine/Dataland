@@ -1,11 +1,11 @@
 package org.dataland.datalandbackend.services
 
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
+import org.dataland.datalandmessagequeueutils.constants.ActionType
 import org.dataland.datalandmessagequeueutils.constants.ExchangeName
 import org.dataland.datalandmessagequeueutils.constants.MessageHeaderKey
 import org.dataland.datalandmessagequeueutils.constants.MessageType
 import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
-import org.dataland.datalandmessagequeueutils.exceptions.MessageQueueRejectException
 import org.dataland.datalandmessagequeueutils.utils.MessageQueueUtils
 import org.json.JSONObject
 import org.slf4j.LoggerFactory
@@ -55,26 +55,32 @@ class MessageQueueListenerForPrivateDataManager(
             ),
         ],
     )
-    fun processStoredPrivateSmeData(
+    fun processStoredPrivateVsmeData(
         @Payload payload: String,
         @Header(MessageHeaderKey.CorrelationId) correlationId: String,
         @Header(MessageHeaderKey.Type) type: String,
     ) {
         messageQueueUtils.validateMessageType(type, MessageType.PrivateDataStored)
-        val dataId = JSONObject(payload).getString("dataId")
-        if (dataId.isEmpty()) {
-            throw MessageQueueRejectException("Provided data ID is empty")
-        }
+        val dataId = messageQueueUtils.getDataId(payload)
         logger.info(
             "Received message that dataset with dataId $dataId and correlationId $correlationId was successfully " +
                 "stored on EuroDaT. Starting to persist mapping info, meta info and clearing in-memory-storages",
         )
         messageQueueUtils.rejectMessageOnException {
             privateDataManager.persistMappingInfo(dataId, correlationId)
-            privateDataManager.persistMetaInfo(dataId, correlationId)
+            val metaData = privateDataManager.persistMetaInfo(dataId, correlationId)
             privateDataManager.removeRelatedEntriesFromInMemoryStorages(dataId, correlationId)
+            val outboundPayload = JSONObject(
+                mapOf(
+                    "dataId" to dataId,
+                    "actionType" to ActionType.StorePrivateDataAndDocuments,
+                    "companyId" to metaData.company.companyId,
+                    "framework" to metaData.dataType,
+                    "reportingPeriod" to metaData.reportingPeriod,
+                ),
+            ).toString()
             cloudEventMessageHandler.buildCEMessageAndSendToQueue(
-                dataId, MessageType.PrivateDataReceived, correlationId,
+                outboundPayload, MessageType.PrivateDataReceived, correlationId,
                 ExchangeName.PrivateRequestReceived, RoutingKeyNames.metaDataPersisted,
             )
             logger.info(
