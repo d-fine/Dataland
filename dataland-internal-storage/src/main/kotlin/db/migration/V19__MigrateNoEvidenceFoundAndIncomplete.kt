@@ -32,7 +32,7 @@ class V19__MigrateNoEvidenceFoundAndIncomplete : BaseJavaMigration() {
                 } else if (quality == "Incomplete") {
                     obj.put("quality", "NoDataFound")
                 } else {
-                    //Do nothing as no migration required in this case
+                    // Do nothing as no migration required in this case
                 }
             } else {
                 obj.keys().forEach {
