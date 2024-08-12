@@ -3,10 +3,23 @@
     >{{ content.displayValue.label }}
     <em class="pl-2 material-icons" aria-hidden="true" title=""> dataset </em>
   </a>
-  <a @click="$dialog.open(DataPointDataTable, convertedValueForModal)" class="link"
-    >{{ 'Data Source' }}
-    <em class="pl-2 material-icons" aria-hidden="true" title=""> dataset </em>
-  </a>
+  <div style="display: flex; flex-direction: column">
+    <div
+      v-if="
+        content.displayValue.modalOptions?.data.dataSource ||
+        content.displayValue.modalOptions?.data.quality ||
+        content.displayValue.modalOptions?.data.comment
+      "
+    >
+      <a @click="$dialog.open(DataPointDataTable, modalDataOptions)" class="link"
+        >{{ 'Data Source' }}
+        <em class="pl-2 material-icons" aria-hidden="true" title=""> dataset </em>
+      </a>
+    </div>
+    <div v-else style="display: flex">
+      <p>No source or quality provided</p>
+    </div>
+  </div>
 </template>
 
 <script lang="ts">
@@ -27,18 +40,12 @@ export default defineComponent({
     modalDataOptions() {
       let updatedDataModalOptions = this.content.displayValue.modalOptions;
       updatedDataModalOptions!.data.metaInfo = this.metaInfo;
-      return updatedDataModalOptions;
-    },
-
-    convertedValueForModal() {
-      const content = this.content.displayValue.modalOptions;
-      let dataModalOptionsWithSource = this.content.displayValue.modalOptions;
-      dataModalOptionsWithSource!.data.dataPointDisplay = {
-        quality: content.source.quality,
-        dataSource: content.source.dataSource,
-        comment: content.source.comment,
+      updatedDataModalOptions!.data.dataPointDisplay = {
+        quality: updatedDataModalOptions?.data.quality,
+        dataSource: updatedDataModalOptions?.data.dataSource,
+        comment: updatedDataModalOptions?.data.comment,
       };
-      return dataModalOptionsWithSource;
+      return updatedDataModalOptions;
     },
   },
   props: {

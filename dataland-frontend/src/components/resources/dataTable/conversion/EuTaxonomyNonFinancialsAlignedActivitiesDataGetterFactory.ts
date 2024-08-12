@@ -26,7 +26,7 @@ export function formatEuTaxonomyNonFinancialsAlignedActivitiesDataForTable(
     return <MLDTDisplayObject<MLDTDisplayComponentName.ModalLinkWithDataSourceDisplayComponent>>{
       displayComponentName: MLDTDisplayComponentName.ModalLinkWithDataSourceDisplayComponent,
       displayValue: {
-        label: `Show ${input.value?.length} activit${input.value?.length > 1 ? 'ies' : 'y'}`,
+        label: `Show ${input.value!.length} activit${input.value!.length > 1 ? 'ies' : 'y'}`,
         modalComponent: AlignedActivitiesDataTable,
         modalOptions: {
           props: {
@@ -38,8 +38,6 @@ export function formatEuTaxonomyNonFinancialsAlignedActivitiesDataForTable(
             listOfRowContents: input.value,
             kpiKeyOfTable: 'alignedActivities',
             columnHeaders: euTaxonomyNonFinancialsModalColumnHeaders,
-          },
-          source: {
             dataSource: input.dataSource,
             comment: input.comment,
             quality: input.quality,

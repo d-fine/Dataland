@@ -33,6 +33,9 @@ export type MLDTDisplayComponentTypes = {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     modalComponent: any;
     modalOptions?: DynamicDialogOptions;
+    quality?: string;
+    dataSource?: ExtendedDocumentReference | BaseDocumentReference | null;
+    comment?: string;
   };
   [MLDTDisplayComponentName.HighlightHiddenCellDisplay]: {
     innerContents: AvailableMLDTDisplayObjectTypes;

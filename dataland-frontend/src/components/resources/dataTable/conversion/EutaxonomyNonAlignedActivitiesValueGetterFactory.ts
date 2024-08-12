@@ -60,7 +60,7 @@ export function formatNonAlignedActivitiesForDataTable(
   return <MLDTDisplayObject<MLDTDisplayComponentName.ModalLinkWithDataSourceDisplayComponent>>{
     displayComponentName: MLDTDisplayComponentName.ModalLinkWithDataSourceDisplayComponent,
     displayValue: {
-      label: `Show ${nonAlignedActivities.value?.length} activit${nonAlignedActivities.value?.length > 1 ? 'ies' : 'y'}`,
+      label: `Show ${nonAlignedActivities.value!.length} activit${nonAlignedActivities.value!.length > 1 ? 'ies' : 'y'}`,
       modalComponent: NonAlignedActivitiesDataTable,
       modalOptions: {
         props: {
@@ -72,8 +72,6 @@ export function formatNonAlignedActivitiesForDataTable(
           listOfRowContents: nonAlignedActivities.value,
           kpiKeyOfTable: 'nonAlignedActivities',
           columnHeaders: euTaxonomyNonFinancialsModalColumnHeaders,
-        },
-        source: {
           dataSource: nonAlignedActivities.dataSource,
           comment: nonAlignedActivities.comment,
           quality: nonAlignedActivities.quality,
