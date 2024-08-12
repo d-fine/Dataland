@@ -15,7 +15,7 @@
         content.displayValue.modalOptions?.data.comment
       "
     >
-      <a @click="$dialog.open(DataPointDataTable, modalDataOptions)" class="link"
+      <a @click="$dialog.open(DataPointDataTable, modalDataSourceOptions)" class="link"
         >{{ 'Data Source' }}
         <em class="pl-2 material-icons" aria-hidden="true" title=""> dataset </em>
       </a>
@@ -44,12 +44,17 @@ export default defineComponent({
     modalDataOptions() {
       let updatedDataModalOptions = this.content.displayValue.modalOptions;
       updatedDataModalOptions!.data.metaInfo = this.metaInfo;
-      updatedDataModalOptions!.data.dataPointDisplay = {
-        quality: updatedDataModalOptions?.data.quality,
-        dataSource: updatedDataModalOptions?.data.dataSource,
-        comment: updatedDataModalOptions?.data.comment,
-      };
       return updatedDataModalOptions;
+    },
+    modalDataSourceOptions() {
+      let updatedDataSourceModalOptions = this.content.displayValue.modalOptions;
+      updatedDataSourceModalOptions!.props!.header = 'Data Source and Quality';
+      updatedDataSourceModalOptions!.data.dataPointDisplay = {
+        quality: updatedDataSourceModalOptions?.data.quality,
+        dataSource: updatedDataSourceModalOptions?.data.dataSource,
+        comment: updatedDataSourceModalOptions?.data.comment,
+      };
+      return updatedDataSourceModalOptions;
     },
   },
   props: {
