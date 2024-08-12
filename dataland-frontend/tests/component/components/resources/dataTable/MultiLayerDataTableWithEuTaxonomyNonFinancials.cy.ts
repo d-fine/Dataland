@@ -22,7 +22,7 @@ import {
   getSectionHead,
 } from '@sharedUtils/components/resources/dataTable/MultiLayerDataTableTestUtils';
 import { runFunctionBlockWithinPrimeVueModal } from '@sharedUtils/ElementChecks';
-import {humanizeStringOrNumber} from "../../../../../src/utils/StringFormatter";
+import {humanizeStringOrNumber} from "@/utils/StringFormatter";
 
 describe('Component test for the Eu-Taxonomy-Non-Financials view page', () => {
   let fixturesForTests: FixtureData<EutaxonomyNonFinancialsData>[];

@@ -8,8 +8,8 @@ import org.flywaydb.core.api.migration.Context
 import org.json.JSONObject
 
 /**
- * This migration script moves all SFDR Incomplete quality buckets to NoDataFound and removes the value NoEvidenceFound by
- * putting NoDataFound into the quality bucket and setting the value to null
+ * This migration script moves all SFDR Incomplete quality buckets to NoDataFound and removes the value NoEvidenceFound
+ * by putting NoDataFound into the quality bucket and setting the value to null
  */
 class V19__MigrateNoEvidenceFoundAndIncomplete : BaseJavaMigration() {
 
