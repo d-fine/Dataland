@@ -79,9 +79,9 @@
 
           <h4 id="topicTitles" class="title pt-3">On this page</h4>
           <ul>
-            <li v-for="category in heimathafenDataModel" :key="category">
+            <li v-for="category in heimathafenDataModel" :key="category.name">
               <ul>
-                <li v-for="subcategory in category.subcategories" :key="subcategory">
+                <li v-for="subcategory in category.subcategories" :key="subcategory.name">
                   <a
                     v-if="subcategoryVisibility.get(subcategory) ?? true"
                     @click="smoothScroll(`#${subcategory.name}`)"
@@ -97,7 +97,6 @@
   </Card>
 </template>
 <script lang="ts">
-// @ts-nocheck
 import { FormKit } from '@formkit/vue';
 import { ApiClientProvider } from '@/services/ApiClients';
 import Card from 'primevue/card';
@@ -256,6 +255,7 @@ export default defineComponent({
       if (frameworkDefinition) {
         return frameworkDefinition.getPublicFrameworkApiClient(undefined, apiClientProvider.axiosInstance);
       }
+      throw Error('Data API for Heimathafen is broken.');
     },
 
     /**
@@ -269,9 +269,7 @@ export default defineComponent({
       const dataResponse = await heimathafenDataControllerApi.getFrameworkData(dataId);
       const heimathafenResponseData = dataResponse.data;
       this.listOfFilledKpis = getFilledKpis(heimathafenResponseData.data);
-      this.companyAssociatedHeimathafenData = objectDropNull(
-        heimathafenResponseData as ObjectType
-      ) as CompanyAssociatedDataHeimathafenData;
+      this.companyAssociatedHeimathafenData = objectDropNull(heimathafenResponseData);
       this.waitingForData = false;
     },
     /**
@@ -301,8 +299,8 @@ export default defineComponent({
         this.uploadSucceded = true;
       } catch (error) {
         console.error(error);
-        if (error.message) {
-          this.message = formatAxiosErrorMessage(error as Error);
+        if (error instanceof Error) {
+          this.message = formatAxiosErrorMessage(error);
         } else {
           this.message =
             'An unexpected error occurred. Please try again or contact the support team if the issue persists.';
