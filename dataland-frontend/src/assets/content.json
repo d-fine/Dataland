@@ -249,6 +249,10 @@
                 {
                   "text": "COMMUNITY",
                   "url": "/community/swagger-ui/index.html"
+                },
+                {
+                  "text": "QUALITY ASSURANCE",
+                  "url": "/qa/swagger-ui/index.html"
                 }
               ]
             },

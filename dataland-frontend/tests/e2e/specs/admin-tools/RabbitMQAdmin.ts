@@ -3,7 +3,7 @@ import { getStringCypressEnv } from '@e2e/utils/Cypress';
 const queues = [
   'dataQualityAssuredBackendDataManager',
   'requestReceivedInternalStorageDatabaseDataStore',
-  'requestReceivedCommunityManagerNotificationService',
+  'dataQualityAssuredCommunityManagerNotificationService',
   'privateRequestReceivedCommunityManagerNotificationService',
   'dataStoredBackendDataManager',
   'dataStoredDocumentManager',
@@ -20,6 +20,8 @@ const queues = [
   'privateRequestReceivedEurodatDataStore',
   'sendInternalEmailService',
   'sendTemplateEmailService',
+  'privateRequestReceivedCommunityManager',
+  'qaReportDeleteDataRequestReceivedQueue',
 ];
 
 describe('As a developer, I expect the RabbitMQ GUI console to be available to me. Also check if all expected channels exist.', () => {

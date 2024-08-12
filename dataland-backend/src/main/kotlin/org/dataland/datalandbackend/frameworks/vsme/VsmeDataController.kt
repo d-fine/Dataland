@@ -9,8 +9,10 @@ import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.companies.CompanyAssociatedData
 import org.dataland.datalandbackend.model.metainformation.DataAndMetaInformation
 import org.dataland.datalandbackend.model.metainformation.DataMetaInformation
+import org.dataland.datalandbackend.services.CompanyRoleChecker
 import org.dataland.datalandbackend.services.DataMetaInformationManager
 import org.dataland.datalandbackend.services.LogMessageBuilder
+import org.dataland.datalandbackend.services.PrivateDataAccessChecker
 import org.dataland.datalandbackend.services.PrivateDataManager
 import org.dataland.datalandbackend.utils.IdUtils.generateCorrelationId
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
@@ -34,6 +36,8 @@ class VsmeDataController(
     @Autowired var myObjectMapper: ObjectMapper,
     @Autowired var logMessageBuilder: LogMessageBuilder,
     @Autowired var dataMetaInformationManager: DataMetaInformationManager,
+    @Autowired var privateDataAccessChecker: PrivateDataAccessChecker,
+    @Autowired var companyRoleChecker: CompanyRoleChecker,
 ) : VsmeDataApi {
     private val logger = LoggerFactory.getLogger(javaClass)
 
@@ -105,15 +109,22 @@ class VsmeDataController(
         )
         val authentication = DatalandAuthentication.fromContextOrNull()
         val frameworkDataAndMetaInfo = mutableListOf<DataAndMetaInformation<VsmeData>>()
-        metaInfos.filter { it.isDatasetViewableByUser(authentication) }.forEach {
-            val correlationId = generateCorrelationId(companyId = companyId, dataId = null)
-            val data = privateDataManager.getPrivateVsmeData(it.dataId, correlationId)
-            frameworkDataAndMetaInfo.add(
-                DataAndMetaInformation(
-                    it.toApiModel(DatalandAuthentication.fromContext()), data,
-                ),
-            )
+        metaInfos.filter {
+            it.isDatasetViewableByUser(authentication) && (
+                privateDataAccessChecker
+                    .hasUserAccessToPrivateResources(it.dataId) || companyRoleChecker
+                    .hasCurrentUserAnyRoleForCompany(companyId)
+                )
         }
+            .forEach {
+                val correlationId = generateCorrelationId(companyId = companyId, dataId = null)
+                val data = privateDataManager.getPrivateVsmeData(it.dataId, correlationId)
+                frameworkDataAndMetaInfo.add(
+                    DataAndMetaInformation(
+                        it.toApiModel(DatalandAuthentication.fromContext()), data,
+                    ),
+                )
+            }
         return ResponseEntity.ok(frameworkDataAndMetaInfo)
     }
 }

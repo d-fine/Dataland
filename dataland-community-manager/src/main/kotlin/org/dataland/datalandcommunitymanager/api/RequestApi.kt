@@ -6,6 +6,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import jakarta.validation.Valid
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
+import org.dataland.datalandcommunitymanager.model.dataRequest.AccessStatus
 import org.dataland.datalandcommunitymanager.model.dataRequest.AggregatedDataRequest
 import org.dataland.datalandcommunitymanager.model.dataRequest.BulkDataRequest
 import org.dataland.datalandcommunitymanager.model.dataRequest.BulkDataRequestResponse
@@ -22,6 +23,7 @@ import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RequestMethod
 import org.springframework.web.bind.annotation.RequestParam
 import java.util.UUID
 
@@ -169,13 +171,17 @@ interface RequestApi {
         "hasRole('ROLE_ADMIN') or " +
             "(@SecurityUtilsService.isUserAskingForOwnRequest(#dataRequestId) and " +
             "@SecurityUtilsService.isRequestStatusChangeableByUser(#dataRequestId, #requestStatus) and " +
+            "@SecurityUtilsService.noAccessStatusPatch(#accessStatus) and " +
             "@SecurityUtilsService.isRequestMessageHistoryChangeableByUser(" +
             "#dataRequestId, #requestStatus, #contacts,#message)" +
-            ")",
+            ") or" +
+            "@SecurityUtilsService.isUserCompanyOwnerForRequestId(#dataRequestId) and" +
+            "@SecurityUtilsService.areOnlyAuthorizedFieldsPatched(#requestStatus, #contacts, #message) ",
     )
     fun patchDataRequest(
         @PathVariable dataRequestId: UUID,
         @RequestParam requestStatus: RequestStatus?,
+        @RequestParam accessStatus: AccessStatus?,
         @RequestParam contacts: Set<String>?,
         @RequestParam message: String?,
     ): ResponseEntity<StoredDataRequest>
@@ -195,12 +201,47 @@ interface RequestApi {
     @GetMapping(
         produces = ["application/json"],
     )
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize(
+        "hasRole('ROLE_ADMIN') or" +
+            "@SecurityUtilsService.isUserCompanyOwnerForCompanyId(#datalandCompanyId)",
+    )
     fun getDataRequests(
         @RequestParam dataType: DataTypeEnum?,
         @RequestParam userId: String?,
         @RequestParam requestStatus: RequestStatus?,
+        @RequestParam accessStatus: AccessStatus?,
         @RequestParam reportingPeriod: String?,
         @RequestParam datalandCompanyId: String?,
     ): ResponseEntity<List<StoredDataRequest>>
+
+    /**
+     * A method to check if the logged-in user can access a specific dataset.
+     * The dataset is specified by a companyId, dataType and a reportingPeriod.
+     * @param companyId of the company for which the user might have the role
+     * @param dataType of the corresponding framework
+     * @param reportingPeriod of the dataset
+     */
+    @Operation(
+        summary = "This head request checks whether the logged-in user has access to dataset.",
+        description = "This head request checks whether the logged-in user has access to dataset.",
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "200", description = "The user can access the dataset."),
+            ApiResponse(
+                responseCode = "404",
+                description = "Either the specified dataset does not exist or the user cannot access the dataset.",
+            ),
+        ],
+    )
+    @RequestMapping(
+        method = [RequestMethod.HEAD],
+        value = ["/dataset-access/{companyId}/{dataType}/{reportingPeriod}/{userId}"],
+    )
+    fun hasAccessToDataset(
+        @PathVariable("companyId") companyId: UUID,
+        @PathVariable("dataType") dataType: String,
+        @PathVariable("reportingPeriod") reportingPeriod: String,
+        @PathVariable("userId") userId: UUID,
+    )
 }

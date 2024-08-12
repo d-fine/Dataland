@@ -1,6 +1,6 @@
 <template>
   <div
-    style="position: relative; display: flex; align-items: center; justify-content: center"
+    style="position: relative; display: flex; align-items: center; justify-content: flex-start"
     data-test="download-link"
   >
     <span @click="downloadDocument()" class="text-primary cursor-pointer" :class="fontStyle" style="flex: 0 0 auto">

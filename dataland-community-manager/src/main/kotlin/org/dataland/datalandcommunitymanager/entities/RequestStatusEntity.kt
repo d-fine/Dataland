@@ -7,6 +7,7 @@ import jakarta.persistence.Id
 import jakarta.persistence.JoinColumn
 import jakarta.persistence.ManyToOne
 import jakarta.persistence.Table
+import org.dataland.datalandcommunitymanager.model.dataRequest.AccessStatus
 import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
 import org.dataland.datalandcommunitymanager.model.dataRequest.StoredDataRequestStatusObject
 import java.util.*
@@ -23,6 +24,9 @@ data class RequestStatusEntity(
     @Enumerated(EnumType.STRING)
     val requestStatus: RequestStatus,
 
+    @Enumerated(EnumType.STRING)
+    val accessStatus: AccessStatus,
+
     val creationTimestamp: Long,
 
     @ManyToOne(optional = false)
@@ -35,6 +39,7 @@ data class RequestStatusEntity(
     ) : this(
         statusHistoryId = UUID.randomUUID().toString(),
         requestStatus = statusObject.status,
+        accessStatus = statusObject.accessStatus,
         creationTimestamp = statusObject.creationTimestamp,
         dataRequest = dataRequest,
     )
@@ -45,6 +50,7 @@ data class RequestStatusEntity(
      */
     fun toStoredDataRequestStatusObject() = StoredDataRequestStatusObject(
         status = requestStatus,
+        accessStatus = accessStatus,
         creationTimestamp = creationTimestamp,
     )
 }

@@ -73,7 +73,6 @@ ssh ubuntu@"$target_server_url" "mkdir -p $location/dataland-eurodat-client/secr
 scp -r ./dataland-eurodat-client/secret_files_templates ubuntu@"$target_server_url":"$location"/dataland-eurodat-client/secret_files_templates
 
 ssh ubuntu@"$target_server_url" "echo "${EURODAT_CLIENT_KEYSTORE_INT_BASE64}" | base64 -d > $location/dataland-eurodat-client/secret_files/keystore.jks"
-ssh ubuntu@"$target_server_url" "echo "${EURODAT_CLIENT_TEST_INT_BASE64}" | base64 -d > $location/dataland-eurodat-client/secret_files/test.jks"
 
 scp ./dataland-eurodat-client/write_secret_files.sh ubuntu@"$target_server_url":"$location"/dataland-eurodat-client
 ssh ubuntu@"$target_server_url" "$location/dataland-eurodat-client/write_secret_files.sh"

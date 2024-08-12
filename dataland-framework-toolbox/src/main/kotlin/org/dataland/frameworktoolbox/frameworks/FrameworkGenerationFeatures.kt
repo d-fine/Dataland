@@ -6,7 +6,7 @@ import java.util.Collections
  * An enum that contains different features available during code generation.
  */
 enum class FrameworkGenerationFeatures {
-    BackendDataModel, BackendApiController, ViewPage, UploadPage, FakeFixtures;
+    BackendDataModel, QaModel, BackendApiController, ViewPage, UploadPage, FakeFixtures;
 
     companion object {
         val ENTRY_SET: Set<FrameworkGenerationFeatures> = Collections.unmodifiableSet(entries.toSet())
