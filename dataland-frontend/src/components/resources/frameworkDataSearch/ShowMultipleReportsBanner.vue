@@ -22,7 +22,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { defineComponent, type PropType } from 'vue';
 import PreviousReportsModal from '@/components/resources/frameworkDataSearch/PreviousReportsModal.vue';
 import type { CompanyReport } from '@clients/backend';
 import { openReportDataTableModal } from '@/utils/ReferencedReportsUtil';
@@ -35,8 +35,8 @@ export default defineComponent({
     };
   },
   props: {
-    reports: { type: Array<{ [p: string]: CompanyReport }>, required: true },
-    reportingPeriods: { type: Array<string>, required: true },
+    reports: { type: Array as PropType<Record<string, CompanyReport>[]>, required: true },
+    reportingPeriods: { type: Array as PropType<string[]>, required: true },
   },
   mounted() {
     this.indexOfNewestReportingPeriod = this.calculateIndexOfNewestReportingPeriod(this.reportingPeriods);
