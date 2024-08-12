@@ -1,0 +1,43 @@
+[
+	{
+		"companyInformation": {
+			"companyName": "sfdr-qa-report-with-one-correction",
+			"headquarters": "D'Amoreworth",
+			"headquartersPostalCode": "44380",
+			"sector": "initiatives",
+			"identifiers": {
+				"Lei": [],
+				"Isin": [
+					"0mD4x6MKUdFi",
+					"My2jlcOrf81j"
+				],
+				"PermId": [],
+				"Ticker": [],
+				"Duns": [],
+				"VatNumber": [],
+				"CompanyRegistrationNumber": []
+			},
+			"countryCode": "GL",
+			"companyContactDetails": [],
+			"companyAlternativeNames": [],
+			"companyLegalForm": "Limited Liability Partnership (LLP)",
+			"website": "https://definitive-state.name/",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"environmental": {
+				"biodiversity": {
+					"primaryForestAndWoodedLandOfNativeSpeciesExposure": {
+						"comment": "some comment",
+						"verdict": "QaInconclusive",
+						"correctedData": {
+							"value": "Yes",
+							"quality": "Estimated"
+						}
+					}
+				}
+			}
+		},
+		"reportingPeriod": "2021"
+	}
+]

@@ -152,7 +152,10 @@ sonar {
                 // backend
                 "dataland-backend/src/main/kotlin/org/dataland/datalandbackend/frameworks/**," +
                 "dataland-backend/src/main/kotlin/org/dataland/datalandbackend/model/enums/eutaxonomy/nonfinancials/" +
-                "Activity.kt",
+                "Activity.kt," +
+
+                // qa-service
+                "dataland-qa-service/src/main/kotlin/org/dataland/datalandqaservice/frameworks/**",
         )
     }
 }

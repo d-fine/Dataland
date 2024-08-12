@@ -1,6 +1,7 @@
 package org.dataland.frameworktoolbox.intermediate.components
 
 import org.dataland.frameworktoolbox.intermediate.FieldNodeParent
+import org.dataland.frameworktoolbox.intermediate.components.basecomponents.SimpleKotlinBackedBaseComponent
 import org.dataland.frameworktoolbox.intermediate.datapoints.NoDocumentSupport
 import org.dataland.frameworktoolbox.specific.fixturegenerator.elements.FixtureSectionBuilder
 import org.dataland.frameworktoolbox.specific.uploadconfig.elements.UploadCategoryBuilder
@@ -15,7 +16,7 @@ import org.dataland.frameworktoolbox.utils.typescript.TypeScriptImport
 class AmountWithCurrencyComponent(
     identifier: String,
     parent: FieldNodeParent,
-) : ComponentBase(
+) : SimpleKotlinBackedBaseComponent(
     identifier, parent,
     "org.dataland.datalandbackend.model.generics.AmountWithCurrency",
 ) {

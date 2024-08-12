@@ -21,10 +21,11 @@ import org.dataland.frameworktoolbox.utils.typescript.TypeScriptImport
 open class Iso2CountryCodesMultiSelectComponent(
     identifier: String,
     parent: FieldNodeParent,
-) : ComponentBase(identifier, parent, "List") {
+) : ComponentBase(identifier, parent) {
 
     var options: Set<SelectionOption> = mutableSetOf()
     var filePathOfPremadeDropdownDatasets: String = "@/utils/PremadeDropdownDatasets"
+
     override fun generateDefaultDataModel(dataClassBuilder: DataClassBuilder) {
         requireDocumentSupportIn(setOf(NoDocumentSupport))
         dataClassBuilder.addProperty(
