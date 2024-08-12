@@ -66,11 +66,11 @@
       }
     },
     "substantialContributionToClimateChangeMitigationInPercentAligned": 26.41,
-    "substantialContributionToClimateChangeAdaptationInPercent": 88.32,
-    "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent": 34.47,
-    "substantialContributionToTransitionToACircularEconomyInPercent": 14.21,
-    "substantialContributionToPollutionPreventionAndControlInPercent": 78.71,
-    "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent": null,
+    "substantialContributionToClimateChangeAdaptationInPercentAligned": 88.32,
+    "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned": 34.47,
+    "substantialContributionToTransitionToACircularEconomyInPercentAligned": 14.21,
+    "substantialContributionToPollutionPreventionAndControlInPercentAligned": 78.71,
+    "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned": null,
     "alignedActivities": [
       {
         "activityName": "RetrofittingOfInlandWaterPassengerAndFreightTransport",
@@ -85,7 +85,7 @@
             "currency": "SLE"
           }
         },
-        "substantialContributionToClimateChangeMitigationInPercentAligned": 0.7,
+        "substantialContributionToClimateChangeMitigationInPercent": 0.7,
         "substantialContributionToClimateChangeAdaptationInPercent": 99.01,
         "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent": 6.33,
         "substantialContributionToTransitionToACircularEconomyInPercent": 69.71,
@@ -109,7 +109,7 @@
             "currency": null
           }
         },
-        "substantialContributionToClimateChangeMitigationInPercentAligned": 2.37,
+        "substantialContributionToClimateChangeMitigationInPercent": 2.37,
         "substantialContributionToClimateChangeAdaptationInPercent": 91.9,
         "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent": 62.91,
         "substantialContributionToTransitionToACircularEconomyInPercent": 11.12,
@@ -159,11 +159,11 @@
       }
     },
     "substantialContributionToClimateChangeMitigationInPercentAligned": 31.98,
-    "substantialContributionToClimateChangeAdaptationInPercent": 67.66,
-    "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent": null,
-    "substantialContributionToTransitionToACircularEconomyInPercent": 12.73,
-    "substantialContributionToPollutionPreventionAndControlInPercent": 56.82,
-    "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent": 45.51,
+    "substantialContributionToClimateChangeAdaptationInPercentAligned": 67.66,
+    "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned": null,
+    "substantialContributionToTransitionToACircularEconomyInPercentAligned": 12.73,
+    "substantialContributionToPollutionPreventionAndControlInPercentAligned": 56.82,
+    "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned": 45.51,
     "alignedActivities": [],
     "enablingShareInPercent": 11.95,
     "transitionalShareInPercent": 3.56
@@ -205,11 +205,11 @@
       "absoluteShare": null
     },
     "substantialContributionToClimateChangeMitigationInPercentAligned": null,
-    "substantialContributionToClimateChangeAdaptationInPercent": 96.5,
-    "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent": 80.99,
-    "substantialContributionToTransitionToACircularEconomyInPercent": 51.32,
-    "substantialContributionToPollutionPreventionAndControlInPercent": 27.44,
-    "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent": 39.95,
+    "substantialContributionToClimateChangeAdaptationInPercentAligned": 96.5,
+    "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned": 80.99,
+    "substantialContributionToTransitionToACircularEconomyInPercentAligned": 51.32,
+    "substantialContributionToPollutionPreventionAndControlInPercentAligned": 27.44,
+    "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned": 39.95,
     "alignedActivities": [
       {
         "activityName": "ManufactureOfCarbonBlack",
@@ -223,7 +223,7 @@
             "currency": "ETB"
           }
         },
-        "substantialContributionToClimateChangeMitigationInPercentAligned": 24,
+        "substantialContributionToClimateChangeMitigationInPercent": 24,
         "substantialContributionToClimateChangeAdaptationInPercent": 26.16,
         "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent": null,
         "substantialContributionToTransitionToACircularEconomyInPercent": 40.77,
@@ -249,7 +249,7 @@
             "currency": "MZN"
           }
         },
-        "substantialContributionToClimateChangeMitigationInPercentAligned": 49.67,
+        "substantialContributionToClimateChangeMitigationInPercent": 49.67,
         "substantialContributionToClimateChangeAdaptationInPercent": 6.03,
         "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent": 44.66,
         "substantialContributionToTransitionToACircularEconomyInPercent": 26.93,
@@ -275,7 +275,7 @@
             "currency": "UYU"
           }
         },
-        "substantialContributionToClimateChangeMitigationInPercentAligned": 57.24,
+        "substantialContributionToClimateChangeMitigationInPercent": 57.24,
         "substantialContributionToClimateChangeAdaptationInPercent": 67.54,
         "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent": null,
         "substantialContributionToTransitionToACircularEconomyInPercent": 46.34,
@@ -304,7 +304,7 @@
             "currency": "TWD"
           }
         },
-        "substantialContributionToClimateChangeMitigationInPercentAligned": 79.7,
+        "substantialContributionToClimateChangeMitigationInPercent": 79.7,
         "substantialContributionToClimateChangeAdaptationInPercent": 16.99,
         "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent": 63.28,
         "substantialContributionToTransitionToACircularEconomyInPercent": 80.66,
@@ -328,7 +328,7 @@
             "currency": "XPF"
           }
         },
-        "substantialContributionToClimateChangeMitigationInPercentAligned": 73.74,
+        "substantialContributionToClimateChangeMitigationInPercent": 73.74,
         "substantialContributionToClimateChangeAdaptationInPercent": 70.3,
         "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent": 34.7,
         "substantialContributionToTransitionToACircularEconomyInPercent": 85.53,
@@ -355,7 +355,7 @@
             "currency": "GNF"
           }
         },
-        "substantialContributionToClimateChangeMitigationInPercentAligned": 8.92,
+        "substantialContributionToClimateChangeMitigationInPercent": 8.92,
         "substantialContributionToClimateChangeAdaptationInPercent": null,
         "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent": 3.96,
         "substantialContributionToTransitionToACircularEconomyInPercent": 86.37,
@@ -381,7 +381,7 @@
             "currency": "KMF"
           }
         },
-        "substantialContributionToClimateChangeMitigationInPercentAligned": 28.99,
+        "substantialContributionToClimateChangeMitigationInPercent": 28.99,
         "substantialContributionToClimateChangeAdaptationInPercent": null,
         "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent": 92.95,
         "substantialContributionToTransitionToACircularEconomyInPercent": 5.35,
@@ -408,7 +408,7 @@
             "currency": null
           }
         },
-        "substantialContributionToClimateChangeMitigationInPercentAligned": 20.06,
+        "substantialContributionToClimateChangeMitigationInPercent": 20.06,
         "substantialContributionToClimateChangeAdaptationInPercent": 18.97,
         "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent": 93.26,
         "substantialContributionToTransitionToACircularEconomyInPercent": null,

@@ -7,7 +7,6 @@ import org.flywaydb.core.api.migration.BaseJavaMigration
 import org.flywaydb.core.api.migration.Context
 import org.json.JSONArray
 import org.json.JSONObject
-import java.nio.file.CopyOption
 
 /**
  * This migration script updates existing EUTaxonomyNonFinancial Files to the new
@@ -17,6 +16,16 @@ import java.nio.file.CopyOption
 
 class V20__MigrateEUTaxonomyToNewFilestructure : BaseJavaMigration() {
 
+    private val mapOfOldToNewFieldNames = mapOf(
+        "substantialContributionToClimateChangeMitigationInPercent" to "substantialContributionToClimateChangeMitigationInPercentAligned",
+        "substantialContributionToClimateChangeAdaptationInPercent" to "substantialContributionToClimateChangeAdaptationInPercentAligned",
+        "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent" to "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned",
+        "substantialContributionToTransitionToACircularEconomyInPercent" to "substantialContributionToTransitionToACircularEconomyInPercentAligned",
+        "substantialContributionToPollutionPreventionAndControlInPercent" to "substantialContributionToPollutionPreventionAndControlInPercentAligned",
+        "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent" to "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned",
+        //TODO add third green block
+    )
+
     private val oldFieldsToRename = listOf(
         // check if this has to be written all together
         "substantialContributionToClimateChangeMitigationInPercent",
@@ -25,6 +34,7 @@ class V20__MigrateEUTaxonomyToNewFilestructure : BaseJavaMigration() {
         "substantialContributionToTransitionToACircularEconomyInPercent",
         "substantialContributionToPollutionPreventionAndControlInPercent",
         "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent"
+        //TODO add third green block
         )
 
     private val newFieldsRenamed = listOf(
@@ -70,7 +80,6 @@ class V20__MigrateEUTaxonomyToNewFilestructure : BaseJavaMigration() {
     private fun replaceOldKeyWithNewOne(oldString: String, jsonObject: JSONObject, jsonCopy: JSONObject) {
         println("I want to see what gets into this function: " + oldString)
 
-
         val value = jsonObject.get(oldString)
 
         val indexOfOldString = oldFieldsToRename.indexOf(oldString)
@@ -79,63 +88,39 @@ class V20__MigrateEUTaxonomyToNewFilestructure : BaseJavaMigration() {
 
     }
 
-    private fun migrateToAligned(jsonObject: JSONObject, it: String) {
-        val value = jsonObject.getOrJavaNull(it)
-        val valueAligned = jsonObject.getOrJavaNull("substantialContributionToClimateChangeMitigationInPercentAligned") as JSONObject? ?: JSONObject()
-        valueAligned.put("substantialContributionToClimateChangeMitigationInPercentAligned",value)
-
-        jsonObject.put("substantialContributionToClimateChangeMitigationInPercentAligned",valueAligned)
-    }
-
     fun checkForRelevantFieldsInJsonObjectKeys(jsonObject: JSONObject) {
 
         val keysToBeRemoved: MutableList<String> = mutableListOf()
         val keyStringList = jsonObject.keys().iterator().asSequence().toList()
-        val valueAligned = jsonObject.getOrJavaNull("zzzzzzzzzzzzzz") as JSONObject? ?: JSONObject()
+        val jsonCopy = jsonObject.getOrJavaNull("zzzzzzzzzzzzzz") as JSONObject? ?: JSONObject()
 
         for(i in 0 until keyStringList.size) {
 
             if(oldFieldsToRename.contains(keyStringList[i])) {
 
-                replaceOldKeyWithNewOne(keyStringList[i], jsonObject, valueAligned)
-
-                // if the keyListString element is in the list of leemnts to be replaced ONLY THEN do something
-//                println("=======================================ULTRA TEST")
-//                val value = jsonObject.getOrJavaNull("substantialContributionToClimateChangeMitigationInPercent")
-//                valueAligned.put("substantialContributionToClimateChangeMitigationInPercentAligned", value)
+                replaceOldKeyWithNewOne(keyStringList[i], jsonObject, jsonCopy)
+                keysToBeRemoved.add(keyStringList[i])
 
             }
             checkRecursivelyForBaseDataPointsInJsonObject(jsonObject, keyStringList[i])
         }
 
-        if(valueAligned.length() > 0){
-            if(valueAligned.length() ==6){
-                println("==============================================================lets see it")
+        if(jsonCopy.length() > 0){
+            //remove keys in list
+            // add copy
+
+            for(j in 0 until keysToBeRemoved.size) {
+                jsonObject.remove(keysToBeRemoved[j])
+                val removalIndex = oldFieldsToRename.indexOf(keysToBeRemoved[j])
+                jsonObject.put(newFieldsRenamed[removalIndex], jsonCopy.get(newFieldsRenamed[removalIndex]))
             }
+
+            println("==============================================================lets see it")
         }
+
 
         println("What happens in the end?")
 
-            /*
-            .forEach {
-            println("ALLE KEYS:" + it)
-
-            if(it == "substantialContributionToClimateChangeMitigationInPercent"){
-                println("!!!WATCH FROM HERE!!!")
-                migrateToAligned(jsonObject, it)
-            }
-
-            checkRecursivelyForBaseDataPointsInJsonObject(jsonObject, it)
-        }
-
-             */
-/*
-            if (it == "substantialContributionToClimateChangeMitigationInPercent") {
-                replaceOldKeyForNewKey(jsonObject,it)
-            }
-
-        }
-         */
     }
 
 
@@ -159,13 +144,45 @@ class V20__MigrateEUTaxonomyToNewFilestructure : BaseJavaMigration() {
         }
     }
 
-    fun migrateEutaxonomyNonFinancialsData(dataTableEntity: DataTableEntity) {
+    fun migrateEutaxonomyNonFinancialsDataALT(dataTableEntity: DataTableEntity) {
         val jsonObject = dataTableEntity.dataJsonObject
         jsonObject.keys().forEach{
             println("TOP KEYS:" + it)
             checkRecursivelyForBaseDataPointsInJsonObject(jsonObject, it)
         }
     }
+
+
+
+
+
+
+
+
+
+
+
+    private fun changeFields(revenueKeys: JSONObject) {
+        revenueKeys.keys().forEach { println("REVENUE KEYS: $it") }
+        mapOfOldToNewFieldNames.forEach {
+            revenueKeys.put(it.value, revenueKeys.get(it.key))
+            revenueKeys.remove(it.key)
+        }
+    }
+
+
+    fun migrateEutaxonomyNonFinancialsData(dataTableEntity: DataTableEntity) {
+        val jsonObject = dataTableEntity.dataJsonObject
+        arrayOf("opex", "capex", "revenue").forEach { //
+            val revenueKeys = jsonObject.getOrJavaNull(it)
+            println(revenueKeys is JSONObject)
+            if (revenueKeys != null && revenueKeys is JSONObject) {
+                changeFields(revenueKeys)
+            }
+        }
+    }
+
+
 
 
     override fun migrate(context: Context?) {
