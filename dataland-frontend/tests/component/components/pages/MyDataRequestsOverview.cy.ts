@@ -56,7 +56,7 @@ before(function () {
   } as ExtendedStoredDataRequest);
 });
 describe('Component tests for the data requests search page', function (): void {
-  it.only('Check sorting', function (): void {
+  it('Check sorting', function (): void {
     cy.intercept('**community/requests/user', {
       body: mockDataRequests,
       status: 200,
