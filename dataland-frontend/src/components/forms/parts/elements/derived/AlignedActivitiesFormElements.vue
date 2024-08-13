@@ -14,6 +14,18 @@
         description="Are minimum social safeguards fulfilled?"
         label="Minimum Social Safeguards"
       />
+
+      <YesNoFormField
+          name="enablingActivities"
+          description="Is this an enabling activity?"
+          label="Enabling activity"
+      />
+
+      <YesNoFormField
+          name="transitionalActivities"
+          description="Is this a transitional activity?"
+          label="Transitional activity"
+      />
     </div>
   </div>
 </template>

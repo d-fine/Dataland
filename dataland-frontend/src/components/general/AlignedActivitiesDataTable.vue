@@ -165,6 +165,19 @@ export default defineComponent({
         group: '_minimumSafeguards',
         groupIndex: 0,
       },
+      {
+        field: 'enablingActivities',
+        header: this.humanizeHeaderName('enablingActivities'),
+        group: '_minimumSafeguards',
+        groupIndex: 1,
+      },
+      {
+        field: 'transitionalActivities',
+        header: this.humanizeHeaderName('transitionalActivities'),
+        group: '_minimumSafeguards',
+        groupIndex: 2,
+      },
+
     ];
 
     this.frozenColumnData = this.listOfRowContents.map((activity) => ({

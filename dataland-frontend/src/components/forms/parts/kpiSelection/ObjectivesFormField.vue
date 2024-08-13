@@ -4,7 +4,8 @@
     description="Grade of the substantial contribution criterias fulfillment"
   />
   <div v-for="field in objectives" :key="field.name">
-    <UploadFormHeader :label="'Substantial Contribution to ' + field.name" description="" :is-required="false" />
+    <UploadFormHeader :label="'Substantial Contribution to ' + field.name"
+                      :description="'Taxonomy-aligned share substantially contributing to ' + field.description" />
     <FormKit
       type="text"
       :name="'substantialContributionTo' + field.key + 'InPercent'"
@@ -43,26 +44,32 @@ export default defineComponent({
         {
           name: 'Climate change mitigation',
           key: 'ClimateChangeMitigation',
+          description: 'climate change mitigation'
         },
         {
           name: 'Climate change adaptation',
           key: 'ClimateChangeAdaptation',
+          description: 'climate change adaptation'
         },
         {
           name: 'Sustainable use and protection of water and marine resources',
           key: 'SustainableUseAndProtectionOfWaterAndMarineResources',
+          description: 'sustainable use and protection of water and marine resources'
         },
         {
           name: 'Transition to a circular economy',
           key: 'TransitionToACircularEconomy',
+          description: 'circular economy'
         },
         {
           name: 'Pollution prevention and control',
           key: 'PollutionPreventionAndControl',
+          description: 'pollution prevention and control'
         },
         {
           name: 'Protection and restoration of biodiversity and ecosystems',
           key: 'ProtectionAndRestorationOfBiodiversityAndEcosystems',
+          description: 'protection and restoration of biodiversity and ecosystems'
         },
       ],
     };
