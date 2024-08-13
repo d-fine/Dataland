@@ -8,7 +8,7 @@ class V20__MigrateEUTaxonomyToNewFileStructureTest {
     private val frameworkEutaxonomy = "eutaxonomy"
 
     @Test
-    fun `this is a test`() {
+    fun `check if the new EU taxonomy fields have been implemented`() {
         TestUtils().testMigrationOfSingleDataset(
             frameworkEutaxonomy,
             "V20/originalCompanyInformationWithEutaxonomyNonFinancialsData.json",
