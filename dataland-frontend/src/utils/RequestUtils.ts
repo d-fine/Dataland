@@ -90,3 +90,24 @@ export function badgeClass(requestStatus: RequestStatus): string {
       return 'p-badge outline rounded';
   }
 }
+/**
+ * Defines the color of p-badge
+ * @param accessStatus access status of a request
+ * @returns p-badge class
+ */
+export function accessStatusBadgeClass(accessStatus: AccessStatus): string {
+  switch (accessStatus) {
+    case 'Public':
+      return 'p-badge badge-blue outline rounded';
+    case 'Pending':
+      return 'p-badge badge-yellow outline rounded';
+    case 'Granted':
+      return 'p-badge badge-light-green outline rounded';
+    case 'Revoked':
+      return 'p-badge badge-gray outline rounded';
+    case 'Declined':
+      return 'p-badge badge-brown outline rounded';
+    default:
+      return 'p-badge outline rounded';
+  }
+}

@@ -98,10 +98,17 @@
                     </div>
                   </template>
                 </Column>
-                <Column header="STATUS" :sortable="true" field="requestStatus">
+                <Column header="REQUEST STATUS" :sortable="true" field="requestStatus">
                   <template #body="slotProps">
                     <div :class="badgeClass(slotProps.data.requestStatus)" style="display: inline-flex">
                       {{ slotProps.data.requestStatus }}
+                    </div>
+                  </template>
+                </Column>
+                <Column header="ACCESS STATUS" :sortable="true" field="accessStatus">
+                  <template #body="slotProps">
+                    <div :class="accessStatusBadgeClass(slotProps.data.accessStatus)" style="display: inline-flex">
+                      {{ slotProps.data.accessStatus }}
                     </div>
                   </template>
                 </Column>
@@ -179,7 +186,7 @@ import type { FrameworkSelectableItem } from '@/utils/FrameworkDataSearchDropDow
 import { FRAMEWORKS_WITH_VIEW_PAGE } from '@/utils/Constants';
 import { getFrontendFrameworkDefinition } from '@/frameworks/FrontendFrameworkRegistry';
 import AuthenticationWrapper from '@/components/wrapper/AuthenticationWrapper.vue';
-import { badgeClass } from '@/utils/RequestUtils';
+import { accessStatusBadgeClass, badgeClass } from '@/utils/RequestUtils';
 
 export default defineComponent({
   name: 'MyDataRequestsOverview',
@@ -245,6 +252,7 @@ export default defineComponent({
     },
   },
   methods: {
+    accessStatusBadgeClass,
     badgeClass,
     frameworkHasSubTitle,
     getFrameworkTitle,
