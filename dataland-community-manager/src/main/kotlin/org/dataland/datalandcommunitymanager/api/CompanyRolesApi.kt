@@ -34,7 +34,7 @@ interface CompanyRolesApi {
     @Operation(
         summary = "Assign company role for the company to the user.",
         description = "The company role for the specified company is being assigned to the user. " +
-            "Endpoint accessible for all Dataland-Admins and some Company-Role-Assignees of the company, " +
+            "Endpoint accessible to all Dataland-Admins and some Company-Role-Assignees of the company, " +
             "based on the company role that shall be assigned.",
     )
     @ApiResponses(
@@ -65,9 +65,11 @@ interface CompanyRolesApi {
      * @returns the company role assignments for the specified company role and company
      */
     @Operation(
-        summary = "Retrieve company role assignments for company and company role.",
-        description = "Get company role assignments for the specified company role and company. " +
-            "Endpoint accessible for all Dataland-Admins and all Company-Role-Assignees of the company.",
+        summary = "Get company role assignments that match the provided filters.",
+        description = "Get company role assignments that match the provided filters. " +
+            "Endpoint fully accessible to all Dataland-Admins. " +
+            "Company-Role-Assignees can access the endpoint if companyId-filter is set to their company. " +
+            "Any Dataland-user can access the endpoint if the userId-filter is set to their userId.",
     )
     @ApiResponses(
         value = [
@@ -79,7 +81,11 @@ interface CompanyRolesApi {
         produces = ["application/json"],
         value = ["/company-role-assignments"],
     )
-    @PreAuthorize("hasRole('ROLE_ADMIN') or @SecurityUtilsService.isUserMemberOfTheCompany(#companyId)")
+    @PreAuthorize(
+        "hasRole('ROLE_ADMIN') or " +
+            "@SecurityUtilsService.isUserMemberOfTheCompany(#companyId) or" +
+            "@SecurityUtilsService.isUserRequestingForOwnId(#userId)",
+    )
     fun getCompanyRoleAssignments(
         @RequestParam("role") companyRole: CompanyRole? = null,
         @RequestParam("companyId") companyId: UUID? = null,
@@ -96,7 +102,7 @@ interface CompanyRolesApi {
     @Operation(
         summary = "Remove company role for the company from the user.",
         description = "The company role for the specified company is being removed from the user. " +
-            "Endpoint accessible for all Dataland-Admins and some Company-Role-Assignees of the company, " +
+            "Endpoint accessible to all Dataland-Admins and some Company-Role-Assignees of the company, " +
             "based on the company role that shall be removed.",
     )
     @ApiResponses(
@@ -128,7 +134,7 @@ interface CompanyRolesApi {
     @Operation(
         summary = "Validate company role for company and user.",
         description = "Checks whether the company role for the company is assigned to the user. " +
-            "Endpoint accessible for all Dataland-Admins, for all users that check for their own userId, " +
+            "Endpoint accessible to all Dataland-Admins, for all users that check for their own userId, " +
             "and all Company-Role-Assignees of the company.",
     )
     @ApiResponses(
@@ -162,7 +168,7 @@ interface CompanyRolesApi {
     @Operation(
         summary = "Request company ownership for the company.",
         description = "Request company ownership for the company on Dataland. " +
-            "Endpoint accessible for all Dataland users.",
+            "Endpoint accessible to all Dataland users.",
     )
     @ApiResponses(
         value = [
@@ -185,7 +191,7 @@ interface CompanyRolesApi {
     @Operation(
         summary = "Validate existence of company ownership for the company.",
         description = "Validates if at least one company owner exists for the specified company. " +
-            "Endpoint accessible for all Dataland users.",
+            "Endpoint accessible to all Dataland users.",
     )
     @ApiResponses(
         value = [
