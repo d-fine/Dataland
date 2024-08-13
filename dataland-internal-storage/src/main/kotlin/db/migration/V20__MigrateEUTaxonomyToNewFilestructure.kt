@@ -5,14 +5,12 @@ import db.migration.utils.getOrJavaNull
 import db.migration.utils.migrateCompanyAssociatedDataOfDatatype
 import org.flywaydb.core.api.migration.BaseJavaMigration
 import org.flywaydb.core.api.migration.Context
-import org.json.JSONArray
 import org.json.JSONObject
 
 /**
  * This migration script updates existing EUTaxonomyNonFinancial Files to the new
  * EUTaxonomyNonFinancials structure
  */
-
 
 class V20__MigrateEUTaxonomyToNewFilestructure : BaseJavaMigration() {
 
@@ -23,16 +21,14 @@ class V20__MigrateEUTaxonomyToNewFilestructure : BaseJavaMigration() {
         "substantialContributionToTransitionToACircularEconomyInPercent" to "substantialContributionToTransitionToACircularEconomyInPercentAligned",
         "substantialContributionToPollutionPreventionAndControlInPercent" to "substantialContributionToPollutionPreventionAndControlInPercentAligned",
         "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent" to "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned",
-        //TODO add third green block
     )
 
     private fun changeFields(revenueKeys: JSONObject) {
         mapOfOldToNewFieldNames.forEach {
-            revenueKeys.put(it.value, revenueKeys.get(it.key))
+            revenueKeys.put(it.value, revenueKeys[it.key] )
             revenueKeys.remove(it.key)
         }
     }
-
 
     fun migrateEutaxonomyNonFinancialsData(dataTableEntity: DataTableEntity) {
         val jsonObject = dataTableEntity.dataJsonObject
