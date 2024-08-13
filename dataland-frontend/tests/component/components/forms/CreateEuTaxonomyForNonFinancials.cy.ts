@@ -429,7 +429,7 @@ describe('Component tests for the Eu Taxonomy for non financials that test depen
     });
   });
 
-  it.only('Open upload page, fill out and validate the upload form, except for new activities', () => {
+  it('Open upload page, fill out and validate the upload form, except for new activities', () => {
     cy.stub(DataPointFormWithToggle);
     getMountingFunction({
       keycloak: minimalKeycloakMock(),
