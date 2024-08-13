@@ -14,14 +14,15 @@ import org.json.JSONObject
 class V19__MigrateNoEvidenceFoundAndIncomplete : BaseJavaMigration() {
 
     /**
-     * Find all data points with a value of NoEvidenceFound and move it to the quality bucket or with quality Incomplete
-     * and move it to NoDataFound
+     * Apply the following two migrations:
+     * 1. If value of the data point is "NoEvidenceFound", set value to null and the quality bucket to "NoDataFound"
+     * 2. If the quality bucket of the data point is "Incomplete" set it to "NoDataFound" instead
      */
     private fun recursivelyChangeRelevantDataPointFields(
-        dataset: JSONObject,
+        jsonObject: JSONObject,
         objectName: String,
     ) {
-        val obj = dataset.getOrJavaNull(objectName)
+        val obj = jsonObject.getOrJavaNull(objectName)
         if (obj !== null && obj is JSONObject) {
             if (obj.has("value") || obj.has("quality")) {
                 val value = obj.getOrJavaNull("value").toString()

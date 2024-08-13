@@ -6,7 +6,7 @@ describe('Component test for CurrencyDataPointFormField', () => {
   /**
    * Ensures that the data quality field is inactive and that the field is not shown as required with an asterix
    */
-  function checkDataQualityFieldNotActive(): void {
+  function checkDataQualityFieldNotMandatory(): void {
     cy.get('div[data-test="dataQuality"] div[name="quality"]').find('span').should('have.text', 'Data quality');
     cy.get('div[data-test="dataQuality"] .form-field-label span.asterisk').should('not.exist');
   }
@@ -26,7 +26,7 @@ describe('Component test for CurrencyDataPointFormField', () => {
     cy.mountWithPlugins(CurrencyDataPointFormField, {}).then(() => {
       cy.get('[data-test="dataPointToggleButton"]').click();
 
-      checkDataQualityFieldNotActive();
+      checkDataQualityFieldNotMandatory();
       cy.get('input[name="value"]').should('be.visible').type('123');
       checkDataQualityFieldActive();
 
