@@ -12,6 +12,7 @@ export function generateSfdrPreparedFixtures(): Array<FixtureData<SfdrData>> {
   const preparedFixtures = [];
   preparedFixtures.push(manipulateFixtureForOneFilledSubcategory(generateSfdrDataWithoutNulls()));
   preparedFixtures.push(generateFixtureWithBrokenFileReference(generateSfdrDataWithoutNulls()));
+  preparedFixtures.push(generateFixtureWithIncompleteReferencedReport(generateSfdrDataWithoutNulls()));
   preparedFixtures.push(
     manipulateFixtureForSfdrDatasetWithLotsOfNulls(
       generateFixtureDataset<SfdrData>(generateOneSfdrDatasetWithManyNulls, 1)[0]
@@ -19,6 +20,7 @@ export function generateSfdrPreparedFixtures(): Array<FixtureData<SfdrData>> {
   );
   preparedFixtures.push(manipulateFixtureForNoNullFields(generateSfdrDataWithoutNulls()));
   preparedFixtures.push(manipulateFixtureForInvalidCurrencyInput(generateSfdrDataWithoutNulls()));
+  preparedFixtures.push(manipulateFixtureForInvalidBigDecimalDataPointInput(generateSfdrDataWithoutNulls()));
   preparedFixtures.push(manipulateFixtureForInvalidLongDataPointInput(generateSfdrDataWithoutNulls()));
   preparedFixtures.push(manipulateFixtureForEmptyStringDocumentReference(generateSfdrDataWithoutNulls()));
   preparedFixtures.push(manipulateFixtureForInvalidPercentageInput(generateSfdrDataWithoutNulls()));
@@ -44,6 +46,18 @@ function generateSfdrDataWithoutNulls(): FixtureData<SfdrData> {
 function manipulateFixtureForInvalidCurrencyInput(input: FixtureData<SfdrData>): FixtureData<SfdrData> {
   input.companyInformation.companyName = 'Sfdr-dataset-with-invalid-currency-input';
   input.t.social!.socialAndEmployeeMatters!.averageGrossHourlyEarningsFemaleEmployees!.value = -100;
+  return input;
+}
+
+/**
+ * Sets the company name to a specific value to be able to pick this dataset from the prepared fixtures.
+ * sets an extendedDataPoint<BigDecimal> to an invalid negative value>
+ * @param input Fixture data to be manipulated
+ * @returns the manipulated fixture data
+ */
+function manipulateFixtureForInvalidBigDecimalDataPointInput(input: FixtureData<SfdrData>): FixtureData<SfdrData> {
+  input.companyInformation.companyName = 'Sfdr-dataset-with-invalid-negative-big-decimal-input';
+  input.t.social!.socialAndEmployeeMatters!.workdaysLostInDays!.value = -1;
   return input;
 }
 
@@ -169,5 +183,18 @@ function generateFixtureWithBrokenFileReference(input: FixtureData<SfdrData>): F
   input.companyInformation.companyName = 'TestForBrokenFileReference';
   input.t.environmental!.greenhouseGasEmissions!.scope2GhgEmissionsInTonnes!.dataSource!.fileReference =
     brokenFileReference;
+  return input;
+}
+
+/**
+ * Generates an SFDR dataset with a incomplete referenced report list
+ * @param input Fixture data to be manipulated
+ * @returns the dataset
+ */
+function generateFixtureWithIncompleteReferencedReport(input: FixtureData<SfdrData>): FixtureData<SfdrData> {
+  input.companyInformation.companyName = 'TestForIncompleteReferencedReport';
+  input.t.general.general.referencedReports = {
+    notReferencedFile: { fileReference: 'invalidFileReference', fileName: 'notReferencedFile' },
+  };
   return input;
 }
