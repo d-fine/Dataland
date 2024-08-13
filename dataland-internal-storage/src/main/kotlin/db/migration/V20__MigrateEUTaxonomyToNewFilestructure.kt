@@ -168,6 +168,7 @@ class V20__MigrateEUTaxonomyToNewFilestructure : BaseJavaMigration() {
             revenueKeys.put(it.value, revenueKeys.get(it.key))
             revenueKeys.remove(it.key)
         }
+        revenueKeys.keys().forEach { println("Changed Keys: $it") }
     }
 
 
@@ -181,9 +182,6 @@ class V20__MigrateEUTaxonomyToNewFilestructure : BaseJavaMigration() {
             }
         }
     }
-
-
-
 
     override fun migrate(context: Context?) {
         migrateCompanyAssociatedDataOfDatatype(

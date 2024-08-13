@@ -11,8 +11,8 @@ class V20__MigrateEUTaxonomyToNewFileStructureTest {
     fun `this is a test`() {
         TestUtils().testMigrationOfSingleDataset(
             frameworkEutaxonomy,
-            "V20/originalCompanyInformationWithEutaxonomyNonFinancialsData.json",
-            "V20/expectedCompanyInformationWithEutaxonomyNonFinancialsData.json",
+            "V20/originalSHORTCompanyInformationWithEutaxonomyNonFinancialsData.json",
+            "V20/expectedSHORTCompanyInformationWithEutaxonomyNonFinancialsData.json",
             V20__MigrateEUTaxonomyToNewFilestructure()::migrateEutaxonomyNonFinancialsData,
         )
     }
