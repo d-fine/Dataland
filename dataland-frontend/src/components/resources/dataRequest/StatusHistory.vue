@@ -26,6 +26,14 @@
       <div data-test="request_status" :class="badgeClass(requestStatusObject.status)" style="display: inline-flex">
         {{ requestStatusObject.status }}
       </div>
+      <div class="card__subtitle">and</div>
+      <div
+        data-test="access_status"
+        :class="accessStatusBadgeClass(requestStatusObject.accessStatus)"
+        style="display: inline-flex"
+      >
+        {{ requestStatusObject.accessStatus }}
+      </div>
     </span>
     <div class="card__separator" style="margin-top: 0.25rem; margin-bottom: 0.25rem" />
   </div>
@@ -34,7 +42,7 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import { convertUnixTimeInMsToDateString } from '@/utils/DataFormatUtils';
-import { badgeClass } from '@/utils/RequestUtils';
+import { accessStatusBadgeClass, badgeClass } from '@/utils/RequestUtils';
 import { type StoredDataRequestStatusObject } from '@clients/communitymanager';
 import ChevronDownIcon from 'primevue/icons/chevrondown';
 import ChevronUpIcon from 'primevue/icons/chevronup';
@@ -53,6 +61,7 @@ export default defineComponent({
     };
   },
   methods: {
+    accessStatusBadgeClass,
     convertUnixTimeInMsToDateString,
     badgeClass,
     /**
