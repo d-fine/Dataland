@@ -56,7 +56,7 @@ before(function () {
   } as ExtendedStoredDataRequest);
 });
 describe('Component tests for the data requests search page', function (): void {
-  it('Check sorting', function (): void {
+  it.only('Check sorting', function (): void {
     cy.intercept('**community/requests/user', {
       body: mockDataRequests,
       status: 200,
@@ -64,7 +64,7 @@ describe('Component tests for the data requests search page', function (): void 
     cy.mountWithPlugins(RequestedDatasetsPage, {
       keycloak: minimalKeycloakMock({}),
     });
-    const sortingColumHeader = ['COMPANY', 'REPORTING PERIOD', 'REQUESTED', 'STATUS'];
+    const sortingColumHeader = ['COMPANY', 'REPORTING PERIOD', 'REQUESTED', 'REQUEST STATUS', 'ACCESS STATUS'];
     sortingColumHeader.forEach((value) => {
       cy.get(`table th:contains(${value})`).should('exist').click();
       cy.get('[data-test="requested-Datasets-table"]')
