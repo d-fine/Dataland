@@ -4,15 +4,23 @@ package org.dataland.datalandbackend.frameworks.vsme.model.basic
 import jakarta.validation.Valid
 import org.dataland.datalandbackend.frameworks.vsme.model.basic.basisForPreparation.VsmeBasicBasisForPreparation
 import org.dataland.datalandbackend.frameworks.vsme.model.basic.biodiversity.VsmeBasicBiodiversity
-import org.dataland.datalandbackend.frameworks.vsme.model.basic.energyAndGreenhousGasEmissions.VsmeBasicEnergyAndGreenhousGasEmissions
+import org.dataland.datalandbackend.frameworks.vsme.model.basic.energyAndGreenhousGasEmissions
+    .VsmeBasicEnergyAndGreenhousGasEmissions
 import org.dataland.datalandbackend.frameworks.vsme.model.basic.pollutionOfAirWaterSoil.VsmeBasicPollutionOfAirWaterSoil
-import org.dataland.datalandbackend.frameworks.vsme.model.basic.practicesForTransitioningTowardsAMoreSustainableEconomy.VsmeBasicPracticesForTransitioningTowardsAMoreSustainableEconomy
-import org.dataland.datalandbackend.frameworks.vsme.model.basic.resourceUseCircularEconomyAndWasteManagement.VsmeBasicResourceUseCircularEconomyAndWasteManagement
+import org.dataland.datalandbackend.frameworks.vsme.model.basic.practicesForTransitioningTowardsAMoreSustainableEconomy
+    .VsmeBasicPracticesForTransitioningTowardsAMoreSustainableEconomy
+import org.dataland.datalandbackend.frameworks.vsme.model.basic.resourceUseCircularEconomyAndWasteManagement
+    .VsmeBasicResourceUseCircularEconomyAndWasteManagement
 import org.dataland.datalandbackend.frameworks.vsme.model.basic.water.VsmeBasicWater
-import org.dataland.datalandbackend.frameworks.vsme.model.basic.workersInTheValueChainAffectedCommunitiesConsumersAndEndUsers.VsmeBasicWorkersInTheValueChainAffectedCommunitiesConsumersAndEndUsers
-import org.dataland.datalandbackend.frameworks.vsme.model.basic.workforceGeneralCharacteristics.VsmeBasicWorkforceGeneralCharacteristics
-import org.dataland.datalandbackend.frameworks.vsme.model.basic.workforceHealthAndSafety.VsmeBasicWorkforceHealthAndSafety
-import org.dataland.datalandbackend.frameworks.vsme.model.basic.workforceRenumerationCollectiveBargainingAndTraining.VsmeBasicWorkforceRenumerationCollectiveBargainingAndTraining
+import org.dataland.datalandbackend.frameworks.vsme.model.basic
+    .workersInTheValueChainAffectedCommunitiesConsumersAndEndUsers
+    .VsmeBasicWorkersInTheValueChainAffectedCommunitiesConsumersAndEndUsers
+import org.dataland.datalandbackend.frameworks.vsme.model.basic.workforceGeneralCharacteristics
+    .VsmeBasicWorkforceGeneralCharacteristics
+import org.dataland.datalandbackend.frameworks.vsme.model.basic.workforceHealthAndSafety
+    .VsmeBasicWorkforceHealthAndSafety
+import org.dataland.datalandbackend.frameworks.vsme.model.basic.workforceRenumerationCollectiveBargainingAndTraining
+    .VsmeBasicWorkforceRenumerationCollectiveBargainingAndTraining
 
 /**
  * The data-model for the Basic section

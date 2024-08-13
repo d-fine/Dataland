@@ -2,10 +2,12 @@
 package org.dataland.datalandbackend.frameworks.sfdr.model.social
 
 import jakarta.validation.Valid
-import org.dataland.datalandbackend.frameworks.sfdr.model.social.antiCorruptionAndAntiBribery.SfdrSocialAntiCorruptionAndAntiBribery
+import org.dataland.datalandbackend.frameworks.sfdr.model.social.antiCorruptionAndAntiBribery
+    .SfdrSocialAntiCorruptionAndAntiBribery
 import org.dataland.datalandbackend.frameworks.sfdr.model.social.greenSecurities.SfdrSocialGreenSecurities
 import org.dataland.datalandbackend.frameworks.sfdr.model.social.humanRights.SfdrSocialHumanRights
-import org.dataland.datalandbackend.frameworks.sfdr.model.social.socialAndEmployeeMatters.SfdrSocialSocialAndEmployeeMatters
+import org.dataland.datalandbackend.frameworks.sfdr.model.social.socialAndEmployeeMatters
+    .SfdrSocialSocialAndEmployeeMatters
 
 /**
  * The data-model for the Social section
