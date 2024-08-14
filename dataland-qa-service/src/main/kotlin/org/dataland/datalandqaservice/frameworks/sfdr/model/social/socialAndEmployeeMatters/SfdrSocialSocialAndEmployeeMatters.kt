@@ -5,7 +5,7 @@ import jakarta.validation.Valid
 import org.dataland.datalandbackend.openApiClient.model.CurrencyDataPoint
 import org.dataland.datalandbackend.openApiClient.model.ExtendedDataPointBigDecimal
 import org.dataland.datalandbackend.openApiClient.model.ExtendedDataPointBigInteger
-import org.dataland.datalandbackend.openApiClient.model.ExtendedDataPointYesNoNoEvidenceFound
+import org.dataland.datalandbackend.openApiClient.model.ExtendedDataPointYesNo
 import org.dataland.datalandqaservice.model.reports.QaReportDataPoint
 
 /**
@@ -13,56 +13,55 @@ import org.dataland.datalandqaservice.model.reports.QaReportDataPoint
  */
 data class SfdrSocialSocialAndEmployeeMatters(
     @field:Valid()
-    val humanRightsLegalProceedings: QaReportDataPoint<ExtendedDataPointYesNoNoEvidenceFound?>? = null,
+    val humanRightsLegalProceedings: QaReportDataPoint<ExtendedDataPointYesNo?>? = null,
 
     @field:Valid()
-    val iloCoreLabourStandards: QaReportDataPoint<ExtendedDataPointYesNoNoEvidenceFound?>? = null,
+    val iloCoreLabourStandards: QaReportDataPoint<ExtendedDataPointYesNo?>? = null,
 
     @field:Valid()
-    val environmentalPolicy: QaReportDataPoint<ExtendedDataPointYesNoNoEvidenceFound?>? = null,
+    val environmentalPolicy: QaReportDataPoint<ExtendedDataPointYesNo?>? = null,
 
     @field:Valid()
-    val corruptionLegalProceedings: QaReportDataPoint<ExtendedDataPointYesNoNoEvidenceFound?>? = null,
+    val corruptionLegalProceedings: QaReportDataPoint<ExtendedDataPointYesNo?>? = null,
 
     @field:Valid()
-    val transparencyDisclosurePolicy: QaReportDataPoint<ExtendedDataPointYesNoNoEvidenceFound?>? = null,
+    val transparencyDisclosurePolicy: QaReportDataPoint<ExtendedDataPointYesNo?>? = null,
 
     @field:Valid()
-    val humanRightsDueDiligencePolicy: QaReportDataPoint<ExtendedDataPointYesNoNoEvidenceFound?>? = null,
+    val humanRightsDueDiligencePolicy: QaReportDataPoint<ExtendedDataPointYesNo?>? = null,
 
     @field:Valid()
-    val policyAgainstChildLabour: QaReportDataPoint<ExtendedDataPointYesNoNoEvidenceFound?>? = null,
+    val policyAgainstChildLabour: QaReportDataPoint<ExtendedDataPointYesNo?>? = null,
 
     @field:Valid()
-    val policyAgainstForcedLabour: QaReportDataPoint<ExtendedDataPointYesNoNoEvidenceFound?>? = null,
+    val policyAgainstForcedLabour: QaReportDataPoint<ExtendedDataPointYesNo?>? = null,
 
     @field:Valid()
-    val policyAgainstDiscriminationInTheWorkplace: QaReportDataPoint<ExtendedDataPointYesNoNoEvidenceFound?>? = null,
+    val policyAgainstDiscriminationInTheWorkplace: QaReportDataPoint<ExtendedDataPointYesNo?>? = null,
 
     @field:Valid()
-    val iso14001Certificate: QaReportDataPoint<ExtendedDataPointYesNoNoEvidenceFound?>? = null,
+    val iso14001Certificate: QaReportDataPoint<ExtendedDataPointYesNo?>? = null,
 
     @field:Valid()
-    val policyAgainstBriberyAndCorruption: QaReportDataPoint<ExtendedDataPointYesNoNoEvidenceFound?>? = null,
+    val policyAgainstBriberyAndCorruption: QaReportDataPoint<ExtendedDataPointYesNo?>? = null,
 
     @field:Valid()
-    val fairBusinessMarketingAdvertisingPolicy: QaReportDataPoint<ExtendedDataPointYesNoNoEvidenceFound?>? = null,
+    val fairBusinessMarketingAdvertisingPolicy: QaReportDataPoint<ExtendedDataPointYesNo?>? = null,
 
     @field:Valid()
-    val technologiesExpertiseTransferPolicy: QaReportDataPoint<ExtendedDataPointYesNoNoEvidenceFound?>? = null,
+    val technologiesExpertiseTransferPolicy: QaReportDataPoint<ExtendedDataPointYesNo?>? = null,
 
     @field:Valid()
-    val fairCompetitionPolicy: QaReportDataPoint<ExtendedDataPointYesNoNoEvidenceFound?>? = null,
+    val fairCompetitionPolicy: QaReportDataPoint<ExtendedDataPointYesNo?>? = null,
 
     @field:Valid()
-    val violationOfTaxRulesAndRegulation: QaReportDataPoint<ExtendedDataPointYesNoNoEvidenceFound?>? = null,
+    val violationOfTaxRulesAndRegulation: QaReportDataPoint<ExtendedDataPointYesNo?>? = null,
 
     @field:Valid()
-    val unGlobalCompactPrinciplesCompliancePolicy: QaReportDataPoint<ExtendedDataPointYesNoNoEvidenceFound?>? = null,
+    val unGlobalCompactPrinciplesCompliancePolicy: QaReportDataPoint<ExtendedDataPointYesNo?>? = null,
 
     @field:Valid()
-    val oecdGuidelinesForMultinationalEnterprisesGrievanceHandling:
-    QaReportDataPoint<ExtendedDataPointYesNoNoEvidenceFound?>? = null,
+    val oecdGuidelinesForMultinationalEnterprisesGrievanceHandling: QaReportDataPoint<ExtendedDataPointYesNo?>? = null,
 
     val averageGrossHourlyEarningsMaleEmployees: CurrencyDataPoint? = null,
 
@@ -81,10 +80,10 @@ data class SfdrSocialSocialAndEmployeeMatters(
     val boardGenderDiversityInPercent: QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
 
     @field:Valid()
-    val controversialWeaponsExposure: QaReportDataPoint<ExtendedDataPointYesNoNoEvidenceFound?>? = null,
+    val controversialWeaponsExposure: QaReportDataPoint<ExtendedDataPointYesNo?>? = null,
 
     @field:Valid()
-    val workplaceAccidentPreventionPolicy: QaReportDataPoint<ExtendedDataPointYesNoNoEvidenceFound?>? = null,
+    val workplaceAccidentPreventionPolicy: QaReportDataPoint<ExtendedDataPointYesNo?>? = null,
 
     @field:Valid()
     val rateOfAccidentsInPercent: QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
@@ -93,13 +92,13 @@ data class SfdrSocialSocialAndEmployeeMatters(
     val workdaysLostInDays: QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
 
     @field:Valid()
-    val supplierCodeOfConduct: QaReportDataPoint<ExtendedDataPointYesNoNoEvidenceFound?>? = null,
+    val supplierCodeOfConduct: QaReportDataPoint<ExtendedDataPointYesNo?>? = null,
 
     @field:Valid()
-    val grievanceHandlingMechanism: QaReportDataPoint<ExtendedDataPointYesNoNoEvidenceFound?>? = null,
+    val grievanceHandlingMechanism: QaReportDataPoint<ExtendedDataPointYesNo?>? = null,
 
     @field:Valid()
-    val whistleblowerProtectionPolicy: QaReportDataPoint<ExtendedDataPointYesNoNoEvidenceFound?>? = null,
+    val whistleblowerProtectionPolicy: QaReportDataPoint<ExtendedDataPointYesNo?>? = null,
 
     @field:Valid()
     val reportedIncidentsOfDiscrimination: QaReportDataPoint<ExtendedDataPointBigInteger?>? = null,

@@ -760,7 +760,8 @@
               "Audited",
               "Reported",
               "Estimated",
-              "Incomplete"
+              "Incomplete",
+              "NoDataFound"
             ]
           },
           "comment": {
@@ -786,7 +787,8 @@
               "Audited",
               "Reported",
               "Estimated",
-              "Incomplete"
+              "Incomplete",
+              "NoDataFound"
             ]
           },
           "comment": {
@@ -810,7 +812,8 @@
               "Audited",
               "Reported",
               "Estimated",
-              "Incomplete"
+              "Incomplete",
+              "NoDataFound"
             ]
           },
           "comment": {
@@ -821,15 +824,14 @@
           }
         }
       },
-      "ExtendedDataPointYesNoNoEvidenceFound": {
+      "ExtendedDataPointYesNo": {
         "type": "object",
         "properties": {
           "value": {
             "type": "string",
             "enum": [
               "Yes",
-              "No",
-              "NoEvidenceFound"
+              "No"
             ]
           },
           "quality": {
@@ -838,7 +840,8 @@
               "Audited",
               "Reported",
               "Estimated",
-              "Incomplete"
+              "Incomplete",
+              "NoDataFound"
             ]
           },
           "comment": {
@@ -908,7 +911,7 @@
           }
         }
       },
-      "QaReportDataPointExtendedDataPointYesNoNoEvidenceFound": {
+      "QaReportDataPointExtendedDataPointYesNo": {
         "required": [
           "comment",
           "correctedData",
@@ -923,7 +926,7 @@
             "$ref": "#/components/schemas/QaReportDataPointVerdict"
           },
           "correctedData": {
-            "$ref": "#/components/schemas/ExtendedDataPointYesNoNoEvidenceFound"
+            "$ref": "#/components/schemas/ExtendedDataPointYesNo"
           }
         }
       },
@@ -999,37 +1002,37 @@
         "type": "object",
         "properties": {
           "primaryForestAndWoodedLandOfNativeSpeciesExposure": {
-            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointYesNoNoEvidenceFound"
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointYesNo"
           },
           "protectedAreasExposure": {
-            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointYesNoNoEvidenceFound"
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointYesNo"
           },
           "rareOrEndangeredEcosystemsExposure": {
-            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointYesNoNoEvidenceFound"
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointYesNo"
           },
           "highlyBiodiverseGrasslandExposure": {
-            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointYesNoNoEvidenceFound"
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointYesNo"
           },
           "manufactureOfAgrochemicalPesticidesProducts": {
-            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointYesNoNoEvidenceFound"
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointYesNo"
           },
           "landDegradationDesertificationSoilSealingExposure": {
-            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointYesNoNoEvidenceFound"
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointYesNo"
           },
           "sustainableAgriculturePolicy": {
-            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointYesNoNoEvidenceFound"
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointYesNo"
           },
           "sustainableOceansAndSeasPolicy": {
-            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointYesNoNoEvidenceFound"
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointYesNo"
           },
           "threatenedSpeciesExposure": {
-            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointYesNoNoEvidenceFound"
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointYesNo"
           },
           "biodiversityProtectionPolicy": {
-            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointYesNoNoEvidenceFound"
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointYesNo"
           },
           "deforestationPolicy": {
-            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointYesNoNoEvidenceFound"
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointYesNo"
           }
         }
       },
@@ -1046,7 +1049,7 @@
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
           },
           "carbonReductionInitiatives": {
-            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointYesNoNoEvidenceFound"
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointYesNo"
           }
         }
       },
@@ -1152,7 +1155,7 @@
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
           },
           "fossilFuelSectorExposure": {
-            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointYesNoNoEvidenceFound"
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointYesNo"
           }
         }
       },
@@ -1183,10 +1186,10 @@
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
           },
           "waterManagementPolicy": {
-            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointYesNoNoEvidenceFound"
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointYesNo"
           },
           "highWaterStressAreaExposure": {
-            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointYesNoNoEvidenceFound"
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointYesNo"
           }
         }
       },
@@ -1252,7 +1255,7 @@
         "type": "object",
         "properties": {
           "securitiesNotCertifiedAsGreen": {
-            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointYesNoNoEvidenceFound"
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointYesNo"
           }
         }
       },
@@ -1260,19 +1263,19 @@
         "type": "object",
         "properties": {
           "humanRightsPolicy": {
-            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointYesNoNoEvidenceFound"
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointYesNo"
           },
           "humanRightsDueDiligence": {
-            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointYesNoNoEvidenceFound"
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointYesNo"
           },
           "traffickingInHumanBeingsPolicy": {
-            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointYesNoNoEvidenceFound"
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointYesNo"
           },
           "reportedChildLabourIncidents": {
-            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointYesNoNoEvidenceFound"
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointYesNo"
           },
           "reportedForcedOrCompulsoryLabourIncidents": {
-            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointYesNoNoEvidenceFound"
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointYesNo"
           },
           "numberOfReportedIncidentsOfHumanRightsViolations": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigInteger"
@@ -1283,55 +1286,55 @@
         "type": "object",
         "properties": {
           "humanRightsLegalProceedings": {
-            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointYesNoNoEvidenceFound"
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointYesNo"
           },
           "iloCoreLabourStandards": {
-            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointYesNoNoEvidenceFound"
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointYesNo"
           },
           "environmentalPolicy": {
-            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointYesNoNoEvidenceFound"
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointYesNo"
           },
           "corruptionLegalProceedings": {
-            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointYesNoNoEvidenceFound"
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointYesNo"
           },
           "transparencyDisclosurePolicy": {
-            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointYesNoNoEvidenceFound"
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointYesNo"
           },
           "humanRightsDueDiligencePolicy": {
-            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointYesNoNoEvidenceFound"
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointYesNo"
           },
           "policyAgainstChildLabour": {
-            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointYesNoNoEvidenceFound"
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointYesNo"
           },
           "policyAgainstForcedLabour": {
-            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointYesNoNoEvidenceFound"
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointYesNo"
           },
           "policyAgainstDiscriminationInTheWorkplace": {
-            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointYesNoNoEvidenceFound"
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointYesNo"
           },
           "iso14001Certificate": {
-            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointYesNoNoEvidenceFound"
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointYesNo"
           },
           "policyAgainstBriberyAndCorruption": {
-            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointYesNoNoEvidenceFound"
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointYesNo"
           },
           "fairBusinessMarketingAdvertisingPolicy": {
-            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointYesNoNoEvidenceFound"
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointYesNo"
           },
           "technologiesExpertiseTransferPolicy": {
-            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointYesNoNoEvidenceFound"
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointYesNo"
           },
           "fairCompetitionPolicy": {
-            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointYesNoNoEvidenceFound"
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointYesNo"
           },
           "violationOfTaxRulesAndRegulation": {
-            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointYesNoNoEvidenceFound"
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointYesNo"
           },
           "unGlobalCompactPrinciplesCompliancePolicy": {
-            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointYesNoNoEvidenceFound"
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointYesNo"
           },
           "oecdGuidelinesForMultinationalEnterprisesGrievanceHandling": {
-            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointYesNoNoEvidenceFound"
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointYesNo"
           },
           "averageGrossHourlyEarningsMaleEmployees": {
             "$ref": "#/components/schemas/CurrencyDataPoint"
@@ -1352,10 +1355,10 @@
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
           },
           "controversialWeaponsExposure": {
-            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointYesNoNoEvidenceFound"
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointYesNo"
           },
           "workplaceAccidentPreventionPolicy": {
-            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointYesNoNoEvidenceFound"
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointYesNo"
           },
           "rateOfAccidentsInPercent": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
@@ -1364,13 +1367,13 @@
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
           },
           "supplierCodeOfConduct": {
-            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointYesNoNoEvidenceFound"
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointYesNo"
           },
           "grievanceHandlingMechanism": {
-            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointYesNoNoEvidenceFound"
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointYesNo"
           },
           "whistleblowerProtectionPolicy": {
-            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointYesNoNoEvidenceFound"
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointYesNo"
           },
           "reportedIncidentsOfDiscrimination": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigInteger"
