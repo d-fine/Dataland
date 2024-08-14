@@ -2,7 +2,7 @@
 package org.dataland.datalandqaservice.frameworks.sfdr.model.environmental.biodiversity
 
 import jakarta.validation.Valid
-import org.dataland.datalandbackend.openApiClient.model.ExtendedDataPointYesNo
+import org.dataland.datalandbackend.openApiClient.model.ExtendedDataPointYesNoNoEvidenceFound
 import org.dataland.datalandqaservice.model.reports.QaReportDataPoint
 
 /**
@@ -10,36 +10,38 @@ import org.dataland.datalandqaservice.model.reports.QaReportDataPoint
  */
 data class SfdrEnvironmentalBiodiversity(
     @field:Valid()
-    val primaryForestAndWoodedLandOfNativeSpeciesExposure: QaReportDataPoint<ExtendedDataPointYesNo?>? = null,
+    val primaryForestAndWoodedLandOfNativeSpeciesExposure:
+    QaReportDataPoint<ExtendedDataPointYesNoNoEvidenceFound?>? = null,
 
     @field:Valid()
-    val protectedAreasExposure: QaReportDataPoint<ExtendedDataPointYesNo?>? = null,
+    val protectedAreasExposure: QaReportDataPoint<ExtendedDataPointYesNoNoEvidenceFound?>? = null,
 
     @field:Valid()
-    val rareOrEndangeredEcosystemsExposure: QaReportDataPoint<ExtendedDataPointYesNo?>? = null,
+    val rareOrEndangeredEcosystemsExposure: QaReportDataPoint<ExtendedDataPointYesNoNoEvidenceFound?>? = null,
 
     @field:Valid()
-    val highlyBiodiverseGrasslandExposure: QaReportDataPoint<ExtendedDataPointYesNo?>? = null,
+    val highlyBiodiverseGrasslandExposure: QaReportDataPoint<ExtendedDataPointYesNoNoEvidenceFound?>? = null,
 
     @field:Valid()
-    val manufactureOfAgrochemicalPesticidesProducts: QaReportDataPoint<ExtendedDataPointYesNo?>? = null,
+    val manufactureOfAgrochemicalPesticidesProducts: QaReportDataPoint<ExtendedDataPointYesNoNoEvidenceFound?>? = null,
 
     @field:Valid()
-    val landDegradationDesertificationSoilSealingExposure: QaReportDataPoint<ExtendedDataPointYesNo?>? = null,
+    val landDegradationDesertificationSoilSealingExposure:
+    QaReportDataPoint<ExtendedDataPointYesNoNoEvidenceFound?>? = null,
 
     @field:Valid()
-    val sustainableAgriculturePolicy: QaReportDataPoint<ExtendedDataPointYesNo?>? = null,
+    val sustainableAgriculturePolicy: QaReportDataPoint<ExtendedDataPointYesNoNoEvidenceFound?>? = null,
 
     @field:Valid()
-    val sustainableOceansAndSeasPolicy: QaReportDataPoint<ExtendedDataPointYesNo?>? = null,
+    val sustainableOceansAndSeasPolicy: QaReportDataPoint<ExtendedDataPointYesNoNoEvidenceFound?>? = null,
 
     @field:Valid()
-    val threatenedSpeciesExposure: QaReportDataPoint<ExtendedDataPointYesNo?>? = null,
+    val threatenedSpeciesExposure: QaReportDataPoint<ExtendedDataPointYesNoNoEvidenceFound?>? = null,
 
     @field:Valid()
-    val biodiversityProtectionPolicy: QaReportDataPoint<ExtendedDataPointYesNo?>? = null,
+    val biodiversityProtectionPolicy: QaReportDataPoint<ExtendedDataPointYesNoNoEvidenceFound?>? = null,
 
     @field:Valid()
-    val deforestationPolicy: QaReportDataPoint<ExtendedDataPointYesNo?>? = null,
+    val deforestationPolicy: QaReportDataPoint<ExtendedDataPointYesNoNoEvidenceFound?>? = null,
 
 )

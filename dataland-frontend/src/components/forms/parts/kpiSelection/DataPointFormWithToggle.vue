@@ -156,7 +156,6 @@ import DataPointHeader from '@/components/forms/parts/kpiSelection/DataPointHead
 import { getFileName, getFileReferenceByFileName } from '@/utils/FileUploadUtils';
 import { isValidFileName, noReportLabel } from '@/utils/DataSource';
 import SingleSelectFormElement from '@/components/forms/parts/elements/basic/SingleSelectFormElement.vue';
-import { humanizeStringOrNumber } from '@/utils/StringFormatter';
 
 export default defineComponent({
   name: 'DataPointFormWithToggle',
@@ -166,7 +165,7 @@ export default defineComponent({
     isMounted: false,
     dataPointIsAvailable: true,
     qualityOptions: Object.values(QualityOptions).map((qualityOption: string) => ({
-      label: humanizeStringOrNumber(qualityOption),
+      label: qualityOption,
       value: qualityOption,
     })),
     currentAmountValue: '',

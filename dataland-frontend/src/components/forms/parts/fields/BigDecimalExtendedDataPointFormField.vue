@@ -6,6 +6,7 @@
     :label="label"
     :required="required"
     :input-class="inputClass"
+    :check-value-validity="hasDataPointProperValue"
     :isDataPointToggleable="isDataPointToggleable"
   >
     <div class="mb-2">
@@ -26,6 +27,7 @@ import { defineComponent } from 'vue';
 import { BaseFormFieldProps } from '@/components/forms/parts/fields/FormFieldProps';
 import ExtendedDataPointFormField from '@/components/forms/parts/elements/basic/ExtendedDataPointFormField.vue';
 import NumberFormField from '@/components/forms/parts/fields/NumberFormField.vue';
+import { hasDataPointProperValue } from '@/utils/DataPoint';
 
 export default defineComponent({
   name: 'BigDecimalExtendedDataPointFormField',
@@ -40,5 +42,6 @@ export default defineComponent({
       default: true,
     },
   },
+  methods: { hasDataPointProperValue },
 });
 </script>

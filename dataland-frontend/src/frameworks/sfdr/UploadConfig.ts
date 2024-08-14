@@ -239,7 +239,7 @@ export const sfdrDataModel = [
             description:
               'Do you derive any revenues from exploration, mining, extraction, production, processing, storage, refining or distribution, including transportation, storage and trade, of fossil fuels as defined in Article 2, point (62), of Regulation (EU) 2018/1999 of the European Parliament and of the Council? See also Regulation, Annex I, top (5).',
 
-            component: 'YesNoExtendedDataPointFormField',
+            component: 'YesNoNoEvidenceFoundExtendedDataPointFormField',
             required: false,
             showIf: (): boolean => true,
           },
@@ -432,7 +432,7 @@ export const sfdrDataModel = [
             description:
               'Do you have sites/operations located in or near to primary forest and other wooded areas where activities of those sites/operations negatively affect those areas? See also Regulation, Annex I, table 1, indicator nr. 7).',
 
-            component: 'YesNoExtendedDataPointFormField',
+            component: 'YesNoNoEvidenceFoundExtendedDataPointFormField',
             required: false,
             showIf: (): boolean => true,
           },
@@ -442,7 +442,7 @@ export const sfdrDataModel = [
             description:
               'Do you have sites/operations located in or near protected areas where activities of those sites/operations negatively affect those areas? See also Regulation, Annex I, table 1, indicator nr. 7).',
 
-            component: 'YesNoExtendedDataPointFormField',
+            component: 'YesNoNoEvidenceFoundExtendedDataPointFormField',
             required: false,
             showIf: (): boolean => true,
           },
@@ -452,7 +452,7 @@ export const sfdrDataModel = [
             description:
               'Do you have sites/operations in or near areas designated for the protection of species (including flora and fauna) and where the activities of those sites/operations lead to the deterioration of natural habitats and the habitats of those species and disturb the species for which the protected area has been designated? See also Regulation, Annex I, table 1, indicator nr. 7 and Annex I, definition 18(a).',
 
-            component: 'YesNoExtendedDataPointFormField',
+            component: 'YesNoNoEvidenceFoundExtendedDataPointFormField',
             required: false,
             showIf: (): boolean => true,
           },
@@ -462,7 +462,7 @@ export const sfdrDataModel = [
             description:
               'Do you have sites/operations located in highly biodiverse grassland that is: (i) natural, namely, grassland that would remain grassland in the absence of human intervention and which maintains the natural species composition and ecological characteristics and processes; or (ii) non-natural, namely, grassland that would cease to be grassland in the absence of human intervention and which is species-rich and not degraded, unless evidence is provided that the harvesting of the raw material is necessary to preserve its grassland status?',
 
-            component: 'YesNoExtendedDataPointFormField',
+            component: 'YesNoNoEvidenceFoundExtendedDataPointFormField',
             required: false,
             showIf: (): boolean => true,
           },
@@ -472,7 +472,7 @@ export const sfdrDataModel = [
             description:
               'Are you involved in the manufacturing of pesticides and other agrochemical products? (see activities which fall under Division 20.2 of Annex I to Regulation (EC) No 1893/2006)',
 
-            component: 'YesNoExtendedDataPointFormField',
+            component: 'YesNoNoEvidenceFoundExtendedDataPointFormField',
             required: false,
             showIf: (): boolean => true,
           },
@@ -482,7 +482,7 @@ export const sfdrDataModel = [
             description:
               'Is the company involved in activities which cause land degradation, desertification or soil sealing? See also Regulation, Annex I, Table 2, indicator 10.',
 
-            component: 'YesNoExtendedDataPointFormField',
+            component: 'YesNoNoEvidenceFoundExtendedDataPointFormField',
             required: false,
             showIf: (): boolean => true,
           },
@@ -492,7 +492,7 @@ export const sfdrDataModel = [
             description:
               'Do you have sustainable land/agriculture practices or policies? If yes, please share the relevant documents with us.',
 
-            component: 'YesNoExtendedDataPointFormField',
+            component: 'YesNoNoEvidenceFoundExtendedDataPointFormField',
             required: false,
             showIf: (): boolean => true,
           },
@@ -502,7 +502,7 @@ export const sfdrDataModel = [
             description:
               'Do you have sustainable oceans/seas practices or policies? If yes, please share the relevant documents with us.',
 
-            component: 'YesNoExtendedDataPointFormField',
+            component: 'YesNoNoEvidenceFoundExtendedDataPointFormField',
             required: false,
             showIf: (): boolean => true,
           },
@@ -511,7 +511,7 @@ export const sfdrDataModel = [
             label: 'Threatened Species Exposure',
             description: 'Do you have operations which affect threatened species?',
 
-            component: 'YesNoExtendedDataPointFormField',
+            component: 'YesNoNoEvidenceFoundExtendedDataPointFormField',
             required: false,
             showIf: (): boolean => true,
           },
@@ -521,7 +521,7 @@ export const sfdrDataModel = [
             description:
               'Do you have a biodiversity protection policy covering operational sites owned, leased, managed in, or adjacent to, a protected area or an area of high biodiversity value outside protected areas? If yes, please share the policy with us.',
 
-            component: 'YesNoExtendedDataPointFormField',
+            component: 'YesNoNoEvidenceFoundExtendedDataPointFormField',
             required: false,
             showIf: (): boolean => true,
           },
@@ -531,7 +531,7 @@ export const sfdrDataModel = [
             description:
               'Do you have a policy to address deforestation? If yes, please share the policy with us. "Deforestation" means the human-induced conversion of forested land to non-forested land, which can be permanent, when this change is definitive, or temporary when this change is part of a cycle that includes natural or assisted regeneration, according to the Intergovernmental Science-Policy Platform on Biodiversity and Ecosystem Services (IPBES) as referred to in paragraph 100 of Decision No 1386/2013/EU of the European Parliament and of the Council.',
 
-            component: 'YesNoExtendedDataPointFormField',
+            component: 'YesNoNoEvidenceFoundExtendedDataPointFormField',
             required: false,
             showIf: (): boolean => true,
           },
@@ -593,7 +593,7 @@ export const sfdrDataModel = [
             description:
               'Does the company have policies and procedures for water management? If yes, please share the relevant documents with us.',
 
-            component: 'YesNoExtendedDataPointFormField',
+            component: 'YesNoNoEvidenceFoundExtendedDataPointFormField',
             required: false,
             showIf: (): boolean => true,
           },
@@ -603,7 +603,7 @@ export const sfdrDataModel = [
             description:
               'Do you have sites/operations in or near ‘areas of high water stress’, meaning regions where the percentage of total water withdrawn is high (40-80 %) or extremely high (greater than 80 %) where the activities of those sites/operations negatively affect those areas? See also Regulation, Annex I, definition 13.',
 
-            component: 'YesNoExtendedDataPointFormField',
+            component: 'YesNoNoEvidenceFoundExtendedDataPointFormField',
             required: false,
             showIf: (): boolean => true,
           },
@@ -685,7 +685,7 @@ export const sfdrDataModel = [
             description:
               'Do you have any policies or procedures for carbon emission reduction aimed at aligning with the Paris Agreement?',
 
-            component: 'YesNoExtendedDataPointFormField',
+            component: 'YesNoNoEvidenceFoundExtendedDataPointFormField',
             required: false,
             showIf: (): boolean => true,
           },
@@ -708,7 +708,7 @@ export const sfdrDataModel = [
             label: 'Human Rights Legal Proceedings',
             description: 'Have you been involved in Human Rights related legal proceedings?',
 
-            component: 'YesNoExtendedDataPointFormField',
+            component: 'YesNoNoEvidenceFoundExtendedDataPointFormField',
             required: false,
             showIf: (): boolean => true,
           },
@@ -717,7 +717,7 @@ export const sfdrDataModel = [
             label: 'ILO Core Labour Standards',
             description: 'Do you abide by the ILO Core Labour Standards?',
 
-            component: 'YesNoExtendedDataPointFormField',
+            component: 'YesNoNoEvidenceFoundExtendedDataPointFormField',
             required: false,
             showIf: (): boolean => true,
           },
@@ -726,7 +726,7 @@ export const sfdrDataModel = [
             label: 'Environmental Policy',
             description: 'Do you have an environmental policy? If yes, please share the policy with us.',
 
-            component: 'YesNoExtendedDataPointFormField',
+            component: 'YesNoNoEvidenceFoundExtendedDataPointFormField',
             required: false,
             showIf: (): boolean => true,
           },
@@ -735,7 +735,7 @@ export const sfdrDataModel = [
             label: 'Corruption Legal Proceedings',
             description: 'Have you been involved in corruption related legal proceedings?',
 
-            component: 'YesNoExtendedDataPointFormField',
+            component: 'YesNoNoEvidenceFoundExtendedDataPointFormField',
             required: false,
             showIf: (): boolean => true,
           },
@@ -745,7 +745,7 @@ export const sfdrDataModel = [
             description:
               'Do you have a transparency policy? If yes, please share the policy with us. According to the OECD Guidelines for Multinational Enterprises, multinational companies should inform the public not only about their financial performance, but also about all of the important aspects of their business activities, such as how they are meeting social and environmental standards and what risks they foresee linked to their business activities.',
 
-            component: 'YesNoExtendedDataPointFormField',
+            component: 'YesNoNoEvidenceFoundExtendedDataPointFormField',
             required: false,
             showIf: (): boolean => true,
           },
@@ -755,7 +755,7 @@ export const sfdrDataModel = [
             description:
               'Do you have policies in place to support/respect human rights and carry out due diligence to ensure that the business activities do not have a negative human rights impact? If yes, please share the relevant documents with us.',
 
-            component: 'YesNoExtendedDataPointFormField',
+            component: 'YesNoNoEvidenceFoundExtendedDataPointFormField',
             required: false,
             showIf: (): boolean => true,
           },
@@ -765,7 +765,7 @@ export const sfdrDataModel = [
             description:
               'Do you have policies in place to abolish all forms of child labour? If yes, please share the policy with us.',
 
-            component: 'YesNoExtendedDataPointFormField',
+            component: 'YesNoNoEvidenceFoundExtendedDataPointFormField',
             required: false,
             showIf: (): boolean => true,
           },
@@ -775,7 +775,7 @@ export const sfdrDataModel = [
             description:
               'Do you have policies in place to abolish all forms of forced labour? If yes, please share the policy with us.',
 
-            component: 'YesNoExtendedDataPointFormField',
+            component: 'YesNoNoEvidenceFoundExtendedDataPointFormField',
             required: false,
             showIf: (): boolean => true,
           },
@@ -785,7 +785,7 @@ export const sfdrDataModel = [
             description:
               'Do you have policies in place to eliminate discrimination in the workplace? If yes, please share the policy with us.',
 
-            component: 'YesNoExtendedDataPointFormField',
+            component: 'YesNoNoEvidenceFoundExtendedDataPointFormField',
             required: false,
             showIf: (): boolean => true,
           },
@@ -795,7 +795,7 @@ export const sfdrDataModel = [
             description:
               'Is your company ISO 14001 certified (Environmental Management)? If yes, please share the certificate with us.',
 
-            component: 'YesNoExtendedDataPointFormField',
+            component: 'YesNoNoEvidenceFoundExtendedDataPointFormField',
             required: false,
             showIf: (): boolean => true,
           },
@@ -805,7 +805,7 @@ export const sfdrDataModel = [
             description:
               'Do you have a policy on anti-corruption and anti-bribery consistent with the United Nations Convention against Corruption? If yes, please share the policy with us.',
 
-            component: 'YesNoExtendedDataPointFormField',
+            component: 'YesNoNoEvidenceFoundExtendedDataPointFormField',
             required: false,
             showIf: (): boolean => true,
           },
@@ -815,7 +815,7 @@ export const sfdrDataModel = [
             description:
               'Do you have policies and procedures in place to apply fair business, marketing and advertising practices and to guarantee the safety and quality of the goods and services? If yes, please share the relevant documents with us.',
 
-            component: 'YesNoExtendedDataPointFormField',
+            component: 'YesNoNoEvidenceFoundExtendedDataPointFormField',
             required: false,
             showIf: (): boolean => true,
           },
@@ -825,7 +825,7 @@ export const sfdrDataModel = [
             description:
               'Do you have policies and procedures in place to permit the transfer and rapid dissemination of technologies and expertise? If yes, please share the relevant documents with us.',
 
-            component: 'YesNoExtendedDataPointFormField',
+            component: 'YesNoNoEvidenceFoundExtendedDataPointFormField',
             required: false,
             showIf: (): boolean => true,
           },
@@ -835,7 +835,7 @@ export const sfdrDataModel = [
             description:
               'Do you have policies and procedures in place related to fair competition and anti-competitive cartels? If yes, please share the relevant documents with us.',
 
-            component: 'YesNoExtendedDataPointFormField',
+            component: 'YesNoNoEvidenceFoundExtendedDataPointFormField',
             required: false,
             showIf: (): boolean => true,
           },
@@ -845,7 +845,7 @@ export const sfdrDataModel = [
             description:
               'Are you involved in violations of OECD Guidelines for Multinational Enterprises for Taxation: In the field of taxation, multinational enterprises should make their contribution to public finances within the framework of applicable law and regulations, in accordance with the tax rules and regulations of the host countries, and should cooperate with the tax authorities.',
 
-            component: 'YesNoExtendedDataPointFormField',
+            component: 'YesNoNoEvidenceFoundExtendedDataPointFormField',
             required: false,
             showIf: (): boolean => true,
           },
@@ -855,7 +855,7 @@ export const sfdrDataModel = [
             description:
               'Do you have a policy to monitor compliance with the UNGC principles or OECD Guidelines for Multinational Enterprises? If yes, please share the policy with us.',
 
-            component: 'YesNoExtendedDataPointFormField',
+            component: 'YesNoNoEvidenceFoundExtendedDataPointFormField',
             required: false,
             showIf: (): boolean => true,
           },
@@ -865,7 +865,7 @@ export const sfdrDataModel = [
             description:
               'Do you have grievance / complaints handling mechanisms to address violations of the UNGC principles or OECD Guidelines for Multinational Enterprises?',
 
-            component: 'YesNoExtendedDataPointFormField',
+            component: 'YesNoNoEvidenceFoundExtendedDataPointFormField',
             required: false,
             showIf: (): boolean => true,
           },
@@ -936,7 +936,7 @@ export const sfdrDataModel = [
             description:
               'Involvement in the manufacture or selling of controversial weapons such as anti- personnel mines, cluster munitions, chemical weapons and biological weapons.',
 
-            component: 'YesNoExtendedDataPointFormField',
+            component: 'YesNoNoEvidenceFoundExtendedDataPointFormField',
             required: false,
             showIf: (): boolean => true,
           },
@@ -945,7 +945,7 @@ export const sfdrDataModel = [
             label: 'Workplace Accident Prevention Policy',
             description: 'Do you have workplace accident prevention policy? If yes, please share the policy with us.',
 
-            component: 'YesNoExtendedDataPointFormField',
+            component: 'YesNoNoEvidenceFoundExtendedDataPointFormField',
             required: false,
             showIf: (): boolean => true,
           },
@@ -978,7 +978,7 @@ export const sfdrDataModel = [
             description:
               'Do you have a supplier code of conduct (against unsafe working conditions, precarious work, child labour and forced labour)? If yes, please share the document with us.',
 
-            component: 'YesNoExtendedDataPointFormField',
+            component: 'YesNoNoEvidenceFoundExtendedDataPointFormField',
             required: false,
             showIf: (): boolean => true,
           },
@@ -987,7 +987,7 @@ export const sfdrDataModel = [
             label: 'Grievance Handling Mechanism',
             description: 'Do you have any grievance/complaints handling mechanism related to employee matters?',
 
-            component: 'YesNoExtendedDataPointFormField',
+            component: 'YesNoNoEvidenceFoundExtendedDataPointFormField',
             required: false,
             showIf: (): boolean => true,
           },
@@ -997,7 +997,7 @@ export const sfdrDataModel = [
             description:
               'Do you have a policy on the protection of whistleblowers? If yes, please share the policy with us.',
 
-            component: 'YesNoExtendedDataPointFormField',
+            component: 'YesNoNoEvidenceFoundExtendedDataPointFormField',
             required: false,
             showIf: (): boolean => true,
           },
@@ -1057,7 +1057,7 @@ export const sfdrDataModel = [
             description:
               'Do you have securities in investments not certified as green under a future EU legal act setting up an EU Green Bond Standard?',
 
-            component: 'YesNoExtendedDataPointFormField',
+            component: 'YesNoNoEvidenceFoundExtendedDataPointFormField',
             required: false,
             showIf: (): boolean => true,
           },
@@ -1072,7 +1072,7 @@ export const sfdrDataModel = [
             label: 'Human Rights Policy',
             description: 'Do you have a human rights policy? If yes, please share the policy with us.',
 
-            component: 'YesNoExtendedDataPointFormField',
+            component: 'YesNoNoEvidenceFoundExtendedDataPointFormField',
             required: false,
             showIf: (): boolean => true,
           },
@@ -1082,7 +1082,7 @@ export const sfdrDataModel = [
             description:
               'Do you have due diligence processes to identify, prevent, mitigate and address adverse human rights impacts?',
 
-            component: 'YesNoExtendedDataPointFormField',
+            component: 'YesNoNoEvidenceFoundExtendedDataPointFormField',
             required: false,
             showIf: (): boolean => true,
           },
@@ -1092,7 +1092,7 @@ export const sfdrDataModel = [
             description:
               'Do you have a policy against trafficking in human beings? If yes, please share the policy with us.',
 
-            component: 'YesNoExtendedDataPointFormField',
+            component: 'YesNoNoEvidenceFoundExtendedDataPointFormField',
             required: false,
             showIf: (): boolean => true,
           },
@@ -1101,7 +1101,7 @@ export const sfdrDataModel = [
             label: 'Reported Child Labour Incidents',
             description: 'Has their been any reported child labour incident (within own operations or supply chain)?',
 
-            component: 'YesNoExtendedDataPointFormField',
+            component: 'YesNoNoEvidenceFoundExtendedDataPointFormField',
             required: false,
             showIf: (): boolean => true,
           },
@@ -1111,7 +1111,7 @@ export const sfdrDataModel = [
             description:
               'Has their been any reported forced or compulsory labour incident (within own operations or supply chain)?',
 
-            component: 'YesNoExtendedDataPointFormField',
+            component: 'YesNoNoEvidenceFoundExtendedDataPointFormField',
             required: false,
             showIf: (): boolean => true,
           },

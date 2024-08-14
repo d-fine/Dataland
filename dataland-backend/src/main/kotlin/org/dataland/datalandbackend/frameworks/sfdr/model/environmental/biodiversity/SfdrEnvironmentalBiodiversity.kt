@@ -3,43 +3,43 @@ package org.dataland.datalandbackend.frameworks.sfdr.model.environmental.biodive
 
 import jakarta.validation.Valid
 import org.dataland.datalandbackend.model.datapoints.ExtendedDataPoint
-import org.dataland.datalandbackend.model.enums.commons.YesNo
+import org.dataland.datalandbackend.model.enums.commons.YesNoNoEvidenceFound
 
 /**
  * The data-model for the Biodiversity section
  */
 data class SfdrEnvironmentalBiodiversity(
     @field:Valid()
-    val primaryForestAndWoodedLandOfNativeSpeciesExposure: ExtendedDataPoint<YesNo?>? = null,
+    val primaryForestAndWoodedLandOfNativeSpeciesExposure: ExtendedDataPoint<YesNoNoEvidenceFound?>? = null,
 
     @field:Valid()
-    val protectedAreasExposure: ExtendedDataPoint<YesNo?>? = null,
+    val protectedAreasExposure: ExtendedDataPoint<YesNoNoEvidenceFound?>? = null,
 
     @field:Valid()
-    val rareOrEndangeredEcosystemsExposure: ExtendedDataPoint<YesNo?>? = null,
+    val rareOrEndangeredEcosystemsExposure: ExtendedDataPoint<YesNoNoEvidenceFound?>? = null,
 
     @field:Valid()
-    val highlyBiodiverseGrasslandExposure: ExtendedDataPoint<YesNo?>? = null,
+    val highlyBiodiverseGrasslandExposure: ExtendedDataPoint<YesNoNoEvidenceFound?>? = null,
 
     @field:Valid()
-    val manufactureOfAgrochemicalPesticidesProducts: ExtendedDataPoint<YesNo?>? = null,
+    val manufactureOfAgrochemicalPesticidesProducts: ExtendedDataPoint<YesNoNoEvidenceFound?>? = null,
 
     @field:Valid()
-    val landDegradationDesertificationSoilSealingExposure: ExtendedDataPoint<YesNo?>? = null,
+    val landDegradationDesertificationSoilSealingExposure: ExtendedDataPoint<YesNoNoEvidenceFound?>? = null,
 
     @field:Valid()
-    val sustainableAgriculturePolicy: ExtendedDataPoint<YesNo?>? = null,
+    val sustainableAgriculturePolicy: ExtendedDataPoint<YesNoNoEvidenceFound?>? = null,
 
     @field:Valid()
-    val sustainableOceansAndSeasPolicy: ExtendedDataPoint<YesNo?>? = null,
+    val sustainableOceansAndSeasPolicy: ExtendedDataPoint<YesNoNoEvidenceFound?>? = null,
 
     @field:Valid()
-    val threatenedSpeciesExposure: ExtendedDataPoint<YesNo?>? = null,
+    val threatenedSpeciesExposure: ExtendedDataPoint<YesNoNoEvidenceFound?>? = null,
 
     @field:Valid()
-    val biodiversityProtectionPolicy: ExtendedDataPoint<YesNo?>? = null,
+    val biodiversityProtectionPolicy: ExtendedDataPoint<YesNoNoEvidenceFound?>? = null,
 
     @field:Valid()
-    val deforestationPolicy: ExtendedDataPoint<YesNo?>? = null,
+    val deforestationPolicy: ExtendedDataPoint<YesNoNoEvidenceFound?>? = null,
 
 )

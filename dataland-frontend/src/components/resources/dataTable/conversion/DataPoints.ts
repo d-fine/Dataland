@@ -9,7 +9,6 @@ import { getFieldValueFromFrameworkDataset } from '@/components/resources/dataTa
 import { type BaseDocumentReference, type ExtendedDocumentReference } from '@clients/backend';
 import { NO_DATA_PROVIDED, ONLY_AUXILIARY_DATA_PROVIDED } from '@/utils/Constants';
 import { formatStringForDatatable } from '@/components/resources/dataTable/conversion/PlainStringValueGetterFactory';
-import { humanizeStringOrNumber } from '@/utils/StringFormatter';
 /**
  * Checks if a given data point has a valid reference set
  * @param dataPoint the datapoint whose reference to check
@@ -61,7 +60,7 @@ export function getDataPointGetterFactory<
           fieldLabel: field.label,
           value: displayValue,
           dataSource: dataPointAsExtendedDataPoint.dataSource,
-          quality: humanizeStringOrNumber(dataPointAsExtendedDataPoint.quality),
+          quality: dataPointAsExtendedDataPoint.quality,
           comment: dataPointAsExtendedDataPoint.comment,
         },
       } as AvailableMLDTDisplayObjectTypes;
@@ -109,7 +108,7 @@ export function wrapDisplayValueWithDatapointInformation(
       displayValue: {
         innerContents:
           inputValue.displayValue == '' ? formatStringForDatatable(ONLY_AUXILIARY_DATA_PROVIDED) : inputValue,
-        quality: humanizeStringOrNumber(datapointProperties?.quality),
+        quality: datapointProperties?.quality ?? undefined,
         comment: datapointProperties?.comment ?? undefined,
         dataSource: datapointProperties?.dataSource ?? undefined,
         fieldLabel: fieldLabel,
@@ -129,6 +128,7 @@ export function wrapDisplayValueWithDatapointInformation(
 
 /**
  * Checks if any property of the data point is not null.
+ * Has to check for Quality != NA, since this is the default setting for no provided data.
  * @param dataPointProperties gives dataPoint properties
  * @returns boolean value
  */
