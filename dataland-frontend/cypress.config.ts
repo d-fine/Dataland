@@ -32,7 +32,8 @@ export default defineConfig({
         ? process.env.DATA_REQUEST_UPLOAD_MAX_FILE_SIZE_IN_MEGABYTES
         : '2',
   },
-  numTestsKeptInMemory: 2,
+  experimentalMemoryManagement: true,
+  numTestsKeptInMemory: 1,
   defaultCommandTimeout: 10000,
   viewportHeight: 684,
   viewportWidth: 1536,

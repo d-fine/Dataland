@@ -6,7 +6,6 @@
     :label="label"
     :required="required"
     :input-class="inputClass"
-    :check-value-validity="hasDataPointProperValue"
     :placeholder="placeholder"
     :validation="validation"
     :validation-label="validationLabel"
@@ -41,7 +40,6 @@ import { FormFieldPropsWithPlaceholder } from '@/components/forms/parts/fields/F
 import ExtendedDataPointFormField from '@/components/forms/parts/elements/basic/ExtendedDataPointFormField.vue';
 import { DropdownDatasetIdentifier, getDataset } from '@/utils/PremadeDropdownDatasets';
 import NumberFormField from '@/components/forms/parts/fields/NumberFormField.vue';
-import { hasDataPointProperValue } from '@/utils/DataPoint';
 import SingleSelectFormElement from '@/components/forms/parts/elements/basic/SingleSelectFormElement.vue';
 
 export default defineComponent({
@@ -63,7 +61,6 @@ export default defineComponent({
     },
   },
   methods: {
-    hasDataPointProperValue,
     getDataset,
   },
 });
