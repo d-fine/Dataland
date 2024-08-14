@@ -6,7 +6,6 @@
     :label="label"
     :required="required"
     :input-class="inputClass"
-    :check-value-validity="hasDataPointProperValue"
   >
     <div class="mb-3">
       <UploadFormHeader :label="label" :description="description" :is-required="required" />
@@ -29,7 +28,6 @@ import UploadFormHeader from '@/components/forms/parts/elements/basic/UploadForm
 import { FormFieldPropsWithPlaceholder } from '@/components/forms/parts/fields/FormFieldProps';
 import ExtendedDataPointFormField from '@/components/forms/parts/elements/basic/ExtendedDataPointFormField.vue';
 import NumberFormField from '@/components/forms/parts/fields/NumberFormField.vue';
-import { hasDataPointProperValue } from '@/utils/DataPoint';
 
 export default defineComponent({
   name: 'IntegerExtendedDataPointFormField',
@@ -40,6 +38,5 @@ export default defineComponent({
       type: String,
     },
   },
-  methods: { hasDataPointProperValue },
 });
 </script>
