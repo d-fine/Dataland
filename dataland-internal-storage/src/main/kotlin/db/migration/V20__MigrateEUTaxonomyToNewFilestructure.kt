@@ -25,7 +25,7 @@ class V20__MigrateEUTaxonomyToNewFilestructure : BaseJavaMigration() {
 
     private fun changeFields(revenueKeys: JSONObject) {
         mapOfOldToNewFieldNames.forEach {
-            revenueKeys.put(it.value, revenueKeys[it.key] )
+            revenueKeys.put(it.value, revenueKeys[it.key])
             revenueKeys.remove(it.key)
         }
     }
