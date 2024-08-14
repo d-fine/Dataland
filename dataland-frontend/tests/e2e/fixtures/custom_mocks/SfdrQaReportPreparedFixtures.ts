@@ -1,8 +1,8 @@
 import { generateFixtureDataset } from '@e2e/fixtures/FixtureUtils';
 import { type FixtureData } from '@sharedUtils/Fixtures';
 import {
-  ExtendedDataPointYesNoNoEvidenceFoundQualityEnum,
-  ExtendedDataPointYesNoNoEvidenceFoundValueEnum,
+  ExtendedDataPointYesNoQualityEnum,
+  ExtendedDataPointYesNoValueEnum,
   QaReportDataPointVerdict,
   type SfdrData as SfdrQaReport,
 } from '@clients/qaservice';
@@ -45,8 +45,8 @@ function generateSfdrQaReportWithCorrectionForPrimaryForestAndWoodedLand(): Sfdr
           comment: 'some comment',
           verdict: QaReportDataPointVerdict.QaInconclusive,
           correctedData: {
-            value: ExtendedDataPointYesNoNoEvidenceFoundValueEnum.Yes,
-            quality: ExtendedDataPointYesNoNoEvidenceFoundQualityEnum.Estimated,
+            value: ExtendedDataPointYesNoValueEnum.Yes,
+            quality: ExtendedDataPointYesNoQualityEnum.Estimated,
           },
         },
       },

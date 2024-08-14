@@ -3,7 +3,7 @@ package org.dataland.datalandbackend.frameworks.sfdr.model.environmental.emissio
 
 import jakarta.validation.Valid
 import org.dataland.datalandbackend.model.datapoints.ExtendedDataPoint
-import org.dataland.datalandbackend.model.enums.commons.YesNoNoEvidenceFound
+import org.dataland.datalandbackend.model.enums.commons.YesNo
 import org.dataland.datalandbackend.validator.MinimumValue
 import java.math.BigDecimal
 
@@ -24,6 +24,6 @@ data class SfdrEnvironmentalEmissions(
     val emissionsOfOzoneDepletionSubstancesInTonnes: ExtendedDataPoint<BigDecimal?>? = null,
 
     @field:Valid()
-    val carbonReductionInitiatives: ExtendedDataPoint<YesNoNoEvidenceFound?>? = null,
+    val carbonReductionInitiatives: ExtendedDataPoint<YesNo?>? = null,
 
 )

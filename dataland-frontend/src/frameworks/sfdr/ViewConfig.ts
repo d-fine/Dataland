@@ -5,7 +5,7 @@ import { type AvailableMLDTDisplayObjectTypes } from '@/components/resources/dat
 import { formatCurrencyForDisplay } from '@/components/resources/dataTable/conversion/CurrencyDataPointValueGetterFactory';
 import { formatNumberForDatatable } from '@/components/resources/dataTable/conversion/NumberValueGetterFactory';
 import { wrapDisplayValueWithDatapointInformation } from '@/components/resources/dataTable/conversion/DataPoints';
-import { formatYesNoNoEvidenceFoundValueForDatatable } from '@/components/resources/dataTable/conversion/YesNoNoEvidenceFoundValueGetterFactory';
+import { formatYesNoValueForDatatable } from '@/components/resources/dataTable/conversion/YesNoValueGetterFactory';
 import { formatHighImpactClimateSectorForDisplay } from '@/components/resources/dataTable/conversion/HighImpactClimateGetterFactory';
 import { formatStringForDatatable } from '@/components/resources/dataTable/conversion/PlainStringValueGetterFactory';
 import { getOriginalNameFromTechnicalName } from '@/components/resources/dataTable/conversion/Utils';
@@ -304,7 +304,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
-                formatYesNoNoEvidenceFoundValueForDatatable(
+                formatYesNoValueForDatatable(
                   dataset.environmental?.greenhouseGasEmissions?.fossilFuelSectorExposure?.value
                 ),
                 'Fossil Fuel Sector Exposure',
@@ -563,7 +563,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
-                formatYesNoNoEvidenceFoundValueForDatatable(
+                formatYesNoValueForDatatable(
                   dataset.environmental?.biodiversity?.primaryForestAndWoodedLandOfNativeSpeciesExposure?.value
                 ),
                 'Primary Forest And Wooded Land Of Native Species Exposure',
@@ -578,9 +578,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
-                formatYesNoNoEvidenceFoundValueForDatatable(
-                  dataset.environmental?.biodiversity?.protectedAreasExposure?.value
-                ),
+                formatYesNoValueForDatatable(dataset.environmental?.biodiversity?.protectedAreasExposure?.value),
                 'Protected Areas Exposure',
                 dataset.environmental?.biodiversity?.protectedAreasExposure
               ),
@@ -593,7 +591,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
-                formatYesNoNoEvidenceFoundValueForDatatable(
+                formatYesNoValueForDatatable(
                   dataset.environmental?.biodiversity?.rareOrEndangeredEcosystemsExposure?.value
                 ),
                 'Rare Or Endangered Ecosystems Exposure',
@@ -608,7 +606,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
-                formatYesNoNoEvidenceFoundValueForDatatable(
+                formatYesNoValueForDatatable(
                   dataset.environmental?.biodiversity?.highlyBiodiverseGrasslandExposure?.value
                 ),
                 'Highly Biodiverse Grassland Exposure',
@@ -622,7 +620,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
-                formatYesNoNoEvidenceFoundValueForDatatable(
+                formatYesNoValueForDatatable(
                   dataset.environmental?.biodiversity?.manufactureOfAgrochemicalPesticidesProducts?.value
                 ),
                 'Manufacture Of Agrochemical Pesticides Products',
@@ -636,7 +634,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
-                formatYesNoNoEvidenceFoundValueForDatatable(
+                formatYesNoValueForDatatable(
                   dataset.environmental?.biodiversity?.landDegradationDesertificationSoilSealingExposure?.value
                 ),
                 'Land Degradation Desertification Soil Sealing Exposure',
@@ -650,9 +648,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
-                formatYesNoNoEvidenceFoundValueForDatatable(
-                  dataset.environmental?.biodiversity?.sustainableAgriculturePolicy?.value
-                ),
+                formatYesNoValueForDatatable(dataset.environmental?.biodiversity?.sustainableAgriculturePolicy?.value),
                 'Sustainable Agriculture Policy',
                 dataset.environmental?.biodiversity?.sustainableAgriculturePolicy
               ),
@@ -664,7 +660,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
-                formatYesNoNoEvidenceFoundValueForDatatable(
+                formatYesNoValueForDatatable(
                   dataset.environmental?.biodiversity?.sustainableOceansAndSeasPolicy?.value
                 ),
                 'Sustainable Oceans And Seas Policy',
@@ -678,9 +674,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
-                formatYesNoNoEvidenceFoundValueForDatatable(
-                  dataset.environmental?.biodiversity?.threatenedSpeciesExposure?.value
-                ),
+                formatYesNoValueForDatatable(dataset.environmental?.biodiversity?.threatenedSpeciesExposure?.value),
                 'Threatened Species Exposure',
                 dataset.environmental?.biodiversity?.threatenedSpeciesExposure
               ),
@@ -693,9 +687,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
-                formatYesNoNoEvidenceFoundValueForDatatable(
-                  dataset.environmental?.biodiversity?.biodiversityProtectionPolicy?.value
-                ),
+                formatYesNoValueForDatatable(dataset.environmental?.biodiversity?.biodiversityProtectionPolicy?.value),
                 'Biodiversity Protection Policy',
                 dataset.environmental?.biodiversity?.biodiversityProtectionPolicy
               ),
@@ -708,9 +700,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
-                formatYesNoNoEvidenceFoundValueForDatatable(
-                  dataset.environmental?.biodiversity?.deforestationPolicy?.value
-                ),
+                formatYesNoValueForDatatable(dataset.environmental?.biodiversity?.deforestationPolicy?.value),
                 'Deforestation Policy',
                 dataset.environmental?.biodiversity?.deforestationPolicy
               ),
@@ -786,7 +776,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
-                formatYesNoNoEvidenceFoundValueForDatatable(dataset.environmental?.water?.waterManagementPolicy?.value),
+                formatYesNoValueForDatatable(dataset.environmental?.water?.waterManagementPolicy?.value),
                 'Water Management Policy',
                 dataset.environmental?.water?.waterManagementPolicy
               ),
@@ -799,9 +789,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
-                formatYesNoNoEvidenceFoundValueForDatatable(
-                  dataset.environmental?.water?.highWaterStressAreaExposure?.value
-                ),
+                formatYesNoValueForDatatable(dataset.environmental?.water?.highWaterStressAreaExposure?.value),
                 'High Water Stress Area Exposure',
                 dataset.environmental?.water?.highWaterStressAreaExposure
               ),
@@ -907,9 +895,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
-                formatYesNoNoEvidenceFoundValueForDatatable(
-                  dataset.environmental?.emissions?.carbonReductionInitiatives?.value
-                ),
+                formatYesNoValueForDatatable(dataset.environmental?.emissions?.carbonReductionInitiatives?.value),
                 'Carbon Reduction Initiatives',
                 dataset.environmental?.emissions?.carbonReductionInitiatives
               ),
@@ -938,7 +924,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
-                formatYesNoNoEvidenceFoundValueForDatatable(
+                formatYesNoValueForDatatable(
                   dataset.social?.socialAndEmployeeMatters?.humanRightsLegalProceedings?.value
                 ),
                 'Human Rights Legal Proceedings',
@@ -952,9 +938,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
-                formatYesNoNoEvidenceFoundValueForDatatable(
-                  dataset.social?.socialAndEmployeeMatters?.iloCoreLabourStandards?.value
-                ),
+                formatYesNoValueForDatatable(dataset.social?.socialAndEmployeeMatters?.iloCoreLabourStandards?.value),
                 'ILO Core Labour Standards',
                 dataset.social?.socialAndEmployeeMatters?.iloCoreLabourStandards
               ),
@@ -966,9 +950,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
-                formatYesNoNoEvidenceFoundValueForDatatable(
-                  dataset.social?.socialAndEmployeeMatters?.environmentalPolicy?.value
-                ),
+                formatYesNoValueForDatatable(dataset.social?.socialAndEmployeeMatters?.environmentalPolicy?.value),
                 'Environmental Policy',
                 dataset.social?.socialAndEmployeeMatters?.environmentalPolicy
               ),
@@ -980,7 +962,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
-                formatYesNoNoEvidenceFoundValueForDatatable(
+                formatYesNoValueForDatatable(
                   dataset.social?.socialAndEmployeeMatters?.corruptionLegalProceedings?.value
                 ),
                 'Corruption Legal Proceedings',
@@ -995,7 +977,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
-                formatYesNoNoEvidenceFoundValueForDatatable(
+                formatYesNoValueForDatatable(
                   dataset.social?.socialAndEmployeeMatters?.transparencyDisclosurePolicy?.value
                 ),
                 'Transparency Disclosure Policy',
@@ -1010,7 +992,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
-                formatYesNoNoEvidenceFoundValueForDatatable(
+                formatYesNoValueForDatatable(
                   dataset.social?.socialAndEmployeeMatters?.humanRightsDueDiligencePolicy?.value
                 ),
                 'Human Rights Due Diligence Policy',
@@ -1024,9 +1006,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
-                formatYesNoNoEvidenceFoundValueForDatatable(
-                  dataset.social?.socialAndEmployeeMatters?.policyAgainstChildLabour?.value
-                ),
+                formatYesNoValueForDatatable(dataset.social?.socialAndEmployeeMatters?.policyAgainstChildLabour?.value),
                 'Policy against Child Labour',
                 dataset.social?.socialAndEmployeeMatters?.policyAgainstChildLabour
               ),
@@ -1038,7 +1018,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
-                formatYesNoNoEvidenceFoundValueForDatatable(
+                formatYesNoValueForDatatable(
                   dataset.social?.socialAndEmployeeMatters?.policyAgainstForcedLabour?.value
                 ),
                 'Policy against Forced Labour',
@@ -1052,7 +1032,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
-                formatYesNoNoEvidenceFoundValueForDatatable(
+                formatYesNoValueForDatatable(
                   dataset.social?.socialAndEmployeeMatters?.policyAgainstDiscriminationInTheWorkplace?.value
                 ),
                 'Policy against Discrimination in the Workplace',
@@ -1066,9 +1046,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
-                formatYesNoNoEvidenceFoundValueForDatatable(
-                  dataset.social?.socialAndEmployeeMatters?.iso14001Certificate?.value
-                ),
+                formatYesNoValueForDatatable(dataset.social?.socialAndEmployeeMatters?.iso14001Certificate?.value),
                 'ISO 14001 Certificate',
                 dataset.social?.socialAndEmployeeMatters?.iso14001Certificate
               ),
@@ -1081,7 +1059,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
-                formatYesNoNoEvidenceFoundValueForDatatable(
+                formatYesNoValueForDatatable(
                   dataset.social?.socialAndEmployeeMatters?.policyAgainstBriberyAndCorruption?.value
                 ),
                 'Policy against Bribery and Corruption',
@@ -1096,7 +1074,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
-                formatYesNoNoEvidenceFoundValueForDatatable(
+                formatYesNoValueForDatatable(
                   dataset.social?.socialAndEmployeeMatters?.fairBusinessMarketingAdvertisingPolicy?.value
                 ),
                 'Fair Business Marketing Advertising Policy',
@@ -1111,7 +1089,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
-                formatYesNoNoEvidenceFoundValueForDatatable(
+                formatYesNoValueForDatatable(
                   dataset.social?.socialAndEmployeeMatters?.technologiesExpertiseTransferPolicy?.value
                 ),
                 'Technologies Expertise Transfer Policy',
@@ -1125,9 +1103,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
-                formatYesNoNoEvidenceFoundValueForDatatable(
-                  dataset.social?.socialAndEmployeeMatters?.fairCompetitionPolicy?.value
-                ),
+                formatYesNoValueForDatatable(dataset.social?.socialAndEmployeeMatters?.fairCompetitionPolicy?.value),
                 'Fair Competition Policy',
                 dataset.social?.socialAndEmployeeMatters?.fairCompetitionPolicy
               ),
@@ -1140,7 +1116,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
-                formatYesNoNoEvidenceFoundValueForDatatable(
+                formatYesNoValueForDatatable(
                   dataset.social?.socialAndEmployeeMatters?.violationOfTaxRulesAndRegulation?.value
                 ),
                 'Violation Of Tax Rules And Regulation',
@@ -1155,7 +1131,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
-                formatYesNoNoEvidenceFoundValueForDatatable(
+                formatYesNoValueForDatatable(
                   dataset.social?.socialAndEmployeeMatters?.unGlobalCompactPrinciplesCompliancePolicy?.value
                 ),
                 'UN Global Compact Principles Compliance Policy',
@@ -1170,7 +1146,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
-                formatYesNoNoEvidenceFoundValueForDatatable(
+                formatYesNoValueForDatatable(
                   dataset.social?.socialAndEmployeeMatters?.oecdGuidelinesForMultinationalEnterprisesGrievanceHandling
                     ?.value
                 ),
@@ -1264,7 +1240,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
-                formatYesNoNoEvidenceFoundValueForDatatable(
+                formatYesNoValueForDatatable(
                   dataset.social?.socialAndEmployeeMatters?.controversialWeaponsExposure?.value
                 ),
                 'Controversial Weapons Exposure',
@@ -1278,7 +1254,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
-                formatYesNoNoEvidenceFoundValueForDatatable(
+                formatYesNoValueForDatatable(
                   dataset.social?.socialAndEmployeeMatters?.workplaceAccidentPreventionPolicy?.value
                 ),
                 'Workplace Accident Prevention Policy',
@@ -1321,9 +1297,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
-                formatYesNoNoEvidenceFoundValueForDatatable(
-                  dataset.social?.socialAndEmployeeMatters?.supplierCodeOfConduct?.value
-                ),
+                formatYesNoValueForDatatable(dataset.social?.socialAndEmployeeMatters?.supplierCodeOfConduct?.value),
                 'Supplier Code Of Conduct',
                 dataset.social?.socialAndEmployeeMatters?.supplierCodeOfConduct
               ),
@@ -1335,7 +1309,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
-                formatYesNoNoEvidenceFoundValueForDatatable(
+                formatYesNoValueForDatatable(
                   dataset.social?.socialAndEmployeeMatters?.grievanceHandlingMechanism?.value
                 ),
                 'Grievance Handling Mechanism',
@@ -1349,7 +1323,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
-                formatYesNoNoEvidenceFoundValueForDatatable(
+                formatYesNoValueForDatatable(
                   dataset.social?.socialAndEmployeeMatters?.whistleblowerProtectionPolicy?.value
                 ),
                 'Whistleblower Protection Policy',
@@ -1432,9 +1406,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
-                formatYesNoNoEvidenceFoundValueForDatatable(
-                  dataset.social?.greenSecurities?.securitiesNotCertifiedAsGreen?.value
-                ),
+                formatYesNoValueForDatatable(dataset.social?.greenSecurities?.securitiesNotCertifiedAsGreen?.value),
                 'Securities Not Certified As Green',
                 dataset.social?.greenSecurities?.securitiesNotCertifiedAsGreen
               ),
@@ -1454,7 +1426,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
-                formatYesNoNoEvidenceFoundValueForDatatable(dataset.social?.humanRights?.humanRightsPolicy?.value),
+                formatYesNoValueForDatatable(dataset.social?.humanRights?.humanRightsPolicy?.value),
                 'Human Rights Policy',
                 dataset.social?.humanRights?.humanRightsPolicy
               ),
@@ -1467,9 +1439,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
-                formatYesNoNoEvidenceFoundValueForDatatable(
-                  dataset.social?.humanRights?.humanRightsDueDiligence?.value
-                ),
+                formatYesNoValueForDatatable(dataset.social?.humanRights?.humanRightsDueDiligence?.value),
                 'Human Rights Due Diligence',
                 dataset.social?.humanRights?.humanRightsDueDiligence
               ),
@@ -1481,9 +1451,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
-                formatYesNoNoEvidenceFoundValueForDatatable(
-                  dataset.social?.humanRights?.traffickingInHumanBeingsPolicy?.value
-                ),
+                formatYesNoValueForDatatable(dataset.social?.humanRights?.traffickingInHumanBeingsPolicy?.value),
                 'Trafficking In Human Beings Policy',
                 dataset.social?.humanRights?.traffickingInHumanBeingsPolicy
               ),
@@ -1495,9 +1463,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
-                formatYesNoNoEvidenceFoundValueForDatatable(
-                  dataset.social?.humanRights?.reportedChildLabourIncidents?.value
-                ),
+                formatYesNoValueForDatatable(dataset.social?.humanRights?.reportedChildLabourIncidents?.value),
                 'Reported Child Labour Incidents',
                 dataset.social?.humanRights?.reportedChildLabourIncidents
               ),
@@ -1509,7 +1475,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
-                formatYesNoNoEvidenceFoundValueForDatatable(
+                formatYesNoValueForDatatable(
                   dataset.social?.humanRights?.reportedForcedOrCompulsoryLabourIncidents?.value
                 ),
                 'Reported Forced Or Compulsory Labour Incidents',
