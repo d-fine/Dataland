@@ -15,12 +15,18 @@ import org.json.JSONObject
 class V20__MigrateEUTaxonomyToNewFilestructure : BaseJavaMigration() {
 
     private val mapOfOldToNewFieldNames = mapOf(
-        "substantialContributionToClimateChangeMitigationInPercent" to "substantialContributionToClimateChangeMitigationInPercentAligned",
-        "substantialContributionToClimateChangeAdaptationInPercent" to "substantialContributionToClimateChangeAdaptationInPercentAligned",
-        "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent" to "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned",
-        "substantialContributionToTransitionToACircularEconomyInPercent" to "substantialContributionToTransitionToACircularEconomyInPercentAligned",
-        "substantialContributionToPollutionPreventionAndControlInPercent" to "substantialContributionToPollutionPreventionAndControlInPercentAligned",
-        "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent" to "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned",
+        "substantialContributionToClimateChangeMitigationInPercent" to
+                "substantialContributionToClimateChangeMitigationInPercentAligned",
+        "substantialContributionToClimateChangeAdaptationInPercent" to
+                "substantialContributionToClimateChangeAdaptationInPercentAligned",
+        "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent" to
+                "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned",
+        "substantialContributionToTransitionToACircularEconomyInPercent" to
+                "substantialContributionToTransitionToACircularEconomyInPercentAligned",
+        "substantialContributionToPollutionPreventionAndControlInPercent" to
+                "substantialContributionToPollutionPreventionAndControlInPercentAligned",
+        "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent" to
+                "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned",
     )
 
     private fun changeFields(revenueKeys: JSONObject) {
@@ -30,6 +36,9 @@ class V20__MigrateEUTaxonomyToNewFilestructure : BaseJavaMigration() {
         }
     }
 
+    /**
+     * Migrate all relevant keys under the array keys to the new naming convention
+     */
     fun migrateEutaxonomyNonFinancialsData(dataTableEntity: DataTableEntity) {
         val jsonObject = dataTableEntity.dataJsonObject
         arrayOf("opex", "capex", "revenue").forEach { //

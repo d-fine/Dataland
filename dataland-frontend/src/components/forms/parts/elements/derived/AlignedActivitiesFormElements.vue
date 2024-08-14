@@ -16,13 +16,13 @@
       />
 
       <YesNoFormField
-          name="enablingActivities"
+          name="enablingActivity"
           description="Is this an enabling activity?"
           label="Enabling activity"
       />
 
       <YesNoFormField
-          name="transitionalActivities"
+          name="transitionalActivity"
           description="Is this a transitional activity?"
           label="Transitional activity"
       />
