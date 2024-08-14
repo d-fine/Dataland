@@ -305,6 +305,153 @@
         ]
       }
     },
+    "/data/eutaxonomy-non-financials/{dataId}/reports": {
+      "get": {
+        "tags": [
+          "eutaxonomy-non-financials-data-qa-report-controller"
+        ],
+        "summary": "Retrieve all QA reports.",
+        "description": "Retrieve all QA reports associated to given dataset.",
+        "operationId": "getAllQaReportsForDataset_1",
+        "parameters": [
+          {
+            "name": "dataId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "showInactive",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "reporterUserId",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved all QA reports.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/QaReportWithMetaInformationEutaxonomyNonFinancialsData"
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      },
+      "post": {
+        "tags": [
+          "eutaxonomy-non-financials-data-qa-report-controller"
+        ],
+        "summary": "Upload new QA report.",
+        "description": "The uploaded QA report is added to the database, the generated report id is returned.",
+        "operationId": "postQaReport_1",
+        "parameters": [
+          {
+            "name": "dataId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EutaxonomyNonFinancialsData"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully added QA report to dataland.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/QaReportMetaInformation"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
     "/data/sfdr/{dataId}/reports/{qaReportId}/status": {
       "patch": {
         "tags": [
@@ -313,6 +460,77 @@
         "summary": "Change the status of a QA report.",
         "description": "The specified QA report is marked as active or inactive.",
         "operationId": "setQaReportStatus",
+        "parameters": [
+          {
+            "name": "dataId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "qaReportId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/QaReportStatusPatch"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully marked QA report as active or inactive."
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
+    "/data/eutaxonomy-non-financials/{dataId}/reports/{qaReportId}/status": {
+      "patch": {
+        "tags": [
+          "eutaxonomy-non-financials-data-qa-report-controller"
+        ],
+        "summary": "Change the status of a QA report.",
+        "description": "The specified QA report is marked as active or inactive.",
+        "operationId": "setQaReportStatus_1",
         "parameters": [
           {
             "name": "dataId",
@@ -462,6 +680,74 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/QaReportWithMetaInformationSfdrData"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
+    "/data/eutaxonomy-non-financials/{dataId}/reports/{qaReportId}": {
+      "get": {
+        "tags": [
+          "eutaxonomy-non-financials-data-qa-report-controller"
+        ],
+        "summary": "Retrieve a QA report.",
+        "description": "Retrieve the information about a QA report.",
+        "operationId": "getQaReport_1",
+        "parameters": [
+          {
+            "name": "dataId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "qaReportId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved QA report.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/QaReportWithMetaInformationEutaxonomyNonFinancialsData"
                 }
               }
             }
@@ -1417,6 +1703,495 @@
           }
         }
       },
+      "EutaxonomyNonFinancialsCapex": {
+        "type": "object",
+        "properties": {
+          "totalAmount": {
+            "$ref": "#/components/schemas/CurrencyDataPoint"
+          },
+          "nonEligibleShare": {
+            "$ref": "#/components/schemas/EutaxonomyNonFinancialsCapexNonEligibleShare"
+          },
+          "eligibleShare": {
+            "$ref": "#/components/schemas/EutaxonomyNonFinancialsCapexEligibleShare"
+          },
+          "nonAlignedShare": {
+            "$ref": "#/components/schemas/EutaxonomyNonFinancialsCapexNonAlignedShare"
+          },
+          "alignedShare": {
+            "$ref": "#/components/schemas/EutaxonomyNonFinancialsCapexAlignedShare"
+          },
+          "substantialContributionToClimateChangeMitigationInPercent": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          },
+          "substantialContributionToClimateChangeAdaptationInPercent": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          },
+          "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          },
+          "substantialContributionToTransitionToACircularEconomyInPercent": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          },
+          "substantialContributionToPollutionPreventionAndControlInPercent": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          },
+          "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          },
+          "enablingShareInPercent": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          },
+          "transitionalShareInPercent": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          }
+        }
+      },
+      "EutaxonomyNonFinancialsCapexAlignedShare": {
+        "type": "object",
+        "properties": {
+          "relativeShareInPercent": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          },
+          "absoluteShare": {
+            "$ref": "#/components/schemas/CurrencyDataPoint"
+          }
+        }
+      },
+      "EutaxonomyNonFinancialsCapexEligibleShare": {
+        "type": "object",
+        "properties": {
+          "relativeShareInPercent": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          },
+          "absoluteShare": {
+            "$ref": "#/components/schemas/CurrencyDataPoint"
+          }
+        }
+      },
+      "EutaxonomyNonFinancialsCapexNonAlignedShare": {
+        "type": "object",
+        "properties": {
+          "relativeShareInPercent": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          },
+          "absoluteShare": {
+            "$ref": "#/components/schemas/CurrencyDataPoint"
+          }
+        }
+      },
+      "EutaxonomyNonFinancialsCapexNonEligibleShare": {
+        "type": "object",
+        "properties": {
+          "relativeShareInPercent": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          },
+          "absoluteShare": {
+            "$ref": "#/components/schemas/CurrencyDataPoint"
+          }
+        }
+      },
+      "EutaxonomyNonFinancialsData": {
+        "type": "object",
+        "properties": {
+          "general": {
+            "$ref": "#/components/schemas/EutaxonomyNonFinancialsGeneral"
+          },
+          "revenue": {
+            "$ref": "#/components/schemas/EutaxonomyNonFinancialsRevenue"
+          },
+          "capex": {
+            "$ref": "#/components/schemas/EutaxonomyNonFinancialsCapex"
+          },
+          "opex": {
+            "$ref": "#/components/schemas/EutaxonomyNonFinancialsOpex"
+          }
+        }
+      },
+      "EutaxonomyNonFinancialsGeneral": {
+        "type": "object",
+        "properties": {
+          "fiscalYearDeviation": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointEutaxonomyNonFinancialsGeneralFiscalYearDeviationOptions"
+          },
+          "fiscalYearEnd": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointLocalDate"
+          },
+          "scopeOfEntities": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointYesNoNa"
+          },
+          "nfrdMandatory": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointYesNo"
+          },
+          "euTaxonomyActivityLevelReporting": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointYesNo"
+          },
+          "numberOfEmployees": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          },
+          "referencedReports": {
+            "$ref": "#/components/schemas/QaReportDataPointMapStringCompanyReport"
+          }
+        }
+      },
+      "EutaxonomyNonFinancialsOpex": {
+        "type": "object",
+        "properties": {
+          "totalAmount": {
+            "$ref": "#/components/schemas/CurrencyDataPoint"
+          },
+          "nonEligibleShare": {
+            "$ref": "#/components/schemas/EutaxonomyNonFinancialsOpexNonEligibleShare"
+          },
+          "eligibleShare": {
+            "$ref": "#/components/schemas/EutaxonomyNonFinancialsOpexEligibleShare"
+          },
+          "nonAlignedShare": {
+            "$ref": "#/components/schemas/EutaxonomyNonFinancialsOpexNonAlignedShare"
+          },
+          "alignedShare": {
+            "$ref": "#/components/schemas/EutaxonomyNonFinancialsOpexAlignedShare"
+          },
+          "substantialContributionToClimateChangeMitigationInPercent": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          },
+          "substantialContributionToClimateChangeAdaptationInPercent": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          },
+          "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          },
+          "substantialContributionToTransitionToACircularEconomyInPercent": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          },
+          "substantialContributionToPollutionPreventionAndControlInPercent": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          },
+          "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          },
+          "enablingShareInPercent": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          },
+          "transitionalShareInPercent": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          }
+        }
+      },
+      "EutaxonomyNonFinancialsOpexAlignedShare": {
+        "type": "object",
+        "properties": {
+          "relativeShareInPercent": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          },
+          "absoluteShare": {
+            "$ref": "#/components/schemas/CurrencyDataPoint"
+          }
+        }
+      },
+      "EutaxonomyNonFinancialsOpexEligibleShare": {
+        "type": "object",
+        "properties": {
+          "relativeShareInPercent": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          },
+          "absoluteShare": {
+            "$ref": "#/components/schemas/CurrencyDataPoint"
+          }
+        }
+      },
+      "EutaxonomyNonFinancialsOpexNonAlignedShare": {
+        "type": "object",
+        "properties": {
+          "relativeShareInPercent": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          },
+          "absoluteShare": {
+            "$ref": "#/components/schemas/CurrencyDataPoint"
+          }
+        }
+      },
+      "EutaxonomyNonFinancialsOpexNonEligibleShare": {
+        "type": "object",
+        "properties": {
+          "relativeShareInPercent": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          },
+          "absoluteShare": {
+            "$ref": "#/components/schemas/CurrencyDataPoint"
+          }
+        }
+      },
+      "EutaxonomyNonFinancialsRevenue": {
+        "type": "object",
+        "properties": {
+          "totalAmount": {
+            "$ref": "#/components/schemas/CurrencyDataPoint"
+          },
+          "nonEligibleShare": {
+            "$ref": "#/components/schemas/EutaxonomyNonFinancialsRevenueNonEligibleShare"
+          },
+          "eligibleShare": {
+            "$ref": "#/components/schemas/EutaxonomyNonFinancialsRevenueEligibleShare"
+          },
+          "nonAlignedShare": {
+            "$ref": "#/components/schemas/EutaxonomyNonFinancialsRevenueNonAlignedShare"
+          },
+          "alignedShare": {
+            "$ref": "#/components/schemas/EutaxonomyNonFinancialsRevenueAlignedShare"
+          },
+          "substantialContributionToClimateChangeMitigationInPercent": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          },
+          "substantialContributionToClimateChangeAdaptationInPercent": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          },
+          "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          },
+          "substantialContributionToTransitionToACircularEconomyInPercent": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          },
+          "substantialContributionToPollutionPreventionAndControlInPercent": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          },
+          "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          },
+          "enablingShareInPercent": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          },
+          "transitionalShareInPercent": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          }
+        }
+      },
+      "EutaxonomyNonFinancialsRevenueAlignedShare": {
+        "type": "object",
+        "properties": {
+          "relativeShareInPercent": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          },
+          "absoluteShare": {
+            "$ref": "#/components/schemas/CurrencyDataPoint"
+          }
+        }
+      },
+      "EutaxonomyNonFinancialsRevenueEligibleShare": {
+        "type": "object",
+        "properties": {
+          "relativeShareInPercent": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          },
+          "absoluteShare": {
+            "$ref": "#/components/schemas/CurrencyDataPoint"
+          }
+        }
+      },
+      "EutaxonomyNonFinancialsRevenueNonAlignedShare": {
+        "type": "object",
+        "properties": {
+          "relativeShareInPercent": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          },
+          "absoluteShare": {
+            "$ref": "#/components/schemas/CurrencyDataPoint"
+          }
+        }
+      },
+      "EutaxonomyNonFinancialsRevenueNonEligibleShare": {
+        "type": "object",
+        "properties": {
+          "relativeShareInPercent": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          },
+          "absoluteShare": {
+            "$ref": "#/components/schemas/CurrencyDataPoint"
+          }
+        }
+      },
+      "ExtendedDataPointEutaxonomyNonFinancialsGeneralFiscalYearDeviationOptions": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "type": "string",
+            "enum": [
+              "Deviation",
+              "NoDeviation"
+            ]
+          },
+          "quality": {
+            "type": "string",
+            "enum": [
+              "Audited",
+              "Reported",
+              "Estimated",
+              "Incomplete"
+            ]
+          },
+          "comment": {
+            "type": "string"
+          },
+          "dataSource": {
+            "$ref": "#/components/schemas/ExtendedDocumentReference"
+          }
+        }
+      },
+      "ExtendedDataPointLocalDate": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "type": "string",
+            "format": "date"
+          },
+          "quality": {
+            "type": "string",
+            "enum": [
+              "Audited",
+              "Reported",
+              "Estimated",
+              "Incomplete"
+            ]
+          },
+          "comment": {
+            "type": "string"
+          },
+          "dataSource": {
+            "$ref": "#/components/schemas/ExtendedDocumentReference"
+          }
+        }
+      },
+      "ExtendedDataPointYesNo": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "type": "string",
+            "enum": [
+              "Yes",
+              "No"
+            ]
+          },
+          "quality": {
+            "type": "string",
+            "enum": [
+              "Audited",
+              "Reported",
+              "Estimated",
+              "Incomplete"
+            ]
+          },
+          "comment": {
+            "type": "string"
+          },
+          "dataSource": {
+            "$ref": "#/components/schemas/ExtendedDocumentReference"
+          }
+        }
+      },
+      "ExtendedDataPointYesNoNa": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "type": "string",
+            "enum": [
+              "Yes",
+              "No",
+              "NA"
+            ]
+          },
+          "quality": {
+            "type": "string",
+            "enum": [
+              "Audited",
+              "Reported",
+              "Estimated",
+              "Incomplete"
+            ]
+          },
+          "comment": {
+            "type": "string"
+          },
+          "dataSource": {
+            "$ref": "#/components/schemas/ExtendedDocumentReference"
+          }
+        }
+      },
+      "QaReportDataPointExtendedDataPointEutaxonomyNonFinancialsGeneralFiscalYearDeviationOptions": {
+        "required": [
+          "comment",
+          "correctedData",
+          "verdict"
+        ],
+        "type": "object",
+        "properties": {
+          "comment": {
+            "type": "string"
+          },
+          "verdict": {
+            "$ref": "#/components/schemas/QaReportDataPointVerdict"
+          },
+          "correctedData": {
+            "$ref": "#/components/schemas/ExtendedDataPointEutaxonomyNonFinancialsGeneralFiscalYearDeviationOptions"
+          }
+        }
+      },
+      "QaReportDataPointExtendedDataPointLocalDate": {
+        "required": [
+          "comment",
+          "correctedData",
+          "verdict"
+        ],
+        "type": "object",
+        "properties": {
+          "comment": {
+            "type": "string"
+          },
+          "verdict": {
+            "$ref": "#/components/schemas/QaReportDataPointVerdict"
+          },
+          "correctedData": {
+            "$ref": "#/components/schemas/ExtendedDataPointLocalDate"
+          }
+        }
+      },
+      "QaReportDataPointExtendedDataPointYesNo": {
+        "required": [
+          "comment",
+          "correctedData",
+          "verdict"
+        ],
+        "type": "object",
+        "properties": {
+          "comment": {
+            "type": "string"
+          },
+          "verdict": {
+            "$ref": "#/components/schemas/QaReportDataPointVerdict"
+          },
+          "correctedData": {
+            "$ref": "#/components/schemas/ExtendedDataPointYesNo"
+          }
+        }
+      },
+      "QaReportDataPointExtendedDataPointYesNoNa": {
+        "required": [
+          "comment",
+          "correctedData",
+          "verdict"
+        ],
+        "type": "object",
+        "properties": {
+          "comment": {
+            "type": "string"
+          },
+          "verdict": {
+            "$ref": "#/components/schemas/QaReportDataPointVerdict"
+          },
+          "correctedData": {
+            "$ref": "#/components/schemas/ExtendedDataPointYesNoNa"
+          }
+        }
+      },
       "QaReportStatusPatch": {
         "required": [
           "active"
@@ -1466,6 +2241,21 @@
           },
           "report": {
             "$ref": "#/components/schemas/SfdrData"
+          }
+        }
+      },
+      "QaReportWithMetaInformationEutaxonomyNonFinancialsData": {
+        "required": [
+          "metaInfo",
+          "report"
+        ],
+        "type": "object",
+        "properties": {
+          "metaInfo": {
+            "$ref": "#/components/schemas/QaReportMetaInformation"
+          },
+          "report": {
+            "$ref": "#/components/schemas/EutaxonomyNonFinancialsData"
           }
         }
       },
