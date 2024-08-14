@@ -36,7 +36,8 @@ class V20__MigrateEUTaxonomyToNewFilestructure : BaseJavaMigration() {
     }
 
     /**
-     * Migrate all relevant keys under the array keys to the new naming convention
+     * Migrate all relevant keys under the array keys to the new
+     * naming convention
      */
     fun migrateEutaxonomyNonFinancialsData(dataTableEntity: DataTableEntity) {
         val jsonObject = dataTableEntity.dataJsonObject
