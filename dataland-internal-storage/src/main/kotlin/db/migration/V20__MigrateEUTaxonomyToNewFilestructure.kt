@@ -13,20 +13,19 @@ import org.json.JSONObject
  */
 
 class V20__MigrateEUTaxonomyToNewFilestructure : BaseJavaMigration() {
-
     private val mapOfOldToNewFieldNames = mapOf(
         "substantialContributionToClimateChangeMitigationInPercent" to
-                "substantialContributionToClimateChangeMitigationInPercentAligned",
+            "substantialContributionToClimateChangeMitigationInPercentAligned",
         "substantialContributionToClimateChangeAdaptationInPercent" to
-                "substantialContributionToClimateChangeAdaptationInPercentAligned",
+            "substantialContributionToClimateChangeAdaptationInPercentAligned",
         "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent" to
-                "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned",
+            "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned",
         "substantialContributionToTransitionToACircularEconomyInPercent" to
-                "substantialContributionToTransitionToACircularEconomyInPercentAligned",
+            "substantialContributionToTransitionToACircularEconomyInPercentAligned",
         "substantialContributionToPollutionPreventionAndControlInPercent" to
-                "substantialContributionToPollutionPreventionAndControlInPercentAligned",
+            "substantialContributionToPollutionPreventionAndControlInPercentAligned",
         "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent" to
-                "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned",
+            "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned",
     )
 
     private fun changeFields(revenueKeys: JSONObject) {

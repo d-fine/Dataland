@@ -6,7 +6,6 @@
       label="Share"
       description="Relative and absolute share of the underlying cash flow"
     />
-
     <ObjectivesFormField />
     <div class="header-separator">
       <YesNoFormField
@@ -14,17 +13,11 @@
         description="Are minimum social safeguards fulfilled?"
         label="Minimum Social Safeguards"
       />
-
+      <YesNoFormField name="enablingActivity" description="Is this an enabling activity?" label="Enabling activity" />
       <YesNoFormField
-          name="enablingActivity"
-          description="Is this an enabling activity?"
-          label="Enabling activity"
-      />
-
-      <YesNoFormField
-          name="transitionalActivity"
-          description="Is this a transitional activity?"
-          label="Transitional activity"
+        name="transitionalActivity"
+        description="Is this a transitional activity?"
+        label="Transitional activity"
       />
     </div>
   </div>

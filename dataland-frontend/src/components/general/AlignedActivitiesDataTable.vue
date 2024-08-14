@@ -177,7 +177,6 @@ export default defineComponent({
         group: '_transitionalActivity',
         groupIndex: 0,
       },
-
     ];
 
     this.frozenColumnData = this.listOfRowContents.map((activity) => ({
@@ -224,7 +223,7 @@ export default defineComponent({
         ),
         ...createMinimumSafeguardsGroupData(col),
         ...createEnablingActivityGroupData(col),
-        ...createTransitionalActivityGroupData(col)
+        ...createTransitionalActivityGroupData(col),
       ])
       .flat();
 
@@ -242,7 +241,7 @@ export default defineComponent({
       },
       { key: '_minimumSafeguards', label: '', colspan: this.findMaxColspanForGroup('_minimumSafeguards') },
       { key: '_enablingActivity', label: '', colspan: this.findMaxColspanForGroup('_enablingActivity') },
-      { key: '_transitionalActivity', label: '', colspan: this.findMaxColspanForGroup('_transitionalActivity') }
+      { key: '_transitionalActivity', label: '', colspan: this.findMaxColspanForGroup('_transitionalActivity') },
     ];
   },
   methods: {
@@ -259,7 +258,7 @@ export default defineComponent({
         dnshCriteria: environmentalObjectivesLength,
         _minimumSafeguards: 1,
         _enablingActivity: 1,
-        _transitionalActivity: 1
+        _transitionalActivity: 1,
       };
       return colspans[groupName];
     },
