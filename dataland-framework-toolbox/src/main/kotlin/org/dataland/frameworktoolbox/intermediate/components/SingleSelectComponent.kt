@@ -31,7 +31,6 @@ open class SingleSelectComponent(
     enum class UploadMode(val component: String) {
         Dropdown("SingleSelectFormField"),
         RadioButtons("RadioButtonsFormField"),
-        RadioButtonsExtended("RadioButtonsExtendedFormField"),
     }
 
     var options: Set<SelectionOption> = mutableSetOf()

@@ -6,7 +6,7 @@
     "fiscalYearEnd": {
       "value": "2024-05-08"
     },
-    "scopeOfEntities":  {
+    "scopeOfEntities": {
       "value": "Yes"
     },
     "nfrdMandatory": {
@@ -21,7 +21,7 @@
       "dataSource": null
     },
     "numberOfEmployees": {
-      "value": 8416.55
+      "value": null
     },
     "referencedReports": {
       "SustainabilityReport": {

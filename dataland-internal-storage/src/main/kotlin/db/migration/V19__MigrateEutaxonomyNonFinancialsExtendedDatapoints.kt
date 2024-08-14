@@ -36,18 +36,23 @@ class V19__MigrateEutaxonomyNonFinancialsExtendedDatapoints : BaseJavaMigration(
     )
 
     /**
-     * Create a nested JSON object from a JSON object and a key.
+     * Move key: object to key: { "value": object }
      * @param jsonObject JSON object
      * @param key key corresponding to the JSON object
      */
-    private fun createNestedJsonObject(jsonObject: JSONObject, key: String) {
-        val nestedJson = JSONObject()
-        nestedJson.put("value", jsonObject.getOrJavaNull(key))
-        jsonObject.put(key, nestedJson)
+    private fun updateObjectBehindKeyInJsonObject(jsonObject: JSONObject, key: String) {
+        val newValue = JSONObject()
+        val oldValue = jsonObject[key]
+        if (oldValue != null) {
+            newValue.put("value", oldValue)
+        } else {
+            newValue.put("value", JSONObject.NULL)
+        }
+        jsonObject.put(key, newValue)
     }
 
     /**
-     * Check if the keys of a JSON object are relevant fields and, if so, created a nested JSON object.
+     * Check if the keys of a JSON object are relevant fields and, if so, update the object behind these keys.
      * @param jsonObject JSON object
      */
     private fun checkForRelevantFieldsInJsonObjectKeys(jsonObject: JSONObject) {
@@ -58,52 +63,49 @@ class V19__MigrateEutaxonomyNonFinancialsExtendedDatapoints : BaseJavaMigration(
                 absoluteShare.remove("amount")
                 absoluteShare.put("value", amount)
             } else if (it in relevantFields) {
-                createNestedJsonObject(jsonObject, it)
+                updateObjectBehindKeyInJsonObject(jsonObject, it)
             } else {
-                // Do nothing
+                // Do nothing as no more migration is required
             }
-            checkRecursivelyForBaseDataPointsInJsonObject(jsonObject, it)
+            checkRecursivelyForRelevantFieldKeysInJsonObject(jsonObject, it)
         }
     }
 
     /**
-     * Check recursively for BaseDataPoints in a JSON array.
+     * Check recursively for relevant field keys in a JSON array.
      * @param jsonArray JSON array
      */
-    private fun checkRecursivelyForBaseDataPointsInJsonArray(jsonArray: JSONArray) {
-        for (i in 0 until jsonArray.length()) {
-            val element = jsonArray[i]
-            if (element != null && element is JSONObject) {
-                checkForRelevantFieldsInJsonObjectKeys(element)
+    private fun checkRecursivelyForRelevantFieldKeysInJsonArray(jsonArray: JSONArray) {
+        jsonArray.forEach {
+            if (it != null && it is JSONObject) {
+                checkForRelevantFieldsInJsonObjectKeys(it)
             }
         }
     }
 
     /**
-     * Check recursively for BaseDataPoints in a JSON object.
+     * Check recursively for relevant field keys in a JSON object.
      * @param jsonObject JSON object
      * @param key key corresponding to the JSON object
      */
-    private fun checkRecursivelyForBaseDataPointsInJsonObject(jsonObject: JSONObject, key: String) {
+    private fun checkRecursivelyForRelevantFieldKeysInJsonObject(jsonObject: JSONObject, key: String) {
         val obj = jsonObject.getOrJavaNull(key)
         if (obj !== null && obj is JSONObject) {
             checkForRelevantFieldsInJsonObjectKeys(obj)
         } else if (obj != null && obj is JSONArray) {
-            checkRecursivelyForBaseDataPointsInJsonArray(obj)
+            checkRecursivelyForRelevantFieldKeysInJsonArray(obj)
         } else {
-            // Do nothing
+            // Do nothing as no more migration is required
         }
     }
 
     /**
-     * Migrate a DataTableEntity so that certain BaseDataPoints are turned into ExtendedDataPoints.
+     * Migrate a DataTableEntity so that the relevant fields are turned into ExtendedDataPoints.
      * @param dataTableEntity DataTableEntity
      */
     fun migrateEutaxonomyNonFinancialsData(dataTableEntity: DataTableEntity) {
         val jsonObject = dataTableEntity.dataJsonObject
-        jsonObject.keys().forEach {
-            checkRecursivelyForBaseDataPointsInJsonObject(jsonObject, it)
-        }
+        checkForRelevantFieldsInJsonObjectKeys(jsonObject)
         dataTableEntity.companyAssociatedData.put("data", jsonObject.toString())
     }
 
