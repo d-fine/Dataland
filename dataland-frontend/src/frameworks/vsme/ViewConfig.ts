@@ -496,20 +496,21 @@ export const vsmeViewConfiguration: MLDTConfig<VsmeData> = [
             explanation:
               'Please, for each type of waste, provide your total annual generation of it (in tons or m^3) differentiating whether it is non-hazardous or hazardous. Also indicate the share of it diverted to recycling or reuse (in absolute numbers). First choose the unit you want to report in.',
             shouldDisplay: (): boolean => true,
-            valueGetter: (dataset: VsmeData): AvailableMLDTDisplayObjectTypes => {
-              const mappings = {
-                WeightPreferred: 'Weight (preferred)',
-                Volume: 'Volume',
-              };
-              return formatStringForDatatable(
-                dataset.basic?.resourceUseCircularEconomyAndWasteManagement?.measureWaste
-                  ? getOriginalNameFromTechnicalName(
-                      dataset.basic?.resourceUseCircularEconomyAndWasteManagement?.measureWaste,
-                      mappings
-                    )
-                  : ''
-              );
-            },
+            valueGetter: (dataset: VsmeData): AvailableMLDTDisplayObjectTypes =>
+              ((): AvailableMLDTDisplayObjectTypes => {
+                const mappings = {
+                  WeightPreferred: 'Weight (preferred)',
+                  Volume: 'Volume',
+                };
+                return formatStringForDatatable(
+                  dataset.basic?.resourceUseCircularEconomyAndWasteManagement?.measureWaste
+                    ? getOriginalNameFromTechnicalName(
+                        dataset.basic?.resourceUseCircularEconomyAndWasteManagement?.measureWaste,
+                        mappings
+                      )
+                    : ''
+                );
+              })(),
           },
           {
             type: 'cell',
@@ -536,20 +537,21 @@ export const vsmeViewConfiguration: MLDTConfig<VsmeData> = [
             explanation:
               'You will be asked to provide information related to the number of your employees. How do you want to count them? Please stick to this measure for all the subsequent questions.',
             shouldDisplay: (): boolean => true,
-            valueGetter: (dataset: VsmeData): AvailableMLDTDisplayObjectTypes => {
-              const mappings = {
-                FullTimeEquivalents: 'Full-Time Equivalents',
-                HeadCount: 'Head Count',
-              };
-              return formatStringForDatatable(
-                dataset.basic?.workforceGeneralCharacteristics?.measureEmployees
-                  ? getOriginalNameFromTechnicalName(
-                      dataset.basic?.workforceGeneralCharacteristics?.measureEmployees,
-                      mappings
-                    )
-                  : ''
-              );
-            },
+            valueGetter: (dataset: VsmeData): AvailableMLDTDisplayObjectTypes =>
+              ((): AvailableMLDTDisplayObjectTypes => {
+                const mappings = {
+                  FullTimeEquivalents: 'Full-Time Equivalents',
+                  HeadCount: 'Head Count',
+                };
+                return formatStringForDatatable(
+                  dataset.basic?.workforceGeneralCharacteristics?.measureEmployees
+                    ? getOriginalNameFromTechnicalName(
+                        dataset.basic?.workforceGeneralCharacteristics?.measureEmployees,
+                        mappings
+                      )
+                    : ''
+                );
+              })(),
           },
           {
             type: 'cell',
@@ -955,20 +957,21 @@ export const vsmeViewConfiguration: MLDTConfig<VsmeData> = [
               const secondValue = dataset.basic?.workforceGeneralCharacteristics?.numberOfEmployeesInFte ?? 0;
               return firstValue >= 150 || secondValue >= 150;
             },
-            valueGetter: (dataset: VsmeData): AvailableMLDTDisplayObjectTypes => {
-              const mappings = {
-                Annual: 'annual',
-                Weekly: 'weekly',
-              };
-              return formatStringForDatatable(
-                dataset.basic?.workforceRenumerationCollectiveBargainingAndTraining?.payGapBasis
-                  ? getOriginalNameFromTechnicalName(
-                      dataset.basic?.workforceRenumerationCollectiveBargainingAndTraining?.payGapBasis,
-                      mappings
-                    )
-                  : ''
-              );
-            },
+            valueGetter: (dataset: VsmeData): AvailableMLDTDisplayObjectTypes =>
+              ((): AvailableMLDTDisplayObjectTypes => {
+                const mappings = {
+                  Annual: 'annual',
+                  Weekly: 'weekly',
+                };
+                return formatStringForDatatable(
+                  dataset.basic?.workforceRenumerationCollectiveBargainingAndTraining?.payGapBasis
+                    ? getOriginalNameFromTechnicalName(
+                        dataset.basic?.workforceRenumerationCollectiveBargainingAndTraining?.payGapBasis,
+                        mappings
+                      )
+                    : ''
+                );
+              })(),
           },
           {
             type: 'cell',
