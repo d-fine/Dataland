@@ -176,7 +176,7 @@ export default defineComponent({
     showDataPointFields(): boolean {
       return this.dataPointIsAvailable || !this.isDataPointToggleable;
     },
-    computeQualityOption(): object {
+    computeQualityOption(): DropdownOption[] {
       return this.qualityOptions;
     },
     reportOptions(): DropdownOption[] {
