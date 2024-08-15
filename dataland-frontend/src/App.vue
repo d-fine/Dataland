@@ -25,7 +25,7 @@ const windowWidth = ref<number>();
 const storeWindowWidth = (): void => {
   windowWidth.value = window.innerWidth;
 };
-// TODO detekt faiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiil
+// TODO on refresh ist kaputt => tab erscheint nicht
 export default defineComponent({
   name: 'app',
   components: { DynamicDialog },
@@ -101,6 +101,7 @@ export default defineComponent({
      * Sets up the whole authentication status of the user when starting the Dataland Frontend App.
      */
     processUserAuthentication() {
+      console.log('processUserAuthentication');
       this.keycloakPromise = this.initKeycloak();
       if (this.keycloakPromise) {
         this.apiClientProvider = new ApiClientProvider(this.keycloakPromise);
@@ -139,6 +140,7 @@ export default defineComponent({
      * @param resolvedKeycloakPromise contains the login-status of the current user
      */
     handleResolvedKeycloakPromise(resolvedKeycloakPromise: Keycloak) {
+      console.log('handleResolvedKeycloakPromise');
       this.resolvedKeycloakPromise = resolvedKeycloakPromise;
       if (this.resolvedKeycloakPromise.authenticated) {
         void updateTokenAndItsExpiryTimestampAndStoreBoth(this.resolvedKeycloakPromise, true);
@@ -154,9 +156,11 @@ export default defineComponent({
      * @param apiClientProvider is used to trigger a request to the backend of Dataland
      */
     setCompanyRolesForUser(resolvedKeycloakPromise: Keycloak, apiClientProvider: ApiClientProvider) {
+      console.log('setCompanyRolesForUser');
       getCompanyRoleAssignmentsForCurrentUser(resolvedKeycloakPromise, apiClientProvider).then(
         (retrievedCompanyRoleAssignments) => (this.companyRoleAssignments = retrievedCompanyRoleAssignments)
       );
+      console.log('setCompanyRolesForUser');
     },
 
     /**
