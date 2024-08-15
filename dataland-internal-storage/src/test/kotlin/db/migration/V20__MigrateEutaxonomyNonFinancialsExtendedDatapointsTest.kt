@@ -35,4 +35,14 @@ class V20__MigrateEutaxonomyNonFinancialsExtendedDatapointsTest {
             migration = V20__MigrateEutaxonomyNonFinancialsExtendedDatapoints()::migrateEutaxonomyNonFinancialsData,
         )
     }
+
+    @Test
+    fun `test with broken data from production`() {
+        TestUtils().testMigrationOfSingleDataset(
+            dataType = frameworkEutaxonomyNonFinancials,
+            oldDataFileLocation = "V20/BrokenDataServerError.json",
+            migratedDataFileLocation = "V20/ExpectedBrokenDataServerError.json",
+            migration = V20__MigrateEutaxonomyNonFinancialsExtendedDatapoints()::migrateEutaxonomyNonFinancialsData,
+        )
+    }
 }
