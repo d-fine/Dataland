@@ -22,6 +22,7 @@ import {
   getSectionHead,
 } from '@sharedUtils/components/resources/dataTable/MultiLayerDataTableTestUtils';
 import { runFunctionBlockWithinPrimeVueModal } from '@sharedUtils/ElementChecks';
+import { humanizeStringOrNumber } from '@/utils/StringFormatter';
 
 describe('Component test for the Eu-Taxonomy-Non-Financials view page', () => {
   let fixturesForTests: FixtureData<EutaxonomyNonFinancialsData>[];
@@ -119,7 +120,7 @@ describe('Component test for the Eu-Taxonomy-Non-Financials view page', () => {
       getCellValueContainer('Total Amount', 2).first().click();
       runFunctionBlockWithinPrimeVueModal(() => {
         cy.contains('td', gammaCapexTotalAmountFormattedString).should('exist');
-        cy.contains('td', assertDefined(gammaCapexTotalAmount.quality).toString()).should('exist');
+        cy.contains('td', assertDefined(humanizeStringOrNumber(gammaCapexTotalAmount.quality))).should('exist');
         cy.contains('td', assertDefined(gammaCapexTotalAmount.comment).toString()).should('exist');
         cy.get(`span[data-test="Report-Download-${assertDefined(gammaCapexTotalAmount.dataSource).fileName}"]`).should(
           'exist'

@@ -3,13 +3,13 @@ package org.dataland.datalandbackend.frameworks.sfdr.model.social.greenSecuritie
 
 import jakarta.validation.Valid
 import org.dataland.datalandbackend.model.datapoints.ExtendedDataPoint
-import org.dataland.datalandbackend.model.enums.commons.YesNoNoEvidenceFound
+import org.dataland.datalandbackend.model.enums.commons.YesNo
 
 /**
  * The data-model for the GreenSecurities section
  */
 data class SfdrSocialGreenSecurities(
     @field:Valid()
-    val securitiesNotCertifiedAsGreen: ExtendedDataPoint<YesNoNoEvidenceFound?>? = null,
+    val securitiesNotCertifiedAsGreen: ExtendedDataPoint<YesNo?>? = null,
 
 )

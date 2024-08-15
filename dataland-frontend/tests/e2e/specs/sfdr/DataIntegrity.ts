@@ -13,6 +13,7 @@ import { type ObjectType } from '@/utils/UpdateObjectUtils';
 import { type ExtendedDataPoint } from '@/utils/DataPoint';
 import { selectItemFromDropdownByIndex, selectItemFromDropdownByValue } from '@sharedUtils/Dropdown';
 import SfdrBaseFrameworkDefinition from '@/frameworks/sfdr/BaseFrameworkDefinition';
+import { humanizeStringOrNumber } from '@/utils/StringFormatter';
 
 let testSfdrCompany: FixtureData<SfdrData>;
 before(function () {
@@ -97,17 +98,17 @@ describeIf(
       cy.get('[data-test="protectedAreasExposure"]')
         .find('div[data-test="dataQuality"] span.p-dropdown-label')
         .should('exist')
-        .should('contain.text', fieldData.quality);
+        .should('contain.text', humanizeStringOrNumber(fieldData.quality));
       cy.get('[data-test="protectedAreasExposure"] [data-test="toggleDataPointWrapper"] input[value="Yes"]').click();
       cy.get('[data-test="protectedAreasExposure"] [data-test="toggleDataPointWrapper"] input[value="No"]').click();
       cy.get('[data-test="protectedAreasExposure"] div[data-test="dataQuality"] span.p-dropdown-label')
         .should('exist')
-        .should('contain.text', fieldData.quality);
+        .should('contain.text', humanizeStringOrNumber(fieldData.quality));
       cy.get('[data-test="protectedAreasExposure"] [data-test="toggleDataPointWrapper"] input[value="No"]').click();
       cy.get('[data-test="protectedAreasExposure"] [data-test="toggleDataPointWrapper"] input[value="No"]').click();
       cy.get('[data-test="protectedAreasExposure"] div[data-test="dataQuality"] span.p-dropdown-label')
         .should('exist')
-        .should('contain.text', fieldData.quality);
+        .should('contain.text', humanizeStringOrNumber(fieldData.quality));
     }
 
     /**
