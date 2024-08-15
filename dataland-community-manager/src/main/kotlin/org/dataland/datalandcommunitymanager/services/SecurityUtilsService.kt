@@ -36,7 +36,7 @@ class SecurityUtilsService(
     /**
      * Returns true if and only if the currently authenticated user is asking for him/herself
      */
-    fun isUserRequestingForOwnId(userIdRequester: String): Boolean {
+    fun isUserRequestingForOwnId(userIdRequester: String?): Boolean {
         val userIdAuthenticated = SecurityContextHolder.getContext().authentication.name
         return userIdAuthenticated == userIdRequester
     }
