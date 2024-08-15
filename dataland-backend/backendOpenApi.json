@@ -11617,6 +11617,22 @@
                 "$ref": "#/components/schemas/YesNo"
               }
             ]
+          },
+          "enablingActivity": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
+          },
+          "transitionalActivity": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
           }
         }
       },
@@ -11670,27 +11686,103 @@
               }
             ]
           },
-          "substantialContributionToClimateChangeMitigationInPercent": {
+          "substantialContributionToClimateChangeMitigationInPercentEligible": {
             "type": "number",
             "nullable": true
           },
-          "substantialContributionToClimateChangeAdaptationInPercent": {
+          "substantialContributionToClimateChangeMitigationInPercentAligned": {
             "type": "number",
             "nullable": true
           },
-          "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent": {
+          "substantialContributionToClimateChangeMitigationInPercentOfWhichUseOfProceeds": {
             "type": "number",
             "nullable": true
           },
-          "substantialContributionToTransitionToACircularEconomyInPercent": {
+          "substantialContributionToClimateChangeMitigationInPercentEnablingShare": {
             "type": "number",
             "nullable": true
           },
-          "substantialContributionToPollutionPreventionAndControlInPercent": {
+          "substantialContributionToClimateChangeMitigationInPercentTransitionalShare": {
             "type": "number",
             "nullable": true
           },
-          "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent": {
+          "substantialContributionToClimateChangeAdaptationInPercentEligible": {
+            "type": "number",
+            "nullable": true
+          },
+          "substantialContributionToClimateChangeAdaptationInPercentAligned": {
+            "type": "number",
+            "nullable": true
+          },
+          "substantialContributionToClimateChangeAdaptationInPercentOfWhichUseOfProceeds": {
+            "type": "number",
+            "nullable": true
+          },
+          "substantialContributionToClimateChangeAdaptationInPercentEnablingShare": {
+            "type": "number",
+            "nullable": true
+          },
+          "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentEligible": {
+            "type": "number",
+            "nullable": true
+          },
+          "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned": {
+            "type": "number",
+            "nullable": true
+          },
+          "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentOfWhichUseOfProceeds": {
+            "type": "number",
+            "nullable": true
+          },
+          "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentEnablingShare": {
+            "type": "number",
+            "nullable": true
+          },
+          "substantialContributionToTransitionToACircularEconomyInPercentEligible": {
+            "type": "number",
+            "nullable": true
+          },
+          "substantialContributionToTransitionToACircularEconomyInPercentAligned": {
+            "type": "number",
+            "nullable": true
+          },
+          "substantialContributionToTransitionToACircularEconomyInPercentOfWhichUseOfProceeds": {
+            "type": "number",
+            "nullable": true
+          },
+          "substantialContributionToTransitionToACircularEconomyInPercentEnablingShare": {
+            "type": "number",
+            "nullable": true
+          },
+          "substantialContributionToPollutionPreventionAndControlInPercentEligible": {
+            "type": "number",
+            "nullable": true
+          },
+          "substantialContributionToPollutionPreventionAndControlInPercentAligned": {
+            "type": "number",
+            "nullable": true
+          },
+          "substantialContributionToPollutionPreventionAndControlInPercentOfWhichUseOfProceeds": {
+            "type": "number",
+            "nullable": true
+          },
+          "substantialContributionToPollutionPreventionAndControlInPercentEnablingShare": {
+            "type": "number",
+            "nullable": true
+          },
+          "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentEligible": {
+            "type": "number",
+            "nullable": true
+          },
+          "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned": {
+            "type": "number",
+            "nullable": true
+          },
+          "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentOfWhichUseOfProceeds": {
+            "type": "number",
+            "nullable": true
+          },
+          "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentEnablingShare": {
             "type": "number",
             "nullable": true
           },
@@ -11935,27 +12027,27 @@
               }
             ]
           },
-          "substantialContributionToClimateChangeMitigationInPercent": {
+          "substantialContributionToClimateChangeMitigationInPercentAligned": {
             "type": "number",
             "nullable": true
           },
-          "substantialContributionToClimateChangeAdaptationInPercent": {
+          "substantialContributionToClimateChangeAdaptationInPercentAligned": {
             "type": "number",
             "nullable": true
           },
-          "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent": {
+          "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned": {
             "type": "number",
             "nullable": true
           },
-          "substantialContributionToTransitionToACircularEconomyInPercent": {
+          "substantialContributionToTransitionToACircularEconomyInPercentAligned": {
             "type": "number",
             "nullable": true
           },
-          "substantialContributionToPollutionPreventionAndControlInPercent": {
+          "substantialContributionToPollutionPreventionAndControlInPercentAligned": {
             "type": "number",
             "nullable": true
           },
-          "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent": {
+          "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned": {
             "type": "number",
             "nullable": true
           },
@@ -12094,27 +12186,103 @@
               }
             ]
           },
-          "substantialContributionToClimateChangeMitigationInPercent": {
+          "substantialContributionToClimateChangeMitigationInPercentEligible": {
             "type": "number",
             "nullable": true
           },
-          "substantialContributionToClimateChangeAdaptationInPercent": {
+          "substantialContributionToClimateChangeMitigationInPercentAligned": {
             "type": "number",
             "nullable": true
           },
-          "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent": {
+          "substantialContributionToClimateChangeMitigationInPercentOfWhichUseOfProceeds": {
             "type": "number",
             "nullable": true
           },
-          "substantialContributionToTransitionToACircularEconomyInPercent": {
+          "substantialContributionToClimateChangeMitigationInPercentEnablingShare": {
             "type": "number",
             "nullable": true
           },
-          "substantialContributionToPollutionPreventionAndControlInPercent": {
+          "substantialContributionToClimateChangeMitigationInPercentTransitionalShare": {
             "type": "number",
             "nullable": true
           },
-          "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent": {
+          "substantialContributionToClimateChangeAdaptationInPercentEligible": {
+            "type": "number",
+            "nullable": true
+          },
+          "substantialContributionToClimateChangeAdaptationInPercentAligned": {
+            "type": "number",
+            "nullable": true
+          },
+          "substantialContributionToClimateChangeAdaptationInPercentOfWhichUseOfProceeds": {
+            "type": "number",
+            "nullable": true
+          },
+          "substantialContributionToClimateChangeAdaptationInPercentEnablingShare": {
+            "type": "number",
+            "nullable": true
+          },
+          "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentEligible": {
+            "type": "number",
+            "nullable": true
+          },
+          "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned": {
+            "type": "number",
+            "nullable": true
+          },
+          "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentOfWhichUseOfProceeds": {
+            "type": "number",
+            "nullable": true
+          },
+          "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentEnablingShare": {
+            "type": "number",
+            "nullable": true
+          },
+          "substantialContributionToTransitionToACircularEconomyInPercentEligible": {
+            "type": "number",
+            "nullable": true
+          },
+          "substantialContributionToTransitionToACircularEconomyInPercentAligned": {
+            "type": "number",
+            "nullable": true
+          },
+          "substantialContributionToTransitionToACircularEconomyInPercentOfWhichUseOfProceeds": {
+            "type": "number",
+            "nullable": true
+          },
+          "substantialContributionToTransitionToACircularEconomyInPercentEnablingShare": {
+            "type": "number",
+            "nullable": true
+          },
+          "substantialContributionToPollutionPreventionAndControlInPercentEligible": {
+            "type": "number",
+            "nullable": true
+          },
+          "substantialContributionToPollutionPreventionAndControlInPercentAligned": {
+            "type": "number",
+            "nullable": true
+          },
+          "substantialContributionToPollutionPreventionAndControlInPercentOfWhichUseOfProceeds": {
+            "type": "number",
+            "nullable": true
+          },
+          "substantialContributionToPollutionPreventionAndControlInPercentEnablingShare": {
+            "type": "number",
+            "nullable": true
+          },
+          "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentEligible": {
+            "type": "number",
+            "nullable": true
+          },
+          "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned": {
+            "type": "number",
+            "nullable": true
+          },
+          "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentOfWhichUseOfProceeds": {
+            "type": "number",
+            "nullable": true
+          },
+          "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentEnablingShare": {
             "type": "number",
             "nullable": true
           },
@@ -14565,10 +14733,6 @@
         ],
         "type": "object",
         "properties": {
-          "sector": {
-            "type": "string",
-            "nullable": true
-          },
           "companyId": {
             "type": "string"
           },
@@ -14580,6 +14744,10 @@
           },
           "countryCode": {
             "type": "string"
+          },
+          "sector": {
+            "type": "string",
+            "nullable": true
           },
           "lei": {
             "type": "string",
