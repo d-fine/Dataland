@@ -20,6 +20,12 @@
   "packageRules": [
     {
       "matchUpdateTypes": [
+        "digest"
+      ],
+      "automerge": true
+    },
+    {
+      "matchUpdateTypes": [
         "major"
       ],
       "labels": [
