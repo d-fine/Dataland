@@ -1,0 +1,51 @@
+[
+	{
+		"companyInformation": {
+			"companyName": "eutaxonomy-non-financials-qa-report-with-one-correction",
+			"headquarters": "North Wallaceworth",
+			"headquartersPostalCode": "97416-7205",
+			"sector": "metrics",
+			"identifiers": {
+				"Lei": [],
+				"Isin": [
+					"Q3CoERJfyoUh"
+				],
+				"PermId": [
+					"hWr3EB4NVC"
+				],
+				"Ticker": [],
+				"Duns": [],
+				"VatNumber": [
+					"Y0KbP18Xg"
+				],
+				"CompanyRegistrationNumber": [
+					"2ZvCn2oatj9aSG1"
+				]
+			},
+			"countryCode": "GU",
+			"companyContactDetails": [],
+			"companyAlternativeNames": [
+				"Hilll - Corkery",
+				"Rodriguez Inc"
+			],
+			"companyLegalForm": "Limited Liability Partnership (LLP)",
+			"website": null,
+			"isTeaserCompany": false
+		},
+		"t": {
+			"revenue": {
+				"nonEligibleShare": {
+					"relativeShareInPercent": {
+						"comment": "some comment",
+						"verdict": "QaInconclusive",
+						"correctedData": {
+							"value": 15.3472,
+							"quality": "Audited"
+						}
+					}
+				}
+			}
+		},
+		"reportingPeriod": "2024"
+	}
+]
