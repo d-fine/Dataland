@@ -122,7 +122,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, nextTick, type PropType } from 'vue';
+import { defineComponent, nextTick } from 'vue';
 import InputSwitch from 'primevue/inputswitch';
 import UploadFormHeader from '@/components/forms/parts/elements/basic/UploadFormHeader.vue';
 import { FormKit } from '@formkit/vue';
