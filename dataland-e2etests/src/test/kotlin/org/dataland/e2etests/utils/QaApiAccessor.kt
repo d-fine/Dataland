@@ -1,17 +1,24 @@
 package org.dataland.e2etests.utils
 
 import org.awaitility.Awaitility.await
-import org.dataland.datalandbackend.openApiClient.api.EutaxonomyNonFinancialsDataControllerApi
 import org.dataland.datalandbackend.openApiClient.api.MetaDataControllerApi
 import org.dataland.datalandbackend.openApiClient.model.DataMetaInformation
 import org.dataland.datalandbackend.openApiClient.model.QaStatus
+import org.dataland.datalandqaservice.openApiClient.api.EutaxonomyNonFinancialsDataQaReportControllerApi
 import org.dataland.datalandqaservice.openApiClient.api.SfdrDataQaReportControllerApi
 import org.dataland.e2etests.BASE_PATH_TO_QA_SERVICE
 import java.util.concurrent.TimeUnit
 
 class QaApiAccessor {
     val sfdrQaReportControllerApi = SfdrDataQaReportControllerApi(BASE_PATH_TO_QA_SERVICE)
-    val euTaxonomyNonFinancialsQaReportControllerApi = EutaxonomyNonFinancialsDataControllerApi(BASE_PATH_TO_QA_SERVICE)
+
+    // TODO Emanuel: Achtung. Die Methode heißt postQaReport1() => unschön => sollten wir anders handhaben
+    // TODO => das kann man mit der operationId im Controller selbst anpassen =>
+    // TODO => z.B. so @Operation(operationId = "postQaReportEuTaxonomyNonFinancials")
+    // TODO => das muss die framework toolbox automatisch tun, wenn sie die Controller im qa-service autogeneriert
+    val euTaxonomyNonFinancialsQaReportControllerApi = EutaxonomyNonFinancialsDataQaReportControllerApi(
+        BASE_PATH_TO_QA_SERVICE,
+    )
 
     /**
      * Wait until QaStatus is accepted for all Upload Infos or throw error. The metadata of the provided uploadInfos
