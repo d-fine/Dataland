@@ -403,7 +403,7 @@ function createEnablingActivityGroupData(activity: EuTaxonomyAlignedActivity): A
       activity: activity.activityName as string,
       group: '_enablingActivity',
       field: 'enablingActivity',
-      content: activity.minimumSafeguards ?? '',
+      content: activity.enablingActivity ?? '',
     },
   ];
 }
@@ -418,7 +418,7 @@ function createTransitionalActivityGroupData(activity: EuTaxonomyAlignedActivity
       activity: activity.activityName as string,
       group: '_transitionalActivity',
       field: 'transitionalActivity',
-      content: activity.minimumSafeguards ?? '',
+      content: activity.transitionalActivity ?? '',
     },
   ];
 }
