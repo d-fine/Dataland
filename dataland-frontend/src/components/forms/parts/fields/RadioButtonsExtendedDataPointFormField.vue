@@ -7,7 +7,6 @@
       :required="required"
       :input-class="inputClass"
       :options="options"
-      :check-value-validity="hasDataPointProperValue"
       :isDataPointToggleable="isDataPointToggleable"
     />
   </div>
@@ -16,7 +15,6 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import { OptionsFormFieldProps } from '@/components/forms/parts/fields/FormFieldProps';
-import { hasDataPointProperValue } from '@/utils/DataPoint';
 import ExtendedDataPointFormField from '@/components/forms/parts/elements/basic/ExtendedDataPointFormField.vue';
 
 export default defineComponent({
@@ -29,6 +27,5 @@ export default defineComponent({
       default: false,
     },
   },
-  methods: { hasDataPointProperValue },
 });
 </script>
