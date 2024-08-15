@@ -59,9 +59,7 @@
       }
     },
     "eligibleShare": {
-      "relativeShareInPercent": {
-        "value": null
-      },
+      "relativeShareInPercent": null,
       "absoluteShare": {
         "value": 5164293898.27,
         "currency": "KPW"

@@ -43,12 +43,10 @@ class V20__MigrateEutaxonomyNonFinancialsExtendedDatapoints : BaseJavaMigration(
     private fun updateObjectBehindKeyInJsonObject(jsonObject: JSONObject, key: String) {
         val newValue = JSONObject()
         val oldValue = jsonObject[key]
-        if (oldValue != null) {
+        if (oldValue != JSONObject.NULL) {
             newValue.put("value", oldValue)
-        } else {
-            newValue.put("value", JSONObject.NULL)
+            jsonObject.put(key, newValue)
         }
-        jsonObject.put(key, newValue)
     }
 
     /**
@@ -57,12 +55,12 @@ class V20__MigrateEutaxonomyNonFinancialsExtendedDatapoints : BaseJavaMigration(
      */
     private fun checkForRelevantFieldsInJsonObjectKeys(jsonObject: JSONObject) {
         jsonObject.keys().forEach {
-            if (it == "absoluteShare") {
+            if (it == "absoluteShare" && jsonObject[it] != JSONObject.NULL) {
                 val absoluteShare = jsonObject[it] as JSONObject
                 val amount = absoluteShare["amount"]
                 absoluteShare.remove("amount")
                 absoluteShare.put("value", amount)
-            } else if (it in relevantFields) {
+            } else if (it != "absoluteShare" && it in relevantFields) {
                 updateObjectBehindKeyInJsonObject(jsonObject, it)
             } else {
                 // Do nothing as no more migration is required

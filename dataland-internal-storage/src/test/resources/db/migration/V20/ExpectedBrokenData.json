@@ -19,13 +19,17 @@
     "totalAmount": null,
     "nonEligibleShare": null,
     "eligibleShare": {
-      "relativeShareInPercent": 16.8,
+      "relativeShareInPercent": {
+        "value": 16.8
+      },
       "absoluteShare": null
     },
     "nonAlignedShare": null,
     "nonAlignedActivities": null,
     "alignedShare": {
-      "relativeShareInPercent": 16.8,
+      "relativeShareInPercent": {
+        "value": 16.8
+      },
       "absoluteShare": null
     },
     "substantialContributionToClimateChangeMitigationInPercent": null,
@@ -42,13 +46,17 @@
     "totalAmount": null,
     "nonEligibleShare": null,
     "eligibleShare": {
-      "relativeShareInPercent": 54,
+      "relativeShareInPercent": {
+        "value": 54
+      },
       "absoluteShare": null
     },
     "nonAlignedShare": null,
     "nonAlignedActivities": null,
     "alignedShare": {
-      "relativeShareInPercent": 24.3,
+      "relativeShareInPercent": {
+        "value": 24.3
+      },
       "absoluteShare": null
     },
     "substantialContributionToClimateChangeMitigationInPercent": null,
@@ -65,13 +73,17 @@
     "totalAmount": null,
     "nonEligibleShare": null,
     "eligibleShare": {
-      "relativeShareInPercent": 9.3,
+      "relativeShareInPercent": {
+        "value": 9.3
+      },
       "absoluteShare": null
     },
     "nonAlignedShare": null,
     "nonAlignedActivities": null,
     "alignedShare": {
-      "relativeShareInPercent": 9.3,
+      "relativeShareInPercent": {
+        "value": 9.3
+      },
       "absoluteShare": null
     },
     "substantialContributionToClimateChangeMitigationInPercent": null,
