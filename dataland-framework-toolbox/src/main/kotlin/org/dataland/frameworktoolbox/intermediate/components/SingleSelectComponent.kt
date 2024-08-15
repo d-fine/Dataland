@@ -2,7 +2,7 @@ package org.dataland.frameworktoolbox.intermediate.components
 
 import org.dataland.frameworktoolbox.intermediate.FieldNodeParent
 import org.dataland.frameworktoolbox.intermediate.components.support.SelectionOption
-import org.dataland.frameworktoolbox.intermediate.datapoints.NoDocumentSupport
+import org.dataland.frameworktoolbox.intermediate.datapoints.ExtendedDocumentSupport
 import org.dataland.frameworktoolbox.intermediate.datapoints.addPropertyWithDocumentSupport
 import org.dataland.frameworktoolbox.specific.datamodel.TypeReference
 import org.dataland.frameworktoolbox.specific.datamodel.elements.DataClassBuilder
@@ -24,7 +24,6 @@ open class SingleSelectComponent(
     identifier: String,
     parent: FieldNodeParent,
 ) : ComponentBase(identifier, parent) {
-
     /**
      * The UploadMode of a SingleSelectComponent determines the form element styling for the upload
      * page (i.e., dropdown or radio buttons?)
@@ -35,7 +34,7 @@ open class SingleSelectComponent(
     }
 
     var options: Set<SelectionOption> = mutableSetOf()
-    var enumName = "${camelCaseComponentIdentifier}Options"
+    private var enumName = "${camelCaseComponentIdentifier}Options"
     var uploadMode: UploadMode = UploadMode.Dropdown
 
     override fun generateDefaultDataModel(dataClassBuilder: DataClassBuilder) {
@@ -45,9 +44,9 @@ open class SingleSelectComponent(
             comment = "Enum class for the single-select-field $identifier",
         )
         dataClassBuilder.addPropertyWithDocumentSupport(
-            documentSupport,
-            identifier,
-            enum.getTypeReference(isNullable),
+            documentSupport = documentSupport,
+            name = identifier,
+            type = enum.getTypeReference(isNullable),
         )
     }
 
@@ -66,10 +65,10 @@ open class SingleSelectComponent(
             this,
             documentSupport.getFrameworkDisplayValueLambda(
                 FrameworkDisplayValueLambda(
-                    "{\n" +
+                    "((): AvailableMLDTDisplayObjectTypes =>{\n" +
                         generateTsCodeForSelectOptionsMappingObject(options) +
                         generateReturnStatement() +
-                        "}",
+                        "})()",
                     setOf(
                         TypeScriptImport(
                             "formatStringForDatatable",
@@ -87,7 +86,6 @@ open class SingleSelectComponent(
     }
 
     override fun generateDefaultUploadConfig(uploadCategoryBuilder: UploadCategoryBuilder) {
-        requireDocumentSupportIn(setOf(NoDocumentSupport))
         uploadCategoryBuilder.addStandardUploadConfigCell(
             frameworkUploadOptions = FrameworkUploadOptions(
                 body = generateTsCodeForOptionsOfSelectionFormFields(this.options),
@@ -114,9 +112,12 @@ open class SingleSelectComponent(
     }
 
     private fun generateReturnStatement(): String {
+        val fieldAccessor = getTypescriptFieldAccessor()
+        val dataPointValueAccessor =
+            if (documentSupport == ExtendedDocumentSupport) "$fieldAccessor?.value" else fieldAccessor
         return "return formatStringForDatatable(\n" +
-            "${getTypescriptFieldAccessor()} ? " +
-            "getOriginalNameFromTechnicalName(${getTypescriptFieldAccessor()}, mappings) : \"\"\n" +
+            "$dataPointValueAccessor ? " +
+            "getOriginalNameFromTechnicalName($dataPointValueAccessor, mappings) : \"\"\n" +
             ")\n"
     }
 }

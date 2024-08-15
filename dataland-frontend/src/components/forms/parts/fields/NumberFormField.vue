@@ -8,7 +8,8 @@
       :value="currentValue"
       :validation-label="validationLabel ?? label"
       :validation="`number|${validation}`"
-      :placeholder="unit ? `Value in ${unit}` : 'Value'"
+      :placeholder="determinePlaceholder()"
+      :isDataPointToggleable="isDataPointToggleable"
       :validationMessages="{ integer: `${validationLabel ?? label} must be an integer.` }"
       :validationRules="{ integer }"
       :outer-class="inputClass"
@@ -40,6 +41,10 @@ export default defineComponent({
       type: String,
       default: '',
     },
+    isDataPointToggleable: {
+      type: Boolean,
+      default: false,
+    },
   },
   watch: {
     currentValue() {
@@ -63,6 +68,19 @@ export default defineComponent({
      */
     emitUpdateCurrentValue() {
       this.$emit('update:currentValue', this.currentValue);
+    },
+    /**
+     * Determines the value of the placeholder
+     * @returns the placeholder
+     */
+    determinePlaceholder() {
+      if (this.placeholder) {
+        return this.placeholder;
+      } else if (this.unit) {
+        return `Value in ${this.unit}`;
+      } else {
+        return 'Value';
+      }
     },
   },
 });

@@ -6,6 +6,7 @@ import {
 } from '@/components/resources/dataTable/MultiLayerDataTableCellDisplayer';
 import { type EuTaxonomyActivity } from '@clients/backend';
 import NonAlignedActivitiesDataTable from '@/components/general/NonAlignedActivitiesDataTable.vue';
+import { type ExtendedDataPoint } from '@/utils/DataPoint';
 
 export const euTaxonomyNonFinancialsModalColumnHeaders = {
   alignedActivities: {
@@ -51,17 +52,17 @@ export const euTaxonomyNonFinancialsModalColumnHeaders = {
  * @returns the display object for the multi-layer-data-table to render a modal to display the non-aligned activities
  */
 export function formatNonAlignedActivitiesForDataTable(
-  nonAlignedActivities: Array<EuTaxonomyActivity> | undefined | null,
+  nonAlignedActivities: ExtendedDataPoint<EuTaxonomyActivity[]> | undefined | null,
   fieldLabel: string
 ): AvailableMLDTDisplayObjectTypes {
   if (!nonAlignedActivities) {
     return MLDTDisplayObjectForEmptyString;
   }
 
-  return <MLDTDisplayObject<MLDTDisplayComponentName.ModalLinkDisplayComponent>>{
-    displayComponentName: MLDTDisplayComponentName.ModalLinkDisplayComponent,
+  return <MLDTDisplayObject<MLDTDisplayComponentName.ModalLinkWithDataSourceDisplayComponent>>{
+    displayComponentName: MLDTDisplayComponentName.ModalLinkWithDataSourceDisplayComponent,
     displayValue: {
-      label: `Show ${nonAlignedActivities.length} activit${nonAlignedActivities.length > 1 ? 'ies' : 'y'}`,
+      label: `Show ${nonAlignedActivities.value?.length} activit${nonAlignedActivities.value?.length ?? 0 > 1 ? 'ies' : 'y'}`,
       modalComponent: NonAlignedActivitiesDataTable,
       modalOptions: {
         props: {
@@ -70,9 +71,14 @@ export function formatNonAlignedActivitiesForDataTable(
           dismissableMask: true,
         },
         data: {
-          listOfRowContents: nonAlignedActivities,
+          listOfRowContents: nonAlignedActivities.value,
           kpiKeyOfTable: 'nonAlignedActivities',
           columnHeaders: euTaxonomyNonFinancialsModalColumnHeaders,
+          dataPointDisplay: {
+            dataSource: nonAlignedActivities.dataSource,
+            comment: nonAlignedActivities.comment,
+            quality: nonAlignedActivities.quality,
+          },
         },
       },
     },

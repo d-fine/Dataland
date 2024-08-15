@@ -195,6 +195,11 @@
   border-bottom: 1px solid $table-border;
 }
 
+.table-cell-alignment {
+  display: flex;
+  flex-direction: column;
+}
+
 .indentation {
   span {
     padding-left: 1rem;

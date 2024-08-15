@@ -1,9 +1,8 @@
 import { type MLDTConfig } from '@/components/resources/dataTable/MultiLayerDataTableConfiguration';
 import MultiLayerDataTableFrameworkPanel from '@/components/resources/frameworkDataSearch/frameworkPanel/MultiLayerDataTableFrameworkPanel.vue';
-import { type FrameworkDataTypes } from '@/utils/api/FrameworkDataTypes';
 import { type DataAndMetaInformation } from '@/api-models/DataAndMetaInformation';
 import { type FixtureData } from '@sharedUtils/Fixtures';
-import { type DataMetaInformation } from '@clients/backend';
+import { type DataMetaInformation, type DataTypeEnum } from '@clients/backend';
 import { minimalKeycloakMock } from './Keycloak';
 import { getMountingFunction } from '@ct/testUtils/Mount';
 
@@ -16,15 +15,15 @@ import { getMountingFunction } from '@ct/testUtils/Mount';
  * @param reviewMode mount the company in reviewer mode?
  * @returns the component mounting chainable
  */
-export function mountMLDTFrameworkPanelFromFakeFixture<Framework extends keyof FrameworkDataTypes>(
-  frameworkIdentifier: Framework,
-  displayConfiguration: MLDTConfig<FrameworkDataTypes[Framework]['data']>,
-  datasetsToDisplay: Array<FixtureData<FrameworkDataTypes[Framework]['data']>>,
+export function mountMLDTFrameworkPanelFromFakeFixture<FrameworkDataType>(
+  frameworkIdentifier: DataTypeEnum,
+  displayConfiguration: MLDTConfig<FrameworkDataType>,
+  datasetsToDisplay: Array<FixtureData<FrameworkDataType>>,
   companyId = 'mock-company-id',
   reviewMode = false
 ): Cypress.Chainable {
-  const convertedDataAndMetaInformation: Array<DataAndMetaInformation<FrameworkDataTypes[Framework]['data']>> =
-    datasetsToDisplay.map((it, idx) => {
+  const convertedDataAndMetaInformation: Array<DataAndMetaInformation<FrameworkDataType>> = datasetsToDisplay.map(
+    (it, idx) => {
       const metaInfo: DataMetaInformation = {
         dataId: `data-id-${idx}`,
         companyId: companyId,
@@ -38,7 +37,8 @@ export function mountMLDTFrameworkPanelFromFakeFixture<Framework extends keyof F
         data: it.t,
         metaInfo: metaInfo,
       };
-    });
+    }
+  );
 
   return mountMLDTFrameworkPanel(
     frameworkIdentifier,
@@ -58,10 +58,10 @@ export function mountMLDTFrameworkPanelFromFakeFixture<Framework extends keyof F
  * @param reviewMode mount the company in reviewer mode?
  * @returns the component mounting chainable
  */
-export function mountMLDTFrameworkPanel<Framework extends keyof FrameworkDataTypes>(
-  frameworkIdentifier: Framework,
-  displayConfiguration: MLDTConfig<FrameworkDataTypes[Framework]['data']>,
-  datasetsToDisplay: Array<DataAndMetaInformation<FrameworkDataTypes[Framework]['data']>>,
+export function mountMLDTFrameworkPanel<FrameworkDataType>(
+  frameworkIdentifier: DataTypeEnum,
+  displayConfiguration: MLDTConfig<FrameworkDataType>,
+  datasetsToDisplay: Array<DataAndMetaInformation<FrameworkDataType>>,
   companyId = 'mock-company-id',
   reviewMode = false
 ): Cypress.Chainable {
