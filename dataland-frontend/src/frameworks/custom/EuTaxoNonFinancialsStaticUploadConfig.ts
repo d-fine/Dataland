@@ -144,7 +144,8 @@ export const eutaxonomyNonFinancialsDataModel = [
           {
             name: 'substantialContributionToClimateChangeMitigationInPercentEligible',
             label: 'Substantial Contribution to Climate Change Mitigation In Percent - Eligible',
-            description: 'Taxonomy-eligible proportion of revenue substantially contributing to climate change mitigation',
+            description:
+              'Taxonomy-eligible proportion of revenue substantially contributing to climate change mitigation',
             unit: '%',
             component: 'PercentageFormField',
             required: false,
@@ -154,7 +155,8 @@ export const eutaxonomyNonFinancialsDataModel = [
           {
             name: 'substantialContributionToClimateChangeMitigationInPercentAligned',
             label: 'Substantial Contribution to Climate Change Mitigation In Percent - Aligned',
-            description: 'Taxonomy-aligned proportion of revenue substantially contributing to climate change mitigation',
+            description:
+              'Taxonomy-aligned proportion of revenue substantially contributing to climate change mitigation',
             unit: '%',
             component: 'PercentageFormField',
             required: false,
@@ -164,7 +166,8 @@ export const eutaxonomyNonFinancialsDataModel = [
           {
             name: 'substantialContributionToClimateChangeMitigationInPercentOfWhichUseOfProceeds',
             label: 'Substantial Contribution to Climate Change Mitigation In Percent - Of Which Use Of Proceeds',
-            description: 'Taxonomy-aligned use of proceeds share substantially contributing to climate change mitigation',
+            description:
+              'Taxonomy-aligned use of proceeds share substantially contributing to climate change mitigation',
             unit: '%',
             component: 'PercentageFormField',
             required: false,
@@ -174,7 +177,8 @@ export const eutaxonomyNonFinancialsDataModel = [
           {
             name: 'substantialContributionToClimateChangeMitigationInPercentEnablingShare',
             label: 'Substantial Contribution to Climate Change Mitigation In Percent - Enabling Share',
-            description: 'Taxonomy-aligned and enabling proportion of revenue substantially contributing to climate change mitigation',
+            description:
+              'Taxonomy-aligned and enabling proportion of revenue substantially contributing to climate change mitigation',
             unit: '%',
             component: 'PercentageFormField',
             required: false,
@@ -184,7 +188,8 @@ export const eutaxonomyNonFinancialsDataModel = [
           {
             name: 'substantialContributionToClimateChangeMitigationInPercentTransitionalShare',
             label: 'Substantial Contribution to Climate Change Mitigation In Percent - Transitional Share',
-            description: 'Taxonomy-aligned and transitional proportion of revenue substantially contributing to climate change mitigation',
+            description:
+              'Taxonomy-aligned and transitional proportion of revenue substantially contributing to climate change mitigation',
             unit: '%',
             component: 'PercentageFormField',
             required: false,
@@ -194,7 +199,8 @@ export const eutaxonomyNonFinancialsDataModel = [
           {
             name: 'substantialContributionToClimateChangeAdaptationInPercentEligible',
             label: 'Substantial Contribution to Climate Change Adaptation In Percent - Eligible',
-            description: 'Taxonomy-eligible proportion of revenue substantially contributing to climate change adaptation',
+            description:
+              'Taxonomy-eligible proportion of revenue substantially contributing to climate change adaptation',
             unit: '%',
             component: 'PercentageFormField',
             required: false,
@@ -204,7 +210,8 @@ export const eutaxonomyNonFinancialsDataModel = [
           {
             name: 'substantialContributionToClimateChangeAdaptationInPercentAligned',
             label: 'Substantial Contribution to Climate Change Adaptation In Percent - Aligned',
-            description: 'Taxonomy-aligned proportion of revenue substantially contributing to climate change adaptation',
+            description:
+              'Taxonomy-aligned proportion of revenue substantially contributing to climate change adaptation',
             unit: '%',
             component: 'PercentageFormField',
             required: false,
@@ -214,7 +221,8 @@ export const eutaxonomyNonFinancialsDataModel = [
           {
             name: 'substantialContributionToClimateChangeAdaptationInPercentOfWhichUseOfProceeds',
             label: 'Substantial Contribution to Climate Change Adaptation In Percent - Of Which Use Of Proceeds',
-            description: 'Taxonomy-aligned use of proceeds share substantially contributing to climate change adaptation',
+            description:
+              'Taxonomy-aligned use of proceeds share substantially contributing to climate change adaptation',
             unit: '%',
             component: 'PercentageFormField',
             required: false,
@@ -224,7 +232,8 @@ export const eutaxonomyNonFinancialsDataModel = [
           {
             name: 'substantialContributionToClimateChangeAdaptationInPercentEnablingShare',
             label: 'Substantial Contribution to Climate Change Adaptation In Percent - Enabling Share',
-            description: 'Taxonomy-aligned and enabling proportion of revenue substantially contributing to climate change adaptation',
+            description:
+              'Taxonomy-aligned and enabling proportion of revenue substantially contributing to climate change adaptation',
             unit: '%',
             component: 'PercentageFormField',
             required: false,
@@ -233,8 +242,10 @@ export const eutaxonomyNonFinancialsDataModel = [
           },
           {
             name: 'substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentEligible',
-            label: 'Substantial Contribution to Sustainable Use and Protection of Water and Marine Resources In Percent - Eligible',
-            description: 'Taxonomy-eligible proportion of revenue substantially contributing to sustainable use and protection of water and marine resources',
+            label:
+              'Substantial Contribution to Sustainable Use and Protection of Water and Marine Resources In Percent - Eligible',
+            description:
+              'Taxonomy-eligible proportion of revenue substantially contributing to sustainable use and protection of water and marine resources',
             unit: '%',
             component: 'PercentageFormField',
             required: false,
@@ -243,8 +254,10 @@ export const eutaxonomyNonFinancialsDataModel = [
           },
           {
             name: 'substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned',
-            label: 'Substantial Contribution to Sustainable Use and Protection of Water and Marine Resources In Percent - Aligned',
-            description: 'Taxonomy-aligned proportion of revenue substantially contributing to sustainable use and protection of water and marine resources',
+            label:
+              'Substantial Contribution to Sustainable Use and Protection of Water and Marine Resources In Percent - Aligned',
+            description:
+              'Taxonomy-aligned proportion of revenue substantially contributing to sustainable use and protection of water and marine resources',
             unit: '%',
             component: 'PercentageFormField',
             required: false,
@@ -253,8 +266,10 @@ export const eutaxonomyNonFinancialsDataModel = [
           },
           {
             name: 'substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentOfWhichUseOfProceeds',
-            label: 'Substantial Contribution to Sustainable Use and Protection of Water and Marine Resources In Percent - Of Which Use Of Proceeds',
-            description: 'Taxonomy-aligned use of proceeds share substantially contributing to sustainable use and protection of water and marine resources',
+            label:
+              'Substantial Contribution to Sustainable Use and Protection of Water and Marine Resources In Percent - Of Which Use Of Proceeds',
+            description:
+              'Taxonomy-aligned use of proceeds share substantially contributing to sustainable use and protection of water and marine resources',
             unit: '%',
             component: 'PercentageFormField',
             required: false,
@@ -263,8 +278,10 @@ export const eutaxonomyNonFinancialsDataModel = [
           },
           {
             name: 'substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentEnablingShare',
-            label: 'Substantial Contribution to Sustainable Use and Protection of Water and Marine Resources In Percent - Enabling Share',
-            description: 'Taxonomy-aligned and enabling proportion of revenue substantially contributing to sustainable use and protection of water and marine resources',
+            label:
+              'Substantial Contribution to Sustainable Use and Protection of Water and Marine Resources In Percent - Enabling Share',
+            description:
+              'Taxonomy-aligned and enabling proportion of revenue substantially contributing to sustainable use and protection of water and marine resources',
             unit: '%',
             component: 'PercentageFormField',
             required: false,
@@ -304,7 +321,8 @@ export const eutaxonomyNonFinancialsDataModel = [
           {
             name: 'substantialContributionToTransitionToACircularEconomyInPercentEnablingShare',
             label: 'Substantial Contribution to Transition to a Circular Economy In Percent - Enabling Share',
-            description: 'Taxonomy-aligned and enabling proportion of revenue substantially contributing to circular economy',
+            description:
+              'Taxonomy-aligned and enabling proportion of revenue substantially contributing to circular economy',
             unit: '%',
             component: 'PercentageFormField',
             required: false,
@@ -314,7 +332,8 @@ export const eutaxonomyNonFinancialsDataModel = [
           {
             name: 'substantialContributionToPollutionPreventionAndControlInPercentEligible',
             label: 'Substantial Contribution to Pollution Prevention and Control In Percent - Eligible',
-            description: 'Taxonomy-eligible proportion of CapEx substantially contributing to pollution prevention and control',
+            description:
+              'Taxonomy-eligible proportion of CapEx substantially contributing to pollution prevention and control',
             unit: '%',
             component: 'PercentageFormField',
             required: false,
@@ -324,7 +343,8 @@ export const eutaxonomyNonFinancialsDataModel = [
           {
             name: 'substantialContributionToPollutionPreventionAndControlInPercentAligned',
             label: 'Substantial Contribution to Pollution Prevention and Control In Percent - Aligned',
-            description: 'Taxonomy-aligned proportion of CapEx substantially contributing to pollution prevention and control',
+            description:
+              'Taxonomy-aligned proportion of CapEx substantially contributing to pollution prevention and control',
             unit: '%',
             component: 'PercentageFormField',
             required: false,
@@ -334,7 +354,8 @@ export const eutaxonomyNonFinancialsDataModel = [
           {
             name: 'substantialContributionToPollutionPreventionAndControlInPercentOfWhichUseOfProceeds',
             label: 'Substantial Contribution to Pollution Prevention and Control In Percent - Of Which Use Of Proceeds',
-            description: 'Taxonomy-aligned use of proceeds share substantially contributing to pollution prevention and control',
+            description:
+              'Taxonomy-aligned use of proceeds share substantially contributing to pollution prevention and control',
             unit: '%',
             component: 'PercentageFormField',
             required: false,
@@ -344,7 +365,8 @@ export const eutaxonomyNonFinancialsDataModel = [
           {
             name: 'substantialContributionToPollutionPreventionAndControlInPercentEnablingShare',
             label: 'Substantial Contribution to Pollution Prevention and Control In Percent - Enabling Share',
-            description: 'Taxonomy-aligned and enabling proportion of CapEx substantially contributing to pollution prevention and control',
+            description:
+              'Taxonomy-aligned and enabling proportion of CapEx substantially contributing to pollution prevention and control',
             unit: '%',
             component: 'PercentageFormField',
             required: false,
@@ -353,8 +375,10 @@ export const eutaxonomyNonFinancialsDataModel = [
           },
           {
             name: 'substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentEligible',
-            label: 'Substantial Contribution to Protection and Restoration of Biodiversity and Ecosystems In Percent - Eligible',
-            description: 'Taxonomy-eligible proportion of CapEx substantially contributing to protection and restoration of biodiversity and ecosystems',
+            label:
+              'Substantial Contribution to Protection and Restoration of Biodiversity and Ecosystems In Percent - Eligible',
+            description:
+              'Taxonomy-eligible proportion of CapEx substantially contributing to protection and restoration of biodiversity and ecosystems',
             unit: '%',
             component: 'PercentageFormField',
             required: false,
@@ -363,8 +387,10 @@ export const eutaxonomyNonFinancialsDataModel = [
           },
           {
             name: 'substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned',
-            label: 'Substantial Contribution to Protection and Restoration of Biodiversity and Ecosystems In Percent - Aligned',
-            description: 'Taxonomy-aligned proportion of CapEx substantially contributing to protection and restoration of biodiversity and ecosystems',
+            label:
+              'Substantial Contribution to Protection and Restoration of Biodiversity and Ecosystems In Percent - Aligned',
+            description:
+              'Taxonomy-aligned proportion of CapEx substantially contributing to protection and restoration of biodiversity and ecosystems',
             unit: '%',
             component: 'PercentageFormField',
             required: false,
@@ -373,8 +399,10 @@ export const eutaxonomyNonFinancialsDataModel = [
           },
           {
             name: 'substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentOfWhichUseOfProceeds',
-            label: 'Substantial Contribution to Protection and Restoration of Biodiversity and Ecosystems In Percent - Of Which Use Of Proceeds',
-            description: 'Taxonomy-aligned use of proceeds share substantially contributing to protection and restoration of biodiversity and ecosystems',
+            label:
+              'Substantial Contribution to Protection and Restoration of Biodiversity and Ecosystems In Percent - Of Which Use Of Proceeds',
+            description:
+              'Taxonomy-aligned use of proceeds share substantially contributing to protection and restoration of biodiversity and ecosystems',
             unit: '%',
             component: 'PercentageFormField',
             required: false,
@@ -383,8 +411,10 @@ export const eutaxonomyNonFinancialsDataModel = [
           },
           {
             name: 'substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentEnablingShare',
-            label: 'Substantial Contribution to Protection and Restoration of Biodiversity and Ecosystems In Percent - Enabling Share',
-            description: 'Taxonomy-aligned and enabling proportion of CapEx substantially contributing to protection and restoration of biodiversity and ecosystems',
+            label:
+              'Substantial Contribution to Protection and Restoration of Biodiversity and Ecosystems In Percent - Enabling Share',
+            description:
+              'Taxonomy-aligned and enabling proportion of CapEx substantially contributing to protection and restoration of biodiversity and ecosystems',
             unit: '%',
             component: 'PercentageFormField',
             required: false,
@@ -500,7 +530,8 @@ export const eutaxonomyNonFinancialsDataModel = [
           {
             name: 'substantialContributionToClimateChangeMitigationInPercentEligible',
             label: 'Substantial Contribution to Climate Change Mitigation In Percent - Eligible',
-            description: 'Taxonomy-eligible proportion of CapEx substantially contributing to climate change mitigation',
+            description:
+              'Taxonomy-eligible proportion of CapEx substantially contributing to climate change mitigation',
             unit: '%',
             component: 'PercentageFormField',
             required: false,
@@ -520,7 +551,8 @@ export const eutaxonomyNonFinancialsDataModel = [
           {
             name: 'substantialContributionToClimateChangeMitigationInPercentOfWhichUseOfProceeds',
             label: 'Substantial Contribution to Climate Change Mitigation In Percent - Of Which Use Of Proceeds',
-            description: 'Taxonomy-aligned use of proceeds share substantially contributing to climate change mitigation',
+            description:
+              'Taxonomy-aligned use of proceeds share substantially contributing to climate change mitigation',
             unit: '%',
             component: 'PercentageFormField',
             required: false,
@@ -530,7 +562,8 @@ export const eutaxonomyNonFinancialsDataModel = [
           {
             name: 'substantialContributionToClimateChangeMitigationInPercentEnablingShare',
             label: 'Substantial Contribution to Climate Change Mitigation In Percent - Enabling Share',
-            description: 'Taxonomy-aligned and enabling proportion of CapEx substantially contributing to climate change mitigation',
+            description:
+              'Taxonomy-aligned and enabling proportion of CapEx substantially contributing to climate change mitigation',
             unit: '%',
             component: 'PercentageFormField',
             required: false,
@@ -540,7 +573,8 @@ export const eutaxonomyNonFinancialsDataModel = [
           {
             name: 'substantialContributionToClimateChangeMitigationInPercentTransitionalShare',
             label: 'Substantial Contribution to Climate Change Mitigation In Percent - Transitional Share',
-            description: 'Taxonomy-aligned and transitional proportion of CapEx substantially contributing to climate change mitigation',
+            description:
+              'Taxonomy-aligned and transitional proportion of CapEx substantially contributing to climate change mitigation',
             unit: '%',
             component: 'PercentageFormField',
             required: false,
@@ -550,7 +584,8 @@ export const eutaxonomyNonFinancialsDataModel = [
           {
             name: 'substantialContributionToClimateChangeAdaptationInPercentEligible',
             label: 'Substantial Contribution to Climate Change Adaptation In Percent - Eligible',
-            description: 'Taxonomy-eligible proportion of CapEx substantially contributing to climate change adaptation',
+            description:
+              'Taxonomy-eligible proportion of CapEx substantially contributing to climate change adaptation',
             unit: '%',
             component: 'PercentageFormField',
             required: false,
@@ -570,7 +605,8 @@ export const eutaxonomyNonFinancialsDataModel = [
           {
             name: 'substantialContributionToClimateChangeAdaptationInPercentOfWhichUseOfProceeds',
             label: 'Substantial Contribution to Climate Change Adaptation In Percent - Of Which Use Of Proceeds',
-            description: 'Taxonomy-aligned use of proceeds share substantially contributing to climate change adaptation',
+            description:
+              'Taxonomy-aligned use of proceeds share substantially contributing to climate change adaptation',
             unit: '%',
             component: 'PercentageFormField',
             required: false,
@@ -580,7 +616,8 @@ export const eutaxonomyNonFinancialsDataModel = [
           {
             name: 'substantialContributionToClimateChangeAdaptationInPercentEnablingShare',
             label: 'Substantial Contribution to Climate Change Adaptation In Percent - Enabling Share',
-            description: 'Taxonomy-aligned and enabling proportion of CapEx substantially contributing to climate change adaptation',
+            description:
+              'Taxonomy-aligned and enabling proportion of CapEx substantially contributing to climate change adaptation',
             unit: '%',
             component: 'PercentageFormField',
             required: false,
@@ -589,8 +626,10 @@ export const eutaxonomyNonFinancialsDataModel = [
           },
           {
             name: 'substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentEligible',
-            label: 'Substantial Contribution to Sustainable Use and Protection of Water and Marine Resources In Percent - Eligible',
-            description: 'Taxonomy-eligible proportion of CapEx substantially contributing to sustainable use and protection of water and marine resources',
+            label:
+              'Substantial Contribution to Sustainable Use and Protection of Water and Marine Resources In Percent - Eligible',
+            description:
+              'Taxonomy-eligible proportion of CapEx substantially contributing to sustainable use and protection of water and marine resources',
             unit: '%',
             component: 'PercentageFormField',
             required: false,
@@ -599,8 +638,10 @@ export const eutaxonomyNonFinancialsDataModel = [
           },
           {
             name: 'substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned',
-            label: 'Substantial Contribution to Sustainable Use and Protection of Water and Marine Resources In Percent - Aligned',
-            description: 'Taxonomy-aligned proportion of CapEx substantially contributing to sustainable use and protection of water and marine resources',
+            label:
+              'Substantial Contribution to Sustainable Use and Protection of Water and Marine Resources In Percent - Aligned',
+            description:
+              'Taxonomy-aligned proportion of CapEx substantially contributing to sustainable use and protection of water and marine resources',
             unit: '%',
             component: 'PercentageFormField',
             required: false,
@@ -609,8 +650,10 @@ export const eutaxonomyNonFinancialsDataModel = [
           },
           {
             name: 'substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentOfWhichUseOfProceeds',
-            label: 'Substantial Contribution to Sustainable Use and Protection of Water and Marine Resources In Percent - Of Which Use Of Proceeds',
-            description: 'Taxonomy-aligned use of proceeds share substantially contributing to sustainable use and protection of water and marine resources',
+            label:
+              'Substantial Contribution to Sustainable Use and Protection of Water and Marine Resources In Percent - Of Which Use Of Proceeds',
+            description:
+              'Taxonomy-aligned use of proceeds share substantially contributing to sustainable use and protection of water and marine resources',
             unit: '%',
             component: 'PercentageFormField',
             required: false,
@@ -619,8 +662,10 @@ export const eutaxonomyNonFinancialsDataModel = [
           },
           {
             name: 'substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentEnablingShare',
-            label: 'Substantial Contribution to Sustainable Use and Protection of Water and Marine Resources In Percent - Enabling Share',
-            description: 'Taxonomy-aligned and enabling proportion of CapEx substantially contributing to sustainable use and protection of water and marine resources',
+            label:
+              'Substantial Contribution to Sustainable Use and Protection of Water and Marine Resources In Percent - Enabling Share',
+            description:
+              'Taxonomy-aligned and enabling proportion of CapEx substantially contributing to sustainable use and protection of water and marine resources',
             unit: '%',
             component: 'PercentageFormField',
             required: false,
@@ -660,7 +705,8 @@ export const eutaxonomyNonFinancialsDataModel = [
           {
             name: 'substantialContributionToTransitionToACircularEconomyInPercentEnablingShare',
             label: 'Substantial Contribution to Transition to a Circular Economy In Percent - Enabling Share',
-            description: 'Taxonomy-aligned and enabling proportion of CapEx substantially contributing to circular economy',
+            description:
+              'Taxonomy-aligned and enabling proportion of CapEx substantially contributing to circular economy',
             unit: '%',
             component: 'PercentageFormField',
             required: false,
@@ -670,7 +716,8 @@ export const eutaxonomyNonFinancialsDataModel = [
           {
             name: 'substantialContributionToPollutionPreventionAndControlInPercentEligible',
             label: 'Substantial Contribution to Pollution Prevention and Control In Percent - Eligible',
-            description: 'Taxonomy-eligible proportion of CapEx substantially contributing to pollution prevention and control',
+            description:
+              'Taxonomy-eligible proportion of CapEx substantially contributing to pollution prevention and control',
             unit: '%',
             component: 'PercentageFormField',
             required: false,
@@ -680,7 +727,8 @@ export const eutaxonomyNonFinancialsDataModel = [
           {
             name: 'substantialContributionToPollutionPreventionAndControlInPercentAligned',
             label: 'Substantial Contribution to Pollution Prevention and Control In Percent - Aligned',
-            description: 'Taxonomy-aligned proportion of CapEx substantially contributing to pollution prevention and control',
+            description:
+              'Taxonomy-aligned proportion of CapEx substantially contributing to pollution prevention and control',
             unit: '%',
             component: 'PercentageFormField',
             required: false,
@@ -690,7 +738,8 @@ export const eutaxonomyNonFinancialsDataModel = [
           {
             name: 'substantialContributionToPollutionPreventionAndControlInPercentOfWhichUseOfProceeds',
             label: 'Substantial Contribution to Pollution Prevention and Control In Percent - Of Which Use Of Proceeds',
-            description: 'Taxonomy-aligned use of proceeds share substantially contributing to pollution prevention and control',
+            description:
+              'Taxonomy-aligned use of proceeds share substantially contributing to pollution prevention and control',
             unit: '%',
             component: 'PercentageFormField',
             required: false,
@@ -700,7 +749,8 @@ export const eutaxonomyNonFinancialsDataModel = [
           {
             name: 'substantialContributionToPollutionPreventionAndControlInPercentEnablingShare',
             label: 'Substantial Contribution to Pollution Prevention and Control In Percent - Enabling Share',
-            description: 'Taxonomy-aligned and enabling proportion of CapEx substantially contributing to pollution prevention and control',
+            description:
+              'Taxonomy-aligned and enabling proportion of CapEx substantially contributing to pollution prevention and control',
             unit: '%',
             component: 'PercentageFormField',
             required: false,
@@ -709,8 +759,10 @@ export const eutaxonomyNonFinancialsDataModel = [
           },
           {
             name: 'substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentEligible',
-            label: 'Substantial Contribution to Protection and Restoration of Biodiversity and Ecosystems In Percent - Eligible',
-            description: 'Taxonomy-eligible proportion of CapEx substantially contributing to protection and restoration of biodiversity and ecosystems',
+            label:
+              'Substantial Contribution to Protection and Restoration of Biodiversity and Ecosystems In Percent - Eligible',
+            description:
+              'Taxonomy-eligible proportion of CapEx substantially contributing to protection and restoration of biodiversity and ecosystems',
             unit: '%',
             component: 'PercentageFormField',
             required: false,
@@ -719,8 +771,10 @@ export const eutaxonomyNonFinancialsDataModel = [
           },
           {
             name: 'substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned',
-            label: 'Substantial Contribution to Protection and Restoration of Biodiversity and Ecosystems In Percent - Aligned',
-            description: 'Taxonomy-aligned proportion of CapEx substantially contributing to protection and restoration of biodiversity and ecosystems',
+            label:
+              'Substantial Contribution to Protection and Restoration of Biodiversity and Ecosystems In Percent - Aligned',
+            description:
+              'Taxonomy-aligned proportion of CapEx substantially contributing to protection and restoration of biodiversity and ecosystems',
             unit: '%',
             component: 'PercentageFormField',
             required: false,
@@ -729,8 +783,10 @@ export const eutaxonomyNonFinancialsDataModel = [
           },
           {
             name: 'substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentOfWhichUseOfProceeds',
-            label: 'Substantial Contribution to Protection and Restoration of Biodiversity and Ecosystems In Percent - Of Which Use Of Proceeds',
-            description: 'Taxonomy-aligned use of proceeds share substantially contributing to protection and restoration of biodiversity and ecosystems',
+            label:
+              'Substantial Contribution to Protection and Restoration of Biodiversity and Ecosystems In Percent - Of Which Use Of Proceeds',
+            description:
+              'Taxonomy-aligned use of proceeds share substantially contributing to protection and restoration of biodiversity and ecosystems',
             unit: '%',
             component: 'PercentageFormField',
             required: false,
@@ -739,8 +795,10 @@ export const eutaxonomyNonFinancialsDataModel = [
           },
           {
             name: 'substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentEnablingShare',
-            label: 'Substantial Contribution to Protection and Restoration of Biodiversity and Ecosystems In Percent - Enabling Share',
-            description: 'Taxonomy-aligned and enabling proportion of CapEx substantially contributing to protection and restoration of biodiversity and ecosystems',
+            label:
+              'Substantial Contribution to Protection and Restoration of Biodiversity and Ecosystems In Percent - Enabling Share',
+            description:
+              'Taxonomy-aligned and enabling proportion of CapEx substantially contributing to protection and restoration of biodiversity and ecosystems',
             unit: '%',
             component: 'PercentageFormField',
             required: false,
