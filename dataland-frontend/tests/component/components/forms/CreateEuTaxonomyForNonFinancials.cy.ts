@@ -162,38 +162,38 @@ describe('Component tests for the Eu Taxonomy for non financials that test depen
     cy.get('div[label="Revenue"] input[name="relativeShareInPercent"]').eq(1).clear().type('50');
     cy.get('div[label="Revenue"] input[name="amount"]').eq(1).clear().type('4000');
     selectItemFromDropdownByIndex(cy.get('div[label="Revenue"] div[name="currency"]').eq(1), 51);
-    cy.get('div[label="Revenue"] input[name="substantialContributionToClimateChangeMitigationInPercent"]')
+    cy.get('div[label="Revenue"] input[name="substantialContributionToClimateChangeMitigationInPercentEligible"]')
       .clear()
       .type('a');
     cy.get('div[label="Revenue"] em[title="Eligible Revenue"]').click();
     cy.get(`div[label="Revenue"] [data-message-type="validation"]`)
       .should('contain', 'must be a number')
       .should('exist');
-    cy.get('div[label="Revenue"] input[name="substantialContributionToClimateChangeMitigationInPercent"]')
+    cy.get('div[label="Revenue"] input[name="substantialContributionToClimateChangeMitigationInPercentEligible"]')
       .clear()
       .type('-12');
     cy.get('div[label="Revenue"] em[title="Eligible Revenue"]').click();
     cy.get(`div[label="Revenue"] [data-message-type="validation"]`)
       .should('contain', 'must be between 0 and 100')
       .should('exist');
-    cy.get('div[label="Revenue"] input[name="substantialContributionToClimateChangeMitigationInPercent"]')
+    cy.get('div[label="Revenue"] input[name="substantialContributionToClimateChangeMitigationInPercentEligible"]')
       .clear()
       .type('15');
-    cy.get('div[label="Revenue"] input[name="substantialContributionToClimateChangeAdaptationInPercent"]')
+    cy.get('div[label="Revenue"] input[name="substantialContributionToClimateChangeAdaptationInPercentEligible"]')
       .clear()
       .type('15');
     cy.get(
-      'div[label="Revenue"] input[name="substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent"]'
+      'div[label="Revenue"] input[name="substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentEligible"]'
     )
       .clear()
       .type('15');
-    cy.get('div[label="Revenue"] input[name="substantialContributionToTransitionToACircularEconomyInPercent"]')
+    cy.get('div[label="Revenue"] input[name="substantialContributionToTransitionToACircularEconomyInPercentEligible"]')
       .clear()
       .type('15');
-    cy.get('div[label="Revenue"] input[name="substantialContributionToPollutionPreventionAndControlInPercent"]')
+    cy.get('div[label="Revenue"] input[name="substantialContributionToPollutionPreventionAndControlInPercentEligible"]')
       .clear()
       .type('15');
-    cy.get('div[label="Revenue"] input[name="substantialContributionToClimateChangeAdaptationInPercent"]')
+    cy.get('div[label="Revenue"] input[name="substantialContributionToClimateChangeAdaptationInPercentEligible"]')
       .clear()
       .type('15');
     cy.get('div[label="Revenue"] input[name="relativeShareInPercent"]').eq(2).clear().type('11');
