@@ -125,6 +125,45 @@ describe('Component tests for the Eu Taxonomy for non financials that test depen
   }
 
   /**
+   * Types a value into a data point in the "Revenue" segment of the upload form
+   * @param value to type
+   * @param dataTestMarker marks the specific input field to type into
+   */
+  function insertValueIntoRevenueDataPoint(value: string, dataTestMarker: string): void {
+    cy.get(`div[label="Revenue"] div[data-test="${dataTestMarker}"] input[name="value"]`).clear().type(value);
+  }
+
+  /**
+   * Toggles a data point in the "Revenue" segment of the upload form
+   * @param dataTestMarker identifies the specific data point to toggle
+   */
+  function toggleDataPoint(dataTestMarker: string): void {
+    cy.get(
+      `div[label="Revenue"] div[data-test="${dataTestMarker}"] 
+        div[data-test="toggleDataPointWrapper"] div[data-test="dataPointToggleButton"]`
+    )
+      .should('exist')
+      .click();
+  }
+
+  /**
+   * Toggles a data point inside a sub-segment of the segment "Revenue" of the upload form
+   * @param dataTestMarkerOfSubSegment identifies the sub-segment
+   * @param dataTestMarkerOfDataPoint identifies the data point itself
+   */
+  function toggleDataPointInSubSegmentOfRevenue(
+    dataTestMarkerOfSubSegment: string,
+    dataTestMarkerOfDataPoint: string
+  ): void {
+    cy.get(
+      `div[label="Revenue"] div[data-test=${dataTestMarkerOfSubSegment}] div[data-test="${dataTestMarkerOfDataPoint}"] 
+        div[data-test="toggleDataPointWrapper"] div[data-test="dataPointToggleButton"]`
+    )
+      .should('exist')
+      .click();
+  }
+
+  /**
    * this method fills and checks the Revenue section, excluding the activity component
    * @param reports the name of the reports that are uploaded
    */
@@ -144,11 +183,7 @@ describe('Component tests for the Eu Taxonomy for non financials that test depen
     selectItemFromDropdownByIndex(cy.get('div[label="Revenue"] div[data-test="totalAmount"] div[name="quality"]'), 2);
     cy.get('div[label="Revenue"] div[data-test="totalAmount"] textarea[name="comment"]').clear().type('just a comment');
 
-    cy.get(
-      'div[label="Revenue"] div[data-test="eligibleShare"] div[data-test="relativeShareInPercent"] div[data-test="toggleDataPointWrapper"] div[data-test="dataPointToggleButton"]'
-    )
-      .should('exist')
-      .click();
+    toggleDataPointInSubSegmentOfRevenue('eligibleShare', 'relativeShareInPercent');
     cy.get('div[label="Revenue"] div[data-test="relativeShareInPercent"] input[name="value"]').eq(0).clear().type('a');
     cy.get('div[label="Revenue"] em[title="Eligible Revenue"]').click();
     cy.get(`div[label="Revenue"] [data-message-type="validation"]`)
@@ -163,137 +198,54 @@ describe('Component tests for the Eu Taxonomy for non financials that test depen
       .should('contain', 'must be between 0 and 100')
       .should('exist');
     cy.get('div[label="Revenue"] div[data-test="relativeShareInPercent"] input[name="value"]').eq(0).clear().type('25');
-    cy.get(
-      'div[label="Revenue"] div[data-test="eligibleShare"] div[data-test="absoluteShare"] div[data-test="toggleDataPointWrapper"] div[data-test="dataPointToggleButton"]'
-    )
-      .should('exist')
-      .click();
+    toggleDataPointInSubSegmentOfRevenue('eligibleShare', 'absoluteShare');
     cy.get('div[label="Revenue"] div[data-test="absoluteShare"] input[name="value"]').eq(0).clear().type('5000');
     selectItemFromDropdownByIndex(cy.get('div[label="Revenue"] div[name="currency"]').eq(0), 5);
-    cy.get(
-      'div[label="Revenue"] div[data-test="alignedShare"] div[data-test="relativeShareInPercent"] div[data-test="toggleDataPointWrapper"] div[data-test="dataPointToggleButton"]'
-    )
-      .should('exist')
-      .click();
+    toggleDataPointInSubSegmentOfRevenue('alignedShare', 'relativeShareInPercent');
     cy.get('div[label="Revenue"] div[data-test="relativeShareInPercent"] input[name="value"]').eq(1).clear().type('50');
-    cy.get(
-      'div[label="Revenue"] div[data-test="alignedShare"] div[data-test="absoluteShare"] div[data-test="toggleDataPointWrapper"] div[data-test="dataPointToggleButton"]'
-    )
-      .should('exist')
-      .click();
+    toggleDataPointInSubSegmentOfRevenue('alignedShare', 'absoluteShare');
     cy.get('div[label="Revenue"] div[data-test="absoluteShare"] input[name="value"]').eq(1).clear().type('4000');
     selectItemFromDropdownByIndex(cy.get('div[label="Revenue"] div[name="currency"]').eq(1), 51);
-    cy.get(
-      'div[label="Revenue"] div[data-test="substantialContributionToClimateChangeMitigationInPercent"] div[data-test="toggleDataPointWrapper"] div[data-test="dataPointToggleButton"]'
-    )
-      .should('exist')
-      .click();
-    cy.get(
-      'div[label="Revenue"] div[data-test="substantialContributionToClimateChangeMitigationInPercent"] input[name="value"]'
-    )
-      .clear()
-      .type('a');
+    toggleDataPoint('substantialContributionToClimateChangeMitigationInPercent');
+    insertValueIntoRevenueDataPoint('a', 'substantialContributionToClimateChangeMitigationInPercent');
     cy.get('div[label="Revenue"] em[title="Eligible Revenue"]').click();
     cy.get(`div[label="Revenue"] [data-message-type="validation"]`)
       .should('contain', 'must be a number')
       .should('exist');
-    cy.get(
-      'div[label="Revenue"] div[data-test="substantialContributionToClimateChangeMitigationInPercent"] input[name="value"]'
-    )
-      .clear()
-      .type('-12');
+    insertValueIntoRevenueDataPoint('-12', 'substantialContributionToClimateChangeMitigationInPercent');
     cy.get('div[label="Revenue"] em[title="Eligible Revenue"]').click();
     cy.get(`div[label="Revenue"] [data-message-type="validation"]`)
       .should('contain', 'must be between 0 and 100')
       .should('exist');
-    cy.get(
-      'div[label="Revenue"] div[data-test="substantialContributionToClimateChangeMitigationInPercent"] input[name="value"]'
-    )
-      .clear()
-      .type('15');
-    cy.get(
-      'div[label="Revenue"] div[data-test="substantialContributionToClimateChangeMitigationInPercent"] input[name="value"]'
-    )
-      .clear()
-      .type('15');
-    cy.get(
-      'div[label="Revenue"] div[data-test="substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent"] div[data-test="toggleDataPointWrapper"] div[data-test="dataPointToggleButton"]'
-    )
-      .should('exist')
-      .click();
-    cy.get(
-      'div[label="Revenue"] div[data-test="substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent"] input[name="value"]'
-    )
-      .clear()
-      .type('15');
-    cy.get(
-      'div[label="Revenue"] div[data-test="substantialContributionToTransitionToACircularEconomyInPercent"] div[data-test="toggleDataPointWrapper"] div[data-test="dataPointToggleButton"]'
-    )
-      .should('exist')
-      .click();
-    cy.get(
-      'div[label="Revenue"] div[data-test="substantialContributionToTransitionToACircularEconomyInPercent"] input[name="value"]'
-    )
-      .clear()
-      .type('15');
-    cy.get(
-      'div[label="Revenue"] div[data-test="substantialContributionToPollutionPreventionAndControlInPercent"] div[data-test="toggleDataPointWrapper"] div[data-test="dataPointToggleButton"]'
-    )
-      .should('exist')
-      .click();
-    cy.get(
-      'div[label="Revenue"] div[data-test="substantialContributionToPollutionPreventionAndControlInPercent"] input[name="value"]'
-    )
-      .clear()
-      .type('15');
-    cy.get(
-      'div[label="Revenue"] div[data-test="substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent"] div[data-test="toggleDataPointWrapper"] div[data-test="dataPointToggleButton"]'
-    )
-      .should('exist')
-      .click();
-    cy.get(
-      'div[label="Revenue"] div[data-test="substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent"] input[name="value"]'
-    )
-      .clear()
-      .type('15');
-    cy.get(
-      'div[label="Revenue"] div[data-test="nonAlignedShare"] div[data-test="relativeShareInPercent"] div[data-test="toggleDataPointWrapper"] div[data-test="dataPointToggleButton"]'
-    )
-      .should('exist')
-      .click();
+    insertValueIntoRevenueDataPoint('15', 'substantialContributionToClimateChangeMitigationInPercent');
+    toggleDataPoint('substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent');
+    insertValueIntoRevenueDataPoint(
+      '15',
+      'substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent'
+    );
+    toggleDataPoint('substantialContributionToTransitionToACircularEconomyInPercent');
+    insertValueIntoRevenueDataPoint('15', 'substantialContributionToTransitionToACircularEconomyInPercent');
+    toggleDataPoint('substantialContributionToPollutionPreventionAndControlInPercent');
+    insertValueIntoRevenueDataPoint('15', 'substantialContributionToPollutionPreventionAndControlInPercent');
+    toggleDataPoint('substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent');
+    insertValueIntoRevenueDataPoint(
+      '15',
+      'substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent'
+    );
+    toggleDataPointInSubSegmentOfRevenue('nonAlignedShare', 'relativeShareInPercent');
     cy.get('div[label="Revenue"] div[data-test="relativeShareInPercent"] input[name="value"]').eq(2).clear().type('11');
-    cy.get(
-      'div[label="Revenue"] div[data-test="nonAlignedShare"] div[data-test="absoluteShare"] div[data-test="toggleDataPointWrapper"] div[data-test="dataPointToggleButton"]'
-    )
-      .should('exist')
-      .click();
+    toggleDataPointInSubSegmentOfRevenue('nonAlignedShare', 'absoluteShare');
     cy.get('div[label="Revenue"] div[data-test="absoluteShare"] input[name="value"]').eq(2).clear().type('12000');
     selectItemFromDropdownByIndex(cy.get('div[label="Revenue"] div[name="currency"]').eq(2), 51);
-    cy.get(
-      'div[label="Revenue"] div[data-test="nonEligibleShare"] div[data-test="relativeShareInPercent"] div[data-test="toggleDataPointWrapper"] div[data-test="dataPointToggleButton"]'
-    )
-      .should('exist')
-      .click();
+    toggleDataPointInSubSegmentOfRevenue('nonEligibleShare', 'relativeShareInPercent');
     cy.get('div[label="Revenue"] div[data-test="relativeShareInPercent"] input[name="value"]').eq(3).clear().type('13');
-    cy.get(
-      'div[label="Revenue"] div[data-test="nonEligibleShare"] div[data-test="absoluteShare"] div[data-test="toggleDataPointWrapper"] div[data-test="dataPointToggleButton"]'
-    )
-      .should('exist')
-      .click();
+    toggleDataPointInSubSegmentOfRevenue('nonEligibleShare', 'absoluteShare');
     cy.get('div[label="Revenue"] div[data-test="absoluteShare"] input[name="value"]').eq(3).clear().type('13000');
     selectItemFromDropdownByIndex(cy.get('div[label="Revenue"] div[name="currency"]').eq(3), 53);
-    cy.get(
-      'div[label="Revenue"] div[data-test="enablingShareInPercent"] div[data-test="toggleDataPointWrapper"] div[data-test="dataPointToggleButton"]'
-    )
-      .should('exist')
-      .click();
-    cy.get('div[label="Revenue"] div[data-test="enablingShareInPercent"] input[name="value"]').clear().type('12');
-    cy.get(
-      'div[label="Revenue"] div[data-test="transitionalShareInPercent"] div[data-test="toggleDataPointWrapper"] div[data-test="dataPointToggleButton"]'
-    )
-      .should('exist')
-      .click();
-    cy.get('div[label="Revenue"] div[data-test="transitionalShareInPercent"] input[name="value"]').clear().type('12');
+    toggleDataPoint('enablingShareInPercent');
+    insertValueIntoRevenueDataPoint('12', 'enablingShareInPercent');
+    toggleDataPoint('transitionalShareInPercent');
+    insertValueIntoRevenueDataPoint('12', 'transitionalShareInPercent');
   }
 
   /**
