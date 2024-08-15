@@ -5,12 +5,24 @@ import com.squareup.moshi.Moshi
 import com.squareup.moshi.Types
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import java.io.File
+import org.dataland.datalandqaservice.openApiClient.model.EutaxonomyNonFinancialsData as EuTaxonomyNonFinancialsQaReport
 import org.dataland.datalandqaservice.openApiClient.model.SfdrData as SfdrQaReport
 
-class QaReportTestDataProvider<T> (private val clazz: Class<T>) {
+class QaReportTestDataProvider<T>(private val clazz: Class<T>, private val framework: String) {
 
-    private val jsonFilesForTesting = mapOf(
+    private val sfdrJsonFilesForTesting = mapOf(
         SfdrQaReport::class.java to File("./build/resources/test/SfdrQaReportPreparedFixtures.json"),
+        /*
+The following line of code is a dummy entry to avoid a compilation error.
+The compilation error occurs if this map has only one entry.
+Feel free to remove the dummy entry as soon as you have added an actual "real" second entry to this map.
+ */
+        String::class.java to File("./"),
+    )
+
+    private val euTaxonomyNonFinancialsJsonFilesForTesting = mapOf(
+        EuTaxonomyNonFinancialsQaReport::class.java to
+            File("./build/resources/test/EuTaxonomyNonFinancialsQaReportPreparedFixtures.json"),
         /*
         The following line of code is a dummy entry to avoid a compilation error.
         The compilation error occurs if this map has only one entry.
@@ -23,8 +35,21 @@ class QaReportTestDataProvider<T> (private val clazz: Class<T>) {
         .add(BigDecimalAdapter).add(LocalDateAdapter).build()
 
     private fun getJsonFileForTesting(): File {
-        return jsonFilesForTesting[clazz]
-            ?: throw IllegalArgumentException("No JSON file for testing found for class $clazz")
+        val file: File? = when (framework) {
+            "sfdr" -> sfdrJsonFilesForTesting[clazz]
+            "eutaxonomy-non-financials" -> euTaxonomyNonFinancialsJsonFilesForTesting[clazz]
+            else -> null
+        }
+
+        if (file == null) {
+            throw if (framework == "sfdr" || framework == "eutaxonomy-non-financials") {
+                IllegalArgumentException("No JSON file for testing found for class $clazz")
+            } else {
+                NotImplementedError("QaReportTestDataProvider is not implemented for framework $framework")
+            }
+        }
+
+        return file
     }
 
     private fun convertJsonToList(jsonFile: File): List<CompanyInformationWithT<T>> {

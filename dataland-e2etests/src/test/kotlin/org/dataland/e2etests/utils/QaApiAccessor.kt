@@ -1,16 +1,17 @@
 package org.dataland.e2etests.utils
 
 import org.awaitility.Awaitility.await
+import org.dataland.datalandbackend.openApiClient.api.EutaxonomyNonFinancialsDataControllerApi
 import org.dataland.datalandbackend.openApiClient.api.MetaDataControllerApi
 import org.dataland.datalandbackend.openApiClient.model.DataMetaInformation
 import org.dataland.datalandbackend.openApiClient.model.QaStatus
 import org.dataland.datalandqaservice.openApiClient.api.SfdrDataQaReportControllerApi
 import org.dataland.e2etests.BASE_PATH_TO_QA_SERVICE
-import java.lang.NullPointerException
 import java.util.concurrent.TimeUnit
 
 class QaApiAccessor {
     val sfdrQaReportControllerApi = SfdrDataQaReportControllerApi(BASE_PATH_TO_QA_SERVICE)
+    val euTaxonomyNonFinancialsQaReportControllerApi = EutaxonomyNonFinancialsDataControllerApi(BASE_PATH_TO_QA_SERVICE)
 
     /**
      * Wait until QaStatus is accepted for all Upload Infos or throw error. The metadata of the provided uploadInfos
