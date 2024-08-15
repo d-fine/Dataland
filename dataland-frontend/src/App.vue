@@ -17,13 +17,15 @@ import SessionDialog from '@/components/general/SessionDialog.vue';
 import { KEYCLOAK_INIT_OPTIONS } from '@/utils/Constants';
 import { useSharedSessionStateStore } from '@/stores/Stores';
 import { ApiClientProvider } from '@/services/ApiClients';
+import { type CompanyRoleAssignment } from '@clients/communitymanager';
+import { getCompanyRoleAssignmentsForCurrentUser } from '@/utils/CompanyRolesUtils';
 
 const smallScreenBreakpoint = 768;
 const windowWidth = ref<number>();
 const storeWindowWidth = (): void => {
   windowWidth.value = window.innerWidth;
 };
-
+// TODO detekt faiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiil
 export default defineComponent({
   name: 'app',
   components: { DynamicDialog },
@@ -31,18 +33,29 @@ export default defineComponent({
   data() {
     return {
       keycloakPromise: undefined as undefined | Promise<Keycloak>,
-      apiClientProvider: undefined as ApiClientProvider | undefined,
       resolvedKeycloakPromise: undefined as undefined | Keycloak,
       keycloakAuthenticated: false,
       functionIdOfSessionSetInterval: undefined as number | undefined,
+
+      apiClientProvider: undefined as ApiClientProvider | undefined,
+
+      companyRoleAssignments: undefined as Array<CompanyRoleAssignment> | undefined,
     };
+  },
+
+  computed: {
+    currentRefreshTokenInSharedStore() {
+      return useSharedSessionStateStore().refreshToken;
+    },
   },
 
   watch: {
     currentRefreshTokenInSharedStore(newRefreshToken: string) {
       if (this.resolvedKeycloakPromise && newRefreshToken) {
         this.resolvedKeycloakPromise.refreshToken = newRefreshToken;
-        clearInterval(this.functionIdOfSessionSetInterval);
+        if (this.functionIdOfSessionSetInterval) {
+          clearInterval(this.functionIdOfSessionSetInterval);
+        }
         const openSessionWarningModalBound = this.openSessionWarningModal.bind(this);
         this.functionIdOfSessionSetInterval = startSessionSetIntervalFunctionAndReturnItsId(
           this.resolvedKeycloakPromise,
@@ -52,32 +65,16 @@ export default defineComponent({
     },
   },
 
-  computed: {
-    currentRefreshTokenInSharedStore() {
-      return useSharedSessionStateStore().refreshToken;
-    },
-  },
-
-  created() {
-    this.keycloakPromise = this.initKeycloak();
-    this.keycloakPromise
-      .then((keycloak) => {
-        this.resolvedKeycloakPromise = keycloak;
-        if (this.resolvedKeycloakPromise?.authenticated) {
-          void updateTokenAndItsExpiryTimestampAndStoreBoth(this.resolvedKeycloakPromise, true);
-        }
-      })
-      .catch((e) => console.log(e));
-
-    this.apiClientProvider = new ApiClientProvider(this.keycloakPromise);
-  },
-
   provide() {
     return {
       getKeycloakPromise: (): Promise<Keycloak> => {
         if (this.keycloakPromise) return this.keycloakPromise;
         throw new Error('The Keycloak promise has not yet been initialised. This should not be possible...');
       },
+      companyRoleAssignments: computed(() => {
+        console.log('Currently the company role assignments are: ' + this.companyRoleAssignments);
+        return this.companyRoleAssignments;
+      }),
       authenticated: computed(() => {
         return this.keycloakAuthenticated;
       }),
@@ -88,6 +85,10 @@ export default defineComponent({
     };
   },
 
+  created() {
+    this.processUserAuthentication();
+  },
+
   mounted() {
     window.addEventListener('resize', storeWindowWidth);
   },
@@ -96,6 +97,18 @@ export default defineComponent({
   },
 
   methods: {
+    /**
+     * Sets up the whole authentication status of the user when starting the Dataland Frontend App.
+     */
+    processUserAuthentication() {
+      this.keycloakPromise = this.initKeycloak();
+      if (this.keycloakPromise) {
+        this.apiClientProvider = new ApiClientProvider(this.keycloakPromise);
+        this.keycloakPromise
+          .then((keycloak) => this.handleResolvedKeycloakPromise(keycloak))
+          .catch((e) => console.log(e));
+      }
+    },
     /**
      * Initializes the Keycloak adaptor and configures it according to the requirements of the Dataland application.
      * @returns a promise which resolves to the Keycloak adaptor object
@@ -119,6 +132,31 @@ export default defineComponent({
         .then((): Keycloak => {
           return keycloak;
         });
+    },
+
+    /**
+     * Executes actions based on the resolved Keycloak-login-status of the current user
+     * @param resolvedKeycloakPromise contains the login-status of the current user
+     */
+    handleResolvedKeycloakPromise(resolvedKeycloakPromise: Keycloak) {
+      this.resolvedKeycloakPromise = resolvedKeycloakPromise;
+      if (this.resolvedKeycloakPromise.authenticated) {
+        void updateTokenAndItsExpiryTimestampAndStoreBoth(this.resolvedKeycloakPromise, true);
+        if (this.apiClientProvider) {
+          this.setCompanyRolesForUser(resolvedKeycloakPromise, this.apiClientProvider);
+        }
+      }
+    },
+
+    /**
+     * Fetches the company roles of the current user and stores it in a variable.
+     * @param resolvedKeycloakPromise contains the login-status of the current user
+     * @param apiClientProvider is used to trigger a request to the backend of Dataland
+     */
+    setCompanyRolesForUser(resolvedKeycloakPromise: Keycloak, apiClientProvider: ApiClientProvider) {
+      getCompanyRoleAssignmentsForCurrentUser(resolvedKeycloakPromise, apiClientProvider).then(
+        (retrievedCompanyRoleAssignments) => (this.companyRoleAssignments = retrievedCompanyRoleAssignments)
+      );
     },
 
     /**

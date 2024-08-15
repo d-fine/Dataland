@@ -12,6 +12,9 @@ import { CompanyRole, type CompanyRoleAssignment } from '@clients/communitymanag
  * @param keycloakPromiseGetter the getter-function which returns a Keycloak-Promise
  * @returns a promise, which resolves to a boolean
  */
+// TODO Emanuel: Disktuier mit anderen Entwicklern, ob wir die Rollen-Checks nicht alle mit den von App.vue provideten
+// TODO Rollen machen wollen.  Dann gibt es einfach einen Api-Call bei Aufrufen von Dataland, der alle Rollen fetcht,
+// TODO und alles weitere passiert dann mit diesen gefetchten Rollen => wir sparen einen Haufen COde und api calls
 export async function hasUserCompanyRoleForCompany(
   companyRole: CompanyRole,
   companyId: string,
@@ -89,32 +92,28 @@ export async function hasCompanyAtLeastOneCompanyOwner(
 }
 
 /**
- * Get company role assignments for the currently logged in user
- * @param companyId defines the company for which to check
- * @param keycloakPromiseGetter getter for a keycloak promise
- * @returns a promise which resolves to an array of company role assignments for this user and company
+ * Get company role assignments for the current user.
+ * If the user is not logged in, an empty array is returned.
+ * @param resolvedKeycloakPromise used to retrieve the user Id to get the role assignments for
+ * @param apiClientProvider used to execute an authenticated api call to get the role assignments
+ * @returns a promise which resolves to an array of company role assignments for this user
  */
-export async function getCompanyRoleAssignmentsForCurrentUserAndCompany(
-  companyId: string,
-  keycloakPromiseGetter?: () => Promise<Keycloak>
-): Promise<Array<CompanyRoleAssignment>> {
-  if (keycloakPromiseGetter) {
-    const resolvedKeycloakPromise = await waitForAndReturnResolvedKeycloakPromise(keycloakPromiseGetter);
+export async function getCompanyRoleAssignmentsForCurrentUser(
+  resolvedKeycloakPromise: Keycloak,
+  apiClientProvider: ApiClientProvider
+): Promise<CompanyRoleAssignment[]> {
+  let companyRoleAssignments: CompanyRoleAssignment[] = [];
+  if (resolvedKeycloakPromise) {
     const userId = resolvedKeycloakPromise?.idTokenParsed?.sub;
     if (userId) {
-      try {
-        const response = await new ApiClientProvider(
-          keycloakPromiseGetter()
-        ).apiClients.companyRolesController.getCompanyRoleAssignments(undefined, companyId, userId);
-        return response.data;
-      } catch (error) {
-        if ((error as AxiosError)?.response?.status == 403) {
-          return [];
-        }
-        throw error;
-      }
-    } else {
-      return [];
+      companyRoleAssignments = (
+        await apiClientProvider.apiClients.companyRolesController.getCompanyRoleAssignments(
+          undefined,
+          undefined,
+          userId
+        )
+      ).data;
     }
-  } else return [];
+  }
+  return companyRoleAssignments;
 }

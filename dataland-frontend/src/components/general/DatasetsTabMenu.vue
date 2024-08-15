@@ -23,6 +23,7 @@ import TabView from 'primevue/tabview';
 import TabPanel from 'primevue/tabpanel';
 import { checkIfUserHasRole, KEYCLOAK_ROLE_REVIEWER } from '@/utils/KeycloakUtils';
 import type Keycloak from 'keycloak-js';
+import { CompanyRole, type CompanyRoleAssignment } from '@clients/communitymanager';
 
 export default defineComponent({
   name: 'DatasetsTabMenu',
@@ -51,28 +52,53 @@ export default defineComponent({
       {
         label: 'QA',
         route: '/qualityassurance',
-        isVisible: true,
+        isVisible: false,
       },
       {
         label: 'MY DATA REQUESTS',
         route: '/requests',
         isVisible: true,
       },
+      {
+        label: 'DATA ACCESS REQUESTS FOR MY COMPANIES', // TODO at the very end: rethink about naming
+        route: '/requests', //TODO dummy for now
+        isVisible: false,
+      },
     ] as Tab[],
   }),
   setup() {
     return {
       getKeycloakPromise: inject<() => Promise<Keycloak>>('getKeycloakPromise'),
+      companyRoleAssignments: inject<Array<CompanyRoleAssignment>>('companyRoleAssignments'),
     };
   },
   created() {
-    checkIfUserHasRole(KEYCLOAK_ROLE_REVIEWER, this.getKeycloakPromise)
-      .then((hasUserReviewerRights) => {
-        this.tabs[2].isVisible = hasUserReviewerRights;
-      })
-      .catch((error) => console.log(error));
+    this.setVisibilityForTabWithQualityAssurance();
+    this.setVisibilityForTabWithAccessRequestsForMyCompanies();
   },
   methods: {
+    /**
+     * Sets the visibility of the tab for Quality Assurance.
+     * If the user does have the Keycloak-role "Reviewer", it is shown. Else it stays invisible.
+     */
+    setVisibilityForTabWithQualityAssurance() {
+      checkIfUserHasRole(KEYCLOAK_ROLE_REVIEWER, this.getKeycloakPromise).then((hasUserReviewerRights) => {
+        this.tabs[2].isVisible = hasUserReviewerRights;
+      });
+    },
+
+    /**
+     * Sets the visibility of the tab for data access requests to companies of the current user.
+     * If the user does have any company ownership, the tab is shown. Else it stays invisible.
+     */
+    setVisibilityForTabWithAccessRequestsForMyCompanies() {
+      const companyOwnershipAssignments = this.companyRoleAssignments?.filter(
+        (roleAssignment) => roleAssignment.companyRole == CompanyRole.CompanyOwner
+      );
+      if (companyOwnershipAssignments) {
+        this.tabs[4].isVisible = companyOwnershipAssignments.length > 0;
+      }
+    },
     /**
      * Routes to companies page when AVAILABLE DATASET tab is clicked
      * @param event the event containing the index of the newly selected tab
