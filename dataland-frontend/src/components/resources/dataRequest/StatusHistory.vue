@@ -17,15 +17,21 @@
 
   <div v-show="isStatusHistoryVisible">
     <div>
-      <DataTable :value="statusHistory">
+      <DataTable :value="statusHistory" data-test="statusHistoryTable">
         <Column field="creationTimeStamp" header="Creation Timestamp"
-          ><template #body="slotProps">{{
-            convertUnixTimeInMsToDateString(slotProps.data.creationTimestamp)
-          }}</template>
+          ><template #body="slotProps">
+            <span data-test="creationTimestampEntry">
+              {{ convertUnixTimeInMsToDateString(slotProps.data.creationTimestamp) }}
+            </span>
+          </template>
         </Column>
         <Column field="requestStatus" header="Request Status"
           ><template #body="slotProps"
-            ><div style="display: inline-flex" :class="badgeClass(slotProps.data.status)">
+            ><div
+              style="display: inline-flex"
+              :class="badgeClass(slotProps.data.status)"
+              data-test="requestStatusEntry"
+            >
               {{ slotProps.data.status }}
             </div></template
           >
