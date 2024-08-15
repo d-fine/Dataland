@@ -163,11 +163,9 @@
             "M71.20"
           ],
           "share": {
-            "relativeShareInPercent": {
-              "value": 51.76
-            },
+            "relativeShareInPercent": 51.76,
             "absoluteShare": {
-              "value": 5775148600.81,
+              "amount": 5775148600.81,
               "currency": "THB"
             }
           }
@@ -179,11 +177,9 @@
             "E38.32"
           ],
           "share": {
-            "relativeShareInPercent": {
-              "value": 10.48
-            },
+            "relativeShareInPercent": 10.48,
             "absoluteShare": {
-              "value": 3651916955.13,
+              "amount": 3651916955.13,
               "currency": "BAM"
             }
           }
@@ -226,32 +222,18 @@
             "C33.17"
           ],
           "share": {
-            "relativeShareInPercent": {
-              "value": 2.8
-            },
+            "relativeShareInPercent": 2.8,
             "absoluteShare": {
-              "value": 1481051335.57,
+              "amount": 1481051335.57,
               "currency": "CHF"
             }
           },
-          "substantialContributionToClimateChangeMitigationInPercent": {
-            "value": 24.1
-          },
-          "substantialContributionToClimateChangeAdaptationInPercent": {
-            "value": 19.75
-          },
-          "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent": {
-            "value": 96.91
-          },
-          "substantialContributionToTransitionToACircularEconomyInPercent": {
-            "value": 55.64
-          },
-          "substantialContributionToPollutionPreventionAndControlInPercent": {
-            "value": 97.36
-          },
-          "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent": {
-            "value": 20.68
-          },
+          "substantialContributionToClimateChangeMitigationInPercent": 24.1,
+          "substantialContributionToClimateChangeAdaptationInPercent": 19.75,
+          "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent": 96.91,
+          "substantialContributionToTransitionToACircularEconomyInPercent": 55.64,
+          "substantialContributionToPollutionPreventionAndControlInPercent": 97.36,
+          "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent": 20.68,
           "dnshToClimateChangeMitigation": "No",
           "dnshToClimateChangeAdaptation": "Yes",
           "dnshToSustainableUseAndProtectionOfWaterAndMarineResources": "Yes",
@@ -266,32 +248,18 @@
             "A2"
           ],
           "share": {
-            "relativeShareInPercent": {
-              "value": 41.09
-            },
+            "relativeShareInPercent": 41.09,
             "absoluteShare": {
-              "value": 199003929.73,
+              "amount": 199003929.73,
               "currency": "BIF"
             }
           },
-          "substantialContributionToClimateChangeMitigationInPercent": {
-            "value": 62.45
-          },
-          "substantialContributionToClimateChangeAdaptationInPercent": {
-            "value": 63.77
-          },
-          "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent": {
-            "value": 58.55
-          },
-          "substantialContributionToTransitionToACircularEconomyInPercent": {
-            "value": 37.45
-          },
-          "substantialContributionToPollutionPreventionAndControlInPercent": {
-            "value": 28.52
-          },
-          "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent": {
-            "value": 64.94
-          },
+          "substantialContributionToClimateChangeMitigationInPercent": 62.45,
+          "substantialContributionToClimateChangeAdaptationInPercent": 63.77,
+          "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent": 58.55,
+          "substantialContributionToTransitionToACircularEconomyInPercent": 37.45,
+          "substantialContributionToPollutionPreventionAndControlInPercent": 28.52,
+          "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent": 64.94,
           "dnshToClimateChangeMitigation": "No",
           "dnshToClimateChangeAdaptation": "No",
           "dnshToSustainableUseAndProtectionOfWaterAndMarineResources": "No",
@@ -306,32 +274,18 @@
             "F42.99"
           ],
           "share": {
-            "relativeShareInPercent": {
-              "value": 80.81
-            },
+            "relativeShareInPercent": 80.81,
             "absoluteShare": {
-              "value": 5586450139.53,
+              "amount": 5586450139.53,
               "currency": "XCD"
             }
           },
-          "substantialContributionToClimateChangeMitigationInPercent": {
-            "value": 57.8
-          },
-          "substantialContributionToClimateChangeAdaptationInPercent": {
-            "value": 68.37
-          },
-          "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent": {
-            "value": 94.62
-          },
-          "substantialContributionToTransitionToACircularEconomyInPercent": {
-            "value": 39.58
-          },
-          "substantialContributionToPollutionPreventionAndControlInPercent": {
-            "value": 59.01
-          },
-          "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent": {
-            "value": 62.8
-          },
+          "substantialContributionToClimateChangeMitigationInPercent": 57.8,
+          "substantialContributionToClimateChangeAdaptationInPercent": 68.37,
+          "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent": 94.62,
+          "substantialContributionToTransitionToACircularEconomyInPercent": 39.58,
+          "substantialContributionToPollutionPreventionAndControlInPercent": 59.01,
+          "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent": 62.8,
           "dnshToClimateChangeMitigation": "Yes",
           "dnshToClimateChangeAdaptation": "No",
           "dnshToSustainableUseAndProtectionOfWaterAndMarineResources": "Yes",
@@ -347,32 +301,18 @@
             "N77.39"
           ],
           "share": {
-            "relativeShareInPercent": {
-              "value": 85.71
-            },
+            "relativeShareInPercent": 85.71,
             "absoluteShare": {
-              "value": 2029363890.18,
+              "amount": 2029363890.18,
               "currency": "YER"
             }
           },
-          "substantialContributionToClimateChangeMitigationInPercent": {
-            "value": 93.77
-          },
-          "substantialContributionToClimateChangeAdaptationInPercent": {
-            "value": 13.29
-          },
-          "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent": {
-            "value": 96.08
-          },
-          "substantialContributionToTransitionToACircularEconomyInPercent": {
-            "value": 10.01
-          },
-          "substantialContributionToPollutionPreventionAndControlInPercent": {
-            "value": 52.9
-          },
-          "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent": {
-            "value": 59.33
-          },
+          "substantialContributionToClimateChangeMitigationInPercent": 93.77,
+          "substantialContributionToClimateChangeAdaptationInPercent": 13.29,
+          "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent": 96.08,
+          "substantialContributionToTransitionToACircularEconomyInPercent": 10.01,
+          "substantialContributionToPollutionPreventionAndControlInPercent": 52.9,
+          "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent": 59.33,
           "dnshToClimateChangeMitigation": "Yes",
           "dnshToClimateChangeAdaptation": "Yes",
           "dnshToSustainableUseAndProtectionOfWaterAndMarineResources": "Yes",
@@ -438,11 +378,9 @@
             "C24.53"
           ],
           "share": {
-            "relativeShareInPercent": {
-              "value": 46.85
-            },
+            "relativeShareInPercent": 46.85,
             "absoluteShare": {
-              "value": 9344113084.96,
+              "amount": 9344113084.96,
               "currency": "NOK"
             }
           }
@@ -453,11 +391,9 @@
             "N77.39"
           ],
           "share": {
-            "relativeShareInPercent": {
-              "value": 85.94
-            },
+            "relativeShareInPercent": 85.94,
             "absoluteShare": {
-              "value": 7821699846.54,
+              "amount": 7821699846.54,
               "currency": "IRR"
             }
           }
@@ -497,32 +433,18 @@
           "activityName": "ConservationIncludingRestorationOfHabitatsEcosystemsAndSpecies",
           "naceCodes": [],
           "share": {
-            "relativeShareInPercent": {
-              "value": 92.86
-            },
+            "relativeShareInPercent": 92.86,
             "absoluteShare": {
-              "value": 1153179106.76,
+              "amount": 1153179106.76,
               "currency": "NIO"
             }
           },
-          "substantialContributionToClimateChangeMitigationInPercent": {
-            "value": 28.1
-          },
-          "substantialContributionToClimateChangeAdaptationInPercent": {
-            "value": 32.57
-          },
-          "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent": {
-            "value": 11.16
-          },
-          "substantialContributionToTransitionToACircularEconomyInPercent": {
-            "value": 56.26
-          },
-          "substantialContributionToPollutionPreventionAndControlInPercent": {
-            "value": 1.83
-          },
-          "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent": {
-            "value": 70.72
-          },
+          "substantialContributionToClimateChangeMitigationInPercent": 28.1,
+          "substantialContributionToClimateChangeAdaptationInPercent": 32.57,
+          "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent": 11.16,
+          "substantialContributionToTransitionToACircularEconomyInPercent": 56.26,
+          "substantialContributionToPollutionPreventionAndControlInPercent": 1.83,
+          "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent": 70.72,
           "dnshToClimateChangeMitigation": "Yes",
           "dnshToClimateChangeAdaptation": "No",
           "dnshToSustainableUseAndProtectionOfWaterAndMarineResources": "Yes",
@@ -537,32 +459,18 @@
             "R91"
           ],
           "share": {
-            "relativeShareInPercent": {
-              "value": 97.05
-            },
+            "relativeShareInPercent": 97.05,
             "absoluteShare": {
-              "value": 668982409.4,
+              "amount": 668982409.4,
               "currency": "BWP"
             }
           },
-          "substantialContributionToClimateChangeMitigationInPercent": {
-            "value": 7.53
-          },
-          "substantialContributionToClimateChangeAdaptationInPercent": {
-            "value": 38.73
-          },
-          "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent": {
-            "value": 21.91
-          },
-          "substantialContributionToTransitionToACircularEconomyInPercent": {
-            "value": 98.4
-          },
-          "substantialContributionToPollutionPreventionAndControlInPercent": {
-            "value": 91.83
-          },
-          "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent": {
-            "value": 36.75
-          },
+          "substantialContributionToClimateChangeMitigationInPercent": 7.53,
+          "substantialContributionToClimateChangeAdaptationInPercent": 38.73,
+          "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent": 21.91,
+          "substantialContributionToTransitionToACircularEconomyInPercent": 98.4,
+          "substantialContributionToPollutionPreventionAndControlInPercent": 91.83,
+          "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent": 36.75,
           "dnshToClimateChangeMitigation": "Yes",
           "dnshToClimateChangeAdaptation": "Yes",
           "dnshToSustainableUseAndProtectionOfWaterAndMarineResources": "No",
@@ -577,32 +485,18 @@
             "F42.9"
           ],
           "share": {
-            "relativeShareInPercent": {
-              "value": 78.45
-            },
+            "relativeShareInPercent": 78.45,
             "absoluteShare": {
-              "value": 7573001733.98,
+              "amount": 7573001733.98,
               "currency": "TWD"
             }
           },
-          "substantialContributionToClimateChangeMitigationInPercent": {
-            "value": 17.77
-          },
-          "substantialContributionToClimateChangeAdaptationInPercent": {
-            "value": 78.83
-          },
-          "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent": {
-            "value": 67.27
-          },
-          "substantialContributionToTransitionToACircularEconomyInPercent": {
-            "value": 88.32
-          },
-          "substantialContributionToPollutionPreventionAndControlInPercent": {
-            "value": 57.35
-          },
-          "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent": {
-            "value": 40.1
-          },
+          "substantialContributionToClimateChangeMitigationInPercent": 17.77,
+          "substantialContributionToClimateChangeAdaptationInPercent": 78.83,
+          "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent": 67.27,
+          "substantialContributionToTransitionToACircularEconomyInPercent": 88.32,
+          "substantialContributionToPollutionPreventionAndControlInPercent": 57.35,
+          "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent": 40.1,
           "dnshToClimateChangeMitigation": "No",
           "dnshToClimateChangeAdaptation": "No",
           "dnshToSustainableUseAndProtectionOfWaterAndMarineResources": "Yes",

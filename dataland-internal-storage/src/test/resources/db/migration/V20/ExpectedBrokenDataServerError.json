@@ -52,12 +52,10 @@
           "naceCodes": [],
           "activityName": "TransmissionAndDistributionOfElectricity",
           "share": {
-            "relativeShareInPercent": {
-              "value": 0
-            },
+            "relativeShareInPercent": 0,
             "absoluteShare": {
               "currency": "EUR",
-              "value": 0
+              "amount": 0
             }
           }
         },
@@ -65,12 +63,10 @@
           "naceCodes": [],
           "activityName": "DistrictHeatingCoolingDistribution",
           "share": {
-            "relativeShareInPercent": {
-              "value": 0.4
-            },
+            "relativeShareInPercent": 0.4,
             "absoluteShare": {
               "currency": "EUR",
-              "value": 20600000
+              "amount": 20600000
             }
           }
         },
@@ -78,12 +74,10 @@
           "naceCodes": [],
           "activityName": "CollectionAndTransportOfNonHazardousWasteInSourceSegregatedFractions",
           "share": {
-            "relativeShareInPercent": {
-              "value": 0
-            },
+            "relativeShareInPercent": 0,
             "absoluteShare": {
               "currency": "EUR",
-              "value": 0
+              "amount": 0
             }
           }
         },
@@ -91,12 +85,10 @@
           "naceCodes": [],
           "activityName": "InfrastructureForRailTransport",
           "share": {
-            "relativeShareInPercent": {
-              "value": 0
-            },
+            "relativeShareInPercent": 0,
             "absoluteShare": {
               "currency": "EUR",
-              "value": 0
+              "amount": 0
             }
           }
         },
@@ -104,12 +96,10 @@
           "naceCodes": [],
           "activityName": "LowCarbonAirportInfrastructure",
           "share": {
-            "relativeShareInPercent": {
-              "value": 0
-            },
+            "relativeShareInPercent": 0,
             "absoluteShare": {
               "currency": "EUR",
-              "value": 0
+              "amount": 0
             }
           }
         },
@@ -117,12 +107,10 @@
           "naceCodes": [],
           "activityName": "AcquisitionAndOwnershipOfBuildings",
           "share": {
-            "relativeShareInPercent": {
-              "value": 2
-            },
+            "relativeShareInPercent": 2,
             "absoluteShare": {
               "currency": "EUR",
-              "value": 108200000
+              "amount": 108200000
             }
           }
         }
@@ -191,7 +179,7 @@
           "naceCodes": [],
           "dnshToClimateChangeMitigation": null,
           "share": {
-            "relativeShareInPercent": 0.4
+            "relativeShareInPercent": 0.4,
             "absoluteShare": {
               "currency": "EUR",
               "amount": 22000000
@@ -203,9 +191,7 @@
           "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent": null
         },
         {
-          "substantialContributionToClimateChangeMitigationInPercent": {
-            "value": 100
-          },
+          "substantialContributionToClimateChangeMitigationInPercent": 100,
           "substantialContributionToTransitionToACircularEconomyInPercent": null,
           "dnshToPollutionPreventionAndControl": "Yes",
           "substantialContributionToClimateChangeAdaptationInPercent": null,
@@ -217,12 +203,10 @@
           "naceCodes": [],
           "dnshToClimateChangeMitigation": null,
           "share": {
-            "relativeShareInPercent": {
-              "value": 0
-            },
+            "relativeShareInPercent": 0,
             "absoluteShare": {
               "currency": "EUR",
-              "value": 0
+              "amount": 0
             }
           },
           "dnshToProtectionAndRestorationOfBiodiversityAndEcosystems": "Yes",
@@ -231,9 +215,7 @@
           "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent": null
         },
         {
-          "substantialContributionToClimateChangeMitigationInPercent": {
-            "value": 100
-          },
+          "substantialContributionToClimateChangeMitigationInPercent": 100,
           "substantialContributionToTransitionToACircularEconomyInPercent": null,
           "dnshToPollutionPreventionAndControl": null,
           "substantialContributionToClimateChangeAdaptationInPercent": null,
@@ -245,12 +227,10 @@
           "naceCodes": [],
           "dnshToClimateChangeMitigation": null,
           "share": {
-            "relativeShareInPercent": {
-              "value": 0.1
-            },
+            "relativeShareInPercent": 0.1,
             "absoluteShare": {
               "currency": "EUR",
-              "value": 3300000
+              "amount": 3300000
             }
           },
           "dnshToProtectionAndRestorationOfBiodiversityAndEcosystems": null,
@@ -259,9 +239,7 @@
           "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent": null
         },
         {
-          "substantialContributionToClimateChangeMitigationInPercent": {
-            "value": 100
-          },
+          "substantialContributionToClimateChangeMitigationInPercent": 100,
           "substantialContributionToTransitionToACircularEconomyInPercent": null,
           "dnshToPollutionPreventionAndControl": "Yes",
           "substantialContributionToClimateChangeAdaptationInPercent": null,
@@ -273,12 +251,10 @@
           "naceCodes": [],
           "dnshToClimateChangeMitigation": null,
           "share": {
-            "relativeShareInPercent": {
-              "value": 1.1
-            },
+            "relativeShareInPercent": 1.1,
             "absoluteShare": {
               "currency": "EUR",
-              "value": 60700000
+              "amount": 60700000
             }
           },
           "dnshToProtectionAndRestorationOfBiodiversityAndEcosystems": "Yes",
@@ -287,9 +263,7 @@
           "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent": null
         },
         {
-          "substantialContributionToClimateChangeMitigationInPercent": {
-            "value": 100
-          },
+          "substantialContributionToClimateChangeMitigationInPercent": 100,
           "substantialContributionToTransitionToACircularEconomyInPercent": null,
           "dnshToPollutionPreventionAndControl": "Yes",
           "substantialContributionToClimateChangeAdaptationInPercent": null,
@@ -301,12 +275,10 @@
           "naceCodes": [],
           "dnshToClimateChangeMitigation": null,
           "share": {
-            "relativeShareInPercent": {
-              "value": 0.2
-            },
+            "relativeShareInPercent": 0.2,
             "absoluteShare": {
               "currency": "EUR",
-              "value": 13500000
+              "amount": 13500000
             }
           },
           "dnshToProtectionAndRestorationOfBiodiversityAndEcosystems": "Yes",
@@ -315,9 +287,7 @@
           "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent": null
         },
         {
-          "substantialContributionToClimateChangeMitigationInPercent": {
-            "value": 100
-          },
+          "substantialContributionToClimateChangeMitigationInPercent": 100,
           "substantialContributionToTransitionToACircularEconomyInPercent": null,
           "dnshToPollutionPreventionAndControl": null,
           "substantialContributionToClimateChangeAdaptationInPercent": null,
@@ -329,12 +299,10 @@
           "naceCodes": [],
           "dnshToClimateChangeMitigation": null,
           "share": {
-            "relativeShareInPercent": {
-              "value": 0
-            },
+            "relativeShareInPercent": 0,
             "absoluteShare": {
               "currency": "EUR",
-              "value": 1500000
+              "amount": 1500000
             }
           },
           "dnshToProtectionAndRestorationOfBiodiversityAndEcosystems": null,
@@ -366,12 +334,10 @@
           "naceCodes": [],
           "activityName": "TransmissionAndDistributionOfElectricity",
           "share": {
-            "relativeShareInPercent": {
-              "value": 0.2
-            },
+            "relativeShareInPercent": 0.2,
             "absoluteShare": {
               "currency": "EUR",
-              "value": 1800000
+              "amount": 1800000
             }
           }
         },
@@ -379,12 +345,10 @@
           "naceCodes": [],
           "activityName": "DistrictHeatingCoolingDistribution",
           "share": {
-            "relativeShareInPercent": {
-              "value": 0
-            },
+            "relativeShareInPercent": 0,
             "absoluteShare": {
               "currency": "EUR",
-              "value": 0
+              "amount": 0
             }
           }
         },
@@ -392,12 +356,10 @@
           "naceCodes": [],
           "activityName": "ProductionOfHeatCoolFromGeothermalEnergy",
           "share": {
-            "relativeShareInPercent": {
-              "value": 0
-            },
+            "relativeShareInPercent": 0,
             "absoluteShare": {
               "currency": "EUR",
-              "value": 0
+              "amount": 0
             }
           }
         },
@@ -405,12 +367,10 @@
           "naceCodes": [],
           "activityName": "RenewalOfWasteWaterCollectionAndTreatment",
           "share": {
-            "relativeShareInPercent": {
-              "value": 0
-            },
+            "relativeShareInPercent": 0,
             "absoluteShare": {
               "currency": "EUR",
-              "value": 0
+              "amount": 0
             }
           }
         },
@@ -418,12 +378,10 @@
           "naceCodes": [],
           "activityName": "CollectionAndTransportOfNonHazardousWasteInSourceSegregatedFractions",
           "share": {
-            "relativeShareInPercent": {
-              "value": 0
-            },
+            "relativeShareInPercent": 0,
             "absoluteShare": {
               "currency": "EUR",
-              "value": 0
+              "amount": 0
             }
           }
         },
@@ -431,12 +389,10 @@
           "naceCodes": [],
           "activityName": "TransportByMotorbikesPassengerCarsAndLightCommercialVehicles",
           "share": {
-            "relativeShareInPercent": {
-              "value": 0.2
-            },
+            "relativeShareInPercent": 0.2,
             "absoluteShare": {
               "currency": "EUR",
-              "value": 1700000
+              "amount": 1700000
             }
           }
         },
@@ -444,12 +400,10 @@
           "naceCodes": [],
           "activityName": "InfrastructureForPersonalMobilityCycleLogistics",
           "share": {
-            "relativeShareInPercent": {
-              "value": 0
-            },
+            "relativeShareInPercent": 0,
             "absoluteShare": {
               "currency": "EUR",
-              "value": 0
+              "amount": 0
             }
           }
         },
@@ -457,12 +411,10 @@
           "naceCodes": [],
           "activityName": "InfrastructureForRailTransport",
           "share": {
-            "relativeShareInPercent": {
-              "value": 0
-            },
+            "relativeShareInPercent": 0,
             "absoluteShare": {
               "currency": "EUR",
-              "value": 0
+              "amount": 0
             }
           }
         },
@@ -470,12 +422,10 @@
           "naceCodes": [],
           "activityName": "LowCarbonAirportInfrastructure",
           "share": {
-            "relativeShareInPercent": {
-              "value": 0
-            },
+            "relativeShareInPercent": 0,
             "absoluteShare": {
               "currency": "EUR",
-              "value": 0
+              "amount": 0
             }
           }
         },
@@ -483,12 +433,10 @@
           "naceCodes": [],
           "activityName": "ConstructionOfNewBuildings",
           "share": {
-            "relativeShareInPercent": {
-              "value": 2.7
-            },
+            "relativeShareInPercent": 2.7,
             "absoluteShare": {
               "currency": "EUR",
-              "value": 27000000
+              "amount": 27000000
             }
           }
         },
@@ -496,12 +444,10 @@
           "naceCodes": [],
           "activityName": "RenovationOfExistingBuildings",
           "share": {
-            "relativeShareInPercent": {
-              "value": 0.9
-            },
+            "relativeShareInPercent": 0.9,
             "absoluteShare": {
               "currency": "EUR",
-              "value": 9400000
+              "amount": 9400000
             }
           }
         },
@@ -509,12 +455,10 @@
           "naceCodes": [],
           "activityName": "InstallationMaintenanceAndRepairOfEnergyEfficiencyEquipment",
           "share": {
-            "relativeShareInPercent": {
-              "value": 0.2
-            },
+            "relativeShareInPercent": 0.2,
             "absoluteShare": {
               "currency": "EUR",
-              "value": 2400000
+              "amount": 2400000
             }
           }
         },
@@ -522,12 +466,10 @@
           "naceCodes": [],
           "activityName": "InstallationMaintenanceAndRepairOfChargingStationsForElectricVehiclesInBuildingsAndParkingSpacesAttachedToBuildings",
           "share": {
-            "relativeShareInPercent": {
-              "value": 0
-            },
+            "relativeShareInPercent": 0,
             "absoluteShare": {
               "currency": "EUR",
-              "value": 0
+              "amount": 0
             }
           }
         },
@@ -535,12 +477,10 @@
           "naceCodes": [],
           "activityName": "InstallationMaintenanceAndRepairOfInstrumentsAndDevicesForMeasuringRegulationAndControllingEnergyPerformanceOfBuildings",
           "share": {
-            "relativeShareInPercent": {
-              "value": 0
-            },
+            "relativeShareInPercent": 0,
             "absoluteShare": {
               "currency": "EUR",
-              "value": 300000
+              "amount": 300000
             }
           }
         },
@@ -548,12 +488,10 @@
           "naceCodes": [],
           "activityName": "UrbanWasteWaterTreatment",
           "share": {
-            "relativeShareInPercent": {
-              "value": 0
-            },
+            "relativeShareInPercent": 0,
             "absoluteShare": {
               "currency": "EUR",
-              "value": 0
+              "amount": 0
             }
           }
         },
@@ -561,12 +499,10 @@
           "naceCodes": [],
           "activityName": "ProductionOfHeatCoolFromBioenergy",
           "share": {
-            "relativeShareInPercent": {
-              "value": 0
-            },
+            "relativeShareInPercent": 0,
             "absoluteShare": {
               "currency": "EUR",
-              "value": 0
+              "amount": 0
             }
           }
         }
@@ -623,9 +559,7 @@
     "alignedActivities": {
       "value": [
         {
-          "substantialContributionToClimateChangeMitigationInPercent": {
-            "value": 100
-          },
+          "substantialContributionToClimateChangeMitigationInPercent": 100,
           "substantialContributionToTransitionToACircularEconomyInPercent": null,
           "dnshToPollutionPreventionAndControl": "Yes",
           "substantialContributionToClimateChangeAdaptationInPercent": null,
@@ -637,12 +571,10 @@
           "naceCodes": [],
           "dnshToClimateChangeMitigation": null,
           "share": {
-            "relativeShareInPercent": {
-              "value": 1.5
-            },
+            "relativeShareInPercent": 1.5,
             "absoluteShare": {
               "currency": "EUR",
-              "value": 15600000
+              "amount": 15600000
             }
           },
           "dnshToProtectionAndRestorationOfBiodiversityAndEcosystems": "Yes",
@@ -651,9 +583,7 @@
           "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent": null
         },
         {
-          "substantialContributionToClimateChangeMitigationInPercent": {
-            "value": 100
-          },
+          "substantialContributionToClimateChangeMitigationInPercent": 100,
           "substantialContributionToTransitionToACircularEconomyInPercent": null,
           "dnshToPollutionPreventionAndControl": "Yes",
           "substantialContributionToClimateChangeAdaptationInPercent": null,
@@ -665,12 +595,10 @@
           "naceCodes": [],
           "dnshToClimateChangeMitigation": null,
           "share": {
-            "relativeShareInPercent": {
-              "value": 0.8
-            },
+            "relativeShareInPercent": 0.8,
             "absoluteShare": {
               "currency": "EUR",
-              "value": 8200000
+              "amount": 8200000
             }
           },
           "dnshToProtectionAndRestorationOfBiodiversityAndEcosystems": "Yes",
@@ -679,9 +607,7 @@
           "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent": null
         },
         {
-          "substantialContributionToClimateChangeMitigationInPercent": {
-            "value": 100
-          },
+          "substantialContributionToClimateChangeMitigationInPercent": 100,
           "substantialContributionToTransitionToACircularEconomyInPercent": null,
           "dnshToPollutionPreventionAndControl": "Yes",
           "substantialContributionToClimateChangeAdaptationInPercent": null,
@@ -693,12 +619,10 @@
           "naceCodes": [],
           "dnshToClimateChangeMitigation": null,
           "share": {
-            "relativeShareInPercent": {
-              "value": 0.5
-            },
+            "relativeShareInPercent": 0.5,
             "absoluteShare": {
               "currency": "EUR",
-              "value": 4900000
+              "amount": 4900000
             }
           },
           "dnshToProtectionAndRestorationOfBiodiversityAndEcosystems": "Yes",
@@ -707,9 +631,7 @@
           "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent": null
         },
         {
-          "substantialContributionToClimateChangeMitigationInPercent": {
-            "value": 100
-          },
+          "substantialContributionToClimateChangeMitigationInPercent": 100,
           "substantialContributionToTransitionToACircularEconomyInPercent": null,
           "dnshToPollutionPreventionAndControl": "Yes",
           "substantialContributionToClimateChangeAdaptationInPercent": null,
@@ -721,12 +643,10 @@
           "naceCodes": [],
           "dnshToClimateChangeMitigation": null,
           "share": {
-            "relativeShareInPercent": {
-              "value": 0
-            },
+            "relativeShareInPercent": 0,
             "absoluteShare": {
               "currency": "EUR",
-              "value": 300000
+              "amount": 300000
             }
           },
           "dnshToProtectionAndRestorationOfBiodiversityAndEcosystems": "Yes",
@@ -735,9 +655,7 @@
           "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent": null
         },
         {
-          "substantialContributionToClimateChangeMitigationInPercent": {
-            "value": 100
-          },
+          "substantialContributionToClimateChangeMitigationInPercent": 100,
           "substantialContributionToTransitionToACircularEconomyInPercent": null,
           "dnshToPollutionPreventionAndControl": null,
           "substantialContributionToClimateChangeAdaptationInPercent": null,
@@ -749,12 +667,10 @@
           "naceCodes": [],
           "dnshToClimateChangeMitigation": null,
           "share": {
-            "relativeShareInPercent": {
-              "value": 0
-            },
+            "relativeShareInPercent": 0,
             "absoluteShare": {
               "currency": "EUR",
-              "value": 100000
+              "amount": 100000
             }
           },
           "dnshToProtectionAndRestorationOfBiodiversityAndEcosystems": null,
@@ -763,9 +679,7 @@
           "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent": null
         },
         {
-          "substantialContributionToClimateChangeMitigationInPercent": {
-            "value": 100
-          },
+          "substantialContributionToClimateChangeMitigationInPercent": 100,
           "substantialContributionToTransitionToACircularEconomyInPercent": null,
           "dnshToPollutionPreventionAndControl": "Yes",
           "substantialContributionToClimateChangeAdaptationInPercent": null,
@@ -777,12 +691,10 @@
           "naceCodes": [],
           "dnshToClimateChangeMitigation": null,
           "share": {
-            "relativeShareInPercent": {
-              "value": 0
-            },
+            "relativeShareInPercent": 0,
             "absoluteShare": {
               "currency": "EUR",
-              "value": 0
+              "amount": 0
             }
           },
           "dnshToProtectionAndRestorationOfBiodiversityAndEcosystems": null,
@@ -791,9 +703,7 @@
           "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent": null
         },
         {
-          "substantialContributionToClimateChangeMitigationInPercent": {
-            "value": 100
-          },
+          "substantialContributionToClimateChangeMitigationInPercent": 100,
           "substantialContributionToTransitionToACircularEconomyInPercent": null,
           "dnshToPollutionPreventionAndControl": "Yes",
           "substantialContributionToClimateChangeAdaptationInPercent": null,
@@ -805,12 +715,10 @@
           "naceCodes": [],
           "dnshToClimateChangeMitigation": null,
           "share": {
-            "relativeShareInPercent": {
-              "value": 0.1
-            },
+            "relativeShareInPercent": 0.1,
             "absoluteShare": {
               "currency": "EUR",
-              "value": 600000
+              "amount": 600000
             }
           },
           "dnshToProtectionAndRestorationOfBiodiversityAndEcosystems": "Yes",
@@ -819,9 +727,7 @@
           "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent": null
         },
         {
-          "substantialContributionToClimateChangeMitigationInPercent": {
-            "value": 100
-          },
+          "substantialContributionToClimateChangeMitigationInPercent": 100,
           "substantialContributionToTransitionToACircularEconomyInPercent": null,
           "dnshToPollutionPreventionAndControl": "Yes",
           "substantialContributionToClimateChangeAdaptationInPercent": null,
@@ -833,12 +739,10 @@
           "naceCodes": [],
           "dnshToClimateChangeMitigation": null,
           "share": {
-            "relativeShareInPercent": {
-              "value": 4.3
-            },
+            "relativeShareInPercent": 4.3,
             "absoluteShare": {
               "currency": "EUR",
-              "value": 44500000
+              "amount": 44500000
             }
           },
           "dnshToProtectionAndRestorationOfBiodiversityAndEcosystems": "Yes",
@@ -847,9 +751,7 @@
           "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent": null
         },
         {
-          "substantialContributionToClimateChangeMitigationInPercent": {
-            "value": 100
-          },
+          "substantialContributionToClimateChangeMitigationInPercent": 100,
           "substantialContributionToTransitionToACircularEconomyInPercent": null,
           "dnshToPollutionPreventionAndControl": "Yes",
           "substantialContributionToClimateChangeAdaptationInPercent": null,
@@ -861,12 +763,10 @@
           "naceCodes": [],
           "dnshToClimateChangeMitigation": null,
           "share": {
-            "relativeShareInPercent": {
-              "value": 0.6
-            },
+            "relativeShareInPercent": 0.6,
             "absoluteShare": {
               "currency": "EUR",
-              "value": 6600000
+              "amount": 6600000
             }
           },
           "dnshToProtectionAndRestorationOfBiodiversityAndEcosystems": "Yes",
@@ -875,9 +775,7 @@
           "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent": null
         },
         {
-          "substantialContributionToClimateChangeMitigationInPercent": {
-            "value": 100
-          },
+          "substantialContributionToClimateChangeMitigationInPercent": 100,
           "substantialContributionToTransitionToACircularEconomyInPercent": null,
           "dnshToPollutionPreventionAndControl": "Yes",
           "substantialContributionToClimateChangeAdaptationInPercent": null,
@@ -889,12 +787,10 @@
           "naceCodes": [],
           "dnshToClimateChangeMitigation": null,
           "share": {
-            "relativeShareInPercent": {
-              "value": 0.1
-            },
+            "relativeShareInPercent": 0.1,
             "absoluteShare": {
               "currency": "EUR",
-              "value": 700000
+              "amount": 700000
             }
           },
           "dnshToProtectionAndRestorationOfBiodiversityAndEcosystems": "Yes",
@@ -903,9 +799,7 @@
           "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent": null
         },
         {
-          "substantialContributionToClimateChangeMitigationInPercent": {
-            "value": 100
-          },
+          "substantialContributionToClimateChangeMitigationInPercent": 100,
           "substantialContributionToTransitionToACircularEconomyInPercent": null,
           "dnshToPollutionPreventionAndControl": "Yes",
           "substantialContributionToClimateChangeAdaptationInPercent": null,
@@ -917,12 +811,10 @@
           "naceCodes": [],
           "dnshToClimateChangeMitigation": null,
           "share": {
-            "relativeShareInPercent": {
-              "value": 0.7
-            },
+            "relativeShareInPercent": 0.7,
             "absoluteShare": {
               "currency": "EUR",
-              "value": 7300000
+              "amount": 7300000
             }
           },
           "dnshToProtectionAndRestorationOfBiodiversityAndEcosystems": null,
@@ -931,9 +823,7 @@
           "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent": null
         },
         {
-          "substantialContributionToClimateChangeMitigationInPercent": {
-            "value": 100
-          },
+          "substantialContributionToClimateChangeMitigationInPercent": 100,
           "substantialContributionToTransitionToACircularEconomyInPercent": null,
           "dnshToPollutionPreventionAndControl": "Yes",
           "substantialContributionToClimateChangeAdaptationInPercent": null,
@@ -945,12 +835,10 @@
           "naceCodes": [],
           "dnshToClimateChangeMitigation": null,
           "share": {
-            "relativeShareInPercent": {
-              "value": 0.7
-            },
+            "relativeShareInPercent": 0.7,
             "absoluteShare": {
               "currency": "EUR",
-              "value": 7200000
+              "amount": 7200000
             }
           },
           "dnshToProtectionAndRestorationOfBiodiversityAndEcosystems": null,
@@ -959,9 +847,7 @@
           "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent": null
         },
         {
-          "substantialContributionToClimateChangeMitigationInPercent": {
-            "value": 100
-          },
+          "substantialContributionToClimateChangeMitigationInPercent": 100,
           "substantialContributionToTransitionToACircularEconomyInPercent": null,
           "dnshToPollutionPreventionAndControl": null,
           "substantialContributionToClimateChangeAdaptationInPercent": null,
@@ -973,12 +859,10 @@
           "naceCodes": [],
           "dnshToClimateChangeMitigation": null,
           "share": {
-            "relativeShareInPercent": {
-              "value": 0.8
-            },
+            "relativeShareInPercent": 0.8,
             "absoluteShare": {
               "currency": "EUR",
-              "value": 8500000
+              "amount": 8500000
             }
           },
           "dnshToProtectionAndRestorationOfBiodiversityAndEcosystems": null,
@@ -987,9 +871,7 @@
           "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent": null
         },
         {
-          "substantialContributionToClimateChangeMitigationInPercent": {
-            "value": 100
-          },
+          "substantialContributionToClimateChangeMitigationInPercent": 100,
           "substantialContributionToTransitionToACircularEconomyInPercent": null,
           "dnshToPollutionPreventionAndControl": null,
           "substantialContributionToClimateChangeAdaptationInPercent": null,
@@ -1001,12 +883,10 @@
           "naceCodes": [],
           "dnshToClimateChangeMitigation": null,
           "share": {
-            "relativeShareInPercent": {
-              "value": 0.2
-            },
+            "relativeShareInPercent": 0.2,
             "absoluteShare": {
               "currency": "EUR",
-              "value": 2400000
+              "amount": 2400000
             }
           },
           "dnshToProtectionAndRestorationOfBiodiversityAndEcosystems": null,
@@ -1018,9 +898,7 @@
           "substantialContributionToClimateChangeMitigationInPercent": null,
           "substantialContributionToTransitionToACircularEconomyInPercent": null,
           "dnshToPollutionPreventionAndControl": "Yes",
-          "substantialContributionToClimateChangeAdaptationInPercent": {
-            "value": 100
-          },
+          "substantialContributionToClimateChangeAdaptationInPercent": 100,
           "substantialContributionToPollutionPreventionAndControlInPercent": null,
           "minimumSafeguards": "Yes",
           "activityName": "UrbanWasteWaterTreatment",
@@ -1029,12 +907,10 @@
           "naceCodes": [],
           "dnshToClimateChangeMitigation": "Yes",
           "share": {
-            "relativeShareInPercent": {
-              "value": 2.6
-            },
+            "relativeShareInPercent": 2.6,
             "absoluteShare": {
               "currency": "EUR",
-              "value": 27400000
+              "amount": 27400000
             }
           },
           "dnshToProtectionAndRestorationOfBiodiversityAndEcosystems": "Yes",

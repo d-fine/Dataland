@@ -65,7 +65,9 @@ class V20__MigrateEutaxonomyNonFinancialsExtendedDatapoints : BaseJavaMigration(
             } else {
                 // Do nothing as no more migration is required
             }
-            checkRecursivelyForRelevantFieldKeysInJsonObject(jsonObject, it)
+            if (it != "alignedActivities" && it != "nonAlignedActivities") {
+                checkRecursivelyForRelevantFieldKeysInJsonObject(jsonObject, it)
+            }
         }
     }
 
