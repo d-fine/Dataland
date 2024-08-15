@@ -14,28 +14,31 @@
       <ChevronUpIcon class="p-icon p-row-toggler-icon ml-2" />
     </div>
   </div>
-  <div
-    v-show="isStatusHistoryVisible"
-    v-for="requestStatusObject in statusHistory"
-    :key="requestStatusObject.creationTimestamp"
-  >
-    <span style="display: flex; align-items: center">
-      <div class="card__subtitle" data-test="creation_timestamp">
-        {{ convertUnixTimeInMsToDateString(requestStatusObject.creationTimestamp) }}
-      </div>
-      <div data-test="request_status" :class="badgeClass(requestStatusObject.status)" style="display: inline-flex">
-        {{ requestStatusObject.status }}
-      </div>
-      <div class="card__subtitle">and</div>
-      <div
-        data-test="access_status"
-        :class="accessStatusBadgeClass(requestStatusObject.accessStatus)"
-        style="display: inline-flex"
-      >
-        {{ requestStatusObject.accessStatus }}
-      </div>
-    </span>
-    <div class="card__separator" style="margin-top: 0.25rem; margin-bottom: 0.25rem" />
+
+  <div v-show="isStatusHistoryVisible">
+    <div>
+      <DataTable :value="statusHistory">
+        <Column field="creationTimeStamp" header="Creation Timestamp"
+          ><template #body="slotProps">{{
+            convertUnixTimeInMsToDateString(slotProps.data.creationTimestamp)
+          }}</template>
+        </Column>
+        <Column field="requestStatus" header="Request Status"
+          ><template #body="slotProps"
+            ><div style="display: inline-flex" :class="badgeClass(slotProps.data.status)">
+              {{ slotProps.data.status }}
+            </div></template
+          >
+        </Column>
+        <Column field="accessStatus" header="Access Status"
+          ><template #body="slotProps"
+            ><div style="display: inline-flex" :class="accessStatusBadgeClass(slotProps.data.accessStatus)">
+              {{ slotProps.data.accessStatus }}
+            </div></template
+          >
+        </Column>
+      </DataTable>
+    </div>
   </div>
 </template>
 
@@ -46,9 +49,11 @@ import { accessStatusBadgeClass, badgeClass } from '@/utils/RequestUtils';
 import { type StoredDataRequestStatusObject } from '@clients/communitymanager';
 import ChevronDownIcon from 'primevue/icons/chevrondown';
 import ChevronUpIcon from 'primevue/icons/chevronup';
+import DataTable from 'primevue/datatable';
+import Column from 'primevue/column';
 export default defineComponent({
   name: 'StatusHistory',
-  components: { ChevronUpIcon, ChevronDownIcon },
+  components: { ChevronUpIcon, ChevronDownIcon, DataTable, Column },
   props: {
     statusHistory: {
       type: Array<StoredDataRequestStatusObject>,

@@ -3,7 +3,7 @@ package org.dataland.datalandbackend.frameworks.sfdr.model.social.humanRights
 
 import jakarta.validation.Valid
 import org.dataland.datalandbackend.model.datapoints.ExtendedDataPoint
-import org.dataland.datalandbackend.model.enums.commons.YesNoNoEvidenceFound
+import org.dataland.datalandbackend.model.enums.commons.YesNo
 import org.dataland.datalandbackend.validator.MinimumValue
 import java.math.BigInteger
 
@@ -12,19 +12,19 @@ import java.math.BigInteger
  */
 data class SfdrSocialHumanRights(
     @field:Valid()
-    val humanRightsPolicy: ExtendedDataPoint<YesNoNoEvidenceFound?>? = null,
+    val humanRightsPolicy: ExtendedDataPoint<YesNo?>? = null,
 
     @field:Valid()
-    val humanRightsDueDiligence: ExtendedDataPoint<YesNoNoEvidenceFound?>? = null,
+    val humanRightsDueDiligence: ExtendedDataPoint<YesNo?>? = null,
 
     @field:Valid()
-    val traffickingInHumanBeingsPolicy: ExtendedDataPoint<YesNoNoEvidenceFound?>? = null,
+    val traffickingInHumanBeingsPolicy: ExtendedDataPoint<YesNo?>? = null,
 
     @field:Valid()
-    val reportedChildLabourIncidents: ExtendedDataPoint<YesNoNoEvidenceFound?>? = null,
+    val reportedChildLabourIncidents: ExtendedDataPoint<YesNo?>? = null,
 
     @field:Valid()
-    val reportedForcedOrCompulsoryLabourIncidents: ExtendedDataPoint<YesNoNoEvidenceFound?>? = null,
+    val reportedForcedOrCompulsoryLabourIncidents: ExtendedDataPoint<YesNo?>? = null,
 
     @field:MinimumValue(minimumValue = 0)
     @field:Valid()

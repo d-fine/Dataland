@@ -15,7 +15,6 @@ import { getModalGetterFactory } from '@/components/resources/dataTable/conversi
 import { lksgModalColumnHeaders } from '@/components/resources/frameworkDataSearch/lksg/LksgModalColumnHeaders';
 import { p2pDriveMixValueGetterFactory } from '@/components/resources/dataTable/conversion/p2p/P2pDriveMixValueGetterFactory';
 import { vsmeModalColumnHeaders } from '@/components/resources/dataTable/conversion/vsme/VsmeDisplayValueGetters';
-import { yesNoNoEvidenceFoundValueGetterFactory } from '@/components/resources/dataTable/conversion/YesNoNoEvidenceFoundValueGetterFactory';
 
 // The effort of making this file type-safe greatly outweighs the benefit.
 /* eslint @typescript-eslint/no-explicit-any: 0 */
@@ -39,7 +38,6 @@ const formFieldValueGetterFactoryMap: { [key: string]: ValueGetterFactory } = {
   YesNoBaseDataPointFormField: yesNoDataPointValueGetterFactory,
   YesNoExtendedDataPointFormField: yesNoDataPointValueGetterFactory,
   YesNoNaFormField: yesNoValueGetterFactory,
-  YesNoNoEvidenceFoundExtendedDataPointFormField: yesNoNoEvidenceFoundValueGetterFactory,
   YesNoNaBaseDataPointFormField: yesNoDataPointValueGetterFactory,
   IntegerExtendedDataPointFormField: numberDataPointValueGetterFactory,
   BigDecimalExtendedDataPointFormField: numberDataPointValueGetterFactory,

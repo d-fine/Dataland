@@ -3,7 +3,7 @@ package org.dataland.datalandqaservice.frameworks.sfdr.model.environmental.emiss
 
 import jakarta.validation.Valid
 import org.dataland.datalandbackend.openApiClient.model.ExtendedDataPointBigDecimal
-import org.dataland.datalandbackend.openApiClient.model.ExtendedDataPointYesNoNoEvidenceFound
+import org.dataland.datalandbackend.openApiClient.model.ExtendedDataPointYesNo
 import org.dataland.datalandqaservice.model.reports.QaReportDataPoint
 
 /**
@@ -20,6 +20,6 @@ data class SfdrEnvironmentalEmissions(
     val emissionsOfOzoneDepletionSubstancesInTonnes: QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
 
     @field:Valid()
-    val carbonReductionInitiatives: QaReportDataPoint<ExtendedDataPointYesNoNoEvidenceFound?>? = null,
+    val carbonReductionInitiatives: QaReportDataPoint<ExtendedDataPointYesNo?>? = null,
 
 )
