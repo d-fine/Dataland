@@ -12,7 +12,7 @@ import org.json.JSONObject
  * This migration script updates the existing EU taxonomy non-financials datasets and migrates all
  * existing BaseDataPoints to ExtendedDataPoints.
  */
-class V19__MigrateEutaxonomyNonFinancialsExtendedDatapoints : BaseJavaMigration() {
+class V20__MigrateEutaxonomyNonFinancialsExtendedDatapoints : BaseJavaMigration() {
 
     private val relevantFields = listOf(
         "scopeOfEntities",
