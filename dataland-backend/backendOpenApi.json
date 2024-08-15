@@ -12487,39 +12487,6 @@
           }
         }
       },
-      "ExtendedDataPointYesNo": {
-        "type": "object",
-        "properties": {
-          "value": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/YesNo"
-              }
-            ]
-          },
-          "quality": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/QualityOptions"
-              }
-            ]
-          },
-          "comment": {
-            "type": "string",
-            "nullable": true
-          },
-          "dataSource": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ExtendedDocumentReference"
-              }
-            ]
-          }
-        }
-      },
       "ExtendedDataPointYesNoNa": {
         "type": "object",
         "properties": {
@@ -14915,6 +14882,12 @@
         ],
         "type": "object",
         "properties": {
+          "countryCode": {
+            "type": "string"
+          },
+          "headquarters": {
+            "type": "string"
+          },
           "lei": {
             "type": "string",
             "nullable": true
@@ -14923,16 +14896,10 @@
             "type": "string",
             "nullable": true
           },
-          "companyId": {
-            "type": "string"
-          },
           "companyName": {
             "type": "string"
           },
-          "headquarters": {
-            "type": "string"
-          },
-          "countryCode": {
+          "companyId": {
             "type": "string"
           }
         }
@@ -14956,10 +14923,10 @@
         ],
         "type": "object",
         "properties": {
-          "companyId": {
+          "companyName": {
             "type": "string"
           },
-          "companyName": {
+          "companyId": {
             "type": "string"
           }
         }
