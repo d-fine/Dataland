@@ -9,6 +9,7 @@ creation URL (or simply copy this md file into the description)
 
 ### Dependency updates
 
+- Update Postgres in Docker-compose.yml to 16.0 causes CD to fail. (https://jira.d-fine.dev/browse/DALA-3135). This line can be deleted after the issue is resolved
 - [ ] Take a look at the dependency dashboard and see which updates are to be applied. For a detailed description of the process,
 consult the internal Dataland Wiki.
 
