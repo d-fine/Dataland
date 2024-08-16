@@ -11,11 +11,6 @@ import java.util.concurrent.TimeUnit
 
 class QaApiAccessor {
     val sfdrQaReportControllerApi = SfdrDataQaReportControllerApi(BASE_PATH_TO_QA_SERVICE)
-
-    // TODO Emanuel: Achtung. Die Methode heißt postQaReport1() => unschön => sollten wir anders handhaben
-    // TODO => das kann man mit der operationId im Controller selbst anpassen =>
-    // TODO => z.B. so @Operation(operationId = "postQaReportEuTaxonomyNonFinancials")
-    // TODO => das muss die framework toolbox automatisch tun, wenn sie die Controller im qa-service autogeneriert
     val euTaxonomyNonFinancialsQaReportControllerApi = EutaxonomyNonFinancialsDataQaReportControllerApi(
         BASE_PATH_TO_QA_SERVICE,
     )
