@@ -7,7 +7,7 @@
   >
     <TabPanel
       v-for="tab in tabs"
-      :key="tab"
+      :key="tab.label"
       :disabled="!(tabs.indexOf(tab) == initialTabIndex || (tab.isVisible ?? true))"
       :header="tab.label"
     >
@@ -17,7 +17,6 @@
 </template>
 
 <script lang="ts">
-// @ts-nocheck
 import { defineComponent, inject } from 'vue';
 import TabView from 'primevue/tabview';
 import TabPanel from 'primevue/tabpanel';
@@ -109,7 +108,7 @@ export default defineComponent({
      * @param event the event containing the index of the newly selected tab
      * @param event.index the index of the tab element
      */
-    async handleTabChange(event: { index: number }): void {
+    async handleTabChange(event: { index: number }): Promise<void> {
       if (this.initialTabIndex != event.index) {
         await this.$router.push(this.tabs[event.index].route);
       }

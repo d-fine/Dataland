@@ -1,4 +1,4 @@
-// @ts-nocheck
+// @ts-nocheck TODO Emanuel: might remove later after Marcs fix is merged
 import CompanyCockpitPage from '@/components/pages/CompanyCockpitPage.vue';
 import { minimalKeycloakMock } from '@ct/testUtils/Keycloak';
 import {
