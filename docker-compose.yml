@@ -523,7 +523,7 @@ services:
   eurodat-client:
     restart: always
     profiles: [ "production", "development" ]
-    image: registry.gitlab.com/eurodat/trustee-platform/client-controller:v0.0.34@sha256:ac78891e34ce7f14b8e20811043cf9749f2dfbb827350459d98024a195da8b23
+    image: registry.gitlab.com/eurodat/trustee-platform/client-controller:v0.0.38@sha256:8b523b5ce376c401bb17c6ee8619199edfe18d15078b6e6fa150da250100be88
     networks:
       - internal
     expose:
