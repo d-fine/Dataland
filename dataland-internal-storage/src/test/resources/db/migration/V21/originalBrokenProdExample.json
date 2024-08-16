@@ -1,0 +1,169 @@
+{
+  "general": {
+    "fiscalYearDeviation": {
+      "value": "NoDeviation",
+      "quality": null,
+      "comment": null,
+      "dataSource": null
+    },
+    "fiscalYearEnd": null,
+    "scopeOfEntities": null,
+    "nfrdMandatory": {
+      "value": "No",
+      "quality": null,
+      "comment": null,
+      "dataSource": null
+    },
+    "euTaxonomyActivityLevelReporting": null,
+    "assurance": {
+      "value": "None",
+      "dataSource": {
+        "page": 63,
+        "tagName": null,
+        "fileName": "Annual Report",
+        "fileReference": "a9775878491bf3d3223d77b24fa7497818c705c260a551196cb221f8855e8718"
+      },
+      "provider": "DELOITTE"
+    },
+    "numberOfEmployees": {
+      "value": 32,
+      "quality": null,
+      "comment": null,
+      "dataSource": null
+    },
+    "referencedReports": {
+      "Annual Report": {
+        "fileReference": "a9775878491bf3d3223d77b24fa7497818c705c260a551196cb221f8855e8718",
+        "fileName": "Annual Report",
+        "publicationDate": null
+      }
+    }
+  },
+  "revenue": {
+    "totalAmount": {
+      "value": 2130000,
+      "quality": "Reported",
+      "comment": null,
+      "dataSource": {
+        "page": 9,
+        "tagName": null,
+        "fileName": "Annual Report",
+        "fileReference": "a9775878491bf3d3223d77b24fa7497818c705c260a551196cb221f8855e8718"
+      },
+      "currency": null
+    },
+    "nonEligibleShare": null,
+    "eligibleShare": {
+      "relativeShareInPercent": null,
+      "absoluteShare": {
+        "value": null,
+        "quality": null,
+        "comment": null,
+        "dataSource": null,
+        "currency": null
+      }
+    },
+    "nonAlignedShare": null,
+    "nonAlignedActivities": null,
+    "alignedShare": {
+      "relativeShareInPercent": null,
+      "absoluteShare": {
+        "value": null,
+        "quality": null,
+        "comment": null,
+        "dataSource": null,
+        "currency": null
+      }
+    },
+    "substantialContributionToClimateChangeMitigationInPercent": null,
+    "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent": null,
+    "substantialContributionToTransitionToACircularEconomyInPercent": null,
+    "substantialContributionToPollutionPreventionAndControlInPercent": null,
+    "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent": null,
+    "alignedActivities": null,
+    "enablingShareInPercent": null,
+    "transitionalShareInPercent": null
+  },
+  "capex": {
+    "totalAmount": {
+      "value": null,
+      "quality": "Reported",
+      "comment": null,
+      "dataSource": null,
+      "currency": null
+    },
+    "nonEligibleShare": null,
+    "eligibleShare": {
+      "relativeShareInPercent": null,
+      "absoluteShare": {
+        "value": null,
+        "quality": null,
+        "comment": null,
+        "dataSource": null,
+        "currency": null
+      }
+    },
+    "nonAlignedShare": null,
+    "nonAlignedActivities": null,
+    "alignedShare": {
+      "relativeShareInPercent": null,
+      "absoluteShare": {
+        "value": null,
+        "quality": null,
+        "comment": null,
+        "dataSource": null,
+        "currency": null
+      }
+    },
+    "substantialContributionToClimateChangeMitigationInPercent": null,
+    "substantialContributionToClimateChangeAdaptationInPercent": null,
+    "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent": null,
+    "substantialContributionToTransitionToACircularEconomyInPercent": null,
+    "substantialContributionToPollutionPreventionAndControlInPercent": null,
+    "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent": null,
+    "alignedActivities": null,
+    "enablingShareInPercent": null,
+    "transitionalShareInPercent": null
+  },
+  "opex": {
+    "totalAmount": {
+      "value": null,
+      "quality": "Reported",
+      "comment": null,
+      "dataSource": null,
+      "currency": null
+    },
+    "nonEligibleShare": null,
+    "eligibleShare": {
+      "relativeShareInPercent": null,
+      "absoluteShare": {
+        "value": null,
+        "quality": null,
+        "comment": null,
+        "dataSource": null,
+        "currency": null
+      }
+    },
+    "nonAlignedShare": null,
+    "nonAlignedActivities": null,
+    "alignedShare": {
+      "relativeShareInPercent": null,
+      "absoluteShare": {
+        "value": null,
+        "quality": null,
+        "comment": null,
+        "dataSource": null,
+        "currency": null
+      }
+    },
+    "substantialContributionToClimateChangeMitigationInPercent": null,
+    "substantialContributionToClimateChangeAdaptationInPercent": null,
+    "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent": null,
+    "substantialContributionToTransitionToACircularEconomyInPercent": null,
+    "substantialContributionToPollutionPreventionAndControlInPercent": null,
+    "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent": null,
+    "alignedActivities": null,
+    "enablingShareInPercent": null,
+    "transitionalShareInPercent": null
+  }
+}
