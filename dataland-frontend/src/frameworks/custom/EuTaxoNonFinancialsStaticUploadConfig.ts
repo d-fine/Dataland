@@ -202,7 +202,7 @@ export const eutaxonomyNonFinancialsDataModel = [
             description:
               'Taxonomy-eligible proportion of revenue substantially contributing to climate change adaptation',
             unit: '%',
-            component: 'PercentageFormField',
+            component: 'PercentageExtendedDataPointFormField',
             required: false,
             showIf: (): boolean => true,
             validation: 'between:0,100',
@@ -213,7 +213,7 @@ export const eutaxonomyNonFinancialsDataModel = [
             description:
               'Taxonomy-aligned proportion of revenue substantially contributing to climate change adaptation',
             unit: '%',
-            component: 'PercentageFormField',
+            component: 'PercentageExtendedDataPointFormField',
             required: false,
             showIf: (): boolean => true,
             validation: 'between:0,100',
@@ -224,7 +224,7 @@ export const eutaxonomyNonFinancialsDataModel = [
             description:
               'Taxonomy-aligned use of proceeds share substantially contributing to climate change adaptation',
             unit: '%',
-            component: 'PercentageFormField',
+            component: 'PercentageExtendedDataPointFormField',
             required: false,
             showIf: (): boolean => true,
             validation: 'between:0,100',
@@ -235,7 +235,7 @@ export const eutaxonomyNonFinancialsDataModel = [
             description:
               'Taxonomy-aligned and enabling proportion of revenue substantially contributing to climate change adaptation',
             unit: '%',
-            component: 'PercentageFormField',
+            component: 'PercentageExtendedDataPointFormField',
             required: false,
             showIf: (): boolean => true,
             validation: 'between:0,100',
@@ -247,7 +247,7 @@ export const eutaxonomyNonFinancialsDataModel = [
             description:
               'Taxonomy-eligible proportion of revenue substantially contributing to sustainable use and protection of water and marine resources',
             unit: '%',
-            component: 'PercentageFormField',
+            component: 'PercentageExtendedDataPointFormField',
             required: false,
             showIf: (): boolean => true,
             validation: 'between:0,100',
@@ -259,7 +259,7 @@ export const eutaxonomyNonFinancialsDataModel = [
             description:
               'Taxonomy-aligned proportion of revenue substantially contributing to sustainable use and protection of water and marine resources',
             unit: '%',
-            component: 'PercentageFormField',
+            component: 'PercentageExtendedDataPointFormField',
             required: false,
             showIf: (): boolean => true,
             validation: 'between:0,100',
@@ -271,7 +271,7 @@ export const eutaxonomyNonFinancialsDataModel = [
             description:
               'Taxonomy-aligned use of proceeds share substantially contributing to sustainable use and protection of water and marine resources',
             unit: '%',
-            component: 'PercentageFormField',
+            component: 'PercentageExtendedDataPointFormField',
             required: false,
             showIf: (): boolean => true,
             validation: 'between:0,100',
@@ -283,7 +283,7 @@ export const eutaxonomyNonFinancialsDataModel = [
             description:
               'Taxonomy-aligned and enabling proportion of revenue substantially contributing to sustainable use and protection of water and marine resources',
             unit: '%',
-            component: 'PercentageFormField',
+            component: 'PercentageExtendedDataPointFormField',
             required: false,
             showIf: (): boolean => true,
             validation: 'between:0,100',
@@ -293,7 +293,7 @@ export const eutaxonomyNonFinancialsDataModel = [
             label: 'Substantial Contribution to Transition to a Circular Economy In Percent - Eligible',
             description: 'Taxonomy-eligible proportion of revenue substantially contributing to circular economy',
             unit: '%',
-            component: 'PercentageFormField',
+            component: 'PercentageExtendedDataPointFormField',
             required: false,
             showIf: (): boolean => true,
             validation: 'between:0,100',
@@ -303,7 +303,7 @@ export const eutaxonomyNonFinancialsDataModel = [
             label: 'Substantial Contribution to Transition to a Circular Economy In Percent - Aligned',
             description: 'Taxonomy-aligned proportion of revenue substantially contributing to circular economy',
             unit: '%',
-            component: 'PercentageFormField',
+            component: 'PercentageExtendedDataPointFormField',
             required: false,
             showIf: (): boolean => true,
             validation: 'between:0,100',
@@ -313,7 +313,7 @@ export const eutaxonomyNonFinancialsDataModel = [
             label: 'Substantial Contribution to Transition to a Circular Economy In Percent - Of Which Use Of Proceeds',
             description: 'Taxonomy-aligned use of proceeds share substantially contributing to circular economy',
             unit: '%',
-            component: 'PercentageFormField',
+            component: 'PercentageExtendedDataPointFormField',
             required: false,
             showIf: (): boolean => true,
             validation: 'between:0,100',
@@ -324,7 +324,7 @@ export const eutaxonomyNonFinancialsDataModel = [
             description:
               'Taxonomy-aligned and enabling proportion of revenue substantially contributing to circular economy',
             unit: '%',
-            component: 'PercentageFormField',
+            component: 'PercentageExtendedDataPointFormField',
             required: false,
             showIf: (): boolean => true,
             validation: 'between:0,100',
@@ -335,7 +335,7 @@ export const eutaxonomyNonFinancialsDataModel = [
             description:
               'Taxonomy-eligible proportion of CapEx substantially contributing to pollution prevention and control',
             unit: '%',
-            component: 'PercentageFormField',
+            component: 'PercentageExtendedDataPointFormField',
             required: false,
             showIf: (): boolean => true,
             validation: 'between:0,100',
@@ -346,7 +346,7 @@ export const eutaxonomyNonFinancialsDataModel = [
             description:
               'Taxonomy-aligned proportion of CapEx substantially contributing to pollution prevention and control',
             unit: '%',
-            component: 'PercentageFormField',
+            component: 'PercentageExtendedDataPointFormField',
             required: false,
             showIf: (): boolean => true,
             validation: 'between:0,100',
@@ -357,7 +357,7 @@ export const eutaxonomyNonFinancialsDataModel = [
             description:
               'Taxonomy-aligned use of proceeds share substantially contributing to pollution prevention and control',
             unit: '%',
-            component: 'PercentageFormField',
+            component: 'PercentageExtendedDataPointFormField',
             required: false,
             showIf: (): boolean => true,
             validation: 'between:0,100',
@@ -368,7 +368,7 @@ export const eutaxonomyNonFinancialsDataModel = [
             description:
               'Taxonomy-aligned and enabling proportion of CapEx substantially contributing to pollution prevention and control',
             unit: '%',
-            component: 'PercentageFormField',
+            component: 'PercentageExtendedDataPointFormField',
             required: false,
             showIf: (): boolean => true,
             validation: 'between:0,100',
@@ -380,7 +380,7 @@ export const eutaxonomyNonFinancialsDataModel = [
             description:
               'Taxonomy-eligible proportion of CapEx substantially contributing to protection and restoration of biodiversity and ecosystems',
             unit: '%',
-            component: 'PercentageFormField',
+            component: 'PercentageExtendedDataPointFormField',
             required: false,
             showIf: (): boolean => true,
             validation: 'between:0,100',
@@ -392,7 +392,7 @@ export const eutaxonomyNonFinancialsDataModel = [
             description:
               'Taxonomy-aligned proportion of CapEx substantially contributing to protection and restoration of biodiversity and ecosystems',
             unit: '%',
-            component: 'PercentageFormField',
+            component: 'PercentageExtendedDataPointFormField',
             required: false,
             showIf: (): boolean => true,
             validation: 'between:0,100',
@@ -404,7 +404,7 @@ export const eutaxonomyNonFinancialsDataModel = [
             description:
               'Taxonomy-aligned use of proceeds share substantially contributing to protection and restoration of biodiversity and ecosystems',
             unit: '%',
-            component: 'PercentageFormField',
+            component: 'PercentageExtendedDataPointFormField',
             required: false,
             showIf: (): boolean => true,
             validation: 'between:0,100',
@@ -587,7 +587,7 @@ export const eutaxonomyNonFinancialsDataModel = [
             description:
               'Taxonomy-eligible proportion of CapEx substantially contributing to climate change adaptation',
             unit: '%',
-            component: 'PercentageFormField',
+            component: 'PercentageExtendedDataPointFormField',
             required: false,
             showIf: (): boolean => true,
             validation: 'between:0,100',
@@ -597,7 +597,7 @@ export const eutaxonomyNonFinancialsDataModel = [
             label: 'Substantial Contribution to Climate Change Adaptation In Percent - Aligned',
             description: 'Taxonomy-aligned proportion of CapEx substantially contributing to climate change adaptation',
             unit: '%',
-            component: 'PercentageFormField',
+            component: 'PercentageExtendedDataPointFormField',
             required: false,
             showIf: (): boolean => true,
             validation: 'between:0,100',
@@ -608,7 +608,7 @@ export const eutaxonomyNonFinancialsDataModel = [
             description:
               'Taxonomy-aligned use of proceeds share substantially contributing to climate change adaptation',
             unit: '%',
-            component: 'PercentageFormField',
+            component: 'PercentageExtendedDataPointFormField',
             required: false,
             showIf: (): boolean => true,
             validation: 'between:0,100',
@@ -619,7 +619,7 @@ export const eutaxonomyNonFinancialsDataModel = [
             description:
               'Taxonomy-aligned and enabling proportion of CapEx substantially contributing to climate change adaptation',
             unit: '%',
-            component: 'PercentageFormField',
+            component: 'PercentageExtendedDataPointFormField',
             required: false,
             showIf: (): boolean => true,
             validation: 'between:0,100',
@@ -631,7 +631,7 @@ export const eutaxonomyNonFinancialsDataModel = [
             description:
               'Taxonomy-eligible proportion of CapEx substantially contributing to sustainable use and protection of water and marine resources',
             unit: '%',
-            component: 'PercentageFormField',
+            component: 'PercentageExtendedDataPointFormField',
             required: false,
             showIf: (): boolean => true,
             validation: 'between:0,100',
@@ -643,7 +643,7 @@ export const eutaxonomyNonFinancialsDataModel = [
             description:
               'Taxonomy-aligned proportion of CapEx substantially contributing to sustainable use and protection of water and marine resources',
             unit: '%',
-            component: 'PercentageFormField',
+            component: 'PercentageExtendedDataPointFormField',
             required: false,
             showIf: (): boolean => true,
             validation: 'between:0,100',
@@ -655,7 +655,7 @@ export const eutaxonomyNonFinancialsDataModel = [
             description:
               'Taxonomy-aligned use of proceeds share substantially contributing to sustainable use and protection of water and marine resources',
             unit: '%',
-            component: 'PercentageFormField',
+            component: 'PercentageExtendedDataPointFormField',
             required: false,
             showIf: (): boolean => true,
             validation: 'between:0,100',
@@ -667,7 +667,7 @@ export const eutaxonomyNonFinancialsDataModel = [
             description:
               'Taxonomy-aligned and enabling proportion of CapEx substantially contributing to sustainable use and protection of water and marine resources',
             unit: '%',
-            component: 'PercentageFormField',
+            component: 'PercentageExtendedDataPointFormField',
             required: false,
             showIf: (): boolean => true,
             validation: 'between:0,100',
@@ -677,7 +677,7 @@ export const eutaxonomyNonFinancialsDataModel = [
             label: 'Substantial Contribution to Transition to a Circular Economy In Percent - Eligible',
             description: 'Taxonomy-eligible proportion of CapEx substantially contributing to circular economy',
             unit: '%',
-            component: 'PercentageFormField',
+            component: 'PercentageExtendedDataPointFormField',
             required: false,
             showIf: (): boolean => true,
             validation: 'between:0,100',
@@ -687,7 +687,7 @@ export const eutaxonomyNonFinancialsDataModel = [
             label: 'Substantial Contribution to Transition to a Circular Economy In Percent - Aligned',
             description: 'Taxonomy-aligned proportion of CapEx substantially contributing to circular economy',
             unit: '%',
-            component: 'PercentageFormField',
+            component: 'PercentageExtendedDataPointFormField',
             required: false,
             showIf: (): boolean => true,
             validation: 'between:0,100',
@@ -697,7 +697,7 @@ export const eutaxonomyNonFinancialsDataModel = [
             label: 'Substantial Contribution to Transition to a Circular Economy In Percent - Of Which Use Of Proceeds',
             description: 'Taxonomy-aligned use of proceeds share substantially contributing to circular economy',
             unit: '%',
-            component: 'PercentageFormField',
+            component: 'PercentageExtendedDataPointFormField',
             required: false,
             showIf: (): boolean => true,
             validation: 'between:0,100',
@@ -708,7 +708,7 @@ export const eutaxonomyNonFinancialsDataModel = [
             description:
               'Taxonomy-aligned and enabling proportion of CapEx substantially contributing to circular economy',
             unit: '%',
-            component: 'PercentageFormField',
+            component: 'PercentageExtendedDataPointFormField',
             required: false,
             showIf: (): boolean => true,
             validation: 'between:0,100',
@@ -719,7 +719,7 @@ export const eutaxonomyNonFinancialsDataModel = [
             description:
               'Taxonomy-eligible proportion of CapEx substantially contributing to pollution prevention and control',
             unit: '%',
-            component: 'PercentageFormField',
+            component: 'PercentageExtendedDataPointFormField',
             required: false,
             showIf: (): boolean => true,
             validation: 'between:0,100',
@@ -730,7 +730,7 @@ export const eutaxonomyNonFinancialsDataModel = [
             description:
               'Taxonomy-aligned proportion of CapEx substantially contributing to pollution prevention and control',
             unit: '%',
-            component: 'PercentageFormField',
+            component: 'PercentageExtendedDataPointFormField',
             required: false,
             showIf: (): boolean => true,
             validation: 'between:0,100',
@@ -741,7 +741,7 @@ export const eutaxonomyNonFinancialsDataModel = [
             description:
               'Taxonomy-aligned use of proceeds share substantially contributing to pollution prevention and control',
             unit: '%',
-            component: 'PercentageFormField',
+            component: 'PercentageExtendedDataPointFormField',
             required: false,
             showIf: (): boolean => true,
             validation: 'between:0,100',
@@ -752,7 +752,7 @@ export const eutaxonomyNonFinancialsDataModel = [
             description:
               'Taxonomy-aligned and enabling proportion of CapEx substantially contributing to pollution prevention and control',
             unit: '%',
-            component: 'PercentageFormField',
+            component: 'PercentageExtendedDataPointFormField',
             required: false,
             showIf: (): boolean => true,
             validation: 'between:0,100',
@@ -764,7 +764,7 @@ export const eutaxonomyNonFinancialsDataModel = [
             description:
               'Taxonomy-eligible proportion of CapEx substantially contributing to protection and restoration of biodiversity and ecosystems',
             unit: '%',
-            component: 'PercentageFormField',
+            component: 'PercentageExtendedDataPointFormField',
             required: false,
             showIf: (): boolean => true,
             validation: 'between:0,100',
@@ -776,7 +776,7 @@ export const eutaxonomyNonFinancialsDataModel = [
             description:
               'Taxonomy-aligned proportion of CapEx substantially contributing to protection and restoration of biodiversity and ecosystems',
             unit: '%',
-            component: 'PercentageFormField',
+            component: 'PercentageExtendedDataPointFormField',
             required: false,
             showIf: (): boolean => true,
             validation: 'between:0,100',
@@ -788,7 +788,7 @@ export const eutaxonomyNonFinancialsDataModel = [
             description:
               'Taxonomy-aligned use of proceeds share substantially contributing to protection and restoration of biodiversity and ecosystems',
             unit: '%',
-            component: 'PercentageFormField',
+            component: 'PercentageExtendedDataPointFormField',
             required: false,
             showIf: (): boolean => true,
             validation: 'between:0,100',
