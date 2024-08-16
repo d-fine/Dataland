@@ -31,7 +31,7 @@ export const euTaxonomyNonFinancialsModalColumnHeaders = {
     dnshToProtectionAndRestorationOfBiodiversityAndEcosystems: 'Biodiversity and Ecosystems',
     minimumSafeguards: 'Minimum Safeguards',
     enablingActivity: 'Enabling Activity',
-    transitionalActivity:'Transitional Activity',
+    transitionalActivity: 'Transitional Activity',
     substantialContributionCriteria: 'Substantial Contribution Criteria',
     dnshCriteria: 'DNSH Criteria',
   },
