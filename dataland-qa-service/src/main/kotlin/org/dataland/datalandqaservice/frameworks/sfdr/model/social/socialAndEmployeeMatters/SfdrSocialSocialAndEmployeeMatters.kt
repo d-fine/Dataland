@@ -71,13 +71,22 @@ data class SfdrSocialSocialAndEmployeeMatters(
     val unadjustedGenderPayGapInPercent: QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
 
     @field:Valid()
-    val femaleBoardMembers: QaReportDataPoint<ExtendedDataPointBigInteger?>? = null,
+    val femaleBoardMembersSupervisoryBoard: QaReportDataPoint<ExtendedDataPointBigInteger?>? = null,
 
     @field:Valid()
-    val maleBoardMembers: QaReportDataPoint<ExtendedDataPointBigInteger?>? = null,
+    val femaleBoardMembersBoardOfDirectors: QaReportDataPoint<ExtendedDataPointBigInteger?>? = null,
 
     @field:Valid()
-    val boardGenderDiversityInPercent: QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
+    val maleBoardMembersSupervisoryBoard: QaReportDataPoint<ExtendedDataPointBigInteger?>? = null,
+
+    @field:Valid()
+    val maleBoardMembersBoardOfDirectors: QaReportDataPoint<ExtendedDataPointBigInteger?>? = null,
+
+    @field:Valid()
+    val boardGenderDiversitySupervisoryBoardInPercent: QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
+
+    @field:Valid()
+    val boardGenderDiversityBoardOfDirectorsInPercent: QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
 
     @field:Valid()
     val controversialWeaponsExposure: QaReportDataPoint<ExtendedDataPointYesNo?>? = null,
