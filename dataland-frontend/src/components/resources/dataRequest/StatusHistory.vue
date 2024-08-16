@@ -38,7 +38,11 @@
         </Column>
         <Column field="accessStatus" header="Access Status"
           ><template #body="slotProps"
-            ><div style="display: inline-flex" :class="accessStatusBadgeClass(slotProps.data.accessStatus)">
+            ><div
+              style="display: inline-flex"
+              :class="accessStatusBadgeClass(slotProps.data.accessStatus)"
+              data-test="accessStatusEntry"
+            >
               {{ slotProps.data.accessStatus }}
             </div></template
           >
