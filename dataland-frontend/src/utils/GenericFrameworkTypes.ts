@@ -1,12 +1,13 @@
 import { type DropdownOption } from '@/utils/PremadeDropdownDatasets';
 import {
-  type EuTaxonomyDataForFinancials,
   type EsgQuestionnaireData,
+  type EuTaxonomyDataForFinancials,
+  type EutaxonomyNonFinancialsData,
+  type HeimathafenData,
   type LksgData,
   type PathwaysToParisData,
   type SfdrData,
   type VsmeData,
-  type EutaxonomyNonFinancialsData,
 } from '@clients/backend';
 
 export interface Category {
@@ -51,4 +52,5 @@ export type FrameworkData =
   | SfdrData
   | VsmeData
   | EsgQuestionnaireData
-  | PathwaysToParisData;
+  | PathwaysToParisData
+  | HeimathafenData;

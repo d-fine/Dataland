@@ -49,13 +49,21 @@ class EuTaxonomyAlignedActivitiesComponent(
         dataClassBuilder.addProperty(
             identifier,
             TypeReference(
-                "kotlin.collections.MutableList",
+                "org.dataland.datalandbackend.model.datapoints.ExtendedDataPoint",
                 isNullable,
                 listOf(
                     TypeReference(
-                        "org.dataland.datalandbackend.frameworks.eutaxonomynonfinancials" +
-                            ".custom.EuTaxonomyAlignedActivity",
-                        false,
+                        "kotlin.collections.MutableList",
+                        isNullable,
+
+                        listOf(
+
+                            TypeReference(
+                                "org.dataland.datalandbackend.frameworks.eutaxonomynonfinancials" +
+                                    ".custom.EuTaxonomyAlignedActivity",
+                                false,
+                            ),
+                        ),
                     ),
                 ),
             ),
@@ -65,9 +73,11 @@ class EuTaxonomyAlignedActivitiesComponent(
     override fun generateDefaultFixtureGenerator(sectionBuilder: FixtureSectionBuilder) {
         requireDocumentSupportIn(setOf(NoDocumentSupport))
         val fixtureExpression = if (isNullable) {
-            "dataGenerator.randomArray(() => dataGenerator.generateAlignedActivity(), 0, 10)"
+            "dataGenerator.randomExtendedDataPoint(dataGenerator.randomArray(() => " +
+                "dataGenerator.generateAlignedActivity(), 0, 10))"
         } else {
-            "dataGenerator.guaranteedArray(() => dataGenerator.generateAlignedActivity(), 0, 10)"
+            "dataGenerator.randomExtendedDataPoint(dataGenerator.guaranteedArray(() => " +
+                "dataGenerator.generateAlignedActivity(), 0, 10))"
         }
         sectionBuilder.addAtomicExpression(
             identifier,

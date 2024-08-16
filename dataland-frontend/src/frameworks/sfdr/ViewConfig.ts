@@ -35,17 +35,18 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
             label: 'Fiscal Year Deviation',
             explanation: 'Does the fiscal year deviate from the calendar year?',
             shouldDisplay: (): boolean => true,
-            valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes => {
-              const mappings = {
-                Deviation: 'Deviation',
-                NoDeviation: 'No Deviation',
-              };
-              return formatStringForDatatable(
-                dataset.general?.general?.fiscalYearDeviation
-                  ? getOriginalNameFromTechnicalName(dataset.general?.general?.fiscalYearDeviation, mappings)
-                  : ''
-              );
-            },
+            valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
+              ((): AvailableMLDTDisplayObjectTypes => {
+                const mappings = {
+                  Deviation: 'Deviation',
+                  NoDeviation: 'No Deviation',
+                };
+                return formatStringForDatatable(
+                  dataset.general?.general?.fiscalYearDeviation
+                    ? getOriginalNameFromTechnicalName(dataset.general?.general?.fiscalYearDeviation, mappings)
+                    : ''
+                );
+              })(),
           },
           {
             type: 'cell',
