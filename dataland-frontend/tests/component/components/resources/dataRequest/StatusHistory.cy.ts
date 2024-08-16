@@ -2,6 +2,7 @@ import StatusHistory from '@/components/resources/dataRequest/StatusHistory.vue'
 import { AccessStatus, RequestStatus, type StoredDataRequestStatusObject } from '@clients/communitymanager';
 import { minimalKeycloakMock } from '@ct/testUtils/Keycloak';
 import { convertUnixTimeInMsToDateString } from '@/utils/DataFormatUtils';
+import { getMountingFunction } from '@ct/testUtils/Mount';
 
 describe('Component tests for the Status History', function (): void {
   const expectedStatus = [RequestStatus.Open, RequestStatus.Answered, RequestStatus.Resolved, RequestStatus.Closed];
@@ -29,9 +30,7 @@ describe('Component tests for the Status History', function (): void {
     },
   ] as Array<StoredDataRequestStatusObject>;
   it('Check functionality of Status History', function () {
-    // TODO after DALA-4606 has been merged to main, and main into this feature branch, this ts-ignore can be removed
-    // @ts-ignore
-    cy.mountWithPlugins(StatusHistory, {
+    getMountingFunction()(StatusHistory, {
       keycloak: minimalKeycloakMock({}),
       props: {
         statusHistory: dummyStatusHistory,

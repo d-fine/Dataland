@@ -1,9 +1,8 @@
-// @ts-nocheck
-// TODO: EManuel: remove the ts-nocheck later when Marcs fix is merged
 import DatasetsTabMenu from '@/components/general/DatasetsTabMenu.vue';
 import { minimalKeycloakMock } from '@ct/testUtils/Keycloak';
 import { CompanyRole, type CompanyRoleAssignment } from '@clients/communitymanager';
 import { KEYCLOAK_ROLE_REVIEWER, KEYCLOAK_ROLE_USER } from '@/utils/KeycloakUtils';
+import { getMountingFunction } from '@ct/testUtils/Mount';
 
 describe('Component tests for the tab used by logged-in users to switch pages', () => {
   enum AlwaysVisibleTabs {
@@ -25,14 +24,13 @@ describe('Component tests for the tab used by logged-in users to switch pages', 
    * @param keycloakRoles of the logged-in user that sees the tab
    * @param companyRoleAssignments for the logged-in user that sees the tab
    * @param indexOfHighlightedTab sets which tab is highlighted as if the user had clicked on it
-   * @returns the mounted component
    */
   function mountDatasetsTabMenuWithAuthentication(
     keycloakRoles: string[],
     companyRoleAssignments: CompanyRoleAssignment[],
     indexOfHighlightedTab: number
-  ): Cypress.Chainable {
-    return cy.mountWithPlugins(DatasetsTabMenu, {
+  ): void {
+    getMountingFunction()(DatasetsTabMenu, {
       keycloak: minimalKeycloakMock({
         authenticated: true,
         roles: keycloakRoles,
@@ -43,9 +41,6 @@ describe('Component tests for the tab used by logged-in users to switch pages', 
           companyRoleAssignments: companyRoleAssignments,
         },
       },
-      //TODO Emanuel remove after Marcs fix is merged
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
       props: {
         initialTabIndex: indexOfHighlightedTab,
       },
@@ -83,13 +78,12 @@ describe('Component tests for the tab used by logged-in users to switch pages', 
   }
 
   it('Validate tabs for a logged-in Dataland-Reader with no company role assignments', function () {
-    mountDatasetsTabMenuWithAuthentication([KEYCLOAK_ROLE_USER], [], 0).then(() => {
-      assertThatStandardTabsAreAllVisible();
-      for (const tabText of Object.values(RoleBasedTabs)) {
-        isTabVisible(tabText, false);
-      }
-      isTabHighlighted(AlwaysVisibleTabs.Companies, true);
-    });
+    mountDatasetsTabMenuWithAuthentication([KEYCLOAK_ROLE_USER], [], 0);
+    assertThatStandardTabsAreAllVisible();
+    for (const tabText of Object.values(RoleBasedTabs)) {
+      isTabVisible(tabText, false);
+    }
+    isTabHighlighted(AlwaysVisibleTabs.Companies, true);
   });
 
   it('Validate tabs for a logged-in Dataland-Reader with company ownership', function () {
@@ -100,20 +94,18 @@ describe('Component tests for the tab used by logged-in users to switch pages', 
         userId: dummyUserId,
       },
     ];
-    mountDatasetsTabMenuWithAuthentication([KEYCLOAK_ROLE_USER], companyRoleAssignments, 4).then(() => {
-      assertThatStandardTabsAreAllVisible();
-      isTabVisible(RoleBasedTabs.Qa, false);
-      isTabVisible(RoleBasedTabs.DataAccessRequests, true);
-      isTabHighlighted(RoleBasedTabs.DataAccessRequests, true);
-    });
+    mountDatasetsTabMenuWithAuthentication([KEYCLOAK_ROLE_USER], companyRoleAssignments, 4);
+    assertThatStandardTabsAreAllVisible();
+    isTabVisible(RoleBasedTabs.Qa, false);
+    isTabVisible(RoleBasedTabs.DataAccessRequests, true);
+    isTabHighlighted(RoleBasedTabs.DataAccessRequests, true);
   });
 
   it('Validate tabs for a logged-in Dataland-Reviewer with no company role assignments', function () {
-    mountDatasetsTabMenuWithAuthentication([KEYCLOAK_ROLE_REVIEWER], [], 2).then(() => {
-      assertThatStandardTabsAreAllVisible();
-      isTabVisible(RoleBasedTabs.Qa, true);
-      isTabVisible(RoleBasedTabs.DataAccessRequests, false);
-      isTabHighlighted(RoleBasedTabs.Qa, true);
-    });
+    mountDatasetsTabMenuWithAuthentication([KEYCLOAK_ROLE_REVIEWER], [], 2);
+    assertThatStandardTabsAreAllVisible();
+    isTabVisible(RoleBasedTabs.Qa, true);
+    isTabVisible(RoleBasedTabs.DataAccessRequests, false);
+    isTabHighlighted(RoleBasedTabs.Qa, true);
   });
 });
