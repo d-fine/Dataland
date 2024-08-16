@@ -4,7 +4,6 @@ import db.migration.utils.DataTableEntity
 import db.migration.utils.migrateCompanyAssociatedDataOfDatatype
 import org.flywaydb.core.api.migration.BaseJavaMigration
 import org.flywaydb.core.api.migration.Context
-import org.json.JSONObject
 
 /**
  * This migration script updates all sfdr datasets to match the new sfdr data model.
@@ -15,42 +14,29 @@ class V22__IntroduceNewFieldsInSfdr : BaseJavaMigration() {
         migrateCompanyAssociatedDataOfDatatype(
             context,
             "sfdr",
-            this::migrateSfdr,
+            this::migrateBoardFields,
         )
     }
 
-    private fun migrateSfdr(dataTableEntity: DataTableEntity) {
+    /**
+     * Migrates sfdr data to the new sfdr data model.
+     */
+    fun migrateBoardFields(dataTableEntity: DataTableEntity) {
         val dataset = dataTableEntity.dataJsonObject
 
-        migrateSocialAndEmployeeMatters(dataset)
-        migrateGreenhouseGasEmissions(dataset)
-    }
+        val socialObject = dataset.getJSONObject("social") ?: return
 
-    private fun migrateGreenhouseGasEmissions(dataset: JSONObject) {
-        val environmentalObject = dataset.getJSONObject("environmental")
-        val greenhouseGasEmissionsObject = environmentalObject.getJSONObject("greenhouseGasEmissions")
-
-        greenhouseGasEmissionsObject.put("scope3UpstreamGhgEmissionsInTonnes", JSONObject.NULL)
-        greenhouseGasEmissionsObject.put("scope3DownstreamGhgEmissionsInTonnes", JSONObject.NULL)
-        greenhouseGasEmissionsObject.put("ghgIntensityScope1InTonnesPerMillionEURRevenue", JSONObject.NULL)
-        greenhouseGasEmissionsObject.put("ghgIntensityScope2InTonnesPerMillionEURRevenue", JSONObject.NULL)
-        greenhouseGasEmissionsObject.put("ghgIntensityScope3InTonnesPerMillionEURRevenue", JSONObject.NULL)
-        greenhouseGasEmissionsObject.put("ghgIntensityScope4InTonnesPerMillionEURRevenue", JSONObject.NULL)
-    }
-
-    private fun migrateSocialAndEmployeeMatters(dataset: JSONObject) {
-        val socialObject = dataset.getJSONObject("social")
-        val socialAndEmployeeMattersObject = socialObject.getJSONObject("socialAndEmployeeMatters")
+        val socialAndEmployeeMattersObject = socialObject.getJSONObject("socialAndEmployeeMatters") ?: return
 
         val femaleBoardMembers = socialAndEmployeeMattersObject.remove("femaleBoardMembers")
-        val maleBoardMembers = socialAndEmployeeMattersObject.remove("maleBoardMembers")
-        val boardGenderDiversity = socialAndEmployeeMattersObject.remove("boardGenderDiversityInPercent")
-
         socialAndEmployeeMattersObject.put("femaleBoardMembersSupervisoryBoard", femaleBoardMembers)
-        socialAndEmployeeMattersObject.put("femaleBoardMembersBoardOfDirectors", JSONObject.NULL)
+
+        val maleBoardMembers = socialAndEmployeeMattersObject.remove("maleBoardMembers")
         socialAndEmployeeMattersObject.put("maleBoardMembersSupervisoryBoard", maleBoardMembers)
-        socialAndEmployeeMattersObject.put("maleBoardMembersBoardOfDirectors", JSONObject.NULL)
+
+        val boardGenderDiversity = socialAndEmployeeMattersObject.remove("boardGenderDiversityInPercent")
         socialAndEmployeeMattersObject.put("boardGenderDiversitySupervisoryBoardInPercent", boardGenderDiversity)
-        socialAndEmployeeMattersObject.put("boardGenderDiversityBoardOfDirectorsInPercent", JSONObject.NULL)
+
+        dataTableEntity.companyAssociatedData.put("data", dataset.toString())
     }
 }
