@@ -1,9 +1,7 @@
-// @ts-nocheck
 import ShowMultipleReportsBanner from '@/components/resources/frameworkDataSearch/ShowMultipleReportsBanner.vue';
 import { minimalKeycloakMock } from '@ct/testUtils/Keycloak';
 import {
   Activity,
-  type CompanyReport,
   type CurrencyDataPoint,
   DataTypeEnum,
   type EuTaxonomyActivity,
@@ -23,6 +21,7 @@ import {
 } from '@sharedUtils/components/resources/dataTable/MultiLayerDataTableTestUtils';
 import { runFunctionBlockWithinPrimeVueModal } from '@sharedUtils/ElementChecks';
 import { humanizeStringOrNumber } from '@/utils/StringFormatter';
+import { getMountingFunction } from '@ct/testUtils/Mount';
 
 describe('Component test for the Eu-Taxonomy-Non-Financials view page', () => {
   let fixturesForTests: FixtureData<EutaxonomyNonFinancialsData>[];
@@ -53,22 +52,22 @@ describe('Component test for the Eu-Taxonomy-Non-Financials view page', () => {
 
         gammaCapex = assertDefined(fixturesForTests[2].t.capex);
         const gammaCapexAlignedActivities = assertDefined(gammaCapex.alignedActivities);
-        if (gammaCapexAlignedActivities.length < 1) {
+        if (gammaCapexAlignedActivities.value!.length < 1) {
           throw new Error(
             'Aligned activities list for capex of gamma dataset needs at least one element for this test to make sense.'
           );
         }
-        gammaCapexFirstAlignedActivity = gammaCapexAlignedActivities[0];
+        gammaCapexFirstAlignedActivity = gammaCapexAlignedActivities.value![0];
         gammaCapexFirstAlignedActivity.activityName = Activity.Afforestation;
         gammaCapexFirstAlignedActivity.substantialContributionToClimateChangeAdaptationInPercent = 0;
 
         const gammaCapexNonAlignedActivities = assertDefined(gammaCapex.nonAlignedActivities);
-        if (gammaCapexNonAlignedActivities.length < 1) {
+        if (gammaCapexNonAlignedActivities.value!.length < 1) {
           throw new Error(
             'Non-Aligned activities list for capex of gamma dataset needs at least one element for this test to make sense.'
           );
         }
-        gammaCapexFirstNonAlignedActivity = gammaCapexNonAlignedActivities[0];
+        gammaCapexFirstNonAlignedActivity = gammaCapexNonAlignedActivities.value![0];
         gammaCapexFirstNonAlignedActivity.activityName = Activity.Education;
         assertDefined(gammaCapexFirstNonAlignedActivity.share).relativeShareInPercent = 0;
 
@@ -84,18 +83,19 @@ describe('Component test for the Eu-Taxonomy-Non-Financials view page', () => {
       fixturesForTests
     ).then(() => {
       const betaTotalAlignedCapexPercentage = roundNumber(
-        assertDefined(betaCapex.alignedShare?.relativeShareInPercent),
+        assertDefined(betaCapex.alignedShare?.relativeShareInPercent?.value),
         2
       );
       const gammaCapexTotalAmountFormattedString = formatAmountWithCurrency({
         amount: assertDefined(gammaCapexTotalAmount.value),
         currency: assertDefined(gammaCapexTotalAmount.currency),
       });
-      const gammaTotalAlignedCapexAbsoluteShareString = formatAmountWithCurrency(
-        assertDefined(gammaCapex.alignedShare?.absoluteShare)
-      );
+      const gammaTotalAlignedCapexAbsoluteShareString = formatAmountWithCurrency({
+        amount: assertDefined(gammaCapex.alignedShare?.absoluteShare?.value),
+        currency: assertDefined(gammaCapex.alignedShare?.absoluteShare?.currency),
+      });
       const gammaContributionToClimateChangeMitigation = roundNumber(
-        assertDefined(gammaCapex.substantialContributionToClimateChangeMitigationInPercent),
+        assertDefined(gammaCapex.substantialContributionToClimateChangeMitigationInPercent?.value),
         2
       );
 
@@ -129,7 +129,7 @@ describe('Component test for the Eu-Taxonomy-Non-Financials view page', () => {
       });
       cy.get('body').type('{esc}');
 
-      getCellValueContainer('Aligned Activities', 2).first().click();
+      getCellValueContainer('Aligned Activities', 2).find('a[data-test=activityLink]').first().click();
       runFunctionBlockWithinPrimeVueModal(() => {
         cy.get('tr')
           .contains('td', assertDefined(gammaCapexFirstAlignedActivity.activityName))
@@ -140,7 +140,7 @@ describe('Component test for the Eu-Taxonomy-Non-Financials view page', () => {
       });
       cy.get('body').type('{esc}');
 
-      getCellValueContainer('Non-Aligned Activities', 2).first().click();
+      getCellValueContainer('Non-Aligned Activities', 2).find('a[data-test=activityLink]').first().click();
       runFunctionBlockWithinPrimeVueModal(() => {
         cy.get('tr')
           .contains('td', assertDefined(gammaCapexFirstNonAlignedActivity.activityName))
@@ -157,21 +157,19 @@ describe('Component test for the Eu-Taxonomy-Non-Financials view page', () => {
 
   it('Checks if the reports banner and the corresponding modal is properly displayed', () => {
     const allReportingPeriods = fixturesForTests.map((it) => it.reportingPeriod);
-    const allReports = fixturesForTests.map((it) => assertDefined(it.t.general).referencedReports);
+    const allReports = fixturesForTests.map((it) => assertDefined(it.t.general?.referencedReports));
     const expectedLatestReportingPeriod = allReportingPeriods[0];
-    const nameOfFirstReportOfExpectedLatestReportingPeriod = Object.keys(
-      allReports[0] as Record<string, CompanyReport>
-    )[0];
-    cy.mountWithDialog(
-      ShowMultipleReportsBanner,
-      {
-        keycloak: minimalKeycloakMock({}),
+    const nameOfFirstReportOfExpectedLatestReportingPeriod = Object.keys(allReports[0])[0];
+    getMountingFunction({
+      keycloak: minimalKeycloakMock(),
+      dialogOptions: {
+        mountWithDialog: true,
+        propsToPassToTheMountedComponent: {
+          reports: allReports,
+          reportingPeriods: allReportingPeriods,
+        },
       },
-      {
-        reports: allReports,
-        reportingPeriods: allReportingPeriods,
-      }
-    ).then(() => {
+    })(ShowMultipleReportsBanner).then(() => {
       cy.get(`[data-test="frameworkNewDataTableTitle"`).contains(
         `Data extracted from the company report. Company Reports (${expectedLatestReportingPeriod})`
       );
