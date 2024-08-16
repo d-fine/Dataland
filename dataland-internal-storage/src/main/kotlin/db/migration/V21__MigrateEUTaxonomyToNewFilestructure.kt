@@ -12,7 +12,7 @@ import org.json.JSONObject
  * EUTaxonomyNonFinancials structure
  */
 
-class V20__MigrateEUTaxonomyToNewFilestructure : BaseJavaMigration() {
+class V21__MigrateEUTaxonomyToNewFilestructure : BaseJavaMigration() {
     private val mapOfOldToNewFieldNames = mapOf(
         "substantialContributionToClimateChangeMitigationInPercent" to
             "substantialContributionToClimateChangeMitigationInPercentAligned",

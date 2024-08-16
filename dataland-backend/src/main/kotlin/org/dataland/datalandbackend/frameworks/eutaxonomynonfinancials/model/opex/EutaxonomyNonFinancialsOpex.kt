@@ -13,6 +13,7 @@ import org.dataland.datalandbackend.frameworks.eutaxonomynonfinancials.model.ope
 import org.dataland.datalandbackend.frameworks.eutaxonomynonfinancials.model.opex.nonEligibleShare
     .EutaxonomyNonFinancialsOpexNonEligibleShare
 import org.dataland.datalandbackend.model.datapoints.CurrencyDataPoint
+import org.dataland.datalandbackend.model.datapoints.ExtendedDataPoint
 import java.math.BigDecimal
 import kotlin.collections.MutableList
 
@@ -32,29 +33,37 @@ data class EutaxonomyNonFinancialsOpex(
     @field:Valid()
     val nonAlignedShare: EutaxonomyNonFinancialsOpexNonAlignedShare? = null,
 
-    val nonAlignedActivities: MutableList<EuTaxonomyActivity>? = null,
+    val nonAlignedActivities: ExtendedDataPoint<MutableList<EuTaxonomyActivity>?>? = null,
 
     @field:Valid()
     val alignedShare: EutaxonomyNonFinancialsOpexAlignedShare? = null,
 
-    val substantialContributionToClimateChangeMitigationInPercentAligned: BigDecimal? = null,
+    @field:Valid()
+    val substantialContributionToClimateChangeMitigationInPercentAligned: ExtendedDataPoint<BigDecimal?>? = null,
 
-    val substantialContributionToClimateChangeAdaptationInPercentAligned: BigDecimal? = null,
+    @field:Valid()
+    val substantialContributionToClimateChangeAdaptationInPercentAligned: ExtendedDataPoint<BigDecimal?>? = null,
 
+    @field:Valid()
     val substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned:
-    BigDecimal? = null,
+    ExtendedDataPoint<BigDecimal?>? = null,
 
-    val substantialContributionToTransitionToACircularEconomyInPercentAligned: BigDecimal? = null,
+    @field:Valid()
+    val substantialContributionToTransitionToACircularEconomyInPercentAligned: ExtendedDataPoint<BigDecimal?>? = null,
 
-    val substantialContributionToPollutionPreventionAndControlInPercentAligned: BigDecimal? = null,
+    @field:Valid()
+    val substantialContributionToPollutionPreventionAndControlInPercentAligned: ExtendedDataPoint<BigDecimal?>? = null,
 
+    @field:Valid()
     val substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned:
-    BigDecimal? = null,
+    ExtendedDataPoint<BigDecimal?>? = null,
 
-    val alignedActivities: MutableList<EuTaxonomyAlignedActivity>? = null,
+    val alignedActivities: ExtendedDataPoint<MutableList<EuTaxonomyAlignedActivity>?>? = null,
 
-    val enablingShareInPercent: BigDecimal? = null,
+    @field:Valid()
+    val enablingShareInPercent: ExtendedDataPoint<BigDecimal?>? = null,
 
-    val transitionalShareInPercent: BigDecimal? = null,
+    @field:Valid()
+    val transitionalShareInPercent: ExtendedDataPoint<BigDecimal?>? = null,
 
 )

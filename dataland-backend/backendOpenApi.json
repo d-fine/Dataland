@@ -11672,11 +11672,12 @@
             ]
           },
           "nonAlignedActivities": {
-            "type": "array",
             "nullable": true,
-            "items": {
-              "$ref": "#/components/schemas/EuTaxonomyActivity"
-            }
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointListEuTaxonomyActivity"
+              }
+            ]
           },
           "alignedShare": {
             "nullable": true,
@@ -11687,119 +11688,228 @@
             ]
           },
           "substantialContributionToClimateChangeMitigationInPercentEligible": {
-            "type": "number",
-            "nullable": true
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
           },
           "substantialContributionToClimateChangeMitigationInPercentAligned": {
-            "type": "number",
-            "nullable": true
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
           },
           "substantialContributionToClimateChangeMitigationInPercentOfWhichUseOfProceeds": {
-            "type": "number",
-            "nullable": true
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
           },
           "substantialContributionToClimateChangeMitigationInPercentEnablingShare": {
-            "type": "number",
-            "nullable": true
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
           },
           "substantialContributionToClimateChangeMitigationInPercentTransitionalShare": {
-            "type": "number",
-            "nullable": true
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
           },
           "substantialContributionToClimateChangeAdaptationInPercentEligible": {
-            "type": "number",
-            "nullable": true
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
           },
           "substantialContributionToClimateChangeAdaptationInPercentAligned": {
-            "type": "number",
-            "nullable": true
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
           },
           "substantialContributionToClimateChangeAdaptationInPercentOfWhichUseOfProceeds": {
-            "type": "number",
-            "nullable": true
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
           },
           "substantialContributionToClimateChangeAdaptationInPercentEnablingShare": {
-            "type": "number",
-            "nullable": true
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
           },
           "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentEligible": {
-            "type": "number",
-            "nullable": true
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
           },
           "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned": {
-            "type": "number",
-            "nullable": true
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
           },
           "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentOfWhichUseOfProceeds": {
-            "type": "number",
-            "nullable": true
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
           },
           "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentEnablingShare": {
-            "type": "number",
-            "nullable": true
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
           },
           "substantialContributionToTransitionToACircularEconomyInPercentEligible": {
-            "type": "number",
-            "nullable": true
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
           },
           "substantialContributionToTransitionToACircularEconomyInPercentAligned": {
-            "type": "number",
-            "nullable": true
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
           },
           "substantialContributionToTransitionToACircularEconomyInPercentOfWhichUseOfProceeds": {
-            "type": "number",
-            "nullable": true
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
           },
           "substantialContributionToTransitionToACircularEconomyInPercentEnablingShare": {
-            "type": "number",
-            "nullable": true
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
           },
           "substantialContributionToPollutionPreventionAndControlInPercentEligible": {
-            "type": "number",
-            "nullable": true
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
           },
           "substantialContributionToPollutionPreventionAndControlInPercentAligned": {
-            "type": "number",
-            "nullable": true
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
           },
           "substantialContributionToPollutionPreventionAndControlInPercentOfWhichUseOfProceeds": {
-            "type": "number",
-            "nullable": true
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
           },
           "substantialContributionToPollutionPreventionAndControlInPercentEnablingShare": {
-            "type": "number",
-            "nullable": true
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
           },
           "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentEligible": {
-            "type": "number",
-            "nullable": true
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
           },
           "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned": {
-            "type": "number",
-            "nullable": true
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
           },
           "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentOfWhichUseOfProceeds": {
-            "type": "number",
-            "nullable": true
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
           },
           "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentEnablingShare": {
-            "type": "number",
-            "nullable": true
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
           },
           "alignedActivities": {
-            "type": "array",
             "nullable": true,
-            "items": {
-              "$ref": "#/components/schemas/EuTaxonomyAlignedActivity"
-            }
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointListEuTaxonomyAlignedActivity"
+              }
+            ]
           },
           "enablingShareInPercent": {
-            "type": "number",
-            "nullable": true
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
           },
           "transitionalShareInPercent": {
-            "type": "number",
-            "nullable": true
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
           }
         }
       },
@@ -11807,14 +11917,18 @@
         "type": "object",
         "properties": {
           "relativeShareInPercent": {
-            "type": "number",
-            "nullable": true
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
           },
           "absoluteShare": {
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/AmountWithCurrency"
+                "$ref": "#/components/schemas/CurrencyDataPoint"
               }
             ]
           }
@@ -11824,14 +11938,18 @@
         "type": "object",
         "properties": {
           "relativeShareInPercent": {
-            "type": "number",
-            "nullable": true
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
           },
           "absoluteShare": {
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/AmountWithCurrency"
+                "$ref": "#/components/schemas/CurrencyDataPoint"
               }
             ]
           }
@@ -11841,14 +11959,18 @@
         "type": "object",
         "properties": {
           "relativeShareInPercent": {
-            "type": "number",
-            "nullable": true
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
           },
           "absoluteShare": {
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/AmountWithCurrency"
+                "$ref": "#/components/schemas/CurrencyDataPoint"
               }
             ]
           }
@@ -11858,14 +11980,18 @@
         "type": "object",
         "properties": {
           "relativeShareInPercent": {
-            "type": "number",
-            "nullable": true
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
           },
           "absoluteShare": {
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/AmountWithCurrency"
+                "$ref": "#/components/schemas/CurrencyDataPoint"
               }
             ]
           }
@@ -11915,20 +12041,23 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/EutaxonomyNonFinancialsGeneralFiscalYearDeviationOptions"
+                "$ref": "#/components/schemas/ExtendedDataPointEutaxonomyNonFinancialsGeneralFiscalYearDeviationOptions"
               }
             ]
           },
           "fiscalYearEnd": {
-            "type": "string",
-            "format": "date",
-            "nullable": true
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointLocalDate"
+              }
+            ]
           },
           "scopeOfEntities": {
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/YesNoNa"
+                "$ref": "#/components/schemas/ExtendedDataPointYesNoNa"
               }
             ]
           },
@@ -11936,7 +12065,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/YesNo"
+                "$ref": "#/components/schemas/ExtendedDataPointYesNo"
               }
             ]
           },
@@ -11944,7 +12073,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/YesNo"
+                "$ref": "#/components/schemas/ExtendedDataPointYesNo"
               }
             ]
           },
@@ -11957,8 +12086,12 @@
             ]
           },
           "numberOfEmployees": {
-            "type": "number",
-            "nullable": true
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
           },
           "referencedReports": {
             "type": "object",
@@ -12013,11 +12146,12 @@
             ]
           },
           "nonAlignedActivities": {
-            "type": "array",
             "nullable": true,
-            "items": {
-              "$ref": "#/components/schemas/EuTaxonomyActivity"
-            }
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointListEuTaxonomyActivity"
+              }
+            ]
           },
           "alignedShare": {
             "nullable": true,
@@ -12028,43 +12162,76 @@
             ]
           },
           "substantialContributionToClimateChangeMitigationInPercentAligned": {
-            "type": "number",
-            "nullable": true
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
           },
           "substantialContributionToClimateChangeAdaptationInPercentAligned": {
-            "type": "number",
-            "nullable": true
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
           },
           "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned": {
-            "type": "number",
-            "nullable": true
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
           },
           "substantialContributionToTransitionToACircularEconomyInPercentAligned": {
-            "type": "number",
-            "nullable": true
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
           },
           "substantialContributionToPollutionPreventionAndControlInPercentAligned": {
-            "type": "number",
-            "nullable": true
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
           },
           "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned": {
-            "type": "number",
-            "nullable": true
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
           },
           "alignedActivities": {
-            "type": "array",
             "nullable": true,
-            "items": {
-              "$ref": "#/components/schemas/EuTaxonomyAlignedActivity"
-            }
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointListEuTaxonomyAlignedActivity"
+              }
+            ]
           },
           "enablingShareInPercent": {
-            "type": "number",
-            "nullable": true
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
           },
           "transitionalShareInPercent": {
-            "type": "number",
-            "nullable": true
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
           }
         }
       },
@@ -12072,14 +12239,18 @@
         "type": "object",
         "properties": {
           "relativeShareInPercent": {
-            "type": "number",
-            "nullable": true
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
           },
           "absoluteShare": {
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/AmountWithCurrency"
+                "$ref": "#/components/schemas/CurrencyDataPoint"
               }
             ]
           }
@@ -12089,14 +12260,18 @@
         "type": "object",
         "properties": {
           "relativeShareInPercent": {
-            "type": "number",
-            "nullable": true
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
           },
           "absoluteShare": {
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/AmountWithCurrency"
+                "$ref": "#/components/schemas/CurrencyDataPoint"
               }
             ]
           }
@@ -12106,14 +12281,18 @@
         "type": "object",
         "properties": {
           "relativeShareInPercent": {
-            "type": "number",
-            "nullable": true
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
           },
           "absoluteShare": {
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/AmountWithCurrency"
+                "$ref": "#/components/schemas/CurrencyDataPoint"
               }
             ]
           }
@@ -12123,14 +12302,18 @@
         "type": "object",
         "properties": {
           "relativeShareInPercent": {
-            "type": "number",
-            "nullable": true
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
           },
           "absoluteShare": {
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/AmountWithCurrency"
+                "$ref": "#/components/schemas/CurrencyDataPoint"
               }
             ]
           }
@@ -12172,11 +12355,12 @@
             ]
           },
           "nonAlignedActivities": {
-            "type": "array",
             "nullable": true,
-            "items": {
-              "$ref": "#/components/schemas/EuTaxonomyActivity"
-            }
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointListEuTaxonomyActivity"
+              }
+            ]
           },
           "alignedShare": {
             "nullable": true,
@@ -12187,119 +12371,228 @@
             ]
           },
           "substantialContributionToClimateChangeMitigationInPercentEligible": {
-            "type": "number",
-            "nullable": true
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
           },
           "substantialContributionToClimateChangeMitigationInPercentAligned": {
-            "type": "number",
-            "nullable": true
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
           },
           "substantialContributionToClimateChangeMitigationInPercentOfWhichUseOfProceeds": {
-            "type": "number",
-            "nullable": true
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
           },
           "substantialContributionToClimateChangeMitigationInPercentEnablingShare": {
-            "type": "number",
-            "nullable": true
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
           },
           "substantialContributionToClimateChangeMitigationInPercentTransitionalShare": {
-            "type": "number",
-            "nullable": true
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
           },
           "substantialContributionToClimateChangeAdaptationInPercentEligible": {
-            "type": "number",
-            "nullable": true
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
           },
           "substantialContributionToClimateChangeAdaptationInPercentAligned": {
-            "type": "number",
-            "nullable": true
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
           },
           "substantialContributionToClimateChangeAdaptationInPercentOfWhichUseOfProceeds": {
-            "type": "number",
-            "nullable": true
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
           },
           "substantialContributionToClimateChangeAdaptationInPercentEnablingShare": {
-            "type": "number",
-            "nullable": true
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
           },
           "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentEligible": {
-            "type": "number",
-            "nullable": true
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
           },
           "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned": {
-            "type": "number",
-            "nullable": true
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
           },
           "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentOfWhichUseOfProceeds": {
-            "type": "number",
-            "nullable": true
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
           },
           "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentEnablingShare": {
-            "type": "number",
-            "nullable": true
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
           },
           "substantialContributionToTransitionToACircularEconomyInPercentEligible": {
-            "type": "number",
-            "nullable": true
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
           },
           "substantialContributionToTransitionToACircularEconomyInPercentAligned": {
-            "type": "number",
-            "nullable": true
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
           },
           "substantialContributionToTransitionToACircularEconomyInPercentOfWhichUseOfProceeds": {
-            "type": "number",
-            "nullable": true
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
           },
           "substantialContributionToTransitionToACircularEconomyInPercentEnablingShare": {
-            "type": "number",
-            "nullable": true
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
           },
           "substantialContributionToPollutionPreventionAndControlInPercentEligible": {
-            "type": "number",
-            "nullable": true
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
           },
           "substantialContributionToPollutionPreventionAndControlInPercentAligned": {
-            "type": "number",
-            "nullable": true
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
           },
           "substantialContributionToPollutionPreventionAndControlInPercentOfWhichUseOfProceeds": {
-            "type": "number",
-            "nullable": true
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
           },
           "substantialContributionToPollutionPreventionAndControlInPercentEnablingShare": {
-            "type": "number",
-            "nullable": true
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
           },
           "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentEligible": {
-            "type": "number",
-            "nullable": true
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
           },
           "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned": {
-            "type": "number",
-            "nullable": true
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
           },
           "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentOfWhichUseOfProceeds": {
-            "type": "number",
-            "nullable": true
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
           },
           "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentEnablingShare": {
-            "type": "number",
-            "nullable": true
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
           },
           "alignedActivities": {
-            "type": "array",
             "nullable": true,
-            "items": {
-              "$ref": "#/components/schemas/EuTaxonomyAlignedActivity"
-            }
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointListEuTaxonomyAlignedActivity"
+              }
+            ]
           },
           "enablingShareInPercent": {
-            "type": "number",
-            "nullable": true
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
           },
           "transitionalShareInPercent": {
-            "type": "number",
-            "nullable": true
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
           }
         }
       },
@@ -12307,14 +12600,18 @@
         "type": "object",
         "properties": {
           "relativeShareInPercent": {
-            "type": "number",
-            "nullable": true
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
           },
           "absoluteShare": {
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/AmountWithCurrency"
+                "$ref": "#/components/schemas/CurrencyDataPoint"
               }
             ]
           }
@@ -12324,14 +12621,18 @@
         "type": "object",
         "properties": {
           "relativeShareInPercent": {
-            "type": "number",
-            "nullable": true
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
           },
           "absoluteShare": {
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/AmountWithCurrency"
+                "$ref": "#/components/schemas/CurrencyDataPoint"
               }
             ]
           }
@@ -12341,14 +12642,18 @@
         "type": "object",
         "properties": {
           "relativeShareInPercent": {
-            "type": "number",
-            "nullable": true
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
           },
           "absoluteShare": {
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/AmountWithCurrency"
+                "$ref": "#/components/schemas/CurrencyDataPoint"
               }
             ]
           }
@@ -12358,14 +12663,178 @@
         "type": "object",
         "properties": {
           "relativeShareInPercent": {
-            "type": "number",
-            "nullable": true
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
           },
           "absoluteShare": {
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/AmountWithCurrency"
+                "$ref": "#/components/schemas/CurrencyDataPoint"
+              }
+            ]
+          }
+        }
+      },
+      "ExtendedDataPointEutaxonomyNonFinancialsGeneralFiscalYearDeviationOptions": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/EutaxonomyNonFinancialsGeneralFiscalYearDeviationOptions"
+              }
+            ]
+          },
+          "quality": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/QualityOptions"
+              }
+            ]
+          },
+          "comment": {
+            "type": "string",
+            "nullable": true
+          },
+          "dataSource": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDocumentReference"
+              }
+            ]
+          }
+        }
+      },
+      "ExtendedDataPointListEuTaxonomyActivity": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/EuTaxonomyActivity"
+            }
+          },
+          "quality": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/QualityOptions"
+              }
+            ]
+          },
+          "comment": {
+            "type": "string",
+            "nullable": true
+          },
+          "dataSource": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDocumentReference"
+              }
+            ]
+          }
+        }
+      },
+      "ExtendedDataPointListEuTaxonomyAlignedActivity": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/EuTaxonomyAlignedActivity"
+            }
+          },
+          "quality": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/QualityOptions"
+              }
+            ]
+          },
+          "comment": {
+            "type": "string",
+            "nullable": true
+          },
+          "dataSource": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDocumentReference"
+              }
+            ]
+          }
+        }
+      },
+      "ExtendedDataPointLocalDate": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "type": "string",
+            "format": "date",
+            "nullable": true
+          },
+          "quality": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/QualityOptions"
+              }
+            ]
+          },
+          "comment": {
+            "type": "string",
+            "nullable": true
+          },
+          "dataSource": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDocumentReference"
+              }
+            ]
+          }
+        }
+      },
+      "ExtendedDataPointYesNoNa": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNoNa"
+              }
+            ]
+          },
+          "quality": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/QualityOptions"
+              }
+            ]
+          },
+          "comment": {
+            "type": "string",
+            "nullable": true
+          },
+          "dataSource": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDocumentReference"
               }
             ]
           }
@@ -14733,11 +15202,9 @@
         ],
         "type": "object",
         "properties": {
-          "companyId": {
-            "type": "string"
-          },
-          "companyName": {
-            "type": "string"
+          "sector": {
+            "type": "string",
+            "nullable": true
           },
           "headquarters": {
             "type": "string"
@@ -14745,9 +15212,11 @@
           "countryCode": {
             "type": "string"
           },
-          "sector": {
-            "type": "string",
-            "nullable": true
+          "companyId": {
+            "type": "string"
+          },
+          "companyName": {
+            "type": "string"
           },
           "lei": {
             "type": "string",
