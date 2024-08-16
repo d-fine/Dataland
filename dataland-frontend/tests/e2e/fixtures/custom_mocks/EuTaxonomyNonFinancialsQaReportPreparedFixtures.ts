@@ -7,8 +7,9 @@ import {
 } from '@clients/qaservice';
 
 /**
- * Generates sfdr qa report prepared fixtures by generating random sfdr-qa-reports and
- * afterwards manipulating some fields via manipulator-functions to set specific values for those fields.
+ * Generates eu taxonomy non-financials qa report prepared fixtures by generating random
+ * eutaxonomy-non-financials-qa-reports and afterwards manipulating some fields via manipulator-functions to set
+ * specific values for those fields.
  * @returns the prepared fixtures
  */
 export function generateEuTaxonomyNonFinancialsQaReportPreparedFixtures(): Array<
@@ -40,8 +41,8 @@ function manipulateFixtureForEuTaxonomyNonFinancialsDatasetWithOneCorrection(
 }
 
 /**
- * Generates a qa-report for sfdr with a correction for one specific field.
- * @returns the generated sfdr qa report
+ * Generates a qa-report for eu taxonomy non-financials with a correction for one specific field.
+ * @returns the generated eu taxonomy non-financials qa report
  */
 function generateEuTaxonomyNonFinancialsQaReportWithCorrectionForRelativeShareInPercent(): EuTaxonomyNonFinancialsQaReport {
   return {

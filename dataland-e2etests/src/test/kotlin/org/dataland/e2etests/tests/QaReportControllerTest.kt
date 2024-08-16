@@ -51,7 +51,7 @@ class QaReportControllerTest {
         )
         val dataIdOfUpload = uploadInfo.first().actualStoredDataMetaInfo!!.dataId
         return withTechnicalUser(TechnicalUser.Admin) {
-            qaApiAccessor.sfdrQaReportControllerApi.postQaReport(dataIdOfUpload, sfdrQaReport)
+            qaApiAccessor.sfdrQaReportControllerApi.postSfdrDataQaReport(dataIdOfUpload, sfdrQaReport)
         }
     }
 
@@ -68,7 +68,7 @@ class QaReportControllerTest {
         )
         val dataIdOfUpload = uploadInfo.first().actualStoredDataMetaInfo!!.dataId
         return withTechnicalUser(TechnicalUser.Admin) {
-            qaApiAccessor.euTaxonomyNonFinancialsQaReportControllerApi.postQaReport1(
+            qaApiAccessor.euTaxonomyNonFinancialsQaReportControllerApi.postEutaxonomyNonFinancialsDataQaReport(
                 dataIdOfUpload,
                 euTaxonomyNonFinancialsQaReport,
             )
@@ -78,7 +78,7 @@ class QaReportControllerTest {
     private fun assertCanAccessSfdrQaDataset(reportMetaInformation: QaReportMetaInformation) {
         assertEquals(
             reportMetaInformation.dataId,
-            qaApiAccessor.sfdrQaReportControllerApi.getQaReport(
+            qaApiAccessor.sfdrQaReportControllerApi.getSfdrDataQaReport(
                 dataId = reportMetaInformation.dataId,
                 qaReportId = reportMetaInformation.qaReportId,
             ).metaInfo.dataId,
@@ -88,7 +88,7 @@ class QaReportControllerTest {
     private fun assertCanAccessEuTaxonomyNonFinancialsQaDataset(reportMetaInformation: QaReportMetaInformation) {
         assertEquals(
             reportMetaInformation.dataId,
-            qaApiAccessor.euTaxonomyNonFinancialsQaReportControllerApi.getQaReport1(
+            qaApiAccessor.euTaxonomyNonFinancialsQaReportControllerApi.getEutaxonomyNonFinancialsDataQaReport(
                 dataId = reportMetaInformation.dataId,
                 qaReportId = reportMetaInformation.qaReportId,
             ).metaInfo.dataId,
@@ -97,7 +97,7 @@ class QaReportControllerTest {
 
     private fun assertCannotAccessSfdrQaDataset(reportMetaInformation: QaReportMetaInformation) {
         val exception = assertThrows<ClientException> {
-            qaApiAccessor.sfdrQaReportControllerApi.getQaReport(
+            qaApiAccessor.sfdrQaReportControllerApi.getSfdrDataQaReport(
                 dataId = reportMetaInformation.dataId,
                 qaReportId = reportMetaInformation.qaReportId,
             )
@@ -107,7 +107,7 @@ class QaReportControllerTest {
 
     private fun assertCannotAccessEuTaxonomyNonFinancialsQaDataset(reportMetaInformation: QaReportMetaInformation) {
         val exception = assertThrows<ClientException> {
-            qaApiAccessor.euTaxonomyNonFinancialsQaReportControllerApi.getQaReport1(
+            qaApiAccessor.euTaxonomyNonFinancialsQaReportControllerApi.getEutaxonomyNonFinancialsDataQaReport(
                 dataId = reportMetaInformation.dataId,
                 qaReportId = reportMetaInformation.qaReportId,
             )
@@ -133,7 +133,7 @@ class QaReportControllerTest {
             apiAccessor.dataDeletionControllerApi.deleteCompanyAssociatedData(reportMetaInfo.dataId)
 
             val exception = assertThrows<ClientException> {
-                qaApiAccessor.sfdrQaReportControllerApi.getQaReport(
+                qaApiAccessor.sfdrQaReportControllerApi.getSfdrDataQaReport(
                     dataId = reportMetaInfo.dataId,
                     qaReportId = reportMetaInfo.qaReportId,
                 )
@@ -151,7 +151,7 @@ class QaReportControllerTest {
 
         val userUploadingTheQaReport = TechnicalUser.Admin
         withTechnicalUser(userUploadingTheQaReport) {
-            val retrievedReport = qaApiAccessor.sfdrQaReportControllerApi.getQaReport(
+            val retrievedReport = qaApiAccessor.sfdrQaReportControllerApi.getSfdrDataQaReport(
                 sfdrQaReportMetaInfo.dataId,
                 sfdrQaReportMetaInfo.qaReportId,
             )
@@ -180,7 +180,7 @@ class QaReportControllerTest {
             apiAccessor.dataDeletionControllerApi.deleteCompanyAssociatedData(reportMetaInfo.dataId)
 
             val exception = assertThrows<ClientException> {
-                qaApiAccessor.euTaxonomyNonFinancialsQaReportControllerApi.getQaReport1(
+                qaApiAccessor.euTaxonomyNonFinancialsQaReportControllerApi.getEutaxonomyNonFinancialsDataQaReport(
                     dataId = reportMetaInfo.dataId,
                     qaReportId = reportMetaInfo.qaReportId,
                 )
@@ -200,10 +200,11 @@ class QaReportControllerTest {
 
         val userUploadingTheQaReport = TechnicalUser.Admin
         withTechnicalUser(userUploadingTheQaReport) {
-            val retrievedReport = qaApiAccessor.euTaxonomyNonFinancialsQaReportControllerApi.getQaReport1(
-                euTaxonomyNonFinancialsQaReportMetaInfo.dataId,
-                euTaxonomyNonFinancialsQaReportMetaInfo.qaReportId,
-            )
+            val retrievedReport =
+                qaApiAccessor.euTaxonomyNonFinancialsQaReportControllerApi.getEutaxonomyNonFinancialsDataQaReport(
+                    euTaxonomyNonFinancialsQaReportMetaInfo.dataId,
+                    euTaxonomyNonFinancialsQaReportMetaInfo.qaReportId,
+                )
             assertEquals(userUploadingTheQaReport.technicalUserId, retrievedReport.metaInfo.reporterUserId)
             assertEquals(euTaxonomyNonFinancialsQaReportMetaInfo.dataId, retrievedReport.metaInfo.dataId)
             assertEquals(DataTypeEnum.eutaxonomyMinusNonMinusFinancials.value, retrievedReport.metaInfo.dataType)
