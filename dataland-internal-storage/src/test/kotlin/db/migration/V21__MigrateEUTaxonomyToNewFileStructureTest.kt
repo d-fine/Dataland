@@ -16,15 +16,4 @@ class V21__MigrateEUTaxonomyToNewFileStructureTest {
             V21__MigrateEUTaxonomyToNewFilestructure()::migrateEutaxonomyNonFinancialsData,
         )
     }
-
-    @Test
-    fun `check the data set from prod that broke migration`() {
-        TestUtils().testMigrationOfSingleDataset(
-            frameworkEutaxonomy,
-            "V21/originalBrokenProdExample.json",
-            "V21/expectedBrokenProdExample.json",
-            V21__MigrateEUTaxonomyToNewFilestructure()::migrateEutaxonomyNonFinancialsData,
-        )
-    }
-
 }

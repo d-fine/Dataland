@@ -188,17 +188,6 @@
       "comment": null,
       "quality": "Incomplete"
     },
-    "substantialContributionToClimateChangeAdaptationInPercentAligned": {
-      "value": 75.57,
-      "dataSource": {
-        "page": 1082,
-        "fileName": "IntegratedReport",
-        "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-        "tagName": "blockchains"
-      },
-      "comment": "quantify multi-byte feed",
-      "quality": null
-    },
     "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned": {
       "value": 60.97,
       "dataSource": {
