@@ -395,7 +395,7 @@ function createMinimumSafeguardsGroupData(activity: EuTaxonomyAlignedActivity): 
 
 /**
  * @param activity targeted activity object
- * @returns list of minimum safeguards data items
+ * @returns list of minimum Enabling Activity data items
  */
 function createEnablingActivityGroupData(activity: EuTaxonomyAlignedActivity): ActivityFieldValueObject[] {
   return [
@@ -410,7 +410,7 @@ function createEnablingActivityGroupData(activity: EuTaxonomyAlignedActivity): A
 
 /**
  * @param activity targeted activity object
- * @returns list of minimum safeguards data items
+ * @returns list of minimum Transitional Activity data items
  */
 function createTransitionalActivityGroupData(activity: EuTaxonomyAlignedActivity): ActivityFieldValueObject[] {
   return [
