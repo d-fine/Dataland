@@ -2,11 +2,11 @@ import { describeIf } from '@e2e/support/TestUtility';
 import { admin_name, admin_pw, getBaseUrl } from '@e2e/utils/Cypress';
 import { getKeycloakToken } from '@e2e/utils/Auth';
 import {
+  type CompanyAssociatedDataEutaxonomyNonFinancialsData,
   Configuration,
   type DataMetaInformation,
   DataTypeEnum,
   type EutaxonomyNonFinancialsData,
-  type CompanyAssociatedDataEutaxonomyNonFinancialsData,
   EutaxonomyNonFinancialsDataControllerApi,
 } from '@clients/backend';
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from '@e2e/utils/CompanyUpload';

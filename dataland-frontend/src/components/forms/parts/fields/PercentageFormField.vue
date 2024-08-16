@@ -1,13 +1,13 @@
 <template>
   <div class="form-field">
-    <UploadFormHeader :label="`${label} (%)`" :description="description" :is-required="required" />
+    <UploadFormHeader :label="label !== '' ? `${label} (%)` : ''" :description="description" :is-required="required" />
     <div class="grid">
       <FormKit
         type="text"
         :name="name"
         :validation-label="validationLabel ?? label"
         :validation="`number|${validation}`"
-        placeholder="Value in %"
+        :placeholder="placeholder"
         v-model="percentageFieldValue"
         :outerClass="inputClass"
       >
@@ -20,19 +20,18 @@
 </template>
 
 <script lang="ts">
-// @ts-nocheck
 import UploadFormHeader from '@/components/forms/parts/elements/basic/UploadFormHeader.vue';
 import { defineComponent } from 'vue';
 import { FormKit } from '@formkit/vue';
-import { FormFieldPropsWithPlaceholder } from '@/components/forms/parts/fields/FormFieldProps';
+import { BaseFormFieldProps } from '@/components/forms/parts/fields/FormFieldProps';
 
 export default defineComponent({
   name: 'PercentageFormField',
   components: { FormKit, UploadFormHeader },
   computed: {
     percentageFieldValue: {
-      get(): string {
-        return this.percentageFieldValueBind;
+      get(): string | undefined {
+        return this.percentageFieldValueBind?.toString();
       },
       set(newValue: string) {
         this.$emit('update:percentageFieldValueBind', newValue);
@@ -40,9 +39,13 @@ export default defineComponent({
     },
   },
   props: {
-    ...FormFieldPropsWithPlaceholder,
+    ...BaseFormFieldProps,
     percentageFieldValueBind: {
       type: [String, Number],
+    },
+    placeholder: {
+      type: String,
+      default: 'Value in %',
     },
   },
 });
