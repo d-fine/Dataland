@@ -93,10 +93,10 @@ interface DataRequestRepository : JpaRepository<DataRequestEntity, String> {
             "OR d.data_type = :#{#searchFilter.dataTypeFilter}) AND " +
             "(:#{#searchFilter.userIdFilterLength} = 0 " +
             "OR d.user_Id = :#{#searchFilter.userIdFilter}) AND " +
-            "(CAST(:#{#searchFilter.requestStatus} AS varchar) IS NULL " +
-            "OR status_table.request_status = CAST(:#{#searchFilter.requestStatus} AS varchar)) AND " +
-            "(CAST(:#{#searchFilter.accessStatus} AS varchar) IS NULL " +
-            "OR status_table.access_status = CAST(:#{#searchFilter.accessStatus}  AS varchar) ) AND " +
+            "(:#{#searchFilter.requestStatusLength} = 0 " +
+            "OR status_table.request_status = :#{#searchFilter.requestStatus} ) AND " +
+            "(:#{#searchFilter.accessStatusLength} = 0 " +
+            "OR status_table.access_status = :#{#searchFilter.accessStatus}  ) AND " +
             "(:#{#searchFilter.reportingPeriodFilterLength} = 0 " +
             "OR d.reporting_period = :#{#searchFilter.reportingPeriodFilter}) AND " +
             "(:#{#searchFilter.datalandCompanyIdFilterLength} = 0 " +
