@@ -85,7 +85,7 @@ interface DataRequestRepository : JpaRepository<DataRequestEntity, String> {
             "JOIN most_recent ON most_recent.data_request_id = request_status_history.data_request_id " +
             "AND most_recent.creation_timestamp = request_status_history.creation_timestamp), " +
 
-            "filtered_table AS (SELECT * " +
+            "filtered_table AS (SELECT d.data_request_id " +
             "FROM data_requests d " +
             "JOIN  status_table ON status_table.request_id = d.data_request_id " +
             "WHERE " +
@@ -102,8 +102,8 @@ interface DataRequestRepository : JpaRepository<DataRequestEntity, String> {
             "(:#{#searchFilter.datalandCompanyIdFilterLength} = 0 " +
             "OR d.dataland_company_id = :#{#searchFilter.datalandCompanyIdFilter}))" +
 
-                "SELECT d.* FROM data_requests d " +
-                "JOIN filtered_table ON filtered_table.data_request_id = d.data_request_id"
+            "SELECT d.* FROM data_requests d " +
+            "JOIN filtered_table ON filtered_table.data_request_id = d.data_request_id",
 
     )
     fun searchDataRequestEntity(
