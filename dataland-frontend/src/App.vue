@@ -25,7 +25,6 @@ const windowWidth = ref<number>();
 const storeWindowWidth = (): void => {
   windowWidth.value = window.innerWidth;
 };
-// TODO on refresh ist kaputt => tab erscheint nicht
 export default defineComponent({
   name: 'app',
   components: { DynamicDialog },
@@ -72,7 +71,10 @@ export default defineComponent({
         throw new Error('The Keycloak promise has not yet been initialised. This should not be possible...');
       },
       companyRoleAssignments: computed(() => {
-        console.log('Currently the company role assignments are: ' + this.companyRoleAssignments); // TODO remove
+        console.log(
+          'Currently the company role assignments are: ' +
+            this.companyRoleAssignments?.map((it) => it.companyId + '-' + it.companyRole)
+        ); // TODO debugging console log: remove before merge
         return this.companyRoleAssignments;
       }),
       authenticated: computed(() => {
@@ -101,7 +103,7 @@ export default defineComponent({
      * Sets up the whole authentication status of the user when starting the Dataland Frontend App.
      */
     processUserAuthentication() {
-      console.log('processUserAuthentication'); //TODO remove
+      console.log('processUserAuthentication'); //TODO debugging console log, remove before merging to main
       this.keycloakPromise = this.initKeycloak();
       if (this.keycloakPromise) {
         const apiClientProvider = new ApiClientProvider(this.keycloakPromise);
@@ -142,7 +144,7 @@ export default defineComponent({
      * @param apiClientProvider to trigger a request to the backend of Dataland for getting the users company roles
      */
     handleResolvedKeycloakPromise(resolvedKeycloakPromise: Keycloak, apiClientProvider: ApiClientProvider) {
-      console.log('handleResolvedKeycloakPromise'); // TODO remove
+      console.log('handleResolvedKeycloakPromise'); // TODO debugging console log, remove before merging to main
       this.resolvedKeycloakPromise = resolvedKeycloakPromise;
       if (this.resolvedKeycloakPromise.authenticated) {
         void updateTokenAndItsExpiryTimestampAndStoreBoth(this.resolvedKeycloakPromise, true);
@@ -156,11 +158,10 @@ export default defineComponent({
      * @param apiClientProvider to trigger a request to the backend of Dataland for getting the users company roles
      */
     setCompanyRolesForUser(resolvedKeycloakPromise: Keycloak, apiClientProvider: ApiClientProvider) {
-      console.log('setCompanyRolesForUser'); // TODO remove
+      console.log('setCompanyRolesForUser'); // TODO debugging console log, remove before merging to main
       getCompanyRoleAssignmentsForCurrentUser(resolvedKeycloakPromise, apiClientProvider).then(
         (retrievedCompanyRoleAssignments) => (this.companyRoleAssignments = retrievedCompanyRoleAssignments)
       );
-      console.log('setCompanyRolesForUser'); // TODO remove
     },
 
     /**

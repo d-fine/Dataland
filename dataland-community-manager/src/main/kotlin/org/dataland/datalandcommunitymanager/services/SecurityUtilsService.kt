@@ -133,14 +133,14 @@ class SecurityUtilsService(
     }
 
     /**
-     * Returns false if the user tries to patch the accessStatus of their own request without having the proper rights
-     * @param accessStatus the accessStatus of the patch
+     * Returns true if the user is not trying to patch the accessStatus
+     * @param accessStatusPatch the accessStatus of the patch
      */
     @Transactional
-    fun noAccessStatusPatch(
-        accessStatus: AccessStatus?,
+    fun isNotTryingToPatchAccessStatus(
+        accessStatusPatch: AccessStatus?,
     ): Boolean {
-        return accessStatus == null
+        return accessStatusPatch == null
     }
 
     /**
@@ -187,5 +187,7 @@ class SecurityUtilsService(
     fun areOnlyAuthorizedFieldsPatched(requestStatus: RequestStatus?, contacts: Set<String>?, message: String?):
         Boolean {
         return requestStatus == null && contacts.isNullOrEmpty() && message.isNullOrBlank()
+        // TODO test:  Dürfte nicht eigentlich contacts und message NUR null sein ??! Sonst kann ich mit leerer Liste
+        // TODO die contacts überschreiben!
     }
 }
