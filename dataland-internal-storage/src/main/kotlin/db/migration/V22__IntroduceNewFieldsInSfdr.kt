@@ -18,24 +18,25 @@ class V22__IntroduceNewFieldsInSfdr : BaseJavaMigration() {
         )
     }
 
+    private val oldToNewSocialAndEmployeeMattersKey = mapOf(
+        "femaleBoardMembers" to "femaleBoardMembersSupervisoryBoard",
+        "maleBoardMembers" to "maleBoardMembersSupervisoryBoard",
+        "boardGenderDiversityInPercent" to "boardGenderDiversitySupervisoryBoardInPercent",
+    )
+
     /**
      * Migrates sfdr data to the new sfdr data model.
      */
     fun migrateBoardFields(dataTableEntity: DataTableEntity) {
         val dataset = dataTableEntity.dataJsonObject
 
-        val socialObject = dataset.getJSONObject("social") ?: return
+        val socialObject = dataset.optJSONObject("social") ?: return
+        val socialAndEmployeeMattersObject = socialObject.optJSONObject("socialAndEmployeeMatters") ?: return
 
-        val socialAndEmployeeMattersObject = socialObject.getJSONObject("socialAndEmployeeMatters") ?: return
-
-        val femaleBoardMembers = socialAndEmployeeMattersObject.remove("femaleBoardMembers")
-        socialAndEmployeeMattersObject.put("femaleBoardMembersSupervisoryBoard", femaleBoardMembers)
-
-        val maleBoardMembers = socialAndEmployeeMattersObject.remove("maleBoardMembers")
-        socialAndEmployeeMattersObject.put("maleBoardMembersSupervisoryBoard", maleBoardMembers)
-
-        val boardGenderDiversity = socialAndEmployeeMattersObject.remove("boardGenderDiversityInPercent")
-        socialAndEmployeeMattersObject.put("boardGenderDiversitySupervisoryBoardInPercent", boardGenderDiversity)
+        for ((oldKey, newKey) in oldToNewSocialAndEmployeeMattersKey) {
+            val oldValue = socialAndEmployeeMattersObject.remove(oldKey) ?: continue
+            socialAndEmployeeMattersObject.put(newKey, oldValue)
+        }
 
         dataTableEntity.companyAssociatedData.put("data", dataset.toString())
     }
