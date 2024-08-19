@@ -40,6 +40,9 @@ Execute `sudo apt-get update && sudo apt-get upgrade` on
 - [ ] letsencrypt.dataland.com
 - [ ] dataland.com (align beforehand)
 
+If the updates require a reboot (for e.g. a kernel update), you can restart the machine with `sudo reboot`.
+However, for dataland.com, you may want to avoid any interruption and schedule the reboot at the night with `sudo shutdown -r 02:00`.
+
 ## ssh-keys maintenance
 
 - [ ] Make sure the ssh-keys file reflects the current team composition. Execute the update script as described in the 
