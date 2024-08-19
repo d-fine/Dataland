@@ -72,7 +72,7 @@ interface DataRequestRepository : JpaRepository<DataRequestEntity, String> {
     /**
      * A function for searching for data request information by dataType, userID, requestID, requestStatus,
      * accessStatus, reportingPeriod or dataRequestCompanyIdentifierValue
-     * @param searchFilter takes the input params to check ofr
+     * @param searchFilter takes the input params to check for
      * @returns the data request
      */
     @Query(
