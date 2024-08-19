@@ -116,9 +116,15 @@ interface DataRequestRepository : JpaRepository<DataRequestEntity, String> {
      * @returns the initial list of data request entities together with the associated status history
      */
     @Query(
-        "SELECT DISTINCT d FROM DataRequestEntity d " +
+        nativeQuery = true,
+        value =
+        "SELECT d.* FROM data_requests d " +
+                "LEFT JOIN request_status_history ON request_status_history.data_request_id = d.data_request_id",
+       /* "SELECT DISTINCT d FROM DataRequestEntity d " +
             "LEFT JOIN FETCH d.dataRequestStatusHistory " +
-            "WHERE d IN :dataRequests",
+            "ON d.data_request_id WHERE d IN :dataRequests",
+
+        */
     )
     fun fetchStatusHistory(
         dataRequests: List<DataRequestEntity>,

@@ -123,6 +123,7 @@ class DataRequestQueryManager(
         reportingPeriod: String?,
         datalandCompanyId: String?,
     ): List<StoredDataRequest>? {
+        //TODO remove logger
         val printRequestStatus = requestStatus?.name ?: ""
         logger.info(printRequestStatus)
         val printDataType = dataType?.value ?: ""
