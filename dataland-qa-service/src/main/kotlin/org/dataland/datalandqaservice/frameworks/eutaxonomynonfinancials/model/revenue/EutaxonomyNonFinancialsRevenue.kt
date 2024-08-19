@@ -4,6 +4,8 @@ package org.dataland.datalandqaservice.frameworks.eutaxonomynonfinancials.model.
 import jakarta.validation.Valid
 import org.dataland.datalandbackend.openApiClient.model.CurrencyDataPoint
 import org.dataland.datalandbackend.openApiClient.model.ExtendedDataPointBigDecimal
+import org.dataland.datalandbackend.openApiClient.model.ExtendedDataPointListEuTaxonomyActivity
+import org.dataland.datalandbackend.openApiClient.model.ExtendedDataPointListEuTaxonomyAlignedActivity
 import org.dataland.datalandqaservice.frameworks.eutaxonomynonfinancials.model.revenue.alignedShare
     .EutaxonomyNonFinancialsRevenueAlignedShare
 import org.dataland.datalandqaservice.frameworks.eutaxonomynonfinancials.model.revenue.eligibleShare
@@ -28,6 +30,8 @@ data class EutaxonomyNonFinancialsRevenue(
 
     @field:Valid()
     val nonAlignedShare: EutaxonomyNonFinancialsRevenueNonAlignedShare? = null,
+
+    val nonAlignedActivities: QaReportDataPoint<ExtendedDataPointListEuTaxonomyActivity?>? = null,
 
     @field:Valid()
     val alignedShare: EutaxonomyNonFinancialsRevenueAlignedShare? = null,
@@ -55,6 +59,8 @@ data class EutaxonomyNonFinancialsRevenue(
     @field:Valid()
     val substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent:
     QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
+
+    val alignedActivities: QaReportDataPoint<ExtendedDataPointListEuTaxonomyAlignedActivity?>? = null,
 
     @field:Valid()
     val enablingShareInPercent: QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,

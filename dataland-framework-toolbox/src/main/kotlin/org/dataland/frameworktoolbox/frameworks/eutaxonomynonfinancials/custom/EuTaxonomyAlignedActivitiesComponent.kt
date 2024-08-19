@@ -9,7 +9,6 @@ import org.dataland.frameworktoolbox.intermediate.datapoints.NoDocumentSupport
 import org.dataland.frameworktoolbox.specific.datamodel.TypeReference
 import org.dataland.frameworktoolbox.specific.datamodel.elements.DataClassBuilder
 import org.dataland.frameworktoolbox.specific.fixturegenerator.elements.FixtureSectionBuilder
-import org.dataland.frameworktoolbox.specific.qamodel.addQaPropertyWithDocumentSupport
 import org.dataland.frameworktoolbox.specific.uploadconfig.elements.UploadCategoryBuilder
 import org.dataland.frameworktoolbox.specific.viewconfig.elements.SectionConfigBuilder
 import org.dataland.frameworktoolbox.specific.viewconfig.elements.getTypescriptFieldAccessor
@@ -72,26 +71,18 @@ class EuTaxonomyAlignedActivitiesComponent(
     }
 
     override fun generateDefaultQaModel(dataClassBuilder: DataClassBuilder) {
-        dataClassBuilder.addQaPropertyWithDocumentSupport(
-            documentSupport,
+        dataClassBuilder.addProperty(
             identifier,
             TypeReference(
-                "org.dataland.datalandbackend.model.datapoints.ExtendedDataPoint",
+                "org.dataland.datalandqaservice.model.reports.QaReportDataPoint",
                 isNullable,
                 listOf(
                     TypeReference(
-                        "kotlin.collections.MutableList",
+                        "org.dataland.datalandbackend.openApiClient.model" +
+                            ".ExtendedDataPointListEuTaxonomyAlignedActivity",
                         isNullable,
-
-                        listOf(
-
-                            TypeReference(
-                                "org.dataland.datalandbackend.frameworks.eutaxonomynonfinancials" +
-                                    ".custom.EuTaxonomyAlignedActivity",
-                                false,
-                            ),
-                        ),
                     ),
+
                 ),
             ),
         )

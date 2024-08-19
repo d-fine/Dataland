@@ -1687,6 +1687,430 @@
           }
         }
       },
+      "AmountWithCurrency": {
+        "type": "object",
+        "properties": {
+          "amount": {
+            "type": "number"
+          },
+          "currency": {
+            "type": "string"
+          }
+        }
+      },
+      "EuTaxonomyActivity": {
+        "required": [
+          "activityName"
+        ],
+        "type": "object",
+        "properties": {
+          "activityName": {
+            "type": "string",
+            "enum": [
+              "AcquisitionAndOwnershipOfBuildings",
+              "Afforestation",
+              "AirTransportGroundHandlingOperations",
+              "AirportInfrastructure",
+              "AnaerobicDigestionOfBioWaste",
+              "AnaerobicDigestionOfSewageSludge",
+              "CloseToMarketResearchDevelopmentAndInnovation",
+              "CogenerationOfHeatCoolAndPowerFromBioenergy",
+              "CogenerationOfHeatCoolAndPowerFromGeothermalEnergy",
+              "CogenerationOfHeatCoolAndPowerFromRenewableNonFossilGaseousAndLiquidFuels",
+              "CogenerationOfHeatCoolAndPowerFromSolarEnergy",
+              "CollectionAndTransportOfHazardousWaste",
+              "CollectionAndTransportOfNonHazardousAndHazardousWaste",
+              "CollectionAndTransportOfNonHazardousWasteInSourceSegregatedFractions",
+              "CompostingOfBioWaste",
+              "ComputerProgrammingConsultancyAndRelatedActivities",
+              "ConservationForestry",
+              "ConservationIncludingRestorationOfHabitatsEcosystemsAndSpecies",
+              "ConstructionAndSafeOperationOfNewNuclearPowerPlantsForTheGenerationOfElectricityAndOrHeatIncludingForHydrogenProductionUsingBestAvailableTechnologies",
+              "ConstructionExtensionAndOperationOfWasteWaterCollectionAndTreatment",
+              "ConstructionExtensionAndOperationOfWaterCollectionTreatmentAndSupplySystems",
+              "ConstructionOfNewBuildings",
+              "ConsultancyForPhysicalClimateRiskManagementAndAdaptation",
+              "CreativeArtsAndEntertainmentActivities",
+              "DataDrivenSolutionsForGhgEmissionsReductions",
+              "DataProcessingHostingAndRelatedActivities",
+              "DemolitionAndWreckingOfBuildingsAndOtherStructures",
+              "DepollutionAndDismantlingOfEndOfLifeProducts",
+              "Desalination",
+              "DistrictHeatingCoolingDistribution",
+              "Education",
+              "ElectricityGenerationFromBioenergy",
+              "ElectricityGenerationFromFossilGaseousFuels",
+              "ElectricityGenerationFromGeothermalEnergy",
+              "ElectricityGenerationFromHydropower",
+              "ElectricityGenerationFromNuclearEnergyInExistingInstallations",
+              "ElectricityGenerationFromOceanEnergyTechnologies",
+              "ElectricityGenerationFromRenewableNonFossilGaseousAndLiquidFuels",
+              "ElectricityGenerationFromWindPower",
+              "ElectricityGenerationUsingConcentratedSolarPowerCspTechnology",
+              "ElectricityGenerationUsingSolarPhotovoltaicTechnology",
+              "EmergencyServices",
+              "EngineeringActivitiesAndRelatedTechnicalConsultancyDedicatedToAdaptationToClimateChange",
+              "FloodRiskPreventionAndProtectionInfrastructure",
+              "ForestManagement",
+              "FreightRailTransport",
+              "FreightTransportServicesByRoad",
+              "HighEfficiencyCoGenerationOfHeatCoolAndPowerFromFossilGaseousFuels",
+              "HotelsHolidayCampingGroundsAndSimilarAccommodation",
+              "InfrastructureEnablingLowCarbonRoadTransportAndPublicTransport",
+              "InfrastructureEnablingLowCarbonWaterTransport",
+              "InfrastructureEnablingRoadTransportAndPublicTransport",
+              "InfrastructureForPersonalMobilityCycleLogistics",
+              "InfrastructureForRailTransport",
+              "InfrastructureForWaterTransport",
+              "InlandFreightWaterTransport",
+              "InlandPassengerWaterTransport",
+              "InstallationAndOperationOfElectricHeatPumps",
+              "InstallationMaintenanceAndRepairOfChargingStationsForElectricVehiclesInBuildingsAndParkingSpacesAttachedToBuildings",
+              "InstallationMaintenanceAndRepairOfEnergyEfficiencyEquipment",
+              "InstallationMaintenanceAndRepairOfInstrumentsAndDevicesForMeasuringRegulationAndControllingEnergyPerformanceOfBuildings",
+              "InstallationMaintenanceAndRepairOfRenewableEnergyTechnologies",
+              "LandfillGasCaptureAndUtilisation",
+              "LeasingOfAircraft",
+              "LibrariesArchivesMuseumsAndCulturalActivities",
+              "LowCarbonAirportInfrastructure",
+              "MaintenanceOfRoadsAndMotorways",
+              "ManufactureInstallationAndAssociatedServicesForLeakageControlTechnologiesEnablingLeakageReductionAndPreventionInWaterSupplySystems",
+              "ManufactureInstallationAndServicingOfHighMediumAndLowVoltageElectricalEquipmentForElectricalTransmissionAndDistributionThatResultInOrEnableASubstantialContributionToClimateChangeMitigation",
+              "ManufactureOfActivePharmaceuticalIngredientsApiOrActiveSubstances",
+              "ManufactureOfAluminium",
+              "ManufactureOfAnhydrousAmmonia",
+              "ManufactureOfAutomotiveAndMobilityComponents",
+              "ManufactureOfBatteries",
+              "ManufactureOfBiogasAndBiofuelsForUseInTransportAndOfBioliquids",
+              "ManufactureOfCarbonBlack",
+              "ManufactureOfCement",
+              "ManufactureOfChlorine",
+              "ManufactureOfElectricalAndElectronicEquipment",
+              "ManufactureOfEnergyEfficiencyEquipmentForBuildings",
+              "ManufactureOfEquipmentForTheProductionAndUseOfHydrogen",
+              "ManufactureOfHydrogen",
+              "ManufactureOfIronAndSteel",
+              "ManufactureOfLowCarbonTechnologiesForTransport",
+              "ManufactureOfMedicinalProducts",
+              "ManufactureOfNitricAcid",
+              "ManufactureOfOrganicBasicChemicals",
+              "ManufactureOfOtherLowCarbonTechnologies",
+              "ManufactureOfPlasticPackagingGoods",
+              "ManufactureOfPlasticsInPrimaryForm",
+              "ManufactureOfRailRollingStockConstituents",
+              "ManufactureOfRenewableEnergyTechnologies",
+              "ManufactureOfSodaAsh",
+              "ManufacturingOfAircraft",
+              "MarketplaceForTheTradeOfSecondHandGoodsForReuse",
+              "MaterialRecoveryFromNonHazardousWaste",
+              "MotionPictureVideoAndTelevisionProgrammeProductionSoundRecordingAndMusicPublishingActivities",
+              "NatureBasedSolutionsForFloodAndDroughtRiskPreventionAndProtection",
+              "NonLifeInsuranceUnderwritingOfClimateRelatedPerils",
+              "OperationOfPersonalMobilityDevicesCycleLogistics",
+              "PassengerAndFreightAirTransport",
+              "PassengerInterurbanRailTransport",
+              "PhosphorusRecoveryFromWasteWater",
+              "PreCommercialStagesOfAdvancedTechnologiesToProduceEnergyFromNuclearProcessesWithMinimalWasteFromTheFuelCycle",
+              "PreparationForReUseOfEndOfLifeProductsAndProductComponents",
+              "ProductAsAServiceAndOtherCircularUseAndResultOrientedServiceModels",
+              "ProductionOfAlternativeWaterResourcesForPurposesOtherThanHumanConsumption",
+              "ProductionOfHeatCoolFromBioenergy",
+              "ProductionOfHeatCoolFromFossilGaseousFuelsInAnEfficientDistrictHeatingAndCoolingSystem",
+              "ProductionOfHeatCoolFromGeothermalEnergy",
+              "ProductionOfHeatCoolFromRenewableNonFossilGaseousAndLiquidFuels",
+              "ProductionOfHeatCoolFromSolarThermalHeating",
+              "ProductionOfHeatCoolUsingWasteHeat",
+              "ProfessionalServicesRelatedToEnergyPerformanceOfBuildings",
+              "ProgrammingAndBroadcastingActivities",
+              "ProvisionOfItOtDataDrivenSolutions",
+              "ProvisionOfItOtDataDrivenSolutionsForLeakageReduction",
+              "RecoveryOfBioWasteByAnaerobicDigestionOrComposting",
+              "RehabilitationAndRestorationOfForestsIncludingReforestationAndNaturalForestRegenerationAfterAnExtremeEvent",
+              "Reinsurance",
+              "RemediationOfContaminatedSitesAndAreas",
+              "RemediationOfLegallyNonConformingLandfillsAndAbandonedOrIllegalWasteDumps",
+              "RenewalOfWasteWaterCollectionAndTreatment",
+              "RenewalOfWaterCollectionTreatmentAndSupplySystems",
+              "RenovationOfExistingBuildings",
+              "RepairRefurbishmentAndRemanufacturing",
+              "ResearchDevelopmentAndInnovationForDirectAirCaptureOfCo2",
+              "ResidentialCareActivities",
+              "RestorationOfWetlands",
+              "RetrofittingOfInlandWaterPassengerAndFreightTransport",
+              "RetrofittingOfSeaAndCoastalFreightAndPassengerWaterTransport",
+              "SaleOfSecondHandGoods",
+              "SaleOfSpareParts",
+              "SeaAndCoastalFreightWaterTransportVesselsForPortOperationsAndAuxiliaryActivities",
+              "SeaAndCoastalPassengerWaterTransport",
+              "SoftwareEnablingPhysicalClimateRiskManagementAndAdaptation",
+              "SortingAndMaterialRecoveryOfNonHazardousWaste",
+              "StorageOfElectricity",
+              "StorageOfHydrogen",
+              "StorageOfThermalEnergy",
+              "SustainableUrbanDrainageSystemsSuds",
+              "TransmissionAndDistributionNetworksForRenewableAndLowCarbonGases",
+              "TransmissionAndDistributionOfElectricity",
+              "TransportByMotorbikesPassengerCarsAndLightCommercialVehicles",
+              "TransportOfCo2",
+              "TreatmentOfHazardousWaste",
+              "UndergroundPermanentGeologicalStorageOfCo2",
+              "UrbanAndSuburbanTransportRoadPassengerTransport",
+              "UrbanWasteWaterTreatment",
+              "UseOfConcreteInCivilEngineering",
+              "WaterSupply"
+            ]
+          },
+          "naceCodes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "share": {
+            "$ref": "#/components/schemas/RelativeAndAbsoluteFinancialShare"
+          }
+        }
+      },
+      "EuTaxonomyAlignedActivity": {
+        "required": [
+          "activityName"
+        ],
+        "type": "object",
+        "properties": {
+          "activityName": {
+            "type": "string",
+            "enum": [
+              "AcquisitionAndOwnershipOfBuildings",
+              "Afforestation",
+              "AirTransportGroundHandlingOperations",
+              "AirportInfrastructure",
+              "AnaerobicDigestionOfBioWaste",
+              "AnaerobicDigestionOfSewageSludge",
+              "CloseToMarketResearchDevelopmentAndInnovation",
+              "CogenerationOfHeatCoolAndPowerFromBioenergy",
+              "CogenerationOfHeatCoolAndPowerFromGeothermalEnergy",
+              "CogenerationOfHeatCoolAndPowerFromRenewableNonFossilGaseousAndLiquidFuels",
+              "CogenerationOfHeatCoolAndPowerFromSolarEnergy",
+              "CollectionAndTransportOfHazardousWaste",
+              "CollectionAndTransportOfNonHazardousAndHazardousWaste",
+              "CollectionAndTransportOfNonHazardousWasteInSourceSegregatedFractions",
+              "CompostingOfBioWaste",
+              "ComputerProgrammingConsultancyAndRelatedActivities",
+              "ConservationForestry",
+              "ConservationIncludingRestorationOfHabitatsEcosystemsAndSpecies",
+              "ConstructionAndSafeOperationOfNewNuclearPowerPlantsForTheGenerationOfElectricityAndOrHeatIncludingForHydrogenProductionUsingBestAvailableTechnologies",
+              "ConstructionExtensionAndOperationOfWasteWaterCollectionAndTreatment",
+              "ConstructionExtensionAndOperationOfWaterCollectionTreatmentAndSupplySystems",
+              "ConstructionOfNewBuildings",
+              "ConsultancyForPhysicalClimateRiskManagementAndAdaptation",
+              "CreativeArtsAndEntertainmentActivities",
+              "DataDrivenSolutionsForGhgEmissionsReductions",
+              "DataProcessingHostingAndRelatedActivities",
+              "DemolitionAndWreckingOfBuildingsAndOtherStructures",
+              "DepollutionAndDismantlingOfEndOfLifeProducts",
+              "Desalination",
+              "DistrictHeatingCoolingDistribution",
+              "Education",
+              "ElectricityGenerationFromBioenergy",
+              "ElectricityGenerationFromFossilGaseousFuels",
+              "ElectricityGenerationFromGeothermalEnergy",
+              "ElectricityGenerationFromHydropower",
+              "ElectricityGenerationFromNuclearEnergyInExistingInstallations",
+              "ElectricityGenerationFromOceanEnergyTechnologies",
+              "ElectricityGenerationFromRenewableNonFossilGaseousAndLiquidFuels",
+              "ElectricityGenerationFromWindPower",
+              "ElectricityGenerationUsingConcentratedSolarPowerCspTechnology",
+              "ElectricityGenerationUsingSolarPhotovoltaicTechnology",
+              "EmergencyServices",
+              "EngineeringActivitiesAndRelatedTechnicalConsultancyDedicatedToAdaptationToClimateChange",
+              "FloodRiskPreventionAndProtectionInfrastructure",
+              "ForestManagement",
+              "FreightRailTransport",
+              "FreightTransportServicesByRoad",
+              "HighEfficiencyCoGenerationOfHeatCoolAndPowerFromFossilGaseousFuels",
+              "HotelsHolidayCampingGroundsAndSimilarAccommodation",
+              "InfrastructureEnablingLowCarbonRoadTransportAndPublicTransport",
+              "InfrastructureEnablingLowCarbonWaterTransport",
+              "InfrastructureEnablingRoadTransportAndPublicTransport",
+              "InfrastructureForPersonalMobilityCycleLogistics",
+              "InfrastructureForRailTransport",
+              "InfrastructureForWaterTransport",
+              "InlandFreightWaterTransport",
+              "InlandPassengerWaterTransport",
+              "InstallationAndOperationOfElectricHeatPumps",
+              "InstallationMaintenanceAndRepairOfChargingStationsForElectricVehiclesInBuildingsAndParkingSpacesAttachedToBuildings",
+              "InstallationMaintenanceAndRepairOfEnergyEfficiencyEquipment",
+              "InstallationMaintenanceAndRepairOfInstrumentsAndDevicesForMeasuringRegulationAndControllingEnergyPerformanceOfBuildings",
+              "InstallationMaintenanceAndRepairOfRenewableEnergyTechnologies",
+              "LandfillGasCaptureAndUtilisation",
+              "LeasingOfAircraft",
+              "LibrariesArchivesMuseumsAndCulturalActivities",
+              "LowCarbonAirportInfrastructure",
+              "MaintenanceOfRoadsAndMotorways",
+              "ManufactureInstallationAndAssociatedServicesForLeakageControlTechnologiesEnablingLeakageReductionAndPreventionInWaterSupplySystems",
+              "ManufactureInstallationAndServicingOfHighMediumAndLowVoltageElectricalEquipmentForElectricalTransmissionAndDistributionThatResultInOrEnableASubstantialContributionToClimateChangeMitigation",
+              "ManufactureOfActivePharmaceuticalIngredientsApiOrActiveSubstances",
+              "ManufactureOfAluminium",
+              "ManufactureOfAnhydrousAmmonia",
+              "ManufactureOfAutomotiveAndMobilityComponents",
+              "ManufactureOfBatteries",
+              "ManufactureOfBiogasAndBiofuelsForUseInTransportAndOfBioliquids",
+              "ManufactureOfCarbonBlack",
+              "ManufactureOfCement",
+              "ManufactureOfChlorine",
+              "ManufactureOfElectricalAndElectronicEquipment",
+              "ManufactureOfEnergyEfficiencyEquipmentForBuildings",
+              "ManufactureOfEquipmentForTheProductionAndUseOfHydrogen",
+              "ManufactureOfHydrogen",
+              "ManufactureOfIronAndSteel",
+              "ManufactureOfLowCarbonTechnologiesForTransport",
+              "ManufactureOfMedicinalProducts",
+              "ManufactureOfNitricAcid",
+              "ManufactureOfOrganicBasicChemicals",
+              "ManufactureOfOtherLowCarbonTechnologies",
+              "ManufactureOfPlasticPackagingGoods",
+              "ManufactureOfPlasticsInPrimaryForm",
+              "ManufactureOfRailRollingStockConstituents",
+              "ManufactureOfRenewableEnergyTechnologies",
+              "ManufactureOfSodaAsh",
+              "ManufacturingOfAircraft",
+              "MarketplaceForTheTradeOfSecondHandGoodsForReuse",
+              "MaterialRecoveryFromNonHazardousWaste",
+              "MotionPictureVideoAndTelevisionProgrammeProductionSoundRecordingAndMusicPublishingActivities",
+              "NatureBasedSolutionsForFloodAndDroughtRiskPreventionAndProtection",
+              "NonLifeInsuranceUnderwritingOfClimateRelatedPerils",
+              "OperationOfPersonalMobilityDevicesCycleLogistics",
+              "PassengerAndFreightAirTransport",
+              "PassengerInterurbanRailTransport",
+              "PhosphorusRecoveryFromWasteWater",
+              "PreCommercialStagesOfAdvancedTechnologiesToProduceEnergyFromNuclearProcessesWithMinimalWasteFromTheFuelCycle",
+              "PreparationForReUseOfEndOfLifeProductsAndProductComponents",
+              "ProductAsAServiceAndOtherCircularUseAndResultOrientedServiceModels",
+              "ProductionOfAlternativeWaterResourcesForPurposesOtherThanHumanConsumption",
+              "ProductionOfHeatCoolFromBioenergy",
+              "ProductionOfHeatCoolFromFossilGaseousFuelsInAnEfficientDistrictHeatingAndCoolingSystem",
+              "ProductionOfHeatCoolFromGeothermalEnergy",
+              "ProductionOfHeatCoolFromRenewableNonFossilGaseousAndLiquidFuels",
+              "ProductionOfHeatCoolFromSolarThermalHeating",
+              "ProductionOfHeatCoolUsingWasteHeat",
+              "ProfessionalServicesRelatedToEnergyPerformanceOfBuildings",
+              "ProgrammingAndBroadcastingActivities",
+              "ProvisionOfItOtDataDrivenSolutions",
+              "ProvisionOfItOtDataDrivenSolutionsForLeakageReduction",
+              "RecoveryOfBioWasteByAnaerobicDigestionOrComposting",
+              "RehabilitationAndRestorationOfForestsIncludingReforestationAndNaturalForestRegenerationAfterAnExtremeEvent",
+              "Reinsurance",
+              "RemediationOfContaminatedSitesAndAreas",
+              "RemediationOfLegallyNonConformingLandfillsAndAbandonedOrIllegalWasteDumps",
+              "RenewalOfWasteWaterCollectionAndTreatment",
+              "RenewalOfWaterCollectionTreatmentAndSupplySystems",
+              "RenovationOfExistingBuildings",
+              "RepairRefurbishmentAndRemanufacturing",
+              "ResearchDevelopmentAndInnovationForDirectAirCaptureOfCo2",
+              "ResidentialCareActivities",
+              "RestorationOfWetlands",
+              "RetrofittingOfInlandWaterPassengerAndFreightTransport",
+              "RetrofittingOfSeaAndCoastalFreightAndPassengerWaterTransport",
+              "SaleOfSecondHandGoods",
+              "SaleOfSpareParts",
+              "SeaAndCoastalFreightWaterTransportVesselsForPortOperationsAndAuxiliaryActivities",
+              "SeaAndCoastalPassengerWaterTransport",
+              "SoftwareEnablingPhysicalClimateRiskManagementAndAdaptation",
+              "SortingAndMaterialRecoveryOfNonHazardousWaste",
+              "StorageOfElectricity",
+              "StorageOfHydrogen",
+              "StorageOfThermalEnergy",
+              "SustainableUrbanDrainageSystemsSuds",
+              "TransmissionAndDistributionNetworksForRenewableAndLowCarbonGases",
+              "TransmissionAndDistributionOfElectricity",
+              "TransportByMotorbikesPassengerCarsAndLightCommercialVehicles",
+              "TransportOfCo2",
+              "TreatmentOfHazardousWaste",
+              "UndergroundPermanentGeologicalStorageOfCo2",
+              "UrbanAndSuburbanTransportRoadPassengerTransport",
+              "UrbanWasteWaterTreatment",
+              "UseOfConcreteInCivilEngineering",
+              "WaterSupply"
+            ]
+          },
+          "naceCodes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "share": {
+            "$ref": "#/components/schemas/RelativeAndAbsoluteFinancialShare"
+          },
+          "substantialContributionToClimateChangeMitigationInPercent": {
+            "type": "number"
+          },
+          "substantialContributionToClimateChangeAdaptationInPercent": {
+            "type": "number"
+          },
+          "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent": {
+            "type": "number"
+          },
+          "substantialContributionToTransitionToACircularEconomyInPercent": {
+            "type": "number"
+          },
+          "substantialContributionToPollutionPreventionAndControlInPercent": {
+            "type": "number"
+          },
+          "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent": {
+            "type": "number"
+          },
+          "dnshToClimateChangeMitigation": {
+            "type": "string",
+            "enum": [
+              "Yes",
+              "No"
+            ]
+          },
+          "dnshToClimateChangeAdaptation": {
+            "type": "string",
+            "enum": [
+              "Yes",
+              "No"
+            ]
+          },
+          "dnshToSustainableUseAndProtectionOfWaterAndMarineResources": {
+            "type": "string",
+            "enum": [
+              "Yes",
+              "No"
+            ]
+          },
+          "dnshToTransitionToACircularEconomy": {
+            "type": "string",
+            "enum": [
+              "Yes",
+              "No"
+            ]
+          },
+          "dnshToPollutionPreventionAndControl": {
+            "type": "string",
+            "enum": [
+              "Yes",
+              "No"
+            ]
+          },
+          "dnshToProtectionAndRestorationOfBiodiversityAndEcosystems": {
+            "type": "string",
+            "enum": [
+              "Yes",
+              "No"
+            ]
+          },
+          "minimumSafeguards": {
+            "type": "string",
+            "enum": [
+              "Yes",
+              "No"
+            ]
+          }
+        }
+      },
       "EutaxonomyNonFinancialsCapex": {
         "type": "object",
         "properties": {
@@ -1701,6 +2125,9 @@
           },
           "nonAlignedShare": {
             "$ref": "#/components/schemas/EutaxonomyNonFinancialsCapexNonAlignedShare"
+          },
+          "nonAlignedActivities": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointListEuTaxonomyActivity"
           },
           "alignedShare": {
             "$ref": "#/components/schemas/EutaxonomyNonFinancialsCapexAlignedShare"
@@ -1722,6 +2149,9 @@
           },
           "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          },
+          "alignedActivities": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointListEuTaxonomyAlignedActivity"
           },
           "enablingShareInPercent": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
@@ -1833,6 +2263,9 @@
           "nonAlignedShare": {
             "$ref": "#/components/schemas/EutaxonomyNonFinancialsOpexNonAlignedShare"
           },
+          "nonAlignedActivities": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointListEuTaxonomyActivity"
+          },
           "alignedShare": {
             "$ref": "#/components/schemas/EutaxonomyNonFinancialsOpexAlignedShare"
           },
@@ -1853,6 +2286,9 @@
           },
           "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          },
+          "alignedActivities": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointListEuTaxonomyAlignedActivity"
           },
           "enablingShareInPercent": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
@@ -1921,6 +2357,9 @@
           "nonAlignedShare": {
             "$ref": "#/components/schemas/EutaxonomyNonFinancialsRevenueNonAlignedShare"
           },
+          "nonAlignedActivities": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointListEuTaxonomyActivity"
+          },
           "alignedShare": {
             "$ref": "#/components/schemas/EutaxonomyNonFinancialsRevenueAlignedShare"
           },
@@ -1941,6 +2380,9 @@
           },
           "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          },
+          "alignedActivities": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointListEuTaxonomyAlignedActivity"
           },
           "enablingShareInPercent": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
@@ -2003,6 +2445,58 @@
               "Deviation",
               "NoDeviation"
             ]
+          },
+          "quality": {
+            "type": "string",
+            "enum": [
+              "Audited",
+              "Reported",
+              "Estimated",
+              "Incomplete"
+            ]
+          },
+          "comment": {
+            "type": "string"
+          },
+          "dataSource": {
+            "$ref": "#/components/schemas/ExtendedDocumentReference"
+          }
+        }
+      },
+      "ExtendedDataPointListEuTaxonomyActivity": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/EuTaxonomyActivity"
+            }
+          },
+          "quality": {
+            "type": "string",
+            "enum": [
+              "Audited",
+              "Reported",
+              "Estimated",
+              "Incomplete"
+            ]
+          },
+          "comment": {
+            "type": "string"
+          },
+          "dataSource": {
+            "$ref": "#/components/schemas/ExtendedDocumentReference"
+          }
+        }
+      },
+      "ExtendedDataPointListEuTaxonomyAlignedActivity": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/EuTaxonomyAlignedActivity"
+            }
           },
           "quality": {
             "type": "string",
@@ -2119,6 +2613,44 @@
           }
         }
       },
+      "QaReportDataPointExtendedDataPointListEuTaxonomyActivity": {
+        "required": [
+          "comment",
+          "correctedData",
+          "verdict"
+        ],
+        "type": "object",
+        "properties": {
+          "comment": {
+            "type": "string"
+          },
+          "verdict": {
+            "$ref": "#/components/schemas/QaReportDataPointVerdict"
+          },
+          "correctedData": {
+            "$ref": "#/components/schemas/ExtendedDataPointListEuTaxonomyActivity"
+          }
+        }
+      },
+      "QaReportDataPointExtendedDataPointListEuTaxonomyAlignedActivity": {
+        "required": [
+          "comment",
+          "correctedData",
+          "verdict"
+        ],
+        "type": "object",
+        "properties": {
+          "comment": {
+            "type": "string"
+          },
+          "verdict": {
+            "$ref": "#/components/schemas/QaReportDataPointVerdict"
+          },
+          "correctedData": {
+            "$ref": "#/components/schemas/ExtendedDataPointListEuTaxonomyAlignedActivity"
+          }
+        }
+      },
       "QaReportDataPointExtendedDataPointLocalDate": {
         "required": [
           "comment",
@@ -2173,6 +2705,17 @@
           },
           "correctedData": {
             "$ref": "#/components/schemas/ExtendedDataPointYesNoNa"
+          }
+        }
+      },
+      "RelativeAndAbsoluteFinancialShare": {
+        "type": "object",
+        "properties": {
+          "relativeShareInPercent": {
+            "type": "number"
+          },
+          "absoluteShare": {
+            "$ref": "#/components/schemas/AmountWithCurrency"
           }
         }
       },
