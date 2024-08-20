@@ -21,20 +21,6 @@ export type DataPointDisplay = {
 };
 
 /**
- * Checks if a potential data point has a value that is neither undefined nor
- * @param dataPoint the potential data point
- * @param dataPoint.value the value of the potential data point
- * @returns the result of the evaluation
- */
-export function hasDataPointProperValue(dataPoint: unknown): boolean {
-  if (typeof dataPoint == 'object' && dataPoint != null && 'value' in dataPoint) {
-    return dataPoint.value != undefined && dataPoint.value != '';
-  } else {
-    return false;
-  }
-}
-
-/**
  * Creates a list of the names of all Kpis that have some value
  * @param dataResponseData Data to prefill upload form
  * @returns array of Kpis names that have some value

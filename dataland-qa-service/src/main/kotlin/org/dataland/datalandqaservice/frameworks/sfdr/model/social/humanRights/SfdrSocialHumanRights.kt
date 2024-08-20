@@ -3,7 +3,7 @@ package org.dataland.datalandqaservice.frameworks.sfdr.model.social.humanRights
 
 import jakarta.validation.Valid
 import org.dataland.datalandbackend.openApiClient.model.ExtendedDataPointBigInteger
-import org.dataland.datalandbackend.openApiClient.model.ExtendedDataPointYesNoNoEvidenceFound
+import org.dataland.datalandbackend.openApiClient.model.ExtendedDataPointYesNo
 import org.dataland.datalandqaservice.model.reports.QaReportDataPoint
 
 /**
@@ -11,19 +11,19 @@ import org.dataland.datalandqaservice.model.reports.QaReportDataPoint
  */
 data class SfdrSocialHumanRights(
     @field:Valid()
-    val humanRightsPolicy: QaReportDataPoint<ExtendedDataPointYesNoNoEvidenceFound?>? = null,
+    val humanRightsPolicy: QaReportDataPoint<ExtendedDataPointYesNo?>? = null,
 
     @field:Valid()
-    val humanRightsDueDiligence: QaReportDataPoint<ExtendedDataPointYesNoNoEvidenceFound?>? = null,
+    val humanRightsDueDiligence: QaReportDataPoint<ExtendedDataPointYesNo?>? = null,
 
     @field:Valid()
-    val traffickingInHumanBeingsPolicy: QaReportDataPoint<ExtendedDataPointYesNoNoEvidenceFound?>? = null,
+    val traffickingInHumanBeingsPolicy: QaReportDataPoint<ExtendedDataPointYesNo?>? = null,
 
     @field:Valid()
-    val reportedChildLabourIncidents: QaReportDataPoint<ExtendedDataPointYesNoNoEvidenceFound?>? = null,
+    val reportedChildLabourIncidents: QaReportDataPoint<ExtendedDataPointYesNo?>? = null,
 
     @field:Valid()
-    val reportedForcedOrCompulsoryLabourIncidents: QaReportDataPoint<ExtendedDataPointYesNoNoEvidenceFound?>? = null,
+    val reportedForcedOrCompulsoryLabourIncidents: QaReportDataPoint<ExtendedDataPointYesNo?>? = null,
 
     @field:Valid()
     val numberOfReportedIncidentsOfHumanRightsViolations: QaReportDataPoint<ExtendedDataPointBigInteger?>? = null,

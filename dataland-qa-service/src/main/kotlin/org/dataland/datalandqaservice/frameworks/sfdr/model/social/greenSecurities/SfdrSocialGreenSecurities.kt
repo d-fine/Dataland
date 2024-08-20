@@ -2,7 +2,7 @@
 package org.dataland.datalandqaservice.frameworks.sfdr.model.social.greenSecurities
 
 import jakarta.validation.Valid
-import org.dataland.datalandbackend.openApiClient.model.ExtendedDataPointYesNoNoEvidenceFound
+import org.dataland.datalandbackend.openApiClient.model.ExtendedDataPointYesNo
 import org.dataland.datalandqaservice.model.reports.QaReportDataPoint
 
 /**
@@ -10,6 +10,6 @@ import org.dataland.datalandqaservice.model.reports.QaReportDataPoint
  */
 data class SfdrSocialGreenSecurities(
     @field:Valid()
-    val securitiesNotCertifiedAsGreen: QaReportDataPoint<ExtendedDataPointYesNoNoEvidenceFound?>? = null,
+    val securitiesNotCertifiedAsGreen: QaReportDataPoint<ExtendedDataPointYesNo?>? = null,
 
 )

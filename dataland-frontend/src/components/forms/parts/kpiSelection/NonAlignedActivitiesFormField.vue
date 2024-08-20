@@ -6,7 +6,6 @@
     :label="label"
     :required="required"
     :input-class="inputClass"
-    :check-value-validity="hasDataPointProperValue"
   >
     <FormListFormField
       name="value"
@@ -26,11 +25,9 @@ import { defineComponent } from 'vue';
 import { BaseFormFieldProps } from '@/components/forms/parts/fields/FormFieldProps';
 import FormListFormField from '@/components/forms/parts/fields/FormListFormField.vue';
 import ExtendedDataPointFormField from '@/components/forms/parts/elements/basic/ExtendedDataPointFormField.vue';
-import { hasDataPointProperValue } from '@/utils/DataPoint';
 
 export default defineComponent({
   name: 'NonAlignedActivitiesFormField',
-  methods: { hasDataPointProperValue },
   props: {
     ...BaseFormFieldProps,
   },

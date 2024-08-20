@@ -50,10 +50,7 @@ class InvalidSfdrRequestTests {
 
     @Test
     fun `post a company with invalid negative extended data point BigDecimal`() {
-        val errorForInvalidInput = getErrorFromApi(
-            "Sfdr-dataset-with-invalid" +
-                "-negative-big-decimal-input",
-        )
+        val errorForInvalidInput = getErrorFromApi("Sfdr-dataset-with-invalid-negative-big-decimal-input")
         Assertions.assertTrue(errorForInvalidInput.message!!.contains(errorCode400))
         Assertions.assertTrue(
             (errorForInvalidInput.response as ClientError<*>).body!!.toString()

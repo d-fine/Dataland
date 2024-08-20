@@ -8,7 +8,6 @@
     :validation-label="validationLabel"
     :validation="validation"
     :input-class="inputClass"
-    :check-value-validity="hasDataPointProperValue"
     :placeholder="placeholder"
     :outerClass="inputClass"
   >
@@ -29,7 +28,6 @@ import { defineComponent } from 'vue';
 import { BaseFormFieldProps } from '@/components/forms/parts/fields/FormFieldProps';
 import ExtendedDataPointFormField from '@/components/forms/parts/elements/basic/ExtendedDataPointFormField.vue';
 import PercentageFormField from '@/components/forms/parts/fields/PercentageFormField.vue';
-import { hasDataPointProperValue } from '@/utils/DataPoint';
 
 export default defineComponent({
   name: 'PercentageExtendedDataPointFormField',
@@ -41,6 +39,5 @@ export default defineComponent({
       default: 'Value in %',
     },
   },
-  methods: { hasDataPointProperValue },
 });
 </script>
