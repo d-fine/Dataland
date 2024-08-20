@@ -67,7 +67,7 @@ describe('Component test for the company cockpit', () => {
     const hasCompanyAtLeastOneOwnerStatusCode = hasCompanyAtLeastOneOwner ? 200 : 404;
     cy.intercept('**/community/company-ownership/*', {
       statusCode: hasCompanyAtLeastOneOwnerStatusCode,
-    });
+    }).as('fetchCompanyOwnershipExistence');
   }
 
   /**
@@ -76,6 +76,7 @@ describe('Component test for the company cockpit', () => {
   function waitForRequestsOnMounted(): void {
     cy.wait('@fetchCompanyInfo');
     cy.wait('@fetchAggregatedFrameworkMetaInfo');
+    cy.wait('@fetchCompanyOwnershipExistence');
   }
 
   /**

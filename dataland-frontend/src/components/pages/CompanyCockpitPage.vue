@@ -9,7 +9,7 @@
         <FrameworkSummaryPanel
           v-for="framework of FRAMEWORKS_WITH_VIEW_PAGE"
           :key="framework"
-          :is-user-allowed-to-view="isUserAllowedToViewForFramework(framework)"
+          :is-user-allowed-to-view="authenticated === true"
           :is-user-allowed-to-upload="isUserAllowedToUploadForFramework(framework)"
           :company-id="companyId"
           :framework="framework"
@@ -125,18 +125,6 @@ export default defineComponent({
       this.aggregatedFrameworkDataSummary = (
         await companyDataControllerApi.getAggregatedFrameworkDataSummary(this.companyId)
       ).data as { [key in DataTypeEnum]: AggregatedFrameworkDataSummary } | undefined;
-    },
-
-    /**
-     * Checks if the user is allowed to view datasets for the framework
-     * @param framework to check for
-     * @returns a boolean as result of this check
-     */
-    isUserAllowedToViewForFramework(framework: DataTypeEnum): boolean {
-      if (!this.authenticated) {
-        return false;
-      }
-      return this.hasUserAnyRoleInCompany || this.isFrameworkPublic(framework);
     },
 
     /**
