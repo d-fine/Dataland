@@ -13,7 +13,7 @@ describe('Component tests for the tab used by logged-in users to switch pages', 
 
   enum RoleBasedTabs {
     Qa = 'QA',
-    DataAccessRequests = 'DATA ACCESS REQUESTS FOR MY COMPANIES',
+    DataAccessRequests = 'DATA REQUESTS FOR MY COMPANIES',
   }
 
   const dummyUserId = 'mock-user-id';
