@@ -13,10 +13,10 @@ class QaReportTestDataProvider<T>(private val clazz: Class<T>, private val frame
     private val sfdrJsonFilesForTesting = mapOf(
         SfdrQaReport::class.java to File("./build/resources/test/SfdrQaReportPreparedFixtures.json"),
         /*
-The following line of code is a dummy entry to avoid a compilation error.
-The compilation error occurs if this map has only one entry.
-Feel free to remove the dummy entry as soon as you have added an actual "real" second entry to this map.
- */
+        The following line of code is a dummy entry to avoid a compilation error.
+        The compilation error occurs if this map has only one entry.
+        Feel free to remove the dummy entry as soon as you have added an actual "real" second entry to this map.
+         */
         String::class.java to File("./"),
     )
 

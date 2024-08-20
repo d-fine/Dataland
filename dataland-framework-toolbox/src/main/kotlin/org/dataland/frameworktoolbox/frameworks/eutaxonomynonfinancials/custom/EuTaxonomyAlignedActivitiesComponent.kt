@@ -55,9 +55,7 @@ class EuTaxonomyAlignedActivitiesComponent(
                     TypeReference(
                         "kotlin.collections.MutableList",
                         isNullable,
-
                         listOf(
-
                             TypeReference(
                                 "org.dataland.datalandbackend.frameworks.eutaxonomynonfinancials" +
                                     ".custom.EuTaxonomyAlignedActivity",
@@ -82,7 +80,6 @@ class EuTaxonomyAlignedActivitiesComponent(
                             ".ExtendedDataPointListEuTaxonomyAlignedActivity",
                         isNullable,
                     ),
-
                 ),
             ),
         )

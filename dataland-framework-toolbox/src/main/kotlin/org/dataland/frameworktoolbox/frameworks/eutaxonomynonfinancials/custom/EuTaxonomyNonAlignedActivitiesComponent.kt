@@ -57,7 +57,6 @@ class EuTaxonomyNonAlignedActivitiesComponent(
                             ".ExtendedDataPointListEuTaxonomyActivity",
                         isNullable,
                     ),
-
                 ),
             ),
         )
