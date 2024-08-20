@@ -100,14 +100,16 @@ interface DataRequestRepository : JpaRepository<DataRequestEntity, String> {
             "(:#{#searchFilter.reportingPeriodFilterLength} = 0 " +
             "OR d.reporting_period = :#{#searchFilter.reportingPeriodFilter}) AND " +
             "(:#{#searchFilter.datalandCompanyIdFilterLength} = 0 " +
-            "OR d.dataland_company_id = :#{#searchFilter.datalandCompanyIdFilter})), " +
+            "OR d.dataland_company_id = :#{#searchFilter.datalandCompanyIdFilter})) " +
 
-            "final_selection AS (SELECT d.* FROM data_requests d " +
-            "JOIN filtered_table ON filtered_table.data_request_id = d.data_request_id)" +
+            //"final_selection AS (SELECT d.* FROM data_requests d " +
+          //  "JOIN filtered_table ON filtered_table.data_request_id = d.data_request_id)" +
 
-            "SELECT final_selection.* FROM final_selection " +
+                "SELECT dr.* " +
+                "FROM data_requests dr " +
                 "LEFT JOIN request_status_history " +
-                "ON final_selection.data_request_id = request_status_history.data_request_id ",
+                "ON dr.data_request_id = request_status_history.data_request_id " +
+                "WHERE dr.data_request_id IN (SELECT fr.data_request_id FROM filtered_table fr) " ,
 
     )
     fun searchDataRequestEntity(
