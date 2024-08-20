@@ -1,10 +1,13 @@
 package org.dataland.e2etests.tests.communityManager
 
 import org.dataland.communitymanager.openApiClient.api.RequestControllerApi
+import org.dataland.communitymanager.openApiClient.infrastructure.ClientException
+import org.dataland.communitymanager.openApiClient.model.CompanyRole
 import org.dataland.communitymanager.openApiClient.model.RequestStatus
 import org.dataland.communitymanager.openApiClient.model.SingleDataRequest
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.e2etests.BASE_PATH_TO_COMMUNITY_MANAGER
+import org.dataland.e2etests.auth.GlobalAuth.withTechnicalUser
 import org.dataland.e2etests.auth.JwtAuthenticationHelper
 import org.dataland.e2etests.auth.TechnicalUser
 import org.dataland.e2etests.utils.ApiAccessor
@@ -13,9 +16,11 @@ import org.dataland.e2etests.utils.communityManager.generateRandomPermId
 import org.dataland.e2etests.utils.communityManager.getIdForUploadedCompanyWithIdentifiers
 import org.dataland.e2etests.utils.communityManager.retrieveTimeAndWaitOneMillisecond
 import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
+import org.junit.jupiter.api.assertThrows
 import java.util.*
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
@@ -28,23 +33,55 @@ class QueryDataRequestsTest {
     private val companyIdB = getIdForUploadedCompanyWithIdentifiers(permId = generateRandomPermId())
     private val timestampBeforePost = retrieveTimeAndWaitOneMillisecond()
 
+    private fun postSingleDataRequest(
+        companyId: String,
+        dataType: SingleDataRequest.DataType,
+        reportingPeriods: Set<String>,
+    ) {
+        requestControllerApi.postSingleDataRequest(
+            SingleDataRequest(
+                companyIdentifier = companyId,
+                dataType = dataType,
+                reportingPeriods = reportingPeriods,
+            ),
+        )
+    }
+
+    private fun assignCompanyOwnershipToUser(companyId: String, userId: String) {
+        withTechnicalUser(TechnicalUser.Admin) {
+            apiAccessor.companyRolesControllerApi.assignCompanyRole(
+                CompanyRole.CompanyOwner,
+                UUID.fromString(companyId),
+                UUID.fromString(userId),
+            )
+        }
+    }
+
+    private fun removeCompanyOwnershipFromUser(companyId: String, userId: String) {
+        withTechnicalUser(TechnicalUser.Admin) {
+            apiAccessor.companyRolesControllerApi.removeCompanyRole(
+                CompanyRole.CompanyOwner,
+                UUID.fromString(companyId),
+                UUID.fromString(userId),
+            )
+        }
+    }
+
+    private fun assertAccessDeniedWrapper(
+        operation: () -> Any,
+    ) {
+        val expectedAccessDeniedClientException = assertThrows<ClientException> {
+            operation()
+        }
+        assertEquals("Client error : 403 ", expectedAccessDeniedClientException.message)
+    }
+
     @BeforeAll
     fun postDataRequestsBeforeQueryTest() {
-        jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.PremiumUser)
-        requestControllerApi.postSingleDataRequest(
-            SingleDataRequest(
-                companyIdentifier = companyIdA,
-                dataType = SingleDataRequest.DataType.lksg,
-                reportingPeriods = setOf("2022", "2023"),
-            ),
-        )
-        requestControllerApi.postSingleDataRequest(
-            SingleDataRequest(
-                companyIdentifier = companyIdB,
-                dataType = SingleDataRequest.DataType.p2p,
-                reportingPeriods = setOf("2023"),
-            ),
-        )
+        withTechnicalUser(TechnicalUser.PremiumUser) {
+            postSingleDataRequest(companyIdA, SingleDataRequest.DataType.lksg, setOf("2022", "2023"))
+            postSingleDataRequest(companyIdB, SingleDataRequest.DataType.p2p, setOf("2023"))
+        }
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
     }
 
@@ -159,5 +196,33 @@ class QueryDataRequestsTest {
         }
         assertEquals(3, dataRequestsByPremiumUser.size)
         dataRequestsByPremiumUser.forEach { assertEquals(TechnicalUser.PremiumUser.technicalUserId, it.userId) }
+    }
+
+    @Test
+    fun `query data requests and assert that e-mail address is only populated for owned companies`() {
+        withTechnicalUser(TechnicalUser.Admin) {
+            val dataRequests = requestControllerApi.getDataRequests(datalandCompanyId = companyIdA)
+            assertTrue(dataRequests.all { it.userEmailAddress == null })
+        }
+
+        val queryingUser = TechnicalUser.Reader
+
+        withTechnicalUser(queryingUser) {
+            assertAccessDeniedWrapper { requestControllerApi.getDataRequests(datalandCompanyId = companyIdA) }
+        }
+
+        assignCompanyOwnershipToUser(companyIdA, queryingUser.technicalUserId)
+
+        withTechnicalUser(queryingUser) {
+            val dataRequests = requestControllerApi.getDataRequests(datalandCompanyId = companyIdA)
+            assertEquals(2, dataRequests.size)
+            assertTrue(dataRequests.all { it.userEmailAddress != null })
+        }
+
+        removeCompanyOwnershipFromUser(companyIdA, queryingUser.technicalUserId)
+
+        withTechnicalUser(queryingUser) {
+            assertAccessDeniedWrapper { requestControllerApi.getDataRequests(datalandCompanyId = companyIdA) }
+        }
     }
 }
