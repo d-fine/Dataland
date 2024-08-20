@@ -59,8 +59,8 @@ export default defineComponent({
         isVisible: true,
       },
       {
-        label: 'DATA ACCESS REQUESTS FOR MY COMPANIES', // TODO at the very end: rethink about naming
-        route: '/requests', //TODO dummy for now
+        label: 'DATA REQUESTS FOR MY COMPANIES', // TODO at the very end: rethink about naming
+        route: '/companyrequests',
         isVisible: false,
       },
     ] as Tab[],
