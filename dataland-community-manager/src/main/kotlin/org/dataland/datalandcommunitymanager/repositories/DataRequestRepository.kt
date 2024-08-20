@@ -105,11 +105,10 @@ interface DataRequestRepository : JpaRepository<DataRequestEntity, String> {
             //"final_selection AS (SELECT d.* FROM data_requests d " +
           //  "JOIN filtered_table ON filtered_table.data_request_id = d.data_request_id)" +
 
-                "SELECT dr.* " +
-                "FROM data_requests dr " +
-                "LEFT JOIN request_status_history " +
-                "ON dr.data_request_id = request_status_history.data_request_id " +
-                "WHERE dr.data_request_id IN (SELECT fr.data_request_id FROM filtered_table fr) " ,
+                "SELECT DISTINCT d.* " +
+                "FROM data_requests d " +
+                "LEFT JOIN request_status_history rsh ON d.data_request_id = rsh.data_request_id " +
+                "INNER JOIN filtered_table yt ON d.data_request_id = yt.data_request_id " ,
 
     )
     fun searchDataRequestEntity(
