@@ -100,10 +100,14 @@ interface DataRequestRepository : JpaRepository<DataRequestEntity, String> {
             "(:#{#searchFilter.reportingPeriodFilterLength} = 0 " +
             "OR d.reporting_period = :#{#searchFilter.reportingPeriodFilter}) AND " +
             "(:#{#searchFilter.datalandCompanyIdFilterLength} = 0 " +
-            "OR d.dataland_company_id = :#{#searchFilter.datalandCompanyIdFilter}))" +
+            "OR d.dataland_company_id = :#{#searchFilter.datalandCompanyIdFilter})), " +
 
-            "SELECT d.* FROM data_requests d " +
-            "JOIN filtered_table ON filtered_table.data_request_id = d.data_request_id",
+            "final_selection AS (SELECT d.* FROM data_requests d " +
+            "JOIN filtered_table ON filtered_table.data_request_id = d.data_request_id)" +
+
+            "SELECT final_selection.* FROM final_selection " +
+                "LEFT JOIN request_status_history " +
+                "ON final_selection.data_request_id = request_status_history.data_request_id ",
 
     )
     fun searchDataRequestEntity(
@@ -116,17 +120,15 @@ interface DataRequestRepository : JpaRepository<DataRequestEntity, String> {
      * @returns the initial list of data request entities together with the associated status history
      */
     @Query(
-        "SELECT DISTINCT d FROM DataRequestEntity d " +
-                "LEFT JOIN FETCH d.dataRequestStatusHistory " +
-                "WHERE EXISTS (" +
-                "    SELECT 1 FROM DataRequestEntity r WHERE r.dataRequestId = d.dataRequestId AND r IN :dataRequests" +
-                ")"
+// TODO just do it all in one query
 
+        "SELECT DISTINCT d FROM DataRequestEntity d " +
+            "LEFT JOIN FETCH d.dataRequestStatusHistory " +
+            "WHERE d IN :dataRequests",
     )
     fun fetchStatusHistory(
         dataRequests: List<DataRequestEntity>,
     ): List<DataRequestEntity>
-
 
     /** This method counts the number of data requests that a user
      * has performed from a specified timestamp.

@@ -123,7 +123,7 @@ class DataRequestQueryManager(
         reportingPeriod: String?,
         datalandCompanyId: String?,
     ): List<StoredDataRequest>? {
-        //TODO remove logger
+        // TODO remove logger
         val printRequestStatus = requestStatus?.name ?: ""
         logger.info(printRequestStatus)
         val printDataType = dataType?.value ?: ""
@@ -136,7 +136,7 @@ class DataRequestQueryManager(
             reportingPeriodFilter = reportingPeriod ?: "",
             datalandCompanyIdFilter = datalandCompanyId ?: "",
         )
-        val result = dataRequestRepository.searchDataRequestEntity(filter)
-        return dataRequestRepository.fetchStatusHistory(result).map { it.toStoredDataRequest() }
+        //val result = dataRequestRepository.searchDataRequestEntity(filter)
+        return dataRequestRepository.searchDataRequestEntity(filter).map { it.toStoredDataRequest() }
     }
 }
