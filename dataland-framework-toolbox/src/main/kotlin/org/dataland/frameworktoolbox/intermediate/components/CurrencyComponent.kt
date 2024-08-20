@@ -4,7 +4,6 @@ import org.apache.commons.text.StringEscapeUtils
 import org.dataland.frameworktoolbox.intermediate.FieldNodeParent
 import org.dataland.frameworktoolbox.intermediate.components.basecomponents.NumberBaseComponent
 import org.dataland.frameworktoolbox.intermediate.datapoints.ExtendedDocumentSupport
-import org.dataland.frameworktoolbox.intermediate.datapoints.ExtendedDocumentSupport.getJvmTypeReference
 import org.dataland.frameworktoolbox.specific.datamodel.TypeReference
 import org.dataland.frameworktoolbox.specific.datamodel.annotations.ValidAnnotation
 import org.dataland.frameworktoolbox.specific.datamodel.elements.DataClassBuilder
@@ -50,7 +49,7 @@ class CurrencyComponent(
                 "org.dataland.datalandqaservice.model.reports.QaReportDataPoint",
                 true,
                 listOf(
-                    backendCurrencyDatapoint.getBackendClientTypeReference()
+                    backendCurrencyDatapoint.getBackendClientTypeReference(),
                 ),
             ),
         )
