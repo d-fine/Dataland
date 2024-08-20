@@ -1,9 +1,16 @@
 package org.dataland.datalandcommunitymanager.services
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties
+import com.fasterxml.jackson.annotation.JsonProperty
+import com.fasterxml.jackson.databind.ObjectMapper
+import okhttp3.OkHttpClient
+import okhttp3.Request
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
+import org.dataland.datalandcommunitymanager.entities.CompanyRoleAssignmentEntity
 import org.dataland.datalandcommunitymanager.entities.DataRequestEntity
 import org.dataland.datalandcommunitymanager.exceptions.DataRequestNotFoundApiException
+import org.dataland.datalandcommunitymanager.model.companyRoles.CompanyRole
 import org.dataland.datalandcommunitymanager.model.dataRequest.AccessStatus
 import org.dataland.datalandcommunitymanager.model.dataRequest.AggregatedDataRequest
 import org.dataland.datalandcommunitymanager.model.dataRequest.ExtendedStoredDataRequest
@@ -15,6 +22,8 @@ import org.dataland.datalandcommunitymanager.utils.DataRequestProcessingUtils
 import org.dataland.datalandcommunitymanager.utils.GetDataRequestsSearchFilter
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.beans.factory.annotation.Qualifier
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import kotlin.jvm.optionals.getOrElse
@@ -22,12 +31,16 @@ import kotlin.jvm.optionals.getOrElse
 /**
  * Implementation of a request manager service for all request queries
  */
+@Suppress("LongParameterList") // TODO maybe remove later?
 @Service
 class DataRequestQueryManager(
     @Autowired private val dataRequestRepository: DataRequestRepository,
     @Autowired private val dataRequestLogger: DataRequestLogger,
     @Autowired private val companyDataControllerApi: CompanyDataControllerApi,
     @Autowired private val processingUtils: DataRequestProcessingUtils,
+    @Autowired private val objectMapper: ObjectMapper,
+    @Qualifier("AuthenticatedOkHttpClient") val authenticatedOkHttpClient: OkHttpClient,
+    @Value("\${dataland.keycloak.base-url}") private val keycloakBaseUrl: String,
 ) {
 
     /** This method retrieves all the data requests for the current user from the database and logs a message.
@@ -103,6 +116,30 @@ class DataRequestQueryManager(
         return dataRequestEntity.toStoredDataRequest()
     }
 
+    @JsonIgnoreProperties(ignoreUnknown = true)
+    private data class User( // TODO backend utils?
+        @JsonProperty("email")
+        val email: String?,
+    )
+
+    /**
+     * Gets the email address of a user in keycloak given the user id
+     * @param userId the userId of the user in question
+     * @returns the email address
+     */
+    fun getEmailAddress(userId: String): String {
+        // TODO duplicate code to KeycloakUserControllerApiService => centralize?
+        val request = Request.Builder()
+            .url("$keycloakBaseUrl/admin/realms/datalandsecurity/users/$userId")
+            .build()
+        val response = authenticatedOkHttpClient.newCall(request).execute()
+        val parsedResponseBody = objectMapper.readValue(
+            response.body!!.string(),
+            User::class.java,
+        )
+        return parsedResponseBody.email ?: ""
+    }
+
     /**
      * Method to get all data requests based on filters.
      * @param dataType the framework to apply to the data request
@@ -112,6 +149,7 @@ class DataRequestQueryManager(
      * @param datalandCompanyId the Dataland company ID to apply to the data request
      * @return all filtered data requests
      */
+    @Suppress("LongParameterList") // TODO maybe remove later or look for other workaround
     @Transactional
     fun getDataRequests(
         dataType: DataTypeEnum?,
@@ -120,6 +158,7 @@ class DataRequestQueryManager(
         accessStatus: AccessStatus?,
         reportingPeriod: String?,
         datalandCompanyId: String?,
+        companyRoleAssignmentsOfCurrentUser: List<CompanyRoleAssignmentEntity>,
     ): List<StoredDataRequest>? {
         val filter = GetDataRequestsSearchFilter(
             dataTypeFilter = dataType?.value ?: "",
@@ -129,7 +168,36 @@ class DataRequestQueryManager(
             reportingPeriodFilter = reportingPeriod ?: "",
             datalandCompanyIdFilter = datalandCompanyId ?: "",
         )
-        val result = dataRequestRepository.searchDataRequestEntity(filter)
-        return dataRequestRepository.fetchStatusHistory(result).map { it.toStoredDataRequest() }
+        return createStoredDataRequestObjects(filter, companyRoleAssignmentsOfCurrentUser)
+    }
+
+    /**
+     * Fetches data requests from the database and returns them as api model objects.
+     * The email addresses of the users associated with the data requests are only included for
+     * those companies for which the current user is a company owner.
+     * @param filter to retrieve only specific data requests
+     * @param companyRoleAssignmentsOfCurrentUser contains the company ownerships of the current user
+     * @return all filtered data requests as api model objects
+     */
+    private fun createStoredDataRequestObjects(
+        filter: GetDataRequestsSearchFilter,
+        companyRoleAssignmentsOfCurrentUser: List<CompanyRoleAssignmentEntity>,
+    ): List<StoredDataRequest> {
+        val ownedCompanyIds = companyRoleAssignmentsOfCurrentUser.filter {
+            it.companyRole == CompanyRole.CompanyOwner
+        }.map { it.companyId }
+
+        val queryResult = dataRequestRepository.searchDataRequestEntity(filter)
+        val queryResultWithHistory = dataRequestRepository.fetchStatusHistory(queryResult)
+
+        val storedDataRequests = queryResultWithHistory.map {
+            val allowedToSeeEmailAddress = ownedCompanyIds.contains(it.datalandCompanyId)
+            var emailAddress: String? = null
+            if (allowedToSeeEmailAddress) {
+                emailAddress = getEmailAddress(it.userId)
+            }
+            it.toStoredDataRequest(emailAddress)
+        }
+        return storedDataRequests
     }
 }

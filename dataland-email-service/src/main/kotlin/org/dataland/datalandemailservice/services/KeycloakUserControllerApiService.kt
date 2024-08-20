@@ -22,7 +22,7 @@ class KeycloakUserControllerApiService(
     @Value("\${dataland.keycloak.base-url}") private val keycloakBaseUrl: String,
 ) {
     @JsonIgnoreProperties(ignoreUnknown = true)
-    private data class User(
+    private data class User( // TODO duplicate now?  create backend-utils-class for it?
         @JsonProperty("email")
         val email: String?,
 
