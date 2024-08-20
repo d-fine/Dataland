@@ -14,7 +14,6 @@ import org.dataland.datalandcommunitymanager.utils.DataRequestLogger
 import org.dataland.datalandcommunitymanager.utils.DataRequestProcessingUtils
 import org.dataland.datalandcommunitymanager.utils.GetDataRequestsSearchFilter
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
-import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -30,7 +29,6 @@ class DataRequestQueryManager(
     @Autowired private val companyDataControllerApi: CompanyDataControllerApi,
     @Autowired private val processingUtils: DataRequestProcessingUtils,
 ) {
-    private val logger = LoggerFactory.getLogger(javaClass)
 
     /** This method retrieves all the data requests for the current user from the database and logs a message.
      * @returns all data requests for the current user
@@ -123,11 +121,6 @@ class DataRequestQueryManager(
         reportingPeriod: String?,
         datalandCompanyId: String?,
     ): List<StoredDataRequest>? {
-        // TODO remove logger
-        val printRequestStatus = requestStatus?.name ?: ""
-        logger.info(printRequestStatus)
-        val printDataType = dataType?.value ?: ""
-        logger.info(printDataType)
         val filter = GetDataRequestsSearchFilter(
             dataTypeFilter = dataType?.value ?: "",
             userIdFilter = userId ?: "",
@@ -136,7 +129,6 @@ class DataRequestQueryManager(
             reportingPeriodFilter = reportingPeriod ?: "",
             datalandCompanyIdFilter = datalandCompanyId ?: "",
         )
-        //val result = dataRequestRepository.searchDataRequestEntity(filter)
-        return dataRequestRepository.searchDataRequestEntity(filter).map { it.toStoredDataRequest() }
+        return dataRequestRepository.searchDataRequestEntityAndStatusHistory(filter).map { it.toStoredDataRequest() }
     }
 }

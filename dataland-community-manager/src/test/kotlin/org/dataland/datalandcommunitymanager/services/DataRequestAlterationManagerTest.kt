@@ -88,7 +88,7 @@ class DataRequestAlterationManagerTest {
             dataRequestRepository.searchDataRequestEntity(
                 searchFilter = GetDataRequestsSearchFilter(
                     metaData.dataType.value, "",
-                    RequestStatus.Open, null, metaData.reportingPeriod, metaData.companyId,
+                    RequestStatus.Open.name, null, metaData.reportingPeriod, metaData.companyId,
                 ),
             ),
         ).thenReturn(dummyDataRequestEntities)

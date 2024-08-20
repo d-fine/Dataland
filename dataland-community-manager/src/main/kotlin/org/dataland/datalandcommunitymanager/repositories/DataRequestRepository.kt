@@ -3,6 +3,7 @@ package org.dataland.datalandcommunitymanager.repositories
 import org.dataland.datalandcommunitymanager.entities.AggregatedDataRequestEntity
 import org.dataland.datalandcommunitymanager.entities.DataRequestEntity
 import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
+import org.dataland.datalandcommunitymanager.repositories.utils.TemporaryTables
 import org.dataland.datalandcommunitymanager.utils.GetDataRequestsSearchFilter
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Query
@@ -77,38 +78,16 @@ interface DataRequestRepository : JpaRepository<DataRequestEntity, String> {
      */
     @Query(
         nativeQuery = true,
-        value =
-        "WITH most_recent AS (SELECT data_request_id, MAX(creation_timestamp) AS creation_timestamp FROM request_status_history " +
-            "GROUP BY data_request_id), " +
+        value = TemporaryTables.TABLE_FILTERED +
+            // TODO alles hier drüber als string konstante auslagern und abrufbar machen, das auskommentierte select
+            // TODO hier drunter verwenden für die eigentliche funktionalität der funktion
+            // TODO die ausgelagerte komponten in allen funktionen wie zB fetchStatusHistory verwenden
+            // TODO an den code stellen wie zB im DataRequestQueryManager nur noch einmal eine Query aufrufen,
+            // TODO  nicht zweimal Line 140
+            // TODO andere verwendungen von searchDataRequestEntity finden und genauso anpassen
 
-            "status_table AS (SELECT most_recent.data_request_id AS request_id, request_status, access_status FROM request_status_history " +
-            "JOIN most_recent ON most_recent.data_request_id = request_status_history.data_request_id " +
-            "AND most_recent.creation_timestamp = request_status_history.creation_timestamp), " +
-
-            "filtered_table AS (SELECT d.data_request_id " +
-            "FROM data_requests d " +
-            "JOIN  status_table ON status_table.request_id = d.data_request_id " +
-            "WHERE " +
-            "(:#{#searchFilter.dataTypeFilterLength} = 0 " +
-            "OR d.data_type = :#{#searchFilter.dataTypeFilter}) AND " +
-            "(:#{#searchFilter.userIdFilterLength} = 0 " +
-            "OR d.user_Id = :#{#searchFilter.userIdFilter}) AND " +
-            "(:#{#searchFilter.requestStatusLength} = 0 " +
-            "OR status_table.request_status = :#{#searchFilter.requestStatus} ) AND " +
-            "(:#{#searchFilter.accessStatusLength} = 0 " +
-            "OR status_table.access_status = :#{#searchFilter.accessStatus}  ) AND " +
-            "(:#{#searchFilter.reportingPeriodFilterLength} = 0 " +
-            "OR d.reporting_period = :#{#searchFilter.reportingPeriodFilter}) AND " +
-            "(:#{#searchFilter.datalandCompanyIdFilterLength} = 0 " +
-            "OR d.dataland_company_id = :#{#searchFilter.datalandCompanyIdFilter})) " +
-
-            //"final_selection AS (SELECT d.* FROM data_requests d " +
-          //  "JOIN filtered_table ON filtered_table.data_request_id = d.data_request_id)" +
-
-                "SELECT DISTINCT d.* " +
-                "FROM data_requests d " +
-                "LEFT JOIN request_status_history rsh ON d.data_request_id = rsh.data_request_id " +
-                "INNER JOIN filtered_table yt ON d.data_request_id = yt.data_request_id " ,
+            "SELECT d.* FROM data_requests d " +
+            "JOIN filtered_table ON filtered_table.data_request_id = d.data_request_id",
 
     )
     fun searchDataRequestEntity(
@@ -129,6 +108,26 @@ interface DataRequestRepository : JpaRepository<DataRequestEntity, String> {
     )
     fun fetchStatusHistory(
         dataRequests: List<DataRequestEntity>,
+    ): List<DataRequestEntity>
+
+    /**
+     * Fetches data request entities together with the associated status history
+     * @param dataRequests the requests entities for which the status histories to fetch
+     * @returns the initial list of data request entities together with the associated status history
+     */
+    @Query(
+// TODO just do it all in one query
+        nativeQuery = true,
+        value = TemporaryTables.TABLE_FILTERED +
+
+            "SELECT DISTINCT d.* " +
+            "FROM data_requests d " +
+            "LEFT JOIN request_status_history rsh ON d.data_request_id = rsh.data_request_id " +
+            "INNER JOIN filtered_table yt ON d.data_request_id = yt.data_request_id ",
+
+    )
+    fun searchDataRequestEntityAndStatusHistory(
+        @Param("searchFilter") searchFilter: GetDataRequestsSearchFilter,
     ): List<DataRequestEntity>
 
     /** This method counts the number of data requests that a user
