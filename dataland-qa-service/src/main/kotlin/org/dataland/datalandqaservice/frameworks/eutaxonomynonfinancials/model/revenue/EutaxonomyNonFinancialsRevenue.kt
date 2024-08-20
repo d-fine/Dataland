@@ -20,7 +20,7 @@ import org.dataland.datalandqaservice.model.reports.QaReportDataPoint
  * The QA-model for the Revenue section
  */
 data class EutaxonomyNonFinancialsRevenue(
-    val totalAmount: CurrencyDataPoint? = null,
+    val totalAmount: QaReportDataPoint<CurrencyDataPoint?>? = null,
 
     @field:Valid()
     val nonEligibleShare: EutaxonomyNonFinancialsRevenueNonEligibleShare? = null,

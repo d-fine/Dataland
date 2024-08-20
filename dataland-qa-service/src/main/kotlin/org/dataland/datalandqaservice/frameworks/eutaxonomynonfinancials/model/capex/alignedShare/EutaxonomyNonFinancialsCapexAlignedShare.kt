@@ -13,6 +13,6 @@ data class EutaxonomyNonFinancialsCapexAlignedShare(
     @field:Valid()
     val relativeShareInPercent: QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
 
-    val absoluteShare: CurrencyDataPoint? = null,
+    val absoluteShare: QaReportDataPoint<CurrencyDataPoint?>? = null,
 
 )

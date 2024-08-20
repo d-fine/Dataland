@@ -789,7 +789,7 @@
                   }
                 }
               },
-              "application/vnd.spring-boot.actuator.v2+json": {
+              "application/json": {
                 "schema": {
                   "type": "object",
                   "additionalProperties": {
@@ -800,7 +800,7 @@
                   }
                 }
               },
-              "application/json": {
+              "application/vnd.spring-boot.actuator.v2+json": {
                 "schema": {
                   "type": "object",
                   "additionalProperties": {
@@ -852,12 +852,12 @@
                   "type": "object"
                 }
               },
-              "application/vnd.spring-boot.actuator.v2+json": {
+              "application/json": {
                 "schema": {
                   "type": "object"
                 }
               },
-              "application/json": {
+              "application/vnd.spring-boot.actuator.v2+json": {
                 "schema": {
                   "type": "object"
                 }
@@ -903,12 +903,12 @@
                   "type": "object"
                 }
               },
-              "application/vnd.spring-boot.actuator.v2+json": {
+              "application/json": {
                 "schema": {
                   "type": "object"
                 }
               },
-              "application/json": {
+              "application/vnd.spring-boot.actuator.v2+json": {
                 "schema": {
                   "type": "object"
                 }
@@ -954,12 +954,12 @@
                   "type": "object"
                 }
               },
-              "application/vnd.spring-boot.actuator.v2+json": {
+              "application/json": {
                 "schema": {
                   "type": "object"
                 }
               },
-              "application/json": {
+              "application/vnd.spring-boot.actuator.v2+json": {
                 "schema": {
                   "type": "object"
                 }
@@ -2137,7 +2137,7 @@
         "type": "object",
         "properties": {
           "totalAmount": {
-            "$ref": "#/components/schemas/CurrencyDataPoint"
+            "$ref": "#/components/schemas/QaReportDataPointCurrencyDataPoint"
           },
           "nonEligibleShare": {
             "$ref": "#/components/schemas/EutaxonomyNonFinancialsCapexNonEligibleShare"
@@ -2190,7 +2190,7 @@
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
           },
           "absoluteShare": {
-            "$ref": "#/components/schemas/CurrencyDataPoint"
+            "$ref": "#/components/schemas/QaReportDataPointCurrencyDataPoint"
           }
         }
       },
@@ -2201,7 +2201,7 @@
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
           },
           "absoluteShare": {
-            "$ref": "#/components/schemas/CurrencyDataPoint"
+            "$ref": "#/components/schemas/QaReportDataPointCurrencyDataPoint"
           }
         }
       },
@@ -2212,7 +2212,7 @@
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
           },
           "absoluteShare": {
-            "$ref": "#/components/schemas/CurrencyDataPoint"
+            "$ref": "#/components/schemas/QaReportDataPointCurrencyDataPoint"
           }
         }
       },
@@ -2223,7 +2223,7 @@
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
           },
           "absoluteShare": {
-            "$ref": "#/components/schemas/CurrencyDataPoint"
+            "$ref": "#/components/schemas/QaReportDataPointCurrencyDataPoint"
           }
         }
       },
@@ -2274,7 +2274,7 @@
         "type": "object",
         "properties": {
           "totalAmount": {
-            "$ref": "#/components/schemas/CurrencyDataPoint"
+            "$ref": "#/components/schemas/QaReportDataPointCurrencyDataPoint"
           },
           "nonEligibleShare": {
             "$ref": "#/components/schemas/EutaxonomyNonFinancialsOpexNonEligibleShare"
@@ -2327,7 +2327,7 @@
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
           },
           "absoluteShare": {
-            "$ref": "#/components/schemas/CurrencyDataPoint"
+            "$ref": "#/components/schemas/QaReportDataPointCurrencyDataPoint"
           }
         }
       },
@@ -2338,7 +2338,7 @@
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
           },
           "absoluteShare": {
-            "$ref": "#/components/schemas/CurrencyDataPoint"
+            "$ref": "#/components/schemas/QaReportDataPointCurrencyDataPoint"
           }
         }
       },
@@ -2349,7 +2349,7 @@
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
           },
           "absoluteShare": {
-            "$ref": "#/components/schemas/CurrencyDataPoint"
+            "$ref": "#/components/schemas/QaReportDataPointCurrencyDataPoint"
           }
         }
       },
@@ -2360,7 +2360,7 @@
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
           },
           "absoluteShare": {
-            "$ref": "#/components/schemas/CurrencyDataPoint"
+            "$ref": "#/components/schemas/QaReportDataPointCurrencyDataPoint"
           }
         }
       },
@@ -2368,7 +2368,7 @@
         "type": "object",
         "properties": {
           "totalAmount": {
-            "$ref": "#/components/schemas/CurrencyDataPoint"
+            "$ref": "#/components/schemas/QaReportDataPointCurrencyDataPoint"
           },
           "nonEligibleShare": {
             "$ref": "#/components/schemas/EutaxonomyNonFinancialsRevenueNonEligibleShare"
@@ -2421,7 +2421,7 @@
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
           },
           "absoluteShare": {
-            "$ref": "#/components/schemas/CurrencyDataPoint"
+            "$ref": "#/components/schemas/QaReportDataPointCurrencyDataPoint"
           }
         }
       },
@@ -2432,7 +2432,7 @@
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
           },
           "absoluteShare": {
-            "$ref": "#/components/schemas/CurrencyDataPoint"
+            "$ref": "#/components/schemas/QaReportDataPointCurrencyDataPoint"
           }
         }
       },
@@ -2443,7 +2443,7 @@
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
           },
           "absoluteShare": {
-            "$ref": "#/components/schemas/CurrencyDataPoint"
+            "$ref": "#/components/schemas/QaReportDataPointCurrencyDataPoint"
           }
         }
       },
@@ -2454,7 +2454,7 @@
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
           },
           "absoluteShare": {
-            "$ref": "#/components/schemas/CurrencyDataPoint"
+            "$ref": "#/components/schemas/QaReportDataPointCurrencyDataPoint"
           }
         }
       },
@@ -2474,7 +2474,8 @@
               "Audited",
               "Reported",
               "Estimated",
-              "Incomplete"
+              "Incomplete",
+              "NoDataFound"
             ]
           },
           "comment": {
@@ -2500,7 +2501,8 @@
               "Audited",
               "Reported",
               "Estimated",
-              "Incomplete"
+              "Incomplete",
+              "NoDataFound"
             ]
           },
           "comment": {
@@ -2526,7 +2528,8 @@
               "Audited",
               "Reported",
               "Estimated",
-              "Incomplete"
+              "Incomplete",
+              "NoDataFound"
             ]
           },
           "comment": {
@@ -2550,34 +2553,8 @@
               "Audited",
               "Reported",
               "Estimated",
-              "Incomplete"
-            ]
-          },
-          "comment": {
-            "type": "string"
-          },
-          "dataSource": {
-            "$ref": "#/components/schemas/ExtendedDocumentReference"
-          }
-        }
-      },
-      "ExtendedDataPointYesNo": {
-        "type": "object",
-        "properties": {
-          "value": {
-            "type": "string",
-            "enum": [
-              "Yes",
-              "No"
-            ]
-          },
-          "quality": {
-            "type": "string",
-            "enum": [
-              "Audited",
-              "Reported",
-              "Estimated",
-              "Incomplete"
+              "Incomplete",
+              "NoDataFound"
             ]
           },
           "comment": {
@@ -2605,7 +2582,8 @@
               "Audited",
               "Reported",
               "Estimated",
-              "Incomplete"
+              "Incomplete",
+              "NoDataFound"
             ]
           },
           "comment": {
@@ -2689,25 +2667,6 @@
           },
           "correctedData": {
             "$ref": "#/components/schemas/ExtendedDataPointLocalDate"
-          }
-        }
-      },
-      "QaReportDataPointExtendedDataPointYesNo": {
-        "required": [
-          "comment",
-          "correctedData",
-          "verdict"
-        ],
-        "type": "object",
-        "properties": {
-          "comment": {
-            "type": "string"
-          },
-          "verdict": {
-            "$ref": "#/components/schemas/QaReportDataPointVerdict"
-          },
-          "correctedData": {
-            "$ref": "#/components/schemas/ExtendedDataPointYesNo"
           }
         }
       },

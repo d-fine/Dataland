@@ -20,7 +20,7 @@ import org.dataland.datalandqaservice.model.reports.QaReportDataPoint
  * The QA-model for the Capex section
  */
 data class EutaxonomyNonFinancialsCapex(
-    val totalAmount: CurrencyDataPoint? = null,
+    val totalAmount: QaReportDataPoint<CurrencyDataPoint?>? = null,
 
     @field:Valid()
     val nonEligibleShare: EutaxonomyNonFinancialsCapexNonEligibleShare? = null,
