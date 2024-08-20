@@ -305,6 +305,153 @@
         ]
       }
     },
+    "/data/additional-company-information/{dataId}/reports": {
+      "get": {
+        "tags": [
+          "additional-company-information-data-qa-report-controller"
+        ],
+        "summary": "Retrieve all QA reports.",
+        "description": "Retrieve all QA reports associated to given dataset.",
+        "operationId": "getAllQaReportsForDataset_1",
+        "parameters": [
+          {
+            "name": "dataId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "showInactive",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "reporterUserId",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved all QA reports.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/QaReportWithMetaInformationAdditionalCompanyInformationData"
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      },
+      "post": {
+        "tags": [
+          "additional-company-information-data-qa-report-controller"
+        ],
+        "summary": "Upload new QA report.",
+        "description": "The uploaded QA report is added to the database, the generated report id is returned.",
+        "operationId": "postQaReport_1",
+        "parameters": [
+          {
+            "name": "dataId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AdditionalCompanyInformationData"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully added QA report to dataland.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/QaReportMetaInformation"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
     "/data/sfdr/{dataId}/reports/{qaReportId}/status": {
       "patch": {
         "tags": [
@@ -313,6 +460,77 @@
         "summary": "Change the status of a QA report.",
         "description": "The specified QA report is marked as active or inactive.",
         "operationId": "setQaReportStatus",
+        "parameters": [
+          {
+            "name": "dataId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "qaReportId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/QaReportStatusPatch"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully marked QA report as active or inactive."
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
+    "/data/additional-company-information/{dataId}/reports/{qaReportId}/status": {
+      "patch": {
+        "tags": [
+          "additional-company-information-data-qa-report-controller"
+        ],
+        "summary": "Change the status of a QA report.",
+        "description": "The specified QA report is marked as active or inactive.",
+        "operationId": "setQaReportStatus_1",
         "parameters": [
           {
             "name": "dataId",
@@ -497,6 +715,74 @@
         ]
       }
     },
+    "/data/additional-company-information/{dataId}/reports/{qaReportId}": {
+      "get": {
+        "tags": [
+          "additional-company-information-data-qa-report-controller"
+        ],
+        "summary": "Retrieve a QA report.",
+        "description": "Retrieve the information about a QA report.",
+        "operationId": "getQaReport_1",
+        "parameters": [
+          {
+            "name": "dataId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "qaReportId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved QA report.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/QaReportWithMetaInformationAdditionalCompanyInformationData"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
     "/actuator": {
       "get": {
         "tags": [
@@ -519,7 +805,7 @@
                   }
                 }
               },
-              "application/vnd.spring-boot.actuator.v2+json": {
+              "application/json": {
                 "schema": {
                   "type": "object",
                   "additionalProperties": {
@@ -530,7 +816,7 @@
                   }
                 }
               },
-              "application/json": {
+              "application/vnd.spring-boot.actuator.v2+json": {
                 "schema": {
                   "type": "object",
                   "additionalProperties": {
@@ -582,12 +868,12 @@
                   "type": "object"
                 }
               },
-              "application/vnd.spring-boot.actuator.v2+json": {
+              "application/json": {
                 "schema": {
                   "type": "object"
                 }
               },
-              "application/json": {
+              "application/vnd.spring-boot.actuator.v2+json": {
                 "schema": {
                   "type": "object"
                 }
@@ -633,12 +919,12 @@
                   "type": "object"
                 }
               },
-              "application/vnd.spring-boot.actuator.v2+json": {
+              "application/json": {
                 "schema": {
                   "type": "object"
                 }
               },
-              "application/json": {
+              "application/vnd.spring-boot.actuator.v2+json": {
                 "schema": {
                   "type": "object"
                 }
@@ -684,12 +970,12 @@
                   "type": "object"
                 }
               },
-              "application/vnd.spring-boot.actuator.v2+json": {
+              "application/json": {
                 "schema": {
                   "type": "object"
                 }
               },
-              "application/json": {
+              "application/vnd.spring-boot.actuator.v2+json": {
                 "schema": {
                   "type": "object"
                 }
@@ -1439,6 +1725,147 @@
           }
         }
       },
+      "AdditionalCompanyInformationData": {
+        "type": "object",
+        "properties": {
+          "general": {
+            "$ref": "#/components/schemas/AdditionalCompanyInformationGeneral"
+          }
+        }
+      },
+      "AdditionalCompanyInformationGeneral": {
+        "type": "object",
+        "properties": {
+          "general": {
+            "$ref": "#/components/schemas/AdditionalCompanyInformationGeneralGeneral"
+          },
+          "financialInformation": {
+            "$ref": "#/components/schemas/AdditionalCompanyInformationGeneralFinancialInformation"
+          }
+        }
+      },
+      "AdditionalCompanyInformationGeneralFinancialInformation": {
+        "type": "object",
+        "properties": {
+          "equity": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          },
+          "debt": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          },
+          "balanceSheetTotal": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          },
+          "evic": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          }
+        }
+      },
+      "AdditionalCompanyInformationGeneralGeneral": {
+        "type": "object",
+        "properties": {
+          "fiscalYearDeviation": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointAdditionalCompanyInformationGeneralGeneralFiscalYearDeviationOptions"
+          },
+          "fiscalYearEnd": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointLocalDate"
+          },
+          "referencedReports": {
+            "$ref": "#/components/schemas/QaReportDataPointMapStringCompanyReport"
+          }
+        }
+      },
+      "ExtendedDataPointAdditionalCompanyInformationGeneralGeneralFiscalYearDeviationOptions": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "type": "string",
+            "enum": [
+              "Deviation",
+              "NoDeviation"
+            ]
+          },
+          "quality": {
+            "type": "string",
+            "enum": [
+              "Audited",
+              "Reported",
+              "Estimated",
+              "Incomplete",
+              "NoDataFound"
+            ]
+          },
+          "comment": {
+            "type": "string"
+          },
+          "dataSource": {
+            "$ref": "#/components/schemas/ExtendedDocumentReference"
+          }
+        }
+      },
+      "ExtendedDataPointLocalDate": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "type": "string",
+            "format": "date"
+          },
+          "quality": {
+            "type": "string",
+            "enum": [
+              "Audited",
+              "Reported",
+              "Estimated",
+              "Incomplete",
+              "NoDataFound"
+            ]
+          },
+          "comment": {
+            "type": "string"
+          },
+          "dataSource": {
+            "$ref": "#/components/schemas/ExtendedDocumentReference"
+          }
+        }
+      },
+      "QaReportDataPointExtendedDataPointAdditionalCompanyInformationGeneralGeneralFiscalYearDeviationOptions": {
+        "required": [
+          "comment",
+          "correctedData",
+          "verdict"
+        ],
+        "type": "object",
+        "properties": {
+          "comment": {
+            "type": "string"
+          },
+          "verdict": {
+            "$ref": "#/components/schemas/QaReportDataPointVerdict"
+          },
+          "correctedData": {
+            "$ref": "#/components/schemas/ExtendedDataPointAdditionalCompanyInformationGeneralGeneralFiscalYearDeviationOptions"
+          }
+        }
+      },
+      "QaReportDataPointExtendedDataPointLocalDate": {
+        "required": [
+          "comment",
+          "correctedData",
+          "verdict"
+        ],
+        "type": "object",
+        "properties": {
+          "comment": {
+            "type": "string"
+          },
+          "verdict": {
+            "$ref": "#/components/schemas/QaReportDataPointVerdict"
+          },
+          "correctedData": {
+            "$ref": "#/components/schemas/ExtendedDataPointLocalDate"
+          }
+        }
+      },
       "QaReportStatusPatch": {
         "required": [
           "active"
@@ -1488,6 +1915,21 @@
           },
           "report": {
             "$ref": "#/components/schemas/SfdrData"
+          }
+        }
+      },
+      "QaReportWithMetaInformationAdditionalCompanyInformationData": {
+        "required": [
+          "metaInfo",
+          "report"
+        ],
+        "type": "object",
+        "properties": {
+          "metaInfo": {
+            "$ref": "#/components/schemas/QaReportMetaInformation"
+          },
+          "report": {
+            "$ref": "#/components/schemas/AdditionalCompanyInformationData"
           }
         }
       },

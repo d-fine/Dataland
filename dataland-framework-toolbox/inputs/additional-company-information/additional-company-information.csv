@@ -1,0 +1,8 @@
+Field Identifier,Category,Sub-Category,Field Name,Tooltip,Component,Options,Unit,Document-Support,Dependency,Show when value is,Mandatory Field
+2,General,General,Fiscal Year Deviation,Does the fiscal year deviate from the calendar year?,Single-Select Radio Button,Deviation | No Deviation,,Extended,,,
+3,General,General,Fiscal Year End,The date the fiscal year ends,Date,,,Extended,,,
+4,General,General,Referenced Reports,Please upload all relevant reports for this dataset in the PDF format.,Report Preupload,,,,,,
+5,General,Financial Information,Equity,"The value of ownership interest in the company, calculated as total assets minus total liabilities.",Number,,Currency,Extended,,,
+6,General,Financial Information,Debt,"The total amount of all financial obligations the company owes to external parties, including loans, bonds, and other forms of debt.",Number,,Currency,Extended,,,
+7,General,Financial Information,Balance sheet total,"The sum of all assets listed on the balance sheet, representing the total value of the company's resources.",Number,,Currency,Extended,,,
+8,General,Financial Information,EVIC,Enterprise Value Including Cash,Number,,Currency,Extended,,,
