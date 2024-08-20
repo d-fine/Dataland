@@ -116,19 +116,17 @@ interface DataRequestRepository : JpaRepository<DataRequestEntity, String> {
      * @returns the initial list of data request entities together with the associated status history
      */
     @Query(
-        nativeQuery = true,
-        value =
-        "SELECT d.* FROM data_requests d " +
-                "LEFT JOIN request_status_history ON request_status_history.data_request_id = d.data_request_id",
-       /* "SELECT DISTINCT d FROM DataRequestEntity d " +
-            "LEFT JOIN FETCH d.dataRequestStatusHistory " +
-            "ON d.data_request_id WHERE d IN :dataRequests",
+        "SELECT DISTINCT d FROM DataRequestEntity d " +
+                "LEFT JOIN FETCH d.dataRequestStatusHistory " +
+                "WHERE EXISTS (" +
+                "    SELECT 1 FROM DataRequestEntity r WHERE r.dataRequestId = d.dataRequestId AND r IN :dataRequests" +
+                ")"
 
-        */
     )
     fun fetchStatusHistory(
         dataRequests: List<DataRequestEntity>,
     ): List<DataRequestEntity>
+
 
     /** This method counts the number of data requests that a user
      * has performed from a specified timestamp.
