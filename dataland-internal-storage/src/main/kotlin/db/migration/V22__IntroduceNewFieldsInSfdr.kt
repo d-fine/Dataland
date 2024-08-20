@@ -19,9 +19,9 @@ class V22__IntroduceNewFieldsInSfdr : BaseJavaMigration() {
     }
 
     private val oldToNewSocialAndEmployeeMattersKey = mapOf(
-        "femaleBoardMembers" to "femaleBoardMembersSupervisoryBoard",
-        "maleBoardMembers" to "maleBoardMembersSupervisoryBoard",
-        "boardGenderDiversityInPercent" to "boardGenderDiversitySupervisoryBoardInPercent",
+        "femaleBoardMembers" to "femaleBoardMembersBoardOfDirectors",
+        "maleBoardMembers" to "maleBoardMembersBoardOfDirectors",
+        "boardGenderDiversityInPercent" to "boardGenderDiversityBoardOfDirectorsInPercent",
     )
 
     /**

@@ -367,7 +367,7 @@
         "socialAndEmployeeMatters": {
             "averageGrossHourlyEarningsFemaleEmployees": null,
             "averageGrossHourlyEarningsMaleEmployees": null,
-            "boardGenderDiversitySupervisoryBoardInPercent": {
+            "boardGenderDiversityBoardOfDirectorsInPercent": {
                 "comment": "The percentage of women on the OCI N.V. board is 30,7% in the year 2023. This information comes from the OCI Annual Report 2023.",
                 "dataSource": {
                     "fileName": "OCI N.V./OCI-Annual-Report-2023-vf.pdf",
@@ -435,7 +435,7 @@
                 "quality": "Reported",
                 "value": "Yes"
             },
-            "femaleBoardMembersSupervisoryBoard": {
+            "femaleBoardMembersBoardOfDirectors": {
                 "comment": "As of the General Meeting held on May 3, 2023, the\ncomposition of the Board in terms of gender diversity is\nas follows:\n\u00e2\u20ac\u00a2 Non-Executive Directors: 6 Male (66.67%), 3\nFemale (33.3%)\n\u00e2\u20ac\u00a2 Executive Directors: 3 Male (75%), 1 Female (25.0%)",
                 "dataSource": {
                     "fileName": "OCI N.V./OCI-Annual-Report-2023-vf.pdf",
@@ -491,7 +491,7 @@
                 "quality": "Audited",
                 "value": "Yes"
             },
-            "maleBoardMembersSupervisoryBoard": {
+            "maleBoardMembersBoardOfDirectors": {
                 "comment": "As of the General Meeting held on May 3, 2023, the\ncomposition of the Board in terms of gender diversity is\nas follows:\n\u00e2\u20ac\u00a2 Non-Executive Directors: 6 Male (66.67%), 3\nFemale (33.3%)\n\u00e2\u20ac\u00a2 Executive Directors: 3 Male (75%), 1 Female (25.0%)",
                 "dataSource": {
                     "fileName": "OCI N.V./OCI-Annual-Report-2023-vf.pdf",

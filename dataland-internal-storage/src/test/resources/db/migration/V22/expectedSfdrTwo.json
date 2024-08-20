@@ -178,7 +178,7 @@
         "socialAndEmployeeMatters": {
             "averageGrossHourlyEarningsFemaleEmployees": null,
             "averageGrossHourlyEarningsMaleEmployees": null,
-            "boardGenderDiversitySupervisoryBoardInPercent": {
+            "boardGenderDiversityBoardOfDirectorsInPercent": {
                 "comment": "The percentage of women on the board of directors of SUMIDA AG is 0%.",
                 "dataSource": {
                     "fileName": "SUMIDA AG/Sustainability - ESG Data - SUMIDA CORPORATION.pdf",
@@ -216,7 +216,7 @@
                 "quality": "Estimated",
                 "value": "Yes"
             },
-            "femaleBoardMembersSupervisoryBoard": {
+            "femaleBoardMembersBoardOfDirectors": {
                 "comment": "The number of women on the board of directors of SUMIDA AG is 0.",
                 "dataSource": {
                     "fileName": "SUMIDA AG/Sustainability - ESG Data - SUMIDA CORPORATION.pdf",
@@ -262,7 +262,7 @@
                 "quality": null,
                 "value": "Yes"
             },
-            "maleBoardMembersSupervisoryBoard": {
+            "maleBoardMembersBoardOfDirectors": {
                 "comment": "The number of men on the board of directors of SUMIDA AG is 2.",
                 "dataSource": {
                     "fileName": "SUMIDA AG/Sustainability - ESG Data - SUMIDA CORPORATION.pdf",

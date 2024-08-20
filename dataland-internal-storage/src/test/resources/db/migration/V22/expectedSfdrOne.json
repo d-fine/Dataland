@@ -131,7 +131,7 @@
         "socialAndEmployeeMatters": {
             "averageGrossHourlyEarningsFemaleEmployees": null,
             "averageGrossHourlyEarningsMaleEmployees": null,
-            "boardGenderDiversitySupervisoryBoardInPercent": {
+            "boardGenderDiversityBoardOfDirectorsInPercent": {
                 "comment": "",
                 "dataSource": {
                     "fileName": "spotify-2022-equity-impact-report",
@@ -149,13 +149,13 @@
             "excessiveCeoPayRatioInPercent": null,
             "fairBusinessMarketingAdvertisingPolicy": null,
             "fairCompetitionPolicy": null,
-            "femaleBoardMembersSupervisoryBoard": null,
+            "femaleBoardMembersBoardOfDirectors": null,
             "grievanceHandlingMechanism": null,
             "humanRightsDueDiligencePolicy": null,
             "humanRightsLegalProceedings": null,
             "iloCoreLabourStandards": null,
             "iso14001Certificate": null,
-            "maleBoardMembersSupervisoryBoard": null,
+            "maleBoardMembersBoardOfDirectors": null,
             "oecdGuidelinesForMultinationalEnterprisesGrievanceHandling": null,
             "policyAgainstBriberyAndCorruption": null,
             "policyAgainstChildLabour": null,
