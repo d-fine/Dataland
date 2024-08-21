@@ -9,6 +9,7 @@ import org.dataland.e2etests.utils.ApiAccessor
 import org.dataland.e2etests.utils.DocumentManagerAccessor
 import org.dataland.e2etests.utils.QaApiAccessor
 import org.dataland.e2etests.utils.UploadConfiguration
+import org.dataland.e2etests.utils.UploadInfo
 import org.dataland.e2etests.utils.testDataProvivders.QaReportTestDataProvider
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeAll
@@ -40,11 +41,11 @@ class QaReportControllerTest {
         documentManagerAccessor.uploadAllTestDocumentsAndAssurePersistence()
     }
 
-    private fun <T> postQaReportForNewDataId(
+    private fun <T>provideUploadInfo(
         qaReport: T,
         bypassQa: Boolean,
-    ): QaReportMetaInformation {
-        val uploadInfo = when (qaReport) {
+    ): List<UploadInfo> {
+        return when (qaReport) {
             is SfdrQaReport -> apiAccessor.uploadCompanyAndFrameworkDataForOneFramework(
                 testCompanyInformationForSfdrData,
                 testSfdrDataset,
@@ -63,6 +64,13 @@ class QaReportControllerTest {
 
             else -> throw IllegalArgumentException("The framework of $qaReport does not support QA reports.")
         }
+    }
+
+    private fun <T> postQaReportForNewDataId(
+        qaReport: T,
+        bypassQa: Boolean,
+    ): QaReportMetaInformation {
+        val uploadInfo = provideUploadInfo(qaReport, bypassQa)
         val dataIdOfUpload = uploadInfo.first().actualStoredDataMetaInfo!!.dataId
         return withTechnicalUser(TechnicalUser.Admin) {
             when (qaReport) {
