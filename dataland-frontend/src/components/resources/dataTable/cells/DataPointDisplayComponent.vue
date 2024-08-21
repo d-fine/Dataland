@@ -54,7 +54,7 @@ export default defineComponent({
     },
     contentDisplayValue() {
       return this.hasAuxiliaryData && !this.hasValidValue
-        ? ONLY_AUXILIARY_DATA_PROVIDED
+        ? 'testvalue1'
         : this.content.displayValue?.value || NO_DATA_PROVIDED;
     },
     convertedValueForModal() {
