@@ -45,7 +45,13 @@ class CurrencyComponent(
         )
         dataClassBuilder.addProperty(
             identifier,
-            backendCurrencyDatapoint.getBackendClientTypeReference(),
+            TypeReference(
+                "org.dataland.datalandqaservice.model.reports.QaReportDataPoint",
+                true,
+                listOf(
+                    backendCurrencyDatapoint.getBackendClientTypeReference(),
+                ),
+            ),
         )
     }
 

@@ -63,9 +63,9 @@ data class SfdrSocialSocialAndEmployeeMatters(
     @field:Valid()
     val oecdGuidelinesForMultinationalEnterprisesGrievanceHandling: QaReportDataPoint<ExtendedDataPointYesNo?>? = null,
 
-    val averageGrossHourlyEarningsMaleEmployees: CurrencyDataPoint? = null,
+    val averageGrossHourlyEarningsMaleEmployees: QaReportDataPoint<CurrencyDataPoint?>? = null,
 
-    val averageGrossHourlyEarningsFemaleEmployees: CurrencyDataPoint? = null,
+    val averageGrossHourlyEarningsFemaleEmployees: QaReportDataPoint<CurrencyDataPoint?>? = null,
 
     @field:Valid()
     val unadjustedGenderPayGapInPercent: QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,

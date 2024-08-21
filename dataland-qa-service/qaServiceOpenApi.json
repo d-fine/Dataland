@@ -873,6 +873,25 @@
           }
         }
       },
+      "QaReportDataPointCurrencyDataPoint": {
+        "required": [
+          "comment",
+          "correctedData",
+          "verdict"
+        ],
+        "type": "object",
+        "properties": {
+          "comment": {
+            "type": "string"
+          },
+          "verdict": {
+            "$ref": "#/components/schemas/QaReportDataPointVerdict"
+          },
+          "correctedData": {
+            "$ref": "#/components/schemas/CurrencyDataPoint"
+          }
+        }
+      },
       "QaReportDataPointExtendedDataPointBigDecimal": {
         "required": [
           "comment",
@@ -1149,10 +1168,10 @@
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
           },
           "enterpriseValue": {
-            "$ref": "#/components/schemas/CurrencyDataPoint"
+            "$ref": "#/components/schemas/QaReportDataPointCurrencyDataPoint"
           },
           "totalRevenue": {
-            "$ref": "#/components/schemas/CurrencyDataPoint"
+            "$ref": "#/components/schemas/QaReportDataPointCurrencyDataPoint"
           },
           "carbonFootprintInTonnesPerMillionEURRevenue": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
@@ -1265,7 +1284,7 @@
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigInteger"
           },
           "totalAmountOfReportedFinesOfBriberyAndCorruption": {
-            "$ref": "#/components/schemas/CurrencyDataPoint"
+            "$ref": "#/components/schemas/QaReportDataPointCurrencyDataPoint"
           }
         }
       },
@@ -1355,10 +1374,10 @@
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointYesNo"
           },
           "averageGrossHourlyEarningsMaleEmployees": {
-            "$ref": "#/components/schemas/CurrencyDataPoint"
+            "$ref": "#/components/schemas/QaReportDataPointCurrencyDataPoint"
           },
           "averageGrossHourlyEarningsFemaleEmployees": {
-            "$ref": "#/components/schemas/CurrencyDataPoint"
+            "$ref": "#/components/schemas/QaReportDataPointCurrencyDataPoint"
           },
           "unadjustedGenderPayGapInPercent": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
