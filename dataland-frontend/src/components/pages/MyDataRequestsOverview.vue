@@ -30,6 +30,17 @@
                 class="ml-3"
                 style="margin: 15px"
               />
+              <FrameworkDataSearchDropdownFilter
+                  v-model="selectedAccessStatus"
+                  ref="frameworkFilter"
+                  :available-items="availableAccessStatus"
+                  filter-name="Access Status"
+                  data-test="requested-Datasets-frameworks"
+                  filter-id="framework-filter"
+                  filter-placeholder="access status"
+                  class="ml-3"
+                  style="margin: 15px"
+              />
               <div class="flex align-items-center">
                 <span
                   data-test="reset-filter"
@@ -178,11 +189,11 @@ import {
 } from '@/utils/StringFormatter';
 import DatasetsTabMenu from '@/components/general/DatasetsTabMenu.vue';
 import { convertUnixTimeInMsToDateString } from '@/utils/DataFormatUtils';
-import { type ExtendedStoredDataRequest, RequestStatus } from '@clients/communitymanager';
+import {AccessStatus, type ExtendedStoredDataRequest, RequestStatus} from '@clients/communitymanager';
 import { type DataTypeEnum } from '@clients/backend';
 import InputText from 'primevue/inputtext';
 import FrameworkDataSearchDropdownFilter from '@/components/resources/frameworkDataSearch/FrameworkDataSearchDropdownFilter.vue';
-import type { FrameworkSelectableItem } from '@/utils/FrameworkDataSearchDropDownFilterTypes';
+import {FrameworkSelectableItem, SelectableItem} from '@/utils/FrameworkDataSearchDropDownFilterTypes';
 import { FRAMEWORKS_WITH_VIEW_PAGE } from '@/utils/Constants';
 import { getFrontendFrameworkDefinition } from '@/frameworks/FrontendFrameworkRegistry';
 import AuthenticationWrapper from '@/components/wrapper/AuthenticationWrapper.vue';
@@ -193,6 +204,9 @@ export default defineComponent({
   computed: {
     RequestStatus() {
       return RequestStatus;
+    },
+    AccessStatus() {
+      return AccessStatus;
     },
   },
   components: {
@@ -229,6 +243,8 @@ export default defineComponent({
       searchBarInputFilter: '',
       availableFrameworks: [] as Array<FrameworkSelectableItem>,
       selectedFrameworks: [] as Array<FrameworkSelectableItem>,
+      availableAccessStatus: [] as Array<SelectableItem>,
+      selectedAccessStatus: [] as Array<SelectableItem>,
       numberOfFilteredRequests: 0,
       sortField: 'requestStatus' as keyof ExtendedStoredDataRequest,
       sortOrder: 1,
@@ -236,11 +252,15 @@ export default defineComponent({
   },
   mounted() {
     this.availableFrameworks = this.retrieveAvailableFrameworks();
+    this.availableAccessStatus = this.retrieveAvailableAccessStatus();
     this.getStoredRequestDataList().catch((error) => console.error(error));
     this.resetFilterAndSearchBar();
   },
   watch: {
     selectedFrameworks() {
+      this.updateCurrentDisplayedData();
+    },
+    selectedAccessStatus() {
       this.updateCurrentDisplayedData();
     },
     waitingForData() {
@@ -291,6 +311,18 @@ export default defineComponent({
         return {
           frameworkDataType: dataTypeEnum,
           displayName: displayName,
+          disabled: false,
+        };
+      });
+    },
+    /**
+     * Gets list with all available access status
+     * @returns array of SelectableItem
+     */
+    retrieveAvailableAccessStatus(): Array<SelectableItem> {
+      return Object.values(this.AccessStatus).map((status) => {
+        return {
+          displayName: status,
           disabled: false,
         };
       });
@@ -351,6 +383,17 @@ export default defineComponent({
       return false;
     },
     /**
+     * Filterfunction for access status
+     * @param accessStatus dataland framework
+     * @returns checks if given accessStatus is selected
+     */
+    filterAccessStatus(accessStatus: string) {
+      for (const selectedAccessStatus of this.selectedAccessStatus) {
+        if (accessStatus == selectedAccessStatus.displayName) return true;
+      }
+      return false;
+    },
+    /**
      * Filterfunction for searchbar
      * @param companyName dataland companyName
      * @returns checks if given companyName contains searchbar text
@@ -365,6 +408,7 @@ export default defineComponent({
      */
     resetFilterAndSearchBar() {
       this.selectedFrameworks = this.availableFrameworks;
+      this.selectedAccessStatus = this.availableAccessStatus;
       this.searchBarInput = '';
     },
     /**
@@ -373,7 +417,8 @@ export default defineComponent({
     updateCurrentDisplayedData() {
       this.displayedData = this.storedDataRequests
         .filter((dataRequest) => this.filterSearchInput(dataRequest.companyName))
-        .filter((dataRequest) => this.filterFramework(dataRequest.dataType));
+        .filter((dataRequest) => this.filterFramework(dataRequest.dataType))
+        .filter((dataRequest) => this.filterAccessStatus(dataRequest.accessStatus));
       this.displayedData.sort((a, b) => this.customCompareForExtendedStoredDataRequests(a, b));
       this.numberOfFilteredRequests = this.displayedData.length;
       this.displayedData = this.displayedData.slice(
