@@ -37,9 +37,8 @@ from dataland_backend_api_documentation_client.models.company_associated_data_es
 from dataland_backend_api_documentation_client.models.company_associated_data_heimathafen_data import (
     CompanyAssociatedDataHeimathafenData,
 )
-from dataland_backend_api_documentation_client.models.company_associated_data_additional_company_information_data import (
-    CompanyAssociatedDataAdditionalCompanyInformationData,
-)
+from dataland_backend_api_documentation_client.models.company_associated_data_additional_company_information_data \
+    import (CompanyAssociatedDataAdditionalCompanyInformationData)
 
 from dataland_backend_api_documentation_client.client import AuthenticatedClient
 from dataland_backend_api_documentation_client.models.data_meta_information import (
