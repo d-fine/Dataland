@@ -20,7 +20,8 @@ const ViewFrameworkData = (): Promise<RouteComponent> => import('@/components/pa
 const DatasetOverview = (): Promise<RouteComponent> => import('@/components/pages/DatasetOverview.vue');
 const MyDataRequestsOverview = (): Promise<RouteComponent> => import('@/components/pages/MyDataRequestsOverview.vue');
 const ViewDataRequestPage = (): Promise<RouteComponent> => import('@/components/pages/ViewDataRequestPage.vue');
-const CompanyDataRequestsOverview = (): Promise<RouteComponent> => import('@/components/pages/CompanyDataRequestsOverview.vue');
+const CompanyDataRequestsOverview = (): Promise<RouteComponent> =>
+  import('@/components/pages/CompanyDataRequestsOverview.vue');
 const UploadFormWrapper = (): Promise<RouteComponent> => import('@/components/pages/UploadFormWrapper.vue');
 const ChooseCompanyForFrameworkDataUpload = (): Promise<RouteComponent> =>
   import('@/components/pages/ChooseCompanyForFrameworkDataUpload.vue');
