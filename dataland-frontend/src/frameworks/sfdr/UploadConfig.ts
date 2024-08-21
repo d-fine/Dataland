@@ -161,6 +161,28 @@ export const sfdrDataModel = [
             showIf: (): boolean => true,
           },
           {
+            name: 'scope3UpstreamGhgEmissionsInTonnes',
+            label: 'Scope 3 upstream GHG emissions',
+            description:
+              'Indirect (gross) carbon emissions from activities related to the production and distribution of goods and services purchased by the reporting company.',
+
+            unit: 'Tonnes',
+            component: 'BigDecimalExtendedDataPointFormField',
+            required: false,
+            showIf: (): boolean => true,
+          },
+          {
+            name: 'scope3DownstreamGhgEmissionsInTonnes',
+            label: 'Scope 3 downstream GHG emissions ',
+            description:
+              'Indirect (gross) carbon emissions that occur as a result of the use or disposal of the reporting company’s sold products and services.',
+
+            unit: 'Tonnes',
+            component: 'BigDecimalExtendedDataPointFormField',
+            required: false,
+            showIf: (): boolean => true,
+          },
+          {
             name: 'scope1And2And3GhgEmissionsInTonnes',
             label: 'Scope 1 and 2 and 3 GHG emissions',
             description: 'Sum of scope 1, 2 and 3 carbon emissions',
@@ -227,6 +249,50 @@ export const sfdrDataModel = [
             name: 'ghgIntensityInTonnesPerMillionEURRevenue',
             label: 'GHG intensity',
             description: 'Tonnes of GHG emissions / million of the revenue (in the same currency as the total revenue)',
+
+            unit: 'Tonnes / €M Revenue',
+            component: 'BigDecimalExtendedDataPointFormField',
+            required: false,
+            showIf: (): boolean => true,
+          },
+          {
+            name: 'ghgIntensityScope1InTonnesPerMillionEURRevenue',
+            label: 'GHG intensity - scope 1',
+            description:
+              'Tonnes of Scope 1 GHG emissions / million of the revenue (in the same currency as the total revenue)',
+
+            unit: 'Tonnes / €M Revenue',
+            component: 'BigDecimalExtendedDataPointFormField',
+            required: false,
+            showIf: (): boolean => true,
+          },
+          {
+            name: 'ghgIntensityScope2InTonnesPerMillionEURRevenue',
+            label: 'GHG intensity - scope 2',
+            description:
+              'Tonnes of Scope 2 GHG emissions / million of the revenue (in the same currency as the total revenue)',
+
+            unit: 'Tonnes / €M Revenue',
+            component: 'BigDecimalExtendedDataPointFormField',
+            required: false,
+            showIf: (): boolean => true,
+          },
+          {
+            name: 'ghgIntensityScope3InTonnesPerMillionEURRevenue',
+            label: 'GHG intensity - scope 3',
+            description:
+              'Tonnes of Scope 3 GHG emissions / million of the revenue (in the same currency as the total revenue)',
+
+            unit: 'Tonnes / €M Revenue',
+            component: 'BigDecimalExtendedDataPointFormField',
+            required: false,
+            showIf: (): boolean => true,
+          },
+          {
+            name: 'ghgIntensityScope4InTonnesPerMillionEURRevenue',
+            label: 'GHG intensity - scope 4',
+            description:
+              'Tonnes of Scope 4 GHG emissions / million of the revenue (in the same currency as the total revenue)',
 
             unit: 'Tonnes / €M Revenue',
             component: 'BigDecimalExtendedDataPointFormField',
@@ -898,10 +964,10 @@ export const sfdrDataModel = [
             showIf: (): boolean => true,
           },
           {
-            name: 'femaleBoardMembers',
-            label: 'Female Board Members',
+            name: 'femaleBoardMembersSupervisoryBoard',
+            label: 'Female Board Members - Supervisory Board',
             description:
-              'Number of females on the board, i.e. means the administrative, management or supervisory body of a company',
+              'Number of females on the supervisory board, i.e. means the administrative, management or supervisory body of a company',
 
             component: 'BigDecimalExtendedDataPointFormField',
             required: false,
@@ -909,10 +975,9 @@ export const sfdrDataModel = [
             validation: 'integer|min:0',
           },
           {
-            name: 'maleBoardMembers',
-            label: 'Male Board Members',
-            description:
-              'Number of males on the board, i.e. means the administrative, management or supervisory body of a company.',
+            name: 'femaleBoardMembersBoardOfDirectors',
+            label: 'Female Board Members - Board of Directors',
+            description: 'Number of females on the board of directors of the company',
 
             component: 'BigDecimalExtendedDataPointFormField',
             required: false,
@@ -920,9 +985,41 @@ export const sfdrDataModel = [
             validation: 'integer|min:0',
           },
           {
-            name: 'boardGenderDiversityInPercent',
-            label: 'Board gender diversity',
-            description: 'Percentage of female board members among all board members',
+            name: 'maleBoardMembersSupervisoryBoard',
+            label: 'Male Board Members - Supervisory Board',
+            description:
+              'Number of males on the supervisory board, i.e. means the administrative, management or supervisory body of a company',
+
+            component: 'BigDecimalExtendedDataPointFormField',
+            required: false,
+            showIf: (): boolean => true,
+            validation: 'integer|min:0',
+          },
+          {
+            name: 'maleBoardMembersBoardOfDirectors',
+            label: 'Male Board Members - Board of Directors',
+            description: 'Number of males on the board of directors of the company',
+
+            component: 'BigDecimalExtendedDataPointFormField',
+            required: false,
+            showIf: (): boolean => true,
+            validation: 'integer|min:0',
+          },
+          {
+            name: 'boardGenderDiversitySupervisoryBoardInPercent',
+            label: 'Board gender diversity - Supervisory Board',
+            description: 'Percentage of female board members among all supervisory board members',
+
+            unit: 'Percent',
+            component: 'BigDecimalExtendedDataPointFormField',
+            required: false,
+            showIf: (): boolean => true,
+            validation: 'between:0,100',
+          },
+          {
+            name: 'boardGenderDiversityBoardOfDirectorsInPercent',
+            label: 'Board gender diversity - Board of Directors',
+            description: 'Percentage of female board members among all board of directors members',
 
             unit: 'Percent',
             component: 'BigDecimalExtendedDataPointFormField',
