@@ -7,7 +7,7 @@
  */
 export function isValidFileName(
   isMounted: boolean,
-  fileName: string | undefined,
+  fileName: string | null | undefined,
   invalidFileNames = [noReportLabel]
 ): boolean {
   if (!isMounted) {

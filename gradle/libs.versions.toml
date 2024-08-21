@@ -153,7 +153,7 @@ json = "org.json:json:20240303"
 spring-context = "org.springframework:spring-context:6.1.8"
 spring-test = "org.springframework:spring-test:6.1.8"
 
-spring-boot = "org.springframework.boot:spring-boot:3.3.0"
+spring-boot = "org.springframework.boot:spring-boot:3.3.2"
 
 spring-rabbit = "org.springframework.amqp:spring-rabbit:3.1.5"
 
@@ -169,7 +169,7 @@ spring-amqp = "org.springframework.amqp:spring-amqp:3.1.5"
 
 spring-rabbit-test = { module = "org.springframework.amqp:spring-rabbit-test" }
 
-springdoc-openapi-ui = "org.springdoc:springdoc-openapi-starter-webmvc-ui:2.5.0"
+springdoc-openapi-ui = "org.springdoc:springdoc-openapi-starter-webmvc-ui:2.6.0"
 
 jackson-kotlin = "com.fasterxml.jackson.module:jackson-module-kotlin:2.17.1"
 freemarker = "org.freemarker:freemarker:2.3.33"

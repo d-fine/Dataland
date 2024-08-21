@@ -96,7 +96,6 @@
   </Card>
 </template>
 <script lang="ts">
-// @ts-nocheck
 import { FormKit } from '@formkit/vue';
 import { ApiClientProvider } from '@/services/ApiClients';
 import Card from 'primevue/card';
@@ -132,7 +131,7 @@ import YesNoNaFormField from '@/components/forms/parts/fields/YesNoNaFormField.v
 import UploadReports from '@/components/forms/parts/UploadReports.vue';
 import PercentageFormField from '@/components/forms/parts/fields/PercentageFormField.vue';
 import ProductionSitesFormField from '@/components/forms/parts/fields/ProductionSitesFormField.vue';
-import { objectDropNull, type ObjectType } from '@/utils/UpdateObjectUtils';
+import { objectDropNull } from '@/utils/UpdateObjectUtils';
 import { smoothScroll } from '@/utils/SmoothScroll';
 import { type DocumentToUpload, uploadFiles } from '@/utils/FileUploadUtils';
 import MostImportantProductsFormField from '@/components/forms/parts/fields/MostImportantProductsFormField.vue';
@@ -285,9 +284,7 @@ export default defineComponent({
       const dataResponse = await assertDefined(esgQuestionnaireDataControllerApi).getFrameworkData(dataId);
       const esgQuestionnaireResponseData = dataResponse.data;
       this.listOfFilledKpis = getFilledKpis(esgQuestionnaireResponseData.data);
-      this.companyAssociatedEsgQuestionnaireData = objectDropNull(
-        esgQuestionnaireResponseData as ObjectType
-      ) as CompanyAssociatedDataEsgQuestionnaireData;
+      this.companyAssociatedEsgQuestionnaireData = objectDropNull(esgQuestionnaireResponseData);
       this.waitingForData = false;
     },
     /**

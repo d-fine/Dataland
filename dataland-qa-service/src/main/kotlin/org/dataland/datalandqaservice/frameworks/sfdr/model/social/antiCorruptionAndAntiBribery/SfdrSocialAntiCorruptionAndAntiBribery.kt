@@ -16,6 +16,6 @@ data class SfdrSocialAntiCorruptionAndAntiBribery(
     @field:Valid()
     val reportedConvictionsOfBriberyAndCorruption: QaReportDataPoint<ExtendedDataPointBigInteger?>? = null,
 
-    val totalAmountOfReportedFinesOfBriberyAndCorruption: CurrencyDataPoint? = null,
+    val totalAmountOfReportedFinesOfBriberyAndCorruption: QaReportDataPoint<CurrencyDataPoint?>? = null,
 
 )
