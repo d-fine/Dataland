@@ -9,7 +9,7 @@ import java.io.File
  * The additional company information framework
  */
 @Component
-class AdditionalCompanyInformationFramework : InDevelopmentPavedRoadFramework (
+class AdditionalCompanyInformationFramework : InDevelopmentPavedRoadFramework(
     identifier = "additional-company-information",
     label = "Additional Company Information",
     explanation = "Additional Company Information",
