@@ -116,14 +116,13 @@ interface DataRequestRepository : JpaRepository<DataRequestEntity, String> {
      * @returns the initial list of data request entities together with the associated status history
      */
     @Query(
-// TODO just do it all in one query
         nativeQuery = true,
         value = TemporaryTables.TABLE_FILTERED +
 
             "SELECT DISTINCT d.* " +
             "FROM data_requests d " +
             "LEFT JOIN request_status_history rsh ON d.data_request_id = rsh.data_request_id " +
-            "INNER JOIN filtered_table yt ON d.data_request_id = yt.data_request_id ",
+            "INNER JOIN filtered_table ft ON d.data_request_id = ft.data_request_id ",
 
     )
     fun searchDataRequestEntityAndStatusHistory(
