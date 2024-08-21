@@ -43,6 +43,7 @@ interface DataRequestRepository : JpaRepository<DataRequestEntity, String> {
      * @returns the aggregated data requests
      */
     @Query(
+        //TODO anpassen
         " SELECT new org.dataland.datalandcommunitymanager.entities.AggregatedDataRequestEntity( " +
             "d.dataType, " +
             "d.reportingPeriod, " +
@@ -100,7 +101,6 @@ interface DataRequestRepository : JpaRepository<DataRequestEntity, String> {
      * @returns the initial list of data request entities together with the associated status history
      */
     @Query(
-// TODO just do it all in one query
 
         "SELECT DISTINCT d FROM DataRequestEntity d " +
             "LEFT JOIN FETCH d.dataRequestStatusHistory " +
@@ -112,8 +112,8 @@ interface DataRequestRepository : JpaRepository<DataRequestEntity, String> {
 
     /**
      * Fetches data request entities together with the associated status history
-     * @param dataRequests the requests entities for which the status histories to fetch
-     * @returns the initial list of data request entities together with the associated status history
+     * @param searchFilter the search filter used to filter in the data_requests table
+     * @returns a list of data request entities together with their associated status history
      */
     @Query(
         nativeQuery = true,
