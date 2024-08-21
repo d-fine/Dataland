@@ -43,7 +43,7 @@ interface DataRequestRepository : JpaRepository<DataRequestEntity, String> {
      * @returns the aggregated data requests
      */
     @Query(
-        //TODO anpassen
+        // TODO anpassen
         " SELECT new org.dataland.datalandcommunitymanager.entities.AggregatedDataRequestEntity( " +
             "d.dataType, " +
             "d.reportingPeriod, " +
