@@ -27,7 +27,7 @@ export const additionalCompanyInformationDataModel = [
               },
             ],
 
-            component: 'RadioButtonsFormField',
+            component: 'RadioButtonsExtendedDataPointFormField',
             required: false,
             showIf: (): boolean => true,
           },
