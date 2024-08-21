@@ -11617,6 +11617,22 @@
                 "$ref": "#/components/schemas/YesNo"
               }
             ]
+          },
+          "enablingActivity": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
+          },
+          "transitionalActivity": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
           }
         }
       },
@@ -11671,7 +11687,7 @@
               }
             ]
           },
-          "substantialContributionToClimateChangeMitigationInPercent": {
+          "substantialContributionToClimateChangeMitigationInPercentEligible": {
             "nullable": true,
             "allOf": [
               {
@@ -11679,7 +11695,7 @@
               }
             ]
           },
-          "substantialContributionToClimateChangeAdaptationInPercent": {
+          "substantialContributionToClimateChangeMitigationInPercentAligned": {
             "nullable": true,
             "allOf": [
               {
@@ -11687,7 +11703,7 @@
               }
             ]
           },
-          "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent": {
+          "substantialContributionToClimateChangeMitigationInPercentOfWhichUseOfProceeds": {
             "nullable": true,
             "allOf": [
               {
@@ -11695,7 +11711,7 @@
               }
             ]
           },
-          "substantialContributionToTransitionToACircularEconomyInPercent": {
+          "substantialContributionToClimateChangeMitigationInPercentEnablingShare": {
             "nullable": true,
             "allOf": [
               {
@@ -11703,7 +11719,7 @@
               }
             ]
           },
-          "substantialContributionToPollutionPreventionAndControlInPercent": {
+          "substantialContributionToClimateChangeMitigationInPercentTransitionalShare": {
             "nullable": true,
             "allOf": [
               {
@@ -11711,7 +11727,159 @@
               }
             ]
           },
-          "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent": {
+          "substantialContributionToClimateChangeAdaptationInPercentEligible": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          },
+          "substantialContributionToClimateChangeAdaptationInPercentAligned": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          },
+          "substantialContributionToClimateChangeAdaptationInPercentOfWhichUseOfProceeds": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          },
+          "substantialContributionToClimateChangeAdaptationInPercentEnablingShare": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          },
+          "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentEligible": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          },
+          "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          },
+          "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentOfWhichUseOfProceeds": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          },
+          "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentEnablingShare": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          },
+          "substantialContributionToTransitionToACircularEconomyInPercentEligible": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          },
+          "substantialContributionToTransitionToACircularEconomyInPercentAligned": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          },
+          "substantialContributionToTransitionToACircularEconomyInPercentOfWhichUseOfProceeds": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          },
+          "substantialContributionToTransitionToACircularEconomyInPercentEnablingShare": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          },
+          "substantialContributionToPollutionPreventionAndControlInPercentEligible": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          },
+          "substantialContributionToPollutionPreventionAndControlInPercentAligned": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          },
+          "substantialContributionToPollutionPreventionAndControlInPercentOfWhichUseOfProceeds": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          },
+          "substantialContributionToPollutionPreventionAndControlInPercentEnablingShare": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          },
+          "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentEligible": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          },
+          "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          },
+          "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentOfWhichUseOfProceeds": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          },
+          "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentEnablingShare": {
             "nullable": true,
             "allOf": [
               {
@@ -11993,7 +12161,7 @@
               }
             ]
           },
-          "substantialContributionToClimateChangeMitigationInPercent": {
+          "substantialContributionToClimateChangeMitigationInPercentAligned": {
             "nullable": true,
             "allOf": [
               {
@@ -12001,7 +12169,7 @@
               }
             ]
           },
-          "substantialContributionToClimateChangeAdaptationInPercent": {
+          "substantialContributionToClimateChangeAdaptationInPercentAligned": {
             "nullable": true,
             "allOf": [
               {
@@ -12009,7 +12177,7 @@
               }
             ]
           },
-          "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent": {
+          "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned": {
             "nullable": true,
             "allOf": [
               {
@@ -12017,7 +12185,7 @@
               }
             ]
           },
-          "substantialContributionToTransitionToACircularEconomyInPercent": {
+          "substantialContributionToTransitionToACircularEconomyInPercentAligned": {
             "nullable": true,
             "allOf": [
               {
@@ -12025,7 +12193,7 @@
               }
             ]
           },
-          "substantialContributionToPollutionPreventionAndControlInPercent": {
+          "substantialContributionToPollutionPreventionAndControlInPercentAligned": {
             "nullable": true,
             "allOf": [
               {
@@ -12033,7 +12201,7 @@
               }
             ]
           },
-          "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent": {
+          "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned": {
             "nullable": true,
             "allOf": [
               {
@@ -12202,7 +12370,7 @@
               }
             ]
           },
-          "substantialContributionToClimateChangeMitigationInPercent": {
+          "substantialContributionToClimateChangeMitigationInPercentEligible": {
             "nullable": true,
             "allOf": [
               {
@@ -12210,7 +12378,7 @@
               }
             ]
           },
-          "substantialContributionToClimateChangeAdaptationInPercent": {
+          "substantialContributionToClimateChangeMitigationInPercentAligned": {
             "nullable": true,
             "allOf": [
               {
@@ -12218,7 +12386,7 @@
               }
             ]
           },
-          "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent": {
+          "substantialContributionToClimateChangeMitigationInPercentOfWhichUseOfProceeds": {
             "nullable": true,
             "allOf": [
               {
@@ -12226,7 +12394,7 @@
               }
             ]
           },
-          "substantialContributionToTransitionToACircularEconomyInPercent": {
+          "substantialContributionToClimateChangeMitigationInPercentEnablingShare": {
             "nullable": true,
             "allOf": [
               {
@@ -12234,7 +12402,7 @@
               }
             ]
           },
-          "substantialContributionToPollutionPreventionAndControlInPercent": {
+          "substantialContributionToClimateChangeMitigationInPercentTransitionalShare": {
             "nullable": true,
             "allOf": [
               {
@@ -12242,7 +12410,159 @@
               }
             ]
           },
-          "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent": {
+          "substantialContributionToClimateChangeAdaptationInPercentEligible": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          },
+          "substantialContributionToClimateChangeAdaptationInPercentAligned": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          },
+          "substantialContributionToClimateChangeAdaptationInPercentOfWhichUseOfProceeds": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          },
+          "substantialContributionToClimateChangeAdaptationInPercentEnablingShare": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          },
+          "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentEligible": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          },
+          "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          },
+          "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentOfWhichUseOfProceeds": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          },
+          "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentEnablingShare": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          },
+          "substantialContributionToTransitionToACircularEconomyInPercentEligible": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          },
+          "substantialContributionToTransitionToACircularEconomyInPercentAligned": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          },
+          "substantialContributionToTransitionToACircularEconomyInPercentOfWhichUseOfProceeds": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          },
+          "substantialContributionToTransitionToACircularEconomyInPercentEnablingShare": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          },
+          "substantialContributionToPollutionPreventionAndControlInPercentEligible": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          },
+          "substantialContributionToPollutionPreventionAndControlInPercentAligned": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          },
+          "substantialContributionToPollutionPreventionAndControlInPercentOfWhichUseOfProceeds": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          },
+          "substantialContributionToPollutionPreventionAndControlInPercentEnablingShare": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          },
+          "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentEligible": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          },
+          "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          },
+          "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentOfWhichUseOfProceeds": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          },
+          "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentEnablingShare": {
             "nullable": true,
             "allOf": [
               {
@@ -14882,25 +15202,25 @@
         ],
         "type": "object",
         "properties": {
+          "sector": {
+            "type": "string",
+            "nullable": true
+          },
+          "headquarters": {
+            "type": "string"
+          },
           "countryCode": {
             "type": "string"
           },
-          "headquarters": {
+          "companyId": {
+            "type": "string"
+          },
+          "companyName": {
             "type": "string"
           },
           "lei": {
             "type": "string",
             "nullable": true
-          },
-          "sector": {
-            "type": "string",
-            "nullable": true
-          },
-          "companyName": {
-            "type": "string"
-          },
-          "companyId": {
-            "type": "string"
           }
         }
       },
@@ -14923,10 +15243,10 @@
         ],
         "type": "object",
         "properties": {
-          "companyName": {
+          "companyId": {
             "type": "string"
           },
-          "companyId": {
+          "companyName": {
             "type": "string"
           }
         }
