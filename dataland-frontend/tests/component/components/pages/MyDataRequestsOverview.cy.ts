@@ -1,4 +1,4 @@
-import { type ExtendedStoredDataRequest, RequestStatus } from '@clients/communitymanager';
+import { AccessStatus, type ExtendedStoredDataRequest, RequestStatus } from '@clients/communitymanager';
 import RequestedDatasetsPage from '@/components/pages/MyDataRequestsOverview.vue';
 import { minimalKeycloakMock } from '@ct/testUtils/Keycloak';
 import { DataTypeEnum } from '@clients/backend';
@@ -8,52 +8,85 @@ const expectedHeaders = ['COMPANY', 'REPORTING PERIOD', 'FRAMEWORK', 'REQUESTED'
 const dummyRequestId = 'dummyRequestId';
 
 before(function () {
-  mockDataRequests.push({
-    dataRequestId: dummyRequestId,
-    datalandCompanyId: 'compA',
-    companyName: 'companyAnswered',
-    dataType: DataTypeEnum.P2p,
-    reportingPeriod: '2020',
-    creationTimestamp: 1709204495770,
-    lastModifiedDate: 1709204495770,
-    requestStatus: RequestStatus.Answered,
-  } as ExtendedStoredDataRequest);
-  mockDataRequests.push({
-    dataRequestId: dummyRequestId,
-    companyName: 'companyNotAnsweredSfdr',
-    dataType: DataTypeEnum.Sfdr,
-    reportingPeriod: '2022',
-    creationTimestamp: 1709204495770,
-    lastModifiedDate: 1709204495770,
-    requestStatus: RequestStatus.Open,
-  } as ExtendedStoredDataRequest);
-  mockDataRequests.push({
-    dataRequestId: dummyRequestId,
-    companyName: 'z-company-that-will-always-be-sorted-to-bottom',
-    dataType: DataTypeEnum.EutaxonomyFinancials,
-    reportingPeriod: '3021',
-    creationTimestamp: 1809204495770,
-    lastModifiedDate: 1609204495770,
-    requestStatus: RequestStatus.Resolved,
-  } as ExtendedStoredDataRequest);
-  mockDataRequests.push({
-    dataRequestId: dummyRequestId,
-    companyName: 'companyNotAnsweredEU',
-    dataType: DataTypeEnum.EutaxonomyNonFinancials,
-    reportingPeriod: '2021',
-    creationTimestamp: 1709204495770,
-    lastModifiedDate: 1709204495770,
-    requestStatus: RequestStatus.Open,
-  } as ExtendedStoredDataRequest);
-  mockDataRequests.push({
-    dataRequestId: dummyRequestId,
-    companyName: 'a-company-that-will-always-be-sorted-to-top',
-    dataType: DataTypeEnum.EsgQuestionnaire,
-    reportingPeriod: '1021',
-    creationTimestamp: 1609204495770,
-    lastModifiedDate: 1809204495770,
-    requestStatus: RequestStatus.Answered,
-  } as ExtendedStoredDataRequest);
+  /**
+   * Builds an extended stored data request object and assures type-safety.
+   * @param dataType to include in the data request
+   * @param reportingPeriod to include in the data request
+   * @param companyName to include in the data request
+   * @param requestStatus to set in the data request
+   * @param accessStatus to set in the data request
+   * @returns an extended sorted data request object
+   */
+  function buildExtendedStoredDataRequest(
+    dataType: DataTypeEnum,
+    reportingPeriod: string,
+    companyName: string,
+    requestStatus: RequestStatus,
+    accessStatus: AccessStatus
+  ): ExtendedStoredDataRequest {
+    return {
+      dataRequestId: dummyRequestId,
+      userId: 'some-user-id',
+      creationTimestamp: 1709204495770,
+      dataType: dataType,
+      reportingPeriod: reportingPeriod,
+      datalandCompanyId: 'some-id',
+      companyName: companyName,
+      lastModifiedDate: 1709204495770,
+      requestStatus: requestStatus,
+      accessStatus: accessStatus,
+    };
+  }
+
+  mockDataRequests.push(
+    buildExtendedStoredDataRequest(
+      DataTypeEnum.P2p,
+      '2020',
+      'companyAnswered',
+      RequestStatus.Answered,
+      AccessStatus.Pending
+    )
+  );
+
+  mockDataRequests.push(
+    buildExtendedStoredDataRequest(
+      DataTypeEnum.Sfdr,
+      '2022',
+      'companyNotAnsweredSfdr',
+      RequestStatus.Open,
+      AccessStatus.Pending
+    )
+  );
+
+  mockDataRequests.push(
+    buildExtendedStoredDataRequest(
+      DataTypeEnum.EutaxonomyFinancials,
+      '3021',
+      'z-company-that-will-always-be-sorted-to-bottom',
+      RequestStatus.Resolved,
+      AccessStatus.Pending
+    )
+  );
+
+  mockDataRequests.push(
+    buildExtendedStoredDataRequest(
+      DataTypeEnum.EutaxonomyNonFinancials,
+      '2021',
+      'companyNotAnsweredEU',
+      RequestStatus.Open,
+      AccessStatus.Pending
+    )
+  );
+
+  mockDataRequests.push(
+    buildExtendedStoredDataRequest(
+      DataTypeEnum.EsgQuestionnaire,
+      '1021',
+      'a-company-that-will-always-be-sorted-to-top',
+      RequestStatus.Answered,
+      AccessStatus.Pending
+    )
+  );
 });
 describe('Component tests for the data requests search page', function (): void {
   it('Check sorting', function (): void {

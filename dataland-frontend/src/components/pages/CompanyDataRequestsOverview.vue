@@ -182,7 +182,7 @@ import TheHeader from '@/components/generics/TheHeader.vue';
 import { defineComponent, inject, ref } from 'vue';
 import type Keycloak from 'keycloak-js';
 import { ApiClientProvider } from '@/services/ApiClients';
-import DataTable, { type DataTablePageEvent, type DataTableSortEvent } from 'primevue/datatable';
+import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
 import {
   frameworkHasSubTitle,
