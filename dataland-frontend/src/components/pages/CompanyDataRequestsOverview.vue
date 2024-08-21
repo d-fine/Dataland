@@ -30,6 +30,18 @@
                 class="ml-3"
                 style="margin: 15px"
               />
+              <FrameworkDataSearchDropdownFilter
+                  v-model="selectedAccessStatus"
+                  ref="frameworkFilter"
+                  :available-items="availableAccessStatus"
+                  filter-name="Access Status"
+                  data-test="requested-Datasets-frameworks"
+                  filter-id="framework-filter"
+                  filter-placeholder="access status"
+                  class="ml-3"
+                  style="margin: 15px"
+              />
+              <div class="flex align-items-center">
                 <span
                   data-test="reset-filter"
                   style="margin: 15px"
@@ -37,6 +49,7 @@
                   @click="resetFilterAndSearchBar"
                   >RESET</span
                 >
+              </div>
             </span>
           </div>
           <div class="col-12 text-left p-3">
@@ -111,20 +124,36 @@
                       v-if="slotProps.data.accessStatus == AccessStatus.Pending"
                       class="text-right text-primary no-underline font-bold"
                     >
-                      <PrimeButton
-                          class="uppercase p-button p-button-sm"
-                          @click=""
-                      >
-                        <i class="material-icons"> done </i>
-                        <span class="d-letters pl-2"> Grant </span>
-                      </PrimeButton>
-                      <PrimeButton
-                          class="uppercase p-button-outlined p-button-sm mr-3"
-                          @click=""
-                      >
-                        <i class="material-icons"> clear </i>
-                        <span class="d-letters pl-2"> Decline </span>
-                      </PrimeButton>
+                      <div class="button-container">
+                        <PrimeButton
+                            class="uppercase p-button p-button-sm"
+                            @click="updateAccessStatus(slotProps.data.dataRequestId, AccessStatus.Granted)"
+                        >
+                          <i class="material-icons"> done </i>
+                          <span class="d-letters pl-2"> Grant </span>
+                        </PrimeButton>
+                        <PrimeButton
+                            class="uppercase p-button-outlined p-button-sm mr-3"
+                            @click="updateAccessStatus(slotProps.data.dataRequestId, AccessStatus.Declined)"
+                        >
+                          <i class="material-icons"> clear </i>
+                          <span class="d-letters pl-2"> Decline </span>
+                        </PrimeButton>
+                      </div>
+                    </div>
+                    <div
+                        v-if="slotProps.data.accessStatus == AccessStatus.Granted"
+                        class="text-right text-primary no-underline font-bold"
+                    >
+                      <div class="button-container">
+                        <PrimeButton
+                            class="uppercase p-button-outlined p-button-sm mr-3"
+                            @click="updateAccessStatus(slotProps.data.dataRequestId, AccessStatus.Revoked)"
+                        >
+                          <i class="material-icons"> clear </i>
+                          <span class="d-letters pl-2"> Revoke </span>
+                        </PrimeButton>
+                      </div>
                     </div>
                   </template>
                 </Column>
@@ -173,7 +202,7 @@ import {
 } from '@clients/communitymanager';
 import InputText from 'primevue/inputtext';
 import FrameworkDataSearchDropdownFilter from '@/components/resources/frameworkDataSearch/FrameworkDataSearchDropdownFilter.vue';
-import type { FrameworkSelectableItem } from '@/utils/FrameworkDataSearchDropDownFilterTypes';
+import {FrameworkSelectableItem, SelectableItem} from '@/utils/FrameworkDataSearchDropDownFilterTypes';
 import { FRAMEWORKS_WITH_VIEW_PAGE } from '@/utils/Constants';
 import { getFrontendFrameworkDefinition } from '@/frameworks/FrontendFrameworkRegistry';
 import AuthenticationWrapper from '@/components/wrapper/AuthenticationWrapper.vue';
@@ -223,6 +252,8 @@ export default defineComponent({
       searchBarInputFilter: '',
       availableFrameworks: [] as Array<FrameworkSelectableItem>,
       selectedFrameworks: [] as Array<FrameworkSelectableItem>,
+      availableAccessStatus: [] as Array<SelectableItem>,
+      selectedAccessStatus: [] as Array<SelectableItem>,
       numberOfFilteredRequests: 0,
       sortField: 'requestStatus' as keyof StoredDataRequest,
       sortOrder: 1,
@@ -230,11 +261,15 @@ export default defineComponent({
   },
   mounted() {
     this.availableFrameworks = this.retrieveAvailableFrameworks();
+    this.availableAccessStatus = this.retrieveAvailableAccessStatus();
     this.getStoredCompanyRequestDataList().catch((error) => console.error(error));
     this.resetFilterAndSearchBar();
   },
   watch: {
     selectedFrameworks() {
+      this.updateCurrentDisplayedData();
+    },
+    selectedAccessStatus() {
       this.updateCurrentDisplayedData();
     },
     waitingForData() {
@@ -271,6 +306,18 @@ export default defineComponent({
       });
     },
     /**
+     * Gets list with all available access status
+     * @returns array of frameworkSelectableItem
+     */
+    retrieveAvailableAccessStatus(): Array<SelectableItem> {
+      return Object.values(this.AccessStatus).map((status) => {
+        return {
+          displayName: status,
+          disabled: false,
+        };
+      });
+    },
+    /**
      * Gets list of storedComapnyDataRequests
      */
     async getStoredCompanyRequestDataList() {
@@ -285,12 +332,12 @@ export default defineComponent({
         const dataRequestsPromises = companyIDs.map(async (companyId) => {
           try {
             const response = await apiClientProvider.apiClients.requestController.getDataRequests(
-                undefined,  // dataType (optional)
-                undefined,  // userId (optional)
-                undefined,  // requestStatus (optional)
-                undefined,  // accessStatus (optional)
-                undefined,  // reportingPeriod (optional)
-                companyId   // CompanyId
+                undefined,
+                undefined,
+                undefined,
+                undefined,
+                undefined,
+                companyId
             );
             return response.data
           } catch (error) {
@@ -323,6 +370,17 @@ export default defineComponent({
       return false;
     },
     /**
+     * Filterfunction for access status
+     * @param accessStatus dataland framework
+     * @returns checks if given accessStatus is selected
+     */
+    filterAccessStatus(accessStatus: string) {
+      for (const selectedAccessStatus of this.selectedAccessStatus) {
+        if (accessStatus == selectedAccessStatus.displayName) return true;
+      }
+      return false;
+    },
+    /**
      * Filterfunction for searchbar
      * @param requesterMail dataland requesterMail
      * @returns checks if given requesterMail contains searchbar text
@@ -337,6 +395,7 @@ export default defineComponent({
      */
     resetFilterAndSearchBar() {
       this.selectedFrameworks = this.availableFrameworks;
+      this.selectedAccessStatus = this.availableAccessStatus;
       this.searchBarInput = '';
     },
     /**
@@ -345,7 +404,8 @@ export default defineComponent({
     updateCurrentDisplayedData() {
       this.displayedData = this.storedDataRequests
           .filter((dataRequest) => this.filterSearchInput(dataRequest.userEmailAddress))
-          .filter((dataRequest) => this.filterFramework(dataRequest.dataType));
+          .filter((dataRequest) => this.filterFramework(dataRequest.dataType))
+          .filter((dataRequest) => this.filterAccessStatus(dataRequest.accessStatus));
       this.displayedData.sort((a, b) => this.customCompareForStoredDataRequests(a, b));
       this.numberOfFilteredRequests = this.displayedData.length;
       this.displayedData = this.displayedData.slice(
@@ -405,6 +465,26 @@ export default defineComponent({
       this.currentPage = event.page;
       this.updateCurrentDisplayedData();
     },
+    /**
+     * Updates the access status
+     */
+    async updateAccessStatus(requestId:string, newAccessStatus:AccessStatus) {
+      try {
+        if (this.getKeycloakPromise) {
+              await new ApiClientProvider(
+                  this.getKeycloakPromise()
+              ).apiClients.requestController.patchDataRequest(
+                  requestId,
+                  undefined,
+                  newAccessStatus
+              );
+          await this.getStoredCompanyRequestDataList();
+          this.updateCurrentDisplayedData();
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    }
   }
 });
 </script>
