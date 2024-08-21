@@ -23,11 +23,12 @@ import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
 
 import { computed, inject, ref } from 'vue';
-import { type DataMetaInformation, type DataTypeEnum } from '@clients/backend';
+import { type DataMetaInformation } from '@clients/backend';
 import type Keycloak from 'keycloak-js';
 import { ApiClientProvider } from '@/services/ApiClients';
 import PrimeButton from 'primevue/button';
 import { useRouter } from 'vue-router';
+import { type SingleDataRequestDataTypeEnum } from '@clients/communitymanager';
 type RequestableOption = {
   reportingPeriod: string;
   latestUpload: string;
@@ -72,7 +73,7 @@ async function submitDataRequestsForSelection(): Promise<void> {
     const reportingPeriodsToRequest = selectedOptions.value.map((it) => it.reportingPeriod);
     await requestController.postSingleDataRequest({
       companyIdentifier: props.companyId,
-      dataType: props.dataType as DataTypeEnum,
+      dataType: props.dataType as SingleDataRequestDataTypeEnum,
       reportingPeriods: reportingPeriodsToRequest as unknown as Set<string>,
     });
     await router.push('/requests');

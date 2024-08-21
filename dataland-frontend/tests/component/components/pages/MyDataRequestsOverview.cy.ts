@@ -1,5 +1,5 @@
 import { AccessStatus, type ExtendedStoredDataRequest, RequestStatus } from '@clients/communitymanager';
-import RequestedDatasetsPage from '@/components/pages/MyDataRequestsOverview.vue';
+import MyDataRequestsOverview from '@/components/pages/MyDataRequestsOverview.vue';
 import { minimalKeycloakMock } from '@ct/testUtils/Keycloak';
 import { DataTypeEnum } from '@clients/backend';
 
@@ -94,7 +94,7 @@ describe('Component tests for the data requests search page', function (): void 
       body: mockDataRequests,
       status: 200,
     }).as('UserRequests');
-    cy.mountWithPlugins(RequestedDatasetsPage, {
+    cy.mountWithPlugins(MyDataRequestsOverview, {
       keycloak: minimalKeycloakMock({}),
     });
     const sortingColumHeader = ['COMPANY', 'REPORTING PERIOD', 'REQUESTED', 'REQUEST STATUS', 'ACCESS STATUS'];
@@ -123,7 +123,7 @@ describe('Component tests for the data requests search page', function (): void 
       body: [],
       status: 200,
     }).as('UserRequests');
-    cy.mountWithPlugins(RequestedDatasetsPage, {
+    cy.mountWithPlugins(MyDataRequestsOverview, {
       keycloak: minimalKeycloakMock({}),
     }).then((mounted) => {
       cy.get('[data-test="requested-Datasets-table"]').should('not.exist');
@@ -140,7 +140,7 @@ describe('Component tests for the data requests search page', function (): void 
       body: mockDataRequests,
       status: 200,
     }).as('UserRequests');
-    cy.mountWithPlugins(RequestedDatasetsPage, {
+    cy.mountWithPlugins(MyDataRequestsOverview, {
       keycloak: minimalKeycloakMock({}),
     });
 
@@ -173,7 +173,7 @@ describe('Component tests for the data requests search page', function (): void 
       status: 200,
     }).as('UserRequests');
 
-    cy.mountWithPlugins(RequestedDatasetsPage, {
+    cy.mountWithPlugins(MyDataRequestsOverview, {
       keycloak: minimalKeycloakMock({}),
     });
 
@@ -193,7 +193,7 @@ describe('Component tests for the data requests search page', function (): void 
       status: 200,
     }).as('UserRequests');
 
-    cy.mountWithPlugins(RequestedDatasetsPage, {
+    cy.mountWithPlugins(MyDataRequestsOverview, {
       keycloak: minimalKeycloakMock({}),
     }).then((mounted) => {
       cy.get('[data-test="requested-Datasets-searchbar"]')
@@ -229,7 +229,7 @@ describe('Component tests for the data requests search page', function (): void 
       status: 200,
     }).as('UserRequests');
 
-    cy.mountWithPlugins(RequestedDatasetsPage, {
+    cy.mountWithPlugins(MyDataRequestsOverview, {
       keycloak: minimalKeycloakMock({}),
     }).then((mounted) => {
       void mounted.wrapper.setData({
@@ -250,7 +250,7 @@ describe('Component tests for the data requests search page', function (): void 
       body: mockDataRequests,
       status: 200,
     }).as('UserRequests');
-    cy.mountWithPlugins(RequestedDatasetsPage, {
+    cy.mountWithPlugins(MyDataRequestsOverview, {
       keycloak: minimalKeycloakMock({}),
     }).then((mounted) => {
       cy.get('[data-test="requested-Datasets-table"]').within(() => {
