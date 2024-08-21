@@ -2,9 +2,7 @@ package org.dataland.e2etests.tests
 
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandqaservice.openApiClient.infrastructure.ClientException
-import org.dataland.datalandqaservice.openApiClient.model.EutaxonomyNonFinancialsData
 import org.dataland.datalandqaservice.openApiClient.model.QaReportMetaInformation
-import org.dataland.datalandqaservice.openApiClient.model.SfdrData
 import org.dataland.e2etests.auth.GlobalAuth.withTechnicalUser
 import org.dataland.e2etests.auth.TechnicalUser
 import org.dataland.e2etests.utils.ApiAccessor
@@ -18,6 +16,8 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
 import org.junit.jupiter.api.assertThrows
 import org.springframework.http.HttpStatus
+import org.dataland.datalandqaservice.openApiClient.model.EutaxonomyNonFinancialsData as EuTaxonomyNonFinancialsQaReportData
+import org.dataland.datalandqaservice.openApiClient.model.SfdrData as SfdrQaReportData
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class QaReportControllerTest {
@@ -39,100 +39,104 @@ class QaReportControllerTest {
         documentManagerAccessor.uploadAllTestDocumentsAndAssurePersistence()
     }
 
-    private fun postSfdrQaReportForNewDataId(
-        sfdrQaReport: SfdrData,
+    private fun <T> postQaReportForNewDataId(
+        qaReport: T,
         bypassQa: Boolean,
     ): QaReportMetaInformation {
-        val uploadInfo = apiAccessor.uploadCompanyAndFrameworkDataForOneFramework(
-            testCompanyInformationForSfdrData,
-            testSfdrDataset,
-            apiAccessor::sfdrUploaderFunction,
-            uploadConfig = UploadConfiguration(bypassQa = bypassQa),
-            ensureQaPassed = bypassQa,
-        )
+        val uploadInfo = when (qaReport) {
+            is SfdrQaReportData -> apiAccessor.uploadCompanyAndFrameworkDataForOneFramework(
+                testCompanyInformationForSfdrData,
+                testSfdrDataset,
+                apiAccessor::sfdrUploaderFunction,
+                uploadConfig = UploadConfiguration(bypassQa = bypassQa),
+                ensureQaPassed = bypassQa,
+            )
+
+            is EuTaxonomyNonFinancialsQaReportData -> apiAccessor.uploadCompanyAndFrameworkDataForOneFramework(
+                testCompanyInformationForEuTaxonomyNonFinancialsData,
+                testEuTaxonomyNonFinancialsDataset,
+                apiAccessor::euTaxonomyNonFinancialsUploaderFunction,
+                uploadConfig = UploadConfiguration(bypassQa = bypassQa),
+                ensureQaPassed = bypassQa,
+            )
+
+            else -> throw IllegalArgumentException("The framework of $qaReport does not support QA reports.")
+        }
         val dataIdOfUpload = uploadInfo.first().actualStoredDataMetaInfo!!.dataId
         return withTechnicalUser(TechnicalUser.Admin) {
-            qaApiAccessor.sfdrQaReportControllerApi.postSfdrDataQaReport(dataIdOfUpload, sfdrQaReport)
+            when (qaReport) {
+                is SfdrQaReportData ->
+                    qaApiAccessor.sfdrQaReportControllerApi
+                        .postSfdrDataQaReport(dataIdOfUpload, qaReport)
+
+                is EuTaxonomyNonFinancialsQaReportData ->
+                    qaApiAccessor.euTaxonomyNonFinancialsQaReportControllerApi
+                        .postEutaxonomyNonFinancialsDataQaReport(dataIdOfUpload, qaReport)
+
+                else -> throw IllegalArgumentException("The framework of $qaReport does not support QA reports.")
+            }
         }
     }
 
-    private fun postEuTaxonomyNonFinancialsQaReportForNewDataId(
-        euTaxonomyNonFinancialsQaReport: EutaxonomyNonFinancialsData,
-        bypassQa: Boolean,
-    ): QaReportMetaInformation {
-        val uploadInfo = apiAccessor.uploadCompanyAndFrameworkDataForOneFramework(
-            testCompanyInformationForEuTaxonomyNonFinancialsData,
-            testEuTaxonomyNonFinancialsDataset,
-            apiAccessor::euTaxonomyNonFinancialsUploaderFunction,
-            uploadConfig = UploadConfiguration(bypassQa = bypassQa),
-            ensureQaPassed = bypassQa,
-        )
-        val dataIdOfUpload = uploadInfo.first().actualStoredDataMetaInfo!!.dataId
-        return withTechnicalUser(TechnicalUser.Admin) {
-            qaApiAccessor.euTaxonomyNonFinancialsQaReportControllerApi.postEutaxonomyNonFinancialsDataQaReport(
-                dataIdOfUpload,
-                euTaxonomyNonFinancialsQaReport,
-            )
-        }
-    }
-
-    private fun assertCanAccessSfdrQaDataset(reportMetaInformation: QaReportMetaInformation) {
+    private fun <T> assertCanAccessQaDataset(qaReport: T, reportMetaInformation: QaReportMetaInformation) {
         assertEquals(
             reportMetaInformation.dataId,
-            qaApiAccessor.sfdrQaReportControllerApi.getSfdrDataQaReport(
-                dataId = reportMetaInformation.dataId,
-                qaReportId = reportMetaInformation.qaReportId,
-            ).metaInfo.dataId,
+            when (qaReport) {
+                is SfdrQaReportData -> qaApiAccessor.sfdrQaReportControllerApi.getSfdrDataQaReport(
+                    dataId = reportMetaInformation.dataId,
+                    qaReportId = reportMetaInformation.qaReportId,
+                ).metaInfo.dataId
+
+                is EuTaxonomyNonFinancialsQaReportData ->
+                    qaApiAccessor.euTaxonomyNonFinancialsQaReportControllerApi
+                        .getEutaxonomyNonFinancialsDataQaReport(
+                            dataId = reportMetaInformation.dataId,
+                            qaReportId = reportMetaInformation.qaReportId,
+                        ).metaInfo.dataId
+
+                else -> throw IllegalArgumentException("The framework of $qaReport does not support QA reports.")
+            },
         )
     }
 
-    private fun assertCanAccessEuTaxonomyNonFinancialsQaDataset(reportMetaInformation: QaReportMetaInformation) {
-        assertEquals(
-            reportMetaInformation.dataId,
-            qaApiAccessor.euTaxonomyNonFinancialsQaReportControllerApi.getEutaxonomyNonFinancialsDataQaReport(
-                dataId = reportMetaInformation.dataId,
-                qaReportId = reportMetaInformation.qaReportId,
-            ).metaInfo.dataId,
-        )
-    }
-
-    private fun assertCannotAccessSfdrQaDataset(reportMetaInformation: QaReportMetaInformation) {
+    private fun <T> assertCannotAccessQaDataset(qaReport: T, reportMetaInformation: QaReportMetaInformation) {
         val exception = assertThrows<ClientException> {
-            qaApiAccessor.sfdrQaReportControllerApi.getSfdrDataQaReport(
-                dataId = reportMetaInformation.dataId,
-                qaReportId = reportMetaInformation.qaReportId,
-            )
-        }
-        assertEquals(exception.statusCode, HttpStatus.FORBIDDEN.value())
-    }
+            when (qaReport) {
+                is SfdrQaReportData -> qaApiAccessor.sfdrQaReportControllerApi.getSfdrDataQaReport(
+                    dataId = reportMetaInformation.dataId,
+                    qaReportId = reportMetaInformation.qaReportId,
+                )
 
-    private fun assertCannotAccessEuTaxonomyNonFinancialsQaDataset(reportMetaInformation: QaReportMetaInformation) {
-        val exception = assertThrows<ClientException> {
-            qaApiAccessor.euTaxonomyNonFinancialsQaReportControllerApi.getEutaxonomyNonFinancialsDataQaReport(
-                dataId = reportMetaInformation.dataId,
-                qaReportId = reportMetaInformation.qaReportId,
-            )
+                is EuTaxonomyNonFinancialsQaReportData ->
+                    qaApiAccessor.euTaxonomyNonFinancialsQaReportControllerApi
+                        .getEutaxonomyNonFinancialsDataQaReport(
+                            dataId = reportMetaInformation.dataId,
+                            qaReportId = reportMetaInformation.qaReportId,
+                        )
+
+                else -> throw IllegalArgumentException("The framework of $qaReport does not support QA reports.")
+            }
         }
         assertEquals(exception.statusCode, HttpStatus.FORBIDDEN.value())
     }
 
     @Test
     fun `post an sfdr qa report and check retrieval permissions`() {
-        val sfdrQaReport = SfdrData()
-        val reportMetaInfo = postSfdrQaReportForNewDataId(sfdrQaReport, bypassQa = false)
+        val sfdrQaReport = SfdrQaReportData()
+        val reportMetaInfo = postQaReportForNewDataId(sfdrQaReport, bypassQa = false)
 
-        withTechnicalUser(TechnicalUser.Admin) { assertCanAccessSfdrQaDataset(reportMetaInfo) }
-        withTechnicalUser(TechnicalUser.Reviewer) { assertCanAccessSfdrQaDataset(reportMetaInfo) }
-        withTechnicalUser(TechnicalUser.Uploader) { assertCannotAccessSfdrQaDataset(reportMetaInfo) }
-        withTechnicalUser(TechnicalUser.Reader) { assertCannotAccessSfdrQaDataset(reportMetaInfo) }
+        withTechnicalUser(TechnicalUser.Admin) { assertCanAccessQaDataset(sfdrQaReport, reportMetaInfo) }
+        withTechnicalUser(TechnicalUser.Reviewer) { assertCanAccessQaDataset(sfdrQaReport, reportMetaInfo) }
+        withTechnicalUser(TechnicalUser.Uploader) { assertCannotAccessQaDataset(sfdrQaReport, reportMetaInfo) }
+        withTechnicalUser(TechnicalUser.Reader) { assertCannotAccessQaDataset(sfdrQaReport, reportMetaInfo) }
     }
 
     @Test
     fun `post an sfdr qa report and check that it is deleted with the dataset`() {
-        val sfdrQaReport = SfdrData()
-        val reportMetaInfo = postSfdrQaReportForNewDataId(sfdrQaReport, bypassQa = true)
+        val sfdrQaReport = SfdrQaReportData()
+        val reportMetaInfo = postQaReportForNewDataId(sfdrQaReport, bypassQa = true)
         withTechnicalUser(TechnicalUser.Admin) {
-            assertCanAccessSfdrQaDataset(reportMetaInfo)
+            assertCanAccessQaDataset(sfdrQaReport, reportMetaInfo)
             apiAccessor.dataDeletionControllerApi.deleteCompanyAssociatedData(reportMetaInfo.dataId)
 
             val exception = assertThrows<ClientException> {
@@ -147,10 +151,10 @@ class QaReportControllerTest {
 
     @Test
     fun `post an sfdr qa report and check that the report can be retrieved`() {
-        val qaReportTestDataProvider = QaReportTestDataProvider(SfdrData::class.java, "sfdr")
+        val qaReportTestDataProvider = QaReportTestDataProvider(SfdrQaReportData::class.java, "sfdr")
         val sfdrQaReportWithOneCorrection = qaReportTestDataProvider.getTData(1).first()
 
-        val sfdrQaReportMetaInfo = postSfdrQaReportForNewDataId(sfdrQaReportWithOneCorrection, true)
+        val sfdrQaReportMetaInfo = postQaReportForNewDataId(sfdrQaReportWithOneCorrection, true)
 
         val userUploadingTheQaReport = TechnicalUser.Admin
         withTechnicalUser(userUploadingTheQaReport) {
@@ -167,23 +171,43 @@ class QaReportControllerTest {
 
     @Test
     fun `post an eu taxonomy non financials qa report and check retrieval permissions`() {
-        val euTaxonomyNonFinancialsQaReport = EutaxonomyNonFinancialsData()
+        val euTaxonomyNonFinancialsQaReport = EuTaxonomyNonFinancialsQaReportData()
         val reportMetaInfo =
-            postEuTaxonomyNonFinancialsQaReportForNewDataId(euTaxonomyNonFinancialsQaReport, bypassQa = false)
+            postQaReportForNewDataId(euTaxonomyNonFinancialsQaReport, bypassQa = false)
 
-        withTechnicalUser(TechnicalUser.Admin) { assertCanAccessEuTaxonomyNonFinancialsQaDataset(reportMetaInfo) }
-        withTechnicalUser(TechnicalUser.Reviewer) { assertCanAccessEuTaxonomyNonFinancialsQaDataset(reportMetaInfo) }
-        withTechnicalUser(TechnicalUser.Uploader) { assertCannotAccessEuTaxonomyNonFinancialsQaDataset(reportMetaInfo) }
-        withTechnicalUser(TechnicalUser.Reader) { assertCannotAccessEuTaxonomyNonFinancialsQaDataset(reportMetaInfo) }
+        withTechnicalUser(TechnicalUser.Admin) {
+            assertCanAccessQaDataset(
+                euTaxonomyNonFinancialsQaReport,
+                reportMetaInfo,
+            )
+        }
+        withTechnicalUser(TechnicalUser.Reviewer) {
+            assertCanAccessQaDataset(
+                euTaxonomyNonFinancialsQaReport,
+                reportMetaInfo,
+            )
+        }
+        withTechnicalUser(TechnicalUser.Uploader) {
+            assertCannotAccessQaDataset(
+                euTaxonomyNonFinancialsQaReport,
+                reportMetaInfo,
+            )
+        }
+        withTechnicalUser(TechnicalUser.Reader) {
+            assertCannotAccessQaDataset(
+                euTaxonomyNonFinancialsQaReport,
+                reportMetaInfo,
+            )
+        }
     }
 
     @Test
     fun `post an eu taxonomy non financials qa report and check that it is deleted with the dataset`() {
-        val euTaxonomyNonFinancialsQaReport = EutaxonomyNonFinancialsData()
+        val euTaxonomyNonFinancialsQaReport = EuTaxonomyNonFinancialsQaReportData()
         val reportMetaInfo =
-            postEuTaxonomyNonFinancialsQaReportForNewDataId(euTaxonomyNonFinancialsQaReport, bypassQa = true)
+            postQaReportForNewDataId(euTaxonomyNonFinancialsQaReport, bypassQa = true)
         withTechnicalUser(TechnicalUser.Admin) {
-            assertCanAccessEuTaxonomyNonFinancialsQaDataset(reportMetaInfo)
+            assertCanAccessQaDataset(euTaxonomyNonFinancialsQaReport, reportMetaInfo)
             apiAccessor.dataDeletionControllerApi.deleteCompanyAssociatedData(reportMetaInfo.dataId)
 
             val exception = assertThrows<ClientException> {
@@ -199,12 +223,15 @@ class QaReportControllerTest {
     @Test
     fun `post an eu taxonomy non financials qa report and check that the report can be retrieved`() {
         val qaReportTestDataProvider =
-            QaReportTestDataProvider(EutaxonomyNonFinancialsData::class.java, "eutaxonomy-non-financials")
+            QaReportTestDataProvider(
+                EuTaxonomyNonFinancialsQaReportData::class.java,
+                "eutaxonomy-non-financials",
+            )
         val euTaxonomyNonFinancialsQaReportWithOneCorrection = qaReportTestDataProvider.getTData(1)
             .first()
 
         val euTaxonomyNonFinancialsQaReportMetaInfo =
-            postEuTaxonomyNonFinancialsQaReportForNewDataId(
+            postQaReportForNewDataId(
                 euTaxonomyNonFinancialsQaReportWithOneCorrection,
                 true,
             )
