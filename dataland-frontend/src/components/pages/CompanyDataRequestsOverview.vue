@@ -31,15 +31,15 @@
                 style="margin: 15px"
               />
               <FrameworkDataSearchDropdownFilter
-                  v-model="selectedAccessStatus"
-                  ref="frameworkFilter"
-                  :available-items="availableAccessStatus"
-                  filter-name="Access Status"
-                  data-test="requested-Datasets-frameworks"
-                  filter-id="framework-filter"
-                  filter-placeholder="access status"
-                  class="ml-3"
-                  style="margin: 15px"
+                v-model="selectedAccessStatus"
+                ref="frameworkFilter"
+                :available-items="availableAccessStatus"
+                filter-name="Access Status"
+                data-test="requested-Datasets-frameworks"
+                filter-id="framework-filter"
+                filter-placeholder="access status"
+                class="ml-3"
+                style="margin: 15px"
               />
               <div class="flex align-items-center">
                 <span
@@ -64,7 +64,8 @@
                 paginator-position="bottom"
                 :rows="datasetsPerPage"
                 :total-records="numberOfFilteredRequests"
-                id="my-company-requests-overview-table" >
+                id="my-company-requests-overview-table"
+              >
                 <Column header="REQUESTER" field="userEmailAddress" :sortable="true">
                   <template #body="slotProps">
                     {{ slotProps.data.userEmailAddress }}
@@ -126,15 +127,15 @@
                     >
                       <div class="button-container">
                         <PrimeButton
-                            class="uppercase p-button p-button-sm"
-                            @click="updateAccessStatus(slotProps.data.dataRequestId, AccessStatus.Granted)"
+                          class="uppercase p-button p-button-sm"
+                          @click="updateAccessStatus(slotProps.data.dataRequestId, AccessStatus.Granted)"
                         >
                           <i class="material-icons"> done </i>
                           <span class="d-letters pl-2"> Grant </span>
                         </PrimeButton>
                         <PrimeButton
-                            class="uppercase p-button-outlined p-button-sm mr-3"
-                            @click="updateAccessStatus(slotProps.data.dataRequestId, AccessStatus.Declined)"
+                          class="uppercase p-button-outlined p-button-sm mr-3"
+                          @click="updateAccessStatus(slotProps.data.dataRequestId, AccessStatus.Declined)"
                         >
                           <i class="material-icons"> clear </i>
                           <span class="d-letters pl-2"> Decline </span>
@@ -142,13 +143,13 @@
                       </div>
                     </div>
                     <div
-                        v-if="slotProps.data.accessStatus == AccessStatus.Granted"
-                        class="text-right text-primary no-underline font-bold"
+                      v-if="slotProps.data.accessStatus == AccessStatus.Granted"
+                      class="text-right text-primary no-underline font-bold"
                     >
                       <div class="button-container">
                         <PrimeButton
-                            class="uppercase p-button-outlined p-button-sm mr-3"
-                            @click="updateAccessStatus(slotProps.data.dataRequestId, AccessStatus.Revoked)"
+                          class="uppercase p-button-outlined p-button-sm mr-3"
+                          @click="updateAccessStatus(slotProps.data.dataRequestId, AccessStatus.Revoked)"
                         >
                           <i class="material-icons"> clear </i>
                           <span class="d-letters pl-2"> Revoke </span>
@@ -181,10 +182,7 @@ import TheHeader from '@/components/generics/TheHeader.vue';
 import { defineComponent, inject, ref } from 'vue';
 import type Keycloak from 'keycloak-js';
 import { ApiClientProvider } from '@/services/ApiClients';
-import DataTable, {
-  type DataTablePageEvent,
-  type DataTableSortEvent,
-} from 'primevue/datatable';
+import DataTable, { type DataTablePageEvent, type DataTableSortEvent } from 'primevue/datatable';
 import Column from 'primevue/column';
 import {
   frameworkHasSubTitle,
@@ -197,17 +195,17 @@ import { convertUnixTimeInMsToDateString } from '@/utils/DataFormatUtils';
 import {
   type CompanyRoleAssignment,
   RequestStatus,
-    AccessStatus,
-  type StoredDataRequest
+  AccessStatus,
+  type StoredDataRequest,
 } from '@clients/communitymanager';
 import InputText from 'primevue/inputtext';
 import FrameworkDataSearchDropdownFilter from '@/components/resources/frameworkDataSearch/FrameworkDataSearchDropdownFilter.vue';
-import {FrameworkSelectableItem, SelectableItem} from '@/utils/FrameworkDataSearchDropDownFilterTypes';
+import { type FrameworkSelectableItem, type SelectableItem } from '@/utils/FrameworkDataSearchDropDownFilterTypes';
 import { FRAMEWORKS_WITH_VIEW_PAGE } from '@/utils/Constants';
 import { getFrontendFrameworkDefinition } from '@/frameworks/FrontendFrameworkRegistry';
 import AuthenticationWrapper from '@/components/wrapper/AuthenticationWrapper.vue';
 import { accessStatusBadgeClass, badgeClass } from '@/utils/RequestUtils';
-import PrimeButton from "primevue/button";
+import PrimeButton from 'primevue/button';
 
 export default defineComponent({
   name: 'MyDataRequestsOverview',
@@ -234,7 +232,7 @@ export default defineComponent({
       frameworkFilter: ref(),
       datasetsPerPage: 100,
       getKeycloakPromise: inject<() => Promise<Keycloak>>('getKeycloakPromise'),
-      companyRoleAssignments: inject<Array<CompanyRoleAssignment>>('companyRoleAssignments')
+      companyRoleAssignments: inject<Array<CompanyRoleAssignment>>('companyRoleAssignments'),
     };
   },
 
@@ -281,12 +279,12 @@ export default defineComponent({
     },
   },
   methods: {
-  accessStatusBadgeClass,
-  badgeClass,
-  frameworkHasSubTitle,
-  getFrameworkTitle,
-  getFrameworkSubtitle,
-  convertUnixTimeInMsToDateString,
+    accessStatusBadgeClass,
+    badgeClass,
+    frameworkHasSubTitle,
+    getFrameworkTitle,
+    getFrameworkSubtitle,
+    convertUnixTimeInMsToDateString,
     /**
      * Gets list with all available frameworks
      * @returns array of frameworkSelectableItem
@@ -326,38 +324,30 @@ export default defineComponent({
       if (!this.companyRoleAssignments) {
         return;
       }
-      const companyIDs = Array.from(new Set(this.companyRoleAssignments.map(assignment => assignment.companyId)));
+      const companyIDs = Array.from(new Set(this.companyRoleAssignments.map((assignment) => assignment.companyId)));
       if (this.getKeycloakPromise) {
         const apiClientProvider = new ApiClientProvider(this.getKeycloakPromise());
         const dataRequestsPromises = companyIDs.map(async (companyId) => {
           try {
             const response = await apiClientProvider.apiClients.requestController.getDataRequests(
-                undefined,
-                undefined,
-                undefined,
-                undefined,
-                undefined,
-                companyId
+              undefined,
+              undefined,
+              undefined,
+              undefined,
+              undefined,
+              companyId
             );
-            return response.data
+            return response.data;
           } catch (error) {
             console.error(`Error fetching data for companyId ${companyId}:`, error);
-            return []
+            return [];
           }
-        })
+        });
         this.storedDataRequests = (await Promise.all(dataRequestsPromises)).flat();
       }
-      this.waitingForData = false
+      this.waitingForData = false;
     },
-    /**
-     * Sorts the list of storedDataRequests
-     * @param event contains column to sort and sortOrder
-     */
-    onSort(event: DataTableSortEvent) {
-      this.sortField = event.sortField as keyof StoredDataRequest;
-      this.sortOrder = event.sortOrder ?? 1;
-      this.updateCurrentDisplayedData();
-    },
+
     /**
      * Filterfunction for frameworks
      * @param framework dataland framework
@@ -403,9 +393,9 @@ export default defineComponent({
      */
     updateCurrentDisplayedData() {
       this.displayedData = this.storedDataRequests
-          .filter((dataRequest) => this.filterSearchInput(dataRequest.userEmailAddress))
-          .filter((dataRequest) => this.filterFramework(dataRequest.dataType))
-          .filter((dataRequest) => this.filterAccessStatus(dataRequest.accessStatus));
+        .filter((dataRequest) => this.filterSearchInput(dataRequest.userEmailAddress))
+        .filter((dataRequest) => this.filterFramework(dataRequest.dataType))
+        .filter((dataRequest) => this.filterAccessStatus(dataRequest.accessStatus));
       this.displayedData.sort((a, b) => this.customCompareForStoredDataRequests(a, b));
       this.numberOfFilteredRequests = this.displayedData.length;
       this.displayedData = this.displayedData.slice(
@@ -424,8 +414,8 @@ export default defineComponent({
      * @returns result of the comparison
      */
     customCompareForStoredDataRequests(a: StoredDataRequest, b: StoredDataRequest) {
-      const aValue = a[this.sortField]?? '';
-      const bValue = b[this.sortField]?? '';
+      const aValue = a[this.sortField] ?? '';
+      const bValue = b[this.sortField] ?? '';
 
       if (this.sortField != ('requestStatus' as keyof StoredDataRequest)) {
         if (aValue < bValue) return -1 * this.sortOrder;
@@ -458,34 +448,26 @@ export default defineComponent({
       return this.sortOrder;
     },
     /**
-     * Updates the data for the current page
-     * @param event event containing the new page
-     */
-    onPage(event: DataTablePageEvent) {
-      this.currentPage = event.page;
-      this.updateCurrentDisplayedData();
-    },
-    /**
      * Updates the access status
+     * @param requestId to update
+     * @param newAccessStatus to set
      */
-    async updateAccessStatus(requestId:string, newAccessStatus:AccessStatus) {
+    async updateAccessStatus(requestId: string, newAccessStatus: AccessStatus) {
       try {
         if (this.getKeycloakPromise) {
-              await new ApiClientProvider(
-                  this.getKeycloakPromise()
-              ).apiClients.requestController.patchDataRequest(
-                  requestId,
-                  undefined,
-                  newAccessStatus
-              );
+          await new ApiClientProvider(this.getKeycloakPromise()).apiClients.requestController.patchDataRequest(
+            requestId,
+            undefined,
+            newAccessStatus
+          );
           await this.getStoredCompanyRequestDataList();
           this.updateCurrentDisplayedData();
         }
       } catch (error) {
         console.error(error);
       }
-    }
-  }
+    },
+  },
 });
 </script>
 <style scoped>

@@ -31,15 +31,15 @@
                 style="margin: 15px"
               />
               <FrameworkDataSearchDropdownFilter
-                  v-model="selectedAccessStatus"
-                  ref="frameworkFilter"
-                  :available-items="availableAccessStatus"
-                  filter-name="Access Status"
-                  data-test="requested-Datasets-frameworks"
-                  filter-id="framework-filter"
-                  filter-placeholder="access status"
-                  class="ml-3"
-                  style="margin: 15px"
+                v-model="selectedAccessStatus"
+                ref="frameworkFilter"
+                :available-items="availableAccessStatus"
+                filter-name="Access Status"
+                data-test="requested-Datasets-frameworks"
+                filter-id="framework-filter"
+                filter-placeholder="access status"
+                class="ml-3"
+                style="margin: 15px"
               />
               <div class="flex align-items-center">
                 <span
@@ -189,11 +189,11 @@ import {
 } from '@/utils/StringFormatter';
 import DatasetsTabMenu from '@/components/general/DatasetsTabMenu.vue';
 import { convertUnixTimeInMsToDateString } from '@/utils/DataFormatUtils';
-import {AccessStatus, type ExtendedStoredDataRequest, RequestStatus} from '@clients/communitymanager';
+import { AccessStatus, type ExtendedStoredDataRequest, RequestStatus } from '@clients/communitymanager';
 import { type DataTypeEnum } from '@clients/backend';
 import InputText from 'primevue/inputtext';
 import FrameworkDataSearchDropdownFilter from '@/components/resources/frameworkDataSearch/FrameworkDataSearchDropdownFilter.vue';
-import {FrameworkSelectableItem, SelectableItem} from '@/utils/FrameworkDataSearchDropDownFilterTypes';
+import { type FrameworkSelectableItem, type SelectableItem } from '@/utils/FrameworkDataSearchDropDownFilterTypes';
 import { FRAMEWORKS_WITH_VIEW_PAGE } from '@/utils/Constants';
 import { getFrontendFrameworkDefinition } from '@/frameworks/FrontendFrameworkRegistry';
 import AuthenticationWrapper from '@/components/wrapper/AuthenticationWrapper.vue';
