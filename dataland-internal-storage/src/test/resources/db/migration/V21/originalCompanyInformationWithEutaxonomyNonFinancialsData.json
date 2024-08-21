@@ -1,0 +1,547 @@
+{
+  "general": {
+    "fiscalYearDeviation": {
+      "value": "NoDeviation",
+      "dataSource": {
+        "page": 108,
+        "fileName": "ESEFReport",
+        "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+        "tagName": "e-business"
+      },
+      "comment": null,
+      "quality": "NoDataFound"
+    },
+    "fiscalYearEnd": null,
+    "scopeOfEntities": {
+      "value": "Yes",
+      "dataSource": null,
+      "comment": "back up cross-platform capacitor",
+      "quality": "NoDataFound"
+    },
+    "nfrdMandatory": {
+      "value": null,
+      "dataSource": {
+        "page": 285,
+        "fileName": "AnnualReport",
+        "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+        "tagName": "channels"
+      },
+      "comment": "input 1080p port",
+      "quality": "NoDataFound"
+    },
+    "euTaxonomyActivityLevelReporting": null,
+    "assurance": {
+      "value": "ReasonableAssurance",
+      "provider": "Treutel, Halvorson and Connelly",
+      "dataSource": {
+        "page": 849,
+        "fileName": "AnnualReport",
+        "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+        "tagName": "deliverables"
+      }
+    },
+    "numberOfEmployees": {
+      "value": null,
+      "dataSource": {
+        "page": 1008,
+        "fileName": "SustainabilityReport",
+        "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+        "tagName": "synergies"
+      },
+      "comment": "copy multi-byte port",
+      "quality": "Reported"
+    },
+    "referencedReports": {
+      "SustainabilityReport": {
+        "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+        "fileName": "SustainabilityReport",
+        "publicationDate": null
+      },
+      "IntegratedReport": {
+        "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+        "fileName": "IntegratedReport",
+        "publicationDate": "2023-04-30"
+      },
+      "ESEFReport": {
+        "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+        "fileName": "ESEFReport",
+        "publicationDate": "2023-08-13"
+      },
+      "AnnualReport": {
+        "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+        "fileName": "AnnualReport",
+        "publicationDate": "2023-11-05"
+      }
+    }
+  },
+  "revenue": {
+    "totalAmount": {
+      "value": 9517315344.42,
+      "dataSource": {
+        "page": 150,
+        "fileName": "AnnualReport",
+        "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+        "tagName": "ROI"
+      },
+      "comment": "back up solid state capacitor",
+      "quality": "Estimated",
+      "currency": "BND"
+    },
+    "nonEligibleShare": {
+      "relativeShareInPercent": {
+        "value": 27.59,
+        "dataSource": {
+          "page": 29,
+          "fileName": "SustainabilityReport",
+          "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+          "tagName": "models"
+        },
+        "comment": null,
+        "quality": null
+      },
+      "absoluteShare": {
+        "value": 5641382231.84,
+        "dataSource": {
+          "page": 1127,
+          "fileName": "SustainabilityReport",
+          "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+          "tagName": "experiences"
+        },
+        "comment": "generate back-end program",
+        "quality": "Reported",
+        "currency": "NIO"
+      }
+    },
+    "eligibleShare": {
+      "relativeShareInPercent": null,
+      "absoluteShare": null
+    },
+    "nonAlignedShare": {
+      "relativeShareInPercent": {
+        "value": 21.39,
+        "dataSource": {
+          "page": 391,
+          "fileName": "IntegratedReport",
+          "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+          "tagName": "content"
+        },
+        "comment": "connect solid state monitor",
+        "quality": "Estimated"
+      },
+      "absoluteShare": {
+        "value": null,
+        "dataSource": {
+          "page": 270,
+          "fileName": "ESEFReport",
+          "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+          "tagName": "relationships"
+        },
+        "comment": "quantify redundant card",
+        "quality": "NoDataFound",
+        "currency": "GEL"
+      }
+    },
+    "nonAlignedActivities": {
+      "value": null,
+      "dataSource": {
+        "page": 1018,
+        "fileName": "ESEFReport",
+        "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+        "tagName": "communities"
+      },
+      "comment": "reboot multi-byte array",
+      "quality": null
+    },
+    "alignedShare": {
+      "relativeShareInPercent": {
+        "value": 99.33,
+        "dataSource": {
+          "page": 61,
+          "fileName": "AnnualReport",
+          "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+          "tagName": "portals"
+        },
+        "comment": "navigate auxiliary interface",
+        "quality": "NoDataFound"
+      },
+      "absoluteShare": {
+        "value": null,
+        "dataSource": {
+          "page": 872,
+          "fileName": "AnnualReport",
+          "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+          "tagName": "bandwidth"
+        },
+        "comment": null,
+        "quality": null,
+        "currency": "ERN"
+      }
+    },
+    "substantialContributionToClimateChangeMitigationInPercent": {
+      "value": 88.05,
+      "dataSource": {
+        "page": 381,
+        "fileName": "IntegratedReport",
+        "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+        "tagName": "communities"
+      },
+      "comment": null,
+      "quality": "Incomplete"
+    },
+    "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent": {
+      "value": 60.97,
+      "dataSource": {
+        "page": 78,
+        "fileName": "AnnualReport",
+        "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+        "tagName": "solutions"
+      },
+      "comment": "parse digital matrix",
+      "quality": "Incomplete"
+    },
+    "substantialContributionToTransitionToACircularEconomyInPercent": {
+      "value": 8.82,
+      "dataSource": null,
+      "comment": "override optical port",
+      "quality": null
+    },
+    "substantialContributionToPollutionPreventionAndControlInPercent": null,
+    "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent": {
+      "value": null,
+      "dataSource": {
+        "page": 801,
+        "fileName": "ESEFReport",
+        "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+        "tagName": "paradigms"
+      },
+      "comment": "hack open-source feed",
+      "quality": "NoDataFound"
+    },
+    "alignedActivities": null,
+    "enablingShareInPercent": null,
+    "transitionalShareInPercent": {
+      "value": 94.95,
+      "dataSource": null,
+      "comment": "compress neural card",
+      "quality": "Incomplete"
+    }
+  },
+  "capex": {
+    "totalAmount": {
+      "value": null,
+      "dataSource": null,
+      "comment": "index solid state card",
+      "quality": "Estimated",
+      "currency": "AWG"
+    },
+    "nonEligibleShare": {
+      "relativeShareInPercent": null,
+      "absoluteShare": {
+        "value": 6834295862.36,
+        "dataSource": null,
+        "comment": "back up 1080p alarm",
+        "quality": "Incomplete",
+        "currency": "WST"
+      }
+    },
+    "eligibleShare": {
+      "relativeShareInPercent": null,
+      "absoluteShare": null
+    },
+    "nonAlignedShare": {
+      "relativeShareInPercent": null,
+      "absoluteShare": {
+        "value": 2833128243.22,
+        "dataSource": {
+          "page": 720,
+          "fileName": "SustainabilityReport",
+          "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+          "tagName": "systems"
+        },
+        "comment": "bypass digital microchip",
+        "quality": "NoDataFound",
+        "currency": "LAK"
+      }
+    },
+    "nonAlignedActivities": {
+      "value": null,
+      "dataSource": {
+        "page": 246,
+        "fileName": "SustainabilityReport",
+        "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+        "tagName": "portals"
+      },
+      "comment": "calculate back-end application",
+      "quality": "Reported"
+    },
+    "alignedShare": {
+      "relativeShareInPercent": null,
+      "absoluteShare": null
+    },
+    "substantialContributionToClimateChangeMitigationInPercent": null,
+    "substantialContributionToClimateChangeAdaptationInPercent": {
+      "value": null,
+      "dataSource": {
+        "page": 565,
+        "fileName": "AnnualReport",
+        "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+        "tagName": "content"
+      },
+      "comment": "copy mobile application",
+      "quality": "Reported"
+    },
+    "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent": {
+      "value": 25.72,
+      "dataSource": {
+        "page": 374,
+        "fileName": "SustainabilityReport",
+        "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+        "tagName": "content"
+      },
+      "comment": "transmit solid state monitor",
+      "quality": "NoDataFound"
+    },
+    "substantialContributionToTransitionToACircularEconomyInPercent": {
+      "value": null,
+      "dataSource": {
+        "page": 1116,
+        "fileName": "SustainabilityReport",
+        "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+        "tagName": "models"
+      },
+      "comment": null,
+      "quality": "Reported"
+    },
+    "substantialContributionToPollutionPreventionAndControlInPercent": null,
+    "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent": {
+      "value": 40.92,
+      "dataSource": {
+        "page": 752,
+        "fileName": "SustainabilityReport",
+        "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+        "tagName": "technologies"
+      },
+      "comment": "override online interface",
+      "quality": "Reported"
+    },
+    "alignedActivities": null,
+    "enablingShareInPercent": {
+      "value": null,
+      "dataSource": {
+        "page": 935,
+        "fileName": "ESEFReport",
+        "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+        "tagName": "markets"
+      },
+      "comment": "quantify bluetooth alarm",
+      "quality": "NoDataFound"
+    },
+    "transitionalShareInPercent": {
+      "value": 53.73,
+      "dataSource": {
+        "page": 254,
+        "fileName": "ESEFReport",
+        "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+        "tagName": "blockchains"
+      },
+      "comment": "calculate cross-platform microchip",
+      "quality": "Estimated"
+    }
+  },
+  "opex": {
+    "totalAmount": {
+      "value": 491663888.09,
+      "dataSource": null,
+      "comment": "quantify open-source transmitter",
+      "quality": "Incomplete",
+      "currency": "MGA"
+    },
+    "nonEligibleShare": {
+      "relativeShareInPercent": {
+        "value": null,
+        "dataSource": {
+          "page": 979,
+          "fileName": "AnnualReport",
+          "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+          "tagName": "models"
+        },
+        "comment": "hack cross-platform monitor",
+        "quality": null
+      },
+      "absoluteShare": {
+        "value": 5585746683.65,
+        "dataSource": {
+          "page": 749,
+          "fileName": "IntegratedReport",
+          "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+          "tagName": "bandwidth"
+        },
+        "comment": null,
+        "quality": "Estimated",
+        "currency": "FKP"
+      }
+    },
+    "eligibleShare": {
+      "relativeShareInPercent": null,
+      "absoluteShare": null
+    },
+    "nonAlignedShare": {
+      "relativeShareInPercent": {
+        "value": 96.86,
+        "dataSource": {
+          "page": 1134,
+          "fileName": "IntegratedReport",
+          "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+          "tagName": "systems"
+        },
+        "comment": "input cross-platform hard drive",
+        "quality": "Estimated"
+      },
+      "absoluteShare": {
+        "value": 4645222625.69,
+        "dataSource": {
+          "page": 820,
+          "fileName": "IntegratedReport",
+          "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+          "tagName": "communities"
+        },
+        "comment": "parse wireless driver",
+        "quality": null,
+        "currency": "BOB"
+      }
+    },
+    "nonAlignedActivities": {
+      "value": [
+        {
+          "activityName": "InstallationAndOperationOfElectricHeatPumps",
+          "naceCodes": [
+            "D35.30"
+          ],
+          "share": {
+            "relativeShareInPercent": 4.8,
+            "absoluteShare": null
+          }
+        }
+      ],
+      "dataSource": {
+        "page": 72,
+        "fileName": "SustainabilityReport",
+        "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+        "tagName": "e-business"
+      },
+      "comment": "navigate wireless monitor",
+      "quality": "Reported"
+    },
+    "alignedShare": {
+      "relativeShareInPercent": null,
+      "absoluteShare": {
+        "value": 1863414240.07,
+        "dataSource": {
+          "page": 660,
+          "fileName": "SustainabilityReport",
+          "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+          "tagName": "solutions"
+        },
+        "comment": "transmit redundant system",
+        "quality": null,
+        "currency": "IDR"
+      }
+    },
+    "substantialContributionToClimateChangeMitigationInPercent": {
+      "value": 48.22,
+      "dataSource": {
+        "page": 377,
+        "fileName": "IntegratedReport",
+        "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+        "tagName": "methodologies"
+      },
+      "comment": "quantify primary port",
+      "quality": "Estimated"
+    },
+    "substantialContributionToClimateChangeAdaptationInPercent": null,
+    "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent": {
+      "value": 20.05,
+      "dataSource": {
+        "page": 518,
+        "fileName": "ESEFReport",
+        "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+        "tagName": "platforms"
+      },
+      "comment": "calculate open-source driver",
+      "quality": null
+    },
+    "substantialContributionToTransitionToACircularEconomyInPercent": {
+      "value": null,
+      "dataSource": {
+        "page": 364,
+        "fileName": "IntegratedReport",
+        "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+        "tagName": "niches"
+      },
+      "comment": "override primary application",
+      "quality": "NoDataFound"
+    },
+    "substantialContributionToPollutionPreventionAndControlInPercent": {
+      "value": null,
+      "dataSource": {
+        "page": 464,
+        "fileName": "ESEFReport",
+        "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+        "tagName": "experiences"
+      },
+      "comment": "reboot optical driver",
+      "quality": "Audited"
+    },
+    "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent": {
+      "value": null,
+      "dataSource": {
+        "page": 59,
+        "fileName": "IntegratedReport",
+        "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+        "tagName": "solutions"
+      },
+      "comment": "navigate back-end protocol",
+      "quality": "Reported"
+    },
+    "alignedActivities": {
+      "value": [
+        {
+          "activityName": "PreparationForReUseOfEndOfLifeProductsAndProductComponents",
+          "naceCodes": null,
+          "share": {
+            "relativeShareInPercent": null,
+            "absoluteShare": {
+              "amount": 1340532598.55,
+              "currency": "NGN"
+            }
+          },
+          "substantialContributionToClimateChangeMitigationInPercent": 42.62,
+          "substantialContributionToClimateChangeAdaptationInPercent": 78.27,
+          "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent": null,
+          "substantialContributionToTransitionToACircularEconomyInPercent": 87.81,
+          "substantialContributionToPollutionPreventionAndControlInPercent": null,
+          "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent": null,
+          "dnshToClimateChangeMitigation": null,
+          "dnshToClimateChangeAdaptation": "No",
+          "dnshToSustainableUseAndProtectionOfWaterAndMarineResources": "No",
+          "dnshToTransitionToACircularEconomy": null,
+          "dnshToPollutionPreventionAndControl": "No",
+          "dnshToProtectionAndRestorationOfBiodiversityAndEcosystems": null,
+          "minimumSafeguards": "No",
+          "enablingActivity": "Yes",
+          "transitionalActivity": null
+        }
+      ],
+      "dataSource": null,
+      "comment": "quantify solid state monitor",
+      "quality": null
+    },
+    "enablingShareInPercent": {
+      "value": 61.75,
+      "dataSource": null,
+      "comment": "calculate optical capacitor",
+      "quality": "Incomplete"
+    },
+    "transitionalShareInPercent": null
+  }
+}

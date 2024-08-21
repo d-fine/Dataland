@@ -28,4 +28,6 @@ data class EuTaxonomyAlignedActivity(
     val dnshToPollutionPreventionAndControl: YesNo?,
     val dnshToProtectionAndRestorationOfBiodiversityAndEcosystems: YesNo?,
     val minimumSafeguards: YesNo?,
+    val enablingActivity: YesNo?,
+    val transitionalActivity: YesNo?,
 )

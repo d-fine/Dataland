@@ -142,9 +142,10 @@ export const eutaxonomyNonFinancialsDataModel = [
             showIf: (): boolean => true,
           },
           {
-            name: 'substantialContributionToClimateChangeMitigationInPercent',
-            label: 'Substantial Contribution to Climate Change Mitigation',
-            description: 'Grade of the substantial contribution criterion fulfillment',
+            name: 'substantialContributionToClimateChangeMitigationInPercentEligible',
+            label: 'Substantial Contribution to Climate Change Mitigation In Percent - Eligible',
+            description:
+              'Taxonomy-eligible proportion of revenue substantially contributing to climate change mitigation',
             unit: '%',
             component: 'PercentageExtendedDataPointFormField',
             required: false,
@@ -152,9 +153,10 @@ export const eutaxonomyNonFinancialsDataModel = [
             validation: 'between:0,100',
           },
           {
-            name: 'substantialContributionToClimateChangeAdaptationInPercent',
-            label: 'Substantial Contribution to Climate Change Adaptation',
-            description: 'Grade of the substantial contribution criterion fulfillment',
+            name: 'substantialContributionToClimateChangeMitigationInPercentAligned',
+            label: 'Substantial Contribution to Climate Change Mitigation In Percent - Aligned',
+            description:
+              'Taxonomy-aligned proportion of revenue substantially contributing to climate change mitigation',
             unit: '%',
             component: 'PercentageExtendedDataPointFormField',
             required: false,
@@ -162,9 +164,10 @@ export const eutaxonomyNonFinancialsDataModel = [
             validation: 'between:0,100',
           },
           {
-            name: 'substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent',
-            label: 'Substantial Contribution to Sustainable Use and Protection of Water and Marine Resources',
-            description: 'Grade of the substantial contribution criterion fulfillment',
+            name: 'substantialContributionToClimateChangeMitigationInPercentOfWhichUseOfProceeds',
+            label: 'Substantial Contribution to Climate Change Mitigation In Percent - Of Which Use Of Proceeds',
+            description:
+              'Taxonomy-aligned use of proceeds share substantially contributing to climate change mitigation',
             unit: '%',
             component: 'PercentageExtendedDataPointFormField',
             required: false,
@@ -172,9 +175,10 @@ export const eutaxonomyNonFinancialsDataModel = [
             validation: 'between:0,100',
           },
           {
-            name: 'substantialContributionToTransitionToACircularEconomyInPercent',
-            label: 'Substantial Contribution to Transition to a Circular Economy',
-            description: 'Grade of the substantial contribution criterion fulfillment',
+            name: 'substantialContributionToClimateChangeMitigationInPercentEnablingShare',
+            label: 'Substantial Contribution to Climate Change Mitigation In Percent - Enabling Share',
+            description:
+              'Taxonomy-aligned and enabling proportion of revenue substantially contributing to climate change mitigation',
             unit: '%',
             component: 'PercentageExtendedDataPointFormField',
             required: false,
@@ -182,9 +186,10 @@ export const eutaxonomyNonFinancialsDataModel = [
             validation: 'between:0,100',
           },
           {
-            name: 'substantialContributionToPollutionPreventionAndControlInPercent',
-            label: 'Substantial Contribution to Pollution Prevention and Control',
-            description: 'Grade of the substantial contribution criterion fulfillment',
+            name: 'substantialContributionToClimateChangeMitigationInPercentTransitionalShare',
+            label: 'Substantial Contribution to Climate Change Mitigation In Percent - Transitional Share',
+            description:
+              'Taxonomy-aligned and transitional proportion of revenue substantially contributing to climate change mitigation',
             unit: '%',
             component: 'PercentageExtendedDataPointFormField',
             required: false,
@@ -192,9 +197,224 @@ export const eutaxonomyNonFinancialsDataModel = [
             validation: 'between:0,100',
           },
           {
-            name: 'substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent',
-            label: 'Substantial Contribution to Protection and Restoration of Biodiversity and Ecosystems',
-            description: 'Grade of the substantial contribution criterion fulfillment',
+            name: 'substantialContributionToClimateChangeAdaptationInPercentEligible',
+            label: 'Substantial Contribution to Climate Change Adaptation In Percent - Eligible',
+            description:
+              'Taxonomy-eligible proportion of revenue substantially contributing to climate change adaptation',
+            unit: '%',
+            component: 'PercentageExtendedDataPointFormField',
+            required: false,
+            showIf: (): boolean => true,
+            validation: 'between:0,100',
+          },
+          {
+            name: 'substantialContributionToClimateChangeAdaptationInPercentAligned',
+            label: 'Substantial Contribution to Climate Change Adaptation In Percent - Aligned',
+            description:
+              'Taxonomy-aligned proportion of revenue substantially contributing to climate change adaptation',
+            unit: '%',
+            component: 'PercentageExtendedDataPointFormField',
+            required: false,
+            showIf: (): boolean => true,
+            validation: 'between:0,100',
+          },
+          {
+            name: 'substantialContributionToClimateChangeAdaptationInPercentOfWhichUseOfProceeds',
+            label: 'Substantial Contribution to Climate Change Adaptation In Percent - Of Which Use Of Proceeds',
+            description:
+              'Taxonomy-aligned use of proceeds share substantially contributing to climate change adaptation',
+            unit: '%',
+            component: 'PercentageExtendedDataPointFormField',
+            required: false,
+            showIf: (): boolean => true,
+            validation: 'between:0,100',
+          },
+          {
+            name: 'substantialContributionToClimateChangeAdaptationInPercentEnablingShare',
+            label: 'Substantial Contribution to Climate Change Adaptation In Percent - Enabling Share',
+            description:
+              'Taxonomy-aligned and enabling proportion of revenue substantially contributing to climate change adaptation',
+            unit: '%',
+            component: 'PercentageExtendedDataPointFormField',
+            required: false,
+            showIf: (): boolean => true,
+            validation: 'between:0,100',
+          },
+          {
+            name: 'substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentEligible',
+            label:
+              'Substantial Contribution to Sustainable Use and Protection of Water and Marine Resources In Percent - Eligible',
+            description:
+              'Taxonomy-eligible proportion of revenue substantially contributing to sustainable use and protection of water and marine resources',
+            unit: '%',
+            component: 'PercentageExtendedDataPointFormField',
+            required: false,
+            showIf: (): boolean => true,
+            validation: 'between:0,100',
+          },
+          {
+            name: 'substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned',
+            label:
+              'Substantial Contribution to Sustainable Use and Protection of Water and Marine Resources In Percent - Aligned',
+            description:
+              'Taxonomy-aligned proportion of revenue substantially contributing to sustainable use and protection of water and marine resources',
+            unit: '%',
+            component: 'PercentageExtendedDataPointFormField',
+            required: false,
+            showIf: (): boolean => true,
+            validation: 'between:0,100',
+          },
+          {
+            name: 'substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentOfWhichUseOfProceeds',
+            label:
+              'Substantial Contribution to Sustainable Use and Protection of Water and Marine Resources In Percent - Of Which Use Of Proceeds',
+            description:
+              'Taxonomy-aligned use of proceeds share substantially contributing to sustainable use and protection of water and marine resources',
+            unit: '%',
+            component: 'PercentageExtendedDataPointFormField',
+            required: false,
+            showIf: (): boolean => true,
+            validation: 'between:0,100',
+          },
+          {
+            name: 'substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentEnablingShare',
+            label:
+              'Substantial Contribution to Sustainable Use and Protection of Water and Marine Resources In Percent - Enabling Share',
+            description:
+              'Taxonomy-aligned and enabling proportion of revenue substantially contributing to sustainable use and protection of water and marine resources',
+            unit: '%',
+            component: 'PercentageExtendedDataPointFormField',
+            required: false,
+            showIf: (): boolean => true,
+            validation: 'between:0,100',
+          },
+          {
+            name: 'substantialContributionToTransitionToACircularEconomyInPercentEligible',
+            label: 'Substantial Contribution to Transition to a Circular Economy In Percent - Eligible',
+            description: 'Taxonomy-eligible proportion of revenue substantially contributing to circular economy',
+            unit: '%',
+            component: 'PercentageExtendedDataPointFormField',
+            required: false,
+            showIf: (): boolean => true,
+            validation: 'between:0,100',
+          },
+          {
+            name: 'substantialContributionToTransitionToACircularEconomyInPercentAligned',
+            label: 'Substantial Contribution to Transition to a Circular Economy In Percent - Aligned',
+            description: 'Taxonomy-aligned proportion of revenue substantially contributing to circular economy',
+            unit: '%',
+            component: 'PercentageExtendedDataPointFormField',
+            required: false,
+            showIf: (): boolean => true,
+            validation: 'between:0,100',
+          },
+          {
+            name: 'substantialContributionToTransitionToACircularEconomyInPercentOfWhichUseOfProceeds',
+            label: 'Substantial Contribution to Transition to a Circular Economy In Percent - Of Which Use Of Proceeds',
+            description: 'Taxonomy-aligned use of proceeds share substantially contributing to circular economy',
+            unit: '%',
+            component: 'PercentageExtendedDataPointFormField',
+            required: false,
+            showIf: (): boolean => true,
+            validation: 'between:0,100',
+          },
+          {
+            name: 'substantialContributionToTransitionToACircularEconomyInPercentEnablingShare',
+            label: 'Substantial Contribution to Transition to a Circular Economy In Percent - Enabling Share',
+            description:
+              'Taxonomy-aligned and enabling proportion of revenue substantially contributing to circular economy',
+            unit: '%',
+            component: 'PercentageExtendedDataPointFormField',
+            required: false,
+            showIf: (): boolean => true,
+            validation: 'between:0,100',
+          },
+          {
+            name: 'substantialContributionToPollutionPreventionAndControlInPercentEligible',
+            label: 'Substantial Contribution to Pollution Prevention and Control In Percent - Eligible',
+            description:
+              'Taxonomy-eligible proportion of CapEx substantially contributing to pollution prevention and control',
+            unit: '%',
+            component: 'PercentageExtendedDataPointFormField',
+            required: false,
+            showIf: (): boolean => true,
+            validation: 'between:0,100',
+          },
+          {
+            name: 'substantialContributionToPollutionPreventionAndControlInPercentAligned',
+            label: 'Substantial Contribution to Pollution Prevention and Control In Percent - Aligned',
+            description:
+              'Taxonomy-aligned proportion of CapEx substantially contributing to pollution prevention and control',
+            unit: '%',
+            component: 'PercentageExtendedDataPointFormField',
+            required: false,
+            showIf: (): boolean => true,
+            validation: 'between:0,100',
+          },
+          {
+            name: 'substantialContributionToPollutionPreventionAndControlInPercentOfWhichUseOfProceeds',
+            label: 'Substantial Contribution to Pollution Prevention and Control In Percent - Of Which Use Of Proceeds',
+            description:
+              'Taxonomy-aligned use of proceeds share substantially contributing to pollution prevention and control',
+            unit: '%',
+            component: 'PercentageExtendedDataPointFormField',
+            required: false,
+            showIf: (): boolean => true,
+            validation: 'between:0,100',
+          },
+          {
+            name: 'substantialContributionToPollutionPreventionAndControlInPercentEnablingShare',
+            label: 'Substantial Contribution to Pollution Prevention and Control In Percent - Enabling Share',
+            description:
+              'Taxonomy-aligned and enabling proportion of CapEx substantially contributing to pollution prevention and control',
+            unit: '%',
+            component: 'PercentageExtendedDataPointFormField',
+            required: false,
+            showIf: (): boolean => true,
+            validation: 'between:0,100',
+          },
+          {
+            name: 'substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentEligible',
+            label:
+              'Substantial Contribution to Protection and Restoration of Biodiversity and Ecosystems In Percent - Eligible',
+            description:
+              'Taxonomy-eligible proportion of CapEx substantially contributing to protection and restoration of biodiversity and ecosystems',
+            unit: '%',
+            component: 'PercentageExtendedDataPointFormField',
+            required: false,
+            showIf: (): boolean => true,
+            validation: 'between:0,100',
+          },
+          {
+            name: 'substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned',
+            label:
+              'Substantial Contribution to Protection and Restoration of Biodiversity and Ecosystems In Percent - Aligned',
+            description:
+              'Taxonomy-aligned proportion of CapEx substantially contributing to protection and restoration of biodiversity and ecosystems',
+            unit: '%',
+            component: 'PercentageExtendedDataPointFormField',
+            required: false,
+            showIf: (): boolean => true,
+            validation: 'between:0,100',
+          },
+          {
+            name: 'substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentOfWhichUseOfProceeds',
+            label:
+              'Substantial Contribution to Protection and Restoration of Biodiversity and Ecosystems In Percent - Of Which Use Of Proceeds',
+            description:
+              'Taxonomy-aligned use of proceeds share substantially contributing to protection and restoration of biodiversity and ecosystems',
+            unit: '%',
+            component: 'PercentageExtendedDataPointFormField',
+            required: false,
+            showIf: (): boolean => true,
+            validation: 'between:0,100',
+          },
+          {
+            name: 'substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentEnablingShare',
+            label:
+              'Substantial Contribution to Protection and Restoration of Biodiversity and Ecosystems In Percent - Enabling Share',
+            description:
+              'Taxonomy-aligned and enabling proportion of CapEx substantially contributing to protection and restoration of biodiversity and ecosystems',
             unit: '%',
             component: 'PercentageExtendedDataPointFormField',
             required: false,
@@ -308,9 +528,10 @@ export const eutaxonomyNonFinancialsDataModel = [
             showIf: (): boolean => true,
           },
           {
-            name: 'substantialContributionToClimateChangeMitigationInPercent',
-            label: 'Substantial Contribution to Climate Change Mitigation',
-            description: 'Grade of the substantial contribution criterion fulfillment',
+            name: 'substantialContributionToClimateChangeMitigationInPercentEligible',
+            label: 'Substantial Contribution to Climate Change Mitigation In Percent - Eligible',
+            description:
+              'Taxonomy-eligible proportion of CapEx substantially contributing to climate change mitigation',
             unit: '%',
             component: 'PercentageExtendedDataPointFormField',
             required: false,
@@ -318,9 +539,9 @@ export const eutaxonomyNonFinancialsDataModel = [
             validation: 'between:0,100',
           },
           {
-            name: 'substantialContributionToClimateChangeAdaptationInPercent',
-            label: 'Substantial Contribution to Climate Change Adaptation',
-            description: 'Grade of the substantial contribution criterion fulfillment',
+            name: 'substantialContributionToClimateChangeMitigationInPercentAligned',
+            label: 'Substantial Contribution to Climate Change Mitigation In Percent - Aligned',
+            description: 'Taxonomy-aligned proportion of CapEx substantially contributing to climate change mitigation',
             unit: '%',
             component: 'PercentageExtendedDataPointFormField',
             required: false,
@@ -328,9 +549,10 @@ export const eutaxonomyNonFinancialsDataModel = [
             validation: 'between:0,100',
           },
           {
-            name: 'substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent',
-            label: 'Substantial Contribution to Sustainable Use and Protection of Water and Marine Resources',
-            description: 'Grade of the substantial contribution criterion fulfillment',
+            name: 'substantialContributionToClimateChangeMitigationInPercentOfWhichUseOfProceeds',
+            label: 'Substantial Contribution to Climate Change Mitigation In Percent - Of Which Use Of Proceeds',
+            description:
+              'Taxonomy-aligned use of proceeds share substantially contributing to climate change mitigation',
             unit: '%',
             component: 'PercentageExtendedDataPointFormField',
             required: false,
@@ -338,9 +560,10 @@ export const eutaxonomyNonFinancialsDataModel = [
             validation: 'between:0,100',
           },
           {
-            name: 'substantialContributionToTransitionToACircularEconomyInPercent',
-            label: 'Substantial Contribution to Transition to a Circular Economy',
-            description: 'Grade of the substantial contribution criterion fulfillment',
+            name: 'substantialContributionToClimateChangeMitigationInPercentEnablingShare',
+            label: 'Substantial Contribution to Climate Change Mitigation In Percent - Enabling Share',
+            description:
+              'Taxonomy-aligned and enabling proportion of CapEx substantially contributing to climate change mitigation',
             unit: '%',
             component: 'PercentageExtendedDataPointFormField',
             required: false,
@@ -348,9 +571,10 @@ export const eutaxonomyNonFinancialsDataModel = [
             validation: 'between:0,100',
           },
           {
-            name: 'substantialContributionToPollutionPreventionAndControlInPercent',
-            label: 'Substantial Contribution to Pollution Prevention and Control',
-            description: 'Grade of the substantial contribution criterion fulfillment',
+            name: 'substantialContributionToClimateChangeMitigationInPercentTransitionalShare',
+            label: 'Substantial Contribution to Climate Change Mitigation In Percent - Transitional Share',
+            description:
+              'Taxonomy-aligned and transitional proportion of CapEx substantially contributing to climate change mitigation',
             unit: '%',
             component: 'PercentageExtendedDataPointFormField',
             required: false,
@@ -358,9 +582,223 @@ export const eutaxonomyNonFinancialsDataModel = [
             validation: 'between:0,100',
           },
           {
-            name: 'substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent',
-            label: 'Substantial Contribution to Protection and Restoration of Biodiversity and Ecosystems',
-            description: 'Grade of the substantial contribution criterion fulfillment',
+            name: 'substantialContributionToClimateChangeAdaptationInPercentEligible',
+            label: 'Substantial Contribution to Climate Change Adaptation In Percent - Eligible',
+            description:
+              'Taxonomy-eligible proportion of CapEx substantially contributing to climate change adaptation',
+            unit: '%',
+            component: 'PercentageExtendedDataPointFormField',
+            required: false,
+            showIf: (): boolean => true,
+            validation: 'between:0,100',
+          },
+          {
+            name: 'substantialContributionToClimateChangeAdaptationInPercentAligned',
+            label: 'Substantial Contribution to Climate Change Adaptation In Percent - Aligned',
+            description: 'Taxonomy-aligned proportion of CapEx substantially contributing to climate change adaptation',
+            unit: '%',
+            component: 'PercentageExtendedDataPointFormField',
+            required: false,
+            showIf: (): boolean => true,
+            validation: 'between:0,100',
+          },
+          {
+            name: 'substantialContributionToClimateChangeAdaptationInPercentOfWhichUseOfProceeds',
+            label: 'Substantial Contribution to Climate Change Adaptation In Percent - Of Which Use Of Proceeds',
+            description:
+              'Taxonomy-aligned use of proceeds share substantially contributing to climate change adaptation',
+            unit: '%',
+            component: 'PercentageExtendedDataPointFormField',
+            required: false,
+            showIf: (): boolean => true,
+            validation: 'between:0,100',
+          },
+          {
+            name: 'substantialContributionToClimateChangeAdaptationInPercentEnablingShare',
+            label: 'Substantial Contribution to Climate Change Adaptation In Percent - Enabling Share',
+            description:
+              'Taxonomy-aligned and enabling proportion of CapEx substantially contributing to climate change adaptation',
+            unit: '%',
+            component: 'PercentageExtendedDataPointFormField',
+            required: false,
+            showIf: (): boolean => true,
+            validation: 'between:0,100',
+          },
+          {
+            name: 'substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentEligible',
+            label:
+              'Substantial Contribution to Sustainable Use and Protection of Water and Marine Resources In Percent - Eligible',
+            description:
+              'Taxonomy-eligible proportion of CapEx substantially contributing to sustainable use and protection of water and marine resources',
+            unit: '%',
+            component: 'PercentageExtendedDataPointFormField',
+            required: false,
+            showIf: (): boolean => true,
+            validation: 'between:0,100',
+          },
+          {
+            name: 'substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned',
+            label:
+              'Substantial Contribution to Sustainable Use and Protection of Water and Marine Resources In Percent - Aligned',
+            description:
+              'Taxonomy-aligned proportion of CapEx substantially contributing to sustainable use and protection of water and marine resources',
+            unit: '%',
+            component: 'PercentageExtendedDataPointFormField',
+            required: false,
+            showIf: (): boolean => true,
+            validation: 'between:0,100',
+          },
+          {
+            name: 'substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentOfWhichUseOfProceeds',
+            label:
+              'Substantial Contribution to Sustainable Use and Protection of Water and Marine Resources In Percent - Of Which Use Of Proceeds',
+            description:
+              'Taxonomy-aligned use of proceeds share substantially contributing to sustainable use and protection of water and marine resources',
+            unit: '%',
+            component: 'PercentageExtendedDataPointFormField',
+            required: false,
+            showIf: (): boolean => true,
+            validation: 'between:0,100',
+          },
+          {
+            name: 'substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentEnablingShare',
+            label:
+              'Substantial Contribution to Sustainable Use and Protection of Water and Marine Resources In Percent - Enabling Share',
+            description:
+              'Taxonomy-aligned and enabling proportion of CapEx substantially contributing to sustainable use and protection of water and marine resources',
+            unit: '%',
+            component: 'PercentageExtendedDataPointFormField',
+            required: false,
+            showIf: (): boolean => true,
+            validation: 'between:0,100',
+          },
+          {
+            name: 'substantialContributionToTransitionToACircularEconomyInPercentEligible',
+            label: 'Substantial Contribution to Transition to a Circular Economy In Percent - Eligible',
+            description: 'Taxonomy-eligible proportion of CapEx substantially contributing to circular economy',
+            unit: '%',
+            component: 'PercentageExtendedDataPointFormField',
+            required: false,
+            showIf: (): boolean => true,
+            validation: 'between:0,100',
+          },
+          {
+            name: 'substantialContributionToTransitionToACircularEconomyInPercentAligned',
+            label: 'Substantial Contribution to Transition to a Circular Economy In Percent - Aligned',
+            description: 'Taxonomy-aligned proportion of CapEx substantially contributing to circular economy',
+            unit: '%',
+            component: 'PercentageExtendedDataPointFormField',
+            required: false,
+            showIf: (): boolean => true,
+            validation: 'between:0,100',
+          },
+          {
+            name: 'substantialContributionToTransitionToACircularEconomyInPercentOfWhichUseOfProceeds',
+            label: 'Substantial Contribution to Transition to a Circular Economy In Percent - Of Which Use Of Proceeds',
+            description: 'Taxonomy-aligned use of proceeds share substantially contributing to circular economy',
+            unit: '%',
+            component: 'PercentageExtendedDataPointFormField',
+            required: false,
+            showIf: (): boolean => true,
+            validation: 'between:0,100',
+          },
+          {
+            name: 'substantialContributionToTransitionToACircularEconomyInPercentEnablingShare',
+            label: 'Substantial Contribution to Transition to a Circular Economy In Percent - Enabling Share',
+            description:
+              'Taxonomy-aligned and enabling proportion of CapEx substantially contributing to circular economy',
+            unit: '%',
+            component: 'PercentageExtendedDataPointFormField',
+            required: false,
+            showIf: (): boolean => true,
+            validation: 'between:0,100',
+          },
+          {
+            name: 'substantialContributionToPollutionPreventionAndControlInPercentEligible',
+            label: 'Substantial Contribution to Pollution Prevention and Control In Percent - Eligible',
+            description:
+              'Taxonomy-eligible proportion of CapEx substantially contributing to pollution prevention and control',
+            unit: '%',
+            component: 'PercentageExtendedDataPointFormField',
+            required: false,
+            showIf: (): boolean => true,
+            validation: 'between:0,100',
+          },
+          {
+            name: 'substantialContributionToPollutionPreventionAndControlInPercentAligned',
+            label: 'Substantial Contribution to Pollution Prevention and Control In Percent - Aligned',
+            description:
+              'Taxonomy-aligned proportion of CapEx substantially contributing to pollution prevention and control',
+            unit: '%',
+            component: 'PercentageExtendedDataPointFormField',
+            required: false,
+            showIf: (): boolean => true,
+            validation: 'between:0,100',
+          },
+          {
+            name: 'substantialContributionToPollutionPreventionAndControlInPercentOfWhichUseOfProceeds',
+            label: 'Substantial Contribution to Pollution Prevention and Control In Percent - Of Which Use Of Proceeds',
+            description:
+              'Taxonomy-aligned use of proceeds share substantially contributing to pollution prevention and control',
+            unit: '%',
+            component: 'PercentageExtendedDataPointFormField',
+            required: false,
+            showIf: (): boolean => true,
+            validation: 'between:0,100',
+          },
+          {
+            name: 'substantialContributionToPollutionPreventionAndControlInPercentEnablingShare',
+            label: 'Substantial Contribution to Pollution Prevention and Control In Percent - Enabling Share',
+            description:
+              'Taxonomy-aligned and enabling proportion of CapEx substantially contributing to pollution prevention and control',
+            unit: '%',
+            component: 'PercentageExtendedDataPointFormField',
+            required: false,
+            showIf: (): boolean => true,
+            validation: 'between:0,100',
+          },
+          {
+            name: 'substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentEligible',
+            label:
+              'Substantial Contribution to Protection and Restoration of Biodiversity and Ecosystems In Percent - Eligible',
+            description:
+              'Taxonomy-eligible proportion of CapEx substantially contributing to protection and restoration of biodiversity and ecosystems',
+            unit: '%',
+            component: 'PercentageExtendedDataPointFormField',
+            required: false,
+            showIf: (): boolean => true,
+            validation: 'between:0,100',
+          },
+          {
+            name: 'substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned',
+            label:
+              'Substantial Contribution to Protection and Restoration of Biodiversity and Ecosystems In Percent - Aligned',
+            description:
+              'Taxonomy-aligned proportion of CapEx substantially contributing to protection and restoration of biodiversity and ecosystems',
+            unit: '%',
+            component: 'PercentageExtendedDataPointFormField',
+            required: false,
+            showIf: (): boolean => true,
+            validation: 'between:0,100',
+          },
+          {
+            name: 'substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentOfWhichUseOfProceeds',
+            label:
+              'Substantial Contribution to Protection and Restoration of Biodiversity and Ecosystems In Percent - Of Which Use Of Proceeds',
+            description:
+              'Taxonomy-aligned use of proceeds share substantially contributing to protection and restoration of biodiversity and ecosystems',
+            unit: '%',
+            component: 'PercentageExtendedDataPointFormField',
+            required: false,
+            showIf: (): boolean => true,
+            validation: 'between:0,100',
+          },
+          {
+            name: 'substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentEnablingShare',
+            label:
+              'Substantial Contribution to Protection and Restoration of Biodiversity and Ecosystems In Percent - Enabling Share',
+            description:
+              'Taxonomy-aligned and enabling proportion of CapEx substantially contributing to protection and restoration of biodiversity and ecosystems',
             unit: '%',
             component: 'PercentageExtendedDataPointFormField',
             required: false,
@@ -473,8 +911,8 @@ export const eutaxonomyNonFinancialsDataModel = [
             showIf: (): boolean => true,
           },
           {
-            name: 'substantialContributionToClimateChangeMitigationInPercent',
-            label: 'Substantial Contribution to Climate Change Mitigation',
+            name: 'substantialContributionToClimateChangeMitigationInPercentAligned',
+            label: 'Substantial Contribution to Climate Change Mitigation - Aligned',
             description: 'Grade of the substantial contribution criterion fulfillment',
             unit: '%',
             component: 'PercentageExtendedDataPointFormField',
@@ -483,8 +921,8 @@ export const eutaxonomyNonFinancialsDataModel = [
             validation: 'between:0,100',
           },
           {
-            name: 'substantialContributionToClimateChangeAdaptationInPercent',
-            label: 'Substantial Contribution to Climate Change Adaptation',
+            name: 'substantialContributionToClimateChangeAdaptationInPercentAligned',
+            label: 'Substantial Contribution to Climate Change Adaptation - Aligned',
             description: 'Grade of the substantial contribution criterion fulfillment',
             unit: '%',
             component: 'PercentageExtendedDataPointFormField',
@@ -493,8 +931,8 @@ export const eutaxonomyNonFinancialsDataModel = [
             validation: 'between:0,100',
           },
           {
-            name: 'substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent',
-            label: 'Substantial Contribution to Sustainable Use and Protection of Water and Marine Resources',
+            name: 'substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned',
+            label: 'Substantial Contribution to Sustainable Use and Protection of Water and Marine Resources - Aligned',
             description: 'Grade of the substantial contribution criterion fulfillment',
             unit: '%',
             component: 'PercentageExtendedDataPointFormField',
@@ -503,8 +941,8 @@ export const eutaxonomyNonFinancialsDataModel = [
             validation: 'between:0,100',
           },
           {
-            name: 'substantialContributionToTransitionToACircularEconomyInPercent',
-            label: 'Substantial Contribution to Transition to a Circular Economy',
+            name: 'substantialContributionToTransitionToACircularEconomyInPercentAligned',
+            label: 'Substantial Contribution to Transition to a Circular Economy - Aligned',
             description: 'Grade of the substantial contribution criterion fulfillment',
             unit: '%',
             component: 'PercentageExtendedDataPointFormField',
@@ -513,8 +951,8 @@ export const eutaxonomyNonFinancialsDataModel = [
             validation: 'between:0,100',
           },
           {
-            name: 'substantialContributionToPollutionPreventionAndControlInPercent',
-            label: 'Substantial Contribution to Pollution Prevention and Control',
+            name: 'substantialContributionToPollutionPreventionAndControlInPercentAligned',
+            label: 'Substantial Contribution to Pollution Prevention and Control - Aligned',
             description: 'Grade of the substantial contribution criterion fulfillment',
             unit: '%',
             component: 'PercentageExtendedDataPointFormField',
@@ -523,8 +961,8 @@ export const eutaxonomyNonFinancialsDataModel = [
             validation: 'between:0,100',
           },
           {
-            name: 'substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent',
-            label: 'Substantial Contribution to Protection and Restoration of Biodiversity and Ecosystems',
+            name: 'substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned',
+            label: 'Substantial Contribution to Protection and Restoration of Biodiversity and Ecosystems - Aligned',
             description: 'Grade of the substantial contribution criterion fulfillment',
             unit: '%',
             component: 'PercentageExtendedDataPointFormField',

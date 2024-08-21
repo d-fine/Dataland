@@ -165,6 +165,18 @@ export default defineComponent({
         group: '_minimumSafeguards',
         groupIndex: 0,
       },
+      {
+        field: 'enablingActivity',
+        header: this.humanizeHeaderName('enablingActivity'),
+        group: '_enablingActivity',
+        groupIndex: 0,
+      },
+      {
+        field: 'transitionalActivity',
+        header: this.humanizeHeaderName('transitionalActivity'),
+        group: '_transitionalActivity',
+        groupIndex: 0,
+      },
     ];
 
     this.frozenColumnData = this.listOfRowContents.map((activity) => ({
@@ -210,6 +222,8 @@ export default defineComponent({
           (value: YesNo) => (value ? `${value}` : '')
         ),
         ...createMinimumSafeguardsGroupData(col),
+        ...createEnablingActivityGroupData(col),
+        ...createTransitionalActivityGroupData(col),
       ])
       .flat();
 
@@ -226,6 +240,8 @@ export default defineComponent({
         colspan: this.findMaxColspanForGroup('dnshCriteria'),
       },
       { key: '_minimumSafeguards', label: '', colspan: this.findMaxColspanForGroup('_minimumSafeguards') },
+      { key: '_enablingActivity', label: '', colspan: this.findMaxColspanForGroup('_enablingActivity') },
+      { key: '_transitionalActivity', label: '', colspan: this.findMaxColspanForGroup('_transitionalActivity') },
     ];
   },
   methods: {
@@ -241,6 +257,8 @@ export default defineComponent({
         substantialContributionCriteria: environmentalObjectivesLength,
         dnshCriteria: environmentalObjectivesLength,
         _minimumSafeguards: 1,
+        _enablingActivity: 1,
+        _transitionalActivity: 1,
       };
       return colspans[groupName];
     },
@@ -371,6 +389,36 @@ function createMinimumSafeguardsGroupData(activity: EuTaxonomyAlignedActivity): 
       group: '_minimumSafeguards',
       field: 'minimumSafeguards',
       content: activity.minimumSafeguards ?? '',
+    },
+  ];
+}
+
+/**
+ * @param activity targeted activity object
+ * @returns list of minimum Enabling Activity data items
+ */
+function createEnablingActivityGroupData(activity: EuTaxonomyAlignedActivity): ActivityFieldValueObject[] {
+  return [
+    {
+      activity: activity.activityName as string,
+      group: '_enablingActivity',
+      field: 'enablingActivity',
+      content: activity.enablingActivity ?? '',
+    },
+  ];
+}
+
+/**
+ * @param activity targeted activity object
+ * @returns list of minimum Transitional Activity data items
+ */
+function createTransitionalActivityGroupData(activity: EuTaxonomyAlignedActivity): ActivityFieldValueObject[] {
+  return [
+    {
+      activity: activity.activityName as string,
+      group: '_transitionalActivity',
+      field: 'transitionalActivity',
+      content: activity.transitionalActivity ?? '',
     },
   ];
 }

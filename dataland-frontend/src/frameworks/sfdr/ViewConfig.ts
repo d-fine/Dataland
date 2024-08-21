@@ -200,6 +200,38 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
           },
           {
             type: 'cell',
+            label: 'Scope 3 upstream GHG emissions',
+            explanation:
+              'Indirect (gross) carbon emissions from activities related to the production and distribution of goods and services purchased by the reporting company.',
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatNumberForDatatable(
+                  dataset.environmental?.greenhouseGasEmissions?.scope3UpstreamGhgEmissionsInTonnes?.value,
+                  'Tonnes'
+                ),
+                'Scope 3 upstream GHG emissions',
+                dataset.environmental?.greenhouseGasEmissions?.scope3UpstreamGhgEmissionsInTonnes
+              ),
+          },
+          {
+            type: 'cell',
+            label: 'Scope 3 downstream GHG emissions ',
+            explanation:
+              'Indirect (gross) carbon emissions that occur as a result of the use or disposal of the reporting company’s sold products and services.',
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatNumberForDatatable(
+                  dataset.environmental?.greenhouseGasEmissions?.scope3DownstreamGhgEmissionsInTonnes?.value,
+                  'Tonnes'
+                ),
+                'Scope 3 downstream GHG emissions ',
+                dataset.environmental?.greenhouseGasEmissions?.scope3DownstreamGhgEmissionsInTonnes
+              ),
+          },
+          {
+            type: 'cell',
             label: 'Scope 1 and 2 and 3 GHG emissions',
             explanation: 'Sum of scope 1, 2 and 3 carbon emissions',
             shouldDisplay: (): boolean => true,
@@ -295,6 +327,70 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                 ),
                 'GHG intensity',
                 dataset.environmental?.greenhouseGasEmissions?.ghgIntensityInTonnesPerMillionEURRevenue
+              ),
+          },
+          {
+            type: 'cell',
+            label: 'GHG intensity - scope 1',
+            explanation:
+              'Tonnes of Scope 1 GHG emissions / million of the revenue (in the same currency as the total revenue)',
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatNumberForDatatable(
+                  dataset.environmental?.greenhouseGasEmissions?.ghgIntensityScope1InTonnesPerMillionEURRevenue?.value,
+                  'Tonnes / \u20ACM Revenue'
+                ),
+                'GHG intensity - scope 1',
+                dataset.environmental?.greenhouseGasEmissions?.ghgIntensityScope1InTonnesPerMillionEURRevenue
+              ),
+          },
+          {
+            type: 'cell',
+            label: 'GHG intensity - scope 2',
+            explanation:
+              'Tonnes of Scope 2 GHG emissions / million of the revenue (in the same currency as the total revenue)',
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatNumberForDatatable(
+                  dataset.environmental?.greenhouseGasEmissions?.ghgIntensityScope2InTonnesPerMillionEURRevenue?.value,
+                  'Tonnes / \u20ACM Revenue'
+                ),
+                'GHG intensity - scope 2',
+                dataset.environmental?.greenhouseGasEmissions?.ghgIntensityScope2InTonnesPerMillionEURRevenue
+              ),
+          },
+          {
+            type: 'cell',
+            label: 'GHG intensity - scope 3',
+            explanation:
+              'Tonnes of Scope 3 GHG emissions / million of the revenue (in the same currency as the total revenue)',
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatNumberForDatatable(
+                  dataset.environmental?.greenhouseGasEmissions?.ghgIntensityScope3InTonnesPerMillionEURRevenue?.value,
+                  'Tonnes / \u20ACM Revenue'
+                ),
+                'GHG intensity - scope 3',
+                dataset.environmental?.greenhouseGasEmissions?.ghgIntensityScope3InTonnesPerMillionEURRevenue
+              ),
+          },
+          {
+            type: 'cell',
+            label: 'GHG intensity - scope 4',
+            explanation:
+              'Tonnes of Scope 4 GHG emissions / million of the revenue (in the same currency as the total revenue)',
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatNumberForDatatable(
+                  dataset.environmental?.greenhouseGasEmissions?.ghgIntensityScope4InTonnesPerMillionEURRevenue?.value,
+                  'Tonnes / \u20ACM Revenue'
+                ),
+                'GHG intensity - scope 4',
+                dataset.environmental?.greenhouseGasEmissions?.ghgIntensityScope4InTonnesPerMillionEURRevenue
               ),
           },
           {
@@ -1194,43 +1290,94 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
           },
           {
             type: 'cell',
-            label: 'Female Board Members',
+            label: 'Female Board Members - Supervisory Board',
             explanation:
-              'Number of females on the board, i.e. means the administrative, management or supervisory body of a company',
-            shouldDisplay: (): boolean => true,
-            valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
-              wrapDisplayValueWithDatapointInformation(
-                formatNumberForDatatable(dataset.social?.socialAndEmployeeMatters?.femaleBoardMembers?.value, ''),
-                'Female Board Members',
-                dataset.social?.socialAndEmployeeMatters?.femaleBoardMembers
-              ),
-          },
-          {
-            type: 'cell',
-            label: 'Male Board Members',
-            explanation:
-              'Number of males on the board, i.e. means the administrative, management or supervisory body of a company.',
-            shouldDisplay: (): boolean => true,
-            valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
-              wrapDisplayValueWithDatapointInformation(
-                formatNumberForDatatable(dataset.social?.socialAndEmployeeMatters?.maleBoardMembers?.value, ''),
-                'Male Board Members',
-                dataset.social?.socialAndEmployeeMatters?.maleBoardMembers
-              ),
-          },
-          {
-            type: 'cell',
-            label: 'Board gender diversity',
-            explanation: 'Percentage of female board members among all board members',
+              'Number of females on the supervisory board, i.e. means the administrative, management or supervisory body of a company',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
                 formatNumberForDatatable(
-                  dataset.social?.socialAndEmployeeMatters?.boardGenderDiversityInPercent?.value,
+                  dataset.social?.socialAndEmployeeMatters?.femaleBoardMembersSupervisoryBoard?.value,
+                  ''
+                ),
+                'Female Board Members - Supervisory Board',
+                dataset.social?.socialAndEmployeeMatters?.femaleBoardMembersSupervisoryBoard
+              ),
+          },
+          {
+            type: 'cell',
+            label: 'Female Board Members - Board of Directors',
+            explanation: 'Number of females on the board of directors of the company',
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatNumberForDatatable(
+                  dataset.social?.socialAndEmployeeMatters?.femaleBoardMembersBoardOfDirectors?.value,
+                  ''
+                ),
+                'Female Board Members - Board of Directors',
+                dataset.social?.socialAndEmployeeMatters?.femaleBoardMembersBoardOfDirectors
+              ),
+          },
+          {
+            type: 'cell',
+            label: 'Male Board Members - Supervisory Board',
+            explanation:
+              'Number of males on the supervisory board, i.e. means the administrative, management or supervisory body of a company',
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatNumberForDatatable(
+                  dataset.social?.socialAndEmployeeMatters?.maleBoardMembersSupervisoryBoard?.value,
+                  ''
+                ),
+                'Male Board Members - Supervisory Board',
+                dataset.social?.socialAndEmployeeMatters?.maleBoardMembersSupervisoryBoard
+              ),
+          },
+          {
+            type: 'cell',
+            label: 'Male Board Members - Board of Directors',
+            explanation: 'Number of males on the board of directors of the company',
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatNumberForDatatable(
+                  dataset.social?.socialAndEmployeeMatters?.maleBoardMembersBoardOfDirectors?.value,
+                  ''
+                ),
+                'Male Board Members - Board of Directors',
+                dataset.social?.socialAndEmployeeMatters?.maleBoardMembersBoardOfDirectors
+              ),
+          },
+          {
+            type: 'cell',
+            label: 'Board gender diversity - Supervisory Board',
+            explanation: 'Percentage of female board members among all supervisory board members',
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatNumberForDatatable(
+                  dataset.social?.socialAndEmployeeMatters?.boardGenderDiversitySupervisoryBoardInPercent?.value,
                   'Percent'
                 ),
-                'Board gender diversity',
-                dataset.social?.socialAndEmployeeMatters?.boardGenderDiversityInPercent
+                'Board gender diversity - Supervisory Board',
+                dataset.social?.socialAndEmployeeMatters?.boardGenderDiversitySupervisoryBoardInPercent
+              ),
+          },
+          {
+            type: 'cell',
+            label: 'Board gender diversity - Board of Directors',
+            explanation: 'Percentage of female board members among all board of directors members',
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatNumberForDatatable(
+                  dataset.social?.socialAndEmployeeMatters?.boardGenderDiversityBoardOfDirectorsInPercent?.value,
+                  'Percent'
+                ),
+                'Board gender diversity - Board of Directors',
+                dataset.social?.socialAndEmployeeMatters?.boardGenderDiversityBoardOfDirectorsInPercent
               ),
           },
           {

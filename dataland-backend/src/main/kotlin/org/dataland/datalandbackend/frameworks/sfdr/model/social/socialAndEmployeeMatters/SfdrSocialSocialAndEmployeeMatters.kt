@@ -78,16 +78,29 @@ data class SfdrSocialSocialAndEmployeeMatters(
 
     @field:MinimumValue(minimumValue = 0)
     @field:Valid()
-    val femaleBoardMembers: ExtendedDataPoint<BigInteger?>? = null,
+    val femaleBoardMembersSupervisoryBoard: ExtendedDataPoint<BigInteger?>? = null,
 
     @field:MinimumValue(minimumValue = 0)
     @field:Valid()
-    val maleBoardMembers: ExtendedDataPoint<BigInteger?>? = null,
+    val femaleBoardMembersBoardOfDirectors: ExtendedDataPoint<BigInteger?>? = null,
+
+    @field:MinimumValue(minimumValue = 0)
+    @field:Valid()
+    val maleBoardMembersSupervisoryBoard: ExtendedDataPoint<BigInteger?>? = null,
+
+    @field:MinimumValue(minimumValue = 0)
+    @field:Valid()
+    val maleBoardMembersBoardOfDirectors: ExtendedDataPoint<BigInteger?>? = null,
 
     @field:MinimumValue(minimumValue = 0)
     @field:MaximumValue(maximumValue = 100)
     @field:Valid()
-    val boardGenderDiversityInPercent: ExtendedDataPoint<BigDecimal?>? = null,
+    val boardGenderDiversitySupervisoryBoardInPercent: ExtendedDataPoint<BigDecimal?>? = null,
+
+    @field:MinimumValue(minimumValue = 0)
+    @field:MaximumValue(maximumValue = 100)
+    @field:Valid()
+    val boardGenderDiversityBoardOfDirectorsInPercent: ExtendedDataPoint<BigDecimal?>? = null,
 
     @field:Valid()
     val controversialWeaponsExposure: ExtendedDataPoint<YesNo?>? = null,

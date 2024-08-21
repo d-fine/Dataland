@@ -206,31 +206,31 @@ describe('Component tests for the Eu Taxonomy for non financials that test depen
     toggleDataPointInSubSegmentOfRevenue('alignedShare', 'absoluteShare');
     cy.get('div[label="Revenue"] div[data-test="absoluteShare"] input[name="value"]').eq(1).clear().type('4000');
     selectItemFromDropdownByIndex(cy.get('div[label="Revenue"] div[name="currency"]').eq(1), 51);
-    toggleDataPoint('substantialContributionToClimateChangeMitigationInPercent');
-    insertValueIntoRevenueDataPoint('a', 'substantialContributionToClimateChangeMitigationInPercent');
+    toggleDataPoint('substantialContributionToClimateChangeMitigationInPercentEligible');
+    insertValueIntoRevenueDataPoint('a', 'substantialContributionToClimateChangeMitigationInPercentEligible');
     cy.get('div[label="Revenue"] em[title="Eligible Revenue"]').click();
     cy.get(`div[label="Revenue"] [data-message-type="validation"]`)
       .should('contain', 'must be a number')
       .should('exist');
-    insertValueIntoRevenueDataPoint('-12', 'substantialContributionToClimateChangeMitigationInPercent');
+    insertValueIntoRevenueDataPoint('-12', 'substantialContributionToClimateChangeMitigationInPercentEligible');
     cy.get('div[label="Revenue"] em[title="Eligible Revenue"]').click();
     cy.get(`div[label="Revenue"] [data-message-type="validation"]`)
       .should('contain', 'must be between 0 and 100')
       .should('exist');
-    insertValueIntoRevenueDataPoint('15', 'substantialContributionToClimateChangeMitigationInPercent');
-    toggleDataPoint('substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent');
+    insertValueIntoRevenueDataPoint('15', 'substantialContributionToClimateChangeMitigationInPercentEligible');
+    toggleDataPoint('substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentEligible');
     insertValueIntoRevenueDataPoint(
       '15',
-      'substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent'
+      'substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentEligible'
     );
-    toggleDataPoint('substantialContributionToTransitionToACircularEconomyInPercent');
-    insertValueIntoRevenueDataPoint('15', 'substantialContributionToTransitionToACircularEconomyInPercent');
-    toggleDataPoint('substantialContributionToPollutionPreventionAndControlInPercent');
-    insertValueIntoRevenueDataPoint('15', 'substantialContributionToPollutionPreventionAndControlInPercent');
-    toggleDataPoint('substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent');
+    toggleDataPoint('substantialContributionToTransitionToACircularEconomyInPercentEligible');
+    insertValueIntoRevenueDataPoint('15', 'substantialContributionToTransitionToACircularEconomyInPercentEligible');
+    toggleDataPoint('substantialContributionToPollutionPreventionAndControlInPercentEligible');
+    insertValueIntoRevenueDataPoint('15', 'substantialContributionToPollutionPreventionAndControlInPercentEligible');
+    toggleDataPoint('substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentEligible');
     insertValueIntoRevenueDataPoint(
       '15',
-      'substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent'
+      'substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentEligible'
     );
     toggleDataPointInSubSegmentOfRevenue('nonAlignedShare', 'relativeShareInPercent');
     cy.get('div[label="Revenue"] div[data-test="relativeShareInPercent"] input[name="value"]').eq(2).clear().type('11');
