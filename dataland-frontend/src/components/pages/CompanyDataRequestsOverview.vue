@@ -307,7 +307,7 @@ export default defineComponent({
     },
     /**
      * Gets list with all available access status
-     * @returns array of frameworkSelectableItem
+     * @returns array of SelectableItem
      */
     retrieveAvailableAccessStatus(): Array<SelectableItem> {
       return Object.values(this.AccessStatus).map((status) => {
