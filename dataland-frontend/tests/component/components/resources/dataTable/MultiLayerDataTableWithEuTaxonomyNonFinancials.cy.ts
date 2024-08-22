@@ -95,10 +95,9 @@ describe('Component test for the Eu-Taxonomy-Non-Financials view page', () => {
         currency: assertDefined(gammaCapex.alignedShare?.absoluteShare?.currency),
       });
       const gammaContributionToClimateChangeMitigation = roundNumber(
-        assertDefined(gammaCapex.substantialContributionToClimateChangeMitigationInPercent?.value),
+        assertDefined(gammaCapex.substantialContributionToClimateChangeMitigationInPercentEligible?.value),
         2
       );
-
       getSectionHead('Revenue').should('exist');
       getCellValueContainer('Total Amount', 0)
         .invoke('text')
@@ -112,7 +111,7 @@ describe('Component test for the Eu-Taxonomy-Non-Financials view page', () => {
       getCellValueContainer('Absolute Share', 2)
         .invoke('text')
         .should('contains', `${gammaTotalAlignedCapexAbsoluteShareString}`);
-      getCellValueContainer('Substantial Contribution to Climate Change Mitigation In Percent', 2)
+      getCellValueContainer('Substantial Contribution to Climate Change Mitigation In Percent - Eligible', 2)
         .invoke('text')
         .should('contains', `${gammaContributionToClimateChangeMitigation} %`);
       getCellValueContainer('Total Amount', 2)

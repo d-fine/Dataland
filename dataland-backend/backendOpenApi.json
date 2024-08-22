@@ -772,75 +772,6 @@
         ]
       }
     },
-    "/data/additional-company-information": {
-      "post": {
-        "tags": [
-          "additional-company-information-data-controller"
-        ],
-        "operationId": "postCompanyAssociatedAdditionalCompanyInformationData",
-        "parameters": [
-          {
-            "name": "bypassQa",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "boolean",
-              "default": false
-            }
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CompanyAssociatedDataAdditionalCompanyInformationData"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "Successfully added data to the data store.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/DataMetaInformation"
-                }
-              }
-            }
-          },
-          "default": {
-            "description": "An error occurred",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "headers": {
-              "WWW-Authenticate": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "default-oauth": []
-          },
-          {
-            "default-bearer-auth": []
-          }
-        ]
-      }
-    },
     "/companies": {
       "get": {
         "tags": [
@@ -2736,142 +2667,6 @@
         ]
       }
     },
-    "/data/additional-company-information/{dataId}": {
-      "get": {
-        "tags": [
-          "additional-company-information-data-controller"
-        ],
-        "operationId": "getCompanyAssociatedAdditionalCompanyInformationData",
-        "parameters": [
-          {
-            "name": "dataId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successfully retrieved data set.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/CompanyAssociatedDataAdditionalCompanyInformationData"
-                }
-              }
-            }
-          },
-          "default": {
-            "description": "An error occurred",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "headers": {
-              "WWW-Authenticate": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "default-oauth": []
-          },
-          {
-            "default-bearer-auth": []
-          }
-        ]
-      }
-    },
-    "/data/additional-company-information/companies/{companyId}": {
-      "get": {
-        "tags": [
-          "additional-company-information-data-controller"
-        ],
-        "operationId": "getAllCompanyAdditionalCompanyInformationData",
-        "parameters": [
-          {
-            "name": "companyId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "showOnlyActive",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "boolean",
-              "default": true
-            }
-          },
-          {
-            "name": "reportingPeriod",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successfully retrieved framework datasets with meta info.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/DataAndMetaInformationAdditionalCompanyInformationData"
-                  }
-                }
-              }
-            }
-          },
-          "default": {
-            "description": "An error occurred",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "headers": {
-              "WWW-Authenticate": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "default-oauth": []
-          },
-          {
-            "default-bearer-auth": []
-          }
-        ]
-      }
-    },
     "/companies/{companyId}/info": {
       "get": {
         "tags": [
@@ -3290,7 +3085,7 @@
                   }
                 }
               },
-              "application/json": {
+              "application/vnd.spring-boot.actuator.v2+json": {
                 "schema": {
                   "type": "object",
                   "additionalProperties": {
@@ -3301,7 +3096,7 @@
                   }
                 }
               },
-              "application/vnd.spring-boot.actuator.v2+json": {
+              "application/json": {
                 "schema": {
                   "type": "object",
                   "additionalProperties": {
@@ -3353,12 +3148,12 @@
                   "type": "object"
                 }
               },
-              "application/json": {
+              "application/vnd.spring-boot.actuator.v2+json": {
                 "schema": {
                   "type": "object"
                 }
               },
-              "application/vnd.spring-boot.actuator.v2+json": {
+              "application/json": {
                 "schema": {
                   "type": "object"
                 }
@@ -3404,12 +3199,12 @@
                   "type": "object"
                 }
               },
-              "application/json": {
+              "application/vnd.spring-boot.actuator.v2+json": {
                 "schema": {
                   "type": "object"
                 }
               },
-              "application/vnd.spring-boot.actuator.v2+json": {
+              "application/json": {
                 "schema": {
                   "type": "object"
                 }
@@ -3455,12 +3250,12 @@
                   "type": "object"
                 }
               },
-              "application/json": {
+              "application/vnd.spring-boot.actuator.v2+json": {
                 "schema": {
                   "type": "object"
                 }
               },
-              "application/vnd.spring-boot.actuator.v2+json": {
+              "application/json": {
                 "schema": {
                   "type": "object"
                 }
@@ -5410,6 +5205,22 @@
               }
             ]
           },
+          "scope3UpstreamGhgEmissionsInTonnes": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          },
+          "scope3DownstreamGhgEmissionsInTonnes": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          },
           "scope1And2And3GhgEmissionsInTonnes": {
             "nullable": true,
             "allOf": [
@@ -5459,6 +5270,38 @@
             ]
           },
           "ghgIntensityInTonnesPerMillionEURRevenue": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          },
+          "ghgIntensityScope1InTonnesPerMillionEURRevenue": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          },
+          "ghgIntensityScope2InTonnesPerMillionEURRevenue": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          },
+          "ghgIntensityScope3InTonnesPerMillionEURRevenue": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          },
+          "ghgIntensityScope4InTonnesPerMillionEURRevenue": {
             "nullable": true,
             "allOf": [
               {
@@ -6131,7 +5974,7 @@
               }
             ]
           },
-          "femaleBoardMembers": {
+          "femaleBoardMembersSupervisoryBoard": {
             "nullable": true,
             "allOf": [
               {
@@ -6139,7 +5982,7 @@
               }
             ]
           },
-          "maleBoardMembers": {
+          "femaleBoardMembersBoardOfDirectors": {
             "nullable": true,
             "allOf": [
               {
@@ -6147,7 +5990,31 @@
               }
             ]
           },
-          "boardGenderDiversityInPercent": {
+          "maleBoardMembersSupervisoryBoard": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigInteger"
+              }
+            ]
+          },
+          "maleBoardMembersBoardOfDirectors": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigInteger"
+              }
+            ]
+          },
+          "boardGenderDiversitySupervisoryBoardInPercent": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          },
+          "boardGenderDiversityBoardOfDirectorsInPercent": {
             "nullable": true,
             "allOf": [
               {
@@ -11822,6 +11689,22 @@
                 "$ref": "#/components/schemas/YesNo"
               }
             ]
+          },
+          "enablingActivity": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
+          },
+          "transitionalActivity": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
           }
         }
       },
@@ -11876,7 +11759,7 @@
               }
             ]
           },
-          "substantialContributionToClimateChangeMitigationInPercent": {
+          "substantialContributionToClimateChangeMitigationInPercentEligible": {
             "nullable": true,
             "allOf": [
               {
@@ -11884,7 +11767,7 @@
               }
             ]
           },
-          "substantialContributionToClimateChangeAdaptationInPercent": {
+          "substantialContributionToClimateChangeMitigationInPercentAligned": {
             "nullable": true,
             "allOf": [
               {
@@ -11892,7 +11775,7 @@
               }
             ]
           },
-          "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent": {
+          "substantialContributionToClimateChangeMitigationInPercentOfWhichUseOfProceeds": {
             "nullable": true,
             "allOf": [
               {
@@ -11900,7 +11783,7 @@
               }
             ]
           },
-          "substantialContributionToTransitionToACircularEconomyInPercent": {
+          "substantialContributionToClimateChangeMitigationInPercentEnablingShare": {
             "nullable": true,
             "allOf": [
               {
@@ -11908,7 +11791,7 @@
               }
             ]
           },
-          "substantialContributionToPollutionPreventionAndControlInPercent": {
+          "substantialContributionToClimateChangeMitigationInPercentTransitionalShare": {
             "nullable": true,
             "allOf": [
               {
@@ -11916,7 +11799,159 @@
               }
             ]
           },
-          "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent": {
+          "substantialContributionToClimateChangeAdaptationInPercentEligible": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          },
+          "substantialContributionToClimateChangeAdaptationInPercentAligned": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          },
+          "substantialContributionToClimateChangeAdaptationInPercentOfWhichUseOfProceeds": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          },
+          "substantialContributionToClimateChangeAdaptationInPercentEnablingShare": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          },
+          "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentEligible": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          },
+          "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          },
+          "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentOfWhichUseOfProceeds": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          },
+          "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentEnablingShare": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          },
+          "substantialContributionToTransitionToACircularEconomyInPercentEligible": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          },
+          "substantialContributionToTransitionToACircularEconomyInPercentAligned": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          },
+          "substantialContributionToTransitionToACircularEconomyInPercentOfWhichUseOfProceeds": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          },
+          "substantialContributionToTransitionToACircularEconomyInPercentEnablingShare": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          },
+          "substantialContributionToPollutionPreventionAndControlInPercentEligible": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          },
+          "substantialContributionToPollutionPreventionAndControlInPercentAligned": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          },
+          "substantialContributionToPollutionPreventionAndControlInPercentOfWhichUseOfProceeds": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          },
+          "substantialContributionToPollutionPreventionAndControlInPercentEnablingShare": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          },
+          "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentEligible": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          },
+          "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          },
+          "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentOfWhichUseOfProceeds": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          },
+          "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentEnablingShare": {
             "nullable": true,
             "allOf": [
               {
@@ -12198,7 +12233,7 @@
               }
             ]
           },
-          "substantialContributionToClimateChangeMitigationInPercent": {
+          "substantialContributionToClimateChangeMitigationInPercentAligned": {
             "nullable": true,
             "allOf": [
               {
@@ -12206,7 +12241,7 @@
               }
             ]
           },
-          "substantialContributionToClimateChangeAdaptationInPercent": {
+          "substantialContributionToClimateChangeAdaptationInPercentAligned": {
             "nullable": true,
             "allOf": [
               {
@@ -12214,7 +12249,7 @@
               }
             ]
           },
-          "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent": {
+          "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned": {
             "nullable": true,
             "allOf": [
               {
@@ -12222,7 +12257,7 @@
               }
             ]
           },
-          "substantialContributionToTransitionToACircularEconomyInPercent": {
+          "substantialContributionToTransitionToACircularEconomyInPercentAligned": {
             "nullable": true,
             "allOf": [
               {
@@ -12230,7 +12265,7 @@
               }
             ]
           },
-          "substantialContributionToPollutionPreventionAndControlInPercent": {
+          "substantialContributionToPollutionPreventionAndControlInPercentAligned": {
             "nullable": true,
             "allOf": [
               {
@@ -12238,7 +12273,7 @@
               }
             ]
           },
-          "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent": {
+          "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned": {
             "nullable": true,
             "allOf": [
               {
@@ -12407,7 +12442,7 @@
               }
             ]
           },
-          "substantialContributionToClimateChangeMitigationInPercent": {
+          "substantialContributionToClimateChangeMitigationInPercentEligible": {
             "nullable": true,
             "allOf": [
               {
@@ -12415,7 +12450,7 @@
               }
             ]
           },
-          "substantialContributionToClimateChangeAdaptationInPercent": {
+          "substantialContributionToClimateChangeMitigationInPercentAligned": {
             "nullable": true,
             "allOf": [
               {
@@ -12423,7 +12458,7 @@
               }
             ]
           },
-          "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent": {
+          "substantialContributionToClimateChangeMitigationInPercentOfWhichUseOfProceeds": {
             "nullable": true,
             "allOf": [
               {
@@ -12431,7 +12466,7 @@
               }
             ]
           },
-          "substantialContributionToTransitionToACircularEconomyInPercent": {
+          "substantialContributionToClimateChangeMitigationInPercentEnablingShare": {
             "nullable": true,
             "allOf": [
               {
@@ -12439,7 +12474,7 @@
               }
             ]
           },
-          "substantialContributionToPollutionPreventionAndControlInPercent": {
+          "substantialContributionToClimateChangeMitigationInPercentTransitionalShare": {
             "nullable": true,
             "allOf": [
               {
@@ -12447,7 +12482,159 @@
               }
             ]
           },
-          "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent": {
+          "substantialContributionToClimateChangeAdaptationInPercentEligible": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          },
+          "substantialContributionToClimateChangeAdaptationInPercentAligned": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          },
+          "substantialContributionToClimateChangeAdaptationInPercentOfWhichUseOfProceeds": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          },
+          "substantialContributionToClimateChangeAdaptationInPercentEnablingShare": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          },
+          "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentEligible": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          },
+          "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          },
+          "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentOfWhichUseOfProceeds": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          },
+          "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentEnablingShare": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          },
+          "substantialContributionToTransitionToACircularEconomyInPercentEligible": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          },
+          "substantialContributionToTransitionToACircularEconomyInPercentAligned": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          },
+          "substantialContributionToTransitionToACircularEconomyInPercentOfWhichUseOfProceeds": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          },
+          "substantialContributionToTransitionToACircularEconomyInPercentEnablingShare": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          },
+          "substantialContributionToPollutionPreventionAndControlInPercentEligible": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          },
+          "substantialContributionToPollutionPreventionAndControlInPercentAligned": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          },
+          "substantialContributionToPollutionPreventionAndControlInPercentOfWhichUseOfProceeds": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          },
+          "substantialContributionToPollutionPreventionAndControlInPercentEnablingShare": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          },
+          "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentEligible": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          },
+          "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          },
+          "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentOfWhichUseOfProceeds": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          },
+          "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentEnablingShare": {
             "nullable": true,
             "allOf": [
               {
@@ -14826,165 +15013,6 @@
           }
         }
       },
-      "AdditionalCompanyInformationData": {
-        "type": "object",
-        "properties": {
-          "general": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/AdditionalCompanyInformationGeneral"
-              }
-            ]
-          }
-        }
-      },
-      "AdditionalCompanyInformationGeneral": {
-        "type": "object",
-        "properties": {
-          "general": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/AdditionalCompanyInformationGeneralGeneral"
-              }
-            ]
-          },
-          "financialInformation": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/AdditionalCompanyInformationGeneralFinancialInformation"
-              }
-            ]
-          }
-        }
-      },
-      "AdditionalCompanyInformationGeneralFinancialInformation": {
-        "type": "object",
-        "properties": {
-          "equity": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
-              }
-            ]
-          },
-          "debt": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
-              }
-            ]
-          },
-          "balanceSheetTotal": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
-              }
-            ]
-          },
-          "evic": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
-              }
-            ]
-          }
-        }
-      },
-      "AdditionalCompanyInformationGeneralGeneral": {
-        "type": "object",
-        "properties": {
-          "fiscalYearDeviation": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ExtendedDataPointAdditionalCompanyInformationGeneralGeneralFiscalYearDeviationOptions"
-              }
-            ]
-          },
-          "fiscalYearEnd": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ExtendedDataPointLocalDate"
-              }
-            ]
-          },
-          "referencedReports": {
-            "type": "object",
-            "additionalProperties": {
-              "$ref": "#/components/schemas/CompanyReport"
-            },
-            "nullable": true,
-            "example": "{\"string\": {\"fileReference\": \"string\",\"fileName\": \"string\",\"publicationDate\": \"2023-10-12\",}}"
-          }
-        }
-      },
-      "AdditionalCompanyInformationGeneralGeneralFiscalYearDeviationOptions": {
-        "type": "string",
-        "enum": [
-          "Deviation",
-          "NoDeviation"
-        ]
-      },
-      "CompanyAssociatedDataAdditionalCompanyInformationData": {
-        "required": [
-          "companyId",
-          "data",
-          "reportingPeriod"
-        ],
-        "type": "object",
-        "properties": {
-          "companyId": {
-            "type": "string"
-          },
-          "reportingPeriod": {
-            "type": "string"
-          },
-          "data": {
-            "$ref": "#/components/schemas/AdditionalCompanyInformationData"
-          }
-        }
-      },
-      "ExtendedDataPointAdditionalCompanyInformationGeneralGeneralFiscalYearDeviationOptions": {
-        "type": "object",
-        "properties": {
-          "value": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/AdditionalCompanyInformationGeneralGeneralFiscalYearDeviationOptions"
-              }
-            ]
-          },
-          "quality": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/QualityOptions"
-              }
-            ]
-          },
-          "comment": {
-            "type": "string",
-            "nullable": true
-          },
-          "dataSource": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ExtendedDocumentReference"
-              }
-            ]
-          }
-        }
-      },
       "CompanyInformationPatch": {
         "type": "object",
         "properties": {
@@ -15237,21 +15265,6 @@
           }
         }
       },
-      "DataAndMetaInformationAdditionalCompanyInformationData": {
-        "required": [
-          "data",
-          "metaInfo"
-        ],
-        "type": "object",
-        "properties": {
-          "metaInfo": {
-            "$ref": "#/components/schemas/DataMetaInformation"
-          },
-          "data": {
-            "$ref": "#/components/schemas/AdditionalCompanyInformationData"
-          }
-        }
-      },
       "BasicCompanyInformation": {
         "required": [
           "companyId",
@@ -15261,23 +15274,23 @@
         ],
         "type": "object",
         "properties": {
-          "countryCode": {
-            "type": "string"
+          "sector": {
+            "type": "string",
+            "nullable": true
           },
           "headquarters": {
             "type": "string"
           },
-          "companyName": {
+          "countryCode": {
             "type": "string"
           },
           "companyId": {
             "type": "string"
           },
-          "lei": {
-            "type": "string",
-            "nullable": true
+          "companyName": {
+            "type": "string"
           },
-          "sector": {
+          "lei": {
             "type": "string",
             "nullable": true
           }
@@ -15302,10 +15315,10 @@
         ],
         "type": "object",
         "properties": {
-          "companyName": {
+          "companyId": {
             "type": "string"
           },
-          "companyId": {
+          "companyName": {
             "type": "string"
           }
         }
@@ -15367,8 +15380,7 @@
           "sfdr",
           "vsme",
           "esg-questionnaire",
-          "heimathafen",
-          "additional-company-information"
+          "heimathafen"
         ]
       },
       "ErrorDetails": {
