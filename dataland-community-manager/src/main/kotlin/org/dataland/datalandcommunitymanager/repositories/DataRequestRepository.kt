@@ -3,7 +3,7 @@ package org.dataland.datalandcommunitymanager.repositories
 import org.dataland.datalandcommunitymanager.entities.AggregatedDataRequestEntity
 import org.dataland.datalandcommunitymanager.entities.DataRequestEntity
 import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
-import org.dataland.datalandcommunitymanager.utils.GetDataRequestsSearchFilter
+import org.dataland.datalandcommunitymanager.utils.DataRequestsQueryFilter
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.query.Param
@@ -98,7 +98,7 @@ interface DataRequestRepository : JpaRepository<DataRequestEntity, String> {
             "OR d.datalandCompanyId = :#{#searchFilter.datalandCompanyIdFilter})",
     )
     fun searchDataRequestEntity(
-        @Param("searchFilter") searchFilter: GetDataRequestsSearchFilter,
+        @Param("searchFilter") searchFilter: DataRequestsQueryFilter,
     ): List<DataRequestEntity>
 
     /**

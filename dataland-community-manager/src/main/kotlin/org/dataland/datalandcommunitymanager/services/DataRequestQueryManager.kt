@@ -19,7 +19,7 @@ import org.dataland.datalandcommunitymanager.model.dataRequest.StoredDataRequest
 import org.dataland.datalandcommunitymanager.repositories.DataRequestRepository
 import org.dataland.datalandcommunitymanager.utils.DataRequestLogger
 import org.dataland.datalandcommunitymanager.utils.DataRequestProcessingUtils
-import org.dataland.datalandcommunitymanager.utils.GetDataRequestsSearchFilter
+import org.dataland.datalandcommunitymanager.utils.DataRequestsQueryFilter
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Qualifier
@@ -160,7 +160,7 @@ class DataRequestQueryManager(
         datalandCompanyId: String?,
         companyRoleAssignmentsOfCurrentUser: List<CompanyRoleAssignmentEntity>,
     ): List<StoredDataRequest>? {
-        val filter = GetDataRequestsSearchFilter(
+        val filter = DataRequestsQueryFilter(
             dataTypeFilter = dataType?.value ?: "",
             userIdFilter = userId ?: "",
             requestStatus = requestStatus,
@@ -180,7 +180,7 @@ class DataRequestQueryManager(
      * @return all filtered data requests as api model objects
      */
     private fun createStoredDataRequestObjects(
-        filter: GetDataRequestsSearchFilter,
+        filter: DataRequestsQueryFilter,
         companyRoleAssignmentsOfCurrentUser: List<CompanyRoleAssignmentEntity>,
     ): List<StoredDataRequest> {
         val ownedCompanyIds = companyRoleAssignmentsOfCurrentUser.filter {
