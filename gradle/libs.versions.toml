@@ -181,7 +181,7 @@ jodconverter-core = "org.jodconverter:jodconverter-core:4.4.7"
 
 jodconverter-local = "org.jodconverter:jodconverter-local:4.4.7"
 
-itext-core = "com.itextpdf:itext-core:8.0.4"
+itext-core = "com.itextpdf:itext-core:8.0.5"
 
 layout = "com.itextpdf:layout:8.0.4"
 
