@@ -55,7 +55,7 @@
     "depcheck": "1.4.7",
     "eslint": "8.57.0",
     "eslint-plugin-cypress": "3.3.0",
-    "eslint-plugin-jsdoc": "48.2.3",
+    "eslint-plugin-jsdoc": "48.2.15",
     "eslint-plugin-vue": "9.25.0",
     "git-commit-id": "2.0.1",
     "lint-staged": "15.2.2",
