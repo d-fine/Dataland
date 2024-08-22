@@ -54,7 +54,7 @@
     "cypress": "12.11.0",
     "depcheck": "1.4.7",
     "eslint": "8.57.0",
-    "eslint-plugin-cypress": "3.3.0",
+    "eslint-plugin-cypress": "3.5.0",
     "eslint-plugin-jsdoc": "48.2.3",
     "eslint-plugin-vue": "9.25.0",
     "git-commit-id": "2.0.1",
