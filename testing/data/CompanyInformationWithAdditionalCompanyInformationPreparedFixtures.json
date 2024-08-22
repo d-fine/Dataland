@@ -1,1 +1,129 @@
-[]
+[
+	{
+		"companyInformation": {
+			"companyName": "additional-company-information-dataset-with-no-null-fields",
+			"headquarters": "Johnsonview",
+			"headquartersPostalCode": "62716-1811",
+			"sector": null,
+			"identifiers": {
+				"Lei": [],
+				"Isin": [
+					"7NG7COkW1hns",
+					"Nnhi3O9k3QmS"
+				],
+				"PermId": [],
+				"Ticker": [],
+				"Duns": [],
+				"VatNumber": [
+					"qYdIsMQad"
+				],
+				"CompanyRegistrationNumber": [
+					"b0DXu8Pee0E7enN"
+				]
+			},
+			"countryCode": "SA",
+			"companyContactDetails": [
+				"Cheyanne_Stracke48@example.com",
+				"Cornell_Bartoletti57@example.com"
+			],
+			"companyAlternativeNames": [
+				"Rippin LLC"
+			],
+			"companyLegalForm": "Partnership without Limited Liability",
+			"website": "https://lively-singing.info",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"general": {
+				"general": {
+					"fiscalYearDeviation": {
+						"value": "Deviation",
+						"dataSource": {
+							"page": 208,
+							"fileName": "AnnualReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "users"
+						},
+						"comment": "synthesize open-source driver",
+						"quality": "Audited"
+					},
+					"fiscalYearEnd": {
+						"value": "2024-07-01",
+						"dataSource": {
+							"page": 954,
+							"fileName": "IntegratedReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "e-commerce"
+						},
+						"comment": "back up primary firewall",
+						"quality": "Audited"
+					},
+					"referencedReports": {
+						"AnnualReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "AnnualReport",
+							"publicationDate": "2023-07-03"
+						},
+						"SustainabilityReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "SustainabilityReport",
+							"publicationDate": "2023-12-27"
+						},
+						"IntegratedReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "IntegratedReport",
+							"publicationDate": "2024-01-08"
+						}
+					}
+				},
+				"financialInformation": {
+					"equity": {
+						"value": 66088.3,
+						"dataSource": {
+							"page": 691,
+							"fileName": "AnnualReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "mindshare"
+						},
+						"comment": "quantify back-end transmitter",
+						"quality": "Incomplete"
+					},
+					"debt": {
+						"value": 66115.09,
+						"dataSource": {
+							"page": 158,
+							"fileName": "IntegratedReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "ROI"
+						},
+						"comment": "compress multi-byte monitor",
+						"quality": "Audited"
+					},
+					"balanceSheetTotal": {
+						"value": 10157.06,
+						"dataSource": {
+							"page": 1084,
+							"fileName": "AnnualReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "deliverables"
+						},
+						"comment": "navigate optical driver",
+						"quality": "NoDataFound"
+					},
+					"evic": {
+						"value": 35244.52,
+						"dataSource": {
+							"page": 506,
+							"fileName": "SustainabilityReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "eyeballs"
+						},
+						"comment": "override neural bandwidth",
+						"quality": "Reported"
+					}
+				}
+			}
+		},
+		"reportingPeriod": "2021"
+	}
+]

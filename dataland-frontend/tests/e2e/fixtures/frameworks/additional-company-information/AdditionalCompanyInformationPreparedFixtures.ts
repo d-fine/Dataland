@@ -22,5 +22,16 @@ export function generateAdditionalCompanyInformationPreparedFixtures(): Array<
     preparedFixtures.push(manipulatorFunctions[i](preparedFixturesBeforeManipulation[i]));
   }
 
+  preparedFixtures.push(generateFixturesWithNoNullFields());
   return preparedFixtures;
+}
+
+/**
+ * Generate a prepared Fixture with no null entries
+ * @returns the fixture
+ */
+function generateFixturesWithNoNullFields(): FixtureData<AdditionalCompanyInformationData> {
+  const newFixture = generateAdditionalCompanyInformationFixtures(1, 0)[0];
+  newFixture.companyInformation.companyName = 'additional-company-information-dataset-with-no-null-fields';
+  return newFixture;
 }
