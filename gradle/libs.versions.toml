@@ -183,7 +183,7 @@ jodconverter-local = "org.jodconverter:jodconverter-local:4.4.7"
 
 itext-core = "com.itextpdf:itext-core:8.0.4"
 
-layout = "com.itextpdf:layout:8.0.4"
+layout = "com.itextpdf:layout:8.0.5"
 
 tika-core = "org.apache.tika:tika-core:2.9.2"
 
