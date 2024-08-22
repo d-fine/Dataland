@@ -77,80 +77,80 @@ describe('Component test for the Eu-Taxonomy-Non-Financials view page', () => {
   });
 
   it('Check if the view page for non-financials displays data correctly in its custom fields', () => {
-    cy.intercept('GET', '**/api/metadata?*', []).as('fetchMetaInfo');
     mountMLDTFrameworkPanelFromFakeFixture(
       DataTypeEnum.EutaxonomyNonFinancials,
       eutaxonomyNonFinancialsViewConfiguration,
       fixturesForTests
-    );
-    const betaTotalAlignedCapexPercentage = roundNumber(
-      assertDefined(betaCapex.alignedShare?.relativeShareInPercent?.value),
-      2
-    );
-    const gammaCapexTotalAmountFormattedString = formatAmountWithCurrency({
-      amount: assertDefined(gammaCapexTotalAmount.value),
-      currency: assertDefined(gammaCapexTotalAmount.currency),
-    });
-    const gammaTotalAlignedCapexAbsoluteShareString = formatAmountWithCurrency({
-      amount: assertDefined(gammaCapex.alignedShare?.absoluteShare?.value),
-      currency: assertDefined(gammaCapex.alignedShare?.absoluteShare?.currency),
-    });
-    const gammaContributionToClimateChangeMitigation = roundNumber(
-      assertDefined(gammaCapex.substantialContributionToClimateChangeMitigationInPercentEligible?.value),
-      2
-    );
-    getSectionHead('Revenue').should('exist');
-    getCellValueContainer('Total Amount', 0)
-      .invoke('text')
-      .should('match', /^0\s*EUR\s.*/);
-    getSectionHead('Revenue').click();
-
-    getCellValueContainer('Relative Share in Percent', 1)
-      .invoke('text')
-      .should('contains', `${betaTotalAlignedCapexPercentage} %`);
-
-    getCellValueContainer('Absolute Share', 2)
-      .invoke('text')
-      .should('contains', `${gammaTotalAlignedCapexAbsoluteShareString}`);
-    getCellValueContainer('Substantial Contribution to Climate Change Mitigation In Percent - Eligible', 2)
-      .invoke('text')
-      .should('contains', `${gammaContributionToClimateChangeMitigation} %`);
-    getCellValueContainer('Total Amount', 2)
-      .invoke('text')
-      .should('match', new RegExp(`^${gammaCapexTotalAmountFormattedString}\\s.*$`));
-    getCellValueContainer('Total Amount', 2).first().click();
-    runFunctionBlockWithinPrimeVueModal(() => {
-      cy.contains('td', gammaCapexTotalAmountFormattedString).should('exist');
-      cy.contains('td', assertDefined(humanizeStringOrNumber(gammaCapexTotalAmount.quality))).should('exist');
-      cy.contains('td', assertDefined(gammaCapexTotalAmount.comment).toString()).should('exist');
-      cy.get(`span[data-test="Report-Download-${assertDefined(gammaCapexTotalAmount.dataSource).fileName}"]`).should(
-        'exist'
+    ).then(() => {
+      const betaTotalAlignedCapexPercentage = roundNumber(
+        assertDefined(betaCapex.alignedShare?.relativeShareInPercent?.value),
+        2
       );
-    });
-    cy.get('body').type('{esc}');
-
-    getCellValueContainer('Aligned Activities', 2).find('a[data-test=activityLink]').first().click();
-    runFunctionBlockWithinPrimeVueModal(() => {
-      cy.get('tr')
-        .contains('td', assertDefined(gammaCapexFirstAlignedActivity.activityName))
-        .nextAll()
-        .eq(4)
+      const gammaCapexTotalAmountFormattedString = formatAmountWithCurrency({
+        amount: assertDefined(gammaCapexTotalAmount.value),
+        currency: assertDefined(gammaCapexTotalAmount.currency),
+      });
+      const gammaTotalAlignedCapexAbsoluteShareString = formatAmountWithCurrency({
+        amount: assertDefined(gammaCapex.alignedShare?.absoluteShare?.value),
+        currency: assertDefined(gammaCapex.alignedShare?.absoluteShare?.currency),
+      });
+      const gammaContributionToClimateChangeMitigation = roundNumber(
+        assertDefined(gammaCapex.substantialContributionToClimateChangeMitigationInPercentEligible?.value),
+        2
+      );
+      getSectionHead('Revenue').should('exist');
+      getCellValueContainer('Total Amount', 0)
         .invoke('text')
-        .should('match', /^0 %$/);
-    });
-    cy.get('body').type('{esc}');
+        .should('match', /^0\s*EUR\s.*/);
+      getSectionHead('Revenue').click();
 
-    getCellValueContainer('Non-Aligned Activities', 2).find('a[data-test=activityLink]').first().click();
-    runFunctionBlockWithinPrimeVueModal(() => {
-      cy.get('tr')
-        .contains('td', assertDefined(gammaCapexFirstNonAlignedActivity.activityName))
-        .nextAll()
-        .eq(2)
+      getCellValueContainer('Relative Share in Percent', 1)
         .invoke('text')
-        .should(
-          'match',
-          new RegExp(`^${assertDefined(gammaCapexFirstNonAlignedActivity.share).relativeShareInPercent}\\s.*$`)
+        .should('contains', `${betaTotalAlignedCapexPercentage} %`);
+
+      getCellValueContainer('Absolute Share', 2)
+        .invoke('text')
+        .should('contains', `${gammaTotalAlignedCapexAbsoluteShareString}`);
+      getCellValueContainer('Substantial Contribution to Climate Change Mitigation In Percent - Eligible', 2)
+        .invoke('text')
+        .should('contains', `${gammaContributionToClimateChangeMitigation} %`);
+      getCellValueContainer('Total Amount', 2)
+        .invoke('text')
+        .should('match', new RegExp(`^${gammaCapexTotalAmountFormattedString}\\s.*$`));
+      getCellValueContainer('Total Amount', 2).first().click();
+      runFunctionBlockWithinPrimeVueModal(() => {
+        cy.contains('td', gammaCapexTotalAmountFormattedString).should('exist');
+        cy.contains('td', assertDefined(humanizeStringOrNumber(gammaCapexTotalAmount.quality))).should('exist');
+        cy.contains('td', assertDefined(gammaCapexTotalAmount.comment).toString()).should('exist');
+        cy.get(`span[data-test="Report-Download-${assertDefined(gammaCapexTotalAmount.dataSource).fileName}"]`).should(
+          'exist'
         );
+      });
+      cy.get('body').type('{esc}');
+
+      getCellValueContainer('Aligned Activities', 2).find('a[data-test=activityLink]').first().click();
+      runFunctionBlockWithinPrimeVueModal(() => {
+        cy.get('tr')
+          .contains('td', assertDefined(gammaCapexFirstAlignedActivity.activityName))
+          .nextAll()
+          .eq(4)
+          .invoke('text')
+          .should('match', /^0 %$/);
+      });
+      cy.get('body').type('{esc}');
+
+      getCellValueContainer('Non-Aligned Activities', 2).find('a[data-test=activityLink]').first().click();
+      runFunctionBlockWithinPrimeVueModal(() => {
+        cy.get('tr')
+          .contains('td', assertDefined(gammaCapexFirstNonAlignedActivity.activityName))
+          .nextAll()
+          .eq(2)
+          .invoke('text')
+          .should(
+            'match',
+            new RegExp(`^${assertDefined(gammaCapexFirstNonAlignedActivity.share).relativeShareInPercent}\\s.*$`)
+          );
+      });
     });
   });
 

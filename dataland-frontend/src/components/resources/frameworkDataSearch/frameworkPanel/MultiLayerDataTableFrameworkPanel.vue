@@ -79,6 +79,7 @@ import { AxiosError } from 'axios';
 import RequestableDatasetsTable from '@/components/resources/frameworkDataSearch/frameworkPanel/RequestableDatasetsTable.vue';
 import { useDialog } from 'primevue/usedialog';
 import RequestableDatasetsTableModalWrapper from '@/components/resources/frameworkDataSearch/frameworkPanel/RequestableDatasetsTableModalWrapper.vue';
+import { PRIVATE_FRAMEWORKS } from '@/utils/Constants';
 
 const dialog = useDialog();
 
@@ -207,8 +208,7 @@ async function loadDataForDisplay(
  * that the user might want to request access to.
  */
 async function fetchMetaInfoOfInaccessibleDatasets(): Promise<void> {
-  //
-  const isFrameworkPrivate = Object.values(DataTypeEnum).includes(props.frameworkIdentifier as DataTypeEnum);
+  const isFrameworkPrivate = PRIVATE_FRAMEWORKS.includes(props.frameworkIdentifier as DataTypeEnum);
   if (isFrameworkPrivate) {
     const allMetaInfoOfAvailableDatasets = (
       await apiClientProvider.backendClients.metaDataController.getListOfDataMetaInfo(
