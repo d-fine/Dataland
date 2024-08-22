@@ -84,7 +84,7 @@ interface DataRequestRepository : JpaRepository<DataRequestEntity, String> {
             // TODO an den code stellen wie zB im DataRequestQueryManager nur noch einmal eine Query aufrufen,
             // TODO nicht zweimal Line 140
             // TODO andere verwendungen von searchDataRequestEntity finden und genauso anpassen
-            // check that most recent status and access status are present in the final table
+            // TODO  check that most recent status and access status are present in the final table
             "SELECT d.* FROM data_requests d " +
             "JOIN filtered_table ON filtered_table.data_request_id = d.data_request_id",
 
@@ -117,10 +117,8 @@ interface DataRequestRepository : JpaRepository<DataRequestEntity, String> {
         nativeQuery = true,
         value = TemporaryTables.TABLE_FILTERED +
 
-            "SELECT DISTINCT d.* " +
-            "FROM data_requests d " +
-            "LEFT JOIN request_status_history rsh ON d.data_request_id = rsh.data_request_id " +
-            "INNER JOIN filtered_table ft ON d.data_request_id = ft.data_request_id ",
+                "SELECT d.* FROM data_requests d " +
+                "JOIN filtered_table ON filtered_table.data_request_id = d.data_request_id",
 
     )
     fun searchDataRequestEntityAndStatusHistory(
