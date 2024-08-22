@@ -13,6 +13,7 @@ before(function () {
    * @param dataType to include in the data request
    * @param reportingPeriod to include in the data request
    * @param companyName to include in the data request
+   * @param companyId to include in the data request
    * @param requestStatus to set in the data request
    * @param accessStatus to set in the data request
    * @returns an extended sorted data request object
@@ -21,6 +22,7 @@ before(function () {
     dataType: DataTypeEnum,
     reportingPeriod: string,
     companyName: string,
+    companyId: string,
     requestStatus: RequestStatus,
     accessStatus: AccessStatus
   ): ExtendedStoredDataRequest {
@@ -30,7 +32,7 @@ before(function () {
       creationTimestamp: 1709204495770,
       dataType: dataType,
       reportingPeriod: reportingPeriod,
-      datalandCompanyId: 'some-id',
+      datalandCompanyId: companyId,
       companyName: companyName,
       lastModifiedDate: 1709204495770,
       requestStatus: requestStatus,
@@ -43,6 +45,7 @@ before(function () {
       DataTypeEnum.P2p,
       '2020',
       'companyAnswered',
+      'compA',
       RequestStatus.Answered,
       AccessStatus.Pending
     )
@@ -53,6 +56,7 @@ before(function () {
       DataTypeEnum.Sfdr,
       '2022',
       'companyNotAnsweredSfdr',
+      'someId',
       RequestStatus.Open,
       AccessStatus.Pending
     )
@@ -63,6 +67,7 @@ before(function () {
       DataTypeEnum.EutaxonomyFinancials,
       '3021',
       'z-company-that-will-always-be-sorted-to-bottom',
+      'someId',
       RequestStatus.Resolved,
       AccessStatus.Pending
     )
@@ -73,6 +78,7 @@ before(function () {
       DataTypeEnum.EutaxonomyNonFinancials,
       '2021',
       'companyNotAnsweredEU',
+      'someId',
       RequestStatus.Open,
       AccessStatus.Pending
     )
@@ -83,6 +89,7 @@ before(function () {
       DataTypeEnum.EsgQuestionnaire,
       '1021',
       'a-company-that-will-always-be-sorted-to-top',
+      'someId',
       RequestStatus.Answered,
       AccessStatus.Pending
     )
