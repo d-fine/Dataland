@@ -75,7 +75,7 @@ class DataRequestQueryManager(
         val aggregatedDataRequestEntities =
             dataRequestRepository.getAggregatedDataRequests(
                 GetAggregatedRequestsSearchFilter(
-                    dataTypeFilter = dataTypesFilterForQuery,
+                    dataTypeFilter = dataTypesFilterForQuery ?: setOf(),
                     reportingPeriodFilter = reportingPeriod,
                     requestStatus = status?.name ?: "",
                     datalandCompanyIdFilter = identifierValue,
@@ -132,7 +132,7 @@ class DataRequestQueryManager(
             reportingPeriodFilter = reportingPeriod ?: "",
             datalandCompanyIdFilter = datalandCompanyId ?: "",
         )
-        return dataRequestRepository.searchDataRequestEntityAndStatusHistory(filter).map { dataRequestEntity ->
+        return dataRequestRepository.searchDataRequestEntity(filter).map { dataRequestEntity ->
             getExtendedStoredDataRequestByRequestEntity(dataRequestEntity)
         }
     }

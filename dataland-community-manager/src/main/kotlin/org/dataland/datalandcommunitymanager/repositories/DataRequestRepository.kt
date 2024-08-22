@@ -13,6 +13,7 @@ import org.springframework.data.repository.query.Param
 /**
  * A JPA repository for storing and retrieving data requests
  */
+// TODO do formatting on queries
 
 interface DataRequestRepository : JpaRepository<DataRequestEntity, String> {
     /** This method gets all data request that are stored for a specific userId.
@@ -59,7 +60,8 @@ interface DataRequestRepository : JpaRepository<DataRequestEntity, String> {
             "FROM data_requests dr " +
             "JOIN status_table st ON dr.data_request_id = st.request_id " +
             "WHERE (:#{#searchFilter.dataTypeFilterLength} = 0 " +
-            "OR dr.data_type = :#{#searchFilter.dataTypeFilter}) " +
+            "OR :#{#searchFilter.dataTypeFilter} IS NULL " +
+            "OR dr.data_type IN :#{#searchFilter.dataTypeFilter} ) " +
             "AND (:#{#searchFilter.reportingPeriodFilterLength} = 0 " +
             "OR dr.reporting_period = :#{#searchFilter.reportingPeriodFilter}) " +
             "AND (:#{#searchFilter.datalandCompanyIdFilterLength} = 0 " +
@@ -106,23 +108,6 @@ interface DataRequestRepository : JpaRepository<DataRequestEntity, String> {
     )
     fun fetchStatusHistory(
         dataRequests: List<DataRequestEntity>,
-    ): List<DataRequestEntity>
-
-    /**
-     * Fetches data request entities together with the associated status history
-     * @param searchFilter the search filter used to filter in the data_requests table
-     * @returns a list of data request entities together with their associated status history
-     */
-    @Query(
-        nativeQuery = true,
-        value = TemporaryTables.TABLE_FILTERED +
-
-                "SELECT d.* FROM data_requests d " +
-                "JOIN filtered_table ON filtered_table.data_request_id = d.data_request_id",
-
-    )
-    fun searchDataRequestEntityAndStatusHistory(
-        @Param("searchFilter") searchFilter: GetDataRequestsSearchFilter,
     ): List<DataRequestEntity>
 
     /** This method counts the number of data requests that a user
