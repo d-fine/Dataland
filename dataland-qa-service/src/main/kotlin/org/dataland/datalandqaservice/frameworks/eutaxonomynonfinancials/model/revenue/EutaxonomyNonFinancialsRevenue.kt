@@ -37,27 +37,103 @@ data class EutaxonomyNonFinancialsRevenue(
     val alignedShare: EutaxonomyNonFinancialsRevenueAlignedShare? = null,
 
     @field:Valid()
-    val substantialContributionToClimateChangeMitigationInPercent:
+    val substantialContributionToClimateChangeMitigationInPercentEligible:
     QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
 
     @field:Valid()
-    val substantialContributionToClimateChangeAdaptationInPercent:
+    val substantialContributionToClimateChangeMitigationInPercentAligned:
     QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
 
     @field:Valid()
-    val substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent:
+    val substantialContributionToClimateChangeMitigationInPercentOfWhichUseOfProceeds:
     QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
 
     @field:Valid()
-    val substantialContributionToTransitionToACircularEconomyInPercent:
+    val substantialContributionToClimateChangeMitigationInPercentEnablingShare:
     QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
 
     @field:Valid()
-    val substantialContributionToPollutionPreventionAndControlInPercent:
+    val substantialContributionToClimateChangeMitigationInPercentTransitionalShare:
     QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
 
     @field:Valid()
-    val substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent:
+    val substantialContributionToClimateChangeAdaptationInPercentEligible:
+    QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
+
+    @field:Valid()
+    val substantialContributionToClimateChangeAdaptationInPercentAligned:
+    QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
+
+    @field:Valid()
+    val substantialContributionToClimateChangeAdaptationInPercentOfWhichUseOfProceeds:
+    QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
+
+    @field:Valid()
+    val substantialContributionToClimateChangeAdaptationInPercentEnablingShare:
+    QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
+
+    @field:Valid()
+    val substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentEligible:
+    QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
+
+    @field:Valid()
+    val substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned:
+    QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
+
+    @field:Valid()
+    val substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentOfWhichUseOfProceeds:
+    QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
+
+    @field:Valid()
+    val substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentEnablingShare:
+    QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
+
+    @field:Valid()
+    val substantialContributionToTransitionToACircularEconomyInPercentEligible:
+    QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
+
+    @field:Valid()
+    val substantialContributionToTransitionToACircularEconomyInPercentAligned:
+    QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
+
+    @field:Valid()
+    val substantialContributionToTransitionToACircularEconomyInPercentOfWhichUseOfProceeds:
+    QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
+
+    @field:Valid()
+    val substantialContributionToTransitionToACircularEconomyInPercentEnablingShare:
+    QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
+
+    @field:Valid()
+    val substantialContributionToPollutionPreventionAndControlInPercentEligible:
+    QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
+
+    @field:Valid()
+    val substantialContributionToPollutionPreventionAndControlInPercentAligned:
+    QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
+
+    @field:Valid()
+    val substantialContributionToPollutionPreventionAndControlInPercentOfWhichUseOfProceeds:
+    QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
+
+    @field:Valid()
+    val substantialContributionToPollutionPreventionAndControlInPercentEnablingShare:
+    QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
+
+    @field:Valid()
+    val substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentEligible:
+    QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
+
+    @field:Valid()
+    val substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned:
+    QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
+
+    @field:Valid()
+    val substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentOfWhichUseOfProceeds:
+    QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
+
+    @field:Valid()
+    val substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentEnablingShare:
     QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
 
     val alignedActivities: QaReportDataPoint<ExtendedDataPointListEuTaxonomyAlignedActivity?>? = null,
