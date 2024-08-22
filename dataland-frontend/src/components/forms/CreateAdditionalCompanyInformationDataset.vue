@@ -18,17 +18,44 @@
             @submit-invalid="checkCustomInputs"
           >
             <FormKit type="hidden" name="companyId" :model-value="companyID" />
-            <FormKit type="hidden" name="reportingPeriod" v-model="yearOfDataDate" />
+            <div class="uploadFormSection grid">
+              <div class="col-3 p-3 topicLabel">
+                <h4 id="reportingPeriod" class="anchor title">Reporting Period</h4>
+              </div>
+              <div class="col-9 form-field formFields uploaded-files">
+                <UploadFormHeader
+                  :label="'Reporting Period'"
+                  :description="'The year for which the data is reported.'"
+                  :is-required="true"
+                />
+                <div class="lg:col-4 md:col-6 col-12 pl-0">
+                  <Calendar
+                    data-test="reportingPeriod"
+                    v-model="reportingPeriod"
+                    inputId="icon"
+                    :showIcon="true"
+                    view="year"
+                    dateFormat="yy"
+                    validation="required"
+                  />
+                </div>
+                <FormKit type="hidden" :modelValue="reportingPeriodYear.toString()" name="reportingPeriod" />
+              </div>
+            </div>
 
             <FormKit type="group" name="data" label="data">
               <FormKit
                 type="group"
                 v-for="category in additionalCompanyInformationDataModel"
-                :key="category"
+                :key="category.name"
                 :label="category.label"
                 :name="category.name"
               >
-                <div class="uploadFormSection grid" v-for="subcategory in category.subcategories" :key="subcategory">
+                <div
+                  class="uploadFormSection grid"
+                  v-for="subcategory in category.subcategories"
+                  :key="subcategory.name"
+                >
                   <template v-if="subcategoryVisibility.get(subcategory) ?? true">
                     <div class="col-3 p-3 topicLabel">
                       <h4 :id="subcategory.name" class="anchor title">{{ subcategory.label }}</h4>
@@ -75,9 +102,9 @@
 
           <h4 id="topicTitles" class="title pt-3">On this page</h4>
           <ul>
-            <li v-for="category in additionalCompanyInformationDataModel" :key="category">
+            <li v-for="category in additionalCompanyInformationDataModel" :key="category.name">
               <ul>
-                <li v-for="subcategory in category.subcategories" :key="subcategory">
+                <li v-for="subcategory in category.subcategories" :key="subcategory.name">
                   <a
                     v-if="subcategoryVisibility.get(subcategory) ?? true"
                     @click="smoothScroll(`#${subcategory.name}`)"
@@ -93,7 +120,6 @@
   </Card>
 </template>
 <script lang="ts">
-//@ts-nocheck
 import { FormKit } from '@formkit/vue';
 import { ApiClientProvider } from '@/services/ApiClients';
 import Card from 'primevue/card';
@@ -176,7 +202,6 @@ export default defineComponent({
     return {
       formId: 'createAdditionalCompanyInformationForm',
       waitingForData: true,
-      dataDate: undefined as Date | undefined,
       companyAssociatedAdditionalCompanyInformationData: {} as CompanyAssociatedDataAdditionalCompanyInformationData,
       additionalCompanyInformationDataModel,
       route: useRoute(),
@@ -187,26 +212,18 @@ export default defineComponent({
       messageCounter: 0,
       checkCustomInputs,
       referencedReportsForPrefill: {} as { [key: string]: CompanyReport },
-      listOfFilledKpis: [] as Array<string>,
       namesAndReferencesOfAllCompanyReportsForTheDataset: {},
+      reportingPeriod: undefined as undefined | Date,
+      listOfFilledKpis: [] as Array<string>,
       fieldSpecificDocuments: new Map<string, DocumentToUpload[]>(),
     };
   },
   computed: {
-    yearOfDataDate: {
-      get(): string {
-        const currentDate =
-          this.companyAssociatedAdditionalCompanyInformationData.data?.general?.general?.fiscalYearEnd?.value;
-        if (currentDate === undefined || currentDate === null) {
-          return '';
-        } else {
-          const currentDateSegments = currentDate.split('-');
-          return currentDateSegments[0] ?? new Date().getFullYear();
-        }
-      },
-      set() {
-        // IGNORED
-      },
+    reportingPeriodYear(): number {
+      if (this.reportingPeriod) {
+        return this.reportingPeriod.getFullYear();
+      }
+      return 0;
     },
     namesOfAllCompanyReportsForTheDataset(): string[] {
       return getFileName(this.namesAndReferencesOfAllCompanyReportsForTheDataset);
