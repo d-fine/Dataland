@@ -70,8 +70,8 @@ export default defineComponent({
     },
     /**
      * Checks if inputValue is a quality
-     * @param displayValue value to be shown as link
-     * @returns boolean if inputValue is a quality
+     * @param displayValue String to be shown as link
+     * @returns boolean if inputValue is a QualityOption
      */
     isQuality: function (displayValue: string) {
       return [
