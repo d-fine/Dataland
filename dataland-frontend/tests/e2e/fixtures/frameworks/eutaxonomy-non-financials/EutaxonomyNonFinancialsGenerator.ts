@@ -52,6 +52,8 @@ export class EutaxonomyNonFinancialsGenerator extends Generator {
       dnshToPollutionPreventionAndControl: this.randomYesNo(),
       dnshToProtectionAndRestorationOfBiodiversityAndEcosystems: this.randomYesNo(),
       minimumSafeguards: this.randomYesNo(),
+      enablingActivity: this.randomYesNo(),
+      transitionalActivity: this.randomYesNo(),
     };
   }
 }

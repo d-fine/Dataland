@@ -1422,6 +1422,12 @@
           "scope3GhgEmissionsInTonnes": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
           },
+          "scope3UpstreamGhgEmissionsInTonnes": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          },
+          "scope3DownstreamGhgEmissionsInTonnes": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          },
           "scope1And2And3GhgEmissionsInTonnes": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
           },
@@ -1441,6 +1447,18 @@
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
           },
           "ghgIntensityInTonnesPerMillionEURRevenue": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          },
+          "ghgIntensityScope1InTonnesPerMillionEURRevenue": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          },
+          "ghgIntensityScope2InTonnesPerMillionEURRevenue": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          },
+          "ghgIntensityScope3InTonnesPerMillionEURRevenue": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          },
+          "ghgIntensityScope4InTonnesPerMillionEURRevenue": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
           },
           "fossilFuelSectorExposure": {
@@ -1634,13 +1652,22 @@
           "unadjustedGenderPayGapInPercent": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
           },
-          "femaleBoardMembers": {
+          "femaleBoardMembersSupervisoryBoard": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigInteger"
           },
-          "maleBoardMembers": {
+          "femaleBoardMembersBoardOfDirectors": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigInteger"
           },
-          "boardGenderDiversityInPercent": {
+          "maleBoardMembersSupervisoryBoard": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigInteger"
+          },
+          "maleBoardMembersBoardOfDirectors": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigInteger"
+          },
+          "boardGenderDiversitySupervisoryBoardInPercent": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          },
+          "boardGenderDiversityBoardOfDirectorsInPercent": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
           },
           "controversialWeaponsExposure": {
