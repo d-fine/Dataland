@@ -1,5 +1,5 @@
 import { describeIf } from '@e2e/support/TestUtility';
-import { admin_name, admin_pw, admin_userId, getBaseUrl, reader_name, reader_pw } from '@e2e/utils/Cypress';
+import { admin_name, admin_pw, getBaseUrl, reader_name, reader_pw } from '@e2e/utils/Cypress';
 import { getKeycloakToken } from '@e2e/utils/Auth';
 import { DataTypeEnum, type StoredCompany, type VsmeData } from '@clients/backend';
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from '@e2e/utils/CompanyUpload';
@@ -37,7 +37,7 @@ describeIf(
 
     /**
      * Selects the row with the provided reporting period in the table to send an access request for it.
-     * @param reportingPeriod
+     * @param reportingPeriod defines which row will be selected to request data access
      */
     function selectRowInRequestableReportingPeriodsTable(reportingPeriod: string): void {
       cy.contains('td', reportingPeriod).siblings('td[data-p-selection-column="true"]').click();
