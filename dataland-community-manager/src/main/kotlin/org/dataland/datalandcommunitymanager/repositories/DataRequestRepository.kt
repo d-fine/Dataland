@@ -84,7 +84,7 @@ interface DataRequestRepository : JpaRepository<DataRequestEntity, String> {
             // TODO an den code stellen wie zB im DataRequestQueryManager nur noch einmal eine Query aufrufen,
             // TODO nicht zweimal Line 140
             // TODO andere verwendungen von searchDataRequestEntity finden und genauso anpassen
-
+            // check that most recent status and access status are present in the final table
             "SELECT d.* FROM data_requests d " +
             "JOIN filtered_table ON filtered_table.data_request_id = d.data_request_id",
 
