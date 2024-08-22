@@ -244,7 +244,7 @@ export default defineComponent({
   created() {
     const dataId = this.route.query.templateDataId;
     if (dataId && typeof dataId === 'string') {
-      void this.loadAdditionalCompanyInformationData(dataId);
+      this.loadAdditionalCompanyInformationData(dataId);
     } else {
       this.waitingForData = false;
     }
