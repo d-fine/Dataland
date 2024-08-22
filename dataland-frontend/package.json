@@ -38,6 +38,7 @@
     "primeicons": "^7.0.0",
     "primevue": "~3.44.0",
     "vue": "^3.4.21",
+    "vue-markdown-render": "^2.2.1",
     "vue-router": "^4.3.2"
   },
   "devDependencies": {

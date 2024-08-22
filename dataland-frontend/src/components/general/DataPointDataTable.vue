@@ -33,7 +33,11 @@
           </tr>
           <tr v-if="dialogData.dataPointDisplay.comment">
             <th class="headers-bg width-auto"><span class="table-left-label">Comment</span></th>
-            <td><AutoFormattingTextSpan :text="dialogData.dataPointDisplay.comment" /></td>
+              <td >
+                  <div >
+                  <vue-markdown :source="dialogData.dataPointDisplay.comment"/>
+                 </div></td>
+
           </tr>
         </tbody>
       </table>
@@ -42,13 +46,14 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import {defineComponent, ref} from 'vue';
 import { type DynamicDialogInstance } from 'primevue/dynamicdialogoptions';
 import DocumentLink from '@/components/resources/frameworkDataSearch/DocumentLink.vue';
 import { type DataPointDisplay } from '@/utils/DataPoint';
 import { ONLY_AUXILIARY_DATA_PROVIDED } from '@/utils/Constants';
 import AutoFormattingTextSpan from '@/components/general/AutoFormattingTextSpan.vue';
 import { assertDefined } from '@/utils/TypeScriptUtils';
+import VueMarkdown from 'vue-markdown-render';
 
 interface DataPointDataTableRefProps {
   dataPointDisplay: DataPointDisplay;
@@ -66,7 +71,14 @@ export default defineComponent({
       return ONLY_AUXILIARY_DATA_PROVIDED;
     },
   },
-  components: { AutoFormattingTextSpan, DocumentLink },
+  //  setup(props, ctx) {
+    //    const src = ref('# header')
+
+   //     return {
+     //       src
+    //    }
+  //  },
+  components: { AutoFormattingTextSpan, DocumentLink, VueMarkdown},
   inject: ['dialogRef'],
   name: 'DataPointDataTable',
   computed: {
