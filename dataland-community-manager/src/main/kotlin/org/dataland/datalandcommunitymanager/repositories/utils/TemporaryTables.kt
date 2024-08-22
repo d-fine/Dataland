@@ -7,17 +7,18 @@ package org.dataland.datalandcommunitymanager.repositories.utils
 class TemporaryTables private constructor() {
 
     companion object {
-        // Select company_id, LEI identifiers as leis
-        // TODO update docs
-        const val TABLE_FILTERED = "WITH most_recent AS (SELECT data_request_id, MAX(creation_timestamp) " +
+        // Defines a SELECT on the REQUEST_STATUS_HISTORY table to get the most recent status change
+        const val MOST_RECENT_STATUS_CHANGE = "WITH most_recent AS (SELECT data_request_id, MAX(creation_timestamp) " +
             "AS creation_timestamp FROM request_status_history " +
             "GROUP BY data_request_id), " +
-
             "status_table AS (SELECT most_recent.data_request_id AS request_id, request_status, access_status " +
             "FROM request_status_history " +
             "JOIN most_recent ON most_recent.data_request_id = request_status_history.data_request_id " +
-            "AND most_recent.creation_timestamp = request_status_history.creation_timestamp), " +
+            "AND most_recent.creation_timestamp = request_status_history.creation_timestamp) "
 
+        // Select data_request_id, based on specified filters
+        const val TABLE_FILTERED = MOST_RECENT_STATUS_CHANGE +
+            ", " +
             "filtered_table AS (SELECT d.data_request_id " +
             "FROM data_requests d " +
             "JOIN  status_table ON status_table.request_id = d.data_request_id " +

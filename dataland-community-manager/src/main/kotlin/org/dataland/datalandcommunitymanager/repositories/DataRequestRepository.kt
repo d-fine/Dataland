@@ -1,9 +1,10 @@
 package org.dataland.datalandcommunitymanager.repositories
 
-import org.dataland.datalandcommunitymanager.entities.AggregatedDataRequestEntity
+import org.dataland.datalandcommunitymanager.entities.AggregatedDataRequest
 import org.dataland.datalandcommunitymanager.entities.DataRequestEntity
-import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
 import org.dataland.datalandcommunitymanager.repositories.utils.TemporaryTables
+import org.dataland.datalandcommunitymanager.repositories.utils.TemporaryTables.Companion.MOST_RECENT_STATUS_CHANGE
+import org.dataland.datalandcommunitymanager.utils.GetAggregatedRequestsSearchFilter
 import org.dataland.datalandcommunitymanager.utils.GetDataRequestsSearchFilter
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Query
@@ -42,34 +43,34 @@ interface DataRequestRepository : JpaRepository<DataRequestEntity, String> {
      * @param status to check for
      * @returns the aggregated data requests
      */
+
     @Query(
+        nativeQuery = true,
+        value =
         // TODO anpassen
-        " SELECT new org.dataland.datalandcommunitymanager.entities.AggregatedDataRequestEntity( " +
-            "d.dataType, " +
-            "d.reportingPeriod, " +
-            "d.datalandCompanyId, " +
-            "rs.requestStatus, " +
-            "COUNT(d.userId) " +
-            ") " +
-            "FROM DataRequestEntity d " +
-            "JOIN RequestStatusEntity rs ON d = rs.dataRequest " +
-            "WHERE (:dataTypes IS NULL OR d.dataType IN :dataTypes) " +
-            "AND (:reportingPeriod IS NULL OR d.reportingPeriod LIKE %:reportingPeriod%) " +
-            "AND (:identifierValue IS NULL OR d.datalandCompanyId LIKE %:identifierValue%) " +
-            "AND rs.creationTimestamp =  ( " +
-            "SELECT MAX(rs2.creationTimestamp) " +
-            "FROM RequestStatusEntity rs2 " +
-            "WHERE rs.dataRequest = rs2.dataRequest " +
-            ") " +
-            "AND (:status IS NULL OR rs.requestStatus = :status) " +
-            "GROUP BY d.dataType, d.reportingPeriod, d.datalandCompanyId, rs.requestStatus ",
+        MOST_RECENT_STATUS_CHANGE +
+
+            "SELECT " +
+            "dr.data_type AS dataType, " +
+            "dr.reporting_period AS reportingPeriod, " +
+            "dr.dataland_company_id AS datalandCompanyId, " +
+            "st.request_status AS requestStatus, " +
+            "COUNT(dr.user_id) AS count " +
+            "FROM data_requests dr " +
+            "JOIN status_table st ON dr.data_request_id = st.request_id " +
+            "WHERE (:#{#searchFilter.dataTypeFilterLength} = 0 " +
+            "OR dr.data_type = :#{#searchFilter.dataTypeFilter}) " +
+            "AND (:#{#searchFilter.reportingPeriodFilterLength} = 0 " +
+            "OR dr.reporting_period = :#{#searchFilter.reportingPeriodFilter}) " +
+            "AND (:#{#searchFilter.datalandCompanyIdFilterLength} = 0 " +
+            "OR dr.dataland_company_id = :#{#searchFilter.datalandCompanyIdFilter}) " +
+            "AND (:#{#searchFilter.requestStatusLength} = 0 " +
+            "OR st.request_status = :#{#searchFilter.requestStatus} ) " +
+            "GROUP BY dr.data_type, dr.reporting_period, dr.dataland_company_id, st.request_status ",
     )
     fun getAggregatedDataRequests(
-        @Param("identifierValue") identifierValue: String?,
-        @Param("dataTypes") dataTypes: Set<String>?,
-        @Param("reportingPeriod") reportingPeriod: String?,
-        @Param("status") status: RequestStatus?,
-    ): List<AggregatedDataRequestEntity>
+        @Param("searchFilter") searchFilter: GetAggregatedRequestsSearchFilter,
+    ): List<AggregatedDataRequest>
 
     /**
      * A function for searching for data request information by dataType, userID, requestID, requestStatus,
@@ -80,11 +81,8 @@ interface DataRequestRepository : JpaRepository<DataRequestEntity, String> {
     @Query(
         nativeQuery = true,
         value = TemporaryTables.TABLE_FILTERED +
-            // TODO alles hier drüber als string konstante auslagern und abrufbar machen, das auskommentierte select
-            // TODO hier drunter verwenden für die eigentliche funktionalität der funktion
-            // TODO die ausgelagerte komponten in allen funktionen wie zB fetchStatusHistory verwenden
             // TODO an den code stellen wie zB im DataRequestQueryManager nur noch einmal eine Query aufrufen,
-            // TODO  nicht zweimal Line 140
+            // TODO nicht zweimal Line 140
             // TODO andere verwendungen von searchDataRequestEntity finden und genauso anpassen
 
             "SELECT d.* FROM data_requests d " +

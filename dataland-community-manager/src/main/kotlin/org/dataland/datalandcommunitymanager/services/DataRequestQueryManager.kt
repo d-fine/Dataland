@@ -12,6 +12,7 @@ import org.dataland.datalandcommunitymanager.model.dataRequest.StoredDataRequest
 import org.dataland.datalandcommunitymanager.repositories.DataRequestRepository
 import org.dataland.datalandcommunitymanager.utils.DataRequestLogger
 import org.dataland.datalandcommunitymanager.utils.DataRequestProcessingUtils
+import org.dataland.datalandcommunitymanager.utils.GetAggregatedRequestsSearchFilter
 import org.dataland.datalandcommunitymanager.utils.GetDataRequestsSearchFilter
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.springframework.beans.factory.annotation.Autowired
@@ -73,10 +74,12 @@ class DataRequestQueryManager(
         }
         val aggregatedDataRequestEntities =
             dataRequestRepository.getAggregatedDataRequests(
-                identifierValue,
-                dataTypesFilterForQuery,
-                reportingPeriod,
-                status,
+                GetAggregatedRequestsSearchFilter(
+                    dataTypeFilter = dataTypesFilterForQuery,
+                    reportingPeriodFilter = reportingPeriod,
+                    requestStatus = status?.name ?: "",
+                    datalandCompanyIdFilter = identifierValue,
+                ),
             )
         val aggregatedDataRequests = aggregatedDataRequestEntities.map { aggregatedDataRequestEntity ->
             AggregatedDataRequest(
