@@ -12,7 +12,7 @@ class DataTypesExtractorTest {
             "eutaxonomy-non-financials",
             "lksg",
             "sfdr",
-            "sme",
+            "vsme",
             "p2p",
             "esg-questionnaire",
             "heimathafen",

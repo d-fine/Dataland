@@ -2,11 +2,16 @@ package org.dataland.frameworktoolbox.frameworks
 
 import org.dataland.frameworktoolbox.SpringConfig
 import org.dataland.frameworktoolbox.intermediate.Framework
+import org.dataland.frameworktoolbox.intermediate.components.ReportPreuploadComponent
+import org.dataland.frameworktoolbox.specific.datamodel.Annotation
 import org.dataland.frameworktoolbox.specific.datamodel.FrameworkDataModelBuilder
+import org.dataland.frameworktoolbox.specific.datamodel.elements.ReferencedReportValidatorBuilder
 import org.dataland.frameworktoolbox.specific.fixturegenerator.FrameworkFixtureGeneratorBuilder
 import org.dataland.frameworktoolbox.specific.frameworkregistryimports.FrameworkRegistryImportsUpdater
+import org.dataland.frameworktoolbox.specific.qamodel.FrameworkQaModelBuilder
 import org.dataland.frameworktoolbox.specific.uploadconfig.FrameworkUploadConfigBuilder
 import org.dataland.frameworktoolbox.specific.viewconfig.FrameworkViewConfigBuilder
+import org.dataland.frameworktoolbox.specific.viewconfig.elements.getKotlinFieldAccessor
 import org.dataland.frameworktoolbox.template.ExcelTemplate
 import org.dataland.frameworktoolbox.template.TemplateComponentBuilder
 import org.dataland.frameworktoolbox.template.components.ComponentFactoryContainer
@@ -119,6 +124,21 @@ abstract class PavedRoadFramework(
     }
 
     /**
+     * Generate the QA-model for the framework
+     */
+    open fun generateQaModel(framework: Framework): FrameworkQaModelBuilder {
+        return framework.generateQaModel()
+    }
+
+    /**
+     * Can be overwritten to programmatically customize the QA dataModel
+     * (to e.g, change the JVM type of certain fields)
+     */
+    open fun customizeQaModel(dataModel: FrameworkQaModelBuilder) {
+        // Empty as it's just a customization endpoint
+    }
+
+    /**
      * Generate the view-model for the framework
      */
     open fun generateViewModel(framework: Framework): FrameworkViewConfigBuilder {
@@ -170,11 +190,48 @@ abstract class PavedRoadFramework(
         val dataModel = generateDataModel(framework)
         customizeDataModel(dataModel)
 
+        insertReferencedReportValidatorIfNeeded(dataModel)
+
         dataModel.build(
             into = datalandProject,
             buildApiController = enabledFeatures.contains(FrameworkGenerationFeatures.BackendApiController),
             privateFrameworkBoolean = isPrivateFramework,
         )
+    }
+
+    private fun compileQaModel(datalandProject: DatalandRepository) {
+        if (!enabledFeatures.contains(FrameworkGenerationFeatures.QaModel)) {
+            return
+        }
+        val qaModelBuilder = generateQaModel(framework)
+        customizeQaModel(qaModelBuilder)
+
+        qaModelBuilder.build(
+            into = datalandProject,
+        )
+    }
+
+    private fun insertReferencedReportValidatorIfNeeded(dataModel: FrameworkDataModelBuilder) {
+        val referencedReports = framework.root.nestedChildren.find { it is ReportPreuploadComponent }
+        if (referencedReports != null) {
+            val referencedReportsPath = referencedReports.getKotlinFieldAccessor()
+            val extendedDocumentFileReferences =
+                framework.root.nestedChildren.flatMap { it.getExtendedDocumentReference() }.toList()
+
+            val validatorPackage = dataModel.rootPackageBuilder.addPackage("validator")
+            val referencedReportValidatorBuilder = ReferencedReportValidatorBuilder(
+                validatorPackage,
+                dataModel.rootDataModelClass,
+                framework.identifier,
+                referencedReportsPath,
+                extendedDocumentFileReferences,
+            )
+            validatorPackage.childElements.add(referencedReportValidatorBuilder)
+
+            dataModel.rootDataModelClass.annotations.add(
+                Annotation(referencedReportValidatorBuilder.fullyQualifiedName),
+            )
+        }
     }
 
     private fun compileViewModel(datalandProject: DatalandRepository) {
@@ -224,11 +281,13 @@ abstract class PavedRoadFramework(
         customizeHighLevelIntermediateRepresentation(frameworkIntermediateRepresentation)
 
         compileDataModel(datalandProject)
+        compileQaModel(datalandProject)
         compileViewModel(datalandProject)
         compileUploadModel(datalandProject)
         compileFixtureGenerator(datalandProject)
 
         FrameworkRegistryImportsUpdater().update(datalandProject)
+        datalandProject.gradleInterface.executeGradleTasks(listOf(":dataland-frontend:npm_run_typecheck"))
         diagnostics.finalizeDiagnosticStream()
         logger.info("✔ Framework toolbox finished for framework $identifier ✨")
     }

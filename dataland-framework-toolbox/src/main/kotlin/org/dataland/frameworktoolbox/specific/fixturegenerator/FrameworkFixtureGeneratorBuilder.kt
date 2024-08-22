@@ -7,7 +7,7 @@ import org.dataland.frameworktoolbox.utils.LoggerDelegate
 import org.dataland.frameworktoolbox.utils.Naming.getNameFromLabel
 import org.dataland.frameworktoolbox.utils.capitalizeEn
 import org.dataland.frameworktoolbox.utils.freemarker.FreeMarker
-import org.dataland.frameworktoolbox.utils.typescript.EsLintRunner
+import org.dataland.frameworktoolbox.utils.typescript.EsLintPrettierRunner
 import org.dataland.frameworktoolbox.utils.typescript.TypeScriptImport
 import java.io.FileWriter
 import java.nio.file.Path
@@ -136,6 +136,6 @@ class FrameworkFixtureGeneratorBuilder(
             ),
         )
 
-        EsLintRunner(into, generatedTsFiles).run()
+        EsLintPrettierRunner(into, generatedTsFiles).run()
     }
 }

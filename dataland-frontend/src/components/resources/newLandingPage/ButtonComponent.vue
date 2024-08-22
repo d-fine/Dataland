@@ -9,15 +9,15 @@ const { label, buttonType, ariaLabel } = defineProps({
   label: String,
   buttonType: {
     type: String,
-    default: "button-component",
+    default: 'button-component',
   },
   ariaLabel: String,
 });
 
-const emit = defineEmits<(event: "click") => void>();
+const emit = defineEmits<(event: 'click') => void>();
 
 const handleClick = (): void => {
-  emit("click");
+  emit('click');
 };
 </script>
 

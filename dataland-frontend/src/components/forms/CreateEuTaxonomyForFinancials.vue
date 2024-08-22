@@ -2,7 +2,7 @@
   <Card class="col-12 page-wrapper-card p-3">
     <template #title>
       <span data-test="pageWrapperTitle"
-        >{{ editMode ? "Edit" : "Create" }} EU Taxonomy Dataset for a Financial Company/Service</span
+        >{{ editMode ? 'Edit' : 'Create' }} EU Taxonomy Dataset for a Financial Company/Service</span
       >
     </template>
     <template #content>
@@ -303,32 +303,32 @@
 
 <script lang="ts">
 // @ts-nocheck
-import SuccessMessage from "@/components/messages/SuccessMessage.vue";
-import SubmitSideBar from "@/components/forms/parts/SubmitSideBar.vue";
-import { FormKit } from "@formkit/vue";
+import SuccessMessage from '@/components/messages/SuccessMessage.vue';
+import SubmitSideBar from '@/components/forms/parts/SubmitSideBar.vue';
+import { FormKit } from '@formkit/vue';
 
-import EuTaxonomyBasicInformation from "@/components/forms/parts/EuTaxonomyBasicInformation.vue";
+import EuTaxonomyBasicInformation from '@/components/forms/parts/EuTaxonomyBasicInformation.vue';
 
-import PrimeButton from "primevue/button";
-import MultiSelect from "primevue/multiselect";
-import UploadFormHeader from "@/components/forms/parts/elements/basic/UploadFormHeader.vue";
-import Calendar from "primevue/calendar";
-import FailMessage from "@/components/messages/FailMessage.vue";
-import { humanizeStringOrNumber } from "@/utils/StringFormatter";
-import { ApiClientProvider } from "@/services/ApiClients";
-import Card from "primevue/card";
-import { useRoute } from "vue-router";
-import { defineComponent, inject, nextTick } from "vue";
-import type Keycloak from "keycloak-js";
-import { assertDefined } from "@/utils/TypeScriptUtils";
-import { checkIfAllUploadedReportsAreReferencedInDataModel, checkCustomInputs } from "@/utils/ValidationsUtils";
-import { getHyphenatedDate } from "@/utils/DataFormatUtils";
+import PrimeButton from 'primevue/button';
+import MultiSelect from 'primevue/multiselect';
+import UploadFormHeader from '@/components/forms/parts/elements/basic/UploadFormHeader.vue';
+import Calendar from 'primevue/calendar';
+import FailMessage from '@/components/messages/FailMessage.vue';
+import { humanizeStringOrNumber } from '@/utils/StringFormatter';
+import { ApiClientProvider } from '@/services/ApiClients';
+import Card from 'primevue/card';
+import { useRoute } from 'vue-router';
+import { defineComponent, inject, nextTick } from 'vue';
+import type Keycloak from 'keycloak-js';
+import { assertDefined } from '@/utils/TypeScriptUtils';
+import { checkIfAllUploadedReportsAreReferencedInDataModel, checkCustomInputs } from '@/utils/ValidationsUtils';
+import { getHyphenatedDate } from '@/utils/DataFormatUtils';
 import {
   euTaxonomyKpiInfoMappings,
   euTaxonomyKpiNameMappings,
   euTaxonomyKPIsModel,
   getKpiFieldNameForOneFinancialServiceType,
-} from "@/components/forms/parts/kpiSelection/EuTaxonomyKPIsModel";
+} from '@/components/forms/parts/kpiSelection/EuTaxonomyKPIsModel';
 import {
   AssuranceDataPointValueEnum,
   type CompanyAssociatedDataEuTaxonomyDataForFinancials,
@@ -336,26 +336,28 @@ import {
   DataTypeEnum,
   type EuTaxonomyDataForFinancials,
   EuTaxonomyDataForFinancialsFinancialServicesTypesEnum,
-} from "@clients/backend";
-import { type AxiosResponse } from "axios";
-import { type ObjectType, updateObject } from "@/utils/UpdateObjectUtils";
-import JumpLinksSection from "@/components/forms/parts/JumpLinksSection.vue";
-import SubmitButton from "@/components/forms/parts/SubmitButton.vue";
-import { type FormKitNode } from "@formkit/core";
-import UploadReports from "@/components/forms/parts/UploadReports.vue";
-import { formatAxiosErrorMessage } from "@/utils/AxiosErrorMessageFormatter";
-import DataPointFormWithToggle from "@/components/forms/parts/kpiSelection/DataPointFormWithToggle.vue";
-import { uploadFiles, type DocumentToUpload, getFileName, getFileReferenceByFileName } from "@/utils/FileUploadUtils";
-import { isValidFileName, noReportLabel } from "@/utils/DataSource";
-import SingleSelectFormElement from "@/components/forms/parts/elements/basic/SingleSelectFormElement.vue";
+} from '@clients/backend';
+import { type AxiosResponse } from 'axios';
+import { type ObjectType, updateObject } from '@/utils/UpdateObjectUtils';
+import JumpLinksSection from '@/components/forms/parts/JumpLinksSection.vue';
+import SubmitButton from '@/components/forms/parts/SubmitButton.vue';
+import { type FormKitNode } from '@formkit/core';
+import UploadReports from '@/components/forms/parts/UploadReports.vue';
+import { formatAxiosErrorMessage } from '@/utils/AxiosErrorMessageFormatter';
+import DataPointFormWithToggle from '@/components/forms/parts/kpiSelection/DataPointFormWithToggle.vue';
+import { uploadFiles, type DocumentToUpload, getFileName, getFileReferenceByFileName } from '@/utils/FileUploadUtils';
+import { isValidFileName, noReportLabel } from '@/utils/DataSource';
+import SingleSelectFormElement from '@/components/forms/parts/elements/basic/SingleSelectFormElement.vue';
+import { type ClickableLink } from '@/types/CustomPropTypes';
+import { hasUserCompanyOwnerOrDataUploaderRole } from '@/utils/CompanyRolesUtils';
 
 export default defineComponent({
   setup() {
     return {
-      getKeycloakPromise: inject<() => Promise<Keycloak>>("getKeycloakPromise"),
+      getKeycloakPromise: inject<() => Promise<Keycloak>>('getKeycloakPromise'),
     };
   },
-  name: "CreateEuTaxonomyForFinancials",
+  name: 'CreateEuTaxonomyForFinancials',
   components: {
     SingleSelectFormElement,
     JumpLinksSection,
@@ -373,15 +375,15 @@ export default defineComponent({
     MultiSelect,
     DataPointFormWithToggle,
   },
-  emits: ["datasetCreated"],
+  emits: ['datasetCreated'],
   data() {
     return {
       isMounted: false,
-      formId: "createEuTaxonomyForFinancialsForm",
+      formId: 'createEuTaxonomyForFinancialsForm',
       formInputsModel: {} as CompanyAssociatedDataEuTaxonomyDataForFinancials,
       fiscalYearEndAsDate: null as Date | null,
-      fiscalYearEnd: "",
-      currentReportValue: "" as string,
+      fiscalYearEnd: '',
+      currentReportValue: '' as string,
       reportingPeriod: undefined as undefined | Date,
       assuranceData: {
         None: humanizeStringOrNumber(AssuranceDataPointValueEnum.None),
@@ -401,42 +403,42 @@ export default defineComponent({
       messageCount: 0,
       postEuTaxonomyDataForFinancialsResponse: null as AxiosResponse<DataMetaInformation> | null,
       onThisPageLinksStart: [
-        { label: "Upload company reports", value: "uploadReports" },
-        { label: "Basic information", value: "basicInformation" },
-        { label: "Assurance", value: "assurance" },
-        { label: "Add KPIs", value: "addKpis" },
+        { label: 'Upload company reports', value: 'uploadReports' },
+        { label: 'Basic information', value: 'basicInformation' },
+        { label: 'Assurance', value: 'assurance' },
+        { label: 'Add KPIs', value: 'addKpis' },
       ],
-      onThisPageLinks: [] as { label: string; value: string }[],
+      onThisPageLinks: [] as ClickableLink[],
       financialServiceOptionsInDropdown: [
         {
-          label: "Credit Institution",
+          label: 'Credit Institution',
           value: getKpiFieldNameForOneFinancialServiceType(
-            EuTaxonomyDataForFinancialsFinancialServicesTypesEnum.CreditInstitution,
+            EuTaxonomyDataForFinancialsFinancialServicesTypesEnum.CreditInstitution
           ),
         },
         {
-          label: "Investment Firm",
+          label: 'Investment Firm',
           value: getKpiFieldNameForOneFinancialServiceType(
-            EuTaxonomyDataForFinancialsFinancialServicesTypesEnum.InvestmentFirm,
+            EuTaxonomyDataForFinancialsFinancialServicesTypesEnum.InvestmentFirm
           ),
         },
         {
-          label: "Insurance & Re-insurance",
+          label: 'Insurance & Re-insurance',
           value: getKpiFieldNameForOneFinancialServiceType(
-            EuTaxonomyDataForFinancialsFinancialServicesTypesEnum.InsuranceOrReinsurance,
+            EuTaxonomyDataForFinancialsFinancialServicesTypesEnum.InsuranceOrReinsurance
           ),
         },
         {
-          label: "Asset Management",
+          label: 'Asset Management',
           value: getKpiFieldNameForOneFinancialServiceType(
-            EuTaxonomyDataForFinancialsFinancialServicesTypesEnum.AssetManagement,
+            EuTaxonomyDataForFinancialsFinancialServicesTypesEnum.AssetManagement
           ),
         },
       ],
       selectedFinancialServiceOptions: [] as { label: string; value: string }[],
       confirmedSelectedFinancialServiceOptions: [] as { label: string; value: string }[],
       confirmedSelectedFinancialServiceTypes: [] as EuTaxonomyDataForFinancialsFinancialServicesTypesEnum[],
-      message: "",
+      message: '',
       namesAndReferencesOfAllCompanyReportsForTheDataset: {},
       templateDataset: undefined as undefined | EuTaxonomyDataForFinancials,
       isValidFileName: isValidFileName,
@@ -459,7 +461,7 @@ export default defineComponent({
     fileReferenceAccordingToName(): string {
       return getFileReferenceByFileName(
         this.currentReportValue,
-        this.namesAndReferencesOfAllCompanyReportsForTheDataset,
+        this.namesAndReferencesOfAllCompanyReportsForTheDataset
       );
     },
   },
@@ -468,7 +470,7 @@ export default defineComponent({
       this.confirmedSelectedFinancialServiceTypes = newValue.map(
         (financialServiceOption: { label: string; value: string }): string => {
           return euTaxonomyKPIsModel.kpisFieldNameToFinancialServiceType[financialServiceOption.value] as string;
-        },
+        }
       );
     },
   },
@@ -480,7 +482,7 @@ export default defineComponent({
   },
   created() {
     const dataId = this.route.query.templateDataId;
-    if (typeof dataId === "string" && dataId !== "") {
+    if (typeof dataId === 'string' && dataId !== '') {
       this.editMode = true;
       this.fetchTemplateData(dataId);
     }
@@ -519,7 +521,7 @@ export default defineComponent({
           this.extractFinancialServiceTypes(companyAssociatedEuTaxonomyData.data);
 
           (companyAssociatedEuTaxonomyData.data as ObjectType).kpiSections = this.extractKpis(
-            companyAssociatedEuTaxonomyData.data as ObjectType,
+            companyAssociatedEuTaxonomyData.data as ObjectType
           );
           this.waitingForData = false;
 
@@ -575,9 +577,9 @@ export default defineComponent({
             return arrayWithCompanyKpiTypes?.includes(
               euTaxonomyKPIsModel.kpisFieldNameToFinancialServiceType[
                 financialServiceOption.value
-              ] as EuTaxonomyDataForFinancialsFinancialServicesTypesEnum,
+              ] as EuTaxonomyDataForFinancialsFinancialServicesTypesEnum
             );
-          },
+          }
         );
         this.confirmSelectedKPIs();
       }
@@ -609,7 +611,7 @@ export default defineComponent({
         .reduce((all, one) => ({ ...all, ...one }), []);
 
       const kpis = Object.keys(kpiSections)
-        .filter((financialServiceTypeKey) => financialServiceTypeKey !== "assetManagementKpis")
+        .filter((financialServiceTypeKey) => financialServiceTypeKey !== 'assetManagementKpis')
         .map((financialServiceTypeKey) => {
           const kpi = { [financialServiceTypeKey]: kpiSections[financialServiceTypeKey] };
           if (kpiSections[financialServiceTypeKey]) {
@@ -636,7 +638,7 @@ export default defineComponent({
 
         // JSON.parse/stringify used to clone the formInputsModel in order to stop Proxy refreneces
         const clonedFormInputsModel = JSON.parse(
-          JSON.stringify(this.formInputsModel),
+          JSON.stringify(this.formInputsModel)
         ) as unknown as CompanyAssociatedDataEuTaxonomyDataForFinancials;
         const kpiSections = (clonedFormInputsModel.data as ObjectType).kpiSections;
         delete (clonedFormInputsModel.data as ObjectType).kpiSections;
@@ -647,15 +649,24 @@ export default defineComponent({
 
         checkIfAllUploadedReportsAreReferencedInDataModel(
           this.formInputsModel.data as ObjectType,
-          Object.keys(this.namesAndReferencesOfAllCompanyReportsForTheDataset),
+          Object.keys(this.namesAndReferencesOfAllCompanyReportsForTheDataset)
         );
         await uploadFiles(this.documentsToUpload, assertDefined(this.getKeycloakPromise));
         const euTaxonomyDataForFinancialsControllerApi = new ApiClientProvider(
-          assertDefined(this.getKeycloakPromise)(),
+          assertDefined(this.getKeycloakPromise)()
         ).getUnifiedFrameworkDataController(DataTypeEnum.EutaxonomyFinancials);
-        this.postEuTaxonomyDataForFinancialsResponse =
-          await euTaxonomyDataForFinancialsControllerApi.postFrameworkData(clonedFormInputsModel);
-        this.$emit("datasetCreated");
+
+        const isCompanyOwnerOrDataUploader = await hasUserCompanyOwnerOrDataUploaderRole(
+          this.formInputsModel.companyId,
+          this.getKeycloakPromise
+        );
+
+        this.postEuTaxonomyDataForFinancialsResponse = await euTaxonomyDataForFinancialsControllerApi.postFrameworkData(
+          clonedFormInputsModel,
+          isCompanyOwnerOrDataUploader
+        );
+
+        this.$emit('datasetCreated');
       } catch (error) {
         this.messageCount++;
         console.error(error);
@@ -671,7 +682,7 @@ export default defineComponent({
      */
     removeKpisSection(value: string) {
       const filtered = this.confirmedSelectedFinancialServiceOptions.filter(
-        (financialServiceOption: { label: string; value: string }) => financialServiceOption.value !== value,
+        (financialServiceOption: { label: string; value: string }) => financialServiceOption.value !== value
       );
 
       this.confirmedSelectedFinancialServiceOptions = filtered;

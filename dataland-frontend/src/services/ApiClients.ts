@@ -1,15 +1,20 @@
-import { type Configuration } from "@clients/backend/configuration";
-import { DocumentControllerApi } from "@clients/documentmanager";
-import { QaControllerApi } from "@clients/qaservice";
-import type Keycloak from "keycloak-js";
-import { ApiKeyControllerApi } from "@clients/apikeymanager";
-import { RequestControllerApi, type RequestControllerApiInterface } from "@clients/communitymanager";
-import axios, { type AxiosInstance } from "axios";
-import { updateTokenAndItsExpiryTimestampAndStoreBoth } from "@/utils/SessionTimeoutUtils";
-import { type FrameworkDataTypes } from "@/utils/api/FrameworkDataTypes";
-import { type PublicFrameworkDataApi } from "@/utils/api/UnifiedFrameworkDataApi";
-import { getUnifiedFrameworkDataControllerFromConfiguration } from "@/utils/api/FrameworkApiClient";
-import * as backendApis from "@clients/backend/api";
+import { type Configuration } from '@clients/backend/configuration';
+import { DocumentControllerApi } from '@clients/documentmanager';
+import { QaControllerApi } from '@clients/qaservice';
+import type Keycloak from 'keycloak-js';
+import { ApiKeyControllerApi } from '@clients/apikeymanager';
+import {
+  CompanyRolesControllerApi,
+  type CompanyRolesControllerApiInterface,
+  RequestControllerApi,
+  type RequestControllerApiInterface,
+} from '@clients/communitymanager';
+import axios, { type AxiosInstance } from 'axios';
+import { updateTokenAndItsExpiryTimestampAndStoreBoth } from '@/utils/SessionTimeoutUtils';
+import { type FrameworkDataTypes } from '@/utils/api/FrameworkDataTypes';
+import { type PublicFrameworkDataApi } from '@/utils/api/UnifiedFrameworkDataApi';
+import { getUnifiedFrameworkDataControllerFromConfiguration } from '@/utils/api/FrameworkApiClient';
+import * as backendApis from '@clients/backend/api';
 
 interface ApiBackendClients {
   actuator: backendApis.ActuatorApiInterface;
@@ -22,13 +27,14 @@ interface ApiClients {
   apiKeyController: ApiKeyControllerApi;
   documentController: DocumentControllerApi;
   requestController: RequestControllerApiInterface;
+  companyRolesController: CompanyRolesControllerApiInterface;
   qaController: QaControllerApi;
 }
 
 type ApiClientConstructor<T> = new (
   configuration: Configuration | undefined,
   basePath: string,
-  axios: AxiosInstance,
+  axios: AxiosInstance
 ) => T;
 type ApiClientFactory = <T>(constructor: ApiClientConstructor<T>) => T;
 
@@ -53,16 +59,16 @@ export class ApiClientProvider {
       async (config) => {
         const bearerToken = await this.getBearerToken();
         if (bearerToken) {
-          config.headers["Authorization"] = `Bearer ${bearerToken}`;
+          config.headers['Authorization'] = `Bearer ${bearerToken}`;
         }
         return config;
       },
-      (error) => Promise.reject(error),
+      (error) => Promise.reject(error)
     );
   }
 
   private constructBackendClients(): ApiBackendClients {
-    const backendClientFactory = this.getClientFactory("/api");
+    const backendClientFactory = this.getClientFactory('/api');
     return {
       actuator: backendClientFactory(backendApis.ActuatorApi),
       companyDataController: backendClientFactory(backendApis.CompanyDataControllerApi),
@@ -73,10 +79,11 @@ export class ApiClientProvider {
 
   private constructApiClients(): ApiClients {
     return {
-      apiKeyController: this.getClientFactory("/api-keys")(ApiKeyControllerApi),
-      documentController: this.getClientFactory("/documents")(DocumentControllerApi),
-      requestController: this.getClientFactory("/community")(RequestControllerApi),
-      qaController: this.getClientFactory("/qa")(QaControllerApi),
+      apiKeyController: this.getClientFactory('/api-keys')(ApiKeyControllerApi),
+      documentController: this.getClientFactory('/documents')(DocumentControllerApi),
+      requestController: this.getClientFactory('/community')(RequestControllerApi),
+      companyRolesController: this.getClientFactory('/community')(CompanyRolesControllerApi),
+      qaController: this.getClientFactory('/qa')(QaControllerApi),
     };
   }
 
@@ -103,8 +110,8 @@ export class ApiClientProvider {
    * @returns the unified API client
    */
   getUnifiedFrameworkDataController<K extends keyof FrameworkDataTypes>(
-    framework: K,
-  ): PublicFrameworkDataApi<FrameworkDataTypes[K]["data"]> {
+    framework: K
+  ): PublicFrameworkDataApi<FrameworkDataTypes[K]['data']> {
     return getUnifiedFrameworkDataControllerFromConfiguration(framework, undefined, this.axiosInstance);
   }
 }

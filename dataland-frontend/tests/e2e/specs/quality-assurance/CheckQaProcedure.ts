@@ -4,10 +4,10 @@ import {
   type EuTaxonomyDataForFinancials,
   type LksgData,
   type StoredCompany,
-} from "@clients/backend";
-import { describeIf } from "@e2e/support/TestUtility";
-import { getKeycloakToken, login } from "@e2e/utils/Auth";
-import { generateDummyCompanyInformation, uploadCompanyViaApi } from "@e2e/utils/CompanyUpload";
+} from '@clients/backend';
+import { describeIf } from '@e2e/support/TestUtility';
+import { getKeycloakToken, login } from '@e2e/utils/Auth';
+import { generateDummyCompanyInformation, uploadCompanyViaApi } from '@e2e/utils/CompanyUpload';
 import {
   admin_name,
   admin_pw,
@@ -16,18 +16,18 @@ import {
   reviewer_pw,
   uploader_name,
   uploader_pw,
-} from "@e2e/utils/Cypress";
-import { type FixtureData, getPreparedFixture } from "@sharedUtils/Fixtures";
+} from '@e2e/utils/Cypress';
+import { type FixtureData, getPreparedFixture } from '@sharedUtils/Fixtures';
 import {
   uploadFrameworkDataForLegacyFramework,
   uploadFrameworkDataForPublicToolboxFramework,
-} from "@e2e/utils/FrameworkUpload";
-import LksgBaseFrameworkDefinition from "@/frameworks/lksg/BaseFrameworkDefinition";
+} from '@e2e/utils/FrameworkUpload';
+import LksgBaseFrameworkDefinition from '@/frameworks/lksg/BaseFrameworkDefinition';
 
 describeIf(
-  "As a user, I expect to be able to add a new dataset and see it as pending",
+  'As a user, I expect to be able to add a new dataset and see it as pending',
   {
-    executionEnvironments: ["developmentLocal", "ci", "developmentCd"],
+    executionEnvironments: ['developmentLocal', 'ci', 'developmentCd'],
   },
   function () {
     let storedCompany: StoredCompany;
@@ -35,11 +35,11 @@ describeIf(
     let preparedLksgFixtures: Array<FixtureData<LksgData>>;
 
     before(function () {
-      cy.fixture("CompanyInformationWithEuTaxonomyDataForFinancialsPreparedFixtures").then(function (jsonContent) {
+      cy.fixture('CompanyInformationWithEuTaxonomyDataForFinancialsPreparedFixtures').then(function (jsonContent) {
         preparedEuTaxonomyFixtures = jsonContent as Array<FixtureData<EuTaxonomyDataForFinancials>>;
       });
 
-      cy.fixture("CompanyInformationWithLksgPreparedFixtures").then(function (jsonContent) {
+      cy.fixture('CompanyInformationWithLksgPreparedFixtures').then(function (jsonContent) {
         preparedLksgFixtures = jsonContent as Array<FixtureData<LksgData>>;
       });
 
@@ -49,42 +49,42 @@ describeIf(
       });
     });
 
-    it("Check whether newly added dataset has Pending status and can be approved by a reviewer", () => {
-      const data = getPreparedFixture("company-for-all-types", preparedEuTaxonomyFixtures);
+    it('Check whether newly added dataset has Pending status and can be approved by a reviewer', () => {
+      const data = getPreparedFixture('company-for-all-types', preparedEuTaxonomyFixtures);
       getKeycloakToken(uploader_name, uploader_pw).then((token: string) => {
         return uploadFrameworkDataForLegacyFramework(
           DataTypeEnum.EutaxonomyFinancials,
           token,
           storedCompany.companyId,
-          "2022",
+          '2022',
           data.t,
-          false,
+          false
         ).then((dataMetaInfo) => {
-          cy.intercept(`**/api/metadata/${dataMetaInfo.dataId}`).as("getMetadataOfUploadedDataset");
-          cy.intercept(`**/api/companies/${storedCompany.companyId}`).as("getCompanyInformationOfUploadedCompany");
+          cy.intercept(`**/api/metadata/${dataMetaInfo.dataId}`).as('getMetadataOfUploadedDataset');
+          cy.intercept(`**/api/companies/${storedCompany.companyId}`).as('getCompanyInformationOfUploadedCompany');
           testSubmittedDatasetIsInReviewListAndAcceptIt(storedCompany);
         });
       });
     });
 
-    it("Check whether newly added dataset has Rejected status and can be edited", () => {
-      const data = getPreparedFixture("lksg-all-fields", preparedLksgFixtures);
+    it('Check whether newly added dataset has Rejected status and can be edited', () => {
+      const data = getPreparedFixture('lksg-all-fields', preparedLksgFixtures);
       getKeycloakToken(uploader_name, uploader_pw).then((token: string) => {
         return uploadFrameworkDataForPublicToolboxFramework(
           LksgBaseFrameworkDefinition,
           token,
           storedCompany.companyId,
-          "2022",
+          '2022',
           data.t,
-          false,
+          false
         ).then((dataMetaInfo) => {
-          cy.intercept(`**/api/metadata/${dataMetaInfo.dataId}`).as("getMetadataOfUploadedDataset");
-          cy.intercept(`**/api/companies/${storedCompany.companyId}`).as("getCompanyInformationOfUploadedCompany");
+          cy.intercept(`**/api/metadata/${dataMetaInfo.dataId}`).as('getMetadataOfUploadedDataset');
+          cy.intercept(`**/api/companies/${storedCompany.companyId}`).as('getCompanyInformationOfUploadedCompany');
           testSubmittedDatasetIsInReviewListAndRejectIt(storedCompany, dataMetaInfo);
         });
       });
     });
-  },
+  }
 );
 
 /**
@@ -95,7 +95,7 @@ function testSubmittedDatasetIsInReviewListAndAcceptIt(storedCompany: StoredComp
   const companyName = storedCompany.companyInformation.companyName;
   login(uploader_name, uploader_pw);
 
-  testDatasetPresentWithCorrectStatus(companyName, "PENDING");
+  testDatasetPresentWithCorrectStatus(companyName, 'PENDING');
 
   safeLogout();
   login(reviewer_name, reviewer_pw);
@@ -104,30 +104,30 @@ function testSubmittedDatasetIsInReviewListAndAcceptIt(storedCompany: StoredComp
 
   cy.get('[data-test="qa-review-section"] .p-datatable-tbody')
     .last()
-    .should("exist")
-    .get(".qa-review-company-name")
-    .should("contain", companyName);
+    .should('exist')
+    .get('.qa-review-company-name')
+    .should('contain', companyName);
 
   cy.get('[data-test="qa-review-section"] .p-datatable-tbody tr').last().click();
 
-  cy.get('[data-test="qaRejectButton"').should("exist");
-  cy.get('span[data-test="hideEmptyDataToggleCaption"]').should("exist");
-  cy.get("span[class=p-inputswitch-slider]").should("exist");
-  cy.get('div[data-test="hideEmptyDataToggleButton"]').should("not.have.class", "p-inputswitch-checked");
+  cy.get('[data-test="qaRejectButton"').should('exist');
+  cy.get('span[data-test="hideEmptyDataToggleCaption"]').should('exist');
+  cy.get('span[class=p-inputswitch-slider]').should('exist');
+  cy.get('div[data-test="hideEmptyDataToggleButton"]').should('not.have.class', 'p-inputswitch-checked');
 
-  cy.get('[data-test="qaApproveButton"').should("exist").click();
+  cy.get('[data-test="qaApproveButton"').should('exist').click();
 
   safeLogout();
   login(uploader_name, uploader_pw);
 
-  testDatasetPresentWithCorrectStatus(companyName, "APPROVED");
+  testDatasetPresentWithCorrectStatus(companyName, 'APPROVED');
 }
 
 /**
  * Validates that the view page is in review mode by ensuring that at least one hidden-field icon is displayed
  */
 function validateThatViewPageIsInReviewMode(): void {
-  cy.get("i[data-test=hidden-icon]").should("exist");
+  cy.get('i[data-test=hidden-icon]').should('exist');
 }
 
 /**
@@ -137,31 +137,31 @@ function validateThatViewPageIsInReviewMode(): void {
  */
 function testSubmittedDatasetIsInReviewListAndRejectIt(
   storedCompany: StoredCompany,
-  dataMetaInfo: DataMetaInformation,
+  dataMetaInfo: DataMetaInformation
 ): void {
   login(reviewer_name, reviewer_pw);
 
   viewRecentlyUploadedDatasetsInQaTable();
 
-  cy.contains("td", dataMetaInfo.dataId).click();
+  cy.contains('td', dataMetaInfo.dataId).click();
 
   validateThatViewPageIsInReviewMode();
-  cy.get('[data-test="qaRejectButton"').should("exist").click();
+  cy.get('[data-test="qaRejectButton"').should('exist').click();
 
   safeLogout();
   login(uploader_name, uploader_pw);
 
-  testDatasetPresentWithCorrectStatus(storedCompany.companyInformation.companyName, "REJECTED");
+  testDatasetPresentWithCorrectStatus(storedCompany.companyInformation.companyName, 'REJECTED');
 
-  cy.intercept(`**/api/data/lksg/${dataMetaInfo.dataId}`).as("getUploadedDataset");
+  cy.intercept(`**/api/data/lksg/${dataMetaInfo.dataId}`).as('getUploadedDataset');
   cy.visitAndCheckAppMount(`/companies/${storedCompany.companyId}/frameworks/lksg/${dataMetaInfo.dataId}`);
-  cy.wait("@getUploadedDataset");
-  cy.get('[data-test="datasetDisplayStatusContainer"]').should("exist");
-  cy.get('button[data-test="editDatasetButton"]').should("exist").click();
+  cy.wait('@getUploadedDataset');
+  cy.get('[data-test="datasetDisplayStatusContainer"]').should('exist');
+  cy.get('button[data-test="editDatasetButton"]').should('exist').click();
 
   cy.url().should(
-    "eq",
-    getBaseUrl() + `/companies/${storedCompany.companyId}/frameworks/lksg/upload?templateDataId=${dataMetaInfo.dataId}`,
+    'eq',
+    getBaseUrl() + `/companies/${storedCompany.companyId}/frameworks/lksg/upload?templateDataId=${dataMetaInfo.dataId}`
   );
 }
 
@@ -169,15 +169,15 @@ function testSubmittedDatasetIsInReviewListAndRejectIt(
  * Visits the quality assurance page and switches to the last table page
  */
 function viewRecentlyUploadedDatasetsInQaTable(): void {
-  cy.visitAndCheckAppMount("/qualityassurance");
-  cy.contains("span", "REVIEW");
-  cy.get(".p-paginator-last", { timeout: Cypress.env("medium_timeout_in_ms") as number }).then((element) => {
-    if (element.prop("disabled")) {
+  cy.visitAndCheckAppMount('/qualityassurance');
+  cy.contains('span', 'REVIEW');
+  cy.get('.p-paginator-last', { timeout: Cypress.env('medium_timeout_in_ms') as number }).then((element) => {
+    if (element.prop('disabled')) {
       return;
     }
-    element.trigger("click");
+    element.trigger('click');
   });
-  cy.wait("@getMetadataOfUploadedDataset").wait("@getCompanyInformationOfUploadedCompany");
+  cy.wait('@getMetadataOfUploadedDataset').wait('@getCompanyInformationOfUploadedCompany');
 }
 
 /**
@@ -186,31 +186,28 @@ function viewRecentlyUploadedDatasetsInQaTable(): void {
  * @param status The current expected status of the dataset
  */
 function testDatasetPresentWithCorrectStatus(companyName: string, status: string): void {
-  cy.intercept("**/api/users/**").as("getMyDatasets");
-  cy.visitAndCheckAppMount("/datasets");
-  cy.wait("@getMyDatasets");
+  cy.intercept('**/api/users/**').as('getMyDatasets');
+  cy.visitAndCheckAppMount('/datasets');
+  cy.wait('@getMyDatasets');
 
   cy.get('[data-test="datasets-table"] .p-datatable-tbody tr', {
-    timeout: Cypress.env("medium_timeout_in_ms") as number,
+    timeout: Cypress.env('medium_timeout_in_ms') as number,
   })
     .first()
-    .find(".data-test-company-name")
-    .should("contain", companyName);
+    .find('.data-test-company-name')
+    .should('contain', companyName);
 
-  cy.get('[data-test="datasets-table"]').get('span[data-test="qa-status"]').should("contain", status);
+  cy.get('[data-test="datasets-table"]').get('span[data-test="qa-status"]').should('contain', status);
 }
 
 /**
  * Logs the user out without testing the url
  */
 function safeLogout(): void {
-  cy.intercept("**/api-keys/getApiKeyMetaInfoForUser", { body: [] }).as("getApiKeyMetaInfoForUser");
-  cy.visitAndCheckAppMount("/api-key")
-    .wait("@getApiKeyMetaInfoForUser")
-    .get("div[id='profile-picture-dropdown-toggle']")
-    .click()
-    .get("a[id='profile-picture-dropdown-logout-anchor']")
-    .click();
-  cy.url().should("eq", getBaseUrl() + "/");
-  cy.contains("a", "Login");
+  cy.intercept('**/api-keys/getApiKeyMetaInfoForUser', { body: [] }).as('getApiKeyMetaInfoForUser');
+  cy.visitAndCheckAppMount('/api-key').wait('@getApiKeyMetaInfoForUser');
+  cy.get("div[id='profile-picture-dropdown-toggle']").click();
+  cy.get("a[id='profile-picture-dropdown-logout-anchor']").click();
+  cy.url().should('eq', getBaseUrl() + '/');
+  cy.contains('a', 'Login');
 }

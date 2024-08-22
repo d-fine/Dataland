@@ -1,7 +1,7 @@
-import { type DataMetaInformation, DataTypeEnum, QaStatus } from "@clients/backend";
-import { DataMetaInformationGenerator } from "@e2e/fixtures/data_meta_information/DataMetaInformationFixtures";
-import { faker } from "@faker-js/faker";
-import { range } from "@/utils/ArrayUtils";
+import { type DataMetaInformation, DataTypeEnum, QaStatus } from '@clients/backend';
+import { DataMetaInformationGenerator } from '@e2e/fixtures/data_meta_information/DataMetaInformationFixtures';
+import { faker } from '@faker-js/faker';
+import { range } from '@/utils/ArrayUtils';
 
 /**
  * Generates a list of data meta information for some data types

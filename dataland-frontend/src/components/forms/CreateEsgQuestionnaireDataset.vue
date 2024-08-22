@@ -28,7 +28,7 @@
                 :label="category.label"
                 :name="category.name"
               >
-                <div class="" v-for="subcategory in category.subcategories" :key="subcategory">
+                <div class="" v-for="subcategory in category.subcategories" :key="subcategory.name">
                   <template v-if="subcategoryVisibility.get(subcategory) ?? true">
                     <div class="uploadFormSection grid">
                       <div class="col-3 p-3 topicLabel">
@@ -78,9 +78,9 @@
 
           <h4 id="topicTitles" class="title pt-3">On this page</h4>
           <ul>
-            <li v-for="category in esgQuestionnaireDataModel" :key="category">
+            <li v-for="category in esgQuestionnaireDataModel" :key="category.name">
               <ul>
-                <li v-for="subcategory in category.subcategories" :key="subcategory">
+                <li v-for="subcategory in category.subcategories" :key="subcategory.name">
                   <a
                     v-if="subcategoryVisibility.get(subcategory) ?? true"
                     @click="smoothScroll(`#${subcategory.name}`)"
@@ -96,72 +96,72 @@
   </Card>
 </template>
 <script lang="ts">
-// @ts-nocheck
-import { FormKit } from "@formkit/vue";
-import { ApiClientProvider } from "@/services/ApiClients";
-import Card from "primevue/card";
-import { computed, defineComponent, inject } from "vue";
-import type Keycloak from "keycloak-js";
-import { assertDefined } from "@/utils/TypeScriptUtils";
-import Tooltip from "primevue/tooltip";
-import PrimeButton from "primevue/button";
-import UploadFormHeader from "@/components/forms/parts/elements/basic/UploadFormHeader.vue";
-import YesNoFormField from "@/components/forms/parts/fields/YesNoFormField.vue";
-import Calendar from "primevue/calendar";
-import SuccessMessage from "@/components/messages/SuccessMessage.vue";
-import FailMessage from "@/components/messages/FailMessage.vue";
+import { FormKit } from '@formkit/vue';
+import { ApiClientProvider } from '@/services/ApiClients';
+import Card from 'primevue/card';
+import { computed, defineComponent, inject } from 'vue';
+import type Keycloak from 'keycloak-js';
+import { assertDefined } from '@/utils/TypeScriptUtils';
+import Tooltip from 'primevue/tooltip';
+import PrimeButton from 'primevue/button';
+import UploadFormHeader from '@/components/forms/parts/elements/basic/UploadFormHeader.vue';
+import YesNoFormField from '@/components/forms/parts/fields/YesNoFormField.vue';
+import Calendar from 'primevue/calendar';
+import SuccessMessage from '@/components/messages/SuccessMessage.vue';
+import FailMessage from '@/components/messages/FailMessage.vue';
 import {
   type CompanyAssociatedDataEsgQuestionnaireData,
   DataTypeEnum,
   type EsgQuestionnaireData,
-} from "@clients/backend";
-import { useRoute } from "vue-router";
-import { checkCustomInputs } from "@/utils/ValidationsUtils";
-import NaceCodeFormField from "@/components/forms/parts/fields/NaceCodeFormField.vue";
-import InputTextFormField from "@/components/forms/parts/fields/InputTextFormField.vue";
-import FreeTextFormField from "@/components/forms/parts/fields/FreeTextFormField.vue";
-import NumberFormField from "@/components/forms/parts/fields/NumberFormField.vue";
-import DateFormField from "@/components/forms/parts/fields/DateFormField.vue";
-import SingleSelectFormField from "@/components/forms/parts/fields/SingleSelectFormField.vue";
-import MultiSelectFormField from "@/components/forms/parts/fields/MultiSelectFormField.vue";
-import AddressFormField from "@/components/forms/parts/fields/AddressFormField.vue";
-import RadioButtonsFormField from "@/components/forms/parts/fields/RadioButtonsFormField.vue";
-import SubmitButton from "@/components/forms/parts/SubmitButton.vue";
-import SubmitSideBar from "@/components/forms/parts/SubmitSideBar.vue";
-import YesNoNaFormField from "@/components/forms/parts/fields/YesNoNaFormField.vue";
-import UploadReports from "@/components/forms/parts/UploadReports.vue";
-import PercentageFormField from "@/components/forms/parts/fields/PercentageFormField.vue";
-import ProductionSitesFormField from "@/components/forms/parts/fields/ProductionSitesFormField.vue";
-import { objectDropNull, type ObjectType } from "@/utils/UpdateObjectUtils";
-import { smoothScroll } from "@/utils/SmoothScroll";
-import { type DocumentToUpload, uploadFiles } from "@/utils/FileUploadUtils";
-import MostImportantProductsFormField from "@/components/forms/parts/fields/MostImportantProductsFormField.vue";
-import { type Field, type Subcategory } from "@/utils/GenericFrameworkTypes";
-import ProcurementCategoriesFormField from "@/components/forms/parts/fields/ProcurementCategoriesFormField.vue";
-import { createSubcategoryVisibilityMap } from "@/utils/UploadFormUtils";
-import HighImpactClimateSectorsFormField from "@/components/forms/parts/fields/HighImpactClimateSectorsFormField.vue";
-import { formatAxiosErrorMessage } from "@/utils/AxiosErrorMessageFormatter";
-import IntegerExtendedDataPointFormField from "@/components/forms/parts/fields/IntegerExtendedDataPointFormField.vue";
-import BigDecimalExtendedDataPointFormField from "@/components/forms/parts/fields/BigDecimalExtendedDataPointFormField.vue";
-import CurrencyDataPointFormField from "@/components/forms/parts/fields/CurrencyDataPointFormField.vue";
-import YesNoExtendedDataPointFormField from "@/components/forms/parts/fields/YesNoExtendedDataPointFormField.vue";
-import YesNoBaseDataPointFormField from "@/components/forms/parts/fields/YesNoBaseDataPointFormField.vue";
-import YesNoNaBaseDataPointFormField from "@/components/forms/parts/fields/YesNoNaBaseDataPointFormField.vue";
-import EsgQuestionnaireYearlyDecimalTimeseriesThreeYearDeltaDataFormField from "@/components/forms/parts/fields/EsgQuestionnaireYearlyDecimalTimeseriesThreeYearDeltaDataFormField.vue";
-import EsgQuestionnaireYearlyDecimalTimeseriesThreeYearPastDataFormField from "@/components/forms/parts/fields/EsgQuestionnaireYearlyDecimalTimeseriesThreeYearPastDataFormField.vue";
-import { esgQuestionnaireDataModel } from "@/frameworks/esg-questionnaire/UploadConfig";
-import ListOfBaseDataPointsFormField from "@/components/forms/parts/fields/ListOfBaseDataPointsFormField.vue";
-import { getFilledKpis } from "@/utils/DataPoint";
-import { getBasePublicFrameworkDefinition } from "@/frameworks/BasePublicFrameworkRegistry";
-import { type PublicFrameworkDataApi } from "@/utils/api/UnifiedFrameworkDataApi";
+} from '@clients/backend';
+import { useRoute } from 'vue-router';
+import { checkCustomInputs } from '@/utils/ValidationsUtils';
+import NaceCodeFormField from '@/components/forms/parts/fields/NaceCodeFormField.vue';
+import InputTextFormField from '@/components/forms/parts/fields/InputTextFormField.vue';
+import FreeTextFormField from '@/components/forms/parts/fields/FreeTextFormField.vue';
+import NumberFormField from '@/components/forms/parts/fields/NumberFormField.vue';
+import DateFormField from '@/components/forms/parts/fields/DateFormField.vue';
+import SingleSelectFormField from '@/components/forms/parts/fields/SingleSelectFormField.vue';
+import MultiSelectFormField from '@/components/forms/parts/fields/MultiSelectFormField.vue';
+import AddressFormField from '@/components/forms/parts/fields/AddressFormField.vue';
+import RadioButtonsFormField from '@/components/forms/parts/fields/RadioButtonsFormField.vue';
+import SubmitButton from '@/components/forms/parts/SubmitButton.vue';
+import SubmitSideBar from '@/components/forms/parts/SubmitSideBar.vue';
+import YesNoNaFormField from '@/components/forms/parts/fields/YesNoNaFormField.vue';
+import UploadReports from '@/components/forms/parts/UploadReports.vue';
+import PercentageFormField from '@/components/forms/parts/fields/PercentageFormField.vue';
+import ProductionSitesFormField from '@/components/forms/parts/fields/ProductionSitesFormField.vue';
+import { objectDropNull } from '@/utils/UpdateObjectUtils';
+import { smoothScroll } from '@/utils/SmoothScroll';
+import { type DocumentToUpload, uploadFiles } from '@/utils/FileUploadUtils';
+import MostImportantProductsFormField from '@/components/forms/parts/fields/MostImportantProductsFormField.vue';
+import { type Field, type Subcategory } from '@/utils/GenericFrameworkTypes';
+import ProcurementCategoriesFormField from '@/components/forms/parts/fields/ProcurementCategoriesFormField.vue';
+import { createSubcategoryVisibilityMap } from '@/utils/UploadFormUtils';
+import HighImpactClimateSectorsFormField from '@/components/forms/parts/fields/HighImpactClimateSectorsFormField.vue';
+import { formatAxiosErrorMessage } from '@/utils/AxiosErrorMessageFormatter';
+import IntegerExtendedDataPointFormField from '@/components/forms/parts/fields/IntegerExtendedDataPointFormField.vue';
+import BigDecimalExtendedDataPointFormField from '@/components/forms/parts/fields/BigDecimalExtendedDataPointFormField.vue';
+import CurrencyDataPointFormField from '@/components/forms/parts/fields/CurrencyDataPointFormField.vue';
+import YesNoExtendedDataPointFormField from '@/components/forms/parts/fields/YesNoExtendedDataPointFormField.vue';
+import YesNoBaseDataPointFormField from '@/components/forms/parts/fields/YesNoBaseDataPointFormField.vue';
+import YesNoNaBaseDataPointFormField from '@/components/forms/parts/fields/YesNoNaBaseDataPointFormField.vue';
+import EsgQuestionnaireYearlyDecimalTimeseriesThreeYearDeltaDataFormField from '@/components/forms/parts/fields/EsgQuestionnaireYearlyDecimalTimeseriesThreeYearDeltaDataFormField.vue';
+import EsgQuestionnaireYearlyDecimalTimeseriesThreeYearPastDataFormField from '@/components/forms/parts/fields/EsgQuestionnaireYearlyDecimalTimeseriesThreeYearPastDataFormField.vue';
+import { esgQuestionnaireDataModel } from '@/frameworks/esg-questionnaire/UploadConfig';
+import ListOfBaseDataPointsFormField from '@/components/forms/parts/fields/ListOfBaseDataPointsFormField.vue';
+import { getFilledKpis } from '@/utils/DataPoint';
+import { getBasePublicFrameworkDefinition } from '@/frameworks/BasePublicFrameworkRegistry';
+import { type PublicFrameworkDataApi } from '@/utils/api/UnifiedFrameworkDataApi';
+import { hasUserCompanyOwnerOrDataUploaderRole } from '@/utils/CompanyRolesUtils';
 
 export default defineComponent({
   setup() {
     return {
-      getKeycloakPromise: inject<() => Promise<Keycloak>>("getKeycloakPromise"),
+      getKeycloakPromise: inject<() => Promise<Keycloak>>('getKeycloakPromise'),
     };
   },
-  name: "CreateEsgQuestionnaireDataset",
+  name: 'CreateEsgQuestionnaireDataset',
   components: {
     SubmitButton,
     SubmitSideBar,
@@ -202,16 +202,16 @@ export default defineComponent({
   directives: {
     tooltip: Tooltip,
   },
-  emits: ["datasetCreated"],
+  emits: ['datasetCreated'],
   data() {
     return {
-      formId: "createEsgQuestionnaireForm",
+      formId: 'createEsgQuestionnaireForm',
       waitingForData: true,
       dataDate: undefined as Date | undefined,
       companyAssociatedEsgQuestionnaireData: {} as CompanyAssociatedDataEsgQuestionnaireData,
       esgQuestionnaireDataModel,
       route: useRoute(),
-      message: "",
+      message: '',
       listOfFilledKpis: [] as Array<string>,
       smoothScroll: smoothScroll,
       uploadSucceded: false,
@@ -226,9 +226,9 @@ export default defineComponent({
       get(): string {
         const currentDate = this.companyAssociatedEsgQuestionnaireData.data?.general?.masterData?.gueltigkeitsDatum;
         if (currentDate === undefined) {
-          return "";
+          return '';
         } else {
-          const currentDateSegments = currentDate.split("-");
+          const currentDateSegments = currentDate!.split('-');
           return currentDateSegments[0] ?? new Date().getFullYear();
         }
       },
@@ -239,7 +239,7 @@ export default defineComponent({
     subcategoryVisibility(): Map<Subcategory, boolean> {
       return createSubcategoryVisibilityMap(
         this.esgQuestionnaireDataModel,
-        this.companyAssociatedEsgQuestionnaireData.data,
+        this.companyAssociatedEsgQuestionnaireData.data
       );
     },
   },
@@ -251,7 +251,7 @@ export default defineComponent({
   },
   created() {
     const dataId = this.route.query.templateDataId;
-    if (dataId && typeof dataId === "string") {
+    if (dataId && typeof dataId === 'string') {
       void this.loadEsgQuestionnaireData(dataId);
     } else {
       this.waitingForData = false;
@@ -262,12 +262,15 @@ export default defineComponent({
      * Builds an api to get and upload esg questionnaire data
      * @returns the api
      */
-    buildEsgQuestionnaireDataApi(): PublicFrameworkDataApi<EsgQuestionnaireData> {
+    buildEsgQuestionnaireDataApi(): PublicFrameworkDataApi<EsgQuestionnaireData> | undefined {
       const apiClientProvider = new ApiClientProvider(assertDefined(this.getKeycloakPromise)());
       const frameworkDefinition = getBasePublicFrameworkDefinition(DataTypeEnum.EsgQuestionnaire);
       if (frameworkDefinition) {
-        return frameworkDefinition.getPublicFrameworkApiClient(undefined, apiClientProvider.axiosInstance);
-      }
+        return frameworkDefinition.getPublicFrameworkApiClient(
+          undefined,
+          apiClientProvider.axiosInstance
+        ) as PublicFrameworkDataApi<EsgQuestionnaireData>;
+      } else return undefined;
     },
 
     /**
@@ -281,9 +284,7 @@ export default defineComponent({
       const dataResponse = await assertDefined(esgQuestionnaireDataControllerApi).getFrameworkData(dataId);
       const esgQuestionnaireResponseData = dataResponse.data;
       this.listOfFilledKpis = getFilledKpis(esgQuestionnaireResponseData.data);
-      this.companyAssociatedEsgQuestionnaireData = objectDropNull(
-        esgQuestionnaireResponseData as ObjectType,
-      ) as CompanyAssociatedDataEsgQuestionnaireData;
+      this.companyAssociatedEsgQuestionnaireData = objectDropNull(esgQuestionnaireResponseData);
       this.waitingForData = false;
     },
     /**
@@ -296,20 +297,28 @@ export default defineComponent({
           await uploadFiles(Array.from(this.fieldSpecificDocuments.values()), assertDefined(this.getKeycloakPromise));
         }
         const esgQuestionnaireDataControllerApi = this.buildEsgQuestionnaireDataApi();
+
+        const isCompanyOwnerOrDataUploader = await hasUserCompanyOwnerOrDataUploaderRole(
+          this.companyAssociatedEsgQuestionnaireData.companyId,
+          this.getKeycloakPromise
+        );
+
         await assertDefined(esgQuestionnaireDataControllerApi).postFrameworkData(
           this.companyAssociatedEsgQuestionnaireData,
+          isCompanyOwnerOrDataUploader
         );
-        this.$emit("datasetCreated");
+
+        this.$emit('datasetCreated');
         this.dataDate = undefined;
-        this.message = "Upload successfully executed.";
+        this.message = 'Upload successfully executed.';
         this.uploadSucceded = true;
       } catch (error) {
         console.error(error);
-        if (error.message) {
+        if ((error as Error).message) {
           this.message = formatAxiosErrorMessage(error as Error);
         } else {
           this.message =
-            "An unexpected error occurred. Please try again or contact the support team if the issue persists.";
+            'An unexpected error occurred. Please try again or contact the support team if the issue persists.';
         }
         this.uploadSucceded = false;
       } finally {

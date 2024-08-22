@@ -11,13 +11,13 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
-import PrimeButton from "primevue/button";
-import { useRoute } from "vue-router";
-import { assertDefined } from "@/utils/TypeScriptUtils";
+import { defineComponent } from 'vue';
+import PrimeButton from 'primevue/button';
+import { useRoute } from 'vue-router';
+import { assertDefined } from '@/utils/TypeScriptUtils';
 
 export default defineComponent({
-  name: "SubmitButton",
+  name: 'SubmitButton',
   components: {
     PrimeButton,
   },

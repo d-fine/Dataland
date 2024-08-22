@@ -1,6 +1,6 @@
-import type Keycloak from "keycloak-js";
-import { type KeycloakInitOptions } from "keycloak-js";
-import { KEYCLOAK_ROLE_USER } from "@/utils/KeycloakUtils";
+import type Keycloak from 'keycloak-js';
+import { type KeycloakInitOptions } from 'keycloak-js';
+import { KEYCLOAK_ROLE_USER } from '@/utils/KeycloakUtils';
 
 export interface KeycloakMockConfiguration {
   userId?: string;
@@ -16,10 +16,10 @@ export interface KeycloakMockConfiguration {
  */
 export function minimalKeycloakMock(config: KeycloakMockConfiguration = {}): Keycloak {
   const mock = {
-    token: "mocked-token",
+    token: 'mocked-token',
     authenticated: config.authenticated ?? true,
     idTokenParsed: config.idTokenParsed ?? {
-      sub: config.userId ?? "mock-user-id",
+      sub: config.userId ?? 'mock-user-id',
     },
     realmAccess: {
       roles: config.roles ?? [KEYCLOAK_ROLE_USER],

@@ -13,10 +13,10 @@ export interface StringSplitSearchMatch {
  * @returns a list of segments that make up rawText.
  */
 export function splitStringBySearchMatch(rawText: string, searchString: string): Array<StringSplitSearchMatch> {
-  if (searchString == "") return [{ text: rawText, highlight: false }];
+  if (searchString == '') return [{ text: rawText, highlight: false }];
   const ret = [];
-  const escapedSearchString = searchString.replace(/[-/\\^$*+?.()|[\]{}]/g, "\\$&");
-  const regex = new RegExp(escapedSearchString, "gi");
+  const escapedSearchString = searchString.replace(/[-/\\^$*+?.()|[\]{}]/g, '\\$&');
+  const regex = new RegExp(escapedSearchString, 'gi');
   let match;
   let lastIndex = 0;
   while ((match = regex.exec(rawText)) != null) {

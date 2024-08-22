@@ -10,15 +10,15 @@
 </template>
 
 <script lang="ts">
-import { FormKit } from "@formkit/vue";
-import { defineComponent } from "vue";
-import DriveMixFormElement from "@/components/forms/parts/elements/derived/DriveMixFormElement.vue";
-import UploadFormHeader from "@/components/forms/parts/elements/basic/UploadFormHeader.vue";
-import { BaseFormFieldProps } from "@/components/forms/parts/fields/FormFieldProps";
-import { DriveMixType } from "@/api-models/DriveMixType";
+import { FormKit } from '@formkit/vue';
+import { defineComponent } from 'vue';
+import DriveMixFormElement from '@/components/forms/parts/elements/derived/DriveMixFormElement.vue';
+import UploadFormHeader from '@/components/forms/parts/elements/basic/UploadFormHeader.vue';
+import { BaseFormFieldProps } from '@/components/forms/parts/fields/FormFieldProps';
+import { DriveMixType } from '@/api-models/DriveMixType';
 
 export default defineComponent({
-  name: "DriveMixFormField",
+  name: 'DriveMixFormField',
   data() {
     return {
       DriveMixType,

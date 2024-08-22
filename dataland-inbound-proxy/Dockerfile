@@ -1,4 +1,4 @@
-FROM nginx:1.25.4
+FROM nginx:1.27.0@sha256:67682bda769fae1ccf5183192b8daf37b64cae99c6c3302650f6f8bf5f0f95df
 # Install certbot and cron and delete default nginx config
 RUN apt-get update && apt-get install -y certbot cron && rm -rf /etc/nginx/* && mkdir -p /etc/nginx/conf.d && apt-get clean && rm -rf /var/lib/apt/lists/*
 
@@ -7,8 +7,7 @@ COPY dataland-inbound-proxy/templates/*.template /etc/nginx/templates/
 COPY dataland-inbound-proxy/dhparam.pem /certs/dhparam.pem
 COPY dataland-inbound-proxy/docker-entrypoint.d/* /docker-entrypoint.d/
 COPY dataland-inbound-proxy/scripts /scripts
-COPY dataland-inbound-proxy/custom_errors.html /var/www/html/custom_errors.html
-COPY dataland-inbound-proxy/api_errors.json /var/www/html/json_errors.json
+COPY dataland-inbound-proxy/error_documents /var/www/html/error_documents
 COPY dataland-inbound-proxy/robots.txt /var/www/html/robots.txt
 COPY dataland-inbound-proxy/robots-prod.txt /var/www/html/robots-prod.txt
 COPY dataland-frontend/src/assets/images /var/www/images

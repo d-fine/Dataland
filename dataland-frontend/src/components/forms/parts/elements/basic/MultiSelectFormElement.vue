@@ -30,13 +30,13 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from "vue";
-import { FormKit, FormKitMessages } from "@formkit/vue";
-import MultiSelect from "primevue/multiselect";
-import { DropdownOptionFormFieldProps } from "@/components/forms/parts/fields/FormFieldProps";
+import { defineComponent, ref } from 'vue';
+import { FormKit, FormKitMessages } from '@formkit/vue';
+import MultiSelect from 'primevue/multiselect';
+import { DropdownOptionFormFieldProps } from '@/components/forms/parts/fields/FormFieldProps';
 
 export default defineComponent({
-  name: "MultiSelectFormElement",
+  name: 'MultiSelectFormElement',
   components: { FormKit, MultiSelect, FormKitMessages },
   inheritAttrs: false,
   setup() {
@@ -53,7 +53,7 @@ export default defineComponent({
     ...DropdownOptionFormFieldProps,
     emptyMessage: {
       type: String,
-      default: "No available options",
+      default: 'No available options',
     },
   },
   methods: {

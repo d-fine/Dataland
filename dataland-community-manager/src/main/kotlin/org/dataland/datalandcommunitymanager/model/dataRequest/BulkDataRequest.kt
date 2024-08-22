@@ -25,7 +25,7 @@ data class BulkDataRequest(
     @field:ArraySchema(
         arraySchema = Schema(
             implementation = DataTypeEnum::class,
-            example = "[\"p2p\", \"sme\"]",
+            example = "[\"p2p\", \"vsme\"]",
         ),
     )
     val dataTypes: Set<DataTypeEnum>,

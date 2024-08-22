@@ -22,19 +22,19 @@
 </template>
 
 <script setup lang="ts">
-import { computed, inject } from "vue";
-import type { Section } from "@/types/ContentTypes";
-import ButtonComponent from "@/components/resources/newLandingPage/ButtonComponent.vue";
-import { assertDefined } from "@/utils/TypeScriptUtils";
-import { registerAndRedirectToSearchPage } from "@/utils/KeycloakUtils";
-import type Keycloak from "keycloak-js";
+import { computed, inject } from 'vue';
+import type { Section } from '@/types/ContentTypes';
+import ButtonComponent from '@/components/resources/newLandingPage/ButtonComponent.vue';
+import { assertDefined } from '@/utils/TypeScriptUtils';
+import { registerAndRedirectToSearchPage } from '@/utils/KeycloakUtils';
+import type Keycloak from 'keycloak-js';
 const props = defineProps<{ sections?: Section[] }>();
 
 const aboutIntroSection = computed(() => {
-  return props.sections?.find((section) => section.title === "START YOUR DATALAND JOURNEY") ?? null;
+  return props.sections?.find((section) => section.title === 'START YOUR DATALAND JOURNEY') ?? null;
 });
 
-const getKeycloakPromise = inject<() => Promise<Keycloak>>("getKeycloakPromise");
+const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
 /**
  * Sends the user to the keycloak register page (if not authenticated already)
  */
@@ -125,14 +125,14 @@ const register = (): void => {
       border-bottom: 2px solid transparent;
       width: fit-content;
       &::before {
-        content: "";
+        content: '';
         position: absolute;
         transform: translateY(-50%) rotate(180deg);
         left: -20px;
         top: 50%;
         width: 16px;
         height: 16px;
-        background-image: url("/static/icons/Arrow--right.svg");
+        background-image: url('/static/icons/Arrow--right.svg');
         background-size: cover;
       }
       &:hover {

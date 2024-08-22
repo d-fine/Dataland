@@ -1,6 +1,6 @@
-import { type FixtureData } from "@sharedUtils/Fixtures";
-import { type PathwaysToParisData } from "@clients/backend";
-import { generateP2pFixtures } from "./P2pDataFixtures";
+import { type FixtureData } from '@sharedUtils/Fixtures';
+import { type PathwaysToParisData } from '@clients/backend';
+import { generateP2pFixtures } from './P2pDataFixtures';
 
 /**
  * Generates Pathway To Paris prepared fixtures by generating random Pathway To Paris datasets and afterwards manipulating some fields
@@ -11,16 +11,16 @@ import { generateP2pFixtures } from "./P2pDataFixtures";
  */
 export function generateP2pPreparedFixtures(
   nullProbability: number,
-  toggleRandomSectors = true,
+  toggleRandomSectors = true
 ): Array<FixtureData<PathwaysToParisData>> {
   const preparedFixtures = [];
   preparedFixtures.push(
-    manipulateFixtureForSixP2pDataSetsInDifferentYears(generateP2pFixtures(1, nullProbability, toggleRandomSectors)[0]),
+    manipulateFixtureForSixP2pDataSetsInDifferentYears(generateP2pFixtures(1, nullProbability, toggleRandomSectors)[0])
   );
-  preparedFixtures.push(manipulateFixtureForDate(generateP2pFixtures(1, nullProbability)[0], "2023-04-18"));
+  preparedFixtures.push(manipulateFixtureForDate(generateP2pFixtures(1, nullProbability)[0], '2023-04-18'));
   preparedFixtures.push(manipulateFixtureForNoNullFields(generateP2pFixtures(1, 0, false)[0]));
   preparedFixtures.push(
-    manipulateFixtureForOneP2pDataSetWithFourSectors(generateP2pFixtures(1, nullProbability, toggleRandomSectors)[0]),
+    manipulateFixtureForOneP2pDataSetWithFourSectors(generateP2pFixtures(1, nullProbability, toggleRandomSectors)[0])
   );
   return preparedFixtures;
 }
@@ -31,12 +31,12 @@ export function generateP2pPreparedFixtures(
  * @returns the manipulated fixture data
  */
 function manipulateFixtureForSixP2pDataSetsInDifferentYears(
-  input: FixtureData<PathwaysToParisData>,
+  input: FixtureData<PathwaysToParisData>
 ): FixtureData<PathwaysToParisData> {
-  input.companyInformation.companyName = "six-p2p-data-sets-in-different-years";
-  if (input.t.general?.general?.dataDate) input.t.general.general.dataDate = "2023-01-01";
-  else console.error("fakeFixture created improperly: dataDate missing");
-  input.reportingPeriod = "2023";
+  input.companyInformation.companyName = 'six-p2p-data-sets-in-different-years';
+  if (input.t.general?.general?.dataDate) input.t.general.general.dataDate = '2023-01-01';
+  else console.error('fakeFixture created improperly: dataDate missing');
+  input.reportingPeriod = '2023';
   return input;
 }
 
@@ -46,7 +46,7 @@ function manipulateFixtureForSixP2pDataSetsInDifferentYears(
  * @returns the manipulated fixture data
  */
 function manipulateFixtureForNoNullFields(input: FixtureData<PathwaysToParisData>): FixtureData<PathwaysToParisData> {
-  input.companyInformation.companyName = "P2p-dataset-with-no-null-fields";
+  input.companyInformation.companyName = 'P2p-dataset-with-no-null-fields';
   return input;
 }
 
@@ -59,11 +59,11 @@ function manipulateFixtureForNoNullFields(input: FixtureData<PathwaysToParisData
  */
 function manipulateFixtureForDate(
   input: FixtureData<PathwaysToParisData>,
-  date: string,
+  date: string
 ): FixtureData<PathwaysToParisData> {
-  input.companyInformation.companyName = "P2p-date-" + date;
+  input.companyInformation.companyName = 'P2p-date-' + date;
   input.t.general.general.dataDate = date;
-  input.reportingPeriod = date.split("-")[0];
+  input.reportingPeriod = date.split('-')[0];
   return input;
 }
 
@@ -74,20 +74,20 @@ function manipulateFixtureForDate(
  * @returns the manipulated fixture data
  */
 function manipulateFixtureForOneP2pDataSetWithFourSectors(
-  input: FixtureData<PathwaysToParisData>,
+  input: FixtureData<PathwaysToParisData>
 ): FixtureData<PathwaysToParisData> {
-  input.companyInformation.companyName = "one-p2p-data-set-with-four-sectors";
-  input.t.general.general.dataDate = "2022-01-01";
-  input.reportingPeriod = "2022";
-  input.t.general.general.sectors = ["Ammonia", "Cement", "FreightTransportByRoad", "LivestockFarming"];
+  input.companyInformation.companyName = 'one-p2p-data-set-with-four-sectors';
+  input.t.general.general.dataDate = '2022-01-01';
+  input.reportingPeriod = '2022';
+  input.t.general.general.sectors = ['Ammonia', 'Cement', 'FreightTransportByRoad', 'LivestockFarming'];
   input.t.general.emissionsPlanning!.relativeEmissionsInPercent = 12;
   input.t.ammonia!.decarbonisation!.ccsTechnologyAdoptionInPercent = 54;
   input.t.cement!.material!.preCalcinedClayUsageInPercent = 23;
   input.t.livestockFarming!.animalFeed!.externalFeedCertification = {
-    value: "Yes",
+    value: 'Yes',
     dataSource: {
-      fileName: "Policy",
-      fileReference: "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+      fileName: 'Policy',
+      fileReference: '50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63',
     },
   };
   input.t.freightTransportByRoad!.technology!.driveMixPerFleetSegment = {

@@ -16,6 +16,7 @@ import org.dataland.datalandmessagequeueutils.constants.MessageType
 import org.json.JSONObject
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.security.access.AccessDeniedException
 import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Propagation
 import org.springframework.transaction.annotation.Transactional
@@ -31,15 +32,19 @@ import java.util.concurrent.ConcurrentHashMap
  * @param dataManagerUtils holds util methods for handling of data
 */
 @Component("DataManager")
-class DataManager(
+class DataManager
+@Suppress("LongParameterList")
+constructor(
     @Autowired private val objectMapper: ObjectMapper,
     @Autowired private val companyQueryManager: CompanyQueryManager,
     @Autowired private val metaDataManager: DataMetaInformationManager,
     @Autowired private val storageClient: StorageControllerApi,
     @Autowired private val cloudEventMessageHandler: CloudEventMessageHandler,
     @Autowired private val dataManagerUtils: DataManagerUtils,
+    @Autowired private val companyRoleChecker: CompanyRoleChecker,
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
+    private val logMessageBuilder = LogMessageBuilder()
     private val publicDataInMemoryStorage = ConcurrentHashMap<String, String>()
 
     /**
@@ -56,6 +61,9 @@ class DataManager(
         correlationId: String,
     ):
         String {
+        if (bypassQa && !companyRoleChecker.canUserBypassQa(storableDataSet.companyId)) {
+            throw AccessDeniedException(logMessageBuilder.bypassQaDeniedExceptionMessage)
+        }
         val dataId = IdUtils.generateUUID()
         storeMetaDataFrom(dataId, storableDataSet, correlationId)
         storeDataSetInTemporaryStoreAndSendMessage(dataId, storableDataSet, bypassQa, correlationId)

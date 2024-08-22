@@ -1,5 +1,5 @@
-import { YesNo, YesNoNa, YesNoNoEvidenceFound } from "@clients/backend";
-import { pickOneElement } from "@e2e/fixtures/FixtureUtils";
+import { YesNo, YesNoNa } from '@clients/backend';
+import { pickOneElement } from '@e2e/fixtures/FixtureUtils';
 
 /**
  * Randomly returns Yes or No
@@ -15,12 +15,4 @@ export function generateYesNo(): YesNo {
  */
 export function generateYesNoNa(): YesNoNa {
   return pickOneElement(Object.values(YesNoNa));
-}
-
-/**
- * Randomly returns Yes, No or No Evidence Found
- * @returns Yes, No or Na
- */
-export function generateYesNoNoEvidenceFound(): YesNoNoEvidenceFound {
-  return pickOneElement(Object.values(YesNoNoEvidenceFound));
 }

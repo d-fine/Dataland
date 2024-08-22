@@ -18,25 +18,26 @@
       <template v-else>No data provided</template>
     </DataPointWrapperDisplayComponent>
   </div>
-  <component v-else :is="content.displayComponentName" :content="content" />
+  <component v-else :is="content.displayComponentName" :content="content" :meta-Info="metaInfo" />
 </template>
 
 <script lang="ts">
 import {
   type AvailableMLDTDisplayObjectTypes,
   MLDTDisplayComponentName,
-} from "@/components/resources/dataTable/MultiLayerDataTableCellDisplayer";
-import DocumentLinkDisplayComponent from "@/components/resources/dataTable/cells/DocumentLinkDisplayComponent.vue";
-import StringDisplayComponent from "@/components/resources/dataTable/cells/StringDisplayComponent.vue";
-import { defineComponent } from "vue";
-import ModalLinkDisplayComponent from "@/components/resources/dataTable/cells/ModalLinkDisplayComponent.vue";
-import DataPointDisplayComponent from "@/components/resources/dataTable/cells/DataPointDisplayComponent.vue";
-import DataPointWrapperDisplayComponent from "@/components/resources/dataTable/cells/DataPointWrapperDisplayComponent.vue";
-import FreeTextDisplayComponent from "@/components/resources/dataTable/cells/FreeTextDisplayComponent.vue";
-import { type DataMetaInformation } from "@clients/backend";
+} from '@/components/resources/dataTable/MultiLayerDataTableCellDisplayer';
+import DocumentLinkDisplayComponent from '@/components/resources/dataTable/cells/DocumentLinkDisplayComponent.vue';
+import StringDisplayComponent from '@/components/resources/dataTable/cells/StringDisplayComponent.vue';
+import { defineComponent } from 'vue';
+import ModalLinkDisplayComponent from '@/components/resources/dataTable/cells/ModalLinkDisplayComponent.vue';
+import ModalLinkWithDataSourceDisplayComponent from '@/components/resources/dataTable/cells/ModalLinkWithDataSourceDisplayComponent.vue';
+import DataPointDisplayComponent from '@/components/resources/dataTable/cells/DataPointDisplayComponent.vue';
+import DataPointWrapperDisplayComponent from '@/components/resources/dataTable/cells/DataPointWrapperDisplayComponent.vue';
+import FreeTextDisplayComponent from '@/components/resources/dataTable/cells/FreeTextDisplayComponent.vue';
+import { type DataMetaInformation } from '@clients/backend';
 
 export default defineComponent({
-  name: "MultiLayerDataTableCell",
+  name: 'MultiLayerDataTableCell',
   computed: {
     MLDTDisplayComponents() {
       return MLDTDisplayComponentName;
@@ -59,6 +60,7 @@ export default defineComponent({
     ModalLinkDisplayComponent,
     DataPointDisplayComponent,
     FreeTextDisplayComponent,
+    ModalLinkWithDataSourceDisplayComponent,
   },
   props: {
     content: {

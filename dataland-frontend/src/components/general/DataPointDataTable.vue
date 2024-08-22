@@ -1,32 +1,39 @@
 <template>
   <div class="p-datatable p-component">
     <div class="p-datatable-wrapper overflow-auto">
-      <table v-if="dataPointDisplay" class="p-datatable-table" aria-label="Data point content">
+      <table class="p-datatable-table" aria-label="Data point content">
         <tbody class="p-datatable-body">
-          <tr v-if="dataPointDisplay.value && dataPointDisplay.value != ONLY_AUXILIARY_DATA_PROVIDED()">
+          <tr
+            v-if="
+              dialogData.dataPointDisplay.value && dialogData.dataPointDisplay.value != ONLY_AUXILIARY_DATA_PROVIDED()
+            "
+          >
             <th class="headers-bg width-auto"><span class="table-left-label">Value</span></th>
-            <td>{{ dataPointDisplay.value }}</td>
+            <td>{{ dialogData.dataPointDisplay.value }}</td>
           </tr>
-          <tr v-if="dataPointDisplay.quality">
+          <tr v-if="dialogData.dataPointDisplay.quality">
             <th class="headers-bg width-auto"><span class="table-left-label">Quality</span></th>
-            <td>{{ dataPointDisplay.quality }}</td>
+            <td>{{ dialogData.dataPointDisplay.quality }}</td>
           </tr>
-          <tr v-if="dataPointDisplay.dataSource">
+          <tr v-if="dialogData.dataPointDisplay.dataSource">
             <th class="headers-bg width-auto"><span class="table-left-label">Data source</span></th>
             <td>
               <DocumentLink
                 :label="dataSourceLabel"
-                :download-name="dataPointDisplay.dataSource.fileName ?? dataPointDisplay.dataSource.fileReference"
-                :file-reference="dataPointDisplay.dataSource.fileReference"
-                :data-id="dataId"
-                :data-type="dataType"
+                :download-name="
+                  dialogData.dataPointDisplay.dataSource.fileName ??
+                  dialogData.dataPointDisplay.dataSource.fileReference
+                "
+                :file-reference="dialogData.dataPointDisplay.dataSource.fileReference"
+                :data-id="dialogData.dataId"
+                :data-type="dialogData.dataType"
                 show-icon
               />
             </td>
           </tr>
-          <tr v-if="dataPointDisplay.comment">
+          <tr v-if="dialogData.dataPointDisplay.comment">
             <th class="headers-bg width-auto"><span class="table-left-label">Comment</span></th>
-            <td>{{ dataPointDisplay.comment }}</td>
+            <td><AutoFormattingTextSpan :text="dialogData.dataPointDisplay.comment" /></td>
           </tr>
         </tbody>
       </table>
@@ -35,12 +42,19 @@
 </template>
 
 <script lang="ts">
-// @ts-nocheck
-import { defineComponent } from "vue";
-import { type DynamicDialogInstance } from "primevue/dynamicdialogoptions";
-import DocumentLink from "@/components/resources/frameworkDataSearch/DocumentLink.vue";
-import { type DataPointDisplay } from "@/utils/DataPoint";
-import { ONLY_AUXILIARY_DATA_PROVIDED } from "@/utils/Constants";
+import { defineComponent } from 'vue';
+import { type DynamicDialogInstance } from 'primevue/dynamicdialogoptions';
+import DocumentLink from '@/components/resources/frameworkDataSearch/DocumentLink.vue';
+import { type DataPointDisplay } from '@/utils/DataPoint';
+import { ONLY_AUXILIARY_DATA_PROVIDED } from '@/utils/Constants';
+import AutoFormattingTextSpan from '@/components/general/AutoFormattingTextSpan.vue';
+import { assertDefined } from '@/utils/TypeScriptUtils';
+
+interface DataPointDataTableRefProps {
+  dataPointDisplay: DataPointDisplay;
+  dataId?: string;
+  dataType?: string;
+}
 
 export default defineComponent({
   methods: {
@@ -52,32 +66,21 @@ export default defineComponent({
       return ONLY_AUXILIARY_DATA_PROVIDED;
     },
   },
-  components: { DocumentLink },
-  inject: ["dialogRef"],
-  name: "DataPointDataTable",
-  data() {
-    return {
-      dataPointDisplay: undefined as DataPointDisplay | undefined,
-      dataId: undefined as string | undefined,
-      dataType: undefined as string | undefined,
-    };
-  },
-  mounted() {
-    const dialogRefToDisplay = this.dialogRef as DynamicDialogInstance;
-    const dialogRefData = dialogRefToDisplay.data as {
-      dataPointDisplay: DataPointDisplay;
-      dataId: string;
-      dataType: string;
-    };
-    this.dataPointDisplay = dialogRefData.dataPointDisplay;
-    this.dataId = dialogRefData.dataId;
-    this.dataType = dialogRefData.dataType;
-  },
+  components: { AutoFormattingTextSpan, DocumentLink },
+  inject: ['dialogRef'],
+  name: 'DataPointDataTable',
   computed: {
-    dataSourceLabel() {
-      return this.dataPointDisplay.dataSource.page
-        ? `${this.dataPointDisplay.dataSource.fileName}, page ${this.dataPointDisplay.dataSource.page}`
-        : this.dataPointDisplay.dataSource.fileName;
+    dialogData(): DataPointDataTableRefProps {
+      return assertDefined(this.dialogRef as DynamicDialogInstance).data as DataPointDataTableRefProps;
+    },
+    dataSourceLabel(): string {
+      const dataSource = this.dialogData.dataPointDisplay.dataSource;
+      if (!dataSource) return '';
+      if ('page' in dataSource) {
+        return dataSource.page === null ? `${dataSource.fileName}` : `${dataSource.fileName}, page ${dataSource.page}`;
+      } else {
+        return dataSource.fileName ?? '';
+      }
     },
   },
 });

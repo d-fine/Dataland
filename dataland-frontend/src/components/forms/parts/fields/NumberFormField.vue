@@ -8,7 +8,8 @@
       :value="currentValue"
       :validation-label="validationLabel ?? label"
       :validation="`number|${validation}`"
-      :placeholder="unit ? `Value in ${unit}` : 'Value'"
+      :placeholder="determinePlaceholder()"
+      :isDataPointToggleable="isDataPointToggleable"
       :validationMessages="{ integer: `${validationLabel ?? label} must be an integer.` }"
       :validationRules="{ integer }"
       :outer-class="inputClass"
@@ -22,14 +23,14 @@
 </template>
 
 <script lang="ts">
-import UploadFormHeader from "@/components/forms/parts/elements/basic/UploadFormHeader.vue";
-import { defineComponent } from "vue";
-import { FormKit } from "@formkit/vue";
-import { FormFieldPropsWithPlaceholder } from "@/components/forms/parts/fields/FormFieldProps";
-import { type FormKitNode } from "@formkit/core";
+import UploadFormHeader from '@/components/forms/parts/elements/basic/UploadFormHeader.vue';
+import { defineComponent } from 'vue';
+import { FormKit } from '@formkit/vue';
+import { FormFieldPropsWithPlaceholder } from '@/components/forms/parts/fields/FormFieldProps';
+import { type FormKitNode } from '@formkit/core';
 
 export default defineComponent({
-  name: "NumberFormField",
+  name: 'NumberFormField',
   components: { FormKit, UploadFormHeader },
   inheritAttrs: false,
   props: {
@@ -38,7 +39,11 @@ export default defineComponent({
     currentValue: String,
     dataTest: {
       type: String,
-      default: "",
+      default: '',
+    },
+    isDataPointToggleable: {
+      type: Boolean,
+      default: false,
     },
   },
   watch: {
@@ -46,7 +51,7 @@ export default defineComponent({
       this.emitUpdateCurrentValue();
     },
   },
-  emits: ["update:currentValue"],
+  emits: ['update:currentValue'],
 
   methods: {
     /**
@@ -62,7 +67,20 @@ export default defineComponent({
      * Emits an event when the currentValue has been changed
      */
     emitUpdateCurrentValue() {
-      this.$emit("update:currentValue", this.currentValue);
+      this.$emit('update:currentValue', this.currentValue);
+    },
+    /**
+     * Determines the value of the placeholder
+     * @returns the placeholder
+     */
+    determinePlaceholder() {
+      if (this.placeholder) {
+        return this.placeholder;
+      } else if (this.unit) {
+        return `Value in ${this.unit}`;
+      } else {
+        return 'Value';
+      }
     },
   },
 });

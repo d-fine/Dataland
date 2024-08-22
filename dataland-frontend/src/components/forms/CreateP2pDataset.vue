@@ -80,7 +80,7 @@
                   <a
                     v-if="subcategoryVisibility.get(subcategory) ?? true"
                     @click="smoothScroll(`#${category.name}-${subcategory.name}`)"
-                    >{{ category.label + ": " + subcategory.label }}</a
+                    >{{ category.label + ': ' + subcategory.label }}</a
                   >
                 </li>
               </ul>
@@ -93,54 +93,55 @@
 </template>
 <script lang="ts">
 // @ts-nocheck
-import { FormKit } from "@formkit/vue";
-import { computed, defineComponent, inject } from "vue";
-import { assertDefined } from "@/utils/TypeScriptUtils";
-import { useRoute } from "vue-router";
-import { checkCustomInputs } from "@/utils/ValidationsUtils";
-import { objectDropNull, type ObjectType } from "@/utils/UpdateObjectUtils";
-import { smoothScroll } from "@/utils/SmoothScroll";
-import { createSubcategoryVisibilityMap } from "@/utils/UploadFormUtils";
-import { ApiClientProvider } from "@/services/ApiClients";
-import Card from "primevue/card";
-import Calendar from "primevue/calendar";
-import type Keycloak from "keycloak-js";
-import PrimeButton from "primevue/button";
-import { type DriveMixType } from "@/api-models/DriveMixType";
-import { type Category, type Subcategory } from "@/utils/GenericFrameworkTypes";
-import { AxiosError } from "axios";
-import { type CompanyAssociatedDataPathwaysToParisData, DataTypeEnum, type P2pDriveMix } from "@clients/backend";
-import { p2pDataModel } from "@/components/resources/frameworkDataSearch/p2p/P2pDataModel";
-import UploadFormHeader from "@/components/forms/parts/elements/basic/UploadFormHeader.vue";
-import YesNoFormField from "@/components/forms/parts/fields/YesNoFormField.vue";
-import InputTextFormField from "@/components/forms/parts/fields/InputTextFormField.vue";
-import NumberFormField from "@/components/forms/parts/fields/NumberFormField.vue";
-import MultiSelectFormField from "@/components/forms/parts/fields/MultiSelectFormField.vue";
-import SubmitButton from "@/components/forms/parts/SubmitButton.vue";
-import SubmitSideBar from "@/components/forms/parts/SubmitSideBar.vue";
-import PercentageFormField from "@/components/forms/parts/fields/PercentageFormField.vue";
-import SuccessMessage from "@/components/messages/SuccessMessage.vue";
-import FailMessage from "@/components/messages/FailMessage.vue";
-import DateFormField from "@/components/forms/parts/fields/DateFormField.vue";
-import SingleSelectFormField from "@/components/forms/parts/fields/SingleSelectFormField.vue";
-import DriveMixFormField from "@/components/forms/parts/fields/DriveMixFormField.vue";
-import IntegerExtendedDataPointFormField from "@/components/forms/parts/fields/IntegerExtendedDataPointFormField.vue";
-import BigDecimalExtendedDataPointFormField from "@/components/forms/parts/fields/BigDecimalExtendedDataPointFormField.vue";
-import CurrencyDataPointFormField from "@/components/forms/parts/fields/CurrencyDataPointFormField.vue";
-import YesNoNaFormField from "@/components/forms/parts/fields/YesNoNaFormField.vue";
-import YesNoBaseDataPointFormField from "@/components/forms/parts/fields/YesNoBaseDataPointFormField.vue";
-import YesNoNaBaseDataPointFormField from "@/components/forms/parts/fields/YesNoNaBaseDataPointFormField.vue";
-import YesNoExtendedDataPointFormField from "@/components/forms/parts/fields/YesNoExtendedDataPointFormField.vue";
-import { type DocumentToUpload, uploadFiles } from "@/utils/FileUploadUtils";
-import { getFilledKpis } from "@/utils/DataPoint";
+import { FormKit } from '@formkit/vue';
+import { computed, defineComponent, inject } from 'vue';
+import { assertDefined } from '@/utils/TypeScriptUtils';
+import { useRoute } from 'vue-router';
+import { checkCustomInputs } from '@/utils/ValidationsUtils';
+import { objectDropNull, type ObjectType } from '@/utils/UpdateObjectUtils';
+import { smoothScroll } from '@/utils/SmoothScroll';
+import { createSubcategoryVisibilityMap } from '@/utils/UploadFormUtils';
+import { ApiClientProvider } from '@/services/ApiClients';
+import Card from 'primevue/card';
+import Calendar from 'primevue/calendar';
+import type Keycloak from 'keycloak-js';
+import PrimeButton from 'primevue/button';
+import { type DriveMixType } from '@/api-models/DriveMixType';
+import { type Category, type Subcategory } from '@/utils/GenericFrameworkTypes';
+import { AxiosError } from 'axios';
+import { type CompanyAssociatedDataPathwaysToParisData, DataTypeEnum, type P2pDriveMix } from '@clients/backend';
+import { p2pDataModel } from '@/components/resources/frameworkDataSearch/p2p/P2pDataModel';
+import UploadFormHeader from '@/components/forms/parts/elements/basic/UploadFormHeader.vue';
+import YesNoFormField from '@/components/forms/parts/fields/YesNoFormField.vue';
+import InputTextFormField from '@/components/forms/parts/fields/InputTextFormField.vue';
+import NumberFormField from '@/components/forms/parts/fields/NumberFormField.vue';
+import MultiSelectFormField from '@/components/forms/parts/fields/MultiSelectFormField.vue';
+import SubmitButton from '@/components/forms/parts/SubmitButton.vue';
+import SubmitSideBar from '@/components/forms/parts/SubmitSideBar.vue';
+import PercentageFormField from '@/components/forms/parts/fields/PercentageFormField.vue';
+import SuccessMessage from '@/components/messages/SuccessMessage.vue';
+import FailMessage from '@/components/messages/FailMessage.vue';
+import DateFormField from '@/components/forms/parts/fields/DateFormField.vue';
+import SingleSelectFormField from '@/components/forms/parts/fields/SingleSelectFormField.vue';
+import DriveMixFormField from '@/components/forms/parts/fields/DriveMixFormField.vue';
+import IntegerExtendedDataPointFormField from '@/components/forms/parts/fields/IntegerExtendedDataPointFormField.vue';
+import BigDecimalExtendedDataPointFormField from '@/components/forms/parts/fields/BigDecimalExtendedDataPointFormField.vue';
+import CurrencyDataPointFormField from '@/components/forms/parts/fields/CurrencyDataPointFormField.vue';
+import YesNoNaFormField from '@/components/forms/parts/fields/YesNoNaFormField.vue';
+import YesNoBaseDataPointFormField from '@/components/forms/parts/fields/YesNoBaseDataPointFormField.vue';
+import YesNoNaBaseDataPointFormField from '@/components/forms/parts/fields/YesNoNaBaseDataPointFormField.vue';
+import YesNoExtendedDataPointFormField from '@/components/forms/parts/fields/YesNoExtendedDataPointFormField.vue';
+import { type DocumentToUpload, uploadFiles } from '@/utils/FileUploadUtils';
+import { getFilledKpis } from '@/utils/DataPoint';
+import { hasUserCompanyOwnerOrDataUploaderRole } from '@/utils/CompanyRolesUtils';
 
 export default defineComponent({
   setup() {
     return {
-      getKeycloakPromise: inject<() => Promise<Keycloak>>("getKeycloakPromise"),
+      getKeycloakPromise: inject<() => Promise<Keycloak>>('getKeycloakPromise'),
     };
   },
-  name: "CreateP2pDataset",
+  name: 'CreateP2pDataset',
   components: {
     DriveMixFormField,
     FormKit,
@@ -167,16 +168,16 @@ export default defineComponent({
     YesNoNaBaseDataPointFormField,
     YesNoExtendedDataPointFormField,
   },
-  emits: ["datasetCreated"],
+  emits: ['datasetCreated'],
   data() {
     return {
-      formId: "createP2pForm",
+      formId: 'createP2pForm',
       waitingForData: true,
       dataDate: undefined as Date | undefined,
       companyAssociatedP2pData: {} as CompanyAssociatedDataPathwaysToParisData,
       p2pDataModel,
       route: useRoute(),
-      message: "",
+      message: '',
       smoothScroll: smoothScroll,
       uploadSucceded: false,
       postP2pDataProcessed: false,
@@ -191,9 +192,9 @@ export default defineComponent({
       get(): string {
         const currentDate = this.companyAssociatedP2pData.data?.general?.general?.dataDate;
         if (currentDate === undefined) {
-          return "";
+          return '';
         } else {
-          return currentDate.split("-")[0];
+          return currentDate.split('-')[0];
         }
       },
       set() {
@@ -202,7 +203,7 @@ export default defineComponent({
     },
     visibleCategories(): Category[] {
       return this.p2pDataModel.filter(
-        (category) => category.showIf(this.companyAssociatedP2pData.data) || category.name === "general",
+        (category) => category.showIf(this.companyAssociatedP2pData.data) || category.name === 'general'
       );
     },
     subcategoryVisibility(): Map<Subcategory, boolean> {
@@ -217,7 +218,7 @@ export default defineComponent({
   },
   created() {
     const dataId = this.route.query.templateDataId;
-    if (dataId && typeof dataId === "string") {
+    if (dataId && typeof dataId === 'string') {
       void this.loadP2pData(dataId);
     } else {
       this.waitingForData = false;
@@ -232,7 +233,7 @@ export default defineComponent({
     async loadP2pData(dataId: string): Promise<void> {
       this.waitingForData = true;
       const p2pDataControllerApi = new ApiClientProvider(
-        assertDefined(this.getKeycloakPromise)(),
+        assertDefined(this.getKeycloakPromise)()
       ).getUnifiedFrameworkDataController(DataTypeEnum.P2p);
 
       const p2pDataset = (await p2pDataControllerApi.getFrameworkData(dataId)).data;
@@ -242,7 +243,7 @@ export default defineComponent({
         this.dataDate = new Date(dataDateFromDataset);
       }
       this.companyAssociatedP2pData = objectDropNull(
-        p2pDataset as ObjectType,
+        p2pDataset as ObjectType
       ) as CompanyAssociatedDataPathwaysToParisData;
       this.waitingForData = false;
     },
@@ -257,20 +258,27 @@ export default defineComponent({
           await uploadFiles(Array.from(this.fieldSpecificDocuments.values()), assertDefined(this.getKeycloakPromise));
         }
         const p2pDataControllerApi = new ApiClientProvider(
-          assertDefined(this.getKeycloakPromise)(),
+          assertDefined(this.getKeycloakPromise)()
         ).getUnifiedFrameworkDataController(DataTypeEnum.P2p);
-        await p2pDataControllerApi.postFrameworkData(this.companyAssociatedP2pData);
-        this.$emit("datasetCreated");
+
+        const isCompanyOwnerOrDataUploader = await hasUserCompanyOwnerOrDataUploaderRole(
+          this.companyAssociatedP2pData.companyId,
+          this.getKeycloakPromise
+        );
+
+        await p2pDataControllerApi.postFrameworkData(this.companyAssociatedP2pData, isCompanyOwnerOrDataUploader);
+
+        this.$emit('datasetCreated');
         this.dataDate = undefined;
-        this.message = "Upload successfully executed.";
+        this.message = 'Upload successfully executed.';
         this.uploadSucceded = true;
       } catch (error) {
         console.error(error);
         if (error instanceof AxiosError) {
-          this.message = "An error occurred: " + error.message;
+          this.message = 'An error occurred: ' + error.message;
         } else {
           this.message =
-            "An unexpected error occurred. Please try again or contact the support team if the issue persists.";
+            'An unexpected error occurred. Please try again or contact the support team if the issue persists.';
         }
         this.uploadSucceded = false;
       } finally {
@@ -283,10 +291,10 @@ export default defineComponent({
      */
     filterFieldSpecificDocumentsByEnabledFieldOwnership() {
       Array.from(this.fieldSpecificDocuments.keys()).forEach((key) => {
-        const categoryName = key.split(".")[0];
+        const categoryName = key.split('.')[0];
         const allowedCategories = this.companyAssociatedP2pData.data.general.general.sectors
           .map((sector) => sector.toString().toLowerCase())
-          .concat("general");
+          .concat('general');
         if (!allowedCategories.includes(categoryName.toLowerCase())) {
           this.fieldSpecificDocuments.delete(key);
         }

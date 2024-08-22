@@ -16,14 +16,14 @@
   .p-card-subtitle {
     font-weight: $fw-bold;
     margin-bottom: $spacing-xxs;
-    color: $gray
+    color: $gray;
   }
   .p-card-content {
     padding: $spacing-sm 0;
-    color: $aquamarine-dark
+    color: $aquamarine-dark;
   }
   .p-card-footer {
-    padding: $spacing-sm 0 0 0
+    padding: $spacing-sm 0 0 0;
   }
 }
 .d-card {
@@ -58,11 +58,11 @@
   border-radius: 6px;
   .p-progressbar-value {
     margin: 0;
-    background: $orange-prime
+    background: $orange-prime;
   }
   .p-progressbar-label {
     color: $white;
-    line-height: 1.5rem
+    line-height: 1.5rem;
   }
 }
 
@@ -82,7 +82,7 @@
 .p-fileupload .p-fileupload-content {
   background: #fff;
   padding: 2rem 1rem;
-  border: 1px dashed #958D7C;
+  border: 1px dashed #958d7c;
   border-radius: 8px;
   color: #1b1b1b;
 }
@@ -92,4 +92,3 @@
 .link-in-list:not(:last-child) {
   border-right: 1px solid #858585;
 }
-

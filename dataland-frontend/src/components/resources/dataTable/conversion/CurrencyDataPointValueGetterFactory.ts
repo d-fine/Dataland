@@ -1,14 +1,14 @@
-import { type Field } from "@/utils/GenericFrameworkTypes";
+import { type Field } from '@/utils/GenericFrameworkTypes';
 import {
   type AvailableMLDTDisplayObjectTypes,
   MLDTDisplayComponentName,
-} from "@/components/resources/dataTable/MultiLayerDataTableCellDisplayer";
-import { type CurrencyDataPoint } from "@clients/backend";
-import { formatAmountWithCurrency } from "@/utils/Formatter";
+} from '@/components/resources/dataTable/MultiLayerDataTableCellDisplayer';
+import { type CurrencyDataPoint } from '@clients/backend';
+import { formatAmountWithCurrency } from '@/utils/Formatter';
 import {
   getDataPointGetterFactory,
   wrapDisplayValueWithDatapointInformation,
-} from "@/components/resources/dataTable/conversion/DataPoints";
+} from '@/components/resources/dataTable/conversion/DataPoints';
 
 /**
  * Formats a currency value for display in the data-table
@@ -18,7 +18,7 @@ import {
  */
 export function formatCurrencyForDisplay(
   dataPoint: CurrencyDataPoint | null | undefined,
-  fieldLabel: string,
+  fieldLabel: string
 ): AvailableMLDTDisplayObjectTypes {
   const datapointValue = formatAmountWithCurrency({ amount: dataPoint?.value, currency: dataPoint?.currency }).trim();
 
@@ -28,7 +28,7 @@ export function formatCurrencyForDisplay(
       displayComponentName: MLDTDisplayComponentName.StringDisplayComponent,
     },
     fieldLabel,
-    dataPoint,
+    dataPoint
   );
 }
 
@@ -40,7 +40,7 @@ export function formatCurrencyForDisplay(
  */
 export function currencyDataPointValueGetterFactory(
   path: string,
-  field: Field,
+  field: Field
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
 ): (dataset: any) => AvailableMLDTDisplayObjectTypes {
   return getDataPointGetterFactory<number, CurrencyDataPoint>(
@@ -48,7 +48,7 @@ export function currencyDataPointValueGetterFactory(
     field,
     (dataPoint?: CurrencyDataPoint): string | undefined => {
       const datapointValue = formatAmountWithCurrency({ amount: dataPoint?.value });
-      return datapointValue ? `${datapointValue} ${dataPoint?.currency ?? ""}`.trim() : "";
-    },
+      return datapointValue ? `${datapointValue} ${dataPoint?.currency ?? ''}`.trim() : '';
+    }
   );
 }

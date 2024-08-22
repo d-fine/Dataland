@@ -1,7 +1,7 @@
-import { type StoredDataRequestMessageObject } from "@clients/communitymanager";
-import { faker } from "@faker-js/faker";
-import { generateInt } from "@e2e/fixtures/common/NumberFixtures";
-import { generateArray } from "@e2e/fixtures/FixtureUtils";
+import { type StoredDataRequestMessageObject } from '@clients/communitymanager';
+import { faker } from '@faker-js/faker';
+import { generateInt } from '@e2e/fixtures/common/NumberFixtures';
+import { generateArray } from '@e2e/fixtures/FixtureUtils';
 
 /**
  * Generates a stored data request message object with contacts and a random message
@@ -11,7 +11,7 @@ export function generateStoredDataRequestMessage(): StoredDataRequestMessageObje
   const minimalNumberOfEmailAddressees = 1;
   return {
     contacts: new Set(
-      generateArray(() => faker.internet.email({ provider: "example.com" }), minimalNumberOfEmailAddressees),
+      generateArray(() => faker.internet.email({ provider: 'example.com' }), minimalNumberOfEmailAddressees)
     ),
     message: faker.git.commitMessage(),
     creationTimestamp: generateInt(),

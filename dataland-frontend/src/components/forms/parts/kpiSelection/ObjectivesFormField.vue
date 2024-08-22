@@ -4,7 +4,10 @@
     description="Grade of the substantial contribution criterias fulfillment"
   />
   <div v-for="field in objectives" :key="field.name">
-    <UploadFormHeader :label="'Substantial Contribution to ' + field.name" description="" :is-required="false" />
+    <UploadFormHeader
+      :label="'Substantial Contribution to ' + field.name"
+      :description="'Taxonomy-aligned share substantially contributing to ' + field.description"
+    />
     <FormKit
       type="text"
       :name="'substantialContributionTo' + field.key + 'InPercent'"
@@ -29,40 +32,46 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
-import YesNoFormField from "@/components/forms/parts/fields/YesNoFormField.vue";
-import UploadFormHeader from "@/components/forms/parts/elements/basic/UploadFormHeader.vue";
-import UploadFormSubcategoryHeader from "@/components/forms/parts/elements/basic/UploadFormSubcategoryHeader.vue";
+import { defineComponent } from 'vue';
+import YesNoFormField from '@/components/forms/parts/fields/YesNoFormField.vue';
+import UploadFormHeader from '@/components/forms/parts/elements/basic/UploadFormHeader.vue';
+import UploadFormSubcategoryHeader from '@/components/forms/parts/elements/basic/UploadFormSubcategoryHeader.vue';
 
 export default defineComponent({
-  name: "ObjectivesFormField",
+  name: 'ObjectivesFormField',
   components: { UploadFormHeader, YesNoFormField, UploadFormSubcategoryHeader },
   data() {
     return {
       objectives: [
         {
-          name: "Climate change mitigation",
-          key: "ClimateChangeMitigation",
+          name: 'Climate change mitigation',
+          key: 'ClimateChangeMitigation',
+          description: 'climate change mitigation',
         },
         {
-          name: "Climate change adaptation",
-          key: "ClimateChangeAdaptation",
+          name: 'Climate change adaptation',
+          key: 'ClimateChangeAdaptation',
+          description: 'climate change adaptation',
         },
         {
-          name: "Sustainable use and protection of water and marine resources",
-          key: "SustainableUseAndProtectionOfWaterAndMarineResources",
+          name: 'Sustainable use and protection of water and marine resources',
+          key: 'SustainableUseAndProtectionOfWaterAndMarineResources',
+          description: 'sustainable use and protection of water and marine resources',
         },
         {
-          name: "Transition to a circular economy",
-          key: "TransitionToACircularEconomy",
+          name: 'Transition to a circular economy',
+          key: 'TransitionToACircularEconomy',
+          description: 'circular economy',
         },
         {
-          name: "Pollution prevention and control",
-          key: "PollutionPreventionAndControl",
+          name: 'Pollution prevention and control',
+          key: 'PollutionPreventionAndControl',
+          description: 'pollution prevention and control',
         },
         {
-          name: "Protection and restoration of biodiversity and ecosystems",
-          key: "ProtectionAndRestorationOfBiodiversityAndEcosystems",
+          name: 'Protection and restoration of biodiversity and ecosystems',
+          key: 'ProtectionAndRestorationOfBiodiversityAndEcosystems',
+          description: 'protection and restoration of biodiversity and ecosystems',
         },
       ],
     };

@@ -1,16 +1,16 @@
-import type Keycloak from "keycloak-js";
-import type { Router } from "vue-router";
-import { mount } from "cypress/vue";
-import { createPinia } from "pinia";
-import PrimeVue from "primevue/config";
-import DialogService from "primevue/dialogservice";
-import { createMemoryHistory, createRouter } from "vue-router";
-import { routes } from "@/router";
-import { ApiClientProvider } from "@/services/ApiClients";
-import { assertDefined } from "@/utils/TypeScriptUtils";
-import { defaultConfig, plugin } from "@formkit/vue";
-import { defineComponent, h } from "vue";
-import DynamicDialog from "primevue/dynamicdialog";
+import type Keycloak from 'keycloak-js';
+import type { Router } from 'vue-router';
+import { mount } from 'cypress/vue';
+import { createPinia } from 'pinia';
+import PrimeVue from 'primevue/config';
+import DialogService from 'primevue/dialogservice';
+import { createMemoryHistory, createRouter } from 'vue-router';
+import { routes } from '@/router';
+import { ApiClientProvider } from '@/services/ApiClients';
+import { assertDefined } from '@/utils/TypeScriptUtils';
+import { defaultConfig, plugin } from '@formkit/vue';
+import { defineComponent, h } from 'vue';
+import DynamicDialog from 'primevue/dynamicdialog';
 
 interface DatalandMountOptions {
   /**
@@ -44,6 +44,7 @@ export function getMountingFunction(additionalOptions: DatalandMountOptions = {}
     However, the underlying type definition of the mount function is very complex (> 100 LOC).
     Therefore, we decided to create this un-checked meta-function.
   */
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   return (component: any, options: any) => {
     if (!options) {
       options = {};
@@ -87,12 +88,14 @@ export function getMountingFunction(additionalOptions: DatalandMountOptions = {}
     }
 
     options.global.plugins.push({
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       install(app: any) {
         app.use(assertDefined(options.router));
       },
     });
 
     options.global.plugins.push({
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       install(app: any) {
         app.use(plugin, defaultConfig);
       },

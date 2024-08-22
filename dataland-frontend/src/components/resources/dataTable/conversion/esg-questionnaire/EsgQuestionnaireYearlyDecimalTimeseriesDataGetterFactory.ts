@@ -3,14 +3,14 @@ import {
   MLDTDisplayComponentName,
   type MLDTDisplayObject,
   MLDTDisplayObjectForEmptyString,
-} from "@/components/resources/dataTable/MultiLayerDataTableCellDisplayer";
+} from '@/components/resources/dataTable/MultiLayerDataTableCellDisplayer';
 
 import {
   type EsgQuestionnaireYearlyDecimalTimeseriesDataConfiguration,
   type MappedOptionalDecimal,
   type YearlyTimeseriesData,
-} from "@/components/resources/dataTable/conversion/esg-questionnaire/EsgQuestionnaireYearlyDecimalTimeseriesData";
-import EsgQuestionnaireYearlyDecimalTimeseriesModal from "@/components/resources/dataTable/modals/EsgQuestionnaireYearlyDecimalTimeseriesModal.vue";
+} from '@/components/resources/dataTable/conversion/esg-questionnaire/EsgQuestionnaireYearlyDecimalTimeseriesData';
+import EsgQuestionnaireYearlyDecimalTimeseriesModal from '@/components/resources/dataTable/modals/EsgQuestionnaireYearlyDecimalTimeseriesModal.vue';
 
 /**
  * Formtas a EsgQuestionnaireYearlyDecimalTimeseries for display in the table using a modal
@@ -22,7 +22,7 @@ import EsgQuestionnaireYearlyDecimalTimeseriesModal from "@/components/resources
 export function formatEsgQuestionnaireYearlyDecimalTimeseriesDataForTable<KeyList extends string>(
   input: YearlyTimeseriesData<MappedOptionalDecimal<KeyList>> | null | undefined,
   options: EsgQuestionnaireYearlyDecimalTimeseriesDataConfiguration<KeyList>,
-  fieldLabel: string,
+  fieldLabel: string
 ): AvailableMLDTDisplayObjectTypes {
   const yearlyData = input?.yearlyData;
   if (
@@ -61,11 +61,11 @@ export function formatEsgQuestionnaireYearlyDecimalTimeseriesDataForTable<KeyLis
  * @returns a boolean stating if all numbers are null
  */
 function areAllTimeSeriesNumbersNull<KeyList extends string>(
-  yearlyData: { [key: string]: MappedOptionalDecimal<KeyList> } | null | undefined,
+  yearlyData: { [key: string]: MappedOptionalDecimal<KeyList> } | null | undefined
 ): boolean {
   for (const year in yearlyData) {
     const mappedOptionDecimalForOneYear = yearlyData[year];
-    if (mappedOptionDecimalForOneYear !== null && typeof mappedOptionDecimalForOneYear === "object") {
+    if (mappedOptionDecimalForOneYear !== null && typeof mappedOptionDecimalForOneYear === 'object') {
       for (const key in mappedOptionDecimalForOneYear) {
         const singleValue = mappedOptionDecimalForOneYear[key];
         if (singleValue !== null) {

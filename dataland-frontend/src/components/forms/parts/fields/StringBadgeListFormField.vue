@@ -42,18 +42,18 @@
 </template>
 
 <script lang="ts">
-import UploadFormHeader from "@/components/forms/parts/elements/basic/UploadFormHeader.vue";
-import { defineComponent } from "vue";
-import { FormKit } from "@formkit/vue";
-import { BaseFormFieldProps } from "@/components/forms/parts/fields/FormFieldProps";
-import PrimeButton from "primevue/button";
+import UploadFormHeader from '@/components/forms/parts/elements/basic/UploadFormHeader.vue';
+import { defineComponent } from 'vue';
+import { FormKit } from '@formkit/vue';
+import { BaseFormFieldProps } from '@/components/forms/parts/fields/FormFieldProps';
+import PrimeButton from 'primevue/button';
 
 export default defineComponent({
-  name: "StringBadgeListFormField",
+  name: 'StringBadgeListFormField',
   components: { PrimeButton, FormKit, UploadFormHeader },
   data() {
     return {
-      listOfElementsString: "",
+      listOfElementsString: '',
       listOfElements: [] as string[],
     };
   },
@@ -61,11 +61,11 @@ export default defineComponent({
     ...BaseFormFieldProps,
     dataTestAddButton: {
       type: String,
-      default: "addButton",
+      default: 'addButton',
     },
     dataTestListInput: {
       type: String,
-      default: "listOfElementsInput",
+      default: 'listOfElementsInput',
     },
   },
   methods: {
@@ -84,11 +84,11 @@ export default defineComponent({
      */
     addNewItems() {
       const items = this.listOfElementsString
-        .split(",")
+        .split(',')
         .map((element) => element.trim())
-        .filter((element) => element !== "");
+        .filter((element) => element !== '');
       this.listOfElements = [...new Set([...this.listOfElements, ...items])];
-      this.listOfElementsString = "";
+      this.listOfElementsString = '';
     },
   },
 });

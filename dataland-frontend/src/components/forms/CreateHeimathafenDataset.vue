@@ -24,11 +24,11 @@
               <FormKit
                 type="group"
                 v-for="category in heimathafenDataModel"
-                :key="category"
+                :key="category.name"
                 :label="category.label"
                 :name="category.name"
               >
-                <div class="" v-for="subcategory in category.subcategories" :key="subcategory">
+                <div class="" v-for="subcategory in category.subcategories" :key="subcategory.name">
                   <template v-if="subcategoryVisibility.get(subcategory) ?? true">
                     <div class="uploadFormSection grid">
                       <div class="col-3 p-3 topicLabel">
@@ -79,9 +79,9 @@
 
           <h4 id="topicTitles" class="title pt-3">On this page</h4>
           <ul>
-            <li v-for="category in heimathafenDataModel" :key="category">
+            <li v-for="category in heimathafenDataModel" :key="category.name">
               <ul>
-                <li v-for="subcategory in category.subcategories" :key="subcategory">
+                <li v-for="subcategory in category.subcategories" :key="subcategory.name">
                   <a
                     v-if="subcategoryVisibility.get(subcategory) ?? true"
                     @click="smoothScroll(`#${subcategory.name}`)"
@@ -97,65 +97,65 @@
   </Card>
 </template>
 <script lang="ts">
-// @ts-nocheck
-import { FormKit } from "@formkit/vue";
-import { ApiClientProvider } from "@/services/ApiClients";
-import Card from "primevue/card";
-import { computed, defineComponent, inject } from "vue";
-import type Keycloak from "keycloak-js";
-import { assertDefined } from "@/utils/TypeScriptUtils";
-import Tooltip from "primevue/tooltip";
-import PrimeButton from "primevue/button";
-import UploadFormHeader from "@/components/forms/parts/elements/basic/UploadFormHeader.vue";
-import YesNoFormField from "@/components/forms/parts/fields/YesNoFormField.vue";
-import Calendar from "primevue/calendar";
-import SuccessMessage from "@/components/messages/SuccessMessage.vue";
-import FailMessage from "@/components/messages/FailMessage.vue";
-import { type CompanyAssociatedDataHeimathafenData, DataTypeEnum, type HeimathafenData } from "@clients/backend";
-import { useRoute } from "vue-router";
-import { checkCustomInputs } from "@/utils/ValidationsUtils";
-import NaceCodeFormField from "@/components/forms/parts/fields/NaceCodeFormField.vue";
-import InputTextFormField from "@/components/forms/parts/fields/InputTextFormField.vue";
-import FreeTextFormField from "@/components/forms/parts/fields/FreeTextFormField.vue";
-import NumberFormField from "@/components/forms/parts/fields/NumberFormField.vue";
-import DateFormField from "@/components/forms/parts/fields/DateFormField.vue";
-import SingleSelectFormField from "@/components/forms/parts/fields/SingleSelectFormField.vue";
-import MultiSelectFormField from "@/components/forms/parts/fields/MultiSelectFormField.vue";
-import AddressFormField from "@/components/forms/parts/fields/AddressFormField.vue";
-import RadioButtonsFormField from "@/components/forms/parts/fields/RadioButtonsFormField.vue";
-import SubmitButton from "@/components/forms/parts/SubmitButton.vue";
-import SubmitSideBar from "@/components/forms/parts/SubmitSideBar.vue";
-import YesNoNaFormField from "@/components/forms/parts/fields/YesNoNaFormField.vue";
-import UploadReports from "@/components/forms/parts/UploadReports.vue";
-import PercentageFormField from "@/components/forms/parts/fields/PercentageFormField.vue";
-import ProductionSitesFormField from "@/components/forms/parts/fields/ProductionSitesFormField.vue";
-import { objectDropNull, type ObjectType } from "@/utils/UpdateObjectUtils";
-import { smoothScroll } from "@/utils/SmoothScroll";
-import { type DocumentToUpload, uploadFiles } from "@/utils/FileUploadUtils";
-import MostImportantProductsFormField from "@/components/forms/parts/fields/MostImportantProductsFormField.vue";
-import { type Field, type Subcategory } from "@/utils/GenericFrameworkTypes";
-import ProcurementCategoriesFormField from "@/components/forms/parts/fields/ProcurementCategoriesFormField.vue";
-import { createSubcategoryVisibilityMap } from "@/utils/UploadFormUtils";
-import { formatAxiosErrorMessage } from "@/utils/AxiosErrorMessageFormatter";
-import IntegerExtendedDataPointFormField from "@/components/forms/parts/fields/IntegerExtendedDataPointFormField.vue";
-import BigDecimalExtendedDataPointFormField from "@/components/forms/parts/fields/BigDecimalExtendedDataPointFormField.vue";
-import CurrencyDataPointFormField from "@/components/forms/parts/fields/CurrencyDataPointFormField.vue";
-import YesNoExtendedDataPointFormField from "@/components/forms/parts/fields/YesNoExtendedDataPointFormField.vue";
-import YesNoBaseDataPointFormField from "@/components/forms/parts/fields/YesNoBaseDataPointFormField.vue";
-import YesNoNaBaseDataPointFormField from "@/components/forms/parts/fields/YesNoNaBaseDataPointFormField.vue";
-import ListOfBaseDataPointsFormField from "@/components/forms/parts/fields/ListOfBaseDataPointsFormField.vue";
-import { getFilledKpis } from "@/utils/DataPoint";
-import { heimathafenDataModel } from "@/frameworks/heimathafen/UploadConfig";
-import { getBasePublicFrameworkDefinition } from "@/frameworks/BasePublicFrameworkRegistry";
-import { type PublicFrameworkDataApi } from "@/utils/api/UnifiedFrameworkDataApi";
+import { FormKit } from '@formkit/vue';
+import { ApiClientProvider } from '@/services/ApiClients';
+import Card from 'primevue/card';
+import { computed, defineComponent, inject } from 'vue';
+import type Keycloak from 'keycloak-js';
+import { assertDefined } from '@/utils/TypeScriptUtils';
+import Tooltip from 'primevue/tooltip';
+import PrimeButton from 'primevue/button';
+import UploadFormHeader from '@/components/forms/parts/elements/basic/UploadFormHeader.vue';
+import YesNoFormField from '@/components/forms/parts/fields/YesNoFormField.vue';
+import Calendar from 'primevue/calendar';
+import SuccessMessage from '@/components/messages/SuccessMessage.vue';
+import FailMessage from '@/components/messages/FailMessage.vue';
+import { type CompanyAssociatedDataHeimathafenData, DataTypeEnum, type HeimathafenData } from '@clients/backend';
+import { useRoute } from 'vue-router';
+import { checkCustomInputs } from '@/utils/ValidationsUtils';
+import NaceCodeFormField from '@/components/forms/parts/fields/NaceCodeFormField.vue';
+import InputTextFormField from '@/components/forms/parts/fields/InputTextFormField.vue';
+import FreeTextFormField from '@/components/forms/parts/fields/FreeTextFormField.vue';
+import NumberFormField from '@/components/forms/parts/fields/NumberFormField.vue';
+import DateFormField from '@/components/forms/parts/fields/DateFormField.vue';
+import SingleSelectFormField from '@/components/forms/parts/fields/SingleSelectFormField.vue';
+import MultiSelectFormField from '@/components/forms/parts/fields/MultiSelectFormField.vue';
+import AddressFormField from '@/components/forms/parts/fields/AddressFormField.vue';
+import RadioButtonsFormField from '@/components/forms/parts/fields/RadioButtonsFormField.vue';
+import SubmitButton from '@/components/forms/parts/SubmitButton.vue';
+import SubmitSideBar from '@/components/forms/parts/SubmitSideBar.vue';
+import YesNoNaFormField from '@/components/forms/parts/fields/YesNoNaFormField.vue';
+import UploadReports from '@/components/forms/parts/UploadReports.vue';
+import PercentageFormField from '@/components/forms/parts/fields/PercentageFormField.vue';
+import ProductionSitesFormField from '@/components/forms/parts/fields/ProductionSitesFormField.vue';
+import { objectDropNull } from '@/utils/UpdateObjectUtils';
+import { smoothScroll } from '@/utils/SmoothScroll';
+import { type DocumentToUpload, uploadFiles } from '@/utils/FileUploadUtils';
+import MostImportantProductsFormField from '@/components/forms/parts/fields/MostImportantProductsFormField.vue';
+import { type Field, type Subcategory } from '@/utils/GenericFrameworkTypes';
+import ProcurementCategoriesFormField from '@/components/forms/parts/fields/ProcurementCategoriesFormField.vue';
+import { createSubcategoryVisibilityMap } from '@/utils/UploadFormUtils';
+import { formatAxiosErrorMessage } from '@/utils/AxiosErrorMessageFormatter';
+import IntegerExtendedDataPointFormField from '@/components/forms/parts/fields/IntegerExtendedDataPointFormField.vue';
+import BigDecimalExtendedDataPointFormField from '@/components/forms/parts/fields/BigDecimalExtendedDataPointFormField.vue';
+import CurrencyDataPointFormField from '@/components/forms/parts/fields/CurrencyDataPointFormField.vue';
+import YesNoExtendedDataPointFormField from '@/components/forms/parts/fields/YesNoExtendedDataPointFormField.vue';
+import YesNoBaseDataPointFormField from '@/components/forms/parts/fields/YesNoBaseDataPointFormField.vue';
+import YesNoNaBaseDataPointFormField from '@/components/forms/parts/fields/YesNoNaBaseDataPointFormField.vue';
+import ListOfBaseDataPointsFormField from '@/components/forms/parts/fields/ListOfBaseDataPointsFormField.vue';
+import { getFilledKpis } from '@/utils/DataPoint';
+import { heimathafenDataModel } from '@/frameworks/heimathafen/UploadConfig';
+import { getBasePublicFrameworkDefinition } from '@/frameworks/BasePublicFrameworkRegistry';
+import { type PublicFrameworkDataApi } from '@/utils/api/UnifiedFrameworkDataApi';
+import { hasUserCompanyOwnerOrDataUploaderRole } from '@/utils/CompanyRolesUtils';
 
 export default defineComponent({
   setup() {
     return {
-      getKeycloakPromise: inject<() => Promise<Keycloak>>("getKeycloakPromise"),
+      getKeycloakPromise: inject<() => Promise<Keycloak>>('getKeycloakPromise'),
     };
   },
-  name: "CreateHeimathafenDataset",
+  name: 'CreateHeimathafenDataset',
   components: {
     SubmitButton,
     SubmitSideBar,
@@ -193,16 +193,16 @@ export default defineComponent({
   directives: {
     tooltip: Tooltip,
   },
-  emits: ["datasetCreated"],
+  emits: ['datasetCreated'],
   data() {
     return {
-      formId: "createHeimathafenForm",
+      formId: 'createHeimathafenForm',
       waitingForData: true,
       dataDate: undefined as Date | undefined,
       companyAssociatedHeimathafenData: {} as CompanyAssociatedDataHeimathafenData,
       heimathafenDataModel: heimathafenDataModel,
       route: useRoute(),
-      message: "",
+      message: '',
       listOfFilledKpis: [] as Array<string>,
       smoothScroll: smoothScroll,
       uploadSucceded: false,
@@ -217,7 +217,7 @@ export default defineComponent({
       get(): string {
         const currentYear: string = this.companyAssociatedHeimathafenData.reportingPeriod;
         if (currentYear == undefined) {
-          return "";
+          return '';
         } else {
           return currentYear;
         }
@@ -238,7 +238,7 @@ export default defineComponent({
   },
   created() {
     const dataId = this.route.query.templateDataId;
-    if (dataId && typeof dataId === "string") {
+    if (dataId && typeof dataId === 'string') {
       void this.loadHeimathafenData(dataId);
     } else {
       this.waitingForData = false;
@@ -255,6 +255,7 @@ export default defineComponent({
       if (frameworkDefinition) {
         return frameworkDefinition.getPublicFrameworkApiClient(undefined, apiClientProvider.axiosInstance);
       }
+      throw Error('Data API for Heimathafen is broken.');
     },
 
     /**
@@ -268,9 +269,7 @@ export default defineComponent({
       const dataResponse = await heimathafenDataControllerApi.getFrameworkData(dataId);
       const heimathafenResponseData = dataResponse.data;
       this.listOfFilledKpis = getFilledKpis(heimathafenResponseData.data);
-      this.companyAssociatedHeimathafenData = objectDropNull(
-        heimathafenResponseData as ObjectType,
-      ) as CompanyAssociatedDataHeimathafenData;
+      this.companyAssociatedHeimathafenData = objectDropNull(heimathafenResponseData);
       this.waitingForData = false;
     },
     /**
@@ -283,18 +282,28 @@ export default defineComponent({
           await uploadFiles(Array.from(this.fieldSpecificDocuments.values()), assertDefined(this.getKeycloakPromise));
         }
         const heimathafenDataControllerApi = this.buildHeimathafenDataApi();
-        await heimathafenDataControllerApi.postFrameworkData(this.companyAssociatedHeimathafenData);
-        this.$emit("datasetCreated");
+
+        const isCompanyOwnerOrDataUploader = await hasUserCompanyOwnerOrDataUploaderRole(
+          this.companyAssociatedHeimathafenData.companyId,
+          this.getKeycloakPromise
+        );
+
+        await heimathafenDataControllerApi.postFrameworkData(
+          this.companyAssociatedHeimathafenData,
+          isCompanyOwnerOrDataUploader
+        );
+
+        this.$emit('datasetCreated');
         this.dataDate = undefined;
-        this.message = "Upload successfully executed.";
+        this.message = 'Upload successfully executed.';
         this.uploadSucceded = true;
       } catch (error) {
         console.error(error);
-        if (error.message) {
-          this.message = formatAxiosErrorMessage(error as Error);
+        if (error instanceof Error) {
+          this.message = formatAxiosErrorMessage(error);
         } else {
           this.message =
-            "An unexpected error occurred. Please try again or contact the support team if the issue persists.";
+            'An unexpected error occurred. Please try again or contact the support team if the issue persists.';
         }
         this.uploadSucceded = false;
       } finally {

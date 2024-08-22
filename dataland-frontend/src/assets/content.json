@@ -1,398 +1,372 @@
 {
-    "pages": [
+  "pages": [
+    {
+      "title": "Home",
+      "url": "/",
+      "sections": [
         {
-            "title": "Home",
-            "url": "/",
-            "sections": [
-                {
-                    "title": "Welcome to Dataland",
-                    "text": [
-                        "This is the main introduction of our homepage."
-                    ],
-                    "image": [
-                        "/static/logos/gfx_logo_dataland_orange_S.svg"
-                    ]
-                },
-                {
-                    "title": "Intro",
-                    "text": [
-                        "Liberate Data - ",
-                        "Empower Autonomy.  ",
-                        "The alternative to data monopolies."
-                    ],
-                    "image": [
-                        "/static/logos/Dataland_D_svg_Logo.svg"
-                    ],
-                    "cards": [
-                        {
-                            "icon": "/static/icons/Search.svg",
-                            "text": "Search for a company to view or request data..."
-                        }
-                    ]
-                },
-                {
-                    "title": "Quotes",
-                    "text": [
-                        "START YOUR DATALAND JOURNEY"
-                    ],
-                    "cards": [
-                        {
-                            "icon": "BzUkAtdcKvg",
-                            "title": "Sven Schubert,",
-                            "text": " CEO of Envoria",
-                            "date": "\"Dataland is the only platform we know that is open to everyone and based on a non-profit business model.\""
-                        },
-                        {
-                            "icon": "NqEjkz-3hPw",
-                            "title": "Jonas Weisbach,",
-                            "text": "Business Development Manager ESG\n at Metzler Asset Management",
-                            "date": "\"We believe that open source, reliable and comparable data is the single best way to identify the companies that walk the walk.\""
-                        },
-                        {
-                            "icon": "rCkISSQreCI",
-                            "title": "Dr. Egbert Schark,",
-                            "text": "Founder and Managing Director\n at d-fine GmbH",
-                            "date": "\"I believe the fascinating idea is worth supporting. Join the mission! Join Dataland!\""
-                        },
-                        {
-                            "icon": "g40FkVQZjUc",
-                            "title": "Daniel Sailer,",
-                            "text": " Head of Sustainable Investment Office\n at Metzler Asset Management GmbH",
-                            "date": "\"The Pathways to Paris PoC can be a simple way to make sure Dataland becomes the data platform you need.\""
-                        },
-                        {
-                            "icon": "Jx1v2Z-9cBw",
-                            "title": "Dr. Anna-Lisa Schwarz",
-                            "text": "Managing Director at Werte-Stiftung ",
-                            "date": "\"Dataland will help solve data issues by ensuring transparent, open and fair access to sustainability data.\""
-                        },
-                        {
-                            "icon": "WJg2KKUVch4",
-                            "title": "Rudolf Siebel",
-                            "text": "Managing Director at BVI German Fund Association ",
-                            "date": "\"[Through Dataland], we hope that data availability, coverage and quality is improved, for the benefit of the users, the corporations and society overall.\""
-                        },
-                        {
-                            "icon": "jeyQERlJPP8",
-                            "title": "Jasmina Klein",
-                            "text": "Manager at d-fine",
-                            "date": "\"[Dataland] will help to let the data flow and this is the key to solve one of the most pressing issues of our time.\""
-                        },
-                        {
-                            "icon": "Hz-5xC8BSAg",
-                            "title": "Matthias Kopp,",
-                            "text": " Director of Sustainable Finance at WWF Germany",
-                            "date": "\"Dataland can provide the data ecosystem we all need [to support our] transition to stay within 1.5 degrees or within the planetary boundaries.\""
-                        },
-                        {
-                            "icon": "34qs_8D78JY",
-                            "title": "Christian Heller,",
-                            "text": " CEO of Value Balancing Alliance",
-                            "date": "\"Join Dataland, share your data, and make use of it to transform the economy into a just and sustainable one.\""
-                        },
-                        {
-                            "icon": "NMaN0Autdok",
-                            "title": "Fabian Klose,",
-                            "text": "Cloud Services Sales\n at T-Systems International",
-                            "date": "\"Have a look at Dataland and look at what benefits you can get out of it for your business. Join the community!\""
-                        },
-                        {
-                            "icon": "UpEYtR_v5ws",
-                            "title": "Ingo Speich,",
-                            "text": "Head of Sustainability & Corporate Governance\n at Deka Investment",
-                            "date": "\"We appeal to both investors and companies to make sustainability data available in a timely and cost-efficient manner.\""
-                        },
-                        {
-                            "icon": "1CArXxrcsvg",
-                            "title": "Christoph Benner,",
-                            "text": "CEO of Chom Capital",
-                            "date": "\"Our partnership with Dataland is instrumental in progressively addressing and bridging data gaps.\""
-                        }
-                    ]
-                },
-                {
-                    "title": "Brands",
-                    "text": [
-                        "See who ",
-                        "is involved"
-                    ],
-                    "image": [
-                        "/static/logos/img_Atlas_Metrics.png",
-                        "/static/logos/img_bvi.png",
-                        "/static/logos/img_chom_capital.png",
-                        "/static/logos/img_d-fine.png",
-                        "/static/logos/img_dydon_ai.png",
-                        "/static/logos/img_envoria.png",
-                        "/static/logos/img_Experience_One.png",
-                        "/static/logos/img_HansaInvest.png",
-                        "/static/logos/img_impact_cubed.png",
-                        "/static/logos/img_leonardo.png",
-                        "/static/logos/img_Metzler.png",
-                        "/static/logos/img_pwc.png",
-                        "/static/logos/img_sustainable_dividends.png",
-                        "/static/logos/img_t_systems.png",
-                        "/static/logos/img_value_balancing_alliance.png",
-                        "/static/logos/img_voeb.png"
-                    ]
-                },
-                {
-                    "title": "Struggle",
-                    "text": [
-                        "Dataland aims to fix",
-                        " four main data issues"
-                    ],
-                    "cards": [
-                        {
-                            "icon": "/static/icons/Diagram.svg",
-                            "title": "Data Gaps",
-                            "text": "Smaller and unlisted companies are often left out of the existing data offering, shifting the burden of acquiring this data to the data consumers."
-                        },
-                        {
-                            "icon": "/static/icons/Badge.svg",
-                            "title": "Quality Issues",
-                            "text": "Inaccurate, inconsistent, or outdated data jeopardizes the integrity of analytics and decision processes, leading to misguided strategies."
-                        },
-                        {
-                            "icon": "/static/icons/3d-mpr-toggle.svg",
-                            "title": "Usage Restrictions",
-                            "text": "Companies are quite limited in how they can use the data they acquired, hindering many valuable applications of this data."
-                        },
-                        {
-                            "icon": "/static/icons/Airline--rapid-board.svg",
-                            "title": "High Price",
-                            "text": "Data is becoming more and more expensive, limiting access to essential information for many organizations."
-                        }
-                    ]
-                },
-                {
-                    "title": "How it works",
-                    "text": [
-                        "How does Dataland work?"
-                    ],
-                    "cards": [
-                        {
-                            "title": "Search",
-                            "text": "Utilize the search feature to find specific companies within the platform."
-                        },
-                        {
-                            "title": "Request company’s inclusion",
-                            "text": "Request company’s inclusion in case you can’t find the company you are looking for."
-                        },
-                        {
-                            "title": "Request framework data",
-                            "text": "Join a campaign to get the missing data."
-                        },
-                        {
-                            "title": "Download",
-                            "text": "Download either through the platform or through API."
-                        }
-                    ]
-                },
-                {
-                    "title": "Claim",
-                    "text": [
-                        "In Dataland, ",
-                        "you",
-                        " have the power."
-                    ]
-                },
-                {
-                    "title": "Join a campaign",
-                    "text": [
-                        "Join a campaign to",
-                        " get the missing ",
-                        "data.",
-                        "The campaigns are a simple way for you to get better data coverage and improved data quality, while testing Dataland."
-                    ],
-                    "cards": [
-                        {
-                            "title": "Pathways to Paris",
-                            "text": "Captures companies’ progress on Paris-compatible transformation paths that are necessary to achieve the goals of the Paris climate protection agreement.",
-                            "date": "14th of August"
-                        },
-                        {
-                            "title": "LkSG",
-                            "text": "The Lieferkettensorgfalts-pflichtengesetz is a German law requiring companies to monitor human rights and environmental risks in their supply chains."
-                        },
-                        {
-                            "title": "EU Taxonomy",
-                            "text": "The EU Taxonomy Regulation supports companies to capture their environmentally sustainable economic activities."
-                        },
-                        {
-                            "title": "SFDR",
-                            "text": "SFDR helps investors to properly assess how sustainability risks are integrated in the investment decision process."
-                        }
-                    ]
-                },
-                {
-                    "title": "Get in touch",
-                    "text": [
-                        "Get in touch"
-                    ],
-                    "cards": [
-                        {
-                            "icon": "Email",
-                            "title": "Your message",
-                            "text": "Get in touch",
-                            "date": "By clicking Get in Touch,  you agree to our Terms of use and that you have read our Privacy Policy."
-                        },
-                        {
-                            "icon": "/static/images/Erik_Breen.jpg",
-                            "title": "Erik Breen,",
-                            "text": "Managing Director of Dataland"
-                        },
-                        {
-                            "icon": "erik.breen@dataland.com",
-                            "title": "Campaigns on Dataland",
-                            "text": "Hello Erik,\n \nI recently visited Dataland and I'm interested in the campaigns on Dataland.\nCould you please provide me with information regarding:\n1.      Each framework\n2.      How I can get the data for a certain company\n\nIf you have any upcoming events or newsletters, I'd love to know about those too.\n\nThank you, and I look forward to hearing from you.\nBest regards,\n[Your Name]\n[Your Email Address]\n[Your Phone Number]"
-                        },
-                        {
-                            "icon": "erik.breen@dataland.com",
-                            "title": "Inquiry about Dataland: Shortest way to fill data gaps and improve data quality",
-                            "text": "Hello Erik,\n \nI recently visited Dataland and I'm interested in learning more about your platform, its features, and how I can get involved.\n\nCould you please provide me with information regarding:\n1.      The purpose and mission of your website.\n2.      Key functionalities and features.\n3.      The different frameworks\n4.      How can I get data / provide data\n\nIf you have any upcoming events or newsletters, I'd love to know about those too.\n\nFeel free to reply to this email or share the best way to get in touch.\n\nThank you, and I look forward to hearing from you.\nBest regards,\n[Your Name]\n[Your Email Address]\n[Your Phone Number]"
-                        }
-                    ]
-                },
-                {
-                    "title": "Footer",
-                    "text": [
-                        "Copyright © ",
-                        " Dataland"
-                    ],
-                    "image": [
-                        "/static/logos/gfx_logo_dataland_orange_S.svg"
-                    ],
-                    "cards": [
-                        {
-                            "title": "Tech Hub",
-                            "links": [
-                                {
-                                    "text": "DATASETS",
-                                    "url": "/api/swagger-ui/index.html"
-                                },
-                                {
-                                    "text": "DOCUMENTS",
-                                    "url": "/documents/swagger-ui/index.html"
-                                },
-                                {
-                                    "text": "REQUESTS",
-                                    "url": "/community/swagger-ui/index.html"
-                                }
-                            ]
-                        },
-                        {
-                            "title": "ESG Frameworks",
-                            "links": [
-                                {
-                                    "text": "OVERVIEW",
-                                    "url": "https://github.com/d-fine/Dataland/wiki/Data-Framework-Documentation"
-                                }
-                            ]
-                        },
-                        {
-                            "title": "Follow Dataland",
-                            "links": [
-                                {
-                                    "text": "LINKEDIN",
-                                    "url": "https://www.linkedin.com/company/dataland-gmbh/"
-                                }
-                            ]
-                        },
-                        {
-                            "title": "Legal",
-                            "links": [
-                                {
-                                    "text": "LEGAL",
-                                    "url": "/terms"
-                                },
-                                {
-                                    "text": "IMPRINT",
-                                    "url": "/imprint"
-                                },
-                                {
-                                    "text": "DATA PRIVACY",
-                                    "url": "/dataprivacy"
-                                }
-                            ]
-                        },
-                        {
-                            "title": "Owned by:",
-                            "text": "A Werte-Stiftung Company",
-                            "links": [
-                                {
-                                    "text": "WERTESTIFTUNG.ORG",
-                                    "url": "https://www.wertestiftung.org"
-                                }
-                            ],
-                            "icon": "/static/logos/werte-stiftung-logo__light.png"
-                        }
-                    ]
-                }
-            ]
+          "title": "Welcome to Dataland",
+          "text": ["This is the main introduction of our homepage."],
+          "image": ["/static/logos/gfx_logo_dataland_orange_S.svg"]
         },
         {
-            "title": "About",
-            "url": "/about",
-            "sections": [
-                {
-                    "title": "START YOUR DATALAND JOURNEY",
-                    "text": [
-                        "Our joint purpose, promise & passion is to ",
-                        "let the data flow ",
-                        "in order to create value.",
-                        "EXPLORE OUR PRINCIPLES"
-                    ]
-                },
-                {
-                    "title": "Our principles",
-                    "text": [
-                        "Our principles"
-                    ],
-                    "cards": [
-                        {
-                            "title": "Integrity",
-                            "text": "We need comparable and reliable sustainability data to create value."
-                        },
-                        {
-                            "title": "Disclosure",
-                            "text": "We will seek disclosure of sustainability data from our business relations."
-                        },
-                        {
-                            "title": "Transparency",
-                            "text": "We will respect and promote data soveignty."
-                        },
-                        {
-                            "title": "Accountability",
-                            "text": "Data should be timely and easliy accessible at fair cost."
-                        },
-                        {
-                            "title": "Neutrality",
-                            "text": "Common data spaces should be neutral, transparent, non-competitive and not-for-profit."
-                        },
-                        {
-                            "title": "Collaboration",
-                            "text": "We will work together to achieve these principles and promote their acceptance."
-                        }
-                    ]
-                }
-            ]
+          "title": "Intro",
+          "text": ["Liberate Data - ", "Empower Autonomy.  ", "The alternative to data monopolies."],
+          "image": ["/static/logos/Dataland_D_svg_Logo.svg"],
+          "cards": [
+            {
+              "icon": "/static/icons/Search.svg",
+              "text": "Search for a company to view or request data..."
+            }
+          ]
         },
         {
-            "title": "Companies",
-            "url": "/companies",
-            "sections": [
+          "title": "Quotes",
+          "text": ["START YOUR DATALAND JOURNEY"],
+          "cards": [
+            {
+              "icon": "BzUkAtdcKvg",
+              "title": "Sven Schubert",
+              "text": " CEO of Envoria",
+              "date": "\"Dataland is the only platform we know that is open to everyone and based on a non-profit business model.\""
+            },
+            {
+              "icon": "rCkISSQreCI",
+              "title": "Dr. Egbert Schark",
+              "text": "Founder and Managing Director\n at d-fine GmbH",
+              "date": "\"I believe the fascinating idea is worth supporting. Join the mission! Join Dataland!\""
+            },
+            {
+              "icon": "g40FkVQZjUc",
+              "title": "Daniel Sailer",
+              "text": " Head of Sustainable Investment Office\n at Metzler Asset Management GmbH",
+              "date": "\"The Pathways to Paris PoC can be a simple way to make sure Dataland becomes the data platform you need.\""
+            },
+            {
+              "icon": "Jx1v2Z-9cBw",
+              "title": "Dr. Anna-Lisa Schwarz",
+              "text": "Managing Director at Werte-Stiftung",
+              "date": "\"Dataland will help solve data issues by ensuring transparent, open and fair access to sustainability data.\""
+            },
+            {
+              "icon": "WJg2KKUVch4",
+              "title": "Rudolf Siebel",
+              "text": "Managing Director at BVI German Fund Association",
+              "date": "\"[Through Dataland], we hope that data availability, coverage and quality is improved, for the benefit of the users, the corporations and society overall.\""
+            },
+            {
+              "icon": "tFTkaG2p2D4",
+              "title": "Stephan Henkel",
+              "text": "Managing Directer at VÖB-Service GmbH",
+              "date": "\"Then came Dataland with the idea that ESG data should be a common good, and I think that's excellent [...].\""
+            },
+            {
+              "icon": "jeyQERlJPP8",
+              "title": "Jasmina Klein",
+              "text": "Manager at d-fine",
+              "date": "\"[Dataland] will help to let the data flow and this is the key to solve one of the most pressing issues of our time.\""
+            },
+            {
+              "icon": "Hz-5xC8BSAg",
+              "title": "Matthias Kopp",
+              "text": " Director of Sustainable Finance at WWF Germany",
+              "date": "\"Dataland can provide the data ecosystem we all need [to support our] transition to stay within 1.5 degrees or within the planetary boundaries.\""
+            },
+            {
+              "icon": "34qs_8D78JY",
+              "title": "Christian Heller",
+              "text": " CEO of Value Balancing Alliance",
+              "date": "\"Join Dataland, share your data, and make use of it to transform the economy into a just and sustainable one.\""
+            },
+            {
+              "icon": "NMaN0Autdok",
+              "title": "Fabian Klose",
+              "text": "Cloud Services Sales\n at T-Systems International",
+              "date": "\"Have a look at Dataland and look at what benefits you can get out of it for your business. Join the community!\""
+            },
+            {
+              "icon": "UpEYtR_v5ws",
+              "title": "Ingo Speich",
+              "text": "Head of Sustainability & Corporate Governance\n at Deka Investment",
+              "date": "\"We appeal to both investors and companies to make sustainability data available in a timely and cost-efficient manner.\""
+            },
+            {
+              "icon": "1CArXxrcsvg",
+              "title": "Christoph Benner",
+              "text": "CEO of Chom Capital",
+              "date": "\"Our partnership with Dataland is instrumental in progressively addressing and bridging data gaps.\""
+            }
+          ]
+        },
+        {
+          "title": "Brands",
+          "text": ["See who ", "is involved"],
+          "image": [
+            "/static/logos/img_Atlas_Metrics.png",
+            "/static/logos/img_bvi.png",
+            "/static/logos/img_chom_capital.png",
+            "/static/logos/img_deka.png",
+            "/static/logos/img_d-fine.png",
+            "/static/logos/img_dydon_ai.png",
+            "/static/logos/img_envoria.png",
+            "/static/logos/img_Experience_One.png",
+            "/static/logos/img_HansaInvest.png",
+            "/static/logos/img_impact_cubed.png",
+            "/static/logos/img_leonardo.png",
+            "/static/logos/img_Metzler.png",
+            "/static/logos/img_pwc.png",
+            "/static/logos/img_sustainable_dividends.png",
+            "/static/logos/img_sustaind.png",
+            "/static/logos/img_t_systems.png",
+            "/static/logos/img_university-of-oxford-eci.png",
+            "/static/logos/img_value_balancing_alliance.png",
+            "/static/logos/img_voeb.png"
+          ]
+        },
+        {
+          "title": "Struggle",
+          "text": ["Dataland aims to fix", " four main data issues"],
+          "cards": [
+            {
+              "icon": "/static/icons/Diagram.svg",
+              "title": "Data Gaps",
+              "text": "Smaller and unlisted companies are often left out of the existing data offering, shifting the burden of acquiring this data to the data consumers."
+            },
+            {
+              "icon": "/static/icons/Badge.svg",
+              "title": "Quality Issues",
+              "text": "Inaccurate, inconsistent, or outdated data jeopardizes the integrity of analytics and decision processes, leading to misguided strategies."
+            },
+            {
+              "icon": "/static/icons/3d-mpr-toggle.svg",
+              "title": "Usage Restrictions",
+              "text": "Companies are quite limited in how they can use the data they acquired, hindering many valuable applications of this data."
+            },
+            {
+              "icon": "/static/icons/Airline--rapid-board.svg",
+              "title": "High Price",
+              "text": "Data is becoming more and more expensive, limiting access to essential information for many organizations."
+            }
+          ]
+        },
+        {
+          "title": "How it works",
+          "text": ["How does Dataland work?"],
+          "cards": [
+            {
+              "title": "Search",
+              "text": "Utilize the search feature to find specific companies within the platform."
+            },
+            {
+              "title": "Request company’s inclusion",
+              "text": "Request company’s inclusion in case you can’t find the company you are looking for."
+            },
+            {
+              "title": "Request framework data",
+              "text": "Join a campaign to get the missing data."
+            },
+            {
+              "title": "Download",
+              "text": "Download either through the platform or through API."
+            }
+          ]
+        },
+        {
+          "title": "Claim",
+          "text": ["In Dataland, ", "you", " have the power."]
+        },
+        {
+          "title": "Join a campaign",
+          "text": [
+            "Join a campaign to",
+            " get the missing ",
+            "data.",
+            "The campaigns are a simple way for you to get better data coverage and improved data quality, while testing Dataland."
+          ],
+          "cards": [
+            {
+              "title": "Pathways to Paris",
+              "text": "Captures companies’ progress on Paris-compatible transformation paths that are necessary to achieve the goals of the Paris climate protection agreement.",
+              "date": "14th of August"
+            },
+            {
+              "title": "LkSG",
+              "text": "The Lieferkettensorgfalts-pflichtengesetz is a German law requiring companies to monitor human rights and environmental risks in their supply chains."
+            },
+            {
+              "title": "EU Taxonomy",
+              "text": "The EU Taxonomy Regulation supports companies to capture their environmentally sustainable economic activities."
+            },
+            {
+              "title": "SFDR",
+              "text": "SFDR helps investors to properly assess how sustainability risks are integrated in the investment decision process."
+            }
+          ]
+        },
+        {
+          "title": "Get in touch",
+          "text": ["Get in touch"],
+          "cards": [
+            {
+              "icon": "Email",
+              "title": "Your message",
+              "text": "Get in touch",
+              "date": "By clicking Get in Touch,  you agree to our Terms of use and that you have read our Privacy Policy."
+            },
+            {
+              "icon": "/static/images/Erik_Breen.jpg",
+              "title": "Erik Breen,",
+              "text": "Managing Director of Dataland"
+            },
+            {
+              "icon": "erik.breen@dataland.com",
+              "title": "Campaigns on Dataland",
+              "text": "Hello Erik,\n \nI recently visited Dataland and I'm interested in the campaigns on Dataland.\nCould you please provide me with information regarding:\n1.      Each framework\n2.      How I can get the data for a certain company\n\nIf you have any upcoming events or newsletters, I'd love to know about those too.\n\nThank you, and I look forward to hearing from you.\nBest regards,\n[Your Name]\n[Your Email Address]\n[Your Phone Number]"
+            },
+            {
+              "icon": "erik.breen@dataland.com",
+              "title": "Inquiry about Dataland: Shortest way to fill data gaps and improve data quality",
+              "text": "Hello Erik,\n \nI recently visited Dataland and I'm interested in learning more about your platform, its features, and how I can get involved.\n\nCould you please provide me with information regarding:\n1.      The purpose and mission of your website.\n2.      Key functionalities and features.\n3.      The different frameworks\n4.      How can I get data / provide data\n\nIf you have any upcoming events or newsletters, I'd love to know about those too.\n\nFeel free to reply to this email or share the best way to get in touch.\n\nThank you, and I look forward to hearing from you.\nBest regards,\n[Your Name]\n[Your Email Address]\n[Your Phone Number]"
+            }
+          ]
+        },
+        {
+          "title": "Footer",
+          "text": ["Copyright © ", " Dataland"],
+          "image": ["/static/logos/gfx_logo_dataland_orange_S.svg"],
+          "cards": [
+            {
+              "title": "Tech Hub",
+              "links": [
                 {
-                    "title": "Single Data Request",
-                    "text": [],
-                    "cards": [
-                        {
-                            "icon": "erik.breen@dataland.com",
-                            "title": "Interested in becoming a premium user",
-                            "text": "Hi Erik,\n\nI'd like to receive some information about the premium user role on Dataland.\nThank you, and I look forward to hearing from you.\n\nBest regards,\n\n[Your Name]\n[Your Email Address]\n[Your Phone Number]"
-                        }
-                    ]
+                  "text": "DATASETS",
+                  "url": "/api/swagger-ui/index.html"
+                },
+                {
+                  "text": "DOCUMENTS",
+                  "url": "/documents/swagger-ui/index.html"
+                },
+                {
+                  "text": "COMMUNITY",
+                  "url": "/community/swagger-ui/index.html"
+                },
+                {
+                  "text": "QUALITY ASSURANCE",
+                  "url": "/qa/swagger-ui/index.html"
                 }
-            ]
+              ]
+            },
+            {
+              "title": "ESG Frameworks",
+              "links": [
+                {
+                  "text": "OVERVIEW",
+                  "url": "https://github.com/d-fine/Dataland/wiki/Data-Framework-Documentation"
+                }
+              ]
+            },
+            {
+              "title": "Follow Dataland",
+              "links": [
+                {
+                  "text": "LINKEDIN",
+                  "url": "https://www.linkedin.com/company/dataland-gmbh/"
+                }
+              ]
+            },
+            {
+              "title": "Legal",
+              "links": [
+                {
+                  "text": "LEGAL",
+                  "url": "/terms"
+                },
+                {
+                  "text": "IMPRINT",
+                  "url": "/imprint"
+                },
+                {
+                  "text": "DATA PRIVACY",
+                  "url": "/dataprivacy"
+                }
+              ]
+            },
+            {
+              "title": "Owned by:",
+              "text": "A Werte-Stiftung Company",
+              "links": [
+                {
+                  "text": "WERTESTIFTUNG.ORG",
+                  "url": "https://www.wertestiftung.org"
+                }
+              ],
+              "icon": "/static/logos/werte-stiftung-logo__light.png"
+            }
+          ]
         }
-    ]
+      ]
+    },
+    {
+      "title": "About",
+      "url": "/about",
+      "sections": [
+        {
+          "title": "START YOUR DATALAND JOURNEY",
+          "text": [
+            "Our joint purpose, promise & passion is to ",
+            "let the data flow ",
+            "in order to create value.",
+            "EXPLORE OUR PRINCIPLES"
+          ]
+        },
+        {
+          "title": "Our principles",
+          "text": ["Our principles"],
+          "cards": [
+            {
+              "title": "Integrity",
+              "text": "We need comparable and reliable sustainability data to create value."
+            },
+            {
+              "title": "Disclosure",
+              "text": "We will seek disclosure of sustainability data from our business relations."
+            },
+            {
+              "title": "Transparency",
+              "text": "We will respect and promote data soveignty."
+            },
+            {
+              "title": "Accountability",
+              "text": "Data should be timely and easliy accessible at fair cost."
+            },
+            {
+              "title": "Neutrality",
+              "text": "Common data spaces should be neutral, transparent, non-competitive and not-for-profit."
+            },
+            {
+              "title": "Collaboration",
+              "text": "We will work together to achieve these principles and promote their acceptance."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Companies",
+      "url": "/companies",
+      "sections": [
+        {
+          "title": "Single Data Request",
+          "text": [],
+          "cards": [
+            {
+              "icon": "erik.breen@dataland.com",
+              "title": "Interested in becoming a premium user",
+              "text": "Hi Erik,\n\nI'd like to receive some information about the premium user role on Dataland.\nThank you, and I look forward to hearing from you.\n\nBest regards,\n\n[Your Name]\n[Your Email Address]\n[Your Phone Number]"
+            }
+          ]
+        }
+      ]
+    }
+  ]
 }

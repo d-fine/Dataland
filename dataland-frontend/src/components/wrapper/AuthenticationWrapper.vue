@@ -12,14 +12,14 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, inject } from "vue";
-import type Keycloak from "keycloak-js";
-import { assertDefined } from "@/utils/TypeScriptUtils";
-import MiddleCenterDiv from "@/components/wrapper/MiddleCenterDivWrapper.vue";
-import MobileWarningPage from "@/components/pages/MobileWarningPage.vue";
+import { defineComponent, inject } from 'vue';
+import type Keycloak from 'keycloak-js';
+import { assertDefined } from '@/utils/TypeScriptUtils';
+import MiddleCenterDiv from '@/components/wrapper/MiddleCenterDivWrapper.vue';
+import MobileWarningPage from '@/components/pages/MobileWarningPage.vue';
 
 export default defineComponent({
-  name: "AuthenticationWrapper",
+  name: 'AuthenticationWrapper',
   components: { MiddleCenterDiv, MobileWarningPage },
   props: {
     disableAuthenticationWrapper: {
@@ -35,8 +35,8 @@ export default defineComponent({
   },
   setup() {
     return {
-      getKeycloakPromise: inject<() => Promise<Keycloak>>("getKeycloakPromise"),
-      authenticated: inject<boolean>("authenticated"),
+      getKeycloakPromise: inject<() => Promise<Keycloak>>('getKeycloakPromise'),
+      authenticated: inject<boolean>('authenticated'),
     };
   },
   mounted: function () {

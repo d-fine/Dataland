@@ -1,12 +1,12 @@
-import { type Field } from "@/utils/GenericFrameworkTypes";
+import { type Field } from '@/utils/GenericFrameworkTypes';
 import {
   type AvailableMLDTDisplayObjectTypes,
   MLDTDisplayComponentName,
   type MLDTDisplayObject,
   MLDTDisplayObjectForEmptyString,
-} from "@/components/resources/dataTable/MultiLayerDataTableCellDisplayer";
-import { getFieldValueFromFrameworkDataset } from "@/components/resources/dataTable/conversion/Utils";
-import MultiSelectModal from "@/components/resources/dataTable/modals/MultiSelectModal.vue";
+} from '@/components/resources/dataTable/MultiLayerDataTableCellDisplayer';
+import { getFieldValueFromFrameworkDataset } from '@/components/resources/dataTable/conversion/Utils';
+import MultiSelectModal from '@/components/resources/dataTable/modals/MultiSelectModal.vue';
 
 /**
  * Returns a value factory that returns the value of the MultiSelect form field.
@@ -17,7 +17,7 @@ import MultiSelectModal from "@/components/resources/dataTable/modals/MultiSelec
  */
 export function multiSelectValueGetterFactory(
   path: string,
-  field: Field,
+  field: Field
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
 ): (dataset: any) => AvailableMLDTDisplayObjectTypes {
   return (dataset) => {
@@ -32,7 +32,7 @@ export function multiSelectValueGetterFactory(
       technicalNameToLabelMapping.set(option.value, option.label);
     }
     const labelsToDisplayInFrontend = fieldValueFromFrameworkDataset.map(
-      (it) => technicalNameToLabelMapping.get(it) ?? it,
+      (it) => technicalNameToLabelMapping.get(it) ?? it
     );
     return formatListOfStringsForDatatable(labelsToDisplayInFrontend, field.label);
   };
@@ -46,7 +46,7 @@ export function multiSelectValueGetterFactory(
  */
 export function formatListOfStringsForDatatable(
   input: string[] | null | undefined,
-  fieldLabel: string,
+  fieldLabel: string
 ): AvailableMLDTDisplayObjectTypes {
   if (!input || input.length == 0) {
     return MLDTDisplayObjectForEmptyString;
@@ -54,7 +54,7 @@ export function formatListOfStringsForDatatable(
     return <MLDTDisplayObject<MLDTDisplayComponentName.ModalLinkDisplayComponent>>{
       displayComponentName: MLDTDisplayComponentName.ModalLinkDisplayComponent,
       displayValue: {
-        label: `Show ${input.length} value${input.length > 1 ? "s" : ""}`,
+        label: `Show ${input.length} value${input.length > 1 ? 's' : ''}`,
         modalComponent: MultiSelectModal,
         modalOptions: {
           props: {

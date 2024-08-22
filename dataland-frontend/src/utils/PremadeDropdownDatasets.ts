@@ -1,16 +1,19 @@
-import { getAllCountryNamesWithCodes } from "@/utils/CountryCodeConverter";
-import currencyCodeData from "currency-codes/data";
-import { RiskPositionType } from "@clients/backend";
-import { humanizeStringOrNumber } from "@/utils/StringFormatter";
+import { getAllCountryNamesWithCodes } from '@/utils/CountryCodeConverter';
+import currencyCodeData from 'currency-codes/data';
+import { AreaAdjointness, ReleaseMedium, RiskPositionType, WasteClassifications } from '@clients/backend';
+import { humanizeStringOrNumber } from '@/utils/StringFormatter';
 
 export interface DropdownOption {
   label: string;
   value: string;
 }
 export enum DropdownDatasetIdentifier {
-  CountryCodesIso2 = "ISO 2 Codes",
-  CurrencyCodes = "ISO 4217 Codes",
-  RiskPositions = "Risk Positions",
+  CountryCodesIso2 = 'ISO 2 Codes',
+  CurrencyCodes = 'ISO 4217 Codes',
+  RiskPositions = 'Risk Positions',
+  ReleaseMedium = 'Release Medium',
+  WasteClassifications = 'Waste classifications',
+  Adjointness = 'Adjointness',
 }
 
 export type DropdownDataset = Array<DropdownOption>;
@@ -28,6 +31,12 @@ export function getDataset(datasetIdentifier: DropdownDatasetIdentifier): Dropdo
       return getCurrencyCodeDropdownDataset();
     case DropdownDatasetIdentifier.RiskPositions:
       return getRiskPositionDropdownDataset();
+    case DropdownDatasetIdentifier.ReleaseMedium:
+      return getReleaseMediumDropdownDataset();
+    case DropdownDatasetIdentifier.WasteClassifications:
+      return getWasteClassificationsDropdownDataset();
+    case DropdownDatasetIdentifier.Adjointness:
+      return getAdjointnessDropdownDataset();
   }
   throw Error(`Unknown dataset identifier ${datasetIdentifier as string}`);
 }
@@ -90,9 +99,9 @@ function getCountryCodeDropdownDataset(): DropdownDataset {
 }
 
 export enum ReportingPeriodTableActions {
-  EditDataset = "editDataset",
-  ResolveRequest = "resolveRequest",
-  ReopenRequest = "reOpenRequest",
+  EditDataset = 'editDataset',
+  ResolveRequest = 'resolveRequest',
+  ReopenRequest = 'reOpenRequest',
 }
 export interface ReportingPeriodTableEntry {
   reportingPeriod: string;
@@ -100,4 +109,47 @@ export interface ReportingPeriodTableEntry {
   dataRequestId?: string;
   actionOnClick?: ReportingPeriodTableActions;
   isClickable: boolean;
+}
+/**
+ * Retrieves a dropdown dataset of vsme release medium
+ * @returns a dropdown dataset of vsme release medium
+ */
+function getReleaseMediumDropdownDataset(): DropdownDataset {
+  const releaseMediumDataset: DropdownDataset = [];
+  Object.keys(ReleaseMedium).forEach((it) => {
+    releaseMediumDataset.push({
+      label: humanizeStringOrNumber(it),
+      value: it,
+    });
+  });
+  return releaseMediumDataset;
+}
+
+/**
+ * Retrieves a dropdown dataset of vsme waste classification
+ * @returns a dropdown dataset of vsme waste classification
+ */
+function getWasteClassificationsDropdownDataset(): DropdownDataset {
+  const WasteClassificationDataset: DropdownDataset = [];
+  Object.keys(WasteClassifications).forEach((it) => {
+    WasteClassificationDataset.push({
+      label: humanizeStringOrNumber(it),
+      value: it,
+    });
+  });
+  return WasteClassificationDataset;
+}
+/**
+ * Retrieves a dropdown dataset of vsme adjointness
+ * @returns a dropdown dataset of vsme adjointness
+ */
+function getAdjointnessDropdownDataset(): DropdownDataset {
+  const adjointnessDataset: DropdownDataset = [];
+  Object.keys(AreaAdjointness).forEach((it) => {
+    adjointnessDataset.push({
+      label: humanizeStringOrNumber(it),
+      value: it,
+    });
+  });
+  return adjointnessDataset;
 }

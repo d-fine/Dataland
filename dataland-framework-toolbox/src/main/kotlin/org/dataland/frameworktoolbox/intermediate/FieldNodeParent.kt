@@ -11,7 +11,7 @@ interface FieldNodeParent {
     val nestedChildren: Sequence<ComponentBase>
         get() = children.flatMap {
             if (it is FieldNodeParent) {
-                listOf(it) + it.children
+                listOf(it) + it.nestedChildren
             } else {
                 listOf(it)
             }

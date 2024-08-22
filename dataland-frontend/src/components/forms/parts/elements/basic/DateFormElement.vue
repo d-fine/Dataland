@@ -21,13 +21,13 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
-import { FormKit } from "@formkit/vue";
-import { getHyphenatedDate } from "@/utils/DataFormatUtils";
-import Calendar from "primevue/calendar";
+import { defineComponent } from 'vue';
+import { FormKit } from '@formkit/vue';
+import { getHyphenatedDate } from '@/utils/DataFormatUtils';
+import Calendar from 'primevue/calendar';
 
 export default defineComponent({
-  name: "DateFormElement",
+  name: 'DateFormElement',
   components: { FormKit, Calendar },
   data() {
     return {
@@ -73,15 +73,15 @@ export default defineComponent({
     },
     validation: {
       type: String,
-      default: "",
+      default: '',
     },
     validationLabel: {
       type: String,
-      default: "",
+      default: '',
     },
     placeholder: {
       type: String,
-      default: "",
+      default: '',
     },
     todayAsMax: {
       type: Boolean,

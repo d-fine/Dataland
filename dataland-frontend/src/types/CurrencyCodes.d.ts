@@ -1,4 +1,4 @@
-declare module "currency-codes/data" {
+declare module 'currency-codes/data' {
   interface CurrencyCodeEntry {
     code: string;
     currency: string;

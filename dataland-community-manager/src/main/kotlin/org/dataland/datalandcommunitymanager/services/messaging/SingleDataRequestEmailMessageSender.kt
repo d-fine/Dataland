@@ -3,6 +3,8 @@ package org.dataland.datalandcommunitymanager.services.messaging
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
+import org.dataland.datalandcommunitymanager.entities.MessageEntity
+import org.dataland.datalandcommunitymanager.services.CompanyRolesManager
 import org.dataland.datalandcommunitymanager.utils.readableFrameworkNameMapping
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
 import org.dataland.datalandmessagequeueutils.constants.ExchangeName
@@ -22,6 +24,7 @@ class SingleDataRequestEmailMessageSender(
     @Autowired private val cloudEventMessageHandler: CloudEventMessageHandler,
     @Autowired private val objectMapper: ObjectMapper,
     @Autowired val companyApi: CompanyDataControllerApi,
+    @Autowired private val companyRolesManager: CompanyRolesManager,
 ) : DataRequestEmailMessageSenderBase() {
     /**
      * Data structure holding the shared information of the sent messages
@@ -71,7 +74,7 @@ class SingleDataRequestEmailMessageSender(
      */
     fun sendSingleDataRequestExternalMessage(
         messageInformation: MessageInformation,
-        receiver: String,
+        receiverSet: Set<String>,
         contactMessage: String?,
         correlationId: String,
     ) {
@@ -80,27 +83,25 @@ class SingleDataRequestEmailMessageSender(
             "companyId" to messageInformation.datalandCompanyId,
             "companyName" to companyName,
             "requesterEmail" to messageInformation.userAuthentication.username,
-            "firstName" to messageInformation.userAuthentication.firstName.takeIf {
-                it.isNotBlank()
-            },
-            "lastName" to messageInformation.userAuthentication.lastName.takeIf {
-                it.isNotBlank()
-            },
+            "firstName" to messageInformation.userAuthentication.firstName.takeIf { it.isNotBlank() },
+            "lastName" to messageInformation.userAuthentication.lastName.takeIf { it.isNotBlank() },
             "dataType" to readableFrameworkNameMapping.getValue(messageInformation.dataType),
             "reportingPeriods" to formatReportingPeriods(messageInformation.reportingPeriods),
             "message" to contactMessage.takeIf { !contactMessage.isNullOrBlank() },
         )
-        val message = TemplateEmailMessage(
-            emailTemplateType = TemplateEmailMessage.Type.ClaimOwnership,
-            receiver = receiver,
-            properties = properties,
-        )
-        cloudEventMessageHandler.buildCEMessageAndSendToQueue(
-            objectMapper.writeValueAsString(message),
-            MessageType.SendTemplateEmail,
-            correlationId,
-            ExchangeName.SendEmail,
-            RoutingKeyNames.templateEmail,
-        )
+
+        val receiverList = receiverSet.flatMap {
+            MessageEntity.addContact(it, companyRolesManager, messageInformation.datalandCompanyId)
+        }
+
+        receiverList.forEach {
+            val message = TemplateEmailMessage(
+                emailTemplateType = TemplateEmailMessage.Type.ClaimOwnership, receiver = it, properties = properties,
+            )
+            cloudEventMessageHandler.buildCEMessageAndSendToQueue(
+                objectMapper.writeValueAsString(message), MessageType.SendTemplateEmail, correlationId,
+                ExchangeName.SendEmail, RoutingKeyNames.templateEmail,
+            )
+        }
     }
 }

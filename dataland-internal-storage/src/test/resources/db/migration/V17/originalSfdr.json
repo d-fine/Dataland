@@ -1,0 +1,23 @@
+{
+  "general": {
+    "general": {
+      "dataDate": "2024-04-15",
+      "fiscalYearDeviation": "NoDeviation",
+      "fiscalYearEnd": "2024-10-19",
+      "referencedReports": {
+        "SustainabilityReport": {
+          "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+          "fileName": "SustainabilityReport",
+          "isGroupLevel": "No",
+          "reportDate": "2023-04-21",
+          "currency": "CNY"
+        },
+        "EsgReport": {
+          "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+          "fileName": "EsgReport",
+          "reportDate": "2023-04-22"
+        }
+      }
+    }
+  }
+}

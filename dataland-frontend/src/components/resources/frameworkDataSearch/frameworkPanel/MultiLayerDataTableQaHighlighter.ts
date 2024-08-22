@@ -2,13 +2,13 @@ import {
   type MLDTCellConfig,
   type MLDTConfig,
   type MLDTSectionConfig,
-} from "@/components/resources/dataTable/MultiLayerDataTableConfiguration";
+} from '@/components/resources/dataTable/MultiLayerDataTableConfiguration';
 import {
   type AvailableMLDTDisplayObjectTypes,
   MLDTDisplayComponentName,
   type MLDTDisplayComponentTypes,
-} from "@/components/resources/dataTable/MultiLayerDataTableCellDisplayer";
-import { NO_DATA_PROVIDED } from "@/utils/Constants";
+} from '@/components/resources/dataTable/MultiLayerDataTableCellDisplayer';
+import { NO_DATA_PROVIDED } from '@/utils/Constants';
 /**
  * For QA it is desirable that all fields are displayed to a reviewer even if they should normally not be visible.
  * This function edits a standard view-configuration in a way that it displays all cells but highlights cells that would
@@ -24,22 +24,22 @@ export function editMultiLayerDataTableConfigForHighlightingHiddenFields<T>(
   config: MLDTConfig<T>,
   inReviewMode: boolean,
   hideEmptyFields: boolean,
-  displayStatusGettersOfAllParents?: Array<(dataset: T) => boolean>,
+  displayStatusGettersOfAllParents?: Array<(dataset: T) => boolean>
 ): MLDTConfig<T> {
   return config.map((cellOrSectionConfig) => {
-    if (cellOrSectionConfig.type == "cell") {
+    if (cellOrSectionConfig.type == 'cell') {
       return editCellConfigForHighlightingHiddenFields(
         cellOrSectionConfig,
         inReviewMode,
         hideEmptyFields,
-        displayStatusGettersOfAllParents,
+        displayStatusGettersOfAllParents
       );
     } else {
       return editSectionConfigForHighlightingHiddenFields(
         cellOrSectionConfig,
         inReviewMode,
         hideEmptyFields,
-        displayStatusGettersOfAllParents,
+        displayStatusGettersOfAllParents
       );
     }
   });
@@ -58,7 +58,7 @@ function editSectionConfigForHighlightingHiddenFields<T>(
   sectionConfig: MLDTSectionConfig<T>,
   inReviewMode: boolean,
   hideEmptyFields: boolean,
-  displayStatusGettersOfAllParents?: Array<(dataset: T) => boolean>,
+  displayStatusGettersOfAllParents?: Array<(dataset: T) => boolean>
 ): MLDTSectionConfig<T> {
   const displayStatusGetterOfThisSection = sectionConfig.shouldDisplay;
   const displayStatusGettersToPassDownToChildren = ((): Array<(dataset: T) => boolean> => {
@@ -92,7 +92,7 @@ function editSectionConfigForHighlightingHiddenFields<T>(
       sectionConfig.children,
       inReviewMode,
       hideEmptyFields,
-      displayStatusGettersToPassDownToChildren,
+      displayStatusGettersToPassDownToChildren
     ),
     areThisSectionAndAllParentSectionsDisplayedForTheDataset: areThisSectionAndAllParentSectionsDisplayedForTheDataset,
   };
@@ -111,7 +111,7 @@ function editCellConfigForHighlightingHiddenFields<T>(
   cellConfig: MLDTCellConfig<T>,
   inReviewMode: boolean,
   hideEmptyFields: boolean,
-  displayStatusGettersOfAllParents?: Array<(dataset: T) => boolean>,
+  displayStatusGettersOfAllParents?: Array<(dataset: T) => boolean>
 ): MLDTCellConfig<T> {
   const cellHasAtLeastOneParent = !!displayStatusGettersOfAllParents && displayStatusGettersOfAllParents.length > 0;
   return {
@@ -160,19 +160,19 @@ function editCellConfigForHighlightingHiddenFields<T>(
  */
 function checkShouldValueBeDisplayed(value: MLDTDisplayComponentTypes[MLDTDisplayComponentName]): boolean {
   switch (typeof value) {
-    case "string":
+    case 'string':
       return !!(value && value != NO_DATA_PROVIDED);
-    case "object":
+    case 'object':
       /* eslint-disable @typescript-eslint/no-unsafe-member-access */
-      if (!!value && "modalOptions" in value) {
+      if (!!value && 'modalOptions' in value) {
         return !!(
           // prettier-ignore
           (value.modalOptions?.data?.listOfRowContents?.length ||
             value.modalOptions?.data?.input ||
             value.modalOptions?.data?.values?.length)
         );
-      } else if (!!value && "innerContents" in value) {
-        return value.innerContents.displayValue != NO_DATA_PROVIDED && value.innerContents.displayValue != "";
+      } else if (!!value && 'innerContents' in value) {
+        return value.innerContents.displayValue != NO_DATA_PROVIDED && value.innerContents.displayValue != '';
       } else {
         return !!value;
       }

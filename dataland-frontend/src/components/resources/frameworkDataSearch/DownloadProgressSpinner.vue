@@ -7,7 +7,7 @@
     <div v-if="displayAnything" style="position: relative; width: 1.5rem">
       <span v-if="displaySpinner" class="progress-spinner-container">
         <i class="pi pi-spin pi-spinner progress-spinner-spinner" data-test="spinner-icon" />
-        <div class="progress-spinner-value" data-test="percentage-text">{{ percentCompleted }}%</div>
+        <span class="progress-spinner-value" data-test="percentage-text">{{ percentCompleted }}%</span>
       </span>
       <span v-if="displayCheckmark" class="progress-spinner-container">
         <i class="pi pi-check progress-completed-checkmark" data-test="checkmark-icon" />
@@ -17,40 +17,22 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent } from 'vue';
 
 export default defineComponent({
-  name: "DownloadProgressSpinner",
+  name: 'DownloadProgressSpinner',
   props: {
     percentCompleted: { type: Number, default: undefined },
-  },
-  mounted() {
-    this.updateDisplays(this.percentCompleted);
-  },
-  data() {
-    return {
-      displaySpinner: false,
-      displayCheckmark: false,
-    };
-  },
-  watch: {
-    percentCompleted(newValue: undefined | number) {
-      this.updateDisplays(newValue);
-    },
   },
   computed: {
     displayAnything() {
       return this.displaySpinner || this.displayCheckmark;
     },
-  },
-  methods: {
-    /**
-     * updates the visibility of spinner and checkmark
-     * @param newPercentCompleted new value of percentCompleted
-     */
-    updateDisplays(newPercentCompleted: undefined | number) {
-      this.displaySpinner = newPercentCompleted != undefined && newPercentCompleted < 100;
-      this.displayCheckmark = newPercentCompleted == 100;
+    displaySpinner() {
+      return this.percentCompleted !== undefined && this.percentCompleted < 100;
+    },
+    displayCheckmark() {
+      return this.percentCompleted === 100;
     },
   },
 });

@@ -18,12 +18,12 @@
 
 <script lang="ts">
 // @ts-nocheck
-import { FormKit } from "@formkit/vue";
-import { defineComponent } from "vue";
+import { FormKit } from '@formkit/vue';
+import { defineComponent } from 'vue';
 
 export default defineComponent({
   component: { FormKit },
-  name: "DataPointFormElement",
+  name: 'DataPointFormElement',
   data: () => ({
     inputValue: null,
   }),

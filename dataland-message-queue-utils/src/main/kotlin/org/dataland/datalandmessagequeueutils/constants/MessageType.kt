@@ -10,6 +10,7 @@ object MessageType {
     const val DocumentStored = "Document stored"
     const val QaCompleted = "QA completed"
     const val ManualQaRequested = "Manual QA requested"
+    const val PersistAutomatedQaResult = "Persist automated QA result"
     const val SendInternalEmail = "Send internal E-Mail"
     const val SendTemplateEmail = "Send template E-Mail"
     const val PrivateDataStored = "Private Data Stored"

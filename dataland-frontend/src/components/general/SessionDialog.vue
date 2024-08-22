@@ -22,28 +22,28 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, inject } from "vue";
-import { type DynamicDialogInstance } from "primevue/dynamicdialogoptions";
-import PrimeButton from "primevue/button";
+import { defineComponent, inject } from 'vue';
+import { type DynamicDialogInstance } from 'primevue/dynamicdialogoptions';
+import PrimeButton from 'primevue/button';
 import {
   isRefreshTokenExpiryTimestampInSharedStoreReached,
   SessionDialogMode,
   tryToRefreshSession,
-} from "@/utils/SessionTimeoutUtils";
-import type Keycloak from "keycloak-js";
-import { TIME_DISTANCE_SET_INTERVAL_SESSION_CHECK_IN_MS } from "@/utils/Constants";
-import { useSharedSessionStateStore } from "@/stores/Stores";
-import { loginAndRedirectToSearchPage } from "@/utils/KeycloakUtils";
-import { assertDefined } from "@/utils/TypeScriptUtils";
+} from '@/utils/SessionTimeoutUtils';
+import type Keycloak from 'keycloak-js';
+import { TIME_DISTANCE_SET_INTERVAL_SESSION_CHECK_IN_MS } from '@/utils/Constants';
+import { useSharedSessionStateStore } from '@/stores/Stores';
+import { loginAndRedirectToSearchPage } from '@/utils/KeycloakUtils';
+import { assertDefined } from '@/utils/TypeScriptUtils';
 
 export default defineComponent({
-  inject: ["dialogRef"],
-  name: "SessionTimeoutModal",
+  inject: ['dialogRef'],
+  name: 'SessionTimeoutModal',
   components: { PrimeButton },
 
   setup() {
     return {
-      getKeycloakPromise: inject<() => Promise<Keycloak>>("getKeycloakPromise"),
+      getKeycloakPromise: inject<() => Promise<Keycloak>>('getKeycloakPromise'),
     };
   },
 
@@ -59,7 +59,7 @@ export default defineComponent({
     currentRefreshTokenInSharedStore() {
       this.closeTheDialog();
       if (this.sessionDialogMode === SessionDialogMode.ExternalLogout) {
-        void this.$router.push({ path: "/companies", replace: true });
+        void this.$router.push({ path: '/companies', replace: true });
       }
     },
   },
@@ -71,26 +71,26 @@ export default defineComponent({
     displayedHeader(): string | undefined {
       switch (this.sessionDialogMode) {
         case SessionDialogMode.SessionWarning:
-          return "Session expires soon";
+          return 'Session expires soon';
         case SessionDialogMode.SessionClosed:
-          return "Session closed";
+          return 'Session closed';
         case SessionDialogMode.ExternalLogout:
-          return "You have been logged out";
+          return 'You have been logged out';
         default:
-          return "";
+          return '';
       }
     },
 
     displayedText(): string | undefined {
       switch (this.sessionDialogMode) {
         case SessionDialogMode.SessionWarning:
-          return "To refresh it, please click on the button below.";
+          return 'To refresh it, please click on the button below.';
         case SessionDialogMode.SessionClosed:
-          return "Your session has been closed due to inactivity. Login to start a new session.";
+          return 'Your session has been closed due to inactivity. Login to start a new session.';
         case SessionDialogMode.ExternalLogout:
-          return "Do you want to login again?";
+          return 'Do you want to login again?';
         default:
-          return "";
+          return '';
       }
     },
   },

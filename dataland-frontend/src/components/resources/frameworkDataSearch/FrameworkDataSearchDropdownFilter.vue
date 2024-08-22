@@ -32,9 +32,9 @@
 </template>
 
 <script lang="ts">
-import MultiSelect from "primevue/multiselect";
-import { defineComponent, ref } from "vue";
-import { type SelectableItem } from "@/utils/FrameworkDataSearchDropDownFilterTypes";
+import MultiSelect from 'primevue/multiselect';
+import { defineComponent, ref } from 'vue';
+import { type SelectableItem } from '@/utils/FrameworkDataSearchDropDownFilterTypes';
 
 export default defineComponent({
   setup() {
@@ -42,9 +42,9 @@ export default defineComponent({
       multiselect: ref(),
     };
   },
-  name: "FrameworkDataSearchDropdownFilter",
+  name: 'FrameworkDataSearchDropdownFilter',
   components: { MultiSelect },
-  emits: ["update:modelValue"],
+  emits: ['update:modelValue'],
   props: {
     availableItems: {
       type: Array as () => Array<SelectableItem>,
@@ -56,15 +56,15 @@ export default defineComponent({
     },
     filterName: {
       type: String,
-      default: "",
+      default: '',
     },
     filterId: {
       type: String,
-      default: "",
+      default: '',
     },
     filterPlaceholder: {
       type: String,
-      default: "",
+      default: '',
     },
   },
   data() {
@@ -74,11 +74,11 @@ export default defineComponent({
   },
   computed: {
     selectionButtonClasses(): Array<string> {
-      const classes = ["selection-button", "flex", "flex-row", "align-items-center"];
+      const classes = ['selection-button', 'flex', 'flex-row', 'align-items-center'];
       if (this.overlayVisible) {
-        classes.push("overlayVisible");
+        classes.push('overlayVisible');
       } else if (this.modelValue.length > 0) {
-        classes.push("filterActive");
+        classes.push('filterActive');
       }
       return classes;
     },
@@ -87,7 +87,7 @@ export default defineComponent({
         return this.modelValue;
       },
       set(newValue: Array<SelectableItem>) {
-        this.$emit("update:modelValue", newValue);
+        this.$emit('update:modelValue', newValue);
       },
     },
   },

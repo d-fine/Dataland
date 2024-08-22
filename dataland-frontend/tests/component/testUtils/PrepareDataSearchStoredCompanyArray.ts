@@ -5,7 +5,7 @@ import {
   DataTypeEnum,
   QaStatus,
   type BasicCompanyInformation,
-} from "@clients/backend";
+} from '@clients/backend';
 
 /**
  * Method to prepare an array consisting of one simple dataset to be displayed in the data table of the "AVAILABLE
@@ -15,21 +15,21 @@ import {
  */
 export function prepareSimpleDataSearchStoredCompanyArray(no_iterations = 1): BasicCompanyInformation[] {
   const mockCompanyInformation: CompanyInformation = {
-    companyName: "testCompany",
-    headquarters: "testHeadquarters",
-    sector: "testSector",
+    companyName: 'testCompany',
+    headquarters: 'testHeadquarters',
+    sector: 'testSector',
     identifiers: {
-      [IdentifierType.Lei]: ["testLei"],
+      [IdentifierType.Lei]: ['testLei'],
     },
-    countryCode: "DE",
+    countryCode: 'DE',
   };
 
   const mockDataMetaInformation = {
-    dataId: "testDataId",
-    companyId: "testCompanyId",
+    dataId: 'testDataId',
+    companyId: 'testCompanyId',
     dataType: DataTypeEnum.Lksg,
     uploadTime: 1672527600000, // 1.1.2023 00:00:00:0000
-    reportingPeriod: "2023",
+    reportingPeriod: '2023',
     currentlyActive: true,
     qaStatus: QaStatus.Accepted,
   } as DataMetaInformation;

@@ -1,6 +1,8 @@
 {
   "extends": "../tsconfig.cypress-e2e.json",
-  "references": [{
-    "path": "../tsconfig.cypress-ct.json"
-  }],
+  "references": [
+    {
+      "path": "../tsconfig.cypress-ct.json"
+    }
+  ]
 }

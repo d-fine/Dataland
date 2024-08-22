@@ -28,15 +28,15 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from "vue";
-import type { Section } from "@/types/ContentTypes";
-import { openEmailClient } from "@/utils/Email";
-import ButtonComponent from "@/components/resources/newLandingPage/ButtonComponent.vue";
+import { computed } from 'vue';
+import type { Section } from '@/types/ContentTypes';
+import { openEmailClient } from '@/utils/Email';
+import ButtonComponent from '@/components/resources/newLandingPage/ButtonComponent.vue';
 
 const { sections } = defineProps<{ sections?: Section[] }>();
 
 const getInTouchSection = computed(() => {
-  return sections?.find((section) => section.title === "Get in touch") ?? null;
+  return sections?.find((section) => section.title === 'Get in touch') ?? null;
 });
 </script>
 

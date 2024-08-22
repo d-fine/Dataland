@@ -1,15 +1,16 @@
-import { type BaseDocumentReference, type ExtendedDocumentReference } from "@clients/backend";
-import { type DynamicDialogOptions } from "primevue/dynamicdialogoptions";
-import { type DataPointDisplay } from "@/utils/DataPoint";
+import { type BaseDocumentReference, type ExtendedDocumentReference } from '@clients/backend';
+import { type DynamicDialogOptions } from 'primevue/dynamicdialogoptions';
+import { type DataPointDisplay } from '@/utils/DataPoint';
 
 export enum MLDTDisplayComponentName {
-  StringDisplayComponent = "StringDisplayComponent",
-  FreeTextDisplayComponent = "FreeTextDisplayComponent",
-  DocumentLinkDisplayComponent = "DocumentLinkDisplayComponent",
-  ModalLinkDisplayComponent = "ModalLinkDisplayComponent",
-  HighlightHiddenCellDisplay = "HighlightHiddenCellDisplay",
-  DataPointDisplayComponent = "DataPointDisplayComponent",
-  DataPointWrapperDisplayComponent = "DataPointWrapperDisplayComponent",
+  StringDisplayComponent = 'StringDisplayComponent',
+  FreeTextDisplayComponent = 'FreeTextDisplayComponent',
+  DocumentLinkDisplayComponent = 'DocumentLinkDisplayComponent',
+  ModalLinkDisplayComponent = 'ModalLinkDisplayComponent',
+  HighlightHiddenCellDisplay = 'HighlightHiddenCellDisplay',
+  DataPointDisplayComponent = 'DataPointDisplayComponent',
+  DataPointWrapperDisplayComponent = 'DataPointWrapperDisplayComponent',
+  ModalLinkWithDataSourceDisplayComponent = 'ModalLinkWithDataSourceDisplayComponent',
 }
 
 export type MLDTDisplayComponentTypes = {
@@ -25,6 +26,16 @@ export type MLDTDisplayComponentTypes = {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     modalComponent: any;
     modalOptions?: DynamicDialogOptions;
+  };
+  [MLDTDisplayComponentName.ModalLinkWithDataSourceDisplayComponent]: {
+    label: string;
+    // Ignored as "any" type comes from DynamicDialog
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    modalComponent: any;
+    modalOptions?: DynamicDialogOptions;
+    quality?: string;
+    dataSource?: ExtendedDocumentReference | BaseDocumentReference | null;
+    comment?: string;
   };
   [MLDTDisplayComponentName.HighlightHiddenCellDisplay]: {
     innerContents: AvailableMLDTDisplayObjectTypes;
@@ -49,5 +60,5 @@ export type AvailableMLDTDisplayObjectTypes = {
 
 export const MLDTDisplayObjectForEmptyString: AvailableMLDTDisplayObjectTypes = {
   displayComponentName: MLDTDisplayComponentName.StringDisplayComponent,
-  displayValue: "",
+  displayValue: '',
 };

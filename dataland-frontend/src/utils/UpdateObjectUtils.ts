@@ -7,7 +7,7 @@ export type ObjectType = { [key: string]: string | object };
  */
 export function updateObject(baseObject: ObjectType, objectWithNewData: ObjectType): void {
   for (const key in objectWithNewData) {
-    if (typeof objectWithNewData[key] === "object" && objectWithNewData[key] !== null) {
+    if (typeof objectWithNewData[key] === 'object' && objectWithNewData[key] !== null) {
       if (baseObject[key]) {
         updateObject(baseObject[key] as unknown as ObjectType, objectWithNewData[key] as unknown as ObjectType);
       } else {
@@ -32,7 +32,7 @@ export function findAllValuesForKey(obj: ObjectType, keyToFind: string): Array<s
   return Object.entries(obj).reduce((acc: Array<string>, [key, value]) => {
     if (key === keyToFind) {
       return acc.concat(value as string);
-    } else if (typeof value === "object" && value != null) {
+    } else if (typeof value === 'object' && value != null) {
       return acc.concat(findAllValuesForKey(value as ObjectType, keyToFind));
     } else {
       return acc;
@@ -40,18 +40,37 @@ export function findAllValuesForKey(obj: ObjectType, keyToFind: string): Array<s
   }, []);
 }
 
+type PickNullable<T> = {
+  [P in keyof T as null extends T[P] ? P : never]: T[P];
+};
+
+type PickNotNullable<T> = {
+  [P in keyof T as null extends T[P] ? never : P]: T[P];
+};
+
+// Adapted from: https://stackoverflow.com/a/72634592
+type OptionalNullable<T> = T extends Array<unknown> | Set<unknown>
+  ? T
+  : T extends object
+    ? {
+        [K in keyof PickNullable<T>]?: OptionalNullable<Exclude<T[K], null>>;
+      } & {
+        [K in keyof PickNotNullable<T>]: OptionalNullable<T[K]>;
+      }
+    : T;
+
 /**
  * Drops all nulls from arbitrarily nested object by stringifying it and parsing it back to object
  * It does not work in the case of the value being of type Array<null>!
  * @param obj the object that needs the nulls dropped
  * @returns the object without all keys with undefined or null value
  */
-export function objectDropNull(obj: ObjectType): ObjectType {
+export function objectDropNull<T>(obj: T): OptionalNullable<T> {
   return JSON.parse(
     JSON.stringify(obj, (key, value: string | number) => {
       return value ?? undefined;
-    }),
-  ) as ObjectType;
+    })
+  ) as OptionalNullable<T>;
 }
 
 /**

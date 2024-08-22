@@ -1,4 +1,5 @@
-.p-datatable, .p-datatable.p-datatable-scrollable {
+.p-datatable,
+.p-datatable.p-datatable-scrollable {
   border-radius: 0;
   background: $table-background-color;
   color: $main-text-color;
@@ -24,7 +25,7 @@
   }
   .onlyHeaders {
     tr {
-      display:flex;
+      display: flex;
       width: calc(100vw - 58px);
     }
     tr th:not(.first-horizontal-headers-size) {
@@ -43,7 +44,8 @@
     &:hover {
       background: $table-background-hover-color;
     }
-    th, td {
+    th,
+    td {
       text-align: left;
       padding: 1rem;
     }
@@ -64,7 +66,7 @@
   .p-sortable-column {
     .p-sortable-column-icon {
       color: $table-icon-color;
-      margin-left: .5rem;
+      margin-left: 0.5rem;
     }
     &.p-highlight {
       background: $table-background-color;
@@ -96,7 +98,7 @@
       button {
         position: absolute;
         right: 1rem;
-        top:50%;
+        top: 50%;
         margin-top: -7px;
       }
     }
@@ -121,14 +123,14 @@
       .p-column-header-content {
         justify-content: center;
       }
-      &:not(:first-of-type){
+      &:not(:first-of-type) {
         border-left: 1px solid $table-border;
       }
     }
     .first-group-column:not(:first-of-type) {
       border-left: 1px solid $table-border;
     }
-    .non-frozen-header{
+    .non-frozen-header {
       vertical-align: top;
     }
     .frozen-row-header {
@@ -154,11 +156,14 @@
 .p-paginator {
   background: #fff;
   color: $pagination-color;
-  padding: .5rem 1rem;
-  .p-paginator-first, .p-paginator-prev, .p-paginator-next, .p-paginator-last {
+  padding: 0.5rem 1rem;
+  .p-paginator-first,
+  .p-paginator-prev,
+  .p-paginator-next,
+  .p-paginator-last {
     min-width: 2.357rem;
     height: 2.357rem;
-    margin: .143rem;
+    margin: 0.143rem;
     &:not(.p-disabled) {
       &:not(.p-highlight) {
         &:hover {
@@ -170,14 +175,14 @@
   .p-paginator-current {
     min-width: 2.357rem;
     height: 2.357rem;
-    margin: .143rem;
-    padding: 0 .5rem;
+    margin: 0.143rem;
+    padding: 0 0.5rem;
   }
   .p-paginator-pages {
     .p-paginator-page {
       min-width: 2.357rem;
       height: 2.357rem;
-      margin: .143rem;
+      margin: 0.143rem;
     }
     .p-paginator-page.p-highlight {
       background: $main-color;
@@ -188,6 +193,11 @@
 }
 .border-bottom-table {
   border-bottom: 1px solid $table-border;
+}
+
+.table-cell-alignment {
+  display: flex;
+  flex-direction: column;
 }
 
 .indentation {

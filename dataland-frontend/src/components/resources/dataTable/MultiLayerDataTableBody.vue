@@ -94,14 +94,14 @@ import {
   isCellOrSectionVisible,
   type MLDTConfig,
   type MLDTSectionConfig,
-} from "@/components/resources/dataTable/MultiLayerDataTableConfiguration";
-import ChevronDownIcon from "primevue/icons/chevrondown";
-import ChevronLeftIcon from "primevue/icons/chevronleft";
-import MultiLayerDataTableBody from "@/components/resources/dataTable/MultiLayerDataTableBody.vue";
-import { computed, onMounted, ref } from "vue";
-import MultiLayerDataTableCell from "@/components/resources/dataTable/MultiLayerDataTableCell.vue";
-import Tooltip from "primevue/tooltip";
-import { type DataAndMetaInformation } from "@/api-models/DataAndMetaInformation";
+} from '@/components/resources/dataTable/MultiLayerDataTableConfiguration';
+import ChevronDownIcon from 'primevue/icons/chevrondown';
+import ChevronLeftIcon from 'primevue/icons/chevronleft';
+import MultiLayerDataTableBody from '@/components/resources/dataTable/MultiLayerDataTableBody.vue';
+import { computed, onMounted, ref } from 'vue';
+import MultiLayerDataTableCell from '@/components/resources/dataTable/MultiLayerDataTableCell.vue';
+import Tooltip from 'primevue/tooltip';
+import { type DataAndMetaInformation } from '@/api-models/DataAndMetaInformation';
 
 const expandedSections = ref(new Set<number>());
 const vTooltip = Tooltip;
@@ -124,7 +124,7 @@ function toggleSection(idx: number): void {
 function expandSectionsOnPageLoad(): void {
   for (let i = 0; i < props.config.length; i++) {
     const element = props.config[i];
-    if (element.type == "section" && element.expandOnPageLoad) {
+    if (element.type == 'section' && element.expandOnPageLoad) {
       expandedSections.value.add(i);
     }
   }

@@ -20,9 +20,9 @@ export function roundNumber(rawNumber: number, precision: number): number {
  * @returns a human-readable string of the number of bytes
  */
 export function formatBytesUserFriendly(numberOfBytes: number, precision: number): string {
-  if (!+numberOfBytes) return "0 Bytes";
+  if (!+numberOfBytes) return '0 Bytes';
   const k = 1024;
-  const sizes = ["Bytes", "KB", "MB"];
+  const sizes = ['Bytes', 'KB', 'MB'];
   const i = Math.floor(Math.log(numberOfBytes) / Math.log(k));
 
   return `${parseFloat((numberOfBytes / Math.pow(k, i)).toFixed(precision))} ${sizes[i]}`;
@@ -34,5 +34,5 @@ export function formatBytesUserFriendly(numberOfBytes: number, precision: number
  * @returns a string with the converted number and "MM" at the end
  */
 export function convertToMillions(inputNumber: number): string {
-  return `${(inputNumber / 1000000).toLocaleString("en-GB", { maximumFractionDigits: 2 })} MM`;
+  return `${(inputNumber / 1000000).toLocaleString('en-GB', { maximumFractionDigits: 2 })} MM`;
 }

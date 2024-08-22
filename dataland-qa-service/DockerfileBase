@@ -1,8 +1,9 @@
 ARG DATALAND_GRADLE_BASE_VERSION
-FROM ghcr.io/d-fine/dataland/dataland_gradle_base:${DATALAND_GRADLE_BASE_VERSION} as builder
+FROM ghcr.io/d-fine/dataland/dataland_gradle_base:${DATALAND_GRADLE_BASE_VERSION} AS builder
 
 WORKDIR /app
 COPY ./dataland-qa-service/ ./dataland-qa-service/
+COPY ./dataland-backend/backendOpenApi.json ./dataland-backend/backendOpenApi.json
 COPY ./dataland-backend-utils/ ./dataland-backend-utils/
 COPY ./dataland-message-queue-utils/ ./dataland-message-queue-utils/
 COPY ./dataland-api-key-manager/apiKeyManagerOpenApi.json ./dataland-api-key-manager/apiKeyManagerOpenApi.json

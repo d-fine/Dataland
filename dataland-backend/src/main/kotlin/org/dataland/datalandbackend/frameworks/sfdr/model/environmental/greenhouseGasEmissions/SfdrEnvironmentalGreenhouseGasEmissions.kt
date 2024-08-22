@@ -4,7 +4,7 @@ package org.dataland.datalandbackend.frameworks.sfdr.model.environmental.greenho
 import jakarta.validation.Valid
 import org.dataland.datalandbackend.model.datapoints.CurrencyDataPoint
 import org.dataland.datalandbackend.model.datapoints.ExtendedDataPoint
-import org.dataland.datalandbackend.model.enums.commons.YesNoNoEvidenceFound
+import org.dataland.datalandbackend.model.enums.commons.YesNo
 import java.math.BigDecimal
 
 /**
@@ -36,6 +36,12 @@ data class SfdrEnvironmentalGreenhouseGasEmissions(
     val scope3GhgEmissionsInTonnes: ExtendedDataPoint<BigDecimal?>? = null,
 
     @field:Valid()
+    val scope3UpstreamGhgEmissionsInTonnes: ExtendedDataPoint<BigDecimal?>? = null,
+
+    @field:Valid()
+    val scope3DownstreamGhgEmissionsInTonnes: ExtendedDataPoint<BigDecimal?>? = null,
+
+    @field:Valid()
     val scope1And2And3GhgEmissionsInTonnes: ExtendedDataPoint<BigDecimal?>? = null,
 
     @field:Valid()
@@ -57,6 +63,18 @@ data class SfdrEnvironmentalGreenhouseGasEmissions(
     val ghgIntensityInTonnesPerMillionEURRevenue: ExtendedDataPoint<BigDecimal?>? = null,
 
     @field:Valid()
-    val fossilFuelSectorExposure: ExtendedDataPoint<YesNoNoEvidenceFound?>? = null,
+    val ghgIntensityScope1InTonnesPerMillionEURRevenue: ExtendedDataPoint<BigDecimal?>? = null,
+
+    @field:Valid()
+    val ghgIntensityScope2InTonnesPerMillionEURRevenue: ExtendedDataPoint<BigDecimal?>? = null,
+
+    @field:Valid()
+    val ghgIntensityScope3InTonnesPerMillionEURRevenue: ExtendedDataPoint<BigDecimal?>? = null,
+
+    @field:Valid()
+    val ghgIntensityScope4InTonnesPerMillionEURRevenue: ExtendedDataPoint<BigDecimal?>? = null,
+
+    @field:Valid()
+    val fossilFuelSectorExposure: ExtendedDataPoint<YesNo?>? = null,
 
 )

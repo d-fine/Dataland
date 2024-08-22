@@ -22,11 +22,11 @@
 </template>
 
 <script lang="ts">
-import UserProfileDropDown from "@/components/general/UserProfileDropDown.vue";
-import { inject, defineComponent } from "vue";
-import AuthSection from "@/components/resources/newLandingPage/AuthSection.vue";
+import UserProfileDropDown from '@/components/general/UserProfileDropDown.vue';
+import { inject, defineComponent } from 'vue';
+import AuthSection from '@/components/resources/newLandingPage/AuthSection.vue';
 export default defineComponent({
-  name: "TheHeader",
+  name: 'TheHeader',
   components: { AuthSection, UserProfileDropDown },
   props: {
     showUserProfileDropdown: {
@@ -36,7 +36,7 @@ export default defineComponent({
   },
   setup() {
     return {
-      authenticated: inject<boolean>("authenticated"),
+      authenticated: inject<boolean>('authenticated'),
     };
   },
 });

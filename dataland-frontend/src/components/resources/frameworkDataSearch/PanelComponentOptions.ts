@@ -1,4 +1,4 @@
-import { type DataMetaInformation } from "@clients/backend";
+import { type DataMetaInformation } from '@clients/backend';
 
 export const PanelProps = {
   companyId: {

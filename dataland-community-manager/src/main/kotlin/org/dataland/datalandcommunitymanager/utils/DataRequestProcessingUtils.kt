@@ -1,16 +1,22 @@
 package org.dataland.datalandcommunitymanager.utils
 
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
+import org.dataland.datalandbackend.openApiClient.api.MetaDataControllerApi
+import org.dataland.datalandbackend.openApiClient.model.CompanyIdAndName
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandbackendutils.exceptions.AuthenticationMethodNotSupportedException
 import org.dataland.datalandbackendutils.exceptions.ConflictApiException
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandcommunitymanager.entities.DataRequestEntity
+import org.dataland.datalandcommunitymanager.entities.MessageEntity
+import org.dataland.datalandcommunitymanager.entities.RequestStatusEntity
+import org.dataland.datalandcommunitymanager.model.dataRequest.AccessStatus
 import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
 import org.dataland.datalandcommunitymanager.model.dataRequest.StoredDataRequestMessageObject
 import org.dataland.datalandcommunitymanager.model.dataRequest.StoredDataRequestStatusObject
 import org.dataland.datalandcommunitymanager.repositories.DataRequestRepository
-import org.dataland.datalandcommunitymanager.services.DataRequestHistoryManager
+import org.dataland.datalandcommunitymanager.repositories.MessageRepository
+import org.dataland.datalandcommunitymanager.repositories.RequestStatusRepository
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.dataland.keycloakAdapter.auth.DatalandJwtAuthentication
 import org.springframework.beans.factory.annotation.Autowired
@@ -23,9 +29,11 @@ import java.time.Instant
 @Service
 class DataRequestProcessingUtils(
     @Autowired private val dataRequestRepository: DataRequestRepository,
-    @Autowired private val dataRequestHistoryManager: DataRequestHistoryManager,
+    @Autowired private var requestStatusRepository: RequestStatusRepository,
+    @Autowired private var messageRepository: MessageRepository,
     @Autowired private val dataRequestLogger: DataRequestLogger,
     @Autowired private val companyApi: CompanyDataControllerApi,
+    @Autowired private val metaDataApi: MetaDataControllerApi,
 ) {
     /**
      * We want to avoid users from using other authentication methods than jwt-authentication, such as
@@ -44,14 +52,14 @@ class DataRequestProcessingUtils(
      * exception will be thrown (default)
      * @return the company ID or null
      */
-    fun getDatalandCompanyIdForIdentifierValue(
+    fun getDatalandCompanyIdAndNameForIdentifierValue(
         identifierValue: String,
         returnOnlyUnique: Boolean = false,
-    ): String? {
+    ): CompanyIdAndName? {
         val matchingCompanyIdsAndNamesOnDataland =
             companyApi.getCompaniesBySearchString(identifierValue)
-        val datalandCompanyId = if (matchingCompanyIdsAndNamesOnDataland.size == 1) {
-            matchingCompanyIdsAndNamesOnDataland.first().companyId
+        val datalandCompanyIdAndName = if (matchingCompanyIdsAndNamesOnDataland.size == 1) {
+            matchingCompanyIdsAndNamesOnDataland.first()
         } else if (matchingCompanyIdsAndNamesOnDataland.size > 1 && !returnOnlyUnique) {
             throw InvalidInputApiException(
                 summary = "No unique identifier. Multiple companies could be found.",
@@ -61,8 +69,11 @@ class DataRequestProcessingUtils(
             null
         }
         dataRequestLogger
-            .logMessageWhenCrossReferencingIdentifierValueWithDatalandCompanyId(identifierValue, datalandCompanyId)
-        return datalandCompanyId
+            .logMessageWhenCrossReferencingIdentifierValueWithDatalandCompanyId(
+                identifierValue,
+                datalandCompanyIdAndName?.companyId,
+            )
+        return datalandCompanyIdAndName
     }
 
     /**
@@ -90,19 +101,56 @@ class DataRequestProcessingUtils(
             creationTime,
         )
         dataRequestRepository.save(dataRequestEntity)
-
-        val requestStatusObject = listOf(StoredDataRequestStatusObject(RequestStatus.Open, creationTime))
-        dataRequestEntity.associateRequestStatus(requestStatusObject)
-        dataRequestHistoryManager.saveStatusHistory(dataRequestEntity.dataRequestStatusHistory)
+        val accessStatus = if (dataType == DataTypeEnum.vsme) {
+            AccessStatus.Pending
+        } else {
+            AccessStatus.Public
+        }
+        addNewRequestStatusToHistory(dataRequestEntity, RequestStatus.Open, accessStatus, creationTime)
 
         if (!contacts.isNullOrEmpty()) {
-            val messageHistory = listOf(StoredDataRequestMessageObject(contacts, message, creationTime))
-            dataRequestEntity.associateMessages(messageHistory)
-            dataRequestHistoryManager.saveMessageHistory(dataRequestEntity.messageHistory)
+            addMessageToMessageHistory(dataRequestEntity, contacts, message, creationTime)
         }
         dataRequestLogger.logMessageForStoringDataRequest(dataRequestEntity.dataRequestId)
 
         return dataRequestEntity
+    }
+
+    /**
+     * For a given dataRequestEntity, this function adds and persists a new entry to
+     * the messageHistory of the dataRequestEntity.
+     * The new entry contains a set of contacts, an optional message and a modificationTime.
+     * This function should be called within a transaction.
+     */
+    fun addMessageToMessageHistory(
+        dataRequestEntity: DataRequestEntity,
+        contacts: Set<String>,
+        message: String?,
+        modificationTime: Long,
+    ) {
+        val requestMessageObject = StoredDataRequestMessageObject(contacts, message, modificationTime)
+        val requestMessageEntity = MessageEntity(requestMessageObject, dataRequestEntity)
+        messageRepository.save(requestMessageEntity)
+        dataRequestEntity.addRequestEventToMessageHistory(requestMessageEntity)
+    }
+
+    /**
+     * For a given dataRequestEntity, this function adds and persists a new entry to
+     * the requestStatusHistory of the dataRequestEntity.
+     * The new entry contains a requestStatis, an accessStatus and a modificationTime.
+     * This function should be called within a transaction.
+     */
+    fun addNewRequestStatusToHistory(
+        dataRequestEntity: DataRequestEntity,
+        requestStatus: RequestStatus,
+        accessStatus: AccessStatus,
+        modificationTime: Long,
+    ) {
+        val requestStatusObject = StoredDataRequestStatusObject(requestStatus, modificationTime, accessStatus)
+        val requestStatusEntity = RequestStatusEntity(requestStatusObject, dataRequestEntity)
+
+        requestStatusRepository.save(requestStatusEntity)
+        dataRequestEntity.addToDataRequestStatusHistory(requestStatusEntity)
     }
 
     /**
@@ -173,13 +221,30 @@ class DataRequestProcessingUtils(
             true
         }
     }
-}
 
-/**
- * Finds the entry in the DataType enum corresponding to a provided framework name
- * @param frameworkName the name of the framework
- * @return the corresponding enum entry
- */
-fun getDataTypeEnumForFrameworkName(frameworkName: String): DataTypeEnum? {
-    return DataTypeEnum.entries.find { it.value == frameworkName }
+    /**
+     * This method checks if a dataset exists for the specified parameters
+     * @param companyId the dataland companyId of the company from which data is requested
+     * @param reportingPeriod the reportingPeriod for which data is requested
+     * @param dataType the framework dataType for which data is requested
+     * @return true if matching datasets were found
+     */
+    fun matchingDatasetExists(companyId: String, reportingPeriod: String, dataType: DataTypeEnum): Boolean {
+        val matchingDatasets = metaDataApi.getListOfDataMetaInfo(
+            companyId = companyId,
+            dataType = dataType,
+            showOnlyActive = true,
+            reportingPeriod = reportingPeriod,
+        )
+        return matchingDatasets.isNotEmpty()
+    }
+
+    /**
+     * Finds the entry in the DataType enum corresponding to a provided framework name
+     * @param frameworkName the name of the framework
+     * @return the corresponding enum entry
+     */
+    fun getDataTypeEnumForFrameworkName(frameworkName: String): DataTypeEnum? {
+        return DataTypeEnum.entries.find { it.value == frameworkName }
+    }
 }

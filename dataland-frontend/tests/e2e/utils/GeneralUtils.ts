@@ -1,5 +1,5 @@
-import { type DataTypeEnum } from "@clients/backend";
-import { type Interception } from "cypress/types/net-stubbing";
+import { type DataTypeEnum } from '@clients/backend';
+import { type Interception } from 'cypress/types/net-stubbing';
 
 /**
  * Visits the edit page for a framework via UI navigation.
@@ -9,18 +9,18 @@ import { type Interception } from "cypress/types/net-stubbing";
  */
 export function goToEditFormOfMostRecentDatasetForCompanyAndFramework(
   companyId: string,
-  dataType: DataTypeEnum,
+  dataType: DataTypeEnum
 ): Cypress.Chainable<Interception> {
-  const getRequestAlias = "fetchDataForPrefill";
+  const getRequestAlias = 'fetchDataForPrefill';
   cy.intercept({
-    method: "GET",
-    url: "**/api/data/**",
+    method: 'GET',
+    url: '**/api/data/**',
     times: 2,
   }).as(getRequestAlias);
   cy.visit(`/companies/${companyId}/frameworks/${dataType}`);
-  cy.wait(`@${getRequestAlias}`, { timeout: Cypress.env("medium_timeout_in_ms") as number });
+  cy.wait(`@${getRequestAlias}`, { timeout: Cypress.env('medium_timeout_in_ms') as number });
   cy.get('[data-test="editDatasetButton"]').click();
-  return cy.wait(`@${getRequestAlias}`, { timeout: Cypress.env("medium_timeout_in_ms") as number });
+  return cy.wait(`@${getRequestAlias}`, { timeout: Cypress.env('medium_timeout_in_ms') as number });
 }
 
 /**
@@ -33,7 +33,7 @@ export function goToEditFormOfMostRecentDatasetForCompanyAndFramework(
 export function compareObjectKeysAndValuesDeep(
   objA: Record<string, object>,
   objB: Record<string, object>,
-  path = "",
+  path = ''
 ): void {
   const keysA = Object.keys(objA);
   const keysB = Object.keys(objB);
@@ -65,12 +65,12 @@ export function compareObjectKeysAndValuesDeep(
 function checkIfContentIsIdentical(
   valueA: Record<string, object>,
   valueB: Record<string, object>,
-  newPath: string,
+  newPath: string
 ): void {
   const throwErrorBecauseOfFieldValue = (fieldPath: string): void => {
     throw new Error(`Field ${fieldPath} is not equal.`);
   };
-  if (typeof valueA === "object" && typeof valueB === "object") {
+  if (typeof valueA === 'object' && typeof valueB === 'object') {
     if (valueA === null || valueB === null) {
       if (valueA !== valueB) {
         throwErrorBecauseOfFieldValue(newPath);

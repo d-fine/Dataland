@@ -1,8 +1,8 @@
 /**
  * As a user, I want the shared framework data page of a company to exist and behave like I expect
  */
-describe("Tests for shared header for the page of framework data", () => {
-  require("./FrameworkViewPage");
-  require("./UploadFrameworkDataJourney");
-  require("./RoleChecks");
+describe('Tests for shared header for the page of framework data', () => {
+  require('./FrameworkViewPage');
+  require('./UploadFrameworkDataJourney');
+  require('./RoleChecks');
 });

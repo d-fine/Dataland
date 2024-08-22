@@ -9,6 +9,7 @@ import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
 import org.dataland.datalandmessagequeueutils.exceptions.MessageQueueRejectException
 import org.dataland.datalandmessagequeueutils.messages.QaCompletedMessage
 import org.dataland.datalandmessagequeueutils.utils.MessageQueueUtils
+import org.json.JSONObject
 import org.slf4j.LoggerFactory
 import org.springframework.amqp.rabbit.annotation.Argument
 import org.springframework.amqp.rabbit.annotation.Exchange
@@ -71,6 +72,45 @@ class DataRequestUploadListener(
         if (qaCompletedMessage.validationResult != QaStatus.Accepted) {
             logger.info("Dataset with ID $dataId was not accepted and request matching is cancelled")
             return
+        }
+        messageUtils.rejectMessageOnException {
+            dataRequestAlterationManager.patchRequestStatusFromOpenToAnsweredByDataId(dataId, correlationId = id)
+        }
+    }
+
+    /**
+     * Checks if for a given dataset there are open requests with matching company identifier, reporting period
+     * and data type and sets their status to answered and handles the update of the access status
+     * @param dataId the dataId of the uploaded data
+     * @param type the type of the message
+     */
+    @RabbitListener(
+        bindings = [
+            QueueBinding(
+                value = Queue(
+                    "privateRequestReceivedCommunityManager",
+                    arguments = [
+                        Argument(name = "x-dead-letter-exchange", value = ExchangeName.DeadLetter),
+                        Argument(name = "x-dead-letter-routing-key", value = "deadLetterKey"),
+                        Argument(name = "defaultRequeueRejected", value = "false"),
+                    ],
+                ),
+                exchange = Exchange(ExchangeName.PrivateRequestReceived, declare = "false"),
+                key = [RoutingKeyNames.metaDataPersisted],
+            ),
+        ],
+    )
+    @Transactional
+    fun changeRequestStatusAfterPrivateDataUpload(
+        @Payload payload: String,
+        @Header(MessageHeaderKey.Type) type: String,
+        @Header(MessageHeaderKey.CorrelationId) id: String,
+    ) {
+        messageUtils.validateMessageType(type, MessageType.PrivateDataReceived)
+        val payloadJsonObject = JSONObject(payload)
+        val dataId = payloadJsonObject.getString("dataId")
+        if (dataId.isEmpty()) {
+            throw MessageQueueRejectException("Provided data ID is empty")
         }
         messageUtils.rejectMessageOnException {
             dataRequestAlterationManager.patchRequestStatusFromOpenToAnsweredByDataId(dataId, correlationId = id)

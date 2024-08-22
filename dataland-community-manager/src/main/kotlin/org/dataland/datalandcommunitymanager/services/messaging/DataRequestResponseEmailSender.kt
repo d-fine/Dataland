@@ -3,7 +3,6 @@ package org.dataland.datalandcommunitymanager.services.messaging
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandcommunitymanager.entities.DataRequestEntity
-import org.dataland.datalandcommunitymanager.services.KeycloakUserControllerApiService
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
 import org.dataland.datalandmessagequeueutils.constants.ExchangeName
 import org.dataland.datalandmessagequeueutils.constants.MessageType
@@ -22,7 +21,6 @@ import java.util.*
 class DataRequestResponseEmailSender(
     @Autowired private val cloudEventMessageHandler: CloudEventMessageHandler,
     @Autowired private val objectMapper: ObjectMapper,
-    @Autowired private val keycloakUserControllerApiService: KeycloakUserControllerApiService,
     @Autowired private val companyDataControllerApi: CompanyDataControllerApi,
     @Value("\${dataland.community-manager.data-request.answered.stale-days-threshold}")
     private val staleDaysThreshold: String,
@@ -48,34 +46,6 @@ class DataRequestResponseEmailSender(
         return dateFormat.format(creationTimestamp)
     }
 
-    /**
-     * Method to retrieve userEmail by userId
-     * @param userId dataland userId
-     * @returns userEmail as string
-     */
-    private fun getUserEmailById(userId: String): String {
-        return keycloakUserControllerApiService.getEmailAddress(userId)
-    }
-
-    /**
-     * Method to retrieve human-readable dataType
-     * @param dataType dataland dataType
-     * @returns human-readable dataType as string
-     */
-    private fun getDataTypeDescription(dataType: String): String {
-        return when (dataType) {
-            "eutaxonomy-financials" -> "EU Taxonomy for financial companies"
-            "eutaxonomy-non-financials" -> "EU Taxonomy for non-financial companies"
-            "lksg" -> "LkSG"
-            "sfdr" -> "SFDR"
-            "sme" -> "SME"
-            "p2p" -> "WWF Pathways to Paris"
-            "esg-questionnaire" -> "ESG Questionnaire"
-            "heimathafen" -> "Heimathafen"
-            else -> dataType
-        }
-    }
-
     private fun getProperties(dataRequestEntity: DataRequestEntity, staleDaysThreshold: String): Map<String, String> {
         return mapOf(
             "companyId" to dataRequestEntity.datalandCompanyId,
@@ -83,7 +53,7 @@ class DataRequestResponseEmailSender(
             "dataType" to dataRequestEntity.dataType,
             "reportingPeriod" to dataRequestEntity.reportingPeriod,
             "creationDate" to convertUnitTimeInMsToDate(dataRequestEntity.creationTimestamp),
-            "dataTypeDescription" to getDataTypeDescription(dataRequestEntity.dataType),
+            "dataTypeDescription" to dataRequestEntity.getDataTypeDescription(),
             "dataRequestId" to dataRequestEntity.dataRequestId,
             "closedInDays" to staleDaysThreshold,
         )
@@ -103,7 +73,7 @@ class DataRequestResponseEmailSender(
         val properties = getProperties(dataRequestEntity, staleDaysThreshold)
         val message = TemplateEmailMessage(
             emailTemplateType = emailType,
-            receiver = getUserEmailById(dataRequestEntity.userId),
+            receiver = TemplateEmailMessage.UserIdEmailRecipient(dataRequestEntity.userId),
             properties = properties,
         )
         cloudEventMessageHandler.buildCEMessageAndSendToQueue(

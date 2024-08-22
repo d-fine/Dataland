@@ -10,17 +10,17 @@
 </template>
 
 <script lang="ts">
-import PrimeButton from "primevue/button";
-import { defineComponent, inject } from "vue";
-import type Keycloak from "keycloak-js";
-import { assertDefined } from "@/utils/TypeScriptUtils";
+import PrimeButton from 'primevue/button';
+import { defineComponent, inject } from 'vue';
+import type Keycloak from 'keycloak-js';
+import { assertDefined } from '@/utils/TypeScriptUtils';
 
 export default defineComponent({
-  name: "JoinDatalandButton",
+  name: 'JoinDatalandButton',
   components: { PrimeButton },
   setup() {
     return {
-      getKeycloakPromise: inject<() => Promise<Keycloak>>("getKeycloakPromise"),
+      getKeycloakPromise: inject<() => Promise<Keycloak>>('getKeycloakPromise'),
     };
   },
   methods: {

@@ -1,73 +1,73 @@
 // @ts-nocheck
-import CreateLksgDataset from "@/components/forms/CreateLksgDataset.vue";
-import { minimalKeycloakMock } from "@ct/testUtils/Keycloak";
-import { type FixtureData, getPreparedFixture } from "@sharedUtils/Fixtures";
-import { type CompanyAssociatedDataLksgData, type LksgData } from "@clients/backend";
-import { submitButton } from "@sharedUtils/components/SubmitButton";
+import CreateLksgDataset from '@/components/forms/CreateLksgDataset.vue';
+import { minimalKeycloakMock } from '@ct/testUtils/Keycloak';
+import { type FixtureData, getPreparedFixture } from '@sharedUtils/Fixtures';
+import { type CompanyAssociatedDataLksgData, type LksgData } from '@clients/backend';
+import { submitButton } from '@sharedUtils/components/SubmitButton';
 
-describe("Test YesNoBaseDataPointFormField for entries", () => {
+describe('Test YesNoBaseDataPointFormField for entries', () => {
   let preparedFixtures: Array<FixtureData<LksgData>>;
   before(() => {
-    cy.fixture("CompanyInformationWithLksgPreparedFixtures").then(function (jsonContent) {
+    cy.fixture('CompanyInformationWithLksgPreparedFixtures').then(function (jsonContent) {
       preparedFixtures = jsonContent as Array<FixtureData<LksgData>>;
     });
   });
 
-  it("Edit and subsequent upload should work properly when removing or changing referenced documents", () => {
-    const dummyData = getPreparedFixture("lksg-all-fields", preparedFixtures).t;
+  it('Edit and subsequent upload should work properly when removing or changing referenced documents', () => {
+    const dummyData = getPreparedFixture('lksg-all-fields', preparedFixtures).t;
     mountEditForm(dummyData).then(() => {
       cy.get("[data-test^='BaseDataPointFormField'] button[data-test='files-to-upload-remove']")
         .first()
         .parents('[data-test^="BaseDataPointFormField"]')
         .first()
-        .find("input.p-radiobutton")
+        .find('input.p-radiobutton')
         .eq(1)
         .click()
         .find("button[data-test='files-to-upload-remove']")
-        .should("not.exist");
+        .should('not.exist');
     });
   });
 
-  it("Edit and subsequent upload should work properly changing subcontracting companies", () => {
-    const dummyData = getPreparedFixture("lksg-with-subcontracting-countries", preparedFixtures).t;
+  it('Edit and subsequent upload should work properly changing subcontracting companies', () => {
+    const dummyData = getPreparedFixture('lksg-with-subcontracting-countries', preparedFixtures).t;
     mountEditForm(dummyData).then(() => {
       cy.get("[data-test='subcontractingCompaniesCountries']", {
-        timeout: Cypress.env("medium_timeout_in_ms") as number,
+        timeout: Cypress.env('medium_timeout_in_ms') as number,
       }).within(() => {
-        cy.get(".p-multiselect").first().should("contains.text", "Germany");
-        cy.get(".p-multiselect").first().should("contains.text", "United Kingdom");
-        cy.get(".p-multiselect").first().click();
+        cy.get('.p-multiselect').first().should('contains.text', 'Germany');
+        cy.get('.p-multiselect').first().should('contains.text', 'United Kingdom');
+        cy.get('.p-multiselect').first().click();
         cy.get("h5:contains('Subcontracting Companies Industries in Germany')")
-          .parents(".form-field")
+          .parents('.form-field')
           .first()
-          .find(".d-nace-chipview")
+          .find('.d-nace-chipview')
           .children()
-          .should("have.length", 2);
+          .should('have.length', 2);
         cy.get("h5:contains('Subcontracting Companies Industries in United Kingdom')")
-          .parents(".form-field")
+          .parents('.form-field')
           .first()
-          .find(".d-nace-chipview")
+          .find('.d-nace-chipview')
           .children()
-          .should("have.length", 1);
+          .should('have.length', 1);
       });
-      cy.get("h5:contains('Subcontracting Companies Industries in Albania')").should("not.exist");
+      cy.get("h5:contains('Subcontracting Companies Industries in Albania')").should('not.exist');
       cy.get('[data-pc-name="multiselect"]')
         .get('[data-pc-section="wrapper"]')
         .get('[data-pc-section="list"]')
         .find("li:contains('Albania')")
         .click();
-      cy.get("h5:contains('Subcontracting Companies Industries in Albania')").should("exist");
-      cy.intercept("**/api/data/lksg", (request) => {
+      cy.get("h5:contains('Subcontracting Companies Industries in Albania')").should('exist');
+      cy.intercept('**/api/data/lksg*', (request) => {
         const body = request.body as CompanyAssociatedDataLksgData;
         expect(body.data.general.productionSpecific?.subcontractingCompaniesCountries).to.deep.equal({
-          DE: ["A", "G"],
-          GB: ["B"],
+          DE: ['A', 'G'],
+          GB: ['B'],
           AL: [],
         });
         request.reply(200);
-      }).as("send");
+      }).as('send');
       submitButton.clickButton();
-      cy.wait("@send");
+      cy.wait('@send');
     });
   });
 });
@@ -79,24 +79,24 @@ describe("Test YesNoBaseDataPointFormField for entries", () => {
  */
 function mountEditForm(data: LksgData): Cypress.Chainable {
   const dummyCompanyAssociatedData: CompanyAssociatedDataLksgData = {
-    companyId: "company-id",
-    reportingPeriod: "2024",
+    companyId: 'company-id',
+    reportingPeriod: '2024',
     data: data,
   };
-  cy.intercept("**/api/data/lksg/*", dummyCompanyAssociatedData);
+  cy.intercept('**/api/data/lksg/*', dummyCompanyAssociatedData);
   return cy.mountWithPlugins(CreateLksgDataset, {
     keycloak: minimalKeycloakMock({}),
     data: () => ({
       route: {
         query: {
-          templateDataId: "data-id",
+          templateDataId: 'data-id',
         },
       },
     }),
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     props: {
-      companyID: "company-id",
+      companyID: 'company-id',
     },
   });
 }

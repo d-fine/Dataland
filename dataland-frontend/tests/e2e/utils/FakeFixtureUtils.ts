@@ -3,8 +3,8 @@ import {
   generateArray,
   pickOneElement,
   pickSubsetOfElements,
-} from "@e2e/fixtures/FixtureUtils";
-import { generateYesNo, generateYesNoNa, generateYesNoNoEvidenceFound } from "@e2e/fixtures/common/YesNoFixtures";
+} from '@e2e/fixtures/FixtureUtils';
+import { generateYesNo, generateYesNoNa } from '@e2e/fixtures/common/YesNoFixtures';
 import {
   type AmountWithCurrency,
   type CurrencyDataPoint,
@@ -12,18 +12,17 @@ import {
   QualityOptions,
   type YesNo,
   type YesNoNa,
-  type YesNoNoEvidenceFound,
-} from "@clients/backend";
-import { generateCurrencyValue, generateFloat, generatePercentageValue } from "@e2e/fixtures/common/NumberFixtures";
-import { generateReferencedDocuments, getReferencedDocumentId } from "@e2e/utils/DocumentReference";
-import { generateCurrencyCode } from "@e2e/fixtures/common/CurrencyFixtures";
-import { type BaseDataPoint, type ExtendedDataPoint } from "@/utils/DataPoint";
-import { generateFutureDate, generatePastDate } from "@e2e/fixtures/common/DateFixtures";
-import { faker } from "@faker-js/faker";
-import { generateDataSource } from "@e2e/fixtures/common/DataSourceFixtures";
+} from '@clients/backend';
+import { generateCurrencyValue, generateFloat, generatePercentageValue } from '@e2e/fixtures/common/NumberFixtures';
+import { generateReferencedDocuments, getReferencedDocumentId } from '@e2e/utils/DocumentReference';
+import { generateCurrencyCode } from '@e2e/fixtures/common/CurrencyFixtures';
+import { type BaseDataPoint, type ExtendedDataPoint } from '@/utils/DataPoint';
+import { generateFutureDate, generatePastDate } from '@e2e/fixtures/common/DateFixtures';
+import { faker } from '@faker-js/faker';
+import { generateDataSource } from '@e2e/fixtures/common/DataSourceFixtures';
 
 export const DEFAULT_PROBABILITY = 0.2;
-const possibleReports = ["AnnualReport", "SustainabilityReport", "IntegratedReport", "ESEFReport"];
+const possibleReports = ['AnnualReport', 'SustainabilityReport', 'IntegratedReport', 'ESEFReport'];
 
 /**
  * Randomly returns the specified value or null
@@ -64,13 +63,6 @@ export class Generator {
 
   guaranteedYesNoNa(): YesNoNa {
     return generateYesNoNa();
-  }
-  randomYesNoNoEvidenceFound(): YesNoNoEvidenceFound | null {
-    return this.valueOrNull(this.guaranteedYesNoNoEvidenceFound());
-  }
-
-  guaranteedYesNoNoEvidenceFound(): YesNoNoEvidenceFound {
-    return generateYesNoNoEvidenceFound();
   }
 
   randomPercentageValue(): number | null {
@@ -180,9 +172,7 @@ export class Generator {
       referencedReports[reportName] = {
         fileReference: getReferencedDocumentId(),
         fileName: this.valueOrNull(reportName),
-        isGroupLevel: this.randomYesNo(),
-        reportDate: this.valueOrNull(generatePastDate()),
-        currency: this.valueOrNull(generateCurrencyCode()),
+        publicationDate: this.valueOrNull(generatePastDate()),
       };
     }
     return referencedReports;

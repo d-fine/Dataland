@@ -1,6 +1,6 @@
-import { type FixtureData } from "@sharedUtils/Fixtures";
-import { type HeimathafenData } from "@clients/backend";
-import { generateHeimathafenFixtures } from "./HeimathafenDataFixtures";
+import { type FixtureData } from '@sharedUtils/Fixtures';
+import { type HeimathafenData } from '@clients/backend';
+import { generateHeimathafenFixtures } from './HeimathafenDataFixtures';
 
 /**
  * Generates heimathafen prepared fixtures by generating random heimathafen datasets and
@@ -21,6 +21,6 @@ export function generateHeimathafenPreparedFixtures(): Array<FixtureData<Heimath
  */
 function generateFixturesWithNoNullFields(): FixtureData<HeimathafenData> {
   const newFixture = generateHeimathafenFixtures(1, 0)[0];
-  newFixture.companyInformation.companyName = "Heimathafen-dataset-with-no-null-fields";
+  newFixture.companyInformation.companyName = 'Heimathafen-dataset-with-no-null-fields';
   return newFixture;
 }

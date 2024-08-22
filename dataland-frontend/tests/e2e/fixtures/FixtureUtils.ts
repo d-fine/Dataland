@@ -1,8 +1,8 @@
-import { type CompanyReport, type BaseDocumentReference } from "@clients/backend";
-import { generateCompanyInformation } from "./CompanyFixtures";
-import { generateReportingPeriod } from "@e2e/fixtures/common/ReportingPeriodFixtures";
-import { type FixtureData } from "@sharedUtils/Fixtures";
-import { faker } from "@faker-js/faker";
+import { type CompanyReport, type BaseDocumentReference } from '@clients/backend';
+import { generateCompanyInformation } from './CompanyFixtures';
+import { generateReportingPeriod } from '@e2e/fixtures/common/ReportingPeriodFixtures';
+import { type FixtureData } from '@sharedUtils/Fixtures';
+import { faker } from '@faker-js/faker';
 
 export type ReferencedDocuments = { [key: string]: CompanyReport | BaseDocumentReference };
 
@@ -17,7 +17,7 @@ export type ReferencedDocuments = { [key: string]: CompanyReport | BaseDocumentR
 export function generateFixtureDataset<T>(
   frameworkDataGenerator: () => T,
   numElements: number,
-  reportingPeriodGenerator: (dataSet: T) => string = generateReportingPeriod,
+  reportingPeriodGenerator: (dataSet: T) => string = generateReportingPeriod
 ): Array<FixtureData<T>> {
   const fixtureDataset = [];
   for (let id = 1; id <= numElements; id++) {
@@ -29,7 +29,7 @@ export function generateFixtureDataset<T>(
     });
     if (id > 1) {
       fixtureDataset[id - 1].companyInformation.parentCompanyLei =
-        fixtureDataset[id - 2].companyInformation.identifiers["Lei"]?.[0] ?? null;
+        fixtureDataset[id - 2].companyInformation.identifiers['Lei']?.[0] ?? null;
     }
   }
   return fixtureDataset;
@@ -47,7 +47,7 @@ export function generateArray<T>(
   generator: (nullProbabilityInGenerator?: number) => T,
   min = 0,
   max = 5,
-  nullProbabilityInGenerator?: number,
+  nullProbabilityInGenerator?: number
 ): T[] {
   return Array.from({ length: faker.number.int({ min, max }) }, () => generator(nullProbabilityInGenerator));
 }

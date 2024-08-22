@@ -21,7 +21,7 @@
           <h3 :id="card.title" class="footer__column-title">
             {{ card.title }}
             <span v-if="isSmallScreen" class="footer__toggle-icon">
-              {{ card.title && isAccordionOpen(card.title) ? "-" : "+" }}
+              {{ card.title && isAccordionOpen(card.title) ? '-' : '+' }}
             </span>
           </h3>
           <ul
@@ -51,8 +51,8 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref, onMounted, onUnmounted, type Ref } from "vue";
-import type { Section } from "@/types/ContentTypes";
+import { computed, ref, onMounted, onUnmounted, type Ref } from 'vue';
+import type { Section } from '@/types/ContentTypes';
 
 const props = defineProps<{
   sections?: Section[];
@@ -60,7 +60,7 @@ const props = defineProps<{
 }>();
 
 const footerSection = computed(() => {
-  return props.sections?.find((section) => section.title === "Footer") ?? null;
+  return props.sections?.find((section) => section.title === 'Footer') ?? null;
 });
 
 const openAccordions = ref<Record<string, boolean>>({});
@@ -77,10 +77,10 @@ function toggleAccordion(title: string): void {
 
 const isAccordionOpen = (title: string | undefined): boolean => (title ? openAccordions.value[title] : false);
 
-const footerLogo = computed(() => footerSection.value?.image?.[0] ?? "");
+const footerLogo = computed(() => footerSection.value?.image?.[0] ?? '');
 
 const ownedByCard = computed(() => {
-  const card = footerSection.value?.cards?.find((card) => card.title === "Owned by:");
+  const card = footerSection.value?.cards?.find((card) => card.title === 'Owned by:');
   if (card && !card.links) {
     card.links = [];
   }
@@ -88,13 +88,13 @@ const ownedByCard = computed(() => {
 });
 
 const nonLegalCards = computed(() => {
-  return footerSection.value?.cards?.filter((card) => card.title !== "Legal" && card.title !== "Owned by:") ?? [];
+  return footerSection.value?.cards?.filter((card) => card.title !== 'Legal' && card.title !== 'Owned by:') ?? [];
 });
 
-const legalLinks = computed(() => footerSection.value?.cards?.find((card) => card.title === "Legal")?.links ?? []);
+const legalLinks = computed(() => footerSection.value?.cards?.find((card) => card.title === 'Legal')?.links ?? []);
 
 const copyrightText = computed(() => {
-  if (!footerSection.value?.text) return "";
+  if (!footerSection.value?.text) return '';
   const currentYear = new Date().getFullYear();
   return `${footerSection.value.text[0]}${currentYear}${footerSection.value.text[1]}`;
 });
@@ -106,12 +106,12 @@ const updateScreenSize = (): void => {
 };
 
 onMounted(() => {
-  window.addEventListener("resize", updateScreenSize);
+  window.addEventListener('resize', updateScreenSize);
   updateScreenSize();
 });
 
 onUnmounted(() => {
-  window.removeEventListener("resize", updateScreenSize);
+  window.removeEventListener('resize', updateScreenSize);
 });
 </script>
 
@@ -177,7 +177,7 @@ onUnmounted(() => {
             text-decoration-thickness: 2px;
           }
           &::after {
-            content: "";
+            content: '';
             display: inline-block;
             top: 3px;
             width: 16px;
@@ -232,7 +232,7 @@ onUnmounted(() => {
       margin-bottom: 16px;
     }
     &:not(:last-of-type) &-link::after {
-      content: "";
+      content: '';
       display: inline-block;
       top: 3px;
       width: 16px;
@@ -247,7 +247,7 @@ onUnmounted(() => {
       top: -3px;
       position: relative;
       &::before {
-        content: "";
+        content: '';
         display: inline-block;
         top: 3px;
         width: 24px;
@@ -403,7 +403,7 @@ onUnmounted(() => {
         font-size: 1.3em;
         line-height: 1.5em;
       }
-      .footer__column[aria-expanded="true"] .footer__toggle-icon {
+      .footer__column[aria-expanded='true'] .footer__toggle-icon {
         transform: rotate(45deg);
       }
       &-list,

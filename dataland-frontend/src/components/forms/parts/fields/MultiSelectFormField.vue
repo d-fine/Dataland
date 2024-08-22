@@ -15,21 +15,21 @@
 </template>
 
 <script lang="ts">
-import UploadFormHeader from "@/components/forms/parts/elements/basic/UploadFormHeader.vue";
-import { defineComponent } from "vue";
+import UploadFormHeader from '@/components/forms/parts/elements/basic/UploadFormHeader.vue';
+import { defineComponent } from 'vue';
 
-import MultiSelectFormElement from "@/components/forms/parts/elements/basic/MultiSelectFormElement.vue";
-import { DropdownOptionFormFieldProps } from "@/components/forms/parts/fields/FormFieldProps";
+import MultiSelectFormElement from '@/components/forms/parts/elements/basic/MultiSelectFormElement.vue';
+import { DropdownOptionFormFieldProps } from '@/components/forms/parts/fields/FormFieldProps';
 
 export default defineComponent({
-  name: "MultiSelectFormField",
+  name: 'MultiSelectFormField',
   components: { MultiSelectFormElement, UploadFormHeader },
   inheritAttrs: false,
   props: {
     ...DropdownOptionFormFieldProps,
     dataTest: {
       type: String,
-      default: "multiSelectFormElement",
+      default: 'multiSelectFormElement',
     },
     emptyMessage: {
       type: String,

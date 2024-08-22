@@ -1,24 +1,24 @@
 // @ts-nocheck
-import ViewDataRequestPage from "@/components/pages/ViewDataRequestPage.vue";
-import { minimalKeycloakMock } from "@ct/testUtils/Keycloak";
-import { RequestStatus, type StoredDataRequest, type StoredDataRequestMessageObject } from "@clients/communitymanager";
-import type { BasicCompanyInformation, DataMetaInformation } from "@clients/backend";
-import { QaStatus } from "@clients/backend";
-import { convertUnixTimeInMsToDateString } from "@/utils/DataFormatUtils";
-import { humanizeStringOrNumber } from "@/utils/StringFormatter";
-import { checkEmailFieldsAndCheckBox } from "@ct/testUtils/EmailDetails";
+import ViewDataRequestPage from '@/components/pages/ViewDataRequestPage.vue';
+import { minimalKeycloakMock } from '@ct/testUtils/Keycloak';
+import { RequestStatus, type StoredDataRequest, type StoredDataRequestMessageObject } from '@clients/communitymanager';
+import type { BasicCompanyInformation, DataMetaInformation } from '@clients/backend';
+import { QaStatus } from '@clients/backend';
+import { convertUnixTimeInMsToDateString } from '@/utils/DataFormatUtils';
+import { humanizeStringOrNumber } from '@/utils/StringFormatter';
+import { checkEmailFieldsAndCheckBox } from '@ct/testUtils/EmailDetails';
 
-describe("Component tests for the view data request page", function (): void {
-  const requestId = "dummyRequestId";
-  const dummyCompanyId = "dummyCompanyId";
-  const dummyCompanyName = "dummyCompanyName";
-  const dummyFramework = "dummyFramework";
-  const dummyReportingYear = "dummyReportingYear";
+describe('Component tests for the view data request page', function (): void {
+  const requestId = 'dummyRequestId';
+  const dummyCompanyId = 'dummyCompanyId';
+  const dummyCompanyName = 'dummyCompanyName';
+  const dummyFramework = 'dummyFramework';
+  const dummyReportingYear = 'dummyReportingYear';
   const dummyLastModifiedDate = 1709204495770;
   const dummyCreationTime = 1709104495770;
   const dummyMessageObject = {
-    contacts: new Set<string>(["test@example.com", "test2@example.com"]),
-    message: "test message",
+    contacts: new Set<string>(['test@example.com', 'test2@example.com']),
+    message: 'test message',
     creationTimestamp: dummyCreationTime,
   } as StoredDataRequestMessageObject;
   /**
@@ -29,7 +29,7 @@ describe("Component tests for the view data request page", function (): void {
    */
   function getStoredDataRequest(
     requestStatus: RequestStatus,
-    messageHistory: Array<StoredDataRequestMessageObject>,
+    messageHistory: Array<StoredDataRequestMessageObject>
   ): StoredDataRequest {
     return {
       requestStatus: requestStatus,
@@ -40,7 +40,7 @@ describe("Component tests for the view data request page", function (): void {
       datalandCompanyId: dummyCompanyId,
       messageHistory: messageHistory,
       creationTimestamp: dummyCreationTime,
-      userId: "dummyUserId",
+      userId: 'dummyUserId',
     } as StoredDataRequest;
   }
   /**
@@ -51,7 +51,7 @@ describe("Component tests for the view data request page", function (): void {
     cy.intercept(`**/community/requests/dummyRequestId`, {
       body: request,
       status: 200,
-    }).as("fetchSingleDataRequests");
+    }).as('fetchSingleDataRequests');
   }
   /**
    * Mocks the api-manager answer for basic company information
@@ -65,7 +65,7 @@ describe("Component tests for the view data request page", function (): void {
         } as DataMetaInformation,
       ],
       status: 200,
-    }).as("fetchActiveDatasets");
+    }).as('fetchActiveDatasets');
   }
   /**
    * Mocks the api-manager answer for basic company information
@@ -76,7 +76,7 @@ describe("Component tests for the view data request page", function (): void {
         companyName: dummyCompanyName,
       } as BasicCompanyInformation,
       status: 200,
-    }).as("fetchCompanyName");
+    }).as('fetchCompanyName');
   }
   /**
    * Mocks the community-manager answer for patching a data request
@@ -84,12 +84,12 @@ describe("Component tests for the view data request page", function (): void {
   function interceptPatchRequest(): void {
     cy.intercept(`**/community/requests/dummyRequestId/requestStatus?**`, {
       status: 200,
-    }).as("fetchCompanyName");
+    }).as('fetchCompanyName');
   }
 
-  it("Check view data request page for resolved request with data renders as expected", function () {
+  it('Check view data request page for resolved request with data renders as expected', function () {
     interceptUserAskForSingleDataRequestsOnMounted(
-      getStoredDataRequest(RequestStatus.Resolved, [dummyMessageObject] as Array<StoredDataRequestMessageObject>),
+      getStoredDataRequest(RequestStatus.Resolved, [dummyMessageObject] as Array<StoredDataRequestMessageObject>)
     );
     interceptUserAskForCompanyNameOnMounted();
     interceptUserActiveDatasetOnMounted(QaStatus.Accepted);
@@ -103,17 +103,17 @@ describe("Component tests for the view data request page", function (): void {
       },
     }).then((mounted) => {
       checkBasicPageElements(RequestStatus.Resolved);
-      cy.get('[data-test="newMessage"]').should("exist").should("not.be.visible");
-      cy.get('[data-test="card_withdrawn"]').should("exist").should("not.be.visible");
-      cy.get('[data-test="resolveRequestButton"]').should("exist").should("not.be.visible");
+      cy.get('[data-test="newMessage"]').should('exist').should('not.be.visible');
+      cy.get('[data-test="card_withdrawn"]').should('exist').should('not.be.visible');
+      cy.get('[data-test="resolveRequestButton"]').should('exist').should('not.be.visible');
 
-      cy.get('[data-test="viewDataset"]').should("exist").click();
+      cy.get('[data-test="viewDataset"]').should('exist').click();
       cy.wrap(mounted.component)
-        .its("$route.path")
-        .should("eq", `/companies/${dummyCompanyId}/frameworks/${dummyFramework}`);
+        .its('$route.path')
+        .should('eq', `/companies/${dummyCompanyId}/frameworks/${dummyFramework}`);
     });
   });
-  it("Check view data request page for withdrawn request without data renders as expected", function () {
+  it('Check view data request page for withdrawn request without data renders as expected', function () {
     interceptUserAskForSingleDataRequestsOnMounted(getStoredDataRequest(RequestStatus.Withdrawn, []));
     interceptUserAskForCompanyNameOnMounted();
     interceptUserActiveDatasetOnMounted(QaStatus.Rejected);
@@ -127,10 +127,10 @@ describe("Component tests for the view data request page", function (): void {
       },
     }).then(() => {
       checkBasicPageElements(RequestStatus.Withdrawn);
-      cy.get('[data-test="newMessage"]').should("exist").should("not.be.visible");
-      cy.get('[data-test="card_withdrawn"]').should("exist").should("not.be.visible");
-      cy.get('[data-test="resolveRequestButton"]').should("exist").should("not.be.visible");
-      cy.get('[data-test="viewDataset"]').should("exist").should("not.be.visible");
+      cy.get('[data-test="newMessage"]').should('exist').should('not.be.visible');
+      cy.get('[data-test="card_withdrawn"]').should('exist').should('not.be.visible');
+      cy.get('[data-test="resolveRequestButton"]').should('exist').should('not.be.visible');
+      cy.get('[data-test="viewDataset"]').should('exist').should('not.be.visible');
     });
   });
   /**
@@ -138,30 +138,30 @@ describe("Component tests for the view data request page", function (): void {
    * @param requestStatus the request Status to check for
    */
   function checkBasicPageElements(requestStatus: RequestStatus): void {
-    cy.contains("Data Request").should("exist");
-    cy.contains("Request Details").should("exist").should("have.class", "card__title");
-    cy.contains("Provided Contact Details & Messages").should("exist").should("have.class", "card__title");
-    cy.contains("Request is").should("exist").should("have.class", "card__title");
-    cy.get('[data-test="status_history_toggle"]').should("exist");
+    cy.contains('Data Request').should('exist');
+    cy.contains('Request Details').should('exist').should('have.class', 'card__title');
+    cy.contains('Provided Contact Details & Messages').should('exist').should('have.class', 'card__title');
+    cy.contains('Request is').should('exist').should('have.class', 'card__title');
+    cy.get('[data-test="status_history_toggle"]').should('exist');
 
     cy.get('[data-test="card_requestDetails"]')
-      .should("exist")
+      .should('exist')
       .within(() => {
-        cy.contains("Company").should("exist");
-        cy.contains(`${dummyCompanyName}`).should("exist");
-        cy.contains("Framework").should("exist");
-        cy.contains(`${humanizeStringOrNumber(dummyFramework)}`).should("exist");
-        cy.contains("Reporting year").should("exist");
-        cy.contains(`${dummyReportingYear}`).should("exist");
+        cy.contains('Company').should('exist');
+        cy.contains(`${dummyCompanyName}`).should('exist');
+        cy.contains('Framework').should('exist');
+        cy.contains(`${humanizeStringOrNumber(dummyFramework)}`).should('exist');
+        cy.contains('Reporting year').should('exist');
+        cy.contains(`${dummyReportingYear}`).should('exist');
       });
     cy.get('[data-test="card_requestIs"]')
-      .should("exist")
+      .should('exist')
       .within(() => {
-        cy.contains(`${requestStatus}`).should("exist");
-        cy.contains(`${convertUnixTimeInMsToDateString(dummyLastModifiedDate)}`).should("exist");
+        cy.contains(`${requestStatus}`).should('exist');
+        cy.contains(`${convertUnixTimeInMsToDateString(dummyLastModifiedDate)}`).should('exist');
       });
   }
-  it("Check view data request page for open request without data and withdraw the data request", function () {
+  it('Check view data request page for open request without data and withdraw the data request', function () {
     interceptUserAskForSingleDataRequestsOnMounted(getStoredDataRequest(RequestStatus.Open, []));
     interceptUserAskForCompanyNameOnMounted();
     interceptUserActiveDatasetOnMounted(QaStatus.Pending);
@@ -176,27 +176,27 @@ describe("Component tests for the view data request page", function (): void {
     }).then(() => {
       checkBasicPageElements(RequestStatus.Open);
       cy.get('[data-test="card_providedContactDetails"]')
-        .should("exist")
+        .should('exist')
         .get('[data-test="newMessage"]')
-        .should("exist");
+        .should('exist');
 
-      cy.get('[data-test="resolveRequestButton"]').should("exist").should("not.be.visible");
-      cy.get('[data-test="viewDataset"]').should("exist").should("not.be.visible");
+      cy.get('[data-test="resolveRequestButton"]').should('exist').should('not.be.visible');
+      cy.get('[data-test="viewDataset"]').should('exist').should('not.be.visible');
       cy.get('[data-test="card_withdrawn"]')
-        .should("exist")
+        .should('exist')
         .within(() => {
           cy.contains(
-            "Once a data request is withdrawn, it will be removed from your data request list." +
-              " The data owner will not be notified anymore.",
-          ).should("exist");
-          cy.contains("Withdraw Request").should("exist");
-          cy.contains("Withdraw request.").should("exist").click();
+            'Once a data request is withdrawn, it will be removed from your data request list.' +
+              ' The company owner will not be notified anymore.'
+          ).should('exist');
+          cy.contains('Withdraw Request').should('exist');
+          cy.contains('Withdraw request.').should('exist').click();
         });
-      cy.get('[data-test="successModal"]').should("exist").should("be.visible").contains("CLOSE").click();
-      cy.get('[data-test="successModal"]').should("not.exist");
+      cy.get('[data-test="successModal"]').should('exist').should('be.visible').contains('CLOSE').click();
+      cy.get('[data-test="successModal"]').should('not.exist');
     });
   });
-  it("Check view data request page for open request with data and check the routing to data view page", function () {
+  it('Check view data request page for open request with data and check the routing to data view page', function () {
     interceptUserAskForSingleDataRequestsOnMounted(getStoredDataRequest(RequestStatus.Open, []));
     interceptUserAskForCompanyNameOnMounted();
     interceptUserActiveDatasetOnMounted(QaStatus.Accepted);
@@ -210,15 +210,15 @@ describe("Component tests for the view data request page", function (): void {
       },
     }).then((mounted) => {
       checkBasicPageElements(RequestStatus.Open);
-      cy.get('[data-test="viewDataset"]').should("exist").click();
+      cy.get('[data-test="viewDataset"]').should('exist').click();
       cy.wrap(mounted.component)
-        .its("$route.path")
-        .should("eq", `/companies/${dummyCompanyId}/frameworks/${dummyFramework}`);
+        .its('$route.path')
+        .should('eq', `/companies/${dummyCompanyId}/frameworks/${dummyFramework}`);
     });
   });
   it(
-    "Check view data request page for answered request and " +
-      "check the routing to data view page on resolve request click",
+    'Check view data request page for answered request and ' +
+      'check the routing to data view page on resolve request click',
     function () {
       const dummyRequest = getStoredDataRequest(RequestStatus.Answered, []);
       interceptUserAskForSingleDataRequestsOnMounted(dummyRequest);
@@ -234,19 +234,19 @@ describe("Component tests for the view data request page", function (): void {
         },
       }).then((mounted) => {
         checkBasicPageElements(dummyRequest.requestStatus);
-        cy.get('[data-test="resolveRequestButton"]').should("exist").click();
+        cy.get('[data-test="resolveRequestButton"]').should('exist').click();
         cy.wrap(mounted.component)
-          .its("$route.path")
-          .should("eq", `/companies/${dummyCompanyId}/frameworks/${dummyFramework}`);
+          .its('$route.path')
+          .should('eq', `/companies/${dummyCompanyId}/frameworks/${dummyFramework}`);
       });
-    },
+    }
   );
   it(
-    "Check view data request page for open request and check that the message history is displayed " +
-      "and that a user can add a new message",
+    'Check view data request page for open request and check that the message history is displayed ' +
+      'and that a user can add a new message',
     function () {
       interceptUserAskForSingleDataRequestsOnMounted(
-        getStoredDataRequest(RequestStatus.Open, [dummyMessageObject] as Array<StoredDataRequestMessageObject>),
+        getStoredDataRequest(RequestStatus.Open, [dummyMessageObject] as Array<StoredDataRequestMessageObject>)
       );
       interceptUserAskForCompanyNameOnMounted();
       interceptUserActiveDatasetOnMounted(QaStatus.Accepted);
@@ -260,9 +260,9 @@ describe("Component tests for the view data request page", function (): void {
         },
       }).then(() => {
         checkBasicPageElements(RequestStatus.Open);
-        cy.get('[data-test="newMessage"]').should("exist").click();
-        checkEmailFieldsAndCheckBox("newMessageModal", "addMessageButton");
+        cy.get('[data-test="newMessage"]').should('exist').click();
+        checkEmailFieldsAndCheckBox('newMessageModal', 'addMessageButton');
       });
-    },
+    }
   );
 });

@@ -7,8 +7,8 @@
  */
 export function isValidFileName(
   isMounted: boolean,
-  fileName: string | undefined,
-  invalidFileNames = [noReportLabel],
+  fileName: string | null | undefined,
+  invalidFileNames = [noReportLabel]
 ): boolean {
   if (!isMounted) {
     return true;
@@ -16,4 +16,4 @@ export function isValidFileName(
   return !!fileName && !invalidFileNames.includes(fileName);
 }
 
-export const noReportLabel = "None...";
+export const noReportLabel = 'None...';

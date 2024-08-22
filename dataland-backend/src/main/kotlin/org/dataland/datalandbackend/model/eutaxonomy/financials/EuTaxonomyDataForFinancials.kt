@@ -20,6 +20,7 @@ import java.util.EnumSet
  */
 @Suppress("MagicNumber")
 @DataType("eutaxonomy-financials", 1)
+@ValidateReferencedReportsListForEuTaxonomyFinancials
 data class EuTaxonomyDataForFinancials(
     val financialServicesTypes: EnumSet<FinancialServicesType>? = null,
 

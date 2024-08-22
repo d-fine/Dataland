@@ -25,23 +25,23 @@
 </template>
 
 <script lang="ts">
-import AuthenticationWrapper from "@/components/wrapper/AuthenticationWrapper.vue";
-import TheHeader from "@/components/generics/TheHeader.vue";
-import TheContent from "@/components/generics/TheContent.vue";
-import { defineComponent, inject } from "vue";
-import TheFooter from "@/components/generics/TheNewFooter.vue";
-import contentData from "@/assets/content.json";
-import type { Content, Page } from "@/types/ContentTypes";
-import DatasetOverviewTable from "@/components/resources/datasetOverview/DatasetOverviewTable.vue";
-import { assertDefined } from "@/utils/TypeScriptUtils";
-import type Keycloak from "keycloak-js";
-import { type DatasetTableInfo, getMyDatasetTableInfos } from "@/components/resources/datasetOverview/DatasetTableInfo";
-import { checkIfUserHasRole, KEYCLOAK_ROLE_UPLOADER } from "@/utils/KeycloakUtils";
-import DatasetsTabMenu from "@/components/general/DatasetsTabMenu.vue";
-import NewDatasetButton from "@/components/general/NewDatasetButton.vue";
+import AuthenticationWrapper from '@/components/wrapper/AuthenticationWrapper.vue';
+import TheHeader from '@/components/generics/TheHeader.vue';
+import TheContent from '@/components/generics/TheContent.vue';
+import { defineComponent, inject } from 'vue';
+import TheFooter from '@/components/generics/TheNewFooter.vue';
+import contentData from '@/assets/content.json';
+import type { Content, Page } from '@/types/ContentTypes';
+import DatasetOverviewTable from '@/components/resources/datasetOverview/DatasetOverviewTable.vue';
+import { assertDefined } from '@/utils/TypeScriptUtils';
+import type Keycloak from 'keycloak-js';
+import { type DatasetTableInfo, getMyDatasetTableInfos } from '@/components/resources/datasetOverview/DatasetTableInfo';
+import { checkIfUserHasRole, KEYCLOAK_ROLE_UPLOADER } from '@/utils/KeycloakUtils';
+import DatasetsTabMenu from '@/components/general/DatasetsTabMenu.vue';
+import NewDatasetButton from '@/components/general/NewDatasetButton.vue';
 
 export default defineComponent({
-  name: "DatasetOverview",
+  name: 'DatasetOverview',
   components: {
     NewDatasetButton,
     DatasetsTabMenu,
@@ -53,7 +53,7 @@ export default defineComponent({
   },
   data() {
     const content: Content = contentData;
-    const footerPage: Page | undefined = content.pages.find((page) => page.url === "/");
+    const footerPage: Page | undefined = content.pages.find((page) => page.url === '/');
     const footerContent = footerPage?.sections;
     return {
       datasetTableInfos: [] as DatasetTableInfo[],
@@ -64,7 +64,7 @@ export default defineComponent({
   },
   setup() {
     return {
-      getKeycloakPromise: inject<() => Promise<Keycloak>>("getKeycloakPromise"),
+      getKeycloakPromise: inject<() => Promise<Keycloak>>('getKeycloakPromise'),
     };
   },
   created() {

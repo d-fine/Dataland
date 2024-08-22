@@ -4,14 +4,14 @@
 
   .p-tree-container {
     .p-treenode {
-      padding: .143rem;
+      padding: 0.143rem;
 
       .p-treenode-content {
-        padding: .5rem
+        padding: 0.5rem;
       }
 
       .p-tree-toggler {
-        margin-right: .5rem;
+        margin-right: 0.5rem;
         width: 2rem;
         height: 2rem;
         color: #6c757d;
@@ -22,13 +22,13 @@
         &:enabled:hover {
           color: #1b1b1b;
           border-color: transparent;
-          background: #e9ecef
+          background: #e9ecef;
         }
 
         &:focus {
           outline: 0 none;
           outline-offset: 0;
-          box-shadow: 0 0 0 .2rem #bfd1f6;
+          box-shadow: 0 0 0 0.2rem #bfd1f6;
         }
       }
     }

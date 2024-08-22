@@ -14,7 +14,7 @@
         <UploadFormHeader :label="label" :description="description" :is-required="required" />
         <FormKit
           type="checkbox"
-          name="name"
+          name="doesNotMatter"
           v-model="checkboxValue"
           :options="options"
           :outer-class="{
@@ -64,7 +64,7 @@
                 name="fileName"
                 v-model="currentReportValue"
                 placeholder="Select a report"
-                :options="[noReportLabel, ...reportsName]"
+                :options="reportOptions"
                 allow-unknown-option
                 ignore
                 input-class="w-12"
@@ -102,7 +102,6 @@
             <SingleSelectFormElement
               name="quality"
               v-model="qualityValue"
-              :disabled="!isDataQualityRequired"
               validation-label="Data quality"
               placeholder="Data quality"
               :options="computeQualityOption"
@@ -123,31 +122,31 @@
 </template>
 
 <script lang="ts">
-// @ts-nocheck
-import { defineComponent, nextTick } from "vue";
-import InputSwitch from "primevue/inputswitch";
-import UploadFormHeader from "@/components/forms/parts/elements/basic/UploadFormHeader.vue";
-import { FormKit } from "@formkit/vue";
-import { QualityOptions } from "@clients/backend";
-import { FormFieldPropsWithPlaceholder } from "@/components/forms/parts/fields/FormFieldProps";
-import { type ObjectType } from "@/utils/UpdateObjectUtils";
-import { getFileName, getFileReferenceByFileName } from "@/utils/FileUploadUtils";
-import { assertDefined } from "@/utils/TypeScriptUtils";
-import { disabledOnMoreThanOne } from "@/utils/FormKitPlugins";
-import { type ExtendedDataPoint } from "@/utils/DataPoint";
-import { isValidFileName, noReportLabel } from "@/utils/DataSource";
-import SingleSelectFormElement from "@/components/forms/parts/elements/basic/SingleSelectFormElement.vue";
+import { defineComponent, nextTick } from 'vue';
+import InputSwitch from 'primevue/inputswitch';
+import UploadFormHeader from '@/components/forms/parts/elements/basic/UploadFormHeader.vue';
+import { FormKit } from '@formkit/vue';
+import { QualityOptions } from '@clients/backend';
+import { FormFieldPropsWithPlaceholder } from '@/components/forms/parts/fields/FormFieldProps';
+import { type ObjectType } from '@/utils/UpdateObjectUtils';
+import { getFileName, getFileReferenceByFileName } from '@/utils/FileUploadUtils';
+import { disabledOnMoreThanOne } from '@/utils/FormKitPlugins';
+import { type ExtendedDataPoint } from '@/utils/DataPoint';
+import { isValidFileName, noReportLabel } from '@/utils/DataSource';
+import SingleSelectFormElement from '@/components/forms/parts/elements/basic/SingleSelectFormElement.vue';
+import { humanizeStringOrNumber } from '@/utils/StringFormatter';
+import type { DropdownOption } from '@/utils/PremadeDropdownDatasets';
 
 export default defineComponent({
-  name: "ExtendedDataPointFormField",
+  name: 'ExtendedDataPointFormField',
   components: { SingleSelectFormElement, UploadFormHeader, FormKit, InputSwitch },
   inject: {
     injectReportsNameAndReferences: {
-      from: "namesAndReferencesOfAllCompanyReportsForTheDataset",
+      from: 'namesAndReferencesOfAllCompanyReportsForTheDataset',
       default: {} as ObjectType,
     },
     injectlistOfFilledKpis: {
-      from: "listOfFilledKpis",
+      from: 'listOfFilledKpis',
       default: [] as Array<string>,
     },
   },
@@ -156,17 +155,16 @@ export default defineComponent({
       isMounted: false,
       dataPointIsAvailable: (this.injectlistOfFilledKpis as unknown as Array<string>).includes(this.name as string),
       qualityOptions: Object.values(QualityOptions).map((qualityOption: string) => ({
-        label: qualityOption,
+        label: humanizeStringOrNumber(qualityOption),
         value: qualityOption,
       })),
       qualityValue: null as null | string,
-      commentValue: "",
+      commentValue: '',
       currentReportValue: null as string | null,
       dataPoint: {} as ExtendedDataPoint<unknown>,
-      currentValue: null,
+      currentValue: null as string | null,
       checkboxValue: [] as Array<string>,
       firstAssignmentWhileEditModeWasDone: false,
-      noReportLabel: noReportLabel,
       pageForFileReference: undefined as string | undefined,
       isValidFileName: isValidFileName,
     };
@@ -178,20 +176,15 @@ export default defineComponent({
     showDataPointFields(): boolean {
       return this.dataPointIsAvailable || !this.isDataPointToggleable;
     },
-    isDataValueProvided(): boolean {
-      return (assertDefined(this.checkValueValidity) as (dataPoint: unknown) => boolean)(this.dataPoint);
-    },
-    isDataQualityRequired(): boolean {
-      return this.isDataValueProvided;
-    },
-    computeQualityOption(): object {
+    computeQualityOption(): DropdownOption[] {
       return this.qualityOptions;
     },
-    reportsName(): string[] {
-      return getFileName(this.injectReportsNameAndReferences);
+    reportOptions(): DropdownOption[] {
+      const plainOptions = [noReportLabel, ...getFileName(this.injectReportsNameAndReferences as ObjectType)];
+      return plainOptions.map((it) => ({ value: it, label: it }));
     },
     fileReferenceAccordingToName(): string {
-      return getFileReferenceByFileName(this.currentReportValue, this.injectReportsNameAndReferences);
+      return getFileReferenceByFileName(this.currentReportValue, this.injectReportsNameAndReferences as ObjectType);
     },
     isYesNoVariant() {
       return Object.keys(this.options).length;
@@ -199,10 +192,6 @@ export default defineComponent({
   },
   props: {
     ...FormFieldPropsWithPlaceholder,
-    checkValueValidity: {
-      type: Function as unknown as () => (dataPoint: unknown) => boolean,
-      default: (): boolean => false,
-    },
     isDataPointToggleable: {
       type: Boolean,
       default: true,
@@ -213,13 +202,10 @@ export default defineComponent({
     },
     dataTest: {
       type: String,
-      default: "",
+      default: '',
     },
   },
   watch: {
-    isDataValueProvided(isDataValueProvided: boolean) {
-      this.handleBlurValue(isDataValueProvided);
-    },
     currentValue(newVal: string) {
       if (!this.firstAssignmentWhileEditModeWasDone) {
         this.setCheckboxValue(newVal);
@@ -237,17 +223,8 @@ export default defineComponent({
      * @param newCheckboxValue value after changing value that must be reflected in checkboxes
      */
     setCheckboxValue(newCheckboxValue: string) {
-      if (newCheckboxValue && newCheckboxValue !== "") {
+      if (newCheckboxValue && newCheckboxValue !== '') {
         this.checkboxValue = [newCheckboxValue];
-      }
-    },
-    /**
-     * Handle blur event on value input.
-     * @param isDataValueProvided boolean which gives information whether data is provided or not
-     */
-    handleBlurValue(isDataValueProvided: boolean) {
-      if (!isDataValueProvided && !this.isYesNoVariant) {
-        this.qualityValue = null;
       }
     },
     /**
@@ -260,10 +237,10 @@ export default defineComponent({
      * updateCurrentValue
      * @param checkboxValue checkboxValue
      */
-    updateCurrentValue(checkboxValue: [string]) {
-      if (checkboxValue[0]) {
+    updateCurrentValue(checkboxValue: string[] | undefined) {
+      if (checkboxValue && checkboxValue[0]) {
         this.dataPointIsAvailable = true;
-        this.currentValue = checkboxValue[0].toString();
+        this.currentValue = checkboxValue[0];
       } else {
         this.dataPointIsAvailable = false;
         this.currentValue = null;

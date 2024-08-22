@@ -51,7 +51,7 @@ object DatabaseConnection {
 
         val successFlag = executeSqlInsertStatement(
             preparedStatement,
-            "A Document with the $documentId was inserted successfully.",
+            "A Document with the eurodatId $documentId was inserted successfully.",
         )
         conn.close()
         return successFlag

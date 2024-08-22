@@ -3,11 +3,12 @@ import {
   MLDTDisplayComponentName,
   type MLDTDisplayObject,
   MLDTDisplayObjectForEmptyString,
-} from "@/components/resources/dataTable/MultiLayerDataTableCellDisplayer";
+} from '@/components/resources/dataTable/MultiLayerDataTableCellDisplayer';
 
-import { type EuTaxonomyAlignedActivity } from "@clients/backend";
-import AlignedActivitiesDataTable from "@/components/general/AlignedActivitiesDataTable.vue";
-import { euTaxonomyNonFinancialsModalColumnHeaders } from "@/components/resources/dataTable/conversion/EutaxonomyNonAlignedActivitiesValueGetterFactory";
+import { type EuTaxonomyAlignedActivity } from '@clients/backend';
+import AlignedActivitiesDataTable from '@/components/general/AlignedActivitiesDataTable.vue';
+import { euTaxonomyNonFinancialsModalColumnHeaders } from '@/components/resources/dataTable/conversion/EutaxonomyNonAlignedActivitiesValueGetterFactory';
+import { type ExtendedDataPoint } from '@/utils/DataPoint';
 
 /**
  * Formats a EuTaxonomyAlignedActivities component for display in the table using a modal
@@ -16,16 +17,16 @@ import { euTaxonomyNonFinancialsModalColumnHeaders } from "@/components/resource
  * @returns the display-value for the table
  */
 export function formatEuTaxonomyNonFinancialsAlignedActivitiesDataForTable(
-  input: EuTaxonomyAlignedActivity[] | null | undefined,
-  fieldLabel: string,
+  input: ExtendedDataPoint<EuTaxonomyAlignedActivity[]> | null | undefined,
+  fieldLabel: string
 ): AvailableMLDTDisplayObjectTypes {
   if (!input) {
     return MLDTDisplayObjectForEmptyString;
   } else {
-    return <MLDTDisplayObject<MLDTDisplayComponentName.ModalLinkDisplayComponent>>{
-      displayComponentName: MLDTDisplayComponentName.ModalLinkDisplayComponent,
+    return <MLDTDisplayObject<MLDTDisplayComponentName.ModalLinkWithDataSourceDisplayComponent>>{
+      displayComponentName: MLDTDisplayComponentName.ModalLinkWithDataSourceDisplayComponent,
       displayValue: {
-        label: `Show ${input.length} activit${input.length > 1 ? "ies" : "y"}`,
+        label: `Show ${input.value?.length} activit${input.value?.length ?? 0 > 1 ? 'ies' : 'y'}`,
         modalComponent: AlignedActivitiesDataTable,
         modalOptions: {
           props: {
@@ -34,9 +35,14 @@ export function formatEuTaxonomyNonFinancialsAlignedActivitiesDataForTable(
             dismissableMask: true,
           },
           data: {
-            listOfRowContents: input,
-            kpiKeyOfTable: "alignedActivities",
+            listOfRowContents: input.value,
+            kpiKeyOfTable: 'alignedActivities',
             columnHeaders: euTaxonomyNonFinancialsModalColumnHeaders,
+            dataPointDisplay: {
+              dataSource: input.dataSource,
+              comment: input.comment,
+              quality: input.quality,
+            },
           },
         },
       },

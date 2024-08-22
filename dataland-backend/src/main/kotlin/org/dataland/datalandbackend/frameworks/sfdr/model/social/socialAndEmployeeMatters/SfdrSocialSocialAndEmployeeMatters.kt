@@ -4,7 +4,7 @@ package org.dataland.datalandbackend.frameworks.sfdr.model.social.socialAndEmplo
 import jakarta.validation.Valid
 import org.dataland.datalandbackend.model.datapoints.CurrencyDataPoint
 import org.dataland.datalandbackend.model.datapoints.ExtendedDataPoint
-import org.dataland.datalandbackend.model.enums.commons.YesNoNoEvidenceFound
+import org.dataland.datalandbackend.model.enums.commons.YesNo
 import org.dataland.datalandbackend.validator.MaximumValue
 import org.dataland.datalandbackend.validator.MinimumValue
 import java.math.BigDecimal
@@ -15,55 +15,55 @@ import java.math.BigInteger
  */
 data class SfdrSocialSocialAndEmployeeMatters(
     @field:Valid()
-    val humanRightsLegalProceedings: ExtendedDataPoint<YesNoNoEvidenceFound?>? = null,
+    val humanRightsLegalProceedings: ExtendedDataPoint<YesNo?>? = null,
 
     @field:Valid()
-    val iloCoreLabourStandards: ExtendedDataPoint<YesNoNoEvidenceFound?>? = null,
+    val iloCoreLabourStandards: ExtendedDataPoint<YesNo?>? = null,
 
     @field:Valid()
-    val environmentalPolicy: ExtendedDataPoint<YesNoNoEvidenceFound?>? = null,
+    val environmentalPolicy: ExtendedDataPoint<YesNo?>? = null,
 
     @field:Valid()
-    val corruptionLegalProceedings: ExtendedDataPoint<YesNoNoEvidenceFound?>? = null,
+    val corruptionLegalProceedings: ExtendedDataPoint<YesNo?>? = null,
 
     @field:Valid()
-    val transparencyDisclosurePolicy: ExtendedDataPoint<YesNoNoEvidenceFound?>? = null,
+    val transparencyDisclosurePolicy: ExtendedDataPoint<YesNo?>? = null,
 
     @field:Valid()
-    val humanRightsDueDiligencePolicy: ExtendedDataPoint<YesNoNoEvidenceFound?>? = null,
+    val humanRightsDueDiligencePolicy: ExtendedDataPoint<YesNo?>? = null,
 
     @field:Valid()
-    val policyAgainstChildLabour: ExtendedDataPoint<YesNoNoEvidenceFound?>? = null,
+    val policyAgainstChildLabour: ExtendedDataPoint<YesNo?>? = null,
 
     @field:Valid()
-    val policyAgainstForcedLabour: ExtendedDataPoint<YesNoNoEvidenceFound?>? = null,
+    val policyAgainstForcedLabour: ExtendedDataPoint<YesNo?>? = null,
 
     @field:Valid()
-    val policyAgainstDiscriminationInTheWorkplace: ExtendedDataPoint<YesNoNoEvidenceFound?>? = null,
+    val policyAgainstDiscriminationInTheWorkplace: ExtendedDataPoint<YesNo?>? = null,
 
     @field:Valid()
-    val iso14001Certificate: ExtendedDataPoint<YesNoNoEvidenceFound?>? = null,
+    val iso14001Certificate: ExtendedDataPoint<YesNo?>? = null,
 
     @field:Valid()
-    val policyAgainstBriberyAndCorruption: ExtendedDataPoint<YesNoNoEvidenceFound?>? = null,
+    val policyAgainstBriberyAndCorruption: ExtendedDataPoint<YesNo?>? = null,
 
     @field:Valid()
-    val fairBusinessMarketingAdvertisingPolicy: ExtendedDataPoint<YesNoNoEvidenceFound?>? = null,
+    val fairBusinessMarketingAdvertisingPolicy: ExtendedDataPoint<YesNo?>? = null,
 
     @field:Valid()
-    val technologiesExpertiseTransferPolicy: ExtendedDataPoint<YesNoNoEvidenceFound?>? = null,
+    val technologiesExpertiseTransferPolicy: ExtendedDataPoint<YesNo?>? = null,
 
     @field:Valid()
-    val fairCompetitionPolicy: ExtendedDataPoint<YesNoNoEvidenceFound?>? = null,
+    val fairCompetitionPolicy: ExtendedDataPoint<YesNo?>? = null,
 
     @field:Valid()
-    val violationOfTaxRulesAndRegulation: ExtendedDataPoint<YesNoNoEvidenceFound?>? = null,
+    val violationOfTaxRulesAndRegulation: ExtendedDataPoint<YesNo?>? = null,
 
     @field:Valid()
-    val unGlobalCompactPrinciplesCompliancePolicy: ExtendedDataPoint<YesNoNoEvidenceFound?>? = null,
+    val unGlobalCompactPrinciplesCompliancePolicy: ExtendedDataPoint<YesNo?>? = null,
 
     @field:Valid()
-    val oecdGuidelinesForMultinationalEnterprisesGrievanceHandling: ExtendedDataPoint<YesNoNoEvidenceFound?>? = null,
+    val oecdGuidelinesForMultinationalEnterprisesGrievanceHandling: ExtendedDataPoint<YesNo?>? = null,
 
     @field:MinimumValue(minimumValue = 0)
     @field:Valid()
@@ -78,22 +78,35 @@ data class SfdrSocialSocialAndEmployeeMatters(
 
     @field:MinimumValue(minimumValue = 0)
     @field:Valid()
-    val femaleBoardMembers: ExtendedDataPoint<BigInteger?>? = null,
+    val femaleBoardMembersSupervisoryBoard: ExtendedDataPoint<BigInteger?>? = null,
 
     @field:MinimumValue(minimumValue = 0)
     @field:Valid()
-    val maleBoardMembers: ExtendedDataPoint<BigInteger?>? = null,
+    val femaleBoardMembersBoardOfDirectors: ExtendedDataPoint<BigInteger?>? = null,
+
+    @field:MinimumValue(minimumValue = 0)
+    @field:Valid()
+    val maleBoardMembersSupervisoryBoard: ExtendedDataPoint<BigInteger?>? = null,
+
+    @field:MinimumValue(minimumValue = 0)
+    @field:Valid()
+    val maleBoardMembersBoardOfDirectors: ExtendedDataPoint<BigInteger?>? = null,
 
     @field:MinimumValue(minimumValue = 0)
     @field:MaximumValue(maximumValue = 100)
     @field:Valid()
-    val boardGenderDiversityInPercent: ExtendedDataPoint<BigDecimal?>? = null,
+    val boardGenderDiversitySupervisoryBoardInPercent: ExtendedDataPoint<BigDecimal?>? = null,
+
+    @field:MinimumValue(minimumValue = 0)
+    @field:MaximumValue(maximumValue = 100)
+    @field:Valid()
+    val boardGenderDiversityBoardOfDirectorsInPercent: ExtendedDataPoint<BigDecimal?>? = null,
 
     @field:Valid()
-    val controversialWeaponsExposure: ExtendedDataPoint<YesNoNoEvidenceFound?>? = null,
+    val controversialWeaponsExposure: ExtendedDataPoint<YesNo?>? = null,
 
     @field:Valid()
-    val workplaceAccidentPreventionPolicy: ExtendedDataPoint<YesNoNoEvidenceFound?>? = null,
+    val workplaceAccidentPreventionPolicy: ExtendedDataPoint<YesNo?>? = null,
 
     @field:MinimumValue(minimumValue = 0)
     @field:MaximumValue(maximumValue = 100)
@@ -105,13 +118,13 @@ data class SfdrSocialSocialAndEmployeeMatters(
     val workdaysLostInDays: ExtendedDataPoint<BigDecimal?>? = null,
 
     @field:Valid()
-    val supplierCodeOfConduct: ExtendedDataPoint<YesNoNoEvidenceFound?>? = null,
+    val supplierCodeOfConduct: ExtendedDataPoint<YesNo?>? = null,
 
     @field:Valid()
-    val grievanceHandlingMechanism: ExtendedDataPoint<YesNoNoEvidenceFound?>? = null,
+    val grievanceHandlingMechanism: ExtendedDataPoint<YesNo?>? = null,
 
     @field:Valid()
-    val whistleblowerProtectionPolicy: ExtendedDataPoint<YesNoNoEvidenceFound?>? = null,
+    val whistleblowerProtectionPolicy: ExtendedDataPoint<YesNo?>? = null,
 
     @field:MinimumValue(minimumValue = 0)
     @field:Valid()

@@ -2,14 +2,14 @@ import {
   type AvailableMLDTDisplayObjectTypes,
   MLDTDisplayComponentName,
   MLDTDisplayObjectForEmptyString,
-} from "@/components/resources/dataTable/MultiLayerDataTableCellDisplayer";
-import { type AssuranceDataPoint, type AssuranceDataPointValueEnum } from "@clients/backend";
-import { wrapDisplayValueWithDatapointInformation } from "@/components/resources/dataTable/conversion/DataPoints";
+} from '@/components/resources/dataTable/MultiLayerDataTableCellDisplayer';
+import { type AssuranceDataPoint, type AssuranceDataPointValueEnum } from '@clients/backend';
+import { wrapDisplayValueWithDatapointInformation } from '@/components/resources/dataTable/conversion/DataPoints';
 
 const nameMapping: Record<AssuranceDataPointValueEnum, string> = {
-  None: "None",
-  LimitedAssurance: "Limited Assurance",
-  ReasonableAssurance: "Reasonable Assurance",
+  None: 'None',
+  LimitedAssurance: 'Limited Assurance',
+  ReasonableAssurance: 'Reasonable Assurance',
 };
 
 /**
@@ -20,7 +20,7 @@ const nameMapping: Record<AssuranceDataPointValueEnum, string> = {
  */
 export function formatAssuranceForDataTable(
   assurance: AssuranceDataPoint | undefined | null,
-  fieldLabel: string,
+  fieldLabel: string
 ): AvailableMLDTDisplayObjectTypes {
   if (!assurance) {
     return MLDTDisplayObjectForEmptyString;
@@ -44,7 +44,7 @@ export function formatAssuranceForDataTable(
  * @returns the value formatted for display
  */
 export function formatAssuranceProviderForDataTable(
-  assurance: AssuranceDataPoint | undefined | null,
+  assurance: AssuranceDataPoint | undefined | null
 ): AvailableMLDTDisplayObjectTypes {
   if (!assurance?.provider) {
     return MLDTDisplayObjectForEmptyString;

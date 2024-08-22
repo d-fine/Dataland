@@ -1,23 +1,30 @@
 package org.dataland.e2etests.tests
 
-import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
+import org.dataland.communitymanager.openApiClient.model.CompanyRole
 import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataEutaxonomyNonFinancialsData
+import org.dataland.e2etests.auth.JwtAuthenticationHelper
 import org.dataland.e2etests.auth.TechnicalUser
 import org.dataland.e2etests.utils.ApiAccessor
 import org.dataland.e2etests.utils.DocumentManagerAccessor
+import org.dataland.e2etests.utils.ExceptionUtils.assertAccessDeniedWrapper
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
+import org.junit.jupiter.api.assertDoesNotThrow
 import org.junit.jupiter.api.assertThrows
 import java.lang.IllegalArgumentException
+import java.util.*
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class DataControllerTest {
 
     private val apiAccessor = ApiAccessor()
     private val documentManagerAccessor = DocumentManagerAccessor()
+    private val dataReaderUserId = UUID.fromString(TechnicalUser.Reader.technicalUserId)
+
+    val jwtHelper = JwtAuthenticationHelper()
 
     private val testDataEuTaxonomyNonFinancials = apiAccessor.testDataProviderForEuTaxonomyDataForNonFinancials
         .getTData(1).first()
@@ -90,21 +97,37 @@ class DataControllerTest {
     }
 
     @Test
-    fun `post data as a user type which does not have the rights to do so and receive an error code 403`() {
-        val testCompanyId = apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId
-        apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader)
-        val exception =
-            assertThrows<ClientException> {
-                apiAccessor.dataControllerApiForEuTaxonomyNonFinancials
-                    .postCompanyAssociatedEutaxonomyNonFinancialsData(
-                        CompanyAssociatedDataEutaxonomyNonFinancialsData(
-                            testCompanyId,
-                            "",
-                            testDataEuTaxonomyNonFinancials,
-                        ),
-                        true,
-                    )
+    fun `check that keycloak reader role can only upload data as company owner or company data uploader`() {
+        val companyId = UUID.fromString(
+            apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId,
+        )
+        val rolesThatCanUploadPublicData = listOf(CompanyRole.CompanyOwner, CompanyRole.DataUploader)
+
+        jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader)
+        assertAccessDeniedWrapper { uploadEuTaxoDataset(companyId) }
+
+        for (role in CompanyRole.values()) {
+            jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
+            apiAccessor.companyRolesControllerApi.assignCompanyRole(role, companyId = companyId, dataReaderUserId)
+
+            jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader)
+            if (rolesThatCanUploadPublicData.contains(role)) {
+                assertDoesNotThrow {
+                    apiAccessor.companyRolesControllerApi.hasUserCompanyRole(role, companyId, dataReaderUserId)
+                }
+                assertDoesNotThrow { uploadEuTaxoDataset(companyId) }
+            } else {
+                assertAccessDeniedWrapper { uploadEuTaxoDataset(companyId) }
             }
-        assertEquals("Client error : 403 ", exception.message)
+        }
+    }
+
+    private fun uploadEuTaxoDataset(companyId: UUID) {
+        apiAccessor.euTaxonomyNonFinancialsUploaderFunction(
+            companyId.toString(),
+            testDataEuTaxonomyNonFinancials,
+            "2022",
+            false,
+        )
     }
 }

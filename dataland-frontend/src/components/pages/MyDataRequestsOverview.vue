@@ -149,40 +149,40 @@
 </template>
 
 <script lang="ts">
-import TheFooter from "@/components/generics/TheNewFooter.vue";
-import contentData from "@/assets/content.json";
-import type { Content, Page } from "@/types/ContentTypes";
-import TheContent from "@/components/generics/TheContent.vue";
-import TheHeader from "@/components/generics/TheHeader.vue";
-import { defineComponent, inject, ref } from "vue";
-import type Keycloak from "keycloak-js";
-import { ApiClientProvider } from "@/services/ApiClients";
+import TheFooter from '@/components/generics/TheNewFooter.vue';
+import contentData from '@/assets/content.json';
+import type { Content, Page } from '@/types/ContentTypes';
+import TheContent from '@/components/generics/TheContent.vue';
+import TheHeader from '@/components/generics/TheHeader.vue';
+import { defineComponent, inject, ref } from 'vue';
+import type Keycloak from 'keycloak-js';
+import { ApiClientProvider } from '@/services/ApiClients';
 import DataTable, {
   type DataTablePageEvent,
   type DataTableRowClickEvent,
   type DataTableSortEvent,
-} from "primevue/datatable";
-import Column from "primevue/column";
+} from 'primevue/datatable';
+import Column from 'primevue/column';
 import {
   frameworkHasSubTitle,
   getFrameworkSubtitle,
   getFrameworkTitle,
   humanizeStringOrNumber,
-} from "@/utils/StringFormatter";
-import DatasetsTabMenu from "@/components/general/DatasetsTabMenu.vue";
-import { convertUnixTimeInMsToDateString } from "@/utils/DataFormatUtils";
-import { type ExtendedStoredDataRequest, RequestStatus } from "@clients/communitymanager";
-import { type DataTypeEnum } from "@clients/backend";
-import InputText from "primevue/inputtext";
-import FrameworkDataSearchDropdownFilter from "@/components/resources/frameworkDataSearch/FrameworkDataSearchDropdownFilter.vue";
-import type { FrameworkSelectableItem } from "@/utils/FrameworkDataSearchDropDownFilterTypes";
-import { ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE } from "@/utils/Constants";
-import { getFrontendFrameworkDefinition } from "@/frameworks/FrontendFrameworkRegistry";
-import AuthenticationWrapper from "@/components/wrapper/AuthenticationWrapper.vue";
-import { badgeClass } from "@/utils/RequestUtils";
+} from '@/utils/StringFormatter';
+import DatasetsTabMenu from '@/components/general/DatasetsTabMenu.vue';
+import { convertUnixTimeInMsToDateString } from '@/utils/DataFormatUtils';
+import { type ExtendedStoredDataRequest, RequestStatus } from '@clients/communitymanager';
+import { type DataTypeEnum } from '@clients/backend';
+import InputText from 'primevue/inputtext';
+import FrameworkDataSearchDropdownFilter from '@/components/resources/frameworkDataSearch/FrameworkDataSearchDropdownFilter.vue';
+import type { FrameworkSelectableItem } from '@/utils/FrameworkDataSearchDropDownFilterTypes';
+import { FRAMEWORKS_WITH_VIEW_PAGE } from '@/utils/Constants';
+import { getFrontendFrameworkDefinition } from '@/frameworks/FrontendFrameworkRegistry';
+import AuthenticationWrapper from '@/components/wrapper/AuthenticationWrapper.vue';
+import { badgeClass } from '@/utils/RequestUtils';
 
 export default defineComponent({
-  name: "MyDataRequestsOverview",
+  name: 'MyDataRequestsOverview',
   computed: {
     RequestStatus() {
       return RequestStatus;
@@ -204,13 +204,13 @@ export default defineComponent({
     return {
       frameworkFilter: ref(),
       datasetsPerPage: 100,
-      getKeycloakPromise: inject<() => Promise<Keycloak>>("getKeycloakPromise"),
+      getKeycloakPromise: inject<() => Promise<Keycloak>>('getKeycloakPromise'),
     };
   },
 
   data() {
     const content: Content = contentData;
-    const footerPage: Page | undefined = content.pages.find((page) => page.url === "/");
+    const footerPage: Page | undefined = content.pages.find((page) => page.url === '/');
     const footerContent = footerPage?.sections;
     return {
       waitingForData: true,
@@ -218,12 +218,12 @@ export default defineComponent({
       storedDataRequests: [] as ExtendedStoredDataRequest[],
       displayedData: [] as ExtendedStoredDataRequest[],
       footerContent,
-      searchBarInput: "",
-      searchBarInputFilter: "",
+      searchBarInput: '',
+      searchBarInputFilter: '',
       availableFrameworks: [] as Array<FrameworkSelectableItem>,
       selectedFrameworks: [] as Array<FrameworkSelectableItem>,
       numberOfFilteredRequests: 0,
-      sortField: "requestStatus" as keyof ExtendedStoredDataRequest,
+      sortField: 'requestStatus' as keyof ExtendedStoredDataRequest,
       sortOrder: 1,
     };
   },
@@ -274,7 +274,7 @@ export default defineComponent({
      * @returns array of frameworkSelectableItem
      */
     retrieveAvailableFrameworks(): Array<FrameworkSelectableItem> {
-      return ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE.map((dataTypeEnum) => {
+      return FRAMEWORKS_WITH_VIEW_PAGE.map((dataTypeEnum) => {
         let displayName = humanizeStringOrNumber(dataTypeEnum);
         const frameworkDefinition = getFrontendFrameworkDefinition(dataTypeEnum);
         if (frameworkDefinition) {
@@ -297,7 +297,7 @@ export default defineComponent({
         if (this.getKeycloakPromise) {
           this.storedDataRequests = (
             await new ApiClientProvider(
-              this.getKeycloakPromise(),
+              this.getKeycloakPromise()
             ).apiClients.requestController.getDataRequestsForRequestingUser()
           ).data;
         }
@@ -315,7 +315,7 @@ export default defineComponent({
      */
     onRowClick(event: DataTableRowClickEvent) {
       const clickedElement = event.originalEvent.target as HTMLElement;
-      const isResolveButtonClick = clickedElement.id === "resolveButton";
+      const isResolveButtonClick = clickedElement.id === 'resolveButton';
       if (!isResolveButtonClick) {
         const requestIdOfClickedRow = event.data.dataRequestId;
         return this.$router.push(`/requests/${requestIdOfClickedRow}`);
@@ -348,7 +348,7 @@ export default defineComponent({
      * @returns checks if given companyName contains searchbar text
      */
     filterSearchInput(companyName: string) {
-      const lowerCaseCompanyName = (companyName ?? "").toLowerCase();
+      const lowerCaseCompanyName = (companyName ?? '').toLowerCase();
       const lowerCaseSearchString = this.searchBarInputFilter.toLowerCase();
       return lowerCaseCompanyName.includes(lowerCaseSearchString);
     },
@@ -357,7 +357,7 @@ export default defineComponent({
      */
     resetFilterAndSearchBar() {
       this.selectedFrameworks = this.availableFrameworks;
-      this.searchBarInput = "";
+      this.searchBarInput = '';
     },
     /**
      * Updates the displayedData
@@ -370,11 +370,11 @@ export default defineComponent({
       this.numberOfFilteredRequests = this.displayedData.length;
       this.displayedData = this.displayedData.slice(
         this.datasetsPerPage * this.currentPage,
-        this.datasetsPerPage * (1 + this.currentPage),
+        this.datasetsPerPage * (1 + this.currentPage)
       );
       window.scrollTo({
         top: 0,
-        behavior: "smooth",
+        behavior: 'smooth',
       });
     },
     /**
@@ -387,7 +387,7 @@ export default defineComponent({
       const aValue = a[this.sortField];
       const bValue = b[this.sortField];
 
-      if (this.sortField != ("requestStatus" as keyof ExtendedStoredDataRequest)) {
+      if (this.sortField != ('requestStatus' as keyof ExtendedStoredDataRequest)) {
         if (aValue < bValue) return -1 * this.sortOrder;
         if (aValue > bValue) return this.sortOrder;
       }

@@ -1,8 +1,8 @@
-import { faker } from "@faker-js/faker";
-import { type DataMetaInformation, DataTypeEnum, QaStatus } from "@clients/backend";
-import { generateBoolean, generateInt } from "@e2e/fixtures/common/NumberFixtures";
-import { Generator } from "@e2e/utils/FakeFixtureUtils";
-import { pickOneElement } from "@e2e/fixtures/FixtureUtils";
+import { faker } from '@faker-js/faker';
+import { type DataMetaInformation, DataTypeEnum, QaStatus } from '@clients/backend';
+import { generateBoolean, generateInt } from '@e2e/fixtures/common/NumberFixtures';
+import { Generator } from '@e2e/utils/FakeFixtureUtils';
+import { pickOneElement } from '@e2e/fixtures/FixtureUtils';
 
 export class DataMetaInformationGenerator extends Generator {
   /**
@@ -18,7 +18,7 @@ export class DataMetaInformationGenerator extends Generator {
    * @returns a random reporting period
    */
   generateReportingPeriodRecentYear(): string {
-    return pickOneElement(["2023", "2022", "2021", "2020"]);
+    return pickOneElement(['2023', '2022', '2021', '2020']);
   }
 
   /**

@@ -16,11 +16,11 @@
 </template>
 
 <script lang="ts">
-import Tooltip from "primevue/tooltip";
-import { defineComponent } from "vue";
+import Tooltip from 'primevue/tooltip';
+import { defineComponent } from 'vue';
 
 export default defineComponent({
-  name: "UploadFormSubcategoryHeader",
+  name: 'UploadFormSubcategoryHeader',
   directives: {
     tooltip: Tooltip,
   },
@@ -39,7 +39,7 @@ export default defineComponent({
     },
     propClass: {
       type: String,
-      default: "",
+      default: '',
     },
   },
 });

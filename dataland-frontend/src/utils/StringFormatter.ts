@@ -2,10 +2,10 @@
  * Module to convert string to a human-readable text
  */
 
-import { HumanizedYesNoNa } from "@/utils/YesNoNa";
-import { getBasePublicFrameworkDefinition } from "@/frameworks/BasePublicFrameworkRegistry";
-import { DataTypeEnum } from "@clients/backend";
-import { getBasePrivateFrameworkDefinition } from "@/frameworks/BasePrivateFrameworkRegistry";
+import { HumanizedYesNoNa } from '@/utils/YesNoNa';
+import { getBasePublicFrameworkDefinition } from '@/frameworks/BasePublicFrameworkRegistry';
+import { DataTypeEnum } from '@clients/backend';
+import { getBasePrivateFrameworkDefinition } from '@/frameworks/BasePrivateFrameworkRegistry';
 
 /**
  * convert kebab case string to pascal case string using regex
@@ -25,7 +25,7 @@ export function convertKebabCaseToPascalCase(rawText: string): string {
  */
 function convertCamelCaseToSentenceCase(rawText: string): string {
   // Split the sting to words
-  const processedText = rawText.replace(/((?!^)[A-Z])/g, " $1");
+  const processedText = rawText.replace(/((?!^)[A-Z])/g, ' $1');
   // uppercase the first letter of the first word
   return processedText.charAt(0).toUpperCase() + processedText.slice(1);
 }
@@ -37,42 +37,42 @@ function convertCamelCaseToSentenceCase(rawText: string): string {
  */
 function humanizeViaMapping(rawText: string): string {
   const mappingObject: { [key: string]: string } = {
-    isin: "ISIN",
-    permid: "PermID",
-    lei: "LEI",
-    ticker: "Ticker",
-    duns: "DUNS",
-    eligiblecapex: "Eligible CapEx",
-    eligibleopex: "Eligible OpEx",
-    alignedcapex: "Aligned CapEx",
-    alignedopex: "Aligned OpEx",
-    insuranceorreinsurance: "Insurance or Reinsurance",
-    annualreport: "Annual Report",
-    sustainabilityreport: "Sustainability Report",
-    integratedreport: "Integrated Report",
-    esefreport: "ESEF Report",
+    isin: 'ISIN',
+    permid: 'PermID',
+    lei: 'LEI',
+    ticker: 'Ticker',
+    duns: 'DUNS',
+    eligiblecapex: 'Eligible CapEx',
+    eligibleopex: 'Eligible OpEx',
+    alignedcapex: 'Aligned CapEx',
+    alignedopex: 'Aligned OpEx',
+    insuranceorreinsurance: 'Insurance or Reinsurance',
+    annualreport: 'Annual Report',
+    sustainabilityreport: 'Sustainability Report',
+    integratedreport: 'Integrated Report',
+    esefreport: 'ESEF Report',
     yes: HumanizedYesNoNa.Yes,
     no: HumanizedYesNoNa.No,
     na: HumanizedYesNoNa.NA,
-    "eutaxonomy-financials": "EU Taxonomy for financial companies",
-    "eutaxonomy-non-financials": "EU Taxonomy for non-financial companies",
-    lksg: "LkSG",
-    sfdr: "SFDR",
-    sme: "SME",
-    p2p: "WWF Pathway to Paris",
-    inhouseproduction: "In-house Production",
-    contractprocessing: "Contract Processing",
-    hvcplastics: "HVC Plastics",
+    'eutaxonomy-financials': 'EU Taxonomy for financial companies',
+    'eutaxonomy-non-financials': 'EU Taxonomy for non-financial companies',
+    lksg: 'LkSG',
+    sfdr: 'SFDR',
+    sme: 'SME',
+    p2p: 'WWF Pathways to Paris',
+    inhouseproduction: 'In-house Production',
+    contractprocessing: 'Contract Processing',
+    hvcplastics: 'HVC Plastics',
     contaminationofsoilwaterairornoiseemissionsorexcessivewaterconsumption:
-      "Contamination of soil/water/air, noise emissions, excessive water consumption",
-    useofmercuryormercurywaste: "Use of mercury, mercury waste (Minamata Convention)",
+      'Contamination of soil/water/air, noise emissions, excessive water consumption',
+    useofmercuryormercurywaste: 'Use of mercury, mercury waste (Minamata Convention)',
     productionanduseofpersistentorganicpollutants:
-      "Production and use of persistent organic pollutants (POPs Convention)",
-    exportimportofhazardouswaste: "Export/import of hazardous waste (Basel Convention)",
+      'Production and use of persistent organic pollutants (POPs Convention)',
+    exportimportofhazardouswaste: 'Export/import of hazardous waste (Basel Convention)',
   };
 
   const lowerCaseText = rawText.toLowerCase();
-  return lowerCaseText in mappingObject ? mappingObject[lowerCaseText] : "";
+  return lowerCaseText in mappingObject ? mappingObject[lowerCaseText] : '';
 }
 
 /**
@@ -81,18 +81,18 @@ function humanizeViaMapping(rawText: string): string {
  * @returns the converted string
  */
 export function humanizeStringOrNumber(rawInput: string | number | null | undefined): string {
-  if (typeof rawInput === "number") {
+  if (typeof rawInput === 'number') {
     return rawInput.toString();
   }
   if (!rawInput) {
-    return "";
+    return '';
   }
 
   const frameworkLabel =
     getBasePublicFrameworkDefinition(rawInput)?.label ?? getBasePrivateFrameworkDefinition(rawInput)?.label;
   if (frameworkLabel) return frameworkLabel;
   const resultOfCustomMappingHumanisation = humanizeViaMapping(rawInput);
-  return resultOfCustomMappingHumanisation === ""
+  return resultOfCustomMappingHumanisation === ''
     ? convertCamelCaseToSentenceCase(rawInput)
     : resultOfCustomMappingHumanisation;
 }
@@ -104,13 +104,13 @@ export function humanizeStringOrNumber(rawInput: string | number | null | undefi
 export function getFrameworkTitle(framework: string): string {
   switch (framework) {
     case DataTypeEnum.EutaxonomyFinancials:
-      return "EU Taxonomy";
+      return 'EU Taxonomy';
     case DataTypeEnum.EutaxonomyNonFinancials:
-      return "EU Taxonomy";
+      return 'EU Taxonomy';
     case DataTypeEnum.P2p:
-      return "WWF";
+      return 'WWF';
     case DataTypeEnum.EsgQuestionnaire:
-      return "ESG Questionnaire";
+      return 'ESG Questionnaire';
     default:
       return humanizeStringOrNumber(framework);
   }
@@ -136,14 +136,14 @@ export function frameworkHasSubTitle(framework: string): boolean {
 export function getFrameworkSubtitle(framework: string): string {
   switch (framework) {
     case DataTypeEnum.EutaxonomyFinancials:
-      return "for financial companies";
+      return 'for financial companies';
     case DataTypeEnum.EutaxonomyNonFinancials:
-      return "for non-financial companies";
+      return 'for non-financial companies';
     case DataTypeEnum.P2p:
-      return "Pathways to Paris";
+      return 'Pathways to Paris';
     case DataTypeEnum.EsgQuestionnaire:
-      return "für Corporate Schuldscheindarlehen";
+      return 'für Corporate Schuldscheindarlehen';
     default:
-      return "";
+      return '';
   }
 }

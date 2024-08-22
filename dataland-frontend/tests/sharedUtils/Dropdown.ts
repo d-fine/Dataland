@@ -7,17 +7,17 @@
 export function selectItemFromDropdownByValue(
   dropdownDiv: Cypress.Chainable<JQuery<HTMLElement>>,
   valueToSelect: string | number | RegExp,
-  exactMatchNotNeeded?: boolean,
+  exactMatchNotNeeded?: boolean
 ): void {
-  dropdownDiv.find(".p-dropdown-trigger").click();
+  dropdownDiv.find('.p-dropdown-trigger').click();
   if (exactMatchNotNeeded) {
-    cy.get(".p-dropdown-items").contains(valueToSelect).should("contain.text", valueToSelect);
-    cy.get(".p-dropdown-items").contains(valueToSelect).click();
+    cy.get('.p-dropdown-items').contains(valueToSelect).should('contain.text', valueToSelect);
+    cy.get('.p-dropdown-items').contains(valueToSelect).click();
   } else {
-    cy.get(".p-dropdown-items")
+    cy.get('.p-dropdown-items')
       .contains(new RegExp(`^${valueToSelect}$`))
-      .should("have.text", valueToSelect);
-    cy.get(".p-dropdown-items")
+      .should('have.text', valueToSelect);
+    cy.get('.p-dropdown-items')
       .contains(new RegExp(`^${valueToSelect}$`))
       .click();
   }
@@ -30,8 +30,8 @@ export function selectItemFromDropdownByValue(
  */
 export function selectItemFromDropdownByIndex(
   dropdownDiv: Cypress.Chainable<JQuery<HTMLElement>>,
-  indexToSelect: number,
+  indexToSelect: number
 ): void {
-  dropdownDiv.find(".p-dropdown-trigger").click();
-  cy.get(".p-dropdown-items").find("li").eq(indexToSelect).click();
+  dropdownDiv.find('.p-dropdown-trigger').click();
+  cy.get('.p-dropdown-items').find('li').eq(indexToSelect).click();
 }

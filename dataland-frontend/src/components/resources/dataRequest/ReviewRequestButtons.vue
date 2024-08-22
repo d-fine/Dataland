@@ -121,31 +121,32 @@
 </template>
 
 <script lang="ts">
-import PrimeButton from "primevue/button";
-import { defineComponent, inject, type PropType } from "vue";
-import type Keycloak from "keycloak-js";
-import { getAnsweredDataRequestsForViewPage, patchDataRequest } from "@/utils/RequestUtils";
-import OverlayPanel from "primevue/overlaypanel";
-import { type DataMetaInformation, type DataTypeEnum, type ErrorResponse } from "@clients/backend";
-import SelectReportingPeriodDialog from "@/components/general/SelectReportingPeriodDialog.vue";
-import { ReportingPeriodTableActions, type ReportingPeriodTableEntry } from "@/utils/PremadeDropdownDatasets";
+import PrimeButton from 'primevue/button';
+import { defineComponent, inject, type PropType } from 'vue';
+import type Keycloak from 'keycloak-js';
+import { getAnsweredDataRequestsForViewPage, patchDataRequest } from '@/utils/RequestUtils';
+import OverlayPanel from 'primevue/overlaypanel';
+import { type DataMetaInformation, type DataTypeEnum, type ErrorResponse } from '@clients/backend';
+import SelectReportingPeriodDialog from '@/components/general/SelectReportingPeriodDialog.vue';
+import { ReportingPeriodTableActions, type ReportingPeriodTableEntry } from '@/utils/PremadeDropdownDatasets';
 import {
+  type AccessStatus,
   type ExtendedStoredDataRequest,
   RequestStatus,
   type StoredDataRequestMessageObject,
-} from "@clients/communitymanager";
-import PrimeDialog from "primevue/dialog";
-import { assertDefined } from "@/utils/TypeScriptUtils";
-import { AxiosError } from "axios";
-import EmailDetails from "@/components/resources/dataRequest/EmailDetails.vue";
-import { ApiClientProvider } from "@/services/ApiClients";
-import { convertUnixTimeInMsToDateString } from "@/utils/DataFormatUtils";
+} from '@clients/communitymanager';
+import PrimeDialog from 'primevue/dialog';
+import { assertDefined } from '@/utils/TypeScriptUtils';
+import { AxiosError } from 'axios';
+import EmailDetails from '@/components/resources/dataRequest/EmailDetails.vue';
+import { ApiClientProvider } from '@/services/ApiClients';
+import { convertUnixTimeInMsToDateString } from '@/utils/DataFormatUtils';
 
 export default defineComponent({
-  name: "ReviewRequestButtons",
+  name: 'ReviewRequestButtons',
   setup() {
     return {
-      getKeycloakPromise: inject<() => Promise<Keycloak>>("getKeycloakPromise"),
+      getKeycloakPromise: inject<() => Promise<Keycloak>>('getKeycloakPromise'),
     };
   },
   components: { EmailDetails, PrimeButton, OverlayPanel, SelectReportingPeriodDialog, PrimeDialog },
@@ -163,7 +164,7 @@ export default defineComponent({
       required: true,
     },
   },
-  emits: ["isVisible"],
+  emits: ['isVisible'],
   computed: {
     isVisible() {
       return this.answeredDataRequestsForViewPage.length > 0;
@@ -171,7 +172,7 @@ export default defineComponent({
   },
   watch: {
     isVisible(newStatus: boolean) {
-      this.$emit("isVisible", newStatus);
+      this.$emit('isVisible', newStatus);
     },
     currentChosenDataRequestId: {
       handler(newRequestId: string) {
@@ -185,17 +186,17 @@ export default defineComponent({
   data() {
     return {
       toggleEmailDetailsError: false,
-      activeTab: "update request",
+      activeTab: 'update request',
       hasValidEmailForm: false,
       emailContacts: undefined as Set<string> | undefined,
       emailMessage: undefined as string | undefined,
       showUpdateRequestDialog: false,
       answeredDataRequestsForViewPage: [] as ExtendedStoredDataRequest[],
       dialogIsVisible: false,
-      dialog: "Default\n text.",
+      dialog: 'Default\n text.',
       dialogIsSuccess: false,
       actionOnClick: ReportingPeriodTableActions.ReopenRequest,
-      currentChosenDataRequestId: "",
+      currentChosenDataRequestId: '',
       messageHistory: [] as StoredDataRequestMessageObject[],
     };
   },
@@ -212,7 +213,7 @@ export default defineComponent({
      */
     formattedContacts(contacts: Set<string>) {
       const contactsList = [...contacts];
-      return contactsList.join(", ");
+      return contactsList.join(', ');
     },
     /**
      * Method to fetch message history with given requestId
@@ -221,7 +222,7 @@ export default defineComponent({
       try {
         if (this.getKeycloakPromise) {
           const response = await new ApiClientProvider(
-            this.getKeycloakPromise(),
+            this.getKeycloakPromise()
           ).apiClients.requestController.getDataRequestById(this.currentChosenDataRequestId);
           this.messageHistory = response.data.messageHistory;
         }
@@ -254,7 +255,7 @@ export default defineComponent({
         this.companyId,
         this.framework,
         Array.from(this.mapOfReportingPeriodToActiveDataset.keys()),
-        this.getKeycloakPromise,
+        this.getKeycloakPromise
       );
     },
     /**
@@ -300,20 +301,29 @@ export default defineComponent({
      * Trys to patch DataRequest, displays possible error message
      * @param dataRequestId DataRequest to be closed
      * @param requestStatusToPatch desired requestStatus
+     * @param accessStatus the access status of a request
      * @param contacts set of email contacts
      * @param message context of the email
      */
     async patchDataRequest(
       dataRequestId: string,
       requestStatusToPatch: RequestStatus,
+      accessStatus?: AccessStatus,
       contacts?: Set<string>,
-      message?: string,
+      message?: string
     ) {
       try {
-        await patchDataRequest(dataRequestId, requestStatusToPatch, contacts, message, this.getKeycloakPromise);
+        await patchDataRequest(
+          dataRequestId,
+          requestStatusToPatch,
+          accessStatus,
+          contacts,
+          message,
+          this.getKeycloakPromise
+        );
       } catch (e) {
         let errorMessage =
-          "An unexpected error occurred. Please try again or contact the support team if the issue persists.";
+          'An unexpected error occurred. Please try again or contact the support team if the issue persists.';
         if (e instanceof AxiosError) {
           const responseMessages = (e.response?.data as ErrorResponse)?.errors;
           errorMessage = responseMessages ? responseMessages[0].message : e.message;
@@ -324,10 +334,10 @@ export default defineComponent({
       await this.updateAnsweredDataRequestsForViewPage();
       switch (requestStatusToPatch) {
         case RequestStatus.Open:
-          this.openSuccessModal("Request reopened successfully.");
+          this.openSuccessModal('Request reopened successfully.');
           return;
         case RequestStatus.Resolved:
-          this.openSuccessModal("Request resolved successfully.");
+          this.openSuccessModal('Request resolved successfully.');
           return;
       }
     },
@@ -338,7 +348,7 @@ export default defineComponent({
     async handleReportingPeriodSelection(reportingPeriodTableEntry: ReportingPeriodTableEntry) {
       const dataRequestId = assertDefined(reportingPeriodTableEntry.dataRequestId);
       const requestStatusToPatch = assertDefined(
-        this.mapActionToStatus(assertDefined(reportingPeriodTableEntry.actionOnClick)),
+        this.mapActionToStatus(assertDefined(reportingPeriodTableEntry.actionOnClick))
       );
       if (requestStatusToPatch == RequestStatus.Open) {
         this.currentChosenDataRequestId = dataRequestId;
@@ -371,8 +381,9 @@ export default defineComponent({
         await this.patchDataRequest(
           this.currentChosenDataRequestId,
           RequestStatus.Open,
+          undefined,
           this.emailContacts,
-          this.emailMessage,
+          this.emailMessage
         );
         this.showUpdateRequestDialog = false;
       } else {

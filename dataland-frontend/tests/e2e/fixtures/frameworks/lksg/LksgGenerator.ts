@@ -1,18 +1,18 @@
-import { Generator } from "@e2e/utils/FakeFixtureUtils";
-import { type LksgProduct } from "@clients/backend/org/dataland/datalandfrontend/openApiClient/backend/model/lksg-product";
+import { Generator } from '@e2e/utils/FakeFixtureUtils';
+import { type LksgProduct } from '@clients/backend/org/dataland/datalandfrontend/openApiClient/backend/model/lksg-product';
 import {
   type LksgGrievanceAssessmentMechanism,
   type LksgProcurementCategory,
   type LksgProductionSite,
   type LksgRiskOrViolationAssessment,
   RiskPositionType,
-} from "@clients/backend";
-import { ProcurementCategoryType } from "@/api-models/ProcurementCategoryType";
-import { generateAddress } from "@e2e/fixtures/common/AddressFixtures";
-import { faker } from "@faker-js/faker";
-import { generateNaceCodes } from "@e2e/fixtures/common/NaceCodeFixtures";
-import { generateIso2CountryCode } from "@e2e/fixtures/common/CountryFixtures";
-import { generateArray, pickSubsetOfElements } from "@e2e/fixtures/FixtureUtils";
+} from '@clients/backend';
+import { ProcurementCategoryType } from '@/api-models/ProcurementCategoryType';
+import { generateAddress } from '@e2e/fixtures/common/AddressFixtures';
+import { faker } from '@faker-js/faker';
+import { generateNaceCodes } from '@e2e/fixtures/common/NaceCodeFixtures';
+import { generateIso2CountryCode } from '@e2e/fixtures/common/CountryFixtures';
+import { generateArray, pickSubsetOfElements } from '@e2e/fixtures/FixtureUtils';
 export class LksgGenerator extends Generator {
   generateLksgProduct(): LksgProduct {
     return {
@@ -46,11 +46,11 @@ export class LksgGenerator extends Generator {
 
   generateProcurementCategories(): { [p: string]: LksgProcurementCategory } {
     const categoryTypes = Object.values(ProcurementCategoryType).filter(
-      () => faker.number.float() > this.nullProbability,
+      () => faker.number.float() > this.nullProbability
     );
     const lksgProcurementCategoriesMap = new Map<ProcurementCategoryType, LksgProcurementCategory>();
     categoryTypes.forEach((categoryType) =>
-      lksgProcurementCategoriesMap.set(categoryType, this.generateLkSGProcurementCategory()),
+      lksgProcurementCategoriesMap.set(categoryType, this.generateLkSGProcurementCategory())
     );
     return Object.fromEntries(lksgProcurementCategoriesMap);
   }

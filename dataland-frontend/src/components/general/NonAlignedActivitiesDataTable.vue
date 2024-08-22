@@ -25,13 +25,13 @@
 
 <script lang="ts">
 // @ts-nocheck
-import { defineComponent } from "vue";
-import DataTable from "primevue/datatable";
-import Column from "primevue/column";
-import { type DynamicDialogInstance } from "primevue/dynamicdialogoptions";
-import { activityApiNameToHumanizedName } from "@/components/resources/frameworkDataSearch/EuTaxonomyActivityNames";
-import { type EuTaxonomyAlignedActivity } from "@clients/backend/org/dataland/datalandfrontend/openApiClient/backend/model";
-import { formatAmountWithCurrency, formatPercentageNumberAsString } from "@/utils/Formatter";
+import { defineComponent } from 'vue';
+import DataTable from 'primevue/datatable';
+import Column from 'primevue/column';
+import { type DynamicDialogInstance } from 'primevue/dynamicdialogoptions';
+import { activityApiNameToHumanizedName } from '@/components/resources/frameworkDataSearch/EuTaxonomyActivityNames';
+import { type EuTaxonomyAlignedActivity } from '@clients/backend/org/dataland/datalandfrontend/openApiClient/backend/model';
+import { formatAmountWithCurrency, formatPercentageNumberAsString } from '@/utils/Formatter';
 
 type NonAlignedActivityFieldValueObject = {
   activity: string;
@@ -46,13 +46,13 @@ type MainColumnDefinition = {
 };
 
 export default defineComponent({
-  inject: ["dialogRef"],
-  name: "NonAlignedActivitiesDataTable",
+  inject: ['dialogRef'],
+  name: 'NonAlignedActivitiesDataTable',
   components: { DataTable, Column },
   data() {
     return {
       listOfRowContents: [] as Array<EuTaxonomyAlignedActivity>,
-      kpiKeyOfTable: "" as string,
+      kpiKeyOfTable: '' as string,
       columnHeaders: {} as { [kpiKeyOfTable: string]: { [columnName: string]: string } },
       mainColumnDefinitions: [] as Array<MainColumnDefinition>,
       mainColumnData: [] as Array<NonAlignedActivityFieldValueObject>,
@@ -68,17 +68,17 @@ export default defineComponent({
     this.kpiKeyOfTable = dialogRefData.kpiKeyOfTable;
     this.columnHeaders = dialogRefData.columnHeaders;
 
-    if (typeof dialogRefData.listOfRowContents[0] === "string") {
+    if (typeof dialogRefData.listOfRowContents[0] === 'string') {
       this.listOfRowContents = dialogRefData.listOfRowContents.map((o) => ({ [this.kpiKeyOfTable]: o }));
     } else {
       this.listOfRowContents = dialogRefData.listOfRowContents as Array<EuTaxonomyAlignedActivity>;
     }
 
     this.mainColumnDefinitions = [
-      { field: "activity", header: this.humanizeHeaderName("activityName") },
-      { field: "naceCodes", header: this.humanizeHeaderName("naceCodes") },
-      { field: "revenue", header: this.humanizeHeaderName("revenue") },
-      { field: "revenuePercent", header: this.humanizeHeaderName("revenuePercent") },
+      { field: 'activity', header: this.humanizeHeaderName('activityName') },
+      { field: 'naceCodes', header: this.humanizeHeaderName('naceCodes') },
+      { field: 'revenue', header: this.humanizeHeaderName('revenue') },
+      { field: 'revenuePercent', header: this.humanizeHeaderName('revenuePercent') },
     ];
 
     this.mainColumnData = this.listOfRowContents.map((activity) => ({
@@ -103,12 +103,12 @@ export default defineComponent({
      * @returns class names determined by column
      */
     cellClass(col: MainColumnDefinition): string {
-      if (col.field === "activity") {
-        return "col-activity headers-bg border-bottom";
-      } else if (col.field === "naceCodes") {
-        return "col-nace-codes headers-bg border-bottom";
+      if (col.field === 'activity') {
+        return 'col-activity headers-bg border-bottom';
+      } else if (col.field === 'naceCodes') {
+        return 'col-nace-codes headers-bg border-bottom';
       }
-      return "horizontal-headers-size border-bottom";
+      return 'horizontal-headers-size border-bottom';
     },
   },
 });

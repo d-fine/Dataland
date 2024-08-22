@@ -1,16 +1,16 @@
-import { routes } from "@/router";
-import { createPinia } from "pinia";
-import PrimeVue from "primevue/config";
-import DialogService from "primevue/dialogservice";
-import { plugin, defaultConfig } from "@formkit/vue";
-import { createMemoryHistory, createRouter, type Router } from "vue-router";
-import { mount } from "cypress/vue";
-import { type VueWrapper } from "@vue/test-utils";
-import { type DefineComponent, defineComponent, h } from "vue";
-import type Keycloak from "keycloak-js";
-import { assertDefined } from "@/utils/TypeScriptUtils";
-import DynamicDialog from "primevue/dynamicdialog";
-import { ApiClientProvider } from "@/services/ApiClients";
+import { routes } from '@/router';
+import { createPinia } from 'pinia';
+import PrimeVue from 'primevue/config';
+import DialogService from 'primevue/dialogservice';
+import { plugin, defaultConfig } from '@formkit/vue';
+import { createMemoryHistory, createRouter, type Router } from 'vue-router';
+import { mount } from 'cypress/vue';
+import { type VueWrapper } from '@vue/test-utils';
+import { type DefineComponent, defineComponent, h } from 'vue';
+import type Keycloak from 'keycloak-js';
+import { assertDefined } from '@/utils/TypeScriptUtils';
+import DynamicDialog from 'primevue/dynamicdialog';
+import { ApiClientProvider } from '@/services/ApiClients';
 
 /*
   This file defines a alternative mounting function that also includes many creature comforts
@@ -40,10 +40,10 @@ declare global {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       mountWithPlugins<T extends DefineComponent<any, any, any, any, any>>(
         component: T,
-        options: ComponentMountingOptions<T>,
+        options: ComponentMountingOptions<T>
       ): Cypress.Chainable<{
         wrapper: VueWrapper<InstanceType<T>>;
-        component: VueWrapper<InstanceType<T>>["vm"];
+        component: VueWrapper<InstanceType<T>>['vm'];
       }>;
       /**
        * Helper mount function for Vue Components utilizing the DynamicDialog component
@@ -54,10 +54,10 @@ declare global {
       mountWithDialog<T extends DefineComponent<any, any, any, any, any>>(
         component: T,
         options: MountingOptions,
-        props: object,
+        props: object
       ): Cypress.Chainable<{
         wrapper: VueWrapper<InstanceType<T>>;
-        component: VueWrapper<InstanceType<T>>["vm"];
+        component: VueWrapper<InstanceType<T>>['vm'];
       }>;
     }
   }
@@ -73,10 +73,10 @@ declare global {
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function mountWithPlugins<T extends DefineComponent<any, any, any, any, any>>(
   component: T,
-  options: ComponentMountingOptions<T>,
+  options: ComponentMountingOptions<T>
 ): Cypress.Chainable<{
   wrapper: VueWrapper<InstanceType<T>>;
-  component: VueWrapper<InstanceType<T>>["vm"];
+  component: VueWrapper<InstanceType<T>>['vm'];
 }> {
   options.global = options.global ?? {};
   options.global.plugins = options.global.plugins ?? [];
@@ -134,7 +134,7 @@ function mountWithPlugins<T extends DefineComponent<any, any, any, any, any>>(
 function mountWithDialog<T extends DefineComponent<any, any, any, any, any>>(
   component: T,
   options: MountingOptions,
-  props: object = {},
+  props: object = {}
 ): Cypress.Chainable {
   const componentWrapper = defineComponent({
     render() {
@@ -148,5 +148,5 @@ function mountWithDialog<T extends DefineComponent<any, any, any, any, any>>(
   return mountWithPlugins(componentWrapper, wrapperOptions);
 }
 
-Cypress.Commands.add("mountWithPlugins", mountWithPlugins);
-Cypress.Commands.add("mountWithDialog", mountWithDialog);
+Cypress.Commands.add('mountWithPlugins', mountWithPlugins);
+Cypress.Commands.add('mountWithDialog', mountWithDialog);

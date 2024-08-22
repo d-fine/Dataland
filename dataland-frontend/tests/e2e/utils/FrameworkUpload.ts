@@ -2,20 +2,21 @@ import {
   Configuration,
   type DataMetaInformation,
   type CompanyInformation,
-  type SmeData,
-  SmeDataControllerApi,
-} from "@clients/backend";
-import { type UploadIds } from "@e2e/utils/GeneralApiUtils";
-import { uploadCompanyViaApi } from "@e2e/utils/CompanyUpload";
-import { type FrameworkDataTypes } from "@/utils/api/FrameworkDataTypes";
-import { getUnifiedFrameworkDataControllerFromConfiguration } from "@/utils/api/FrameworkApiClient";
-import { type PublicFrameworkDataApi } from "@/utils/api/UnifiedFrameworkDataApi";
-import { postDataOwner } from "@e2e/utils/DataOwnerUtils";
-import { admin_userId } from "@e2e/utils/Cypress";
-import { type BasePublicFrameworkDefinition } from "@/frameworks/BasePublicFrameworkDefinition";
+  type VsmeData,
+  VsmeDataControllerApi,
+} from '@clients/backend';
+import { type UploadIds } from '@e2e/utils/GeneralApiUtils';
+import { uploadCompanyViaApi } from '@e2e/utils/CompanyUpload';
+import { type FrameworkDataTypes } from '@/utils/api/FrameworkDataTypes';
+import { getUnifiedFrameworkDataControllerFromConfiguration } from '@/utils/api/FrameworkApiClient';
+import { type PublicFrameworkDataApi } from '@/utils/api/UnifiedFrameworkDataApi';
+import { assignCompanyRole } from '@e2e/utils/CompanyRolesUtils';
+import { admin_userId } from '@e2e/utils/Cypress';
+import { type BasePublicFrameworkDefinition } from '@/frameworks/BasePublicFrameworkDefinition';
+import { CompanyRole } from '@clients/communitymanager';
 
 export type PublicApiClientConstructor<FrameworkDataType> = (
-  config: Configuration,
+  config: Configuration
 ) => PublicFrameworkDataApi<FrameworkDataType>;
 
 /**
@@ -34,7 +35,7 @@ export async function uploadFrameworkDataForPublicToolboxFramework<FrameworkData
   companyId: string,
   reportingPeriod: string,
   data: FrameworkDataType,
-  bypassQa = true,
+  bypassQa = true
 ): Promise<DataMetaInformation> {
   return uploadGenericFrameworkData(
     token,
@@ -42,7 +43,7 @@ export async function uploadFrameworkDataForPublicToolboxFramework<FrameworkData
     reportingPeriod,
     data,
     (config) => frameworkDefinition.getPublicFrameworkApiClient(config),
-    bypassQa,
+    bypassQa
   );
 }
 
@@ -61,8 +62,8 @@ export async function uploadFrameworkDataForLegacyFramework<K extends keyof Fram
   token: string,
   companyId: string,
   reportingPeriod: string,
-  data: FrameworkDataTypes[K]["data"],
-  bypassQa = true,
+  data: FrameworkDataTypes[K]['data'],
+  bypassQa = true
 ): Promise<DataMetaInformation> {
   return uploadGenericFrameworkData(
     token,
@@ -70,7 +71,7 @@ export async function uploadFrameworkDataForLegacyFramework<K extends keyof Fram
     reportingPeriod,
     data,
     (config) => getUnifiedFrameworkDataControllerFromConfiguration(framework, config),
-    bypassQa,
+    bypassQa
   );
 }
 
@@ -90,7 +91,7 @@ export async function uploadGenericFrameworkData<FrameworkDataType>(
   reportingPeriod: string,
   data: FrameworkDataType,
   apiClientConstructor: PublicApiClientConstructor<FrameworkDataType>,
-  bypassQa: boolean = true,
+  bypassQa: boolean = true
 ): Promise<DataMetaInformation> {
   const apiClient = apiClientConstructor(new Configuration({ accessToken: token }));
 
@@ -100,7 +101,7 @@ export async function uploadGenericFrameworkData<FrameworkDataType>(
       reportingPeriod,
       data,
     },
-    bypassQa,
+    bypassQa
   );
   return response.data;
 }
@@ -121,7 +122,7 @@ export async function uploadCompanyAndFrameworkDataForPublicToolboxFramework<Fra
   companyInformation: CompanyInformation,
   testData: FrameworkDataType,
   reportingPeriod: string,
-  bypassQa = true,
+  bypassQa = true
 ): Promise<UploadIds> {
   return uploadCompanyViaApi(token, companyInformation).then(async (storedCompany) => {
     return uploadFrameworkDataForPublicToolboxFramework(
@@ -130,7 +131,7 @@ export async function uploadCompanyAndFrameworkDataForPublicToolboxFramework<Fra
       storedCompany.companyId,
       reportingPeriod,
       testData,
-      bypassQa,
+      bypassQa
     ).then((dataMetaInformation) => {
       return { companyId: storedCompany.companyId, dataId: dataMetaInformation.dataId };
     });
@@ -151,9 +152,9 @@ export async function uploadCompanyAndFrameworkDataForLegacyFrameworks<K extends
   framework: K,
   token: string,
   companyInformation: CompanyInformation,
-  testData: FrameworkDataTypes[K]["data"],
+  testData: FrameworkDataTypes[K]['data'],
   reportingPeriod: string,
-  bypassQa = true,
+  bypassQa = true
 ): Promise<UploadIds> {
   return uploadCompanyViaApi(token, companyInformation).then(async (storedCompany) => {
     return uploadFrameworkDataForLegacyFramework(
@@ -162,14 +163,14 @@ export async function uploadCompanyAndFrameworkDataForLegacyFrameworks<K extends
       storedCompany.companyId,
       reportingPeriod,
       testData,
-      bypassQa,
+      bypassQa
     ).then((dataMetaInformation) => {
       return { companyId: storedCompany.companyId, dataId: dataMetaInformation.dataId };
     });
   });
 }
 /**
- * Uploads a single sme dataset for a company
+ * Uploads a single vsme dataset for a company
  * @param token The API bearer token to use
  * @param companyId The Id of the company to upload the dataset for
  * @param reportingPeriod The reporting period to use for the upload
@@ -177,16 +178,18 @@ export async function uploadCompanyAndFrameworkDataForLegacyFrameworks<K extends
  * @param documents the documents to upload
  * @returns a promise on the created data meta information
  */
-export async function uploadSmeFrameworkData(
+export async function uploadVsmeFrameworkData(
   token: string,
   companyId: string,
   reportingPeriod: string,
-  data: SmeData,
-  documents: File[],
+  data: VsmeData,
+  documents: File[]
 ): Promise<DataMetaInformation> {
-  await postDataOwner(token, admin_userId, companyId);
-  const smeDataControllerApi = new SmeDataControllerApi(new Configuration({ accessToken: token }));
-
-  const response = await smeDataControllerApi.postSmeJsonAndDocuments({ companyId, reportingPeriod, data }, documents);
+  await assignCompanyRole(token, CompanyRole.CompanyOwner, companyId, admin_userId);
+  const vsmeDataControllerApi = new VsmeDataControllerApi(new Configuration({ accessToken: token }));
+  const response = await vsmeDataControllerApi.postVsmeJsonAndDocuments(
+    { companyId, reportingPeriod, data },
+    documents
+  );
   return response.data;
 }

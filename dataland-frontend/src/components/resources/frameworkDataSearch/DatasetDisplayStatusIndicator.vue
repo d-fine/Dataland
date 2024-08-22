@@ -18,12 +18,12 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, type PropType } from "vue";
-import { type DataMetaInformation, QaStatus } from "@clients/backend";
-import PrimeButton from "primevue/button";
-import { assertDefined } from "@/utils/TypeScriptUtils";
+import { defineComponent, type PropType } from 'vue';
+import { type DataMetaInformation, QaStatus } from '@clients/backend';
+import PrimeButton from 'primevue/button';
+import { assertDefined } from '@/utils/TypeScriptUtils';
 export default defineComponent({
-  name: "DatasetDisplayStatusIndicator",
+  name: 'DatasetDisplayStatusIndicator',
   components: { PrimeButton },
   props: {
     displayedDataset: {
@@ -47,19 +47,19 @@ export default defineComponent({
       );
     },
     warningMessage(): string {
-      if (this.displayedDataset?.qaStatus === QaStatus.Pending) return "This dataset is currently pending review";
-      else if (this.displayedDataset?.qaStatus === QaStatus.Rejected) return "This dataset has been rejected";
-      else if (this.displayedDataset?.currentlyActive === false) return "This dataset is superseded";
-      else if (this.areMoreDatasetsViewableSimultaneously) return "You are only viewing a single available dataset";
-      else return "ERROR";
+      if (this.displayedDataset?.qaStatus === QaStatus.Pending) return 'This dataset is currently pending review';
+      else if (this.displayedDataset?.qaStatus === QaStatus.Rejected) return 'This dataset has been rejected';
+      else if (this.displayedDataset?.currentlyActive === false) return 'This dataset is superseded';
+      else if (this.areMoreDatasetsViewableSimultaneously) return 'You are only viewing a single available dataset';
+      else return 'ERROR';
     },
     buttonLabel(): string {
       if (this.displayedDataset?.qaStatus === QaStatus.Pending || this.displayedDataset?.currentlyActive === false) {
-        return "View Active";
+        return 'View Active';
       } else if (this.areMoreDatasetsViewableSimultaneously) {
-        return "View All";
+        return 'View All';
       } else {
-        return "ERROR";
+        return 'ERROR';
       }
     },
     link(): string | undefined {
@@ -81,7 +81,7 @@ export default defineComponent({
       }
     },
     existsAcceptedVersion(): boolean {
-      return this.receivedMapOfReportingPeriodsToActiveDataMetaInfo.has(this.displayedDataset?.reportingPeriod ?? "");
+      return this.receivedMapOfReportingPeriodsToActiveDataMetaInfo.has(this.displayedDataset?.reportingPeriod ?? '');
     },
     areMoreDatasetsViewableSimultaneously(): boolean {
       return (

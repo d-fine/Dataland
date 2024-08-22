@@ -1,34 +1,20 @@
 // Config file for cypress E2E tests
 {
   "extends": "@vue/tsconfig/tsconfig.dom.json",
-  "include": ["tests/sharedUtils/**/*","tests/e2e/**/*","build/clients/**/*","src/types/**/*"],
+  "include": ["tests/sharedUtils/**/*", "tests/e2e/**/*", "build/clients/**/*", "src/types/**/*"],
   "compilerOptions": {
     "isolatedModules": false,
     "baseUrl": ".",
     "target": "ES2019",
-    "lib": [
-      "ES2019",
-      "dom"
-    ],
-    "types": [
-      "cypress",
-      "node"
-    ],
+    "lib": ["ES2019", "dom"],
+    "types": ["cypress", "node"],
     // Setting the following to true breaks the imports of the auto-generated clients
     "verbatimModuleSyntax": false,
     "paths": {
-      "@/*": [
-        "./src/*"
-      ],
-      "@clients/*": [
-        "./build/clients/*"
-      ],
-      "@e2e/*": [
-        "./tests/e2e/*"
-      ],
-      "@sharedUtils/*": [
-        "./tests/sharedUtils/*"
-      ]
+      "@/*": ["./src/*"],
+      "@clients/*": ["./build/clients/*"],
+      "@e2e/*": ["./tests/e2e/*"],
+      "@sharedUtils/*": ["./tests/sharedUtils/*"]
     },
     "moduleResolution": "node"
   }

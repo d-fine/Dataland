@@ -1,0 +1,17 @@
+{
+  "errors": [
+    {
+      "errorType": "duplicate-company-identifier",
+      "summary": "At least one of the identifiers you entered is already being used by another company",
+      "message": "At least one of the identifiers you entered is already being used by another company",
+      "httpStatus": 400,
+      "metaInformation": [
+        {
+          "companyId": "violating-company-id",
+          "identifierType": "CompanyRegistrationNumber",
+          "identifierValue": "Dummy Reg123456"
+        }
+      ]
+    }
+  ]
+}

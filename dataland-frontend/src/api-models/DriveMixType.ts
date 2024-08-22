@@ -1,5 +1,5 @@
 export enum DriveMixType {
-  SmallTrucks = "SmallTrucks",
-  MediumTrucks = "MediumTrucks",
-  LargeTrucks = "LargeTrucks",
+  SmallTrucks = 'SmallTrucks',
+  MediumTrucks = 'MediumTrucks',
+  LargeTrucks = 'LargeTrucks',
 }

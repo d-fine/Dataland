@@ -3,6 +3,7 @@ package org.dataland.e2etests.tests.communityManager
 import org.dataland.communitymanager.openApiClient.api.RequestControllerApi
 import org.dataland.communitymanager.openApiClient.infrastructure.ClientError
 import org.dataland.communitymanager.openApiClient.infrastructure.ClientException
+import org.dataland.communitymanager.openApiClient.model.CompanyRole
 import org.dataland.communitymanager.openApiClient.model.RequestStatus
 import org.dataland.communitymanager.openApiClient.model.SingleDataRequest
 import org.dataland.datalandbackend.openApiClient.model.CompanyInformation
@@ -33,6 +34,7 @@ import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
+import org.junit.jupiter.api.assertDoesNotThrow
 import org.junit.jupiter.api.assertThrows
 import java.time.Instant
 import java.util.*
@@ -43,6 +45,8 @@ class SingleDataRequestsTest {
     val apiAccessor = ApiAccessor()
     val jwtHelper = JwtAuthenticationHelper()
     private val requestControllerApi = RequestControllerApi(BASE_PATH_TO_COMMUNITY_MANAGER)
+    private val maxRequestsForUser = 10
+    private val dataReaderUserId = UUID.fromString(TechnicalUser.Reader.technicalUserId)
 
     @BeforeEach
     fun authenticateAsPremiumUser() {
@@ -214,10 +218,11 @@ class SingleDataRequestsTest {
             }
             check400ClientExceptionErrorMessage(clientException)
             val responseBody = (clientException.response as ClientError<*>).body as String
-            assertTrue(responseBody.contains("Invalid email address \\\"${it[0]}\\\""))
+            assertTrue(responseBody.contains("Invalid contact ${it[0]}"))
             assertTrue(
                 responseBody.contains(
-                    "The email address \\\"${it[0]}\\\" you have provided has an invalid format.",
+                    "The provided contact ${it[0]} is not valid. Please specify a valid email address " +
+                        "or when a company owner exists COMPANY_OWNER.",
                 ),
             )
         }
@@ -328,5 +333,32 @@ class SingleDataRequestsTest {
             newlyStoredRequests[0].reportingPeriod,
             "The reporting period of the one newly stored request is not as expected.",
         )
+    }
+
+    @Test
+    fun `post several single data requests as a company member and check that no quota is applied`() {
+        val stringThatMatchesThePermIdRegex = System.currentTimeMillis().toString()
+        val companyId = getIdForUploadedCompanyWithIdentifiers(permId = stringThatMatchesThePermIdRegex)
+        val reportingPeriods = (2000..(2000 + maxRequestsForUser + 1)).map { it.toString() }.toSet()
+        val singleDataRequest = SingleDataRequest(
+            companyIdentifier = stringThatMatchesThePermIdRegex,
+            dataType = SingleDataRequest.DataType.lksg,
+            reportingPeriods = reportingPeriods,
+            contacts = setOf("someContact@example.com", "simpleString@example.com"),
+            message = "This is a test. The current timestamp is ${System.currentTimeMillis()}",
+        )
+
+        jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader)
+        assertThrows<ClientException> { requestControllerApi.postSingleDataRequest(singleDataRequest) }
+
+        apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
+        apiAccessor.companyRolesControllerApi.assignCompanyRole(
+            CompanyRole.Member,
+            UUID.fromString(companyId),
+            dataReaderUserId,
+        )
+
+        jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader)
+        assertDoesNotThrow { requestControllerApi.postSingleDataRequest(singleDataRequest) }
     }
 }

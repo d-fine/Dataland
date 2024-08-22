@@ -1,21 +1,52 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "configMigration": true,
-  "extends": ["config:best-practices"],
-  "labels": ["dependencies"],
+  "extends": [
+    "config:best-practices"
+  ],
+  "labels": [
+    "dependencies"
+  ],
   "separateMinorPatch": true,
   "separateMajorMinor": true,
   "separateMultipleMajor": true,
-  "minimumReleaseAge": "14 days",
+  "minimumReleaseAge": "5 days",
+  "updateNotScheduled": false,
   "schedule": [
     "after 8pm every weekday",
-    "before 8am every weekday",
+    "before 5am every weekday",
     "every weekend"
   ],
   "packageRules": [
     {
-      "matchUpdateTypes": ["major"],
-      "labels": ["dependencies", "MAJOR"]
+      "groupName": "digest-bundle",
+      "matchPackageNames": [
+        "*"
+      ],
+      "matchUpdateTypes": [
+        "digest"
+      ]
+    },
+    {
+      "matchUpdateTypes": [
+        "major"
+      ],
+      "labels": [
+        "dependencies",
+        "MAJOR"
+      ]
+    },
+    {
+      "groupName": "formkit-packages",
+      "matchPackageNames": [
+        "/^@formkit//"
+      ]
+    },
+    {
+      "groupName": "cloudevents",
+      "matchPackageNames": [
+        "/cloudevents/"
+      ]
     }
   ]
 }

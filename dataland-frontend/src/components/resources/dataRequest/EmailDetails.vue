@@ -70,12 +70,12 @@
   </FormKit>
 </template>
 <script lang="ts">
-import { defineComponent } from "vue";
-import { FormKit } from "@formkit/vue";
-const dataRequesterMessageAccessDisabledText = "Please provide a valid email before entering a message";
+import { defineComponent } from 'vue';
+import { FormKit } from '@formkit/vue';
+const dataRequesterMessageAccessDisabledText = 'Please provide a valid email before entering a message';
 
 export default defineComponent({
-  name: "EmailDetails",
+  name: 'EmailDetails',
   components: { FormKit },
   props: {
     isOptional: {
@@ -87,7 +87,7 @@ export default defineComponent({
       default: false,
     },
   },
-  emits: ["hasNewInput"],
+  emits: ['hasNewInput'],
   data() {
     return {
       displayNoMessageError: false,
@@ -95,8 +95,8 @@ export default defineComponent({
       displayConsentToMessageDateUsageNotGiven: false,
       allowAccessDataRequesterMessage: false,
       consentToMessageDataUsageGiven: false,
-      dataRequesterMessage: "Please provide a valid email before entering a message",
-      contactsAsString: "",
+      dataRequesterMessage: 'Please provide a valid email before entering a message',
+      contactsAsString: '',
     };
   },
   computed: {
@@ -105,7 +105,7 @@ export default defineComponent({
     },
     selectedContacts(): string[] {
       return this.contactsAsString
-        .split(",")
+        .split(',')
         .map((rawEmail) => rawEmail.trim())
         .filter((email) => email);
     },
@@ -146,7 +146,7 @@ export default defineComponent({
           return undefined;
         }
       })();
-      this.$emit("hasNewInput", this.hasValidInput, contacts, message);
+      this.$emit('hasNewInput', this.hasValidInput, contacts, message);
     },
     /**
      * Enables the error messages
@@ -183,13 +183,13 @@ export default defineComponent({
       if (this.areContactsFilledAndValid()) {
         this.allowAccessDataRequesterMessage = true;
         if (this.dataRequesterMessage == dataRequesterMessageAccessDisabledText) {
-          this.dataRequesterMessage = "";
+          this.dataRequesterMessage = '';
         }
       } else {
         this.allowAccessDataRequesterMessage = false;
         this.consentToMessageDataUsageGiven = false;
         this.displayConsentToMessageDateUsageNotGiven = false;
-        if (this.contactsAsString == "" && this.dataRequesterMessage == "") {
+        if (this.contactsAsString == '' && this.dataRequesterMessage == '') {
           this.dataRequesterMessage = dataRequesterMessageAccessDisabledText;
         }
       }

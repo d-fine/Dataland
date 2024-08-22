@@ -10,14 +10,14 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
-import ToggleChip from "@/components/general/ToggleChip.vue";
+import { defineComponent } from 'vue';
+import ToggleChip from '@/components/general/ToggleChip.vue';
 
 export type ToggleChipInputType = { name: string; value: boolean };
 
 export default defineComponent({
-  name: "ToggleChipFormInputs",
-  emits: ["changed"],
+  name: 'ToggleChipFormInputs',
+  emits: ['changed'],
   components: {
     ToggleChip,
   },
@@ -48,7 +48,7 @@ export default defineComponent({
     onToggleChange(option: ToggleChipInputType, value: boolean) {
       option.value = value;
       this.value = this.options?.filter((option) => option.value).map((option) => option.name) ?? [];
-      this.$emit("changed");
+      this.$emit('changed');
     },
   },
 });

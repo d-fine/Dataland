@@ -43,19 +43,19 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref, watch, onUnmounted } from "vue";
-import type { Section } from "@/types/ContentTypes";
-import CompaniesOnlySearchBar from "@/components/resources/companiesOnlySearch/CompaniesOnlySearchBar.vue";
-import ButtonComponent from "@/components/resources/newLandingPage/ButtonComponent.vue";
+import { computed, ref, watch, onUnmounted } from 'vue';
+import type { Section } from '@/types/ContentTypes';
+import CompaniesOnlySearchBar from '@/components/resources/companiesOnlySearch/CompaniesOnlySearchBar.vue';
+import ButtonComponent from '@/components/resources/newLandingPage/ButtonComponent.vue';
 
 const props = defineProps<{ sections?: Section[] }>();
 
 const introSection = computed(() => {
-  return props.sections?.find((section) => section.title === "Intro") ?? null;
+  return props.sections?.find((section) => section.title === 'Intro') ?? null;
 });
 
 const aboutIntroSection = computed(() => {
-  return props.sections?.find((section) => section.title === "START YOUR DATALAND JOURNEY") ?? null;
+  return props.sections?.find((section) => section.title === 'START YOUR DATALAND JOURNEY') ?? null;
 });
 
 const isMobile = ref(window.innerWidth < 768);
@@ -64,17 +64,17 @@ watch(
   () => window.innerWidth,
   (newWidth) => {
     isMobile.value = newWidth < 768;
-  },
+  }
 );
 
 const updateIsMobile = (): void => {
   isMobile.value = window.innerWidth < 768;
 };
 
-window.addEventListener("resize", updateIsMobile);
+window.addEventListener('resize', updateIsMobile);
 
 onUnmounted(() => {
-  window.removeEventListener("resize", updateIsMobile);
+  window.removeEventListener('resize', updateIsMobile);
 });
 
 const inputFocused = ref(false);
@@ -82,8 +82,8 @@ const inputFocused = ref(false);
 const handleInputFocus = (): void => {
   inputFocused.value = true;
   if (isMobile.value) {
-    const header = document.querySelector(".header") as HTMLElement;
-    if (header) header.style.display = "none";
+    const header = document.querySelector('.header') as HTMLElement;
+    if (header) header.style.display = 'none';
   }
 };
 
@@ -91,8 +91,8 @@ const handleInputBlur = (): void => {
   setTimeout(() => {
     inputFocused.value = false;
     if (isMobile.value) {
-      const header = document.querySelector(".header") as HTMLElement;
-      if (header) header.style.display = "";
+      const header = document.querySelector('.header') as HTMLElement;
+      if (header) header.style.display = '';
     }
   }, 300);
 };
@@ -202,7 +202,7 @@ const handleInputBlur = (): void => {
       line-height: 24px;
       letter-spacing: 0.25px;
       &::before {
-        content: "";
+        content: '';
         display: block;
         position: absolute;
         left: -8px;
@@ -310,7 +310,7 @@ const handleInputBlur = (): void => {
         height: 4rem;
         position: relative;
         &:after {
-          content: "";
+          content: '';
           height: 2px;
           width: calc(100% - 3em);
           background-color: var(--grey-tones-100);

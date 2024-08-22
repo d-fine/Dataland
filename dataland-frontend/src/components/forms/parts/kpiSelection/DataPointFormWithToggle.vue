@@ -8,7 +8,7 @@
       v-model="dataPointIsAvailable"
     />
     <h5 data-test="dataPointToggleTitle" class="ml-2">
-      {{ dataPointIsAvailable ? "Data point is available" : "Data point is not available" }}
+      {{ dataPointIsAvailable ? 'Data point is available' : 'Data point is not available' }}
     </h5>
   </div>
   <div v-show="dataPointIsAvailable">
@@ -147,36 +147,37 @@
 
 <script lang="ts">
 // @ts-nocheck
-import { defineComponent } from "vue";
-import InputSwitch from "primevue/inputswitch";
-import UploadFormHeader from "@/components/forms/parts/elements/basic/UploadFormHeader.vue";
-import { FormKit } from "@formkit/vue";
-import { QualityOptions } from "@clients/backend";
-import DataPointHeader from "@/components/forms/parts/kpiSelection/DataPointHeader.vue";
-import { getFileName, getFileReferenceByFileName } from "@/utils/FileUploadUtils";
-import { isValidFileName, noReportLabel } from "@/utils/DataSource";
-import SingleSelectFormElement from "@/components/forms/parts/elements/basic/SingleSelectFormElement.vue";
+import { defineComponent } from 'vue';
+import InputSwitch from 'primevue/inputswitch';
+import UploadFormHeader from '@/components/forms/parts/elements/basic/UploadFormHeader.vue';
+import { FormKit } from '@formkit/vue';
+import { QualityOptions } from '@clients/backend';
+import DataPointHeader from '@/components/forms/parts/kpiSelection/DataPointHeader.vue';
+import { getFileName, getFileReferenceByFileName } from '@/utils/FileUploadUtils';
+import { isValidFileName, noReportLabel } from '@/utils/DataSource';
+import SingleSelectFormElement from '@/components/forms/parts/elements/basic/SingleSelectFormElement.vue';
+import { humanizeStringOrNumber } from '@/utils/StringFormatter';
 
 export default defineComponent({
-  name: "DataPointFormWithToggle",
+  name: 'DataPointFormWithToggle',
   components: { SingleSelectFormElement, DataPointHeader, UploadFormHeader, FormKit, InputSwitch },
-  emits: ["dataPointAvailableToggle"],
+  emits: ['dataPointAvailableToggle'],
   data: () => ({
     isMounted: false,
     dataPointIsAvailable: true,
     qualityOptions: Object.values(QualityOptions).map((qualityOption: string) => ({
-      label: qualityOption,
+      label: humanizeStringOrNumber(qualityOption),
       value: qualityOption,
     })),
-    currentAmountValue: "",
-    currentValue: "",
-    currentReportValue: "",
-    currentPageValue: "",
+    currentAmountValue: '',
+    currentValue: '',
+    currentReportValue: '',
+    currentPageValue: '',
     currentQualityValue: null as string | null,
-    amountValueBeforeDataPointWasDisabled: "",
-    valueBeforeDataPointWasDisabled: "",
-    reportValueBeforeDataPointWasDisabled: "",
-    pageValueBeforeDataPointWasDisabled: "",
+    amountValueBeforeDataPointWasDisabled: '',
+    valueBeforeDataPointWasDisabled: '',
+    reportValueBeforeDataPointWasDisabled: '',
+    pageValueBeforeDataPointWasDisabled: '',
     qualityValueBeforeDataPointWasDisabled: null as string | null,
     noReportLabel: noReportLabel,
     isValidFileName: isValidFileName,
@@ -189,10 +190,10 @@ export default defineComponent({
         this.reportValueBeforeDataPointWasDisabled = this.currentReportValue;
         this.pageValueBeforeDataPointWasDisabled = this.currentPageValue;
         this.qualityValueBeforeDataPointWasDisabled = this.currentQualityValue;
-        this.currentAmountValue = "";
-        this.currentValue = "";
-        this.currentReportValue = "";
-        this.currentPageValue = "";
+        this.currentAmountValue = '';
+        this.currentValue = '';
+        this.currentReportValue = '';
+        this.currentPageValue = '';
         this.currentQualityValue = null;
       } else {
         this.currentQualityValue = this.qualityValueBeforeDataPointWasDisabled;
@@ -228,8 +229,8 @@ export default defineComponent({
       default: null,
     },
     valueType: {
-      type: String as () => "percent" | "number",
-      default: "percent",
+      type: String as () => 'percent' | 'number',
+      default: 'percent',
     },
     reportsNameAndReferences: {
       type: Object,

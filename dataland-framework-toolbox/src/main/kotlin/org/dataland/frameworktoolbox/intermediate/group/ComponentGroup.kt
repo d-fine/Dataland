@@ -26,6 +26,10 @@ class ComponentGroup(
 
     override val children: Sequence<ComponentBase> by componentGroupApi::children
 
+    override var isNullable: Boolean
+        get() = super.isNullable && nestedChildren.all { it.isNullable }
+        set(value) { super.isNullable = value }
+
     override fun generateDefaultDataModel(dataClassBuilder: DataClassBuilder) {
         val groupPackage = dataClassBuilder.parentPackage.addPackage(identifier)
         val groupClass = groupPackage.addClass(
@@ -37,13 +41,35 @@ class ComponentGroup(
             it.generateDataModel(groupClass)
         }
 
-        val isRequired = isRequired || nestedChildren.any { it.isRequired }
-
         dataClassBuilder.addProperty(
             identifier,
-            groupClass.getTypeReference(nullable = !isRequired),
+            groupClass.getTypeReference(isNullable),
             listOf(ValidAnnotation),
         )
+    }
+
+    override fun generateDefaultQaModel(dataClassBuilder: DataClassBuilder) {
+        val groupPackage = dataClassBuilder.parentPackage.addPackage(identifier)
+        val groupClass = groupPackage.addClass(
+            camelCaseComponentIdentifier,
+            "The QA-model for the ${identifier.capitalizeEn()} section",
+        )
+
+        children.forEach {
+            it.generateQaModel(groupClass)
+        }
+
+        if (!groupClass.empty) {
+            dataClassBuilder.addProperty(
+                identifier,
+                groupClass.getTypeReference(groupClass.allNullable),
+                listOf(ValidAnnotation),
+            )
+        }
+
+        if (groupPackage.empty) {
+            dataClassBuilder.parentPackage.childElements.remove(groupPackage)
+        }
     }
 
     override fun generateDefaultViewConfig(sectionConfigBuilder: SectionConfigBuilder) {

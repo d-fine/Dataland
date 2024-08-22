@@ -94,69 +94,69 @@
 </template>
 <script lang="ts">
 // @ts-nocheck
-import { FormKit } from "@formkit/vue";
-import { ApiClientProvider } from "@/services/ApiClients";
-import Card from "primevue/card";
-import { defineComponent, inject, computed } from "vue";
-import type Keycloak from "keycloak-js";
-import { assertDefined } from "@/utils/TypeScriptUtils";
-import Tooltip from "primevue/tooltip";
-import PrimeButton from "primevue/button";
-import UploadFormHeader from "@/components/forms/parts/elements/basic/UploadFormHeader.vue";
-import YesNoFormField from "@/components/forms/parts/fields/YesNoFormField.vue";
-import Calendar from "primevue/calendar";
-import SuccessMessage from "@/components/messages/SuccessMessage.vue";
-import FailMessage from "@/components/messages/FailMessage.vue";
-import { sfdrDataModel } from "@/frameworks/sfdr/UploadConfig";
-import { type CompanyAssociatedDataSfdrData, type CompanyReport, DataTypeEnum, type SfdrData } from "@clients/backend";
-import { useRoute } from "vue-router";
-import { checkCustomInputs, checkIfAllUploadedReportsAreReferencedInDataModel } from "@/utils/ValidationsUtils";
-import NaceCodeFormField from "@/components/forms/parts/fields/NaceCodeFormField.vue";
-import InputTextFormField from "@/components/forms/parts/fields/InputTextFormField.vue";
-import FreeTextFormField from "@/components/forms/parts/fields/FreeTextFormField.vue";
-import NumberFormField from "@/components/forms/parts/fields/NumberFormField.vue";
-import DateFormField from "@/components/forms/parts/fields/DateFormField.vue";
-import SingleSelectFormField from "@/components/forms/parts/fields/SingleSelectFormField.vue";
-import MultiSelectFormField from "@/components/forms/parts/fields/MultiSelectFormField.vue";
-import AddressFormField from "@/components/forms/parts/fields/AddressFormField.vue";
-import RadioButtonsFormField from "@/components/forms/parts/fields/RadioButtonsFormField.vue";
-import SubmitButton from "@/components/forms/parts/SubmitButton.vue";
-import SubmitSideBar from "@/components/forms/parts/SubmitSideBar.vue";
-import YesNoNaFormField from "@/components/forms/parts/fields/YesNoNaFormField.vue";
-import UploadReports from "@/components/forms/parts/UploadReports.vue";
-import PercentageFormField from "@/components/forms/parts/fields/PercentageFormField.vue";
-import ProductionSitesFormField from "@/components/forms/parts/fields/ProductionSitesFormField.vue";
-import { objectDropNull, type ObjectType } from "@/utils/UpdateObjectUtils";
-import { smoothScroll } from "@/utils/SmoothScroll";
-import { type DocumentToUpload, getFileName, uploadFiles } from "@/utils/FileUploadUtils";
-import MostImportantProductsFormField from "@/components/forms/parts/fields/MostImportantProductsFormField.vue";
-import { type Subcategory } from "@/utils/GenericFrameworkTypes";
-import ProcurementCategoriesFormField from "@/components/forms/parts/fields/ProcurementCategoriesFormField.vue";
-import { createSubcategoryVisibilityMap } from "@/utils/UploadFormUtils";
-import HighImpactClimateSectorsFormField from "@/components/forms/parts/fields/HighImpactClimateSectorsFormField.vue";
-import { formatAxiosErrorMessage } from "@/utils/AxiosErrorMessageFormatter";
-import { HighImpactClimateSectorsNaceCodes } from "@/types/HighImpactClimateSectors";
-import IntegerExtendedDataPointFormField from "@/components/forms/parts/fields/IntegerExtendedDataPointFormField.vue";
-import BigDecimalExtendedDataPointFormField from "@/components/forms/parts/fields/BigDecimalExtendedDataPointFormField.vue";
-import CurrencyDataPointFormField from "@/components/forms/parts/fields/CurrencyDataPointFormField.vue";
-import YesNoExtendedDataPointFormField from "@/components/forms/parts/fields/YesNoExtendedDataPointFormField.vue";
-import YesNoNoEvidenceFoundExtendedDataPointFormField from "@/components/forms/parts/fields/YesNoNoEvidenceFoundExtendedDataPointFormField.vue";
-import YesNoBaseDataPointFormField from "@/components/forms/parts/fields/YesNoBaseDataPointFormField.vue";
-import YesNoNaBaseDataPointFormField from "@/components/forms/parts/fields/YesNoNaBaseDataPointFormField.vue";
-import BaseDataPointFormField from "@/components/forms/parts/elements/basic/BaseDataPointFormField.vue";
-import { getFilledKpis } from "@/utils/DataPoint";
-import { type PublicFrameworkDataApi } from "@/utils/api/UnifiedFrameworkDataApi";
-import { getBasePublicFrameworkDefinition } from "@/frameworks/BasePublicFrameworkRegistry";
+import { FormKit } from '@formkit/vue';
+import { ApiClientProvider } from '@/services/ApiClients';
+import Card from 'primevue/card';
+import { defineComponent, inject, computed } from 'vue';
+import type Keycloak from 'keycloak-js';
+import { assertDefined } from '@/utils/TypeScriptUtils';
+import Tooltip from 'primevue/tooltip';
+import PrimeButton from 'primevue/button';
+import UploadFormHeader from '@/components/forms/parts/elements/basic/UploadFormHeader.vue';
+import YesNoFormField from '@/components/forms/parts/fields/YesNoFormField.vue';
+import Calendar from 'primevue/calendar';
+import SuccessMessage from '@/components/messages/SuccessMessage.vue';
+import FailMessage from '@/components/messages/FailMessage.vue';
+import { sfdrDataModel } from '@/frameworks/sfdr/UploadConfig';
+import { type CompanyAssociatedDataSfdrData, type CompanyReport, DataTypeEnum, type SfdrData } from '@clients/backend';
+import { useRoute } from 'vue-router';
+import { checkCustomInputs, checkIfAllUploadedReportsAreReferencedInDataModel } from '@/utils/ValidationsUtils';
+import NaceCodeFormField from '@/components/forms/parts/fields/NaceCodeFormField.vue';
+import InputTextFormField from '@/components/forms/parts/fields/InputTextFormField.vue';
+import FreeTextFormField from '@/components/forms/parts/fields/FreeTextFormField.vue';
+import NumberFormField from '@/components/forms/parts/fields/NumberFormField.vue';
+import DateFormField from '@/components/forms/parts/fields/DateFormField.vue';
+import SingleSelectFormField from '@/components/forms/parts/fields/SingleSelectFormField.vue';
+import MultiSelectFormField from '@/components/forms/parts/fields/MultiSelectFormField.vue';
+import AddressFormField from '@/components/forms/parts/fields/AddressFormField.vue';
+import RadioButtonsFormField from '@/components/forms/parts/fields/RadioButtonsFormField.vue';
+import SubmitButton from '@/components/forms/parts/SubmitButton.vue';
+import SubmitSideBar from '@/components/forms/parts/SubmitSideBar.vue';
+import YesNoNaFormField from '@/components/forms/parts/fields/YesNoNaFormField.vue';
+import UploadReports from '@/components/forms/parts/UploadReports.vue';
+import PercentageFormField from '@/components/forms/parts/fields/PercentageFormField.vue';
+import ProductionSitesFormField from '@/components/forms/parts/fields/ProductionSitesFormField.vue';
+import { objectDropNull, type ObjectType } from '@/utils/UpdateObjectUtils';
+import { smoothScroll } from '@/utils/SmoothScroll';
+import { type DocumentToUpload, getFileName, uploadFiles } from '@/utils/FileUploadUtils';
+import MostImportantProductsFormField from '@/components/forms/parts/fields/MostImportantProductsFormField.vue';
+import { type Subcategory } from '@/utils/GenericFrameworkTypes';
+import ProcurementCategoriesFormField from '@/components/forms/parts/fields/ProcurementCategoriesFormField.vue';
+import { createSubcategoryVisibilityMap } from '@/utils/UploadFormUtils';
+import HighImpactClimateSectorsFormField from '@/components/forms/parts/fields/HighImpactClimateSectorsFormField.vue';
+import { formatAxiosErrorMessage } from '@/utils/AxiosErrorMessageFormatter';
+import { HighImpactClimateSectorsNaceCodes } from '@/types/HighImpactClimateSectors';
+import IntegerExtendedDataPointFormField from '@/components/forms/parts/fields/IntegerExtendedDataPointFormField.vue';
+import BigDecimalExtendedDataPointFormField from '@/components/forms/parts/fields/BigDecimalExtendedDataPointFormField.vue';
+import CurrencyDataPointFormField from '@/components/forms/parts/fields/CurrencyDataPointFormField.vue';
+import YesNoExtendedDataPointFormField from '@/components/forms/parts/fields/YesNoExtendedDataPointFormField.vue';
+import YesNoBaseDataPointFormField from '@/components/forms/parts/fields/YesNoBaseDataPointFormField.vue';
+import YesNoNaBaseDataPointFormField from '@/components/forms/parts/fields/YesNoNaBaseDataPointFormField.vue';
+import BaseDataPointFormField from '@/components/forms/parts/elements/basic/BaseDataPointFormField.vue';
+import { getFilledKpis } from '@/utils/DataPoint';
+import { type PublicFrameworkDataApi } from '@/utils/api/UnifiedFrameworkDataApi';
+import { getBasePublicFrameworkDefinition } from '@/frameworks/BasePublicFrameworkRegistry';
+import { hasUserCompanyOwnerOrDataUploaderRole } from '@/utils/CompanyRolesUtils';
 
-const referenceableReportsFieldId = "referenceableReports";
+const referenceableReportsFieldId = 'referenceableReports';
 
 export default defineComponent({
   setup() {
     return {
-      getKeycloakPromise: inject<() => Promise<Keycloak>>("getKeycloakPromise"),
+      getKeycloakPromise: inject<() => Promise<Keycloak>>('getKeycloakPromise'),
     };
   },
-  name: "CreateSfdrDataset",
+  name: 'CreateSfdrDataset',
   components: {
     BaseDataPointFormField,
     SubmitButton,
@@ -191,21 +191,20 @@ export default defineComponent({
     YesNoBaseDataPointFormField,
     YesNoNaBaseDataPointFormField,
     YesNoExtendedDataPointFormField,
-    YesNoNoEvidenceFoundExtendedDataPointFormField,
   },
   directives: {
     tooltip: Tooltip,
   },
-  emits: ["datasetCreated"],
+  emits: ['datasetCreated'],
   data() {
     return {
-      formId: "createSFDRForm",
+      formId: 'createSFDRForm',
       waitingForData: true,
       dataDate: undefined as Date | undefined,
       companyAssociatedSfdrData: {} as CompanyAssociatedDataSfdrData,
       sfdrDataModel,
       route: useRoute(),
-      message: "",
+      message: '',
       smoothScroll: smoothScroll,
       uploadSucceded: false,
       postSfdrDataProcessed: false,
@@ -223,9 +222,9 @@ export default defineComponent({
       get(): string {
         const currentDate = this.companyAssociatedSfdrData.data?.general?.general?.fiscalYearEnd;
         if (currentDate === undefined) {
-          return "";
+          return '';
         } else {
-          const currentDateSegments = currentDate.split("-");
+          const currentDateSegments = currentDate.split('-');
           return currentDateSegments[0] ?? new Date().getFullYear();
         }
       },
@@ -248,7 +247,7 @@ export default defineComponent({
   },
   created() {
     const dataId = this.route.query.templateDataId;
-    if (dataId && typeof dataId === "string") {
+    if (dataId && typeof dataId === 'string') {
       void this.loadSfdrData(dataId);
     } else {
       this.waitingForData = false;
@@ -284,7 +283,7 @@ export default defineComponent({
         ? Object.keys(sfdrResponseData?.data?.environmental?.energyPerformance?.applicableHighImpactClimateSectors).map(
             (it): string => {
               return HighImpactClimateSectorsNaceCodes[it as keyof typeof HighImpactClimateSectorsNaceCodes] ?? it;
-            },
+            }
           )
         : [];
       this.companyAssociatedSfdrData = objectDropNull(sfdrResponseData as ObjectType) as CompanyAssociatedDataSfdrData;
@@ -300,17 +299,24 @@ export default defineComponent({
         if (this.fieldSpecificDocuments.get(referenceableReportsFieldId)?.length) {
           checkIfAllUploadedReportsAreReferencedInDataModel(
             this.companyAssociatedSfdrData.data as ObjectType,
-            this.namesOfAllCompanyReportsForTheDataset,
+            this.namesOfAllCompanyReportsForTheDataset
           );
         }
         const documentsToUpload = Array.from(this.fieldSpecificDocuments.values()).flat();
         await uploadFiles(documentsToUpload, assertDefined(this.getKeycloakPromise));
 
         const sfdrDataControllerApi = this.buildSfdrDataApi();
-        await sfdrDataControllerApi.postFrameworkData(this.companyAssociatedSfdrData);
-        this.$emit("datasetCreated");
+
+        const isCompanyOwnerOrDataUploader = await hasUserCompanyOwnerOrDataUploaderRole(
+          this.companyAssociatedSfdrData.companyId,
+          this.getKeycloakPromise
+        );
+
+        await sfdrDataControllerApi.postFrameworkData(this.companyAssociatedSfdrData, isCompanyOwnerOrDataUploader);
+
+        this.$emit('datasetCreated');
         this.dataDate = undefined;
-        this.message = "Upload successfully executed.";
+        this.message = 'Upload successfully executed.';
         this.uploadSucceded = true;
       } catch (error) {
         console.error(error);
@@ -318,7 +324,7 @@ export default defineComponent({
           this.message = formatAxiosErrorMessage(error as Error);
         } else {
           this.message =
-            "An unexpected error occurred. Please try again or contact the support team if the issue persists.";
+            'An unexpected error occurred. Please try again or contact the support team if the issue persists.';
         }
         this.uploadSucceded = false;
       } finally {

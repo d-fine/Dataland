@@ -4,11 +4,16 @@ package org.dataland.datalandbackend.frameworks.eutaxonomynonfinancials.model.op
 import jakarta.validation.Valid
 import org.dataland.datalandbackend.frameworks.eutaxonomynonfinancials.custom.EuTaxonomyActivity
 import org.dataland.datalandbackend.frameworks.eutaxonomynonfinancials.custom.EuTaxonomyAlignedActivity
-import org.dataland.datalandbackend.frameworks.eutaxonomynonfinancials.model.opex.alignedShare.EutaxonomyNonFinancialsOpexAlignedShare
-import org.dataland.datalandbackend.frameworks.eutaxonomynonfinancials.model.opex.eligibleShare.EutaxonomyNonFinancialsOpexEligibleShare
-import org.dataland.datalandbackend.frameworks.eutaxonomynonfinancials.model.opex.nonAlignedShare.EutaxonomyNonFinancialsOpexNonAlignedShare
-import org.dataland.datalandbackend.frameworks.eutaxonomynonfinancials.model.opex.nonEligibleShare.EutaxonomyNonFinancialsOpexNonEligibleShare
+import org.dataland.datalandbackend.frameworks.eutaxonomynonfinancials.model.opex.alignedShare
+    .EutaxonomyNonFinancialsOpexAlignedShare
+import org.dataland.datalandbackend.frameworks.eutaxonomynonfinancials.model.opex.eligibleShare
+    .EutaxonomyNonFinancialsOpexEligibleShare
+import org.dataland.datalandbackend.frameworks.eutaxonomynonfinancials.model.opex.nonAlignedShare
+    .EutaxonomyNonFinancialsOpexNonAlignedShare
+import org.dataland.datalandbackend.frameworks.eutaxonomynonfinancials.model.opex.nonEligibleShare
+    .EutaxonomyNonFinancialsOpexNonEligibleShare
 import org.dataland.datalandbackend.model.datapoints.CurrencyDataPoint
+import org.dataland.datalandbackend.model.datapoints.ExtendedDataPoint
 import java.math.BigDecimal
 import kotlin.collections.MutableList
 
@@ -28,27 +33,37 @@ data class EutaxonomyNonFinancialsOpex(
     @field:Valid()
     val nonAlignedShare: EutaxonomyNonFinancialsOpexNonAlignedShare? = null,
 
-    val nonAlignedActivities: MutableList<EuTaxonomyActivity>? = null,
+    val nonAlignedActivities: ExtendedDataPoint<MutableList<EuTaxonomyActivity>?>? = null,
 
     @field:Valid()
     val alignedShare: EutaxonomyNonFinancialsOpexAlignedShare? = null,
 
-    val substantialContributionToClimateChangeMitigationInPercent: BigDecimal? = null,
+    @field:Valid()
+    val substantialContributionToClimateChangeMitigationInPercentAligned: ExtendedDataPoint<BigDecimal?>? = null,
 
-    val substantialContributionToClimateChangeAdaptationInPercent: BigDecimal? = null,
+    @field:Valid()
+    val substantialContributionToClimateChangeAdaptationInPercentAligned: ExtendedDataPoint<BigDecimal?>? = null,
 
-    val substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent: BigDecimal? = null,
+    @field:Valid()
+    val substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned:
+    ExtendedDataPoint<BigDecimal?>? = null,
 
-    val substantialContributionToTransitionToACircularEconomyInPercent: BigDecimal? = null,
+    @field:Valid()
+    val substantialContributionToTransitionToACircularEconomyInPercentAligned: ExtendedDataPoint<BigDecimal?>? = null,
 
-    val substantialContributionToPollutionPreventionAndControlInPercent: BigDecimal? = null,
+    @field:Valid()
+    val substantialContributionToPollutionPreventionAndControlInPercentAligned: ExtendedDataPoint<BigDecimal?>? = null,
 
-    val substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent: BigDecimal? = null,
+    @field:Valid()
+    val substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned:
+    ExtendedDataPoint<BigDecimal?>? = null,
 
-    val alignedActivities: MutableList<EuTaxonomyAlignedActivity>? = null,
+    val alignedActivities: ExtendedDataPoint<MutableList<EuTaxonomyAlignedActivity>?>? = null,
 
-    val enablingShareInPercent: BigDecimal? = null,
+    @field:Valid()
+    val enablingShareInPercent: ExtendedDataPoint<BigDecimal?>? = null,
 
-    val transitionalShareInPercent: BigDecimal? = null,
+    @field:Valid()
+    val transitionalShareInPercent: ExtendedDataPoint<BigDecimal?>? = null,
 
 )

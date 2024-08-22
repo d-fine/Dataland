@@ -1,5 +1,5 @@
-import { type FrameworkData } from "@/utils/GenericFrameworkTypes";
-import { type DataAndMetaInformation } from "@/api-models/DataAndMetaInformation";
+import { type FrameworkData } from '@/utils/GenericFrameworkTypes';
+import { type DataAndMetaInformation } from '@/api-models/DataAndMetaInformation';
 
 export type DataAndMetaInformationViewModel<T extends FrameworkViewModel> = DataAndMetaInformation<T>;
 
@@ -13,7 +13,7 @@ export interface FrameworkViewModel {
  * @returns a DataAndMetaInformationViewModel with an identity toApiModel function.
  */
 export function getViewModelWithIdentityApiModel<T extends FrameworkData>(
-  input: DataAndMetaInformation<T>,
+  input: DataAndMetaInformation<T>
 ): DataAndMetaInformationViewModel<T & FrameworkViewModel> {
   return {
     metaInfo: input.metaInfo,

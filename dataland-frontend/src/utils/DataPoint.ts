@@ -1,5 +1,5 @@
-import { type BaseDocumentReference, type ExtendedDocumentReference, type QualityOptions } from "@clients/backend";
-import { type ObjectType } from "@/utils/UpdateObjectUtils";
+import { type BaseDocumentReference, type ExtendedDocumentReference, type QualityOptions } from '@clients/backend';
+import { type ObjectType } from '@/utils/UpdateObjectUtils';
 
 export interface ExtendedDataPoint<T> {
   value?: T | null;
@@ -21,16 +21,6 @@ export type DataPointDisplay = {
 };
 
 /**
- * Checks if a potential data point has a value that is neither undefined nor
- * @param dataPoint the potential data point
- * @param dataPoint.value the value of the potential data point
- * @returns the result of the evaluation
- */
-export function hasDataPointProperValue(dataPoint: { value: unknown }): boolean {
-  return dataPoint.value != undefined && dataPoint.value != "";
-}
-
-/**
  * Creates a list of the names of all Kpis that have some value
  * @param dataResponseData Data to prefill upload form
  * @returns array of Kpis names that have some value
@@ -38,9 +28,9 @@ export function hasDataPointProperValue(dataPoint: { value: unknown }): boolean 
 export function getFilledKpis(dataResponseData: object): string[] {
   const listOfFilledKpis: string[] = [];
   Object.values(dataResponseData).forEach((category) => {
-    if (category && typeof category === "object") {
+    if (category && typeof category === 'object') {
       Object.values(category as ObjectType).forEach((subCategory) => {
-        if (subCategory && typeof subCategory === "object") {
+        if (subCategory && typeof subCategory === 'object') {
           Object.keys(subCategory).forEach((kpi) => {
             if (subCategory[kpi as keyof typeof subCategory]) {
               listOfFilledKpis.push(kpi);

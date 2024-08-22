@@ -1,9 +1,9 @@
-import { Generator } from "@e2e/utils/FakeFixtureUtils";
-import type { AssuranceDataPoint, EuTaxonomyActivity, EuTaxonomyAlignedActivity } from "@clients/backend";
-import { generateAssuranceDatapoint } from "@e2e/fixtures/eutaxonomy-shared/AssuranceDataFixture";
-import { pickOneElement } from "@e2e/fixtures/FixtureUtils";
-import { Activity } from "@clients/backend";
-import { getRandomNumberOfNaceCodesForSpecificActivity } from "@e2e/fixtures/common/NaceCodeFixtures";
+import { Generator } from '@e2e/utils/FakeFixtureUtils';
+import type { AssuranceDataPoint, EuTaxonomyActivity, EuTaxonomyAlignedActivity } from '@clients/backend';
+import { generateAssuranceDatapoint } from '@e2e/fixtures/eutaxonomy-shared/AssuranceDataFixture';
+import { pickOneElement } from '@e2e/fixtures/FixtureUtils';
+import { Activity } from '@clients/backend';
+import { getRandomNumberOfNaceCodesForSpecificActivity } from '@e2e/fixtures/common/NaceCodeFixtures';
 
 export class EutaxonomyNonFinancialsGenerator extends Generator {
   /**
@@ -52,6 +52,8 @@ export class EutaxonomyNonFinancialsGenerator extends Generator {
       dnshToPollutionPreventionAndControl: this.randomYesNo(),
       dnshToProtectionAndRestorationOfBiodiversityAndEcosystems: this.randomYesNo(),
       minimumSafeguards: this.randomYesNo(),
+      enablingActivity: this.randomYesNo(),
+      transitionalActivity: this.randomYesNo(),
     };
   }
 }

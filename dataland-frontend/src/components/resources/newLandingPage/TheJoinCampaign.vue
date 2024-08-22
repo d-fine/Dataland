@@ -29,17 +29,17 @@
 </template>
 
 <script setup lang="ts">
-import { computed, type ComputedRef } from "vue";
-import type { Section } from "@/types/ContentTypes";
-import { openEmailClient } from "@/utils/Email";
-import ButtonComponent from "@/components/resources/newLandingPage/ButtonComponent.vue";
+import { computed, type ComputedRef } from 'vue';
+import type { Section } from '@/types/ContentTypes';
+import { openEmailClient } from '@/utils/Email';
+import ButtonComponent from '@/components/resources/newLandingPage/ButtonComponent.vue';
 
 const { sections } = defineProps<{ sections?: Section[] }>();
 const findSection = (title: string): ComputedRef<Section | null> => {
   return computed(() => sections?.find((section) => section.title === title) ?? null);
 };
-const joinCampaignSection = findSection("Join a campaign");
-const getInTouchSection = findSection("Get in touch");
+const joinCampaignSection = findSection('Join a campaign');
+const getInTouchSection = findSection('Get in touch');
 </script>
 
 <style scoped lang="scss">

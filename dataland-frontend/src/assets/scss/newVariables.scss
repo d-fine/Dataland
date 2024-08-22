@@ -1,20 +1,18 @@
 /* newVariables.scss */
 :root {
   /* Color Palette */
-  --primary-orange: #FF6813;
+  --primary-orange: #ff6813;
   --basic-dark: #1b1b1b;
-  --default-neutral-white: #FFF;
-  --grey-tones-100: #F6F6F6;
-  --grey-tones-300: #C0C0C0;
-  --grey-tones-400: #A5A5A5;
+  --default-neutral-white: #fff;
+  --grey-tones-100: #f6f6f6;
+  --grey-tones-300: #c0c0c0;
+  --grey-tones-400: #a5a5a5;
   --grey-tones-600: #737373;
-  --grey-tones-700: #5B5B5B;
-  --grey-tones-900: #2F2F2F;
-
-
+  --grey-tones-700: #5b5b5b;
+  --grey-tones-900: #2f2f2f;
 }
-  /* Breakpoints */
-  $small: 768px;
-  $medium: 1024px;
-  $large: 1440px;
-  $extra-large: 1800px;
+/* Breakpoints */
+$small: 768px;
+$medium: 1024px;
+$large: 1440px;
+$extra-large: 1800px;

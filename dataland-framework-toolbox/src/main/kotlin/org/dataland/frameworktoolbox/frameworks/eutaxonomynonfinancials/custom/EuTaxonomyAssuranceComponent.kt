@@ -2,14 +2,15 @@ package org.dataland.frameworktoolbox.frameworks.eutaxonomynonfinancials.custom
 
 import org.apache.commons.text.StringEscapeUtils
 import org.dataland.frameworktoolbox.intermediate.FieldNodeParent
-import org.dataland.frameworktoolbox.intermediate.components.ComponentBase
 import org.dataland.frameworktoolbox.intermediate.components.addStandardCellWithValueGetterFactory
 import org.dataland.frameworktoolbox.intermediate.components.addStandardUploadConfigCell
+import org.dataland.frameworktoolbox.intermediate.components.basecomponents.SimpleKotlinBackedBaseComponent
 import org.dataland.frameworktoolbox.intermediate.components.requireDocumentSupportIn
 import org.dataland.frameworktoolbox.intermediate.datapoints.NoDocumentSupport
 import org.dataland.frameworktoolbox.specific.fixturegenerator.elements.FixtureSectionBuilder
 import org.dataland.frameworktoolbox.specific.uploadconfig.elements.UploadCategoryBuilder
 import org.dataland.frameworktoolbox.specific.viewconfig.elements.SectionConfigBuilder
+import org.dataland.frameworktoolbox.specific.viewconfig.elements.getKotlinFieldAccessor
 import org.dataland.frameworktoolbox.specific.viewconfig.elements.getTypescriptFieldAccessor
 import org.dataland.frameworktoolbox.specific.viewconfig.functional.FrameworkDisplayValueLambda
 import org.dataland.frameworktoolbox.utils.typescript.TypeScriptImport
@@ -20,7 +21,7 @@ import org.dataland.frameworktoolbox.utils.typescript.TypeScriptImport
 class EuTaxonomyAssuranceComponent(
     identifier: String,
     parent: FieldNodeParent,
-) : ComponentBase(
+) : SimpleKotlinBackedBaseComponent(
     identifier, parent,
     "org.dataland.datalandbackend.frameworks" +
         ".eutaxonomynonfinancials.custom.AssuranceDataPoint",
@@ -84,5 +85,9 @@ class EuTaxonomyAssuranceComponent(
                 ),
             ),
         )
+    }
+
+    override fun getExtendedDocumentReference(): List<String> {
+        return listOf("${this.getKotlinFieldAccessor()}?.dataSource?.fileReference")
     }
 }

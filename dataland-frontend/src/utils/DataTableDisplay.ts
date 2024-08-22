@@ -1,4 +1,4 @@
-import { type DataAndMetaInformation } from "@/api-models/DataAndMetaInformation";
+import { type DataAndMetaInformation } from '@/api-models/DataAndMetaInformation';
 
 /**
  * Sorts dates to ensure that Sfdr and LkSG datasets are displayed chronologically in the table in terms of reporting
@@ -8,10 +8,10 @@ import { type DataAndMetaInformation } from "@/api-models/DataAndMetaInformation
  * @returns list of sorted objects
  */
 export function sortReportingPeriodsToDisplayAsColumns(
-  listOfDataDateToDisplayAsColumns: ReportingPeriodOfDataSetWithId[],
+  listOfDataDateToDisplayAsColumns: ReportingPeriodOfDataSetWithId[]
 ): ReportingPeriodOfDataSetWithId[] {
   return listOfDataDateToDisplayAsColumns.sort((dataSetA, dataSetB) =>
-    compareReportingPeriods(dataSetA.reportingPeriod, dataSetB.reportingPeriod),
+    compareReportingPeriods(dataSetA.reportingPeriod, dataSetB.reportingPeriod)
   );
 }
 
@@ -21,10 +21,10 @@ export function sortReportingPeriodsToDisplayAsColumns(
  * @returns the sorted list
  */
 export function sortDatasetsByReportingPeriod<T>(
-  listOfDatasets: DataAndMetaInformation<T>[],
+  listOfDatasets: DataAndMetaInformation<T>[]
 ): DataAndMetaInformation<T>[] {
   return listOfDatasets.sort((dataSetA, dataSetB) =>
-    compareReportingPeriods(dataSetA.metaInfo.reportingPeriod, dataSetB.metaInfo.reportingPeriod),
+    compareReportingPeriods(dataSetA.metaInfo.reportingPeriod, dataSetB.metaInfo.reportingPeriod)
   );
 }
 
@@ -57,7 +57,7 @@ export type ReportingPeriodOfDataSetWithId = {
   reportingPeriod: string;
 };
 
-const buttonRowHeaderId = "row-header-id";
+const buttonRowHeaderId = 'row-header-id';
 
 /**
  * Adds click event listeners on DataTable row headers to expand and collapse row
@@ -69,12 +69,12 @@ const buttonRowHeaderId = "row-header-id";
 export function mountRowHeaderClickEventListeners(
   dataTableIdentifier: string,
   expandedRowsOnClick: () => string[],
-  newExpandedRowsCallback: (newExpandedRows: string[]) => void,
+  newExpandedRowsCallback: (newExpandedRows: string[]) => void
 ): Map<Element, EventListener> {
   const handlerMap: Map<Element, EventListener> = new Map();
   let expandedRowGroups: string[] = [];
   const rowHeaders = Array.from(
-    document.querySelectorAll(`[data-table-id="${dataTableIdentifier}"][data-row-header-click]`),
+    document.querySelectorAll(`[data-table-id="${dataTableIdentifier}"][data-row-header-click]`)
   );
   const rowButtons = rowHeaders
     .map((rowHeader: Element) => {
@@ -110,7 +110,7 @@ export function mountRowHeaderClickEventListeners(
     }
     if (target) {
       handlerMap.set(target as Element, clickHandler);
-      target.addEventListener("click", clickHandler);
+      target.addEventListener('click', clickHandler);
     }
   });
   return handlerMap;
@@ -121,12 +121,12 @@ export function mountRowHeaderClickEventListeners(
  * @param handlerMap the map of rows and their click handlers that need to be looped and have their event listeners removed
  */
 export function unmountRowHeaderClickEventListeners(handlerMap: Map<Element, EventListener>): void {
-  const buttonAttributeName = "data-parent-id";
+  const buttonAttributeName = 'data-parent-id';
   handlerMap.forEach((clickHandler: EventListener | null, el: Element) => {
     if (el?.getAttribute(buttonAttributeName)) {
-      el.removeEventListener("click", clickHandler as EventListener);
+      el.removeEventListener('click', clickHandler as EventListener);
     } else {
-      el.parentNode?.removeEventListener("click", clickHandler);
+      el.parentNode?.removeEventListener('click', clickHandler);
     }
     handlerMap.delete(el);
   });

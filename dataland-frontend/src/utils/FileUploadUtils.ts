@@ -1,9 +1,9 @@
-import { type CompanyReport } from "@clients/backend";
-import { ApiClientProvider } from "@/services/ApiClients";
-import type Keycloak from "keycloak-js";
-import { AxiosError } from "axios";
-import { assertDefined } from "@/utils/TypeScriptUtils";
-import { type ObjectType } from "@/utils/UpdateObjectUtils";
+import { type CompanyReport } from '@clients/backend';
+import { ApiClientProvider } from '@/services/ApiClients';
+import type Keycloak from 'keycloak-js';
+import { AxiosError } from 'axios';
+import { assertDefined } from '@/utils/TypeScriptUtils';
+import { type ObjectType } from '@/utils/UpdateObjectUtils';
 
 export interface DocumentToUpload {
   file: File;
@@ -21,7 +21,7 @@ export interface StoredReport extends CompanyReport {
  */
 export async function uploadFiles(
   files: DocumentToUpload[],
-  getKeycloakPromise: () => Promise<Keycloak>,
+  getKeycloakPromise: () => Promise<Keycloak>
 ): Promise<void> {
   const documentControllerApi = new ApiClientProvider(getKeycloakPromise()).apiClients.documentController;
   const alreadyUploadedFileReferences = new Set<string>();
@@ -44,7 +44,7 @@ export async function uploadFiles(
     if (!fileIsAlreadyInStorage) {
       const backendComputedHash = (await documentControllerApi.postDocument(fileToUpload.file)).data.documentId;
       if (fileToUpload.fileReference !== backendComputedHash) {
-        throw Error("Locally computed document hash does not concede with the one received by the upload request!");
+        throw Error('Locally computed document hash does not concede with the one received by the upload request!');
       }
       alreadyUploadedFileReferences.add(fileToUpload.fileReference);
     }
@@ -59,7 +59,7 @@ export async function uploadFiles(
  */
 export function isThereActuallyANewFileSelected(
   filesCurrentlySelectedByUser: File[],
-  previouslySelectedDocuments: DocumentToUpload[],
+  previouslySelectedDocuments: DocumentToUpload[]
 ): boolean {
   return filesCurrentlySelectedByUser.length != previouslySelectedDocuments.length;
 }
@@ -71,7 +71,7 @@ export function isThereActuallyANewFileSelected(
  */
 export async function calculateSha256HashFromFile(file: File): Promise<string> {
   const buffer = await file.arrayBuffer();
-  const hashBuffer = await crypto.subtle.digest("SHA-256", buffer);
+  const hashBuffer = await crypto.subtle.digest('SHA-256', buffer);
   return toHex(hashBuffer);
 }
 
@@ -82,7 +82,7 @@ export async function calculateSha256HashFromFile(file: File): Promise<string> {
  */
 function toHex(buffer: ArrayBuffer): string {
   const array = Array.from(new Uint8Array(buffer)); // convert buffer to byte array
-  return array.map((b) => b.toString(16).padStart(2, "0")).join(""); // convert bytes to hex string
+  return array.map((b) => b.toString(16).padStart(2, '0')).join(''); // convert bytes to hex string
 }
 
 /**
@@ -92,7 +92,7 @@ function toHex(buffer: ArrayBuffer): string {
  * @returns the file name without the file extension after the last dot
  */
 export function removeFileTypeExtension(fileName: string): string {
-  return fileName.split(".").slice(0, -1).join(".");
+  return fileName.split('.').slice(0, -1).join('.');
 }
 
 /**
@@ -121,16 +121,16 @@ export function calculateReferenceableFiles(inputArray: DocumentToUpload[] | Sto
  * @returns fileReference of the given fileName
  */
 export function getFileReferenceByFileName(
-  currentReportValue: string,
-  injectReportsNameAndReferences: ObjectType,
+  currentReportValue: string | null,
+  injectReportsNameAndReferences: ObjectType
 ): string {
-  if (currentReportValue in injectReportsNameAndReferences) {
+  if (currentReportValue && currentReportValue in injectReportsNameAndReferences) {
     const value = injectReportsNameAndReferences[currentReportValue];
-    if (typeof value === "string") {
+    if (typeof value === 'string') {
       return value;
     }
   }
-  return "";
+  return '';
 }
 
 /**

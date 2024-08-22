@@ -58,27 +58,27 @@
 
 <script lang="ts">
 // @ts-nocheck
-import { defineComponent } from "vue";
-import PrimeButton from "primevue/button";
-import FileUpload, { type FileUploadSelectEvent } from "primevue/fileupload";
-import { formatBytesUserFriendly } from "@/utils/NumberConversionUtils";
+import { defineComponent } from 'vue';
+import PrimeButton from 'primevue/button';
+import FileUpload, { type FileUploadSelectEvent } from 'primevue/fileupload';
+import { formatBytesUserFriendly } from '@/utils/NumberConversionUtils';
 import {
   calculateSha256HashFromFile,
   type DocumentToUpload,
   isThereActuallyANewFileSelected,
   removeFileTypeExtension,
-} from "@/utils/FileUploadUtils";
-import { DOCUMENT_UPLOAD_MAX_FILE_SIZE_IN_BYTES, BYTE_TO_MEGABYTE_FACTOR } from "@/DatalandSettings";
-import FileSelectMessage from "primevue/message";
+} from '@/utils/FileUploadUtils';
+import { DOCUMENT_UPLOAD_MAX_FILE_SIZE_IN_BYTES, BYTE_TO_MEGABYTE_FACTOR } from '@/DatalandSettings';
+import FileSelectMessage from 'primevue/message';
 
 export default defineComponent({
-  name: "UploadDocumentsForm",
+  name: 'UploadDocumentsForm',
   components: {
     FileSelectMessage,
     PrimeButton,
     FileUpload,
   },
-  emits: ["updatedDocumentsSelectedForUpload"],
+  emits: ['updatedDocumentsSelectedForUpload'],
   data() {
     return {
       formatBytesUserFriendly,
@@ -124,7 +124,7 @@ export default defineComponent({
               fileReference: await calculateSha256HashFromFile(file),
               fileNameWithoutSuffix: removeFileTypeExtension(file.name),
             };
-          }),
+          })
         ) as Promise<DocumentToUpload[]>;
 
         void documentsToUpload.then((documentsToUpload) => {
@@ -137,7 +137,7 @@ export default defineComponent({
      * Emits event that selected documents changed
      */
     emitUpdatedDocumentsSelectionEvent() {
-      this.$emit("updatedDocumentsSelectedForUpload", this.documentsToUpload);
+      this.$emit('updatedDocumentsSelectedForUpload', this.documentsToUpload);
     },
 
     /**

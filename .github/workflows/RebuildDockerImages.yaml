@@ -13,7 +13,7 @@ jobs:
     outputs:
       buildscript_json_array: ${{ steps.gather-buildscripts-step.outputs.BUILDSCRIPT_JSON_ARRAY }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
       - name: Gather Buildscripts
         id: gather-buildscripts-step
         run: |
@@ -33,7 +33,7 @@ jobs:
     env:
       BUILD_SCRIPT: ${{ matrix.buildScript }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
       - uses: ./.github/workflows/logObjects
         name: log job contexts
         with:
@@ -47,7 +47,7 @@ jobs:
           inputs: ${{ toJSON(inputs) }}
           vars: ${{ toJSON(vars) }}
       - name: Login to Github Packages
-        uses: docker/login-action@v3
+        uses: docker/login-action@0d4c9c5ea7693da7b068278f7b52bda2a190a446 # v3
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
@@ -67,12 +67,12 @@ jobs:
           chmod +x "./build-utils/$BUILD_SCRIPT"
           "./build-utils/$BUILD_SCRIPT"
       - name: Store docker image versions
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@0b2256b8c012f0828dc542b3febcab082c67f72b # v4
         with:
           name: dockerImageVersions-${{ matrix.buildScript }}
           path: ./*github_env.log
       - name: Store env and secrets
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@0b2256b8c012f0828dc542b3febcab082c67f72b # v4
         if: always()
         with:
           name: parameters-${{ matrix.buildScript }}

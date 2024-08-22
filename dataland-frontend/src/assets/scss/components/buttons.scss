@@ -6,32 +6,36 @@
   font-size: $button-fs;
   font-weight: $button-fw;
   font-family: $ibm-plex-sans;
-  transition: background-color .2s, color .2s, border-color .2s, box-shadow .2s;
+  transition:
+    background-color 0.2s,
+    color 0.2s,
+    border-color 0.2s,
+    box-shadow 0.2s;
   border-radius: 0;
   line-height: $line-height-1;
   margin: $spacing-xxxs;
 
   &:enabled:hover {
     background: darken($btn-primary-bg, 20%);
-    border-color: darken($btn-primary-bg, 20%)
+    border-color: darken($btn-primary-bg, 20%);
   }
 
   &:enabled:active {
     background: darken($btn-primary-bg, 10%);
-    border-color: darken($btn-primary-bg, 10%)
+    border-color: darken($btn-primary-bg, 10%);
   }
 
   &:disabled {
     background-color: transparent;
     border: 0;
     color: $btn-disabled-color;
-    cursor: not-allowed
+    cursor: not-allowed;
   }
 
   &:focus {
     outline: 0 none;
     outline-offset: 0;
-    box-shadow: 0 0 0 .2rem $btn-focus-border-color
+    box-shadow: 0 0 0 0.2rem $btn-focus-border-color;
   }
 
   &.p-button-danger {
@@ -40,12 +44,12 @@
 
     &:enabled:hover {
       background: darken($btn-danger-bg, 20%);
-      border-color: darken($btn-danger-bg, 20%)
+      border-color: darken($btn-danger-bg, 20%);
     }
 
     &:enabled:active {
       background: darken($btn-danger-bg, 10%);
-      border-color: darken($btn-danger-bg, 10%)
+      border-color: darken($btn-danger-bg, 10%);
     }
   }
 
@@ -55,17 +59,17 @@
 
     &:enabled:hover {
       background: darken($btn-success-bg, 20%);
-      border-color: darken($btn-success-bg, 20%)
+      border-color: darken($btn-success-bg, 20%);
     }
 
     &:enabled:active {
       background: darken($btn-success-bg, 10%);
-      border-color: darken($btn-success-bg, 10%)
+      border-color: darken($btn-success-bg, 10%);
     }
   }
 
   &.p-button-rounded {
-    border-radius: $radius-lg
+    border-radius: $radius-lg;
   }
 
   &.p-button-sm {
@@ -75,7 +79,7 @@
 
   &.p-button-icon {
     padding: $spacing-xxxs;
-    line-height: .75rem;
+    line-height: 0.75rem;
 
     .pi {
       font-size: $fs-xs;
@@ -90,7 +94,6 @@
     &:enabled:hover {
       color: $btn-primary-bg;
       background-color: transparent;
-
     }
 
     &:enabled:active {
@@ -126,7 +129,6 @@
         background: lighten($btn-danger-bg, 40%);
       }
     }
-
 
     &.p-button-success {
       color: $btn-success-bg;
@@ -209,7 +211,7 @@
   }
 
   &:focus {
-    box-shadow: 0 0 0 .2rem $btn-focus-border-color;
+    box-shadow: 0 0 0 0.2rem $btn-focus-border-color;
   }
 
   &.--underlined {

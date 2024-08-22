@@ -7,7 +7,7 @@
         <ClaimOwnershipPanel v-if="isClaimPanelVisible" :company-id="companyId" />
 
         <FrameworkSummaryPanel
-          v-for="framework of ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE"
+          v-for="framework of FRAMEWORKS_WITH_VIEW_PAGE"
           :key="framework"
           :is-user-allowed-to-view="isUserAllowedToViewForFramework(framework)"
           :is-user-allowed-to-upload="isUserAllowedToUploadForFramework(framework)"
@@ -25,29 +25,33 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, inject } from "vue";
-import TheHeader from "@/components/generics/TheHeader.vue";
-import TheContent from "@/components/generics/TheContent.vue";
-import { type AggregatedFrameworkDataSummary, type DataTypeEnum } from "@clients/backend";
-import { ApiClientProvider } from "@/services/ApiClients";
-import TheFooter from "@/components/generics/TheNewFooter.vue";
-import contentData from "@/assets/content.json";
-import type { Content, Page } from "@/types/ContentTypes";
-import type Keycloak from "keycloak-js";
-import FrameworkSummaryPanel from "@/components/resources/companyCockpit/FrameworkSummaryPanel.vue";
-import CompanyInfoSheet from "@/components/general/CompanyInfoSheet.vue";
-import { ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE, PRIVATE_FRAMEWORKS } from "@/utils/Constants";
-import ClaimOwnershipPanel from "@/components/resources/companyCockpit/ClaimOwnershipPanel.vue";
-import { checkIfUserHasRole, KEYCLOAK_ROLE_UPLOADER } from "@/utils/KeycloakUtils";
-import { hasCompanyAtLeastOneDataOwner, isUserDataOwnerForCompany } from "@/utils/DataOwnerUtils";
-import { isCompanyIdValid } from "@/utils/ValidationsUtils";
-import { assertDefined } from "@/utils/TypeScriptUtils";
+import { defineComponent, inject } from 'vue';
+import TheHeader from '@/components/generics/TheHeader.vue';
+import TheContent from '@/components/generics/TheContent.vue';
+import { type AggregatedFrameworkDataSummary, type DataTypeEnum } from '@clients/backend';
+import { ApiClientProvider } from '@/services/ApiClients';
+import TheFooter from '@/components/generics/TheNewFooter.vue';
+import contentData from '@/assets/content.json';
+import type { Content, Page } from '@/types/ContentTypes';
+import type Keycloak from 'keycloak-js';
+import FrameworkSummaryPanel from '@/components/resources/companyCockpit/FrameworkSummaryPanel.vue';
+import CompanyInfoSheet from '@/components/general/CompanyInfoSheet.vue';
+import { FRAMEWORKS_WITH_VIEW_PAGE, PRIVATE_FRAMEWORKS } from '@/utils/Constants';
+import ClaimOwnershipPanel from '@/components/resources/companyCockpit/ClaimOwnershipPanel.vue';
+import { checkIfUserHasRole, KEYCLOAK_ROLE_UPLOADER } from '@/utils/KeycloakUtils';
+import {
+  getCompanyRoleAssignmentsForCurrentUserAndCompany,
+  hasCompanyAtLeastOneCompanyOwner,
+} from '@/utils/CompanyRolesUtils';
+import { isCompanyIdValid } from '@/utils/ValidationsUtils';
+import { assertDefined } from '@/utils/TypeScriptUtils';
+import { CompanyRole } from '@clients/communitymanager';
 
 export default defineComponent({
-  name: "CompanyCockpitPage",
+  name: 'CompanyCockpitPage',
   inject: {
     injectedUseMobileView: {
-      from: "useMobileView",
+      from: 'useMobileView',
       default: false,
     },
   },
@@ -56,7 +60,7 @@ export default defineComponent({
       return this.injectedUseMobileView;
     },
     isClaimPanelVisible() {
-      return !this.isAnyDataOwnerExisting && isCompanyIdValid(this.companyId);
+      return !this.isAnyCompanyOwnerExisting && isCompanyIdValid(this.companyId);
     },
   },
   watch: {
@@ -66,7 +70,7 @@ export default defineComponent({
           await this.getAggregatedFrameworkDataSummary();
           await this.setUserRights();
         } catch (error) {
-          console.error("Error fetching data for new company:", error);
+          console.error('Error fetching data for new company:', error);
         }
       }
     },
@@ -84,8 +88,8 @@ export default defineComponent({
   },
   setup() {
     return {
-      getKeycloakPromise: inject<() => Promise<Keycloak>>("getKeycloakPromise"),
-      authenticated: inject<boolean>("authenticated"),
+      getKeycloakPromise: inject<() => Promise<Keycloak>>('getKeycloakPromise'),
+      authenticated: inject<boolean>('authenticated'),
     };
   },
   created() {
@@ -99,16 +103,17 @@ export default defineComponent({
   },
   data() {
     const content: Content = contentData;
-    const footerPage: Page | undefined = content.pages.find((page) => page.url === "/");
+    const footerPage: Page | undefined = content.pages.find((page) => page.url === '/');
     const footerContent = footerPage?.sections;
     return {
       aggregatedFrameworkDataSummary: undefined as
         | { [key in DataTypeEnum]: AggregatedFrameworkDataSummary }
         | undefined,
-      ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE,
-      isUserDataOwner: false,
-      isUserUploader: false,
-      isAnyDataOwnerExisting: false,
+      FRAMEWORKS_WITH_VIEW_PAGE,
+      isUserCompanyOwnerOrUploader: false,
+      isUserKeycloakUploader: false,
+      isAnyCompanyOwnerExisting: false,
+      hasUserAnyRoleInCompany: false,
       footerContent,
     };
   },
@@ -136,7 +141,7 @@ export default defineComponent({
       if (!this.authenticated) {
         return false;
       }
-      return this.isUserDataOwner || this.isFrameworkPublic(framework);
+      return this.hasUserAnyRoleInCompany || this.isFrameworkPublic(framework);
     },
 
     /**
@@ -145,7 +150,7 @@ export default defineComponent({
      * @returns a boolean as result of this check
      */
     isUserAllowedToUploadForFramework(framework: DataTypeEnum): boolean {
-      return this.isUserDataOwner || (this.isFrameworkPublic(framework) && this.isUserUploader);
+      return this.isUserCompanyOwnerOrUploader || (this.isFrameworkPublic(framework) && this.isUserKeycloakUploader);
     },
 
     /**
@@ -158,12 +163,17 @@ export default defineComponent({
     },
 
     /**
-     * Set user access rights and ownership info
+     * Set user access rights
      */
     async setUserRights() {
-      this.isAnyDataOwnerExisting = await hasCompanyAtLeastOneDataOwner(this.companyId, this.getKeycloakPromise);
-      this.isUserDataOwner = await isUserDataOwnerForCompany(this.companyId, this.getKeycloakPromise);
-      this.isUserUploader = await checkIfUserHasRole(KEYCLOAK_ROLE_UPLOADER, this.getKeycloakPromise);
+      this.isAnyCompanyOwnerExisting = await hasCompanyAtLeastOneCompanyOwner(this.companyId, this.getKeycloakPromise);
+      const roles = (
+        await getCompanyRoleAssignmentsForCurrentUserAndCompany(this.companyId, this.getKeycloakPromise)
+      ).map((it) => it.companyRole);
+      this.hasUserAnyRoleInCompany = roles.length > 0;
+      this.isUserCompanyOwnerOrUploader =
+        roles.includes(CompanyRole.CompanyOwner) || roles.includes(CompanyRole.DataUploader);
+      this.isUserKeycloakUploader = await checkIfUserHasRole(KEYCLOAK_ROLE_UPLOADER, this.getKeycloakPromise);
     },
   },
 });

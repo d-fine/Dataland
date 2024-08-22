@@ -1,6 +1,4 @@
 {
-  "*.vue": "eslint --fix",
-  "*.ts": "eslint --fix"
+  "*.vue": ["eslint --fix", "prettier --write"],
+  "*.ts": ["eslint --fix", "prettier --write"]
 }
-
-

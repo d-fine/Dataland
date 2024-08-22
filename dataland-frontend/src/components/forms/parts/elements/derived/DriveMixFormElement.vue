@@ -37,19 +37,19 @@
 
 <script lang="ts">
 // @ts-nocheck
-import { defineComponent } from "vue";
-import InputSwitch from "primevue/inputswitch";
-import { BaseFormFieldProps } from "@/components/forms/parts/fields/FormFieldProps";
-import { FormKit } from "@formkit/vue";
-import PercentageFormField from "@/components/forms/parts/fields/PercentageFormField.vue";
-import UploadFormHeader from "@/components/forms/parts/elements/basic/UploadFormHeader.vue";
-import { type DriveMixType } from "@/api-models/DriveMixType";
+import { defineComponent } from 'vue';
+import InputSwitch from 'primevue/inputswitch';
+import { BaseFormFieldProps } from '@/components/forms/parts/fields/FormFieldProps';
+import { FormKit } from '@formkit/vue';
+import PercentageFormField from '@/components/forms/parts/fields/PercentageFormField.vue';
+import UploadFormHeader from '@/components/forms/parts/elements/basic/UploadFormHeader.vue';
+import { type DriveMixType } from '@/api-models/DriveMixType';
 
 export default defineComponent({
-  name: "DriveMixFormElement",
+  name: 'DriveMixFormElement',
   inject: {
     driveMixPerFleetSegment: {
-      from: "driveMixPerFleetSegment",
+      from: 'driveMixPerFleetSegment',
       default: {} as { [key: string]: DriveMixType },
     },
   },
@@ -62,8 +62,8 @@ export default defineComponent({
   props: BaseFormFieldProps,
   data() {
     return {
-      driveMixPerFleetSegmentInPercent: "",
-      totalAmountOfVehicles: "",
+      driveMixPerFleetSegmentInPercent: '',
+      totalAmountOfVehicles: '',
       isItActive: !!this.driveMixPerFleetSegment[this.name],
     };
   },

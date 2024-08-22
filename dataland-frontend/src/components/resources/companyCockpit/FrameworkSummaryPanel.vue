@@ -36,11 +36,11 @@
 </template>
 
 <script setup lang="ts">
-import { computed, inject } from "vue";
-import { DataTypeEnum } from "@clients/backend";
-import { humanizeStringOrNumber } from "@/utils/StringFormatter";
-import { ARRAY_OF_FRAMEWORKS_WITH_UPLOAD_FORM, ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE } from "@/utils/Constants";
-import { useRouter } from "vue-router";
+import { computed, inject } from 'vue';
+import { DataTypeEnum } from '@clients/backend';
+import { humanizeStringOrNumber } from '@/utils/StringFormatter';
+import { FRAMEWORKS_WITH_UPLOAD_FORM, FRAMEWORKS_WITH_VIEW_PAGE } from '@/utils/Constants';
+import { useRouter } from 'vue-router';
 
 const router = useRouter();
 
@@ -60,31 +60,31 @@ const title = computed(() => {
   if (!euTaxonomyFrameworks.has(props.framework)) {
     return humanizeStringOrNumber(props.framework as string);
   } else {
-    return "EU Taxonomy";
+    return 'EU Taxonomy';
   }
 });
 const subtitle = computed(() => {
   if (!euTaxonomyFrameworks.has(props.framework)) {
-    return "";
+    return '';
   } else if (props.framework == DataTypeEnum.EutaxonomyFinancials) {
-    return "for financial companies";
+    return 'for financial companies';
   } else {
-    return "for non-financial companies";
+    return 'for non-financial companies';
   }
 });
 
-const injectedUseMobileView = inject<{ value: boolean }>("useMobileView");
+const injectedUseMobileView = inject<{ value: boolean }>('useMobileView');
 const useMobileView = computed<boolean | undefined>(() => injectedUseMobileView?.value);
 
 const showProvideDataButton = computed(() => {
-  return props.isUserAllowedToUpload && ARRAY_OF_FRAMEWORKS_WITH_UPLOAD_FORM.includes(props.framework);
+  return props.isUserAllowedToUpload && FRAMEWORKS_WITH_UPLOAD_FORM.includes(props.framework);
 });
 
-const authenticated = inject<{ value: boolean }>("authenticated");
+const authenticated = inject<{ value: boolean }>('authenticated');
 const hasAccessibleViewPage = computed(() => {
   return (
     authenticated?.value &&
-    ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE.includes(props.framework) &&
+    FRAMEWORKS_WITH_VIEW_PAGE.includes(props.framework) &&
     props.numberOfProvidedReportingPeriods
   );
 });

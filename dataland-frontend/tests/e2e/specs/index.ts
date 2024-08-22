@@ -1,14 +1,14 @@
-const testGroupingDisabled = isNaN(Cypress.env("TEST_GROUP") as number);
+const testGroupingDisabled = isNaN(Cypress.env('TEST_GROUP') as number);
 let cypressTestGroup = undefined;
 if (!testGroupingDisabled) {
-  cypressTestGroup = parseInt(Cypress.env("TEST_GROUP") as string);
+  cypressTestGroup = parseInt(Cypress.env('TEST_GROUP') as string);
 }
 
-const singlePopulate = !testGroupingDisabled && Cypress.env("SINGLE_POPULATE") === true;
-const runPrepopulation = Cypress.env("RUN_PREPOPULATION") !== false;
+const singlePopulate = !testGroupingDisabled && Cypress.env('SINGLE_POPULATE') === true;
+const runPrepopulation = Cypress.env('RUN_PREPOPULATION') !== false;
 
 if (testGroupingDisabled) {
-  console.log("Test grouping disabled. Loading all tests...");
+  console.log('Test grouping disabled. Loading all tests...');
 } else {
   console.log(`Test grouping enabled. Loading tests for group ${String(cypressTestGroup)}`);
 }
@@ -19,34 +19,34 @@ if (testGroupingDisabled) {
  * 101 - 102  : Restartability E2E-Tests
  */
 
-require("./infrastructure");
+require('./infrastructure');
 
 if (runPrepopulation) {
   if (!singlePopulate || cypressTestGroup === 1 || cypressTestGroup === 101) {
-    require("./prepopulation");
+    require('./prepopulation');
   } else {
-    require("./prepopulation/AwaitPrepopulation");
+    require('./prepopulation/AwaitPrepopulation');
   }
 }
 
 if (testGroupingDisabled || cypressTestGroup === 1) {
-  require("./landing-page");
-  require("./swagger-ui");
-  require("./user-api-key");
-  require("./framework-view-and-upload-journey");
-  require("./sfdr");
-  require("./lksg");
-  require("./company-cockpit");
+  require('./landing-page');
+  require('./swagger-ui');
+  require('./user-api-key');
+  require('./framework-view-and-upload-journey');
+  require('./sfdr');
+  require('./lksg');
+  require('./company-cockpit');
 }
 
 if (testGroupingDisabled || cypressTestGroup === 2) {
-  require("./eu-taxonomy-financials");
-  require("./eu-taxonomy-non-financials");
-  require("./p2p");
-  require("./sme");
-  require("./esg-questionnaire");
-  require("./heimathafen");
-  require("./data-ownership");
+  require('./eu-taxonomy-financials');
+  require('./eu-taxonomy-non-financials');
+  require('./p2p');
+  require('./vsme');
+  require('./esg-questionnaire');
+  require('./heimathafen');
+  require('./company-ownership');
 }
 
 if (testGroupingDisabled || cypressTestGroup === 3) {
@@ -54,12 +54,12 @@ if (testGroupingDisabled || cypressTestGroup === 3) {
    * user-authentication and admin-tools both need the admin tunnel to be present.
    * That's why they live together.
    */
-  require("./user-authentication");
-  require("./admin-tools");
+  require('./user-authentication');
+  require('./admin-tools');
 }
 
 if (testGroupingDisabled || cypressTestGroup === 4) {
-  require("./search-company-framework-data");
-  require("./quality-assurance");
-  require("./community");
+  require('./search-company-framework-data');
+  require('./quality-assurance');
+  require('./community');
 }

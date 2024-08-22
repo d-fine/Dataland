@@ -1,5 +1,5 @@
 export enum ProcurementCategoryType {
-  Products = "Products",
-  RawMaterials = "RawMaterials",
-  Services = "Services",
+  Products = 'Products',
+  RawMaterials = 'RawMaterials',
+  Services = 'Services',
 }

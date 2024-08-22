@@ -26,13 +26,13 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
-import UploadDocumentsForm from "@/components/forms/parts/elements/basic/UploadDocumentsForm.vue";
-import { type DocumentToUpload } from "@/utils/FileUploadUtils";
-import { isValidFileName } from "@/utils/DataSource";
+import { defineComponent } from 'vue';
+import UploadDocumentsForm from '@/components/forms/parts/elements/basic/UploadDocumentsForm.vue';
+import { type DocumentToUpload } from '@/utils/FileUploadUtils';
+import { isValidFileName } from '@/utils/DataSource';
 
 export default defineComponent({
-  name: "StringBaseDataPointFormField",
+  name: 'StringBaseDataPointFormField',
   components: { UploadDocumentsForm },
   inheritAttrs: false,
   data() {
@@ -45,7 +45,7 @@ export default defineComponent({
       isValidFileName: isValidFileName,
     };
   },
-  emits: ["fieldSpecificDocumentsUpdated"],
+  emits: ['fieldSpecificDocumentsUpdated'],
   mounted() {
     setTimeout(() => {
       this.updateFileUploadFiles();
@@ -68,7 +68,7 @@ export default defineComponent({
       this.referencedDocument = updatedDocuments[0];
       this.documentName = this.referencedDocument?.fileNameWithoutSuffix;
       this.documentReference = this.referencedDocument?.fileReference;
-      this.$emit("fieldSpecificDocumentsUpdated", this.referencedDocument);
+      this.$emit('fieldSpecificDocumentsUpdated', this.referencedDocument);
     },
 
     /**

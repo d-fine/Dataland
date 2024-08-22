@@ -4,6 +4,7 @@ import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.model.CompanyInformation
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
+import org.dataland.datalandcommunitymanager.services.CompanyRolesManager
 import org.dataland.datalandcommunitymanager.services.messaging.SingleDataRequestEmailMessageSender
 import org.dataland.datalandcommunitymanager.utils.readableFrameworkNameMapping
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
@@ -30,9 +31,11 @@ import java.util.*
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class SingleDataRequestEmailMessageSenderTest {
-    val objectMapper = jacksonObjectMapper()
+    private val objectMapper = jacksonObjectMapper()
     private lateinit var authenticationMock: DatalandJwtAuthentication
     private val cloudEventMessageHandlerMock = mock(CloudEventMessageHandler::class.java)
+    private lateinit var companyRolesManager: CompanyRolesManager
+
     private val companyName = "Test Inc."
     private val reportingPeriods = setOf("2022", "2023")
     private val reportingPeriodsAsString = "2022, 2023"
@@ -56,10 +59,12 @@ class SingleDataRequestEmailMessageSenderTest {
         val companyInfoMock = mock(CompanyInformation::class.java)
         `when`(companyInfoMock.companyName).thenReturn(companyName)
         `when`(companyApiMock.getCompanyInfo(anyString())).thenReturn(companyInfoMock)
+        companyRolesManager = mock(CompanyRolesManager::class.java)
         singleDataRequestEmailMessageSender = SingleDataRequestEmailMessageSender(
             cloudEventMessageHandler = cloudEventMessageHandlerMock,
             objectMapper = objectMapper,
             companyApi = companyApiMock,
+            companyRolesManager = companyRolesManager,
         )
     }
 
@@ -68,7 +73,7 @@ class SingleDataRequestEmailMessageSenderTest {
         reset(cloudEventMessageHandlerMock)
     }
 
-    private fun buildInternalEmailMessageMock() {
+    private fun mockBuildingMessageAndSendingItToQueueForInternalMails() {
         `when`(
             cloudEventMessageHandlerMock.buildCEMessageAndSendToQueue(
                 anyString(),
@@ -101,7 +106,7 @@ class SingleDataRequestEmailMessageSenderTest {
 
     @Test
     fun `validate that the output of the internal email message sender is correctly built`() {
-        buildInternalEmailMessageMock()
+        mockBuildingMessageAndSendingItToQueueForInternalMails()
         singleDataRequestEmailMessageSender.sendSingleDataRequestInternalMessage(
             SingleDataRequestEmailMessageSender.MessageInformation(
                 authenticationMock, datalandCompanyId, DataTypeEnum.lksg, reportingPeriods,
@@ -110,7 +115,7 @@ class SingleDataRequestEmailMessageSenderTest {
         )
     }
 
-    private fun buildExternalEmailMessageMock() {
+    private fun mockBuildingMessageAndSendingItToQueueForExternalMails() {
         `when`(
             cloudEventMessageHandlerMock.buildCEMessageAndSendToQueue(
                 anyString(),
@@ -127,7 +132,7 @@ class SingleDataRequestEmailMessageSenderTest {
             val arg5 = it.getArgument<String>(4)
 
             assertEquals(TemplateEmailMessage.Type.ClaimOwnership, arg1.emailTemplateType)
-            assertEquals("alphabet@example.com", arg1.receiver)
+            assertEquals(TemplateEmailMessage.EmailAddressEmailRecipient(email = "alphabet@example.com"), arg1.receiver)
             assertEquals(datalandCompanyId, arg1.properties.getValue("companyId"))
             assertEquals(companyName, arg1.properties.getValue("companyName"))
             assertEquals(authenticationMock.username, arg1.properties.getValue("requesterEmail"))
@@ -143,12 +148,12 @@ class SingleDataRequestEmailMessageSenderTest {
 
     @Test
     fun `validate that the output of the external email message sender is correctly built`() {
-        buildExternalEmailMessageMock()
+        mockBuildingMessageAndSendingItToQueueForExternalMails()
         singleDataRequestEmailMessageSender.sendSingleDataRequestExternalMessage(
             SingleDataRequestEmailMessageSender.MessageInformation(
                 authenticationMock, datalandCompanyId, DataTypeEnum.p2p, reportingPeriods,
             ),
-            "alphabet@example.com",
+            setOf("alphabet@example.com"),
             "ABCDEFGHIJKLMNOPQRSTUVWXYZ",
             correlationId,
         )

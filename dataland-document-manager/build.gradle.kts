@@ -77,6 +77,52 @@ openApi {
     waitTimeInSeconds.set(openApiGeneratorTimeOutThresholdInSeconds.toInt())
 }
 
+tasks.register("generateCommunityManagerClient", org.openapitools.generator.gradle.plugin.tasks.GenerateTask::class) {
+    description = "Task to generate clients for the community manager service."
+    group = "clients"
+    val communityManagerClientDestinationPackage = "org.dataland.datalandcommunitymanager.openApiClient"
+    input = project.file("${project.rootDir}/dataland-community-manager/communityManagerOpenApi.json").path
+    outputDir.set(layout.buildDirectory.dir("clients/communitymanager").get().toString())
+    packageName.set(communityManagerClientDestinationPackage)
+    modelPackage.set("$communityManagerClientDestinationPackage.model")
+    apiPackage.set("$communityManagerClientDestinationPackage.api")
+    generatorName.set("kotlin")
+    additionalProperties.set(
+        mapOf(
+            "removeEnumValuePrefix" to false,
+        ),
+    )
+    configOptions.set(
+        mapOf(
+            "withInterfaces" to "true",
+            "withSeparateModelsAndApi" to "true",
+        ),
+    )
+}
+
+tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
+    dependsOn("generateCommunityManagerClient")
+}
+
+tasks.getByName("runKtlintCheckOverMainSourceSet") {
+    dependsOn("generateCommunityManagerClient")
+}
+
+tasks.getByName("ktlintMainSourceSetCheck") {
+    dependsOn("generateCommunityManagerClient")
+}
+
+sourceSets {
+    val main by getting
+    main.kotlin.srcDir(layout.buildDirectory.dir("clients/communitymanager/src/main/kotlin"))
+}
+
+ktlint {
+    filter {
+        exclude("**/openApiClient/**")
+    }
+}
+
 tasks.test {
     useJUnitPlatform()
 

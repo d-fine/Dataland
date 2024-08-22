@@ -49,12 +49,14 @@ dependencies {
     implementation(libs.flyway)
     implementation(libs.flyway.core)
     implementation(Spring.boot.security)
+    implementation(libs.json)
     runtimeOnly(libs.postgresql)
     runtimeOnly(libs.h2)
     kapt(Spring.boot.configurationProcessor)
     testImplementation(Spring.boot.test)
     testImplementation(Testing.mockito.core)
     testImplementation(Spring.security.spring_security_test)
+    testImplementation(libs.mockito.kotlin)
 }
 
 openApi {

@@ -2,7 +2,7 @@ import {
   type AvailableMLDTDisplayObjectTypes,
   MLDTDisplayComponentName,
   MLDTDisplayObjectForEmptyString,
-} from "@/components/resources/dataTable/MultiLayerDataTableCellDisplayer";
+} from '@/components/resources/dataTable/MultiLayerDataTableCellDisplayer';
 
 /**
  * Formats the provided string as a FreeText cell for the datatable

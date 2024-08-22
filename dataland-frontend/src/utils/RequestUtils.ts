@@ -1,7 +1,7 @@
-import type Keycloak from "keycloak-js";
-import { type ExtendedStoredDataRequest, RequestStatus } from "@clients/communitymanager";
-import { ApiClientProvider } from "@/services/ApiClients";
-import { type DataTypeEnum } from "@clients/backend";
+import type Keycloak from 'keycloak-js';
+import { type AccessStatus, type ExtendedStoredDataRequest, RequestStatus } from '@clients/communitymanager';
+import { ApiClientProvider } from '@/services/ApiClients';
+import { type DataTypeEnum } from '@clients/backend';
 
 /**
  * Returns the List of StoredDataRequest from user with ReqeustStatus 'answered' and matching framework and companyId
@@ -15,20 +15,20 @@ export async function getAnsweredDataRequestsForViewPage(
   companyId: string,
   framework: DataTypeEnum,
   reportingPeriods: string[],
-  keycloakPromiseGetter?: () => Promise<Keycloak>,
+  keycloakPromiseGetter?: () => Promise<Keycloak>
 ): Promise<ExtendedStoredDataRequest[]> {
   try {
     if (keycloakPromiseGetter) {
       return (
         await new ApiClientProvider(
-          keycloakPromiseGetter(),
+          keycloakPromiseGetter()
         ).apiClients.requestController.getDataRequestsForRequestingUser()
       ).data.filter(
         (dataRequest) =>
           dataRequest.dataType == framework &&
           dataRequest.datalandCompanyId == companyId &&
           reportingPeriods.includes(dataRequest.reportingPeriod) &&
-          dataRequest.requestStatus == RequestStatus.Answered,
+          dataRequest.requestStatus == RequestStatus.Answered
       );
     }
   } catch (error) {
@@ -41,6 +41,7 @@ export async function getAnsweredDataRequestsForViewPage(
  * Patches the RequestStatus of a StoredDataRequest
  * @param dataRequestId the dataland dataRequestId
  * @param requestStatus the desired requestStatus
+ * @param accessStatus the desired access status
  * @param contacts set of email contacts
  * @param message context of the email
  * @param keycloakPromiseGetter the getter-function which returns a Keycloak-Promise
@@ -48,17 +49,19 @@ export async function getAnsweredDataRequestsForViewPage(
 export async function patchDataRequest(
   dataRequestId: string,
   requestStatus: RequestStatus | undefined,
+  accessStatus: AccessStatus | undefined,
   contacts: Set<string> | undefined,
   message: string | undefined,
-  keycloakPromiseGetter?: () => Promise<Keycloak>,
+  keycloakPromiseGetter?: () => Promise<Keycloak>
 ): Promise<void> {
   try {
     if (keycloakPromiseGetter) {
       await new ApiClientProvider(keycloakPromiseGetter()).apiClients.requestController.patchDataRequest(
         dataRequestId,
         requestStatus,
+        accessStatus,
         contacts,
-        message,
+        message
       );
     }
   } catch (error) {
@@ -73,17 +76,17 @@ export async function patchDataRequest(
  */
 export function badgeClass(requestStatus: RequestStatus): string {
   switch (requestStatus) {
-    case "Answered":
-      return "p-badge badge-blue outline rounded";
-    case "Open":
-      return "p-badge badge-yellow outline rounded";
-    case "Resolved":
-      return "p-badge badge-light-green outline rounded";
-    case "Withdrawn":
-      return "p-badge badge-gray outline rounded";
-    case "Closed":
-      return "p-badge badge-brown outline rounded";
+    case 'Answered':
+      return 'p-badge badge-blue outline rounded';
+    case 'Open':
+      return 'p-badge badge-yellow outline rounded';
+    case 'Resolved':
+      return 'p-badge badge-light-green outline rounded';
+    case 'Withdrawn':
+      return 'p-badge badge-gray outline rounded';
+    case 'Closed':
+      return 'p-badge badge-brown outline rounded';
     default:
-      return "p-badge outline rounded";
+      return 'p-badge outline rounded';
   }
 }

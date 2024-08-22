@@ -37,7 +37,7 @@
           >
         </template>
         <template #body="{ data }">
-          {{ data.lei ? data.lei : "Not available" }}
+          {{ data.lei ? data.lei : 'Not available' }}
         </template>
       </Column>
       <Column field="sector" header="SECTOR" :sortable="false" class="d-bg-white w-2" />
@@ -61,16 +61,16 @@
 </template>
 
 <script lang="ts">
-import DataTable, { type DataTablePageEvent } from "primevue/datatable";
-import Column from "primevue/column";
-import Tooltip from "primevue/tooltip";
-import { defineComponent, type PropType } from "vue";
-import { type BasicCompanyInformation } from "@clients/backend";
+import DataTable, { type DataTablePageEvent } from 'primevue/datatable';
+import Column from 'primevue/column';
+import Tooltip from 'primevue/tooltip';
+import { defineComponent, type PropType } from 'vue';
+import { type BasicCompanyInformation } from '@clients/backend';
 
 export default defineComponent({
-  name: "FrameworkDataSearchResults",
+  name: 'FrameworkDataSearchResults',
   components: { DataTable, Column },
-  emits: ["page-update"],
+  emits: ['page-update'],
   directives: {
     tooltip: Tooltip,
   },
@@ -99,7 +99,7 @@ export default defineComponent({
      */
     onPage(event: DataTablePageEvent) {
       window.scrollTo(0, 0);
-      this.$emit("page-update", event.page);
+      this.$emit('page-update', event.page);
     },
     /**
      * Navigates to the company cockpit page on a click on the row of the company

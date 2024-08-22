@@ -16,16 +16,16 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent } from 'vue';
 import {
   MLDTDisplayComponentName,
   type MLDTDisplayObject,
-} from "@/components/resources/dataTable/MultiLayerDataTableCellDisplayer";
-import DataPointDataTable from "@/components/general/DataPointDataTable.vue";
-import { type DataMetaInformation, type ExtendedDocumentReference } from "@clients/backend";
+} from '@/components/resources/dataTable/MultiLayerDataTableCellDisplayer';
+import DataPointDataTable from '@/components/general/DataPointDataTable.vue';
+import { type DataMetaInformation, type ExtendedDocumentReference } from '@clients/backend';
 
 export default defineComponent({
-  name: "DataPointWrapperDisplayComponent",
+  name: 'DataPointWrapperDisplayComponent',
   props: {
     content: {
       type: Object as () => MLDTDisplayObject<MLDTDisplayComponentName.DataPointWrapperDisplayComponent>,

@@ -1,8 +1,9 @@
 ARG DATALAND_GRADLE_BASE_VERSION
-FROM ghcr.io/d-fine/dataland/dataland_gradle_base:${DATALAND_GRADLE_BASE_VERSION} as builder
+FROM ghcr.io/d-fine/dataland/dataland_gradle_base:${DATALAND_GRADLE_BASE_VERSION} AS builder
 
 WORKDIR /app
 COPY ./dataland-email-service/ ./dataland-email-service/
 COPY ./dataland-backend-utils/ ./dataland-backend-utils/
+COPY ./dataland-keycloak-adapter/ ./dataland-keycloak-adapter/
 COPY ./dataland-message-queue-utils/ ./dataland-message-queue-utils/
 RUN ./gradlew dataland-email-service:bootJar --no-daemon --stacktrace

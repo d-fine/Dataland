@@ -1,4 +1,4 @@
-import { faker } from "@faker-js/faker";
+import { faker } from '@faker-js/faker';
 
 export const FAKER_BASE_SEED = 0;
 export const HASH_MULTIPLIER = 31;
@@ -8,7 +8,7 @@ export const HASH_MULTIPLIER = 31;
  * @returns the java hashCode of the string
  */
 function stringHashCode(str: string): number {
-  return str.split("").reduce((acc, toIntegrate) => ((acc << 5) - acc + toIntegrate.charCodeAt(0)) | 0, 0);
+  return str.split('').reduce((acc, toIntegrate) => ((acc << 5) - acc + toIntegrate.charCodeAt(0)) | 0, 0);
 }
 
 /**
@@ -43,6 +43,6 @@ function getRngSeedForFramework(folderName: string): number {
 export function setupDeterministicFakerEnvironmentForFramework(folderName: string): number {
   const seed = getRngSeedForFramework(folderName);
   faker.seed(seed);
-  faker.setDefaultRefDate(new Date("2024-01-24")); // Dataland launch date ;)
+  faker.setDefaultRefDate(new Date('2024-01-24')); // Dataland launch date ;)
   return seed;
 }

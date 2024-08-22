@@ -1,10 +1,10 @@
-import { type FixtureData } from "@sharedUtils/Fixtures";
-import { type EutaxonomyNonFinancialsData } from "@clients/backend";
+import { type FixtureData } from '@sharedUtils/Fixtures';
+import { type EutaxonomyNonFinancialsData } from '@clients/backend';
 import {
   generateEutaxonomyNonFinancialsData,
   generateEutaxonomyNonFinancialsFixtures,
-} from "./EutaxonomyNonFinancialsDataFixtures";
-import { EutaxonomyNonFinancialsGenerator } from "@e2e/fixtures/frameworks/eutaxonomy-non-financials/EutaxonomyNonFinancialsGenerator";
+} from './EutaxonomyNonFinancialsDataFixtures';
+import { EutaxonomyNonFinancialsGenerator } from '@e2e/fixtures/frameworks/eutaxonomy-non-financials/EutaxonomyNonFinancialsGenerator';
 
 /**
  * Generates eutaxonomy-non-financials prepared fixtures by generating random eutaxonomy-non-financials datasets and
@@ -21,6 +21,7 @@ export function generateEutaxonomyNonFinancialsPreparedFixtures(): Array<Fixture
     createCompanyAlphaWithAllFieldsDefined,
     createCompanyBetaWithAllFieldsDefined,
     createCompanyGammaWithAllFieldsDefined,
+    createCompanyWithIncompleteReferencedReportsList,
   ];
   const preparedFixturesBeforeManipulation = generateEutaxonomyNonFinancialsFixtures(manipulatorFunctions.length);
 
@@ -40,7 +41,7 @@ export function generateEutaxonomyNonFinancialsPreparedFixtures(): Array<Fixture
 function createDatasetThatHasAllFieldsDefined(
   input: FixtureData<EutaxonomyNonFinancialsData>,
   companyName: string,
-  reportingPeriod: string,
+  reportingPeriod: string
 ): FixtureData<EutaxonomyNonFinancialsData> {
   input.companyInformation.companyName = companyName;
   input.reportingPeriod = reportingPeriod;
@@ -54,9 +55,9 @@ function createDatasetThatHasAllFieldsDefined(
  * @returns the modified fixture
  */
 function createCompanyAlphaWithAllFieldsDefined(
-  input: FixtureData<EutaxonomyNonFinancialsData>,
+  input: FixtureData<EutaxonomyNonFinancialsData>
 ): FixtureData<EutaxonomyNonFinancialsData> {
-  return createDatasetThatHasAllFieldsDefined(input, "all-fields-defined-for-eu-taxo-non-financials-alpha", "2023");
+  return createDatasetThatHasAllFieldsDefined(input, 'all-fields-defined-for-eu-taxo-non-financials-alpha', '2023');
 }
 
 /**
@@ -65,9 +66,9 @@ function createCompanyAlphaWithAllFieldsDefined(
  * @returns the modified fixture
  */
 function createCompanyBetaWithAllFieldsDefined(
-  input: FixtureData<EutaxonomyNonFinancialsData>,
+  input: FixtureData<EutaxonomyNonFinancialsData>
 ): FixtureData<EutaxonomyNonFinancialsData> {
-  return createDatasetThatHasAllFieldsDefined(input, "all-fields-defined-for-eu-taxo-non-financials-beta", "2022");
+  return createDatasetThatHasAllFieldsDefined(input, 'all-fields-defined-for-eu-taxo-non-financials-beta', '2022');
 }
 
 /**
@@ -78,21 +79,17 @@ function createCompanyBetaWithAllFieldsDefined(
  * @returns the modified fixture
  */
 function createCompanyGammaWithAllFieldsDefined(
-  input: FixtureData<EutaxonomyNonFinancialsData>,
+  input: FixtureData<EutaxonomyNonFinancialsData>
 ): FixtureData<EutaxonomyNonFinancialsData> {
-  input.companyInformation.companyName = "all-fields-defined-for-eu-taxo-non-financials-gamma";
-  input.reportingPeriod = "2021";
+  input.companyInformation.companyName = 'all-fields-defined-for-eu-taxo-non-financials-gamma';
+  input.reportingPeriod = '2021';
   input.t = generateEutaxonomyNonFinancialsData(0);
   const eutaxoNonFinancialsGenerator = new EutaxonomyNonFinancialsGenerator(0);
-  const someNonAlignedActivities = eutaxoNonFinancialsGenerator.randomArray(
-    () => eutaxoNonFinancialsGenerator.generateActivity(),
-    1,
-    4,
+  const someNonAlignedActivities = eutaxoNonFinancialsGenerator.randomExtendedDataPoint(
+    eutaxoNonFinancialsGenerator.randomArray(() => eutaxoNonFinancialsGenerator.generateActivity(), 1, 4)
   );
-  const someAlignedActivities = eutaxoNonFinancialsGenerator.randomArray(
-    () => eutaxoNonFinancialsGenerator.generateAlignedActivity(),
-    1,
-    10,
+  const someAlignedActivities = eutaxoNonFinancialsGenerator.randomExtendedDataPoint(
+    eutaxoNonFinancialsGenerator.randomArray(() => eutaxoNonFinancialsGenerator.generateAlignedActivity(), 1, 10)
   );
 
   const modifiedInput = { ...input };
@@ -103,4 +100,18 @@ function createCompanyGammaWithAllFieldsDefined(
     modifiedInput.t.capex.alignedActivities = someAlignedActivities;
   }
   return modifiedInput;
+}
+/**
+ * Creates a prepared fixture with a missing referenced reports list
+ * @param input the base fixture to modify
+ * @returns the modified fixture
+ */
+function createCompanyWithIncompleteReferencedReportsList(
+  input: FixtureData<EutaxonomyNonFinancialsData>
+): FixtureData<EutaxonomyNonFinancialsData> {
+  input.companyInformation.companyName = 'TestForIncompleteReferencedReport';
+  input.reportingPeriod = '2021';
+  input.t = generateEutaxonomyNonFinancialsData(0);
+  if (input.t.general) input.t.general.referencedReports = null;
+  return input;
 }

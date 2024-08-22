@@ -1,6 +1,7 @@
 package org.dataland.datalandbackend.configurations
 
 import okhttp3.OkHttpClient
+import org.dataland.datalandcommunitymanager.openApiClient.api.CompanyRolesControllerApi
 import org.dataland.datalandcommunitymanager.openApiClient.api.RequestControllerApi
 import org.dataland.documentmanager.openApiClient.api.DocumentControllerApi
 import org.springframework.beans.factory.annotation.Qualifier
@@ -17,10 +18,20 @@ class ApiClients(
     @Value("\${dataland.documentmanager.base-url}") private val documentManagerBaseUrl: String,
 ) {
     /**
+     * Creates an auto-authenticated version of the CompanyRolesControllerApi of the community manager
+     */
+    @Bean
+    fun getCompanyRolesApi(
+        @Qualifier("AuthenticatedOkHttpClient") authenticatedOkHttpClient: OkHttpClient,
+    ): CompanyRolesControllerApi {
+        return CompanyRolesControllerApi(communitymanagerBaseUrl, authenticatedOkHttpClient)
+    }
+
+    /**
      * Creates an auto-authenticated version of the RequestControllerApi of the community manager
      */
     @Bean
-    fun getRequestApi(
+    fun getRequestsApi(
         @Qualifier("AuthenticatedOkHttpClient") authenticatedOkHttpClient: OkHttpClient,
     ): RequestControllerApi {
         return RequestControllerApi(communitymanagerBaseUrl, authenticatedOkHttpClient)

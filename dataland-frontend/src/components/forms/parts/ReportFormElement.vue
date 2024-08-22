@@ -2,59 +2,41 @@
   <FormKit :name="name" type="group">
     <!-- Date of the report -->
     <div class="form-field">
-      <UploadFormHeader
-        label="Report Date"
-        description="The date until which the information presented in the report is valid."
-      />
+      <UploadFormHeader label="Publication Date" description="The publication date of the report." />
       <div class="md:col-6 col-12 p-0">
         <Calendar
-          data-test="reportDate"
+          data-test="publicationDate"
           inputId="icon"
-          :modelValue="reportDateAsDate"
+          :modelValue="publicationDateAsDate"
           :showIcon="true"
           dateFormat="D, M dd, yy"
           @update:modelValue="reportingDateChanged($event)"
         />
       </div>
-      <FormKit type="text" :modelValue="hyphenatedDate" name="reportDate" :outer-class="{ 'hidden-input': true }" />
-    </div>
-
-    <FormKit type="text" :modelValue="fileReference" name="fileReference" :outer-class="{ 'hidden-input': true }" />
-
-    <!-- Currency used in the report -->
-    <SingleSelectFormField
-      validation-label="Currency used in the report"
-      placeholder="Currency used in the report"
-      :options="countryCodeOptions"
-      name="currency"
-      label="Currency"
-      description="The 3-letter alpha code that represents the currency used in the report."
-    />
-    <!-- Integrated report is on a group level -->
-    <div class="form-field">
-      <YesNoFormField name="isGroupLevel" description="Is the report on a group level?" label="Group Level Report" />
+      <FormKit
+        type="text"
+        :modelValue="hyphenatedDate"
+        name="publicationDate"
+        :outer-class="{ 'hidden-input': true }"
+      />
+      <FormKit type="text" :modelValue="fileReference" name="fileReference" :outer-class="{ 'hidden-input': true }" />
     </div>
   </FormKit>
 </template>
 
 <script lang="ts">
 // @ts-nocheck
-import { defineComponent } from "vue";
-import UploadFormHeader from "@/components/forms/parts/elements/basic/UploadFormHeader.vue";
-import { FormKit } from "@formkit/vue";
-import Calendar from "primevue/calendar";
-import { getHyphenatedDate } from "@/utils/DataFormatUtils";
-import YesNoFormField from "@/components/forms/parts/fields/YesNoFormField.vue";
-import { DropdownDatasetIdentifier, getDataset } from "@/utils/PremadeDropdownDatasets";
-import SingleSelectFormField from "@/components/forms/parts/fields/SingleSelectFormField.vue";
-
+import { defineComponent } from 'vue';
+import UploadFormHeader from '@/components/forms/parts/elements/basic/UploadFormHeader.vue';
+import { FormKit } from '@formkit/vue';
+import Calendar from 'primevue/calendar';
+import { getHyphenatedDate } from '@/utils/DataFormatUtils';
 export default defineComponent({
-  name: "ReportFormElement",
-  components: { YesNoFormField, FormKit, UploadFormHeader, Calendar, SingleSelectFormField },
+  name: 'ReportFormElement',
+  components: { FormKit, UploadFormHeader, Calendar },
   data() {
     return {
-      countryCodeOptions: getDataset(DropdownDatasetIdentifier.CurrencyCodes),
-      reportDateAsDate: undefined as undefined | Date,
+      publicationDateAsDate: undefined as undefined | Date,
     };
   },
   mounted() {
@@ -69,14 +51,14 @@ export default defineComponent({
       type: String,
       required: true,
     },
-    reportDate: {
+    publicationDate: {
       type: String,
     },
   },
   computed: {
     hyphenatedDate() {
-      if (this.reportDateAsDate) {
-        return getHyphenatedDate(this.reportDateAsDate);
+      if (this.publicationDateAsDate) {
+        return getHyphenatedDate(this.publicationDateAsDate);
       }
       return undefined;
     },
@@ -86,14 +68,15 @@ export default defineComponent({
      * computes an actual date object from the date string
      */
     getDateFromString() {
-      this.reportDateAsDate = this.reportDate && this.reportDate.length > 1 ? new Date(this.reportDate) : undefined;
+      this.publicationDateAsDate =
+        this.publicationDate && this.publicationDate.length > 1 ? new Date(this.publicationDate) : undefined;
     },
     /**
      * Emits the event that the reporting date was changed
      * @param newDate the new date
      */
     reportingDateChanged(newDate: Date) {
-      this.reportDateAsDate = newDate;
+      this.publicationDateAsDate = newDate;
     },
   },
 });

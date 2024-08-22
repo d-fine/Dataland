@@ -102,7 +102,8 @@
           <div class="api-doc_links">
             <a href="/api/swagger-ui/index.html" target="_blank" rel="noopener noreferrer">Datasets</a>
             <a href="/documents/swagger-ui/index.html" target="_blank" rel="noopener noreferrer">Documents</a>
-            <a href="/community/swagger-ui/index.html" target="_blank" rel="noopener noreferrer">Requests</a>
+            <a href="/community/swagger-ui/index.html" target="_blank" rel="noopener noreferrer">Community</a>
+            <a href="/qa/swagger-ui/index.html" target="_blank" rel="noopener noreferrer">Quality Assurance</a>
           </div>
         </div>
       </div>
@@ -145,28 +146,28 @@
 </template>
 
 <script lang="ts">
-import AuthenticationWrapper from "@/components/wrapper/AuthenticationWrapper.vue";
-import { type ComponentPublicInstance, defineComponent, inject, ref } from "vue";
-import PrimeButton from "primevue/button";
-import TheHeader from "@/components/generics/TheHeader.vue";
-import TheContent from "@/components/generics/TheContent.vue";
-import MiddleCenterDiv from "@/components/wrapper/MiddleCenterDivWrapper.vue";
-import BackButton from "@/components/general/BackButton.vue";
-import ApiKeyCard from "@/components/resources/apiKey/ApiKeyCard.vue";
-import CreateApiKeyCard from "@/components/resources/apiKey/CreateApiKeyCard.vue";
-import MessageComponent from "@/components/messages/MessageComponent.vue";
-import PrimeDialog from "primevue/dialog";
-import PrimeTextarea from "primevue/textarea";
-import { ApiClientProvider } from "@/services/ApiClients";
-import { assertDefined } from "@/utils/TypeScriptUtils";
-import type Keycloak from "keycloak-js";
-import { type ApiKeyControllerApiInterface } from "@clients/apikeymanager";
-import TheFooter from "@/components/generics/TheNewFooter.vue";
-import contentData from "@/assets/content.json";
-import type { Content, Page } from "@/types/ContentTypes";
+import AuthenticationWrapper from '@/components/wrapper/AuthenticationWrapper.vue';
+import { type ComponentPublicInstance, defineComponent, inject, ref } from 'vue';
+import PrimeButton from 'primevue/button';
+import TheHeader from '@/components/generics/TheHeader.vue';
+import TheContent from '@/components/generics/TheContent.vue';
+import MiddleCenterDiv from '@/components/wrapper/MiddleCenterDivWrapper.vue';
+import BackButton from '@/components/general/BackButton.vue';
+import ApiKeyCard from '@/components/resources/apiKey/ApiKeyCard.vue';
+import CreateApiKeyCard from '@/components/resources/apiKey/CreateApiKeyCard.vue';
+import MessageComponent from '@/components/messages/MessageComponent.vue';
+import PrimeDialog from 'primevue/dialog';
+import PrimeTextarea from 'primevue/textarea';
+import { ApiClientProvider } from '@/services/ApiClients';
+import { assertDefined } from '@/utils/TypeScriptUtils';
+import type Keycloak from 'keycloak-js';
+import { type ApiKeyControllerApiInterface } from '@clients/apikeymanager';
+import TheFooter from '@/components/generics/TheNewFooter.vue';
+import contentData from '@/assets/content.json';
+import type { Content, Page } from '@/types/ContentTypes';
 
 export default defineComponent({
-  name: "ApiKeysPage",
+  name: 'ApiKeysPage',
   components: {
     AuthenticationWrapper,
     TheContent,
@@ -183,17 +184,17 @@ export default defineComponent({
   },
   setup() {
     return {
-      getKeycloakPromise: inject<() => Promise<Keycloak>>("getKeycloakPromise"),
+      getKeycloakPromise: inject<() => Promise<Keycloak>>('getKeycloakPromise'),
       newKeyHolderRef: ref<ComponentPublicInstance<typeof PrimeTextarea> | null>(null),
     };
   },
   data() {
     return {
-      pageState: "view",
+      pageState: 'view',
       userAlreadyHasApiKey: false,
       waitingForData: true,
       regenerateConfirmationVisible: false,
-      newKey: "",
+      newKey: '',
       expiryDate: undefined as undefined | number,
       userRolesAccordingToApiKey: [] as Array<string>,
       userRolesAccordingToKeycloak: [] as Array<string>,
@@ -203,9 +204,9 @@ export default defineComponent({
   },
   computed: {
     pageTitle() {
-      if (this.pageState === "view") return "API Key";
-      if (this.pageState === "create") return "Create new API Key";
-      return "API";
+      if (this.pageState === 'view') return 'API Key';
+      if (this.pageState === 'create') return 'Create new API Key';
+      return 'API';
     },
   },
   props: {},
@@ -227,12 +228,12 @@ export default defineComponent({
      */
     async getApiKeyMetaInfoForUser() {
       this.content = contentData;
-      this.footerContent = this.content.pages.find((page) => page.url === "/");
+      this.footerContent = this.content.pages.find((page) => page.url === '/');
       try {
         const keycloakPromiseGetter = assertDefined(this.getKeycloakPromise);
         const resolvedKeycloakPromise = await keycloakPromiseGetter();
         const apiKeyManagerController: ApiKeyControllerApiInterface = new ApiClientProvider(
-          assertDefined(this.getKeycloakPromise)(),
+          assertDefined(this.getKeycloakPromise)()
         ).apiClients.apiKeyController;
         const apiKeyMetaInfoForUser = await apiKeyManagerController.getApiKeyMetaInfoForUser();
         this.waitingForData = false;
@@ -283,7 +284,7 @@ export default defineComponent({
         this.userRolesAccordingToApiKey = response.data.apiKeyMetaInfo.keycloakRoles
           ? response.data.apiKeyMetaInfo.keycloakRoles
           : [];
-        this.setActivePageState("view");
+        this.setActivePageState('view');
       } catch (error) {
         console.error(error);
         this.userAlreadyHasApiKey = false;
@@ -338,7 +339,7 @@ export default defineComponent({
       letter-spacing: 0.25px;
       text-decoration: none;
       &::after {
-        content: "";
+        content: '';
         display: inline-block;
         top: 3px;
         width: 16px;

@@ -7,16 +7,16 @@
  */
 export function convertCurrencyNumbersToNotationWithLetters(
   numberToConvert: number | undefined,
-  maxNumberOfDigitsAfterDecimalPoint?: number,
+  maxNumberOfDigitsAfterDecimalPoint?: number
 ): string {
   const lookup = [
-    { value: 1, symbol: "" },
-    { value: 1e3, symbol: "K" },
-    { value: 1e6, symbol: "M" },
-    { value: 1e9, symbol: "B" },
-    { value: 1e12, symbol: "T" },
-    { value: 1e15, symbol: "QA" },
-    { value: 1e18, symbol: "QI" },
+    { value: 1, symbol: '' },
+    { value: 1e3, symbol: 'K' },
+    { value: 1e6, symbol: 'M' },
+    { value: 1e9, symbol: 'B' },
+    { value: 1e12, symbol: 'T' },
+    { value: 1e15, symbol: 'QA' },
+    { value: 1e18, symbol: 'QI' },
   ];
   if (numberToConvert !== undefined) {
     const regex = /\.0+$|(\.d*[1-9])0+$/;
@@ -25,11 +25,11 @@ export function convertCurrencyNumbersToNotationWithLetters(
       .reverse()
       .find((part): boolean => numberToConvert >= part.value);
     return item
-      ? (numberToConvert / item.value).toFixed(maxNumberOfDigitsAfterDecimalPoint).replace(regex, "$1") +
-          " " +
+      ? (numberToConvert / item.value).toFixed(maxNumberOfDigitsAfterDecimalPoint).replace(regex, '$1') +
+          ' ' +
           item.symbol
-      : "0";
+      : '0';
   } else {
-    return "";
+    return '';
   }
 }

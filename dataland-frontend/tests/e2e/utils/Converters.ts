@@ -4,6 +4,6 @@
  * @returns the encoded inputString
  */
 export function convertStringToQueryParamFormat(inputString: string): string {
-  const stringInQueryParamFormat = inputString.replace(" ", "+");
+  const stringInQueryParamFormat = inputString.replace(' ', '+');
   return stringInQueryParamFormat;
 }

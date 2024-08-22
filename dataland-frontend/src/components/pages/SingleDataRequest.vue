@@ -58,12 +58,12 @@
                       />
                     </BasicFormSection>
                     <BasicFormSection
-                      :data-test="'informationDataOwnership'"
-                      header="Information about company data ownership"
+                      :data-test="'informationCompanyOwnership'"
+                      header="Information about company ownership"
                     >
-                      <p v-if="hasCompanyDataOwner">
-                        This company has at least one company data owner. <br />
-                        The company data owner(s) will be informed about your data request.
+                      <p v-if="hasCompanyAtLeastOneOwner">
+                        This company has at least one company owner. <br />
+                        The company company owner(s) will be informed about your data request.
                       </p>
                       <p v-else>This company does not have a company owner yet.</p>
                     </BasicFormSection>
@@ -210,34 +210,34 @@
 </template>
 
 <script lang="ts">
-import { FormKit } from "@formkit/vue";
-import TheContent from "@/components/generics/TheContent.vue";
-import { defineComponent, inject } from "vue";
-import TheFooter from "@/components/generics/TheNewFooter.vue";
-import TheHeader from "@/components/generics/TheHeader.vue";
-import AuthenticationWrapper from "@/components/wrapper/AuthenticationWrapper.vue";
-import { type Content, type Page } from "@/types/ContentTypes";
-import contentData from "@/assets/content.json";
-import CompanyInfoSheet from "@/components/general/CompanyInfoSheet.vue";
-import { type CompanyInformation, type DataTypeEnum, type ErrorResponse } from "@clients/backend";
-import { type SingleDataRequest } from "@clients/communitymanager";
-import PrimeButton from "primevue/button";
-import type Keycloak from "keycloak-js";
-import { AxiosError } from "axios";
-import { ApiClientProvider } from "@/services/ApiClients";
-import { assertDefined } from "@/utils/TypeScriptUtils";
-import ToggleChipFormInputs from "@/components/general/ToggleChipFormInputs.vue";
-import BasicFormSection from "@/components/general/BasicFormSection.vue";
-import { humanizeStringOrNumber } from "@/utils/StringFormatter";
-import { ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE } from "@/utils/Constants";
-import PrimeDialog from "primevue/dialog";
-import { openEmailClient } from "@/utils/Email";
-import { MAX_NUMBER_OF_DATA_REQUESTS_PER_DAY_FOR_ROLE_USER } from "@/DatalandSettings";
-import { hasCompanyAtLeastOneDataOwner } from "@/utils/DataOwnerUtils";
-import SingleSelectFormElement from "@/components/forms/parts/elements/basic/SingleSelectFormElement.vue";
+import { FormKit } from '@formkit/vue';
+import TheContent from '@/components/generics/TheContent.vue';
+import { defineComponent, inject } from 'vue';
+import TheFooter from '@/components/generics/TheNewFooter.vue';
+import TheHeader from '@/components/generics/TheHeader.vue';
+import AuthenticationWrapper from '@/components/wrapper/AuthenticationWrapper.vue';
+import { type Content, type Page } from '@/types/ContentTypes';
+import contentData from '@/assets/content.json';
+import CompanyInfoSheet from '@/components/general/CompanyInfoSheet.vue';
+import { type CompanyInformation, type DataTypeEnum, type ErrorResponse } from '@clients/backend';
+import { type SingleDataRequest, type SingleDataRequestDataTypeEnum } from '@clients/communitymanager';
+import PrimeButton from 'primevue/button';
+import type Keycloak from 'keycloak-js';
+import { AxiosError } from 'axios';
+import { ApiClientProvider } from '@/services/ApiClients';
+import { assertDefined } from '@/utils/TypeScriptUtils';
+import ToggleChipFormInputs from '@/components/general/ToggleChipFormInputs.vue';
+import BasicFormSection from '@/components/general/BasicFormSection.vue';
+import { humanizeStringOrNumber } from '@/utils/StringFormatter';
+import { FRAMEWORKS_WITH_VIEW_PAGE } from '@/utils/Constants';
+import PrimeDialog from 'primevue/dialog';
+import { openEmailClient } from '@/utils/Email';
+import { MAX_NUMBER_OF_DATA_REQUESTS_PER_DAY_FOR_ROLE_USER } from '@/DatalandSettings';
+import { hasCompanyAtLeastOneCompanyOwner } from '@/utils/CompanyRolesUtils';
+import SingleSelectFormElement from '@/components/forms/parts/elements/basic/SingleSelectFormElement.vue';
 
 export default defineComponent({
-  name: "SingleDataRequest",
+  name: 'SingleDataRequest',
   components: {
     SingleSelectFormElement,
     PrimeDialog,
@@ -253,52 +253,52 @@ export default defineComponent({
   },
   setup() {
     return {
-      getKeycloakPromise: inject<() => Promise<Keycloak>>("getKeycloakPromise"),
+      getKeycloakPromise: inject<() => Promise<Keycloak>>('getKeycloakPromise'),
     };
   },
   data() {
     const content: Content = contentData;
-    const footerPage: Page | undefined = content.pages.find((page) => page.url === "/");
+    const footerPage: Page | undefined = content.pages.find((page) => page.url === '/');
     const footerContent = footerPage?.sections;
 
-    const companiesPage = content.pages.find((page) => page.url === "/companies");
+    const companiesPage = content.pages.find((page) => page.url === '/companies');
     const singleDatRequestSection = companiesPage
-      ? companiesPage.sections.find((section) => section.title === "Single Data Request")
+      ? companiesPage.sections.find((section) => section.title === 'Single Data Request')
       : undefined;
     const becomePremiumUserEmailTemplate = singleDatRequestSection
-      ? singleDatRequestSection.cards?.find((card) => card.title === "Interested in becoming a premium user")
+      ? singleDatRequestSection.cards?.find((card) => card.title === 'Interested in becoming a premium user')
       : undefined;
 
-    const dataRequesterMessageAccessDisabledText = "Please provide a valid email before entering a message";
+    const dataRequesterMessageAccessDisabledText = 'Please provide a valid email before entering a message';
 
     return {
       singleDataRequestModel: {},
       footerContent,
       fetchedCompanyInformation: {} as CompanyInformation,
       frameworkOptions: [] as { value: DataTypeEnum; label: string }[],
-      frameworkName: this.$route.query.preSelectedFramework as DataTypeEnum,
-      contactsAsString: "",
+      frameworkName: this.$route.query.preSelectedFramework as SingleDataRequestDataTypeEnum,
+      contactsAsString: '',
       allowAccessDataRequesterMessage: false,
       dataRequesterMessage: dataRequesterMessageAccessDisabledText,
       dataRequesterMessageAccessDisabledText,
       consentToMessageDataUsageGiven: false,
-      errorMessage: "",
+      errorMessage: '',
       selectedReportingPeriodsError: false,
       displayConditionsNotAcceptedError: false,
       displayContactsNotValidError: false,
       reportingPeriodOptions: [
-        { name: "2024", value: false },
-        { name: "2023", value: false },
-        { name: "2022", value: false },
-        { name: "2021", value: false },
-        { name: "2020", value: false },
+        { name: '2024', value: false },
+        { name: '2023', value: false },
+        { name: '2022', value: false },
+        { name: '2021', value: false },
+        { name: '2020', value: false },
       ],
       submittingSucceeded: false,
       submitted: false,
       maxRequestReachedModalIsVisible: false,
       becomePremiumUserEmailTemplate,
       MAX_NUMBER_OF_DATA_REQUESTS_PER_DAY_FOR_ROLE_USER,
-      hasCompanyDataOwner: false,
+      hasCompanyAtLeastOneOwner: false,
     };
   },
   computed: {
@@ -309,7 +309,7 @@ export default defineComponent({
     },
     selectedContacts(): string[] {
       return this.contactsAsString
-        .split(",")
+        .split(',')
         .map((rawEmail) => rawEmail.trim())
         .filter((email) => email);
     },
@@ -379,11 +379,11 @@ export default defineComponent({
       if (this.areContactsFilledAndValid()) {
         this.allowAccessDataRequesterMessage = true;
         if (this.dataRequesterMessage == this.dataRequesterMessageAccessDisabledText) {
-          this.dataRequesterMessage = "";
+          this.dataRequesterMessage = '';
         }
       } else {
         this.allowAccessDataRequesterMessage = false;
-        if (this.contactsAsString == "" && this.dataRequesterMessage == "") {
+        if (this.contactsAsString == '' && this.dataRequesterMessage == '') {
           this.dataRequesterMessage = this.dataRequesterMessageAccessDisabledText;
         }
       }
@@ -448,12 +448,11 @@ export default defineComponent({
     collectDataToSend(): SingleDataRequest {
       return {
         companyIdentifier: this.companyIdentifier,
-        // @ts-ignore
         dataType: this.frameworkName,
         // as unknown as Set<string> cast required to ensure proper json is created
         reportingPeriods: this.selectedReportingPeriods as unknown as Set<string>,
         contacts: this.selectedContacts as unknown as Set<string>,
-        message: this.allowAccessDataRequesterMessage ? this.dataRequesterMessage : "",
+        message: this.allowAccessDataRequesterMessage ? this.dataRequesterMessage : '',
       };
     },
     /**
@@ -491,9 +490,9 @@ export default defineComponent({
           }
         } else {
           this.editStateVariables(
-            "An unexpected error occurred." + " Please try again or contact the support team if the issue persists.",
+            'An unexpected error occurred.' + ' Please try again or contact the support team if the issue persists.',
             true,
-            false,
+            false
           );
         }
       }
@@ -502,7 +501,7 @@ export default defineComponent({
      * Populates the availableFrameworks property in the format expected by the dropdown filter
      */
     retrieveFrameworkOptions() {
-      this.frameworkOptions = ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE.map((dataTypeEnum) => {
+      this.frameworkOptions = FRAMEWORKS_WITH_VIEW_PAGE.map((dataTypeEnum) => {
         return {
           value: dataTypeEnum,
           label: humanizeStringOrNumber(dataTypeEnum),
@@ -519,15 +518,18 @@ export default defineComponent({
       });
     },
     /**
-     * Updates the hasCompanyDataOwner in an async way
+     * Updates the hasCompanyAtLeastOneOwner in an async way
      */
-    async updateHasCompanyDataOwner() {
-      this.hasCompanyDataOwner = await hasCompanyAtLeastOneDataOwner(this.companyIdentifier, this.getKeycloakPromise);
+    async updateHasCompanyAtLeastOneOwner() {
+      this.hasCompanyAtLeastOneOwner = await hasCompanyAtLeastOneCompanyOwner(
+        this.companyIdentifier,
+        this.getKeycloakPromise
+      );
     },
   },
   mounted() {
     this.retrieveFrameworkOptions();
-    this.updateHasCompanyDataOwner().catch((error) => console.error(error));
+    this.updateHasCompanyAtLeastOneOwner().catch((error) => console.error(error));
   },
 });
 </script>

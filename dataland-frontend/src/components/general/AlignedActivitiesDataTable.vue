@@ -74,27 +74,27 @@
 
 <script lang="ts">
 // @ts-nocheck
-import { defineComponent } from "vue";
-import DataTable from "primevue/datatable";
-import Column from "primevue/column";
-import ColumnGroup from "primevue/columngroup";
-import Row from "primevue/row";
-import { type DynamicDialogInstance } from "primevue/dynamicdialogoptions";
+import { defineComponent } from 'vue';
+import DataTable from 'primevue/datatable';
+import Column from 'primevue/column';
+import ColumnGroup from 'primevue/columngroup';
+import Row from 'primevue/row';
+import { type DynamicDialogInstance } from 'primevue/dynamicdialogoptions';
 import {
   type YesNo,
   type Activity,
   type EuTaxonomyAlignedActivity,
-} from "@clients/backend/org/dataland/datalandfrontend/openApiClient/backend/model";
-import { activityApiNameToHumanizedName } from "@/components/resources/frameworkDataSearch/EuTaxonomyActivityNames";
-import { formatAmountWithCurrency, formatPercentageNumberAsString } from "@/utils/Formatter";
+} from '@clients/backend/org/dataland/datalandfrontend/openApiClient/backend/model';
+import { activityApiNameToHumanizedName } from '@/components/resources/frameworkDataSearch/EuTaxonomyActivityNames';
+import { formatAmountWithCurrency, formatPercentageNumberAsString } from '@/utils/Formatter';
 
 export const euTaxonomyObjectives = [
-  "ClimateChangeMitigation",
-  "ClimateChangeAdaptation",
-  "SustainableUseAndProtectionOfWaterAndMarineResources",
-  "TransitionToACircularEconomy",
-  "PollutionPreventionAndControl",
-  "ProtectionAndRestorationOfBiodiversityAndEcosystems",
+  'ClimateChangeMitigation',
+  'ClimateChangeAdaptation',
+  'SustainableUseAndProtectionOfWaterAndMarineResources',
+  'TransitionToACircularEconomy',
+  'PollutionPreventionAndControl',
+  'ProtectionAndRestorationOfBiodiversityAndEcosystems',
 ];
 
 type ActivityFieldValueObject = {
@@ -113,13 +113,13 @@ type MainColumnDefinition = {
 };
 
 export default defineComponent({
-  inject: ["dialogRef"],
-  name: "AlignedActivitiesDataTable",
+  inject: ['dialogRef'],
+  name: 'AlignedActivitiesDataTable',
   components: { DataTable, Column, ColumnGroup, Row },
   data() {
     return {
       listOfRowContents: [] as Array<EuTaxonomyAlignedActivity>,
-      kpiKeyOfTable: "" as string,
+      kpiKeyOfTable: '' as string,
       columnHeaders: {} as { [kpiKeyOfTable: string]: { [columnName: string]: string } },
       frozenColumnDefinitions: [] as Array<{ field: string; header: string; frozen?: boolean; group: string }>,
       mainColumnGroups: [] as Array<{ key: string; label: string; colspan: number }>,
@@ -141,28 +141,40 @@ export default defineComponent({
     this.kpiKeyOfTable = dialogRefData.kpiKeyOfTable;
     this.columnHeaders = dialogRefData.columnHeaders;
 
-    if (typeof dialogRefData.listOfRowContents[0] === "string") {
+    if (typeof dialogRefData.listOfRowContents[0] === 'string') {
       this.listOfRowContents = dialogRefData.listOfRowContents.map((o) => ({ [this.kpiKeyOfTable]: o }));
     } else {
       this.listOfRowContents = dialogRefData.listOfRowContents as Array<EuTaxonomyAlignedActivity>;
     }
 
     this.frozenColumnDefinitions = [
-      { field: "activity", header: this.humanizeHeaderName("activity"), frozen: true, group: "_frozen" },
-      { field: "naceCodes", header: this.humanizeHeaderName("naceCodes"), frozen: true, group: "_frozen" },
+      { field: 'activity', header: this.humanizeHeaderName('activity'), frozen: true, group: '_frozen' },
+      { field: 'naceCodes', header: this.humanizeHeaderName('naceCodes'), frozen: true, group: '_frozen' },
     ];
 
     this.mainColumnDefinitions = [
-      { field: "revenue", header: this.humanizeHeaderName("revenue"), group: "_revenue", groupIndex: 0 },
-      { field: "revenuePercent", header: this.humanizeHeaderName("revenuePercent"), group: "_revenue", groupIndex: 1 },
+      { field: 'revenue', header: this.humanizeHeaderName('revenue'), group: '_revenue', groupIndex: 0 },
+      { field: 'revenuePercent', header: this.humanizeHeaderName('revenuePercent'), group: '_revenue', groupIndex: 1 },
 
-      ...this.makeGroupColumns("substantialContributionCriteria", "substantialContribution"),
-      ...this.makeGroupColumns("dnshCriteria", "dnsh"),
+      ...this.makeGroupColumns('substantialContributionCriteria', 'substantialContribution'),
+      ...this.makeGroupColumns('dnshCriteria', 'dnsh'),
 
       {
-        field: "minimumSafeguards",
-        header: this.humanizeHeaderName("minimumSafeguards"),
-        group: "_minimumSafeguards",
+        field: 'minimumSafeguards',
+        header: this.humanizeHeaderName('minimumSafeguards'),
+        group: '_minimumSafeguards',
+        groupIndex: 0,
+      },
+      {
+        field: 'enablingActivity',
+        header: this.humanizeHeaderName('enablingActivity'),
+        group: '_enablingActivity',
+        groupIndex: 0,
+      },
+      {
+        field: 'transitionalActivity',
+        header: this.humanizeHeaderName('transitionalActivity'),
+        group: '_transitionalActivity',
         groupIndex: 0,
       },
     ];
@@ -177,7 +189,7 @@ export default defineComponent({
         ...createRevenueGroupData(col),
         ...createActivityGroupData<number>(
           col.activityName as string,
-          "substantialContributionCriteria",
+          'substantialContributionCriteria',
           {
             substantialContributionToClimateChangeMitigationInPercent:
               col.substantialContributionToClimateChangeMitigationInPercent,
@@ -192,11 +204,11 @@ export default defineComponent({
             substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent:
               col.substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent,
           },
-          formatPercentageNumberAsString,
+          formatPercentageNumberAsString
         ),
         ...createActivityGroupData<YesNo>(
           col.activityName as string,
-          "dnshCriteria",
+          'dnshCriteria',
           {
             dnshToClimateChangeMitigation: col.dnshToClimateChangeMitigation,
             dnshToClimateChangeAdaptation: col.dnshToClimateChangeAdaptation,
@@ -207,25 +219,29 @@ export default defineComponent({
             dnshToProtectionAndRestorationOfBiodiversityAndEcosystems:
               col.dnshToProtectionAndRestorationOfBiodiversityAndEcosystems,
           },
-          (value: YesNo) => (value ? `${value}` : ""),
+          (value: YesNo) => (value ? `${value}` : '')
         ),
         ...createMinimumSafeguardsGroupData(col),
+        ...createEnablingActivityGroupData(col),
+        ...createTransitionalActivityGroupData(col),
       ])
       .flat();
 
     this.mainColumnGroups = [
-      { key: "_revenue", label: "", colspan: this.findMaxColspanForGroup("_revenue") },
+      { key: '_revenue', label: '', colspan: this.findMaxColspanForGroup('_revenue') },
       {
-        key: "substantialContributionCriteria",
-        label: this.humanizeHeaderName("substantialContributionCriteria"),
-        colspan: this.findMaxColspanForGroup("substantialContributionCriteria"),
+        key: 'substantialContributionCriteria',
+        label: this.humanizeHeaderName('substantialContributionCriteria'),
+        colspan: this.findMaxColspanForGroup('substantialContributionCriteria'),
       },
       {
-        key: "dnshCriteria",
-        label: this.humanizeHeaderName("dnshCriteria"),
-        colspan: this.findMaxColspanForGroup("dnshCriteria"),
+        key: 'dnshCriteria',
+        label: this.humanizeHeaderName('dnshCriteria'),
+        colspan: this.findMaxColspanForGroup('dnshCriteria'),
       },
-      { key: "_minimumSafeguards", label: "", colspan: this.findMaxColspanForGroup("_minimumSafeguards") },
+      { key: '_minimumSafeguards', label: '', colspan: this.findMaxColspanForGroup('_minimumSafeguards') },
+      { key: '_enablingActivity', label: '', colspan: this.findMaxColspanForGroup('_enablingActivity') },
+      { key: '_transitionalActivity', label: '', colspan: this.findMaxColspanForGroup('_transitionalActivity') },
     ];
   },
   methods: {
@@ -241,6 +257,8 @@ export default defineComponent({
         substantialContributionCriteria: environmentalObjectivesLength,
         dnshCriteria: environmentalObjectivesLength,
         _minimumSafeguards: 1,
+        _enablingActivity: 1,
+        _transitionalActivity: 1,
       };
       return colspans[groupName];
     },
@@ -253,9 +271,9 @@ export default defineComponent({
      */
     findContentFromActivityGroupAndField(activityName: string, groupName: string, fieldName: string) {
       const value = this.mainColumnData.find(
-        (item) => item.activity === activityName && item.group === groupName && item.field === fieldName,
+        (item) => item.activity === activityName && item.group === groupName && item.field === fieldName
       );
-      return value ? value.content : "";
+      return value ? value.content : '';
     },
 
     /**
@@ -266,7 +284,7 @@ export default defineComponent({
     makeGroupColumns(groupName: string, prefix: string) {
       const environmentalObjectiveKeys = euTaxonomyObjectives.map((suffix) => {
         const extendedKey = `${prefix}To${suffix}`;
-        if (prefix === "dnsh") {
+        if (prefix === 'dnsh') {
           return extendedKey;
         } else {
           return `${extendedKey}InPercent`;
@@ -286,12 +304,12 @@ export default defineComponent({
      */
     columnCss(key: string): string {
       switch (key) {
-        case "activity":
-          return "col-activity";
-        case "naceCodes":
-          return "col-nace-codes";
+        case 'activity':
+          return 'col-activity';
+        case 'naceCodes':
+          return 'col-nace-codes';
         default:
-          return "";
+          return '';
       }
     },
     /**
@@ -299,7 +317,7 @@ export default defineComponent({
      * @param additionalClasses (optional) any additional classes to be added
      * @returns classes for specific columns
      */
-    groupColumnCssClasses(columnDefinition: MainColumnDefinition, additionalClasses = ""): string {
+    groupColumnCssClasses(columnDefinition: MainColumnDefinition, additionalClasses = ''): string {
       if (columnDefinition.groupIndex === 0) return `first-group-column ${additionalClasses}`;
       return additionalClasses;
     },
@@ -321,14 +339,14 @@ function createRevenueGroupData(activity: EuTaxonomyAlignedActivity): ActivityFi
   return [
     {
       activity: activity.activityName,
-      group: "_revenue",
-      field: "revenue",
+      group: '_revenue',
+      field: 'revenue',
       content: formatAmountWithCurrency(activity.share?.absoluteShare),
     },
     {
       activity: activity.activityName,
-      group: "_revenue",
-      field: "revenuePercent",
+      group: '_revenue',
+      field: 'revenuePercent',
       content: formatPercentageNumberAsString(activity.share?.relativeShareInPercent),
     },
   ];
@@ -345,7 +363,7 @@ function createActivityGroupData<T>(
   activityName: string,
   groupName: string,
   fields: { [key: string]: T } | undefined,
-  valueFormatter: (value: T) => string,
+  valueFormatter: (value: T) => string
 ): ActivityFieldValueObject[] {
   const fieldsEntries = Object.entries(fields ?? {});
   return fieldsEntries
@@ -355,7 +373,7 @@ function createActivityGroupData<T>(
         activity: activityName,
         group: groupName,
         field,
-        content: valueFormatter(value) ?? "",
+        content: valueFormatter(value) ?? '',
       };
     });
 }
@@ -368,9 +386,39 @@ function createMinimumSafeguardsGroupData(activity: EuTaxonomyAlignedActivity): 
   return [
     {
       activity: activity.activityName as string,
-      group: "_minimumSafeguards",
-      field: "minimumSafeguards",
-      content: activity.minimumSafeguards ?? "",
+      group: '_minimumSafeguards',
+      field: 'minimumSafeguards',
+      content: activity.minimumSafeguards ?? '',
+    },
+  ];
+}
+
+/**
+ * @param activity targeted activity object
+ * @returns list of minimum Enabling Activity data items
+ */
+function createEnablingActivityGroupData(activity: EuTaxonomyAlignedActivity): ActivityFieldValueObject[] {
+  return [
+    {
+      activity: activity.activityName as string,
+      group: '_enablingActivity',
+      field: 'enablingActivity',
+      content: activity.enablingActivity ?? '',
+    },
+  ];
+}
+
+/**
+ * @param activity targeted activity object
+ * @returns list of minimum Transitional Activity data items
+ */
+function createTransitionalActivityGroupData(activity: EuTaxonomyAlignedActivity): ActivityFieldValueObject[] {
+  return [
+    {
+      activity: activity.activityName as string,
+      group: '_transitionalActivity',
+      field: 'transitionalActivity',
+      content: activity.transitionalActivity ?? '',
     },
   ];
 }

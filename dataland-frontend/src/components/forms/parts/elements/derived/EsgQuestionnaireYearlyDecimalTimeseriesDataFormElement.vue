@@ -40,21 +40,21 @@
 
 <script lang="ts">
 // @ts-nocheck
-import { defineComponent } from "vue";
+import { defineComponent } from 'vue';
 
-import { DropdownOptionFormFieldProps } from "@/components/forms/parts/fields/FormFieldProps";
-import { FormKit } from "@formkit/vue";
-import UploadFormHeader from "@/components/forms/parts/elements/basic/UploadFormHeader.vue";
+import { DropdownOptionFormFieldProps } from '@/components/forms/parts/fields/FormFieldProps';
+import { FormKit } from '@formkit/vue';
+import UploadFormHeader from '@/components/forms/parts/elements/basic/UploadFormHeader.vue';
 
 interface YearGroup {
   headerTitle: string;
-  color: "light-gray" | "dark-blue";
+  color: 'light-gray' | 'dark-blue';
   icon?: string;
   yearsInOrder: number[];
 }
 
 export default defineComponent({
-  name: "EsgQuestionnaireYearlyDecimalTimeseriesDataFormElement",
+  name: 'EsgQuestionnaireYearlyDecimalTimeseriesDataFormElement',
   components: { UploadFormHeader, FormKit },
   props: {
     ...DropdownOptionFormFieldProps,
@@ -77,7 +77,7 @@ export default defineComponent({
   },
   computed: {
     numericalYearOfDataDate(): number | undefined {
-      const parsedNumber = parseInt(this.reportingPeriod ?? "");
+      const parsedNumber = parseInt(this.reportingPeriod ?? '');
       if (isNaN(parsedNumber)) return undefined;
       else return parsedNumber;
     },
@@ -85,9 +85,9 @@ export default defineComponent({
       if (!this.nYearsIntoPast || !this.numericalYearOfDataDate) return undefined;
 
       const pastGroup: YearGroup = {
-        headerTitle: "Historische Daten",
-        color: "light-gray",
-        icon: "menu_book",
+        headerTitle: 'Historische Daten',
+        color: 'light-gray',
+        icon: 'menu_book',
         yearsInOrder: [],
       };
       for (let year = this.numericalYearOfDataDate - this.nYearsIntoPast; year < this.numericalYearOfDataDate; year++) {
@@ -98,9 +98,9 @@ export default defineComponent({
     futureGroup(): YearGroup | undefined {
       if (!this.nYearsIntoFuture || !this.numericalYearOfDataDate) return undefined;
       const futureGroup: YearGroup = {
-        headerTitle: "Prognosen",
-        color: "light-gray",
-        icon: "lightbulb",
+        headerTitle: 'Prognosen',
+        color: 'light-gray',
+        icon: 'lightbulb',
         yearsInOrder: [],
       };
       for (
@@ -115,8 +115,8 @@ export default defineComponent({
     currentGroup(): YearGroup | undefined {
       if (!this.showCurrentYear || !this.numericalYearOfDataDate) return undefined;
       return {
-        headerTitle: "Aktuelles Jahr",
-        color: "dark-blue",
+        headerTitle: 'Aktuelles Jahr',
+        color: 'dark-blue',
         yearsInOrder: [this.numericalYearOfDataDate],
       };
     },
@@ -130,7 +130,7 @@ export default defineComponent({
 </script>
 
 <style scoped lang="scss">
-@import "src/assets/scss/variables.scss";
+@import 'src/assets/scss/variables.scss';
 .badge-light-gray {
   color: $aquamarine-dark;
   background: $paper-white;

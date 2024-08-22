@@ -13,10 +13,10 @@ from dataland_backend_api_documentation_client.models.data_meta_information impo
 from dataland_backend_api_documentation_client import AuthenticatedClient
 from dataland_backend_api_documentation_client.models.data_type_enum import DataTypeEnum
 from dataland_backend_api_documentation_client.models.qa_status import QaStatus
-from dataland_backend_api_documentation_client.models.company_associated_data_sme_data import (
-    CompanyAssociatedDataSmeData,
+from dataland_backend_api_documentation_client.models.company_associated_data_vsme_data import (
+    CompanyAssociatedDataVsmeData,
 )
-from dataland_backend_api_documentation_client.models.sme_data import SmeData
+from dataland_backend_api_documentation_client.models.vsme_data import VsmeData
 
 
 class TestResource(Resource):
@@ -33,7 +33,7 @@ def get_data_meta_info_mock(data_id: str, client: AuthenticatedClient) -> DataMe
     return DataMetaInformation(
         data_id="data-id",
         company_id="company-id",
-        data_type=DataTypeEnum.SME,
+        data_type=DataTypeEnum.VSME,
         upload_time=0,
         reporting_period="reporting period",
         currently_active=True,
@@ -41,23 +41,20 @@ def get_data_meta_info_mock(data_id: str, client: AuthenticatedClient) -> DataMe
     )
 
 
-def get_sme_data_mock(
+def get_vsme_data_mock(
     data_type: DataTypeEnum,  # noqa: ARG001
     data_id: str,  # noqa: ARG001
     client: AuthenticatedClient,  # noqa: ARG001
-) -> CompanyAssociatedDataSmeData:
-    return CompanyAssociatedDataSmeData(
+) -> CompanyAssociatedDataVsmeData:
+    return CompanyAssociatedDataVsmeData(
         company_id="company-id",
         reporting_period="reporting period",
-        data=SmeData.from_dict({
-            "general": {
-                "basicInformation": {
-                    "reportingDate": "2023-03-01",
-                    "sectors": ["dummy"],
-                    "numberOfEmployees": 42,
-                    "fiscalYearStart": "2024-01-01",
+        data=VsmeData.from_dict({
+            "basic": {
+                "energyAndGreenhousGasEmissions": {
+                    "energyFossilFuelsInMWh": 1,
                 }
-            }
+            },
         }),
     )
 
@@ -71,12 +68,12 @@ class ResourceTest(unittest.TestCase):
     def test_data_is_fetched_correctly(self) -> None:
         data_resources.get_access_token = Mock()
         data_resources.get_data_meta_info = get_data_meta_info_mock
-        data_resources._get_data = get_sme_data_mock  # noqa: SLF001
+        data_resources._get_data = get_vsme_data_mock  # noqa: SLF001
         data_resource = DataResource("data-id")
         self.assertEqual("data-id", data_resource.id)
-        self.assertEqual(DataTypeEnum.SME, data_resource.meta_info.data_type)
-        self.assertIsInstance(data_resource.data, SmeData)
-        self.assertEqual("dummy", data_resource.data.general.basic_information.sectors[0])
+        self.assertEqual(DataTypeEnum.VSME, data_resource.meta_info.data_type)
+        self.assertIsInstance(data_resource.data, VsmeData)
+        self.assertEqual(1, data_resource.data.basic.energy_and_greenhous_gas_emissions.energy_fossil_fuels_in_m_wh)
 
     def test_document_is_fetched_correctly(self) -> None:
         document_resources.get_access_token = Mock()

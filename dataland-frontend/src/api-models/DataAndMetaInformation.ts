@@ -1,4 +1,4 @@
-import { type DataMetaInformation } from "@clients/backend";
+import { type DataMetaInformation } from '@clients/backend';
 
 /**
  * A clone of the generic DataAndMetaInformation interface from the backend.

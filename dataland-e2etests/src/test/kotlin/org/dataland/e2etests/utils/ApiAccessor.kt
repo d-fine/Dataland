@@ -1,8 +1,9 @@
 package org.dataland.e2etests.utils
 
+import org.dataland.communitymanager.openApiClient.api.CompanyRolesControllerApi
 import org.dataland.communitymanager.openApiClient.api.RequestControllerApi
-import org.dataland.datalandbackend.openApiClient.api.AdminDataManipulationControllerApi
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
+import org.dataland.datalandbackend.openApiClient.api.DataDeletionControllerApi
 import org.dataland.datalandbackend.openApiClient.api.EuTaxonomyDataForFinancialsControllerApi
 import org.dataland.datalandbackend.openApiClient.api.EutaxonomyNonFinancialsDataControllerApi
 import org.dataland.datalandbackend.openApiClient.api.LksgDataControllerApi
@@ -33,6 +34,8 @@ import org.dataland.e2etests.auth.TechnicalUser
 import org.dataland.e2etests.customApiControllers.UnauthorizedCompanyDataControllerApi
 import org.dataland.e2etests.customApiControllers.UnauthorizedEuTaxonomyDataNonFinancialsControllerApi
 import org.dataland.e2etests.customApiControllers.UnauthorizedMetaDataControllerApi
+import org.dataland.e2etests.utils.testDataProvivders.FrameworkTestDataProvider
+import org.dataland.e2etests.utils.testDataProvivders.GeneralTestDataProvider
 
 class ApiAccessor {
 
@@ -43,6 +46,7 @@ class ApiAccessor {
     val unauthorizedMetaDataControllerApi = UnauthorizedMetaDataControllerApi()
 
     val requestControllerApi = RequestControllerApi(BASE_PATH_TO_COMMUNITY_MANAGER)
+    val companyRolesControllerApi = CompanyRolesControllerApi(BASE_PATH_TO_COMMUNITY_MANAGER)
 
     val qaServiceControllerApi = QaControllerApi(BASE_PATH_TO_QA_SERVICE)
     private val qaApiAccessor = QaApiAccessor()
@@ -56,7 +60,7 @@ class ApiAccessor {
     val unauthorizedEuTaxonomyDataNonFinancialsControllerApi = UnauthorizedEuTaxonomyDataNonFinancialsControllerApi()
     val testDataProviderForEuTaxonomyDataForNonFinancials =
         FrameworkTestDataProvider(EutaxonomyNonFinancialsData::class.java)
-    val adminDataManipulationControllerApi = AdminDataManipulationControllerApi(BASE_PATH_TO_DATALAND_BACKEND)
+    val dataDeletionControllerApi = DataDeletionControllerApi(BASE_PATH_TO_DATALAND_BACKEND)
     fun euTaxonomyNonFinancialsUploaderFunction(
         companyId: String,
         euTaxonomyNonFinancialsData: EutaxonomyNonFinancialsData,

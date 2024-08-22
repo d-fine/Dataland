@@ -1,4 +1,4 @@
-import { type DataTypeEnum } from "@clients/backend";
+import { type DataTypeEnum } from '@clients/backend';
 
 export interface SelectableItem {
   displayName: string;

@@ -1,21 +1,23 @@
-import { DataTypeEnum } from "@clients/backend";
+import { DataTypeEnum } from '@clients/backend';
 
 // - Available frameworks settings
 
 export const ALL_FRAMEWORKS_ORDERED = Object.values(DataTypeEnum);
-
-export const PRIVATE_FRAMEWORKS = ALL_FRAMEWORKS_ORDERED.filter((framework) => framework == DataTypeEnum.Sme);
-export const ARRAY_OF_SUPPORTED_FRAMEWORKS = ALL_FRAMEWORKS_ORDERED;
-export const ARRAY_OF_PUBLIC_FRAMEWORKS = ALL_FRAMEWORKS_ORDERED.filter((framework) => framework !== DataTypeEnum.Sme);
-export const ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE = ALL_FRAMEWORKS_ORDERED;
-export const ARRAY_OF_FRAMEWORKS_WITH_UPLOAD_FORM = ALL_FRAMEWORKS_ORDERED;
+export const PRIVATE_FRAMEWORKS = ALL_FRAMEWORKS_ORDERED.filter((framework) => framework == DataTypeEnum.Vsme);
+export const PUBLIC_FRAMEWORKS = ALL_FRAMEWORKS_ORDERED.filter((framework) => !PRIVATE_FRAMEWORKS.includes(framework));
+export const FRONTEND_SUPPORTED_FRAMEWORKS = ALL_FRAMEWORKS_ORDERED;
+export const FRAMEWORKS_WITH_VIEW_PAGE = ALL_FRAMEWORKS_ORDERED;
+export const FRAMEWORKS_WITH_UPLOAD_FORM = ALL_FRAMEWORKS_ORDERED;
+export const FRAMEWORKS_WITH_EDIT_FUNCTIONALITY = FRAMEWORKS_WITH_UPLOAD_FORM.filter(
+  (framework) => !PRIVATE_FRAMEWORKS.includes(framework)
+);
 
 // - Keycloak and session management related settings
 
 export const KEYCLOAK_INIT_OPTIONS = {
-  realm: "datalandsecurity",
-  url: "/keycloak",
-  clientId: "dataland-public",
+  realm: 'datalandsecurity',
+  url: '/keycloak',
+  clientId: 'dataland-public',
 };
 
 export const TIME_DISTANCE_SET_INTERVAL_SESSION_CHECK_IN_MS = 5000;
@@ -33,5 +35,5 @@ export const REGEX_FOR_FILE_NAMES = /^[^<>:"|?/*\\\s][^<>:"|?/*\\]{0,252}[^<>:"|
 
 export const MS_PER_DAY = 24 * 60 * 60 * 1000;
 
-export const NO_DATA_PROVIDED = "No data provided";
-export const ONLY_AUXILIARY_DATA_PROVIDED = "Only auxiliary data provided";
+export const NO_DATA_PROVIDED = 'No data provided';
+export const ONLY_AUXILIARY_DATA_PROVIDED = 'Only auxiliary data provided';

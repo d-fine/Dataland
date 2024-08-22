@@ -17,11 +17,11 @@
 </template>
 
 <script lang="ts">
-import Tooltip from "primevue/tooltip";
-import { defineComponent } from "vue";
+import Tooltip from 'primevue/tooltip';
+import { defineComponent } from 'vue';
 
 export default defineComponent({
-  name: "UploadFormHeader",
+  name: 'UploadFormHeader',
   directives: {
     tooltip: Tooltip,
   },

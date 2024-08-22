@@ -1,5 +1,5 @@
 * {
-  box-sizing: border-box
+  box-sizing: border-box;
 }
 
 #app {
@@ -10,7 +10,7 @@
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  margin: unset
+  margin: unset;
 }
 
 body {
@@ -18,7 +18,7 @@ body {
   font-size: $fs-base;
   font-weight: $fw-normal;
   margin: 0;
-  padding: 0
+  padding: 0;
 }
 
 .w-10 {
@@ -87,7 +87,7 @@ body {
 
 .p-component {
   &:disabled {
-    opacity: .8
+    opacity: 0.8;
   }
 }
 
@@ -98,17 +98,19 @@ body {
 }
 
 .d-header {
-  z-index: 100
+  z-index: 100;
 }
 
 .p-fluid {
-  .p-button, .p-inputtext {
-    width: 100%
+  .p-button,
+  .p-inputtext {
+    width: 100%;
   }
 
-  .p-input-icon-left, .p-input-icon-right {
+  .p-input-icon-left,
+  .p-input-icon-right {
     display: block;
-    width: 100%
+    width: 100%;
   }
 }
 
@@ -123,8 +125,8 @@ body {
   height: 1.5rem;
   line-height: 1.5rem;
   display: inline-block;
-  border-radius: .25rem;
-  padding: 0 .5rem;
+  border-radius: 0.25rem;
+  padding: 0 0.5rem;
 
   &.round {
     border-radius: 50%;
@@ -135,7 +137,8 @@ body {
     background: var(--yellow-100);
   }
 
-  &.badge-green, &.p-badge-success {
+  &.badge-green,
+  &.p-badge-success {
     color: var(--green-700);
     background: var(--green-100);
     border-color: var(--green-700);
@@ -169,7 +172,7 @@ body {
 
   &.badge-brown {
     color: $brown-light;
-    background: #E2D9C5;
+    background: #e2d9c5;
   }
 
   &.outline {
@@ -183,7 +186,6 @@ body {
   }
 }
 
-
 .d-center-div {
   position: absolute;
   top: 50%;
@@ -193,31 +195,32 @@ body {
 }
 
 .d-letters {
-  letter-spacing: .05em
+  letter-spacing: 0.05em;
 }
 
 .d-small-logo {
-  height: 1.25em
+  height: 1.25em;
 }
 
 // sections
 .third-section {
   background-color: $brown-lighter;
-  color: $white
+  color: $white;
 }
 
 .second-section {
   background-color: $paper-white;
-  color: $aquamarine-dark
+  color: $aquamarine-dark;
 }
 
 .paper-section {
-  background-color: $paper-white
+  background-color: $paper-white;
 }
 
 // We want this classes to always overwrite styles to main colors
-.text-primary, .primary-color {
-  color: $main-color !important
+.text-primary,
+.primary-color {
+  color: $main-color !important;
 }
 
 .text-danger {
@@ -226,88 +229,86 @@ body {
 
 .bg-primary {
   color: $bg-text-primary !important;
-  background-color: $main-color !important
+  background-color: $main-color !important;
 }
 
 .bg-white {
-  background-color: $white !important
+  background-color: $white !important;
 }
 
 // --- //
 
 // 12px
 .fs-xs {
-  font-size: $fs-xs
+  font-size: $fs-xs;
 }
 
 // 14px
 .fs-sm {
-  font-size: $fs-sm
+  font-size: $fs-sm;
 }
 
 // 16px
 .fs-base {
-  font-size: $fs-base
+  font-size: $fs-base;
 }
 
 // 18px
 .fs-lg {
-  font-size: $fs-lg
+  font-size: $fs-lg;
 }
 
 // 24px
 .fs-xl {
-  font-size: $fs-xl
+  font-size: $fs-xl;
 }
 
 // 32px
 .fs-xxl {
-  font-size: $fs-xxl
+  font-size: $fs-xxl;
 }
 
 //font-weight
 .fw-normal {
-  font-weight: $normal-weight
+  font-weight: $normal-weight;
 }
 
 .fw-light-bold {
-  font-weight: $fw-medium
+  font-weight: $fw-medium;
 }
 
 .fw-semi-bold {
-  font-weight: $fw-semibold
+  font-weight: $fw-semibold;
 }
-
 
 // Typography //
 .gray-text {
-  color: $gray
+  color: $gray;
 }
 
 .gray-text-light {
-  color: $gray-light
+  color: $gray-light;
 }
 
 .red-text {
-  color: $red
+  color: $red;
 }
 
 .green-text {
-  color: $green
+  color: $green;
 }
 
 // Radius //
 .radius-1 {
-  border-radius: $radius-xxxs
+  border-radius: $radius-xxxs;
 }
-
 
 // Home Page
 .video-container {
   position: relative;
   width: 100%;
   padding-bottom: 56.25%;
-  height: 0
+  height: 0;
 }
 
 .video-container iframe {
@@ -316,25 +317,25 @@ body {
   left: 0;
   width: 100%;
   height: 100%;
-  border: 0
+  border: 0;
 }
 
 .top-left-blue-border {
   border-style: solid;
   border-width: 1px 0 0 1px;
-  border-color: $blue-light
+  border-color: $blue-light;
 }
 
 .right-bottom-blue-border {
   border-style: solid;
   border-width: 0 1px 1px 0;
-  border-color: $blue-light
+  border-color: $blue-light;
 }
 
 .all-sides-blue-border {
   border-style: solid;
   border-width: 1px 1px 1px 1px;
-  border-color: $blue-light
+  border-color: $blue-light;
 }
 
 .middle-center-div {
@@ -351,8 +352,9 @@ body {
   align-items: center;
 }
 
-.p-disabled, .p-component:disabled {
-  opacity: .5;
+.p-disabled,
+.p-component:disabled {
+  opacity: 0.5;
 }
 
 .d-cursor-pointer {

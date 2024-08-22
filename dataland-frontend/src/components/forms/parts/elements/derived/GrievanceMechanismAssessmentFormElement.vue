@@ -28,15 +28,15 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
-import YesNoFormField from "@/components/forms/parts/fields/YesNoFormField.vue";
-import FreeTextFormField from "@/components/forms/parts/fields/FreeTextFormField.vue";
-import MultiSelectFormField from "@/components/forms/parts/fields/MultiSelectFormField.vue";
-import { DropdownDatasetIdentifier, getDataset } from "@/utils/PremadeDropdownDatasets";
-import { convertYesNoUndefinedToBoolean } from "@/utils/YesNoNa";
+import { defineComponent } from 'vue';
+import YesNoFormField from '@/components/forms/parts/fields/YesNoFormField.vue';
+import FreeTextFormField from '@/components/forms/parts/fields/FreeTextFormField.vue';
+import MultiSelectFormField from '@/components/forms/parts/fields/MultiSelectFormField.vue';
+import { DropdownDatasetIdentifier, getDataset } from '@/utils/PremadeDropdownDatasets';
+import { convertYesNoUndefinedToBoolean } from '@/utils/YesNoNa';
 
 export default defineComponent({
-  name: "GrievanceMechanismAssessmentFormElement",
+  name: 'GrievanceMechanismAssessmentFormElement',
   data() {
     return {
       riskOptions: getDataset(DropdownDatasetIdentifier.RiskPositions),

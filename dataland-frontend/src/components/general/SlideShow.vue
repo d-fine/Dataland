@@ -11,7 +11,7 @@
 </template>
 
 <script setup lang="ts">
-import { onUnmounted, ref, toRefs, computed } from "vue";
+import { onUnmounted, ref, toRefs, computed } from 'vue';
 
 const props = withDefaults(
   defineProps<{
@@ -28,14 +28,14 @@ const props = withDefaults(
   {
     initialCenterSlide: 0,
     slideWidth: 440,
-  },
+  }
 );
 
 const { slideCount, initialCenterSlide, scrollScreenWidthLimit, slideWidth } = toRefs(props);
 
 const slider = ref<HTMLElement | null>(null);
 const currentSlide = ref(0);
-const emit = defineEmits(["update:currentSlide"]);
+const emit = defineEmits(['update:currentSlide']);
 
 const state = {
   isDragging: false,
@@ -64,22 +64,22 @@ const disableRightArrow = computed(() => {
 
 const toggleScrollLock = (lock: boolean): void => {
   if (lock) {
-    document.addEventListener("touchmove", preventDefault, { passive: false } as EventListenerOptions);
+    document.addEventListener('touchmove', preventDefault, { passive: false } as EventListenerOptions);
   } else {
-    document.removeEventListener("touchmove", preventDefault, { passive: false } as EventListenerOptions);
+    document.removeEventListener('touchmove', preventDefault, { passive: false } as EventListenerOptions);
   }
   state.disableScroll = lock;
 };
 
 const dragStartCondition = (e: PointerEvent | TouchEvent): void => {
   if (slideCount.value <= 1) return;
-  state.startX = "touches" in e ? e.touches[0].pageX : e.pageX;
-  state.startY = "touches" in e ? e.touches[0].pageY : e.pageY;
+  state.startX = 'touches' in e ? e.touches[0].pageX : e.pageX;
+  state.startY = 'touches' in e ? e.touches[0].pageY : e.pageY;
   dragStart(e);
 };
 
 const setSliderPosition = (sliderElement: HTMLElement, animate = true): void => {
-  if (animate) sliderElement.style.transition = "transform 0.3s ease-out";
+  if (animate) sliderElement.style.transition = 'transform 0.3s ease-out';
   sliderElement.style.transform = `translate3d(${state.currentTranslate}px, 0, 0)`;
 };
 
@@ -87,7 +87,7 @@ const move = (direction: number): void => {
   if (direction === 1 && currentSlide.value < slideCount.value - 1 - initialCenterSlide.value) currentSlide.value++;
   if (direction === -1 && currentSlide.value > 0 - initialCenterSlide.value) currentSlide.value--;
 
-  emit("update:currentSlide", currentSlide.value);
+  emit('update:currentSlide', currentSlide.value);
 
   state.currentTranslate = currentSlide.value * -slideWidth.value;
   if (slider.value) setSliderPosition(slider.value);
@@ -98,24 +98,24 @@ const dragStart = (e: PointerEvent | TouchEvent): void => {
     return;
   }
   state.isDragging = true;
-  state.startPos = "touches" in e ? e.touches[0].pageX : e.pageX;
+  state.startPos = 'touches' in e ? e.touches[0].pageX : e.pageX;
   state.prevTranslate = state.currentTranslate;
 
   if (slider.value) {
-    slider.value.style.transition = "none";
-    slider.value.classList.add("isdragging");
+    slider.value.style.transition = 'none';
+    slider.value.classList.add('isdragging');
   }
 
-  document.addEventListener("pointermove", drag);
-  document.addEventListener("pointerup", dragEnd);
-  document.addEventListener("touchmove", drag);
-  document.addEventListener("touchend", dragEnd);
+  document.addEventListener('pointermove', drag);
+  document.addEventListener('pointerup', dragEnd);
+  document.addEventListener('touchmove', drag);
+  document.addEventListener('touchend', dragEnd);
 };
 
 const drag = (e: PointerEvent | TouchEvent): void => {
   if (!state.isDragging) return;
 
-  const { pageX } = "touches" in e ? e.touches[0] : e;
+  const { pageX } = 'touches' in e ? e.touches[0] : e;
   const dx = Math.abs(pageX - state.startX);
   state.thresholdReached = dx > 20;
   if (state.thresholdReached && !state.disableScroll) {
@@ -137,25 +137,25 @@ const dragEnd = (): void => {
   if (movedBy < -100 && currentSlide.value < slideCount.value - 1 - initialCenterSlide.value) currentSlide.value++;
   if (movedBy > 100 && currentSlide.value > 0 - initialCenterSlide.value) currentSlide.value--;
 
-  emit("update:currentSlide", currentSlide.value);
+  emit('update:currentSlide', currentSlide.value);
 
   state.currentTranslate = currentSlide.value * -slideWidth.value;
 
   if (slider.value) {
     setSliderPosition(slider.value);
-    slider.value.classList.remove("isdragging");
+    slider.value.classList.remove('isdragging');
   }
 
-  document.removeEventListener("pointermove", drag);
-  document.removeEventListener("pointerup", dragEnd);
-  document.removeEventListener("touchmove", drag);
-  document.removeEventListener("touchend", dragEnd);
+  document.removeEventListener('pointermove', drag);
+  document.removeEventListener('pointerup', dragEnd);
+  document.removeEventListener('touchmove', drag);
+  document.removeEventListener('touchend', dragEnd);
 };
 
 onUnmounted(() => {
-  document.removeEventListener("pointermove", drag);
-  document.removeEventListener("pointerup", dragEnd);
-  document.removeEventListener("touchmove", drag);
-  document.removeEventListener("touchend", dragEnd);
+  document.removeEventListener('pointermove', drag);
+  document.removeEventListener('pointerup', dragEnd);
+  document.removeEventListener('touchmove', drag);
+  document.removeEventListener('touchend', dragEnd);
 });
 </script>

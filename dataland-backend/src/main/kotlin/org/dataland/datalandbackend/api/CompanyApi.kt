@@ -269,7 +269,10 @@ interface CompanyApi {
         consumes = ["application/json"],
         produces = ["application/json"],
     )
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize(
+        "hasRole('ROLE_USER') and " +
+            "@CompanyRoleChecker.canUserPatchFieldsForCompany(#companyInformationPatch, #companyId)",
+    )
     fun patchCompanyById(
         @PathVariable("companyId") companyId: String,
         @Valid @RequestBody

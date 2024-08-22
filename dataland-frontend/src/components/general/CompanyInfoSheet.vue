@@ -39,13 +39,13 @@
 </template>
 
 <script setup lang="ts">
-import BackButton from "@/components/general/BackButton.vue";
-import CompanyInformationBanner from "@/components/pages/CompanyInformation.vue";
-import CompaniesOnlySearchBar from "@/components/resources/companiesOnlySearch/CompaniesOnlySearchBar.vue";
-import { type CompanyInformation, type DataMetaInformation, type DataTypeEnum } from "@clients/backend";
-import { computed, inject, onMounted, onUnmounted, type PropType, ref } from "vue";
+import BackButton from '@/components/general/BackButton.vue';
+import CompanyInformationBanner from '@/components/pages/CompanyInformation.vue';
+import CompaniesOnlySearchBar from '@/components/resources/companiesOnlySearch/CompaniesOnlySearchBar.vue';
+import { type CompanyInformation, type DataMetaInformation, type DataTypeEnum } from '@clients/backend';
+import { computed, inject, onMounted, onUnmounted, type PropType, ref } from 'vue';
 
-const injectedMobileView = inject<{ value: boolean }>("useMobileView");
+const injectedMobileView = inject<{ value: boolean }>('useMobileView');
 const useMobileView = computed<boolean | undefined>(() => injectedMobileView?.value);
 
 const sheet = ref<HTMLDivElement>();
@@ -75,7 +75,7 @@ const { companyId, showSearchBar, showSingleDataRequestButton, framework, mapOfR
     },
   });
 
-const emit = defineEmits(["fetchedCompanyInformation"]);
+const emit = defineEmits(['fetchedCompanyInformation']);
 
 /**
  * On fetched company information defines the companyName and emits an event of type "fetchedCompanyInformation"
@@ -83,12 +83,12 @@ const emit = defineEmits(["fetchedCompanyInformation"]);
  */
 function onFetchedCompanyInformation(companyInfo: CompanyInformation): void {
   companyName.value = companyInfo.companyName;
-  emit("fetchedCompanyInformation", companyInfo);
+  emit('fetchedCompanyInformation', companyInfo);
 }
 
 const companyName = ref<string>();
 const mobileTitle = computed<string>(() => {
-  const genericTitle = "Company Overview";
+  const genericTitle = 'Company Overview';
   if (isCollapsed.value) {
     return companyName.value ?? genericTitle;
   } else {
@@ -108,10 +108,10 @@ function onScroll(): void {
 }
 
 onMounted(() => {
-  window.addEventListener("scroll", onScroll);
+  window.addEventListener('scroll', onScroll);
 });
 onUnmounted(() => {
-  window.removeEventListener("scroll", onScroll);
+  window.removeEventListener('scroll', onScroll);
 });
 const isCollapsed = computed<boolean>(() => {
   if (useMobileView.value && sheetRect.value != undefined && attachedSheetHeight.value != undefined) {

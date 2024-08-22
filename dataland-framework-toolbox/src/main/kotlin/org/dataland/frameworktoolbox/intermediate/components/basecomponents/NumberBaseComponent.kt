@@ -19,8 +19,7 @@ import org.dataland.frameworktoolbox.utils.typescript.TypeScriptImport
 open class NumberBaseComponent(
     identifier: String,
     parent: FieldNodeParent,
-    fullyQualifiedNameOfKotlinType: String = "java.math.BigDecimal",
-) : ComponentBase(identifier, parent, fullyQualifiedNameOfKotlinType) {
+) : ComponentBase(identifier, parent) {
     open var constantUnitSuffix: String? = null
 
     /**

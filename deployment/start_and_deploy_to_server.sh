@@ -59,7 +59,12 @@ fi
 
 if [[ $LOAD_GLEIF_GOLDEN_COPY == true ]]; then
   echo "Setting flag indicating that the full GLEIF Golden Copy File should be imported"
-  ssh ubuntu@"$target_server_url" "mkdir -p $location/dataland-batch-manager/config; touch $location/dataland-batch-manager/config/perform_full_golden_copy_download_flag"
+  ssh ubuntu@"$target_server_url" "mkdir -p $location/dataland-batch-manager/config; touch $location/dataland-batch-manager/config/perform_gleif_full_golden_copy_download_flag"
+fi
+
+if [[ $LOAD_NORTHDATA_GOLDEN_COPY == true ]]; then
+  echo "Setting flag indicating that the full NorthData Golden Copy File should be imported"
+  ssh ubuntu@"$target_server_url" "mkdir -p $location/dataland-batch-manager/config; touch $location/dataland-batch-manager/config/perform_northdata_full_golden_copy_download_flag"
 fi
 
 
@@ -68,7 +73,6 @@ ssh ubuntu@"$target_server_url" "mkdir -p $location/dataland-eurodat-client/secr
 scp -r ./dataland-eurodat-client/secret_files_templates ubuntu@"$target_server_url":"$location"/dataland-eurodat-client/secret_files_templates
 
 ssh ubuntu@"$target_server_url" "echo "${EURODAT_CLIENT_KEYSTORE_INT_BASE64}" | base64 -d > $location/dataland-eurodat-client/secret_files/keystore.jks"
-ssh ubuntu@"$target_server_url" "echo "${EURODAT_CLIENT_TEST_INT_BASE64}" | base64 -d > $location/dataland-eurodat-client/secret_files/test.jks"
 
 scp ./dataland-eurodat-client/write_secret_files.sh ubuntu@"$target_server_url":"$location"/dataland-eurodat-client
 ssh ubuntu@"$target_server_url" "$location/dataland-eurodat-client/write_secret_files.sh"

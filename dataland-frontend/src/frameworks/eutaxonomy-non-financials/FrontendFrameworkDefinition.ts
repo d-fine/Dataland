@@ -2,10 +2,10 @@
 import {
   type FrontendFrameworkDefinition,
   type FrameworkViewConfiguration,
-} from "@/frameworks/BaseFrameworkDefinition";
-import { eutaxonomyNonFinancialsViewConfiguration } from "@/frameworks/eutaxonomy-non-financials/ViewConfig";
-import { BaseEutaxonomyNonFinancialsFrameworkDefinition } from "@/frameworks/eutaxonomy-non-financials/BaseFrameworkDefinition";
-import { type EutaxonomyNonFinancialsData } from "@clients/backend";
+} from '@/frameworks/BaseFrameworkDefinition';
+import { eutaxonomyNonFinancialsViewConfiguration } from '@/frameworks/eutaxonomy-non-financials/ViewConfig';
+import { BaseEutaxonomyNonFinancialsFrameworkDefinition } from '@/frameworks/eutaxonomy-non-financials/BaseFrameworkDefinition';
+import { type EutaxonomyNonFinancialsData } from '@clients/backend';
 
 export class FrontendEutaxonomyNonFinancialsFrameworkDefinition
   extends BaseEutaxonomyNonFinancialsFrameworkDefinition
@@ -13,7 +13,7 @@ export class FrontendEutaxonomyNonFinancialsFrameworkDefinition
 {
   getFrameworkViewConfiguration(): FrameworkViewConfiguration<EutaxonomyNonFinancialsData> {
     return {
-      type: "MultiLayerDataTable",
+      type: 'MultiLayerDataTable',
       configuration: eutaxonomyNonFinancialsViewConfiguration,
     };
   }

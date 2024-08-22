@@ -79,27 +79,27 @@
 
 <script lang="ts">
 // @ts-nocheck
-import ViewFrameworkBase from "@/components/generics/ViewFrameworkBase.vue";
-import { defineComponent, inject } from "vue";
-import { type DataMetaInformation, DataTypeEnum } from "@clients/backend";
-import { humanizeStringOrNumber } from "@/utils/StringFormatter";
-import { ApiClientProvider } from "@/services/ApiClients";
-import { assertDefined } from "@/utils/TypeScriptUtils";
-import { type AxiosError } from "axios";
-import type Keycloak from "keycloak-js";
-import DatasetDisplayStatusIndicator from "@/components/resources/frameworkDataSearch/DatasetDisplayStatusIndicator.vue";
-import MultiLayerDataTableFrameworkPanel from "@/components/resources/frameworkDataSearch/frameworkPanel/MultiLayerDataTableFrameworkPanel.vue";
-import { convertDataModelToMLDTConfig } from "@/components/resources/dataTable/conversion/MultiLayerDataTableConfigurationConverter";
-import { p2pDataModel } from "@/components/resources/frameworkDataSearch/p2p/P2pDataModel";
-import { getFrontendFrameworkDefinition } from "@/frameworks/FrontendFrameworkRegistry";
+import ViewFrameworkBase from '@/components/generics/ViewFrameworkBase.vue';
+import { defineComponent, inject } from 'vue';
+import { type DataMetaInformation, DataTypeEnum } from '@clients/backend';
+import { humanizeStringOrNumber } from '@/utils/StringFormatter';
+import { ApiClientProvider } from '@/services/ApiClients';
+import { assertDefined } from '@/utils/TypeScriptUtils';
+import { type AxiosError } from 'axios';
+import type Keycloak from 'keycloak-js';
+import DatasetDisplayStatusIndicator from '@/components/resources/frameworkDataSearch/DatasetDisplayStatusIndicator.vue';
+import MultiLayerDataTableFrameworkPanel from '@/components/resources/frameworkDataSearch/frameworkPanel/MultiLayerDataTableFrameworkPanel.vue';
+import { convertDataModelToMLDTConfig } from '@/components/resources/dataTable/conversion/MultiLayerDataTableConfigurationConverter';
+import { p2pDataModel } from '@/components/resources/frameworkDataSearch/p2p/P2pDataModel';
+import { getFrontendFrameworkDefinition } from '@/frameworks/FrontendFrameworkRegistry';
 import {
   type FrontendFrameworkDefinition,
   type FrameworkViewConfiguration,
-} from "@/frameworks/BaseFrameworkDefinition";
-import { configForEuTaxonomyFinancialsMLDT } from "@/components/resources/frameworkDataSearch/euTaxonomy/configForEutaxonomyFinancialsMLDT";
+} from '@/frameworks/BaseFrameworkDefinition';
+import { configForEuTaxonomyFinancialsMLDT } from '@/components/resources/frameworkDataSearch/euTaxonomy/configForEutaxonomyFinancialsMLDT';
 
 export default defineComponent({
-  name: "ViewMultipleDatasetsDisplayBase",
+  name: 'ViewMultipleDatasetsDisplayBase',
   computed: {
     p2pDataModel() {
       return p2pDataModel;
@@ -154,7 +154,7 @@ export default defineComponent({
   },
   setup() {
     return {
-      getKeycloakPromise: inject<() => Promise<Keycloak>>("getKeycloakPromise"),
+      getKeycloakPromise: inject<() => Promise<Keycloak>>('getKeycloakPromise'),
     };
   },
   watch: {
@@ -173,11 +173,11 @@ export default defineComponent({
         if (dataMetaInfoForNewlyChosenReportingPeriod) {
           this.getMetaDataForDataId(dataMetaInfoForNewlyChosenReportingPeriod.dataId).catch((err) =>
             console.log(
-              "Retrieving meta data information for data ID " +
+              'Retrieving meta data information for data ID ' +
                 dataMetaInfoForNewlyChosenReportingPeriod.dataId +
-                " failed with error " +
-                String(err),
-            ),
+                ' failed with error ' +
+                String(err)
+            )
           );
         } else {
           this.isReportingPeriodInUrlInvalid = true;
@@ -286,12 +286,12 @@ export default defineComponent({
      * active data meta information objects
      */
     handleUpdateActiveDataMetaInfo(
-      receivedMapOfReportingPeriodsToActiveDataMetaInfo: Map<string, DataMetaInformation>,
+      receivedMapOfReportingPeriodsToActiveDataMetaInfo: Map<string, DataMetaInformation>
     ) {
       this.receivedMapOfDistinctReportingPeriodsToActiveDataMetaInfo =
         receivedMapOfReportingPeriodsToActiveDataMetaInfo;
       this.createListOfDataMetaInfoForDisplayedDatasets().catch((err) =>
-        console.log("Retrieving data meta info failed with error " + String(err)),
+        console.log('Retrieving data meta info failed with error ' + String(err))
       );
       this.isWaitingForListOfDataIdsToDisplay = false;
     },

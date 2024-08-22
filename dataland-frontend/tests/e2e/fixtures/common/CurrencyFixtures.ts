@@ -1,4 +1,4 @@
-import { faker } from "@faker-js/faker";
+import { faker } from '@faker-js/faker';
 
 /**
  * Randomly returns a currency from "USD", "EUR", "CHF", "CAD" and "AUD"

@@ -1,5 +1,5 @@
-import { TIME_DELAY_BETWEEN_SUBMIT_AND_NEXT_ACTION_IN_MS } from "@/utils/Constants";
-import { type Router } from "vue-router";
+import { TIME_DELAY_BETWEEN_SUBMIT_AND_NEXT_ACTION_IN_MS } from '@/utils/Constants';
+import { type Router } from 'vue-router';
 
 /**
  * function that redirects from the current page to the myDatasets page.

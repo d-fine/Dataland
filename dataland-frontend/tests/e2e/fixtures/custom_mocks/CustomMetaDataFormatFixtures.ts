@@ -1,4 +1,4 @@
-import { type DataMetaInformation, DataTypeEnum } from "@clients/backend";
+import { type DataMetaInformation, DataTypeEnum } from '@clients/backend';
 
 type MetaInfoAssociatedWithReportingPeriodByDataType = { [key in DataTypeEnum]?: (string | DataMetaInformation)[][] };
 
@@ -8,7 +8,7 @@ type MetaInfoAssociatedWithReportingPeriodByDataType = { [key in DataTypeEnum]?:
  * @returns the object
  */
 export function extractMetaInfoAssociatedWithReportingPeriodByDataType(
-  metaInfoDataForOneCompany: DataMetaInformation[],
+  metaInfoDataForOneCompany: DataMetaInformation[]
 ): MetaInfoAssociatedWithReportingPeriodByDataType {
   const holdingObject: MetaInfoAssociatedWithReportingPeriodByDataType = {};
   [DataTypeEnum.EutaxonomyFinancials, DataTypeEnum.Lksg].forEach((dataType) => {

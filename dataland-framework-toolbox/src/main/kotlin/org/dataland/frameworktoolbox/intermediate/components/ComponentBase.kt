@@ -4,16 +4,16 @@ import org.dataland.frameworktoolbox.intermediate.ComponentMarker
 import org.dataland.frameworktoolbox.intermediate.FieldNodeParent
 import org.dataland.frameworktoolbox.intermediate.TreeNode
 import org.dataland.frameworktoolbox.intermediate.datapoints.DocumentSupport
+import org.dataland.frameworktoolbox.intermediate.datapoints.ExtendedDocumentSupport
 import org.dataland.frameworktoolbox.intermediate.datapoints.NoDocumentSupport
-import org.dataland.frameworktoolbox.intermediate.datapoints.addPropertyWithDocumentSupport
 import org.dataland.frameworktoolbox.intermediate.group.ComponentGroup
 import org.dataland.frameworktoolbox.intermediate.group.TopLevelComponentGroup
 import org.dataland.frameworktoolbox.intermediate.logic.FrameworkConditional
-import org.dataland.frameworktoolbox.specific.datamodel.TypeReference
 import org.dataland.frameworktoolbox.specific.datamodel.elements.DataClassBuilder
 import org.dataland.frameworktoolbox.specific.fixturegenerator.elements.FixtureSectionBuilder
 import org.dataland.frameworktoolbox.specific.uploadconfig.elements.UploadCategoryBuilder
 import org.dataland.frameworktoolbox.specific.viewconfig.elements.SectionConfigBuilder
+import org.dataland.frameworktoolbox.specific.viewconfig.elements.getKotlinFieldAccessor
 import org.dataland.frameworktoolbox.utils.Naming
 import org.dataland.frameworktoolbox.utils.capitalizeEn
 
@@ -23,11 +23,11 @@ import org.dataland.frameworktoolbox.utils.capitalizeEn
  * @param identifier the camelCase identifier of the component
  * @param parent the parent node in the hierarchy
  */
+@Suppress("TooManyFunctions")
 @ComponentMarker
 open class ComponentBase(
     var identifier: String,
     override var parent: FieldNodeParent,
-    var fullyQualifiedNameOfKotlinType: String = "",
 ) : TreeNode<FieldNodeParent> {
 
     /**
@@ -53,6 +53,12 @@ open class ComponentBase(
     var dataModelGenerator: ((dataClassBuilder: DataClassBuilder) -> Unit)? = null
 
     /**
+     * The qaModelGenerator allows users to overwrite the DataClass generation of this specific component instance
+     * for the QA model
+     */
+    var qaModelGenerator: ((dataClassBuilder: DataClassBuilder) -> Unit)? = null
+
+    /**
      * The viewConfigGenerator allows users to overwrite the ViewConfig generation of this specific component instance
      */
     var viewConfigGenerator: ((sectionConfigBuilder: SectionConfigBuilder) -> Unit)? = null
@@ -72,7 +78,7 @@ open class ComponentBase(
     /**
      * True iff this component is optional / accepts null values
      */
-    var isNullable: Boolean = true
+    open var isNullable: Boolean = true
 
     /**
      * True iff this component is required (just a pointer to !isNullable for convenience)
@@ -126,11 +132,7 @@ open class ComponentBase(
      * generator
      */
     open fun generateDefaultDataModel(dataClassBuilder: DataClassBuilder) {
-        dataClassBuilder.addPropertyWithDocumentSupport(
-            documentSupport,
-            identifier,
-            TypeReference(fullyQualifiedNameOfKotlinType, isNullable),
-        )
+        throw IllegalStateException("This component did not implement Data model generation.")
     }
 
     /**
@@ -138,6 +140,31 @@ open class ComponentBase(
      */
     fun generateDataModel(dataClassBuilder: DataClassBuilder) {
         return dataModelGenerator?.let { it(dataClassBuilder) } ?: generateDefaultDataModel(dataClassBuilder)
+    }
+
+    /**
+     * Build this component instance into the provided Kotlin DataClass using the default
+     * generator
+     */
+    open fun generateDefaultQaModel(dataClassBuilder: DataClassBuilder) {
+        throw IllegalStateException("This component did not implement QA model generation.")
+    }
+
+    /**
+     * Build this component instance into the provided Kotlin DataClass
+     */
+    fun generateQaModel(dataClassBuilder: DataClassBuilder) {
+        val localQaModelGenerator = qaModelGenerator
+
+        // dataModelGenerator != null ==> localQaModelGenerator != null
+        require(dataModelGenerator == null || localQaModelGenerator != null) {
+            "You should always overwrite dataModelGenerator when using qaModelGenerator"
+        }
+        if (localQaModelGenerator != null) {
+            localQaModelGenerator(dataClassBuilder)
+        } else {
+            generateDefaultQaModel(dataClassBuilder)
+        }
     }
 
     /**
@@ -183,5 +210,16 @@ open class ComponentBase(
      */
     fun generateFixtureGenerator(sectionBuilder: FixtureSectionBuilder) {
         return fixtureGeneratorGenerator?.let { it(sectionBuilder) } ?: generateDefaultFixtureGenerator(sectionBuilder)
+    }
+
+    /**
+     * Returns the list of extended document references of the component
+     */
+    open fun getExtendedDocumentReference(): List<String> {
+        return if (documentSupport == ExtendedDocumentSupport) {
+            listOf("${this.getKotlinFieldAccessor()}?.dataSource?.fileReference")
+        } else {
+            emptyList()
+        }
     }
 }

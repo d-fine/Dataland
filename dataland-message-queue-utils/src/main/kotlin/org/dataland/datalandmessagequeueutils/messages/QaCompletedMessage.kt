@@ -9,4 +9,6 @@ import org.dataland.datalandbackendutils.model.QaStatus
 data class QaCompletedMessage(
     val identifier: String,
     val validationResult: QaStatus,
+    val reviewerId: String,
+    val message: String? = null,
 )

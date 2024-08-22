@@ -61,7 +61,7 @@
           </div>
           <ReportFormElement
             :name="storedReport.fileName"
-            :report-date="storedReport.reportDate"
+            :publication-date="storedReport.publicationDate"
             :fileReference="storedReport.fileReference"
           />
         </div>
@@ -72,19 +72,19 @@
 
 <script lang="ts">
 // @ts-nocheck
-import { defineComponent } from "vue";
-import PrimeButton from "primevue/button";
-import ReportFormElement from "@/components/forms/parts/ReportFormElement.vue";
-import InvalidFileSelectionDialog from "@/components/general/InvalidFileSelectionDialog.vue";
-import { calculateReferenceableFiles, type DocumentToUpload, type StoredReport } from "@/utils/FileUploadUtils";
-import UploadDocumentsForm from "@/components/forms/parts/elements/basic/UploadDocumentsForm.vue";
-import { type CompanyReport } from "@clients/backend";
-import { type ObjectType } from "@/utils/UpdateObjectUtils";
-import { REGEX_FOR_FILE_NAMES } from "@/utils/Constants";
+import { defineComponent } from 'vue';
+import PrimeButton from 'primevue/button';
+import ReportFormElement from '@/components/forms/parts/ReportFormElement.vue';
+import InvalidFileSelectionDialog from '@/components/general/InvalidFileSelectionDialog.vue';
+import { calculateReferenceableFiles, type DocumentToUpload, type StoredReport } from '@/utils/FileUploadUtils';
+import UploadDocumentsForm from '@/components/forms/parts/elements/basic/UploadDocumentsForm.vue';
+import { type CompanyReport } from '@clients/backend';
+import { type ObjectType } from '@/utils/UpdateObjectUtils';
+import { REGEX_FOR_FILE_NAMES } from '@/utils/Constants';
 
 enum FileNameInvalidityReason {
-  Duplicate = "Duplicate",
-  ForbiddenCharacter = "ForbiddenCharacter",
+  Duplicate = 'Duplicate',
+  ForbiddenCharacter = 'ForbiddenCharacter',
 }
 type NameIndexAndReasonOfInvalidFile = {
   fileName: string;
@@ -93,11 +93,11 @@ type NameIndexAndReasonOfInvalidFile = {
 };
 
 export default defineComponent({
-  name: "UploadReports",
+  name: 'UploadReports',
   inheritAttrs: false,
   inject: {
     injectReferencedReportsForPrefill: {
-      from: "referencedReportsForPrefill",
+      from: 'referencedReportsForPrefill',
       default: {},
     },
   },
@@ -106,7 +106,7 @@ export default defineComponent({
     ReportFormElement,
     PrimeButton,
   },
-  emits: ["reportsUpdated"],
+  emits: ['reportsUpdated'],
   data() {
     return {
       documentsToUpload: [] as DocumentToUpload[],
@@ -159,7 +159,7 @@ export default defineComponent({
       ) {
         this.openModalToDisplayNameErrorsInFileSelectionByUser();
       }
-      this.$emit("reportsUpdated", this.allReferenceableReportNamesAndReferences, this.documentsToUpload);
+      this.$emit('reportsUpdated', this.allReferenceableReportNamesAndReferences, this.documentsToUpload);
     },
     /**
      * Handles selection of files by the user. If invalid file names are found in the selection, this is handled.
@@ -216,10 +216,10 @@ export default defineComponent({
         .filter((it) => it.invalidityReason === FileNameInvalidityReason.ForbiddenCharacter)
         .map((it) => it.fileName);
       const indexesOfInvalidFileNames = nameIndexAndReasonOfInvalidFiles.map(
-        (fileNameWithIndexAndReason) => fileNameWithIndexAndReason.index,
+        (fileNameWithIndexAndReason) => fileNameWithIndexAndReason.index
       );
       (this.$refs.uploadDocumentsForm.removeDocumentsFromDocumentsToUpload as (indexes: number[]) => void)(
-        indexesOfInvalidFileNames,
+        indexesOfInvalidFileNames
       );
     },
     /**
@@ -245,9 +245,7 @@ export default defineComponent({
           this.alreadyStoredReports.push({
             fileName: key,
             fileReference: referencedReport.fileReference,
-            currency: referencedReport.currency,
-            reportDate: referencedReport.reportDate,
-            isGroupLevel: referencedReport.isGroupLevel,
+            publicationDate: referencedReport.publicationDate,
           });
         }
         this.emitReportsUpdatedEvent();
@@ -263,11 +261,11 @@ export default defineComponent({
           modal: true,
           closable: true,
           dismissableMask: true,
-          header: "Files cannot be uploaded",
+          header: 'Files cannot be uploaded',
         },
         data: {
-          duplicateNamesJoinedString: this.namesInFileSelectionThatAreAlreadyTakenByOtherReports.join(", "),
-          fileNamesWithCharacterViolationsJoinedString: this.namesInFileSelectionWithForbiddenCharacters.join(", "),
+          duplicateNamesJoinedString: this.namesInFileSelectionThatAreAlreadyTakenByOtherReports.join(', '),
+          fileNamesWithCharacterViolationsJoinedString: this.namesInFileSelectionWithForbiddenCharacters.join(', '),
         },
       });
       this.namesInFileSelectionThatAreAlreadyTakenByOtherReports = [];

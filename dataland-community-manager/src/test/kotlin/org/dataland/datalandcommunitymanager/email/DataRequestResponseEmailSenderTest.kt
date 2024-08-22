@@ -4,7 +4,6 @@ import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.model.CompanyInformation
 import org.dataland.datalandcommunitymanager.entities.DataRequestEntity
-import org.dataland.datalandcommunitymanager.services.KeycloakUserControllerApiService
 import org.dataland.datalandcommunitymanager.services.messaging.DataRequestResponseEmailSender
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
 import org.dataland.datalandmessagequeueutils.constants.ExchangeName
@@ -27,7 +26,6 @@ class DataRequestResponseEmailSenderTest {
     private val reportingPeriod = "2022"
     private val companyId = "59f05156-e1ba-4ea8-9d1e-d4833f6c7afc"
     private val userId = "1234-221-1111elf"
-    private val userEmail = "$userId@example.com"
     private val creationTimestamp = 1709820187875
     private val creationTimestampAsDate = "07 Mar 2024, 15:03"
     private val companyName = "Test Inc."
@@ -35,25 +33,18 @@ class DataRequestResponseEmailSenderTest {
     private val correlationId = UUID.randomUUID().toString()
     private val staleDaysThreshold = "some number"
     private val dataTypes = getListOfAllDataTypes()
-    private lateinit var keycloakUserControllerApiService: KeycloakUserControllerApiService
 
     @BeforeEach
     fun setupAuthentication() {
         val mockSecurityContext = mock(SecurityContext::class.java)
         val authenticationMock = AuthenticationMock.mockJwtAuthentication(
-            userEmail,
+            "userEmail",
             userId,
             setOf(DatalandRealmRole.ROLE_USER),
         )
         `when`(mockSecurityContext.authentication).thenReturn(authenticationMock)
         `when`(authenticationMock.credentials).thenReturn("")
         SecurityContextHolder.setContext(mockSecurityContext)
-        keycloakUserControllerApiService = getKeycloakControllerApiService()
-    }
-    private fun getKeycloakControllerApiService(): KeycloakUserControllerApiService {
-        val keycloakUserControllerApiService = mock(KeycloakUserControllerApiService::class.java)
-        `when`(keycloakUserControllerApiService.getEmailAddress(userId)).thenReturn(userEmail)
-        return keycloakUserControllerApiService
     }
     private fun getDataRequestEntityWithDataType(dataType: String): DataRequestEntity {
         return DataRequestEntity(
@@ -100,7 +91,7 @@ class DataRequestResponseEmailSenderTest {
             listOf("eutaxonomy-non-financials", "EU Taxonomy for non-financial companies"),
             listOf("lksg", "LkSG"),
             listOf("sfdr", "SFDR"),
-            listOf("sme", "SME"),
+            listOf("vsme", "VSME"),
             listOf("esg-questionnaire", "ESG Questionnaire"),
             listOf("heimathafen", "Heimathafen"),
         )
@@ -129,7 +120,7 @@ class DataRequestResponseEmailSenderTest {
             val arg4 = it.getArgument<String>(3)
             val arg5 = it.getArgument<String>(4)
             assertEquals(emailMessageType, arg1.emailTemplateType)
-            assertEquals(userEmail, arg1.receiver)
+            assertEquals(TemplateEmailMessage.UserIdEmailRecipient(userId), arg1.receiver)
             checkPropertiesOfDataRequestResponseEmail(
                 dataRequestId, arg1.properties, dataType, dataTypeDescription,
             )
@@ -154,7 +145,7 @@ class DataRequestResponseEmailSenderTest {
             val dataRequestClosedEmailMessageSender =
                 DataRequestResponseEmailSender(
                     cloudEventMessageHandlerMock,
-                    jacksonObjectMapper(), keycloakUserControllerApiService,
+                    jacksonObjectMapper(),
                     getCompanyDataControllerMock(),
                     staleDaysThreshold,
                 )
@@ -177,7 +168,7 @@ class DataRequestResponseEmailSenderTest {
             val dataRequestClosedEmailMessageSender =
                 DataRequestResponseEmailSender(
                     cloudEventMessageHandlerMock,
-                    jacksonObjectMapper(), keycloakUserControllerApiService,
+                    jacksonObjectMapper(),
                     getCompanyDataControllerMock(),
                     staleDaysThreshold,
                 )

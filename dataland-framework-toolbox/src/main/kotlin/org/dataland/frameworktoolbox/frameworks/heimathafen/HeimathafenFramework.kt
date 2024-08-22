@@ -1,6 +1,7 @@
 package org.dataland.frameworktoolbox.frameworks.heimathafen
 
 import ComponentGenerationUtilsForGermanFrameworks
+import org.dataland.frameworktoolbox.frameworks.FrameworkGenerationFeatures
 import org.dataland.frameworktoolbox.frameworks.PavedRoadFramework
 import org.dataland.frameworktoolbox.intermediate.Framework
 import org.dataland.frameworktoolbox.intermediate.group.ComponentGroup
@@ -19,6 +20,8 @@ class HeimathafenFramework : PavedRoadFramework(
     explanation = "Das Heimathafen Framework",
     File("./dataland-framework-toolbox/inputs/heimathafen/dataDictionary-Heimathafen.csv"),
     order = 8,
+    enabledFeatures =
+    FrameworkGenerationFeatures.allExcept(FrameworkGenerationFeatures.QaModel),
 ) {
     override fun getComponentGenerationUtils(): ComponentGenerationUtils {
         return ComponentGenerationUtilsForGermanFrameworks()

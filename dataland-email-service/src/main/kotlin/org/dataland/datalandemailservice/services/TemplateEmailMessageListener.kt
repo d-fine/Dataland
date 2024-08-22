@@ -1,5 +1,6 @@
 package org.dataland.datalandemailservice.services
 
+import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandemailservice.email.EmailSender
 import org.dataland.datalandemailservice.services.templateemail.TemplateEmailFactory
@@ -30,6 +31,7 @@ class TemplateEmailMessageListener(
     @Autowired private val messageQueueUtils: MessageQueueUtils,
     @Autowired private val objectMapper: ObjectMapper,
     @Autowired private val templateEmailFactories: List<TemplateEmailFactory>,
+    @Autowired private val keycloakUserControllerApiService: KeycloakUserControllerApiService,
 ) {
     private val logger = LoggerFactory.getLogger(TemplateEmailMessageListener::class.java)
 
@@ -66,14 +68,26 @@ class TemplateEmailMessageListener(
             "Received template email message of type ${message.emailTemplateType.name} " +
                 "with correlationId $correlationId.",
         )
+
+        val receiverEmailAddress = getEmailAddressByRecipient(objectMapper.readTree(jsonString).get("receiver"))
         messageQueueUtils.rejectMessageOnException {
             val templateEmailFactory = getMatchingEmailFactory(message)
             emailSender.sendEmailWithoutTestReceivers(
                 templateEmailFactory.buildEmail(
-                    receiverEmail = message.receiver,
+                    receiverEmail = receiverEmailAddress,
                     properties = message.properties,
                 ),
             )
+        }
+    }
+
+    private fun getEmailAddressByRecipient(receiver: JsonNode?): String {
+        return when (val receiverType = receiver?.get("type")?.asText()) {
+            "address" -> receiver.get("email").asText()
+            "user" -> keycloakUserControllerApiService.getEmailAddress(receiver.get("userId").asText())
+            else -> {
+                throw IllegalArgumentException("Invalid receiver type: $receiverType")
+            }
         }
     }
 

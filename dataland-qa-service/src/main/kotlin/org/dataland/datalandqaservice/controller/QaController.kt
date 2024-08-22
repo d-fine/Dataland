@@ -11,14 +11,18 @@ import org.dataland.datalandmessagequeueutils.messages.QaCompletedMessage
 import org.dataland.datalandqaservice.api.QaApi
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.ReviewInformationEntity
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.ReviewQueueEntity
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.ReviewInformationResponse
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.repositories.ReviewHistoryRepository
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.repositories.ReviewQueueRepository
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
+import org.dataland.keycloakAdapter.auth.DatalandRealmRole
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
+import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.transaction.annotation.Transactional
 import org.springframework.web.bind.annotation.RestController
+import java.util.*
 import java.util.UUID.randomUUID
 import kotlin.jvm.optionals.getOrElse
 
@@ -41,7 +45,26 @@ class QaController(
     }
 
     @Transactional
-    override fun assignQaStatus(dataId: String, qaStatus: QaStatus) {
+    override fun getDatasetById(dataId: UUID): ResponseEntity<ReviewInformationResponse> {
+        val identifier = dataId.toString()
+        logger.info(
+            "Received request to respond with the review information " +
+                "of the dataset with identifier $identifier",
+        )
+
+        val reviewHistoryEntity = reviewHistoryRepository.findById(identifier).orElse(null)
+
+        return if (reviewHistoryEntity != null) {
+            val userIsAdmin = DatalandAuthentication.fromContext().roles.contains(DatalandRealmRole.ROLE_ADMIN)
+            val response = reviewHistoryEntity.toReviewInformationResponse(userIsAdmin)
+            ResponseEntity.ok(response)
+        } else {
+            ResponseEntity.notFound().build()
+        }
+    }
+
+    @Transactional
+    override fun assignQaStatus(dataId: String, qaStatus: QaStatus, message: String?) {
         val correlationId = randomUUID().toString()
         logger.info(
             "Received request to change the quality status of dataset with ID $dataId " +
@@ -61,10 +84,11 @@ class QaController(
                 receptionTime = dataReviewStatusToUpdate.receptionTime,
                 qaStatus = qaStatus,
                 reviewerKeycloakId = DatalandAuthentication.fromContext().userId,
+                message = message,
             ),
         )
         reviewQueueRepository.deleteById(dataId)
-        sendQaCompletedMessage(dataId, qaStatus, correlationId)
+        sendQaCompletedMessage(dataId, qaStatus, correlationId, message)
     }
 
     /**
@@ -86,13 +110,15 @@ class QaController(
      * @param dataId the ID of the QAed dataset
      * @param qaStatus the assigned quality status
      * @param correlationId the ID of the process
+     * @param message optional message attached to the QA completion
      */
-    fun sendQaCompletedMessage(dataId: String, qaStatus: QaStatus, correlationId: String) {
-        val message = objectMapper.writeValueAsString(
-            QaCompletedMessage(dataId, qaStatus),
+    fun sendQaCompletedMessage(dataId: String, qaStatus: QaStatus, correlationId: String, message: String?) {
+        val reviewerId = SecurityContextHolder.getContext().authentication.name
+        val messageBody = objectMapper.writeValueAsString(
+            QaCompletedMessage(dataId, qaStatus, reviewerId, message),
         )
         cloudEventMessageHandler.buildCEMessageAndSendToQueue(
-            message, MessageType.QaCompleted, correlationId, ExchangeName.DataQualityAssured,
+            messageBody, MessageType.QaCompleted, correlationId, ExchangeName.DataQualityAssured,
             RoutingKeyNames.data,
         )
     }

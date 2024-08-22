@@ -1,4 +1,4 @@
-import { type DropdownOption } from "@/utils/PremadeDropdownDatasets";
+import { type DropdownOption } from '@/utils/PremadeDropdownDatasets';
 
 export const BaseFormFieldProps = {
   name: {
@@ -7,15 +7,15 @@ export const BaseFormFieldProps = {
   },
   description: {
     type: String,
-    default: "",
+    default: '',
   },
   label: {
     type: String,
-    default: "",
+    default: '',
   },
   validation: {
     type: String,
-    default: "",
+    default: '',
   },
   validationLabel: {
     type: String,
@@ -26,7 +26,7 @@ export const BaseFormFieldProps = {
   },
   inputClass: {
     type: String,
-    default: "col-4",
+    default: 'col-4',
   },
 };
 
@@ -34,7 +34,7 @@ export const FormFieldPropsWithPlaceholder = {
   ...BaseFormFieldProps,
   placeholder: {
     type: String,
-    default: "",
+    default: '',
   },
 };
 
@@ -53,7 +53,7 @@ export const DropdownOptionFormFieldProps = {
     required: true,
   },
   placeholder: {
-    default: "Please Select",
+    default: 'Please Select',
   },
 };
 

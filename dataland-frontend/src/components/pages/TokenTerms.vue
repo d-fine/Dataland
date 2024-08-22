@@ -8,10 +8,10 @@
 </template>
 
 <script lang="ts">
-import LegalPage from "@/components/generics/LegalPage.vue";
+import LegalPage from '@/components/generics/LegalPage.vue';
 
 export default {
-  name: "TokenTerms",
+  name: 'TokenTerms',
   components: { LegalPage },
 };
 </script>

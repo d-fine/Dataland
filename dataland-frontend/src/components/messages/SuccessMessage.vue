@@ -8,15 +8,15 @@
 </template>
 
 <script lang="ts">
-import Message from "primevue/message";
+import Message from 'primevue/message';
 
 export default {
-  name: "SuccessMessage",
+  name: 'SuccessMessage',
   components: { Message },
   props: {
     successMessage: {
       type: String,
-      default: "Upload successfully executed.",
+      default: 'Upload successfully executed.',
     },
     message: {
       type: String,

@@ -1,5 +1,5 @@
-import { getAllCountryCodes } from "@/utils/CountryCodeConverter";
-import { pickOneElement } from "@e2e/fixtures/FixtureUtils";
+import { getAllCountryCodes } from '@/utils/CountryCodeConverter';
+import { pickOneElement } from '@e2e/fixtures/FixtureUtils';
 
 /**
  * Randomly returns one Iso2 country code from all available Iso2 country codes

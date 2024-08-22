@@ -34,12 +34,12 @@
 
 <script lang="ts">
 // @ts-nocheck
-import { defineComponent } from "vue";
-import { FormKit } from "@formkit/vue";
-import { disabledOnMoreThanOne } from "@/utils/FormKitPlugins";
+import { defineComponent } from 'vue';
+import { FormKit } from '@formkit/vue';
+import { disabledOnMoreThanOne } from '@/utils/FormKitPlugins';
 
 export default defineComponent({
-  name: "CheckboxesListFormElement",
+  name: 'CheckboxesListFormElement',
   components: { FormKit },
   data() {
     return {
@@ -64,12 +64,12 @@ export default defineComponent({
      * @param newCheckBoxValue is the new value in the checkbox
      */
     updateCurrentValue(newCheckBoxValue: string) {
-      if (newCheckBoxValue && newCheckBoxValue !== "") {
+      if (newCheckBoxValue && newCheckBoxValue !== '') {
         this.shouldBeIgnoredByFormKit = false;
         this.currentValue = newCheckBoxValue;
         this.checkboxValue = [newCheckBoxValue];
       } else {
-        this.shouldBeIgnoredByFormKit = !this.validation.includes("is:");
+        this.shouldBeIgnoredByFormKit = !this.validation.includes('is:');
         this.currentValue = null;
       }
     },
@@ -77,14 +77,14 @@ export default defineComponent({
   watch: {
     currentValue(newVal: string) {
       this.updateCurrentValue(newVal);
-      this.$emit("updateCheckboxValue", this.currentValue);
+      this.$emit('updateCheckboxValue', this.currentValue);
     },
   },
-  emits: ["updateCheckboxValue"],
+  emits: ['updateCheckboxValue'],
   props: {
     name: {
       type: String,
-      default: "",
+      default: '',
     },
     options: {
       type: Object,
@@ -92,18 +92,18 @@ export default defineComponent({
     },
     validation: {
       type: String,
-      default: "",
+      default: '',
     },
     validationLabel: {
       type: String,
-      default: "",
+      default: '',
     },
     validationMessages: {
       type: Object as () => { is: string },
     },
     fieldName: {
       type: String,
-      default: "",
+      default: '',
     },
   },
 });

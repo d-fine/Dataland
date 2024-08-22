@@ -7,7 +7,7 @@
 // This function is inherently not type-safe, but still required for the data-model conversion.
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function getFieldValueFromFrameworkDataset(identifier: string, frameworkDataset: any): any {
-  const splits = identifier.split(".");
+  const splits = identifier.split('.');
   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment,@typescript-eslint/no-explicit-any
   let currentObject: any = frameworkDataset;
   for (const split of splits) {
@@ -27,7 +27,7 @@ export function getFieldValueFromFrameworkDataset(identifier: string, frameworkD
 // This function is inherently not type-safe, but still required for the data-model conversion.
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function getFieldValueFromDataModel(identifier: string, dataModel: any): any {
-  const splits = identifier.split(".");
+  const splits = identifier.split('.');
   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment,@typescript-eslint/no-explicit-any
   let currentObject: any = dataModel;
   for (const split of splits) {
@@ -46,7 +46,7 @@ export function getFieldValueFromDataModel(identifier: string, dataModel: any): 
  */
 export function getOriginalNameFromTechnicalName<T extends string>(
   technicalName: T,
-  mappingObject: { [key in T]: string },
+  mappingObject: { [key in T]: string }
 ): string {
   return mappingObject[technicalName];
 }

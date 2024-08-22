@@ -1,5 +1,5 @@
 // @ts-nocheck
-import { type FixtureData, getPreparedFixture } from "@sharedUtils/Fixtures";
+import { type FixtureData, getPreparedFixture } from '@sharedUtils/Fixtures';
 import {
   type DataAndMetaInformationLksgData,
   type DataMetaInformation,
@@ -7,135 +7,135 @@ import {
   type LksgData,
   type LksgProductionSite,
   QaStatus,
-} from "@clients/backend";
-import { type ReportingPeriodOfDataSetWithId, sortReportingPeriodsToDisplayAsColumns } from "@/utils/DataTableDisplay";
-import { lksgViewConfiguration } from "@/frameworks/lksg/ViewConfig";
+} from '@clients/backend';
+import { type ReportingPeriodOfDataSetWithId, sortReportingPeriodsToDisplayAsColumns } from '@/utils/DataTableDisplay';
+import { lksgViewConfiguration } from '@/frameworks/lksg/ViewConfig';
 import {
   mountMLDTFrameworkPanelFromFakeFixture,
   mountMLDTFrameworkPanel,
-} from "@ct/testUtils/MultiLayerDataTableComponentTestUtils";
+} from '@ct/testUtils/MultiLayerDataTableComponentTestUtils';
 
-import { type DataAndMetaInformation } from "@/api-models/DataAndMetaInformation";
+import { type DataAndMetaInformation } from '@/api-models/DataAndMetaInformation';
 import {
   getCellValueContainerAndCheckIconForHiddenDisplay,
   getCellValueContainer,
   getSectionHead,
-} from "@sharedUtils/components/resources/dataTable/MultiLayerDataTableTestUtils";
+} from '@sharedUtils/components/resources/dataTable/MultiLayerDataTableTestUtils';
 
-describe("Component test for the LksgPanel", () => {
+describe('Component test for the LksgPanel', () => {
   let preparedFixtures: Array<FixtureData<LksgData>>;
 
   before(function () {
-    cy.fixture("CompanyInformationWithLksgPreparedFixtures").then(function (jsonContent) {
+    cy.fixture('CompanyInformationWithLksgPreparedFixtures').then(function (jsonContent) {
       preparedFixtures = jsonContent as Array<FixtureData<LksgData>>;
     });
   });
 
-  it("Should be able to handle null values in a Lksg dataset and display rows for those values", () => {
-    const preparedFixture = getPreparedFixture("lksg-almost-only-nulls", preparedFixtures);
+  it('Should be able to handle null values in a Lksg dataset and display rows for those values', () => {
+    const preparedFixture = getPreparedFixture('lksg-almost-only-nulls', preparedFixtures);
     mountMLDTFrameworkPanelFromFakeFixture(DataTypeEnum.Lksg, lksgViewConfiguration, [preparedFixture]);
-    getCellValueContainer("Data Date").should("contain.text", "1999-12-24");
-    getCellValueContainer("Industry").should("exist");
+    getCellValueContainer('Data Date').should('contain.text', '1999-12-24');
+    getCellValueContainer('Industry').should('exist');
   });
 
-  it("Check that the Master Data section is auto-expanded on page load and is decollapsed", () => {
-    const preparedFixture = getPreparedFixture("one-lksg-data-set-with-two-production-sites", preparedFixtures);
+  it('Check that the Master Data section is auto-expanded on page load and is decollapsed', () => {
+    const preparedFixture = getPreparedFixture('one-lksg-data-set-with-two-production-sites', preparedFixtures);
     mountMLDTFrameworkPanelFromFakeFixture(DataTypeEnum.Lksg, lksgViewConfiguration, [preparedFixture]);
     const lksgData = preparedFixture.t;
 
-    getCellValueContainer("Data Date")
-      .should("contain.text", lksgData.general.masterData.dataDate)
-      .should("be.visible");
-    getSectionHead("Master Data").should("have.attr", "data-section-expanded", "true");
-    getCellValueContainer("Data Date", 0, false).should("be.visible");
-    getSectionHead("Master Data").should("have.attr", "data-section-expanded", "true");
-    getCellValueContainer("Data Date")
-      .should("contain.text", lksgData.general.masterData.dataDate)
-      .should("be.visible");
+    getCellValueContainer('Data Date')
+      .should('contain.text', lksgData.general.masterData.dataDate)
+      .should('be.visible');
+    getSectionHead('Master Data').should('have.attr', 'data-section-expanded', 'true');
+    getCellValueContainer('Data Date', 0, false).should('be.visible');
+    getSectionHead('Master Data').should('have.attr', 'data-section-expanded', 'true');
+    getCellValueContainer('Data Date')
+      .should('contain.text', lksgData.general.masterData.dataDate)
+      .should('be.visible');
   });
 
-  it("Validate that certificate links are displayed correctly", () => {
-    const preparedFixture = getPreparedFixture("one-lksg-data-set-with-two-production-sites", preparedFixtures);
+  it('Validate that certificate links are displayed correctly', () => {
+    const preparedFixture = getPreparedFixture('one-lksg-data-set-with-two-production-sites', preparedFixtures);
     mountMLDTFrameworkPanelFromFakeFixture(DataTypeEnum.Lksg, lksgViewConfiguration, [preparedFixture]);
 
-    getSectionHead("Governance").should("have.attr", "data-section-expanded", "true");
-    getSectionHead("Certifications, policies and responsibilities")
-      .should("have.attr", "data-section-expanded", "true")
+    getSectionHead('Governance').should('have.attr', 'data-section-expanded', 'true');
+    getSectionHead('Certifications, policies and responsibilities')
+      .should('have.attr', 'data-section-expanded', 'true')
       .click();
   });
 
-  it("Validate that the list of production sites is displayed modal is displayed correctly", () => {
-    const preparedFixture = getPreparedFixture("one-lksg-data-set-with-two-production-sites", preparedFixtures);
+  it('Validate that the list of production sites is displayed modal is displayed correctly', () => {
+    const preparedFixture = getPreparedFixture('one-lksg-data-set-with-two-production-sites', preparedFixtures);
     mountMLDTFrameworkPanelFromFakeFixture(DataTypeEnum.Lksg, lksgViewConfiguration, [preparedFixture]);
     const lksgData = preparedFixture.t;
     const reportingPeriod = preparedFixture.reportingPeriod;
-    getCellValueContainer("Data Date")
-      .should("contain.text", lksgData.general.masterData.dataDate)
-      .should("be.visible");
-    cy.get(`span.p-column-title`).should("contain.text", reportingPeriod.substring(0, 4));
-    getSectionHead("Production-specific").should("have.attr", "data-section-expanded", "true");
-    getCellValueContainer("List Of Production Sites").contains("a").should("be.visible").click();
+    getCellValueContainer('Data Date')
+      .should('contain.text', lksgData.general.masterData.dataDate)
+      .should('be.visible');
+    cy.get(`span.p-column-title`).should('contain.text', reportingPeriod.substring(0, 4));
+    getSectionHead('Production-specific').should('have.attr', 'data-section-expanded', 'true');
+    getCellValueContainer('List Of Production Sites').contains('a').should('be.visible').click();
     lksgData.general.productionSpecific!.listOfProductionSites!.forEach((productionSite: LksgProductionSite) => {
       if (productionSite.addressOfProductionSite?.streetAndHouseNumber) {
-        cy.get("tbody.p-datatable-tbody p").contains(productionSite.addressOfProductionSite.streetAndHouseNumber);
+        cy.get('tbody.p-datatable-tbody p').contains(productionSite.addressOfProductionSite.streetAndHouseNumber);
       }
     });
-    cy.get("div.p-dialog-mask").click({ force: true });
+    cy.get('div.p-dialog-mask').click({ force: true });
   });
 
-  it("Validate that the procurement category modal is displayed and contains the correct headers", () => {
-    const preparedFixture = getPreparedFixture("lksg-with-procurement-categories", preparedFixtures);
+  it('Validate that the procurement category modal is displayed and contains the correct headers', () => {
+    const preparedFixture = getPreparedFixture('lksg-with-procurement-categories', preparedFixtures);
     mountMLDTFrameworkPanelFromFakeFixture(DataTypeEnum.Lksg, lksgViewConfiguration, [preparedFixture]);
 
-    getSectionHead("Production-specific - Own Operations").should("have.attr", "data-section-expanded", "true");
-    getCellValueContainer("Procurement Categories").find("a").should("be.visible").click();
+    getSectionHead('Production-specific - Own Operations').should('have.attr', 'data-section-expanded', 'true');
+    getCellValueContainer('Procurement Categories').find('a').should('be.visible').click();
 
-    cy.get("div.p-dialog").within(() => {
-      cy.get("th").eq(0).should("have.text", "Procurement Category");
-      cy.get("th").eq(1).should("have.text", "Procured Products/Services");
-      cy.get("th").eq(2).should("have.text", "Number of Direct Suppliers and Countries");
-      cy.get("th").eq(3).should("have.text", "Order Volume");
+    cy.get('div.p-dialog').within(() => {
+      cy.get('th').eq(0).should('have.text', 'Procurement Category');
+      cy.get('th').eq(1).should('have.text', 'Procured Products/Services');
+      cy.get('th').eq(2).should('have.text', 'Number of Direct Suppliers and Countries');
+      cy.get('th').eq(3).should('have.text', 'Order Volume');
     });
   });
 
-  it("Validate that the subcategories countries modal is displayed correctly and contains the correct headers", () => {
-    const preparedFixture = getPreparedFixture("lksg-with-subcontracting-countries", preparedFixtures);
+  it('Validate that the subcategories countries modal is displayed correctly and contains the correct headers', () => {
+    const preparedFixture = getPreparedFixture('lksg-with-subcontracting-countries', preparedFixtures);
     mountMLDTFrameworkPanelFromFakeFixture(DataTypeEnum.Lksg, lksgViewConfiguration, [preparedFixture]);
 
-    getSectionHead("Production-specific").should("have.attr", "data-section-expanded", "true");
-    getCellValueContainer("Subcontracting Companies Countries").find("a").should("be.visible").click();
+    getSectionHead('Production-specific').should('have.attr', 'data-section-expanded', 'true');
+    getCellValueContainer('Subcontracting Companies Countries').find('a').should('be.visible').click();
 
-    cy.get("div.p-dialog").within(() => {
-      cy.get("th").eq(0).should("have.text", "Country");
-      cy.get("th").eq(1).should("have.text", "Industries");
-      cy.get("td:contains('United Kingdom')").should("exist");
+    cy.get('div.p-dialog').within(() => {
+      cy.get('th').eq(0).should('have.text', 'Country');
+      cy.get('th').eq(1).should('have.text', 'Industries');
+      cy.get("td:contains('United Kingdom')").should('exist');
       cy.get("td:contains('Germany')")
-        .siblings("td")
-        .find("li")
-        .should("have.length", 2)
+        .siblings('td')
+        .find('li')
+        .should('have.length', 2)
         .first()
-        .should("contain.text", "A - AGRICULTURE");
+        .should('contain.text', 'A - AGRICULTURE');
     });
   });
 
-  it("Validate that show-if hidden fields are displayed and highlighted in review mode", () => {
+  it('Validate that show-if hidden fields are displayed and highlighted in review mode', () => {
     const preparedFixture = getPreparedFixture(
-      "lksg-not-a-manufacturing-company-but-has-production-sites",
-      preparedFixtures,
+      'lksg-not-a-manufacturing-company-but-has-production-sites',
+      preparedFixtures
     );
     mountMLDTFrameworkPanelFromFakeFixture(
       DataTypeEnum.Lksg,
       lksgViewConfiguration,
       [preparedFixture],
-      "mock-company-id",
-      true,
+      'mock-company-id',
+      true
     );
 
-    getSectionHead("Production-specific").should("have.attr", "data-section-expanded", "true");
+    getSectionHead('Production-specific').should('have.attr', 'data-section-expanded', 'true');
 
-    getCellValueContainer("Manufacturing Company").should("have.text", "No");
-    getCellValueContainer("List Of Production Sites").should("be.visible");
-    getCellValueContainerAndCheckIconForHiddenDisplay("List Of Production Sites", true);
+    getCellValueContainer('Manufacturing Company').should('have.text', 'No');
+    getCellValueContainer('List Of Production Sites').should('be.visible');
+    getCellValueContainerAndCheckIconForHiddenDisplay('List Of Production Sites', true);
   });
 
   /**
@@ -158,9 +158,9 @@ describe("Component test for the LksgPanel", () => {
         qaStatus: QaStatus.Accepted,
         currentlyActive: true,
         dataType: DataTypeEnum.Lksg,
-        companyId: "mock-company-id",
+        companyId: 'mock-company-id',
         uploadTime: 0,
-        uploaderUserId: "mock-uploader-id",
+        uploaderUserId: 'mock-uploader-id',
       };
 
       lksgDatasets.push({
@@ -171,37 +171,37 @@ describe("Component test for the LksgPanel", () => {
     return lksgDatasets;
   }
 
-  it("Check Lksg view page for company with six Lksg data sets reported in different years ", () => {
-    const preparedFixture = getPreparedFixture("six-lksg-data-sets-in-different-years", preparedFixtures);
+  it('Check Lksg view page for company with six Lksg data sets reported in different years ', () => {
+    const preparedFixture = getPreparedFixture('six-lksg-data-sets-in-different-years', preparedFixtures);
     const mockedData = constructCompanyApiResponseForLksgForSixYears(preparedFixture.t);
     mountMLDTFrameworkPanel(DataTypeEnum.Lksg, lksgViewConfiguration, mockedData);
 
-    cy.get("table").find(`tr:contains("Data Date")`).find(`span`).eq(6).get("span").contains("2023");
+    cy.get('table').find(`tr:contains("Data Date")`).find(`span`).eq(6).get('span').contains('2023');
 
     for (let indexOfColumn = 1; indexOfColumn <= 6; indexOfColumn++) {
       cy.get(`span.p-column-title`)
         .eq(indexOfColumn)
-        .should("contain.text", (2029 - indexOfColumn).toString());
+        .should('contain.text', (2029 - indexOfColumn).toString());
     }
   });
 
-  it("Unit test for sortReportingPeriodsToDisplayAsColumns", () => {
-    const firstYearObject = { dataId: "5", reportingPeriod: "2022" };
-    const secondYearObject = { dataId: "2", reportingPeriod: "2020" };
-    const firstOtherObject = { dataId: "3", reportingPeriod: "Q2-2020" };
-    const secondOtherObject = { dataId: "6", reportingPeriod: "Q3-2020" };
+  it('Unit test for sortReportingPeriodsToDisplayAsColumns', () => {
+    const firstYearObject = { dataId: '5', reportingPeriod: '2022' };
+    const secondYearObject = { dataId: '2', reportingPeriod: '2020' };
+    const firstOtherObject = { dataId: '3', reportingPeriod: 'Q2-2020' };
+    const secondOtherObject = { dataId: '6', reportingPeriod: 'Q3-2020' };
     const shouldSwapList = [false, true]; //Apparently Typescript doesn't like type conversions, so input is direct.
     for (let i = 0; i < 2; i++) {
       expect(
-        swapAndSortReportingPeriodsToDisplayAsColumns([secondYearObject, firstYearObject], shouldSwapList[i]),
+        swapAndSortReportingPeriodsToDisplayAsColumns([secondYearObject, firstYearObject], shouldSwapList[i])
       ).to.deep.equal([firstYearObject, secondYearObject]);
 
       expect(
-        swapAndSortReportingPeriodsToDisplayAsColumns([secondOtherObject, firstOtherObject], shouldSwapList[i]),
+        swapAndSortReportingPeriodsToDisplayAsColumns([secondOtherObject, firstOtherObject], shouldSwapList[i])
       ).to.deep.equal([firstOtherObject, secondOtherObject]);
     }
     expect(
-      sortReportingPeriodsToDisplayAsColumns([firstYearObject, secondOtherObject, firstOtherObject]),
+      sortReportingPeriodsToDisplayAsColumns([firstYearObject, secondOtherObject, firstOtherObject])
     ).to.deep.equal([firstYearObject, firstOtherObject, secondOtherObject]);
   });
 });
@@ -214,7 +214,7 @@ describe("Component test for the LksgPanel", () => {
  */
 function swapAndSortReportingPeriodsToDisplayAsColumns(
   listOfDataDateToDisplayAsColumns: ReportingPeriodOfDataSetWithId[],
-  shouldSwap = false,
+  shouldSwap = false
 ): ReportingPeriodOfDataSetWithId[] {
   let swappedList: ReportingPeriodOfDataSetWithId[];
   if (shouldSwap && listOfDataDateToDisplayAsColumns.length == 2) {

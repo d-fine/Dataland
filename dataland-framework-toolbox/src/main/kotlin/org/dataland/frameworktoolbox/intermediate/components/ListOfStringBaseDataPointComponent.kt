@@ -55,8 +55,7 @@ class ListOfStringBaseDataPointComponent(
                 setOf(
                     TypeScriptImport(
                         "formatListOfBaseDataPoint",
-                        "@/components/resources/dataTable/conversion/" +
-                            "esg-questionnaire/EsgQuestionnaireListOfBaseDataPointGetterFactory",
+                        "@/components/resources/dataTable/conversion/ListOfBaseDataPointGetterFactory",
                     ),
                 ),
             ),

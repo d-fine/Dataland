@@ -11,14 +11,14 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
-import { BaseFormFieldProps } from "@/components/forms/parts/fields/FormFieldProps";
-import CheckboxesListFormElement from "@/components/forms/parts/elements/basic/CheckboxesListFormElement.vue";
-import UploadFormHeader from "@/components/forms/parts/elements/basic/UploadFormHeader.vue";
-import { HumanizedYesNoNa } from "@/utils/YesNoNa";
+import { defineComponent } from 'vue';
+import { BaseFormFieldProps } from '@/components/forms/parts/fields/FormFieldProps';
+import CheckboxesListFormElement from '@/components/forms/parts/elements/basic/CheckboxesListFormElement.vue';
+import UploadFormHeader from '@/components/forms/parts/elements/basic/UploadFormHeader.vue';
+import { HumanizedYesNoNa } from '@/utils/YesNoNa';
 
 export default defineComponent({
-  name: "YesNoNaFormField",
+  name: 'YesNoNaFormField',
   computed: {
     HumanizedYesNoNa() {
       return HumanizedYesNoNa;
@@ -30,7 +30,7 @@ export default defineComponent({
     ...BaseFormFieldProps,
     classes: {
       type: String,
-      default: "form-field",
+      default: 'form-field',
     },
   },
 });

@@ -7,16 +7,16 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent } from 'vue';
 import {
   type MLDTDisplayComponentName,
   type MLDTDisplayObject,
-} from "@/components/resources/dataTable/MultiLayerDataTableCellDisplayer";
-import DataPointDataTable from "@/components/general/DataPointDataTable.vue";
-import { NO_DATA_PROVIDED, ONLY_AUXILIARY_DATA_PROVIDED } from "@/utils/Constants";
+} from '@/components/resources/dataTable/MultiLayerDataTableCellDisplayer';
+import DataPointDataTable from '@/components/general/DataPointDataTable.vue';
+import { NO_DATA_PROVIDED, ONLY_AUXILIARY_DATA_PROVIDED } from '@/utils/Constants';
 
 export default defineComponent({
-  name: "DataPointDisplayComponent",
+  name: 'DataPointDisplayComponent',
   props: {
     content: {
       type: Object as () => MLDTDisplayObject<MLDTDisplayComponentName.DataPointDisplayComponent>,

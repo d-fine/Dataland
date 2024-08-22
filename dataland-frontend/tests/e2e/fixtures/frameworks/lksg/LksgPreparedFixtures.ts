@@ -1,8 +1,8 @@
-import { type FixtureData } from "@sharedUtils/Fixtures";
-import { type LksgData, YesNo } from "@clients/backend";
-import { generateLksgFixtures } from "./LksgDataFixtures";
-import { LksgGenerator } from "@e2e/fixtures/frameworks/lksg/LksgGenerator";
-import { generateNaceCodes } from "@e2e/fixtures/common/NaceCodeFixtures";
+import { type FixtureData } from '@sharedUtils/Fixtures';
+import { type LksgData, YesNo } from '@clients/backend';
+import { generateLksgFixtures } from './LksgDataFixtures';
+import { LksgGenerator } from '@e2e/fixtures/frameworks/lksg/LksgGenerator';
+import { generateNaceCodes } from '@e2e/fixtures/common/NaceCodeFixtures';
 
 /**
  * Generates lksg prepared fixtures by generating random lksg datasets and
@@ -30,9 +30,9 @@ export function generateLksgPreparedFixtures(): Array<FixtureData<LksgData>> {
   for (let i = 0; i < manipulatorFunctions.length; i++) {
     preparedFixtures.push(manipulatorFunctions[i](preparedFixturesBeforeManipulation[i]));
   }
-  preparedFixtures.push(generateFixtureForDate("2023-04-18"));
-  preparedFixtures.push(generateFixtureForDate("2023-06-22"));
-  preparedFixtures.push(generateFixtureForDate("2022-07-30"));
+  preparedFixtures.push(generateFixtureForDate('2023-04-18'));
+  preparedFixtures.push(generateFixtureForDate('2023-06-22'));
+  preparedFixtures.push(generateFixtureForDate('2022-07-30'));
   return preparedFixtures;
 }
 
@@ -47,7 +47,7 @@ function generateFixutreWithNoNullFields(): FixtureData<LksgData> {
     DE: generateNaceCodes(1, 5),
     GB: generateNaceCodes(0, 5),
   };
-  newFixture.companyInformation.companyName = "lksg-all-fields";
+  newFixture.companyInformation.companyName = 'lksg-all-fields';
   return newFixture;
 }
 
@@ -57,7 +57,7 @@ function generateFixutreWithNoNullFields(): FixtureData<LksgData> {
  */
 function generateFixtureToNotBeAManufacturingCompany(): FixtureData<LksgData> {
   const newFixture = generateLksgFixtures(1)[0];
-  newFixture.companyInformation.companyName = "lksg-not-a-manufacturing-company-but-has-production-sites";
+  newFixture.companyInformation.companyName = 'lksg-not-a-manufacturing-company-but-has-production-sites';
   const lksgGeneratorNoUndefined = new LksgGenerator(0);
   const twoProductionSites = [
     lksgGeneratorNoUndefined.generateLksgProductionSite(),
@@ -78,7 +78,7 @@ function generateFixtureToNotBeAManufacturingCompany(): FixtureData<LksgData> {
 function generateFixtureToHaveNoChildLaborUnder18AndChildLaborUnder15(): FixtureData<LksgData> {
   const newFixture = generateLksgFixtures(1)[0];
 
-  newFixture.companyInformation.companyName = "lksg-with-nulls-and-no-child-labor-under-18";
+  newFixture.companyInformation.companyName = 'lksg-with-nulls-and-no-child-labor-under-18';
   newFixture.t.social!.childLabor!.employeeSUnder18 = YesNo.No;
   newFixture.t.social!.childLabor!.employeeSUnder15 = YesNo.Yes;
   newFixture.t.general.masterData.numberOfEmployees = null;
@@ -91,11 +91,11 @@ function generateFixtureToHaveNoChildLaborUnder18AndChildLaborUnder15(): Fixture
  */
 function generateFixtureToContainProcurementCategories(): FixtureData<LksgData> {
   const newFixture = generateLksgFixtures(1, 0)[0];
-  newFixture.companyInformation.companyName = "lksg-with-procurement-categories";
+  newFixture.companyInformation.companyName = 'lksg-with-procurement-categories';
   newFixture.t.general.productionSpecific!.manufacturingCompany = YesNo.Yes;
   if (Object.keys(newFixture.t.general.productionSpecificOwnOperations!.procurementCategories ?? {}).length < 1) {
     throw Error(
-      "The fixture should contain procurement categories as the undefined percentage was set to 0. But it does not!",
+      'The fixture should contain procurement categories as the undefined percentage was set to 0. But it does not!'
     );
   }
   return newFixture;
@@ -107,16 +107,16 @@ function generateFixtureToContainProcurementCategories(): FixtureData<LksgData> 
  */
 function generateFixtureToContainSubcontractingCountries(): FixtureData<LksgData> {
   const newFixture = generateLksgFixtures(1, 0)[0];
-  newFixture.companyInformation.companyName = "lksg-with-subcontracting-countries";
+  newFixture.companyInformation.companyName = 'lksg-with-subcontracting-countries';
   newFixture.t.general.productionSpecific!.manufacturingCompany = YesNo.Yes;
   newFixture.t.general.productionSpecific!.productionViaSubcontracting = YesNo.Yes;
   newFixture.t.general.productionSpecific!.subcontractingCompaniesCountries = {
-    DE: ["A", "G"],
-    GB: ["B"],
+    DE: ['A', 'G'],
+    GB: ['B'],
   };
   if (Object.keys(newFixture.t.general.productionSpecificOwnOperations!.procurementCategories ?? {}).length < 1) {
     throw Error(
-      "The fixture should contain procurement categories as the undefined percentage was set to 0. But it does not!",
+      'The fixture should contain procurement categories as the undefined percentage was set to 0. But it does not!'
     );
   }
   return newFixture;
@@ -128,10 +128,10 @@ function generateFixtureToContainSubcontractingCountries(): FixtureData<LksgData
  */
 function generateFixtureForSixLksgDataSetsInDifferentYears(): FixtureData<LksgData> {
   const newFixture = generateLksgFixtures(1)[0];
-  newFixture.companyInformation.companyName = "six-lksg-data-sets-in-different-years";
-  if (newFixture.t.general?.masterData?.dataDate) newFixture.t.general.masterData.dataDate = "2022-01-01";
-  else console.error("fakeFixture created improperly: dataDate missing");
-  newFixture.reportingPeriod = "2022";
+  newFixture.companyInformation.companyName = 'six-lksg-data-sets-in-different-years';
+  if (newFixture.t.general?.masterData?.dataDate) newFixture.t.general.masterData.dataDate = '2022-01-01';
+  else console.error('fakeFixture created improperly: dataDate missing');
+  newFixture.reportingPeriod = '2022';
   return newFixture;
 }
 
@@ -144,8 +144,8 @@ function generateFixtureForOneLksgDataSetWithProductionSites(): FixtureData<Lksg
   const newFixture = generateLksgFixtures(1)[0];
   const lksgGeneratorNoUndefined = new LksgGenerator(0);
 
-  newFixture.companyInformation.companyName = "one-lksg-data-set-with-two-production-sites";
-  newFixture.reportingPeriod = "2024";
+  newFixture.companyInformation.companyName = 'one-lksg-data-set-with-two-production-sites';
+  newFixture.reportingPeriod = '2024';
 
   newFixture.t.governance!.certificationsPoliciesAndResponsibilities!.codeOfConduct =
     lksgGeneratorNoUndefined.randomBaseDataPoint(YesNo.Yes);
@@ -167,9 +167,9 @@ function generateFixtureForOneLksgDataSetWithProductionSites(): FixtureData<Lksg
  */
 function generateFixtureForDate(date: string): FixtureData<LksgData> {
   const newFixture = generateLksgFixtures(1)[0];
-  newFixture.companyInformation.companyName = "LkSG-date-" + date;
+  newFixture.companyInformation.companyName = 'LkSG-date-' + date;
   newFixture.t.general.masterData.dataDate = date;
-  newFixture.reportingPeriod = date.split("-")[0];
+  newFixture.reportingPeriod = date.split('-')[0];
   return newFixture;
 }
 
@@ -180,13 +180,13 @@ function generateFixtureForDate(date: string): FixtureData<LksgData> {
  */
 function generateOneLksgDatasetWithOnlyNulls(): FixtureData<LksgData> {
   const newFixture = generateLksgFixtures(1)[0];
-  newFixture.companyInformation.companyName = "lksg-almost-only-nulls";
+  newFixture.companyInformation.companyName = 'lksg-almost-only-nulls';
 
   newFixture.t.governance = null;
   newFixture.t.social = null;
   newFixture.t.environmental = null;
 
-  newFixture.t.general.masterData.dataDate = "1999-12-24";
+  newFixture.t.general.masterData.dataDate = '1999-12-24';
   newFixture.t.general.masterData.headOfficeInGermany = null;
   newFixture.t.general.masterData.groupOfCompanies = null;
   newFixture.t.general.masterData.groupOfCompaniesName = null;
@@ -206,8 +206,8 @@ function generateOneLksgDatasetWithOnlyNulls(): FixtureData<LksgData> {
  */
 function generateFixtureWithBrokenFileReference(): FixtureData<LksgData> {
   const newFixture = generateLksgFixtures(1, 0)[0];
-  const brokenFileReference = "123";
-  newFixture.companyInformation.companyName = "TestForBrokenFileReference";
+  const brokenFileReference = '123';
+  newFixture.companyInformation.companyName = 'TestForBrokenFileReference';
   newFixture.t.governance!.certificationsPoliciesAndResponsibilities!.codeOfConduct!.dataSource!.fileReference =
     brokenFileReference;
   return newFixture;

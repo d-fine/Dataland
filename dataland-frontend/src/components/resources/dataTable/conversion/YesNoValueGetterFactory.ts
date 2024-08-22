@@ -1,10 +1,10 @@
 import {
   type AvailableMLDTDisplayObjectTypes,
   MLDTDisplayComponentName,
-} from "@/components/resources/dataTable/MultiLayerDataTableCellDisplayer";
-import { type YesNoNa } from "@clients/backend";
-import { getFieldValueFromFrameworkDataset } from "@/components/resources/dataTable/conversion/Utils";
-import { HumanizedYesNoNa } from "@/utils/YesNoNa";
+} from '@/components/resources/dataTable/MultiLayerDataTableCellDisplayer';
+import { type YesNoNa } from '@clients/backend';
+import { getFieldValueFromFrameworkDataset } from '@/components/resources/dataTable/conversion/Utils';
+import { HumanizedYesNoNa } from '@/utils/YesNoNa';
 
 /**
  * Formats the provided Yes/No/Na value for the data-table
@@ -12,7 +12,7 @@ import { HumanizedYesNoNa } from "@/utils/YesNoNa";
  * @returns the value formatted for display
  */
 export function formatYesNoValueForDatatable(value: YesNoNa | undefined | null): AvailableMLDTDisplayObjectTypes {
-  const displayValue = value ? HumanizedYesNoNa[value] : "";
+  const displayValue = value ? HumanizedYesNoNa[value] : '';
   return {
     displayComponentName: MLDTDisplayComponentName.StringDisplayComponent,
     displayValue: displayValue,

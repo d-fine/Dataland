@@ -35,12 +35,15 @@ dependencies {
     implementation(libs.log4j.api)
     implementation(libs.log4j.to.slf4j)
     implementation(project(":dataland-keycloak-adapter"))
+    implementation(libs.jackson.kotlin)
     implementation(Spring.boot.validation)
     implementation(libs.json)
     implementation(Spring.boot.oauth2ResourceServer)
     implementation(Spring.boot.security)
     implementation(libs.springdoc.openapi.ui)
     implementation(Spring.boot.data.jpa)
+    implementation(libs.moshi.kotlin)
+    implementation(libs.okhttp)
     runtimeOnly(libs.postgresql)
     runtimeOnly(libs.h2)
     testImplementation(Spring.boot.test)
@@ -62,6 +65,50 @@ tasks.test {
 
     extensions.configure(JacocoTaskExtension::class) {
         setDestinationFile(layout.buildDirectory.dir("jacoco/jacoco.exec").get().asFile)
+    }
+}
+
+tasks.register("generateBackendClient", org.openapitools.generator.gradle.plugin.tasks.GenerateTask::class) {
+    description = "Task to generate clients for the backend service."
+    group = "clients"
+    val backendClientDestinationPackage = "org.dataland.datalandbackend.openApiClient"
+    input = project.file("${project.rootDir}/dataland-backend/backendOpenApi.json").path
+    outputDir.set(layout.buildDirectory.dir("clients/backend").get().toString())
+    packageName.set(backendClientDestinationPackage)
+    modelPackage.set("$backendClientDestinationPackage.model")
+    apiPackage.set("$backendClientDestinationPackage.api")
+    generatorName.set("kotlin")
+
+    additionalProperties.set(
+        mapOf(
+            "removeEnumValuePrefix" to false,
+        ),
+    )
+    configOptions.set(
+        mapOf(
+            "serializationLibrary" to "jackson",
+            "dateLibrary" to "java21",
+            "useTags" to "true",
+        ),
+    )
+}
+
+tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
+    dependsOn("generateBackendClient")
+}
+
+tasks.getByName("runKtlintCheckOverMainSourceSet") {
+    dependsOn("generateBackendClient")
+}
+
+sourceSets {
+    val main by getting
+    main.kotlin.srcDir(layout.buildDirectory.dir("clients/backend/src/main/kotlin"))
+}
+
+ktlint {
+    filter {
+        exclude("**/openApiClient/**")
     }
 }
 

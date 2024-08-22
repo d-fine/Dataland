@@ -24,16 +24,16 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, inject } from "vue";
-import type Keycloak from "keycloak-js";
-import ViewFrameworkData from "@/components/pages/ViewFrameworkData.vue";
-import { ApiClientProvider } from "@/services/ApiClients";
-import { assertDefined } from "@/utils/TypeScriptUtils";
-import JoinDatalandButton from "@/components/general/JoinDatalandButton.vue";
-import BackButton from "@/components/general/BackButton.vue";
+import { defineComponent, inject } from 'vue';
+import type Keycloak from 'keycloak-js';
+import ViewFrameworkData from '@/components/pages/ViewFrameworkData.vue';
+import { ApiClientProvider } from '@/services/ApiClients';
+import { assertDefined } from '@/utils/TypeScriptUtils';
+import JoinDatalandButton from '@/components/general/JoinDatalandButton.vue';
+import BackButton from '@/components/general/BackButton.vue';
 
 export default defineComponent({
-  name: "ViewTeaserCompanyData",
+  name: 'ViewTeaserCompanyData',
   components: {
     ViewFrameworkData,
     JoinDatalandButton,
@@ -41,14 +41,14 @@ export default defineComponent({
   },
   setup() {
     return {
-      getKeycloakPromise: inject<() => Promise<Keycloak>>("getKeycloakPromise"),
+      getKeycloakPromise: inject<() => Promise<Keycloak>>('getKeycloakPromise'),
     };
   },
   data: () => ({
-    companyId: "",
-    dataId: "",
-    dataType: "",
-    reportingPeriod: "",
+    companyId: '',
+    dataId: '',
+    dataType: '',
+    reportingPeriod: '',
     isMetaInfoFetched: false,
     isAtLeastOneTeaserCompanyExisting: true,
     isAtLeastOneDatasetExistingForTeaserCompany: true,

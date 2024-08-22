@@ -26,16 +26,16 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
-import UploadDocumentsForm from "@/components/forms/parts/elements/basic/UploadDocumentsForm.vue";
-import { type DocumentToUpload } from "@/utils/FileUploadUtils";
-import { isValidFileName } from "@/utils/DataSource";
-import { BaseFormFieldProps } from "@/components/forms/parts/fields/FormFieldProps";
-import UploadFormHeader from "@/components/forms/parts/elements/basic/UploadFormHeader.vue";
-import NumberFormField from "@/components/forms/parts/fields/NumberFormField.vue";
+import { defineComponent } from 'vue';
+import UploadDocumentsForm from '@/components/forms/parts/elements/basic/UploadDocumentsForm.vue';
+import { type DocumentToUpload } from '@/utils/FileUploadUtils';
+import { isValidFileName } from '@/utils/DataSource';
+import { BaseFormFieldProps } from '@/components/forms/parts/fields/FormFieldProps';
+import UploadFormHeader from '@/components/forms/parts/elements/basic/UploadFormHeader.vue';
+import NumberFormField from '@/components/forms/parts/fields/NumberFormField.vue';
 
 export default defineComponent({
-  name: "BigDecimalBaseDataPointFormField",
+  name: 'BigDecimalBaseDataPointFormField',
   components: { NumberFormField, UploadFormHeader, UploadDocumentsForm },
   inheritAttrs: false,
   props: {
@@ -54,7 +54,7 @@ export default defineComponent({
       isValidFileName: isValidFileName,
     };
   },
-  emits: ["fieldSpecificDocumentsUpdated"],
+  emits: ['fieldSpecificDocumentsUpdated'],
   mounted() {
     setTimeout(() => {
       this.updateFileUploadFiles();
@@ -77,7 +77,7 @@ export default defineComponent({
       this.referencedDocument = updatedDocuments[0];
       this.documentName = this.referencedDocument?.fileNameWithoutSuffix;
       this.documentReference = this.referencedDocument?.fileReference;
-      this.$emit("fieldSpecificDocumentsUpdated", this.referencedDocument);
+      this.$emit('fieldSpecificDocumentsUpdated', this.referencedDocument);
     },
 
     /**

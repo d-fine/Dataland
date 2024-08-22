@@ -1,8 +1,8 @@
 import {
   type AvailableMLDTDisplayObjectTypes,
   MLDTDisplayComponentName,
-} from "@/components/resources/dataTable/MultiLayerDataTableCellDisplayer";
-import { getFieldValueFromFrameworkDataset } from "@/components/resources/dataTable/conversion/Utils";
+} from '@/components/resources/dataTable/MultiLayerDataTableCellDisplayer';
+import { getFieldValueFromFrameworkDataset } from '@/components/resources/dataTable/conversion/Utils';
 
 /**
  * Returns a value factory that returns the value of the field as a string.
@@ -23,6 +23,6 @@ export function plainStringValueGetterFactory(path: string): (dataset: any) => A
 export function formatStringForDatatable(input: string | null | undefined): AvailableMLDTDisplayObjectTypes {
   return {
     displayComponentName: MLDTDisplayComponentName.StringDisplayComponent,
-    displayValue: input ?? "",
+    displayValue: input ?? '',
   };
 }

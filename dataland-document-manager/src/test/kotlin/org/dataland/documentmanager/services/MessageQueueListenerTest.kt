@@ -54,6 +54,8 @@ class MessageQueueListenerTest(
             QaCompletedMessage(
                 identifier = "",
                 validationResult = QaStatus.Accepted,
+                reviewerId = "",
+                message = null,
             ),
         )
         val thrown = assertThrows<MessageQueueRejectException> {
@@ -69,6 +71,8 @@ class MessageQueueListenerTest(
             QaCompletedMessage(
                 identifier = documentId,
                 validationResult = QaStatus.Accepted,
+                reviewerId = "",
+                message = null,
             ),
         )
 

@@ -15,12 +15,12 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
-import { BaseFormFieldProps } from "@/components/forms/parts/fields/FormFieldProps";
-import FormListFormField from "@/components/forms/parts/fields/FormListFormField.vue";
+import { defineComponent } from 'vue';
+import { BaseFormFieldProps } from '@/components/forms/parts/fields/FormFieldProps';
+import FormListFormField from '@/components/forms/parts/fields/FormListFormField.vue';
 
 export default defineComponent({
-  name: "ProductionSitesFormField",
+  name: 'ProductionSitesFormField',
   props: BaseFormFieldProps,
   components: {
     FormListFormField,

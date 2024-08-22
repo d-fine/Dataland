@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
-import org.springframework.transaction.annotation.Transactional
 
 /**
  * Class to manage the clients interaction with keycloak,
@@ -21,30 +20,39 @@ class KeycloakUserControllerApiService(
     @Qualifier("AuthenticatedOkHttpClient") val authenticatedOkHttpClient: OkHttpClient,
     @Value("\${dataland.keycloak.base-url}") private val keycloakBaseUrl: String,
 ) {
+    /**
+     * This data class contains information about the keycloak user
+     */
     @JsonIgnoreProperties(ignoreUnknown = true)
-    private data class User(
+    data class User(
         @JsonProperty("email")
         val email: String?,
 
         @JsonProperty("id")
         val userId: String,
+
+        @JsonProperty("firstName")
+        val firstName: String?,
+
+        @JsonProperty("lastName")
+        val lastName: String?,
+
     )
 
     /**
-     * gets the email address of a user in keycloak given the user id
+     * get user information for given keycloak user id
      * @param userId the userId of the user in question
-     * @returns the email address
+     * @returns the User Object
      */
-    @Transactional
-    fun getEmailAddress(userId: String): String {
+    fun getUser(userId: String): User {
         val request = Request.Builder()
             .url("$keycloakBaseUrl/admin/realms/datalandsecurity/users/$userId")
             .build()
-        val response = authenticatedOkHttpClient.newCall(request).execute()
-        val parsedResponseBody = objectMapper.readValue(
-            response.body!!.string(),
+        val response = authenticatedOkHttpClient.newCall(request).execute().body!!.string()
+        val user = objectMapper.readValue(
+            response,
             User::class.java,
         )
-        return parsedResponseBody.email ?: ""
+        return user
     }
 }

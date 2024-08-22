@@ -1,8 +1,8 @@
-import { faker } from "@faker-js/faker";
-import { generateDataSource } from "@e2e/fixtures/common/DataSourceFixtures";
-import { type AssuranceDataPoint, AssuranceDataPointValueEnum } from "@clients/backend";
-import { pickOneElement, type ReferencedDocuments } from "@e2e/fixtures/FixtureUtils";
-import { valueOrNull } from "@e2e/utils/FakeFixtureUtils";
+import { faker } from '@faker-js/faker';
+import { generateDataSource } from '@e2e/fixtures/common/DataSourceFixtures';
+import { type AssuranceDataPoint, AssuranceDataPointValueEnum } from '@clients/backend';
+import { pickOneElement, type ReferencedDocuments } from '@e2e/fixtures/FixtureUtils';
+import { valueOrNull } from '@e2e/utils/FakeFixtureUtils';
 
 /**
  * Generates random assurance data
@@ -14,7 +14,7 @@ export function generateAssuranceDatapoint(reports: ReferencedDocuments, nullPro
   const isAssuranceProviderExisting = faker.datatype.boolean(1 - nullProbability);
 
   const assuranceValuesForExistingProvider = Object.values(AssuranceDataPointValueEnum).filter(
-    (value) => value !== AssuranceDataPointValueEnum.None,
+    (value) => value !== AssuranceDataPointValueEnum.None
   );
 
   const assurance = isAssuranceProviderExisting

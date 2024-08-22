@@ -1,7 +1,7 @@
-import { faker } from "@faker-js/faker";
-import { generateIso2CountryCode } from "@e2e/fixtures/common/CountryFixtures";
-import { type Address } from "@clients/backend";
-import { DEFAULT_PROBABILITY, valueOrNull } from "@e2e/utils/FakeFixtureUtils";
+import { faker } from '@faker-js/faker';
+import { generateIso2CountryCode } from '@e2e/fixtures/common/CountryFixtures';
+import { type Address } from '@clients/backend';
+import { DEFAULT_PROBABILITY, valueOrNull } from '@e2e/utils/FakeFixtureUtils';
 
 /**
  * Generates a random address
@@ -10,7 +10,7 @@ import { DEFAULT_PROBABILITY, valueOrNull } from "@e2e/utils/FakeFixtureUtils";
  */
 export function generateAddress(nullProbability = DEFAULT_PROBABILITY): Address {
   return {
-    streetAndHouseNumber: valueOrNull(faker.location.street() + " " + faker.location.buildingNumber(), nullProbability),
+    streetAndHouseNumber: valueOrNull(faker.location.street() + ' ' + faker.location.buildingNumber(), nullProbability),
     postalCode: valueOrNull(faker.location.zipCode(), nullProbability),
     city: faker.location.city(),
     state: valueOrNull(faker.location.state(), nullProbability),

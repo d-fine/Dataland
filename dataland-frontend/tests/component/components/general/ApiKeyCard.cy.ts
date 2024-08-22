@@ -1,8 +1,8 @@
 // @ts-nocheck
-import ApiKeyCard from "@/components/resources/apiKey/ApiKeyCard.vue";
-import { KEYCLOAK_ROLE_ADMIN, KEYCLOAK_ROLE_USER } from "@/utils/KeycloakUtils";
+import ApiKeyCard from '@/components/resources/apiKey/ApiKeyCard.vue';
+import { KEYCLOAK_ROLE_ADMIN, KEYCLOAK_ROLE_USER } from '@/utils/KeycloakUtils';
 
-describe("Component test for ApiKeyCard", () => {
+describe('Component test for ApiKeyCard', () => {
   it("Should contain text 'The API Key expired' when Api Key is expired", () => {
     cy.mountWithPlugins(ApiKeyCard, {
       data() {
@@ -13,8 +13,8 @@ describe("Component test for ApiKeyCard", () => {
         };
       },
     });
-    cy.get("div#existingApiKeyCard").should("exist").should("contain.text", "The API Key expired");
-    cy.get("div#existingApiKeyCard span").should("have.class", "text-red-700");
+    cy.get('div#existingApiKeyCard').should('exist').should('contain.text', 'The API Key expired');
+    cy.get('div#existingApiKeyCard span').should('have.class', 'text-red-700');
   });
   it("Should contain text 'The API Key has no defined expiry date' when Api Key has no defined expiry date", () => {
     cy.mountWithPlugins(ApiKeyCard, {
@@ -26,6 +26,6 @@ describe("Component test for ApiKeyCard", () => {
         };
       },
     });
-    cy.get("div#existingApiKeyCard").should("exist").should("contain.text", "The API Key has no defined expiry date");
+    cy.get('div#existingApiKeyCard').should('exist').should('contain.text', 'The API Key has no defined expiry date');
   });
 });

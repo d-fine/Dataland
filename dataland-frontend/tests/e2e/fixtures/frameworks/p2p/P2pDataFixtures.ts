@@ -12,14 +12,14 @@ import {
   P2pSector,
   type P2pSteel,
   type PathwaysToParisData,
-} from "@clients/backend";
-import { type FixtureData } from "@sharedUtils/Fixtures";
-import { generateFixtureDataset, pickSubsetOfElements } from "@e2e/fixtures/FixtureUtils";
-import { generateFutureDate } from "@e2e/fixtures/common/DateFixtures";
-import { faker } from "@faker-js/faker";
-import { DEFAULT_PROBABILITY, Generator } from "@e2e/utils/FakeFixtureUtils";
-import { generateYesNo } from "@e2e/fixtures/common/YesNoFixtures";
-import { DriveMixType } from "@/api-models/DriveMixType";
+} from '@clients/backend';
+import { type FixtureData } from '@sharedUtils/Fixtures';
+import { generateFixtureDataset, pickSubsetOfElements } from '@e2e/fixtures/FixtureUtils';
+import { generateFutureDate } from '@e2e/fixtures/common/DateFixtures';
+import { faker } from '@faker-js/faker';
+import { DEFAULT_PROBABILITY, Generator } from '@e2e/utils/FakeFixtureUtils';
+import { generateYesNo } from '@e2e/fixtures/common/YesNoFixtures';
+import { DriveMixType } from '@/api-models/DriveMixType';
 
 /**
  * Generates a set number of P2P fixtures
@@ -31,12 +31,12 @@ import { DriveMixType } from "@/api-models/DriveMixType";
 export function generateP2pFixtures(
   numFixtures: number,
   nullProbability = DEFAULT_PROBABILITY,
-  toggleRandomSectors = true,
+  toggleRandomSectors = true
 ): FixtureData<PathwaysToParisData>[] {
   return generateFixtureDataset<PathwaysToParisData>(
     () => generateP2pData(nullProbability, toggleRandomSectors),
     numFixtures,
-    (dataSet: PathwaysToParisData) => dataSet.general.general.dataDate.substring(0, 4),
+    (dataSet: PathwaysToParisData) => dataSet.general.general.dataDate.substring(0, 4)
   );
 }
 
@@ -53,8 +53,8 @@ function generateP2pData(nullProbability = DEFAULT_PROBABILITY, toggleRandomSect
     ammonia: dataGenerator.getSectorAmmonia(),
     automotive: dataGenerator.getSectorAutomotive(),
     hvcPlastics: dataGenerator.getSectorHVCPlastics(),
-    commercialRealEstate: dataGenerator.getSectorRealEstate("CommercialRealEstate"),
-    residentialRealEstate: dataGenerator.getSectorRealEstate("ResidentialRealEstate"),
+    commercialRealEstate: dataGenerator.getSectorRealEstate('CommercialRealEstate'),
+    residentialRealEstate: dataGenerator.getSectorRealEstate('ResidentialRealEstate'),
     steel: dataGenerator.getSectorSteel(),
     freightTransportByRoad: dataGenerator.getSectorFreightTransportByRoad(),
     electricityGeneration: dataGenerator.getSectorElectricityGeneration(),
@@ -146,7 +146,7 @@ class P2pGenerator extends Generator {
         useOfRenewableFeedstocksInPercent: this.randomPercentageValue(),
       },
     };
-    return this.sectorPresent("Ammonia") ? data : null;
+    return this.sectorPresent('Ammonia') ? data : null;
   }
 
   /**
@@ -169,7 +169,7 @@ class P2pGenerator extends Generator {
         useOfSecondaryMaterialsInPercent: this.randomPercentageValue(),
       },
     };
-    return this.sectorPresent("Automotive") ? data : null;
+    return this.sectorPresent('Automotive') ? data : null;
   }
 
   /**
@@ -194,7 +194,7 @@ class P2pGenerator extends Generator {
         chemicalRecyclingInPercent: this.randomPercentageValue(),
       },
     };
-    return this.sectorPresent("HVCPlastics") ? data : null;
+    return this.sectorPresent('HVCPlastics') ? data : null;
   }
 
   /**
@@ -235,7 +235,7 @@ class P2pGenerator extends Generator {
         lowCarbonSteelScaleUpInPercent: this.randomPercentageValue(),
       },
     };
-    return this.sectorPresent("Steel") ? data : null;
+    return this.sectorPresent('Steel') ? data : null;
   }
 
   /**
@@ -252,7 +252,7 @@ class P2pGenerator extends Generator {
         fuelMixInPercent: this.randomPercentageValue(),
       },
     };
-    return this.sectorPresent("FreightTransportByRoad") ? data : null;
+    return this.sectorPresent('FreightTransportByRoad') ? data : null;
   }
 
   /**
@@ -269,7 +269,7 @@ class P2pGenerator extends Generator {
         storageCapacityExpansionInPercent: this.randomPercentageValue(),
       },
     };
-    return this.sectorPresent("ElectricityGeneration") ? data : null;
+    return this.sectorPresent('ElectricityGeneration') ? data : null;
   }
 
   /**
@@ -300,7 +300,7 @@ class P2pGenerator extends Generator {
         electricGasPoweredMachineryVehicleInPercent: this.randomPercentageValue(),
       },
     };
-    return this.sectorPresent("LivestockFarming") ? data : null;
+    return this.sectorPresent('LivestockFarming') ? data : null;
   }
 
   /**
@@ -325,7 +325,7 @@ class P2pGenerator extends Generator {
         circularEconomyContribution: this.randomYesNo(),
       },
     };
-    return this.sectorPresent("Cement") ? data : null;
+    return this.sectorPresent('Cement') ? data : null;
   }
 
   /**
@@ -352,7 +352,7 @@ class P2pGenerator extends Generator {
       }
     });
     return Object.fromEntries(
-      new Map<string, P2pDriveMix>(keys.map((driveMixType) => [driveMixType as string, this.generateDriveMixInfo()])),
+      new Map<string, P2pDriveMix>(keys.map((driveMixType) => [driveMixType as string, this.generateDriveMixInfo()]))
     );
   }
 }

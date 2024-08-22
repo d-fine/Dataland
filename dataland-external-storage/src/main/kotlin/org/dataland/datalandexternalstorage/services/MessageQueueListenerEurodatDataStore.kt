@@ -5,6 +5,7 @@ import org.dataland.datalandmessagequeueutils.constants.ActionType
 import org.dataland.datalandmessagequeueutils.constants.ExchangeName
 import org.dataland.datalandmessagequeueutils.constants.MessageHeaderKey
 import org.dataland.datalandmessagequeueutils.constants.MessageType
+import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
 import org.dataland.datalandmessagequeueutils.exceptions.MessageQueueRejectException
 import org.dataland.datalandmessagequeueutils.utils.MessageQueueUtils
 import org.json.JSONObject
@@ -48,7 +49,7 @@ class MessageQueueListenerEurodatDataStore(
         bindings = [
             QueueBinding(
                 value = Queue(
-                    "requestReceivedEurodatDataStore",
+                    "privateRequestReceivedEurodatDataStore",
                     arguments = [
                         Argument(name = "x-dead-letter-exchange", value = ExchangeName.DeadLetter),
                         Argument(name = "x-dead-letter-routing-key", value = "deadLetterKey"),
@@ -56,7 +57,7 @@ class MessageQueueListenerEurodatDataStore(
                     ],
                 ),
                 exchange = Exchange(ExchangeName.PrivateRequestReceived, declare = "false"),
-                key = [""],
+                key = [RoutingKeyNames.privateDataAndDocument],
             ),
         ],
     )
