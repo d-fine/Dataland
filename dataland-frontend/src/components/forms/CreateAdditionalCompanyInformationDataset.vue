@@ -40,7 +40,7 @@
                     <div class="col-9 formFields">
                       <FormKit v-for="field in subcategory.fields" :key="field" type="group" :name="subcategory.name">
                         <component
-                          v-if="field.showIf(companyAssociatedAdditionalCompanyInformationData.data)"
+                          v-if="field.showIf(companyAssociatedAdditionalCompanyInformationData.data as FrameworkData)"
                           :is="field.component"
                           :label="field.label"
                           :placeholder="field.placeholder"
@@ -97,60 +97,41 @@
 import { FormKit } from '@formkit/vue';
 import { ApiClientProvider } from '@/services/ApiClients';
 import Card from 'primevue/card';
-import { defineComponent, inject, computed } from 'vue';
+import { computed, defineComponent, inject } from 'vue';
 import type Keycloak from 'keycloak-js';
 import { assertDefined } from '@/utils/TypeScriptUtils';
 import Tooltip from 'primevue/tooltip';
 import PrimeButton from 'primevue/button';
 import UploadFormHeader from '@/components/forms/parts/elements/basic/UploadFormHeader.vue';
-import YesNoFormField from '@/components/forms/parts/fields/YesNoFormField.vue';
 import Calendar from 'primevue/calendar';
 import SuccessMessage from '@/components/messages/SuccessMessage.vue';
 import FailMessage from '@/components/messages/FailMessage.vue';
 import { additionalCompanyInformationDataModel } from '@/frameworks/additional-company-information/UploadConfig';
 import {
+  type AdditionalCompanyInformationData,
   type CompanyAssociatedDataAdditionalCompanyInformationData,
   type CompanyReport,
   DataTypeEnum,
-  type AdditionalCompanyInformationData,
 } from '@clients/backend';
 import { useRoute } from 'vue-router';
 import { checkCustomInputs, checkIfAllUploadedReportsAreReferencedInDataModel } from '@/utils/ValidationsUtils';
-import NaceCodeFormField from '@/components/forms/parts/fields/NaceCodeFormField.vue';
-import InputTextFormField from '@/components/forms/parts/fields/InputTextFormField.vue';
 import FreeTextFormField from '@/components/forms/parts/fields/FreeTextFormField.vue';
 import NumberFormField from '@/components/forms/parts/fields/NumberFormField.vue';
 import DateFormField from '@/components/forms/parts/fields/DateFormField.vue';
 import SingleSelectFormField from '@/components/forms/parts/fields/SingleSelectFormField.vue';
-import MultiSelectFormField from '@/components/forms/parts/fields/MultiSelectFormField.vue';
-import AddressFormField from '@/components/forms/parts/fields/AddressFormField.vue';
 import RadioButtonsFormField from '@/components/forms/parts/fields/RadioButtonsFormField.vue';
 import SubmitButton from '@/components/forms/parts/SubmitButton.vue';
 import SubmitSideBar from '@/components/forms/parts/SubmitSideBar.vue';
-import YesNoNaFormField from '@/components/forms/parts/fields/YesNoNaFormField.vue';
 import UploadReports from '@/components/forms/parts/UploadReports.vue';
-import PercentageFormField from '@/components/forms/parts/fields/PercentageFormField.vue';
-import ProductionSitesFormField from '@/components/forms/parts/fields/ProductionSitesFormField.vue';
 import { objectDropNull, type ObjectType } from '@/utils/UpdateObjectUtils';
 import { smoothScroll } from '@/utils/SmoothScroll';
 import { type DocumentToUpload, getFileName, uploadFiles } from '@/utils/FileUploadUtils';
-import MostImportantProductsFormField from '@/components/forms/parts/fields/MostImportantProductsFormField.vue';
 import { type FrameworkData, type Subcategory } from '@/utils/GenericFrameworkTypes';
-import ProcurementCategoriesFormField from '@/components/forms/parts/fields/ProcurementCategoriesFormField.vue';
 import { createSubcategoryVisibilityMap } from '@/utils/UploadFormUtils';
-import HighImpactClimateSectorsFormField from '@/components/forms/parts/fields/HighImpactClimateSectorsFormField.vue';
 import { formatAxiosErrorMessage } from '@/utils/AxiosErrorMessageFormatter';
-import { HighImpactClimateSectorsNaceCodes } from '@/types/HighImpactClimateSectors';
-import IntegerExtendedDataPointFormField from '@/components/forms/parts/fields/IntegerExtendedDataPointFormField.vue';
 import BigDecimalExtendedDataPointFormField from '@/components/forms/parts/fields/BigDecimalExtendedDataPointFormField.vue';
-import CurrencyDataPointFormField from '@/components/forms/parts/fields/CurrencyDataPointFormField.vue';
-import YesNoBaseDataPointFormField from '@/components/forms/parts/fields/YesNoBaseDataPointFormField.vue';
-import YesNoNaBaseDataPointFormField from '@/components/forms/parts/fields/YesNoNaBaseDataPointFormField.vue';
-import YesNoExtendedDataPointFormField from '@/components/forms/parts/fields/YesNoExtendedDataPointFormField.vue';
 import BaseDataPointFormField from '@/components/forms/parts/elements/basic/BaseDataPointFormField.vue';
-import YesNoNaExtendedDataPointFormField from '@/components/forms/parts/fields/YesNoNaExtendedDataPointFormField.vue';
 import DateExtendedDataPointFormField from '@/components/forms/parts/fields/DateExtendedDataPointFormField.vue';
-import PercentageExtendedDataPointFormField from '@/components/forms/parts/fields/PercentageExtendedDataPointFormField.vue';
 import RadioButtonsExtendedDataPointFormField from '@/components/forms/parts/fields/RadioButtonsExtendedDataPointFormField.vue';
 import { getFilledKpis } from '@/utils/DataPoint';
 import { type PublicFrameworkDataApi } from '@/utils/api/UnifiedFrameworkDataApi';
@@ -177,32 +158,14 @@ export default defineComponent({
     Card,
     PrimeButton,
     Calendar,
-    // InputTextFormField,
     FreeTextFormField,
     NumberFormField,
     DateFormField,
     SingleSelectFormField,
-    // MultiSelectFormField,
-    // NaceCodeFormField,
-    // AddressFormField,
     RadioButtonsFormField,
-    // PercentageFormField,
-    // ProductionSitesFormField,
-    // MostImportantProductsFormField,
-    // ProcurementCategoriesFormField,
     UploadReports,
-    // HighImpactClimateSectorsFormField,
-    IntegerExtendedDataPointFormField,
     BigDecimalExtendedDataPointFormField,
-    CurrencyDataPointFormField,
-    YesNoFormField,
-    YesNoNaFormField,
-    YesNoBaseDataPointFormField,
-    YesNoNaBaseDataPointFormField,
-    YesNoExtendedDataPointFormField,
-    YesNoNaExtendedDataPointFormField,
     DateExtendedDataPointFormField,
-    PercentageExtendedDataPointFormField,
     RadioButtonsExtendedDataPointFormField,
   },
   directives: {
@@ -233,8 +196,8 @@ export default defineComponent({
     yearOfDataDate: {
       get(): string {
         const currentDate =
-          this.companyAssociatedAdditionalCompanyInformationData.data?.general?.general?.fiscalYearEnd;
-        if (currentDate === undefined) {
+          this.companyAssociatedAdditionalCompanyInformationData.data?.general?.general?.fiscalYearEnd?.value;
+        if (currentDate === undefined || currentDate === null) {
           return '';
         } else {
           const currentDateSegments = currentDate.split('-');
@@ -274,12 +237,13 @@ export default defineComponent({
      * Builds an api to get and upload Additional Company Information data
      * @returns the api
      */
-    buildAdditionalCompanyInformationDataApi(): PublicFrameworkDataApi<AdditionalCompanyInformationData> {
+    buildAdditionalCompanyInformationDataApi(): PublicFrameworkDataApi<AdditionalCompanyInformationData> | null {
       const apiClientProvider = new ApiClientProvider(assertDefined(this.getKeycloakPromise)());
       const frameworkDefinition = getBasePublicFrameworkDefinition(DataTypeEnum.AdditionalCompanyInformation);
       if (frameworkDefinition) {
         return frameworkDefinition.getPublicFrameworkApiClient(undefined, apiClientProvider.axiosInstance);
       }
+      return null;
     },
 
     /**
@@ -290,16 +254,17 @@ export default defineComponent({
     async loadAdditionalCompanyInformationData(dataId: string): Promise<void> {
       this.waitingForData = true;
       const additionalCompanyInformationDataControllerApi = this.buildAdditionalCompanyInformationDataApi();
-      const dataResponse = await additionalCompanyInformationDataControllerApi.getFrameworkData(dataId);
-      const additionalCompanyInformationResponseData = dataResponse.data;
-      this.listOfFilledKpis = getFilledKpis(additionalCompanyInformationResponseData.data);
-      this.referencedReportsForPrefill =
-        additionalCompanyInformationResponseData.data.general.general.referencedReports ?? {};
-      this.companyAssociatedAdditionalCompanyInformationData = objectDropNull(
-        additionalCompanyInformationResponseData as ObjectType
-      ) as CompanyAssociatedAdditionalCompanyInformationData;
-
-      this.waitingForData = false;
+      if (additionalCompanyInformationDataControllerApi) {
+        const dataResponse = await additionalCompanyInformationDataControllerApi.getFrameworkData(dataId);
+        const additionalCompanyInformationResponseData = dataResponse.data;
+        this.listOfFilledKpis = getFilledKpis(additionalCompanyInformationResponseData.data);
+        this.referencedReportsForPrefill =
+          additionalCompanyInformationResponseData.data?.general?.general?.referencedReports ?? {};
+        this.companyAssociatedAdditionalCompanyInformationData = objectDropNull(
+          additionalCompanyInformationResponseData
+        ) as CompanyAssociatedDataAdditionalCompanyInformationData;
+        this.waitingForData = false;
+      }
     },
     /**
      * Sends data to add AdditionalCompanyInformation data
@@ -323,7 +288,7 @@ export default defineComponent({
           this.getKeycloakPromise
         );
 
-        await additionalCompanyInformationDataControllerApi.postFrameworkData(
+        await additionalCompanyInformationDataControllerApi?.postFrameworkData(
           this.companyAssociatedAdditionalCompanyInformationData,
           isCompanyOwnerOrDataUploader
         );
@@ -334,7 +299,7 @@ export default defineComponent({
         this.uploadSucceded = true;
       } catch (error) {
         console.error(error);
-        if (error.message) {
+        if ((error as Error).message) {
           this.message = formatAxiosErrorMessage(error as Error);
         } else {
           this.message =
