@@ -266,88 +266,397 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
       },
       {
         type: 'cell',
-        label: 'Substantial Contribution to Climate Change Mitigation In Percent',
-        explanation: 'Grade of the substantial contribution criterion fulfillment',
+        label: 'Substantial Contribution to Climate Change Mitigation In Percent - Eligible',
+        explanation: 'Taxonomy-eligible proportion of revenue substantially contributing to climate change mitigation',
         shouldDisplay: (): boolean => true,
         valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
           wrapDisplayValueWithDatapointInformation(
             formatPercentageForDatatable(
-              dataset.revenue?.substantialContributionToClimateChangeMitigationInPercent?.value
+              dataset.revenue?.substantialContributionToClimateChangeMitigationInPercentEligible?.value
             ),
-            'Substantial Contribution to Climate Change Mitigation In Percent',
-            dataset.revenue?.substantialContributionToClimateChangeMitigationInPercent
+            'Substantial Contribution to Climate Change Mitigation In Percent - Eligible',
+            dataset.revenue?.substantialContributionToClimateChangeMitigationInPercentEligible
           ),
       },
       {
         type: 'cell',
-        label: 'Substantial Contribution to Climate Change Adaptation In Percent',
-        explanation: 'Grade of the substantial contribution criterion fulfillment',
+        label: 'Substantial Contribution to Climate Change Mitigation In Percent - Aligned',
+        explanation: 'Taxonomy-aligned proportion of revenue substantially contributing to climate change mitigation',
         shouldDisplay: (): boolean => true,
         valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
           wrapDisplayValueWithDatapointInformation(
             formatPercentageForDatatable(
-              dataset.revenue?.substantialContributionToClimateChangeAdaptationInPercent?.value
+              dataset.revenue?.substantialContributionToClimateChangeMitigationInPercentAligned?.value
             ),
-            'Substantial Contribution to Climate Change Adaptation In Percent',
-            dataset.revenue?.substantialContributionToClimateChangeAdaptationInPercent
+            'Substantial Contribution to Climate Change Mitigation In Percent - Aligned',
+            dataset.revenue?.substantialContributionToClimateChangeMitigationInPercentAligned
           ),
       },
       {
         type: 'cell',
-        label: 'Substantial Contribution to Sustainable Use and Protection of Water and Marine Resources In Percent',
-        explanation: 'Grade of the substantial contribution criterion fulfillment',
+        label: 'Substantial Contribution to Climate Change Mitigation In Percent - Of which use of proceeds',
+        explanation: 'Taxonomy-aligned use of proceeds share substantially contributing to climate change mitigation',
         shouldDisplay: (): boolean => true,
         valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
           wrapDisplayValueWithDatapointInformation(
             formatPercentageForDatatable(
-              dataset.revenue?.substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent
+              dataset.revenue?.substantialContributionToClimateChangeMitigationInPercentOfWhichUseOfProceeds?.value
+            ),
+            'Substantial Contribution to Climate Change Mitigation In Percent - Of which use of proceeds',
+            dataset.revenue?.substantialContributionToClimateChangeMitigationInPercentOfWhichUseOfProceeds
+          ),
+      },
+      {
+        type: 'cell',
+        label: 'Substantial Contribution to Climate Change Mitigation In Percent - Enabling Share',
+        explanation:
+          'Taxonomy-aligned and enabling proportion of revenue substantially contributing to climate change mitigation',
+        shouldDisplay: (): boolean => true,
+        valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
+          wrapDisplayValueWithDatapointInformation(
+            formatPercentageForDatatable(
+              dataset.revenue?.substantialContributionToClimateChangeMitigationInPercentEnablingShare?.value
+            ),
+            'Substantial Contribution to Climate Change Mitigation In Percent - Enabling Share',
+            dataset.revenue?.substantialContributionToClimateChangeMitigationInPercentEnablingShare
+          ),
+      },
+      {
+        type: 'cell',
+        label: 'Substantial Contribution to Climate Change Mitigation In Percent - Transitional Share',
+        explanation:
+          'Taxonomy-aligned and transitional proportion of revenue substantially contributing to climate change mitigation',
+        shouldDisplay: (): boolean => true,
+        valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
+          wrapDisplayValueWithDatapointInformation(
+            formatPercentageForDatatable(
+              dataset.revenue?.substantialContributionToClimateChangeMitigationInPercentTransitionalShare?.value
+            ),
+            'Substantial Contribution to Climate Change Mitigation In Percent - Transitional Share',
+            dataset.revenue?.substantialContributionToClimateChangeMitigationInPercentTransitionalShare
+          ),
+      },
+      {
+        type: 'cell',
+        label: 'Substantial Contribution to Climate Change Adaptation In Percent - Eligible',
+        explanation: 'Taxonomy-eligible proportion of revenue substantially contributing to climate change adaptation',
+        shouldDisplay: (): boolean => true,
+        valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
+          wrapDisplayValueWithDatapointInformation(
+            formatPercentageForDatatable(
+              dataset.revenue?.substantialContributionToClimateChangeAdaptationInPercentEligible?.value
+            ),
+            'Substantial Contribution to Climate Change Adaptation In Percent - Eligible',
+            dataset.revenue?.substantialContributionToClimateChangeAdaptationInPercentEligible
+          ),
+      },
+      {
+        type: 'cell',
+        label: 'Substantial Contribution to Climate Change Adaptation In Percent - Aligned',
+        explanation: 'Taxonomy-aligned proportion of revenue substantially contributing to climate change adaptation',
+        shouldDisplay: (): boolean => true,
+        valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
+          wrapDisplayValueWithDatapointInformation(
+            formatPercentageForDatatable(
+              dataset.revenue?.substantialContributionToClimateChangeAdaptationInPercentAligned?.value
+            ),
+            'Substantial Contribution to Climate Change Adaptation In Percent - Aligned',
+            dataset.revenue?.substantialContributionToClimateChangeAdaptationInPercentAligned
+          ),
+      },
+      {
+        type: 'cell',
+        label: 'Substantial Contribution to Climate Change Adaptation In Percent - Of which use of proceeds',
+        explanation: 'Taxonomy-aligned use of proceeds share substantially contributing to climate change adaptation',
+        shouldDisplay: (): boolean => true,
+        valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
+          wrapDisplayValueWithDatapointInformation(
+            formatPercentageForDatatable(
+              dataset.revenue?.substantialContributionToClimateChangeAdaptationInPercentOfWhichUseOfProceeds?.value
+            ),
+            'Substantial Contribution to Climate Change Adaptation In Percent - Of which use of proceeds',
+            dataset.revenue?.substantialContributionToClimateChangeAdaptationInPercentOfWhichUseOfProceeds
+          ),
+      },
+      {
+        type: 'cell',
+        label: 'Substantial Contribution to Climate Change Adaptation In Percent - Enabling Share',
+        explanation:
+          'Taxonomy-aligned and enabling proportion of revenue substantially contributing to climate change adaptation',
+        shouldDisplay: (): boolean => true,
+        valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
+          wrapDisplayValueWithDatapointInformation(
+            formatPercentageForDatatable(
+              dataset.revenue?.substantialContributionToClimateChangeAdaptationInPercentEnablingShare?.value
+            ),
+            'Substantial Contribution to Climate Change Adaptation In Percent - Enabling Share',
+            dataset.revenue?.substantialContributionToClimateChangeAdaptationInPercentEnablingShare
+          ),
+      },
+      {
+        type: 'cell',
+        label:
+          'Substantial Contribution to Sustainable Use and Protection of Water and Marine Resources In Percent - Eligible',
+        explanation:
+          'Taxonomy-eligible proportion of revenue substantially contributing to sustainable use and protection of water and marine resources',
+        shouldDisplay: (): boolean => true,
+        valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
+          wrapDisplayValueWithDatapointInformation(
+            formatPercentageForDatatable(
+              dataset.revenue
+                ?.substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentEligible?.value
+            ),
+            'Substantial Contribution to Sustainable Use and Protection of Water and Marine Resources In Percent - Eligible',
+            dataset.revenue
+              ?.substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentEligible
+          ),
+      },
+      {
+        type: 'cell',
+        label:
+          'Substantial Contribution to Sustainable Use and Protection of Water and Marine Resources In Percent - Aligned',
+        explanation:
+          'Taxonomy-aligned proportion of revenue substantially contributing to sustainable use and protection of water and marine resources',
+        shouldDisplay: (): boolean => true,
+        valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
+          wrapDisplayValueWithDatapointInformation(
+            formatPercentageForDatatable(
+              dataset.revenue
+                ?.substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned?.value
+            ),
+            'Substantial Contribution to Sustainable Use and Protection of Water and Marine Resources In Percent - Aligned',
+            dataset.revenue
+              ?.substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned
+          ),
+      },
+      {
+        type: 'cell',
+        label:
+          'Substantial Contribution to Sustainable Use and Protection of Water and Marine Resources In Percent - Of which use of proceeds',
+        explanation:
+          'Taxonomy-aligned use of proceeds share substantially contributing to sustainable use and protection of water and marine resources',
+        shouldDisplay: (): boolean => true,
+        valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
+          wrapDisplayValueWithDatapointInformation(
+            formatPercentageForDatatable(
+              dataset.revenue
+                ?.substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentOfWhichUseOfProceeds
                 ?.value
             ),
-            'Substantial Contribution to Sustainable Use and Protection of Water and Marine Resources In Percent',
-            dataset.revenue?.substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent
+            'Substantial Contribution to Sustainable Use and Protection of Water and Marine Resources In Percent - Of which use of proceeds',
+            dataset.revenue
+              ?.substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentOfWhichUseOfProceeds
           ),
       },
       {
         type: 'cell',
-        label: 'Substantial Contribution to Transition to a Circular Economy In Percent',
-        explanation: 'Grade of the substantial contribution criterion fulfillment',
+        label:
+          'Substantial Contribution to Sustainable Use and Protection of Water and Marine Resources In Percent - Enabling Share',
+        explanation:
+          'Taxonomy-aligned and enabling proportion of revenue substantially contributing to sustainable use and protection of water and marine resources',
         shouldDisplay: (): boolean => true,
         valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
           wrapDisplayValueWithDatapointInformation(
             formatPercentageForDatatable(
-              dataset.revenue?.substantialContributionToTransitionToACircularEconomyInPercent?.value
-            ),
-            'Substantial Contribution to Transition to a Circular Economy In Percent',
-            dataset.revenue?.substantialContributionToTransitionToACircularEconomyInPercent
-          ),
-      },
-      {
-        type: 'cell',
-        label: 'Substantial Contribution to Pollution Prevention and Control In Percent',
-        explanation: 'Grade of the substantial contribution criterion fulfillment',
-        shouldDisplay: (): boolean => true,
-        valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
-          wrapDisplayValueWithDatapointInformation(
-            formatPercentageForDatatable(
-              dataset.revenue?.substantialContributionToPollutionPreventionAndControlInPercent?.value
-            ),
-            'Substantial Contribution to Pollution Prevention and Control In Percent',
-            dataset.revenue?.substantialContributionToPollutionPreventionAndControlInPercent
-          ),
-      },
-      {
-        type: 'cell',
-        label: 'Substantial Contribution to Protection and Restoration of Biodiversity and Ecosystems In Percent',
-        explanation: 'Grade of the substantial contribution criterion fulfillment',
-        shouldDisplay: (): boolean => true,
-        valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
-          wrapDisplayValueWithDatapointInformation(
-            formatPercentageForDatatable(
-              dataset.revenue?.substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent
+              dataset.revenue
+                ?.substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentEnablingShare
                 ?.value
             ),
-            'Substantial Contribution to Protection and Restoration of Biodiversity and Ecosystems In Percent',
-            dataset.revenue?.substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent
+            'Substantial Contribution to Sustainable Use and Protection of Water and Marine Resources In Percent - Enabling Share',
+            dataset.revenue
+              ?.substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentEnablingShare
+          ),
+      },
+      {
+        type: 'cell',
+        label: 'Substantial Contribution to Transition to a Circular Economy In Percent - Eligible',
+        explanation: 'Taxonomy-eligible proportion of revenue substantially contributing to circular economy',
+        shouldDisplay: (): boolean => true,
+        valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
+          wrapDisplayValueWithDatapointInformation(
+            formatPercentageForDatatable(
+              dataset.revenue?.substantialContributionToTransitionToACircularEconomyInPercentEligible?.value
+            ),
+            'Substantial Contribution to Transition to a Circular Economy In Percent - Eligible',
+            dataset.revenue?.substantialContributionToTransitionToACircularEconomyInPercentEligible
+          ),
+      },
+      {
+        type: 'cell',
+        label: 'Substantial Contribution to Transition to a Circular Economy In Percent - Aligned',
+        explanation: 'Taxonomy-aligned proportion of revenue substantially contributing to circular economy',
+        shouldDisplay: (): boolean => true,
+        valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
+          wrapDisplayValueWithDatapointInformation(
+            formatPercentageForDatatable(
+              dataset.revenue?.substantialContributionToTransitionToACircularEconomyInPercentAligned?.value
+            ),
+            'Substantial Contribution to Transition to a Circular Economy In Percent - Aligned',
+            dataset.revenue?.substantialContributionToTransitionToACircularEconomyInPercentAligned
+          ),
+      },
+      {
+        type: 'cell',
+        label: 'Substantial Contribution to Transition to a Circular Economy In Percent - Of which use of proceeds',
+        explanation: 'Taxonomy-aligned use of proceeds share substantially contributing to circular economy',
+        shouldDisplay: (): boolean => true,
+        valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
+          wrapDisplayValueWithDatapointInformation(
+            formatPercentageForDatatable(
+              dataset.revenue?.substantialContributionToTransitionToACircularEconomyInPercentOfWhichUseOfProceeds?.value
+            ),
+            'Substantial Contribution to Transition to a Circular Economy In Percent - Of which use of proceeds',
+            dataset.revenue?.substantialContributionToTransitionToACircularEconomyInPercentOfWhichUseOfProceeds
+          ),
+      },
+      {
+        type: 'cell',
+        label: 'Substantial Contribution to Transition to a Circular Economy In Percent - Enabling Share',
+        explanation:
+          'Taxonomy-aligned and enabling proportion of revenue substantially contributing to circular economy',
+        shouldDisplay: (): boolean => true,
+        valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
+          wrapDisplayValueWithDatapointInformation(
+            formatPercentageForDatatable(
+              dataset.revenue?.substantialContributionToTransitionToACircularEconomyInPercentEnablingShare?.value
+            ),
+            'Substantial Contribution to Transition to a Circular Economy In Percent - Enabling Share',
+            dataset.revenue?.substantialContributionToTransitionToACircularEconomyInPercentEnablingShare
+          ),
+      },
+      {
+        type: 'cell',
+        label: 'Substantial Contribution to Pollution Prevention and Control In Percent - Eligible',
+        explanation:
+          'Taxonomy-eligible proportion of revenue substantially contributing to pollution prevention and control',
+        shouldDisplay: (): boolean => true,
+        valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
+          wrapDisplayValueWithDatapointInformation(
+            formatPercentageForDatatable(
+              dataset.revenue?.substantialContributionToPollutionPreventionAndControlInPercentEligible?.value
+            ),
+            'Substantial Contribution to Pollution Prevention and Control In Percent - Eligible',
+            dataset.revenue?.substantialContributionToPollutionPreventionAndControlInPercentEligible
+          ),
+      },
+      {
+        type: 'cell',
+        label: 'Substantial Contribution to Pollution Prevention and Control In Percent - Aligned',
+        explanation:
+          'Taxonomy-aligned proportion of revenue substantially contributing to pollution prevention and control',
+        shouldDisplay: (): boolean => true,
+        valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
+          wrapDisplayValueWithDatapointInformation(
+            formatPercentageForDatatable(
+              dataset.revenue?.substantialContributionToPollutionPreventionAndControlInPercentAligned?.value
+            ),
+            'Substantial Contribution to Pollution Prevention and Control In Percent - Aligned',
+            dataset.revenue?.substantialContributionToPollutionPreventionAndControlInPercentAligned
+          ),
+      },
+      {
+        type: 'cell',
+        label: 'Substantial Contribution to Pollution Prevention and Control In Percent - Of which use of proceeds',
+        explanation:
+          'Taxonomy-aligned use of proceeds share substantially contributing to pollution prevention and control',
+        shouldDisplay: (): boolean => true,
+        valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
+          wrapDisplayValueWithDatapointInformation(
+            formatPercentageForDatatable(
+              dataset.revenue?.substantialContributionToPollutionPreventionAndControlInPercentOfWhichUseOfProceeds
+                ?.value
+            ),
+            'Substantial Contribution to Pollution Prevention and Control In Percent - Of which use of proceeds',
+            dataset.revenue?.substantialContributionToPollutionPreventionAndControlInPercentOfWhichUseOfProceeds
+          ),
+      },
+      {
+        type: 'cell',
+        label: 'Substantial Contribution to Pollution Prevention and Control In Percent - Enabling Share',
+        explanation:
+          'Taxonomy-aligned and enabling proportion of revenue substantially contributing to pollution prevention and control',
+        shouldDisplay: (): boolean => true,
+        valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
+          wrapDisplayValueWithDatapointInformation(
+            formatPercentageForDatatable(
+              dataset.revenue?.substantialContributionToPollutionPreventionAndControlInPercentEnablingShare?.value
+            ),
+            'Substantial Contribution to Pollution Prevention and Control In Percent - Enabling Share',
+            dataset.revenue?.substantialContributionToPollutionPreventionAndControlInPercentEnablingShare
+          ),
+      },
+      {
+        type: 'cell',
+        label:
+          'Substantial Contribution to Protection and Restoration of Biodiversity and Ecosystems In Percent - Eligible',
+        explanation:
+          'Taxonomy-eligible proportion of revenue substantially contributing to protection and restoration of biodiversity and ecosystems',
+        shouldDisplay: (): boolean => true,
+        valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
+          wrapDisplayValueWithDatapointInformation(
+            formatPercentageForDatatable(
+              dataset.revenue
+                ?.substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentEligible?.value
+            ),
+            'Substantial Contribution to Protection and Restoration of Biodiversity and Ecosystems In Percent - Eligible',
+            dataset.revenue
+              ?.substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentEligible
+          ),
+      },
+      {
+        type: 'cell',
+        label:
+          'Substantial Contribution to Protection and Restoration of Biodiversity and Ecosystems In Percent - Aligned',
+        explanation:
+          'Taxonomy-aligned proportion of revenue substantially contributing to protection and restoration of biodiversity and ecosystems',
+        shouldDisplay: (): boolean => true,
+        valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
+          wrapDisplayValueWithDatapointInformation(
+            formatPercentageForDatatable(
+              dataset.revenue
+                ?.substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned?.value
+            ),
+            'Substantial Contribution to Protection and Restoration of Biodiversity and Ecosystems In Percent - Aligned',
+            dataset.revenue
+              ?.substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned
+          ),
+      },
+      {
+        type: 'cell',
+        label:
+          'Substantial Contribution to Protection and Restoration of Biodiversity and Ecosystems In Percent - Of which use of proceeds',
+        explanation:
+          'Taxonomy-aligned use of proceeds share substantially contributing to protection and restoration of biodiversity and ecosystems',
+        shouldDisplay: (): boolean => true,
+        valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
+          wrapDisplayValueWithDatapointInformation(
+            formatPercentageForDatatable(
+              dataset.revenue
+                ?.substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentOfWhichUseOfProceeds
+                ?.value
+            ),
+            'Substantial Contribution to Protection and Restoration of Biodiversity and Ecosystems In Percent - Of which use of proceeds',
+            dataset.revenue
+              ?.substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentOfWhichUseOfProceeds
+          ),
+      },
+      {
+        type: 'cell',
+        label:
+          'Substantial Contribution to Protection and Restoration of Biodiversity and Ecosystems In Percent - Enabling Share',
+        explanation:
+          'Taxonomy-aligned and enabling proportion of revenue substantially contributing to protection and restoration of biodiversity and ecosystems',
+        shouldDisplay: (): boolean => true,
+        valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
+          wrapDisplayValueWithDatapointInformation(
+            formatPercentageForDatatable(
+              dataset.revenue
+                ?.substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentEnablingShare
+                ?.value
+            ),
+            'Substantial Contribution to Protection and Restoration of Biodiversity and Ecosystems In Percent - Enabling Share',
+            dataset.revenue
+              ?.substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentEnablingShare
           ),
       },
       {
@@ -536,88 +845,392 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
       },
       {
         type: 'cell',
-        label: 'Substantial Contribution to Climate Change Mitigation In Percent',
-        explanation: 'Grade of the substantial contribution criterion fulfillment',
+        label: 'Substantial Contribution to Climate Change Mitigation In Percent - Eligible',
+        explanation: 'Taxonomy-eligible proportion of CapEx substantially contributing to climate change mitigation',
         shouldDisplay: (): boolean => true,
         valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
           wrapDisplayValueWithDatapointInformation(
             formatPercentageForDatatable(
-              dataset.capex?.substantialContributionToClimateChangeMitigationInPercent?.value
+              dataset.capex?.substantialContributionToClimateChangeMitigationInPercentEligible?.value
             ),
-            'Substantial Contribution to Climate Change Mitigation In Percent',
-            dataset.capex?.substantialContributionToClimateChangeMitigationInPercent
+            'Substantial Contribution to Climate Change Mitigation In Percent - Eligible',
+            dataset.capex?.substantialContributionToClimateChangeMitigationInPercentEligible
           ),
       },
       {
         type: 'cell',
-        label: 'Substantial Contribution to Climate Change Adaptation In Percent',
-        explanation: 'Grade of the substantial contribution criterion fulfillment',
+        label: 'Substantial Contribution to Climate Change Mitigation In Percent - Aligned',
+        explanation: 'Taxonomy-aligned proportion of CapEx substantially contributing to climate change mitigation',
         shouldDisplay: (): boolean => true,
         valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
           wrapDisplayValueWithDatapointInformation(
             formatPercentageForDatatable(
-              dataset.capex?.substantialContributionToClimateChangeAdaptationInPercent?.value
+              dataset.capex?.substantialContributionToClimateChangeMitigationInPercentAligned?.value
             ),
-            'Substantial Contribution to Climate Change Adaptation In Percent',
-            dataset.capex?.substantialContributionToClimateChangeAdaptationInPercent
+            'Substantial Contribution to Climate Change Mitigation In Percent - Aligned',
+            dataset.capex?.substantialContributionToClimateChangeMitigationInPercentAligned
           ),
       },
       {
         type: 'cell',
-        label: 'Substantial Contribution to Sustainable Use and Protection of Water and Marine Resources In Percent',
-        explanation: 'Grade of the substantial contribution criterion fulfillment',
+        label: 'Substantial Contribution to Climate Change Mitigation In Percent - Of which use of proceeds',
+        explanation: 'Taxonomy-aligned use of proceeds share substantially contributing to climate change mitigation',
         shouldDisplay: (): boolean => true,
         valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
           wrapDisplayValueWithDatapointInformation(
             formatPercentageForDatatable(
-              dataset.capex?.substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent
+              dataset.capex?.substantialContributionToClimateChangeMitigationInPercentOfWhichUseOfProceeds?.value
+            ),
+            'Substantial Contribution to Climate Change Mitigation In Percent - Of which use of proceeds',
+            dataset.capex?.substantialContributionToClimateChangeMitigationInPercentOfWhichUseOfProceeds
+          ),
+      },
+      {
+        type: 'cell',
+        label: 'Substantial Contribution to Climate Change Mitigation In Percent - Enabling Share',
+        explanation:
+          'Taxonomy-aligned and enabling proportion of CapEx substantially contributing to climate change mitigation',
+        shouldDisplay: (): boolean => true,
+        valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
+          wrapDisplayValueWithDatapointInformation(
+            formatPercentageForDatatable(
+              dataset.capex?.substantialContributionToClimateChangeMitigationInPercentEnablingShare?.value
+            ),
+            'Substantial Contribution to Climate Change Mitigation In Percent - Enabling Share',
+            dataset.capex?.substantialContributionToClimateChangeMitigationInPercentEnablingShare
+          ),
+      },
+      {
+        type: 'cell',
+        label: 'Substantial Contribution to Climate Change Mitigation In Percent - Transitional Share',
+        explanation:
+          'Taxonomy-aligned and transitional proportion of CapEx substantially contributing to climate change mitigation',
+        shouldDisplay: (): boolean => true,
+        valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
+          wrapDisplayValueWithDatapointInformation(
+            formatPercentageForDatatable(
+              dataset.capex?.substantialContributionToClimateChangeMitigationInPercentTransitionalShare?.value
+            ),
+            'Substantial Contribution to Climate Change Mitigation In Percent - Transitional Share',
+            dataset.capex?.substantialContributionToClimateChangeMitigationInPercentTransitionalShare
+          ),
+      },
+      {
+        type: 'cell',
+        label: 'Substantial Contribution to Climate Change Adaptation In Percent - Eligible',
+        explanation: 'Taxonomy-eligible proportion of CapEx substantially contributing to climate change adaptation',
+        shouldDisplay: (): boolean => true,
+        valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
+          wrapDisplayValueWithDatapointInformation(
+            formatPercentageForDatatable(
+              dataset.capex?.substantialContributionToClimateChangeAdaptationInPercentEligible?.value
+            ),
+            'Substantial Contribution to Climate Change Adaptation In Percent - Eligible',
+            dataset.capex?.substantialContributionToClimateChangeAdaptationInPercentEligible
+          ),
+      },
+      {
+        type: 'cell',
+        label: 'Substantial Contribution to Climate Change Adaptation In Percent - Aligned',
+        explanation: 'Taxonomy-aligned proportion of CapEx substantially contributing to climate change adaptation',
+        shouldDisplay: (): boolean => true,
+        valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
+          wrapDisplayValueWithDatapointInformation(
+            formatPercentageForDatatable(
+              dataset.capex?.substantialContributionToClimateChangeAdaptationInPercentAligned?.value
+            ),
+            'Substantial Contribution to Climate Change Adaptation In Percent - Aligned',
+            dataset.capex?.substantialContributionToClimateChangeAdaptationInPercentAligned
+          ),
+      },
+      {
+        type: 'cell',
+        label: 'Substantial Contribution to Climate Change Adaptation In Percent - Of which use of proceeds',
+        explanation: 'Taxonomy-aligned use of proceeds share substantially contributing to climate change adaptation',
+        shouldDisplay: (): boolean => true,
+        valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
+          wrapDisplayValueWithDatapointInformation(
+            formatPercentageForDatatable(
+              dataset.capex?.substantialContributionToClimateChangeAdaptationInPercentOfWhichUseOfProceeds?.value
+            ),
+            'Substantial Contribution to Climate Change Adaptation In Percent - Of which use of proceeds',
+            dataset.capex?.substantialContributionToClimateChangeAdaptationInPercentOfWhichUseOfProceeds
+          ),
+      },
+      {
+        type: 'cell',
+        label: 'Substantial Contribution to Climate Change Adaptation In Percent - Enabling Share',
+        explanation:
+          'Taxonomy-aligned and enabling proportion of CapEx substantially contributing to climate change adaptation',
+        shouldDisplay: (): boolean => true,
+        valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
+          wrapDisplayValueWithDatapointInformation(
+            formatPercentageForDatatable(
+              dataset.capex?.substantialContributionToClimateChangeAdaptationInPercentEnablingShare?.value
+            ),
+            'Substantial Contribution to Climate Change Adaptation In Percent - Enabling Share',
+            dataset.capex?.substantialContributionToClimateChangeAdaptationInPercentEnablingShare
+          ),
+      },
+      {
+        type: 'cell',
+        label:
+          'Substantial Contribution to Sustainable Use and Protection of Water and Marine Resources In Percent - Eligible',
+        explanation:
+          'Taxonomy-eligible proportion of CapEx substantially contributing to sustainable use and protection of water and marine resources',
+        shouldDisplay: (): boolean => true,
+        valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
+          wrapDisplayValueWithDatapointInformation(
+            formatPercentageForDatatable(
+              dataset.capex
+                ?.substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentEligible?.value
+            ),
+            'Substantial Contribution to Sustainable Use and Protection of Water and Marine Resources In Percent - Eligible',
+            dataset.capex
+              ?.substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentEligible
+          ),
+      },
+      {
+        type: 'cell',
+        label:
+          'Substantial Contribution to Sustainable Use and Protection of Water and Marine Resources In Percent - Aligned',
+        explanation:
+          'Taxonomy-aligned proportion of CapEx substantially contributing to sustainable use and protection of water and marine resources',
+        shouldDisplay: (): boolean => true,
+        valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
+          wrapDisplayValueWithDatapointInformation(
+            formatPercentageForDatatable(
+              dataset.capex
+                ?.substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned?.value
+            ),
+            'Substantial Contribution to Sustainable Use and Protection of Water and Marine Resources In Percent - Aligned',
+            dataset.capex?.substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned
+          ),
+      },
+      {
+        type: 'cell',
+        label:
+          'Substantial Contribution to Sustainable Use and Protection of Water and Marine Resources In Percent - Of which use of proceeds',
+        explanation:
+          'Taxonomy-aligned use of proceeds share substantially contributing to sustainable use and protection of water and marine resources',
+        shouldDisplay: (): boolean => true,
+        valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
+          wrapDisplayValueWithDatapointInformation(
+            formatPercentageForDatatable(
+              dataset.capex
+                ?.substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentOfWhichUseOfProceeds
                 ?.value
             ),
-            'Substantial Contribution to Sustainable Use and Protection of Water and Marine Resources In Percent',
-            dataset.capex?.substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent
+            'Substantial Contribution to Sustainable Use and Protection of Water and Marine Resources In Percent - Of which use of proceeds',
+            dataset.capex
+              ?.substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentOfWhichUseOfProceeds
           ),
       },
       {
         type: 'cell',
-        label: 'Substantial Contribution to Transition to a Circular Economy In Percent',
-        explanation: 'Grade of the substantial contribution criterion fulfillment',
+        label:
+          'Substantial Contribution to Sustainable Use and Protection of Water and Marine Resources In Percent - Enabling Share',
+        explanation:
+          'Taxonomy-aligned and enabling proportion of CapEx substantially contributing to sustainable use and protection of water and marine resources',
         shouldDisplay: (): boolean => true,
         valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
           wrapDisplayValueWithDatapointInformation(
             formatPercentageForDatatable(
-              dataset.capex?.substantialContributionToTransitionToACircularEconomyInPercent?.value
-            ),
-            'Substantial Contribution to Transition to a Circular Economy In Percent',
-            dataset.capex?.substantialContributionToTransitionToACircularEconomyInPercent
-          ),
-      },
-      {
-        type: 'cell',
-        label: 'Substantial Contribution to Pollution Prevention and Control In Percent',
-        explanation: 'Grade of the substantial contribution criterion fulfillment',
-        shouldDisplay: (): boolean => true,
-        valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
-          wrapDisplayValueWithDatapointInformation(
-            formatPercentageForDatatable(
-              dataset.capex?.substantialContributionToPollutionPreventionAndControlInPercent?.value
-            ),
-            'Substantial Contribution to Pollution Prevention and Control In Percent',
-            dataset.capex?.substantialContributionToPollutionPreventionAndControlInPercent
-          ),
-      },
-      {
-        type: 'cell',
-        label: 'Substantial Contribution to Protection and Restoration of Biodiversity and Ecosystems In Percent',
-        explanation: 'Grade of the substantial contribution criterion fulfillment',
-        shouldDisplay: (): boolean => true,
-        valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
-          wrapDisplayValueWithDatapointInformation(
-            formatPercentageForDatatable(
-              dataset.capex?.substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent
+              dataset.capex
+                ?.substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentEnablingShare
                 ?.value
             ),
-            'Substantial Contribution to Protection and Restoration of Biodiversity and Ecosystems In Percent',
-            dataset.capex?.substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent
+            'Substantial Contribution to Sustainable Use and Protection of Water and Marine Resources In Percent - Enabling Share',
+            dataset.capex
+              ?.substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentEnablingShare
+          ),
+      },
+      {
+        type: 'cell',
+        label: 'Substantial Contribution to Transition to a Circular Economy In Percent - Eligible',
+        explanation: 'Taxonomy-eligible proportion of CapEx substantially contributing to circular economy',
+        shouldDisplay: (): boolean => true,
+        valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
+          wrapDisplayValueWithDatapointInformation(
+            formatPercentageForDatatable(
+              dataset.capex?.substantialContributionToTransitionToACircularEconomyInPercentEligible?.value
+            ),
+            'Substantial Contribution to Transition to a Circular Economy In Percent - Eligible',
+            dataset.capex?.substantialContributionToTransitionToACircularEconomyInPercentEligible
+          ),
+      },
+      {
+        type: 'cell',
+        label: 'Substantial Contribution to Transition to a Circular Economy In Percent - Aligned',
+        explanation: 'Taxonomy-aligned proportion of CapEx substantially contributing to circular economy',
+        shouldDisplay: (): boolean => true,
+        valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
+          wrapDisplayValueWithDatapointInformation(
+            formatPercentageForDatatable(
+              dataset.capex?.substantialContributionToTransitionToACircularEconomyInPercentAligned?.value
+            ),
+            'Substantial Contribution to Transition to a Circular Economy In Percent - Aligned',
+            dataset.capex?.substantialContributionToTransitionToACircularEconomyInPercentAligned
+          ),
+      },
+      {
+        type: 'cell',
+        label: 'Substantial Contribution to Transition to a Circular Economy In Percent - Of which use of proceeds',
+        explanation: 'Taxonomy-aligned use of proceeds share substantially contributing to circular economy',
+        shouldDisplay: (): boolean => true,
+        valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
+          wrapDisplayValueWithDatapointInformation(
+            formatPercentageForDatatable(
+              dataset.capex?.substantialContributionToTransitionToACircularEconomyInPercentOfWhichUseOfProceeds?.value
+            ),
+            'Substantial Contribution to Transition to a Circular Economy In Percent - Of which use of proceeds',
+            dataset.capex?.substantialContributionToTransitionToACircularEconomyInPercentOfWhichUseOfProceeds
+          ),
+      },
+      {
+        type: 'cell',
+        label: 'Substantial Contribution to Transition to a Circular Economy In Percent - Enabling Share',
+        explanation: 'Taxonomy-aligned and enabling proportion of CapEx substantially contributing to circular economy',
+        shouldDisplay: (): boolean => true,
+        valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
+          wrapDisplayValueWithDatapointInformation(
+            formatPercentageForDatatable(
+              dataset.capex?.substantialContributionToTransitionToACircularEconomyInPercentEnablingShare?.value
+            ),
+            'Substantial Contribution to Transition to a Circular Economy In Percent - Enabling Share',
+            dataset.capex?.substantialContributionToTransitionToACircularEconomyInPercentEnablingShare
+          ),
+      },
+      {
+        type: 'cell',
+        label: 'Substantial Contribution to Pollution Prevention and Control In Percent - Eligible',
+        explanation:
+          'Taxonomy-eligible proportion of CapEx substantially contributing to pollution prevention and control',
+        shouldDisplay: (): boolean => true,
+        valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
+          wrapDisplayValueWithDatapointInformation(
+            formatPercentageForDatatable(
+              dataset.capex?.substantialContributionToPollutionPreventionAndControlInPercentEligible?.value
+            ),
+            'Substantial Contribution to Pollution Prevention and Control In Percent - Eligible',
+            dataset.capex?.substantialContributionToPollutionPreventionAndControlInPercentEligible
+          ),
+      },
+      {
+        type: 'cell',
+        label: 'Substantial Contribution to Pollution Prevention and Control In Percent - Aligned',
+        explanation:
+          'Taxonomy-aligned proportion of CapEx substantially contributing to pollution prevention and control',
+        shouldDisplay: (): boolean => true,
+        valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
+          wrapDisplayValueWithDatapointInformation(
+            formatPercentageForDatatable(
+              dataset.capex?.substantialContributionToPollutionPreventionAndControlInPercentAligned?.value
+            ),
+            'Substantial Contribution to Pollution Prevention and Control In Percent - Aligned',
+            dataset.capex?.substantialContributionToPollutionPreventionAndControlInPercentAligned
+          ),
+      },
+      {
+        type: 'cell',
+        label: 'Substantial Contribution to Pollution Prevention and Control In Percent - Of which use of proceeds',
+        explanation:
+          'Taxonomy-aligned use of proceeds share substantially contributing to pollution prevention and control',
+        shouldDisplay: (): boolean => true,
+        valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
+          wrapDisplayValueWithDatapointInformation(
+            formatPercentageForDatatable(
+              dataset.capex?.substantialContributionToPollutionPreventionAndControlInPercentOfWhichUseOfProceeds?.value
+            ),
+            'Substantial Contribution to Pollution Prevention and Control In Percent - Of which use of proceeds',
+            dataset.capex?.substantialContributionToPollutionPreventionAndControlInPercentOfWhichUseOfProceeds
+          ),
+      },
+      {
+        type: 'cell',
+        label: 'Substantial Contribution to Pollution Prevention and Control In Percent - Enabling Share',
+        explanation:
+          'Taxonomy-aligned and enabling proportion of CapEx substantially contributing to pollution prevention and control',
+        shouldDisplay: (): boolean => true,
+        valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
+          wrapDisplayValueWithDatapointInformation(
+            formatPercentageForDatatable(
+              dataset.capex?.substantialContributionToPollutionPreventionAndControlInPercentEnablingShare?.value
+            ),
+            'Substantial Contribution to Pollution Prevention and Control In Percent - Enabling Share',
+            dataset.capex?.substantialContributionToPollutionPreventionAndControlInPercentEnablingShare
+          ),
+      },
+      {
+        type: 'cell',
+        label:
+          'Substantial Contribution to Protection and Restoration of Biodiversity and Ecosystems In Percent - Eligible',
+        explanation:
+          'Taxonomy-eligible proportion of CapEx substantially contributing to protection and restoration of biodiversity and ecosystems',
+        shouldDisplay: (): boolean => true,
+        valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
+          wrapDisplayValueWithDatapointInformation(
+            formatPercentageForDatatable(
+              dataset.capex
+                ?.substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentEligible?.value
+            ),
+            'Substantial Contribution to Protection and Restoration of Biodiversity and Ecosystems In Percent - Eligible',
+            dataset.capex?.substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentEligible
+          ),
+      },
+      {
+        type: 'cell',
+        label:
+          'Substantial Contribution to Protection and Restoration of Biodiversity and Ecosystems In Percent - Aligned',
+        explanation:
+          'Taxonomy-aligned proportion of CapEx substantially contributing to protection and restoration of biodiversity and ecosystems',
+        shouldDisplay: (): boolean => true,
+        valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
+          wrapDisplayValueWithDatapointInformation(
+            formatPercentageForDatatable(
+              dataset.capex
+                ?.substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned?.value
+            ),
+            'Substantial Contribution to Protection and Restoration of Biodiversity and Ecosystems In Percent - Aligned',
+            dataset.capex?.substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned
+          ),
+      },
+      {
+        type: 'cell',
+        label:
+          'Substantial Contribution to Protection and Restoration of Biodiversity and Ecosystems In Percent - Of which use of proceeds',
+        explanation:
+          'Taxonomy-aligned use of proceeds share substantially contributing to protection and restoration of biodiversity and ecosystems',
+        shouldDisplay: (): boolean => true,
+        valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
+          wrapDisplayValueWithDatapointInformation(
+            formatPercentageForDatatable(
+              dataset.capex
+                ?.substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentOfWhichUseOfProceeds
+                ?.value
+            ),
+            'Substantial Contribution to Protection and Restoration of Biodiversity and Ecosystems In Percent - Of which use of proceeds',
+            dataset.capex
+              ?.substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentOfWhichUseOfProceeds
+          ),
+      },
+      {
+        type: 'cell',
+        label:
+          'Substantial Contribution to Protection and Restoration of Biodiversity and Ecosystems In Percent - Enabling Share',
+        explanation:
+          'Taxonomy-aligned and enabling proportion of CapEx substantially contributing to protection and restoration of biodiversity and ecosystems',
+        shouldDisplay: (): boolean => true,
+        valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
+          wrapDisplayValueWithDatapointInformation(
+            formatPercentageForDatatable(
+              dataset.capex
+                ?.substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentEnablingShare
+                ?.value
+            ),
+            'Substantial Contribution to Protection and Restoration of Biodiversity and Ecosystems In Percent - Enabling Share',
+            dataset.capex
+              ?.substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentEnablingShare
           ),
       },
       {
@@ -806,87 +1419,93 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
       },
       {
         type: 'cell',
-        label: 'Substantial Contribution to Climate Change Mitigation In Percent',
-        explanation: 'Grade of the substantial contribution criterion fulfillment',
+        label: 'Substantial Contribution to Climate Change Mitigation In Percent - Aligned',
+        explanation: 'Taxonomy-aligned proportion of OpEx substantially contributing to climate change mitigation',
         shouldDisplay: (): boolean => true,
         valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
           wrapDisplayValueWithDatapointInformation(
             formatPercentageForDatatable(
-              dataset.opex?.substantialContributionToClimateChangeMitigationInPercent?.value
+              dataset.opex?.substantialContributionToClimateChangeMitigationInPercentAligned?.value
             ),
-            'Substantial Contribution to Climate Change Mitigation In Percent',
-            dataset.opex?.substantialContributionToClimateChangeMitigationInPercent
+            'Substantial Contribution to Climate Change Mitigation In Percent - Aligned',
+            dataset.opex?.substantialContributionToClimateChangeMitigationInPercentAligned
           ),
       },
       {
         type: 'cell',
-        label: 'Substantial Contribution to Climate Change Adaptation In Percent',
-        explanation: 'Grade of the substantial contribution criterion fulfillment',
+        label: 'Substantial Contribution to Climate Change Adaptation In Percent - Aligned',
+        explanation: 'Taxonomy-aligned proportion of OpEx substantially contributing to climate change adaptation',
         shouldDisplay: (): boolean => true,
         valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
           wrapDisplayValueWithDatapointInformation(
             formatPercentageForDatatable(
-              dataset.opex?.substantialContributionToClimateChangeAdaptationInPercent?.value
+              dataset.opex?.substantialContributionToClimateChangeAdaptationInPercentAligned?.value
             ),
-            'Substantial Contribution to Climate Change Adaptation In Percent',
-            dataset.opex?.substantialContributionToClimateChangeAdaptationInPercent
+            'Substantial Contribution to Climate Change Adaptation In Percent - Aligned',
+            dataset.opex?.substantialContributionToClimateChangeAdaptationInPercentAligned
           ),
       },
       {
         type: 'cell',
-        label: 'Substantial Contribution to Sustainable Use and Protection of Water and Marine Resources In Percent',
-        explanation: 'Grade of the substantial contribution criterion fulfillment',
+        label:
+          'Substantial Contribution to Sustainable Use and Protection of Water and Marine Resources In Percent - Aligned',
+        explanation:
+          'Taxonomy-aligned proportion of OpEx substantially contributing to sustainable use and protection of water and marine resources',
         shouldDisplay: (): boolean => true,
         valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
           wrapDisplayValueWithDatapointInformation(
             formatPercentageForDatatable(
-              dataset.opex?.substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent
+              dataset.opex
+                ?.substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned?.value
+            ),
+            'Substantial Contribution to Sustainable Use and Protection of Water and Marine Resources In Percent - Aligned',
+            dataset.opex?.substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned
+          ),
+      },
+      {
+        type: 'cell',
+        label: 'Substantial Contribution to Transition to a Circular Economy In Percent - Aligned',
+        explanation: 'Taxonomy-aligned proportion of OpEx substantially contributing to circular economy',
+        shouldDisplay: (): boolean => true,
+        valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
+          wrapDisplayValueWithDatapointInformation(
+            formatPercentageForDatatable(
+              dataset.opex?.substantialContributionToTransitionToACircularEconomyInPercentAligned?.value
+            ),
+            'Substantial Contribution to Transition to a Circular Economy In Percent - Aligned',
+            dataset.opex?.substantialContributionToTransitionToACircularEconomyInPercentAligned
+          ),
+      },
+      {
+        type: 'cell',
+        label: 'Substantial Contribution to Pollution Prevention and Control In Percent - Aligned',
+        explanation:
+          'Taxonomy-aligned proportion of OpEx substantially contributing to pollution prevention and control',
+        shouldDisplay: (): boolean => true,
+        valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
+          wrapDisplayValueWithDatapointInformation(
+            formatPercentageForDatatable(
+              dataset.opex?.substantialContributionToPollutionPreventionAndControlInPercentAligned?.value
+            ),
+            'Substantial Contribution to Pollution Prevention and Control In Percent - Aligned',
+            dataset.opex?.substantialContributionToPollutionPreventionAndControlInPercentAligned
+          ),
+      },
+      {
+        type: 'cell',
+        label:
+          'Substantial Contribution to Protection and Restoration of Biodiversity and Ecosystems In Percent - Aligned',
+        explanation:
+          'Taxonomy-aligned proportion of OpEx substantially contributing to protection and restoration of biodiversity and ecosystems',
+        shouldDisplay: (): boolean => true,
+        valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
+          wrapDisplayValueWithDatapointInformation(
+            formatPercentageForDatatable(
+              dataset.opex?.substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned
                 ?.value
             ),
-            'Substantial Contribution to Sustainable Use and Protection of Water and Marine Resources In Percent',
-            dataset.opex?.substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent
-          ),
-      },
-      {
-        type: 'cell',
-        label: 'Substantial Contribution to Transition to a Circular Economy In Percent',
-        explanation: 'Grade of the substantial contribution criterion fulfillment',
-        shouldDisplay: (): boolean => true,
-        valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
-          wrapDisplayValueWithDatapointInformation(
-            formatPercentageForDatatable(
-              dataset.opex?.substantialContributionToTransitionToACircularEconomyInPercent?.value
-            ),
-            'Substantial Contribution to Transition to a Circular Economy In Percent',
-            dataset.opex?.substantialContributionToTransitionToACircularEconomyInPercent
-          ),
-      },
-      {
-        type: 'cell',
-        label: 'Substantial Contribution to Pollution Prevention and Control In Percent',
-        explanation: 'Grade of the substantial contribution criterion fulfillment',
-        shouldDisplay: (): boolean => true,
-        valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
-          wrapDisplayValueWithDatapointInformation(
-            formatPercentageForDatatable(
-              dataset.opex?.substantialContributionToPollutionPreventionAndControlInPercent?.value
-            ),
-            'Substantial Contribution to Pollution Prevention and Control In Percent',
-            dataset.opex?.substantialContributionToPollutionPreventionAndControlInPercent
-          ),
-      },
-      {
-        type: 'cell',
-        label: 'Substantial Contribution to Protection and Restoration of Biodiversity and Ecosystems In Percent',
-        explanation: 'Grade of the substantial contribution criterion fulfillment',
-        shouldDisplay: (): boolean => true,
-        valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
-          wrapDisplayValueWithDatapointInformation(
-            formatPercentageForDatatable(
-              dataset.opex?.substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent?.value
-            ),
-            'Substantial Contribution to Protection and Restoration of Biodiversity and Ecosystems In Percent',
-            dataset.opex?.substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent
+            'Substantial Contribution to Protection and Restoration of Biodiversity and Ecosystems In Percent - Aligned',
+            dataset.opex?.substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned
           ),
       },
       {
