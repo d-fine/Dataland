@@ -52,10 +52,13 @@ describe('Component tests for the Quality Assurance page', () => {
     cy.intercept(`**/api/metadata?companyId=${mockDataMetaInfoForP2pTestDataset.companyId}`, [
       mockDataMetaInfoForActiveDataset,
     ]);
+    cy.intercept(`**/api/metadata?companyId=${mockDataMetaInfoForP2pTestDataset.companyId}&dataType*`, []);
+
     cy.intercept(
       `**/api/companies/${mockDataMetaInfoForP2pTestDataset.companyId}/info`,
       p2pFixtureForTest.companyInformation
     );
+
     cy.intercept(`**/api/metadata/${mockDataMetaInfoForP2pTestDataset.dataId}`, mockDataMetaInfoForP2pTestDataset);
     cy.intercept(`**/api/data/${DataTypeEnum.P2p}/${mockDataMetaInfoForP2pTestDataset.dataId}`, {
       companyId: mockDataMetaInfoForP2pTestDataset.companyId,
@@ -75,40 +78,37 @@ describe('Component tests for the Quality Assurance page', () => {
         dataType: DataTypeEnum.P2p,
         dataId: mockDataMetaInfoForP2pTestDataset.dataId,
       }
-    ).then(() => {
-      cy.get('h1').contains(p2pFixtureForTest.companyInformation.companyName).should('be.visible');
+    );
+    cy.get('h1').contains(p2pFixtureForTest.companyInformation.companyName).should('be.visible');
 
-      cy.get('#framework_data_search_bar_standard').should('not.exist');
-      cy.get('#chooseFrameworkDropdown').should('not.exist');
-      cy.get('a[data-test="gotoNewDatasetButton"]').should('not.exist');
+    cy.get('#framework_data_search_bar_standard').should('not.exist');
+    cy.get('#chooseFrameworkDropdown').should('not.exist');
+    cy.get('a[data-test="gotoNewDatasetButton"]').should('not.exist');
 
-      cy.get('div[data-test="datasetDisplayStatusContainer"] span').contains(
-        'This dataset is currently pending review'
-      );
+    cy.get('div[data-test="datasetDisplayStatusContainer"] span').contains('This dataset is currently pending review');
 
-      cy.intercept(
-        'POST',
-        `**/qa/datasets/${mockDataMetaInfoForP2pTestDataset.dataId}?qaStatus=${QaStatus.Accepted}`,
-        (request) => {
-          request.reply(200, {});
-        }
-      ).as('approveDataset');
-      cy.get('button[data-test="qaApproveButton"]').should('exist').click();
-      cy.wait('@approveDataset');
-      cy.get('div[data-test="qaReviewSubmittedMessage"]').should('exist');
-      cy.get('.p-dialog-header-close').click();
+    cy.intercept(
+      'POST',
+      `**/qa/datasets/${mockDataMetaInfoForP2pTestDataset.dataId}?qaStatus=${QaStatus.Accepted}`,
+      (request) => {
+        request.reply(200, {});
+      }
+    ).as('approveDataset');
+    cy.get('button[data-test="qaApproveButton"]').should('exist').click();
+    cy.wait('@approveDataset');
+    cy.get('div[data-test="qaReviewSubmittedMessage"]').should('exist');
+    cy.get('.p-dialog-header-close').click();
 
-      cy.intercept(
-        'POST',
-        `**/qa/datasets/${mockDataMetaInfoForP2pTestDataset.dataId}?qaStatus=${QaStatus.Rejected}`,
-        (request) => {
-          request.reply(200, {});
-        }
-      ).as('rejectDataset');
-      cy.get('button[data-test="qaRejectButton"]').should('exist').click();
-      cy.wait('@rejectDataset');
-      cy.get('div[data-test="qaReviewSubmittedMessage"]').should('exist');
-      cy.get('.p-dialog-header-close').click();
-    });
+    cy.intercept(
+      'POST',
+      `**/qa/datasets/${mockDataMetaInfoForP2pTestDataset.dataId}?qaStatus=${QaStatus.Rejected}`,
+      (request) => {
+        request.reply(200, {});
+      }
+    ).as('rejectDataset');
+    cy.get('button[data-test="qaRejectButton"]').should('exist').click();
+    cy.wait('@rejectDataset');
+    cy.get('div[data-test="qaReviewSubmittedMessage"]').should('exist');
+    cy.get('.p-dialog-header-close').click();
   });
 });
