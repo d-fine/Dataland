@@ -17,6 +17,7 @@ import org.dataland.datalandcommunitymanager.services.DataAccessManager
 import org.dataland.datalandcommunitymanager.services.DataRequestAlterationManager
 import org.dataland.datalandcommunitymanager.services.DataRequestQueryManager
 import org.dataland.datalandcommunitymanager.services.SingleDataRequestManager
+import org.dataland.datalandcommunitymanager.utils.DataRequestsQueryFilter
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
@@ -86,14 +87,17 @@ class RequestController(
         val currentUserId = DatalandAuthentication.fromContext().userId
         val companyRoleAssignmentsOfCurrentUser =
             companyRolesManager.getCompanyRoleAssignmentsByParameters(null, null, userId = currentUserId)
+        val filter = DataRequestsQueryFilter(
+            dataTypeFilter = dataType?.value ?: "",
+            userIdFilter = userId ?: "",
+            requestStatus = requestStatus,
+            accessStatus = accessStatus,
+            reportingPeriodFilter = reportingPeriod ?: "",
+            datalandCompanyIdFilter = datalandCompanyId ?: "",
+        )
         return ResponseEntity.ok(
             dataRequestQueryManager.getDataRequests(
-                dataType,
-                userId,
-                requestStatus,
-                accessStatus,
-                reportingPeriod,
-                datalandCompanyId,
+                filter,
                 companyRoleAssignmentsOfCurrentUser,
             ),
         )
