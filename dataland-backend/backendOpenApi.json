@@ -5205,6 +5205,22 @@
               }
             ]
           },
+          "scope3UpstreamGhgEmissionsInTonnes": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          },
+          "scope3DownstreamGhgEmissionsInTonnes": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          },
           "scope1And2And3GhgEmissionsInTonnes": {
             "nullable": true,
             "allOf": [
@@ -5254,6 +5270,38 @@
             ]
           },
           "ghgIntensityInTonnesPerMillionEURRevenue": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          },
+          "ghgIntensityScope1InTonnesPerMillionEURRevenue": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          },
+          "ghgIntensityScope2InTonnesPerMillionEURRevenue": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          },
+          "ghgIntensityScope3InTonnesPerMillionEURRevenue": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          },
+          "ghgIntensityScope4InTonnesPerMillionEURRevenue": {
             "nullable": true,
             "allOf": [
               {
@@ -5926,7 +5974,7 @@
               }
             ]
           },
-          "femaleBoardMembers": {
+          "femaleBoardMembersSupervisoryBoard": {
             "nullable": true,
             "allOf": [
               {
@@ -5934,7 +5982,7 @@
               }
             ]
           },
-          "maleBoardMembers": {
+          "femaleBoardMembersBoardOfDirectors": {
             "nullable": true,
             "allOf": [
               {
@@ -5942,7 +5990,31 @@
               }
             ]
           },
-          "boardGenderDiversityInPercent": {
+          "maleBoardMembersSupervisoryBoard": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigInteger"
+              }
+            ]
+          },
+          "maleBoardMembersBoardOfDirectors": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigInteger"
+              }
+            ]
+          },
+          "boardGenderDiversitySupervisoryBoardInPercent": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          },
+          "boardGenderDiversityBoardOfDirectorsInPercent": {
             "nullable": true,
             "allOf": [
               {
