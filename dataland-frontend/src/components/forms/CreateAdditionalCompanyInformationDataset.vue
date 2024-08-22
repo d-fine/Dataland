@@ -311,7 +311,6 @@ export default defineComponent({
         );
 
         this.$emit('datasetCreated');
-        this.dataDate = undefined;
         this.message = 'Upload successfully executed.';
         this.uploadSucceded = true;
       } catch (error) {
