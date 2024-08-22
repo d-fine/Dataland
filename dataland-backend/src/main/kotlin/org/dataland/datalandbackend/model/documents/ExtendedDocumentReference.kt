@@ -10,7 +10,7 @@ import org.dataland.datalandbackend.validator.DocumentExists
  * A reference to a page in a company report
  */
 data class ExtendedDocumentReference(
-    override val page: Long? = null,
+    override val page: String? = null,
     override val tagName: String? = null,
     override val fileName: String? = null,
     @field:JsonProperty(required = true)

@@ -3085,7 +3085,7 @@
                   }
                 }
               },
-              "application/vnd.spring-boot.actuator.v2+json": {
+              "application/json": {
                 "schema": {
                   "type": "object",
                   "additionalProperties": {
@@ -3096,7 +3096,7 @@
                   }
                 }
               },
-              "application/json": {
+              "application/vnd.spring-boot.actuator.v2+json": {
                 "schema": {
                   "type": "object",
                   "additionalProperties": {
@@ -3148,12 +3148,12 @@
                   "type": "object"
                 }
               },
-              "application/vnd.spring-boot.actuator.v2+json": {
+              "application/json": {
                 "schema": {
                   "type": "object"
                 }
               },
-              "application/json": {
+              "application/vnd.spring-boot.actuator.v2+json": {
                 "schema": {
                   "type": "object"
                 }
@@ -3199,12 +3199,12 @@
                   "type": "object"
                 }
               },
-              "application/vnd.spring-boot.actuator.v2+json": {
+              "application/json": {
                 "schema": {
                   "type": "object"
                 }
               },
-              "application/json": {
+              "application/vnd.spring-boot.actuator.v2+json": {
                 "schema": {
                   "type": "object"
                 }
@@ -3250,12 +3250,12 @@
                   "type": "object"
                 }
               },
-              "application/vnd.spring-boot.actuator.v2+json": {
+              "application/json": {
                 "schema": {
                   "type": "object"
                 }
               },
-              "application/json": {
+              "application/vnd.spring-boot.actuator.v2+json": {
                 "schema": {
                   "type": "object"
                 }
@@ -3660,8 +3660,7 @@
         "type": "object",
         "properties": {
           "page": {
-            "type": "integer",
-            "format": "int64",
+            "type": "string",
             "nullable": true
           },
           "tagName": {

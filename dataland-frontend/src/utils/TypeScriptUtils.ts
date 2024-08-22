@@ -1,3 +1,5 @@
+import {REGEX_FOR_FILE_NAMES} from "@/utils/Constants";
+
 /**
  * A type operator that checks the crude equality of two objects
  * Does not work in every case.
@@ -44,4 +46,29 @@ export function isStringArray(input: unknown): input is string[] {
  */
 export function isString(input: unknown): input is string {
   return typeof input === 'string';
+}
+
+/**
+ * Checks if the pages given as a String conform to the set rules:
+ * - all numbers > 0
+ * - first number <= second number
+ * @param pageString
+ */
+export function checkIfPageStringIsConform(pageString: string | null | undefined): boolean {
+  const regexSingleNumber = new RegExp('[1-9]\\d*' )
+  const regexTwoNumbers = new RegExp('[1-9]\\d*\\-[1-9]\\d*')
+  if(pageString == null){
+    return false
+  }else if (pageString.includes('-') && regexTwoNumbers.test(pageString)) {
+    const dashNumber = pageString.indexOf('-')
+    console.log('dashNmber is: ' + dashNumber)
+    const smallerNumber = Number(pageString.substring(0, dashNumber - 1))
+    console.log('smallnum: ' + smallerNumber)
+    const biggerNumber = Number(pageString.substring(dashNumber + 1))
+    console.log('bignum: ' + biggerNumber)
+
+    return smallerNumber < biggerNumber
+  } else {
+    return regexSingleNumber.test(pageString)
+  }
 }

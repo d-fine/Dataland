@@ -74,14 +74,11 @@
               <UploadFormHeader :label="'Page'" :description="'Page where information was found'" />
               <FormKit
                 outer-class="w-100"
-                type="number"
+                type="text"
                 name="page"
                 placeholder="Page"
                 v-model="pageForFileReference"
                 validation-label="Page"
-                step="1"
-                min="0"
-                validation="min:0"
                 ignore="true"
               />
             </div>
