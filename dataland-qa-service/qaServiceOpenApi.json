@@ -2157,6 +2157,20 @@
               "Yes",
               "No"
             ]
+          },
+          "enablingActivity": {
+            "type": "string",
+            "enum": [
+              "Yes",
+              "No"
+            ]
+          },
+          "transitionalActivity": {
+            "type": "string",
+            "enum": [
+              "Yes",
+              "No"
+            ]
           }
         }
       },
