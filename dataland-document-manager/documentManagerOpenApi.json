@@ -143,13 +143,13 @@
                   "format": "binary"
                 }
               },
-              "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet": {
+              "application/vnd.ms-excel": {
                 "schema": {
                   "type": "string",
                   "format": "binary"
                 }
               },
-              "application/vnd.ms-excel": {
+              "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet": {
                 "schema": {
                   "type": "string",
                   "format": "binary"
@@ -323,7 +323,7 @@
                   }
                 }
               },
-              "application/json": {
+              "application/vnd.spring-boot.actuator.v2+json": {
                 "schema": {
                   "type": "object",
                   "additionalProperties": {
@@ -334,7 +334,7 @@
                   }
                 }
               },
-              "application/vnd.spring-boot.actuator.v2+json": {
+              "application/json": {
                 "schema": {
                   "type": "object",
                   "additionalProperties": {
@@ -386,12 +386,12 @@
                   "type": "object"
                 }
               },
-              "application/json": {
+              "application/vnd.spring-boot.actuator.v2+json": {
                 "schema": {
                   "type": "object"
                 }
               },
-              "application/vnd.spring-boot.actuator.v2+json": {
+              "application/json": {
                 "schema": {
                   "type": "object"
                 }
@@ -437,12 +437,12 @@
                   "type": "object"
                 }
               },
-              "application/json": {
+              "application/vnd.spring-boot.actuator.v2+json": {
                 "schema": {
                   "type": "object"
                 }
               },
-              "application/vnd.spring-boot.actuator.v2+json": {
+              "application/json": {
                 "schema": {
                   "type": "object"
                 }
@@ -488,12 +488,12 @@
                   "type": "object"
                 }
               },
-              "application/json": {
+              "application/vnd.spring-boot.actuator.v2+json": {
                 "schema": {
                   "type": "object"
                 }
               },
-              "application/vnd.spring-boot.actuator.v2+json": {
+              "application/json": {
                 "schema": {
                   "type": "object"
                 }
