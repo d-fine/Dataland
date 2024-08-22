@@ -30,7 +30,7 @@ describe('Component test for the view multiple dataset display base component', 
       reportingPeriod: mockedData.metaInfo.reportingPeriod,
       data: mockedData.data,
     });
-    cy.intercept(`/api/metadata?companyId=mock-company-id`, [mockedData.metaInfo]);
+    cy.intercept(`/api/metadata?*`, [mockedData.metaInfo]);
     cy.mountWithPlugins(ViewMultipleDatasetsDisplayBase, {
       keycloak: minimalKeycloakMock({}),
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -58,7 +58,7 @@ describe('Component test for the view multiple dataset display base component', 
     mockedData2023.metaInfo.reportingPeriod = '2023';
     cy.intercept(`/api/companies/*/info`, preparedFixture.companyInformation);
     cy.intercept(`/api/data/lksg/companies/mock-company-id`, [mockedData2024, mockedData2023]);
-    cy.intercept(`/api/metadata?companyId=mock-company-id`, {
+    cy.intercept(`/api/metadata?*`, {
       status: 200,
       body: [mockedData2024.metaInfo, mockedData2023.metaInfo],
     });
