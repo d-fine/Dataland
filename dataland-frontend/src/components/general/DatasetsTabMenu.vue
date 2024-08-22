@@ -75,6 +75,12 @@ export default defineComponent({
     this.setVisibilityForTabWithQualityAssurance();
     this.setVisibilityForTabWithAccessRequestsForMyCompanies();
   },
+  watch: {
+    companyRoleAssignments() {
+      console.log('company role assignments changed => watcher is triggered'); // TODO remove
+      this.setVisibilityForTabWithAccessRequestsForMyCompanies();
+    },
+  },
   methods: {
     /**
      * Sets the visibility of the tab for Quality Assurance.
@@ -86,11 +92,6 @@ export default defineComponent({
       });
     },
 
-    /* TODO Emanuel: Feedback von einem Reviewer einholen:
-          Bei der aktuellen Implementierung muss user X im Browser mit F5 refreshen,
-          falls während user X auf der Seite ist "live" eine erste company-ownership vergeben wird.
-          Ist das schlimm?
-       */
     /**
      * Sets the visibility of the tab for data access requests to companies of the current user.
      * If the user does have any company ownership, the tab is shown. Else it stays invisible.
