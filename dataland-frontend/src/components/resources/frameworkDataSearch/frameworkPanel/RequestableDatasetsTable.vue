@@ -5,9 +5,9 @@
       datasets for the selected reporting periods.
     </h4>
     <DataTable v-model:selection="selectedOptions" :value="requestableOptions" dataKey="reportingPeriod">
-      <Column selectionMode="multiple" headerStyle="width: 3rem"></Column>
-      <Column field="reportingPeriod" header="Reporting Period"></Column>
-      <Column field="latestUpload" header="Latest Upload"></Column>
+      <Column selectionMode="multiple" headerStyle="width: 3rem" />
+      <Column field="reportingPeriod" header="Reporting Period" />
+      <Column field="latestUpload" header="Latest Upload" />
     </DataTable>
     <div class="flex flex-column align-items-center justify-content-center col-6 mt-2">
       <PrimeButton
