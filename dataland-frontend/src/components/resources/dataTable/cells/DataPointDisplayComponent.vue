@@ -57,8 +57,8 @@ export default defineComponent({
         ? this.qualityString
         : this.content.displayValue?.value || NO_DATA_PROVIDED;
     },
-    qualityString(){
-      return this.content.displayValue.quality == '' ? ONLY_AUXILIARY_DATA_PROVIDED : this.content.displayValue.quality
+    qualityString() {
+      return this.content.displayValue.quality == '' ? ONLY_AUXILIARY_DATA_PROVIDED : this.content.displayValue.quality;
     },
     convertedValueForModal() {
       const content = this.content.displayValue;

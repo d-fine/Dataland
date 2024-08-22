@@ -3,7 +3,13 @@
     <div class="p-datatable-wrapper overflow-auto">
       <table class="p-datatable-table" aria-label="Data point content">
         <tbody class="p-datatable-body">
-          <tr v-if=" dialogData.dataPointDisplay.value && dialogData.dataPointDisplay.value != ONLY_AUXILIARY_DATA_PROVIDED() && !isQuality(dialogData.dataPointDisplay.value) " >
+          <tr
+            v-if="
+              dialogData.dataPointDisplay.value &&
+              dialogData.dataPointDisplay.value != ONLY_AUXILIARY_DATA_PROVIDED() &&
+              !isQuality(dialogData.dataPointDisplay.value)
+            "
+          >
             <th class="headers-bg width-auto"><span class="table-left-label">Value</span></th>
             <td>{{ dialogData.dataPointDisplay.value }}</td>
           </tr>
@@ -45,7 +51,7 @@ import { type DataPointDisplay } from '@/utils/DataPoint';
 import { ONLY_AUXILIARY_DATA_PROVIDED } from '@/utils/Constants';
 import AutoFormattingTextSpan from '@/components/general/AutoFormattingTextSpan.vue';
 import { assertDefined } from '@/utils/TypeScriptUtils';
-import {QualityOptions} from "@clients/backend";
+import { QualityOptions } from '@clients/backend';
 
 interface DataPointDataTableRefProps {
   dataPointDisplay: DataPointDisplay;
@@ -68,13 +74,14 @@ export default defineComponent({
      * @returns boolean if inputValue is a quality
      */
     isQuality: function (displayValue: string) {
-      return [QualityOptions.Audited.toString(),
+      return [
+        QualityOptions.Audited.toString(),
         QualityOptions.Estimated.toString(),
         QualityOptions.Incomplete.toString(),
         QualityOptions.Reported.toString(),
-        QualityOptions.NoDataFound.toString()].includes(displayValue)
-
-    }
+        QualityOptions.NoDataFound.toString(),
+      ].includes(displayValue);
+    },
   },
   components: { AutoFormattingTextSpan, DocumentLink },
   inject: ['dialogRef'],
