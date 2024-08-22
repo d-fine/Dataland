@@ -123,7 +123,7 @@ class DataRequestQueryManager(
         accessStatus: AccessStatus?,
         reportingPeriod: String?,
         datalandCompanyId: String?,
-    ): List<StoredDataRequest>? {
+    ): List<ExtendedStoredDataRequest>? {
         val filter = GetDataRequestsSearchFilter(
             dataTypeFilter = dataType?.value ?: "",
             userIdFilter = userId ?: "",
@@ -132,6 +132,8 @@ class DataRequestQueryManager(
             reportingPeriodFilter = reportingPeriod ?: "",
             datalandCompanyIdFilter = datalandCompanyId ?: "",
         )
-        return dataRequestRepository.searchDataRequestEntityAndStatusHistory(filter).map { it.toStoredDataRequest() }
+        return dataRequestRepository.searchDataRequestEntityAndStatusHistory(filter).map { dataRequestEntity ->
+            getExtendedStoredDataRequestByRequestEntity(dataRequestEntity)
+        }
     }
 }

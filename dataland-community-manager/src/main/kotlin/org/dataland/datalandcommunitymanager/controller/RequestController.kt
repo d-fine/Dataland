@@ -79,7 +79,7 @@ class RequestController(
         accessStatus: AccessStatus?,
         reportingPeriod: String?,
         datalandCompanyId: String?,
-    ): ResponseEntity<List<StoredDataRequest>> {
+    ): ResponseEntity<List<ExtendedStoredDataRequest>> {
         return ResponseEntity.ok(
             dataRequestQueryManager.getDataRequests(
                 dataType,

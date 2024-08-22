@@ -212,7 +212,7 @@ interface RequestApi {
         @RequestParam accessStatus: AccessStatus?,
         @RequestParam reportingPeriod: String?,
         @RequestParam datalandCompanyId: String?,
-    ): ResponseEntity<List<StoredDataRequest>>
+    ): ResponseEntity<List<ExtendedStoredDataRequest>>
 
     /**
      * A method to check if the logged-in user can access a specific dataset.

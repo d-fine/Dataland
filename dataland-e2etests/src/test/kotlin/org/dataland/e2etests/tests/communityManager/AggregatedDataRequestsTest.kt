@@ -1,6 +1,4 @@
 package org.dataland.e2etests.tests.communityManager
-//TODO reactivate tests
-/*
 import org.dataland.communitymanager.openApiClient.api.RequestControllerApi
 import org.dataland.communitymanager.openApiClient.model.AggregatedDataRequest
 import org.dataland.communitymanager.openApiClient.model.BulkDataRequest
@@ -246,4 +244,3 @@ class AggregatedDataRequestsTest {
         assertEquals(count, numberOfStatusMatches)
     }
 }
-*/

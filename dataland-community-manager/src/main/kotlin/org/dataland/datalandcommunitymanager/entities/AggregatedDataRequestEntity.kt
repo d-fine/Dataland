@@ -1,6 +1,6 @@
 package org.dataland.datalandcommunitymanager.entities
 
-import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
+import java.util.*
 
 /**
  * Received entity when doing a database query to get aggregated info about the count of existing data requests
@@ -15,6 +15,6 @@ data class AggregatedDataRequestEntity(
     val dataType: String,
     val reportingPeriod: String,
     val datalandCompanyId: String,
-    val requestStatus: RequestStatus,
+    val requestStatus: String,
     val count: Long,
 )
