@@ -59,7 +59,7 @@ export default defineComponent({
         isVisible: true,
       },
       {
-        label: 'DATA REQUESTS FOR MY COMPANIES', // TODO at the very end: rethink about naming
+        label: 'DATA REQUESTS FOR MY COMPANIES',
         route: '/companyrequests',
         isVisible: false,
       },

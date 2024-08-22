@@ -12,14 +12,14 @@ import { CompanyRole, type CompanyRoleAssignment } from '@clients/communitymanag
  * @param keycloakPromiseGetter the getter-function which returns a Keycloak-Promise
  * @returns a promise, which resolves to a boolean
  */
-// TODO Emanuel: Disktuier mit anderen Entwicklern, ob wir die Rollen-Checks nicht alle mit den von App.vue provideten
-// TODO Rollen machen wollen.  Dann gibt es einfach einen Api-Call bei Aufrufen von Dataland, der alle Rollen fetcht,
-// TODO und alles weitere passiert dann mit diesen gefetchten Rollen => wir sparen einen Haufen COde und api calls
 export async function hasUserCompanyRoleForCompany(
   companyRole: CompanyRole,
   companyId: string,
   keycloakPromiseGetter?: () => Promise<Keycloak>
 ): Promise<boolean> {
+  /* TODO Emanuel: Disktuier mit anderen Entwicklern, ob wir die Rollen-Checks nicht alle mit den von App.vue provideten
+ Rollen machen wollen.  Dann gibt es einfach einen Api-Call bei Aufrufen von Dataland, der alle Rollen fetcht,
+ und alles weitere passiert dann mit diesen gefetchten Rollen => wir sparen einen Haufen COde und api calls */
   if (keycloakPromiseGetter && isCompanyIdValid(companyId)) {
     const resolvedKeycloakPromise = await waitForAndReturnResolvedKeycloakPromise(keycloakPromiseGetter);
     const userId = resolvedKeycloakPromise?.idTokenParsed?.sub;

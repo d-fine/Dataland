@@ -1,27 +1,37 @@
 <template>
-  <h4 class="mt-4">
-    Select any number of available reporting periods and click the Submit button. This will request access to all
-    datasets for the selected reporting periods.
-  </h4>
-  <DataTable v-model:selection="selectedOptions" :value="requestableOptions" dataKey="reportingPeriod">
-    <Column selectionMode="multiple" headerStyle="width: 3rem"></Column>
-    <Column field="reportingPeriod" header="Reporting Period"></Column>
-    <Column field="latestUpload" header="Latest Upload"></Column>
-  </DataTable>
-  <PrimeButton
-    :disabled="selectedOptions.length === 0"
-    @click="submitDataRequestsForSelection"
-    :class="selectedOptions.length > 0 ? 'mt-2' : 'button-disabled mt-2'"
-    data-test="requestAccessButton"
-  >
-    <span class="d-letters pl-2"> Request Access </span>
-  </PrimeButton>
+  <div class="flex flex-column align-items-center justify-content-center">
+    <h4 class="mt-4 text-center">
+      Select any number of available reporting periods and click the Submit button. This will request access to all
+      datasets for the selected reporting periods.
+    </h4>
+    <DataTable v-model:selection="selectedOptions" :value="requestableOptions" dataKey="reportingPeriod">
+      <Column selectionMode="multiple" headerStyle="width: 3rem"></Column>
+      <Column field="reportingPeriod" header="Reporting Period"></Column>
+      <Column field="latestUpload" header="Latest Upload"></Column>
+    </DataTable>
+    <div class="flex flex-column align-items-center justify-content-center col-6 mt-2">
+      <PrimeButton
+        :disabled="selectedOptions.length === 0"
+        @click="submitDataRequestsForSelection"
+        :class="selectedOptions.length > 0 ? 'mt-2' : 'button-disabled mt-2'"
+        data-test="requestAccessButton"
+      >
+        <span class="d-letters pl-2"> Request Access </span>
+      </PrimeButton>
+      <FailMessage
+        v-if="isAccessRequestFailed"
+        message="Request failed. Please try again later or contact the Dataland team."
+        :messageId="messageCounter"
+      />
+    </div>
+  </div>
 </template>
 
 <script setup lang="ts">
 import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
 
+import FailMessage from '@/components/messages/FailMessage.vue';
 import { computed, inject, ref } from 'vue';
 import { type DataMetaInformation } from '@clients/backend';
 import type Keycloak from 'keycloak-js';
@@ -45,6 +55,8 @@ const emit = defineEmits(['submittedAccessRequests']);
 const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
 
 const selectedOptions = ref<RequestableOption[]>([]);
+const messageCounter = ref(0);
+const isAccessRequestFailed = ref(false);
 
 const requestableOptions = computed<RequestableOption[]>(() => {
   const reportingPeriodToLatestUploadTime = new Map<string, number>();
@@ -69,16 +81,21 @@ const router = useRouter();
  */
 async function submitDataRequestsForSelection(): Promise<void> {
   if (getKeycloakPromise) {
-    const requestController = new ApiClientProvider(getKeycloakPromise()).apiClients.requestController;
-    const reportingPeriodsToRequest = selectedOptions.value.map((it) => it.reportingPeriod);
-    await requestController.postSingleDataRequest({
-      companyIdentifier: props.companyId,
-      dataType: props.dataType as SingleDataRequestDataTypeEnum,
-      reportingPeriods: reportingPeriodsToRequest as unknown as Set<string>,
-    });
-    await router.push('/requests');
-    emit('submittedAccessRequests');
-    // TODO catch error and show smth?
+    try {
+      messageCounter.value++;
+      isAccessRequestFailed.value = false;
+      const requestController = new ApiClientProvider(getKeycloakPromise()).apiClients.requestController;
+      const reportingPeriodsToRequest = selectedOptions.value.map((it) => it.reportingPeriod);
+      await requestController.postSingleDataRequest({
+        companyIdentifier: props.companyId,
+        dataType: props.dataType as SingleDataRequestDataTypeEnum,
+        reportingPeriods: reportingPeriodsToRequest as unknown as Set<string>,
+      });
+      await router.push('/requests');
+      emit('submittedAccessRequests');
+    } catch (e) {
+      isAccessRequestFailed.value = true;
+    }
   }
 }
 </script>
