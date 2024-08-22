@@ -106,7 +106,7 @@ function manipulateFixtureForTwoInvalidInputs(input: FixtureData<SfdrData>): Fix
  */
 function manipulateFixtureForEmptyStringDocumentReference(input: FixtureData<SfdrData>): FixtureData<SfdrData> {
   input.companyInformation.companyName = 'Sfdr-dataset-with-empty-string-document-reference';
-  input.t.social!.socialAndEmployeeMatters!.maleBoardMembers!.dataSource!.fileReference = '';
+  input.t.social!.socialAndEmployeeMatters!.maleBoardMembersSupervisoryBoard!.dataSource!.fileReference = '';
   return input;
 }
 

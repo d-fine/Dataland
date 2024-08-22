@@ -44,6 +44,8 @@ export function generateSfdrData(nullProbability = DEFAULT_PROBABILITY): SfdrDat
         scope1And2GhgEmissionsLocationBasedInTonnes: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat()),
         scope1And2GhgEmissionsMarketBasedInTonnes: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat()),
         scope3GhgEmissionsInTonnes: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat()),
+        scope3UpstreamGhgEmissionsInTonnes: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat()),
+        scope3DownstreamGhgEmissionsInTonnes: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat()),
         scope1And2And3GhgEmissionsInTonnes: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat()),
         scope1And2And3GhgEmissionsLocationBasedInTonnes: dataGenerator.randomExtendedDataPoint(
           dataGenerator.randomFloat()
@@ -55,6 +57,18 @@ export function generateSfdrData(nullProbability = DEFAULT_PROBABILITY): SfdrDat
         totalRevenue: dataGenerator.randomCurrencyDataPoint(),
         carbonFootprintInTonnesPerMillionEURRevenue: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat()),
         ghgIntensityInTonnesPerMillionEURRevenue: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat()),
+        ghgIntensityScope1InTonnesPerMillionEURRevenue: dataGenerator.randomExtendedDataPoint(
+          dataGenerator.randomFloat()
+        ),
+        ghgIntensityScope2InTonnesPerMillionEURRevenue: dataGenerator.randomExtendedDataPoint(
+          dataGenerator.randomFloat()
+        ),
+        ghgIntensityScope3InTonnesPerMillionEURRevenue: dataGenerator.randomExtendedDataPoint(
+          dataGenerator.randomFloat()
+        ),
+        ghgIntensityScope4InTonnesPerMillionEURRevenue: dataGenerator.randomExtendedDataPoint(
+          dataGenerator.randomFloat()
+        ),
         fossilFuelSectorExposure: dataGenerator.randomExtendedDataPoint(dataGenerator.randomYesNo()),
       },
       energyPerformance: {
@@ -150,9 +164,16 @@ export function generateSfdrData(nullProbability = DEFAULT_PROBABILITY): SfdrDat
         averageGrossHourlyEarningsMaleEmployees: dataGenerator.randomCurrencyDataPoint(0),
         averageGrossHourlyEarningsFemaleEmployees: dataGenerator.randomCurrencyDataPoint(0),
         unadjustedGenderPayGapInPercent: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat()),
-        femaleBoardMembers: dataGenerator.randomExtendedDataPoint(dataGenerator.randomInt(0)),
-        maleBoardMembers: dataGenerator.randomExtendedDataPoint(dataGenerator.randomInt(0)),
-        boardGenderDiversityInPercent: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat(0, 100)),
+        femaleBoardMembersSupervisoryBoard: dataGenerator.randomExtendedDataPoint(dataGenerator.randomInt(0)),
+        femaleBoardMembersBoardOfDirectors: dataGenerator.randomExtendedDataPoint(dataGenerator.randomInt(0)),
+        maleBoardMembersSupervisoryBoard: dataGenerator.randomExtendedDataPoint(dataGenerator.randomInt(0)),
+        maleBoardMembersBoardOfDirectors: dataGenerator.randomExtendedDataPoint(dataGenerator.randomInt(0)),
+        boardGenderDiversitySupervisoryBoardInPercent: dataGenerator.randomExtendedDataPoint(
+          dataGenerator.randomFloat(0, 100)
+        ),
+        boardGenderDiversityBoardOfDirectorsInPercent: dataGenerator.randomExtendedDataPoint(
+          dataGenerator.randomFloat(0, 100)
+        ),
         controversialWeaponsExposure: dataGenerator.randomExtendedDataPoint(dataGenerator.randomYesNo()),
         workplaceAccidentPreventionPolicy: dataGenerator.randomExtendedDataPoint(dataGenerator.randomYesNo()),
         rateOfAccidentsInPercent: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat(0, 100)),

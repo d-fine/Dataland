@@ -19,10 +19,13 @@
   ],
   "packageRules": [
     {
+      "groupName": "digest-bundle",
+      "matchPackageNames": [
+        "*"
+      ],
       "matchUpdateTypes": [
         "digest"
-      ],
-      "automerge": true
+      ]
     },
     {
       "matchUpdateTypes": [

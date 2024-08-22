@@ -1,0 +1,355 @@
+{
+    "environmental": {
+        "biodiversity": {
+            "biodiversityProtectionPolicy": null,
+            "deforestationPolicy": null,
+            "highlyBiodiverseGrasslandExposure": null,
+            "landDegradationDesertificationSoilSealingExposure": null,
+            "manufactureOfAgrochemicalPesticidesProducts": null,
+            "primaryForestAndWoodedLandOfNativeSpeciesExposure": null,
+            "protectedAreasExposure": null,
+            "rareOrEndangeredEcosystemsExposure": null,
+            "sustainableAgriculturePolicy": null,
+            "sustainableOceansAndSeasPolicy": null,
+            "threatenedSpeciesExposure": null
+        },
+        "emissions": {
+            "carbonReductionInitiatives": {
+                "comment": "Yes, SUMIDA AG has guidelines and procedures for reducing carbon emissions, aiming to align with the Paris Agreement. SUMIDA AG plans to set targets and develop an action plan to reduce greenhouse gas emissions in Scope 1, 2, and 3 areas through engagement with the Science Based Targets Initiatives. The company aims to publish a science-based target for the medium to long-term reduction of carbon emissions by 2023. Further details are available on the website.",
+                "dataSource": {
+                    "fileName": "SUMIDA AG/230328_Sumida_Corporate_Governance_Policy_E.pdf",
+                    "fileReference": "f01ff67fc268fa37b7e4e63911117dd4649a707adac451c4cef84d3ff977eb91",
+                    "page": null,
+                    "tagName": null
+                },
+                "quality": "Estimated",
+                "value": "Yes"
+            },
+            "emissionsOfAirPollutantsInTonnes": null,
+            "emissionsOfInorganicPollutantsInTonnes": null,
+            "emissionsOfOzoneDepletionSubstancesInTonnes": null
+        },
+        "energyPerformance": {
+            "applicableHighImpactClimateSectors": null,
+            "nonRenewableEnergyConsumptionCoalInGWh": null,
+            "nonRenewableEnergyConsumptionCrudeOilInGWh": null,
+            "nonRenewableEnergyConsumptionFossilFuelsInGWh": null,
+            "nonRenewableEnergyConsumptionInGWh": {
+                "comment": "The energy consumption from non-renewable energy sources for the years 2019 to 2023 can be calculated as follows:\n\n- 2019: 134,958 MWh (total energy consumption) - 183 MWh (renewable energy) = 134,775 MWh\n- 2020: 125,567 MWh (total energy consumption) - 135 MWh (renewable energy) = 125,432 MWh\n- 2021: 142,584 MWh (total energy consumption) - 511 MWh (renewable energy) = 142,073 MWh\n- 2022: 132,827 MWh (total energy consumption) - 1,878 MWh (renewable energy) = 130,949 MWh\n- 2023: 125,489 MWh (total energy consumption) - 0 MWh (renewable energy) = 125,489 MWh\n\nSource: SUMIDA AG/Sustainability - ESG Data - SUMIDA CORPORATION.pdf",
+                "dataSource": {
+                    "fileName": "SUMIDA AG/Sustainability - ESG Data - SUMIDA CORPORATION.pdf",
+                    "fileReference": "2b8c29e14231de6bd6354d0fe4d8b650b4640ac0d1d73545f9baa87e9fb6e78e",
+                    "page": null,
+                    "tagName": null
+                },
+                "quality": "Reported",
+                "value": 125.49
+            },
+            "nonRenewableEnergyConsumptionLigniteInGWh": null,
+            "nonRenewableEnergyConsumptionNaturalGasInGWh": null,
+            "nonRenewableEnergyConsumptionNuclearEnergyInGWh": null,
+            "nonRenewableEnergyConsumptionOtherInGWh": null,
+            "nonRenewableEnergyProductionInGWh": null,
+            "relativeNonRenewableEnergyConsumptionInPercent": null,
+            "relativeNonRenewableEnergyProductionInPercent": {
+                "comment": "In the year 2023, the total energy consumption of SUMIDA AG was 125,489 MWh. Of this, 1,878 MWh came from renewable energy sources. Therefore, it can be deduced that 123,611 MWh came from non-renewable energy sources.",
+                "dataSource": {
+                    "fileName": "SUMIDA AG/Sustainability - ESG Data - SUMIDA CORPORATION.pdf",
+                    "fileReference": "2b8c29e14231de6bd6354d0fe4d8b650b4640ac0d1d73545f9baa87e9fb6e78e",
+                    "page": null,
+                    "tagName": null
+                },
+                "quality": "Reported",
+                "value": 98.5
+            },
+            "renewableEnergyConsumptionInGWh": {
+                "comment": "The amount of energy consumed from renewable energy sources for SUMIDA AG is as follows:\n\n- 2019: 183 MWh\n- 2020: 135 MWh\n- 2021: 511 MWh\n- 2022: 1,878 MWh\n\nSource: SUMIDA AG/Sustainability - ESG Data - SUMIDA CORPORATION.pdf",
+                "dataSource": {
+                    "fileName": "SUMIDA AG/Sustainability - ESG Data - SUMIDA CORPORATION.pdf",
+                    "fileReference": "2b8c29e14231de6bd6354d0fe4d8b650b4640ac0d1d73545f9baa87e9fb6e78e",
+                    "page": null,
+                    "tagName": null
+                },
+                "quality": "Reported",
+                "value": 1.87
+            },
+            "renewableEnergyProductionInGWh": null,
+            "totalHighImpactClimateSectorEnergyConsumptionInGWh": null
+        },
+        "greenhouseGasEmissions": null,
+        "waste": {
+            "hazardousAndRadioactiveWasteInTonnes": {
+                "comment": "637 tons of hazardous waste in 2019, 515 tons in 2020, 594 tons in 2021, 534 tons in 2022, and 553 tons in 2023.",
+                "dataSource": {
+                    "fileName": "SUMIDA AG/Sustainability - ESG Data - SUMIDA CORPORATION.pdf",
+                    "fileReference": "2b8c29e14231de6bd6354d0fe4d8b650b4640ac0d1d73545f9baa87e9fb6e78e",
+                    "page": null,
+                    "tagName": null
+                },
+                "quality": "Reported",
+                "value": 553
+            },
+            "nonRecycledWasteInTonnes": {
+                "comment": "The value of non-hazardous waste generated in the last years is as follows:\n\n- 2019: 2,591 tons\n- 2020: 2,523 tons\n- 2021: 2,935 tons\n- 2022: 2,950 tons\n- 2023: 3,278 tons",
+                "dataSource": {
+                    "fileName": "SUMIDA AG/Sustainability - ESG Data - SUMIDA CORPORATION.pdf",
+                    "fileReference": "2b8c29e14231de6bd6354d0fe4d8b650b4640ac0d1d73545f9baa87e9fb6e78e",
+                    "page": null,
+                    "tagName": null
+                },
+                "quality": "Reported",
+                "value": 3278
+            }
+        },
+        "water": {
+            "emissionsToWaterInTonnes": null,
+            "highWaterStressAreaExposure": null,
+            "relativeWaterUsageInCubicMetersPerMillionEURRevenue": null,
+            "waterConsumptionInCubicMeters": {
+                "comment": "The company's water consumption in the last completed fiscal year amounted to 986 million liters.",
+                "dataSource": {
+                    "fileName": "SUMIDA AG/Sustainability - ESG Data - SUMIDA CORPORATION.pdf",
+                    "fileReference": "2b8c29e14231de6bd6354d0fe4d8b650b4640ac0d1d73545f9baa87e9fb6e78e",
+                    "page": null,
+                    "tagName": null
+                },
+                "quality": "Reported",
+                "value": 986000
+            },
+            "waterManagementPolicy": null,
+            "waterReusedInCubicMeters": null
+        }
+    },
+    "general": {
+        "general": {
+            "dataDate": "2023-12-31",
+            "fiscalYearDeviation": "NoDeviation",
+            "fiscalYearEnd": "2022-12-31",
+            "referencedReports": {
+                "230328_Sumida_Corporate_Governance_Policy_E.pdf": {
+                    "fileName": "230328_Sumida_Corporate_Governance_Policy_E.pdf",
+                    "fileReference": "f01ff67fc268fa37b7e4e63911117dd4649a707adac451c4cef84d3ff977eb91",
+                    "publicationDate": null
+                },
+                "SUMIDA AG/SUMIDA_CSR_Report_2023_E.pdf": {
+                    "fileName": "SUMIDA AG/SUMIDA_CSR_Report_2023_E.pdf",
+                    "fileReference": "b780578dd3c92d38a9571893ebc242b805aa66f065a88f4b7d026ca73e480b21",
+                    "publicationDate": null
+                },
+                "SUMIDA AG/Sustainability - ESG Data - SUMIDA CORPORATION.pdf": {
+                    "fileName": "SUMIDA AG/Sustainability - ESG Data - SUMIDA CORPORATION.pdf",
+                    "fileReference": "2b8c29e14231de6bd6354d0fe4d8b650b4640ac0d1d73545f9baa87e9fb6e78e",
+                    "publicationDate": null
+                }
+            }
+        }
+    },
+    "social": {
+        "antiCorruptionAndAntiBribery": null,
+        "greenSecurities": null,
+        "humanRights": {
+            "humanRightsDueDiligence": {
+                "comment": "Yes, SUMIDA AG has due diligence processes to identify, prevent, mitigate, and address negative impacts on human rights. This is achieved through the integration of clauses related to environmental, labor, and human rights requirements in contracts with suppliers, as well as by collecting signatures for the Supplier Social Responsibility Commitment Letter and information on conflict minerals.",
+                "dataSource": {
+                    "fileName": "SUMIDA AG/SUMIDA_CSR_Report_2023_E.pdf",
+                    "fileReference": "b780578dd3c92d38a9571893ebc242b805aa66f065a88f4b7d026ca73e480b21",
+                    "page": null,
+                    "tagName": null
+                },
+                "quality": "Estimated",
+                "value": "Yes"
+            },
+            "humanRightsPolicy": {
+                "comment": null,
+                "dataSource": {
+                    "fileName": "230328_Sumida_Corporate_Governance_Policy_E.pdf",
+                    "fileReference": "f01ff67fc268fa37b7e4e63911117dd4649a707adac451c4cef84d3ff977eb91",
+                    "page": null,
+                    "tagName": null
+                },
+                "quality": null,
+                "value": "Yes"
+            },
+            "numberOfReportedIncidentsOfHumanRightsViolations": null,
+            "reportedChildLabourIncidents": null,
+            "reportedForcedOrCompulsoryLabourIncidents": null,
+            "traffickingInHumanBeingsPolicy": null
+        },
+        "socialAndEmployeeMatters": {
+            "averageGrossHourlyEarningsFemaleEmployees": null,
+            "averageGrossHourlyEarningsMaleEmployees": null,
+            "boardGenderDiversityInPercent": {
+                "comment": "The percentage of women on the board of directors of SUMIDA AG is 0%.",
+                "dataSource": {
+                    "fileName": "SUMIDA AG/Sustainability - ESG Data - SUMIDA CORPORATION.pdf",
+                    "fileReference": "2b8c29e14231de6bd6354d0fe4d8b650b4640ac0d1d73545f9baa87e9fb6e78e",
+                    "page": null,
+                    "tagName": null
+                },
+                "quality": "Reported",
+                "value": 0
+            },
+            "ceoToEmployeePayGapRatio": null,
+            "controversialWeaponsExposure": null,
+            "corruptionLegalProceedings": null,
+            "environmentalPolicy": {
+                "comment": null,
+                "dataSource": {
+                    "fileName": "SUMIDA AG/230328_Sumida_Corporate_Governance_Policy_E.pdf",
+                    "fileReference": "f01ff67fc268fa37b7e4e63911117dd4649a707adac451c4cef84d3ff977eb91",
+                    "page": null,
+                    "tagName": null
+                },
+                "quality": null,
+                "value": "Yes"
+            },
+            "excessiveCeoPayRatioInPercent": null,
+            "fairBusinessMarketingAdvertisingPolicy": null,
+            "fairCompetitionPolicy": {
+                "comment": "Yes, SUMIDA AG has guidelines and procedures related to fair competition and anti-competitive practices. These issues are addressed in the company policies which focus on bribery, free competition, and fair business transactions. These guidelines are part of the code of conduct and internal control systems aimed at ensuring that all business activities comply with applicable laws and regulations.",
+                "dataSource": {
+                    "fileName": "SUMIDA_CSR_Report_2023_E.pdf",
+                    "fileReference": "b780578dd3c92d38a9571893ebc242b805aa66f065a88f4b7d026ca73e480b21",
+                    "page": null,
+                    "tagName": null
+                },
+                "quality": "Estimated",
+                "value": "Yes"
+            },
+            "femaleBoardMembers": {
+                "comment": "The number of women on the board of directors of SUMIDA AG is 0.",
+                "dataSource": {
+                    "fileName": "SUMIDA AG/Sustainability - ESG Data - SUMIDA CORPORATION.pdf",
+                    "fileReference": "2b8c29e14231de6bd6354d0fe4d8b650b4640ac0d1d73545f9baa87e9fb6e78e",
+                    "page": null,
+                    "tagName": null
+                },
+                "quality": "Reported",
+                "value": 0
+            },
+            "grievanceHandlingMechanism": {
+                "comment": "Yes, SUMIDA AG has a mechanism for handling complaints related to employee matters. The company has established a contact point at an external law firm to report compliance violations such as breaches of laws and regulations, fraudulent acts, and harassment. The company's rules prohibit any adverse treatment of whistleblowers due to their reports. In addition, the confidentiality of whistleblowers is maintained by limiting the number of individuals who have access to the reports and ensuring the anonymity of whistleblowers. Whistleblowing reports are regularly presented to the audit committee, which consists solely of independent external directors.",
+                "dataSource": {
+                    "fileName": "SUMIDA AG/230328_Sumida_Corporate_Governance_Policy_E.pdf",
+                    "fileReference": "f01ff67fc268fa37b7e4e63911117dd4649a707adac451c4cef84d3ff977eb91",
+                    "page": null,
+                    "tagName": null
+                },
+                "quality": "Reported",
+                "value": "Yes"
+            },
+            "humanRightsDueDiligencePolicy": {
+                "comment": null,
+                "dataSource": {
+                    "fileName": "SUMIDA_CSR_Report_2023_E.pdf",
+                    "fileReference": "b780578dd3c92d38a9571893ebc242b805aa66f065a88f4b7d026ca73e480b21",
+                    "page": null,
+                    "tagName": null
+                },
+                "quality": null,
+                "value": "Yes"
+            },
+            "humanRightsLegalProceedings": null,
+            "iloCoreLabourStandards": null,
+            "iso14001Certificate": {
+                "comment": null,
+                "dataSource": {
+                    "fileName": "SUMIDA AG/230328_Sumida_Corporate_Governance_Policy_E.pdf",
+                    "fileReference": "f01ff67fc268fa37b7e4e63911117dd4649a707adac451c4cef84d3ff977eb91",
+                    "page": null,
+                    "tagName": null
+                },
+                "quality": null,
+                "value": "Yes"
+            },
+            "maleBoardMembers": {
+                "comment": "The number of men on the board of directors of SUMIDA AG is 2.",
+                "dataSource": {
+                    "fileName": "SUMIDA AG/Sustainability - ESG Data - SUMIDA CORPORATION.pdf",
+                    "fileReference": "2b8c29e14231de6bd6354d0fe4d8b650b4640ac0d1d73545f9baa87e9fb6e78e",
+                    "page": null,
+                    "tagName": null
+                },
+                "quality": "Reported",
+                "value": 2
+            },
+            "oecdGuidelinesForMultinationalEnterprisesGrievanceHandling": {
+                "comment": "Yes, SUMIDA AG has established mechanisms for handling complaints and claims. There is a contact point at an external law firm to report compliance violations, including violations of laws, regulations, and company rules, fraudulent activities, and harassment. Company rules prohibit any retaliation against whistleblowers due to their reports. The confidentiality of whistleblowers is maintained by limiting the number of people who have access to the reports and by ensuring the anonymity of whistleblowers.",
+                "dataSource": {
+                    "fileName": "230328_Sumida_Corporate_Governance_Policy_E.pdf",
+                    "fileReference": "f01ff67fc268fa37b7e4e63911117dd4649a707adac451c4cef84d3ff977eb91",
+                    "page": null,
+                    "tagName": null
+                },
+                "quality": "Reported",
+                "value": "Yes"
+            },
+            "policyAgainstBriberyAndCorruption": {
+                "comment": null,
+                "dataSource": {
+                    "fileName": "SUMIDA AG/SUMIDA_CSR_Report_2023_E.pdf",
+                    "fileReference": "b780578dd3c92d38a9571893ebc242b805aa66f065a88f4b7d026ca73e480b21",
+                    "page": null,
+                    "tagName": null
+                },
+                "quality": null,
+                "value": "Yes"
+            },
+            "policyAgainstChildLabour": null,
+            "policyAgainstDiscriminationInTheWorkplace": {
+                "comment": null,
+                "dataSource": {
+                    "fileName": "SUMIDA AG/230328_Sumida_Corporate_Governance_Policy_E.pdf",
+                    "fileReference": "f01ff67fc268fa37b7e4e63911117dd4649a707adac451c4cef84d3ff977eb91",
+                    "page": null,
+                    "tagName": null
+                },
+                "quality": null,
+                "value": "Yes"
+            },
+            "policyAgainstForcedLabour": null,
+            "rateOfAccidentsInPercent": null,
+            "reportedIncidentsOfDiscrimination": null,
+            "sanctionedIncidentsOfDiscrimination": null,
+            "supplierCodeOfConduct": null,
+            "technologiesExpertiseTransferPolicy": null,
+            "transparencyDisclosurePolicy": {
+                "comment": null,
+                "dataSource": {
+                    "fileName": "SUMIDA AG/230328_Sumida_Corporate_Governance_Policy_E.pdf",
+                    "fileReference": "f01ff67fc268fa37b7e4e63911117dd4649a707adac451c4cef84d3ff977eb91",
+                    "page": null,
+                    "tagName": null
+                },
+                "quality": null,
+                "value": "Yes"
+            },
+            "unGlobalCompactPrinciplesCompliancePolicy": null,
+            "unadjustedGenderPayGapInPercent": null,
+            "violationOfTaxRulesAndRegulation": null,
+            "whistleblowerProtectionPolicy": {
+                "comment": null,
+                "dataSource": {
+                    "fileName": "230328_Sumida_Corporate_Governance_Policy_E.pdf",
+                    "fileReference": "f01ff67fc268fa37b7e4e63911117dd4649a707adac451c4cef84d3ff977eb91",
+                    "page": null,
+                    "tagName": null
+                },
+                "quality": null,
+                "value": "Yes"
+            },
+            "workdaysLostInDays": null,
+            "workplaceAccidentPreventionPolicy": {
+                "comment": null,
+                "dataSource": {
+                    "fileName": "230328_Sumida_Corporate_Governance_Policy_E.pdf",
+                    "fileReference": "f01ff67fc268fa37b7e4e63911117dd4649a707adac451c4cef84d3ff977eb91",
+                    "page": null,
+                    "tagName": null
+                },
+                "quality": null,
+                "value": "Yes"
+            }
+        }
+    }
+}
