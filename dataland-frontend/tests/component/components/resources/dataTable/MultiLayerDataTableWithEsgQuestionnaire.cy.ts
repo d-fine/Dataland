@@ -33,7 +33,8 @@ describe('Component Test for the ESG Questionnaire view Page with its componenet
       companyId: companyId,
       reportingPeriod: preparedFixtureForTest.reportingPeriod,
       data: preparedFixtureForTest.t,
-    } as CompanyAssociatedDataEsgQuestionnaireData);
+    });
+    cy.intercept(`/api/metadata?*`, []);
     mountEsgQuestionnaireFrameworkFromFakeFixture([preparedFixtureForTest]);
     getSectionHead('Umwelt').should('exist');
     getSectionHead('Treibhausgasemissionen').should('exist');
@@ -60,6 +61,7 @@ describe('Component Test for the ESG Questionnaire view Page with its componenet
       reportingPeriod: preparedFixtureForTest.reportingPeriod,
       data: preparedFixtureForTest.t,
     } as CompanyAssociatedDataEsgQuestionnaireData);
+    cy.intercept(`/api/metadata?*`, []);
     mountEsgQuestionnaireFrameworkFromFakeFixture([preparedFixtureForTest]);
     getSectionHead('Unternehmensführung/ Governance').should('exist');
     getSectionHead('Sonstige').should('exist');
@@ -74,6 +76,7 @@ describe('Component Test for the ESG Questionnaire view Page with its componenet
       reportingPeriod: preparedFixtureForTest.reportingPeriod,
       data: preparedFixtureForTest.t,
     } as CompanyAssociatedDataEsgQuestionnaireData);
+    cy.intercept(`/api/metadata?*`, []);
     mountEsgQuestionnaireFrameworkFromFakeFixture([preparedFixtureForTest]);
     getSectionHead('ESG Berichte').should('exist');
     getCellValueContainer('Aktuelle Berichte').click();
