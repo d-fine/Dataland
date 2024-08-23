@@ -61,8 +61,7 @@ export const additionalCompanyInformationDataModel = [
             description:
               'The value of ownership interest in the company, calculated as total assets minus total liabilities.',
 
-            unit: 'Currency',
-            component: 'BigDecimalExtendedDataPointFormField',
+            component: 'CurrencyDataPointFormField',
             required: false,
             showIf: (): boolean => true,
           },
@@ -72,8 +71,7 @@ export const additionalCompanyInformationDataModel = [
             description:
               'The total amount of all financial obligations the company owes to external parties, including loans, bonds, and other forms of debt.',
 
-            unit: 'Currency',
-            component: 'BigDecimalExtendedDataPointFormField',
+            component: 'CurrencyDataPointFormField',
             required: false,
             showIf: (): boolean => true,
           },
@@ -83,8 +81,7 @@ export const additionalCompanyInformationDataModel = [
             description:
               "The sum of all assets listed on the balance sheet, representing the total value of the company's resources.",
 
-            unit: 'Currency',
-            component: 'BigDecimalExtendedDataPointFormField',
+            component: 'CurrencyDataPointFormField',
             required: false,
             showIf: (): boolean => true,
           },
@@ -93,8 +90,7 @@ export const additionalCompanyInformationDataModel = [
             label: 'EVIC',
             description: 'Enterprise Value Including Cash',
 
-            unit: 'Currency',
-            component: 'BigDecimalExtendedDataPointFormField',
+            component: 'CurrencyDataPointFormField',
             required: false,
             showIf: (): boolean => true,
           },

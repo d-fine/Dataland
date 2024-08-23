@@ -2,23 +2,22 @@
 package org.dataland.datalandbackend.frameworks.additionalcompanyinformation.model.general.financialInformation
 
 import jakarta.validation.Valid
-import org.dataland.datalandbackend.model.datapoints.ExtendedDataPoint
-import java.math.BigDecimal
+import org.dataland.datalandbackend.model.datapoints.CurrencyDataPoint
 
 /**
  * The data-model for the FinancialInformation section
  */
 data class AdditionalCompanyInformationGeneralFinancialInformation(
     @field:Valid()
-    val equity: ExtendedDataPoint<BigDecimal?>? = null,
+    val equity: CurrencyDataPoint? = null,
 
     @field:Valid()
-    val debt: ExtendedDataPoint<BigDecimal?>? = null,
+    val debt: CurrencyDataPoint? = null,
 
     @field:Valid()
-    val balanceSheetTotal: ExtendedDataPoint<BigDecimal?>? = null,
+    val balanceSheetTotal: CurrencyDataPoint? = null,
 
     @field:Valid()
-    val evic: ExtendedDataPoint<BigDecimal?>? = null,
+    val evic: CurrencyDataPoint? = null,
 
 )

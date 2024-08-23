@@ -2,9 +2,9 @@
 import { type AdditionalCompanyInformationData } from '@clients/backend';
 import { type MLDTConfig } from '@/components/resources/dataTable/MultiLayerDataTableConfiguration';
 import { type AvailableMLDTDisplayObjectTypes } from '@/components/resources/dataTable/MultiLayerDataTableCellDisplayer';
-import { formatNumberForDatatable } from '@/components/resources/dataTable/conversion/NumberValueGetterFactory';
-import { wrapDisplayValueWithDatapointInformation } from '@/components/resources/dataTable/conversion/DataPoints';
+import { formatCurrencyForDisplay } from '@/components/resources/dataTable/conversion/CurrencyDataPointValueGetterFactory';
 import { formatStringForDatatable } from '@/components/resources/dataTable/conversion/PlainStringValueGetterFactory';
+import { wrapDisplayValueWithDatapointInformation } from '@/components/resources/dataTable/conversion/DataPoints';
 import { getOriginalNameFromTechnicalName } from '@/components/resources/dataTable/conversion/Utils';
 export const additionalCompanyInformationViewConfiguration: MLDTConfig<AdditionalCompanyInformationData> = [
   {
@@ -68,11 +68,7 @@ export const additionalCompanyInformationViewConfiguration: MLDTConfig<Additiona
               'The value of ownership interest in the company, calculated as total assets minus total liabilities.',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: AdditionalCompanyInformationData): AvailableMLDTDisplayObjectTypes =>
-              wrapDisplayValueWithDatapointInformation(
-                formatNumberForDatatable(dataset.general?.financialInformation?.equity?.value, 'Currency'),
-                'Equity',
-                dataset.general?.financialInformation?.equity
-              ),
+              formatCurrencyForDisplay(dataset.general?.financialInformation?.equity, 'Equity'),
           },
           {
             type: 'cell',
@@ -81,11 +77,7 @@ export const additionalCompanyInformationViewConfiguration: MLDTConfig<Additiona
               'The total amount of all financial obligations the company owes to external parties, including loans, bonds, and other forms of debt.',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: AdditionalCompanyInformationData): AvailableMLDTDisplayObjectTypes =>
-              wrapDisplayValueWithDatapointInformation(
-                formatNumberForDatatable(dataset.general?.financialInformation?.debt?.value, 'Currency'),
-                'Debt',
-                dataset.general?.financialInformation?.debt
-              ),
+              formatCurrencyForDisplay(dataset.general?.financialInformation?.debt, 'Debt'),
           },
           {
             type: 'cell',
@@ -94,11 +86,7 @@ export const additionalCompanyInformationViewConfiguration: MLDTConfig<Additiona
               "The sum of all assets listed on the balance sheet, representing the total value of the company's resources.",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: AdditionalCompanyInformationData): AvailableMLDTDisplayObjectTypes =>
-              wrapDisplayValueWithDatapointInformation(
-                formatNumberForDatatable(dataset.general?.financialInformation?.balanceSheetTotal?.value, 'Currency'),
-                'Balance sheet total',
-                dataset.general?.financialInformation?.balanceSheetTotal
-              ),
+              formatCurrencyForDisplay(dataset.general?.financialInformation?.balanceSheetTotal, 'Balance sheet total'),
           },
           {
             type: 'cell',
@@ -106,11 +94,7 @@ export const additionalCompanyInformationViewConfiguration: MLDTConfig<Additiona
             explanation: 'Enterprise Value Including Cash',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: AdditionalCompanyInformationData): AvailableMLDTDisplayObjectTypes =>
-              wrapDisplayValueWithDatapointInformation(
-                formatNumberForDatatable(dataset.general?.financialInformation?.evic?.value, 'Currency'),
-                'EVIC',
-                dataset.general?.financialInformation?.evic
-              ),
+              formatCurrencyForDisplay(dataset.general?.financialInformation?.evic, 'EVIC'),
           },
         ],
       },

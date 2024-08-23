@@ -1775,16 +1775,16 @@
         "type": "object",
         "properties": {
           "equity": {
-            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+            "$ref": "#/components/schemas/QaReportDataPointCurrencyDataPoint"
           },
           "debt": {
-            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+            "$ref": "#/components/schemas/QaReportDataPointCurrencyDataPoint"
           },
           "balanceSheetTotal": {
-            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+            "$ref": "#/components/schemas/QaReportDataPointCurrencyDataPoint"
           },
           "evic": {
-            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+            "$ref": "#/components/schemas/QaReportDataPointCurrencyDataPoint"
           }
         }
       },

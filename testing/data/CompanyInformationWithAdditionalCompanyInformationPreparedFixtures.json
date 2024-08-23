@@ -2,35 +2,40 @@
 	{
 		"companyInformation": {
 			"companyName": "additional-company-information-dataset-with-no-null-fields",
-			"headquarters": "Johnsonview",
-			"headquartersPostalCode": "62716-1811",
-			"sector": null,
+			"headquarters": "Pollichboro",
+			"headquartersPostalCode": "16181-1400",
+			"sector": "niches",
 			"identifiers": {
-				"Lei": [],
+				"Lei": [
+					"7mgt8ILL2DCOKn0ksj7N"
+				],
 				"Isin": [
-					"7NG7COkW1hns",
-					"Nnhi3O9k3QmS"
+					"i3O9k3QmSKRO"
 				],
 				"PermId": [],
-				"Ticker": [],
+				"Ticker": [
+					"3XyTehf"
+				],
 				"Duns": [],
 				"VatNumber": [
-					"qYdIsMQad"
+					"IsMQadvb0"
 				],
-				"CompanyRegistrationNumber": [
-					"b0DXu8Pee0E7enN"
-				]
+				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "SA",
+			"countryCode": "BY",
 			"companyContactDetails": [
-				"Cheyanne_Stracke48@example.com",
-				"Cornell_Bartoletti57@example.com"
+				"Cleo_Kshlerin3@example.com",
+				"Erick6@example.com",
+				"Mylene_Huel49@example.com",
+				"Rahul.Hudson9@example.com",
+				"Ottis.Hettinger@example.com"
 			],
 			"companyAlternativeNames": [
-				"Rippin LLC"
+				"Jakubowski, Greenholt and Nader",
+				"Yundt and Sons"
 			],
-			"companyLegalForm": "Partnership without Limited Liability",
-			"website": "https://lively-singing.info",
+			"companyLegalForm": "Private Limited Company (Ltd)",
+			"website": "https://variable-cream.net/",
 			"isTeaserCompany": false
 		},
 		"t": {
@@ -78,52 +83,56 @@
 				},
 				"financialInformation": {
 					"equity": {
-						"value": 66088.3,
+						"value": 7164818567.69,
 						"dataSource": {
-							"page": 691,
-							"fileName": "AnnualReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "mindshare"
-						},
-						"comment": "quantify back-end transmitter",
-						"quality": "Incomplete"
-					},
-					"debt": {
-						"value": 66115.09,
-						"dataSource": {
-							"page": 158,
-							"fileName": "IntegratedReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "ROI"
-						},
-						"comment": "compress multi-byte monitor",
-						"quality": "Audited"
-					},
-					"balanceSheetTotal": {
-						"value": 10157.06,
-						"dataSource": {
-							"page": 1084,
+							"page": 375,
 							"fileName": "AnnualReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "deliverables"
 						},
-						"comment": "navigate optical driver",
-						"quality": "NoDataFound"
+						"comment": "hack neural alarm",
+						"quality": "Reported",
+						"currency": "PEN"
 					},
-					"evic": {
-						"value": 35244.52,
+					"debt": {
+						"value": 2394110865.42,
 						"dataSource": {
-							"page": 506,
+							"page": 971,
+							"fileName": "IntegratedReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "platforms"
+						},
+						"comment": "compress primary bus",
+						"quality": "Estimated",
+						"currency": "BTN"
+					},
+					"balanceSheetTotal": {
+						"value": 9032161661.89,
+						"dataSource": {
+							"page": 1003,
 							"fileName": "SustainabilityReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "eyeballs"
+							"tagName": "paradigms"
 						},
-						"comment": "override neural bandwidth",
-						"quality": "Reported"
+						"comment": "navigate cross-platform array",
+						"quality": "Incomplete",
+						"currency": "EUR"
+					},
+					"evic": {
+						"value": 5048991297.37,
+						"dataSource": {
+							"page": 1162,
+							"fileName": "IntegratedReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "technologies"
+						},
+						"comment": "index digital matrix",
+						"quality": "Reported",
+						"currency": "ETB"
 					}
 				}
 			}
 		},
-		"reportingPeriod": "2021"
+		"reportingPeriod": "2020"
 	}
 ]

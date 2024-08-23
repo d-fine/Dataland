@@ -15259,7 +15259,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+                "$ref": "#/components/schemas/CurrencyDataPoint"
               }
             ]
           },
@@ -15267,7 +15267,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+                "$ref": "#/components/schemas/CurrencyDataPoint"
               }
             ]
           },
@@ -15275,7 +15275,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+                "$ref": "#/components/schemas/CurrencyDataPoint"
               }
             ]
           },
@@ -15283,7 +15283,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+                "$ref": "#/components/schemas/CurrencyDataPoint"
               }
             ]
           }
@@ -15663,10 +15663,10 @@
           "companyId": {
             "type": "string"
           },
-          "countryCode": {
+          "headquarters": {
             "type": "string"
           },
-          "headquarters": {
+          "countryCode": {
             "type": "string"
           },
           "lei": {

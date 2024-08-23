@@ -45,10 +45,10 @@ export function generateAdditionalCompanyInformationData(
         referencedReports: dataGenerator.reports,
       },
       financialInformation: {
-        equity: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat()),
-        debt: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat()),
-        balanceSheetTotal: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat()),
-        evic: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat()),
+        equity: dataGenerator.randomCurrencyDataPoint(),
+        debt: dataGenerator.randomCurrencyDataPoint(),
+        balanceSheetTotal: dataGenerator.randomCurrencyDataPoint(),
+        evic: dataGenerator.randomCurrencyDataPoint(),
       },
     },
   };
