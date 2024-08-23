@@ -109,7 +109,7 @@ class DataRequestTimeSchedulerTest {
             )
             dataRequestEntities.add(dataRequestEntity)
         }
-        `when`(dataRequestRepository.searchDataRequestEntity(any(GetDataRequestsSearchFilter::class.java), eq(100),eq(0))).thenReturn(
+        `when`(dataRequestRepository.searchDataRequestEntity(any(GetDataRequestsSearchFilter::class.java), eq(100), eq(0))).thenReturn(
             dataRequestEntities,
         )
         dataRequestTimeScheduler.patchStaleAnsweredRequestToClosed()
