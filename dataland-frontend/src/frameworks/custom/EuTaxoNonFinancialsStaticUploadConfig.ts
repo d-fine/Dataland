@@ -38,7 +38,6 @@ export const eutaxonomyNonFinancialsDataModel = [
             component: 'DateExtendedDataPointFormField',
             required: false,
             showIf: (): boolean => true,
-            validation: 'required',
           },
           {
             name: 'referencedReports',
