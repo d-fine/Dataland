@@ -60,7 +60,6 @@ interface DataRequestRepository : JpaRepository<DataRequestEntity, String> {
             "FROM data_requests dr " +
             "JOIN status_table st ON dr.data_request_id = st.request_id " +
             "WHERE (:#{#searchFilter.dataTypeFilterLength} = 0 " +
-            "OR :#{#searchFilter.dataTypeFilter} IS NULL " +
             "OR dr.data_type IN :#{#searchFilter.dataTypeFilter} ) " +
             "AND (:#{#searchFilter.reportingPeriodFilterLength} = 0 " +
             "OR dr.reporting_period = :#{#searchFilter.reportingPeriodFilter}) " +
