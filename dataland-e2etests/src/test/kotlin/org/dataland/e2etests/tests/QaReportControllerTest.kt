@@ -41,7 +41,7 @@ class QaReportControllerTest {
         documentManagerAccessor.uploadAllTestDocumentsAndAssurePersistence()
     }
 
-    private fun <T>provideUploadInfo(
+    private fun <T>uploadFrameworkData(
         qaReport: T,
         bypassQa: Boolean,
     ): List<UploadInfo> {
@@ -70,7 +70,7 @@ class QaReportControllerTest {
         qaReport: T,
         bypassQa: Boolean,
     ): QaReportMetaInformation {
-        val uploadInfo = provideUploadInfo(qaReport, bypassQa)
+        val uploadInfo = uploadFrameworkData(qaReport, bypassQa)
         val dataIdOfUpload = uploadInfo.first().actualStoredDataMetaInfo!!.dataId
         return withTechnicalUser(TechnicalUser.Admin) {
             when (qaReport) {
