@@ -15,23 +15,48 @@ describeIf(
   function (): void {
     let storedTestCompany: StoredCompany;
     let vsmeFixtures: FixtureData<VsmeData>[];
+    const uniqueCompanyMarker = Date.now().toString();
+    const testCompanyName = 'Company-Created-In-Request-And-Grant-Test-' + uniqueCompanyMarker;
+
+    const reportingPeriodToBeGranted = '2022';
+    const reportingPeriodToBeDeclined = '2023';
+    const reportingPeriodWithoutRequest = '2024';
 
     before(() => {
       cy.fixture('CompanyInformationWithVsmeData').then(function (jsonContent) {
         vsmeFixtures = jsonContent as Array<FixtureData<VsmeData>>;
       });
 
-      const uniqueCompanyMarker = Date.now().toString();
-      const testCompanyName = 'Company-Created-In-Request-And-Grant-Test-' + uniqueCompanyMarker;
-
       getKeycloakToken(admin_name, admin_pw).then((token: string) => {
         return uploadCompanyViaApi(token, generateDummyCompanyInformation(testCompanyName))
           .then((storedCompany) => {
             storedTestCompany = storedCompany;
-            return uploadVsmeFrameworkData(token, storedTestCompany.companyId, '2022', vsmeFixtures[0].t, []);
+            return uploadVsmeFrameworkData(
+              token,
+              storedTestCompany.companyId,
+              reportingPeriodToBeGranted,
+              vsmeFixtures[0].t,
+              []
+            );
           })
-          .then(() => uploadVsmeFrameworkData(token, storedTestCompany.companyId, '2023', vsmeFixtures[1].t, []))
-          .then(() => uploadVsmeFrameworkData(token, storedTestCompany.companyId, '2024', vsmeFixtures[1].t, []));
+          .then(() =>
+            uploadVsmeFrameworkData(
+              token,
+              storedTestCompany.companyId,
+              reportingPeriodToBeDeclined,
+              vsmeFixtures[1].t,
+              []
+            )
+          )
+          .then(() =>
+            uploadVsmeFrameworkData(
+              token,
+              storedTestCompany.companyId,
+              reportingPeriodWithoutRequest,
+              vsmeFixtures[1].t,
+              []
+            )
+          );
       });
     });
 
@@ -60,45 +85,145 @@ describeIf(
       validateSubmitButton(true).click();
     }
 
-    it('Request access to private datasets, grant and decline those requests, then validate the access ', () => {
+    /**
+     * Validates that there are two access requests.
+     * One for reportingPeriodToBeGranted and one for reportingPeriodToBeDeclined.
+     */
+    function validateThatAccessRequestsAreDisplayedInTable(): void {
+      cy.get('tbody.p-datatable-tbody').within(() => {
+        cy.get('tr')
+          .eq(0)
+          .within(() => {
+            cy.get('td').eq(0).should('have.text', testCompanyName);
+            cy.get('td').eq(1).should('have.text', 'VSME');
+            cy.get('td').eq(2).should('have.text', reportingPeriodToBeGranted);
+          });
+
+        cy.get('tr')
+          .eq(1)
+          .within(() => {
+            cy.get('td').eq(0).should('have.text', testCompanyName);
+            cy.get('td').eq(1).should('have.text', 'VSME');
+            cy.get('td').eq(2).should('have.text', reportingPeriodToBeDeclined);
+          });
+      });
+    }
+
+    /**
+     * Clicks on the button in the access request table in specific row to grant or decline a request
+     * @param reportingPeriod
+     * @param buttonText
+     */
+    function clickButtonInAccessRequestTableForReportingPeriod(reportingPeriod: string, buttonText: string): void {
+      cy.get('tbody.p-datatable-tbody')
+        .find('tr')
+        .contains('td', reportingPeriod)
+        .parent()
+        .contains('button', buttonText)
+        .click();
+    }
+
+    /**
+     * Checks that a specific row in the access request table has a certain badge with a give class and text.
+     * @param reportingPeriod
+     * @param badgeClass
+     * @param badgeText
+     */
+    function validateAccessRequestForReportingPeriodTableHasBadgeWithText(
+      reportingPeriod: string,
+      badgeClass: string,
+      badgeText: string
+    ): void {
+      cy.get('tbody.p-datatable-tbody')
+        .find('tr')
+        .contains('td', reportingPeriod)
+        .parent()
+        .find('div.' + badgeClass)
+        .should('have.text', badgeText);
+    }
+
+    /**
+     * Checks that on a company page for a dataset the reportingPeriodToBeGranted appears in the header,
+     * which indicates that the dataset is visible to the user.
+     */
+    function validateThatReportingPeriodWithGrantedAccessIsDisplayed(): void {
+      cy.get('table.p-datatable-table thead th').contains('span', reportingPeriodToBeGranted).should('exist');
+    }
+
+    /**
+     * On a company page for a dataset this method clicks on the request access to more datasets button
+     * and then checks that in the dialog the right reportingPeriods appear.
+     */
+    function clickToRequestMoreReportingPeriodsAndVerifyThatTheCorrectYearsAreDisplayed(): void {
+      cy.contains('button', 'REQUEST ACCESS TO MORE DATASETS').click();
+
+      cy.get('div.p-dialog table.p-datatable-table tbody').within(() => {
+        cy.get('tr').eq(0).contains('td', reportingPeriodToBeDeclined).should('exist');
+        cy.get('tr').eq(1).contains('td', reportingPeriodWithoutRequest).should('exist');
+      });
+    }
+
+    /**
+     * Performs the first steps of the data reader of this test.
+     */
+    function dataReaderChecksReportingPeriodTableAndCreatesAccessRequests(): void {
       cy.ensureLoggedIn(reader_name, reader_pw);
       cy.visitAndCheckAppMount('/companies/' + storedTestCompany.companyId + '/frameworks/' + DataTypeEnum.Vsme);
       validateSubmitButton(false);
 
-      selectRowInRequestableReportingPeriodsTable('2022');
+      selectRowInRequestableReportingPeriodsTable(reportingPeriodToBeGranted);
       validateSubmitButton(true);
 
-      selectRowInRequestableReportingPeriodsTable('2022');
+      selectRowInRequestableReportingPeriodsTable(reportingPeriodToBeGranted);
       validateSubmitButton(false);
 
-      selectRowInRequestableReportingPeriodsTable('2022');
+      selectRowInRequestableReportingPeriodsTable(reportingPeriodToBeGranted);
       validateSubmitButton(true);
 
-      selectRowInRequestableReportingPeriodsTable('2023');
+      selectRowInRequestableReportingPeriodsTable(reportingPeriodToBeDeclined);
       clickSubmitButton();
 
       cy.url().should('eq', getBaseUrl() + '/requests');
-      // TODO => check dass deine zwei neuen requests für 2022 und 2023 in der Tabelle ganz oben stehen
 
-      // TODO TIPP: use cy.pause() to pause at certain points in the test
-      // TODO cy.ensureLoggedIn(admin_name, admin_pw); => might already be sufficient for re-login with different user
+      validateThatAccessRequestsAreDisplayedInTable();
+    }
 
-      /*
+    /**
+     * Performs the steps of the data admin in its role as the company owner.
+     */
+    function dataAdminGrantsOneAndDeclinesOneAccessRequest(): void {
+      cy.ensureLoggedIn(admin_name, admin_pw);
+      cy.visitAndCheckAppMount('/companyrequests');
 
-      TEST-PART-ALS-ADMIN
-      TODO => log dich jetzt als admin ein => geh auf deine "request for my company" page
-      TODO => du solltest jetzt die zwei access requests sehen => grante einen und decline einen
-      TODO => checke dass durch deinen grant und decline die Status-badges jetzt korrekt sind
+      clickButtonInAccessRequestTableForReportingPeriod(reportingPeriodToBeGranted, 'Grant');
+      validateAccessRequestForReportingPeriodTableHasBadgeWithText(
+        reportingPeriodToBeGranted,
+        'badge-light-green',
+        'Granted'
+      );
 
-      TEST-PART-II-ALS-READER
-      TODO => log dich jetzt wieder als reader ein
-      TODO => gehe auf die view page für die test company und vsme
-      TODO => du solltest jetzt den ge-granteten dataset Datensatz sehen können
-      TODO => clicke auf den REQUEST ACCESS TO MORE DATASETS button => ein modal öffnet sich
-      TODO => im modal sollte die declinete reporting period erscheinen, sowie die, für die du noch keine request gestellt hast
+      clickButtonInAccessRequestTableForReportingPeriod(reportingPeriodToBeDeclined, 'Decline');
+      validateAccessRequestForReportingPeriodTableHasBadgeWithText(
+        reportingPeriodToBeDeclined,
+        'badge-brown',
+        'Declined'
+      );
+    }
 
-      Test zu Ende aus meiner Sicht
-       */
+    /**
+     * Performs the last steps of the data reader in this test.
+     */
+    function dataReaderChecksThatOneReportingPeriodIsVisibleAndTwoReportingPeriodsCanBeRequested(): void {
+      cy.ensureLoggedIn(reader_name, reader_pw);
+      cy.visitAndCheckAppMount('/companies/' + storedTestCompany.companyId + '/frameworks/' + DataTypeEnum.Vsme);
+      validateThatReportingPeriodWithGrantedAccessIsDisplayed();
+      clickToRequestMoreReportingPeriodsAndVerifyThatTheCorrectYearsAreDisplayed();
+    }
+
+    it('Request access to private datasets, grant and decline those requests, then validate the access ', () => {
+      dataReaderChecksReportingPeriodTableAndCreatesAccessRequests();
+      dataAdminGrantsOneAndDeclinesOneAccessRequest();
+      dataReaderChecksThatOneReportingPeriodIsVisibleAndTwoReportingPeriodsCanBeRequested();
     });
   }
 );
