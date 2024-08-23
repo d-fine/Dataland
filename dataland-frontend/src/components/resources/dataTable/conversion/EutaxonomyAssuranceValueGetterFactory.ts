@@ -26,7 +26,7 @@ export function formatAssuranceForDataTable(
     return MLDTDisplayObjectForEmptyString;
   }
 
-  const assuranceDatapointText = nameMapping[assurance.value];
+  const assuranceDatapointText = assurance.value != null ? nameMapping[assurance.value] : '';
   const innerDisplayValue: AvailableMLDTDisplayObjectTypes = {
     displayComponentName: MLDTDisplayComponentName.StringDisplayComponent,
     displayValue: assuranceDatapointText,
