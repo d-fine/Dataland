@@ -1,6 +1,4 @@
 <template>
-  <!-- Level of assurance -->
-
   <FormKit name="assurance" type="group">
     <!-- Level of assurance -->
     <div class="form-field">
@@ -8,11 +6,11 @@
         <SingleSelectFormField
           :label="euTaxonomyKpiNameMappings.assurance ?? ''"
           :description="euTaxonomyKpiInfoMappings.assurance ?? ''"
-          :required="true"
+          :required="required"
           name="value"
           placeholder="Please choose..."
           :validation-label="euTaxonomyKpiNameMappings.assurance ?? ''"
-          validation="required"
+          :validation="validation"
           :options="assuranceData"
         />
       </div>
@@ -39,7 +37,7 @@
           <SingleSelectFormField
             :label="euTaxonomyKpiNameMappings.report ?? ''"
             :description="euTaxonomyKpiInfoMappings.report ?? ''"
-            :required="true"
+            :required="required"
             v-model="currentReportValue"
             placeholder="Select a report"
             :options="[noReportLabel, ...reportsName]"

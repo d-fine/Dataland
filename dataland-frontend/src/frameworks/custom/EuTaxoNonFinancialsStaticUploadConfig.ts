@@ -36,7 +36,7 @@ export const eutaxonomyNonFinancialsDataModel = [
             description: 'The date the fiscal year ends',
             unit: '',
             component: 'DateExtendedDataPointFormField',
-            required: true,
+            required: false,
             showIf: (): boolean => true,
             validation: 'required',
           },
