@@ -79,8 +79,8 @@ class RequestController(
         accessStatus: AccessStatus?,
         reportingPeriod: String?,
         datalandCompanyId: String?,
-        chunkSize: Int?,
-        chunkIndex: Int?,
+        chunkSize: Int,
+        chunkIndex: Int,
     ): ResponseEntity<List<ExtendedStoredDataRequest>> {
         return ResponseEntity.ok(
             dataRequestQueryManager.getDataRequests(
@@ -90,7 +90,7 @@ class RequestController(
                 accessStatus,
                 reportingPeriod,
                 datalandCompanyId,
-                chunkIndex ?: 0,
+                chunkIndex,
                 chunkSize,
             ),
         )
