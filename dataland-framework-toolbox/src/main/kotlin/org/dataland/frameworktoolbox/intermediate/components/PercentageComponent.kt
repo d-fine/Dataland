@@ -6,6 +6,7 @@ import org.dataland.frameworktoolbox.intermediate.datapoints.addPropertyWithDocu
 import org.dataland.frameworktoolbox.specific.datamodel.TypeReference
 import org.dataland.frameworktoolbox.specific.datamodel.elements.DataClassBuilder
 import org.dataland.frameworktoolbox.specific.fixturegenerator.elements.FixtureSectionBuilder
+import org.dataland.frameworktoolbox.specific.qamodel.addQaPropertyWithDocumentSupport
 import org.dataland.frameworktoolbox.specific.uploadconfig.elements.UploadCategoryBuilder
 import org.dataland.frameworktoolbox.specific.viewconfig.elements.SectionConfigBuilder
 import org.dataland.frameworktoolbox.specific.viewconfig.elements.getTypescriptFieldAccessor
@@ -22,6 +23,15 @@ class PercentageComponent(
 
     override fun generateDefaultDataModel(dataClassBuilder: DataClassBuilder) {
         dataClassBuilder.addPropertyWithDocumentSupport(
+            documentSupport,
+            identifier,
+            TypeReference("java.math.BigDecimal", isNullable),
+            listOf(),
+        )
+    }
+
+    override fun generateDefaultQaModel(dataClassBuilder: DataClassBuilder) {
+        dataClassBuilder.addQaPropertyWithDocumentSupport(
             documentSupport,
             identifier,
             TypeReference("java.math.BigDecimal", isNullable),

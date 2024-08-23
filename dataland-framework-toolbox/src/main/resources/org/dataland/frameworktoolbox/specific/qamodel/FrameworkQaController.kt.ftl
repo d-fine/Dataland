@@ -2,12 +2,18 @@
 package org.dataland.datalandqaservice.org.dataland.datalandqaservice.frameworks.${frameworkPackageName}
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import io.swagger.v3.oas.annotations.Operation
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.controller.QaReportController
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.QaReportManager
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.QaReportSecurityPolicy
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
+import org.springframework.http.ResponseEntity
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.reports.QaReportMetaInformation
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.reports.QaReportStatusPatch
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.reports.QaReportWithMetaInformation
+
 <#list frameworkDataType.imports as import>import ${import}
 </#list>
 
@@ -21,9 +27,40 @@ class ${frameworkDataType.shortenedQualifier}QaReportController(
 @Autowired qaReportManager: QaReportManager,
 @Autowired qaReportSecurityPolicy: QaReportSecurityPolicy,
 ) : QaReportController<${frameworkDataType.shortenedQualifier}>(
-    objectMapper = objectMapper,
-    qaReportManager = qaReportManager,
-    qaReportSecurityPolicy = qaReportSecurityPolicy,
-    clazz = ${frameworkDataType.shortenedQualifier}::class.java,
-    dataType = "${frameworkIdentifier}",
-)
+objectMapper = objectMapper,
+qaReportManager = qaReportManager,
+qaReportSecurityPolicy = qaReportSecurityPolicy,
+clazz = ${frameworkDataType.shortenedQualifier}::class.java,
+dataType = "${frameworkIdentifier}",
+) {
+    @Operation(operationId = "post${frameworkDataType.shortenedQualifier}QaReport")
+    override fun postQaReport(
+        dataId: String,
+        qaReport: ${frameworkDataType.shortenedQualifier},
+    ): ResponseEntity<QaReportMetaInformation> {
+        return super.postQaReport(dataId, qaReport)
+    }
+
+    @Operation(operationId = "get${frameworkDataType.shortenedQualifier}QaReport")
+    override fun getQaReport(
+        dataId: String,
+        qaReportId: String,
+    ): ResponseEntity<QaReportWithMetaInformation<${frameworkDataType.shortenedQualifier}>> {
+        return super.getQaReport(dataId, qaReportId)
+    }
+
+    @Operation(operationId = "set${frameworkDataType.shortenedQualifier}QaReportStatus")
+    override fun setQaReportStatus(dataId: String, qaReportId: String, statusPatch: QaReportStatusPatch) {
+        super.setQaReportStatus(dataId, qaReportId, statusPatch)
+    }
+
+    @Operation(operationId = "get${frameworkDataType.shortenedQualifier}AllQaReportsForDataset")
+    override fun getAllQaReportsForDataset(
+        dataId: String,
+        showInactive: Boolean?,
+        reporterUserId: String?,
+    ): ResponseEntity<List<QaReportWithMetaInformation<${frameworkDataType.shortenedQualifier}>>> {
+        return super.getAllQaReportsForDataset(dataId, showInactive, reporterUserId)
+    }
+}
+
