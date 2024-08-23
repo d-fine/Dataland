@@ -124,7 +124,7 @@ class DataRequestQueryManager(
         accessStatus: AccessStatus?,
         reportingPeriod: String?,
         datalandCompanyId: String?,
-        chunkIndex: Int?,
+        chunkIndex: Int,
         chunkSize: Int?,
     ): List<ExtendedStoredDataRequest>? {
         val filter = GetDataRequestsSearchFilter(
@@ -135,8 +135,9 @@ class DataRequestQueryManager(
             reportingPeriodFilter = reportingPeriod ?: "",
             datalandCompanyIdFilter = datalandCompanyId ?: "",
         )
+        val offset = chunkIndex * (chunkSize ?: 0)
         return dataRequestRepository.searchDataRequestEntity(
-            searchFilter = filter, resultOffset = chunkIndex,
+            searchFilter = filter, resultOffset = offset,
             resultLimit = chunkSize,
         ).map { dataRequestEntity ->
             getExtendedStoredDataRequestByRequestEntity(dataRequestEntity)
