@@ -82,16 +82,16 @@ interface DataRequestRepository : JpaRepository<DataRequestEntity, String> {
     @Query(
         nativeQuery = true,
         value = TemporaryTables.TABLE_FILTERED +
-            // TODO an den code stellen wie zB im DataRequestQueryManager nur noch einmal eine Query aufrufen,
-            // TODO nicht zweimal Line 140
-            // TODO andere verwendungen von searchDataRequestEntity finden und genauso anpassen
-            // TODO  check that most recent status and access status are present in the final table
             "SELECT d.* FROM data_requests d " +
-            "JOIN filtered_table ON filtered_table.data_request_id = d.data_request_id",
+            "JOIN filtered_table ON filtered_table.data_request_id = d.data_request_id " +
+            "ORDER BY d.data_request_id ASC " +
+            "LIMIT :#{#resultLimit} OFFSET :#{#resultOffset} ",
 
     )
     fun searchDataRequestEntity(
         @Param("searchFilter") searchFilter: GetDataRequestsSearchFilter,
+        @Param("resultLimit") resultLimit: Int? = 100,
+        @Param("resultOffset") resultOffset: Int? = 0,
     ): List<DataRequestEntity>
 
     /**

@@ -115,6 +115,7 @@ class DataRequestQueryManager(
      * @param datalandCompanyId the Dataland company ID to apply to the data request
      * @return all filtered data requests
      */
+    @Suppress("LongParameterList")
     @Transactional
     fun getDataRequests(
         dataType: DataTypeEnum?,
@@ -123,6 +124,8 @@ class DataRequestQueryManager(
         accessStatus: AccessStatus?,
         reportingPeriod: String?,
         datalandCompanyId: String?,
+        chunkIndex: Int?,
+        chunkSize: Int?,
     ): List<ExtendedStoredDataRequest>? {
         val filter = GetDataRequestsSearchFilter(
             dataTypeFilter = dataType?.value ?: "",
@@ -132,7 +135,10 @@ class DataRequestQueryManager(
             reportingPeriodFilter = reportingPeriod ?: "",
             datalandCompanyIdFilter = datalandCompanyId ?: "",
         )
-        return dataRequestRepository.searchDataRequestEntity(filter).map { dataRequestEntity ->
+        return dataRequestRepository.searchDataRequestEntity(
+            searchFilter = filter, resultOffset = chunkIndex,
+            resultLimit = chunkSize,
+        ).map { dataRequestEntity ->
             getExtendedStoredDataRequestByRequestEntity(dataRequestEntity)
         }
     }

@@ -212,6 +212,8 @@ interface RequestApi {
         @RequestParam accessStatus: AccessStatus?,
         @RequestParam reportingPeriod: String?,
         @RequestParam datalandCompanyId: String?,
+        @RequestParam chunkSize: Int? = null,
+        @RequestParam chunkIndex: Int? = null,
     ): ResponseEntity<List<ExtendedStoredDataRequest>>
 
     /**
