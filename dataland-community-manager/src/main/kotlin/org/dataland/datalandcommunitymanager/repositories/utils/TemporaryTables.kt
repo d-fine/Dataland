@@ -21,7 +21,7 @@ class TemporaryTables private constructor() {
             ", " +
             "filtered_table AS (SELECT d.data_request_id " +
             "FROM data_requests d " +
-            "JOIN  status_table ON status_table.request_id = d.data_request_id " +
+            "JOIN status_table ON status_table.request_id = d.data_request_id " +
             "WHERE " +
             "(:#{#searchFilter.dataTypeFilterLength} = 0 " +
             "OR d.data_type = :#{#searchFilter.dataTypeFilter}) AND " +
@@ -34,6 +34,8 @@ class TemporaryTables private constructor() {
             "(:#{#searchFilter.reportingPeriodFilterLength} = 0 " +
             "OR d.reporting_period = :#{#searchFilter.reportingPeriodFilter}) AND " +
             "(:#{#searchFilter.datalandCompanyIdFilterLength} = 0 " +
-            "OR d.dataland_company_id = :#{#searchFilter.datalandCompanyIdFilter})) "
+            "OR d.dataland_company_id = :#{#searchFilter.datalandCompanyIdFilter}) " +
+            "ORDER BY d.data_request_id ASC " +
+            "LIMIT :#{#resultLimit} OFFSET :#{#resultOffset}) "
     }
 }
