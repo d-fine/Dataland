@@ -8,7 +8,7 @@ io-gitlab-arturbosch-detekt = { id = "io.gitlab.arturbosch.detekt", version = "1
 
 com-github-node-gradle-node = { id = "com.github.node-gradle.node", version = "7.0.2" }
 
-org-springframework-boot = { id = "org.springframework.boot", version = "3.3.0" }
+org-springframework-boot = { id = "org.springframework.boot", version = "3.3.2" }
 
 org-jlleitschuh-gradle-ktlint = { id = "org.jlleitschuh.gradle.ktlint", version = "12.1.0" }
 
@@ -127,9 +127,9 @@ bcpkix-jdk15on = "org.bouncycastle:bcpkix-jdk15on:1.70"
 
 bcprov-jdk15on = "org.bouncycastle:bcprov-jdk15on:1.70"
 
-jackson-dataformat-csv = "com.fasterxml.jackson.dataformat:jackson-dataformat-csv:2.17.1"
+jackson-dataformat-csv = "com.fasterxml.jackson.dataformat:jackson-dataformat-csv:2.17.2"
 
-jackson-module-kotlin = "com.fasterxml.jackson.module:jackson-module-kotlin:2.17.1"
+jackson-module-kotlin = "com.fasterxml.jackson.module:jackson-module-kotlin:2.17.2"
 
 commons-io = "commons-io:commons-io:2.16.1"
 
@@ -171,7 +171,7 @@ spring-rabbit-test = { module = "org.springframework.amqp:spring-rabbit-test" }
 
 springdoc-openapi-ui = "org.springdoc:springdoc-openapi-starter-webmvc-ui:2.6.0"
 
-jackson-kotlin = "com.fasterxml.jackson.module:jackson-module-kotlin:2.17.1"
+jackson-kotlin = "com.fasterxml.jackson.module:jackson-module-kotlin:2.17.2"
 freemarker = "org.freemarker:freemarker:2.3.33"
 
 
@@ -181,9 +181,9 @@ jodconverter-core = "org.jodconverter:jodconverter-core:4.4.7"
 
 jodconverter-local = "org.jodconverter:jodconverter-local:4.4.7"
 
-itext-core = "com.itextpdf:itext-core:8.0.4"
+itext-core = "com.itextpdf:itext-core:8.0.5"
 
-layout = "com.itextpdf:layout:8.0.4"
+layout = "com.itextpdf:layout:8.0.5"
 
 tika-core = "org.apache.tika:tika-core:2.9.2"
 
