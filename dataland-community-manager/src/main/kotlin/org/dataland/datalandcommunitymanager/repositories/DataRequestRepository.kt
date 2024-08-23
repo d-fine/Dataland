@@ -83,7 +83,7 @@ interface DataRequestRepository : JpaRepository<DataRequestEntity, String> {
         nativeQuery = true,
         value = TemporaryTables.TABLE_FILTERED +
             "SELECT d.* FROM data_requests d " +
-            "JOIN filtered_table ON filtered_table.data_request_id = d.data_request_id " ,
+            "JOIN filtered_table ON filtered_table.data_request_id = d.data_request_id ",
 
     )
     fun searchDataRequestEntity(

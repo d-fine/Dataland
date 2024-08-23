@@ -91,7 +91,7 @@ class RequestController(
                 reportingPeriod,
                 datalandCompanyId,
                 chunkIndex ?: 0,
-                chunkSize ?: 100,
+                chunkSize,
             ),
         )
     }
