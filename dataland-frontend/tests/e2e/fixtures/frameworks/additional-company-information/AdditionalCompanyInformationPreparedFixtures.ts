@@ -11,17 +11,6 @@ export function generateAdditionalCompanyInformationPreparedFixtures(): Array<
   FixtureData<AdditionalCompanyInformationData>
 > {
   const preparedFixtures = [];
-  // Note: Put the code for prepared fixture generation below. This file will not be overwritten automatically
-
-  const manipulatorFunctions: Array<
-    (input: FixtureData<AdditionalCompanyInformationData>) => FixtureData<AdditionalCompanyInformationData>
-  > = [];
-  const preparedFixturesBeforeManipulation = generateAdditionalCompanyInformationFixtures(manipulatorFunctions.length);
-
-  for (let i = 0; i < manipulatorFunctions.length; i++) {
-    preparedFixtures.push(manipulatorFunctions[i](preparedFixturesBeforeManipulation[i]));
-  }
-
   preparedFixtures.push(generateFixturesWithNoNullFields());
   return preparedFixtures;
 }
