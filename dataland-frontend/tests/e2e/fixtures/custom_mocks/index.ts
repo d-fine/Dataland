@@ -5,6 +5,7 @@ import { generateMapOfFrameworkNameToAggregatedFrameworkDataSummary } from '@e2e
 import { generateListOfDataSearchStoredCompany } from '@e2e/fixtures/custom_mocks/DataSearchStoredCompanyFaker';
 import { generateStoredDataRequests } from '@e2e/fixtures/custom_mocks/StoredDataRequestsFaker';
 import { generateSfdrQaReportPreparedFixtures } from '@e2e/fixtures/custom_mocks/SfdrQaReportPreparedFixtures';
+import { generateEuTaxonomyNonFinancialsQaReportPreparedFixtures } from '@e2e/fixtures/custom_mocks/EuTaxonomyNonFinancialsQaReportPreparedFixtures';
 
 /**
  * Generates mocks that are not only dataset mocks
@@ -41,5 +42,9 @@ export function exportCustomMocks(): void {
   fs.writeFileSync(
     '../testing/data/SfdrQaReportPreparedFixtures.json',
     JSON.stringify(generateSfdrQaReportPreparedFixtures(), null, '\t')
+  );
+  fs.writeFileSync(
+    '../testing/data/EuTaxonomyNonFinancialsQaReportPreparedFixtures.json',
+    JSON.stringify(generateEuTaxonomyNonFinancialsQaReportPreparedFixtures(), null, '\t')
   );
 }

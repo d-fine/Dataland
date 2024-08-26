@@ -23,7 +23,7 @@ class EuTaxonomyNonFinancialsFramework : PavedRoadFramework(
     ),
     order = 2,
     enabledFeatures =
-    FrameworkGenerationFeatures.allExcept(FrameworkGenerationFeatures.UploadPage, FrameworkGenerationFeatures.QaModel),
+    FrameworkGenerationFeatures.allExcept(FrameworkGenerationFeatures.UploadPage),
 ) {
 
     private fun configureComponentGroupColorsAndExpansion(root: ComponentGroupApi) {
@@ -48,6 +48,7 @@ class EuTaxonomyNonFinancialsFramework : PavedRoadFramework(
             viewPageLabelBadgeColor = LabelBadgeColor.Blue
         }
     }
+
     override fun customizeHighLevelIntermediateRepresentation(framework: Framework) {
         configureComponentGroupColorsAndExpansion(framework.root)
     }
