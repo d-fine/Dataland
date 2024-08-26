@@ -77,7 +77,6 @@ export default defineComponent({
   },
   watch: {
     companyRoleAssignments() {
-      console.log('company role assignments changed => watcher is triggered'); // TODO remove
       this.setVisibilityForTabWithAccessRequestsForMyCompanies();
     },
   },

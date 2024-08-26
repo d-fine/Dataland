@@ -187,7 +187,5 @@ class SecurityUtilsService(
     fun areOnlyAuthorizedFieldsPatched(requestStatus: RequestStatus?, contacts: Set<String>?, message: String?):
         Boolean {
         return requestStatus == null && contacts.isNullOrEmpty() && message.isNullOrBlank()
-        // TODO test:  Dürfte nicht eigentlich contacts und message NUR null sein ??! Sonst kann ich mit leerer Liste
-        // TODO die contacts überschreiben!
     }
 }
