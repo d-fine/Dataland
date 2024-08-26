@@ -198,6 +198,7 @@ import { FRAMEWORKS_WITH_VIEW_PAGE } from '@/utils/Constants';
 import { getFrontendFrameworkDefinition } from '@/frameworks/FrontendFrameworkRegistry';
 import AuthenticationWrapper from '@/components/wrapper/AuthenticationWrapper.vue';
 import { accessStatusBadgeClass, badgeClass } from '@/utils/RequestUtils';
+import { customCompareForRequestStatus } from '@/utils/RequestsOverviewPageUtils';
 
 export default defineComponent({
   name: 'MyDataRequestsOverview',
@@ -446,7 +447,7 @@ export default defineComponent({
       }
 
       if (a.requestStatus != b.requestStatus)
-        return this.customCompareForRequestStatus(a.requestStatus, b.requestStatus);
+        return customCompareForRequestStatus(a.requestStatus, b.requestStatus, this.sortOrder);
 
       if (a.lastModifiedDate < b.lastModifiedDate) return this.sortOrder;
       if (a.lastModifiedDate > b.lastModifiedDate) return -1 * this.sortOrder;
@@ -454,22 +455,7 @@ export default defineComponent({
       if (a.companyName < b.companyName) return -1 * this.sortOrder;
       else return this.sortOrder;
     },
-    /**
-     * Compares two request status
-     * @param a RequestStatus to compare
-     * @param b RequestStatus to compare
-     * @returns result of the comparison
-     */
-    customCompareForRequestStatus(a: RequestStatus, b: RequestStatus) {
-      const sortOrderRequestStatus: { [key: string]: number } = {};
-      sortOrderRequestStatus[RequestStatus.Answered] = 1;
-      sortOrderRequestStatus[RequestStatus.Open] = 2;
-      sortOrderRequestStatus[RequestStatus.Resolved] = 3;
-      sortOrderRequestStatus[RequestStatus.Closed] = 4;
-      sortOrderRequestStatus[RequestStatus.Withdrawn] = 5;
-      if (sortOrderRequestStatus[a] <= sortOrderRequestStatus[b]) return -1 * this.sortOrder;
-      return this.sortOrder;
-    },
+
     /**
      * Updates the data for the current page
      * @param event event containing the new page
