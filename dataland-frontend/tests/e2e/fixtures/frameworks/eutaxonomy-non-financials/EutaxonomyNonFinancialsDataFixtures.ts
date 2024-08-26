@@ -69,21 +69,66 @@ export function generateEutaxonomyNonFinancialsData(
         relativeShareInPercent: dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
         absoluteShare: dataGenerator.randomCurrencyDataPoint(),
       },
-      substantialContributionToClimateChangeMitigationInPercent: dataGenerator.randomExtendedDataPoint(
+      substantialContributionToClimateChangeMitigationInPercentEligible: dataGenerator.randomExtendedDataPoint(
         dataGenerator.randomPercentageValue()
       ),
-      substantialContributionToClimateChangeAdaptationInPercent: dataGenerator.randomExtendedDataPoint(
+      substantialContributionToClimateChangeMitigationInPercentAligned: dataGenerator.randomExtendedDataPoint(
         dataGenerator.randomPercentageValue()
       ),
-      substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent:
+      substantialContributionToClimateChangeMitigationInPercentOfWhichUseOfProceeds:
         dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
-      substantialContributionToTransitionToACircularEconomyInPercent: dataGenerator.randomExtendedDataPoint(
+      substantialContributionToClimateChangeMitigationInPercentEnablingShare: dataGenerator.randomExtendedDataPoint(
         dataGenerator.randomPercentageValue()
       ),
-      substantialContributionToPollutionPreventionAndControlInPercent: dataGenerator.randomExtendedDataPoint(
+      substantialContributionToClimateChangeMitigationInPercentTransitionalShare: dataGenerator.randomExtendedDataPoint(
         dataGenerator.randomPercentageValue()
       ),
-      substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent:
+      substantialContributionToClimateChangeAdaptationInPercentEligible: dataGenerator.randomExtendedDataPoint(
+        dataGenerator.randomPercentageValue()
+      ),
+      substantialContributionToClimateChangeAdaptationInPercentAligned: dataGenerator.randomExtendedDataPoint(
+        dataGenerator.randomPercentageValue()
+      ),
+      substantialContributionToClimateChangeAdaptationInPercentOfWhichUseOfProceeds:
+        dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
+      substantialContributionToClimateChangeAdaptationInPercentEnablingShare: dataGenerator.randomExtendedDataPoint(
+        dataGenerator.randomPercentageValue()
+      ),
+      substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentEligible:
+        dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
+      substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned:
+        dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
+      substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentOfWhichUseOfProceeds:
+        dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
+      substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentEnablingShare:
+        dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
+      substantialContributionToTransitionToACircularEconomyInPercentEligible: dataGenerator.randomExtendedDataPoint(
+        dataGenerator.randomPercentageValue()
+      ),
+      substantialContributionToTransitionToACircularEconomyInPercentAligned: dataGenerator.randomExtendedDataPoint(
+        dataGenerator.randomPercentageValue()
+      ),
+      substantialContributionToTransitionToACircularEconomyInPercentOfWhichUseOfProceeds:
+        dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
+      substantialContributionToTransitionToACircularEconomyInPercentEnablingShare:
+        dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
+      substantialContributionToPollutionPreventionAndControlInPercentEligible: dataGenerator.randomExtendedDataPoint(
+        dataGenerator.randomPercentageValue()
+      ),
+      substantialContributionToPollutionPreventionAndControlInPercentAligned: dataGenerator.randomExtendedDataPoint(
+        dataGenerator.randomPercentageValue()
+      ),
+      substantialContributionToPollutionPreventionAndControlInPercentOfWhichUseOfProceeds:
+        dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
+      substantialContributionToPollutionPreventionAndControlInPercentEnablingShare:
+        dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
+      substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentEligible:
+        dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
+      substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned:
+        dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
+      substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentOfWhichUseOfProceeds:
+        dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
+      substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentEnablingShare:
         dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
       alignedActivities: dataGenerator.randomExtendedDataPoint(
         dataGenerator.randomArray(() => dataGenerator.generateAlignedActivity(), 0, 10)
@@ -112,21 +157,66 @@ export function generateEutaxonomyNonFinancialsData(
         relativeShareInPercent: dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
         absoluteShare: dataGenerator.randomCurrencyDataPoint(),
       },
-      substantialContributionToClimateChangeMitigationInPercent: dataGenerator.randomExtendedDataPoint(
+      substantialContributionToClimateChangeMitigationInPercentEligible: dataGenerator.randomExtendedDataPoint(
         dataGenerator.randomPercentageValue()
       ),
-      substantialContributionToClimateChangeAdaptationInPercent: dataGenerator.randomExtendedDataPoint(
+      substantialContributionToClimateChangeMitigationInPercentAligned: dataGenerator.randomExtendedDataPoint(
         dataGenerator.randomPercentageValue()
       ),
-      substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent:
+      substantialContributionToClimateChangeMitigationInPercentOfWhichUseOfProceeds:
         dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
-      substantialContributionToTransitionToACircularEconomyInPercent: dataGenerator.randomExtendedDataPoint(
+      substantialContributionToClimateChangeMitigationInPercentEnablingShare: dataGenerator.randomExtendedDataPoint(
         dataGenerator.randomPercentageValue()
       ),
-      substantialContributionToPollutionPreventionAndControlInPercent: dataGenerator.randomExtendedDataPoint(
+      substantialContributionToClimateChangeMitigationInPercentTransitionalShare: dataGenerator.randomExtendedDataPoint(
         dataGenerator.randomPercentageValue()
       ),
-      substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent:
+      substantialContributionToClimateChangeAdaptationInPercentEligible: dataGenerator.randomExtendedDataPoint(
+        dataGenerator.randomPercentageValue()
+      ),
+      substantialContributionToClimateChangeAdaptationInPercentAligned: dataGenerator.randomExtendedDataPoint(
+        dataGenerator.randomPercentageValue()
+      ),
+      substantialContributionToClimateChangeAdaptationInPercentOfWhichUseOfProceeds:
+        dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
+      substantialContributionToClimateChangeAdaptationInPercentEnablingShare: dataGenerator.randomExtendedDataPoint(
+        dataGenerator.randomPercentageValue()
+      ),
+      substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentEligible:
+        dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
+      substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned:
+        dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
+      substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentOfWhichUseOfProceeds:
+        dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
+      substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentEnablingShare:
+        dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
+      substantialContributionToTransitionToACircularEconomyInPercentEligible: dataGenerator.randomExtendedDataPoint(
+        dataGenerator.randomPercentageValue()
+      ),
+      substantialContributionToTransitionToACircularEconomyInPercentAligned: dataGenerator.randomExtendedDataPoint(
+        dataGenerator.randomPercentageValue()
+      ),
+      substantialContributionToTransitionToACircularEconomyInPercentOfWhichUseOfProceeds:
+        dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
+      substantialContributionToTransitionToACircularEconomyInPercentEnablingShare:
+        dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
+      substantialContributionToPollutionPreventionAndControlInPercentEligible: dataGenerator.randomExtendedDataPoint(
+        dataGenerator.randomPercentageValue()
+      ),
+      substantialContributionToPollutionPreventionAndControlInPercentAligned: dataGenerator.randomExtendedDataPoint(
+        dataGenerator.randomPercentageValue()
+      ),
+      substantialContributionToPollutionPreventionAndControlInPercentOfWhichUseOfProceeds:
+        dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
+      substantialContributionToPollutionPreventionAndControlInPercentEnablingShare:
+        dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
+      substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentEligible:
+        dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
+      substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned:
+        dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
+      substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentOfWhichUseOfProceeds:
+        dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
+      substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentEnablingShare:
         dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
       alignedActivities: dataGenerator.randomExtendedDataPoint(
         dataGenerator.randomArray(() => dataGenerator.generateAlignedActivity(), 0, 10)
@@ -155,21 +245,21 @@ export function generateEutaxonomyNonFinancialsData(
         relativeShareInPercent: dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
         absoluteShare: dataGenerator.randomCurrencyDataPoint(),
       },
-      substantialContributionToClimateChangeMitigationInPercent: dataGenerator.randomExtendedDataPoint(
+      substantialContributionToClimateChangeMitigationInPercentAligned: dataGenerator.randomExtendedDataPoint(
         dataGenerator.randomPercentageValue()
       ),
-      substantialContributionToClimateChangeAdaptationInPercent: dataGenerator.randomExtendedDataPoint(
+      substantialContributionToClimateChangeAdaptationInPercentAligned: dataGenerator.randomExtendedDataPoint(
         dataGenerator.randomPercentageValue()
       ),
-      substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent:
+      substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned:
         dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
-      substantialContributionToTransitionToACircularEconomyInPercent: dataGenerator.randomExtendedDataPoint(
+      substantialContributionToTransitionToACircularEconomyInPercentAligned: dataGenerator.randomExtendedDataPoint(
         dataGenerator.randomPercentageValue()
       ),
-      substantialContributionToPollutionPreventionAndControlInPercent: dataGenerator.randomExtendedDataPoint(
+      substantialContributionToPollutionPreventionAndControlInPercentAligned: dataGenerator.randomExtendedDataPoint(
         dataGenerator.randomPercentageValue()
       ),
-      substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent:
+      substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned:
         dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
       alignedActivities: dataGenerator.randomExtendedDataPoint(
         dataGenerator.randomArray(() => dataGenerator.generateAlignedActivity(), 0, 10)
