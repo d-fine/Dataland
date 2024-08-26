@@ -193,9 +193,7 @@ describeIf(
      */
     function dataAdminGrantsOneAndDeclinesOneAccessRequest(): void {
       cy.ensureLoggedIn(admin_name, admin_pw);
-      cy.wait(10000) // TODO debugging test in CD
       cy.visitAndCheckAppMount('/companyrequests');
-      cy.wait(10000) // TODO debugging test in CD
 
       clickButtonInAccessRequestTableForReportingPeriod(reportingPeriodToBeGranted, 'Grant');
       validateAccessRequestForReportingPeriodTableHasBadgeWithText(
