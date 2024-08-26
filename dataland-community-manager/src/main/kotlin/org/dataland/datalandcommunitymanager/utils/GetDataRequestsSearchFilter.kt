@@ -12,7 +12,6 @@ data class GetDataRequestsSearchFilter(
     val reportingPeriodFilter: String,
     val datalandCompanyIdFilter: String,
 ) {
-    // TODO use string instead of Enum here, remove cast in query
     val dataTypeFilterLength: Int
         get() = dataTypeFilter.length
 

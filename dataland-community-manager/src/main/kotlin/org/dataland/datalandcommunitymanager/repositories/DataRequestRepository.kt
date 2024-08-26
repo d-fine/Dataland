@@ -13,7 +13,6 @@ import org.springframework.data.repository.query.Param
 /**
  * A JPA repository for storing and retrieving data requests
  */
-// TODO do formatting on queries
 
 interface DataRequestRepository : JpaRepository<DataRequestEntity, String> {
     /** This method gets all data request that are stored for a specific userId.
@@ -48,9 +47,7 @@ interface DataRequestRepository : JpaRepository<DataRequestEntity, String> {
     @Query(
         nativeQuery = true,
         value =
-        // TODO anpassen
         MOST_RECENT_STATUS_CHANGE +
-
             "SELECT " +
             "dr.data_type AS dataType, " +
             "dr.reporting_period AS reportingPeriod, " +
