@@ -17,9 +17,6 @@ export async function hasUserCompanyRoleForCompany(
   companyId: string,
   keycloakPromiseGetter?: () => Promise<Keycloak>
 ): Promise<boolean> {
-  /* TODO Emanuel: Disktuier mit anderen Entwicklern, ob wir die Rollen-Checks nicht alle mit den von App.vue provideten
- Rollen machen wollen.  Dann gibt es einfach einen Api-Call bei Aufrufen von Dataland, der alle Rollen fetcht,
- und alles weitere passiert dann mit diesen gefetchten Rollen => wir sparen einen Haufen COde und api calls */
   if (keycloakPromiseGetter && isCompanyIdValid(companyId)) {
     const resolvedKeycloakPromise = await waitForAndReturnResolvedKeycloakPromise(keycloakPromiseGetter);
     const userId = resolvedKeycloakPromise?.idTokenParsed?.sub;
