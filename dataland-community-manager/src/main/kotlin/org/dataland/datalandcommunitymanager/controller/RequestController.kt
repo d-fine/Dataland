@@ -16,6 +16,7 @@ import org.dataland.datalandcommunitymanager.services.DataAccessManager
 import org.dataland.datalandcommunitymanager.services.DataRequestAlterationManager
 import org.dataland.datalandcommunitymanager.services.DataRequestQueryManager
 import org.dataland.datalandcommunitymanager.services.SingleDataRequestManager
+import org.dataland.datalandcommunitymanager.utils.GetDataRequestsSearchFilter
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.RestController
@@ -82,14 +83,17 @@ class RequestController(
         chunkSize: Int,
         chunkIndex: Int,
     ): ResponseEntity<List<ExtendedStoredDataRequest>> {
+        val filter = GetDataRequestsSearchFilter(
+            dataTypeFilter = dataType?.value ?: "",
+            userIdFilter = userId ?: "",
+            requestStatus = requestStatus?.name ?: "",
+            accessStatus = accessStatus?.name ?: "",
+            reportingPeriodFilter = reportingPeriod ?: "",
+            datalandCompanyIdFilter = datalandCompanyId ?: "",
+        )
         return ResponseEntity.ok(
             dataRequestQueryManager.getDataRequests(
-                dataType,
-                userId,
-                requestStatus,
-                accessStatus,
-                reportingPeriod,
-                datalandCompanyId,
+                filter,
                 chunkIndex,
                 chunkSize,
             ),
