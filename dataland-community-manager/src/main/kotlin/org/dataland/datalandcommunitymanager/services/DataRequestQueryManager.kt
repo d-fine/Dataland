@@ -11,6 +11,7 @@ import org.dataland.datalandcommunitymanager.entities.CompanyRoleAssignmentEntit
 import org.dataland.datalandcommunitymanager.entities.DataRequestEntity
 import org.dataland.datalandcommunitymanager.exceptions.DataRequestNotFoundApiException
 import org.dataland.datalandcommunitymanager.model.companyRoles.CompanyRole
+import org.dataland.datalandcommunitymanager.model.dataRequest.AccessStatus
 import org.dataland.datalandcommunitymanager.model.dataRequest.AggregatedDataRequest
 import org.dataland.datalandcommunitymanager.model.dataRequest.ExtendedStoredDataRequest
 import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
@@ -176,7 +177,8 @@ class DataRequestQueryManager(
         val queryResultWithHistory = dataRequestRepository.fetchStatusHistory(queryResult)
 
         val storedDataRequests = queryResultWithHistory.map {
-            val allowedToSeeEmailAddress = ownedCompanyIds.contains(it.datalandCompanyId)
+            val allowedToSeeEmailAddress =
+                ownedCompanyIds.contains(it.datalandCompanyId) && it.accessStatus != AccessStatus.Public
             var emailAddress: String? = null
             if (allowedToSeeEmailAddress) {
                 emailAddress = getEmailAddress(it.userId)
