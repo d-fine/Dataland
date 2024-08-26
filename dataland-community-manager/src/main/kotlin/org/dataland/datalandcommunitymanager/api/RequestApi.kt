@@ -164,7 +164,7 @@ interface RequestApi {
         ],
     )
     @PatchMapping(
-        value = ["/{dataRequestId}/requestStatus"], // TODO Man kann hier doch viel mehr patchen als nur den status
+        value = ["/{dataRequestId}/requestStatus"],
         produces = ["application/json"],
     )
     @PreAuthorize(
@@ -178,7 +178,7 @@ interface RequestApi {
             "@SecurityUtilsService.isUserCompanyOwnerForRequestId(#dataRequestId) and" +
             "@SecurityUtilsService.areOnlyAuthorizedFieldsPatched(#requestStatus, #contacts, #message) ",
     )
-    fun patchDataRequest( // TODO der patch sollte eher ein request body sein bei sovielen pathcable params
+    fun patchDataRequest(
         @PathVariable dataRequestId: UUID,
         @RequestParam requestStatus: RequestStatus?,
         @RequestParam accessStatus: AccessStatus?,

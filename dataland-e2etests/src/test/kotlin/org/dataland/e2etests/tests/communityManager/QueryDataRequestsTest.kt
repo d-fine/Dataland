@@ -79,7 +79,7 @@ class QueryDataRequestsTest {
     @BeforeAll
     fun postDataRequestsBeforeQueryTest() {
         withTechnicalUser(TechnicalUser.PremiumUser) {
-            postSingleDataRequest(companyIdA, SingleDataRequest.DataType.lksg, setOf("2022", "2023"))
+            postSingleDataRequest(companyIdA, SingleDataRequest.DataType.vsme, setOf("2022", "2023"))
             postSingleDataRequest(companyIdB, SingleDataRequest.DataType.p2p, setOf("2023"))
         }
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
@@ -95,10 +95,10 @@ class QueryDataRequestsTest {
 
     @Test
     fun `query data requests with data type filter and assert that the expected results are being retrieved`() {
-        val vsmeDataRequests = requestControllerApi.getDataRequests(
-            dataType = RequestControllerApi.DataTypeGetDataRequests.vsme,
+        val sfdrDataRequests = requestControllerApi.getDataRequests(
+            dataType = RequestControllerApi.DataTypeGetDataRequests.sfdr,
         ).filter { it.creationTimestamp > timestampBeforePost }
-        assertEquals(0, vsmeDataRequests.size)
+        assertEquals(0, sfdrDataRequests.size)
 
         val p2pDataRequests = requestControllerApi.getDataRequests(
             dataType = RequestControllerApi.DataTypeGetDataRequests.p2p,
@@ -106,11 +106,11 @@ class QueryDataRequestsTest {
         assertEquals(1, p2pDataRequests.size)
         assertEquals(DataTypeEnum.p2p.value, p2pDataRequests.first().dataType)
 
-        val lksgDataRequests = requestControllerApi.getDataRequests(
-            dataType = RequestControllerApi.DataTypeGetDataRequests.lksg,
+        val vsmeDataRequests = requestControllerApi.getDataRequests(
+            dataType = RequestControllerApi.DataTypeGetDataRequests.vsme,
         ).filter { it.creationTimestamp > timestampBeforePost }
-        assertEquals(2, lksgDataRequests.size)
-        lksgDataRequests.forEach { assertEquals(DataTypeEnum.lksg.value, it.dataType) }
+        assertEquals(2, vsmeDataRequests.size)
+        vsmeDataRequests.forEach { assertEquals(DataTypeEnum.vsme.value, it.dataType) }
     }
 
     @Test
