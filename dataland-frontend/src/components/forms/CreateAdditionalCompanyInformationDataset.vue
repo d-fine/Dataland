@@ -141,11 +141,7 @@ import {
 } from '@clients/backend';
 import { useRoute } from 'vue-router';
 import { checkCustomInputs, checkIfAllUploadedReportsAreReferencedInDataModel } from '@/utils/ValidationsUtils';
-import FreeTextFormField from '@/components/forms/parts/fields/FreeTextFormField.vue';
-import NumberFormField from '@/components/forms/parts/fields/NumberFormField.vue';
 import DateFormField from '@/components/forms/parts/fields/DateFormField.vue';
-import SingleSelectFormField from '@/components/forms/parts/fields/SingleSelectFormField.vue';
-import RadioButtonsFormField from '@/components/forms/parts/fields/RadioButtonsFormField.vue';
 import SubmitButton from '@/components/forms/parts/SubmitButton.vue';
 import SubmitSideBar from '@/components/forms/parts/SubmitSideBar.vue';
 import UploadReports from '@/components/forms/parts/UploadReports.vue';
@@ -155,7 +151,6 @@ import { type DocumentToUpload, getFileName, uploadFiles } from '@/utils/FileUpl
 import { type FrameworkData, type Subcategory } from '@/utils/GenericFrameworkTypes';
 import { createSubcategoryVisibilityMap } from '@/utils/UploadFormUtils';
 import { formatAxiosErrorMessage } from '@/utils/AxiosErrorMessageFormatter';
-import BigDecimalExtendedDataPointFormField from '@/components/forms/parts/fields/BigDecimalExtendedDataPointFormField.vue';
 import BaseDataPointFormField from '@/components/forms/parts/elements/basic/BaseDataPointFormField.vue';
 import DateExtendedDataPointFormField from '@/components/forms/parts/fields/DateExtendedDataPointFormField.vue';
 import RadioButtonsExtendedDataPointFormField from '@/components/forms/parts/fields/RadioButtonsExtendedDataPointFormField.vue';
@@ -163,6 +158,7 @@ import { getFilledKpis } from '@/utils/DataPoint';
 import { type PublicFrameworkDataApi } from '@/utils/api/UnifiedFrameworkDataApi';
 import { getBasePublicFrameworkDefinition } from '@/frameworks/BasePublicFrameworkRegistry';
 import { hasUserCompanyOwnerOrDataUploaderRole } from '@/utils/CompanyRolesUtils';
+import CurrencyDataPointFormField from '@/components/forms/parts/fields/CurrencyDataPointFormField.vue';
 
 const referenceableReportsFieldId = 'referenceableReports';
 
@@ -184,15 +180,11 @@ export default defineComponent({
     Card,
     PrimeButton,
     Calendar,
-    FreeTextFormField,
-    NumberFormField,
     DateFormField,
-    SingleSelectFormField,
-    RadioButtonsFormField,
     UploadReports,
-    BigDecimalExtendedDataPointFormField,
     DateExtendedDataPointFormField,
     RadioButtonsExtendedDataPointFormField,
+    CurrencyDataPointFormField,
   },
   directives: {
     tooltip: Tooltip,
