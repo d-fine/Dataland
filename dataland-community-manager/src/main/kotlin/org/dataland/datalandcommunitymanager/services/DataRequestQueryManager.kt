@@ -2,10 +2,9 @@ package org.dataland.datalandcommunitymanager.services
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import okhttp3.OkHttpClient
-import okhttp3.Request
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
-import org.dataland.datalandbackendutils.model.KeycloakUserInfo
+import org.dataland.datalandbackendutils.utils.getEmailAddress
 import org.dataland.datalandcommunitymanager.entities.CompanyRoleAssignmentEntity
 import org.dataland.datalandcommunitymanager.entities.DataRequestEntity
 import org.dataland.datalandcommunitymanager.exceptions.DataRequestNotFoundApiException
@@ -118,23 +117,6 @@ constructor(
     }
 
     /**
-     * Gets the email address of a user in keycloak given the user id
-     * @param userId the userId of the user in question
-     * @returns the email address
-     */
-    fun getEmailAddress(userId: String): String {
-        val request = Request.Builder()
-            .url("$keycloakBaseUrl/admin/realms/datalandsecurity/users/$userId")
-            .build()
-        val response = authenticatedOkHttpClient.newCall(request).execute()
-        val parsedResponseBody = objectMapper.readValue(
-            response.body!!.string(),
-            KeycloakUserInfo::class.java,
-        )
-        return parsedResponseBody.email ?: ""
-    }
-
-    /**
      * Method to get all data requests based on filters.
      * @param dataType the framework to apply to the data request
      * @param requestStatus the status to apply to the data request
@@ -175,7 +157,7 @@ constructor(
                 ownedCompanyIds.contains(it.datalandCompanyId) && it.accessStatus != AccessStatus.Public
             var emailAddress: String? = null
             if (allowedToSeeEmailAddress) {
-                emailAddress = getEmailAddress(it.userId)
+                emailAddress = getEmailAddress(authenticatedOkHttpClient, objectMapper, keycloakBaseUrl, it.userId)
             }
             it.toStoredDataRequest(emailAddress)
         }
