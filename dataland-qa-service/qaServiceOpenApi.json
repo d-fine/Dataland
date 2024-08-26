@@ -449,9 +449,7 @@
         "tags": [
           "additional-company-information-data-qa-report-controller"
         ],
-        "summary": "Retrieve all QA reports.",
-        "description": "Retrieve all QA reports associated to given dataset.",
-        "operationId": "getAllQaReportsForDataset",
+        "operationId": "getAdditionalCompanyInformationDataAllQaReportsForDataset",
         "parameters": [
           {
             "name": "dataId",
@@ -526,9 +524,7 @@
         "tags": [
           "additional-company-information-data-qa-report-controller"
         ],
-        "summary": "Upload new QA report.",
-        "description": "The uploaded QA report is added to the database, the generated report id is returned.",
-        "operationId": "postQaReport",
+        "operationId": "postAdditionalCompanyInformationDataQaReport",
         "parameters": [
           {
             "name": "dataId",
@@ -734,9 +730,7 @@
         "tags": [
           "additional-company-information-data-qa-report-controller"
         ],
-        "summary": "Change the status of a QA report.",
-        "description": "The specified QA report is marked as active or inactive.",
-        "operationId": "setQaReportStatus",
+        "operationId": "setAdditionalCompanyInformationDataQaReportStatus",
         "parameters": [
           {
             "name": "dataId",
@@ -990,9 +984,7 @@
         "tags": [
           "additional-company-information-data-qa-report-controller"
         ],
-        "summary": "Retrieve a QA report.",
-        "description": "Retrieve the information about a QA report.",
-        "operationId": "getQaReport",
+        "operationId": "getAdditionalCompanyInformationDataQaReport",
         "parameters": [
           {
             "name": "dataId",

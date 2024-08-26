@@ -2,11 +2,16 @@
 package org.dataland.datalandqaservice.org.dataland.datalandqaservice.frameworks.additionalcompanyinformation
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import io.swagger.v3.oas.annotations.Operation
 import org.dataland.datalandqaservice.frameworks.additionalcompanyinformation.model.AdditionalCompanyInformationData
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.controller.QaReportController
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.reports.QaReportMetaInformation
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.reports.QaReportStatusPatch
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.reports.QaReportWithMetaInformation
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.QaReportManager
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.QaReportSecurityPolicy
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
@@ -25,4 +30,34 @@ class AdditionalCompanyInformationDataQaReportController(
     qaReportSecurityPolicy = qaReportSecurityPolicy,
     clazz = AdditionalCompanyInformationData::class.java,
     dataType = "additional-company-information",
-)
+) {
+    @Operation(operationId = "postAdditionalCompanyInformationDataQaReport")
+    override fun postQaReport(
+        dataId: String,
+        qaReport: AdditionalCompanyInformationData,
+    ): ResponseEntity<QaReportMetaInformation> {
+        return super.postQaReport(dataId, qaReport)
+    }
+
+    @Operation(operationId = "getAdditionalCompanyInformationDataQaReport")
+    override fun getQaReport(
+        dataId: String,
+        qaReportId: String,
+    ): ResponseEntity<QaReportWithMetaInformation<AdditionalCompanyInformationData>> {
+        return super.getQaReport(dataId, qaReportId)
+    }
+
+    @Operation(operationId = "setAdditionalCompanyInformationDataQaReportStatus")
+    override fun setQaReportStatus(dataId: String, qaReportId: String, statusPatch: QaReportStatusPatch) {
+        super.setQaReportStatus(dataId, qaReportId, statusPatch)
+    }
+
+    @Operation(operationId = "getAdditionalCompanyInformationDataAllQaReportsForDataset")
+    override fun getAllQaReportsForDataset(
+        dataId: String,
+        showInactive: Boolean?,
+        reporterUserId: String?,
+    ): ResponseEntity<List<QaReportWithMetaInformation<AdditionalCompanyInformationData>>> {
+        return super.getAllQaReportsForDataset(dataId, showInactive, reporterUserId)
+    }
+}
