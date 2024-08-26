@@ -15661,6 +15661,9 @@
             "type": "string",
             "nullable": true
           },
+          "headquarters": {
+            "type": "string"
+          },
           "companyId": {
             "type": "string"
           },
@@ -15668,9 +15671,6 @@
             "type": "string"
           },
           "countryCode": {
-            "type": "string"
-          },
-          "headquarters": {
             "type": "string"
           }
         }
