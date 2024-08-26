@@ -111,8 +111,8 @@ describeIf(
 
     /**
      * Clicks on the button in the access request table in specific row to grant or decline a request
-     * @param reportingPeriod
-     * @param buttonText
+     * @param reportingPeriod the reporting period to decline or grant
+     * @param buttonText the text of the button that should be clicked
      */
     function clickButtonInAccessRequestTableForReportingPeriod(reportingPeriod: string, buttonText: string): void {
       cy.get('tbody.p-datatable-tbody')
@@ -125,9 +125,9 @@ describeIf(
 
     /**
      * Checks that a specific row in the access request table has a certain badge with a give class and text.
-     * @param reportingPeriod
-     * @param badgeClass
-     * @param badgeText
+     * @param reportingPeriod the reporting period to identify the row
+     * @param badgeClass the badge class that should exist
+     * @param badgeText the text the badge should have
      */
     function validateAccessRequestForReportingPeriodTableHasBadgeWithText(
       reportingPeriod: string,
