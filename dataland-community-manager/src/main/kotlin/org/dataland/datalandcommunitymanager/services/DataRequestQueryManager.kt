@@ -4,7 +4,6 @@ import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandcommunitymanager.entities.DataRequestEntity
 import org.dataland.datalandcommunitymanager.exceptions.DataRequestNotFoundApiException
-import org.dataland.datalandcommunitymanager.model.dataRequest.AccessStatus
 import org.dataland.datalandcommunitymanager.model.dataRequest.AggregatedDataRequest
 import org.dataland.datalandcommunitymanager.model.dataRequest.ExtendedStoredDataRequest
 import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
@@ -118,23 +117,10 @@ class DataRequestQueryManager(
     @Suppress("LongParameterList")
     @Transactional
     fun getDataRequests(
-        dataType: DataTypeEnum?,
-        userId: String?,
-        requestStatus: RequestStatus?,
-        accessStatus: AccessStatus?,
-        reportingPeriod: String?,
-        datalandCompanyId: String?,
+        filter: GetDataRequestsSearchFilter,
         chunkIndex: Int?,
         chunkSize: Int?,
     ): List<ExtendedStoredDataRequest>? {
-        val filter = GetDataRequestsSearchFilter(
-            dataTypeFilter = dataType?.value ?: "",
-            userIdFilter = userId ?: "",
-            requestStatus = requestStatus?.name ?: "",
-            accessStatus = accessStatus?.name ?: "",
-            reportingPeriodFilter = reportingPeriod ?: "",
-            datalandCompanyIdFilter = datalandCompanyId ?: "",
-        )
         val offset = (chunkIndex ?: 0) * (chunkSize ?: 0)
         return dataRequestRepository.searchDataRequestEntity(
             searchFilter = filter, resultOffset = offset,
