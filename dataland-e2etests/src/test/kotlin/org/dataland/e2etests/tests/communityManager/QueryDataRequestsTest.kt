@@ -50,7 +50,7 @@ class QueryDataRequestsTest {
 
     @Test
     fun `query data requests with no filters and assert that the expected results are being retrieved`() {
-        val storedDataRequests = requestControllerApi.getDataRequests().filter {
+        val storedDataRequests = requestControllerApi.getDataRequests(chunkSize = 1000).filter {
             it.creationTimestamp > timestampBeforePost
         }
         assertEquals(3, storedDataRequests.size)
@@ -59,18 +59,18 @@ class QueryDataRequestsTest {
     @Test
     fun `query data requests with data type filter and assert that the expected results are being retrieved`() {
         val vsmeDataRequests = requestControllerApi.getDataRequests(
-            dataType = RequestControllerApi.DataTypeGetDataRequests.vsme,
+            dataType = RequestControllerApi.DataTypeGetDataRequests.vsme, chunkSize = 1000,
         ).filter { it.creationTimestamp > timestampBeforePost }
         assertEquals(0, vsmeDataRequests.size)
 
         val p2pDataRequests = requestControllerApi.getDataRequests(
-            dataType = RequestControllerApi.DataTypeGetDataRequests.p2p,
+            dataType = RequestControllerApi.DataTypeGetDataRequests.p2p, chunkSize = 1000,
         ).filter { it.creationTimestamp > timestampBeforePost }
         assertEquals(1, p2pDataRequests.size)
         assertEquals(DataTypeEnum.p2p.value, p2pDataRequests.first().dataType)
 
         val lksgDataRequests = requestControllerApi.getDataRequests(
-            dataType = RequestControllerApi.DataTypeGetDataRequests.lksg,
+            dataType = RequestControllerApi.DataTypeGetDataRequests.lksg, chunkSize = 1000,
         ).filter { it.creationTimestamp > timestampBeforePost }
         assertEquals(2, lksgDataRequests.size)
         lksgDataRequests.forEach { assertEquals(DataTypeEnum.lksg.value, it.dataType) }
@@ -78,18 +78,27 @@ class QueryDataRequestsTest {
 
     @Test
     fun `query data requests with reporting period filter and assert that the expected results are being retrieved`() {
-        val dataRequestsFor2021 = requestControllerApi.getDataRequests(reportingPeriod = "2021").filter {
+        val dataRequestsFor2021 = requestControllerApi.getDataRequests(
+            reportingPeriod = "2021",
+            chunkSize = 1000,
+        ).filter {
             it.creationTimestamp > timestampBeforePost
         }
         assertEquals(0, dataRequestsFor2021.size)
 
-        val dataRequestsFor2022 = requestControllerApi.getDataRequests(reportingPeriod = "2022").filter {
+        val dataRequestsFor2022 = requestControllerApi.getDataRequests(
+            reportingPeriod = "2022",
+            chunkSize = 1000,
+        ).filter {
             it.creationTimestamp > timestampBeforePost
         }
         assertEquals(1, dataRequestsFor2022.size)
         assertEquals("2022", dataRequestsFor2022.first().reportingPeriod)
 
-        val dataRequestsFor2023 = requestControllerApi.getDataRequests(reportingPeriod = "2023").filter {
+        val dataRequestsFor2023 = requestControllerApi.getDataRequests(
+            reportingPeriod = "2023",
+            chunkSize = 1000,
+        ).filter {
             it.creationTimestamp > timestampBeforePost
         }
         assertEquals(2, dataRequestsFor2023.size)
@@ -99,14 +108,17 @@ class QueryDataRequestsTest {
     @Test
     fun `query data requests with request status filter and assert that the expected results are being retrieved`() {
         val dataRequestIdB = UUID.fromString(
-            requestControllerApi.getDataRequests().filter {
+            requestControllerApi.getDataRequests(chunkSize = 1000).filter {
                 it.creationTimestamp > timestampBeforePost
             }.first {
                 it.datalandCompanyId == companyIdB
             }.dataRequestId,
         )
 
-        val closedDataRequests = requestControllerApi.getDataRequests(requestStatus = RequestStatus.Resolved).filter {
+        val closedDataRequests = requestControllerApi.getDataRequests(
+            requestStatus = RequestStatus.Resolved,
+            chunkSize = 1000,
+        ).filter {
             it.creationTimestamp > timestampBeforePost
         }
         assertEquals(0, closedDataRequests.size)
@@ -117,7 +129,10 @@ class QueryDataRequestsTest {
 
         requestControllerApi.patchDataRequest(dataRequestIdB, RequestStatus.Answered)
 
-        val answeredDataRequests = requestControllerApi.getDataRequests(requestStatus = RequestStatus.Answered).filter {
+        val answeredDataRequests = requestControllerApi.getDataRequests(
+            requestStatus = RequestStatus.Answered,
+            chunkSize = 1000,
+        ).filter {
             it.creationTimestamp > timestampBeforePost
         }
         assertEquals(1, answeredDataRequests.size)
@@ -128,16 +143,22 @@ class QueryDataRequestsTest {
     @Test
     fun `query data requests with company id filter and assert that the expected results are being retrieved`() {
         val storedDataRequestsForRandomCompanyId = requestControllerApi.getDataRequests(
-            datalandCompanyId = UUID.randomUUID().toString(),
+            datalandCompanyId = UUID.randomUUID().toString(), chunkSize = 1000,
         ).filter { it.creationTimestamp > timestampBeforePost }
         assertEquals(0, storedDataRequestsForRandomCompanyId.size)
 
-        val storedDataRequestsForCompanyB = requestControllerApi.getDataRequests(datalandCompanyId = companyIdB)
+        val storedDataRequestsForCompanyB = requestControllerApi.getDataRequests(
+            datalandCompanyId = companyIdB,
+            chunkSize = 1000,
+        )
             .filter { it.creationTimestamp > timestampBeforePost }
         assertEquals(1, storedDataRequestsForCompanyB.size)
         assertEquals(companyIdB, storedDataRequestsForCompanyB.first().datalandCompanyId)
 
-        val storedDataRequestsForCompanyA = requestControllerApi.getDataRequests(datalandCompanyId = companyIdA)
+        val storedDataRequestsForCompanyA = requestControllerApi.getDataRequests(
+            datalandCompanyId = companyIdA,
+            chunkSize = 1000,
+        )
             .filter { it.creationTimestamp > timestampBeforePost }
         assertEquals(2, storedDataRequestsForCompanyA.size)
         storedDataRequestsForCompanyA.forEach { assertEquals(companyIdA, it.datalandCompanyId) }
@@ -146,14 +167,14 @@ class QueryDataRequestsTest {
     @Test
     fun `query data requests with user id filter and assert that the expected results are being retrieved`() {
         val dataRequestsByAdmin = requestControllerApi.getDataRequests(
-            userId = TechnicalUser.Admin.technicalUserId,
+            userId = TechnicalUser.Admin.technicalUserId, chunkSize = 1000,
         ).filter {
             it.creationTimestamp > timestampBeforePost
         }
         assertEquals(0, dataRequestsByAdmin.size)
 
         val dataRequestsByPremiumUser = requestControllerApi.getDataRequests(
-            userId = TechnicalUser.PremiumUser.technicalUserId,
+            userId = TechnicalUser.PremiumUser.technicalUserId, chunkSize = 1000,
         ).filter {
             it.creationTimestamp > timestampBeforePost
         }
