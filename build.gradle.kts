@@ -111,7 +111,7 @@ sonar {
                 // frontend configs
                 "dataland-frontend/src/components/resources/frameworkDataSearch/euTaxonomy/configMLDT/" +
                 "configForEutaxonomyFinancialsMLDT.ts," +
-                "dataland-frontend/src/frameworks/additional-company-information/ViewConfig.ts" +
+                "dataland-frontend/src/frameworks/additional-company-information/ViewConfig.ts," +
                 "dataland-frontend/src/frameworks/esg-questionnaire/ViewConfig.ts," +
                 "dataland-frontend/src/frameworks/lksg/ViewConfig.ts," +
                 "dataland-frontend/src/frameworks/sfdr/ViewConfig.ts," +
