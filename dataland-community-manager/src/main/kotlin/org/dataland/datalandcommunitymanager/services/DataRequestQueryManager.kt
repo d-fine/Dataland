@@ -107,14 +107,11 @@ class DataRequestQueryManager(
 
     /**
      * Method to get all data requests based on filters.
-     * @param dataType the framework to apply to the data request
-     * @param requestStatus the status to apply to the data request
-     * @param userId the user to apply to the data request
-     * @param reportingPeriod the reporting period to apply to the data request
-     * @param datalandCompanyId the Dataland company ID to apply to the data request
+     * @param filter the search filter containing relevant search parameters
+     * @param chunkIndex the index of the chunked results which should be returned
+     * @param chunkSize the size of entries per chunk which should be returned
      * @return all filtered data requests
      */
-    @Suppress("LongParameterList")
     @Transactional
     fun getDataRequests(
         filter: GetDataRequestsSearchFilter,
