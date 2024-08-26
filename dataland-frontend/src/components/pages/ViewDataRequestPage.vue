@@ -235,9 +235,6 @@ export default defineComponent({
       .catch((error) => console.error(error));
   },
   methods: {
-    /*TODO do we need a withdrawn status in the accessStatus Enum?
-       Currently if a vsme data request is withdrawn it is shown as requestStatus = withdrawn + accessStatus = pending
-       in the frontend*/
     accessStatusBadgeClass,
     convertUnixTimeInMsToDateString,
     badgeClass,
