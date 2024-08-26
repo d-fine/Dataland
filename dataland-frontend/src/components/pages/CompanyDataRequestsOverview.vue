@@ -270,6 +270,9 @@ export default defineComponent({
       this.searchBarInputFilter = newSearch;
       this.updateCurrentDisplayedData();
     },
+    companyRoleAssignments() {
+      this.getStoredCompanyRequestDataList();
+    },
   },
   methods: {
     accessStatusBadgeClass,
