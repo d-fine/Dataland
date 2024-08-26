@@ -1,12 +1,11 @@
 package org.dataland.datalandcommunitymanager.services
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties
-import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.databind.ObjectMapper
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
+import org.dataland.datalandbackendutils.model.KeycloakUserInfo
 import org.dataland.datalandcommunitymanager.entities.CompanyRoleAssignmentEntity
 import org.dataland.datalandcommunitymanager.entities.DataRequestEntity
 import org.dataland.datalandcommunitymanager.exceptions.DataRequestNotFoundApiException
@@ -118,26 +117,19 @@ constructor(
         return dataRequestEntity.toStoredDataRequest()
     }
 
-    @JsonIgnoreProperties(ignoreUnknown = true)
-    private data class User( // TODO backend utils?
-        @JsonProperty("email")
-        val email: String?,
-    )
-
     /**
      * Gets the email address of a user in keycloak given the user id
      * @param userId the userId of the user in question
      * @returns the email address
      */
     fun getEmailAddress(userId: String): String {
-        // TODO duplicate code to KeycloakUserControllerApiService => centralize?
         val request = Request.Builder()
             .url("$keycloakBaseUrl/admin/realms/datalandsecurity/users/$userId")
             .build()
         val response = authenticatedOkHttpClient.newCall(request).execute()
         val parsedResponseBody = objectMapper.readValue(
             response.body!!.string(),
-            User::class.java,
+            KeycloakUserInfo::class.java,
         )
         return parsedResponseBody.email ?: ""
     }
