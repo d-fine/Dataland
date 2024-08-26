@@ -55,15 +55,30 @@ class EuTaxonomyAlignedActivitiesComponent(
                     TypeReference(
                         "kotlin.collections.MutableList",
                         isNullable,
-
                         listOf(
-
                             TypeReference(
                                 "org.dataland.datalandbackend.frameworks.eutaxonomynonfinancials" +
                                     ".custom.EuTaxonomyAlignedActivity",
                                 false,
                             ),
                         ),
+                    ),
+                ),
+            ),
+        )
+    }
+
+    override fun generateDefaultQaModel(dataClassBuilder: DataClassBuilder) {
+        dataClassBuilder.addProperty(
+            identifier,
+            TypeReference(
+                "org.dataland.datalandqaservice.model.reports.QaReportDataPoint",
+                isNullable,
+                listOf(
+                    TypeReference(
+                        "org.dataland.datalandbackend.openApiClient.model" +
+                            ".ExtendedDataPointListEuTaxonomyAlignedActivity",
+                        isNullable,
                     ),
                 ),
             ),

@@ -15657,10 +15657,11 @@
             "type": "string",
             "nullable": true
           },
-          "headquarters": {
-            "type": "string"
+          "lei": {
+            "type": "string",
+            "nullable": true
           },
-          "countryCode": {
+          "headquarters": {
             "type": "string"
           },
           "companyName": {
@@ -15669,9 +15670,8 @@
           "companyId": {
             "type": "string"
           },
-          "lei": {
-            "type": "string",
-            "nullable": true
+          "countryCode": {
+            "type": "string"
           }
         }
       },
