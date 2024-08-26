@@ -31,14 +31,16 @@ import kotlin.jvm.optionals.getOrElse
 /**
  * Implementation of a request manager service for all request queries
  */
-@Suppress("LongParameterList") // TODO maybe remove later?
 @Service
-class DataRequestQueryManager(
-    @Autowired private val dataRequestRepository: DataRequestRepository,
-    @Autowired private val dataRequestLogger: DataRequestLogger,
-    @Autowired private val companyDataControllerApi: CompanyDataControllerApi,
-    @Autowired private val processingUtils: DataRequestProcessingUtils,
-    @Autowired private val objectMapper: ObjectMapper,
+class DataRequestQueryManager
+@Suppress("LongParameterList")
+@Autowired
+constructor(
+    private val dataRequestRepository: DataRequestRepository,
+    private val dataRequestLogger: DataRequestLogger,
+    private val companyDataControllerApi: CompanyDataControllerApi,
+    private val processingUtils: DataRequestProcessingUtils,
+    private val objectMapper: ObjectMapper,
     @Qualifier("AuthenticatedOkHttpClient") val authenticatedOkHttpClient: OkHttpClient,
     @Value("\${dataland.keycloak.base-url}") private val keycloakBaseUrl: String,
 ) {
