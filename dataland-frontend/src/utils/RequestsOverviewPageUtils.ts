@@ -1,4 +1,8 @@
-import { RequestStatus } from '@clients/communitymanager';
+import { AccessStatus, RequestStatus } from '@clients/communitymanager';
+import { type FrameworkSelectableItem, type SelectableItem } from '@/utils/FrameworkDataSearchDropDownFilterTypes';
+import { FRAMEWORKS_WITH_VIEW_PAGE } from '@/utils/Constants';
+import { humanizeStringOrNumber } from '@/utils/StringFormatter';
+import { getFrontendFrameworkDefinition } from '@/frameworks/FrontendFrameworkRegistry';
 
 /**
  * Compares two request status
@@ -16,4 +20,36 @@ export function customCompareForRequestStatus(a: RequestStatus, b: RequestStatus
   sortOrderRequestStatus[RequestStatus.Withdrawn] = 5;
   if (sortOrderRequestStatus[a] <= sortOrderRequestStatus[b]) return -1 * sortOrder;
   return sortOrder;
+}
+
+/**
+ * Gets list with all available frameworks
+ * @returns array of frameworkSelectableItem
+ */
+export function retrieveAvailableFrameworks(): Array<FrameworkSelectableItem> {
+  return FRAMEWORKS_WITH_VIEW_PAGE.map((dataTypeEnum) => {
+    let displayName = humanizeStringOrNumber(dataTypeEnum);
+    const frameworkDefinition = getFrontendFrameworkDefinition(dataTypeEnum);
+    if (frameworkDefinition) {
+      displayName = frameworkDefinition.label;
+    }
+    return {
+      frameworkDataType: dataTypeEnum,
+      displayName: displayName,
+      disabled: false,
+    };
+  });
+}
+
+/**
+ * Gets list with all available access status
+ * @returns array of SelectableItem
+ */
+export function retrieveAvailableAccessStatus(): Array<SelectableItem> {
+  return Object.values(AccessStatus).map((status) => {
+    return {
+      displayName: status,
+      disabled: false,
+    };
+  });
 }

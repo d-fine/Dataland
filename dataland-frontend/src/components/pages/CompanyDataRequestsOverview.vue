@@ -184,29 +184,21 @@ import type Keycloak from 'keycloak-js';
 import { ApiClientProvider } from '@/services/ApiClients';
 import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
-import {
-  frameworkHasSubTitle,
-  getFrameworkSubtitle,
-  getFrameworkTitle,
-  humanizeStringOrNumber,
-} from '@/utils/StringFormatter';
+import { frameworkHasSubTitle, getFrameworkSubtitle, getFrameworkTitle } from '@/utils/StringFormatter';
 import DatasetsTabMenu from '@/components/general/DatasetsTabMenu.vue';
 import { convertUnixTimeInMsToDateString } from '@/utils/DataFormatUtils';
-import {
-  type CompanyRoleAssignment,
-  RequestStatus,
-  AccessStatus,
-  type StoredDataRequest,
-} from '@clients/communitymanager';
+import { type CompanyRoleAssignment, AccessStatus, type StoredDataRequest } from '@clients/communitymanager';
 import InputText from 'primevue/inputtext';
 import FrameworkDataSearchDropdownFilter from '@/components/resources/frameworkDataSearch/FrameworkDataSearchDropdownFilter.vue';
 import { type FrameworkSelectableItem, type SelectableItem } from '@/utils/FrameworkDataSearchDropDownFilterTypes';
-import { FRAMEWORKS_WITH_VIEW_PAGE } from '@/utils/Constants';
-import { getFrontendFrameworkDefinition } from '@/frameworks/FrontendFrameworkRegistry';
 import AuthenticationWrapper from '@/components/wrapper/AuthenticationWrapper.vue';
 import { accessStatusBadgeClass, badgeClass } from '@/utils/RequestUtils';
 import PrimeButton from 'primevue/button';
-import { customCompareForRequestStatus } from '@/utils/RequestsOverviewPageUtils';
+import {
+  customCompareForRequestStatus,
+  retrieveAvailableAccessStatus,
+  retrieveAvailableFrameworks,
+} from '@/utils/RequestsOverviewPageUtils';
 
 export default defineComponent({
   name: 'MyDataRequestsOverview',
@@ -259,8 +251,8 @@ export default defineComponent({
     };
   },
   mounted() {
-    this.availableFrameworks = this.retrieveAvailableFrameworks();
-    this.availableAccessStatus = this.retrieveAvailableAccessStatus();
+    this.availableFrameworks = retrieveAvailableFrameworks();
+    this.availableAccessStatus = retrieveAvailableAccessStatus();
     this.getStoredCompanyRequestDataList().catch((error) => console.error(error));
     this.resetFilterAndSearchBar();
   },
@@ -286,36 +278,7 @@ export default defineComponent({
     getFrameworkTitle,
     getFrameworkSubtitle,
     convertUnixTimeInMsToDateString,
-    /**
-     * Gets list with all available frameworks
-     * @returns array of frameworkSelectableItem
-     */
-    retrieveAvailableFrameworks(): Array<FrameworkSelectableItem> {
-      return FRAMEWORKS_WITH_VIEW_PAGE.map((dataTypeEnum) => {
-        let displayName = humanizeStringOrNumber(dataTypeEnum);
-        const frameworkDefinition = getFrontendFrameworkDefinition(dataTypeEnum);
-        if (frameworkDefinition) {
-          displayName = frameworkDefinition.label;
-        }
-        return {
-          frameworkDataType: dataTypeEnum,
-          displayName: displayName,
-          disabled: false,
-        };
-      });
-    },
-    /**
-     * Gets list with all available access status
-     * @returns array of SelectableItem
-     */
-    retrieveAvailableAccessStatus(): Array<SelectableItem> {
-      return Object.values(this.AccessStatus).map((status) => {
-        return {
-          displayName: status,
-          disabled: false,
-        };
-      });
-    },
+
     /**
      * Gets list of storedComapnyDataRequests
      */
