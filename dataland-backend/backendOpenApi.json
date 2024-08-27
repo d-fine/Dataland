@@ -11514,11 +11514,13 @@
         ]
       },
       "AssuranceDataPoint": {
+        "required": [
+          "value"
+        ],
         "type": "object",
         "properties": {
           "value": {
             "type": "string",
-            "nullable": true,
             "enum": [
               "None",
               "LimitedAssurance",
@@ -15272,25 +15274,25 @@
         ],
         "type": "object",
         "properties": {
-          "countryCode": {
-            "type": "string"
-          },
-          "headquarters": {
-            "type": "string"
-          },
           "sector": {
             "type": "string",
             "nullable": true
           },
-          "companyName": {
+          "lei": {
+            "type": "string",
+            "nullable": true
+          },
+          "headquarters": {
             "type": "string"
           },
           "companyId": {
             "type": "string"
           },
-          "lei": {
-            "type": "string",
-            "nullable": true
+          "companyName": {
+            "type": "string"
+          },
+          "countryCode": {
+            "type": "string"
           }
         }
       },
@@ -15313,10 +15315,10 @@
         ],
         "type": "object",
         "properties": {
-          "companyName": {
+          "companyId": {
             "type": "string"
           },
-          "companyId": {
+          "companyName": {
             "type": "string"
           }
         }
