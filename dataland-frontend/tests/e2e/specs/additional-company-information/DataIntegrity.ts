@@ -54,7 +54,7 @@ describeIf(
               return uploadGenericFrameworkData(
                 token,
                 storedCompany.companyId,
-                '2021',
+                additionalCompanyInformationFixtureForTest.reportingPeriod,
                 additionalCompanyInformationFixtureForTest.t,
                 (config) =>
                   getBasePublicFrameworkDefinition(
@@ -73,6 +73,8 @@ describeIf(
                   );
                 cy.wait('@fetchDataForPrefill', { timeout: Cypress.env('medium_timeout_in_ms') as number });
                 cy.get('h1').should('contain', testCompanyName);
+                cy.get('[data-test="reportingPeriod"] button').should('have.class', 'p-datepicker-trigger').click();
+
                 cy.intercept({
                   url: `**/api/data/${DataTypeEnum.AdditionalCompanyInformation}?bypassQa=true`,
                   times: 1,
