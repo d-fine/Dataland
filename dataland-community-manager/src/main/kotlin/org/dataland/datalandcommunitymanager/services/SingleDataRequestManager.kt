@@ -13,6 +13,7 @@ import org.dataland.datalandcommunitymanager.utils.CompanyIdValidator
 import org.dataland.datalandcommunitymanager.utils.DataRequestLogger
 import org.dataland.datalandcommunitymanager.utils.DataRequestProcessingUtils
 import org.dataland.datalandcommunitymanager.utils.ReportingPeriodKeys
+import org.dataland.datalandcommunitymanager.utils.readableFrameworkNameMapping
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.dataland.keycloakAdapter.auth.DatalandJwtAuthentication
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
@@ -278,10 +279,12 @@ constructor(
         if (reportingPeriodsOfStoredAccessRequests.isNullOrEmpty()) {
             return
         } else {
+            val dataTypeDescription =
+                readableFrameworkNameMapping[preprocessedRequest.dataType] ?: preprocessedRequest.dataType.toString()
             accessRequestEmailSender.notifyCompanyOwnerAboutNewRequest(
                 AccessRequestEmailSender.RequestEmailInformation(
                     preprocessedRequest.userId, preprocessedRequest.message,
-                    preprocessedRequest.companyId, preprocessedRequest.dataType.toString(),
+                    preprocessedRequest.companyId, dataTypeDescription,
                     reportingPeriodsOfStoredAccessRequests.toSet(),
                     preprocessedRequest.contacts ?: setOf(),
                 ),
