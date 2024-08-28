@@ -13,7 +13,7 @@ import org.dataland.datalandcommunitymanager.utils.readableFrameworkNameMapping
 import java.util.*
 
 /**
- * The entity storing the information considering one data request
+ * The entity storing the information considering one data requests
  */
 @Entity
 @Table(name = "data_requests")
