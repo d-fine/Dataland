@@ -1,6 +1,5 @@
 package org.dataland.datalandemailservice.services
 
-import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.ObjectMapper
 import okhttp3.OkHttpClient
 import org.dataland.datalandbackendutils.utils.getEmailAddress
@@ -75,7 +74,7 @@ class TemplateEmailMessageListener(
         )
 
         messageQueueUtils.rejectMessageOnException {
-            val receiverEmailAddress = getEmailAddressByRecipient(objectMapper.readTree(jsonString).get("receiver"))
+            val receiverEmailAddress = getEmailAddressByRecipient(message.receiver)
             val templateEmailFactory = getMatchingEmailFactory(message)
             emailSender.sendEmailWithoutTestReceivers(
                 templateEmailFactory.buildEmail(
@@ -86,18 +85,12 @@ class TemplateEmailMessageListener(
         }
     }
 
-    private fun getEmailAddressByRecipient(receiver: JsonNode?): String {
-        return when (val receiverType = receiver?.get("type")?.asText()) {
-            "address" -> receiver.get("email").asText()
-            "user" -> getEmailAddress(
-                authenticatedOkHttpClient,
-                objectMapper,
-                keycloakBaseUrl,
-                receiver.get("userId").asText(),
-            )
-            else -> {
-                throw IllegalArgumentException("Invalid receiver type: $receiverType")
-            }
+    private fun getEmailAddressByRecipient(receiver: TemplateEmailMessage.EmailRecipient): String {
+        return when (receiver) {
+            is TemplateEmailMessage.EmailAddressEmailRecipient ->
+                receiver.email
+            is TemplateEmailMessage.UserIdEmailRecipient ->
+                getEmailAddress(authenticatedOkHttpClient, objectMapper, keycloakBaseUrl, receiver.userId)
         }
     }
 
