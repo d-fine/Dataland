@@ -74,8 +74,8 @@ class TemplateEmailMessageListener(
                 "with correlationId $correlationId.",
         )
 
-        val receiverEmailAddress = getEmailAddressByRecipient(objectMapper.readTree(jsonString).get("receiver"))
         messageQueueUtils.rejectMessageOnException {
+            val receiverEmailAddress = getEmailAddressByRecipient(objectMapper.readTree(jsonString).get("receiver"))
             val templateEmailFactory = getMatchingEmailFactory(message)
             emailSender.sendEmailWithoutTestReceivers(
                 templateEmailFactory.buildEmail(
