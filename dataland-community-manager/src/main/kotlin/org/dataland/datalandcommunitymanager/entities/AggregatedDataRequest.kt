@@ -1,7 +1,5 @@
 package org.dataland.datalandcommunitymanager.entities
 
-import java.util.*
-
 /**
  * Received entity when doing a database query to get aggregated info about the count of existing data requests
  * on Dataland.
