@@ -2,10 +2,11 @@ package org.dataland.datalandcommunitymanager.repositories
 
 import org.dataland.datalandcommunitymanager.entities.AggregatedDataRequest
 import org.dataland.datalandcommunitymanager.entities.DataRequestEntity
+import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
+import org.dataland.datalandcommunitymanager.utils.DataRequestsQueryFilter
 import org.dataland.datalandcommunitymanager.repositories.utils.TemporaryTables
 import org.dataland.datalandcommunitymanager.repositories.utils.TemporaryTables.Companion.MOST_RECENT_STATUS_CHANGE
 import org.dataland.datalandcommunitymanager.utils.GetAggregatedRequestsSearchFilter
-import org.dataland.datalandcommunitymanager.utils.GetDataRequestsSearchFilter
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.query.Param
@@ -84,7 +85,7 @@ interface DataRequestRepository : JpaRepository<DataRequestEntity, String> {
 
     )
     fun searchDataRequestEntity(
-        @Param("searchFilter") searchFilter: GetDataRequestsSearchFilter,
+        @Param("searchFilter") searchFilter: DataRequestsQueryFilter,
         @Param("resultLimit") resultLimit: Int? = 100,
         @Param("resultOffset") resultOffset: Int? = 0,
     ): List<DataRequestEntity>

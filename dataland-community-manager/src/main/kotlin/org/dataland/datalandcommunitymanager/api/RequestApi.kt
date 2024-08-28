@@ -171,7 +171,7 @@ interface RequestApi {
         "hasRole('ROLE_ADMIN') or " +
             "(@SecurityUtilsService.isUserAskingForOwnRequest(#dataRequestId) and " +
             "@SecurityUtilsService.isRequestStatusChangeableByUser(#dataRequestId, #requestStatus) and " +
-            "@SecurityUtilsService.noAccessStatusPatch(#accessStatus) and " +
+            "@SecurityUtilsService.isNotTryingToPatchAccessStatus(#accessStatus) and " +
             "@SecurityUtilsService.isRequestMessageHistoryChangeableByUser(" +
             "#dataRequestId, #requestStatus, #contacts,#message)" +
             ") or" +

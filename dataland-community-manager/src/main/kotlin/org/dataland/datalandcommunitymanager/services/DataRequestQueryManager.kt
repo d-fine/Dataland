@@ -1,9 +1,15 @@
 package org.dataland.datalandcommunitymanager.services
 
+import com.fasterxml.jackson.databind.ObjectMapper
+import okhttp3.OkHttpClient
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
+import org.dataland.datalandbackendutils.utils.getEmailAddress
+import org.dataland.datalandcommunitymanager.entities.CompanyRoleAssignmentEntity
 import org.dataland.datalandcommunitymanager.entities.DataRequestEntity
 import org.dataland.datalandcommunitymanager.exceptions.DataRequestNotFoundApiException
+import org.dataland.datalandcommunitymanager.model.companyRoles.CompanyRole
+import org.dataland.datalandcommunitymanager.model.dataRequest.AccessStatus
 import org.dataland.datalandcommunitymanager.model.dataRequest.AggregatedDataRequest
 import org.dataland.datalandcommunitymanager.model.dataRequest.ExtendedStoredDataRequest
 import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
@@ -12,9 +18,11 @@ import org.dataland.datalandcommunitymanager.repositories.DataRequestRepository
 import org.dataland.datalandcommunitymanager.utils.DataRequestLogger
 import org.dataland.datalandcommunitymanager.utils.DataRequestProcessingUtils
 import org.dataland.datalandcommunitymanager.utils.GetAggregatedRequestsSearchFilter
-import org.dataland.datalandcommunitymanager.utils.GetDataRequestsSearchFilter
+import org.dataland.datalandcommunitymanager.utils.DataRequestsQueryFilter
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.beans.factory.annotation.Qualifier
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import kotlin.jvm.optionals.getOrElse
@@ -23,11 +31,17 @@ import kotlin.jvm.optionals.getOrElse
  * Implementation of a request manager service for all request queries
  */
 @Service
-class DataRequestQueryManager(
-    @Autowired private val dataRequestRepository: DataRequestRepository,
-    @Autowired private val dataRequestLogger: DataRequestLogger,
-    @Autowired private val companyDataControllerApi: CompanyDataControllerApi,
-    @Autowired private val processingUtils: DataRequestProcessingUtils,
+class DataRequestQueryManager
+@Suppress("LongParameterList")
+@Autowired
+constructor(
+    private val dataRequestRepository: DataRequestRepository,
+    private val dataRequestLogger: DataRequestLogger,
+    private val companyDataControllerApi: CompanyDataControllerApi,
+    private val processingUtils: DataRequestProcessingUtils,
+    private val objectMapper: ObjectMapper,
+    @Qualifier("AuthenticatedOkHttpClient") val authenticatedOkHttpClient: OkHttpClient,
+    @Value("\${dataland.keycloak.base-url}") private val keycloakBaseUrl: String,
 ) {
 
     /** This method retrieves all the data requests for the current user from the database and logs a message.
@@ -114,16 +128,48 @@ class DataRequestQueryManager(
      */
     @Transactional
     fun getDataRequests(
-        filter: GetDataRequestsSearchFilter,
+        filter: DataRequestsQueryFilter,
+        companyRoleAssignmentsOfCurrentUser: List<CompanyRoleAssignmentEntity>,
         chunkIndex: Int?,
         chunkSize: Int?,
-    ): List<ExtendedStoredDataRequest>? {
+    ): List<StoredDataRequest>? {
+        return createStoredDataRequestObjects(filter, companyRoleAssignmentsOfCurrentUser, chunkIndex, chunkSize)
+    }
+
+    /**
+     * Fetches data requests from the database and returns them as api model objects.
+     * The email addresses of the users associated with the data requests are only included for
+     * those companies for which the current user is a company owner.
+     * @param filter to retrieve only specific data requests
+     * @param companyRoleAssignmentsOfCurrentUser contains the company ownerships of the current user
+     * @return all filtered data requests as api model objects
+     */
+    private fun createStoredDataRequestObjects(
+        filter: DataRequestsQueryFilter,
+        companyRoleAssignmentsOfCurrentUser: List<CompanyRoleAssignmentEntity>,
+        chunkIndex: Int?,
+        chunkSize: Int?,
+    ): List<StoredDataRequest> {
+        val ownedCompanyIds = companyRoleAssignmentsOfCurrentUser.filter {
+            it.companyRole == CompanyRole.CompanyOwner
+        }.map { it.companyId }
         val offset = (chunkIndex ?: 0) * (chunkSize ?: 0)
-        return dataRequestRepository.searchDataRequestEntity(
+        val extendedStoredDataRequest = dataRequestRepository.searchDataRequestEntity(
             searchFilter = filter, resultOffset = offset,
             resultLimit = chunkSize,
         ).map { dataRequestEntity ->
             getExtendedStoredDataRequestByRequestEntity(dataRequestEntity)
         }
+
+        val storedDataRequests = queryResultWithHistory.map {
+            val allowedToSeeEmailAddress =
+                ownedCompanyIds.contains(it.datalandCompanyId) && it.accessStatus != AccessStatus.Public
+            var emailAddress: String? = null
+            if (allowedToSeeEmailAddress) {
+                emailAddress = getEmailAddress(authenticatedOkHttpClient, objectMapper, keycloakBaseUrl, it.userId)
+            }
+            it.toStoredDataRequest(emailAddress)
+        }
+        return storedDataRequests
     }
 }

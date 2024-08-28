@@ -1,7 +1,7 @@
 <template>
   <AuthenticationWrapper>
     <TheHeader />
-    <DatasetsTabMenu :initial-tab-index="3">
+    <DatasetsTabMenu :initial-tab-index="4">
       <TheContent class="min-h-screen paper-section relative">
         <div v-if="waitingForData || storedDataRequests.length > 0">
           <div
@@ -15,7 +15,7 @@
                 <InputText
                   data-test="requested-Datasets-searchbar"
                   v-model="searchBarInput"
-                  placeholder="Search by company name"
+                  placeholder="Search by requester"
                   class="w-12 pl-6 pr-6"
                 />
               </span>
@@ -63,16 +63,12 @@
                 paginator
                 paginator-position="bottom"
                 :rows="datasetsPerPage"
-                lazy
                 :total-records="numberOfFilteredRequests"
-                @page="onPage($event)"
-                @sort="onSort($event)"
-                @row-click="onRowClick($event)"
-                id="my-data-requests-overview-table"
+                id="my-company-requests-overview-table"
               >
-                <Column header="COMPANY" field="companyName" :sortable="true">
+                <Column header="REQUESTER" field="userEmailAddress" :sortable="true">
                   <template #body="slotProps">
-                    {{ slotProps.data.companyName }}
+                    {{ slotProps.data.userEmailAddress }}
                   </template>
                 </Column>
                 <Column header="FRAMEWORK" :sortable="true" field="dataType">
@@ -126,17 +122,39 @@
                 <Column field="resolve" header="">
                   <template #body="slotProps">
                     <div
-                      v-if="slotProps.data.requestStatus == RequestStatus.Answered"
+                      v-if="slotProps.data.accessStatus == AccessStatus.Pending"
                       class="text-right text-primary no-underline font-bold"
                     >
-                      <span
-                        id="resolveButton"
-                        style="cursor: pointer"
-                        data-test="requested-Datasets-Resolve"
-                        @click="goToResolveDataRequestPage(slotProps.data.datalandCompanyId, slotProps.data.dataType)"
-                        >RESOLVE</span
-                      >
-                      <span class="ml-3">></span>
+                      <div class="button-container">
+                        <PrimeButton
+                          class="uppercase p-button p-button-sm"
+                          @click="updateAccessStatus(slotProps.data.dataRequestId, AccessStatus.Granted)"
+                        >
+                          <i class="material-icons"> done </i>
+                          <span class="d-letters pl-2"> Grant </span>
+                        </PrimeButton>
+                        <PrimeButton
+                          class="uppercase p-button-outlined p-button-sm mr-3"
+                          @click="updateAccessStatus(slotProps.data.dataRequestId, AccessStatus.Declined)"
+                        >
+                          <i class="material-icons"> clear </i>
+                          <span class="d-letters pl-2"> Decline </span>
+                        </PrimeButton>
+                      </div>
+                    </div>
+                    <div
+                      v-if="slotProps.data.accessStatus == AccessStatus.Granted"
+                      class="text-right text-primary no-underline font-bold"
+                    >
+                      <div class="button-container">
+                        <PrimeButton
+                          class="uppercase p-button-outlined p-button-sm mr-3"
+                          @click="updateAccessStatus(slotProps.data.dataRequestId, AccessStatus.Revoked)"
+                        >
+                          <i class="material-icons"> clear </i>
+                          <span class="d-letters pl-2"> Revoke </span>
+                        </PrimeButton>
+                      </div>
                     </div>
                   </template>
                 </Column>
@@ -146,18 +164,7 @@
         </div>
         <div v-if="!waitingForData && storedDataRequests.length == 0">
           <div class="d-center-div text-center px-7 py-4">
-            <p class="font-medium text-xl">You have not requested data yet.</p>
-            <p class="font-medium text-xl">Request data to see your requests here.</p>
-            <a @click="goToBulkDataRequestPage()" class="no-underline" data-test="bulkDataRequestButton">
-              <button
-                class="p-button p-component uppercase p-button p-button-sm mr-3"
-                type="button"
-                data-pc-name="button"
-                data-pc-section="root"
-              >
-                <i class="material-icons"> add_box </i><span class="d-letters pl-2"> BULK DATA REQUEST </span>
-              </button></a
-            >
+            <p class="font-medium text-xl">You have no data requests yet.</p>
           </div>
         </div>
       </TheContent>
@@ -175,22 +182,18 @@ import TheHeader from '@/components/generics/TheHeader.vue';
 import { defineComponent, inject, ref } from 'vue';
 import type Keycloak from 'keycloak-js';
 import { ApiClientProvider } from '@/services/ApiClients';
-import DataTable, {
-  type DataTablePageEvent,
-  type DataTableRowClickEvent,
-  type DataTableSortEvent,
-} from 'primevue/datatable';
+import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
 import { frameworkHasSubTitle, getFrameworkSubtitle, getFrameworkTitle } from '@/utils/StringFormatter';
 import DatasetsTabMenu from '@/components/general/DatasetsTabMenu.vue';
 import { convertUnixTimeInMsToDateString } from '@/utils/DataFormatUtils';
-import { type ExtendedStoredDataRequest, RequestStatus } from '@clients/communitymanager';
-import { type DataTypeEnum } from '@clients/backend';
+import { type CompanyRoleAssignment, AccessStatus, type StoredDataRequest } from '@clients/communitymanager';
 import InputText from 'primevue/inputtext';
 import FrameworkDataSearchDropdownFilter from '@/components/resources/frameworkDataSearch/FrameworkDataSearchDropdownFilter.vue';
 import { type FrameworkSelectableItem, type SelectableItem } from '@/utils/FrameworkDataSearchDropDownFilterTypes';
 import AuthenticationWrapper from '@/components/wrapper/AuthenticationWrapper.vue';
 import { accessStatusBadgeClass, badgeClass } from '@/utils/RequestUtils';
+import PrimeButton from 'primevue/button';
 import {
   customCompareForRequestStatus,
   retrieveAvailableAccessStatus,
@@ -200,11 +203,12 @@ import {
 export default defineComponent({
   name: 'MyDataRequestsOverview',
   computed: {
-    RequestStatus() {
-      return RequestStatus;
+    AccessStatus() {
+      return AccessStatus;
     },
   },
   components: {
+    PrimeButton,
     AuthenticationWrapper,
     FrameworkDataSearchDropdownFilter,
     DatasetsTabMenu,
@@ -221,6 +225,7 @@ export default defineComponent({
       frameworkFilter: ref(),
       datasetsPerPage: 100,
       getKeycloakPromise: inject<() => Promise<Keycloak>>('getKeycloakPromise'),
+      companyRoleAssignments: inject<Array<CompanyRoleAssignment>>('companyRoleAssignments'),
     };
   },
 
@@ -231,8 +236,8 @@ export default defineComponent({
     return {
       waitingForData: true,
       currentPage: 0,
-      storedDataRequests: [] as ExtendedStoredDataRequest[],
-      displayedData: [] as ExtendedStoredDataRequest[],
+      storedDataRequests: [] as StoredDataRequest[],
+      displayedData: [] as StoredDataRequest[],
       footerContent,
       searchBarInput: '',
       searchBarInputFilter: '',
@@ -241,14 +246,14 @@ export default defineComponent({
       availableAccessStatus: [] as Array<SelectableItem>,
       selectedAccessStatus: [] as Array<SelectableItem>,
       numberOfFilteredRequests: 0,
-      sortField: 'requestStatus' as keyof ExtendedStoredDataRequest,
+      sortField: 'requestStatus' as keyof StoredDataRequest,
       sortOrder: 1,
     };
   },
   mounted() {
     this.availableFrameworks = retrieveAvailableFrameworks();
     this.availableAccessStatus = retrieveAvailableAccessStatus();
-    this.getStoredRequestDataList().catch((error) => console.error(error));
+    this.getStoredCompanyRequestDataList().catch((error) => console.error(error));
     this.resetFilterAndSearchBar();
   },
   watch: {
@@ -265,6 +270,9 @@ export default defineComponent({
       this.searchBarInputFilter = newSearch;
       this.updateCurrentDisplayedData();
     },
+    companyRoleAssignments() {
+      this.getStoredCompanyRequestDataList();
+    },
   },
   methods: {
     accessStatusBadgeClass,
@@ -273,67 +281,38 @@ export default defineComponent({
     getFrameworkTitle,
     getFrameworkSubtitle,
     convertUnixTimeInMsToDateString,
-    /**
-     * Navigates to the company view page
-     * @param companyId Dataland companyId
-     * @param framework Dataland framework
-     * @returns the promise of the router push action
-     */
-    goToResolveDataRequestPage(companyId: string, framework: DataTypeEnum) {
-      const url = `/companies/${companyId}/frameworks/${framework}`;
-      return this.$router.push(url);
-    },
-    /**
-     * Navigates to the bulk data request page
-     * @returns the promise of the router push action
-     */
-    goToBulkDataRequestPage() {
-      const url = `/bulkdatarequest`;
-      return this.$router.push(url);
-    },
 
     /**
-     * Gets list of storedDataRequests
+     * Gets list of storedComapnyDataRequests
      */
-    async getStoredRequestDataList() {
+    async getStoredCompanyRequestDataList() {
       this.waitingForData = true;
       this.storedDataRequests = [];
-      try {
-        if (this.getKeycloakPromise) {
-          this.storedDataRequests = (
-            await new ApiClientProvider(
-              this.getKeycloakPromise()
-            ).apiClients.requestController.getDataRequestsForRequestingUser()
-          ).data;
-        }
-      } catch (error) {
-        console.error(error);
+      if (!this.companyRoleAssignments) {
+        return;
+      }
+      const companyIDs = Array.from(new Set(this.companyRoleAssignments.map((assignment) => assignment.companyId)));
+      if (this.getKeycloakPromise) {
+        const apiClientProvider = new ApiClientProvider(this.getKeycloakPromise());
+        const dataRequestsPromises = companyIDs.map(async (companyId) => {
+          try {
+            const response = await apiClientProvider.apiClients.requestController.getDataRequests(
+              undefined,
+              undefined,
+              undefined,
+              undefined,
+              undefined,
+              companyId
+            );
+            return response.data;
+          } catch (error) {
+            console.error(`Error fetching data for companyId ${companyId}:`, error);
+            return [];
+          }
+        });
+        this.storedDataRequests = (await Promise.all(dataRequestsPromises)).flat();
       }
       this.waitingForData = false;
-    },
-    /**
-     * Navigates to the view dataRequest page
-     * @param event contains column that was clicked
-     * @param event.data extended stored data request
-     * @param event.originalEvent needed to get the clicked cell
-     * @returns the promise of the router push action
-     */
-    onRowClick(event: DataTableRowClickEvent) {
-      const clickedElement = event.originalEvent.target as HTMLElement;
-      const isResolveButtonClick = clickedElement.id === 'resolveButton';
-      if (!isResolveButtonClick) {
-        const requestIdOfClickedRow = event.data.dataRequestId;
-        return this.$router.push(`/requests/${requestIdOfClickedRow}`);
-      }
-    },
-    /**
-     * Sorts the list of storedDataRequests
-     * @param event contains column to sort and sortOrder
-     */
-    onSort(event: DataTableSortEvent) {
-      this.sortField = event.sortField as keyof ExtendedStoredDataRequest;
-      this.sortOrder = event.sortOrder ?? 1;
-      this.updateCurrentDisplayedData();
     },
 
     /**
@@ -360,13 +339,13 @@ export default defineComponent({
     },
     /**
      * Filterfunction for searchbar
-     * @param companyName dataland companyName
-     * @returns checks if given companyName contains searchbar text
+     * @param requesterMail dataland requesterMail
+     * @returns checks if given requesterMail contains searchbar text
      */
-    filterSearchInput(companyName: string) {
-      const lowerCaseCompanyName = (companyName ?? '').toLowerCase();
+    filterSearchInput(requesterMail: string | undefined) {
+      const lowerCaseRequesterMail = (requesterMail ?? '').toLowerCase();
       const lowerCaseSearchString = this.searchBarInputFilter.toLowerCase();
-      return lowerCaseCompanyName.includes(lowerCaseSearchString);
+      return lowerCaseRequesterMail.includes(lowerCaseSearchString);
     },
     /**
      * Resets selected frameworks and searchBarInput
@@ -381,10 +360,10 @@ export default defineComponent({
      */
     updateCurrentDisplayedData() {
       this.displayedData = this.storedDataRequests
-        .filter((dataRequest) => this.filterSearchInput(dataRequest.companyName))
+        .filter((dataRequest) => this.filterSearchInput(dataRequest.userEmailAddress))
         .filter((dataRequest) => this.filterFramework(dataRequest.dataType))
         .filter((dataRequest) => this.filterAccessStatus(dataRequest.accessStatus));
-      this.displayedData.sort((a, b) => this.customCompareForExtendedStoredDataRequests(a, b));
+      this.displayedData.sort((a, b) => this.customCompareForStoredDataRequests(a, b));
       this.numberOfFilteredRequests = this.displayedData.length;
       this.displayedData = this.displayedData.slice(
         this.datasetsPerPage * this.currentPage,
@@ -396,16 +375,16 @@ export default defineComponent({
       });
     },
     /**
-     * Compares two extended stored data requests (sort field, request status, last modified, company name)
-     * @param a ExtendedStoredDataRequest to sort
-     * @param b ExtendedStoredDataRequest to sort
+     * Compares two  stored data requests (sort field, request status, last modified, requester mail)
+     * @param a StoredDataRequest to sort
+     * @param b StoredDataRequest to sort
      * @returns result of the comparison
      */
-    customCompareForExtendedStoredDataRequests(a: ExtendedStoredDataRequest, b: ExtendedStoredDataRequest) {
-      const aValue = a[this.sortField];
-      const bValue = b[this.sortField];
+    customCompareForStoredDataRequests(a: StoredDataRequest, b: StoredDataRequest) {
+      const aValue = a[this.sortField] ?? '';
+      const bValue = b[this.sortField] ?? '';
 
-      if (this.sortField != ('requestStatus' as keyof ExtendedStoredDataRequest)) {
+      if (this.sortField != ('requestStatus' as keyof StoredDataRequest)) {
         if (aValue < bValue) return -1 * this.sortOrder;
         if (aValue > bValue) return this.sortOrder;
       }
@@ -416,17 +395,29 @@ export default defineComponent({
       if (a.lastModifiedDate < b.lastModifiedDate) return this.sortOrder;
       if (a.lastModifiedDate > b.lastModifiedDate) return -1 * this.sortOrder;
 
-      if (a.companyName < b.companyName) return -1 * this.sortOrder;
+      if ((a.userEmailAddress ?? '') < (b.userEmailAddress ?? '')) return -1 * this.sortOrder;
       else return this.sortOrder;
     },
 
     /**
-     * Updates the data for the current page
-     * @param event event containing the new page
+     * Updates the access status
+     * @param requestId to update
+     * @param newAccessStatus to set
      */
-    onPage(event: DataTablePageEvent) {
-      this.currentPage = event.page;
-      this.updateCurrentDisplayedData();
+    async updateAccessStatus(requestId: string, newAccessStatus: AccessStatus) {
+      try {
+        if (this.getKeycloakPromise) {
+          await new ApiClientProvider(this.getKeycloakPromise()).apiClients.requestController.patchDataRequest(
+            requestId,
+            undefined,
+            newAccessStatus
+          );
+          await this.getStoredCompanyRequestDataList();
+          this.updateCurrentDisplayedData();
+        }
+      } catch (error) {
+        console.error(error);
+      }
     },
   },
 });
