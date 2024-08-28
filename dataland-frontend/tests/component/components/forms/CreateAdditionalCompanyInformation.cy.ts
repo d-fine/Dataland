@@ -12,9 +12,9 @@ describe('Component tests for the CreateAdditionalCompanyInformation dataset tha
   }
 
   /**
-   * Pick fiscal year deviation "No Deviation"
+   * Pick fiscal year deviation "No Deviation" and check that no reports can be selected
    */
-  function pickFiscalYearDeviation(): void {
+  function pickFiscalYearDeviationAndCheckThatNoReportsCanBeSelected(): void {
     cy.get('[data-test="dataQuality"').should('not.exist');
     cy.get('div[data-test="fiscalYearDeviation"] input[type="checkbox"][value="Deviation"]').check();
     cy.get('[data-test="dataQuality"').should('exist');
@@ -22,6 +22,9 @@ describe('Component tests for the CreateAdditionalCompanyInformation dataset tha
     cy.get('[data-test="dataQuality"').should('not.exist');
     cy.get('div[data-test="fiscalYearDeviation"] input[type="checkbox"][value="NoDeviation"]').check();
     cy.get('[data-test="dataQuality"').should('exist');
+
+    cy.get('div[data-test="dataReport"]').should('exist').click();
+    cy.get('li:contains("None")').should('exist').click();
   }
 
   it('On the upload page, ensure that sectors can be selected and deselected and the submit looks as expected', () => {
@@ -37,7 +40,7 @@ describe('Component tests for the CreateAdditionalCompanyInformation dataset tha
       cy.get('[name="reportingPeriod"]').should('be.hidden').should('contain.value', '0');
       pickDate();
       cy.get('[name="reportingPeriod"]').should('contain.value', '2024');
-      pickFiscalYearDeviation();
+      pickFiscalYearDeviationAndCheckThatNoReportsCanBeSelected();
     });
   });
 });
