@@ -226,4 +226,21 @@ class QaServiceTest {
         }
         assertEquals(CLIENT_ERROR_403, exception.message)
     }
+
+    @Test
+    fun `check that content of the review queue can be retrieved after a pending dataset was deleted`() {
+        val dataIdAlpha = uploadDatasetAndValidatePendingState()
+        val dataIdBeta = uploadDatasetAndValidatePendingState()
+        apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
+        val qaServiceController = apiAccessor.qaServiceControllerApi
+        await().atMost(2, TimeUnit.SECONDS)
+            .until { qaServiceController.getUnreviewedDatasetsIds().contains(dataIdAlpha) }
+        await().atMost(2, TimeUnit.SECONDS)
+            .until { qaServiceController.getUnreviewedDatasetsIds().contains(dataIdBeta) }
+        val dataDeletionControllerApi = apiAccessor.dataDeletionControllerApi
+        dataDeletionControllerApi.deleteCompanyAssociatedData(dataIdAlpha)
+        Thread.sleep(1000)
+        assertFalse(qaServiceController.getUnreviewedDatasetsIds().contains(dataIdAlpha))
+        assertTrue(qaServiceController.getUnreviewedDatasetsIds().contains(dataIdBeta))
+    }
 }
