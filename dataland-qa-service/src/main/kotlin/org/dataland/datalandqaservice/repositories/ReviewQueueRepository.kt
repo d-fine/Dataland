@@ -16,4 +16,9 @@ interface ReviewQueueRepository : JpaRepository<ReviewQueueEntity, String> {
             "ORDER BY status.receptionTime ASC",
     )
     fun getSortedPendingDataIds(): List<String>
+
+    /**
+     * Deletes all queued QA requests for a specific dataId.
+     */
+    fun deleteByDataId(dataId: String)
 }
