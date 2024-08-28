@@ -26,11 +26,8 @@ class V19__MigrateNoEvidenceFoundAndIncomplete : BaseJavaMigration() {
         if (obj !== null && obj is JSONObject) {
             if (obj.has("value") || obj.has("quality")) {
                 val value = obj.getOrJavaNull("value").toString()
-                val quality = obj.getOrJavaNull("quality").toString()
                 if (value == "NoEvidenceFound") {
                     obj.put("value", JSONObject.NULL)
-                    obj.put("quality", "NoDataFound")
-                } else if (quality == "Incomplete") {
                     obj.put("quality", "NoDataFound")
                 } else {
                     // Do nothing as no migration required in this case
