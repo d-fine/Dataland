@@ -213,7 +213,7 @@ interface RequestApi {
         @RequestParam reportingPeriod: String?,
         @RequestParam datalandCompanyId: String?,
         @RequestParam(defaultValue = "100") chunkSize: Int,
-        @RequestParam(defaultValue = "0")chunkIndex: Int,
+        @RequestParam(defaultValue = "0") chunkIndex: Int,
     ): ResponseEntity<List<ExtendedStoredDataRequest>>
 
     /**
