@@ -83,9 +83,10 @@ data class DataRequestEntity(
      * Converts this entity to a StoredDataRequest
      * @returns the StoredDataRequest
      */
-    fun toStoredDataRequest() = StoredDataRequest(
+    fun toStoredDataRequest(userEmailAddress: String? = null) = StoredDataRequest(
         dataRequestId = dataRequestId,
         userId = userId,
+        userEmailAddress = userEmailAddress,
         creationTimestamp = creationTimestamp,
         dataType = dataType,
         reportingPeriod = reportingPeriod,
