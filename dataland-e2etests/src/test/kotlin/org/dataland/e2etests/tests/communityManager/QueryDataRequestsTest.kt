@@ -108,7 +108,7 @@ class QueryDataRequestsTest {
         assertEquals(DataTypeEnum.p2p.value, p2pDataRequests.first().dataType)
 
         val vsmeDataRequests = requestControllerApi.getDataRequests(
-            dataType = RequestControllerApi.DataTypeGetDataRequests.vsme, chunkSize = chunkSize
+            dataType = RequestControllerApi.DataTypeGetDataRequests.vsme, chunkSize = chunkSize,
         ).filter { it.creationTimestamp > timestampBeforePost }
         assertEquals(2, vsmeDataRequests.size)
         vsmeDataRequests.forEach { assertEquals(DataTypeEnum.vsme.value, it.dataType) }

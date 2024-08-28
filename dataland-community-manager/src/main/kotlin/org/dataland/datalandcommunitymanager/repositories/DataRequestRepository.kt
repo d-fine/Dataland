@@ -2,10 +2,9 @@ package org.dataland.datalandcommunitymanager.repositories
 
 import org.dataland.datalandcommunitymanager.entities.AggregatedDataRequest
 import org.dataland.datalandcommunitymanager.entities.DataRequestEntity
-import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
-import org.dataland.datalandcommunitymanager.utils.DataRequestsQueryFilter
 import org.dataland.datalandcommunitymanager.repositories.utils.TemporaryTables
 import org.dataland.datalandcommunitymanager.repositories.utils.TemporaryTables.Companion.MOST_RECENT_STATUS_CHANGE
+import org.dataland.datalandcommunitymanager.utils.DataRequestsQueryFilter
 import org.dataland.datalandcommunitymanager.utils.GetAggregatedRequestsSearchFilter
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Query

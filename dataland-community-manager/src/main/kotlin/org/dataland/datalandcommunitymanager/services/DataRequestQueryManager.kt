@@ -17,8 +17,8 @@ import org.dataland.datalandcommunitymanager.model.dataRequest.StoredDataRequest
 import org.dataland.datalandcommunitymanager.repositories.DataRequestRepository
 import org.dataland.datalandcommunitymanager.utils.DataRequestLogger
 import org.dataland.datalandcommunitymanager.utils.DataRequestProcessingUtils
-import org.dataland.datalandcommunitymanager.utils.GetAggregatedRequestsSearchFilter
 import org.dataland.datalandcommunitymanager.utils.DataRequestsQueryFilter
+import org.dataland.datalandcommunitymanager.utils.GetAggregatedRequestsSearchFilter
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Qualifier
@@ -64,7 +64,7 @@ constructor(
      */
     fun getExtendedStoredDataRequestByRequestEntity(dataRequestEntity: DataRequestEntity): ExtendedStoredDataRequest {
         val companyInformation = companyDataControllerApi.getCompanyInfo(dataRequestEntity.datalandCompanyId)
-        return ExtendedStoredDataRequest(dataRequestEntity, companyInformation.companyName)
+        return ExtendedStoredDataRequest(dataRequestEntity, companyInformation.companyName, null)
     }
 
     /** This method triggers a query to get aggregated data requests.
@@ -132,7 +132,7 @@ constructor(
         companyRoleAssignmentsOfCurrentUser: List<CompanyRoleAssignmentEntity>,
         chunkIndex: Int?,
         chunkSize: Int?,
-    ): List<StoredDataRequest>? {
+    ): List<ExtendedStoredDataRequest>? {
         return createStoredDataRequestObjects(filter, companyRoleAssignmentsOfCurrentUser, chunkIndex, chunkSize)
     }
 
@@ -149,7 +149,7 @@ constructor(
         companyRoleAssignmentsOfCurrentUser: List<CompanyRoleAssignmentEntity>,
         chunkIndex: Int?,
         chunkSize: Int?,
-    ): List<StoredDataRequest> {
+    ): List<ExtendedStoredDataRequest> {
         val ownedCompanyIds = companyRoleAssignmentsOfCurrentUser.filter {
             it.companyRole == CompanyRole.CompanyOwner
         }.map { it.companyId }
@@ -161,14 +161,15 @@ constructor(
             getExtendedStoredDataRequestByRequestEntity(dataRequestEntity)
         }
 
-        val storedDataRequests = queryResultWithHistory.map {
+        val storedDataRequests = extendedStoredDataRequest.map {
             val allowedToSeeEmailAddress =
                 ownedCompanyIds.contains(it.datalandCompanyId) && it.accessStatus != AccessStatus.Public
             var emailAddress: String? = null
             if (allowedToSeeEmailAddress) {
                 emailAddress = getEmailAddress(authenticatedOkHttpClient, objectMapper, keycloakBaseUrl, it.userId)
             }
-            it.toStoredDataRequest(emailAddress)
+            it.userEmailAddress = emailAddress
+            it
         }
         return storedDataRequests
     }

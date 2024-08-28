@@ -1657,6 +1657,9 @@
           "userId": {
             "type": "string"
           },
+          "userEmailAddress": {
+            "type": "string"
+          },
           "creationTimestamp": {
             "type": "integer",
             "format": "int64"
