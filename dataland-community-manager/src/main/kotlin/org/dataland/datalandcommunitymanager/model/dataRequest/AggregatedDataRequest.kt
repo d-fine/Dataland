@@ -15,6 +15,6 @@ data class AggregatedDataRequest(
     val dataType: DataTypeEnum?,
     val reportingPeriod: String?,
     val datalandCompanyId: String,
-    val requestStatus: RequestStatus,
+    val requestStatus: String,
     val count: Long,
 )

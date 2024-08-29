@@ -83,15 +83,17 @@ class RequestController(
         accessStatus: AccessStatus?,
         reportingPeriod: String?,
         datalandCompanyId: String?,
-    ): ResponseEntity<List<StoredDataRequest>> {
+        chunkSize: Int,
+        chunkIndex: Int,
+    ): ResponseEntity<List<ExtendedStoredDataRequest>> {
         val currentUserId = DatalandAuthentication.fromContext().userId
         val companyRoleAssignmentsOfCurrentUser =
             companyRolesManager.getCompanyRoleAssignmentsByParameters(null, null, userId = currentUserId)
         val filter = DataRequestsQueryFilter(
             dataTypeFilter = dataType?.value ?: "",
             userIdFilter = userId ?: "",
-            requestStatus = requestStatus,
-            accessStatus = accessStatus,
+            requestStatus = requestStatus?.name ?: "",
+            accessStatus = accessStatus?.name ?: "",
             reportingPeriodFilter = reportingPeriod ?: "",
             datalandCompanyIdFilter = datalandCompanyId ?: "",
         )
@@ -99,6 +101,9 @@ class RequestController(
             dataRequestQueryManager.getDataRequests(
                 filter,
                 companyRoleAssignmentsOfCurrentUser,
+                chunkIndex,
+                chunkSize,
+
             ),
         )
     }

@@ -20,6 +20,8 @@ data class ExtendedStoredDataRequest(
 
     val userId: String,
 
+    var userEmailAddress: String?,
+
     val creationTimestamp: Long,
 
     val dataType: String,
@@ -36,9 +38,10 @@ data class ExtendedStoredDataRequest(
 
     val accessStatus: AccessStatus,
 ) {
-    constructor(dataRequestEntity: DataRequestEntity, companyName: String) : this(
+    constructor(dataRequestEntity: DataRequestEntity, companyName: String, userEmailAddress: String?) : this(
         dataRequestEntity.dataRequestId,
         dataRequestEntity.userId,
+        userEmailAddress,
         dataRequestEntity.creationTimestamp,
         dataRequestEntity.dataType,
         dataRequestEntity.reportingPeriod,

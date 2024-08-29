@@ -35,9 +35,9 @@ class DataAccessRequestedEmailFactory(
     override val builderForType = TemplateEmailMessage.Type.DataAccessRequested
 
     override val requiredProperties =
-        setOf(COMPANY_ID, COMPANY_NAME, DATA_TYPE, REPORTING_PERIODS, REQUESTER_EMAIL)
+        setOf(COMPANY_ID, COMPANY_NAME, DATA_TYPE, REPORTING_PERIODS)
 
-    override val optionalProperties = setOf(FIRST_NAME, LAST_NAME, MESSAGE)
+    override val optionalProperties = setOf(FIRST_NAME, LAST_NAME, MESSAGE, REQUESTER_EMAIL)
 
     override val templateFile = "/data_access_requested.html.ftl"
 

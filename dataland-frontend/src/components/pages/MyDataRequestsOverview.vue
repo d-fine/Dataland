@@ -402,8 +402,8 @@ export default defineComponent({
      * @returns result of the comparison
      */
     customCompareForExtendedStoredDataRequests(a: ExtendedStoredDataRequest, b: ExtendedStoredDataRequest) {
-      const aValue = a[this.sortField];
-      const bValue = b[this.sortField];
+      const aValue = a[this.sortField] ?? '';
+      const bValue = b[this.sortField] ?? '';
 
       if (this.sortField != ('requestStatus' as keyof ExtendedStoredDataRequest)) {
         if (aValue < bValue) return -1 * this.sortOrder;

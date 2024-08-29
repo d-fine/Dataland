@@ -187,7 +187,7 @@ import Column from 'primevue/column';
 import { frameworkHasSubTitle, getFrameworkSubtitle, getFrameworkTitle } from '@/utils/StringFormatter';
 import DatasetsTabMenu from '@/components/general/DatasetsTabMenu.vue';
 import { convertUnixTimeInMsToDateString } from '@/utils/DataFormatUtils';
-import { type CompanyRoleAssignment, AccessStatus, type StoredDataRequest } from '@clients/communitymanager';
+import { type CompanyRoleAssignment, AccessStatus, type ExtendedStoredDataRequest } from '@clients/communitymanager';
 import InputText from 'primevue/inputtext';
 import FrameworkDataSearchDropdownFilter from '@/components/resources/frameworkDataSearch/FrameworkDataSearchDropdownFilter.vue';
 import { type FrameworkSelectableItem, type SelectableItem } from '@/utils/FrameworkDataSearchDropDownFilterTypes';
@@ -236,8 +236,8 @@ export default defineComponent({
     return {
       waitingForData: true,
       currentPage: 0,
-      storedDataRequests: [] as StoredDataRequest[],
-      displayedData: [] as StoredDataRequest[],
+      storedDataRequests: [] as ExtendedStoredDataRequest[],
+      displayedData: [] as ExtendedStoredDataRequest[],
       footerContent,
       searchBarInput: '',
       searchBarInputFilter: '',
@@ -246,7 +246,7 @@ export default defineComponent({
       availableAccessStatus: [] as Array<SelectableItem>,
       selectedAccessStatus: [] as Array<SelectableItem>,
       numberOfFilteredRequests: 0,
-      sortField: 'requestStatus' as keyof StoredDataRequest,
+      sortField: 'requestStatus' as keyof ExtendedStoredDataRequest,
       sortOrder: 1,
     };
   },
@@ -380,11 +380,11 @@ export default defineComponent({
      * @param b StoredDataRequest to sort
      * @returns result of the comparison
      */
-    customCompareForStoredDataRequests(a: StoredDataRequest, b: StoredDataRequest) {
+    customCompareForStoredDataRequests(a: ExtendedStoredDataRequest, b: ExtendedStoredDataRequest) {
       const aValue = a[this.sortField] ?? '';
       const bValue = b[this.sortField] ?? '';
 
-      if (this.sortField != ('requestStatus' as keyof StoredDataRequest)) {
+      if (this.sortField != ('requestStatus' as keyof ExtendedStoredDataRequest)) {
         if (aValue < bValue) return -1 * this.sortOrder;
         if (aValue > bValue) return this.sortOrder;
       }
