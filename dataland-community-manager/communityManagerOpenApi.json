@@ -722,6 +722,26 @@
             "schema": {
               "type": "string"
             }
+          },
+          {
+            "name": "chunkSize",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 100
+            }
+          },
+          {
+            "name": "chunkIndex",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 0
+            }
           }
         ],
         "responses": {
@@ -732,7 +752,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/StoredDataRequest"
+                    "$ref": "#/components/schemas/ExtendedStoredDataRequest"
                   }
                 }
               }
@@ -1641,6 +1661,9 @@
           "userId": {
             "type": "string"
           },
+          "userEmailAddress": {
+            "type": "string"
+          },
           "creationTimestamp": {
             "type": "integer",
             "format": "int64"
@@ -1698,7 +1721,7 @@
             "type": "string"
           },
           "requestStatus": {
-            "$ref": "#/components/schemas/RequestStatus"
+            "type": "string"
           },
           "count": {
             "type": "integer",
