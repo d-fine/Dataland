@@ -77,7 +77,7 @@ export const additionalCompanyInformationDataModel = [
           },
           {
             name: 'balanceSheetTotal',
-            label: 'Balance sheet total',
+            label: 'Balance Sheet Total',
             description:
               "The sum of all assets listed on the balance sheet, representing the total value of the company's resources.",
 

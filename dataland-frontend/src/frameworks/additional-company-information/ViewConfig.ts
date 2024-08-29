@@ -81,12 +81,12 @@ export const additionalCompanyInformationViewConfiguration: MLDTConfig<Additiona
           },
           {
             type: 'cell',
-            label: 'Balance sheet total',
+            label: 'Balance Sheet Total',
             explanation:
               "The sum of all assets listed on the balance sheet, representing the total value of the company's resources.",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: AdditionalCompanyInformationData): AvailableMLDTDisplayObjectTypes =>
-              formatCurrencyForDisplay(dataset.general?.financialInformation?.balanceSheetTotal, 'Balance sheet total'),
+              formatCurrencyForDisplay(dataset.general?.financialInformation?.balanceSheetTotal, 'Balance Sheet Total'),
           },
           {
             type: 'cell',

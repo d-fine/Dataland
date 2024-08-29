@@ -15653,12 +15653,6 @@
         ],
         "type": "object",
         "properties": {
-          "headquarters": {
-            "type": "string"
-          },
-          "countryCode": {
-            "type": "string"
-          },
           "sector": {
             "type": "string",
             "nullable": true
@@ -15667,6 +15661,12 @@
             "type": "string"
           },
           "companyId": {
+            "type": "string"
+          },
+          "countryCode": {
+            "type": "string"
+          },
+          "headquarters": {
             "type": "string"
           },
           "lei": {
