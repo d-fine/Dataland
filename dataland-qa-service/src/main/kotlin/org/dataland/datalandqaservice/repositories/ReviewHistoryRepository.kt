@@ -8,7 +8,7 @@ import org.springframework.data.jpa.repository.JpaRepository
  */
 interface ReviewHistoryRepository : JpaRepository<ReviewInformationEntity, String> {
     /**
-     * Deletes all queued QA requests for a specific dataId.
+     * Deletes QA information for a specific dataId.
      */
     fun deleteByDataId(dataId: String)
 }
