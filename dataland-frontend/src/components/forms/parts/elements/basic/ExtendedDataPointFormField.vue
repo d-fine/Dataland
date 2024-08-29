@@ -29,7 +29,7 @@
           }"
           :ignore="true"
           :plugins="[disabledOnMoreThanOne]"
-          @input="updateCurrentValue($event)"
+          @input="updateCurrentCheckboxValue($event)"
         />
       </div>
     </div>
@@ -234,20 +234,14 @@ export default defineComponent({
       this.dataPointIsAvailable = !this.dataPointIsAvailable;
     },
     /**
-     * updateCurrentValue
+     * updateCurrentCheckboxValue
      * @param checkboxValue checkboxValue
      */
-    updateCurrentValue(checkboxValue: string[] | undefined) {
+    updateCurrentCheckboxValue(checkboxValue: string[] | undefined) {
       if (checkboxValue && checkboxValue[0]) {
-        this.dataPointIsAvailable = true;
         this.currentValue = checkboxValue[0];
-      } else if (this.isYesNoVariant) {
-        this.dataPointIsAvailable = true;
-        this.currentValue = null;
       } else {
-        this.dataPointIsAvailable = false;
         this.currentValue = null;
-        this.dataPoint = {};
       }
     },
   },
