@@ -20,7 +20,7 @@
 import { defineComponent, inject } from 'vue';
 import TabView from 'primevue/tabview';
 import TabPanel from 'primevue/tabpanel';
-import { checkIfUserHasRole, KEYCLOAK_ROLE_REVIEWER } from '@/utils/KeycloakUtils';
+import {checkIfUserHasRole, KEYCLOAK_ROLE_ADMIN, KEYCLOAK_ROLE_REVIEWER} from '@/utils/KeycloakUtils';
 import type Keycloak from 'keycloak-js';
 import { CompanyRole, type CompanyRoleAssignment } from '@clients/communitymanager';
 
@@ -63,6 +63,11 @@ export default defineComponent({
         route: '/companyrequests',
         isVisible: false,
       },
+      {
+        label: 'All DATA REQUESTS',
+        route: '/requestoverview',
+        isVisible: false,
+      },
     ] as Tab[],
   }),
   setup() {
@@ -74,6 +79,7 @@ export default defineComponent({
   created() {
     this.setVisibilityForTabWithQualityAssurance();
     this.setVisibilityForTabWithAccessRequestsForMyCompanies();
+    this.setVisibilityForAdminTab();
   },
   watch: {
     companyRoleAssignments() {
@@ -102,6 +108,15 @@ export default defineComponent({
       if (companyOwnershipAssignments) {
         this.tabs[4].isVisible = companyOwnershipAssignments.length > 0;
       }
+    },
+    /**
+     * Sets the visibility of the all data requests tab.
+     * Only Admins can see the tab.
+     */
+    setVisibilityForAdminTab() {
+      checkIfUserHasRole(KEYCLOAK_ROLE_ADMIN, this.getKeycloakPromise).then((hasUserAdminRights) => {
+        this.tabs[5].isVisible = hasUserAdminRights;
+      });
     },
     /**
      * Routes to companies page when AVAILABLE DATASET tab is clicked
