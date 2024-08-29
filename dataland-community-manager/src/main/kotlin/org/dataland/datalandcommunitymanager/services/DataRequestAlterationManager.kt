@@ -10,13 +10,12 @@ import org.dataland.datalandcommunitymanager.model.dataRequest.StoredDataRequest
 import org.dataland.datalandcommunitymanager.repositories.DataRequestRepository
 import org.dataland.datalandcommunitymanager.utils.DataRequestLogger
 import org.dataland.datalandcommunitymanager.utils.DataRequestProcessingUtils
-import org.dataland.datalandcommunitymanager.utils.GetDataRequestsSearchFilter
+import org.dataland.datalandcommunitymanager.utils.DataRequestsQueryFilter
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.time.Instant
-import java.util.*
 import kotlin.jvm.optionals.getOrElse
 
 /**
@@ -89,8 +88,8 @@ class DataRequestAlterationManager(
     fun patchRequestStatusFromOpenToAnsweredByDataId(dataId: String, correlationId: String) {
         val metaData = metaDataControllerApi.getDataMetaInfo(dataId)
         val dataRequestEntities = dataRequestRepository.searchDataRequestEntity(
-            GetDataRequestsSearchFilter(
-                dataTypeFilter = metaData.dataType.value, userIdFilter = "", requestStatus = RequestStatus.Open,
+            DataRequestsQueryFilter(
+                dataTypeFilter = metaData.dataType.value, userIdFilter = "", requestStatus = RequestStatus.Open.name,
                 accessStatus = null, reportingPeriodFilter = metaData.reportingPeriod,
                 datalandCompanyIdFilter = metaData.companyId,
             ),

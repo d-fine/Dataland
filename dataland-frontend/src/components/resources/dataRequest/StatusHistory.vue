@@ -14,33 +14,56 @@
       <ChevronUpIcon class="p-icon p-row-toggler-icon ml-2" />
     </div>
   </div>
-  <div
-    v-show="isStatusHistoryVisible"
-    v-for="requestStatusObject in statusHistory"
-    :key="requestStatusObject.creationTimestamp"
-  >
-    <span style="display: flex; align-items: center">
-      <div class="card__subtitle" data-test="creation_timestamp">
-        {{ convertUnixTimeInMsToDateString(requestStatusObject.creationTimestamp) }}
-      </div>
-      <div data-test="request_status" :class="badgeClass(requestStatusObject.status)" style="display: inline-flex">
-        {{ requestStatusObject.status }}
-      </div>
-    </span>
-    <div class="card__separator" style="margin-top: 0.25rem; margin-bottom: 0.25rem" />
+
+  <div v-show="isStatusHistoryVisible">
+    <div>
+      <DataTable :value="statusHistory" data-test="statusHistoryTable">
+        <Column field="creationTimeStamp" header="Creation Timestamp"
+          ><template #body="slotProps">
+            <span data-test="creationTimestampEntry">
+              {{ convertUnixTimeInMsToDateString(slotProps.data.creationTimestamp) }}
+            </span>
+          </template>
+        </Column>
+        <Column field="requestStatus" header="Request Status"
+          ><template #body="slotProps"
+            ><div
+              style="display: inline-flex"
+              :class="badgeClass(slotProps.data.status)"
+              data-test="requestStatusEntry"
+            >
+              {{ slotProps.data.status }}
+            </div></template
+          >
+        </Column>
+        <Column field="accessStatus" header="Access Status"
+          ><template #body="slotProps"
+            ><div
+              style="display: inline-flex"
+              :class="accessStatusBadgeClass(slotProps.data.accessStatus)"
+              data-test="accessStatusEntry"
+            >
+              {{ slotProps.data.accessStatus }}
+            </div></template
+          >
+        </Column>
+      </DataTable>
+    </div>
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue';
 import { convertUnixTimeInMsToDateString } from '@/utils/DataFormatUtils';
-import { badgeClass } from '@/utils/RequestUtils';
+import { accessStatusBadgeClass, badgeClass } from '@/utils/RequestUtils';
 import { type StoredDataRequestStatusObject } from '@clients/communitymanager';
 import ChevronDownIcon from 'primevue/icons/chevrondown';
 import ChevronUpIcon from 'primevue/icons/chevronup';
+import DataTable from 'primevue/datatable';
+import Column from 'primevue/column';
 export default defineComponent({
   name: 'StatusHistory',
-  components: { ChevronUpIcon, ChevronDownIcon },
+  components: { ChevronUpIcon, ChevronDownIcon, DataTable, Column },
   props: {
     statusHistory: {
       type: Array<StoredDataRequestStatusObject>,
@@ -53,6 +76,7 @@ export default defineComponent({
     };
   },
   methods: {
+    accessStatusBadgeClass,
     convertUnixTimeInMsToDateString,
     badgeClass,
     /**
