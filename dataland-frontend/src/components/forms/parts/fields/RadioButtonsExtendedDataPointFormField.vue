@@ -7,7 +7,6 @@
       :required="required"
       :input-class="inputClass"
       :options="options"
-      :isDataPointToggleable="isDataPointToggleable"
     />
   </div>
 </template>
@@ -22,10 +21,6 @@ export default defineComponent({
   components: { ExtendedDataPointFormField },
   props: {
     ...OptionsFormFieldProps,
-    isDataPointToggleable: {
-      type: Boolean,
-      default: false,
-    },
   },
 });
 </script>

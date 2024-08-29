@@ -1,7 +1,7 @@
 <template>
   <div :data-test="dataTest" class="mb-3 p-0 -ml-2" :class="showDataPointFields ? 'bordered-box' : ''">
     <div data-test="toggleDataPointWrapper">
-      <div class="px-2 py-3 next-to-each-other vertical-middle" v-if="isDataPointToggleable && !isYesNoVariant">
+      <div class="px-2 py-3 next-to-each-other vertical-middle" v-if="isDataPointToggleable">
         <InputSwitch
           data-test="dataPointToggleButton"
           inputId="dataPointIsAvailableSwitch"
@@ -10,7 +10,7 @@
         />
         <UploadFormHeader :label="label" :description="description" :is-required="required" />
       </div>
-      <div class="px-2 pt-3" v-if="isYesNoVariant">
+      <div class="px-2 pt-3" v-if="isYesNoVariant && dataPointIsAvailable">
         <UploadFormHeader :label="label" :description="description" :is-required="required" />
         <FormKit
           type="checkbox"
@@ -46,14 +46,14 @@
           :outer-class="{ 'hidden-input': true, 'formkit-outer': false }"
           v-if="isYesNoVariant"
         />
-        <div class="col-12" v-if="dataPoint.value || !isYesNoVariant">
+        <div class="col-12">
           <UploadFormHeader
-            v-if="!isDataPointToggleable && !isYesNoVariant"
+            v-if="!isDataPointToggleable"
             :label="label"
             :description="description"
             :is-required="required"
           />
-          <slot v-if="!isYesNoVariant" />
+          <slot />
           <div class="grid align-content-end">
             <div class="col-8">
               <UploadFormHeader
@@ -170,7 +170,7 @@ export default defineComponent({
     };
   },
   mounted() {
-    void nextTick(() => (this.isMounted = true));
+    nextTick(() => (this.isMounted = true));
   },
   computed: {
     showDataPointFields(): boolean {

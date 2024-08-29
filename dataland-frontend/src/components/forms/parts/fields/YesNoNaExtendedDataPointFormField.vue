@@ -7,7 +7,6 @@
       :required="required"
       :input-class="inputClass"
       :options="HumanizedYesNoNa"
-      :isDataPointToggleable="isDataPointToggleable"
     />
   </div>
 </template>
@@ -30,10 +29,6 @@ export default defineComponent({
   },
   props: {
     ...FormFieldPropsWithPlaceholder,
-    isDataPointToggleable: {
-      type: Boolean,
-      default: false,
-    },
   },
 });
 </script>
