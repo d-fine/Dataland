@@ -3,6 +3,7 @@ package org.dataland.e2etests.tests
 import org.awaitility.Awaitility.await
 import org.dataland.communitymanager.openApiClient.model.CompanyRole
 import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataEutaxonomyNonFinancialsData
+import org.dataland.e2etests.auth.GlobalAuth.withTechnicalUser
 import org.dataland.e2etests.auth.TechnicalUser
 import org.dataland.e2etests.utils.ApiAccessor
 import org.dataland.e2etests.utils.DocumentManagerAccessor
@@ -231,16 +232,19 @@ class QaServiceTest {
     fun `check that content of the review queue can be retrieved after a pending dataset was deleted`() {
         val dataIdAlpha = uploadDatasetAndValidatePendingState()
         val dataIdBeta = uploadDatasetAndValidatePendingState()
-        apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
-        val qaServiceController = apiAccessor.qaServiceControllerApi
-        await().atMost(2, TimeUnit.SECONDS)
-            .until { qaServiceController.getUnreviewedDatasetsIds().contains(dataIdAlpha) }
-        await().atMost(2, TimeUnit.SECONDS)
-            .until { qaServiceController.getUnreviewedDatasetsIds().contains(dataIdBeta) }
-        val dataDeletionControllerApi = apiAccessor.dataDeletionControllerApi
-        dataDeletionControllerApi.deleteCompanyAssociatedData(dataIdAlpha)
-        Thread.sleep(SLEEP_DURATION_MS)
-        assertFalse(qaServiceController.getUnreviewedDatasetsIds().contains(dataIdAlpha))
-        assertTrue(qaServiceController.getUnreviewedDatasetsIds().contains(dataIdBeta))
+        withTechnicalUser(TechnicalUser.Admin) {
+            val qaServiceController = apiAccessor.qaServiceControllerApi
+            await().atMost(2, TimeUnit.SECONDS)
+                .until { qaServiceController.getUnreviewedDatasetsIds().contains(dataIdAlpha) }
+            await().atMost(2, TimeUnit.SECONDS)
+                .until { qaServiceController.getUnreviewedDatasetsIds().contains(dataIdBeta) }
+            val dataDeletionControllerApi = apiAccessor.dataDeletionControllerApi
+            dataDeletionControllerApi.deleteCompanyAssociatedData(dataIdAlpha)
+            await().atMost(2, TimeUnit.SECONDS)
+                .until {
+                    !qaServiceController.getUnreviewedDatasetsIds().contains(dataIdAlpha) &&
+                        qaServiceController.getUnreviewedDatasetsIds().contains(dataIdBeta)
+                }
+        }
     }
 }
