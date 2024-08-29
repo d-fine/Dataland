@@ -71,7 +71,7 @@ class FrameworkQaModelBuilder(
         into.gradleInterface.executeGradleTasks(listOf("assemble"))
         into.gradleInterface.executeGradleTasks(listOf("dataland-qa-service:ktlintFormat"))
         into.gradleInterface.executeGradleTasks(listOf("dataland-qa-service:generateOpenApiDocs"), force = true)
-        into.gradleInterface.executeGradleTasks(listOf("generateClients"))
+        into.gradleInterface.executeGradleTasks(listOf("generateClients"), force = true)
 
         logger.info("QA Data-Model generation was successful!")
     }

@@ -16,6 +16,7 @@ class DataTypesExtractorTest {
             "p2p",
             "esg-questionnaire",
             "heimathafen",
+            "additional-company-information",
         )
         val dataTypes = DataTypesExtractor().getAllDataTypes()
         Assertions.assertTrue(
