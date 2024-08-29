@@ -1,5 +1,4 @@
 package org.dataland.e2etests.tests.communityManager
-
 import org.dataland.communitymanager.openApiClient.api.RequestControllerApi
 import org.dataland.communitymanager.openApiClient.model.AggregatedDataRequest
 import org.dataland.communitymanager.openApiClient.model.BulkDataRequest
@@ -217,15 +216,15 @@ class AggregatedDataRequestsTest {
         companyIdentifierValue: String,
         countOfOpenRequests: Long = 2, // currently only used with input 2, default added because of linting
     ) {
-        val allRequestStati = RequestStatus.entries.toSet()
+        val allRequestStati = RequestStatus.values().map { it.name }.toSet()
         assertNumberOfMatchesOnRequestStatusEquals(
-            aggregatedDataRequests, companyIdentifierValue, setOf(RequestStatus.Open), countOfOpenRequests,
+            aggregatedDataRequests, companyIdentifierValue, setOf(RequestStatus.Open.value), countOfOpenRequests,
         )
         assertNumberOfMatchesOnRequestStatusEquals(
-            aggregatedDataRequests, companyIdentifierValue, setOf(RequestStatus.Answered), 0,
+            aggregatedDataRequests, companyIdentifierValue, setOf(RequestStatus.Answered.value), 0,
         )
         assertNumberOfMatchesOnRequestStatusEquals(
-            aggregatedDataRequests, companyIdentifierValue, setOf(RequestStatus.Resolved), 0,
+            aggregatedDataRequests, companyIdentifierValue, setOf(RequestStatus.Resolved.value), 0,
         )
         assertNumberOfMatchesOnRequestStatusEquals(
             aggregatedDataRequests, companyIdentifierValue, allRequestStati, countOfOpenRequests,
@@ -235,7 +234,7 @@ class AggregatedDataRequestsTest {
     private fun assertNumberOfMatchesOnRequestStatusEquals(
         aggregatedDataRequests: List<AggregatedDataRequest>,
         companyIdentifier: String,
-        stati: Set<RequestStatus>,
+        stati: Set<String>,
         count: Long,
     ) {
         val numberOfStatusMatches = aggregatedDataRequests.filter {
