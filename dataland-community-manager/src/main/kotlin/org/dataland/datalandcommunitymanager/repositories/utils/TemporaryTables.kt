@@ -27,8 +27,8 @@ class TemporaryTables private constructor() {
             "OR d.data_type = :#{#searchFilter.dataTypeFilter}) AND " +
             "(:#{#searchFilter.userIdFilterLength} = 0 " +
             "OR d.user_Id = :#{#searchFilter.userIdFilter}) AND " +
-            "(:#{searchFilter.shouldApplyEmailFilter} = false" +
-            "OR d.user_Id IN :{#searchFilter.appliedUserIdsFromEmailFilter}) AND " +
+            "(:#{searchFilter.shouldApplyEmailFilter} = false " +
+            "OR d.user_Id IN :#{#searchFilter.appliedUserIdsFromEmailFilter}) AND " +
             "(:#{#searchFilter.requestStatusLength} = 0 " +
             "OR status_table.request_status = :#{#searchFilter.requestStatus} ) AND " +
             "(:#{#searchFilter.accessStatusLength} = 0 " +

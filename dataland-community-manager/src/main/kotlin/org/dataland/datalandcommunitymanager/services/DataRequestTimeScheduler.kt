@@ -36,7 +36,7 @@ class DataRequestTimeScheduler(
         logger.info("Searching for stale answered data request. CorrelationId: $correlationId")
         val thresholdTime = Instant.now().minus(Duration.ofDays(staleDaysThreshold)).toEpochMilli()
         val searchFilterForAnsweredDataRequests = DataRequestsQueryFilter(
-            "", "",
+            "", "", null,
             RequestStatus.Answered.name, null, "", "",
         )
         val staleAnsweredRequests =

@@ -691,6 +691,14 @@
             }
           },
           {
+            "name": "emailAddress",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
             "name": "requestStatus",
             "in": "query",
             "required": false,
