@@ -239,7 +239,7 @@ class QaServiceTest {
             .until { qaServiceController.getUnreviewedDatasetsIds().contains(dataIdBeta) }
         val dataDeletionControllerApi = apiAccessor.dataDeletionControllerApi
         dataDeletionControllerApi.deleteCompanyAssociatedData(dataIdAlpha)
-        Thread.sleep(1000)
+        Thread.sleep(SLEEP_DURATION_MS)
         assertFalse(qaServiceController.getUnreviewedDatasetsIds().contains(dataIdAlpha))
         assertTrue(qaServiceController.getUnreviewedDatasetsIds().contains(dataIdBeta))
     }
