@@ -16,6 +16,7 @@ import org.dataland.datalandcommunitymanager.services.CompanyRolesManager
 import org.dataland.datalandcommunitymanager.services.DataAccessManager
 import org.dataland.datalandcommunitymanager.services.DataRequestAlterationManager
 import org.dataland.datalandcommunitymanager.services.DataRequestQueryManager
+import org.dataland.datalandcommunitymanager.services.KeycloakUserControllerApiService
 import org.dataland.datalandcommunitymanager.services.SingleDataRequestManager
 import org.dataland.datalandcommunitymanager.utils.DataRequestsQueryFilter
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
@@ -37,6 +38,7 @@ class RequestController(
     @Autowired private val dataRequestAlterationManager: DataRequestAlterationManager,
     @Autowired private val dataAccessManager: DataAccessManager,
     @Autowired private val companyRolesManager: CompanyRolesManager,
+    @Autowired private val keycloakUserControllerApiService: KeycloakUserControllerApiService,
 ) : RequestApi {
     override fun postBulkDataRequest(bulkDataRequest: BulkDataRequest): ResponseEntity<BulkDataRequestResponse> {
         return ResponseEntity.ok(
@@ -79,6 +81,7 @@ class RequestController(
     override fun getDataRequests(
         dataType: DataTypeEnum?,
         userId: String?,
+        emailAddress: String?,
         requestStatus: RequestStatus?,
         accessStatus: AccessStatus?,
         reportingPeriod: String?,
@@ -89,9 +92,12 @@ class RequestController(
         val currentUserId = DatalandAuthentication.fromContext().userId
         val companyRoleAssignmentsOfCurrentUser =
             companyRolesManager.getCompanyRoleAssignmentsByParameters(null, null, userId = currentUserId)
+        val userIdsFromEmail = emailAddress
+            ?.takeIf { it.isBlank() }?.let { keycloakUserControllerApiService.searchUsers(it) }?.map { it.userId }
         val filter = DataRequestsQueryFilter(
             dataTypeFilter = dataType?.value ?: "",
             userIdFilter = userId ?: "",
+            userIdsFromEmailFilter = userIdsFromEmail,
             requestStatus = requestStatus?.name ?: "",
             accessStatus = accessStatus?.name ?: "",
             reportingPeriodFilter = reportingPeriod ?: "",
