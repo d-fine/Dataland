@@ -18,6 +18,7 @@ import org.dataland.datalandcommunitymanager.repositories.DataRequestRepository
 import org.dataland.datalandcommunitymanager.utils.DataRequestLogger
 import org.dataland.datalandcommunitymanager.utils.DataRequestProcessingUtils
 import org.dataland.datalandcommunitymanager.utils.DataRequestsQueryFilter
+import org.dataland.datalandcommunitymanager.utils.GetAggregatedRequestsSearchFilter
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Qualifier
@@ -63,7 +64,7 @@ constructor(
      */
     fun getExtendedStoredDataRequestByRequestEntity(dataRequestEntity: DataRequestEntity): ExtendedStoredDataRequest {
         val companyInformation = companyDataControllerApi.getCompanyInfo(dataRequestEntity.datalandCompanyId)
-        return ExtendedStoredDataRequest(dataRequestEntity, companyInformation.companyName)
+        return ExtendedStoredDataRequest(dataRequestEntity, companyInformation.companyName, null)
     }
 
     /** This method triggers a query to get aggregated data requests.
@@ -86,10 +87,12 @@ constructor(
         }
         val aggregatedDataRequestEntities =
             dataRequestRepository.getAggregatedDataRequests(
-                identifierValue,
-                dataTypesFilterForQuery,
-                reportingPeriod,
-                status,
+                GetAggregatedRequestsSearchFilter(
+                    dataTypeFilter = dataTypesFilterForQuery ?: setOf(),
+                    reportingPeriodFilter = reportingPeriod,
+                    requestStatus = status?.name ?: "",
+                    datalandCompanyIdFilter = identifierValue,
+                ),
             )
         val aggregatedDataRequests = aggregatedDataRequestEntities.map { aggregatedDataRequestEntity ->
             AggregatedDataRequest(
@@ -118,19 +121,19 @@ constructor(
 
     /**
      * Method to get all data requests based on filters.
-     * @param dataType the framework to apply to the data request
-     * @param requestStatus the status to apply to the data request
-     * @param userId the user to apply to the data request
-     * @param reportingPeriod the reporting period to apply to the data request
-     * @param datalandCompanyId the Dataland company ID to apply to the data request
+     * @param filter the search filter containing relevant search parameters
+     * @param chunkIndex the index of the chunked results which should be returned
+     * @param chunkSize the size of entries per chunk which should be returned
      * @return all filtered data requests
      */
     @Transactional
     fun getDataRequests(
         filter: DataRequestsQueryFilter,
         companyRoleAssignmentsOfCurrentUser: List<CompanyRoleAssignmentEntity>,
-    ): List<StoredDataRequest>? {
-        return createStoredDataRequestObjects(filter, companyRoleAssignmentsOfCurrentUser)
+        chunkIndex: Int?,
+        chunkSize: Int?,
+    ): List<ExtendedStoredDataRequest>? {
+        return createStoredDataRequestObjects(filter, companyRoleAssignmentsOfCurrentUser, chunkIndex, chunkSize)
     }
 
     /**
@@ -144,22 +147,29 @@ constructor(
     private fun createStoredDataRequestObjects(
         filter: DataRequestsQueryFilter,
         companyRoleAssignmentsOfCurrentUser: List<CompanyRoleAssignmentEntity>,
-    ): List<StoredDataRequest> {
+        chunkIndex: Int?,
+        chunkSize: Int?,
+    ): List<ExtendedStoredDataRequest> {
         val ownedCompanyIds = companyRoleAssignmentsOfCurrentUser.filter {
             it.companyRole == CompanyRole.CompanyOwner
         }.map { it.companyId }
+        val offset = (chunkIndex ?: 0) * (chunkSize ?: 0)
+        val extendedStoredDataRequest = dataRequestRepository.searchDataRequestEntity(
+            searchFilter = filter, resultOffset = offset,
+            resultLimit = chunkSize,
+        ).map { dataRequestEntity ->
+            getExtendedStoredDataRequestByRequestEntity(dataRequestEntity)
+        }
 
-        val queryResult = dataRequestRepository.searchDataRequestEntity(filter)
-        val queryResultWithHistory = dataRequestRepository.fetchStatusHistory(queryResult)
-
-        val storedDataRequests = queryResultWithHistory.map {
+        val storedDataRequests = extendedStoredDataRequest.map {
             val allowedToSeeEmailAddress =
                 ownedCompanyIds.contains(it.datalandCompanyId) && it.accessStatus != AccessStatus.Public
             var emailAddress: String? = null
             if (allowedToSeeEmailAddress) {
                 emailAddress = getEmailAddress(authenticatedOkHttpClient, objectMapper, keycloakBaseUrl, it.userId)
             }
-            it.toStoredDataRequest(emailAddress)
+            it.userEmailAddress = emailAddress
+            it
         }
         return storedDataRequests
     }
