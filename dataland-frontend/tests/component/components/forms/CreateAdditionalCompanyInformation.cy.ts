@@ -4,7 +4,7 @@ import { getMountingFunction } from '@ct/testUtils/Mount';
 
 describe('Component tests for the CreateAdditionalCompanyInformation dataset that test dependent fields', () => {
   /**
-   * Picks the the year 2024 in the datepicker
+   * Picks the year 2024 in the datepicker
    */
   function pickDate(): void {
     cy.get('[data-test="reportingPeriod"]').click();
@@ -27,7 +27,7 @@ describe('Component tests for the CreateAdditionalCompanyInformation dataset tha
     cy.get('li:contains("None")').should('exist').click();
   }
 
-  it('On the upload page, ensure that sectors can be selected and deselected and the submit looks as expected', () => {
+  it('On the upload page, ensure that fiscalYearDeviation can be selected and deselected and page looks as expected', () => {
     getMountingFunction({
       keycloak: minimalKeycloakMock(),
       dialogOptions: {
