@@ -90,9 +90,11 @@ message
                 </tr>
                 <tr>
                     <td style="font-weight: bold; color: #FF6813; text-decoration: none; border: 0 none;">
-                        <a href="mailto:${requesterEmail}" style="font-weight: bold; color: black; text-decoration: none; border: 0 none;">
-                            ${requesterEmail}
-                        </a>
+                        <#if requesterEmail??>
+                          <a href="mailto:${requesterEmail}" style="font-weight: bold; color: black; text-decoration: none; border: 0 none;">
+                              ${requesterEmail}
+                          </a>
+                        </#if>
                     </td>
                 </tr>
                 <#if message??>
