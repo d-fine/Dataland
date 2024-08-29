@@ -241,6 +241,9 @@ export default defineComponent({
       if (checkboxValue && checkboxValue[0]) {
         this.dataPointIsAvailable = true;
         this.currentValue = checkboxValue[0];
+      } else if (this.isYesNoVariant) {
+        this.dataPointIsAvailable = true;
+        this.currentValue = null;
       } else {
         this.dataPointIsAvailable = false;
         this.currentValue = null;
