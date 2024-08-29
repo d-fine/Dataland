@@ -93,7 +93,7 @@ class RequestController(
         val companyRoleAssignmentsOfCurrentUser =
             companyRolesManager.getCompanyRoleAssignmentsByParameters(null, null, userId = currentUserId)
         val userIdsFromEmail = emailAddress
-            ?.takeIf { it.isBlank() }?.let { keycloakUserControllerApiService.searchUsers(it) }?.map { it.userId }
+            ?.takeIf { it.isNotBlank() }?.let { keycloakUserControllerApiService.searchUsers(it) }?.map { it.userId }
         val filter = DataRequestsQueryFilter(
             dataTypeFilter = dataType?.value ?: "",
             userIdFilter = userId ?: "",
