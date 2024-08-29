@@ -21,9 +21,10 @@ class DataAccessGrantedEmailFactory(
      * The keys component holds constants used for generation access granted emails
      */
     companion object Keys {
-        const val DATA_REQUEST_ID = "dataRequestId"
+        const val COMPANY_ID = "companyId"
         const val COMPANY_NAME = "companyName"
         const val DATA_TYPE = "dataType"
+        const val DATA_TYPE_DESCRIPTION = "dataTypeDescription"
         const val REPORTING_PERIOD = "reportingPeriod"
         const val CREATION_DATE = "creationDate"
     }
@@ -31,7 +32,7 @@ class DataAccessGrantedEmailFactory(
     override val builderForType = TemplateEmailMessage.Type.DataAccessGranted
 
     override val requiredProperties = setOf(
-        DATA_REQUEST_ID, COMPANY_NAME, DATA_TYPE, REPORTING_PERIOD, CREATION_DATE,
+        COMPANY_ID, COMPANY_NAME, DATA_TYPE, DATA_TYPE_DESCRIPTION, REPORTING_PERIOD, CREATION_DATE,
     )
 
     override val optionalProperties = emptySet<String>()

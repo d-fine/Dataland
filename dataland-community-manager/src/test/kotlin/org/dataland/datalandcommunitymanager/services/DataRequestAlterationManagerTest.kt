@@ -11,7 +11,7 @@ import org.dataland.datalandcommunitymanager.model.dataRequest.StoredDataRequest
 import org.dataland.datalandcommunitymanager.repositories.DataRequestRepository
 import org.dataland.datalandcommunitymanager.utils.DataRequestLogger
 import org.dataland.datalandcommunitymanager.utils.DataRequestProcessingUtils
-import org.dataland.datalandcommunitymanager.utils.GetDataRequestsSearchFilter
+import org.dataland.datalandcommunitymanager.utils.DataRequestsQueryFilter
 import org.dataland.keycloakAdapter.auth.DatalandJwtAuthentication
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
 import org.dataland.keycloakAdapter.utils.AuthenticationMock
@@ -86,7 +86,7 @@ class DataRequestAlterationManagerTest {
         }
         `when`(
             dataRequestRepository.searchDataRequestEntity(
-                searchFilter = GetDataRequestsSearchFilter(
+                searchFilter = DataRequestsQueryFilter(
                     metaData.dataType.value, "",
                     RequestStatus.Open, null, metaData.reportingPeriod, metaData.companyId,
                 ),

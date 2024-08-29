@@ -97,6 +97,10 @@
                   <div :class="badgeClass(storedDataRequest.requestStatus)" style="display: inline-flex">
                     {{ storedDataRequest.requestStatus }}
                   </div>
+                  <div class="card__title">and Access is:</div>
+                  <div :class="accessStatusBadgeClass(storedDataRequest.accessStatus)" style="display: inline-flex">
+                    {{ storedDataRequest.accessStatus }}
+                  </div>
                   <div class="card__subtitle">
                     since {{ convertUnixTimeInMsToDateString(storedDataRequest.lastModifiedDate) }}
                   </div>
@@ -174,7 +178,7 @@ import { ApiClientProvider } from '@/services/ApiClients';
 import { RequestStatus, type StoredDataRequest } from '@clients/communitymanager';
 import type Keycloak from 'keycloak-js';
 import { frameworkHasSubTitle, getFrameworkSubtitle, getFrameworkTitle } from '@/utils/StringFormatter';
-import { badgeClass, patchDataRequest } from '@/utils/RequestUtils';
+import { accessStatusBadgeClass, badgeClass, patchDataRequest } from '@/utils/RequestUtils';
 import { convertUnixTimeInMsToDateString } from '@/utils/DataFormatUtils';
 import PrimeButton from 'primevue/button';
 import PrimeDialog from 'primevue/dialog';
@@ -231,6 +235,7 @@ export default defineComponent({
       .catch((error) => console.error(error));
   },
   methods: {
+    accessStatusBadgeClass,
     convertUnixTimeInMsToDateString,
     badgeClass,
     getFrameworkSubtitle,

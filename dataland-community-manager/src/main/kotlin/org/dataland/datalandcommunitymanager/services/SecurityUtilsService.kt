@@ -36,7 +36,7 @@ class SecurityUtilsService(
     /**
      * Returns true if and only if the currently authenticated user is asking for him/herself
      */
-    fun isUserRequestingForOwnId(userIdRequester: String): Boolean {
+    fun isUserRequestingForOwnId(userIdRequester: String?): Boolean {
         val userIdAuthenticated = SecurityContextHolder.getContext().authentication.name
         return userIdAuthenticated == userIdRequester
     }
@@ -133,14 +133,14 @@ class SecurityUtilsService(
     }
 
     /**
-     * Returns false if the user tries to patch the accessStatus of their own request without having the proper rights
-     * @param accessStatus the accessStatus of the patch
+     * Returns true if the user is not trying to patch the accessStatus
+     * @param accessStatusPatch the accessStatus of the patch
      */
     @Transactional
-    fun noAccessStatusPatch(
-        accessStatus: AccessStatus?,
+    fun isNotTryingToPatchAccessStatus(
+        accessStatusPatch: AccessStatus?,
     ): Boolean {
-        return accessStatus == null
+        return accessStatusPatch == null
     }
 
     /**

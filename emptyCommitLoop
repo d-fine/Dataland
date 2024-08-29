@@ -1,0 +1,10 @@
+#!/bin/bash
+
+branch_name=$(git rev-parse --abbrev-ref HEAD)
+number_of_commits=3
+
+for ((i = 1; i <= $number_of_commits; i++)); do
+    echo "Creating empty commit $i"
+    git commit --allow-empty -m "Empty commit $i"
+    git push origin $branch_name
+done

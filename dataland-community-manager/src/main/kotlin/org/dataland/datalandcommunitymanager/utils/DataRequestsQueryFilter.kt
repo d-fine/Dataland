@@ -7,7 +7,7 @@ import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
  * A filter class used in the searchDataRequestEntity-Method which allows
  * convenient usage of SEPL instructions in the query
  */
-data class GetDataRequestsSearchFilter(
+data class DataRequestsQueryFilter(
     val dataTypeFilter: String,
     val userIdFilter: String,
     val requestStatus: RequestStatus?,
