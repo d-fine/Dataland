@@ -3,7 +3,6 @@
     <TheHeader />
     <DatasetsTabMenu :initial-tab-index="5">
       <TheContent class="min-h-screen paper-section relative">
-        <div> bin da </div>
         <div v-if="waitingForData || storedDataRequests.length > 0">
           <div
             id="searchBarAndFiltersContainer"
@@ -16,7 +15,7 @@
                 <InputText
                   data-test="requested-Datasets-searchbar"
                   v-model="searchBarInput"
-                  placeholder="Search by company name"
+                  placeholder="Search by requester"
                   class="w-12 pl-6 pr-6"
                 />
               </span>
@@ -30,6 +29,17 @@
                 filter-placeholder="Search frameworks"
                 class="ml-3"
                 style="margin: 15px"
+              />
+              <FrameworkDataSearchDropdownFilter
+                  v-model="selectedAccessStatus"
+                  ref="frameworkFilter"
+                  :available-items="availableAccessStatus"
+                  filter-name="Access Status"
+                  data-test="requested-Datasets-frameworks"
+                  filter-id="framework-filter"
+                  filter-placeholder="access status"
+                  class="ml-3"
+                  style="margin: 15px"
               />
               <div class="flex align-items-center">
                 <span
@@ -45,27 +55,34 @@
           <div class="col-12 text-left p-3">
             <div class="card">
               <DataTable
-                :value="displayedData"
-                style="cursor: pointer"
-                :rowHover="true"
-                :loading="waitingForData"
-                data-test="requested-Datasets-table"
-                paginator
-                paginator-position="bottom"
-                :rows="datasetsPerPage"
-                lazy
-                :total-records="numberOfFilteredRequests"
-                @page="onPage($event)"
-                @sort="onSort($event)"
-                @row-click="onRowClick($event)"
-                id="my-data-requests-overview-table"
+                 v-if="storedDataRequests && storedDataRequests.length > 0"
+                 ref="dataTable"
+                 :value="storedDataRequests"
+                 :paginator="true"
+                 @page="onPage($event)"
+                 :lazy="true"
+                 :first="previousRecords"
+                 :total-records="totalRecords"
+                 :rows="rowsPerPage"
+                 paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport"
+                 :alwaysShowPaginator="false"
+                 currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                 @row-click="onRowClick($event)"
+                 class="table-cursor"
+                 id="admin-request-overview-data"
+                 :rowHover="true"
               >
-                <Column header="COMPANY" field="companyName" :sortable="true">
+                <Column header="REQUESTER" field="userEmailAddress" :sortable="false">
+                  <template #body="slotProps">
+                    {{ slotProps.data.userEmailAddress }}
+                  </template>
+                </Column>
+                <Column header="COMPANY" field="companyName" :sortable="false">
                   <template #body="slotProps">
                     {{ slotProps.data.companyName }}
                   </template>
                 </Column>
-                <Column header="FRAMEWORK" :sortable="true" field="dataType">
+                <Column header="FRAMEWORK" :sortable="false" field="dataType">
                   <template #body="slotProps">
                     <div>
                       {{ getFrameworkTitle(slotProps.data.dataType) }}
@@ -80,67 +97,41 @@
                     </div>
                   </template>
                 </Column>
-                <Column header="REPORTING PERIOD" field="reportingPeriod" :sortable="true">
+                <Column header="REPORTING PERIOD" field="reportingPeriod" :sortable="false">
                   <template #body="slotProps">
                     {{ slotProps.data.reportingPeriod }}
                   </template>
                 </Column>
-                <Column header="REQUESTED" field="creationTimestamp" :sortable="true">
+                <Column header="REQUESTED" field="creationTimestamp" :sortable="false">
                   <template #body="slotProps">
                     <div>
                       {{ convertUnixTimeInMsToDateString(slotProps.data.creationTimestamp) }}
                     </div></template
                   >
                 </Column>
-                <Column header="LAST UPDATED" :sortable="true" field="lastModifiedDate">
+                <Column header="LAST UPDATED" :sortable="false" field="lastModifiedDate">
                   <template #body="slotProps"
                     ><div>
                       {{ convertUnixTimeInMsToDateString(slotProps.data.lastModifiedDate) }}
                     </div>
                   </template>
                 </Column>
-                <Column header="STATUS" :sortable="true" field="requestStatus">
+                <Column header="STATUS" :sortable="false" field="requestStatus">
                   <template #body="slotProps">
                     <div :class="badgeClass(slotProps.data.requestStatus)" style="display: inline-flex">
                       {{ slotProps.data.requestStatus }}
                     </div>
                   </template>
                 </Column>
-                <Column field="resolve" header="">
+                <Column header="ACCESS STATUS" :sortable="false" field="accessStatus">
                   <template #body="slotProps">
-                    <div
-                      v-if="slotProps.data.requestStatus == RequestStatus.Answered"
-                      class="text-right text-primary no-underline font-bold"
-                    >
-                      <span
-                        id="resolveButton"
-                        style="cursor: pointer"
-                        data-test="requested-Datasets-Resolve"
-                        @click="goToResolveDataRequestPage(slotProps.data.datalandCompanyId, slotProps.data.dataType)"
-                        >RESOLVE</span
-                      >
-                      <span class="ml-3">></span>
+                    <div :class="accessStatusBadgeClass(slotProps.data.accessStatus)" style="display: inline-flex">
+                      {{ slotProps.data.accessStatus }}
                     </div>
                   </template>
                 </Column>
-              </DataTable>
+              </DataTable >
             </div>
-          </div>
-        </div>
-        <div v-if="!waitingForData && storedDataRequests.length == 0">
-          <div class="d-center-div text-center px-7 py-4">
-            <p class="font-medium text-xl">You have not requested data yet.</p>
-            <p class="font-medium text-xl">Request data to see your requests here.</p>
-            <a @click="goToBulkDataRequestPage()" class="no-underline" data-test="bulkDataRequestButton">
-              <button
-                class="p-button p-component uppercase p-button p-button-sm mr-3"
-                type="button"
-                data-pc-name="button"
-                data-pc-section="root"
-              >
-                <i class="material-icons"> add_box </i><span class="d-letters pl-2"> BULK DATA REQUEST </span>
-              </button></a
-            >
           </div>
         </div>
       </TheContent>
@@ -160,8 +151,7 @@ import type Keycloak from 'keycloak-js';
 import { ApiClientProvider } from '@/services/ApiClients';
 import DataTable, {
   type DataTablePageEvent,
-  type DataTableRowClickEvent,
-  type DataTableSortEvent,
+  type DataTableRowClickEvent
 } from 'primevue/datatable';
 import Column from 'primevue/column';
 import {
@@ -176,11 +166,13 @@ import { type ExtendedStoredDataRequest, RequestStatus } from '@clients/communit
 import { type DataTypeEnum } from '@clients/backend';
 import InputText from 'primevue/inputtext';
 import FrameworkDataSearchDropdownFilter from '@/components/resources/frameworkDataSearch/FrameworkDataSearchDropdownFilter.vue';
-import type { FrameworkSelectableItem } from '@/utils/FrameworkDataSearchDropDownFilterTypes';
+import type {FrameworkSelectableItem, SelectableItem} from '@/utils/FrameworkDataSearchDropDownFilterTypes';
 import { FRAMEWORKS_WITH_VIEW_PAGE } from '@/utils/Constants';
 import { getFrontendFrameworkDefinition } from '@/frameworks/FrontendFrameworkRegistry';
 import AuthenticationWrapper from '@/components/wrapper/AuthenticationWrapper.vue';
-import { badgeClass } from '@/utils/RequestUtils';
+import {accessStatusBadgeClass, badgeClass} from '@/utils/RequestUtils';
+import FrameworkDataSearchResults from "@/components/resources/frameworkDataSearch/FrameworkDataSearchResults.vue";
+import {retrieveAvailableAccessStatus} from "@/utils/RequestsOverviewPageUtils";
 
 export default defineComponent({
   name: 'MyDataRequestsOverview',
@@ -190,6 +182,7 @@ export default defineComponent({
     },
   },
   components: {
+    FrameworkDataSearchResults,
     AuthenticationWrapper,
     FrameworkDataSearchDropdownFilter,
     DatasetsTabMenu,
@@ -216,6 +209,9 @@ export default defineComponent({
     return {
       waitingForData: true,
       currentPage: 0,
+      totalRecords: 0,
+      rowsPerPage: 100,
+      previousRecords: 0,
       storedDataRequests: [] as ExtendedStoredDataRequest[],
       displayedData: [] as ExtendedStoredDataRequest[],
       footerContent,
@@ -223,30 +219,22 @@ export default defineComponent({
       searchBarInputFilter: '',
       availableFrameworks: [] as Array<FrameworkSelectableItem>,
       selectedFrameworks: [] as Array<FrameworkSelectableItem>,
+      availableAccessStatus: [] as Array<SelectableItem>,
+      selectedAccessStatus: [] as Array<SelectableItem>,
       numberOfFilteredRequests: 0,
-      sortField: 'requestStatus' as keyof ExtendedStoredDataRequest,
-      sortOrder: 1,
     };
   },
   mounted() {
     this.availableFrameworks = this.retrieveAvailableFrameworks();
+    this.availableAccessStatus = retrieveAvailableAccessStatus();
     this.getStoredRequestDataList().catch((error) => console.error(error));
     this.resetFilterAndSearchBar();
   },
   watch: {
-    selectedFrameworks() {
-      this.updateCurrentDisplayedData();
-    },
-    waitingForData() {
-      this.updateCurrentDisplayedData();
-    },
-    searchBarInput(newSearch: string) {
-      this.searchBarInputFilter = newSearch;
-      this.updateCurrentDisplayedData();
-    },
   },
   methods: {
     badgeClass,
+    accessStatusBadgeClass,
     frameworkHasSubTitle,
     getFrameworkTitle,
     getFrameworkSubtitle,
@@ -262,12 +250,12 @@ export default defineComponent({
       return this.$router.push(url);
     },
     /**
-     * Navigates to the bulk data request page
-     * @returns the promise of the router push action
+     * Updates the current Page in the parent component
+     * @param event DataTablePageEvent
      */
-    goToBulkDataRequestPage() {
-      const url = `/bulkdatarequest`;
-      return this.$router.push(url);
+    onPage(event: DataTablePageEvent) {
+      window.scrollTo(0, 0);
+      this.$emit('page-update', event.page);
     },
 
     /**
@@ -299,7 +287,16 @@ export default defineComponent({
           this.storedDataRequests = (
             await new ApiClientProvider(
               this.getKeycloakPromise()
-            ).apiClients.requestController.getDataRequestsForRequestingUser()
+            ).apiClients.requestController.getDataRequests(
+                undefined,
+                undefined,
+                undefined,
+                undefined,
+                undefined,
+                undefined,
+                this.datasetsPerPage,
+                this.currentPage
+            )
           ).data;
         }
       } catch (error) {
@@ -319,17 +316,8 @@ export default defineComponent({
       const isResolveButtonClick = clickedElement.id === 'resolveButton';
       if (!isResolveButtonClick) {
         const requestIdOfClickedRow = event.data.dataRequestId;
-        return this.$router.push(`/requests/${requestIdOfClickedRow}`);
+        return this.$router.push(`/requests/${requestIdOfClickedRow}`); //TODO: update dataRequestPage for Admins
       }
-    },
-    /**
-     * Sorts the list of storedDataRequests
-     * @param event contains column to sort and sortOrder
-     */
-    onSort(event: DataTableSortEvent) {
-      this.sortField = event.sortField as keyof ExtendedStoredDataRequest;
-      this.sortOrder = event.sortOrder ?? 1;
-      this.updateCurrentDisplayedData();
     },
 
     /**
@@ -345,87 +333,35 @@ export default defineComponent({
     },
     /**
      * Filterfunction for searchbar
-     * @param companyName dataland companyName
-     * @returns checks if given companyName contains searchbar text
+     * @param requesterMail dataland requesterMail
+     * @returns checks if given requesterMail contains searchbar text
      */
-    filterSearchInput(companyName: string) {
-      const lowerCaseCompanyName = (companyName ?? '').toLowerCase();
+    filterSearchInput(requesterMail: string | undefined) {
+      const lowerCaseRequesterMail = (requesterMail ?? '').toLowerCase();
       const lowerCaseSearchString = this.searchBarInputFilter.toLowerCase();
-      return lowerCaseCompanyName.includes(lowerCaseSearchString);
+      return lowerCaseRequesterMail.includes(lowerCaseSearchString);
     },
     /**
      * Resets selected frameworks and searchBarInput
      */
     resetFilterAndSearchBar() {
-      this.selectedFrameworks = this.availableFrameworks;
+      this.selectedFrameworks = [];
+      this.selectedAccessStatus = [];
       this.searchBarInput = '';
     },
     /**
-     * Updates the displayedData
+     * Updates the current page.
+     * An update of the currentPage automatically triggers a data Update
+     * @param pageNumber the new page index
      */
-    updateCurrentDisplayedData() {
-      this.displayedData = this.storedDataRequests
-        .filter((dataRequest) => this.filterSearchInput(dataRequest.companyName))
-        .filter((dataRequest) => this.filterFramework(dataRequest.dataType));
-      this.displayedData.sort((a, b) => this.customCompareForExtendedStoredDataRequests(a, b));
-      this.numberOfFilteredRequests = this.displayedData.length;
-      this.displayedData = this.displayedData.slice(
-        this.datasetsPerPage * this.currentPage,
-        this.datasetsPerPage * (1 + this.currentPage)
-      );
-      window.scrollTo({
-        top: 0,
-        behavior: 'smooth',
-      });
-    },
-    /**
-     * Compares two extended stored data requests (sort field, request status, last modified, company name)
-     * @param a ExtendedStoredDataRequest to sort
-     * @param b ExtendedStoredDataRequest to sort
-     * @returns result of the comparison
-     */
-    customCompareForExtendedStoredDataRequests(a: ExtendedStoredDataRequest, b: ExtendedStoredDataRequest) {
-      const aValue = a[this.sortField];
-      const bValue = b[this.sortField];
-
-      if (this.sortField != ('requestStatus' as keyof ExtendedStoredDataRequest)) {
-        if (aValue < bValue) return -1 * this.sortOrder;
-        if (aValue > bValue) return this.sortOrder;
+    handlePageUpdate(pageNumber: number) {
+      if (pageNumber != this.currentPage) {
+        this.waitingForData = true;
+        this.currentPage = pageNumber;
+        this.previousRecords = this.currentPage * this.rowsPerPage;
       }
-
-      if (a.requestStatus != b.requestStatus)
-        return this.customCompareForRequestStatus(a.requestStatus, b.requestStatus);
-
-      if (a.lastModifiedDate < b.lastModifiedDate) return this.sortOrder;
-      if (a.lastModifiedDate > b.lastModifiedDate) return -1 * this.sortOrder;
-
-      if (a.companyName < b.companyName) return -1 * this.sortOrder;
-      else return this.sortOrder;
     },
-    /**
-     * Compares two request status
-     * @param a RequestStatus to compare
-     * @param b RequestStatus to compare
-     * @returns result of the comparison
-     */
-    customCompareForRequestStatus(a: RequestStatus, b: RequestStatus) {
-      const sortOrderRequestStatus: { [key: string]: number } = {};
-      sortOrderRequestStatus[RequestStatus.Answered] = 1;
-      sortOrderRequestStatus[RequestStatus.Open] = 2;
-      sortOrderRequestStatus[RequestStatus.Resolved] = 3;
-      sortOrderRequestStatus[RequestStatus.Closed] = 4;
-      sortOrderRequestStatus[RequestStatus.Withdrawn] = 5;
-      if (sortOrderRequestStatus[a] <= sortOrderRequestStatus[b]) return -1 * this.sortOrder;
-      return this.sortOrder;
-    },
-    /**
-     * Updates the data for the current page
-     * @param event event containing the new page
-     */
-    onPage(event: DataTablePageEvent) {
-      this.currentPage = event.page;
-      this.updateCurrentDisplayedData();
-    },
+
   },
 });
 </script>
