@@ -1,5 +1,6 @@
 package org.dataland.datalandcommunitymanager.services
 
+import com.fasterxml.jackson.core.type.TypeReference
 import com.fasterxml.jackson.databind.ObjectMapper
 import okhttp3.OkHttpClient
 import okhttp3.Request
@@ -35,5 +36,20 @@ class KeycloakUserControllerApiService(
             KeycloakUserInfo::class.java,
         )
         return user
+    }
+
+    /**
+     * Search keycloak users by email address or parts thereof
+     */
+    fun searchUsers(emailAddressSearchString: String): List<KeycloakUserInfo> {
+        val request = Request.Builder()
+            .url("$keycloakBaseUrl/admin/realms/datalandsecurity/users?email=$emailAddressSearchString")
+            .build()
+        val response = authenticatedOkHttpClient.newCall(request).execute().body!!.string()
+        val listOfUsers: List<KeycloakUserInfo> = objectMapper.readValue(
+            response,
+            object : TypeReference<List<KeycloakUserInfo>>() {},
+        )
+        return listOfUsers
     }
 }
