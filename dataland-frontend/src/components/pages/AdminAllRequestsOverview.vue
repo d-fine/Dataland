@@ -71,6 +71,7 @@
                  class="table-cursor"
                  id="admin-request-overview-data"
                  :rowHover="true"
+                 style="cursor: pointer"
               >
                 <Column header="REQUESTER" field="userEmailAddress" :sortable="false">
                   <template #body="slotProps">
@@ -116,7 +117,7 @@
                     </div>
                   </template>
                 </Column>
-                <Column header="STATUS" :sortable="false" field="requestStatus">
+                <Column header="REQUEST STATUS" :sortable="false" field="requestStatus">
                   <template #body="slotProps">
                     <div :class="badgeClass(slotProps.data.requestStatus)" style="display: inline-flex">
                       {{ slotProps.data.requestStatus }}
@@ -132,6 +133,11 @@
                 </Column>
               </DataTable >
             </div>
+          </div>
+        </div>
+        <div v-if="!waitingForData && storedDataRequests.length == 0">
+          <div class="d-center-div text-center px-7 py-4">
+            <p class="font-medium text-xl">Currently, there are no data requests on Dataland.</p>
           </div>
         </div>
       </TheContent>
@@ -321,7 +327,7 @@ export default defineComponent({
     },
 
     /**
-     * Filterfunction for frameworks
+     * Filter function for frameworks
      * @param framework dataland framework
      * @returns checks if given framework is selected
      */
@@ -332,7 +338,7 @@ export default defineComponent({
       return false;
     },
     /**
-     * Filterfunction for searchbar
+     * Filter function for searchbar
      * @param requesterMail dataland requesterMail
      * @returns checks if given requesterMail contains searchbar text
      */
@@ -365,8 +371,3 @@ export default defineComponent({
   },
 });
 </script>
-<style scoped>
-#my-data-requests-overview-table tr:hover {
-  cursor: pointer;
-}
-</style>

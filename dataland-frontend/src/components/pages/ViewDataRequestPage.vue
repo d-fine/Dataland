@@ -62,6 +62,8 @@
             <div class="card" data-test="card_requestDetails">
               <div class="card__title">Request Details</div>
               <div class="card__separator" />
+              <div class="card__subtitle" v-show="isUserKeycloakAdmin">Requester</div>
+              <div class="card__data" v-show="isUserKeycloakAdmin">{{ storedDataRequest.userEmailAddress }}</div>
               <div class="card__subtitle">Company</div>
               <div class="card__data">{{ companyName }}</div>
               <div class="card__subtitle">Framework</div>
@@ -117,7 +119,7 @@
                 <div class="card__separator" />
                 <StatusHistory :status-history="storedDataRequest.dataRequestStatusHistory" />
               </div>
-              <div class="card" data-test="card_providedContactDetails">
+              <div class="card" data-test="card_providedContactDetails" v-show="isUsersOwnRequest">
                 <span style="display: flex; align-items: center">
                   <div class="card__title" style="margin-right: auto">Provided Contact Details & Messages</div>
                   <div
@@ -186,6 +188,7 @@ import EmailDetails from '@/components/resources/dataRequest/EmailDetails.vue';
 import { type DataTypeEnum, QaStatus } from '@clients/backend';
 import TheContent from '@/components/generics/TheContent.vue';
 import StatusHistory from '@/components/resources/dataRequest/StatusHistory.vue';
+import {checkIfUserHasRole, getUserId, KEYCLOAK_ROLE_ADMIN} from "@/utils/KeycloakUtils";
 
 export default defineComponent({
   name: 'ViewDataRequest',
@@ -216,6 +219,8 @@ export default defineComponent({
       toggleEmailDetailsError: false,
       successModalIsVisible: false,
       isDatasetAvailable: false,
+      isUsersOwnRequest: false,
+      isUserKeycloakAdmin: false,
       storedDataRequest: {} as StoredDataRequest,
       companyName: '',
       showNewMessageDialog: false,
@@ -231,6 +236,7 @@ export default defineComponent({
         this.getCompanyName(this.storedDataRequest.datalandCompanyId).catch((error) => console.error(error));
         this.checkForAvailableData(this.storedDataRequest).catch((error) => console.error(error));
         this.storedDataRequest.dataRequestStatusHistory.sort((a, b) => b.creationTimestamp - a.creationTimestamp);
+        this.setUserAccessFields();
       })
       .catch((error) => console.error(error));
   },
@@ -330,6 +336,22 @@ export default defineComponent({
       }
       this.successModalIsVisible = true;
       this.storedDataRequest.requestStatus = RequestStatus.Withdrawn;
+    },
+    /**
+     * This function sets the components fields 'isUsersOwnRequest' and 'isUserKeycloakAdmin'.
+     * Both variables are used to show information on page depending on who's visiting
+     */
+    async setUserAccessFields() {
+      try {
+        if (this.getKeycloakPromise) {
+          const userId = await getUserId(this.getKeycloakPromise);
+          this.isUsersOwnRequest = this.storedDataRequest.userId == userId;
+          this.isUserKeycloakAdmin = await checkIfUserHasRole(KEYCLOAK_ROLE_ADMIN, this.getKeycloakPromise);
+        }
+      } catch (error) {
+          console.error(error);
+          return;
+      }
     },
     /**
      * Method to update the request message when clicking on the button
