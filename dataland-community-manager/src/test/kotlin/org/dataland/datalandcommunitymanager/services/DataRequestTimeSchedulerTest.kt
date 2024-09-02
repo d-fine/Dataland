@@ -5,11 +5,10 @@ import org.dataland.datalandcommunitymanager.entities.RequestStatusEntity
 import org.dataland.datalandcommunitymanager.model.dataRequest.AccessStatus
 import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
 import org.dataland.datalandcommunitymanager.repositories.DataRequestRepository
-import org.dataland.datalandcommunitymanager.utils.DataRequestsQueryFilter
+import org.dataland.datalandcommunitymanager.utils.DataRequestsFilter
 import org.dataland.datalandcommunitymanager.utils.TestUtils
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import org.mockito.ArgumentMatchers.eq
 import org.mockito.Mockito
 import org.mockito.Mockito.mock
 import org.mockito.Mockito.reset
@@ -17,6 +16,7 @@ import org.mockito.Mockito.times
 import org.mockito.Mockito.verify
 import org.mockito.Mockito.verifyNoInteractions
 import org.mockito.Mockito.`when`
+import org.mockito.kotlin.eq
 import java.time.Duration
 import java.time.Instant
 import java.util.UUID
@@ -81,7 +81,8 @@ class DataRequestTimeSchedulerTest {
     fun `validate that two stale and answered data requests are patched`() {
         `when`(
             dataRequestRepository.searchDataRequestEntity(
-                any(DataRequestsQueryFilter::class.java),
+                any(DataRequestsFilter::class.java),
+                eq(emptyList()),
                 eq(100), eq(0),
             ),
         ).thenReturn(
@@ -116,7 +117,8 @@ class DataRequestTimeSchedulerTest {
         }
         `when`(
             dataRequestRepository.searchDataRequestEntity(
-                any(DataRequestsQueryFilter::class.java),
+                any(DataRequestsFilter::class.java),
+                eq(emptyList()),
                 eq(100), eq(0),
             ),
         ).thenReturn(

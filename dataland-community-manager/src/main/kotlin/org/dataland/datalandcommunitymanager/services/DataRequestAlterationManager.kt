@@ -10,7 +10,7 @@ import org.dataland.datalandcommunitymanager.model.dataRequest.StoredDataRequest
 import org.dataland.datalandcommunitymanager.repositories.DataRequestRepository
 import org.dataland.datalandcommunitymanager.utils.DataRequestLogger
 import org.dataland.datalandcommunitymanager.utils.DataRequestProcessingUtils
-import org.dataland.datalandcommunitymanager.utils.DataRequestsQueryFilter
+import org.dataland.datalandcommunitymanager.utils.DataRequestsFilter
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
@@ -88,11 +88,12 @@ class DataRequestAlterationManager(
     fun patchRequestStatusFromOpenToAnsweredByDataId(dataId: String, correlationId: String) {
         val metaData = metaDataControllerApi.getDataMetaInfo(dataId)
         val dataRequestEntities = dataRequestRepository.searchDataRequestEntity(
-            DataRequestsQueryFilter(
-                dataTypeFilter = metaData.dataType.value, userIdFilter = "", userIdsFromEmailFilter = null,
+            DataRequestsFilter(
+                dataType = metaData.dataType.value, userId = null, emailAddress = null,
                 requestStatus = RequestStatus.Open.name, accessStatus = null,
-                reportingPeriodFilter = metaData.reportingPeriod, datalandCompanyIdFilter = metaData.companyId,
+                reportingPeriod = metaData.reportingPeriod, datalandCompanyId = metaData.companyId,
             ),
+            fetchedUserIdsByEmail = emptyList(),
         )
         dataRequestEntities.forEach {
             if (it.dataType == DataTypeEnum.vsme.name && it.accessStatus != AccessStatus.Granted) {

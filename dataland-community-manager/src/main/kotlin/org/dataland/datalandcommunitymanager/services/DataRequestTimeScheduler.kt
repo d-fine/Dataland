@@ -2,7 +2,7 @@ package org.dataland.datalandcommunitymanager.services
 
 import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
 import org.dataland.datalandcommunitymanager.repositories.DataRequestRepository
-import org.dataland.datalandcommunitymanager.utils.DataRequestsQueryFilter
+import org.dataland.datalandcommunitymanager.utils.DataRequestsFilter
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
@@ -35,12 +35,12 @@ class DataRequestTimeScheduler(
         val correlationId = UUID.randomUUID().toString()
         logger.info("Searching for stale answered data request. CorrelationId: $correlationId")
         val thresholdTime = Instant.now().minus(Duration.ofDays(staleDaysThreshold)).toEpochMilli()
-        val searchFilterForAnsweredDataRequests = DataRequestsQueryFilter(
-            "", "", null,
-            RequestStatus.Answered.name, null, "", "",
+        val searchFilterForAnsweredDataRequests = DataRequestsFilter(
+            null, null, null, null, null,
+            RequestStatus.Answered.name, null,
         )
         val staleAnsweredRequests =
-            dataRequestRepository.searchDataRequestEntity(searchFilterForAnsweredDataRequests)
+            dataRequestRepository.searchDataRequestEntity(searchFilterForAnsweredDataRequests, emptyList())
                 .filter { it.lastModifiedDate < thresholdTime }
         staleAnsweredRequests.forEach {
             logger.info(

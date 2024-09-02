@@ -23,20 +23,20 @@ class TemporaryTables private constructor() {
             "FROM data_requests d " +
             "JOIN status_table ON status_table.request_id = d.data_request_id " +
             "WHERE " +
-            "(:#{#searchFilter.dataTypeFilterLength} = 0 " +
-            "OR d.data_type = :#{#searchFilter.dataTypeFilter}) AND " +
-            "(:#{#searchFilter.userIdFilterLength} = 0 " +
-            "OR d.user_Id = :#{#searchFilter.userIdFilter}) AND " +
-            "(:#{#searchFilter.shouldApplyEmailFilter} = false " +
-            "OR d.user_Id IN :#{#searchFilter.appliedUserIdsFromEmailFilter}) AND " +
-            "(:#{#searchFilter.requestStatusLength} = 0 " +
-            "OR status_table.request_status = :#{#searchFilter.requestStatus} ) AND " +
-            "(:#{#searchFilter.accessStatusLength} = 0 " +
-            "OR status_table.access_status = :#{#searchFilter.accessStatus}  ) AND " +
-            "(:#{#searchFilter.reportingPeriodFilterLength} = 0 " +
-            "OR d.reporting_period = :#{#searchFilter.reportingPeriodFilter}) AND " +
-            "(:#{#searchFilter.datalandCompanyIdFilterLength} = 0 " +
-            "OR d.dataland_company_id = :#{#searchFilter.datalandCompanyIdFilter}) " +
+            "(:#{#searchFilter.shouldFilterByDataType} = false " +
+            "OR d.data_type = :#{#searchFilter.usedDataTypeFilter}) AND " +
+            "(:#{#searchFilter.shouldFilterByUserId} = false " +
+            "OR d.user_Id = :#{#searchFilter.usedUserIdFilter}) AND " +
+            "(:#{#searchFilter.shouldFilterByEmailAddress} = false " +
+            "OR d.user_Id IN :#{#fetchedUserIdsByEmail}) AND " +
+            "(:#{#searchFilter.shouldFilterByRequestStatus} = false " +
+            "OR status_table.request_status = :#{#searchFilter.usedRequestStatusFilter} ) AND " +
+            "(:#{#searchFilter.shouldFilterByAccessStatus} = false " +
+            "OR status_table.access_status = :#{#searchFilter.usedAccessStatusFilter}  ) AND " +
+            "(:#{#searchFilter.shouldFilterByReportingPeriod} = false " +
+            "OR d.reporting_period = :#{#searchFilter.usedReportingPeriodFilter}) AND " +
+            "(:#{#searchFilter.shouldFilterByDatalandCompanyId} = false " +
+            "OR d.dataland_company_id = :#{#searchFilter.usedDatalandCompanyIdFilter}) " +
             "ORDER BY d.data_request_id ASC " +
             "LIMIT :#{#resultLimit} OFFSET :#{#resultOffset}) "
     }

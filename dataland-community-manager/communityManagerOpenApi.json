@@ -665,69 +665,11 @@
         "operationId": "getDataRequests",
         "parameters": [
           {
-            "name": "dataType",
+            "name": "filter",
             "in": "query",
-            "required": false,
+            "required": true,
             "schema": {
-              "type": "string",
-              "enum": [
-                "eutaxonomy-financials",
-                "eutaxonomy-non-financials",
-                "lksg",
-                "p2p",
-                "sfdr",
-                "vsme",
-                "esg-questionnaire",
-                "heimathafen"
-              ]
-            }
-          },
-          {
-            "name": "userId",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "emailAddress",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "requestStatus",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "$ref": "#/components/schemas/RequestStatus"
-            }
-          },
-          {
-            "name": "accessStatus",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "$ref": "#/components/schemas/AccessStatus"
-            }
-          },
-          {
-            "name": "reportingPeriod",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "datalandCompanyId",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "string"
+              "$ref": "#/components/schemas/DataRequestsFilter"
             }
           },
           {
@@ -1641,6 +1583,32 @@
           },
           "accessStatus": {
             "$ref": "#/components/schemas/AccessStatus"
+          }
+        }
+      },
+      "DataRequestsFilter": {
+        "type": "object",
+        "properties": {
+          "dataType": {
+            "type": "string"
+          },
+          "userId": {
+            "type": "string"
+          },
+          "emailAddress": {
+            "type": "string"
+          },
+          "datalandCompanyId": {
+            "type": "string"
+          },
+          "reportingPeriod": {
+            "type": "string"
+          },
+          "requestStatus": {
+            "type": "string"
+          },
+          "accessStatus": {
+            "type": "string"
           }
         }
       },

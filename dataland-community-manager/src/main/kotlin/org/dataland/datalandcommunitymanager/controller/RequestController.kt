@@ -2,6 +2,7 @@ package org.dataland.datalandcommunitymanager.controller
 
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandcommunitymanager.api.RequestApi
+import org.dataland.datalandcommunitymanager.model.companyRoles.CompanyRole
 import org.dataland.datalandcommunitymanager.model.dataRequest.AccessStatus
 import org.dataland.datalandcommunitymanager.model.dataRequest.AggregatedDataRequest
 import org.dataland.datalandcommunitymanager.model.dataRequest.BulkDataRequest
@@ -16,10 +17,10 @@ import org.dataland.datalandcommunitymanager.services.CompanyRolesManager
 import org.dataland.datalandcommunitymanager.services.DataAccessManager
 import org.dataland.datalandcommunitymanager.services.DataRequestAlterationManager
 import org.dataland.datalandcommunitymanager.services.DataRequestQueryManager
-import org.dataland.datalandcommunitymanager.services.KeycloakUserControllerApiService
 import org.dataland.datalandcommunitymanager.services.SingleDataRequestManager
-import org.dataland.datalandcommunitymanager.utils.DataRequestsQueryFilter
+import org.dataland.datalandcommunitymanager.utils.DataRequestsFilter
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
+import org.dataland.keycloakAdapter.auth.DatalandRealmRole
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.RestController
@@ -38,7 +39,6 @@ class RequestController(
     @Autowired private val dataRequestAlterationManager: DataRequestAlterationManager,
     @Autowired private val dataAccessManager: DataAccessManager,
     @Autowired private val companyRolesManager: CompanyRolesManager,
-    @Autowired private val keycloakUserControllerApiService: KeycloakUserControllerApiService,
 ) : RequestApi {
     override fun postBulkDataRequest(bulkDataRequest: BulkDataRequest): ResponseEntity<BulkDataRequestResponse> {
         return ResponseEntity.ok(
@@ -79,37 +79,24 @@ class RequestController(
     }
 
     override fun getDataRequests(
-        dataType: DataTypeEnum?,
-        userId: String?,
-        emailAddress: String?,
-        requestStatus: RequestStatus?,
-        accessStatus: AccessStatus?,
-        reportingPeriod: String?,
-        datalandCompanyId: String?,
+        filter: DataRequestsFilter,
         chunkSize: Int,
         chunkIndex: Int,
     ): ResponseEntity<List<ExtendedStoredDataRequest>> {
-        val currentUserId = DatalandAuthentication.fromContext().userId
-        val companyRoleAssignmentsOfCurrentUser =
-            companyRolesManager.getCompanyRoleAssignmentsByParameters(null, null, userId = currentUserId)
-        val userIdsFromEmail = emailAddress
-            ?.takeIf { it.isNotBlank() }?.let { keycloakUserControllerApiService.searchUsers(it) }?.map { it.userId }
-        val filter = DataRequestsQueryFilter(
-            dataTypeFilter = dataType?.value ?: "",
-            userIdFilter = userId ?: "",
-            userIdsFromEmailFilter = userIdsFromEmail,
-            requestStatus = requestStatus?.name ?: "",
-            accessStatus = accessStatus?.name ?: "",
-            reportingPeriodFilter = reportingPeriod ?: "",
-            datalandCompanyIdFilter = datalandCompanyId ?: "",
-        )
+        val isUserAdmin = DatalandAuthentication.fromContext().roles.contains(DatalandRealmRole.ROLE_ADMIN)
+        val userId = DatalandAuthentication.fromContext().userId
+        val ownedCompanyIdsByUser =
+            companyRolesManager.getCompanyRoleAssignmentsByParameters(null, null, userId = userId)
+                .filter { it.companyRole == CompanyRole.CompanyOwner }
+                .map { it.companyId }
+
         return ResponseEntity.ok(
             dataRequestQueryManager.getDataRequests(
                 filter,
-                companyRoleAssignmentsOfCurrentUser,
+                isUserAdmin,
+                ownedCompanyIdsByUser,
                 chunkIndex,
                 chunkSize,
-
             ),
         )
     }
