@@ -7,6 +7,7 @@ package org.dataland.datalandcommunitymanager.utils
 data class DataRequestsQueryFilter(
     val dataTypeFilter: String,
     val userIdFilter: String,
+    val userIdsFromEmailFilter: List<String>?,
     val requestStatus: String?,
     val accessStatus: String?,
     val reportingPeriodFilter: String,
@@ -17,6 +18,12 @@ data class DataRequestsQueryFilter(
 
     val userIdFilterLength: Int
         get() = userIdFilter.length
+
+    val shouldApplyEmailFilter: Boolean
+        get() = userIdsFromEmailFilter != null
+
+    val appliedUserIdsFromEmailFilter: List<String>
+        get() = userIdsFromEmailFilter ?: emptyList()
 
     val reportingPeriodFilterLength: Int
         get() = reportingPeriodFilter.length

@@ -20,7 +20,7 @@
 import { defineComponent, inject } from 'vue';
 import TabView from 'primevue/tabview';
 import TabPanel from 'primevue/tabpanel';
-import {checkIfUserHasRole, KEYCLOAK_ROLE_ADMIN, KEYCLOAK_ROLE_REVIEWER} from '@/utils/KeycloakUtils';
+import { checkIfUserHasRole, KEYCLOAK_ROLE_ADMIN, KEYCLOAK_ROLE_REVIEWER } from '@/utils/KeycloakUtils';
 import type Keycloak from 'keycloak-js';
 import { CompanyRole, type CompanyRoleAssignment } from '@clients/communitymanager';
 
@@ -64,7 +64,7 @@ export default defineComponent({
         isVisible: false,
       },
       {
-        label: 'All DATA REQUESTS',
+        label: 'ALL DATA REQUESTS',
         route: '/requestoverview',
         isVisible: false,
       },

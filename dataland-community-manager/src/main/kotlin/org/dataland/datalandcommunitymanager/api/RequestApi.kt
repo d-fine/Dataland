@@ -208,6 +208,7 @@ interface RequestApi {
     fun getDataRequests(
         @RequestParam dataType: DataTypeEnum?,
         @RequestParam userId: String?,
+        @RequestParam emailAddress: String?,
         @RequestParam requestStatus: RequestStatus?,
         @RequestParam accessStatus: AccessStatus?,
         @RequestParam reportingPeriod: String?,
