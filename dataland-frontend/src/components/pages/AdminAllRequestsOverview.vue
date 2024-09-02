@@ -103,6 +103,11 @@
                     {{ slotProps.data.reportingPeriod }}
                   </template>
                 </Column>
+                <Column header="REQUEST ID" field="dataRequestId" :sortable="false">
+                  <template #body="slotProps">
+                    {{ slotProps.data.dataRequestId }}
+                  </template>
+                </Column>
                 <Column header="REQUESTED" field="creationTimestamp" :sortable="false">
                   <template #body="slotProps">
                     <div>
