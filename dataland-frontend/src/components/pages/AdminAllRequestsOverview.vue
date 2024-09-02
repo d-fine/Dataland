@@ -26,18 +26,18 @@
                 filter-name="Framework"
                 data-test="requested-Datasets-frameworks"
                 filter-id="framework-filter"
-                filter-placeholder="Search frameworks"
+                filter-placeholder="Filter frameworks"
                 class="ml-3"
                 style="margin: 15px"
               />
               <FrameworkDataSearchDropdownFilter
-                  v-model="selectedAccessStatus"
+                  v-model="selectedRequestStatus"
                   ref="frameworkFilter"
-                  :available-items="availableAccessStatus"
-                  filter-name="Access Status"
+                  :available-items="availableRequestStatus"
+                  filter-name="Request Status"
                   data-test="requested-Datasets-frameworks"
                   filter-id="framework-filter"
-                  filter-placeholder="access status"
+                  filter-placeholder="Filter Request Status"
                   class="ml-3"
                   style="margin: 15px"
               />
@@ -68,6 +68,7 @@
                  :alwaysShowPaginator="false"
                  currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
                  @row-click="onRowClick($event)"
+                 @page-update="handlePageUpdate"
                  class="table-cursor"
                  id="admin-request-overview-data"
                  :rowHover="true"
@@ -154,16 +155,13 @@
 <script lang="ts">
 import TheFooter from '@/components/generics/TheNewFooter.vue';
 import contentData from '@/assets/content.json';
-import type { Content, Page } from '@/types/ContentTypes';
+import type {Content, Page} from '@/types/ContentTypes';
 import TheContent from '@/components/generics/TheContent.vue';
 import TheHeader from '@/components/generics/TheHeader.vue';
-import { defineComponent, inject, ref } from 'vue';
+import {defineComponent, inject, ref} from 'vue';
 import type Keycloak from 'keycloak-js';
-import { ApiClientProvider } from '@/services/ApiClients';
-import DataTable, {
-  type DataTablePageEvent,
-  type DataTableRowClickEvent
-} from 'primevue/datatable';
+import {ApiClientProvider} from '@/services/ApiClients';
+import DataTable, {type DataTablePageEvent, type DataTableRowClickEvent} from 'primevue/datatable';
 import Column from 'primevue/column';
 import {
   frameworkHasSubTitle,
@@ -172,18 +170,19 @@ import {
   humanizeStringOrNumber,
 } from '@/utils/StringFormatter';
 import DatasetsTabMenu from '@/components/general/DatasetsTabMenu.vue';
-import { convertUnixTimeInMsToDateString } from '@/utils/DataFormatUtils';
-import { type ExtendedStoredDataRequest, RequestStatus } from '@clients/communitymanager';
-import { type DataTypeEnum } from '@clients/backend';
+import {convertUnixTimeInMsToDateString} from '@/utils/DataFormatUtils';
+import {type ExtendedStoredDataRequest, RequestStatus} from '@clients/communitymanager';
+import {type DataTypeEnum} from '@clients/backend';
 import InputText from 'primevue/inputtext';
-import FrameworkDataSearchDropdownFilter from '@/components/resources/frameworkDataSearch/FrameworkDataSearchDropdownFilter.vue';
+import FrameworkDataSearchDropdownFilter
+  from '@/components/resources/frameworkDataSearch/FrameworkDataSearchDropdownFilter.vue';
 import type {FrameworkSelectableItem, SelectableItem} from '@/utils/FrameworkDataSearchDropDownFilterTypes';
-import { FRAMEWORKS_WITH_VIEW_PAGE } from '@/utils/Constants';
-import { getFrontendFrameworkDefinition } from '@/frameworks/FrontendFrameworkRegistry';
+import {FRAMEWORKS_WITH_VIEW_PAGE} from '@/utils/Constants';
+import {getFrontendFrameworkDefinition} from '@/frameworks/FrontendFrameworkRegistry';
 import AuthenticationWrapper from '@/components/wrapper/AuthenticationWrapper.vue';
 import {accessStatusBadgeClass, badgeClass} from '@/utils/RequestUtils';
 import FrameworkDataSearchResults from "@/components/resources/frameworkDataSearch/FrameworkDataSearchResults.vue";
-import {retrieveAvailableAccessStatus} from "@/utils/RequestsOverviewPageUtils";
+import {retrieveAvailableFrameworks, retrieveAvailableRequestStatus} from "@/utils/RequestsOverviewPageUtils";
 
 export default defineComponent({
   name: 'MyDataRequestsOverview',
@@ -230,18 +229,31 @@ export default defineComponent({
       searchBarInputFilter: '',
       availableFrameworks: [] as Array<FrameworkSelectableItem>,
       selectedFrameworks: [] as Array<FrameworkSelectableItem>,
-      availableAccessStatus: [] as Array<SelectableItem>,
-      selectedAccessStatus: [] as Array<SelectableItem>,
-      numberOfFilteredRequests: 0,
+      availableRequestStatus: [] as Array<SelectableItem>,
+      selectedRequestStatus: [] as Array<SelectableItem>,
     };
   },
   mounted() {
-    this.availableFrameworks = this.retrieveAvailableFrameworks();
-    this.availableAccessStatus = retrieveAvailableAccessStatus();
+    this.availableFrameworks = retrieveAvailableFrameworks();
+    this.availableRequestStatus = retrieveAvailableRequestStatus();
     this.getStoredRequestDataList().catch((error) => console.error(error));
     this.resetFilterAndSearchBar();
   },
   watch: {
+    selectedFrameworks() {
+      console.log(this.selectedFrameworks)
+      this.handlePageUpdate();
+    },
+    selectedRequestStatus() {
+      this.handlePageUpdate();
+    },
+    waitingForData() {
+      this.handlePageUpdate();
+    },
+    searchBarInput(newSearch: string) {
+      this.searchBarInputFilter = newSearch;
+      this.handlePageUpdate();
+    },
   },
   methods: {
     badgeClass,
@@ -250,43 +262,6 @@ export default defineComponent({
     getFrameworkTitle,
     getFrameworkSubtitle,
     convertUnixTimeInMsToDateString,
-    /**
-     * Navigates to the company view page
-     * @param companyId Dataland companyId
-     * @param framework Dataland framework
-     * @returns the promise of the router push action
-     */
-    goToResolveDataRequestPage(companyId: string, framework: DataTypeEnum) {
-      const url = `/companies/${companyId}/frameworks/${framework}`;
-      return this.$router.push(url);
-    },
-    /**
-     * Updates the current Page in the parent component
-     * @param event DataTablePageEvent
-     */
-    onPage(event: DataTablePageEvent) {
-      window.scrollTo(0, 0);
-      this.$emit('page-update', event.page);
-    },
-
-    /**
-     * Gets list with all available frameworks
-     * @returns array of frameworkSelectableItem
-     */
-    retrieveAvailableFrameworks(): Array<FrameworkSelectableItem> {
-      return FRAMEWORKS_WITH_VIEW_PAGE.map((dataTypeEnum) => {
-        let displayName = humanizeStringOrNumber(dataTypeEnum);
-        const frameworkDefinition = getFrontendFrameworkDefinition(dataTypeEnum);
-        if (frameworkDefinition) {
-          displayName = frameworkDefinition.label;
-        }
-        return {
-          frameworkDataType: dataTypeEnum,
-          displayName: displayName,
-          disabled: false,
-        };
-      });
-    },
     /**
      * Gets list of storedDataRequests
      */
@@ -315,6 +290,37 @@ export default defineComponent({
       }
       this.waitingForData = false;
     },
+
+    /**
+     * Resets selected frameworks and searchBarInput
+     */
+    resetFilterAndSearchBar() {
+      this.selectedFrameworks = [];
+      this.selectedRequestStatus = [];
+      this.searchBarInput = '';
+    },
+
+    /**
+     * Updates the current page.
+     * An update of the currentPage automatically triggers a data Update
+     * @param pageNumber the new page index
+     */
+    handlePageUpdate() {
+      if (pageNumber != this.currentPage) {
+        this.waitingForData = true;
+        this.currentPage = pageNumber;
+        this.previousRecords = this.currentPage * this.rowsPerPage;
+      }
+    },
+    /**
+     * Updates the current Page in the parent component
+     * @param event DataTablePageEvent
+     */
+    onPage(event: DataTablePageEvent) {
+      window.scrollTo(0, 0);
+      this.$emit('page-update', event.page);
+    },
+
     /**
      * Navigates to the view dataRequest page
      * @param event contains column that was clicked
@@ -328,48 +334,6 @@ export default defineComponent({
       if (!isResolveButtonClick) {
         const requestIdOfClickedRow = event.data.dataRequestId;
         return this.$router.push(`/requests/${requestIdOfClickedRow}`); //TODO: update dataRequestPage for Admins
-      }
-    },
-
-    /**
-     * Filter function for frameworks
-     * @param framework dataland framework
-     * @returns checks if given framework is selected
-     */
-    filterFramework(framework: string) {
-      for (const selectedFramework of this.selectedFrameworks) {
-        if (framework == selectedFramework.frameworkDataType) return true;
-      }
-      return false;
-    },
-    /**
-     * Filter function for searchbar
-     * @param requesterMail dataland requesterMail
-     * @returns checks if given requesterMail contains searchbar text
-     */
-    filterSearchInput(requesterMail: string | undefined) {
-      const lowerCaseRequesterMail = (requesterMail ?? '').toLowerCase();
-      const lowerCaseSearchString = this.searchBarInputFilter.toLowerCase();
-      return lowerCaseRequesterMail.includes(lowerCaseSearchString);
-    },
-    /**
-     * Resets selected frameworks and searchBarInput
-     */
-    resetFilterAndSearchBar() {
-      this.selectedFrameworks = [];
-      this.selectedAccessStatus = [];
-      this.searchBarInput = '';
-    },
-    /**
-     * Updates the current page.
-     * An update of the currentPage automatically triggers a data Update
-     * @param pageNumber the new page index
-     */
-    handlePageUpdate(pageNumber: number) {
-      if (pageNumber != this.currentPage) {
-        this.waitingForData = true;
-        this.currentPage = pageNumber;
-        this.previousRecords = this.currentPage * this.rowsPerPage;
       }
     },
 
