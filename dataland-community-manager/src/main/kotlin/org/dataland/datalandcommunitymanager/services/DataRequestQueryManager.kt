@@ -132,7 +132,7 @@ constructor(
 
         val offset = (chunkIndex ?: 0) * (chunkSize ?: 0)
         val extendedStoredDataRequest = dataRequestRepository.searchDataRequestEntity(
-            searchFilter = filter, fetchedUserIdsByEmail = userIdsFromEmail.keys.toList(),
+            searchFilter = filter, prefetchedUserIdsByEmail = userIdsFromEmail.keys.toList(),
             resultOffset = offset, resultLimit = chunkSize,
         ).map { dataRequestEntity ->
             getExtendedStoredDataRequestByRequestEntity(dataRequestEntity)

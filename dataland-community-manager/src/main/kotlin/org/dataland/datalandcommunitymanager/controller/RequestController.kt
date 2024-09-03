@@ -101,6 +101,10 @@ class RequestController(
         )
     }
 
+    override fun getNumberOfRequests(filter: DataRequestsFilter): ResponseEntity<Int> {
+        return ResponseEntity.ok(0)
+    }
+
     override fun hasAccessToDataset(companyId: UUID, dataType: String, reportingPeriod: String, userId: UUID) {
         dataAccessManager.hasAccessToDataset(companyId.toString(), reportingPeriod, dataType, userId.toString())
     }

@@ -3,6 +3,7 @@ package org.dataland.e2etests.tests.communityManager
 import org.dataland.communitymanager.openApiClient.api.RequestControllerApi
 import org.dataland.communitymanager.openApiClient.infrastructure.ClientException
 import org.dataland.communitymanager.openApiClient.model.CompanyRole
+import org.dataland.communitymanager.openApiClient.model.DataRequestsFilter
 import org.dataland.communitymanager.openApiClient.model.RequestStatus
 import org.dataland.communitymanager.openApiClient.model.SingleDataRequest
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
@@ -88,16 +89,17 @@ class QueryDataRequestsTest {
 
     @Test
     fun `query data requests with no filters and assert that the expected results are being retrieved`() {
-        val storedDataRequests = requestControllerApi.getDataRequests(chunkSize = chunkSize).filter {
-            it.creationTimestamp > timestampBeforePost
-        }
+        val storedDataRequests =
+            requestControllerApi.getDataRequests(DataRequestsFilter(), chunkSize = chunkSize).filter {
+                it.creationTimestamp > timestampBeforePost
+            }
         assertEquals(3, storedDataRequests.size)
     }
 
     @Test
     fun `query data requests with data type filter and assert that the expected results are being retrieved`() {
         val sfdrDataRequests = requestControllerApi.getDataRequests(
-            dataType = RequestControllerApi.DataTypeGetDataRequests.sfdr, chunkSize = chunkSize,
+            DataRequestsFilter(dataType = DataTypeEnum.sfdr.name), chunkSize = chunkSize,
         ).filter { it.creationTimestamp > timestampBeforePost }
         assertEquals(0, sfdrDataRequests.size)
 

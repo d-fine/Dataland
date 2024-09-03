@@ -24,15 +24,15 @@ class TemporaryTables private constructor() {
             "JOIN status_table ON status_table.request_id = d.data_request_id " +
             "WHERE " +
             "(:#{#searchFilter.shouldFilterByDataType} = false " +
-            "OR d.data_type = :#{#searchFilter.usedDataTypeFilter}) AND " +
+            "OR d.data_type IN :#{#searchFilter.usedDataTypeFilter}) AND " +
             "(:#{#searchFilter.shouldFilterByUserId} = false " +
             "OR d.user_Id = :#{#searchFilter.usedUserIdFilter}) AND " +
             "(:#{#searchFilter.shouldFilterByEmailAddress} = false " +
-            "OR d.user_Id IN :#{#fetchedUserIdsByEmail}) AND " +
+            "OR d.user_Id IN :#{#prefetchedUserIdsByEmail}) AND " +
             "(:#{#searchFilter.shouldFilterByRequestStatus} = false " +
-            "OR status_table.request_status = :#{#searchFilter.usedRequestStatusFilter} ) AND " +
+            "OR status_table.request_status IN :#{#searchFilter.usedRequestStatusFilter} ) AND " +
             "(:#{#searchFilter.shouldFilterByAccessStatus} = false " +
-            "OR status_table.access_status = :#{#searchFilter.usedAccessStatusFilter}  ) AND " +
+            "OR status_table.access_status IN :#{#searchFilter.usedAccessStatusFilter}  ) AND " +
             "(:#{#searchFilter.shouldFilterByReportingPeriod} = false " +
             "OR d.reporting_period = :#{#searchFilter.usedReportingPeriodFilter}) AND " +
             "(:#{#searchFilter.shouldFilterByDatalandCompanyId} = false " +

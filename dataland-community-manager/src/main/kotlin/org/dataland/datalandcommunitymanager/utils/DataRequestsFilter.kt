@@ -1,5 +1,8 @@
 package org.dataland.datalandcommunitymanager.utils
 import io.swagger.v3.oas.annotations.media.Schema
+import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
+import org.dataland.datalandcommunitymanager.model.dataRequest.AccessStatus
+import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
 
 /**
  * A filter class used in the searchDataRequestEntity-Method which allows
@@ -7,21 +10,21 @@ import io.swagger.v3.oas.annotations.media.Schema
  */
 data class DataRequestsFilter(
     // TODO do we need to add some annotations?
-    val dataType: String?,
+    val dataTypes: Set<DataTypeEnum>?,
     val userId: String?,
     val emailAddress: String?,
     val datalandCompanyId: String?,
     val reportingPeriod: String?,
-    val requestStatus: String?,
-    val accessStatus: String?,
+    val requestStatus: Set<RequestStatus>?,
+    val accessStatus: Set<AccessStatus>?,
 ) {
     @get:Schema(hidden = true)
-    val shouldFilterByDataType: Boolean
-        get() = dataType?.isNotEmpty() ?: false
+    val shouldFilterByDataTypes: Boolean
+        get() = dataTypes?.isNotEmpty() ?: false
 
     @get:Schema(hidden = true)
-    val usedDataTypeFilter: String
-        get() = dataType ?: ""
+    val usedDataTypesFilter: List<String>
+        get() = dataTypes?.map { it.value } ?: emptyList()
 
     @get:Schema(hidden = true)
     val shouldFilterByUserId: Boolean
@@ -56,14 +59,14 @@ data class DataRequestsFilter(
         get() = requestStatus?.isNotEmpty() ?: false
 
     @get:Schema(hidden = true)
-    val usedRequestStatusFilter: String
-        get() = requestStatus ?: ""
+    val usedRequestStatusFilter: List<String>
+        get() = requestStatus?.map { it.name } ?: emptyList()
 
     @get:Schema(hidden = true)
     val shouldFilterByAccessStatus: Boolean
         get() = accessStatus?.isNotEmpty() ?: false
 
     @get:Schema(hidden = true)
-    val usedAccessStatusFilter: String
-        get() = accessStatus ?: ""
+    val usedAccessStatusFilter: List<String>
+        get() = accessStatus?.map { it.name } ?: emptyList()
 }

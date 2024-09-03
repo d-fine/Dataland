@@ -89,11 +89,11 @@ class DataRequestAlterationManager(
         val metaData = metaDataControllerApi.getDataMetaInfo(dataId)
         val dataRequestEntities = dataRequestRepository.searchDataRequestEntity(
             DataRequestsFilter(
-                dataType = metaData.dataType.value, userId = null, emailAddress = null,
-                requestStatus = RequestStatus.Open.name, accessStatus = null,
+                dataTypes = setOf(metaData.dataType), userId = null, emailAddress = null,
+                requestStatus = setOf(RequestStatus.Open), accessStatus = null,
                 reportingPeriod = metaData.reportingPeriod, datalandCompanyId = metaData.companyId,
             ),
-            fetchedUserIdsByEmail = emptyList(),
+            prefetchedUserIdsByEmail = emptyList(),
         )
         dataRequestEntities.forEach {
             if (it.dataType == DataTypeEnum.vsme.name && it.accessStatus != AccessStatus.Granted) {

@@ -87,10 +87,10 @@ class DataRequestAlterationManagerTest {
         `when`(
             dataRequestRepository.searchDataRequestEntity(
                 searchFilter = DataRequestsFilter(
-                    metaData.dataType.value, null, null, metaData.companyId, metaData.reportingPeriod,
-                    RequestStatus.Open.name, null,
+                    setOf(metaData.dataType), null, null, metaData.companyId, metaData.reportingPeriod,
+                    setOf(RequestStatus.Open), null,
                 ),
-                fetchedUserIdsByEmail = emptyList(),
+                prefetchedUserIdsByEmail = emptyList(),
             ),
         ).thenReturn(dummyDataRequestEntities)
 

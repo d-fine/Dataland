@@ -299,12 +299,7 @@ export default defineComponent({
             await new ApiClientProvider(
               this.getKeycloakPromise()
             ).apiClients.requestController.getDataRequests(
-                undefined,
-                undefined,
-                undefined,
-                undefined,
-                undefined,
-                undefined,
+                {},
                 this.datasetsPerPage,
                 this.currentPage
             )

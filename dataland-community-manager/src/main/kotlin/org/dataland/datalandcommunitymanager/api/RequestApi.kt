@@ -214,6 +214,31 @@ interface RequestApi {
     ): ResponseEntity<List<ExtendedStoredDataRequest>>
 
     /**
+     * TODO add description
+     */
+    @Operation(
+        summary = "TODO",
+        description = "TODO",
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "200", description = "TODO."),
+        ],
+    )
+    @GetMapping(
+        value = ["/numberOfRequests"],
+        produces = ["application/json"],
+    )
+    @PreAuthorize(
+        "hasRole('ROLE_ADMIN') or" +
+            "@SecurityUtilsService.isUserCompanyOwnerForCompanyId(#filter.datalandCompanyId)",
+    )
+    fun getNumberOfRequests(
+        @RequestBody @Valid
+        filter: DataRequestsFilter,
+    ): ResponseEntity<Int>
+
+    /**
      * A method to check if the logged-in user can access a specific dataset.
      * The dataset is specified by a companyId, dataType and a reportingPeriod.
      * @param companyId of the company for which the user might have the role

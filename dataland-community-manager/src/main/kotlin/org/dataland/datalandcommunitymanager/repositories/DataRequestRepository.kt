@@ -85,7 +85,7 @@ interface DataRequestRepository : JpaRepository<DataRequestEntity, String> {
     )
     fun searchDataRequestEntity(
         @Param("searchFilter") searchFilter: DataRequestsFilter,
-        @Param("fetchedUserIdsByEmail") fetchedUserIdsByEmail: List<String>,
+        @Param("prefetchedUserIdsByEmail") prefetchedUserIdsByEmail: List<String> = emptyList(),
         @Param("resultLimit") resultLimit: Int? = 100,
         @Param("resultOffset") resultOffset: Int? = 0,
     ): List<DataRequestEntity>

@@ -852,6 +852,67 @@
         ]
       }
     },
+    "/requests/numberOfRequests": {
+      "get": {
+        "tags": [
+          "request-controller"
+        ],
+        "summary": "TODO",
+        "description": "TODO",
+        "operationId": "getNumberOfRequests",
+        "parameters": [
+          {
+            "name": "filter",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/DataRequestsFilter"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "TODO.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "integer",
+                  "format": "int32"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
     "/requests/aggregated": {
       "get": {
         "tags": [
@@ -1589,8 +1650,22 @@
       "DataRequestsFilter": {
         "type": "object",
         "properties": {
-          "dataType": {
-            "type": "string"
+          "dataTypes": {
+            "uniqueItems": true,
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "eutaxonomy-financials",
+                "eutaxonomy-non-financials",
+                "lksg",
+                "p2p",
+                "sfdr",
+                "vsme",
+                "esg-questionnaire",
+                "heimathafen"
+              ]
+            }
           },
           "userId": {
             "type": "string"
@@ -1605,10 +1680,18 @@
             "type": "string"
           },
           "requestStatus": {
-            "type": "string"
+            "uniqueItems": true,
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/RequestStatus"
+            }
           },
           "accessStatus": {
-            "type": "string"
+            "uniqueItems": true,
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AccessStatus"
+            }
           }
         }
       },

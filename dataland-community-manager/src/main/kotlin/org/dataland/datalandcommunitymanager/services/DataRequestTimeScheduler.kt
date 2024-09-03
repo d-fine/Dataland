@@ -37,7 +37,7 @@ class DataRequestTimeScheduler(
         val thresholdTime = Instant.now().minus(Duration.ofDays(staleDaysThreshold)).toEpochMilli()
         val searchFilterForAnsweredDataRequests = DataRequestsFilter(
             null, null, null, null, null,
-            RequestStatus.Answered.name, null,
+            setOf(RequestStatus.Answered), null,
         )
         val staleAnsweredRequests =
             dataRequestRepository.searchDataRequestEntity(searchFilterForAnsweredDataRequests, emptyList())
