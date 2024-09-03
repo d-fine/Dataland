@@ -155,31 +155,30 @@
 <script lang="ts">
 import TheFooter from '@/components/generics/TheNewFooter.vue';
 import contentData from '@/assets/content.json';
-import type {Content, Page} from '@/types/ContentTypes';
+import type { Content, Page } from '@/types/ContentTypes';
 import TheContent from '@/components/generics/TheContent.vue';
 import TheHeader from '@/components/generics/TheHeader.vue';
-import {defineComponent, inject, ref} from 'vue';
+import { defineComponent, inject, ref } from 'vue';
 import type Keycloak from 'keycloak-js';
-import {ApiClientProvider} from '@/services/ApiClients';
-import DataTable, {type DataTablePageEvent, type DataTableRowClickEvent} from 'primevue/datatable';
+import { ApiClientProvider } from '@/services/ApiClients';
+import DataTable, { type DataTablePageEvent, type DataTableRowClickEvent } from 'primevue/datatable';
 import Column from 'primevue/column';
-import {frameworkHasSubTitle, getFrameworkSubtitle, getFrameworkTitle} from '@/utils/StringFormatter';
+import { frameworkHasSubTitle, getFrameworkSubtitle, getFrameworkTitle } from '@/utils/StringFormatter';
 import DatasetsTabMenu from '@/components/general/DatasetsTabMenu.vue';
-import {convertUnixTimeInMsToDateString} from '@/utils/DataFormatUtils';
+import { convertUnixTimeInMsToDateString } from '@/utils/DataFormatUtils';
 import type {
   DataRequestsFilter,
   DataRequestsFilterDataTypesEnum,
   ExtendedStoredDataRequest,
-  RequestStatus
+  RequestStatus,
 } from '@clients/communitymanager';
 import InputText from 'primevue/inputtext';
-import FrameworkDataSearchDropdownFilter
-  from '@/components/resources/frameworkDataSearch/FrameworkDataSearchDropdownFilter.vue';
-import type {FrameworkSelectableItem, SelectableItem} from '@/utils/FrameworkDataSearchDropDownFilterTypes';
+import FrameworkDataSearchDropdownFilter from '@/components/resources/frameworkDataSearch/FrameworkDataSearchDropdownFilter.vue';
+import type { FrameworkSelectableItem, SelectableItem } from '@/utils/FrameworkDataSearchDropDownFilterTypes';
 import AuthenticationWrapper from '@/components/wrapper/AuthenticationWrapper.vue';
-import {accessStatusBadgeClass, badgeClass} from '@/utils/RequestUtils';
-import {retrieveAvailableFrameworks, retrieveAvailableRequestStatus} from '@/utils/RequestsOverviewPageUtils';
-import type {DataTypeEnum} from "@clients/backend";
+import { accessStatusBadgeClass, badgeClass } from '@/utils/RequestUtils';
+import { retrieveAvailableFrameworks, retrieveAvailableRequestStatus } from '@/utils/RequestsOverviewPageUtils';
+import type { DataTypeEnum } from '@clients/backend';
 
 export default defineComponent({
   name: 'MyDataRequestsOverview',
@@ -222,30 +221,24 @@ export default defineComponent({
       selectedFrameworks: [] as Array<FrameworkSelectableItem>,
       availableRequestStatus: [] as Array<SelectableItem>,
       selectedRequestStatus: [] as Array<SelectableItem>,
-      searchFilter: {} as DataRequestsFilter,
     };
   },
   mounted() {
     this.availableFrameworks = retrieveAvailableFrameworks();
     this.availableRequestStatus = retrieveAvailableRequestStatus();
-    // this.getStoredRequestDataList().catch((error) => console.error(error));
+    this.getStoredRequestDataList().catch((error) => console.error(error));
     this.resetFilterAndSearchBar();
   },
   watch: {
     selectedFrameworks() {
-      const frameworksList = this.selectedFrameworks.map((selectableItem) => selectableItem.frameworkDataType);
-      console.log(frameworksList);
-      this.updateSearchFilter()
+      this.getStoredRequestDataList();
     },
     selectedRequestStatus() {
-      const requestStatusList = this.selectedRequestStatus.map((selectableItem) => selectableItem.displayName);
-      console.log(requestStatusList);
-      this.updateSearchFilter()
+      this.getStoredRequestDataList();
     },
     searchBarInput(newSearch: string) {
       this.searchBarInput = newSearch;
-      console.log(this.searchBarInput);
-      this.updateSearchFilter()
+      this.getStoredRequestDataList();
     },
   },
   methods: {
@@ -262,11 +255,26 @@ export default defineComponent({
     async getStoredRequestDataList() {
       this.waitingForData = true;
       this.currentDataRequests = [];
+      const selectedFrameworksAsSet = new Set<DataTypeEnum>(
+        this.selectedFrameworks.map((selectableItem) => selectableItem.frameworkDataType)
+      );
+      const selectedRequestStatusesAsSet = new Set<RequestStatus>(
+        this.selectedRequestStatus.map((selectableItem) => selectableItem.displayName as RequestStatus)
+      );
       try {
         if (this.getKeycloakPromise) {
           this.currentDataRequests = (
             await new ApiClientProvider(this.getKeycloakPromise()).apiClients.requestController.getDataRequests(
-              null,
+              // selectedFrameworksAsSet,
+              undefined,
+              undefined,
+              /*this.searchBarInput,
+                  selectedRequestStatusesAsSet,*/
+              undefined,
+              undefined,
+              undefined,
+              undefined,
+              undefined,
               this.datasetsPerPage,
               this.currentPage
             )
@@ -314,23 +322,6 @@ export default defineComponent({
       this.selectedFrameworks = [];
       this.selectedRequestStatus = [];
       this.searchBarInput = '';
-    },
-
-    /**
-     * updates searchFilter field with selected frameworks, requestStatuses, and input from search bar
-     */
-    updateSearchFilter() {
-      const selectedFrameworksAsSet = new Set<DataTypeEnum>(
-          this.selectedFrameworks.map((selectableItem) => selectableItem.frameworkDataType)
-      )
-      const selectedRequestStatusesAsSet = new Set<RequestStatus>(
-          this.selectedRequestStatus.map((selectableItem) => selectableItem.displayName as RequestStatus)
-      )
-      this.searchFilter = {
-        dataTypes: selectedFrameworksAsSet as Set<DataRequestsFilterDataTypesEnum>,
-        requestStatus: selectedRequestStatusesAsSet,
-        emailAddress: this.searchBarInput,
-      }
     },
 
     /**
