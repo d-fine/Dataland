@@ -25,6 +25,7 @@ import org.junit.jupiter.api.assertThrows
 import org.mockito.ArgumentMatchers.anyBoolean
 import org.mockito.ArgumentMatchers.anyLong
 import org.mockito.ArgumentMatchers.anyString
+import org.mockito.Mockito.doNothing
 import org.mockito.Mockito.mock
 import org.mockito.Mockito.times
 import org.mockito.Mockito.verify
@@ -68,6 +69,7 @@ class SingleDataRequestManagerTest {
         utilsMock = createDataRequestProcessingUtilsMock()
         securityUtilsServiceMock = mock(SecurityUtilsService::class.java)
         mockCompanyIdValidator = mock(CompanyIdValidator::class.java)
+        doNothing().`when`(mockCompanyIdValidator).checkIfCompanyIdIsValid(anyString())
         dataRequestRepositoryMock = createDataRequestRepositoryMock()
         accessRequestEmailSender = mock(AccessRequestEmailSender::class.java)
         companyRolesManager = mock(CompanyRolesManager::class.java)
@@ -84,7 +86,6 @@ class SingleDataRequestManagerTest {
             companyRolesManager = companyRolesManager,
             maxRequestsForUser,
         )
-        `when`(mockCompanyIdValidator.checkIfCompanyIdIsValid(anyString()))
 
         val mockSecurityContext = createSecurityContextMock()
         SecurityContextHolder.setContext(mockSecurityContext)
