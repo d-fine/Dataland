@@ -82,7 +82,6 @@ class DataRequestTimeSchedulerTest {
         `when`(
             dataRequestRepository.searchDataRequestEntity(
                 any(DataRequestsFilter::class.java),
-                eq(emptyList()),
                 eq(100), eq(0),
             ),
         ).thenReturn(
@@ -118,7 +117,6 @@ class DataRequestTimeSchedulerTest {
         `when`(
             dataRequestRepository.searchDataRequestEntity(
                 any(DataRequestsFilter::class.java),
-                eq(emptyList()),
                 eq(100), eq(0),
             ),
         ).thenReturn(

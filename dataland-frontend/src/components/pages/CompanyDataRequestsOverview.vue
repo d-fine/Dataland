@@ -297,7 +297,8 @@ export default defineComponent({
         const dataRequestsPromises = companyIDs.map(async (companyId) => {
           try {
             const response = await apiClientProvider.apiClients.requestController.getDataRequests(
-                {datalandCompanyId: companyId},
+                undefined, undefined, undefined, undefined, undefined,
+                undefined, companyId, undefined, undefined
             );
             return response.data;
           } catch (error) {
