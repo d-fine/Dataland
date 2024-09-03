@@ -74,6 +74,10 @@ interface DataRequestRepository : JpaRepository<DataRequestEntity, String> {
      * A function for searching for data request information by dataType, userID, requestID, requestStatus,
      * accessStatus, reportingPeriod or dataRequestCompanyIdentifierValue
      * @param searchFilter takes the input params to check for
+     * @param prefetchedUserIdsByEmail If the searchFilter filters for email addresses, the prefetchedUserIdsByEmail
+     *  needs to be provided.
+     * @param resultLimit The number of entities that should be returned
+     * @param resultOffset The offset of the returned entities
      * @returns the data request
      */
     @Query(
