@@ -98,7 +98,7 @@ interface DataRequestRepository : JpaRepository<DataRequestEntity, String> {
      */
     @Query(
         nativeQuery = true,
-        value = TemporaryTables.TABLE_FILTERED +
+        value = TemporaryTables.TABLE_FILTERED + ") " +
             "SELECT COUNT(*) FROM data_requests d " +
             "JOIN filtered_table ON filtered_table.data_request_id = d.data_request_id ",
     )
