@@ -3,7 +3,7 @@
     <TheHeader />
     <DatasetsTabMenu :initial-tab-index="5">
       <TheContent class="min-h-screen paper-section relative">
-        <div v-if="waitingForData || storedDataRequests.length > 0">
+        <div v-if="waitingForData || currentDataRequests.length > 0">
           <div
             id="searchBarAndFiltersContainer"
             class="w-full bg-white pt-4 justify-between"
@@ -15,7 +15,7 @@
                 <InputText
                   data-test="requested-Datasets-searchbar"
                   v-model="searchBarInput"
-                  placeholder="Search by requester"
+                  placeholder="Search by Requester"
                   class="w-12 pl-6 pr-6"
                 />
               </span>
@@ -26,20 +26,20 @@
                 filter-name="Framework"
                 data-test="requested-Datasets-frameworks"
                 filter-id="framework-filter"
-                filter-placeholder="Filter frameworks"
+                filter-placeholder="Search by Frameworks"
                 class="ml-3"
                 style="margin: 15px"
               />
               <FrameworkDataSearchDropdownFilter
-                  v-model="selectedRequestStatus"
-                  ref="frameworkFilter"
-                  :available-items="availableRequestStatus"
-                  filter-name="Request Status"
-                  data-test="requested-Datasets-frameworks"
-                  filter-id="framework-filter"
-                  filter-placeholder="Filter Request Status"
-                  class="ml-3"
-                  style="margin: 15px"
+                v-model="selectedRequestStatus"
+                ref="frameworkFilter"
+                :available-items="availableRequestStatus"
+                filter-name="Request Status"
+                data-test="requested-Datasets-frameworks"
+                filter-id="framework-filter"
+                filter-placeholder="Search by Request Status"
+                class="ml-3"
+                style="margin: 15px"
               />
               <div class="flex align-items-center">
                 <span
@@ -55,24 +55,24 @@
           <div class="col-12 text-left p-3">
             <div class="card">
               <DataTable
-                 v-if="storedDataRequests && storedDataRequests.length > 0"
-                 ref="dataTable"
-                 :value="storedDataRequests"
-                 :paginator="true"
-                 @page="onPage($event)"
-                 :lazy="true"
-                 :first="previousRecords"
-                 :total-records="totalRecords"
-                 :rows="rowsPerPage"
-                 paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport"
-                 :alwaysShowPaginator="false"
-                 currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-                 @row-click="onRowClick($event)"
-                 @page-update="handlePageUpdate"
-                 class="table-cursor"
-                 id="admin-request-overview-data"
-                 :rowHover="true"
-                 style="cursor: pointer"
+                v-if="currentDataRequests && currentDataRequests.length > 0"
+                ref="dataTable"
+                :value="currentDataRequests"
+                :paginator="true"
+                @page="onPage($event)"
+                :lazy="true"
+                :first="previousRecords"
+                :total-records="totalRecords"
+                :rows="rowsPerPage"
+                paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport"
+                :alwaysShowPaginator="false"
+                currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                @row-click="onRowClick($event)"
+                @page-update="handlePageUpdate"
+                class="table-cursor"
+                id="admin-request-overview-data"
+                :rowHover="true"
+                style="cursor: pointer"
               >
                 <Column header="REQUESTER" field="userEmailAddress" :sortable="false">
                   <template #body="slotProps">
@@ -137,11 +137,11 @@
                     </div>
                   </template>
                 </Column>
-              </DataTable >
+              </DataTable>
             </div>
           </div>
         </div>
-        <div v-if="!waitingForData && storedDataRequests.length == 0">
+        <div v-if="!waitingForData && currentDataRequests.length == 0">
           <div class="d-center-div text-center px-7 py-4">
             <p class="font-medium text-xl">Currently, there are no data requests on Dataland.</p>
           </div>
@@ -155,44 +155,31 @@
 <script lang="ts">
 import TheFooter from '@/components/generics/TheNewFooter.vue';
 import contentData from '@/assets/content.json';
-import type {Content, Page} from '@/types/ContentTypes';
+import type { Content, Page } from '@/types/ContentTypes';
 import TheContent from '@/components/generics/TheContent.vue';
 import TheHeader from '@/components/generics/TheHeader.vue';
-import {defineComponent, inject, ref} from 'vue';
+import { defineComponent, inject, ref } from 'vue';
 import type Keycloak from 'keycloak-js';
-import {ApiClientProvider} from '@/services/ApiClients';
-import DataTable, {type DataTablePageEvent, type DataTableRowClickEvent} from 'primevue/datatable';
+import { ApiClientProvider } from '@/services/ApiClients';
+import DataTable, { type DataTablePageEvent, type DataTableRowClickEvent } from 'primevue/datatable';
 import Column from 'primevue/column';
-import {
-  frameworkHasSubTitle,
-  getFrameworkSubtitle,
-  getFrameworkTitle,
-  humanizeStringOrNumber,
-} from '@/utils/StringFormatter';
+import { frameworkHasSubTitle, getFrameworkSubtitle, getFrameworkTitle } from '@/utils/StringFormatter';
 import DatasetsTabMenu from '@/components/general/DatasetsTabMenu.vue';
-import {convertUnixTimeInMsToDateString} from '@/utils/DataFormatUtils';
-import {type ExtendedStoredDataRequest, RequestStatus} from '@clients/communitymanager';
-import {type DataTypeEnum} from '@clients/backend';
+import { convertUnixTimeInMsToDateString } from '@/utils/DataFormatUtils';
+import { type ExtendedStoredDataRequest } from '@clients/communitymanager';
 import InputText from 'primevue/inputtext';
-import FrameworkDataSearchDropdownFilter
-  from '@/components/resources/frameworkDataSearch/FrameworkDataSearchDropdownFilter.vue';
-import type {FrameworkSelectableItem, SelectableItem} from '@/utils/FrameworkDataSearchDropDownFilterTypes';
-import {FRAMEWORKS_WITH_VIEW_PAGE} from '@/utils/Constants';
-import {getFrontendFrameworkDefinition} from '@/frameworks/FrontendFrameworkRegistry';
+import FrameworkDataSearchDropdownFilter from '@/components/resources/frameworkDataSearch/FrameworkDataSearchDropdownFilter.vue';
+import type { FrameworkSelectableItem, SelectableItem } from '@/utils/FrameworkDataSearchDropDownFilterTypes';
 import AuthenticationWrapper from '@/components/wrapper/AuthenticationWrapper.vue';
-import {accessStatusBadgeClass, badgeClass} from '@/utils/RequestUtils';
-import FrameworkDataSearchResults from "@/components/resources/frameworkDataSearch/FrameworkDataSearchResults.vue";
-import {retrieveAvailableFrameworks, retrieveAvailableRequestStatus} from "@/utils/RequestsOverviewPageUtils";
+import { accessStatusBadgeClass, badgeClass } from '@/utils/RequestUtils';
+import FrameworkDataSearchResults from '@/components/resources/frameworkDataSearch/FrameworkDataSearchResults.vue';
+import { retrieveAvailableFrameworks, retrieveAvailableRequestStatus } from '@/utils/RequestsOverviewPageUtils';
 
 export default defineComponent({
   name: 'MyDataRequestsOverview',
-  computed: {
-    RequestStatus() {
-      return RequestStatus;
-    },
-  },
+  computed: {},
   components: {
-    FrameworkDataSearchResults,
+    // FrameworkDataSearchResults,
     AuthenticationWrapper,
     FrameworkDataSearchDropdownFilter,
     DatasetsTabMenu,
@@ -222,11 +209,9 @@ export default defineComponent({
       totalRecords: 0,
       rowsPerPage: 100,
       previousRecords: 0,
-      storedDataRequests: [] as ExtendedStoredDataRequest[],
-      displayedData: [] as ExtendedStoredDataRequest[],
+      currentDataRequests: [] as ExtendedStoredDataRequest[],
       footerContent,
       searchBarInput: '',
-      searchBarInputFilter: '',
       availableFrameworks: [] as Array<FrameworkSelectableItem>,
       selectedFrameworks: [] as Array<FrameworkSelectableItem>,
       availableRequestStatus: [] as Array<SelectableItem>,
@@ -241,18 +226,16 @@ export default defineComponent({
   },
   watch: {
     selectedFrameworks() {
-      console.log(this.selectedFrameworks)
-      this.handlePageUpdate();
+      const frameworksList = this.selectedFrameworks.map((selectableItem) => selectableItem.frameworkDataType);
+      console.log(frameworksList);
     },
     selectedRequestStatus() {
-      this.handlePageUpdate();
-    },
-    waitingForData() {
-      this.handlePageUpdate();
+      const requestStatusList = this.selectedRequestStatus.map((selectableItem) => selectableItem.displayName);
+      console.log(requestStatusList);
     },
     searchBarInput(newSearch: string) {
-      this.searchBarInputFilter = newSearch;
-      this.handlePageUpdate();
+      this.searchBarInput = newSearch;
+      console.log(this.searchBarInput);
     },
   },
   methods: {
@@ -262,21 +245,49 @@ export default defineComponent({
     getFrameworkTitle,
     getFrameworkSubtitle,
     convertUnixTimeInMsToDateString,
+
     /**
      * Gets list of storedDataRequests
      */
     async getStoredRequestDataList() {
       this.waitingForData = true;
-      this.storedDataRequests = [];
+      this.currentDataRequests = [];
       try {
         if (this.getKeycloakPromise) {
-          this.storedDataRequests = (
+          this.currentDataRequests = (
+            await new ApiClientProvider(this.getKeycloakPromise()).apiClients.requestController.getDataRequests(
+              undefined,
+              undefined,
+              undefined,
+              undefined,
+              undefined,
+              undefined,
+              this.datasetsPerPage,
+              this.currentPage
+            )
+          ).data;
+        }
+      } catch (error) {
+        console.error(error);
+      }
+      this.waitingForData = false;
+    },
+
+    /* /!**
+     * Gets list of storedDataRequests
+     *!/
+    async fetchDataFromBackend(frameworks: Set<DataTypeEnum> | undefined, requestStatuses: Set<String> | undefined) {
+      this.waitingForData = true;
+      this.currentDataRequests = [];
+      try {
+        if (this.getKeycloakPromise) {
+          this.currentDataRequests = (
             await new ApiClientProvider(
               this.getKeycloakPromise()
             ).apiClients.requestController.getDataRequests(
+                frameworks,
                 undefined,
-                undefined,
-                undefined,
+                requestStatuses,
                 undefined,
                 undefined,
                 undefined,
@@ -289,7 +300,7 @@ export default defineComponent({
         console.error(error);
       }
       this.waitingForData = false;
-    },
+    },*/
 
     /**
      * Resets selected frameworks and searchBarInput
@@ -305,7 +316,7 @@ export default defineComponent({
      * An update of the currentPage automatically triggers a data Update
      * @param pageNumber the new page index
      */
-    handlePageUpdate() {
+    handlePageUpdate(pageNumber: number) {
       if (pageNumber != this.currentPage) {
         this.waitingForData = true;
         this.currentPage = pageNumber;
@@ -333,10 +344,9 @@ export default defineComponent({
       const isResolveButtonClick = clickedElement.id === 'resolveButton';
       if (!isResolveButtonClick) {
         const requestIdOfClickedRow = event.data.dataRequestId;
-        return this.$router.push(`/requests/${requestIdOfClickedRow}`); //TODO: update dataRequestPage for Admins
+        return this.$router.push(`/requests/${requestIdOfClickedRow}`);
       }
     },
-
   },
 });
 </script>
