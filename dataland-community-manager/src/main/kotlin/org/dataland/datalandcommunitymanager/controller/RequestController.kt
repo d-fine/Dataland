@@ -23,7 +23,6 @@ import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
-import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 import java.util.UUID
 
@@ -81,15 +80,15 @@ class RequestController(
     }
 
     override fun getDataRequests(
-        @RequestParam dataType: Set<DataTypeEnum>?,
-        @RequestParam userId: String?,
-        @RequestParam emailAddress: String?,
-        @RequestParam requestStatus: Set<RequestStatus>?,
-        @RequestParam accessStatus: Set<AccessStatus>?,
-        @RequestParam reportingPeriod: String?,
-        @RequestParam datalandCompanyId: String?,
-        @RequestParam(defaultValue = "100") chunkSize: Int,
-        @RequestParam(defaultValue = "0") chunkIndex: Int,
+        dataType: Set<DataTypeEnum>?,
+        userId: String?,
+        emailAddress: String?,
+        requestStatus: Set<RequestStatus>?,
+        accessStatus: Set<AccessStatus>?,
+        reportingPeriod: String?,
+        datalandCompanyId: String?,
+        chunkSize: Int,
+        chunkIndex: Int,
     ): ResponseEntity<List<ExtendedStoredDataRequest>> {
         val filter = DataRequestsFilter(
             dataType, userId, emailAddress, datalandCompanyId, reportingPeriod, requestStatus, accessStatus,
@@ -113,13 +112,13 @@ class RequestController(
     }
 
     override fun getNumberOfRequests(
-        @RequestParam dataType: Set<DataTypeEnum>?,
-        @RequestParam userId: String?,
-        @RequestParam emailAddress: String?,
-        @RequestParam requestStatus: Set<RequestStatus>?,
-        @RequestParam accessStatus: Set<AccessStatus>?,
-        @RequestParam reportingPeriod: String?,
-        @RequestParam datalandCompanyId: String?,
+        dataType: Set<DataTypeEnum>?,
+        userId: String?,
+        emailAddress: String?,
+        requestStatus: Set<RequestStatus>?,
+        accessStatus: Set<AccessStatus>?,
+        reportingPeriod: String?,
+        datalandCompanyId: String?,
     ): ResponseEntity<Int> {
         val filter = DataRequestsFilter(
             dataType, userId, emailAddress, datalandCompanyId, reportingPeriod, requestStatus, accessStatus,
