@@ -3,6 +3,7 @@ package org.dataland.datalandcommunitymanager.utils
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
+import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Service
 class CompanyIdValidator(
     @Autowired private val companyApi: CompanyDataControllerApi,
 ) {
+    private val logger = LoggerFactory.getLogger(javaClass)
 
     /**
      * Checks if a companyId exists on Dataland by trying to retrieve it in the backend.
@@ -31,7 +33,10 @@ class CompanyIdValidator(
                     "Company not found",
                     "Dataland does not know the company ID $companyId",
                 )
-            } else { throw e }
+            }
+
+                else { logger.info("Error source found")
+                throw e }
         }
     }
 }
