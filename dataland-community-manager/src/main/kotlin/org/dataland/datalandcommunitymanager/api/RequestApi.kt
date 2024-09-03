@@ -238,7 +238,7 @@ interface RequestApi {
     )
     @PreAuthorize(
         "hasRole('ROLE_ADMIN') or" +
-            "@SecurityUtilsService.isUserCompanyOwnerForCompanyId(#filter.datalandCompanyId)",
+            "@SecurityUtilsService.isUserCompanyOwnerForCompanyId(#datalandCompanyId)",
     )
     fun getNumberOfRequests(
         @RequestParam dataType: Set<DataTypeEnum>?,
