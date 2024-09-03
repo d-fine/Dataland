@@ -93,7 +93,6 @@ class DataRequestAlterationManager(
                 requestStatus = setOf(RequestStatus.Open), accessStatus = null,
                 reportingPeriod = metaData.reportingPeriod, datalandCompanyId = metaData.companyId,
             ),
-            prefetchedUserIdsByEmail = emptyList(),
         )
         dataRequestEntities.forEach {
             if (it.dataType == DataTypeEnum.vsme.name && it.accessStatus != AccessStatus.Granted) {
