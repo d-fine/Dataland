@@ -2,6 +2,7 @@ package org.dataland.e2etests.tests.communityManager
 
 import org.dataland.communitymanager.openApiClient.api.RequestControllerApi
 import org.dataland.communitymanager.openApiClient.infrastructure.ClientException
+import org.dataland.communitymanager.openApiClient.model.AccessStatus
 import org.dataland.communitymanager.openApiClient.model.CompanyRole
 import org.dataland.communitymanager.openApiClient.model.RequestStatus
 import org.dataland.communitymanager.openApiClient.model.SingleDataRequest
@@ -170,6 +171,27 @@ class QueryDataRequestsTest {
     }
 
     @Test
+    fun `query data requests with access status filter and assert that the expected results are being retrieved`() {
+        val grantedAccessRequests =
+            api.getDataRequests(accessStatus = setOf(AccessStatus.Granted), chunkSize = chunkSize)
+                .filter { it.creationTimestamp > timestampBeforePost }
+        assertEquals(0, grantedAccessRequests.size)
+
+        val publicAccessRequests =
+            api.getDataRequests(accessStatus = setOf(AccessStatus.Public), chunkSize = chunkSize)
+                .filter { it.creationTimestamp > timestampBeforePost }
+        assertEquals(1, publicAccessRequests.size)
+        assertEquals(companyIdB, publicAccessRequests.first().datalandCompanyId)
+        assertEquals(AccessStatus.Public, publicAccessRequests.first().accessStatus)
+
+        val pendingAndPublicAccessRequests = api.getDataRequests(
+            accessStatus = setOf(AccessStatus.Pending, AccessStatus.Public),
+            chunkSize = chunkSize,
+        ).filter { it.creationTimestamp > timestampBeforePost }
+        assertEquals(3, pendingAndPublicAccessRequests.size)
+    }
+
+    @Test
     fun `query data requests with company id filter and assert that the expected results are being retrieved`() {
         val storedDataRequestsForRandomCompanyId =
             api.getDataRequests(datalandCompanyId = UUID.randomUUID().toString(), chunkSize = chunkSize)
@@ -229,5 +251,24 @@ class QueryDataRequestsTest {
         withTechnicalUser(queryingUser) {
             assertAccessDeniedWrapper { api.getDataRequests(datalandCompanyId = companyIdA) }
         }
+    }
+
+    /*TODO Emanuel: Wir können hier den email-Addressen-Filter nicht testen, da die technischen User keine E-Mail-
+    Adresse haben => Wir müssen das unbedingt über unit-Tests o.Ä. covern!
+    Falls das nicht funktioniert oder keinen Sinn macht => e2e-Test mit einem fake-User mit non-blank email-Adresse
+    */
+
+    @Test
+    fun `query data requests with combined filter and assert that the expected results are being retrieved`() {
+        val combinedQueryResults =
+            api.getDataRequests(
+                dataType = listOf(sfdrType, p2pType, vsmeType),
+                requestStatus = setOf(RequestStatus.Open, RequestStatus.Resolved),
+                accessStatus = setOf(AccessStatus.Pending),
+                reportingPeriod = "2023",
+                chunkSize = chunkSize,
+            )
+                .filter { it.creationTimestamp > timestampBeforePost }
+        assertEquals(1, combinedQueryResults.size)
     }
 }
