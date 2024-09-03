@@ -665,11 +665,82 @@
         "operationId": "getDataRequests",
         "parameters": [
           {
-            "name": "filter",
+            "name": "dataType",
             "in": "query",
-            "required": true,
+            "required": false,
             "schema": {
-              "$ref": "#/components/schemas/DataRequestsFilter"
+              "uniqueItems": true,
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "eutaxonomy-financials",
+                  "eutaxonomy-non-financials",
+                  "lksg",
+                  "p2p",
+                  "sfdr",
+                  "vsme",
+                  "esg-questionnaire",
+                  "heimathafen",
+                  "additional-company-information"
+                ]
+              }
+            }
+          },
+          {
+            "name": "userId",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "emailAddress",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "requestStatus",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "uniqueItems": true,
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/RequestStatus"
+              }
+            }
+          },
+          {
+            "name": "accessStatus",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "uniqueItems": true,
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/AccessStatus"
+              }
+            }
+          },
+          {
+            "name": "reportingPeriod",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "datalandCompanyId",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
             }
           },
           {
@@ -862,11 +933,82 @@
         "operationId": "getNumberOfRequests",
         "parameters": [
           {
-            "name": "filter",
+            "name": "dataType",
             "in": "query",
-            "required": true,
+            "required": false,
             "schema": {
-              "$ref": "#/components/schemas/DataRequestsFilter"
+              "uniqueItems": true,
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "eutaxonomy-financials",
+                  "eutaxonomy-non-financials",
+                  "lksg",
+                  "p2p",
+                  "sfdr",
+                  "vsme",
+                  "esg-questionnaire",
+                  "heimathafen",
+                  "additional-company-information"
+                ]
+              }
+            }
+          },
+          {
+            "name": "userId",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "emailAddress",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "requestStatus",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "uniqueItems": true,
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/RequestStatus"
+              }
+            }
+          },
+          {
+            "name": "accessStatus",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "uniqueItems": true,
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/AccessStatus"
+              }
+            }
+          },
+          {
+            "name": "reportingPeriod",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "datalandCompanyId",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
             }
           }
         ],
@@ -1647,55 +1789,6 @@
           },
           "accessStatus": {
             "$ref": "#/components/schemas/AccessStatus"
-          }
-        }
-      },
-      "DataRequestsFilter": {
-        "type": "object",
-        "properties": {
-          "dataTypes": {
-            "uniqueItems": true,
-            "type": "array",
-            "items": {
-              "type": "string",
-              "enum": [
-                "eutaxonomy-financials",
-                "eutaxonomy-non-financials",
-                "lksg",
-                "p2p",
-                "sfdr",
-                "vsme",
-                "esg-questionnaire",
-                "heimathafen",
-                "additional-company-information"
-              ]
-            }
-          },
-          "userId": {
-            "type": "string"
-          },
-          "emailAddress": {
-            "type": "string"
-          },
-          "datalandCompanyId": {
-            "type": "string"
-          },
-          "reportingPeriod": {
-            "type": "string"
-          },
-          "requestStatus": {
-            "uniqueItems": true,
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/RequestStatus"
-            }
-          },
-          "accessStatus": {
-            "uniqueItems": true,
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/AccessStatus"
-            }
           }
         }
       },
