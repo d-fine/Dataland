@@ -204,6 +204,6 @@ class CompanyDataController(
         )
     }
     override fun isCompanyIdValid(companyId: String) {
-            companyQueryManager.verifyCompanyIdExists(companyId)
+        companyQueryManager.verifyCompanyIdExists(companyId)
     }
 }
