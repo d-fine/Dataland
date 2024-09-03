@@ -36,8 +36,11 @@ class TemporaryTables private constructor() {
             "(:#{#searchFilter.shouldFilterByReportingPeriod} = false " +
             "OR d.reporting_period = :#{#searchFilter.usedReportingPeriodFilter}) AND " +
             "(:#{#searchFilter.shouldFilterByDatalandCompanyId} = false " +
-            "OR d.dataland_company_id = :#{#searchFilter.usedDatalandCompanyIdFilter}) " +
+            "OR d.dataland_company_id = :#{#searchFilter.usedDatalandCompanyIdFilter}) "
+
+        /*TODO*/
+        const val ORDER_AND_LIMIT_CLAUSE =
             "ORDER BY d.data_request_id ASC " +
-            "LIMIT :#{#resultLimit} OFFSET :#{#resultOffset}) "
+                "LIMIT :#{#resultLimit} OFFSET :#{#resultOffset}) "
     }
 }

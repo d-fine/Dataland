@@ -2,7 +2,6 @@ package org.dataland.datalandcommunitymanager.services
 
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
-import org.dataland.datalandbackendutils.model.KeycloakUserInfo
 import org.dataland.datalandcommunitymanager.entities.DataRequestEntity
 import org.dataland.datalandcommunitymanager.exceptions.DataRequestNotFoundApiException
 import org.dataland.datalandcommunitymanager.model.dataRequest.AccessStatus
@@ -123,7 +122,6 @@ constructor(
         isUserAdmin: Boolean,
         ownedCompanyIdsByUser: List<String>,
         filter: DataRequestsFilter,
-        userInfoList: List<KeycloakUserInfo>,
         chunkIndex: Int?,
         chunkSize: Int?,
     ): List<ExtendedStoredDataRequest>? {
@@ -134,6 +132,7 @@ constructor(
             getExtendedStoredDataRequestByRequestEntity(dataRequestEntity)
         }
 
+        val userInfoList = filter.setupEmailFilter(keycloakUserControllerApiService)
         val userEmailMap = userInfoList.associate { it.userId to it.email }.toMutableMap()
 
         val storedDataRequests = extendedStoredDataRequest.map { storedDataRequest ->
@@ -150,5 +149,16 @@ constructor(
             storedDataRequest
         }
         return storedDataRequests
+    }
+
+    /**
+     * TODO
+     */
+    @Transactional
+    fun getNumberOfDataRequests(
+        filter: DataRequestsFilter,
+    ): Int {
+        filter.setupEmailFilter(keycloakUserControllerApiService)
+        return dataRequestRepository.getNumberOfRequests(filter)
     }
 }

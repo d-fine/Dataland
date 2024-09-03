@@ -17,7 +17,6 @@ import org.dataland.datalandcommunitymanager.services.CompanyRolesManager
 import org.dataland.datalandcommunitymanager.services.DataAccessManager
 import org.dataland.datalandcommunitymanager.services.DataRequestAlterationManager
 import org.dataland.datalandcommunitymanager.services.DataRequestQueryManager
-import org.dataland.datalandcommunitymanager.services.KeycloakUserControllerApiService
 import org.dataland.datalandcommunitymanager.services.SingleDataRequestManager
 import org.dataland.datalandcommunitymanager.utils.DataRequestsFilter
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
@@ -41,7 +40,6 @@ class RequestController(
     @Autowired private val dataRequestQueryManager: DataRequestQueryManager,
     @Autowired private val dataRequestAlterationManager: DataRequestAlterationManager,
     @Autowired private val dataAccessManager: DataAccessManager,
-    @Autowired private val keycloakUserControllerApiService: KeycloakUserControllerApiService,
     @Autowired private val companyRolesManager: CompanyRolesManager,
 ) : RequestApi {
     override fun postBulkDataRequest(bulkDataRequest: BulkDataRequest): ResponseEntity<BulkDataRequestResponse> {
@@ -93,14 +91,8 @@ class RequestController(
         @RequestParam(defaultValue = "100") chunkSize: Int,
         @RequestParam(defaultValue = "0") chunkIndex: Int,
     ): ResponseEntity<List<ExtendedStoredDataRequest>> {
-        val userInfoList = emailAddress
-            ?.takeIf { it.isNotEmpty() }
-            ?.let { keycloakUserControllerApiService.searchUsers(it) }
-
-        val userIdsFromEmailAddress = userInfoList?.map { it.userId }?.toSet()
-
         val filter = DataRequestsFilter(
-            dataType, userId, userIdsFromEmailAddress, datalandCompanyId, reportingPeriod, requestStatus, accessStatus,
+            dataType, userId, emailAddress, datalandCompanyId, reportingPeriod, requestStatus, accessStatus,
         )
 
         val authenticationContext = DatalandAuthentication.fromContext()
@@ -114,7 +106,6 @@ class RequestController(
                 authenticationContext.roles.contains(DatalandRealmRole.ROLE_ADMIN),
                 ownedCompanyIdsByUser,
                 filter,
-                userInfoList ?: emptyList(),
                 chunkIndex,
                 chunkSize,
             ),
@@ -130,7 +121,11 @@ class RequestController(
         @RequestParam reportingPeriod: String?,
         @RequestParam datalandCompanyId: String?,
     ): ResponseEntity<Int> {
-        return ResponseEntity.ok(0)
+        val filter = DataRequestsFilter(
+            dataType, userId, emailAddress, datalandCompanyId, reportingPeriod, requestStatus, accessStatus,
+        )
+
+        return ResponseEntity.ok(dataRequestQueryManager.getNumberOfDataRequests(filter))
     }
 
     override fun hasAccessToDataset(companyId: UUID, dataType: String, reportingPeriod: String, userId: UUID) {

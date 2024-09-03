@@ -82,7 +82,7 @@ interface DataRequestRepository : JpaRepository<DataRequestEntity, String> {
      */
     @Query(
         nativeQuery = true,
-        value = TemporaryTables.TABLE_FILTERED +
+        value = TemporaryTables.TABLE_FILTERED + TemporaryTables.ORDER_AND_LIMIT_CLAUSE +
             "SELECT d.* FROM data_requests d " +
             "JOIN filtered_table ON filtered_table.data_request_id = d.data_request_id ",
 
@@ -92,6 +92,17 @@ interface DataRequestRepository : JpaRepository<DataRequestEntity, String> {
         @Param("resultLimit") resultLimit: Int? = 100,
         @Param("resultOffset") resultOffset: Int? = 0,
     ): List<DataRequestEntity>
+
+    /**
+     * TODO
+     */
+    @Query(
+        nativeQuery = true,
+        value = TemporaryTables.TABLE_FILTERED +
+            "SELECT COUNT(*) FROM data_requests d " +
+            "JOIN filtered_table ON filtered_table.data_request_id = d.data_request_id ",
+    )
+    fun getNumberOfRequests(@Param("searchFilter") searchFilter: DataRequestsFilter): Int
 
     /**
      * Fetches data request entities together with the associated status history

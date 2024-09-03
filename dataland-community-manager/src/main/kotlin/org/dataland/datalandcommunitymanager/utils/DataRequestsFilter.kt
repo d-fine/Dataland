@@ -1,7 +1,9 @@
 package org.dataland.datalandcommunitymanager.utils
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
+import org.dataland.datalandbackendutils.model.KeycloakUserInfo
 import org.dataland.datalandcommunitymanager.model.dataRequest.AccessStatus
 import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
+import org.dataland.datalandcommunitymanager.services.KeycloakUserControllerApiService
 
 /**
  * A filter class used in the searchDataRequestEntity-Method which allows
@@ -10,7 +12,7 @@ import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
 data class DataRequestsFilter(
     val dataType: Set<DataTypeEnum>?,
     val userId: String?,
-    val userIdsFromEmailAddress: Set<String>?,
+    val emailAddress: String?,
     val datalandCompanyId: String?,
     val reportingPeriod: String?,
     val requestStatus: Set<RequestStatus>?,
@@ -29,7 +31,22 @@ data class DataRequestsFilter(
         get() = userId ?: ""
 
     val shouldFilterByEmailAddress: Boolean
-        get() = userIdsFromEmailAddress != null
+        get() = emailAddress?.isNotEmpty() ?: false
+
+    var userIdsFromEmailAddress: Set<String>? = null
+
+    /**
+     * TODO
+     */
+    fun setupEmailFilter(keycloakUserControllerApiService: KeycloakUserControllerApiService): List<KeycloakUserInfo> {
+        val userInfoList = emailAddress
+            ?.takeIf { shouldFilterByEmailAddress }
+            ?.let { keycloakUserControllerApiService.searchUsers(it) }
+
+        userIdsFromEmailAddress = userInfoList?.map { it.userId }?.toSet()
+
+        return userInfoList ?: emptyList()
+    }
 
     val usedEmailAddressFilter: List<String>
         get() = userIdsFromEmailAddress?.toList() ?: emptyList()
