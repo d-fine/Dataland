@@ -89,7 +89,7 @@ class DataRequestAlterationManager(
         val metaData = metaDataControllerApi.getDataMetaInfo(dataId)
         val dataRequestEntities = dataRequestRepository.searchDataRequestEntity(
             DataRequestsFilter(
-                dataTypes = setOf(metaData.dataType), userId = null, emailAddress = null,
+                dataType = setOf(metaData.dataType), userId = null, userIdsFromEmailAddress = null,
                 requestStatus = setOf(RequestStatus.Open), accessStatus = null,
                 reportingPeriod = metaData.reportingPeriod, datalandCompanyId = metaData.companyId,
             ),

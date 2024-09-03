@@ -40,7 +40,7 @@ class DataRequestTimeScheduler(
             setOf(RequestStatus.Answered), null,
         )
         val staleAnsweredRequests =
-            dataRequestRepository.searchDataRequestEntity(searchFilterForAnsweredDataRequests, emptyList())
+            dataRequestRepository.searchDataRequestEntity(searchFilterForAnsweredDataRequests)
                 .filter { it.lastModifiedDate < thresholdTime }
         staleAnsweredRequests.forEach {
             logger.info(

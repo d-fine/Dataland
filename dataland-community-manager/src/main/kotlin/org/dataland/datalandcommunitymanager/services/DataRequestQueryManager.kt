@@ -2,6 +2,7 @@ package org.dataland.datalandcommunitymanager.services
 
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
+import org.dataland.datalandbackendutils.model.KeycloakUserInfo
 import org.dataland.datalandcommunitymanager.entities.DataRequestEntity
 import org.dataland.datalandcommunitymanager.exceptions.DataRequestNotFoundApiException
 import org.dataland.datalandcommunitymanager.model.dataRequest.AccessStatus
@@ -32,7 +33,7 @@ constructor(
     private val dataRequestLogger: DataRequestLogger,
     private val companyDataControllerApi: CompanyDataControllerApi,
     private val processingUtils: DataRequestProcessingUtils,
-    @Autowired private val keycloakUserControllerApiService: KeycloakUserControllerApiService,
+    private val keycloakUserControllerApiService: KeycloakUserControllerApiService,
 ) {
 
     /** This method retrieves all the data requests for the current user from the database and logs a message.
@@ -119,21 +120,16 @@ constructor(
      */
     @Transactional
     fun getDataRequests(
-        filter: DataRequestsFilter,
         isUserAdmin: Boolean,
         ownedCompanyIdsByUser: List<String>,
+        filter: DataRequestsFilter,
+        userInfoMap: MutableMap<String, KeycloakUserInfo>,
         chunkIndex: Int?,
         chunkSize: Int?,
     ): List<ExtendedStoredDataRequest>? {
-        val userIdsFromEmail = filter.emailAddress
-            ?.takeIf { filter.shouldFilterByEmailAddress }
-            ?.let { keycloakUserControllerApiService.searchUsers(it) }
-            ?.associateBy { it.userId }?.toMutableMap() ?: mutableMapOf()
-
         val offset = (chunkIndex ?: 0) * (chunkSize ?: 0)
         val extendedStoredDataRequest = dataRequestRepository.searchDataRequestEntity(
-            searchFilter = filter, prefetchedUserIdsByEmail = userIdsFromEmail.keys.toList(),
-            resultOffset = offset, resultLimit = chunkSize,
+            searchFilter = filter, resultOffset = offset, resultLimit = chunkSize,
         ).map { dataRequestEntity ->
             getExtendedStoredDataRequestByRequestEntity(dataRequestEntity)
         }
@@ -147,7 +143,7 @@ constructor(
 
             storedDataRequest.userEmailAddress = storedDataRequest.userId
                 .takeIf { allowedToSeeEmailAddress }
-                ?.let { userIdsFromEmail.getOrPut(it) { keycloakUserControllerApiService.getUser(it) }.email }
+                ?.let { userInfoMap.getOrPut(it) { keycloakUserControllerApiService.getUser(it) }.email }
 
             storedDataRequest
         }
