@@ -189,7 +189,9 @@ interface RequestApi {
 
     /** A method for searching data requests based on filters.
      * @return all filtered data requests in a list
+     * TODO adjust description
      */
+    @Suppress("LongParameterList")
     @Operation(
         summary = "Get all stored data requests based on filters.",
         description = "Gets all the stored data request based on filters.",
@@ -204,11 +206,16 @@ interface RequestApi {
     )
     @PreAuthorize(
         "hasRole('ROLE_ADMIN') or" +
-            "@SecurityUtilsService.isUserCompanyOwnerForCompanyId(#filter.datalandCompanyId)",
+            "@SecurityUtilsService.isUserCompanyOwnerForCompanyId(#datalandCompanyId)",
     )
     fun getDataRequests(
-        @RequestBody @Valid
-        filter: DataRequestsFilter,
+        @RequestParam dataType: Set<DataTypeEnum>?,
+        @RequestParam userId: String?,
+        @RequestParam emailAddress: String?,
+        @RequestParam requestStatus: Set<RequestStatus>?,
+        @RequestParam accessStatus: Set<AccessStatus>?,
+        @RequestParam reportingPeriod: String?,
+        @RequestParam datalandCompanyId: String?,
         @RequestParam(defaultValue = "100") chunkSize: Int,
         @RequestParam(defaultValue = "0") chunkIndex: Int,
     ): ResponseEntity<List<ExtendedStoredDataRequest>>
@@ -231,11 +238,16 @@ interface RequestApi {
     )
     @PreAuthorize(
         "hasRole('ROLE_ADMIN') or" +
-            "@SecurityUtilsService.isUserCompanyOwnerForCompanyId(#filter.datalandCompanyId)",
+            "@SecurityUtilsService.isUserCompanyOwnerForCompanyId(#datalandCompanyId)",
     )
     fun getNumberOfRequests(
-        @RequestBody @Valid
-        filter: DataRequestsFilter,
+        @RequestParam dataType: Set<DataTypeEnum>?,
+        @RequestParam userId: String?,
+        @RequestParam emailAddress: String?,
+        @RequestParam requestStatus: Set<RequestStatus>?,
+        @RequestParam accessStatus: Set<AccessStatus>?,
+        @RequestParam reportingPeriod: String?,
+        @RequestParam datalandCompanyId: String?,
     ): ResponseEntity<Int>
 
     /**

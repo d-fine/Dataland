@@ -23,6 +23,7 @@ import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
+import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 import java.util.UUID
 
@@ -79,11 +80,17 @@ class RequestController(
     }
 
     override fun getDataRequests(
-        filter: DataRequestsFilter,
-        chunkSize: Int,
-        chunkIndex: Int,
+        @RequestParam dataType: Set<DataTypeEnum>?,
+        @RequestParam userId: String?,
+        @RequestParam emailAddress: String?,
+        @RequestParam requestStatus: Set<RequestStatus>?,
+        @RequestParam accessStatus: Set<AccessStatus>?,
+        @RequestParam reportingPeriod: String?,
+        @RequestParam datalandCompanyId: String?,
+        @RequestParam(defaultValue = "100") chunkSize: Int,
+        @RequestParam(defaultValue = "0") chunkIndex: Int
     ): ResponseEntity<List<ExtendedStoredDataRequest>> {
-        val isUserAdmin = DatalandAuthentication.fromContext().roles.contains(DatalandRealmRole.ROLE_ADMIN)
+        /*val isUserAdmin = DatalandAuthentication.fromContext().roles.contains(DatalandRealmRole.ROLE_ADMIN)
         val userId = DatalandAuthentication.fromContext().userId
         val ownedCompanyIdsByUser =
             companyRolesManager.getCompanyRoleAssignmentsByParameters(null, null, userId = userId)
@@ -98,10 +105,19 @@ class RequestController(
                 chunkIndex,
                 chunkSize,
             ),
-        )
+        )*/
+        return ResponseEntity.ok(emptyList())
     }
 
-    override fun getNumberOfRequests(filter: DataRequestsFilter): ResponseEntity<Int> {
+    override fun getNumberOfRequests(
+        @RequestParam dataType: Set<DataTypeEnum>?,
+        @RequestParam userId: String?,
+        @RequestParam emailAddress: String?,
+        @RequestParam requestStatus: Set<RequestStatus>?,
+        @RequestParam accessStatus: Set<AccessStatus>?,
+        @RequestParam reportingPeriod: String?,
+        @RequestParam datalandCompanyId: String?
+    ): ResponseEntity<Int> {
         return ResponseEntity.ok(0)
     }
 
