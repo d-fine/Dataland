@@ -161,7 +161,7 @@ class CompanyRolesManager(
         companyId: String,
         userId: String,
     ) {
-        companyIdValidator.checkIfCompanyIdIsValidAndReturnName(companyId)
+        //companyIdValidator.checkIfCompanyIdIsValidAndReturnName(companyId)
         val id = CompanyRoleAssignmentId(companyRole = companyRole, companyId = companyId, userId = userId)
         if (!companyRoleAssignmentRepository.existsById(id)) {
             throwExceptionDueToRoleNotAssignedToUser(companyRole, companyId, userId)
@@ -174,7 +174,7 @@ class CompanyRolesManager(
      */
     @Transactional(readOnly = true)
     fun validateIfCompanyHasAtLeastOneCompanyOwner(companyId: String) {
-        companyIdValidator.checkIfCompanyIdIsValidAndReturnName(companyId)
+       // companyIdValidator.checkIfCompanyIdIsValidAndReturnName(companyId)
         val companyRoleAssignments = getCompanyRoleAssignmentsByParameters(CompanyRole.CompanyOwner, companyId, null)
         if (companyRoleAssignments.isEmpty()) {
             throw ResourceNotFoundApiException(

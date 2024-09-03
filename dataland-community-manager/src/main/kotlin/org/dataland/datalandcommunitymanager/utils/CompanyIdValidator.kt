@@ -15,7 +15,6 @@ import org.springframework.stereotype.Service
 class CompanyIdValidator(
     @Autowired private val companyApi: CompanyDataControllerApi,
 ) {
-    private val logger = LoggerFactory.getLogger(javaClass)
 
     /**
      * Checks if a companyId exists on Dataland by trying to retrieve it in the backend.
@@ -35,8 +34,7 @@ class CompanyIdValidator(
                 )
             }
 
-                else { logger.info("Error source found")
-                throw e }
+                else { throw e }
         }
     }
 }
