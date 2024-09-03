@@ -206,7 +206,7 @@ interface RequestApi {
     )
     @PreAuthorize(
         "hasRole('ROLE_ADMIN') or" +
-            "@SecurityUtilsService.isUserCompanyOwnerForCompanyId(datalandCompanyId)",
+            "@SecurityUtilsService.isUserCompanyOwnerForCompanyId(#datalandCompanyId)",
     )
     fun getDataRequests(
         @RequestParam dataType: Set<DataTypeEnum>?,
