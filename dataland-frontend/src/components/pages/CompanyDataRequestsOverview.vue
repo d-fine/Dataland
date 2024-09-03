@@ -296,14 +296,9 @@ export default defineComponent({
         const apiClientProvider = new ApiClientProvider(this.getKeycloakPromise());
         const dataRequestsPromises = companyIDs.map(async (companyId) => {
           try {
-            const response = await apiClientProvider.apiClients.requestController.getDataRequests(
-              undefined,
-              undefined,
-              undefined,
-              undefined,
-              undefined,
-              companyId
-            );
+            const response = await apiClientProvider.apiClients.requestController.getDataRequests({
+              datalandCompanyId: companyId,
+            });
             return response.data;
           } catch (error) {
             console.error(`Error fetching data for companyId ${companyId}:`, error);

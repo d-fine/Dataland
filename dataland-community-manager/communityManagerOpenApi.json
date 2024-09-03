@@ -665,69 +665,11 @@
         "operationId": "getDataRequests",
         "parameters": [
           {
-            "name": "dataType",
+            "name": "filter",
             "in": "query",
-            "required": false,
+            "required": true,
             "schema": {
-              "type": "string",
-              "enum": [
-                "eutaxonomy-financials",
-                "eutaxonomy-non-financials",
-                "lksg",
-                "p2p",
-                "sfdr",
-                "vsme",
-                "esg-questionnaire",
-                "heimathafen"
-              ]
-            }
-          },
-          {
-            "name": "userId",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "emailAddress",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "requestStatus",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "$ref": "#/components/schemas/RequestStatus"
-            }
-          },
-          {
-            "name": "accessStatus",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "$ref": "#/components/schemas/AccessStatus"
-            }
-          },
-          {
-            "name": "reportingPeriod",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "datalandCompanyId",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "string"
+              "$ref": "#/components/schemas/DataRequestsFilter"
             }
           },
           {
@@ -875,6 +817,67 @@
                   "items": {
                     "$ref": "#/components/schemas/ExtendedStoredDataRequest"
                   }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
+    "/requests/numberOfRequests": {
+      "get": {
+        "tags": [
+          "request-controller"
+        ],
+        "summary": "TODO",
+        "description": "TODO",
+        "operationId": "getNumberOfRequests",
+        "parameters": [
+          {
+            "name": "filter",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/DataRequestsFilter"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "TODO.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "integer",
+                  "format": "int32"
                 }
               }
             }
@@ -1641,6 +1644,54 @@
           },
           "accessStatus": {
             "$ref": "#/components/schemas/AccessStatus"
+          }
+        }
+      },
+      "DataRequestsFilter": {
+        "type": "object",
+        "properties": {
+          "dataTypes": {
+            "uniqueItems": true,
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "eutaxonomy-financials",
+                "eutaxonomy-non-financials",
+                "lksg",
+                "p2p",
+                "sfdr",
+                "vsme",
+                "esg-questionnaire",
+                "heimathafen"
+              ]
+            }
+          },
+          "userId": {
+            "type": "string"
+          },
+          "emailAddress": {
+            "type": "string"
+          },
+          "datalandCompanyId": {
+            "type": "string"
+          },
+          "reportingPeriod": {
+            "type": "string"
+          },
+          "requestStatus": {
+            "uniqueItems": true,
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/RequestStatus"
+            }
+          },
+          "accessStatus": {
+            "uniqueItems": true,
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AccessStatus"
+            }
           }
         }
       },

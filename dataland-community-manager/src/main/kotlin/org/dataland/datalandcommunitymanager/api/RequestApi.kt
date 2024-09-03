@@ -15,6 +15,7 @@ import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
 import org.dataland.datalandcommunitymanager.model.dataRequest.SingleDataRequest
 import org.dataland.datalandcommunitymanager.model.dataRequest.SingleDataRequestResponse
 import org.dataland.datalandcommunitymanager.model.dataRequest.StoredDataRequest
+import org.dataland.datalandcommunitymanager.utils.DataRequestsFilter
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.GetMapping
@@ -203,19 +204,39 @@ interface RequestApi {
     )
     @PreAuthorize(
         "hasRole('ROLE_ADMIN') or" +
-            "@SecurityUtilsService.isUserCompanyOwnerForCompanyId(#datalandCompanyId)",
+            "@SecurityUtilsService.isUserCompanyOwnerForCompanyId(#filter.datalandCompanyId)",
     )
     fun getDataRequests(
-        @RequestParam dataType: DataTypeEnum?,
-        @RequestParam userId: String?,
-        @RequestParam emailAddress: String?,
-        @RequestParam requestStatus: RequestStatus?,
-        @RequestParam accessStatus: AccessStatus?,
-        @RequestParam reportingPeriod: String?,
-        @RequestParam datalandCompanyId: String?,
+        @RequestBody @Valid
+        filter: DataRequestsFilter,
         @RequestParam(defaultValue = "100") chunkSize: Int,
         @RequestParam(defaultValue = "0") chunkIndex: Int,
     ): ResponseEntity<List<ExtendedStoredDataRequest>>
+
+    /**
+     * TODO add description
+     */
+    @Operation(
+        summary = "TODO",
+        description = "TODO",
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "200", description = "TODO."),
+        ],
+    )
+    @GetMapping(
+        value = ["/numberOfRequests"],
+        produces = ["application/json"],
+    )
+    @PreAuthorize(
+        "hasRole('ROLE_ADMIN') or" +
+            "@SecurityUtilsService.isUserCompanyOwnerForCompanyId(#filter.datalandCompanyId)",
+    )
+    fun getNumberOfRequests(
+        @RequestBody @Valid
+        filter: DataRequestsFilter,
+    ): ResponseEntity<Int>
 
     /**
      * A method to check if the logged-in user can access a specific dataset.
