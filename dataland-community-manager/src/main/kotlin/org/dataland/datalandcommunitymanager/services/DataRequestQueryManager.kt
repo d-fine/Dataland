@@ -123,7 +123,7 @@ constructor(
         isUserAdmin: Boolean,
         ownedCompanyIdsByUser: List<String>,
         filter: DataRequestsFilter,
-        userInfoMap: MutableMap<String, KeycloakUserInfo>,
+        userInfoList: List<KeycloakUserInfo>,
         chunkIndex: Int?,
         chunkSize: Int?,
     ): List<ExtendedStoredDataRequest>? {
@@ -134,6 +134,8 @@ constructor(
             getExtendedStoredDataRequestByRequestEntity(dataRequestEntity)
         }
 
+        val userEmailMap = userInfoList.associate { it.userId to it.email }.toMutableMap()
+
         val storedDataRequests = extendedStoredDataRequest.map { storedDataRequest ->
             val allowedToSeeEmailAddress = isUserAdmin ||
                 (
@@ -143,7 +145,7 @@ constructor(
 
             storedDataRequest.userEmailAddress = storedDataRequest.userId
                 .takeIf { allowedToSeeEmailAddress }
-                ?.let { userInfoMap.getOrPut(it) { keycloakUserControllerApiService.getUser(it) }.email }
+                ?.let { userEmailMap.getOrPut(it) { keycloakUserControllerApiService.getUser(it).email ?: "" } }
 
             storedDataRequest
         }

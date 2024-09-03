@@ -229,7 +229,7 @@ class QueryDataRequestsTest {
     fun `query data requests and assert that email address is only populated for owned companies`() {
         withTechnicalUser(TechnicalUser.Admin) {
             val dataRequests = api.getDataRequests(datalandCompanyId = companyIdA)
-            assertTrue(dataRequests.all { it.userEmailAddress == null })
+            assertTrue(dataRequests.all { it.userEmailAddress != null })
         }
 
         val queryingUser = TechnicalUser.Reader

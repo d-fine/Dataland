@@ -93,13 +93,14 @@ class RequestController(
         @RequestParam(defaultValue = "100") chunkSize: Int,
         @RequestParam(defaultValue = "0") chunkIndex: Int,
     ): ResponseEntity<List<ExtendedStoredDataRequest>> {
-        val userInfoMap = emailAddress
+        val userInfoList = emailAddress
             ?.takeIf { it.isNotEmpty() }
             ?.let { keycloakUserControllerApiService.searchUsers(it) }
-            ?.associateBy { it.userId }?.toMutableMap() ?: mutableMapOf()
+
+        val userIdsFromEmailAddress = userInfoList?.map { it.userId }?.toSet()
 
         val filter = DataRequestsFilter(
-            dataType, userId, userInfoMap.keys, datalandCompanyId, reportingPeriod, requestStatus, accessStatus,
+            dataType, userId, userIdsFromEmailAddress, datalandCompanyId, reportingPeriod, requestStatus, accessStatus,
         )
 
         val authenticationContext = DatalandAuthentication.fromContext()
@@ -113,7 +114,7 @@ class RequestController(
                 authenticationContext.roles.contains(DatalandRealmRole.ROLE_ADMIN),
                 ownedCompanyIdsByUser,
                 filter,
-                userInfoMap,
+                userInfoList ?: emptyList(),
                 chunkIndex,
                 chunkSize,
             ),
