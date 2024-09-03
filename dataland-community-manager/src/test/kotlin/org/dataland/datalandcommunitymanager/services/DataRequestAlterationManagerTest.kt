@@ -90,7 +90,6 @@ class DataRequestAlterationManagerTest {
                     setOf(metaData.dataType), null, null, metaData.companyId, metaData.reportingPeriod,
                     setOf(RequestStatus.Open), null,
                 ),
-                prefetchedUserIdsByEmail = emptyList(),
             ),
         ).thenReturn(dummyDataRequestEntities)
 

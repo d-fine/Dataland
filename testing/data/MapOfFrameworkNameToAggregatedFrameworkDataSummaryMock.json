@@ -22,5 +22,8 @@
 	},
 	"heimathafen": {
 		"numberOfProvidedReportingPeriods": 15
+	},
+	"additional-company-information": {
+		"numberOfProvidedReportingPeriods": 14
 	}
 }

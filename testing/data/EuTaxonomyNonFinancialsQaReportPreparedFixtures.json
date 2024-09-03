@@ -2,34 +2,36 @@
 	{
 		"companyInformation": {
 			"companyName": "eutaxonomy-non-financials-qa-report-with-one-correction",
-			"headquarters": "North Wallaceworth",
-			"headquartersPostalCode": "97416-7205",
-			"sector": "metrics",
+			"headquarters": "Port Penelope",
+			"headquartersPostalCode": "85870-8109",
+			"sector": null,
 			"identifiers": {
-				"Lei": [],
+				"Lei": [
+					"5FYj862KJ1egBw0FAvyn"
+				],
 				"Isin": [
-					"Q3CoERJfyoUh"
+					"NPQon9hEXd5u"
 				],
 				"PermId": [
-					"hWr3EB4NVC"
+					"aP6737HGeU"
 				],
-				"Ticker": [],
-				"Duns": [],
-				"VatNumber": [
-					"Y0KbP18Xg"
+				"Ticker": [
+					"SWEsdSp"
 				],
-				"CompanyRegistrationNumber": [
-					"2ZvCn2oatj9aSG1"
-				]
+				"Duns": [
+					"DbTmfgMyu"
+				],
+				"VatNumber": [],
+				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "GU",
-			"companyContactDetails": [],
+			"countryCode": "GI",
+			"companyContactDetails": null,
 			"companyAlternativeNames": [
-				"Hilll - Corkery",
-				"Rodriguez Inc"
+				"Hettinger - Smith",
+				"Huels Inc"
 			],
-			"companyLegalForm": "Limited Liability Partnership (LLP)",
-			"website": null,
+			"companyLegalForm": "Sole Trader",
+			"website": "https://naughty-sheath.biz/",
 			"isTeaserCompany": false
 		},
 		"t": {
@@ -97,6 +99,6 @@
 				}
 			}
 		},
-		"reportingPeriod": "2024"
+		"reportingPeriod": "2022"
 	}
 ]

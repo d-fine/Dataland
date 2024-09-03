@@ -11,4 +11,5 @@ val readableFrameworkNameMapping: Map<DataTypeEnum, String> = mapOf(
     DataTypeEnum.p2p to "WWF Pathways to Paris",
     DataTypeEnum.esgMinusQuestionnaire to "ESG Questionnaire",
     DataTypeEnum.heimathafen to "Heimathafen",
+    DataTypeEnum.additionalMinusCompanyMinusInformation to "Additional Company Information",
 )
