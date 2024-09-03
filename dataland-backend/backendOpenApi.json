@@ -147,6 +147,60 @@
           }
         ]
       },
+      "head": {
+        "tags": [
+          "company-data-controller"
+        ],
+        "summary": "Checks that a companyId exists.",
+        "description": "Checks that a companyId exists.",
+        "operationId": "isCompanyIdValid",
+        "parameters": [
+          {
+            "name": "companyId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully checked that companyId exists."
+          },
+          "404": {
+            "description": "Successfully checked that companyIdr does not exist."
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      },
       "patch": {
         "tags": [
           "company-data-controller"
@@ -15278,21 +15332,21 @@
             "type": "string",
             "nullable": true
           },
-          "companyId": {
-            "type": "string"
+          "lei": {
+            "type": "string",
+            "nullable": true
           },
           "companyName": {
             "type": "string"
           },
-          "headquarters": {
+          "companyId": {
             "type": "string"
           },
           "countryCode": {
             "type": "string"
           },
-          "lei": {
-            "type": "string",
-            "nullable": true
+          "headquarters": {
+            "type": "string"
           }
         }
       },
@@ -15315,10 +15369,10 @@
         ],
         "type": "object",
         "properties": {
-          "companyId": {
+          "companyName": {
             "type": "string"
           },
-          "companyName": {
+          "companyId": {
             "type": "string"
           }
         }
