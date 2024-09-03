@@ -15,6 +15,7 @@ import {
 } from '@e2e/utils/FrameworkUpload';
 import { humanizeStringOrNumber } from '@/utils/StringFormatter';
 import SfdrBaseFrameworkDefinition from '@/frameworks/sfdr/BaseFrameworkDefinition';
+import { ALL_FRAMEWORKS_ORDERED } from '@/utils/Constants';
 
 let companiesWithEuTaxonomyDataForFinancials: Array<FixtureData<EuTaxonomyDataForFinancials>>;
 let companiesWithSfdrData: Array<FixtureData<SfdrData>>;
@@ -37,6 +38,11 @@ function escapeParenthesisInRegExp(inputString: string): string {
 }
 describe('As a user, I expect the search functionality on the /companies page to adjust to the selected dropdown filters', () => {
   const failureMessageOnAvailableDatasetsPage = "We're sorry, but your search did not return any results.";
+
+  const frameworkOne = ALL_FRAMEWORKS_ORDERED[0];
+  const frameworkTwo = ALL_FRAMEWORKS_ORDERED[ALL_FRAMEWORKS_ORDERED.length - 4];
+  const frameworkThree = ALL_FRAMEWORKS_ORDERED[ALL_FRAMEWORKS_ORDERED.length - 5];
+
   it('The framework filter synchronise between the search bar and the URL', { scrollBehavior: false }, () => {
     cy.ensureLoggedIn();
     cy.intercept('**/api/companies/meta-information').as('companies-meta-information');
@@ -45,18 +51,20 @@ describe('As a user, I expect the search functionality on the /companies page to
     cy.url().should('eq', getBaseUrl() + '/companies');
     cy.get('#framework-filter').click();
     cy.get('div.p-multiselect-panel')
-      .find(`li.p-multiselect-item:contains(${humanizeStringOrNumber(DataTypeEnum.EutaxonomyFinancials)})`)
+      .find(`li.p-multiselect-item:contains(${humanizeStringOrNumber(frameworkOne)})`)
       .click();
     verifySearchResultTableExists();
-    cy.url()
-      .should('eq', getBaseUrl() + '/companies?' + `framework=${DataTypeEnum.EutaxonomyFinancials}`)
-      .get('div.p-multiselect-panel')
-      .find(`li.p-multiselect-item:contains(${humanizeStringOrNumber(DataTypeEnum.P2p)})`)
-      .click();
-    verifySearchResultTableExists();
+    cy.url().should('eq', getBaseUrl() + '/companies?' + `framework=${frameworkOne}`);
+
     cy.get('.p-multiselect-items-wrapper').scrollTo('bottom');
+
     cy.get('div.p-multiselect-panel')
-      .find(`li.p-multiselect-item:contains(${humanizeStringOrNumber(DataTypeEnum.Sfdr)})`)
+      .find(`li.p-multiselect-item:contains(${humanizeStringOrNumber(frameworkTwo)})`)
+      .click();
+    verifySearchResultTableExists();
+
+    cy.get('div.p-multiselect-panel')
+      .find(`li.p-multiselect-item:contains(${humanizeStringOrNumber(frameworkThree)})`)
       .click();
     verifySearchResultTableExists();
     cy.url()
@@ -64,20 +72,14 @@ describe('As a user, I expect the search functionality on the /companies page to
         'eq',
         getBaseUrl() +
           '/companies?' +
-          `framework=${DataTypeEnum.EutaxonomyFinancials}` +
-          `&framework=${DataTypeEnum.P2p}` +
-          `&framework=${DataTypeEnum.Sfdr}`
+          `framework=${frameworkOne}` +
+          `&framework=${frameworkTwo}` +
+          `&framework=${frameworkThree}`
       )
       .get('div.p-multiselect-panel')
-      .find(`li.p-highlight:contains(${humanizeStringOrNumber(DataTypeEnum.P2p)})`)
+      .find(`li.p-highlight:contains(${humanizeStringOrNumber(frameworkTwo)})`)
       .click();
-    cy.url().should(
-      'eq',
-      getBaseUrl() +
-        '/companies?' +
-        `framework=${DataTypeEnum.EutaxonomyFinancials}` +
-        `&framework=${DataTypeEnum.Sfdr}`
-    );
+    cy.url().should('eq', getBaseUrl() + '/companies?' + `framework=${frameworkOne}` + `&framework=${frameworkThree}`);
   });
 
   describeIf(

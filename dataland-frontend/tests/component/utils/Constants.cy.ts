@@ -4,9 +4,12 @@ import { getAllPublicFrameworkIdentifiers } from '@/frameworks/BasePublicFramewo
 import { getAllPrivateFrameworkIdentifiers } from '@/frameworks/BasePrivateFrameworkRegistry';
 
 describe('Unit test for the data type sorting in the Constants', () => {
-  it('Check if esg questionnaire and heimathafen are put at the end of a list of data type enums', () => {
-    expect(ALL_FRAMEWORKS_ORDERED[ALL_FRAMEWORKS_ORDERED.length - 2]).to.equal(DataTypeEnum.EsgQuestionnaire);
-    expect(ALL_FRAMEWORKS_ORDERED[ALL_FRAMEWORKS_ORDERED.length - 1]).to.equal(DataTypeEnum.Heimathafen);
+  it('Check framework order of esg questionnaire, heimathafen, and additional company information', () => {
+    expect(ALL_FRAMEWORKS_ORDERED[ALL_FRAMEWORKS_ORDERED.length - 3]).to.equal(DataTypeEnum.EsgQuestionnaire);
+    expect(ALL_FRAMEWORKS_ORDERED[ALL_FRAMEWORKS_ORDERED.length - 2]).to.equal(DataTypeEnum.Heimathafen);
+    expect(ALL_FRAMEWORKS_ORDERED[ALL_FRAMEWORKS_ORDERED.length - 1]).to.equal(
+      DataTypeEnum.AdditionalCompanyInformation
+    );
   });
 
   it('Check if the frameworks in the Constants are in sync with the framework registries', () => {

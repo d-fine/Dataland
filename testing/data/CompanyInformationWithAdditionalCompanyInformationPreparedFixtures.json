@@ -1,0 +1,138 @@
+[
+	{
+		"companyInformation": {
+			"companyName": "additional-company-information-dataset-with-no-null-fields",
+			"headquarters": "Pollichboro",
+			"headquartersPostalCode": "16181-1400",
+			"sector": "niches",
+			"identifiers": {
+				"Lei": [
+					"7mgt8ILL2DCOKn0ksj7N"
+				],
+				"Isin": [
+					"i3O9k3QmSKRO"
+				],
+				"PermId": [],
+				"Ticker": [
+					"3XyTehf"
+				],
+				"Duns": [],
+				"VatNumber": [
+					"IsMQadvb0"
+				],
+				"CompanyRegistrationNumber": []
+			},
+			"countryCode": "BY",
+			"companyContactDetails": [
+				"Cleo_Kshlerin3@example.com",
+				"Erick6@example.com",
+				"Mylene_Huel49@example.com",
+				"Rahul.Hudson9@example.com",
+				"Ottis.Hettinger@example.com"
+			],
+			"companyAlternativeNames": [
+				"Jakubowski, Greenholt and Nader",
+				"Yundt and Sons"
+			],
+			"companyLegalForm": "Private Limited Company (Ltd)",
+			"website": "https://variable-cream.net/",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"general": {
+				"general": {
+					"fiscalYearDeviation": {
+						"value": "Deviation",
+						"dataSource": {
+							"page": 208,
+							"fileName": "AnnualReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "users"
+						},
+						"comment": "synthesize open-source driver",
+						"quality": "Audited"
+					},
+					"fiscalYearEnd": {
+						"value": "2024-07-01",
+						"dataSource": {
+							"page": 954,
+							"fileName": "IntegratedReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "e-commerce"
+						},
+						"comment": "back up primary firewall",
+						"quality": "Audited"
+					},
+					"referencedReports": {
+						"AnnualReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "AnnualReport",
+							"publicationDate": "2023-07-03"
+						},
+						"SustainabilityReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "SustainabilityReport",
+							"publicationDate": "2023-12-27"
+						},
+						"IntegratedReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "IntegratedReport",
+							"publicationDate": "2024-01-08"
+						}
+					}
+				},
+				"financialInformation": {
+					"equity": {
+						"value": 7164818567.69,
+						"dataSource": {
+							"page": 375,
+							"fileName": "AnnualReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "deliverables"
+						},
+						"comment": "hack neural alarm",
+						"quality": "Reported",
+						"currency": "PEN"
+					},
+					"debt": {
+						"value": 2394110865.42,
+						"dataSource": {
+							"page": 971,
+							"fileName": "IntegratedReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "platforms"
+						},
+						"comment": "compress primary bus",
+						"quality": "Estimated",
+						"currency": "BTN"
+					},
+					"balanceSheetTotal": {
+						"value": 9032161661.89,
+						"dataSource": {
+							"page": 1003,
+							"fileName": "SustainabilityReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "paradigms"
+						},
+						"comment": "navigate cross-platform array",
+						"quality": "Incomplete",
+						"currency": "EUR"
+					},
+					"evic": {
+						"value": 5048991297.37,
+						"dataSource": {
+							"page": 1162,
+							"fileName": "IntegratedReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "technologies"
+						},
+						"comment": "index digital matrix",
+						"quality": "Reported",
+						"currency": "ETB"
+					}
+				}
+			}
+		},
+		"reportingPeriod": "2020"
+	}
+]
