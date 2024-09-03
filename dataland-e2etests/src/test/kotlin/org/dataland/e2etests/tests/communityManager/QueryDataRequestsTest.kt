@@ -226,7 +226,7 @@ class QueryDataRequestsTest {
     }
 
     @Test
-    fun `query data requests and assert that email address is only populated for owned companies`() {
+    fun `query data requests and assert that email address is only populated for admin or owned companies`() {
         withTechnicalUser(TechnicalUser.Admin) {
             val dataRequests = api.getDataRequests(datalandCompanyId = companyIdA)
             assertTrue(dataRequests.all { it.userEmailAddress != null })
@@ -250,6 +250,29 @@ class QueryDataRequestsTest {
 
         withTechnicalUser(queryingUser) {
             assertAccessDeniedWrapper { api.getDataRequests(datalandCompanyId = companyIdA) }
+        }
+    }
+
+    @Test
+    fun `query data requests and assert that email address is not visible for public data requests`() {
+        val queryingUser = TechnicalUser.Reader
+
+        withTechnicalUser(queryingUser) {
+            assertAccessDeniedWrapper { api.getDataRequests(datalandCompanyId = companyIdB) }
+        }
+
+        assignCompanyOwnershipToUser(companyIdB, queryingUser.technicalUserId)
+
+        withTechnicalUser(queryingUser) {
+            val dataRequests = api.getDataRequests(datalandCompanyId = companyIdB)
+            assertEquals(1, dataRequests.size)
+            assertTrue(dataRequests.all { it.userEmailAddress == null })
+        }
+
+        removeCompanyOwnershipFromUser(companyIdB, queryingUser.technicalUserId)
+
+        withTechnicalUser(queryingUser) {
+            assertAccessDeniedWrapper { api.getDataRequests(datalandCompanyId = companyIdB) }
         }
     }
 
