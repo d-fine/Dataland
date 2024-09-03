@@ -89,7 +89,7 @@ class CompanyRolesManagerTest {
 
     @Test
     fun `check that a company ownership can only be requested for existing companies`() {
-        `when`(mockCompanyDataControllerApi.getCompanyById("non-existing-company-id")).thenThrow(
+        `when`(mockCompanyDataControllerApi.isCompanyIdValid("non-existing-company-id")).thenThrow(
             ClientException("Client error", HttpStatus.NOT_FOUND.value()),
         )
         val exception = assertThrows<ResourceNotFoundApiException> {
