@@ -58,6 +58,7 @@
                 v-if="currentDataRequests && currentDataRequests.length > 0"
                 ref="dataTable"
                 :value="currentDataRequests"
+                :first="first"
                 :paginator="true"
                 :lazy="true"
                 :total-records="totalRecords"
@@ -66,7 +67,6 @@
                 :alwaysShowPaginator="false"
                 currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
                 @row-click="onRowClick($event)"
-                @page-update="handlePageUpdate"
                 @page="onPage($event)"
                 class="table-cursor"
                 id="admin-request-overview-data"
@@ -297,23 +297,16 @@ export default defineComponent({
     },
 
     /**
-     * Updates the current page.
-     * An update of the currentPage automatically triggers a data Update
-     * @param pageNumber the new page index
-     */
-    handlePageUpdate(pageNumber: number) {
-      if (pageNumber != this.currentPage) {
-        this.currentPage = pageNumber;
-        this.getAllRequestsForFilters();
-      }
-    },
-    /**
      * Updates the current Page in the parent component
      * @param event DataTablePageEvent
      */
     onPage(event: DataTablePageEvent) {
-      window.scrollTo(0, 0);
-      this.$emit('page-update', event.page);
+      // window.scrollTo(0, 0);
+      console.log(event.page);
+      if (event.page != this.currentPage) {
+        this.currentPage = event.page;
+        this.getAllRequestsForFilters();
+      }
     },
 
     /**
