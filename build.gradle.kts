@@ -91,7 +91,8 @@ sonar {
             "**/test/**," +
                 "**/tests/**," +
                 "**/LocalCorsConfig.kt," +
-                "dataland-frontend/src/main.ts",
+                "dataland-frontend/src/main.ts," +
+                "dataland-frontend/src/frameworks/additional-company-information/ViewConfig.ts",
         )
         property(
             "sonar.sources",
@@ -108,22 +109,21 @@ sonar {
                 "dataland-frontend/src/components/forms/parts/elements/derived/ActivityTree.ts," +
                 "dataland-frontend/tests/e2e/fixtures/frameworks/eutaxonomy-non-financials/" +
                 "EutaxonomyNonFinancialsDataFixtures.ts," +
-
                 // frontend configs
                 "dataland-frontend/src/components/resources/frameworkDataSearch/euTaxonomy/configMLDT/" +
                 "configForEutaxonomyFinancialsMLDT.ts," +
+                "dataland-frontend/src/frameworks/additional-company-information/ViewConfig.ts," +
                 "dataland-frontend/src/frameworks/esg-questionnaire/ViewConfig.ts," +
+                "dataland-frontend/src/frameworks/lksg/ViewConfig.ts," +
                 "dataland-frontend/src/frameworks/sfdr/ViewConfig.ts," +
                 "dataland-frontend/src/frameworks/esg-questionnaire/UploadConfig.ts," +
                 "dataland-frontend/src/frameworks/heimathafen/UploadConfig.ts," +
-                "dataland-frontend/src/frameworks/custom/EuTaxoNonFinancialsStaticUploadConfig.ts," +
                 "dataland-frontend/src/frameworks/sfdr/UploadConfig.ts," +
                 "dataland-frontend/src/frameworks/vsme/UploadConfig.ts," +
-                "dataland-frontend/src/frameworks/lksg/ViewConfig.ts," +
                 "dataland-frontend/src/frameworks/lksg/UploadConfig.ts," +
+                "dataland-frontend/src/frameworks/custom/EuTaxoNonFinancialsStaticUploadConfig.ts," +
                 "dataland-frontend/src/components/resources/frameworkDataSearch/p2p/P2pDataModel.ts," +
                 "dataland-frontend/tests/component/utils/LinkExtraction.cy.ts," +
-
                 // backend
                 "dataland-backend/src/main/kotlin/db/migration/V1_1__CreateBackendTables.kt," +
 

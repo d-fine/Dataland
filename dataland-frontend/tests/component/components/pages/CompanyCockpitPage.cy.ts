@@ -1,4 +1,3 @@
-// @ts-nocheck
 import CompanyCockpitPage from '@/components/pages/CompanyCockpitPage.vue';
 import { minimalKeycloakMock } from '@ct/testUtils/Keycloak';
 import {
@@ -16,7 +15,8 @@ import {
 } from '@/utils/KeycloakUtils';
 import { setMobileDeviceViewport } from '@sharedUtils/TestSetupUtils';
 import { computed } from 'vue';
-import { CompanyRole } from '@clients/communitymanager';
+import { CompanyRole, type CompanyRoleAssignment } from '@clients/communitymanager';
+import { getMountingFunction } from '@ct/testUtils/Mount';
 
 describe('Component test for the company cockpit', () => {
   let companyInformationForTest: CompanyInformation;
@@ -41,31 +41,21 @@ describe('Component test for the company cockpit', () => {
    * Generates a company role assignment
    * @param companyRole in the mock assignment
    * @param companyId of the company associated with the mock assignment
-   * @param userId of the user that shall be associated with the mock assignment
    * @returns a mock company role assignment
    */
-  function generateCompanyRoleAssignment(
-    companyRole: CompanyRole,
-    companyId: string,
-    userId: string
-  ): CompanyRoleAssignment {
+  function generateCompanyRoleAssignment(companyRole: CompanyRole, companyId: string): CompanyRoleAssignment {
     return {
       companyRole: companyRole,
       companyId: companyId,
-      userId: userId,
+      userId: dummyUserId,
     };
   }
 
   /**
    * Mocks the requests that happen when the company cockpit page is being mounted
    * @param hasCompanyAtLeastOneOwner has the company at least one company owner
-   * @param companyRoleOfCurrentUser the company role that the user has who is visiting the cockpit page
    */
-  function mockRequestsOnMounted(hasCompanyAtLeastOneOwner: boolean, companyRoleOfCurrentUser?: CompanyRole): void {
-    const mockCompanyRoleAssignments = companyRoleOfCurrentUser
-      ? [generateCompanyRoleAssignment(companyRoleOfCurrentUser, dummyCompanyId, dummyUserId)]
-      : [];
-
+  function mockRequestsOnMounted(hasCompanyAtLeastOneOwner: boolean): void {
     cy.intercept(`**/api/companies/*/info`, {
       body: companyInformationForTest,
       times: 1,
@@ -74,13 +64,10 @@ describe('Component test for the company cockpit', () => {
       body: mockMapOfDataTypeToAggregatedFrameworkDataSummary,
       times: 1,
     }).as('fetchAggregatedFrameworkMetaInfo');
-    cy.intercept(`**/community/company-role-assignments?*`, {
-      body: mockCompanyRoleAssignments,
-    }).as('fetchCompanyRoleAssignments');
     const hasCompanyAtLeastOneOwnerStatusCode = hasCompanyAtLeastOneOwner ? 200 : 404;
     cy.intercept('**/community/company-ownership/*', {
       statusCode: hasCompanyAtLeastOneOwnerStatusCode,
-    });
+    }).as('fetchCompanyOwnershipExistence');
   }
 
   /**
@@ -89,35 +76,36 @@ describe('Component test for the company cockpit', () => {
   function waitForRequestsOnMounted(): void {
     cy.wait('@fetchCompanyInfo');
     cy.wait('@fetchAggregatedFrameworkMetaInfo');
+    cy.wait('@fetchCompanyOwnershipExistence');
   }
 
   /**
    * Mounts the company cockpit page with a specific authentication
    * @param isLoggedIn determines if the mount shall happen from a logged-in users perspective
    * @param isMobile determines if the mount shall happen from a mobie-users perspective
-   * @param roles defines the roles of the user if the mount happens from a logged-in users perspective
-   * @param userId defines a custom user id for the logged-in user
+   * @param keycloakRoles defines the keycloak roles of the user if the mount happens from a logged-in users perspective
+   * @param companyRoleAssignments defines the company role assignments that the current user shall have
    * @returns the mounted component
    */
   function mountCompanyCockpitWithAuthentication(
     isLoggedIn: boolean,
     isMobile: boolean,
-    roles?: string[],
-    userId?: string
+    keycloakRoles?: string[],
+    companyRoleAssignments?: CompanyRoleAssignment[]
   ): Cypress.Chainable {
-    return cy.mountWithPlugins(CompanyCockpitPage, {
+    return getMountingFunction({
       keycloak: minimalKeycloakMock({
         authenticated: isLoggedIn,
-        roles: roles,
-        userId: userId,
+        roles: keycloakRoles,
+        userId: dummyUserId,
       }),
+    })(CompanyCockpitPage, {
       global: {
         provide: {
           useMobileView: computed((): boolean => isMobile),
+          companyRoleAssignments: companyRoleAssignments,
         },
       },
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
       props: {
         companyId: dummyCompanyId,
       },
@@ -160,12 +148,12 @@ describe('Component test for the company cockpit', () => {
   }
   /**
    * Validates the vsme framework summary panel
-   * @param isCompanyOwner is the current user company owner
+   * @param isUserCompanyOwner is the current user company owner
    */
-  function validateVsmeFrameworkSummaryPanel(isCompanyOwner: boolean): void {
+  function validateVsmeFrameworkSummaryPanel(isUserCompanyOwner: boolean): void {
     const frameworkName = 'vsme';
     const frameworkSummaryPanelSelector = `div[data-test="${frameworkName}-summary-panel"]`;
-    if (isCompanyOwner) {
+    if (isUserCompanyOwner) {
       cy.get(`${frameworkSummaryPanelSelector} a[data-test="${frameworkName}-provide-data-button"]`).should('exist');
     } else {
       cy.get(`${frameworkSummaryPanelSelector} a[data-test="${frameworkName}-provide-data-button"]`).should(
@@ -236,24 +224,22 @@ describe('Component test for the company cockpit', () => {
     const isClaimOwnershipPanelExpected = true;
     const isProvideDataButtonExpected = false;
     mockRequestsOnMounted(hasCompanyAtLeastOneOwner);
-    mountCompanyCockpitWithAuthentication(false, false, [], '').then(() => {
-      waitForRequestsOnMounted();
-      validateBackButtonExistence(false);
-      validateSearchBarExistence(true);
-      validateCompanyInformationBanner(hasCompanyAtLeastOneOwner);
-      validateClaimOwnershipPanel(isClaimOwnershipPanelExpected);
-      validateFrameworkSummaryPanels(isProvideDataButtonExpected);
-    });
+    mountCompanyCockpitWithAuthentication(false, false, []);
+    waitForRequestsOnMounted();
+    validateBackButtonExistence(false);
+    validateSearchBarExistence(true);
+    validateCompanyInformationBanner(hasCompanyAtLeastOneOwner);
+    validateClaimOwnershipPanel(isClaimOwnershipPanelExpected);
+    validateFrameworkSummaryPanels(isProvideDataButtonExpected);
   });
   it('Check for expected company ownership elements for a non-logged-in users and for a company with a company owner', () => {
     const hasCompanyAtLeastOneOwner = true;
     const isClaimOwnershipPanelExpected = false;
     mockRequestsOnMounted(hasCompanyAtLeastOneOwner);
-    mountCompanyCockpitWithAuthentication(false, false, [], '').then(() => {
-      waitForRequestsOnMounted();
-      validateCompanyInformationBanner(hasCompanyAtLeastOneOwner);
-      validateClaimOwnershipPanel(isClaimOwnershipPanelExpected);
-    });
+    mountCompanyCockpitWithAuthentication(false, false, []);
+    waitForRequestsOnMounted();
+    validateCompanyInformationBanner(hasCompanyAtLeastOneOwner);
+    validateClaimOwnershipPanel(isClaimOwnershipPanelExpected);
   });
 
   it('Check for all expected elements for a logged-in reader-user for a company with company owner', () => {
@@ -262,15 +248,14 @@ describe('Component test for the company cockpit', () => {
     const isProvideDataButtonExpected = false;
     const isSingleDataRequestButtonExpected = true;
     mockRequestsOnMounted(hasCompanyAtLeastOneOwner);
-    mountCompanyCockpitWithAuthentication(true, false, [KEYCLOAK_ROLE_USER]).then(() => {
-      waitForRequestsOnMounted();
-      validateBackButtonExistence(false);
-      validateSearchBarExistence(true);
-      validateCompanyInformationBanner(hasCompanyAtLeastOneOwner);
-      validateClaimOwnershipPanel(isClaimOwnershipPanelExpected);
-      validateFrameworkSummaryPanels(isProvideDataButtonExpected);
-      validateSingleDataRequestButton(isSingleDataRequestButtonExpected);
-    });
+    mountCompanyCockpitWithAuthentication(true, false, [KEYCLOAK_ROLE_USER], []);
+    waitForRequestsOnMounted();
+    validateBackButtonExistence(false);
+    validateSearchBarExistence(true);
+    validateCompanyInformationBanner(hasCompanyAtLeastOneOwner);
+    validateClaimOwnershipPanel(isClaimOwnershipPanelExpected);
+    validateFrameworkSummaryPanels(isProvideDataButtonExpected);
+    validateSingleDataRequestButton(isSingleDataRequestButtonExpected);
   });
 
   it('Check for all expected elements for a logged-in uploader-user and for a company without company owner', () => {
@@ -278,85 +263,79 @@ describe('Component test for the company cockpit', () => {
     const isClaimOwnershipPanelExpected = true;
     const isProvideDataButtonExpected = true;
     mockRequestsOnMounted(hasCompanyAtLeastOneOwner);
-    mountCompanyCockpitWithAuthentication(true, false, [KEYCLOAK_ROLE_UPLOADER]).then(() => {
-      waitForRequestsOnMounted();
-      validateBackButtonExistence(false);
-      validateSearchBarExistence(true);
-      validateCompanyInformationBanner(hasCompanyAtLeastOneOwner);
-      validateClaimOwnershipPanel(isClaimOwnershipPanelExpected);
-      validateFrameworkSummaryPanels(isProvideDataButtonExpected);
-    });
+    mountCompanyCockpitWithAuthentication(true, false, [KEYCLOAK_ROLE_UPLOADER], []);
+    waitForRequestsOnMounted();
+    validateBackButtonExistence(false);
+    validateSearchBarExistence(true);
+    validateCompanyInformationBanner(hasCompanyAtLeastOneOwner);
+    validateClaimOwnershipPanel(isClaimOwnershipPanelExpected);
+    validateFrameworkSummaryPanels(isProvideDataButtonExpected);
   });
   it('Check for all expected elements for a logged-in uploader-user with company ownership for a company with company owner', () => {
     const hasCompanyAtLeastOneOwner = true;
-    const companyRoleOfCurrentUser = CompanyRole.CompanyOwner;
+    const companyRoleAssignmentsOfUser = [generateCompanyRoleAssignment(CompanyRole.CompanyOwner, dummyCompanyId)];
     const isClaimOwnershipPanelExpected = false;
     const isProvideDataButtonExpected = true;
     const isSingleDataRequestButtonExpected = true;
-    mockRequestsOnMounted(hasCompanyAtLeastOneOwner, companyRoleOfCurrentUser);
-    mountCompanyCockpitWithAuthentication(true, false, [KEYCLOAK_ROLE_UPLOADER], dummyUserId).then(() => {
-      waitForRequestsOnMounted();
-      validateBackButtonExistence(false);
-      validateSearchBarExistence(true);
-      validateCompanyInformationBanner(hasCompanyAtLeastOneOwner);
-      validateClaimOwnershipPanel(isClaimOwnershipPanelExpected);
-      validateFrameworkSummaryPanels(isProvideDataButtonExpected, true);
-      validateSingleDataRequestButton(isSingleDataRequestButtonExpected);
-    });
+    mockRequestsOnMounted(hasCompanyAtLeastOneOwner);
+    mountCompanyCockpitWithAuthentication(true, false, [KEYCLOAK_ROLE_UPLOADER], companyRoleAssignmentsOfUser);
+    waitForRequestsOnMounted();
+    validateBackButtonExistence(false);
+    validateSearchBarExistence(true);
+    validateCompanyInformationBanner(hasCompanyAtLeastOneOwner);
+    validateClaimOwnershipPanel(isClaimOwnershipPanelExpected);
+    validateFrameworkSummaryPanels(isProvideDataButtonExpected, true);
+    validateSingleDataRequestButton(isSingleDataRequestButtonExpected);
   });
   it('Check for some expected elements for a logged-in premium-user and for a company without company owner', () => {
     const hasCompanyAtLeastOneOwner = false;
     const isSingleDataRequestButtonExpected = true;
     mockRequestsOnMounted(hasCompanyAtLeastOneOwner);
-    mountCompanyCockpitWithAuthentication(true, false, [KEYCLOAK_ROLE_PREMIUM_USER], dummyUserId).then(() => {
-      waitForRequestsOnMounted();
-      validateSingleDataRequestButton(isSingleDataRequestButtonExpected);
-    });
+    mountCompanyCockpitWithAuthentication(true, false, [KEYCLOAK_ROLE_PREMIUM_USER], []);
+    waitForRequestsOnMounted();
+    validateSingleDataRequestButton(isSingleDataRequestButtonExpected);
   });
 
   it('Check the Vsme summary panel behaviour if the user is company owner', () => {
+    const companyRoleAssignmentsOfUser = [generateCompanyRoleAssignment(CompanyRole.CompanyOwner, dummyCompanyId)];
     const hasCompanyAtLeastOneOwner = true;
-    const companyRoleOfCurrentUser = CompanyRole.CompanyOwner;
     KEYCLOAK_ROLES.forEach((keycloakRole: string) => {
-      mockRequestsOnMounted(hasCompanyAtLeastOneOwner, companyRoleOfCurrentUser);
-      mountCompanyCockpitWithAuthentication(true, false, [keycloakRole], dummyUserId).then(() => {
-        waitForRequestsOnMounted();
-        validateVsmeFrameworkSummaryPanel(true);
-      });
+      mockRequestsOnMounted(hasCompanyAtLeastOneOwner);
+      mountCompanyCockpitWithAuthentication(true, false, [keycloakRole], companyRoleAssignmentsOfUser);
+      waitForRequestsOnMounted();
+      validateVsmeFrameworkSummaryPanel(true);
     });
   });
   it('Check the Vsme summary panel behaviour if the user is not company owner', () => {
     const hasCompanyAtLeastOneOwner = true;
     KEYCLOAK_ROLES.forEach((keycloakRole: string) => {
       mockRequestsOnMounted(hasCompanyAtLeastOneOwner);
-      mountCompanyCockpitWithAuthentication(true, false, [keycloakRole]).then(() => {
-        waitForRequestsOnMounted();
-        validateVsmeFrameworkSummaryPanel(false);
-      });
+      mountCompanyCockpitWithAuthentication(true, false, [keycloakRole]);
+      waitForRequestsOnMounted();
+      validateVsmeFrameworkSummaryPanel(false);
     });
   });
 
   it('Check for all expected elements for a uploader-user on a mobile device for a company without company owner', () => {
     const scrollDurationInMs = 300;
-    setMobileDeviceViewport();
     const hasCompanyAtLeastOneOwner = false;
     const isClaimOwnershipPanelExpected = true;
     const isProvideDataButtonExpected = false;
+    setMobileDeviceViewport();
     mockRequestsOnMounted(hasCompanyAtLeastOneOwner);
-    mountCompanyCockpitWithAuthentication(true, true, [KEYCLOAK_ROLE_UPLOADER]).then(() => {
-      waitForRequestsOnMounted();
+    mountCompanyCockpitWithAuthentication(true, true, [KEYCLOAK_ROLE_UPLOADER]);
+    waitForRequestsOnMounted();
 
-      validateMobileHeader(false);
-      cy.scrollTo('bottom', { duration: scrollDurationInMs });
-      validateMobileHeader(true);
-      cy.scrollTo('top', { duration: scrollDurationInMs });
-      validateMobileHeader(false);
+    validateMobileHeader(false);
+    cy.scrollTo('bottom', { duration: scrollDurationInMs });
+    validateMobileHeader(true);
+    cy.scrollTo('top', { duration: scrollDurationInMs });
+    validateMobileHeader(false);
 
-      validateBackButtonExistence(true);
-      validateSearchBarExistence(false);
-      validateCompanyInformationBanner(hasCompanyAtLeastOneOwner);
-      validateClaimOwnershipPanel(isClaimOwnershipPanelExpected);
-      validateFrameworkSummaryPanels(isProvideDataButtonExpected);
-    });
+    validateBackButtonExistence(true);
+    validateSearchBarExistence(false);
+    validateCompanyInformationBanner(hasCompanyAtLeastOneOwner);
+    validateClaimOwnershipPanel(isClaimOwnershipPanelExpected);
+    validateFrameworkSummaryPanels(isProvideDataButtonExpected);
   });
 });

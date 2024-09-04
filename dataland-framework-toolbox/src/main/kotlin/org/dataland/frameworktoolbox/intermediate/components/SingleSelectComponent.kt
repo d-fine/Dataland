@@ -3,6 +3,7 @@ package org.dataland.frameworktoolbox.intermediate.components
 import org.dataland.frameworktoolbox.intermediate.FieldNodeParent
 import org.dataland.frameworktoolbox.intermediate.components.support.SelectionOption
 import org.dataland.frameworktoolbox.intermediate.datapoints.ExtendedDocumentSupport
+import org.dataland.frameworktoolbox.intermediate.datapoints.NoDocumentSupport
 import org.dataland.frameworktoolbox.intermediate.datapoints.addPropertyWithDocumentSupport
 import org.dataland.frameworktoolbox.specific.datamodel.TypeReference
 import org.dataland.frameworktoolbox.specific.datamodel.elements.DataClassBuilder
@@ -86,13 +87,28 @@ open class SingleSelectComponent(
     }
 
     override fun generateDefaultUploadConfig(uploadCategoryBuilder: UploadCategoryBuilder) {
+        val componentName = if (uploadMode == UploadMode.Dropdown) {
+            uploadMode.component
+        } else {
+            when (documentSupport) {
+                is NoDocumentSupport -> uploadMode.component
+                is ExtendedDocumentSupport -> "RadioButtonsExtendedDataPointFormField"
+
+                else ->
+                    throw IllegalArgumentException(
+                        "SingleSelectComponent ${uploadMode.component} does not " +
+                            "support document support $documentSupport",
+                    )
+            }
+        }
+
         uploadCategoryBuilder.addStandardUploadConfigCell(
             frameworkUploadOptions = FrameworkUploadOptions(
                 body = generateTsCodeForOptionsOfSelectionFormFields(this.options),
                 imports = null,
             ),
             component = this,
-            uploadComponentName = uploadMode.component,
+            uploadComponentName = componentName,
         )
     }
 

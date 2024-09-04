@@ -2,6 +2,8 @@ package org.dataland.frameworktoolbox.intermediate.components
 
 import org.dataland.frameworktoolbox.intermediate.FieldNodeParent
 import org.dataland.frameworktoolbox.intermediate.components.basecomponents.SimpleKotlinBackedBaseComponent
+import org.dataland.frameworktoolbox.intermediate.datapoints.ExtendedDocumentSupport
+import org.dataland.frameworktoolbox.intermediate.datapoints.NoDocumentSupport
 import org.dataland.frameworktoolbox.specific.fixturegenerator.elements.FixtureSectionBuilder
 import org.dataland.frameworktoolbox.specific.uploadconfig.elements.UploadCategoryBuilder
 import org.dataland.frameworktoolbox.specific.viewconfig.elements.SectionConfigBuilder
@@ -36,9 +38,15 @@ class DateComponent(
     }
 
     override fun generateDefaultUploadConfig(uploadCategoryBuilder: UploadCategoryBuilder) {
+        val componentName = when (documentSupport) {
+            is NoDocumentSupport -> "DateFormField"
+            is ExtendedDocumentSupport -> "DateExtendedDataPointFormField"
+            else ->
+                throw IllegalArgumentException("DateComponent does not support document support '$documentSupport")
+        }
         uploadCategoryBuilder.addStandardUploadConfigCell(
             component = this,
-            uploadComponentName = "DateFormField",
+            uploadComponentName = componentName,
         )
     }
 

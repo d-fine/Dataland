@@ -2,11 +2,16 @@
 package org.dataland.datalandqaservice.org.dataland.datalandqaservice.frameworks.sfdr
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import io.swagger.v3.oas.annotations.Operation
 import org.dataland.datalandqaservice.frameworks.sfdr.model.SfdrData
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.controller.QaReportController
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.reports.QaReportMetaInformation
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.reports.QaReportStatusPatch
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.reports.QaReportWithMetaInformation
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.QaReportManager
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.QaReportSecurityPolicy
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
@@ -25,4 +30,34 @@ class SfdrDataQaReportController(
     qaReportSecurityPolicy = qaReportSecurityPolicy,
     clazz = SfdrData::class.java,
     dataType = "sfdr",
-)
+) {
+    @Operation(operationId = "postSfdrDataQaReport")
+    override fun postQaReport(
+        dataId: String,
+        qaReport: SfdrData,
+    ): ResponseEntity<QaReportMetaInformation> {
+        return super.postQaReport(dataId, qaReport)
+    }
+
+    @Operation(operationId = "getSfdrDataQaReport")
+    override fun getQaReport(
+        dataId: String,
+        qaReportId: String,
+    ): ResponseEntity<QaReportWithMetaInformation<SfdrData>> {
+        return super.getQaReport(dataId, qaReportId)
+    }
+
+    @Operation(operationId = "setSfdrDataQaReportStatus")
+    override fun setQaReportStatus(dataId: String, qaReportId: String, statusPatch: QaReportStatusPatch) {
+        super.setQaReportStatus(dataId, qaReportId, statusPatch)
+    }
+
+    @Operation(operationId = "getSfdrDataAllQaReportsForDataset")
+    override fun getAllQaReportsForDataset(
+        dataId: String,
+        showInactive: Boolean?,
+        reporterUserId: String?,
+    ): ResponseEntity<List<QaReportWithMetaInformation<SfdrData>>> {
+        return super.getAllQaReportsForDataset(dataId, showInactive, reporterUserId)
+    }
+}

@@ -90,9 +90,11 @@ message
                 </tr>
                 <tr>
                     <td style="font-weight: bold; color: #FF6813; text-decoration: none; border: 0 none;">
-                        <a href="mailto:${requesterEmail}" style="font-weight: bold; color: black; text-decoration: none; border: 0 none;">
-                            ${requesterEmail}
-                        </a>
+                        <#if requesterEmail??>
+                          <a href="mailto:${requesterEmail}" style="font-weight: bold; color: black; text-decoration: none; border: 0 none;">
+                              ${requesterEmail}
+                          </a>
+                        </#if>
                     </td>
                 </tr>
                 <#if message??>
@@ -146,7 +148,7 @@ message
     <tr>
         <td style="text-align: left; padding:0; margin:0; border: 0; height: 54px; width: 26px"></td>
         <td style="background-color: #ff5c00; text-align: center; padding:0; margin:0; border: 0; height: 54px; width: 468px;">
-            <a href="${baseUrl}/companies/${companyId}" target="_blank" style="border: 0 none; line-height: 30px; color: #ffffff; font-size: 18px; width: 100%; display: block; text-decoration: none;">
+            <a href="${baseUrl}/companyrequests" target="_blank" style="border: 0 none; line-height: 30px; color: #ffffff; font-size: 18px; width: 100%; display: block; text-decoration: none;">
                 VERIFY AND GRANT ACCESS ON DATALAND
             </a>
         </td>

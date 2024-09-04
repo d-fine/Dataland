@@ -45,6 +45,23 @@ class EuTaxonomyNonAlignedActivitiesComponent(
         )
     }
 
+    override fun generateDefaultQaModel(dataClassBuilder: DataClassBuilder) {
+        dataClassBuilder.addProperty(
+            identifier,
+            TypeReference(
+                "org.dataland.datalandqaservice.model.reports.QaReportDataPoint",
+                isNullable,
+                listOf(
+                    TypeReference(
+                        "org.dataland.datalandbackend.openApiClient.model" +
+                            ".ExtendedDataPointListEuTaxonomyActivity",
+                        isNullable,
+                    ),
+                ),
+            ),
+        )
+    }
+
     override fun generateDefaultUploadConfig(uploadCategoryBuilder: UploadCategoryBuilder) {
         uploadCategoryBuilder.addStandardUploadConfigCell(
             component = this,

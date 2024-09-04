@@ -6,7 +6,6 @@ import org.dataland.frameworktoolbox.specific.datamodel.Annotation
 import org.dataland.frameworktoolbox.specific.datamodel.FrameworkDataModelBuilder
 import org.dataland.frameworktoolbox.specific.datamodel.elements.ReferencedReportValidatorBuilder
 import org.dataland.frameworktoolbox.specific.frameworkregistryimports.FrameworkRegistryImportsUpdater
-import org.dataland.frameworktoolbox.specific.qamodel.FrameworkQaModelBuilder
 import org.dataland.frameworktoolbox.specific.viewconfig.elements.getKotlinFieldAccessor
 import org.dataland.frameworktoolbox.template.ExcelTemplate
 import org.dataland.frameworktoolbox.utils.DatalandRepository
@@ -60,7 +59,7 @@ abstract class InDevelopmentPavedRoadFramework(
         if (!enabledFeatures.contains(FrameworkGenerationFeatures.QaModel)) {
             return
         }
-        val qaModelBuilder = FrameworkQaModelBuilder(framework)
+        val qaModelBuilder = framework.generateQaModel()
         customizeQaModel(qaModelBuilder)
 
         @Suppress("TooGenericExceptionCaught")
