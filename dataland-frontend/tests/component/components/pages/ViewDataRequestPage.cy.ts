@@ -6,7 +6,7 @@ import {
   type StoredDataRequest,
   type StoredDataRequestMessageObject,
 } from '@clients/communitymanager';
-import type { BasicCompanyInformation } from '@clients/backend';
+import type { CompanyInformation } from '@clients/backend';
 import { QaStatus } from '@clients/backend';
 import { convertUnixTimeInMsToDateString } from '@/utils/DataFormatUtils';
 import { humanizeStringOrNumber } from '@/utils/StringFormatter';
@@ -75,11 +75,11 @@ describe('Component tests for the view data request page', function (): void {
    * Mocks the api-manager answer for basic company information
    */
   function interceptUserAskForCompanyNameOnMounted(): void {
-    const mockCompanyInfo: BasicCompanyInformation = {
+    const mockCompanyInfo: CompanyInformation = {
       companyName: dummyCompanyName,
-      companyId: 'dummyCompanyId',
-      countryCode: 'IT',
       headquarters: 'Berlin',
+      identifiers: {},
+      countryCode: 'IT',
     };
     cy.intercept(`**/companies/dummyCompanyId/info`, {
       body: mockCompanyInfo,
@@ -272,3 +272,5 @@ describe('Component tests for the view data request page', function (): void {
     }
   );
 });
+
+// TODO Emanuel: remove all ts-ignores!
