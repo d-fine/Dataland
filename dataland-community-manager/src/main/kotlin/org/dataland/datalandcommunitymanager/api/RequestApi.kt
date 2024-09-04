@@ -187,7 +187,7 @@ interface RequestApi {
     ): ResponseEntity<StoredDataRequest>
 
     /** A method for searching data requests based on filters.
-     * @param dataType If set, only the requests with are data type in dataType are returned
+     * @param dataType If set, only the requests with a data type in dataType are returned
      * @param userId If set, only the requests from this user are returned
      * @param emailAddress If set, only the requests from users which email address partially matches emailAddress are
      *  returned
@@ -228,8 +228,8 @@ interface RequestApi {
         @RequestParam(defaultValue = "0") chunkIndex: Int,
     ): ResponseEntity<List<ExtendedStoredDataRequest>>
 
-    /** A method to count data requests based on specific filter.
-     * @param dataType If set, only the requests with are data type in dataType are counted
+    /** A method to count data requests based on specific filters.
+     * @param dataType If set, only the requests with a data type in dataType are counted
      * @param userId If set, only the requests from this user are counted
      * @param emailAddress If set, only the requests from users which email address partially matches emailAddress are
      *  counted

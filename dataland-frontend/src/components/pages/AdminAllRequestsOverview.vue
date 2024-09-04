@@ -52,6 +52,12 @@
               </div>
             </span>
           </div>
+
+          <div v-if="waitingForData" class="d-center-div text-center px-7 py-4">
+            <p class="font-medium text-xl">Loading...</p>
+            <i class="pi pi-spinner pi-spin" aria-hidden="true" style="z-index: 20; color: #e67f3f" />
+          </div>
+
           <div class="col-12 text-left p-3">
             <div class="card">
               <DataTable
@@ -212,7 +218,7 @@ export default defineComponent({
       selectedFrameworks: [] as Array<FrameworkSelectableItem>,
       availableRequestStatus: [] as Array<SelectableItem>,
       selectedRequestStatus: [] as Array<SelectableItem>,
-      queryDelayInMs: 300,
+      debounceInMs: 300,
       timerId: 0,
     };
   },
@@ -234,7 +240,7 @@ export default defineComponent({
       if (this.timerId) {
         clearTimeout(this.timerId);
       }
-      this.timerId = setTimeout(() => this.getAllRequestsForFilters(), this.queryDelayInMs);
+      this.timerId = setTimeout(() => this.getAllRequestsForFilters(), this.debounceInMs);
     },
   },
   methods: {
@@ -250,7 +256,6 @@ export default defineComponent({
      */
     async getAllRequestsForFilters() {
       this.waitingForData = true;
-      this.currentDataRequests = [];
       const selectedFrameworksAsSet = new Set<DataTypeEnum>(
         this.selectedFrameworks.map((selectableItem) => selectableItem.frameworkDataType)
       );
@@ -306,8 +311,7 @@ export default defineComponent({
      * @param event DataTablePageEvent
      */
     onPage(event: DataTablePageEvent) {
-      // window.scrollTo(0, 0);
-      console.log(event.page);
+      window.scrollTo(0, 0);
       if (event.page != this.currentPage) {
         this.currentPage = event.page;
         this.getAllRequestsForFilters();
