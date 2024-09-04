@@ -130,12 +130,12 @@ constructor(
     ): List<ExtendedStoredDataRequest>? {
         val offset = (chunkIndex ?: 0) * (chunkSize ?: 0)
 
+        val usersMatchingEmailFilter = filter.setupEmailFilter(keycloakUserControllerApiService)
         val extendedStoredDataRequests = dataRequestRepository.searchDataRequestEntity(
             searchFilter = filter, resultOffset = offset, resultLimit = chunkSize,
         ).map { dataRequestEntity -> convertRequestEntityToExtendedStoredDataRequest(dataRequestEntity) }
 
-        val keycloakUserInfos = filter.setupEmailFilter(keycloakUserControllerApiService)
-        val userIdsToEmails = keycloakUserInfos.associate { it.userId to it.email }.toMutableMap()
+        val userIdsToEmails = usersMatchingEmailFilter.associate { it.userId to it.email }.toMutableMap()
 
         val extendedStoredDataRequestsWithMails = extendedStoredDataRequests.map { it ->
             val allowedToSeeEmailAddress = isUserAdmin ||
