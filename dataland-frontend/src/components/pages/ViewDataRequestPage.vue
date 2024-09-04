@@ -188,7 +188,7 @@ import EmailDetails from '@/components/resources/dataRequest/EmailDetails.vue';
 import { type DataTypeEnum, QaStatus } from '@clients/backend';
 import TheContent from '@/components/generics/TheContent.vue';
 import StatusHistory from '@/components/resources/dataRequest/StatusHistory.vue';
-import {checkIfUserHasRole, getUserId, KEYCLOAK_ROLE_ADMIN} from "@/utils/KeycloakUtils";
+import { checkIfUserHasRole, getUserId, KEYCLOAK_ROLE_ADMIN } from '@/utils/KeycloakUtils';
 
 export default defineComponent({
   name: 'ViewDataRequest',
@@ -349,8 +349,8 @@ export default defineComponent({
           this.isUserKeycloakAdmin = await checkIfUserHasRole(KEYCLOAK_ROLE_ADMIN, this.getKeycloakPromise);
         }
       } catch (error) {
-          console.error(error);
-          return;
+        console.error(error);
+        return;
       }
     },
     /**
