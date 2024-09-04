@@ -13,7 +13,7 @@
               <span class="w-3 p-input-icon-left" style="margin: 15px">
                 <i class="pi pi-search pl-3 pr-3" aria-hidden="true" style="color: #958d7c" />
                 <InputText
-                  data-test="requested-Datasets-searchbar"
+                  data-test="email-searchbar"
                   v-model="searchBarInput"
                   placeholder="Search by Requester"
                   class="w-12 pl-6 pr-6"
@@ -255,12 +255,13 @@ export default defineComponent({
       );
       try {
         if (this.getKeycloakPromise) {
+          const emailFilter = this.searchBarInput === '' ? undefined : this.searchBarInput;
           const apiClientProvider = new ApiClientProvider(this.getKeycloakPromise());
           this.currentDataRequests = (
             await apiClientProvider.apiClients.requestController.getDataRequests(
               selectedFrameworksAsSet,
               undefined,
-              this.searchBarInput,
+              emailFilter,
               selectedRequestStatusesAsSet,
               undefined,
               undefined,
@@ -273,7 +274,7 @@ export default defineComponent({
             await apiClientProvider.apiClients.requestController.getNumberOfRequests(
               selectedFrameworksAsSet,
               undefined,
-              this.searchBarInput,
+              emailFilter,
               selectedRequestStatusesAsSet,
               undefined,
               undefined,
