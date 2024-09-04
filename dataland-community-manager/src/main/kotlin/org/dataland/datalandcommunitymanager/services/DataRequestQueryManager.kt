@@ -43,7 +43,7 @@ constructor(
         val retrievedStoredDataRequestEntitiesForUser =
             dataRequestRepository.fetchStatusHistory(dataRequestRepository.findByUserId(currentUserId))
         val extendedStoredDataRequests = retrievedStoredDataRequestEntitiesForUser.map { dataRequestEntity ->
-            getExtendedStoredDataRequestByRequestEntity(dataRequestEntity)
+            convertRequestEntityToExtendedStoredDataRequest(dataRequestEntity)
         }
         dataRequestLogger.logMessageForRetrievingDataRequestsForUser()
         return extendedStoredDataRequests
@@ -53,7 +53,8 @@ constructor(
      * @param dataRequestEntity dataland data request entity
      * @returns extended stored data request
      */
-    fun getExtendedStoredDataRequestByRequestEntity(dataRequestEntity: DataRequestEntity): ExtendedStoredDataRequest {
+    fun convertRequestEntityToExtendedStoredDataRequest(dataRequestEntity: DataRequestEntity):
+        ExtendedStoredDataRequest {
         val companyInformation = companyDataControllerApi.getCompanyInfo(dataRequestEntity.datalandCompanyId)
         return ExtendedStoredDataRequest(dataRequestEntity, companyInformation.companyName, null)
     }
@@ -126,29 +127,28 @@ constructor(
         chunkSize: Int?,
     ): List<ExtendedStoredDataRequest>? {
         val offset = (chunkIndex ?: 0) * (chunkSize ?: 0)
-        val extendedStoredDataRequest = dataRequestRepository.searchDataRequestEntity(
+
+        val extendedStoredDataRequests = dataRequestRepository.searchDataRequestEntity(
             searchFilter = filter, resultOffset = offset, resultLimit = chunkSize,
-        ).map { dataRequestEntity ->
-            getExtendedStoredDataRequestByRequestEntity(dataRequestEntity)
-        }
+        ).map { dataRequestEntity -> convertRequestEntityToExtendedStoredDataRequest(dataRequestEntity) }
 
-        val userInfoList = filter.setupEmailFilter(keycloakUserControllerApiService)
-        val userEmailMap = userInfoList.associate { it.userId to it.email }.toMutableMap()
+        val keycloakUserInfos = filter.setupEmailFilter(keycloakUserControllerApiService)
+        val userIdsToEmails = keycloakUserInfos.associate { it.userId to it.email }.toMutableMap()
 
-        val storedDataRequests = extendedStoredDataRequest.map { storedDataRequest ->
+        val extendedStoredDataRequestsWithMails = extendedStoredDataRequests.map { it ->
             val allowedToSeeEmailAddress = isUserAdmin ||
                 (
-                    ownedCompanyIdsByUser.contains(storedDataRequest.datalandCompanyId) &&
-                        storedDataRequest.accessStatus != AccessStatus.Public
+                    ownedCompanyIdsByUser.contains(it.datalandCompanyId) &&
+                        it.accessStatus != AccessStatus.Public
                     )
 
-            storedDataRequest.userEmailAddress = storedDataRequest.userId
+            it.userEmailAddress = it.userId
                 .takeIf { allowedToSeeEmailAddress }
-                ?.let { userEmailMap.getOrPut(it) { keycloakUserControllerApiService.getUser(it).email ?: "" } }
+                ?.let { userIdsToEmails.getOrPut(it) { keycloakUserControllerApiService.getUser(it).email ?: "" } }
 
-            storedDataRequest
+            it
         }
-        return storedDataRequests
+        return extendedStoredDataRequestsWithMails
     }
 
     /**
