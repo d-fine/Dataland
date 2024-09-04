@@ -28,7 +28,10 @@ import CreateSfdrDataset from '@/components/forms/CreateSfdrDataset.vue';
 import CreateP2pDataset from '@/components/forms/CreateP2pDataset.vue';
 import CreateEuTaxonomyForFinancials from '@/components/forms/CreateEuTaxonomyForFinancials.vue';
 import CreateEuTaxonomyNonFinancials from '@/components/forms/CreateEuTaxonomyNonFinancials.vue';
-
+import CreateHeimathafenDataset from '@/components/forms/CreateHeimathafenDataset.vue';
+import CreateLksgDataset from '@/components/forms/CreateLksgDataset.vue';
+import CreateVsmeDataset from '@/components/forms/CreateVsmeDataset.vue';
+import CreateAdditionalCompanyInformationDataset from '@/components/forms/CreateAdditionalCompanyInformationDataset.vue';
 import CompanyInformation from '@/components/pages/CompanyInformation.vue';
 import TheFooter from '@/components/generics/TheNewFooter.vue';
 import contentData from '@/assets/content.json';
@@ -40,9 +43,6 @@ import { KEYCLOAK_ROLE_UPLOADER } from '@/utils/KeycloakUtils';
 import { defineComponent } from 'vue';
 import TheContent from '@/components/generics/TheContent.vue';
 import MarginWrapper from '@/components/wrapper/MarginWrapper.vue';
-import CreateHeimathafenDataset from '@/components/forms/CreateHeimathafenDataset.vue';
-import CreateLksgDataset from '@/components/forms/CreateLksgDataset.vue';
-import CreateVsmeDataset from '@/components/forms/CreateVsmeDataset.vue';
 
 export default defineComponent({
   name: 'UploadFormWrapper',
@@ -95,6 +95,8 @@ export default defineComponent({
           return CreateEsgQuestionnaireDataset;
         case `${DataTypeEnum.Vsme}`:
           return CreateVsmeDataset;
+        case `${DataTypeEnum.AdditionalCompanyInformation}`:
+          return CreateAdditionalCompanyInformationDataset;
         default:
           return null;
       }
