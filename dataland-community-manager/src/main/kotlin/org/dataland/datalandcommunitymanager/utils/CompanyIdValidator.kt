@@ -40,7 +40,7 @@ class CompanyIdValidator(
      * If it does not exist the method catches the not-found-exception from the backend and throws a
      * resource-not-found exception here in the community manager.
      * @param companyId is the companyId to check for
-     * @returns the name of the company if it could be found
+     * @returns nothing if the company exists or throws an resource not found exception if the company does not exists
      */
     fun checkIfCompanyIdIsValid(companyId: String) {
         try {

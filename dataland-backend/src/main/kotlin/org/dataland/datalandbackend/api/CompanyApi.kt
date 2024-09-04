@@ -373,13 +373,21 @@ interface CompanyApi {
      * @param companyId the identifier
      */
     @Operation(
-        summary = "Checks that a companyId exists.",
-        description = "Checks that a companyId exists.",
+        summary = "Checks if a company exists for the specified companyId.",
+        description = "Checks if a company exists for the specified companyId.",
     )
     @ApiResponses(
         value = [
-            ApiResponse(responseCode = "200", description = "Successfully checked that companyId exists."),
-            ApiResponse(responseCode = "404", description = "Successfully checked that companyIdr does not exist."),
+            ApiResponse(
+                responseCode = "200",
+                description = "Successfully checked that the companyId is known " +
+                    "by dataland.",
+            ),
+            ApiResponse(
+                responseCode = "404",
+                description = "Successfully checked that the companyId is not known " +
+                    "by dataland.",
+            ),
         ],
     )
     @RequestMapping(
