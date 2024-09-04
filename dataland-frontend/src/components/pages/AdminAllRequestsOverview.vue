@@ -3,7 +3,7 @@
     <TheHeader />
     <DatasetsTabMenu :initial-tab-index="5">
       <TheContent class="min-h-screen paper-section relative">
-        <div v-if="waitingForData || currentDataRequests.length > 0">
+        <div>
           <div
             id="searchBarAndFiltersContainer"
             class="w-full bg-white pt-4 justify-between"
@@ -59,9 +59,7 @@
                 ref="dataTable"
                 :value="currentDataRequests"
                 :paginator="true"
-                @page="onPage($event)"
                 :lazy="true"
-                :first="previousRecords"
                 :total-records="totalRecords"
                 :rows="rowsPerPage"
                 paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport"
@@ -69,6 +67,7 @@
                 currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
                 @row-click="onRowClick($event)"
                 @page-update="handlePageUpdate"
+                @page="onPage($event)"
                 class="table-cursor"
                 id="admin-request-overview-data"
                 :rowHover="true"
@@ -138,12 +137,12 @@
                   </template>
                 </Column>
               </DataTable>
+              <div v-if="!waitingForData && currentDataRequests.length == 0">
+                <div class="d-center-div text-center px-7 py-4">
+                  <p class="font-medium text-xl">There are no data requests on Dataland matching your filters.</p>
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
-        <div v-if="!waitingForData && currentDataRequests.length == 0">
-          <div class="d-center-div text-center px-7 py-4">
-            <p class="font-medium text-xl">Currently, there are no data requests on Dataland.</p>
           </div>
         </div>
       </TheContent>
@@ -166,12 +165,7 @@ import Column from 'primevue/column';
 import { frameworkHasSubTitle, getFrameworkSubtitle, getFrameworkTitle } from '@/utils/StringFormatter';
 import DatasetsTabMenu from '@/components/general/DatasetsTabMenu.vue';
 import { convertUnixTimeInMsToDateString } from '@/utils/DataFormatUtils';
-import type {
-  DataRequestsFilter,
-  DataRequestsFilterDataTypesEnum,
-  ExtendedStoredDataRequest,
-  RequestStatus,
-} from '@clients/communitymanager';
+import type { ExtendedStoredDataRequest, RequestStatus } from '@clients/communitymanager';
 import InputText from 'primevue/inputtext';
 import FrameworkDataSearchDropdownFilter from '@/components/resources/frameworkDataSearch/FrameworkDataSearchDropdownFilter.vue';
 import type { FrameworkSelectableItem, SelectableItem } from '@/utils/FrameworkDataSearchDropDownFilterTypes';
@@ -184,7 +178,6 @@ export default defineComponent({
   name: 'MyDataRequestsOverview',
   computed: {},
   components: {
-    // FrameworkDataSearchResults,
     AuthenticationWrapper,
     FrameworkDataSearchDropdownFilter,
     DatasetsTabMenu,
@@ -213,7 +206,6 @@ export default defineComponent({
       currentPage: 0,
       totalRecords: 0,
       rowsPerPage: 100,
-      previousRecords: 0,
       currentDataRequests: [] as ExtendedStoredDataRequest[],
       footerContent,
       searchBarInput: '',
@@ -226,19 +218,19 @@ export default defineComponent({
   mounted() {
     this.availableFrameworks = retrieveAvailableFrameworks();
     this.availableRequestStatus = retrieveAvailableRequestStatus();
-    this.getStoredRequestDataList().catch((error) => console.error(error));
+    this.getAllRequestsForFilters().catch((error) => console.error(error));
     this.resetFilterAndSearchBar();
   },
   watch: {
     selectedFrameworks() {
-      this.getStoredRequestDataList();
+      this.getAllRequestsForFilters();
     },
     selectedRequestStatus() {
-      this.getStoredRequestDataList();
+      this.getAllRequestsForFilters();
     },
     searchBarInput(newSearch: string) {
       this.searchBarInput = newSearch;
-      this.getStoredRequestDataList();
+      this.getAllRequestsForFilters();
     },
   },
   methods: {
@@ -252,7 +244,7 @@ export default defineComponent({
     /**
      * Gets list of storedDataRequests
      */
-    async getStoredRequestDataList() {
+    async getAllRequestsForFilters() {
       this.waitingForData = true;
       this.currentDataRequests = [];
       const selectedFrameworksAsSet = new Set<DataTypeEnum>(
@@ -263,20 +255,29 @@ export default defineComponent({
       );
       try {
         if (this.getKeycloakPromise) {
+          const apiClientProvider = new ApiClientProvider(this.getKeycloakPromise());
           this.currentDataRequests = (
-            await new ApiClientProvider(this.getKeycloakPromise()).apiClients.requestController.getDataRequests(
-              // selectedFrameworksAsSet,
+            await apiClientProvider.apiClients.requestController.getDataRequests(
+              selectedFrameworksAsSet,
               undefined,
-              undefined,
-              /*this.searchBarInput,
-                  selectedRequestStatusesAsSet,*/
-              undefined,
-              undefined,
+              this.searchBarInput,
+              selectedRequestStatusesAsSet,
               undefined,
               undefined,
               undefined,
               this.datasetsPerPage,
               this.currentPage
+            )
+          ).data;
+          this.totalRecords = (
+            await apiClientProvider.apiClients.requestController.getNumberOfRequests(
+              selectedFrameworksAsSet,
+              undefined,
+              this.searchBarInput,
+              selectedRequestStatusesAsSet,
+              undefined,
+              undefined,
+              undefined
             )
           ).data;
         }
@@ -285,35 +286,6 @@ export default defineComponent({
       }
       this.waitingForData = false;
     },
-
-    /* /!**
-     * Gets list of storedDataRequests
-     *!/
-    async fetchDataFromBackend(frameworks: Set<DataTypeEnum> | undefined, requestStatuses: Set<String> | undefined) {
-      this.waitingForData = true;
-      this.currentDataRequests = [];
-      try {
-        if (this.getKeycloakPromise) {
-          this.currentDataRequests = (
-            await new ApiClientProvider(
-              this.getKeycloakPromise()
-            ).apiClients.requestController.getDataRequests(
-                frameworks,
-                undefined,
-                requestStatuses,
-                undefined,
-                undefined,
-                undefined,
-                this.datasetsPerPage,
-                this.currentPage
-            )
-          ).data;
-        }
-      } catch (error) {
-        console.error(error);
-      }
-      this.waitingForData = false;
-    },*/
 
     /**
      * Resets selected frameworks and searchBarInput
@@ -331,9 +303,8 @@ export default defineComponent({
      */
     handlePageUpdate(pageNumber: number) {
       if (pageNumber != this.currentPage) {
-        this.waitingForData = true;
         this.currentPage = pageNumber;
-        this.previousRecords = this.currentPage * this.rowsPerPage;
+        this.getAllRequestsForFilters();
       }
     },
     /**
