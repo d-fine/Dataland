@@ -36,7 +36,8 @@ data class DataRequestsFilter(
     var userIdsFromEmailAddress: Set<String>? = null
 
     /**
-     * TODO
+     * This function should be called when the email address filter is not empty, i.e. if shouldFilterByEmailAddress
+     * is true. The keycloakUserControllerApiService is required to get the user ids for the email addresses.
      */
     fun setupEmailFilter(keycloakUserControllerApiService: KeycloakUserControllerApiService): List<KeycloakUserInfo> {
         val userInfoList = emailAddress
@@ -49,7 +50,12 @@ data class DataRequestsFilter(
     }
 
     val usedEmailAddressFilter: List<String>
-        get() = userIdsFromEmailAddress?.toList() ?: emptyList()
+        get() {
+            check(!shouldFilterByEmailAddress || userIdsFromEmailAddress != null) {
+                "You need to call setupEmailFilter(..) before querying by email address!"
+            }
+            return userIdsFromEmailAddress?.toList() ?: emptyList()
+        }
 
     val shouldFilterByDatalandCompanyId: Boolean
         get() = datalandCompanyId?.isNotEmpty() ?: false

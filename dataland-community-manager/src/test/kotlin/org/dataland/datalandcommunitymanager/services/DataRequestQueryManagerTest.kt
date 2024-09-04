@@ -30,6 +30,7 @@ class DataRequestQueryManagerTest {
     private lateinit var companyDataControllerApi: CompanyDataControllerApi
     private lateinit var processingUtils: DataRequestProcessingUtils
     private lateinit var keycloakUserControllerApiService: KeycloakUserControllerApiService
+    private val dataRequestLogger = mock(DataRequestLogger::class.java)
 
     private val testCompanyId = UUID.randomUUID().toString()
     private val testReportingPeriod = "2024"
@@ -130,7 +131,7 @@ class DataRequestQueryManagerTest {
         setupMocks()
         dataRequestQueryManager = DataRequestQueryManager(
             dataRequestRepository = dataRequestRepository,
-            dataRequestLogger = mock(DataRequestLogger::class.java), // TODO move up?
+            dataRequestLogger = dataRequestLogger,
             companyDataControllerApi = companyDataControllerApi,
             processingUtils = processingUtils,
             keycloakUserControllerApiService = keycloakUserControllerApiService,

@@ -187,8 +187,17 @@ interface RequestApi {
     ): ResponseEntity<StoredDataRequest>
 
     /** A method for searching data requests based on filters.
+     * @param dataType If set, only the requests with are data type in dataType are returned
+     * @param userId If set, only the requests from this user are returned
+     * @param emailAddress If set, only the requests from users which email address partially matches emailAddress are
+     *  returned
+     * @param requestStatus If set, only the requests with a request status in requestStatus are returned
+     * @param accessStatus If set, only the requests with an access status in accessStatus are returned
+     * @param reportingPeriod If set, only the requests with this reportingPeriod are returned
+     * @param datalandCompanyId If set, only the requests for this company are returned
+     * @param chunkSize Limits the number of returned requests
+     * @param chunkIndex The index of the chunked requests
      * @return all filtered data requests in a list
-     * TODO adjust description
      */
     @Suppress("LongParameterList")
     @Operation(
@@ -219,12 +228,20 @@ interface RequestApi {
         @RequestParam(defaultValue = "0") chunkIndex: Int,
     ): ResponseEntity<List<ExtendedStoredDataRequest>>
 
-    /**
-     * TODO add description
+    /** A method to count data requests based on specific filter.
+     * @param dataType If set, only the requests with are data type in dataType are counted
+     * @param userId If set, only the requests from this user are counted
+     * @param emailAddress If set, only the requests from users which email address partially matches emailAddress are
+     *  counted
+     * @param requestStatus If set, only the requests with a request status in requestStatus are counted
+     * @param accessStatus If set, only the requests with an access status in accessStatus are counted
+     * @param reportingPeriod If set, only the requests with this reportingPeriod are counted
+     * @param datalandCompanyId If set, only the requests for this company are counted
+     * @return The number of requests that match the filter
      */
     @Operation(
-        summary = "TODO",
-        description = "TODO",
+        summary = "Get the number of requests based on filters.",
+        description = "Get the number of requests based on filters.",
     )
     @ApiResponses(
         value = [
