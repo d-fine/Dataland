@@ -12,6 +12,7 @@ import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
 import org.dataland.keycloakAdapter.utils.AuthenticationMock
 import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.Assertions.assertDoesNotThrow
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import org.mockito.Mockito
@@ -50,19 +51,23 @@ internal class CompanyDataControllerTest(
         ),
         parentCompanyLei = null,
     )
+    val companyController = CompanyDataController(
+        companyAlterationManager,
+        companyQueryManager,
+        companyIdentifierRepositoryInterface,
+        companyBaseManager,
+    )
+    fun postCompany(): String {
+        return companyController.postCompany(
+            companyWithTestLei,
+        ).body!!.companyId
+    }
 
     @Test
     fun `check that the company id by identifier endpoint works as expected`() {
         mockSecurityContext()
-        val companyController = CompanyDataController(
-            companyAlterationManager,
-            companyQueryManager,
-            companyIdentifierRepositoryInterface,
-            companyBaseManager,
-        )
-        val expectedCompanyId = companyController.postCompany(
-            companyWithTestLei,
-        ).body!!.companyId
+
+        val expectedCompanyId = postCompany()
         Assertions.assertEquals(
             expectedCompanyId,
             companyController.getCompanyIdByIdentifier(IdentifierType.Lei, testLei).body!!.companyId,
@@ -81,5 +86,19 @@ internal class CompanyDataControllerTest(
         val mockSecurityContext = Mockito.mock(SecurityContext::class.java)
         `when`(mockSecurityContext.authentication).thenReturn(mockAuthentication)
         SecurityContextHolder.setContext(mockSecurityContext)
+    }
+
+    @Test
+    fun `check that the is company valid head endpoint endpoint works as expected`() {
+        mockSecurityContext()
+
+        val expectedCompanyId = postCompany()
+        assertDoesNotThrow {
+            companyController.isCompanyIdValid(expectedCompanyId)
+        }
+
+        assertThrows<ResourceNotFoundApiException> {
+            companyController.isCompanyIdValid("nonExistingLei")
+        }
     }
 }
