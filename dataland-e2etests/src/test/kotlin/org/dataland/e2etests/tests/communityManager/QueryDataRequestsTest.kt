@@ -290,19 +290,12 @@ class QueryDataRequestsTest {
         assertEquals(1, combinedQueryResults.size)
     }
 
-    /*
-            withTechnicalUser(TechnicalUser.PremiumUser) {
-            postSingleDataRequest(companyIdA, SingleDataRequest.DataType.vsme, setOf("2022", "2023"))
-            postSingleDataRequest(companyIdB, SingleDataRequest.DataType.p2p, setOf("2023"))
-        }
-     */
-
     private val sfdrType2 = RequestControllerApi.DataTypeGetNumberOfRequests.sfdr
     private val p2pType2 = RequestControllerApi.DataTypeGetNumberOfRequests.p2p
     private val vsmeType2 = RequestControllerApi.DataTypeGetNumberOfRequests.vsme
 
     @Test
-    fun `count requests with request and access status filters`() {
+    fun `count requests with request status filters`() {
         assertEquals(
             2,
             api.getNumberOfRequests(
@@ -315,15 +308,6 @@ class QueryDataRequestsTest {
             api.getNumberOfRequests(datalandCompanyId = companyIdA, requestStatus = setOf(RequestStatus.Resolved)),
         )
         assertEquals(
-            0,
-            api.getNumberOfRequests(datalandCompanyId = companyIdA, accessStatus = setOf(AccessStatus.Public)),
-        )
-        assertEquals(
-            2,
-            api.getNumberOfRequests(datalandCompanyId = companyIdA, accessStatus = setOf(AccessStatus.Pending)),
-        )
-
-        assertEquals(
             1,
             api.getNumberOfRequests(
                 datalandCompanyId = companyIdB,
@@ -333,6 +317,18 @@ class QueryDataRequestsTest {
         assertEquals(
             0,
             api.getNumberOfRequests(datalandCompanyId = companyIdB, requestStatus = setOf(RequestStatus.Resolved)),
+        )
+    }
+
+    @Test
+    fun `count requests with access status filters`() {
+        assertEquals(
+            0,
+            api.getNumberOfRequests(datalandCompanyId = companyIdA, accessStatus = setOf(AccessStatus.Public)),
+        )
+        assertEquals(
+            2,
+            api.getNumberOfRequests(datalandCompanyId = companyIdA, accessStatus = setOf(AccessStatus.Pending)),
         )
         assertEquals(
             1,
@@ -378,7 +374,7 @@ class QueryDataRequestsTest {
     }
 
     @Test
-    fun `count requests with reporting period and request status filter`() {
+    fun `count requests with reporting period 2022 and request status filter`() {
         assertEquals(1, api.getNumberOfRequests(datalandCompanyId = companyIdA, reportingPeriod = "2022"))
         assertEquals(
             1,
@@ -396,7 +392,10 @@ class QueryDataRequestsTest {
                 dataType = listOf(sfdrType2),
             ),
         )
+    }
 
+    @Test
+    fun `count requests with reporting period 2023 and request status filter`() {
         assertEquals(1, api.getNumberOfRequests(datalandCompanyId = companyIdB, reportingPeriod = "2023"))
         assertEquals(
             1,
