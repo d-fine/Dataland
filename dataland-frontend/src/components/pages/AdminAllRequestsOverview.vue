@@ -66,7 +66,6 @@
                 :alwaysShowPaginator="false"
                 currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
                 @row-click="onRowClick($event)"
-                @page-update="handlePageUpdate"
                 @page="onPage($event)"
                 class="table-cursor"
                 id="admin-request-overview-data"
@@ -213,6 +212,8 @@ export default defineComponent({
       selectedFrameworks: [] as Array<FrameworkSelectableItem>,
       availableRequestStatus: [] as Array<SelectableItem>,
       selectedRequestStatus: [] as Array<SelectableItem>,
+      queryDelayInMs: 300,
+      timerId: 0,
     };
   },
   mounted() {
@@ -230,7 +231,10 @@ export default defineComponent({
     },
     searchBarInput(newSearch: string) {
       this.searchBarInput = newSearch;
-      this.getAllRequestsForFilters();
+      if (this.timerId) {
+        clearTimeout(this.timerId);
+      }
+      this.timerId = setTimeout(() => this.getAllRequestsForFilters(), this.queryDelayInMs);
     },
   },
   methods: {
@@ -298,23 +302,16 @@ export default defineComponent({
     },
 
     /**
-     * Updates the current page.
-     * An update of the currentPage automatically triggers a data Update
-     * @param pageNumber the new page index
-     */
-    handlePageUpdate(pageNumber: number) {
-      if (pageNumber != this.currentPage) {
-        this.currentPage = pageNumber;
-        this.getAllRequestsForFilters();
-      }
-    },
-    /**
      * Updates the current Page in the parent component
      * @param event DataTablePageEvent
      */
     onPage(event: DataTablePageEvent) {
-      window.scrollTo(0, 0);
-      this.$emit('page-update', event.page);
+      // window.scrollTo(0, 0);
+      console.log(event.page);
+      if (event.page != this.currentPage) {
+        this.currentPage = event.page;
+        this.getAllRequestsForFilters();
+      }
     },
 
     /**
