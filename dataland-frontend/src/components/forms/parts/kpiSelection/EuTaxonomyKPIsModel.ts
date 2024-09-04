@@ -179,7 +179,9 @@ export const euTaxonomyKpiInfoMappings = {
   currency: 'The 3-letter alpha code that represents the currency used in the report.',
 
   quality: 'The level of confidence associated to the value.',
-  page: 'The page number of the document from where the information was sourced.',
+  page:
+    'The page number of the document from where the information was sourced. On Dataland, page number ' +
+    'is defined as the PDF page number when looking at the document in a browser.',
   report: 'The report from where the information was sourced.',
   tagName: 'The name of the tag where the information is in the pdf.',
   comment: 'Free optional text',
