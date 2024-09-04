@@ -1,8 +1,12 @@
-// @ts-nocheck
 import ViewDataRequestPage from '@/components/pages/ViewDataRequestPage.vue';
 import { minimalKeycloakMock } from '@ct/testUtils/Keycloak';
-import { RequestStatus, type StoredDataRequest, type StoredDataRequestMessageObject } from '@clients/communitymanager';
-import type { BasicCompanyInformation, DataMetaInformation } from '@clients/backend';
+import {
+  AccessStatus,
+  RequestStatus,
+  type StoredDataRequest,
+  type StoredDataRequestMessageObject,
+} from '@clients/communitymanager';
+import type { BasicCompanyInformation } from '@clients/backend';
 import { QaStatus } from '@clients/backend';
 import { convertUnixTimeInMsToDateString } from '@/utils/DataFormatUtils';
 import { humanizeStringOrNumber } from '@/utils/StringFormatter';
@@ -71,11 +75,11 @@ describe('Component tests for the view data request page', function (): void {
    * Mocks the api-manager answer for basic company information
    */
   function interceptUserAskForCompanyNameOnMounted(): void {
-    const mockCompanyInfo: CompanyInformation = {
+    const mockCompanyInfo: BasicCompanyInformation = {
       companyName: dummyCompanyName,
-      headquarters: 'Berlin',
-      identifiers: {},
+      companyId: 'dummyCompanyId',
       countryCode: 'IT',
+      headquarters: 'Berlin',
     };
     cy.intercept(`**/companies/dummyCompanyId/info`, {
       body: mockCompanyInfo,
