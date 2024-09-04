@@ -928,8 +928,8 @@
         "tags": [
           "request-controller"
         ],
-        "summary": "TODO",
-        "description": "TODO",
+        "summary": "Get the number of requests based on filters.",
+        "description": "Get the number of requests based on filters.",
         "operationId": "getNumberOfRequests",
         "parameters": [
           {

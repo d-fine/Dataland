@@ -38,9 +38,12 @@ class TemporaryTables private constructor() {
             "(:#{#searchFilter.shouldFilterByDatalandCompanyId} = false " +
             "OR d.dataland_company_id = :#{#searchFilter.usedDatalandCompanyIdFilter}) "
 
-        /*TODO*/
-        const val ORDER_AND_LIMIT_CLAUSE =
+        // Append this clause at the end of TABLE_FILTERED to limit, offset and order the requests.
+        const val TABLE_FILTERED_ORDER_AND_LIMIT =
             "ORDER BY d.data_request_id ASC " +
-                "LIMIT :#{#resultLimit} OFFSET :#{#resultOffset}) "
+                "LIMIT :#{#resultLimit} OFFSET :#{#resultOffset}"
+
+        // Append this after the TABLE_FILTERED query
+        const val TABLE_FILTERED_END = ") "
     }
 }

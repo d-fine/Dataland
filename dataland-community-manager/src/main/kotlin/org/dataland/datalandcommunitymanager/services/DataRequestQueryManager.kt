@@ -113,8 +113,8 @@ constructor(
 
     /**
      * Method to get all data requests based on filters.
-     * @param isUserAdmin TODO
-     * @param ownedCompanyIdsByUser TODO
+     * @param isUserAdmin whether the requesting user is an admin
+     * @param ownedCompanyIdsByUser the company ids for which the user is a company owner
      * @param filter the search filter containing relevant search parameters
      * @param chunkIndex the index of the chunked results which should be returned
      * @param chunkSize the size of entries per chunk which should be returned
@@ -137,7 +137,7 @@ constructor(
 
         val userIdsToEmails = usersMatchingEmailFilter.associate { it.userId to it.email }.toMutableMap()
 
-        val extendedStoredDataRequestsWithMails = extendedStoredDataRequests.map { it ->
+        val extendedStoredDataRequestsWithMails = extendedStoredDataRequests.map {
             val allowedToSeeEmailAddress = isUserAdmin ||
                 (
                     ownedCompanyIdsByUser.contains(it.datalandCompanyId) &&
@@ -154,7 +154,7 @@ constructor(
     }
 
     /**
-     * TODO
+     * Returns the number of requests for a specific filter.
      */
     @Transactional
     fun getNumberOfDataRequests(

@@ -74,15 +74,14 @@ interface DataRequestRepository : JpaRepository<DataRequestEntity, String> {
      * A function for searching for data request information by dataType, userID, requestID, requestStatus,
      * accessStatus, reportingPeriod or dataRequestCompanyIdentifierValue
      * @param searchFilter takes the input params to check for
-     * @param prefetchedUserIdsByEmail If the searchFilter filters for email addresses, the prefetchedUserIdsByEmail
-     *  needs to be provided.
      * @param resultLimit The number of entities that should be returned
      * @param resultOffset The offset of the returned entities
      * @returns the data request
      */
     @Query(
         nativeQuery = true,
-        value = TemporaryTables.TABLE_FILTERED + TemporaryTables.ORDER_AND_LIMIT_CLAUSE +
+        value = TemporaryTables.TABLE_FILTERED +
+            TemporaryTables.TABLE_FILTERED_ORDER_AND_LIMIT + TemporaryTables.TABLE_FILTERED_END +
             "SELECT d.* FROM data_requests d " +
             "JOIN filtered_table ON filtered_table.data_request_id = d.data_request_id ",
 
@@ -94,11 +93,11 @@ interface DataRequestRepository : JpaRepository<DataRequestEntity, String> {
     ): List<DataRequestEntity>
 
     /**
-     * TODO
+     * This query counts the number of requests that matches the search fiter and returns this number.
      */
     @Query(
         nativeQuery = true,
-        value = TemporaryTables.TABLE_FILTERED + ") " +
+        value = TemporaryTables.TABLE_FILTERED + TemporaryTables.TABLE_FILTERED_END +
             "SELECT COUNT(*) FROM data_requests d " +
             "JOIN filtered_table ON filtered_table.data_request_id = d.data_request_id ",
     )
