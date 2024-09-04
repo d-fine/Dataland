@@ -10,45 +10,49 @@ import { checkEmailFieldsAndCheckBox } from '@ct/testUtils/EmailDetails';
 
 describe('Component tests for the view data request page', function (): void {
   const requestId = 'dummyRequestId';
+  const dummyUserId = 'dummyUserId';
   const dummyCompanyId = 'dummyCompanyId';
   const dummyCompanyName = 'dummyCompanyName';
   const dummyFramework = 'dummyFramework';
   const dummyReportingYear = 'dummyReportingYear';
   const dummyLastModifiedDate = 1709204495770;
   const dummyCreationTime = 1709104495770;
-  const dummyMessageObject = {
+  const dummyMessageObject: StoredDataRequestMessageObject = {
     contacts: new Set<string>(['test@example.com', 'test2@example.com']),
     message: 'test message',
     creationTimestamp: dummyCreationTime,
-  } as StoredDataRequestMessageObject;
+  };
   /**
    * Return a stored data request
    * @param requestStatus the request status
    * @param messageHistory the message history
    * @returns stored data request
    */
-  function getStoredDataRequest(
+  function createStoredDataRequest(
     requestStatus: RequestStatus,
     messageHistory: Array<StoredDataRequestMessageObject>
   ): StoredDataRequest {
     return {
-      requestStatus: requestStatus,
-      reportingPeriod: dummyReportingYear,
-      dataType: dummyFramework,
       dataRequestId: requestId,
-      lastModifiedDate: dummyLastModifiedDate,
+      userId: dummyUserId,
+      userEmailAddress: 'dummy@mail.de',
+      creationTimestamp: dummyCreationTime,
+      dataType: dummyFramework,
+      reportingPeriod: dummyReportingYear,
       datalandCompanyId: dummyCompanyId,
       messageHistory: messageHistory,
-      creationTimestamp: dummyCreationTime,
-      userId: 'dummyUserId',
-    } as StoredDataRequest;
+      dataRequestStatusHistory: [],
+      lastModifiedDate: dummyLastModifiedDate,
+      requestStatus: requestStatus,
+      accessStatus: AccessStatus.Public,
+    };
   }
   /**
    * Mocks the community-manager answer for single data request of the users
    * @param request the request to mock
    */
   function interceptUserAskForSingleDataRequestsOnMounted(request: StoredDataRequest): void {
-    cy.intercept(`**/community/requests/dummyRequestId`, {
+    cy.intercept(`**/community/requests/${requestId}`, {
       body: request,
       status: 200,
     }).as('fetchSingleDataRequests');
@@ -59,11 +63,7 @@ describe('Component tests for the view data request page', function (): void {
    */
   function interceptUserActiveDatasetOnMounted(qaStatus: QaStatus): void {
     cy.intercept(`**/api/metadata?**`, {
-      body: [
-        {
-          qaStatus: qaStatus,
-        } as DataMetaInformation,
-      ],
+      body: [{ qaStatus: qaStatus }],
       status: 200,
     }).as('fetchActiveDatasets');
   }
@@ -71,10 +71,14 @@ describe('Component tests for the view data request page', function (): void {
    * Mocks the api-manager answer for basic company information
    */
   function interceptUserAskForCompanyNameOnMounted(): void {
+    const mockCompanyInfo: CompanyInformation = {
+      companyName: dummyCompanyName,
+      headquarters: 'Berlin',
+      identifiers: {},
+      countryCode: 'IT',
+    };
     cy.intercept(`**/companies/dummyCompanyId/info`, {
-      body: {
-        companyName: dummyCompanyName,
-      } as BasicCompanyInformation,
+      body: mockCompanyInfo,
       status: 200,
     }).as('fetchCompanyName');
   }
@@ -82,14 +86,14 @@ describe('Component tests for the view data request page', function (): void {
    * Mocks the community-manager answer for patching a data request
    */
   function interceptPatchRequest(): void {
-    cy.intercept(`**/community/requests/dummyRequestId/requestStatus?**`, {
+    cy.intercept(`**/community/requests/${requestId}/requestStatus?**`, {
       status: 200,
     }).as('fetchCompanyName');
   }
 
   it('Check view data request page for resolved request with data renders as expected', function () {
     interceptUserAskForSingleDataRequestsOnMounted(
-      getStoredDataRequest(RequestStatus.Resolved, [dummyMessageObject] as Array<StoredDataRequestMessageObject>)
+      createStoredDataRequest(RequestStatus.Resolved, [dummyMessageObject])
     );
     interceptUserAskForCompanyNameOnMounted();
     interceptUserActiveDatasetOnMounted(QaStatus.Accepted);
@@ -114,7 +118,7 @@ describe('Component tests for the view data request page', function (): void {
     });
   });
   it('Check view data request page for withdrawn request without data renders as expected', function () {
-    interceptUserAskForSingleDataRequestsOnMounted(getStoredDataRequest(RequestStatus.Withdrawn, []));
+    interceptUserAskForSingleDataRequestsOnMounted(createStoredDataRequest(RequestStatus.Withdrawn, []));
     interceptUserAskForCompanyNameOnMounted();
     interceptUserActiveDatasetOnMounted(QaStatus.Rejected);
     interceptPatchRequest();
@@ -162,7 +166,7 @@ describe('Component tests for the view data request page', function (): void {
       });
   }
   it('Check view data request page for open request without data and withdraw the data request', function () {
-    interceptUserAskForSingleDataRequestsOnMounted(getStoredDataRequest(RequestStatus.Open, []));
+    interceptUserAskForSingleDataRequestsOnMounted(createStoredDataRequest(RequestStatus.Open, []));
     interceptUserAskForCompanyNameOnMounted();
     interceptUserActiveDatasetOnMounted(QaStatus.Pending);
     interceptPatchRequest();
@@ -197,7 +201,7 @@ describe('Component tests for the view data request page', function (): void {
     });
   });
   it('Check view data request page for open request with data and check the routing to data view page', function () {
-    interceptUserAskForSingleDataRequestsOnMounted(getStoredDataRequest(RequestStatus.Open, []));
+    interceptUserAskForSingleDataRequestsOnMounted(createStoredDataRequest(RequestStatus.Open, []));
     interceptUserAskForCompanyNameOnMounted();
     interceptUserActiveDatasetOnMounted(QaStatus.Accepted);
     interceptPatchRequest();
@@ -220,7 +224,7 @@ describe('Component tests for the view data request page', function (): void {
     'Check view data request page for answered request and ' +
       'check the routing to data view page on resolve request click',
     function () {
-      const dummyRequest = getStoredDataRequest(RequestStatus.Answered, []);
+      const dummyRequest = createStoredDataRequest(RequestStatus.Answered, []);
       interceptUserAskForSingleDataRequestsOnMounted(dummyRequest);
       interceptUserAskForCompanyNameOnMounted();
       interceptUserActiveDatasetOnMounted(QaStatus.Accepted);
@@ -245,14 +249,12 @@ describe('Component tests for the view data request page', function (): void {
     'Check view data request page for open request and check that the message history is displayed ' +
       'and that a user can add a new message',
     function () {
-      interceptUserAskForSingleDataRequestsOnMounted(
-        getStoredDataRequest(RequestStatus.Open, [dummyMessageObject] as Array<StoredDataRequestMessageObject>)
-      );
+      interceptUserAskForSingleDataRequestsOnMounted(createStoredDataRequest(RequestStatus.Open, [dummyMessageObject]));
       interceptUserAskForCompanyNameOnMounted();
       interceptUserActiveDatasetOnMounted(QaStatus.Accepted);
       interceptPatchRequest();
       cy.mountWithPlugins(ViewDataRequestPage, {
-        keycloak: minimalKeycloakMock({}),
+        keycloak: minimalKeycloakMock({ userId: dummyUserId }),
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
         props: {
