@@ -58,7 +58,6 @@
                 v-if="currentDataRequests && currentDataRequests.length > 0"
                 ref="dataTable"
                 :value="currentDataRequests"
-                :first="first"
                 :paginator="true"
                 :lazy="true"
                 :total-records="totalRecords"
@@ -213,6 +212,8 @@ export default defineComponent({
       selectedFrameworks: [] as Array<FrameworkSelectableItem>,
       availableRequestStatus: [] as Array<SelectableItem>,
       selectedRequestStatus: [] as Array<SelectableItem>,
+      queryDelayInMs: 300,
+      timerId: 0,
     };
   },
   mounted() {
@@ -230,7 +231,10 @@ export default defineComponent({
     },
     searchBarInput(newSearch: string) {
       this.searchBarInput = newSearch;
-      this.getAllRequestsForFilters();
+      if (this.timerId) {
+        clearTimeout(this.timerId);
+      }
+      this.timerId = setTimeout(() => this.getAllRequestsForFilters(), this.queryDelayInMs);
     },
   },
   methods: {
