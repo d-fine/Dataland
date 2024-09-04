@@ -53,7 +53,7 @@ constructor(
      * @param dataRequestEntity dataland data request entity
      * @returns extended stored data request
      */
-    fun convertRequestEntityToExtendedStoredDataRequest(dataRequestEntity: DataRequestEntity):
+    private fun convertRequestEntityToExtendedStoredDataRequest(dataRequestEntity: DataRequestEntity):
         ExtendedStoredDataRequest {
         val companyInformation = companyDataControllerApi.getCompanyInfo(dataRequestEntity.datalandCompanyId)
         return ExtendedStoredDataRequest(dataRequestEntity, companyInformation.companyName, null)
