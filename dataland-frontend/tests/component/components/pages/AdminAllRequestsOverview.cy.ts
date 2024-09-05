@@ -58,9 +58,9 @@ describe('Component test for the admin-requests-overview page', () => {
    * Mounts the page and asserts that the unfiltered list of all data requests is displayed
    */
   function mountAdminAllRequestsPageWithMocks(): void {
-    const expectedNumberOfRequests = mockRequests.length.toString();
+    const expectedNumberOfRequests = mockRequests.length;
     cy.intercept('**/community/requests?chunkSize=100&chunkIndex=0', mockRequests).as('fetchInitialUnfilteredRequests');
-    cy.intercept('**/community/requests/numberOfRequests', expectedNumberOfRequests).as(
+    cy.intercept('**/community/requests/numberOfRequests', expectedNumberOfRequests.toString()).as(
       'fetchInitialUnfilteredNumberOfRequests'
     );
     getMountingFunction({
@@ -70,7 +70,7 @@ describe('Component test for the admin-requests-overview page', () => {
         userId: crypto.randomUUID(),
       }),
     })(AdminAllRequestsOverview);
-    assertNumberOfSearchResults(mockRequests.length);
+    assertNumberOfSearchResults(expectedNumberOfRequests);
     mockRequests.forEach((extendedStoredDataRequest) => {
       if (extendedStoredDataRequest.userEmailAddress) {
         assertEmailAddressExistsInSearchResults(extendedStoredDataRequest.userEmailAddress);
@@ -182,6 +182,24 @@ describe('Component test for the admin-requests-overview page', () => {
     assertEmailAddressExistsInSearchResults(mailDelta);
   }
 
+  /**
+   * Removes the combined filter and checks if all requests are shown again
+   */
+  function validateDeselctingCombinedFilter(): void {
+    const expectedNumberOfRequests = mockRequests.length;
+    cy.intercept('**/community/requests?chunkSize=100&chunkIndex=0', mockRequests).as('fetchInitialUnfilteredRequests');
+    cy.intercept('**/community/requests/numberOfRequests', expectedNumberOfRequests.toString()).as(
+      'fetchInitialUnfilteredNumberOfRequests'
+    );
+    const frameworkHumanReadableName = humanizeStringOrNumber(DataTypeEnum.Sfdr);
+    cy.get(`li[aria-label="${frameworkHumanReadableName}"]`).click();
+    cy.get(`input[data-test="email-searchbar"]`).clear().type('{enter}');
+
+    assertNumberOfSearchResults(expectedNumberOfRequests);
+    assertEmailAddressExistsInSearchResults(mailAlpha);
+    assertEmailAddressExistsInSearchResults(mailDelta);
+  }
+
   it('Filtering for an email address works as expected', () => {
     mountAdminAllRequestsPageWithMocks();
     validateEmailAddressFilter();
@@ -197,8 +215,9 @@ describe('Component test for the admin-requests-overview page', () => {
     validateRequestStatusFilter();
   });
 
-  it('A combined filter works as expected', () => {
+  it('A combined filter works as expected and is also de-selectable', () => {
     mountAdminAllRequestsPageWithMocks();
     validateCombinedFilter();
+    validateDeselctingCombinedFilter();
   });
 });
