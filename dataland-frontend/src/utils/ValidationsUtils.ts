@@ -1,6 +1,5 @@
 import { type FormKitNode } from '@formkit/core';
 import { findAllValuesForKey, type ObjectType } from '@/utils/UpdateObjectUtils';
-import { ref } from 'vue';
 
 /**
  * Checks which inputs are not filled correctly
@@ -70,36 +69,25 @@ export function isCompanyIdValid(companyId: string): boolean {
   return uuidRegexExp.test(companyId);
 }
 
-export const PAGE_NUMBER_VALIDATION_MESSAGE = ref('');
 /**
  * Checks if a page number is valid
  * @param node FormKit node
  * @returns boolean that expresses if the page number is valid
  */
 export function validatePageNumber(node: FormKitNode): boolean {
-  const pageNumberErrorMessage =
-    'Page number must be a non-zero number or a range of ascending non-zero numbers,' + ' e.g. 2, 13-15 etc.';
   const pageNumberInput = node.value;
   const regexSinglePage = /^[1-9]\d*$/;
   const regexRange = /^[1-9]\d*-[1-9]\d*$/;
   let result;
 
   if (typeof pageNumberInput == 'string' && regexSinglePage.test(pageNumberInput)) {
-    PAGE_NUMBER_VALIDATION_MESSAGE.value = '';
     result = true;
   } else if (typeof pageNumberInput == 'string' && regexRange.test(pageNumberInput)) {
     const hyphenIndex = pageNumberInput.indexOf('-');
     const firstNumber = Number(pageNumberInput.substring(0, hyphenIndex));
     const secondNumber = Number(pageNumberInput.substring(hyphenIndex + 1));
-    if (firstNumber < secondNumber) {
-      PAGE_NUMBER_VALIDATION_MESSAGE.value = '';
-      result = true;
-    } else {
-      PAGE_NUMBER_VALIDATION_MESSAGE.value = pageNumberErrorMessage;
-      result = false;
-    }
+    result = firstNumber < secondNumber;
   } else {
-    PAGE_NUMBER_VALIDATION_MESSAGE.value = pageNumberErrorMessage;
     result = false;
   }
   return result;

@@ -86,7 +86,7 @@
                 placeholder="Enter page"
                 v-model="pageForFileReference"
                 :validation-messages="{
-                  validatePageNumber: pageNumberValidationMessage,
+                  validatePageNumber: pageNumberValidationErrorMessage,
                 }"
                 :validation-rules="{ validatePageNumber }"
                 validation="validatePageNumber"
@@ -132,7 +132,7 @@
 
 <script lang="ts">
 import { defineComponent, nextTick } from 'vue';
-import { PAGE_NUMBER_VALIDATION_MESSAGE, validatePageNumber } from '@/utils/ValidationsUtils';
+import { validatePageNumber } from '@/utils/ValidationsUtils';
 import InputSwitch from 'primevue/inputswitch';
 import UploadFormHeader from '@/components/forms/parts/elements/basic/UploadFormHeader.vue';
 import { FormKit } from '@formkit/vue';
@@ -162,7 +162,8 @@ export default defineComponent({
   },
   data() {
     return {
-      pageNumberValidationMessage: PAGE_NUMBER_VALIDATION_MESSAGE,
+      pageNumberValidationErrorMessage:
+        'Page number must be a non-zero number or a range of ascending non-zero numbers, ' + 'e.g. 2, 13-15 etc.',
       isMounted: false,
       dataPointIsAvailable: (this.injectlistOfFilledKpis as unknown as Array<string>).includes(this.name as string),
       qualityOptions: Object.values(QualityOptions).map((qualityOption: string) => ({
