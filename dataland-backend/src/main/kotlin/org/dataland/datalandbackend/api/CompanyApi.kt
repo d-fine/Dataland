@@ -367,4 +367,34 @@ interface CompanyApi {
         produces = ["application/json"],
     )
     fun getCompanyInfo(@PathVariable("companyId") companyId: String): ResponseEntity<CompanyInformation>
+
+    /**
+     * A method to check if a companyId is valid
+     * @param companyId the identifier
+     */
+    @Operation(
+        summary = "Checks if a company exists for the specified companyId.",
+        description = "Checks if a company exists for the specified companyId.",
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(
+                responseCode = "200",
+                description = "Successfully checked that the companyId is known " +
+                    "by dataland.",
+            ),
+            ApiResponse(
+                responseCode = "404",
+                description = "Check was successfull. CompanyId is not known by dataland.",
+            ),
+        ],
+    )
+    @RequestMapping(
+        method = [RequestMethod.HEAD],
+        value = ["/{companyId}"],
+    )
+    @PreAuthorize("hasRole('ROLE_USER')")
+    fun isCompanyIdValid(
+        @PathVariable("companyId") companyId: String,
+    )
 }

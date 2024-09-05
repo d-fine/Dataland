@@ -118,7 +118,7 @@ class CompanyRolesManager(
         userId: String?,
     ): List<CompanyRoleAssignmentEntity> {
         if (companyId != null) {
-            companyIdValidator.checkIfCompanyIdIsValidAndReturnName(companyId)
+            companyIdValidator.checkIfCompanyIdIsValid(companyId)
         }
         return companyRoleAssignmentRepository.getCompanyRoleAssignmentsByProvidedParameters(
             companyId = companyId, userId = userId, companyRole = companyRole,
@@ -140,7 +140,7 @@ class CompanyRolesManager(
      */
     @Transactional
     fun removeCompanyRoleForCompanyFromUser(companyRole: CompanyRole, companyId: String, userId: String) {
-        companyIdValidator.checkIfCompanyIdIsValidAndReturnName(companyId)
+        companyIdValidator.checkIfCompanyIdIsValid(companyId)
         val id = CompanyRoleAssignmentId(companyRole = companyRole, companyId = companyId, userId = userId)
         val companyRoleAssignmentEntityOptional = companyRoleAssignmentRepository.findById(id)
         if (companyRoleAssignmentEntityOptional.isPresent) {
@@ -161,7 +161,7 @@ class CompanyRolesManager(
         companyId: String,
         userId: String,
     ) {
-        companyIdValidator.checkIfCompanyIdIsValidAndReturnName(companyId)
+        companyIdValidator.checkIfCompanyIdIsValid(companyId)
         val id = CompanyRoleAssignmentId(companyRole = companyRole, companyId = companyId, userId = userId)
         if (!companyRoleAssignmentRepository.existsById(id)) {
             throwExceptionDueToRoleNotAssignedToUser(companyRole, companyId, userId)
@@ -174,7 +174,7 @@ class CompanyRolesManager(
      */
     @Transactional(readOnly = true)
     fun validateIfCompanyHasAtLeastOneCompanyOwner(companyId: String) {
-        companyIdValidator.checkIfCompanyIdIsValidAndReturnName(companyId)
+        companyIdValidator.checkIfCompanyIdIsValid(companyId)
         val companyRoleAssignments = getCompanyRoleAssignmentsByParameters(CompanyRole.CompanyOwner, companyId, null)
         if (companyRoleAssignments.isEmpty()) {
             throw ResourceNotFoundApiException(

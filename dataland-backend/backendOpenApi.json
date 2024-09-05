@@ -147,6 +147,60 @@
           }
         ]
       },
+      "head": {
+        "tags": [
+          "company-data-controller"
+        ],
+        "summary": "Checks if a company exists for the specified companyId.",
+        "description": "Checks if a company exists for the specified companyId.",
+        "operationId": "isCompanyIdValid",
+        "parameters": [
+          {
+            "name": "companyId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully checked that the companyId is known by dataland."
+          },
+          "404": {
+            "description": "Check was successfull. CompanyId is not known by dataland."
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      },
       "patch": {
         "tags": [
           "company-data-controller"
@@ -15663,10 +15717,10 @@
           "companyId": {
             "type": "string"
           },
-          "countryCode": {
+          "headquarters": {
             "type": "string"
           },
-          "headquarters": {
+          "countryCode": {
             "type": "string"
           },
           "lei": {
