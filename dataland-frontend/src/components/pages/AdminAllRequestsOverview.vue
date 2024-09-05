@@ -170,7 +170,11 @@ import Column from 'primevue/column';
 import { frameworkHasSubTitle, getFrameworkSubtitle, getFrameworkTitle } from '@/utils/StringFormatter';
 import DatasetsTabMenu from '@/components/general/DatasetsTabMenu.vue';
 import { convertUnixTimeInMsToDateString } from '@/utils/DataFormatUtils';
-import type { ExtendedStoredDataRequest, RequestStatus } from '@clients/communitymanager';
+import {
+  type ExtendedStoredDataRequest,
+  type GetDataRequestsDataTypeEnum,
+  type RequestStatus,
+} from '@clients/communitymanager';
 import InputText from 'primevue/inputtext';
 import FrameworkDataSearchDropdownFilter from '@/components/resources/frameworkDataSearch/FrameworkDataSearchDropdownFilter.vue';
 import type { FrameworkSelectableItem, SelectableItem } from '@/utils/FrameworkDataSearchDropDownFilterTypes';
@@ -256,7 +260,7 @@ export default defineComponent({
      */
     async getAllRequestsForFilters() {
       this.waitingForData = true;
-      const selectedFrameworksAsSet = new Set<DataTypeEnum>(
+      const selectedFrameworksAsSet = new Set<GetDataRequestsDataTypeEnum>(
         this.selectedFrameworks.map((selectableItem) => selectableItem.frameworkDataType)
       );
       const selectedRequestStatusesAsSet = new Set<RequestStatus>(
