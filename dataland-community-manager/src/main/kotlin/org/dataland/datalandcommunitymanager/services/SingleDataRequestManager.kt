@@ -231,7 +231,7 @@ constructor(
 
     private fun findDatalandCompanyIdForCompanyIdentifier(companyIdentifier: String): String {
         val datalandCompanyId: String? = if (companyIdRegex.matches(companyIdentifier)) {
-            companyIdValidator.checkIfCompanyIdIsValidAndReturnName(companyIdentifier)
+            companyIdValidator.checkIfCompanyIdIsValid(companyIdentifier)
             companyIdentifier
         } else {
             utils.getDatalandCompanyIdAndNameForIdentifierValue(companyIdentifier)?.companyId
