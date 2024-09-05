@@ -108,7 +108,8 @@ constructor(
         val dataRequestEntity = dataRequestRepository.findById(dataRequestId).getOrElse {
             throw DataRequestNotFoundApiException(dataRequestId)
         }
-        return dataRequestEntity.toStoredDataRequest()
+        val emailAddress = keycloakUserControllerApiService.getUser(dataRequestEntity.userId).email ?: ""
+        return dataRequestEntity.toStoredDataRequest(emailAddress)
     }
 
     /**
