@@ -40,7 +40,8 @@ class TemporaryTables private constructor() {
 
         // Append this clause at the end of TABLE_FILTERED to limit, offset and order the requests.
         const val TABLE_FILTERED_ORDER_AND_LIMIT = "ORDER BY " +
-            "d.data_type ASC, d.reporting_period ASC, status_table.request_status ASC, d.dataland_company_id ASC " +
+            "d.creation_timestamp DESC, d.dataland_company_id ASC, d.reporting_period DESC, " +
+            "status_table.request_status ASC " +
             "LIMIT :#{#resultLimit} OFFSET :#{#resultOffset}"
 
         // Append this after the TABLE_FILTERED query
