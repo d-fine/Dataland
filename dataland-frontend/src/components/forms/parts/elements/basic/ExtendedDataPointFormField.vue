@@ -71,13 +71,25 @@
               />
             </div>
             <div class="col-4">
-              <UploadFormHeader :label="'Page'" :description="'Page where information was found'" />
+              <UploadFormHeader
+                :label="'Page'"
+                :description="
+                  'The page number of the document from where the ' +
+                  'information was sourced. On Dataland, page number is defined as the PDF page number when looking at ' +
+                  'the document in a browser.'
+                "
+              />
               <FormKit
                 outer-class="w-100"
                 type="text"
                 name="page"
-                placeholder="Page"
+                placeholder="Enter page"
                 v-model="pageForFileReference"
+                :validation-messages="{
+                  validatePageNumber: pageNumberValidationMessage,
+                }"
+                :validation-rules="{ validatePageNumber }"
+                validation="validatePageNumber"
                 validation-label="Page"
                 ignore="true"
               />
@@ -120,6 +132,7 @@
 
 <script lang="ts">
 import { defineComponent, nextTick } from 'vue';
+import { PAGE_NUMBER_VALIDATION_MESSAGE, validatePageNumber } from '@/utils/ValidationsUtils';
 import InputSwitch from 'primevue/inputswitch';
 import UploadFormHeader from '@/components/forms/parts/elements/basic/UploadFormHeader.vue';
 import { FormKit } from '@formkit/vue';
@@ -149,6 +162,7 @@ export default defineComponent({
   },
   data() {
     return {
+      pageNumberValidationMessage: PAGE_NUMBER_VALIDATION_MESSAGE,
       isMounted: false,
       dataPointIsAvailable: (this.injectlistOfFilledKpis as unknown as Array<string>).includes(this.name as string),
       qualityOptions: Object.values(QualityOptions).map((qualityOption: string) => ({
@@ -167,7 +181,7 @@ export default defineComponent({
     };
   },
   mounted() {
-    void nextTick(() => (this.isMounted = true));
+    nextTick(() => (this.isMounted = true));
   },
   computed: {
     showDataPointFields(): boolean {
@@ -213,6 +227,7 @@ export default defineComponent({
     },
   },
   methods: {
+    validatePageNumber,
     disabledOnMoreThanOne,
 
     /**
