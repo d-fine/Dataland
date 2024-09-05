@@ -22,33 +22,31 @@ annotation class PageRange(
  */
 class PageRangeValidator : ConstraintValidator<PageRange, String> {
 
+    override fun initialize(constraintAnnotation: PageRange) {
+        // No initialization needed
+    }
+
     override fun isValid(value: String?, context: ConstraintValidatorContext?): Boolean {
-        // Allow nulls, delegate to @NotNull if needed
-        if (value == null) return true
+        if (value == null) return true // Consider null as valid
 
-        // Regular expression to match a single page number or a range A-B
-        val regexSinglePage = """^\d+$""".toRegex()
-        val regexPageRange = """^(\d+)-(\d+)$""".toRegex()
+        val regexSinglePage = """^[1-9]\d*$""".toRegex()
+        val regexPageRange = """^([1-9]\d*)-([1-9]\d*)$""".toRegex()
 
-        // Initialize a result variable
-        var isValid = false
-
-        // Check for a single page number
-        if (regexSinglePage.matches(value)) {
+        return if (regexSinglePage.matches(value)) {
+            // Check for a valid single page number
             val pageNumber = value.toInt()
-            isValid = pageNumber >= 1 // Valid if single page number > 0
+            pageNumber >= 1 // Valid single page number must be >= 1
         } else {
-            // Check for a range A-B
+            // Check for a range A-B with A < B
             val matchResult = regexPageRange.matchEntire(value)
             if (matchResult != null) {
                 val (a, b) = matchResult.destructured
                 val pageA = a.toInt()
                 val pageB = b.toInt()
-                // Validate the range
-                isValid = pageA >= 1 && pageB >= 1 && pageA < pageB
+                pageA >= 1 && pageB >= 1 && pageA < pageB // A and B must be >= 1 and A < B
+            } else {
+                false // Invalid format
             }
         }
-
-        return isValid
     }
 }

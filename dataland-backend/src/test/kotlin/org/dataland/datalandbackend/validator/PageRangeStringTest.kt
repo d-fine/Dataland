@@ -20,7 +20,7 @@ class PageRangeStringTest : NumberValidationTestBase() {
     @Test
     fun `check that validation fails correctly for invalid ranges and numbers`() {
         // Invalid inputs
-        listOf("0", "-1", "abc", "3-2", "5-5", "0-10", "4--2", "abc-def").forEach {
+        listOf("0", "01", "-1", "abc", "3-2", "5-5", "0-10", "4--2", "abc-def").forEach {
             assertNumberOfViolations(PageRangeHolder(it), 1)
         }
     }
