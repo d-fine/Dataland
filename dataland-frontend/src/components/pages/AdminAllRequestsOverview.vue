@@ -259,7 +259,7 @@ export default defineComponent({
      */
     async getAllRequestsForFilters() {
       this.waitingForData = true;
-      const selectedFrameworksAsSet = new Set<GetDataRequestsDataTypeEnum>(
+      const selectedFrameworksAsSet = new Set<DataTypeEnum>(
         this.selectedFrameworks.map((selectableItem) => selectableItem.frameworkDataType)
       );
       const selectedRequestStatusesAsSet = new Set<RequestStatus>(
@@ -271,7 +271,7 @@ export default defineComponent({
           const apiClientProvider = new ApiClientProvider(this.getKeycloakPromise());
           this.currentDataRequests = (
             await apiClientProvider.apiClients.requestController.getDataRequests(
-              selectedFrameworksAsSet,
+              selectedFrameworksAsSet as Set<GetDataRequestsDataTypeEnum>,
               undefined,
               emailFilter,
               selectedRequestStatusesAsSet,
@@ -284,7 +284,7 @@ export default defineComponent({
           ).data;
           this.totalRecords = (
             await apiClientProvider.apiClients.requestController.getNumberOfRequests(
-              selectedFrameworksAsSet,
+              selectedFrameworksAsSet as Set<GetDataRequestsDataTypeEnum>,
               undefined,
               emailFilter,
               selectedRequestStatusesAsSet,
