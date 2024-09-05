@@ -5,6 +5,7 @@ import { KEYCLOAK_ROLE_ADMIN } from '@/utils/KeycloakUtils';
 import { getMountingFunction } from '@ct/testUtils/Mount';
 import { AccessStatus, type ExtendedStoredDataRequest, RequestStatus } from '@clients/communitymanager';
 import { faker } from '@faker-js/faker';
+import { humanizeStringOrNumber } from '@/utils/StringFormatter';
 
 describe('Component test for the admin-requests-overview page', () => {
   let mockRequests: ExtendedStoredDataRequest[];
@@ -39,6 +40,7 @@ describe('Component test for the admin-requests-overview page', () => {
   }
 
   const mailAlpha = 'stephanie@fake.com';
+  const mailSearchTerm = mailAlpha.substring(0, 3);
   const mailBeta = 'random@fake.com';
   const mailGamma = 'test123@fake.com';
   const mailDelta = 'steven@fake.com';
@@ -56,10 +58,11 @@ describe('Component test for the admin-requests-overview page', () => {
    * Mounts the page and asserts that the unfiltered list of all data requests is displayed
    */
   function mountAdminAllRequestsPageWithMocks(): void {
-    /* TODO Emanuel: passe den intercept exakt auf den korrekten call an (ohne wildcard am Ende)
-    Der Call sollte defaultmäßig auch die ersten 100 gehen => sicherstellen in interception
-     */
-    cy.intercept('**/community/requests?**', { body: mockRequests, times: 1 }).as('fetchInitialUnfilteredRequests');
+    const expectedNumberOfRequests = mockRequests.length.toString();
+    cy.intercept('**/community/requests?chunkSize=100&chunkIndex=0', mockRequests).as('fetchInitialUnfilteredRequests');
+    cy.intercept('**/community/requests/numberOfRequests', expectedNumberOfRequests).as(
+      'fetchInitialUnfilteredNumberOfRequests'
+    );
     getMountingFunction({
       keycloak: minimalKeycloakMock({
         authenticated: true,
@@ -95,15 +98,17 @@ describe('Component test for the admin-requests-overview page', () => {
    * Validates if filtering via email address substring works as expected
    */
   function validateEmailAddressFilter(): void {
-    /* TODO Emanuel: passe den intercept exakt auf den korrekten call an
-    Der Call sollte nach emails mit dem search term filtern => sicherstellen in interception
-     */
-    cy.intercept('**/community/requests?**', [mockRequests[0], mockRequests[3]]).as('fetchEmailFilteredRequests');
+    const mockResposne = [mockRequests[0], mockRequests[3]];
+    const expectedNumberOfRequests = mockResposne.length;
+    cy.intercept(`**/community/requests?emailAddress=${mailSearchTerm}&chunkSize=100&chunkIndex=0`, mockResposne).as(
+      'fetchEmailFilteredRequests'
+    );
+    cy.intercept(`**/community/requests/numberOfRequests?emailAddress=ste`, expectedNumberOfRequests.toString()).as(
+      'fetchEmailFilteredNumberOfRequests'
+    );
 
-    const searchTerm = mailAlpha.substring(0, 3);
-    cy.get(`input[data-test="requested-Datasets-searchbar"]`).type(searchTerm).type('{enter}');
-
-    assertNumberOfSearchResults(2);
+    cy.get(`input[data-test="email-searchbar"]`).type(mailSearchTerm).type('{enter}');
+    assertNumberOfSearchResults(expectedNumberOfRequests);
     assertEmailAddressExistsInSearchResults(mailAlpha);
     assertEmailAddressExistsInSearchResults(mailDelta);
   }
@@ -112,13 +117,22 @@ describe('Component test for the admin-requests-overview page', () => {
    * Validates if filtering via framework dropdown filter works as expected
    */
   function validateFrameworkFilter(): void {
-    /* TODO Emanuel: passe den intercept exakt auf den korrekten call an
-    Der Call sollte nach request mit p2p filtern => sicherstellen in interception
-     */
-    cy.intercept('**/community/requests?**', [mockRequests[1]]).as('fetchFrameworkFilteredRequests');
+    const frameworkToFilterFor = DataTypeEnum.P2p;
+    const frameworkHumanReadableName = humanizeStringOrNumber(frameworkToFilterFor);
+    const mockResponse = [mockRequests[1]];
+    const expectedNumberOfRequests = mockResponse.length;
+    cy.intercept(`**/community/requests?dataType=${frameworkToFilterFor}&chunkSize=100&chunkIndex=0`, mockResponse).as(
+      'fetchFrameworkFilteredRequests'
+    );
+    cy.intercept(
+      `**/community/requests/numberOfRequests?dataType=${frameworkToFilterFor}`,
+      expectedNumberOfRequests.toString()
+    ).as('fetchFrameworkFilteredNumberOfRequests');
 
-    // TODO select framework dropdown and select p2p
-    assertNumberOfSearchResults(1);
+    cy.get(`div[data-test="framework-picker"]`).click();
+    cy.get(`li[aria-label="${frameworkHumanReadableName}"]`).click();
+
+    assertNumberOfSearchResults(expectedNumberOfRequests);
     assertEmailAddressExistsInSearchResults(mailBeta);
   }
 
@@ -126,13 +140,21 @@ describe('Component test for the admin-requests-overview page', () => {
    * Validates if filtering via data request status dropdown filter works as expected
    */
   function validateRequestStatusFilter(): void {
-    /* TODO Emanuel: passe den intercept exakt auf den korrekten call an
-    Der Call sollte nach request mit dem request status "open" filtern => sicherstellen in interception
-     */
-    cy.intercept('**/community/requests?**', [mockRequests[0]]).as('fetchRequestStatusFilteredRequests');
+    const requestStatusToFilterFor = RequestStatus.Open;
+    const mockResponse = [mockRequests[0]];
+    const expectedNumberOfRequests = mockResponse.length;
+    cy.intercept(
+      `**/community/requests?requestStatus=${requestStatusToFilterFor}&chunkSize=100&chunkIndex=0`,
+      mockResponse
+    ).as('fetchRequestStatusFilteredRequests');
+    cy.intercept(
+      `**/community/requests/numberOfRequests?requestStatus=${requestStatusToFilterFor}`,
+      expectedNumberOfRequests.toString()
+    ).as('fetchRequestStatusFilteredNumberOfRequests');
 
-    // TODO select request status dropdown "Open"
-    assertNumberOfSearchResults(1);
+    cy.get(`div[data-test="request-status-picker"]`).click();
+    cy.get(`li[aria-label="${requestStatusToFilterFor}"]`).click();
+    assertNumberOfSearchResults(expectedNumberOfRequests);
     assertEmailAddressExistsInSearchResults(mailAlpha);
   }
 
@@ -141,14 +163,22 @@ describe('Component test for the admin-requests-overview page', () => {
    */
   function validateCombinedFilter(): void {
     validateEmailAddressFilter();
+    const frameworkToFilterFor = DataTypeEnum.Sfdr;
+    const frameworkHumanReadableName = humanizeStringOrNumber(frameworkToFilterFor);
+    const mockResponse = [mockRequests[3]];
+    const expectedNumberOfRequests = mockResponse.length;
+    cy.intercept(
+      `**/community/requests?dataType=${frameworkToFilterFor}&emailAddress=${mailSearchTerm}&chunkSize=100&chunkIndex=0`,
+      mockResponse
+    ).as('fetchCombinedFilteredRequests');
+    cy.intercept(
+      `**/community/requests/numberOfRequests?dataType=sfdr&emailAddress=ste`,
+      expectedNumberOfRequests.toString()
+    ).as('fetchCombinedFilteredNumberOfRequests');
 
-    /* TODO Emanuel: passe den intercept exakt auf den korrekten call an
-    Der Call sollte SOWOHL nach mails, als auch nach sfdr filtern => sicherstellen in interception
-     */
-    cy.intercept('**/community/requests?**', [mockRequests[3]]).as('fetchCombinedFilteredRequests');
-    // TODO additionally filter on framework sfdr
-
-    assertNumberOfSearchResults(1);
+    cy.get(`div[data-test="framework-picker"]`).click();
+    cy.get(`li[aria-label="${frameworkHumanReadableName}"]`).click();
+    assertNumberOfSearchResults(expectedNumberOfRequests);
     assertEmailAddressExistsInSearchResults(mailDelta);
   }
 
