@@ -9,7 +9,7 @@ import kotlin.reflect.KClass
 /**
  * Annotation for validating a page range as a string.
  */
-@Target(AnnotationTarget.FIELD)
+@Target(AnnotationTarget.FIELD, AnnotationTarget.PROPERTY, AnnotationTarget.VALUE_PARAMETER)
 @Constraint(validatedBy = [PageRangeValidator::class])
 annotation class PageRange(
     val message: String = "Input validation failed: Invalid page range format.",
