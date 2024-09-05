@@ -69,7 +69,7 @@ describe('Component test for the admin-requests-overview page', () => {
         roles: [KEYCLOAK_ROLE_ADMIN],
         userId: crypto.randomUUID(),
       }),
-    })(AdminAllRequestsOverview, undefined);
+    })(AdminAllRequestsOverview);
     assertNumberOfSearchResults(mockRequests.length);
     mockRequests.forEach((extendedStoredDataRequest) => {
       if (extendedStoredDataRequest.userEmailAddress) {
