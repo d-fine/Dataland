@@ -151,8 +151,8 @@
         "tags": [
           "company-data-controller"
         ],
-        "summary": "Checks that a companyId exists.",
-        "description": "Checks that a companyId exists.",
+        "summary": "Checks if a company exists for the specified companyId.",
+        "description": "Checks if a company exists for the specified companyId.",
         "operationId": "isCompanyIdValid",
         "parameters": [
           {
@@ -166,10 +166,10 @@
         ],
         "responses": {
           "200": {
-            "description": "Successfully checked that companyId exists."
+            "description": "Successfully checked that the companyId is known by dataland."
           },
           "404": {
-            "description": "Successfully checked that companyIdr does not exist."
+            "description": "Check was successfull. CompanyId is not known by dataland."
           },
           "default": {
             "description": "An error occurred",
@@ -15707,10 +15707,14 @@
         ],
         "type": "object",
         "properties": {
-          "companyId": {
-            "type": "string"
+          "sector": {
+            "type": "string",
+            "nullable": true
           },
           "companyName": {
+            "type": "string"
+          },
+          "companyId": {
             "type": "string"
           },
           "headquarters": {
@@ -15718,10 +15722,6 @@
           },
           "countryCode": {
             "type": "string"
-          },
-          "sector": {
-            "type": "string",
-            "nullable": true
           },
           "lei": {
             "type": "string",
@@ -15748,10 +15748,10 @@
         ],
         "type": "object",
         "properties": {
-          "companyId": {
+          "companyName": {
             "type": "string"
           },
-          "companyName": {
+          "companyId": {
             "type": "string"
           }
         }
