@@ -11,6 +11,7 @@ import { QaStatus } from '@clients/backend';
 import { convertUnixTimeInMsToDateString } from '@/utils/DataFormatUtils';
 import { humanizeStringOrNumber } from '@/utils/StringFormatter';
 import { checkEmailFieldsAndCheckBox } from '@ct/testUtils/EmailDetails';
+import { getMountingFunction } from '@ct/testUtils/Mount';
 
 describe('Component tests for the view data request page', function (): void {
   const requestId = 'dummyRequestId';
@@ -102,10 +103,7 @@ describe('Component tests for the view data request page', function (): void {
     interceptUserAskForCompanyNameOnMounted();
     interceptUserActiveDatasetOnMounted(QaStatus.Accepted);
     interceptPatchRequest();
-    cy.mountWithPlugins(ViewDataRequestPage, {
-      keycloak: minimalKeycloakMock({}),
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
+    getMountingFunction({ keycloak: minimalKeycloakMock({}) })(ViewDataRequestPage, {
       props: {
         requestId: requestId,
       },
@@ -121,26 +119,24 @@ describe('Component tests for the view data request page', function (): void {
         .should('eq', `/companies/${dummyCompanyId}/frameworks/${dummyFramework}`);
     });
   });
+
   it('Check view data request page for withdrawn request without data renders as expected', function () {
     interceptUserAskForSingleDataRequestsOnMounted(createStoredDataRequest(RequestStatus.Withdrawn, []));
     interceptUserAskForCompanyNameOnMounted();
     interceptUserActiveDatasetOnMounted(QaStatus.Rejected);
     interceptPatchRequest();
-    cy.mountWithPlugins(ViewDataRequestPage, {
-      keycloak: minimalKeycloakMock({}),
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
+    getMountingFunction({ keycloak: minimalKeycloakMock({}) })(ViewDataRequestPage, {
       props: {
         requestId: requestId,
       },
-    }).then(() => {
-      checkBasicPageElements(RequestStatus.Withdrawn);
-      cy.get('[data-test="newMessage"]').should('exist').should('not.be.visible');
-      cy.get('[data-test="card_withdrawn"]').should('exist').should('not.be.visible');
-      cy.get('[data-test="resolveRequestButton"]').should('exist').should('not.be.visible');
-      cy.get('[data-test="viewDataset"]').should('exist').should('not.be.visible');
     });
+    checkBasicPageElements(RequestStatus.Withdrawn);
+    cy.get('[data-test="newMessage"]').should('exist').should('not.be.visible');
+    cy.get('[data-test="card_withdrawn"]').should('exist').should('not.be.visible');
+    cy.get('[data-test="resolveRequestButton"]').should('exist').should('not.be.visible');
+    cy.get('[data-test="viewDataset"]').should('exist').should('not.be.visible');
   });
+
   /**
    * Checks the existence of basic elements of the page
    * @param requestStatus the request Status to check for
@@ -174,48 +170,35 @@ describe('Component tests for the view data request page', function (): void {
     interceptUserAskForCompanyNameOnMounted();
     interceptUserActiveDatasetOnMounted(QaStatus.Pending);
     interceptPatchRequest();
-    cy.mountWithPlugins(ViewDataRequestPage, {
-      keycloak: minimalKeycloakMock({}),
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      props: {
-        requestId: requestId,
-      },
-    }).then(() => {
-      checkBasicPageElements(RequestStatus.Open);
-      cy.get('[data-test="card_providedContactDetails"]')
-        .should('exist')
-        .get('[data-test="newMessage"]')
-        .should('exist');
-
-      cy.get('[data-test="resolveRequestButton"]').should('exist').should('not.be.visible');
-      cy.get('[data-test="viewDataset"]').should('exist').should('not.be.visible');
-      cy.get('[data-test="card_withdrawn"]')
-        .should('exist')
-        .within(() => {
-          cy.contains(
-            'Once a data request is withdrawn, it will be removed from your data request list.' +
-              ' The company owner will not be notified anymore.'
-          ).should('exist');
-          cy.contains('Withdraw Request').should('exist');
-          cy.contains('Withdraw request.').should('exist').click();
-        });
-      cy.get('[data-test="successModal"]').should('exist').should('be.visible').contains('CLOSE').click();
-      cy.get('[data-test="successModal"]').should('not.exist');
+    getMountingFunction({ keycloak: minimalKeycloakMock({}) })(ViewDataRequestPage, {
+      props: { requestId: requestId },
     });
+    checkBasicPageElements(RequestStatus.Open);
+    cy.get('[data-test="card_providedContactDetails"]').should('exist').get('[data-test="newMessage"]').should('exist');
+
+    cy.get('[data-test="resolveRequestButton"]').should('exist').should('not.be.visible');
+    cy.get('[data-test="viewDataset"]').should('exist').should('not.be.visible');
+    cy.get('[data-test="card_withdrawn"]')
+      .should('exist')
+      .within(() => {
+        cy.contains(
+          'Once a data request is withdrawn, it will be removed from your data request list.' +
+            ' The company owner will not be notified anymore.'
+        ).should('exist');
+        cy.contains('Withdraw Request').should('exist');
+        cy.contains('Withdraw request.').should('exist').click();
+      });
+    cy.get('[data-test="successModal"]').should('exist').should('be.visible').contains('CLOSE').click();
+    cy.get('[data-test="successModal"]').should('not.exist');
   });
+
   it('Check view data request page for open request with data and check the routing to data view page', function () {
     interceptUserAskForSingleDataRequestsOnMounted(createStoredDataRequest(RequestStatus.Open, []));
     interceptUserAskForCompanyNameOnMounted();
     interceptUserActiveDatasetOnMounted(QaStatus.Accepted);
     interceptPatchRequest();
-    cy.mountWithPlugins(ViewDataRequestPage, {
-      keycloak: minimalKeycloakMock({}),
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      props: {
-        requestId: requestId,
-      },
+    getMountingFunction({ keycloak: minimalKeycloakMock({}) })(ViewDataRequestPage, {
+      props: { requestId: requestId },
     }).then((mounted) => {
       checkBasicPageElements(RequestStatus.Open);
       cy.get('[data-test="viewDataset"]').should('exist').click();
@@ -224,6 +207,7 @@ describe('Component tests for the view data request page', function (): void {
         .should('eq', `/companies/${dummyCompanyId}/frameworks/${dummyFramework}`);
     });
   });
+
   it(
     'Check view data request page for answered request and ' +
       'check the routing to data view page on resolve request click',
@@ -233,13 +217,8 @@ describe('Component tests for the view data request page', function (): void {
       interceptUserAskForCompanyNameOnMounted();
       interceptUserActiveDatasetOnMounted(QaStatus.Accepted);
       interceptPatchRequest();
-      cy.mountWithPlugins(ViewDataRequestPage, {
-        keycloak: minimalKeycloakMock({}),
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
-        props: {
-          requestId: requestId,
-        },
+      getMountingFunction({ keycloak: minimalKeycloakMock({}) })(ViewDataRequestPage, {
+        props: { requestId: requestId },
       }).then((mounted) => {
         checkBasicPageElements(dummyRequest.requestStatus);
         cy.get('[data-test="resolveRequestButton"]').should('exist').click();
@@ -249,6 +228,7 @@ describe('Component tests for the view data request page', function (): void {
       });
     }
   );
+
   it(
     'Check view data request page for open request and check that the message history is displayed ' +
       'and that a user can add a new message',
@@ -257,20 +237,12 @@ describe('Component tests for the view data request page', function (): void {
       interceptUserAskForCompanyNameOnMounted();
       interceptUserActiveDatasetOnMounted(QaStatus.Accepted);
       interceptPatchRequest();
-      cy.mountWithPlugins(ViewDataRequestPage, {
-        keycloak: minimalKeycloakMock({ userId: dummyUserId }),
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
-        props: {
-          requestId: requestId,
-        },
-      }).then(() => {
-        checkBasicPageElements(RequestStatus.Open);
-        cy.get('[data-test="newMessage"]').should('exist').click();
-        checkEmailFieldsAndCheckBox('newMessageModal', 'addMessageButton');
+      getMountingFunction({ keycloak: minimalKeycloakMock({ userId: dummyUserId }) })(ViewDataRequestPage, {
+        props: { requestId: requestId },
       });
+      checkBasicPageElements(RequestStatus.Open);
+      cy.get('[data-test="newMessage"]').should('exist').click();
+      checkEmailFieldsAndCheckBox('newMessageModal', 'addMessageButton');
     }
   );
 });
-
-// TODO Emanuel: remove all ts-ignores!
