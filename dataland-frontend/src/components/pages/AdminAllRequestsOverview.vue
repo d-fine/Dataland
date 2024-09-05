@@ -181,7 +181,6 @@ import type { FrameworkSelectableItem, SelectableItem } from '@/utils/FrameworkD
 import AuthenticationWrapper from '@/components/wrapper/AuthenticationWrapper.vue';
 import { accessStatusBadgeClass, badgeClass } from '@/utils/RequestUtils';
 import { retrieveAvailableFrameworks, retrieveAvailableRequestStatus } from '@/utils/RequestsOverviewPageUtils';
-import type { DataTypeEnum } from '@clients/backend';
 
 export default defineComponent({
   name: 'MyDataRequestsOverview',
