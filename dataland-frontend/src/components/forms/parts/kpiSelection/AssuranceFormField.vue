@@ -65,7 +65,7 @@
             :validation-rules="{ validatePageNumber }"
             validation="validatePageNumber"
             validation-label="Page"
-            ignore="true"
+            ignore="false"
           />
           <FormKit type="group" name="dataSource" v-if="isValidFileName(isMounted, currentReportValue)">
             <FormKit type="hidden" name="fileName" v-model="currentReportValue" />
@@ -81,7 +81,7 @@
 <script lang="ts">
 // @ts-nocheck
 import { defineComponent, nextTick } from 'vue';
-import { validatePageNumber, PAGE_NUMBER_VALIDATION_MESSAGE } from '@/utils/ValidationsUtils';
+import { validatePageNumber } from '@/utils/ValidationsUtils';
 import { FormKit } from '@formkit/vue';
 import { BaseFormFieldProps } from '@/components/forms/parts/fields/FormFieldProps';
 import UploadFormHeader from '@/components/forms/parts/elements/basic/UploadFormHeader.vue';
@@ -107,7 +107,8 @@ export default defineComponent({
   components: { SingleSelectFormField, FormKit, UploadFormHeader },
   data() {
     return {
-      pageNumberValidationMessage: PAGE_NUMBER_VALIDATION_MESSAGE,
+      pageNumberValidationMessage:
+        'Page number must be a non-zero number or ' + 'a range of ascending non-zero numbers, e.g. 2, 13-15 etc.',
       isMounted: false,
       euTaxonomyKpiNameMappings,
       euTaxonomyKpiInfoMappings,
@@ -123,7 +124,7 @@ export default defineComponent({
     };
   },
   mounted() {
-    void nextTick(() => (this.isMounted = true));
+    nextTick(() => (this.isMounted = true));
   },
   computed: {
     reportsName(): string[] {

@@ -91,7 +91,7 @@
                 :validation-rules="{ validatePageNumber }"
                 validation="validatePageNumber"
                 validation-label="Page"
-                ignore="true"
+                ignore="false"
               />
             </div>
 
