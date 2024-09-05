@@ -80,7 +80,7 @@
 					"electricityTotalInMWh": {
 						"value": 16767.01,
 						"dataSource": {
-							"page": 72,
+							"page": "72",
 							"fileName": "ESEFReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "supply-chains"
@@ -94,7 +94,7 @@
 					"scope1EmissionsInTonnesOfCO2Equivalents": {
 						"value": 80980.74,
 						"dataSource": {
-							"page": 891,
+							"page": "891",
 							"fileName": "IntegratedReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "eyeballs"
@@ -105,7 +105,7 @@
 					"scope2EmissionsInTonnesOfCO2Equivalents": {
 						"value": 83660.29,
 						"dataSource": {
-							"page": 1186,
+							"page": "1186",
 							"fileName": "ESEFReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "solutions"
@@ -116,7 +116,7 @@
 					"scope3EmissionsInTonnesOfCO2Equivalents": {
 						"value": 33012.03,
 						"dataSource": {
-							"page": 937,
+							"page": "937",
 							"fileName": "IntegratedReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "users"
@@ -220,7 +220,7 @@
 					"waterWithdrawalAllSitesInCubicMeters": {
 						"value": null,
 						"dataSource": {
-							"page": 1173,
+							"page": "1173",
 							"fileName": "IntegratedReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "technologies"
@@ -456,7 +456,7 @@
 					"electricityTotalInMWh": {
 						"value": 23262.47,
 						"dataSource": {
-							"page": 255,
+							"page": "255",
 							"fileName": "AnnualReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "deliverables"
@@ -470,7 +470,7 @@
 					"scope1EmissionsInTonnesOfCO2Equivalents": {
 						"value": 43369.8,
 						"dataSource": {
-							"page": 497,
+							"page": "497",
 							"fileName": "SustainabilityReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "networks"
@@ -481,7 +481,7 @@
 					"scope2EmissionsInTonnesOfCO2Equivalents": {
 						"value": 50394.95,
 						"dataSource": {
-							"page": 371,
+							"page": "371",
 							"fileName": "AnnualReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "web services"
@@ -773,7 +773,7 @@
 					"electricityTotalInMWh": {
 						"value": 79138.08,
 						"dataSource": {
-							"page": 256,
+							"page": "256",
 							"fileName": "AnnualReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "communities"
@@ -786,7 +786,7 @@
 					"totalEmissionsInTonnesOfCO2Equivalents": {
 						"value": 76222.39,
 						"dataSource": {
-							"page": 273,
+							"page": "273",
 							"fileName": "IntegratedReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "architectures"
@@ -797,7 +797,7 @@
 					"scope1EmissionsInTonnesOfCO2Equivalents": {
 						"value": 19065.79,
 						"dataSource": {
-							"page": 714,
+							"page": "714",
 							"fileName": "ESEFReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "metrics"
@@ -808,7 +808,7 @@
 					"scope2EmissionsInTonnesOfCO2Equivalents": {
 						"value": null,
 						"dataSource": {
-							"page": 936,
+							"page": "936",
 							"fileName": "SustainabilityReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "users"
@@ -819,7 +819,7 @@
 					"scope3EmissionsInTonnesOfCO2Equivalents": {
 						"value": 20386.81,
 						"dataSource": {
-							"page": 1096,
+							"page": "1096",
 							"fileName": "ESEFReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "partnerships"
@@ -971,7 +971,7 @@
 					"waterWithdrawalAllSitesInCubicMeters": {
 						"value": 85553.92,
 						"dataSource": {
-							"page": 340,
+							"page": "340",
 							"fileName": "AnnualReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "partnerships"
@@ -1225,7 +1225,7 @@
 					"electricityTotalInMWh": {
 						"value": 39614.3,
 						"dataSource": {
-							"page": 175,
+							"page": "175",
 							"fileName": "SustainabilityReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "schemas"
@@ -1238,7 +1238,7 @@
 					"totalEmissionsInTonnesOfCO2Equivalents": {
 						"value": 26473.5,
 						"dataSource": {
-							"page": 234,
+							"page": "234",
 							"fileName": "IntegratedReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "platforms"
@@ -1249,7 +1249,7 @@
 					"scope1EmissionsInTonnesOfCO2Equivalents": {
 						"value": 55348.32,
 						"dataSource": {
-							"page": 670,
+							"page": "670",
 							"fileName": "ESEFReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "web services"
@@ -1266,7 +1266,7 @@
 					"scope3EmissionsInTonnesOfCO2Equivalents": {
 						"value": null,
 						"dataSource": {
-							"page": 51,
+							"page": "51",
 							"fileName": "ESEFReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "convergence"
@@ -1313,7 +1313,7 @@
 					"waterWithdrawalAllSitesInCubicMeters": {
 						"value": 64734.43,
 						"dataSource": {
-							"page": 343,
+							"page": "343",
 							"fileName": "SustainabilityReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "solutions"
@@ -1563,7 +1563,7 @@
 					"electricityTotalInMWh": {
 						"value": 66066.78,
 						"dataSource": {
-							"page": 146,
+							"page": "146",
 							"fileName": "ESEFReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "functionalities"
@@ -1577,7 +1577,7 @@
 					"scope1EmissionsInTonnesOfCO2Equivalents": {
 						"value": 88055.05,
 						"dataSource": {
-							"page": 1017,
+							"page": "1017",
 							"fileName": "IntegratedReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "networks"
@@ -1588,7 +1588,7 @@
 					"scope2EmissionsInTonnesOfCO2Equivalents": {
 						"value": null,
 						"dataSource": {
-							"page": 415,
+							"page": "415",
 							"fileName": "IntegratedReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "web services"
@@ -1690,7 +1690,7 @@
 					"waterWithdrawalAllSitesInCubicMeters": {
 						"value": null,
 						"dataSource": {
-							"page": 667,
+							"page": "667",
 							"fileName": "ESEFReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "convergence"
@@ -1906,7 +1906,7 @@
 					"electricityTotalInMWh": {
 						"value": 52558.03,
 						"dataSource": {
-							"page": 939,
+							"page": "939",
 							"fileName": "SustainabilityReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "convergence"
@@ -1919,7 +1919,7 @@
 					"totalEmissionsInTonnesOfCO2Equivalents": {
 						"value": 95236.16,
 						"dataSource": {
-							"page": 416,
+							"page": "416",
 							"fileName": "AnnualReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "experiences"
@@ -1930,7 +1930,7 @@
 					"scope1EmissionsInTonnesOfCO2Equivalents": {
 						"value": 29594.34,
 						"dataSource": {
-							"page": 1125,
+							"page": "1125",
 							"fileName": "ESEFReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "portals"
@@ -1941,7 +1941,7 @@
 					"scope2EmissionsInTonnesOfCO2Equivalents": {
 						"value": 27418.91,
 						"dataSource": {
-							"page": 404,
+							"page": "404",
 							"fileName": "IntegratedReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "experiences"
@@ -1952,7 +1952,7 @@
 					"scope3EmissionsInTonnesOfCO2Equivalents": {
 						"value": null,
 						"dataSource": {
-							"page": 808,
+							"page": "808",
 							"fileName": "ESEFReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "platforms"
@@ -2056,7 +2056,7 @@
 					"waterWithdrawalAllSitesInCubicMeters": {
 						"value": null,
 						"dataSource": {
-							"page": 396,
+							"page": "396",
 							"fileName": "IntegratedReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "bandwidth"
@@ -2309,7 +2309,7 @@
 					"electricityTotalInMWh": {
 						"value": 84281.94,
 						"dataSource": {
-							"page": 5,
+							"page": "5",
 							"fileName": "ESEFReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "relationships"
@@ -2322,7 +2322,7 @@
 					"totalEmissionsInTonnesOfCO2Equivalents": {
 						"value": 21105.4,
 						"dataSource": {
-							"page": 381,
+							"page": "381",
 							"fileName": "AnnualReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "applications"
@@ -2333,7 +2333,7 @@
 					"scope1EmissionsInTonnesOfCO2Equivalents": {
 						"value": 84706.14,
 						"dataSource": {
-							"page": 1077,
+							"page": "1077",
 							"fileName": "ESEFReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "content"
@@ -2344,7 +2344,7 @@
 					"scope2EmissionsInTonnesOfCO2Equivalents": {
 						"value": 29398.8,
 						"dataSource": {
-							"page": 212,
+							"page": "212",
 							"fileName": "ESEFReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "deliverables"
@@ -2355,7 +2355,7 @@
 					"scope3EmissionsInTonnesOfCO2Equivalents": {
 						"value": 17454.87,
 						"dataSource": {
-							"page": 210,
+							"page": "210",
 							"fileName": "IntegratedReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "markets"
@@ -2678,7 +2678,7 @@
 					"electricityTotalInMWh": {
 						"value": null,
 						"dataSource": {
-							"page": 1058,
+							"page": "1058",
 							"fileName": "SustainabilityReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "lifetime value"
@@ -2692,7 +2692,7 @@
 					"scope1EmissionsInTonnesOfCO2Equivalents": {
 						"value": 21499.01,
 						"dataSource": {
-							"page": 880,
+							"page": "880",
 							"fileName": "ESEFReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "relationships"
@@ -2703,7 +2703,7 @@
 					"scope2EmissionsInTonnesOfCO2Equivalents": {
 						"value": 80229.77,
 						"dataSource": {
-							"page": 1009,
+							"page": "1009",
 							"fileName": "ESEFReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "action-items"
@@ -2714,7 +2714,7 @@
 					"scope3EmissionsInTonnesOfCO2Equivalents": {
 						"value": 14458.31,
 						"dataSource": {
-							"page": 21,
+							"page": "21",
 							"fileName": "SustainabilityReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "eyeballs"
@@ -2761,7 +2761,7 @@
 					"waterWithdrawalAllSitesInCubicMeters": {
 						"value": null,
 						"dataSource": {
-							"page": 50,
+							"page": "50",
 							"fileName": "SustainabilityReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "interfaces"
@@ -2984,7 +2984,7 @@
 					"totalEmissionsInTonnesOfCO2Equivalents": {
 						"value": 44688.1,
 						"dataSource": {
-							"page": 265,
+							"page": "265",
 							"fileName": "IntegratedReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "bandwidth"
@@ -2995,7 +2995,7 @@
 					"scope1EmissionsInTonnesOfCO2Equivalents": {
 						"value": null,
 						"dataSource": {
-							"page": 706,
+							"page": "706",
 							"fileName": "IntegratedReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "markets"
@@ -3007,7 +3007,7 @@
 					"scope3EmissionsInTonnesOfCO2Equivalents": {
 						"value": 62689,
 						"dataSource": {
-							"page": 225,
+							"page": "225",
 							"fileName": "IntegratedReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "systems"
@@ -3159,7 +3159,7 @@
 					"waterWithdrawalAllSitesInCubicMeters": {
 						"value": null,
 						"dataSource": {
-							"page": 240,
+							"page": "240",
 							"fileName": "IntegratedReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "deliverables"
@@ -3428,7 +3428,7 @@
 					"scope3EmissionsInTonnesOfCO2Equivalents": {
 						"value": 3692.2,
 						"dataSource": {
-							"page": 977,
+							"page": "977",
 							"fileName": "AnnualReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "synergies"
@@ -3508,7 +3508,7 @@
 					"waterWithdrawalAllSitesInCubicMeters": {
 						"value": 10881.13,
 						"dataSource": {
-							"page": 1122,
+							"page": "1122",
 							"fileName": "AnnualReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "technologies"
@@ -3728,7 +3728,7 @@
 					"electricityTotalInMWh": {
 						"value": null,
 						"dataSource": {
-							"page": 206,
+							"page": "206",
 							"fileName": "ESEFReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "lifetime value"
@@ -3742,7 +3742,7 @@
 					"scope1EmissionsInTonnesOfCO2Equivalents": {
 						"value": null,
 						"dataSource": {
-							"page": 772,
+							"page": "772",
 							"fileName": "AnnualReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "e-commerce"
@@ -3753,7 +3753,7 @@
 					"scope2EmissionsInTonnesOfCO2Equivalents": {
 						"value": null,
 						"dataSource": {
-							"page": 576,
+							"page": "576",
 							"fileName": "ESEFReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "e-commerce"
@@ -3764,7 +3764,7 @@
 					"scope3EmissionsInTonnesOfCO2Equivalents": {
 						"value": null,
 						"dataSource": {
-							"page": 653,
+							"page": "653",
 							"fileName": "ESEFReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "applications"
@@ -4119,7 +4119,7 @@
 					"electricityTotalInMWh": {
 						"value": null,
 						"dataSource": {
-							"page": 342,
+							"page": "342",
 							"fileName": "SustainabilityReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "mindshare"
@@ -4132,7 +4132,7 @@
 					"totalEmissionsInTonnesOfCO2Equivalents": {
 						"value": null,
 						"dataSource": {
-							"page": 870,
+							"page": "870",
 							"fileName": "AnnualReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "schemas"
@@ -4143,7 +4143,7 @@
 					"scope1EmissionsInTonnesOfCO2Equivalents": {
 						"value": null,
 						"dataSource": {
-							"page": 246,
+							"page": "246",
 							"fileName": "SustainabilityReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "lifetime value"
@@ -4154,7 +4154,7 @@
 					"scope2EmissionsInTonnesOfCO2Equivalents": {
 						"value": null,
 						"dataSource": {
-							"page": 556,
+							"page": "556",
 							"fileName": "AnnualReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "infrastructures"
@@ -4192,7 +4192,7 @@
 					"waterWithdrawalAllSitesInCubicMeters": {
 						"value": 65717.26,
 						"dataSource": {
-							"page": 822,
+							"page": "822",
 							"fileName": "AnnualReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "lifetime value"
@@ -4445,7 +4445,7 @@
 					"electricityTotalInMWh": {
 						"value": 73868.84,
 						"dataSource": {
-							"page": 1038,
+							"page": "1038",
 							"fileName": "ESEFReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "deliverables"
@@ -4458,7 +4458,7 @@
 					"totalEmissionsInTonnesOfCO2Equivalents": {
 						"value": null,
 						"dataSource": {
-							"page": 134,
+							"page": "134",
 							"fileName": "IntegratedReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "technologies"
@@ -4469,7 +4469,7 @@
 					"scope1EmissionsInTonnesOfCO2Equivalents": {
 						"value": null,
 						"dataSource": {
-							"page": 394,
+							"page": "394",
 							"fileName": "IntegratedReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "partnerships"
@@ -4480,7 +4480,7 @@
 					"scope2EmissionsInTonnesOfCO2Equivalents": {
 						"value": null,
 						"dataSource": {
-							"page": 1012,
+							"page": "1012",
 							"fileName": "ESEFReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "web services"
@@ -4615,7 +4615,7 @@
 					"waterWithdrawalAllSitesInCubicMeters": {
 						"value": 35607.64,
 						"dataSource": {
-							"page": 691,
+							"page": "691",
 							"fileName": "SustainabilityReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "infrastructures"
@@ -4859,7 +4859,7 @@
 					"electricityTotalInMWh": {
 						"value": 11666.62,
 						"dataSource": {
-							"page": 63,
+							"page": "63",
 							"fileName": "SustainabilityReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "technologies"
@@ -4884,7 +4884,7 @@
 					"scope2EmissionsInTonnesOfCO2Equivalents": {
 						"value": 89853.77,
 						"dataSource": {
-							"page": 700,
+							"page": "700",
 							"fileName": "SustainabilityReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "initiatives"
@@ -4895,7 +4895,7 @@
 					"scope3EmissionsInTonnesOfCO2Equivalents": {
 						"value": 76987.23,
 						"dataSource": {
-							"page": 631,
+							"page": "631",
 							"fileName": "IntegratedReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "portals"
@@ -5010,7 +5010,7 @@
 					"waterWithdrawalAllSitesInCubicMeters": {
 						"value": 54471.16,
 						"dataSource": {
-							"page": 330,
+							"page": "330",
 							"fileName": "AnnualReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "technologies"
@@ -5205,7 +5205,7 @@
 					"electricityTotalInMWh": {
 						"value": 37921.33,
 						"dataSource": {
-							"page": 402,
+							"page": "402",
 							"fileName": "SustainabilityReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "e-commerce"
@@ -5219,7 +5219,7 @@
 					"scope1EmissionsInTonnesOfCO2Equivalents": {
 						"value": 53682.71,
 						"dataSource": {
-							"page": 53,
+							"page": "53",
 							"fileName": "SustainabilityReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "systems"
@@ -5230,7 +5230,7 @@
 					"scope2EmissionsInTonnesOfCO2Equivalents": {
 						"value": 20176.68,
 						"dataSource": {
-							"page": 345,
+							"page": "345",
 							"fileName": "ESEFReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "lifetime value"
@@ -5241,7 +5241,7 @@
 					"scope3EmissionsInTonnesOfCO2Equivalents": {
 						"value": null,
 						"dataSource": {
-							"page": 775,
+							"page": "775",
 							"fileName": "SustainabilityReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "e-markets"
@@ -5369,7 +5369,7 @@
 					"waterWithdrawalAllSitesInCubicMeters": {
 						"value": 76533.92,
 						"dataSource": {
-							"page": 379,
+							"page": "379",
 							"fileName": "SustainabilityReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "functionalities"
@@ -5665,7 +5665,7 @@
 					"electricityTotalInMWh": {
 						"value": 59795.9,
 						"dataSource": {
-							"page": 311,
+							"page": "311",
 							"fileName": "ESEFReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "e-markets"
@@ -5678,7 +5678,7 @@
 					"totalEmissionsInTonnesOfCO2Equivalents": {
 						"value": 33948.48,
 						"dataSource": {
-							"page": 645,
+							"page": "645",
 							"fileName": "ESEFReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "synergies"
@@ -5689,7 +5689,7 @@
 					"scope1EmissionsInTonnesOfCO2Equivalents": {
 						"value": 91890.78,
 						"dataSource": {
-							"page": 1107,
+							"page": "1107",
 							"fileName": "ESEFReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "mindshare"
@@ -5700,7 +5700,7 @@
 					"scope2EmissionsInTonnesOfCO2Equivalents": {
 						"value": 53948.67,
 						"dataSource": {
-							"page": 1092,
+							"page": "1092",
 							"fileName": "ESEFReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "schemas"
@@ -5778,7 +5778,7 @@
 					"waterWithdrawalAllSitesInCubicMeters": {
 						"value": null,
 						"dataSource": {
-							"page": 151,
+							"page": "151",
 							"fileName": "ESEFReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "architectures"
@@ -6039,7 +6039,7 @@
 					"electricityTotalInMWh": {
 						"value": null,
 						"dataSource": {
-							"page": 1109,
+							"page": "1109",
 							"fileName": "ESEFReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "e-business"
@@ -6053,7 +6053,7 @@
 					"scope1EmissionsInTonnesOfCO2Equivalents": {
 						"value": null,
 						"dataSource": {
-							"page": 381,
+							"page": "381",
 							"fileName": "ESEFReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "metrics"
@@ -6064,7 +6064,7 @@
 					"scope2EmissionsInTonnesOfCO2Equivalents": {
 						"value": 50131.28,
 						"dataSource": {
-							"page": 592,
+							"page": "592",
 							"fileName": "ESEFReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "e-commerce"
@@ -6075,7 +6075,7 @@
 					"scope3EmissionsInTonnesOfCO2Equivalents": {
 						"value": 38766.39,
 						"dataSource": {
-							"page": 699,
+							"page": "699",
 							"fileName": "ESEFReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "content"
@@ -6166,7 +6166,7 @@
 					"waterWithdrawalAllSitesInCubicMeters": {
 						"value": null,
 						"dataSource": {
-							"page": 888,
+							"page": "888",
 							"fileName": "ESEFReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "relationships"
@@ -6400,7 +6400,7 @@
 					"totalEmissionsInTonnesOfCO2Equivalents": {
 						"value": 43328.52,
 						"dataSource": {
-							"page": 976,
+							"page": "976",
 							"fileName": "IntegratedReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "eyeballs"
@@ -6411,7 +6411,7 @@
 					"scope1EmissionsInTonnesOfCO2Equivalents": {
 						"value": null,
 						"dataSource": {
-							"page": 884,
+							"page": "884",
 							"fileName": "AnnualReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "web services"
@@ -6422,7 +6422,7 @@
 					"scope2EmissionsInTonnesOfCO2Equivalents": {
 						"value": 98833.83,
 						"dataSource": {
-							"page": 671,
+							"page": "671",
 							"fileName": "IntegratedReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "e-markets"
@@ -6433,7 +6433,7 @@
 					"scope3EmissionsInTonnesOfCO2Equivalents": {
 						"value": null,
 						"dataSource": {
-							"page": 668,
+							"page": "668",
 							"fileName": "AnnualReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "applications"
@@ -6548,7 +6548,7 @@
 					"waterWithdrawalAllSitesInCubicMeters": {
 						"value": 39884.34,
 						"dataSource": {
-							"page": 1099,
+							"page": "1099",
 							"fileName": "IntegratedReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "ROI"
@@ -6797,7 +6797,7 @@
 					"scope1EmissionsInTonnesOfCO2Equivalents": {
 						"value": null,
 						"dataSource": {
-							"page": 504,
+							"page": "504",
 							"fileName": "SustainabilityReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "blockchains"
@@ -6808,7 +6808,7 @@
 					"scope2EmissionsInTonnesOfCO2Equivalents": {
 						"value": null,
 						"dataSource": {
-							"page": 880,
+							"page": "880",
 							"fileName": "SustainabilityReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "methodologies"
@@ -6819,7 +6819,7 @@
 					"scope3EmissionsInTonnesOfCO2Equivalents": {
 						"value": 58479.2,
 						"dataSource": {
-							"page": 1026,
+							"page": "1026",
 							"fileName": "SustainabilityReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "e-business"
@@ -6963,7 +6963,7 @@
 					"waterWithdrawalAllSitesInCubicMeters": {
 						"value": null,
 						"dataSource": {
-							"page": 281,
+							"page": "281",
 							"fileName": "ESEFReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "supply-chains"
@@ -7196,7 +7196,7 @@
 					"electricityTotalInMWh": {
 						"value": null,
 						"dataSource": {
-							"page": 855,
+							"page": "855",
 							"fileName": "SustainabilityReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "initiatives"
@@ -7210,7 +7210,7 @@
 					"scope1EmissionsInTonnesOfCO2Equivalents": {
 						"value": null,
 						"dataSource": {
-							"page": 632,
+							"page": "632",
 							"fileName": "SustainabilityReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "supply-chains"
@@ -7221,7 +7221,7 @@
 					"scope2EmissionsInTonnesOfCO2Equivalents": {
 						"value": null,
 						"dataSource": {
-							"page": 958,
+							"page": "958",
 							"fileName": "SustainabilityReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "experiences"
@@ -7264,7 +7264,7 @@
 					"waterWithdrawalAllSitesInCubicMeters": {
 						"value": 8869.75,
 						"dataSource": {
-							"page": 800,
+							"page": "800",
 							"fileName": "SustainabilityReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "methodologies"
@@ -7534,7 +7534,7 @@
 					"electricityTotalInMWh": {
 						"value": 51661.37,
 						"dataSource": {
-							"page": 1182,
+							"page": "1182",
 							"fileName": "SustainabilityReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "paradigms"
@@ -7547,7 +7547,7 @@
 					"totalEmissionsInTonnesOfCO2Equivalents": {
 						"value": 65364.49,
 						"dataSource": {
-							"page": 709,
+							"page": "709",
 							"fileName": "ESEFReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "synergies"
@@ -7558,7 +7558,7 @@
 					"scope1EmissionsInTonnesOfCO2Equivalents": {
 						"value": 67674.47,
 						"dataSource": {
-							"page": 848,
+							"page": "848",
 							"fileName": "IntegratedReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "content"
@@ -7656,7 +7656,7 @@
 					"waterWithdrawalAllSitesInCubicMeters": {
 						"value": null,
 						"dataSource": {
-							"page": 472,
+							"page": "472",
 							"fileName": "IntegratedReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "infrastructures"
@@ -7923,7 +7923,7 @@
 					"electricityTotalInMWh": {
 						"value": 83270.38,
 						"dataSource": {
-							"page": 493,
+							"page": "493",
 							"fileName": "ESEFReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "e-markets"
@@ -7936,7 +7936,7 @@
 					"totalEmissionsInTonnesOfCO2Equivalents": {
 						"value": 69658.49,
 						"dataSource": {
-							"page": 714,
+							"page": "714",
 							"fileName": "AnnualReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "technologies"
@@ -7947,7 +7947,7 @@
 					"scope1EmissionsInTonnesOfCO2Equivalents": {
 						"value": null,
 						"dataSource": {
-							"page": 818,
+							"page": "818",
 							"fileName": "AnnualReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "architectures"
@@ -7958,7 +7958,7 @@
 					"scope2EmissionsInTonnesOfCO2Equivalents": {
 						"value": 72791.76,
 						"dataSource": {
-							"page": 147,
+							"page": "147",
 							"fileName": "AnnualReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "lifetime value"
@@ -7969,7 +7969,7 @@
 					"scope3EmissionsInTonnesOfCO2Equivalents": {
 						"value": 79118.26,
 						"dataSource": {
-							"page": 659,
+							"page": "659",
 							"fileName": "AnnualReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "technologies"
@@ -8108,7 +8108,7 @@
 					"waterWithdrawalAllSitesInCubicMeters": {
 						"value": 14137.57,
 						"dataSource": {
-							"page": 726,
+							"page": "726",
 							"fileName": "AnnualReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "methodologies"
@@ -8313,7 +8313,7 @@
 					"electricityTotalInMWh": {
 						"value": 51788.69,
 						"dataSource": {
-							"page": 323,
+							"page": "323",
 							"fileName": "AnnualReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "networks"
@@ -8327,7 +8327,7 @@
 					"scope1EmissionsInTonnesOfCO2Equivalents": {
 						"value": null,
 						"dataSource": {
-							"page": 1144,
+							"page": "1144",
 							"fileName": "IntegratedReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "methodologies"
@@ -8338,7 +8338,7 @@
 					"scope2EmissionsInTonnesOfCO2Equivalents": {
 						"value": 90822,
 						"dataSource": {
-							"page": 107,
+							"page": "107",
 							"fileName": "AnnualReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "content"
@@ -8349,7 +8349,7 @@
 					"scope3EmissionsInTonnesOfCO2Equivalents": {
 						"value": 56950.99,
 						"dataSource": {
-							"page": 574,
+							"page": "574",
 							"fileName": "AnnualReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "portals"
@@ -8391,7 +8391,7 @@
 					"waterWithdrawalAllSitesInCubicMeters": {
 						"value": null,
 						"dataSource": {
-							"page": 751,
+							"page": "751",
 							"fileName": "AnnualReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "users"
@@ -8624,7 +8624,7 @@
 					"totalEmissionsInTonnesOfCO2Equivalents": {
 						"value": 32502.38,
 						"dataSource": {
-							"page": 118,
+							"page": "118",
 							"fileName": "IntegratedReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "schemas"
@@ -8635,7 +8635,7 @@
 					"scope1EmissionsInTonnesOfCO2Equivalents": {
 						"value": 87601.87,
 						"dataSource": {
-							"page": 25,
+							"page": "25",
 							"fileName": "IntegratedReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "supply-chains"
@@ -8646,7 +8646,7 @@
 					"scope2EmissionsInTonnesOfCO2Equivalents": {
 						"value": 62112.56,
 						"dataSource": {
-							"page": 1042,
+							"page": "1042",
 							"fileName": "AnnualReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "e-markets"
@@ -8881,7 +8881,7 @@
 					"electricityTotalInMWh": {
 						"value": 98067.12,
 						"dataSource": {
-							"page": 834,
+							"page": "834",
 							"fileName": "AnnualReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "communities"
@@ -8894,7 +8894,7 @@
 					"totalEmissionsInTonnesOfCO2Equivalents": {
 						"value": null,
 						"dataSource": {
-							"page": 1098,
+							"page": "1098",
 							"fileName": "AnnualReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "e-business"
@@ -8911,7 +8911,7 @@
 					"scope2EmissionsInTonnesOfCO2Equivalents": {
 						"value": null,
 						"dataSource": {
-							"page": 526,
+							"page": "526",
 							"fileName": "AnnualReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "web services"
@@ -8922,7 +8922,7 @@
 					"scope3EmissionsInTonnesOfCO2Equivalents": {
 						"value": 72878.61,
 						"dataSource": {
-							"page": 177,
+							"page": "177",
 							"fileName": "AnnualReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "e-business"
@@ -9056,7 +9056,7 @@
 					"waterWithdrawalAllSitesInCubicMeters": {
 						"value": null,
 						"dataSource": {
-							"page": 707,
+							"page": "707",
 							"fileName": "AnnualReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "metrics"
@@ -9361,7 +9361,7 @@
 					"electricityTotalInMWh": {
 						"value": null,
 						"dataSource": {
-							"page": 457,
+							"page": "457",
 							"fileName": "AnnualReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "lifetime value"
@@ -9374,7 +9374,7 @@
 					"totalEmissionsInTonnesOfCO2Equivalents": {
 						"value": null,
 						"dataSource": {
-							"page": 1174,
+							"page": "1174",
 							"fileName": "AnnualReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "deliverables"
@@ -9386,7 +9386,7 @@
 					"scope2EmissionsInTonnesOfCO2Equivalents": {
 						"value": 35824.84,
 						"dataSource": {
-							"page": 22,
+							"page": "22",
 							"fileName": "IntegratedReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "blockchains"
@@ -9397,7 +9397,7 @@
 					"scope3EmissionsInTonnesOfCO2Equivalents": {
 						"value": 59155.81,
 						"dataSource": {
-							"page": 1092,
+							"page": "1092",
 							"fileName": "AnnualReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "users"
@@ -9565,7 +9565,7 @@
 					"waterWithdrawalAllSitesInCubicMeters": {
 						"value": null,
 						"dataSource": {
-							"page": 235,
+							"page": "235",
 							"fileName": "IntegratedReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "solutions"
@@ -9777,7 +9777,7 @@
 					"totalEmissionsInTonnesOfCO2Equivalents": {
 						"value": null,
 						"dataSource": {
-							"page": 316,
+							"page": "316",
 							"fileName": "ESEFReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "paradigms"
@@ -9788,7 +9788,7 @@
 					"scope1EmissionsInTonnesOfCO2Equivalents": {
 						"value": 76996.05,
 						"dataSource": {
-							"page": 178,
+							"page": "178",
 							"fileName": "AnnualReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "mindshare"
@@ -9799,7 +9799,7 @@
 					"scope2EmissionsInTonnesOfCO2Equivalents": {
 						"value": 52071.47,
 						"dataSource": {
-							"page": 129,
+							"page": "129",
 							"fileName": "AnnualReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "niches"
@@ -9810,7 +9810,7 @@
 					"scope3EmissionsInTonnesOfCO2Equivalents": {
 						"value": null,
 						"dataSource": {
-							"page": 43,
+							"page": "43",
 							"fileName": "ESEFReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "systems"
@@ -10206,7 +10206,7 @@
 					"totalEmissionsInTonnesOfCO2Equivalents": {
 						"value": 84905.2,
 						"dataSource": {
-							"page": 1098,
+							"page": "1098",
 							"fileName": "ESEFReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "communities"
@@ -10217,7 +10217,7 @@
 					"scope1EmissionsInTonnesOfCO2Equivalents": {
 						"value": null,
 						"dataSource": {
-							"page": 106,
+							"page": "106",
 							"fileName": "ESEFReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "solutions"
@@ -10228,7 +10228,7 @@
 					"scope2EmissionsInTonnesOfCO2Equivalents": {
 						"value": null,
 						"dataSource": {
-							"page": 987,
+							"page": "987",
 							"fileName": "ESEFReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "communities"
@@ -10239,7 +10239,7 @@
 					"scope3EmissionsInTonnesOfCO2Equivalents": {
 						"value": 81786.25,
 						"dataSource": {
-							"page": 911,
+							"page": "911",
 							"fileName": "ESEFReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "web services"
@@ -10286,7 +10286,7 @@
 					"waterWithdrawalAllSitesInCubicMeters": {
 						"value": 93901.8,
 						"dataSource": {
-							"page": 374,
+							"page": "374",
 							"fileName": "ESEFReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "niches"
@@ -10493,7 +10493,7 @@
 					"electricityTotalInMWh": {
 						"value": 84954.77,
 						"dataSource": {
-							"page": 640,
+							"page": "640",
 							"fileName": "IntegratedReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "deliverables"
@@ -10507,7 +10507,7 @@
 					"scope1EmissionsInTonnesOfCO2Equivalents": {
 						"value": 80810.12,
 						"dataSource": {
-							"page": 869,
+							"page": "869",
 							"fileName": "IntegratedReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "metrics"
@@ -10518,7 +10518,7 @@
 					"scope2EmissionsInTonnesOfCO2Equivalents": {
 						"value": 26452.44,
 						"dataSource": {
-							"page": 193,
+							"page": "193",
 							"fileName": "IntegratedReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "communities"
@@ -10529,7 +10529,7 @@
 					"scope3EmissionsInTonnesOfCO2Equivalents": {
 						"value": null,
 						"dataSource": {
-							"page": 688,
+							"page": "688",
 							"fileName": "IntegratedReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "relationships"
@@ -10663,7 +10663,7 @@
 					"waterWithdrawalAllSitesInCubicMeters": {
 						"value": null,
 						"dataSource": {
-							"page": 104,
+							"page": "104",
 							"fileName": "IntegratedReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "communities"
@@ -10897,7 +10897,7 @@
 					"totalEmissionsInTonnesOfCO2Equivalents": {
 						"value": null,
 						"dataSource": {
-							"page": 88,
+							"page": "88",
 							"fileName": "ESEFReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "systems"
@@ -10910,7 +10910,7 @@
 					"scope3EmissionsInTonnesOfCO2Equivalents": {
 						"value": null,
 						"dataSource": {
-							"page": 420,
+							"page": "420",
 							"fileName": "SustainabilityReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "convergence"
@@ -11078,7 +11078,7 @@
 					"waterWithdrawalAllSitesInCubicMeters": {
 						"value": 18551.01,
 						"dataSource": {
-							"page": 611,
+							"page": "611",
 							"fileName": "AnnualReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "relationships"
@@ -11284,7 +11284,7 @@
 					"electricityTotalInMWh": {
 						"value": 11756.91,
 						"dataSource": {
-							"page": 309,
+							"page": "309",
 							"fileName": "AnnualReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "partnerships"
@@ -11297,7 +11297,7 @@
 					"totalEmissionsInTonnesOfCO2Equivalents": {
 						"value": 46685.17,
 						"dataSource": {
-							"page": 428,
+							"page": "428",
 							"fileName": "IntegratedReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "markets"
@@ -11308,7 +11308,7 @@
 					"scope1EmissionsInTonnesOfCO2Equivalents": {
 						"value": null,
 						"dataSource": {
-							"page": 480,
+							"page": "480",
 							"fileName": "IntegratedReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "applications"
@@ -11319,7 +11319,7 @@
 					"scope2EmissionsInTonnesOfCO2Equivalents": {
 						"value": 83341.91,
 						"dataSource": {
-							"page": 421,
+							"page": "421",
 							"fileName": "IntegratedReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "infrastructures"
@@ -11582,7 +11582,7 @@
 					"electricityTotalInMWh": {
 						"value": null,
 						"dataSource": {
-							"page": 137,
+							"page": "137",
 							"fileName": "SustainabilityReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "systems"
@@ -11597,7 +11597,7 @@
 					"scope2EmissionsInTonnesOfCO2Equivalents": {
 						"value": null,
 						"dataSource": {
-							"page": 114,
+							"page": "114",
 							"fileName": "SustainabilityReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "bandwidth"
@@ -11879,7 +11879,7 @@
 					"electricityTotalInMWh": {
 						"value": 54216.95,
 						"dataSource": {
-							"page": 977,
+							"page": "977",
 							"fileName": "AnnualReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "architectures"
@@ -11892,7 +11892,7 @@
 					"totalEmissionsInTonnesOfCO2Equivalents": {
 						"value": null,
 						"dataSource": {
-							"page": 529,
+							"page": "529",
 							"fileName": "AnnualReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "portals"
@@ -11903,7 +11903,7 @@
 					"scope1EmissionsInTonnesOfCO2Equivalents": {
 						"value": null,
 						"dataSource": {
-							"page": 287,
+							"page": "287",
 							"fileName": "AnnualReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "niches"
@@ -11915,7 +11915,7 @@
 					"scope3EmissionsInTonnesOfCO2Equivalents": {
 						"value": 44891.72,
 						"dataSource": {
-							"page": 447,
+							"page": "447",
 							"fileName": "AnnualReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "paradigms"
@@ -11962,7 +11962,7 @@
 					"waterWithdrawalAllSitesInCubicMeters": {
 						"value": null,
 						"dataSource": {
-							"page": 939,
+							"page": "939",
 							"fileName": "AnnualReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "niches"
@@ -12222,7 +12222,7 @@
 					"totalEmissionsInTonnesOfCO2Equivalents": {
 						"value": 90464.72,
 						"dataSource": {
-							"page": 305,
+							"page": "305",
 							"fileName": "AnnualReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "networks"
@@ -12239,7 +12239,7 @@
 					"scope2EmissionsInTonnesOfCO2Equivalents": {
 						"value": null,
 						"dataSource": {
-							"page": 875,
+							"page": "875",
 							"fileName": "SustainabilityReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "bandwidth"
@@ -12250,7 +12250,7 @@
 					"scope3EmissionsInTonnesOfCO2Equivalents": {
 						"value": 17471.6,
 						"dataSource": {
-							"page": 748,
+							"page": "748",
 							"fileName": "SustainabilityReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "deliverables"
@@ -12510,7 +12510,7 @@
 					"totalEmissionsInTonnesOfCO2Equivalents": {
 						"value": null,
 						"dataSource": {
-							"page": 1142,
+							"page": "1142",
 							"fileName": "AnnualReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "initiatives"
@@ -12521,7 +12521,7 @@
 					"scope1EmissionsInTonnesOfCO2Equivalents": {
 						"value": 68892.96,
 						"dataSource": {
-							"page": 790,
+							"page": "790",
 							"fileName": "AnnualReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "synergies"
@@ -12533,7 +12533,7 @@
 					"scope3EmissionsInTonnesOfCO2Equivalents": {
 						"value": null,
 						"dataSource": {
-							"page": 11,
+							"page": "11",
 							"fileName": "ESEFReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "partnerships"
@@ -12850,7 +12850,7 @@
 					"totalEmissionsInTonnesOfCO2Equivalents": {
 						"value": 88746.68,
 						"dataSource": {
-							"page": 481,
+							"page": "481",
 							"fileName": "AnnualReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "e-markets"
@@ -12867,7 +12867,7 @@
 					"scope2EmissionsInTonnesOfCO2Equivalents": {
 						"value": 28850.66,
 						"dataSource": {
-							"page": 624,
+							"page": "624",
 							"fileName": "IntegratedReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "web services"
@@ -12878,7 +12878,7 @@
 					"scope3EmissionsInTonnesOfCO2Equivalents": {
 						"value": 45011.2,
 						"dataSource": {
-							"page": 129,
+							"page": "129",
 							"fileName": "IntegratedReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "e-business"
@@ -13178,7 +13178,7 @@
 					"totalEmissionsInTonnesOfCO2Equivalents": {
 						"value": null,
 						"dataSource": {
-							"page": 648,
+							"page": "648",
 							"fileName": "IntegratedReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "systems"
@@ -13189,7 +13189,7 @@
 					"scope1EmissionsInTonnesOfCO2Equivalents": {
 						"value": 87189.9,
 						"dataSource": {
-							"page": 370,
+							"page": "370",
 							"fileName": "IntegratedReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "supply-chains"
@@ -13200,7 +13200,7 @@
 					"scope2EmissionsInTonnesOfCO2Equivalents": {
 						"value": null,
 						"dataSource": {
-							"page": 845,
+							"page": "845",
 							"fileName": "IntegratedReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "interfaces"
@@ -13500,7 +13500,7 @@
 					"electricityTotalInMWh": {
 						"value": null,
 						"dataSource": {
-							"page": 659,
+							"page": "659",
 							"fileName": "ESEFReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "relationships"
@@ -13513,7 +13513,7 @@
 					"totalEmissionsInTonnesOfCO2Equivalents": {
 						"value": 32566.99,
 						"dataSource": {
-							"page": 215,
+							"page": "215",
 							"fileName": "ESEFReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "functionalities"
@@ -13524,7 +13524,7 @@
 					"scope1EmissionsInTonnesOfCO2Equivalents": {
 						"value": 87653.92,
 						"dataSource": {
-							"page": 1104,
+							"page": "1104",
 							"fileName": "ESEFReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "systems"
@@ -13535,7 +13535,7 @@
 					"scope2EmissionsInTonnesOfCO2Equivalents": {
 						"value": null,
 						"dataSource": {
-							"page": 230,
+							"page": "230",
 							"fileName": "ESEFReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "infrastructures"
@@ -13546,7 +13546,7 @@
 					"scope3EmissionsInTonnesOfCO2Equivalents": {
 						"value": 94042.45,
 						"dataSource": {
-							"page": 1073,
+							"page": "1073",
 							"fileName": "ESEFReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "mindshare"
@@ -13961,7 +13961,7 @@
 					"electricityTotalInMWh": {
 						"value": 29019.68,
 						"dataSource": {
-							"page": 700,
+							"page": "700",
 							"fileName": "AnnualReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "metrics"
@@ -13980,7 +13980,7 @@
 					"scope1EmissionsInTonnesOfCO2Equivalents": {
 						"value": 16733.61,
 						"dataSource": {
-							"page": 706,
+							"page": "706",
 							"fileName": "ESEFReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "systems"
@@ -13991,7 +13991,7 @@
 					"scope2EmissionsInTonnesOfCO2Equivalents": {
 						"value": 89576.72,
 						"dataSource": {
-							"page": 812,
+							"page": "812",
 							"fileName": "AnnualReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "eyeballs"
@@ -14002,7 +14002,7 @@
 					"scope3EmissionsInTonnesOfCO2Equivalents": {
 						"value": null,
 						"dataSource": {
-							"page": 1060,
+							"page": "1060",
 							"fileName": "AnnualReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "lifetime value"
@@ -14283,7 +14283,7 @@
 					"electricityTotalInMWh": {
 						"value": null,
 						"dataSource": {
-							"page": 988,
+							"page": "988",
 							"fileName": "ESEFReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "blockchains"
@@ -14296,7 +14296,7 @@
 					"totalEmissionsInTonnesOfCO2Equivalents": {
 						"value": 62360.26,
 						"dataSource": {
-							"page": 1018,
+							"page": "1018",
 							"fileName": "ESEFReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "e-markets"
@@ -14307,7 +14307,7 @@
 					"scope1EmissionsInTonnesOfCO2Equivalents": {
 						"value": 8856.03,
 						"dataSource": {
-							"page": 972,
+							"page": "972",
 							"fileName": "ESEFReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "synergies"
@@ -14318,7 +14318,7 @@
 					"scope2EmissionsInTonnesOfCO2Equivalents": {
 						"value": 21474.68,
 						"dataSource": {
-							"page": 837,
+							"page": "837",
 							"fileName": "ESEFReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "markets"
@@ -14329,7 +14329,7 @@
 					"scope3EmissionsInTonnesOfCO2Equivalents": {
 						"value": 6898.48,
 						"dataSource": {
-							"page": 1152,
+							"page": "1152",
 							"fileName": "ESEFReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "markets"
@@ -14415,7 +14415,7 @@
 					"waterWithdrawalAllSitesInCubicMeters": {
 						"value": 41213.09,
 						"dataSource": {
-							"page": 685,
+							"page": "685",
 							"fileName": "ESEFReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "eyeballs"
@@ -14675,7 +14675,7 @@
 					"electricityTotalInMWh": {
 						"value": null,
 						"dataSource": {
-							"page": 562,
+							"page": "562",
 							"fileName": "SustainabilityReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "niches"
@@ -14688,7 +14688,7 @@
 					"totalEmissionsInTonnesOfCO2Equivalents": {
 						"value": null,
 						"dataSource": {
-							"page": 138,
+							"page": "138",
 							"fileName": "AnnualReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "systems"
@@ -14699,7 +14699,7 @@
 					"scope1EmissionsInTonnesOfCO2Equivalents": {
 						"value": 40084.67,
 						"dataSource": {
-							"page": 282,
+							"page": "282",
 							"fileName": "SustainabilityReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "lifetime value"
@@ -15078,7 +15078,7 @@
 					"totalEmissionsInTonnesOfCO2Equivalents": {
 						"value": 7957.04,
 						"dataSource": {
-							"page": 1103,
+							"page": "1103",
 							"fileName": "AnnualReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "bandwidth"
@@ -15101,7 +15101,7 @@
 					"scope3EmissionsInTonnesOfCO2Equivalents": {
 						"value": 58500.78,
 						"dataSource": {
-							"page": 829,
+							"page": "829",
 							"fileName": "AnnualReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "bandwidth"
@@ -15168,7 +15168,7 @@
 					"waterWithdrawalAllSitesInCubicMeters": {
 						"value": null,
 						"dataSource": {
-							"page": 571,
+							"page": "571",
 							"fileName": "AnnualReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "relationships"
@@ -15373,7 +15373,7 @@
 					"electricityTotalInMWh": {
 						"value": 7798.28,
 						"dataSource": {
-							"page": 717,
+							"page": "717",
 							"fileName": "ESEFReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "mindshare"
@@ -15386,7 +15386,7 @@
 					"totalEmissionsInTonnesOfCO2Equivalents": {
 						"value": 58524.75,
 						"dataSource": {
-							"page": 93,
+							"page": "93",
 							"fileName": "IntegratedReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "networks"
@@ -15397,7 +15397,7 @@
 					"scope1EmissionsInTonnesOfCO2Equivalents": {
 						"value": 90461.21,
 						"dataSource": {
-							"page": 874,
+							"page": "874",
 							"fileName": "AnnualReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "schemas"
@@ -15408,7 +15408,7 @@
 					"scope2EmissionsInTonnesOfCO2Equivalents": {
 						"value": 48463.57,
 						"dataSource": {
-							"page": 500,
+							"page": "500",
 							"fileName": "ESEFReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "users"
@@ -15419,7 +15419,7 @@
 					"scope3EmissionsInTonnesOfCO2Equivalents": {
 						"value": null,
 						"dataSource": {
-							"page": 494,
+							"page": "494",
 							"fileName": "AnnualReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "e-markets"
@@ -15558,7 +15558,7 @@
 					"waterWithdrawalAllSitesInCubicMeters": {
 						"value": null,
 						"dataSource": {
-							"page": 199,
+							"page": "199",
 							"fileName": "AnnualReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "experiences"
@@ -15771,7 +15771,7 @@
 					"totalEmissionsInTonnesOfCO2Equivalents": {
 						"value": 95683.11,
 						"dataSource": {
-							"page": 593,
+							"page": "593",
 							"fileName": "ESEFReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "models"
@@ -15788,7 +15788,7 @@
 					"scope2EmissionsInTonnesOfCO2Equivalents": {
 						"value": 17797.48,
 						"dataSource": {
-							"page": 884,
+							"page": "884",
 							"fileName": "ESEFReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "solutions"
@@ -15799,7 +15799,7 @@
 					"scope3EmissionsInTonnesOfCO2Equivalents": {
 						"value": null,
 						"dataSource": {
-							"page": 1022,
+							"page": "1022",
 							"fileName": "SustainabilityReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "partnerships"
@@ -16103,7 +16103,7 @@
 					"scope2EmissionsInTonnesOfCO2Equivalents": {
 						"value": null,
 						"dataSource": {
-							"page": 458,
+							"page": "458",
 							"fileName": "ESEFReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "relationships"
@@ -16114,7 +16114,7 @@
 					"scope3EmissionsInTonnesOfCO2Equivalents": {
 						"value": 92524.81,
 						"dataSource": {
-							"page": 959,
+							"page": "959",
 							"fileName": "ESEFReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "e-business"
@@ -16229,7 +16229,7 @@
 					"waterWithdrawalAllSitesInCubicMeters": {
 						"value": null,
 						"dataSource": {
-							"page": 148,
+							"page": "148",
 							"fileName": "ESEFReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "communities"
@@ -16473,7 +16473,7 @@
 					"electricityTotalInMWh": {
 						"value": 67841.99,
 						"dataSource": {
-							"page": 485,
+							"page": "485",
 							"fileName": "AnnualReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "functionalities"
@@ -16486,7 +16486,7 @@
 					"totalEmissionsInTonnesOfCO2Equivalents": {
 						"value": 29807.7,
 						"dataSource": {
-							"page": 83,
+							"page": "83",
 							"fileName": "IntegratedReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "content"
@@ -16498,7 +16498,7 @@
 					"scope2EmissionsInTonnesOfCO2Equivalents": {
 						"value": 42479.39,
 						"dataSource": {
-							"page": 636,
+							"page": "636",
 							"fileName": "IntegratedReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "systems"
@@ -16509,7 +16509,7 @@
 					"scope3EmissionsInTonnesOfCO2Equivalents": {
 						"value": null,
 						"dataSource": {
-							"page": 682,
+							"page": "682",
 							"fileName": "IntegratedReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "markets"
@@ -16581,7 +16581,7 @@
 					"waterWithdrawalAllSitesInCubicMeters": {
 						"value": 34584.48,
 						"dataSource": {
-							"page": 891,
+							"page": "891",
 							"fileName": "IntegratedReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "users"
@@ -16808,7 +16808,7 @@
 					"electricityTotalInMWh": {
 						"value": 35748.71,
 						"dataSource": {
-							"page": 950,
+							"page": "950",
 							"fileName": "SustainabilityReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "supply-chains"
@@ -16821,7 +16821,7 @@
 					"totalEmissionsInTonnesOfCO2Equivalents": {
 						"value": 26570.39,
 						"dataSource": {
-							"page": 44,
+							"page": "44",
 							"fileName": "IntegratedReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "platforms"
@@ -16832,7 +16832,7 @@
 					"scope1EmissionsInTonnesOfCO2Equivalents": {
 						"value": null,
 						"dataSource": {
-							"page": 1100,
+							"page": "1100",
 							"fileName": "SustainabilityReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "solutions"
@@ -16843,7 +16843,7 @@
 					"scope2EmissionsInTonnesOfCO2Equivalents": {
 						"value": 15353.37,
 						"dataSource": {
-							"page": 1186,
+							"page": "1186",
 							"fileName": "SustainabilityReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "relationships"
@@ -16854,7 +16854,7 @@
 					"scope3EmissionsInTonnesOfCO2Equivalents": {
 						"value": 53222.09,
 						"dataSource": {
-							"page": 1173,
+							"page": "1173",
 							"fileName": "AnnualReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "functionalities"
@@ -17214,7 +17214,7 @@
 					"electricityTotalInMWh": {
 						"value": 15624.06,
 						"dataSource": {
-							"page": 375,
+							"page": "375",
 							"fileName": "SustainabilityReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "technologies"
@@ -17227,7 +17227,7 @@
 					"totalEmissionsInTonnesOfCO2Equivalents": {
 						"value": 54511.03,
 						"dataSource": {
-							"page": 296,
+							"page": "296",
 							"fileName": "ESEFReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "web services"
@@ -17517,7 +17517,7 @@
 					"electricityTotalInMWh": {
 						"value": 99011.4,
 						"dataSource": {
-							"page": 120,
+							"page": "120",
 							"fileName": "SustainabilityReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "communities"
@@ -17530,7 +17530,7 @@
 					"totalEmissionsInTonnesOfCO2Equivalents": {
 						"value": null,
 						"dataSource": {
-							"page": 48,
+							"page": "48",
 							"fileName": "SustainabilityReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "ROI"
@@ -17541,7 +17541,7 @@
 					"scope1EmissionsInTonnesOfCO2Equivalents": {
 						"value": null,
 						"dataSource": {
-							"page": 874,
+							"page": "874",
 							"fileName": "SustainabilityReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "supply-chains"
@@ -17553,7 +17553,7 @@
 					"scope3EmissionsInTonnesOfCO2Equivalents": {
 						"value": 92715.99,
 						"dataSource": {
-							"page": 785,
+							"page": "785",
 							"fileName": "SustainabilityReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "convergence"
@@ -17625,7 +17625,7 @@
 					"waterWithdrawalAllSitesInCubicMeters": {
 						"value": 84838.21,
 						"dataSource": {
-							"page": 15,
+							"page": "15",
 							"fileName": "SustainabilityReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "technologies"
@@ -17881,7 +17881,7 @@
 					"electricityTotalInMWh": {
 						"value": 86999.82,
 						"dataSource": {
-							"page": 1115,
+							"page": "1115",
 							"fileName": "AnnualReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "lifetime value"
@@ -17894,7 +17894,7 @@
 					"totalEmissionsInTonnesOfCO2Equivalents": {
 						"value": 2691.29,
 						"dataSource": {
-							"page": 346,
+							"page": "346",
 							"fileName": "AnnualReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "paradigms"
@@ -17905,7 +17905,7 @@
 					"scope1EmissionsInTonnesOfCO2Equivalents": {
 						"value": 38261.4,
 						"dataSource": {
-							"page": 1152,
+							"page": "1152",
 							"fileName": "IntegratedReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "applications"
@@ -17917,7 +17917,7 @@
 					"scope3EmissionsInTonnesOfCO2Equivalents": {
 						"value": null,
 						"dataSource": {
-							"page": 110,
+							"page": "110",
 							"fileName": "ESEFReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "functionalities"

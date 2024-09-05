@@ -69,26 +69,34 @@ export function isCompanyIdValid(companyId: string): boolean {
   return uuidRegexExp.test(companyId);
 }
 
+export const regexSinglePage = /^[1-9]\d*$/;
+export const regexRange = /^[1-9]\d*-[1-9]\d*$/;
+
 /**
  * Checks if a page number is valid
- * @param node FormKit node
+ * @param page page in the form of FormKitNode, string, null, or undefined
  * @returns boolean that expresses if the page number is valid
  */
-export function validatePageNumber(node: FormKitNode): boolean {
-  const pageNumberInput = node.value;
-  const regexSinglePage = /^[1-9]\d*$/;
-  const regexRange = /^[1-9]\d*-[1-9]\d*$/;
-  let result;
-
-  if (typeof pageNumberInput == 'string' && regexSinglePage.test(pageNumberInput)) {
-    result = true;
-  } else if (typeof pageNumberInput == 'string' && regexRange.test(pageNumberInput)) {
-    const hyphenIndex = pageNumberInput.indexOf('-');
-    const firstNumber = Number(pageNumberInput.substring(0, hyphenIndex));
-    const secondNumber = Number(pageNumberInput.substring(hyphenIndex + 1));
-    result = firstNumber < secondNumber;
+export function validatePageNumber(page: FormKitNode | string | null | undefined): boolean {
+  let pageNumberToTest;
+  if (page == null || typeof page == 'undefined') {
+    return false;
+  } else if (typeof page == 'string') {
+    pageNumberToTest = page;
+  } else if (typeof page.value == 'string') {
+    pageNumberToTest = page.value;
   } else {
-    result = false;
+    return false;
   }
-  return result;
+
+  if (regexSinglePage.test(pageNumberToTest)) {
+    return true;
+  } else if (regexRange.test(pageNumberToTest)) {
+    const hyphenIndex = pageNumberToTest.indexOf('-');
+    const firstNumber = Number(pageNumberToTest.substring(0, hyphenIndex));
+    const secondNumber = Number(pageNumberToTest.substring(hyphenIndex + 1));
+    return firstNumber < secondNumber;
+  } else {
+    return false;
+  }
 }

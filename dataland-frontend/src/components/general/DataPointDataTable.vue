@@ -48,7 +48,8 @@ import DocumentLink from '@/components/resources/frameworkDataSearch/DocumentLin
 import { type DataPointDisplay } from '@/utils/DataPoint';
 import { ONLY_AUXILIARY_DATA_PROVIDED } from '@/utils/Constants';
 import AutoFormattingTextSpan from '@/components/general/AutoFormattingTextSpan.vue';
-import { assertDefined, checkIfPageStringIsConform } from '@/utils/TypeScriptUtils';
+import { assertDefined } from '@/utils/TypeScriptUtils';
+import { validatePageNumber } from '@/utils/ValidationsUtils';
 
 interface DataPointDataTableRefProps {
   dataPointDisplay: DataPointDisplay;
@@ -76,7 +77,7 @@ export default defineComponent({
     dataSourceLabel(): string {
       const dataSource = this.dialogData.dataPointDisplay.dataSource;
       if (!dataSource) return '';
-      if ('page' in dataSource && checkIfPageStringIsConform(dataSource.page) ) {
+      if ('page' in dataSource && validatePageNumber(dataSource.page)) {
         return dataSource.page === null ? `${dataSource.fileName}` : `${dataSource.fileName}, page ${dataSource.page}`;
       } else {
         return dataSource.fileName ?? '';

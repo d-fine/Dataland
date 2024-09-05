@@ -11,7 +11,7 @@ export function generateDataSource(referencedReports: ReferencedDocuments): Exte
   const chosenReport = pickOneElement(Object.keys(referencedReports));
   const chosenReportReference = referencedReports[chosenReport];
   return {
-    page: faker.number.int({ min: 1, max: 1200 }),
+    page: String(faker.number.int({ min: 1, max: 1200 })),
     fileName: chosenReport,
     fileReference: chosenReportReference.fileReference,
     tagName: faker.company.buzzNoun(),

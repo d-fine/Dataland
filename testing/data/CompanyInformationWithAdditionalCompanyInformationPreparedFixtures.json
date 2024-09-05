@@ -44,7 +44,7 @@
 					"fiscalYearDeviation": {
 						"value": "Deviation",
 						"dataSource": {
-							"page": 208,
+							"page": "208",
 							"fileName": "AnnualReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "users"
@@ -55,7 +55,7 @@
 					"fiscalYearEnd": {
 						"value": "2024-07-01",
 						"dataSource": {
-							"page": 954,
+							"page": "954",
 							"fileName": "IntegratedReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "e-commerce"
@@ -85,7 +85,7 @@
 					"equity": {
 						"value": 7164818567.69,
 						"dataSource": {
-							"page": 375,
+							"page": "375",
 							"fileName": "AnnualReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "deliverables"
@@ -97,7 +97,7 @@
 					"debt": {
 						"value": 2394110865.42,
 						"dataSource": {
-							"page": 971,
+							"page": "971",
 							"fileName": "IntegratedReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "platforms"
@@ -109,7 +109,7 @@
 					"balanceSheetTotal": {
 						"value": 9032161661.89,
 						"dataSource": {
-							"page": 1003,
+							"page": "1003",
 							"fileName": "SustainabilityReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "paradigms"
@@ -121,7 +121,7 @@
 					"evic": {
 						"value": 5048991297.37,
 						"dataSource": {
-							"page": 1162,
+							"page": "1162",
 							"fileName": "IntegratedReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "technologies"

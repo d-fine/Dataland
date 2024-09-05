@@ -38,7 +38,7 @@
 				"fiscalYearDeviation": {
 					"value": "Deviation",
 					"dataSource": {
-						"page": 738,
+						"page": "738",
 						"fileName": "IntegratedReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "models"
@@ -49,7 +49,7 @@
 				"fiscalYearEnd": {
 					"value": "2024-09-03",
 					"dataSource": {
-						"page": 466,
+						"page": "466",
 						"fileName": "IntegratedReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "synergies"
@@ -60,7 +60,7 @@
 				"scopeOfEntities": {
 					"value": "Yes",
 					"dataSource": {
-						"page": 944,
+						"page": "944",
 						"fileName": "ESEFReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "experiences"
@@ -71,7 +71,7 @@
 				"nfrdMandatory": {
 					"value": "No",
 					"dataSource": {
-						"page": 403,
+						"page": "403",
 						"fileName": "IntegratedReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "e-markets"
@@ -82,7 +82,7 @@
 				"euTaxonomyActivityLevelReporting": {
 					"value": "Yes",
 					"dataSource": {
-						"page": 131,
+						"page": "131",
 						"fileName": "IntegratedReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "experiences"
@@ -94,7 +94,7 @@
 					"value": "LimitedAssurance",
 					"provider": "Schowalter Group",
 					"dataSource": {
-						"page": 1125,
+						"page": "1125",
 						"fileName": "IntegratedReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "e-markets"
@@ -103,7 +103,7 @@
 				"numberOfEmployees": {
 					"value": 82701.26,
 					"dataSource": {
-						"page": 232,
+						"page": "232",
 						"fileName": "SustainabilityReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "ROI"
@@ -138,7 +138,7 @@
 				"totalAmount": {
 					"value": 9384188996.63,
 					"dataSource": {
-						"page": 1136,
+						"page": "1136",
 						"fileName": "AnnualReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "supply-chains"
@@ -151,7 +151,7 @@
 					"relativeShareInPercent": {
 						"value": 19.93,
 						"dataSource": {
-							"page": 1006,
+							"page": "1006",
 							"fileName": "AnnualReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "systems"
@@ -162,7 +162,7 @@
 					"absoluteShare": {
 						"value": 2501722134.18,
 						"dataSource": {
-							"page": 1041,
+							"page": "1041",
 							"fileName": "SustainabilityReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "solutions"
@@ -176,7 +176,7 @@
 					"relativeShareInPercent": {
 						"value": 82.43,
 						"dataSource": {
-							"page": 1027,
+							"page": "1027",
 							"fileName": "AnnualReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "mindshare"
@@ -187,7 +187,7 @@
 					"absoluteShare": {
 						"value": 325502241.03,
 						"dataSource": {
-							"page": 205,
+							"page": "205",
 							"fileName": "AnnualReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "functionalities"
@@ -201,7 +201,7 @@
 					"relativeShareInPercent": {
 						"value": 97.59,
 						"dataSource": {
-							"page": 1140,
+							"page": "1140",
 							"fileName": "IntegratedReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "interfaces"
@@ -212,7 +212,7 @@
 					"absoluteShare": {
 						"value": 9629976337.31,
 						"dataSource": {
-							"page": 1166,
+							"page": "1166",
 							"fileName": "IntegratedReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "platforms"
@@ -254,7 +254,7 @@
 						}
 					],
 					"dataSource": {
-						"page": 1171,
+						"page": "1171",
 						"fileName": "AnnualReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "communities"
@@ -266,7 +266,7 @@
 					"relativeShareInPercent": {
 						"value": 17.2,
 						"dataSource": {
-							"page": 1106,
+							"page": "1106",
 							"fileName": "IntegratedReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "relationships"
@@ -277,7 +277,7 @@
 					"absoluteShare": {
 						"value": 3425674708.56,
 						"dataSource": {
-							"page": 163,
+							"page": "163",
 							"fileName": "SustainabilityReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "functionalities"
@@ -290,7 +290,7 @@
 				"substantialContributionToClimateChangeMitigationInPercentEligible": {
 					"value": 15.39,
 					"dataSource": {
-						"page": 583,
+						"page": "583",
 						"fileName": "AnnualReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "portals"
@@ -301,7 +301,7 @@
 				"substantialContributionToClimateChangeMitigationInPercentAligned": {
 					"value": 7.13,
 					"dataSource": {
-						"page": 965,
+						"page": "965",
 						"fileName": "SustainabilityReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "channels"
@@ -312,7 +312,7 @@
 				"substantialContributionToClimateChangeMitigationInPercentOfWhichUseOfProceeds": {
 					"value": 45.77,
 					"dataSource": {
-						"page": 861,
+						"page": "861",
 						"fileName": "IntegratedReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "systems"
@@ -323,7 +323,7 @@
 				"substantialContributionToClimateChangeMitigationInPercentEnablingShare": {
 					"value": 11.83,
 					"dataSource": {
-						"page": 544,
+						"page": "544",
 						"fileName": "ESEFReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "initiatives"
@@ -334,7 +334,7 @@
 				"substantialContributionToClimateChangeMitigationInPercentTransitionalShare": {
 					"value": 10.16,
 					"dataSource": {
-						"page": 51,
+						"page": "51",
 						"fileName": "SustainabilityReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "networks"
@@ -345,7 +345,7 @@
 				"substantialContributionToClimateChangeAdaptationInPercentEligible": {
 					"value": 98.33,
 					"dataSource": {
-						"page": 809,
+						"page": "809",
 						"fileName": "AnnualReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "interfaces"
@@ -356,7 +356,7 @@
 				"substantialContributionToClimateChangeAdaptationInPercentAligned": {
 					"value": 77.53,
 					"dataSource": {
-						"page": 176,
+						"page": "176",
 						"fileName": "AnnualReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "lifetime value"
@@ -367,7 +367,7 @@
 				"substantialContributionToClimateChangeAdaptationInPercentOfWhichUseOfProceeds": {
 					"value": 24.39,
 					"dataSource": {
-						"page": 453,
+						"page": "453",
 						"fileName": "SustainabilityReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "functionalities"
@@ -378,7 +378,7 @@
 				"substantialContributionToClimateChangeAdaptationInPercentEnablingShare": {
 					"value": 4.51,
 					"dataSource": {
-						"page": 79,
+						"page": "79",
 						"fileName": "SustainabilityReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "relationships"
@@ -389,7 +389,7 @@
 				"substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentEligible": {
 					"value": 96.05,
 					"dataSource": {
-						"page": 680,
+						"page": "680",
 						"fileName": "SustainabilityReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "technologies"
@@ -400,7 +400,7 @@
 				"substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned": {
 					"value": 19.37,
 					"dataSource": {
-						"page": 1050,
+						"page": "1050",
 						"fileName": "AnnualReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "users"
@@ -411,7 +411,7 @@
 				"substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentOfWhichUseOfProceeds": {
 					"value": 45.78,
 					"dataSource": {
-						"page": 160,
+						"page": "160",
 						"fileName": "SustainabilityReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "functionalities"
@@ -422,7 +422,7 @@
 				"substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentEnablingShare": {
 					"value": 42.04,
 					"dataSource": {
-						"page": 211,
+						"page": "211",
 						"fileName": "AnnualReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "synergies"
@@ -433,7 +433,7 @@
 				"substantialContributionToTransitionToACircularEconomyInPercentEligible": {
 					"value": 6.59,
 					"dataSource": {
-						"page": 383,
+						"page": "383",
 						"fileName": "IntegratedReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "interfaces"
@@ -444,7 +444,7 @@
 				"substantialContributionToTransitionToACircularEconomyInPercentAligned": {
 					"value": 91.81,
 					"dataSource": {
-						"page": 60,
+						"page": "60",
 						"fileName": "AnnualReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "communities"
@@ -455,7 +455,7 @@
 				"substantialContributionToTransitionToACircularEconomyInPercentOfWhichUseOfProceeds": {
 					"value": 31.77,
 					"dataSource": {
-						"page": 1032,
+						"page": "1032",
 						"fileName": "AnnualReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "metrics"
@@ -466,7 +466,7 @@
 				"substantialContributionToTransitionToACircularEconomyInPercentEnablingShare": {
 					"value": 38.64,
 					"dataSource": {
-						"page": 61,
+						"page": "61",
 						"fileName": "IntegratedReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "functionalities"
@@ -477,7 +477,7 @@
 				"substantialContributionToPollutionPreventionAndControlInPercentEligible": {
 					"value": 24.51,
 					"dataSource": {
-						"page": 241,
+						"page": "241",
 						"fileName": "IntegratedReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "eyeballs"
@@ -488,7 +488,7 @@
 				"substantialContributionToPollutionPreventionAndControlInPercentAligned": {
 					"value": 25.9,
 					"dataSource": {
-						"page": 467,
+						"page": "467",
 						"fileName": "AnnualReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "systems"
@@ -499,7 +499,7 @@
 				"substantialContributionToPollutionPreventionAndControlInPercentOfWhichUseOfProceeds": {
 					"value": 10.31,
 					"dataSource": {
-						"page": 462,
+						"page": "462",
 						"fileName": "IntegratedReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "interfaces"
@@ -510,7 +510,7 @@
 				"substantialContributionToPollutionPreventionAndControlInPercentEnablingShare": {
 					"value": 69.48,
 					"dataSource": {
-						"page": 908,
+						"page": "908",
 						"fileName": "AnnualReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "e-markets"
@@ -521,7 +521,7 @@
 				"substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentEligible": {
 					"value": 44.8,
 					"dataSource": {
-						"page": 985,
+						"page": "985",
 						"fileName": "ESEFReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "portals"
@@ -532,7 +532,7 @@
 				"substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned": {
 					"value": 57.86,
 					"dataSource": {
-						"page": 1199,
+						"page": "1199",
 						"fileName": "AnnualReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "interfaces"
@@ -543,7 +543,7 @@
 				"substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentOfWhichUseOfProceeds": {
 					"value": 42.41,
 					"dataSource": {
-						"page": 823,
+						"page": "823",
 						"fileName": "IntegratedReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "paradigms"
@@ -554,7 +554,7 @@
 				"substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentEnablingShare": {
 					"value": 32.63,
 					"dataSource": {
-						"page": 1003,
+						"page": "1003",
 						"fileName": "AnnualReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "markets"
@@ -652,7 +652,7 @@
 						}
 					],
 					"dataSource": {
-						"page": 318,
+						"page": "318",
 						"fileName": "SustainabilityReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "functionalities"
@@ -663,7 +663,7 @@
 				"enablingShareInPercent": {
 					"value": 30.3,
 					"dataSource": {
-						"page": 627,
+						"page": "627",
 						"fileName": "ESEFReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "infrastructures"
@@ -674,7 +674,7 @@
 				"transitionalShareInPercent": {
 					"value": 36.63,
 					"dataSource": {
-						"page": 238,
+						"page": "238",
 						"fileName": "IntegratedReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "schemas"
@@ -687,7 +687,7 @@
 				"totalAmount": {
 					"value": 1702977705.28,
 					"dataSource": {
-						"page": 859,
+						"page": "859",
 						"fileName": "SustainabilityReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "e-commerce"
@@ -700,7 +700,7 @@
 					"relativeShareInPercent": {
 						"value": 14.23,
 						"dataSource": {
-							"page": 140,
+							"page": "140",
 							"fileName": "IntegratedReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "action-items"
@@ -711,7 +711,7 @@
 					"absoluteShare": {
 						"value": 7948738278.36,
 						"dataSource": {
-							"page": 58,
+							"page": "58",
 							"fileName": "SustainabilityReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "mindshare"
@@ -725,7 +725,7 @@
 					"relativeShareInPercent": {
 						"value": 25.51,
 						"dataSource": {
-							"page": 435,
+							"page": "435",
 							"fileName": "IntegratedReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "niches"
@@ -736,7 +736,7 @@
 					"absoluteShare": {
 						"value": 4752292074.26,
 						"dataSource": {
-							"page": 762,
+							"page": "762",
 							"fileName": "ESEFReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "metrics"
@@ -750,7 +750,7 @@
 					"relativeShareInPercent": {
 						"value": 33.39,
 						"dataSource": {
-							"page": 184,
+							"page": "184",
 							"fileName": "SustainabilityReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "mindshare"
@@ -761,7 +761,7 @@
 					"absoluteShare": {
 						"value": 8200602198.49,
 						"dataSource": {
-							"page": 351,
+							"page": "351",
 							"fileName": "IntegratedReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "methodologies"
@@ -774,7 +774,7 @@
 				"nonAlignedActivities": {
 					"value": [],
 					"dataSource": {
-						"page": 416,
+						"page": "416",
 						"fileName": "AnnualReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "bandwidth"
@@ -786,7 +786,7 @@
 					"relativeShareInPercent": {
 						"value": 68.6,
 						"dataSource": {
-							"page": 132,
+							"page": "132",
 							"fileName": "SustainabilityReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "content"
@@ -797,7 +797,7 @@
 					"absoluteShare": {
 						"value": 4591478228.1,
 						"dataSource": {
-							"page": 268,
+							"page": "268",
 							"fileName": "ESEFReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "platforms"
@@ -810,7 +810,7 @@
 				"substantialContributionToClimateChangeMitigationInPercentEligible": {
 					"value": 53.67,
 					"dataSource": {
-						"page": 964,
+						"page": "964",
 						"fileName": "IntegratedReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "convergence"
@@ -821,7 +821,7 @@
 				"substantialContributionToClimateChangeMitigationInPercentAligned": {
 					"value": 12.14,
 					"dataSource": {
-						"page": 356,
+						"page": "356",
 						"fileName": "ESEFReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "niches"
@@ -832,7 +832,7 @@
 				"substantialContributionToClimateChangeMitigationInPercentOfWhichUseOfProceeds": {
 					"value": 68.2,
 					"dataSource": {
-						"page": 829,
+						"page": "829",
 						"fileName": "ESEFReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "systems"
@@ -843,7 +843,7 @@
 				"substantialContributionToClimateChangeMitigationInPercentEnablingShare": {
 					"value": 79.12,
 					"dataSource": {
-						"page": 419,
+						"page": "419",
 						"fileName": "IntegratedReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "infrastructures"
@@ -854,7 +854,7 @@
 				"substantialContributionToClimateChangeMitigationInPercentTransitionalShare": {
 					"value": 66.37,
 					"dataSource": {
-						"page": 612,
+						"page": "612",
 						"fileName": "ESEFReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "initiatives"
@@ -865,7 +865,7 @@
 				"substantialContributionToClimateChangeAdaptationInPercentEligible": {
 					"value": 52.96,
 					"dataSource": {
-						"page": 92,
+						"page": "92",
 						"fileName": "ESEFReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "e-markets"
@@ -876,7 +876,7 @@
 				"substantialContributionToClimateChangeAdaptationInPercentAligned": {
 					"value": 40.83,
 					"dataSource": {
-						"page": 1163,
+						"page": "1163",
 						"fileName": "SustainabilityReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "solutions"
@@ -887,7 +887,7 @@
 				"substantialContributionToClimateChangeAdaptationInPercentOfWhichUseOfProceeds": {
 					"value": 38.93,
 					"dataSource": {
-						"page": 639,
+						"page": "639",
 						"fileName": "SustainabilityReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "lifetime value"
@@ -898,7 +898,7 @@
 				"substantialContributionToClimateChangeAdaptationInPercentEnablingShare": {
 					"value": 38.26,
 					"dataSource": {
-						"page": 1166,
+						"page": "1166",
 						"fileName": "IntegratedReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "paradigms"
@@ -909,7 +909,7 @@
 				"substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentEligible": {
 					"value": 54.36,
 					"dataSource": {
-						"page": 1121,
+						"page": "1121",
 						"fileName": "ESEFReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "portals"
@@ -920,7 +920,7 @@
 				"substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned": {
 					"value": 24.17,
 					"dataSource": {
-						"page": 949,
+						"page": "949",
 						"fileName": "SustainabilityReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "networks"
@@ -931,7 +931,7 @@
 				"substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentOfWhichUseOfProceeds": {
 					"value": 35.65,
 					"dataSource": {
-						"page": 1124,
+						"page": "1124",
 						"fileName": "IntegratedReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "channels"
@@ -942,7 +942,7 @@
 				"substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentEnablingShare": {
 					"value": 62.65,
 					"dataSource": {
-						"page": 65,
+						"page": "65",
 						"fileName": "IntegratedReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "bandwidth"
@@ -953,7 +953,7 @@
 				"substantialContributionToTransitionToACircularEconomyInPercentEligible": {
 					"value": 85.6,
 					"dataSource": {
-						"page": 326,
+						"page": "326",
 						"fileName": "IntegratedReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "synergies"
@@ -964,7 +964,7 @@
 				"substantialContributionToTransitionToACircularEconomyInPercentAligned": {
 					"value": 89.12,
 					"dataSource": {
-						"page": 1050,
+						"page": "1050",
 						"fileName": "IntegratedReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "content"
@@ -975,7 +975,7 @@
 				"substantialContributionToTransitionToACircularEconomyInPercentOfWhichUseOfProceeds": {
 					"value": 73.5,
 					"dataSource": {
-						"page": 11,
+						"page": "11",
 						"fileName": "SustainabilityReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "eyeballs"
@@ -986,7 +986,7 @@
 				"substantialContributionToTransitionToACircularEconomyInPercentEnablingShare": {
 					"value": 57.97,
 					"dataSource": {
-						"page": 1036,
+						"page": "1036",
 						"fileName": "ESEFReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "models"
@@ -997,7 +997,7 @@
 				"substantialContributionToPollutionPreventionAndControlInPercentEligible": {
 					"value": 75.39,
 					"dataSource": {
-						"page": 16,
+						"page": "16",
 						"fileName": "SustainabilityReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "users"
@@ -1008,7 +1008,7 @@
 				"substantialContributionToPollutionPreventionAndControlInPercentAligned": {
 					"value": 10.85,
 					"dataSource": {
-						"page": 632,
+						"page": "632",
 						"fileName": "ESEFReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "methodologies"
@@ -1019,7 +1019,7 @@
 				"substantialContributionToPollutionPreventionAndControlInPercentOfWhichUseOfProceeds": {
 					"value": 46.48,
 					"dataSource": {
-						"page": 1166,
+						"page": "1166",
 						"fileName": "ESEFReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "portals"
@@ -1030,7 +1030,7 @@
 				"substantialContributionToPollutionPreventionAndControlInPercentEnablingShare": {
 					"value": 17.24,
 					"dataSource": {
-						"page": 40,
+						"page": "40",
 						"fileName": "SustainabilityReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "eyeballs"
@@ -1041,7 +1041,7 @@
 				"substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentEligible": {
 					"value": 30.58,
 					"dataSource": {
-						"page": 222,
+						"page": "222",
 						"fileName": "IntegratedReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "experiences"
@@ -1052,7 +1052,7 @@
 				"substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned": {
 					"value": 71.7,
 					"dataSource": {
-						"page": 735,
+						"page": "735",
 						"fileName": "IntegratedReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "relationships"
@@ -1063,7 +1063,7 @@
 				"substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentOfWhichUseOfProceeds": {
 					"value": 81.86,
 					"dataSource": {
-						"page": 409,
+						"page": "409",
 						"fileName": "ESEFReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "technologies"
@@ -1074,7 +1074,7 @@
 				"substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentEnablingShare": {
 					"value": 54.14,
 					"dataSource": {
-						"page": 800,
+						"page": "800",
 						"fileName": "SustainabilityReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "users"
@@ -1285,7 +1285,7 @@
 						}
 					],
 					"dataSource": {
-						"page": 493,
+						"page": "493",
 						"fileName": "AnnualReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "web services"
@@ -1296,7 +1296,7 @@
 				"enablingShareInPercent": {
 					"value": 82.93,
 					"dataSource": {
-						"page": 570,
+						"page": "570",
 						"fileName": "IntegratedReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "web services"
@@ -1307,7 +1307,7 @@
 				"transitionalShareInPercent": {
 					"value": 98.33,
 					"dataSource": {
-						"page": 753,
+						"page": "753",
 						"fileName": "IntegratedReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "solutions"
@@ -1320,7 +1320,7 @@
 				"totalAmount": {
 					"value": 7963660992.68,
 					"dataSource": {
-						"page": 986,
+						"page": "986",
 						"fileName": "ESEFReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "web services"
@@ -1333,7 +1333,7 @@
 					"relativeShareInPercent": {
 						"value": 88.81,
 						"dataSource": {
-							"page": 925,
+							"page": "925",
 							"fileName": "IntegratedReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "architectures"
@@ -1344,7 +1344,7 @@
 					"absoluteShare": {
 						"value": 8004333495.63,
 						"dataSource": {
-							"page": 458,
+							"page": "458",
 							"fileName": "ESEFReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "infrastructures"
@@ -1358,7 +1358,7 @@
 					"relativeShareInPercent": {
 						"value": 64.54,
 						"dataSource": {
-							"page": 654,
+							"page": "654",
 							"fileName": "IntegratedReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "initiatives"
@@ -1369,7 +1369,7 @@
 					"absoluteShare": {
 						"value": 4028669069.52,
 						"dataSource": {
-							"page": 660,
+							"page": "660",
 							"fileName": "SustainabilityReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "functionalities"
@@ -1383,7 +1383,7 @@
 					"relativeShareInPercent": {
 						"value": 33.98,
 						"dataSource": {
-							"page": 480,
+							"page": "480",
 							"fileName": "IntegratedReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "e-business"
@@ -1394,7 +1394,7 @@
 					"absoluteShare": {
 						"value": 7362657431.52,
 						"dataSource": {
-							"page": 811,
+							"page": "811",
 							"fileName": "SustainabilityReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "interfaces"
@@ -1434,7 +1434,7 @@
 						}
 					],
 					"dataSource": {
-						"page": 564,
+						"page": "564",
 						"fileName": "SustainabilityReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "lifetime value"
@@ -1446,7 +1446,7 @@
 					"relativeShareInPercent": {
 						"value": 10.8,
 						"dataSource": {
-							"page": 564,
+							"page": "564",
 							"fileName": "SustainabilityReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "paradigms"
@@ -1457,7 +1457,7 @@
 					"absoluteShare": {
 						"value": 2507479642.52,
 						"dataSource": {
-							"page": 141,
+							"page": "141",
 							"fileName": "ESEFReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "experiences"
@@ -1470,7 +1470,7 @@
 				"substantialContributionToClimateChangeMitigationInPercentAligned": {
 					"value": 22.66,
 					"dataSource": {
-						"page": 15,
+						"page": "15",
 						"fileName": "ESEFReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "relationships"
@@ -1481,7 +1481,7 @@
 				"substantialContributionToClimateChangeAdaptationInPercentAligned": {
 					"value": 68.75,
 					"dataSource": {
-						"page": 65,
+						"page": "65",
 						"fileName": "AnnualReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "applications"
@@ -1492,7 +1492,7 @@
 				"substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned": {
 					"value": 67.67,
 					"dataSource": {
-						"page": 368,
+						"page": "368",
 						"fileName": "SustainabilityReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "relationships"
@@ -1503,7 +1503,7 @@
 				"substantialContributionToTransitionToACircularEconomyInPercentAligned": {
 					"value": 33.03,
 					"dataSource": {
-						"page": 1161,
+						"page": "1161",
 						"fileName": "SustainabilityReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "ROI"
@@ -1514,7 +1514,7 @@
 				"substantialContributionToPollutionPreventionAndControlInPercentAligned": {
 					"value": 59.63,
 					"dataSource": {
-						"page": 934,
+						"page": "934",
 						"fileName": "AnnualReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "e-markets"
@@ -1525,7 +1525,7 @@
 				"substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned": {
 					"value": 41.11,
 					"dataSource": {
-						"page": 326,
+						"page": "326",
 						"fileName": "SustainabilityReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "users"
@@ -1621,7 +1621,7 @@
 						}
 					],
 					"dataSource": {
-						"page": 64,
+						"page": "64",
 						"fileName": "AnnualReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "initiatives"
@@ -1632,7 +1632,7 @@
 				"enablingShareInPercent": {
 					"value": 85.41,
 					"dataSource": {
-						"page": 892,
+						"page": "892",
 						"fileName": "SustainabilityReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "experiences"
@@ -1643,7 +1643,7 @@
 				"transitionalShareInPercent": {
 					"value": 57.45,
 					"dataSource": {
-						"page": 1037,
+						"page": "1037",
 						"fileName": "IntegratedReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "models"
@@ -1704,7 +1704,7 @@
 				"fiscalYearDeviation": {
 					"value": "Deviation",
 					"dataSource": {
-						"page": 494,
+						"page": "494",
 						"fileName": "AnnualReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "communities"
@@ -1715,7 +1715,7 @@
 				"fiscalYearEnd": {
 					"value": "2024-02-19",
 					"dataSource": {
-						"page": 99,
+						"page": "99",
 						"fileName": "AnnualReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "functionalities"
@@ -1726,7 +1726,7 @@
 				"scopeOfEntities": {
 					"value": "No",
 					"dataSource": {
-						"page": 820,
+						"page": "820",
 						"fileName": "AnnualReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "lifetime value"
@@ -1737,7 +1737,7 @@
 				"nfrdMandatory": {
 					"value": "Yes",
 					"dataSource": {
-						"page": 1006,
+						"page": "1006",
 						"fileName": "AnnualReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "ROI"
@@ -1748,7 +1748,7 @@
 				"euTaxonomyActivityLevelReporting": {
 					"value": "No",
 					"dataSource": {
-						"page": 1015,
+						"page": "1015",
 						"fileName": "AnnualReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "communities"
@@ -1760,7 +1760,7 @@
 					"value": "LimitedAssurance",
 					"provider": "Barton Inc",
 					"dataSource": {
-						"page": 630,
+						"page": "630",
 						"fileName": "AnnualReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "experiences"
@@ -1769,7 +1769,7 @@
 				"numberOfEmployees": {
 					"value": 93962.32,
 					"dataSource": {
-						"page": 441,
+						"page": "441",
 						"fileName": "AnnualReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "metrics"
@@ -1789,7 +1789,7 @@
 				"totalAmount": {
 					"value": 4239166532.64,
 					"dataSource": {
-						"page": 577,
+						"page": "577",
 						"fileName": "AnnualReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "schemas"
@@ -1802,7 +1802,7 @@
 					"relativeShareInPercent": {
 						"value": 5.41,
 						"dataSource": {
-							"page": 872,
+							"page": "872",
 							"fileName": "AnnualReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "content"
@@ -1813,7 +1813,7 @@
 					"absoluteShare": {
 						"value": 8552919158.25,
 						"dataSource": {
-							"page": 136,
+							"page": "136",
 							"fileName": "AnnualReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "mindshare"
@@ -1827,7 +1827,7 @@
 					"relativeShareInPercent": {
 						"value": 13.71,
 						"dataSource": {
-							"page": 500,
+							"page": "500",
 							"fileName": "AnnualReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "networks"
@@ -1838,7 +1838,7 @@
 					"absoluteShare": {
 						"value": 1822920881.67,
 						"dataSource": {
-							"page": 1043,
+							"page": "1043",
 							"fileName": "AnnualReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "platforms"
@@ -1852,7 +1852,7 @@
 					"relativeShareInPercent": {
 						"value": 9.66,
 						"dataSource": {
-							"page": 199,
+							"page": "199",
 							"fileName": "AnnualReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "applications"
@@ -1863,7 +1863,7 @@
 					"absoluteShare": {
 						"value": 2497663851.82,
 						"dataSource": {
-							"page": 231,
+							"page": "231",
 							"fileName": "AnnualReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "niches"
@@ -1891,7 +1891,7 @@
 						}
 					],
 					"dataSource": {
-						"page": 43,
+						"page": "43",
 						"fileName": "AnnualReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "e-markets"
@@ -1903,7 +1903,7 @@
 					"relativeShareInPercent": {
 						"value": 67.52,
 						"dataSource": {
-							"page": 22,
+							"page": "22",
 							"fileName": "AnnualReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "blockchains"
@@ -1914,7 +1914,7 @@
 					"absoluteShare": {
 						"value": 5423058639.28,
 						"dataSource": {
-							"page": 330,
+							"page": "330",
 							"fileName": "AnnualReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "supply-chains"
@@ -1927,7 +1927,7 @@
 				"substantialContributionToClimateChangeMitigationInPercentEligible": {
 					"value": 30.11,
 					"dataSource": {
-						"page": 831,
+						"page": "831",
 						"fileName": "AnnualReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "portals"
@@ -1938,7 +1938,7 @@
 				"substantialContributionToClimateChangeMitigationInPercentAligned": {
 					"value": 85.54,
 					"dataSource": {
-						"page": 721,
+						"page": "721",
 						"fileName": "AnnualReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "initiatives"
@@ -1949,7 +1949,7 @@
 				"substantialContributionToClimateChangeMitigationInPercentOfWhichUseOfProceeds": {
 					"value": 53.97,
 					"dataSource": {
-						"page": 89,
+						"page": "89",
 						"fileName": "AnnualReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "synergies"
@@ -1960,7 +1960,7 @@
 				"substantialContributionToClimateChangeMitigationInPercentEnablingShare": {
 					"value": 72.59,
 					"dataSource": {
-						"page": 1168,
+						"page": "1168",
 						"fileName": "AnnualReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "niches"
@@ -1971,7 +1971,7 @@
 				"substantialContributionToClimateChangeMitigationInPercentTransitionalShare": {
 					"value": 89.14,
 					"dataSource": {
-						"page": 246,
+						"page": "246",
 						"fileName": "AnnualReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "blockchains"
@@ -1982,7 +1982,7 @@
 				"substantialContributionToClimateChangeAdaptationInPercentEligible": {
 					"value": 6.04,
 					"dataSource": {
-						"page": 655,
+						"page": "655",
 						"fileName": "AnnualReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "paradigms"
@@ -1993,7 +1993,7 @@
 				"substantialContributionToClimateChangeAdaptationInPercentAligned": {
 					"value": 27.94,
 					"dataSource": {
-						"page": 243,
+						"page": "243",
 						"fileName": "AnnualReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "web services"
@@ -2004,7 +2004,7 @@
 				"substantialContributionToClimateChangeAdaptationInPercentOfWhichUseOfProceeds": {
 					"value": 50.74,
 					"dataSource": {
-						"page": 302,
+						"page": "302",
 						"fileName": "AnnualReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "communities"
@@ -2015,7 +2015,7 @@
 				"substantialContributionToClimateChangeAdaptationInPercentEnablingShare": {
 					"value": 66.52,
 					"dataSource": {
-						"page": 800,
+						"page": "800",
 						"fileName": "AnnualReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "lifetime value"
@@ -2026,7 +2026,7 @@
 				"substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentEligible": {
 					"value": 3.24,
 					"dataSource": {
-						"page": 724,
+						"page": "724",
 						"fileName": "AnnualReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "methodologies"
@@ -2037,7 +2037,7 @@
 				"substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned": {
 					"value": 30.85,
 					"dataSource": {
-						"page": 846,
+						"page": "846",
 						"fileName": "AnnualReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "paradigms"
@@ -2048,7 +2048,7 @@
 				"substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentOfWhichUseOfProceeds": {
 					"value": 98.93,
 					"dataSource": {
-						"page": 741,
+						"page": "741",
 						"fileName": "AnnualReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "infrastructures"
@@ -2059,7 +2059,7 @@
 				"substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentEnablingShare": {
 					"value": 78.31,
 					"dataSource": {
-						"page": 27,
+						"page": "27",
 						"fileName": "AnnualReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "infrastructures"
@@ -2070,7 +2070,7 @@
 				"substantialContributionToTransitionToACircularEconomyInPercentEligible": {
 					"value": 99.28,
 					"dataSource": {
-						"page": 1020,
+						"page": "1020",
 						"fileName": "AnnualReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "communities"
@@ -2081,7 +2081,7 @@
 				"substantialContributionToTransitionToACircularEconomyInPercentAligned": {
 					"value": 75.09,
 					"dataSource": {
-						"page": 583,
+						"page": "583",
 						"fileName": "AnnualReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "portals"
@@ -2092,7 +2092,7 @@
 				"substantialContributionToTransitionToACircularEconomyInPercentOfWhichUseOfProceeds": {
 					"value": 95.31,
 					"dataSource": {
-						"page": 76,
+						"page": "76",
 						"fileName": "AnnualReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "metrics"
@@ -2103,7 +2103,7 @@
 				"substantialContributionToTransitionToACircularEconomyInPercentEnablingShare": {
 					"value": 13.45,
 					"dataSource": {
-						"page": 119,
+						"page": "119",
 						"fileName": "AnnualReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "interfaces"
@@ -2114,7 +2114,7 @@
 				"substantialContributionToPollutionPreventionAndControlInPercentEligible": {
 					"value": 3.2,
 					"dataSource": {
-						"page": 1040,
+						"page": "1040",
 						"fileName": "AnnualReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "infrastructures"
@@ -2125,7 +2125,7 @@
 				"substantialContributionToPollutionPreventionAndControlInPercentAligned": {
 					"value": 91.33,
 					"dataSource": {
-						"page": 268,
+						"page": "268",
 						"fileName": "AnnualReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "channels"
@@ -2136,7 +2136,7 @@
 				"substantialContributionToPollutionPreventionAndControlInPercentOfWhichUseOfProceeds": {
 					"value": 43.37,
 					"dataSource": {
-						"page": 887,
+						"page": "887",
 						"fileName": "AnnualReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "bandwidth"
@@ -2147,7 +2147,7 @@
 				"substantialContributionToPollutionPreventionAndControlInPercentEnablingShare": {
 					"value": 81.14,
 					"dataSource": {
-						"page": 1093,
+						"page": "1093",
 						"fileName": "AnnualReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "solutions"
@@ -2158,7 +2158,7 @@
 				"substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentEligible": {
 					"value": 25.77,
 					"dataSource": {
-						"page": 548,
+						"page": "548",
 						"fileName": "AnnualReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "eyeballs"
@@ -2169,7 +2169,7 @@
 				"substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned": {
 					"value": 69.12,
 					"dataSource": {
-						"page": 611,
+						"page": "611",
 						"fileName": "AnnualReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "markets"
@@ -2180,7 +2180,7 @@
 				"substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentOfWhichUseOfProceeds": {
 					"value": 78.77,
 					"dataSource": {
-						"page": 808,
+						"page": "808",
 						"fileName": "AnnualReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "schemas"
@@ -2191,7 +2191,7 @@
 				"substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentEnablingShare": {
 					"value": 10.56,
 					"dataSource": {
-						"page": 76,
+						"page": "76",
 						"fileName": "AnnualReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "e-business"
@@ -2287,7 +2287,7 @@
 						}
 					],
 					"dataSource": {
-						"page": 981,
+						"page": "981",
 						"fileName": "AnnualReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "infrastructures"
@@ -2298,7 +2298,7 @@
 				"enablingShareInPercent": {
 					"value": 79.94,
 					"dataSource": {
-						"page": 731,
+						"page": "731",
 						"fileName": "AnnualReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "networks"
@@ -2309,7 +2309,7 @@
 				"transitionalShareInPercent": {
 					"value": 24.88,
 					"dataSource": {
-						"page": 771,
+						"page": "771",
 						"fileName": "AnnualReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "synergies"
@@ -2322,7 +2322,7 @@
 				"totalAmount": {
 					"value": 639175588.73,
 					"dataSource": {
-						"page": 857,
+						"page": "857",
 						"fileName": "AnnualReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "applications"
@@ -2335,7 +2335,7 @@
 					"relativeShareInPercent": {
 						"value": 25.22,
 						"dataSource": {
-							"page": 739,
+							"page": "739",
 							"fileName": "AnnualReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "partnerships"
@@ -2346,7 +2346,7 @@
 					"absoluteShare": {
 						"value": 7022818033.59,
 						"dataSource": {
-							"page": 1121,
+							"page": "1121",
 							"fileName": "AnnualReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "mindshare"
@@ -2360,7 +2360,7 @@
 					"relativeShareInPercent": {
 						"value": 30.12,
 						"dataSource": {
-							"page": 726,
+							"page": "726",
 							"fileName": "AnnualReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "networks"
@@ -2371,7 +2371,7 @@
 					"absoluteShare": {
 						"value": 3026956249.96,
 						"dataSource": {
-							"page": 1157,
+							"page": "1157",
 							"fileName": "AnnualReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "networks"
@@ -2385,7 +2385,7 @@
 					"relativeShareInPercent": {
 						"value": 89.05,
 						"dataSource": {
-							"page": 311,
+							"page": "311",
 							"fileName": "AnnualReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "channels"
@@ -2396,7 +2396,7 @@
 					"absoluteShare": {
 						"value": 6667719762.77,
 						"dataSource": {
-							"page": 831,
+							"page": "831",
 							"fileName": "AnnualReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "communities"
@@ -2409,7 +2409,7 @@
 				"nonAlignedActivities": {
 					"value": [],
 					"dataSource": {
-						"page": 747,
+						"page": "747",
 						"fileName": "AnnualReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "interfaces"
@@ -2421,7 +2421,7 @@
 					"relativeShareInPercent": {
 						"value": 68.94,
 						"dataSource": {
-							"page": 713,
+							"page": "713",
 							"fileName": "AnnualReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "models"
@@ -2432,7 +2432,7 @@
 					"absoluteShare": {
 						"value": 361176622.1,
 						"dataSource": {
-							"page": 240,
+							"page": "240",
 							"fileName": "AnnualReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "architectures"
@@ -2445,7 +2445,7 @@
 				"substantialContributionToClimateChangeMitigationInPercentEligible": {
 					"value": 18.99,
 					"dataSource": {
-						"page": 68,
+						"page": "68",
 						"fileName": "AnnualReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "mindshare"
@@ -2456,7 +2456,7 @@
 				"substantialContributionToClimateChangeMitigationInPercentAligned": {
 					"value": 90.12,
 					"dataSource": {
-						"page": 689,
+						"page": "689",
 						"fileName": "AnnualReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "methodologies"
@@ -2467,7 +2467,7 @@
 				"substantialContributionToClimateChangeMitigationInPercentOfWhichUseOfProceeds": {
 					"value": 79.48,
 					"dataSource": {
-						"page": 1130,
+						"page": "1130",
 						"fileName": "AnnualReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "portals"
@@ -2478,7 +2478,7 @@
 				"substantialContributionToClimateChangeMitigationInPercentEnablingShare": {
 					"value": 33.81,
 					"dataSource": {
-						"page": 896,
+						"page": "896",
 						"fileName": "AnnualReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "channels"
@@ -2489,7 +2489,7 @@
 				"substantialContributionToClimateChangeMitigationInPercentTransitionalShare": {
 					"value": 10.7,
 					"dataSource": {
-						"page": 635,
+						"page": "635",
 						"fileName": "AnnualReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "deliverables"
@@ -2500,7 +2500,7 @@
 				"substantialContributionToClimateChangeAdaptationInPercentEligible": {
 					"value": 58.59,
 					"dataSource": {
-						"page": 971,
+						"page": "971",
 						"fileName": "AnnualReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "initiatives"
@@ -2511,7 +2511,7 @@
 				"substantialContributionToClimateChangeAdaptationInPercentAligned": {
 					"value": 22.14,
 					"dataSource": {
-						"page": 204,
+						"page": "204",
 						"fileName": "AnnualReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "technologies"
@@ -2522,7 +2522,7 @@
 				"substantialContributionToClimateChangeAdaptationInPercentOfWhichUseOfProceeds": {
 					"value": 37.96,
 					"dataSource": {
-						"page": 1140,
+						"page": "1140",
 						"fileName": "AnnualReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "experiences"
@@ -2533,7 +2533,7 @@
 				"substantialContributionToClimateChangeAdaptationInPercentEnablingShare": {
 					"value": 15.45,
 					"dataSource": {
-						"page": 309,
+						"page": "309",
 						"fileName": "AnnualReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "mindshare"
@@ -2544,7 +2544,7 @@
 				"substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentEligible": {
 					"value": 73.01,
 					"dataSource": {
-						"page": 285,
+						"page": "285",
 						"fileName": "AnnualReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "experiences"
@@ -2555,7 +2555,7 @@
 				"substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned": {
 					"value": 88.13,
 					"dataSource": {
-						"page": 751,
+						"page": "751",
 						"fileName": "AnnualReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "blockchains"
@@ -2566,7 +2566,7 @@
 				"substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentOfWhichUseOfProceeds": {
 					"value": 0.53,
 					"dataSource": {
-						"page": 50,
+						"page": "50",
 						"fileName": "AnnualReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "relationships"
@@ -2577,7 +2577,7 @@
 				"substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentEnablingShare": {
 					"value": 91,
 					"dataSource": {
-						"page": 452,
+						"page": "452",
 						"fileName": "AnnualReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "networks"
@@ -2588,7 +2588,7 @@
 				"substantialContributionToTransitionToACircularEconomyInPercentEligible": {
 					"value": 30.71,
 					"dataSource": {
-						"page": 325,
+						"page": "325",
 						"fileName": "AnnualReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "portals"
@@ -2599,7 +2599,7 @@
 				"substantialContributionToTransitionToACircularEconomyInPercentAligned": {
 					"value": 10.65,
 					"dataSource": {
-						"page": 678,
+						"page": "678",
 						"fileName": "AnnualReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "channels"
@@ -2610,7 +2610,7 @@
 				"substantialContributionToTransitionToACircularEconomyInPercentOfWhichUseOfProceeds": {
 					"value": 78.68,
 					"dataSource": {
-						"page": 906,
+						"page": "906",
 						"fileName": "AnnualReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "metrics"
@@ -2621,7 +2621,7 @@
 				"substantialContributionToTransitionToACircularEconomyInPercentEnablingShare": {
 					"value": 59.39,
 					"dataSource": {
-						"page": 958,
+						"page": "958",
 						"fileName": "AnnualReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "models"
@@ -2632,7 +2632,7 @@
 				"substantialContributionToPollutionPreventionAndControlInPercentEligible": {
 					"value": 16.97,
 					"dataSource": {
-						"page": 1060,
+						"page": "1060",
 						"fileName": "AnnualReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "interfaces"
@@ -2643,7 +2643,7 @@
 				"substantialContributionToPollutionPreventionAndControlInPercentAligned": {
 					"value": 70.61,
 					"dataSource": {
-						"page": 529,
+						"page": "529",
 						"fileName": "AnnualReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "e-markets"
@@ -2654,7 +2654,7 @@
 				"substantialContributionToPollutionPreventionAndControlInPercentOfWhichUseOfProceeds": {
 					"value": 77.01,
 					"dataSource": {
-						"page": 1027,
+						"page": "1027",
 						"fileName": "AnnualReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "technologies"
@@ -2665,7 +2665,7 @@
 				"substantialContributionToPollutionPreventionAndControlInPercentEnablingShare": {
 					"value": 92.74,
 					"dataSource": {
-						"page": 376,
+						"page": "376",
 						"fileName": "AnnualReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "lifetime value"
@@ -2676,7 +2676,7 @@
 				"substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentEligible": {
 					"value": 35,
 					"dataSource": {
-						"page": 603,
+						"page": "603",
 						"fileName": "AnnualReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "content"
@@ -2687,7 +2687,7 @@
 				"substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned": {
 					"value": 59.9,
 					"dataSource": {
-						"page": 726,
+						"page": "726",
 						"fileName": "AnnualReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "content"
@@ -2698,7 +2698,7 @@
 				"substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentOfWhichUseOfProceeds": {
 					"value": 76.38,
 					"dataSource": {
-						"page": 520,
+						"page": "520",
 						"fileName": "AnnualReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "synergies"
@@ -2709,7 +2709,7 @@
 				"substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentEnablingShare": {
 					"value": 73.53,
 					"dataSource": {
-						"page": 638,
+						"page": "638",
 						"fileName": "AnnualReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "mindshare"
@@ -2947,7 +2947,7 @@
 						}
 					],
 					"dataSource": {
-						"page": 844,
+						"page": "844",
 						"fileName": "AnnualReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "content"
@@ -2958,7 +2958,7 @@
 				"enablingShareInPercent": {
 					"value": 7.11,
 					"dataSource": {
-						"page": 129,
+						"page": "129",
 						"fileName": "AnnualReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "methodologies"
@@ -2969,7 +2969,7 @@
 				"transitionalShareInPercent": {
 					"value": 96.8,
 					"dataSource": {
-						"page": 116,
+						"page": "116",
 						"fileName": "AnnualReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "e-business"
@@ -2982,7 +2982,7 @@
 				"totalAmount": {
 					"value": 9098237450.24,
 					"dataSource": {
-						"page": 97,
+						"page": "97",
 						"fileName": "AnnualReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "blockchains"
@@ -2995,7 +2995,7 @@
 					"relativeShareInPercent": {
 						"value": 41.7,
 						"dataSource": {
-							"page": 27,
+							"page": "27",
 							"fileName": "AnnualReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "e-business"
@@ -3006,7 +3006,7 @@
 					"absoluteShare": {
 						"value": 8185499641.12,
 						"dataSource": {
-							"page": 221,
+							"page": "221",
 							"fileName": "AnnualReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "content"
@@ -3020,7 +3020,7 @@
 					"relativeShareInPercent": {
 						"value": 13.75,
 						"dataSource": {
-							"page": 414,
+							"page": "414",
 							"fileName": "AnnualReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "schemas"
@@ -3031,7 +3031,7 @@
 					"absoluteShare": {
 						"value": 1110123493.7,
 						"dataSource": {
-							"page": 177,
+							"page": "177",
 							"fileName": "AnnualReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "communities"
@@ -3045,7 +3045,7 @@
 					"relativeShareInPercent": {
 						"value": 95.86,
 						"dataSource": {
-							"page": 1023,
+							"page": "1023",
 							"fileName": "AnnualReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "convergence"
@@ -3056,7 +3056,7 @@
 					"absoluteShare": {
 						"value": 4631259704.47,
 						"dataSource": {
-							"page": 838,
+							"page": "838",
 							"fileName": "AnnualReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "platforms"
@@ -3096,7 +3096,7 @@
 						}
 					],
 					"dataSource": {
-						"page": 174,
+						"page": "174",
 						"fileName": "AnnualReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "web services"
@@ -3108,7 +3108,7 @@
 					"relativeShareInPercent": {
 						"value": 65.92,
 						"dataSource": {
-							"page": 986,
+							"page": "986",
 							"fileName": "AnnualReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "metrics"
@@ -3119,7 +3119,7 @@
 					"absoluteShare": {
 						"value": 6080798003.82,
 						"dataSource": {
-							"page": 447,
+							"page": "447",
 							"fileName": "AnnualReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "deliverables"
@@ -3132,7 +3132,7 @@
 				"substantialContributionToClimateChangeMitigationInPercentAligned": {
 					"value": 17.36,
 					"dataSource": {
-						"page": 812,
+						"page": "812",
 						"fileName": "AnnualReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "convergence"
@@ -3143,7 +3143,7 @@
 				"substantialContributionToClimateChangeAdaptationInPercentAligned": {
 					"value": 15.51,
 					"dataSource": {
-						"page": 944,
+						"page": "944",
 						"fileName": "AnnualReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "supply-chains"
@@ -3154,7 +3154,7 @@
 				"substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned": {
 					"value": 4.38,
 					"dataSource": {
-						"page": 773,
+						"page": "773",
 						"fileName": "AnnualReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "metrics"
@@ -3165,7 +3165,7 @@
 				"substantialContributionToTransitionToACircularEconomyInPercentAligned": {
 					"value": 33.95,
 					"dataSource": {
-						"page": 234,
+						"page": "234",
 						"fileName": "AnnualReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "communities"
@@ -3176,7 +3176,7 @@
 				"substantialContributionToPollutionPreventionAndControlInPercentAligned": {
 					"value": 5.66,
 					"dataSource": {
-						"page": 101,
+						"page": "101",
 						"fileName": "AnnualReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "methodologies"
@@ -3187,7 +3187,7 @@
 				"substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned": {
 					"value": 5.86,
 					"dataSource": {
-						"page": 640,
+						"page": "640",
 						"fileName": "AnnualReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "blockchains"
@@ -3198,7 +3198,7 @@
 				"alignedActivities": {
 					"value": [],
 					"dataSource": {
-						"page": 1146,
+						"page": "1146",
 						"fileName": "AnnualReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "models"
@@ -3209,7 +3209,7 @@
 				"enablingShareInPercent": {
 					"value": 52.07,
 					"dataSource": {
-						"page": 934,
+						"page": "934",
 						"fileName": "AnnualReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "communities"
@@ -3220,7 +3220,7 @@
 				"transitionalShareInPercent": {
 					"value": 83.77,
 					"dataSource": {
-						"page": 351,
+						"page": "351",
 						"fileName": "AnnualReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "applications"
@@ -3278,7 +3278,7 @@
 				"fiscalYearDeviation": {
 					"value": "NoDeviation",
 					"dataSource": {
-						"page": 229,
+						"page": "229",
 						"fileName": "AnnualReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "bandwidth"
@@ -3289,7 +3289,7 @@
 				"fiscalYearEnd": {
 					"value": "2024-07-02",
 					"dataSource": {
-						"page": 255,
+						"page": "255",
 						"fileName": "ESEFReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "applications"
@@ -3300,7 +3300,7 @@
 				"scopeOfEntities": {
 					"value": "Yes",
 					"dataSource": {
-						"page": 697,
+						"page": "697",
 						"fileName": "ESEFReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "e-commerce"
@@ -3311,7 +3311,7 @@
 				"nfrdMandatory": {
 					"value": "Yes",
 					"dataSource": {
-						"page": 787,
+						"page": "787",
 						"fileName": "ESEFReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "bandwidth"
@@ -3322,7 +3322,7 @@
 				"euTaxonomyActivityLevelReporting": {
 					"value": "Yes",
 					"dataSource": {
-						"page": 572,
+						"page": "572",
 						"fileName": "AnnualReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "portals"
@@ -3334,7 +3334,7 @@
 					"value": "ReasonableAssurance",
 					"provider": "Torp Group",
 					"dataSource": {
-						"page": 389,
+						"page": "389",
 						"fileName": "ESEFReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "e-commerce"
@@ -3343,7 +3343,7 @@
 				"numberOfEmployees": {
 					"value": 8275.59,
 					"dataSource": {
-						"page": 52,
+						"page": "52",
 						"fileName": "ESEFReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "partnerships"
@@ -3368,7 +3368,7 @@
 				"totalAmount": {
 					"value": 8275053706.02,
 					"dataSource": {
-						"page": 895,
+						"page": "895",
 						"fileName": "ESEFReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "e-markets"
@@ -3381,7 +3381,7 @@
 					"relativeShareInPercent": {
 						"value": 15.06,
 						"dataSource": {
-							"page": 1120,
+							"page": "1120",
 							"fileName": "ESEFReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "relationships"
@@ -3392,7 +3392,7 @@
 					"absoluteShare": {
 						"value": 1269312431.1,
 						"dataSource": {
-							"page": 113,
+							"page": "113",
 							"fileName": "ESEFReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "platforms"
@@ -3406,7 +3406,7 @@
 					"relativeShareInPercent": {
 						"value": 29.05,
 						"dataSource": {
-							"page": 956,
+							"page": "956",
 							"fileName": "AnnualReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "eyeballs"
@@ -3417,7 +3417,7 @@
 					"absoluteShare": {
 						"value": 2099484857.17,
 						"dataSource": {
-							"page": 521,
+							"page": "521",
 							"fileName": "ESEFReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "e-markets"
@@ -3431,7 +3431,7 @@
 					"relativeShareInPercent": {
 						"value": 18.71,
 						"dataSource": {
-							"page": 438,
+							"page": "438",
 							"fileName": "AnnualReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "web services"
@@ -3442,7 +3442,7 @@
 					"absoluteShare": {
 						"value": 7942218545.36,
 						"dataSource": {
-							"page": 679,
+							"page": "679",
 							"fileName": "AnnualReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "users"
@@ -3470,7 +3470,7 @@
 						}
 					],
 					"dataSource": {
-						"page": 650,
+						"page": "650",
 						"fileName": "ESEFReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "deliverables"
@@ -3482,7 +3482,7 @@
 					"relativeShareInPercent": {
 						"value": 44.96,
 						"dataSource": {
-							"page": 474,
+							"page": "474",
 							"fileName": "ESEFReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "bandwidth"
@@ -3493,7 +3493,7 @@
 					"absoluteShare": {
 						"value": 9189151786.27,
 						"dataSource": {
-							"page": 922,
+							"page": "922",
 							"fileName": "AnnualReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "initiatives"
@@ -3506,7 +3506,7 @@
 				"substantialContributionToClimateChangeMitigationInPercentEligible": {
 					"value": 77.26,
 					"dataSource": {
-						"page": 529,
+						"page": "529",
 						"fileName": "ESEFReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "architectures"
@@ -3517,7 +3517,7 @@
 				"substantialContributionToClimateChangeMitigationInPercentAligned": {
 					"value": 25.65,
 					"dataSource": {
-						"page": 317,
+						"page": "317",
 						"fileName": "AnnualReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "web services"
@@ -3528,7 +3528,7 @@
 				"substantialContributionToClimateChangeMitigationInPercentOfWhichUseOfProceeds": {
 					"value": 48.66,
 					"dataSource": {
-						"page": 189,
+						"page": "189",
 						"fileName": "ESEFReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "systems"
@@ -3539,7 +3539,7 @@
 				"substantialContributionToClimateChangeMitigationInPercentEnablingShare": {
 					"value": 43.78,
 					"dataSource": {
-						"page": 898,
+						"page": "898",
 						"fileName": "AnnualReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "markets"
@@ -3550,7 +3550,7 @@
 				"substantialContributionToClimateChangeMitigationInPercentTransitionalShare": {
 					"value": 94.01,
 					"dataSource": {
-						"page": 293,
+						"page": "293",
 						"fileName": "ESEFReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "systems"
@@ -3561,7 +3561,7 @@
 				"substantialContributionToClimateChangeAdaptationInPercentEligible": {
 					"value": 26.9,
 					"dataSource": {
-						"page": 278,
+						"page": "278",
 						"fileName": "ESEFReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "functionalities"
@@ -3572,7 +3572,7 @@
 				"substantialContributionToClimateChangeAdaptationInPercentAligned": {
 					"value": 43.89,
 					"dataSource": {
-						"page": 748,
+						"page": "748",
 						"fileName": "AnnualReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "paradigms"
@@ -3583,7 +3583,7 @@
 				"substantialContributionToClimateChangeAdaptationInPercentOfWhichUseOfProceeds": {
 					"value": 21.36,
 					"dataSource": {
-						"page": 877,
+						"page": "877",
 						"fileName": "AnnualReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "experiences"
@@ -3594,7 +3594,7 @@
 				"substantialContributionToClimateChangeAdaptationInPercentEnablingShare": {
 					"value": 83.77,
 					"dataSource": {
-						"page": 886,
+						"page": "886",
 						"fileName": "AnnualReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "initiatives"
@@ -3605,7 +3605,7 @@
 				"substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentEligible": {
 					"value": 57.04,
 					"dataSource": {
-						"page": 570,
+						"page": "570",
 						"fileName": "ESEFReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "portals"
@@ -3616,7 +3616,7 @@
 				"substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned": {
 					"value": 67.76,
 					"dataSource": {
-						"page": 967,
+						"page": "967",
 						"fileName": "AnnualReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "metrics"
@@ -3627,7 +3627,7 @@
 				"substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentOfWhichUseOfProceeds": {
 					"value": 72.05,
 					"dataSource": {
-						"page": 389,
+						"page": "389",
 						"fileName": "ESEFReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "deliverables"
@@ -3638,7 +3638,7 @@
 				"substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentEnablingShare": {
 					"value": 90.47,
 					"dataSource": {
-						"page": 146,
+						"page": "146",
 						"fileName": "ESEFReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "synergies"
@@ -3649,7 +3649,7 @@
 				"substantialContributionToTransitionToACircularEconomyInPercentEligible": {
 					"value": 71.82,
 					"dataSource": {
-						"page": 1085,
+						"page": "1085",
 						"fileName": "AnnualReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "e-business"
@@ -3660,7 +3660,7 @@
 				"substantialContributionToTransitionToACircularEconomyInPercentAligned": {
 					"value": 22.22,
 					"dataSource": {
-						"page": 500,
+						"page": "500",
 						"fileName": "ESEFReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "niches"
@@ -3671,7 +3671,7 @@
 				"substantialContributionToTransitionToACircularEconomyInPercentOfWhichUseOfProceeds": {
 					"value": 30.33,
 					"dataSource": {
-						"page": 690,
+						"page": "690",
 						"fileName": "ESEFReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "supply-chains"
@@ -3682,7 +3682,7 @@
 				"substantialContributionToTransitionToACircularEconomyInPercentEnablingShare": {
 					"value": 94.81,
 					"dataSource": {
-						"page": 732,
+						"page": "732",
 						"fileName": "AnnualReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "supply-chains"
@@ -3693,7 +3693,7 @@
 				"substantialContributionToPollutionPreventionAndControlInPercentEligible": {
 					"value": 56.4,
 					"dataSource": {
-						"page": 997,
+						"page": "997",
 						"fileName": "ESEFReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "content"
@@ -3704,7 +3704,7 @@
 				"substantialContributionToPollutionPreventionAndControlInPercentAligned": {
 					"value": 89.92,
 					"dataSource": {
-						"page": 733,
+						"page": "733",
 						"fileName": "ESEFReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "users"
@@ -3715,7 +3715,7 @@
 				"substantialContributionToPollutionPreventionAndControlInPercentOfWhichUseOfProceeds": {
 					"value": 99.53,
 					"dataSource": {
-						"page": 1192,
+						"page": "1192",
 						"fileName": "AnnualReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "channels"
@@ -3726,7 +3726,7 @@
 				"substantialContributionToPollutionPreventionAndControlInPercentEnablingShare": {
 					"value": 43.27,
 					"dataSource": {
-						"page": 364,
+						"page": "364",
 						"fileName": "AnnualReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "relationships"
@@ -3737,7 +3737,7 @@
 				"substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentEligible": {
 					"value": 88.59,
 					"dataSource": {
-						"page": 217,
+						"page": "217",
 						"fileName": "ESEFReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "web services"
@@ -3748,7 +3748,7 @@
 				"substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned": {
 					"value": 52.52,
 					"dataSource": {
-						"page": 1158,
+						"page": "1158",
 						"fileName": "ESEFReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "portals"
@@ -3759,7 +3759,7 @@
 				"substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentOfWhichUseOfProceeds": {
 					"value": 20.01,
 					"dataSource": {
-						"page": 58,
+						"page": "58",
 						"fileName": "ESEFReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "interfaces"
@@ -3770,7 +3770,7 @@
 				"substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentEnablingShare": {
 					"value": 82.01,
 					"dataSource": {
-						"page": 429,
+						"page": "429",
 						"fileName": "AnnualReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "e-markets"
@@ -3847,7 +3847,7 @@
 						}
 					],
 					"dataSource": {
-						"page": 891,
+						"page": "891",
 						"fileName": "AnnualReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "markets"
@@ -3858,7 +3858,7 @@
 				"enablingShareInPercent": {
 					"value": 49.61,
 					"dataSource": {
-						"page": 1101,
+						"page": "1101",
 						"fileName": "ESEFReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "schemas"
@@ -3869,7 +3869,7 @@
 				"transitionalShareInPercent": {
 					"value": 25.58,
 					"dataSource": {
-						"page": 847,
+						"page": "847",
 						"fileName": "AnnualReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "platforms"
@@ -3882,7 +3882,7 @@
 				"totalAmount": {
 					"value": 8173319932.54,
 					"dataSource": {
-						"page": 769,
+						"page": "769",
 						"fileName": "AnnualReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "e-business"
@@ -3895,7 +3895,7 @@
 					"relativeShareInPercent": {
 						"value": 89.57,
 						"dataSource": {
-							"page": 1052,
+							"page": "1052",
 							"fileName": "ESEFReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "architectures"
@@ -3906,7 +3906,7 @@
 					"absoluteShare": {
 						"value": 169211374.59,
 						"dataSource": {
-							"page": 621,
+							"page": "621",
 							"fileName": "ESEFReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "applications"
@@ -3920,7 +3920,7 @@
 					"relativeShareInPercent": {
 						"value": 56.55,
 						"dataSource": {
-							"page": 1159,
+							"page": "1159",
 							"fileName": "ESEFReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "ROI"
@@ -3931,7 +3931,7 @@
 					"absoluteShare": {
 						"value": 6527061255.18,
 						"dataSource": {
-							"page": 986,
+							"page": "986",
 							"fileName": "AnnualReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "markets"
@@ -3945,7 +3945,7 @@
 					"relativeShareInPercent": {
 						"value": 43.88,
 						"dataSource": {
-							"page": 305,
+							"page": "305",
 							"fileName": "ESEFReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "functionalities"
@@ -3956,7 +3956,7 @@
 					"absoluteShare": {
 						"value": 4707569230.81,
 						"dataSource": {
-							"page": 385,
+							"page": "385",
 							"fileName": "ESEFReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "methodologies"
@@ -3983,7 +3983,7 @@
 						}
 					],
 					"dataSource": {
-						"page": 314,
+						"page": "314",
 						"fileName": "IntegratedReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "mindshare"
@@ -3995,7 +3995,7 @@
 					"relativeShareInPercent": {
 						"value": 88.57,
 						"dataSource": {
-							"page": 373,
+							"page": "373",
 							"fileName": "ESEFReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "experiences"
@@ -4006,7 +4006,7 @@
 					"absoluteShare": {
 						"value": 4284324557.52,
 						"dataSource": {
-							"page": 230,
+							"page": "230",
 							"fileName": "AnnualReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "applications"
@@ -4019,7 +4019,7 @@
 				"substantialContributionToClimateChangeMitigationInPercentEligible": {
 					"value": 91.43,
 					"dataSource": {
-						"page": 342,
+						"page": "342",
 						"fileName": "ESEFReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "metrics"
@@ -4030,7 +4030,7 @@
 				"substantialContributionToClimateChangeMitigationInPercentAligned": {
 					"value": 64.94,
 					"dataSource": {
-						"page": 688,
+						"page": "688",
 						"fileName": "AnnualReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "niches"
@@ -4041,7 +4041,7 @@
 				"substantialContributionToClimateChangeMitigationInPercentOfWhichUseOfProceeds": {
 					"value": 9.16,
 					"dataSource": {
-						"page": 865,
+						"page": "865",
 						"fileName": "ESEFReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "mindshare"
@@ -4052,7 +4052,7 @@
 				"substantialContributionToClimateChangeMitigationInPercentEnablingShare": {
 					"value": 7.56,
 					"dataSource": {
-						"page": 247,
+						"page": "247",
 						"fileName": "ESEFReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "markets"
@@ -4063,7 +4063,7 @@
 				"substantialContributionToClimateChangeMitigationInPercentTransitionalShare": {
 					"value": 54.88,
 					"dataSource": {
-						"page": 640,
+						"page": "640",
 						"fileName": "AnnualReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "partnerships"
@@ -4074,7 +4074,7 @@
 				"substantialContributionToClimateChangeAdaptationInPercentEligible": {
 					"value": 35.54,
 					"dataSource": {
-						"page": 640,
+						"page": "640",
 						"fileName": "ESEFReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "lifetime value"
@@ -4085,7 +4085,7 @@
 				"substantialContributionToClimateChangeAdaptationInPercentAligned": {
 					"value": 21.86,
 					"dataSource": {
-						"page": 1057,
+						"page": "1057",
 						"fileName": "AnnualReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "experiences"
@@ -4096,7 +4096,7 @@
 				"substantialContributionToClimateChangeAdaptationInPercentOfWhichUseOfProceeds": {
 					"value": 5.09,
 					"dataSource": {
-						"page": 485,
+						"page": "485",
 						"fileName": "ESEFReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "communities"
@@ -4107,7 +4107,7 @@
 				"substantialContributionToClimateChangeAdaptationInPercentEnablingShare": {
 					"value": 50.53,
 					"dataSource": {
-						"page": 73,
+						"page": "73",
 						"fileName": "ESEFReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "e-business"
@@ -4118,7 +4118,7 @@
 				"substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentEligible": {
 					"value": 87.98,
 					"dataSource": {
-						"page": 44,
+						"page": "44",
 						"fileName": "ESEFReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "content"
@@ -4129,7 +4129,7 @@
 				"substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned": {
 					"value": 88.07,
 					"dataSource": {
-						"page": 805,
+						"page": "805",
 						"fileName": "ESEFReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "methodologies"
@@ -4140,7 +4140,7 @@
 				"substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentOfWhichUseOfProceeds": {
 					"value": 45.44,
 					"dataSource": {
-						"page": 767,
+						"page": "767",
 						"fileName": "AnnualReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "systems"
@@ -4151,7 +4151,7 @@
 				"substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentEnablingShare": {
 					"value": 59.05,
 					"dataSource": {
-						"page": 1191,
+						"page": "1191",
 						"fileName": "ESEFReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "schemas"
@@ -4162,7 +4162,7 @@
 				"substantialContributionToTransitionToACircularEconomyInPercentEligible": {
 					"value": 6.98,
 					"dataSource": {
-						"page": 343,
+						"page": "343",
 						"fileName": "ESEFReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "e-markets"
@@ -4173,7 +4173,7 @@
 				"substantialContributionToTransitionToACircularEconomyInPercentAligned": {
 					"value": 81.7,
 					"dataSource": {
-						"page": 73,
+						"page": "73",
 						"fileName": "ESEFReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "applications"
@@ -4184,7 +4184,7 @@
 				"substantialContributionToTransitionToACircularEconomyInPercentOfWhichUseOfProceeds": {
 					"value": 28.56,
 					"dataSource": {
-						"page": 700,
+						"page": "700",
 						"fileName": "ESEFReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "relationships"
@@ -4195,7 +4195,7 @@
 				"substantialContributionToTransitionToACircularEconomyInPercentEnablingShare": {
 					"value": 81.14,
 					"dataSource": {
-						"page": 392,
+						"page": "392",
 						"fileName": "ESEFReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "platforms"
@@ -4206,7 +4206,7 @@
 				"substantialContributionToPollutionPreventionAndControlInPercentEligible": {
 					"value": 39.55,
 					"dataSource": {
-						"page": 411,
+						"page": "411",
 						"fileName": "AnnualReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "channels"
@@ -4217,7 +4217,7 @@
 				"substantialContributionToPollutionPreventionAndControlInPercentAligned": {
 					"value": 82.79,
 					"dataSource": {
-						"page": 927,
+						"page": "927",
 						"fileName": "AnnualReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "paradigms"
@@ -4228,7 +4228,7 @@
 				"substantialContributionToPollutionPreventionAndControlInPercentOfWhichUseOfProceeds": {
 					"value": 5.1,
 					"dataSource": {
-						"page": 645,
+						"page": "645",
 						"fileName": "ESEFReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "e-business"
@@ -4239,7 +4239,7 @@
 				"substantialContributionToPollutionPreventionAndControlInPercentEnablingShare": {
 					"value": 7.33,
 					"dataSource": {
-						"page": 104,
+						"page": "104",
 						"fileName": "AnnualReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "solutions"
@@ -4250,7 +4250,7 @@
 				"substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentEligible": {
 					"value": 67.48,
 					"dataSource": {
-						"page": 21,
+						"page": "21",
 						"fileName": "ESEFReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "web services"
@@ -4261,7 +4261,7 @@
 				"substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned": {
 					"value": 6.24,
 					"dataSource": {
-						"page": 735,
+						"page": "735",
 						"fileName": "ESEFReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "communities"
@@ -4272,7 +4272,7 @@
 				"substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentOfWhichUseOfProceeds": {
 					"value": 90.21,
 					"dataSource": {
-						"page": 105,
+						"page": "105",
 						"fileName": "AnnualReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "networks"
@@ -4283,7 +4283,7 @@
 				"substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentEnablingShare": {
 					"value": 19.11,
 					"dataSource": {
-						"page": 279,
+						"page": "279",
 						"fileName": "AnnualReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "interfaces"
@@ -4569,7 +4569,7 @@
 						}
 					],
 					"dataSource": {
-						"page": 487,
+						"page": "487",
 						"fileName": "IntegratedReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "convergence"
@@ -4580,7 +4580,7 @@
 				"enablingShareInPercent": {
 					"value": 32.88,
 					"dataSource": {
-						"page": 337,
+						"page": "337",
 						"fileName": "AnnualReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "ROI"
@@ -4591,7 +4591,7 @@
 				"transitionalShareInPercent": {
 					"value": 69.64,
 					"dataSource": {
-						"page": 472,
+						"page": "472",
 						"fileName": "AnnualReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "interfaces"
@@ -4604,7 +4604,7 @@
 				"totalAmount": {
 					"value": 1634772201.07,
 					"dataSource": {
-						"page": 730,
+						"page": "730",
 						"fileName": "ESEFReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "experiences"
@@ -4617,7 +4617,7 @@
 					"relativeShareInPercent": {
 						"value": 99.68,
 						"dataSource": {
-							"page": 1087,
+							"page": "1087",
 							"fileName": "AnnualReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "e-markets"
@@ -4628,7 +4628,7 @@
 					"absoluteShare": {
 						"value": 7366529353.9,
 						"dataSource": {
-							"page": 654,
+							"page": "654",
 							"fileName": "AnnualReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "ROI"
@@ -4642,7 +4642,7 @@
 					"relativeShareInPercent": {
 						"value": 63.87,
 						"dataSource": {
-							"page": 111,
+							"page": "111",
 							"fileName": "AnnualReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "supply-chains"
@@ -4653,7 +4653,7 @@
 					"absoluteShare": {
 						"value": 8012369393.84,
 						"dataSource": {
-							"page": 138,
+							"page": "138",
 							"fileName": "ESEFReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "portals"
@@ -4667,7 +4667,7 @@
 					"relativeShareInPercent": {
 						"value": 96,
 						"dataSource": {
-							"page": 191,
+							"page": "191",
 							"fileName": "ESEFReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "convergence"
@@ -4678,7 +4678,7 @@
 					"absoluteShare": {
 						"value": 8444646620.2,
 						"dataSource": {
-							"page": 825,
+							"page": "825",
 							"fileName": "ESEFReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "functionalities"
@@ -4705,7 +4705,7 @@
 						}
 					],
 					"dataSource": {
-						"page": 715,
+						"page": "715",
 						"fileName": "AnnualReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "models"
@@ -4717,7 +4717,7 @@
 					"relativeShareInPercent": {
 						"value": 64.77,
 						"dataSource": {
-							"page": 1,
+							"page": "1",
 							"fileName": "ESEFReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "users"
@@ -4728,7 +4728,7 @@
 					"absoluteShare": {
 						"value": 1704435180.87,
 						"dataSource": {
-							"page": 360,
+							"page": "360",
 							"fileName": "AnnualReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "convergence"
@@ -4741,7 +4741,7 @@
 				"substantialContributionToClimateChangeMitigationInPercentAligned": {
 					"value": 51.65,
 					"dataSource": {
-						"page": 221,
+						"page": "221",
 						"fileName": "AnnualReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "interfaces"
@@ -4752,7 +4752,7 @@
 				"substantialContributionToClimateChangeAdaptationInPercentAligned": {
 					"value": 18.86,
 					"dataSource": {
-						"page": 1121,
+						"page": "1121",
 						"fileName": "AnnualReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "technologies"
@@ -4763,7 +4763,7 @@
 				"substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned": {
 					"value": 55.32,
 					"dataSource": {
-						"page": 295,
+						"page": "295",
 						"fileName": "ESEFReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "niches"
@@ -4774,7 +4774,7 @@
 				"substantialContributionToTransitionToACircularEconomyInPercentAligned": {
 					"value": 46.64,
 					"dataSource": {
-						"page": 519,
+						"page": "519",
 						"fileName": "ESEFReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "blockchains"
@@ -4785,7 +4785,7 @@
 				"substantialContributionToPollutionPreventionAndControlInPercentAligned": {
 					"value": 77.94,
 					"dataSource": {
-						"page": 1065,
+						"page": "1065",
 						"fileName": "ESEFReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "networks"
@@ -4796,7 +4796,7 @@
 				"substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned": {
 					"value": 36.87,
 					"dataSource": {
-						"page": 675,
+						"page": "675",
 						"fileName": "AnnualReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "lifetime value"
@@ -5064,7 +5064,7 @@
 						}
 					],
 					"dataSource": {
-						"page": 830,
+						"page": "830",
 						"fileName": "ESEFReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "mindshare"
@@ -5075,7 +5075,7 @@
 				"enablingShareInPercent": {
 					"value": 96.1,
 					"dataSource": {
-						"page": 643,
+						"page": "643",
 						"fileName": "ESEFReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "mindshare"
@@ -5086,7 +5086,7 @@
 				"transitionalShareInPercent": {
 					"value": 74.15,
 					"dataSource": {
-						"page": 101,
+						"page": "101",
 						"fileName": "ESEFReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "lifetime value"
@@ -5132,7 +5132,7 @@
 				"fiscalYearDeviation": {
 					"value": "Deviation",
 					"dataSource": {
-						"page": 29,
+						"page": "29",
 						"fileName": "AnnualReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "infrastructures"
@@ -5143,7 +5143,7 @@
 				"fiscalYearEnd": {
 					"value": "2024-12-08",
 					"dataSource": {
-						"page": 59,
+						"page": "59",
 						"fileName": "IntegratedReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "paradigms"
@@ -5154,7 +5154,7 @@
 				"scopeOfEntities": {
 					"value": "No",
 					"dataSource": {
-						"page": 76,
+						"page": "76",
 						"fileName": "IntegratedReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "paradigms"
@@ -5165,7 +5165,7 @@
 				"nfrdMandatory": {
 					"value": "No",
 					"dataSource": {
-						"page": 343,
+						"page": "343",
 						"fileName": "SustainabilityReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "paradigms"
@@ -5176,7 +5176,7 @@
 				"euTaxonomyActivityLevelReporting": {
 					"value": "Yes",
 					"dataSource": {
-						"page": 640,
+						"page": "640",
 						"fileName": "IntegratedReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "deliverables"
@@ -5188,7 +5188,7 @@
 					"value": "ReasonableAssurance",
 					"provider": "Haag - Weissnat",
 					"dataSource": {
-						"page": 937,
+						"page": "937",
 						"fileName": "ESEFReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "functionalities"
@@ -5197,7 +5197,7 @@
 				"numberOfEmployees": {
 					"value": 8680.54,
 					"dataSource": {
-						"page": 726,
+						"page": "726",
 						"fileName": "IntegratedReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "e-commerce"
@@ -5211,7 +5211,7 @@
 				"totalAmount": {
 					"value": 9820075817.41,
 					"dataSource": {
-						"page": 279,
+						"page": "279",
 						"fileName": "ESEFReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "e-business"
@@ -5224,7 +5224,7 @@
 					"relativeShareInPercent": {
 						"value": 79.67,
 						"dataSource": {
-							"page": 1048,
+							"page": "1048",
 							"fileName": "ESEFReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "partnerships"
@@ -5235,7 +5235,7 @@
 					"absoluteShare": {
 						"value": 9160086214.55,
 						"dataSource": {
-							"page": 346,
+							"page": "346",
 							"fileName": "SustainabilityReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "convergence"
@@ -5249,7 +5249,7 @@
 					"relativeShareInPercent": {
 						"value": 73.36,
 						"dataSource": {
-							"page": 772,
+							"page": "772",
 							"fileName": "AnnualReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "interfaces"
@@ -5260,7 +5260,7 @@
 					"absoluteShare": {
 						"value": 5919046590.57,
 						"dataSource": {
-							"page": 1041,
+							"page": "1041",
 							"fileName": "IntegratedReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "interfaces"
@@ -5274,7 +5274,7 @@
 					"relativeShareInPercent": {
 						"value": 22.15,
 						"dataSource": {
-							"page": 252,
+							"page": "252",
 							"fileName": "SustainabilityReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "technologies"
@@ -5285,7 +5285,7 @@
 					"absoluteShare": {
 						"value": 2809800680.26,
 						"dataSource": {
-							"page": 1162,
+							"page": "1162",
 							"fileName": "SustainabilityReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "applications"
@@ -5298,7 +5298,7 @@
 				"nonAlignedActivities": {
 					"value": [],
 					"dataSource": {
-						"page": 763,
+						"page": "763",
 						"fileName": "IntegratedReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "e-markets"
@@ -5310,7 +5310,7 @@
 					"relativeShareInPercent": {
 						"value": 17.94,
 						"dataSource": {
-							"page": 397,
+							"page": "397",
 							"fileName": "SustainabilityReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "synergies"
@@ -5321,7 +5321,7 @@
 					"absoluteShare": {
 						"value": 8018249629.53,
 						"dataSource": {
-							"page": 855,
+							"page": "855",
 							"fileName": "AnnualReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "bandwidth"
@@ -5334,7 +5334,7 @@
 				"substantialContributionToClimateChangeMitigationInPercentEligible": {
 					"value": 5.82,
 					"dataSource": {
-						"page": 577,
+						"page": "577",
 						"fileName": "SustainabilityReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "interfaces"
@@ -5345,7 +5345,7 @@
 				"substantialContributionToClimateChangeMitigationInPercentAligned": {
 					"value": 84.27,
 					"dataSource": {
-						"page": 1022,
+						"page": "1022",
 						"fileName": "AnnualReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "architectures"
@@ -5356,7 +5356,7 @@
 				"substantialContributionToClimateChangeMitigationInPercentOfWhichUseOfProceeds": {
 					"value": 23.88,
 					"dataSource": {
-						"page": 38,
+						"page": "38",
 						"fileName": "IntegratedReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "technologies"
@@ -5367,7 +5367,7 @@
 				"substantialContributionToClimateChangeMitigationInPercentEnablingShare": {
 					"value": 20.76,
 					"dataSource": {
-						"page": 356,
+						"page": "356",
 						"fileName": "ESEFReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "infrastructures"
@@ -5378,7 +5378,7 @@
 				"substantialContributionToClimateChangeMitigationInPercentTransitionalShare": {
 					"value": 57.29,
 					"dataSource": {
-						"page": 326,
+						"page": "326",
 						"fileName": "AnnualReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "e-business"
@@ -5389,7 +5389,7 @@
 				"substantialContributionToClimateChangeAdaptationInPercentEligible": {
 					"value": 98.62,
 					"dataSource": {
-						"page": 1033,
+						"page": "1033",
 						"fileName": "IntegratedReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "systems"
@@ -5400,7 +5400,7 @@
 				"substantialContributionToClimateChangeAdaptationInPercentAligned": {
 					"value": 82.69,
 					"dataSource": {
-						"page": 872,
+						"page": "872",
 						"fileName": "ESEFReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "mindshare"
@@ -5411,7 +5411,7 @@
 				"substantialContributionToClimateChangeAdaptationInPercentOfWhichUseOfProceeds": {
 					"value": 10.66,
 					"dataSource": {
-						"page": 499,
+						"page": "499",
 						"fileName": "AnnualReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "ROI"
@@ -5422,7 +5422,7 @@
 				"substantialContributionToClimateChangeAdaptationInPercentEnablingShare": {
 					"value": 35.32,
 					"dataSource": {
-						"page": 514,
+						"page": "514",
 						"fileName": "ESEFReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "solutions"
@@ -5433,7 +5433,7 @@
 				"substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentEligible": {
 					"value": 42.19,
 					"dataSource": {
-						"page": 489,
+						"page": "489",
 						"fileName": "AnnualReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "models"
@@ -5444,7 +5444,7 @@
 				"substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned": {
 					"value": 64.81,
 					"dataSource": {
-						"page": 729,
+						"page": "729",
 						"fileName": "SustainabilityReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "lifetime value"
@@ -5455,7 +5455,7 @@
 				"substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentOfWhichUseOfProceeds": {
 					"value": 34.72,
 					"dataSource": {
-						"page": 95,
+						"page": "95",
 						"fileName": "IntegratedReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "communities"
@@ -5466,7 +5466,7 @@
 				"substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentEnablingShare": {
 					"value": 30.65,
 					"dataSource": {
-						"page": 964,
+						"page": "964",
 						"fileName": "SustainabilityReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "portals"
@@ -5477,7 +5477,7 @@
 				"substantialContributionToTransitionToACircularEconomyInPercentEligible": {
 					"value": 78.26,
 					"dataSource": {
-						"page": 537,
+						"page": "537",
 						"fileName": "AnnualReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "bandwidth"
@@ -5488,7 +5488,7 @@
 				"substantialContributionToTransitionToACircularEconomyInPercentAligned": {
 					"value": 41.58,
 					"dataSource": {
-						"page": 425,
+						"page": "425",
 						"fileName": "AnnualReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "action-items"
@@ -5499,7 +5499,7 @@
 				"substantialContributionToTransitionToACircularEconomyInPercentOfWhichUseOfProceeds": {
 					"value": 41.95,
 					"dataSource": {
-						"page": 291,
+						"page": "291",
 						"fileName": "SustainabilityReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "networks"
@@ -5510,7 +5510,7 @@
 				"substantialContributionToTransitionToACircularEconomyInPercentEnablingShare": {
 					"value": 84.35,
 					"dataSource": {
-						"page": 1038,
+						"page": "1038",
 						"fileName": "AnnualReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "technologies"
@@ -5521,7 +5521,7 @@
 				"substantialContributionToPollutionPreventionAndControlInPercentEligible": {
 					"value": 18.86,
 					"dataSource": {
-						"page": 1080,
+						"page": "1080",
 						"fileName": "SustainabilityReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "architectures"
@@ -5532,7 +5532,7 @@
 				"substantialContributionToPollutionPreventionAndControlInPercentAligned": {
 					"value": 16.31,
 					"dataSource": {
-						"page": 1086,
+						"page": "1086",
 						"fileName": "SustainabilityReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "applications"
@@ -5543,7 +5543,7 @@
 				"substantialContributionToPollutionPreventionAndControlInPercentOfWhichUseOfProceeds": {
 					"value": 6.7,
 					"dataSource": {
-						"page": 744,
+						"page": "744",
 						"fileName": "IntegratedReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "infrastructures"
@@ -5554,7 +5554,7 @@
 				"substantialContributionToPollutionPreventionAndControlInPercentEnablingShare": {
 					"value": 64.67,
 					"dataSource": {
-						"page": 693,
+						"page": "693",
 						"fileName": "AnnualReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "lifetime value"
@@ -5565,7 +5565,7 @@
 				"substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentEligible": {
 					"value": 6.28,
 					"dataSource": {
-						"page": 880,
+						"page": "880",
 						"fileName": "SustainabilityReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "e-markets"
@@ -5576,7 +5576,7 @@
 				"substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned": {
 					"value": 49.17,
 					"dataSource": {
-						"page": 796,
+						"page": "796",
 						"fileName": "SustainabilityReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "interfaces"
@@ -5587,7 +5587,7 @@
 				"substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentOfWhichUseOfProceeds": {
 					"value": 90.05,
 					"dataSource": {
-						"page": 152,
+						"page": "152",
 						"fileName": "SustainabilityReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "communities"
@@ -5598,7 +5598,7 @@
 				"substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentEnablingShare": {
 					"value": 43.52,
 					"dataSource": {
-						"page": 284,
+						"page": "284",
 						"fileName": "IntegratedReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "communities"
@@ -5814,7 +5814,7 @@
 						}
 					],
 					"dataSource": {
-						"page": 586,
+						"page": "586",
 						"fileName": "ESEFReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "systems"
@@ -5825,7 +5825,7 @@
 				"enablingShareInPercent": {
 					"value": 35.89,
 					"dataSource": {
-						"page": 686,
+						"page": "686",
 						"fileName": "IntegratedReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "communities"
@@ -5836,7 +5836,7 @@
 				"transitionalShareInPercent": {
 					"value": 18.75,
 					"dataSource": {
-						"page": 1197,
+						"page": "1197",
 						"fileName": "IntegratedReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "functionalities"
@@ -5849,7 +5849,7 @@
 				"totalAmount": {
 					"value": 6286804100.97,
 					"dataSource": {
-						"page": 1021,
+						"page": "1021",
 						"fileName": "IntegratedReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "bandwidth"
@@ -5862,7 +5862,7 @@
 					"relativeShareInPercent": {
 						"value": 85.35,
 						"dataSource": {
-							"page": 596,
+							"page": "596",
 							"fileName": "AnnualReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "e-commerce"
@@ -5873,7 +5873,7 @@
 					"absoluteShare": {
 						"value": 9907975527.46,
 						"dataSource": {
-							"page": 1163,
+							"page": "1163",
 							"fileName": "SustainabilityReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "communities"
@@ -5887,7 +5887,7 @@
 					"relativeShareInPercent": {
 						"value": 59.28,
 						"dataSource": {
-							"page": 58,
+							"page": "58",
 							"fileName": "IntegratedReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "relationships"
@@ -5898,7 +5898,7 @@
 					"absoluteShare": {
 						"value": 3753181695.94,
 						"dataSource": {
-							"page": 1112,
+							"page": "1112",
 							"fileName": "AnnualReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "e-markets"
@@ -5912,7 +5912,7 @@
 					"relativeShareInPercent": {
 						"value": 47.5,
 						"dataSource": {
-							"page": 695,
+							"page": "695",
 							"fileName": "ESEFReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "metrics"
@@ -5923,7 +5923,7 @@
 					"absoluteShare": {
 						"value": 7904179545.59,
 						"dataSource": {
-							"page": 466,
+							"page": "466",
 							"fileName": "ESEFReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "action-items"
@@ -5950,7 +5950,7 @@
 						}
 					],
 					"dataSource": {
-						"page": 387,
+						"page": "387",
 						"fileName": "SustainabilityReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "eyeballs"
@@ -5962,7 +5962,7 @@
 					"relativeShareInPercent": {
 						"value": 81.56,
 						"dataSource": {
-							"page": 200,
+							"page": "200",
 							"fileName": "IntegratedReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "deliverables"
@@ -5973,7 +5973,7 @@
 					"absoluteShare": {
 						"value": 4273992914.24,
 						"dataSource": {
-							"page": 751,
+							"page": "751",
 							"fileName": "AnnualReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "systems"
@@ -5986,7 +5986,7 @@
 				"substantialContributionToClimateChangeMitigationInPercentEligible": {
 					"value": 31.68,
 					"dataSource": {
-						"page": 880,
+						"page": "880",
 						"fileName": "SustainabilityReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "initiatives"
@@ -5997,7 +5997,7 @@
 				"substantialContributionToClimateChangeMitigationInPercentAligned": {
 					"value": 86,
 					"dataSource": {
-						"page": 244,
+						"page": "244",
 						"fileName": "AnnualReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "relationships"
@@ -6008,7 +6008,7 @@
 				"substantialContributionToClimateChangeMitigationInPercentOfWhichUseOfProceeds": {
 					"value": 45.83,
 					"dataSource": {
-						"page": 189,
+						"page": "189",
 						"fileName": "ESEFReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "schemas"
@@ -6019,7 +6019,7 @@
 				"substantialContributionToClimateChangeMitigationInPercentEnablingShare": {
 					"value": 1.01,
 					"dataSource": {
-						"page": 340,
+						"page": "340",
 						"fileName": "ESEFReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "paradigms"
@@ -6030,7 +6030,7 @@
 				"substantialContributionToClimateChangeMitigationInPercentTransitionalShare": {
 					"value": 5,
 					"dataSource": {
-						"page": 113,
+						"page": "113",
 						"fileName": "SustainabilityReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "infrastructures"
@@ -6041,7 +6041,7 @@
 				"substantialContributionToClimateChangeAdaptationInPercentEligible": {
 					"value": 87.14,
 					"dataSource": {
-						"page": 905,
+						"page": "905",
 						"fileName": "SustainabilityReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "models"
@@ -6052,7 +6052,7 @@
 				"substantialContributionToClimateChangeAdaptationInPercentAligned": {
 					"value": 37.05,
 					"dataSource": {
-						"page": 333,
+						"page": "333",
 						"fileName": "IntegratedReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "architectures"
@@ -6063,7 +6063,7 @@
 				"substantialContributionToClimateChangeAdaptationInPercentOfWhichUseOfProceeds": {
 					"value": 50.95,
 					"dataSource": {
-						"page": 710,
+						"page": "710",
 						"fileName": "AnnualReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "supply-chains"
@@ -6074,7 +6074,7 @@
 				"substantialContributionToClimateChangeAdaptationInPercentEnablingShare": {
 					"value": 11.63,
 					"dataSource": {
-						"page": 648,
+						"page": "648",
 						"fileName": "IntegratedReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "content"
@@ -6085,7 +6085,7 @@
 				"substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentEligible": {
 					"value": 53.59,
 					"dataSource": {
-						"page": 899,
+						"page": "899",
 						"fileName": "ESEFReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "communities"
@@ -6096,7 +6096,7 @@
 				"substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned": {
 					"value": 20.12,
 					"dataSource": {
-						"page": 181,
+						"page": "181",
 						"fileName": "SustainabilityReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "functionalities"
@@ -6107,7 +6107,7 @@
 				"substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentOfWhichUseOfProceeds": {
 					"value": 13.79,
 					"dataSource": {
-						"page": 899,
+						"page": "899",
 						"fileName": "ESEFReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "portals"
@@ -6118,7 +6118,7 @@
 				"substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentEnablingShare": {
 					"value": 13.19,
 					"dataSource": {
-						"page": 1164,
+						"page": "1164",
 						"fileName": "ESEFReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "lifetime value"
@@ -6129,7 +6129,7 @@
 				"substantialContributionToTransitionToACircularEconomyInPercentEligible": {
 					"value": 16.21,
 					"dataSource": {
-						"page": 1054,
+						"page": "1054",
 						"fileName": "IntegratedReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "ROI"
@@ -6140,7 +6140,7 @@
 				"substantialContributionToTransitionToACircularEconomyInPercentAligned": {
 					"value": 19.15,
 					"dataSource": {
-						"page": 833,
+						"page": "833",
 						"fileName": "ESEFReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "eyeballs"
@@ -6151,7 +6151,7 @@
 				"substantialContributionToTransitionToACircularEconomyInPercentOfWhichUseOfProceeds": {
 					"value": 94.84,
 					"dataSource": {
-						"page": 1017,
+						"page": "1017",
 						"fileName": "IntegratedReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "eyeballs"
@@ -6162,7 +6162,7 @@
 				"substantialContributionToTransitionToACircularEconomyInPercentEnablingShare": {
 					"value": 45.23,
 					"dataSource": {
-						"page": 802,
+						"page": "802",
 						"fileName": "AnnualReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "solutions"
@@ -6173,7 +6173,7 @@
 				"substantialContributionToPollutionPreventionAndControlInPercentEligible": {
 					"value": 62.37,
 					"dataSource": {
-						"page": 856,
+						"page": "856",
 						"fileName": "SustainabilityReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "web services"
@@ -6184,7 +6184,7 @@
 				"substantialContributionToPollutionPreventionAndControlInPercentAligned": {
 					"value": 6.07,
 					"dataSource": {
-						"page": 25,
+						"page": "25",
 						"fileName": "SustainabilityReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "models"
@@ -6195,7 +6195,7 @@
 				"substantialContributionToPollutionPreventionAndControlInPercentOfWhichUseOfProceeds": {
 					"value": 67.86,
 					"dataSource": {
-						"page": 1032,
+						"page": "1032",
 						"fileName": "AnnualReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "systems"
@@ -6206,7 +6206,7 @@
 				"substantialContributionToPollutionPreventionAndControlInPercentEnablingShare": {
 					"value": 17.11,
 					"dataSource": {
-						"page": 947,
+						"page": "947",
 						"fileName": "IntegratedReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "partnerships"
@@ -6217,7 +6217,7 @@
 				"substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentEligible": {
 					"value": 79.09,
 					"dataSource": {
-						"page": 1200,
+						"page": "1200",
 						"fileName": "IntegratedReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "communities"
@@ -6228,7 +6228,7 @@
 				"substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned": {
 					"value": 80.2,
 					"dataSource": {
-						"page": 127,
+						"page": "127",
 						"fileName": "AnnualReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "markets"
@@ -6239,7 +6239,7 @@
 				"substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentOfWhichUseOfProceeds": {
 					"value": 23,
 					"dataSource": {
-						"page": 123,
+						"page": "123",
 						"fileName": "ESEFReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "relationships"
@@ -6250,7 +6250,7 @@
 				"substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentEnablingShare": {
 					"value": 20.35,
 					"dataSource": {
-						"page": 928,
+						"page": "928",
 						"fileName": "AnnualReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "networks"
@@ -6346,7 +6346,7 @@
 						}
 					],
 					"dataSource": {
-						"page": 90,
+						"page": "90",
 						"fileName": "SustainabilityReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "e-markets"
@@ -6357,7 +6357,7 @@
 				"enablingShareInPercent": {
 					"value": 81.36,
 					"dataSource": {
-						"page": 480,
+						"page": "480",
 						"fileName": "ESEFReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "channels"
@@ -6368,7 +6368,7 @@
 				"transitionalShareInPercent": {
 					"value": 34.26,
 					"dataSource": {
-						"page": 890,
+						"page": "890",
 						"fileName": "ESEFReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "partnerships"
@@ -6381,7 +6381,7 @@
 				"totalAmount": {
 					"value": 3730388823.9,
 					"dataSource": {
-						"page": 832,
+						"page": "832",
 						"fileName": "ESEFReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "schemas"
@@ -6394,7 +6394,7 @@
 					"relativeShareInPercent": {
 						"value": 21.47,
 						"dataSource": {
-							"page": 264,
+							"page": "264",
 							"fileName": "SustainabilityReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "technologies"
@@ -6405,7 +6405,7 @@
 					"absoluteShare": {
 						"value": 5657082509.72,
 						"dataSource": {
-							"page": 761,
+							"page": "761",
 							"fileName": "ESEFReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "infrastructures"
@@ -6419,7 +6419,7 @@
 					"relativeShareInPercent": {
 						"value": 29.24,
 						"dataSource": {
-							"page": 973,
+							"page": "973",
 							"fileName": "IntegratedReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "niches"
@@ -6430,7 +6430,7 @@
 					"absoluteShare": {
 						"value": 8189177489.84,
 						"dataSource": {
-							"page": 716,
+							"page": "716",
 							"fileName": "AnnualReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "lifetime value"
@@ -6444,7 +6444,7 @@
 					"relativeShareInPercent": {
 						"value": 68.86,
 						"dataSource": {
-							"page": 805,
+							"page": "805",
 							"fileName": "IntegratedReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "e-commerce"
@@ -6455,7 +6455,7 @@
 					"absoluteShare": {
 						"value": 8002431555.65,
 						"dataSource": {
-							"page": 229,
+							"page": "229",
 							"fileName": "AnnualReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "blockchains"
@@ -6468,7 +6468,7 @@
 				"nonAlignedActivities": {
 					"value": [],
 					"dataSource": {
-						"page": 566,
+						"page": "566",
 						"fileName": "ESEFReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "applications"
@@ -6480,7 +6480,7 @@
 					"relativeShareInPercent": {
 						"value": 54.21,
 						"dataSource": {
-							"page": 1177,
+							"page": "1177",
 							"fileName": "AnnualReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "metrics"
@@ -6491,7 +6491,7 @@
 					"absoluteShare": {
 						"value": 9648227607.84,
 						"dataSource": {
-							"page": 584,
+							"page": "584",
 							"fileName": "SustainabilityReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "web services"
@@ -6504,7 +6504,7 @@
 				"substantialContributionToClimateChangeMitigationInPercentAligned": {
 					"value": 4.91,
 					"dataSource": {
-						"page": 465,
+						"page": "465",
 						"fileName": "ESEFReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "users"
@@ -6515,7 +6515,7 @@
 				"substantialContributionToClimateChangeAdaptationInPercentAligned": {
 					"value": 95.81,
 					"dataSource": {
-						"page": 70,
+						"page": "70",
 						"fileName": "AnnualReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "communities"
@@ -6526,7 +6526,7 @@
 				"substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned": {
 					"value": 72.76,
 					"dataSource": {
-						"page": 132,
+						"page": "132",
 						"fileName": "AnnualReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "platforms"
@@ -6537,7 +6537,7 @@
 				"substantialContributionToTransitionToACircularEconomyInPercentAligned": {
 					"value": 28.52,
 					"dataSource": {
-						"page": 624,
+						"page": "624",
 						"fileName": "AnnualReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "systems"
@@ -6548,7 +6548,7 @@
 				"substantialContributionToPollutionPreventionAndControlInPercentAligned": {
 					"value": 68.47,
 					"dataSource": {
-						"page": 50,
+						"page": "50",
 						"fileName": "IntegratedReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "e-commerce"
@@ -6559,7 +6559,7 @@
 				"substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned": {
 					"value": 26.48,
 					"dataSource": {
-						"page": 190,
+						"page": "190",
 						"fileName": "ESEFReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "ROI"
@@ -6630,7 +6630,7 @@
 						}
 					],
 					"dataSource": {
-						"page": 1179,
+						"page": "1179",
 						"fileName": "IntegratedReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "channels"
@@ -6641,7 +6641,7 @@
 				"enablingShareInPercent": {
 					"value": 72.03,
 					"dataSource": {
-						"page": 189,
+						"page": "189",
 						"fileName": "ESEFReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "portals"
@@ -6652,7 +6652,7 @@
 				"transitionalShareInPercent": {
 					"value": 27.68,
 					"dataSource": {
-						"page": 25,
+						"page": "25",
 						"fileName": "AnnualReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"tagName": "e-commerce"
