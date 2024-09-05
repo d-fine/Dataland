@@ -341,7 +341,7 @@ class QueryDataRequestsTest {
     }
 
     @Test
-    fun `count requests by data type`() {
+    fun `count requests by data type for company A`() {
         assertTrue(api.getNumberOfRequests() >= 3)
         assertTrue(api.getNumberOfRequests(dataType = listOf(vsmeNumReq)) >= 2)
         assertTrue(api.getNumberOfRequests(dataType = listOf(p2pNumReq)) >= 1)
@@ -361,7 +361,10 @@ class QueryDataRequestsTest {
                 datalandCompanyId = companyIdA, dataType = listOf(p2pNumReq, vsmeNumReq, sfdrNumReq),
             ),
         )
+    }
 
+    @Test
+    fun `count requests by data type for company B`() {
         assertEquals(1, api.getNumberOfRequests(datalandCompanyId = companyIdB))
         assertEquals(0, api.getNumberOfRequests(datalandCompanyId = companyIdB, dataType = listOf(vsmeNumReq)))
         assertEquals(1, api.getNumberOfRequests(datalandCompanyId = companyIdB, dataType = listOf(p2pNumReq)))
