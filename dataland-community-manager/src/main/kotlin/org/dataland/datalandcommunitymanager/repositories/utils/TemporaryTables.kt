@@ -24,19 +24,19 @@ class TemporaryTables private constructor() {
             "JOIN status_table ON status_table.request_id = d.data_request_id " +
             "WHERE " +
             "(:#{#searchFilter.shouldFilterByDataType} = false " +
-            "OR d.data_type IN :#{#searchFilter.usedDataTypeFilter}) AND " +
+            "OR d.data_type IN :#{#searchFilter.preparedDataType}) AND " +
             "(:#{#searchFilter.shouldFilterByUserId} = false " +
-            "OR d.user_Id = :#{#searchFilter.usedUserIdFilter}) AND " +
+            "OR d.user_Id = :#{#searchFilter.preparedUserId}) AND " +
             "(:#{#searchFilter.shouldFilterByEmailAddress} = false " +
-            "OR d.user_Id IN :#{#searchFilter.usedEmailAddressFilter}) AND " +
+            "OR d.user_Id IN :#{#searchFilter.preparedUserIdsMatchingEmailAddress}) AND " +
             "(:#{#searchFilter.shouldFilterByRequestStatus} = false " +
-            "OR status_table.request_status IN :#{#searchFilter.usedRequestStatusFilter} ) AND " +
+            "OR status_table.request_status IN :#{#searchFilter.preparedRequestStatus} ) AND " +
             "(:#{#searchFilter.shouldFilterByAccessStatus} = false " +
-            "OR status_table.access_status IN :#{#searchFilter.usedAccessStatusFilter}  ) AND " +
+            "OR status_table.access_status IN :#{#searchFilter.preparedAccessStatus}  ) AND " +
             "(:#{#searchFilter.shouldFilterByReportingPeriod} = false " +
-            "OR d.reporting_period = :#{#searchFilter.usedReportingPeriodFilter}) AND " +
+            "OR d.reporting_period = :#{#searchFilter.preparedReportingPeriod}) AND " +
             "(:#{#searchFilter.shouldFilterByDatalandCompanyId} = false " +
-            "OR d.dataland_company_id = :#{#searchFilter.usedDatalandCompanyIdFilter}) "
+            "OR d.dataland_company_id = :#{#searchFilter.preparedDatalandCompanyId}) "
 
         // Append this clause at the end of TABLE_FILTERED to limit, offset and order the requests.
         const val TABLE_FILTERED_ORDER_AND_LIMIT = "ORDER BY " +

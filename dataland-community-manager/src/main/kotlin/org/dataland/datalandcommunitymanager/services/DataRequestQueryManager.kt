@@ -131,7 +131,7 @@ constructor(
     ): List<ExtendedStoredDataRequest>? {
         val offset = (chunkIndex ?: 0) * (chunkSize ?: 0)
 
-        val usersMatchingEmailFilter = filter.setupEmailFilter(keycloakUserControllerApiService)
+        val usersMatchingEmailFilter = filter.setupEmailAddressFilter(keycloakUserControllerApiService)
         val extendedStoredDataRequests = dataRequestRepository.searchDataRequestEntity(
             searchFilter = filter, resultOffset = offset, resultLimit = chunkSize,
         ).map { dataRequestEntity -> convertRequestEntityToExtendedStoredDataRequest(dataRequestEntity) }
@@ -161,7 +161,7 @@ constructor(
     fun getNumberOfDataRequests(
         filter: DataRequestsFilter,
     ): Int {
-        filter.setupEmailFilter(keycloakUserControllerApiService)
+        filter.setupEmailAddressFilter(keycloakUserControllerApiService)
         return dataRequestRepository.getNumberOfRequests(filter)
     }
 }
