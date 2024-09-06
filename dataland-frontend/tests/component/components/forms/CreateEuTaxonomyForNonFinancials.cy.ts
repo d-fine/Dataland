@@ -98,6 +98,25 @@ describe('Component tests for the Eu Taxonomy for non financials that test depen
   }
 
   /**
+   * this method fills and validates the assurance report page number in the general section
+   */
+  function fillAndValidateAssuranceReportPageNumber(): void {
+    const invalidPageInputs = ['string', '0', '01', '0.5', '-13', '5-3', '5-5', '5-', '-5'];
+    for (const invalidPageInput of invalidPageInputs) {
+      cy.get('div[label="General"] input[name="page"]:not([type="hidden"])').last().clear().type(invalidPageInput);
+      cy.get('div[label="General"] em[title="Page"]:not([type="hidden"])').last().click();
+      cy.get('[data-message-type="validation"]')
+        .should('contain', PAGE_NUMBER_VALIDATION_ERROR_MESSAGE)
+        .should('exist');
+    }
+    const validPageInputs = ['3', '10-11'];
+    for (const validPageInput of validPageInputs) {
+      cy.get('div[label="General"] input[name="page"]:not([type="hidden"])').last().clear().type(validPageInput);
+      cy.get('div[label="General"] em[title="Page"]:not([type="hidden"])').last().click();
+    }
+  }
+
+  /**
    * this method fills and checks the general section
    * @param reports the name of the reports that are uploaded
    */
@@ -120,25 +139,7 @@ describe('Component tests for the Eu Taxonomy for non financials that test depen
     cy.get('div[label="General"] div[name="fileName"]').each((reportField) =>
       selectItemFromDropdownByValue(cy.wrap(reportField), reports[0])
     );
-    cy.get('div[label="General"] input[name="page"]:not([type="hidden"])').last().clear().type('string');
-    cy.get('div[label="General"] em[title="Page"]:not([type="hidden"])').last().click();
-    cy.get(`[data-message-type="validation"]`).should('contain', PAGE_NUMBER_VALIDATION_ERROR_MESSAGE).should('exist');
-    cy.get('div[label="General"] input[name="page"]:not([type="hidden"])').last().clear().type('0');
-    cy.get('div[label="General"] em[title="Page"]:not([type="hidden"])').last().click();
-    cy.get(`[data-message-type="validation"]`).should('contain', PAGE_NUMBER_VALIDATION_ERROR_MESSAGE).should('exist');
-    cy.get('div[label="General"] input[name="page"]:not([type="hidden"])').last().clear().type('0.5');
-    cy.get('div[label="General"] em[title="Page"]:not([type="hidden"])').last().click();
-    cy.get(`[data-message-type="validation"]`).should('contain', PAGE_NUMBER_VALIDATION_ERROR_MESSAGE).should('exist');
-    cy.get('div[label="General"] input[name="page"]:not([type="hidden"])').last().clear().type('-13');
-    cy.get('div[label="General"] em[title="Page"]:not([type="hidden"])').last().click();
-    cy.get(`[data-message-type="validation"]`).should('contain', PAGE_NUMBER_VALIDATION_ERROR_MESSAGE).should('exist');
-    cy.get('div[label="General"] input[name="page"]:not([type="hidden"])').last().clear().type('5-3');
-    cy.get('div[label="General"] em[title="Page"]:not([type="hidden"])').last().click();
-    cy.get(`[data-message-type="validation"]`).should('contain', PAGE_NUMBER_VALIDATION_ERROR_MESSAGE).should('exist');
-    cy.get('div[label="General"] input[name="page"]:not([type="hidden"])').last().clear().type('3');
-    cy.get('div[label="General"] em[title="Page"]:not([type="hidden"])').last().click();
-    cy.get('div[label="General"] input[name="page"]:not([type="hidden"])').last().clear().type('10-11');
-    cy.get('div[label="General"] em[title="Page"]:not([type="hidden"])').last().click();
+    fillAndValidateAssuranceReportPageNumber();
   }
 
   /**
