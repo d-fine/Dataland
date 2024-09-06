@@ -99,19 +99,24 @@ describe('Component tests for the Eu Taxonomy for non financials that test depen
 
   /**
    * this method fills and validates the assurance report page number in the general section
+   * it also makes sure invalid page numbers cannot be uploaded
    */
   function fillAndValidateAssuranceReportPageNumber(): void {
-    const invalidPageInputs = ['string', '0', '01', '0.5', '-13', '5-3', '5-5', '5-', '-5'];
-    for (const invalidPageInput of invalidPageInputs) {
-      cy.get('div[label="General"] input[name="page"]:not([type="hidden"])').last().clear().type(invalidPageInput);
+    const invalidPageNumberInputs = ['abc', '0', '01', '0.5', '-13', '5-3', '5-5', '5-', '-5'];
+    for (const invalidPageNumberInput of invalidPageNumberInputs) {
+      cy.get('div[label="General"] input[name="page"]:not([type="hidden"])')
+        .last()
+        .clear()
+        .type(invalidPageNumberInput);
       cy.get('div[label="General"] em[title="Page"]:not([type="hidden"])').last().click();
       cy.get('[data-message-type="validation"]')
         .should('contain', PAGE_NUMBER_VALIDATION_ERROR_MESSAGE)
         .should('exist');
+      submitButton.buttonAppearsDisabled();
     }
-    const validPageInputs = ['3', '10-11'];
-    for (const validPageInput of validPageInputs) {
-      cy.get('div[label="General"] input[name="page"]:not([type="hidden"])').last().clear().type(validPageInput);
+    const validPageNumberInputs = ['3', '10-11'];
+    for (const validPageNumberInput of validPageNumberInputs) {
+      cy.get('div[label="General"] input[name="page"]:not([type="hidden"])').last().clear().type(validPageNumberInput);
       cy.get('div[label="General"] em[title="Page"]:not([type="hidden"])').last().click();
     }
   }
