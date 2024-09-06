@@ -290,9 +290,9 @@ class QueryDataRequestsTest {
         assertEquals(1, combinedQueryResults.size)
     }
 
-    private val sfdrNumReq = RequestControllerApi.DataTypeGetNumberOfRequests.sfdr
-    private val p2pNumReq = RequestControllerApi.DataTypeGetNumberOfRequests.p2p
-    private val vsmeNumReq = RequestControllerApi.DataTypeGetNumberOfRequests.vsme
+    private val sfdrRequestNumberDataType = RequestControllerApi.DataTypeGetNumberOfRequests.sfdr
+    private val p2pRequestNumberDataType = RequestControllerApi.DataTypeGetNumberOfRequests.p2p
+    private val vsmeRequestNumberDataType = RequestControllerApi.DataTypeGetNumberOfRequests.vsme
 
     @Test
     fun `count requests with request status filters`() {
@@ -342,23 +342,27 @@ class QueryDataRequestsTest {
 
     @Test
     fun `count requests by data type for company A`() {
-        assertTrue(api.getNumberOfRequests() >= 3)
-        assertTrue(api.getNumberOfRequests(dataType = listOf(vsmeNumReq)) >= 2)
-        assertTrue(api.getNumberOfRequests(dataType = listOf(p2pNumReq)) >= 1)
-        assertTrue(api.getNumberOfRequests(dataType = listOf(p2pNumReq, vsmeNumReq)) >= 3)
-        assertTrue(api.getNumberOfRequests(dataType = listOf(p2pNumReq, vsmeNumReq, sfdrNumReq)) >= 3)
-
         assertEquals(2, api.getNumberOfRequests(datalandCompanyId = companyIdA))
-        assertEquals(2, api.getNumberOfRequests(datalandCompanyId = companyIdA, dataType = listOf(vsmeNumReq)))
-        assertEquals(0, api.getNumberOfRequests(datalandCompanyId = companyIdA, dataType = listOf(p2pNumReq)))
         assertEquals(
             2,
-            api.getNumberOfRequests(datalandCompanyId = companyIdA, dataType = listOf(p2pNumReq, vsmeNumReq)),
+            api.getNumberOfRequests(datalandCompanyId = companyIdA, dataType = listOf(vsmeRequestNumberDataType)),
+        )
+        assertEquals(
+            0,
+            api.getNumberOfRequests(datalandCompanyId = companyIdA, dataType = listOf(p2pRequestNumberDataType)),
         )
         assertEquals(
             2,
             api.getNumberOfRequests(
-                datalandCompanyId = companyIdA, dataType = listOf(p2pNumReq, vsmeNumReq, sfdrNumReq),
+                datalandCompanyId = companyIdA,
+                dataType = listOf(p2pRequestNumberDataType, vsmeRequestNumberDataType),
+            ),
+        )
+        assertEquals(
+            2,
+            api.getNumberOfRequests(
+                datalandCompanyId = companyIdA,
+                dataType = listOf(p2pRequestNumberDataType, vsmeRequestNumberDataType, sfdrRequestNumberDataType),
             ),
         )
     }
@@ -366,16 +370,25 @@ class QueryDataRequestsTest {
     @Test
     fun `count requests by data type for company B`() {
         assertEquals(1, api.getNumberOfRequests(datalandCompanyId = companyIdB))
-        assertEquals(0, api.getNumberOfRequests(datalandCompanyId = companyIdB, dataType = listOf(vsmeNumReq)))
-        assertEquals(1, api.getNumberOfRequests(datalandCompanyId = companyIdB, dataType = listOf(p2pNumReq)))
+        assertEquals(
+            0,
+            api.getNumberOfRequests(datalandCompanyId = companyIdB, dataType = listOf(vsmeRequestNumberDataType)),
+        )
         assertEquals(
             1,
-            api.getNumberOfRequests(datalandCompanyId = companyIdB, dataType = listOf(p2pNumReq, vsmeNumReq)),
+            api.getNumberOfRequests(datalandCompanyId = companyIdB, dataType = listOf(p2pRequestNumberDataType)),
         )
         assertEquals(
             1,
             api.getNumberOfRequests(
-                datalandCompanyId = companyIdB, dataType = listOf(p2pNumReq, vsmeNumReq, sfdrNumReq),
+                datalandCompanyId = companyIdB, dataType = listOf(p2pRequestNumberDataType, vsmeRequestNumberDataType),
+            ),
+        )
+        assertEquals(
+            1,
+            api.getNumberOfRequests(
+                datalandCompanyId = companyIdB,
+                dataType = listOf(p2pRequestNumberDataType, vsmeRequestNumberDataType, sfdrRequestNumberDataType),
             ),
         )
     }
@@ -388,7 +401,7 @@ class QueryDataRequestsTest {
             api.getNumberOfRequests(
                 datalandCompanyId = companyIdA,
                 reportingPeriod = "2022",
-                dataType = listOf(vsmeNumReq),
+                dataType = listOf(vsmeRequestNumberDataType),
             ),
         )
         assertEquals(
@@ -396,7 +409,7 @@ class QueryDataRequestsTest {
             api.getNumberOfRequests(
                 datalandCompanyId = companyIdA,
                 reportingPeriod = "2022",
-                dataType = listOf(sfdrNumReq),
+                dataType = listOf(sfdrRequestNumberDataType),
             ),
         )
     }
@@ -417,7 +430,7 @@ class QueryDataRequestsTest {
             api.getNumberOfRequests(
                 datalandCompanyId = companyIdB,
                 reportingPeriod = "2023",
-                dataType = listOf(p2pNumReq),
+                dataType = listOf(p2pRequestNumberDataType),
                 requestStatus = setOf(RequestStatus.Open),
             ),
         )
@@ -428,13 +441,30 @@ class QueryDataRequestsTest {
         val requesterUserId = TechnicalUser.PremiumUser.technicalUserId
 
         assertTrue(api.getNumberOfRequests(userId = requesterUserId) >= 3)
-        assertTrue(api.getNumberOfRequests(dataType = listOf(vsmeNumReq), userId = requesterUserId) >= 2)
-        assertTrue(api.getNumberOfRequests(dataType = listOf(p2pNumReq), userId = requesterUserId) >= 1)
-        assertTrue(api.getNumberOfRequests(dataType = listOf(p2pNumReq, vsmeNumReq), userId = requesterUserId) >= 3)
+        assertTrue(api.getNumberOfRequests(dataType = listOf(vsmeRequestNumberDataType), userId = requesterUserId) >= 2)
+        assertTrue(api.getNumberOfRequests(dataType = listOf(p2pRequestNumberDataType), userId = requesterUserId) >= 1)
         assertTrue(
             api.getNumberOfRequests(
-                dataType = listOf(p2pNumReq, vsmeNumReq, sfdrNumReq),
+                dataType = listOf(p2pRequestNumberDataType, vsmeRequestNumberDataType), userId = requesterUserId,
+            ) >= 3,
+        )
+        assertTrue(
+            api.getNumberOfRequests(
+                dataType = listOf(p2pRequestNumberDataType, vsmeRequestNumberDataType, sfdrRequestNumberDataType),
                 userId = requesterUserId,
+            ) >= 3,
+        )
+    }
+
+    @Test
+    fun `count requests without company filter`() {
+        assertTrue(api.getNumberOfRequests() >= 3)
+        assertTrue(api.getNumberOfRequests(dataType = listOf(vsmeRequestNumberDataType)) >= 2)
+        assertTrue(api.getNumberOfRequests(dataType = listOf(p2pRequestNumberDataType)) >= 1)
+        assertTrue(api.getNumberOfRequests(dataType = listOf(p2pRequestNumberDataType, vsmeRequestNumberDataType)) >= 3)
+        assertTrue(
+            api.getNumberOfRequests(
+                dataType = listOf(p2pRequestNumberDataType, vsmeRequestNumberDataType, sfdrRequestNumberDataType),
             ) >= 3,
         )
     }
