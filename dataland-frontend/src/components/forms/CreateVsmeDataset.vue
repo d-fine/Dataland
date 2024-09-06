@@ -125,7 +125,7 @@
 import { FormKit } from '@formkit/vue';
 import { computed, defineComponent, inject } from 'vue';
 import { assertDefined } from '@/utils/TypeScriptUtils';
-import { checkCustomInputs, checkIfAllUploadedReportsAreReferencedInDataModel } from '@/utils/ValidationsUtils';
+import { checkCustomInputs, checkIfAllUploadedReportsAreReferencedInDataModel } from '@/utils/ValidationUtils';
 import UploadReports from '@/components/forms/parts/UploadReports.vue';
 import { smoothScroll } from '@/utils/SmoothScroll';
 import { createSubcategoryVisibilityMap } from '@/utils/UploadFormUtils';

@@ -49,16 +49,6 @@ export function checkIfAllUploadedReportsAreReferencedInDataModel(
     );
   }
 }
-
-/**
- * Checks if for a given validation the corresponding formkit field requires some input
- * @param validation the formkit validation string
- * @returns true if the validation string contains required else false
- */
-export function isInputRequired(validation?: string): boolean {
-  return validation?.includes('required') ?? false;
-}
-
 /**
  * Checks if a company ID is valid
  * @param companyId id as string
@@ -70,31 +60,21 @@ export function isCompanyIdValid(companyId: string): boolean {
 }
 
 export const regexSinglePage = /^[1-9]\d*$/;
-export const regexRange = /^[1-9]\d*-[1-9]\d*$/;
+export const regexPageRange = /^[1-9]\d*-[1-9]\d*$/;
 
 /**
  * Checks if a page number is valid
- * @param page page in the form of FormKitNode, string, null, or undefined
+ * @param node FormKitNode
  * @returns boolean that expresses if the page number is valid
  */
-export function validatePageNumber(page: FormKitNode | string | null | undefined): boolean {
-  let pageNumberToTest;
-  if (page == null || typeof page == 'undefined') {
-    return false;
-  } else if (typeof page == 'string') {
-    pageNumberToTest = page;
-  } else if (typeof page.value == 'string') {
-    pageNumberToTest = page.value;
-  } else {
-    return false;
-  }
-
-  if (regexSinglePage.test(pageNumberToTest)) {
+export function validatePageNumber(node: FormKitNode): boolean {
+  const pageNumber = node.value;
+  if (typeof pageNumber == 'string' && regexSinglePage.test(pageNumber)) {
     return true;
-  } else if (regexRange.test(pageNumberToTest)) {
-    const hyphenIndex = pageNumberToTest.indexOf('-');
-    const firstNumber = Number(pageNumberToTest.substring(0, hyphenIndex));
-    const secondNumber = Number(pageNumberToTest.substring(hyphenIndex + 1));
+  } else if (typeof pageNumber == 'string' && regexPageRange.test(pageNumber)) {
+    const hyphenIndex = pageNumber.indexOf('-');
+    const firstNumber = Number(pageNumber.substring(0, hyphenIndex));
+    const secondNumber = Number(pageNumber.substring(hyphenIndex + 1));
     return firstNumber < secondNumber;
   } else {
     return false;

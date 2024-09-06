@@ -140,7 +140,7 @@ import {
   DataTypeEnum,
 } from '@clients/backend';
 import { useRoute } from 'vue-router';
-import { checkCustomInputs, checkIfAllUploadedReportsAreReferencedInDataModel } from '@/utils/ValidationsUtils';
+import { checkCustomInputs, checkIfAllUploadedReportsAreReferencedInDataModel } from '@/utils/ValidationUtils';
 import DateFormField from '@/components/forms/parts/fields/DateFormField.vue';
 import SubmitButton from '@/components/forms/parts/SubmitButton.vue';
 import SubmitSideBar from '@/components/forms/parts/SubmitSideBar.vue';

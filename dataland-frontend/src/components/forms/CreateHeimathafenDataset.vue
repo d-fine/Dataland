@@ -112,7 +112,7 @@ import SuccessMessage from '@/components/messages/SuccessMessage.vue';
 import FailMessage from '@/components/messages/FailMessage.vue';
 import { type CompanyAssociatedDataHeimathafenData, DataTypeEnum, type HeimathafenData } from '@clients/backend';
 import { useRoute } from 'vue-router';
-import { checkCustomInputs } from '@/utils/ValidationsUtils';
+import { checkCustomInputs } from '@/utils/ValidationUtils';
 import NaceCodeFormField from '@/components/forms/parts/fields/NaceCodeFormField.vue';
 import InputTextFormField from '@/components/forms/parts/fields/InputTextFormField.vue';
 import FreeTextFormField from '@/components/forms/parts/fields/FreeTextFormField.vue';

@@ -81,7 +81,7 @@
 <script lang="ts">
 // @ts-nocheck
 import { defineComponent, nextTick } from 'vue';
-import { validatePageNumber } from '@/utils/ValidationsUtils';
+import { validatePageNumber } from '@/utils/ValidationUtils';
 import { FormKit } from '@formkit/vue';
 import { BaseFormFieldProps } from '@/components/forms/parts/fields/FormFieldProps';
 import UploadFormHeader from '@/components/forms/parts/elements/basic/UploadFormHeader.vue';

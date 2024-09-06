@@ -321,7 +321,7 @@ import { useRoute } from 'vue-router';
 import { defineComponent, inject, nextTick } from 'vue';
 import type Keycloak from 'keycloak-js';
 import { assertDefined } from '@/utils/TypeScriptUtils';
-import { checkIfAllUploadedReportsAreReferencedInDataModel, checkCustomInputs } from '@/utils/ValidationsUtils';
+import { checkIfAllUploadedReportsAreReferencedInDataModel, checkCustomInputs } from '@/utils/ValidationUtils';
 import { getHyphenatedDate } from '@/utils/DataFormatUtils';
 import {
   euTaxonomyKpiInfoMappings,
