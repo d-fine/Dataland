@@ -50,6 +50,9 @@
                   >RESET</span
                 >
               </div>
+              <div class="flex align-items-center ml-auto" style="margin: 15px">
+                <span>{{ numberOfRequestsInformation }}</span>
+              </div>
             </span>
           </div>
 
@@ -185,7 +188,6 @@ import type { DataTypeEnum } from '@clients/backend';
 
 export default defineComponent({
   name: 'AdminDataRequestsOverview',
-  computed: {},
   components: {
     AuthenticationWrapper,
     FrameworkDataSearchDropdownFilter,
@@ -232,6 +234,21 @@ export default defineComponent({
     this.getAllRequestsForFilters().catch((error) => console.error(error));
     this.resetFilterAndSearchBar();
   },
+  computed: {
+    numberOfRequestsInformation(): string {
+      if (!this.waitingForData) {
+        if (this.totalRecords === 0) {
+          return 'No results for this search.';
+        } else {
+          const startIndex = this.currentPage * this.rowsPerPage + 1;
+          const endIndex = Math.min(startIndex + this.rowsPerPage - 1, this.totalRecords);
+          return `Showing results ${startIndex}-${endIndex} of ${this.totalRecords}.`;
+        }
+      }
+      return '';
+    },
+  },
+
   watch: {
     selectedFrameworks() {
       this.getAllRequestsForFilters();
