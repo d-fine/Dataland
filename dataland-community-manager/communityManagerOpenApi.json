@@ -678,7 +678,8 @@
                 "sfdr",
                 "vsme",
                 "esg-questionnaire",
-                "heimathafen"
+                "heimathafen",
+                "additional-company-information"
               ]
             }
           },
@@ -936,7 +937,8 @@
                   "sfdr",
                   "vsme",
                   "esg-questionnaire",
-                  "heimathafen"
+                  "heimathafen",
+                  "additional-company-information"
                 ]
               }
             }
@@ -1345,7 +1347,8 @@
               "sfdr",
               "vsme",
               "esg-questionnaire",
-              "heimathafen"
+              "heimathafen",
+              "additional-company-information"
             ]
           },
           "reportingPeriods": {
@@ -1441,7 +1444,8 @@
                 "sfdr",
                 "vsme",
                 "esg-questionnaire",
-                "heimathafen"
+                "heimathafen",
+                "additional-company-information"
               ]
             }
           },
@@ -1706,7 +1710,8 @@
               "sfdr",
               "vsme",
               "esg-questionnaire",
-              "heimathafen"
+              "heimathafen",
+              "additional-company-information"
             ]
           },
           "reportingPeriod": {
