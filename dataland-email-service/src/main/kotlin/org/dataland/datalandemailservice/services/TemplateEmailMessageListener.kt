@@ -1,7 +1,8 @@
 package org.dataland.datalandemailservice.services
 
-import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.ObjectMapper
+import okhttp3.OkHttpClient
+import org.dataland.datalandbackendutils.utils.getEmailAddress
 import org.dataland.datalandemailservice.email.EmailSender
 import org.dataland.datalandemailservice.services.templateemail.TemplateEmailFactory
 import org.dataland.datalandmessagequeueutils.constants.ExchangeName
@@ -17,6 +18,8 @@ import org.springframework.amqp.rabbit.annotation.Queue
 import org.springframework.amqp.rabbit.annotation.QueueBinding
 import org.springframework.amqp.rabbit.annotation.RabbitListener
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.beans.factory.annotation.Qualifier
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.messaging.handler.annotation.Header
 import org.springframework.messaging.handler.annotation.Payload
 import org.springframework.stereotype.Service
@@ -31,7 +34,8 @@ class TemplateEmailMessageListener(
     @Autowired private val messageQueueUtils: MessageQueueUtils,
     @Autowired private val objectMapper: ObjectMapper,
     @Autowired private val templateEmailFactories: List<TemplateEmailFactory>,
-    @Autowired private val keycloakUserControllerApiService: KeycloakUserControllerApiService,
+    @Qualifier("AuthenticatedOkHttpClient") val authenticatedOkHttpClient: OkHttpClient,
+    @Value("\${dataland.keycloak.base-url}") private val keycloakBaseUrl: String,
 ) {
     private val logger = LoggerFactory.getLogger(TemplateEmailMessageListener::class.java)
 
@@ -69,8 +73,8 @@ class TemplateEmailMessageListener(
                 "with correlationId $correlationId.",
         )
 
-        val receiverEmailAddress = getEmailAddressByRecipient(objectMapper.readTree(jsonString).get("receiver"))
         messageQueueUtils.rejectMessageOnException {
+            val receiverEmailAddress = getEmailAddressByRecipient(message.receiver)
             val templateEmailFactory = getMatchingEmailFactory(message)
             emailSender.sendEmailWithoutTestReceivers(
                 templateEmailFactory.buildEmail(
@@ -81,13 +85,12 @@ class TemplateEmailMessageListener(
         }
     }
 
-    private fun getEmailAddressByRecipient(receiver: JsonNode?): String {
-        return when (val receiverType = receiver?.get("type")?.asText()) {
-            "address" -> receiver.get("email").asText()
-            "user" -> keycloakUserControllerApiService.getEmailAddress(receiver.get("userId").asText())
-            else -> {
-                throw IllegalArgumentException("Invalid receiver type: $receiverType")
-            }
+    private fun getEmailAddressByRecipient(receiver: TemplateEmailMessage.EmailRecipient): String {
+        return when (receiver) {
+            is TemplateEmailMessage.EmailAddressEmailRecipient ->
+                receiver.email
+            is TemplateEmailMessage.UserIdEmailRecipient ->
+                getEmailAddress(authenticatedOkHttpClient, objectMapper, keycloakBaseUrl, receiver.userId)
         }
     }
 

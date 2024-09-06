@@ -30,6 +30,17 @@
                 class="ml-3"
                 style="margin: 15px"
               />
+              <FrameworkDataSearchDropdownFilter
+                v-model="selectedAccessStatus"
+                ref="frameworkFilter"
+                :available-items="availableAccessStatus"
+                filter-name="Access Status"
+                data-test="requested-Datasets-frameworks"
+                filter-id="framework-filter"
+                filter-placeholder="access status"
+                class="ml-3"
+                style="margin: 15px"
+              />
               <div class="flex align-items-center">
                 <span
                   data-test="reset-filter"
@@ -98,10 +109,17 @@
                     </div>
                   </template>
                 </Column>
-                <Column header="STATUS" :sortable="true" field="requestStatus">
+                <Column header="REQUEST STATUS" :sortable="true" field="requestStatus">
                   <template #body="slotProps">
                     <div :class="badgeClass(slotProps.data.requestStatus)" style="display: inline-flex">
                       {{ slotProps.data.requestStatus }}
+                    </div>
+                  </template>
+                </Column>
+                <Column header="ACCESS STATUS" :sortable="true" field="accessStatus">
+                  <template #body="slotProps">
+                    <div :class="accessStatusBadgeClass(slotProps.data.accessStatus)" style="display: inline-flex">
+                      {{ slotProps.data.accessStatus }}
                     </div>
                   </template>
                 </Column>
@@ -163,23 +181,21 @@ import DataTable, {
   type DataTableSortEvent,
 } from 'primevue/datatable';
 import Column from 'primevue/column';
-import {
-  frameworkHasSubTitle,
-  getFrameworkSubtitle,
-  getFrameworkTitle,
-  humanizeStringOrNumber,
-} from '@/utils/StringFormatter';
+import { frameworkHasSubTitle, getFrameworkSubtitle, getFrameworkTitle } from '@/utils/StringFormatter';
 import DatasetsTabMenu from '@/components/general/DatasetsTabMenu.vue';
 import { convertUnixTimeInMsToDateString } from '@/utils/DataFormatUtils';
 import { type ExtendedStoredDataRequest, RequestStatus } from '@clients/communitymanager';
 import { type DataTypeEnum } from '@clients/backend';
 import InputText from 'primevue/inputtext';
 import FrameworkDataSearchDropdownFilter from '@/components/resources/frameworkDataSearch/FrameworkDataSearchDropdownFilter.vue';
-import type { FrameworkSelectableItem } from '@/utils/FrameworkDataSearchDropDownFilterTypes';
-import { FRAMEWORKS_WITH_VIEW_PAGE } from '@/utils/Constants';
-import { getFrontendFrameworkDefinition } from '@/frameworks/FrontendFrameworkRegistry';
+import { type FrameworkSelectableItem, type SelectableItem } from '@/utils/FrameworkDataSearchDropDownFilterTypes';
 import AuthenticationWrapper from '@/components/wrapper/AuthenticationWrapper.vue';
-import { badgeClass } from '@/utils/RequestUtils';
+import { accessStatusBadgeClass, badgeClass } from '@/utils/RequestUtils';
+import {
+  customCompareForRequestStatus,
+  retrieveAvailableAccessStatus,
+  retrieveAvailableFrameworks,
+} from '@/utils/RequestsOverviewPageUtils';
 
 export default defineComponent({
   name: 'MyDataRequestsOverview',
@@ -222,18 +238,24 @@ export default defineComponent({
       searchBarInputFilter: '',
       availableFrameworks: [] as Array<FrameworkSelectableItem>,
       selectedFrameworks: [] as Array<FrameworkSelectableItem>,
+      availableAccessStatus: [] as Array<SelectableItem>,
+      selectedAccessStatus: [] as Array<SelectableItem>,
       numberOfFilteredRequests: 0,
       sortField: 'requestStatus' as keyof ExtendedStoredDataRequest,
       sortOrder: 1,
     };
   },
   mounted() {
-    this.availableFrameworks = this.retrieveAvailableFrameworks();
+    this.availableFrameworks = retrieveAvailableFrameworks();
+    this.availableAccessStatus = retrieveAvailableAccessStatus();
     this.getStoredRequestDataList().catch((error) => console.error(error));
     this.resetFilterAndSearchBar();
   },
   watch: {
     selectedFrameworks() {
+      this.updateCurrentDisplayedData();
+    },
+    selectedAccessStatus() {
       this.updateCurrentDisplayedData();
     },
     waitingForData() {
@@ -245,6 +267,7 @@ export default defineComponent({
     },
   },
   methods: {
+    accessStatusBadgeClass,
     badgeClass,
     frameworkHasSubTitle,
     getFrameworkTitle,
@@ -269,24 +292,6 @@ export default defineComponent({
       return this.$router.push(url);
     },
 
-    /**
-     * Gets list with all available frameworks
-     * @returns array of frameworkSelectableItem
-     */
-    retrieveAvailableFrameworks(): Array<FrameworkSelectableItem> {
-      return FRAMEWORKS_WITH_VIEW_PAGE.map((dataTypeEnum) => {
-        let displayName = humanizeStringOrNumber(dataTypeEnum);
-        const frameworkDefinition = getFrontendFrameworkDefinition(dataTypeEnum);
-        if (frameworkDefinition) {
-          displayName = frameworkDefinition.label;
-        }
-        return {
-          frameworkDataType: dataTypeEnum,
-          displayName: displayName,
-          disabled: false,
-        };
-      });
-    },
     /**
      * Gets list of storedDataRequests
      */
@@ -343,6 +348,17 @@ export default defineComponent({
       return false;
     },
     /**
+     * Filterfunction for access status
+     * @param accessStatus dataland framework
+     * @returns checks if given accessStatus is selected
+     */
+    filterAccessStatus(accessStatus: string) {
+      for (const selectedAccessStatus of this.selectedAccessStatus) {
+        if (accessStatus == selectedAccessStatus.displayName) return true;
+      }
+      return false;
+    },
+    /**
      * Filterfunction for searchbar
      * @param companyName dataland companyName
      * @returns checks if given companyName contains searchbar text
@@ -357,6 +373,7 @@ export default defineComponent({
      */
     resetFilterAndSearchBar() {
       this.selectedFrameworks = this.availableFrameworks;
+      this.selectedAccessStatus = this.availableAccessStatus;
       this.searchBarInput = '';
     },
     /**
@@ -365,7 +382,8 @@ export default defineComponent({
     updateCurrentDisplayedData() {
       this.displayedData = this.storedDataRequests
         .filter((dataRequest) => this.filterSearchInput(dataRequest.companyName))
-        .filter((dataRequest) => this.filterFramework(dataRequest.dataType));
+        .filter((dataRequest) => this.filterFramework(dataRequest.dataType))
+        .filter((dataRequest) => this.filterAccessStatus(dataRequest.accessStatus));
       this.displayedData.sort((a, b) => this.customCompareForExtendedStoredDataRequests(a, b));
       this.numberOfFilteredRequests = this.displayedData.length;
       this.displayedData = this.displayedData.slice(
@@ -384,8 +402,8 @@ export default defineComponent({
      * @returns result of the comparison
      */
     customCompareForExtendedStoredDataRequests(a: ExtendedStoredDataRequest, b: ExtendedStoredDataRequest) {
-      const aValue = a[this.sortField];
-      const bValue = b[this.sortField];
+      const aValue = a[this.sortField] ?? '';
+      const bValue = b[this.sortField] ?? '';
 
       if (this.sortField != ('requestStatus' as keyof ExtendedStoredDataRequest)) {
         if (aValue < bValue) return -1 * this.sortOrder;
@@ -393,7 +411,7 @@ export default defineComponent({
       }
 
       if (a.requestStatus != b.requestStatus)
-        return this.customCompareForRequestStatus(a.requestStatus, b.requestStatus);
+        return customCompareForRequestStatus(a.requestStatus, b.requestStatus, this.sortOrder);
 
       if (a.lastModifiedDate < b.lastModifiedDate) return this.sortOrder;
       if (a.lastModifiedDate > b.lastModifiedDate) return -1 * this.sortOrder;
@@ -401,22 +419,7 @@ export default defineComponent({
       if (a.companyName < b.companyName) return -1 * this.sortOrder;
       else return this.sortOrder;
     },
-    /**
-     * Compares two request status
-     * @param a RequestStatus to compare
-     * @param b RequestStatus to compare
-     * @returns result of the comparison
-     */
-    customCompareForRequestStatus(a: RequestStatus, b: RequestStatus) {
-      const sortOrderRequestStatus: { [key: string]: number } = {};
-      sortOrderRequestStatus[RequestStatus.Answered] = 1;
-      sortOrderRequestStatus[RequestStatus.Open] = 2;
-      sortOrderRequestStatus[RequestStatus.Resolved] = 3;
-      sortOrderRequestStatus[RequestStatus.Closed] = 4;
-      sortOrderRequestStatus[RequestStatus.Withdrawn] = 5;
-      if (sortOrderRequestStatus[a] <= sortOrderRequestStatus[b]) return -1 * this.sortOrder;
-      return this.sortOrder;
-    },
+
     /**
      * Updates the data for the current page
      * @param event event containing the new page

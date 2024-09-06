@@ -87,7 +87,7 @@ class FrameworkDataModelBuilder(
         into.gradleInterface.executeGradleTasks(listOf("assemble"))
         into.gradleInterface.executeGradleTasks(listOf("dataland-backend:ktlintFormat"))
         into.gradleInterface.executeGradleTasks(listOf("dataland-backend:generateOpenApiDocs"), force = true)
-        into.gradleInterface.executeGradleTasks(listOf("generateClients"))
+        into.gradleInterface.executeGradleTasks(listOf("generateClients"), force = true)
 
         logger.info("Backend Data-Model generation was successful!")
     }

@@ -54,7 +54,7 @@
             :is-required="required"
           />
           <slot v-if="!isYesNoVariant" />
-          <div class="grid align-content-end">
+          <div class="grid align-content-end" data-test="dataReport">
             <div class="col-8">
               <UploadFormHeader
                 :label="`${label} Report`"

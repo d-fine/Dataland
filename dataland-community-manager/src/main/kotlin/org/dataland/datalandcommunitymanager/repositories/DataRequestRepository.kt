@@ -1,9 +1,11 @@
 package org.dataland.datalandcommunitymanager.repositories
 
-import org.dataland.datalandcommunitymanager.entities.AggregatedDataRequestEntity
+import org.dataland.datalandcommunitymanager.entities.AggregatedDataRequest
 import org.dataland.datalandcommunitymanager.entities.DataRequestEntity
-import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
-import org.dataland.datalandcommunitymanager.utils.GetDataRequestsSearchFilter
+import org.dataland.datalandcommunitymanager.repositories.utils.TemporaryTables
+import org.dataland.datalandcommunitymanager.repositories.utils.TemporaryTables.Companion.MOST_RECENT_STATUS_CHANGE
+import org.dataland.datalandcommunitymanager.utils.DataRequestsQueryFilter
+import org.dataland.datalandcommunitymanager.utils.GetAggregatedRequestsSearchFilter
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.query.Param
@@ -41,64 +43,50 @@ interface DataRequestRepository : JpaRepository<DataRequestEntity, String> {
      * @param status to check for
      * @returns the aggregated data requests
      */
+
     @Query(
-        " SELECT new org.dataland.datalandcommunitymanager.entities.AggregatedDataRequestEntity( " +
-            "d.dataType, " +
-            "d.reportingPeriod, " +
-            "d.datalandCompanyId, " +
-            "rs.requestStatus, " +
-            "COUNT(d.userId) " +
-            ") " +
-            "FROM DataRequestEntity d " +
-            "JOIN RequestStatusEntity rs ON d = rs.dataRequest " +
-            "WHERE (:dataTypes IS NULL OR d.dataType IN :dataTypes) " +
-            "AND (:reportingPeriod IS NULL OR d.reportingPeriod LIKE %:reportingPeriod%) " +
-            "AND (:identifierValue IS NULL OR d.datalandCompanyId LIKE %:identifierValue%) " +
-            "AND rs.creationTimestamp =  ( " +
-            "SELECT MAX(rs2.creationTimestamp) " +
-            "FROM RequestStatusEntity rs2 " +
-            "WHERE rs.dataRequest = rs2.dataRequest " +
-            ") " +
-            "AND (:status IS NULL OR rs.requestStatus = :status) " +
-            "GROUP BY d.dataType, d.reportingPeriod, d.datalandCompanyId, rs.requestStatus ",
+        nativeQuery = true,
+        value =
+        MOST_RECENT_STATUS_CHANGE +
+            "SELECT " +
+            "dr.data_type AS dataType, " +
+            "dr.reporting_period AS reportingPeriod, " +
+            "dr.dataland_company_id AS datalandCompanyId, " +
+            "st.request_status AS requestStatus, " +
+            "COUNT(dr.user_id) AS count " +
+            "FROM data_requests dr " +
+            "JOIN status_table st ON dr.data_request_id = st.request_id " +
+            "WHERE (:#{#searchFilter.dataTypeFilterLength} = 0 " +
+            "OR dr.data_type IN :#{#searchFilter.dataTypeFilter} ) " +
+            "AND (:#{#searchFilter.reportingPeriodFilterLength} = 0 " +
+            "OR dr.reporting_period = :#{#searchFilter.reportingPeriodFilter}) " +
+            "AND (:#{#searchFilter.datalandCompanyIdFilterLength} = 0 " +
+            "OR dr.dataland_company_id = :#{#searchFilter.datalandCompanyIdFilter}) " +
+            "AND (:#{#searchFilter.requestStatusLength} = 0 " +
+            "OR st.request_status = :#{#searchFilter.requestStatus} ) " +
+            "GROUP BY dr.data_type, dr.reporting_period, dr.dataland_company_id, st.request_status ",
     )
     fun getAggregatedDataRequests(
-        @Param("identifierValue") identifierValue: String?,
-        @Param("dataTypes") dataTypes: Set<String>?,
-        @Param("reportingPeriod") reportingPeriod: String?,
-        @Param("status") status: RequestStatus?,
-    ): List<AggregatedDataRequestEntity>
+        @Param("searchFilter") searchFilter: GetAggregatedRequestsSearchFilter,
+    ): List<AggregatedDataRequest>
 
     /**
      * A function for searching for data request information by dataType, userID, requestID, requestStatus,
      * accessStatus, reportingPeriod or dataRequestCompanyIdentifierValue
-     * @param searchFilter takes the input params to check ofr
+     * @param searchFilter takes the input params to check for
      * @returns the data request
      */
     @Query(
-        "SELECT d FROM DataRequestEntity d  " +
-            "JOIN RequestStatusEntity rs ON d = rs.dataRequest " +
-            "WHERE " +
-            "(:#{#searchFilter.dataTypeFilterLength} = 0 " +
-            "OR d.dataType = :#{#searchFilter.dataTypeFilter}) AND " +
-            "(:#{#searchFilter.userIdFilterLength} = 0 " +
-            "OR d.userId = :#{#searchFilter.userIdFilter}) AND " +
-            "rs.creationTimestamp =  (" +
-            "    SELECT MAX(rs2.creationTimestamp)" +
-            "    FROM RequestStatusEntity rs2 " +
-            "    WHERE rs.dataRequest = rs2.dataRequest " +
-            ") AND " +
-            "(:#{#searchFilter.requestStatus} IS NULL " +
-            "OR rs.requestStatus = :#{#searchFilter.requestStatus}) AND " +
-            "(:#{#searchFilter.accessStatus} IS NULL " +
-            "OR rs.accessStatus = :#{#searchFilter.accessStatus}) AND " +
-            "(:#{#searchFilter.reportingPeriodFilterLength} = 0 " +
-            "OR d.reportingPeriod = :#{#searchFilter.reportingPeriodFilter}) AND " +
-            "(:#{#searchFilter.datalandCompanyIdFilterLength} = 0 " +
-            "OR d.datalandCompanyId = :#{#searchFilter.datalandCompanyIdFilter})",
+        nativeQuery = true,
+        value = TemporaryTables.TABLE_FILTERED +
+            "SELECT d.* FROM data_requests d " +
+            "JOIN filtered_table ON filtered_table.data_request_id = d.data_request_id ",
+
     )
     fun searchDataRequestEntity(
-        @Param("searchFilter") searchFilter: GetDataRequestsSearchFilter,
+        @Param("searchFilter") searchFilter: DataRequestsQueryFilter,
+        @Param("resultLimit") resultLimit: Int? = 100,
+        @Param("resultOffset") resultOffset: Int? = 0,
     ): List<DataRequestEntity>
 
     /**
@@ -107,6 +95,7 @@ interface DataRequestRepository : JpaRepository<DataRequestEntity, String> {
      * @returns the initial list of data request entities together with the associated status history
      */
     @Query(
+
         "SELECT DISTINCT d FROM DataRequestEntity d " +
             "LEFT JOIN FETCH d.dataRequestStatusHistory " +
             "WHERE d IN :dataRequests",
