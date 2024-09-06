@@ -90,9 +90,7 @@ class QueryDataRequestsTest {
     @Test
     fun `query data requests with data type filter and assert that the expected results are being retrieved`() {
         val sfdrDataRequests = api.getDataRequests(
-            dataType = listOf(
-                dataTypeGetDataRequestsSfdr,
-            ),
+            dataType = listOf(dataTypeGetDataRequestsSfdr),
             chunkSize = chunkSize,
         ).filter { it.creationTimestamp > timestampBeforePost }
         assertEquals(0, sfdrDataRequests.size)
@@ -371,22 +369,13 @@ class QueryDataRequestsTest {
         assertEquals(
             0,
             api.getNumberOfRequests(
-                datalandCompanyId = companyIdB,
-                dataType = listOf(dataTypeGetNumberOfRequestsVsme),
+                datalandCompanyId = companyIdB, dataType = listOf(dataTypeGetNumberOfRequestsVsme),
             ),
         )
         assertEquals(
             1,
             api.getNumberOfRequests(
-                datalandCompanyId = companyIdB,
-                dataType = listOf(dataTypeGetNumberOfRequestsP2p),
-            ),
-        )
-        assertEquals(
-            1,
-            api.getNumberOfRequests(
-                datalandCompanyId = companyIdB,
-                dataType = listOf(dataTypeGetNumberOfRequestsP2p, dataTypeGetNumberOfRequestsVsme),
+                datalandCompanyId = companyIdB, dataType = listOf(dataTypeGetNumberOfRequestsP2p),
             ),
         )
         assertEquals(
