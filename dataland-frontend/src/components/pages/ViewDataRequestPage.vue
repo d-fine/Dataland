@@ -62,8 +62,8 @@
             <div class="card" data-test="card_requestDetails">
               <div class="card__title">Request Details</div>
               <div class="card__separator" />
-              <div class="card__subtitle" v-show="isUserKeycloakAdmin">Requester</div>
-              <div class="card__data" v-show="isUserKeycloakAdmin">{{ storedDataRequest.userEmailAddress }}</div>
+              <div class="card__subtitle" v-if="isUserKeycloakAdmin">Requester</div>
+              <div class="card__data" v-if="isUserKeycloakAdmin">{{ storedDataRequest.userEmailAddress }}</div>
               <div class="card__subtitle">Company</div>
               <div class="card__data">{{ companyName }}</div>
               <div class="card__subtitle">Framework</div>
@@ -109,7 +109,7 @@
                   <div style="margin-left: auto">
                     <PrimeButton
                       data-test="resolveRequestButton"
-                      v-show="isRequestStatusAnswered()"
+                      v-show="isUsersOwnRequest && isRequestStatusAnswered()"
                       @click="goToResolveDataRequestPage()"
                     >
                       <span class="d-letters pl-2"> Resolve Request </span>
@@ -119,7 +119,7 @@
                 <div class="card__separator" />
                 <StatusHistory :status-history="storedDataRequest.dataRequestStatusHistory" />
               </div>
-              <div class="card" data-test="card_providedContactDetails" v-show="isUsersOwnRequest">
+              <div class="card" data-test="card_providedContactDetails" v-if="isUsersOwnRequest">
                 <span style="display: flex; align-items: center">
                   <div class="card__title" style="margin-right: auto">Provided Contact Details & Messages</div>
                   <div
