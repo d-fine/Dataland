@@ -184,7 +184,7 @@ import { retrieveAvailableFrameworks, retrieveAvailableRequestStatus } from '@/u
 import type { DataTypeEnum } from '@clients/backend';
 
 export default defineComponent({
-  name: 'MyDataRequestsOverview',
+  name: 'AdminDataRequestsOverview',
   computed: {},
   components: {
     AuthenticationWrapper,

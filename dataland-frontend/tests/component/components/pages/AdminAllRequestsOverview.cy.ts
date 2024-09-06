@@ -16,7 +16,7 @@ describe('Component test for the admin-requests-overview page', () => {
    * @param framework for which data has been requested
    * @param requestStatus of the data request
    * @param accessStatus of the data request
-   * @returns a mock company role assignment
+   * @returns the generated ExtendedStoredDataRequest
    */
   function generateExtendedStoredDataRequest(
     userEmailAddress: string,
@@ -185,7 +185,7 @@ describe('Component test for the admin-requests-overview page', () => {
   /**
    * Removes the combined filter and checks if all requests are shown again
    */
-  function validateDeselctingCombinedFilter(): void {
+  function validateDeselectingCombinedFilter(): void {
     const expectedNumberOfRequests = mockRequests.length;
     cy.intercept('**/community/requests?chunkSize=100&chunkIndex=0', mockRequests).as('fetchInitialUnfilteredRequests');
     cy.intercept('**/community/requests/numberOfRequests', expectedNumberOfRequests.toString()).as(
@@ -218,6 +218,6 @@ describe('Component test for the admin-requests-overview page', () => {
   it('A combined filter works as expected and is also de-selectable', () => {
     mountAdminAllRequestsPageWithMocks();
     validateCombinedFilter();
-    validateDeselctingCombinedFilter();
+    validateDeselectingCombinedFilter();
   });
 });
