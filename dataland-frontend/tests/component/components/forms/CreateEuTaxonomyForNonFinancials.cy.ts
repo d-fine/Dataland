@@ -8,9 +8,11 @@ import { UploadReports } from '@sharedUtils/components/UploadReports';
 import { selectItemFromDropdownByIndex, selectItemFromDropdownByValue } from '@sharedUtils/Dropdown';
 import { getFilledKpis } from '@/utils/DataPoint';
 import { getMountingFunction } from '@ct/testUtils/Mount';
+import { PAGE_NUMBER_VALIDATION_ERROR_MESSAGE } from '@/utils/ValidationUtils';
 
 describe('Component tests for the Eu Taxonomy for non financials that test dependent fields', () => {
   const uploadReports = new UploadReports('referencedReports');
+
   /**
    * On the eu taxonomy for non-financial services edit page, this method checks that there can not be a file uploaded
    * whose name equals the one of a file selected before
@@ -118,10 +120,25 @@ describe('Component tests for the Eu Taxonomy for non financials that test depen
     cy.get('div[label="General"] div[name="fileName"]').each((reportField) =>
       selectItemFromDropdownByValue(cy.wrap(reportField), reports[0])
     );
+    cy.get('div[label="General"] input[name="page"]:not([type="hidden"])').last().clear().type('string');
+    cy.get('div[label="General"] em[title="Page"]:not([type="hidden"])').last().click();
+    cy.get(`[data-message-type="validation"]`).should('contain', PAGE_NUMBER_VALIDATION_ERROR_MESSAGE).should('exist');
+    cy.get('div[label="General"] input[name="page"]:not([type="hidden"])').last().clear().type('0');
+    cy.get('div[label="General"] em[title="Page"]:not([type="hidden"])').last().click();
+    cy.get(`[data-message-type="validation"]`).should('contain', PAGE_NUMBER_VALIDATION_ERROR_MESSAGE).should('exist');
+    cy.get('div[label="General"] input[name="page"]:not([type="hidden"])').last().clear().type('0.5');
+    cy.get('div[label="General"] em[title="Page"]:not([type="hidden"])').last().click();
+    cy.get(`[data-message-type="validation"]`).should('contain', PAGE_NUMBER_VALIDATION_ERROR_MESSAGE).should('exist');
     cy.get('div[label="General"] input[name="page"]:not([type="hidden"])').last().clear().type('-13');
     cy.get('div[label="General"] em[title="Page"]:not([type="hidden"])').last().click();
-    cy.get(`[data-message-type="validation"]`).should('contain', 'at least 0').should('exist');
+    cy.get(`[data-message-type="validation"]`).should('contain', PAGE_NUMBER_VALIDATION_ERROR_MESSAGE).should('exist');
+    cy.get('div[label="General"] input[name="page"]:not([type="hidden"])').last().clear().type('5-3');
+    cy.get('div[label="General"] em[title="Page"]:not([type="hidden"])').last().click();
+    cy.get(`[data-message-type="validation"]`).should('contain', PAGE_NUMBER_VALIDATION_ERROR_MESSAGE).should('exist');
     cy.get('div[label="General"] input[name="page"]:not([type="hidden"])').last().clear().type('3');
+    cy.get('div[label="General"] em[title="Page"]:not([type="hidden"])').last().click();
+    cy.get('div[label="General"] input[name="page"]:not([type="hidden"])').last().clear().type('10-11');
+    cy.get('div[label="General"] em[title="Page"]:not([type="hidden"])').last().click();
   }
 
   /**

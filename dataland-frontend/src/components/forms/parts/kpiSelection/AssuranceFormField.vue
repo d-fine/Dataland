@@ -49,10 +49,7 @@
           />
         </div>
         <div>
-          <UploadFormHeader
-            :label="euTaxonomyKpiNameMappings.page ?? ''"
-            :description="euTaxonomyKpiInfoMappings.page ?? ''"
-          />
+          <UploadFormHeader :label="'Page'" :description="pageNumberDescription" />
           <FormKit
             name="page"
             v-model="reportPageNumber"
@@ -60,7 +57,7 @@
             type="text"
             placeholder="Enter page"
             :validation-messages="{
-              validatePageNumber: pageNumberValidationMessage,
+              validatePageNumber: pageNumberValidationErrorMessage,
             }"
             :validation-rules="{ validatePageNumber }"
             validation="validatePageNumber"
@@ -81,7 +78,7 @@
 <script lang="ts">
 // @ts-nocheck
 import { defineComponent, nextTick } from 'vue';
-import { validatePageNumber } from '@/utils/ValidationUtils';
+import { PAGE_NUMBER_VALIDATION_ERROR_MESSAGE, validatePageNumber } from '@/utils/ValidationUtils';
 import { FormKit } from '@formkit/vue';
 import { BaseFormFieldProps } from '@/components/forms/parts/fields/FormFieldProps';
 import UploadFormHeader from '@/components/forms/parts/elements/basic/UploadFormHeader.vue';
@@ -107,8 +104,10 @@ export default defineComponent({
   components: { SingleSelectFormField, FormKit, UploadFormHeader },
   data() {
     return {
-      pageNumberValidationMessage:
-        'Page number must be a non-zero number or ' + 'a range of ascending non-zero numbers, e.g. 2, 13-15 etc.',
+      pageNumberDescription:
+        'The page number of the document from where the information was sourced. ' +
+        'On Dataland, page number is defined as the PDF page number when looking at the document in a browser.',
+      pageNumberValidationErrorMessage: PAGE_NUMBER_VALIDATION_ERROR_MESSAGE,
       isMounted: false,
       euTaxonomyKpiNameMappings,
       euTaxonomyKpiInfoMappings,

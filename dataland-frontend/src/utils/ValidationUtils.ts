@@ -62,6 +62,8 @@ export function isCompanyIdValid(companyId: string): boolean {
 export const regexSinglePage = /^[1-9]\d*$/;
 export const regexPageRange = /^[1-9]\d*-[1-9]\d*$/;
 
+export const PAGE_NUMBER_VALIDATION_ERROR_MESSAGE =
+  'Page number must be a positive number or ' + 'a range of ascending positive numbers, e.g. 2, 13-15 etc.';
 /**
  * Checks if a page number is valid
  * @param node FormKitNode

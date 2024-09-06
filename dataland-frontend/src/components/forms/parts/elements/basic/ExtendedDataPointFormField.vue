@@ -125,7 +125,7 @@
 
 <script lang="ts">
 import { defineComponent, nextTick } from 'vue';
-import { validatePageNumber } from '@/utils/ValidationUtils';
+import { PAGE_NUMBER_VALIDATION_ERROR_MESSAGE, validatePageNumber } from '@/utils/ValidationUtils';
 import InputSwitch from 'primevue/inputswitch';
 import UploadFormHeader from '@/components/forms/parts/elements/basic/UploadFormHeader.vue';
 import { FormKit } from '@formkit/vue';
@@ -158,8 +158,7 @@ export default defineComponent({
       pageNumberDescription:
         'The page number of the document from where the information was sourced. ' +
         'On Dataland, page number is defined as the PDF page number when looking at the document in a browser.',
-      pageNumberValidationErrorMessage:
-        'Page number must be a non-zero number or a range of ascending non-zero numbers, ' + 'e.g. 2, 13-15 etc.',
+      pageNumberValidationErrorMessage: PAGE_NUMBER_VALIDATION_ERROR_MESSAGE,
       isMounted: false,
       dataPointIsAvailable: (this.injectlistOfFilledKpis as unknown as Array<string>).includes(this.name as string),
       qualityOptions: Object.values(QualityOptions).map((qualityOption: string) => ({
