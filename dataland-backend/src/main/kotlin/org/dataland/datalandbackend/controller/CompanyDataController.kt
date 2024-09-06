@@ -203,4 +203,7 @@ class CompanyDataController(
                 .getCompanyApiModelById(companyId, DatalandAuthentication.fromContextOrNull()).companyInformation,
         )
     }
+    override fun isCompanyIdValid(companyId: String) {
+        companyQueryManager.verifyCompanyIdExists(companyId)
+    }
 }
