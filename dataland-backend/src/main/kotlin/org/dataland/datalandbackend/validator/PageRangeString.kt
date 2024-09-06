@@ -9,7 +9,8 @@ import kotlin.reflect.KClass
 /**
  * Annotation for validating a page range as a string.
  */
-@Target(AnnotationTarget.FIELD, AnnotationTarget.PROPERTY, AnnotationTarget.VALUE_PARAMETER)
+@Target(AnnotationTarget.PROPERTY_GETTER)
+@Retention(AnnotationRetention.RUNTIME)
 @Constraint(validatedBy = [PageRangeValidator::class])
 annotation class PageRange(
     val message: String = "Input validation failed: Invalid page range format.",
@@ -27,15 +28,14 @@ class PageRangeValidator : ConstraintValidator<PageRange, String> {
     }
 
     override fun isValid(value: String?, context: ConstraintValidatorContext?): Boolean {
+        println("Validating value: $value") // Debug statement
         if (value == null) return true // Consider null as valid
 
         val regexSinglePage = """^[1-9]\d*$""".toRegex()
         val regexPageRange = """^([1-9]\d*)-([1-9]\d*)$""".toRegex()
 
         return if (regexSinglePage.matches(value)) {
-            // Check for a valid single page number
-            val pageNumber = value.toInt()
-            pageNumber >= 1 // Valid single page number must be >= 1
+            true // Valid single page number
         } else {
             // Check for a range A-B with A < B
             val matchResult = regexPageRange.matchEntire(value)
@@ -43,7 +43,7 @@ class PageRangeValidator : ConstraintValidator<PageRange, String> {
                 val (a, b) = matchResult.destructured
                 val pageA = a.toInt()
                 val pageB = b.toInt()
-                pageA >= 1 && pageB >= 1 && pageA < pageB // A and B must be >= 1 and A < B
+                pageA < pageB // A and B must be >= 1 and A < B
             } else {
                 false // Invalid format
             }
