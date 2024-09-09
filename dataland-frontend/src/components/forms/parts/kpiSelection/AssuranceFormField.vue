@@ -48,7 +48,7 @@
             ignore
           />
         </div>
-        <div>
+        <div v-if="isValidFileName(isMounted, currentReportValue)">
           <UploadFormHeader :label="'Page'" :description="pageNumberDescription" />
           <FormKit
             name="page"

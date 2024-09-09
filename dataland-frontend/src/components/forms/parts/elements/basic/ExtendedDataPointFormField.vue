@@ -70,7 +70,7 @@
                 input-class="w-12"
               />
             </div>
-            <div class="col-4">
+            <div v-if="isValidFileName(isMounted, currentReportValue)" class="col-4">
               <UploadFormHeader :label="'Page'" :description="pageNumberDescription" />
               <FormKit
                 outer-class="w-100"
