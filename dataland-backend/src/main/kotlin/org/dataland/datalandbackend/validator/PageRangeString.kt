@@ -28,7 +28,6 @@ class PageRangeValidator : ConstraintValidator<PageRange, String> {
     }
 
     override fun isValid(value: String?, context: ConstraintValidatorContext?): Boolean {
-        println("Validating value: $value") // Debug statement
         if (value == null) return true // Consider null as valid
 
         val regexSinglePage = """^[1-9]\d*$""".toRegex()

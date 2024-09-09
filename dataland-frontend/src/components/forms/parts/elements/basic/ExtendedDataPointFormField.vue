@@ -5,7 +5,7 @@
         <InputSwitch
           data-test="dataPointToggleButton"
           inputId="dataPointIsAvailableSwitch"
-          @click="dataPointAvailableToggle"
+          @click="handleToggleClick"
           v-model="dataPointIsAvailable"
         />
         <UploadFormHeader :label="label" :description="description" :is-required="required" />
@@ -83,15 +83,20 @@
                 }"
                 :validation-rules="{ validatePageNumber }"
                 validation="validatePageNumber"
-                validation-label="Page"
-                ignore="false"
+                ignore="true"
               />
             </div>
 
             <FormKit v-if="isValidFileName(isMounted, currentReportValue)" type="group" name="dataSource">
               <FormKit type="hidden" name="fileName" v-model="currentReportValue" />
               <FormKit type="hidden" name="fileReference" :modelValue="fileReferenceAccordingToName" />
-              <FormKit type="hidden" name="page" v-model="pageForFileReference" />
+              <FormKit
+                type="hidden"
+                name="page"
+                :validation-rules="{ validatePageNumber }"
+                validation="validatePageNumber"
+                v-model="pageForFileReference"
+              />
             </FormKit>
           </div>
 
@@ -238,7 +243,7 @@ export default defineComponent({
     /**
      * Toggle dataPointIsAvailable variable value
      */
-    dataPointAvailableToggle(): void {
+    handleToggleClick(): void {
       this.dataPointIsAvailable = !this.dataPointIsAvailable;
     },
     /**
