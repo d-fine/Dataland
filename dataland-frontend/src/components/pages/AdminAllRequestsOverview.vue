@@ -251,13 +251,16 @@ export default defineComponent({
 
   watch: {
     selectedFrameworks() {
+      this.currentPage = 0;
       this.getAllRequestsForFilters();
     },
     selectedRequestStatus() {
+      this.currentPage = 0;
       this.getAllRequestsForFilters();
     },
     searchBarInput(newSearch: string) {
       this.searchBarInput = newSearch;
+      this.currentPage = 0;
       if (this.timerId) {
         clearTimeout(this.timerId);
       }
@@ -325,10 +328,11 @@ export default defineComponent({
       this.selectedFrameworks = [];
       this.selectedRequestStatus = [];
       this.searchBarInput = '';
+      this.currentPage = 0;
     },
 
     /**
-     * Updates the current Page in the parent component
+     * Updates the current Page
      * @param event DataTablePageEvent
      */
     onPage(event: DataTablePageEvent) {
