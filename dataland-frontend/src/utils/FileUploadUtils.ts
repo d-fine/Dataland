@@ -145,3 +145,8 @@ export function getAvailableFileNames(injectReportsNameAndReferences: ObjectType
     return [];
   }
 }
+
+export const PAGE_NUMBER_DESCRIPTION =
+  'The page number of the document from where the information ' +
+  'was sourced. On Dataland, the page number is defined as the n-th page of the PDF, i.e., ' +
+  'the page number when looking at the PDF in a browser.';

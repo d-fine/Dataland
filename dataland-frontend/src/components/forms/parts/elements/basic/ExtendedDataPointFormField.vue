@@ -137,7 +137,7 @@ import { FormKit } from '@formkit/vue';
 import { QualityOptions } from '@clients/backend';
 import { FormFieldPropsWithPlaceholder } from '@/components/forms/parts/fields/FormFieldProps';
 import { type ObjectType } from '@/utils/UpdateObjectUtils';
-import { getAvailableFileNames, getFileReferenceByFileName } from '@/utils/FileUploadUtils';
+import { getAvailableFileNames, getFileReferenceByFileName, PAGE_NUMBER_DESCRIPTION } from '@/utils/FileUploadUtils';
 import { disabledOnMoreThanOne } from '@/utils/FormKitPlugins';
 import { type ExtendedDataPoint } from '@/utils/DataPoint';
 import { isValidFileName, noReportLabel } from '@/utils/DataSource';
@@ -160,9 +160,7 @@ export default defineComponent({
   },
   data() {
     return {
-      pageNumberDescription:
-        'The page number of the document from where the information was sourced. ' +
-        'On Dataland, page number is defined as the PDF page number when looking at the document in a browser.',
+      pageNumberDescription: PAGE_NUMBER_DESCRIPTION,
       pageNumberValidationErrorMessage: PAGE_NUMBER_VALIDATION_ERROR_MESSAGE,
       isMounted: false,
       dataPointIsAvailable: (this.injectlistOfFilledKpis as unknown as Array<string>).includes(this.name as string),

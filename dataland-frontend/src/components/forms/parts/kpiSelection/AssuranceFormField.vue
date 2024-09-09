@@ -94,7 +94,7 @@ import {
 import { humanizeStringOrNumber } from '@/utils/StringFormatter';
 import { AssuranceDataPointValueEnum } from '@clients/backend';
 import { type ObjectType } from '@/utils/UpdateObjectUtils';
-import { getAvailableFileNames, getFileReferenceByFileName } from '@/utils/FileUploadUtils';
+import { getAvailableFileNames, getFileReferenceByFileName, PAGE_NUMBER_DESCRIPTION } from '@/utils/FileUploadUtils';
 import { isValidFileName, noReportLabel } from '@/utils/DataSource';
 import SingleSelectFormField from '@/components/forms/parts/fields/SingleSelectFormField.vue';
 
@@ -109,9 +109,7 @@ export default defineComponent({
   components: { SingleSelectFormField, FormKit, UploadFormHeader },
   data() {
     return {
-      pageNumberDescription:
-        'The page number of the document from where the information was sourced. ' +
-        'On Dataland, page number is defined as the PDF page number when looking at the document in a browser.',
+      pageNumberDescription: PAGE_NUMBER_DESCRIPTION,
       pageNumberValidationErrorMessage: PAGE_NUMBER_VALIDATION_ERROR_MESSAGE,
       isMounted: false,
       euTaxonomyKpiNameMappings,
