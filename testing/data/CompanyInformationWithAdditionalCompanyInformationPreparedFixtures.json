@@ -2,39 +2,35 @@
 	{
 		"companyInformation": {
 			"companyName": "additional-company-information-dataset-with-no-null-fields",
-			"headquarters": "New Alycia",
-			"headquartersPostalCode": "43741-0565",
+			"headquarters": "Keventown",
+			"headquartersPostalCode": "08624-9889",
 			"sector": "web services",
 			"identifiers": {
-				"Lei": [],
+				"Lei": [
+					"ZSW19V9gRjT8dOwHuHw8"
+				],
 				"Isin": [
-					"25LZNRbsujP7"
+					"7isXp6iT68ka"
 				],
-				"PermId": [
-					"boBwDMEMmH"
+				"PermId": [],
+				"Ticker": [
+					"NJ56EIw"
 				],
-				"Ticker": [],
 				"Duns": [
-					"EyIJWk64m"
+					"Uv5q40XAG"
 				],
 				"VatNumber": [],
 				"CompanyRegistrationNumber": [
-					"QJhyaNGKNQ4RCi8"
+					"ZpBjhhkxNgn3BlA"
 				]
 			},
-			"countryCode": "KP",
-			"companyContactDetails": [
-				"Seamus.Hayes@example.com",
-				"Lee.Bosco34@example.com",
-				"Jennyfer22@example.com"
-			],
+			"countryCode": "AE",
+			"companyContactDetails": [],
 			"companyAlternativeNames": [
-				"Conn - Yost",
-				"Miller Group",
-				"Waters LLC"
+				"Abbott, Stroman and Rempel"
 			],
-			"companyLegalForm": "Partnership without Limited Liability",
-			"website": "https://bossy-humanity.biz/",
+			"companyLegalForm": "Limited Liability Partnership (LLP)",
+			"website": "https://reflecting-jungle.name",
 			"isTeaserCompany": false
 		},
 		"t": {
@@ -43,85 +39,90 @@
 					"fiscalYearDeviation": {
 						"value": "Deviation",
 						"dataSource": {
-							"page": "581-1152",
+							"page": "109-1241",
 							"fileName": "SustainabilityReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "interfaces"
+							"tagName": "web services"
 						},
-						"comment": "program virtual interface",
-						"quality": "Audited"
+						"comment": "parse optical driver",
+						"quality": "Estimated"
 					},
 					"fiscalYearEnd": {
-						"value": "2024-05-17",
+						"value": "2024-12-10",
 						"dataSource": {
-							"page": "502",
-							"fileName": "SustainabilityReport",
+							"page": "1197-1214",
+							"fileName": "IntegratedReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "functionalities"
+							"tagName": "portals"
 						},
-						"comment": "back up optical bus",
-						"quality": "Audited"
+						"comment": "synthesize mobile pixel",
+						"quality": "Reported"
 					},
 					"referencedReports": {
+						"IntegratedReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "IntegratedReport",
+							"publicationDate": "2023-04-01"
+						},
 						"SustainabilityReport": {
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"fileName": "SustainabilityReport",
-							"publicationDate": "2023-08-31"
+							"publicationDate": "2023-08-18"
 						}
 					}
 				},
 				"financialInformation": {
 					"equity": {
-						"value": 9062488116.33,
+						"value": 9602059661.42,
 						"dataSource": {
-							"page": "1147",
-							"fileName": "SustainabilityReport",
+							"page": "689",
+							"fileName": "IntegratedReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "synergies"
+							"tagName": "web services"
 						},
-						"comment": "program bluetooth sensor",
+						"comment": "input mobile microchip",
 						"quality": "Estimated",
-						"currency": "ALL"
+						"currency": "LAK"
 					},
 					"debt": {
-						"value": 3605868609.16,
+						"value": 1098737262.65,
 						"dataSource": {
-							"page": "195-942",
+							"page": "752-1062",
 							"fileName": "SustainabilityReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "portals"
+							"tagName": "ROI"
 						},
-						"comment": "parse open-source bus",
-						"quality": "Audited",
-						"currency": "TRY"
+						"comment": "index 1080p bus",
+						"quality": "Reported",
+						"currency": "CDF"
 					},
 					"balanceSheetTotal": {
-						"value": 7387847807.26,
+						"value": 4386258840.09,
 						"dataSource": {
-							"page": "748",
-							"fileName": "SustainabilityReport",
+							"page": "300-1131",
+							"fileName": "IntegratedReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "schemas"
+							"tagName": "systems"
 						},
-						"comment": "generate multi-byte bandwidth",
+						"comment": "program primary monitor",
 						"quality": "Incomplete",
-						"currency": "SBD"
+						"currency": "MAD"
 					},
 					"evic": {
-						"value": 5439465872.48,
+						"value": 5305528752.51,
 						"dataSource": {
-							"page": "3-445",
-							"fileName": "SustainabilityReport",
+							"page": "599",
+							"fileName": "IntegratedReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "architectures"
+							"tagName": "markets"
 						},
-						"comment": "bypass 1080p firewall",
+						"comment": "copy optical array",
 						"quality": "NoDataFound",
-						"currency": "ZAR"
+						"currency": "BWP"
 					}
 				}
 			}
 		},
-		"reportingPeriod": "2022"
+		"reportingPeriod": "2021"
 	}
 ]
