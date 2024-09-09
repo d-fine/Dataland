@@ -13,7 +13,7 @@ import kotlin.reflect.KClass
 @Retention(AnnotationRetention.RUNTIME)
 @Constraint(validatedBy = [PageRangeValidator::class])
 annotation class PageRange(
-    val message: String = "Input validation failed: Invalid page range format.",
+    val message: String = "Input validation failed: Invalid page range format. Valid examples: '1', '2-5'",
     val groups: Array<KClass<*>> = [],
     val payload: Array<KClass<out Payload>> = [],
 )
