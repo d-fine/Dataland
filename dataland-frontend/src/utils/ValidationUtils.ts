@@ -75,13 +75,13 @@ export function validatePageNumber(node: FormKitNode): boolean {
     if (match === null) {
       return false;
     }
-    const firstElementMatches = match[0] !== undefined;
-    const secondElementMatches = match[1] !== undefined;
-    if (firstElementMatches && secondElementMatches) {
-      const firstNumber = Number(match[0]);
-      const secondNumber = Number(match[1]);
+    const firstNumber = Number(match[1]);
+    const secondNumber = match[2] !== undefined ? Number(match[2]) : undefined;
+    if (secondNumber !== undefined) {
       return firstNumber < secondNumber;
-    } else return firstElementMatches;
+    } else {
+      return true;
+    }
   } else {
     return false;
   }

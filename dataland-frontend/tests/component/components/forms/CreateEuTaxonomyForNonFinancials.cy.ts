@@ -118,6 +118,7 @@ describe('Component tests for the Eu Taxonomy for non financials that test depen
     for (const validPageNumberInput of validPageNumberInputs) {
       cy.get('div[label="General"] input[name="page"]:not([type="hidden"])').last().clear().type(validPageNumberInput);
       cy.get('div[label="General"] em[title="Page"]:not([type="hidden"])').last().click();
+      submitButton.buttonAppearsEnabled();
     }
   }
 
