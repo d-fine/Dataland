@@ -99,11 +99,11 @@ class AccessRequestEmailSender(
         constructor(dataRequestEntity: DataRequestEntity) :
             this(
                 dataRequestEntity.userId,
-                dataRequestEntity.messageHistory.last().message,
+                dataRequestEntity.messageHistory.last().message.takeIf { it?.isNotBlank() ?: false },
                 dataRequestEntity.datalandCompanyId,
                 dataRequestEntity.getDataTypeDescription(),
                 setOf(dataRequestEntity.reportingPeriod),
-                dataRequestEntity.messageHistory.last().contactsAsSet(),
+                dataRequestEntity.messageHistory.last().contactsAsSet().takeIf { it.isNotEmpty()} ?: setOf(""),
             )
     }
 
