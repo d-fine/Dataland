@@ -15,20 +15,18 @@ class PageRangeStringTest {
 
     @Test
     fun `check that valid page ranges are processed correctly`() {
-        // Valid inputs
-        listOf("1", "5", "10", "1-2", "2-5", "4-10").forEach {
+        val validInputs = listOf("1", "5", "10", "1-2", "2-5", "4-10")
+        validInputs.forEach {
             val violations = validator.validate(PageRangeHolder(it))
-            println("Testing value $it: Violations: ${violations.size}")
             assert(violations.isEmpty()) { "Expected no violations for valid input: $it" }
         }
     }
 
     @Test
     fun `check that validation fails correctly for invalid ranges and numbers`() {
-        // Invalid inputs
-        listOf("0", "01", "-1", "abc", "3-2", "5-5", "0-10", "4--2", "abc-def").forEach {
+        val invalidInputs = listOf("0", "01", "-1", "abc", "3-2", "5-5", "0-10", "4--2", "abc-def")
+        invalidInputs.forEach {
             val violations = validator.validate(PageRangeHolder(it))
-            println("Testing value $it: Violations: ${violations.size}")
             assert(violations.size == 1) { "Expected 1 violation for invalid input: $it" }
         }
     }
