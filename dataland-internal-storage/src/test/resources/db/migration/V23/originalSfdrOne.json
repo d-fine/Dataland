@@ -1,0 +1,43 @@
+{
+  "environmental": {
+    "greenhouseGasEmissions": {
+      "scope1And2And3GhgEmissionsInTonnes": {
+        "comment": "",
+        "dataSource": {
+          "fileName": "spotify-2022-equity-impact-report",
+          "fileReference": "087cf59102229a1a5ebfcefe8c83bcede74024008fdcc24c9b0a302c1ad4bfe1",
+          "page": 0,
+          "tagName": null
+        },
+        "quality": "Reported",
+        "value": 356178
+      },
+      "scope1And2GhgEmissionsMarketBasedInTonnes": {
+        "comment": "",
+        "dataSource": {
+          "fileName": "spotify-2022-equity-impact-report",
+          "fileReference": "087cf59102229a1a5ebfcefe8c83bcede74024008fdcc24c9b0a302c1ad4bfe1",
+          "page": 0,
+          "tagName": null
+        },
+        "quality": "Reported",
+        "value": 3806
+      }
+    }
+  },
+  "social": {
+    "socialAndEmployeeMatters": {
+      "boardGenderDiversityBoardOfDirectorsInPercent": {
+        "comment": "",
+        "dataSource": {
+          "fileName": "spotify-2022-equity-impact-report",
+          "fileReference": "087cf59102229a1a5ebfcefe8c83bcede74024008fdcc24c9b0a302c1ad4bfe1",
+          "page": 0,
+          "tagName": null
+        },
+        "quality": "Reported",
+        "value": 36.7
+      }
+    }
+  }
+}
