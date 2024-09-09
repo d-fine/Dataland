@@ -13,7 +13,7 @@ import kotlin.reflect.KClass
 @Retention(AnnotationRetention.RUNTIME)
 @Constraint(validatedBy = [PageRangeValidator::class])
 annotation class PageRange(
-    val message: String = "Input validation failed: Invalid page range format.",
+    val message: String = "Input validation failed: Invalid page range format. Valid examples: '1', '2-5'",
     val groups: Array<KClass<*>> = [],
     val payload: Array<KClass<out Payload>> = [],
 )
@@ -23,29 +23,28 @@ annotation class PageRange(
  */
 class PageRangeValidator : ConstraintValidator<PageRange, String> {
 
+    companion object {
+        private val regexPage = """^([1-9]\d*)(?:-([1-9]\d*))?$""".toRegex()
+    }
+
     override fun initialize(constraintAnnotation: PageRange) {
         // No initialization needed
     }
-
     override fun isValid(value: String?, context: ConstraintValidatorContext?): Boolean {
         if (value == null) return true // Consider null as valid
 
-        val regexSinglePage = """^[1-9]\d*$""".toRegex()
-        val regexPageRange = """^([1-9]\d*)-([1-9]\d*)$""".toRegex()
-
-        return if (regexSinglePage.matches(value)) {
-            true // Valid single page number
-        } else {
-            // Check for a range A-B with A < B
-            val matchResult = regexPageRange.matchEntire(value)
-            if (matchResult != null) {
-                val (a, b) = matchResult.destructured
+        val matchResult = regexPage.matchEntire(value)
+        return if (matchResult != null) {
+            val (a, b) = matchResult.destructured
+            if (b.isEmpty()) {
+                true // Valid single page number
+            } else {
                 val pageA = a.toInt()
                 val pageB = b.toInt()
                 pageA < pageB // A and B must be >= 1 and A < B
-            } else {
-                false // Invalid format
             }
+        } else {
+            false // Invalid format
         }
     }
 }
