@@ -94,18 +94,15 @@ class QueryDataRequestsTest {
             chunkSize = chunkSize,
         ).filter { it.creationTimestamp > timestampBeforePost }
         assertEquals(0, sfdrDataRequests.size)
-
         val p2pDataRequests = api.getDataRequests(dataType = listOf(dataTypeGetDataRequestsP2p), chunkSize = chunkSize)
             .filter { it.creationTimestamp > timestampBeforePost }
         assertEquals(1, p2pDataRequests.size)
         assertEquals(DataTypeEnum.p2p.value, p2pDataRequests.first().dataType)
-
         val vsmeDataRequests =
             api.getDataRequests(dataType = listOf(dataTypeGetDataRequestsVsme), chunkSize = chunkSize)
                 .filter { it.creationTimestamp > timestampBeforePost }
         assertEquals(2, vsmeDataRequests.size)
         vsmeDataRequests.forEach { assertEquals(DataTypeEnum.vsme.value, it.dataType) }
-
         val vsmeAndP2pDataRequests = api.getDataRequests(
             dataType = listOf(dataTypeGetDataRequestsVsme, dataTypeGetDataRequestsP2p), chunkSize = chunkSize,
         ).filter { it.creationTimestamp > timestampBeforePost }
@@ -120,12 +117,10 @@ class QueryDataRequestsTest {
         val dataRequestsFor2021 = api.getDataRequests(reportingPeriod = "2021", chunkSize = chunkSize)
             .filter { it.creationTimestamp > timestampBeforePost }
         assertEquals(0, dataRequestsFor2021.size)
-
         val dataRequestsFor2022 = api.getDataRequests(reportingPeriod = "2022", chunkSize = chunkSize)
             .filter { it.creationTimestamp > timestampBeforePost }
         assertEquals(1, dataRequestsFor2022.size)
         assertEquals("2022", dataRequestsFor2022.first().reportingPeriod)
-
         val dataRequestsFor2023 = api.getDataRequests(reportingPeriod = "2023", chunkSize = chunkSize)
             .filter { it.creationTimestamp > timestampBeforePost }
         assertEquals(2, dataRequestsFor2023.size)
@@ -138,7 +133,6 @@ class QueryDataRequestsTest {
             api.getDataRequests(requestStatus = setOf(RequestStatus.Resolved), chunkSize = chunkSize)
                 .filter { it.creationTimestamp > timestampBeforePost }
         assertEquals(0, resolvedDataRequests.size)
-
         val dataRequestIdB = UUID.fromString(
             api.getDataRequests(chunkSize = chunkSize).filter { it.creationTimestamp > timestampBeforePost }
                 .first { it.datalandCompanyId == companyIdB }.dataRequestId,
@@ -146,16 +140,13 @@ class QueryDataRequestsTest {
         val storedDataRequestB = api.getDataRequestById(dataRequestIdB)
         assertEquals(DataTypeEnum.p2p.value, storedDataRequestB.dataType)
         assertEquals("2023", storedDataRequestB.reportingPeriod)
-
         api.patchDataRequest(dataRequestIdB, RequestStatus.Answered)
-
         val answeredDataRequests =
             api.getDataRequests(requestStatus = setOf(RequestStatus.Answered), chunkSize = chunkSize)
                 .filter { it.creationTimestamp > timestampBeforePost }
         assertEquals(1, answeredDataRequests.size)
         assertEquals(companyIdB, answeredDataRequests.first().datalandCompanyId)
         assertEquals(RequestStatus.Answered, answeredDataRequests.first().requestStatus)
-
         val answeredAndOpenRequests = api.getDataRequests(
             requestStatus = setOf(RequestStatus.Answered, RequestStatus.Open),
             chunkSize = chunkSize,
@@ -169,13 +160,11 @@ class QueryDataRequestsTest {
             api.getDataRequests(accessStatus = setOf(AccessStatus.Granted), chunkSize = chunkSize)
                 .filter { it.creationTimestamp > timestampBeforePost }
         assertEquals(0, grantedAccessRequests.size)
-
         val publicAccessRequests = api.getDataRequests(accessStatus = setOf(AccessStatus.Public), chunkSize = chunkSize)
             .filter { it.creationTimestamp > timestampBeforePost }
         assertEquals(1, publicAccessRequests.size)
         assertEquals(companyIdB, publicAccessRequests.first().datalandCompanyId)
         assertEquals(AccessStatus.Public, publicAccessRequests.first().accessStatus)
-
         val pendingAndPublicAccessRequests = api.getDataRequests(
             accessStatus = setOf(AccessStatus.Pending, AccessStatus.Public),
             chunkSize = chunkSize,
@@ -189,12 +178,10 @@ class QueryDataRequestsTest {
             api.getDataRequests(datalandCompanyId = UUID.randomUUID().toString(), chunkSize = chunkSize)
                 .filter { it.creationTimestamp > timestampBeforePost }
         assertEquals(0, storedDataRequestsForRandomCompanyId.size)
-
         val storedDataRequestsForCompanyB = api.getDataRequests(datalandCompanyId = companyIdB, chunkSize = chunkSize)
             .filter { it.creationTimestamp > timestampBeforePost }
         assertEquals(1, storedDataRequestsForCompanyB.size)
         assertEquals(companyIdB, storedDataRequestsForCompanyB.first().datalandCompanyId)
-
         val storedDataRequestsForCompanyA = api.getDataRequests(datalandCompanyId = companyIdA, chunkSize = chunkSize)
             .filter { it.creationTimestamp > timestampBeforePost }
         assertEquals(2, storedDataRequestsForCompanyA.size)
@@ -221,23 +208,17 @@ class QueryDataRequestsTest {
             val dataRequests = api.getDataRequests(datalandCompanyId = companyIdA)
             assertTrue(dataRequests.all { it.userEmailAddress != null })
         }
-
         val queryingUser = TechnicalUser.Reader
-
         withTechnicalUser(queryingUser) {
             assertAccessDeniedWrapper { api.getDataRequests(datalandCompanyId = companyIdA) }
         }
-
         assignCompanyOwnershipToUser(companyIdA, queryingUser.technicalUserId)
-
         withTechnicalUser(queryingUser) {
             val dataRequests = api.getDataRequests(datalandCompanyId = companyIdA)
             assertEquals(2, dataRequests.size)
             assertTrue(dataRequests.all { it.userEmailAddress != null })
         }
-
         removeCompanyOwnershipFromUser(companyIdA, queryingUser.technicalUserId)
-
         withTechnicalUser(queryingUser) {
             assertAccessDeniedWrapper { api.getDataRequests(datalandCompanyId = companyIdA) }
         }
@@ -246,21 +227,16 @@ class QueryDataRequestsTest {
     @Test
     fun `query data requests and assert that email address is not visible for public data requests`() {
         val queryingUser = TechnicalUser.Reader
-
         withTechnicalUser(queryingUser) {
             assertAccessDeniedWrapper { api.getDataRequests(datalandCompanyId = companyIdB) }
         }
-
         assignCompanyOwnershipToUser(companyIdB, queryingUser.technicalUserId)
-
         withTechnicalUser(queryingUser) {
             val dataRequests = api.getDataRequests(datalandCompanyId = companyIdB)
             assertEquals(1, dataRequests.size)
             assertTrue(dataRequests.all { it.userEmailAddress == null })
         }
-
         removeCompanyOwnershipFromUser(companyIdB, queryingUser.technicalUserId)
-
         withTechnicalUser(queryingUser) {
             assertAccessDeniedWrapper { api.getDataRequests(datalandCompanyId = companyIdB) }
         }
@@ -277,13 +253,24 @@ class QueryDataRequestsTest {
         ).filter { it.creationTimestamp > timestampBeforePost }
         assertEquals(1, combinedQueryResults.size)
     }
-
     private val dataTypeGetNumberOfRequestsSfdr = RequestControllerApi.DataTypeGetNumberOfRequests.sfdr
     private val dataTypeGetNumberOfRequestsP2p = RequestControllerApi.DataTypeGetNumberOfRequests.p2p
     private val dataTypeGetNumberOfRequestsVsme = RequestControllerApi.DataTypeGetNumberOfRequests.vsme
 
     @Test
-    fun `count requests with request status filters`() {
+    fun `count requests with single request status filters`() {
+        assertEquals(
+            0,
+            api.getNumberOfRequests(datalandCompanyId = companyIdA, requestStatus = setOf(RequestStatus.Resolved)),
+        )
+        assertEquals(
+            0,
+            api.getNumberOfRequests(datalandCompanyId = companyIdB, requestStatus = setOf(RequestStatus.Resolved)),
+        )
+    }
+
+    @Test
+    fun `count requests with multiple request status filters`() {
         assertEquals(
             2,
             api.getNumberOfRequests(
@@ -292,19 +279,11 @@ class QueryDataRequestsTest {
             ),
         )
         assertEquals(
-            0,
-            api.getNumberOfRequests(datalandCompanyId = companyIdA, requestStatus = setOf(RequestStatus.Resolved)),
-        )
-        assertEquals(
             1,
             api.getNumberOfRequests(
                 datalandCompanyId = companyIdB,
                 requestStatus = setOf(RequestStatus.Open, RequestStatus.Resolved),
             ),
-        )
-        assertEquals(
-            0,
-            api.getNumberOfRequests(datalandCompanyId = companyIdB, requestStatus = setOf(RequestStatus.Resolved)),
         )
     }
 
