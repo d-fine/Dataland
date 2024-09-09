@@ -127,7 +127,7 @@
                                 allow-unknown-option
                               />
                             </div>
-                            <div v-if="isValidFileName(isMounted, currentReportValue)" class="col-4">
+                            <div v-if="isValidFileName(isMounted, currentReportValue)">
                               <UploadFormHeader :label="'Page'" :description="pageNumberDescription" />
                               <FormKit
                                 outer-class="w-100"
