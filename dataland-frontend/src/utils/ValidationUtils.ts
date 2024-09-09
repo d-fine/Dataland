@@ -59,8 +59,7 @@ export function isCompanyIdValid(companyId: string): boolean {
   return uuidRegexExp.test(companyId);
 }
 
-export const regexSinglePage = /^[1-9]\d*$/;
-export const regexPageRange = /^[1-9]\d*-[1-9]\d*$/;
+export const regexPageNumber = /^([1-9]\d*)(?:-([1-9]\d*))?$/;
 
 export const PAGE_NUMBER_VALIDATION_ERROR_MESSAGE =
   'Page number must be a positive number or ' + 'a range of ascending positive numbers, e.g. 2, 13-15 etc.';
@@ -71,13 +70,18 @@ export const PAGE_NUMBER_VALIDATION_ERROR_MESSAGE =
  */
 export function validatePageNumber(node: FormKitNode): boolean {
   const pageNumber = node.value;
-  if (typeof pageNumber == 'string' && regexSinglePage.test(pageNumber)) {
-    return true;
-  } else if (typeof pageNumber == 'string' && regexPageRange.test(pageNumber)) {
-    const hyphenIndex = pageNumber.indexOf('-');
-    const firstNumber = Number(pageNumber.substring(0, hyphenIndex));
-    const secondNumber = Number(pageNumber.substring(hyphenIndex + 1));
-    return firstNumber < secondNumber;
+  if (typeof pageNumber == 'string') {
+    const match = RegExp(regexPageNumber).exec(pageNumber);
+    if (match === null) {
+      return false;
+    }
+    const firstElementMatches = match[0] !== undefined;
+    const secondElementMatches = match[1] !== undefined;
+    if (firstElementMatches && secondElementMatches) {
+      const firstNumber = Number(match[0]);
+      const secondNumber = Number(match[1]);
+      return firstNumber < secondNumber;
+    } else return firstElementMatches;
   } else {
     return false;
   }
