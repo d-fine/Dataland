@@ -329,7 +329,7 @@ class QueryDataRequestsTest {
     }
 
     @Test
-    fun `count requests by data type for company A`() {
+    fun `count requests by single data type for company A`() {
         assertEquals(2, api.getNumberOfRequests(datalandCompanyId = companyIdA))
         assertEquals(
             2,
@@ -345,6 +345,10 @@ class QueryDataRequestsTest {
                 dataType = listOf(dataTypeGetNumberOfRequestsP2p),
             ),
         )
+    }
+
+    @Test
+    fun `count requests by multiple data type for company A`() {
         assertEquals(
             2,
             api.getNumberOfRequests(
