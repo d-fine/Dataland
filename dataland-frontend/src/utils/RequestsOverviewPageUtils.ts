@@ -53,3 +53,16 @@ export function retrieveAvailableAccessStatus(): Array<SelectableItem> {
     };
   });
 }
+
+/**
+ * Gets list with all available request status
+ * @returns array of SelectableItem
+ */
+export function retrieveAvailableRequestStatus(): Array<SelectableItem> {
+  return Object.values(RequestStatus).map((status) => {
+    return {
+      displayName: status,
+      disabled: false,
+    };
+  });
+}

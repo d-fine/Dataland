@@ -4,7 +4,7 @@ import org.dataland.datalandcommunitymanager.entities.AggregatedDataRequest
 import org.dataland.datalandcommunitymanager.entities.DataRequestEntity
 import org.dataland.datalandcommunitymanager.repositories.utils.TemporaryTables
 import org.dataland.datalandcommunitymanager.repositories.utils.TemporaryTables.Companion.MOST_RECENT_STATUS_CHANGE
-import org.dataland.datalandcommunitymanager.utils.DataRequestsQueryFilter
+import org.dataland.datalandcommunitymanager.utils.DataRequestsFilter
 import org.dataland.datalandcommunitymanager.utils.GetAggregatedRequestsSearchFilter
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Query
@@ -74,20 +74,34 @@ interface DataRequestRepository : JpaRepository<DataRequestEntity, String> {
      * A function for searching for data request information by dataType, userID, requestID, requestStatus,
      * accessStatus, reportingPeriod or dataRequestCompanyIdentifierValue
      * @param searchFilter takes the input params to check for
+     * @param resultLimit The number of entities that should be returned
+     * @param resultOffset The offset of the returned entities
      * @returns the data request
      */
     @Query(
         nativeQuery = true,
         value = TemporaryTables.TABLE_FILTERED +
+            TemporaryTables.TABLE_FILTERED_ORDER_AND_LIMIT + TemporaryTables.TABLE_FILTERED_END +
             "SELECT d.* FROM data_requests d " +
             "JOIN filtered_table ON filtered_table.data_request_id = d.data_request_id ",
 
     )
     fun searchDataRequestEntity(
-        @Param("searchFilter") searchFilter: DataRequestsQueryFilter,
+        @Param("searchFilter") searchFilter: DataRequestsFilter,
         @Param("resultLimit") resultLimit: Int? = 100,
         @Param("resultOffset") resultOffset: Int? = 0,
     ): List<DataRequestEntity>
+
+    /**
+     * This query counts the number of requests that matches the search fiter and returns this number.
+     */
+    @Query(
+        nativeQuery = true,
+        value = TemporaryTables.TABLE_FILTERED + TemporaryTables.TABLE_FILTERED_END +
+            "SELECT COUNT(*) FROM data_requests d " +
+            "JOIN filtered_table ON filtered_table.data_request_id = d.data_request_id ",
+    )
+    fun getNumberOfRequests(@Param("searchFilter") searchFilter: DataRequestsFilter): Int
 
     /**
      * Fetches data request entities together with the associated status history
@@ -95,7 +109,6 @@ interface DataRequestRepository : JpaRepository<DataRequestEntity, String> {
      * @returns the initial list of data request entities together with the associated status history
      */
     @Query(
-
         "SELECT DISTINCT d FROM DataRequestEntity d " +
             "LEFT JOIN FETCH d.dataRequestStatusHistory " +
             "WHERE d IN :dataRequests",
