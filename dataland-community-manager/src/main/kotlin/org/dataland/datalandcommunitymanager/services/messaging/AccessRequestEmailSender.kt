@@ -103,7 +103,7 @@ class AccessRequestEmailSender(
                 dataRequestEntity.datalandCompanyId,
                 dataRequestEntity.getDataTypeDescription(),
                 setOf(dataRequestEntity.reportingPeriod),
-                dataRequestEntity.messageHistory.last().contactsAsSet().takeIf { it.isNotEmpty()} ?: setOf(""),
+                dataRequestEntity.messageHistory.last().contactsAsSet().takeIf { it.isNotEmpty() } ?: setOf(""),
             )
     }
 
