@@ -16,12 +16,18 @@ describe('Component tests for the CreateAdditionalCompanyInformation dataset tha
    */
   function pickFiscalYearDeviationAndCheckThatNoReportsCanBeSelected(): void {
     cy.get('[data-test="dataQuality"').should('not.exist');
+    cy.get(
+      `div[data-test="fiscalYearDeviation"] 
+        div[data-test="toggleDataPointWrapper"] div[data-test="dataPointToggleButton"]`
+    )
+      .should('exist')
+      .click();
     cy.get('div[data-test="fiscalYearDeviation"] input[type="checkbox"][value="Deviation"]').check();
-    cy.get('[data-test="dataQuality"').should('exist');
+    cy.get('[data-test="dataQuality"]').should('exist');
     cy.get('div[data-test="fiscalYearDeviation"] input[type="checkbox"][value="Deviation"]').uncheck();
-    cy.get('[data-test="dataQuality"').should('not.exist');
+    cy.get('[data-test="dataQuality"]').should('not.exist');
     cy.get('div[data-test="fiscalYearDeviation"] input[type="checkbox"][value="NoDeviation"]').check();
-    cy.get('[data-test="dataQuality"').should('exist');
+    cy.get('[data-test="dataQuality"]').should('exist');
 
     cy.get('div[data-test="dataReport"]').should('exist').click();
     cy.get('li:contains("None")').should('exist').click();
