@@ -24,6 +24,6 @@ export function generateDataSource(referencedReports: ReferencedDocuments): Exte
     fileReference: chosenReportReference.fileReference,
     tagName: faker.company.buzzNoun(),
   });
-  const randomPageNumberScheme = Math.random() < 0.5 ? singlePageNumberScheme : pageRangeScheme;
-  return randomPageNumberScheme();
+  const chosenPageNumberScheme = pickOneElement([singlePageNumberScheme, pageRangeScheme]);
+  return chosenPageNumberScheme();
 }
