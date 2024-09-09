@@ -61,13 +61,18 @@
             }"
             :validation-rules="{ validatePageNumber }"
             validation="validatePageNumber"
-            validation-label="Page"
             ignore="false"
           />
           <FormKit type="group" name="dataSource" v-if="isValidFileName(isMounted, currentReportValue)">
             <FormKit type="hidden" name="fileName" v-model="currentReportValue" />
             <FormKit type="hidden" name="fileReference" :modelValue="fileReferenceAccordingToName" />
-            <FormKit type="hidden" name="page" v-model="reportPageNumber" />
+            <FormKit
+              type="hidden"
+              name="page"
+              :validation-rules="{ validatePageNumber }"
+              validation="validatePageNumber"
+              v-model="reportPageNumber"
+            />
           </FormKit>
         </div>
       </div>
