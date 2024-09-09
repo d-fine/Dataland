@@ -2,40 +2,39 @@
 	{
 		"companyInformation": {
 			"companyName": "additional-company-information-dataset-with-no-null-fields",
-			"headquarters": "Pollichboro",
-			"headquartersPostalCode": "16181-1400",
-			"sector": "niches",
+			"headquarters": "New Alycia",
+			"headquartersPostalCode": "43741-0565",
+			"sector": "web services",
 			"identifiers": {
-				"Lei": [
-					"7mgt8ILL2DCOKn0ksj7N"
-				],
+				"Lei": [],
 				"Isin": [
-					"i3O9k3QmSKRO"
+					"25LZNRbsujP7"
 				],
-				"PermId": [],
-				"Ticker": [
-					"3XyTehf"
+				"PermId": [
+					"boBwDMEMmH"
 				],
-				"Duns": [],
-				"VatNumber": [
-					"IsMQadvb0"
+				"Ticker": [],
+				"Duns": [
+					"EyIJWk64m"
 				],
-				"CompanyRegistrationNumber": []
+				"VatNumber": [],
+				"CompanyRegistrationNumber": [
+					"QJhyaNGKNQ4RCi8"
+				]
 			},
-			"countryCode": "BY",
+			"countryCode": "KP",
 			"companyContactDetails": [
-				"Cleo_Kshlerin3@example.com",
-				"Erick6@example.com",
-				"Mylene_Huel49@example.com",
-				"Rahul.Hudson9@example.com",
-				"Ottis.Hettinger@example.com"
+				"Seamus.Hayes@example.com",
+				"Lee.Bosco34@example.com",
+				"Jennyfer22@example.com"
 			],
 			"companyAlternativeNames": [
-				"Jakubowski, Greenholt and Nader",
-				"Yundt and Sons"
+				"Conn - Yost",
+				"Miller Group",
+				"Waters LLC"
 			],
-			"companyLegalForm": "Private Limited Company (Ltd)",
-			"website": "https://variable-cream.net/",
+			"companyLegalForm": "Partnership without Limited Liability",
+			"website": "https://bossy-humanity.biz/",
 			"isTeaserCompany": false
 		},
 		"t": {
@@ -44,95 +43,85 @@
 					"fiscalYearDeviation": {
 						"value": "Deviation",
 						"dataSource": {
-							"page": "208",
-							"fileName": "AnnualReport",
+							"page": "581-1152",
+							"fileName": "SustainabilityReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "users"
+							"tagName": "interfaces"
 						},
-						"comment": "synthesize open-source driver",
+						"comment": "program virtual interface",
 						"quality": "Audited"
 					},
 					"fiscalYearEnd": {
-						"value": "2024-07-01",
+						"value": "2024-05-17",
 						"dataSource": {
-							"page": "954",
-							"fileName": "IntegratedReport",
+							"page": "502",
+							"fileName": "SustainabilityReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "e-commerce"
+							"tagName": "functionalities"
 						},
-						"comment": "back up primary firewall",
+						"comment": "back up optical bus",
 						"quality": "Audited"
 					},
 					"referencedReports": {
-						"AnnualReport": {
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"fileName": "AnnualReport",
-							"publicationDate": "2023-07-03"
-						},
 						"SustainabilityReport": {
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"fileName": "SustainabilityReport",
-							"publicationDate": "2023-12-27"
-						},
-						"IntegratedReport": {
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"fileName": "IntegratedReport",
-							"publicationDate": "2024-01-08"
+							"publicationDate": "2023-08-31"
 						}
 					}
 				},
 				"financialInformation": {
 					"equity": {
-						"value": 7164818567.69,
+						"value": 9062488116.33,
 						"dataSource": {
-							"page": "375",
-							"fileName": "AnnualReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "deliverables"
-						},
-						"comment": "hack neural alarm",
-						"quality": "Reported",
-						"currency": "PEN"
-					},
-					"debt": {
-						"value": 2394110865.42,
-						"dataSource": {
-							"page": "971",
-							"fileName": "IntegratedReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "platforms"
-						},
-						"comment": "compress primary bus",
-						"quality": "Estimated",
-						"currency": "BTN"
-					},
-					"balanceSheetTotal": {
-						"value": 9032161661.89,
-						"dataSource": {
-							"page": "1003",
+							"page": "1147",
 							"fileName": "SustainabilityReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "paradigms"
+							"tagName": "synergies"
 						},
-						"comment": "navigate cross-platform array",
+						"comment": "program bluetooth sensor",
+						"quality": "Estimated",
+						"currency": "ALL"
+					},
+					"debt": {
+						"value": 3605868609.16,
+						"dataSource": {
+							"page": "195-942",
+							"fileName": "SustainabilityReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "portals"
+						},
+						"comment": "parse open-source bus",
+						"quality": "Audited",
+						"currency": "TRY"
+					},
+					"balanceSheetTotal": {
+						"value": 7387847807.26,
+						"dataSource": {
+							"page": "748",
+							"fileName": "SustainabilityReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "schemas"
+						},
+						"comment": "generate multi-byte bandwidth",
 						"quality": "Incomplete",
-						"currency": "EUR"
+						"currency": "SBD"
 					},
 					"evic": {
-						"value": 5048991297.37,
+						"value": 5439465872.48,
 						"dataSource": {
-							"page": "1162",
-							"fileName": "IntegratedReport",
+							"page": "3-445",
+							"fileName": "SustainabilityReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "technologies"
+							"tagName": "architectures"
 						},
-						"comment": "index digital matrix",
-						"quality": "Reported",
-						"currency": "ETB"
+						"comment": "bypass 1080p firewall",
+						"quality": "NoDataFound",
+						"currency": "ZAR"
 					}
 				}
 			}
 		},
-		"reportingPeriod": "2020"
+		"reportingPeriod": "2022"
 	}
 ]
