@@ -127,21 +127,19 @@
                                 allow-unknown-option
                               />
                             </div>
-                            <div>
-                              <UploadFormHeader
-                                :label="euTaxonomyKpiNameMappings.page ?? ''"
-                                :description="euTaxonomyKpiInfoMappings.page ?? ''"
-                              />
+                            <div v-if="isValidFileName(isMounted, currentReportValue)" class="col-4">
+                              <UploadFormHeader :label="'Page'" :description="pageNumberDescription" />
                               <FormKit
                                 outer-class="w-100"
-                                type="number"
+                                type="text"
                                 name="page"
-                                v-model="reportPageNumber"
-                                placeholder="Page"
-                                validation-label="Page"
-                                validation="min:0"
-                                step="1"
-                                min="0"
+                                placeholder="Enter page"
+                                v-model="pageForFileReference"
+                                :validation-messages="{
+                                  validatePageNumber: pageNumberValidationErrorMessage,
+                                }"
+                                :validation-rules="{ validatePageNumber }"
+                                validation="validatePageNumber"
                                 ignore="true"
                               />
                             </div>
@@ -150,7 +148,13 @@
                         <FormKit type="group" name="dataSource" v-if="isValidFileName(isMounted, currentReportValue)">
                           <FormKit type="hidden" name="fileName" v-model="currentReportValue" />
                           <FormKit type="hidden" name="fileReference" :modelValue="fileReferenceAccordingToName" />
-                          <FormKit type="hidden" name="page" v-model="reportPageNumber" />
+                          <FormKit
+                            type="hidden"
+                            name="page"
+                            :validation-rules="{ validatePageNumber }"
+                            validation="validatePageNumber"
+                            v-model="pageForFileReference"
+                          />
                         </FormKit>
                       </div>
                     </FormKit>
@@ -321,7 +325,12 @@ import { useRoute } from 'vue-router';
 import { defineComponent, inject, nextTick } from 'vue';
 import type Keycloak from 'keycloak-js';
 import { assertDefined } from '@/utils/TypeScriptUtils';
-import { checkIfAllUploadedReportsAreReferencedInDataModel, checkCustomInputs } from '@/utils/ValidationUtils';
+import {
+  checkIfAllUploadedReportsAreReferencedInDataModel,
+  checkCustomInputs,
+  validatePageNumber,
+  PAGE_NUMBER_VALIDATION_ERROR_MESSAGE,
+} from '@/utils/ValidationUtils';
 import { getHyphenatedDate } from '@/utils/DataFormatUtils';
 import {
   euTaxonomyKpiInfoMappings,
@@ -350,6 +359,7 @@ import {
   type DocumentToUpload,
   getAvailableFileNames,
   getFileReferenceByFileName,
+  PAGE_NUMBER_DESCRIPTION,
 } from '@/utils/FileUploadUtils';
 import { isValidFileName, noReportLabel } from '@/utils/DataSource';
 import SingleSelectFormElement from '@/components/forms/parts/elements/basic/SingleSelectFormElement.vue';
@@ -383,6 +393,9 @@ export default defineComponent({
   emits: ['datasetCreated'],
   data() {
     return {
+      pageNumberDescription: PAGE_NUMBER_DESCRIPTION,
+      pageForFileReference: undefined as string | undefined,
+      pageNumberValidationErrorMessage: PAGE_NUMBER_VALIDATION_ERROR_MESSAGE,
       isMounted: false,
       formId: 'createEuTaxonomyForFinancialsForm',
       formInputsModel: {} as CompanyAssociatedDataEuTaxonomyDataForFinancials,
@@ -402,8 +415,6 @@ export default defineComponent({
       waitingForData: false,
       editMode: false,
       noReportLabel: noReportLabel,
-      reportPageNumber: undefined as string | undefined,
-
       postEuTaxonomyDataForFinancialsProcessed: false,
       messageCount: 0,
       postEuTaxonomyDataForFinancialsResponse: null as AxiosResponse<DataMetaInformation> | null,
@@ -499,6 +510,7 @@ export default defineComponent({
   },
 
   methods: {
+    validatePageNumber,
     /**
      * Loads the Dataset by the provided dataId and pre-configures the form to contain the data
      * from the dataset

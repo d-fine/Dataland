@@ -159,7 +159,7 @@ import UploadFormHeader from '@/components/forms/parts/elements/basic/UploadForm
 import { FormKit } from '@formkit/vue';
 import { QualityOptions } from '@clients/backend';
 import DataPointHeader from '@/components/forms/parts/kpiSelection/DataPointHeader.vue';
-import { getAvailableFileNames, getFileReferenceByFileName } from '@/utils/FileUploadUtils';
+import { getAvailableFileNames, getFileReferenceByFileName, PAGE_NUMBER_DESCRIPTION } from '@/utils/FileUploadUtils';
 import { isValidFileName, noReportLabel } from '@/utils/DataSource';
 import SingleSelectFormElement from '@/components/forms/parts/elements/basic/SingleSelectFormElement.vue';
 import { humanizeStringOrNumber } from '@/utils/StringFormatter';
@@ -170,6 +170,7 @@ export default defineComponent({
   components: { SingleSelectFormElement, DataPointHeader, UploadFormHeader, FormKit, InputSwitch },
   emits: ['dataPointAvailableToggle'],
   data: () => ({
+    pageNumberDescription: PAGE_NUMBER_DESCRIPTION,
     pageNumberValidationErrorMessage: PAGE_NUMBER_VALIDATION_ERROR_MESSAGE,
     pageForFileReference: undefined as string | undefined,
     isMounted: false,
