@@ -134,11 +134,11 @@ export function getFileReferenceByFileName(
 }
 
 /**
- * Retrieves the all fileNames of the map
- * @param injectReportsNameAndReferences map from which the fileNames should be retrieved
- * @returns fileNames of all entries in the map
+ * Retrieves all names of currently referencable files on the upload page.
+ * @param injectReportsNameAndReferences map of file names to their respective file references (which are hashes)
+ * @returns the file names as list
  */
-export function getFileName(injectReportsNameAndReferences: ObjectType): string[] {
+export function getAvailableFileNames(injectReportsNameAndReferences: ObjectType): string[] {
   if (injectReportsNameAndReferences) {
     return Object.keys(injectReportsNameAndReferences);
   } else {

@@ -345,7 +345,12 @@ import { type FormKitNode } from '@formkit/core';
 import UploadReports from '@/components/forms/parts/UploadReports.vue';
 import { formatAxiosErrorMessage } from '@/utils/AxiosErrorMessageFormatter';
 import DataPointFormWithToggle from '@/components/forms/parts/kpiSelection/DataPointFormWithToggle.vue';
-import { uploadFiles, type DocumentToUpload, getFileName, getFileReferenceByFileName } from '@/utils/FileUploadUtils';
+import {
+  uploadFiles,
+  type DocumentToUpload,
+  getAvailableFileNames,
+  getFileReferenceByFileName,
+} from '@/utils/FileUploadUtils';
 import { isValidFileName, noReportLabel } from '@/utils/DataSource';
 import SingleSelectFormElement from '@/components/forms/parts/elements/basic/SingleSelectFormElement.vue';
 import { type ClickableLink } from '@/types/CustomPropTypes';
@@ -456,7 +461,7 @@ export default defineComponent({
       return 0;
     },
     namesOfAllCompanyReportsForTheDataset(): string[] {
-      return getFileName(this.namesAndReferencesOfAllCompanyReportsForTheDataset);
+      return getAvailableFileNames(this.namesAndReferencesOfAllCompanyReportsForTheDataset);
     },
     fileReferenceAccordingToName(): string {
       return getFileReferenceByFileName(

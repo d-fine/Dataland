@@ -137,7 +137,7 @@ import { FormKit } from '@formkit/vue';
 import { QualityOptions } from '@clients/backend';
 import { FormFieldPropsWithPlaceholder } from '@/components/forms/parts/fields/FormFieldProps';
 import { type ObjectType } from '@/utils/UpdateObjectUtils';
-import { getFileName, getFileReferenceByFileName } from '@/utils/FileUploadUtils';
+import { getAvailableFileNames, getFileReferenceByFileName } from '@/utils/FileUploadUtils';
 import { disabledOnMoreThanOne } from '@/utils/FormKitPlugins';
 import { type ExtendedDataPoint } from '@/utils/DataPoint';
 import { isValidFileName, noReportLabel } from '@/utils/DataSource';
@@ -192,7 +192,7 @@ export default defineComponent({
       return this.qualityOptions;
     },
     reportOptions(): DropdownOption[] {
-      const plainOptions = [noReportLabel, ...getFileName(this.injectReportsNameAndReferences as ObjectType)];
+      const plainOptions = [noReportLabel, ...getAvailableFileNames(this.injectReportsNameAndReferences as ObjectType)];
       return plainOptions.map((it) => ({ value: it, label: it }));
     },
     fileReferenceAccordingToName(): string {

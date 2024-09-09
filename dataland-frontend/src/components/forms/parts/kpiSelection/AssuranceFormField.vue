@@ -94,7 +94,7 @@ import {
 import { humanizeStringOrNumber } from '@/utils/StringFormatter';
 import { AssuranceDataPointValueEnum } from '@clients/backend';
 import { type ObjectType } from '@/utils/UpdateObjectUtils';
-import { getFileName, getFileReferenceByFileName } from '@/utils/FileUploadUtils';
+import { getAvailableFileNames, getFileReferenceByFileName } from '@/utils/FileUploadUtils';
 import { isValidFileName, noReportLabel } from '@/utils/DataSource';
 import SingleSelectFormField from '@/components/forms/parts/fields/SingleSelectFormField.vue';
 
@@ -132,7 +132,7 @@ export default defineComponent({
   },
   computed: {
     reportsName(): string[] {
-      return getFileName(this.injectReportsNameAndReferences);
+      return getAvailableFileNames(this.injectReportsNameAndReferences);
     },
     fileReferenceAccordingToName(): string {
       return getFileReferenceByFileName(this.currentReportValue, this.injectReportsNameAndReferences);

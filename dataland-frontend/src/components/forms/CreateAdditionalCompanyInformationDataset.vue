@@ -147,7 +147,7 @@ import SubmitSideBar from '@/components/forms/parts/SubmitSideBar.vue';
 import UploadReports from '@/components/forms/parts/UploadReports.vue';
 import { objectDropNull, type ObjectType } from '@/utils/UpdateObjectUtils';
 import { smoothScroll } from '@/utils/SmoothScroll';
-import { type DocumentToUpload, getFileName, uploadFiles } from '@/utils/FileUploadUtils';
+import { type DocumentToUpload, getAvailableFileNames, uploadFiles } from '@/utils/FileUploadUtils';
 import { type FrameworkData, type Subcategory } from '@/utils/GenericFrameworkTypes';
 import { createSubcategoryVisibilityMap } from '@/utils/UploadFormUtils';
 import { formatAxiosErrorMessage } from '@/utils/AxiosErrorMessageFormatter';
@@ -218,7 +218,7 @@ export default defineComponent({
       return 0;
     },
     namesOfAllCompanyReportsForTheDataset(): string[] {
-      return getFileName(this.namesAndReferencesOfAllCompanyReportsForTheDataset);
+      return getAvailableFileNames(this.namesAndReferencesOfAllCompanyReportsForTheDataset);
     },
     subcategoryVisibility(): Map<Subcategory, boolean> {
       return createSubcategoryVisibilityMap(

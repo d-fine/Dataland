@@ -150,7 +150,7 @@ import DateFormField from '@/components/forms/parts/fields/DateFormField.vue';
 import SingleSelectFormField from '@/components/forms/parts/fields/SingleSelectFormField.vue';
 import BigDecimalExtendedDataPointFormField from '@/components/forms/parts/fields/BigDecimalExtendedDataPointFormField.vue';
 import NaceCodeFormField from '@/components/forms/parts/fields/NaceCodeFormField.vue';
-import { type DocumentToUpload, getFileName } from '@/utils/FileUploadUtils';
+import { type DocumentToUpload, getAvailableFileNames } from '@/utils/FileUploadUtils';
 import { type ObjectType } from '@/utils/UpdateObjectUtils';
 import { formatAxiosErrorMessage } from '@/utils/AxiosErrorMessageFormatter';
 import { getBasePrivateFrameworkDefinition } from '@/frameworks/BasePrivateFrameworkRegistry';
@@ -231,7 +231,7 @@ export default defineComponent({
       return createSubcategoryVisibilityMap(this.vsmeUploadConfig, this.companyAssociatedVsmeData.data);
     },
     namesOfAllCompanyReportsForTheDataset(): string[] {
-      return getFileName(this.namesAndReferencesOfAllCompanyReportsForTheDataset);
+      return getAvailableFileNames(this.namesAndReferencesOfAllCompanyReportsForTheDataset);
     },
   },
   props: {
