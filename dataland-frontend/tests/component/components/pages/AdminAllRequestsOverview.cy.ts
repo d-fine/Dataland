@@ -11,7 +11,7 @@ describe('Component test for the admin-requests-overview page', () => {
   let mockRequests: ExtendedStoredDataRequest[];
 
   /**
-   * Generates one ExtendedStoredDataRequest type object
+   * Generates one ExtendedStoredDataRequest type objec
    * @param userEmailAddress of the requesting user
    * @param framework for which data has been requested
    * @param requestStatus of the data request
