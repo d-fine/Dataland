@@ -17,6 +17,7 @@ class V23__MigratePageZeroToNull : BaseJavaMigration() {
         "eutaxonomy-non-financials",
         "eutaxonomy-financials",
         "sfdr",
+        "additional-company-information",
     )
 
     private val logger = LoggerFactory.getLogger("Migration V23")
