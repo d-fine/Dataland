@@ -7,10 +7,12 @@ import org.flywaydb.core.api.migration.Context
 import org.json.JSONObject
 
 /**
- * This migration script updates all SFDR datasets where the page field is 0,
+ * This migration script updates all SFDR datasets where the page field is 0 or invalid,
  * setting the value to NULL to match the new validation rules.
  */
 class V23__MigratePageZeroToNull : BaseJavaMigration() {
+
+    private val regexPage = """^([1-9]\d*)(?:-([1-9]\d*))?$""".toRegex()
 
     override fun migrate(context: Context?) {
         migrateCompanyAssociatedDataOfDatatype(
@@ -21,7 +23,7 @@ class V23__MigratePageZeroToNull : BaseJavaMigration() {
     }
 
     /**
-     * Migrates sfdr data by setting 'page' values of 0 to NULL.
+     * Migrates SFDR data by setting 'page' values of 0 or invalid formats to NULL.
      */
     fun migratePageFields(dataTableEntity: DataTableEntity) {
         val dataset = dataTableEntity.dataJsonObject
@@ -33,8 +35,16 @@ class V23__MigratePageZeroToNull : BaseJavaMigration() {
 
                 if (value is JSONObject) {
                     updatePageFields(value)
-                } else if (key == "page" && value == 0) {
-                    jsonObject.put(key, JSONObject.NULL) // Set page value of 0 to NULL
+                } else if (key == "page" && value is String) {
+                    if (!regexPage.matches(value)) {
+                        jsonObject.put(key, JSONObject.NULL) // Set invalid page to NULL
+                    }
+                } else if (key == "page" && value is Int) {
+                    if (value <= 0) {
+                        jsonObject.put(key, JSONObject.NULL) // Set page values <= 0 to NULL
+                    } else {
+                        jsonObject.put(key, value.toString()) // Convert valid page number to string
+                    }
                 }
             }
         }
