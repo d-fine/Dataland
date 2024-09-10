@@ -15,7 +15,7 @@ import kotlin.reflect.KClass
 annotation class PageRange(
     val message: String = """
 Valid inputs are a positive number or a range of two ascending positive numbers separated by "-". The numbers must not 
-begin with a zero. Valid examples are "2" are "13-15".
+begin with a zero. Valid examples are "2" or "13-15".
 """,
     val groups: Array<KClass<*>> = [],
     val payload: Array<KClass<out Payload>> = [],
