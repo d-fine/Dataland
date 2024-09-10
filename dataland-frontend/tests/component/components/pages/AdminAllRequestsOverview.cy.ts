@@ -209,7 +209,7 @@ describe('Component test for the admin-requests-overview page', () => {
     cy.intercept('**/community/requests/numberOfRequests', expectedNumberOfRequests.toString()).as(
       'fetchInitialUnfilteredNumberOfRequests'
     );
-    cy.get('[data-test=reset-filter]').click();
+    cy.get(`[data-test=reset-filter]`).click();
 
     assertNumberOfSearchResults(expectedNumberOfRequests);
     assertEmailAddressExistsInSearchResults(mailAlpha);
