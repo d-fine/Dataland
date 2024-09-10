@@ -9,8 +9,8 @@ class V23__MigratePageZeroToNullTest {
     fun `check migration script for page set to null where page is 0`() {
         TestUtils().testMigrationOfSingleDataset(
             "sfdr",
-            "V23/originalSfdrOne.json",
-            "V23/expectedSfdrOne.json",
+            "V23/euTaxonomyFinancialsOriginal.json",
+            "V23/euTaxonomyFinancialsExpected.json",
             { dataTableEntity -> V23__MigratePageZeroToNull().migratePageFields(dataTableEntity, "sfdr") },
         )
     }
@@ -19,8 +19,8 @@ class V23__MigratePageZeroToNullTest {
     fun `check migration script for multiple page values set to null`() {
         TestUtils().testMigrationOfSingleDataset(
             "sfdr",
-            "V23/originalSfdrMultiple.json",
-            "V23/expectedSfdrMultiple.json",
+            "V23/additionalCompanyInformationOriginal.json",
+            "V23/additionalCompanyInformationExpected.json",
             { dataTableEntity -> V23__MigratePageZeroToNull().migratePageFields(dataTableEntity, "sfdr") },
         )
     }
@@ -29,8 +29,8 @@ class V23__MigratePageZeroToNullTest {
     fun `check migration script for nested page field`() {
         TestUtils().testMigrationOfSingleDataset(
             "sfdr",
-            "V23/originalSfdrNested.json",
-            "V23/expectedSfdrNested.json",
+            "V23/euTaxonomyNonFinancialsOriginal.json",
+            "V23/euTaxonomyNonFinancialsExpected.json",
             { dataTableEntity -> V23__MigratePageZeroToNull().migratePageFields(dataTableEntity, "sfdr") },
         )
     }
@@ -39,8 +39,8 @@ class V23__MigratePageZeroToNullTest {
     fun `check migration script for invalid page ranges`() {
         TestUtils().testMigrationOfSingleDataset(
             "sfdr",
-            "V23/originalSfdrInvalidRanges.json",
-            "V23/expectedSfdrInvalidRanges.json",
+            "V23/sfdrOriginal.json",
+            "V23/sfdrExpected.json",
             { dataTableEntity -> V23__MigratePageZeroToNull().migratePageFields(dataTableEntity, "sfdr") },
         )
     }

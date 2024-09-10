@@ -1,0 +1,100 @@
+{
+  "companyId": "c7cc80a3-4413-4db5-a05a-8c55d8bb46af",
+  "dataType": "additional-company-information",
+  "uploaderUserId": "bfb57e96-f218-4878-9a99-007d5fd2f78b",
+  "uploadTime": 1725598101794,
+  "reportingPeriod": "2022",
+  "data": {
+    "financialServicesTypes": ["CreditInstitution"],
+    "eligibilityKpis": {
+      "CreditInstitution": {
+        "taxonomyEligibleActivityInPercent": {
+          "value": null,
+          "quality": null,
+          "comment": null,
+          "dataSource": null
+        },
+        "taxonomyNonEligibleActivityInPercent": {
+          "value": null,
+          "quality": null,
+          "comment": null,
+          "dataSource": null
+        },
+        "derivativesInPercent": {
+          "value": null,
+          "quality": null,
+          "comment": null,
+          "dataSource": null
+        },
+        "banksAndIssuersInPercent": {
+          "value": null,
+          "quality": null,
+          "comment": null,
+          "dataSource": null
+        },
+        "investmentNonNfrdInPercent": {
+          "value": null,
+          "quality": null,
+          "comment": null,
+          "dataSource": null
+        }
+      }
+    },
+    "creditInstitutionKpis": {
+      "tradingPortfolioInPercent": {
+        "value": null,
+        "quality": null,
+        "comment": null,
+        "dataSource": null
+      },
+      "interbankLoansInPercent": {
+        "value": null,
+        "quality": null,
+        "comment": null,
+        "dataSource": null
+      },
+      "tradingPortfolioAndInterbankLoansInPercent": {
+        "value": null,
+        "quality": null,
+        "comment": null,
+        "dataSource": null
+      },
+      "greenAssetRatioInPercent": {
+        "value": 0.16,
+        "quality": "Reported",
+        "comment": null,
+        "dataSource": {
+          "page": null,
+          "tagName": null,
+          "fileName": "240430_Nichtfinanzieller Bericht IKB 2023",
+          "fileReference": "2fb7896acec95a0c08132e71a07293e2bb2ac42b742d06516e0bd975ea40db60"
+        }
+      }
+    },
+    "investmentFirmKpis": null,
+    "insuranceKpis": null,
+    "fiscalYearDeviation": "NoDeviation",
+    "fiscalYearEnd": "2023-12-31",
+    "scopeOfEntities": "Yes",
+    "nfrdMandatory": "Yes",
+    "euTaxonomyActivityLevelReporting": "No",
+    "assurance": {
+      "value": "None",
+      "dataSource": {
+        "page": "6",
+        "tagName": null,
+        "fileName": "240430_Nichtfinanzieller Bericht IKB 2023",
+        "fileReference": "2fb7896acec95a0c08132e71a07293e2bb2ac42b742d06516e0bd975ea40db60"
+      },
+      "provider": null
+    },
+    "numberOfEmployees": 568,
+    "referencedReports": {
+      "240430_Nichtfinanzieller Bericht IKB 2023": {
+        "fileReference": "2fb7896acec95a0c08132e71a07293e2bb2ac42b742d06516e0bd975ea40db60",
+        "fileName": null,
+        "publicationDate": null
+      }
+    }
+  }
+}

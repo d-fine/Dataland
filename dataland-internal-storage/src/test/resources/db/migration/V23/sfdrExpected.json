@@ -1,0 +1,48 @@
+{
+  "companyId": "38110e22-143d-49d2-b314-f747dc2e340f",
+  "dataType": "sfdr",
+  "uploaderUserId": "7944c764-02fb-4db0-a99f-66320e3e36d6",
+  "uploadTime": 1725041997319,
+  "reportingPeriod": "2023",
+  "data": {
+    "general": {
+      "general": {
+        "dataDate": "2024-02-27",
+        "fiscalYearDeviation": "Deviation",
+        "fiscalYearEnd": "2023-12-31",
+        "referencedReports": {
+          "FBIN-2023-Code-of-Conduct.pdf": {
+            "fileReference": "37ea7907edafeb8f53ee1e970a12f2d042d04d39fa274121d95f55c57867fc9c",
+            "fileName": "FBIN-2023-Code-of-Conduct.pdf",
+            "publicationDate": null,
+            "page": "15"
+          },
+          "FBIN-Whistleblower-Policy.pdf": {
+            "fileReference": "34ab228b954a85e1304b53369b458079d08556bc528b5c2aceae37b6e43cbc00",
+            "fileName": "FBIN-Whistleblower-Policy.pdf",
+            "publicationDate": null,
+            "page": "17"
+          },
+          "2023 FBIN Annual Report.pdf": {
+            "fileReference": "530181316ef6f3430de3f863c838f4bf0c93ac255bea936965b4ffd64a3a7c18",
+            "fileName": "2023 FBIN Annual Report.pdf",
+            "publicationDate": null,
+            "page": "71"
+          },
+          "2023_FBIN_ESG_Report_Final.pdf": {
+            "fileReference": "5b67c28e69a7f6d5e17279cb466fb5f59bf4819111f147610a6fd453c5da1e8e",
+            "fileName": "2023_FBIN_ESG_Report_Final.pdf",
+            "publicationDate": null,
+            "page": "65"
+          },
+          "FBIN-Human-Rights-Policy.pdf": {
+            "fileReference": "ea8325932dbe5fa0765843f2ee3e0aebe63b2ea5d638c8992832cd9f3791e6f4",
+            "fileName": "FBIN-Human-Rights-Policy.pdf",
+            "publicationDate": null,
+            "page": "59"
+          }
+        }
+      }
+    }
+  }
+}
