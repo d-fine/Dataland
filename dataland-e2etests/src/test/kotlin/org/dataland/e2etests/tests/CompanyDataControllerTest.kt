@@ -223,7 +223,13 @@ class CompanyDataControllerTest {
             emptyList(),
         )
         assertEquals(
-            expectedStoredCompany,
+            expectedStoredCompany.copy(
+                companyInformation = expectedStoredCompany
+                    .companyInformation.copy(
+                        companyContactDetails = expectedStoredCompany
+                            .companyInformation.companyContactDetails?.sorted(),
+                    ),
+            ),
             apiAccessor.companyDataControllerApi.getCompanyById(uploadInfo.actualStoredCompany.companyId),
             "Dataland does not contain the posted company.",
         )
@@ -260,7 +266,13 @@ class CompanyDataControllerTest {
             dataRegisteredByDataland = emptyList(),
         )
         assertEquals(
-            expectedStoredTeaserCompany,
+            expectedStoredTeaserCompany.copy(
+                companyInformation = expectedStoredTeaserCompany
+                    .companyInformation.copy(
+                        companyContactDetails = expectedStoredTeaserCompany
+                            .companyInformation.companyContactDetails?.sorted(),
+                    ),
+            ),
             getCompanyByIdResponse,
             "The posted company does not equal the teaser company.",
         )
@@ -415,7 +427,10 @@ class CompanyDataControllerTest {
         apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader)
         val expectedCompanyInformation = uploadInfo.inputCompanyInformation
         assertEquals(
-            expectedCompanyInformation,
+            expectedCompanyInformation.copy(
+                companyContactDetails = expectedCompanyInformation
+                    .companyContactDetails?.sorted(),
+            ),
             apiAccessor.companyDataControllerApi.getCompanyInfo(uploadInfo.actualStoredCompany.companyId),
             "Dataland does not contain the posted company.",
         )
@@ -492,7 +507,7 @@ class CompanyDataControllerTest {
 
         val companyAfterAttempt = apiAccessor.companyDataControllerApi.getCompanyById(companyId)
         assertEquals(
-            originalCompany.companyInformation.companyContactDetails,
+            originalCompany.companyInformation.companyContactDetails?.sorted(),
             companyAfterAttempt.companyInformation.companyContactDetails,
             "The company contact details should not have been updated",
         )
@@ -514,7 +529,7 @@ class CompanyDataControllerTest {
 
         val companyAfterAttempt = apiAccessor.companyDataControllerApi.getCompanyById(companyId)
         assertEquals(
-            originalCompany.companyInformation.companyContactDetails,
+            originalCompany.companyInformation.companyContactDetails?.sorted(),
             companyAfterAttempt.companyInformation.companyContactDetails,
             "The company contact details should not have been updated",
         )
