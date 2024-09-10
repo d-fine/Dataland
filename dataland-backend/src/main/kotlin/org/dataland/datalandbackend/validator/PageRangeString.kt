@@ -31,20 +31,20 @@ class PageRangeValidator : ConstraintValidator<PageRange, String> {
         // No initialization needed
     }
     override fun isValid(value: String?, context: ConstraintValidatorContext?): Boolean {
-        if (value == null) return true // Consider null as valid
+        if (value == null) return true
 
         val matchResult = regexPage.matchEntire(value)
         return if (matchResult != null) {
             val (a, b) = matchResult.destructured
             if (b.isEmpty()) {
-                true // Valid single page number
+                true
             } else {
                 val pageA = a.toInt()
                 val pageB = b.toInt()
-                pageA < pageB // A and B must be >= 1 and A < B
+                pageA < pageB
             }
         } else {
-            false // Invalid format
+            false
         }
     }
 }
