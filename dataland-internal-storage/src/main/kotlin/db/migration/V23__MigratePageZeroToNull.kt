@@ -8,8 +8,8 @@ import org.json.JSONObject
 import org.slf4j.LoggerFactory
 
 /**
- * This migration script updates all datasets where the page field smaller equal 0,
- * setting the value to NULL to match the new validation rules.
+ * This migration script updates all datasets where the page field is smaller or equal to 0,
+ * setting the value to NULL. It also converts valid page integers into strings.
  */
 class V23__MigratePageZeroToNull : BaseJavaMigration() {
 
@@ -34,6 +34,7 @@ class V23__MigratePageZeroToNull : BaseJavaMigration() {
     /**
      * Migrates the page fields in the given `DataTableEntity` to match the new validation rules.
      * If a page field has a value less than or equal to 0, it sets the value to NULL.
+     * Valid integer page values are converted to strings.
      *
      * @param dataTableEntity The entity containing the dataset to be migrated.
      * @param framework The framework name associated with the dataset.
@@ -51,6 +52,8 @@ class V23__MigratePageZeroToNull : BaseJavaMigration() {
                                 dataTableEntity.dataId,
                         )
                         jsonObject.put(key, JSONObject.NULL)
+                    } else {
+                        jsonObject.put(key, value.toString())
                     }
                 } else if (jsonObject.opt(key) is JSONObject) {
                     updatePageFields(jsonObject.getJSONObject(key))
