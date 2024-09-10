@@ -157,23 +157,28 @@ export default defineComponent({
     },
   },
   mounted() {
-    void this.getCompanyInformation();
-    void this.setCompanyOwnershipStatus();
-    void this.updateHasCompanyOwner();
+    this.updateBanner();
   },
   watch: {
-    async companyId(newCompanyId) {
+    async companyId() {
+      await this.updateBanner();
+    },
+  },
+  methods: {
+    /**
+     * A complete update of all data-based UI elements of the banner
+     */
+    async updateBanner() {
       try {
-        void this.setCompanyOwnershipStatus();
         void this.getCompanyInformation();
-        this.hasCompanyOwner = await hasCompanyAtLeastOneCompanyOwner(newCompanyId as string, this.getKeycloakPromise);
+        void this.setCompanyOwnershipStatus();
+        void this.updateHasCompanyOwner();
         this.claimIsSubmitted = false;
       } catch (error) {
         console.error('Error fetching data for new company:', error);
       }
     },
-  },
-  methods: {
+
     /**
      * triggers route push to parent company if the parent company exists
      * @returns route push
