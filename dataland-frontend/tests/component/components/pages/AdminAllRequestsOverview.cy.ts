@@ -200,6 +200,22 @@ describe('Component test for the admin-requests-overview page', () => {
     assertEmailAddressExistsInSearchResults(mailDelta);
   }
 
+  /**
+   * Removes the combined filter via resetButton and checks if all requests are shown again
+   */
+  function validateResetButton(): void {
+    const expectedNumberOfRequests = mockRequests.length;
+    cy.intercept('**/community/requests?chunkSize=100&chunkIndex=0', mockRequests).as('fetchInitialUnfilteredRequests');
+    cy.intercept('**/community/requests/numberOfRequests', expectedNumberOfRequests.toString()).as(
+      'fetchInitialUnfilteredNumberOfRequests'
+    );
+    cy.get('[data-test=reset-filter]').click();
+
+    assertNumberOfSearchResults(expectedNumberOfRequests);
+    assertEmailAddressExistsInSearchResults(mailAlpha);
+    assertEmailAddressExistsInSearchResults(mailDelta);
+  }
+
   it('Filtering for an email address works as expected', () => {
     mountAdminAllRequestsPageWithMocks();
     validateEmailAddressFilter();
@@ -219,5 +235,11 @@ describe('Component test for the admin-requests-overview page', () => {
     mountAdminAllRequestsPageWithMocks();
     validateCombinedFilter();
     validateDeselectingCombinedFilter();
+  });
+
+  it('A combined filter works as expected and reset Button works as expected', () => {
+    mountAdminAllRequestsPageWithMocks();
+    validateCombinedFilter();
+    validateResetButton();
   });
 });
