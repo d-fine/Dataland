@@ -187,8 +187,19 @@ interface RequestApi {
     ): ResponseEntity<StoredDataRequest>
 
     /** A method for searching data requests based on filters.
+     * @param dataType If set, only the requests with a data type in dataType are returned
+     * @param userId If set, only the requests from this user are returned
+     * @param emailAddress If set, only the requests from users which email address partially matches emailAddress are
+     *  returned
+     * @param requestStatus If set, only the requests with a request status in requestStatus are returned
+     * @param accessStatus If set, only the requests with an access status in accessStatus are returned
+     * @param reportingPeriod If set, only the requests with this reportingPeriod are returned
+     * @param datalandCompanyId If set, only the requests for this company are returned
+     * @param chunkSize Limits the number of returned requests
+     * @param chunkIndex The index of the chunked requests
      * @return all filtered data requests in a list
      */
+    @Suppress("LongParameterList")
     @Operation(
         summary = "Get all stored data requests based on filters.",
         description = "Gets all the stored data request based on filters.",
@@ -206,15 +217,54 @@ interface RequestApi {
             "@SecurityUtilsService.isUserCompanyOwnerForCompanyId(#datalandCompanyId)",
     )
     fun getDataRequests(
-        @RequestParam dataType: DataTypeEnum?,
+        @RequestParam dataType: Set<DataTypeEnum>?,
         @RequestParam userId: String?,
-        @RequestParam requestStatus: RequestStatus?,
-        @RequestParam accessStatus: AccessStatus?,
+        @RequestParam emailAddress: String?,
+        @RequestParam requestStatus: Set<RequestStatus>?,
+        @RequestParam accessStatus: Set<AccessStatus>?,
         @RequestParam reportingPeriod: String?,
         @RequestParam datalandCompanyId: String?,
         @RequestParam(defaultValue = "100") chunkSize: Int,
         @RequestParam(defaultValue = "0") chunkIndex: Int,
     ): ResponseEntity<List<ExtendedStoredDataRequest>>
+
+    /** A method to count data requests based on specific filters.
+     * @param dataType If set, only the requests with a data type in dataType are counted
+     * @param userId If set, only the requests from this user are counted
+     * @param emailAddress If set, only the requests from users which email address partially matches emailAddress are
+     *  counted
+     * @param requestStatus If set, only the requests with a request status in requestStatus are counted
+     * @param accessStatus If set, only the requests with an access status in accessStatus are counted
+     * @param reportingPeriod If set, only the requests with this reportingPeriod are counted
+     * @param datalandCompanyId If set, only the requests for this company are counted
+     * @return The number of requests that match the filter
+     */
+    @Operation(
+        summary = "Get the number of requests based on filters.",
+        description = "Get the number of requests based on filters.",
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "200", description = "TODO."),
+        ],
+    )
+    @GetMapping(
+        value = ["/numberOfRequests"],
+        produces = ["application/json"],
+    )
+    @PreAuthorize(
+        "hasRole('ROLE_ADMIN') or" +
+            "@SecurityUtilsService.isUserCompanyOwnerForCompanyId(#datalandCompanyId)",
+    )
+    fun getNumberOfRequests(
+        @RequestParam dataType: Set<DataTypeEnum>?,
+        @RequestParam userId: String?,
+        @RequestParam emailAddress: String?,
+        @RequestParam requestStatus: Set<RequestStatus>?,
+        @RequestParam accessStatus: Set<AccessStatus>?,
+        @RequestParam reportingPeriod: String?,
+        @RequestParam datalandCompanyId: String?,
+    ): ResponseEntity<Int>
 
     /**
      * A method to check if the logged-in user can access a specific dataset.

@@ -23,19 +23,28 @@ class TemporaryTables private constructor() {
             "FROM data_requests d " +
             "JOIN status_table ON status_table.request_id = d.data_request_id " +
             "WHERE " +
-            "(:#{#searchFilter.dataTypeFilterLength} = 0 " +
-            "OR d.data_type = :#{#searchFilter.dataTypeFilter}) AND " +
-            "(:#{#searchFilter.userIdFilterLength} = 0 " +
-            "OR d.user_Id = :#{#searchFilter.userIdFilter}) AND " +
-            "(:#{#searchFilter.requestStatusLength} = 0 " +
-            "OR status_table.request_status = :#{#searchFilter.requestStatus} ) AND " +
-            "(:#{#searchFilter.accessStatusLength} = 0 " +
-            "OR status_table.access_status = :#{#searchFilter.accessStatus}  ) AND " +
-            "(:#{#searchFilter.reportingPeriodFilterLength} = 0 " +
-            "OR d.reporting_period = :#{#searchFilter.reportingPeriodFilter}) AND " +
-            "(:#{#searchFilter.datalandCompanyIdFilterLength} = 0 " +
-            "OR d.dataland_company_id = :#{#searchFilter.datalandCompanyIdFilter}) " +
-            "ORDER BY d.data_request_id ASC " +
-            "LIMIT :#{#resultLimit} OFFSET :#{#resultOffset}) "
+            "(:#{#searchFilter.shouldFilterByDataType} = false " +
+            "OR d.data_type IN :#{#searchFilter.preparedDataType}) AND " +
+            "(:#{#searchFilter.shouldFilterByUserId} = false " +
+            "OR d.user_Id = :#{#searchFilter.preparedUserId}) AND " +
+            "(:#{#searchFilter.shouldFilterByEmailAddress} = false " +
+            "OR d.user_Id IN :#{#searchFilter.preparedUserIdsMatchingEmailAddress}) AND " +
+            "(:#{#searchFilter.shouldFilterByRequestStatus} = false " +
+            "OR status_table.request_status IN :#{#searchFilter.preparedRequestStatus} ) AND " +
+            "(:#{#searchFilter.shouldFilterByAccessStatus} = false " +
+            "OR status_table.access_status IN :#{#searchFilter.preparedAccessStatus}  ) AND " +
+            "(:#{#searchFilter.shouldFilterByReportingPeriod} = false " +
+            "OR d.reporting_period = :#{#searchFilter.preparedReportingPeriod}) AND " +
+            "(:#{#searchFilter.shouldFilterByDatalandCompanyId} = false " +
+            "OR d.dataland_company_id = :#{#searchFilter.preparedDatalandCompanyId}) "
+
+        // Append this clause at the end of TABLE_FILTERED to limit, offset and order the requests.
+        const val TABLE_FILTERED_ORDER_AND_LIMIT = "ORDER BY " +
+            "d.creation_timestamp DESC, d.dataland_company_id ASC, d.reporting_period DESC, " +
+            "status_table.request_status ASC " +
+            "LIMIT :#{#resultLimit} OFFSET :#{#resultOffset}"
+
+        // Append this after the TABLE_FILTERED query
+        const val TABLE_FILTERED_END = ") "
     }
 }

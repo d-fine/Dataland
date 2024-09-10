@@ -25,7 +25,7 @@ const CompanyDataRequestsOverview = (): Promise<RouteComponent> =>
 const UploadFormWrapper = (): Promise<RouteComponent> => import('@/components/pages/UploadFormWrapper.vue');
 const ChooseCompanyForFrameworkDataUpload = (): Promise<RouteComponent> =>
   import('@/components/pages/ChooseCompanyForFrameworkDataUpload.vue');
-
+const AdminRequestsOverview = (): Promise<RouteComponent> => import('@/components/pages/AdminAllRequestsOverview.vue');
 const ViewTeaserCompanyData = (): Promise<RouteComponent> => import('@/components/pages/ViewTeaserCompanyData.vue');
 const ChooseFrameworkForDataUpload = (): Promise<RouteComponent> =>
   import('@/components/pages/ChooseFrameworkForDataUpload.vue');
@@ -91,6 +91,11 @@ const routes = [
     props: true,
     name: 'Company framework data for specific reporting period',
     component: ViewFrameworkData,
+  },
+  {
+    path: '/requestoverview',
+    name: 'Admin overview for all requests',
+    component: AdminRequestsOverview,
   },
   {
     path: `/qualityassurance`,
