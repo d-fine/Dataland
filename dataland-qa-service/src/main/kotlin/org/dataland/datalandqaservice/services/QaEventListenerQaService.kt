@@ -44,6 +44,9 @@ class QaEventListenerQaService(
     private val reviewerIdAutomatedQaService = "automated-qa-service"
     private data class ForwardedQaMessage(
         val identifier: String,
+        val companyName: String,
+        val framework: String,
+        val reportingPeriod: String,
         val comment: String,
     )
     private data class PersistAutomatedQaResultMessage(
@@ -85,20 +88,32 @@ class QaEventListenerQaService(
         messageUtils.validateMessageType(type, MessageType.ManualQaRequested)
         val message = objectMapper.readValue(messageAsJsonString, ForwardedQaMessage::class.java)
         val dataId = message.identifier
+        val companyName = message.companyName
+        val framework = message.framework
+        val reportingPeriod = message.reportingPeriod
         val comment = message.comment
         if (dataId.isEmpty()) {
             throw MessageQueueRejectException("Provided data ID is empty")
         }
         messageUtils.rejectMessageOnException {
             logger.info("Received data with DataId: $dataId on QA message queue with Correlation Id: $correlationId")
-            storeDatasetAsToBeReviewed(dataId, comment)
+            storeDatasetAsToBeReviewed(dataId, companyName, framework, reportingPeriod, comment)
         }
     }
 
-    private fun storeDatasetAsToBeReviewed(dataId: String, comment: String) {
+    private fun storeDatasetAsToBeReviewed(
+        dataId: String,
+        companyName: String,
+        framework: String,
+        reportingPeriod: String,
+        comment: String,
+    ) {
         reviewQueueRepository.save(
             ReviewQueueEntity(
                 dataId = dataId,
+                companyName = companyName,
+                framework = framework,
+                reportingPeriod = reportingPeriod,
                 receptionTime = Instant.now().toEpochMilli(),
                 comment = comment,
             ),
