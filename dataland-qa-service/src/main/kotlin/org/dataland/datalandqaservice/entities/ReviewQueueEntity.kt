@@ -13,6 +13,9 @@ import jakarta.persistence.Table
 data class ReviewQueueEntity(
     @Id
     val dataId: String,
+    val companyName: String,
+    val framework: String,
+    val reportingPeriod: String,
     val receptionTime: Long,
     @Column(columnDefinition = "TEXT")
     val comment: String?,
