@@ -5,9 +5,7 @@
         <tbody class="p-datatable-body">
           <tr
             v-if="
-              dialogData.dataPointDisplay.value &&
-              dialogData.dataPointDisplay.value != ONLY_AUXILIARY_DATA_PROVIDED() &&
-              !isQuality(dialogData.dataPointDisplay.value)
+              dialogData.dataPointDisplay.value && dialogData.dataPointDisplay.value != ONLY_AUXILIARY_DATA_PROVIDED()
             "
           >
             <th class="headers-bg width-auto"><span class="table-left-label">Value</span></th>
@@ -51,7 +49,6 @@ import { type DataPointDisplay } from '@/utils/DataPoint';
 import { ONLY_AUXILIARY_DATA_PROVIDED } from '@/utils/Constants';
 import AutoFormattingTextSpan from '@/components/general/AutoFormattingTextSpan.vue';
 import { assertDefined } from '@/utils/TypeScriptUtils';
-import { QualityOptions } from '@clients/backend';
 
 interface DataPointDataTableRefProps {
   dataPointDisplay: DataPointDisplay;
@@ -67,20 +64,6 @@ export default defineComponent({
      */
     ONLY_AUXILIARY_DATA_PROVIDED() {
       return ONLY_AUXILIARY_DATA_PROVIDED;
-    },
-    /**
-     * Checks if inputValue is a quality
-     * @param displayValue String to be shown as link
-     * @returns boolean if inputValue is a QualityOption
-     */
-    isQuality: function (displayValue: string) {
-      return [
-        QualityOptions.Audited.toString(),
-        QualityOptions.Estimated.toString(),
-        QualityOptions.Incomplete.toString(),
-        QualityOptions.Reported.toString(),
-        QualityOptions.NoDataFound.toString(),
-      ].includes(displayValue);
     },
   },
   components: { AutoFormattingTextSpan, DocumentLink },

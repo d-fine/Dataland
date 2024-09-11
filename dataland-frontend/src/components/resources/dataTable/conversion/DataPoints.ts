@@ -107,7 +107,8 @@ export function wrapDisplayValueWithDatapointInformation(
     return {
       displayComponentName: MLDTDisplayComponentName.DataPointWrapperDisplayComponent,
       displayValue: {
-        innerContents: inputValue.displayValue == '' ? getLinkDisplayString(datapointProperties) : inputValue,
+        innerContents:
+          inputValue.displayValue == '' ? formatStringForDatatable(ONLY_AUXILIARY_DATA_PROVIDED) : inputValue,
         quality: humanizeStringOrNumber(datapointProperties?.quality),
         comment: datapointProperties?.comment ?? undefined,
         dataSource: datapointProperties?.dataSource ?? undefined,
@@ -137,18 +138,4 @@ function doesAnyDataPointPropertyExist(dataPointProperties: DatapointProperties 
       dataPointProperties?.comment?.length ||
       (dataPointProperties?.dataSource && dataPointProperties?.dataSource.fileReference.trim().length > 0))
   );
-}
-
-/**
- * @param datapointProperties x
- * @returns AvailableMLDTDisplayObjectTypes
- */
-function getLinkDisplayString(
-  datapointProperties: DatapointProperties | undefined | null
-): AvailableMLDTDisplayObjectTypes {
-  if (humanizeStringOrNumber(datapointProperties?.quality) == '') {
-    return formatStringForDatatable(ONLY_AUXILIARY_DATA_PROVIDED);
-  } else {
-    return formatStringForDatatable(datapointProperties?.quality?.toString());
-  }
 }
