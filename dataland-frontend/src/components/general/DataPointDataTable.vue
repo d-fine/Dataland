@@ -33,7 +33,8 @@
           </tr>
           <tr v-if="dialogData.dataPointDisplay.comment">
             <th class="headers-bg width-auto"><span class="table-left-label">Comment</span></th>
-            <td><AutoFormattingTextSpan :text="dialogData.dataPointDisplay.comment" /></td>
+            <td v-html="commentHtml"></td>
+            <!-- Use v-html here -->
           </tr>
         </tbody>
       </table>
@@ -42,12 +43,12 @@
 </template>
 
 <script lang="ts">
+import { marked } from 'marked';
 import { defineComponent } from 'vue';
 import { type DynamicDialogInstance } from 'primevue/dynamicdialogoptions';
 import DocumentLink from '@/components/resources/frameworkDataSearch/DocumentLink.vue';
 import { type DataPointDisplay } from '@/utils/DataPoint';
 import { ONLY_AUXILIARY_DATA_PROVIDED } from '@/utils/Constants';
-import AutoFormattingTextSpan from '@/components/general/AutoFormattingTextSpan.vue';
 import { assertDefined } from '@/utils/TypeScriptUtils';
 
 interface DataPointDataTableRefProps {
@@ -66,10 +67,13 @@ export default defineComponent({
       return ONLY_AUXILIARY_DATA_PROVIDED;
     },
   },
-  components: { AutoFormattingTextSpan, DocumentLink },
+  components: { DocumentLink },
   inject: ['dialogRef'],
   name: 'DataPointDataTable',
   computed: {
+    commentHtml() {
+      return marked(this.dialogData.dataPointDisplay.comment || '');
+    },
     dialogData(): DataPointDataTableRefProps {
       return assertDefined(this.dialogRef as DynamicDialogInstance).data as DataPointDataTableRefProps;
     },
