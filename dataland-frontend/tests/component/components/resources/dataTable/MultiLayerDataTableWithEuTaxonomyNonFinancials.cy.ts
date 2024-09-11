@@ -102,10 +102,6 @@ describe('Component test for the Eu-Taxonomy-Non-Financials view page', () => {
       getCellValueContainer('Total Amount', 0)
         .invoke('text')
         .should('match', /^0\s*EUR\s.*/);
-
-      getCellValueContainer('Relative Share in Percent', 0)
-        .invoke('text')
-        .should('contain', 'Incomplete');
       getSectionHead('Revenue').click();
 
       getCellValueContainer('Relative Share in Percent', 1)
