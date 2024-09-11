@@ -54,13 +54,11 @@ export default defineComponent({
     },
     contentDisplayValue() {
       return this.hasAuxiliaryData && !this.hasValidValue
-        ? this.qualityDisplayValue
+        ? ONLY_AUXILIARY_DATA_PROVIDED
         : this.content.displayValue?.value || NO_DATA_PROVIDED;
     },
-    qualityDisplayValue() {
-      return this.content.displayValue.quality == '' ? ONLY_AUXILIARY_DATA_PROVIDED : this.content.displayValue.quality;
-    },
     convertedValueForModal() {
+      // TODO data point properties type
       const content = this.content.displayValue;
       return {
         value: content.value,
