@@ -95,7 +95,7 @@
                 name="page"
                 :validation-rules="{ validatePageNumber }"
                 validation="validatePageNumber"
-                v-model="pageForFileReference"
+                v-model="filteredPageForFileReference"
               />
             </FormKit>
           </div>
@@ -198,6 +198,15 @@ export default defineComponent({
     },
     isYesNoVariant() {
       return Object.keys(this.options).length;
+    },
+    filteredPageForFileReference: {
+      get() {
+        return this.pageForFileReference === '' ? undefined : this.pageForFileReference;
+      },
+
+      set(newValue: undefined | string) {
+        this.pageForFileReference = newValue === undefined ? '' : newValue;
+      },
     },
   },
   props: {
