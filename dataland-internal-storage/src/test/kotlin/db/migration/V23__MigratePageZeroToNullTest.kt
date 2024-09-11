@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test
 class V23__MigratePageZeroToNullTest {
 
     @Test
-    fun `check migration script for page set to null where page is 0`() {
+    fun `check migration script for eu taxonomy financials`() {
         TestUtils().testMigrationOfSingleDataset(
             "sfdr",
             "V23/euTaxonomyFinancialsOriginal.json",
@@ -16,7 +16,7 @@ class V23__MigratePageZeroToNullTest {
     }
 
     @Test
-    fun `check migration script for multiple page values set to null`() {
+    fun `check migration script for additional company information`() {
         TestUtils().testMigrationOfSingleDataset(
             "sfdr",
             "V23/additionalCompanyInformationOriginal.json",
@@ -26,7 +26,7 @@ class V23__MigratePageZeroToNullTest {
     }
 
     @Test
-    fun `check migration script for nested page field`() {
+    fun `check migration script for eu taxonomy non financials`() {
         TestUtils().testMigrationOfSingleDataset(
             "sfdr",
             "V23/euTaxonomyNonFinancialsOriginal.json",
@@ -36,7 +36,7 @@ class V23__MigratePageZeroToNullTest {
     }
 
     @Test
-    fun `check migration script for invalid page ranges`() {
+    fun `check migration script for sfdr`() {
         TestUtils().testMigrationOfSingleDataset(
             "sfdr",
             "V23/sfdrOriginal.json",

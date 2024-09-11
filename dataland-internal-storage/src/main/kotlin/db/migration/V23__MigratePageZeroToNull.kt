@@ -37,7 +37,6 @@ class V23__MigratePageZeroToNull : BaseJavaMigration() {
      * Valid integer page values are converted to strings.
      *
      * @param dataTableEntity The entity containing the dataset to be migrated.
-     * @param framework The framework name associated with the dataset.
      */
     fun migratePageFields(dataTableEntity: DataTableEntity) {
         val dataset = dataTableEntity.dataJsonObject
@@ -58,7 +57,7 @@ class V23__MigratePageZeroToNull : BaseJavaMigration() {
                                 jsonObject.put(key, JSONObject.NULL)
                             }
                         }
-                    key == "page" && value != null -> {
+                    key == "page" && value != JSONObject.NULL -> {
                         logger.info("Page field has unexpected value '$value' in dataset ${dataTableEntity.dataId}")
                         jsonObject.put(key, JSONObject.NULL)
                     }

@@ -1,100 +1,235 @@
 {
-  "companyId": "c7cc80a3-4413-4db5-a05a-8c55d8bb46af",
-  "dataType": "eutaxonomy-financials",
-  "uploaderUserId": "bfb57e96-f218-4878-9a99-007d5fd2f78b",
-  "uploadTime": 1725598101794,
-  "reportingPeriod": "2024",
-  "data": {
-    "financialServicesTypes": ["CreditInstitution"],
-    "eligibilityKpis": {
-      "CreditInstitution": {
-        "taxonomyEligibleActivityInPercent": {
-          "value": null,
-          "quality": null,
-          "comment": null,
-          "dataSource": null
-        },
-        "taxonomyNonEligibleActivityInPercent": {
-          "value": null,
-          "quality": null,
-          "comment": null,
-          "dataSource": null
-        },
-        "derivativesInPercent": {
-          "value": null,
-          "quality": null,
-          "comment": null,
-          "dataSource": null
-        },
-        "banksAndIssuersInPercent": {
-          "value": null,
-          "quality": null,
-          "comment": null,
-          "dataSource": null
-        },
-        "investmentNonNfrdInPercent": {
-          "value": null,
-          "quality": null,
-          "comment": null,
-          "dataSource": null
-        }
-      }
+  "assurance": {
+    "dataSource": {
+      "fileName": "Sustainability Report",
+      "fileReference": "83c4d065194bd46ca5afd55880243495ad2cb491219f9504eb74876303ed8f44",
+      "page": "66",
+      "tagName": null
     },
-    "creditInstitutionKpis": {
-      "tradingPortfolioInPercent": {
-        "value": null,
-        "quality": null,
-        "comment": null,
-        "dataSource": null
+    "provider": "PwC GmbH",
+    "value": "LimitedAssurance"
+  },
+  "creditInstitutionKpis": {
+    "greenAssetRatioInPercent": {
+      "comment": null,
+      "dataSource": null,
+      "quality": "Reported",
+      "value": null
+    },
+    "interbankLoansInPercent": {
+      "comment": null,
+      "dataSource": null,
+      "quality": "Reported",
+      "value": null
+    },
+    "tradingPortfolioAndInterbankLoansInPercent": {
+      "comment": null,
+      "dataSource": null,
+      "quality": "Reported",
+      "value": null
+    },
+    "tradingPortfolioInPercent": {
+      "comment": null,
+      "dataSource": {
+        "fileName": "Sustainability Report",
+        "fileReference": "83c4d065194bd46ca5afd55880243495ad2cb491219f9504eb74876303ed8f44",
+        "page": null,
+        "tagName": null
       },
-      "interbankLoansInPercent": {
-        "value": null,
-        "quality": null,
-        "comment": null,
-        "dataSource": null
-      },
-      "tradingPortfolioAndInterbankLoansInPercent": {
-        "value": null,
-        "quality": null,
-        "comment": null,
-        "dataSource": null
-      },
-      "greenAssetRatioInPercent": {
-        "value": 0.16,
-        "quality": "Reported",
+      "quality": "Reported",
+      "value": null
+    }
+  },
+  "eligibilityKpis": {
+    "AssetManagement": {
+      "banksAndIssuersInPercent": {
         "comment": null,
         "dataSource": {
-          "page": "6",
-          "tagName": null,
-          "fileName": "240430_Nichtfinanzieller Bericht IKB 2023",
-          "fileReference": "2fb7896acec95a0c08132e71a07293e2bb2ac42b742d06516e0bd975ea40db60"
-        }
+          "fileName": "Sustainability Report",
+          "fileReference": "83c4d065194bd46ca5afd55880243495ad2cb491219f9504eb74876303ed8f44",
+          "page": "22",
+          "tagName": null
+        },
+        "quality": "Reported",
+        "value": 20.8
+      },
+      "derivativesInPercent": {
+        "comment": null,
+        "dataSource": {
+          "fileName": "Sustainability Report",
+          "fileReference": "83c4d065194bd46ca5afd55880243495ad2cb491219f9504eb74876303ed8f44",
+          "page": "22",
+          "tagName": null
+        },
+        "quality": "Reported",
+        "value": 0.3
+      },
+      "investmentNonNfrdInPercent": {
+        "comment": null,
+        "dataSource": {
+          "fileName": "Sustainability Report",
+          "fileReference": "83c4d065194bd46ca5afd55880243495ad2cb491219f9504eb74876303ed8f44",
+          "page": "22",
+          "tagName": null
+        },
+        "quality": "Reported",
+        "value": 58.7
+      },
+      "taxonomyEligibleActivityInPercent": {
+        "comment": null,
+        "dataSource": {
+          "fileName": "Sustainability Report",
+          "fileReference": "83c4d065194bd46ca5afd55880243495ad2cb491219f9504eb74876303ed8f44",
+          "page": "22",
+          "tagName": null
+        },
+        "quality": "Reported",
+        "value": 7.8
+      },
+      "taxonomyNonEligibleActivityInPercent": {
+        "comment": null,
+        "dataSource": {
+          "fileName": "Sustainability Report",
+          "fileReference": "83c4d065194bd46ca5afd55880243495ad2cb491219f9504eb74876303ed8f44",
+          "page": "22",
+          "tagName": null
+        },
+        "quality": "Reported",
+        "value": 33.2
       }
     },
-    "investmentFirmKpis": null,
-    "insuranceKpis": null,
-    "fiscalYearDeviation": "NoDeviation",
-    "fiscalYearEnd": "2023-12-31",
-    "scopeOfEntities": "Yes",
-    "nfrdMandatory": "Yes",
-    "euTaxonomyActivityLevelReporting": "No",
-    "assurance": {
-      "value": "None",
-      "dataSource": {
-        "page": null,
-        "tagName": null,
-        "fileName": "240430_Nichtfinanzieller Bericht IKB 2023",
-        "fileReference": "2fb7896acec95a0c08132e71a07293e2bb2ac42b742d06516e0bd975ea40db60"
+    "CreditInstitution": {
+      "banksAndIssuersInPercent": {
+        "comment": null,
+        "dataSource": null,
+        "quality": "Reported",
+        "value": null
       },
-      "provider": null
+      "derivativesInPercent": {
+        "comment": null,
+        "dataSource": null,
+        "quality": "Reported",
+        "value": null
+      },
+      "investmentNonNfrdInPercent": {
+        "comment": null,
+        "dataSource": null,
+        "quality": "Reported",
+        "value": null
+      },
+      "taxonomyEligibleActivityInPercent": {
+        "comment": null,
+        "dataSource": null,
+        "quality": "Reported",
+        "value": null
+      },
+      "taxonomyNonEligibleActivityInPercent": {
+        "comment": null,
+        "dataSource": null,
+        "quality": "Reported",
+        "value": null
+      }
     },
-    "numberOfEmployees": 568,
-    "referencedReports": {
-      "240430_Nichtfinanzieller Bericht IKB 2023": {
-        "fileReference": "2fb7896acec95a0c08132e71a07293e2bb2ac42b742d06516e0bd975ea40db60",
-        "fileName": null,
-        "publicationDate": null
+    "InsuranceOrReinsurance": {
+      "banksAndIssuersInPercent": {
+        "comment": null,
+        "dataSource": null,
+        "quality": "Reported",
+        "value": null
+      },
+      "derivativesInPercent": {
+        "comment": null,
+        "dataSource": null,
+        "quality": "Reported",
+        "value": null
+      },
+      "investmentNonNfrdInPercent": {
+        "comment": null,
+        "dataSource": null,
+        "quality": "Reported",
+        "value": null
+      },
+      "taxonomyEligibleActivityInPercent": {
+        "comment": null,
+        "dataSource": null,
+        "quality": "Reported",
+        "value": null
+      },
+      "taxonomyNonEligibleActivityInPercent": {
+        "comment": null,
+        "dataSource": null,
+        "quality": "Reported",
+        "value": null
+      }
+    },
+    "InvestmentFirm": {
+      "banksAndIssuersInPercent": {
+        "comment": null,
+        "dataSource": null,
+        "quality": "Reported",
+        "value": null
+      },
+      "derivativesInPercent": {
+        "comment": null,
+        "dataSource": null,
+        "quality": "Reported",
+        "value": null
+      },
+      "investmentNonNfrdInPercent": {
+        "comment": null,
+        "dataSource": null,
+        "quality": "Reported",
+        "value": null
+      },
+      "taxonomyEligibleActivityInPercent": {
+        "comment": null,
+        "dataSource": null,
+        "quality": "Reported",
+        "value": null
+      },
+      "taxonomyNonEligibleActivityInPercent": {
+        "comment": null,
+        "dataSource": null,
+        "quality": "Reported",
+        "value": null
       }
     }
-  }
+  },
+  "euTaxonomyActivityLevelReporting": "Yes",
+  "financialServicesTypes": [
+    "AssetManagement"
+  ],
+  "fiscalYearDeviation": "NoDeviation",
+  "fiscalYearEnd": "2021-12-31",
+  "insuranceKpis": {
+    "taxonomyEligibleNonLifeInsuranceActivitiesInPercent": {
+      "comment": null,
+      "dataSource": null,
+      "quality": "Reported",
+      "value": null
+    }
+  },
+  "investmentFirmKpis": {
+    "greenAssetRatioInPercent": {
+      "comment": null,
+      "dataSource": null,
+      "quality": "Reported",
+      "value": null
+    }
+  },
+  "nfrdMandatory": "Yes",
+  "numberOfEmployees": 23954,
+  "referencedReports": {
+    "Annual Report": {
+      "fileName": "Annual Report",
+      "fileReference": "28ad8f99b8b94c0ed6a61218ca58dd49351084c35c9b6659ee7b464b2612255d",
+      "publicationDate": null
+    },
+    "Sustainability Report": {
+      "fileName": "Sustainability Report",
+      "fileReference": "83c4d065194bd46ca5afd55880243495ad2cb491219f9504eb74876303ed8f44",
+      "publicationDate": null
+    }
+  },
+  "scopeOfEntities": null
 }

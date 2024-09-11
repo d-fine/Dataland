@@ -1,99 +1,89 @@
 {
-  "companyId": "c7cc80a3-4413-4db5-a05a-8c55d8bb46af",
-  "dataType": "additional-company-information",
-  "uploaderUserId": "bfb57e96-f218-4878-9a99-007d5fd2f78b",
-  "uploadTime": 1725598101794,
-  "reportingPeriod": "2022",
-  "data": {
-    "financialServicesTypes": ["CreditInstitution"],
-    "eligibilityKpis": {
-      "CreditInstitution": {
-        "taxonomyEligibleActivityInPercent": {
-          "value": null,
-          "quality": null,
-          "comment": null,
-          "dataSource": null
-        },
-        "taxonomyNonEligibleActivityInPercent": {
-          "value": null,
-          "quality": null,
-          "comment": null,
-          "dataSource": null
-        },
-        "derivativesInPercent": {
-          "value": null,
-          "quality": null,
-          "comment": null,
-          "dataSource": null
-        },
-        "banksAndIssuersInPercent": {
-          "value": null,
-          "quality": null,
-          "comment": null,
-          "dataSource": null
-        },
-        "investmentNonNfrdInPercent": {
-          "value": null,
-          "quality": null,
-          "comment": null,
-          "dataSource": null
-        }
-      }
-    },
-    "creditInstitutionKpis": {
-      "tradingPortfolioInPercent": {
-        "value": null,
-        "quality": null,
-        "comment": null,
-        "dataSource": null
-      },
-      "interbankLoansInPercent": {
-        "value": null,
-        "quality": null,
-        "comment": null,
-        "dataSource": null
-      },
-      "tradingPortfolioAndInterbankLoansInPercent": {
-        "value": null,
-        "quality": null,
-        "comment": null,
-        "dataSource": null
-      },
-      "greenAssetRatioInPercent": {
-        "value": 0.16,
-        "quality": "Reported",
-        "comment": null,
+  "general": {
+    "financialInformation": {
+      "balanceSheetTotal": {
+        "comment": "transmit redundant transmitter",
+        "currency": "BAM",
         "dataSource": {
-          "page": 0,
-          "tagName": null,
-          "fileName": "240430_Nichtfinanzieller Bericht IKB 2023",
-          "fileReference": "2fb7896acec95a0c08132e71a07293e2bb2ac42b742d06516e0bd975ea40db60"
-        }
+          "fileName": "IntegratedReport",
+          "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+          "page": 674,
+          "tagName": "portals"
+        },
+        "quality": "Reported",
+        "value": 1654885890.89
+      },
+      "debt": {
+        "comment": null,
+        "currency": "OMR",
+        "dataSource": {
+          "fileName": "IntegratedReport",
+          "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+          "page": null,
+          "tagName": "interfaces"
+        },
+        "quality": "NoDataFound",
+        "value": 5701369922.61
+      },
+      "equity": {
+        "comment": "back up primary bandwidth",
+        "currency": "IQD",
+        "dataSource": {
+          "fileName": "ESEFReport",
+          "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+          "page": 1035,
+          "tagName": "web services"
+        },
+        "quality": null,
+        "value": 764964444.09
+      },
+      "evic": {
+        "comment": "quantify redundant port",
+        "currency": "BWP",
+        "dataSource": {
+          "fileName": "IntegratedReport",
+          "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+          "page": 454,
+          "tagName": "solutions"
+        },
+        "quality": "Audited",
+        "value": 1764778879
       }
     },
-    "investmentFirmKpis": null,
-    "insuranceKpis": null,
-    "fiscalYearDeviation": "NoDeviation",
-    "fiscalYearEnd": "2023-12-31",
-    "scopeOfEntities": "Yes",
-    "nfrdMandatory": "Yes",
-    "euTaxonomyActivityLevelReporting": "No",
-    "assurance": {
-      "value": "None",
-      "dataSource": {
-        "page": 6,
-        "tagName": null,
-        "fileName": "240430_Nichtfinanzieller Bericht IKB 2023",
-        "fileReference": "2fb7896acec95a0c08132e71a07293e2bb2ac42b742d06516e0bd975ea40db60"
+    "general": {
+      "fiscalYearDeviation": {
+        "comment": "back up back-end monitor",
+        "dataSource": {
+          "fileName": "IntegratedReport",
+          "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+          "page": null,
+          "tagName": "blockchains"
+        },
+        "quality": null,
+        "value": null
       },
-      "provider": null
-    },
-    "numberOfEmployees": 568,
-    "referencedReports": {
-      "240430_Nichtfinanzieller Bericht IKB 2023": {
-        "fileReference": "2fb7896acec95a0c08132e71a07293e2bb2ac42b742d06516e0bd975ea40db60",
-        "fileName": null,
-        "publicationDate": null
+      "fiscalYearEnd": {
+        "comment": "calculate solid state firewall",
+        "dataSource": null,
+        "quality": "Incomplete",
+        "value": "2024-04-17"
+      },
+      "referencedReports": {
+        "AnnualReport": {
+          "fileName": "AnnualReport",
+          "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+          "publicationDate": "2024-01-05"
+        },
+        "ESEFReport": {
+          "fileName": "ESEFReport",
+          "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+          "publicationDate": "2023-02-16"
+        },
+        "IntegratedReport": {
+          "fileName": "IntegratedReport",
+          "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+          "publicationDate": "2023-10-14"
+        }
       }
     }
   }
