@@ -149,6 +149,7 @@
 				},
 				"nonEligibleShare": {
 					"relativeShareInPercent": {
+						"value": 19.93,
 						"dataSource": {
 							"page": 1006,
 							"fileName": "AnnualReport",
