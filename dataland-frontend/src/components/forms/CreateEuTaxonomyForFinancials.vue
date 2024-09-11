@@ -119,21 +119,21 @@
                                 :is-required="true"
                               />
                               <SingleSelectFormElement
+                                name="'Report'"
                                 ignore="true"
                                 placeholder="Select a report"
                                 validation-label="Selecting a report"
                                 v-model="currentReportValue"
                                 :options="[noReportLabel, ...namesOfAllCompanyReportsForTheDataset]"
-                                allow-unknown-option
                               />
                             </div>
                             <div v-if="isValidFileName(isMounted, currentReportValue)">
-                              <UploadFormHeader :label="'Page'" :description="pageNumberDescription" />
+                              <UploadFormHeader :label="'Page(s)'" :description="pageNumberDescription" />
                               <FormKit
                                 outer-class="w-100"
                                 type="text"
                                 name="page"
-                                placeholder="Enter page"
+                                placeholder="Page(s)"
                                 v-model="pageForFileReference"
                                 :validation-messages="{
                                   validatePageNumber: pageNumberValidationErrorMessage,

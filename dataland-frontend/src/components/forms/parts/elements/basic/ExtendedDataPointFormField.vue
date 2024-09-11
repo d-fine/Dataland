@@ -65,18 +65,16 @@
                 v-model="currentReportValue"
                 placeholder="Select a report"
                 :options="reportOptions"
-                allow-unknown-option
-                ignore
                 input-class="w-12"
               />
             </div>
             <div v-if="isValidFileName(isMounted, currentReportValue)" class="col-4">
-              <UploadFormHeader :label="'Page'" :description="pageNumberDescription" />
+              <UploadFormHeader :label="'Page(s)'" :description="pageNumberDescription" />
               <FormKit
                 outer-class="w-100"
                 type="text"
                 name="page"
-                placeholder="Enter page"
+                placeholder="Page(s)"
                 v-model="pageForFileReference"
                 :validation-messages="{
                   validatePageNumber: pageNumberValidationErrorMessage,
