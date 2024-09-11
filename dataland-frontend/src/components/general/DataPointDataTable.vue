@@ -33,8 +33,7 @@
           </tr>
           <tr v-if="dialogData.dataPointDisplay.comment">
             <th class="headers-bg width-auto"><span class="table-left-label">Comment</span></th>
-            <td v-html="commentHtml"></td>
-            <!-- Use v-html here -->
+            <td v-html="sanitizedHtml"></td>
           </tr>
         </tbody>
       </table>
@@ -43,6 +42,7 @@
 </template>
 
 <script lang="ts">
+import DOMPurify from 'dompurify';
 import { marked } from 'marked';
 import { defineComponent } from 'vue';
 import { type DynamicDialogInstance } from 'primevue/dynamicdialogoptions';
@@ -71,8 +71,9 @@ export default defineComponent({
   inject: ['dialogRef'],
   name: 'DataPointDataTable',
   computed: {
-    commentHtml() {
-      return marked(this.dialogData.dataPointDisplay.comment || '');
+    sanitizedHtml() {
+      const rawHtml = marked(this.dialogData.dataPointDisplay.comment || '');
+      return typeof rawHtml == 'string' ? DOMPurify.sanitize(rawHtml) : '';
     },
     dialogData(): DataPointDataTableRefProps {
       return assertDefined(this.dialogRef as DynamicDialogInstance).data as DataPointDataTableRefProps;
