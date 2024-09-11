@@ -3,6 +3,7 @@ import { type Field } from '@/utils/GenericFrameworkTypes';
 import {
   type AvailableMLDTDisplayObjectTypes,
   MLDTDisplayComponentName,
+  type MLDTDisplayComponentTypes,
   MLDTDisplayObjectForEmptyString,
 } from '@/components/resources/dataTable/MultiLayerDataTableCellDisplayer';
 import { getFieldValueFromFrameworkDataset } from '@/components/resources/dataTable/conversion/Utils';
@@ -106,14 +107,7 @@ export function wrapDisplayValueWithDatapointInformation(
   if (doesAnyDataPointPropertyExist(datapointProperties)) {
     return {
       displayComponentName: MLDTDisplayComponentName.DataPointWrapperDisplayComponent,
-      displayValue: {
-        innerContents:
-          inputValue.displayValue == '' ? formatStringForDatatable(ONLY_AUXILIARY_DATA_PROVIDED) : inputValue,
-        quality: humanizeStringOrNumber(datapointProperties?.quality),
-        comment: datapointProperties?.comment ?? undefined,
-        dataSource: datapointProperties?.dataSource ?? undefined,
-        fieldLabel: fieldLabel,
-      },
+      displayValue: buildDisplayValueWhenDataPointMetaInfoIsAvailable(inputValue, fieldLabel, datapointProperties),
     };
   } else if (inputValue.displayValue == '') {
     return MLDTDisplayObjectForEmptyString;
@@ -138,4 +132,38 @@ function doesAnyDataPointPropertyExist(dataPointProperties: DatapointProperties 
       dataPointProperties?.comment?.length ||
       (dataPointProperties?.dataSource && dataPointProperties?.dataSource.fileReference.trim().length > 0))
   );
+}
+
+/**
+ * Builds the displayValue object for the DataPointWrapperDisplayComponent when quality, comment and data source are NOT
+ * all empty.
+ * @param inputValue the original value to wrap
+ * @param fieldLabel the label of the field to wrap
+ * @param datapointProperties the properties of the datapoint to wrap
+ * @returns the built displayValue object
+ */
+function buildDisplayValueWhenDataPointMetaInfoIsAvailable(
+  inputValue: AvailableMLDTDisplayObjectTypes,
+  fieldLabel: string,
+  datapointProperties: DatapointProperties | undefined | null
+): MLDTDisplayComponentTypes[MLDTDisplayComponentName.DataPointWrapperDisplayComponent] {
+  let innerContent: AvailableMLDTDisplayObjectTypes;
+  const isOnlyQualityProvided =
+    datapointProperties?.dataSource == undefined &&
+    datapointProperties?.comment == undefined &&
+    inputValue.displayValue == '';
+
+  if (isOnlyQualityProvided) {
+    innerContent = formatStringForDatatable(datapointProperties?.quality);
+  } else {
+    innerContent = inputValue.displayValue == '' ? formatStringForDatatable(ONLY_AUXILIARY_DATA_PROVIDED) : inputValue;
+  }
+
+  return {
+    innerContents: innerContent,
+    quality: isOnlyQualityProvided ? undefined : datapointProperties?.quality ?? undefined,
+    comment: datapointProperties?.comment ?? undefined,
+    dataSource: datapointProperties?.dataSource ?? undefined,
+    fieldLabel: fieldLabel,
+  };
 }
