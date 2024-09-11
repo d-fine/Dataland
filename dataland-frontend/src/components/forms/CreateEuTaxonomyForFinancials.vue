@@ -119,7 +119,7 @@
                                 :is-required="true"
                               />
                               <SingleSelectFormElement
-                                name="'Report'"
+                                name="report"
                                 ignore="true"
                                 placeholder="Select a report"
                                 validation-label="Selecting a report"
