@@ -11,12 +11,14 @@ import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
 import java.util.*
 
 /**
  * Defines the restful dataland qa service API
  */
+@RequestMapping("/qa")
 @SecurityRequirement(name = "default-bearer-auth")
 @SecurityRequirement(name = "default-oauth")
 interface QaApi {
@@ -24,12 +26,12 @@ interface QaApi {
      * Get an ordered list of datasets to be QAed
      */
     @Operation(
-        summary = "Get unreviewed datasets IDs.",
-        description = "Gets a ordered list of dataset IDs which need to be reviewed",
+        summary = "Get unreviewed metadata sets of qa reports.",
+        description = "Gets a ordered list of metadata sets which need to be reviewed",
     )
     @ApiResponses(
         value = [
-            ApiResponse(responseCode = "200", description = "Successfully retrieved dataset IDs."),
+            ApiResponse(responseCode = "200", description = "Successfully retrieved metadata sets."),
         ],
     )
     @GetMapping(
@@ -37,7 +39,7 @@ interface QaApi {
         produces = ["application/json"],
     )
     @PreAuthorize("hasRole('ROLE_REVIEWER')")
-    fun getUnreviewedDatasetsIds(): ResponseEntity<List<String>>
+    fun getUnreviewedMetadataSets(): ResponseEntity<List<ReviewInformationResponse>>
 
     /**
      * A method to get the QA review status of an uploaded dataset for a given identifier

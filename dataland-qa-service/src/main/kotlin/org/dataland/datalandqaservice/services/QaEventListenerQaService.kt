@@ -51,6 +51,9 @@ class QaEventListenerQaService(
     )
     private data class PersistAutomatedQaResultMessage(
         val identifier: String,
+        val companyName: String,
+        val framework: String,
+        val reportingPeriod: String,
         val validationResult: QaStatus,
         val reviewerId: String,
         val resourceType: String,
@@ -200,6 +203,9 @@ class QaEventListenerQaService(
             objectMapper.readValue(messageAsJsonString, PersistAutomatedQaResultMessage::class.java)
         if (persistAutomatedQaResultMessage.resourceType == "data") {
             val dataId = persistAutomatedQaResultMessage.identifier
+            val companyName = persistAutomatedQaResultMessage.companyName
+            val framework = persistAutomatedQaResultMessage.framework
+            val reportingPeriod = persistAutomatedQaResultMessage.reportingPeriod
             if (dataId.isEmpty()) {
                 throw MessageQueueRejectException("Provided data ID is empty")
             }
@@ -215,6 +221,9 @@ class QaEventListenerQaService(
                 reviewHistoryRepository.save(
                     ReviewInformationEntity(
                         dataId = dataId,
+                        companyName = companyName,
+                        framework = framework,
+                        reportingPeriod = reportingPeriod,
                         receptionTime = System.currentTimeMillis(),
                         qaStatus = validationResult,
                         reviewerKeycloakId = reviewerId,

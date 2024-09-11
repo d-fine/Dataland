@@ -39,9 +39,9 @@ class QaController(
     private val logger = LoggerFactory.getLogger(javaClass)
 
     @Transactional
-    override fun getUnreviewedDatasetsIds(): ResponseEntity<List<String>> {
+    override fun getUnreviewedMetadataSets(): ResponseEntity<List<ReviewInformationResponse>> {
         logger.info("Received request to respond with IDs of unreviewed datasets")
-        return ResponseEntity.ok(reviewQueueRepository.getSortedPendingDataIds())
+        return ResponseEntity.ok(reviewQueueRepository.getSortedPendingMetadataSet())
     }
 
     @Transactional
@@ -81,6 +81,9 @@ class QaController(
         reviewHistoryRepository.save(
             ReviewInformationEntity(
                 dataId = dataId,
+                companyName = dataReviewStatusToUpdate.companyName,
+                framework = dataReviewStatusToUpdate.framework,
+                reportingPeriod = dataReviewStatusToUpdate.reportingPeriod,
                 receptionTime = dataReviewStatusToUpdate.receptionTime,
                 qaStatus = qaStatus,
                 reviewerKeycloakId = DatalandAuthentication.fromContext().userId,

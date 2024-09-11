@@ -799,18 +799,18 @@
         "tags": [
           "qa-controller"
         ],
-        "summary": "Get unreviewed datasets IDs.",
-        "description": "Gets a ordered list of dataset IDs which need to be reviewed",
-        "operationId": "getUnreviewedDatasetsIds",
+        "summary": "Get unreviewed metadata sets.",
+        "description": "Gets a ordered list of metadata sets which need to be reviewed",
+        "operationId": "getUnreviewedMetadataSets",
         "responses": {
           "200": {
-            "description": "Successfully retrieved dataset IDs.",
+            "description": "Successfully retrieved metadata sets.",
             "content": {
               "application/json": {
                 "schema": {
                   "type": "array",
                   "items": {
-                    "type": "string"
+                    "$ref": "#/components/schemas/ReviewInformationResponse"
                   }
                 }
               }
@@ -3250,6 +3250,15 @@
         "type": "object",
         "properties": {
           "dataId": {
+            "type": "string"
+          },
+          "companyName": {
+            "type": "string"
+          },
+          "framework": {
+            "type": "string"
+          },
+          "reportingPeriod": {
             "type": "string"
           },
           "receptionTime": {
