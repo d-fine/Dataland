@@ -349,7 +349,6 @@ export default defineComponent({
       if (event.page != this.currentChunkIndex) {
         this.currentChunkIndex = event.page;
         this.firstRowIndex = this.currentChunkIndex * this.rowsPerPage;
-        console.log(event.first);
         this.getAllRequestsForFilters();
       }
     },
