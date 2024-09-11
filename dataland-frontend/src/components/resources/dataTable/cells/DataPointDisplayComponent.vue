@@ -58,7 +58,6 @@ export default defineComponent({
         : this.content.displayValue?.value || NO_DATA_PROVIDED;
     },
     convertedValueForModal() {
-      // TODO data point properties type
       const content = this.content.displayValue;
       return {
         value: content.value,

@@ -5,7 +5,7 @@ import {
   type DataAndMetaInformationSfdrData,
   DataTypeEnum,
   QaStatus,
-  type SfdrData,
+  type SfdrData, QualityOptions,
 } from '@clients/backend';
 
 import {
@@ -14,6 +14,7 @@ import {
 } from '@ct/testUtils/MultiLayerDataTableComponentTestUtils';
 import { getCellValueContainer } from '@sharedUtils/components/resources/dataTable/MultiLayerDataTableTestUtils';
 import { sfdrViewConfiguration } from '@/frameworks/sfdr/ViewConfig';
+import {ONLY_AUXILIARY_DATA_PROVIDED} from "@/utils/Constants";
 
 describe('Component tests for SfdrPanel', () => {
   let preparedFixtures: Array<FixtureData<SfdrData>>;
@@ -83,5 +84,27 @@ describe('Component tests for SfdrPanel', () => {
 
     cy.contains('span', '2023-01-01').should('exist');
     cy.contains('td.headers-bg', 'Data Date').should('exist');
+  });
+
+  it('Check SFDR view page for datapoints that have only value, quality or comment filled', () => {
+    const preparedFixture = getPreparedFixture('TestForDataPointDisplayLogic', preparedFixtures);
+    mountMLDTFrameworkPanelFromFakeFixture(DataTypeEnum.Sfdr, sfdrDisplayConfiguration, [preparedFixture]);
+
+    const expectedDisplayValueScope1 =
+            preparedFixture.t.environmental.greenhouseGasEmissions.scope1GhgEmissionsInTonnes.value + ' Tonnes'
+    getCellValueContainer('Scope 1 GHG emissions', 0)
+        .should('contain.text', expectedDisplayValueScope1)
+        .find('a.link')
+        .should('not.exist');
+
+    getCellValueContainer('Scope 2 GHG emissions', 0)
+        .should('contain.text', QualityOptions.Estimated)
+        .find('a.link')
+        .should('not.exist');
+
+    getCellValueContainer('Scope 2 GHG emissions (location-based)', 0)
+        .should('contain.text', ONLY_AUXILIARY_DATA_PROVIDED)
+        .find('a.link')
+        .should('exist');
   });
 });

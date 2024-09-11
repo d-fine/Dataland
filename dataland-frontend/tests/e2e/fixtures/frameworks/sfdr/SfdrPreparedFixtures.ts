@@ -25,7 +25,7 @@ export function generateSfdrPreparedFixtures(): Array<FixtureData<SfdrData>> {
   preparedFixtures.push(manipulateFixtureForEmptyStringDocumentReference(generateSfdrDataWithoutNulls()));
   preparedFixtures.push(manipulateFixtureForInvalidPercentageInput(generateSfdrDataWithoutNulls()));
   preparedFixtures.push(manipulateFixtureForTwoInvalidInputs(generateSfdrDataWithoutNulls()));
-
+  preparedFixtures.push(generateFixtureWithDifferentExtendedDatapointCases(generateSfdrDataWithoutNulls()))
   return preparedFixtures;
 }
 
@@ -197,4 +197,20 @@ function generateFixtureWithIncompleteReferencedReport(input: FixtureData<SfdrDa
     notReferencedFile: { fileReference: 'invalidFileReference', fileName: 'notReferencedFile' },
   };
   return input;
+}
+
+function generateFixtureWithDifferentExtendedDatapointCases(input: FixtureData<SfdrData>): FixtureData<SfdrData>{
+  input.companyInformation.companyName = 'TestForDataPointDisplayLogic';
+  if (input.t.environmental?.greenhouseGasEmissions?.scope1GhgEmissionsInTonnes){
+    input.t.environmental.greenhouseGasEmissions.scope1GhgEmissionsInTonnes = {"value": 30}
+  }
+  if (input.t.environmental?.greenhouseGasEmissions?.scope2GhgEmissionsInTonnes){
+    input.t.environmental.greenhouseGasEmissions.scope2GhgEmissionsInTonnes =
+        {"quality": "Estimated"}
+  }
+  if (input.t.environmental?.greenhouseGasEmissions?.scope2GhgEmissionsLocationBasedInTonnes){
+    input.t.environmental.greenhouseGasEmissions.scope2GhgEmissionsLocationBasedInTonnes =
+        {"comment": "This is a datapoint with only comment info."}
+  }
+  return input
 }
