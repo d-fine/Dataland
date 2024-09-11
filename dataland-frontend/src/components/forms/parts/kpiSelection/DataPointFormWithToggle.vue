@@ -92,6 +92,8 @@
             v-model="currentReportValue"
             placeholder="Select a report"
             :options="[noReportLabel, ...reportsName]"
+            ignore
+            allow-unknown-option
           />
         </div>
         <div v-if="isValidFileName(isMounted, currentReportValue)">

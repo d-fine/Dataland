@@ -125,6 +125,7 @@
                                 validation-label="Selecting a report"
                                 v-model="currentReportValue"
                                 :options="[noReportLabel, ...namesOfAllCompanyReportsForTheDataset]"
+                                allow-unknown-option
                               />
                             </div>
                             <div v-if="isValidFileName(isMounted, currentReportValue)">

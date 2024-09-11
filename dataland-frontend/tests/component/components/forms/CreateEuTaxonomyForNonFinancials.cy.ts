@@ -108,7 +108,7 @@ describe('Component tests for the Eu Taxonomy for non financials that test depen
         .last()
         .clear()
         .type(invalidPageNumberInput);
-      cy.get('div[label="General"] em[title="Page"]:not([type="hidden"])').last().click();
+      cy.get('div[label="General"] em[title="Page(s)"]:not([type="hidden"])').last().click();
       cy.get('[data-message-type="validation"]')
         .should('contain', PAGE_NUMBER_VALIDATION_ERROR_MESSAGE)
         .should('exist');
@@ -117,7 +117,7 @@ describe('Component tests for the Eu Taxonomy for non financials that test depen
     const validPageNumberInputs = ['3', '10-11'];
     for (const validPageNumberInput of validPageNumberInputs) {
       cy.get('div[label="General"] input[name="page"]:not([type="hidden"])').last().clear().type(validPageNumberInput);
-      cy.get('div[label="General"] em[title="Page"]:not([type="hidden"])').last().click();
+      cy.get('div[label="General"] em[title="Page(s)"]:not([type="hidden"])').last().click();
       submitButton.buttonAppearsEnabled();
     }
   }
