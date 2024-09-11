@@ -13,10 +13,8 @@ import kotlin.reflect.KClass
 @Retention(AnnotationRetention.RUNTIME)
 @Constraint(validatedBy = [PageRangeValidator::class])
 annotation class PageRange(
-    val message: String = """
-Valid inputs are a positive number or a range of two ascending positive numbers separated by "-". The numbers must not 
-begin with a zero. Valid examples are "2" or "13-15".
-""",
+    val message: String = "Valid inputs are a positive number or a range of two ascending positive numbers separated " +
+        "by '-'. The numbers must not begin with a zero. Valid examples are '2' or '13-15'.",
     val groups: Array<KClass<*>> = [],
     val payload: Array<KClass<out Payload>> = [],
 )
@@ -33,6 +31,7 @@ class PageRangeValidator : ConstraintValidator<PageRange, String> {
     override fun initialize(constraintAnnotation: PageRange) {
         // No initialization needed
     }
+
     override fun isValid(value: String?, context: ConstraintValidatorContext?): Boolean {
         if (value == null) return true
 

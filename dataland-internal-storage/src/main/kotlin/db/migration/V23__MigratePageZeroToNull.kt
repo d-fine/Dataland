@@ -27,7 +27,7 @@ class V23__MigratePageZeroToNull : BaseJavaMigration() {
             migrateCompanyAssociatedDataOfDatatype(
                 context,
                 framework,
-            ) { dataTableEntity -> migratePageFields(dataTableEntity, framework) }
+            ) { dataTableEntity -> migratePageFields(dataTableEntity) }
         }
     }
 
@@ -39,26 +39,32 @@ class V23__MigratePageZeroToNull : BaseJavaMigration() {
      * @param dataTableEntity The entity containing the dataset to be migrated.
      * @param framework The framework name associated with the dataset.
      */
-    fun migratePageFields(dataTableEntity: DataTableEntity, framework: String) {
+    fun migratePageFields(dataTableEntity: DataTableEntity) {
         val dataset = dataTableEntity.dataJsonObject
 
         fun updatePageFields(jsonObject: JSONObject) {
             jsonObject.keys().forEachRemaining { key ->
-                if (key == "page") {
-                    val value = jsonObject.optInt(key, -1)
-                    if (value <= 0) {
-                        logger.info(
-                            "Setting page with value $value to NULL for framework: $framework in dataset " +
-                                dataTableEntity.dataId,
-                        )
+                val value = jsonObject.opt(key)
+
+                when {
+                    key == "page" && value is Number ->
+                        when {
+                            value.toLong() > 0 -> jsonObject.put(key, value.toString())
+                            else -> {
+                                logger.info(
+                                    "Setting page field with value $value to NULL " +
+                                        "in dataset ${dataTableEntity.dataId}",
+                                )
+                                jsonObject.put(key, JSONObject.NULL)
+                            }
+                        }
+                    key == "page" && value != null -> {
+                        logger.info("Page field has unexpected value '$value' in dataset ${dataTableEntity.dataId}")
                         jsonObject.put(key, JSONObject.NULL)
-                    } else {
-                        jsonObject.put(key, value.toString())
                     }
-                } else if (jsonObject.opt(key) is JSONObject) {
-                    updatePageFields(jsonObject.getJSONObject(key))
-                } else {
-                    // do nothing
+                    value is JSONObject -> {
+                        updatePageFields(value)
+                    }
                 }
             }
         }
