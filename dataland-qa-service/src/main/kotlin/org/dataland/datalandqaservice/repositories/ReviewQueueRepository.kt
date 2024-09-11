@@ -12,7 +12,8 @@ interface ReviewQueueRepository : JpaRepository<ReviewQueueEntity, String> {
      * A function for getting a list of dataset IDs with pending reviews ascendingly ordered by reception time
      */
     @Query(
-        "SELECT status.dataId FROM ReviewQueueEntity status " +
+        "SELECT status.dataId, status.companyName, status.framework, status.reportingPeriod, status.receptionTime " +
+            "FROM ReviewQueueEntity status " +
             "ORDER BY status.receptionTime ASC",
     )
     fun getSortedPendingDataIds(): List<String>
