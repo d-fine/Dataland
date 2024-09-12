@@ -357,17 +357,11 @@ export default defineComponent({
     /**
      * Navigates to the view dataRequest page
      * @param event contains column that was clicked
-     * @param event.data extended stored data request
-     * @param event.originalEvent needed to get the clicked cell
      * @returns the promise of the router push action
      */
     onRowClick(event: DataTableRowClickEvent) {
-      const clickedElement = event.originalEvent.target as HTMLElement;
-      const isResolveButtonClick = clickedElement.id === 'resolveButton';
-      if (!isResolveButtonClick) {
-        const requestIdOfClickedRow = event.data.dataRequestId;
-        return this.$router.push(`/requests/${requestIdOfClickedRow}`);
-      }
+      const requestIdOfClickedRow = event.data.dataRequestId;
+      return this.$router.push(`/requests/${requestIdOfClickedRow}`);
     },
   },
 });
