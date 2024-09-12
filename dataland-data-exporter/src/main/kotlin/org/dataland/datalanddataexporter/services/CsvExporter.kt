@@ -1,6 +1,5 @@
 package org.dataland.datalanddataexporter.services
 
-
 import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.dataformat.csv.CsvMapper
@@ -21,19 +20,12 @@ class CsvExporter {
     }
 
     fun dummyFunction(): String {
-        println("Hello World!")
-        val test = readJsonFileFromResourceFolder()
-        println(test.toPrettyString())
-
-        val testFile = readJsonFileFromResourceFolder()
-
-        val testTransformation = readTransformationConfig("transformation.config")
-        println("Transformation rules:")
-        println(testTransformation.toString())
-        val csvData = mapJsonToCsv(testFile, testTransformation)
-        println(csvData.toString())
-        //writeCsv(listOf(csvData), "./src/main/resources/output.csv")
-        writeCsv(csvData, "./src/main/resources/output.csv")
+        val jsonNode = readJsonFileFromResourceFolder()
+        val transformationRules = readTransformationConfig("transformation.config")
+        val outputFile = File("./src/main/resources/output.csv")
+        val csvData = mapJsonToCsv(jsonNode, transformationRules)
+        val headers = getHeaders(transformationRules)
+        writeCsv(listOf(csvData), outputFile, headers)
         return "Hello World!"
     }
 
@@ -45,56 +37,38 @@ class CsvExporter {
             .toMap()
     }
 
+    fun getHeaders(transformationRules: Map<String, String>): List<String> {
+        val headers = mutableListOf<String>()
+        transformationRules.forEach { (_, csvHeader) -> if (csvHeader.isNotEmpty()) headers.add(csvHeader) }
+        if (headers.distinct().size != headers.size) {
+            throw IllegalArgumentException("Duplicate headers found in transformation rules.")
+        }
+        return headers
+    }
+
     fun mapJsonToCsv(jsonNode: JsonNode, transformationRules: Map<String, String>): Map<String, String> {
         val csvData = mutableMapOf<String, String>()
         transformationRules.forEach { (jsonPath, csvHeader) ->
-            println("Key: $jsonPath, Value: $csvHeader")
-            if (csvHeader == "skipped") {
-                println("Skipping $jsonPath")
-                return@forEach
-            }
+            if (csvHeader.isEmpty()) return@forEach
             if (jsonNode.get(jsonPath) == null) {
-                throw IllegalArgumentException("Expected JSON path $jsonPath to exist but it was not found.")
+                csvData[csvHeader] = ""
+            } else {
+                csvData[csvHeader] = jsonNode.get(jsonPath).textValue()
             }
-            csvData[csvHeader] = jsonNode.get(jsonPath).toString()
-
         }
         return csvData
     }
 
-    fun writeCsv(data: Map<String, String>, outputFilePath: String) {
-        val csvMapper = CsvMapper()
-        val csvFile = File(outputFilePath)
-        val csvSchemaBuilder = CsvSchema.builder()
-
-
-        data.keys.forEach { header -> csvSchemaBuilder.addColumn(header) }
-
-        val csvSchema = csvSchemaBuilder.build().withHeader().withColumnSeparator("|".first())
-        csvMapper.writerFor(Map::class.java)
-            .with(csvSchema)
-            .writeValue(csvFile, data)
-    }
-
-    fun writeCsv(data: List<Map<String, String>>, outputFilePath: String) {
+    // Todo Add config object instead of passing the headers, file and separator?
+    fun writeCsv(data: List<Map<String, String>>, outputFile: File, headers: List<String>) {
         if (data.isEmpty()) return
 
         val csvSchemaBuilder = CsvSchema.builder()
-        val headers = mutableSetOf<String>()
-
-        data.forEach { row ->
-            row.keys.forEach { key ->
-                headers.add(key)
-            }
-        }
         headers.forEach { header -> csvSchemaBuilder.addColumn(header) }
-
         val csvSchema = csvSchemaBuilder.build().withHeader().withColumnSeparator("|".first())
 
-        val csvMapper = CsvMapper()
-        val csvFile = File(outputFilePath)
-        csvMapper.writerFor(List::class.java)
+        CsvMapper().writerFor(List::class.java)
             .with(csvSchema)
-            .writeValue(csvFile, data)
+            .writeValue(outputFile, data)
     }
 }
