@@ -157,18 +157,18 @@ export default defineComponent({
     },
   },
   mounted() {
-    this.updateBanner();
+    this.fetchDataForThisPage();
   },
   watch: {
     async companyId() {
-      await this.updateBanner();
+      await this.fetchDataForThisPage();
     },
   },
   methods: {
     /**
-     * A complete update of all data-based UI elements of the banner
+     * A complete fetch of all data that is relevant for UI elements of this page
      */
-    async updateBanner() {
+    async fetchDataForThisPage() {
       try {
         void this.getCompanyInformation();
         void this.setCompanyOwnershipStatus();
