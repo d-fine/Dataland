@@ -9,6 +9,7 @@ import { humanizeStringOrNumber } from '@/utils/StringFormatter';
 
 describe('Component test for the admin-requests-overview page', () => {
   let mockRequests: ExtendedStoredDataRequest[];
+  let mockRequestsLarge: ExtendedStoredDataRequest[];
   const maxRows = 100;
 
   /**
@@ -53,6 +54,17 @@ describe('Component test for the admin-requests-overview page', () => {
       generateExtendedStoredDataRequest(mailGamma, DataTypeEnum.Vsme, RequestStatus.Answered, AccessStatus.Declined),
       generateExtendedStoredDataRequest(mailDelta, DataTypeEnum.Sfdr, RequestStatus.Resolved, AccessStatus.Public),
     ];
+    mockRequestsLarge = [];
+    for (let num = 1; num <= 104; num++) {
+      const dataType = faker.helpers.arrayElement([DataTypeEnum.Lksg, DataTypeEnum.P2p, DataTypeEnum.Vsme]);
+      const email = faker.helpers.arrayElement([mailAlpha, mailBeta, mailGamma, mailDelta]);
+      const requestStatus = faker.helpers.arrayElement([
+        RequestStatus.Open,
+        RequestStatus.Answered,
+        RequestStatus.Withdrawn,
+      ]);
+      mockRequestsLarge.push(generateExtendedStoredDataRequest(email, dataType, requestStatus, AccessStatus.Public));
+    }
   });
 
   /**
@@ -86,19 +98,8 @@ describe('Component test for the admin-requests-overview page', () => {
    *
    */
   function mountAdminAllRequestsPageWithManyMocks(): void {
-    for (let num = 1; num <= 100; num++) {
-      const dataType = faker.helpers.arrayElement([DataTypeEnum.Lksg, DataTypeEnum.P2p, DataTypeEnum.Vsme]);
-      const email = faker.helpers.arrayElement([mailAlpha, mailBeta, mailGamma, mailDelta]);
-      const requestStatus = faker.helpers.arrayElement([
-        RequestStatus.Open,
-        RequestStatus.Answered,
-        RequestStatus.Withdrawn,
-      ]);
-      mockRequests.push(generateExtendedStoredDataRequest(email, dataType, requestStatus, AccessStatus.Public));
-    }
-
-    const expectedNumberOfRequests = mockRequests.length;
-    cy.intercept('**/community/requests?chunkSize=100&chunkIndex=0', mockRequests.slice(0, 100));
+    const expectedNumberOfRequests = mockRequestsLarge.length;
+    cy.intercept('**/community/requests?chunkSize=100&chunkIndex=0', mockRequestsLarge.slice(0, 100));
     cy.intercept('**/community/requests/numberOfRequests', expectedNumberOfRequests.toString());
 
     getMountingFunction({
@@ -237,8 +238,8 @@ describe('Component test for the admin-requests-overview page', () => {
    * Validates onPage Event
    */
   function validateOnPageEvent(): void {
-    const secondPageMockResponse = mockRequests.slice(100);
-    const expectedNumberOfRequests = mockRequests.length;
+    const secondPageMockResponse = mockRequestsLarge.slice(100);
+    const expectedNumberOfRequests = mockRequestsLarge.length;
     const expectedNumberOfRows = secondPageMockResponse.length;
     cy.intercept(`**/community/requests?chunkSize=100&chunkIndex=1`, secondPageMockResponse).as('fetchRequests');
     cy.intercept(`**/community/requests/numberOfRequests`, expectedNumberOfRequests.toString());
