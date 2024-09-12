@@ -8,7 +8,7 @@ import org.dataland.datalandbackend.validator.PageRange
  */
 interface ExtendedDocumentReference : BaseDocumentReference {
 
-    @get:PageRange
+    @PageRange
     val page: String?
 
     val tagName: String?

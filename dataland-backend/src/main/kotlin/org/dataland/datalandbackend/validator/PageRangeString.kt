@@ -9,8 +9,7 @@ import kotlin.reflect.KClass
 /**
  * Annotation for validating a page range as a string.
  */
-@Target(AnnotationTarget.PROPERTY_GETTER)
-@Retention(AnnotationRetention.RUNTIME)
+@Target(AnnotationTarget.PROPERTY)
 @Constraint(validatedBy = [PageRangeValidator::class])
 annotation class PageRange(
     val message: String = "Valid inputs are a positive number or a range of two ascending positive numbers separated " +
