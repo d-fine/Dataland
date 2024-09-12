@@ -20,7 +20,7 @@ import java.util.*
 interface QaReportsMetadataApi {
     /**
      * A method to retrieve metadata of QA reports based on filters
-     * @param uploaderIds A list of uploaders' userIds
+     * @param uploaderUserIds A list of uploaders' userIds
      * @param showOnlyActive Flag whether to show only active QA reports or not
      * @param qaStatus A list of QA status
      * @param startDate start date of the time frame
@@ -43,7 +43,7 @@ interface QaReportsMetadataApi {
         produces = ["application/json"],
     )
     fun getQaReportsMetadata(
-        @RequestParam uploaderIds: Set<UUID>? = null,
+        @RequestParam uploaderUserIds: Set<UUID>? = null,
         @RequestParam(defaultValue = "true") showOnlyActive: Boolean,
         @RequestParam qaStatus: Set<QaStatus>? = null,
         @RequestParam
