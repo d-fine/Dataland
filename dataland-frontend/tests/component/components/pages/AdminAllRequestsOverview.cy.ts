@@ -234,7 +234,7 @@ describe('Component test for the admin-requests-overview page', () => {
     cy.get('[data-test=requests-datatable]').within(() => {
       cy.get('tr:last').click();
     });
-    cy.wrap(mounted.component).its('$route.path').should('eq', '/bulkdatarequest');
+    cy.wrap(mounted.component).its('$route.path').should('eq', `/requests/${dataRequestIdOfLastElement}/`);
   }
 
   it('Filtering for an email address works as expected', () => {
