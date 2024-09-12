@@ -6,8 +6,8 @@ import { getMountingFunction } from '@ct/testUtils/Mount';
 import { AccessStatus, type ExtendedStoredDataRequest, RequestStatus } from '@clients/communitymanager';
 import { faker } from '@faker-js/faker';
 import { humanizeStringOrNumber } from '@/utils/StringFormatter';
-import {VueWrapper} from "@vue/test-utils";
-import {CreateComponentPublicInstance, ExtractPropTypes} from "vue";
+import { VueWrapper } from '@vue/test-utils';
+import { CreateComponentPublicInstance, ExtractPropTypes } from 'vue';
 
 describe('Component test for the admin-requests-overview page', () => {
   let mockRequests: ExtendedStoredDataRequest[];
@@ -71,16 +71,15 @@ describe('Component test for the admin-requests-overview page', () => {
         roles: [KEYCLOAK_ROLE_ADMIN],
         userId: crypto.randomUUID(),
       }),
-    })(AdminAllRequestsOverview).then((mounted) => {
-        assertNumberOfSearchResults(expectedNumberOfRequests);
-        mockRequests.forEach((extendedStoredDataRequest) => {
-          if (extendedStoredDataRequest.userEmailAddress) {
-            assertEmailAddressExistsInSearchResults(extendedStoredDataRequest.userEmailAddress);
-          }
-        });
-        return mounted
-    })
-    return mountedComponent
+    })(AdminAllRequestsOverview);
+
+    assertNumberOfSearchResults(expectedNumberOfRequests);
+    mockRequests.forEach((extendedStoredDataRequest) => {
+      if (extendedStoredDataRequest.userEmailAddress) {
+        assertEmailAddressExistsInSearchResults(extendedStoredDataRequest.userEmailAddress);
+      }
+    });
+    return mountedComponent;
   }
 
   /**
@@ -227,14 +226,11 @@ describe('Component test for the admin-requests-overview page', () => {
   function validateRowClickEvent(mounted: Cypress.Chainable): void {
     const dataRequestIdOfLastElement = mockRequests[mockRequests.length - 1].dataRequestId;
 
-    cy.intercept('**/requests/' + dataRequestIdOfLastElement).as('fetchDetailsOfRequest');
-
-    cy.wait(2000);
-
     cy.get('[data-test=requests-datatable]').within(() => {
       cy.get('tr:last').click();
     });
-    cy.wrap(mounted.component).its('$route.path').should('eq', `/requests/${dataRequestIdOfLastElement}/`);
+    // eslint-disable-next-line
+    cy.wrap(mounted.component).its('$route.path').should('eq', `/requests/${dataRequestIdOfLastElement}`);
   }
 
   it('Filtering for an email address works as expected', () => {
@@ -268,6 +264,5 @@ describe('Component test for the admin-requests-overview page', () => {
     mountAdminAllRequestsPageWithMocks().then((mounted) => {
       validateRowClickEvent(mounted);
     });
-
   });
 });
