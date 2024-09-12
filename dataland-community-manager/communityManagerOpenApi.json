@@ -669,18 +669,22 @@
             "in": "query",
             "required": false,
             "schema": {
-              "type": "string",
-              "enum": [
-                "eutaxonomy-financials",
-                "eutaxonomy-non-financials",
-                "lksg",
-                "p2p",
-                "sfdr",
-                "vsme",
-                "esg-questionnaire",
-                "heimathafen",
-                "additional-company-information"
-              ]
+              "uniqueItems": true,
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "eutaxonomy-financials",
+                  "eutaxonomy-non-financials",
+                  "lksg",
+                  "p2p",
+                  "sfdr",
+                  "vsme",
+                  "esg-questionnaire",
+                  "heimathafen",
+                  "additional-company-information"
+                ]
+              }
             }
           },
           {
@@ -692,11 +696,23 @@
             }
           },
           {
+            "name": "emailAddress",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
             "name": "requestStatus",
             "in": "query",
             "required": false,
             "schema": {
-              "$ref": "#/components/schemas/RequestStatus"
+              "uniqueItems": true,
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/RequestStatus"
+              }
             }
           },
           {
@@ -704,7 +720,11 @@
             "in": "query",
             "required": false,
             "schema": {
-              "$ref": "#/components/schemas/AccessStatus"
+              "uniqueItems": true,
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/AccessStatus"
+              }
             }
           },
           {
@@ -868,6 +888,138 @@
                   "items": {
                     "$ref": "#/components/schemas/ExtendedStoredDataRequest"
                   }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
+    "/requests/numberOfRequests": {
+      "get": {
+        "tags": [
+          "request-controller"
+        ],
+        "summary": "Get the number of requests based on filters.",
+        "description": "Get the number of requests based on filters.",
+        "operationId": "getNumberOfRequests",
+        "parameters": [
+          {
+            "name": "dataType",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "uniqueItems": true,
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "eutaxonomy-financials",
+                  "eutaxonomy-non-financials",
+                  "lksg",
+                  "p2p",
+                  "sfdr",
+                  "vsme",
+                  "esg-questionnaire",
+                  "heimathafen",
+                  "additional-company-information"
+                ]
+              }
+            }
+          },
+          {
+            "name": "userId",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "emailAddress",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "requestStatus",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "uniqueItems": true,
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/RequestStatus"
+              }
+            }
+          },
+          {
+            "name": "accessStatus",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "uniqueItems": true,
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/AccessStatus"
+              }
+            }
+          },
+          {
+            "name": "reportingPeriod",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "datalandCompanyId",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "TODO.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "integer",
+                  "format": "int32"
                 }
               }
             }

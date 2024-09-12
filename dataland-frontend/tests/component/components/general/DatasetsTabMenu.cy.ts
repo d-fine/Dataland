@@ -1,7 +1,7 @@
 import DatasetsTabMenu from '@/components/general/DatasetsTabMenu.vue';
 import { minimalKeycloakMock } from '@ct/testUtils/Keycloak';
 import { CompanyRole, type CompanyRoleAssignment } from '@clients/communitymanager';
-import { KEYCLOAK_ROLE_REVIEWER, KEYCLOAK_ROLE_USER } from '@/utils/KeycloakUtils';
+import { KEYCLOAK_ROLE_ADMIN, KEYCLOAK_ROLE_REVIEWER, KEYCLOAK_ROLE_USER } from '@/utils/KeycloakUtils';
 import { getMountingFunction } from '@ct/testUtils/Mount';
 
 describe('Component tests for the tab used by logged-in users to switch pages', () => {
@@ -14,6 +14,7 @@ describe('Component tests for the tab used by logged-in users to switch pages', 
   enum RoleBasedTabs {
     Qa = 'QA',
     DataAccessRequests = 'DATA REQUESTS FOR MY COMPANIES',
+    AllDataRequests = 'ALL DATA REQUESTS',
   }
 
   const dummyUserId = 'mock-user-id';
@@ -23,28 +24,28 @@ describe('Component tests for the tab used by logged-in users to switch pages', 
    * Mounts the Dataland navigation tab with a specific authentication
    * @param keycloakRoles of the logged-in user that sees the tab
    * @param companyRoleAssignments for the logged-in user that sees the tab
-   * @param indexOfHighlightedTab sets which tab is highlighted as if the user had clicked on it
    */
   function mountDatasetsTabMenuWithAuthentication(
     keycloakRoles: string[],
-    companyRoleAssignments: CompanyRoleAssignment[],
-    indexOfHighlightedTab: number
+    companyRoleAssignments: CompanyRoleAssignment[]
   ): void {
-    getMountingFunction()(DatasetsTabMenu, {
+    getMountingFunction({
       keycloak: minimalKeycloakMock({
         authenticated: true,
         roles: keycloakRoles,
         userId: dummyUserId,
       }),
+    })(DatasetsTabMenu, {
       global: {
         provide: {
           companyRoleAssignments: companyRoleAssignments,
         },
       },
       props: {
-        initialTabIndex: indexOfHighlightedTab,
+        initialTabIndex: 0,
       },
     });
+    assertCompaniesTabIsHighlighted();
   }
 
   /**
@@ -58,14 +59,10 @@ describe('Component tests for the tab used by logged-in users to switch pages', 
   }
 
   /**
-   * Checks if the tab with the defined text is highlighted or not
-   * @param textInTab that shall be checked
-   * @param isTabExpectedToBeHighlighted describes if the tab is expected to be highlighted on the navigation bar
+   * Asserts if the 'Companies' tab is highlighted
    */
-  function isTabHighlighted(textInTab: string, isTabExpectedToBeHighlighted: boolean): void {
-    cy.get(`li[data-pc-name="tabpanel"][data-p-active="${isTabExpectedToBeHighlighted}"]`)
-      .contains(textInTab)
-      .should('exist');
+  function assertCompaniesTabIsHighlighted(): void {
+    cy.get(`li[data-pc-name="tabpanel"][data-p-active="true"]`).contains(AlwaysVisibleTabs.Companies).should('exist');
   }
 
   /**
@@ -78,12 +75,11 @@ describe('Component tests for the tab used by logged-in users to switch pages', 
   }
 
   it('Validate tabs for a logged-in Dataland-Reader with no company role assignments', function () {
-    mountDatasetsTabMenuWithAuthentication([KEYCLOAK_ROLE_USER], [], 0);
+    mountDatasetsTabMenuWithAuthentication([KEYCLOAK_ROLE_USER], []);
     assertThatStandardTabsAreAllVisible();
     for (const tabText of Object.values(RoleBasedTabs)) {
       isTabVisible(tabText, false);
     }
-    isTabHighlighted(AlwaysVisibleTabs.Companies, true);
   });
 
   it('Validate tabs for a logged-in Dataland-Reader with company ownership', function () {
@@ -94,18 +90,32 @@ describe('Component tests for the tab used by logged-in users to switch pages', 
         userId: dummyUserId,
       },
     ];
-    mountDatasetsTabMenuWithAuthentication([KEYCLOAK_ROLE_USER], companyRoleAssignments, 4);
+    mountDatasetsTabMenuWithAuthentication([KEYCLOAK_ROLE_USER], companyRoleAssignments);
     assertThatStandardTabsAreAllVisible();
+
     isTabVisible(RoleBasedTabs.Qa, false);
+    isTabVisible(RoleBasedTabs.AllDataRequests, false);
+
     isTabVisible(RoleBasedTabs.DataAccessRequests, true);
-    isTabHighlighted(RoleBasedTabs.DataAccessRequests, true);
   });
 
   it('Validate tabs for a logged-in Dataland-Reviewer with no company role assignments', function () {
-    mountDatasetsTabMenuWithAuthentication([KEYCLOAK_ROLE_REVIEWER], [], 2);
+    mountDatasetsTabMenuWithAuthentication([KEYCLOAK_ROLE_REVIEWER], []);
     assertThatStandardTabsAreAllVisible();
-    isTabVisible(RoleBasedTabs.Qa, true);
+
+    isTabVisible(RoleBasedTabs.AllDataRequests, false);
     isTabVisible(RoleBasedTabs.DataAccessRequests, false);
-    isTabHighlighted(RoleBasedTabs.Qa, true);
+
+    isTabVisible(RoleBasedTabs.Qa, true);
+  });
+
+  it('Validate tabs for a logged-in Dataland-Admin with no company role assignments', function () {
+    mountDatasetsTabMenuWithAuthentication([KEYCLOAK_ROLE_REVIEWER, KEYCLOAK_ROLE_ADMIN], []);
+    assertThatStandardTabsAreAllVisible();
+
+    isTabVisible(RoleBasedTabs.DataAccessRequests, false);
+
+    isTabVisible(RoleBasedTabs.Qa, true);
+    isTabVisible(RoleBasedTabs.AllDataRequests, true);
   });
 });

@@ -2,6 +2,7 @@ package org.dataland.datalandcommunitymanager.controller
 
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandcommunitymanager.api.RequestApi
+import org.dataland.datalandcommunitymanager.model.companyRoles.CompanyRole
 import org.dataland.datalandcommunitymanager.model.dataRequest.AccessStatus
 import org.dataland.datalandcommunitymanager.model.dataRequest.AggregatedDataRequest
 import org.dataland.datalandcommunitymanager.model.dataRequest.BulkDataRequest
@@ -17,8 +18,9 @@ import org.dataland.datalandcommunitymanager.services.DataAccessManager
 import org.dataland.datalandcommunitymanager.services.DataRequestAlterationManager
 import org.dataland.datalandcommunitymanager.services.DataRequestQueryManager
 import org.dataland.datalandcommunitymanager.services.SingleDataRequestManager
-import org.dataland.datalandcommunitymanager.utils.DataRequestsQueryFilter
+import org.dataland.datalandcommunitymanager.utils.DataRequestsFilter
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
+import org.dataland.keycloakAdapter.auth.DatalandRealmRole
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.RestController
@@ -30,6 +32,7 @@ import java.util.UUID
  */
 
 @RestController
+@Suppress("LongParameterList")
 class RequestController(
     @Autowired private val bulkDataRequestManager: BulkDataRequestManager,
     @Autowired private val singleDataRequestManager: SingleDataRequestManager,
@@ -77,35 +80,51 @@ class RequestController(
     }
 
     override fun getDataRequests(
-        dataType: DataTypeEnum?,
+        dataType: Set<DataTypeEnum>?,
         userId: String?,
-        requestStatus: RequestStatus?,
-        accessStatus: AccessStatus?,
+        emailAddress: String?,
+        requestStatus: Set<RequestStatus>?,
+        accessStatus: Set<AccessStatus>?,
         reportingPeriod: String?,
         datalandCompanyId: String?,
         chunkSize: Int,
         chunkIndex: Int,
     ): ResponseEntity<List<ExtendedStoredDataRequest>> {
-        val currentUserId = DatalandAuthentication.fromContext().userId
-        val companyRoleAssignmentsOfCurrentUser =
-            companyRolesManager.getCompanyRoleAssignmentsByParameters(null, null, userId = currentUserId)
-        val filter = DataRequestsQueryFilter(
-            dataTypeFilter = dataType?.value ?: "",
-            userIdFilter = userId ?: "",
-            requestStatus = requestStatus?.name ?: "",
-            accessStatus = accessStatus?.name ?: "",
-            reportingPeriodFilter = reportingPeriod ?: "",
-            datalandCompanyIdFilter = datalandCompanyId ?: "",
+        val filter = DataRequestsFilter(
+            dataType, userId, emailAddress, datalandCompanyId, reportingPeriod, requestStatus, accessStatus,
         )
+
+        val authenticationContext = DatalandAuthentication.fromContext()
+
+        val ownedCompanyIdsByUser = companyRolesManager
+            .getCompanyRoleAssignmentsByParameters(CompanyRole.CompanyOwner, null, authenticationContext.userId)
+            .map { it.companyId }
+
         return ResponseEntity.ok(
             dataRequestQueryManager.getDataRequests(
+                authenticationContext.roles.contains(DatalandRealmRole.ROLE_ADMIN),
+                ownedCompanyIdsByUser,
                 filter,
-                companyRoleAssignmentsOfCurrentUser,
                 chunkIndex,
                 chunkSize,
-
             ),
         )
+    }
+
+    override fun getNumberOfRequests(
+        dataType: Set<DataTypeEnum>?,
+        userId: String?,
+        emailAddress: String?,
+        requestStatus: Set<RequestStatus>?,
+        accessStatus: Set<AccessStatus>?,
+        reportingPeriod: String?,
+        datalandCompanyId: String?,
+    ): ResponseEntity<Int> {
+        val filter = DataRequestsFilter(
+            dataType, userId, emailAddress, datalandCompanyId, reportingPeriod, requestStatus, accessStatus,
+        )
+
+        return ResponseEntity.ok(dataRequestQueryManager.getNumberOfDataRequests(filter))
     }
 
     override fun hasAccessToDataset(companyId: UUID, dataType: String, reportingPeriod: String, userId: UUID) {

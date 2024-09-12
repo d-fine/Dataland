@@ -302,7 +302,10 @@ export default defineComponent({
               undefined,
               undefined,
               undefined,
-              companyId
+              undefined,
+              companyId,
+              undefined,
+              undefined
             );
             return response.data;
           } catch (error) {
