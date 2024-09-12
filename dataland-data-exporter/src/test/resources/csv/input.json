@@ -1,5 +1,7 @@
 {
-  "companyId": "123",
-  "companyName": "Corp Inc.",
-  "Lei": "456"
+  "presentMapping": "Here",
+  "notMapped": "NotMapped",
+  "nested": {
+    "nestedMapping": "NestedHere"
+  }
 }

@@ -70,13 +70,17 @@ class CsvExporter {
         val csvData = mutableMapOf<String, String>()
         transformationRules.forEach { (jsonPath, csvHeader) ->
             if (csvHeader.isEmpty()) return@forEach
-            if (jsonNode.get(jsonPath) == null) {
-                csvData[csvHeader] = ""
-            } else {
-                csvData[csvHeader] = jsonNode.get(jsonPath).textValue()
-            }
+            csvData[csvHeader] = getValueFromJsonNode(jsonNode, jsonPath)
         }
         return csvData
+    }
+
+    fun getValueFromJsonNode(jsonNode: JsonNode, jsonPath: String): String {
+        var currentNode = jsonNode
+        jsonPath.split(".").forEach() { path ->
+            currentNode = currentNode.get(path) ?: return ""
+        }
+        return currentNode.textValue()
     }
 
     // Todo Add config object instead of passing the headers, file and separator?
