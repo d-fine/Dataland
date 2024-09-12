@@ -31,6 +31,18 @@ data class DataMetaInformationSearchFilter(
     val shouldFilterByReportingPeriod: Boolean
         get() = !reportingPeriod.isNullOrEmpty()
 
+    val preparedReportingPeriod: String
+        get() = reportingPeriod ?: ""
+
     val shouldFilterByUploaderUserIds: Boolean
         get() = !uploaderUserIds.isNullOrEmpty()
+
+    val preparedUploaderUserIds: List<String>
+        get() = uploaderUserIds?.map { it.toString() } ?: listOf()
+
+    val shouldFilterByQaStatus: Boolean
+        get() = qaStatus != null
+
+    val preparedQaStatus: String
+        get() = qaStatus?.name ?: ""
 }

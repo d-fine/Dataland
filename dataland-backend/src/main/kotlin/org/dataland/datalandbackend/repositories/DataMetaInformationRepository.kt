@@ -20,18 +20,23 @@ interface DataMetaInformationRepository : JpaRepository<DataMetaInformationEntit
      * If dataType is not empty, then only metaInformation for data with that dataType is returned
      * If an invalid dataType is supplied, no results are returned (but no error is thrown)
      * If reportingPeriod is not empty, then only metaInformation for data with for that reportingPeriod is returned
+     * TODO adjust
      */
     @Query(
         "SELECT dataMetaInformation FROM DataMetaInformationEntity dataMetaInformation " +
             "WHERE " +
-            "(:#{#searchFilter.companyIdFilterLength} = 0 " +
-            "OR dataMetaInformation.company.companyId = :#{#searchFilter.companyIdFilter}) AND " +
-            "(:#{#searchFilter.dataTypeFilterLength} = 0 " +
-            "OR dataMetaInformation.dataType = :#{#searchFilter.dataTypeFilter}) AND " +
-            "(:#{#searchFilter.reportingPeriodFilterLength} = 0 " +
-            "OR dataMetaInformation.reportingPeriod = :#{#searchFilter.reportingPeriodFilter}) AND " +
+            "(:#{#searchFilter.shouldFilterByCompanyId} = false " +
+            "OR dataMetaInformation.company.companyId = :#{#searchFilter.preparedCompanyId}) AND " +
+            "(:#{#searchFilter.shouldFilterByDataType} = false " +
+            "OR dataMetaInformation.dataType = :#{#searchFilter.preparedDataType}) AND " +
+            "(:#{#searchFilter.shouldFilterByReportingPeriod} = false " +
+            "OR dataMetaInformation.reportingPeriod = :#{#searchFilter.preparedReportingPeriod}) AND " +
             "(:#{#searchFilter.onlyActive} = false " +
-            "OR dataMetaInformation.currentlyActive = true)",
+            "OR dataMetaInformation.currentlyActive = true) AND " +
+            "(:#{#searchFilter.shouldFilterByUploaderUserIds} = false " +
+            "OR dataMetaInformation.uploaderUserId IN :#{#searchFilter.preparedUploaderUserIds}) AND " +
+            "(:#{#searchFilter.shouldFilterByQaStatus} OR " +
+            "dataMetaInformation.qaStatus = :#{#searchFilter.preparedQaStatus})",
     )
     fun searchDataMetaInformation(
         @Param("searchFilter") searchFilter: DataMetaInformationSearchFilter,
