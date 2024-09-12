@@ -27,7 +27,7 @@ class PageRangeStringTest {
         val invalidInputs = listOf("0", "01", "-1", "abc", "3-2", "5-5", "0-10", "4--2", "abc-def")
         invalidInputs.forEach {
             val violations = validator.validate(PageRangeHolder(it))
-            assert(violations.size == 1) { "Expected 1 violation for invalid input: $it" }
+            assert(violations.size == 1) { "Expected 1 violation for invalid input of type: $it" }
         }
     }
 }
