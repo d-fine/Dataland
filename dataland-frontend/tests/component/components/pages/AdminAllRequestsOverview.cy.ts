@@ -6,8 +6,6 @@ import { getMountingFunction } from '@ct/testUtils/Mount';
 import { AccessStatus, type ExtendedStoredDataRequest, RequestStatus } from '@clients/communitymanager';
 import { faker } from '@faker-js/faker';
 import { humanizeStringOrNumber } from '@/utils/StringFormatter';
-import { VueWrapper } from '@vue/test-utils';
-import { CreateComponentPublicInstance, ExtractPropTypes } from 'vue';
 
 describe('Component test for the admin-requests-overview page', () => {
   let mockRequests: ExtendedStoredDataRequest[];
@@ -222,6 +220,7 @@ describe('Component test for the admin-requests-overview page', () => {
 
   /**
    * Validate the rowClick event
+   * @param mounted
    */
   function validateRowClickEvent(mounted: Cypress.Chainable): void {
     const dataRequestIdOfLastElement = mockRequests[mockRequests.length - 1].dataRequestId;
@@ -229,7 +228,7 @@ describe('Component test for the admin-requests-overview page', () => {
     cy.get('[data-test=requests-datatable]').within(() => {
       cy.get('tr:last').click();
     });
-    // eslint-disable-next-line
+    //@ts-ignore
     cy.wrap(mounted.component).its('$route.path').should('eq', `/requests/${dataRequestIdOfLastElement}`);
   }
 
