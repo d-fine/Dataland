@@ -500,7 +500,7 @@ services:
     networks:
       - internal
     environment:
-      <<: [*mailjet-api-id-and-secret, *rabbit-mq-user-and-pass]
+      <<: [ *mailjet-api-id-and-secret, *rabbit-mq-user-and-pass ]
       PROXY_PRIMARY_URL: ${PROXY_PRIMARY_URL:-local-dev.dataland.com}
       INTERNAL_BACKEND_URL: ${INTERNAL_BACKEND_URL:-http://backend:8080/api}
       NOTIFICATION_INTERNAL_RECEIVERS: ${NOTIFICATION_INTERNAL_RECEIVERS}
@@ -519,7 +519,7 @@ services:
       INTERNAL_EURODATCLIENT_URL: ${INTERNAL_EURODATCLIENT_URL:-http://eurodat-client:8080}
       IGNORE_EXTERNAL_STORAGE_ERROR: ${IGNORE_EXTERNAL_STORAGE_ERROR:-false}
     extra_hosts:
-     - "host.docker.internal:host-gateway"
+      - "host.docker.internal:host-gateway"
   eurodat-client:
     restart: always
     profiles: [ "production", "development" ]
@@ -557,6 +557,17 @@ services:
       test: [ "CMD-SHELL", "pg_isready || false" ]
       interval: 30s
       timeout: 3s
+  data-exporter:
+    restart: always
+    profiles: [ "production", "testing", "development" ]
+    networks:
+      - internal
+    image: ${DATA_EXPORTER_IMAGE:-ghcr.io/d-fine/dataland/dataland_data_exporter_test:${DATALAND_DATA_EXPORTER_VERSION}}
+    expose:
+      - "8080"
+    <<: *uncritical-constants-env
+    environment:
+      PROXY_PRIMARY_URL: ${PROXY_PRIMARY_URL:-local-dev.dataland.com}
 networks:
   internal:
   external:

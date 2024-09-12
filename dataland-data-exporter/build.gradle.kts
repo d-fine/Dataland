@@ -1,4 +1,4 @@
-// dataland-api-key-manager
+// dataland-data-exporter
 
 val sonarSources by extra(sourceSets.asMap.values.flatMap { sourceSet -> sourceSet.allSource })
 val jacocoSources by extra(sonarSources)
@@ -45,10 +45,10 @@ dependencies {
 }
 
 openApi {
-    outputFileName.set("$projectDir/apiKeyManagerOpenApi.json")
-    apiDocsUrl.set("http://localhost:8483/api-keys/v3/api-docs")
+    outputFileName.set("$projectDir/dataExporterOpenApi.json")
+    apiDocsUrl.set("http://localhost:8489/data-exporter/v3/api-docs")
     customBootRun {
-        args.set(listOf("--spring.profiles.active=nodb", "--server.port=8483"))
+        args.set(listOf("--server.port=8489"))
     }
     waitTimeInSeconds.set(openApiGeneratorTimeOutThresholdInSeconds.toInt())
 }

@@ -4,9 +4,9 @@ import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.dataformat.csv.CsvMapper
 import com.fasterxml.jackson.dataformat.csv.CsvSchema
+import org.springframework.stereotype.Component
 import java.io.File
 import java.util.Properties
-import org.springframework.stereotype.Component
 
 /**
  * A class for handling the transformation of JSON files into CSV
