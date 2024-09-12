@@ -103,12 +103,13 @@
             type="text"
             name="page"
             placeholder="Page(s)"
-            v-model="pageForFileReference"
+            v-model="currentPageValue"
             :validation-messages="{
               validatePageNumber: pageNumberValidationErrorMessage,
             }"
             :validation-rules="{ validatePageNumber }"
             validation="validatePageNumber"
+            ignore="true"
           />
         </div>
       </div>
@@ -171,7 +172,6 @@ export default defineComponent({
   data: () => ({
     pageNumberDescription: PAGE_NUMBER_DESCRIPTION,
     pageNumberValidationErrorMessage: PAGE_NUMBER_VALIDATION_ERROR_MESSAGE,
-    pageForFileReference: undefined as string | undefined,
     isMounted: false,
     dataPointIsAvailable: true,
     qualityOptions: Object.values(QualityOptions).map((qualityOption: string) => ({

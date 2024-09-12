@@ -61,6 +61,7 @@
             }"
             :validation-rules="{ validatePageNumber }"
             validation="validatePageNumber"
+            ignore="true"
           />
           <FormKit type="group" name="dataSource" v-if="isValidFileName(isMounted, currentReportValue)">
             <FormKit type="hidden" name="fileName" v-model="currentReportValue" />

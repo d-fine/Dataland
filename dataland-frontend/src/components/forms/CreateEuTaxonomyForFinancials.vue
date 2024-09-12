@@ -141,6 +141,7 @@
                                 }"
                                 :validation-rules="{ validatePageNumber }"
                                 validation="validatePageNumber"
+                                ignore="true"
                               />
                             </div>
                           </div>
