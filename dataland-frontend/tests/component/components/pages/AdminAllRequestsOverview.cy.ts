@@ -292,7 +292,7 @@ describe('Component test for the admin-requests-overview page', () => {
     validateResetButton();
   });
 
-  it.only('Check the functionality of the onPage event', () => {
+  it('Check the functionality of the onPage event', () => {
     mountAdminAllRequestsPageWithManyMocks();
     validateOnPageEvent();
   });
