@@ -103,7 +103,7 @@
             type="text"
             name="page"
             placeholder="Page(s)"
-            v-model="pageForFileReference"
+            v-model="currentPageValue"
             :validation-messages="{
               validatePageNumber: pageNumberValidationErrorMessage,
             }"
@@ -180,8 +180,8 @@ export default defineComponent({
     })),
     currentAmountValue: '',
     currentValue: '',
-    currentReportValue: null as string | null,
-    pageForFileReference: undefined as string | undefined,
+    currentReportValue: '',
+    currentPageValue: '',
     currentQualityValue: null as string | null,
     amountValueBeforeDataPointWasDisabled: '',
     valueBeforeDataPointWasDisabled: '',
@@ -197,16 +197,16 @@ export default defineComponent({
         this.amountValueBeforeDataPointWasDisabled = this.currentAmountValue;
         this.valueBeforeDataPointWasDisabled = this.currentValue;
         this.reportValueBeforeDataPointWasDisabled = this.currentReportValue;
-        this.pageValueBeforeDataPointWasDisabled = this.pageForFileReference;
+        this.pageValueBeforeDataPointWasDisabled = this.currentPageValue;
         this.qualityValueBeforeDataPointWasDisabled = this.currentQualityValue;
         this.currentAmountValue = '';
         this.currentValue = '';
         this.currentReportValue = '';
-        this.pageForFileReference = '';
+        this.currentPageValue = '';
         this.currentQualityValue = null;
       } else {
         this.currentQualityValue = this.qualityValueBeforeDataPointWasDisabled;
-        this.pageForFileReference = this.pageValueBeforeDataPointWasDisabled;
+        this.currentPageValue = this.pageValueBeforeDataPointWasDisabled;
         this.currentReportValue = this.reportValueBeforeDataPointWasDisabled;
         this.currentValue = this.valueBeforeDataPointWasDisabled;
         this.currentAmountValue = this.amountValueBeforeDataPointWasDisabled;

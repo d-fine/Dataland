@@ -402,7 +402,7 @@ export default defineComponent({
       formInputsModel: {} as CompanyAssociatedDataEuTaxonomyDataForFinancials,
       fiscalYearEndAsDate: null as Date | null,
       fiscalYearEnd: '',
-      currentReportValue: null as string | null,
+      currentReportValue: '' as string,
       reportingPeriod: undefined as undefined | Date,
       assuranceData: {
         None: humanizeStringOrNumber(AssuranceDataPointValueEnum.None),
