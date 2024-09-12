@@ -20,7 +20,8 @@ class CsvExporter {
     }
 
     /**
-     * A dummy function that reads a JSON file from the resources folder, transforms it into a CSV file and writes it to the resources folder.
+     * A dummy function that reads a JSON file from the resources folder,
+     * transforms it into a CSV file and writes it to the resources folder.
      * @return A string message
      */
     fun dummyFunction(): String {
