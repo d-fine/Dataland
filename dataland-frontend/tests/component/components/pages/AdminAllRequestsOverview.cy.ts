@@ -6,6 +6,8 @@ import { getMountingFunction } from '@ct/testUtils/Mount';
 import { AccessStatus, type ExtendedStoredDataRequest, RequestStatus } from '@clients/communitymanager';
 import { faker } from '@faker-js/faker';
 import { humanizeStringOrNumber } from '@/utils/StringFormatter';
+import {VueWrapper} from "@vue/test-utils";
+import {CreateComponentPublicInstance, ExtractPropTypes} from "vue";
 
 describe('Component test for the admin-requests-overview page', () => {
   let mockRequests: ExtendedStoredDataRequest[];
@@ -57,25 +59,28 @@ describe('Component test for the admin-requests-overview page', () => {
   /**
    * Mounts the page and asserts that the unfiltered list of all data requests is displayed
    */
-  function mountAdminAllRequestsPageWithMocks(): void {
+  function mountAdminAllRequestsPageWithMocks(): Cypress.Chainable {
     const expectedNumberOfRequests = mockRequests.length;
     cy.intercept('**/community/requests?chunkSize=100&chunkIndex=0', mockRequests).as('fetchInitialUnfilteredRequests');
     cy.intercept('**/community/requests/numberOfRequests', expectedNumberOfRequests.toString()).as(
       'fetchInitialUnfilteredNumberOfRequests'
     );
-    getMountingFunction({
+    const mountedComponent = getMountingFunction({
       keycloak: minimalKeycloakMock({
         authenticated: true,
         roles: [KEYCLOAK_ROLE_ADMIN],
         userId: crypto.randomUUID(),
       }),
-    })(AdminAllRequestsOverview);
-    assertNumberOfSearchResults(expectedNumberOfRequests);
-    mockRequests.forEach((extendedStoredDataRequest) => {
-      if (extendedStoredDataRequest.userEmailAddress) {
-        assertEmailAddressExistsInSearchResults(extendedStoredDataRequest.userEmailAddress);
-      }
-    });
+    })(AdminAllRequestsOverview).then((mounted) => {
+        assertNumberOfSearchResults(expectedNumberOfRequests);
+        mockRequests.forEach((extendedStoredDataRequest) => {
+          if (extendedStoredDataRequest.userEmailAddress) {
+            assertEmailAddressExistsInSearchResults(extendedStoredDataRequest.userEmailAddress);
+          }
+        });
+        return mounted
+    })
+    return mountedComponent
   }
 
   /**
@@ -98,9 +103,9 @@ describe('Component test for the admin-requests-overview page', () => {
    * Validates if filtering via email address substring works as expected
    */
   function validateEmailAddressFilter(): void {
-    const mockResposne = [mockRequests[0], mockRequests[3]];
-    const expectedNumberOfRequests = mockResposne.length;
-    cy.intercept(`**/community/requests?emailAddress=${mailSearchTerm}&chunkSize=100&chunkIndex=0`, mockResposne).as(
+    const mockResponse = [mockRequests[0], mockRequests[3]];
+    const expectedNumberOfRequests = mockResponse.length;
+    cy.intercept(`**/community/requests?emailAddress=${mailSearchTerm}&chunkSize=100&chunkIndex=0`, mockResponse).as(
       'fetchEmailFilteredRequests'
     );
     cy.intercept(`**/community/requests/numberOfRequests?emailAddress=ste`, expectedNumberOfRequests.toString()).as(
@@ -216,6 +221,22 @@ describe('Component test for the admin-requests-overview page', () => {
     assertEmailAddressExistsInSearchResults(mailDelta);
   }
 
+  /**
+   * Validate the rowClick event
+   */
+  function validateRowClickEvent(mounted: Cypress.Chainable): void {
+    const dataRequestIdOfLastElement = mockRequests[mockRequests.length - 1].dataRequestId;
+
+    cy.intercept('**/requests/' + dataRequestIdOfLastElement).as('fetchDetailsOfRequest');
+
+    cy.wait(2000);
+
+    cy.get('[data-test=requests-datatable]').within(() => {
+      cy.get('tr:last').click();
+    });
+    cy.wrap(mounted.component).its('$route.path').should('eq', '/bulkdatarequest');
+  }
+
   it('Filtering for an email address works as expected', () => {
     mountAdminAllRequestsPageWithMocks();
     validateEmailAddressFilter();
@@ -241,5 +262,12 @@ describe('Component test for the admin-requests-overview page', () => {
     mountAdminAllRequestsPageWithMocks();
     validateCombinedFilter();
     validateResetButton();
+  });
+
+  it.only('Check the functionality of the rowClick event', () => {
+    mountAdminAllRequestsPageWithMocks().then((mounted) => {
+      validateRowClickEvent(mounted);
+    });
+
   });
 });

@@ -67,6 +67,7 @@
                 v-if="currentDataRequests && currentDataRequests.length > 0"
                 v-show="!waitingForData"
                 ref="dataTable"
+                data-test="requests-datatable"
                 :value="currentDataRequests"
                 :paginator="true"
                 :lazy="true"
