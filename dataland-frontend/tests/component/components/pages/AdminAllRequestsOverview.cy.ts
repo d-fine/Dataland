@@ -56,6 +56,7 @@ describe('Component test for the admin-requests-overview page', () => {
 
   /**
    * Mounts the page and asserts that the unfiltered list of all data requests is displayed
+   * @returns mounted component as Chainable
    */
   function mountAdminAllRequestsPageWithMocks(): Cypress.Chainable {
     const expectedNumberOfRequests = mockRequests.length;
@@ -218,20 +219,6 @@ describe('Component test for the admin-requests-overview page', () => {
     assertEmailAddressExistsInSearchResults(mailDelta);
   }
 
-  /**
-   * Validate the rowClick event
-   * @param mounted
-   */
-  function validateRowClickEvent(mounted: Cypress.Chainable): void {
-    const dataRequestIdOfLastElement = mockRequests[mockRequests.length - 1].dataRequestId;
-
-    cy.get('[data-test=requests-datatable]').within(() => {
-      cy.get('tr:last').click();
-    });
-    //@ts-ignore
-    cy.wrap(mounted.component).its('$route.path').should('eq', `/requests/${dataRequestIdOfLastElement}`);
-  }
-
   it('Filtering for an email address works as expected', () => {
     mountAdminAllRequestsPageWithMocks();
     validateEmailAddressFilter();
@@ -259,9 +246,15 @@ describe('Component test for the admin-requests-overview page', () => {
     validateResetButton();
   });
 
-  it.only('Check the functionality of the rowClick event', () => {
-    mountAdminAllRequestsPageWithMocks().then((mounted) => {
-      validateRowClickEvent(mounted);
+  it('Check the functionality of the rowClick event', () => {
+    mountAdminAllRequestsPageWithMocks().then((chainable) => {
+      const dataRequestIdOfLastElement = mockRequests[mockRequests.length - 1].dataRequestId;
+
+      cy.get('[data-test=requests-datatable]').within(() => {
+        cy.get('tr:last').click();
+      });
+
+      cy.wrap(chainable.component).its('$route.path').should('eq', `/requests/${dataRequestIdOfLastElement}`);
     });
   });
 });
