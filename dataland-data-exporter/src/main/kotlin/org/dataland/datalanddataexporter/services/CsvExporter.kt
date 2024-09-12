@@ -40,9 +40,8 @@ class CsvExporter {
     fun getHeaders(transformationRules: Map<String, String>): List<String> {
         val headers = mutableListOf<String>()
         transformationRules.forEach { (_, csvHeader) -> if (csvHeader.isNotEmpty()) headers.add(csvHeader) }
-        if (headers.distinct().size != headers.size) {
-            throw IllegalArgumentException("Duplicate headers found in transformation rules.")
-        }
+        require(headers.isNotEmpty()) { "No headers found in transformation rules." }
+        require(headers.distinct().size == headers.size) { "Duplicate headers found in transformation rules." }
         return headers
     }
 
