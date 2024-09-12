@@ -9,6 +9,7 @@ import { humanizeStringOrNumber } from '@/utils/StringFormatter';
 
 describe('Component test for the admin-requests-overview page', () => {
   let mockRequests: ExtendedStoredDataRequest[];
+  const maxRows = 100;
 
   /**
    * Generates one ExtendedStoredDataRequest type object
@@ -40,10 +41,10 @@ describe('Component test for the admin-requests-overview page', () => {
   }
 
   const mailAlpha = 'stephanie@fake.com';
-  const mailSearchTerm = mailAlpha.substring(0, 3);
   const mailBeta = 'random@fake.com';
   const mailGamma = 'test123@fake.com';
   const mailDelta = 'steven@fake.com';
+  const mailSearchTerm = mailAlpha.substring(0, 3);
 
   before(function () {
     mockRequests = [
@@ -79,6 +80,35 @@ describe('Component test for the admin-requests-overview page', () => {
       }
     });
     return mountedComponent;
+  }
+
+  /**
+   *
+   */
+  function mountAdminAllRequestsPageWithManyMocks(): void {
+    for (let num = 1; num <= 100; num++) {
+      const dataType = faker.helpers.arrayElement([DataTypeEnum.Lksg, DataTypeEnum.P2p, DataTypeEnum.Vsme]);
+      const email = faker.helpers.arrayElement([mailAlpha, mailBeta, mailGamma, mailDelta]);
+      const requestStatus = faker.helpers.arrayElement([
+        RequestStatus.Open,
+        RequestStatus.Answered,
+        RequestStatus.Withdrawn,
+      ]);
+      mockRequests.push(generateExtendedStoredDataRequest(email, dataType, requestStatus, AccessStatus.Public));
+    }
+
+    const expectedNumberOfRequests = mockRequests.length;
+    cy.intercept('**/community/requests?chunkSize=100&chunkIndex=0', mockRequests.slice(0, 100));
+    cy.intercept('**/community/requests/numberOfRequests', expectedNumberOfRequests.toString());
+
+    getMountingFunction({
+      keycloak: minimalKeycloakMock({
+        authenticated: true,
+        roles: [KEYCLOAK_ROLE_ADMIN],
+        userId: crypto.randomUUID(),
+      }),
+    })(AdminAllRequestsOverview);
+    assertNumberOfSearchResults(maxRows);
   }
 
   /**
@@ -175,7 +205,7 @@ describe('Component test for the admin-requests-overview page', () => {
       mockResponse
     ).as('fetchCombinedFilteredRequests');
     cy.intercept(
-      `**/community/requests/numberOfRequests?dataType=sfdr&emailAddress=ste`,
+      `**/community/requests/numberOfRequests?dataType=${frameworkToFilterFor}&emailAddress=${mailSearchTerm}`,
       expectedNumberOfRequests.toString()
     ).as('fetchCombinedFilteredNumberOfRequests');
 
@@ -201,6 +231,22 @@ describe('Component test for the admin-requests-overview page', () => {
     assertNumberOfSearchResults(expectedNumberOfRequests);
     assertEmailAddressExistsInSearchResults(mailAlpha);
     assertEmailAddressExistsInSearchResults(mailDelta);
+  }
+
+  /**
+   * Validates onPage Event
+   */
+  function validateOnPageEvent(): void {
+    const secondPageMockResponse = mockRequests.slice(100);
+    const expectedNumberOfRequests = mockRequests.length;
+    const expectedNumberOfRows = secondPageMockResponse.length;
+    cy.intercept(`**/community/requests?chunkSize=100&chunkIndex=1`, secondPageMockResponse).as('fetchRequests');
+    cy.intercept(`**/community/requests/numberOfRequests`, expectedNumberOfRequests.toString());
+
+    cy.get(`button[aria-label="Page 2"]`).click();
+
+    cy.wait('@fetchRequests');
+    assertNumberOfSearchResults(expectedNumberOfRows);
   }
 
   /**
@@ -244,6 +290,11 @@ describe('Component test for the admin-requests-overview page', () => {
     mountAdminAllRequestsPageWithMocks();
     validateCombinedFilter();
     validateResetButton();
+  });
+
+  it.only('Check the functionality of the onPage event', () => {
+    mountAdminAllRequestsPageWithManyMocks();
+    validateOnPageEvent();
   });
 
   it('Check the functionality of the rowClick event', () => {
