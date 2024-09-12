@@ -110,6 +110,7 @@
             :validation-rules="{ validatePageNumber }"
             validation="validatePageNumber"
             ignore="true"
+            :disabled="!dataPointIsAvailable"
           />
         </div>
       </div>
@@ -225,11 +226,11 @@ export default defineComponent({
     },
     filteredPageForFileReference: {
       get() {
-        return this.pageForFileReference === '' ? undefined : this.pageForFileReference;
+        return this.currentPageValue === '' ? undefined : this.currentPageValue;
       },
 
       set(newValue: undefined | string) {
-        this.pageForFileReference = newValue;
+        this.currentPageValue = newValue;
       },
     },
   },

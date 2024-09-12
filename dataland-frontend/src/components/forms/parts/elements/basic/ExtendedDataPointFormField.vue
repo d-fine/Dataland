@@ -170,9 +170,9 @@ export default defineComponent({
       })),
       qualityValue: null as null | string,
       commentValue: '',
-      currentReportValue: null as string | null,
+      currentReportValue: undefined as string | undefined,
       dataPoint: {} as ExtendedDataPoint<unknown>,
-      currentValue: null as string | null,
+      currentValue: undefined as string | undefined,
       checkboxValue: [] as Array<string>,
       firstAssignmentWhileEditModeWasDone: false,
       pageForFileReference: undefined as string | undefined,
@@ -263,7 +263,7 @@ export default defineComponent({
         this.currentValue = checkboxValue[0];
       } else {
         this.dataPointIsAvailable = false;
-        this.currentValue = null;
+        this.currentValue = undefined;
         this.dataPoint = {};
       }
     },

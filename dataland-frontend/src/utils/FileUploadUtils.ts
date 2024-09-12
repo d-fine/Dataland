@@ -121,7 +121,7 @@ export function calculateReferenceableFiles(inputArray: DocumentToUpload[] | Sto
  * @returns fileReference of the given fileName
  */
 export function getFileReferenceByFileName(
-  currentReportValue: string | null,
+  currentReportValue: string | null | undefined,
   injectReportsNameAndReferences: ObjectType
 ): string {
   if (currentReportValue && currentReportValue in injectReportsNameAndReferences) {
