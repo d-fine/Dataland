@@ -562,7 +562,7 @@ services:
     profiles: [ "production", "testing", "development" ]
     networks:
       - internal
-    image: ${DATA_EXPORTER_IMAGE:-ghcr.io/d-fine/dataland/dataland_data_exporter_test:${DATALAND_DATA_EXPORTER_VERSION}}
+    image: ${DATA_EXPORTER_IMAGE:-ghcr.io/d-fine/dataland/dataland_data_exporter_test:${DATALAND_DATA_EXPORTER_TEST_VERSION}}
     expose:
       - "8080"
     <<: *uncritical-constants-env
