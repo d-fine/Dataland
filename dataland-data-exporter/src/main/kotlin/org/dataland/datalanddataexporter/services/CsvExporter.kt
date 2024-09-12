@@ -19,6 +19,10 @@ class CsvExporter {
         return ObjectMapper().readTree(File(inputFilePath))
     }
 
+    /**
+     * A dummy function that reads a JSON file from the resources folder, transforms it into a CSV file and writes it to the resources folder.
+     * @return A string message
+     */
     fun dummyFunction(): String {
         val jsonNode = readJsonFileFromResourceFolder()
         val transformationRules = readTransformationConfig("transformation.config")
@@ -29,6 +33,11 @@ class CsvExporter {
         return "Hello World!"
     }
 
+    /**
+     * Reads a transformation configuration file and returns a map of JSON paths to CSV headers.
+     * @param fileName The name of the transformation configuration file
+     * @return A map of JSON paths to CSV headers
+     */
     fun readTransformationConfig(fileName: String): Map<String, String> {
         val props = Properties()
         props.load(this.javaClass.classLoader.getResourceAsStream(fileName))
@@ -37,6 +46,11 @@ class CsvExporter {
             .toMap()
     }
 
+    /**
+     * Gets the headers from the transformation rules.
+     * @param transformationRules The transformation rules
+     * @return A list of headers
+     */
     fun getHeaders(transformationRules: Map<String, String>): List<String> {
         val headers = mutableListOf<String>()
         transformationRules.forEach { (_, csvHeader) -> if (csvHeader.isNotEmpty()) headers.add(csvHeader) }
@@ -45,6 +59,12 @@ class CsvExporter {
         return headers
     }
 
+    /**
+     * Maps a JSON node to a CSV.
+     * @param jsonNode The JSON node
+     * @param transformationRules The transformation rules
+     * @return A map of CSV headers to values
+     */
     fun mapJsonToCsv(jsonNode: JsonNode, transformationRules: Map<String, String>): Map<String, String> {
         val csvData = mutableMapOf<String, String>()
         transformationRules.forEach { (jsonPath, csvHeader) ->
@@ -59,6 +79,12 @@ class CsvExporter {
     }
 
     // Todo Add config object instead of passing the headers, file and separator?
+    /**
+     * Writes a CSV file.
+     * @param data The data to write
+     * @param outputFile The output file
+     * @param headers The headers
+     */
     fun writeCsv(data: List<Map<String, String>>, outputFile: File, headers: List<String>) {
         if (data.isEmpty()) return
 
