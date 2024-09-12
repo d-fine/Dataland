@@ -51,17 +51,16 @@
         <div v-if="isValidFileName(isMounted, currentReportValue)">
           <UploadFormHeader :label="'Page(s)'" :description="pageNumberDescription" />
           <FormKit
-            name="page"
-            v-model="reportPageNumber"
             outer-class="w-100"
             type="text"
+            name="page"
             placeholder="Page(s)"
+            v-model="pageForFileReference"
             :validation-messages="{
               validatePageNumber: pageNumberValidationErrorMessage,
             }"
             :validation-rules="{ validatePageNumber }"
             validation="validatePageNumber"
-            ignore="false"
           />
           <FormKit type="group" name="dataSource" v-if="isValidFileName(isMounted, currentReportValue)">
             <FormKit type="hidden" name="fileName" v-model="currentReportValue" />
@@ -71,7 +70,7 @@
               name="page"
               :validation-rules="{ validatePageNumber }"
               validation="validatePageNumber"
-              v-model="reportPageNumber"
+              v-model="filteredPageForFileReference"
             />
           </FormKit>
         </div>
@@ -119,8 +118,8 @@ export default defineComponent({
         LimitedAssurance: humanizeStringOrNumber(AssuranceDataPointValueEnum.LimitedAssurance),
         ReasonableAssurance: humanizeStringOrNumber(AssuranceDataPointValueEnum.ReasonableAssurance),
       },
-      currentReportValue: '',
-      reportPageNumber: undefined as string | undefined,
+      currentReportValue: null as string | null,
+      pageForFileReference: undefined as string | undefined,
       noReportLabel: noReportLabel,
       isValidFileName: isValidFileName,
     };
@@ -134,6 +133,15 @@ export default defineComponent({
     },
     fileReferenceAccordingToName(): string {
       return getFileReferenceByFileName(this.currentReportValue, this.injectReportsNameAndReferences);
+    },
+    filteredPageForFileReference: {
+      get() {
+        return this.pageForFileReference === '' ? undefined : this.pageForFileReference;
+      },
+
+      set(newValue: undefined | string) {
+        this.pageForFileReference = newValue;
+      },
     },
   },
   props: BaseFormFieldProps,

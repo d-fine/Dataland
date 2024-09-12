@@ -109,7 +109,6 @@
             }"
             :validation-rules="{ validatePageNumber }"
             validation="validatePageNumber"
-            ignore="true"
           />
         </div>
       </div>
@@ -121,7 +120,7 @@
           name="page"
           :validation-rules="{ validatePageNumber }"
           validation="validatePageNumber"
-          v-model="pageForFileReference"
+          v-model="filteredPageForFileReference"
         />
       </FormKit>
     </div>
@@ -223,6 +222,15 @@ export default defineComponent({
     },
     fileReferenceAccordingToName() {
       return getFileReferenceByFileName(this.currentReportValue, this.reportsNameAndReferences);
+    },
+    filteredPageForFileReference: {
+      get() {
+        return this.pageForFileReference === '' ? undefined : this.pageForFileReference;
+      },
+
+      set(newValue: undefined | string) {
+        this.pageForFileReference = newValue;
+      },
     },
   },
   props: {

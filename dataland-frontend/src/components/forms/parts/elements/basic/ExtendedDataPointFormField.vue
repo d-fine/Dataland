@@ -70,7 +70,7 @@
                 input-class="w-12"
               />
             </div>
-            <div v-if="isValidFileName(isMounted, currentReportValue)" class="col-4">
+            <div v-if="isValidFileName(isMounted, currentReportValue)">
               <UploadFormHeader :label="'Page(s)'" :description="pageNumberDescription" />
               <FormKit
                 outer-class="w-100"
@@ -83,7 +83,6 @@
                 }"
                 :validation-rules="{ validatePageNumber }"
                 validation="validatePageNumber"
-                ignore="true"
               />
             </div>
 
@@ -205,7 +204,7 @@ export default defineComponent({
       },
 
       set(newValue: undefined | string) {
-        this.pageForFileReference = newValue === undefined ? '' : newValue;
+        this.pageForFileReference = newValue;
       },
     },
   },
