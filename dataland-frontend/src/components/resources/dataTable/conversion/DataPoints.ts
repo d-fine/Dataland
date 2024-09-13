@@ -156,7 +156,7 @@ function buildDisplayValueWhenDataPointMetaInfoIsAvailable(
     inputValue.displayValue === '';
 
   if (isOnlyQualityProvided) {
-    innerContent = formatStringForDatatable(datapointProperties?.quality);
+    innerContent = formatStringForDatatable(humanizeStringOrNumber(datapointProperties?.quality));
   } else {
     innerContent = inputValue.displayValue == '' ? formatStringForDatatable(ONLY_AUXILIARY_DATA_PROVIDED) : inputValue;
   }
