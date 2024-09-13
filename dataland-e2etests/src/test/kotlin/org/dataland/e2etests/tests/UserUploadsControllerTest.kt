@@ -1,15 +1,13 @@
 package org.dataland.e2etests.tests
 
 import org.dataland.datalandbackend.openApiClient.api.UserUploadsControllerApi
-import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
 import org.dataland.datalandbackend.openApiClient.model.DataMetaInformationForMyDatasets
 import org.dataland.e2etests.BASE_PATH_TO_DATALAND_BACKEND
 import org.dataland.e2etests.auth.JwtAuthenticationHelper
 import org.dataland.e2etests.auth.TechnicalUser
-import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.assertThrows
+import org.junit.jupiter.api.assertDoesNotThrow
 
 class UserUploadsControllerTest {
 
@@ -20,11 +18,10 @@ class UserUploadsControllerTest {
     }
 
     @Test
-    fun `check if user uploads of another user than expected requested returns a 403 insufficient rights error`() {
-        val exception = assertThrows<ClientException> {
+    fun `check if a user can see uploads of another user`() {
+        assertDoesNotThrow {
             getUserUploads(TechnicalUser.Admin.technicalUserId, TechnicalUser.Uploader)
         }
-        assertEquals("Client error : 403 ", exception.message)
     }
 
     @Test

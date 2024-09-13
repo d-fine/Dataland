@@ -45,9 +45,10 @@ class MetaDataControllerTest {
         companyId: String,
         testDataType: DataTypeEnum,
         uploadTime: Long,
+        user: TechnicalUser,
     ) = DataMetaInformation(
-        dataId = dataId, companyId = companyId, dataType = testDataType, uploadTime = uploadTime,
-        reportingPeriod = "", currentlyActive = true, qaStatus = QaStatus.Accepted, uploaderUserId = null,
+        dataId = dataId, companyId = companyId, dataType = testDataType, uploadTime = uploadTime, reportingPeriod = "",
+        currentlyActive = true, qaStatus = QaStatus.Accepted, uploaderUserId = user.technicalUserId,
     )
 
     @Test
@@ -60,7 +61,7 @@ class MetaDataControllerTest {
         val actualDataMetaInfo = apiAccessor.metaDataControllerApi.getDataMetaInfo(uploadedMetaInfo.dataId)
         val expectedDataMetaInfo = buildAcceptedAndActiveDataMetaInformation(
             dataId = uploadedMetaInfo.dataId, companyId = uploadedMetaInfo.companyId,
-            testDataType = testDataType, uploadTime = Instant.now().toEpochMilli(),
+            testDataType = testDataType, uploadTime = Instant.now().toEpochMilli(), TechnicalUser.Admin,
         )
         assertEquals(
             expectedDataMetaInfo, actualDataMetaInfo.copy(uploadTime = expectedDataMetaInfo.uploadTime),
