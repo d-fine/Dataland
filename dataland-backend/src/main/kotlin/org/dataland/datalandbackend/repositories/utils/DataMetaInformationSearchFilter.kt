@@ -43,6 +43,6 @@ data class DataMetaInformationSearchFilter(
     val shouldFilterByQaStatus: Boolean
         get() = qaStatus != null
 
-    val preparedQaStatus: String
-        get() = qaStatus?.name ?: ""
+    val preparedQaStatus: QaStatus
+        get() = qaStatus ?: QaStatus.Accepted
 }
