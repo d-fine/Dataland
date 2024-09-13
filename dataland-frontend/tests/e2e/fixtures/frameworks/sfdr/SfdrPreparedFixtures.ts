@@ -229,10 +229,5 @@ function generateFixtureWithDifferentExtendedDatapointCases(input: FixtureData<S
       comment: '',
     };
   }
-  if (input.t.environmental?.greenhouseGasEmissions?.scope3DownstreamGhgEmissionsInTonnes) {
-    input.t.environmental.greenhouseGasEmissions.scope3DownstreamGhgEmissionsInTonnes = {
-      comment: '',
-    };
-  }
   return input;
 }
