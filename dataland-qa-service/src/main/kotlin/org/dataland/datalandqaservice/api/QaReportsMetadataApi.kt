@@ -45,12 +45,13 @@ interface QaReportsMetadataApi {
     fun getQaReportsMetadata(
         @RequestParam uploaderUserIds: Set<UUID>? = null,
         @RequestParam(defaultValue = "true") showOnlyActive: Boolean,
-        @RequestParam qaStatus: Set<QaStatus>? = null,
+        @RequestParam qaStatus: QaStatus? = null,
         @RequestParam
         @DateTimeFormat(pattern = "YYYYMMDD")
         startDate: String? = null,
         @RequestParam
         @DateTimeFormat(pattern = "YYYYMMDD")
         endDate: String? = null,
+        @RequestParam companyIdentifier: String?,
     ): ResponseEntity<List<DataAndQaReportMetadata>>
 }

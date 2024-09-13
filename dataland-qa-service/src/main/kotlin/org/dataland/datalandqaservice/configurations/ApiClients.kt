@@ -1,6 +1,7 @@
 package org.dataland.datalandqaservice.configurations
 
 import okhttp3.OkHttpClient
+import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.api.MetaDataControllerApi
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.beans.factory.annotation.Value
@@ -23,5 +24,15 @@ class ApiClients(
         @Qualifier("AuthenticatedOkHttpClient") authenticatedOkHttpClient: OkHttpClient,
     ): MetaDataControllerApi {
         return MetaDataControllerApi(backendBaseUrl, authenticatedOkHttpClient)
+    }
+
+    /**
+     * Creates an auto-authenticated version of the CompanyDataControllerApi of the backend
+     */
+    @Bean
+    fun getCompanyDataControllerApi(
+        @Qualifier("AuthenticatedOkHttpClient") authenticatedOkHttpClient: OkHttpClient,
+    ): CompanyDataControllerApi {
+        return CompanyDataControllerApi(backendBaseUrl, authenticatedOkHttpClient)
     }
 }
