@@ -10,6 +10,9 @@ import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DataA
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.repositories.QaReportRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
+import java.time.LocalDate
+import java.time.ZoneId
+import java.time.format.DateTimeFormatter
 import java.util.*
 
 /**
@@ -21,6 +24,16 @@ class QaReportMetadataService(
     @Autowired private val qaReportRepository: QaReportRepository,
     @Autowired val metadataController: MetaDataControllerApi,
 ) {
+    private fun convertDateToMillis(date: String?): Long? {
+        return date?.let {
+            LocalDate
+                .parse(it, DateTimeFormatter.ofPattern("yyyyMMdd"))
+                .atStartOfDay(ZoneId.of("Europe/Berlin"))
+                .toInstant()
+                .toEpochMilli()
+        }
+    }
+
     /**
      * Method to search all data and the connected meta information associated with a data set.
      * @param uploaderUserIds set of user ids of the uploader
@@ -45,8 +58,10 @@ class QaReportMetadataService(
                 companyId, null, showOnlyActive, null, uploaderUserIds, qaStatus,
             )
         val dataIds: List<String> = dataMetaInformation.stream().map { it.dataId }.toList()
+        val startDateMillis = convertDateToMillis(startDate)
+        val endDateMillis = convertDateToMillis(endDate)
         val qaReportEntities: List<QaReportEntity> = qaReportRepository
-            .searchQaReportMetaInformation(dataIds, showOnlyActive, startDate, endDate)
+            .searchQaReportMetaInformation(dataIds, showOnlyActive, startDateMillis, endDateMillis)
         val qaReportMap: Map<String, QaReportEntity> = qaReportEntities.associateBy { it.dataId }
         return dataMetaInformation.mapNotNull { metaInformation ->
             qaReportMap[metaInformation.dataId]?.let { qaEntity ->

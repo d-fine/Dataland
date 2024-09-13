@@ -61,13 +61,13 @@ interface QaReportRepository : JpaRepository<QaReportEntity, String> {
             "WHERE qaReport.dataId IN :dataIds " +
             "AND (:onlyActive = FALSE OR qaReport.active = TRUE) " +
             "AND (qaReport.uploadTime IS NULL " +
-            "OR (qaReport.uploadTime >= COALESCE(TO_TIMESTAMP(:startDate, 'YYYYMMDD'), qaReport.uploadTime) " +
-            "AND qaReport.uploadTime <= COALESCE(TO_TIMESTAMP(:endDate, 'YYYYMMDD'), qaReport.uploadTime)))",
+            "OR (qaReport.uploadTime >= COALESCE(:startDate, qaReport.uploadTime) " +
+            "AND qaReport.uploadTime <= COALESCE(:endDate, qaReport.uploadTime)))",
     )
     fun searchQaReportMetaInformation(
         dataIds: List<String>,
         onlyActive: Boolean,
-        startDate: String?,
-        endDate: String?,
+        startDate: Long?,
+        endDate: Long?,
     ): List<QaReportEntity>
 }
