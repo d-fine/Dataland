@@ -91,6 +91,8 @@ class QaEventListenerQaService(
         messageUtils.validateMessageType(type, MessageType.ManualQaRequested)
         val message = objectMapper.readValue(messageAsJsonString, ForwardedQaMessage::class.java)
         val dataId = message.identifier
+        // TODO ich glaube das müssen wir hier ändern, da wir ja die Informationen nicht über
+        // TODO payload schicken wollten, sondern per API Call ans Backend abholen wollten
         val companyName = message.companyName
         val framework = message.framework
         val reportingPeriod = message.reportingPeriod

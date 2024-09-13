@@ -1,6 +1,7 @@
 package org.dataland.datalandqaservice.controller
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
@@ -39,7 +40,11 @@ class QaController(
     private val logger = LoggerFactory.getLogger(javaClass)
 
     @Transactional
-    override fun getUnreviewedMetadataSets(): ResponseEntity<List<ReviewInformationResponse>> {
+    override fun getUnreviewedMetadataSets(
+        dataType: Set<DataTypeEnum>?,
+        reportingPeriod: Set<String>?,
+        companyName: String?,
+    ): ResponseEntity<List<ReviewInformationResponse>> {
         logger.info("Received request to respond with IDs of unreviewed datasets")
         return ResponseEntity.ok(reviewQueueRepository.getSortedPendingMetadataSet())
     }

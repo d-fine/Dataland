@@ -4,6 +4,7 @@ import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
+import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.ReviewInformationResponse
 import org.springframework.http.ResponseEntity
@@ -38,8 +39,13 @@ interface QaApi {
         value = ["/datasets"],
         produces = ["application/json"],
     )
+    // TODO We should discuss the naming of the endpoint, its not fully metadatasets that are beeing reviewed
     @PreAuthorize("hasRole('ROLE_REVIEWER')")
-    fun getUnreviewedMetadataSets(): ResponseEntity<List<ReviewInformationResponse>>
+    fun getUnreviewedMetadataSets(
+        @RequestParam dataType: Set<DataTypeEnum>?,
+        @RequestParam reportingPeriod: Set<String>?,
+        @RequestParam companyName: String?,
+    ): ResponseEntity<List<ReviewInformationResponse>>
 
     /**
      * A method to get the QA review status of an uploaded dataset for a given identifier
