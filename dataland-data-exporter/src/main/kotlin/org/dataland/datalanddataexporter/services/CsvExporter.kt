@@ -75,6 +75,12 @@ class CsvExporter {
         return csvData
     }
 
+    /**
+     * Gets the string value of the JSON node identified by the (possibly) nested JSON path.
+     * @param jsonNode The JSON node
+     * @param jsonPath The JSON path identifying the value
+     * @return The string representation of the value
+     */
     fun getValueFromJsonNode(jsonNode: JsonNode, jsonPath: String): String {
         var currentNode = jsonNode
         jsonPath.split(".").forEach() { path ->

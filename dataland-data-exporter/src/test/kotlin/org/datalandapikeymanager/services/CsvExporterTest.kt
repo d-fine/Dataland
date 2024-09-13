@@ -19,12 +19,13 @@ class CsvExporterTest(
         "presentMapping" to "presentHeader",
         "notMapped" to "",
         "mappedButNoData" to "mappedButNoDataHeader",
-        "nested.nestedMapping" to "nestedHeader"
+        "nested.nestedMapping" to "nestedHeader",
     )
     val expectedHeaders = listOf("presentHeader", "mappedButNoDataHeader", "nestedHeader")
-    val expectedCsvData = mapOf("presentHeader" to "Here", "mappedButNoDataHeader" to "", "nestedHeader" to "NestedHere")
+    val expectedCsvData =
+        mapOf("presentHeader" to "Here", "mappedButNoDataHeader" to "", "nestedHeader" to "NestedHere")
     val expectedCsvFileContent =
-        "\"presentHeader\"|\"mappedButNoDataHeader\"|\"nestedHeader\"\n\"Here\"||\"NestedHere\"\n"
+        "\"nestedHeader\"|\"presentHeader\"|\"mappedButNoDataHeader\"\n\"NestedHere\"|\"Here\"|\n"
 
     @Test
     fun `check that a duplicated header entry in the transformation rules throws an error`() {
@@ -53,8 +54,8 @@ class CsvExporterTest(
     }
 
     @Test
-    // TODO: Fix this test
     fun `check that the csv-file writen for the conversion is as expected`() {
+        // TODO rethink this test
         val csvFile = File("./src/test/resources/csv/output/output.csv")
         val jsonNode = ObjectMapper().readTree(File(inputJson))
         val transformationRules = testCsvExporter.readTransformationConfig(testTransformationConfig)
