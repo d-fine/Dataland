@@ -20,7 +20,7 @@
     }
   ],
   "paths": {
-    "/datasets/{dataId}": {
+    "/qa/datasets/{dataId}": {
       "get": {
         "tags": [
           "qa-controller"
@@ -794,14 +794,59 @@
         ]
       }
     },
-    "/datasets": {
+    "/qa/datasets": {
       "get": {
         "tags": [
           "qa-controller"
         ],
-        "summary": "Get unreviewed metadata sets.",
+        "summary": "Get unreviewed metadata sets of qa reports.",
         "description": "Gets a ordered list of metadata sets which need to be reviewed",
         "operationId": "getUnreviewedMetadataSets",
+        "parameters": [
+          {
+            "name": "dataType",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "uniqueItems": true,
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "eutaxonomy-financials",
+                  "eutaxonomy-non-financials",
+                  "lksg",
+                  "p2p",
+                  "sfdr",
+                  "vsme",
+                  "esg-questionnaire",
+                  "heimathafen",
+                  "additional-company-information"
+                ]
+              }
+            }
+          },
+          {
+            "name": "reportingPeriod",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "uniqueItems": true,
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "companyName",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "Successfully retrieved metadata sets.",
