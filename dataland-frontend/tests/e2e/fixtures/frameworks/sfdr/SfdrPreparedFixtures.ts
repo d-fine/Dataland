@@ -1,5 +1,5 @@
 import { generateFixtureDataset } from '@e2e/fixtures/FixtureUtils';
-import { type SfdrData, YesNo } from '@clients/backend';
+import { QualityOptions, type SfdrData, YesNo } from '@clients/backend';
 import { generateSfdrFixtures } from './SfdrDataFixtures';
 import { type FixtureData } from '@sharedUtils/Fixtures';
 
@@ -210,11 +210,28 @@ function generateFixtureWithDifferentExtendedDatapointCases(input: FixtureData<S
     input.t.environmental.greenhouseGasEmissions.scope1GhgEmissionsInTonnes = { value: 30 };
   }
   if (input.t.environmental?.greenhouseGasEmissions?.scope2GhgEmissionsInTonnes) {
-    input.t.environmental.greenhouseGasEmissions.scope2GhgEmissionsInTonnes = { quality: 'Estimated' };
+    input.t.environmental.greenhouseGasEmissions.scope2GhgEmissionsInTonnes = { quality: QualityOptions.Estimated };
   }
   if (input.t.environmental?.greenhouseGasEmissions?.scope2GhgEmissionsLocationBasedInTonnes) {
     input.t.environmental.greenhouseGasEmissions.scope2GhgEmissionsLocationBasedInTonnes = {
       comment: 'This is a datapoint with only comment info.',
+    };
+  }
+  if (input.t.environmental?.greenhouseGasEmissions?.scope2GhgEmissionsMarketBasedInTonnes) {
+    input.t.environmental.greenhouseGasEmissions.scope2GhgEmissionsMarketBasedInTonnes = {
+      quality: QualityOptions.Estimated,
+      comment: '',
+    };
+  }
+  if (input.t.environmental?.greenhouseGasEmissions?.scope3GhgEmissionsInTonnes) {
+    input.t.environmental.greenhouseGasEmissions.scope3GhgEmissionsInTonnes = {
+      value: 12,
+      comment: '',
+    };
+  }
+  if (input.t.environmental?.greenhouseGasEmissions?.scope3DownstreamGhgEmissionsInTonnes) {
+    input.t.environmental.greenhouseGasEmissions.scope3DownstreamGhgEmissionsInTonnes = {
+      comment: '',
     };
   }
   return input;

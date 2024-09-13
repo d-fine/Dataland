@@ -12472,15 +12472,8 @@
 						"comment": "This is a datapoint with only comment info."
 					},
 					"scope2GhgEmissionsMarketBasedInTonnes": {
-						"value": 75637.46,
-						"dataSource": {
-							"page": 295,
-							"fileName": "IntegratedReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "e-commerce"
-						},
-						"comment": "calculate back-end monitor",
-						"quality": "Audited"
+						"quality": "Estimated",
+						"comment": ""
 					},
 					"scope1And2GhgEmissionsInTonnes": {
 						"value": 32.45,
@@ -12516,15 +12509,8 @@
 						"quality": "Audited"
 					},
 					"scope3GhgEmissionsInTonnes": {
-						"value": 67820.29,
-						"dataSource": {
-							"page": 44,
-							"fileName": "SustainabilityReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "ROI"
-						},
-						"comment": "generate optical bandwidth",
-						"quality": "Audited"
+						"value": 12,
+						"comment": ""
 					},
 					"scope3UpstreamGhgEmissionsInTonnes": {
 						"value": 9228.3,
@@ -12538,15 +12524,7 @@
 						"quality": "Incomplete"
 					},
 					"scope3DownstreamGhgEmissionsInTonnes": {
-						"value": 78853.86,
-						"dataSource": {
-							"page": 784,
-							"fileName": "AnnualReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "systems"
-						},
-						"comment": "override virtual protocol",
-						"quality": "Incomplete"
+						"comment": ""
 					},
 					"scope1And2And3GhgEmissionsInTonnes": {
 						"value": 20633.75,

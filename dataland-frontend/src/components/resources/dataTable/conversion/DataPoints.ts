@@ -136,7 +136,7 @@ function doesAnyDataPointPropertyExist(dataPointProperties: DatapointProperties 
 
 /**
  * Builds the displayValue object for the DataPointWrapperDisplayComponent when quality, comment and data source are NOT
- * all empty.
+ * all empty. TODO Gedanken beschreiben
  * @param inputValue the original value to wrap
  * @param fieldLabel the label of the field to wrap
  * @param datapointProperties the properties of the datapoint to wrap

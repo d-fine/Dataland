@@ -87,9 +87,11 @@ describe('Component tests for SfdrPanel', () => {
     cy.contains('td.headers-bg', 'Data Date').should('exist');
   });
 
-  it('Check SFDR view page for datapoints that have only value, quality or comment filled', () => {
+  it.only('Check SFDR view page for datapoints that have only value, quality or comment filled', () => {
     const preparedFixture = getPreparedFixture('TestForDataPointDisplayLogic', preparedFixtures);
     mountMLDTFrameworkPanelFromFakeFixture(DataTypeEnum.Sfdr, sfdrDisplayConfiguration, [preparedFixture]);
+
+    cy.pause();
 
     const expectedDisplayValueScope1 =
       preparedFixture.t.environmental.greenhouseGasEmissions.scope1GhgEmissionsInTonnes.value + ' Tonnes';
@@ -107,5 +109,19 @@ describe('Component tests for SfdrPanel', () => {
       .should('contain.text', ONLY_AUXILIARY_DATA_PROVIDED)
       .find('a.link')
       .should('exist');
+
+    getCellValueContainer('Scope 2 GHG emissions (market-based)', 0)
+      .should('contain.text', QualityOptions.Estimated)
+      .find('a.link')
+      .should('not.exist');
+
+    const expectedDisplayValueScope3 =
+      preparedFixture.t.environmental.greenhouseGasEmissions.scope3GhgEmissionsInTonnes.value + ' Tonnes';
+    getCellValueContainer('Scope 3 GHG emissions', 0)
+      .should('contain.text', expectedDisplayValueScope3)
+      .find('a.link')
+      .should('not.exist');
+
+    getCellValueContainer('Scope 3 downstream GHG emissions', 0).should('not.exist');
   });
 });
