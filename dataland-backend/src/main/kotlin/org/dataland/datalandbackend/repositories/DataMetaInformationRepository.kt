@@ -35,7 +35,7 @@ interface DataMetaInformationRepository : JpaRepository<DataMetaInformationEntit
             "OR dataMetaInformation.currentlyActive = true) AND " +
             "(:#{#searchFilter.shouldFilterByUploaderUserIds} = false " +
             "OR dataMetaInformation.uploaderUserId IN :#{#searchFilter.preparedUploaderUserIds}) AND " +
-            "(:#{#searchFilter.shouldFilterByQaStatus} OR " +
+            "(:#{#searchFilter.shouldFilterByQaStatus} = false OR " +
             "dataMetaInformation.qaStatus = :#{#searchFilter.preparedQaStatus})",
     )
     fun searchDataMetaInformation(
