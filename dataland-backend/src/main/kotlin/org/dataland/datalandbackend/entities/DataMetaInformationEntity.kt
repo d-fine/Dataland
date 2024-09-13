@@ -55,7 +55,7 @@ data class DataMetaInformationEntity(
 ) : ApiModelConversion<DataMetaInformation> {
 
     /**
-     * A user can view information about the dataset / the dataset itself if
+     * A user can view the dataset itself if
      * (a) the dataset is QAd
      * (b) the user has uploaded the dataset
      * (c) the user is an admin or a reviewer
@@ -72,15 +72,11 @@ data class DataMetaInformationEntity(
     }
 
     override fun toApiModel(viewingUser: DatalandAuthentication?): DataMetaInformation {
-        val displayUploaderUserId = viewingUser != null && (
-            viewingUser.roles.contains(DatalandRealmRole.ROLE_ADMIN) ||
-                viewingUser.userId == uploaderUserId
-            )
         return DataMetaInformation(
             dataId = dataId,
             companyId = company.companyId,
             dataType = DataType.valueOf(dataType),
-            uploaderUserId = if (displayUploaderUserId) uploaderUserId else null,
+            uploaderUserId = uploaderUserId,
             uploadTime = uploadTime,
             reportingPeriod = reportingPeriod,
             currentlyActive = currentlyActive == true,
