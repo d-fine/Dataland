@@ -6,7 +6,6 @@ import { getMountingFunction } from '@ct/testUtils/Mount';
 import { AccessStatus, type ExtendedStoredDataRequest, RequestStatus } from '@clients/communitymanager';
 import { faker } from '@faker-js/faker';
 import { humanizeStringOrNumber } from '@/utils/StringFormatter';
-import { chunk } from 'node_modules/cypress/types/lodash';
 
 describe('Component test for the admin-requests-overview page', () => {
   let mockRequests: ExtendedStoredDataRequest[];
