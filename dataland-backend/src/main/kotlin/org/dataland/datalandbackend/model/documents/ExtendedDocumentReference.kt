@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty
 import jakarta.validation.constraints.NotBlank
 import org.dataland.datalandbackend.interfaces.documents.ExtendedDocumentReference
 import org.dataland.datalandbackend.validator.DocumentExists
+import org.dataland.datalandbackend.validator.PageRangeValidator
 
 /**
  * --- API model ---
@@ -17,4 +18,22 @@ data class ExtendedDocumentReference(
     @field:NotBlank
     @field:DocumentExists
     override val fileReference: String,
-) : ExtendedDocumentReference
+) : ExtendedDocumentReference {
+
+    /**
+     * Validates the page range
+     */
+    init {
+        validatePageRange() // Validate when the object is created
+    }
+
+    /**
+     * Validates the page range
+     */
+    fun validatePageRange() {
+        val validator = PageRangeValidator()
+        if (!validator.isValid(page)) {
+            throw IllegalArgumentException("Invalid page range: $page")
+        }
+    }
+}
