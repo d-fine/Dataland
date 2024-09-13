@@ -182,6 +182,9 @@ export default defineComponent({
         this.fetchMessageHistory().catch((error) => console.error(error));
       },
     },
+    mapOfReportingPeriodToActiveDataset() {
+      void this.updateAnsweredDataRequestsForViewPage();
+    },
   },
   data() {
     return {
@@ -198,6 +201,7 @@ export default defineComponent({
       actionOnClick: ReportingPeriodTableActions.ReopenRequest,
       currentChosenDataRequestId: '',
       messageHistory: [] as StoredDataRequestMessageObject[],
+      currentRunId: 0,
     };
   },
   mounted() {
@@ -251,12 +255,16 @@ export default defineComponent({
      * Makes the api call and updates the list of answered data requests.
      */
     async updateAnsweredDataRequestsForViewPage() {
-      this.answeredDataRequestsForViewPage = await getAnsweredDataRequestsForViewPage(
+      const runId = ++this.currentRunId;
+      const response = await getAnsweredDataRequestsForViewPage(
         this.companyId,
         this.framework,
         Array.from(this.mapOfReportingPeriodToActiveDataset.keys()),
         this.getKeycloakPromise
       );
+      if (runId === this.currentRunId) {
+        this.answeredDataRequestsForViewPage = response;
+      }
     },
     /**
      * Method to close the request or provide dropdown for that when the button is clicked
