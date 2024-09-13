@@ -149,6 +149,7 @@ function buildDisplayValueWhenDataPointMetaInfoIsAvailable(
 ): MLDTDisplayComponentTypes[MLDTDisplayComponentName.DataPointWrapperDisplayComponent] {
   let innerContent: AvailableMLDTDisplayObjectTypes;
   const isOnlyQualityProvided =
+    datapointProperties?.quality != undefined &&
     datapointProperties?.dataSource == undefined &&
     datapointProperties?.comment == undefined &&
     inputValue.displayValue == '';
