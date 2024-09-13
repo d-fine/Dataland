@@ -4,18 +4,20 @@ import DOMPurify from 'dompurify';
 
 describe('Component test for RenderSanitizedMarkdownInput', () => {
   it('renders regular Markdown input correctly', () => {
-    const markdownInput = '# Hello World\nThis is **bold** text.' + '\n- List item 1\n- List item 2';
+    const markdownInput = '# Hello World\nThis is **bold** text.' + '\n- List item 1\n- https://dataland.com';
 
     getMountingFunction()(RenderSanitizedMarkdownInput, {
       props: {
         text: markdownInput,
       },
     });
-
+    cy.get('div').should('not.contain', '#');
+    cy.get('div').should('not.contain', '*');
+    cy.get('div').should('not.contain', '-');
     cy.get('div').should('contain', 'Hello World');
     cy.get('div').should('contain', 'This is bold text.');
     cy.get('div').should('contain', 'List item 1');
-    cy.get('div').should('contain', 'List item 2');
+    cy.get('a').should('contain', 'https://dataland.com').should('be.visible').should('not.be.disabled');
   });
 
   it('handles empty input correctly', () => {

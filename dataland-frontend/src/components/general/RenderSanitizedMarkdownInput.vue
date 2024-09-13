@@ -5,15 +5,13 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from 'vue';
+import { computed } from 'vue';
 import DOMPurify from 'dompurify';
 import MarkdownRender from 'vue-markdown-render';
 
 const props = defineProps<{
   text: string;
 }>();
-
-const errorMessage = ref('');
 
 /**
  * Method to replace raw HTTP URLs with Markdown-type URLs: [URL presentation](URL)
