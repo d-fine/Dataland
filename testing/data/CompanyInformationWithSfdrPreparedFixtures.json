@@ -12524,7 +12524,15 @@
 						"quality": "Incomplete"
 					},
 					"scope3DownstreamGhgEmissionsInTonnes": {
-						"comment": ""
+						"value": 78853.86,
+						"dataSource": {
+							"page": 784,
+							"fileName": "AnnualReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "systems"
+						},
+						"comment": "override virtual protocol",
+						"quality": "Incomplete"
 					},
 					"scope1And2And3GhgEmissionsInTonnes": {
 						"value": 20633.75,
