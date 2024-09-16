@@ -1,21 +1,79 @@
 <template>
   <AuthenticationWrapper>
     <TheHeader />
-    <TheContent class="paper-section flex">
-      <DatasetsTabMenu :initial-tab-index="2">
+    <DatasetsTabMenu :initial-tab-index="2">
+      <TheContent class="min-h-screen paper-section relative">
         <AuthorizationWrapper :required-role="KEYCLOAK_ROLE_REVIEWER">
+          <div
+            id="searchBarAndFiltersContainer"
+            class="w-full bg-white pt-4 justify-between"
+            ref="searchBarAndFiltersContainer"
+          >
+            <span class="align-content-start flex items-center justify-start">
+              <span class="w-3 p-input-icon-left" style="margin: 15px">
+                <i class="pi pi-search pl-3 pr-3" aria-hidden="true" style="color: #958d7c" />
+                <InputText
+                  data-test="companyNameSearchbar"
+                  v-model="searchBarInput"
+                  placeholder="Search by Company Name"
+                  class="w-12 pl-6 pr-6"
+                />
+              </span>
+              <span class="w-3 p-input-icon-left" style="margin: 15px">
+                <i class="pi pi-search pl-3 pr-3" aria-hidden="true" style="color: #958d7c" />
+                <Calendar
+                  data-test="reportingPeriod"
+                  v-model="availableReportingPeriods"
+                  placeholder="Search by Reporting Period"
+                  :showIcon="true"
+                  view="year"
+                  dateFormat="yy"
+                  selectionMode="multiple"
+                  class="w-12 pl-6 pr-6"
+                />
+              </span>
+              <FrameworkDataSearchDropdownFilter
+                v-model="selectedFrameworks"
+                ref="frameworkFilter"
+                :available-items="availableFrameworks"
+                filter-name="Framework"
+                data-test="framework-picker"
+                filter-id="framework-filter"
+                filter-placeholder="Search by Frameworks"
+                class="ml-3"
+                style="margin: 15px"
+              />
+
+              <div class="flex align-items-center">
+                <span
+                  data-test="reset-filter"
+                  style="margin: 15px"
+                  class="ml-3 cursor-pointer text-primary font-semibold d-letters"
+                  @click="resetFilterAndSearchBar"
+                  >RESET</span
+                >
+              </div>
+
+              <div class="flex align-items-center ml-auto" style="margin: 15px">
+                <span>{{ numberOfRequestsInformation }}</span>
+              </div>
+            </span>
+          </div>
+
           <div class="col-12 text-left p-3">
-            <h1>Quality Assurance</h1>
             <div v-if="waitingForData" class="d-center-div text-center px-7 py-4">
               <p class="font-medium text-xl">Loading data to be reviewed...</p>
               <i class="pi pi-spinner pi-spin" aria-hidden="true" style="z-index: 20; color: #e67f3f" />
             </div>
+
             <div class="card">
               <DataTable
+                v-show="!waitingForData && dataIdList.length > 0"
                 :value="displayDataOfPage"
                 class="table-cursor"
                 id="qa-data-result"
                 :rowHover="true"
+                :first="firstRowIndex"
                 data-test="qa-review-section"
                 @row-click="goToQaViewPage($event)"
                 paginator
@@ -59,11 +117,17 @@
                   </template>
                 </Column>
               </DataTable>
+              <div v-if="!waitingForData && dataIdList.length == 0">
+                <div class="d-center-div text-center px-7 py-4">
+                  <p class="font-medium text-xl">There are no data requests on Dataland matching your filters.</p>
+                </div>
+              </div>
             </div>
           </div>
         </AuthorizationWrapper>
-      </DatasetsTabMenu>
-    </TheContent>
+      </TheContent>
+    </DatasetsTabMenu>
+
     <TheFooter :is-light-version="true" :sections="footerContent" />
   </AuthenticationWrapper>
 </template>
@@ -82,10 +146,15 @@ import { assertDefined } from '@/utils/TypeScriptUtils';
 import AuthorizationWrapper from '@/components/wrapper/AuthorizationWrapper.vue';
 import { KEYCLOAK_ROLE_REVIEWER } from '@/utils/KeycloakUtils';
 import DataTable, { type DataTablePageEvent, type DataTableRowClickEvent } from 'primevue/datatable';
+import FrameworkDataSearchDropdownFilter from '@/components/resources/frameworkDataSearch/FrameworkDataSearchDropdownFilter.vue';
 import Column from 'primevue/column';
 import { humanizeStringOrNumber } from '@/utils/StringFormatter';
 import DatasetsTabMenu from '@/components/general/DatasetsTabMenu.vue';
 import { convertUnixTimeInMsToDateString } from '@/utils/DataFormatUtils';
+import { type FrameworkSelectableItem } from '@/utils/FrameworkDataSearchDropDownFilterTypes';
+import { retrieveAvailableFrameworks } from '@/utils/RequestsOverviewPageUtils';
+import InputText from 'primevue/inputtext';
+import Calendar from 'primevue/calendar';
 
 export default defineComponent({
   name: 'QualityAssurance',
@@ -96,8 +165,11 @@ export default defineComponent({
     TheContent,
     TheHeader,
     AuthenticationWrapper,
+    FrameworkDataSearchDropdownFilter,
     DataTable,
     Column,
+    InputText,
+    Calendar,
   },
   setup() {
     return {
@@ -116,12 +188,46 @@ export default defineComponent({
       KEYCLOAK_ROLE_REVIEWER,
       metaInformation: null as DataMetaInformation | null,
       companyInformation: null as CompanyInformation | null,
-      currentPage: 0,
+      currentChunkIndex: 0,
+      firstRowIndex: 0,
       footerContent,
+      debounceInMs: 300,
+      timerId: 0,
+      searchBarInput: '',
+      selectedFrameworks: [] as Array<FrameworkSelectableItem>,
+      availableFrameworks: [] as Array<FrameworkSelectableItem>,
+      availableReportingPeriods: undefined as undefined | Date,
+      reportingPeriod: undefined as undefined | Date,
     };
   },
   mounted() {
     this.getQaDataForCurrentPage().catch((error) => console.log(error));
+    this.availableFrameworks = retrieveAvailableFrameworks();
+  },
+  watch: {
+    selectedFrameworks() {
+      this.currentChunkIndex = 0;
+      this.firstRowIndex = 0;
+      if (!this.waitingForData) {
+        this.getQaDataForCurrentPage();
+      }
+    },
+    selectedRequestStatus() {
+      this.currentChunkIndex = 0;
+      this.firstRowIndex = 0;
+      if (!this.waitingForData) {
+        this.getQaDataForCurrentPage();
+      }
+    },
+    searchBarInput(newSearch: string) {
+      this.searchBarInput = newSearch;
+      this.currentChunkIndex = 0;
+      this.firstRowIndex = 0;
+      if (this.timerId) {
+        clearTimeout(this.timerId);
+      }
+      this.timerId = setTimeout(() => this.getQaDataForCurrentPage(), this.debounceInMs);
+    },
   },
   methods: {
     convertUnixTimeInMsToDateString,
@@ -136,7 +242,7 @@ export default defineComponent({
         const dataOfPage = [] as QaDataObject[];
         const response = await assertDefined(this.apiClientProvider).apiClients.qaController.getUnreviewedDatasetsIds();
         this.dataIdList = response.data;
-        const firstDatasetOnPageIndex = this.currentPage * this.datasetsPerPage;
+        const firstDatasetOnPageIndex = this.currentChunkIndex * this.datasetsPerPage;
         const dataIdsOnPage = this.dataIdList.slice(
           firstDatasetOnPageIndex,
           firstDatasetOnPageIndex + this.datasetsPerPage
@@ -180,13 +286,40 @@ export default defineComponent({
       const qaUri = `/companies/${qaDataObject.metaInformation.companyId}/frameworks/${qaDataObject.metaInformation.dataType}/${qaDataObject.dataId}`;
       return this.$router.push(qaUri);
     },
+
     /**
-     * Updates the data for the current page
-     * @param event event containing the new page
+     * Resets selected frameworks and searchBarInput
      */
-    async onPage(event: DataTablePageEvent) {
-      this.currentPage = event.page;
-      await this.getQaDataForCurrentPage();
+    resetFilterAndSearchBar() {
+      this.currentChunkIndex = 0;
+      this.selectedFrameworks = [];
+      this.searchBarInput = '';
+    },
+    /**
+     * Updates the current Page
+     * @param event DataTablePageEvent
+     */
+    onPage(event: DataTablePageEvent) {
+      window.scrollTo(0, 0);
+      if (event.page != this.currentChunkIndex) {
+        this.currentChunkIndex = event.page;
+        this.firstRowIndex = this.currentChunkIndex * this.rowsPerPage;
+        this.getQaDataForCurrentPage();
+      }
+    },
+  },
+  computed: {
+    numberOfRequestsInformation(): string {
+      if (!this.waitingForData) {
+        if (this.totalRecords === 0) {
+          return 'No results for this search.';
+        } else {
+          const startIndex = this.currentChunkIndex * this.rowsPerPage + 1;
+          const endIndex = Math.min(startIndex + this.rowsPerPage - 1, this.totalRecords);
+          return `Showing results ${startIndex}-${endIndex} of ${this.totalRecords}.`;
+        }
+      }
+      return '';
     },
   },
 });
