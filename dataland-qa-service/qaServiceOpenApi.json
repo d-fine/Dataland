@@ -799,9 +799,9 @@
         "tags": [
           "qa-controller"
         ],
-        "summary": "Get unreviewed metadata sets of qa reports.",
-        "description": "Gets a ordered list of metadata sets which need to be reviewed",
-        "operationId": "getUnreviewedMetadataSets",
+        "summary": "Get relevant meta info on unreviewed datasets.",
+        "description": "Gets a filtered and chronologically ordered list of relevant meta info on unreviewed datasets.",
+        "operationId": "getInfoOnUnreviewedDatasets",
         "parameters": [
           {
             "name": "dataType",
