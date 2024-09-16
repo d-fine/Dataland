@@ -12466,7 +12466,7 @@
 						"value": 30
 					},
 					"scope2GhgEmissionsInTonnes": {
-						"quality": "Estimated"
+						"quality": "NoDataFound"
 					},
 					"scope2GhgEmissionsLocationBasedInTonnes": {
 						"comment": "This is a datapoint with only comment info."

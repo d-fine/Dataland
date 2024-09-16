@@ -210,7 +210,7 @@ function generateFixtureWithDifferentExtendedDatapointCases(input: FixtureData<S
     input.t.environmental.greenhouseGasEmissions.scope1GhgEmissionsInTonnes = { value: 30 };
   }
   if (input.t.environmental?.greenhouseGasEmissions?.scope2GhgEmissionsInTonnes) {
-    input.t.environmental.greenhouseGasEmissions.scope2GhgEmissionsInTonnes = { quality: QualityOptions.Estimated };
+    input.t.environmental.greenhouseGasEmissions.scope2GhgEmissionsInTonnes = { quality: QualityOptions.NoDataFound };
   }
   if (input.t.environmental?.greenhouseGasEmissions?.scope2GhgEmissionsLocationBasedInTonnes) {
     input.t.environmental.greenhouseGasEmissions.scope2GhgEmissionsLocationBasedInTonnes = {

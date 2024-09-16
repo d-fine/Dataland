@@ -99,7 +99,7 @@ describe('Component tests for SfdrPanel', () => {
       .should('not.exist');
 
     getCellValueContainer('Scope 2 GHG emissions', 0)
-      .should('contain.text', QualityOptions.Estimated)
+      .should('contain.text', 'No Data Found')
       .find('a.link')
       .should('not.exist');
 
