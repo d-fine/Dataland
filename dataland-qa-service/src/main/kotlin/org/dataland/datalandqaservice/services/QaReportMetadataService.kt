@@ -2,6 +2,7 @@ package org.dataland.datalandqaservice.org.dataland.datalandqaservice.services
 
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.api.MetaDataControllerApi
+import org.dataland.datalandbackend.openApiClient.model.CompanyIdAndName
 import org.dataland.datalandbackend.openApiClient.model.DataMetaInformation
 import org.dataland.datalandbackend.openApiClient.model.QaStatus
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
@@ -73,7 +74,7 @@ class QaReportMetadataService(
     private fun getCompanyIdFromCompanyIdentifier(companyIdentifier: String?): String? {
         var companyId: String? = null
         if (companyIdentifier != null) {
-            val matchingCompanyIdsAndNamesOnDataland =
+            val matchingCompanyIdsAndNamesOnDataland: List<CompanyIdAndName> =
                 companyController.getCompaniesBySearchString(companyIdentifier)
             companyId = if (matchingCompanyIdsAndNamesOnDataland.size == 1) {
                 matchingCompanyIdsAndNamesOnDataland.first().companyId
