@@ -9,6 +9,8 @@ import { humanizeStringOrNumber } from '@/utils/StringFormatter';
 
 describe('Component test for the admin-requests-overview page', () => {
   let mockRequests: ExtendedStoredDataRequest[];
+  let mockRequestsLarge: ExtendedStoredDataRequest[];
+  const chunkSize = 100;
 
   /**
    * Generates one ExtendedStoredDataRequest type object
@@ -40,10 +42,10 @@ describe('Component test for the admin-requests-overview page', () => {
   }
 
   const mailAlpha = 'stephanie@fake.com';
-  const mailSearchTerm = mailAlpha.substring(0, 3);
   const mailBeta = 'random@fake.com';
   const mailGamma = 'test123@fake.com';
   const mailDelta = 'steven@fake.com';
+  const mailSearchTerm = mailAlpha.substring(0, 3);
 
   before(function () {
     mockRequests = [
@@ -52,17 +54,56 @@ describe('Component test for the admin-requests-overview page', () => {
       generateExtendedStoredDataRequest(mailGamma, DataTypeEnum.Vsme, RequestStatus.Answered, AccessStatus.Declined),
       generateExtendedStoredDataRequest(mailDelta, DataTypeEnum.Sfdr, RequestStatus.Resolved, AccessStatus.Public),
     ];
+    mockRequestsLarge = [];
+    for (let num = 1; num <= 104; num++) {
+      const dataType = faker.helpers.arrayElement([DataTypeEnum.Lksg, DataTypeEnum.P2p, DataTypeEnum.Vsme]);
+      const email = faker.helpers.arrayElement([mailAlpha, mailBeta, mailGamma, mailDelta]);
+      const requestStatus = faker.helpers.arrayElement([
+        RequestStatus.Open,
+        RequestStatus.Answered,
+        RequestStatus.Withdrawn,
+      ]);
+      mockRequestsLarge.push(generateExtendedStoredDataRequest(email, dataType, requestStatus, AccessStatus.Public));
+    }
   });
 
   /**
    * Mounts the page and asserts that the unfiltered list of all data requests is displayed
+   * @returns mounted component as Chainable
    */
-  function mountAdminAllRequestsPageWithMocks(): void {
+  function mountAdminAllRequestsPageWithMocks(): Cypress.Chainable {
     const expectedNumberOfRequests = mockRequests.length;
-    cy.intercept('**/community/requests?chunkSize=100&chunkIndex=0', mockRequests).as('fetchInitialUnfilteredRequests');
+    cy.intercept(`**/community/requests?chunkSize=${chunkSize}&chunkIndex=0`, mockRequests).as(
+      'fetchInitialUnfilteredRequests'
+    );
     cy.intercept('**/community/requests/numberOfRequests', expectedNumberOfRequests.toString()).as(
       'fetchInitialUnfilteredNumberOfRequests'
     );
+    const mountedComponent = getMountingFunction({
+      keycloak: minimalKeycloakMock({
+        authenticated: true,
+        roles: [KEYCLOAK_ROLE_ADMIN],
+        userId: crypto.randomUUID(),
+      }),
+    })(AdminAllRequestsOverview);
+
+    assertNumberOfSearchResults(expectedNumberOfRequests);
+    mockRequests.forEach((extendedStoredDataRequest) => {
+      if (extendedStoredDataRequest.userEmailAddress) {
+        assertEmailAddressExistsInSearchResults(extendedStoredDataRequest.userEmailAddress);
+      }
+    });
+    return mountedComponent;
+  }
+
+  /**
+   *
+   */
+  function mountAdminAllRequestsPageWithManyMocks(): void {
+    const expectedNumberOfRequests = mockRequestsLarge.length;
+    cy.intercept(`**/community/requests?chunkSize=${chunkSize}&chunkIndex=0`, mockRequestsLarge.slice(0, chunkSize));
+    cy.intercept('**/community/requests/numberOfRequests', expectedNumberOfRequests.toString());
+
     getMountingFunction({
       keycloak: minimalKeycloakMock({
         authenticated: true,
@@ -70,12 +111,7 @@ describe('Component test for the admin-requests-overview page', () => {
         userId: crypto.randomUUID(),
       }),
     })(AdminAllRequestsOverview);
-    assertNumberOfSearchResults(expectedNumberOfRequests);
-    mockRequests.forEach((extendedStoredDataRequest) => {
-      if (extendedStoredDataRequest.userEmailAddress) {
-        assertEmailAddressExistsInSearchResults(extendedStoredDataRequest.userEmailAddress);
-      }
-    });
+    assertNumberOfSearchResults(chunkSize);
   }
 
   /**
@@ -98,11 +134,12 @@ describe('Component test for the admin-requests-overview page', () => {
    * Validates if filtering via email address substring works as expected
    */
   function validateEmailAddressFilter(): void {
-    const mockResposne = [mockRequests[0], mockRequests[3]];
-    const expectedNumberOfRequests = mockResposne.length;
-    cy.intercept(`**/community/requests?emailAddress=${mailSearchTerm}&chunkSize=100&chunkIndex=0`, mockResposne).as(
-      'fetchEmailFilteredRequests'
-    );
+    const mockResponse = [mockRequests[0], mockRequests[3]];
+    const expectedNumberOfRequests = mockResponse.length;
+    cy.intercept(
+      `**/community/requests?emailAddress=${mailSearchTerm}&chunkSize=${chunkSize}&chunkIndex=0`,
+      mockResponse
+    ).as('fetchEmailFilteredRequests');
     cy.intercept(`**/community/requests/numberOfRequests?emailAddress=ste`, expectedNumberOfRequests.toString()).as(
       'fetchEmailFilteredNumberOfRequests'
     );
@@ -121,9 +158,10 @@ describe('Component test for the admin-requests-overview page', () => {
     const frameworkHumanReadableName = humanizeStringOrNumber(frameworkToFilterFor);
     const mockResponse = [mockRequests[1]];
     const expectedNumberOfRequests = mockResponse.length;
-    cy.intercept(`**/community/requests?dataType=${frameworkToFilterFor}&chunkSize=100&chunkIndex=0`, mockResponse).as(
-      'fetchFrameworkFilteredRequests'
-    );
+    cy.intercept(
+      `**/community/requests?dataType=${frameworkToFilterFor}&chunkSize=${chunkSize}&chunkIndex=0`,
+      mockResponse
+    ).as('fetchFrameworkFilteredRequests');
     cy.intercept(
       `**/community/requests/numberOfRequests?dataType=${frameworkToFilterFor}`,
       expectedNumberOfRequests.toString()
@@ -144,7 +182,7 @@ describe('Component test for the admin-requests-overview page', () => {
     const mockResponse = [mockRequests[0]];
     const expectedNumberOfRequests = mockResponse.length;
     cy.intercept(
-      `**/community/requests?requestStatus=${requestStatusToFilterFor}&chunkSize=100&chunkIndex=0`,
+      `**/community/requests?requestStatus=${requestStatusToFilterFor}&chunkSize=${chunkSize}&chunkIndex=0`,
       mockResponse
     ).as('fetchRequestStatusFilteredRequests');
     cy.intercept(
@@ -168,11 +206,11 @@ describe('Component test for the admin-requests-overview page', () => {
     const mockResponse = [mockRequests[3]];
     const expectedNumberOfRequests = mockResponse.length;
     cy.intercept(
-      `**/community/requests?dataType=${frameworkToFilterFor}&emailAddress=${mailSearchTerm}&chunkSize=100&chunkIndex=0`,
+      `**/community/requests?dataType=${frameworkToFilterFor}&emailAddress=${mailSearchTerm}&chunkSize=${chunkSize}&chunkIndex=0`,
       mockResponse
     ).as('fetchCombinedFilteredRequests');
     cy.intercept(
-      `**/community/requests/numberOfRequests?dataType=sfdr&emailAddress=ste`,
+      `**/community/requests/numberOfRequests?dataType=${frameworkToFilterFor}&emailAddress=${mailSearchTerm}`,
       expectedNumberOfRequests.toString()
     ).as('fetchCombinedFilteredNumberOfRequests');
 
@@ -187,13 +225,51 @@ describe('Component test for the admin-requests-overview page', () => {
    */
   function validateDeselectingCombinedFilter(): void {
     const expectedNumberOfRequests = mockRequests.length;
-    cy.intercept('**/community/requests?chunkSize=100&chunkIndex=0', mockRequests).as('fetchInitialUnfilteredRequests');
+    cy.intercept(`**/community/requests?chunkSize=${chunkSize}&chunkIndex=0`, mockRequests).as(
+      'fetchInitialUnfilteredRequests'
+    );
     cy.intercept('**/community/requests/numberOfRequests', expectedNumberOfRequests.toString()).as(
       'fetchInitialUnfilteredNumberOfRequests'
     );
     const frameworkHumanReadableName = humanizeStringOrNumber(DataTypeEnum.Sfdr);
     cy.get(`li[aria-label="${frameworkHumanReadableName}"]`).click();
     cy.get(`input[data-test="email-searchbar"]`).clear().type('{enter}');
+
+    assertNumberOfSearchResults(expectedNumberOfRequests);
+    assertEmailAddressExistsInSearchResults(mailAlpha);
+    assertEmailAddressExistsInSearchResults(mailDelta);
+  }
+
+  /**
+   * Validates onPage Event
+   */
+  function validateOnPageEvent(): void {
+    const secondPageMockResponse = mockRequestsLarge.slice(chunkSize);
+    const expectedNumberOfRequests = mockRequestsLarge.length;
+    const expectedNumberOfRows = secondPageMockResponse.length;
+    cy.intercept(`**/community/requests?chunkSize=${chunkSize}&chunkIndex=1`, secondPageMockResponse).as(
+      'fetchRequests'
+    );
+    cy.intercept(`**/community/requests/numberOfRequests`, expectedNumberOfRequests.toString());
+
+    cy.get(`button[aria-label="Page 2"]`).click();
+
+    cy.wait('@fetchRequests');
+    assertNumberOfSearchResults(expectedNumberOfRows);
+  }
+
+  /**
+   * Removes the combined filter via resetButton and checks if all requests are shown again
+   */
+  function validateResetButton(): void {
+    const expectedNumberOfRequests = mockRequests.length;
+    cy.intercept(`**/community/requests?chunkSize=${chunkSize}&chunkIndex=0`, mockRequests).as(
+      'fetchInitialUnfilteredRequests'
+    );
+    cy.intercept('**/community/requests/numberOfRequests', expectedNumberOfRequests.toString()).as(
+      'fetchInitialUnfilteredNumberOfRequests'
+    );
+    cy.get(`[data-test=reset-filter]`).click();
 
     assertNumberOfSearchResults(expectedNumberOfRequests);
     assertEmailAddressExistsInSearchResults(mailAlpha);
@@ -219,5 +295,28 @@ describe('Component test for the admin-requests-overview page', () => {
     mountAdminAllRequestsPageWithMocks();
     validateCombinedFilter();
     validateDeselectingCombinedFilter();
+  });
+
+  it('A combined filter works as expected and reset Button works as expected', () => {
+    mountAdminAllRequestsPageWithMocks();
+    validateCombinedFilter();
+    validateResetButton();
+  });
+
+  it('Check the functionality of the onPage event', () => {
+    mountAdminAllRequestsPageWithManyMocks();
+    validateOnPageEvent();
+  });
+
+  it('Check the functionality of the rowClick event', () => {
+    mountAdminAllRequestsPageWithMocks().then((chainable) => {
+      const dataRequestIdOfLastElement = mockRequests[mockRequests.length - 1].dataRequestId;
+
+      cy.get('[data-test=requests-datatable]').within(() => {
+        cy.get('tr:last').click();
+      });
+
+      cy.wrap(chainable.component).its('$route.path').should('eq', `/requests/${dataRequestIdOfLastElement}`);
+    });
   });
 });

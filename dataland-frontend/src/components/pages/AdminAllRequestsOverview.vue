@@ -65,12 +65,15 @@
             <div class="card">
               <DataTable
                 v-if="currentDataRequests && currentDataRequests.length > 0"
+                v-show="!waitingForData"
                 ref="dataTable"
+                data-test="requests-datatable"
                 :value="currentDataRequests"
                 :paginator="true"
                 :lazy="true"
                 :total-records="totalRecords"
                 :rows="rowsPerPage"
+                :first="firstRowIndex"
                 paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport"
                 :alwaysShowPaginator="false"
                 currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
@@ -214,9 +217,10 @@ export default defineComponent({
     const footerContent = footerPage?.sections;
     return {
       waitingForData: true,
-      currentPage: 0,
+      currentChunkIndex: 0,
       totalRecords: 0,
       rowsPerPage: 100,
+      firstRowIndex: 0,
       currentDataRequests: [] as ExtendedStoredDataRequest[],
       footerContent,
       searchBarInput: '',
@@ -232,7 +236,6 @@ export default defineComponent({
     this.availableFrameworks = retrieveAvailableFrameworks();
     this.availableRequestStatus = retrieveAvailableRequestStatus();
     this.getAllRequestsForFilters().catch((error) => console.error(error));
-    this.resetFilterAndSearchBar();
   },
   computed: {
     numberOfRequestsInformation(): string {
@@ -240,7 +243,7 @@ export default defineComponent({
         if (this.totalRecords === 0) {
           return 'No results for this search.';
         } else {
-          const startIndex = this.currentPage * this.rowsPerPage + 1;
+          const startIndex = this.currentChunkIndex * this.rowsPerPage + 1;
           const endIndex = Math.min(startIndex + this.rowsPerPage - 1, this.totalRecords);
           return `Showing results ${startIndex}-${endIndex} of ${this.totalRecords}.`;
         }
@@ -251,13 +254,23 @@ export default defineComponent({
 
   watch: {
     selectedFrameworks() {
-      this.getAllRequestsForFilters();
+      this.currentChunkIndex = 0;
+      this.firstRowIndex = 0;
+      if (!this.waitingForData) {
+        this.getAllRequestsForFilters();
+      }
     },
     selectedRequestStatus() {
-      this.getAllRequestsForFilters();
+      this.currentChunkIndex = 0;
+      this.firstRowIndex = 0;
+      if (!this.waitingForData) {
+        this.getAllRequestsForFilters();
+      }
     },
     searchBarInput(newSearch: string) {
       this.searchBarInput = newSearch;
+      this.currentChunkIndex = 0;
+      this.firstRowIndex = 0;
       if (this.timerId) {
         clearTimeout(this.timerId);
       }
@@ -297,7 +310,7 @@ export default defineComponent({
               undefined,
               undefined,
               this.datasetsPerPage,
-              this.currentPage
+              this.currentChunkIndex
             )
           ).data;
           this.totalRecords = (
@@ -322,19 +335,21 @@ export default defineComponent({
      * Resets selected frameworks and searchBarInput
      */
     resetFilterAndSearchBar() {
+      this.currentChunkIndex = 0;
       this.selectedFrameworks = [];
       this.selectedRequestStatus = [];
       this.searchBarInput = '';
     },
 
     /**
-     * Updates the current Page in the parent component
+     * Updates the current Page
      * @param event DataTablePageEvent
      */
     onPage(event: DataTablePageEvent) {
       window.scrollTo(0, 0);
-      if (event.page != this.currentPage) {
-        this.currentPage = event.page;
+      if (event.page != this.currentChunkIndex) {
+        this.currentChunkIndex = event.page;
+        this.firstRowIndex = this.currentChunkIndex * this.rowsPerPage;
         this.getAllRequestsForFilters();
       }
     },
@@ -342,17 +357,11 @@ export default defineComponent({
     /**
      * Navigates to the view dataRequest page
      * @param event contains column that was clicked
-     * @param event.data extended stored data request
-     * @param event.originalEvent needed to get the clicked cell
      * @returns the promise of the router push action
      */
     onRowClick(event: DataTableRowClickEvent) {
-      const clickedElement = event.originalEvent.target as HTMLElement;
-      const isResolveButtonClick = clickedElement.id === 'resolveButton';
-      if (!isResolveButtonClick) {
-        const requestIdOfClickedRow = event.data.dataRequestId;
-        return this.$router.push(`/requests/${requestIdOfClickedRow}`);
-      }
+      const requestIdOfClickedRow = event.data.dataRequestId;
+      return this.$router.push(`/requests/${requestIdOfClickedRow}`);
     },
   },
 });
