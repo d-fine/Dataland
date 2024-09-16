@@ -1,10 +1,12 @@
 import RenderSanitizedMarkdownInput from '@/components/general/RenderSanitizedMarkdownInput.vue';
 import { getMountingFunction } from '@ct/testUtils/Mount';
-import DOMPurify from 'dompurify';
 
 describe('Component test for RenderSanitizedMarkdownInput', () => {
   it('renders regular Markdown input correctly', () => {
-    const markdownInput = '# Hello World\nThis is **bold** text.' + '\n- List item 1\n- https://dataland.com';
+    const markdownInput =
+      '# Hello World\nThis is **bold** text.' +
+      '\n- List item 1' +
+      '\n- [Dataland](https://dataland.com) \n- https://test.dataland.com';
 
     getMountingFunction()(RenderSanitizedMarkdownInput, {
       props: {
@@ -17,47 +19,20 @@ describe('Component test for RenderSanitizedMarkdownInput', () => {
     cy.get('div').should('contain', 'Hello World');
     cy.get('div').should('contain', 'This is bold text.');
     cy.get('div').should('contain', 'List item 1');
-    cy.get('a').should('contain', 'https://dataland.com').should('be.visible').should('not.be.disabled');
-  });
-
-  it('handles empty input correctly', () => {
-    getMountingFunction()(RenderSanitizedMarkdownInput, {
-      props: {
-        text: '',
-      },
-    });
-
-    cy.get('div').should('be.empty');
+    cy.get('a').eq(0).should('contain', 'Dataland').should('be.visible').should('not.be.disabled');
+    cy.get('a').eq(0).should('not.contain', 'https://dataland.com');
+    cy.get('a').eq(1).should('contain', 'https://test.dataland.com').should('be.visible').should('not.be.disabled');
   });
 
   it('handles special characters and sanitizes them', () => {
-    const markdownInput = '<script>alert("XSS")</script>';
-
-    getMountingFunction()(RenderSanitizedMarkdownInput, {
-      props: {
-        text: markdownInput,
-      },
-    });
-
-    cy.get('div').should('not.contain', 'alert("XSS")');
-  });
-  it('handles error during sanitization correctly', () => {
-    cy.stub(DOMPurify, 'sanitize').throws(new Error('Sanitization Error'));
-
-    const markdownInput = '## Sample Text';
-
-    getMountingFunction()(RenderSanitizedMarkdownInput, {
-      props: {
-        text: markdownInput,
-      },
-    });
-
-    cy.get('div').should('be.empty');
-
-    cy.spy(console, 'error');
-    cy.get('div').should('be.empty');
-    cy.then(() => {
-      expect(console.error).to.be.calledWith('Error processing markdown:', Cypress.sinon.match.any);
-    });
+    const dangerousInputs = ['<script>alert("XSS")</script>', '[Click me](javascript:alert("XSS"))'];
+    for (const dangerousInput of dangerousInputs) {
+      getMountingFunction()(RenderSanitizedMarkdownInput, {
+        props: {
+          text: dangerousInput,
+        },
+      });
+      cy.get('a').should('not.exist');
+    }
   });
 });

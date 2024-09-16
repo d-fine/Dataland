@@ -1,35 +1,35 @@
 <template>
   <div>
-    <MarkdownRender :source="sanitizedMarkdown" />
+    <vue-markdown :source="sanitizedMarkdown" :options="displayRenderedMarkdownOptions" />
   </div>
 </template>
 
 <script setup lang="ts">
 import { computed } from 'vue';
 import DOMPurify from 'dompurify';
-import MarkdownRender from 'vue-markdown-render';
+import VueMarkdown from 'vue-markdown-render';
+import MarkdownIt from 'markdown-it';
 
 const props = defineProps<{
   text: string;
 }>();
 
-/**
- * Method to replace raw HTTP URLs with Markdown-type URLs: [URL presentation](URL)
- * @param text Input text
- * @returns a converted input text (text remains unchanged if no matching HTTP URLS are found)
- */
-function convertRawUrlsToMarkdown(text: string): string {
-  const urlPattern = /https:\/\/\S+/; // Regex pattern to match URLs
-  return text.replace(urlPattern, (url) => `[${url}](${url})`);
-}
+const renderMarkdownInputOptions = {
+  html: false,
+  linkify: true,
+  breaks: true,
+};
+
+const displayRenderedMarkdownOptions = {
+  html: true,
+  linkify: true,
+  breaks: true,
+};
+
+const md = new MarkdownIt(renderMarkdownInputOptions);
 
 const sanitizedMarkdown = computed(() => {
-  try {
-    const markdownWithLinks = convertRawUrlsToMarkdown(props.text);
-    return DOMPurify.sanitize(markdownWithLinks);
-  } catch (error) {
-    console.error('Error processing markdown:', error);
-    return '';
-  }
+  const renderedMarkdown = md.render(props.text);
+  return DOMPurify.sanitize(renderedMarkdown);
 });
 </script>
