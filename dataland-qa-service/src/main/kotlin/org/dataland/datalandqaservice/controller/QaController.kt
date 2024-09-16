@@ -41,7 +41,7 @@ class QaController(
     private val logger = LoggerFactory.getLogger(javaClass)
 
     @Transactional
-    override fun getUnreviewedMetadataSets(
+    override fun getInfoOnUnreviewedDatasets(
         dataType: Set<DataTypeEnum>?,
         reportingPeriod: Set<String>?,
         companyName: String?,

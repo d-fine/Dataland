@@ -24,11 +24,12 @@ import java.util.*
 @SecurityRequirement(name = "default-oauth")
 interface QaApi {
     /**
-     * Get an ordered list of datasets to be QAed
+     * Gets meta info objects for each unreviewed dataset.
      */
     @Operation(
-        summary = "Get unreviewed metadata sets of qa reports.",
-        description = "Gets a ordered list of metadata sets which need to be reviewed",
+        summary = "Get relevant meta info on unreviewed datasets.",
+        description = "Gets a filtered and chronologically ordered list of relevant meta info on unreviewed datasets.",
+        // TODO bleibt die chronologische Reihenfolge erhalten, auch wenn man filtert? => am Ende checken
     )
     @ApiResponses(
         value = [
@@ -39,9 +40,8 @@ interface QaApi {
         value = ["/datasets"],
         produces = ["application/json"],
     )
-    // TODO We should discuss the naming of the endpoint, its not fully metadatasets that are being reviewed
     @PreAuthorize("hasRole('ROLE_REVIEWER')")
-    fun getUnreviewedMetadataSets(
+    fun getInfoOnUnreviewedDatasets(
         @RequestParam dataType: Set<DataTypeEnum>?,
         @RequestParam reportingPeriod: Set<String>?,
         @RequestParam companyName: String?,
