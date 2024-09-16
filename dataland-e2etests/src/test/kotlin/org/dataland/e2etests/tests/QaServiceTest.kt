@@ -1,6 +1,5 @@
 package org.dataland.e2etests.tests
-// TODO reactive the tests
-/*
+
 import org.awaitility.Awaitility.await
 import org.dataland.communitymanager.openApiClient.model.CompanyRole
 import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataEutaxonomyNonFinancialsData
@@ -102,9 +101,9 @@ class QaServiceTest {
         apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reviewer)
         val qaServiceController = apiAccessor.qaServiceControllerApi
         await().atMost(2, TimeUnit.SECONDS)
-            .until { qaServiceController.getUnreviewedMetadataSets().contains(dataId) }
+            .until { qaServiceController.getUnreviewedMetadataSets().map { it.dataId }.contains(dataId) }
         qaServiceController.assignQaStatus(dataId, qaStatus)
-        assertFalse(qaServiceController.getUnreviewedMetadataSets().contains(dataId))
+        assertFalse(qaServiceController.getUnreviewedMetadataSets().map { it.dataId }.contains(dataId))
     }
 
     private fun canUserSeeUploaderData(
@@ -157,7 +156,7 @@ class QaServiceTest {
     private fun clearReviewQueue() {
         apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reviewer)
         apiAccessor.qaServiceControllerApi.getUnreviewedMetadataSets().forEach {
-            apiAccessor.qaServiceControllerApi.assignQaStatus(it, QaServiceQaStatus.Rejected)
+            apiAccessor.qaServiceControllerApi.assignQaStatus(it.dataId, QaServiceQaStatus.Rejected)
         }
     }
 
@@ -236,17 +235,16 @@ class QaServiceTest {
         withTechnicalUser(TechnicalUser.Admin) {
             val qaServiceController = apiAccessor.qaServiceControllerApi
             await().atMost(2, TimeUnit.SECONDS)
-                .until { qaServiceController.getUnreviewedMetadataSets().contains(dataIdAlpha) }
+                .until { qaServiceController.getUnreviewedMetadataSets().map { it.dataId }.contains(dataIdAlpha) }
             await().atMost(2, TimeUnit.SECONDS)
-                .until { qaServiceController.getUnreviewedMetadataSets().contains(dataIdBeta) }
+                .until { qaServiceController.getUnreviewedMetadataSets().map { it.dataId }.contains(dataIdBeta) }
             val dataDeletionControllerApi = apiAccessor.dataDeletionControllerApi
             dataDeletionControllerApi.deleteCompanyAssociatedData(dataIdAlpha)
             await().atMost(2, TimeUnit.SECONDS)
                 .until {
-                    !qaServiceController.getUnreviewedMetadataSets().contains(dataIdAlpha) &&
-                        qaServiceController.getUnreviewedMetadataSets().contains(dataIdBeta)
+                    !qaServiceController.getUnreviewedMetadataSets().map { it.dataId }.contains(dataIdAlpha) &&
+                        qaServiceController.getUnreviewedMetadataSets().map { it.dataId }.contains(dataIdBeta)
                 }
         }
     }
 }
-*/
