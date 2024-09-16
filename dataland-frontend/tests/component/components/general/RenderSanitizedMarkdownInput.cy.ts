@@ -24,7 +24,7 @@ describe('Component test for RenderSanitizedMarkdownInput', () => {
     cy.get('a').eq(1).should('contain', 'https://test.dataland.com').should('be.visible').should('not.be.disabled');
   });
 
-  it('handles special characters and sanitizes them', () => {
+  it('neutralizes dangerous input', () => {
     const dangerousInputs = ['<script>alert("XSS")</script>', '[Click me](javascript:alert("XSS"))'];
     for (const dangerousInput of dangerousInputs) {
       getMountingFunction()(RenderSanitizedMarkdownInput, {
