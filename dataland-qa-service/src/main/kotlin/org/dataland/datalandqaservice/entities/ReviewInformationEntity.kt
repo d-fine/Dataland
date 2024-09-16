@@ -14,9 +14,6 @@ import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.Revie
 data class ReviewInformationEntity(
     @Id
     val dataId: String,
-    val companyName: String?,
-    val framework: String?,
-    val reportingPeriod: String?,
     val receptionTime: Long,
     var qaStatus: QaStatus,
     val reviewerKeycloakId: String,
@@ -31,9 +28,6 @@ data class ReviewInformationEntity(
     fun toReviewInformationResponse(showReviewerKeycloakId: Boolean): ReviewInformationResponse {
         return ReviewInformationResponse(
             dataId,
-            companyName,
-            framework,
-            reportingPeriod,
             receptionTime,
             qaStatus,
             if (showReviewerKeycloakId) reviewerKeycloakId else null,

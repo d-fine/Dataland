@@ -17,10 +17,10 @@ data class QaSearchFilter(
     val preparedDataType: List<String>
         get() = dataType?.map { it.value } ?: emptyList()
 
-    val shouldFilterByDatalandCompanyId: Boolean
+    val shouldFilterByCompanyName: Boolean
         get() = companyName?.isNotEmpty() ?: false
 
-    val preparedDatalandCompanyId: String
+    val preparedCompanyName: String
         get() = companyName ?: ""
 
     val shouldFilterByReportingPeriod: Boolean

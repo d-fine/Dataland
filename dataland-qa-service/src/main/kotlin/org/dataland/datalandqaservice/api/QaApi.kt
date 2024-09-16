@@ -7,6 +7,7 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.ReviewInformationResponse
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.ReviewQueueResponse
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.GetMapping
@@ -47,7 +48,7 @@ interface QaApi {
         @RequestParam companyName: String?,
         @RequestParam(defaultValue = "100") chunkSize: Int,
         @RequestParam(defaultValue = "0") chunkIndex: Int,
-    ): ResponseEntity<List<ReviewInformationResponse>>
+    ): ResponseEntity<List<ReviewQueueResponse>>
 
     /**
      * A method to get the QA review status of an uploaded dataset for a given identifier

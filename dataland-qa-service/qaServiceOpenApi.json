@@ -799,9 +799,9 @@
         "tags": [
           "qa-controller"
         ],
-        "summary": "Get unreviewed metadata sets of qa reports.",
-        "description": "Gets a ordered list of metadata sets which need to be reviewed",
-        "operationId": "getUnreviewedMetadataSets",
+        "summary": "Get relevant meta info on unreviewed datasets.",
+        "description": "Gets a filtered and chronologically ordered list of relevant meta info on unreviewed datasets.",
+        "operationId": "getInfoOnUnreviewedDatasets",
         "parameters": [
           {
             "name": "dataType",
@@ -875,7 +875,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/ReviewInformationResponse"
+                    "$ref": "#/components/schemas/ReviewQueueResponse"
                   }
                 }
               }
@@ -3306,6 +3306,34 @@
           }
         }
       },
+      "ReviewQueueResponse": {
+        "required": [
+          "dataId",
+          "receptionTime"
+        ],
+        "type": "object",
+        "properties": {
+          "dataId": {
+            "type": "string"
+          },
+          "receptionTime": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "companyName": {
+            "type": "string"
+          },
+          "reportingPeriod": {
+            "type": "string"
+          },
+          "framework": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          }
+        }
+      },
       "ReviewInformationResponse": {
         "required": [
           "dataId",
@@ -3315,15 +3343,6 @@
         "type": "object",
         "properties": {
           "dataId": {
-            "type": "string"
-          },
-          "companyName": {
-            "type": "string"
-          },
-          "framework": {
-            "type": "string"
-          },
-          "reportingPeriod": {
             "type": "string"
           },
           "receptionTime": {

@@ -13,6 +13,7 @@ import org.dataland.datalandqaservice.api.QaApi
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.ReviewInformationEntity
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.ReviewQueueEntity
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.ReviewInformationResponse
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.ReviewQueueResponse
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.repositories.ReviewHistoryRepository
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.repositories.ReviewQueueRepository
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.utils.QaSearchFilter
@@ -47,7 +48,7 @@ class QaController(
         companyName: String?,
         chunkSize: Int,
         chunkIndex: Int,
-    ): ResponseEntity<List<ReviewInformationResponse>> {
+    ): ResponseEntity<List<ReviewQueueResponse>> {
         logger.info("Received request to respond with IDs of unreviewed datasets")
         val searchFilter = QaSearchFilter(
             dataType = dataType,
@@ -55,6 +56,8 @@ class QaController(
             companyName = companyName,
         )
         // TODO Validate that the offset correctly works
+        // TODO move logic to service and add the api call to determein comany ids based on the companyName
+        // TODO change sql query from =companyName to IN ListOfCompanyIds
         val offset = (chunkIndex) * (chunkSize)
         return ResponseEntity.ok(
             reviewQueueRepository.getSortedPendingMetadataSet(
@@ -101,9 +104,6 @@ class QaController(
         reviewHistoryRepository.save(
             ReviewInformationEntity(
                 dataId = dataId,
-                companyName = dataReviewStatusToUpdate.companyName,
-                framework = dataReviewStatusToUpdate.framework,
-                reportingPeriod = dataReviewStatusToUpdate.reportingPeriod,
                 receptionTime = dataReviewStatusToUpdate.receptionTime,
                 qaStatus = qaStatus,
                 reviewerKeycloakId = DatalandAuthentication.fromContext().userId,
