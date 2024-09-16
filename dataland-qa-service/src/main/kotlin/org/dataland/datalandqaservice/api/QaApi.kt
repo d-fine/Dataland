@@ -39,12 +39,14 @@ interface QaApi {
         value = ["/datasets"],
         produces = ["application/json"],
     )
-    // TODO We should discuss the naming of the endpoint, its not fully metadatasets that are beeing reviewed
+    // TODO We should discuss the naming of the endpoint, its not fully metadatasets that are being reviewed
     @PreAuthorize("hasRole('ROLE_REVIEWER')")
     fun getUnreviewedMetadataSets(
         @RequestParam dataType: Set<DataTypeEnum>?,
         @RequestParam reportingPeriod: Set<String>?,
         @RequestParam companyName: String?,
+        @RequestParam(defaultValue = "100") chunkSize: Int,
+        @RequestParam(defaultValue = "0") chunkIndex: Int,
     ): ResponseEntity<List<ReviewInformationResponse>>
 
     /**

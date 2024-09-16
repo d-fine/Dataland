@@ -15,6 +15,7 @@ import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.Re
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.ReviewInformationResponse
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.repositories.ReviewHistoryRepository
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.repositories.ReviewQueueRepository
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.utils.QaSearchFilter
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
 import org.slf4j.LoggerFactory
@@ -44,9 +45,23 @@ class QaController(
         dataType: Set<DataTypeEnum>?,
         reportingPeriod: Set<String>?,
         companyName: String?,
+        chunkSize: Int,
+        chunkIndex: Int,
     ): ResponseEntity<List<ReviewInformationResponse>> {
         logger.info("Received request to respond with IDs of unreviewed datasets")
-        return ResponseEntity.ok(reviewQueueRepository.getSortedPendingMetadataSet())
+        val searchFilter = QaSearchFilter(
+            dataType = dataType,
+            reportingPeriod = reportingPeriod,
+            companyName = companyName,
+        )
+        // TODO Validate that the offset correctly works
+        val offset = (chunkIndex) * (chunkSize)
+        return ResponseEntity.ok(
+            reviewQueueRepository.getSortedPendingMetadataSet(
+                searchFilter, resultOffset = offset,
+                resultLimit = chunkSize,
+            ),
+        )
     }
 
     @Transactional
