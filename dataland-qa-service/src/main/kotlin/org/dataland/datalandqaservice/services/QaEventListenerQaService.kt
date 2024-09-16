@@ -1,6 +1,8 @@
 package org.dataland.datalandqaservice.services
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
+import org.dataland.datalandbackend.openApiClient.api.MetaDataControllerApi
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
 import org.dataland.datalandmessagequeueutils.constants.ExchangeName
@@ -32,28 +34,26 @@ import java.time.Instant
  * @param cloudEventMessageHandler service for managing CloudEvents messages
  */
 @Component
-class QaEventListenerQaService(
+class QaEventListenerQaService
+@Suppress("LongParameterList")
+constructor(
     @Autowired var cloudEventMessageHandler: CloudEventMessageHandler,
     @Autowired var objectMapper: ObjectMapper,
     @Autowired var messageUtils: MessageQueueUtils,
     @Autowired val reviewQueueRepository: ReviewQueueRepository,
     @Autowired val reviewHistoryRepository: ReviewHistoryRepository,
+    @Autowired val companyDataControllerApi: CompanyDataControllerApi,
+    @Autowired val metaDataControllerApi: MetaDataControllerApi,
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
 
     private val reviewerIdAutomatedQaService = "automated-qa-service"
-    private data class ForwardedQaMessage(
+    private data class ForwardedQaMessage( // TODO Laurins Konzept hier umsetzen?
         val identifier: String,
-        val companyName: String,
-        val framework: String,
-        val reportingPeriod: String,
         val comment: String,
     )
     private data class PersistAutomatedQaResultMessage(
         val identifier: String,
-        val companyName: String,
-        val framework: String,
-        val reportingPeriod: String,
         val validationResult: QaStatus,
         val reviewerId: String,
         val resourceType: String,
@@ -90,19 +90,25 @@ class QaEventListenerQaService(
     ) {
         messageUtils.validateMessageType(type, MessageType.ManualQaRequested)
         val message = objectMapper.readValue(messageAsJsonString, ForwardedQaMessage::class.java)
-        val dataId = message.identifier
-        // TODO ich glaube das müssen wir hier ändern, da wir ja die Informationen nicht über
-        // TODO payload schicken wollten, sondern per API Call ans Backend abholen wollten
-        val companyName = message.companyName
-        val framework = message.framework
-        val reportingPeriod = message.reportingPeriod
+
         val comment = message.comment
+        val dataId = message.identifier
         if (dataId.isEmpty()) {
             throw MessageQueueRejectException("Provided data ID is empty")
         }
+
+        val dataMetaInfo = metaDataControllerApi.getDataMetaInfo(dataId)
+        val companyName = companyDataControllerApi.getCompanyById(dataMetaInfo.companyId).companyInformation.companyName
+
         messageUtils.rejectMessageOnException {
             logger.info("Received data with DataId: $dataId on QA message queue with Correlation Id: $correlationId")
-            storeDatasetAsToBeReviewed(dataId, companyName, framework, reportingPeriod, comment)
+            storeDatasetAsToBeReviewed(
+                dataId,
+                companyName,
+                dataMetaInfo.dataType.value,
+                dataMetaInfo.reportingPeriod,
+                comment,
+            )
         }
     }
 
@@ -204,15 +210,17 @@ class QaEventListenerQaService(
         val persistAutomatedQaResultMessage =
             objectMapper.readValue(messageAsJsonString, PersistAutomatedQaResultMessage::class.java)
         if (persistAutomatedQaResultMessage.resourceType == "data") {
+            val validationResult = persistAutomatedQaResultMessage.validationResult
+            val reviewerId = persistAutomatedQaResultMessage.reviewerId
             val dataId = persistAutomatedQaResultMessage.identifier
-            val companyName = persistAutomatedQaResultMessage.companyName
-            val framework = persistAutomatedQaResultMessage.framework
-            val reportingPeriod = persistAutomatedQaResultMessage.reportingPeriod
             if (dataId.isEmpty()) {
                 throw MessageQueueRejectException("Provided data ID is empty")
             }
-            val validationResult = persistAutomatedQaResultMessage.validationResult
-            val reviewerId = persistAutomatedQaResultMessage.reviewerId
+
+            val dataMetaInfo = metaDataControllerApi.getDataMetaInfo(dataId)
+            val companyName =
+                companyDataControllerApi.getCompanyById(dataMetaInfo.companyId).companyInformation.companyName
+
             messageUtils.rejectMessageOnException {
                 logger.info(
                     "Received data with DataId: $dataId on QA message queue with Correlation Id: $correlationId",
@@ -224,8 +232,8 @@ class QaEventListenerQaService(
                     ReviewInformationEntity(
                         dataId = dataId,
                         companyName = companyName,
-                        framework = framework,
-                        reportingPeriod = reportingPeriod,
+                        framework = dataMetaInfo.dataType.value,
+                        reportingPeriod = dataMetaInfo.reportingPeriod,
                         receptionTime = System.currentTimeMillis(),
                         qaStatus = validationResult,
                         reviewerKeycloakId = reviewerId,
