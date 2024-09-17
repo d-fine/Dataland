@@ -48,27 +48,31 @@
             ignore
           />
         </div>
-        <div>
-          <UploadFormHeader
-            :label="euTaxonomyKpiNameMappings.page ?? ''"
-            :description="euTaxonomyKpiInfoMappings.page ?? ''"
-          />
+        <div v-if="isValidFileName(isMounted, currentReportValue)">
+          <UploadFormHeader :label="'Page(s)'" :description="pageNumberDescription" />
           <FormKit
-            name="page"
-            v-model="reportPageNumber"
             outer-class="w-100"
-            type="number"
-            placeholder="Page"
-            validation-label="Page"
-            validation="min:0"
-            step="1"
-            min="0"
+            type="text"
+            name="page"
+            placeholder="Page(s)"
+            v-model="pageForFileReference"
+            :validation-messages="{
+              validatePageNumber: pageNumberValidationErrorMessage,
+            }"
+            :validation-rules="{ validatePageNumber }"
+            validation="validatePageNumber"
             ignore="true"
           />
           <FormKit type="group" name="dataSource" v-if="isValidFileName(isMounted, currentReportValue)">
             <FormKit type="hidden" name="fileName" v-model="currentReportValue" />
             <FormKit type="hidden" name="fileReference" :modelValue="fileReferenceAccordingToName" />
-            <FormKit type="hidden" name="page" v-model="reportPageNumber" />
+            <FormKit
+              type="hidden"
+              name="page"
+              :validation-rules="{ validatePageNumber }"
+              validation="validatePageNumber"
+              v-model="filteredPageForFileReference"
+            />
           </FormKit>
         </div>
       </div>
@@ -79,6 +83,7 @@
 <script lang="ts">
 // @ts-nocheck
 import { defineComponent, nextTick } from 'vue';
+import { PAGE_NUMBER_VALIDATION_ERROR_MESSAGE, validatePageNumber } from '@/utils/ValidationUtils';
 import { FormKit } from '@formkit/vue';
 import { BaseFormFieldProps } from '@/components/forms/parts/fields/FormFieldProps';
 import UploadFormHeader from '@/components/forms/parts/elements/basic/UploadFormHeader.vue';
@@ -89,7 +94,7 @@ import {
 import { humanizeStringOrNumber } from '@/utils/StringFormatter';
 import { AssuranceDataPointValueEnum } from '@clients/backend';
 import { type ObjectType } from '@/utils/UpdateObjectUtils';
-import { getFileName, getFileReferenceByFileName } from '@/utils/FileUploadUtils';
+import { getAvailableFileNames, getFileReferenceByFileName, PAGE_NUMBER_DESCRIPTION } from '@/utils/FileUploadUtils';
 import { isValidFileName, noReportLabel } from '@/utils/DataSource';
 import SingleSelectFormField from '@/components/forms/parts/fields/SingleSelectFormField.vue';
 
@@ -104,6 +109,8 @@ export default defineComponent({
   components: { SingleSelectFormField, FormKit, UploadFormHeader },
   data() {
     return {
+      pageNumberDescription: PAGE_NUMBER_DESCRIPTION,
+      pageNumberValidationErrorMessage: PAGE_NUMBER_VALIDATION_ERROR_MESSAGE,
       isMounted: false,
       euTaxonomyKpiNameMappings,
       euTaxonomyKpiInfoMappings,
@@ -112,23 +119,35 @@ export default defineComponent({
         LimitedAssurance: humanizeStringOrNumber(AssuranceDataPointValueEnum.LimitedAssurance),
         ReasonableAssurance: humanizeStringOrNumber(AssuranceDataPointValueEnum.ReasonableAssurance),
       },
-      currentReportValue: '',
-      reportPageNumber: undefined as string | undefined,
+      currentReportValue: null as string | null,
+      pageForFileReference: undefined as string | undefined,
       noReportLabel: noReportLabel,
       isValidFileName: isValidFileName,
     };
   },
   mounted() {
-    void nextTick(() => (this.isMounted = true));
+    nextTick(() => (this.isMounted = true));
   },
   computed: {
     reportsName(): string[] {
-      return getFileName(this.injectReportsNameAndReferences);
+      return getAvailableFileNames(this.injectReportsNameAndReferences);
     },
     fileReferenceAccordingToName(): string {
       return getFileReferenceByFileName(this.currentReportValue, this.injectReportsNameAndReferences);
     },
+    filteredPageForFileReference: {
+      get() {
+        return this.pageForFileReference === '' ? undefined : this.pageForFileReference;
+      },
+
+      set(newValue: undefined | string) {
+        this.pageForFileReference = newValue;
+      },
+    },
   },
   props: BaseFormFieldProps,
+  methods: {
+    validatePageNumber,
+  },
 });
 </script>

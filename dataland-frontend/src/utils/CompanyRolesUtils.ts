@@ -2,7 +2,7 @@ import type Keycloak from 'keycloak-js';
 import { ApiClientProvider } from '@/services/ApiClients';
 import { type AxiosError } from 'axios';
 import { waitForAndReturnResolvedKeycloakPromise } from '@/utils/KeycloakUtils';
-import { isCompanyIdValid } from '@/utils/ValidationsUtils';
+import { isCompanyIdValid } from '@/utils/ValidationUtils';
 import { CompanyRole, type CompanyRoleAssignment } from '@clients/communitymanager';
 
 /**
