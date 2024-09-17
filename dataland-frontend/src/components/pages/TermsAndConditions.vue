@@ -1208,6 +1208,7 @@ h2 {
 :not(.no-numbering) h2 ~ p::before {
   counter-increment: subsection;
   content: counter(section) '.' counter(subsection) '. ';
+  font-weight: bold;
 }
 
 h3::before {
