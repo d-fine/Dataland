@@ -154,8 +154,7 @@ import { retrieveAvailableFrameworks } from '@/utils/RequestsOverviewPageUtils';
 import InputText from 'primevue/inputtext';
 import Calendar from 'primevue/calendar';
 import type Keycloak from 'keycloak-js';
-import { type ReviewQueueResponse } from '@clients/qaservice';
-import { type DataTypeEnum } from '@clients/backend';
+import {GetInfoOnUnreviewedDatasetsDataTypeEnum, type ReviewQueueResponse} from '@clients/qaservice';
 import { type GetDataRequestsDataTypeEnum } from '@clients/communitymanager';
 
 export default defineComponent({
@@ -240,7 +239,7 @@ export default defineComponent({
         this.waitingForData = true;
         this.displayDataOfPage = [];
 
-        const selectedFrameworksAsSet = new Set<DataTypeEnum>(
+        const selectedFrameworksAsSet = new Set<GetInfoOnUnreviewedDatasetsDataTypeEnum>(
           this.selectedFrameworks.map((selectableItem) => selectableItem.frameworkDataType)
         );
         const reportingPeriodFilter: Set<string> = new Set<string>(
@@ -248,7 +247,7 @@ export default defineComponent({
         );
         const companyNameFilter = this.searchBarInput === '' ? undefined : this.searchBarInput;
         const response = await this.apiClientProvider.apiClients.qaController.getInfoOnUnreviewedDatasets(
-          selectedFrameworksAsSet as Set<DataTypeEnum>,
+          selectedFrameworksAsSet as Set<GetInfoOnUnreviewedDatasetsDataTypeEnum>,
           reportingPeriodFilter,
           companyNameFilter,
           this.datasetsPerPage,
