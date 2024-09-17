@@ -8,7 +8,7 @@ import {
   type PathwaysToParisData,
   type StoredCompany,
 } from '@clients/backend';
-import { QaStatus } from '@clients/qaservice';
+import { QaStatus, type ReviewQueueResponse } from '@clients/qaservice';
 import ViewFrameworkData from '@/components/pages/ViewFrameworkData.vue';
 import { KEYCLOAK_ROLE_REVIEWER, KEYCLOAK_ROLE_USER } from '@/utils/KeycloakUtils';
 import { getMountingFunction } from '@ct/testUtils/Mount';
@@ -40,8 +40,22 @@ describe('Component tests for the Quality Assurance page', () => {
     qaStatus: QaStatus.Pending,
   };
 
-  it('Mock a pending P2P-dataset to check if datasets appear on the QA-overview-page', () => {
-    cy.intercept('**/qa/datasets', [mockDataMetaInfo.dataId]);
+  /**
+   * Builds a review queue element.
+   * @param dataId to include in the element
+   * @param receptionTime to include in the element
+   * @returns the element
+   */
+  function buildReviewQueueElement(dataId: string, receptionTime: number = Date.now()): ReviewQueueResponse {
+    return {
+      dataId: dataId,
+      receptionTime: receptionTime,
+    };
+  }
+
+  it('Check if datasets appear on the QA-overview-page and filtering works as expected', () => {
+    const mockReviewQueue = buildReviewQueueElement(mockDataMetaInfo.dataId);
+    cy.intercept('**/qa/datasets?*', [mockReviewQueue]);
     cy.intercept(`**/api/metadata/${mockDataMetaInfo.dataId}`, mockDataMetaInfo);
 
     const mockStoredCompany: StoredCompany = {
@@ -57,7 +71,7 @@ describe('Component tests for the Quality Assurance page', () => {
     cy.contains('td', `${mockDataMetaInfo.dataId}`);
   });
 
-  it('Mock a pending P2P-dataset to check if dataset can be reviewed', () => {
+  it('Check if dataset can be reviewed on the view page', () => {
     cy.intercept(`**/api/metadata?companyId=${mockDataMetaInfo.companyId}`, [mockDataMetaInfoForActiveDataset]);
     cy.intercept(`**/api/companies/${mockDataMetaInfo.companyId}/info`, p2pFixture.companyInformation);
     cy.intercept(`**/api/metadata/${mockDataMetaInfo.dataId}`, mockDataMetaInfo);
