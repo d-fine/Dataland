@@ -8,9 +8,11 @@ import { UploadReports } from '@sharedUtils/components/UploadReports';
 import { selectItemFromDropdownByIndex, selectItemFromDropdownByValue } from '@sharedUtils/Dropdown';
 import { getFilledKpis } from '@/utils/DataPoint';
 import { getMountingFunction } from '@ct/testUtils/Mount';
+import { PAGE_NUMBER_VALIDATION_ERROR_MESSAGE } from '@/utils/ValidationUtils';
 
 describe('Component tests for the Eu Taxonomy for non financials that test dependent fields', () => {
   const uploadReports = new UploadReports('referencedReports');
+
   /**
    * On the eu taxonomy for non-financial services edit page, this method checks that there can not be a file uploaded
    * whose name equals the one of a file selected before
@@ -96,6 +98,31 @@ describe('Component tests for the Eu Taxonomy for non financials that test depen
   }
 
   /**
+   * this method fills and validates the assurance report page number in the general section
+   * it also makes sure invalid page numbers cannot be uploaded
+   */
+  function fillAndValidateAssuranceReportPageNumber(): void {
+    const invalidPageNumberInputs = ['abc', '0', '01', '0.5', '-13', '5-3', '5-5', '5-', '-5'];
+    for (const invalidPageNumberInput of invalidPageNumberInputs) {
+      cy.get('div[label="General"] input[name="page"]:not([type="hidden"])')
+        .last()
+        .clear()
+        .type(invalidPageNumberInput);
+      cy.get('div[label="General"] em[title="Page(s)"]:not([type="hidden"])').last().click();
+      cy.get('[data-message-type="validation"]')
+        .should('contain', PAGE_NUMBER_VALIDATION_ERROR_MESSAGE)
+        .should('exist');
+      submitButton.buttonAppearsDisabled();
+    }
+    const validPageNumberInputs = ['3', '10-11'];
+    for (const validPageNumberInput of validPageNumberInputs) {
+      cy.get('div[label="General"] input[name="page"]:not([type="hidden"])').last().clear().type(validPageNumberInput);
+      cy.get('div[label="General"] em[title="Page(s)"]:not([type="hidden"])').last().click();
+      submitButton.buttonAppearsEnabled();
+    }
+  }
+
+  /**
    * this method fills and checks the general section
    * @param reports the name of the reports that are uploaded
    */
@@ -118,10 +145,7 @@ describe('Component tests for the Eu Taxonomy for non financials that test depen
     cy.get('div[label="General"] div[name="fileName"]').each((reportField) =>
       selectItemFromDropdownByValue(cy.wrap(reportField), reports[0])
     );
-    cy.get('div[label="General"] input[name="page"]:not([type="hidden"])').last().clear().type('-13');
-    cy.get('div[label="General"] em[title="Page"]:not([type="hidden"])').last().click();
-    cy.get(`[data-message-type="validation"]`).should('contain', 'at least 0').should('exist');
-    cy.get('div[label="General"] input[name="page"]:not([type="hidden"])').last().clear().type('3');
+    fillAndValidateAssuranceReportPageNumber();
   }
 
   /**
@@ -263,7 +287,7 @@ describe('Component tests for the Eu Taxonomy for non financials that test depen
             dataSource: {
               fileName: `${TEST_PDF_FILE_NAME}FileCopy`,
               fileReference: 'bbebf6077b4ab868fd3e5f83ac70c864fc301c9ab9b3e1a53f52ac8a31b97ff7',
-              page: 12,
+              page: '12',
             },
             comment: 'test',
             value: 12000000,
@@ -276,7 +300,7 @@ describe('Component tests for the Eu Taxonomy for non financials that test depen
             dataSource: {
               fileName: 'None...',
               fileReference: 'bbebf6077b4ab868fd3e5f83ac70c864fc301c9ab9b3e1a53f52ac8a31b97ff7',
-              page: 12,
+              page: '12',
             },
             comment: 'test',
             value: 10000000,
@@ -289,7 +313,7 @@ describe('Component tests for the Eu Taxonomy for non financials that test depen
             dataSource: {
               fileName: 'None...',
               fileReference: 'bbebf6077b4ab868fd3e5f83ac70c864fc301c9ab9b3e1a53f52ac8a31b97ff7',
-              page: 12,
+              page: '12-14',
             },
             comment: 'test',
             value: 40000000,
@@ -318,7 +342,7 @@ describe('Component tests for the Eu Taxonomy for non financials that test depen
             dataSource: {
               fileName: TEST_PDF_FILE_NAME,
               fileReference: 'bbebf6077b4ab868fd3e5f83ac70c864fc301c9ab9b3e1a53f52ac8a31b97ff7',
-              page: 1,
+              page: '1',
             },
           },
           numberOfEmployees: {

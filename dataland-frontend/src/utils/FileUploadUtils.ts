@@ -121,7 +121,7 @@ export function calculateReferenceableFiles(inputArray: DocumentToUpload[] | Sto
  * @returns fileReference of the given fileName
  */
 export function getFileReferenceByFileName(
-  currentReportValue: string | null,
+  currentReportValue: string | null | undefined,
   injectReportsNameAndReferences: ObjectType
 ): string {
   if (currentReportValue && currentReportValue in injectReportsNameAndReferences) {
@@ -134,14 +134,19 @@ export function getFileReferenceByFileName(
 }
 
 /**
- * Retrieves the all fileNames of the map
- * @param injectReportsNameAndReferences map from which the fileNames should be retrieved
- * @returns fileNames of all entries in the map
+ * Retrieves all names of currently referencable files on the upload page.
+ * @param injectReportsNameAndReferences map of file names to their respective file references (which are hashes)
+ * @returns the file names as list
  */
-export function getFileName(injectReportsNameAndReferences: ObjectType): string[] {
+export function getAvailableFileNames(injectReportsNameAndReferences: ObjectType): string[] {
   if (injectReportsNameAndReferences) {
     return Object.keys(injectReportsNameAndReferences);
   } else {
     return [];
   }
 }
+
+export const PAGE_NUMBER_DESCRIPTION =
+  'The single page or the range of pages of the document from where the information ' +
+  'was sourced. On Dataland, a single page is defined as the n-th page of the PDF, i.e., ' +
+  'the page number when looking at the PDF in a browser.';

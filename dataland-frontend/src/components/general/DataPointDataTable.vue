@@ -5,7 +5,7 @@
         <tbody class="p-datatable-body">
           <tr
             v-if="
-              dialogData.dataPointDisplay.value && dialogData.dataPointDisplay.value != ONLY_AUXILIARY_DATA_PROVIDED()
+              dialogData.dataPointDisplay.value && dialogData.dataPointDisplay.value != ONLY_AUXILIARY_DATA_PROVIDED
             "
           >
             <th class="headers-bg width-auto"><span class="table-left-label">Value</span></th>
@@ -62,17 +62,13 @@ interface DataPointDataTableRefProps {
 export default defineComponent({
   methods: {
     humanizeStringOrNumber,
-    /**
-     * Returns only-auxiliary-data-provided string
-     * @class
-     */
-    ONLY_AUXILIARY_DATA_PROVIDED() {
-      return ONLY_AUXILIARY_DATA_PROVIDED;
-    },
   },
   components: { RenderSanitizedMarkdownInput, DocumentLink },
   inject: ['dialogRef'],
   name: 'DataPointDataTable',
+  data: () => {
+    return { ONLY_AUXILIARY_DATA_PROVIDED };
+  },
   computed: {
     dialogData(): DataPointDataTableRefProps {
       return assertDefined(this.dialogRef as DynamicDialogInstance).data as DataPointDataTableRefProps;
