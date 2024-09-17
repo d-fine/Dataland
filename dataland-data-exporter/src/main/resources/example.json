@@ -1,5 +1,29 @@
 {
   "companyId": "e7a6f3cb-118f-4939-b39a-48e48047d028",
   "companyName": "Fresenius SE & Co. KGaA",
-  "Lei": "XDFJ0CYCOO1FXRFTQS51"
+  "Lei": "XDFJ0CYCOO1FXRFTQS51",
+  "number": 123,
+  "isin": [
+    "DE0005785604",
+    "US0005785604"
+  ],
+  "nested": {
+    "nestedCompanyId": {
+      "deepNestedCompanyId": "123"
+    },
+    "arrayExample": [
+      {
+        "nestedArrayCompanyId": "1",
+        "nestedArrayCompanyName": "Hallo1",
+        "nestedArrayLei": "2"
+      },
+      {
+        "nestedArrayCompanyId": "3",
+        "nestedArrayCompanyName": "Hallo2",
+        "nestedArrayLei": "4"
+      }
+    ],
+    "nestedCompanyName": "Hallo",
+    "nestedLei": "12344"
+  }
 }

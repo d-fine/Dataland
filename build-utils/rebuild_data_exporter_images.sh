@@ -2,7 +2,8 @@
 set -euxo pipefail
 
 gradle_dependencies=$(grep gradle_dependencies ./build-utils/common.conf | cut -d'=' -f2)
-dependencies="./dataland-data-exporter/ ./environments/.env.uncritical $gradle_dependencies"
+dependencies="./dataland-data-exporter/ ./dataland-backend-utils/ ./dataland-keycloak-adapter/ ./environments/.env.uncritical $gradle_dependencies"
+dependencies+=" ./dataland-backend/backendOpenApi.json"
 
 ./build-utils/base_rebuild_single_docker_image.sh dataland_data_exporter_base ./dataland-data-exporter/DockerfileBase $dependencies
 

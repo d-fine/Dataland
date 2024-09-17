@@ -26,6 +26,7 @@ plugins {
 
 dependencies {
     implementation(project(":dataland-backend-utils"))
+    implementation(libs.jackson.module.kotlin)
     implementation(libs.jackson.dataformat.csv)
     implementation(libs.springdoc.openapi.ui)
     implementation(libs.okhttp)
@@ -52,6 +53,35 @@ openApi {
     }
     waitTimeInSeconds.set(openApiGeneratorTimeOutThresholdInSeconds.toInt())
 }
+
+val backendOpenApiFile = "${project.rootDir}/dataland-backend/backendOpenApi.json"
+val backendClientOutputDir = layout.buildDirectory.dir("clients/backend").get().toString()
+
+tasks.register("generateBackendClient", org.openapitools.generator.gradle.plugin.tasks.GenerateTask::class) {
+    description = "Task to generate clients for the backend service."
+    group = "clients"
+    val backendClientDestinationPackage = "org.dataland.datalandbackend.openApiClient"
+    input = project.file("${project.rootDir}/dataland-backend/backendOpenApi.json").path
+    outputDir.set(layout.buildDirectory.dir("clients/backend").get().toString())
+    packageName.set(backendClientDestinationPackage)
+    modelPackage.set("$backendClientDestinationPackage.model")
+    apiPackage.set("$backendClientDestinationPackage.api")
+    generatorName.set("kotlin")
+
+    additionalProperties.set(
+        mapOf(
+            "removeEnumValuePrefix" to false,
+        ),
+    )
+    configOptions.set(
+        mapOf(
+            "serializationLibrary" to "jackson",
+            "dateLibrary" to "java21",
+            "useTags" to "true",
+        ),
+    )
+}
+
 tasks.test {
     useJUnitPlatform()
 
@@ -61,6 +91,11 @@ tasks.test {
 }
 jacoco {
     toolVersion = jacocoVersion
+}
+
+sourceSets {
+    val main by getting
+    main.kotlin.srcDir(layout.buildDirectory.dir("clients/backend/src/main/kotlin"))
 }
 
 gitProperties {

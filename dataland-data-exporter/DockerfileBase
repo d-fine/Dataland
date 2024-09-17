@@ -2,7 +2,11 @@ ARG DATALAND_GRADLE_BASE_VERSION
 FROM ghcr.io/d-fine/dataland/dataland_gradle_base:${DATALAND_GRADLE_BASE_VERSION} AS builder
 
 WORKDIR /app
-#TODO add additional dependencies
 COPY ./dataland-data-exporter/ ./dataland-data-exporter/
+COPY ./dataland-backend/backendOpenApi.json ./dataland-backend/backendOpenApi.json
+COPY ./dataland-api-key-manager/apiKeyManagerOpenApi.json ./dataland-api-key-manager/apiKeyManagerOpenApi.json
+COPY ./dataland-keycloak-adapter/ ./dataland-keycloak-adapter/
+COPY ./dataland-backend-utils/ ./dataland-backend-utils/
+
 COPY ./.git/ ./.git
 RUN ./gradlew dataland-data-exporter:bootJar --no-daemon --stacktrace

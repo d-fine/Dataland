@@ -38,6 +38,7 @@
 [Environment]::SetEnvironmentVariable("DATALAND_DOCUMENT_MANAGER_CLIENT_SECRET", "password", [System.EnvironmentVariableTarget]::User)
 [Environment]::SetEnvironmentVariable("DATALAND_BACKEND_CLIENT_SECRET", "password", [System.EnvironmentVariableTarget]::User)
 [Environment]::SetEnvironmentVariable("DATALAND_AUTOMATED_QA_SERVICE_CLIENT_SECRET", "password", [System.EnvironmentVariableTarget]::User)
+[Environment]::SetEnvironmentVariable("DATALAND_DATA_EXPORTER_CLIENT_SECRET", "password", [System.EnvironmentVariableTarget]::User)
 [Environment]::SetEnvironmentVariable("EXPECT_STACKTRACE", "true", [System.EnvironmentVariableTarget]::User)
 [Environment]::SetEnvironmentVariable("NOTIFICATION_INTERNAL_RECEIVERS", "dummy.mail@example.com", [System.EnvironmentVariableTarget]::User)
 [Environment]::SetEnvironmentVariable("NOTIFICATION_INTERNAL_CC", "dummy.mail2@example.com", [System.EnvironmentVariableTarget]::User)

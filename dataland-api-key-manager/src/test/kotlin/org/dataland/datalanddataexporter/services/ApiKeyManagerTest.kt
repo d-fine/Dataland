@@ -1,4 +1,4 @@
-package org.datalandapikeymanager.services
+package org.dataland.datalanddataexporter.services
 
 import jakarta.transaction.Transactional
 import org.dataland.datalandapikeymanager.DatalandApiKeyManager

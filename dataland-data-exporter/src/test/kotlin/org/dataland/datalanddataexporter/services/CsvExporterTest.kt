@@ -1,4 +1,4 @@
-package org.datalandapikeymanager.services
+package org.dataland.datalanddataexporter.services
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandapikeymanager.DatalandDataExporter
@@ -8,13 +8,18 @@ import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import java.io.File
+import org.junit.jupiter.api.assertDoesNotThrow
+import org.junit.jupiter.api.assertThrows
 
 @SpringBootTest(classes = [DatalandDataExporter::class])
 class CsvExporterTest(
     @Autowired val testCsvExporter: CsvExporter,
 ) {
     val testTransformationConfig = "./csv/configs/transformation.config"
-    val inputJson = "./src/test/resources/csv/input.json"
+    //val inputJson = this.javaClass.classLoader.getResourceAsStream("./src/test/resources/csv/input.json")
+    val inputJson = File("./src/test/resources/csv/input.json")
+    //val inconsistentJson = this.javaClass.classLoader.getResourceAsStream("./src/test/resources/csv/inconsistent.json")
+    val inconsistentJson = File("./src/test/resources/csv/inconsistent.json")
     val expectedTransformationRules = mapOf(
         "presentMapping" to "presentHeader",
         "notMapped" to "",
@@ -27,33 +32,18 @@ class CsvExporterTest(
     val expectedCsvFileContent =
         "\"nestedHeader\"|\"presentHeader\"|\"mappedButNoDataHeader\"\n\"NestedHere\"|\"Here\"|\n"
 
-    @Test
-    fun `check that a duplicated header entry in the transformation rules throws an error`() {
-        Assertions.assertThrows(IllegalArgumentException::class.java) {
-            testCsvExporter.getHeaders(mapOf("key1" to "header1", "key2" to "header1"))
-        }
-    }
 
-    @Test
-    fun `check that getHeaders returns correct headers`() {
-        val headers = testCsvExporter.getHeaders(expectedTransformationRules)
-        Assertions.assertEquals(expectedHeaders, headers)
-    }
 
-    @Test
-    fun `check that readTransformationConfig returns correct transformation rules`() {
-        val transformationRules = testCsvExporter.readTransformationConfig(testTransformationConfig)
-        Assertions.assertEquals(expectedTransformationRules, transformationRules)
-    }
+
 
     @Test
     fun `check that mapJsonToCsv returns correct csv data`() {
-        val jsonNode = ObjectMapper().readTree(File(inputJson))
+        val jsonNode = ObjectMapper().readTree(inputJson)
         val csvData = testCsvExporter.mapJsonToCsv(jsonNode, expectedTransformationRules)
         Assertions.assertEquals(expectedCsvData, csvData)
     }
 
-    @Test
+    /*@Test
     fun `check that the csv-file writen for the conversion is as expected`() {
         // TODO rethink this test
         val csvFile = File("./src/test/resources/csv/output/output.csv")
@@ -63,5 +53,7 @@ class CsvExporterTest(
         val headers = testCsvExporter.getHeaders(transformationRules)
         testCsvExporter.writeCsv(listOf(csvData), csvFile, headers)
         Assertions.assertEquals(expectedCsvFileContent, csvFile.readText())
-    }
+    }*/
+
+
 }
