@@ -4,9 +4,11 @@ import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
 import org.dataland.datalandbackend.openApiClient.model.DataMetaInformation
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandbackend.openApiClient.model.QaStatus
+import org.dataland.e2etests.auth.GlobalAuth.jwtHelper
 import org.dataland.e2etests.auth.TechnicalUser
 import org.dataland.e2etests.utils.ApiAccessor
 import org.dataland.e2etests.utils.DocumentManagerAccessor
+import org.dataland.e2etests.utils.QaApiAccessor
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeAll
@@ -15,6 +17,7 @@ import org.junit.jupiter.api.TestInstance
 import org.junit.jupiter.api.assertThrows
 import java.math.BigDecimal
 import java.time.Instant
+import java.util.*
 import kotlin.math.abs
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
@@ -272,5 +275,73 @@ class MetaDataControllerTest {
             )
         }
         return companyId
+    }
+
+    @Test
+    fun `upload datasets and test the different search filters with different combinations`() {
+        val companyId = uploadSearchFiltersData()
+        checkSearchFilters(companyId)
+    }
+
+    private fun uploadSearchFiltersData(): String {
+        val sfdrData = apiAccessor.testDataProviderForSfdrData.getTData(1).first()
+        val uploadFunction = apiAccessor::sfdrUploaderFunction
+
+        val reportingPeriods = listOf("2005", "2006")
+        val combinations = reportingPeriods.flatMap { reportingPeriod ->
+            listOf(
+                Triple(reportingPeriod, TechnicalUser.Admin, true),
+                Triple(reportingPeriod, TechnicalUser.Admin, false),
+                Triple(reportingPeriod, TechnicalUser.Uploader, false)
+            )
+        }
+
+        val waitForQaList = mutableListOf<DataMetaInformation>()
+
+        jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
+        val companyId =
+            apiAccessor.companyDataControllerApi.postCompany(listOfOneTestCompanyInformation.first()).companyId
+
+        combinations.forEach {(reportingPeriod, user, bypassQa) ->
+            jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(user)
+            val metaData = uploadFunction(companyId, sfdrData, reportingPeriod, bypassQa)
+            if (bypassQa) {
+                waitForQaList.add(metaData)
+            }
+        }
+        QaApiAccessor().ensureQaIsPassed(waitForQaList, apiAccessor.metaDataControllerApi)
+        return companyId
+    }
+
+    private fun checkSearchFilters(companyId: String) {
+        jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
+        val metaDataList =
+            apiAccessor.metaDataControllerApi.getListOfDataMetaInfo(
+                companyId, null, false, null, null, null
+            )
+
+        val combinations = listOf("2005", "2006").flatMap { reportingPeriod ->
+            QaStatus.entries.flatMap { qaStatus ->
+                listOf(
+                    Triple(listOf(TechnicalUser.Admin, TechnicalUser.Uploader), qaStatus, reportingPeriod),
+                    Triple(listOf(TechnicalUser.Uploader), qaStatus, reportingPeriod),
+                    Triple(listOf(TechnicalUser.Admin), qaStatus, reportingPeriod)
+                )
+            }
+        }
+
+        combinations.forEach { (users, qaStatus, reportingPeriod) ->
+            val userIds = users.map { UUID.fromString(it.technicalUserId) }.toSet()
+            val filteredMetaDatas = metaDataList.filter {
+                it.companyId == companyId && userIds.contains(UUID.fromString(it.uploaderUserId))
+                        && it.qaStatus == qaStatus && it.reportingPeriod == reportingPeriod
+            }
+            val returnedMetaDatas =
+                apiAccessor.metaDataControllerApi.getListOfDataMetaInfo(
+                    companyId, null, false, reportingPeriod, userIds, qaStatus
+                )
+
+            assertEquals(filteredMetaDatas.toSet(), returnedMetaDatas.toSet())
+        }
     }
 }
