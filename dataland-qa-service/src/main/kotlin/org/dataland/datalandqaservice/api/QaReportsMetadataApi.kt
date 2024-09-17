@@ -15,6 +15,7 @@ import java.util.*
 /**
  * Defines the restful dataland QAReports Metadata API
  */
+@Suppress("kotlin:S6517")
 @SecurityRequirement(name = "default-bearer-auth")
 @SecurityRequirement(name = "default-oauth")
 interface QaReportsMetadataApi {

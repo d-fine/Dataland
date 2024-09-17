@@ -45,15 +45,15 @@ class QaReportMetadataServiceTest(
     @MockBean
     lateinit var metadataController: MetaDataControllerApi
 
-    val reporterId1 = UUID.randomUUID()
-    val reporterId2 = UUID.randomUUID()
+    val reporterId1: UUID = UUID.randomUUID()
+    val reporterId2: UUID = UUID.randomUUID()
     val companyIdentifier = "companyIdentifier"
     val companyId = "companyId"
     val dataId1 = "dataId1"
     val dataId2 = "dataId2"
 
     @Test
-    fun `check that non-unique company ids throw an exception`() {
+    fun `check that non unique company ids throw an exception`() {
         val matchingCompanyIdsAndNamesOnDataland: List<CompanyIdAndName> = listOf(
             CompanyIdAndName("1", companyId),
             CompanyIdAndName("2", "2"),
@@ -163,12 +163,7 @@ class QaReportMetadataServiceTest(
         val resultOnlyStart: List<DataAndQaReportMetadata> =
             qaReportMetadataService
                 .searchDataAndQaReportMetadata(
-                    null,
-                    true,
-                    null,
-                    LocalDate.now().minusDays(3).format(formatter),
-                    null,
-                    null,
+                    null, true, null, LocalDate.now().minusDays(3).format(formatter), null, null,
                 )
         Assertions.assertEquals(1, resultOnlyStart.size)
         Assertions.assertEquals(dataId1, resultOnlyStart[0].qaReportMetadata.dataId)
@@ -176,12 +171,7 @@ class QaReportMetadataServiceTest(
         val resultOnlyEnd: List<DataAndQaReportMetadata> =
             qaReportMetadataService
                 .searchDataAndQaReportMetadata(
-                    null,
-                    true,
-                    null,
-                    null,
-                    LocalDate.now().minusDays(3).format(formatter),
-                    null,
+                    null, true, null, null, LocalDate.now().minusDays(3).format(formatter), null,
                 )
         Assertions.assertEquals(1, resultOnlyEnd.size)
         Assertions.assertEquals(dataId2, resultOnlyEnd[0].qaReportMetadata.dataId)
