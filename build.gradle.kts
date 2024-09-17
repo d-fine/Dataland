@@ -20,6 +20,7 @@ subprojects {
     apply(plugin = "com.github.ben-manes.versions")
     apply(plugin = "com.github.jk1.dependency-license-report")
     apply(plugin = "org.jetbrains.kotlin.jvm")
+    apply(plugin = "com.ncorti.ktfmt.gradle")
 
     group = "org.dataland"
     version = "0.0.1-SNAPSHOT"
@@ -42,6 +43,9 @@ subprojects {
         toolchain {
             languageVersion = JavaLanguageVersion.of(jvmVersion.majorVersion.toInt())
         }
+    }
+    ktfmt {
+        googleStyle()
     }
 }
 
@@ -72,6 +76,7 @@ plugins {
     alias(libs.plugins.com.github.ben.manes.versions)
     alias(libs.plugins.org.jetbrains.kotlin.plugin.jpa) apply false
     alias(libs.plugins.org.jetbrains.kotlin.plugin.serialization) apply false
+    alias(libs.plugins.com.ncorti.ktfmt.gradle)
 }
 
 sonar {
