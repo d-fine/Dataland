@@ -197,7 +197,6 @@ export default defineComponent({
       selectedFrameworks: [] as Array<FrameworkSelectableItem>,
       availableFrameworks: [] as Array<FrameworkSelectableItem>,
       availableReportingPeriods: undefined as undefined | Date,
-      reportingPeriod: undefined as undefined | Date,
     };
   },
   mounted() {
