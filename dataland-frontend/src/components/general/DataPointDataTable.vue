@@ -33,7 +33,9 @@
           </tr>
           <tr v-if="dialogData.dataPointDisplay.comment">
             <th class="headers-bg width-auto"><span class="table-left-label">Comment</span></th>
-            <td><RenderSanitizedMarkdownInput :text="dialogData.dataPointDisplay.comment" /></td>
+            <td>
+              <RenderSanitizedMarkdownInput :text="dialogData.dataPointDisplay.comment" />
+            </td>
           </tr>
         </tbody>
       </table>
@@ -50,7 +52,6 @@ import { ONLY_AUXILIARY_DATA_PROVIDED } from '@/utils/Constants';
 import { assertDefined } from '@/utils/TypeScriptUtils';
 import RenderSanitizedMarkdownInput from '@/components/general/RenderSanitizedMarkdownInput.vue';
 import { humanizeStringOrNumber } from '@/utils/StringFormatter';
-
 
 interface DataPointDataTableRefProps {
   dataPointDisplay: DataPointDisplay;
@@ -94,6 +95,7 @@ export default defineComponent({
   border-spacing: 0;
   border-collapse: collapse;
 }
+
 .width-auto {
   width: auto;
 }
