@@ -141,8 +141,7 @@ import TheHeader from '@/components/generics/TheHeader.vue';
 import AuthenticationWrapper from '@/components/wrapper/AuthenticationWrapper.vue';
 import { defineComponent, inject } from 'vue';
 import { type CompanyInformation, type DataMetaInformation } from '@clients/backend';
-import { type ApiClientProvider } from '@/services/ApiClients';
-import { assertDefined } from '@/utils/TypeScriptUtils';
+import { ApiClientProvider } from '@/services/ApiClients';
 import AuthorizationWrapper from '@/components/wrapper/AuthorizationWrapper.vue';
 import { KEYCLOAK_ROLE_REVIEWER } from '@/utils/KeycloakUtils';
 import DataTable, { type DataTablePageEvent, type DataTableRowClickEvent } from 'primevue/datatable';
@@ -155,6 +154,7 @@ import { type FrameworkSelectableItem } from '@/utils/FrameworkDataSearchDropDow
 import { retrieveAvailableFrameworks } from '@/utils/RequestsOverviewPageUtils';
 import InputText from 'primevue/inputtext';
 import Calendar from 'primevue/calendar';
+import type Keycloak from 'keycloak-js';
 
 export default defineComponent({
   name: 'QualityAssurance',
@@ -174,7 +174,7 @@ export default defineComponent({
   setup() {
     return {
       datasetsPerPage: 10,
-      apiClientProvider: inject<ApiClientProvider>('apiClientProvider'),
+      getKeycloakPromise: inject<() => Promise<Keycloak>>('getKeycloakPromise'),
     };
   },
   data() {
@@ -182,6 +182,7 @@ export default defineComponent({
     const footerPage: Page | undefined = content.pages.find((page) => page.url === '/');
     const footerContent = footerPage?.sections;
     return {
+      apiClientProvider: new ApiClientProvider(this.getKeycloakPromise()),
       dataIdList: [] as Array<string>,
       displayDataOfPage: [] as QaDataObject[],
       waitingForData: true,
@@ -239,9 +240,7 @@ export default defineComponent({
         this.waitingForData = true;
         this.displayDataOfPage = [];
         const dataOfPage = [] as QaDataObject[];
-        const response = await assertDefined(
-          this.apiClientProvider
-        ).apiClients.qaController.getInfoOnUnreviewedDatasets();
+        const response = await this.apiClientProvider.apiClients.qaController.getInfoOnUnreviewedDatasets();
         this.dataIdList = response.data;
         const firstDatasetOnPageIndex = this.currentChunkIndex * this.datasetsPerPage;
         const dataIdsOnPage = this.dataIdList.slice(
@@ -263,13 +262,11 @@ export default defineComponent({
      * @returns a promise on the fetched data object
      */
     async addDatasetAssociatedInformationToDisplayList(dataId: string): Promise<QaDataObject> {
-      const metaDataResponse = await assertDefined(
-        this.apiClientProvider
-      ).backendClients.metaDataController.getDataMetaInfo(dataId);
+      const metaDataResponse = await this.apiClientProvider.backendClients.metaDataController.getDataMetaInfo(dataId);
       this.metaInformation = metaDataResponse.data;
-      const companyResponse = await assertDefined(
-        this.apiClientProvider
-      ).backendClients.companyDataController.getCompanyById(this.metaInformation.companyId);
+      const companyResponse = await this.apiClientProvider.backendClients.companyDataController.getCompanyById(
+        this.metaInformation.companyId
+      );
       this.companyInformation = companyResponse.data.companyInformation;
       return {
         dataId: dataId,
