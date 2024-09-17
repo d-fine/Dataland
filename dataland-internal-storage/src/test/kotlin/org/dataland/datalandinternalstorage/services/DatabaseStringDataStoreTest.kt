@@ -1,6 +1,8 @@
 package org.dataland.datalandinternalstorage.services
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import java.util.Optional
+import java.util.UUID
 import org.dataland.datalandbackend.openApiClient.api.TemporarilyCachedDataControllerApi
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandinternalstorage.repositories.DataItemRepository
@@ -12,37 +14,39 @@ import org.junit.jupiter.api.assertThrows
 import org.mockito.Mockito.mock
 import org.mockito.Mockito.spy
 import org.mockito.Mockito.`when`
-import java.util.Optional
-import java.util.UUID
 
 class DatabaseStringDataStoreTest {
 
-    val mockDataItemRepository: DataItemRepository = mock(DataItemRepository::class.java)
-    val mockCloudEventMessageHandler: CloudEventMessageHandler = mock(CloudEventMessageHandler::class.java)
-    val mockTemporarilyCachedDataControllerApi: TemporarilyCachedDataControllerApi =
-        mock(TemporarilyCachedDataControllerApi::class.java)
-    lateinit var databaseStringDataStore: DatabaseStringDataStore
-    lateinit var spyDatabaseStringDataStore: DatabaseStringDataStore
-    val correlationId = UUID.randomUUID().toString()
-    val objectMapper: ObjectMapper = ObjectMapper()
-    val messageQueueUtils: MessageQueueUtils = MessageQueueUtils()
+  val mockDataItemRepository: DataItemRepository = mock(DataItemRepository::class.java)
+  val mockCloudEventMessageHandler: CloudEventMessageHandler =
+    mock(CloudEventMessageHandler::class.java)
+  val mockTemporarilyCachedDataControllerApi: TemporarilyCachedDataControllerApi =
+    mock(TemporarilyCachedDataControllerApi::class.java)
+  lateinit var databaseStringDataStore: DatabaseStringDataStore
+  lateinit var spyDatabaseStringDataStore: DatabaseStringDataStore
+  val correlationId = UUID.randomUUID().toString()
+  val objectMapper: ObjectMapper = ObjectMapper()
+  val messageQueueUtils: MessageQueueUtils = MessageQueueUtils()
 
-    @BeforeEach
-    fun reset() {
-        databaseStringDataStore = DatabaseStringDataStore(
-            mockDataItemRepository,
-            mockCloudEventMessageHandler,
-            mockTemporarilyCachedDataControllerApi,
-            objectMapper,
-            messageQueueUtils,
-        )
-        spyDatabaseStringDataStore = spy(databaseStringDataStore)
-    }
+  @BeforeEach
+  fun reset() {
+    databaseStringDataStore =
+      DatabaseStringDataStore(
+        mockDataItemRepository,
+        mockCloudEventMessageHandler,
+        mockTemporarilyCachedDataControllerApi,
+        objectMapper,
+        messageQueueUtils,
+      )
+    spyDatabaseStringDataStore = spy(databaseStringDataStore)
+  }
 
-    @Test
-    fun `check that a ResourceNotFoundApiException is thrown if the dataset could not be found`() {
-        val dataId = "dummyId"
-        `when`(mockDataItemRepository.findById(dataId)).thenReturn(Optional.empty())
-        assertThrows<ResourceNotFoundApiException> { databaseStringDataStore.selectDataSet(dataId, correlationId) }
+  @Test
+  fun `check that a ResourceNotFoundApiException is thrown if the dataset could not be found`() {
+    val dataId = "dummyId"
+    `when`(mockDataItemRepository.findById(dataId)).thenReturn(Optional.empty())
+    assertThrows<ResourceNotFoundApiException> {
+      databaseStringDataStore.selectDataSet(dataId, correlationId)
     }
+  }
 }

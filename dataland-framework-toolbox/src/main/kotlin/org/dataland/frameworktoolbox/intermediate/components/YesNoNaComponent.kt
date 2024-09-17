@@ -12,59 +12,58 @@ import org.dataland.frameworktoolbox.specific.viewconfig.elements.getTypescriptF
 import org.dataland.frameworktoolbox.specific.viewconfig.functional.FrameworkDisplayValueLambda
 import org.dataland.frameworktoolbox.utils.typescript.TypeScriptImport
 
-/**
- * A YesNoComponent is either Yes or No or N/A.
- */
-class YesNoNaComponent(
-    identifier: String,
-    parent: FieldNodeParent,
-) : SimpleKotlinBackedBaseComponent(
-    identifier, parent,
+/** A YesNoComponent is either Yes or No or N/A. */
+class YesNoNaComponent(identifier: String, parent: FieldNodeParent) :
+  SimpleKotlinBackedBaseComponent(
+    identifier,
+    parent,
     "org.dataland.datalandbackend.model.enums.commons.YesNoNa",
-) {
+  ) {
 
-    override fun generateDefaultViewConfig(sectionConfigBuilder: SectionConfigBuilder) {
-        sectionConfigBuilder.addStandardCellWithValueGetterFactory(
-            this,
-            documentSupport.getFrameworkDisplayValueLambda(
-                FrameworkDisplayValueLambda(
-                    "formatYesNoValueForDatatable(${getTypescriptFieldAccessor(true)})",
-                    setOf(
-                        TypeScriptImport(
-                            "formatYesNoValueForDatatable",
-                            "@/components/resources/dataTable/conversion/YesNoValueGetterFactory",
-                        ),
-                    ),
-                ),
-                label, getTypescriptFieldAccessor(),
-            ),
-        )
-    }
-
-    override fun generateDefaultUploadConfig(uploadCategoryBuilder: UploadCategoryBuilder) {
-        val uploadComponentNameToUse = when (documentSupport) {
-            is NoDocumentSupport -> "YesNoNaFormField"
-            is SimpleDocumentSupport -> "YesNoNaBaseDataPointFormField"
-            is ExtendedDocumentSupport -> "YesNoNaExtendedDataPointFormField"
-            else -> throw IllegalArgumentException(
-                "YesNoNaComponent does not support document support " +
-                    "'$documentSupport",
+  override fun generateDefaultViewConfig(sectionConfigBuilder: SectionConfigBuilder) {
+    sectionConfigBuilder.addStandardCellWithValueGetterFactory(
+      this,
+      documentSupport.getFrameworkDisplayValueLambda(
+        FrameworkDisplayValueLambda(
+          "formatYesNoValueForDatatable(${getTypescriptFieldAccessor(true)})",
+          setOf(
+            TypeScriptImport(
+              "formatYesNoValueForDatatable",
+              "@/components/resources/dataTable/conversion/YesNoValueGetterFactory",
             )
-        }
-        uploadCategoryBuilder.addStandardUploadConfigCell(
-            component = this,
-            uploadComponentName = uploadComponentNameToUse,
-        )
-    }
+          ),
+        ),
+        label,
+        getTypescriptFieldAccessor(),
+      ),
+    )
+  }
 
-    override fun generateDefaultFixtureGenerator(sectionBuilder: FixtureSectionBuilder) {
-        sectionBuilder.addAtomicExpression(
-            identifier,
-            documentSupport.getFixtureExpression(
-                fixtureExpression = "dataGenerator.guaranteedYesNoNa()",
-                nullableFixtureExpression = "dataGenerator.randomYesNoNa()",
-                nullable = isNullable,
-            ),
-        )
-    }
+  override fun generateDefaultUploadConfig(uploadCategoryBuilder: UploadCategoryBuilder) {
+    val uploadComponentNameToUse =
+      when (documentSupport) {
+        is NoDocumentSupport -> "YesNoNaFormField"
+        is SimpleDocumentSupport -> "YesNoNaBaseDataPointFormField"
+        is ExtendedDocumentSupport -> "YesNoNaExtendedDataPointFormField"
+        else ->
+          throw IllegalArgumentException(
+            "YesNoNaComponent does not support document support " + "'$documentSupport"
+          )
+      }
+    uploadCategoryBuilder.addStandardUploadConfigCell(
+      component = this,
+      uploadComponentName = uploadComponentNameToUse,
+    )
+  }
+
+  override fun generateDefaultFixtureGenerator(sectionBuilder: FixtureSectionBuilder) {
+    sectionBuilder.addAtomicExpression(
+      identifier,
+      documentSupport.getFixtureExpression(
+        fixtureExpression = "dataGenerator.guaranteedYesNoNa()",
+        nullableFixtureExpression = "dataGenerator.randomYesNoNa()",
+        nullable = isNullable,
+      ),
+    )
+  }
 }

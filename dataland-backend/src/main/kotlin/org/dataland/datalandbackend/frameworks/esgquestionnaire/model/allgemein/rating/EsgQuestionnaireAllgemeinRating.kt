@@ -5,19 +5,11 @@ import jakarta.validation.Valid
 import org.dataland.datalandbackend.model.datapoints.BaseDataPoint
 import org.dataland.datalandbackend.model.enums.commons.YesNo
 
-/**
- * The data-model for the Rating section
- */
+/** The data-model for the Rating section */
 data class EsgQuestionnaireAllgemeinRating(
-    val esgRating: YesNo? = null,
-
-    val agentur: String? = null,
-
-    val ergebnis: String? = null,
-
-    @field:Valid()
-    val ratingbericht: BaseDataPoint<YesNo>? = null,
-
-    val kritischePunkte: String? = null,
-
+  val esgRating: YesNo? = null,
+  val agentur: String? = null,
+  val ergebnis: String? = null,
+  @field:Valid() val ratingbericht: BaseDataPoint<YesNo>? = null,
+  val kritischePunkte: String? = null,
 )

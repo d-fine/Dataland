@@ -3,14 +3,9 @@ package org.dataland.datalandbackend.frameworks.esgquestionnaire.model.unternehm
 
 import java.math.BigInteger
 
-/**
- * The data-model for the Verguetungsausschuss section
- */
+/** The data-model for the Verguetungsausschuss section */
 data class EsgQuestionnaireUnternehmensfuehrunggovernanceVerguetungsausschuss(
-    val anzahlDerMitgliederImVerguetungsausschuss: BigInteger? = null,
-
-    val anzahlUnabhaengigerMitgliederImVerguetungsausschuss: BigInteger? = null,
-
-    val anzahlVonFrauenImVerguetungsausschuss: BigInteger? = null,
-
+  val anzahlDerMitgliederImVerguetungsausschuss: BigInteger? = null,
+  val anzahlUnabhaengigerMitgliederImVerguetungsausschuss: BigInteger? = null,
+  val anzahlVonFrauenImVerguetungsausschuss: BigInteger? = null,
 )

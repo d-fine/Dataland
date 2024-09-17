@@ -2,38 +2,23 @@
 package org.dataland.datalandbackend.frameworks.lksg.model.governance.grievanceMechanismOwnOperations
 
 import jakarta.validation.Valid
+import java.math.BigDecimal
 import org.dataland.datalandbackend.frameworks.lksg.custom.LksgGrievanceAssessmentMechanism
 import org.dataland.datalandbackend.model.datapoints.BaseDataPoint
 import org.dataland.datalandbackend.model.enums.commons.YesNo
 import org.dataland.datalandbackend.validator.MinimumValue
-import java.math.BigDecimal
 
-/**
- * The data-model for the GrievanceMechanismOwnOperations section
- */
+/** The data-model for the GrievanceMechanismOwnOperations section */
 data class LksgGovernanceGrievanceMechanismOwnOperations(
-    @field:Valid()
-    val grievanceHandlingMechanism: BaseDataPoint<YesNo>? = null,
-
-    val grievanceHandlingReportingAccessible: YesNo? = null,
-
-    val appropriateGrievanceHandlingInformation: YesNo? = null,
-
-    val appropriateGrievanceHandlingSupport: YesNo? = null,
-
-    val accessToExpertiseForGrievanceHandling: YesNo? = null,
-
-    val grievanceComplaints: YesNo? = null,
-
-    @field:MinimumValue(minimumValue = 0)
-    val complaintsNumber: BigDecimal? = null,
-
-    val complaintsRiskPosition: List<LksgGrievanceAssessmentMechanism?>? = null,
-
-    val publicAccessToGrievanceHandling: YesNo? = null,
-
-    val whistleblowerProtection: YesNo? = null,
-
-    val dueDiligenceProcessForGrievanceHandling: YesNo? = null,
-
+  @field:Valid() val grievanceHandlingMechanism: BaseDataPoint<YesNo>? = null,
+  val grievanceHandlingReportingAccessible: YesNo? = null,
+  val appropriateGrievanceHandlingInformation: YesNo? = null,
+  val appropriateGrievanceHandlingSupport: YesNo? = null,
+  val accessToExpertiseForGrievanceHandling: YesNo? = null,
+  val grievanceComplaints: YesNo? = null,
+  @field:MinimumValue(minimumValue = 0) val complaintsNumber: BigDecimal? = null,
+  val complaintsRiskPosition: List<LksgGrievanceAssessmentMechanism?>? = null,
+  val publicAccessToGrievanceHandling: YesNo? = null,
+  val whistleblowerProtection: YesNo? = null,
+  val dueDiligenceProcessForGrievanceHandling: YesNo? = null,
 )

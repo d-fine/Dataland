@@ -9,24 +9,24 @@ import org.dataland.e2etests.BASE_PATH_TO_DATALAND_BACKEND
 
 class UnauthorizedCompanyDataControllerApi {
 
-    private val client = OkHttpClient()
+  private val client = OkHttpClient()
 
-    private fun transferJsonToStoredCompany(inputString: String): StoredCompany {
-        val jsonAdapter: JsonAdapter<StoredCompany> = moshi.adapter(StoredCompany::class.java)
-        return jsonAdapter.fromJson(inputString)!!
-    }
+  private fun transferJsonToStoredCompany(inputString: String): StoredCompany {
+    val jsonAdapter: JsonAdapter<StoredCompany> = moshi.adapter(StoredCompany::class.java)
+    return jsonAdapter.fromJson(inputString)!!
+  }
 
-    private fun buildGetCompanyByIdRequest(companyId: String): Request {
-        return Request.Builder()
-            .url("$BASE_PATH_TO_DATALAND_BACKEND/companies/$companyId")
-            .get()
-            .build()
-    }
+  private fun buildGetCompanyByIdRequest(companyId: String): Request {
+    return Request.Builder()
+      .url("$BASE_PATH_TO_DATALAND_BACKEND/companies/$companyId")
+      .get()
+      .build()
+  }
 
-    fun getCompanyById(companyId: String): StoredCompany {
-        val response = client.newCall(buildGetCompanyByIdRequest(companyId)).execute()
-        require(response.isSuccessful) { "Unauthorized access failed, response is: $response" }
-        val responseBodyAsString = response.body!!.string()
-        return transferJsonToStoredCompany(responseBodyAsString)
-    }
+  fun getCompanyById(companyId: String): StoredCompany {
+    val response = client.newCall(buildGetCompanyByIdRequest(companyId)).execute()
+    require(response.isSuccessful) { "Unauthorized access failed, response is: $response" }
+    val responseBodyAsString = response.body!!.string()
+    return transferJsonToStoredCompany(responseBodyAsString)
+  }
 }

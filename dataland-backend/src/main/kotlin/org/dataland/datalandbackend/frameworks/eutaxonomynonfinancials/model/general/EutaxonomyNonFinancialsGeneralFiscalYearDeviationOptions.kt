@@ -3,13 +3,9 @@ package org.dataland.datalandbackend.frameworks.eutaxonomynonfinancials.model.ge
 
 import io.swagger.v3.oas.annotations.media.Schema
 
-/**
- * Enum class for the single-select-field fiscalYearDeviation
- */
-@Schema(
-    enumAsRef = true,
-)
+/** Enum class for the single-select-field fiscalYearDeviation */
+@Schema(enumAsRef = true)
 enum class EutaxonomyNonFinancialsGeneralFiscalYearDeviationOptions {
-    Deviation,
-    NoDeviation,
+  Deviation,
+  NoDeviation,
 }

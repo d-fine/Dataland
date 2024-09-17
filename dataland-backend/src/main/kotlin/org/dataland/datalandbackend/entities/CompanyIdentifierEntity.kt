@@ -13,29 +13,23 @@ import jakarta.persistence.Table
 import org.dataland.datalandbackend.model.enums.company.IdentifierType
 import org.springframework.data.domain.Persistable
 
-/**
- * The database entity for storing company identifiers
- */
+/** The database entity for storing company identifiers */
 @Entity
 @Table(name = "company_identifiers")
 @IdClass(CompanyIdentifierEntityId::class)
 data class CompanyIdentifierEntity(
-    @Id
-    @Column(name = "identifier_value")
-    val identifierValue: String,
-
-    @Id
-    @Enumerated(EnumType.STRING)
-    @Column(name = "identifier_type")
-    val identifierType: IdentifierType,
-
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "company_id")
-    var company: StoredCompanyEntity?,
-
-    @Transient
-    private var isNew: Boolean = false,
+  @Id @Column(name = "identifier_value") val identifierValue: String,
+  @Id
+  @Enumerated(EnumType.STRING)
+  @Column(name = "identifier_type")
+  val identifierType: IdentifierType,
+  @ManyToOne(fetch = FetchType.LAZY, optional = false)
+  @JoinColumn(name = "company_id")
+  var company: StoredCompanyEntity?,
+  @Transient private var isNew: Boolean = false,
 ) : Persistable<CompanyIdentifierEntityId> {
-    override fun getId(): CompanyIdentifierEntityId = CompanyIdentifierEntityId(identifierValue, identifierType)
-    override fun isNew(): Boolean = isNew
+  override fun getId(): CompanyIdentifierEntityId =
+    CompanyIdentifierEntityId(identifierValue, identifierType)
+
+  override fun isNew(): Boolean = isNew
 }

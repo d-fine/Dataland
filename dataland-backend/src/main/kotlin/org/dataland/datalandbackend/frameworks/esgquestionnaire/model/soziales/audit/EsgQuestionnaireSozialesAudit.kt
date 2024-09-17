@@ -3,14 +3,9 @@ package org.dataland.datalandbackend.frameworks.esgquestionnaire.model.soziales.
 
 import org.dataland.datalandbackend.model.enums.commons.YesNo
 
-/**
- * The data-model for the Audit section
- */
+/** The data-model for the Audit section */
 data class EsgQuestionnaireSozialesAudit(
-    val auditsZurEinhaltungVonArbeitsstandards: YesNo? = null,
-
-    val artDesAudits: EsgQuestionnaireSozialesAuditArtDesAuditsOptions? = null,
-
-    val auditErgebnisse: String? = null,
-
+  val auditsZurEinhaltungVonArbeitsstandards: YesNo? = null,
+  val artDesAudits: EsgQuestionnaireSozialesAuditArtDesAuditsOptions? = null,
+  val auditErgebnisse: String? = null,
 )

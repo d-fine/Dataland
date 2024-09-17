@@ -8,14 +8,13 @@ import org.springframework.web.bind.annotation.RestController
 
 /**
  * Implementation of the controller for removing datasets from the dataland data storage
+ *
  * @param dataManager service to manage data storage
  */
 @RestController
-class DataDeletionController(
-    @Autowired var dataManager: DataManager,
-) : DataDeletionApi {
-    override fun deleteCompanyAssociatedData(dataId: String) {
-        val correlationId = generateCorrelationId(companyId = null, dataId = dataId)
-        dataManager.deleteCompanyAssociatedDataByDataId(dataId, correlationId)
-    }
+class DataDeletionController(@Autowired var dataManager: DataManager) : DataDeletionApi {
+  override fun deleteCompanyAssociatedData(dataId: String) {
+    val correlationId = generateCorrelationId(companyId = null, dataId = dataId)
+    dataManager.deleteCompanyAssociatedDataByDataId(dataId, correlationId)
+  }
 }

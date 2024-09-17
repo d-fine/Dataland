@@ -2,32 +2,19 @@
 package org.dataland.datalandbackend.frameworks.vsme.model.basic.energyAndGreenhousGasEmissions
 
 import jakarta.validation.Valid
-import org.dataland.datalandbackend.model.datapoints.ExtendedDataPoint
 import java.math.BigDecimal
+import org.dataland.datalandbackend.model.datapoints.ExtendedDataPoint
 
-/**
- * The data-model for the EnergyAndGreenhousGasEmissions section
- */
+/** The data-model for the EnergyAndGreenhousGasEmissions section */
 data class VsmeBasicEnergyAndGreenhousGasEmissions(
-    val energyFossilFuelsInMWh: BigDecimal? = null,
-
-    @field:Valid()
-    val electricityTotalInMWh: ExtendedDataPoint<BigDecimal?>? = null,
-
-    val electricityNonRenewableInMWh: BigDecimal? = null,
-
-    val electricityRenewableInMWh: BigDecimal? = null,
-
-    @field:Valid()
-    val totalEmissionsInTonnesOfCO2Equivalents: ExtendedDataPoint<BigDecimal?>? = null,
-
-    @field:Valid()
-    val scope1EmissionsInTonnesOfCO2Equivalents: ExtendedDataPoint<BigDecimal?>? = null,
-
-    @field:Valid()
-    val scope2EmissionsInTonnesOfCO2Equivalents: ExtendedDataPoint<BigDecimal?>? = null,
-
-    @field:Valid()
-    val scope3EmissionsInTonnesOfCO2Equivalents: ExtendedDataPoint<BigDecimal?>? = null,
-
+  val energyFossilFuelsInMWh: BigDecimal? = null,
+  @field:Valid() val electricityTotalInMWh: ExtendedDataPoint<BigDecimal?>? = null,
+  val electricityNonRenewableInMWh: BigDecimal? = null,
+  val electricityRenewableInMWh: BigDecimal? = null,
+  @field:Valid() val totalEmissionsInTonnesOfCO2Equivalents: ExtendedDataPoint<BigDecimal?>? = null,
+  @field:Valid()
+  val scope1EmissionsInTonnesOfCO2Equivalents: ExtendedDataPoint<BigDecimal?>? = null,
+  @field:Valid()
+  val scope2EmissionsInTonnesOfCO2Equivalents: ExtendedDataPoint<BigDecimal?>? = null,
+  @field:Valid() val scope3EmissionsInTonnesOfCO2Equivalents: ExtendedDataPoint<BigDecimal?>? = null,
 )

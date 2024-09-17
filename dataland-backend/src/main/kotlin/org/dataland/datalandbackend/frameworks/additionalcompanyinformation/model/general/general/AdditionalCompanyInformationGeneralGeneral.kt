@@ -3,24 +3,19 @@ package org.dataland.datalandbackend.frameworks.additionalcompanyinformation.mod
 
 import io.swagger.v3.oas.annotations.media.Schema
 import jakarta.validation.Valid
+import java.time.LocalDate
 import org.dataland.datalandbackend.model.datapoints.ExtendedDataPoint
 import org.dataland.datalandbackend.model.documents.CompanyReport
 import org.dataland.datalandbackend.utils.JsonExampleFormattingConstants
-import java.time.LocalDate
 
-/**
- * The data-model for the General section
- */
+/** The data-model for the General section */
 data class AdditionalCompanyInformationGeneralGeneral(
-    @field:Valid()
-    val fiscalYearDeviation:
-    ExtendedDataPoint<AdditionalCompanyInformationGeneralGeneralFiscalYearDeviationOptions?>? = null,
-
-    @field:Valid()
-    val fiscalYearEnd: ExtendedDataPoint<LocalDate?>? = null,
-
-    @field:Schema(example = JsonExampleFormattingConstants.REFERENCED_REPORTS_DEFAULT_VALUE)
-    @field:Valid()
-    val referencedReports: Map<String, CompanyReport>? = null,
-
+  @field:Valid()
+  val fiscalYearDeviation:
+    ExtendedDataPoint<AdditionalCompanyInformationGeneralGeneralFiscalYearDeviationOptions?>? =
+    null,
+  @field:Valid() val fiscalYearEnd: ExtendedDataPoint<LocalDate?>? = null,
+  @field:Schema(example = JsonExampleFormattingConstants.REFERENCED_REPORTS_DEFAULT_VALUE)
+  @field:Valid()
+  val referencedReports: Map<String, CompanyReport>? = null,
 )

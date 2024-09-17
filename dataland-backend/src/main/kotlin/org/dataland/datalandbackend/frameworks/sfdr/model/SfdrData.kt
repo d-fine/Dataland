@@ -8,20 +8,12 @@ import org.dataland.datalandbackend.frameworks.sfdr.model.general.SfdrGeneral
 import org.dataland.datalandbackend.frameworks.sfdr.model.social.SfdrSocial
 import org.dataland.datalandbackend.frameworks.sfdr.model.validator.ReferencedReportsListValidator
 
-/**
- * The root data-model for the Sfdr Framework
- */
+/** The root data-model for the Sfdr Framework */
 @Suppress("MagicNumber")
 @DataType("sfdr", 5)
 @ReferencedReportsListValidator()
 data class SfdrData(
-    @field:Valid()
-    val general: SfdrGeneral,
-
-    @field:Valid()
-    val environmental: SfdrEnvironmental? = null,
-
-    @field:Valid()
-    val social: SfdrSocial? = null,
-
+  @field:Valid() val general: SfdrGeneral,
+  @field:Valid() val environmental: SfdrEnvironmental? = null,
+  @field:Valid() val social: SfdrSocial? = null,
 )

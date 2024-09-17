@@ -22,90 +22,85 @@ import org.dataland.frameworktoolbox.utils.typescript.generateTsCodeForSelectOpt
  * A MultiSelectComponent represents a selection of string-options. Multiple of those string-options
  * can be selected.
  */
-open class MultiSelectComponent(
-    identifier: String,
-    parent: FieldNodeParent,
-) : ComponentBase(identifier, parent) {
+open class MultiSelectComponent(identifier: String, parent: FieldNodeParent) :
+  ComponentBase(identifier, parent) {
 
-    var options: Set<SelectionOption> = mutableSetOf()
-    val enumName = "${identifier.capitalizeEn()}Options"
+  var options: Set<SelectionOption> = mutableSetOf()
+  val enumName = "${identifier.capitalizeEn()}Options"
 
-    override fun generateDefaultDataModel(dataClassBuilder: DataClassBuilder) {
-        val enum = dataClassBuilder.parentPackage.addEnum(
-            name = enumName,
-            options = options,
-            comment = "Enum class for the multi-select-field $identifier",
-        )
-        dataClassBuilder.addPropertyWithDocumentSupport(
-            documentSupport,
-            identifier,
-            TypeReference(
-                "java.util.EnumSet",
-                isNullable, listOf(enum.getTypeReference(false)),
+  override fun generateDefaultDataModel(dataClassBuilder: DataClassBuilder) {
+    val enum =
+      dataClassBuilder.parentPackage.addEnum(
+        name = enumName,
+        options = options,
+        comment = "Enum class for the multi-select-field $identifier",
+      )
+    dataClassBuilder.addPropertyWithDocumentSupport(
+      documentSupport,
+      identifier,
+      TypeReference("java.util.EnumSet", isNullable, listOf(enum.getTypeReference(false))),
+    )
+  }
+
+  override fun generateDefaultViewConfig(sectionConfigBuilder: SectionConfigBuilder) {
+    sectionConfigBuilder.addStandardCellWithValueGetterFactory(
+      this,
+      documentSupport.getFrameworkDisplayValueLambda(
+        FrameworkDisplayValueLambda(
+          "{\n" +
+            generateTsCodeForSelectOptionsMappingObject(options) +
+            generateReturnStatement() +
+            "}",
+          setOf(
+            TypeScriptImport(
+              "formatListOfStringsForDatatable",
+              "@/components/resources/dataTable/conversion/MultiSelectValueGetterFactory",
             ),
-        )
-    }
-
-    override fun generateDefaultViewConfig(sectionConfigBuilder: SectionConfigBuilder) {
-        sectionConfigBuilder.addStandardCellWithValueGetterFactory(
-            this,
-            documentSupport.getFrameworkDisplayValueLambda(
-                FrameworkDisplayValueLambda(
-                    "{\n" +
-                        generateTsCodeForSelectOptionsMappingObject(options) +
-                        generateReturnStatement() +
-                        "}",
-                    setOf(
-                        TypeScriptImport(
-                            "formatListOfStringsForDatatable",
-                            "@/components/resources/dataTable/conversion/MultiSelectValueGetterFactory",
-                        ),
-                        TypeScriptImport(
-                            "getOriginalNameFromTechnicalName",
-                            "@/components/resources/dataTable/conversion/Utils",
-                        ),
-                    ),
-                ),
-                label, getTypescriptFieldAccessor(),
+            TypeScriptImport(
+              "getOriginalNameFromTechnicalName",
+              "@/components/resources/dataTable/conversion/Utils",
             ),
-        )
-    }
+          ),
+        ),
+        label,
+        getTypescriptFieldAccessor(),
+      ),
+    )
+  }
 
-    override fun generateDefaultUploadConfig(uploadCategoryBuilder: UploadCategoryBuilder) {
-        requireDocumentSupportIn(setOf(NoDocumentSupport))
-        uploadCategoryBuilder.addStandardUploadConfigCell(
-            frameworkUploadOptions = FrameworkUploadOptions(
-                body = generateTsCodeForOptionsOfSelectionFormFields(this.options),
-                imports = null,
-            ),
-            component = this,
-            uploadComponentName = "MultiSelectFormField",
-        )
-    }
+  override fun generateDefaultUploadConfig(uploadCategoryBuilder: UploadCategoryBuilder) {
+    requireDocumentSupportIn(setOf(NoDocumentSupport))
+    uploadCategoryBuilder.addStandardUploadConfigCell(
+      frameworkUploadOptions =
+        FrameworkUploadOptions(
+          body = generateTsCodeForOptionsOfSelectionFormFields(this.options),
+          imports = null,
+        ),
+      component = this,
+      uploadComponentName = "MultiSelectFormField",
+    )
+  }
 
-    override fun generateDefaultFixtureGenerator(sectionBuilder: FixtureSectionBuilder) {
-        val formattedString = "[" + options.joinToString { "\"${escapeEcmaScript(it.identifier)}\"" } + "]"
-        sectionBuilder.addAtomicExpression(
-            identifier,
-            documentSupport.getFixtureExpression(
-                fixtureExpression = "pickSubsetOfElements($formattedString)",
-                nullableFixtureExpression = "dataGenerator.valueOrNull(pickSubsetOfElements($formattedString))",
-                nullable = isNullable,
-            ),
-            imports = setOf(
-                TypeScriptImport(
-                    "pickSubsetOfElements",
-                    "@e2e/fixtures/FixtureUtils",
-                ),
-            ),
-        )
-    }
+  override fun generateDefaultFixtureGenerator(sectionBuilder: FixtureSectionBuilder) {
+    val formattedString =
+      "[" + options.joinToString { "\"${escapeEcmaScript(it.identifier)}\"" } + "]"
+    sectionBuilder.addAtomicExpression(
+      identifier,
+      documentSupport.getFixtureExpression(
+        fixtureExpression = "pickSubsetOfElements($formattedString)",
+        nullableFixtureExpression =
+          "dataGenerator.valueOrNull(pickSubsetOfElements($formattedString))",
+        nullable = isNullable,
+      ),
+      imports = setOf(TypeScriptImport("pickSubsetOfElements", "@e2e/fixtures/FixtureUtils")),
+    )
+  }
 
-    private fun generateReturnStatement(): String {
-        return "return formatListOfStringsForDatatable(" +
-            "${getTypescriptFieldAccessor()}?.map(it => \n" +
-            "   getOriginalNameFromTechnicalName(it, mappings)), " +
-            "'${escapeEcmaScript(label)}'" +
-            ")"
-    }
+  private fun generateReturnStatement(): String {
+    return "return formatListOfStringsForDatatable(" +
+      "${getTypescriptFieldAccessor()}?.map(it => \n" +
+      "   getOriginalNameFromTechnicalName(it, mappings)), " +
+      "'${escapeEcmaScript(label)}'" +
+      ")"
+  }
 }

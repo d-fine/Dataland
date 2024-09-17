@@ -25,81 +25,83 @@ import org.springframework.messaging.handler.annotation.Payload
 import org.springframework.stereotype.Service
 
 /**
- * A class that acts like a consumer (receiver) on the sendInternalEmailService queue and forward the message to the
- * mailjet client
+ * A class that acts like a consumer (receiver) on the sendInternalEmailService queue and forward
+ * the message to the mailjet client
  */
 @Service
 class TemplateEmailMessageListener(
-    @Autowired private val emailSender: EmailSender,
-    @Autowired private val messageQueueUtils: MessageQueueUtils,
-    @Autowired private val objectMapper: ObjectMapper,
-    @Autowired private val templateEmailFactories: List<TemplateEmailFactory>,
-    @Qualifier("AuthenticatedOkHttpClient") val authenticatedOkHttpClient: OkHttpClient,
-    @Value("\${dataland.keycloak.base-url}") private val keycloakBaseUrl: String,
+  @Autowired private val emailSender: EmailSender,
+  @Autowired private val messageQueueUtils: MessageQueueUtils,
+  @Autowired private val objectMapper: ObjectMapper,
+  @Autowired private val templateEmailFactories: List<TemplateEmailFactory>,
+  @Qualifier("AuthenticatedOkHttpClient") val authenticatedOkHttpClient: OkHttpClient,
+  @Value("\${dataland.keycloak.base-url}") private val keycloakBaseUrl: String,
 ) {
-    private val logger = LoggerFactory.getLogger(TemplateEmailMessageListener::class.java)
+  private val logger = LoggerFactory.getLogger(TemplateEmailMessageListener::class.java)
 
-    /**
-     * Checks if a message object in the queue fits the expected RoutingKey and Internal Type
-     * to process it as internal mail
-     * @param jsonString the message object which should be sent out as a mail
-     * @param type the type of the message
-     */
-    @RabbitListener(
-        bindings = [
-            QueueBinding(
-                value = Queue(
-                    "sendTemplateEmailService",
-                    arguments = [
-                        Argument(name = "x-dead-letter-exchange", value = ExchangeName.DeadLetter),
-                        Argument(name = "x-dead-letter-routing-key", value = "deadLetterKey"),
-                        Argument(name = "defaultRequeueRejected", value = "false"),
-                    ],
-                ),
-                exchange = Exchange(ExchangeName.SendEmail, declare = "false"),
-                key = [RoutingKeyNames.templateEmail],
+  /**
+   * Checks if a message object in the queue fits the expected RoutingKey and Internal Type to
+   * process it as internal mail
+   *
+   * @param jsonString the message object which should be sent out as a mail
+   * @param type the type of the message
+   */
+  @RabbitListener(
+    bindings =
+      [
+        QueueBinding(
+          value =
+            Queue(
+              "sendTemplateEmailService",
+              arguments =
+                [
+                  Argument(name = "x-dead-letter-exchange", value = ExchangeName.DeadLetter),
+                  Argument(name = "x-dead-letter-routing-key", value = "deadLetterKey"),
+                  Argument(name = "defaultRequeueRejected", value = "false"),
+                ],
             ),
-        ],
-    )
-    fun sendTemplateEmail(
-        @Payload jsonString: String,
-        @Header(MessageHeaderKey.Type) type: String,
-        @Header(MessageHeaderKey.CorrelationId) correlationId: String,
-    ) {
-        messageQueueUtils.validateMessageType(type, MessageType.SendTemplateEmail)
-        val message = objectMapper.readValue(jsonString, TemplateEmailMessage::class.java)
-        logger.info(
-            "Received template email message of type ${message.emailTemplateType.name} " +
-                "with correlationId $correlationId.",
+          exchange = Exchange(ExchangeName.SendEmail, declare = "false"),
+          key = [RoutingKeyNames.templateEmail],
         )
+      ]
+  )
+  fun sendTemplateEmail(
+    @Payload jsonString: String,
+    @Header(MessageHeaderKey.Type) type: String,
+    @Header(MessageHeaderKey.CorrelationId) correlationId: String,
+  ) {
+    messageQueueUtils.validateMessageType(type, MessageType.SendTemplateEmail)
+    val message = objectMapper.readValue(jsonString, TemplateEmailMessage::class.java)
+    logger.info(
+      "Received template email message of type ${message.emailTemplateType.name} " +
+        "with correlationId $correlationId."
+    )
 
-        messageQueueUtils.rejectMessageOnException {
-            val receiverEmailAddress = getEmailAddressByRecipient(message.receiver)
-            val templateEmailFactory = getMatchingEmailFactory(message)
-            emailSender.sendEmailWithoutTestReceivers(
-                templateEmailFactory.buildEmail(
-                    receiverEmail = receiverEmailAddress,
-                    properties = message.properties,
-                ),
-            )
-        }
+    messageQueueUtils.rejectMessageOnException {
+      val receiverEmailAddress = getEmailAddressByRecipient(message.receiver)
+      val templateEmailFactory = getMatchingEmailFactory(message)
+      emailSender.sendEmailWithoutTestReceivers(
+        templateEmailFactory.buildEmail(
+          receiverEmail = receiverEmailAddress,
+          properties = message.properties,
+        )
+      )
     }
+  }
 
-    private fun getEmailAddressByRecipient(receiver: TemplateEmailMessage.EmailRecipient): String {
-        return when (receiver) {
-            is TemplateEmailMessage.EmailAddressEmailRecipient ->
-                receiver.email
-            is TemplateEmailMessage.UserIdEmailRecipient ->
-                getEmailAddress(authenticatedOkHttpClient, objectMapper, keycloakBaseUrl, receiver.userId)
-        }
+  private fun getEmailAddressByRecipient(receiver: TemplateEmailMessage.EmailRecipient): String {
+    return when (receiver) {
+      is TemplateEmailMessage.EmailAddressEmailRecipient -> receiver.email
+      is TemplateEmailMessage.UserIdEmailRecipient ->
+        getEmailAddress(authenticatedOkHttpClient, objectMapper, keycloakBaseUrl, receiver.userId)
     }
+  }
 
-    private fun getMatchingEmailFactory(message: TemplateEmailMessage): TemplateEmailFactory {
-        return templateEmailFactories
-            .find { it.builderForType == message.emailTemplateType }
-            ?: throw IllegalArgumentException(
-                "There is no builder for TemplateEmailMessages" +
-                    " with type ${message.emailTemplateType.name}",
-            )
-    }
+  private fun getMatchingEmailFactory(message: TemplateEmailMessage): TemplateEmailFactory {
+    return templateEmailFactories.find { it.builderForType == message.emailTemplateType }
+      ?: throw IllegalArgumentException(
+        "There is no builder for TemplateEmailMessages" +
+          " with type ${message.emailTemplateType.name}"
+      )
+  }
 }

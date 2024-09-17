@@ -2,20 +2,16 @@
 package org.dataland.datalandbackend.frameworks.sfdr.model.environmental.waste
 
 import jakarta.validation.Valid
+import java.math.BigDecimal
 import org.dataland.datalandbackend.model.datapoints.ExtendedDataPoint
 import org.dataland.datalandbackend.validator.MinimumValue
-import java.math.BigDecimal
 
-/**
- * The data-model for the Waste section
- */
+/** The data-model for the Waste section */
 data class SfdrEnvironmentalWaste(
-    @field:MinimumValue(minimumValue = 0)
-    @field:Valid()
-    val hazardousAndRadioactiveWasteInTonnes: ExtendedDataPoint<BigDecimal?>? = null,
-
-    @field:MinimumValue(minimumValue = 0)
-    @field:Valid()
-    val nonRecycledWasteInTonnes: ExtendedDataPoint<BigDecimal?>? = null,
-
+  @field:MinimumValue(minimumValue = 0)
+  @field:Valid()
+  val hazardousAndRadioactiveWasteInTonnes: ExtendedDataPoint<BigDecimal?>? = null,
+  @field:MinimumValue(minimumValue = 0)
+  @field:Valid()
+  val nonRecycledWasteInTonnes: ExtendedDataPoint<BigDecimal?>? = null,
 )

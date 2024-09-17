@@ -4,16 +4,10 @@ package org.dataland.datalandqaservice.frameworks.additionalcompanyinformation.m
 import org.dataland.datalandbackend.openApiClient.model.CurrencyDataPoint
 import org.dataland.datalandqaservice.model.reports.QaReportDataPoint
 
-/**
- * The QA-model for the FinancialInformation section
- */
+/** The QA-model for the FinancialInformation section */
 data class AdditionalCompanyInformationGeneralFinancialInformation(
-    val equity: QaReportDataPoint<CurrencyDataPoint?>? = null,
-
-    val debt: QaReportDataPoint<CurrencyDataPoint?>? = null,
-
-    val balanceSheetTotal: QaReportDataPoint<CurrencyDataPoint?>? = null,
-
-    val evic: QaReportDataPoint<CurrencyDataPoint?>? = null,
-
+  val equity: QaReportDataPoint<CurrencyDataPoint?>? = null,
+  val debt: QaReportDataPoint<CurrencyDataPoint?>? = null,
+  val balanceSheetTotal: QaReportDataPoint<CurrencyDataPoint?>? = null,
+  val evic: QaReportDataPoint<CurrencyDataPoint?>? = null,
 )

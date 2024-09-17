@@ -3,16 +3,10 @@ package org.dataland.datalandbackend.frameworks.esgquestionnaire.model.umwelt.bi
 
 import org.dataland.datalandbackend.model.enums.commons.YesNo
 
-/**
- * The data-model for the Biodiversitaet section
- */
+/** The data-model for the Biodiversitaet section */
 data class EsgQuestionnaireUmweltBiodiversitaet(
-    val negativeAktivitaetenFuerDieBiologischeVielfalt: YesNo? = null,
-
-    val negativeMassnahmenFuerDieBiologischeVielfalt: String? = null,
-
-    val positiveAktivitaetenFuerDieBiologischeVielfalt: YesNo? = null,
-
-    val positiveMassnahmenFuerDieBiologischeVielfalt: String? = null,
-
+  val negativeAktivitaetenFuerDieBiologischeVielfalt: YesNo? = null,
+  val negativeMassnahmenFuerDieBiologischeVielfalt: String? = null,
+  val positiveAktivitaetenFuerDieBiologischeVielfalt: YesNo? = null,
+  val positiveMassnahmenFuerDieBiologischeVielfalt: String? = null,
 )

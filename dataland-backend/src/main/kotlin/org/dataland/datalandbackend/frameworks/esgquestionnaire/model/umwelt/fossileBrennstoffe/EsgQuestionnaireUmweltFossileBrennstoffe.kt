@@ -4,13 +4,10 @@ package org.dataland.datalandbackend.frameworks.esgquestionnaire.model.umwelt.fo
 import org.dataland.datalandbackend.frameworks.esgquestionnaire.custom.YearlyTimeseriesData
 import org.dataland.datalandbackend.model.enums.commons.YesNo
 
-/**
- * The data-model for the FossileBrennstoffe section
- */
+/** The data-model for the FossileBrennstoffe section */
 data class EsgQuestionnaireUmweltFossileBrennstoffe(
-    val einnahmenAusFossilenBrennstoffen: YesNo? = null,
-
-    val berichterstattungEinnahmenAusFossilenBrennstoffen:
-    YearlyTimeseriesData<BerichterstattungEinnahmenAusFossilenBrennstoffenValues?>? = null,
-
+  val einnahmenAusFossilenBrennstoffen: YesNo? = null,
+  val berichterstattungEinnahmenAusFossilenBrennstoffen:
+    YearlyTimeseriesData<BerichterstattungEinnahmenAusFossilenBrennstoffenValues?>? =
+    null,
 )

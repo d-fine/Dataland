@@ -2,33 +2,19 @@
 package org.dataland.datalandbackend.frameworks.lksg.model.social.disregardForFreedomOfAssociation
 
 import jakarta.validation.Valid
+import java.math.BigDecimal
 import org.dataland.datalandbackend.model.datapoints.BaseDataPoint
 import org.dataland.datalandbackend.model.enums.commons.YesNo
-import java.math.BigDecimal
 
-/**
- * The data-model for the DisregardForFreedomOfAssociation section
- */
+/** The data-model for the DisregardForFreedomOfAssociation section */
 data class LksgSocialDisregardForFreedomOfAssociation(
-    val freedomOfAssociation: YesNo? = null,
-
-    val employeeRepresentation: BigDecimal? = null,
-
-    val freedomOfAssociationDisregardPrevention: YesNo? = null,
-
-    val discriminationForTradeUnionMembers: YesNo? = null,
-
-    val freedomOfOperationForTradeUnion: YesNo? = null,
-
-    @field:Valid()
-    val freedomOfAssociationTraining: BaseDataPoint<YesNo>? = null,
-
-    @field:Valid()
-    val worksCouncil: BaseDataPoint<YesNo>? = null,
-
-    @field:Valid()
-    val freedomOfAssociationOtherMeasures: BaseDataPoint<YesNo>? = null,
-
-    val freedomOfAssociationOtherMeasuresDescription: String? = null,
-
+  val freedomOfAssociation: YesNo? = null,
+  val employeeRepresentation: BigDecimal? = null,
+  val freedomOfAssociationDisregardPrevention: YesNo? = null,
+  val discriminationForTradeUnionMembers: YesNo? = null,
+  val freedomOfOperationForTradeUnion: YesNo? = null,
+  @field:Valid() val freedomOfAssociationTraining: BaseDataPoint<YesNo>? = null,
+  @field:Valid() val worksCouncil: BaseDataPoint<YesNo>? = null,
+  @field:Valid() val freedomOfAssociationOtherMeasures: BaseDataPoint<YesNo>? = null,
+  val freedomOfAssociationOtherMeasuresDescription: String? = null,
 )

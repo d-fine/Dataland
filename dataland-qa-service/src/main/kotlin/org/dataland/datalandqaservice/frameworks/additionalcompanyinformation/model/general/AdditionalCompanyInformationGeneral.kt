@@ -2,19 +2,12 @@
 package org.dataland.datalandqaservice.frameworks.additionalcompanyinformation.model.general
 
 import jakarta.validation.Valid
-import org.dataland.datalandqaservice.frameworks.additionalcompanyinformation.model.general.financialInformation
-    .AdditionalCompanyInformationGeneralFinancialInformation
-import org.dataland.datalandqaservice.frameworks.additionalcompanyinformation.model.general.general
-    .AdditionalCompanyInformationGeneralGeneral
+import org.dataland.datalandqaservice.frameworks.additionalcompanyinformation.model.general.financialInformation.AdditionalCompanyInformationGeneralFinancialInformation
+import org.dataland.datalandqaservice.frameworks.additionalcompanyinformation.model.general.general.AdditionalCompanyInformationGeneralGeneral
 
-/**
- * The QA-model for the General section
- */
+/** The QA-model for the General section */
 data class AdditionalCompanyInformationGeneral(
-    @field:Valid()
-    val general: AdditionalCompanyInformationGeneralGeneral? = null,
-
-    @field:Valid()
-    val financialInformation: AdditionalCompanyInformationGeneralFinancialInformation? = null,
-
+  @field:Valid() val general: AdditionalCompanyInformationGeneralGeneral? = null,
+  @field:Valid()
+  val financialInformation: AdditionalCompanyInformationGeneralFinancialInformation? = null,
 )

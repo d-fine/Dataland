@@ -5,15 +5,11 @@ import jakarta.persistence.Entity
 import jakarta.persistence.Id
 import jakarta.persistence.Table
 
-/**
- * The entity storing the information about a reviewable dataset
- */
+/** The entity storing the information about a reviewable dataset */
 @Entity
 @Table(name = "review_queue")
 data class ReviewQueueEntity(
-    @Id
-    val dataId: String,
-    val receptionTime: Long,
-    @Column(columnDefinition = "TEXT")
-    val comment: String?,
+  @Id val dataId: String,
+  val receptionTime: Long,
+  @Column(columnDefinition = "TEXT") val comment: String?,
 )

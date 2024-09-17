@@ -4,26 +4,15 @@ package org.dataland.datalandbackend.frameworks.lksg.model.governance.generalVio
 import org.dataland.datalandbackend.frameworks.lksg.custom.LksgRiskOrViolationAssessment
 import org.dataland.datalandbackend.model.enums.commons.YesNo
 
-/**
- * The data-model for the GeneralViolations section
- */
+/** The data-model for the GeneralViolations section */
 data class LksgGovernanceGeneralViolations(
-    val legalProceedings: YesNo? = null,
-
-    val humanRightsOrEnvironmentalViolations: YesNo? = null,
-
-    val humanRightsOrEnvironmentalViolationsDefinition: List<LksgRiskOrViolationAssessment?>? = null,
-
-    val highRiskCountriesRawMaterials: YesNo? = null,
-
-    val highRiskCountriesRawMaterialsLocation: List<String>? = null,
-
-    val highRiskCountriesActivity: YesNo? = null,
-
-    val highRiskCountries: List<String>? = null,
-
-    val highRiskCountriesProcurement: YesNo? = null,
-
-    val highRiskCountriesProcurementName: List<String>? = null,
-
+  val legalProceedings: YesNo? = null,
+  val humanRightsOrEnvironmentalViolations: YesNo? = null,
+  val humanRightsOrEnvironmentalViolationsDefinition: List<LksgRiskOrViolationAssessment?>? = null,
+  val highRiskCountriesRawMaterials: YesNo? = null,
+  val highRiskCountriesRawMaterialsLocation: List<String>? = null,
+  val highRiskCountriesActivity: YesNo? = null,
+  val highRiskCountries: List<String>? = null,
+  val highRiskCountriesProcurement: YesNo? = null,
+  val highRiskCountriesProcurementName: List<String>? = null,
 )

@@ -3,13 +3,9 @@ package org.dataland.datalandbackend.frameworks.vsme.model.basic.workforceGenera
 
 import io.swagger.v3.oas.annotations.media.Schema
 
-/**
- * Enum class for the single-select-field measureEmployees
- */
-@Schema(
-    enumAsRef = true,
-)
+/** Enum class for the single-select-field measureEmployees */
+@Schema(enumAsRef = true)
 enum class VsmeBasicWorkforcegeneralcharacteristicsMeasureEmployeesOptions {
-    FullTimeEquivalents,
-    HeadCount,
+  FullTimeEquivalents,
+  HeadCount,
 }

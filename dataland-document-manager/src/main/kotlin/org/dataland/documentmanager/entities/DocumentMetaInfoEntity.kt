@@ -9,27 +9,23 @@ import org.dataland.datalandbackendutils.model.DocumentType
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.documentmanager.model.DocumentMetaInfo
 
-/**
- * The entity storing the document meta info
- */
+/** The entity storing the document meta info */
 @Entity
 @Table(name = "document_meta_info")
 data class DocumentMetaInfoEntity(
-    @Id
-    val documentId: String,
-    @Enumerated(EnumType.STRING)
-    val documentType: DocumentType,
-    val uploaderId: String,
-    val uploadTime: Long,
-    @Enumerated(EnumType.STRING)
-    var qaStatus: QaStatus,
+  @Id val documentId: String,
+  @Enumerated(EnumType.STRING) val documentType: DocumentType,
+  val uploaderId: String,
+  val uploadTime: Long,
+  @Enumerated(EnumType.STRING) var qaStatus: QaStatus,
 ) {
-    constructor(documentMetaInfo: DocumentMetaInfo) :
-        this(
-            documentId = documentMetaInfo.documentId,
-            documentType = documentMetaInfo.documentType,
-            uploaderId = documentMetaInfo.uploaderId,
-            uploadTime = documentMetaInfo.uploadTime,
-            qaStatus = documentMetaInfo.qaStatus,
-        )
+  constructor(
+    documentMetaInfo: DocumentMetaInfo
+  ) : this(
+    documentId = documentMetaInfo.documentId,
+    documentType = documentMetaInfo.documentType,
+    uploaderId = documentMetaInfo.uploaderId,
+    uploadTime = documentMetaInfo.uploadTime,
+    qaStatus = documentMetaInfo.qaStatus,
+  )
 }

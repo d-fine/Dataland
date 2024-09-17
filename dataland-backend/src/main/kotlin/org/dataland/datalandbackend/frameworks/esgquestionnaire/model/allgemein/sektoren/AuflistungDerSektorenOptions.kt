@@ -3,20 +3,16 @@ package org.dataland.datalandbackend.frameworks.esgquestionnaire.model.allgemein
 
 import io.swagger.v3.oas.annotations.media.Schema
 
-/**
- * Enum class for the multi-select-field auflistungDerSektoren
- */
-@Schema(
-    enumAsRef = true,
-)
+/** Enum class for the multi-select-field auflistungDerSektoren */
+@Schema(enumAsRef = true)
 enum class AuflistungDerSektorenOptions {
-    ALandwirtschaftForstwirtschaftUndFischerei,
-    BBergbauUndGewinnungVonSteinenUndErden,
-    CVerarbeitendesGewerbeHerstellungVonWaren,
-    DEnergieversorgung,
-    EWasserversorgungAbwasserAndAbfallentsorgungBeseitigungenVonUmweltverschmutzungen,
-    FBaugewerbeBau,
-    GHandelInstandhaltungUndReparaturVonKraftfahrzeugen,
-    HVerkehrUndLagerhaltung,
-    LGrundstuecksUndWohnungswesen,
+  ALandwirtschaftForstwirtschaftUndFischerei,
+  BBergbauUndGewinnungVonSteinenUndErden,
+  CVerarbeitendesGewerbeHerstellungVonWaren,
+  DEnergieversorgung,
+  EWasserversorgungAbwasserAndAbfallentsorgungBeseitigungenVonUmweltverschmutzungen,
+  FBaugewerbeBau,
+  GHandelInstandhaltungUndReparaturVonKraftfahrzeugen,
+  HVerkehrUndLagerhaltung,
+  LGrundstuecksUndWohnungswesen,
 }

@@ -5,29 +5,17 @@ import jakarta.validation.Valid
 import org.dataland.datalandbackend.model.datapoints.BaseDataPoint
 import org.dataland.datalandbackend.model.enums.commons.YesNo
 
-/**
- * The data-model for the Nachhaltigskeitsrisiken section
- */
+/** The data-model for the Nachhaltigskeitsrisiken section */
 data class HeimathafenSocialNachhaltigskeitsrisiken(
-    val methodikSozialeNachhaltigkeitsrisiken: YesNo? = null,
-
-    val wennNeinBitteBegruenden: String? = null,
-
-    val kartierteSozialeNachhaltigkeitsrisiken: String? = null,
-
-    val identifizierungWesentlicherSozialerNachhaltigkeitsrisikenUndKonstruktionsmethodik: String? = null,
-
-    val sozialeBewertungUnterBeruecksichtigungVonNachhaltigkeitsrisiken: String? = null,
-
-    val sozialeNachhaltigkeitsrisikenAbsichern: String? = null,
-
-    @field:Valid()
-    val quelle: List<BaseDataPoint<String>>? = null,
-
-    val vierAugenPruefung: YesNo? = null,
-
-    val wennKeineVierAugenPruefungBitteBegruenden: String? = null,
-
-    val beschreibungDerVierAugenPruefung: String? = null,
-
+  val methodikSozialeNachhaltigkeitsrisiken: YesNo? = null,
+  val wennNeinBitteBegruenden: String? = null,
+  val kartierteSozialeNachhaltigkeitsrisiken: String? = null,
+  val identifizierungWesentlicherSozialerNachhaltigkeitsrisikenUndKonstruktionsmethodik: String? =
+    null,
+  val sozialeBewertungUnterBeruecksichtigungVonNachhaltigkeitsrisiken: String? = null,
+  val sozialeNachhaltigkeitsrisikenAbsichern: String? = null,
+  @field:Valid() val quelle: List<BaseDataPoint<String>>? = null,
+  val vierAugenPruefung: YesNo? = null,
+  val wennKeineVierAugenPruefungBitteBegruenden: String? = null,
+  val beschreibungDerVierAugenPruefung: String? = null,
 )

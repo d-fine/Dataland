@@ -6,13 +6,12 @@ import org.dataland.datalandbackend.model.documents.ExtendedDocumentReference
 import org.dataland.datalandbackend.model.enums.data.QualityOptions
 
 /**
- * --- API model ---
- * Fields of a generic extended data point which extends the base data point and its source
+ * --- API model --- Fields of a generic extended data point which extends the base data point and
+ * its source
  */
 data class ExtendedDataPoint<T>(
-    override val value: T? = null,
-    override val quality: QualityOptions? = null,
-    override val comment: String? = null,
-    @field:Valid
-    override val dataSource: ExtendedDocumentReference? = null,
+  override val value: T? = null,
+  override val quality: QualityOptions? = null,
+  override val comment: String? = null,
+  @field:Valid override val dataSource: ExtendedDocumentReference? = null,
 ) : ExtendedDataPoint<T>

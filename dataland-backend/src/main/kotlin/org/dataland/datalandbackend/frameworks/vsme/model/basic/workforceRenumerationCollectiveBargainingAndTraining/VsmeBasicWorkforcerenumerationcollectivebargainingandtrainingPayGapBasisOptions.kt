@@ -3,13 +3,9 @@ package org.dataland.datalandbackend.frameworks.vsme.model.basic.workforceRenume
 
 import io.swagger.v3.oas.annotations.media.Schema
 
-/**
- * Enum class for the single-select-field payGapBasis
- */
-@Schema(
-    enumAsRef = true,
-)
+/** Enum class for the single-select-field payGapBasis */
+@Schema(enumAsRef = true)
 enum class VsmeBasicWorkforcerenumerationcollectivebargainingandtrainingPayGapBasisOptions {
-    Annual,
-    Weekly,
+  Annual,
+  Weekly,
 }

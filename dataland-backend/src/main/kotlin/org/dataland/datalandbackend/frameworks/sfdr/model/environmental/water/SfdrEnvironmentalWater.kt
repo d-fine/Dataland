@@ -2,35 +2,25 @@
 package org.dataland.datalandbackend.frameworks.sfdr.model.environmental.water
 
 import jakarta.validation.Valid
+import java.math.BigDecimal
 import org.dataland.datalandbackend.model.datapoints.ExtendedDataPoint
 import org.dataland.datalandbackend.model.enums.commons.YesNo
 import org.dataland.datalandbackend.validator.MinimumValue
-import java.math.BigDecimal
 
-/**
- * The data-model for the Water section
- */
+/** The data-model for the Water section */
 data class SfdrEnvironmentalWater(
-    @field:MinimumValue(minimumValue = 0)
-    @field:Valid()
-    val emissionsToWaterInTonnes: ExtendedDataPoint<BigDecimal?>? = null,
-
-    @field:MinimumValue(minimumValue = 0)
-    @field:Valid()
-    val waterConsumptionInCubicMeters: ExtendedDataPoint<BigDecimal?>? = null,
-
-    @field:MinimumValue(minimumValue = 0)
-    @field:Valid()
-    val waterReusedInCubicMeters: ExtendedDataPoint<BigDecimal?>? = null,
-
-    @field:MinimumValue(minimumValue = 0)
-    @field:Valid()
-    val relativeWaterUsageInCubicMetersPerMillionEURRevenue: ExtendedDataPoint<BigDecimal?>? = null,
-
-    @field:Valid()
-    val waterManagementPolicy: ExtendedDataPoint<YesNo?>? = null,
-
-    @field:Valid()
-    val highWaterStressAreaExposure: ExtendedDataPoint<YesNo?>? = null,
-
+  @field:MinimumValue(minimumValue = 0)
+  @field:Valid()
+  val emissionsToWaterInTonnes: ExtendedDataPoint<BigDecimal?>? = null,
+  @field:MinimumValue(minimumValue = 0)
+  @field:Valid()
+  val waterConsumptionInCubicMeters: ExtendedDataPoint<BigDecimal?>? = null,
+  @field:MinimumValue(minimumValue = 0)
+  @field:Valid()
+  val waterReusedInCubicMeters: ExtendedDataPoint<BigDecimal?>? = null,
+  @field:MinimumValue(minimumValue = 0)
+  @field:Valid()
+  val relativeWaterUsageInCubicMetersPerMillionEURRevenue: ExtendedDataPoint<BigDecimal?>? = null,
+  @field:Valid() val waterManagementPolicy: ExtendedDataPoint<YesNo?>? = null,
+  @field:Valid() val highWaterStressAreaExposure: ExtendedDataPoint<YesNo?>? = null,
 )

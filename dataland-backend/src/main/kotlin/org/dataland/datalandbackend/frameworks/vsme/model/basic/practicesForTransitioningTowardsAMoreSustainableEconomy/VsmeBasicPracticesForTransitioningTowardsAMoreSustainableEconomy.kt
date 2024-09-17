@@ -4,11 +4,7 @@ package org.dataland.datalandbackend.frameworks.vsme.model.basic.practicesForTra
 import jakarta.validation.Valid
 import org.dataland.datalandbackend.model.datapoints.BaseDataPoint
 
-/**
- * The data-model for the PracticesForTransitioningTowardsAMoreSustainableEconomy section
- */
+/** The data-model for the PracticesForTransitioningTowardsAMoreSustainableEconomy section */
 data class VsmeBasicPracticesForTransitioningTowardsAMoreSustainableEconomy(
-    @field:Valid()
-    val undertakenMeasures: List<BaseDataPoint<String>>? = null,
-
+  @field:Valid() val undertakenMeasures: List<BaseDataPoint<String>>? = null
 )

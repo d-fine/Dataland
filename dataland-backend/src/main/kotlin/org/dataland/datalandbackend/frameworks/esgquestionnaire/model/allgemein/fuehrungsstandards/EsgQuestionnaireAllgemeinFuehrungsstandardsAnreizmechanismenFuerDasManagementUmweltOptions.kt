@@ -3,15 +3,11 @@ package org.dataland.datalandbackend.frameworks.esgquestionnaire.model.allgemein
 
 import io.swagger.v3.oas.annotations.media.Schema
 
-/**
- * Enum class for the single-select-field anreizmechanismenFuerDasManagementUmwelt
- */
-@Schema(
-    enumAsRef = true,
-)
+/** Enum class for the single-select-field anreizmechanismenFuerDasManagementUmwelt */
+@Schema(enumAsRef = true)
 enum class EsgQuestionnaireAllgemeinFuehrungsstandardsAnreizmechanismenFuerDasManagementUmweltOptions {
-    Nein,
-    JaAufsichtsrat,
-    JaGeschaeftsleitung,
-    JaAufsichtsratUndGeschaeftsleitung,
+  Nein,
+  JaAufsichtsrat,
+  JaGeschaeftsleitung,
+  JaAufsichtsratUndGeschaeftsleitung,
 }

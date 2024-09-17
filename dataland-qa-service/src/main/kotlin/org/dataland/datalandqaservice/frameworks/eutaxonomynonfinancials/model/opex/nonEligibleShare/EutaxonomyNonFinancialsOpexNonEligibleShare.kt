@@ -6,13 +6,9 @@ import org.dataland.datalandbackend.openApiClient.model.CurrencyDataPoint
 import org.dataland.datalandbackend.openApiClient.model.ExtendedDataPointBigDecimal
 import org.dataland.datalandqaservice.model.reports.QaReportDataPoint
 
-/**
- * The QA-model for the NonEligibleShare section
- */
+/** The QA-model for the NonEligibleShare section */
 data class EutaxonomyNonFinancialsOpexNonEligibleShare(
-    @field:Valid()
-    val relativeShareInPercent: QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
-
-    val absoluteShare: QaReportDataPoint<CurrencyDataPoint?>? = null,
-
+  @field:Valid()
+  val relativeShareInPercent: QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
+  val absoluteShare: QaReportDataPoint<CurrencyDataPoint?>? = null,
 )

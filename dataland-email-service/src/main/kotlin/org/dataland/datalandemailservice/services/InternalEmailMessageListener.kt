@@ -20,51 +20,57 @@ import org.springframework.messaging.handler.annotation.Payload
 import org.springframework.stereotype.Service
 
 /**
- * A class that acts like a consumer (receiver) on the sendInternalEmailService queue and forward the message to the
- * mailjet client
+ * A class that acts like a consumer (receiver) on the sendInternalEmailService queue and forward
+ * the message to the mailjet client
  */
 @Service("InternalEmailMessageListener")
 class InternalEmailMessageListener(
-    @Autowired private val internalEmailBuilder: InternalEmailBuilder,
-    @Autowired private val emailSender: EmailSender,
-    @Autowired private val messageQueueUtils: MessageQueueUtils,
-    @Autowired private val objectMapper: ObjectMapper,
+  @Autowired private val internalEmailBuilder: InternalEmailBuilder,
+  @Autowired private val emailSender: EmailSender,
+  @Autowired private val messageQueueUtils: MessageQueueUtils,
+  @Autowired private val objectMapper: ObjectMapper,
 ) {
-    private val logger = LoggerFactory.getLogger(InternalEmailMessageListener::class.java)
+  private val logger = LoggerFactory.getLogger(InternalEmailMessageListener::class.java)
 
-    /**
-     * Checks if a message object in the queue fits the expected RoutingKey and Internal Type
-     * to process it as internal mail
-     * @param jsonString the message object which should be sent out as a mail
-     * @param type the type of the message
-     */
-    @RabbitListener(
-        bindings = [
-            QueueBinding(
-                value = Queue(
-                    "sendInternalEmailService",
-                    arguments = [
-                        Argument(name = "x-dead-letter-exchange", value = ExchangeName.DeadLetter),
-                        Argument(name = "x-dead-letter-routing-key", value = "deadLetterKey"),
-                        Argument(name = "defaultRequeueRejected", value = "false"),
-                    ],
-                ),
-                exchange = Exchange(ExchangeName.SendEmail, declare = "false"),
-                key = [RoutingKeyNames.internalEmail],
+  /**
+   * Checks if a message object in the queue fits the expected RoutingKey and Internal Type to
+   * process it as internal mail
+   *
+   * @param jsonString the message object which should be sent out as a mail
+   * @param type the type of the message
+   */
+  @RabbitListener(
+    bindings =
+      [
+        QueueBinding(
+          value =
+            Queue(
+              "sendInternalEmailService",
+              arguments =
+                [
+                  Argument(name = "x-dead-letter-exchange", value = ExchangeName.DeadLetter),
+                  Argument(name = "x-dead-letter-routing-key", value = "deadLetterKey"),
+                  Argument(name = "defaultRequeueRejected", value = "false"),
+                ],
             ),
-        ],
-    )
-    fun sendInternalEmail(
-        @Payload jsonString: String,
-        @Header(MessageHeaderKey.Type) type: String,
-        @Header(MessageHeaderKey.CorrelationId) correlationId: String,
-    ) {
-        messageQueueUtils.validateMessageType(type, MessageType.SendInternalEmail)
-        val internalEmailMessage = objectMapper.readValue(jsonString, InternalEmailMessage::class.java)
-        logger.info("Received internal email message with correlationId $correlationId.")
+          exchange = Exchange(ExchangeName.SendEmail, declare = "false"),
+          key = [RoutingKeyNames.internalEmail],
+        )
+      ]
+  )
+  fun sendInternalEmail(
+    @Payload jsonString: String,
+    @Header(MessageHeaderKey.Type) type: String,
+    @Header(MessageHeaderKey.CorrelationId) correlationId: String,
+  ) {
+    messageQueueUtils.validateMessageType(type, MessageType.SendInternalEmail)
+    val internalEmailMessage = objectMapper.readValue(jsonString, InternalEmailMessage::class.java)
+    logger.info("Received internal email message with correlationId $correlationId.")
 
-        messageQueueUtils.rejectMessageOnException {
-            emailSender.sendEmailWithoutTestReceivers(internalEmailBuilder.buildInternalEmail(internalEmailMessage))
-        }
+    messageQueueUtils.rejectMessageOnException {
+      emailSender.sendEmailWithoutTestReceivers(
+        internalEmailBuilder.buildInternalEmail(internalEmailMessage)
+      )
     }
+  }
 }

@@ -3,15 +3,11 @@ package org.dataland.datalandbackend.frameworks.lksg.model.general.masterData
 
 import io.swagger.v3.oas.annotations.media.Schema
 
-/**
- * Enum class for the single-select-field shareOfTemporaryWorkers
- */
-@Schema(
-    enumAsRef = true,
-)
+/** Enum class for the single-select-field shareOfTemporaryWorkers */
+@Schema(enumAsRef = true)
 enum class LksgGeneralMasterdataShareOfTemporaryWorkersOptions {
-    Smaller10,
-    Between10And25,
-    Between25And50,
-    Greater50,
+  Smaller10,
+  Between10And25,
+  Between25And50,
+  Greater50,
 }

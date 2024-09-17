@@ -10,37 +10,35 @@ import org.dataland.frameworktoolbox.template.model.TemplateRow
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 
-/**
- * Generates the Waste Classification Custom Component
- */
-
+/** Generates the Waste Classification Custom Component */
 @Component
-class VsmeWasteClassificationObjectCustomComponentFactory(@Autowired val templateDiagnostic: TemplateDiagnostic) :
-    TemplateComponentFactory {
+class VsmeWasteClassificationObjectCustomComponentFactory(
+  @Autowired val templateDiagnostic: TemplateDiagnostic
+) : TemplateComponentFactory {
 
-    override fun canGenerateComponent(row: TemplateRow): Boolean =
-        row.component == "Waste Classification Component"
+  override fun canGenerateComponent(row: TemplateRow): Boolean =
+    row.component == "Waste Classification Component"
 
-    override fun generateComponent(
-        row: TemplateRow,
-        utils: ComponentGenerationUtils,
-        componentGroup: ComponentGroupApi,
-    ): ComponentBase {
-        templateDiagnostic.optionsNotUsed(row)
-        templateDiagnostic.unitNotUsed(row)
+  override fun generateComponent(
+    row: TemplateRow,
+    utils: ComponentGenerationUtils,
+    componentGroup: ComponentGroupApi,
+  ): ComponentBase {
+    templateDiagnostic.optionsNotUsed(row)
+    templateDiagnostic.unitNotUsed(row)
 
-        return componentGroup.create<VsmeWasteClassificationObjectCustomComponent>(
-            utils.generateFieldIdentifierFromRow(row),
-        ) {
-            utils.setCommonProperties(row, this)
-        }
-    }
-
-    override fun updateDependency(
-        row: TemplateRow,
-        utils: ComponentGenerationUtils,
-        componentIdentifierMap: Map<String, ComponentBase>,
+    return componentGroup.create<VsmeWasteClassificationObjectCustomComponent>(
+      utils.generateFieldIdentifierFromRow(row)
     ) {
-        utils.defaultDependencyConfiguration(row, componentIdentifierMap, templateDiagnostic)
+      utils.setCommonProperties(row, this)
     }
+  }
+
+  override fun updateDependency(
+    row: TemplateRow,
+    utils: ComponentGenerationUtils,
+    componentIdentifierMap: Map<String, ComponentBase>,
+  ) {
+    utils.defaultDependencyConfiguration(row, componentIdentifierMap, templateDiagnostic)
+  }
 }

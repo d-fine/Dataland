@@ -3,14 +3,9 @@ package org.dataland.datalandbackend.frameworks.esgquestionnaire.model.umwelt.en
 
 import java.math.BigDecimal
 
-/**
- * Data class for the timeseries data contained in the field berichterstattungEnergieverbrauch
- */
+/** Data class for the timeseries data contained in the field berichterstattungEnergieverbrauch */
 data class BerichterstattungEnergieverbrauchValues(
-    val energieverbrauch: BigDecimal? = null,
-
-    val prozentDesVerbrauchsErneuerbarerEnergien: BigDecimal? = null,
-
-    val ggfProzentDerErneuerbarenEnergieerzeugung: BigDecimal? = null,
-
+  val energieverbrauch: BigDecimal? = null,
+  val prozentDesVerbrauchsErneuerbarerEnergien: BigDecimal? = null,
+  val ggfProzentDerErneuerbarenEnergieerzeugung: BigDecimal? = null,
 )

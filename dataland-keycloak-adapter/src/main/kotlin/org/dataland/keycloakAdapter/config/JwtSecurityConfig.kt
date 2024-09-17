@@ -9,22 +9,20 @@ import org.springframework.security.oauth2.jwt.JwtDecoder
 import org.springframework.security.oauth2.jwt.JwtValidators
 import org.springframework.security.oauth2.jwt.NimbusJwtDecoder
 
-/**
- * Configures JWT handling decoder
- */
+/** Configures JWT handling decoder */
 @Configuration
 internal class JwtSecurityConfig {
-    /**
-     * A Bean that provides a jwtDecoder - a thing that will convert strings to JWT-Objects
-     */
-    @Bean
-    fun jwtDecoder(properties: OAuth2ResourceServerProperties): JwtDecoder {
-        val jwtDecoder = NimbusJwtDecoder
-            .withJwkSetUri(properties.getJwt().getJwkSetUri())
-            .jwsAlgorithms { algs -> algs.addAll(setOf(SignatureAlgorithm.RS256, SignatureAlgorithm.ES256)) }
-            .build()
-        val validators = JwtValidators.createDefaultWithIssuer(properties.jwt.issuerUri)
-        jwtDecoder.setJwtValidator(DelegatingOAuth2TokenValidator(validators))
-        return jwtDecoder
-    }
+  /** A Bean that provides a jwtDecoder - a thing that will convert strings to JWT-Objects */
+  @Bean
+  fun jwtDecoder(properties: OAuth2ResourceServerProperties): JwtDecoder {
+    val jwtDecoder =
+      NimbusJwtDecoder.withJwkSetUri(properties.getJwt().getJwkSetUri())
+        .jwsAlgorithms { algs ->
+          algs.addAll(setOf(SignatureAlgorithm.RS256, SignatureAlgorithm.ES256))
+        }
+        .build()
+    val validators = JwtValidators.createDefaultWithIssuer(properties.jwt.issuerUri)
+    jwtDecoder.setJwtValidator(DelegatingOAuth2TokenValidator(validators))
+    return jwtDecoder
+  }
 }

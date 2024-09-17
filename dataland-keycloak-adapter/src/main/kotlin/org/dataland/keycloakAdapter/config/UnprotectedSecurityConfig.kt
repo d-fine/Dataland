@@ -9,31 +9,23 @@ import org.springframework.security.web.authentication.session.SessionAuthentica
 import org.springframework.stereotype.Component
 
 /**
- * This class contains all security configurations for the backend to make all endpoints public.
- * It is only activated for the Spring profile "unprotected" to enable running unit tests without
- * the need of any token-authorization.
+ * This class contains all security configurations for the backend to make all endpoints public. It
+ * is only activated for the Spring profile "unprotected" to enable running unit tests without the
+ * need of any token-authorization.
  */
 @Profile("unprotected")
 @Component
 class UnprotectedSecurityConfig {
-    /**
-     * Defines the Session Authentication Strategy
-     */
-    @Bean
-    fun sessionAuthenticationStrategy(): SessionAuthenticationStrategy {
-        return NullAuthenticatedSessionStrategy()
-    }
+  /** Defines the Session Authentication Strategy */
+  @Bean
+  fun sessionAuthenticationStrategy(): SessionAuthenticationStrategy {
+    return NullAuthenticatedSessionStrategy()
+  }
 
-    /**
-     * Defines the default Security Filter Chain
-     */
-    @Bean
-    fun unprotectedFilterChain(http: HttpSecurity): DefaultSecurityFilterChain? {
-        http.authorizeHttpRequests {
-            it.anyRequest().permitAll()
-        }.csrf {
-            it.disable()
-        }
-        return http.build()
-    }
+  /** Defines the default Security Filter Chain */
+  @Bean
+  fun unprotectedFilterChain(http: HttpSecurity): DefaultSecurityFilterChain? {
+    http.authorizeHttpRequests { it.anyRequest().permitAll() }.csrf { it.disable() }
+    return http.build()
+  }
 }

@@ -3,10 +3,7 @@ package org.dataland.datalandbackend.frameworks.esgquestionnaire.model.umwelt.ab
 
 import java.math.BigDecimal
 
-/**
- * Data class for the timeseries data contained in the field recyclingImProduktionsprozess
- */
+/** Data class for the timeseries data contained in the field recyclingImProduktionsprozess */
 data class RecyclingImProduktionsprozessValues(
-    val prozentRecycelteWerkstoffeImProduktionsprozess: BigDecimal? = null,
-
+  val prozentRecycelteWerkstoffeImProduktionsprozess: BigDecimal? = null
 )

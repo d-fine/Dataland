@@ -9,72 +9,59 @@ import org.dataland.frameworktoolbox.specific.viewconfig.FrameworkViewConfigBuil
 
 /**
  * A High-Level intermediate representation of a Dataland Framework
+ *
  * @param identifier the short identifier of the framework (e.g., lksg)
  */
 class Framework(
-    val identifier: String,
-    val label: String,
-    val explanation: String,
-    val order: Int,
+  val identifier: String,
+  val label: String,
+  val explanation: String,
+  val order: Int,
 ) {
-    val root: TopLevelComponentGroup = TopLevelComponentGroup(this)
+  val root: TopLevelComponentGroup = TopLevelComponentGroup(this)
 
-    /**
-     * Generate a Kotlin DataModel for this framework In-Memory.
-     */
-    fun generateDataModel(): FrameworkDataModelBuilder {
-        val frameworkDataModelBuilder = FrameworkDataModelBuilder(this)
+  /** Generate a Kotlin DataModel for this framework In-Memory. */
+  fun generateDataModel(): FrameworkDataModelBuilder {
+    val frameworkDataModelBuilder = FrameworkDataModelBuilder(this)
 
-        root.children.forEach {
-            it.generateDataModel(frameworkDataModelBuilder.rootDataModelClass)
-        }
+    root.children.forEach { it.generateDataModel(frameworkDataModelBuilder.rootDataModelClass) }
 
-        return frameworkDataModelBuilder
+    return frameworkDataModelBuilder
+  }
+
+  /** Generate a Kotlin QA DataModel for this framework In-Memory. */
+  fun generateQaModel(): FrameworkQaModelBuilder {
+    val frameworkQaModelBuilder = FrameworkQaModelBuilder(this)
+
+    root.children.forEach { it.generateQaModel(frameworkQaModelBuilder.rootDataModelClass) }
+
+    return frameworkQaModelBuilder
+  }
+
+  /** Generate a TypeScript ViewModel for this framework In-Memory. */
+  fun generateViewModel(): FrameworkViewConfigBuilder {
+    val frameworkViewConfigBuilder = FrameworkViewConfigBuilder(this)
+    root.children.forEach {
+      it.generateViewConfig(frameworkViewConfigBuilder.rootSectionConfigBuilder)
     }
+    return frameworkViewConfigBuilder
+  }
 
-    /**
-     * Generate a Kotlin QA DataModel for this framework In-Memory.
-     */
-    fun generateQaModel(): FrameworkQaModelBuilder {
-        val frameworkQaModelBuilder = FrameworkQaModelBuilder(this)
-
-        root.children.forEach {
-            it.generateQaModel(frameworkQaModelBuilder.rootDataModelClass)
-        }
-
-        return frameworkQaModelBuilder
+  /** Generate a TypeScript UploadModel for this framework In-Memory. */
+  fun generateUploadModel(): FrameworkUploadConfigBuilder {
+    val frameworkUploadConfigBuilder = FrameworkUploadConfigBuilder(this)
+    root.children.forEach {
+      it.generateUploadConfig(frameworkUploadConfigBuilder.rootSectionConfigBuilder)
     }
+    return frameworkUploadConfigBuilder
+  }
 
-    /**
-     * Generate a TypeScript ViewModel for this framework In-Memory.
-     */
-    fun generateViewModel(): FrameworkViewConfigBuilder {
-        val frameworkViewConfigBuilder = FrameworkViewConfigBuilder(this)
-        root.children.forEach {
-            it.generateViewConfig(frameworkViewConfigBuilder.rootSectionConfigBuilder)
-        }
-        return frameworkViewConfigBuilder
+  /** Generate a FixtureGenerator for this framework In-Memory */
+  fun generateFixtureGenerator(): FrameworkFixtureGeneratorBuilder {
+    val frameworkFixtureGenerator = FrameworkFixtureGeneratorBuilder(this)
+    root.children.forEach {
+      it.generateFixtureGenerator(frameworkFixtureGenerator.rootSectionBuilder)
     }
-
-    /**
-     * Generate a TypeScript UploadModel for this framework In-Memory.
-     */
-    fun generateUploadModel(): FrameworkUploadConfigBuilder {
-        val frameworkUploadConfigBuilder = FrameworkUploadConfigBuilder(this)
-        root.children.forEach {
-            it.generateUploadConfig(frameworkUploadConfigBuilder.rootSectionConfigBuilder)
-        }
-        return frameworkUploadConfigBuilder
-    }
-
-    /**
-     * Generate a FixtureGenerator for this framework In-Memory
-     */
-    fun generateFixtureGenerator(): FrameworkFixtureGeneratorBuilder {
-        val frameworkFixtureGenerator = FrameworkFixtureGeneratorBuilder(this)
-        root.children.forEach {
-            it.generateFixtureGenerator(frameworkFixtureGenerator.rootSectionBuilder)
-        }
-        return frameworkFixtureGenerator
-    }
+    return frameworkFixtureGenerator
+  }
 }

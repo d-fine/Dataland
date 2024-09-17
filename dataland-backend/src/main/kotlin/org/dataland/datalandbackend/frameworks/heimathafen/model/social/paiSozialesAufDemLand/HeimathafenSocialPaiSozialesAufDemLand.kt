@@ -5,21 +5,12 @@ import jakarta.validation.Valid
 import org.dataland.datalandbackend.model.datapoints.BaseDataPoint
 import org.dataland.datalandbackend.model.enums.commons.YesNo
 
-/**
- * The data-model for the PaiSozialesAufDemLand section
- */
+/** The data-model for the PaiSozialesAufDemLand section */
 data class HeimathafenSocialPaiSozialesAufDemLand(
-    val paiSozialesAufDemLand: YesNo? = null,
-
-    val wennNeinBitteBegruenden: String? = null,
-
-    val verwendeteSchluesselzahlen: String? = null,
-
-    val datenerfassung: String? = null,
-
-    val datenPlausibilitaetspruefung: String? = null,
-
-    @field:Valid()
-    val datenquellen: List<BaseDataPoint<String>>? = null,
-
+  val paiSozialesAufDemLand: YesNo? = null,
+  val wennNeinBitteBegruenden: String? = null,
+  val verwendeteSchluesselzahlen: String? = null,
+  val datenerfassung: String? = null,
+  val datenPlausibilitaetspruefung: String? = null,
+  @field:Valid() val datenquellen: List<BaseDataPoint<String>>? = null,
 )

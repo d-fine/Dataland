@@ -4,20 +4,10 @@ package org.dataland.datalandbackend.frameworks.additionalcompanyinformation.mod
 import jakarta.validation.Valid
 import org.dataland.datalandbackend.model.datapoints.CurrencyDataPoint
 
-/**
- * The data-model for the FinancialInformation section
- */
+/** The data-model for the FinancialInformation section */
 data class AdditionalCompanyInformationGeneralFinancialInformation(
-    @field:Valid()
-    val equity: CurrencyDataPoint? = null,
-
-    @field:Valid()
-    val debt: CurrencyDataPoint? = null,
-
-    @field:Valid()
-    val balanceSheetTotal: CurrencyDataPoint? = null,
-
-    @field:Valid()
-    val evic: CurrencyDataPoint? = null,
-
+  @field:Valid() val equity: CurrencyDataPoint? = null,
+  @field:Valid() val debt: CurrencyDataPoint? = null,
+  @field:Valid() val balanceSheetTotal: CurrencyDataPoint? = null,
+  @field:Valid() val evic: CurrencyDataPoint? = null,
 )

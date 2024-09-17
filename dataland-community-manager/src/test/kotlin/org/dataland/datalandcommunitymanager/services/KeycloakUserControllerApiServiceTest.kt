@@ -20,83 +20,92 @@ import org.mockito.kotlin.whenever
 
 class KeycloakUserControllerApiServiceTest {
 
-    private lateinit var objectMapper: ObjectMapper
-    private lateinit var authenticatedOkHttpClient: OkHttpClient
-    private lateinit var service: KeycloakUserControllerApiService
+  private lateinit var objectMapper: ObjectMapper
+  private lateinit var authenticatedOkHttpClient: OkHttpClient
+  private lateinit var service: KeycloakUserControllerApiService
 
-    private val keycloakBaseUrl = "http://fakeurl.com"
+  private val keycloakBaseUrl = "http://fakeurl.com"
 
-    @BeforeEach
-    fun setUp() {
-        MockitoAnnotations.openMocks(this)
-        objectMapper = ObjectMapper()
-        authenticatedOkHttpClient = mock<OkHttpClient>()
-        service = KeycloakUserControllerApiService(objectMapper, authenticatedOkHttpClient, keycloakBaseUrl)
-    }
+  @BeforeEach
+  fun setUp() {
+    MockitoAnnotations.openMocks(this)
+    objectMapper = ObjectMapper()
+    authenticatedOkHttpClient = mock<OkHttpClient>()
+    service =
+      KeycloakUserControllerApiService(objectMapper, authenticatedOkHttpClient, keycloakBaseUrl)
+  }
 
-    private val firstUser = KeycloakUserInfo("test@example.com", "1", "John", "Doe")
-    private val firstUserJson = """
+  private val firstUser = KeycloakUserInfo("test@example.com", "1", "John", "Doe")
+  private val firstUserJson =
+    """
         {
             "id": "${firstUser.userId}",
             "email": "${firstUser.email}",
             "firstName": "${firstUser.firstName}",
             "lastName": "${firstUser.lastName}"
         }
-    """.trimIndent()
+    """
+      .trimIndent()
 
-    private val secondUser = KeycloakUserInfo("example@test.com", "2", "Jane", "Doe")
+  private val secondUser = KeycloakUserInfo("example@test.com", "2", "Jane", "Doe")
 
-    private val secondUserJson = """
+  private val secondUserJson =
+    """
     {
         "id": "${secondUser.userId}",
         "email": "${secondUser.email}",
         "firstName": "${secondUser.firstName}",
         "lastName": "${secondUser.lastName}"
     }
-    """.trimIndent()
+    """
+      .trimIndent()
 
-    @Test
-    fun `getUser should return valid KeycloakUserInfo on successful parse`() {
-        val expectedUrl = "$keycloakBaseUrl/admin/realms/datalandsecurity/users/${firstUser.userId}"
+  @Test
+  fun `getUser should return valid KeycloakUserInfo on successful parse`() {
+    val expectedUrl = "$keycloakBaseUrl/admin/realms/datalandsecurity/users/${firstUser.userId}"
 
-        val response = Response.Builder()
-            .request(Request.Builder().url(expectedUrl).build())
-            .protocol(Protocol.HTTP_1_1)
-            .code(200)
-            .message("OK")
-            .body(firstUserJson.toResponseBody("application/json".toMediaTypeOrNull()))
-            .build()
+    val response =
+      Response.Builder()
+        .request(Request.Builder().url(expectedUrl).build())
+        .protocol(Protocol.HTTP_1_1)
+        .code(200)
+        .message("OK")
+        .body(firstUserJson.toResponseBody("application/json".toMediaTypeOrNull()))
+        .build()
 
-        val call = mock<Call>()
-        whenever(call.execute()).thenReturn(response)
-        whenever(authenticatedOkHttpClient.newCall(argThat { this.url.toString() == expectedUrl })).thenReturn(call)
+    val call = mock<Call>()
+    whenever(call.execute()).thenReturn(response)
+    whenever(authenticatedOkHttpClient.newCall(argThat { this.url.toString() == expectedUrl }))
+      .thenReturn(call)
 
-        val result = service.getUser(firstUser.userId)
-        assertEquals(firstUser, result)
-    }
+    val result = service.getUser(firstUser.userId)
+    assertEquals(firstUser, result)
+  }
 
-    @Test
-    fun `searchUsers should return a list of KeycloakUserInfo on successful parse`() {
-        val emailSearch = "test"
-        val expectedUrl = "$keycloakBaseUrl/admin/realms/datalandsecurity/users?email=$emailSearch"
+  @Test
+  fun `searchUsers should return a list of KeycloakUserInfo on successful parse`() {
+    val emailSearch = "test"
+    val expectedUrl = "$keycloakBaseUrl/admin/realms/datalandsecurity/users?email=$emailSearch"
 
-        val json = "[$firstUserJson, $secondUserJson]"
+    val json = "[$firstUserJson, $secondUserJson]"
 
-        val response = Response.Builder()
-            .request(Request.Builder().url(expectedUrl).build())
-            .protocol(Protocol.HTTP_1_1)
-            .code(200)
-            .message("OK")
-            .body(json.toResponseBody("application/json".toMediaTypeOrNull()))
-            .build()
+    val response =
+      Response.Builder()
+        .request(Request.Builder().url(expectedUrl).build())
+        .protocol(Protocol.HTTP_1_1)
+        .code(200)
+        .message("OK")
+        .body(json.toResponseBody("application/json".toMediaTypeOrNull()))
+        .build()
 
-        val call = mock<Call>()
-        whenever(call.execute()).thenReturn(response)
-        whenever(authenticatedOkHttpClient.newCall(argThat { this.url.toString() == expectedUrl })).thenReturn(call)
+    val call = mock<Call>()
+    whenever(call.execute()).thenReturn(response)
+    whenever(authenticatedOkHttpClient.newCall(argThat { this.url.toString() == expectedUrl }))
+      .thenReturn(call)
 
-        val result = service.searchUsers(emailSearch)
+    val result = service.searchUsers(emailSearch)
 
-        assertTrue(result.contains(firstUser))
-        assertTrue(result.contains(secondUser))
-    }
+    assertTrue(result.contains(firstUser))
+    assertTrue(result.contains(secondUser))
+  }
 }

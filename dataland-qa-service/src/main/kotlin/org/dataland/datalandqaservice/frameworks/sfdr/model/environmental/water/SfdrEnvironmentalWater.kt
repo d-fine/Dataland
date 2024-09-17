@@ -6,26 +6,18 @@ import org.dataland.datalandbackend.openApiClient.model.ExtendedDataPointBigDeci
 import org.dataland.datalandbackend.openApiClient.model.ExtendedDataPointYesNo
 import org.dataland.datalandqaservice.model.reports.QaReportDataPoint
 
-/**
- * The QA-model for the Water section
- */
+/** The QA-model for the Water section */
 data class SfdrEnvironmentalWater(
-    @field:Valid()
-    val emissionsToWaterInTonnes: QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
-
-    @field:Valid()
-    val waterConsumptionInCubicMeters: QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
-
-    @field:Valid()
-    val waterReusedInCubicMeters: QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
-
-    @field:Valid()
-    val relativeWaterUsageInCubicMetersPerMillionEURRevenue: QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
-
-    @field:Valid()
-    val waterManagementPolicy: QaReportDataPoint<ExtendedDataPointYesNo?>? = null,
-
-    @field:Valid()
-    val highWaterStressAreaExposure: QaReportDataPoint<ExtendedDataPointYesNo?>? = null,
-
+  @field:Valid()
+  val emissionsToWaterInTonnes: QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
+  @field:Valid()
+  val waterConsumptionInCubicMeters: QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
+  @field:Valid()
+  val waterReusedInCubicMeters: QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
+  @field:Valid()
+  val relativeWaterUsageInCubicMetersPerMillionEURRevenue:
+    QaReportDataPoint<ExtendedDataPointBigDecimal?>? =
+    null,
+  @field:Valid() val waterManagementPolicy: QaReportDataPoint<ExtendedDataPointYesNo?>? = null,
+  @field:Valid() val highWaterStressAreaExposure: QaReportDataPoint<ExtendedDataPointYesNo?>? = null,
 )

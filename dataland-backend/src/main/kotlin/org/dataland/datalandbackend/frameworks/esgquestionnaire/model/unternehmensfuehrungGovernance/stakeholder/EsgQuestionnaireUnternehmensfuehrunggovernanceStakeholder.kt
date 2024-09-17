@@ -3,14 +3,9 @@ package org.dataland.datalandbackend.frameworks.esgquestionnaire.model.unternehm
 
 import org.dataland.datalandbackend.model.enums.commons.YesNo
 
-/**
- * The data-model for the Stakeholder section
- */
+/** The data-model for the Stakeholder section */
 data class EsgQuestionnaireUnternehmensfuehrunggovernanceStakeholder(
-    val einbeziehungVonStakeholdern: YesNo? = null,
-
-    val prozessDerEinbeziehungVonStakeholdern: String? = null,
-
-    val mechanismenZurAusrichtungAufStakeholder: String? = null,
-
+  val einbeziehungVonStakeholdern: YesNo? = null,
+  val prozessDerEinbeziehungVonStakeholdern: String? = null,
+  val mechanismenZurAusrichtungAufStakeholder: String? = null,
 )

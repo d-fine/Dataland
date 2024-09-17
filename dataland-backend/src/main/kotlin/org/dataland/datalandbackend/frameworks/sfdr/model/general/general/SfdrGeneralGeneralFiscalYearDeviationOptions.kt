@@ -3,13 +3,9 @@ package org.dataland.datalandbackend.frameworks.sfdr.model.general.general
 
 import io.swagger.v3.oas.annotations.media.Schema
 
-/**
- * Enum class for the single-select-field fiscalYearDeviation
- */
-@Schema(
-    enumAsRef = true,
-)
+/** Enum class for the single-select-field fiscalYearDeviation */
+@Schema(enumAsRef = true)
 enum class SfdrGeneralGeneralFiscalYearDeviationOptions {
-    Deviation,
-    NoDeviation,
+  Deviation,
+  NoDeviation,
 }

@@ -3,12 +3,8 @@ package org.dataland.datalandbackend.frameworks.esgquestionnaire.model.unternehm
 
 import org.dataland.datalandbackend.model.enums.commons.YesNo
 
-/**
- * The data-model for the Lieferantenauswahl section
- */
+/** The data-model for the Lieferantenauswahl section */
 data class EsgQuestionnaireUnternehmensfuehrunggovernanceLieferantenauswahl(
-    val esgKriterienUndUeberwachungDerLieferanten: YesNo? = null,
-
-    val auswahlkriterien: String? = null,
-
+  val esgKriterienUndUeberwachungDerLieferanten: YesNo? = null,
+  val auswahlkriterien: String? = null,
 )

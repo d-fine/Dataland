@@ -4,10 +4,7 @@ package org.dataland.datalandqaservice.frameworks.sfdr.model.general.general
 import org.dataland.datalandbackend.openApiClient.model.CompanyReport
 import org.dataland.datalandqaservice.model.reports.QaReportDataPoint
 
-/**
- * The QA-model for the General section
- */
+/** The QA-model for the General section */
 data class SfdrGeneralGeneral(
-    val referencedReports: QaReportDataPoint<Map<String, CompanyReport>>? = null,
-
+  val referencedReports: QaReportDataPoint<Map<String, CompanyReport>>? = null
 )

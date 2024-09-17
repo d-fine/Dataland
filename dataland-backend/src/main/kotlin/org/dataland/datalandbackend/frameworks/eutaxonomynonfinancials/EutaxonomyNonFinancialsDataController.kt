@@ -17,42 +17,44 @@ import org.springframework.web.bind.annotation.RestController
 
 /**
  * Controller for the eutaxonomy-non-financials framework endpoints
+ *
  * @param myDataManager data manager to be used
  * @param myObjectMapper object mapper used for converting data classes to strings and vice versa
  */
 @RequestMapping("/data/eutaxonomy-non-financials")
 @RestController
 class EutaxonomyNonFinancialsDataController(
-    @Autowired var myDataManager: DataManager,
-    @Autowired var myMetaDataManager: DataMetaInformationManager,
-    @Autowired var myObjectMapper: ObjectMapper,
-) : DataController<EutaxonomyNonFinancialsData>(
+  @Autowired var myDataManager: DataManager,
+  @Autowired var myMetaDataManager: DataMetaInformationManager,
+  @Autowired var myObjectMapper: ObjectMapper,
+) :
+  DataController<EutaxonomyNonFinancialsData>(
     myDataManager,
     myMetaDataManager,
     myObjectMapper,
     EutaxonomyNonFinancialsData::class.java,
-) {
-    @Operation(operationId = "getCompanyAssociatedEutaxonomyNonFinancialsData")
-    override fun getCompanyAssociatedData(dataId: String):
-        ResponseEntity<CompanyAssociatedData<EutaxonomyNonFinancialsData>> {
-        return super.getCompanyAssociatedData(dataId)
-    }
+  ) {
+  @Operation(operationId = "getCompanyAssociatedEutaxonomyNonFinancialsData")
+  override fun getCompanyAssociatedData(
+    dataId: String
+  ): ResponseEntity<CompanyAssociatedData<EutaxonomyNonFinancialsData>> {
+    return super.getCompanyAssociatedData(dataId)
+  }
 
-    @Operation(operationId = "postCompanyAssociatedEutaxonomyNonFinancialsData")
-    override fun postCompanyAssociatedData(
-        companyAssociatedData: CompanyAssociatedData<EutaxonomyNonFinancialsData>,
-        bypassQa: Boolean,
-    ):
-        ResponseEntity<DataMetaInformation> {
-        return super.postCompanyAssociatedData(companyAssociatedData, bypassQa)
-    }
+  @Operation(operationId = "postCompanyAssociatedEutaxonomyNonFinancialsData")
+  override fun postCompanyAssociatedData(
+    companyAssociatedData: CompanyAssociatedData<EutaxonomyNonFinancialsData>,
+    bypassQa: Boolean,
+  ): ResponseEntity<DataMetaInformation> {
+    return super.postCompanyAssociatedData(companyAssociatedData, bypassQa)
+  }
 
-    @Operation(operationId = "getAllCompanyEutaxonomyNonFinancialsData")
-    override fun getFrameworkDatasetsForCompany(
-        companyId: String,
-        showOnlyActive: Boolean,
-        reportingPeriod: String?,
-    ): ResponseEntity<List<DataAndMetaInformation<EutaxonomyNonFinancialsData>>> {
-        return super.getFrameworkDatasetsForCompany(companyId, showOnlyActive, reportingPeriod)
-    }
+  @Operation(operationId = "getAllCompanyEutaxonomyNonFinancialsData")
+  override fun getFrameworkDatasetsForCompany(
+    companyId: String,
+    showOnlyActive: Boolean,
+    reportingPeriod: String?,
+  ): ResponseEntity<List<DataAndMetaInformation<EutaxonomyNonFinancialsData>>> {
+    return super.getFrameworkDatasetsForCompany(companyId, showOnlyActive, reportingPeriod)
+  }
 }

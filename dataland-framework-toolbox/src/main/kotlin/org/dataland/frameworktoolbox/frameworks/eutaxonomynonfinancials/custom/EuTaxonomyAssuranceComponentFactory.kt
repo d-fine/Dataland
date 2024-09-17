@@ -11,34 +11,35 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 
 /**
- * Generates EuTaxonomyAssuranceComponent from rows with the component "Custom - EuTaxonomyAssuranceComponent"
+ * Generates EuTaxonomyAssuranceComponent from rows with the component "Custom -
+ * EuTaxonomyAssuranceComponent"
  */
 @Component
 class EuTaxonomyAssuranceComponentFactory(@Autowired val templateDiagnostic: TemplateDiagnostic) :
-    TemplateComponentFactory {
-    override fun canGenerateComponent(row: TemplateRow): Boolean =
-        row.component.trim() == "Custom EuTaxonomyAssuranceComponent"
+  TemplateComponentFactory {
+  override fun canGenerateComponent(row: TemplateRow): Boolean =
+    row.component.trim() == "Custom EuTaxonomyAssuranceComponent"
 
-    override fun generateComponent(
-        row: TemplateRow,
-        utils: ComponentGenerationUtils,
-        componentGroup: ComponentGroupApi,
-    ): ComponentBase {
-        templateDiagnostic.optionsNotUsed(row)
-        templateDiagnostic.unitNotUsed(row)
+  override fun generateComponent(
+    row: TemplateRow,
+    utils: ComponentGenerationUtils,
+    componentGroup: ComponentGroupApi,
+  ): ComponentBase {
+    templateDiagnostic.optionsNotUsed(row)
+    templateDiagnostic.unitNotUsed(row)
 
-        return componentGroup.create<EuTaxonomyAssuranceComponent>(
-            utils.generateFieldIdentifierFromRow(row),
-        ) {
-            utils.setCommonProperties(row, this)
-        }
-    }
-
-    override fun updateDependency(
-        row: TemplateRow,
-        utils: ComponentGenerationUtils,
-        componentIdentifierMap: Map<String, ComponentBase>,
+    return componentGroup.create<EuTaxonomyAssuranceComponent>(
+      utils.generateFieldIdentifierFromRow(row)
     ) {
-        utils.defaultDependencyConfiguration(row, componentIdentifierMap, templateDiagnostic)
+      utils.setCommonProperties(row, this)
     }
+  }
+
+  override fun updateDependency(
+    row: TemplateRow,
+    utils: ComponentGenerationUtils,
+    componentIdentifierMap: Map<String, ComponentBase>,
+  ) {
+    utils.defaultDependencyConfiguration(row, componentIdentifierMap, templateDiagnostic)
+  }
 }

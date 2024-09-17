@@ -3,14 +3,10 @@ package org.dataland.datalandbackend.frameworks.esgquestionnaire.model.soziales.
 
 import io.swagger.v3.oas.annotations.media.Schema
 
-/**
- * Enum class for the single-select-field artDesAudits
- */
-@Schema(
-    enumAsRef = true,
-)
+/** Enum class for the single-select-field artDesAudits */
+@Schema(enumAsRef = true)
 enum class EsgQuestionnaireSozialesAuditArtDesAuditsOptions {
-    InterneAnhoerung,
-    PruefungDurchDritte,
-    SowohlInternAlsAuchVonDrittanbietern,
+  InterneAnhoerung,
+  PruefungDurchDritte,
+  SowohlInternAlsAuchVonDrittanbietern,
 }

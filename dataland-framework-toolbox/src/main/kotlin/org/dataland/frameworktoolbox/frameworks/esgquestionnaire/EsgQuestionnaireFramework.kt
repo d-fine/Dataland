@@ -1,6 +1,7 @@
 package org.dataland.frameworktoolbox.frameworks.esgquestionnaire
 
 import ComponentGenerationUtilsForGermanFrameworks
+import java.io.File
 import org.apache.commons.text.StringEscapeUtils.escapeEcmaScript
 import org.dataland.frameworktoolbox.frameworks.FrameworkGenerationFeatures
 import org.dataland.frameworktoolbox.frameworks.PavedRoadFramework
@@ -24,229 +25,221 @@ import org.dataland.frameworktoolbox.template.components.ComponentGenerationUtil
 import org.dataland.frameworktoolbox.utils.diagnostic.DiagnosticManager
 import org.dataland.frameworktoolbox.utils.typescript.TypeScriptImport
 import org.springframework.stereotype.Component
-import java.io.File
 
-/**
- * Definition of the Heimathafen framework
- */
+/** Definition of the Heimathafen framework */
 @Component
-class EsgQuestionnaireFramework : PavedRoadFramework(
+class EsgQuestionnaireFramework :
+  PavedRoadFramework(
     identifier = "esg-questionnaire",
-    label = "ESG Questionnaire fÃ¼r Corporate Schuldscheindarlehen",
-    explanation = "Der ESG Questionnaire fÃ¼r Corporate Schuldscheindarlehen ist ein ESG-Fragebogen des " +
-        "Gesamtverbands der Versicherer und des Bundesverbands Ã–ffentlicher Banken",
+    label = "ESG Questionnaire für Corporate Schuldscheindarlehen",
+    explanation =
+      "Der ESG Questionnaire für Corporate Schuldscheindarlehen ist ein ESG-Fragebogen des " +
+        "Gesamtverbands der Versicherer und des Bundesverbands Öffentlicher Banken",
     File("./dataland-framework-toolbox/inputs/esg-questionnaire/esg-questionnaire.xlsx"),
     order = 7,
-    enabledFeatures =
-    FrameworkGenerationFeatures.allExcept(FrameworkGenerationFeatures.QaModel),
-) {
+    enabledFeatures = FrameworkGenerationFeatures.allExcept(FrameworkGenerationFeatures.QaModel),
+  ) {
 
-    override fun configureDiagnostics(diagnosticManager: DiagnosticManager) {
-        diagnosticManager.suppress("IgnoredRow-38-3118f246")
+  override fun configureDiagnostics(diagnosticManager: DiagnosticManager) {
+    diagnosticManager.suppress("IgnoredRow-38-3118f246")
+  }
+
+  private fun setGroupsThatAreExpandedOnPageLoad(framework: Framework) {
+    framework.root.edit<ComponentGroup>("allgemein") { viewPageExpandOnPageLoad = true }
+    framework.root.edit<ComponentGroup>("general") {
+      viewPageExpandOnPageLoad = true
+      edit<ComponentGroup>("masterData") { viewPageExpandOnPageLoad = true }
     }
+  }
 
-    private fun setGroupsThatAreExpandedOnPageLoad(framework: Framework) {
-        framework.root.edit<ComponentGroup>("allgemein") {
-            viewPageExpandOnPageLoad = true
+  private fun overwriteFakeFixtureGenerationForDataDate(framework: Framework) {
+    framework.root.edit<ComponentGroup>("general") {
+      edit<ComponentGroup>("masterData") {
+        edit<DateComponent>("gueltigkeitsDatum") {
+          fixtureGeneratorGenerator = {
+            it.addAtomicExpression(identifier, "dataGenerator.dataDate")
+          }
         }
-        framework.root.edit<ComponentGroup>("general") {
-            viewPageExpandOnPageLoad = true
-            edit<ComponentGroup>("masterData") {
-                viewPageExpandOnPageLoad = true
-            }
-        }
+      }
     }
+  }
 
-    private fun overwriteFakeFixtureGenerationForDataDate(framework: Framework) {
-        framework.root.edit<ComponentGroup>("general") {
-            edit<ComponentGroup>("masterData") {
-                edit<DateComponent>("gueltigkeitsDatum") {
-                    fixtureGeneratorGenerator = {
-                        it.addAtomicExpression(
-                            identifier,
-                            "dataGenerator.dataDate",
-                        )
-                    }
-                }
-            }
-        }
+  private fun createRollingWindowComponentsInCategoryUmwelt(framework: Framework) {
+    framework.root.edit<ComponentGroup>("umwelt") {
+      val umweltGroup = this
+      with(EsgQuestionnaireUmweltRollingWindowComponents) {
+        treibhausgasBerichterstattungUndPrognosen(umweltGroup)
+        berichterstattungEnergieverbrauch(umweltGroup)
+        energieeffizienzImmobilienanlagen(umweltGroup)
+        berichterstattungWasserverbrauch(umweltGroup)
+        unternehmensGruppenStrategieBzglAbfallproduktion(umweltGroup)
+        recyclingImProduktionsprozess(umweltGroup)
+        berichterstattungEinnahmenAusFossilenBrennstoffen(umweltGroup)
+        umsatzInvestitionsaufwandFuerNachhaltige(umweltGroup)
+      }
     }
+  }
 
-    private fun createRollingWindowComponentsInCategoryUmwelt(
-        framework: Framework,
+  private fun createRollingWindowComponentsInCategorySoziales(framework: Framework) {
+    framework.root.edit<ComponentGroup>("soziales") {
+      val sozialesGroup = this
+      with(EsgQuestionnaireSozialesRollingWindowComponents) {
+        auswirkungenAufAnteilBefristerVertraegeUndFluktuation(sozialesGroup)
+        budgetFuerSchulungAusbildung(sozialesGroup)
+        unfallrate(sozialesGroup)
+        massnahmenZurVerbesserungDerEinkommensungleichheit(sozialesGroup)
+      }
+    }
+  }
+
+  private fun editListOfStringBaseDatapointComponents(framework: Framework) {
+    framework.root.edit<ComponentGroup>("allgemein") {
+      val componentGroupAllgemein = this
+      with(EsgQuestionnaireListOfStringBaseDataPointComponents) {
+        aktuelleBerichte(componentGroupAllgemein)
+        weitereAkkreditierungen(componentGroupAllgemein)
+        richtlinienZurEinhaltungDerUngcp(componentGroupAllgemein)
+        richtlinienZurEinhaltungDerOecdLeitsaetze(componentGroupAllgemein)
+      }
+    }
+  }
+
+  override fun customizeHighLevelIntermediateRepresentation(framework: Framework) {
+    setGroupsThatAreExpandedOnPageLoad(framework)
+    overwriteFakeFixtureGenerationForDataDate(framework)
+    val berichtsPflicht =
+      framework.root
+        .get<ComponentGroup>("general")
+        .get<ComponentGroup>("masterData")
+        .get<YesNoComponent>("berichtspflichtUndEinwilligungZurVeroeffentlichung")
+
+    createRollingWindowComponentsInCategoryUmwelt(framework)
+    createRollingWindowComponentsInCategorySoziales(framework)
+    editListOfStringBaseDatapointComponents(framework)
+    framework.root.edit<ComponentGroup>("general") {
+      edit<ComponentGroup>("masterData") {
+        edit<YesNoComponent>("berichtspflichtUndEinwilligungZurVeroeffentlichung") {
+          customizeBerichtsPflicht(this)
+        }
+      }
+    }
+    framework.root.get<ComponentGroup>("umwelt").get<ComponentGroup>("taxonomie").create<
+      MultiSelectComponent
+    >(
+      "euTaxonomieKompassAktivitaeten",
+      "umsatzInvestitionsaufwandFuerNachhaltigeAktivitaeten",
     ) {
-        framework.root.edit<ComponentGroup>("umwelt") {
-            val umweltGroup = this
-            with(EsgQuestionnaireUmweltRollingWindowComponents) {
-                treibhausgasBerichterstattungUndPrognosen(umweltGroup)
-                berichterstattungEnergieverbrauch(umweltGroup)
-                energieeffizienzImmobilienanlagen(umweltGroup)
-                berichterstattungWasserverbrauch(umweltGroup)
-                unternehmensGruppenStrategieBzglAbfallproduktion(umweltGroup)
-                recyclingImProduktionsprozess(umweltGroup)
-                berichterstattungEinnahmenAusFossilenBrennstoffen(umweltGroup)
-                umsatzInvestitionsaufwandFuerNachhaltige(umweltGroup)
-            }
-        }
+      setEuTaxonomieKompassAktivitaeten(this)
+      availableIf = DependsOnComponentValue(berichtsPflicht, "Yes")
     }
+  }
 
-    private fun createRollingWindowComponentsInCategorySoziales(
-        framework: Framework,
-    ) {
-        framework.root.edit<ComponentGroup>("soziales") {
-            val sozialesGroup = this
-            with(EsgQuestionnaireSozialesRollingWindowComponents) {
-                auswirkungenAufAnteilBefristerVertraegeUndFluktuation(sozialesGroup)
-                budgetFuerSchulungAusbildung(sozialesGroup)
-                unfallrate(sozialesGroup)
-                massnahmenZurVerbesserungDerEinkommensungleichheit(sozialesGroup)
-            }
-        }
+  override fun getComponentGenerationUtils(): ComponentGenerationUtils {
+    return ComponentGenerationUtilsForGermanFrameworks()
+  }
+
+  private fun setEuTaxonomieKompassAktivitaeten(component: MultiSelectComponent) {
+    component.label = "EU Taxonomie Kompass Aktivitäten"
+    component.uploadPageExplanation =
+      "Welche Aktivitäten gem. dem EU Taxonomie-Kompass übt das Unternehmen aus?"
+    setEuTaxonomieKompassAktivitaetenFixtureGenerator(component)
+    setEuTaxonomieKompassAktivitaetenViewConfigGenerator(component)
+    setEuTaxonomieKompassAktivitaetenUploadGenerator(component)
+    setEuTaxonomieKompassAktivitaetenDataModelGenerator(component)
+  }
+
+  private fun setEuTaxonomieKompassAktivitaetenFixtureGenerator(component: MultiSelectComponent) {
+    component.fixtureGeneratorGenerator = { sectionConfigBuilder: FixtureSectionBuilder ->
+      sectionConfigBuilder.addAtomicExpression(
+        component.identifier,
+        component.documentSupport.getFixtureExpression(
+          fixtureExpression = "pickSubsetOfElements(Object.values(Activity))",
+          nullableFixtureExpression =
+            "dataGenerator.valueOrNull(pickSubsetOfElements(Object.values(Activity)))",
+          nullable = component.isNullable,
+        ),
+        imports = setOf(TypeScriptImport("Activity", "@clients/backend")),
+      )
     }
+  }
 
-    private fun editListOfStringBaseDatapointComponents(framework: Framework) {
-        framework.root.edit<ComponentGroup>("allgemein") {
-            val componentGroupAllgemein = this
-            with(EsgQuestionnaireListOfStringBaseDataPointComponents) {
-                aktuelleBerichte(componentGroupAllgemein)
-                weitereAkkreditierungen(componentGroupAllgemein)
-                richtlinienZurEinhaltungDerUngcp(componentGroupAllgemein)
-                richtlinienZurEinhaltungDerOecdLeitsaetze(componentGroupAllgemein)
-            }
-        }
+  private fun setEuTaxonomieKompassAktivitaetenViewConfigGenerator(
+    component: MultiSelectComponent
+  ) {
+    component.viewConfigGenerator = { sectionConfigBuilder ->
+      sectionConfigBuilder.addStandardCellWithValueGetterFactory(
+        component,
+        FrameworkDisplayValueLambda(
+          "formatListOfStringsForDatatable(" +
+            "${component.getTypescriptFieldAccessor()}?.map(it => {\n" +
+            "                  return activityApiNameToHumanizedName(it)}), " +
+            "'${escapeEcmaScript(component.label)}'" +
+            ")",
+          setOf(
+            TypeScriptImport(
+              "activityApiNameToHumanizedName",
+              "@/components/resources/frameworkDataSearch/EuTaxonomyActivityNames",
+            ),
+            TypeScriptImport(
+              "formatListOfStringsForDatatable",
+              "@/components/resources/dataTable/conversion/MultiSelectValueGetterFactory",
+            ),
+          ),
+        ),
+      )
     }
+  }
 
-    override fun customizeHighLevelIntermediateRepresentation(framework: Framework) {
-        setGroupsThatAreExpandedOnPageLoad(framework)
-        overwriteFakeFixtureGenerationForDataDate(framework)
-        val berichtsPflicht = framework.root
-            .get<ComponentGroup>("general")
-            .get<ComponentGroup>("masterData")
-            .get<YesNoComponent>("berichtspflichtUndEinwilligungZurVeroeffentlichung")
-
-        createRollingWindowComponentsInCategoryUmwelt(framework)
-        createRollingWindowComponentsInCategorySoziales(framework)
-        editListOfStringBaseDatapointComponents(framework)
-        framework.root.edit<ComponentGroup>("general") {
-            edit<ComponentGroup>("masterData") {
-                edit<YesNoComponent>("berichtspflichtUndEinwilligungZurVeroeffentlichung") {
-                    customizeBerichtsPflicht(this)
-                }
-            }
-        }
-        framework.root.get<ComponentGroup>("umwelt").get<ComponentGroup>("taxonomie")
-            .create<MultiSelectComponent>(
-                "euTaxonomieKompassAktivitaeten",
-                "umsatzInvestitionsaufwandFuerNachhaltigeAktivitaeten",
-            ) {
-                setEuTaxonomieKompassAktivitaeten(this)
-                availableIf = DependsOnComponentValue(berichtsPflicht, "Yes")
-            }
+  private fun setEuTaxonomieKompassAktivitaetenUploadGenerator(component: MultiSelectComponent) {
+    component.uploadConfigGenerator = { sectionUploadConfigBuilder ->
+      sectionUploadConfigBuilder.addStandardUploadConfigCell(
+        frameworkUploadOptions =
+          FrameworkUploadOptions(
+            body = "getActivityNamesAsDropdownOptions()",
+            imports =
+              setOf(
+                TypeScriptImport(
+                  "getActivityNamesAsDropdownOptions",
+                  "@/components/resources/frameworkDataSearch/EuTaxonomyActivityNames",
+                )
+              ),
+          ),
+        component = component,
+        uploadComponentName = "MultiSelectFormField",
+      )
     }
+  }
 
-    override fun getComponentGenerationUtils(): ComponentGenerationUtils {
-        return ComponentGenerationUtilsForGermanFrameworks()
+  private fun setEuTaxonomieKompassAktivitaetenDataModelGenerator(component: MultiSelectComponent) {
+    component.dataModelGenerator = { dataClassBuilder ->
+      dataClassBuilder.addProperty(
+        component.identifier,
+        component.documentSupport.getJvmTypeReference(
+          TypeReference(
+            "java.util.EnumSet",
+            true,
+            listOf(
+              TypeReference(
+                "org.dataland.datalandbackend.model.enums.eutaxonomy.nonfinancials.Activity",
+                false,
+              )
+            ),
+          ),
+          true,
+        ),
+        component.documentSupport.getJvmAnnotations(),
+      )
     }
+  }
 
-    private fun setEuTaxonomieKompassAktivitaeten(component: MultiSelectComponent) {
-        component.label = "EU Taxonomie Kompass AktivitÃ¤ten"
-        component.uploadPageExplanation = "Welche AktivitÃ¤ten gem. dem EU Taxonomie-Kompass Ã¼bt das Unternehmen aus?"
-        setEuTaxonomieKompassAktivitaetenFixtureGenerator(component)
-        setEuTaxonomieKompassAktivitaetenViewConfigGenerator(component)
-        setEuTaxonomieKompassAktivitaetenUploadGenerator(component)
-        setEuTaxonomieKompassAktivitaetenDataModelGenerator(component)
+  private fun customizeBerichtsPflicht(component: YesNoComponent) {
+    component.uploadConfigGenerator = { sectionUploadConfigBuilder ->
+      sectionUploadConfigBuilder.addStandardUploadConfigCell(
+        frameworkUploadOptions = null,
+        component = component,
+        uploadComponentName = "YesNoFormField",
+        validation = "is:Yes",
+      )
     }
-
-    private fun setEuTaxonomieKompassAktivitaetenFixtureGenerator(component: MultiSelectComponent) {
-        component.fixtureGeneratorGenerator = { sectionConfigBuilder: FixtureSectionBuilder ->
-            sectionConfigBuilder.addAtomicExpression(
-                component.identifier,
-                component.documentSupport.getFixtureExpression(
-                    fixtureExpression = "pickSubsetOfElements(Object.values(Activity))",
-                    nullableFixtureExpression =
-                    "dataGenerator.valueOrNull(pickSubsetOfElements(Object.values(Activity)))",
-                    nullable = component.isNullable,
-                ),
-                imports = setOf(
-                    TypeScriptImport("Activity", "@clients/backend"),
-                ),
-            )
-        }
-    }
-
-    private fun setEuTaxonomieKompassAktivitaetenViewConfigGenerator(component: MultiSelectComponent) {
-        component.viewConfigGenerator = { sectionConfigBuilder ->
-            sectionConfigBuilder.addStandardCellWithValueGetterFactory(
-                component,
-                FrameworkDisplayValueLambda(
-                    "formatListOfStringsForDatatable(" +
-                        "${component.getTypescriptFieldAccessor()}?.map(it => {\n" +
-                        "                  return activityApiNameToHumanizedName(it)}), " +
-                        "'${escapeEcmaScript(component.label)}'" +
-                        ")",
-                    setOf(
-                        TypeScriptImport(
-                            "activityApiNameToHumanizedName",
-                            "@/components/resources/frameworkDataSearch/EuTaxonomyActivityNames",
-                        ),
-                        TypeScriptImport(
-                            "formatListOfStringsForDatatable",
-                            "@/components/resources/dataTable/conversion/MultiSelectValueGetterFactory",
-                        ),
-                    ),
-                ),
-            )
-        }
-    }
-
-    private fun setEuTaxonomieKompassAktivitaetenUploadGenerator(component: MultiSelectComponent) {
-        component.uploadConfigGenerator = { sectionUploadConfigBuilder ->
-            sectionUploadConfigBuilder.addStandardUploadConfigCell(
-                frameworkUploadOptions = FrameworkUploadOptions(
-                    body = "getActivityNamesAsDropdownOptions()",
-                    imports = setOf(
-                        TypeScriptImport(
-                            "getActivityNamesAsDropdownOptions",
-                            "@/components/resources/frameworkDataSearch/EuTaxonomyActivityNames",
-                        ),
-                    ),
-                ),
-                component = component,
-                uploadComponentName = "MultiSelectFormField",
-            )
-        }
-    }
-
-    private fun setEuTaxonomieKompassAktivitaetenDataModelGenerator(component: MultiSelectComponent) {
-        component.dataModelGenerator = { dataClassBuilder ->
-            dataClassBuilder.addProperty(
-                component.identifier,
-                component.documentSupport.getJvmTypeReference(
-                    TypeReference(
-                        "java.util.EnumSet",
-                        true,
-                        listOf(
-                            TypeReference(
-                                "org.dataland.datalandbackend.model.enums.eutaxonomy.nonfinancials.Activity",
-                                false,
-                            ),
-                        ),
-                    ),
-                    true,
-                ),
-                component.documentSupport.getJvmAnnotations(),
-            )
-        }
-    }
-
-    private fun customizeBerichtsPflicht(component: YesNoComponent) {
-        component.uploadConfigGenerator = { sectionUploadConfigBuilder ->
-            sectionUploadConfigBuilder.addStandardUploadConfigCell(
-                frameworkUploadOptions = null,
-                component = component,
-                uploadComponentName = "YesNoFormField",
-                validation = "is:Yes",
-            )
-        }
-    }
+  }
 }

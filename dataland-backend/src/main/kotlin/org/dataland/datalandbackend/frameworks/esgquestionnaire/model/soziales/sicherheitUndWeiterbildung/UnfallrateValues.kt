@@ -3,10 +3,7 @@ package org.dataland.datalandbackend.frameworks.esgquestionnaire.model.soziales.
 
 import java.math.BigDecimal
 
-/**
- * Data class for the timeseries data contained in the field unfallrate
- */
+/** Data class for the timeseries data contained in the field unfallrate */
 data class UnfallrateValues(
-    val haeufigkeitsrateVonArbeitsunfaellenMitZeitverlust: BigDecimal? = null,
-
+  val haeufigkeitsrateVonArbeitsunfaellenMitZeitverlust: BigDecimal? = null
 )

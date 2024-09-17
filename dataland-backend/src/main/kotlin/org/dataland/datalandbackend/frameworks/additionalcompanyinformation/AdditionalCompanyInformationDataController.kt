@@ -17,42 +17,44 @@ import org.springframework.web.bind.annotation.RestController
 
 /**
  * Controller for the additional-company-information framework endpoints
+ *
  * @param myDataManager data manager to be used
  * @param myObjectMapper object mapper used for converting data classes to strings and vice versa
  */
 @RequestMapping("/data/additional-company-information")
 @RestController
 class AdditionalCompanyInformationDataController(
-    @Autowired var myDataManager: DataManager,
-    @Autowired var myMetaDataManager: DataMetaInformationManager,
-    @Autowired var myObjectMapper: ObjectMapper,
-) : DataController<AdditionalCompanyInformationData>(
+  @Autowired var myDataManager: DataManager,
+  @Autowired var myMetaDataManager: DataMetaInformationManager,
+  @Autowired var myObjectMapper: ObjectMapper,
+) :
+  DataController<AdditionalCompanyInformationData>(
     myDataManager,
     myMetaDataManager,
     myObjectMapper,
     AdditionalCompanyInformationData::class.java,
-) {
-    @Operation(operationId = "getCompanyAssociatedAdditionalCompanyInformationData")
-    override fun getCompanyAssociatedData(dataId: String):
-        ResponseEntity<CompanyAssociatedData<AdditionalCompanyInformationData>> {
-        return super.getCompanyAssociatedData(dataId)
-    }
+  ) {
+  @Operation(operationId = "getCompanyAssociatedAdditionalCompanyInformationData")
+  override fun getCompanyAssociatedData(
+    dataId: String
+  ): ResponseEntity<CompanyAssociatedData<AdditionalCompanyInformationData>> {
+    return super.getCompanyAssociatedData(dataId)
+  }
 
-    @Operation(operationId = "postCompanyAssociatedAdditionalCompanyInformationData")
-    override fun postCompanyAssociatedData(
-        companyAssociatedData: CompanyAssociatedData<AdditionalCompanyInformationData>,
-        bypassQa: Boolean,
-    ):
-        ResponseEntity<DataMetaInformation> {
-        return super.postCompanyAssociatedData(companyAssociatedData, bypassQa)
-    }
+  @Operation(operationId = "postCompanyAssociatedAdditionalCompanyInformationData")
+  override fun postCompanyAssociatedData(
+    companyAssociatedData: CompanyAssociatedData<AdditionalCompanyInformationData>,
+    bypassQa: Boolean,
+  ): ResponseEntity<DataMetaInformation> {
+    return super.postCompanyAssociatedData(companyAssociatedData, bypassQa)
+  }
 
-    @Operation(operationId = "getAllCompanyAdditionalCompanyInformationData")
-    override fun getFrameworkDatasetsForCompany(
-        companyId: String,
-        showOnlyActive: Boolean,
-        reportingPeriod: String?,
-    ): ResponseEntity<List<DataAndMetaInformation<AdditionalCompanyInformationData>>> {
-        return super.getFrameworkDatasetsForCompany(companyId, showOnlyActive, reportingPeriod)
-    }
+  @Operation(operationId = "getAllCompanyAdditionalCompanyInformationData")
+  override fun getFrameworkDatasetsForCompany(
+    companyId: String,
+    showOnlyActive: Boolean,
+    reportingPeriod: String?,
+  ): ResponseEntity<List<DataAndMetaInformation<AdditionalCompanyInformationData>>> {
+    return super.getFrameworkDatasetsForCompany(companyId, showOnlyActive, reportingPeriod)
+  }
 }

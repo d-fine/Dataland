@@ -7,20 +7,10 @@ import org.dataland.datalandqaservice.frameworks.eutaxonomynonfinancials.model.g
 import org.dataland.datalandqaservice.frameworks.eutaxonomynonfinancials.model.opex.EutaxonomyNonFinancialsOpex
 import org.dataland.datalandqaservice.frameworks.eutaxonomynonfinancials.model.revenue.EutaxonomyNonFinancialsRevenue
 
-/**
- * The root QA data-model for the Eutaxonomy-non-financials Framework
- */
+/** The root QA data-model for the Eutaxonomy-non-financials Framework */
 data class EutaxonomyNonFinancialsData(
-    @field:Valid()
-    val general: EutaxonomyNonFinancialsGeneral? = null,
-
-    @field:Valid()
-    val revenue: EutaxonomyNonFinancialsRevenue? = null,
-
-    @field:Valid()
-    val capex: EutaxonomyNonFinancialsCapex? = null,
-
-    @field:Valid()
-    val opex: EutaxonomyNonFinancialsOpex? = null,
-
+  @field:Valid() val general: EutaxonomyNonFinancialsGeneral? = null,
+  @field:Valid() val revenue: EutaxonomyNonFinancialsRevenue? = null,
+  @field:Valid() val capex: EutaxonomyNonFinancialsCapex? = null,
+  @field:Valid() val opex: EutaxonomyNonFinancialsOpex? = null,
 )

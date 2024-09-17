@@ -3,12 +3,10 @@ package org.dataland.datalandbackend.frameworks.esgquestionnaire.model.umwelt.en
 
 import org.dataland.datalandbackend.frameworks.esgquestionnaire.custom.YearlyTimeseriesData
 
-/**
- * The data-model for the Energieverbrauch section
- */
+/** The data-model for the Energieverbrauch section */
 data class EsgQuestionnaireUmweltEnergieverbrauch(
-    val berichterstattungEnergieverbrauch: YearlyTimeseriesData<BerichterstattungEnergieverbrauchValues?>? = null,
-
-    val unternehmensGruppenStrategieBzglEnergieverbrauch: String? = null,
-
+  val berichterstattungEnergieverbrauch:
+    YearlyTimeseriesData<BerichterstattungEnergieverbrauchValues?>? =
+    null,
+  val unternehmensGruppenStrategieBzglEnergieverbrauch: String? = null,
 )

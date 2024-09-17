@@ -3,14 +3,9 @@ package org.dataland.datalandbackend.frameworks.heimathafen.model.general.untern
 
 import java.math.BigInteger
 
-/**
- * The data-model for the Unternehmen section
- */
+/** The data-model for the Unternehmen section */
 data class HeimathafenGeneralUnternehmen(
-    val unternehmenseigentumUndEigentuemerstruktur: String? = null,
-
-    val kernkompetenzenUndGeschaeftsbereiche: List<String>? = null,
-
-    val anzahlDerFuerEsgZustaendigenMitarbeiter: BigInteger? = null,
-
+  val unternehmenseigentumUndEigentuemerstruktur: String? = null,
+  val kernkompetenzenUndGeschaeftsbereiche: List<String>? = null,
+  val anzahlDerFuerEsgZustaendigenMitarbeiter: BigInteger? = null,
 )

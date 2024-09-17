@@ -8,17 +8,14 @@ import org.dataland.frameworktoolbox.specific.datamodel.elements.DataClassBuilde
  * Add anew property to the dataclass respecting the standard required document-support wrapping.
  */
 fun DataClassBuilder.addPropertyWithDocumentSupport(
-    documentSupport: DocumentSupport,
-    name: String,
-    type: TypeReference,
-    annotations: List<Annotation> = emptyList(),
+  documentSupport: DocumentSupport,
+  name: String,
+  type: TypeReference,
+  annotations: List<Annotation> = emptyList(),
 ) {
-    addProperty(
-        name,
-        documentSupport.getJvmTypeReference(
-            type,
-            type.nullable,
-        ),
-        annotations + documentSupport.getJvmAnnotations(),
-    )
+  addProperty(
+    name,
+    documentSupport.getJvmTypeReference(type, type.nullable),
+    annotations + documentSupport.getJvmAnnotations(),
+  )
 }

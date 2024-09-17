@@ -7,54 +7,56 @@ import org.dataland.frameworktoolbox.specific.viewconfig.elements.SectionConfigB
 import org.dataland.frameworktoolbox.specific.viewconfig.functional.FrameworkDisplayValueLambda
 
 /**
- * Add a cell to the section with configuration shared between components
- * and a component-specific value-getter
+ * Add a cell to the section with configuration shared between components and a component-specific
+ * value-getter
  */
 fun SectionConfigBuilder.addStandardCellWithValueGetterFactory(
-    component: ComponentBase,
-    valueGetter: FrameworkDisplayValueLambda,
+  component: ComponentBase,
+  valueGetter: FrameworkDisplayValueLambda,
 ) {
-    addCell(
-        label = component.label ?: throw IllegalStateException(
-            "You must specify a label for ${component.identifier} to generate a view configuration",
+  addCell(
+    label =
+      component.label
+        ?: throw IllegalStateException(
+          "You must specify a label for ${component.identifier} to generate a view configuration"
         ),
-        explanation = component.viewPageExplanation ?: component.uploadPageExplanation,
-        shouldDisplay = component.availableIf.toFrameworkBooleanLambda(),
-        valueGetter = valueGetter,
-    )
+    explanation = component.viewPageExplanation ?: component.uploadPageExplanation,
+    shouldDisplay = component.availableIf.toFrameworkBooleanLambda(),
+    valueGetter = valueGetter,
+  )
 }
 
-/**
- * Add a cell to the upload-config section with configuration shared between components
- */
+/** Add a cell to the upload-config section with configuration shared between components */
 fun UploadCategoryBuilder.addStandardUploadConfigCell(
-    component: ComponentBase,
-    uploadComponentName: String,
-    frameworkUploadOptions: FrameworkUploadOptions? = null,
-    unit: String? = null,
-    validation: String? = null,
+  component: ComponentBase,
+  uploadComponentName: String,
+  frameworkUploadOptions: FrameworkUploadOptions? = null,
+  unit: String? = null,
+  validation: String? = null,
 ) {
-    addUploadCell(
-        identifier = component.identifier,
-        label = component.label ?: throw IllegalStateException(
-            "You must specify a label for ${component.identifier} to generate a view configuration",
+  addUploadCell(
+    identifier = component.identifier,
+    label =
+      component.label
+        ?: throw IllegalStateException(
+          "You must specify a label for ${component.identifier} to generate a view configuration"
         ),
-        explanation = component.uploadPageExplanation,
-        unit = unit,
-        required = component.isRequired,
-        shouldDisplay = component.availableIf.toFrameworkBooleanLambda(),
-        uploadComponentName = uploadComponentName,
-        frameworkUploadOptions = frameworkUploadOptions,
-        validation = validation,
-    )
+    explanation = component.uploadPageExplanation,
+    unit = unit,
+    required = component.isRequired,
+    shouldDisplay = component.availableIf.toFrameworkBooleanLambda(),
+    uploadComponentName = uploadComponentName,
+    frameworkUploadOptions = frameworkUploadOptions,
+    validation = validation,
+  )
 }
 
 /**
- * Asserts that a component-bases document-support is in the set of  pre-defined values.
- * Used to ensure a unified error-message across components
+ * Asserts that a component-bases document-support is in the set of pre-defined values. Used to
+ * ensure a unified error-message across components
  */
 fun ComponentBase.requireDocumentSupportIn(allowedValues: Set<DocumentSupport>) {
-    require(documentSupport in allowedValues) {
-        "This component does not support document-support $documentSupport. Supported values are $allowedValues."
-    }
+  require(documentSupport in allowedValues) {
+    "This component does not support document-support $documentSupport. Supported values are $allowedValues."
+  }
 }

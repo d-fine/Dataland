@@ -5,30 +5,15 @@ import jakarta.validation.Valid
 import org.dataland.datalandbackend.model.datapoints.BaseDataPoint
 import org.dataland.datalandbackend.model.enums.commons.YesNo
 
-/**
- * The data-model for the DisregardForOccupationalHealthSafety section
- */
+/** The data-model for the DisregardForOccupationalHealthSafety section */
 data class LksgSocialDisregardForOccupationalHealthSafety(
-    val lowSkillWork: YesNo? = null,
-
-    val hazardousMachines: YesNo? = null,
-
-    val oshMeasures: YesNo? = null,
-
-    @field:Valid()
-    val oshPolicy: BaseDataPoint<YesNo>? = null,
-
-    @field:Valid()
-    val oshTraining: BaseDataPoint<YesNo>? = null,
-
-    @field:Valid()
-    val healthAndSafetyPolicy: BaseDataPoint<YesNo>? = null,
-
-    @field:Valid()
-    val otherOshMeasures: BaseDataPoint<YesNo>? = null,
-
-    val otherOshMeasuresDescription: String? = null,
-
-    val under10WorkplaceAccidents: YesNo? = null,
-
+  val lowSkillWork: YesNo? = null,
+  val hazardousMachines: YesNo? = null,
+  val oshMeasures: YesNo? = null,
+  @field:Valid() val oshPolicy: BaseDataPoint<YesNo>? = null,
+  @field:Valid() val oshTraining: BaseDataPoint<YesNo>? = null,
+  @field:Valid() val healthAndSafetyPolicy: BaseDataPoint<YesNo>? = null,
+  @field:Valid() val otherOshMeasures: BaseDataPoint<YesNo>? = null,
+  val otherOshMeasuresDescription: String? = null,
+  val under10WorkplaceAccidents: YesNo? = null,
 )

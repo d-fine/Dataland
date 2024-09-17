@@ -7,72 +7,67 @@ import org.dataland.datalandbackend.openApiClient.model.ExtendedDataPointBigDeci
 import org.dataland.datalandbackend.openApiClient.model.ExtendedDataPointYesNo
 import org.dataland.datalandqaservice.model.reports.QaReportDataPoint
 
-/**
- * The QA-model for the GreenhouseGasEmissions section
- */
+/** The QA-model for the GreenhouseGasEmissions section */
 data class SfdrEnvironmentalGreenhouseGasEmissions(
-    @field:Valid()
-    val scope1GhgEmissionsInTonnes: QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
-
-    @field:Valid()
-    val scope2GhgEmissionsInTonnes: QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
-
-    @field:Valid()
-    val scope2GhgEmissionsLocationBasedInTonnes: QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
-
-    @field:Valid()
-    val scope2GhgEmissionsMarketBasedInTonnes: QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
-
-    @field:Valid()
-    val scope1And2GhgEmissionsInTonnes: QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
-
-    @field:Valid()
-    val scope1And2GhgEmissionsLocationBasedInTonnes: QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
-
-    @field:Valid()
-    val scope1And2GhgEmissionsMarketBasedInTonnes: QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
-
-    @field:Valid()
-    val scope3GhgEmissionsInTonnes: QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
-
-    @field:Valid()
-    val scope3UpstreamGhgEmissionsInTonnes: QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
-
-    @field:Valid()
-    val scope3DownstreamGhgEmissionsInTonnes: QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
-
-    @field:Valid()
-    val scope1And2And3GhgEmissionsInTonnes: QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
-
-    @field:Valid()
-    val scope1And2And3GhgEmissionsLocationBasedInTonnes: QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
-
-    @field:Valid()
-    val scope1And2And3GhgEmissionsMarketBasedInTonnes: QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
-
-    val enterpriseValue: QaReportDataPoint<CurrencyDataPoint?>? = null,
-
-    val totalRevenue: QaReportDataPoint<CurrencyDataPoint?>? = null,
-
-    @field:Valid()
-    val carbonFootprintInTonnesPerMillionEURRevenue: QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
-
-    @field:Valid()
-    val ghgIntensityInTonnesPerMillionEURRevenue: QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
-
-    @field:Valid()
-    val ghgIntensityScope1InTonnesPerMillionEURRevenue: QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
-
-    @field:Valid()
-    val ghgIntensityScope2InTonnesPerMillionEURRevenue: QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
-
-    @field:Valid()
-    val ghgIntensityScope3InTonnesPerMillionEURRevenue: QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
-
-    @field:Valid()
-    val ghgIntensityScope4InTonnesPerMillionEURRevenue: QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
-
-    @field:Valid()
-    val fossilFuelSectorExposure: QaReportDataPoint<ExtendedDataPointYesNo?>? = null,
-
+  @field:Valid()
+  val scope1GhgEmissionsInTonnes: QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
+  @field:Valid()
+  val scope2GhgEmissionsInTonnes: QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
+  @field:Valid()
+  val scope2GhgEmissionsLocationBasedInTonnes: QaReportDataPoint<ExtendedDataPointBigDecimal?>? =
+    null,
+  @field:Valid()
+  val scope2GhgEmissionsMarketBasedInTonnes: QaReportDataPoint<ExtendedDataPointBigDecimal?>? =
+    null,
+  @field:Valid()
+  val scope1And2GhgEmissionsInTonnes: QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
+  @field:Valid()
+  val scope1And2GhgEmissionsLocationBasedInTonnes:
+    QaReportDataPoint<ExtendedDataPointBigDecimal?>? =
+    null,
+  @field:Valid()
+  val scope1And2GhgEmissionsMarketBasedInTonnes: QaReportDataPoint<ExtendedDataPointBigDecimal?>? =
+    null,
+  @field:Valid()
+  val scope3GhgEmissionsInTonnes: QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
+  @field:Valid()
+  val scope3UpstreamGhgEmissionsInTonnes: QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
+  @field:Valid()
+  val scope3DownstreamGhgEmissionsInTonnes: QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
+  @field:Valid()
+  val scope1And2And3GhgEmissionsInTonnes: QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
+  @field:Valid()
+  val scope1And2And3GhgEmissionsLocationBasedInTonnes:
+    QaReportDataPoint<ExtendedDataPointBigDecimal?>? =
+    null,
+  @field:Valid()
+  val scope1And2And3GhgEmissionsMarketBasedInTonnes:
+    QaReportDataPoint<ExtendedDataPointBigDecimal?>? =
+    null,
+  val enterpriseValue: QaReportDataPoint<CurrencyDataPoint?>? = null,
+  val totalRevenue: QaReportDataPoint<CurrencyDataPoint?>? = null,
+  @field:Valid()
+  val carbonFootprintInTonnesPerMillionEURRevenue:
+    QaReportDataPoint<ExtendedDataPointBigDecimal?>? =
+    null,
+  @field:Valid()
+  val ghgIntensityInTonnesPerMillionEURRevenue: QaReportDataPoint<ExtendedDataPointBigDecimal?>? =
+    null,
+  @field:Valid()
+  val ghgIntensityScope1InTonnesPerMillionEURRevenue:
+    QaReportDataPoint<ExtendedDataPointBigDecimal?>? =
+    null,
+  @field:Valid()
+  val ghgIntensityScope2InTonnesPerMillionEURRevenue:
+    QaReportDataPoint<ExtendedDataPointBigDecimal?>? =
+    null,
+  @field:Valid()
+  val ghgIntensityScope3InTonnesPerMillionEURRevenue:
+    QaReportDataPoint<ExtendedDataPointBigDecimal?>? =
+    null,
+  @field:Valid()
+  val ghgIntensityScope4InTonnesPerMillionEURRevenue:
+    QaReportDataPoint<ExtendedDataPointBigDecimal?>? =
+    null,
+  @field:Valid() val fossilFuelSectorExposure: QaReportDataPoint<ExtendedDataPointYesNo?>? = null,
 )

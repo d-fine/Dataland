@@ -3,14 +3,9 @@ package org.dataland.datalandbackend.frameworks.esgquestionnaire.model.unternehm
 
 import java.math.BigInteger
 
-/**
- * The data-model for the Nachhaltigkeitsausschuss section
- */
+/** The data-model for the Nachhaltigkeitsausschuss section */
 data class EsgQuestionnaireUnternehmensfuehrunggovernanceNachhaltigkeitsausschuss(
-    val anzahlDerMitgliederImNachhaltigkeitsausschuss: BigInteger? = null,
-
-    val anzahlUnabhaengigerMitgliederImNachhaltigkeitsausschuss: BigInteger? = null,
-
-    val anzahlVonFrauenImNachhaltigkeitsausschuss: BigInteger? = null,
-
+  val anzahlDerMitgliederImNachhaltigkeitsausschuss: BigInteger? = null,
+  val anzahlUnabhaengigerMitgliederImNachhaltigkeitsausschuss: BigInteger? = null,
+  val anzahlVonFrauenImNachhaltigkeitsausschuss: BigInteger? = null,
 )

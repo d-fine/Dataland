@@ -3,14 +3,9 @@ package org.dataland.datalandbackend.frameworks.esgquestionnaire.model.unternehm
 
 import java.math.BigInteger
 
-/**
- * The data-model for the Aufsichtsrat section
- */
+/** The data-model for the Aufsichtsrat section */
 data class EsgQuestionnaireUnternehmensfuehrunggovernanceAufsichtsrat(
-    val anzahlDerMitgliederImAufsichtsrat: BigInteger? = null,
-
-    val anzahlUnabhaengigerMitgliederImAufsichtsrat: BigInteger? = null,
-
-    val anzahlVonFrauenImAufsichtsrat: BigInteger? = null,
-
+  val anzahlDerMitgliederImAufsichtsrat: BigInteger? = null,
+  val anzahlUnabhaengigerMitgliederImAufsichtsrat: BigInteger? = null,
+  val anzahlVonFrauenImAufsichtsrat: BigInteger? = null,
 )

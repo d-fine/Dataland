@@ -5,30 +5,16 @@ import jakarta.validation.Valid
 import org.dataland.datalandbackend.model.datapoints.BaseDataPoint
 import org.dataland.datalandbackend.model.enums.commons.YesNo
 
-/**
- * The data-model for the UseOfMercuryMercuryWasteMinamataConvention section
- */
+/** The data-model for the UseOfMercuryMercuryWasteMinamataConvention section */
 data class LksgEnvironmentalUseOfMercuryMercuryWasteMinamataConvention(
-    val mercuryAndMercuryWasteHandling: YesNo? = null,
-
-    val mercuryAddedProductsHandling: YesNo? = null,
-
-    val mercuryAddedProductsHandlingRiskOfExposure: YesNo? = null,
-
-    val mercuryAddedProductsHandlingRiskOfDisposal: YesNo? = null,
-
-    val mercuryAndMercuryCompoundsProductionAndUse: YesNo? = null,
-
-    val mercuryAndMercuryCompoundsProductionAndUseRiskOfExposure: YesNo? = null,
-
-    val mercuryAndMercuryWasteUsePreventionMeasures: YesNo? = null,
-
-    @field:Valid()
-    val mercuryAndMercuryWasteHandlingPolicy: BaseDataPoint<YesNo>? = null,
-
-    @field:Valid()
-    val mercuryAndMercuryWasteUsePreventionOtherMeasures: BaseDataPoint<YesNo>? = null,
-
-    val mercuryAndMercuryWasteUsePreventionOtherMeasuresDescription: String? = null,
-
+  val mercuryAndMercuryWasteHandling: YesNo? = null,
+  val mercuryAddedProductsHandling: YesNo? = null,
+  val mercuryAddedProductsHandlingRiskOfExposure: YesNo? = null,
+  val mercuryAddedProductsHandlingRiskOfDisposal: YesNo? = null,
+  val mercuryAndMercuryCompoundsProductionAndUse: YesNo? = null,
+  val mercuryAndMercuryCompoundsProductionAndUseRiskOfExposure: YesNo? = null,
+  val mercuryAndMercuryWasteUsePreventionMeasures: YesNo? = null,
+  @field:Valid() val mercuryAndMercuryWasteHandlingPolicy: BaseDataPoint<YesNo>? = null,
+  @field:Valid() val mercuryAndMercuryWasteUsePreventionOtherMeasures: BaseDataPoint<YesNo>? = null,
+  val mercuryAndMercuryWasteUsePreventionOtherMeasuresDescription: String? = null,
 )

@@ -4,9 +4,9 @@ package org.dataland.datalandbackend.frameworks.esgquestionnaire.model.umwelt.en
 import java.math.BigDecimal
 
 /**
- * Data class for the timeseries data contained in the field berichterstattungEnergieverbrauchVonImmobilienvermoegen
+ * Data class for the timeseries data contained in the field
+ * berichterstattungEnergieverbrauchVonImmobilienvermoegen
  */
 data class BerichterstattungEnergieverbrauchVonImmobilienvermoegenValues(
-    val engagementAnteilInEnergieineffizientenImmobilienanlagen: BigDecimal? = null,
-
+  val engagementAnteilInEnergieineffizientenImmobilienanlagen: BigDecimal? = null
 )

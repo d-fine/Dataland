@@ -5,14 +5,10 @@ import jakarta.validation.Valid
 import org.dataland.datalandbackend.openApiClient.model.ExtendedDataPointBigDecimal
 import org.dataland.datalandqaservice.model.reports.QaReportDataPoint
 
-/**
- * The QA-model for the Waste section
- */
+/** The QA-model for the Waste section */
 data class SfdrEnvironmentalWaste(
-    @field:Valid()
-    val hazardousAndRadioactiveWasteInTonnes: QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
-
-    @field:Valid()
-    val nonRecycledWasteInTonnes: QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
-
+  @field:Valid()
+  val hazardousAndRadioactiveWasteInTonnes: QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
+  @field:Valid()
+  val nonRecycledWasteInTonnes: QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
 )

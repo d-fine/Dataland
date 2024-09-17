@@ -5,21 +5,12 @@ import jakarta.validation.Valid
 import org.dataland.datalandbackend.model.datapoints.BaseDataPoint
 import org.dataland.datalandbackend.model.enums.commons.YesNo
 
-/**
- * The data-model for the ImpactmerkmaleBezahlbareUndSaubereEnergie section
- */
+/** The data-model for the ImpactmerkmaleBezahlbareUndSaubereEnergie section */
 data class HeimathafenGeneralImpactmerkmaleBezahlbareUndSaubereEnergie(
-    val sdgBezahlbareUndSaubereEnergie: YesNo? = null,
-
-    val wennNeinBitteBegruenden: String? = null,
-
-    val verwendeteSchluesselzahlen: String? = null,
-
-    val datenerfassung: String? = null,
-
-    val datenPlausibilitaetspruefung: String? = null,
-
-    @field:Valid()
-    val datenquellen: List<BaseDataPoint<String>>? = null,
-
+  val sdgBezahlbareUndSaubereEnergie: YesNo? = null,
+  val wennNeinBitteBegruenden: String? = null,
+  val verwendeteSchluesselzahlen: String? = null,
+  val datenerfassung: String? = null,
+  val datenPlausibilitaetspruefung: String? = null,
+  @field:Valid() val datenquellen: List<BaseDataPoint<String>>? = null,
 )

@@ -3,16 +3,13 @@ package org.dataland.datalandbackend.frameworks.esgquestionnaire.model.allgemein
 
 import org.dataland.datalandbackend.model.enums.commons.YesNo
 
-/**
- * The data-model for the Fuehrungsstandards section
- */
+/** The data-model for the Fuehrungsstandards section */
 data class EsgQuestionnaireAllgemeinFuehrungsstandards(
-    val oekologischeSozialeFuehrungsstandardsOderPrinzipien: YesNo? = null,
-
-    val anreizmechanismenFuerDasManagementUmwelt:
-    EsgQuestionnaireAllgemeinFuehrungsstandardsAnreizmechanismenFuerDasManagementUmweltOptions? = null,
-
-    val anreizmechanismenFuerDasManagementSoziales:
-    EsgQuestionnaireAllgemeinFuehrungsstandardsAnreizmechanismenFuerDasManagementSozialesOptions? = null,
-
+  val oekologischeSozialeFuehrungsstandardsOderPrinzipien: YesNo? = null,
+  val anreizmechanismenFuerDasManagementUmwelt:
+    EsgQuestionnaireAllgemeinFuehrungsstandardsAnreizmechanismenFuerDasManagementUmweltOptions? =
+    null,
+  val anreizmechanismenFuerDasManagementSoziales:
+    EsgQuestionnaireAllgemeinFuehrungsstandardsAnreizmechanismenFuerDasManagementSozialesOptions? =
+    null,
 )

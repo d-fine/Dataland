@@ -4,20 +4,21 @@ import org.dataland.datalandbackendutils.model.ErrorDetails
 import org.springframework.http.HttpStatus
 
 /**
- * A ConflictApiException should be thrown if there appears a conflict in processing the underlying Api request
+ * A ConflictApiException should be thrown if there appears a conflict in processing the underlying
+ * Api request
  */
 open class ConflictApiException(
-    val summary: String,
-    override val message: String,
-    cause: Throwable? = null,
+  val summary: String,
+  override val message: String,
+  cause: Throwable? = null,
 ) : SingleApiException(message, cause) {
 
-    override fun getErrorResponse(): ErrorDetails {
-        return ErrorDetails(
-            errorType = "conflict",
-            summary = summary,
-            message = message,
-            httpStatus = HttpStatus.CONFLICT,
-        )
-    }
+  override fun getErrorResponse(): ErrorDetails {
+    return ErrorDetails(
+      errorType = "conflict",
+      summary = summary,
+      message = message,
+      httpStatus = HttpStatus.CONFLICT,
+    )
+  }
 }

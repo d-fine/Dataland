@@ -5,12 +5,12 @@ import io.swagger.v3.oas.annotations.media.Schema
 import org.dataland.datalandbackend.model.enums.company.IdentifierType
 
 /**
- * --- API model ---
- * Defines an update to basic company information
+ * --- API model --- Defines an update to basic company information
+ *
  * @param companyName official name of the company
  * @param companyAlternativeNames other names or abbreviations the company is known under
  * @param companyContactDetails the email addresses of the company
- * @param companyLegalForm legal structure of the company (e.g. „Public Limited Company (PLC)‟)
+ * @param companyLegalForm legal structure of the company (e.g. �Public Limited Company (PLC)?)
  * @param headquarters city where the headquarters of the company is located
  * @param headquartersPostalCode postal code of the headquarters
  * @param sector in which the company operates (e.g. Financials)
@@ -22,34 +22,22 @@ import org.dataland.datalandbackend.model.enums.company.IdentifierType
  * @param parentCompanyLei the lei of the parent company
  */
 data class CompanyInformationPatch(
-    val companyName: String? = null,
+  val companyName: String? = null,
+  val companyAlternativeNames: List<String>? = null,
+  val companyContactDetails: List<String>? = null,
+  val companyLegalForm: String? = null,
+  val headquarters: String? = null,
+  val headquartersPostalCode: String? = null,
+  val sector: String? = null,
+  val sectorCodeWz: String?,
+  @field:Schema(example = "\n{\n\t\"Lei\": [\"ExampleLei\"]\n}")
+  val identifiers: Map<IdentifierType, List<String>>? = null,
+  val countryCode: String? = null,
 
-    val companyAlternativeNames: List<String>? = null,
-
-    val companyContactDetails: List<String>? = null,
-
-    val companyLegalForm: String? = null,
-
-    val headquarters: String? = null,
-
-    val headquartersPostalCode: String? = null,
-
-    val sector: String? = null,
-
-    val sectorCodeWz: String?,
-
-    @field:Schema(
-        example = "\n{\n\t\"Lei\": [\"ExampleLei\"]\n}",
-    )
-    val identifiers: Map<IdentifierType, List<String>>? = null,
-
-    val countryCode: String? = null,
-
-    // The following annotation is required (including the value field) due to a known issue with the openApi generator
-    // for boolean fields starting with is
-    @field:JsonProperty(value = "isTeaserCompany")
-    val isTeaserCompany: Boolean? = null,
-
-    val website: String? = null,
-    val parentCompanyLei: String? = null,
+  // The following annotation is required (including the value field) due to a known issue with the
+  // openApi generator
+  // for boolean fields starting with is
+  @field:JsonProperty(value = "isTeaserCompany") val isTeaserCompany: Boolean? = null,
+  val website: String? = null,
+  val parentCompanyLei: String? = null,
 )

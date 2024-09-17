@@ -16,54 +16,54 @@ import org.dataland.frameworktoolbox.utils.typescript.TypeScriptImport
 
 /**
  * Represents the VsmeSimpleCustomComponentBase component
- * @param viewFormattingFunctionName the name of the formatting function for the view page in VsmeDisplayValueGetters.ts
+ *
+ * @param viewFormattingFunctionName the name of the formatting function for the view page in
+ *   VsmeDisplayValueGetters.ts
  */
 open class VsmeSimpleCustomComponentBase(
-    identifier: String,
-    parent: FieldNodeParent,
-    val viewFormattingFunctionName: String,
-    val uploadComponentName: String,
-    val guaranteedFixtureExpression: String,
-    val randomFixtureExpression: String?,
+  identifier: String,
+  parent: FieldNodeParent,
+  val viewFormattingFunctionName: String,
+  val uploadComponentName: String,
+  val guaranteedFixtureExpression: String,
+  val randomFixtureExpression: String?,
 ) : ComponentBase(identifier, parent) {
-    override fun generateDefaultViewConfig(sectionConfigBuilder: SectionConfigBuilder) {
-        requireDocumentSupportIn(setOf(NoDocumentSupport))
-        sectionConfigBuilder.addStandardCellWithValueGetterFactory(
-            this,
-            FrameworkDisplayValueLambda(
-                "$viewFormattingFunctionName(${getTypescriptFieldAccessor(true)}, \"${
+  override fun generateDefaultViewConfig(sectionConfigBuilder: SectionConfigBuilder) {
+    requireDocumentSupportIn(setOf(NoDocumentSupport))
+    sectionConfigBuilder.addStandardCellWithValueGetterFactory(
+      this,
+      FrameworkDisplayValueLambda(
+        "$viewFormattingFunctionName(${getTypescriptFieldAccessor(true)}, \"${
                     StringEscapeUtils.escapeEcmaScript(
-                        label,
+                        label
                     )
                 }\")",
-                setOf(
-                    TypeScriptImport(
-                        viewFormattingFunctionName,
-                        "@/components/resources/dataTable/conversion/vsme/VsmeDisplayValueGetters",
-                    ),
-                ),
-            ),
-        )
-    }
+        setOf(
+          TypeScriptImport(
+            viewFormattingFunctionName,
+            "@/components/resources/dataTable/conversion/vsme/VsmeDisplayValueGetters",
+          )
+        ),
+      ),
+    )
+  }
 
-    override fun generateDefaultUploadConfig(uploadCategoryBuilder: UploadCategoryBuilder) {
-        requireDocumentSupportIn(setOf(NoDocumentSupport))
-        uploadCategoryBuilder.addStandardUploadConfigCell(
-            component = this,
-            uploadComponentName = uploadComponentName,
-        )
-    }
+  override fun generateDefaultUploadConfig(uploadCategoryBuilder: UploadCategoryBuilder) {
+    requireDocumentSupportIn(setOf(NoDocumentSupport))
+    uploadCategoryBuilder.addStandardUploadConfigCell(
+      component = this,
+      uploadComponentName = uploadComponentName,
+    )
+  }
 
-    override fun generateDefaultFixtureGenerator(sectionBuilder: FixtureSectionBuilder) {
-        requireDocumentSupportIn(setOf(NoDocumentSupport))
-        val fixtureExpression = if (isNullable && randomFixtureExpression != null) {
-            randomFixtureExpression
-        } else {
-            guaranteedFixtureExpression
-        }
-        sectionBuilder.addAtomicExpression(
-            identifier,
-            fixtureExpression,
-        )
-    }
+  override fun generateDefaultFixtureGenerator(sectionBuilder: FixtureSectionBuilder) {
+    requireDocumentSupportIn(setOf(NoDocumentSupport))
+    val fixtureExpression =
+      if (isNullable && randomFixtureExpression != null) {
+        randomFixtureExpression
+      } else {
+        guaranteedFixtureExpression
+      }
+    sectionBuilder.addAtomicExpression(identifier, fixtureExpression)
+  }
 }

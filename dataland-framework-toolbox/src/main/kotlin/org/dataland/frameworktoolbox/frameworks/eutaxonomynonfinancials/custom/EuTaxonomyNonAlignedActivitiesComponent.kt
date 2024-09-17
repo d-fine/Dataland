@@ -14,84 +14,80 @@ import org.dataland.frameworktoolbox.specific.viewconfig.elements.getTypescriptF
 import org.dataland.frameworktoolbox.specific.viewconfig.functional.FrameworkDisplayValueLambda
 import org.dataland.frameworktoolbox.utils.typescript.TypeScriptImport
 
-/**
- * Represents the EuTaxonomy-Specific "EuTaxonomyNonAlignedActivities" component
- */
-class EuTaxonomyNonAlignedActivitiesComponent(
-    identifier: String,
-    parent: FieldNodeParent,
-) : ComponentBase(identifier, parent) {
+/** Represents the EuTaxonomy-Specific "EuTaxonomyNonAlignedActivities" component */
+class EuTaxonomyNonAlignedActivitiesComponent(identifier: String, parent: FieldNodeParent) :
+  ComponentBase(identifier, parent) {
 
-    override fun generateDefaultDataModel(dataClassBuilder: DataClassBuilder) {
-        dataClassBuilder.addProperty(
-            this.identifier,
-            TypeReference(
-                "org.dataland.datalandbackend.model.datapoints.ExtendedDataPoint",
-                isNullable,
-                listOf(
-                    TypeReference(
-                        "kotlin.collections.MutableList",
-                        true,
-                        listOf(
-                            TypeReference(
-                                "org.dataland.datalandbackend.frameworks" +
-                                    ".eutaxonomynonfinancials.custom.EuTaxonomyActivity",
-                                false,
-                            ),
-                        ),
-                    ),
-                ),
+  override fun generateDefaultDataModel(dataClassBuilder: DataClassBuilder) {
+    dataClassBuilder.addProperty(
+      this.identifier,
+      TypeReference(
+        "org.dataland.datalandbackend.model.datapoints.ExtendedDataPoint",
+        isNullable,
+        listOf(
+          TypeReference(
+            "kotlin.collections.MutableList",
+            true,
+            listOf(
+              TypeReference(
+                "org.dataland.datalandbackend.frameworks" +
+                  ".eutaxonomynonfinancials.custom.EuTaxonomyActivity",
+                false,
+              )
             ),
-        )
-    }
+          )
+        ),
+      ),
+    )
+  }
 
-    override fun generateDefaultQaModel(dataClassBuilder: DataClassBuilder) {
-        dataClassBuilder.addProperty(
-            identifier,
-            TypeReference(
-                "org.dataland.datalandqaservice.model.reports.QaReportDataPoint",
-                isNullable,
-                listOf(
-                    TypeReference(
-                        "org.dataland.datalandbackend.openApiClient.model" +
-                            ".ExtendedDataPointListEuTaxonomyActivity",
-                        isNullable,
-                    ),
-                ),
-            ),
-        )
-    }
+  override fun generateDefaultQaModel(dataClassBuilder: DataClassBuilder) {
+    dataClassBuilder.addProperty(
+      identifier,
+      TypeReference(
+        "org.dataland.datalandqaservice.model.reports.QaReportDataPoint",
+        isNullable,
+        listOf(
+          TypeReference(
+            "org.dataland.datalandbackend.openApiClient.model" +
+              ".ExtendedDataPointListEuTaxonomyActivity",
+            isNullable,
+          )
+        ),
+      ),
+    )
+  }
 
-    override fun generateDefaultUploadConfig(uploadCategoryBuilder: UploadCategoryBuilder) {
-        uploadCategoryBuilder.addStandardUploadConfigCell(
-            component = this,
-            uploadComponentName = "NonAlignedActivitiesFormField",
-        )
-    }
+  override fun generateDefaultUploadConfig(uploadCategoryBuilder: UploadCategoryBuilder) {
+    uploadCategoryBuilder.addStandardUploadConfigCell(
+      component = this,
+      uploadComponentName = "NonAlignedActivitiesFormField",
+    )
+  }
 
-    override fun generateDefaultFixtureGenerator(sectionBuilder: FixtureSectionBuilder) {
-        sectionBuilder.addAtomicExpression(
-            identifier,
-            "dataGenerator.randomExtendedDataPoint(dataGenerator.randomArray(() => " +
-                "dataGenerator.generateActivity(), 0, 2))",
-        )
-    }
+  override fun generateDefaultFixtureGenerator(sectionBuilder: FixtureSectionBuilder) {
+    sectionBuilder.addAtomicExpression(
+      identifier,
+      "dataGenerator.randomExtendedDataPoint(dataGenerator.randomArray(() => " +
+        "dataGenerator.generateActivity(), 0, 2))",
+    )
+  }
 
-    override fun generateDefaultViewConfig(sectionConfigBuilder: SectionConfigBuilder) {
-        sectionConfigBuilder.addStandardCellWithValueGetterFactory(
-            this,
-            FrameworkDisplayValueLambda(
-                "formatNonAlignedActivitiesForDataTable(" +
-                    "${this.getTypescriptFieldAccessor()}," +
-                    "\"${StringEscapeUtils.escapeEcmaScript(label)}\"," +
-                    ")",
-                setOf(
-                    TypeScriptImport(
-                        "formatNonAlignedActivitiesForDataTable",
-                        "@/components/resources/dataTable/conversion/EutaxonomyNonAlignedActivitiesValueGetterFactory",
-                    ),
-                ),
-            ),
-        )
-    }
+  override fun generateDefaultViewConfig(sectionConfigBuilder: SectionConfigBuilder) {
+    sectionConfigBuilder.addStandardCellWithValueGetterFactory(
+      this,
+      FrameworkDisplayValueLambda(
+        "formatNonAlignedActivitiesForDataTable(" +
+          "${this.getTypescriptFieldAccessor()}," +
+          "\"${StringEscapeUtils.escapeEcmaScript(label)}\"," +
+          ")",
+        setOf(
+          TypeScriptImport(
+            "formatNonAlignedActivitiesForDataTable",
+            "@/components/resources/dataTable/conversion/EutaxonomyNonAlignedActivitiesValueGetterFactory",
+          )
+        ),
+      ),
+    )
+  }
 }

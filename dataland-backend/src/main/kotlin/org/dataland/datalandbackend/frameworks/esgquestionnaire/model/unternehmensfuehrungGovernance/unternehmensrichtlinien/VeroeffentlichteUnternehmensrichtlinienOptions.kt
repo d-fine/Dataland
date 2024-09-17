@@ -3,23 +3,19 @@ package org.dataland.datalandbackend.frameworks.esgquestionnaire.model.unternehm
 
 import io.swagger.v3.oas.annotations.media.Schema
 
-/**
- * Enum class for the multi-select-field veroeffentlichteUnternehmensrichtlinien
- */
-@Schema(
-    enumAsRef = true,
-)
+/** Enum class for the multi-select-field veroeffentlichteUnternehmensrichtlinien */
+@Schema(enumAsRef = true)
 enum class VeroeffentlichteUnternehmensrichtlinienOptions {
-    AntiKorruption,
-    Verhaltenskodex,
-    Interessenkonflikte,
-    Datenschutz,
-    DiversitaetAndInklusion,
-    FaireBehandlungVonKunden,
-    Zwangsarbeit,
-    GesundheitUndSicherheit,
-    MgtVonUmweltgefahren,
-    VerantwortungsvollesMarketing,
-    Whistleblowing,
-    Other,
+  AntiKorruption,
+  Verhaltenskodex,
+  Interessenkonflikte,
+  Datenschutz,
+  DiversitaetAndInklusion,
+  FaireBehandlungVonKunden,
+  Zwangsarbeit,
+  GesundheitUndSicherheit,
+  MgtVonUmweltgefahren,
+  VerantwortungsvollesMarketing,
+  Whistleblowing,
+  Other,
 }

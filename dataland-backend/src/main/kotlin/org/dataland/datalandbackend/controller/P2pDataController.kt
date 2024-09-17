@@ -15,41 +15,44 @@ import org.springframework.web.bind.annotation.RestController
 
 /**
  * Controller for the P2P framework endpoints
+ *
  * @param myDataManager data manager to be used
  * @param myObjectMapper object mapper used for converting data classes to strings and vice versa
  */
 @RequestMapping("/data/p2p")
 @RestController
 class P2pDataController(
-    @Autowired var myDataManager: DataManager,
-    @Autowired var myMetaDataManager: DataMetaInformationManager,
-    @Autowired var myObjectMapper: ObjectMapper,
-) : DataController<PathwaysToParisData>(
+  @Autowired var myDataManager: DataManager,
+  @Autowired var myMetaDataManager: DataMetaInformationManager,
+  @Autowired var myObjectMapper: ObjectMapper,
+) :
+  DataController<PathwaysToParisData>(
     myDataManager,
     myMetaDataManager,
     myObjectMapper,
     PathwaysToParisData::class.java,
-) {
-    @Operation(operationId = "getCompanyAssociatedP2pData")
-    override fun getCompanyAssociatedData(dataId: String): ResponseEntity<CompanyAssociatedData<PathwaysToParisData>> {
-        return super.getCompanyAssociatedData(dataId)
-    }
+  ) {
+  @Operation(operationId = "getCompanyAssociatedP2pData")
+  override fun getCompanyAssociatedData(
+    dataId: String
+  ): ResponseEntity<CompanyAssociatedData<PathwaysToParisData>> {
+    return super.getCompanyAssociatedData(dataId)
+  }
 
-    @Operation(operationId = "postCompanyAssociatedP2pData")
-    override fun postCompanyAssociatedData(
-        companyAssociatedData: CompanyAssociatedData<PathwaysToParisData>,
-        bypassQa: Boolean,
-    ):
-        ResponseEntity<DataMetaInformation> {
-        return super.postCompanyAssociatedData(companyAssociatedData, bypassQa)
-    }
+  @Operation(operationId = "postCompanyAssociatedP2pData")
+  override fun postCompanyAssociatedData(
+    companyAssociatedData: CompanyAssociatedData<PathwaysToParisData>,
+    bypassQa: Boolean,
+  ): ResponseEntity<DataMetaInformation> {
+    return super.postCompanyAssociatedData(companyAssociatedData, bypassQa)
+  }
 
-    @Operation(operationId = "getAllCompanyP2pData")
-    override fun getFrameworkDatasetsForCompany(
-        companyId: String,
-        showOnlyActive: Boolean,
-        reportingPeriod: String?,
-    ): ResponseEntity<List<DataAndMetaInformation<PathwaysToParisData>>> {
-        return super.getFrameworkDatasetsForCompany(companyId, showOnlyActive, reportingPeriod)
-    }
+  @Operation(operationId = "getAllCompanyP2pData")
+  override fun getFrameworkDatasetsForCompany(
+    companyId: String,
+    showOnlyActive: Boolean,
+    reportingPeriod: String?,
+  ): ResponseEntity<List<DataAndMetaInformation<PathwaysToParisData>>> {
+    return super.getFrameworkDatasetsForCompany(companyId, showOnlyActive, reportingPeriod)
+  }
 }

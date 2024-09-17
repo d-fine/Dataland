@@ -6,14 +6,8 @@ import org.dataland.datalandbackend.annotations.DataType
 import org.dataland.datalandbackend.frameworks.vsme.model.basic.VsmeBasic
 import org.dataland.datalandbackend.frameworks.vsme.model.validator.ReferencedReportsListValidator
 
-/**
- * The root data-model for the Vsme Framework
- */
+/** The root data-model for the Vsme Framework */
 @Suppress("MagicNumber")
 @DataType("vsme", 6)
 @ReferencedReportsListValidator()
-data class VsmeData(
-    @field:Valid()
-    val basic: VsmeBasic? = null,
-
-)
+data class VsmeData(@field:Valid() val basic: VsmeBasic? = null)

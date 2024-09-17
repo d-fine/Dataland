@@ -5,14 +5,11 @@ import jakarta.validation.constraints.NotBlank
 import org.dataland.datalandbackend.interfaces.documents.BaseDocumentReference
 import org.dataland.datalandbackend.validator.DocumentExists
 
-/**
- * --- API model ---
- * Fields of a generic document reference
- */
+/** --- API model --- Fields of a generic document reference */
 data class BaseDocumentReference(
-    override val fileName: String? = null,
-    @field:JsonProperty(required = true)
-    @field:NotBlank
-    @field:DocumentExists
-    override val fileReference: String,
+  override val fileName: String? = null,
+  @field:JsonProperty(required = true)
+  @field:NotBlank
+  @field:DocumentExists
+  override val fileReference: String,
 ) : BaseDocumentReference

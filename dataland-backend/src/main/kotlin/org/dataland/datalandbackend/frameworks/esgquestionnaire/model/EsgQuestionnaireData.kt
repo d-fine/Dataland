@@ -7,28 +7,16 @@ import org.dataland.datalandbackend.frameworks.esgquestionnaire.model.allgemein.
 import org.dataland.datalandbackend.frameworks.esgquestionnaire.model.general.EsgQuestionnaireGeneral
 import org.dataland.datalandbackend.frameworks.esgquestionnaire.model.soziales.EsgQuestionnaireSoziales
 import org.dataland.datalandbackend.frameworks.esgquestionnaire.model.umwelt.EsgQuestionnaireUmwelt
-import org.dataland.datalandbackend.frameworks.esgquestionnaire.model.unternehmensfuehrungGovernance
-    .EsgQuestionnaireUnternehmensfuehrungGovernance
+import org.dataland.datalandbackend.frameworks.esgquestionnaire.model.unternehmensfuehrungGovernance.EsgQuestionnaireUnternehmensfuehrungGovernance
 
-/**
- * The root data-model for the Esg-questionnaire Framework
- */
+/** The root data-model for the Esg-questionnaire Framework */
 @Suppress("MagicNumber")
 @DataType("esg-questionnaire", 7)
 data class EsgQuestionnaireData(
-    @field:Valid()
-    val general: EsgQuestionnaireGeneral,
-
-    @field:Valid()
-    val allgemein: EsgQuestionnaireAllgemein? = null,
-
-    @field:Valid()
-    val umwelt: EsgQuestionnaireUmwelt? = null,
-
-    @field:Valid()
-    val soziales: EsgQuestionnaireSoziales? = null,
-
-    @field:Valid()
-    val unternehmensfuehrungGovernance: EsgQuestionnaireUnternehmensfuehrungGovernance? = null,
-
+  @field:Valid() val general: EsgQuestionnaireGeneral,
+  @field:Valid() val allgemein: EsgQuestionnaireAllgemein? = null,
+  @field:Valid() val umwelt: EsgQuestionnaireUmwelt? = null,
+  @field:Valid() val soziales: EsgQuestionnaireSoziales? = null,
+  @field:Valid()
+  val unternehmensfuehrungGovernance: EsgQuestionnaireUnternehmensfuehrungGovernance? = null,
 )

@@ -1,19 +1,18 @@
 package org.dataland.datalandemailservice.email
 
-/**
- * A class that manages generating emails
- */
+/** A class that manages generating emails */
 abstract class PropertyStyleEmailBuilder(
-    senderEmail: String,
-    senderName: String,
-    semicolonSeparatedReceiverEmails: String? = null,
-    semicolonSeparatedCcEmails: String? = null,
+  senderEmail: String,
+  senderName: String,
+  semicolonSeparatedReceiverEmails: String? = null,
+  semicolonSeparatedCcEmails: String? = null,
 ) : BaseEmailBuilder(senderEmail, senderName) {
-    protected val receiverEmailContacts = getEmailContactsFromStringList(semicolonSeparatedReceiverEmails)
-    protected val ccEmailContacts = getEmailContactsFromStringList(semicolonSeparatedCcEmails)
+  protected val receiverEmailContacts =
+    getEmailContactsFromStringList(semicolonSeparatedReceiverEmails)
+  protected val ccEmailContacts = getEmailContactsFromStringList(semicolonSeparatedCcEmails)
 
-    private val mailStyleHtml =
-        """
+  private val mailStyleHtml =
+    """
             <style>
                 body {
                     font-family: Arial, sans-serif;
@@ -39,109 +38,120 @@ abstract class PropertyStyleEmailBuilder(
             </style>
     """
 
-    private val htmlHead = """
+  private val htmlHead =
+    """
         <head>
                 $mailStyleHtml
         </head>
     """
 
-    private fun getEmailContactsFromStringList(propWithSemicolonSeperatedEmailAddresses: String?):
-        List<EmailContact>? {
-        return propWithSemicolonSeperatedEmailAddresses?.split(";")?.map {
-                emailAddressString ->
-            EmailContact(assertEmailAddressFormatAndReturnIt(emailAddressString))
-        }
+  private fun getEmailContactsFromStringList(
+    propWithSemicolonSeperatedEmailAddresses: String?
+  ): List<EmailContact>? {
+    return propWithSemicolonSeperatedEmailAddresses?.split(";")?.map { emailAddressString ->
+      EmailContact(assertEmailAddressFormatAndReturnIt(emailAddressString))
     }
+  }
 
-    protected fun buildPropertyStyleEmailContent(
-        subject: String,
-        textTitle: String,
-        htmlTitle: String,
-        properties: Map<String, String?>,
-    ): EmailContent {
-        return EmailContent(
-            subject,
-            buildPropertyStyleTextContent(textTitle, properties),
-            buildPropertyStyleHtmlContent(htmlTitle, properties),
-        )
-    }
+  protected fun buildPropertyStyleEmailContent(
+    subject: String,
+    textTitle: String,
+    htmlTitle: String,
+    properties: Map<String, String?>,
+  ): EmailContent {
+    return EmailContent(
+      subject,
+      buildPropertyStyleTextContent(textTitle, properties),
+      buildPropertyStyleHtmlContent(htmlTitle, properties),
+    )
+  }
 
-    private fun buildPropertyStyleTextContent(title: String, properties: Map<String, String?>): String {
-        return StringBuilder()
-            .append("$title:\n")
-            .apply {
-                properties.filter { it.value != null }.forEach {
-                    append(it.key)
-                    append(": ")
-                    append(it.value)
-                    append("\n")
-                }
-            }
-            .toString()
-    }
+  private fun buildPropertyStyleTextContent(
+    title: String,
+    properties: Map<String, String?>,
+  ): String {
+    return StringBuilder()
+      .append("$title:\n")
+      .apply {
+        properties
+          .filter { it.value != null }
+          .forEach {
+            append(it.key)
+            append(": ")
+            append(it.value)
+            append("\n")
+          }
+      }
+      .toString()
+  }
 
-    private fun buildPropertyStyleHtmlContent(title: String, properties: Map<String, String?>): String {
-        return StringBuilder()
-            .append(
-                """
+  private fun buildPropertyStyleHtmlContent(
+    title: String,
+    properties: Map<String, String?>,
+  ): String {
+    return StringBuilder()
+      .append(
+        """
         <html>
         $htmlHead
-        """,
-            ).computePropertyStyleHtmlBody(title, properties)
-            .append(
-                """
+        """
+      )
+      .computePropertyStyleHtmlBody(title, properties)
+      .append(
+        """
         </html>
-            """,
-            ).toString().trimIndent()
-    }
-
-    private fun StringBuilder.computePropertyStyleHtmlBody(title: String, properties: Map<String, String?>):
-        StringBuilder {
-        return this.append(
             """
+      )
+      .toString()
+      .trimIndent()
+  }
+
+  private fun StringBuilder.computePropertyStyleHtmlBody(
+    title: String,
+    properties: Map<String, String?>,
+  ): StringBuilder {
+    return this.append(
+        """
         <body>
         <div class="container">
-        """,
-        )
-            .append(
-                """
+        """
+      )
+      .append(
+        """
         <div class="header">$title</div>
-        """,
-            )
-            .apply {
-                properties.filter { it.value != null }.forEach {
-                    append(
-                        """
+        """
+      )
+      .apply {
+        properties
+          .filter { it.value != null }
+          .forEach {
+            append(
+              """
         <div class="section"> <span class="bold">${it.key}: </span> ${it.value} </div>
-        """,
-                    )
-                }
-            }
-            .append(
-                """
+        """
+            )
+          }
+      }
+      .append(
+        """
         </div>
         </body>
-        """,
-            )
-    }
+        """
+      )
+  }
 
-    protected fun buildPropertyStyleEmail(
-        subject: String,
-        textTitle: String,
-        htmlTitle: String,
-        properties: Map<String, String?>,
-    ): Email {
-        requireNotNull(receiverEmailContacts)
-        return Email(
-            senderEmailContact,
-            receiverEmailContacts,
-            ccEmailContacts,
-            buildPropertyStyleEmailContent(
-                subject,
-                textTitle,
-                htmlTitle,
-                properties,
-            ),
-        )
-    }
+  protected fun buildPropertyStyleEmail(
+    subject: String,
+    textTitle: String,
+    htmlTitle: String,
+    properties: Map<String, String?>,
+  ): Email {
+    requireNotNull(receiverEmailContacts)
+    return Email(
+      senderEmailContact,
+      receiverEmailContacts,
+      ccEmailContacts,
+      buildPropertyStyleEmailContent(subject, textTitle, htmlTitle, properties),
+    )
+  }
 }

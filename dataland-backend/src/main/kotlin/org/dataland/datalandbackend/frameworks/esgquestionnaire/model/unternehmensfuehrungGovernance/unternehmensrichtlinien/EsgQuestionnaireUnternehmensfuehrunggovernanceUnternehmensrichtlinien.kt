@@ -3,12 +3,10 @@ package org.dataland.datalandbackend.frameworks.esgquestionnaire.model.unternehm
 
 import java.util.EnumSet
 
-/**
- * The data-model for the Unternehmensrichtlinien section
- */
+/** The data-model for the Unternehmensrichtlinien section */
 data class EsgQuestionnaireUnternehmensfuehrunggovernanceUnternehmensrichtlinien(
-    val veroeffentlichteUnternehmensrichtlinien: EnumSet<VeroeffentlichteUnternehmensrichtlinienOptions>? = null,
-
-    val weitereVeroeffentlicheUnternehmensrichtlinien: String? = null,
-
+  val veroeffentlichteUnternehmensrichtlinien:
+    EnumSet<VeroeffentlichteUnternehmensrichtlinienOptions>? =
+    null,
+  val weitereVeroeffentlicheUnternehmensrichtlinien: String? = null,
 )

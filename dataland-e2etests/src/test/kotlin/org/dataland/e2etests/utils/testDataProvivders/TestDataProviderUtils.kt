@@ -3,26 +3,23 @@ package org.dataland.e2etests.utils.testDataProvivders
 import com.squareup.moshi.FromJson
 import com.squareup.moshi.Json
 import com.squareup.moshi.ToJson
-import org.dataland.datalandbackend.openApiClient.model.CompanyInformation
 import java.math.BigDecimal
 import java.time.LocalDate
+import org.dataland.datalandbackend.openApiClient.model.CompanyInformation
 
 object BigDecimalAdapter {
-    @FromJson
-    fun fromJson(string: String) = BigDecimal(string)
+  @FromJson fun fromJson(string: String) = BigDecimal(string)
 
-    @ToJson
-    fun toJson(value: BigDecimal) = value.toString()
+  @ToJson fun toJson(value: BigDecimal) = value.toString()
 }
 
 object LocalDateAdapter {
-    @FromJson
-    fun fromJson(string: String) = LocalDate.parse(string)
+  @FromJson fun fromJson(string: String) = LocalDate.parse(string)
 
-    @ToJson
-    fun toJson(value: LocalDate) = value.toString()
+  @ToJson fun toJson(value: LocalDate) = value.toString()
 }
+
 data class CompanyInformationWithT<T>(
-    @Json var companyInformation: CompanyInformation,
-    @Json var t: T,
+  @Json var companyInformation: CompanyInformation,
+  @Json var t: T,
 )

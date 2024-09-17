@@ -14,45 +14,44 @@ import org.dataland.frameworktoolbox.utils.typescript.TypeScriptImport
  * A FreeTextComponent represents an arbitrary textual value that may contain multiple lines or even
  * paragraphs
  */
-class FreeTextComponent(
-    identifier: String,
-    parent: FieldNodeParent,
-) : SimpleKotlinBackedBaseComponent(identifier, parent, "String") {
+class FreeTextComponent(identifier: String, parent: FieldNodeParent) :
+  SimpleKotlinBackedBaseComponent(identifier, parent, "String") {
 
-    override fun generateDefaultViewConfig(sectionConfigBuilder: SectionConfigBuilder) {
-        sectionConfigBuilder.addStandardCellWithValueGetterFactory(
-            this,
-            documentSupport.getFrameworkDisplayValueLambda(
-                FrameworkDisplayValueLambda(
-                    "formatFreeTextForDatatable(${getTypescriptFieldAccessor(true)})",
-                    setOf(
-                        TypeScriptImport(
-                            "formatFreeTextForDatatable",
-                            "@/components/resources/dataTable/conversion/FreeTextValueGetterFactory",
-                        ),
-                    ),
-                ),
-                label, getTypescriptFieldAccessor(),
-            ),
-        )
-    }
+  override fun generateDefaultViewConfig(sectionConfigBuilder: SectionConfigBuilder) {
+    sectionConfigBuilder.addStandardCellWithValueGetterFactory(
+      this,
+      documentSupport.getFrameworkDisplayValueLambda(
+        FrameworkDisplayValueLambda(
+          "formatFreeTextForDatatable(${getTypescriptFieldAccessor(true)})",
+          setOf(
+            TypeScriptImport(
+              "formatFreeTextForDatatable",
+              "@/components/resources/dataTable/conversion/FreeTextValueGetterFactory",
+            )
+          ),
+        ),
+        label,
+        getTypescriptFieldAccessor(),
+      ),
+    )
+  }
 
-    override fun generateDefaultUploadConfig(uploadCategoryBuilder: UploadCategoryBuilder) {
-        requireDocumentSupportIn(setOf(NoDocumentSupport))
-        uploadCategoryBuilder.addStandardUploadConfigCell(
-            component = this,
-            uploadComponentName = "FreeTextFormField",
-        )
-    }
+  override fun generateDefaultUploadConfig(uploadCategoryBuilder: UploadCategoryBuilder) {
+    requireDocumentSupportIn(setOf(NoDocumentSupport))
+    uploadCategoryBuilder.addStandardUploadConfigCell(
+      component = this,
+      uploadComponentName = "FreeTextFormField",
+    )
+  }
 
-    override fun generateDefaultFixtureGenerator(sectionBuilder: FixtureSectionBuilder) {
-        sectionBuilder.addAtomicExpression(
-            identifier,
-            documentSupport.getFixtureExpression(
-                fixtureExpression = "dataGenerator.guaranteedParagraphs()",
-                nullableFixtureExpression = "dataGenerator.randomParagraphs()",
-                nullable = isNullable,
-            ),
-        )
-    }
+  override fun generateDefaultFixtureGenerator(sectionBuilder: FixtureSectionBuilder) {
+    sectionBuilder.addAtomicExpression(
+      identifier,
+      documentSupport.getFixtureExpression(
+        fixtureExpression = "dataGenerator.guaranteedParagraphs()",
+        nullableFixtureExpression = "dataGenerator.randomParagraphs()",
+        nullable = isNullable,
+      ),
+    )
+  }
 }

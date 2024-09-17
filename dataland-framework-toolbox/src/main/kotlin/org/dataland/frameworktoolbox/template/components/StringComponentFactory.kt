@@ -9,33 +9,30 @@ import org.dataland.frameworktoolbox.template.model.TemplateRow
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 
-/**
- * Generates StringComponents from rows with the component "String"
- */
+/** Generates StringComponents from rows with the component "String" */
 @Component
-class StringComponentFactory(@Autowired val templateDiagnostic: TemplateDiagnostic) : TemplateComponentFactory {
-    override fun canGenerateComponent(row: TemplateRow): Boolean = row.component == "String"
+class StringComponentFactory(@Autowired val templateDiagnostic: TemplateDiagnostic) :
+  TemplateComponentFactory {
+  override fun canGenerateComponent(row: TemplateRow): Boolean = row.component == "String"
 
-    override fun generateComponent(
-        row: TemplateRow,
-        utils: ComponentGenerationUtils,
-        componentGroup: ComponentGroupApi,
-    ): ComponentBase {
-        templateDiagnostic.optionsNotUsed(row)
-        templateDiagnostic.unitNotUsed(row)
+  override fun generateComponent(
+    row: TemplateRow,
+    utils: ComponentGenerationUtils,
+    componentGroup: ComponentGroupApi,
+  ): ComponentBase {
+    templateDiagnostic.optionsNotUsed(row)
+    templateDiagnostic.unitNotUsed(row)
 
-        return componentGroup.create<StringComponent>(
-            utils.generateFieldIdentifierFromRow(row),
-        ) {
-            utils.setCommonProperties(row, this)
-        }
+    return componentGroup.create<StringComponent>(utils.generateFieldIdentifierFromRow(row)) {
+      utils.setCommonProperties(row, this)
     }
+  }
 
-    override fun updateDependency(
-        row: TemplateRow,
-        utils: ComponentGenerationUtils,
-        componentIdentifierMap: Map<String, ComponentBase>,
-    ) {
-        utils.defaultDependencyConfiguration(row, componentIdentifierMap, templateDiagnostic)
-    }
+  override fun updateDependency(
+    row: TemplateRow,
+    utils: ComponentGenerationUtils,
+    componentIdentifierMap: Map<String, ComponentBase>,
+  ) {
+    utils.defaultDependencyConfiguration(row, componentIdentifierMap, templateDiagnostic)
+  }
 }

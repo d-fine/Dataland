@@ -6,28 +6,14 @@ import org.dataland.datalandbackend.model.datapoints.BaseDataPoint
 import org.dataland.datalandbackend.model.enums.commons.YesNo
 import org.dataland.datalandbackend.model.enums.commons.YesNoNa
 
-/**
- * The data-model for the UseOfPrivatePublicSecurityForcesWithDisregardForHumanRights section
- */
+/** The data-model for the UseOfPrivatePublicSecurityForcesWithDisregardForHumanRights section */
 data class LksgSocialUseOfPrivatePublicSecurityForcesWithDisregardForHumanRights(
-    val useOfPrivatePublicSecurityForces: YesNo? = null,
-
-    val useOfPrivatePublicSecurityForcesAndRiskOfViolationOfHumanRights: YesNo? = null,
-
-    @field:Valid()
-    val instructionOfSecurityForces: BaseDataPoint<YesNo>? = null,
-
-    @field:Valid()
-    val humanRightsTraining: BaseDataPoint<YesNo>? = null,
-
-    val stateSecurityForces: YesNoNa? = null,
-
-    @field:Valid()
-    val privateSecurityForces: BaseDataPoint<YesNoNa>? = null,
-
-    @field:Valid()
-    val useOfPrivatePublicSecurityForcesMeasures: BaseDataPoint<YesNo>? = null,
-
-    val useOfPrivatePublicSecurityForcesMeasuresDescription: String? = null,
-
+  val useOfPrivatePublicSecurityForces: YesNo? = null,
+  val useOfPrivatePublicSecurityForcesAndRiskOfViolationOfHumanRights: YesNo? = null,
+  @field:Valid() val instructionOfSecurityForces: BaseDataPoint<YesNo>? = null,
+  @field:Valid() val humanRightsTraining: BaseDataPoint<YesNo>? = null,
+  val stateSecurityForces: YesNoNa? = null,
+  @field:Valid() val privateSecurityForces: BaseDataPoint<YesNoNa>? = null,
+  @field:Valid() val useOfPrivatePublicSecurityForcesMeasures: BaseDataPoint<YesNo>? = null,
+  val useOfPrivatePublicSecurityForcesMeasuresDescription: String? = null,
 )

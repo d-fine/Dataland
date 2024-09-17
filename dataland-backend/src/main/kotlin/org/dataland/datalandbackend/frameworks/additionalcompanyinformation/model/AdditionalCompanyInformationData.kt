@@ -3,19 +3,13 @@ package org.dataland.datalandbackend.frameworks.additionalcompanyinformation.mod
 
 import jakarta.validation.Valid
 import org.dataland.datalandbackend.annotations.DataType
-import org.dataland.datalandbackend.frameworks.additionalcompanyinformation.model.general
-    .AdditionalCompanyInformationGeneral
-import org.dataland.datalandbackend.frameworks.additionalcompanyinformation.model.validator
-    .ReferencedReportsListValidator
+import org.dataland.datalandbackend.frameworks.additionalcompanyinformation.model.general.AdditionalCompanyInformationGeneral
+import org.dataland.datalandbackend.frameworks.additionalcompanyinformation.model.validator.ReferencedReportsListValidator
 
-/**
- * The root data-model for the Additional-company-information Framework
- */
+/** The root data-model for the Additional-company-information Framework */
 @Suppress("MagicNumber")
 @DataType("additional-company-information", 10)
 @ReferencedReportsListValidator()
 data class AdditionalCompanyInformationData(
-    @field:Valid()
-    val general: AdditionalCompanyInformationGeneral? = null,
-
+  @field:Valid() val general: AdditionalCompanyInformationGeneral? = null
 )

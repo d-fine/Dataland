@@ -9,68 +9,54 @@ import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping
 
-/**
- * Defines the restful dataland-backend API regarding internal data exchange
- */
+/** Defines the restful dataland-backend API regarding internal data exchange */
 @RequestMapping("/internal/cached")
 interface TemporarilyCachedDataApi {
 
-    /**
-     * This method retrieves data entries from the temporary storage
-     * @param dataId filters the requested data to a specific entry.
-     */
-    @Operation(
-        summary = "Retrieve specific data from the cache store of the backend.",
-        description = "Data identified by the provided data ID is retrieved.",
-    )
-    @ApiResponses(
-        value = [
-            ApiResponse(responseCode = "200", description = "Successfully retrieved data set."),
-        ],
-    )
-    @GetMapping(
-        value = ["/public/{dataId}"],
-        produces = ["application/json"],
-    )
-    fun getReceivedPublicData(@PathVariable("dataId") dataId: String):
-        ResponseEntity<String>
+  /**
+   * This method retrieves data entries from the temporary storage
+   *
+   * @param dataId filters the requested data to a specific entry.
+   */
+  @Operation(
+    summary = "Retrieve specific data from the cache store of the backend.",
+    description = "Data identified by the provided data ID is retrieved.",
+  )
+  @ApiResponses(
+    value = [ApiResponse(responseCode = "200", description = "Successfully retrieved data set.")]
+  )
+  @GetMapping(value = ["/public/{dataId}"], produces = ["application/json"])
+  fun getReceivedPublicData(@PathVariable("dataId") dataId: String): ResponseEntity<String>
 
-    /**
-     * This method retrieves private data entries from the temporary storage
-     * @param dataId filters the requested data to a specific entry.
-     */
-    @Operation(
-        summary = "Retrieve specific data from the cache store of the backend.",
-        description = "Data identified by the provided data ID is retrieved.",
-    )
-    @ApiResponses(
-        value = [
-            ApiResponse(responseCode = "200", description = "Successfully retrieved data set."),
-        ],
-    )
-    @GetMapping(
-        value = ["/private/{dataId}"],
-        produces = ["application/json"],
-    )
-    fun getReceivedPrivateJson(@PathVariable("dataId") dataId: String):
-        ResponseEntity<String>
+  /**
+   * This method retrieves private data entries from the temporary storage
+   *
+   * @param dataId filters the requested data to a specific entry.
+   */
+  @Operation(
+    summary = "Retrieve specific data from the cache store of the backend.",
+    description = "Data identified by the provided data ID is retrieved.",
+  )
+  @ApiResponses(
+    value = [ApiResponse(responseCode = "200", description = "Successfully retrieved data set.")]
+  )
+  @GetMapping(value = ["/private/{dataId}"], produces = ["application/json"])
+  fun getReceivedPrivateJson(@PathVariable("dataId") dataId: String): ResponseEntity<String>
 
-    /**
-     * This method retrieves data entries from the temporary storage
-     * @param hash filters the requested data to a specific entry.
-     */
-    @Operation(
-        summary = "Retrieve specific data from the cache store of the backend.",
-        description = "Data identified by the provided sha256 hash is retrieved.",
-    )
-    @ApiResponses(
-        value = [
-            ApiResponse(responseCode = "200", description = "Successfully retrieved blob."),
-        ],
-    )
-    @GetMapping(
-        value = ["/private/document/{hash}"],
-        produces = ["application/octet-stream"],
-    )
-    fun getReceivedPrivateDocument(@PathVariable("hash") hash: String): ResponseEntity<InputStreamResource>
+  /**
+   * This method retrieves data entries from the temporary storage
+   *
+   * @param hash filters the requested data to a specific entry.
+   */
+  @Operation(
+    summary = "Retrieve specific data from the cache store of the backend.",
+    description = "Data identified by the provided sha256 hash is retrieved.",
+  )
+  @ApiResponses(
+    value = [ApiResponse(responseCode = "200", description = "Successfully retrieved blob.")]
+  )
+  @GetMapping(value = ["/private/document/{hash}"], produces = ["application/octet-stream"])
+  fun getReceivedPrivateDocument(
+    @PathVariable("hash") hash: String
+  ): ResponseEntity<InputStreamResource>
 }

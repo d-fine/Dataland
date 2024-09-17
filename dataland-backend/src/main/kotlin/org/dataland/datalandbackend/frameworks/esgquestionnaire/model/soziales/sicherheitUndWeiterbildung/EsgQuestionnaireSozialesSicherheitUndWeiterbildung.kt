@@ -3,14 +3,10 @@ package org.dataland.datalandbackend.frameworks.esgquestionnaire.model.soziales.
 
 import org.dataland.datalandbackend.frameworks.esgquestionnaire.custom.YearlyTimeseriesData
 
-/**
- * The data-model for the SicherheitUndWeiterbildung section
- */
+/** The data-model for the SicherheitUndWeiterbildung section */
 data class EsgQuestionnaireSozialesSicherheitUndWeiterbildung(
-    val sicherheitsmassnahmenFuerMitarbeiter: String? = null,
-
-    val unfallrate: YearlyTimeseriesData<UnfallrateValues?>? = null,
-
-    val budgetFuerSchulungAusbildung: YearlyTimeseriesData<BudgetFuerSchulungAusbildungValues?>? = null,
-
+  val sicherheitsmassnahmenFuerMitarbeiter: String? = null,
+  val unfallrate: YearlyTimeseriesData<UnfallrateValues?>? = null,
+  val budgetFuerSchulungAusbildung: YearlyTimeseriesData<BudgetFuerSchulungAusbildungValues?>? =
+    null,
 )

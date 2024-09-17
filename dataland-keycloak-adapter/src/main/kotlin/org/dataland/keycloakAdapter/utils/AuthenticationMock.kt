@@ -8,51 +8,50 @@ import org.springframework.security.core.context.SecurityContext
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.oauth2.jwt.Jwt
 
-/**
- * This object holds a method to mock the authentication via JWT
- */
+/** This object holds a method to mock the authentication via JWT */
 object AuthenticationMock {
-    /**
-     * This method mocks a JWT to authenticate for a given user
-     * and executes a block of code with the mocked authentication
-     */
-    inline fun <T> withAuthenticationMock(
-        username: String,
-        userId: String,
-        roles: Set<DatalandRealmRole>,
-        tokenValue: String = "",
-        block: () -> T,
-    ): T {
-        val auth = mockJwtAuthentication(username, userId, roles, tokenValue)
-        val mockSecurityContext = Mockito.mock(SecurityContext::class.java)
-        `when`(mockSecurityContext.authentication).thenReturn(auth)
-        val oldSecurityContext = SecurityContextHolder.getContext()
-        SecurityContextHolder.setContext(mockSecurityContext)
-        val returnValue = block()
-        SecurityContextHolder.setContext(oldSecurityContext)
-        return returnValue
-    }
+  /**
+   * This method mocks a JWT to authenticate for a given user and executes a block of code with the
+   * mocked authentication
+   */
+  inline fun <T> withAuthenticationMock(
+    username: String,
+    userId: String,
+    roles: Set<DatalandRealmRole>,
+    tokenValue: String = "",
+    block: () -> T,
+  ): T {
+    val auth = mockJwtAuthentication(username, userId, roles, tokenValue)
+    val mockSecurityContext = Mockito.mock(SecurityContext::class.java)
+    `when`(mockSecurityContext.authentication).thenReturn(auth)
+    val oldSecurityContext = SecurityContextHolder.getContext()
+    SecurityContextHolder.setContext(mockSecurityContext)
+    val returnValue = block()
+    SecurityContextHolder.setContext(oldSecurityContext)
+    return returnValue
+  }
 
-    /**
-     * This method mocks a JWT to authenticate for a given user
-     * @param username the username
-     * @param userId the user Id
-     * @param roles the roles of the user
-     */
-    fun mockJwtAuthentication(
-        username: String,
-        userId: String,
-        roles: Set<DatalandRealmRole>,
-        tokenValue: String = "",
-    ): DatalandJwtAuthentication {
-        val jwt = Mockito.mock(Jwt::class.java)
-        Mockito.`when`(jwt.getClaimAsString("preferred_username")).thenReturn(username)
-        val roleMap = mapOf("roles" to roles.map { it.toString() })
-        Mockito.`when`(jwt.getClaimAsMap("realm_access")).thenReturn(roleMap)
-        Mockito.`when`(jwt.subject).thenReturn(userId)
-        Mockito.`when`(jwt.tokenValue).thenReturn(tokenValue)
-        val auth = DatalandJwtAuthentication(jwt)
-        auth.isAuthenticated = true
-        return auth
-    }
+  /**
+   * This method mocks a JWT to authenticate for a given user
+   *
+   * @param username the username
+   * @param userId the user Id
+   * @param roles the roles of the user
+   */
+  fun mockJwtAuthentication(
+    username: String,
+    userId: String,
+    roles: Set<DatalandRealmRole>,
+    tokenValue: String = "",
+  ): DatalandJwtAuthentication {
+    val jwt = Mockito.mock(Jwt::class.java)
+    Mockito.`when`(jwt.getClaimAsString("preferred_username")).thenReturn(username)
+    val roleMap = mapOf("roles" to roles.map { it.toString() })
+    Mockito.`when`(jwt.getClaimAsMap("realm_access")).thenReturn(roleMap)
+    Mockito.`when`(jwt.subject).thenReturn(userId)
+    Mockito.`when`(jwt.tokenValue).thenReturn(tokenValue)
+    val auth = DatalandJwtAuthentication(jwt)
+    auth.isAuthenticated = true
+    return auth
+  }
 }

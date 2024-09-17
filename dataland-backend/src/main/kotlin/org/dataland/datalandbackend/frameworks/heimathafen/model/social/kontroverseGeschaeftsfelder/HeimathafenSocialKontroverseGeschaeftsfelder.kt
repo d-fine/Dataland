@@ -4,11 +4,7 @@ package org.dataland.datalandbackend.frameworks.heimathafen.model.social.kontrov
 import jakarta.validation.Valid
 import org.dataland.datalandbackend.model.datapoints.BaseDataPoint
 
-/**
- * The data-model for the KontroverseGeschaeftsfelder section
- */
+/** The data-model for the KontroverseGeschaeftsfelder section */
 data class HeimathafenSocialKontroverseGeschaeftsfelder(
-    @field:Valid()
-    val verwendeteQuellen: List<BaseDataPoint<String>>? = null,
-
+  @field:Valid() val verwendeteQuellen: List<BaseDataPoint<String>>? = null
 )

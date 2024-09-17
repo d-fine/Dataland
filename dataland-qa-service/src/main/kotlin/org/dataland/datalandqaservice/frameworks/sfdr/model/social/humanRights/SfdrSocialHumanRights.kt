@@ -6,26 +6,18 @@ import org.dataland.datalandbackend.openApiClient.model.ExtendedDataPointBigInte
 import org.dataland.datalandbackend.openApiClient.model.ExtendedDataPointYesNo
 import org.dataland.datalandqaservice.model.reports.QaReportDataPoint
 
-/**
- * The QA-model for the HumanRights section
- */
+/** The QA-model for the HumanRights section */
 data class SfdrSocialHumanRights(
-    @field:Valid()
-    val humanRightsPolicy: QaReportDataPoint<ExtendedDataPointYesNo?>? = null,
-
-    @field:Valid()
-    val humanRightsDueDiligence: QaReportDataPoint<ExtendedDataPointYesNo?>? = null,
-
-    @field:Valid()
-    val traffickingInHumanBeingsPolicy: QaReportDataPoint<ExtendedDataPointYesNo?>? = null,
-
-    @field:Valid()
-    val reportedChildLabourIncidents: QaReportDataPoint<ExtendedDataPointYesNo?>? = null,
-
-    @field:Valid()
-    val reportedForcedOrCompulsoryLabourIncidents: QaReportDataPoint<ExtendedDataPointYesNo?>? = null,
-
-    @field:Valid()
-    val numberOfReportedIncidentsOfHumanRightsViolations: QaReportDataPoint<ExtendedDataPointBigInteger?>? = null,
-
+  @field:Valid() val humanRightsPolicy: QaReportDataPoint<ExtendedDataPointYesNo?>? = null,
+  @field:Valid() val humanRightsDueDiligence: QaReportDataPoint<ExtendedDataPointYesNo?>? = null,
+  @field:Valid()
+  val traffickingInHumanBeingsPolicy: QaReportDataPoint<ExtendedDataPointYesNo?>? = null,
+  @field:Valid()
+  val reportedChildLabourIncidents: QaReportDataPoint<ExtendedDataPointYesNo?>? = null,
+  @field:Valid()
+  val reportedForcedOrCompulsoryLabourIncidents: QaReportDataPoint<ExtendedDataPointYesNo?>? = null,
+  @field:Valid()
+  val numberOfReportedIncidentsOfHumanRightsViolations:
+    QaReportDataPoint<ExtendedDataPointBigInteger?>? =
+    null,
 )

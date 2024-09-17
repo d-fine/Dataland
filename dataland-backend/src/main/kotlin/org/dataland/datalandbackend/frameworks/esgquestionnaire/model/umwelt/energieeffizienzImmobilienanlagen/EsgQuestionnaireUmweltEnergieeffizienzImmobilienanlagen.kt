@@ -3,13 +3,10 @@ package org.dataland.datalandbackend.frameworks.esgquestionnaire.model.umwelt.en
 
 import org.dataland.datalandbackend.frameworks.esgquestionnaire.custom.YearlyTimeseriesData
 
-/**
- * The data-model for the EnergieeffizienzImmobilienanlagen section
- */
+/** The data-model for the EnergieeffizienzImmobilienanlagen section */
 data class EsgQuestionnaireUmweltEnergieeffizienzImmobilienanlagen(
-    val berichterstattungEnergieverbrauchVonImmobilienvermoegen:
-    YearlyTimeseriesData<BerichterstattungEnergieverbrauchVonImmobilienvermoegenValues?>? = null,
-
-    val unternehmensGruppenStrategieBzglEnergieeffizientenImmobilienanlagen: String? = null,
-
+  val berichterstattungEnergieverbrauchVonImmobilienvermoegen:
+    YearlyTimeseriesData<BerichterstattungEnergieverbrauchVonImmobilienvermoegenValues?>? =
+    null,
+  val unternehmensGruppenStrategieBzglEnergieeffizientenImmobilienanlagen: String? = null,
 )

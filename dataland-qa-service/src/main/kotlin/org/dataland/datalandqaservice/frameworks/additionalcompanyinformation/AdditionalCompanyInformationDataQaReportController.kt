@@ -15,49 +15,52 @@ import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
-/**
-* A REST controller for the additional-company-information QA report API.
-*/
+/** A REST controller for the additional-company-information QA report API. */
 @RequestMapping("/data/additional-company-information")
 @RestController
 class AdditionalCompanyInformationDataQaReportController(
-    @Autowired objectMapper: ObjectMapper,
-    @Autowired qaReportManager: QaReportManager,
-    @Autowired qaReportSecurityPolicy: QaReportSecurityPolicy,
-) : QaReportController<AdditionalCompanyInformationData>(
+  @Autowired objectMapper: ObjectMapper,
+  @Autowired qaReportManager: QaReportManager,
+  @Autowired qaReportSecurityPolicy: QaReportSecurityPolicy,
+) :
+  QaReportController<AdditionalCompanyInformationData>(
     objectMapper = objectMapper,
     qaReportManager = qaReportManager,
     qaReportSecurityPolicy = qaReportSecurityPolicy,
     clazz = AdditionalCompanyInformationData::class.java,
     dataType = "additional-company-information",
-) {
-    @Operation(operationId = "postAdditionalCompanyInformationDataQaReport")
-    override fun postQaReport(
-        dataId: String,
-        qaReport: AdditionalCompanyInformationData,
-    ): ResponseEntity<QaReportMetaInformation> {
-        return super.postQaReport(dataId, qaReport)
-    }
+  ) {
+  @Operation(operationId = "postAdditionalCompanyInformationDataQaReport")
+  override fun postQaReport(
+    dataId: String,
+    qaReport: AdditionalCompanyInformationData,
+  ): ResponseEntity<QaReportMetaInformation> {
+    return super.postQaReport(dataId, qaReport)
+  }
 
-    @Operation(operationId = "getAdditionalCompanyInformationDataQaReport")
-    override fun getQaReport(
-        dataId: String,
-        qaReportId: String,
-    ): ResponseEntity<QaReportWithMetaInformation<AdditionalCompanyInformationData>> {
-        return super.getQaReport(dataId, qaReportId)
-    }
+  @Operation(operationId = "getAdditionalCompanyInformationDataQaReport")
+  override fun getQaReport(
+    dataId: String,
+    qaReportId: String,
+  ): ResponseEntity<QaReportWithMetaInformation<AdditionalCompanyInformationData>> {
+    return super.getQaReport(dataId, qaReportId)
+  }
 
-    @Operation(operationId = "setAdditionalCompanyInformationDataQaReportStatus")
-    override fun setQaReportStatus(dataId: String, qaReportId: String, statusPatch: QaReportStatusPatch) {
-        super.setQaReportStatus(dataId, qaReportId, statusPatch)
-    }
+  @Operation(operationId = "setAdditionalCompanyInformationDataQaReportStatus")
+  override fun setQaReportStatus(
+    dataId: String,
+    qaReportId: String,
+    statusPatch: QaReportStatusPatch,
+  ) {
+    super.setQaReportStatus(dataId, qaReportId, statusPatch)
+  }
 
-    @Operation(operationId = "getAdditionalCompanyInformationDataAllQaReportsForDataset")
-    override fun getAllQaReportsForDataset(
-        dataId: String,
-        showInactive: Boolean?,
-        reporterUserId: String?,
-    ): ResponseEntity<List<QaReportWithMetaInformation<AdditionalCompanyInformationData>>> {
-        return super.getAllQaReportsForDataset(dataId, showInactive, reporterUserId)
-    }
+  @Operation(operationId = "getAdditionalCompanyInformationDataAllQaReportsForDataset")
+  override fun getAllQaReportsForDataset(
+    dataId: String,
+    showInactive: Boolean?,
+    reporterUserId: String?,
+  ): ResponseEntity<List<QaReportWithMetaInformation<AdditionalCompanyInformationData>>> {
+    return super.getAllQaReportsForDataset(dataId, showInactive, reporterUserId)
+  }
 }

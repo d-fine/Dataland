@@ -20,58 +20,60 @@ import org.springframework.dao.DataIntegrityViolationException
 @SpringBootTest(classes = [DatalandBackend::class], properties = ["spring.profiles.active=nodb"])
 @AutoConfigureTestDatabase(connection = EmbeddedDatabaseConnection.H2)
 class DataMetaInformationManagerTest(
-    @Autowired private val dataMetaInformationManager: DataMetaInformationManager,
-    @Autowired private val companyManager: CompanyAlterationManager,
-    @Autowired private val objectMapper: ObjectMapper,
+  @Autowired private val dataMetaInformationManager: DataMetaInformationManager,
+  @Autowired private val companyManager: CompanyAlterationManager,
+  @Autowired private val objectMapper: ObjectMapper,
 ) {
-    private val testDataProvider = TestDataProvider(objectMapper)
+  private val testDataProvider = TestDataProvider(objectMapper)
 
-    @Test
-    fun `check that an exception is thrown when non existing company id is provided in meta data search`() {
-        val nonExistingCompanyId = "nonExistingCompanyId"
-        val thrown = assertThrows<ResourceNotFoundApiException> {
-            dataMetaInformationManager.searchDataMetaInfo(
-                companyId = nonExistingCompanyId,
-                dataType = null,
-                showOnlyActive = true,
-                reportingPeriod = "",
-            )
-        }
-        assertEquals(
-            "Dataland does not know the company ID nonExistingCompanyId",
-            thrown.message,
+  @Test
+  fun `check that an exception is thrown when non existing company id is provided in meta data search`() {
+    val nonExistingCompanyId = "nonExistingCompanyId"
+    val thrown =
+      assertThrows<ResourceNotFoundApiException> {
+        dataMetaInformationManager.searchDataMetaInfo(
+          companyId = nonExistingCompanyId,
+          dataType = null,
+          showOnlyActive = true,
+          reportingPeriod = "",
         )
-    }
+      }
+    assertEquals("Dataland does not know the company ID nonExistingCompanyId", thrown.message)
+  }
 
-    @Test
-    fun `check that an exception is thrown when non existing data id is provided to get meta data`() {
-        val nonExistingDataId = "nonExistingDataId"
-        val thrown = assertThrows<ResourceNotFoundApiException> {
-            dataMetaInformationManager.getDataMetaInformationByDataId(dataId = nonExistingDataId)
-        }
-        assertEquals(
-            "No dataset with the id: nonExistingDataId could be found in the data store.",
-            thrown.message,
-        )
-    }
+  @Test
+  fun `check that an exception is thrown when non existing data id is provided to get meta data`() {
+    val nonExistingDataId = "nonExistingDataId"
+    val thrown =
+      assertThrows<ResourceNotFoundApiException> {
+        dataMetaInformationManager.getDataMetaInformationByDataId(dataId = nonExistingDataId)
+      }
+    assertEquals(
+      "No dataset with the id: nonExistingDataId could be found in the data store.",
+      thrown.message,
+    )
+  }
 
-    @Test
-    fun `check that an exception is thrown when two meta data entries are uploaded simultaneously`() {
-        val companyInformation = testDataProvider.getCompanyInformation(1).first()
-        val storedCompanyEntity = companyManager.addCompany(companyInformation)
-        val dataMetaInfoEntityToStore = DataMetaInformationEntity(
-            dataId = "data-id-1",
-            company = storedCompanyEntity,
-            dataType = DataType.of(LksgData::class.java).toString(),
-            uploaderUserId = "uploader-user-id",
-            uploadTime = 0,
-            reportingPeriod = "reporting-period",
-            currentlyActive = null,
-            qaStatus = QaStatus.Accepted,
-        )
-        dataMetaInformationManager.storeDataMetaInformation(dataMetaInfoEntityToStore)
-        assertThrows<DataIntegrityViolationException> {
-            dataMetaInformationManager.storeDataMetaInformation(dataMetaInfoEntityToStore.copy(dataId = "data-id-2"))
-        }
+  @Test
+  fun `check that an exception is thrown when two meta data entries are uploaded simultaneously`() {
+    val companyInformation = testDataProvider.getCompanyInformation(1).first()
+    val storedCompanyEntity = companyManager.addCompany(companyInformation)
+    val dataMetaInfoEntityToStore =
+      DataMetaInformationEntity(
+        dataId = "data-id-1",
+        company = storedCompanyEntity,
+        dataType = DataType.of(LksgData::class.java).toString(),
+        uploaderUserId = "uploader-user-id",
+        uploadTime = 0,
+        reportingPeriod = "reporting-period",
+        currentlyActive = null,
+        qaStatus = QaStatus.Accepted,
+      )
+    dataMetaInformationManager.storeDataMetaInformation(dataMetaInfoEntityToStore)
+    assertThrows<DataIntegrityViolationException> {
+      dataMetaInformationManager.storeDataMetaInformation(
+        dataMetaInfoEntityToStore.copy(dataId = "data-id-2")
+      )
     }
+  }
 }

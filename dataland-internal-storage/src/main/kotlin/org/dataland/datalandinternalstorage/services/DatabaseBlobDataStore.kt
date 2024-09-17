@@ -25,86 +25,98 @@ import org.springframework.transaction.annotation.Transactional
 
 /**
  * Simple implementation of a data store for blobs using JPA
+ *
  * @param blobItemRepository the JPA repository for storing blobs
  */
 @Component
 class DatabaseBlobDataStore(
-    @Autowired private val blobItemRepository: BlobItemRepository,
-    @Autowired var cloudEventMessageHandler: CloudEventMessageHandler,
-    @Autowired var messageUtils: MessageQueueUtils,
-    @Autowired var temporarilyCachedDocumentClient: StreamingTemporarilyCachedDocumentControllerApi,
+  @Autowired private val blobItemRepository: BlobItemRepository,
+  @Autowired var cloudEventMessageHandler: CloudEventMessageHandler,
+  @Autowired var messageUtils: MessageQueueUtils,
+  @Autowired var temporarilyCachedDocumentClient: StreamingTemporarilyCachedDocumentControllerApi,
 ) {
-    private val logger = LoggerFactory.getLogger(javaClass)
+  private val logger = LoggerFactory.getLogger(javaClass)
 
-    /**
-     * Retrieves a blob from the document-manager and stores it in the postgres database.
-     * Emits a stored message after this has finshed
-     */
-    @RabbitListener(
-        bindings = [
-            QueueBinding(
-                value = Queue(
-                    "documentReceivedDatabaseDataStore",
-                    arguments = [
-                        Argument(name = "x-dead-letter-exchange", value = ExchangeName.DeadLetter),
-                        Argument(name = "x-dead-letter-routing-key", value = "deadLetterKey"),
-                        Argument(name = "defaultRequeueRejected", value = "false"),
-                    ],
-                ),
-                exchange = Exchange(ExchangeName.DocumentReceived, declare = "false"),
-                key = [""],
+  /**
+   * Retrieves a blob from the document-manager and stores it in the postgres database. Emits a
+   * stored message after this has finshed
+   */
+  @RabbitListener(
+    bindings =
+      [
+        QueueBinding(
+          value =
+            Queue(
+              "documentReceivedDatabaseDataStore",
+              arguments =
+                [
+                  Argument(name = "x-dead-letter-exchange", value = ExchangeName.DeadLetter),
+                  Argument(name = "x-dead-letter-routing-key", value = "deadLetterKey"),
+                  Argument(name = "defaultRequeueRejected", value = "false"),
+                ],
             ),
-        ],
-    )
-    fun retrieveBlobFromDocumentManagerAndStoreToDatabase(
-        @Payload blobId: String,
-        @Header(MessageHeaderKey.CorrelationId) correlationId: String,
-        @Header(MessageHeaderKey.Type) type: String,
-    ) {
-        messageUtils.validateMessageType(type, MessageType.DocumentReceived)
-        if (blobId.isEmpty()) {
-            throw MessageQueueRejectException("Provided document ID is empty")
-        }
-        messageUtils.rejectMessageOnException {
-            logger.info("Received BlobId $blobId and CorrelationId: $correlationId")
-            val resource = temporarilyCachedDocumentClient.getReceivedData(blobId)
-            storeBlobToDatabase(blobId, resource.readBytes())
-            logger.info(
-                "Inserting blob into database with blob ID: $blobId and correlation ID: $correlationId.",
-            )
-            cloudEventMessageHandler.buildCEMessageAndSendToQueue(
-                blobId, MessageType.DocumentStored, correlationId, ExchangeName.ItemStored,
-                RoutingKeyNames.document,
-            )
-        }
+          exchange = Exchange(ExchangeName.DocumentReceived, declare = "false"),
+          key = [""],
+        )
+      ]
+  )
+  fun retrieveBlobFromDocumentManagerAndStoreToDatabase(
+    @Payload blobId: String,
+    @Header(MessageHeaderKey.CorrelationId) correlationId: String,
+    @Header(MessageHeaderKey.Type) type: String,
+  ) {
+    messageUtils.validateMessageType(type, MessageType.DocumentReceived)
+    if (blobId.isEmpty()) {
+      throw MessageQueueRejectException("Provided document ID is empty")
     }
+    messageUtils.rejectMessageOnException {
+      logger.info("Received BlobId $blobId and CorrelationId: $correlationId")
+      val resource = temporarilyCachedDocumentClient.getReceivedData(blobId)
+      storeBlobToDatabase(blobId, resource.readBytes())
+      logger.info(
+        "Inserting blob into database with blob ID: $blobId and correlation ID: $correlationId."
+      )
+      cloudEventMessageHandler.buildCEMessageAndSendToQueue(
+        blobId,
+        MessageType.DocumentStored,
+        correlationId,
+        ExchangeName.ItemStored,
+        RoutingKeyNames.document,
+      )
+    }
+  }
 
-    /**
-     * Stores the provided binary blob to the database and returns the
-     * stored database entity. Also ensures that this function is not executed as part of any transaction.
-     * This will guarantee that the write is committed after exit of this method.
-     * @param blob the blob to store to the database
-     * @return the stored database entity
-     */
-    @Transactional(propagation = Propagation.NEVER)
-    fun storeBlobToDatabase(blobId: String, blob: ByteArray): BlobItem {
-        val blobItem = BlobItem(blobId, blob)
-        blobItemRepository.save(blobItem)
-        return blobItem
-    }
+  /**
+   * Stores the provided binary blob to the database and returns the stored database entity. Also
+   * ensures that this function is not executed as part of any transaction. This will guarantee that
+   * the write is committed after exit of this method.
+   *
+   * @param blob the blob to store to the database
+   * @return the stored database entity
+   */
+  @Transactional(propagation = Propagation.NEVER)
+  fun storeBlobToDatabase(blobId: String, blob: ByteArray): BlobItem {
+    val blobItem = BlobItem(blobId, blob)
+    blobItemRepository.save(blobItem)
+    return blobItem
+  }
 
-    /**
-     * Retrieves the blob data from the database
-     * @param blobId the hash of the data to be retrieved
-     * @return the blob retrieved from the database
-     */
-    fun selectBlobById(blobId: String, correlationId: String): ByteArray {
-        return blobItemRepository.findById(blobId).orElseThrow {
-            logger.info("Blob with ID: $blobId could not be found. Correlation ID: $correlationId.")
-            ResourceNotFoundApiException(
-                "Dataset not found",
-                "No blob with the ID: $blobId could be found in the data store.",
-            )
-        }.data
-    }
+  /**
+   * Retrieves the blob data from the database
+   *
+   * @param blobId the hash of the data to be retrieved
+   * @return the blob retrieved from the database
+   */
+  fun selectBlobById(blobId: String, correlationId: String): ByteArray {
+    return blobItemRepository
+      .findById(blobId)
+      .orElseThrow {
+        logger.info("Blob with ID: $blobId could not be found. Correlation ID: $correlationId.")
+        ResourceNotFoundApiException(
+          "Dataset not found",
+          "No blob with the ID: $blobId could be found in the data store.",
+        )
+      }
+      .data
+  }
 }

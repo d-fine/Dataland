@@ -3,13 +3,9 @@ package org.dataland.datalandbackend.frameworks.esgquestionnaire.model.allgemein
 
 import io.swagger.v3.oas.annotations.media.Schema
 
-/**
- * Enum class for the single-select-field statusZuS
- */
-@Schema(
-    enumAsRef = true,
-)
+/** Enum class for the single-select-field statusZuS */
+@Schema(enumAsRef = true)
 enum class EsgQuestionnaireAllgemeinRechtsstreitigkeitenStatusZuSOptions {
-    Offen,
-    Geklaert,
+  Offen,
+  Geklaert,
 }

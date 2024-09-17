@@ -27,104 +27,109 @@ import org.springframework.web.multipart.MultipartFile
 
 /**
  * Controller for the vsme framework endpoints
+ *
  * @param privateDataManager data manager to be used
  * @param myObjectMapper object mapper used for converting data classes to strings and vice versa
  */
 @RestController
 class VsmeDataController(
-    @Autowired var privateDataManager: PrivateDataManager,
-    @Autowired var myObjectMapper: ObjectMapper,
-    @Autowired var logMessageBuilder: LogMessageBuilder,
-    @Autowired var dataMetaInformationManager: DataMetaInformationManager,
-    @Autowired var privateDataAccessChecker: PrivateDataAccessChecker,
-    @Autowired var companyRoleChecker: CompanyRoleChecker,
+  @Autowired var privateDataManager: PrivateDataManager,
+  @Autowired var myObjectMapper: ObjectMapper,
+  @Autowired var logMessageBuilder: LogMessageBuilder,
+  @Autowired var dataMetaInformationManager: DataMetaInformationManager,
+  @Autowired var privateDataAccessChecker: PrivateDataAccessChecker,
+  @Autowired var companyRoleChecker: CompanyRoleChecker,
 ) : VsmeDataApi {
-    private val logger = LoggerFactory.getLogger(javaClass)
+  private val logger = LoggerFactory.getLogger(javaClass)
 
-    @Operation(operationId = "postVsmeJsonAndDocuments")
-    override fun postVsmeJsonAndDocuments(
-        companyAssociatedVsmeData: CompanyAssociatedData<VsmeData>,
-        documents: Array<MultipartFile>?,
-    ):
-        ResponseEntity<DataMetaInformation> {
-        val dataMetaInformation = privateDataManager.processPrivateVsmeDataStorageRequest(
-            companyAssociatedVsmeData,
-            documents,
-        )
-        return ResponseEntity.ok(dataMetaInformation)
-    }
+  @Operation(operationId = "postVsmeJsonAndDocuments")
+  override fun postVsmeJsonAndDocuments(
+    companyAssociatedVsmeData: CompanyAssociatedData<VsmeData>,
+    documents: Array<MultipartFile>?,
+  ): ResponseEntity<DataMetaInformation> {
+    val dataMetaInformation =
+      privateDataManager.processPrivateVsmeDataStorageRequest(companyAssociatedVsmeData, documents)
+    return ResponseEntity.ok(dataMetaInformation)
+  }
 
-    @Operation(operationId = "getCompanyAssociatedVsmeData")
-    override fun getCompanyAssociatedVsmeData(dataId: String):
-        ResponseEntity<CompanyAssociatedData<VsmeData>> {
-        val metaInfo = dataMetaInformationManager.getDataMetaInformationByDataId(dataId)
-        if (!metaInfo.isDatasetViewableByUser(DatalandAuthentication.fromContextOrNull())) {
-            throw AccessDeniedException(logMessageBuilder.generateAccessDeniedExceptionMessage(metaInfo.qaStatus))
-        }
-        val companyId = metaInfo.company.companyId
-        val correlationId = generateCorrelationId(companyId = companyId, dataId = dataId)
-        logger.info(logMessageBuilder.getCompanyAssociatedDataMessage(dataId, companyId))
-        val companyAssociatedData = CompanyAssociatedData(
-            companyId = companyId,
-            reportingPeriod = metaInfo.reportingPeriod,
-            data = privateDataManager.getPrivateVsmeData(dataId, correlationId),
-        )
-        logger.info(
-            logMessageBuilder.getCompanyAssociatedDataSuccessMessage(dataId, companyId, correlationId),
-        )
-        return ResponseEntity.ok(companyAssociatedData)
+  @Operation(operationId = "getCompanyAssociatedVsmeData")
+  override fun getCompanyAssociatedVsmeData(
+    dataId: String
+  ): ResponseEntity<CompanyAssociatedData<VsmeData>> {
+    val metaInfo = dataMetaInformationManager.getDataMetaInformationByDataId(dataId)
+    if (!metaInfo.isDatasetViewableByUser(DatalandAuthentication.fromContextOrNull())) {
+      throw AccessDeniedException(
+        logMessageBuilder.generateAccessDeniedExceptionMessage(metaInfo.qaStatus)
+      )
     }
+    val companyId = metaInfo.company.companyId
+    val correlationId = generateCorrelationId(companyId = companyId, dataId = dataId)
+    logger.info(logMessageBuilder.getCompanyAssociatedDataMessage(dataId, companyId))
+    val companyAssociatedData =
+      CompanyAssociatedData(
+        companyId = companyId,
+        reportingPeriod = metaInfo.reportingPeriod,
+        data = privateDataManager.getPrivateVsmeData(dataId, correlationId),
+      )
+    logger.info(
+      logMessageBuilder.getCompanyAssociatedDataSuccessMessage(dataId, companyId, correlationId)
+    )
+    return ResponseEntity.ok(companyAssociatedData)
+  }
 
-    @Operation(operationId = "getPrivateDocument")
-    override fun getPrivateDocument(
-        dataId: String,
-        hash: String,
-    ):
-        ResponseEntity<InputStreamResource> {
-        val correlationId = generateCorrelationId(companyId = null, dataId = dataId)
-        val document = privateDataManager.retrievePrivateDocumentById(dataId, hash, correlationId)
-        return ResponseEntity.ok()
-            .contentType(document.type.mediaType)
-            .header(
-                HttpHeaders.CONTENT_DISPOSITION,
-                "attachment; filename= ${document.documentId}.${document.type.fileExtension}",
-            )
-            .body(document.content)
-    }
+  @Operation(operationId = "getPrivateDocument")
+  override fun getPrivateDocument(
+    dataId: String,
+    hash: String,
+  ): ResponseEntity<InputStreamResource> {
+    val correlationId = generateCorrelationId(companyId = null, dataId = dataId)
+    val document = privateDataManager.retrievePrivateDocumentById(dataId, hash, correlationId)
+    return ResponseEntity.ok()
+      .contentType(document.type.mediaType)
+      .header(
+        HttpHeaders.CONTENT_DISPOSITION,
+        "attachment; filename= ${document.documentId}.${document.type.fileExtension}",
+      )
+      .body(document.content)
+  }
 
-    @Operation(operationId = "getFrameworkDatasetsForCompany")
-    override fun getFrameworkDatasetsForCompany(
-        companyId: String,
-        showOnlyActive: Boolean,
-        reportingPeriod: String?,
-    ):
-        ResponseEntity<List<DataAndMetaInformation<VsmeData>>> {
-        val reportingPeriodInLog = reportingPeriod ?: "all reporting periods"
-        val dataType = DataType.of(VsmeData::class.java)
-        logger.info(
-            logMessageBuilder.getFrameworkDatasetsForCompanyMessage(dataType, companyId, reportingPeriodInLog),
+  @Operation(operationId = "getFrameworkDatasetsForCompany")
+  override fun getFrameworkDatasetsForCompany(
+    companyId: String,
+    showOnlyActive: Boolean,
+    reportingPeriod: String?,
+  ): ResponseEntity<List<DataAndMetaInformation<VsmeData>>> {
+    val reportingPeriodInLog = reportingPeriod ?: "all reporting periods"
+    val dataType = DataType.of(VsmeData::class.java)
+    logger.info(
+      logMessageBuilder.getFrameworkDatasetsForCompanyMessage(
+        dataType,
+        companyId,
+        reportingPeriodInLog,
+      )
+    )
+    val metaInfos =
+      dataMetaInformationManager.searchDataMetaInfo(
+        companyId,
+        dataType,
+        showOnlyActive,
+        reportingPeriod,
+      )
+    val authentication = DatalandAuthentication.fromContextOrNull()
+    val frameworkDataAndMetaInfo = mutableListOf<DataAndMetaInformation<VsmeData>>()
+    metaInfos
+      .filter {
+        it.isDatasetViewableByUser(authentication) &&
+          (privateDataAccessChecker.hasUserAccessToPrivateResources(it.dataId) ||
+            companyRoleChecker.hasCurrentUserAnyRoleForCompany(companyId))
+      }
+      .forEach {
+        val correlationId = generateCorrelationId(companyId = companyId, dataId = null)
+        val data = privateDataManager.getPrivateVsmeData(it.dataId, correlationId)
+        frameworkDataAndMetaInfo.add(
+          DataAndMetaInformation(it.toApiModel(DatalandAuthentication.fromContext()), data)
         )
-        val metaInfos = dataMetaInformationManager.searchDataMetaInfo(
-            companyId, dataType, showOnlyActive, reportingPeriod,
-        )
-        val authentication = DatalandAuthentication.fromContextOrNull()
-        val frameworkDataAndMetaInfo = mutableListOf<DataAndMetaInformation<VsmeData>>()
-        metaInfos.filter {
-            it.isDatasetViewableByUser(authentication) && (
-                privateDataAccessChecker
-                    .hasUserAccessToPrivateResources(it.dataId) || companyRoleChecker
-                    .hasCurrentUserAnyRoleForCompany(companyId)
-                )
-        }
-            .forEach {
-                val correlationId = generateCorrelationId(companyId = companyId, dataId = null)
-                val data = privateDataManager.getPrivateVsmeData(it.dataId, correlationId)
-                frameworkDataAndMetaInfo.add(
-                    DataAndMetaInformation(
-                        it.toApiModel(DatalandAuthentication.fromContext()), data,
-                    ),
-                )
-            }
-        return ResponseEntity.ok(frameworkDataAndMetaInfo)
-    }
+      }
+    return ResponseEntity.ok(frameworkDataAndMetaInfo)
+  }
 }

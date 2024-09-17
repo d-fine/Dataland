@@ -15,49 +15,52 @@ import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
-/**
-* A REST controller for the eutaxonomy-non-financials QA report API.
-*/
+/** A REST controller for the eutaxonomy-non-financials QA report API. */
 @RequestMapping("/data/eutaxonomy-non-financials")
 @RestController
 class EutaxonomyNonFinancialsDataQaReportController(
-    @Autowired objectMapper: ObjectMapper,
-    @Autowired qaReportManager: QaReportManager,
-    @Autowired qaReportSecurityPolicy: QaReportSecurityPolicy,
-) : QaReportController<EutaxonomyNonFinancialsData>(
+  @Autowired objectMapper: ObjectMapper,
+  @Autowired qaReportManager: QaReportManager,
+  @Autowired qaReportSecurityPolicy: QaReportSecurityPolicy,
+) :
+  QaReportController<EutaxonomyNonFinancialsData>(
     objectMapper = objectMapper,
     qaReportManager = qaReportManager,
     qaReportSecurityPolicy = qaReportSecurityPolicy,
     clazz = EutaxonomyNonFinancialsData::class.java,
     dataType = "eutaxonomy-non-financials",
-) {
-    @Operation(operationId = "postEutaxonomyNonFinancialsDataQaReport")
-    override fun postQaReport(
-        dataId: String,
-        qaReport: EutaxonomyNonFinancialsData,
-    ): ResponseEntity<QaReportMetaInformation> {
-        return super.postQaReport(dataId, qaReport)
-    }
+  ) {
+  @Operation(operationId = "postEutaxonomyNonFinancialsDataQaReport")
+  override fun postQaReport(
+    dataId: String,
+    qaReport: EutaxonomyNonFinancialsData,
+  ): ResponseEntity<QaReportMetaInformation> {
+    return super.postQaReport(dataId, qaReport)
+  }
 
-    @Operation(operationId = "getEutaxonomyNonFinancialsDataQaReport")
-    override fun getQaReport(
-        dataId: String,
-        qaReportId: String,
-    ): ResponseEntity<QaReportWithMetaInformation<EutaxonomyNonFinancialsData>> {
-        return super.getQaReport(dataId, qaReportId)
-    }
+  @Operation(operationId = "getEutaxonomyNonFinancialsDataQaReport")
+  override fun getQaReport(
+    dataId: String,
+    qaReportId: String,
+  ): ResponseEntity<QaReportWithMetaInformation<EutaxonomyNonFinancialsData>> {
+    return super.getQaReport(dataId, qaReportId)
+  }
 
-    @Operation(operationId = "setEutaxonomyNonFinancialsDataQaReportStatus")
-    override fun setQaReportStatus(dataId: String, qaReportId: String, statusPatch: QaReportStatusPatch) {
-        super.setQaReportStatus(dataId, qaReportId, statusPatch)
-    }
+  @Operation(operationId = "setEutaxonomyNonFinancialsDataQaReportStatus")
+  override fun setQaReportStatus(
+    dataId: String,
+    qaReportId: String,
+    statusPatch: QaReportStatusPatch,
+  ) {
+    super.setQaReportStatus(dataId, qaReportId, statusPatch)
+  }
 
-    @Operation(operationId = "getEutaxonomyNonFinancialsDataAllQaReportsForDataset")
-    override fun getAllQaReportsForDataset(
-        dataId: String,
-        showInactive: Boolean?,
-        reporterUserId: String?,
-    ): ResponseEntity<List<QaReportWithMetaInformation<EutaxonomyNonFinancialsData>>> {
-        return super.getAllQaReportsForDataset(dataId, showInactive, reporterUserId)
-    }
+  @Operation(operationId = "getEutaxonomyNonFinancialsDataAllQaReportsForDataset")
+  override fun getAllQaReportsForDataset(
+    dataId: String,
+    showInactive: Boolean?,
+    reporterUserId: String?,
+  ): ResponseEntity<List<QaReportWithMetaInformation<EutaxonomyNonFinancialsData>>> {
+    return super.getAllQaReportsForDataset(dataId, showInactive, reporterUserId)
+  }
 }

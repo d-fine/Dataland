@@ -4,13 +4,11 @@ package org.dataland.datalandbackend.frameworks.esgquestionnaire.model.umwelt.tr
 import java.math.BigDecimal
 
 /**
- * Data class for the timeseries data contained in the field treibhausgasBerichterstattungUndPrognosen
+ * Data class for the timeseries data contained in the field
+ * treibhausgasBerichterstattungUndPrognosen
  */
 data class TreibhausgasBerichterstattungUndPrognosenValues(
-    val scope1: BigDecimal? = null,
-
-    val scope2: BigDecimal? = null,
-
-    val scope3: BigDecimal? = null,
-
+  val scope1: BigDecimal? = null,
+  val scope2: BigDecimal? = null,
+  val scope3: BigDecimal? = null,
 )

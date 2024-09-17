@@ -5,19 +5,11 @@ import jakarta.validation.Valid
 import org.dataland.datalandbackend.model.datapoints.BaseDataPoint
 import org.dataland.datalandbackend.model.enums.commons.YesNo
 
-/**
- * The data-model for the GoodGovernance section
- */
+/** The data-model for the GoodGovernance section */
 data class HeimathafenGovernanceGoodGovernance(
-    val methodikDerGutenRegierungsfuehrung: YesNo? = null,
-
-    val wennNeinBitteBegruenden: String? = null,
-
-    val definitionVonGuterRegierungsfuehrung: String? = null,
-
-    val listeDerKpisFuerGuteUnternehmensfuehrung: String? = null,
-
-    @field:Valid()
-    val verwendeteQuellen: List<BaseDataPoint<String>>? = null,
-
+  val methodikDerGutenRegierungsfuehrung: YesNo? = null,
+  val wennNeinBitteBegruenden: String? = null,
+  val definitionVonGuterRegierungsfuehrung: String? = null,
+  val listeDerKpisFuerGuteUnternehmensfuehrung: String? = null,
+  @field:Valid() val verwendeteQuellen: List<BaseDataPoint<String>>? = null,
 )

@@ -4,11 +4,5 @@ package org.dataland.datalandbackend.frameworks.sfdr.model.general
 import jakarta.validation.Valid
 import org.dataland.datalandbackend.frameworks.sfdr.model.general.general.SfdrGeneralGeneral
 
-/**
- * The data-model for the General section
- */
-data class SfdrGeneral(
-    @field:Valid()
-    val general: SfdrGeneralGeneral,
-
-)
+/** The data-model for the General section */
+data class SfdrGeneral(@field:Valid() val general: SfdrGeneralGeneral)

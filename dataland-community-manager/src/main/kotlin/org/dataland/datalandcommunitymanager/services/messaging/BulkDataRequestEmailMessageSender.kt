@@ -14,52 +14,53 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Component
 
-/**
- * A class that manages generating emails messages for bulk and single data requests
- */
+/** A class that manages generating emails messages for bulk and single data requests */
 @Component
 class BulkDataRequestEmailMessageSender(
-    @Autowired private val cloudEventMessageHandler: CloudEventMessageHandler,
-    @Autowired private val objectMapper: ObjectMapper,
-    @Value("\${dataland.community-manager.proxy-primary-url:local-dev.dataland.com}")
-    private val proxyPrimaryUrl: String,
+  @Autowired private val cloudEventMessageHandler: CloudEventMessageHandler,
+  @Autowired private val objectMapper: ObjectMapper,
+  @Value("\${dataland.community-manager.proxy-primary-url:local-dev.dataland.com}")
+  private val proxyPrimaryUrl: String,
 ) : DataRequestEmailMessageSenderBase() {
-    /**
-     * Function that generates the message object for bulk data request mails
-     */
-    fun sendBulkDataRequestInternalMessage(
-        bulkDataRequest: BulkDataRequest,
-        acceptedCompanyIdsAndNames: List<CompanyIdAndName>,
-        correlationId: String,
-    ) {
-        val formattedCompanies = acceptedCompanyIdsAndNames.map { formatCompanyIdAndNameForInfoMail(it) }
+  /** Function that generates the message object for bulk data request mails */
+  fun sendBulkDataRequestInternalMessage(
+    bulkDataRequest: BulkDataRequest,
+    acceptedCompanyIdsAndNames: List<CompanyIdAndName>,
+    correlationId: String,
+  ) {
+    val formattedCompanies =
+      acceptedCompanyIdsAndNames.map { formatCompanyIdAndNameForInfoMail(it) }
 
-        val properties = mapOf(
-            "User" to (DatalandAuthentication.fromContext() as DatalandJwtAuthentication).userDescription,
-            "E-Mail" to (DatalandAuthentication.fromContext() as DatalandJwtAuthentication).username,
-            "First Name" to (DatalandAuthentication.fromContext() as DatalandJwtAuthentication).firstName,
-            "Last Name" to (DatalandAuthentication.fromContext() as DatalandJwtAuthentication).lastName,
-            "Reporting Periods" to formatReportingPeriods(bulkDataRequest.reportingPeriods),
-            "Requested Frameworks" to bulkDataRequest.dataTypes.joinToString(", ") { it.value },
-            "Accepted Companies (Dataland ID)" to formattedCompanies.joinToString(", "),
-        )
-        val message = InternalEmailMessage(
-            "Dataland Bulk Data Request",
-            "A bulk data request has been submitted",
-            "Bulk Data Request",
-            properties,
-        )
-        cloudEventMessageHandler.buildCEMessageAndSendToQueue(
-            objectMapper.writeValueAsString(message),
-            MessageType.SendInternalEmail,
-            correlationId,
-            ExchangeName.SendEmail,
-            RoutingKeyNames.internalEmail,
-        )
-    }
+    val properties =
+      mapOf(
+        "User" to
+          (DatalandAuthentication.fromContext() as DatalandJwtAuthentication).userDescription,
+        "E-Mail" to (DatalandAuthentication.fromContext() as DatalandJwtAuthentication).username,
+        "First Name" to
+          (DatalandAuthentication.fromContext() as DatalandJwtAuthentication).firstName,
+        "Last Name" to (DatalandAuthentication.fromContext() as DatalandJwtAuthentication).lastName,
+        "Reporting Periods" to formatReportingPeriods(bulkDataRequest.reportingPeriods),
+        "Requested Frameworks" to bulkDataRequest.dataTypes.joinToString(", ") { it.value },
+        "Accepted Companies (Dataland ID)" to formattedCompanies.joinToString(", "),
+      )
+    val message =
+      InternalEmailMessage(
+        "Dataland Bulk Data Request",
+        "A bulk data request has been submitted",
+        "Bulk Data Request",
+        properties,
+      )
+    cloudEventMessageHandler.buildCEMessageAndSendToQueue(
+      objectMapper.writeValueAsString(message),
+      MessageType.SendInternalEmail,
+      correlationId,
+      ExchangeName.SendEmail,
+      RoutingKeyNames.internalEmail,
+    )
+  }
 
-    private fun formatCompanyIdAndNameForInfoMail(companyIdAndName: CompanyIdAndName): String {
-        return "<a href=\"https://$proxyPrimaryUrl/companies/${companyIdAndName.companyId}\">" +
-            "${companyIdAndName.companyName}</a> (${companyIdAndName.companyId})"
-    }
+  private fun formatCompanyIdAndNameForInfoMail(companyIdAndName: CompanyIdAndName): String {
+    return "<a href=\"https://$proxyPrimaryUrl/companies/${companyIdAndName.companyId}\">" +
+      "${companyIdAndName.companyName}</a> (${companyIdAndName.companyId})"
+  }
 }

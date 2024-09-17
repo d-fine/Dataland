@@ -2,28 +2,17 @@
 package org.dataland.datalandbackend.frameworks.vsme.model.basic.water
 
 import jakarta.validation.Valid
-import org.dataland.datalandbackend.model.datapoints.ExtendedDataPoint
 import java.math.BigDecimal
+import org.dataland.datalandbackend.model.datapoints.ExtendedDataPoint
 
-/**
- * The data-model for the Water section
- */
+/** The data-model for the Water section */
 data class VsmeBasicWater(
-    @field:Valid()
-    val waterWithdrawalAllSitesInCubicMeters: ExtendedDataPoint<BigDecimal?>? = null,
-
-    val waterWithdrawalStressSitesInCubicMeters: BigDecimal? = null,
-
-    val waterDischargeAllSitesInCubicMeters: BigDecimal? = null,
-
-    val waterDischargeStressSitesInCubicMeters: BigDecimal? = null,
-
-    val rainwaterAllSitesInCubicMeters: BigDecimal? = null,
-
-    val rainwaterStressSitesInCubicMeters: BigDecimal? = null,
-
-    val waterConsumptionAllSitesInCubicMeters: BigDecimal? = null,
-
-    val waterConsumptionStressSitesInCubicMeters: BigDecimal? = null,
-
+  @field:Valid() val waterWithdrawalAllSitesInCubicMeters: ExtendedDataPoint<BigDecimal?>? = null,
+  val waterWithdrawalStressSitesInCubicMeters: BigDecimal? = null,
+  val waterDischargeAllSitesInCubicMeters: BigDecimal? = null,
+  val waterDischargeStressSitesInCubicMeters: BigDecimal? = null,
+  val rainwaterAllSitesInCubicMeters: BigDecimal? = null,
+  val rainwaterStressSitesInCubicMeters: BigDecimal? = null,
+  val waterConsumptionAllSitesInCubicMeters: BigDecimal? = null,
+  val waterConsumptionStressSitesInCubicMeters: BigDecimal? = null,
 )

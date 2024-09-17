@@ -3,12 +3,10 @@ package org.dataland.datalandbackend.frameworks.esgquestionnaire.model.umwelt.wa
 
 import org.dataland.datalandbackend.frameworks.esgquestionnaire.custom.YearlyTimeseriesData
 
-/**
- * The data-model for the Wasserverbrauch section
- */
+/** The data-model for the Wasserverbrauch section */
 data class EsgQuestionnaireUmweltWasserverbrauch(
-    val berichterstattungWasserverbrauch: YearlyTimeseriesData<BerichterstattungWasserverbrauchValues?>? = null,
-
-    val unternehmensGruppenStrategieBzglWasserverbrauch: String? = null,
-
+  val berichterstattungWasserverbrauch:
+    YearlyTimeseriesData<BerichterstattungWasserverbrauchValues?>? =
+    null,
+  val unternehmensGruppenStrategieBzglWasserverbrauch: String? = null,
 )

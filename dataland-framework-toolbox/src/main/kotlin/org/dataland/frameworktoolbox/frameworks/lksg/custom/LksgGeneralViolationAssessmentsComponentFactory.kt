@@ -9,35 +9,35 @@ import org.dataland.frameworktoolbox.template.components.TemplateComponentFactor
 import org.dataland.frameworktoolbox.template.model.TemplateRow
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
-/**
- * Generates the Lksg general violations component
- */
+
+/** Generates the Lksg general violations component */
 @Component
-class LksgGeneralViolationAssessmentsComponentFactory(@Autowired val templateDiagnostic: TemplateDiagnostic) :
-    TemplateComponentFactory {
-    override fun canGenerateComponent(row: TemplateRow): Boolean =
-        row.component == "LkSG General Violations Assessments"
+class LksgGeneralViolationAssessmentsComponentFactory(
+  @Autowired val templateDiagnostic: TemplateDiagnostic
+) : TemplateComponentFactory {
+  override fun canGenerateComponent(row: TemplateRow): Boolean =
+    row.component == "LkSG General Violations Assessments"
 
-    override fun generateComponent(
-        row: TemplateRow,
-        utils: ComponentGenerationUtils,
-        componentGroup: ComponentGroupApi,
-    ): ComponentBase {
-        templateDiagnostic.optionsNotUsed(row)
-        templateDiagnostic.unitNotUsed(row)
+  override fun generateComponent(
+    row: TemplateRow,
+    utils: ComponentGenerationUtils,
+    componentGroup: ComponentGroupApi,
+  ): ComponentBase {
+    templateDiagnostic.optionsNotUsed(row)
+    templateDiagnostic.unitNotUsed(row)
 
-        return componentGroup.create<LksgGeneralViolationAssessmentsComponent>(
-            utils.generateFieldIdentifierFromRow(row),
-        ) {
-            utils.setCommonProperties(row, this)
-        }
-    }
-
-    override fun updateDependency(
-        row: TemplateRow,
-        utils: ComponentGenerationUtils,
-        componentIdentifierMap: Map<String, ComponentBase>,
+    return componentGroup.create<LksgGeneralViolationAssessmentsComponent>(
+      utils.generateFieldIdentifierFromRow(row)
     ) {
-        utils.defaultDependencyConfiguration(row, componentIdentifierMap, templateDiagnostic)
+      utils.setCommonProperties(row, this)
     }
+  }
+
+  override fun updateDependency(
+    row: TemplateRow,
+    utils: ComponentGenerationUtils,
+    componentIdentifierMap: Map<String, ComponentBase>,
+  ) {
+    utils.defaultDependencyConfiguration(row, componentIdentifierMap, templateDiagnostic)
+  }
 }

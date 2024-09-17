@@ -8,22 +8,12 @@ import org.dataland.datalandbackend.frameworks.heimathafen.model.general.Heimath
 import org.dataland.datalandbackend.frameworks.heimathafen.model.governance.HeimathafenGovernance
 import org.dataland.datalandbackend.frameworks.heimathafen.model.social.HeimathafenSocial
 
-/**
- * The root data-model for the Heimathafen Framework
- */
+/** The root data-model for the Heimathafen Framework */
 @Suppress("MagicNumber")
 @DataType("heimathafen", 8)
 data class HeimathafenData(
-    @field:Valid()
-    val general: HeimathafenGeneral? = null,
-
-    @field:Valid()
-    val environmental: HeimathafenEnvironmental? = null,
-
-    @field:Valid()
-    val social: HeimathafenSocial? = null,
-
-    @field:Valid()
-    val governance: HeimathafenGovernance? = null,
-
+  @field:Valid() val general: HeimathafenGeneral? = null,
+  @field:Valid() val environmental: HeimathafenEnvironmental? = null,
+  @field:Valid() val social: HeimathafenSocial? = null,
+  @field:Valid() val governance: HeimathafenGovernance? = null,
 )

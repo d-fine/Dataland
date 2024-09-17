@@ -17,42 +17,44 @@ import org.springframework.web.bind.annotation.RestController
 
 /**
  * Controller for the esg-questionnaire framework endpoints
+ *
  * @param myDataManager data manager to be used
  * @param myObjectMapper object mapper used for converting data classes to strings and vice versa
  */
 @RequestMapping("/data/esg-questionnaire")
 @RestController
 class EsgQuestionnaireDataController(
-    @Autowired var myDataManager: DataManager,
-    @Autowired var myMetaDataManager: DataMetaInformationManager,
-    @Autowired var myObjectMapper: ObjectMapper,
-) : DataController<EsgQuestionnaireData>(
+  @Autowired var myDataManager: DataManager,
+  @Autowired var myMetaDataManager: DataMetaInformationManager,
+  @Autowired var myObjectMapper: ObjectMapper,
+) :
+  DataController<EsgQuestionnaireData>(
     myDataManager,
     myMetaDataManager,
     myObjectMapper,
     EsgQuestionnaireData::class.java,
-) {
-    @Operation(operationId = "getCompanyAssociatedEsgQuestionnaireData")
-    override fun getCompanyAssociatedData(dataId: String):
-        ResponseEntity<CompanyAssociatedData<EsgQuestionnaireData>> {
-        return super.getCompanyAssociatedData(dataId)
-    }
+  ) {
+  @Operation(operationId = "getCompanyAssociatedEsgQuestionnaireData")
+  override fun getCompanyAssociatedData(
+    dataId: String
+  ): ResponseEntity<CompanyAssociatedData<EsgQuestionnaireData>> {
+    return super.getCompanyAssociatedData(dataId)
+  }
 
-    @Operation(operationId = "postCompanyAssociatedEsgQuestionnaireData")
-    override fun postCompanyAssociatedData(
-        companyAssociatedData: CompanyAssociatedData<EsgQuestionnaireData>,
-        bypassQa: Boolean,
-    ):
-        ResponseEntity<DataMetaInformation> {
-        return super.postCompanyAssociatedData(companyAssociatedData, bypassQa)
-    }
+  @Operation(operationId = "postCompanyAssociatedEsgQuestionnaireData")
+  override fun postCompanyAssociatedData(
+    companyAssociatedData: CompanyAssociatedData<EsgQuestionnaireData>,
+    bypassQa: Boolean,
+  ): ResponseEntity<DataMetaInformation> {
+    return super.postCompanyAssociatedData(companyAssociatedData, bypassQa)
+  }
 
-    @Operation(operationId = "getAllCompanyEsgQuestionnaireData")
-    override fun getFrameworkDatasetsForCompany(
-        companyId: String,
-        showOnlyActive: Boolean,
-        reportingPeriod: String?,
-    ): ResponseEntity<List<DataAndMetaInformation<EsgQuestionnaireData>>> {
-        return super.getFrameworkDatasetsForCompany(companyId, showOnlyActive, reportingPeriod)
-    }
+  @Operation(operationId = "getAllCompanyEsgQuestionnaireData")
+  override fun getFrameworkDatasetsForCompany(
+    companyId: String,
+    showOnlyActive: Boolean,
+    reportingPeriod: String?,
+  ): ResponseEntity<List<DataAndMetaInformation<EsgQuestionnaireData>>> {
+    return super.getFrameworkDatasetsForCompany(companyId, showOnlyActive, reportingPeriod)
+  }
 }

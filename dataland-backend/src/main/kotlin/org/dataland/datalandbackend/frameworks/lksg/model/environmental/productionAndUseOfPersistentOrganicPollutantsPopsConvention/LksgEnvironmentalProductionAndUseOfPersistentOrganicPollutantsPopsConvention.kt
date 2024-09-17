@@ -5,26 +5,15 @@ import jakarta.validation.Valid
 import org.dataland.datalandbackend.model.datapoints.BaseDataPoint
 import org.dataland.datalandbackend.model.enums.commons.YesNo
 
-/**
- * The data-model for the ProductionAndUseOfPersistentOrganicPollutantsPopsConvention section
- */
+/** The data-model for the ProductionAndUseOfPersistentOrganicPollutantsPopsConvention section */
 data class LksgEnvironmentalProductionAndUseOfPersistentOrganicPollutantsPopsConvention(
-    val persistentOrganicPollutantsProductionAndUse: YesNo? = null,
-
-    val persistentOrganicPollutantsUsed: String? = null,
-
-    val persistentOrganicPollutantsProductionAndUseRiskOfExposure: YesNo? = null,
-
-    val persistentOrganicPollutantsProductionAndUseRiskOfDisposal: YesNo? = null,
-
-    val persistentOrganicPollutantsUsePreventionMeasures: YesNo? = null,
-
-    @field:Valid()
-    val persistentOrganicPollutantsUsePolicy: BaseDataPoint<YesNo>? = null,
-
-    @field:Valid()
-    val persistentOrganicPollutantsUsePreventionOtherMeasures: BaseDataPoint<YesNo>? = null,
-
-    val persistentOrganicPollutantsUsePreventionOtherMeasuresDescription: String? = null,
-
+  val persistentOrganicPollutantsProductionAndUse: YesNo? = null,
+  val persistentOrganicPollutantsUsed: String? = null,
+  val persistentOrganicPollutantsProductionAndUseRiskOfExposure: YesNo? = null,
+  val persistentOrganicPollutantsProductionAndUseRiskOfDisposal: YesNo? = null,
+  val persistentOrganicPollutantsUsePreventionMeasures: YesNo? = null,
+  @field:Valid() val persistentOrganicPollutantsUsePolicy: BaseDataPoint<YesNo>? = null,
+  @field:Valid()
+  val persistentOrganicPollutantsUsePreventionOtherMeasures: BaseDataPoint<YesNo>? = null,
+  val persistentOrganicPollutantsUsePreventionOtherMeasuresDescription: String? = null,
 )

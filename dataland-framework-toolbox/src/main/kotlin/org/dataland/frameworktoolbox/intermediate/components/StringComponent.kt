@@ -10,48 +10,45 @@ import org.dataland.frameworktoolbox.specific.viewconfig.elements.getTypescriptF
 import org.dataland.frameworktoolbox.specific.viewconfig.functional.FrameworkDisplayValueLambda
 import org.dataland.frameworktoolbox.utils.typescript.TypeScriptImport
 
-/**
- * A StringComponent represents an arbitrary textual value.
- */
-class StringComponent(
-    identifier: String,
-    parent: FieldNodeParent,
-) : SimpleKotlinBackedBaseComponent(identifier, parent, "String") {
+/** A StringComponent represents an arbitrary textual value. */
+class StringComponent(identifier: String, parent: FieldNodeParent) :
+  SimpleKotlinBackedBaseComponent(identifier, parent, "String") {
 
-    override fun generateDefaultViewConfig(sectionConfigBuilder: SectionConfigBuilder) {
-        sectionConfigBuilder.addStandardCellWithValueGetterFactory(
-            this,
-            documentSupport.getFrameworkDisplayValueLambda(
-                FrameworkDisplayValueLambda(
-                    "formatStringForDatatable(${getTypescriptFieldAccessor(true)})",
-                    setOf(
-                        TypeScriptImport(
-                            "formatStringForDatatable",
-                            "@/components/resources/dataTable/conversion/PlainStringValueGetterFactory",
-                        ),
-                    ),
-                ),
-                label, getTypescriptFieldAccessor(),
-            ),
-        )
-    }
+  override fun generateDefaultViewConfig(sectionConfigBuilder: SectionConfigBuilder) {
+    sectionConfigBuilder.addStandardCellWithValueGetterFactory(
+      this,
+      documentSupport.getFrameworkDisplayValueLambda(
+        FrameworkDisplayValueLambda(
+          "formatStringForDatatable(${getTypescriptFieldAccessor(true)})",
+          setOf(
+            TypeScriptImport(
+              "formatStringForDatatable",
+              "@/components/resources/dataTable/conversion/PlainStringValueGetterFactory",
+            )
+          ),
+        ),
+        label,
+        getTypescriptFieldAccessor(),
+      ),
+    )
+  }
 
-    override fun generateDefaultUploadConfig(uploadCategoryBuilder: UploadCategoryBuilder) {
-        requireDocumentSupportIn(setOf(NoDocumentSupport))
-        uploadCategoryBuilder.addStandardUploadConfigCell(
-            component = this,
-            uploadComponentName = "InputTextFormField",
-        )
-    }
+  override fun generateDefaultUploadConfig(uploadCategoryBuilder: UploadCategoryBuilder) {
+    requireDocumentSupportIn(setOf(NoDocumentSupport))
+    uploadCategoryBuilder.addStandardUploadConfigCell(
+      component = this,
+      uploadComponentName = "InputTextFormField",
+    )
+  }
 
-    override fun generateDefaultFixtureGenerator(sectionBuilder: FixtureSectionBuilder) {
-        sectionBuilder.addAtomicExpression(
-            identifier,
-            documentSupport.getFixtureExpression(
-                fixtureExpression = "dataGenerator.guaranteedShortString()",
-                nullableFixtureExpression = "dataGenerator.randomShortString()",
-                nullable = isNullable,
-            ),
-        )
-    }
+  override fun generateDefaultFixtureGenerator(sectionBuilder: FixtureSectionBuilder) {
+    sectionBuilder.addAtomicExpression(
+      identifier,
+      documentSupport.getFixtureExpression(
+        fixtureExpression = "dataGenerator.guaranteedShortString()",
+        nullableFixtureExpression = "dataGenerator.randomShortString()",
+        nullable = isNullable,
+      ),
+    )
+  }
 }

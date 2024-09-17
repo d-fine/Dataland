@@ -5,23 +5,11 @@ import jakarta.validation.Valid
 import org.dataland.datalandbackend.model.datapoints.BaseDataPoint
 import org.dataland.datalandbackend.model.enums.commons.YesNo
 
-/**
- * The data-model for the Akkreditierungen section
- */
+/** The data-model for the Akkreditierungen section */
 data class EsgQuestionnaireAllgemeinAkkreditierungen(
-    @field:Valid()
-    val iso14001: BaseDataPoint<YesNo>? = null,
-
-    @field:Valid()
-    val iso45001: BaseDataPoint<YesNo>? = null,
-
-    @field:Valid()
-    val iso27001: BaseDataPoint<YesNo>? = null,
-
-    @field:Valid()
-    val iso50001: BaseDataPoint<YesNo>? = null,
-
-    @field:Valid()
-    val weitereAkkreditierungen: List<BaseDataPoint<String>>? = null,
-
+  @field:Valid() val iso14001: BaseDataPoint<YesNo>? = null,
+  @field:Valid() val iso45001: BaseDataPoint<YesNo>? = null,
+  @field:Valid() val iso27001: BaseDataPoint<YesNo>? = null,
+  @field:Valid() val iso50001: BaseDataPoint<YesNo>? = null,
+  @field:Valid() val weitereAkkreditierungen: List<BaseDataPoint<String>>? = null,
 )

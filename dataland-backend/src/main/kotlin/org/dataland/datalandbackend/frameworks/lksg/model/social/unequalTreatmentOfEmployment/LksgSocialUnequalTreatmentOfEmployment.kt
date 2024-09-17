@@ -5,29 +5,15 @@ import jakarta.validation.Valid
 import org.dataland.datalandbackend.model.datapoints.BaseDataPoint
 import org.dataland.datalandbackend.model.enums.commons.YesNo
 
-/**
- * The data-model for the UnequalTreatmentOfEmployment section
- */
+/** The data-model for the UnequalTreatmentOfEmployment section */
 data class LksgSocialUnequalTreatmentOfEmployment(
-    val unequalTreatmentOfEmployment: YesNo? = null,
-
-    val unequalTreatmentOfEmploymentPreventionMeasures: YesNo? = null,
-
-    val diversityAndInclusionRole: YesNo? = null,
-
-    val preventionOfMistreatments: YesNo? = null,
-
-    @field:Valid()
-    val unequalTreatmentPreventionTraining: BaseDataPoint<YesNo>? = null,
-
-    val equalOpportunitiesOfficer: YesNo? = null,
-
-    @field:Valid()
-    val equalEmploymentPolicy: BaseDataPoint<YesNo>? = null,
-
-    @field:Valid()
-    val unequalTreatmentPreventionOtherMeasures: BaseDataPoint<YesNo>? = null,
-
-    val unequalTreatmentPreventionOtherMeasuresDescription: String? = null,
-
+  val unequalTreatmentOfEmployment: YesNo? = null,
+  val unequalTreatmentOfEmploymentPreventionMeasures: YesNo? = null,
+  val diversityAndInclusionRole: YesNo? = null,
+  val preventionOfMistreatments: YesNo? = null,
+  @field:Valid() val unequalTreatmentPreventionTraining: BaseDataPoint<YesNo>? = null,
+  val equalOpportunitiesOfficer: YesNo? = null,
+  @field:Valid() val equalEmploymentPolicy: BaseDataPoint<YesNo>? = null,
+  @field:Valid() val unequalTreatmentPreventionOtherMeasures: BaseDataPoint<YesNo>? = null,
+  val unequalTreatmentPreventionOtherMeasuresDescription: String? = null,
 )

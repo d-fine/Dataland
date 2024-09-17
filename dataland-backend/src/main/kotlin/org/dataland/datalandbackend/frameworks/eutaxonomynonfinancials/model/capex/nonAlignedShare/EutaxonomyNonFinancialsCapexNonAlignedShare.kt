@@ -2,18 +2,12 @@
 package org.dataland.datalandbackend.frameworks.eutaxonomynonfinancials.model.capex.nonAlignedShare
 
 import jakarta.validation.Valid
+import java.math.BigDecimal
 import org.dataland.datalandbackend.model.datapoints.CurrencyDataPoint
 import org.dataland.datalandbackend.model.datapoints.ExtendedDataPoint
-import java.math.BigDecimal
 
-/**
- * The data-model for the NonAlignedShare section
- */
+/** The data-model for the NonAlignedShare section */
 data class EutaxonomyNonFinancialsCapexNonAlignedShare(
-    @field:Valid()
-    val relativeShareInPercent: ExtendedDataPoint<BigDecimal?>? = null,
-
-    @field:Valid()
-    val absoluteShare: CurrencyDataPoint? = null,
-
+  @field:Valid() val relativeShareInPercent: ExtendedDataPoint<BigDecimal?>? = null,
+  @field:Valid() val absoluteShare: CurrencyDataPoint? = null,
 )

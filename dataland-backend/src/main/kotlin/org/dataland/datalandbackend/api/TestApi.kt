@@ -5,15 +5,13 @@ import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestMapping
 
-/**
- * An API interface purely used for testing
- */
+/** An API interface purely used for testing */
 @Hidden
 @RequestMapping("/testing")
 fun interface TestApi {
-    /**
-     * A dummy function that returns a 500 response to test the internal server error handling behaviour
-     */
-    @GetMapping("/getDummy500Response")
-    fun getDummy500Response(): ResponseEntity<Unit>
+  /**
+   * A dummy function that returns a 500 response to test the internal server error handling
+   * behaviour
+   */
+  @GetMapping("/getDummy500Response") fun getDummy500Response(): ResponseEntity<Unit>
 }

@@ -28,77 +28,75 @@ import org.springframework.security.core.context.SecurityContextHolder
 @AutoConfigureTestDatabase(connection = EmbeddedDatabaseConnection.H2)
 @Transactional
 internal class CompanyDataControllerTest(
-    @Autowired val companyAlterationManager: CompanyAlterationManager,
-    @Autowired val companyQueryManager: CompanyQueryManager,
-    @Autowired val companyIdentifierRepositoryInterface: CompanyIdentifierRepository,
-    @Autowired val companyBaseManager: CompanyBaseManager,
+  @Autowired val companyAlterationManager: CompanyAlterationManager,
+  @Autowired val companyQueryManager: CompanyQueryManager,
+  @Autowired val companyIdentifierRepositoryInterface: CompanyIdentifierRepository,
+  @Autowired val companyBaseManager: CompanyBaseManager,
 ) {
-    private final val testLei = "testLei"
-    val companyWithTestLei = CompanyInformation(
-        companyName = "Test Company",
-        companyAlternativeNames = null,
-        companyContactDetails = null,
-        companyLegalForm = null,
-        countryCode = "DE",
-        headquarters = "Berlin",
-        headquartersPostalCode = "8",
-        sector = null,
-        sectorCodeWz = null,
-        website = null,
-        isTeaserCompany = null,
-        identifiers = mapOf(
-            IdentifierType.Lei to listOf(testLei),
-        ),
-        parentCompanyLei = null,
+  private final val testLei = "testLei"
+  val companyWithTestLei =
+    CompanyInformation(
+      companyName = "Test Company",
+      companyAlternativeNames = null,
+      companyContactDetails = null,
+      companyLegalForm = null,
+      countryCode = "DE",
+      headquarters = "Berlin",
+      headquartersPostalCode = "8",
+      sector = null,
+      sectorCodeWz = null,
+      website = null,
+      isTeaserCompany = null,
+      identifiers = mapOf(IdentifierType.Lei to listOf(testLei)),
+      parentCompanyLei = null,
     )
-    val companyController = CompanyDataController(
-        companyAlterationManager,
-        companyQueryManager,
-        companyIdentifierRepositoryInterface,
-        companyBaseManager,
+  val companyController =
+    CompanyDataController(
+      companyAlterationManager,
+      companyQueryManager,
+      companyIdentifierRepositoryInterface,
+      companyBaseManager,
     )
-    fun postCompany(): String {
-        return companyController.postCompany(
-            companyWithTestLei,
-        ).body!!.companyId
+
+  fun postCompany(): String {
+    return companyController.postCompany(companyWithTestLei).body!!.companyId
+  }
+
+  @Test
+  fun `check that the company id by identifier endpoint works as expected`() {
+    mockSecurityContext()
+
+    val expectedCompanyId = postCompany()
+    Assertions.assertEquals(
+      expectedCompanyId,
+      companyController.getCompanyIdByIdentifier(IdentifierType.Lei, testLei).body!!.companyId,
+    )
+    assertThrows<ResourceNotFoundApiException> {
+      companyController.getCompanyIdByIdentifier(IdentifierType.Lei, "nonExistingLei")
     }
+  }
 
-    @Test
-    fun `check that the company id by identifier endpoint works as expected`() {
-        mockSecurityContext()
+  private fun mockSecurityContext() {
+    val mockAuthentication =
+      AuthenticationMock.mockJwtAuthentication(
+        "mocked_uploader",
+        "dummy-id",
+        setOf(DatalandRealmRole.ROLE_USER, DatalandRealmRole.ROLE_UPLOADER),
+      )
+    val mockSecurityContext = Mockito.mock(SecurityContext::class.java)
+    `when`(mockSecurityContext.authentication).thenReturn(mockAuthentication)
+    SecurityContextHolder.setContext(mockSecurityContext)
+  }
 
-        val expectedCompanyId = postCompany()
-        Assertions.assertEquals(
-            expectedCompanyId,
-            companyController.getCompanyIdByIdentifier(IdentifierType.Lei, testLei).body!!.companyId,
-        )
-        assertThrows<ResourceNotFoundApiException> {
-            companyController.getCompanyIdByIdentifier(IdentifierType.Lei, "nonExistingLei")
-        }
+  @Test
+  fun `check that the is company valid head endpoint endpoint works as expected`() {
+    mockSecurityContext()
+
+    val expectedCompanyId = postCompany()
+    assertDoesNotThrow { companyController.isCompanyIdValid(expectedCompanyId) }
+
+    assertThrows<ResourceNotFoundApiException> {
+      companyController.isCompanyIdValid("nonExistingLei")
     }
-
-    private fun mockSecurityContext() {
-        val mockAuthentication = AuthenticationMock.mockJwtAuthentication(
-            "mocked_uploader",
-            "dummy-id",
-            setOf(DatalandRealmRole.ROLE_USER, DatalandRealmRole.ROLE_UPLOADER),
-        )
-        val mockSecurityContext = Mockito.mock(SecurityContext::class.java)
-        `when`(mockSecurityContext.authentication).thenReturn(mockAuthentication)
-        SecurityContextHolder.setContext(mockSecurityContext)
-    }
-
-    @Test
-    fun `check that the is company valid head endpoint endpoint works as expected`() {
-        mockSecurityContext()
-
-        val expectedCompanyId = postCompany()
-        assertDoesNotThrow {
-            companyController.isCompanyIdValid(expectedCompanyId)
-        }
-
-        assertThrows<ResourceNotFoundApiException> {
-            companyController.isCompanyIdValid("nonExistingLei")
-        }
-    }
+  }
 }

@@ -12,25 +12,28 @@ import org.springframework.stereotype.Service
  */
 @Service
 class UserAuthenticatedApiService(
-    @Value("\${dataland.backend.base-url}") private val backendBaseUrl: String,
+  @Value("\${dataland.backend.base-url}") private val backendBaseUrl: String
 ) {
-    private fun getUserAuthenticatedHttpClient(authentication: DatalandAuthentication): OkHttpClient {
-        return OkHttpClient()
+  private fun getUserAuthenticatedHttpClient(authentication: DatalandAuthentication): OkHttpClient {
+    return OkHttpClient()
+      .newBuilder()
+      .addInterceptor {
+        val originalRequest = it.request()
+        val modifiedRequest =
+          originalRequest
             .newBuilder()
-            .addInterceptor {
-                val originalRequest = it.request()
-                val modifiedRequest = originalRequest.newBuilder()
-                    .header("Authorization", "Bearer ${authentication.credentials}")
-                    .build()
-                it.proceed(modifiedRequest)
-            }.build()
-    }
+            .header("Authorization", "Bearer ${authentication.credentials}")
+            .build()
+        it.proceed(modifiedRequest)
+      }
+      .build()
+  }
 
-    /**
-     * Builds a MetaDataControllerApi that is authenticated as the given Dataland User.
-     */
-    fun getMetaDataControllerApiForUserAuthentication(authentication: DatalandAuthentication): MetaDataControllerApi {
-        val userAuthenticatedApiClient = getUserAuthenticatedHttpClient(authentication)
-        return MetaDataControllerApi(backendBaseUrl, userAuthenticatedApiClient)
-    }
+  /** Builds a MetaDataControllerApi that is authenticated as the given Dataland User. */
+  fun getMetaDataControllerApiForUserAuthentication(
+    authentication: DatalandAuthentication
+  ): MetaDataControllerApi {
+    val userAuthenticatedApiClient = getUserAuthenticatedHttpClient(authentication)
+    return MetaDataControllerApi(backendBaseUrl, userAuthenticatedApiClient)
+  }
 }

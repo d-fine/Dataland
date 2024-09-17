@@ -2,19 +2,15 @@
 package org.dataland.datalandbackend.frameworks.lksg.model.general.productionSpecificOwnOperations
 
 import io.swagger.v3.oas.annotations.media.Schema
+import kotlin.collections.List
 import org.dataland.datalandbackend.frameworks.lksg.custom.LksgProcurementCategory
 import org.dataland.datalandbackend.frameworks.lksg.custom.LksgProduct
 import org.dataland.datalandbackend.frameworks.lksg.custom.ProcurementCategoryType
 import org.dataland.datalandbackend.utils.JsonExampleFormattingConstants
-import kotlin.collections.List
 
-/**
- * The data-model for the ProductionSpecificOwnOperations section
- */
+/** The data-model for the ProductionSpecificOwnOperations section */
 data class LksgGeneralProductionSpecificOwnOperations(
-    val mostImportantProducts: List<LksgProduct>? = null,
-
-    @field:Schema(example = JsonExampleFormattingConstants.PROCUREMENT_CATEGORIES_DEFAULT_VALUE)
-    val procurementCategories: Map<ProcurementCategoryType, LksgProcurementCategory>? = null,
-
+  val mostImportantProducts: List<LksgProduct>? = null,
+  @field:Schema(example = JsonExampleFormattingConstants.PROCUREMENT_CATEGORIES_DEFAULT_VALUE)
+  val procurementCategories: Map<ProcurementCategoryType, LksgProcurementCategory>? = null,
 )

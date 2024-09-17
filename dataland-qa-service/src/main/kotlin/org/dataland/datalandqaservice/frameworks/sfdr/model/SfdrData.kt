@@ -6,17 +6,9 @@ import org.dataland.datalandqaservice.frameworks.sfdr.model.environmental.SfdrEn
 import org.dataland.datalandqaservice.frameworks.sfdr.model.general.SfdrGeneral
 import org.dataland.datalandqaservice.frameworks.sfdr.model.social.SfdrSocial
 
-/**
- * The root QA data-model for the Sfdr Framework
- */
+/** The root QA data-model for the Sfdr Framework */
 data class SfdrData(
-    @field:Valid()
-    val general: SfdrGeneral? = null,
-
-    @field:Valid()
-    val environmental: SfdrEnvironmental? = null,
-
-    @field:Valid()
-    val social: SfdrSocial? = null,
-
+  @field:Valid() val general: SfdrGeneral? = null,
+  @field:Valid() val environmental: SfdrEnvironmental? = null,
+  @field:Valid() val social: SfdrSocial? = null,
 )

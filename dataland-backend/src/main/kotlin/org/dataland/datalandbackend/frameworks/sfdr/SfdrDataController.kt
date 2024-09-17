@@ -17,42 +17,39 @@ import org.springframework.web.bind.annotation.RestController
 
 /**
  * Controller for the sfdr framework endpoints
+ *
  * @param myDataManager data manager to be used
  * @param myObjectMapper object mapper used for converting data classes to strings and vice versa
  */
 @RequestMapping("/data/sfdr")
 @RestController
 class SfdrDataController(
-    @Autowired var myDataManager: DataManager,
-    @Autowired var myMetaDataManager: DataMetaInformationManager,
-    @Autowired var myObjectMapper: ObjectMapper,
-) : DataController<SfdrData>(
-    myDataManager,
-    myMetaDataManager,
-    myObjectMapper,
-    SfdrData::class.java,
-) {
-    @Operation(operationId = "getCompanyAssociatedSfdrData")
-    override fun getCompanyAssociatedData(dataId: String):
-        ResponseEntity<CompanyAssociatedData<SfdrData>> {
-        return super.getCompanyAssociatedData(dataId)
-    }
+  @Autowired var myDataManager: DataManager,
+  @Autowired var myMetaDataManager: DataMetaInformationManager,
+  @Autowired var myObjectMapper: ObjectMapper,
+) :
+  DataController<SfdrData>(myDataManager, myMetaDataManager, myObjectMapper, SfdrData::class.java) {
+  @Operation(operationId = "getCompanyAssociatedSfdrData")
+  override fun getCompanyAssociatedData(
+    dataId: String
+  ): ResponseEntity<CompanyAssociatedData<SfdrData>> {
+    return super.getCompanyAssociatedData(dataId)
+  }
 
-    @Operation(operationId = "postCompanyAssociatedSfdrData")
-    override fun postCompanyAssociatedData(
-        companyAssociatedData: CompanyAssociatedData<SfdrData>,
-        bypassQa: Boolean,
-    ):
-        ResponseEntity<DataMetaInformation> {
-        return super.postCompanyAssociatedData(companyAssociatedData, bypassQa)
-    }
+  @Operation(operationId = "postCompanyAssociatedSfdrData")
+  override fun postCompanyAssociatedData(
+    companyAssociatedData: CompanyAssociatedData<SfdrData>,
+    bypassQa: Boolean,
+  ): ResponseEntity<DataMetaInformation> {
+    return super.postCompanyAssociatedData(companyAssociatedData, bypassQa)
+  }
 
-    @Operation(operationId = "getAllCompanySfdrData")
-    override fun getFrameworkDatasetsForCompany(
-        companyId: String,
-        showOnlyActive: Boolean,
-        reportingPeriod: String?,
-    ): ResponseEntity<List<DataAndMetaInformation<SfdrData>>> {
-        return super.getFrameworkDatasetsForCompany(companyId, showOnlyActive, reportingPeriod)
-    }
+  @Operation(operationId = "getAllCompanySfdrData")
+  override fun getFrameworkDatasetsForCompany(
+    companyId: String,
+    showOnlyActive: Boolean,
+    reportingPeriod: String?,
+  ): ResponseEntity<List<DataAndMetaInformation<SfdrData>>> {
+    return super.getFrameworkDatasetsForCompany(companyId, showOnlyActive, reportingPeriod)
+  }
 }

@@ -3,15 +3,11 @@ package org.dataland.datalandbackend.frameworks.lksg.model.general.productionSpe
 
 import io.swagger.v3.oas.annotations.media.Schema
 
-/**
- * Enum class for the multi-select-field specificProcurement
- */
-@Schema(
-    enumAsRef = true,
-)
+/** Enum class for the multi-select-field specificProcurement */
+@Schema(enumAsRef = true)
 enum class SpecificProcurementOptions {
-    ShortLivedAndChangingBusinessRelationships,
-    HighPricePressure,
-    TightlyTimedOrShortTermAdjustedDeliveryDeadlinesAndConditionsWithSuppliers,
-    NoneOfTheAbove,
+  ShortLivedAndChangingBusinessRelationships,
+  HighPricePressure,
+  TightlyTimedOrShortTermAdjustedDeliveryDeadlinesAndConditionsWithSuppliers,
+  NoneOfTheAbove,
 }

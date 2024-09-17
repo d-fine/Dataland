@@ -7,15 +7,11 @@ import org.dataland.datalandbackend.model.documents.ExtendedDocumentReference
 import org.dataland.datalandbackend.model.enums.eutaxonomy.AssuranceOptions
 
 /**
- * --- API model ---
- * Level of assurance for the reported data and information about the assurance provider
+ * --- API model --- Level of assurance for the reported data and information about the assurance
+ * provider
  */
 data class AssuranceDataPoint(
-    @field:JsonProperty(required = true)
-    override val value: AssuranceOptions,
-
-    @field:Valid()
-    override val dataSource: ExtendedDocumentReference? = null,
-
-    val provider: String? = null,
+  @field:JsonProperty(required = true) override val value: AssuranceOptions,
+  @field:Valid() override val dataSource: ExtendedDocumentReference? = null,
+  val provider: String? = null,
 ) : BaseDataPoint<AssuranceOptions>

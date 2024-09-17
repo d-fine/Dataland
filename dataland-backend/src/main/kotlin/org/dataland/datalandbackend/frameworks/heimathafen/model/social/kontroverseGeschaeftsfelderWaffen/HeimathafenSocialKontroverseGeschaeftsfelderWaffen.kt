@@ -5,25 +5,14 @@ import jakarta.validation.Valid
 import org.dataland.datalandbackend.model.datapoints.BaseDataPoint
 import org.dataland.datalandbackend.model.enums.commons.YesNo
 
-/**
- * The data-model for the KontroverseGeschaeftsfelderWaffen section
- */
+/** The data-model for the KontroverseGeschaeftsfelderWaffen section */
 data class HeimathafenSocialKontroverseGeschaeftsfelderWaffen(
-    val herstellungOderVertriebVonWaffenAusschluss: YesNo? = null,
-
-    val wennNeinBitteBegruenden: String? = null,
-
-    val verwendeteKennzahlFuerDieUmsatzmessung: String? = null,
-
-    val methodikDerBerechnung: String? = null,
-
-    @field:Valid()
-    val verwendeteQuellen: List<BaseDataPoint<String>>? = null,
-
-    val ausschlussVerbotenerWaffen: YesNo? = null,
-
-    val wennAuschlussNichtMoeglichBitteBegruenden: String? = null,
-
-    val verwendeteKennzahlZurAbbildungGeaechteterWaffen: String? = null,
-
+  val herstellungOderVertriebVonWaffenAusschluss: YesNo? = null,
+  val wennNeinBitteBegruenden: String? = null,
+  val verwendeteKennzahlFuerDieUmsatzmessung: String? = null,
+  val methodikDerBerechnung: String? = null,
+  @field:Valid() val verwendeteQuellen: List<BaseDataPoint<String>>? = null,
+  val ausschlussVerbotenerWaffen: YesNo? = null,
+  val wennAuschlussNichtMoeglichBitteBegruenden: String? = null,
+  val verwendeteKennzahlZurAbbildungGeaechteterWaffen: String? = null,
 )

@@ -10,42 +10,40 @@ import org.dataland.frameworktoolbox.template.model.TemplateRow
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 
-/**
- * Generates EsgQuestionnaireYearlyDecimalTimeseriesDataComponentFactory
- */
+/** Generates EsgQuestionnaireYearlyDecimalTimeseriesDataComponentFactory */
 @Component
-class EsgQuestionnaireYearlyDecimalTimeseriesDataComponentFactory
-(@Autowired val templateDiagnostic: TemplateDiagnostic) :
-    TemplateComponentFactory {
-    override fun canGenerateComponent(row: TemplateRow): Boolean =
-        row.component.trim() in setOf("Custom - Rolling Window", "Custom - Rolling Window (past-only)")
+class EsgQuestionnaireYearlyDecimalTimeseriesDataComponentFactory(
+  @Autowired val templateDiagnostic: TemplateDiagnostic
+) : TemplateComponentFactory {
+  override fun canGenerateComponent(row: TemplateRow): Boolean =
+    row.component.trim() in setOf("Custom - Rolling Window", "Custom - Rolling Window (past-only)")
 
-    override fun generateComponent(
-        row: TemplateRow,
-        utils: ComponentGenerationUtils,
-        componentGroup: ComponentGroupApi,
-    ): ComponentBase {
-        templateDiagnostic.optionsNotUsed(row)
-        templateDiagnostic.unitNotUsed(row)
+  override fun generateComponent(
+    row: TemplateRow,
+    utils: ComponentGenerationUtils,
+    componentGroup: ComponentGroupApi,
+  ): ComponentBase {
+    templateDiagnostic.optionsNotUsed(row)
+    templateDiagnostic.unitNotUsed(row)
 
-        return componentGroup.create<EsgQuestionnaireYearlyDecimalTimeseriesDataComponent>(
-            utils.generateFieldIdentifierFromRow(row),
-        ) {
-            utils.setCommonProperties(row, this)
-            uploadBehaviour =
-                if (row.component.contains("past-only")) {
-                    EsgQuestionnaireYearlyDecimalTimeseriesDataComponent.UploadBehaviour.ThreeYearPast
-                } else {
-                    EsgQuestionnaireYearlyDecimalTimeseriesDataComponent.UploadBehaviour.ThreeYearDelta
-                }
+    return componentGroup.create<EsgQuestionnaireYearlyDecimalTimeseriesDataComponent>(
+      utils.generateFieldIdentifierFromRow(row)
+    ) {
+      utils.setCommonProperties(row, this)
+      uploadBehaviour =
+        if (row.component.contains("past-only")) {
+          EsgQuestionnaireYearlyDecimalTimeseriesDataComponent.UploadBehaviour.ThreeYearPast
+        } else {
+          EsgQuestionnaireYearlyDecimalTimeseriesDataComponent.UploadBehaviour.ThreeYearDelta
         }
     }
+  }
 
-    override fun updateDependency(
-        row: TemplateRow,
-        utils: ComponentGenerationUtils,
-        componentIdentifierMap: Map<String, ComponentBase>,
-    ) {
-        utils.defaultDependencyConfiguration(row, componentIdentifierMap, templateDiagnostic)
-    }
+  override fun updateDependency(
+    row: TemplateRow,
+    utils: ComponentGenerationUtils,
+    componentIdentifierMap: Map<String, ComponentBase>,
+  ) {
+    utils.defaultDependencyConfiguration(row, componentIdentifierMap, templateDiagnostic)
+  }
 }

@@ -5,17 +5,10 @@ import jakarta.validation.Valid
 import org.dataland.datalandbackend.model.datapoints.BaseDataPoint
 import org.dataland.datalandbackend.model.enums.commons.YesNo
 
-/**
- * The data-model for the GoodGovernanceUngc section
- */
+/** The data-model for the GoodGovernanceUngc section */
 data class HeimathafenGovernanceGoodGovernanceUngc(
-    val beruecksichtigungDesUngc: YesNo? = null,
-
-    val wennNeinBitteBegruenden: String? = null,
-
-    val beruecksichtigungDerUngcBeschreibung: String? = null,
-
-    @field:Valid()
-    val verwendeteQuellen: List<BaseDataPoint<String>>? = null,
-
+  val beruecksichtigungDesUngc: YesNo? = null,
+  val wennNeinBitteBegruenden: String? = null,
+  val beruecksichtigungDerUngcBeschreibung: String? = null,
+  @field:Valid() val verwendeteQuellen: List<BaseDataPoint<String>>? = null,
 )

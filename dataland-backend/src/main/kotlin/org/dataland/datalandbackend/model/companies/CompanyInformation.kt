@@ -5,12 +5,12 @@ import io.swagger.v3.oas.annotations.media.Schema
 import org.dataland.datalandbackend.model.enums.company.IdentifierType
 
 /**
- * --- API model ---
- * Class for defining the request body of a post company request
+ * --- API model --- Class for defining the request body of a post company request
+ *
  * @param companyName official name of the company
  * @param companyAlternativeNames other names or abbreviations the company is known under
  * @param companyContactDetails the email addresses of the company
- * @param companyLegalForm legal structure of the company (e.g. „Public Limited Company (PLC)‟)
+ * @param companyLegalForm legal structure of the company (e.g. �Public Limited Company (PLC)?)
  * @param headquarters city where the headquarters of the company is located
  * @param headquartersPostalCode postal code of the headquarters
  * @param sector in which the company operates (e.g. Financials)
@@ -22,36 +22,19 @@ import org.dataland.datalandbackend.model.enums.company.IdentifierType
  * @param parentCompanyLei the lei of the parent company
  */
 data class CompanyInformation(
-    @field:JsonProperty(required = true)
-    val companyName: String,
-
-    val companyAlternativeNames: List<String>?,
-    @field:Schema(example = "\n[\"Test@test.com\"\n]")
-    val companyContactDetails: List<String>?,
-
-    val companyLegalForm: String?,
-
-    @field:JsonProperty(required = true)
-    val headquarters: String,
-
-    val headquartersPostalCode: String?,
-
-    val sector: String?,
-
-    val sectorCodeWz: String?,
-
-    @field:JsonProperty(required = true)
-    @field:Schema(
-        example = "\n{\n\t\"Lei\": [\"ExampleLei\"]\n}",
-    )
-    val identifiers: Map<IdentifierType, List<String>>,
-
-    @field:JsonProperty(required = true)
-    val countryCode: String,
-
-    val isTeaserCompany: Boolean?,
-
-    val website: String?,
-
-    val parentCompanyLei: String?,
+  @field:JsonProperty(required = true) val companyName: String,
+  val companyAlternativeNames: List<String>?,
+  @field:Schema(example = "\n[\"Test@test.com\"\n]") val companyContactDetails: List<String>?,
+  val companyLegalForm: String?,
+  @field:JsonProperty(required = true) val headquarters: String,
+  val headquartersPostalCode: String?,
+  val sector: String?,
+  val sectorCodeWz: String?,
+  @field:JsonProperty(required = true)
+  @field:Schema(example = "\n{\n\t\"Lei\": [\"ExampleLei\"]\n}")
+  val identifiers: Map<IdentifierType, List<String>>,
+  @field:JsonProperty(required = true) val countryCode: String,
+  val isTeaserCompany: Boolean?,
+  val website: String?,
+  val parentCompanyLei: String?,
 )

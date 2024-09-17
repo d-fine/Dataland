@@ -9,34 +9,32 @@ import org.dataland.frameworktoolbox.template.model.TemplateRow
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 
-/**
- * Generates ReportPreuploadComponents from rows with the component "Report Preupload"
- */
+/** Generates ReportPreuploadComponents from rows with the component "Report Preupload" */
 @Component
 class ReportPreuploadComponentFactory(@Autowired val templateDiagnostic: TemplateDiagnostic) :
-    TemplateComponentFactory {
-    override fun canGenerateComponent(row: TemplateRow): Boolean = row.component == "Report Preupload"
+  TemplateComponentFactory {
+  override fun canGenerateComponent(row: TemplateRow): Boolean = row.component == "Report Preupload"
 
-    override fun generateComponent(
-        row: TemplateRow,
-        utils: ComponentGenerationUtils,
-        componentGroup: ComponentGroupApi,
-    ): ComponentBase {
-        templateDiagnostic.optionsNotUsed(row)
-        templateDiagnostic.unitNotUsed(row)
+  override fun generateComponent(
+    row: TemplateRow,
+    utils: ComponentGenerationUtils,
+    componentGroup: ComponentGroupApi,
+  ): ComponentBase {
+    templateDiagnostic.optionsNotUsed(row)
+    templateDiagnostic.unitNotUsed(row)
 
-        return componentGroup.create<ReportPreuploadComponent>(
-            utils.generateFieldIdentifierFromRow(row),
-        ) {
-            utils.setCommonProperties(row, this)
-        }
-    }
-
-    override fun updateDependency(
-        row: TemplateRow,
-        utils: ComponentGenerationUtils,
-        componentIdentifierMap: Map<String, ComponentBase>,
+    return componentGroup.create<ReportPreuploadComponent>(
+      utils.generateFieldIdentifierFromRow(row)
     ) {
-        utils.defaultDependencyConfiguration(row, componentIdentifierMap, templateDiagnostic)
+      utils.setCommonProperties(row, this)
     }
+  }
+
+  override fun updateDependency(
+    row: TemplateRow,
+    utils: ComponentGenerationUtils,
+    componentIdentifierMap: Map<String, ComponentBase>,
+  ) {
+    utils.defaultDependencyConfiguration(row, componentIdentifierMap, templateDiagnostic)
+  }
 }

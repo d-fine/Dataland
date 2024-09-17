@@ -5,19 +5,11 @@ import jakarta.validation.Valid
 import org.dataland.datalandbackend.model.datapoints.BaseDataPoint
 import org.dataland.datalandbackend.model.enums.commons.YesNo
 
-/**
- * The data-model for the KontroverseGeschaeftsfelderKohlefoerderungUndVerteilung section
- */
+/** The data-model for the KontroverseGeschaeftsfelderKohlefoerderungUndVerteilung section */
 data class HeimathafenEnvironmentalKontroverseGeschaeftsfelderKohlefoerderungUndVerteilung(
-    val ausschlussDerKohlefoerderungUndVerteilung: YesNo? = null,
-
-    val wennNeinBitteBegruenden: String? = null,
-
-    val verwendeteKennzahl: String? = null,
-
-    val methodikDerBerechnung: String? = null,
-
-    @field:Valid()
-    val verwendeteQuellen: List<BaseDataPoint<String>>? = null,
-
+  val ausschlussDerKohlefoerderungUndVerteilung: YesNo? = null,
+  val wennNeinBitteBegruenden: String? = null,
+  val verwendeteKennzahl: String? = null,
+  val methodikDerBerechnung: String? = null,
+  @field:Valid() val verwendeteQuellen: List<BaseDataPoint<String>>? = null,
 )

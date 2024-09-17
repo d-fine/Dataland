@@ -19,95 +19,96 @@ import org.springframework.web.bind.annotation.RequestMethod
 import org.springframework.web.bind.annotation.RequestPart
 import org.springframework.web.multipart.MultipartFile
 
-/**
- * Defines the restful dataland document manager API regarding document exchange
- */
+/** Defines the restful dataland document manager API regarding document exchange */
 @SecurityRequirement(name = "default-bearer-auth")
 @SecurityRequirement(name = "default-oauth")
 interface DocumentApi {
-    /**
-     * Upload a document
-     * @param document a document
-     */
-    @Operation(
-        summary = "Upload a document.",
-        description = "Upload a document and receive meta information",
-    )
-    @ApiResponses(
-        value = [
-            ApiResponse(responseCode = "200", description = "Successfully uploaded document."),
-        ],
-    )
-    @PostMapping(
-        value = ["/"],
-        produces = ["application/json"],
-        consumes = ["multipart/form-data"],
-    )
-    @PreAuthorize("hasRole('ROLE_UPLOADER') or @UserRolesChecker.isCurrentUserCompanyOwnerOrCompanyUploader()")
-    fun postDocument(
-        @RequestPart document: MultipartFile,
-    ): ResponseEntity<DocumentUploadResponse>
+  /**
+   * Upload a document
+   *
+   * @param document a document
+   */
+  @Operation(
+    summary = "Upload a document.",
+    description = "Upload a document and receive meta information",
+  )
+  @ApiResponses(
+    value = [ApiResponse(responseCode = "200", description = "Successfully uploaded document.")]
+  )
+  @PostMapping(value = ["/"], produces = ["application/json"], consumes = ["multipart/form-data"])
+  @PreAuthorize(
+    "hasRole('ROLE_UPLOADER') or @UserRolesChecker.isCurrentUserCompanyOwnerOrCompanyUploader()"
+  )
+  fun postDocument(@RequestPart document: MultipartFile): ResponseEntity<DocumentUploadResponse>
 
-    /**
-     * Checks if a document with a given ID exists
-     * @param documentId the ID to check
-     */
-    @Operation(
-        summary = "Check if a document exists.",
-        description = "Check for a given document ID (hash) if the document already exists in the database.",
-    )
-    @ApiResponses(
-        value = [
-            ApiResponse(responseCode = "200", description = "Successfully checked document existence."),
-            ApiResponse(responseCode = "404", description = "Successfully checked that a document does not exist."),
-        ],
-    )
-    @RequestMapping(
-        method = [RequestMethod.HEAD],
-        value = ["/{documentId}"],
-        produces = ["application/json"],
-    )
-    @PreAuthorize("hasRole('ROLE_USER')")
-    fun checkDocument(
-        @PathVariable("documentId") documentId: String,
-    )
+  /**
+   * Checks if a document with a given ID exists
+   *
+   * @param documentId the ID to check
+   */
+  @Operation(
+    summary = "Check if a document exists.",
+    description =
+      "Check for a given document ID (hash) if the document already exists in the database.",
+  )
+  @ApiResponses(
+    value =
+      [
+        ApiResponse(responseCode = "200", description = "Successfully checked document existence."),
+        ApiResponse(
+          responseCode = "404",
+          description = "Successfully checked that a document does not exist.",
+        ),
+      ]
+  )
+  @RequestMapping(
+    method = [RequestMethod.HEAD],
+    value = ["/{documentId}"],
+    produces = ["application/json"],
+  )
+  @PreAuthorize("hasRole('ROLE_USER')")
+  fun checkDocument(@PathVariable("documentId") documentId: String)
 
-    /**
-     * Retrieve a document by its ID
-     * @param documentId the ID to check
-     */
-    @Operation(
-        summary = "Receive a document.",
-        description = "Receive a document by its ID from internal storage.",
-    )
-    @ApiResponses(
-        value = [
-            ApiResponse(
-                responseCode = "200",
-                description = "Successfully received document.",
-                headers = [
-                    Header(name = HttpHeaders.CONTENT_DISPOSITION, schema = Schema(type = "string")),
-                    Header(
-                        name = HttpHeaders.CONTENT_LENGTH,
-                        schema = Schema(type = "integer", format = "int64"),
-                    ),
-                    Header(name = HttpHeaders.CONTENT_TYPE, schema = Schema(type = "string")),
-                ],
-            ),
-        ],
-    )
-    @GetMapping(
-        value = ["/{documentId}"],
-        produces = [
-            "application/json",
-            "application/pdf",
-            "application/vnd.ms-excel",
-            "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-            "application/vnd.oasis.opendocument.spreadsheet",
-        ],
-    )
-    @PreAuthorize("hasRole('ROLE_USER')")
-    fun getDocument(
-        @PathVariable("documentId") documentId: String,
-    ): ResponseEntity<InputStreamResource>
+  /**
+   * Retrieve a document by its ID
+   *
+   * @param documentId the ID to check
+   */
+  @Operation(
+    summary = "Receive a document.",
+    description = "Receive a document by its ID from internal storage.",
+  )
+  @ApiResponses(
+    value =
+      [
+        ApiResponse(
+          responseCode = "200",
+          description = "Successfully received document.",
+          headers =
+            [
+              Header(name = HttpHeaders.CONTENT_DISPOSITION, schema = Schema(type = "string")),
+              Header(
+                name = HttpHeaders.CONTENT_LENGTH,
+                schema = Schema(type = "integer", format = "int64"),
+              ),
+              Header(name = HttpHeaders.CONTENT_TYPE, schema = Schema(type = "string")),
+            ],
+        )
+      ]
+  )
+  @GetMapping(
+    value = ["/{documentId}"],
+    produces =
+      [
+        "application/json",
+        "application/pdf",
+        "application/vnd.ms-excel",
+        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        "application/vnd.oasis.opendocument.spreadsheet",
+      ],
+  )
+  @PreAuthorize("hasRole('ROLE_USER')")
+  fun getDocument(
+    @PathVariable("documentId") documentId: String
+  ): ResponseEntity<InputStreamResource>
 }

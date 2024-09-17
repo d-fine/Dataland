@@ -4,14 +4,9 @@ import org.dataland.datalandbackend.model.p2p.categories.realEstate.subcategorie
 import org.dataland.datalandbackend.model.p2p.categories.realEstate.subcategories.P2pRealEstateEnergySource
 import org.dataland.datalandbackend.model.p2p.categories.realEstate.subcategories.P2plRealEstateTechnology
 
-/**
- * --- API model ---
- * Fields of the P2P questionnaire regarding the real estate sectors
- */
+/** --- API model --- Fields of the P2P questionnaire regarding the real estate sectors */
 data class P2pRealEstate(
-    val buildingEfficiency: P2pRealEstateBuildingEfficiency? = null,
-
-    val energySource: P2pRealEstateEnergySource? = null,
-
-    val technology: P2plRealEstateTechnology? = null,
+  val buildingEfficiency: P2pRealEstateBuildingEfficiency? = null,
+  val energySource: P2pRealEstateEnergySource? = null,
+  val technology: P2plRealEstateTechnology? = null,
 )

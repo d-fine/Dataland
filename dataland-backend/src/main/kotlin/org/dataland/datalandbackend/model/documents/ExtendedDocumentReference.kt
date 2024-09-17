@@ -6,17 +6,13 @@ import org.dataland.datalandbackend.interfaces.documents.ExtendedDocumentReferen
 import org.dataland.datalandbackend.validator.DocumentExists
 import org.dataland.datalandbackend.validator.PageRange
 
-/**
- * --- API model ---
- * A reference to a page in a company report
- */
+/** --- API model --- A reference to a page in a company report */
 data class ExtendedDocumentReference(
-    @field:PageRange
-    override val page: String? = null,
-    override val tagName: String? = null,
-    override val fileName: String? = null,
-    @field:JsonProperty(required = true)
-    @field:NotBlank
-    @field:DocumentExists
-    override val fileReference: String,
+  @field:PageRange override val page: String? = null,
+  override val tagName: String? = null,
+  override val fileName: String? = null,
+  @field:JsonProperty(required = true)
+  @field:NotBlank
+  @field:DocumentExists
+  override val fileReference: String,
 ) : ExtendedDocumentReference

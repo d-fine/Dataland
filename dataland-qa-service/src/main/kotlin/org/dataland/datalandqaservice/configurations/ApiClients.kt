@@ -7,21 +7,15 @@ import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 
-/**
- * A configuration class that provides access to pre-configured Api Clients
- */
+/** A configuration class that provides access to pre-configured Api Clients */
 @Configuration
-class ApiClients(
-    @Value("\${dataland.backend.base-url}") private val backendBaseUrl: String,
-) {
+class ApiClients(@Value("\${dataland.backend.base-url}") private val backendBaseUrl: String) {
 
-    /**
-     * Creates an auto-authenticated version of the MetaDataControllerApi of the backend
-     */
-    @Bean
-    fun getMetaDataControllerApi(
-        @Qualifier("AuthenticatedOkHttpClient") authenticatedOkHttpClient: OkHttpClient,
-    ): MetaDataControllerApi {
-        return MetaDataControllerApi(backendBaseUrl, authenticatedOkHttpClient)
-    }
+  /** Creates an auto-authenticated version of the MetaDataControllerApi of the backend */
+  @Bean
+  fun getMetaDataControllerApi(
+    @Qualifier("AuthenticatedOkHttpClient") authenticatedOkHttpClient: OkHttpClient
+  ): MetaDataControllerApi {
+    return MetaDataControllerApi(backendBaseUrl, authenticatedOkHttpClient)
+  }
 }

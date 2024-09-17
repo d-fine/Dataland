@@ -3,15 +3,11 @@ package org.dataland.datalandbackend.frameworks.esgquestionnaire.model.allgemein
 
 import io.swagger.v3.oas.annotations.media.Schema
 
-/**
- * Enum class for the single-select-field frequenzDerBerichterstattung
- */
-@Schema(
-    enumAsRef = true,
-)
+/** Enum class for the single-select-field frequenzDerBerichterstattung */
+@Schema(enumAsRef = true)
 enum class EsgQuestionnaireAllgemeinEsgberichteFrequenzDerBerichterstattungOptions {
-    Jaehrlich,
-    Halbjaehrlich,
-    Vierteljaehrlich,
-    Monatlich,
+  Jaehrlich,
+  Halbjaehrlich,
+  Vierteljaehrlich,
+  Monatlich,
 }

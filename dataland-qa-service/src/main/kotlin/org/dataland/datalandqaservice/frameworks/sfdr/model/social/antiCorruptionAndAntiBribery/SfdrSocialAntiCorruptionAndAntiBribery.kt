@@ -6,16 +6,15 @@ import org.dataland.datalandbackend.openApiClient.model.CurrencyDataPoint
 import org.dataland.datalandbackend.openApiClient.model.ExtendedDataPointBigInteger
 import org.dataland.datalandqaservice.model.reports.QaReportDataPoint
 
-/**
- * The QA-model for the AntiCorruptionAndAntiBribery section
- */
+/** The QA-model for the AntiCorruptionAndAntiBribery section */
 data class SfdrSocialAntiCorruptionAndAntiBribery(
-    @field:Valid()
-    val casesOfInsufficientActionAgainstBriberyAndCorruption: QaReportDataPoint<ExtendedDataPointBigInteger?>? = null,
-
-    @field:Valid()
-    val reportedConvictionsOfBriberyAndCorruption: QaReportDataPoint<ExtendedDataPointBigInteger?>? = null,
-
-    val totalAmountOfReportedFinesOfBriberyAndCorruption: QaReportDataPoint<CurrencyDataPoint?>? = null,
-
+  @field:Valid()
+  val casesOfInsufficientActionAgainstBriberyAndCorruption:
+    QaReportDataPoint<ExtendedDataPointBigInteger?>? =
+    null,
+  @field:Valid()
+  val reportedConvictionsOfBriberyAndCorruption: QaReportDataPoint<ExtendedDataPointBigInteger?>? =
+    null,
+  val totalAmountOfReportedFinesOfBriberyAndCorruption: QaReportDataPoint<CurrencyDataPoint?>? =
+    null,
 )

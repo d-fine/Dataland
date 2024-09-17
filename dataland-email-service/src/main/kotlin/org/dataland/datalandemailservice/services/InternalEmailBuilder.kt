@@ -6,33 +6,28 @@ import org.dataland.datalandmessagequeueutils.messages.InternalEmailMessage
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Component
 
-/**
- * A class that creates mail for internal use
- */
+/** A class that creates mail for internal use */
 @Component
 class InternalEmailBuilder(
-    @Value("\${dataland.proxy.primary.url}") private val proxyPrimaryUrl: String,
-    @Value("\${dataland.notification.sender.address}") senderEmail: String,
-    @Value("\${dataland.notification.sender.name}") senderName: String,
-    @Value("\${dataland.notification.internal.receivers}") semicolonSeparatedReceiverEmails: String,
-    @Value("\${dataland.notification.internal.cc}") semicolonSeparatedCcEmails: String,
-) : PropertyStyleEmailBuilder(
+  @Value("\${dataland.proxy.primary.url}") private val proxyPrimaryUrl: String,
+  @Value("\${dataland.notification.sender.address}") senderEmail: String,
+  @Value("\${dataland.notification.sender.name}") senderName: String,
+  @Value("\${dataland.notification.internal.receivers}") semicolonSeparatedReceiverEmails: String,
+  @Value("\${dataland.notification.internal.cc}") semicolonSeparatedCcEmails: String,
+) :
+  PropertyStyleEmailBuilder(
     senderEmail = senderEmail,
     senderName = senderName,
     semicolonSeparatedReceiverEmails = semicolonSeparatedReceiverEmails,
     semicolonSeparatedCcEmails = semicolonSeparatedCcEmails,
-) {
-    /**
-     * Function that generates internal emails
-     */
-    fun buildInternalEmail(
-        internalEmailMessage: InternalEmailMessage,
-    ): Email {
-        return buildPropertyStyleEmail(
-            subject = internalEmailMessage.subject,
-            textTitle = internalEmailMessage.textTitle,
-            properties = mapOf("Environment" to proxyPrimaryUrl) + internalEmailMessage.properties,
-            htmlTitle = internalEmailMessage.htmlTitle,
-        )
-    }
+  ) {
+  /** Function that generates internal emails */
+  fun buildInternalEmail(internalEmailMessage: InternalEmailMessage): Email {
+    return buildPropertyStyleEmail(
+      subject = internalEmailMessage.subject,
+      textTitle = internalEmailMessage.textTitle,
+      properties = mapOf("Environment" to proxyPrimaryUrl) + internalEmailMessage.properties,
+      htmlTitle = internalEmailMessage.htmlTitle,
+    )
+  }
 }

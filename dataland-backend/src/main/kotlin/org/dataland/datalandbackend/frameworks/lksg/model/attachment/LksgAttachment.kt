@@ -4,11 +4,5 @@ package org.dataland.datalandbackend.frameworks.lksg.model.attachment
 import jakarta.validation.Valid
 import org.dataland.datalandbackend.frameworks.lksg.model.attachment.attachment.LksgAttachmentAttachment
 
-/**
- * The data-model for the Attachment section
- */
-data class LksgAttachment(
-    @field:Valid()
-    val attachment: LksgAttachmentAttachment? = null,
-
-)
+/** The data-model for the Attachment section */
+data class LksgAttachment(@field:Valid() val attachment: LksgAttachmentAttachment? = null)

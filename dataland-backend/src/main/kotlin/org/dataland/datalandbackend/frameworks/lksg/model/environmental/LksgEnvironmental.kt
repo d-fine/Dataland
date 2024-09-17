@@ -2,28 +2,22 @@
 package org.dataland.datalandbackend.frameworks.lksg.model.environmental
 
 import jakarta.validation.Valid
-import org.dataland.datalandbackend.frameworks.lksg.model.environmental.exportImportOfHazardousWasteBaselConvention
-    .LksgEnvironmentalExportImportOfHazardousWasteBaselConvention
-import org.dataland.datalandbackend.frameworks.lksg.model.environmental
-    .productionAndUseOfPersistentOrganicPollutantsPopsConvention
-    .LksgEnvironmentalProductionAndUseOfPersistentOrganicPollutantsPopsConvention
-import org.dataland.datalandbackend.frameworks.lksg.model.environmental.useOfMercuryMercuryWasteMinamataConvention
-    .LksgEnvironmentalUseOfMercuryMercuryWasteMinamataConvention
+import org.dataland.datalandbackend.frameworks.lksg.model.environmental.exportImportOfHazardousWasteBaselConvention.LksgEnvironmentalExportImportOfHazardousWasteBaselConvention
+import org.dataland.datalandbackend.frameworks.lksg.model.environmental.productionAndUseOfPersistentOrganicPollutantsPopsConvention.LksgEnvironmentalProductionAndUseOfPersistentOrganicPollutantsPopsConvention
+import org.dataland.datalandbackend.frameworks.lksg.model.environmental.useOfMercuryMercuryWasteMinamataConvention.LksgEnvironmentalUseOfMercuryMercuryWasteMinamataConvention
 
-/**
- * The data-model for the Environmental section
- */
+/** The data-model for the Environmental section */
 data class LksgEnvironmental(
-    @field:Valid()
-    val useOfMercuryMercuryWasteMinamataConvention:
-    LksgEnvironmentalUseOfMercuryMercuryWasteMinamataConvention? = null,
-
-    @field:Valid()
-    val productionAndUseOfPersistentOrganicPollutantsPopsConvention:
-    LksgEnvironmentalProductionAndUseOfPersistentOrganicPollutantsPopsConvention? = null,
-
-    @field:Valid()
-    val exportImportOfHazardousWasteBaselConvention:
-    LksgEnvironmentalExportImportOfHazardousWasteBaselConvention? = null,
-
+  @field:Valid()
+  val useOfMercuryMercuryWasteMinamataConvention:
+    LksgEnvironmentalUseOfMercuryMercuryWasteMinamataConvention? =
+    null,
+  @field:Valid()
+  val productionAndUseOfPersistentOrganicPollutantsPopsConvention:
+    LksgEnvironmentalProductionAndUseOfPersistentOrganicPollutantsPopsConvention? =
+    null,
+  @field:Valid()
+  val exportImportOfHazardousWasteBaselConvention:
+    LksgEnvironmentalExportImportOfHazardousWasteBaselConvention? =
+    null,
 )

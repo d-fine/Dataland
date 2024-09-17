@@ -3,20 +3,12 @@ package org.dataland.datalandbackend.frameworks.esgquestionnaire.model.soziales.
 
 import java.math.BigInteger
 
-/**
- * The data-model for the Geschlechterdiversitaet section
- */
+/** The data-model for the Geschlechterdiversitaet section */
 data class EsgQuestionnaireSozialesGeschlechterdiversitaet(
-    val mitarbeiterAufTopManagementEbene: BigInteger? = null,
-
-    val frauenAufTopManagementEbene: BigInteger? = null,
-
-    val mitgliederGeschaeftsfuehrung: BigInteger? = null,
-
-    val frauenInDerGeschaeftsfuehrung: BigInteger? = null,
-
-    val definitionTopManagement: String? = null,
-
-    val einhaltungRechtlicherVorgaben: String? = null,
-
+  val mitarbeiterAufTopManagementEbene: BigInteger? = null,
+  val frauenAufTopManagementEbene: BigInteger? = null,
+  val mitgliederGeschaeftsfuehrung: BigInteger? = null,
+  val frauenInDerGeschaeftsfuehrung: BigInteger? = null,
+  val definitionTopManagement: String? = null,
+  val einhaltungRechtlicherVorgaben: String? = null,
 )

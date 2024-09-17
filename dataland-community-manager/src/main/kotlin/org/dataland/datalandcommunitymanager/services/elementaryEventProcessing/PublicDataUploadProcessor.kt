@@ -1,6 +1,7 @@
 package org.dataland.datalandcommunitymanager.services.elementaryEventProcessing
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import java.util.*
 import org.dataland.datalandbackend.openApiClient.api.MetaDataControllerApi
 import org.dataland.datalandcommunitymanager.events.ElementaryEventType
 import org.dataland.datalandcommunitymanager.model.elementaryEventProcessing.ElementaryEventBasicInfo
@@ -24,80 +25,84 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.messaging.handler.annotation.Header
 import org.springframework.messaging.handler.annotation.Payload
 import org.springframework.stereotype.Component
-import java.util.*
 
-/**
-* Defines the processing of public framework data upload events as elementary events
-*/
+/** Defines the processing of public framework data upload events as elementary events */
 @Component
 class PublicDataUploadProcessor(
-    @Autowired messageUtils: MessageQueueUtils,
-    @Autowired notificationService: NotificationService,
-    @Autowired elementaryEventRepository: ElementaryEventRepository,
-    @Autowired objectMapper: ObjectMapper,
-    @Autowired val metaDataControllerApi: MetaDataControllerApi,
+  @Autowired messageUtils: MessageQueueUtils,
+  @Autowired notificationService: NotificationService,
+  @Autowired elementaryEventRepository: ElementaryEventRepository,
+  @Autowired objectMapper: ObjectMapper,
+  @Autowired val metaDataControllerApi: MetaDataControllerApi,
 ) : BaseEventProcessor(messageUtils, notificationService, elementaryEventRepository, objectMapper) {
 
-    override val elementaryEventType = ElementaryEventType.UploadEvent
-    override val messageType = MessageType.QaCompleted
-    override val actionType = null
-    override var logger: Logger = LoggerFactory.getLogger(this.javaClass)
+  override val elementaryEventType = ElementaryEventType.UploadEvent
+  override val messageType = MessageType.QaCompleted
+  override val actionType = null
+  override var logger: Logger = LoggerFactory.getLogger(this.javaClass)
 
-    /**
-     * Method that listens to public data storage requests, persists them as elementary events and asks the
-     * Notification service to potentially send notifications
-     * @param payload content of the public data storage message
-     * @param correlationId the correlation ID of the current user process that has triggered this message
-     * @param type the type of the message
-     */
-    @RabbitListener(
-        bindings = [
-            QueueBinding(
-                value = Queue(
-                    "dataQualityAssuredCommunityManagerNotificationService",
-                    arguments = [
-                        Argument(name = "x-dead-letter-exchange", value = ExchangeName.DeadLetter),
-                        Argument(name = "x-dead-letter-routing-key", value = "deadLetterKey"),
-                        Argument(name = "defaultRequeueRejected", value = "false"),
-                    ],
-                ),
-                exchange = Exchange(ExchangeName.DataQualityAssured, declare = "false"),
-                key = [RoutingKeyNames.data],
+  /**
+   * Method that listens to public data storage requests, persists them as elementary events and
+   * asks the Notification service to potentially send notifications
+   *
+   * @param payload content of the public data storage message
+   * @param correlationId the correlation ID of the current user process that has triggered this
+   *   message
+   * @param type the type of the message
+   */
+  @RabbitListener(
+    bindings =
+      [
+        QueueBinding(
+          value =
+            Queue(
+              "dataQualityAssuredCommunityManagerNotificationService",
+              arguments =
+                [
+                  Argument(name = "x-dead-letter-exchange", value = ExchangeName.DeadLetter),
+                  Argument(name = "x-dead-letter-routing-key", value = "deadLetterKey"),
+                  Argument(name = "defaultRequeueRejected", value = "false"),
+                ],
             ),
-        ],
-    )
-    fun processEvent(
-        @Payload payload: String,
-        @Header(MessageHeaderKey.CorrelationId) correlationId: String,
-        @Header(MessageHeaderKey.Type) type: String,
-    ) {
-        val dataId = validateIncomingPayloadAndReturnDataId(payload, type)
-
-        super.processEvent(
-            createElementaryEventBasicInfo(
-                objectMapper.writeValueAsString(metaDataControllerApi.getDataMetaInfo(dataId)),
-            ),
-            correlationId,
-            type,
+          exchange = Exchange(ExchangeName.DataQualityAssured, declare = "false"),
+          key = [RoutingKeyNames.data],
         )
-    }
+      ]
+  )
+  fun processEvent(
+    @Payload payload: String,
+    @Header(MessageHeaderKey.CorrelationId) correlationId: String,
+    @Header(MessageHeaderKey.Type) type: String,
+  ) {
+    val dataId = validateIncomingPayloadAndReturnDataId(payload, type)
 
-    override fun validateIncomingPayloadAndReturnDataId(payload: String, messageType: String): String {
-        messageUtils.validateMessageType(messageType, this.messageType)
+    super.processEvent(
+      createElementaryEventBasicInfo(
+        objectMapper.writeValueAsString(metaDataControllerApi.getDataMetaInfo(dataId))
+      ),
+      correlationId,
+      type,
+    )
+  }
 
-        val payloadJsonObject = JSONObject(payload)
+  override fun validateIncomingPayloadAndReturnDataId(
+    payload: String,
+    messageType: String,
+  ): String {
+    messageUtils.validateMessageType(messageType, this.messageType)
 
-        return payloadJsonObject.getString("identifier")
-            .takeIf { it.isNotEmpty() }
-            ?: throw MessageQueueRejectException("The identifier in the message payload is empty.")
-    }
+    val payloadJsonObject = JSONObject(payload)
 
-    override fun createElementaryEventBasicInfo(jsonString: String): ElementaryEventBasicInfo {
-        val metaDataJsonObject = JSONObject(jsonString)
-        val frameworkValue = metaDataJsonObject.getString("dataType")
-        metaDataJsonObject.remove("dataType")
-        metaDataJsonObject.put("framework", frameworkValue)
+    return payloadJsonObject.getString("identifier").takeIf { it.isNotEmpty() }
+      ?: throw MessageQueueRejectException("The identifier in the message payload is empty.")
+  }
 
-        return super.createElementaryEventBasicInfo(metaDataJsonObject.toString())
-    }
+  override fun createElementaryEventBasicInfo(jsonString: String): ElementaryEventBasicInfo {
+    val metaDataJsonObject = JSONObject(jsonString)
+    val frameworkValue = metaDataJsonObject.getString("dataType")
+    metaDataJsonObject.remove("dataType")
+    metaDataJsonObject.put("framework", frameworkValue)
+
+    return super.createElementaryEventBasicInfo(metaDataJsonObject.toString())
+  }
 }

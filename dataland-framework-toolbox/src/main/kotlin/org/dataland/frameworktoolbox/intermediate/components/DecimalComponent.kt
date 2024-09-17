@@ -12,70 +12,63 @@ import org.dataland.frameworktoolbox.specific.fixturegenerator.elements.FixtureS
 import org.dataland.frameworktoolbox.specific.qamodel.addQaPropertyWithDocumentSupport
 import org.dataland.frameworktoolbox.specific.uploadconfig.elements.UploadCategoryBuilder
 
-/**
- * A DecimalComponent represents a numeric decimal value
- */
-open class DecimalComponent(
-    identifier: String,
-    parent: FieldNodeParent,
-) : NumberBaseComponent(identifier, parent) {
+/** A DecimalComponent represents a numeric decimal value */
+open class DecimalComponent(identifier: String, parent: FieldNodeParent) :
+  NumberBaseComponent(identifier, parent) {
 
-    var minimumValue: Long? = null
-    var maximumValue: Long? = null
-    override fun generateDefaultDataModel(dataClassBuilder: DataClassBuilder) {
-        val annotations = getMinMaxDatamodelAnnotations(minimumValue, maximumValue)
+  var minimumValue: Long? = null
+  var maximumValue: Long? = null
 
-        dataClassBuilder.addPropertyWithDocumentSupport(
-            documentSupport,
-            identifier,
-            TypeReference(
-                "java.math.BigDecimal",
-                isNullable,
-            ),
-            annotations,
-        )
-    }
+  override fun generateDefaultDataModel(dataClassBuilder: DataClassBuilder) {
+    val annotations = getMinMaxDatamodelAnnotations(minimumValue, maximumValue)
 
-    override fun generateDefaultQaModel(dataClassBuilder: DataClassBuilder) {
-        dataClassBuilder.addQaPropertyWithDocumentSupport(
-            documentSupport,
-            identifier,
-            TypeReference(
-                "java.math.BigDecimal",
-                isNullable,
-            ),
-        )
-    }
+    dataClassBuilder.addPropertyWithDocumentSupport(
+      documentSupport,
+      identifier,
+      TypeReference("java.math.BigDecimal", isNullable),
+      annotations,
+    )
+  }
 
-    override fun generateDefaultUploadConfig(uploadCategoryBuilder: UploadCategoryBuilder) {
-        val uploadComponent = when (documentSupport) {
-            is NoDocumentSupport -> "NumberFormField"
-            is SimpleDocumentSupport -> "BigDecimalBaseDataPointFormField"
-            is ExtendedDocumentSupport -> "BigDecimalExtendedDataPointFormField"
-            else -> throw IllegalArgumentException(
-                "Upload-page generation for this component " +
-                    "does not support $documentSupport",
-            )
-        }
+  override fun generateDefaultQaModel(dataClassBuilder: DataClassBuilder) {
+    dataClassBuilder.addQaPropertyWithDocumentSupport(
+      documentSupport,
+      identifier,
+      TypeReference("java.math.BigDecimal", isNullable),
+    )
+  }
 
-        uploadCategoryBuilder.addStandardUploadConfigCell(
-            component = this,
-            uploadComponentName = uploadComponent,
-            unit = constantUnitSuffix,
-            validation = getMinMaxValidationRule(minimumValue, maximumValue),
-        )
-    }
+  override fun generateDefaultUploadConfig(uploadCategoryBuilder: UploadCategoryBuilder) {
+    val uploadComponent =
+      when (documentSupport) {
+        is NoDocumentSupport -> "NumberFormField"
+        is SimpleDocumentSupport -> "BigDecimalBaseDataPointFormField"
+        is ExtendedDocumentSupport -> "BigDecimalExtendedDataPointFormField"
+        else ->
+          throw IllegalArgumentException(
+            "Upload-page generation for this component " + "does not support $documentSupport"
+          )
+      }
 
-    override fun generateDefaultFixtureGenerator(sectionBuilder: FixtureSectionBuilder) {
-        val rangeParameterSpecification = getFakeFixtureMinMaxRangeParameterSpec(minimumValue, maximumValue)
+    uploadCategoryBuilder.addStandardUploadConfigCell(
+      component = this,
+      uploadComponentName = uploadComponent,
+      unit = constantUnitSuffix,
+      validation = getMinMaxValidationRule(minimumValue, maximumValue),
+    )
+  }
 
-        sectionBuilder.addAtomicExpression(
-            identifier,
-            documentSupport.getFixtureExpression(
-                fixtureExpression = "dataGenerator.guaranteedFloat($rangeParameterSpecification)",
-                nullableFixtureExpression = "dataGenerator.randomFloat($rangeParameterSpecification)",
-                nullable = isNullable,
-            ),
-        )
-    }
+  override fun generateDefaultFixtureGenerator(sectionBuilder: FixtureSectionBuilder) {
+    val rangeParameterSpecification =
+      getFakeFixtureMinMaxRangeParameterSpec(minimumValue, maximumValue)
+
+    sectionBuilder.addAtomicExpression(
+      identifier,
+      documentSupport.getFixtureExpression(
+        fixtureExpression = "dataGenerator.guaranteedFloat($rangeParameterSpecification)",
+        nullableFixtureExpression = "dataGenerator.randomFloat($rangeParameterSpecification)",
+        nullable = isNullable,
+      ),
+    )
+  }
 }

@@ -5,27 +5,14 @@ import jakarta.validation.Valid
 import org.dataland.datalandbackend.model.datapoints.BaseDataPoint
 import org.dataland.datalandbackend.model.enums.commons.YesNo
 
-/**
- * The data-model for the UnlawfulEvictionDeprivationOfLandForestAndWater section
- */
+/** The data-model for the UnlawfulEvictionDeprivationOfLandForestAndWater section */
 data class LksgSocialUnlawfulEvictionDeprivationOfLandForestAndWater(
-    val unlawfulEvictionAndTakingOfLand: YesNo? = null,
-
-    val unlawfulEvictionAndTakingOfLandRisk: String? = null,
-
-    val unlawfulEvictionAndTakingOfLandMeasures: YesNo? = null,
-
-    @field:Valid()
-    val modelContractsForLandPurchaseOrLeasing: BaseDataPoint<YesNo>? = null,
-
-    val involvementOfLocalsInDecisionMaking: YesNo? = null,
-
-    @field:Valid()
-    val governanceOfTenurePolicy: BaseDataPoint<YesNo>? = null,
-
-    @field:Valid()
-    val unlawfulEvictionAndTakingOfLandOtherMeasures: BaseDataPoint<YesNo>? = null,
-
-    val unlawfulEvictionAndTakingOfLandOtherMeasuresDescription: String? = null,
-
+  val unlawfulEvictionAndTakingOfLand: YesNo? = null,
+  val unlawfulEvictionAndTakingOfLandRisk: String? = null,
+  val unlawfulEvictionAndTakingOfLandMeasures: YesNo? = null,
+  @field:Valid() val modelContractsForLandPurchaseOrLeasing: BaseDataPoint<YesNo>? = null,
+  val involvementOfLocalsInDecisionMaking: YesNo? = null,
+  @field:Valid() val governanceOfTenurePolicy: BaseDataPoint<YesNo>? = null,
+  @field:Valid() val unlawfulEvictionAndTakingOfLandOtherMeasures: BaseDataPoint<YesNo>? = null,
+  val unlawfulEvictionAndTakingOfLandOtherMeasuresDescription: String? = null,
 )

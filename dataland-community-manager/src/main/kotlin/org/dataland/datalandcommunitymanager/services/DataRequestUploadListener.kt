@@ -1,6 +1,7 @@
 package org.dataland.datalandcommunitymanager.services
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import java.util.*
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.datalandmessagequeueutils.constants.ExchangeName
 import org.dataland.datalandmessagequeueutils.constants.MessageHeaderKey
@@ -21,99 +22,111 @@ import org.springframework.messaging.handler.annotation.Header
 import org.springframework.messaging.handler.annotation.Payload
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
-import java.util.*
 
-/**
- * This service checks if freshly uploaded and validated data answers a data request
- */
+/** This service checks if freshly uploaded and validated data answers a data request */
 @Service("DataRequestUpdater")
 class DataRequestUploadListener(
-    @Autowired private val messageUtils: MessageQueueUtils,
-    @Autowired private val objectMapper: ObjectMapper,
-    @Autowired private val dataRequestAlterationManager: DataRequestAlterationManager,
+  @Autowired private val messageUtils: MessageQueueUtils,
+  @Autowired private val objectMapper: ObjectMapper,
+  @Autowired private val dataRequestAlterationManager: DataRequestAlterationManager,
 ) {
-    private val logger = LoggerFactory.getLogger(SingleDataRequestManager::class.java)
+  private val logger = LoggerFactory.getLogger(SingleDataRequestManager::class.java)
 
-    /**
-     * Checks if for a given dataset there are open requests with matching company identifier, reporting period
-     * and data type and sets their status to answered
-     * @param jsonString the message describing the result of the completed QA process
-     * @param type the type of the message
-     */
-    @RabbitListener(
-        bindings = [
-            QueueBinding(
-                value = Queue(
-                    "dataQualityAssuredCommunityManagerDataManager",
-                    arguments = [
-                        Argument(name = "x-dead-letter-exchange", value = ExchangeName.DeadLetter),
-                        Argument(name = "x-dead-letter-routing-key", value = "deadLetterKey"),
-                        Argument(name = "defaultRequeueRejected", value = "false"),
-                    ],
-                ),
-                exchange = Exchange(ExchangeName.DataQualityAssured, declare = "false"),
-                key = [RoutingKeyNames.data],
+  /**
+   * Checks if for a given dataset there are open requests with matching company identifier,
+   * reporting period and data type and sets their status to answered
+   *
+   * @param jsonString the message describing the result of the completed QA process
+   * @param type the type of the message
+   */
+  @RabbitListener(
+    bindings =
+      [
+        QueueBinding(
+          value =
+            Queue(
+              "dataQualityAssuredCommunityManagerDataManager",
+              arguments =
+                [
+                  Argument(name = "x-dead-letter-exchange", value = ExchangeName.DeadLetter),
+                  Argument(name = "x-dead-letter-routing-key", value = "deadLetterKey"),
+                  Argument(name = "defaultRequeueRejected", value = "false"),
+                ],
             ),
-        ],
-    )
-    @Transactional
-    fun changeRequestStatusAfterUpload(
-        @Payload jsonString: String,
-        @Header(MessageHeaderKey.Type) type: String,
-        @Header(MessageHeaderKey.CorrelationId) id: String,
-    ) {
-        messageUtils.validateMessageType(type, MessageType.QaCompleted)
-        val qaCompletedMessage = objectMapper.readValue(jsonString, QaCompletedMessage::class.java)
-        val dataId = qaCompletedMessage.identifier
-        if (dataId.isEmpty()) {
-            throw MessageQueueRejectException("Provided data ID is empty")
-        }
-        logger.info("Received data QA completed message for dataset with ID $dataId")
-        if (qaCompletedMessage.validationResult != QaStatus.Accepted) {
-            logger.info("Dataset with ID $dataId was not accepted and request matching is cancelled")
-            return
-        }
-        messageUtils.rejectMessageOnException {
-            dataRequestAlterationManager.patchRequestStatusFromOpenToAnsweredByDataId(dataId, correlationId = id)
-        }
+          exchange = Exchange(ExchangeName.DataQualityAssured, declare = "false"),
+          key = [RoutingKeyNames.data],
+        )
+      ]
+  )
+  @Transactional
+  fun changeRequestStatusAfterUpload(
+    @Payload jsonString: String,
+    @Header(MessageHeaderKey.Type) type: String,
+    @Header(MessageHeaderKey.CorrelationId) id: String,
+  ) {
+    messageUtils.validateMessageType(type, MessageType.QaCompleted)
+    val qaCompletedMessage = objectMapper.readValue(jsonString, QaCompletedMessage::class.java)
+    val dataId = qaCompletedMessage.identifier
+    if (dataId.isEmpty()) {
+      throw MessageQueueRejectException("Provided data ID is empty")
     }
+    logger.info("Received data QA completed message for dataset with ID $dataId")
+    if (qaCompletedMessage.validationResult != QaStatus.Accepted) {
+      logger.info("Dataset with ID $dataId was not accepted and request matching is cancelled")
+      return
+    }
+    messageUtils.rejectMessageOnException {
+      dataRequestAlterationManager.patchRequestStatusFromOpenToAnsweredByDataId(
+        dataId,
+        correlationId = id,
+      )
+    }
+  }
 
-    /**
-     * Checks if for a given dataset there are open requests with matching company identifier, reporting period
-     * and data type and sets their status to answered and handles the update of the access status
-     * @param dataId the dataId of the uploaded data
-     * @param type the type of the message
-     */
-    @RabbitListener(
-        bindings = [
-            QueueBinding(
-                value = Queue(
-                    "privateRequestReceivedCommunityManager",
-                    arguments = [
-                        Argument(name = "x-dead-letter-exchange", value = ExchangeName.DeadLetter),
-                        Argument(name = "x-dead-letter-routing-key", value = "deadLetterKey"),
-                        Argument(name = "defaultRequeueRejected", value = "false"),
-                    ],
-                ),
-                exchange = Exchange(ExchangeName.PrivateRequestReceived, declare = "false"),
-                key = [RoutingKeyNames.metaDataPersisted],
+  /**
+   * Checks if for a given dataset there are open requests with matching company identifier,
+   * reporting period and data type and sets their status to answered and handles the update of the
+   * access status
+   *
+   * @param dataId the dataId of the uploaded data
+   * @param type the type of the message
+   */
+  @RabbitListener(
+    bindings =
+      [
+        QueueBinding(
+          value =
+            Queue(
+              "privateRequestReceivedCommunityManager",
+              arguments =
+                [
+                  Argument(name = "x-dead-letter-exchange", value = ExchangeName.DeadLetter),
+                  Argument(name = "x-dead-letter-routing-key", value = "deadLetterKey"),
+                  Argument(name = "defaultRequeueRejected", value = "false"),
+                ],
             ),
-        ],
-    )
-    @Transactional
-    fun changeRequestStatusAfterPrivateDataUpload(
-        @Payload payload: String,
-        @Header(MessageHeaderKey.Type) type: String,
-        @Header(MessageHeaderKey.CorrelationId) id: String,
-    ) {
-        messageUtils.validateMessageType(type, MessageType.PrivateDataReceived)
-        val payloadJsonObject = JSONObject(payload)
-        val dataId = payloadJsonObject.getString("dataId")
-        if (dataId.isEmpty()) {
-            throw MessageQueueRejectException("Provided data ID is empty")
-        }
-        messageUtils.rejectMessageOnException {
-            dataRequestAlterationManager.patchRequestStatusFromOpenToAnsweredByDataId(dataId, correlationId = id)
-        }
+          exchange = Exchange(ExchangeName.PrivateRequestReceived, declare = "false"),
+          key = [RoutingKeyNames.metaDataPersisted],
+        )
+      ]
+  )
+  @Transactional
+  fun changeRequestStatusAfterPrivateDataUpload(
+    @Payload payload: String,
+    @Header(MessageHeaderKey.Type) type: String,
+    @Header(MessageHeaderKey.CorrelationId) id: String,
+  ) {
+    messageUtils.validateMessageType(type, MessageType.PrivateDataReceived)
+    val payloadJsonObject = JSONObject(payload)
+    val dataId = payloadJsonObject.getString("dataId")
+    if (dataId.isEmpty()) {
+      throw MessageQueueRejectException("Provided data ID is empty")
     }
+    messageUtils.rejectMessageOnException {
+      dataRequestAlterationManager.patchRequestStatusFromOpenToAnsweredByDataId(
+        dataId,
+        correlationId = id,
+      )
+    }
+  }
 }

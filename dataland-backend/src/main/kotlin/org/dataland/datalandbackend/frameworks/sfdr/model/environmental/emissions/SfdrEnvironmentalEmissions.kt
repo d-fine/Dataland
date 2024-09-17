@@ -2,28 +2,21 @@
 package org.dataland.datalandbackend.frameworks.sfdr.model.environmental.emissions
 
 import jakarta.validation.Valid
+import java.math.BigDecimal
 import org.dataland.datalandbackend.model.datapoints.ExtendedDataPoint
 import org.dataland.datalandbackend.model.enums.commons.YesNo
 import org.dataland.datalandbackend.validator.MinimumValue
-import java.math.BigDecimal
 
-/**
- * The data-model for the Emissions section
- */
+/** The data-model for the Emissions section */
 data class SfdrEnvironmentalEmissions(
-    @field:MinimumValue(minimumValue = 0)
-    @field:Valid()
-    val emissionsOfInorganicPollutantsInTonnes: ExtendedDataPoint<BigDecimal?>? = null,
-
-    @field:MinimumValue(minimumValue = 0)
-    @field:Valid()
-    val emissionsOfAirPollutantsInTonnes: ExtendedDataPoint<BigDecimal?>? = null,
-
-    @field:MinimumValue(minimumValue = 0)
-    @field:Valid()
-    val emissionsOfOzoneDepletionSubstancesInTonnes: ExtendedDataPoint<BigDecimal?>? = null,
-
-    @field:Valid()
-    val carbonReductionInitiatives: ExtendedDataPoint<YesNo?>? = null,
-
+  @field:MinimumValue(minimumValue = 0)
+  @field:Valid()
+  val emissionsOfInorganicPollutantsInTonnes: ExtendedDataPoint<BigDecimal?>? = null,
+  @field:MinimumValue(minimumValue = 0)
+  @field:Valid()
+  val emissionsOfAirPollutantsInTonnes: ExtendedDataPoint<BigDecimal?>? = null,
+  @field:MinimumValue(minimumValue = 0)
+  @field:Valid()
+  val emissionsOfOzoneDepletionSubstancesInTonnes: ExtendedDataPoint<BigDecimal?>? = null,
+  @field:Valid() val carbonReductionInitiatives: ExtendedDataPoint<YesNo?>? = null,
 )

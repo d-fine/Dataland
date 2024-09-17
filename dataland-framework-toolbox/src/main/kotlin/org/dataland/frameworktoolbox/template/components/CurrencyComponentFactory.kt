@@ -9,35 +9,32 @@ import org.dataland.frameworktoolbox.template.model.TemplateRow
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 
-/**
- * Generates CurrencyComponents from rows with the component "Currency"
- */
+/** Generates CurrencyComponents from rows with the component "Currency" */
 @Component
-class CurrencyComponentFactory(@Autowired val templateDiagnostic: TemplateDiagnostic) : TemplateComponentFactory {
-    override fun canGenerateComponent(row: TemplateRow): Boolean = row.component == "Currency"
+class CurrencyComponentFactory(@Autowired val templateDiagnostic: TemplateDiagnostic) :
+  TemplateComponentFactory {
+  override fun canGenerateComponent(row: TemplateRow): Boolean = row.component == "Currency"
 
-    override fun generateComponent(
-        row: TemplateRow,
-        utils: ComponentGenerationUtils,
-        componentGroup: ComponentGroupApi,
-    ): ComponentBase {
-        templateDiagnostic.unitNotUsed(row)
-        val bounds = DecimalComponentFactory.parseBounds(row.options)
+  override fun generateComponent(
+    row: TemplateRow,
+    utils: ComponentGenerationUtils,
+    componentGroup: ComponentGroupApi,
+  ): ComponentBase {
+    templateDiagnostic.unitNotUsed(row)
+    val bounds = DecimalComponentFactory.parseBounds(row.options)
 
-        return componentGroup.create<CurrencyComponent>(
-            utils.generateFieldIdentifierFromRow(row),
-        ) {
-            utils.setCommonProperties(row, this)
-            this.minimumValue = bounds.first
-            this.maximumValue = bounds.second
-        }
+    return componentGroup.create<CurrencyComponent>(utils.generateFieldIdentifierFromRow(row)) {
+      utils.setCommonProperties(row, this)
+      this.minimumValue = bounds.first
+      this.maximumValue = bounds.second
     }
+  }
 
-    override fun updateDependency(
-        row: TemplateRow,
-        utils: ComponentGenerationUtils,
-        componentIdentifierMap: Map<String, ComponentBase>,
-    ) {
-        utils.defaultDependencyConfiguration(row, componentIdentifierMap, templateDiagnostic)
-    }
+  override fun updateDependency(
+    row: TemplateRow,
+    utils: ComponentGenerationUtils,
+    componentIdentifierMap: Map<String, ComponentBase>,
+  ) {
+    utils.defaultDependencyConfiguration(row, componentIdentifierMap, templateDiagnostic)
+  }
 }

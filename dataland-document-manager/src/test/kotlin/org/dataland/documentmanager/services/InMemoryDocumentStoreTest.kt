@@ -6,22 +6,22 @@ import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 
 class InMemoryDocumentStoreTest {
-    private val inMemoryStore = InMemoryDocumentStore()
+  private val inMemoryStore = InMemoryDocumentStore()
 
-    @Test
-    fun `check that data can be stored and retrieved in the inmemory store`() {
-        val dataToStore = "Dataland is awesome".toByteArray(Charsets.UTF_8)
-        val expectedHash = "b5ebbb0e075e95be1d8e32002a7766deaa1f9c6c075b2d3c9f9822183a4eea27"
+  @Test
+  fun `check that data can be stored and retrieved in the inmemory store`() {
+    val dataToStore = "Dataland is awesome".toByteArray(Charsets.UTF_8)
+    val expectedHash = "b5ebbb0e075e95be1d8e32002a7766deaa1f9c6c075b2d3c9f9822183a4eea27"
 
-        val documentId = dataToStore.sha256()
-        inMemoryStore.storeDataInMemory(documentId, dataToStore)
-        assertEquals(expectedHash, documentId)
+    val documentId = dataToStore.sha256()
+    inMemoryStore.storeDataInMemory(documentId, dataToStore)
+    assertEquals(expectedHash, documentId)
 
-        val retrievedDataset = inMemoryStore.retrieveDataFromMemoryStore(expectedHash)
-        assertArrayEquals(dataToStore, retrievedDataset)
+    val retrievedDataset = inMemoryStore.retrieveDataFromMemoryStore(expectedHash)
+    assertArrayEquals(dataToStore, retrievedDataset)
 
-        inMemoryStore.deleteFromInMemoryStore(expectedHash)
+    inMemoryStore.deleteFromInMemoryStore(expectedHash)
 
-        assertEquals(inMemoryStore.retrieveDataFromMemoryStore(expectedHash), null)
-    }
+    assertEquals(inMemoryStore.retrieveDataFromMemoryStore(expectedHash), null)
+  }
 }

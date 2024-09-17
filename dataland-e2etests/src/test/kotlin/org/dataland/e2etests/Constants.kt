@@ -13,7 +13,7 @@ const val BASE_PATH_TO_DOCUMENT_MANAGER = "https://local-dev.dataland.com:443/do
 const val BASE_PATH_TO_COMMUNITY_MANAGER = "https://local-dev.dataland.com:443/community"
 
 const val PATH_TO_KEYCLOAK_TOKENENDPOINT =
-    "https://local-dev.dataland.com:443/keycloak/realms/datalandsecurity/protocol/openid-connect/token"
+  "https://local-dev.dataland.com:443/keycloak/realms/datalandsecurity/protocol/openid-connect/token"
 
 const val TOKENREQUEST_GRANT_TYPE = "password"
 const val TOKENREQUEST_CLIENT_ID = "dataland-public"
@@ -36,35 +36,40 @@ val PREMIUM_USER_EXTENDED_ROLES = listOf("ROLE_PREMIUM_USER")
 const val ADMIN_USER_NAME = "data_admin"
 const val ADMIN_USER_ID = "136a9394-4873-4a61-a25b-65b1e8e7cc2f"
 val ADMIN_USER_PASSWORD: String = System.getenv("KEYCLOAK_DATALAND_ADMIN_PASSWORD")
-val ADMIN_EXTENDED_ROLES = REVIEWER_EXTENDED_ROLES + UPLOADER_EXTENDED_ROLES + PREMIUM_USER_EXTENDED_ROLES
+val ADMIN_EXTENDED_ROLES =
+  REVIEWER_EXTENDED_ROLES + UPLOADER_EXTENDED_ROLES + PREMIUM_USER_EXTENDED_ROLES
 
 const val READER_USER_NAME = "data_reader"
 const val READER_USER_ID = "18b67ecc-1176-4506-8414-1e81661017ca"
 val READER_USER_PASSWORD: String = System.getenv("KEYCLOAK_READER_PASSWORD")
 
 val MUTUAL_ROLES_DATALAND_USERS =
-    listOf("default-roles-datalandsecurity", "ROLE_USER", "offline_access", "uma_authorization")
+  listOf("default-roles-datalandsecurity", "ROLE_USER", "offline_access", "uma_authorization")
 
-val FRONTEND_DISPLAYED_FRAMEWORKS = listOf(
+val FRONTEND_DISPLAYED_FRAMEWORKS =
+  listOf(
     DataTypeEnum.eutaxonomyMinusFinancials,
     DataTypeEnum.eutaxonomyMinusNonMinusFinancials,
     DataTypeEnum.lksg,
     DataTypeEnum.sfdr,
     DataTypeEnum.p2p,
     DataTypeEnum.vsme,
-)
+  )
 
 // Set maxNumberOfDaysSelectableForApiKeyValidity
 private val valueFromEnv = System.getenv("MAX_NUMBER_OF_DAYS_SELECTABLE_FOR_API_KEY_VALIDITY")
-val MAX_NUMBER_OF_DAYS_SELECTABLE_FOR_API_KEY_VALIDITY = if (valueFromEnv.isNullOrEmpty()) {
+val MAX_NUMBER_OF_DAYS_SELECTABLE_FOR_API_KEY_VALIDITY =
+  if (valueFromEnv.isNullOrEmpty()) {
     3650
-} else {
+  } else {
     valueFromEnv.toInt()
-}
+  }
 
-private val quotaValueFromEnv = System.getenv("NUMBER_OF_SINGLE_DATA_REQUESTS_PER_DAY_AS_NON_PREMIUM_USER")
-val NUMBER_OF_SINGLE_DATA_REQUESTS_PER_DAY_AS_NON_PREMIUM_USER = if (quotaValueFromEnv.isNullOrEmpty()) {
+private val quotaValueFromEnv =
+  System.getenv("NUMBER_OF_SINGLE_DATA_REQUESTS_PER_DAY_AS_NON_PREMIUM_USER")
+val NUMBER_OF_SINGLE_DATA_REQUESTS_PER_DAY_AS_NON_PREMIUM_USER =
+  if (quotaValueFromEnv.isNullOrEmpty()) {
     10
-} else {
+  } else {
     quotaValueFromEnv.toInt()
-}
+  }

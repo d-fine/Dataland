@@ -5,39 +5,20 @@ import jakarta.validation.Valid
 import org.dataland.datalandbackend.model.datapoints.BaseDataPoint
 import org.dataland.datalandbackend.model.enums.commons.YesNo
 
-/**
- * The data-model for the ChildLabor section
- */
+/** The data-model for the ChildLabor section */
 data class LksgSocialChildLabor(
-    val employeeSUnder18: YesNo? = null,
-
-    val employeeSUnder15: YesNo? = null,
-
-    val employeeSUnder18InApprenticeship: YesNo? = null,
-
-    val worstFormsOfChildLaborProhibition: YesNo? = null,
-
-    val worstFormsOfChildLaborForms: String? = null,
-
-    val measuresForPreventionOfEmploymentUnderLocalMinimumAge: YesNo? = null,
-
-    val employmentUnderLocalMinimumAgePreventionEmploymentContracts: YesNo? = null,
-
-    val employmentUnderLocalMinimumAgePreventionJobDescription: YesNo? = null,
-
-    val employmentUnderLocalMinimumAgePreventionIdentityDocuments: YesNo? = null,
-
-    @field:Valid()
-    val employmentUnderLocalMinimumAgePreventionTraining: BaseDataPoint<YesNo>? = null,
-
-    val employmentUnderLocalMinimumAgePreventionCheckingOfLegalMinimumAge: YesNo? = null,
-
-    @field:Valid()
-    val childLaborPreventionPolicy: BaseDataPoint<YesNo>? = null,
-
-    @field:Valid()
-    val additionalChildLaborOtherMeasures: BaseDataPoint<YesNo>? = null,
-
-    val additionalChildLaborOtherMeasuresDescription: String? = null,
-
+  val employeeSUnder18: YesNo? = null,
+  val employeeSUnder15: YesNo? = null,
+  val employeeSUnder18InApprenticeship: YesNo? = null,
+  val worstFormsOfChildLaborProhibition: YesNo? = null,
+  val worstFormsOfChildLaborForms: String? = null,
+  val measuresForPreventionOfEmploymentUnderLocalMinimumAge: YesNo? = null,
+  val employmentUnderLocalMinimumAgePreventionEmploymentContracts: YesNo? = null,
+  val employmentUnderLocalMinimumAgePreventionJobDescription: YesNo? = null,
+  val employmentUnderLocalMinimumAgePreventionIdentityDocuments: YesNo? = null,
+  @field:Valid() val employmentUnderLocalMinimumAgePreventionTraining: BaseDataPoint<YesNo>? = null,
+  val employmentUnderLocalMinimumAgePreventionCheckingOfLegalMinimumAge: YesNo? = null,
+  @field:Valid() val childLaborPreventionPolicy: BaseDataPoint<YesNo>? = null,
+  @field:Valid() val additionalChildLaborOtherMeasures: BaseDataPoint<YesNo>? = null,
+  val additionalChildLaborOtherMeasuresDescription: String? = null,
 )

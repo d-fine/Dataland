@@ -5,15 +5,9 @@ import jakarta.validation.Valid
 import org.dataland.datalandbackend.model.datapoints.BaseDataPoint
 import org.dataland.datalandbackend.model.enums.commons.YesNo
 
-/**
- * The data-model for the OecdLeitsaetze section
- */
+/** The data-model for the OecdLeitsaetze section */
 data class EsgQuestionnaireAllgemeinOecdLeitsaetze(
-    val mechanismenZurUeberwachungDerEinhaltungDerOecdLeitsaetze: YesNo? = null,
-
-    @field:Valid()
-    val richtlinienZurEinhaltungDerOecdLeitsaetze: List<BaseDataPoint<String>>? = null,
-
-    val erklaerungDerEinhaltungDerOecdLeitsaetze: String? = null,
-
+  val mechanismenZurUeberwachungDerEinhaltungDerOecdLeitsaetze: YesNo? = null,
+  @field:Valid() val richtlinienZurEinhaltungDerOecdLeitsaetze: List<BaseDataPoint<String>>? = null,
+  val erklaerungDerEinhaltungDerOecdLeitsaetze: String? = null,
 )

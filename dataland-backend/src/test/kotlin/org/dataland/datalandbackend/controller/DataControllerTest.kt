@@ -31,142 +31,131 @@ import org.springframework.security.core.context.SecurityContextHolder
 
 @SpringBootTest(classes = [DatalandBackend::class], properties = ["spring.profiles.active=nodb"])
 @AutoConfigureTestDatabase(connection = EmbeddedDatabaseConnection.H2)
-internal class DataControllerTest(
-    @Autowired @Spy
-    var objectMapper: ObjectMapper,
-) {
-    val testDataProvider = TestDataProvider(objectMapper)
+internal class DataControllerTest(@Autowired @Spy var objectMapper: ObjectMapper) {
+  val testDataProvider = TestDataProvider(objectMapper)
 
-    val testDataType = DataType.valueOf("eutaxonomy-non-financials")
-    val storedCompanyEntity = testDataProvider.getEmptyStoredCompanyEntity()
-    val someEuTaxoData = testDataProvider.getEuTaxonomyNonFinancialsDataset()
-    val someEuTaxoDataAsString = objectMapper.writeValueAsString(someEuTaxoData)!!
+  val testDataType = DataType.valueOf("eutaxonomy-non-financials")
+  val storedCompanyEntity = testDataProvider.getEmptyStoredCompanyEntity()
+  val someEuTaxoData = testDataProvider.getEuTaxonomyNonFinancialsDataset()
+  val someEuTaxoDataAsString = objectMapper.writeValueAsString(someEuTaxoData)!!
 
-    val testUserId = "testuser"
-    val otherUserId = "otheruser"
-    val testUserPendingDataId = "testuser_pending"
-    val otherUserPendingDataId = "otheruser_pending"
-    val otherUserAcceptedDataId = "otheruser_accepted"
-    val testUserPendingDataMetaInformationEntity =
-        buildDataMetaInformationEntity(testUserPendingDataId, testUserId, QaStatus.Pending)
-    val otherUserPendingDataMetaInformationEntity =
-        buildDataMetaInformationEntity(otherUserPendingDataId, otherUserId, QaStatus.Pending)
-    val otherUserAcceptedDataMetaInformationEntity =
-        buildDataMetaInformationEntity(otherUserAcceptedDataId, otherUserId, QaStatus.Accepted)
+  val testUserId = "testuser"
+  val otherUserId = "otheruser"
+  val testUserPendingDataId = "testuser_pending"
+  val otherUserPendingDataId = "otheruser_pending"
+  val otherUserAcceptedDataId = "otheruser_accepted"
+  val testUserPendingDataMetaInformationEntity =
+    buildDataMetaInformationEntity(testUserPendingDataId, testUserId, QaStatus.Pending)
+  val otherUserPendingDataMetaInformationEntity =
+    buildDataMetaInformationEntity(otherUserPendingDataId, otherUserId, QaStatus.Pending)
+  val otherUserAcceptedDataMetaInformationEntity =
+    buildDataMetaInformationEntity(otherUserAcceptedDataId, otherUserId, QaStatus.Accepted)
 
-    lateinit var mockSecurityContext: SecurityContext
-    lateinit var mockDataManager: DataManager
-    lateinit var mockDataMetaInformationManager: DataMetaInformationManager
-    lateinit var dataController: EutaxonomyNonFinancialsDataController
+  lateinit var mockSecurityContext: SecurityContext
+  lateinit var mockDataManager: DataManager
+  lateinit var mockDataMetaInformationManager: DataMetaInformationManager
+  lateinit var dataController: EutaxonomyNonFinancialsDataController
 
-    @BeforeEach
-    fun resetMocks() {
-        mockSecurityContext = mock(SecurityContext::class.java)
-        mockDataManager = mock(DataManager::class.java)
-        mockDataMetaInformationManager = mock(DataMetaInformationManager::class.java)
-        dataController = EutaxonomyNonFinancialsDataController(
-            mockDataManager,
-            mockDataMetaInformationManager, objectMapper,
+  @BeforeEach
+  fun resetMocks() {
+    mockSecurityContext = mock(SecurityContext::class.java)
+    mockDataManager = mock(DataManager::class.java)
+    mockDataMetaInformationManager = mock(DataMetaInformationManager::class.java)
+    dataController =
+      EutaxonomyNonFinancialsDataController(
+        mockDataManager,
+        mockDataMetaInformationManager,
+        objectMapper,
+      )
+  }
+
+  @Test
+  fun `test that the correct datasets are filtered`() {
+    mockDataMetaInformationManager()
+    mockDataManager()
+    testGetCompanyAssociatedDataEndpoint()
+    testGetAllCompanyDataEndpoint()
+  }
+
+  private fun mockDataMetaInformationManager() {
+    `when`(mockDataMetaInformationManager.getDataMetaInformationByDataId(testUserPendingDataId))
+      .thenReturn(testUserPendingDataMetaInformationEntity)
+    `when`(mockDataMetaInformationManager.getDataMetaInformationByDataId(otherUserPendingDataId))
+      .thenReturn(otherUserPendingDataMetaInformationEntity)
+    `when`(mockDataMetaInformationManager.getDataMetaInformationByDataId(otherUserAcceptedDataId))
+      .thenReturn(otherUserAcceptedDataMetaInformationEntity)
+    `when`(mockDataMetaInformationManager.searchDataMetaInfo("", testDataType, false, ""))
+      .thenReturn(
+        listOf(
+          testUserPendingDataMetaInformationEntity,
+          otherUserPendingDataMetaInformationEntity,
+          otherUserAcceptedDataMetaInformationEntity,
         )
+      )
+  }
+
+  private fun mockDataManager() {
+    `when`(mockDataManager.getPublicDataSet(anyString(), notNull() ?: testDataType, anyString()))
+      .thenReturn(StorableDataSet("", testDataType, "", 0, "", someEuTaxoDataAsString))
+  }
+
+  private fun buildDataMetaInformationEntity(
+    dataId: String,
+    uploaderId: String,
+    qaStatus: QaStatus,
+  ): DataMetaInformationEntity {
+    return DataMetaInformationEntity(
+      dataId,
+      storedCompanyEntity,
+      testDataType.toString(),
+      uploaderId,
+      0,
+      "",
+      null,
+      qaStatus,
+    )
+  }
+
+  private fun testGetCompanyAssociatedDataEndpoint() {
+    mockJwtAuthentication(DatalandRealmRole.ROLE_UPLOADER)
+    assertExpectedDatasetForDataId(testUserPendingDataId)
+    assertThrows<AccessDeniedException> {
+      dataController.getCompanyAssociatedData(otherUserPendingDataId)
     }
+    assertExpectedDatasetForDataId(otherUserAcceptedDataId)
 
-    @Test
-    fun `test that the correct datasets are filtered`() {
-        mockDataMetaInformationManager()
-        mockDataManager()
-        testGetCompanyAssociatedDataEndpoint()
-        testGetAllCompanyDataEndpoint()
-    }
+    mockJwtAuthentication(DatalandRealmRole.ROLE_ADMIN)
+    assertExpectedDatasetForDataId(testUserPendingDataId)
+    assertExpectedDatasetForDataId(otherUserPendingDataId)
+    assertExpectedDatasetForDataId(otherUserAcceptedDataId)
+  }
 
-    private fun mockDataMetaInformationManager() {
-        `when`(mockDataMetaInformationManager.getDataMetaInformationByDataId(testUserPendingDataId)).thenReturn(
-            testUserPendingDataMetaInformationEntity,
-        )
-        `when`(mockDataMetaInformationManager.getDataMetaInformationByDataId(otherUserPendingDataId)).thenReturn(
-            otherUserPendingDataMetaInformationEntity,
-        )
-        `when`(mockDataMetaInformationManager.getDataMetaInformationByDataId(otherUserAcceptedDataId)).thenReturn(
-            otherUserAcceptedDataMetaInformationEntity,
-        )
-        `when`(mockDataMetaInformationManager.searchDataMetaInfo("", testDataType, false, "")).thenReturn(
-            listOf(
-                testUserPendingDataMetaInformationEntity,
-                otherUserPendingDataMetaInformationEntity,
-                otherUserAcceptedDataMetaInformationEntity,
-            ),
-        )
-    }
+  private fun testGetAllCompanyDataEndpoint() {
+    mockJwtAuthentication(DatalandRealmRole.ROLE_UPLOADER)
+    assertDatasetsContainExactly(listOf(testUserPendingDataId, otherUserAcceptedDataId))
 
-    private fun mockDataManager() {
-        `when`(mockDataManager.getPublicDataSet(anyString(), notNull() ?: testDataType, anyString())).thenReturn(
-            StorableDataSet(
-                "",
-                testDataType,
-                "",
-                0,
-                "",
-                someEuTaxoDataAsString,
-            ),
-        )
-    }
+    mockJwtAuthentication(DatalandRealmRole.ROLE_ADMIN)
+    assertDatasetsContainExactly(
+      listOf(testUserPendingDataId, otherUserPendingDataId, otherUserAcceptedDataId)
+    )
+  }
 
-    private fun buildDataMetaInformationEntity(
-        dataId: String,
-        uploaderId: String,
-        qaStatus: QaStatus,
-    ): DataMetaInformationEntity {
-        return DataMetaInformationEntity(
-            dataId,
-            storedCompanyEntity,
-            testDataType.toString(),
-            uploaderId,
-            0,
-            "",
-            null,
-            qaStatus,
-        )
-    }
+  private fun mockJwtAuthentication(role: DatalandRealmRole) {
+    val mockAuthentication = AuthenticationMock.mockJwtAuthentication("", testUserId, setOf(role))
+    `when`(mockSecurityContext.authentication).thenReturn(mockAuthentication)
+    SecurityContextHolder.setContext(mockSecurityContext)
+  }
 
-    private fun testGetCompanyAssociatedDataEndpoint() {
-        mockJwtAuthentication(DatalandRealmRole.ROLE_UPLOADER)
-        assertExpectedDatasetForDataId(testUserPendingDataId)
-        assertThrows<AccessDeniedException> {
-            dataController.getCompanyAssociatedData(otherUserPendingDataId)
-        }
-        assertExpectedDatasetForDataId(otherUserAcceptedDataId)
+  private fun assertExpectedDatasetForDataId(dataId: String) {
+    Assertions.assertEquals(
+      dataController.getCompanyAssociatedData(dataId).body!!.data,
+      someEuTaxoData,
+    )
+  }
 
-        mockJwtAuthentication(DatalandRealmRole.ROLE_ADMIN)
-        assertExpectedDatasetForDataId(testUserPendingDataId)
-        assertExpectedDatasetForDataId(otherUserPendingDataId)
-        assertExpectedDatasetForDataId(otherUserAcceptedDataId)
-    }
-
-    private fun testGetAllCompanyDataEndpoint() {
-        mockJwtAuthentication(DatalandRealmRole.ROLE_UPLOADER)
-        assertDatasetsContainExactly(listOf(testUserPendingDataId, otherUserAcceptedDataId))
-
-        mockJwtAuthentication(DatalandRealmRole.ROLE_ADMIN)
-        assertDatasetsContainExactly(listOf(testUserPendingDataId, otherUserPendingDataId, otherUserAcceptedDataId))
-    }
-
-    private fun mockJwtAuthentication(role: DatalandRealmRole) {
-        val mockAuthentication = AuthenticationMock.mockJwtAuthentication("", testUserId, setOf(role))
-        `when`(mockSecurityContext.authentication).thenReturn(mockAuthentication)
-        SecurityContextHolder.setContext(mockSecurityContext)
-    }
-
-    private fun assertExpectedDatasetForDataId(dataId: String) {
-        Assertions.assertEquals(
-            dataController.getCompanyAssociatedData(dataId).body!!.data,
-            someEuTaxoData,
-        )
-    }
-
-    private fun assertDatasetsContainExactly(dataIds: List<String>) {
-        val datasetsWithMetaInfo = dataController.getFrameworkDatasetsForCompany("", false, "").body!!
-        Assertions.assertEquals(datasetsWithMetaInfo.size, dataIds.size)
-        dataIds.forEach { dataId ->
-            assert(datasetsWithMetaInfo.any { it.metaInfo.dataId == dataId })
-        }
-    }
+  private fun assertDatasetsContainExactly(dataIds: List<String>) {
+    val datasetsWithMetaInfo = dataController.getFrameworkDatasetsForCompany("", false, "").body!!
+    Assertions.assertEquals(datasetsWithMetaInfo.size, dataIds.size)
+    dataIds.forEach { dataId -> assert(datasetsWithMetaInfo.any { it.metaInfo.dataId == dataId }) }
+  }
 }

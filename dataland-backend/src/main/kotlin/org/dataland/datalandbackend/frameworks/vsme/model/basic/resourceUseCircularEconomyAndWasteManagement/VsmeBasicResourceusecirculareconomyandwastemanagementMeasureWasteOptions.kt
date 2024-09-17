@@ -3,13 +3,9 @@ package org.dataland.datalandbackend.frameworks.vsme.model.basic.resourceUseCirc
 
 import io.swagger.v3.oas.annotations.media.Schema
 
-/**
- * Enum class for the single-select-field measureWaste
- */
-@Schema(
-    enumAsRef = true,
-)
+/** Enum class for the single-select-field measureWaste */
+@Schema(enumAsRef = true)
 enum class VsmeBasicResourceusecirculareconomyandwastemanagementMeasureWasteOptions {
-    WeightPreferred,
-    Volume,
+  WeightPreferred,
+  Volume,
 }

@@ -10,24 +10,21 @@ import org.springframework.boot.runApplication
 import org.springframework.context.annotation.ComponentScan
 import org.springframework.context.annotation.Import
 
-/**
- * Class to define the spring boot application
- */
+/** Class to define the spring boot application */
 @SpringBootApplication
 @Import(
-    value = [
-        KnownErrorControllerAdvice::class,
-        UnknownErrorControllerAdvice::class,
-        DefaultResponseSchemaCustomizer::class,
-        RequestRejectedExceptionHandler::class,
-    ],
+  value =
+    [
+      KnownErrorControllerAdvice::class,
+      UnknownErrorControllerAdvice::class,
+      DefaultResponseSchemaCustomizer::class,
+      RequestRejectedExceptionHandler::class,
+    ]
 )
 @ComponentScan(basePackages = ["org.dataland"])
 class DatalandBackend : OpenAPIConfiguration
 
-/**
- * Main function to be executed for running the spring boot dataland backend process
- */
+/** Main function to be executed for running the spring boot dataland backend process */
 fun main(args: Array<String>) {
-    runApplication<DatalandBackend>(args = args)
+  runApplication<DatalandBackend>(args = args)
 }

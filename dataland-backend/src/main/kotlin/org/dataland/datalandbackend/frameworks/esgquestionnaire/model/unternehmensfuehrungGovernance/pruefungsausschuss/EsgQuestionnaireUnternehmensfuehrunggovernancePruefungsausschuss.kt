@@ -3,14 +3,9 @@ package org.dataland.datalandbackend.frameworks.esgquestionnaire.model.unternehm
 
 import java.math.BigInteger
 
-/**
- * The data-model for the Pruefungsausschuss section
- */
+/** The data-model for the Pruefungsausschuss section */
 data class EsgQuestionnaireUnternehmensfuehrunggovernancePruefungsausschuss(
-    val anzahlDerMitgliederImPruefungsausschuss: BigInteger? = null,
-
-    val anzahlUnabhaengigerMitgliederImPruefungsausschuss: BigInteger? = null,
-
-    val anzahlVonFrauenImPruefungsausschuss: BigInteger? = null,
-
+  val anzahlDerMitgliederImPruefungsausschuss: BigInteger? = null,
+  val anzahlUnabhaengigerMitgliederImPruefungsausschuss: BigInteger? = null,
+  val anzahlVonFrauenImPruefungsausschuss: BigInteger? = null,
 )

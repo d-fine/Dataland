@@ -3,14 +3,10 @@ package org.dataland.datalandbackend.frameworks.lksg.model.general.productionSpe
 
 import io.swagger.v3.oas.annotations.media.Schema
 
-/**
- * Enum class for the single-select-field market
- */
-@Schema(
-    enumAsRef = true,
-)
+/** Enum class for the single-select-field market */
+@Schema(enumAsRef = true)
 enum class LksgGeneralProductionspecificMarketOptions {
-    National,
-    International,
-    Both,
+  National,
+  International,
+  Both,
 }

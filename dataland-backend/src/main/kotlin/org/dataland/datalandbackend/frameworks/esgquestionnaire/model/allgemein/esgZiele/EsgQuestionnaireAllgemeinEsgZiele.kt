@@ -3,14 +3,9 @@ package org.dataland.datalandbackend.frameworks.esgquestionnaire.model.allgemein
 
 import org.dataland.datalandbackend.model.enums.commons.YesNo
 
-/**
- * The data-model for the EsgZiele section
- */
+/** The data-model for the EsgZiele section */
 data class EsgQuestionnaireAllgemeinEsgZiele(
-    val existenzVonEsgZielen: YesNo? = null,
-
-    val beschreibungDerEsgZiele: String? = null,
-
-    val investitionenInZielerreichung: String? = null,
-
+  val existenzVonEsgZielen: YesNo? = null,
+  val beschreibungDerEsgZiele: String? = null,
+  val investitionenInZielerreichung: String? = null,
 )

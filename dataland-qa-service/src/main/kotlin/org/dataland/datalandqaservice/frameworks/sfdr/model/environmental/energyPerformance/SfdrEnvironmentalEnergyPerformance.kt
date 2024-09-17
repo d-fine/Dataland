@@ -7,53 +7,53 @@ import org.dataland.datalandqaservice.frameworks.sfdr.custom.HighImpactClimateSe
 import org.dataland.datalandqaservice.frameworks.sfdr.custom.SfdrHighImpactClimateSectorEnergyConsumption
 import org.dataland.datalandqaservice.model.reports.QaReportDataPoint
 
-/**
- * The QA-model for the EnergyPerformance section
- */
+/** The QA-model for the EnergyPerformance section */
 data class SfdrEnvironmentalEnergyPerformance(
-    @field:Valid()
-    val renewableEnergyProductionInGWh: QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
-
-    @field:Valid()
-    val renewableEnergyConsumptionInGWh: QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
-
-    @field:Valid()
-    val nonRenewableEnergyProductionInGWh: QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
-
-    @field:Valid()
-    val relativeNonRenewableEnergyProductionInPercent: QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
-
-    @field:Valid()
-    val nonRenewableEnergyConsumptionInGWh: QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
-
-    @field:Valid()
-    val relativeNonRenewableEnergyConsumptionInPercent: QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
-
-    val applicableHighImpactClimateSectors:
-    Map<HighImpactClimateSector, SfdrHighImpactClimateSectorEnergyConsumption>? = null,
-
-    @field:Valid()
-    val totalHighImpactClimateSectorEnergyConsumptionInGWh: QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
-
-    @field:Valid()
-    val nonRenewableEnergyConsumptionFossilFuelsInGWh: QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
-
-    @field:Valid()
-    val nonRenewableEnergyConsumptionCrudeOilInGWh: QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
-
-    @field:Valid()
-    val nonRenewableEnergyConsumptionNaturalGasInGWh: QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
-
-    @field:Valid()
-    val nonRenewableEnergyConsumptionLigniteInGWh: QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
-
-    @field:Valid()
-    val nonRenewableEnergyConsumptionCoalInGWh: QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
-
-    @field:Valid()
-    val nonRenewableEnergyConsumptionNuclearEnergyInGWh: QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
-
-    @field:Valid()
-    val nonRenewableEnergyConsumptionOtherInGWh: QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
-
+  @field:Valid()
+  val renewableEnergyProductionInGWh: QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
+  @field:Valid()
+  val renewableEnergyConsumptionInGWh: QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
+  @field:Valid()
+  val nonRenewableEnergyProductionInGWh: QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
+  @field:Valid()
+  val relativeNonRenewableEnergyProductionInPercent:
+    QaReportDataPoint<ExtendedDataPointBigDecimal?>? =
+    null,
+  @field:Valid()
+  val nonRenewableEnergyConsumptionInGWh: QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
+  @field:Valid()
+  val relativeNonRenewableEnergyConsumptionInPercent:
+    QaReportDataPoint<ExtendedDataPointBigDecimal?>? =
+    null,
+  val applicableHighImpactClimateSectors:
+    Map<HighImpactClimateSector, SfdrHighImpactClimateSectorEnergyConsumption>? =
+    null,
+  @field:Valid()
+  val totalHighImpactClimateSectorEnergyConsumptionInGWh:
+    QaReportDataPoint<ExtendedDataPointBigDecimal?>? =
+    null,
+  @field:Valid()
+  val nonRenewableEnergyConsumptionFossilFuelsInGWh:
+    QaReportDataPoint<ExtendedDataPointBigDecimal?>? =
+    null,
+  @field:Valid()
+  val nonRenewableEnergyConsumptionCrudeOilInGWh: QaReportDataPoint<ExtendedDataPointBigDecimal?>? =
+    null,
+  @field:Valid()
+  val nonRenewableEnergyConsumptionNaturalGasInGWh:
+    QaReportDataPoint<ExtendedDataPointBigDecimal?>? =
+    null,
+  @field:Valid()
+  val nonRenewableEnergyConsumptionLigniteInGWh: QaReportDataPoint<ExtendedDataPointBigDecimal?>? =
+    null,
+  @field:Valid()
+  val nonRenewableEnergyConsumptionCoalInGWh: QaReportDataPoint<ExtendedDataPointBigDecimal?>? =
+    null,
+  @field:Valid()
+  val nonRenewableEnergyConsumptionNuclearEnergyInGWh:
+    QaReportDataPoint<ExtendedDataPointBigDecimal?>? =
+    null,
+  @field:Valid()
+  val nonRenewableEnergyConsumptionOtherInGWh: QaReportDataPoint<ExtendedDataPointBigDecimal?>? =
+    null,
 )

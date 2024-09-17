@@ -2,32 +2,19 @@
 package org.dataland.datalandbackend.frameworks.sfdr.model.social.humanRights
 
 import jakarta.validation.Valid
+import java.math.BigInteger
 import org.dataland.datalandbackend.model.datapoints.ExtendedDataPoint
 import org.dataland.datalandbackend.model.enums.commons.YesNo
 import org.dataland.datalandbackend.validator.MinimumValue
-import java.math.BigInteger
 
-/**
- * The data-model for the HumanRights section
- */
+/** The data-model for the HumanRights section */
 data class SfdrSocialHumanRights(
-    @field:Valid()
-    val humanRightsPolicy: ExtendedDataPoint<YesNo?>? = null,
-
-    @field:Valid()
-    val humanRightsDueDiligence: ExtendedDataPoint<YesNo?>? = null,
-
-    @field:Valid()
-    val traffickingInHumanBeingsPolicy: ExtendedDataPoint<YesNo?>? = null,
-
-    @field:Valid()
-    val reportedChildLabourIncidents: ExtendedDataPoint<YesNo?>? = null,
-
-    @field:Valid()
-    val reportedForcedOrCompulsoryLabourIncidents: ExtendedDataPoint<YesNo?>? = null,
-
-    @field:MinimumValue(minimumValue = 0)
-    @field:Valid()
-    val numberOfReportedIncidentsOfHumanRightsViolations: ExtendedDataPoint<BigInteger?>? = null,
-
+  @field:Valid() val humanRightsPolicy: ExtendedDataPoint<YesNo?>? = null,
+  @field:Valid() val humanRightsDueDiligence: ExtendedDataPoint<YesNo?>? = null,
+  @field:Valid() val traffickingInHumanBeingsPolicy: ExtendedDataPoint<YesNo?>? = null,
+  @field:Valid() val reportedChildLabourIncidents: ExtendedDataPoint<YesNo?>? = null,
+  @field:Valid() val reportedForcedOrCompulsoryLabourIncidents: ExtendedDataPoint<YesNo?>? = null,
+  @field:MinimumValue(minimumValue = 0)
+  @field:Valid()
+  val numberOfReportedIncidentsOfHumanRightsViolations: ExtendedDataPoint<BigInteger?>? = null,
 )

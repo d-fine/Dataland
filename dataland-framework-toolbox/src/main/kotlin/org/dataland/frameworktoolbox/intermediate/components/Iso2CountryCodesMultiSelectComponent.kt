@@ -15,96 +15,88 @@ import org.dataland.frameworktoolbox.specific.viewconfig.functional.FrameworkDis
 import org.dataland.frameworktoolbox.utils.typescript.TypeScriptImport
 
 /**
- * An ISO2 Country Code represents a selection of string-options generated from country Codes. Multiple entries can be
- * selected.
+ * An ISO2 Country Code represents a selection of string-options generated from country Codes.
+ * Multiple entries can be selected.
  */
-open class Iso2CountryCodesMultiSelectComponent(
-    identifier: String,
-    parent: FieldNodeParent,
-) : ComponentBase(identifier, parent) {
+open class Iso2CountryCodesMultiSelectComponent(identifier: String, parent: FieldNodeParent) :
+  ComponentBase(identifier, parent) {
 
-    var options: Set<SelectionOption> = mutableSetOf()
-    var filePathOfPremadeDropdownDatasets: String = "@/utils/PremadeDropdownDatasets"
+  var options: Set<SelectionOption> = mutableSetOf()
+  var filePathOfPremadeDropdownDatasets: String = "@/utils/PremadeDropdownDatasets"
 
-    override fun generateDefaultDataModel(dataClassBuilder: DataClassBuilder) {
-        requireDocumentSupportIn(setOf(NoDocumentSupport))
-        dataClassBuilder.addProperty(
-            this.identifier,
-            TypeReference(
-                "List",
-                isNullable,
-                listOf(TypeReference("String", false)),
-            ),
-        )
-    }
-    private val mappings = "const mappings = getDatasetAsMap(DropdownDatasetIdentifier.CountryCodesIso2);"
-    override fun generateDefaultViewConfig(sectionConfigBuilder: SectionConfigBuilder) {
-        requireDocumentSupportIn(setOf(NoDocumentSupport))
-        sectionConfigBuilder.addStandardCellWithValueGetterFactory(
-            this,
-            documentSupport.getFrameworkDisplayValueLambda(
-                FrameworkDisplayValueLambda(
-                    "{\n" +
-                        mappings +
-                        generateReturnStatement() +
-                        "}",
-                    setOf(
-                        TypeScriptImport(
-                            "formatListOfStringsForDatatable",
-                            "@/components/resources/dataTable/conversion/MultiSelectValueGetterFactory",
-                        ),
-                        TypeScriptImport(
-                            "getOriginalNameFromTechnicalName",
-                            "@/components/resources/dataTable/conversion/Utils",
-                        ),
-                        TypeScriptImport("DropdownDatasetIdentifier", filePathOfPremadeDropdownDatasets),
-                        TypeScriptImport("getDatasetAsMap", filePathOfPremadeDropdownDatasets),
-                    ),
-                ),
-                label, getTypescriptFieldAccessor(),
-            ),
-        )
-    }
+  override fun generateDefaultDataModel(dataClassBuilder: DataClassBuilder) {
+    requireDocumentSupportIn(setOf(NoDocumentSupport))
+    dataClassBuilder.addProperty(
+      this.identifier,
+      TypeReference("List", isNullable, listOf(TypeReference("String", false))),
+    )
+  }
 
-    override fun generateDefaultUploadConfig(uploadCategoryBuilder: UploadCategoryBuilder) {
-        requireDocumentSupportIn(setOf(NoDocumentSupport))
-        uploadCategoryBuilder.addStandardUploadConfigCell(
-            frameworkUploadOptions = FrameworkUploadOptions(
-                body = "getDataset(DropdownDatasetIdentifier.CountryCodesIso2)",
-                imports =
-                setOf(
-                    TypeScriptImport("DropdownDatasetIdentifier", filePathOfPremadeDropdownDatasets),
-                    TypeScriptImport("getDataset", filePathOfPremadeDropdownDatasets),
-                ),
-            ),
-            component = this,
-            uploadComponentName = "MultiSelectFormField",
-        )
-    }
+  private val mappings =
+    "const mappings = getDatasetAsMap(DropdownDatasetIdentifier.CountryCodesIso2);"
 
-    override fun generateDefaultFixtureGenerator(sectionBuilder: FixtureSectionBuilder) {
-        val formattedString = "[ \"DE\", \"AL\", \"AZ\", \"GB\", \"US\", \"DK\"]"
-        sectionBuilder.addAtomicExpression(
-            identifier,
-            documentSupport.getFixtureExpression(
-                fixtureExpression = "pickSubsetOfElements($formattedString)",
-                nullableFixtureExpression = "dataGenerator.valueOrNull(pickSubsetOfElements($formattedString))",
-                nullable = isNullable,
+  override fun generateDefaultViewConfig(sectionConfigBuilder: SectionConfigBuilder) {
+    requireDocumentSupportIn(setOf(NoDocumentSupport))
+    sectionConfigBuilder.addStandardCellWithValueGetterFactory(
+      this,
+      documentSupport.getFrameworkDisplayValueLambda(
+        FrameworkDisplayValueLambda(
+          "{\n" + mappings + generateReturnStatement() + "}",
+          setOf(
+            TypeScriptImport(
+              "formatListOfStringsForDatatable",
+              "@/components/resources/dataTable/conversion/MultiSelectValueGetterFactory",
             ),
-            imports = setOf(
-                TypeScriptImport(
-                    "pickSubsetOfElements",
-                    "@e2e/fixtures/FixtureUtils",
-                ),
+            TypeScriptImport(
+              "getOriginalNameFromTechnicalName",
+              "@/components/resources/dataTable/conversion/Utils",
             ),
-        )
-    }
+            TypeScriptImport("DropdownDatasetIdentifier", filePathOfPremadeDropdownDatasets),
+            TypeScriptImport("getDatasetAsMap", filePathOfPremadeDropdownDatasets),
+          ),
+        ),
+        label,
+        getTypescriptFieldAccessor(),
+      ),
+    )
+  }
 
-    private fun generateReturnStatement(): String {
-        return "return formatListOfStringsForDatatable(" +
-            "${getTypescriptFieldAccessor()}?.map(it => \n" +
-            "   getOriginalNameFromTechnicalName(it, mappings)), " +
-            "'${escapeEcmaScript(label)}'" +
-            ")"
-    }
+  override fun generateDefaultUploadConfig(uploadCategoryBuilder: UploadCategoryBuilder) {
+    requireDocumentSupportIn(setOf(NoDocumentSupport))
+    uploadCategoryBuilder.addStandardUploadConfigCell(
+      frameworkUploadOptions =
+        FrameworkUploadOptions(
+          body = "getDataset(DropdownDatasetIdentifier.CountryCodesIso2)",
+          imports =
+            setOf(
+              TypeScriptImport("DropdownDatasetIdentifier", filePathOfPremadeDropdownDatasets),
+              TypeScriptImport("getDataset", filePathOfPremadeDropdownDatasets),
+            ),
+        ),
+      component = this,
+      uploadComponentName = "MultiSelectFormField",
+    )
+  }
+
+  override fun generateDefaultFixtureGenerator(sectionBuilder: FixtureSectionBuilder) {
+    val formattedString = "[ \"DE\", \"AL\", \"AZ\", \"GB\", \"US\", \"DK\"]"
+    sectionBuilder.addAtomicExpression(
+      identifier,
+      documentSupport.getFixtureExpression(
+        fixtureExpression = "pickSubsetOfElements($formattedString)",
+        nullableFixtureExpression =
+          "dataGenerator.valueOrNull(pickSubsetOfElements($formattedString))",
+        nullable = isNullable,
+      ),
+      imports = setOf(TypeScriptImport("pickSubsetOfElements", "@e2e/fixtures/FixtureUtils")),
+    )
+  }
+
+  private fun generateReturnStatement(): String {
+    return "return formatListOfStringsForDatatable(" +
+      "${getTypescriptFieldAccessor()}?.map(it => \n" +
+      "   getOriginalNameFromTechnicalName(it, mappings)), " +
+      "'${escapeEcmaScript(label)}'" +
+      ")"
+  }
 }

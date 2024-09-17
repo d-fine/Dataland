@@ -3,14 +3,9 @@ package org.dataland.datalandbackend.frameworks.esgquestionnaire.model.unternehm
 
 import java.math.BigInteger
 
-/**
- * The data-model for the Nominierungsausschuss section
- */
+/** The data-model for the Nominierungsausschuss section */
 data class EsgQuestionnaireUnternehmensfuehrunggovernanceNominierungsausschuss(
-    val anzahlDerMitgliederImNominierungsausschuss: BigInteger? = null,
-
-    val anzahlUnabhaengigerMitgliederImNominierungsausschuss: BigInteger? = null,
-
-    val anzahlVonFrauenImVerguetungsausschuss: BigInteger? = null,
-
+  val anzahlDerMitgliederImNominierungsausschuss: BigInteger? = null,
+  val anzahlUnabhaengigerMitgliederImNominierungsausschuss: BigInteger? = null,
+  val anzahlVonFrauenImVerguetungsausschuss: BigInteger? = null,
 )

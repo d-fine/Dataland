@@ -7,29 +7,23 @@ import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 
 /**
- * This class holds the configuration properties and the beans to auto-configure this library in a spring-boot
- * environment
+ * This class holds the configuration properties and the beans to auto-configure this library in a
+ * spring-boot environment
  */
 @Configuration
 class ConfigurationStorageControllerApi(
-    @Value("\${dataland.internalstorage.base-url}")
-    private val internalStorageBaseUrl: String,
-    @Value("\${dataland.externalstorage.base-url}")
-    private val externalStorageBaseUrl: String,
+  @Value("\${dataland.internalstorage.base-url}") private val internalStorageBaseUrl: String,
+  @Value("\${dataland.externalstorage.base-url}") private val externalStorageBaseUrl: String,
 ) {
-    /**
-     * The bean to configure the internal client StorageControllerApi
-     */
-    @Bean
-    fun getApiInternalClient(): StorageControllerApi {
-        return StorageControllerApi(basePath = internalStorageBaseUrl)
-    }
+  /** The bean to configure the internal client StorageControllerApi */
+  @Bean
+  fun getApiInternalClient(): StorageControllerApi {
+    return StorageControllerApi(basePath = internalStorageBaseUrl)
+  }
 
-    /**
-     * The bean to configure the external client StorageControllerApi
-     */
-    @Bean
-    fun getApiExternalClient(): ExternalStorageControllerApi {
-        return ExternalStorageControllerApi(basePath = externalStorageBaseUrl)
-    }
+  /** The bean to configure the external client StorageControllerApi */
+  @Bean
+  fun getApiExternalClient(): ExternalStorageControllerApi {
+    return ExternalStorageControllerApi(basePath = externalStorageBaseUrl)
+  }
 }

@@ -5,11 +5,5 @@ import jakarta.validation.Valid
 import org.dataland.datalandbackend.model.datapoints.BaseDataPoint
 import org.dataland.datalandbackend.model.enums.commons.YesNo
 
-/**
- * The data-model for the Attachment section
- */
-data class LksgAttachmentAttachment(
-    @field:Valid()
-    val attachment: BaseDataPoint<YesNo>? = null,
-
-)
+/** The data-model for the Attachment section */
+data class LksgAttachmentAttachment(@field:Valid() val attachment: BaseDataPoint<YesNo>? = null)

@@ -13,67 +13,64 @@ import org.dataland.frameworktoolbox.specific.viewconfig.elements.getTypescriptF
 import org.dataland.frameworktoolbox.specific.viewconfig.functional.FrameworkDisplayValueLambda
 import org.dataland.frameworktoolbox.utils.typescript.TypeScriptImport
 
-/**
- * A PercentageComponent represents a decimal percentage between 0 % and 100 %.
- */
-class PercentageComponent(
-    identifier: String,
-    parent: FieldNodeParent,
-) : NumberBaseComponent(identifier, parent) {
+/** A PercentageComponent represents a decimal percentage between 0 % and 100 %. */
+class PercentageComponent(identifier: String, parent: FieldNodeParent) :
+  NumberBaseComponent(identifier, parent) {
 
-    override fun generateDefaultDataModel(dataClassBuilder: DataClassBuilder) {
-        dataClassBuilder.addPropertyWithDocumentSupport(
-            documentSupport,
-            identifier,
-            TypeReference("java.math.BigDecimal", isNullable),
-            listOf(),
-        )
-    }
+  override fun generateDefaultDataModel(dataClassBuilder: DataClassBuilder) {
+    dataClassBuilder.addPropertyWithDocumentSupport(
+      documentSupport,
+      identifier,
+      TypeReference("java.math.BigDecimal", isNullable),
+      listOf(),
+    )
+  }
 
-    override fun generateDefaultQaModel(dataClassBuilder: DataClassBuilder) {
-        dataClassBuilder.addQaPropertyWithDocumentSupport(
-            documentSupport,
-            identifier,
-            TypeReference("java.math.BigDecimal", isNullable),
-            listOf(),
-        )
-    }
+  override fun generateDefaultQaModel(dataClassBuilder: DataClassBuilder) {
+    dataClassBuilder.addQaPropertyWithDocumentSupport(
+      documentSupport,
+      identifier,
+      TypeReference("java.math.BigDecimal", isNullable),
+      listOf(),
+    )
+  }
 
-    override fun generateDefaultViewConfig(sectionConfigBuilder: SectionConfigBuilder) {
-        sectionConfigBuilder.addStandardCellWithValueGetterFactory(
-            this,
-            documentSupport.getFrameworkDisplayValueLambda(
-                FrameworkDisplayValueLambda(
-                    "formatPercentageForDatatable(${getTypescriptFieldAccessor(true)})",
-                    setOf(
-                        TypeScriptImport(
-                            "formatPercentageForDatatable",
-                            "@/components/resources/dataTable/conversion/PercentageValueGetterFactory",
-                        ),
-                    ),
-                ),
-                label, getTypescriptFieldAccessor(),
-            ),
-        )
-    }
+  override fun generateDefaultViewConfig(sectionConfigBuilder: SectionConfigBuilder) {
+    sectionConfigBuilder.addStandardCellWithValueGetterFactory(
+      this,
+      documentSupport.getFrameworkDisplayValueLambda(
+        FrameworkDisplayValueLambda(
+          "formatPercentageForDatatable(${getTypescriptFieldAccessor(true)})",
+          setOf(
+            TypeScriptImport(
+              "formatPercentageForDatatable",
+              "@/components/resources/dataTable/conversion/PercentageValueGetterFactory",
+            )
+          ),
+        ),
+        label,
+        getTypescriptFieldAccessor(),
+      ),
+    )
+  }
 
-    override fun generateDefaultUploadConfig(uploadCategoryBuilder: UploadCategoryBuilder) {
-        uploadCategoryBuilder.addStandardUploadConfigCell(
-            component = this,
-            uploadComponentName = "NumberFormField",
-            validation = "between:0,100",
-            unit = "%",
-        )
-    }
+  override fun generateDefaultUploadConfig(uploadCategoryBuilder: UploadCategoryBuilder) {
+    uploadCategoryBuilder.addStandardUploadConfigCell(
+      component = this,
+      uploadComponentName = "NumberFormField",
+      validation = "between:0,100",
+      unit = "%",
+    )
+  }
 
-    override fun generateDefaultFixtureGenerator(sectionBuilder: FixtureSectionBuilder) {
-        sectionBuilder.addAtomicExpression(
-            identifier,
-            documentSupport.getFixtureExpression(
-                fixtureExpression = "dataGenerator.guaranteedPercentageValue()",
-                nullableFixtureExpression = "dataGenerator.randomPercentageValue()",
-                nullable = isNullable,
-            ),
-        )
-    }
+  override fun generateDefaultFixtureGenerator(sectionBuilder: FixtureSectionBuilder) {
+    sectionBuilder.addAtomicExpression(
+      identifier,
+      documentSupport.getFixtureExpression(
+        fixtureExpression = "dataGenerator.guaranteedPercentageValue()",
+        nullableFixtureExpression = "dataGenerator.randomPercentageValue()",
+        nullable = isNullable,
+      ),
+    )
+  }
 }

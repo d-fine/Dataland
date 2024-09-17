@@ -5,11 +5,7 @@ import jakarta.validation.Valid
 import org.dataland.datalandbackend.model.datapoints.ExtendedDataPoint
 import org.dataland.datalandbackend.model.enums.commons.YesNo
 
-/**
- * The data-model for the GreenSecurities section
- */
+/** The data-model for the GreenSecurities section */
 data class SfdrSocialGreenSecurities(
-    @field:Valid()
-    val securitiesNotCertifiedAsGreen: ExtendedDataPoint<YesNo?>? = null,
-
+  @field:Valid() val securitiesNotCertifiedAsGreen: ExtendedDataPoint<YesNo?>? = null
 )

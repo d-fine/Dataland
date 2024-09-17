@@ -7,17 +7,14 @@ import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.context.annotation.Primary
 
-/**
- * A configuration class that disables backend data-existence and access checks
- * for QA reports
- */
+/** A configuration class that disables backend data-existence and access checks for QA reports */
 @Configuration
 class NoBackendRequestQaReportConfiguration {
-    @Bean
-    @Primary
-    fun getQaReportSecurityPolicy(
-        @Autowired userAuthenticatedApiService: UserAuthenticatedApiService,
-    ): QaReportSecurityPolicy {
-        return NoBackendRequestQaReportSecurityPolicy(userAuthenticatedApiService)
-    }
+  @Bean
+  @Primary
+  fun getQaReportSecurityPolicy(
+    @Autowired userAuthenticatedApiService: UserAuthenticatedApiService
+  ): QaReportSecurityPolicy {
+    return NoBackendRequestQaReportSecurityPolicy(userAuthenticatedApiService)
+  }
 }

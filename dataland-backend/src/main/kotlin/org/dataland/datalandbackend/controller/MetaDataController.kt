@@ -13,40 +13,38 @@ import org.springframework.web.bind.annotation.RestController
 
 /**
  * Controller for the company metadata endpoints
+ *
  * @param dataMetaInformationManager service for handling data meta information
  */
-
 @RestController
 class MetaDataController(
-    @Autowired var dataMetaInformationManager: DataMetaInformationManager,
-    @Autowired val logMessageBuilder: LogMessageBuilder,
+  @Autowired var dataMetaInformationManager: DataMetaInformationManager,
+  @Autowired val logMessageBuilder: LogMessageBuilder,
 ) : MetaDataApi {
 
-    override fun getListOfDataMetaInfo(
-        companyId: String?,
-        dataType: DataType?,
-        showOnlyActive: Boolean,
-        reportingPeriod: String?,
-    ):
-        ResponseEntity<List<DataMetaInformation>> {
-        val currentUser = DatalandAuthentication.fromContextOrNull()
-        return ResponseEntity.ok(
-            dataMetaInformationManager.searchDataMetaInfo(
-                companyId ?: "",
-                dataType,
-                showOnlyActive,
-                reportingPeriod,
-            ).filter { it.isDatasetViewableByUser(currentUser) }
-                .map { it.toApiModel(currentUser) },
-        )
-    }
+  override fun getListOfDataMetaInfo(
+    companyId: String?,
+    dataType: DataType?,
+    showOnlyActive: Boolean,
+    reportingPeriod: String?,
+  ): ResponseEntity<List<DataMetaInformation>> {
+    val currentUser = DatalandAuthentication.fromContextOrNull()
+    return ResponseEntity.ok(
+      dataMetaInformationManager
+        .searchDataMetaInfo(companyId ?: "", dataType, showOnlyActive, reportingPeriod)
+        .filter { it.isDatasetViewableByUser(currentUser) }
+        .map { it.toApiModel(currentUser) }
+    )
+  }
 
-    override fun getDataMetaInfo(dataId: String): ResponseEntity<DataMetaInformation> {
-        val currentUser = DatalandAuthentication.fromContextOrNull()
-        val metaInfo = dataMetaInformationManager.getDataMetaInformationByDataId(dataId)
-        if (!metaInfo.isDatasetViewableByUser(DatalandAuthentication.fromContextOrNull())) {
-            throw AccessDeniedException(logMessageBuilder.generateAccessDeniedExceptionMessage(metaInfo.qaStatus))
-        }
-        return ResponseEntity.ok(metaInfo.toApiModel(currentUser))
+  override fun getDataMetaInfo(dataId: String): ResponseEntity<DataMetaInformation> {
+    val currentUser = DatalandAuthentication.fromContextOrNull()
+    val metaInfo = dataMetaInformationManager.getDataMetaInformationByDataId(dataId)
+    if (!metaInfo.isDatasetViewableByUser(DatalandAuthentication.fromContextOrNull())) {
+      throw AccessDeniedException(
+        logMessageBuilder.generateAccessDeniedExceptionMessage(metaInfo.qaStatus)
+      )
     }
+    return ResponseEntity.ok(metaInfo.toApiModel(currentUser))
+  }
 }

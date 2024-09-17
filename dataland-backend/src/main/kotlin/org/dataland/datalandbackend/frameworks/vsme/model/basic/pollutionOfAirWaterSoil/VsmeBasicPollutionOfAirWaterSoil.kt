@@ -3,10 +3,7 @@ package org.dataland.datalandbackend.frameworks.vsme.model.basic.pollutionOfAirW
 
 import org.dataland.datalandbackend.frameworks.vsme.custom.VsmePollutionEmission
 
-/**
- * The data-model for the PollutionOfAirWaterSoil section
- */
+/** The data-model for the PollutionOfAirWaterSoil section */
 data class VsmeBasicPollutionOfAirWaterSoil(
-    val pollutionEmission: List<VsmePollutionEmission?>? = null,
-
+  val pollutionEmission: List<VsmePollutionEmission?>? = null
 )

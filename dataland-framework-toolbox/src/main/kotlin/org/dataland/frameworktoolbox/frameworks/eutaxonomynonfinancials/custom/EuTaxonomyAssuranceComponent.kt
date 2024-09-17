@@ -20,96 +20,93 @@ import org.dataland.frameworktoolbox.specific.viewconfig.elements.getTypescriptF
 import org.dataland.frameworktoolbox.specific.viewconfig.functional.FrameworkDisplayValueLambda
 import org.dataland.frameworktoolbox.utils.typescript.TypeScriptImport
 
-/**
- * Represents the EuTaxonomy-Specific "Assurance" component
- */
-class EuTaxonomyAssuranceComponent(
-    identifier: String,
-    parent: FieldNodeParent,
-) : ComponentBase(identifier, parent) {
+/** Represents the EuTaxonomy-Specific "Assurance" component */
+class EuTaxonomyAssuranceComponent(identifier: String, parent: FieldNodeParent) :
+  ComponentBase(identifier, parent) {
 
-    private val fullyQualifiedNameOfKotlinType =
-        "org.dataland.datalandbackend.frameworks.eutaxonomynonfinancials.custom.AssuranceDataPoint"
+  private val fullyQualifiedNameOfKotlinType =
+    "org.dataland.datalandbackend.frameworks.eutaxonomynonfinancials.custom.AssuranceDataPoint"
 
-    override fun generateDefaultDataModel(dataClassBuilder: DataClassBuilder) {
-        dataClassBuilder.addPropertyWithDocumentSupport(
-            documentSupport,
-            identifier,
-            TypeReference(fullyQualifiedNameOfKotlinType, isNullable),
-            listOf(ValidAnnotation),
-        )
-    }
+  override fun generateDefaultDataModel(dataClassBuilder: DataClassBuilder) {
+    dataClassBuilder.addPropertyWithDocumentSupport(
+      documentSupport,
+      identifier,
+      TypeReference(fullyQualifiedNameOfKotlinType, isNullable),
+      listOf(ValidAnnotation),
+    )
+  }
 
-    override fun generateDefaultQaModel(dataClassBuilder: DataClassBuilder) {
-        dataClassBuilder.addQaPropertyWithDocumentSupport(
-            documentSupport,
-            identifier,
-            TypeReference(fullyQualifiedNameOfKotlinType, isNullable),
-            listOf(ValidAnnotation),
-        )
-    }
+  override fun generateDefaultQaModel(dataClassBuilder: DataClassBuilder) {
+    dataClassBuilder.addQaPropertyWithDocumentSupport(
+      documentSupport,
+      identifier,
+      TypeReference(fullyQualifiedNameOfKotlinType, isNullable),
+      listOf(ValidAnnotation),
+    )
+  }
 
-    override fun generateDefaultViewConfig(sectionConfigBuilder: SectionConfigBuilder) {
-        requireDocumentSupportIn(setOf(NoDocumentSupport))
-        sectionConfigBuilder.addStandardCellWithValueGetterFactory(
-            this,
-            FrameworkDisplayValueLambda(
-                "formatAssuranceForDataTable(${getTypescriptFieldAccessor(true)}, \"${
+  override fun generateDefaultViewConfig(sectionConfigBuilder: SectionConfigBuilder) {
+    requireDocumentSupportIn(setOf(NoDocumentSupport))
+    sectionConfigBuilder.addStandardCellWithValueGetterFactory(
+      this,
+      FrameworkDisplayValueLambda(
+        "formatAssuranceForDataTable(${getTypescriptFieldAccessor(true)}, \"${
                     StringEscapeUtils.escapeEcmaScript(
-                        label,
+                        label
                     )
                 }\")",
-                setOf(
-                    TypeScriptImport(
-                        "formatAssuranceForDataTable",
-                        "@/components/resources/dataTable/conversion/EutaxonomyAssuranceValueGetterFactory",
-                    ),
-                ),
-            ),
-        )
-        createNewViewConfigCellForAssuranceProvider(sectionConfigBuilder)
-    }
+        setOf(
+          TypeScriptImport(
+            "formatAssuranceForDataTable",
+            "@/components/resources/dataTable/conversion/EutaxonomyAssuranceValueGetterFactory",
+          )
+        ),
+      ),
+    )
+    createNewViewConfigCellForAssuranceProvider(sectionConfigBuilder)
+  }
 
-    override fun generateDefaultUploadConfig(uploadCategoryBuilder: UploadCategoryBuilder) {
-        requireDocumentSupportIn(setOf(NoDocumentSupport))
-        uploadCategoryBuilder.addStandardUploadConfigCell(
-            component = this,
-            uploadComponentName = "AssuranceFormField",
-        )
-    }
+  override fun generateDefaultUploadConfig(uploadCategoryBuilder: UploadCategoryBuilder) {
+    requireDocumentSupportIn(setOf(NoDocumentSupport))
+    uploadCategoryBuilder.addStandardUploadConfigCell(
+      component = this,
+      uploadComponentName = "AssuranceFormField",
+    )
+  }
 
-    override fun generateDefaultFixtureGenerator(sectionBuilder: FixtureSectionBuilder) {
-        requireDocumentSupportIn(setOf(NoDocumentSupport))
-        val guaranteedAssuranceDataPointGenerator = "dataGenerator.generateAssuranceDatapoint()"
-        val fixtureExpression = if (isNullable) {
-            "dataGenerator.valueOrNull($guaranteedAssuranceDataPointGenerator)"
-        } else {
-            guaranteedAssuranceDataPointGenerator
-        }
-        sectionBuilder.addAtomicExpression(
-            identifier,
-            fixtureExpression,
-        )
-    }
+  override fun generateDefaultFixtureGenerator(sectionBuilder: FixtureSectionBuilder) {
+    requireDocumentSupportIn(setOf(NoDocumentSupport))
+    val guaranteedAssuranceDataPointGenerator = "dataGenerator.generateAssuranceDatapoint()"
+    val fixtureExpression =
+      if (isNullable) {
+        "dataGenerator.valueOrNull($guaranteedAssuranceDataPointGenerator)"
+      } else {
+        guaranteedAssuranceDataPointGenerator
+      }
+    sectionBuilder.addAtomicExpression(identifier, fixtureExpression)
+  }
 
-    private fun createNewViewConfigCellForAssuranceProvider(sectionConfigBuilder: SectionConfigBuilder) {
-        sectionConfigBuilder.addCell(
-            label = "Assurance Provider",
-            explanation = "Provider of the Assurance",
-            shouldDisplay = availableIf.toFrameworkBooleanLambda(),
-            valueGetter = FrameworkDisplayValueLambda(
-                "formatAssuranceProviderForDataTable(${getTypescriptFieldAccessor(true)})",
-                setOf(
-                    TypeScriptImport(
-                        "formatAssuranceProviderForDataTable",
-                        "@/components/resources/dataTable/conversion/EutaxonomyAssuranceValueGetterFactory",
-                    ),
-                ),
-            ),
-        )
-    }
+  private fun createNewViewConfigCellForAssuranceProvider(
+    sectionConfigBuilder: SectionConfigBuilder
+  ) {
+    sectionConfigBuilder.addCell(
+      label = "Assurance Provider",
+      explanation = "Provider of the Assurance",
+      shouldDisplay = availableIf.toFrameworkBooleanLambda(),
+      valueGetter =
+        FrameworkDisplayValueLambda(
+          "formatAssuranceProviderForDataTable(${getTypescriptFieldAccessor(true)})",
+          setOf(
+            TypeScriptImport(
+              "formatAssuranceProviderForDataTable",
+              "@/components/resources/dataTable/conversion/EutaxonomyAssuranceValueGetterFactory",
+            )
+          ),
+        ),
+    )
+  }
 
-    override fun getExtendedDocumentReference(): List<String> {
-        return listOf("${this.getKotlinFieldAccessor()}?.dataSource?.fileReference")
-    }
+  override fun getExtendedDocumentReference(): List<String> {
+    return listOf("${this.getKotlinFieldAccessor()}?.dataSource?.fileReference")
+  }
 }

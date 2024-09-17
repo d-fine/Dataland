@@ -12,65 +12,57 @@ import org.dataland.frameworktoolbox.specific.viewconfig.elements.getTypescriptF
 import org.dataland.frameworktoolbox.specific.viewconfig.functional.FrameworkDisplayValueLambda
 import org.dataland.frameworktoolbox.utils.typescript.TypeScriptImport
 
-/**
- * A NaceCodesComponent represents a list of strings that are expected to be NACE codes.
- */
-class NaceCodesComponent(
-    identifier: String,
-    parent: FieldNodeParent,
-) : ComponentBase(identifier, parent) {
+/** A NaceCodesComponent represents a list of strings that are expected to be NACE codes. */
+class NaceCodesComponent(identifier: String, parent: FieldNodeParent) :
+  ComponentBase(identifier, parent) {
 
-    override fun generateDefaultDataModel(dataClassBuilder: DataClassBuilder) {
-        requireDocumentSupportIn(setOf(NoDocumentSupport))
-        dataClassBuilder.addProperty(
-            this.identifier,
-            TypeReference(
-                "List",
-                isNullable,
-                listOf(TypeReference("String", false)),
-            ),
-        )
-    }
-    override fun generateDefaultViewConfig(sectionConfigBuilder: SectionConfigBuilder) {
-        sectionConfigBuilder.addStandardCellWithValueGetterFactory(
-            this,
-            documentSupport.getFrameworkDisplayValueLambda(
-                FrameworkDisplayValueLambda(
-                    "formatNaceCodesForDatatable(\n" +
-                        "${getTypescriptFieldAccessor(true)},\n" +
-                        "'${StringEscapeUtils.escapeEcmaScript(label)}',\n" +
-                        ")",
-                    setOf(
-                        TypeScriptImport(
-                            "formatNaceCodesForDatatable",
-                            "@/components/resources/dataTable/conversion/NaceCodeValueGetterFactory",
-                        ),
-                    ),
-                ),
-                label, getTypescriptFieldAccessor(),
-            ),
-        )
-    }
+  override fun generateDefaultDataModel(dataClassBuilder: DataClassBuilder) {
+    requireDocumentSupportIn(setOf(NoDocumentSupport))
+    dataClassBuilder.addProperty(
+      this.identifier,
+      TypeReference("List", isNullable, listOf(TypeReference("String", false))),
+    )
+  }
 
-    override fun generateDefaultUploadConfig(uploadCategoryBuilder: UploadCategoryBuilder) {
-        requireDocumentSupportIn(setOf(NoDocumentSupport))
-        uploadCategoryBuilder.addStandardUploadConfigCell(
-            component = this,
-            uploadComponentName = "NaceCodeFormField",
-        )
-    }
+  override fun generateDefaultViewConfig(sectionConfigBuilder: SectionConfigBuilder) {
+    sectionConfigBuilder.addStandardCellWithValueGetterFactory(
+      this,
+      documentSupport.getFrameworkDisplayValueLambda(
+        FrameworkDisplayValueLambda(
+          "formatNaceCodesForDatatable(\n" +
+            "${getTypescriptFieldAccessor(true)},\n" +
+            "'${StringEscapeUtils.escapeEcmaScript(label)}',\n" +
+            ")",
+          setOf(
+            TypeScriptImport(
+              "formatNaceCodesForDatatable",
+              "@/components/resources/dataTable/conversion/NaceCodeValueGetterFactory",
+            )
+          ),
+        ),
+        label,
+        getTypescriptFieldAccessor(),
+      ),
+    )
+  }
 
-    override fun generateDefaultFixtureGenerator(sectionBuilder: FixtureSectionBuilder) {
-        sectionBuilder.addAtomicExpression(
-            identifier,
-            documentSupport.getFixtureExpression(
-                fixtureExpression = "generateNaceCodes()",
-                nullableFixtureExpression = "dataGenerator.valueOrNull(generateNaceCodes())",
-                nullable = isNullable,
-            ),
-            setOf(
-                TypeScriptImport("generateNaceCodes", "@e2e/fixtures/common/NaceCodeFixtures"),
-            ),
-        )
-    }
+  override fun generateDefaultUploadConfig(uploadCategoryBuilder: UploadCategoryBuilder) {
+    requireDocumentSupportIn(setOf(NoDocumentSupport))
+    uploadCategoryBuilder.addStandardUploadConfigCell(
+      component = this,
+      uploadComponentName = "NaceCodeFormField",
+    )
+  }
+
+  override fun generateDefaultFixtureGenerator(sectionBuilder: FixtureSectionBuilder) {
+    sectionBuilder.addAtomicExpression(
+      identifier,
+      documentSupport.getFixtureExpression(
+        fixtureExpression = "generateNaceCodes()",
+        nullableFixtureExpression = "dataGenerator.valueOrNull(generateNaceCodes())",
+        nullable = isNullable,
+      ),
+      setOf(TypeScriptImport("generateNaceCodes", "@e2e/fixtures/common/NaceCodeFixtures")),
+    )
+  }
 }

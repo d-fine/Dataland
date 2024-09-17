@@ -13,6 +13,7 @@ import org.dataland.datalandcommunitymanager.model.companyRoles.CompanyRoleAssig
 
 /**
  * The entity storing the information considering one company role assignment
+ *
  * @param companyRole for which the assignment is valid
  * @param companyId of the company for which the company role is assigned
  * @param userId of the user that the company role has been assigned to
@@ -21,28 +22,20 @@ import org.dataland.datalandcommunitymanager.model.companyRoles.CompanyRoleAssig
 @Table(name = "company_role_assignments")
 @IdClass(CompanyRoleAssignmentId::class)
 data class CompanyRoleAssignmentEntity(
-    @Id
-    @Column(name = "company_role")
-    @Enumerated(EnumType.STRING)
-    val companyRole: CompanyRole,
-
-    @Id
-    @Column(name = "company_id")
-    val companyId: String,
-
-    @Id
-    @Column(name = "user_id")
-    val userId: String,
+  @Id @Column(name = "company_role") @Enumerated(EnumType.STRING) val companyRole: CompanyRole,
+  @Id @Column(name = "company_id") val companyId: String,
+  @Id @Column(name = "user_id") val userId: String,
 ) {
-    /**
-     * Converts the entity to an API model object
-     * @returns the API model object
-     */
-    fun toApiModel(): CompanyRoleAssignment {
-        return CompanyRoleAssignment(
-            companyRole = this.companyRole,
-            companyId = this.companyId,
-            userId = this.userId,
-        )
-    }
+  /**
+   * Converts the entity to an API model object
+   *
+   * @returns the API model object
+   */
+  fun toApiModel(): CompanyRoleAssignment {
+    return CompanyRoleAssignment(
+      companyRole = this.companyRole,
+      companyId = this.companyId,
+      userId = this.userId,
+    )
+  }
 }

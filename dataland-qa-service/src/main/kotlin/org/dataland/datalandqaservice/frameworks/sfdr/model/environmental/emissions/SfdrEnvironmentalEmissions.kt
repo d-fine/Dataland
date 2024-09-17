@@ -6,20 +6,16 @@ import org.dataland.datalandbackend.openApiClient.model.ExtendedDataPointBigDeci
 import org.dataland.datalandbackend.openApiClient.model.ExtendedDataPointYesNo
 import org.dataland.datalandqaservice.model.reports.QaReportDataPoint
 
-/**
- * The QA-model for the Emissions section
- */
+/** The QA-model for the Emissions section */
 data class SfdrEnvironmentalEmissions(
-    @field:Valid()
-    val emissionsOfInorganicPollutantsInTonnes: QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
-
-    @field:Valid()
-    val emissionsOfAirPollutantsInTonnes: QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
-
-    @field:Valid()
-    val emissionsOfOzoneDepletionSubstancesInTonnes: QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
-
-    @field:Valid()
-    val carbonReductionInitiatives: QaReportDataPoint<ExtendedDataPointYesNo?>? = null,
-
+  @field:Valid()
+  val emissionsOfInorganicPollutantsInTonnes: QaReportDataPoint<ExtendedDataPointBigDecimal?>? =
+    null,
+  @field:Valid()
+  val emissionsOfAirPollutantsInTonnes: QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
+  @field:Valid()
+  val emissionsOfOzoneDepletionSubstancesInTonnes:
+    QaReportDataPoint<ExtendedDataPointBigDecimal?>? =
+    null,
+  @field:Valid() val carbonReductionInitiatives: QaReportDataPoint<ExtendedDataPointYesNo?>? = null,
 )

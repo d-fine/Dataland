@@ -3,12 +3,8 @@ package org.dataland.datalandbackend.frameworks.esgquestionnaire.model.umwelt.wa
 
 import java.math.BigDecimal
 
-/**
- * Data class for the timeseries data contained in the field berichterstattungWasserverbrauch
- */
+/** Data class for the timeseries data contained in the field berichterstattungWasserverbrauch */
 data class BerichterstattungWasserverbrauchValues(
-    val wasserverbrauch: BigDecimal? = null,
-
-    val emissionenInWasser: BigDecimal? = null,
-
+  val wasserverbrauch: BigDecimal? = null,
+  val emissionenInWasser: BigDecimal? = null,
 )

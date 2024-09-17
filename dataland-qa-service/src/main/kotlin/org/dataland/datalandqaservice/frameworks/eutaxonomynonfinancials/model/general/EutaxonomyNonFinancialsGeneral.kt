@@ -4,36 +4,23 @@ package org.dataland.datalandqaservice.frameworks.eutaxonomynonfinancials.model.
 import jakarta.validation.Valid
 import org.dataland.datalandbackend.openApiClient.model.CompanyReport
 import org.dataland.datalandbackend.openApiClient.model.ExtendedDataPointBigDecimal
-import org.dataland.datalandbackend.openApiClient.model
-    .ExtendedDataPointEutaxonomyNonFinancialsGeneralFiscalYearDeviationOptions
+import org.dataland.datalandbackend.openApiClient.model.ExtendedDataPointEutaxonomyNonFinancialsGeneralFiscalYearDeviationOptions
 import org.dataland.datalandbackend.openApiClient.model.ExtendedDataPointLocalDate
 import org.dataland.datalandbackend.openApiClient.model.ExtendedDataPointYesNo
 import org.dataland.datalandbackend.openApiClient.model.ExtendedDataPointYesNoNa
 import org.dataland.datalandqaservice.model.reports.QaReportDataPoint
 
-/**
- * The QA-model for the General section
- */
+/** The QA-model for the General section */
 data class EutaxonomyNonFinancialsGeneral(
-    @field:Valid()
-    val fiscalYearDeviation:
-    QaReportDataPoint<ExtendedDataPointEutaxonomyNonFinancialsGeneralFiscalYearDeviationOptions?>? = null,
-
-    @field:Valid()
-    val fiscalYearEnd: QaReportDataPoint<ExtendedDataPointLocalDate?>? = null,
-
-    @field:Valid()
-    val scopeOfEntities: QaReportDataPoint<ExtendedDataPointYesNoNa?>? = null,
-
-    @field:Valid()
-    val nfrdMandatory: QaReportDataPoint<ExtendedDataPointYesNo?>? = null,
-
-    @field:Valid()
-    val euTaxonomyActivityLevelReporting: QaReportDataPoint<ExtendedDataPointYesNo?>? = null,
-
-    @field:Valid()
-    val numberOfEmployees: QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
-
-    val referencedReports: QaReportDataPoint<Map<String, CompanyReport>>? = null,
-
+  @field:Valid()
+  val fiscalYearDeviation:
+    QaReportDataPoint<ExtendedDataPointEutaxonomyNonFinancialsGeneralFiscalYearDeviationOptions?>? =
+    null,
+  @field:Valid() val fiscalYearEnd: QaReportDataPoint<ExtendedDataPointLocalDate?>? = null,
+  @field:Valid() val scopeOfEntities: QaReportDataPoint<ExtendedDataPointYesNoNa?>? = null,
+  @field:Valid() val nfrdMandatory: QaReportDataPoint<ExtendedDataPointYesNo?>? = null,
+  @field:Valid()
+  val euTaxonomyActivityLevelReporting: QaReportDataPoint<ExtendedDataPointYesNo?>? = null,
+  @field:Valid() val numberOfEmployees: QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
+  val referencedReports: QaReportDataPoint<Map<String, CompanyReport>>? = null,
 )

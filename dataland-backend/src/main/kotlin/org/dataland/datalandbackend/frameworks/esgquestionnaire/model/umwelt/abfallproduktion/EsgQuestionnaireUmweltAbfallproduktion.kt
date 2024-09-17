@@ -3,16 +3,13 @@ package org.dataland.datalandbackend.frameworks.esgquestionnaire.model.umwelt.ab
 
 import org.dataland.datalandbackend.frameworks.esgquestionnaire.custom.YearlyTimeseriesData
 
-/**
- * The data-model for the Abfallproduktion section
- */
+/** The data-model for the Abfallproduktion section */
 data class EsgQuestionnaireUmweltAbfallproduktion(
-    val berichterstattungAbfallproduktion: YearlyTimeseriesData<BerichterstattungAbfallproduktionValues?>? = null,
-
-    val unternehmensGruppenStrategieBzglAbfallproduktion: String? = null,
-
-    val recyclingImProduktionsprozess: YearlyTimeseriesData<RecyclingImProduktionsprozessValues?>? = null,
-
-    val gefaehrlicherAbfall: String? = null,
-
+  val berichterstattungAbfallproduktion:
+    YearlyTimeseriesData<BerichterstattungAbfallproduktionValues?>? =
+    null,
+  val unternehmensGruppenStrategieBzglAbfallproduktion: String? = null,
+  val recyclingImProduktionsprozess: YearlyTimeseriesData<RecyclingImProduktionsprozessValues?>? =
+    null,
+  val gefaehrlicherAbfall: String? = null,
 )

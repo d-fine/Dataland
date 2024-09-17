@@ -2,18 +2,12 @@
 package org.dataland.datalandbackend.frameworks.vsme.model.basic.workersInTheValueChainAffectedCommunitiesConsumersAndEndUsers
 
 import jakarta.validation.Valid
-import org.dataland.datalandbackend.model.datapoints.BaseDataPoint
 import java.math.BigDecimal
+import org.dataland.datalandbackend.model.datapoints.BaseDataPoint
 
-/**
- * The data-model for the WorkersInTheValueChainAffectedCommunitiesConsumersAndEndUsers section
- */
+/** The data-model for the WorkersInTheValueChainAffectedCommunitiesConsumersAndEndUsers section */
 data class VsmeBasicWorkersInTheValueChainAffectedCommunitiesConsumersAndEndUsers(
-    @field:Valid()
-    val negativeEffects: List<BaseDataPoint<String>>? = null,
-
-    val numberOfConvictions: BigDecimal? = null,
-
-    val sumOfFinesInEuro: BigDecimal? = null,
-
+  @field:Valid() val negativeEffects: List<BaseDataPoint<String>>? = null,
+  val numberOfConvictions: BigDecimal? = null,
+  val sumOfFinesInEuro: BigDecimal? = null,
 )

@@ -3,11 +3,10 @@ package org.dataland.datalandbackend.model.p2p.categories.hvcPlastics.subcategor
 import java.math.BigDecimal
 
 /**
- * --- API model ---
- * Fields of the subcategory "Decarbonisation" belonging to the category "HVC Plastics" of the p2p framework.
-*/
+ * --- API model --- Fields of the subcategory "Decarbonisation" belonging to the category "HVC
+ * Plastics" of the p2p framework.
+ */
 data class P2pHvcPlasticsDecarbonisation(
-    val energyMixInPercent: BigDecimal? = null,
-
-    val electrificationInPercent: BigDecimal? = null,
+  val energyMixInPercent: BigDecimal? = null,
+  val electrificationInPercent: BigDecimal? = null,
 )

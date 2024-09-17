@@ -8,27 +8,27 @@ import org.springframework.security.oauth2.jwt.Jwt
  * This authentication class represents a successful authentication via a Keycloak-Issued JWT token.
  */
 class DatalandJwtAuthentication(private val jwt: Jwt) : DatalandAuthentication() {
-    override val userId: String
-        get() = jwt.subject
+  override val userId: String
+    get() = jwt.subject
 
-    val username: String
-        get() = jwt.getClaimAsString("preferred_username")
+  val username: String
+    get() = jwt.getClaimAsString("preferred_username")
 
-    val firstName: String
-        get() = jwt.getClaimAsString("given_name") ?: ""
+  val firstName: String
+    get() = jwt.getClaimAsString("given_name") ?: ""
 
-    val lastName: String
-        get() = jwt.getClaimAsString("family_name") ?: ""
+  val lastName: String
+    get() = jwt.getClaimAsString("family_name") ?: ""
 
-    override fun getAuthorities(): List<GrantedAuthority> {
-        val realmRoles = jwt.getClaimAsMap("realm_access")["roles"] as Collection<*>?
-        return realmRoles?.map { SimpleGrantedAuthority(it as String) } ?: listOf()
-    }
+  override fun getAuthorities(): List<GrantedAuthority> {
+    val realmRoles = jwt.getClaimAsMap("realm_access")["roles"] as Collection<*>?
+    return realmRoles?.map { SimpleGrantedAuthority(it as String) } ?: listOf()
+  }
 
-    override fun getCredentials(): String {
-        return jwt.tokenValue
-    }
+  override fun getCredentials(): String {
+    return jwt.tokenValue
+  }
 
-    val userDescription: String
-        get() = "User $username (Keycloak ID: $userId)"
+  val userDescription: String
+    get() = "User $username (Keycloak ID: $userId)"
 }
