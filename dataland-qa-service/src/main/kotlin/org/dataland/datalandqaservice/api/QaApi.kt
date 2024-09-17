@@ -103,4 +103,35 @@ interface QaApi {
         @RequestParam qaStatus: QaStatus,
         @RequestParam message: String? = null,
     )
+
+    /** A method to count open reviews based on specific filters.
+     * @param dataType If set, only the requests with a data type in dataType are counted
+     * @param userId If set, only the requests from this user are counted
+     * @param emailAddress If set, only the requests from users which email address partially matches emailAddress are
+     *  counted
+     * @param requestStatus If set, only the requests with a request status in requestStatus are counted
+     * @param accessStatus If set, only the requests with an access status in accessStatus are counted
+     * @param reportingPeriod If set, only the requests with this reportingPeriod are counted
+     * @param datalandCompanyId If set, only the requests for this company are counted
+     * @return The number of requests that match the filter
+     */
+    @Operation(
+        summary = "Get the number of requests based on filters.",
+        description = "Get the number of requests based on filters.",
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "200", description = "TODO."),
+        ],
+    )
+    @GetMapping(
+        value = ["/numberOfUnreviewedDatasets"],
+        produces = ["application/json"],
+    )
+    @PreAuthorize("hasRole('ROLE_REVIEWER')")
+    fun getNumberOfUnreviewedDatasets(
+        @RequestParam dataType: Set<DataTypeEnum>?,
+        @RequestParam reportingPeriod: Set<String>?,
+        @RequestParam companyName: String?,
+    ): ResponseEntity<Int>
 }

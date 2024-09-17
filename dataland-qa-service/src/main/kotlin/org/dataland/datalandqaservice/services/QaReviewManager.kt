@@ -51,4 +51,26 @@ class QaReviewManager(
 
         )
     }
+
+    /**
+     * This method returns the number of unreviewed datasets for a specific set of filters
+     * @param dataType the set of datatypes for which should be filtered
+     * @param reportingPeriod the set of reportingPeriods for which should be filtered
+     * @param companyName the companyName for which should be filtered
+     */
+    fun getNumberOfUnreviewedDatasets(
+        dataType: Set<DataTypeEnum>?,
+        reportingPeriod: Set<String>?,
+        companyName: String?,
+    ): Int {
+        var companyIds = emptySet<String>()
+        if (!companyName.isNullOrBlank()) {
+            companyIds =
+                companyDataControllerApi.getCompaniesBySearchString(companyName).map { it.companyId }.toSet()
+        }
+        val filter = QaSearchFilter(
+            dataType = dataType, companyName = companyName, reportingPeriod = reportingPeriod, companyId = companyIds,
+        )
+        return reviewQueueRepository.getNumberOfRequests(filter)
+    }
 }

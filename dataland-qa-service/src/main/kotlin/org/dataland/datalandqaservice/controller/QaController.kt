@@ -50,7 +50,7 @@ class QaController(
         chunkSize: Int,
         chunkIndex: Int,
     ): ResponseEntity<List<ReviewQueueResponse>> {
-        logger.info("Received request to respond with IDs of unreviewed datasets")
+        logger.info("Received request to respond with information about unreviewed datasets")
         return ResponseEntity.ok(
             qaReviewManager.getInfoOnUnreviewedDatasets(
                 dataType, reportingPeriod = reportingPeriod,
@@ -135,6 +135,27 @@ class QaController(
         cloudEventMessageHandler.buildCEMessageAndSendToQueue(
             messageBody, MessageType.QaCompleted, correlationId, ExchangeName.DataQualityAssured,
             RoutingKeyNames.data,
+        )
+    }
+
+    /**
+     * Retrieves the number of unreviewed datasets specified by certain query parameter
+     * @param dataType the set of datatypes for which should be filtered
+     * @param reportingPeriod the set of reportingPeriods for which should be filtered
+     * @param companyName the companyName for which should be filtered
+     */
+    override fun getNumberOfUnreviewedDatasets(
+        dataType: Set<DataTypeEnum>?,
+        reportingPeriod: Set<String>?,
+        companyName: String?,
+    ): ResponseEntity<Int> {
+        logger.info("Received request to respond with number of unreviewed datasets")
+
+        return ResponseEntity.ok(
+            qaReviewManager.getNumberOfUnreviewedDatasets(
+                dataType = dataType,
+                reportingPeriod = reportingPeriod, companyName = companyName,
+            ),
         )
     }
 }

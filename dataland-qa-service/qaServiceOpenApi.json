@@ -794,6 +794,102 @@
         ]
       }
     },
+    "/qa/numberOfUnreviewedDatasets": {
+      "get": {
+        "tags": [
+          "qa-controller"
+        ],
+        "summary": "Get the number of requests based on filters.",
+        "description": "Get the number of requests based on filters.",
+        "operationId": "getNumberOfUnreviewedDatasets",
+        "parameters": [
+          {
+            "name": "dataType",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "uniqueItems": true,
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "eutaxonomy-financials",
+                  "eutaxonomy-non-financials",
+                  "lksg",
+                  "p2p",
+                  "sfdr",
+                  "vsme",
+                  "esg-questionnaire",
+                  "heimathafen",
+                  "additional-company-information"
+                ]
+              }
+            }
+          },
+          {
+            "name": "reportingPeriod",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "uniqueItems": true,
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "companyName",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "TODO.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "integer",
+                  "format": "int32"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
     "/qa/datasets": {
       "get": {
         "tags": [
@@ -3319,15 +3415,15 @@
           "dataId": {
             "type": "string"
           },
+          "receptionTime": {
+            "type": "integer",
+            "format": "int64"
+          },
           "companyName": {
             "type": "string"
           },
           "companyId": {
             "type": "string"
-          },
-          "receptionTime": {
-            "type": "integer",
-            "format": "int64"
           },
           "reportingPeriod": {
             "type": "string"

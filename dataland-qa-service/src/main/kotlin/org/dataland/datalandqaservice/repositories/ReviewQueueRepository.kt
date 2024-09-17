@@ -38,7 +38,23 @@ interface ReviewQueueRepository : JpaRepository<ReviewQueueEntity, String> {
     ): List<ReviewQueueResponse>
 
     /**
+     * This query counts the number of unreviewed datasets that matches the search fiter and returns this number.
+     */
+    @Query(
+        nativeQuery = true,
+        value = "SELECT COUNT(*) FROM review_queue status " +
+            "WHERE " +
+            "(:#{#searchFilter.shouldFilterByDataType} = false " +
+            "OR status.framework IN :#{#searchFilter.preparedDataType}) AND " +
+            "(:#{#searchFilter.shouldFilterByReportingPeriod} = false " +
+            "OR status.reporting_period IN :#{#searchFilter.preparedReportingPeriod}) AND " +
+            "( (:#{#searchFilter.shouldFilterByCompanyName } = false AND " +
+            ":#{#searchFilter.shouldFilterByCompanyId} = false) " +
+            "OR status.company_id IN :#{#searchFilter.preparedCompanyId}) ",
+    )
+    fun getNumberOfRequests(@Param("searchFilter") searchFilter: QaSearchFilter): Int
 
+    /**
      * Deletes queued QA request for a specific dataId.
      */
     fun deleteByDataId(dataId: String)
