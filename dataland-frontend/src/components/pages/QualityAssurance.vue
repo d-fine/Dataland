@@ -180,7 +180,6 @@ export default defineComponent({
     };
   },
   data() {
-    //TODO readd authorization wrapper for keycloak admin again
     const content: Content = contentData;
     const footerPage: Page | undefined = content.pages.find((page) => page.url === '/');
     const footerContent = footerPage?.sections;
