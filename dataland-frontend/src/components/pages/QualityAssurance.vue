@@ -154,8 +154,7 @@ import { retrieveAvailableFrameworks } from '@/utils/RequestsOverviewPageUtils';
 import InputText from 'primevue/inputtext';
 import Calendar from 'primevue/calendar';
 import type Keycloak from 'keycloak-js';
-import {GetInfoOnUnreviewedDatasetsDataTypeEnum, type ReviewQueueResponse} from '@clients/qaservice';
-import { type GetDataRequestsDataTypeEnum } from '@clients/communitymanager';
+import { type GetInfoOnUnreviewedDatasetsDataTypeEnum, type ReviewQueueResponse } from '@clients/qaservice';
 
 export default defineComponent({
   name: 'QualityAssurance',
@@ -256,7 +255,7 @@ export default defineComponent({
         this.displayDataOfPage = response.data;
         this.totalRecords = (
           await this.apiClientProvider.apiClients.qaController.getNumberOfUnreviewedDatasets(
-            selectedFrameworksAsSet as Set<GetDataRequestsDataTypeEnum>,
+            selectedFrameworksAsSet as Set<GetInfoOnUnreviewedDatasetsDataTypeEnum>,
             reportingPeriodFilter,
             companyNameFilter
           )

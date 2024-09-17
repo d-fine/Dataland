@@ -6,7 +6,6 @@ import {
   type DataMetaInformation,
   DataTypeEnum,
   type PathwaysToParisData,
-  type StoredCompany,
 } from '@clients/backend';
 import { QaStatus, type ReviewQueueResponse } from '@clients/qaservice';
 import ViewFrameworkData from '@/components/pages/ViewFrameworkData.vue';
