@@ -42,9 +42,7 @@ class QaReviewManager(
             companyId = companyIds,
             companyName = companyName,
         )
-        // TODO change sql query from =companyName to IN ListOfCompanyIds
         val offset = (chunkIndex) * (chunkSize)
-        // TODO loop over result list and retrieve name for every entry
         return reviewQueueRepository.getSortedPendingMetadataSet(
             searchFilter, resultOffset = offset,
             resultLimit = chunkSize,
