@@ -50,7 +50,7 @@ log4j = "2.23.1"
 
 gradle-tooling = "org.gradle:gradle-tooling-api:8.8"
 
-detekt-cli = "io.gitlab.arturbosch.detekt:detekt-cli:1.23.6"
+detekt-cli = "io.gitlab.arturbosch.detekt:detekt-cli:1.23.7"
 
 kotlin-compiler-embeddable = { group = "org.jetbrains.kotlin", name = "kotlin-compiler-embeddable", version.ref = "kotlin" }
 
