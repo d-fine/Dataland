@@ -853,7 +853,7 @@
             "schema": {
               "type": "integer",
               "format": "int32",
-              "default": 100
+              "default": 10
             }
           },
           {
@@ -3316,12 +3316,6 @@
           "message": {
             "type": "string"
           },
-          "framework": {
-            "type": "string"
-          },
-          "reportingPeriod": {
-            "type": "string"
-          },
           "dataId": {
             "type": "string"
           },
@@ -3334,6 +3328,12 @@
           "receptionTime": {
             "type": "integer",
             "format": "int64"
+          },
+          "reportingPeriod": {
+            "type": "string"
+          },
+          "framework": {
+            "type": "string"
           }
         }
       },

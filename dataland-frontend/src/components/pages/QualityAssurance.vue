@@ -68,7 +68,7 @@
 
             <div class="card">
               <DataTable
-                v-show="!waitingForData && dataIdList.length > 0"
+                v-show="!waitingForData && displayDataOfPage.length > 0"
                 :value="displayDataOfPage"
                 class="table-cursor"
                 id="qa-data-result"
@@ -80,7 +80,7 @@
                 paginator-position="top"
                 :rows="datasetsPerPage"
                 lazy
-                :total-records="dataIdList.length"
+                :total-records="displayDataOfPage.length"
                 @page="onPage($event)"
               >
                 <Column header="DATA ID" class="d-bg-white w-2 qa-review-id">
@@ -90,22 +90,22 @@
                 </Column>
                 <Column header="COMPANY NAME" class="d-bg-white w-2 qa-review-company-name">
                   <template #body="slotProps">
-                    {{ slotProps.data.companyInformation.companyName }}
+                    {{ slotProps.data.companyName }}
                   </template>
                 </Column>
                 <Column header="FRAMEWORK" class="d-bg-white w-2 qa-review-framework">
                   <template #body="slotProps">
-                    {{ humanizeString(slotProps.data.metaInformation.dataType) }}
+                    {{ humanizeString(slotProps.data.framework) }}
                   </template>
                 </Column>
                 <Column header="REPORTING PERIOD" class="d-bg-white w-2 qa-review-reporting-period">
                   <template #body="slotProps">
-                    {{ slotProps.data.metaInformation.reportingPeriod }}
+                    {{ slotProps.data.reportingPeriod }}
                   </template>
                 </Column>
                 <Column header="SUBMISSION DATE" class="d-bg-white w-2 qa-review-submission-date">
                   <template #body="slotProps">
-                    {{ convertUnixTimeInMsToDateString(slotProps.data.metaInformation.uploadTime) }}
+                    {{ convertUnixTimeInMsToDateString(slotProps.data.receptionTime) }}
                   </template>
                 </Column>
                 <Column field="reviewDataset" header="" class="w-2 d-bg-white qa-review-button">
@@ -117,7 +117,7 @@
                   </template>
                 </Column>
               </DataTable>
-              <div v-if="!waitingForData && dataIdList.length == 0">
+              <div v-if="!waitingForData && displayDataOfPage.length == 0">
                 <div class="d-center-div text-center px-7 py-4">
                   <p class="font-medium text-xl">There are no data requests on Dataland matching your filters.</p>
                 </div>
@@ -140,7 +140,6 @@ import TheContent from '@/components/generics/TheContent.vue';
 import TheHeader from '@/components/generics/TheHeader.vue';
 import AuthenticationWrapper from '@/components/wrapper/AuthenticationWrapper.vue';
 import { defineComponent, inject } from 'vue';
-import { type CompanyInformation, type DataMetaInformation } from '@clients/backend';
 import { ApiClientProvider } from '@/services/ApiClients';
 import AuthorizationWrapper from '@/components/wrapper/AuthorizationWrapper.vue';
 import { KEYCLOAK_ROLE_REVIEWER } from '@/utils/KeycloakUtils';
@@ -155,6 +154,8 @@ import { retrieveAvailableFrameworks } from '@/utils/RequestsOverviewPageUtils';
 import InputText from 'primevue/inputtext';
 import Calendar from 'primevue/calendar';
 import type Keycloak from 'keycloak-js';
+import { type ReviewQueueResponse } from '@clients/qaservice';
+import {DataTypeEnum} from "@clients/backend";
 
 export default defineComponent({
   name: 'QualityAssurance',
@@ -178,17 +179,15 @@ export default defineComponent({
     };
   },
   data() {
+    //TODO readd authorization wrapper for keycloak admin again
     const content: Content = contentData;
     const footerPage: Page | undefined = content.pages.find((page) => page.url === '/');
     const footerContent = footerPage?.sections;
     return {
       apiClientProvider: new ApiClientProvider(this.getKeycloakPromise()),
-      dataIdList: [] as Array<string>,
-      displayDataOfPage: [] as QaDataObject[],
+      displayDataOfPage: [] as ReviewQueueResponse[],
       waitingForData: true,
       KEYCLOAK_ROLE_REVIEWER,
-      metaInformation: null as DataMetaInformation | null,
-      companyInformation: null as CompanyInformation | null,
       currentChunkIndex: 0,
       firstRowIndex: 0,
       footerContent,
@@ -197,7 +196,7 @@ export default defineComponent({
       searchBarInput: '',
       selectedFrameworks: [] as Array<FrameworkSelectableItem>,
       availableFrameworks: [] as Array<FrameworkSelectableItem>,
-      availableReportingPeriods: undefined as undefined | Date,
+      availableReportingPeriods: undefined as undefined | Array<Date>,
     };
   },
   mounted() {
@@ -212,7 +211,7 @@ export default defineComponent({
         this.getQaDataForCurrentPage();
       }
     },
-    selectedRequestStatus() {
+    availableReportingPeriods() {
       this.currentChunkIndex = 0;
       this.firstRowIndex = 0;
       if (!this.waitingForData) {
@@ -239,40 +238,26 @@ export default defineComponent({
       try {
         this.waitingForData = true;
         this.displayDataOfPage = [];
-        const dataOfPage = [] as QaDataObject[];
-        const response = await this.apiClientProvider.apiClients.qaController.getInfoOnUnreviewedDatasets();
-        this.dataIdList = response.data;
-        const firstDatasetOnPageIndex = this.currentChunkIndex * this.datasetsPerPage;
-        const dataIdsOnPage = this.dataIdList.slice(
-          firstDatasetOnPageIndex,
-          firstDatasetOnPageIndex + this.datasetsPerPage
+
+        const selectedFrameworksAsSet = new Set<DataTypeEnum>(
+          this.selectedFrameworks.map((selectableItem) => selectableItem.frameworkDataType)
         );
-        for (const dataId of dataIdsOnPage) {
-          dataOfPage.push(await this.addDatasetAssociatedInformationToDisplayList(dataId));
-        }
-        this.displayDataOfPage = dataOfPage;
+        const reportingPeriodFilter: Set<string> = new Set<string>(
+          this.availableReportingPeriods?.map((date) => date.getFullYear().toString())
+        );
+        const companyNameFilter = this.searchBarInput === '' ? undefined : this.searchBarInput;
+        const response = await this.apiClientProvider.apiClients.qaController.getInfoOnUnreviewedDatasets(
+          selectedFrameworksAsSet as Set<DataTypeEnum>,
+          reportingPeriodFilter,
+          companyNameFilter,
+          this.datasetsPerPage,
+          this.currentChunkIndex
+        );
+        this.displayDataOfPage = response.data;
         this.waitingForData = false;
       } catch (error) {
         console.error(error);
       }
-    },
-    /**
-     * Gathers meta and company information associated with a dataset if the information can be retrieved
-     * @param dataId the ID of the corresponding dataset
-     * @returns a promise on the fetched data object
-     */
-    async addDatasetAssociatedInformationToDisplayList(dataId: string): Promise<QaDataObject> {
-      const metaDataResponse = await this.apiClientProvider.backendClients.metaDataController.getDataMetaInfo(dataId);
-      this.metaInformation = metaDataResponse.data;
-      const companyResponse = await this.apiClientProvider.backendClients.companyDataController.getCompanyById(
-        this.metaInformation.companyId
-      );
-      this.companyInformation = companyResponse.data.companyInformation;
-      return {
-        dataId: dataId,
-        metaInformation: this.metaInformation,
-        companyInformation: this.companyInformation,
-      };
     },
     /**
      * Navigates to the view framework data page on a click on the row of the company
@@ -280,8 +265,8 @@ export default defineComponent({
      * @returns the promise of the router push action
      */
     goToQaViewPage(event: DataTableRowClickEvent) {
-      const qaDataObject = event.data as QaDataObject;
-      const qaUri = `/companies/${qaDataObject.metaInformation.companyId}/frameworks/${qaDataObject.metaInformation.dataType}/${qaDataObject.dataId}`;
+      const qaDataObject = event.data as ReviewQueueResponse;
+      const qaUri = `/companies/${qaDataObject.companyId}/frameworks/${qaDataObject.framework}/${qaDataObject.dataId}`;
       return this.$router.push(qaUri);
     },
 
@@ -291,6 +276,7 @@ export default defineComponent({
     resetFilterAndSearchBar() {
       this.currentChunkIndex = 0;
       this.selectedFrameworks = [];
+      this.availableReportingPeriods = [];
       this.searchBarInput = '';
     },
     /**
@@ -301,7 +287,7 @@ export default defineComponent({
       window.scrollTo(0, 0);
       if (event.page != this.currentChunkIndex) {
         this.currentChunkIndex = event.page;
-        this.firstRowIndex = this.currentChunkIndex * this.rowsPerPage;
+        this.firstRowIndex = this.currentChunkIndex * this.datasetsPerPage;
         this.getQaDataForCurrentPage();
       }
     },
@@ -312,8 +298,8 @@ export default defineComponent({
         if (this.totalRecords === 0) {
           return 'No results for this search.';
         } else {
-          const startIndex = this.currentChunkIndex * this.rowsPerPage + 1;
-          const endIndex = Math.min(startIndex + this.rowsPerPage - 1, this.totalRecords);
+          const startIndex = this.currentChunkIndex * this.datasetsPerPage + 1;
+          const endIndex = Math.min(startIndex + this.datasetsPerPage - 1, this.totalRecords);
           return `Showing results ${startIndex}-${endIndex} of ${this.totalRecords}.`;
         }
       }
@@ -321,11 +307,6 @@ export default defineComponent({
     },
   },
 });
-interface QaDataObject {
-  dataId: string;
-  metaInformation: DataMetaInformation;
-  companyInformation: CompanyInformation;
-}
 </script>
 
 <style>

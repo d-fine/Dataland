@@ -46,7 +46,7 @@ interface QaApi {
         @RequestParam dataType: Set<DataTypeEnum>?,
         @RequestParam reportingPeriod: Set<String>?,
         @RequestParam companyName: String?,
-        @RequestParam(defaultValue = "100") chunkSize: Int,
+        @RequestParam(defaultValue = "10") chunkSize: Int,
         @RequestParam(defaultValue = "0") chunkIndex: Int,
     ): ResponseEntity<List<ReviewQueueResponse>>
 
