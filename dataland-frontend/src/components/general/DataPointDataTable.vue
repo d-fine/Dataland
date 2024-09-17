@@ -13,7 +13,7 @@
           </tr>
           <tr v-if="dialogData.dataPointDisplay.quality">
             <th class="headers-bg width-auto"><span class="table-left-label">Quality</span></th>
-            <td>{{ dialogData.dataPointDisplay.quality }}</td>
+            <td>{{ humanizeStringOrNumber(dialogData.dataPointDisplay.quality) }}</td>
           </tr>
           <tr v-if="dialogData.dataPointDisplay.dataSource">
             <th class="headers-bg width-auto"><span class="table-left-label">Data source</span></th>
@@ -49,6 +49,8 @@ import { type DataPointDisplay } from '@/utils/DataPoint';
 import { ONLY_AUXILIARY_DATA_PROVIDED } from '@/utils/Constants';
 import { assertDefined } from '@/utils/TypeScriptUtils';
 import RenderSanitizedMarkdownInput from '@/components/general/RenderSanitizedMarkdownInput.vue';
+import { humanizeStringOrNumber } from '@/utils/StringFormatter';
+
 
 interface DataPointDataTableRefProps {
   dataPointDisplay: DataPointDisplay;
@@ -58,6 +60,7 @@ interface DataPointDataTableRefProps {
 
 export default defineComponent({
   methods: {
+    humanizeStringOrNumber,
     /**
      * Returns only-auxiliary-data-provided string
      * @class
