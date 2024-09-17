@@ -55,7 +55,7 @@
               </div>
 
               <div class="flex align-items-center ml-auto" style="margin: 15px">
-                <span>{{ numberOfRequestsInformation }}</span>
+                <span>{{ numberOfUnreviewedDatasets }}</span>
               </div>
             </span>
           </div>
@@ -80,7 +80,7 @@
                 paginator-position="top"
                 :rows="datasetsPerPage"
                 lazy
-                :total-records="displayDataOfPage.length"
+                :total-records="totalRecords"
                 @page="onPage($event)"
               >
                 <Column header="DATA ID" class="d-bg-white w-2 qa-review-id">
@@ -155,7 +155,8 @@ import InputText from 'primevue/inputtext';
 import Calendar from 'primevue/calendar';
 import type Keycloak from 'keycloak-js';
 import { type ReviewQueueResponse } from '@clients/qaservice';
-import {DataTypeEnum} from "@clients/backend";
+import { type DataTypeEnum } from '@clients/backend';
+import { type GetDataRequestsDataTypeEnum } from '@clients/communitymanager';
 
 export default defineComponent({
   name: 'QualityAssurance',
@@ -190,6 +191,7 @@ export default defineComponent({
       KEYCLOAK_ROLE_REVIEWER,
       currentChunkIndex: 0,
       firstRowIndex: 0,
+      totalRecords: 0,
       footerContent,
       debounceInMs: 300,
       timerId: 0,
@@ -254,6 +256,13 @@ export default defineComponent({
           this.currentChunkIndex
         );
         this.displayDataOfPage = response.data;
+        this.totalRecords = (
+          await this.apiClientProvider.apiClients.qaController.getNumberOfUnreviewedDatasets(
+            selectedFrameworksAsSet as Set<GetDataRequestsDataTypeEnum>,
+            reportingPeriodFilter,
+            companyNameFilter
+          )
+        ).data;
         this.waitingForData = false;
       } catch (error) {
         console.error(error);
@@ -293,7 +302,7 @@ export default defineComponent({
     },
   },
   computed: {
-    numberOfRequestsInformation(): string {
+    numberOfUnreviewedDatasets(): string {
       if (!this.waitingForData) {
         if (this.totalRecords === 0) {
           return 'No results for this search.';
