@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.dataformat.csv.CsvMapper
 import com.fasterxml.jackson.dataformat.csv.CsvSchema
+import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import org.springframework.stereotype.Component
 import java.io.File
 import org.dataland.datalanddataexporter.utils.TransformationUtils.getTimestamp
@@ -34,14 +35,14 @@ class CsvExporter(
 
     private val logger = LoggerFactory.getLogger(javaClass)
 
-    //test
+
     private val leiIdentifier = "Lei"
-    //private val isinIdentifier = "Isin"
+
 
     private val leiHeader = "LEI"
-    //private val leiPath = "Lei"
+
     private val isinHeader = "ISIN"
-    //private val isinPath = "isin"
+
 
     /*private fun readJsonFileFromResourceFolder(): JsonNode {
         val input = this.javaClass.classLoader.getResourceAsStream("./src/main/resources/example.json")
@@ -52,67 +53,12 @@ class CsvExporter(
         return ObjectMapper().readTree(jsonString)
     }*/
 
-    /*private val jsonString = """
-        {
-  "companyId": "e7a6f3cb-118f-4939-b39a-48e48047d028",
-  "companyName": "Fresenius SE & Co. KGaA",
-  "Lei": "XDFJ0CYCOO1FXRFTQS51",
-  "number": 123,
-  "isin": [
-    "DE0005785604",
-    "US0005785604"
-  ],
-  "nested": {
-    "nestedCompanyId": {
-      "deepNestedCompanyId": "123"
-    },
-    "arrayExample": [
-      {
-        "nestedArrayCompanyId": "1",
-        "nestedArrayCompanyName": "Hallo1",
-        "nestedArrayLei": "2"
-      },
-      {
-        "nestedArrayCompanyId": "3",
-        "nestedArrayCompanyName": "Hallo2",
-        "nestedArrayLei": "4"
-      }
-    ],
-    "nestedCompanyName": "Hallo",
-    "nestedLei": "12344"
-  }
-}
-    """.trimIndent()
-*/
-
     /**
      * A dummy function that reads a JSON file from the resources folder,
      * transforms it into a CSV file and writes it to the resources folder.
      * @return A string message
      */
     fun dummyFunction(): String {
-        //val leiToIsinMapping = mutableMapOf<String, List<String>>()
-        //val leiToIsinData = mutableListOf(mapOf<String, String>())
-        //val jsonNode = readJsonFileFromResourceFolder()
-        //val jsonNode = readJsonFromString()
-        //val transformationRules = readTransformationConfig("transformation.config")
-        //val outputFile = File("./src/main/resources/data.csv")
-        //val outputFile = File("/var/export/data.csv")
-        //val isinOutputFile = File("./src/main/resources/isin.csv")
-        //val isinOutputFile = File("/var/export/isin.csv")
-        //val csvData = mapJsonToCsv(jsonNode, transformationRules)
-        //val headers = getHeaders(transformationRules)
-        //leiToIsinMapping+=getLeiToIsinData(jsonNode, "Lei", "isin")
-        //leiToIsinData.addAll(getLeiToIsinData(jsonNode))
-        /*val isinData= mutableListOf(mapOf<String, String>())
-        leiToIsinMapping.forEach { (lei, isins) ->
-            isins.forEach { isin ->
-                isinData.add(mapOf("LEI" to lei, "ISIN" to isin))
-                println("LEI: $lei ISIN: $isin") }
-        }*/
-        //checkConsistency(jsonNode, transformationRules)
-        //writeCsv(listOf(csvData), outputFile, headers)
-        //writeCsv(leiToIsinData, isinOutputFile, listOf(leiHeader, isinHeader))
         exportAllSfdrData()
         return "Hello World!"
     }
@@ -133,11 +79,11 @@ class CsvExporter(
         val timestamp = getTimestamp()
         val outputFile = File("$outputDirectory/data$timestamp.csv")
         val isinOutputFile = File("$outputDirectory/isin$timestamp.csv")
-        logger.info("Writing to file: ${outputFile.absolutePath}")
+        logger.info("Writing to file: $outputFile")
         val csvData = mutableListOf<Map<String, String>>()
         val isinData = mutableListOf<Map<String, String>>()
 
-        val transformationRules = readTransformationConfig("transformation.config")
+        val transformationRules = readTransformationConfig("./transformationRules/SfdrSqlServer.config")
         val headers = getHeaders(transformationRules)
         val dataIds = getAllSfdrDataIds()
 
@@ -157,7 +103,7 @@ class CsvExporter(
 
             isinData.addAll(getLeiToIsinMapping(companyData.companyInformation))
 
-            val jsonData = ObjectMapper().writeValueAsString(companyAssociatedData.data)
+            val jsonData = jacksonObjectMapper().writeValueAsString(companyAssociatedData.data)
             val data = ObjectMapper().readTree(jsonData)
             checkConsistency(data, transformationRules)
             dataToExport+=mapJsonToCsv(data, transformationRules)
@@ -219,23 +165,4 @@ class CsvExporter(
             .with(csvSchema)
             .writeValue(outputFile, data)
     }
-
-    /*/**
-     * Extracts the LEI and ISINs identified by their respective JSON path from the given JSON node.
-     * @param node The JSON node
-     * @return A map of LEI to ISINs
-     */
-    fun getLeiToIsinData(node: JsonNode): List<Map<String, String>> {
-        val isinData = mutableListOf<Map<String, String>>()
-        val lei = getValueFromJsonNode(node, leiPath)
-        val isins = getValueFromJsonNode(node, isinPath)
-            .removeSurrounding("[", "]")
-            .split(",")
-            .map { it.trim().trim('"') }
-        require(lei.isNotBlank() and isins.isNotEmpty()) { "LEI or ISINs not found in provided JSON node." }
-        isins.forEach { isin ->
-            isinData.add(mapOf(leiHeader to lei, isinHeader to isin))
-        }
-        return isinData
-    }*/
 }
