@@ -3,10 +3,13 @@ package org.dataland.e2etests.tests
 import org.awaitility.Awaitility.await
 import org.dataland.communitymanager.openApiClient.model.CompanyRole
 import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataEutaxonomyNonFinancialsData
+import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataSfdrData
+import org.dataland.datalandqaservice.openApiClient.api.QaControllerApi
 import org.dataland.e2etests.auth.GlobalAuth.withTechnicalUser
 import org.dataland.e2etests.auth.TechnicalUser
 import org.dataland.e2etests.utils.ApiAccessor
 import org.dataland.e2etests.utils.DocumentManagerAccessor
+import org.dataland.e2etests.utils.testDataProvivders.GeneralTestDataProvider
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.Assertions.assertNotEquals
@@ -16,21 +19,30 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
 import org.junit.jupiter.api.assertDoesNotThrow
 import org.junit.jupiter.api.assertThrows
+import java.time.Instant
 import java.util.*
 import java.util.concurrent.TimeUnit
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException as BackendClientException
 import org.dataland.datalandbackend.openApiClient.model.QaStatus as BackendQaStatus
 import org.dataland.datalandqaservice.openApiClient.infrastructure.ClientException as QaServiceClientException
 import org.dataland.datalandqaservice.openApiClient.model.QaStatus as QaServiceQaStatus
-
-private const val CLIENT_ERROR_403 = "Client error : 403 "
+ /* TODO Emanuel: Am Ende vllt überall withTechnicalUser nutzen anstatt  "apiAccessor.jwtHelper.authenticate..."
+ => vorher sollten aber vllt erstmal alle Tests grün durchlaufen (will nicht zu viele changes aufeinmal pushen)
+*/
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class QaServiceTest {
     private val apiAccessor = ApiAccessor()
     private val documentManagerAccessor = DocumentManagerAccessor()
     private val dataController = apiAccessor.dataControllerApiForEuTaxonomyNonFinancials
-    private lateinit var dummyCompanyAssociatedData: CompanyAssociatedDataEutaxonomyNonFinancialsData
+    private val qaServiceController = apiAccessor.qaServiceControllerApi
+
+    private lateinit var dummyEuTaxoData: CompanyAssociatedDataEutaxonomyNonFinancialsData
+    private lateinit var dummySfdrData: CompanyAssociatedDataSfdrData
+    private lateinit var companyIdAlpha: String
+    private lateinit var companyIdBeta: String
+
+    private val expectedClientError403Text = "Client error : 403 "
     companion object {
         private const val SLEEP_DURATION_MS: Long = 500
     }
@@ -38,19 +50,17 @@ class QaServiceTest {
     @BeforeAll
     fun postCompany() {
         documentManagerAccessor.uploadAllTestDocumentsAndAssurePersistence()
-        val testCompanyInformation = apiAccessor.testDataProviderForEuTaxonomyDataForNonFinancials
-            .getCompanyInformationWithoutIdentifiers(1).first()
-        apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
-        val storedCompanyInfos = apiAccessor.companyDataControllerApi.postCompany(testCompanyInformation)
-        apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Uploader)
-        val testDataEuTaxonomyNonFinancials = apiAccessor.testDataProviderForEuTaxonomyDataForNonFinancials
-            .getTData(1).first()
-        dummyCompanyAssociatedData =
-            CompanyAssociatedDataEutaxonomyNonFinancialsData(
-                storedCompanyInfos.companyId,
-                "",
-                testDataEuTaxonomyNonFinancials,
-            )
+
+        companyIdAlpha = apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId
+        val testDataEuTaxo =
+            apiAccessor.testDataProviderForEuTaxonomyDataForNonFinancials.getTData(1).first()
+        dummyEuTaxoData = CompanyAssociatedDataEutaxonomyNonFinancialsData(companyIdAlpha, "2024", testDataEuTaxo)
+
+        val timestamp = Instant.now().toEpochMilli().toString()
+        val companyInfoBeta = GeneralTestDataProvider().generateCompanyInformation("Beta-Company-$timestamp", null)
+        val testDataSfdr = apiAccessor.testDataProviderForSfdrData.getTData(1).first()
+        companyIdBeta = apiAccessor.companyDataControllerApi.postCompany(companyInfoBeta).companyId
+        dummySfdrData = CompanyAssociatedDataSfdrData(companyIdBeta, "2024", testDataSfdr)
     }
 
     @Test
@@ -88,7 +98,7 @@ class QaServiceTest {
     private fun uploadDatasetAndValidatePendingState(user: TechnicalUser = TechnicalUser.Uploader): String {
         apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(user)
         val dataId = dataController.postCompanyAssociatedEutaxonomyNonFinancialsData(
-            dummyCompanyAssociatedData, false,
+            dummyEuTaxoData, false,
         ).dataId
         assertEquals(
             BackendQaStatus.Pending,
@@ -101,9 +111,9 @@ class QaServiceTest {
         apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reviewer)
         val qaServiceController = apiAccessor.qaServiceControllerApi
         await().atMost(2, TimeUnit.SECONDS)
-            .until { qaServiceController.getUnreviewedMetadataSets().map { it.dataId }.contains(dataId) }
+            .until { qaServiceController.getInfoOnUnreviewedDatasets().map { it.dataId }.contains(dataId) }
         qaServiceController.assignQaStatus(dataId, qaStatus)
-        assertFalse(qaServiceController.getUnreviewedMetadataSets().map { it.dataId }.contains(dataId))
+        assertFalse(qaServiceController.getInfoOnUnreviewedDatasets().map { it.dataId }.contains(dataId))
     }
 
     private fun canUserSeeUploaderData(
@@ -124,11 +134,11 @@ class QaServiceTest {
             val metaInfoException = assertThrows<BackendClientException> {
                 apiAccessor.metaDataControllerApi.getDataMetaInfo(dataId)
             }
-            assertEquals(CLIENT_ERROR_403, metaInfoException.message)
+            assertEquals(expectedClientError403Text, metaInfoException.message)
             val dataException = assertThrows<BackendClientException> {
                 dataController.getCompanyAssociatedEutaxonomyNonFinancialsData(dataId)
             }
-            assertEquals(CLIENT_ERROR_403, dataException.message)
+            assertEquals(expectedClientError403Text, dataException.message)
         }
     }
 
@@ -142,20 +152,21 @@ class QaServiceTest {
         clearReviewQueue()
         apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Uploader)
         val numberOfUploadedDatasets = 20
-        val listOfDataIdsAsExpectedFromReviewQueue = (1..numberOfUploadedDatasets).map {
+        // TODO Emanuel: 20 (!) uploads mit 0,5 Sekunden sleep dazwischen = 10 Sekundne Wartezeit!  vermeidbar
+        val expectedReviewQueue = (1..numberOfUploadedDatasets).map {
             dataController.postCompanyAssociatedEutaxonomyNonFinancialsData(
-                dummyCompanyAssociatedData, false,
+                dummyEuTaxoData, false,
             ).dataId.also { Thread.sleep(SLEEP_DURATION_MS) }
         }
         apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reviewer)
-        val reviewQueue = apiAccessor.qaServiceControllerApi.getUnreviewedMetadataSets()
+        val actualReviewQueue = apiAccessor.qaServiceControllerApi.getInfoOnUnreviewedDatasets()
 
-        assertTrue(listOfDataIdsAsExpectedFromReviewQueue.toTypedArray().contentDeepEquals(reviewQueue.toTypedArray()))
+        assertTrue(expectedReviewQueue.toTypedArray().contentDeepEquals(actualReviewQueue.toTypedArray()))
     }
 
     private fun clearReviewQueue() {
         apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reviewer)
-        apiAccessor.qaServiceControllerApi.getUnreviewedMetadataSets().forEach {
+        apiAccessor.qaServiceControllerApi.getInfoOnUnreviewedDatasets().forEach {
             apiAccessor.qaServiceControllerApi.assignQaStatus(it.dataId, QaServiceQaStatus.Rejected)
         }
     }
@@ -202,7 +213,7 @@ class QaServiceTest {
             val exception = assertThrows<QaServiceClientException> {
                 apiAccessor.qaServiceControllerApi.getDatasetById(UUID.fromString(dataId))
             }
-            assertEquals(CLIENT_ERROR_403, exception.message)
+            assertEquals(expectedClientError403Text, exception.message)
         }
     }
 
@@ -210,7 +221,7 @@ class QaServiceTest {
     fun `check the a reader can access the review history of the data set he uploaded but an uploader cant`() {
         apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
         apiAccessor.companyRolesControllerApi.assignCompanyRole(
-            CompanyRole.CompanyOwner, UUID.fromString(dummyCompanyAssociatedData.companyId),
+            CompanyRole.CompanyOwner, UUID.fromString(dummyEuTaxoData.companyId),
             UUID.fromString(TechnicalUser.Reader.technicalUserId),
         )
         val dataId = uploadDatasetAndValidatePendingState(TechnicalUser.Reader)
@@ -225,7 +236,7 @@ class QaServiceTest {
         val exception = assertThrows<QaServiceClientException> {
             apiAccessor.qaServiceControllerApi.getDatasetById(UUID.fromString(dataId))
         }
-        assertEquals(CLIENT_ERROR_403, exception.message)
+        assertEquals(expectedClientError403Text, exception.message)
     }
 
     @Test
@@ -235,16 +246,48 @@ class QaServiceTest {
         withTechnicalUser(TechnicalUser.Admin) {
             val qaServiceController = apiAccessor.qaServiceControllerApi
             await().atMost(2, TimeUnit.SECONDS)
-                .until { qaServiceController.getUnreviewedMetadataSets().map { it.dataId }.contains(dataIdAlpha) }
+                .until { qaServiceController.getInfoOnUnreviewedDatasets().map { it.dataId }.contains(dataIdAlpha) }
             await().atMost(2, TimeUnit.SECONDS)
-                .until { qaServiceController.getUnreviewedMetadataSets().map { it.dataId }.contains(dataIdBeta) }
+                .until { qaServiceController.getInfoOnUnreviewedDatasets().map { it.dataId }.contains(dataIdBeta) }
             val dataDeletionControllerApi = apiAccessor.dataDeletionControllerApi
             dataDeletionControllerApi.deleteCompanyAssociatedData(dataIdAlpha)
             await().atMost(2, TimeUnit.SECONDS)
                 .until {
-                    !qaServiceController.getUnreviewedMetadataSets().map { it.dataId }.contains(dataIdAlpha) &&
-                        qaServiceController.getUnreviewedMetadataSets().map { it.dataId }.contains(dataIdBeta)
+                    !qaServiceController.getInfoOnUnreviewedDatasets().map { it.dataId }.contains(dataIdAlpha) &&
+                        qaServiceController.getInfoOnUnreviewedDatasets().map { it.dataId }.contains(dataIdBeta)
                 }
+        }
+    }
+
+    @Test
+    fun `check that filtering works as expected when retrieving meta info on unreviewed datasets`() {
+        clearReviewQueue()
+
+        val datasetAlpha = dummyEuTaxoData.copy(reportingPeriod = "abcdefgh-1")
+        val datasetBeta = dummySfdrData.copy(reportingPeriod = "abcdefgh-2")
+
+        withTechnicalUser(TechnicalUser.Admin) {
+            val dataIdAlpha = apiAccessor.dataControllerApiForEuTaxonomyNonFinancials
+                .postCompanyAssociatedEutaxonomyNonFinancialsData(datasetAlpha).dataId
+            val dataIdBeta =
+                apiAccessor.dataControllerApiForSfdrData.postCompanyAssociatedSfdrData(datasetBeta).dataId
+
+            await().atMost(2, TimeUnit.SECONDS).until {
+                qaServiceController.getInfoOnUnreviewedDatasets(reportingPeriod = setOf("abcdefgh-1"))
+                    .map { it.dataId }.first() == dataIdAlpha
+            }
+            await().atMost(2, TimeUnit.SECONDS).until {
+                qaServiceController.getInfoOnUnreviewedDatasets(
+                    dataType = listOf(
+                        QaControllerApi.DataTypeGetInfoOnUnreviewedDatasets.sfdr,
+                    ),
+                )
+                    .map { it.dataId }.first() == dataIdBeta
+            }
+            await().atMost(2, TimeUnit.SECONDS).until {
+                qaServiceController.getInfoOnUnreviewedDatasets(companyName = "Beta-Company-")
+                    .map { it.dataId }.first() == dataIdBeta
+            }
         }
     }
 }

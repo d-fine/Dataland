@@ -197,7 +197,6 @@ export default defineComponent({
       selectedFrameworks: [] as Array<FrameworkSelectableItem>,
       availableFrameworks: [] as Array<FrameworkSelectableItem>,
       availableReportingPeriods: undefined as undefined | Date,
-      reportingPeriod: undefined as undefined | Date,
     };
   },
   mounted() {
@@ -240,7 +239,9 @@ export default defineComponent({
         this.waitingForData = true;
         this.displayDataOfPage = [];
         const dataOfPage = [] as QaDataObject[];
-        const response = await assertDefined(this.apiClientProvider).apiClients.qaController.getUnreviewedDatasetsIds();
+        const response = await assertDefined(
+          this.apiClientProvider
+        ).apiClients.qaController.getInfoOnUnreviewedDatasets();
         this.dataIdList = response.data;
         const firstDatasetOnPageIndex = this.currentChunkIndex * this.datasetsPerPage;
         const dataIdsOnPage = this.dataIdList.slice(
