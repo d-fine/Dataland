@@ -12,6 +12,7 @@ import { QaStatus, type ReviewQueueResponse } from '@clients/qaservice';
 import ViewFrameworkData from '@/components/pages/ViewFrameworkData.vue';
 import { KEYCLOAK_ROLE_REVIEWER, KEYCLOAK_ROLE_USER } from '@/utils/KeycloakUtils';
 import { getMountingFunction } from '@ct/testUtils/Mount';
+import { humanizeStringOrNumber } from '@/utils/StringFormatter';
 
 describe('Component tests for the Quality Assurance page', () => {
   let p2pFixture: FixtureData<PathwaysToParisData>;
@@ -30,48 +31,110 @@ describe('Component tests for the Quality Assurance page', () => {
   const keycloakMockWithUploaderAndReviewerRoles = minimalKeycloakMock({
     roles: [KEYCLOAK_ROLE_USER, KEYCLOAK_ROLE_REVIEWER],
   });
-  const mockDataMetaInfo: DataMetaInformation = {
-    dataId: 'p2pTestDataId',
-    companyId: 'testCompanyId',
-    dataType: DataTypeEnum.P2p,
-    uploadTime: 1672531200,
-    reportingPeriod: '2023',
-    currentlyActive: false,
-    qaStatus: QaStatus.Pending,
-  };
 
   /**
    * Builds a review queue element.
-   * @param dataId to include in the element
-   * @param receptionTime to include in the element
+   * @param dataId to include
+   * @param companyName to include
+   * @param companyId to include
+   * @param framework to include
+   * @param reportingPeriod to include
+   * @param receptionTime to include
    * @returns the element
    */
-  function buildReviewQueueElement(dataId: string, receptionTime: number = Date.now()): ReviewQueueResponse {
+  function buildReviewQueueElement(
+    dataId: string,
+    companyName?: string,
+    companyId?: string,
+    framework?: string,
+    reportingPeriod?: string,
+    receptionTime: number = Date.now()
+  ): ReviewQueueResponse {
     return {
       dataId: dataId,
       receptionTime: receptionTime,
+      companyName: companyName,
+      companyId: companyId,
+      framework: framework,
+      reportingPeriod: reportingPeriod,
     };
   }
 
   it('Check if datasets appear on the QA-overview-page and filtering works as expected', () => {
-    const mockReviewQueue = buildReviewQueueElement(mockDataMetaInfo.dataId);
-    cy.intercept('**/qa/datasets?*', [mockReviewQueue]);
-    cy.intercept(`**/api/metadata/${mockDataMetaInfo.dataId}`, mockDataMetaInfo);
+    const dataIdAlpha = crypto.randomUUID();
+    const companyNameAlpha = 'Alpha Company AG';
+    const companyIdAlpha = crypto.randomUUID();
+    const reviewQueueElementAlpha = buildReviewQueueElement(
+      dataIdAlpha,
+      companyNameAlpha,
+      companyIdAlpha,
+      DataTypeEnum.P2p,
+      '2022'
+    );
 
-    const mockStoredCompany: StoredCompany = {
-      companyId: mockDataMetaInfo.companyId,
-      companyInformation: p2pFixture.companyInformation,
-      dataRegisteredByDataland: [mockDataMetaInfo],
-    };
-    cy.intercept(`**/api/companies/${mockDataMetaInfo.companyId}`, mockStoredCompany);
+    const dataIdBeta = crypto.randomUUID();
+    const companyNameBeta = 'Beta Corporate Ltd.';
+    const companyIdBeta = crypto.randomUUID();
+    const reviewQueueElementBeta = buildReviewQueueElement(
+      dataIdBeta,
+      companyNameBeta,
+      companyIdBeta,
+      DataTypeEnum.Sfdr,
+      '2023'
+    );
 
-    getMountingFunction({
-      keycloak: keycloakMockWithUploaderAndReviewerRoles,
-    })(QualityAssurance);
-    cy.contains('td', `${mockDataMetaInfo.dataId}`);
+    const mockReviewQueue = [reviewQueueElementAlpha, reviewQueueElementBeta];
+    cy.intercept(`**/qa/datasets?chunkSize=10&chunkIndex=0`, mockReviewQueue);
+    cy.intercept(`**/qa/numberOfUnreviewedDatasets`, mockReviewQueue.length.toString());
+
+    getMountingFunction({ keycloak: keycloakMockWithUploaderAndReviewerRoles })(QualityAssurance);
+    cy.contains('td', `${dataIdAlpha}`);
+    cy.contains('td', `${dataIdBeta}`);
+    cy.contains('span', 'Showing results 1-2 of 2.');
+
+    const companySearchTerm = 'Alpha';
+    cy.intercept(`**/qa/datasets?companyName=${companySearchTerm}&chunkSize=10&chunkIndex=0`, [
+      reviewQueueElementAlpha,
+    ]);
+    cy.intercept(`**/qa/numberOfUnreviewedDatasets?companyName=${companySearchTerm}`, '1');
+    cy.get(`input[data-test="companyNameSearchbar"]`).type(companySearchTerm);
+    cy.contains('td', `${dataIdAlpha}`);
+    cy.contains('td', `${dataIdBeta}`).should('not.exist');
+
+    cy.get(`input[data-test="companyNameSearchbar"]`).clear();
+    cy.contains('td', `${dataIdAlpha}`);
+    cy.contains('td', `${dataIdBeta}`);
+
+    const frameworkToFilterFor = DataTypeEnum.P2p;
+    const frameworkHumanReadableName = humanizeStringOrNumber(frameworkToFilterFor);
+    cy.intercept(`**/qa/datasets?dataType=${DataTypeEnum.P2p}&chunkSize=10&chunkIndex=0`, [reviewQueueElementAlpha]);
+    cy.intercept(`**/qa/numberOfUnreviewedDatasets?dataType=${DataTypeEnum.P2p}`, '1');
+    cy.get(`div[data-test="framework-picker"]`).click();
+    cy.get(`li[aria-label="${frameworkHumanReadableName}"]`).click();
+
+    cy.contains('td', `${dataIdAlpha}`);
+    cy.contains('td', `${dataIdBeta}`).should('not.exist');
+
+    cy.get(`li[aria-label="${frameworkHumanReadableName}"]`).click();
+    cy.contains('td', `${dataIdAlpha}`);
+    cy.contains('td', `${dataIdBeta}`);
+
+    // TODO reporting period filter (typing + date picker?)
+    // TODO combined filter
+    // TODO cleanup test code (functions for better readability)
   });
 
   it('Check if dataset can be reviewed on the view page', () => {
+    const mockDataMetaInfo: DataMetaInformation = {
+      dataId: 'p2pTestDataId',
+      companyId: 'testCompanyId',
+      dataType: DataTypeEnum.P2p,
+      uploadTime: 1672531200,
+      reportingPeriod: '2023',
+      currentlyActive: false,
+      qaStatus: QaStatus.Pending,
+    };
+
     cy.intercept(`**/api/metadata?companyId=${mockDataMetaInfo.companyId}`, [mockDataMetaInfoForActiveDataset]);
     cy.intercept(`**/api/companies/${mockDataMetaInfo.companyId}/info`, p2pFixture.companyInformation);
     cy.intercept(`**/api/metadata/${mockDataMetaInfo.dataId}`, mockDataMetaInfo);
