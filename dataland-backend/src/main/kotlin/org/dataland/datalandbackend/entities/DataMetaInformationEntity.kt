@@ -55,11 +55,11 @@ data class DataMetaInformationEntity(
 ) : ApiModelConversion<DataMetaInformation> {
 
     /**
-     * A user can view the dataset itself if
+     * The viewingUser can view information about the dataset or the dataset itself if
      * (a) the dataset is QAd
      * (b) the user has uploaded the dataset
      * (c) the user is an admin or a reviewer
-     * This function checks these conditions
+     * This function checks these conditions.
      */
     fun isDatasetViewableByUser(viewingUser: DatalandAuthentication?): Boolean {
         return this.qaStatus == QaStatus.Accepted ||

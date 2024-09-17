@@ -41,7 +41,7 @@ class MetaDataController(
                 reportingPeriod,
                 uploaderUserIds,
                 qaStatus,
-            ).map { it.toApiModel(currentUser) },
+            ).filter { it.isDatasetViewableByUser(currentUser) }.map { it.toApiModel(currentUser) },
         )
     }
 
