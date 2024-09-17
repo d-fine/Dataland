@@ -799,8 +799,8 @@
         "tags": [
           "qa-controller"
         ],
-        "summary": "Get the number of requests based on filters.",
-        "description": "Get the number of requests based on filters.",
+        "summary": "Get the number of unreviewed datasets based on filters.",
+        "description": "Get the number of unreviewed datasets based on filters.",
         "operationId": "getNumberOfUnreviewedDatasets",
         "parameters": [
           {
@@ -3412,23 +3412,23 @@
           "message": {
             "type": "string"
           },
-          "dataId": {
+          "companyId": {
             "type": "string"
           },
           "receptionTime": {
             "type": "integer",
             "format": "int64"
           },
+          "dataId": {
+            "type": "string"
+          },
           "companyName": {
             "type": "string"
           },
-          "companyId": {
+          "framework": {
             "type": "string"
           },
           "reportingPeriod": {
-            "type": "string"
-          },
-          "framework": {
             "type": "string"
           }
         }
