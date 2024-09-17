@@ -8,6 +8,7 @@ import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 data class QaSearchFilter(
     val dataType: Set<DataTypeEnum>?,
     val reportingPeriod: Set<String>?,
+    val companyId: Set<String>?,
     val companyName: String?,
 
 ) {
@@ -17,15 +18,18 @@ data class QaSearchFilter(
     val preparedDataType: List<String>
         get() = dataType?.map { it.value } ?: emptyList()
 
-    val shouldFilterByCompanyName: Boolean
-        get() = companyName?.isNotEmpty() ?: false
+    val shouldFilterByCompanyId: Boolean
+        get() = companyId?.isNotEmpty() ?: false
 
-    val preparedCompanyName: String
-        get() = companyName ?: ""
+    val preparedCompanyId: List<String>
+        get() = companyId?.toList() ?: emptyList()
 
     val shouldFilterByReportingPeriod: Boolean
         get() = reportingPeriod?.isNotEmpty() ?: false
 
     val preparedReportingPeriod: List<String>
         get() = reportingPeriod?.toList() ?: emptyList()
+
+    val shouldFilterByCompanyName: Boolean
+        get() = companyName?.isNotEmpty() ?: false
 }
