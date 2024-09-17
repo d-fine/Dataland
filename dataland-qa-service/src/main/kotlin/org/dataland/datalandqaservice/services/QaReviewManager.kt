@@ -5,7 +5,6 @@ import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.ReviewQueueResponse
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.repositories.ReviewQueueRepository
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.utils.QaSearchFilter
-import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 
