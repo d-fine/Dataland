@@ -239,7 +239,9 @@ export default defineComponent({
         this.waitingForData = true;
         this.displayDataOfPage = [];
         const dataOfPage = [] as QaDataObject[];
-        const response = await assertDefined(this.apiClientProvider).apiClients.qaController.getUnreviewedDatasetsIds();
+        const response = await assertDefined(
+          this.apiClientProvider
+        ).apiClients.qaController.getInfoOnUnreviewedDatasets();
         this.dataIdList = response.data;
         const firstDatasetOnPageIndex = this.currentChunkIndex * this.datasetsPerPage;
         const dataIdsOnPage = this.dataIdList.slice(
