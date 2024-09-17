@@ -49,16 +49,6 @@ export function checkIfAllUploadedReportsAreReferencedInDataModel(
     );
   }
 }
-
-/**
- * Checks if for a given validation the corresponding formkit field requires some input
- * @param validation the formkit validation string
- * @returns true if the validation string contains required else false
- */
-export function isInputRequired(validation?: string): boolean {
-  return validation?.includes('required') ?? false;
-}
-
 /**
  * Checks if a company ID is valid
  * @param companyId id as string
@@ -67,4 +57,32 @@ export function isInputRequired(validation?: string): boolean {
 export function isCompanyIdValid(companyId: string): boolean {
   const uuidRegexExp = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
   return uuidRegexExp.test(companyId);
+}
+
+export const regexPageNumber = /^([1-9]\d*)(?:-([1-9]\d*))?$/;
+
+export const PAGE_NUMBER_VALIDATION_ERROR_MESSAGE =
+  'Page(s) must be a positive integer or a range of ascending positive integers, e.g. 2, 13-15, etc.';
+/**
+ * Checks if a page number is valid
+ * @param node FormKitNode
+ * @returns boolean that expresses if the page number is valid
+ */
+export function validatePageNumber(node: FormKitNode): boolean {
+  const pageNumber = node.value;
+  if (typeof pageNumber == 'string') {
+    const match = RegExp(regexPageNumber).exec(pageNumber);
+    if (match === null) {
+      return false;
+    }
+    const firstNumber = Number(match[1]);
+    const secondNumber = match[2] !== undefined ? Number(match[2]) : undefined;
+    if (secondNumber !== undefined) {
+      return firstNumber < secondNumber;
+    } else {
+      return true;
+    }
+  } else {
+    return false;
+  }
 }
