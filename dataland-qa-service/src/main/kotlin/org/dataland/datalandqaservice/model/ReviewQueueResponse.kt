@@ -6,9 +6,10 @@ package org.dataland.datalandqaservice.org.dataland.datalandqaservice.model
  */
 interface ReviewQueueResponse {
     val dataId: String
-    val companyName: String?
+    val companyId: String?
     val framework: String?
     val reportingPeriod: String?
     val receptionTime: Long
+    var companyName: String?
     var message: String?
 }

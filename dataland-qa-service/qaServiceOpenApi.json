@@ -3313,24 +3313,27 @@
         ],
         "type": "object",
         "properties": {
-          "dataId": {
-            "type": "string"
-          },
-          "receptionTime": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "companyName": {
-            "type": "string"
-          },
-          "reportingPeriod": {
+          "message": {
             "type": "string"
           },
           "framework": {
             "type": "string"
           },
-          "message": {
+          "reportingPeriod": {
             "type": "string"
+          },
+          "dataId": {
+            "type": "string"
+          },
+          "companyName": {
+            "type": "string"
+          },
+          "companyId": {
+            "type": "string"
+          },
+          "receptionTime": {
+            "type": "integer",
+            "format": "int64"
           }
         }
       },

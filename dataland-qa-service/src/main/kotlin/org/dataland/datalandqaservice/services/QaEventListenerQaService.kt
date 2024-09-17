@@ -104,6 +104,7 @@ constructor(
             logger.info("Received data with DataId: $dataId on QA message queue with Correlation Id: $correlationId")
             storeDatasetAsToBeReviewed(
                 dataId,
+                dataMetaInfo.companyId,
                 companyName,
                 dataMetaInfo.dataType.value,
                 dataMetaInfo.reportingPeriod,
@@ -114,6 +115,7 @@ constructor(
 
     private fun storeDatasetAsToBeReviewed(
         dataId: String,
+        companyId: String,
         companyName: String,
         framework: String,
         reportingPeriod: String,
@@ -122,6 +124,7 @@ constructor(
         reviewQueueRepository.save(
             ReviewQueueEntity(
                 dataId = dataId,
+                companyId = companyId,
                 companyName = companyName,
                 framework = framework,
                 reportingPeriod = reportingPeriod,

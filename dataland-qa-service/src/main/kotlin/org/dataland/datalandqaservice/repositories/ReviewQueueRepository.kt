@@ -17,7 +17,7 @@ interface ReviewQueueRepository : JpaRepository<ReviewQueueEntity, String> {
     @Query(
         nativeQuery = true,
         value =
-        "SELECT status.data_id, status.company_name, status.framework, status.reporting_period, " +
+        "SELECT status.data_id, status.company_id, status.company_name, status.framework, status.reporting_period, " +
             "status.reception_time " +
             "FROM review_queue status " +
             "WHERE " +
@@ -25,8 +25,9 @@ interface ReviewQueueRepository : JpaRepository<ReviewQueueEntity, String> {
             "OR status.framework IN :#{#searchFilter.preparedDataType}) AND " +
             "(:#{#searchFilter.shouldFilterByReportingPeriod} = false " +
             "OR status.reporting_period IN :#{#searchFilter.preparedReportingPeriod}) AND " +
-            "(:#{#searchFilter.shouldFilterByCompanyName} = false " +
-            "OR status.company_name = :#{#searchFilter.preparedCompanyName}) " +
+            "( (:#{#searchFilter.shouldFilterByCompanyName } = false AND " +
+            ":#{#searchFilter.shouldFilterByCompanyId} = false) " +
+            "OR status.company_id IN :#{#searchFilter.preparedCompanyId}) " +
             "ORDER BY status.reception_time ASC " +
             "LIMIT :#{#resultLimit} OFFSET :#{#resultOffset}",
     )

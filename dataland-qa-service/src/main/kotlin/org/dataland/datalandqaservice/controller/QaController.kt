@@ -16,7 +16,7 @@ import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.Revie
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.ReviewQueueResponse
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.repositories.ReviewHistoryRepository
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.repositories.ReviewQueueRepository
-import org.dataland.datalandqaservice.org.dataland.datalandqaservice.utils.QaSearchFilter
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.QaReviewManager
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
 import org.slf4j.LoggerFactory
@@ -38,6 +38,7 @@ class QaController(
     @Autowired val reviewHistoryRepository: ReviewHistoryRepository,
     @Autowired var cloudEventMessageHandler: CloudEventMessageHandler,
     @Autowired var objectMapper: ObjectMapper,
+    @Autowired var qaReviewManager: QaReviewManager,
 ) : QaApi {
     private val logger = LoggerFactory.getLogger(javaClass)
 
@@ -50,19 +51,10 @@ class QaController(
         chunkIndex: Int,
     ): ResponseEntity<List<ReviewQueueResponse>> {
         logger.info("Received request to respond with IDs of unreviewed datasets")
-        val searchFilter = QaSearchFilter(
-            dataType = dataType,
-            reportingPeriod = reportingPeriod,
-            companyName = companyName,
-        )
-        // TODO Validate that the offset correctly works
-        // TODO move logic to service and add the api call to determein comany ids based on the companyName
-        // TODO change sql query from =companyName to IN ListOfCompanyIds
-        val offset = (chunkIndex) * (chunkSize)
         return ResponseEntity.ok(
-            reviewQueueRepository.getSortedPendingMetadataSet(
-                searchFilter, resultOffset = offset,
-                resultLimit = chunkSize,
+            qaReviewManager.getInfoOnUnreviewedDatasets(
+                dataType, reportingPeriod = reportingPeriod,
+                companyName = companyName, chunkSize = chunkSize, chunkIndex = chunkIndex,
             ),
         )
     }
