@@ -20,7 +20,7 @@
     }
   ],
   "paths": {
-    "/qa/datasets/{dataId}": {
+    "/datasets/{dataId}": {
       "get": {
         "tags": [
           "qa-controller"
@@ -794,7 +794,7 @@
         ]
       }
     },
-    "/qa/numberOfUnreviewedDatasets": {
+    "/numberOfUnreviewedDatasets": {
       "get": {
         "tags": [
           "qa-controller"
@@ -890,7 +890,7 @@
         ]
       }
     },
-    "/qa/datasets": {
+    "/datasets": {
       "get": {
         "tags": [
           "qa-controller"
@@ -3412,23 +3412,23 @@
           "message": {
             "type": "string"
           },
-          "companyId": {
+          "dataId": {
             "type": "string"
           },
           "receptionTime": {
             "type": "integer",
             "format": "int64"
           },
-          "dataId": {
+          "companyId": {
             "type": "string"
           },
           "companyName": {
             "type": "string"
           },
-          "framework": {
+          "reportingPeriod": {
             "type": "string"
           },
-          "reportingPeriod": {
+          "framework": {
             "type": "string"
           }
         }
