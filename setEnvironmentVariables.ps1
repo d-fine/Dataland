@@ -59,6 +59,7 @@
 [Environment]::SetEnvironmentVariable("FRONTEND_LOCATION_CONFIG", "Test", [System.EnvironmentVariableTarget]::User)
 [Environment]::SetEnvironmentVariable("BACKEND_LOCATION_CONFIG", "Dev", [System.EnvironmentVariableTarget]::User)
 [Environment]::SetEnvironmentVariable("BACKEND_URL", "http://host.docker.internal:8080/api/", [System.EnvironmentVariableTarget]::User)
+[Environment]::SetEnvironmentVariable("DATA_EXPORTER_OUTPUT_DIRECTORY", "./dataland-data-exporter", [System.EnvironmentVariableTarget]::User)
 
 # EuroDaT credentials - if value is not hardcoded here, look them up in our wiki
 [Environment]::SetEnvironmentVariable("EURODAT_BASE_URL", "https://int.gcp.qa-int.eurodat.org", [System.EnvironmentVariableTarget]::User)
@@ -67,5 +68,3 @@
 # [Environment]::SetEnvironmentVariable("QUARKUS_HTTP_SSL_CERTIFICATE_KEY_STORE_PASSWORD", "", [System.EnvironmentVariableTarget]::User)
 # [Environment]::SetEnvironmentVariable("QUARKUS_OIDC_CLIENT_CREDENTIALS_JWT_KEY_PASSWORD", "", [System.EnvironmentVariableTarget]::User)
 # [Environment]::SetEnvironmentVariable("QUARKUS_OIDC_CLIENT_CREDENTIALS_JWT_KEY_STORE_PASSWORD", "", [System.EnvironmentVariableTarget]::User)
-
-

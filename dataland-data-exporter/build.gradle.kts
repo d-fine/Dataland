@@ -93,6 +93,10 @@ jacoco {
     toolVersion = jacocoVersion
 }
 
+tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
+    dependsOn("generateBackendClient")
+}
+
 sourceSets {
     val main by getting
     main.kotlin.srcDir(layout.buildDirectory.dir("clients/backend/src/main/kotlin"))

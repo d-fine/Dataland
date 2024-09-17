@@ -573,7 +573,7 @@ services:
       DATALAND_DATA_EXPORTER_CLIENT_SECRET: ${DATALAND_DATA_EXPORTER_CLIENT_SECRET}
       DATA_EXPORTER_OUTPUT_DIRECTORY: ${DATA_EXPORTER_OUTPUT_DIRECTORY}
     volumes:
-      - ${DATA_EXPORTER_OUTPUT_DIRECTORY:-./dataland-data-exporter}:/var/export
+      - ${DATA_EXPORTER_OUTPUT_DIRECTORY}:/var/export
 networks:
   internal:
   external:
