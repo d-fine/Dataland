@@ -15,7 +15,9 @@ import org.dataland.datalanddataexporter.utils.TransformationUtils.checkConsiste
 import org.dataland.datalanddataexporter.utils.TransformationUtils.getHeaders
 import org.dataland.datalanddataexporter.utils.TransformationUtils.getLeiToIsinMapping
 import org.dataland.datalanddataexporter.utils.TransformationUtils.readTransformationConfig
+import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.beans.factory.annotation.Value
 
 /**
  * A class for handling the transformation of JSON files into CSV
@@ -24,8 +26,13 @@ import org.springframework.beans.factory.annotation.Autowired
 class CsvExporter(
     @Autowired private val metaDataControllerApi: MetaDataControllerApi,
     @Autowired private val sfdrDataControllerApi: SfdrDataControllerApi,
-    @Autowired private val companyDataControllerApi: CompanyDataControllerApi
+    @Autowired private val companyDataControllerApi: CompanyDataControllerApi,
+    @Value("\${dataland.data-exporter.output-directory}")
+    private val outputDirectory: String
 ) {
+
+
+    private val logger = LoggerFactory.getLogger(javaClass)
 
     //test
     private val leiIdentifier = "Lei"
@@ -122,9 +129,11 @@ class CsvExporter(
     }
 
     fun exportAllSfdrData() {
+        logger.info("Exporting all SFDR data.")
         val timestamp = getTimestamp()
-        val outputFile = File("/var/export/data$timestamp.csv")
-        val isinOutputFile = File("/var/export/isin$timestamp.csv")
+        val outputFile = File("$outputDirectory/data$timestamp.csv")
+        val isinOutputFile = File("$outputDirectory/isin$timestamp.csv")
+        logger.info("Writing to file: ${outputFile.absolutePath}")
         val csvData = mutableListOf<Map<String, String>>()
         val isinData = mutableListOf<Map<String, String>>()
 
@@ -133,7 +142,9 @@ class CsvExporter(
         val dataIds = getAllSfdrDataIds()
 
         dataIds.forEach { dataId ->
+            logger.info("Exporting data with ID: $dataId")
             val dataToExport = mutableMapOf<String, String>()
+
 
             val companyAssociatedData = sfdrDataControllerApi.getCompanyAssociatedSfdrData(dataId)
             val companyData = companyDataControllerApi.getCompanyById(companyAssociatedData.companyId)
@@ -141,7 +152,9 @@ class CsvExporter(
             dataToExport["reportingPeriod"] = companyAssociatedData.reportingPeriod
             dataToExport["companyId"] = companyAssociatedData.companyId
             dataToExport["companyName"] = companyData.companyInformation.companyName
-            dataToExport["lei"] = companyData.companyInformation.identifiers[leiIdentifier]?.first() ?: ""
+            val lei = companyData.companyInformation.identifiers[leiIdentifier] ?: emptyList()
+            dataToExport["lei"] = if (lei.isEmpty()) "" else lei[0]
+
             isinData.addAll(getLeiToIsinMapping(companyData.companyInformation))
 
             val jsonData = ObjectMapper().writeValueAsString(companyAssociatedData.data)
@@ -150,6 +163,7 @@ class CsvExporter(
             dataToExport+=mapJsonToCsv(data, transformationRules)
             csvData.add(dataToExport)
         }
+        logger.info("Writing results to CSV files.")
         writeCsv(csvData, outputFile, headers)
         writeCsv(isinData, isinOutputFile, listOf(leiHeader, isinHeader))
     }
