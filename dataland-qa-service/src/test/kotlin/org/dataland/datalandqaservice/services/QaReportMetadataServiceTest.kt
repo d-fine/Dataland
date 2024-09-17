@@ -54,8 +54,13 @@ class QaReportMetadataServiceTest(
 
     @Test
     fun `check that non-unique company ids throw an exception`() {
-        val matchingCompanyIdsAndNamesOnDataland: List<CompanyIdAndName> = listOf(CompanyIdAndName("1", companyId), CompanyIdAndName("2", "2"))
-        Mockito.`when`(companyController.getCompaniesBySearchString(companyIdentifier)).thenReturn(matchingCompanyIdsAndNamesOnDataland)
+        val matchingCompanyIdsAndNamesOnDataland: List<CompanyIdAndName> = listOf(
+            CompanyIdAndName("1", companyId),
+            CompanyIdAndName("2", "2"),
+        )
+        Mockito
+            .`when`(companyController.getCompaniesBySearchString(companyIdentifier))
+            .thenReturn(matchingCompanyIdsAndNamesOnDataland)
         val thrown = assertThrows<InvalidInputApiException> {
             qaReportMetadataService.searchDataAndQaReportMetadata(null, true, null, null, null, companyIdentifier)
         }
@@ -68,7 +73,9 @@ class QaReportMetadataServiceTest(
             DataMetaInformation(dataId1, companyId, DataTypeEnum.sfdr, 1, "test", true, QaStatus.Accepted, null),
             DataMetaInformation(dataId2, companyId, DataTypeEnum.sfdr, 1, "test", true, QaStatus.Accepted, null),
         )
-        Mockito.`when`(metadataController.getListOfDataMetaInfo(null, null, true, null, null, null)).thenReturn(dataMetaInformation)
+        Mockito
+            .`when`(metadataController.getListOfDataMetaInfo(null, null, true, null, null, null))
+            .thenReturn(dataMetaInformation)
         val result: List<DataAndQaReportMetadata> =
             qaReportMetadataService
                 .searchDataAndQaReportMetadata(null, true, null, null, null, null)
@@ -78,11 +85,24 @@ class QaReportMetadataServiceTest(
     @Test
     fun `search by userId`() {
         val matchingCompanyIdsAndNamesOnDataland: List<CompanyIdAndName> = listOf(CompanyIdAndName("1", companyId))
-        Mockito.`when`(companyController.getCompaniesBySearchString(companyIdentifier)).thenReturn(matchingCompanyIdsAndNamesOnDataland)
+        Mockito
+            .`when`(companyController.getCompaniesBySearchString(companyIdentifier))
+            .thenReturn(matchingCompanyIdsAndNamesOnDataland)
         val dataMetaInformation: List<DataMetaInformation> = listOf(
-            DataMetaInformation(dataId1, companyId, DataTypeEnum.sfdr, 1, "test", true, QaStatus.Accepted, reporterId1.toString()),
+            DataMetaInformation(
+                dataId1,
+                companyId,
+                DataTypeEnum.sfdr,
+                1,
+                "test",
+                true,
+                QaStatus.Accepted,
+                reporterId1.toString(),
+            ),
         )
-        Mockito.`when`(metadataController.getListOfDataMetaInfo(null, null, true, null, setOf<UUID>(reporterId1), null)).thenReturn(dataMetaInformation)
+        Mockito
+            .`when`(metadataController.getListOfDataMetaInfo(null, null, true, null, setOf<UUID>(reporterId1), null))
+            .thenReturn(dataMetaInformation)
         val result: List<DataAndQaReportMetadata> =
             qaReportMetadataService
                 .searchDataAndQaReportMetadata(setOf<UUID>(reporterId1), true, null, null, null, null)
@@ -93,9 +113,13 @@ class QaReportMetadataServiceTest(
     @Test
     fun `search only inactive cases`() {
         val matchingCompanyIdsAndNamesOnDataland: List<CompanyIdAndName> = listOf(CompanyIdAndName("1", companyId))
-        Mockito.`when`(companyController.getCompaniesBySearchString(companyIdentifier)).thenReturn(matchingCompanyIdsAndNamesOnDataland)
+        Mockito
+            .`when`(companyController.getCompaniesBySearchString(companyIdentifier))
+            .thenReturn(matchingCompanyIdsAndNamesOnDataland)
         val dataMetaInformation: List<DataMetaInformation> = emptyList()
-        Mockito.`when`(metadataController.getListOfDataMetaInfo(null, null, false, null, setOf<UUID>(reporterId1), null)).thenReturn(dataMetaInformation)
+        Mockito
+            .`when`(metadataController.getListOfDataMetaInfo(null, null, false, null, setOf<UUID>(reporterId1), null))
+            .thenReturn(dataMetaInformation)
         val result: List<DataAndQaReportMetadata> =
             qaReportMetadataService
                 .searchDataAndQaReportMetadata(null, false, null, null, null, null)
@@ -109,10 +133,19 @@ class QaReportMetadataServiceTest(
             DataMetaInformation(dataId1, companyId, DataTypeEnum.sfdr, 1, "test", true, QaStatus.Accepted, null),
             DataMetaInformation(dataId2, companyId, DataTypeEnum.sfdr, 1, "test", true, QaStatus.Accepted, null),
         )
-        Mockito.`when`(metadataController.getListOfDataMetaInfo(null, null, true, null, null, null)).thenReturn(dataMetaInformation)
+        Mockito
+            .`when`(metadataController.getListOfDataMetaInfo(null, null, true, null, null, null))
+            .thenReturn(dataMetaInformation)
         val result: List<DataAndQaReportMetadata> =
             qaReportMetadataService
-                .searchDataAndQaReportMetadata(null, true, null, LocalDate.now().minusDays(8).format(formatter), LocalDate.now().plusDays(2).format(formatter), null)
+                .searchDataAndQaReportMetadata(
+                    null,
+                    true,
+                    null,
+                    LocalDate.now().minusDays(8).format(formatter),
+                    LocalDate.now().plusDays(2).format(formatter),
+                    null,
+                )
         Assertions.assertEquals(2, result.size)
     }
 
@@ -123,17 +156,33 @@ class QaReportMetadataServiceTest(
             DataMetaInformation(dataId1, companyId, DataTypeEnum.sfdr, 1, "test", true, QaStatus.Accepted, null),
             DataMetaInformation(dataId2, companyId, DataTypeEnum.sfdr, 1, "test", true, QaStatus.Accepted, null),
         )
-        Mockito.`when`(metadataController.getListOfDataMetaInfo(null, null, true, null, null, null)).thenReturn(dataMetaInformation)
+        Mockito
+            .`when`(metadataController.getListOfDataMetaInfo(null, null, true, null, null, null))
+            .thenReturn(dataMetaInformation)
 
         val resultOnlyStart: List<DataAndQaReportMetadata> =
             qaReportMetadataService
-                .searchDataAndQaReportMetadata(null, true, null, LocalDate.now().minusDays(3).format(formatter), null, null)
+                .searchDataAndQaReportMetadata(
+                    null,
+                    true,
+                    null,
+                    LocalDate.now().minusDays(3).format(formatter),
+                    null,
+                    null,
+                )
         Assertions.assertEquals(1, resultOnlyStart.size)
         Assertions.assertEquals(dataId1, resultOnlyStart[0].qaReportMetadata.dataId)
 
         val resultOnlyEnd: List<DataAndQaReportMetadata> =
             qaReportMetadataService
-                .searchDataAndQaReportMetadata(null, true, null, null, LocalDate.now().minusDays(3).format(formatter), null)
+                .searchDataAndQaReportMetadata(
+                    null,
+                    true,
+                    null,
+                    null,
+                    LocalDate.now().minusDays(3).format(formatter),
+                    null,
+                )
         Assertions.assertEquals(1, resultOnlyEnd.size)
         Assertions.assertEquals(dataId2, resultOnlyEnd[0].qaReportMetadata.dataId)
     }

@@ -9,6 +9,9 @@ import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.RestController
 import java.util.*
 
+/**
+ * A REST controller for the QA reports metadata API.
+ */
 @RestController
 class QaReportsMetadataController(
     @Autowired val qaReportMetadataService: QaReportMetadataService,
