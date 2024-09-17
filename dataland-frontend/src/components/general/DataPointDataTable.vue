@@ -33,7 +33,9 @@
           </tr>
           <tr v-if="dialogData.dataPointDisplay.comment">
             <th class="headers-bg width-auto"><span class="table-left-label">Comment</span></th>
-            <td><AutoFormattingTextSpan :text="dialogData.dataPointDisplay.comment" /></td>
+            <td>
+              <RenderSanitizedMarkdownInput :text="dialogData.dataPointDisplay.comment" />
+            </td>
           </tr>
         </tbody>
       </table>
@@ -47,8 +49,8 @@ import { type DynamicDialogInstance } from 'primevue/dynamicdialogoptions';
 import DocumentLink from '@/components/resources/frameworkDataSearch/DocumentLink.vue';
 import { type DataPointDisplay } from '@/utils/DataPoint';
 import { ONLY_AUXILIARY_DATA_PROVIDED } from '@/utils/Constants';
-import AutoFormattingTextSpan from '@/components/general/AutoFormattingTextSpan.vue';
 import { assertDefined } from '@/utils/TypeScriptUtils';
+import RenderSanitizedMarkdownInput from '@/components/general/RenderSanitizedMarkdownInput.vue';
 import { humanizeStringOrNumber } from '@/utils/StringFormatter';
 
 interface DataPointDataTableRefProps {
@@ -61,7 +63,7 @@ export default defineComponent({
   methods: {
     humanizeStringOrNumber,
   },
-  components: { AutoFormattingTextSpan, DocumentLink },
+  components: { RenderSanitizedMarkdownInput, DocumentLink },
   inject: ['dialogRef'],
   name: 'DataPointDataTable',
   data: () => {
@@ -89,6 +91,7 @@ export default defineComponent({
   border-spacing: 0;
   border-collapse: collapse;
 }
+
 .width-auto {
   width: auto;
 }
