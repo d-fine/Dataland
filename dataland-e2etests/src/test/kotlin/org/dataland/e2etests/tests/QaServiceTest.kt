@@ -13,7 +13,6 @@ import org.dataland.e2etests.utils.testDataProvivders.GeneralTestDataProvider
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.Assertions.assertNotEquals
-import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
@@ -26,9 +25,6 @@ import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
 import org.dataland.datalandbackend.openApiClient.model.QaStatus as BackendQaStatus
 import org.dataland.datalandqaservice.openApiClient.infrastructure.ClientException as QaServiceClientException
 import org.dataland.datalandqaservice.openApiClient.model.QaStatus as QaServiceQaStatus
- /* TODO Emanuel: Am Ende vllt überall withTechnicalUser nutzen anstatt  "apiAccessor.jwtHelper.authenticate..."
- => vorher sollten aber vllt erstmal alle Tests grün durchlaufen (will nicht zu viele changes aufeinmal pushen)
-*/
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class QaServiceTest {
@@ -43,9 +39,6 @@ class QaServiceTest {
     private lateinit var companyIdBeta: String
 
     private val expectedClientError403Text = "Client error : 403 "
-    companion object {
-        private const val SLEEP_DURATION_MS: Long = 500
-    }
 
     @BeforeAll
     fun postCompany() {
@@ -66,7 +59,7 @@ class QaServiceTest {
     @Test
     fun `post dummy data and accept it and check the qa status changes and check different users access permissions`() {
         val dataId = uploadDatasetAndValidatePendingState()
-        reviewDatasetAndValidateItIsNotReviewable(dataId, QaServiceQaStatus.Accepted)
+        reviewDatasetAsReviewerAndAssertSuccess(dataId, QaServiceQaStatus.Accepted)
         awaitQaStatusChange(dataId, BackendQaStatus.Accepted)
         canUserSeeUploaderData(dataId, TechnicalUser.Reader, true, false)
         canUserSeeUploaderData(dataId, TechnicalUser.Uploader, true, true)
@@ -77,13 +70,14 @@ class QaServiceTest {
     @Test
     fun `post dummy data and reject it and check the qa status changes and check different users access permissions`() {
         val dataId = uploadDatasetAndValidatePendingState()
-        reviewDatasetAndValidateItIsNotReviewable(dataId, QaServiceQaStatus.Rejected)
-        apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Uploader)
-        awaitQaStatusChange(dataId, BackendQaStatus.Rejected)
-        canUserSeeUploaderData(dataId, TechnicalUser.Reader, false)
-        canUserSeeUploaderData(dataId, TechnicalUser.Uploader, true, true)
-        canUserSeeUploaderData(dataId, TechnicalUser.Reviewer, true, false)
-        canUserSeeUploaderData(dataId, TechnicalUser.Admin, true, true)
+        reviewDatasetAsReviewerAndAssertSuccess(dataId, QaServiceQaStatus.Rejected)
+        withTechnicalUser(TechnicalUser.Uploader) {
+            awaitQaStatusChange(dataId, BackendQaStatus.Rejected)
+            canUserSeeUploaderData(dataId, TechnicalUser.Reader, false)
+            canUserSeeUploaderData(dataId, TechnicalUser.Uploader, true, true)
+            canUserSeeUploaderData(dataId, TechnicalUser.Reviewer, true, false)
+            canUserSeeUploaderData(dataId, TechnicalUser.Admin, true, true)
+        }
     }
 
     @Test
@@ -96,24 +90,22 @@ class QaServiceTest {
     }
 
     private fun uploadDatasetAndValidatePendingState(user: TechnicalUser = TechnicalUser.Uploader): String {
-        apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(user)
-        val dataId = dataController.postCompanyAssociatedEutaxonomyNonFinancialsData(
-            dummyEuTaxoData, false,
-        ).dataId
-        assertEquals(
-            BackendQaStatus.Pending,
-            apiAccessor.metaDataControllerApi.getDataMetaInfo(dataId).qaStatus,
-        )
-        return dataId
+        withTechnicalUser(user) {
+            val dataId =
+                dataController.postCompanyAssociatedEutaxonomyNonFinancialsData(dummyEuTaxoData, false).dataId
+            assertEquals(BackendQaStatus.Pending, apiAccessor.metaDataControllerApi.getDataMetaInfo(dataId).qaStatus)
+            return dataId
+        }
     }
 
-    private fun reviewDatasetAndValidateItIsNotReviewable(dataId: String, qaStatus: QaServiceQaStatus) {
-        apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reviewer)
-        val qaServiceController = apiAccessor.qaServiceControllerApi
-        await().atMost(2, TimeUnit.SECONDS)
-            .until { qaServiceController.getInfoOnUnreviewedDatasets().map { it.dataId }.contains(dataId) }
-        qaServiceController.assignQaStatus(dataId, qaStatus)
-        assertFalse(qaServiceController.getInfoOnUnreviewedDatasets().map { it.dataId }.contains(dataId))
+    private fun reviewDatasetAsReviewerAndAssertSuccess(dataId: String, qaStatus: QaServiceQaStatus) {
+        withTechnicalUser(TechnicalUser.Reviewer) {
+            val qaServiceController = apiAccessor.qaServiceControllerApi
+            await().atMost(2, TimeUnit.SECONDS)
+                .until { qaServiceController.getInfoOnUnreviewedDatasets().map { it.dataId }.contains(dataId) }
+            qaServiceController.assignQaStatus(dataId, qaStatus)
+            assertFalse(qaServiceController.getInfoOnUnreviewedDatasets().map { it.dataId }.contains(dataId))
+        }
     }
 
     private fun canUserSeeUploaderData(
@@ -122,23 +114,24 @@ class QaServiceTest {
         shouldDataBeVisible: Boolean,
         shouldUploaderBeVisible: Boolean? = null,
     ) {
-        apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(viewingUser)
-        if (shouldDataBeVisible) {
-            requireNotNull(shouldUploaderBeVisible)
-            assertEquals(
-                if (shouldUploaderBeVisible) TechnicalUser.Uploader.technicalUserId else null,
-                apiAccessor.metaDataControllerApi.getDataMetaInfo(dataId).uploaderUserId,
-            )
-            dataController.getCompanyAssociatedEutaxonomyNonFinancialsData(dataId)
-        } else {
-            val metaInfoException = assertThrows<BackendClientException> {
-                apiAccessor.metaDataControllerApi.getDataMetaInfo(dataId)
-            }
-            assertEquals(expectedClientError403Text, metaInfoException.message)
-            val dataException = assertThrows<BackendClientException> {
+        withTechnicalUser(viewingUser) {
+            if (shouldDataBeVisible) {
+                requireNotNull(shouldUploaderBeVisible)
+                assertEquals(
+                    if (shouldUploaderBeVisible) TechnicalUser.Uploader.technicalUserId else null,
+                    apiAccessor.metaDataControllerApi.getDataMetaInfo(dataId).uploaderUserId,
+                )
                 dataController.getCompanyAssociatedEutaxonomyNonFinancialsData(dataId)
+            } else {
+                val metaInfoException = assertThrows<BackendClientException> {
+                    apiAccessor.metaDataControllerApi.getDataMetaInfo(dataId)
+                }
+                assertEquals(expectedClientError403Text, metaInfoException.message)
+                val dataException = assertThrows<BackendClientException> {
+                    dataController.getCompanyAssociatedEutaxonomyNonFinancialsData(dataId)
+                }
+                assertEquals(expectedClientError403Text, dataException.message)
             }
-            assertEquals(expectedClientError403Text, dataException.message)
         }
     }
 
@@ -150,31 +143,34 @@ class QaServiceTest {
     @Test
     fun `check that the review queue is correctly ordered`() {
         clearReviewQueue()
-        apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Uploader)
-        val numberOfUploadedDatasets = 20
-        // TODO Emanuel: 20 (!) uploads mit 0,5 Sekunden sleep dazwischen = 10 Sekundne Wartezeit!  vermeidbar
-        val expectedReviewQueue = (1..numberOfUploadedDatasets).map {
-            dataController.postCompanyAssociatedEutaxonomyNonFinancialsData(
-                dummyEuTaxoData, false,
-            ).dataId.also { Thread.sleep(SLEEP_DURATION_MS) }
-        }
-        apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reviewer)
-        val actualReviewQueue = apiAccessor.qaServiceControllerApi.getInfoOnUnreviewedDatasets()
+        var expectedDataIdsInReviewQueue = emptyList<String>()
 
-        assertTrue(expectedReviewQueue.toTypedArray().contentDeepEquals(actualReviewQueue.toTypedArray()))
+        withTechnicalUser(TechnicalUser.Uploader) {
+            val numberOfUploadedDatasets = 10
+            expectedDataIdsInReviewQueue = (1..numberOfUploadedDatasets).map {
+                dataController.postCompanyAssociatedEutaxonomyNonFinancialsData(dummyEuTaxoData, false).dataId
+            }
+        }
+
+        withTechnicalUser(TechnicalUser.Reviewer) {
+            val actualDataIdsInReviewQueue =
+                apiAccessor.qaServiceControllerApi.getInfoOnUnreviewedDatasets().map { it.dataId }
+            assertEquals(expectedDataIdsInReviewQueue, actualDataIdsInReviewQueue)
+        }
     }
 
     private fun clearReviewQueue() {
-        apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reviewer)
-        apiAccessor.qaServiceControllerApi.getInfoOnUnreviewedDatasets().forEach {
-            apiAccessor.qaServiceControllerApi.assignQaStatus(it.dataId, QaServiceQaStatus.Rejected)
+        withTechnicalUser(TechnicalUser.Reviewer) {
+            apiAccessor.qaServiceControllerApi.getInfoOnUnreviewedDatasets().forEach {
+                apiAccessor.qaServiceControllerApi.assignQaStatus(it.dataId, QaServiceQaStatus.Rejected)
+            }
         }
     }
 
     @Test
     fun `check that an already reviewed dataset can not be assigned a different qa status`() {
         val dataId = uploadDatasetAndValidatePendingState()
-        reviewDatasetAndValidateItIsNotReviewable(dataId, QaServiceQaStatus.Accepted)
+        reviewDatasetAsReviewerAndAssertSuccess(dataId, QaServiceQaStatus.Accepted)
         awaitQaStatusChange(dataId, BackendQaStatus.Accepted)
         val exception = assertThrows<QaServiceClientException> {
             apiAccessor.qaServiceControllerApi.assignQaStatus(dataId, QaServiceQaStatus.Rejected)
@@ -189,54 +185,70 @@ class QaServiceTest {
     @Test
     fun `check the a data set with review history can only retrieved by admin reviewer and uploader of the data`() {
         val dataId = uploadDatasetAndValidatePendingState()
-        reviewDatasetAndValidateItIsNotReviewable(dataId, QaServiceQaStatus.Accepted)
+        reviewDatasetAsReviewerAndAssertSuccess(dataId, QaServiceQaStatus.Accepted)
         awaitQaStatusChange(dataId, BackendQaStatus.Accepted)
         val usersWithAccessToReviewHistory = listOf(
             TechnicalUser.Admin, TechnicalUser.Reviewer,
             TechnicalUser.Uploader,
         )
         usersWithAccessToReviewHistory.forEach {
-            apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(it)
-            assertDoesNotThrow {
-                val reviewInformationResponse =
-                    apiAccessor.qaServiceControllerApi.getDatasetById(UUID.fromString(dataId))
-                if (it == TechnicalUser.Admin) {
-                    assertEquals(TechnicalUser.Reviewer.technicalUserId, reviewInformationResponse.reviewerKeycloakId)
-                } else {
-                    assertEquals(null, reviewInformationResponse.reviewerKeycloakId)
+            withTechnicalUser(it) {
+                assertDoesNotThrow {
+                    val reviewInformationResponse =
+                        apiAccessor.qaServiceControllerApi.getDatasetById(UUID.fromString(dataId))
+                    if (it == TechnicalUser.Admin) {
+                        assertEquals(
+                            TechnicalUser.Reviewer.technicalUserId,
+                            reviewInformationResponse.reviewerKeycloakId,
+                        )
+                    } else {
+                        assertEquals(null, reviewInformationResponse.reviewerKeycloakId)
+                    }
                 }
             }
         }
         val usersWithoutAccessToReviewHistory = listOf(TechnicalUser.Reader, TechnicalUser.PremiumUser)
         usersWithoutAccessToReviewHistory.forEach {
-            apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(it)
+            withTechnicalUser(it) {
+                val exception = assertThrows<QaServiceClientException> {
+                    apiAccessor.qaServiceControllerApi.getDatasetById(UUID.fromString(dataId))
+                }
+                assertEquals(expectedClientError403Text, exception.message)
+            }
+        }
+    }
+
+    @Test
+    fun `check that a reader can access the review history of the dataset they uploaded but an uploader cant`() {
+        val reader = TechnicalUser.Reader
+        withTechnicalUser(TechnicalUser.Admin) {
+            apiAccessor.companyRolesControllerApi.assignCompanyRole(
+                CompanyRole.CompanyOwner, UUID.fromString(companyIdAlpha), UUID.fromString(reader.technicalUserId),
+            )
+        }
+
+        val dataId = uploadDatasetAndValidatePendingState(reader)
+        reviewDatasetAsReviewerAndAssertSuccess(dataId, QaServiceQaStatus.Accepted)
+        awaitQaStatusChange(dataId, BackendQaStatus.Accepted)
+
+        withTechnicalUser(reader) {
+            val reviewInformationResponse = apiAccessor.qaServiceControllerApi.getDatasetById(UUID.fromString(dataId))
+            assertEquals(null, reviewInformationResponse.reviewerKeycloakId)
+            assertEquals(dataId, reviewInformationResponse.dataId)
+        }
+
+        withTechnicalUser(TechnicalUser.Uploader) {
             val exception = assertThrows<QaServiceClientException> {
                 apiAccessor.qaServiceControllerApi.getDatasetById(UUID.fromString(dataId))
             }
             assertEquals(expectedClientError403Text, exception.message)
         }
-    }
 
-    @Test
-    fun `check the a reader can access the review history of the data set he uploaded but an uploader cant`() {
-        apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
-        apiAccessor.companyRolesControllerApi.assignCompanyRole(
-            CompanyRole.CompanyOwner, UUID.fromString(dummyEuTaxoData.companyId),
-            UUID.fromString(TechnicalUser.Reader.technicalUserId),
-        )
-        val dataId = uploadDatasetAndValidatePendingState(TechnicalUser.Reader)
-        reviewDatasetAndValidateItIsNotReviewable(dataId, QaServiceQaStatus.Accepted)
-        awaitQaStatusChange(dataId, BackendQaStatus.Accepted)
-        val reviewInformationResponse =
-            apiAccessor.qaServiceControllerApi.getDatasetById(UUID.fromString(dataId))
-        assertEquals(null, reviewInformationResponse.reviewerKeycloakId)
-        assertEquals(dataId, reviewInformationResponse.dataId)
-
-        apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Uploader)
-        val exception = assertThrows<QaServiceClientException> {
-            apiAccessor.qaServiceControllerApi.getDatasetById(UUID.fromString(dataId))
+        withTechnicalUser(TechnicalUser.Admin) {
+            apiAccessor.companyRolesControllerApi.removeCompanyRole(
+                CompanyRole.CompanyOwner, UUID.fromString(companyIdAlpha), UUID.fromString(reader.technicalUserId),
+            )
         }
-        assertEquals(expectedClientError403Text, exception.message)
     }
 
     @Test
@@ -290,4 +302,6 @@ class QaServiceTest {
             }
         }
     }
+
+    // TODO add or extend existing tests to cover the counter endpoint
 }
