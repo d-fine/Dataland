@@ -58,9 +58,9 @@ class QaServiceTest {
         val dataId = uploadDatasetAndValidatePendingState()
         reviewDatasetAndValidateItIsNotReviewable(dataId, QaServiceQaStatus.Accepted)
         awaitQaStatusChange(dataId, BackendQaStatus.Accepted)
-        canUserSeeUploaderData(dataId, TechnicalUser.Reader, true, false)
+        canUserSeeUploaderData(dataId, TechnicalUser.Reader, true, true)
         canUserSeeUploaderData(dataId, TechnicalUser.Uploader, true, true)
-        canUserSeeUploaderData(dataId, TechnicalUser.Reviewer, true, false)
+        canUserSeeUploaderData(dataId, TechnicalUser.Reviewer, true, true)
         canUserSeeUploaderData(dataId, TechnicalUser.Admin, true, true)
     }
 
@@ -72,7 +72,7 @@ class QaServiceTest {
         awaitQaStatusChange(dataId, BackendQaStatus.Rejected)
         canUserSeeUploaderData(dataId, TechnicalUser.Reader, false)
         canUserSeeUploaderData(dataId, TechnicalUser.Uploader, true, true)
-        canUserSeeUploaderData(dataId, TechnicalUser.Reviewer, true, false)
+        canUserSeeUploaderData(dataId, TechnicalUser.Reviewer, true, true)
         canUserSeeUploaderData(dataId, TechnicalUser.Admin, true, true)
     }
 
@@ -81,7 +81,7 @@ class QaServiceTest {
         val dataId = uploadDatasetAndValidatePendingState()
         canUserSeeUploaderData(dataId, TechnicalUser.Reader, false)
         canUserSeeUploaderData(dataId, TechnicalUser.Uploader, true, true)
-        canUserSeeUploaderData(dataId, TechnicalUser.Reviewer, true, false)
+        canUserSeeUploaderData(dataId, TechnicalUser.Reviewer, true, true)
         canUserSeeUploaderData(dataId, TechnicalUser.Admin, true, true)
     }
 

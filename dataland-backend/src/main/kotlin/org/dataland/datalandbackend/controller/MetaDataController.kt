@@ -9,6 +9,7 @@ import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
+import org.springframework.security.access.AccessDeniedException
 import org.springframework.web.bind.annotation.RestController
 import java.util.UUID
 
@@ -48,6 +49,9 @@ class MetaDataController(
     override fun getDataMetaInfo(dataId: String): ResponseEntity<DataMetaInformation> {
         val currentUser = DatalandAuthentication.fromContextOrNull()
         val metaInfo = dataMetaInformationManager.getDataMetaInformationByDataId(dataId)
+        if (!metaInfo.isDatasetViewableByUser(DatalandAuthentication.fromContextOrNull())) {
+            throw AccessDeniedException(logMessageBuilder.generateAccessDeniedExceptionMessage(metaInfo.qaStatus))
+        }
         return ResponseEntity.ok(metaInfo.toApiModel(currentUser))
     }
 }
