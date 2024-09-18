@@ -155,8 +155,8 @@ class QaServiceTest {
         var expectedDataIdsInReviewQueue = emptyList<String>()
 
         withTechnicalUser(TechnicalUser.Uploader) {
-            val numberOfUploadedDatasets = 10
-            expectedDataIdsInReviewQueue = (1..numberOfUploadedDatasets).map {
+            expectedDataIdsInReviewQueue = (1..10).map {
+                Thread.sleep(1000)
                 dataController.postCompanyAssociatedEutaxonomyNonFinancialsData(dummyEuTaxoDataAlpha, false).dataId
             }
         }
