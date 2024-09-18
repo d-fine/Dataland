@@ -1,0 +1,552 @@
+{
+  "companyId": "485eb70a-0938-4225-803f-483d0fc8a2c0",
+  "data": {
+    "environmental": {
+      "biodiversity": {
+        "biodiversityProtectionPolicy": {
+          "comment": "",
+          "dataSource": null,
+          "quality": "NoDataFound",
+          "value": null
+        },
+        "deforestationPolicy": {
+          "comment": "Carnival Corporation has a strategy to combat deforestation, focusing on reforestation and restoration projects. As part of this strategy, over 500 trees and plants have been planted in port facilities and local communities, including species such as mahogany, sea grapes, palms, coconuts, and neem. A special focus is on the \"Adopt a tree\" project, where over 400 trees have been planted in the community. In addition, the removal of invasive species such as Scaveola Taccada (commonly known as \"Sea Lettuce\") is promoted in Princess Cays and Half Moon Cay to protect the local flora.\n\nThese measures are part of a broader approach to support the environment and combat deforestation by preserving and restoring natural habitats.",
+          "dataSource": {
+            "fileName": "Carnival_Corporation_plc_FY2023-Sustainability-Report.pdf",
+            "fileReference": "6465849c6c891cf0a8559473c458f36bdd7134347ac2e159e9f57ebc5718827e",
+            "page": "60",
+            "tagName": null
+          },
+          "quality": "Reported",
+          "value": "Yes"
+        },
+        "highlyBiodiverseGrasslandExposure": {
+          "comment": "",
+          "dataSource": null,
+          "quality": "NoDataFound",
+          "value": null
+        },
+        "landDegradationDesertificationSoilSealingExposure": {
+          "comment": "",
+          "dataSource": null,
+          "quality": "NoDataFound",
+          "value": null
+        },
+        "manufactureOfAgrochemicalPesticidesProducts": {
+          "comment": "",
+          "dataSource": null,
+          "quality": "NoDataFound",
+          "value": null
+        },
+        "primaryForestAndWoodedLandOfNativeSpeciesExposure": {
+          "comment": "",
+          "dataSource": null,
+          "quality": "NoDataFound",
+          "value": null
+        },
+        "protectedAreasExposure": {
+          "comment": "",
+          "dataSource": null,
+          "quality": "NoDataFound",
+          "value": null
+        },
+        "rareOrEndangeredEcosystemsExposure": {
+          "comment": "Carnival Corporation operates several sites located in areas designated for the protection of rare, endangered, or threatened ecosystems or species. These include:\n\n1. **Half Moon Cay** and **Princess Cays** in the Bahamas, where measures are being taken to protect coral reefs and restore coastlines. These areas are important for the conservation of marine biodiversity.\n\n2. **Mahogany Bay** in Honduras, which has been awarded the \"Bandera Azul Ecologica de Honduras\" for the implementation of best practices in environmental management.\n\nThe species involved include various protected whale species found in the areas where Carnival Corporation's ships operate. These include:\n\n- Blue whale\n- Southern right whale\n- Humpback whale\n- Sperm whale\n- North Atlantic right whale\n- Fin whale\n- Orca\n\nThese details can be found on pages 54 and 60 of the document \"Carnival_Corporation_plc_FY2023-Sustainability-Report.pdf\".",
+          "dataSource": {
+            "fileName": "Carnival_Corporation_plc_FY2023-Sustainability-Report.pdf",
+            "fileReference": "6465849c6c891cf0a8559473c458f36bdd7134347ac2e159e9f57ebc5718827e",
+            "page": "54",
+            "tagName": null
+          },
+          "quality": "Reported",
+          "value": "Yes"
+        },
+        "sustainableAgriculturePolicy": {
+          "comment": "",
+          "dataSource": null,
+          "quality": "NoDataFound",
+          "value": null
+        },
+        "sustainableOceansAndSeasPolicy": {
+          "comment": "Yes, Carnival Corporation has sustainable practices and policies for oceans and seas. These are part of the company's \"Operation Oceans Alive\" program, which was launched in 2018 to promote employee engagement in protecting the oceans. Additionally, compliance with all local regulations when sailing in areas overlapping with whale habitats or migration areas is strictly observed.",
+          "dataSource": {
+            "fileName": "Carnival_Corporation_plc_FY2023-Sustainability-Report.pdf",
+            "fileReference": "6465849c6c891cf0a8559473c458f36bdd7134347ac2e159e9f57ebc5718827e",
+            "page": "54",
+            "tagName": null
+          },
+          "quality": "Reported",
+          "value": "Yes"
+        },
+        "threatenedSpeciesExposure": {
+          "comment": "The operations of Carnival Corporation can impact endangered species, especially in areas where the ships pass through whale habitats or migration areas. Protected whale species that occur in the operating areas include:\n\n- Blue Whales\n- Southern Right Whales\n- Humpback Whales\n- Sperm Whales\n- North Atlantic Right Whales\n- Fin Whales\n- Killer Whales\n\nThe ships strictly adhere to local regulations to ensure the protection of these species, for example by reducing speed and maintaining a minimum distance. Additionally, all whale sightings are reported to local authorities to warn other ships in the vicinity.",
+          "dataSource": {
+            "fileName": "Carnival_Corporation_plc_FY2023-Sustainability-Report.pdf",
+            "fileReference": "6465849c6c891cf0a8559473c458f36bdd7134347ac2e159e9f57ebc5718827e",
+            "page": "54",
+            "tagName": null
+          },
+          "quality": "Reported",
+          "value": "Yes"
+        }
+      },
+      "emissions": {
+        "carbonReductionInitiatives": {
+          "comment": "Carnival Corporation is pursuing a four-part decarbonization strategy aimed at reducing carbon emissions and aligning with the Paris Agreement. This strategy includes optimizing the fleet to reduce emissions, investing in energy efficiency improvements for the existing fleet, improving energy efficiency of travel routes, and identifying and investing in new technologies, including alternative (low or zero) greenhouse gas emissions. The company has committed to achieving net zero greenhouse gas emissions by 2050. \n\nThe source of this information is the document \"Carnival_Corporation_plc_FY2023-Sustainability-Report.pdf\", page 45.",
+          "dataSource": {
+            "fileName": "Carnival_Corporation_plc_FY2023-Sustainability-Report.pdf",
+            "fileReference": "6465849c6c891cf0a8559473c458f36bdd7134347ac2e159e9f57ebc5718827e",
+            "page": "45",
+            "tagName": null
+          },
+          "quality": "Reported",
+          "value": "Yes"
+        },
+        "emissionsOfAirPollutantsInTonnes": null,
+        "emissionsOfInorganicPollutantsInTonnes": null,
+        "emissionsOfOzoneDepletionSubstancesInTonnes": null
+      },
+      "energyPerformance": {
+        "applicableHighImpactClimateSectors": {},
+        "nonRenewableEnergyConsumptionCoalInGWh": null,
+        "nonRenewableEnergyConsumptionCrudeOilInGWh": null,
+        "nonRenewableEnergyConsumptionFossilFuelsInGWh": null,
+        "nonRenewableEnergyConsumptionInGWh": null,
+        "nonRenewableEnergyConsumptionLigniteInGWh": null,
+        "nonRenewableEnergyConsumptionNaturalGasInGWh": null,
+        "nonRenewableEnergyConsumptionNuclearEnergyInGWh": null,
+        "nonRenewableEnergyConsumptionOtherInGWh": null,
+        "nonRenewableEnergyProductionInGWh": null,
+        "relativeNonRenewableEnergyConsumptionInPercent": null,
+        "relativeNonRenewableEnergyProductionInPercent": null,
+        "renewableEnergyConsumptionInGWh": null,
+        "renewableEnergyProductionInGWh": null,
+        "totalHighImpactClimateSectorEnergyConsumptionInGWh": null
+      },
+      "greenhouseGasEmissions": {
+        "carbonFootprintInTonnesPerMillionEURRevenue": null,
+        "enterpriseValue": null,
+        "fossilFuelSectorExposure": {
+          "comment": "Carnival Corporation is not engaged in the fossil fuel sector, but operates cruise ships that currently use fossil fuels to operate their ships. However, it is noted that LNG (Liquefied Natural Gas) is considered the best available fuel for reducing greenhouse gas emissions. Ships built to operate on LNG can also be converted to use biogenic or synthetic forms of this energy source in the future.\n\nThere is no information that Carnival Corporation generates revenue from the exploration, extraction, production, distribution, or refining of fossil fuels, or finances or insures companies in this sector.",
+          "dataSource": {
+            "fileName": "Carnival_Corporation_plc_FY2023-Sustainability-Report.pdf",
+            "fileReference": "6465849c6c891cf0a8559473c458f36bdd7134347ac2e159e9f57ebc5718827e",
+            "page": "40",
+            "tagName": null
+          },
+          "quality": "Reported",
+          "value": "No"
+        },
+        "ghgIntensityInTonnesPerMillionEURRevenue": null,
+        "ghgIntensityScope1InTonnesPerMillionEURRevenue": null,
+        "ghgIntensityScope2InTonnesPerMillionEURRevenue": null,
+        "ghgIntensityScope3InTonnesPerMillionEURRevenue": null,
+        "ghgIntensityScope4InTonnesPerMillionEURRevenue": null,
+        "scope1And2And3GhgEmissionsInTonnes": null,
+        "scope1And2And3GhgEmissionsLocationBasedInTonnes": null,
+        "scope1And2And3GhgEmissionsMarketBasedInTonnes": null,
+        "scope1And2GhgEmissionsInTonnes": null,
+        "scope1And2GhgEmissionsLocationBasedInTonnes": null,
+        "scope1And2GhgEmissionsMarketBasedInTonnes": null,
+        "scope1GhgEmissionsInTonnes": null,
+        "scope2GhgEmissionsInTonnes": null,
+        "scope2GhgEmissionsLocationBasedInTonnes": null,
+        "scope2GhgEmissionsMarketBasedInTonnes": null,
+        "scope3DownstreamGhgEmissionsInTonnes": null,
+        "scope3GhgEmissionsInTonnes": null,
+        "scope3UpstreamGhgEmissionsInTonnes": null,
+        "totalRevenue": {
+          "comment": "The total revenue for the fiscal year 2023 amounts to 21,593 million USD. This revenue consists of passenger ticket revenue of 14,067 million USD and revenue from onboard and other services of 7,526 million USD.",
+          "currency": "USD",
+          "dataSource": {
+            "fileName": "Carnival Corporation & plc 2023 Annual Report-2.pdf",
+            "fileReference": "98686a468ec743faab4ff1fdfa93d37978a827a5d2e4f667623662bd7bcea834",
+            "page": "5",
+            "tagName": null
+          },
+          "quality": "Reported",
+          "value": 21593000000
+        }
+      },
+      "waste": {
+        "hazardousAndRadioactiveWasteInTonnes": null,
+        "nonRecycledWasteInTonnes": null
+      },
+      "water": {
+        "emissionsToWaterInTonnes": null,
+        "highWaterStressAreaExposure": {
+          "comment": "",
+          "dataSource": null,
+          "quality": "NoDataFound",
+          "value": null
+        },
+        "relativeWaterUsageInCubicMetersPerMillionEURRevenue": null,
+        "waterConsumptionInCubicMeters": {
+          "comment": "The amount of water consumed in the last completed fiscal year is 51 gallons per person per day. With 12.5 million passengers and 91.4 million Passenger Cruise Days (PCDs), this results in a total water consumption of approximately 4.7 billion gallons. Converted to liters, this is roughly equivalent to 17.8 billion liters.\n\nThe source of this information is: \"Carnival_Corporation_plc_FY2023-Sustainability-Report.pdf\", page 47.",
+          "dataSource": {
+            "fileName": "Carnival_Corporation_plc_FY2023-Sustainability-Report.pdf",
+            "fileReference": "6465849c6c891cf0a8559473c458f36bdd7134347ac2e159e9f57ebc5718827e",
+            "page": "47",
+            "tagName": null
+          },
+          "quality": "Estimated",
+          "value": 17800000000
+        },
+        "waterManagementPolicy": {
+          "comment": "Yes, the company has guidelines and procedures for water management. These can be found in the document on page 47.",
+          "dataSource": {
+            "fileName": "Carnival_Corporation_plc_FY2023-Sustainability-Report.pdf",
+            "fileReference": "6465849c6c891cf0a8559473c458f36bdd7134347ac2e159e9f57ebc5718827e",
+            "page": "47",
+            "tagName": null
+          },
+          "quality": "Reported",
+          "value": "Yes"
+        },
+        "waterReusedInCubicMeters": {
+          "comment": "The company produces approximately 88% of the water used on board from seawater through desalination and reverse osmosis. The remaining 12% is purchased in ports or from water providers in the visited ports. It is aimed to cover at least 85% of the fresh water demand by themselves in the future as well. In 2023, about 7,000 tons of treated water were reused for irrigation.",
+          "dataSource": {
+            "fileName": "Carnival_Corporation_plc_FY2023-Sustainability-Report.pdf",
+            "fileReference": "6465849c6c891cf0a8559473c458f36bdd7134347ac2e159e9f57ebc5718827e",
+            "page": "61",
+            "tagName": null
+          },
+          "quality": "Reported",
+          "value": 7000
+        }
+      }
+    },
+    "general": {
+      "general": {
+        "dataDate": "2024-01-26",
+        "fiscalYearDeviation": "Deviation",
+        "fiscalYearEnd": "2023-11-30",
+        "referencedReports": {
+          "Carnival Corporation & plc 2023 Annual Report-2.pdf": {
+            "fileName": "Carnival Corporation & plc 2023 Annual Report-2.pdf",
+            "fileReference": "98686a468ec743faab4ff1fdfa93d37978a827a5d2e4f667623662bd7bcea834",
+            "publicationDate": null
+          },
+          "Carnival Corporation and plc Human Rights Policy.pdf": {
+            "fileName": "Carnival Corporation and plc Human Rights Policy.pdf",
+            "fileReference": "f09737c7c134708941c76dae172bf0bf6554e8500d4255858f2df4b742ff7d41",
+            "publicationDate": null
+          },
+          "Carnival Employee Code of Conduct.pdf": {
+            "fileName": "Carnival Employee Code of Conduct.pdf",
+            "fileReference": "c5d9e6e2639da85698fcc22040c9105a286fe103ed1538c1ebf0dd06477ab1de",
+            "publicationDate": null
+          },
+          "Carnival_Corporation_plc_FY2023-Sustainability-Report.pdf": {
+            "fileName": "Carnival_Corporation_plc_FY2023-Sustainability-Report.pdf",
+            "fileReference": "6465849c6c891cf0a8559473c458f36bdd7134347ac2e159e9f57ebc5718827e",
+            "publicationDate": null
+          },
+          "Modern Slavery Statement FY 2023 (1).pdf": {
+            "fileName": "Modern Slavery Statement FY 2023 (1).pdf",
+            "fileReference": "c9fdb1e090329c7506a42b1f4ddc61fd5b2c274a0fa0226fef0d84d6bab8388d",
+            "publicationDate": null
+          }
+        }
+      }
+    },
+    "social": {
+      "antiCorruptionAndAntiBribery": {
+        "casesOfInsufficientActionAgainstBriberyAndCorruption": null,
+        "reportedConvictionsOfBriberyAndCorruption": null,
+        "totalAmountOfReportedFinesOfBriberyAndCorruption": null
+      },
+      "greenSecurities": {
+        "securitiesNotCertifiedAsGreen": {
+          "comment": "",
+          "dataSource": null,
+          "quality": "NoDataFound",
+          "value": null
+        }
+      },
+      "humanRights": {
+        "humanRightsDueDiligence": {
+          "comment": "Yes, there are due diligence processes to identify, prevent, mitigate, and address negative impacts on human rights. Carnival Corporation & plc has implemented a comprehensive set of policies and procedures that demonstrate commitment to human rights and ethical behavior. These include:\n\n- Reviewing and updating the company-wide human rights policy in 2023 to ensure ongoing alignment with regulatory developments and internationally recognized best practices.\n- Publishing an annual statement on modern slavery that describes the commitment and approach to preventing modern slavery and human trafficking in the supply chain and within business operations.\n- Implementing a Business Partner Code of Conduct that must be contractually adhered to by all business partners and their supply chain partners to ensure compliance with all applicable laws and regulations and promote ethical decision-making.\n\nThese measures are monitored by the boards and respective leadership teams of the operating companies.",
+          "dataSource": {
+            "fileName": "Carnival Corporation and plc Human Rights Policy.pdf",
+            "fileReference": "f09737c7c134708941c76dae172bf0bf6554e8500d4255858f2df4b742ff7d41",
+            "page": "1",
+            "tagName": null
+          },
+          "quality": "Reported",
+          "value": "Yes"
+        },
+        "humanRightsPolicy": {
+          "comment": "Yes, the company has a publicly available human rights policy statement. This statement is included in the \"Modern Slavery Statement\" which describes the company's commitment and approach to preventing modern slavery and human trafficking.\n\nThe information can be found in the document \"Carnival_Corporation_plc_FY2023-Sustainability-Report.pdf\" on page 29.",
+          "dataSource": {
+            "fileName": "Carnival_Corporation_plc_FY2023-Sustainability-Report.pdf",
+            "fileReference": "6465849c6c891cf0a8559473c458f36bdd7134347ac2e159e9f57ebc5718827e",
+            "page": "29",
+            "tagName": null
+          },
+          "quality": "Reported",
+          "value": "Yes"
+        },
+        "numberOfReportedIncidentsOfHumanRightsViolations": null,
+        "reportedChildLabourIncidents": {
+          "comment": "",
+          "dataSource": null,
+          "quality": "NoDataFound",
+          "value": null
+        },
+        "reportedForcedOrCompulsoryLabourIncidents": {
+          "comment": "There were no complaints related to forced or compulsory labor practices or concerns within our own operations or supply chain during the reporting period.",
+          "dataSource": {
+            "fileName": "Carnival Corporation and plc Human Rights Policy.pdf",
+            "fileReference": "f09737c7c134708941c76dae172bf0bf6554e8500d4255858f2df4b742ff7d41",
+            "page": "5",
+            "tagName": null
+          },
+          "quality": "Reported",
+          "value": "No"
+        },
+        "traffickingInHumanBeingsPolicy": {
+          "comment": "Yes, there is a guideline against human trafficking. The relevant source is the document \"Modern Slavery Statement FY 2023 (1).pdf\", page 1.",
+          "dataSource": {
+            "fileName": "Modern Slavery Statement FY 2023 (1).pdf",
+            "fileReference": "c9fdb1e090329c7506a42b1f4ddc61fd5b2c274a0fa0226fef0d84d6bab8388d",
+            "page": "1",
+            "tagName": null
+          },
+          "quality": "Reported",
+          "value": "Yes"
+        }
+      },
+      "socialAndEmployeeMatters": {
+        "averageGrossHourlyEarningsFemaleEmployees": null,
+        "averageGrossHourlyEarningsMaleEmployees": null,
+        "boardGenderDiversityBoardOfDirectorsInPercent": null,
+        "boardGenderDiversitySupervisoryBoardInPercent": null,
+        "ceoToEmployeePayGapRatio": null,
+        "controversialWeaponsExposure": {
+          "comment": "",
+          "dataSource": null,
+          "quality": "NoDataFound",
+          "value": null
+        },
+        "corruptionLegalProceedings": {
+          "comment": "",
+          "dataSource": null,
+          "quality": "NoDataFound",
+          "value": null
+        },
+        "environmentalPolicy": {
+          "comment": "Yes, there is an environmental policy. Information about it can be found in the document \"Carnival_Corporation_plc_FY2023-Sustainability-Report.pdf\" on page 45.",
+          "dataSource": {
+            "fileName": "Carnival_Corporation_plc_FY2023-Sustainability-Report.pdf",
+            "fileReference": "6465849c6c891cf0a8559473c458f36bdd7134347ac2e159e9f57ebc5718827e",
+            "page": "45",
+            "tagName": null
+          },
+          "quality": "Reported",
+          "value": "Yes"
+        },
+        "excessiveCeoPayRatioInPercent": null,
+        "fairBusinessMarketingAdvertisingPolicy": {
+          "comment": "Yes, guidelines and procedures have been introduced to implement fair business, marketing, and advertising practices as well as to ensure the safety and quality of goods and services. This information can be found in the document \"Carnival Corporation and plc Human Rights Policy.pdf\" on page 4.",
+          "dataSource": {
+            "fileName": "Carnival Corporation and plc Human Rights Policy.pdf",
+            "fileReference": "f09737c7c134708941c76dae172bf0bf6554e8500d4255858f2df4b742ff7d41",
+            "page": "4",
+            "tagName": null
+          },
+          "quality": "Reported",
+          "value": "Yes"
+        },
+        "fairCompetitionPolicy": {
+          "comment": "Yes, there are guidelines and procedures related to fair competition and anticompetitive cartels. The information can be found in the document \"Carnival Employee Code of Conduct.pdf\" on page 25. It emphasizes that the company is committed to complying with all laws that promote fair and healthy competition, and that violations of these laws can have serious consequences.",
+          "dataSource": {
+            "fileName": "Carnival Employee Code of Conduct.pdf",
+            "fileReference": "c5d9e6e2639da85698fcc22040c9105a286fe103ed1538c1ebf0dd06477ab1de",
+            "page": "25",
+            "tagName": null
+          },
+          "quality": "Reported",
+          "value": "Yes"
+        },
+        "femaleBoardMembersBoardOfDirectors": null,
+        "femaleBoardMembersSupervisoryBoard": null,
+        "grievanceHandlingMechanism": {
+          "comment": "Yes, there is a mechanism for handling complaints regarding employee matters. Carnival Corporation has established several avenues through which all team members can safely report complaints or non-compliance issues without fear of retaliation. These include reporting directly to supervisors, the HR department, or upper management. There is an internal incident reporting system that requires reporting of spills, releases, or discharges. Additionally, a whistleblower system has been established, which includes a hotline and website that are available 24 hours a day. The hotline is monitored by an independent third party.",
+          "dataSource": {
+            "fileName": "Carnival_Corporation_plc_FY2023-Sustainability-Report.pdf",
+            "fileReference": "6465849c6c891cf0a8559473c458f36bdd7134347ac2e159e9f57ebc5718827e",
+            "page": "28",
+            "tagName": null
+          },
+          "quality": "Reported",
+          "value": "Yes"
+        },
+        "humanRightsDueDiligencePolicy": {
+          "comment": "Yes, guidelines have been introduced to support human rights and exercise due diligence. The guidelines include, among other things, the \"Business Partner Code of Conduct and Ethics\", the \"Human Rights Policy\" and the \"Modern Slavery Statement\". These documents are part of a comprehensive set of guidelines and procedures designed to ensure that business activities do not have negative impacts on human rights.",
+          "dataSource": {
+            "fileName": "Carnival Corporation and plc Human Rights Policy.pdf",
+            "fileReference": "f09737c7c134708941c76dae172bf0bf6554e8500d4255858f2df4b742ff7d41",
+            "page": "1",
+            "tagName": null
+          },
+          "quality": "Reported",
+          "value": "Yes"
+        },
+        "humanRightsLegalProceedings": {
+          "comment": "",
+          "dataSource": null,
+          "quality": "NoDataFound",
+          "value": null
+        },
+        "iloCoreLabourStandards": {
+          "comment": "Carnival Corporation adheres to the core labor standards of the International Labour Organization (ILO). The company meets the requirements of the ILO, which develop and monitor international labor standards. These standards include the definition of a seafarer, the minimum age of seafarers, medical certificates, recruitment practices, training, repatriation, provisions, recreational facilities, health and welfare, hours of work and rest, accommodation, as well as wages and benefits.\n\nThe information is taken from the document \"Carnival_Corporation_plc_FY2023-Sustainability-Report.pdf,\" Page 66.",
+          "dataSource": {
+            "fileName": "Carnival_Corporation_plc_FY2023-Sustainability-Report.pdf",
+            "fileReference": "6465849c6c891cf0a8559473c458f36bdd7134347ac2e159e9f57ebc5718827e",
+            "page": "66",
+            "tagName": null
+          },
+          "quality": "Reported",
+          "value": "Yes"
+        },
+        "iso14001Certificate": {
+          "comment": "'Carnival Corporation is certified according to ISO 14001. Further information can be found in the document \"Carnival_Corporation_plc_FY2023-Sustainability-Report.pdf\" on page 45. No information about a specific certificate is available.'",
+          "dataSource": {
+            "fileName": "Carnival_Corporation_plc_FY2023-Sustainability-Report.pdf",
+            "fileReference": "6465849c6c891cf0a8559473c458f36bdd7134347ac2e159e9f57ebc5718827e",
+            "page": "45",
+            "tagName": null
+          },
+          "quality": "Incomplete",
+          "value": "Yes"
+        },
+        "maleBoardMembersBoardOfDirectors": null,
+        "maleBoardMembersSupervisoryBoard": null,
+        "oecdGuidelinesForMultinationalEnterprisesGrievanceHandling": {
+          "comment": "Carnival Corporation has established several mechanisms for addressing complaints and grievances in order to address violations of the UNGC principles or the OECD Guidelines for Multinational Enterprises. These include:\n\n1. A comprehensive internal complaints management system that allows for the reporting of incidents and complaints.\n2. A whistleblower hotline that is available 24/7 and monitored by an independent third party. This hotline allows team members and external stakeholders to report violations anonymously.\n3. The ability to direct complaints directly to supervisors or the HR department without fear of retaliation.\n\nThe hotline was used by 1,597 callers in 2023, with the reports categorized into different categories. It is emphasized that the number of reports is an indicator of openness and trust within the company.",
+          "dataSource": {
+            "fileName": "Carnival_Corporation_plc_FY2023-Sustainability-Report.pdf",
+            "fileReference": "6465849c6c891cf0a8559473c458f36bdd7134347ac2e159e9f57ebc5718827e",
+            "page": null,
+            "tagName": null
+          },
+          "quality": "Reported",
+          "value": "Yes"
+        },
+        "policyAgainstBriberyAndCorruption": {
+          "comment": "Yes, there is a policy against corruption and bribery that aligns with the United Nations Convention against Corruption. The source is the document \"Carnival Employee Code of Conduct.pdf\", page 30.",
+          "dataSource": {
+            "fileName": "Carnival Employee Code of Conduct.pdf",
+            "fileReference": "c5d9e6e2639da85698fcc22040c9105a286fe103ed1538c1ebf0dd06477ab1de",
+            "page": "30",
+            "tagName": null
+          },
+          "quality": "Reported",
+          "value": "Yes"
+        },
+        "policyAgainstChildLabour": {
+          "comment": "Yes, guidelines have been introduced to eliminate all forms of child labor. These guidelines are described in the \"Modern Slavery Statement FY 2023 (1).pdf\" on page 5.",
+          "dataSource": {
+            "fileName": "Modern Slavery Statement FY 2023 (1).pdf",
+            "fileReference": "c9fdb1e090329c7506a42b1f4ddc61fd5b2c274a0fa0226fef0d84d6bab8388d",
+            "page": "5",
+            "tagName": null
+          },
+          "quality": "Reported",
+          "value": "Yes"
+        },
+        "policyAgainstDiscriminationInTheWorkplace": {
+          "comment": "Yes, guidelines were introduced to eliminate discrimination in the workplace. These guidelines are documented in the \"Carnival Corporation and plc Human Rights Policy.pdf\" on page 1 and in the \"Carnival Employee Code of Conduct.pdf\" on page 16.",
+          "dataSource": {
+            "fileName": "Carnival Corporation and plc Human Rights Policy.pdf",
+            "fileReference": "f09737c7c134708941c76dae172bf0bf6554e8500d4255858f2df4b742ff7d41",
+            "page": "1",
+            "tagName": null
+          },
+          "quality": "Reported",
+          "value": "Yes"
+        },
+        "policyAgainstForcedLabour": {
+          "comment": "Yes, guidelines have been introduced to abolish all forms of forced labor. These guidelines are part of a comprehensive set of policies and procedures that demonstrate a commitment to human rights and ethical behavior. The guidelines include a clear commitment to avoiding forced labor, child labor, and human trafficking in the supply chain.\n\nThe source of this information is the document \"Modern Slavery Statement FY 2023 (1).pdf\", page 5.",
+          "dataSource": {
+            "fileName": "Modern Slavery Statement FY 2023 (1).pdf",
+            "fileReference": "c9fdb1e090329c7506a42b1f4ddc61fd5b2c274a0fa0226fef0d84d6bab8388d",
+            "page": "5",
+            "tagName": null
+          },
+          "quality": "Reported",
+          "value": "Yes"
+        },
+        "rateOfAccidentsInPercent": null,
+        "reportedIncidentsOfDiscrimination": null,
+        "sanctionedIncidentsOfDiscrimination": null,
+        "supplierCodeOfConduct": {
+          "comment": "Yes, there is a Supplier Code of Conduct called \"Business Partner Code of Conduct\". This code sets out the expectations for business partners to comply with all applicable laws and regulations and to promote ethical decision-making in all aspects of their business.",
+          "dataSource": {
+            "fileName": "Carnival Corporation and plc Human Rights Policy.pdf",
+            "fileReference": "f09737c7c134708941c76dae172bf0bf6554e8500d4255858f2df4b742ff7d41",
+            "page": "4",
+            "tagName": null
+          },
+          "quality": "Incomplete",
+          "value": "Yes"
+        },
+        "technologiesExpertiseTransferPolicy": {
+          "comment": "",
+          "dataSource": null,
+          "quality": "NoDataFound",
+          "value": null
+        },
+        "transparencyDisclosurePolicy": {
+          "comment": "'Carnival Corporation has a transparency policy that was developed in accordance with various standards and frameworks. Information on transparency and the corresponding reports can be found in the document \"Carnival_Corporation_plc_FY2023-Sustainability-Report.pdf\" on page 12.'",
+          "dataSource": {
+            "fileName": "Carnival_Corporation_plc_FY2023-Sustainability-Report.pdf",
+            "fileReference": "6465849c6c891cf0a8559473c458f36bdd7134347ac2e159e9f57ebc5718827e",
+            "page": "12",
+            "tagName": null
+          },
+          "quality": "Reported",
+          "value": "Yes"
+        },
+        "unGlobalCompactPrinciplesCompliancePolicy": {
+          "comment": "",
+          "dataSource": null,
+          "quality": "NoDataFound",
+          "value": null
+        },
+        "unadjustedGenderPayGapInPercent": null,
+        "violationOfTaxRulesAndRegulation": {
+          "comment": "",
+          "dataSource": null,
+          "quality": "NoDataFound",
+          "value": null
+        },
+        "whistleblowerProtectionPolicy": {
+          "comment": "Yes, there is a policy for the protection of whistleblowers. The source is the document \"Carnival Corporation and plc Human Rights Policy.pdf\", page 5.",
+          "dataSource": {
+            "fileName": "Carnival Corporation and plc Human Rights Policy.pdf",
+            "fileReference": "f09737c7c134708941c76dae172bf0bf6554e8500d4255858f2df4b742ff7d41",
+            "page": "5",
+            "tagName": null
+          },
+          "quality": "Reported",
+          "value": "Yes"
+        },
+        "workdaysLostInDays": null,
+        "workplaceAccidentPreventionPolicy": {
+          "comment": "Yes, there is an accident prevention policy in the workplace. This is part of the \"Carnival Corporation Code of Business Conduct and Ethics\". The relevant information can be found on page 16.",
+          "dataSource": {
+            "fileName": "Carnival Employee Code of Conduct.pdf",
+            "fileReference": "c5d9e6e2639da85698fcc22040c9105a286fe103ed1538c1ebf0dd06477ab1de",
+            "page": "16",
+            "tagName": null
+          },
+          "quality": "Reported",
+          "value": "Yes"
+        }
+      }
+    }
+  },
+  "reportingPeriod": "2023"
+}

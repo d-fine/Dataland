@@ -1,0 +1,225 @@
+{
+  "companyId": "dc2f5707-ad14-4686-9a24-b74bec0ce230",
+  "data": {
+    "capex": {
+      "alignedActivities": null,
+      "alignedShare": null,
+      "eligibleShare": {
+        "absoluteShare": {
+          "comment": null,
+          "currency": "EUR",
+          "dataSource": null,
+          "quality": null,
+          "value": null
+        },
+        "relativeShareInPercent": {
+          "comment": null,
+          "dataSource": null,
+          "quality": null,
+          "value": 45.4
+        }
+      },
+      "enablingShareInPercent": null,
+      "nonAlignedActivities": null,
+      "nonAlignedShare": null,
+      "nonEligibleShare": null,
+      "substantialContributionToClimateChangeAdaptationInPercentAligned": null,
+      "substantialContributionToClimateChangeAdaptationInPercentEligible": null,
+      "substantialContributionToClimateChangeAdaptationInPercentEnablingShare": null,
+      "substantialContributionToClimateChangeAdaptationInPercentOfWhichUseOfProceeds": null,
+      "substantialContributionToClimateChangeMitigationInPercentAligned": null,
+      "substantialContributionToClimateChangeMitigationInPercentEligible": null,
+      "substantialContributionToClimateChangeMitigationInPercentEnablingShare": null,
+      "substantialContributionToClimateChangeMitigationInPercentOfWhichUseOfProceeds": null,
+      "substantialContributionToClimateChangeMitigationInPercentTransitionalShare": null,
+      "substantialContributionToPollutionPreventionAndControlInPercentAligned": null,
+      "substantialContributionToPollutionPreventionAndControlInPercentEligible": null,
+      "substantialContributionToPollutionPreventionAndControlInPercentEnablingShare": null,
+      "substantialContributionToPollutionPreventionAndControlInPercentOfWhichUseOfProceeds": null,
+      "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned": null,
+      "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentEligible": null,
+      "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentEnablingShare": null,
+      "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentOfWhichUseOfProceeds": null,
+      "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned": null,
+      "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentEligible": null,
+      "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentEnablingShare": null,
+      "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentOfWhichUseOfProceeds": null,
+      "substantialContributionToTransitionToACircularEconomyInPercentAligned": null,
+      "substantialContributionToTransitionToACircularEconomyInPercentEligible": null,
+      "substantialContributionToTransitionToACircularEconomyInPercentEnablingShare": null,
+      "substantialContributionToTransitionToACircularEconomyInPercentOfWhichUseOfProceeds": null,
+      "totalAmount": {
+        "comment": null,
+        "currency": "EUR",
+        "dataSource": {
+          "fileName": "Sustainability Report",
+          "fileReference": "51bb345307233940b26ede18196ef71582029027eb7a17881807e7828f7853f3",
+          "page": 14,
+          "tagName": null
+        },
+        "quality": "Audited",
+        "value": 108300000
+      },
+      "transitionalShareInPercent": null
+    },
+    "general": {
+      "assurance": {
+        "dataSource": {
+          "fileName": "Sustainability Report",
+          "fileReference": "51bb345307233940b26ede18196ef71582029027eb7a17881807e7828f7853f3",
+          "page": 96,
+          "tagName": null
+        },
+        "provider": "Dr. Axel Romanus and Robert Knopf",
+        "value": "LimitedAssurance"
+      },
+      "euTaxonomyActivityLevelReporting": {
+        "comment": null,
+        "dataSource": null,
+        "quality": null,
+        "value": "Yes"
+      },
+      "fiscalYearDeviation": {
+        "comment": null,
+        "dataSource": null,
+        "quality": null,
+        "value": "NoDeviation"
+      },
+      "fiscalYearEnd": {
+        "comment": null,
+        "dataSource": null,
+        "quality": null,
+        "value": "2021-12-31"
+      },
+      "nfrdMandatory": {
+        "comment": null,
+        "dataSource": null,
+        "quality": null,
+        "value": "Yes"
+      },
+      "numberOfEmployees": {
+        "comment": null,
+        "dataSource": null,
+        "quality": null,
+        "value": 1638
+      },
+      "referencedReports": {
+        "Annual Report": {
+          "fileName": "Annual Report",
+          "fileReference": "425e040170bda1eda9b6066f4d1dd661a6aba45dcf10cc9c7d17c1be8f5a993c",
+          "publicationDate": null
+        },
+        "Sustainability Report": {
+          "fileName": "Sustainability Report",
+          "fileReference": "51bb345307233940b26ede18196ef71582029027eb7a17881807e7828f7853f3",
+          "publicationDate": null
+        }
+      },
+      "scopeOfEntities": null
+    },
+    "opex": {
+      "alignedActivities": null,
+      "alignedShare": null,
+      "eligibleShare": {
+        "absoluteShare": {
+          "comment": null,
+          "currency": "EUR",
+          "dataSource": null,
+          "quality": null,
+          "value": null
+        },
+        "relativeShareInPercent": {
+          "comment": null,
+          "dataSource": null,
+          "quality": null,
+          "value": 68.4
+        }
+      },
+      "enablingShareInPercent": null,
+      "nonAlignedActivities": null,
+      "nonAlignedShare": null,
+      "nonEligibleShare": null,
+      "substantialContributionToClimateChangeAdaptationInPercentAligned": null,
+      "substantialContributionToClimateChangeMitigationInPercentAligned": null,
+      "substantialContributionToPollutionPreventionAndControlInPercentAligned": null,
+      "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned": null,
+      "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned": null,
+      "substantialContributionToTransitionToACircularEconomyInPercentAligned": null,
+      "totalAmount": {
+        "comment": null,
+        "currency": "EUR",
+        "dataSource": {
+          "fileName": "Sustainability Report",
+          "fileReference": "51bb345307233940b26ede18196ef71582029027eb7a17881807e7828f7853f3",
+          "page": null,
+          "tagName": null
+        },
+        "quality": "Audited",
+        "value": 78900000
+      },
+      "transitionalShareInPercent": null
+    },
+    "revenue": {
+      "alignedActivities": null,
+      "alignedShare": null,
+      "eligibleShare": {
+        "absoluteShare": {
+          "comment": null,
+          "currency": "EUR",
+          "dataSource": null,
+          "quality": null,
+          "value": null
+        },
+        "relativeShareInPercent": {
+          "comment": null,
+          "dataSource": null,
+          "quality": null,
+          "value": 3.8
+        }
+      },
+      "enablingShareInPercent": null,
+      "nonAlignedActivities": null,
+      "nonAlignedShare": null,
+      "nonEligibleShare": null,
+      "substantialContributionToClimateChangeAdaptationInPercentAligned": null,
+      "substantialContributionToClimateChangeAdaptationInPercentEligible": null,
+      "substantialContributionToClimateChangeAdaptationInPercentEnablingShare": null,
+      "substantialContributionToClimateChangeAdaptationInPercentOfWhichUseOfProceeds": null,
+      "substantialContributionToClimateChangeMitigationInPercentAligned": null,
+      "substantialContributionToClimateChangeMitigationInPercentEligible": null,
+      "substantialContributionToClimateChangeMitigationInPercentEnablingShare": null,
+      "substantialContributionToClimateChangeMitigationInPercentOfWhichUseOfProceeds": null,
+      "substantialContributionToClimateChangeMitigationInPercentTransitionalShare": null,
+      "substantialContributionToPollutionPreventionAndControlInPercentAligned": null,
+      "substantialContributionToPollutionPreventionAndControlInPercentEligible": null,
+      "substantialContributionToPollutionPreventionAndControlInPercentEnablingShare": null,
+      "substantialContributionToPollutionPreventionAndControlInPercentOfWhichUseOfProceeds": null,
+      "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned": null,
+      "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentEligible": null,
+      "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentEnablingShare": null,
+      "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentOfWhichUseOfProceeds": null,
+      "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned": null,
+      "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentEligible": null,
+      "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentEnablingShare": null,
+      "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentOfWhichUseOfProceeds": null,
+      "substantialContributionToTransitionToACircularEconomyInPercentAligned": null,
+      "substantialContributionToTransitionToACircularEconomyInPercentEligible": null,
+      "substantialContributionToTransitionToACircularEconomyInPercentEnablingShare": null,
+      "substantialContributionToTransitionToACircularEconomyInPercentOfWhichUseOfProceeds": null,
+      "totalAmount": {
+        "comment": null,
+        "currency": "EUR",
+        "dataSource": {
+          "fileName": "Annual Report",
+          "fileReference": "425e040170bda1eda9b6066f4d1dd661a6aba45dcf10cc9c7d17c1be8f5a993c",
+          "page": 2,
+          "tagName": null
+        },
+        "quality": "Audited",
+        "value": 6300700000
+      },
+      "transitionalShareInPercent": null
+    }
+  },
+  "reportingPeriod": "2021"
+}
