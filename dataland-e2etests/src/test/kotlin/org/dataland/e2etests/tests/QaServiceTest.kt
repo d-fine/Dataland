@@ -23,6 +23,7 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
 import org.junit.jupiter.api.assertDoesNotThrow
 import org.junit.jupiter.api.assertThrows
+import org.slf4j.LoggerFactory
 import java.time.Instant
 import java.util.*
 import java.util.concurrent.TimeUnit
@@ -156,22 +157,28 @@ class QaServiceTest {
     fun `check that the review queue is correctly ordered`() {
         var expectedDataIdsInReviewQueue = emptyList<String>()
 
+        val logger = LoggerFactory.getLogger(QaServiceTest::class.java)
+
         withTechnicalUser(TechnicalUser.Uploader) {
             expectedDataIdsInReviewQueue = (1..5).map {
-                Thread.sleep(5000) // TODO debugging
                 val nextDataId =
                     dataController.postCompanyAssociatedEutaxonomyNonFinancialsData(dummyEuTaxoDataAlpha, false).dataId
-                println("+++FOR LOOP: " + nextDataId) // TODO debugging
+                withTechnicalUser(TechnicalUser.Admin) {
+                    await().atMost(2, TimeUnit.SECONDS).until {
+                        getInfoOnUnreviewedDatasets().last().dataId == nextDataId
+                    }
+                }
+                logger.info("+++FOR LOOP: " + nextDataId) // TODO debugging
                 nextDataId
             }
         }
-        println("+++EXPECTED DATA IDS: ") // TODO debugging
-        println(expectedDataIdsInReviewQueue) // TODO debugging
+        logger.info("+++EXPECTED DATA IDS: ") // TODO debugging
+        logger.info(expectedDataIdsInReviewQueue.toString()) // TODO debugging
 
         withTechnicalUser(TechnicalUser.Reviewer) {
             val actualDataIdsInReviewQueue = getInfoOnUnreviewedDatasets().map { it.dataId }
-            println("+++ACTUAL DATA IDS: ") // TODO debugging
-            println(actualDataIdsInReviewQueue) // TODO debugging
+            logger.info("+++ACTUAL DATA IDS: ") // TODO debugging
+            logger.info(actualDataIdsInReviewQueue.toString()) // TODO debugging
             assertEquals(expectedDataIdsInReviewQueue, actualDataIdsInReviewQueue)
         }
     }
