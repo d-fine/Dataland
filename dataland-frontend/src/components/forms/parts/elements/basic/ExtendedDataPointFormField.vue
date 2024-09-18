@@ -5,7 +5,7 @@
         <InputSwitch
           data-test="dataPointToggleButton"
           inputId="dataPointIsAvailableSwitch"
-          @click="dataPointAvailableToggle"
+          @click="handleToggleClick"
           v-model="dataPointIsAvailable"
         />
         <UploadFormHeader :label="label" :description="description" :is-required="required" />
@@ -70,18 +70,19 @@
                 input-class="w-12"
               />
             </div>
-            <div class="col-4">
-              <UploadFormHeader :label="'Page'" :description="'Page where information was found'" />
+            <div v-if="isValidFileName(isMounted, currentReportValue)" class="col-4">
+              <UploadFormHeader :label="'Page(s)'" :description="pageNumberDescription" />
               <FormKit
                 outer-class="w-100"
-                type="number"
+                type="text"
                 name="page"
-                placeholder="Page"
+                placeholder="Page(s)"
                 v-model="pageForFileReference"
-                validation-label="Page"
-                step="1"
-                min="0"
-                validation="min:0"
+                :validation-messages="{
+                  validatePageNumber: pageNumberValidationErrorMessage,
+                }"
+                :validation-rules="{ validatePageNumber }"
+                validation="validatePageNumber"
                 ignore="true"
               />
             </div>
@@ -89,7 +90,13 @@
             <FormKit v-if="isValidFileName(isMounted, currentReportValue)" type="group" name="dataSource">
               <FormKit type="hidden" name="fileName" v-model="currentReportValue" />
               <FormKit type="hidden" name="fileReference" :modelValue="fileReferenceAccordingToName" />
-              <FormKit type="hidden" name="page" v-model="pageForFileReference" />
+              <FormKit
+                type="hidden"
+                name="page"
+                :validation-rules="{ validatePageNumber }"
+                validation="validatePageNumber"
+                v-model="filteredPageForFileReference"
+              />
             </FormKit>
           </div>
 
@@ -123,13 +130,14 @@
 
 <script lang="ts">
 import { defineComponent, nextTick } from 'vue';
+import { PAGE_NUMBER_VALIDATION_ERROR_MESSAGE, validatePageNumber } from '@/utils/ValidationUtils';
 import InputSwitch from 'primevue/inputswitch';
 import UploadFormHeader from '@/components/forms/parts/elements/basic/UploadFormHeader.vue';
 import { FormKit } from '@formkit/vue';
 import { QualityOptions } from '@clients/backend';
 import { FormFieldPropsWithPlaceholder } from '@/components/forms/parts/fields/FormFieldProps';
 import { type ObjectType } from '@/utils/UpdateObjectUtils';
-import { getFileName, getFileReferenceByFileName } from '@/utils/FileUploadUtils';
+import { getAvailableFileNames, getFileReferenceByFileName, PAGE_NUMBER_DESCRIPTION } from '@/utils/FileUploadUtils';
 import { disabledOnMoreThanOne } from '@/utils/FormKitPlugins';
 import { type ExtendedDataPoint } from '@/utils/DataPoint';
 import { isValidFileName, noReportLabel } from '@/utils/DataSource';
@@ -152,6 +160,8 @@ export default defineComponent({
   },
   data() {
     return {
+      pageNumberDescription: PAGE_NUMBER_DESCRIPTION,
+      pageNumberValidationErrorMessage: PAGE_NUMBER_VALIDATION_ERROR_MESSAGE,
       isMounted: false,
       dataPointIsAvailable: (this.injectlistOfFilledKpis as unknown as Array<string>).includes(this.name as string),
       qualityOptions: Object.values(QualityOptions).map((qualityOption: string) => ({
@@ -160,9 +170,9 @@ export default defineComponent({
       })),
       qualityValue: null as null | string,
       commentValue: '',
-      currentReportValue: null as string | null,
+      currentReportValue: undefined as string | undefined,
       dataPoint: {} as ExtendedDataPoint<unknown>,
-      currentValue: null as string | null,
+      currentValue: undefined as string | undefined,
       checkboxValue: [] as Array<string>,
       firstAssignmentWhileEditModeWasDone: false,
       pageForFileReference: undefined as string | undefined,
@@ -170,7 +180,7 @@ export default defineComponent({
     };
   },
   mounted() {
-    void nextTick(() => (this.isMounted = true));
+    nextTick(() => (this.isMounted = true));
   },
   computed: {
     showDataPointFields(): boolean {
@@ -180,7 +190,7 @@ export default defineComponent({
       return this.qualityOptions;
     },
     reportOptions(): DropdownOption[] {
-      const plainOptions = [noReportLabel, ...getFileName(this.injectReportsNameAndReferences as ObjectType)];
+      const plainOptions = [noReportLabel, ...getAvailableFileNames(this.injectReportsNameAndReferences as ObjectType)];
       return plainOptions.map((it) => ({ value: it, label: it }));
     },
     fileReferenceAccordingToName(): string {
@@ -188,6 +198,15 @@ export default defineComponent({
     },
     isYesNoVariant() {
       return Object.keys(this.options).length;
+    },
+    filteredPageForFileReference: {
+      get() {
+        return this.pageForFileReference === '' ? undefined : this.pageForFileReference;
+      },
+
+      set(newValue: undefined | string) {
+        this.pageForFileReference = newValue;
+      },
     },
   },
   props: {
@@ -216,6 +235,7 @@ export default defineComponent({
     },
   },
   methods: {
+    validatePageNumber,
     disabledOnMoreThanOne,
 
     /**
@@ -230,7 +250,7 @@ export default defineComponent({
     /**
      * Toggle dataPointIsAvailable variable value
      */
-    dataPointAvailableToggle(): void {
+    handleToggleClick(): void {
       this.dataPointIsAvailable = !this.dataPointIsAvailable;
     },
     /**
@@ -243,7 +263,7 @@ export default defineComponent({
         this.currentValue = checkboxValue[0];
       } else {
         this.dataPointIsAvailable = false;
-        this.currentValue = null;
+        this.currentValue = undefined;
         this.dataPoint = {};
       }
     },

@@ -1,4 +1,5 @@
 import { EuTaxonomyDataForFinancialsFinancialServicesTypesEnum } from '@clients/backend';
+import { PAGE_NUMBER_DESCRIPTION } from '@/utils/FileUploadUtils';
 
 export const euTaxonomyKPIsModel = {
   creditInstitutionKpis: [
@@ -179,7 +180,7 @@ export const euTaxonomyKpiInfoMappings = {
   currency: 'The 3-letter alpha code that represents the currency used in the report.',
 
   quality: 'The level of confidence associated to the value.',
-  page: 'The page number of the document from where the information was sourced.',
+  page: PAGE_NUMBER_DESCRIPTION,
   report: 'The report from where the information was sourced.',
   tagName: 'The name of the tag where the information is in the pdf.',
   comment: 'Free optional text',

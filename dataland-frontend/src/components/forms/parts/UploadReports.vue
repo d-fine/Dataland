@@ -82,7 +82,7 @@ import { type CompanyReport } from '@clients/backend';
 import { type ObjectType } from '@/utils/UpdateObjectUtils';
 import { REGEX_FOR_FILE_NAMES } from '@/utils/Constants';
 
-enum FileNameInvalidityReason {
+export enum FileNameInvalidityReason {
   Duplicate = 'Duplicate',
   ForbiddenCharacter = 'ForbiddenCharacter',
 }
