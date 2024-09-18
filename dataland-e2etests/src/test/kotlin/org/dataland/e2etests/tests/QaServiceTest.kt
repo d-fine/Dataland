@@ -33,8 +33,8 @@ class QaServiceTest {
     private val dataController = apiAccessor.dataControllerApiForEuTaxonomyNonFinancials
     private val qaServiceController = apiAccessor.qaServiceControllerApi
 
-    private lateinit var dummyEuTaxoData: CompanyAssociatedDataEutaxonomyNonFinancialsData
-    private lateinit var dummySfdrData: CompanyAssociatedDataSfdrData
+    private lateinit var dummyEuTaxoDataAlpha: CompanyAssociatedDataEutaxonomyNonFinancialsData
+    private lateinit var dummySfdrDataBeta: CompanyAssociatedDataSfdrData
     private lateinit var companyIdAlpha: String
     private lateinit var companyIdBeta: String
 
@@ -47,17 +47,18 @@ class QaServiceTest {
         companyIdAlpha = apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId
         val testDataEuTaxo =
             apiAccessor.testDataProviderForEuTaxonomyDataForNonFinancials.getTData(1).first()
-        dummyEuTaxoData = CompanyAssociatedDataEutaxonomyNonFinancialsData(companyIdAlpha, "2024", testDataEuTaxo)
+        dummyEuTaxoDataAlpha = CompanyAssociatedDataEutaxonomyNonFinancialsData(companyIdAlpha, "2024", testDataEuTaxo)
 
         val timestamp = Instant.now().toEpochMilli().toString()
         val companyInfoBeta = GeneralTestDataProvider().generateCompanyInformation("Beta-Company-$timestamp", null)
         val testDataSfdr = apiAccessor.testDataProviderForSfdrData.getTData(1).first()
         companyIdBeta = apiAccessor.companyDataControllerApi.postCompany(companyInfoBeta).companyId
-        dummySfdrData = CompanyAssociatedDataSfdrData(companyIdBeta, "2024", testDataSfdr)
+        dummySfdrDataBeta = CompanyAssociatedDataSfdrData(companyIdBeta, "2024", testDataSfdr)
     }
 
     @Test
     fun `post dummy data and accept it and check the qa status changes and check different users access permissions`() {
+        println("+++1")
         val dataId = uploadDatasetAndValidatePendingState()
         reviewDatasetAsReviewerAndAssertSuccess(dataId, QaServiceQaStatus.Accepted)
         awaitQaStatusChange(dataId, BackendQaStatus.Accepted)
@@ -69,6 +70,7 @@ class QaServiceTest {
 
     @Test
     fun `post dummy data and reject it and check the qa status changes and check different users access permissions`() {
+        println("+++2")
         val dataId = uploadDatasetAndValidatePendingState()
         reviewDatasetAsReviewerAndAssertSuccess(dataId, QaServiceQaStatus.Rejected)
         withTechnicalUser(TechnicalUser.Uploader) {
@@ -82,6 +84,7 @@ class QaServiceTest {
 
     @Test
     fun `post dummy data and check different users access permissions`() {
+        println("+++3")
         val dataId = uploadDatasetAndValidatePendingState()
         canUserSeeUploaderData(dataId, TechnicalUser.Reader, false)
         canUserSeeUploaderData(dataId, TechnicalUser.Uploader, true, true)
@@ -92,7 +95,7 @@ class QaServiceTest {
     private fun uploadDatasetAndValidatePendingState(user: TechnicalUser = TechnicalUser.Uploader): String {
         withTechnicalUser(user) {
             val dataId =
-                dataController.postCompanyAssociatedEutaxonomyNonFinancialsData(dummyEuTaxoData, false).dataId
+                dataController.postCompanyAssociatedEutaxonomyNonFinancialsData(dummyEuTaxoDataAlpha, false).dataId
             assertEquals(BackendQaStatus.Pending, apiAccessor.metaDataControllerApi.getDataMetaInfo(dataId).qaStatus)
             return dataId
         }
@@ -142,13 +145,14 @@ class QaServiceTest {
 
     @Test
     fun `check that the review queue is correctly ordered`() {
+        println("+++4")
         clearReviewQueue()
         var expectedDataIdsInReviewQueue = emptyList<String>()
 
         withTechnicalUser(TechnicalUser.Uploader) {
             val numberOfUploadedDatasets = 10
             expectedDataIdsInReviewQueue = (1..numberOfUploadedDatasets).map {
-                dataController.postCompanyAssociatedEutaxonomyNonFinancialsData(dummyEuTaxoData, false).dataId
+                dataController.postCompanyAssociatedEutaxonomyNonFinancialsData(dummyEuTaxoDataAlpha, false).dataId
             }
         }
 
@@ -169,6 +173,7 @@ class QaServiceTest {
 
     @Test
     fun `check that an already reviewed dataset can not be assigned a different qa status`() {
+        println("+++5")
         val dataId = uploadDatasetAndValidatePendingState()
         reviewDatasetAsReviewerAndAssertSuccess(dataId, QaServiceQaStatus.Accepted)
         awaitQaStatusChange(dataId, BackendQaStatus.Accepted)
@@ -184,6 +189,7 @@ class QaServiceTest {
 
     @Test
     fun `check the a data set with review history can only retrieved by admin reviewer and uploader of the data`() {
+        println("+++6")
         val dataId = uploadDatasetAndValidatePendingState()
         reviewDatasetAsReviewerAndAssertSuccess(dataId, QaServiceQaStatus.Accepted)
         awaitQaStatusChange(dataId, BackendQaStatus.Accepted)
@@ -220,16 +226,22 @@ class QaServiceTest {
 
     @Test
     fun `check that a reader can access the review history of the dataset they uploaded but an uploader cant`() {
+        println("+++7")
         val reader = TechnicalUser.Reader
         withTechnicalUser(TechnicalUser.Admin) {
             apiAccessor.companyRolesControllerApi.assignCompanyRole(
                 CompanyRole.CompanyOwner, UUID.fromString(companyIdAlpha), UUID.fromString(reader.technicalUserId),
             )
         }
+        println("checkpoint A")
 
         val dataId = uploadDatasetAndValidatePendingState(reader)
         reviewDatasetAsReviewerAndAssertSuccess(dataId, QaServiceQaStatus.Accepted)
+        println("checkpoint A-B")
+
         awaitQaStatusChange(dataId, BackendQaStatus.Accepted)
+
+        println("checkpoint B")
 
         withTechnicalUser(reader) {
             val reviewInformationResponse = apiAccessor.qaServiceControllerApi.getDatasetById(UUID.fromString(dataId))
@@ -253,6 +265,7 @@ class QaServiceTest {
 
     @Test
     fun `check that content of the review queue can be retrieved after a pending dataset was deleted`() {
+        println("+++8")
         val dataIdAlpha = uploadDatasetAndValidatePendingState()
         val dataIdBeta = uploadDatasetAndValidatePendingState()
         withTechnicalUser(TechnicalUser.Admin) {
@@ -273,10 +286,11 @@ class QaServiceTest {
 
     @Test
     fun `check that filtering works as expected when retrieving meta info on unreviewed datasets`() {
+        println("+++9")
         clearReviewQueue()
 
-        val datasetAlpha = dummyEuTaxoData.copy(reportingPeriod = "abcdefgh-1")
-        val datasetBeta = dummySfdrData.copy(reportingPeriod = "abcdefgh-2")
+        val datasetAlpha = dummyEuTaxoDataAlpha.copy(reportingPeriod = "abcdefgh-1")
+        val datasetBeta = dummySfdrDataBeta.copy(reportingPeriod = "abcdefgh-2")
 
         withTechnicalUser(TechnicalUser.Admin) {
             val dataIdAlpha = apiAccessor.dataControllerApiForEuTaxonomyNonFinancials
@@ -286,7 +300,8 @@ class QaServiceTest {
 
             await().atMost(2, TimeUnit.SECONDS).until {
                 qaServiceController.getInfoOnUnreviewedDatasets(reportingPeriod = setOf("abcdefgh-1"))
-                    .map { it.dataId }.first() == dataIdAlpha
+                    .map { it.dataId }.first() == dataIdAlpha &&
+                    qaServiceController.getNumberOfUnreviewedDatasets(reportingPeriod = setOf("abcdefgh-1")) == 1
             }
             await().atMost(2, TimeUnit.SECONDS).until {
                 qaServiceController.getInfoOnUnreviewedDatasets(
@@ -294,14 +309,22 @@ class QaServiceTest {
                         QaControllerApi.DataTypeGetInfoOnUnreviewedDatasets.sfdr,
                     ),
                 )
-                    .map { it.dataId }.first() == dataIdBeta
+                    .map { it.dataId }.first() == dataIdBeta &&
+                    qaServiceController.getNumberOfUnreviewedDatasets(
+                        dataType = listOf(
+                            QaControllerApi.DataTypeGetNumberOfUnreviewedDatasets.sfdr,
+                        ),
+                    ) == 1
             }
             await().atMost(2, TimeUnit.SECONDS).until {
                 qaServiceController.getInfoOnUnreviewedDatasets(companyName = "Beta-Company-")
-                    .map { it.dataId }.first() == dataIdBeta
+                    .map { it.dataId }.first() == dataIdBeta &&
+                    qaServiceController.getNumberOfUnreviewedDatasets(
+                        companyName = "Beta-Company-",
+                    ) == 1
             }
         }
     }
 
-    // TODO add or extend existing tests to cover the counter endpoint
+    // TODO aufräumen (repetitiver und unübersichtlicher Code!)
 }
