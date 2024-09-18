@@ -1524,8 +1524,7 @@
             "type": "string"
           },
           "page": {
-            "type": "integer",
-            "format": "int64"
+            "type": "string"
           },
           "tagName": {
             "type": "string"

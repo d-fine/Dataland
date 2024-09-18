@@ -110,7 +110,7 @@ import FailMessage from '@/components/messages/FailMessage.vue';
 import { sfdrDataModel } from '@/frameworks/sfdr/UploadConfig';
 import { type CompanyAssociatedDataSfdrData, type CompanyReport, DataTypeEnum, type SfdrData } from '@clients/backend';
 import { useRoute } from 'vue-router';
-import { checkCustomInputs, checkIfAllUploadedReportsAreReferencedInDataModel } from '@/utils/ValidationsUtils';
+import { checkCustomInputs, checkIfAllUploadedReportsAreReferencedInDataModel } from '@/utils/ValidationUtils';
 import NaceCodeFormField from '@/components/forms/parts/fields/NaceCodeFormField.vue';
 import InputTextFormField from '@/components/forms/parts/fields/InputTextFormField.vue';
 import FreeTextFormField from '@/components/forms/parts/fields/FreeTextFormField.vue';
@@ -128,7 +128,7 @@ import PercentageFormField from '@/components/forms/parts/fields/PercentageFormF
 import ProductionSitesFormField from '@/components/forms/parts/fields/ProductionSitesFormField.vue';
 import { objectDropNull, type ObjectType } from '@/utils/UpdateObjectUtils';
 import { smoothScroll } from '@/utils/SmoothScroll';
-import { type DocumentToUpload, getFileName, uploadFiles } from '@/utils/FileUploadUtils';
+import { type DocumentToUpload, getAvailableFileNames, uploadFiles } from '@/utils/FileUploadUtils';
 import MostImportantProductsFormField from '@/components/forms/parts/fields/MostImportantProductsFormField.vue';
 import { type Subcategory } from '@/utils/GenericFrameworkTypes';
 import ProcurementCategoriesFormField from '@/components/forms/parts/fields/ProcurementCategoriesFormField.vue';
@@ -233,7 +233,7 @@ export default defineComponent({
       },
     },
     namesOfAllCompanyReportsForTheDataset(): string[] {
-      return getFileName(this.namesAndReferencesOfAllCompanyReportsForTheDataset);
+      return getAvailableFileNames(this.namesAndReferencesOfAllCompanyReportsForTheDataset);
     },
     subcategoryVisibility(): Map<Subcategory, boolean> {
       return createSubcategoryVisibilityMap(this.sfdrDataModel, this.companyAssociatedSfdrData.data);
