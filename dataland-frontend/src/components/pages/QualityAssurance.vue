@@ -26,7 +26,7 @@
                   v-model="availableReportingPeriods"
                   placeholder="Search by Reporting Period"
                   :showIcon="true"
-                  manualInput="false"
+                  :manualInput="false"
                   view="year"
                   dateFormat="yy"
                   selectionMode="multiple"
