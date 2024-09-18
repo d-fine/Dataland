@@ -1,6 +1,5 @@
 package org.dataland.datalanddataexporter.services
 
-import org.dataland.datalandapikeymanager.DatalandDataExporter
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.api.MetaDataControllerApi
 import org.dataland.datalandbackend.openApiClient.api.SfdrDataControllerApi
@@ -23,17 +22,15 @@ import org.junit.jupiter.api.assertDoesNotThrow
 import org.mockito.Mockito.any
 import org.mockito.Mockito.mock
 import org.mockito.Mockito.`when`
-import org.springframework.boot.test.context.SpringBootTest
 import java.time.LocalDate
 
-@SpringBootTest(classes = [DatalandDataExporter::class])
 class CsvExporterTest {
     private lateinit var csvDataExporter: CsvExporter
     private lateinit var mockMetadataControllerApi: MetaDataControllerApi
     private lateinit var mockSfdrDataControllerApi: SfdrDataControllerApi
     private lateinit var mockCompanyDataControllerApi: CompanyDataControllerApi
 
-    val mockMetaData = listOf(
+    private val mockMetaData = listOf(
         DataMetaInformation(
             dataType = DataTypeEnum.sfdr,
             reportingPeriod = "2021",
@@ -46,7 +43,7 @@ class CsvExporterTest {
     )
 
     // ToDo fake fixture laden?
-    private final val mockSfdrData = SfdrData(
+    private val mockSfdrData = SfdrData(
         general = SfdrGeneral(
             SfdrGeneralGeneral(
                 dataDate = LocalDate.parse("2021-01-01"),
@@ -59,13 +56,13 @@ class CsvExporterTest {
         ),
     )
 
-    val mockCompanyAssociatedSfdrData = CompanyAssociatedDataSfdrData(
+    private val mockCompanyAssociatedSfdrData = CompanyAssociatedDataSfdrData(
         companyId = "mockCompanyId",
         reportingPeriod = "2021",
         data = mockSfdrData,
     )
 
-    fun setupMockMetaDataControllerApi(): MetaDataControllerApi {
+    private fun setupMockMetaDataControllerApi(): MetaDataControllerApi {
         val mockMetaDataControllerApi = mock(MetaDataControllerApi::class.java)
         `when`(
             mockMetaDataControllerApi.getListOfDataMetaInfo(
@@ -78,7 +75,7 @@ class CsvExporterTest {
         return mockMetaDataControllerApi
     }
 
-    fun setupMockSfdrDataControllerApi(): SfdrDataControllerApi {
+    private fun setupMockSfdrDataControllerApi(): SfdrDataControllerApi {
         val mockSfdrDataControllerApi = mock(SfdrDataControllerApi::class.java)
         `when`(
             mockSfdrDataControllerApi.getCompanyAssociatedSfdrData(
@@ -88,7 +85,7 @@ class CsvExporterTest {
         return mockSfdrDataControllerApi
     }
 
-    val mockStoredCompany = StoredCompany(
+    private val mockStoredCompany = StoredCompany(
         companyId = "mockCompanyId",
         companyInformation = CompanyInformation(
             companyName = "mockCompanyName",
@@ -103,7 +100,7 @@ class CsvExporterTest {
         dataRegisteredByDataland = emptyList(),
     )
 
-    fun setupMockCompanyDataControllerApi(): CompanyDataControllerApi {
+    private fun setupMockCompanyDataControllerApi(): CompanyDataControllerApi {
         val mockCompanyDataControllerApi = mock(CompanyDataControllerApi::class.java)
         `when`(
             mockCompanyDataControllerApi.getCompanyById(
