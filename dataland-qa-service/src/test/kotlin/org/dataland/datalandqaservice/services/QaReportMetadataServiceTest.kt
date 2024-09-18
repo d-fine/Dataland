@@ -82,7 +82,7 @@ class QaReportMetadataServiceTest(
             DataMetaInformation(dataId2, companyId, DataTypeEnum.sfdr, 1, "test", true, QaStatus.Accepted, null),
         )
         Mockito
-            .`when`(metadataController.getListOfDataMetaInfo(null, null, true, null, null, null))
+            .`when`(metadataController.getListOfDataMetaInfo(null, null, false, null, null, null))
             .thenReturn(dataMetaInformation)
         val result: List<DataAndQaReportMetadata> =
             qaReportMetadataService
@@ -109,7 +109,7 @@ class QaReportMetadataServiceTest(
             ),
         )
         Mockito
-            .`when`(metadataController.getListOfDataMetaInfo(null, null, true, null, setOf<UUID>(reporterId1), null))
+            .`when`(metadataController.getListOfDataMetaInfo(null, null, false, null, setOf<UUID>(reporterId1), null))
             .thenReturn(dataMetaInformation)
         val result: List<DataAndQaReportMetadata> =
             qaReportMetadataService
@@ -142,7 +142,7 @@ class QaReportMetadataServiceTest(
             DataMetaInformation(dataId2, companyId, DataTypeEnum.sfdr, 1, "test", true, QaStatus.Accepted, null),
         )
         Mockito
-            .`when`(metadataController.getListOfDataMetaInfo(null, null, true, null, null, null))
+            .`when`(metadataController.getListOfDataMetaInfo(null, null, false, null, null, null))
             .thenReturn(dataMetaInformation)
         val result: List<DataAndQaReportMetadata> =
             qaReportMetadataService
@@ -165,7 +165,7 @@ class QaReportMetadataServiceTest(
             DataMetaInformation(dataId2, companyId, DataTypeEnum.sfdr, 1, "test", true, QaStatus.Accepted, null),
         )
         Mockito
-            .`when`(metadataController.getListOfDataMetaInfo(null, null, true, null, null, null))
+            .`when`(metadataController.getListOfDataMetaInfo(null, null, false, null, null, null))
             .thenReturn(dataMetaInformation)
 
         val resultOnlyStart: List<DataAndQaReportMetadata> =
