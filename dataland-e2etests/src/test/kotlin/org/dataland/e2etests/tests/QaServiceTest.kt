@@ -42,7 +42,7 @@ class QaServiceTest {
     private val expectedClientError403Text = "Client error : 403 "
 
     @BeforeAll
-    fun postCompany() {
+    fun postCompaniesAndBuildTestDatasets() {
         documentManagerAccessor.uploadAllTestDocumentsAndAssurePersistence()
 
         companyIdAlpha = apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId
@@ -68,9 +68,9 @@ class QaServiceTest {
 
     @Test
     fun `post dummy data and accept it and check the qa status changes and check different users access permissions`() {
-        val dataId = uploadDatasetAndValidatePendingState()
-        reviewDatasetAsReviewerAndAssertSuccess(dataId, QaServiceQaStatus.Accepted)
-        awaitQaStatusChange(dataId, BackendQaStatus.Accepted)
+        val dataId = uploadEuTaxoDataAndValidatePendingState()
+        acceptDatasetAsReviewer(dataId, QaServiceQaStatus.Accepted)
+        waitForExpectedQaStatus(dataId, BackendQaStatus.Accepted)
         canUserSeeUploaderData(dataId, TechnicalUser.Reader, true, false)
         canUserSeeUploaderData(dataId, TechnicalUser.Uploader, true, true)
         canUserSeeUploaderData(dataId, TechnicalUser.Reviewer, true, false)
@@ -79,10 +79,10 @@ class QaServiceTest {
 
     @Test
     fun `post dummy data and reject it and check the qa status changes and check different users access permissions`() {
-        val dataId = uploadDatasetAndValidatePendingState()
-        reviewDatasetAsReviewerAndAssertSuccess(dataId, QaServiceQaStatus.Rejected)
+        val dataId = uploadEuTaxoDataAndValidatePendingState()
+        acceptDatasetAsReviewer(dataId, QaServiceQaStatus.Rejected)
         withTechnicalUser(TechnicalUser.Uploader) {
-            awaitQaStatusChange(dataId, BackendQaStatus.Rejected)
+            waitForExpectedQaStatus(dataId, BackendQaStatus.Rejected)
             canUserSeeUploaderData(dataId, TechnicalUser.Reader, false)
             canUserSeeUploaderData(dataId, TechnicalUser.Uploader, true, true)
             canUserSeeUploaderData(dataId, TechnicalUser.Reviewer, true, false)
@@ -92,14 +92,14 @@ class QaServiceTest {
 
     @Test
     fun `post dummy data and check different users access permissions`() {
-        val dataId = uploadDatasetAndValidatePendingState()
+        val dataId = uploadEuTaxoDataAndValidatePendingState()
         canUserSeeUploaderData(dataId, TechnicalUser.Reader, false)
         canUserSeeUploaderData(dataId, TechnicalUser.Uploader, true, true)
         canUserSeeUploaderData(dataId, TechnicalUser.Reviewer, true, false)
         canUserSeeUploaderData(dataId, TechnicalUser.Admin, true, true)
     }
 
-    private fun uploadDatasetAndValidatePendingState(user: TechnicalUser = TechnicalUser.Uploader): String {
+    private fun uploadEuTaxoDataAndValidatePendingState(user: TechnicalUser = TechnicalUser.Uploader): String {
         withTechnicalUser(user) {
             val dataId =
                 dataController.postCompanyAssociatedEutaxonomyNonFinancialsData(dummyEuTaxoDataAlpha, false).dataId
@@ -108,7 +108,7 @@ class QaServiceTest {
         }
     }
 
-    private fun reviewDatasetAsReviewerAndAssertSuccess(dataId: String, qaStatus: QaServiceQaStatus) {
+    private fun acceptDatasetAsReviewer(dataId: String, qaStatus: QaServiceQaStatus) {
         withTechnicalUser(TechnicalUser.Reviewer) {
             val qaServiceController = apiAccessor.qaServiceControllerApi
             await().atMost(2, TimeUnit.SECONDS)
@@ -145,7 +145,7 @@ class QaServiceTest {
         }
     }
 
-    private fun awaitQaStatusChange(dataId: String, expectedQaStatus: BackendQaStatus) {
+    private fun waitForExpectedQaStatus(dataId: String, expectedQaStatus: BackendQaStatus) {
         await().atMost(2, TimeUnit.SECONDS)
             .until { apiAccessor.metaDataControllerApi.getDataMetaInfo(dataId).qaStatus == expectedQaStatus }
     }
@@ -170,9 +170,9 @@ class QaServiceTest {
 
     @Test
     fun `check that an already reviewed dataset can not be assigned a different qa status`() {
-        val dataId = uploadDatasetAndValidatePendingState()
-        reviewDatasetAsReviewerAndAssertSuccess(dataId, QaServiceQaStatus.Accepted)
-        awaitQaStatusChange(dataId, BackendQaStatus.Accepted)
+        val dataId = uploadEuTaxoDataAndValidatePendingState()
+        acceptDatasetAsReviewer(dataId, QaServiceQaStatus.Accepted)
+        waitForExpectedQaStatus(dataId, BackendQaStatus.Accepted)
         val exception = assertThrows<QaServiceClientException> {
             apiAccessor.qaServiceControllerApi.assignQaStatus(dataId, QaServiceQaStatus.Rejected)
         }
@@ -185,9 +185,9 @@ class QaServiceTest {
 
     @Test
     fun `check the a data set with review history can only retrieved by admin reviewer and uploader of the data`() {
-        val dataId = uploadDatasetAndValidatePendingState()
-        reviewDatasetAsReviewerAndAssertSuccess(dataId, QaServiceQaStatus.Accepted)
-        awaitQaStatusChange(dataId, BackendQaStatus.Accepted)
+        val dataId = uploadEuTaxoDataAndValidatePendingState()
+        acceptDatasetAsReviewer(dataId, QaServiceQaStatus.Accepted)
+        waitForExpectedQaStatus(dataId, BackendQaStatus.Accepted)
         val usersWithAccessToReviewHistory = listOf(
             TechnicalUser.Admin, TechnicalUser.Reviewer,
             TechnicalUser.Uploader,
@@ -228,9 +228,9 @@ class QaServiceTest {
             )
         }
 
-        val dataId = uploadDatasetAndValidatePendingState(reader)
-        reviewDatasetAsReviewerAndAssertSuccess(dataId, QaServiceQaStatus.Accepted)
-        awaitQaStatusChange(dataId, BackendQaStatus.Accepted)
+        val dataId = uploadEuTaxoDataAndValidatePendingState(reader)
+        acceptDatasetAsReviewer(dataId, QaServiceQaStatus.Accepted)
+        waitForExpectedQaStatus(dataId, BackendQaStatus.Accepted)
 
         withTechnicalUser(reader) {
             val reviewInformationResponse = apiAccessor.qaServiceControllerApi.getDatasetById(UUID.fromString(dataId))
@@ -254,8 +254,8 @@ class QaServiceTest {
 
     @Test
     fun `check that content of the review queue can be retrieved after a pending dataset was deleted`() {
-        val dataIdAlpha = uploadDatasetAndValidatePendingState()
-        val dataIdBeta = uploadDatasetAndValidatePendingState()
+        val dataIdAlpha = uploadEuTaxoDataAndValidatePendingState()
+        val dataIdBeta = uploadEuTaxoDataAndValidatePendingState()
         withTechnicalUser(TechnicalUser.Admin) {
             val qaServiceController = apiAccessor.qaServiceControllerApi
             await().atMost(2, TimeUnit.SECONDS)
