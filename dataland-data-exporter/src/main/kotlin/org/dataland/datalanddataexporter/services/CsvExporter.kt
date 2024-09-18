@@ -28,6 +28,9 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.scheduling.annotation.Scheduled
 import org.springframework.stereotype.Component
 import java.io.File
+import java.text.DateFormat
+import java.text.SimpleDateFormat
+import org.springframework.format.annotation.DateTimeFormat
 
 /**
  * A class for handling the transformation of JSON files into CSV
@@ -120,9 +123,10 @@ class CsvExporter(
      * @param companyAssociatedData The company associated data
      * @return The JSON representation of the data
      */
+    //ToDo Move this function to a utility class and write a test to cover the date time formatting
     private fun convertDataToJson(companyAssociatedData: CompanyAssociatedDataSfdrData): JsonNode {
-        //ToDo: local data is written into odd format [YYYY,MM,DD] instead of [YYYY-MM-DD]
         val objectMapper = jacksonObjectMapper().findAndRegisterModules()
+        objectMapper.dateFormat = SimpleDateFormat("yyyy-MM-dd")
         val jsonData = objectMapper.writeValueAsString(companyAssociatedData.data)
         val data = ObjectMapper().readTree(jsonData)
         return data
