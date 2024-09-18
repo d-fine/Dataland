@@ -31,6 +31,28 @@ describe('Component tests for the Quality Assurance page', () => {
     roles: [KEYCLOAK_ROLE_USER, KEYCLOAK_ROLE_REVIEWER],
   });
 
+  const dataIdAlpha = crypto.randomUUID();
+  const companyNameAlpha = 'Alpha Company AG';
+  const companyIdAlpha = crypto.randomUUID();
+  const reviewQueueElementAlpha = buildReviewQueueElement(
+    dataIdAlpha,
+    companyNameAlpha,
+    companyIdAlpha,
+    DataTypeEnum.P2p,
+    '2022'
+  );
+
+  const dataIdBeta = crypto.randomUUID();
+  const companyNameBeta = 'Beta Corporate Ltd.';
+  const companyIdBeta = crypto.randomUUID();
+  const reviewQueueElementBeta = buildReviewQueueElement(
+    dataIdBeta,
+    companyNameBeta,
+    companyIdBeta,
+    DataTypeEnum.Sfdr,
+    '2023'
+  );
+
   /**
    * Builds a review queue element.
    * @param dataId to include
@@ -59,29 +81,10 @@ describe('Component tests for the Quality Assurance page', () => {
     };
   }
 
-  it('Check if datasets appear on the QA-overview-page and filtering works as expected', () => {
-    const dataIdAlpha = crypto.randomUUID();
-    const companyNameAlpha = 'Alpha Company AG';
-    const companyIdAlpha = crypto.randomUUID();
-    const reviewQueueElementAlpha = buildReviewQueueElement(
-      dataIdAlpha,
-      companyNameAlpha,
-      companyIdAlpha,
-      DataTypeEnum.P2p,
-      '2022'
-    );
-
-    const dataIdBeta = crypto.randomUUID();
-    const companyNameBeta = 'Beta Corporate Ltd.';
-    const companyIdBeta = crypto.randomUUID();
-    const reviewQueueElementBeta = buildReviewQueueElement(
-      dataIdBeta,
-      companyNameBeta,
-      companyIdBeta,
-      DataTypeEnum.Sfdr,
-      '2023'
-    );
-
+  /**
+   * Mounts the qa assurance page with two mock elements in the review queue and asserts that they are shown.
+   */
+  function mountQaAssurancePageWithMocks(): void {
     const mockReviewQueue = [reviewQueueElementAlpha, reviewQueueElementBeta];
     cy.intercept(`**/qa/datasets?chunkSize=10&chunkIndex=0`, mockReviewQueue);
     cy.intercept(`**/qa/numberOfUnreviewedDatasets`, mockReviewQueue.length.toString());
@@ -90,6 +93,10 @@ describe('Component tests for the Quality Assurance page', () => {
     cy.contains('td', `${dataIdAlpha}`);
     cy.contains('td', `${dataIdBeta}`);
     cy.contains('span', 'Showing results 1-2 of 2.');
+  }
+
+  it('Check QA-overview-page for filtering on company name', () => {
+    mountQaAssurancePageWithMocks();
 
     const companySearchTerm = 'Alpha';
     cy.intercept(`**/qa/datasets?companyName=${companySearchTerm}&chunkSize=10&chunkIndex=0`, [
@@ -104,6 +111,10 @@ describe('Component tests for the Quality Assurance page', () => {
     cy.get(`input[data-test="companyNameSearchbar"]`).clear();
     cy.contains('td', `${dataIdAlpha}`);
     cy.contains('td', `${dataIdBeta}`);
+  });
+
+  it('Check QA-overview-page for filtering on framework', () => {
+    mountQaAssurancePageWithMocks();
 
     const frameworkToFilterFor = DataTypeEnum.P2p;
     const frameworkHumanReadableName = humanizeStringOrNumber(frameworkToFilterFor);
@@ -119,11 +130,14 @@ describe('Component tests for the Quality Assurance page', () => {
     cy.contains('td', `${dataIdAlpha}`);
     cy.contains('td', `${dataIdBeta}`);
     cy.get(`div[data-test="framework-picker"]`).click();
-
-    // TODO reporting period filter (typing + date picker?)
-    // TODO combined filter
-    // TODO cleanup test code (functions for better readability)
   });
+
+  it('Check QA-overview-page for filtering on reporting period', () => {
+    mountQaAssurancePageWithMocks();
+    // TODO reporting period filter (typing + date picker?)
+  });
+
+  // TODO combined filter
 
   it('Check if dataset can be reviewed on the view page', () => {
     const mockDataMetaInfo: DataMetaInformation = {
