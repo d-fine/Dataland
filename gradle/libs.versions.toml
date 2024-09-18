@@ -155,7 +155,7 @@ spring-test = "org.springframework:spring-test:6.1.12"
 
 spring-boot = "org.springframework.boot:spring-boot:3.3.2"
 
-spring-rabbit = "org.springframework.amqp:spring-rabbit:3.1.5"
+spring-rabbit = "org.springframework.amqp:spring-rabbit:3.1.7"
 
 cloudevents-api = "io.cloudevents:cloudevents-api:4.0.1"
 
@@ -165,7 +165,7 @@ cloudevents-core = "io.cloudevents:cloudevents-core:4.0.1"
 
 spring-cloud-function-context = "org.springframework.cloud:spring-cloud-function-context:4.1.2"
 
-spring-amqp = "org.springframework.amqp:spring-amqp:3.1.5"
+spring-amqp = "org.springframework.amqp:spring-amqp:3.1.7"
 
 spring-rabbit-test = { module = "org.springframework.amqp:spring-rabbit-test" }
 
