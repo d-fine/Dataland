@@ -199,14 +199,11 @@ class QaServiceTest {
         usersWithAccessToReviewHistory.forEach {
             withTechnicalUser(it) {
                 assertDoesNotThrow {
-                    val reviewInformationResponse = getReviewInfoById(UUID.fromString(dataId))
+                    val reviewInfo = getReviewInfoById(UUID.fromString(dataId))
                     if (it == TechnicalUser.Admin) {
-                        assertEquals(
-                            TechnicalUser.Reviewer.technicalUserId,
-                            reviewInformationResponse.reviewerKeycloakId,
-                        )
+                        assertEquals(TechnicalUser.Reviewer.technicalUserId, reviewInfo.reviewerKeycloakId)
                     } else {
-                        assertEquals(null, reviewInformationResponse.reviewerKeycloakId)
+                        assertEquals(null, reviewInfo.reviewerKeycloakId)
                     }
                 }
             }
@@ -310,8 +307,10 @@ class QaServiceTest {
 
     @Test
     fun `check that filtering works as expected when retrieving meta info on unreviewed datasets`() {
-        val datasetAlpha = dummyEuTaxoDataAlpha.copy(reportingPeriod = "abcdefgh-1")
-        val datasetBeta = dummySfdrDataBeta.copy(reportingPeriod = "abcdefgh-2")
+        val repPeriodAlpha = "abcdefgh-1"
+        val repPeriodBeta = "abcdefgh-2"
+        val datasetAlpha = dummyEuTaxoDataAlpha.copy(reportingPeriod = repPeriodAlpha)
+        val datasetBeta = dummySfdrDataBeta.copy(reportingPeriod = repPeriodBeta)
 
         withTechnicalUser(TechnicalUser.Admin) {
             val dataIdAlpha = apiAccessor.dataControllerApiForEuTaxonomyNonFinancials
@@ -320,8 +319,8 @@ class QaServiceTest {
                 apiAccessor.dataControllerApiForSfdrData.postCompanyAssociatedSfdrData(datasetBeta).dataId
 
             await().atMost(2, TimeUnit.SECONDS).until {
-                getInfoOnUnreviewedDatasets(reportingPeriodFilter = "abcdefgh-1").first().dataId == dataIdAlpha &&
-                    getNumberOfUnreviewedDatasets(reportingPeriodFilter = "abcdefgh-1") == 1
+                getInfoOnUnreviewedDatasets(reportingPeriodFilter = repPeriodAlpha).first().dataId == dataIdAlpha &&
+                    getNumberOfUnreviewedDatasets(reportingPeriodFilter = repPeriodAlpha) == 1
             }
 
             await().atMost(2, TimeUnit.SECONDS).until {
