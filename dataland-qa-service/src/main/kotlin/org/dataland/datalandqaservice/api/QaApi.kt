@@ -41,8 +41,8 @@ interface QaApi {
     )
     @PreAuthorize("hasRole('ROLE_REVIEWER')")
     fun getInfoOnUnreviewedDatasets(
-        @RequestParam dataType: Set<DataTypeEnum>?,
-        @RequestParam reportingPeriod: Set<String>?,
+        @RequestParam dataTypes: Set<DataTypeEnum>?,
+        @RequestParam reportingPeriods: Set<String>?,
         @RequestParam companyName: String?,
         @RequestParam(defaultValue = "10") chunkSize: Int,
         @RequestParam(defaultValue = "0") chunkIndex: Int,
@@ -123,8 +123,8 @@ interface QaApi {
     )
     @PreAuthorize("hasRole('ROLE_REVIEWER')")
     fun getNumberOfUnreviewedDatasets(
-        @RequestParam dataType: Set<DataTypeEnum>?,
-        @RequestParam reportingPeriod: Set<String>?,
+        @RequestParam dataTypes: Set<DataTypeEnum>?,
+        @RequestParam reportingPeriods: Set<String>?,
         @RequestParam companyName: String?,
     ): ResponseEntity<Int>
 }

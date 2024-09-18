@@ -804,7 +804,7 @@
         "operationId": "getNumberOfUnreviewedDatasets",
         "parameters": [
           {
-            "name": "dataType",
+            "name": "dataTypes",
             "in": "query",
             "required": false,
             "schema": {
@@ -827,7 +827,7 @@
             }
           },
           {
-            "name": "reportingPeriod",
+            "name": "reportingPeriods",
             "in": "query",
             "required": false,
             "schema": {
@@ -900,7 +900,7 @@
         "operationId": "getInfoOnUnreviewedDatasets",
         "parameters": [
           {
-            "name": "dataType",
+            "name": "dataTypes",
             "in": "query",
             "required": false,
             "schema": {
@@ -923,7 +923,7 @@
             }
           },
           {
-            "name": "reportingPeriod",
+            "name": "reportingPeriods",
             "in": "query",
             "required": false,
             "schema": {
@@ -3411,24 +3411,24 @@
           "message": {
             "type": "string"
           },
-          "dataId": {
-            "type": "string"
-          },
-          "receptionTime": {
-            "type": "integer",
-            "format": "int64"
-          },
           "companyId": {
             "type": "string"
           },
           "companyName": {
             "type": "string"
           },
+          "framework": {
+            "type": "string"
+          },
           "reportingPeriod": {
             "type": "string"
           },
-          "framework": {
+          "dataId": {
             "type": "string"
+          },
+          "receptionTime": {
+            "type": "integer",
+            "format": "int64"
           }
         }
       },

@@ -6,29 +6,29 @@ import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
  * convenient usage of SEPL instructions in the query
  */
 data class QaSearchFilter(
-    val dataType: Set<DataTypeEnum>?,
-    val reportingPeriod: Set<String>?,
-    val companyId: Set<String>?,
+    val dataTypes: Set<DataTypeEnum>?,
+    val reportingPeriods: Set<String>?,
+    val companyIds: Set<String>?,
     val companyName: String?,
 
 ) {
     val shouldFilterByDataType: Boolean
-        get() = dataType?.isNotEmpty() ?: false
+        get() = dataTypes?.isNotEmpty() ?: false
 
-    val preparedDataType: List<String>
-        get() = dataType?.map { it.value } ?: emptyList()
+    val preparedDataTypes: List<String>
+        get() = dataTypes?.map { it.value } ?: emptyList()
 
     val shouldFilterByCompanyId: Boolean
-        get() = companyId?.isNotEmpty() ?: false
+        get() = companyIds?.isNotEmpty() ?: false
 
-    val preparedCompanyId: List<String>
-        get() = companyId?.toList() ?: emptyList()
+    val preparedCompanyIds: List<String>
+        get() = companyIds?.toList() ?: emptyList()
 
     val shouldFilterByReportingPeriod: Boolean
-        get() = reportingPeriod?.isNotEmpty() ?: false
+        get() = reportingPeriods?.isNotEmpty() ?: false
 
-    val preparedReportingPeriod: List<String>
-        get() = reportingPeriod?.toList() ?: emptyList()
+    val preparedReportingPeriods: List<String>
+        get() = reportingPeriods?.toList() ?: emptyList()
 
     val shouldFilterByCompanyName: Boolean
         get() = companyName?.isNotEmpty() ?: false
