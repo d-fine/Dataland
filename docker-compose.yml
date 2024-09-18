@@ -88,7 +88,7 @@ services:
     profiles: [ "production", "testing", "development" ]
     networks:
       - api-key-manager-db
-    image: postgres:15.7@sha256:68b988a164c8bdf0752fa7a4ae2d4b34a058e21c6327e69f741c081a38e97254
+    image: postgres:16.2@sha256:4aea012537edfad80f98d870a36e6b90b4c09b27be7f4b4759d72db863baeebb
     volumes:
       - api_key_manager_data:/var/lib/postgresql/data
     environment:
@@ -123,7 +123,7 @@ services:
     profiles: [ "production", "testing", "development" ]
     networks:
       - document-manager-db
-    image: postgres:15.7@sha256:68b988a164c8bdf0752fa7a4ae2d4b34a058e21c6327e69f741c081a38e97254
+    image: postgres:16.2@sha256:4aea012537edfad80f98d870a36e6b90b4c09b27be7f4b4759d72db863baeebb
     volumes:
       - document_manager_data:/var/lib/postgresql/data
     environment:
@@ -158,7 +158,7 @@ services:
     profiles: [ "production", "testing", "development" ]
     networks:
       - backend-db
-    image: postgres:15.7@sha256:68b988a164c8bdf0752fa7a4ae2d4b34a058e21c6327e69f741c081a38e97254
+    image: postgres:16.2@sha256:4aea012537edfad80f98d870a36e6b90b4c09b27be7f4b4759d72db863baeebb
     volumes:
       - backend_data:/var/lib/postgresql/data
     environment:
@@ -209,7 +209,7 @@ services:
     # https://github.com/docker/for-win/issues/8861
     restart: always
     profiles: [ "developmentContainerFrontend" ]
-    image: node:20.11.1@sha256:e06aae17c40c7a6b5296ca6f942a02e6737ae61bbbf3e2158624bb0f887991b5
+    image: node:20.11.1
     networks:
       internal:
         aliases:
@@ -250,7 +250,7 @@ services:
     profiles: [ "production", "testing", "development" ]
     networks:
       - internal-storage-db
-    image: postgres:15.7@sha256:68b988a164c8bdf0752fa7a4ae2d4b34a058e21c6327e69f741c081a38e97254
+    image: postgres:16.2@sha256:4aea012537edfad80f98d870a36e6b90b4c09b27be7f4b4759d72db863baeebb
     volumes:
       - internal_storage_data:/var/lib/postgresql/data
     environment:
@@ -267,7 +267,7 @@ services:
     profiles: [ "production", "testing", "development", "init" ]
     networks:
       - keycloak-db
-    image: postgres:15.7@sha256:68b988a164c8bdf0752fa7a4ae2d4b34a058e21c6327e69f741c081a38e97254
+    image: postgres:16.2@sha256:4aea012537edfad80f98d870a36e6b90b4c09b27be7f4b4759d72db863baeebb
     volumes:
       - keycloak_data:/var/lib/postgresql/data
     environment:
@@ -420,14 +420,12 @@ services:
       DATALAND_QA_SERVICE_CLIENT_SECRET: ${DATALAND_QA_SERVICE_CLIENT_SECRET}
     depends_on:
       - qa-service-db
-    extra_hosts:
-      - "host.docker.internal:host-gateway"
   qa-service-db:
     restart: always
     profiles: [ "production", "testing", "development" ]
     networks:
       - qa-service-db
-    image: postgres:15.7@sha256:68b988a164c8bdf0752fa7a4ae2d4b34a058e21c6327e69f741c081a38e97254
+    image: postgres:16.2@sha256:4aea012537edfad80f98d870a36e6b90b4c09b27be7f4b4759d72db863baeebb
     volumes:
       - qa_service_data:/var/lib/postgresql/data
     environment:
@@ -471,7 +469,6 @@ services:
       COMMUNITY_MANAGER_DB_PASSWORD: ${COMMUNITY_MANAGER_DB_PASSWORD}
       COMMUNITY_MANAGER_MIGRATION_BASELINE_VERSION: ${COMMUNITY_MANAGER_MIGRATION_BASELINE_VERSION:-1}
       DATALAND_COMMUNITY_MANAGER_CLIENT_SECRET: ${DATALAND_COMMUNITY_MANAGER_CLIENT_SECRET}
-      COMMUNITY_MANAGER_NOTIFICATION_SERVICE_FEATURE_FLAG: ${COMMUNITY_MANAGER_NOTIFICATION_SERVICE_FEATURE_FLAG:-false}
     depends_on:
       - community-manager-db
     extra_hosts:
@@ -481,7 +478,7 @@ services:
     profiles: [ "production", "testing", "development" ]
     networks:
       - community-manager-db
-    image: postgres:15.7@sha256:68b988a164c8bdf0752fa7a4ae2d4b34a058e21c6327e69f741c081a38e97254
+    image: postgres:16.2@sha256:4aea012537edfad80f98d870a36e6b90b4c09b27be7f4b4759d72db863baeebb
     volumes:
       - community_manager_data:/var/lib/postgresql/data
     environment:
@@ -523,7 +520,7 @@ services:
   eurodat-client:
     restart: always
     profiles: [ "production", "development" ]
-    image: registry.gitlab.com/eurodat/trustee-platform/client-controller:v0.0.41@sha256:04f362dd4ed89866f3ebef91f06b227f8de8b236404880361f1affa6fbf5c6b7
+    image: registry.gitlab.com/eurodat/trustee-platform/client-controller:v0.0.34
     networks:
       - internal
     expose:
@@ -545,7 +542,7 @@ services:
   dummy-eurodat-db:
     restart: always
     profiles: [ "testing" ]
-    image: postgres:alpine@sha256:d898b0b78a2627cb4ee63464a14efc9d296884f1b28c841b0ab7d7c42f1fffdf
+    image: postgres:alpine
     networks:
       - internal
     tmpfs: /var/lib/postgresql/data
