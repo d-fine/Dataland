@@ -37,7 +37,7 @@ describeIf(
           lksgFixture.t,
           lksgFixture.reportingPeriod
         ).then((uploadIds) => {
-          cy.intercept('**/qa/datasets').as('getDataIdsOfReviewableDatasets');
+          cy.intercept('**/qa/datasets?chunkSize=10&chunkIndex=0').as('getDataIdsOfReviewableDatasets');
           cy.visit(`/qualityassurance`);
           cy.wait('@getDataIdsOfReviewableDatasets');
           cy.intercept(`**/api/data/lksg/${uploadIds.dataId}`).as('getPostedDataset');
