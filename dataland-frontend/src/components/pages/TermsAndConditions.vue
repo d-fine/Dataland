@@ -14,7 +14,7 @@
     <div v-if="!languageGerman">
       <h1>General terms and conditions for participation in Dataland</h1>
       <h1>(„AGB-Dataland“)</h1>
-      <div>
+      <div class="no-numbering">
         <h2>Preliminary remark</h2>
         <p>
           Dataland GmbH (hereinafter: "Dataland") operates a platform (hereinafter: "Dataland Platform") to compile
@@ -566,7 +566,7 @@
     <div v-if="languageGerman">
       <h1>Allgemeine Bedingungen für die Teilnahme an Dataland</h1>
       <h1>(„AGB-Dataland“)</h1>
-      <div>
+      <div class="no-numbering">
         <h2>Vorbemerkung</h2>
         <p>
           Die Dataland GmbH (nachfolgend: „Dataland“) betreibt eine Plattform (nachfolgend: „Plattform-Dataland“, um
@@ -1182,20 +1182,30 @@ export default defineComponent({
 </script>
 
 <style scoped>
-h1 {
-  counter-reset: section;
+.no-numbering {
+  counter-reset: section subsection;
 }
 
-div:not(:first-of-type) h2::before {
-  counter-increment: section;
-  content: counter(section) '. ';
+div.no-numbering h2::before,
+div.no-numbering h2 ~ p::before {
+  counter-increment: none;
+  content: '';
+}
+
+h1 {
+  counter-reset: section;
 }
 
 h2 {
   counter-reset: subsection;
 }
 
-div:not(:first-of-type) h2 ~ p:not(:only-of-type)::before {
+:not(.no-numbering) h2::before {
+  counter-increment: section;
+  content: counter(section) '. ';
+}
+
+:not(.no-numbering) h2 ~ p::before {
   counter-increment: subsection;
   content: counter(section) '.' counter(subsection) '. ';
   font-weight: bold;
