@@ -99,6 +99,7 @@ describe('Component tests for the Quality Assurance page', () => {
     cy.get(`input[data-test="companyNameSearchbar"]`).type(companySearchTerm);
     cy.contains('td', `${dataIdAlpha}`);
     cy.contains('td', `${dataIdBeta}`).should('not.exist');
+    cy.contains('span', 'Showing results 1-1 of 1.');
 
     cy.get(`input[data-test="companyNameSearchbar"]`).clear();
     cy.contains('td', `${dataIdAlpha}`);
@@ -106,8 +107,8 @@ describe('Component tests for the Quality Assurance page', () => {
 
     const frameworkToFilterFor = DataTypeEnum.P2p;
     const frameworkHumanReadableName = humanizeStringOrNumber(frameworkToFilterFor);
-    cy.intercept(`**/qa/datasets?dataType=${DataTypeEnum.P2p}&chunkSize=10&chunkIndex=0`, [reviewQueueElementAlpha]);
-    cy.intercept(`**/qa/numberOfUnreviewedDatasets?dataType=${DataTypeEnum.P2p}`, '1');
+    cy.intercept(`**/qa/datasets?dataTypes=${DataTypeEnum.P2p}&chunkSize=10&chunkIndex=0`, [reviewQueueElementAlpha]);
+    cy.intercept(`**/qa/numberOfUnreviewedDatasets?dataTypes=${DataTypeEnum.P2p}`, '1');
     cy.get(`div[data-test="framework-picker"]`).click();
     cy.get(`li[aria-label="${frameworkHumanReadableName}"]`).click();
 
@@ -117,6 +118,7 @@ describe('Component tests for the Quality Assurance page', () => {
     cy.get(`li[aria-label="${frameworkHumanReadableName}"]`).click();
     cy.contains('td', `${dataIdAlpha}`);
     cy.contains('td', `${dataIdBeta}`);
+    cy.get(`div[data-test="framework-picker"]`).click();
 
     // TODO reporting period filter (typing + date picker?)
     // TODO combined filter
