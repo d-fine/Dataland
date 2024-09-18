@@ -292,7 +292,7 @@ class MetaDataControllerTest {
             listOf(
                 Triple(reportingPeriod, TechnicalUser.Admin, true),
                 Triple(reportingPeriod, TechnicalUser.Admin, false),
-                Triple(reportingPeriod, TechnicalUser.Uploader, false)
+                Triple(reportingPeriod, TechnicalUser.Uploader, false),
             )
         }
 
@@ -302,7 +302,7 @@ class MetaDataControllerTest {
         val companyId =
             apiAccessor.companyDataControllerApi.postCompany(listOfOneTestCompanyInformation.first()).companyId
 
-        combinations.forEach {(reportingPeriod, user, bypassQa) ->
+        combinations.forEach { (reportingPeriod, user, bypassQa) ->
             jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(user)
             val metaData = uploadFunction(companyId, sfdrData, reportingPeriod, bypassQa)
             if (bypassQa) {
@@ -317,7 +317,7 @@ class MetaDataControllerTest {
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
         val metaDataList =
             apiAccessor.metaDataControllerApi.getListOfDataMetaInfo(
-                companyId, null, false, null, null, null
+                companyId, null, false, null, null, null,
             )
 
         val combinations = listOf("2005", "2006").flatMap { reportingPeriod ->
@@ -325,7 +325,7 @@ class MetaDataControllerTest {
                 listOf(
                     Triple(listOf(TechnicalUser.Admin, TechnicalUser.Uploader), qaStatus, reportingPeriod),
                     Triple(listOf(TechnicalUser.Uploader), qaStatus, reportingPeriod),
-                    Triple(listOf(TechnicalUser.Admin), qaStatus, reportingPeriod)
+                    Triple(listOf(TechnicalUser.Admin), qaStatus, reportingPeriod),
                 )
             }
         }
@@ -333,12 +333,12 @@ class MetaDataControllerTest {
         combinations.forEach { (users, qaStatus, reportingPeriod) ->
             val userIds = users.map { UUID.fromString(it.technicalUserId) }.toSet()
             val filteredMetaDatas = metaDataList.filter {
-                it.companyId == companyId && userIds.contains(UUID.fromString(it.uploaderUserId))
-                        && it.qaStatus == qaStatus && it.reportingPeriod == reportingPeriod
+                it.companyId == companyId && userIds.contains(UUID.fromString(it.uploaderUserId)) &&
+                    it.qaStatus == qaStatus && it.reportingPeriod == reportingPeriod
             }
             val returnedMetaDatas =
                 apiAccessor.metaDataControllerApi.getListOfDataMetaInfo(
-                    companyId, null, false, reportingPeriod, userIds, qaStatus
+                    companyId, null, false, reportingPeriod, userIds, qaStatus,
                 )
 
             assertEquals(filteredMetaDatas.toSet(), returnedMetaDatas.toSet())

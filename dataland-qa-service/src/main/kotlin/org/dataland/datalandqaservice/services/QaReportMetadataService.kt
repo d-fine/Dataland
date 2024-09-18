@@ -54,11 +54,14 @@ class QaReportMetadataService(
         companyIdentifier: String?,
     ): List<DataAndQaReportMetadata> {
         val companyId: String? = getCompanyIdFromCompanyIdentifier(companyIdentifier)
+        if (companyId == null && companyIdentifier != null) {
+            return emptyList()
+        }
         val dataMetaInformation: List<DataMetaInformation> = metadataController
             .getListOfDataMetaInfo(
-                companyId, null, showOnlyActive, null, uploaderUserIds, qaStatus,
+                companyId, null, false, null, uploaderUserIds, qaStatus,
             )
-        val dataIds: List<String> = dataMetaInformation.stream().map { it.dataId }.toList()
+        val dataIds = dataMetaInformation.map { it.dataId }
         val startDateMillis = convertDateToMillis(startDate)
         val endDateMillis = convertDateToMillis(endDate)
         val qaReportEntities: List<QaReportEntity> = qaReportRepository
