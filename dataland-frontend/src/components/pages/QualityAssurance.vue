@@ -231,7 +231,7 @@ export default defineComponent({
     convertUnixTimeInMsToDateString,
     humanizeString: humanizeStringOrNumber,
     /**
-     * Uses the dataland API to build the QaDataObject which is displayed on the quality assurance page
+     * Uses the dataland QA API to retrieve the information that is displayed on the quality assurance page
      */
     async getQaDataForCurrentPage() {
       try {
