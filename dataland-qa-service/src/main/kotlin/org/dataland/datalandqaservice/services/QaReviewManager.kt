@@ -18,15 +18,15 @@ class QaReviewManager(
 ) {
     /**
      * The method returns a list of unreviewed datasets with corresponding information for the specified input params
-     * @param dataType the datatype of the dataset
-     * @param reportingPeriod the reportingperiod of the dataset
+     * @param dataTypes the datatype of the dataset
+     * @param reportingPeriods the reportingperiod of the dataset
      * @param companyName the company name connected to the dataset
      * @param chunkIndex the chunkIndex of the request
      * @param chunkSize the chunkSize of the request
      */
     fun getInfoOnUnreviewedDatasets(
-        dataType: Set<DataTypeEnum>?,
-        reportingPeriod: Set<String>?,
+        dataTypes: Set<DataTypeEnum>?,
+        reportingPeriods: Set<String>?,
         companyName: String?,
         chunkSize: Int,
         chunkIndex: Int,
@@ -37,9 +37,9 @@ class QaReviewManager(
                 companyDataControllerApi.getCompaniesBySearchString(companyName).map { it.companyId }.toSet()
         }
         val searchFilter = QaSearchFilter(
-            dataType = dataType,
-            reportingPeriod = reportingPeriod,
-            companyId = companyIds,
+            dataTypes = dataTypes,
+            reportingPeriods = reportingPeriods,
+            companyIds = companyIds,
             companyName = companyName,
         )
         val offset = (chunkIndex) * (chunkSize)
@@ -57,8 +57,8 @@ class QaReviewManager(
      * @param companyName the companyName for which should be filtered
      */
     fun getNumberOfUnreviewedDatasets(
-        dataType: Set<DataTypeEnum>?,
-        reportingPeriod: Set<String>?,
+        dataTypes: Set<DataTypeEnum>?,
+        reportingPeriods: Set<String>?,
         companyName: String?,
     ): Int {
         var companyIds = emptySet<String>()
@@ -67,7 +67,8 @@ class QaReviewManager(
                 companyDataControllerApi.getCompaniesBySearchString(companyName).map { it.companyId }.toSet()
         }
         val filter = QaSearchFilter(
-            dataType = dataType, companyName = companyName, reportingPeriod = reportingPeriod, companyId = companyIds,
+            dataTypes = dataTypes, companyName = companyName, reportingPeriods = reportingPeriods,
+            companyIds = companyIds,
         )
         return reviewQueueRepository.getNumberOfRequests(filter)
     }

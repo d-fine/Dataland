@@ -272,11 +272,11 @@ class QaServiceTest {
     private fun getInfoOnUnreviewedDatasets(
         companyNameFilter: String? = null,
         reportingPeriodFilter: String? = null,
-        dataTypeFilter: QaControllerApi.DataTypeGetInfoOnUnreviewedDatasets? = null,
+        dataTypeFilter: QaControllerApi.DataTypesGetInfoOnUnreviewedDatasets? = null,
     ): List<ReviewQueueResponse> {
         return qaServiceController.getInfoOnUnreviewedDatasets(
-            reportingPeriod = reportingPeriodFilter?.let { setOf(it) } ?: emptySet(),
-            dataType = dataTypeFilter?.let { listOf(it) } ?: emptyList(),
+            reportingPeriods = reportingPeriodFilter?.let { setOf(it) } ?: emptySet(),
+            dataTypes = dataTypeFilter?.let { listOf(it) } ?: emptyList(),
             companyName = companyNameFilter,
         )
     }
@@ -284,11 +284,11 @@ class QaServiceTest {
     private fun getNumberOfUnreviewedDatasets(
         companyNameFilter: String? = null,
         reportingPeriodFilter: String? = null,
-        dataTypeFilter: QaControllerApi.DataTypeGetNumberOfUnreviewedDatasets? = null,
+        dataTypeFilter: QaControllerApi.DataTypesGetNumberOfUnreviewedDatasets? = null,
     ): Int {
         return qaServiceController.getNumberOfUnreviewedDatasets(
-            reportingPeriod = reportingPeriodFilter?.let { setOf(it) } ?: emptySet(),
-            dataType = dataTypeFilter?.let { listOf(it) } ?: emptyList(),
+            reportingPeriods = reportingPeriodFilter?.let { setOf(it) } ?: emptySet(),
+            dataTypes = dataTypeFilter?.let { listOf(it) } ?: emptyList(),
             companyName = companyNameFilter,
         )
     }
@@ -324,10 +324,10 @@ class QaServiceTest {
             }
 
             await().atMost(2, TimeUnit.SECONDS).until {
-                getInfoOnUnreviewedDatasets(dataTypeFilter = QaControllerApi.DataTypeGetInfoOnUnreviewedDatasets.sfdr)
+                getInfoOnUnreviewedDatasets(dataTypeFilter = QaControllerApi.DataTypesGetInfoOnUnreviewedDatasets.sfdr)
                     .first().dataId == dataIdBeta &&
                     getNumberOfUnreviewedDatasets(
-                        dataTypeFilter = QaControllerApi.DataTypeGetNumberOfUnreviewedDatasets.sfdr,
+                        dataTypeFilter = QaControllerApi.DataTypesGetNumberOfUnreviewedDatasets.sfdr,
                     ) == 1
             }
             await().atMost(2, TimeUnit.SECONDS).until {

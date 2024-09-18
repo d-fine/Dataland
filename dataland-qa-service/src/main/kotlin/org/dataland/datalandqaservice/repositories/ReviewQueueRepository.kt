@@ -22,12 +22,12 @@ interface ReviewQueueRepository : JpaRepository<ReviewQueueEntity, String> {
             "FROM review_queue status " +
             "WHERE " +
             "(:#{#searchFilter.shouldFilterByDataType} = false " +
-            "OR status.framework IN :#{#searchFilter.preparedDataType}) AND " +
+            "OR status.framework IN :#{#searchFilter.preparedDataTypes}) AND " +
             "(:#{#searchFilter.shouldFilterByReportingPeriod} = false " +
-            "OR status.reporting_period IN :#{#searchFilter.preparedReportingPeriod}) AND " +
+            "OR status.reporting_period IN :#{#searchFilter.preparedReportingPeriods}) AND " +
             "( (:#{#searchFilter.shouldFilterByCompanyName } = false AND " +
             ":#{#searchFilter.shouldFilterByCompanyId} = false) " +
-            "OR status.company_id IN :#{#searchFilter.preparedCompanyId}) " +
+            "OR status.company_id IN :#{#searchFilter.preparedCompanyIds}) " +
             "ORDER BY status.reception_time ASC " +
             "LIMIT :#{#resultLimit} OFFSET :#{#resultOffset}",
     )
@@ -45,12 +45,12 @@ interface ReviewQueueRepository : JpaRepository<ReviewQueueEntity, String> {
         value = "SELECT COUNT(*) FROM review_queue status " +
             "WHERE " +
             "(:#{#searchFilter.shouldFilterByDataType} = false " +
-            "OR status.framework IN :#{#searchFilter.preparedDataType}) AND " +
+            "OR status.framework IN :#{#searchFilter.preparedDataTypes}) AND " +
             "(:#{#searchFilter.shouldFilterByReportingPeriod} = false " +
-            "OR status.reporting_period IN :#{#searchFilter.preparedReportingPeriod}) AND " +
+            "OR status.reporting_period IN :#{#searchFilter.preparedReportingPeriods}) AND " +
             "( (:#{#searchFilter.shouldFilterByCompanyName } = false AND " +
             ":#{#searchFilter.shouldFilterByCompanyId} = false) " +
-            "OR status.company_id IN :#{#searchFilter.preparedCompanyId}) ",
+            "OR status.company_id IN :#{#searchFilter.preparedCompanyIds}) ",
     )
     fun getNumberOfRequests(@Param("searchFilter") searchFilter: QaSearchFilter): Int
 

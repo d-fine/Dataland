@@ -44,8 +44,8 @@ class QaController(
 
     @Transactional
     override fun getInfoOnUnreviewedDatasets(
-        dataType: Set<DataTypeEnum>?,
-        reportingPeriod: Set<String>?,
+        dataTypes: Set<DataTypeEnum>?,
+        reportingPeriods: Set<String>?,
         companyName: String?,
         chunkSize: Int,
         chunkIndex: Int,
@@ -53,7 +53,7 @@ class QaController(
         logger.info("Received request to respond with information about unreviewed datasets")
         return ResponseEntity.ok(
             qaReviewManager.getInfoOnUnreviewedDatasets(
-                dataType, reportingPeriod = reportingPeriod,
+                dataTypes = dataTypes, reportingPeriods = reportingPeriods,
                 companyName = companyName, chunkSize = chunkSize, chunkIndex = chunkIndex,
             ),
         )
@@ -145,16 +145,16 @@ class QaController(
      * @param companyName the companyName for which should be filtered
      */
     override fun getNumberOfUnreviewedDatasets(
-        dataType: Set<DataTypeEnum>?,
-        reportingPeriod: Set<String>?,
+        dataTypes: Set<DataTypeEnum>?,
+        reportingPeriods: Set<String>?,
         companyName: String?,
     ): ResponseEntity<Int> {
         logger.info("Received request to respond with number of unreviewed datasets")
 
         return ResponseEntity.ok(
             qaReviewManager.getNumberOfUnreviewedDatasets(
-                dataType = dataType,
-                reportingPeriod = reportingPeriod, companyName = companyName,
+                dataTypes = dataTypes,
+                reportingPeriods = reportingPeriods, companyName = companyName,
             ),
         )
     }
