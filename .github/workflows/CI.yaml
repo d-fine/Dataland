@@ -415,6 +415,7 @@ jobs:
           BACKEND_URL: ${{ secrets.BACKEND_URL }}
           IGNORE_EXTERNAL_STORAGE_ERROR: "false"
           COMMUNITY_MANAGER_NOTIFICATION_SERVICE_FEATURE_FLAG: true
+          DATA_EXPORTER_OUTPUT_DIRECTORY: "/tmp"
       - name: Upload JaCoCo Exec Results
         if: always()
         uses: actions/upload-artifact@0b2256b8c012f0828dc542b3febcab082c67f72b # v4
