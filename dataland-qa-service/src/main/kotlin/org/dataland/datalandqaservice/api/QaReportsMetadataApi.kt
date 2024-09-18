@@ -20,12 +20,13 @@ import java.util.*
 @SecurityRequirement(name = "default-oauth")
 interface QaReportsMetadataApi {
     /**
-     * A method to retrieve metadata of QA reports based on filters
-     * @param uploaderUserIds A list of uploaders' userIds
-     * @param showOnlyActive Flag whether to show only active QA reports or not
-     * @param qaStatus A list of QA status
-     * @param startDate start date of the time frame
-     * @param endDate end date of the time frame
+     * A method to retrieve metadata of QA reports based on filters.
+     * @param uploaderUserIds If set, only metadata of reports are returned that relate to a dataset of an uploader
+     *  in uploaderUserIds.
+     * @param showOnlyActive If true, only metadata of reports are returned that are active
+     * @param qaStatus If set, only metadata of reports are returned that relate to a dataset with this qaStatus
+     * @param startDate If set, only metadata of reports are returned that are past the startDate
+     * @param endDate If set, only metadata of reports are returned that are before the endDate
      */
     @Operation(
         summary = "Get metadata of QA reports based on filters.",
