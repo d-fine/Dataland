@@ -5,6 +5,7 @@ import org.dataland.communitymanager.openApiClient.model.CompanyRole
 import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataEutaxonomyNonFinancialsData
 import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataSfdrData
 import org.dataland.datalandqaservice.openApiClient.api.QaControllerApi
+import org.dataland.datalandqaservice.openApiClient.model.ReviewQueueResponse
 import org.dataland.e2etests.auth.GlobalAuth.withTechnicalUser
 import org.dataland.e2etests.auth.TechnicalUser
 import org.dataland.e2etests.utils.ApiAccessor
@@ -60,9 +61,13 @@ class QaServiceTest {
     @AfterEach
     fun clearTheReviewQueue() {
         withTechnicalUser(TechnicalUser.Reviewer) {
-            apiAccessor.qaServiceControllerApi.getInfoOnUnreviewedDatasets().forEach {
+            getInfoOnUnreviewedDatasets().forEach {
                 apiAccessor.qaServiceControllerApi.assignQaStatus(it.dataId, QaServiceQaStatus.Rejected)
             }
+            await().atMost(2, TimeUnit.SECONDS)
+                .until {
+                    getInfoOnUnreviewedDatasets().isEmpty()
+                }
         }
     }
 
@@ -112,9 +117,9 @@ class QaServiceTest {
         withTechnicalUser(TechnicalUser.Reviewer) {
             val qaServiceController = apiAccessor.qaServiceControllerApi
             await().atMost(2, TimeUnit.SECONDS)
-                .until { qaServiceController.getInfoOnUnreviewedDatasets().map { it.dataId }.contains(dataId) }
+                .until { getInfoOnUnreviewedDatasets().map { it.dataId }.contains(dataId) }
             qaServiceController.assignQaStatus(dataId, qaStatus)
-            assertFalse(qaServiceController.getInfoOnUnreviewedDatasets().map { it.dataId }.contains(dataId))
+            assertFalse(getInfoOnUnreviewedDatasets().map { it.dataId }.contains(dataId))
         }
     }
 
@@ -156,14 +161,13 @@ class QaServiceTest {
 
         withTechnicalUser(TechnicalUser.Uploader) {
             expectedDataIdsInReviewQueue = (1..10).map {
-                Thread.sleep(1000)
+                Thread.sleep(3000) // TODO remove at the end => fix race condition
                 dataController.postCompanyAssociatedEutaxonomyNonFinancialsData(dummyEuTaxoDataAlpha, false).dataId
             }
         }
 
         withTechnicalUser(TechnicalUser.Reviewer) {
-            val actualDataIdsInReviewQueue =
-                apiAccessor.qaServiceControllerApi.getInfoOnUnreviewedDatasets().map { it.dataId }
+            val actualDataIdsInReviewQueue = getInfoOnUnreviewedDatasets().map { it.dataId }
             assertEquals(expectedDataIdsInReviewQueue, actualDataIdsInReviewQueue)
         }
     }
@@ -184,7 +188,7 @@ class QaServiceTest {
     }
 
     @Test
-    fun `check the a data set with review history can only retrieved by admin reviewer and uploader of the data`() {
+    fun `check that dataset with review history can only be retrieved by admin reviewer and uploader of the data`() {
         val dataId = uploadEuTaxoDataAndValidatePendingState()
         acceptDatasetAsReviewer(dataId, QaServiceQaStatus.Accepted)
         waitForExpectedQaStatus(dataId, BackendQaStatus.Accepted)
@@ -256,20 +260,45 @@ class QaServiceTest {
     fun `check that content of the review queue can be retrieved after a pending dataset was deleted`() {
         val dataIdAlpha = uploadEuTaxoDataAndValidatePendingState()
         val dataIdBeta = uploadEuTaxoDataAndValidatePendingState()
+
         withTechnicalUser(TechnicalUser.Admin) {
-            val qaServiceController = apiAccessor.qaServiceControllerApi
-            await().atMost(2, TimeUnit.SECONDS)
-                .until { qaServiceController.getInfoOnUnreviewedDatasets().map { it.dataId }.contains(dataIdAlpha) }
-            await().atMost(2, TimeUnit.SECONDS)
-                .until { qaServiceController.getInfoOnUnreviewedDatasets().map { it.dataId }.contains(dataIdBeta) }
-            val dataDeletionControllerApi = apiAccessor.dataDeletionControllerApi
-            dataDeletionControllerApi.deleteCompanyAssociatedData(dataIdAlpha)
             await().atMost(2, TimeUnit.SECONDS)
                 .until {
-                    !qaServiceController.getInfoOnUnreviewedDatasets().map { it.dataId }.contains(dataIdAlpha) &&
-                        qaServiceController.getInfoOnUnreviewedDatasets().map { it.dataId }.contains(dataIdBeta)
+                    val dataIdsInQueue = getInfoOnUnreviewedDatasets().map { it.dataId }
+                    dataIdsInQueue.contains(dataIdAlpha) && dataIdsInQueue.contains(dataIdBeta)
+                }
+
+            apiAccessor.dataDeletionControllerApi.deleteCompanyAssociatedData(dataIdAlpha)
+            await().atMost(2, TimeUnit.SECONDS)
+                .until {
+                    val dataIdsInQueue = getInfoOnUnreviewedDatasets().map { it.dataId }
+                    !dataIdsInQueue.contains(dataIdAlpha) && dataIdsInQueue.contains(dataIdBeta)
                 }
         }
+    }
+
+    private fun getInfoOnUnreviewedDatasets(
+        companyNameFilter: String? = null,
+        reportingPeriodFilter: String? = null,
+        dataTypeFilter: QaControllerApi.DataTypeGetInfoOnUnreviewedDatasets? = null,
+    ): List<ReviewQueueResponse> {
+        return qaServiceController.getInfoOnUnreviewedDatasets(
+            reportingPeriod = reportingPeriodFilter?.let { setOf(it) } ?: emptySet(),
+            dataType = dataTypeFilter?.let { listOf(it) } ?: emptyList(),
+            companyName = companyNameFilter,
+        )
+    }
+
+    private fun getNumberOfUnreviewedDatasets(
+        companyNameFilter: String? = null,
+        reportingPeriodFilter: String? = null,
+        dataTypeFilter: QaControllerApi.DataTypeGetNumberOfUnreviewedDatasets? = null,
+    ): Int {
+        return qaServiceController.getNumberOfUnreviewedDatasets(
+            reportingPeriod = reportingPeriodFilter?.let { setOf(it) } ?: emptySet(),
+            dataType = dataTypeFilter?.let { listOf(it) } ?: emptyList(),
+            companyName = companyNameFilter,
+        )
     }
 
     @Test
@@ -284,32 +313,21 @@ class QaServiceTest {
                 apiAccessor.dataControllerApiForSfdrData.postCompanyAssociatedSfdrData(datasetBeta).dataId
 
             await().atMost(2, TimeUnit.SECONDS).until {
-                qaServiceController.getInfoOnUnreviewedDatasets(reportingPeriod = setOf("abcdefgh-1"))
-                    .map { it.dataId }.first() == dataIdAlpha &&
-                    qaServiceController.getNumberOfUnreviewedDatasets(reportingPeriod = setOf("abcdefgh-1")) == 1
+                getInfoOnUnreviewedDatasets(reportingPeriodFilter = "abcdefgh-1").first().dataId == dataIdAlpha &&
+                    getNumberOfUnreviewedDatasets(reportingPeriodFilter = "abcdefgh-1") == 1
             }
+
             await().atMost(2, TimeUnit.SECONDS).until {
-                qaServiceController.getInfoOnUnreviewedDatasets(
-                    dataType = listOf(
-                        QaControllerApi.DataTypeGetInfoOnUnreviewedDatasets.sfdr,
-                    ),
-                )
-                    .map { it.dataId }.first() == dataIdBeta &&
-                    qaServiceController.getNumberOfUnreviewedDatasets(
-                        dataType = listOf(
-                            QaControllerApi.DataTypeGetNumberOfUnreviewedDatasets.sfdr,
-                        ),
+                getInfoOnUnreviewedDatasets(dataTypeFilter = QaControllerApi.DataTypeGetInfoOnUnreviewedDatasets.sfdr)
+                    .first().dataId == dataIdBeta &&
+                    getNumberOfUnreviewedDatasets(
+                        dataTypeFilter = QaControllerApi.DataTypeGetNumberOfUnreviewedDatasets.sfdr,
                     ) == 1
             }
             await().atMost(2, TimeUnit.SECONDS).until {
-                qaServiceController.getInfoOnUnreviewedDatasets(companyName = "Beta-Company-")
-                    .map { it.dataId }.first() == dataIdBeta &&
-                    qaServiceController.getNumberOfUnreviewedDatasets(
-                        companyName = "Beta-Company-",
-                    ) == 1
+                getInfoOnUnreviewedDatasets(companyNameFilter = "Beta-Company-").first().dataId == dataIdBeta &&
+                    getNumberOfUnreviewedDatasets(companyNameFilter = "Beta-Company-") == 1
             }
         }
     }
-
-    // TODO aufräumen (repetitiver und unübersichtlicher Code!)
 }
