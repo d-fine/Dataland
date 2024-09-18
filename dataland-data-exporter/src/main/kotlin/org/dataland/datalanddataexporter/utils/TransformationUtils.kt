@@ -1,17 +1,20 @@
 package org.dataland.datalanddataexporter.utils
 
 import com.fasterxml.jackson.databind.JsonNode
+import org.dataland.datalandbackend.openApiClient.model.CompanyInformation
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.util.Properties
-import org.dataland.datalandbackend.openApiClient.model.CompanyInformation
 
+/**
+ * A class containing utility methods for transforming data from JSON to CSV.
+ */
 object TransformationUtils {
 
-    private val leiIdentifier = "Lei"
-    private val isinIdentifier = "Isin"
-    private val leiHeader = "LEI"
-    private val isinHeader = "ISIN"
+    private const val LEI_IDENTIFIER = "Lei"
+    private const val ISIN_IDENTIFIER = "Isin"
+    private const val LEI_HEADER = "LEI"
+    private const val ISIN_HEADER = "ISIN"
 
     /**
      * Method to get the current timestamp in the format yyyyMMdd
@@ -29,12 +32,12 @@ object TransformationUtils {
      * @return a list of mappings from LEI to ISIN (empty list if no LEI or ISINs are present)
      */
     fun getLeiToIsinMapping(companyData: CompanyInformation): List<Map<String, String>> {
-        val lei = companyData.identifiers[leiIdentifier] ?: emptyList()
-        val isins = companyData.identifiers[isinIdentifier] ?: emptyList()
+        val lei = companyData.identifiers[LEI_IDENTIFIER] ?: emptyList()
+        val isins = companyData.identifiers[ISIN_IDENTIFIER] ?: emptyList()
         val leiToIsinData = mutableListOf(mapOf<String, String>())
         if (lei.isNotEmpty()) {
             isins.forEach { isin ->
-                leiToIsinData.add(mapOf(leiHeader to lei.first(), isinHeader to isin))
+                leiToIsinData.add(mapOf(LEI_HEADER to lei.first(), ISIN_HEADER to isin))
             }
         }
         return leiToIsinData
@@ -73,6 +76,10 @@ object TransformationUtils {
      */
     fun checkConsistency(node: JsonNode, transformationRules: Map<String, String>) {
         val leafNodesInJsonNode = getNonArrayLeafNodeFieldNames(node, "")
+        println("Leaf nodes in JSON node:")
+        println(leafNodesInJsonNode)
+        println("Keys of the transformation rules:")
+        println(transformationRules.keys.toString())
         require(transformationRules.keys.containsAll(leafNodesInJsonNode)) {
             "Transformation rules do not cover all leaf nodes in the data."
         }
@@ -87,7 +94,9 @@ object TransformationUtils {
     fun getNonArrayLeafNodeFieldNames(node: JsonNode, currentPath: String): MutableList<String> {
         val leafNodeFieldNames = mutableListOf<String>()
         if (node.isValueNode) {
-            leafNodeFieldNames.add(currentPath)
+            if (!node.isNull) {
+                leafNodeFieldNames.add(currentPath)
+            }
         } else {
             // This does not handle arrays (they are skipped)
             node.fields().forEachRemaining { (fieldName, value) ->

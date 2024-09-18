@@ -1,19 +1,21 @@
 package org.dataland.datalanddataexporter.utils
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import java.io.File
-import org.dataland.datalanddataexporter.utils.TransformationUtils
 import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertDoesNotThrow
 import org.junit.jupiter.api.assertThrows
-
+import java.io.File
 
 class TransformationUtilsTest {
     val testTransformationConfig = "./csv/configs/transformation.config"
-    //val inputJson = this.javaClass.classLoader.getResourceAsStream("./src/test/resources/csv/input.json")
+
+    // val inputJson = this.javaClass.classLoader.getResourceAsStream("./src/test/resources/csv/input.json")
     val inputJson = File("./src/test/resources/csv/input.json")
-    //val inconsistentJson = this.javaClass.classLoader.getResourceAsStream("./src/test/resources/csv/inconsistent.json")
+
+    // val inconsistentJson =
+    // this.javaClass.classLoader.getResourceAsStream("./src/test/resources/csv/inconsistent.json")
     val inconsistentJson = File("./src/test/resources/csv/inconsistent.json")
     val expectedTransformationRules = mapOf(
         "presentMapping" to "presentHeader",
@@ -22,11 +24,14 @@ class TransformationUtilsTest {
         "nested.nestedMapping" to "nestedHeader",
     )
     val expectedHeaders = listOf("presentHeader", "mappedButNoDataHeader", "nestedHeader")
-    val expectedCsvData =
-        mapOf("presentHeader" to "Here", "mappedButNoDataHeader" to "", "nestedHeader" to "NestedHere")
-    val expectedCsvFileContent =
-        "\"nestedHeader\"|\"presentHeader\"|\"mappedButNoDataHeader\"\n\"NestedHere\"|\"Here\"|\n"
+    val expectedJsonPaths = listOf("presentMapping", "notMapped", "nested.nestedMapping")
 
+    @Test
+    fun `check that the retrieved JSON paths are as exüected`() {
+        val jsonNode = ObjectMapper().readTree(inputJson)
+        val result = TransformationUtils.getNonArrayLeafNodeFieldNames(jsonNode, "")
+        assertEquals(expectedJsonPaths, result)
+    }
 
     @Test
     fun `check that a duplicated header entry in the transformation rules throws an error`() {
@@ -38,7 +43,7 @@ class TransformationUtilsTest {
     @Test
     fun `check that getHeaders returns correct headers`() {
         val headers = TransformationUtils.getHeaders(expectedTransformationRules)
-        Assertions.assertEquals(expectedHeaders, headers)
+        assertEquals(expectedHeaders, headers)
     }
 
     @Test
@@ -50,13 +55,14 @@ class TransformationUtilsTest {
     @Test
     fun `check that checkConsistency throws an exception for inconsistent data`() {
         val jsonNode = ObjectMapper().readTree(inconsistentJson)
-        assertThrows<IllegalArgumentException> { TransformationUtils.checkConsistency(jsonNode, expectedTransformationRules) }
+        assertThrows<IllegalArgumentException> {
+            TransformationUtils.checkConsistency(jsonNode, expectedTransformationRules)
+        }
     }
 
     @Test
     fun `check that readTransformationConfig returns correct transformation rules`() {
         val transformationRules = TransformationUtils.readTransformationConfig(testTransformationConfig)
-        Assertions.assertEquals(expectedTransformationRules, transformationRules)
+        assertEquals(expectedTransformationRules, transformationRules)
     }
-
 }

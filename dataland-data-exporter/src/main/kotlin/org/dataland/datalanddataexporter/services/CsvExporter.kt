@@ -5,9 +5,6 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.dataformat.csv.CsvMapper
 import com.fasterxml.jackson.dataformat.csv.CsvSchema
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
-import org.springframework.stereotype.Component
-import java.io.File
-import org.dataland.datalanddataexporter.utils.TransformationUtils.getTimestamp
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.api.MetaDataControllerApi
 import org.dataland.datalandbackend.openApiClient.api.SfdrDataControllerApi
@@ -15,10 +12,13 @@ import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalanddataexporter.utils.TransformationUtils.checkConsistency
 import org.dataland.datalanddataexporter.utils.TransformationUtils.getHeaders
 import org.dataland.datalanddataexporter.utils.TransformationUtils.getLeiToIsinMapping
+import org.dataland.datalanddataexporter.utils.TransformationUtils.getTimestamp
 import org.dataland.datalanddataexporter.utils.TransformationUtils.readTransformationConfig
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
+import org.springframework.stereotype.Component
+import java.io.File
 
 /**
  * A class for handling the transformation of JSON files into CSV
@@ -29,20 +29,16 @@ class CsvExporter(
     @Autowired private val sfdrDataControllerApi: SfdrDataControllerApi,
     @Autowired private val companyDataControllerApi: CompanyDataControllerApi,
     @Value("\${dataland.data-exporter.output-directory}")
-    private val outputDirectory: String
+    private val outputDirectory: String,
 ) {
-
 
     private val logger = LoggerFactory.getLogger(javaClass)
 
-
     private val leiIdentifier = "Lei"
-
 
     private val leiHeader = "LEI"
 
     private val isinHeader = "ISIN"
-
 
     /*private fun readJsonFileFromResourceFolder(): JsonNode {
         val input = this.javaClass.classLoader.getResourceAsStream("./src/main/resources/example.json")
@@ -58,6 +54,7 @@ class CsvExporter(
      * transforms it into a CSV file and writes it to the resources folder.
      * @return A string message
      */
+    // Remove this function and the complete REST API
     fun dummyFunction(): String {
         exportAllSfdrData()
         return "Hello World!"
@@ -74,6 +71,9 @@ class CsvExporter(
         return dataIds
     }
 
+    /**
+     * Exports all SFDR data and the associated LEI to ISIN mapping to a CSV file.
+     */
     fun exportAllSfdrData() {
         logger.info("Exporting all SFDR data.")
         val timestamp = getTimestamp()
@@ -91,7 +91,6 @@ class CsvExporter(
             logger.info("Exporting data with ID: $dataId")
             val dataToExport = mutableMapOf<String, String>()
 
-
             val companyAssociatedData = sfdrDataControllerApi.getCompanyAssociatedSfdrData(dataId)
             val companyData = companyDataControllerApi.getCompanyById(companyAssociatedData.companyId)
 
@@ -99,14 +98,15 @@ class CsvExporter(
             dataToExport["companyId"] = companyAssociatedData.companyId
             dataToExport["companyName"] = companyData.companyInformation.companyName
             val lei = companyData.companyInformation.identifiers[leiIdentifier] ?: emptyList()
-            dataToExport["lei"] = if (lei.isEmpty()) "" else lei[0]
+            dataToExport["Lei"] = if (lei.isEmpty()) "" else lei[0]
 
             isinData.addAll(getLeiToIsinMapping(companyData.companyInformation))
 
-            val jsonData = jacksonObjectMapper().writeValueAsString(companyAssociatedData.data)
+            val objectMapper = jacksonObjectMapper().findAndRegisterModules()
+            val jsonData = objectMapper.writeValueAsString(companyAssociatedData.data)
             val data = ObjectMapper().readTree(jsonData)
             checkConsistency(data, transformationRules)
-            dataToExport+=mapJsonToCsv(data, transformationRules)
+            dataToExport += mapJsonToCsv(data, transformationRules)
             csvData.add(dataToExport)
         }
         logger.info("Writing results to CSV files.")

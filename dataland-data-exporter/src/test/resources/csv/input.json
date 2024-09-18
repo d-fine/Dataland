@@ -3,5 +3,6 @@
   "notMapped": "NotMapped",
   "nested": {
     "nestedMapping": "NestedHere"
-  }
+  },
+  "nullValued": null
 }
