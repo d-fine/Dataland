@@ -4,7 +4,10 @@ import org.awaitility.Awaitility.await
 import org.dataland.communitymanager.openApiClient.model.CompanyRole
 import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataEutaxonomyNonFinancialsData
 import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataSfdrData
+import org.dataland.datalandbackend.openApiClient.model.DataMetaInformation
 import org.dataland.datalandqaservice.openApiClient.api.QaControllerApi
+import org.dataland.datalandqaservice.openApiClient.model.QaStatus
+import org.dataland.datalandqaservice.openApiClient.model.ReviewInformationResponse
 import org.dataland.datalandqaservice.openApiClient.model.ReviewQueueResponse
 import org.dataland.e2etests.auth.GlobalAuth.withTechnicalUser
 import org.dataland.e2etests.auth.TechnicalUser
@@ -61,9 +64,7 @@ class QaServiceTest {
     @AfterEach
     fun clearTheReviewQueue() {
         withTechnicalUser(TechnicalUser.Reviewer) {
-            getInfoOnUnreviewedDatasets().forEach {
-                apiAccessor.qaServiceControllerApi.assignQaStatus(it.dataId, QaServiceQaStatus.Rejected)
-            }
+            getInfoOnUnreviewedDatasets().forEach { assignQaStatus(it.dataId, QaServiceQaStatus.Rejected) }
             await().atMost(2, TimeUnit.SECONDS)
                 .until {
                     getInfoOnUnreviewedDatasets().isEmpty()
@@ -108,17 +109,16 @@ class QaServiceTest {
         withTechnicalUser(user) {
             val dataId =
                 dataController.postCompanyAssociatedEutaxonomyNonFinancialsData(dummyEuTaxoDataAlpha, false).dataId
-            assertEquals(BackendQaStatus.Pending, apiAccessor.metaDataControllerApi.getDataMetaInfo(dataId).qaStatus)
+            assertEquals(BackendQaStatus.Pending, getDataMetaInfo(dataId).qaStatus)
             return dataId
         }
     }
 
     private fun acceptDatasetAsReviewer(dataId: String, qaStatus: QaServiceQaStatus) {
         withTechnicalUser(TechnicalUser.Reviewer) {
-            val qaServiceController = apiAccessor.qaServiceControllerApi
             await().atMost(2, TimeUnit.SECONDS)
                 .until { getInfoOnUnreviewedDatasets().map { it.dataId }.contains(dataId) }
-            qaServiceController.assignQaStatus(dataId, qaStatus)
+            assignQaStatus(dataId, qaStatus)
             assertFalse(getInfoOnUnreviewedDatasets().map { it.dataId }.contains(dataId))
         }
     }
@@ -134,13 +134,11 @@ class QaServiceTest {
                 requireNotNull(shouldUploaderBeVisible)
                 assertEquals(
                     if (shouldUploaderBeVisible) TechnicalUser.Uploader.technicalUserId else null,
-                    apiAccessor.metaDataControllerApi.getDataMetaInfo(dataId).uploaderUserId,
+                    getDataMetaInfo(dataId).uploaderUserId,
                 )
                 dataController.getCompanyAssociatedEutaxonomyNonFinancialsData(dataId)
             } else {
-                val metaInfoException = assertThrows<BackendClientException> {
-                    apiAccessor.metaDataControllerApi.getDataMetaInfo(dataId)
-                }
+                val metaInfoException = assertThrows<BackendClientException> { getDataMetaInfo(dataId) }
                 assertEquals(expectedClientError403Text, metaInfoException.message)
                 val dataException = assertThrows<BackendClientException> {
                     dataController.getCompanyAssociatedEutaxonomyNonFinancialsData(dataId)
@@ -151,8 +149,7 @@ class QaServiceTest {
     }
 
     private fun waitForExpectedQaStatus(dataId: String, expectedQaStatus: BackendQaStatus) {
-        await().atMost(2, TimeUnit.SECONDS)
-            .until { apiAccessor.metaDataControllerApi.getDataMetaInfo(dataId).qaStatus == expectedQaStatus }
+        await().atMost(2, TimeUnit.SECONDS).until { getDataMetaInfo(dataId).qaStatus == expectedQaStatus }
     }
 
     @Test
@@ -160,14 +157,21 @@ class QaServiceTest {
         var expectedDataIdsInReviewQueue = emptyList<String>()
 
         withTechnicalUser(TechnicalUser.Uploader) {
-            expectedDataIdsInReviewQueue = (1..10).map {
-                Thread.sleep(3000) // TODO remove at the end => fix race condition
-                dataController.postCompanyAssociatedEutaxonomyNonFinancialsData(dummyEuTaxoDataAlpha, false).dataId
+            expectedDataIdsInReviewQueue = (1..5).map {
+                Thread.sleep(5000) // TODO debugging
+                val nextDataId =
+                    dataController.postCompanyAssociatedEutaxonomyNonFinancialsData(dummyEuTaxoDataAlpha, false).dataId
+                println("+++FOR LOOP: " + nextDataId) // TODO debugging
+                nextDataId
             }
         }
+        println("+++EXPECTED DATA IDS: ") // TODO debugging
+        println(expectedDataIdsInReviewQueue) // TODO debugging
 
         withTechnicalUser(TechnicalUser.Reviewer) {
             val actualDataIdsInReviewQueue = getInfoOnUnreviewedDatasets().map { it.dataId }
+            println("+++ACTUAL DATA IDS: ") // TODO debugging
+            println(actualDataIdsInReviewQueue) // TODO debugging
             assertEquals(expectedDataIdsInReviewQueue, actualDataIdsInReviewQueue)
         }
     }
@@ -177,14 +181,9 @@ class QaServiceTest {
         val dataId = uploadEuTaxoDataAndValidatePendingState()
         acceptDatasetAsReviewer(dataId, QaServiceQaStatus.Accepted)
         waitForExpectedQaStatus(dataId, BackendQaStatus.Accepted)
-        val exception = assertThrows<QaServiceClientException> {
-            apiAccessor.qaServiceControllerApi.assignQaStatus(dataId, QaServiceQaStatus.Rejected)
-        }
+        val exception = assertThrows<QaServiceClientException> { assignQaStatus(dataId, QaServiceQaStatus.Rejected) }
         assertEquals("Client error : 400 ", exception.message)
-        assertNotEquals(
-            BackendQaStatus.Rejected,
-            apiAccessor.metaDataControllerApi.getDataMetaInfo(dataId).qaStatus,
-        )
+        assertNotEquals(BackendQaStatus.Rejected, getDataMetaInfo(dataId).qaStatus)
     }
 
     @Test
@@ -199,8 +198,7 @@ class QaServiceTest {
         usersWithAccessToReviewHistory.forEach {
             withTechnicalUser(it) {
                 assertDoesNotThrow {
-                    val reviewInformationResponse =
-                        apiAccessor.qaServiceControllerApi.getDatasetById(UUID.fromString(dataId))
+                    val reviewInformationResponse = getReviewInfoById(UUID.fromString(dataId))
                     if (it == TechnicalUser.Admin) {
                         assertEquals(
                             TechnicalUser.Reviewer.technicalUserId,
@@ -215,9 +213,7 @@ class QaServiceTest {
         val usersWithoutAccessToReviewHistory = listOf(TechnicalUser.Reader, TechnicalUser.PremiumUser)
         usersWithoutAccessToReviewHistory.forEach {
             withTechnicalUser(it) {
-                val exception = assertThrows<QaServiceClientException> {
-                    apiAccessor.qaServiceControllerApi.getDatasetById(UUID.fromString(dataId))
-                }
+                val exception = assertThrows<QaServiceClientException> { getReviewInfoById(UUID.fromString(dataId)) }
                 assertEquals(expectedClientError403Text, exception.message)
             }
         }
@@ -237,15 +233,13 @@ class QaServiceTest {
         waitForExpectedQaStatus(dataId, BackendQaStatus.Accepted)
 
         withTechnicalUser(reader) {
-            val reviewInformationResponse = apiAccessor.qaServiceControllerApi.getDatasetById(UUID.fromString(dataId))
+            val reviewInformationResponse = getReviewInfoById(UUID.fromString(dataId))
             assertEquals(null, reviewInformationResponse.reviewerKeycloakId)
             assertEquals(dataId, reviewInformationResponse.dataId)
         }
 
         withTechnicalUser(TechnicalUser.Uploader) {
-            val exception = assertThrows<QaServiceClientException> {
-                apiAccessor.qaServiceControllerApi.getDatasetById(UUID.fromString(dataId))
-            }
+            val exception = assertThrows<QaServiceClientException> { getReviewInfoById(UUID.fromString(dataId)) }
             assertEquals(expectedClientError403Text, exception.message)
         }
 
@@ -299,6 +293,18 @@ class QaServiceTest {
             dataType = dataTypeFilter?.let { listOf(it) } ?: emptyList(),
             companyName = companyNameFilter,
         )
+    }
+
+    private fun getDataMetaInfo(dataId: String): DataMetaInformation {
+        return apiAccessor.metaDataControllerApi.getDataMetaInfo(dataId)
+    }
+
+    private fun assignQaStatus(dataId: String, qaStatus: QaStatus) {
+        apiAccessor.qaServiceControllerApi.assignQaStatus(dataId, qaStatus)
+    }
+
+    private fun getReviewInfoById(dataId: UUID): ReviewInformationResponse {
+        return qaServiceController.getDatasetById(dataId)
     }
 
     @Test
