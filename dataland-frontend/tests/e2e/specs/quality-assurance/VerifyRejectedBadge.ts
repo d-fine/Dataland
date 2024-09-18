@@ -38,10 +38,8 @@ describeIf(
           lksgFixture.reportingPeriod
         ).then((uploadIds) => {
           cy.intercept('**/qa/datasets').as('getDataIdsOfReviewableDatasets');
-          cy.intercept(`**/api/metadata/${uploadIds.dataId}`).as('getDataMetaInfoOfPostedDataset');
           cy.visit(`/qualityassurance`);
           cy.wait('@getDataIdsOfReviewableDatasets');
-          cy.wait('@getDataMetaInfoOfPostedDataset');
           cy.intercept(`**/api/data/lksg/${uploadIds.dataId}`).as('getPostedDataset');
           cy.contains(`${uploadIds.dataId}`).click();
           cy.wait('@getPostedDataset');
