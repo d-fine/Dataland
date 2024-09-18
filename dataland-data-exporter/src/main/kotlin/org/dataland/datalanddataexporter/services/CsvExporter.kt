@@ -121,6 +121,7 @@ class CsvExporter(
      * @return The JSON representation of the data
      */
     private fun convertDataToJson(companyAssociatedData: CompanyAssociatedDataSfdrData): JsonNode {
+        //ToDo: local data is written into odd format [YYYY,MM,DD] instead of [YYYY-MM-DD]
         val objectMapper = jacksonObjectMapper().findAndRegisterModules()
         val jsonData = objectMapper.writeValueAsString(companyAssociatedData.data)
         val data = ObjectMapper().readTree(jsonData)
