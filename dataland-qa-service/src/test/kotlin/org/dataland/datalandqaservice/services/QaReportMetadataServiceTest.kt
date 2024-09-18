@@ -68,6 +68,14 @@ class QaReportMetadataServiceTest(
     }
 
     @Test
+    fun `check that an empty list is returned when searching for non existing company`() {
+        val result: List<DataAndQaReportMetadata> =
+            qaReportMetadataService
+                .searchDataAndQaReportMetadata(null, true, null, null, null, companyIdentifier)
+        Assertions.assertTrue(result.isEmpty())
+    }
+
+    @Test
     fun `search active reports without additional filter`() {
         val dataMetaInformation: List<DataMetaInformation> = listOf(
             DataMetaInformation(dataId1, companyId, DataTypeEnum.sfdr, 1, "test", true, QaStatus.Accepted, null),

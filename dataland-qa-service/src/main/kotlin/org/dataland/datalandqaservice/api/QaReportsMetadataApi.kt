@@ -37,7 +37,6 @@ interface QaReportsMetadataApi {
     @ApiResponses(
         value = [
             ApiResponse(responseCode = "200", description = "Found QA reports for applied filters."),
-            ApiResponse(responseCode = "404", description = "Found no QA reports for applied filters."),
         ],
     )
     @GetMapping(
