@@ -983,19 +983,6 @@
           }
         ],
         "responses": {
-          "404": {
-            "description": "Found no QA reports for applied filters.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/DataAndQaReportMetadata"
-                  }
-                }
-              }
-            }
-          },
           "200": {
             "description": "Found QA reports for applied filters.",
             "content": {
