@@ -245,7 +245,7 @@ interface RequestApi {
     )
     @ApiResponses(
         value = [
-            ApiResponse(responseCode = "200", description = "TODO."),
+            ApiResponse(responseCode = "200", description = "Successfully retrieved the number of data requests."),
         ],
     )
     @GetMapping(

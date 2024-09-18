@@ -849,7 +849,7 @@
         ],
         "responses": {
           "200": {
-            "description": "TODO.",
+            "description": "Successfully retrieved the number of unreviewed datasets.",
             "content": {
               "application/json": {
                 "schema": {
@@ -3411,9 +3411,6 @@
           "message": {
             "type": "string"
           },
-          "companyId": {
-            "type": "string"
-          },
           "companyName": {
             "type": "string"
           },
@@ -3423,12 +3420,15 @@
           "reportingPeriod": {
             "type": "string"
           },
-          "dataId": {
-            "type": "string"
-          },
           "receptionTime": {
             "type": "integer",
             "format": "int64"
+          },
+          "dataId": {
+            "type": "string"
+          },
+          "companyId": {
+            "type": "string"
           }
         }
       },

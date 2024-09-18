@@ -28,7 +28,6 @@ interface QaApi {
     @Operation(
         summary = "Get relevant meta info on unreviewed datasets.",
         description = "Gets a filtered and chronologically ordered list of relevant meta info on unreviewed datasets.",
-        // TODO bleibt die chronologische Reihenfolge erhalten, auch wenn man filtert? => am Ende checken
     )
     @ApiResponses(
         value = [
@@ -114,7 +113,10 @@ interface QaApi {
     )
     @ApiResponses(
         value = [
-            ApiResponse(responseCode = "200", description = "TODO."),
+            ApiResponse(
+                responseCode = "200",
+                description = "Successfully retrieved the number of unreviewed datasets.",
+            ),
         ],
     )
     @GetMapping(
