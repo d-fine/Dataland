@@ -10,6 +10,7 @@ import org.dataland.e2etests.auth.TechnicalUser
 import org.dataland.e2etests.utils.ApiAccessor
 import org.dataland.e2etests.utils.DocumentManagerAccessor
 import org.dataland.e2etests.utils.testDataProvivders.GeneralTestDataProvider
+import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.Assertions.assertNotEquals
@@ -56,9 +57,17 @@ class QaServiceTest {
         dummySfdrDataBeta = CompanyAssociatedDataSfdrData(companyIdBeta, "2024", testDataSfdr)
     }
 
+    @AfterEach
+    fun clearTheReviewQueue() {
+        withTechnicalUser(TechnicalUser.Reviewer) {
+            apiAccessor.qaServiceControllerApi.getInfoOnUnreviewedDatasets().forEach {
+                apiAccessor.qaServiceControllerApi.assignQaStatus(it.dataId, QaServiceQaStatus.Rejected)
+            }
+        }
+    }
+
     @Test
     fun `post dummy data and accept it and check the qa status changes and check different users access permissions`() {
-        println("+++1")
         val dataId = uploadDatasetAndValidatePendingState()
         reviewDatasetAsReviewerAndAssertSuccess(dataId, QaServiceQaStatus.Accepted)
         awaitQaStatusChange(dataId, BackendQaStatus.Accepted)
@@ -70,7 +79,6 @@ class QaServiceTest {
 
     @Test
     fun `post dummy data and reject it and check the qa status changes and check different users access permissions`() {
-        println("+++2")
         val dataId = uploadDatasetAndValidatePendingState()
         reviewDatasetAsReviewerAndAssertSuccess(dataId, QaServiceQaStatus.Rejected)
         withTechnicalUser(TechnicalUser.Uploader) {
@@ -84,7 +92,6 @@ class QaServiceTest {
 
     @Test
     fun `post dummy data and check different users access permissions`() {
-        println("+++3")
         val dataId = uploadDatasetAndValidatePendingState()
         canUserSeeUploaderData(dataId, TechnicalUser.Reader, false)
         canUserSeeUploaderData(dataId, TechnicalUser.Uploader, true, true)
@@ -145,8 +152,6 @@ class QaServiceTest {
 
     @Test
     fun `check that the review queue is correctly ordered`() {
-        println("+++4")
-        clearReviewQueue()
         var expectedDataIdsInReviewQueue = emptyList<String>()
 
         withTechnicalUser(TechnicalUser.Uploader) {
@@ -163,17 +168,8 @@ class QaServiceTest {
         }
     }
 
-    private fun clearReviewQueue() {
-        withTechnicalUser(TechnicalUser.Reviewer) {
-            apiAccessor.qaServiceControllerApi.getInfoOnUnreviewedDatasets().forEach {
-                apiAccessor.qaServiceControllerApi.assignQaStatus(it.dataId, QaServiceQaStatus.Rejected)
-            }
-        }
-    }
-
     @Test
     fun `check that an already reviewed dataset can not be assigned a different qa status`() {
-        println("+++5")
         val dataId = uploadDatasetAndValidatePendingState()
         reviewDatasetAsReviewerAndAssertSuccess(dataId, QaServiceQaStatus.Accepted)
         awaitQaStatusChange(dataId, BackendQaStatus.Accepted)
@@ -189,7 +185,6 @@ class QaServiceTest {
 
     @Test
     fun `check the a data set with review history can only retrieved by admin reviewer and uploader of the data`() {
-        println("+++6")
         val dataId = uploadDatasetAndValidatePendingState()
         reviewDatasetAsReviewerAndAssertSuccess(dataId, QaServiceQaStatus.Accepted)
         awaitQaStatusChange(dataId, BackendQaStatus.Accepted)
@@ -226,22 +221,16 @@ class QaServiceTest {
 
     @Test
     fun `check that a reader can access the review history of the dataset they uploaded but an uploader cant`() {
-        println("+++7")
         val reader = TechnicalUser.Reader
         withTechnicalUser(TechnicalUser.Admin) {
             apiAccessor.companyRolesControllerApi.assignCompanyRole(
                 CompanyRole.CompanyOwner, UUID.fromString(companyIdAlpha), UUID.fromString(reader.technicalUserId),
             )
         }
-        println("checkpoint A")
 
         val dataId = uploadDatasetAndValidatePendingState(reader)
         reviewDatasetAsReviewerAndAssertSuccess(dataId, QaServiceQaStatus.Accepted)
-        println("checkpoint A-B")
-
         awaitQaStatusChange(dataId, BackendQaStatus.Accepted)
-
-        println("checkpoint B")
 
         withTechnicalUser(reader) {
             val reviewInformationResponse = apiAccessor.qaServiceControllerApi.getDatasetById(UUID.fromString(dataId))
@@ -265,7 +254,6 @@ class QaServiceTest {
 
     @Test
     fun `check that content of the review queue can be retrieved after a pending dataset was deleted`() {
-        println("+++8")
         val dataIdAlpha = uploadDatasetAndValidatePendingState()
         val dataIdBeta = uploadDatasetAndValidatePendingState()
         withTechnicalUser(TechnicalUser.Admin) {
@@ -286,9 +274,6 @@ class QaServiceTest {
 
     @Test
     fun `check that filtering works as expected when retrieving meta info on unreviewed datasets`() {
-        println("+++9")
-        clearReviewQueue()
-
         val datasetAlpha = dummyEuTaxoDataAlpha.copy(reportingPeriod = "abcdefgh-1")
         val datasetBeta = dummySfdrDataBeta.copy(reportingPeriod = "abcdefgh-2")
 
