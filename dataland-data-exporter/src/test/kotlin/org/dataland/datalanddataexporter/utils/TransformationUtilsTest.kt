@@ -7,27 +7,32 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertDoesNotThrow
 import org.junit.jupiter.api.assertThrows
 import java.io.File
+import org.dataland.datalanddataexporter.utils.TransformationUtils.COMPANY_ID_HEADER
+import org.dataland.datalanddataexporter.utils.TransformationUtils.COMPANY_NAME_HEADER
+import org.dataland.datalanddataexporter.utils.TransformationUtils.LEI_HEADER
+import org.dataland.datalanddataexporter.utils.TransformationUtils.REPORTING_PERIOD_HEADER
 
 class TransformationUtilsTest {
-    val testTransformationConfig = "./csv/configs/transformation.config"
+    private val testTransformationConfig = "./csv/configs/transformation.config"
 
     // val inputJson = this.javaClass.classLoader.getResourceAsStream("./src/test/resources/csv/input.json")
-    val inputJson = File("./src/test/resources/csv/input.json")
+    private val inputJson = File("./src/test/resources/csv/input.json")
 
     // val inconsistentJson =
     // this.javaClass.classLoader.getResourceAsStream("./src/test/resources/csv/inconsistent.json")
-    val inconsistentJson = File("./src/test/resources/csv/inconsistent.json")
-    val expectedTransformationRules = mapOf(
+    private val inconsistentJson = File("./src/test/resources/csv/inconsistent.json")
+    private val expectedTransformationRules = mapOf(
         "presentMapping" to "presentHeader",
         "notMapped" to "",
         "mappedButNoData" to "mappedButNoDataHeader",
         "nested.nestedMapping" to "nestedHeader",
     )
-    val expectedHeaders = listOf("presentHeader", "mappedButNoDataHeader", "nestedHeader")
-    val expectedJsonPaths = listOf("presentMapping", "notMapped", "nested.nestedMapping")
+    private val expectedHeaders = listOf("presentHeader", "mappedButNoDataHeader", "nestedHeader") +
+            listOf(COMPANY_ID_HEADER, COMPANY_NAME_HEADER, REPORTING_PERIOD_HEADER, LEI_HEADER)
+    private val expectedJsonPaths = listOf("presentMapping", "notMapped", "nested.nestedMapping")
 
     @Test
-    fun `check that the retrieved JSON paths are as exüected`() {
+    fun `check that the retrieved JSON paths are as expected`() {
         val jsonNode = ObjectMapper().readTree(inputJson)
         val result = TransformationUtils.getNonArrayLeafNodeFieldNames(jsonNode, "")
         assertEquals(expectedJsonPaths, result)

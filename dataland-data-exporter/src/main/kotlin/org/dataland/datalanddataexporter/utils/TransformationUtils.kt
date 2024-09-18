@@ -11,10 +11,13 @@ import java.util.Properties
  */
 object TransformationUtils {
 
-    private const val LEI_IDENTIFIER = "Lei"
+    const val LEI_IDENTIFIER = "Lei"
     private const val ISIN_IDENTIFIER = "Isin"
-    private const val LEI_HEADER = "LEI"
-    private const val ISIN_HEADER = "ISIN"
+    const val LEI_HEADER = "LEI"
+    const val ISIN_HEADER = "ISIN"
+    const val COMPANY_ID_HEADER = "Company ID"
+    const val COMPANY_NAME_HEADER = "Company Name"
+    const val REPORTING_PERIOD_HEADER = "Reporting Period"
 
     /**
      * Method to get the current timestamp in the format yyyyMMdd
@@ -65,9 +68,19 @@ object TransformationUtils {
         val headers = mutableListOf<String>()
         transformationRules.forEach { (_, csvHeader) -> if (csvHeader.isNotEmpty()) headers.add(csvHeader) }
         require(headers.isNotEmpty()) { "No headers found in transformation rules." }
+        headers.addAll(getCompanyRelatedHeaders())
         require(headers.distinct().size == headers.size) { "Duplicate headers found in transformation rules." }
         return headers
     }
+
+    /**
+     * Gets the headers for company-related entries that are independent of the data transformation rules.
+     * @return A list of headers
+     */
+    private fun getCompanyRelatedHeaders(): List<String> {
+        return listOf(COMPANY_ID_HEADER, COMPANY_NAME_HEADER, REPORTING_PERIOD_HEADER, LEI_HEADER)
+    }
+
 
     /**
      * Checks the consistency of the transformation rules with the JSON data.
@@ -76,10 +89,6 @@ object TransformationUtils {
      */
     fun checkConsistency(node: JsonNode, transformationRules: Map<String, String>) {
         val leafNodesInJsonNode = getNonArrayLeafNodeFieldNames(node, "")
-        println("Leaf nodes in JSON node:")
-        println(leafNodesInJsonNode)
-        println("Keys of the transformation rules:")
-        println(transformationRules.keys.toString())
         require(transformationRules.keys.containsAll(leafNodesInJsonNode)) {
             "Transformation rules do not cover all leaf nodes in the data."
         }

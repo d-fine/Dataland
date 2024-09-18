@@ -19,6 +19,12 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Component
 import java.io.File
+import org.dataland.datalanddataexporter.utils.TransformationUtils.COMPANY_ID_HEADER
+import org.dataland.datalanddataexporter.utils.TransformationUtils.COMPANY_NAME_HEADER
+import org.dataland.datalanddataexporter.utils.TransformationUtils.ISIN_HEADER
+import org.dataland.datalanddataexporter.utils.TransformationUtils.LEI_HEADER
+import org.dataland.datalanddataexporter.utils.TransformationUtils.LEI_IDENTIFIER
+import org.dataland.datalanddataexporter.utils.TransformationUtils.REPORTING_PERIOD_HEADER
 
 /**
  * A class for handling the transformation of JSON files into CSV
@@ -33,12 +39,6 @@ class CsvExporter(
 ) {
 
     private val logger = LoggerFactory.getLogger(javaClass)
-
-    private val leiIdentifier = "Lei"
-
-    private val leiHeader = "LEI"
-
-    private val isinHeader = "ISIN"
 
     /*private fun readJsonFileFromResourceFolder(): JsonNode {
         val input = this.javaClass.classLoader.getResourceAsStream("./src/main/resources/example.json")
@@ -94,11 +94,11 @@ class CsvExporter(
             val companyAssociatedData = sfdrDataControllerApi.getCompanyAssociatedSfdrData(dataId)
             val companyData = companyDataControllerApi.getCompanyById(companyAssociatedData.companyId)
 
-            dataToExport["reportingPeriod"] = companyAssociatedData.reportingPeriod
-            dataToExport["companyId"] = companyAssociatedData.companyId
-            dataToExport["companyName"] = companyData.companyInformation.companyName
-            val lei = companyData.companyInformation.identifiers[leiIdentifier] ?: emptyList()
-            dataToExport["Lei"] = if (lei.isEmpty()) "" else lei[0]
+            dataToExport[REPORTING_PERIOD_HEADER] = companyAssociatedData.reportingPeriod
+            dataToExport[COMPANY_ID_HEADER] = companyAssociatedData.companyId
+            dataToExport[COMPANY_NAME_HEADER] = companyData.companyInformation.companyName
+            val leiEntry = companyData.companyInformation.identifiers[LEI_IDENTIFIER] ?: emptyList()
+            dataToExport[LEI_HEADER] = if (leiEntry.isEmpty()) "" else leiEntry[0]
 
             isinData.addAll(getLeiToIsinMapping(companyData.companyInformation))
 
@@ -111,7 +111,7 @@ class CsvExporter(
         }
         logger.info("Writing results to CSV files.")
         writeCsv(csvData, outputFile, headers)
-        writeCsv(isinData, isinOutputFile, listOf(leiHeader, isinHeader))
+        writeCsv(isinData, isinOutputFile, listOf(LEI_HEADER, ISIN_HEADER))
     }
 
     /**

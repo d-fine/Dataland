@@ -46,7 +46,7 @@ class CsvExporterTest() {
     )
 
     // ToDo fake fixture laden?
-    val mockSfdrData = SfdrData(
+    private final val mockSfdrData = SfdrData(
         general = SfdrGeneral(
             SfdrGeneralGeneral(
                 dataDate = LocalDate.parse("2021-01-01"),
