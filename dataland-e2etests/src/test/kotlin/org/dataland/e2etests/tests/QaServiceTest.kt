@@ -19,6 +19,7 @@ import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.Assertions.assertNotEquals
 import org.junit.jupiter.api.BeforeAll
+import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
 import org.junit.jupiter.api.assertDoesNotThrow
@@ -61,6 +62,7 @@ class QaServiceTest {
         dummySfdrDataBeta = CompanyAssociatedDataSfdrData(companyIdBeta, "2024", testDataSfdr)
     }
 
+    @BeforeEach
     @AfterEach
     fun clearTheReviewQueue() {
         withTechnicalUser(TechnicalUser.Reviewer) {
@@ -158,20 +160,19 @@ class QaServiceTest {
 
         withTechnicalUser(TechnicalUser.Uploader) {
             expectedDataIdsInReviewQueue = (1..5).map {
-                Thread.sleep(5000) // TODO debugging
                 val nextDataId =
                     dataController.postCompanyAssociatedEutaxonomyNonFinancialsData(dummyEuTaxoDataAlpha, false).dataId
-                println("+++FOR LOOP: " + nextDataId) // TODO debugging
+                withTechnicalUser(TechnicalUser.Admin) {
+                    await().atMost(2, TimeUnit.SECONDS).until {
+                        getInfoOnUnreviewedDatasets().last().dataId == nextDataId
+                    }
+                }
                 nextDataId
             }
         }
-        println("+++EXPECTED DATA IDS: ") // TODO debugging
-        println(expectedDataIdsInReviewQueue) // TODO debugging
 
         withTechnicalUser(TechnicalUser.Reviewer) {
             val actualDataIdsInReviewQueue = getInfoOnUnreviewedDatasets().map { it.dataId }
-            println("+++ACTUAL DATA IDS: ") // TODO debugging
-            println(actualDataIdsInReviewQueue) // TODO debugging
             assertEquals(expectedDataIdsInReviewQueue, actualDataIdsInReviewQueue)
         }
     }

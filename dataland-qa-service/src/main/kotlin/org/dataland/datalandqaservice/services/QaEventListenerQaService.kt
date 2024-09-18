@@ -48,7 +48,7 @@ constructor(
     private val logger = LoggerFactory.getLogger(javaClass)
 
     private val reviewerIdAutomatedQaService = "automated-qa-service"
-    private data class ForwardedQaMessage( // TODO Laurins Konzept hier umsetzen?
+    private data class ForwardedQaMessage(
         val identifier: String,
         val comment: String,
     )
