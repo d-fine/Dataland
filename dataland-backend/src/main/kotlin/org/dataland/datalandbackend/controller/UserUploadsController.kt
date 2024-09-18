@@ -18,7 +18,6 @@ class UserUploadsController(
 ) : UserUploadsApi {
     override fun getUserUploadsDataMetaInformation(userId: String):
         ResponseEntity<List<DataMetaInformationForMyDatasets>> {
-        // TODO need to investigate whether or not this should be changed
         if (DatalandAuthentication.fromContextOrNull()?.userId != userId) {
             throw InsufficientRightsApiException(
                 "You are not allowed to retrieve information about this user.",
