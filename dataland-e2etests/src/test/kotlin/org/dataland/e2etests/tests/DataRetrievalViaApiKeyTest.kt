@@ -108,7 +108,13 @@ class DataRetrievalViaApiKeyTest {
         val downloadedStoredCompany = apiAccessor.companyDataControllerApi.getCompanyById(companyId)
 
         assertEquals(
-            expectedStoredCompany,
+            expectedStoredCompany.copy(
+                companyInformation = expectedStoredCompany
+                    .companyInformation.copy(
+                        companyContactDetails = expectedStoredCompany
+                            .companyInformation.companyContactDetails?.sorted(),
+                    ),
+            ),
             downloadedStoredCompany,
             "The received company $downloadedStoredCompany does not equal the expected company $expectedStoredCompany",
         )
@@ -147,7 +153,16 @@ class DataRetrievalViaApiKeyTest {
         val apiKey = apiKeyHelper.obtainApikeyForTechnicalUser(technicalUser, 1)
         GlobalAuth.setBearerToken(apiKey.apiKey)
         val downloadedStoredCompany = apiAccessor.companyDataControllerApi.getCompanyById(companyId)
-        assertEquals(expectedStoredCompany, downloadedStoredCompany)
+        assertEquals(
+            expectedStoredCompany.copy(
+                companyInformation = expectedStoredCompany
+                    .companyInformation.copy(
+                        companyContactDetails = expectedStoredCompany
+                            .companyInformation.companyContactDetails?.sorted(),
+                    ),
+            ),
+            downloadedStoredCompany,
+        )
 
         apiKeyHelper.revokeApiKeyForTechnicalUserAndResetAuthentication(technicalUser)
         GlobalAuth.setBearerToken(apiKey.apiKey)
@@ -271,7 +286,7 @@ class DataRetrievalViaApiKeyTest {
 
     @Test
     fun `generate an API key per technical user and get the meta info about that API key for that user`() {
-        TechnicalUser.values().forEach { userType ->
+        TechnicalUser.entries.forEach { userType ->
             val apiKeyAndMetaInfo = apiKeyHelper.authenticateApiCallsWithApiKeyForTechnicalUser(userType)
             val apiKeyMetaInfoFromEndpoint = apiKeyHelper.getApiKeyMetaInformationForTechnicalUser(userType)
             assertEquals(

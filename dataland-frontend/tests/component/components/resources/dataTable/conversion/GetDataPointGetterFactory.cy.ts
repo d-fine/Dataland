@@ -28,7 +28,7 @@ const dummyBaseDocumentReference: BaseDocumentReference = {
 const dummyExtendedDocumentReference: ExtendedDocumentReference = {
   fileReference: 'reference',
   fileName: 'name',
-  page: 8,
+  page: '8-9',
 };
 
 const dummyField: Field = {

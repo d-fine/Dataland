@@ -96,27 +96,34 @@
             allow-unknown-option
           />
         </div>
-        <div>
-          <UploadFormHeader :label="kpiNameMappings.page ?? ''" :description="kpiInfoMappings.page ?? ''" />
+        <div v-if="isValidFileName(isMounted, currentReportValue)">
+          <UploadFormHeader :label="'Page(s)'" :description="pageNumberDescription" />
           <FormKit
             outer-class="w-100"
-            :disabled="!dataPointIsAvailable"
-            v-model="currentPageValue"
-            type="number"
+            type="text"
             name="page"
-            placeholder="Page"
-            validation-label="Page"
-            step="1"
-            min="0"
-            validation="min:0"
+            placeholder="Page(s)"
+            v-model="currentPageValue"
+            :validation-messages="{
+              validatePageNumber: pageNumberValidationErrorMessage,
+            }"
+            :validation-rules="{ validatePageNumber }"
+            validation="validatePageNumber"
             ignore="true"
+            :disabled="!dataPointIsAvailable"
           />
         </div>
       </div>
       <FormKit v-if="isValidFileName(isMounted, currentReportValue)" type="group" name="dataSource">
         <FormKit type="hidden" name="fileName" v-model="currentReportValue" />
         <FormKit type="hidden" name="fileReference" :modelValue="fileReferenceAccordingToName" />
-        <FormKit type="hidden" name="page" v-model="currentPageValue" />
+        <FormKit
+          type="hidden"
+          name="page"
+          :validation-rules="{ validatePageNumber }"
+          validation="validatePageNumber"
+          v-model="filteredPageForFileReference"
+        />
       </FormKit>
     </div>
 
@@ -153,16 +160,19 @@ import UploadFormHeader from '@/components/forms/parts/elements/basic/UploadForm
 import { FormKit } from '@formkit/vue';
 import { QualityOptions } from '@clients/backend';
 import DataPointHeader from '@/components/forms/parts/kpiSelection/DataPointHeader.vue';
-import { getFileName, getFileReferenceByFileName } from '@/utils/FileUploadUtils';
+import { getAvailableFileNames, getFileReferenceByFileName, PAGE_NUMBER_DESCRIPTION } from '@/utils/FileUploadUtils';
 import { isValidFileName, noReportLabel } from '@/utils/DataSource';
 import SingleSelectFormElement from '@/components/forms/parts/elements/basic/SingleSelectFormElement.vue';
 import { humanizeStringOrNumber } from '@/utils/StringFormatter';
+import { PAGE_NUMBER_VALIDATION_ERROR_MESSAGE, validatePageNumber } from '@/utils/ValidationUtils';
 
 export default defineComponent({
   name: 'DataPointFormWithToggle',
   components: { SingleSelectFormElement, DataPointHeader, UploadFormHeader, FormKit, InputSwitch },
   emits: ['dataPointAvailableToggle'],
   data: () => ({
+    pageNumberDescription: PAGE_NUMBER_DESCRIPTION,
+    pageNumberValidationErrorMessage: PAGE_NUMBER_VALIDATION_ERROR_MESSAGE,
     isMounted: false,
     dataPointIsAvailable: true,
     qualityOptions: Object.values(QualityOptions).map((qualityOption: string) => ({
@@ -209,10 +219,19 @@ export default defineComponent({
   },
   computed: {
     reportsName(): string[] {
-      return getFileName(this.reportsNameAndReferences);
+      return getAvailableFileNames(this.reportsNameAndReferences);
     },
     fileReferenceAccordingToName() {
       return getFileReferenceByFileName(this.currentReportValue, this.reportsNameAndReferences);
+    },
+    filteredPageForFileReference: {
+      get() {
+        return this.currentPageValue === '' ? undefined : this.currentPageValue;
+      },
+
+      set(newValue: undefined | string) {
+        this.currentPageValue = newValue;
+      },
     },
   },
   props: {
@@ -242,6 +261,7 @@ export default defineComponent({
     },
   },
   methods: {
+    validatePageNumber,
     /**
      * Toggle dataPointIsAvailable variable value and emit event
      *

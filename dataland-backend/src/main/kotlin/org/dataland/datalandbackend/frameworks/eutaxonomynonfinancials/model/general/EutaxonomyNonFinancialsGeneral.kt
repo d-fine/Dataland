@@ -31,6 +31,7 @@ data class EutaxonomyNonFinancialsGeneral(
     @field:Valid()
     val euTaxonomyActivityLevelReporting: ExtendedDataPoint<YesNo?>? = null,
 
+    @field:Valid()
     val assurance: AssuranceDataPoint? = null,
 
     @field:Valid()

@@ -20,7 +20,7 @@
     "prepopulate": "cypress run --spec tests/e2e/specs/prepopulation/index.ts",
     "updatepackages": "npm-check-updates -u",
     "updatepackagelock": "npm update --save --include=dev && npm audit fix",
-    "checkdependencies": "depcheck --ignores='@clients/*,@e2e/*,@sharedUtils/*,@ct/*,@vue/tsconfig,axios,tsconfig-paths,eslint-plugin-*,@vue/eslint-config-*,lint-staged'"
+    "checkdependencies": "depcheck --ignores='@clients/*,@e2e/*,@sharedUtils/*,@ct/*,@vue/tsconfig,axios,tsconfig-paths,eslint-plugin-*,@vue/eslint-config-*,lint-staged,@types/dompurify,@types/markdown-it'"
   },
   "dependencies": {
     "@formkit/core": "^1.6.2",
@@ -45,6 +45,8 @@
     "@faker-js/faker": "8.4.1",
     "@rushstack/eslint-patch": "1.10.4",
     "@tsconfig/node20": "20.1.4",
+    "@types/dompurify": "^3.0.5",
+    "@types/markdown-it": "^14.1.2",
     "@types/node": "20.14.15",
     "@vitejs/plugin-vue": "5.0.5",
     "@vue/eslint-config-prettier": "9.0.0",
@@ -53,12 +55,14 @@
     "@vue/tsconfig": "0.5.1",
     "cypress": "12.11.0",
     "depcheck": "1.4.7",
+    "dompurify": "^3.1.6",
     "eslint": "8.57.0",
     "eslint-plugin-cypress": "3.5.0",
     "eslint-plugin-jsdoc": "48.11.0",
     "eslint-plugin-vue": "9.27.0",
     "git-commit-id": "2.0.1",
     "lint-staged": "15.2.2",
+    "markdown-it": "^14.1.0",
     "mocha": "10.4.0",
     "npm-check-updates": "16.14.18",
     "otplib": "12.0.1",
@@ -69,6 +73,7 @@
     "typescript": "5.4.5",
     "vite": "5.2.10",
     "vite-plugin-istanbul": "6.0.0",
+    "vue-markdown-render": "^2.2.1",
     "vue-tsc": "2.0.21"
   }
 }

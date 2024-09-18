@@ -1,5 +1,5 @@
 import { generateFixtureDataset } from '@e2e/fixtures/FixtureUtils';
-import { type SfdrData, YesNo } from '@clients/backend';
+import { QualityOptions, type SfdrData, YesNo } from '@clients/backend';
 import { generateSfdrFixtures } from './SfdrDataFixtures';
 import { type FixtureData } from '@sharedUtils/Fixtures';
 
@@ -25,7 +25,7 @@ export function generateSfdrPreparedFixtures(): Array<FixtureData<SfdrData>> {
   preparedFixtures.push(manipulateFixtureForEmptyStringDocumentReference(generateSfdrDataWithoutNulls()));
   preparedFixtures.push(manipulateFixtureForInvalidPercentageInput(generateSfdrDataWithoutNulls()));
   preparedFixtures.push(manipulateFixtureForTwoInvalidInputs(generateSfdrDataWithoutNulls()));
-
+  preparedFixtures.push(generateFixtureWithDifferentExtendedDatapointCases(generateSfdrDataWithoutNulls()));
   return preparedFixtures;
 }
 
@@ -196,5 +196,38 @@ function generateFixtureWithIncompleteReferencedReport(input: FixtureData<SfdrDa
   input.t.general.general.referencedReports = {
     notReferencedFile: { fileReference: 'invalidFileReference', fileName: 'notReferencedFile' },
   };
+  return input;
+}
+
+/**
+ * Generates an SFDR dataset with three data points that only contain a value, a quality and a comment.
+ * @param input Fixture data to be manipulated
+ * @returns the dataset
+ */
+function generateFixtureWithDifferentExtendedDatapointCases(input: FixtureData<SfdrData>): FixtureData<SfdrData> {
+  input.companyInformation.companyName = 'TestForDataPointDisplayLogic';
+  if (input.t.environmental?.greenhouseGasEmissions?.scope1GhgEmissionsInTonnes) {
+    input.t.environmental.greenhouseGasEmissions.scope1GhgEmissionsInTonnes = { value: 30 };
+  }
+  if (input.t.environmental?.greenhouseGasEmissions?.scope2GhgEmissionsInTonnes) {
+    input.t.environmental.greenhouseGasEmissions.scope2GhgEmissionsInTonnes = { quality: QualityOptions.NoDataFound };
+  }
+  if (input.t.environmental?.greenhouseGasEmissions?.scope2GhgEmissionsLocationBasedInTonnes) {
+    input.t.environmental.greenhouseGasEmissions.scope2GhgEmissionsLocationBasedInTonnes = {
+      comment: 'This is a datapoint with only comment info.',
+    };
+  }
+  if (input.t.environmental?.greenhouseGasEmissions?.scope2GhgEmissionsMarketBasedInTonnes) {
+    input.t.environmental.greenhouseGasEmissions.scope2GhgEmissionsMarketBasedInTonnes = {
+      quality: QualityOptions.Estimated,
+      comment: '',
+    };
+  }
+  if (input.t.environmental?.greenhouseGasEmissions?.scope3GhgEmissionsInTonnes) {
+    input.t.environmental.greenhouseGasEmissions.scope3GhgEmissionsInTonnes = {
+      value: 12,
+      comment: '',
+    };
+  }
   return input;
 }

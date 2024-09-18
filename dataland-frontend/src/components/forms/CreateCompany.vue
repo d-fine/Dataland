@@ -220,7 +220,7 @@ import { getAllCountryCodes } from '@/utils/CountryCodeConverter';
 import { assertDefined } from '@/utils/TypeScriptUtils';
 import SuccessMessage from '@/components/messages/SuccessMessage.vue';
 import FailMessage from '@/components/messages/FailMessage.vue';
-import { checkCustomInputs } from '@/utils/ValidationsUtils';
+import { checkCustomInputs } from '@/utils/ValidationUtils';
 import Tooltip from 'primevue/tooltip';
 import {
   companyDataNames,
