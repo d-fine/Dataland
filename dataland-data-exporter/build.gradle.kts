@@ -99,7 +99,7 @@ tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
 
 ktlint {
     filter {
-        exclude("**/build/**")
+        exclude("**/build/clients/**")
     }
 }
 

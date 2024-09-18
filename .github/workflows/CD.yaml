@@ -190,7 +190,7 @@ jobs:
           BACKEND_URL: ${{ secrets.BACKEND_URL }}
           IGNORE_EXTERNAL_STORAGE_ERROR: ${{ github.event.inputs.ignoreExternalStorageError }}
           COMMUNITY_MANAGER_NOTIFICATION_SERVICE_FEATURE_FLAG: ${{ vars.COMMUNITY_MANAGER_NOTIFICATION_SERVICE_FEATURE_FLAG }}
-          DATA_EXPORTER_OUTPUT_PATH: ${{ secrets.DATA_EXPORTER_OUTPUT_PATH }}
+          DATA_EXPORTER_OUTPUT_DIRECTORY: ${{ secrets.DATA_EXPORTER_OUTPUT_DIRECTORY }}
       - uses: ./.github/workflows/dockerLogs
         if: always()
         with:

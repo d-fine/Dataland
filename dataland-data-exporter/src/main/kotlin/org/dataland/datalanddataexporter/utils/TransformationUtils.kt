@@ -2,9 +2,6 @@ package org.dataland.datalanddataexporter.utils
 
 import com.fasterxml.jackson.databind.JsonNode
 import org.dataland.datalandbackend.openApiClient.model.CompanyInformation
-import java.time.LocalDate
-import java.time.format.DateTimeFormatter
-import java.util.Properties
 
 /**
  * A class containing utility methods for transforming data from JSON to CSV.
@@ -12,22 +9,13 @@ import java.util.Properties
 object TransformationUtils {
 
     const val LEI_IDENTIFIER = "Lei"
-    private const val ISIN_IDENTIFIER = "Isin"
+    const val ISIN_IDENTIFIER = "Isin"
     const val LEI_HEADER = "LEI"
     const val ISIN_HEADER = "ISIN"
     const val COMPANY_ID_HEADER = "Company ID"
     const val COMPANY_NAME_HEADER = "Company Name"
     const val REPORTING_PERIOD_HEADER = "Reporting Period"
-
-    /**
-     * Method to get the current timestamp in the format yyyyMMdd
-     * @return the current timestamp
-     */
-    fun getTimestamp(): String {
-        val currentDate = LocalDate.now()
-        val formatter = DateTimeFormatter.ofPattern("yyyyMMdd")
-        return currentDate.format(formatter)
-    }
+    private const val NODE_FILTER = ".referencedReports."
 
     /**
      * Method to extract the mapping of LEI to ISIN from the given company data
@@ -44,19 +32,6 @@ object TransformationUtils {
             }
         }
         return leiToIsinData
-    }
-
-    /**
-     * Reads a transformation configuration file and returns a map of JSON paths to CSV headers.
-     * @param fileName The name of the transformation configuration file
-     * @return A map of JSON paths to CSV headers
-     */
-    fun readTransformationConfig(fileName: String): Map<String, String> {
-        val props = Properties()
-        props.load(this.javaClass.classLoader.getResourceAsStream(fileName))
-        return props
-            .map { (jsonPath, csvHeader) -> jsonPath.toString() to csvHeader.toString() }
-            .toMap()
     }
 
     /**
@@ -81,7 +56,6 @@ object TransformationUtils {
         return listOf(COMPANY_ID_HEADER, COMPANY_NAME_HEADER, REPORTING_PERIOD_HEADER, LEI_HEADER)
     }
 
-
     /**
      * Checks the consistency of the transformation rules with the JSON data.
      * @param node The JSON node
@@ -89,7 +63,8 @@ object TransformationUtils {
      */
     fun checkConsistency(node: JsonNode, transformationRules: Map<String, String>) {
         val leafNodesInJsonNode = getNonArrayLeafNodeFieldNames(node, "")
-        require(transformationRules.keys.containsAll(leafNodesInJsonNode)) {
+        val filteredNodes = leafNodesInJsonNode.filter { !it.contains(NODE_FILTER) }
+        require(transformationRules.keys.containsAll(filteredNodes)) {
             "Transformation rules do not cover all leaf nodes in the data."
         }
     }
@@ -114,5 +89,40 @@ object TransformationUtils {
             }
         }
         return leafNodeFieldNames
+    }
+
+    /**
+     * Gets the string value of the JSON node identified by the (possibly) nested JSON path.
+     * @param jsonNode The JSON node
+     * @param jsonPath The JSON path identifying the value
+     * @return The string representation of the value
+     */
+    fun getValueFromJsonNode(jsonNode: JsonNode, jsonPath: String): String {
+        var currentNode = jsonNode
+        jsonPath.split(".").forEach() { path ->
+            currentNode = currentNode.get(path) ?: return ""
+        }
+        return if (currentNode.isNull) {
+            ""
+        } else if (currentNode.isTextual) {
+            currentNode.textValue()
+        } else {
+            currentNode.toString()
+        }
+    }
+
+    /**
+     * Maps a JSON node to a CSV.
+     * @param jsonNode The JSON node
+     * @param transformationRules The transformation rules
+     * @return A map of CSV headers to values
+     */
+    fun mapJsonToCsv(jsonNode: JsonNode, transformationRules: Map<String, String>): Map<String, String> {
+        val csvData = mutableMapOf<String, String>()
+        transformationRules.forEach { (jsonPath, csvHeader) ->
+            if (csvHeader.isEmpty()) return@forEach
+            csvData[csvHeader] = getValueFromJsonNode(jsonNode, jsonPath)
+        }
+        return csvData
     }
 }

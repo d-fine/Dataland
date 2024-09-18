@@ -1,12 +1,12 @@
 package org.dataland.datalanddataexporter.services
 
-import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandapikeymanager.DatalandDataExporter
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.api.MetaDataControllerApi
 import org.dataland.datalandbackend.openApiClient.api.SfdrDataControllerApi
 import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataSfdrData
 import org.dataland.datalandbackend.openApiClient.model.CompanyInformation
+import org.dataland.datalandbackend.openApiClient.model.CompanyReport
 import org.dataland.datalandbackend.openApiClient.model.DataMetaInformation
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandbackend.openApiClient.model.QaStatus
@@ -15,7 +15,8 @@ import org.dataland.datalandbackend.openApiClient.model.SfdrGeneral
 import org.dataland.datalandbackend.openApiClient.model.SfdrGeneralGeneral
 import org.dataland.datalandbackend.openApiClient.model.SfdrGeneralGeneralFiscalYearDeviationOptions
 import org.dataland.datalandbackend.openApiClient.model.StoredCompany
-import org.junit.jupiter.api.Assertions
+import org.dataland.datalanddataexporter.utils.TransformationUtils.ISIN_IDENTIFIER
+import org.dataland.datalanddataexporter.utils.TransformationUtils.LEI_IDENTIFIER
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertDoesNotThrow
@@ -23,11 +24,10 @@ import org.mockito.Mockito.any
 import org.mockito.Mockito.mock
 import org.mockito.Mockito.`when`
 import org.springframework.boot.test.context.SpringBootTest
-import java.io.File
 import java.time.LocalDate
 
 @SpringBootTest(classes = [DatalandDataExporter::class])
-class CsvExporterTest() {
+class CsvExporterTest {
     private lateinit var csvDataExporter: CsvExporter
     private lateinit var mockMetadataControllerApi: MetaDataControllerApi
     private lateinit var mockSfdrDataControllerApi: SfdrDataControllerApi
@@ -52,6 +52,9 @@ class CsvExporterTest() {
                 dataDate = LocalDate.parse("2021-01-01"),
                 fiscalYearEnd = LocalDate.parse("2021-01-01"),
                 fiscalYearDeviation = SfdrGeneralGeneralFiscalYearDeviationOptions.Deviation,
+                referencedReports = mapOf(
+                    "mockReport" to CompanyReport(fileReference = "mockFileReference"),
+                ),
             ),
         ),
     )
@@ -90,8 +93,8 @@ class CsvExporterTest() {
         companyInformation = CompanyInformation(
             companyName = "mockCompanyName",
             identifiers = mapOf(
-                "lei" to listOf("mockLei"),
-                "isin" to listOf("mockIsin1", "mockIsin2"),
+                LEI_IDENTIFIER to listOf("mockLei"),
+                ISIN_IDENTIFIER to listOf("mockIsin1", "mockIsin2"),
             ),
             sector = "mockSector",
             countryCode = "mockCountryCode",
@@ -120,31 +123,11 @@ class CsvExporterTest() {
             metaDataControllerApi = mockMetadataControllerApi,
             sfdrDataControllerApi = mockSfdrDataControllerApi,
             companyDataControllerApi = mockCompanyDataControllerApi,
-            outputDirectory = "./src/test/resources/csv/output",
         )
-    }
-
-    // val inputJson = this.javaClass.classLoader.getResourceAsStream("./src/test/resources/csv/input.json")
-    val inputJson = File("./src/test/resources/csv/input.json")
-
-    val expectedTransformationRules = mapOf(
-        "presentMapping" to "presentHeader",
-        "notMapped" to "",
-        "mappedButNoData" to "mappedButNoDataHeader",
-        "nested.nestedMapping" to "nestedHeader",
-    )
-    val expectedCsvData =
-        mapOf("presentHeader" to "Here", "mappedButNoDataHeader" to "", "nestedHeader" to "NestedHere")
-
-    @Test
-    fun `check that mapJsonToCsv returns correct csv data`() {
-        val jsonNode = ObjectMapper().readTree(inputJson)
-        val csvData = csvDataExporter.mapJsonToCsv(jsonNode, expectedTransformationRules)
-        Assertions.assertEquals(expectedCsvData, csvData)
     }
 
     @Test
     fun `check that running the sfdr export does not throw an error`() {
-        assertDoesNotThrow { csvDataExporter.exportAllSfdrData() }
+        assertDoesNotThrow { csvDataExporter.exportSfdrData(outputDirectory = "./src/test/resources/csv/output") }
     }
 }
