@@ -134,7 +134,18 @@ describe('Component tests for the Quality Assurance page', () => {
 
   it('Check QA-overview-page for filtering on reporting period', () => {
     mountQaAssurancePageWithMocks();
-    // TODO reporting period filter (typing + date picker?)
+    const reportingPeriodToFilterFor = '2022';
+    cy.intercept(`**/qa/datasets?reportingPeriods=${reportingPeriodToFilterFor}&chunkSize=10&chunkIndex=0`, [
+      reviewQueueElementAlpha,
+    ]);
+    cy.intercept(`**/qa/numberOfUnreviewedDatasets?reportingPeriods=${reportingPeriodToFilterFor}`, '1');
+
+    cy.get('span[data-test="reportingPeriod"]').should('exist').click();
+    cy.contains('span', reportingPeriodToFilterFor).should('exist').click();
+    cy.get('span[data-test="reportingPeriod"]').should('exist').click();
+
+    cy.contains('td', `${dataIdAlpha}`);
+    cy.contains('td', `${dataIdBeta}`).should('not.exist');
   });
 
   // TODO combined filter
