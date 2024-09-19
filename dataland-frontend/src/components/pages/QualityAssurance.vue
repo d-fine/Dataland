@@ -15,7 +15,7 @@
                 <InputText
                   data-test="companyNameSearchbar"
                   v-model="searchBarInput"
-                  placeholder="Search by Company Name"
+                  placeholder="Search by company name"
                   class="w-12 pl-6 pr-6"
                 />
               </span>
@@ -23,7 +23,7 @@
                 <Calendar
                   data-test="reportingPeriod"
                   v-model="availableReportingPeriods"
-                  placeholder="Search by Reporting Period"
+                  placeholder="Search by reporting period"
                   :showIcon="true"
                   :manualInput="false"
                   view="year"
