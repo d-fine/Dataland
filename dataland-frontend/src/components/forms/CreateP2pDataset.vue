@@ -97,7 +97,7 @@ import { FormKit } from '@formkit/vue';
 import { computed, defineComponent, inject } from 'vue';
 import { assertDefined } from '@/utils/TypeScriptUtils';
 import { useRoute } from 'vue-router';
-import { checkCustomInputs } from '@/utils/ValidationsUtils';
+import { checkCustomInputs } from '@/utils/ValidationUtils';
 import { objectDropNull, type ObjectType } from '@/utils/UpdateObjectUtils';
 import { smoothScroll } from '@/utils/SmoothScroll';
 import { createSubcategoryVisibilityMap } from '@/utils/UploadFormUtils';
