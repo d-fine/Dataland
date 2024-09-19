@@ -2,7 +2,7 @@ package org.dataland.datalandqaservice.org.dataland.datalandqaservice.model
 
 /**
  * Comparable to the ReviewQueueEntity.
- * This class is used or the GET Response.
+ * This class is used for the GET Response.
  */
 interface ReviewQueueResponse {
     val dataId: String
