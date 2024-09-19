@@ -28,9 +28,10 @@ interface MetaDataApi {
      * A method to search for meta info about data sets registered by Dataland
      * @param companyId if set, filters the requested meta info to a specific company.
      * @param dataType if set, filters the requested meta info to a specific data type.
-     * @param showOnlyActive if set to true, only active datasets will be returned (e.g. no outdated ones)
+     * @param showOnlyActive if set to true, only active datasets will be returned (e.g. no outdated ones).
+     *   If set to false, all datasets will be returned regardless of their active status.
      * @param reportingPeriod if set, the method only returns meta info with this reporting period
-     * @param uploaderUserIds if set, the method only returns meta info for datasets uploader by this user ids.
+     * @param uploaderUserIds if set, the method will only return meta info for datasets uploaded by these user ids.
      * @param qaStatus if set, the method only returns meta info for datasets with this qa status
      * @return a list of matching DataMetaInformation
      */

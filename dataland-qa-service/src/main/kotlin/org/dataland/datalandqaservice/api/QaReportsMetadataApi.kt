@@ -21,12 +21,14 @@ import java.util.*
 interface QaReportsMetadataApi {
     /**
      * A method to retrieve metadata of QA reports based on filters.
-     * @param uploaderUserIds If set, only metadata of reports are returned that relate to a dataset of an uploader
+     * @param uploaderUserIds If set, only metadata of reports that pertain to datasets
+     *  from these uploaders will be returned.
      *  in uploaderUserIds.
-     * @param showOnlyActive If true, only metadata of reports are returned that are active
+     * @param showOnlyActive If true or empty, only metadata of reports are returned that are active.
+     *  If false, reports will be returned regardless of their active status.
      * @param qaStatus If set, only metadata of reports are returned that relate to a dataset with this qaStatus
-     * @param startDate If set, only metadata of reports are returned that are past the startDate
-     * @param endDate If set, only metadata of reports are returned that are before the endDate
+     * @param startDate If set, only metadata of reports are returned that were uploaded after the startDate.
+     * @param endDate If set, only metadata of reports are returned that were uploaded before the endDate.
      */
     @Operation(
         summary = "Get metadata of QA reports based on filters.",

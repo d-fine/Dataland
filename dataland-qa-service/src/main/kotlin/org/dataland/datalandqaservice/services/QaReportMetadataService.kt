@@ -40,8 +40,8 @@ class QaReportMetadataService(
      * @param uploaderUserIds set of user ids of the uploader
      * @param showOnlyActive whether to show only active data
      * @param qaStatus the qa status
-     * @param startDate start date of the search
-     * @param endDate end date of the search
+     * @param startDate searches for reports uploaded after the startDate.
+     * @param endDate searches for reports uploaded before the endDate.
      * @param companyIdentifier external identifier of the company
      * @return a list of all data and the connected meta information associated with a data set
      */
