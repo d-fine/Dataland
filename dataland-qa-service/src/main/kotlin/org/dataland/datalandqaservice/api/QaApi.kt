@@ -83,8 +83,8 @@ interface QaApi {
      * @param message (optional) message to be assigned to a dataset
      */
     @Operation(
-        summary = "Assign a quality status to a unreviewed dataset",
-        description = "Set the quality status after a dataset has been reviewed",
+        summary = "Assign a quality status to a unreviewed dataset.",
+        description = "Set the quality status after a dataset has been reviewed.",
     )
     @ApiResponses(
         value = [

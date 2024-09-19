@@ -94,8 +94,8 @@
         "tags": [
           "qa-controller"
         ],
-        "summary": "Assign a quality status to a unreviewed dataset",
-        "description": "Set the quality status after a dataset has been reviewed",
+        "summary": "Assign a quality status to a unreviewed dataset.",
+        "description": "Set the quality status after a dataset has been reviewed.",
         "operationId": "assignQaStatus",
         "parameters": [
           {
@@ -3411,23 +3411,23 @@
           "message": {
             "type": "string"
           },
+          "receptionTime": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "companyId": {
+            "type": "string"
+          },
           "companyName": {
             "type": "string"
           },
-          "framework": {
+          "dataId": {
             "type": "string"
           },
           "reportingPeriod": {
             "type": "string"
           },
-          "receptionTime": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "dataId": {
-            "type": "string"
-          },
-          "companyId": {
+          "framework": {
             "type": "string"
           }
         }
