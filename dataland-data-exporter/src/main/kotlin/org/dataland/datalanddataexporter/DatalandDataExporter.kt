@@ -1,16 +1,17 @@
-package org.dataland.datalandapikeymanager
+package org.dataland.datalanddataexporter
 
-import org.dataland.datalanddataexporter.configurations.OpenAPIConfiguration
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
 import org.springframework.context.annotation.ComponentScan
+import org.springframework.scheduling.annotation.EnableScheduling
 
 /**
  * Class to define the spring boot application
  */
 @SpringBootApplication
 @ComponentScan(basePackages = ["org.dataland"])
-class DatalandDataExporter : OpenAPIConfiguration
+@EnableScheduling
+class DatalandDataExporter
 
 /**
  * Main function to be executed for running the spring boot dataland API key manager process

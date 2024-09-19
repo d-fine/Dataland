@@ -38,18 +38,6 @@ class CsvExporter(
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
 
-    /**
-     * A dummy function that reads a JSON file from the resources folder,
-     * transforms it into a CSV file and writes it to the resources folder.
-     * @return A string message
-     */
-    // Remove this function and the complete REST API
-    fun dummyFunction(): String {
-        val outputDirectory = "/var/export/csv/sql_server"
-        exportSfdrData(outputDirectory)
-        return "Hello World!"
-    }
-
     @Suppress("UnusedPrivateMember") // Detect does not recognise the scheduled execution of this function
     @Scheduled(cron = "0 0 1 * * *")
     private fun triggerExport() {
@@ -76,7 +64,6 @@ class CsvExporter(
             val companyAssociatedData = sfdrDataControllerApi.getCompanyAssociatedSfdrData(dataId)
             val data = convertDataToJson(companyAssociatedData)
             val companyData = companyDataControllerApi.getCompanyById(companyAssociatedData.companyId)
-            dataToExport += getCompanyRelatedData(companyAssociatedData, companyData)
 
             try {
                 checkConsistency(data, transformationRules)
@@ -88,6 +75,7 @@ class CsvExporter(
 
             isinData.addAll(getLeiToIsinMapping(companyData.companyInformation))
             dataToExport += mapJsonToCsv(data, transformationRules)
+            dataToExport += getCompanyRelatedData(companyAssociatedData, companyData)
             csvData.add(dataToExport)
         }
         writeCsvFiles(outputDirectory, csvData, isinData, headers)

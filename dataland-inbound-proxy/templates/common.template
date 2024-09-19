@@ -48,11 +48,6 @@ location /community/ {
   include utils/communityManagerErrors.conf;
 }
 
-location /data-exporter/ {
-  proxy_pass http://data-exporter:8080/data-exporter/;
-  include utils/proxy.conf;
-}
-
 location /images/ {
   root /var/www;
 }

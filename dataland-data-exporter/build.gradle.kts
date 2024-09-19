@@ -12,13 +12,11 @@ val jacocoClasses by extra(
     },
 )
 val jacocoVersion: String by project
-val openApiGeneratorTimeOutThresholdInSeconds: String by project
 
 plugins {
     kotlin("jvm")
     kotlin("plugin.spring")
     jacoco
-    id("org.springdoc.openapi-gradle-plugin")
     id("com.gorylenko.gradle-git-properties")
     id("org.springframework.boot")
     kotlin("kapt")
@@ -28,7 +26,6 @@ dependencies {
     implementation(project(":dataland-backend-utils"))
     implementation(libs.jackson.module.kotlin)
     implementation(libs.jackson.dataformat.csv)
-    implementation(libs.springdoc.openapi.ui)
     implementation(libs.okhttp)
     implementation(libs.log4j)
     implementation(libs.log4j.api)
@@ -43,15 +40,6 @@ dependencies {
     implementation(project(":dataland-keycloak-adapter"))
     kapt(Spring.boot.configurationProcessor)
     testImplementation(Spring.boot.test)
-}
-
-openApi {
-    outputFileName.set("$projectDir/dataExporterOpenApi.json")
-    apiDocsUrl.set("http://localhost:8489/data-exporter/v3/api-docs")
-    customBootRun {
-        args.set(listOf("--server.port=8489"))
-    }
-    waitTimeInSeconds.set(openApiGeneratorTimeOutThresholdInSeconds.toInt())
 }
 
 val backendOpenApiFile = "${project.rootDir}/dataland-backend/backendOpenApi.json"

@@ -14,11 +14,18 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertDoesNotThrow
 import org.junit.jupiter.api.assertThrows
 import java.io.File
+import java.time.LocalDate
+import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataSfdrData
+import org.dataland.datalandbackend.openApiClient.model.SfdrData
+import org.dataland.datalandbackend.openApiClient.model.SfdrGeneral
+import org.dataland.datalandbackend.openApiClient.model.SfdrGeneralGeneral
+import org.dataland.datalandbackend.openApiClient.model.SfdrGeneralGeneralFiscalYearDeviationOptions
 
 class TransformationUtilsTest {
     private val inputJson = File("./src/test/resources/csv/inputs/input.json")
     private val inconsistentJson = File("./src/test/resources/csv/inputs/inconsistent.json")
     private val referencedReportJson = File("./src/test/resources/csv/inputs/referencedReport.json")
+    private val minimalSfdrDataJson = File("./src/test/resources/csv/inputs/minimalSfdrData.json")
     private val expectedTransformationRules = mapOf(
         "presentMapping" to "presentHeader",
         "notMapped" to "",
@@ -26,7 +33,7 @@ class TransformationUtilsTest {
         "nested.nestedMapping" to "nestedHeader",
     )
     private val expectedHeaders = listOf("presentHeader", "mappedButNoDataHeader", "nestedHeader") +
-        listOf(COMPANY_ID_HEADER, COMPANY_NAME_HEADER, REPORTING_PERIOD_HEADER, LEI_HEADER)
+            listOf(COMPANY_ID_HEADER, COMPANY_NAME_HEADER, REPORTING_PERIOD_HEADER, LEI_HEADER)
     private val expectedJsonPaths = listOf("presentMapping", "notMapped", "nested.nestedMapping")
     private val expectedCsvData =
         mapOf("presentHeader" to "Here", "mappedButNoDataHeader" to "", "nestedHeader" to "NestedHere")
@@ -86,10 +93,22 @@ class TransformationUtilsTest {
 
     @Test
     fun `check that the data class to json conversion correctly converts the date`() {
-        val date = "2022-01-01"
-        val jsonNode = ObjectMapper().readTree("{\"date\": \"$date\"}")
-        val result = TransformationUtils.mapJsonToCsv(jsonNode, mapOf("date" to "date"))
-        assertEquals(date, result["date"])
+        val expectedJson = ObjectMapper().readTree(minimalSfdrDataJson)
+        val input = CompanyAssociatedDataSfdrData(
+            data = SfdrData(
+                SfdrGeneral(
+                    SfdrGeneralGeneral(
+                        dataDate = LocalDate.parse("2022-01-01"),
+                        fiscalYearEnd = LocalDate.parse("2022-01-01"),
+                        fiscalYearDeviation = SfdrGeneralGeneralFiscalYearDeviationOptions.Deviation
+                    )
+                )
+            ),
+            companyId = "companyId",
+            reportingPeriod = "reportingPeriod",
+        )
+        val result = TransformationUtils.convertDataToJson(input)
+        assertEquals(expectedJson, result)
     }
 
     @Test

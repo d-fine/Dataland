@@ -5,4 +5,4 @@ FROM eclipse-temurin:21.0.3_9-jre-alpine@sha256:f05c742dd20051b104b939370f7db4d6
 COPY --from=builder /app/dataland-data-exporter/build/libs/dataland-data-exporter-0.0.1-SNAPSHOT.jar /jar/dataland-data-exporter.jar
 CMD ["java","-jar","/jar/dataland-data-exporter.jar"]
 
-HEALTHCHECK --interval=30s --timeout=3s CMD wget -nv -O- -t 1 http://localhost:8080/data-exporter/actuator/health | tee /dev/stderr | grep -q '^{"status":"UP"' || false
+HEALTHCHECK --interval=30s --timeout=3s CMD kill -0 1
