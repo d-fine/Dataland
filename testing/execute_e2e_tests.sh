@@ -38,7 +38,8 @@ docker exec -i dala-e2e-test-community-manager-db-1 /bin/bash -c "PGPASSWORD=${C
 
 services=("backend" "api-key-manager" "document-manager" "internal-storage" "qa-service" "community-manager" "email-service" "external-storage" "data-exporter")
 
-for service in ${services[@]} do
+for service in ${services[@]}
+do
   docker exec dala-e2e-test-${service}-1 pkill -f java
   timeout 90 sh -c "docker logs dala-e2e-test-${service}-1 --follow" > /dev/null
   docker cp dala-e2e-test-${service}-1:/jacoco.exec ./${service}-bootRun-${CYPRESS_TEST_GROUP}.exec
