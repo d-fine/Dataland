@@ -199,11 +199,6 @@ describe('Component tests for the Quality Assurance page', () => {
 
     clickOnReportingPeriod(reportingPeriodToFilterFor);
 
-    cy.wait('@repPeriodFilteredFetch');
-    cy.wait('@repPeriodFilteredNumberFetch');
-    cy.contains('td', `${dataIdAlpha}`);
-    cy.contains('td', `${dataIdBeta}`).should('not.exist');
-
     const companyNameSearchStringAlpha = 'Alpha';
     cy.intercept(
       `**/qa/datasets?reportingPeriods=${reportingPeriodToFilterFor}&companyName=${companyNameSearchStringAlpha}&chunkSize=10&chunkIndex=0`,
@@ -222,7 +217,6 @@ describe('Component tests for the Quality Assurance page', () => {
     cy.contains('td', `${dataIdBeta}`).should('not.exist');
 
     const companyNameSearchStringBeta = 'Beta';
-
     cy.intercept(
       `**/qa/datasets?reportingPeriods=${reportingPeriodToFilterFor}&companyName=${companyNameSearchStringBeta}&chunkSize=10&chunkIndex=0`,
       []
@@ -243,6 +237,10 @@ describe('Component tests for the Quality Assurance page', () => {
     cy.contains('span', 'No results for this search.');
 
     cy.get(`input[data-test="companyNameSearchbar"]`).clear();
+
+    cy.contains('td', `${dataIdAlpha}`);
+    cy.contains('td', `${dataIdBeta}`).should('not.exist');
+
     clickOnReportingPeriod(reportingPeriodToFilterFor);
 
     assertUnfilteredDatatableState();
