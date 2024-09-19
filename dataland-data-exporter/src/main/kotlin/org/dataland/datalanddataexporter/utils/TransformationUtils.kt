@@ -1,7 +1,11 @@
 package org.dataland.datalanddataexporter.utils
 
 import com.fasterxml.jackson.databind.JsonNode
+import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
+import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataSfdrData
 import org.dataland.datalandbackend.openApiClient.model.CompanyInformation
+import java.text.SimpleDateFormat
 
 /**
  * A class containing utility methods for transforming data from JSON to CSV.
@@ -124,5 +128,18 @@ object TransformationUtils {
             csvData[csvHeader] = getValueFromJsonNode(jsonNode, jsonPath)
         }
         return csvData
+    }
+
+    /**
+     * Converts the data class into a JSON object.
+     * @param companyAssociatedData The company associated data
+     * @return The JSON representation of the data
+     */
+    fun convertDataToJson(companyAssociatedData: CompanyAssociatedDataSfdrData): JsonNode {
+        val objectMapper = jacksonObjectMapper().findAndRegisterModules()
+        objectMapper.dateFormat = SimpleDateFormat("yyyy-MM-dd")
+        val jsonData = objectMapper.writeValueAsString(companyAssociatedData.data)
+        val data = ObjectMapper().readTree(jsonData)
+        return data
     }
 }

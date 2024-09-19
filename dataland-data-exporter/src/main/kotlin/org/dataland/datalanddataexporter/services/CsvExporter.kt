@@ -1,8 +1,5 @@
 package org.dataland.datalanddataexporter.services
 
-import com.fasterxml.jackson.databind.JsonNode
-import com.fasterxml.jackson.databind.ObjectMapper
-import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.api.MetaDataControllerApi
 import org.dataland.datalandbackend.openApiClient.api.SfdrDataControllerApi
@@ -20,6 +17,7 @@ import org.dataland.datalanddataexporter.utils.TransformationUtils.LEI_HEADER
 import org.dataland.datalanddataexporter.utils.TransformationUtils.LEI_IDENTIFIER
 import org.dataland.datalanddataexporter.utils.TransformationUtils.REPORTING_PERIOD_HEADER
 import org.dataland.datalanddataexporter.utils.TransformationUtils.checkConsistency
+import org.dataland.datalanddataexporter.utils.TransformationUtils.convertDataToJson
 import org.dataland.datalanddataexporter.utils.TransformationUtils.getHeaders
 import org.dataland.datalanddataexporter.utils.TransformationUtils.getLeiToIsinMapping
 import org.dataland.datalanddataexporter.utils.TransformationUtils.mapJsonToCsv
@@ -28,9 +26,6 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.scheduling.annotation.Scheduled
 import org.springframework.stereotype.Component
 import java.io.File
-import java.text.DateFormat
-import java.text.SimpleDateFormat
-import org.springframework.format.annotation.DateTimeFormat
 
 /**
  * A class for handling the transformation of JSON files into CSV
@@ -67,11 +62,6 @@ class CsvExporter(
      */
     fun exportSfdrData(outputDirectory: String) {
         logger.info("Starting the export of SFDR data.")
-        val timestamp = getTimestamp()
-        createDirectories(outputDirectory)
-        val outputFile = File("$outputDirectory/SfdrData_$timestamp.csv")
-        val isinOutputFile = File("$outputDirectory/SfdrIsin_$timestamp.csv")
-
         val csvData = mutableListOf<Map<String, String>>()
         val isinData = mutableListOf<Map<String, String>>()
 
@@ -98,13 +88,9 @@ class CsvExporter(
 
             isinData.addAll(getLeiToIsinMapping(companyData.companyInformation))
             dataToExport += mapJsonToCsv(data, transformationRules)
-
             csvData.add(dataToExport)
         }
-
-        logger.info("Writing results to CSV files.")
-        writeCsv(csvData, outputFile, headers)
-        writeCsv(isinData, isinOutputFile, listOf(LEI_HEADER, ISIN_HEADER))
+        writeCsvFiles(outputDirectory, csvData, isinData, headers)
     }
 
     /**
@@ -116,20 +102,6 @@ class CsvExporter(
         val metaData = metaDataControllerApi.getListOfDataMetaInfo(dataType = DataTypeEnum.sfdr)
         metaData.forEach { dataIds.add(it.dataId) }
         return dataIds
-    }
-
-    /**
-     * Converts the data class into a JSON object.
-     * @param companyAssociatedData The company associated data
-     * @return The JSON representation of the data
-     */
-    //ToDo Move this function to a utility class and write a test to cover the date time formatting
-    private fun convertDataToJson(companyAssociatedData: CompanyAssociatedDataSfdrData): JsonNode {
-        val objectMapper = jacksonObjectMapper().findAndRegisterModules()
-        objectMapper.dateFormat = SimpleDateFormat("yyyy-MM-dd")
-        val jsonData = objectMapper.writeValueAsString(companyAssociatedData.data)
-        val data = ObjectMapper().readTree(jsonData)
-        return data
     }
 
     /**
@@ -149,5 +121,27 @@ class CsvExporter(
         val leiEntry = companyData.companyInformation.identifiers[LEI_IDENTIFIER] ?: emptyList()
         extractedData[LEI_HEADER] = if (leiEntry.isEmpty()) "" else leiEntry[0]
         return extractedData
+    }
+
+    /**
+     * Writes the CSV files for ISINs and SFDR data to the output directory.
+     * @param outputDirectory The output directory
+     * @param csvData The SFDR CSV data
+     * @param isinData The LEI to ISIN mapping data
+     * @param headers The headers of the SFDR CSV data
+     */
+    fun writeCsvFiles(
+        outputDirectory: String,
+        csvData: List<Map<String, String>>,
+        isinData: List<Map<String, String>>,
+        headers: List<String>,
+    ) {
+        logger.info("Writing results to CSV files.")
+        val timestamp = getTimestamp()
+        val dataOutputFile = File("$outputDirectory/SfdrData_$timestamp.csv")
+        val isinOutputFile = File("$outputDirectory/SfdrIsin_$timestamp.csv")
+        createDirectories(outputDirectory)
+        writeCsv(csvData, dataOutputFile, headers)
+        writeCsv(isinData, isinOutputFile, listOf(LEI_HEADER, ISIN_HEADER))
     }
 }

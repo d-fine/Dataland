@@ -80,4 +80,12 @@ class TransformationUtilsTest {
         val csvData = TransformationUtils.mapJsonToCsv(jsonNode, expectedTransformationRules)
         assertEquals(expectedCsvData, csvData)
     }
+
+    @Test
+    fun `check that the data class to json conversion correctly converts the date`() {
+        val date = "2022-01-01"
+        val jsonNode = ObjectMapper().readTree("{\"date\": \"$date\"}")
+        val result = TransformationUtils.mapJsonToCsv(jsonNode, mapOf("date" to "date"))
+        assertEquals(date, result["date"])
+    }
 }

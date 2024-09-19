@@ -18,4 +18,12 @@ class FileHandlingUtilsTest {
         val transformationRules = FileHandlingUtils.readTransformationConfig(testTransformationConfig)
         assertEquals(expectedTransformationRules, transformationRules)
     }
+
+    @Test
+    fun `check that getTimestamp returns correct timestamp format`() {
+        val timestamp = FileHandlingUtils.getTimestamp()
+        assertEquals(13, timestamp.length)
+        val regex = "^202[4-9][0-1][0-9][0-3][0-9]_[0-2][0-9][0-5][0-9]$".toRegex()
+        assert(regex.matches(timestamp))
+    }
 }

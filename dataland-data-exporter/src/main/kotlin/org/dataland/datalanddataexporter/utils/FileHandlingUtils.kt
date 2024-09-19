@@ -4,7 +4,7 @@ import com.fasterxml.jackson.dataformat.csv.CsvMapper
 import com.fasterxml.jackson.dataformat.csv.CsvSchema
 import java.io.File
 import java.io.IOException
-import java.time.LocalDate
+import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.util.Properties
 
@@ -18,8 +18,8 @@ object FileHandlingUtils {
      * @return the current timestamp
      */
     fun getTimestamp(): String {
-        val currentDate = LocalDate.now()
-        val formatter = DateTimeFormatter.ofPattern("yyyyMMdd")
+        val currentDate = LocalDateTime.now()
+        val formatter = DateTimeFormatter.ofPattern("yyyyMMdd_HHmm")
         return currentDate.format(formatter)
     }
 
