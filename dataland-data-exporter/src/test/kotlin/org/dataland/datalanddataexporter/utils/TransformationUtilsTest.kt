@@ -1,6 +1,9 @@
 package org.dataland.datalanddataexporter.utils
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.dataformat.csv.CsvMapper
+import com.fasterxml.jackson.dataformat.csv.CsvSchema
+import org.dataland.datalanddataexporter.TestDataProvider
 import org.dataland.datalanddataexporter.utils.TransformationUtils.COMPANY_ID_HEADER
 import org.dataland.datalanddataexporter.utils.TransformationUtils.COMPANY_NAME_HEADER
 import org.dataland.datalanddataexporter.utils.TransformationUtils.LEI_HEADER
@@ -87,5 +90,34 @@ class TransformationUtilsTest {
         val jsonNode = ObjectMapper().readTree("{\"date\": \"$date\"}")
         val result = TransformationUtils.mapJsonToCsv(jsonNode, mapOf("date" to "date"))
         assertEquals(date, result["date"])
+    }
+
+    @Test
+    fun `check something very important`() {
+        val jsonNode = TestDataProvider.getMockSfdrJsonNode()
+        val transformationRule =
+            FileHandlingUtils.readTransformationConfig("./transformationRules/SfdrSqlServer.config")
+        val csvData = TransformationUtils.mapJsonToCsv(jsonNode, transformationRule)
+
+        val csvFile = File("./src/test/resources/csv/output.csv")
+        val mapper = CsvMapper()
+
+        val schema = CsvSchema.emptySchema().withHeader().withColumnSeparator('|')
+        val expectedCsvData = mapper
+            .readerFor(MutableMap::class.java)
+            .with(schema)
+            .readValue<Map<String, String>>(csvFile)
+        compareMaps(expectedCsvData, csvData)
+        assertEquals(csvData, expectedCsvData)
+    }
+
+    private fun compareMaps(map1: Map<String, String>, map2: Map<String, String>) {
+        if (map1.keys != map2.keys) {
+            println("Keys present in Map1 but not in Map2: ${map1.keys - map2.keys}")
+            println("Keys present in Map2 but not in Map1: ${map2.keys - map1.keys}")
+        }
+        map1.entries.intersect(map2.entries).filterNot { it.value == map2[it.key] }.forEach {
+            println("Key: ${it.key}, Map1 value: ${map1[it.key]}, Map2 value: ${map2[it.key]}")
+        }
     }
 }
