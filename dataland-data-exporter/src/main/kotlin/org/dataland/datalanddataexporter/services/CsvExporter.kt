@@ -43,7 +43,7 @@ class CsvExporter(
      * transforms it into a CSV file and writes it to the resources folder.
      * @return A string message
      */
-    // ToDo: Remove this function and the complete REST API
+    // Remove this function and the complete REST API
     fun dummyFunction(): String {
         val outputDirectory = "/var/export/csv/sql_server"
         exportSfdrData(outputDirectory)
