@@ -3,6 +3,11 @@ package org.dataland.datalanddataexporter.utils
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.dataformat.csv.CsvMapper
 import com.fasterxml.jackson.dataformat.csv.CsvSchema
+import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataSfdrData
+import org.dataland.datalandbackend.openApiClient.model.SfdrData
+import org.dataland.datalandbackend.openApiClient.model.SfdrGeneral
+import org.dataland.datalandbackend.openApiClient.model.SfdrGeneralGeneral
+import org.dataland.datalandbackend.openApiClient.model.SfdrGeneralGeneralFiscalYearDeviationOptions
 import org.dataland.datalanddataexporter.TestDataProvider
 import org.dataland.datalanddataexporter.utils.TransformationUtils.COMPANY_ID_HEADER
 import org.dataland.datalanddataexporter.utils.TransformationUtils.COMPANY_NAME_HEADER
@@ -15,11 +20,6 @@ import org.junit.jupiter.api.assertDoesNotThrow
 import org.junit.jupiter.api.assertThrows
 import java.io.File
 import java.time.LocalDate
-import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataSfdrData
-import org.dataland.datalandbackend.openApiClient.model.SfdrData
-import org.dataland.datalandbackend.openApiClient.model.SfdrGeneral
-import org.dataland.datalandbackend.openApiClient.model.SfdrGeneralGeneral
-import org.dataland.datalandbackend.openApiClient.model.SfdrGeneralGeneralFiscalYearDeviationOptions
 
 class TransformationUtilsTest {
     private val inputJson = File("./src/test/resources/csv/inputs/input.json")
@@ -33,7 +33,7 @@ class TransformationUtilsTest {
         "nested.nestedMapping" to "nestedHeader",
     )
     private val expectedHeaders = listOf("presentHeader", "mappedButNoDataHeader", "nestedHeader") +
-            listOf(COMPANY_ID_HEADER, COMPANY_NAME_HEADER, REPORTING_PERIOD_HEADER, LEI_HEADER)
+        listOf(COMPANY_ID_HEADER, COMPANY_NAME_HEADER, REPORTING_PERIOD_HEADER, LEI_HEADER)
     private val expectedJsonPaths = listOf("presentMapping", "notMapped", "nested.nestedMapping")
     private val expectedCsvData =
         mapOf("presentHeader" to "Here", "mappedButNoDataHeader" to "", "nestedHeader" to "NestedHere")
@@ -100,9 +100,9 @@ class TransformationUtilsTest {
                     SfdrGeneralGeneral(
                         dataDate = LocalDate.parse("2022-01-01"),
                         fiscalYearEnd = LocalDate.parse("2022-01-01"),
-                        fiscalYearDeviation = SfdrGeneralGeneralFiscalYearDeviationOptions.Deviation
-                    )
-                )
+                        fiscalYearDeviation = SfdrGeneralGeneralFiscalYearDeviationOptions.Deviation,
+                    ),
+                ),
             ),
             companyId = "companyId",
             reportingPeriod = "reportingPeriod",

@@ -15716,15 +15716,15 @@
             "type": "string",
             "nullable": true
           },
-          "countryCode": {
-            "type": "string"
+          "lei": {
+            "type": "string",
+            "nullable": true
           },
           "headquarters": {
             "type": "string"
           },
-          "lei": {
-            "type": "string",
-            "nullable": true
+          "countryCode": {
+            "type": "string"
           }
         }
       },
