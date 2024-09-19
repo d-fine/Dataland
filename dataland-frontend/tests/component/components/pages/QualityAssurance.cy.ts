@@ -82,16 +82,36 @@ describe('Component tests for the Quality Assurance page', () => {
   }
 
   /**
+   * Picks a reporting period to filter for in the date-picker.
+   * @param reportingPeriod to click on in the date-picker
+   */
+  function clickOnReportingPeriod(reportingPeriod: string): void {
+    cy.get('span[data-test="reportingPeriod"]').should('exist').click();
+    cy.contains('span', reportingPeriod).should('exist').click();
+    cy.get('span[data-test="reportingPeriod"]').should('exist').click();
+  }
+
+  /**
+   * Waits for the requests that occurs if all filters are reset and checks that both expected rows in the table
+   * are there.
+   */
+  function assertUnfilteredDatatableState(): void {
+    cy.wait('@nonFilteredFetch');
+    cy.wait('@nonFilteredNumberFetch');
+    cy.contains('td', `${dataIdAlpha}`);
+    cy.contains('td', `${dataIdBeta}`);
+  }
+
+  /**
    * Mounts the qa assurance page with two mock elements in the review queue and asserts that they are shown.
    */
   function mountQaAssurancePageWithMocks(): void {
     const mockReviewQueue = [reviewQueueElementAlpha, reviewQueueElementBeta];
-    cy.intercept(`**/qa/datasets?chunkSize=10&chunkIndex=0`, mockReviewQueue);
-    cy.intercept(`**/qa/numberOfUnreviewedDatasets`, mockReviewQueue.length.toString());
+    cy.intercept(`**/qa/datasets?chunkSize=10&chunkIndex=0`, mockReviewQueue).as('nonFilteredFetch');
+    cy.intercept(`**/qa/numberOfUnreviewedDatasets`, mockReviewQueue.length.toString()).as('nonFilteredNumberFetch');
 
     getMountingFunction({ keycloak: keycloakMockWithUploaderAndReviewerRoles })(QualityAssurance);
-    cy.contains('td', `${dataIdAlpha}`);
-    cy.contains('td', `${dataIdBeta}`);
+    assertUnfilteredDatatableState();
     cy.contains('span', 'Showing results 1-2 of 2.');
   }
 
@@ -101,16 +121,22 @@ describe('Component tests for the Quality Assurance page', () => {
     const companySearchTerm = 'Alpha';
     cy.intercept(`**/qa/datasets?companyName=${companySearchTerm}&chunkSize=10&chunkIndex=0`, [
       reviewQueueElementAlpha,
-    ]);
-    cy.intercept(`**/qa/numberOfUnreviewedDatasets?companyName=${companySearchTerm}`, '1');
+    ]).as('companyNameFilteredFetch');
+    cy.intercept(`**/qa/numberOfUnreviewedDatasets?companyName=${companySearchTerm}`, '1').as(
+      'companyNameFilteredNumberFetch'
+    );
+
     cy.get(`input[data-test="companyNameSearchbar"]`).type(companySearchTerm);
+
+    cy.wait('@companyNameFilteredFetch');
+    cy.wait('@companyNameFilteredNumberFetch');
     cy.contains('td', `${dataIdAlpha}`);
     cy.contains('td', `${dataIdBeta}`).should('not.exist');
     cy.contains('span', 'Showing results 1-1 of 1.');
 
     cy.get(`input[data-test="companyNameSearchbar"]`).clear();
-    cy.contains('td', `${dataIdAlpha}`);
-    cy.contains('td', `${dataIdBeta}`);
+
+    assertUnfilteredDatatableState();
   });
 
   it('Check QA-overview-page for filtering on framework', () => {
@@ -118,18 +144,24 @@ describe('Component tests for the Quality Assurance page', () => {
 
     const frameworkToFilterFor = DataTypeEnum.P2p;
     const frameworkHumanReadableName = humanizeStringOrNumber(frameworkToFilterFor);
-    cy.intercept(`**/qa/datasets?dataTypes=${DataTypeEnum.P2p}&chunkSize=10&chunkIndex=0`, [reviewQueueElementAlpha]);
-    cy.intercept(`**/qa/numberOfUnreviewedDatasets?dataTypes=${DataTypeEnum.P2p}`, '1');
+    cy.intercept(`**/qa/datasets?dataTypes=${DataTypeEnum.P2p}&chunkSize=10&chunkIndex=0`, [
+      reviewQueueElementAlpha,
+    ]).as('frameworkFilteredFetch');
+    cy.intercept(`**/qa/numberOfUnreviewedDatasets?dataTypes=${DataTypeEnum.P2p}`, '1').as(
+      'frameworkFilteredNumberFetch'
+    );
+
     cy.get(`div[data-test="framework-picker"]`).click();
     cy.get(`li[aria-label="${frameworkHumanReadableName}"]`).click();
 
+    cy.wait('@frameworkFilteredFetch');
+    cy.wait('@frameworkFilteredNumberFetch');
     cy.contains('td', `${dataIdAlpha}`);
     cy.contains('td', `${dataIdBeta}`).should('not.exist');
 
     cy.get(`li[aria-label="${frameworkHumanReadableName}"]`).click();
-    cy.contains('td', `${dataIdAlpha}`);
-    cy.contains('td', `${dataIdBeta}`);
-    cy.get(`div[data-test="framework-picker"]`).click();
+
+    assertUnfilteredDatatableState();
   });
 
   it('Check QA-overview-page for filtering on reporting period', () => {
@@ -137,18 +169,82 @@ describe('Component tests for the Quality Assurance page', () => {
     const reportingPeriodToFilterFor = '2022';
     cy.intercept(`**/qa/datasets?reportingPeriods=${reportingPeriodToFilterFor}&chunkSize=10&chunkIndex=0`, [
       reviewQueueElementAlpha,
-    ]);
-    cy.intercept(`**/qa/numberOfUnreviewedDatasets?reportingPeriods=${reportingPeriodToFilterFor}`, '1');
+    ]).as('repPeriodFilteredFetch');
+    cy.intercept(`**/qa/numberOfUnreviewedDatasets?reportingPeriods=${reportingPeriodToFilterFor}`, '1').as(
+      'repPeriodFilteredNumberFetch'
+    );
 
-    cy.get('span[data-test="reportingPeriod"]').should('exist').click();
-    cy.contains('span', reportingPeriodToFilterFor).should('exist').click();
-    cy.get('span[data-test="reportingPeriod"]').should('exist').click();
+    clickOnReportingPeriod(reportingPeriodToFilterFor);
+
+    cy.wait('@repPeriodFilteredFetch');
+    cy.wait('@repPeriodFilteredNumberFetch');
+    cy.contains('td', `${dataIdAlpha}`);
+    cy.contains('td', `${dataIdBeta}`).should('not.exist');
+
+    clickOnReportingPeriod(reportingPeriodToFilterFor);
+
+    assertUnfilteredDatatableState();
+  });
+
+  it('Check QA-overview-page for combined filtering', () => {
+    mountQaAssurancePageWithMocks();
+
+    const reportingPeriodToFilterFor = '2022';
+    cy.intercept(`**/qa/datasets?reportingPeriods=${reportingPeriodToFilterFor}&chunkSize=10&chunkIndex=0`, [
+      reviewQueueElementAlpha,
+    ]).as('repPeriodFilteredFetch');
+    cy.intercept(`**/qa/numberOfUnreviewedDatasets?reportingPeriods=${reportingPeriodToFilterFor}`, '1').as(
+      'repPeriodFilteredNumberFetch'
+    );
+
+    clickOnReportingPeriod(reportingPeriodToFilterFor);
+
+    const companyNameSearchStringAlpha = 'Alpha';
+    cy.intercept(
+      `**/qa/datasets?reportingPeriods=${reportingPeriodToFilterFor}&companyName=${companyNameSearchStringAlpha}&chunkSize=10&chunkIndex=0`,
+      [reviewQueueElementAlpha]
+    ).as('combinedFilterFetchAlpha');
+    cy.intercept(
+      `**/qa/numberOfUnreviewedDatasets?reportingPeriods=${reportingPeriodToFilterFor}&companyName=${companyNameSearchStringAlpha}`,
+      '1'
+    ).as('combinedFilterNumberFetchAlpha');
+
+    cy.get(`input[data-test="companyNameSearchbar"]`).type(companyNameSearchStringAlpha);
+
+    cy.wait('@combinedFilterFetchAlpha');
+    cy.wait('@combinedFilterNumberFetchAlpha');
+    cy.contains('td', `${dataIdAlpha}`);
+    cy.contains('td', `${dataIdBeta}`).should('not.exist');
+
+    const companyNameSearchStringBeta = 'Beta';
+    cy.intercept(
+      `**/qa/datasets?reportingPeriods=${reportingPeriodToFilterFor}&companyName=${companyNameSearchStringBeta}&chunkSize=10&chunkIndex=0`,
+      []
+    ).as('combinedFilterFetchBeta');
+    cy.intercept(
+      `**/qa/numberOfUnreviewedDatasets?reportingPeriods=${reportingPeriodToFilterFor}&companyName=${companyNameSearchStringBeta}`,
+      '0'
+    ).as('combinedFilterNumberFetchBeta');
+
+    cy.get(`input[data-test="companyNameSearchbar"]`).clear().type(companyNameSearchStringBeta);
+
+    cy.wait('@combinedFilterFetchBeta');
+    cy.wait('@combinedFilterNumberFetchBeta');
+    cy.contains('td', `${dataIdAlpha}`).should('not.exist');
+    cy.contains('td', `${dataIdBeta}`).should('not.exist');
+
+    cy.contains('p', 'There are no unreviewed datasets on Dataland matching your filters');
+    cy.contains('span', 'No results for this search.');
+
+    cy.get(`input[data-test="companyNameSearchbar"]`).clear();
 
     cy.contains('td', `${dataIdAlpha}`);
     cy.contains('td', `${dataIdBeta}`).should('not.exist');
-  });
 
-  // TODO combined filter
+    clickOnReportingPeriod(reportingPeriodToFilterFor);
+
+    assertUnfilteredDatatableState();
+  });
 
   it('Check if dataset can be reviewed on the view page', () => {
     const mockDataMetaInfo: DataMetaInformation = {
