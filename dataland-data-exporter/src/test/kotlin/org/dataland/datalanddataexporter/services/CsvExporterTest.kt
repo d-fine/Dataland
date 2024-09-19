@@ -1,18 +1,15 @@
 package org.dataland.datalanddataexporter.services
 
+import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.api.MetaDataControllerApi
 import org.dataland.datalandbackend.openApiClient.api.SfdrDataControllerApi
 import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataSfdrData
 import org.dataland.datalandbackend.openApiClient.model.CompanyInformation
-import org.dataland.datalandbackend.openApiClient.model.CompanyReport
 import org.dataland.datalandbackend.openApiClient.model.DataMetaInformation
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandbackend.openApiClient.model.QaStatus
 import org.dataland.datalandbackend.openApiClient.model.SfdrData
-import org.dataland.datalandbackend.openApiClient.model.SfdrGeneral
-import org.dataland.datalandbackend.openApiClient.model.SfdrGeneralGeneral
-import org.dataland.datalandbackend.openApiClient.model.SfdrGeneralGeneralFiscalYearDeviationOptions
 import org.dataland.datalandbackend.openApiClient.model.StoredCompany
 import org.dataland.datalanddataexporter.utils.TransformationUtils.ISIN_IDENTIFIER
 import org.dataland.datalanddataexporter.utils.TransformationUtils.LEI_IDENTIFIER
@@ -22,7 +19,8 @@ import org.junit.jupiter.api.assertDoesNotThrow
 import org.mockito.Mockito.any
 import org.mockito.Mockito.mock
 import org.mockito.Mockito.`when`
-import java.time.LocalDate
+import java.io.File
+import java.text.SimpleDateFormat
 
 class CsvExporterTest {
     private lateinit var csvDataExporter: CsvExporter
@@ -42,25 +40,18 @@ class CsvExporterTest {
         ),
     )
 
-    // fake fixture laden?
-    private val mockSfdrData = SfdrData(
-        general = SfdrGeneral(
-            SfdrGeneralGeneral(
-                dataDate = LocalDate.parse("2021-01-01"),
-                fiscalYearEnd = LocalDate.parse("2021-01-01"),
-                fiscalYearDeviation = SfdrGeneralGeneralFiscalYearDeviationOptions.Deviation,
-                referencedReports = mapOf(
-                    "mockReport" to CompanyReport(fileReference = "mockFileReference"),
-                ),
-            ),
-        ),
-    )
-
     private val mockCompanyAssociatedSfdrData = CompanyAssociatedDataSfdrData(
         companyId = "mockCompanyId",
         reportingPeriod = "2021",
-        data = mockSfdrData,
+        data = getMockSfdrData(),
     )
+
+    private fun getMockSfdrData(): SfdrData {
+        val inputJson = File("./src/test/resources/csv/inputs/mockSfdrData.json")
+        val objectMapper = jacksonObjectMapper().findAndRegisterModules()
+        objectMapper.dateFormat = SimpleDateFormat("yyyy-MM-dd")
+        return objectMapper.readValue(inputJson, SfdrData::class.java)
+    }
 
     private fun setupMockMetaDataControllerApi(): MetaDataControllerApi {
         val mockMetaDataControllerApi = mock(MetaDataControllerApi::class.java)
