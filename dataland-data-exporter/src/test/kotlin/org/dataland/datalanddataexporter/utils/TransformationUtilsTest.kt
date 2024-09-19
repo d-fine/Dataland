@@ -93,7 +93,7 @@ class TransformationUtilsTest {
     }
 
     @Test
-    fun `check something very important`() {
+    fun `check that exported sfdr with transformation rule to csv is as expected`() {
         val jsonNode = TestDataProvider.getMockSfdrJsonNode()
         val transformationRule =
             FileHandlingUtils.readTransformationConfig("./transformationRules/SfdrSqlServer.config")
