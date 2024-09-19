@@ -20,7 +20,6 @@
                 />
               </span>
               <span class="w-3 p-input-icon-left" style="margin: 15px">
-                <i class="pi pi-search pl-3 pr-3" aria-hidden="true" style="color: #958d7c" />
                 <Calendar
                   data-test="reportingPeriod"
                   v-model="availableReportingPeriods"
