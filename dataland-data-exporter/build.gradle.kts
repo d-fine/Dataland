@@ -24,6 +24,7 @@ plugins {
 
 dependencies {
     implementation(project(":dataland-backend-utils"))
+    implementation(project(":dataland-keycloak-adapter"))
     implementation(libs.jackson.module.kotlin)
     implementation(libs.jackson.dataformat.csv)
     implementation(libs.okhttp)
@@ -33,11 +34,7 @@ dependencies {
     implementation(libs.logback.classic)
     implementation(libs.logback.core)
     implementation(libs.slf4j.api)
-    implementation(Spring.boot.web)
-    implementation(Spring.boot.actuator)
-    implementation(Spring.boot.validation)
     implementation(Spring.boot.security)
-    implementation(project(":dataland-keycloak-adapter"))
     kapt(Spring.boot.configurationProcessor)
     testImplementation(Spring.boot.test)
 }

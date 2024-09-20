@@ -53,6 +53,7 @@ class CsvExporter(
         val csvData = mutableListOf<Map<String, String>>()
         val isinData = mutableListOf<Map<String, String>>()
 
+        createDirectories(outputDirectory)
         val transformationRules = readTransformationConfig("./transformationRules/SfdrSqlServer.config")
         val headers = getHeaders(transformationRules)
         val dataIds = getAllSfdrDataIds()
@@ -128,7 +129,6 @@ class CsvExporter(
         val timestamp = getTimestamp()
         val dataOutputFile = File("$outputDirectory/SfdrData_$timestamp.csv")
         val isinOutputFile = File("$outputDirectory/SfdrIsin_$timestamp.csv")
-        createDirectories(outputDirectory)
         writeCsv(csvData, dataOutputFile, headers)
         writeCsv(isinData, isinOutputFile, listOf(LEI_HEADER, ISIN_HEADER))
     }
