@@ -94,8 +94,8 @@
         "tags": [
           "qa-controller"
         ],
-        "summary": "Assign a quality status to a unreviewed dataset",
-        "description": "Set the quality status after a dataset has been reviewed",
+        "summary": "Assign a quality status to a unreviewed dataset.",
+        "description": "Set the quality status after a dataset has been reviewed.",
         "operationId": "assignQaStatus",
         "parameters": [
           {
@@ -794,23 +794,184 @@
         ]
       }
     },
+    "/numberOfUnreviewedDatasets": {
+      "get": {
+        "tags": [
+          "qa-controller"
+        ],
+        "summary": "Get the number of unreviewed datasets based on filters.",
+        "description": "Get the number of unreviewed datasets based on filters.",
+        "operationId": "getNumberOfUnreviewedDatasets",
+        "parameters": [
+          {
+            "name": "dataTypes",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "uniqueItems": true,
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "eutaxonomy-financials",
+                  "eutaxonomy-non-financials",
+                  "lksg",
+                  "p2p",
+                  "sfdr",
+                  "vsme",
+                  "esg-questionnaire",
+                  "heimathafen",
+                  "additional-company-information"
+                ]
+              }
+            }
+          },
+          {
+            "name": "reportingPeriods",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "uniqueItems": true,
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "companyName",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved the number of unreviewed datasets.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "integer",
+                  "format": "int32"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
     "/datasets": {
       "get": {
         "tags": [
           "qa-controller"
         ],
-        "summary": "Get unreviewed datasets IDs.",
-        "description": "Gets a ordered list of dataset IDs which need to be reviewed",
-        "operationId": "getUnreviewedDatasetsIds",
+        "summary": "Get relevant meta info on unreviewed datasets.",
+        "description": "Gets a filtered and chronologically ordered list of relevant meta info on unreviewed datasets.",
+        "operationId": "getInfoOnUnreviewedDatasets",
+        "parameters": [
+          {
+            "name": "dataTypes",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "uniqueItems": true,
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "eutaxonomy-financials",
+                  "eutaxonomy-non-financials",
+                  "lksg",
+                  "p2p",
+                  "sfdr",
+                  "vsme",
+                  "esg-questionnaire",
+                  "heimathafen",
+                  "additional-company-information"
+                ]
+              }
+            }
+          },
+          {
+            "name": "reportingPeriods",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "uniqueItems": true,
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "companyName",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "chunkSize",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 10
+            }
+          },
+          {
+            "name": "chunkIndex",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 0
+            }
+          }
+        ],
         "responses": {
           "200": {
-            "description": "Successfully retrieved dataset IDs.",
+            "description": "Successfully retrieved metadata sets.",
             "content": {
               "application/json": {
                 "schema": {
                   "type": "array",
                   "items": {
-                    "type": "string"
+                    "$ref": "#/components/schemas/ReviewQueueResponse"
                   }
                 }
               }
@@ -3353,6 +3514,37 @@
         "properties": {
           "active": {
             "type": "boolean"
+          }
+        }
+      },
+      "ReviewQueueResponse": {
+        "required": [
+          "dataId",
+          "receptionTime"
+        ],
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string"
+          },
+          "receptionTime": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "companyId": {
+            "type": "string"
+          },
+          "companyName": {
+            "type": "string"
+          },
+          "dataId": {
+            "type": "string"
+          },
+          "reportingPeriod": {
+            "type": "string"
+          },
+          "framework": {
+            "type": "string"
           }
         }
       },

@@ -7,11 +7,10 @@ import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
 
 /**
- * The UserAuthenticatedApiService provides access to pre-configured Api Clients that are
- * authenticated as a specific user.
+ * Provides access to pre-configured Backend Api Client that is authenticated as a specific user.
  */
 @Service
-class UserAuthenticatedApiService(
+class UserAuthenticatedBackendClient(
     @Value("\${dataland.backend.base-url}") private val backendBaseUrl: String,
 ) {
     private fun getUserAuthenticatedHttpClient(authentication: DatalandAuthentication): OkHttpClient {
