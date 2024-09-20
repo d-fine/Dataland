@@ -126,17 +126,6 @@ class TransformationUtilsTest {
             .readerFor(MutableMap::class.java)
             .with(schema)
             .readValue<Map<String, String>>(csvFile)
-        compareMaps(expectedCsvData, csvData)
         assertEquals(csvData, expectedCsvData)
-    }
-
-    private fun compareMaps(map1: Map<String, String>, map2: Map<String, String>) {
-        if (map1.keys != map2.keys) {
-            println("Keys present in Map1 but not in Map2: ${map1.keys - map2.keys}")
-            println("Keys present in Map2 but not in Map1: ${map2.keys - map1.keys}")
-        }
-        map1.entries.intersect(map2.entries).filterNot { it.value == map2[it.key] }.forEach {
-            println("Key: ${it.key}, Map1 value: ${map1[it.key]}, Map2 value: ${map2[it.key]}")
-        }
     }
 }
