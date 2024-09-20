@@ -7,6 +7,7 @@ import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.Qa
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.RestController
+import java.time.LocalDate
 import java.util.*
 
 /**
@@ -20,8 +21,8 @@ class QaReportsMetadataController(
         uploaderUserIds: Set<UUID>?,
         showOnlyActive: Boolean,
         qaStatus: QaStatus?,
-        startDate: String?,
-        endDate: String?,
+        minUploadDate: LocalDate?,
+        maxUploadDate: LocalDate?,
         companyIdentifier: String?,
     ): ResponseEntity<List<DataAndQaReportMetadata>> {
         return ResponseEntity.ok(
@@ -30,8 +31,8 @@ class QaReportsMetadataController(
                     uploaderUserIds,
                     showOnlyActive,
                     qaStatus,
-                    startDate,
-                    endDate,
+                    minUploadDate,
+                    maxUploadDate,
                     companyIdentifier,
                 ),
         )

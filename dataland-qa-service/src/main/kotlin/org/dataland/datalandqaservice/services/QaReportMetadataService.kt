@@ -2,18 +2,14 @@ package org.dataland.datalandqaservice.org.dataland.datalandqaservice.services
 
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.api.MetaDataControllerApi
-import org.dataland.datalandbackend.openApiClient.model.CompanyIdAndName
-import org.dataland.datalandbackend.openApiClient.model.DataMetaInformation
 import org.dataland.datalandbackend.openApiClient.model.QaStatus
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
-import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.QaReportEntity
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DataAndQaReportMetadata
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.repositories.QaReportRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import java.time.LocalDate
 import java.time.ZoneId
-import java.time.format.DateTimeFormatter
 import java.util.*
 
 /**
@@ -25,23 +21,14 @@ class QaReportMetadataService(
     @Autowired private val qaReportRepository: QaReportRepository,
     @Autowired val metadataController: MetaDataControllerApi,
 ) {
-    private fun convertDateToMillis(date: String?): Long? {
-        return date?.let {
-            LocalDate
-                .parse(it, DateTimeFormatter.ofPattern("yyyyMMdd"))
-                .atStartOfDay(ZoneId.of("Europe/Berlin"))
-                .toInstant()
-                .toEpochMilli()
-        }
-    }
 
     /**
      * Method to search all data and the connected meta information associated with a data set.
      * @param uploaderUserIds set of user ids of the uploader
      * @param showOnlyActive whether to show only active data
      * @param qaStatus the qa status
-     * @param startDate searches for reports uploaded after the startDate.
-     * @param endDate searches for reports uploaded before the endDate.
+     * @param minUploadDate searches for reports uploaded after the minUploadDate.
+     * @param maxUploadDate searches for reports uploaded before the maxUploadDate.
      * @param companyIdentifier external identifier of the company
      * @return a list of all data and the connected meta information associated with a data set
      */
@@ -49,24 +36,22 @@ class QaReportMetadataService(
         uploaderUserIds: Set<UUID>?,
         showOnlyActive: Boolean,
         qaStatus: QaStatus?,
-        startDate: String?,
-        endDate: String?,
+        minUploadDate: LocalDate?,
+        maxUploadDate: LocalDate?,
         companyIdentifier: String?,
     ): List<DataAndQaReportMetadata> {
-        val companyId: String? = getCompanyIdFromCompanyIdentifier(companyIdentifier)
-        if (companyId == null && companyIdentifier != null) {
-            return emptyList()
+        val companyId: String? = companyIdentifier?.let {
+            getCompanyIdFromCompanyIdentifier(it) ?: return emptyList()
         }
-        val dataMetaInformation: List<DataMetaInformation> = metadataController
-            .getListOfDataMetaInfo(
-                companyId, null, false, null, uploaderUserIds, qaStatus,
-            )
+        val dataMetaInformation = metadataController.getListOfDataMetaInfo(
+            companyId, null, false, null, uploaderUserIds, qaStatus,
+        )
         val dataIds = dataMetaInformation.map { it.dataId }
-        val startDateMillis = convertDateToMillis(startDate)
-        val endDateMillis = convertDateToMillis(endDate)
-        val qaReportEntities: List<QaReportEntity> = qaReportRepository
+        val startDateMillis = minUploadDate?.let { convertDateToMillis(it) }
+        val endDateMillis = maxUploadDate?.let { convertDateToMillis(it) }
+        val qaReportEntities = qaReportRepository
             .searchQaReportMetaInformation(dataIds, showOnlyActive, startDateMillis, endDateMillis)
-        val qaReportMap: Map<String, QaReportEntity> = qaReportEntities.associateBy { it.dataId }
+        val qaReportMap = qaReportEntities.associateBy { it.dataId }
         return dataMetaInformation.mapNotNull { metaInformation ->
             qaReportMap[metaInformation.dataId]?.let { qaEntity ->
                 DataAndQaReportMetadata(metaInformation, qaEntity.toMetaInformationApiModel())
@@ -74,22 +59,22 @@ class QaReportMetadataService(
         }
     }
 
-    private fun getCompanyIdFromCompanyIdentifier(companyIdentifier: String?): String? {
-        var companyId: String? = null
-        if (companyIdentifier != null) {
-            val matchingCompanyIdsAndNamesOnDataland: List<CompanyIdAndName> =
-                companyController.getCompaniesBySearchString(companyIdentifier)
-            companyId = if (matchingCompanyIdsAndNamesOnDataland.size == 1) {
-                matchingCompanyIdsAndNamesOnDataland.first().companyId
-            } else if (matchingCompanyIdsAndNamesOnDataland.size > 1) {
-                throw InvalidInputApiException(
-                    summary = "No unique identifier. Multiple companies could be found.",
-                    message = "Multiple companies have been found for the identifier you specified.",
-                )
-            } else {
-                null
-            }
+    private fun convertDateToMillis(date: LocalDate): Long {
+        return date.atStartOfDay(ZoneId.of("Europe/Berlin"))
+            .toInstant()
+            .toEpochMilli()
+    }
+
+    private fun getCompanyIdFromCompanyIdentifier(companyIdentifier: String): String? {
+        val matchingCompanyIdsAndNamesOnDataland = companyController.getCompaniesBySearchString(companyIdentifier)
+        return when (matchingCompanyIdsAndNamesOnDataland.size) {
+            0 -> null
+            1 -> matchingCompanyIdsAndNamesOnDataland[0].companyId
+            else -> throw InvalidInputApiException(
+                summary = "Company identifier is non unique. Multiple matching companies found.",
+                message = "Multiple companies have been found for the identifier you specified." +
+                    "Please specify a unique company identifier.",
+            )
         }
-        return companyId
     }
 }

@@ -10,6 +10,7 @@ import org.springframework.format.annotation.DateTimeFormat
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestParam
+import java.time.LocalDate
 import java.util.*
 
 /**
@@ -27,8 +28,8 @@ interface QaReportsMetadataApi {
      * @param showOnlyActive If true or empty, only metadata of reports are returned that are active.
      *  If false, reports will be returned regardless of their active status.
      * @param qaStatus If set, only metadata of reports are returned that relate to a dataset with this qaStatus
-     * @param startDate If set, only metadata of reports are returned that were uploaded after the startDate.
-     * @param endDate If set, only metadata of reports are returned that were uploaded before the endDate.
+     * @param minUploadDate If set, only metadata of reports are returned that were uploaded after the minUploadDate.
+     * @param maxUploadDate If set, only metadata of reports are returned that were uploaded before the maxUploadDate.
      */
     @Operation(
         summary = "Get metadata of QA reports based on filters.",
@@ -50,11 +51,11 @@ interface QaReportsMetadataApi {
         @RequestParam(defaultValue = "true") showOnlyActive: Boolean,
         @RequestParam qaStatus: QaStatus? = null,
         @RequestParam
-        @DateTimeFormat(pattern = "YYYYMMDD")
-        startDate: String? = null,
+        @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+        minUploadDate: LocalDate? = null,
         @RequestParam
-        @DateTimeFormat(pattern = "YYYYMMDD")
-        endDate: String? = null,
+        @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+        maxUploadDate: LocalDate? = null,
         @RequestParam companyIdentifier: String?,
     ): ResponseEntity<List<DataAndQaReportMetadata>>
 }
