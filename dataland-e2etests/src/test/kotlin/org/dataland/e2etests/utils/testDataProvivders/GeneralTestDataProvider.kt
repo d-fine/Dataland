@@ -1,9 +1,7 @@
 package org.dataland.e2etests.utils.testDataProvivders
 
 import org.dataland.datalandbackend.openApiClient.model.CompanyInformation
-import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandbackend.openApiClient.model.IdentifierType
-import org.dataland.e2etests.FRONTEND_DISPLAYED_FRAMEWORKS
 
 class GeneralTestDataProvider {
 
@@ -43,17 +41,5 @@ class GeneralTestDataProvider {
             identifiers,
             "DE",
         )
-    }
-
-    private fun getListOfBackendOnlyFrameworks(): List<DataTypeEnum> {
-        return DataTypeEnum.values().toMutableList().filter { !FRONTEND_DISPLAYED_FRAMEWORKS.contains(it) }
-    }
-
-    fun generateOneCompanyInformationPerBackendOnlyFramework(): Map<DataTypeEnum, List<CompanyInformation>> {
-        val map = mutableMapOf<DataTypeEnum, List<CompanyInformation>>()
-        getListOfBackendOnlyFrameworks().forEach {
-            map[it] = listOf(generateCompanyInformation(it.name + "Company", it.name + "HiddenSector"))
-        }
-        return map.toMap()
     }
 }
