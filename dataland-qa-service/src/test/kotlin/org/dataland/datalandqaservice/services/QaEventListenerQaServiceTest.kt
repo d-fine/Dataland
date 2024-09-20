@@ -2,6 +2,8 @@ package org.dataland.datalandqaservice.services
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import jakarta.transaction.Transactional
+import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
+import org.dataland.datalandbackend.openApiClient.api.MetaDataControllerApi
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
 import org.dataland.datalandmessagequeueutils.constants.ExchangeName
@@ -37,6 +39,8 @@ class QaEventListenerQaServiceTest(
     @Autowired var messageUtils: MessageQueueUtils,
     @Autowired val testReviewQueueRepository: ReviewQueueRepository,
     @Autowired val testReviewHistoryRepository: ReviewHistoryRepository,
+    @Autowired val companyDataControllerApi: CompanyDataControllerApi,
+    @Autowired val metaDataControllerApi: MetaDataControllerApi,
 ) {
     lateinit var mockCloudEventMessageHandler: CloudEventMessageHandler
     lateinit var qaEventListenerQaService: QaEventListenerQaService
@@ -66,6 +70,8 @@ class QaEventListenerQaServiceTest(
             messageUtils,
             testReviewQueueRepository,
             testReviewHistoryRepository,
+            companyDataControllerApi,
+            metaDataControllerApi,
         )
     }
 

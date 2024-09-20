@@ -59,9 +59,7 @@ describeIf(
           '2022',
           data.t,
           false
-        ).then((dataMetaInfo) => {
-          cy.intercept(`**/api/metadata/${dataMetaInfo.dataId}`).as('getMetadataOfUploadedDataset');
-          cy.intercept(`**/api/companies/${storedCompany.companyId}`).as('getCompanyInformationOfUploadedCompany');
+        ).then(() => {
           testSubmittedDatasetIsInReviewListAndAcceptIt(storedCompany);
         });
       });
@@ -78,8 +76,6 @@ describeIf(
           data.t,
           false
         ).then((dataMetaInfo) => {
-          cy.intercept(`**/api/metadata/${dataMetaInfo.dataId}`).as('getMetadataOfUploadedDataset');
-          cy.intercept(`**/api/companies/${storedCompany.companyId}`).as('getCompanyInformationOfUploadedCompany');
           testSubmittedDatasetIsInReviewListAndRejectIt(storedCompany, dataMetaInfo);
         });
       });
@@ -177,7 +173,6 @@ function viewRecentlyUploadedDatasetsInQaTable(): void {
     }
     element.trigger('click');
   });
-  cy.wait('@getMetadataOfUploadedDataset').wait('@getCompanyInformationOfUploadedCompany');
 }
 
 /**
