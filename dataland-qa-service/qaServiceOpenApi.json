@@ -3527,23 +3527,23 @@
           "message": {
             "type": "string"
           },
-          "receptionTime": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "companyId": {
-            "type": "string"
-          },
-          "companyName": {
-            "type": "string"
-          },
-          "dataId": {
+          "framework": {
             "type": "string"
           },
           "reportingPeriod": {
             "type": "string"
           },
-          "framework": {
+          "receptionTime": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "dataId": {
+            "type": "string"
+          },
+          "companyId": {
+            "type": "string"
+          },
+          "companyName": {
             "type": "string"
           }
         }

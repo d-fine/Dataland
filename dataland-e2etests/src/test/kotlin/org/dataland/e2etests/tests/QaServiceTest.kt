@@ -79,9 +79,9 @@ class QaServiceTest {
         val dataId = uploadEuTaxoDataAndValidatePendingState()
         acceptDatasetAsReviewer(dataId, QaServiceQaStatus.Accepted)
         waitForExpectedQaStatus(dataId, BackendQaStatus.Accepted)
-        canUserSeeUploaderData(dataId, TechnicalUser.Reader, true, false)
+        canUserSeeUploaderData(dataId, TechnicalUser.Reader, true, true)
         canUserSeeUploaderData(dataId, TechnicalUser.Uploader, true, true)
-        canUserSeeUploaderData(dataId, TechnicalUser.Reviewer, true, false)
+        canUserSeeUploaderData(dataId, TechnicalUser.Reviewer, true, true)
         canUserSeeUploaderData(dataId, TechnicalUser.Admin, true, true)
     }
 
@@ -93,7 +93,7 @@ class QaServiceTest {
             waitForExpectedQaStatus(dataId, BackendQaStatus.Rejected)
             canUserSeeUploaderData(dataId, TechnicalUser.Reader, false)
             canUserSeeUploaderData(dataId, TechnicalUser.Uploader, true, true)
-            canUserSeeUploaderData(dataId, TechnicalUser.Reviewer, true, false)
+            canUserSeeUploaderData(dataId, TechnicalUser.Reviewer, true, true)
             canUserSeeUploaderData(dataId, TechnicalUser.Admin, true, true)
         }
     }
@@ -103,7 +103,7 @@ class QaServiceTest {
         val dataId = uploadEuTaxoDataAndValidatePendingState()
         canUserSeeUploaderData(dataId, TechnicalUser.Reader, false)
         canUserSeeUploaderData(dataId, TechnicalUser.Uploader, true, true)
-        canUserSeeUploaderData(dataId, TechnicalUser.Reviewer, true, false)
+        canUserSeeUploaderData(dataId, TechnicalUser.Reviewer, true, true)
         canUserSeeUploaderData(dataId, TechnicalUser.Admin, true, true)
     }
 
