@@ -958,19 +958,21 @@
             }
           },
           {
-            "name": "startDate",
+            "name": "minUploadDate",
             "in": "query",
             "required": false,
             "schema": {
-              "type": "string"
+              "type": "string",
+              "format": "date"
             }
           },
           {
-            "name": "endDate",
+            "name": "maxUploadDate",
             "in": "query",
             "required": false,
             "schema": {
-              "type": "string"
+              "type": "string",
+              "format": "date"
             }
           },
           {

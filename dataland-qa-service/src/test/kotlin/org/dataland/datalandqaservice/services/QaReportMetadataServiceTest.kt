@@ -27,7 +27,6 @@ import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.mock.mockito.MockBean
 import java.time.Instant
 import java.time.LocalDate
-import java.time.format.DateTimeFormatter
 import java.time.temporal.ChronoUnit
 import java.util.*
 
@@ -64,7 +63,11 @@ class QaReportMetadataServiceTest(
         val thrown = assertThrows<InvalidInputApiException> {
             qaReportMetadataService.searchDataAndQaReportMetadata(null, true, null, null, null, companyIdentifier)
         }
-        Assertions.assertEquals("Multiple companies have been found for the identifier you specified.", thrown.message)
+        Assertions.assertEquals(
+            "Multiple companies have been found for the identifier you specified. " +
+                "Please specify a unique company identifier.",
+            thrown.message,
+        )
     }
 
     @Test
@@ -136,7 +139,6 @@ class QaReportMetadataServiceTest(
 
     @Test
     fun `search closed date range`() {
-        val formatter = DateTimeFormatter.ofPattern("yyyyMMdd")
         val dataMetaInformation: List<DataMetaInformation> = listOf(
             DataMetaInformation(dataId1, companyId, DataTypeEnum.sfdr, 1, "test", true, QaStatus.Accepted, null),
             DataMetaInformation(dataId2, companyId, DataTypeEnum.sfdr, 1, "test", true, QaStatus.Accepted, null),
@@ -150,8 +152,8 @@ class QaReportMetadataServiceTest(
                     null,
                     true,
                     null,
-                    LocalDate.now().minusDays(8).format(formatter),
-                    LocalDate.now().plusDays(2).format(formatter),
+                    LocalDate.now().minusDays(8),
+                    LocalDate.now().plusDays(2),
                     null,
                 )
         Assertions.assertEquals(2, result.size)
@@ -159,7 +161,6 @@ class QaReportMetadataServiceTest(
 
     @Test
     fun `search semi open date ranges`() {
-        val formatter = DateTimeFormatter.ofPattern("yyyyMMdd")
         val dataMetaInformation: List<DataMetaInformation> = listOf(
             DataMetaInformation(dataId1, companyId, DataTypeEnum.sfdr, 1, "test", true, QaStatus.Accepted, null),
             DataMetaInformation(dataId2, companyId, DataTypeEnum.sfdr, 1, "test", true, QaStatus.Accepted, null),
@@ -171,7 +172,7 @@ class QaReportMetadataServiceTest(
         val resultOnlyStart: List<DataAndQaReportMetadata> =
             qaReportMetadataService
                 .searchDataAndQaReportMetadata(
-                    null, true, null, LocalDate.now().minusDays(3).format(formatter), null, null,
+                    null, true, null, LocalDate.now().minusDays(3), null, null,
                 )
         Assertions.assertEquals(1, resultOnlyStart.size)
         Assertions.assertEquals(dataId1, resultOnlyStart[0].qaReportMetadata.dataId)
@@ -179,7 +180,7 @@ class QaReportMetadataServiceTest(
         val resultOnlyEnd: List<DataAndQaReportMetadata> =
             qaReportMetadataService
                 .searchDataAndQaReportMetadata(
-                    null, true, null, null, LocalDate.now().minusDays(3).format(formatter), null,
+                    null, true, null, null, LocalDate.now().minusDays(3), null,
                 )
         Assertions.assertEquals(1, resultOnlyEnd.size)
         Assertions.assertEquals(dataId2, resultOnlyEnd[0].qaReportMetadata.dataId)

@@ -72,7 +72,7 @@ class QaReportMetadataService(
             1 -> matchingCompanyIdsAndNamesOnDataland[0].companyId
             else -> throw InvalidInputApiException(
                 summary = "Company identifier is non unique. Multiple matching companies found.",
-                message = "Multiple companies have been found for the identifier you specified." +
+                message = "Multiple companies have been found for the identifier you specified. " +
                     "Please specify a unique company identifier.",
             )
         }
