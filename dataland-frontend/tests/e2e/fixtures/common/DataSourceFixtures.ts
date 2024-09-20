@@ -10,10 +10,20 @@ import { pickOneElement, type ReferencedDocuments } from '@e2e/fixtures/FixtureU
 export function generateDataSource(referencedReports: ReferencedDocuments): ExtendedDocumentReference {
   const chosenReport = pickOneElement(Object.keys(referencedReports));
   const chosenReportReference = referencedReports[chosenReport];
-  return {
-    page: faker.number.int({ min: 1, max: 1200 }),
+  const startPage = faker.number.int({ min: 1, max: 1200 });
+  const endPage = faker.number.int({ min: startPage + 1, max: 1300 });
+  const singlePageNumberScheme = (): ExtendedDocumentReference => ({
+    page: `${startPage}`,
     fileName: chosenReport,
     fileReference: chosenReportReference.fileReference,
     tagName: faker.company.buzzNoun(),
-  };
+  });
+  const pageRangeScheme = (): ExtendedDocumentReference => ({
+    page: `${startPage}-${endPage}`,
+    fileName: chosenReport,
+    fileReference: chosenReportReference.fileReference,
+    tagName: faker.company.buzzNoun(),
+  });
+  const chosenPageNumberScheme = pickOneElement([singlePageNumberScheme, pageRangeScheme]);
+  return chosenPageNumberScheme();
 }
