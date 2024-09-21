@@ -177,7 +177,7 @@ freemarker = "org.freemarker:freemarker:2.3.33"
 
 flyway-database-postgresql = "org.flywaydb:flyway-database-postgresql:10.15.0"
 
-jodconverter-core = "org.jodconverter:jodconverter-core:4.4.7"
+jodconverter-core = "org.jodconverter:jodconverter-core:4.4.8"
 
 jodconverter-local = "org.jodconverter:jodconverter-local:4.4.7"
 
