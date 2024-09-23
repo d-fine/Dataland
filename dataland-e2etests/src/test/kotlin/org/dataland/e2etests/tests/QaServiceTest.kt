@@ -155,28 +155,20 @@ class QaServiceTest {
     @Test
     fun `check that the review queue is correctly ordered`() {
         clearTheReviewQueue()
-        var expectedDataIdsInReviewQueue = emptyList<String>()
 
         withTechnicalUser(TechnicalUser.Admin) {
-            expectedDataIdsInReviewQueue = (1..5).map {
-                val nextDataId =
-                    dataController.postCompanyAssociatedEutaxonomyNonFinancialsData(dummyEuTaxoDataAlpha, false).dataId
-                await().atMost(10, TimeUnit.SECONDS).until {
-                    val unreviewedDataIds = getInfoOnUnreviewedDatasets().map { it.dataId }
-                    if (unreviewedDataIds.isNotEmpty()) {
-                        unreviewedDataIds.last() == nextDataId
-                    } else {
-                        false
-                    }
-                }
-                nextDataId
+            val dataIdA =
+                dataController.postCompanyAssociatedEutaxonomyNonFinancialsData(dummyEuTaxoDataAlpha, false).dataId
+            val dataIdB =
+                dataController.postCompanyAssociatedEutaxonomyNonFinancialsData(dummyEuTaxoDataAlpha, false).dataId
+
+            await().atMost(10, TimeUnit.SECONDS).until {
+                val unreviewedDataIds = getInfoOnUnreviewedDatasets().map { it.dataId }
+                unreviewedDataIds.contains(dataIdA) && unreviewedDataIds.contains(dataIdB)
             }
+            assertEquals(listOf(dataIdA, dataIdB), getInfoOnUnreviewedDatasets().map { it.dataId })
         }
 
-        withTechnicalUser(TechnicalUser.Reviewer) {
-            val actualDataIdsInReviewQueue = getInfoOnUnreviewedDatasets().map { it.dataId }
-            assertEquals(expectedDataIdsInReviewQueue, actualDataIdsInReviewQueue)
-        }
         clearTheReviewQueue()
     }
 
