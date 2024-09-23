@@ -78,6 +78,15 @@ class QaServiceTest {
         }
     }
 
+    private fun postEuTaxoData(dataSet: CompanyAssociatedDataEutaxonomyNonFinancialsData): DataMetaInformation {
+        return apiAccessor.dataControllerApiForEuTaxonomyNonFinancials
+            .postCompanyAssociatedEutaxonomyNonFinancialsData(dataSet)
+    }
+
+    private fun postSfdrData(dataSet: CompanyAssociatedDataSfdrData): DataMetaInformation {
+        return apiAccessor.dataControllerApiForSfdrData.postCompanyAssociatedSfdrData(dataSet)
+    }
+
     @Test
     fun `post dummy data and accept it and check the qa status changes and check different users access permissions`() {
         val dataId = uploadEuTaxoDataAndValidatePendingState()
@@ -113,8 +122,7 @@ class QaServiceTest {
 
     private fun uploadEuTaxoDataAndValidatePendingState(user: TechnicalUser = TechnicalUser.Uploader): String {
         withTechnicalUser(user) {
-            val dataId =
-                dataController.postCompanyAssociatedEutaxonomyNonFinancialsData(dummyEuTaxoDataAlpha, false).dataId
+            val dataId = postEuTaxoData(dummyEuTaxoDataAlpha).dataId
             assertEquals(BackendQaStatus.Pending, getDataMetaInfo(dataId).qaStatus)
             return dataId
         }
@@ -164,8 +172,7 @@ class QaServiceTest {
 
         withTechnicalUser(TechnicalUser.Admin) {
             expectedDataIdsInReviewQueue = (1..5).map {
-                val nextDataId =
-                    dataController.postCompanyAssociatedEutaxonomyNonFinancialsData(dummyEuTaxoDataAlpha, false).dataId
+                val nextDataId = postEuTaxoData(dummyEuTaxoDataAlpha).dataId
                 await().atMost(2, TimeUnit.SECONDS).until {
                     val unreviewedDataIds = getInfoOnUnreviewedDatasets().map { it.dataId }
                     if (unreviewedDataIds.isNotEmpty()) {
@@ -277,14 +284,14 @@ class QaServiceTest {
     }
 
     private fun getInfoOnUnreviewedDatasets(
-        companyNameFilter: String? = null,
-        reportingPeriodFilter: String? = null,
-        dataTypeFilter: QaControllerApi.DataTypesGetInfoOnUnreviewedDatasets? = null,
+        companyName: String? = null,
+        reportingPeriod: String? = null,
+        dataType: QaControllerApi.DataTypesGetInfoOnUnreviewedDatasets? = null,
     ): List<ReviewQueueResponse> {
         return qaServiceController.getInfoOnUnreviewedDatasets(
-            reportingPeriods = reportingPeriodFilter?.let { setOf(it) } ?: emptySet(),
-            dataTypes = dataTypeFilter?.let { listOf(it) } ?: emptyList(),
-            companyName = companyNameFilter,
+            reportingPeriods = reportingPeriod?.let { setOf(it) } ?: emptySet(),
+            dataTypes = dataType?.let { listOf(it) } ?: emptyList(),
+            companyName = companyName,
         )
     }
 
@@ -320,30 +327,25 @@ class QaServiceTest {
         val datasetBeta = dummySfdrDataBeta.copy(reportingPeriod = repPeriodBeta)
 
         withTechnicalUser(TechnicalUser.Admin) {
-            val dataIdAlpha = apiAccessor.dataControllerApiForEuTaxonomyNonFinancials
-                .postCompanyAssociatedEutaxonomyNonFinancialsData(datasetAlpha).dataId
-            val dataIdBeta =
-                apiAccessor.dataControllerApiForSfdrData.postCompanyAssociatedSfdrData(datasetBeta).dataId
+            val dataIdAlpha = postEuTaxoData(datasetAlpha).dataId
+            val dataIdBeta = postSfdrData(datasetBeta).dataId
 
             await().atMost(2, TimeUnit.SECONDS).until {
-                val unreviewedDataIds =
-                    getInfoOnUnreviewedDatasets(reportingPeriodFilter = repPeriodAlpha).map { it.dataId }
+                val unreviewedDataIds = getInfoOnUnreviewedDatasets(reportingPeriod = repPeriodAlpha).map { it.dataId }
                 if (unreviewedDataIds.isNotEmpty()) {
-                    unreviewedDataIds.first() == dataIdAlpha &&
-                        getNumberOfUnreviewedDatasets(reportingPeriodFilter = repPeriodAlpha) == 1
+                    unreviewedDataIds.first() ==
+                        dataIdAlpha && getNumberOfUnreviewedDatasets(reportingPeriodFilter = repPeriodAlpha) == 1
                 } else { false }
             }
             await().atMost(2, TimeUnit.SECONDS).until {
-                val unreviewedDataIds =
-                    getInfoOnUnreviewedDatasets(dataTypeFilter = getQueueSfdrType).map { it.dataId }
+                val unreviewedDataIds = getInfoOnUnreviewedDatasets(dataType = getQueueSfdrType).map { it.dataId }
                 if (unreviewedDataIds.isNotEmpty()) {
                     unreviewedDataIds.first() == dataIdBeta &&
                         getNumberOfUnreviewedDatasets(dataTypeFilter = getNumberSfdrType) == 1
                 } else { false }
             }
             await().atMost(2, TimeUnit.SECONDS).until {
-                val unreviewedDataIds =
-                    getInfoOnUnreviewedDatasets(dataTypeFilter = getQueueSfdrType).map { it.dataId }
+                val unreviewedDataIds = getInfoOnUnreviewedDatasets(dataType = getQueueSfdrType).map { it.dataId }
                 if (unreviewedDataIds.isNotEmpty()) {
                     unreviewedDataIds.first() == dataIdBeta &&
                         getNumberOfUnreviewedDatasets(companyNameFilter = "Beta-Company-") == 1
