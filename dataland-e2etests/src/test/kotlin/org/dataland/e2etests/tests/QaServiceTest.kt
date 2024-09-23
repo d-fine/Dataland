@@ -45,6 +45,8 @@ class QaServiceTest {
     private lateinit var companyIdBeta: String
 
     private val expectedClientError403Text = "Client error : 403 "
+    private val getQueueSfdrType = QaControllerApi.DataTypesGetInfoOnUnreviewedDatasets.sfdr
+    private val getNumberSfdrType = QaControllerApi.DataTypesGetNumberOfUnreviewedDatasets.sfdr
 
     @BeforeAll
     fun postCompaniesAndBuildTestDatasets() {
@@ -164,12 +166,7 @@ class QaServiceTest {
                     dataController.postCompanyAssociatedEutaxonomyNonFinancialsData(dummyEuTaxoDataAlpha, false).dataId
                 withTechnicalUser(TechnicalUser.Admin) {
                     await().atMost(2, TimeUnit.SECONDS).until {
-                        val unreviewedDataIds = getInfoOnUnreviewedDatasets().map { it.dataId }
-                        if (unreviewedDataIds.isNotEmpty()) {
-                            unreviewedDataIds.last() == nextDataId
-                        } else {
-                            false
-                        }
+                        getInfoOnUnreviewedDatasets().map { it.dataId }.contains(nextDataId)
                     }
                 }
                 nextDataId
@@ -331,24 +328,17 @@ class QaServiceTest {
                         getNumberOfUnreviewedDatasets(reportingPeriodFilter = repPeriodAlpha) == 1
                 } else { false }
             }
-
             await().atMost(2, TimeUnit.SECONDS).until {
                 val unreviewedDataIds =
-                    getInfoOnUnreviewedDatasets(
-                        dataTypeFilter = QaControllerApi.DataTypesGetInfoOnUnreviewedDatasets.sfdr,
-                    ).map { it.dataId }
+                    getInfoOnUnreviewedDatasets(dataTypeFilter = getQueueSfdrType).map { it.dataId }
                 if (unreviewedDataIds.isNotEmpty()) {
                     unreviewedDataIds.first() == dataIdBeta &&
-                        getNumberOfUnreviewedDatasets(
-                            dataTypeFilter = QaControllerApi.DataTypesGetNumberOfUnreviewedDatasets.sfdr,
-                        ) == 1
+                        getNumberOfUnreviewedDatasets(dataTypeFilter = getNumberSfdrType) == 1
                 } else { false }
             }
             await().atMost(2, TimeUnit.SECONDS).until {
                 val unreviewedDataIds =
-                    getInfoOnUnreviewedDatasets(
-                        dataTypeFilter = QaControllerApi.DataTypesGetInfoOnUnreviewedDatasets.sfdr,
-                    ).map { it.dataId }
+                    getInfoOnUnreviewedDatasets(dataTypeFilter = getQueueSfdrType).map { it.dataId }
                 if (unreviewedDataIds.isNotEmpty()) {
                     unreviewedDataIds.first() == dataIdBeta &&
                         getNumberOfUnreviewedDatasets(companyNameFilter = "Beta-Company-") == 1
