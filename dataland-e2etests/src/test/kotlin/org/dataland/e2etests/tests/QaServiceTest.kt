@@ -14,14 +14,11 @@ import org.dataland.e2etests.auth.TechnicalUser
 import org.dataland.e2etests.utils.ApiAccessor
 import org.dataland.e2etests.utils.DocumentManagerAccessor
 import org.dataland.e2etests.utils.testDataProvivders.GeneralTestDataProvider
-import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.Assertions.assertNotEquals
 import org.junit.jupiter.api.BeforeAll
-import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.MethodOrderer
-import org.junit.jupiter.api.Order
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
 import org.junit.jupiter.api.TestMethodOrder
@@ -68,9 +65,7 @@ class QaServiceTest {
         dummySfdrDataBeta = CompanyAssociatedDataSfdrData(companyIdBeta, "2024", testDataSfdr)
     }
 
-    @BeforeEach
-    @AfterAll
-    fun clearTheReviewQueue() {
+    private fun clearTheReviewQueue() {
         withTechnicalUser(TechnicalUser.Reviewer) {
             getInfoOnUnreviewedDatasets().forEach { assignQaStatus(it.dataId, QaServiceQaStatus.Rejected) }
             await().atMost(2, TimeUnit.SECONDS)
@@ -160,9 +155,10 @@ class QaServiceTest {
         await().atMost(2, TimeUnit.SECONDS).until { getDataMetaInfo(dataId).qaStatus == expectedQaStatus }
     }
 
+    // @Order(1) TODO
     @Test
-    @Order(1)
     fun `check that the review queue is correctly ordered`() {
+        clearTheReviewQueue()
         var expectedDataIdsInReviewQueue = emptyList<String>()
 
         withTechnicalUser(TechnicalUser.Uploader) {
@@ -187,6 +183,7 @@ class QaServiceTest {
             val actualDataIdsInReviewQueue = getInfoOnUnreviewedDatasets().map { it.dataId }
             assertEquals(expectedDataIdsInReviewQueue, actualDataIdsInReviewQueue)
         }
+        clearTheReviewQueue()
     }
 
     @Test
@@ -319,6 +316,7 @@ class QaServiceTest {
 
     @Test
     fun `check that filtering works as expected when retrieving meta info on unreviewed datasets`() {
+        clearTheReviewQueue()
         val repPeriodAlpha = "abcdefgh-1"
         val repPeriodBeta = "abcdefgh-2"
         val datasetAlpha = dummyEuTaxoDataAlpha.copy(reportingPeriod = repPeriodAlpha)
