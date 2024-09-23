@@ -38,6 +38,7 @@
 [Environment]::SetEnvironmentVariable("DATALAND_DOCUMENT_MANAGER_CLIENT_SECRET", "password", [System.EnvironmentVariableTarget]::User)
 [Environment]::SetEnvironmentVariable("DATALAND_BACKEND_CLIENT_SECRET", "password", [System.EnvironmentVariableTarget]::User)
 [Environment]::SetEnvironmentVariable("DATALAND_AUTOMATED_QA_SERVICE_CLIENT_SECRET", "password", [System.EnvironmentVariableTarget]::User)
+[Environment]::SetEnvironmentVariable("DATALAND_DATA_EXPORTER_CLIENT_SECRET", "password", [System.EnvironmentVariableTarget]::User)
 [Environment]::SetEnvironmentVariable("EXPECT_STACKTRACE", "true", [System.EnvironmentVariableTarget]::User)
 [Environment]::SetEnvironmentVariable("NOTIFICATION_INTERNAL_RECEIVERS", "dummy.mail@example.com", [System.EnvironmentVariableTarget]::User)
 [Environment]::SetEnvironmentVariable("NOTIFICATION_INTERNAL_CC", "dummy.mail2@example.com", [System.EnvironmentVariableTarget]::User)
@@ -58,6 +59,7 @@
 [Environment]::SetEnvironmentVariable("FRONTEND_LOCATION_CONFIG", "Test", [System.EnvironmentVariableTarget]::User)
 [Environment]::SetEnvironmentVariable("BACKEND_LOCATION_CONFIG", "Dev", [System.EnvironmentVariableTarget]::User)
 [Environment]::SetEnvironmentVariable("BACKEND_URL", "http://host.docker.internal:8080/api/", [System.EnvironmentVariableTarget]::User)
+[Environment]::SetEnvironmentVariable("DATA_EXPORTER_OUTPUT_DIRECTORY", "./dataland-data-exporter", [System.EnvironmentVariableTarget]::User)
 
 # EuroDaT credentials - if value is not hardcoded here, look them up in our wiki
 [Environment]::SetEnvironmentVariable("EURODAT_BASE_URL", "https://int.gcp.qa-int.eurodat.org", [System.EnvironmentVariableTarget]::User)
@@ -66,5 +68,3 @@
 # [Environment]::SetEnvironmentVariable("QUARKUS_HTTP_SSL_CERTIFICATE_KEY_STORE_PASSWORD", "", [System.EnvironmentVariableTarget]::User)
 # [Environment]::SetEnvironmentVariable("QUARKUS_OIDC_CLIENT_CREDENTIALS_JWT_KEY_PASSWORD", "", [System.EnvironmentVariableTarget]::User)
 # [Environment]::SetEnvironmentVariable("QUARKUS_OIDC_CLIENT_CREDENTIALS_JWT_KEY_STORE_PASSWORD", "", [System.EnvironmentVariableTarget]::User)
-
-

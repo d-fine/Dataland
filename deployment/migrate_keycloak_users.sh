@@ -28,7 +28,7 @@ if [[ -n $volume ]]; then
   delete_docker_volume "$volume"
   cp "$keycloak_user_dir"/*-users-*.json "$keycloak_backup_dir"
 elif ls "$persistent_backup"/*-users-*.json &>/dev/null; then
-  echo "No Keycloak volume found. Loading uses from previous backup."
+  echo "No Keycloak volume found. Loading users from previous backup."
   cp "$persistent_backup"/*-users-*.json "$keycloak_backup_dir"
 else
   echo "No Keycloak volume or current user backup found. Resulting Keycloak instance will have no users."

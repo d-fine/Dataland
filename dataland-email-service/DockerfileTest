@@ -3,9 +3,8 @@ FROM ghcr.io/d-fine/dataland/dataland_email_service_base:${DATALAND_EMAIL_SERVIC
 
 FROM eclipse-temurin:21.0.3_9-jre-alpine@sha256:f05c742dd20051b104b939370f7db4d6eb420cc7fd842aeb4e2446837da3bd03
 COPY --from=builder /app/dataland-email-service/build/libs/dataland-email-service-0.0.1-SNAPSHOT.jar /jar/dataland-email-service.jar
-RUN wget https://repo1.maven.org/maven2/org/jacoco/jacoco/0.8.12/jacoco-0.8.12.zip && \
-    unzip -j ./jacoco-0.8.12.zip "lib/jacocoagent.jar" -d /jar/ && \
-    rm ./jacoco-0.8.12.zip
+COPY ./build-utils/download_and_unpack_jacoco.sh ./
+RUN chmod +x ./download_and_unpack_jacoco.sh && ./download_and_unpack_jacoco.sh
 CMD ["java","-javaagent:/jar/jacocoagent.jar=excludes=org.springframework.*,","-jar","/jar/dataland-email-service.jar","--spring.profiles.active=ci"]
 
 HEALTHCHECK --interval=30s --timeout=3s CMD wget -nv -O- -t 1 http://localhost:8080/api/actuator/health | tee /dev/stderr | grep -q '^{"status":"UP"' || false
