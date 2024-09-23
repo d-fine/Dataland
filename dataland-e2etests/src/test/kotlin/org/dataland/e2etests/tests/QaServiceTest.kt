@@ -14,7 +14,7 @@ import org.dataland.e2etests.auth.TechnicalUser
 import org.dataland.e2etests.utils.ApiAccessor
 import org.dataland.e2etests.utils.DocumentManagerAccessor
 import org.dataland.e2etests.utils.testDataProvivders.GeneralTestDataProvider
-import org.junit.jupiter.api.AfterEach
+import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.Assertions.assertNotEquals
@@ -63,7 +63,7 @@ class QaServiceTest {
     }
 
     @BeforeEach
-    @AfterEach
+    @AfterAll
     fun clearTheReviewQueue() {
         withTechnicalUser(TechnicalUser.Reviewer) {
             getInfoOnUnreviewedDatasets().forEach { assignQaStatus(it.dataId, QaServiceQaStatus.Rejected) }
@@ -163,7 +163,7 @@ class QaServiceTest {
                 val nextDataId =
                     dataController.postCompanyAssociatedEutaxonomyNonFinancialsData(dummyEuTaxoDataAlpha, false).dataId
                 withTechnicalUser(TechnicalUser.Admin) {
-                    await().atMost(10, TimeUnit.SECONDS).until {
+                    await().atMost(2, TimeUnit.SECONDS).until {
                         val unreviewedDataIds = getInfoOnUnreviewedDatasets().map { it.dataId }
                         if (unreviewedDataIds.isNotEmpty()) {
                             unreviewedDataIds.last() == nextDataId
