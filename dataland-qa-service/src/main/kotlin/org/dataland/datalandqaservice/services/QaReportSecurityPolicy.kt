@@ -15,7 +15,7 @@ import org.springframework.stereotype.Service
  */
 @Service
 class QaReportSecurityPolicy(
-    @Autowired private val userAuthenticatedApiService: UserAuthenticatedApiService,
+    @Autowired private val userAuthenticatedBackendClient: UserAuthenticatedBackendClient,
 ) {
     /**
      * Checks if a user can change the active status of a report.
@@ -33,7 +33,7 @@ class QaReportSecurityPolicy(
      * @param user the user requesting the view
      */
     fun ensureUserCanViewQaReportForDataId(dataId: String, user: DatalandAuthentication) {
-        val userAuthenticatedMetadataController = userAuthenticatedApiService
+        val userAuthenticatedMetadataController = userAuthenticatedBackendClient
             .getMetaDataControllerApiForUserAuthentication(user)
         try {
             userAuthenticatedMetadataController.getDataMetaInfo(dataId)

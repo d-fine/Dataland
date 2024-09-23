@@ -1,6 +1,7 @@
 package org.dataland.datalandqaservice.controller
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
@@ -12,8 +13,10 @@ import org.dataland.datalandqaservice.api.QaApi
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.ReviewInformationEntity
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.ReviewQueueEntity
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.ReviewInformationResponse
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.ReviewQueueResponse
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.repositories.ReviewHistoryRepository
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.repositories.ReviewQueueRepository
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.QaReviewManager
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
 import org.slf4j.LoggerFactory
@@ -35,13 +38,25 @@ class QaController(
     @Autowired val reviewHistoryRepository: ReviewHistoryRepository,
     @Autowired var cloudEventMessageHandler: CloudEventMessageHandler,
     @Autowired var objectMapper: ObjectMapper,
+    @Autowired var qaReviewManager: QaReviewManager,
 ) : QaApi {
     private val logger = LoggerFactory.getLogger(javaClass)
 
     @Transactional
-    override fun getUnreviewedDatasetsIds(): ResponseEntity<List<String>> {
-        logger.info("Received request to respond with IDs of unreviewed datasets")
-        return ResponseEntity.ok(reviewQueueRepository.getSortedPendingDataIds())
+    override fun getInfoOnUnreviewedDatasets(
+        dataTypes: Set<DataTypeEnum>?,
+        reportingPeriods: Set<String>?,
+        companyName: String?,
+        chunkSize: Int,
+        chunkIndex: Int,
+    ): ResponseEntity<List<ReviewQueueResponse>> {
+        logger.info("Received request to respond with information about unreviewed datasets")
+        return ResponseEntity.ok(
+            qaReviewManager.getInfoOnUnreviewedDatasets(
+                dataTypes = dataTypes, reportingPeriods = reportingPeriods,
+                companyName = companyName, chunkSize = chunkSize, chunkIndex = chunkIndex,
+            ),
+        )
     }
 
     @Transactional
@@ -120,6 +135,27 @@ class QaController(
         cloudEventMessageHandler.buildCEMessageAndSendToQueue(
             messageBody, MessageType.QaCompleted, correlationId, ExchangeName.DataQualityAssured,
             RoutingKeyNames.data,
+        )
+    }
+
+    /**
+     * Retrieves the number of unreviewed datasets specified by certain query parameter
+     * @param dataType the set of datatypes for which should be filtered
+     * @param reportingPeriod the set of reportingPeriods for which should be filtered
+     * @param companyName the companyName for which should be filtered
+     */
+    override fun getNumberOfUnreviewedDatasets(
+        dataTypes: Set<DataTypeEnum>?,
+        reportingPeriods: Set<String>?,
+        companyName: String?,
+    ): ResponseEntity<Int> {
+        logger.info("Received request to respond with number of unreviewed datasets")
+
+        return ResponseEntity.ok(
+            qaReviewManager.getNumberOfUnreviewedDatasets(
+                dataTypes = dataTypes,
+                reportingPeriods = reportingPeriods, companyName = companyName,
+            ),
         )
     }
 }
