@@ -64,8 +64,13 @@ class QaServiceTest {
 
     private fun clearTheReviewQueue() {
         withTechnicalUser(TechnicalUser.Reviewer) {
-            getInfoOnUnreviewedDatasets().forEach { assignQaStatus(it.dataId, QaServiceQaStatus.Rejected) }
-            Thread.sleep(10000)
+            while (getNumberOfUnreviewedDatasets() > 0) {
+                getInfoOnUnreviewedDatasets().forEach { assignQaStatus(it.dataId, QaServiceQaStatus.Rejected) }
+            }
+            await().atMost(2, TimeUnit.SECONDS).until {
+                getNumberOfUnreviewedDatasets() == 0 &&
+                    getInfoOnUnreviewedDatasets().isEmpty()
+            }
         }
     }
 
