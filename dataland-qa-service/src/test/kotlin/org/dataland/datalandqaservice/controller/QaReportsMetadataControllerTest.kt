@@ -28,7 +28,7 @@ class QaReportsMetadataControllerTest {
 
     @Test
     @WithMockUser(username = "user", roles = ["USER"])
-    fun whenValidLocalDates_thenNoBadRequest() {
+    fun whenValidLocalDatesThenNoBadRequest() {
         mockMvc.perform(
             MockMvcRequestBuilders.get("/data/reports/metadata")
                 .queryParam("minUploadDate", "2022-01-01")
