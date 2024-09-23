@@ -82,7 +82,7 @@ spring-boot-starter-validation = { module = "org.springframework.boot:spring-boo
 
 spring-boot-starter-security = { module = "org.springframework.boot:spring-boot-starter-security" }
 
-postgresql = "org.postgresql:postgresql:42.7.3"
+postgresql = "org.postgresql:postgresql:42.7.4"
 
 h2 = "com.h2database:h2:2.2.224"
 
