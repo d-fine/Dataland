@@ -161,18 +161,16 @@ class QaServiceTest {
         clearTheReviewQueue()
         var expectedDataIdsInReviewQueue = emptyList<String>()
 
-        withTechnicalUser(TechnicalUser.Uploader) {
+        withTechnicalUser(TechnicalUser.Admin) {
             expectedDataIdsInReviewQueue = (1..5).map {
                 val nextDataId =
                     dataController.postCompanyAssociatedEutaxonomyNonFinancialsData(dummyEuTaxoDataAlpha, false).dataId
-                withTechnicalUser(TechnicalUser.Admin) {
-                    await().atMost(2, TimeUnit.SECONDS).until {
-                        val unreviewedDataIds = getInfoOnUnreviewedDatasets().map { it.dataId }
-                        if (unreviewedDataIds.isNotEmpty()) {
-                            unreviewedDataIds.last() == nextDataId
-                        } else {
-                            false
-                        }
+                await().atMost(2, TimeUnit.SECONDS).until {
+                    val unreviewedDataIds = getInfoOnUnreviewedDatasets().map { it.dataId }
+                    if (unreviewedDataIds.isNotEmpty()) {
+                        unreviewedDataIds.last() == nextDataId
+                    } else {
+                        false
                     }
                 }
                 nextDataId
