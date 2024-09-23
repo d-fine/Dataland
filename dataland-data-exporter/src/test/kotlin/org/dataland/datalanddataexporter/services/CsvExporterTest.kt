@@ -15,9 +15,9 @@ import org.dataland.datalanddataexporter.utils.TransformationUtils.LEI_IDENTIFIE
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertDoesNotThrow
-import org.mockito.Mockito.any
 import org.mockito.Mockito.mock
 import org.mockito.Mockito.`when`
+import org.mockito.kotlin.any
 
 class CsvExporterTest {
     private lateinit var csvDataExporter: CsvExporter
@@ -51,6 +51,8 @@ class CsvExporterTest {
                 reportingPeriod = any(),
                 companyId = any(),
                 showOnlyActive = any(),
+                uploaderUserIds = any(),
+                qaStatus = any(),
             ),
         ).thenReturn(mockMetaData)
         return mockMetaDataControllerApi
@@ -60,7 +62,7 @@ class CsvExporterTest {
         val mockSfdrDataControllerApi = mock(SfdrDataControllerApi::class.java)
         `when`(
             mockSfdrDataControllerApi.getCompanyAssociatedSfdrData(
-                dataId = any() ?: "mockDataId",
+                dataId = any(),
             ),
         ).thenReturn(mockCompanyAssociatedSfdrData)
         return mockSfdrDataControllerApi
@@ -85,7 +87,7 @@ class CsvExporterTest {
         val mockCompanyDataControllerApi = mock(CompanyDataControllerApi::class.java)
         `when`(
             mockCompanyDataControllerApi.getCompanyById(
-                companyId = any() ?: "mockCompanyId",
+                companyId = any(),
             ),
         ).thenReturn(mockStoredCompany)
         return mockCompanyDataControllerApi
