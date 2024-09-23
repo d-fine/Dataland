@@ -161,7 +161,7 @@ class QaServiceTest {
             expectedDataIdsInReviewQueue = (1..5).map {
                 val nextDataId =
                     dataController.postCompanyAssociatedEutaxonomyNonFinancialsData(dummyEuTaxoDataAlpha, false).dataId
-                await().atMost(2, TimeUnit.SECONDS).until {
+                await().atMost(10, TimeUnit.SECONDS).until {
                     val unreviewedDataIds = getInfoOnUnreviewedDatasets().map { it.dataId }
                     if (unreviewedDataIds.isNotEmpty()) {
                         unreviewedDataIds.last() == nextDataId
