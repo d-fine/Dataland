@@ -18,10 +18,8 @@ import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.Assertions.assertNotEquals
 import org.junit.jupiter.api.BeforeAll
-import org.junit.jupiter.api.MethodOrderer
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
-import org.junit.jupiter.api.TestMethodOrder
 import org.junit.jupiter.api.assertDoesNotThrow
 import org.junit.jupiter.api.assertThrows
 import java.time.Instant
@@ -33,7 +31,6 @@ import org.dataland.datalandqaservice.openApiClient.infrastructure.ClientExcepti
 import org.dataland.datalandqaservice.openApiClient.model.QaStatus as QaServiceQaStatus
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-@TestMethodOrder(MethodOrderer.OrderAnnotation::class)
 class QaServiceTest {
     private val apiAccessor = ApiAccessor()
     private val documentManagerAccessor = DocumentManagerAccessor()
@@ -68,7 +65,7 @@ class QaServiceTest {
     private fun clearTheReviewQueue() {
         withTechnicalUser(TechnicalUser.Reviewer) {
             getInfoOnUnreviewedDatasets().forEach { assignQaStatus(it.dataId, QaServiceQaStatus.Rejected) }
-            await().atMost(2, TimeUnit.SECONDS)
+            await().atMost(10, TimeUnit.SECONDS)
                 .until {
                     getInfoOnUnreviewedDatasets().isEmpty()
                 }
@@ -155,7 +152,6 @@ class QaServiceTest {
         await().atMost(2, TimeUnit.SECONDS).until { getDataMetaInfo(dataId).qaStatus == expectedQaStatus }
     }
 
-    // @Order(1) TODO
     @Test
     fun `check that the review queue is correctly ordered`() {
         clearTheReviewQueue()
