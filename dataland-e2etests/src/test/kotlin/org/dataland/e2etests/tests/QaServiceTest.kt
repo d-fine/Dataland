@@ -174,12 +174,7 @@ class QaServiceTest {
             expectedDataIdsInReviewQueue = (1..5).map {
                 val nextDataId = postEuTaxoData(dummyEuTaxoDataAlpha).dataId
                 await().atMost(2, TimeUnit.SECONDS).until {
-                    val unreviewedDataIds = getInfoOnUnreviewedDatasets().map { it.dataId }
-                    if (unreviewedDataIds.isNotEmpty()) {
-                        unreviewedDataIds.last() == nextDataId
-                    } else {
-                        false
-                    }
+                    getInfoOnUnreviewedDatasets().map { it.dataId }.lastOrNull() == nextDataId
                 }
                 nextDataId
             }
@@ -332,24 +327,18 @@ class QaServiceTest {
 
             await().atMost(2, TimeUnit.SECONDS).until {
                 val unreviewedDataIds = getInfoOnUnreviewedDatasets(reportingPeriod = repPeriodAlpha).map { it.dataId }
-                if (unreviewedDataIds.isNotEmpty()) {
-                    unreviewedDataIds.first() ==
-                        dataIdAlpha && getNumberOfUnreviewedDatasets(reportingPeriodFilter = repPeriodAlpha) == 1
-                } else { false }
+                unreviewedDataIds.firstOrNull() == dataIdAlpha &&
+                    getNumberOfUnreviewedDatasets(reportingPeriodFilter = repPeriodAlpha) == 1
             }
             await().atMost(2, TimeUnit.SECONDS).until {
                 val unreviewedDataIds = getInfoOnUnreviewedDatasets(dataType = getQueueSfdrType).map { it.dataId }
-                if (unreviewedDataIds.isNotEmpty()) {
-                    unreviewedDataIds.first() == dataIdBeta &&
-                        getNumberOfUnreviewedDatasets(dataTypeFilter = getNumberSfdrType) == 1
-                } else { false }
+                unreviewedDataIds.firstOrNull() == dataIdBeta &&
+                    getNumberOfUnreviewedDatasets(dataTypeFilter = getNumberSfdrType) == 1
             }
             await().atMost(2, TimeUnit.SECONDS).until {
                 val unreviewedDataIds = getInfoOnUnreviewedDatasets(dataType = getQueueSfdrType).map { it.dataId }
-                if (unreviewedDataIds.isNotEmpty()) {
-                    unreviewedDataIds.first() == dataIdBeta &&
-                        getNumberOfUnreviewedDatasets(companyNameFilter = "Beta-Company-") == 1
-                } else { false }
+                unreviewedDataIds.firstOrNull() == dataIdBeta &&
+                    getNumberOfUnreviewedDatasets(companyNameFilter = "Beta-Company-") == 1
             }
         }
     }
