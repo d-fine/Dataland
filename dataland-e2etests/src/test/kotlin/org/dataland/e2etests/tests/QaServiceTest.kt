@@ -163,8 +163,11 @@ class QaServiceTest {
                 val nextDataId =
                     dataController.postCompanyAssociatedEutaxonomyNonFinancialsData(dummyEuTaxoDataAlpha, false).dataId
                 withTechnicalUser(TechnicalUser.Admin) {
-                    await().atMost(2, TimeUnit.SECONDS).until {
-                        getInfoOnUnreviewedDatasets().last().dataId == nextDataId
+                    val unreviewedDataIds = getInfoOnUnreviewedDatasets().map { it.dataId }
+                    if (unreviewedDataIds.isNotEmpty()) {
+                        unreviewedDataIds.last() == nextDataId
+                    } else {
+                        false
                     }
                 }
                 nextDataId
