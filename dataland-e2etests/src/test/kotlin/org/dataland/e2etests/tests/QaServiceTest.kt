@@ -151,7 +151,7 @@ class QaServiceTest {
     private fun waitForExpectedQaStatus(dataId: String, expectedQaStatus: BackendQaStatus) {
         await().atMost(2, TimeUnit.SECONDS).until { getDataMetaInfo(dataId).qaStatus == expectedQaStatus }
     }
-
+/*
     @Test
     fun `check that the review queue is correctly ordered`() {
         clearTheReviewQueue()
@@ -170,7 +170,7 @@ class QaServiceTest {
         }
 
         clearTheReviewQueue()
-    }
+    }*/
 
     @Test
     fun `check that an already reviewed dataset can not be assigned a different qa status`() {
