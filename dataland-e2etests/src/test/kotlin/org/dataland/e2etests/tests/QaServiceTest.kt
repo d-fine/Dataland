@@ -14,10 +14,12 @@ import org.dataland.e2etests.auth.TechnicalUser
 import org.dataland.e2etests.utils.ApiAccessor
 import org.dataland.e2etests.utils.DocumentManagerAccessor
 import org.dataland.e2etests.utils.testDataProvivders.GeneralTestDataProvider
+import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.Assertions.assertNotEquals
 import org.junit.jupiter.api.BeforeAll
+import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
 import org.junit.jupiter.api.assertDoesNotThrow
@@ -62,7 +64,9 @@ class QaServiceTest {
         dummySfdrDataBeta = CompanyAssociatedDataSfdrData(companyIdBeta, "2024", testDataSfdr)
     }
 
-    private fun clearTheReviewQueue() {
+    @BeforeEach
+    @AfterEach
+    fun clearTheReviewQueue() {
         withTechnicalUser(TechnicalUser.Reviewer) {
             while (getNumberOfUnreviewedDatasets() > 0) {
                 getInfoOnUnreviewedDatasets().forEach { assignQaStatus(it.dataId, QaServiceQaStatus.Rejected) }
@@ -156,22 +160,28 @@ class QaServiceTest {
 
     @Test
     fun `check that the review queue is correctly ordered`() {
-        clearTheReviewQueue()
+        var expectedDataIdsInReviewQueue = emptyList<String>()
 
         withTechnicalUser(TechnicalUser.Admin) {
-            val dataIdA =
-                dataController.postCompanyAssociatedEutaxonomyNonFinancialsData(dummyEuTaxoDataAlpha, false).dataId
-            val dataIdB =
-                dataController.postCompanyAssociatedEutaxonomyNonFinancialsData(dummyEuTaxoDataAlpha, false).dataId
-
-            Thread.sleep(10000)
-            val unreviewedDataIds = getInfoOnUnreviewedDatasets().map { it.dataId }
-            unreviewedDataIds.contains(dataIdA) && unreviewedDataIds.contains(dataIdB)
-
-            assertEquals(listOf(dataIdA, dataIdB), getInfoOnUnreviewedDatasets().map { it.dataId })
+            expectedDataIdsInReviewQueue = (1..5).map {
+                val nextDataId =
+                    dataController.postCompanyAssociatedEutaxonomyNonFinancialsData(dummyEuTaxoDataAlpha, false).dataId
+                await().atMost(2, TimeUnit.SECONDS).until {
+                    val unreviewedDataIds = getInfoOnUnreviewedDatasets().map { it.dataId }
+                    if (unreviewedDataIds.isNotEmpty()) {
+                        unreviewedDataIds.last() == nextDataId
+                    } else {
+                        false
+                    }
+                }
+                nextDataId
+            }
         }
 
-        clearTheReviewQueue()
+        withTechnicalUser(TechnicalUser.Reviewer) {
+            val actualDataIdsInReviewQueue = getInfoOnUnreviewedDatasets().map { it.dataId }
+            assertEquals(expectedDataIdsInReviewQueue, actualDataIdsInReviewQueue)
+        }
     }
 
     @Test
@@ -304,7 +314,6 @@ class QaServiceTest {
 
     @Test
     fun `check that filtering works as expected when retrieving meta info on unreviewed datasets`() {
-        clearTheReviewQueue()
         val repPeriodAlpha = "abcdefgh-1"
         val repPeriodBeta = "abcdefgh-2"
         val datasetAlpha = dummyEuTaxoDataAlpha.copy(reportingPeriod = repPeriodAlpha)
