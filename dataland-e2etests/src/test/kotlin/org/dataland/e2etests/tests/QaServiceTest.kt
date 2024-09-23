@@ -151,7 +151,7 @@ class QaServiceTest {
     private fun waitForExpectedQaStatus(dataId: String, expectedQaStatus: BackendQaStatus) {
         await().atMost(2, TimeUnit.SECONDS).until { getDataMetaInfo(dataId).qaStatus == expectedQaStatus }
     }
-/*
+
     @Test
     fun `check that the review queue is correctly ordered`() {
         clearTheReviewQueue()
@@ -162,15 +162,15 @@ class QaServiceTest {
             val dataIdB =
                 dataController.postCompanyAssociatedEutaxonomyNonFinancialsData(dummyEuTaxoDataAlpha, false).dataId
 
-            await().atMost(10, TimeUnit.SECONDS).until {
-                val unreviewedDataIds = getInfoOnUnreviewedDatasets().map { it.dataId }
-                unreviewedDataIds.contains(dataIdA) && unreviewedDataIds.contains(dataIdB)
-            }
+            Thread.sleep(10000)
+            val unreviewedDataIds = getInfoOnUnreviewedDatasets().map { it.dataId }
+            unreviewedDataIds.contains(dataIdA) && unreviewedDataIds.contains(dataIdB)
+
             assertEquals(listOf(dataIdA, dataIdB), getInfoOnUnreviewedDatasets().map { it.dataId })
         }
 
         clearTheReviewQueue()
-    }*/
+    }
 
     @Test
     fun `check that an already reviewed dataset can not be assigned a different qa status`() {
