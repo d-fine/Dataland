@@ -37,6 +37,7 @@ dependencies {
     implementation(Spring.boot.security)
     kapt(Spring.boot.configurationProcessor)
     testImplementation(Spring.boot.test)
+    testImplementation(libs.mockito.kotlin)
 }
 
 val backendOpenApiFile = "${project.rootDir}/dataland-backend/backendOpenApi.json"
