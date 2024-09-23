@@ -8,7 +8,7 @@ creation URL (or simply copy this md file into the description)
 ## Dataland repository
 
 ### Dependency updates
-
+- CI fails after typescript update see https://github.com/d-fine/Dataland/actions/runs/10971215777
 - [ ] Take a look at the dependency dashboard and see which updates are to be applied. For a detailed description of the process,
 consult the internal Dataland Wiki.
 
