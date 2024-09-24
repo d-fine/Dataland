@@ -117,9 +117,9 @@ mockito-core = { group = "org.mockito", name = "mockito-core", version.ref = "mo
 
 spring-security-test = { module = "org.springframework.security:spring-security-test" }
 
-spring-security-crypto = "org.springframework.security:spring-security-crypto:6.3.0"
+spring-security-crypto = "org.springframework.security:spring-security-crypto:6.3.3"
 
-spring-security-web = "org.springframework.security:spring-security-web:6.3.0"
+spring-security-web = "org.springframework.security:spring-security-web:6.3.3"
 
 jakarta-servlet-api = "jakarta.servlet:jakarta.servlet-api:6.1.0"
 
@@ -133,10 +133,10 @@ jackson-module-kotlin = "com.fasterxml.jackson.module:jackson-module-kotlin:2.17
 
 commons-io = "commons-io:commons-io:2.16.1"
 
-commons-codec = "commons-codec:commons-codec:1.17.0"
+commons-codec = "commons-codec:commons-codec:1.17.1"
 commons-text = "org.apache.commons:commons-text:1.12.0"
 
-pdfbox = "org.apache.pdfbox:pdfbox:3.0.2"
+pdfbox = "org.apache.pdfbox:pdfbox:3.0.3"
 
 mockito-inline = { group = "org.mockito", name = "mockito-inline", version.ref = "mockito" }
 
@@ -144,18 +144,18 @@ mockito-kotlin = "org.mockito.kotlin:mockito-kotlin:5.3.1"
 
 junit-jupiter = { group = "org.junit.jupiter", name = "junit-jupiter", version.ref = "junit-jupiter" }
 
-awaitility = "org.awaitility:awaitility:4.2.1"
+awaitility = "org.awaitility:awaitility:4.2.2"
 
 kotlin-reflect = { group = "org.jetbrains.kotlin", name = "kotlin-reflect", version.ref = "kotlin" }
 
 json = "org.json:json:20240303"
 
-spring-context = "org.springframework:spring-context:6.1.8"
-spring-test = "org.springframework:spring-test:6.1.8"
+spring-context = "org.springframework:spring-context:6.1.12"
+spring-test = "org.springframework:spring-test:6.1.12"
 
 spring-boot = "org.springframework.boot:spring-boot:3.3.2"
 
-spring-rabbit = "org.springframework.amqp:spring-rabbit:3.1.5"
+spring-rabbit = "org.springframework.amqp:spring-rabbit:3.1.7"
 
 cloudevents-api = "io.cloudevents:cloudevents-api:4.0.1"
 
@@ -165,7 +165,7 @@ cloudevents-core = "io.cloudevents:cloudevents-core:4.0.1"
 
 spring-cloud-function-context = "org.springframework.cloud:spring-cloud-function-context:4.1.2"
 
-spring-amqp = "org.springframework.amqp:spring-amqp:3.1.5"
+spring-amqp = "org.springframework.amqp:spring-amqp:3.1.7"
 
 spring-rabbit-test = { module = "org.springframework.amqp:spring-rabbit-test" }
 
