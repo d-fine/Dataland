@@ -57,6 +57,7 @@ class PrivateDataAccessChecker(
         val metaDataEntities = dataMetaInformationManager.searchDataMetaInfo(
             companyId = companyId,
             dataType = DataType.of(VsmeData::class.java), showOnlyActive = true, reportingPeriod = null,
+            uploaderUserIds = null, qaStatus = null,
         )
         val userId = DatalandAuthentication.fromContext().userId
         metaDataEntities.forEach { metaDataEntity ->

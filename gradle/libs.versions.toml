@@ -84,7 +84,7 @@ spring-boot-starter-security = { module = "org.springframework.boot:spring-boot-
 
 postgresql = "org.postgresql:postgresql:42.7.4"
 
-h2 = "com.h2database:h2:2.2.224"
+h2 = "com.h2database:h2:2.3.232"
 
 spring-boot-configuration-processor = { module = "org.springframework.boot:spring-boot-configuration-processor" }
 
