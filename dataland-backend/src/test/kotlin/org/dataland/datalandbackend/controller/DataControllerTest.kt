@@ -88,13 +88,17 @@ internal class DataControllerTest(
         `when`(mockDataMetaInformationManager.getDataMetaInformationByDataId(otherUserAcceptedDataId)).thenReturn(
             otherUserAcceptedDataMetaInformationEntity,
         )
-        `when`(mockDataMetaInformationManager.searchDataMetaInfo("", testDataType, false, "")).thenReturn(
-            listOf(
-                testUserPendingDataMetaInformationEntity,
-                otherUserPendingDataMetaInformationEntity,
-                otherUserAcceptedDataMetaInformationEntity,
-            ),
+        `when`(
+            mockDataMetaInformationManager
+                .searchDataMetaInfo("", testDataType, false, "", uploaderUserIds = null, qaStatus = null),
         )
+            .thenReturn(
+                listOf(
+                    testUserPendingDataMetaInformationEntity,
+                    otherUserPendingDataMetaInformationEntity,
+                    otherUserAcceptedDataMetaInformationEntity,
+                ),
+            )
     }
 
     private fun mockDataManager() {

@@ -14,24 +14,31 @@ import org.springframework.data.repository.query.Param
 interface DataMetaInformationRepository : JpaRepository<DataMetaInformationEntity, String> {
 
     /**
-     * A function for searching for dataMetaInformation by dataType and companyId.
-     * If companyId is not empty, then only metaInformation for data with that companyId is returned
-     * If an invalid companyId is supplied, no results are returned (but no error is thrown)
-     * If dataType is not empty, then only metaInformation for data with that dataType is returned
-     * If an invalid dataType is supplied, no results are returned (but no error is thrown)
-     * If reportingPeriod is not empty, then only metaInformation for data with for that reportingPeriod is returned
+     * Searches for dataMetaInformation based on a filter defined in DataMetaInformationSearchFilter.
+     * The filtering parameters are companyId, dataType, reportingPeriod, uploaderUserId, qaStatus, active status.
+     * - If a filter for companyId, dataType, reportingPeriod, uploaderUserIds, or qaStatus is set (non-null or true),
+     *   only dataMetaInformation matching the criteria will be returned.
+     * - The onlyActive filter allows filtering for dataMetaInformation that are currently active.
+     * - If an invalid or non-matching value is used for any of the filters, no results are returned for that filter,
+     *   but no error is thrown.
+     * @param searchFilter The set of filtering criteria encapsulated in DataMetaInformationSearchFilter object.
+     * @return A list of DataMetaInformationEntity instances that match the specified filter criteria.
      */
     @Query(
         "SELECT dataMetaInformation FROM DataMetaInformationEntity dataMetaInformation " +
             "WHERE " +
-            "(:#{#searchFilter.companyIdFilterLength} = 0 " +
-            "OR dataMetaInformation.company.companyId = :#{#searchFilter.companyIdFilter}) AND " +
-            "(:#{#searchFilter.dataTypeFilterLength} = 0 " +
-            "OR dataMetaInformation.dataType = :#{#searchFilter.dataTypeFilter}) AND " +
-            "(:#{#searchFilter.reportingPeriodFilterLength} = 0 " +
-            "OR dataMetaInformation.reportingPeriod = :#{#searchFilter.reportingPeriodFilter}) AND " +
+            "(:#{#searchFilter.shouldFilterByCompanyId} = false " +
+            "OR dataMetaInformation.company.companyId = :#{#searchFilter.preparedCompanyId}) AND " +
+            "(:#{#searchFilter.shouldFilterByDataType} = false " +
+            "OR dataMetaInformation.dataType = :#{#searchFilter.preparedDataType}) AND " +
+            "(:#{#searchFilter.shouldFilterByReportingPeriod} = false " +
+            "OR dataMetaInformation.reportingPeriod = :#{#searchFilter.preparedReportingPeriod}) AND " +
             "(:#{#searchFilter.onlyActive} = false " +
-            "OR dataMetaInformation.currentlyActive = true)",
+            "OR dataMetaInformation.currentlyActive = true) AND " +
+            "(:#{#searchFilter.shouldFilterByUploaderUserIds} = false " +
+            "OR dataMetaInformation.uploaderUserId IN :#{#searchFilter.preparedUploaderUserIds}) AND " +
+            "(:#{#searchFilter.shouldFilterByQaStatus} = false OR " +
+            "dataMetaInformation.qaStatus = :#{#searchFilter.preparedQaStatus})",
     )
     fun searchDataMetaInformation(
         @Param("searchFilter") searchFilter: DataMetaInformationSearchFilter,

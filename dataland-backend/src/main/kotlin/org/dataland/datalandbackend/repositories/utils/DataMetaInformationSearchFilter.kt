@@ -1,21 +1,48 @@
 package org.dataland.datalandbackend.repositories.utils
 
+import org.dataland.datalandbackend.model.DataType
+import org.dataland.datalandbackendutils.model.QaStatus
+import java.util.*
+
 /**
  * A filter class used in the searchDataMetaInformation()-Method which allows
  * convenient usage of SEPL instructions in the query
  */
 data class DataMetaInformationSearchFilter(
-    val companyIdFilter: String,
-    val dataTypeFilter: String,
-    val reportingPeriodFilter: String,
+    val companyId: String?,
+    val dataType: DataType?,
+    val reportingPeriod: String?,
     val onlyActive: Boolean,
+    val uploaderUserIds: Set<UUID>?,
+    val qaStatus: QaStatus?,
 ) {
-    val companyIdFilterLength: Int
-        get() = companyIdFilter.length
+    val shouldFilterByCompanyId: Boolean
+        get() = !companyId.isNullOrEmpty()
 
-    val dataTypeFilterLength: Int
-        get() = dataTypeFilter.length
+    val preparedCompanyId: String
+        get() = companyId ?: ""
 
-    val reportingPeriodFilterLength: Int
-        get() = reportingPeriodFilter.length
+    val shouldFilterByDataType: Boolean
+        get() = dataType != null
+
+    val preparedDataType: String
+        get() = dataType?.name ?: ""
+
+    val shouldFilterByReportingPeriod: Boolean
+        get() = !reportingPeriod.isNullOrEmpty()
+
+    val preparedReportingPeriod: String
+        get() = reportingPeriod ?: ""
+
+    val shouldFilterByUploaderUserIds: Boolean
+        get() = !uploaderUserIds.isNullOrEmpty()
+
+    val preparedUploaderUserIds: List<String>
+        get() = uploaderUserIds?.map { it.toString() } ?: listOf()
+
+    val shouldFilterByQaStatus: Boolean
+        get() = qaStatus != null
+
+    val preparedQaStatus: QaStatus
+        get() = qaStatus ?: QaStatus.Accepted
 }

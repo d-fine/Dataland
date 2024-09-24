@@ -6,8 +6,10 @@ import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.repositories.DataMetaInformationRepository
 import org.dataland.datalandbackend.repositories.utils.DataMetaInformationSearchFilter
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
+import org.dataland.datalandbackendutils.model.QaStatus
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
+import java.util.*
 
 /**
  * A service class for managing data meta-information
@@ -79,21 +81,22 @@ class DataMetaInformationManager(
      * @return a list of meta info about data depending on the filters
      */
     fun searchDataMetaInfo(
-        companyId: String,
+        companyId: String?,
         dataType: DataType?,
         showOnlyActive: Boolean,
         reportingPeriod: String?,
+        uploaderUserIds: Set<UUID>?,
+        qaStatus: QaStatus?,
     ): List<DataMetaInformationEntity> {
-        if (companyId != "") {
-            companyQueryManager.verifyCompanyIdExists(companyId)
-        }
-        val dataTypeFilter = dataType?.name ?: ""
-        val reportingPeriodFilter = reportingPeriod ?: ""
+        companyId?.takeIf { it.isNotBlank() }?.let { companyQueryManager.verifyCompanyIdExists(it) }
+
         val filter = DataMetaInformationSearchFilter(
-            companyIdFilter = companyId,
-            dataTypeFilter = dataTypeFilter,
-            reportingPeriodFilter = reportingPeriodFilter,
+            companyId = companyId,
+            dataType = dataType,
+            reportingPeriod = reportingPeriod,
             onlyActive = showOnlyActive,
+            uploaderUserIds = uploaderUserIds,
+            qaStatus = qaStatus,
         )
 
         return dataMetaInformationRepositoryInterface.searchDataMetaInformation(filter)

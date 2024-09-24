@@ -209,7 +209,8 @@ jobs:
       - name: Execute unit tests for all spring services
         run: |
           sudo apt update && sudo apt install libreoffice
-          ./gradlew :dataland-backend:test :dataland-backend-utils:test :dataland-internal-storage:test :dataland-api-key-manager:test :dataland-qa-service:test :dataland-document-manager:test :dataland-batch-manager:test :dataland-community-manager:test :dataland-email-service:test :dataland-framework-toolbox:test :dataland-external-storage:test --no-daemon --stacktrace
+          #TODO: look into a more elegant solution for the line below
+          ./gradlew :dataland-backend:test :dataland-backend-utils:test :dataland-internal-storage:test :dataland-api-key-manager:test :dataland-qa-service:test :dataland-document-manager:test :dataland-batch-manager:test :dataland-community-manager:test :dataland-email-service:test :dataland-framework-toolbox:test :dataland-external-storage:test :dataland-data-exporter:test --no-daemon --stacktrace
         if: always()
         env:
           MAILJET_API_ID: ${{ secrets.MAILJET_API_ID }}
@@ -376,6 +377,7 @@ jobs:
           DATALAND_DOCUMENT_MANAGER_CLIENT_SECRET: "password"
           DATALAND_BACKEND_CLIENT_SECRET: "password"
           DATALAND_AUTOMATED_QA_SERVICE_CLIENT_SECRET: "password"
+          DATALAND_DATA_EXPORTER_CLIENT_SECRET: "password"
           KEYCLOAK_READER_VALUE: "Dic1AEUG0nKnZ8me/3GMxgfyUmbwmJwDWNXkC7arLcij2BDB0xeOgk8ZpfZPKmFNikr9Is5I4+Nyk3MB9zs7mA=="
           KEYCLOAK_READER_SALT: "K9nzg086pCNjq8dxl84GZg=="
           KEYCLOAK_READER_PASSWORD: "password"
@@ -413,6 +415,7 @@ jobs:
           BACKEND_URL: ${{ secrets.BACKEND_URL }}
           IGNORE_EXTERNAL_STORAGE_ERROR: "false"
           COMMUNITY_MANAGER_NOTIFICATION_SERVICE_FEATURE_FLAG: true
+          DATA_EXPORTER_OUTPUT_DIRECTORY: "/tmp"
       - name: Upload JaCoCo Exec Results
         if: always()
         uses: actions/upload-artifact@50769540e7f4bd5e21e526ee35c689e35e0d6874 # v4

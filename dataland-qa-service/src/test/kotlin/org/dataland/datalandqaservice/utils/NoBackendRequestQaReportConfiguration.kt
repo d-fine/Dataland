@@ -1,7 +1,7 @@
 package org.dataland.datalandqaservice.utils
 
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.QaReportSecurityPolicy
-import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.UserAuthenticatedApiService
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.UserAuthenticatedBackendClient
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -16,8 +16,8 @@ class NoBackendRequestQaReportConfiguration {
     @Bean
     @Primary
     fun getQaReportSecurityPolicy(
-        @Autowired userAuthenticatedApiService: UserAuthenticatedApiService,
+        @Autowired userAuthenticatedBackendClient: UserAuthenticatedBackendClient,
     ): QaReportSecurityPolicy {
-        return NoBackendRequestQaReportSecurityPolicy(userAuthenticatedApiService)
+        return NoBackendRequestQaReportSecurityPolicy(userAuthenticatedBackendClient)
     }
 }
