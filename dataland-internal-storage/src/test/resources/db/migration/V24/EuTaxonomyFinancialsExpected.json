@@ -1,0 +1,156 @@
+{
+  "financialServicesTypes": [
+    "AssetManagement",
+    "InsuranceOrReinsurance"
+  ],
+  "eligibilityKpis": {
+    "AssetManagement": {
+      "banksAndIssuersInPercent": null,
+      "derivativesInPercent": {
+        "value": null,
+        "dataSource": {
+          "page": "322",
+          "fileName": "AnnualReport",
+          "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+          "tagName": "paradigms"
+        },
+        "comment": null,
+        "quality": "Audited"
+      },
+      "investmentNonNfrdInPercent": {
+        "value": null,
+        "dataSource": {
+          "page": "426",
+          "fileName": "AnnualReport",
+          "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+          "tagName": "e-markets"
+        },
+        "comment": "hack redundant bus",
+        "quality": "Audited"
+      },
+      "taxonomyEligibleActivityInPercent": {
+        "value": 78.03,
+        "dataSource": {
+          "page": "415",
+          "fileName": "AnnualReport",
+          "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+          "tagName": "eyeballs"
+        },
+        "comment": null,
+        "quality": null
+      },
+      "taxonomyNonEligibleActivityInPercent": {
+        "value": null,
+        "dataSource": {
+          "page": "548-907",
+          "fileName": "AnnualReport",
+          "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+          "tagName": "infrastructures"
+        },
+        "comment": "index primary firewall",
+        "quality": null
+      }
+    },
+    "InsuranceOrReinsurance": {
+      "banksAndIssuersInPercent": {
+        "value": 84.88,
+        "dataSource": {
+          "page": "493-1262",
+          "fileName": "AnnualReport",
+          "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+          "tagName": "lifetime value"
+        },
+        "comment": "transmit bluetooth transmitter",
+        "quality": "Reported"
+      },
+      "derivativesInPercent": {
+        "value": 8,
+        "dataSource": {
+          "page": "406",
+          "fileName": "AnnualReport",
+          "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+          "tagName": "bandwidth"
+        },
+        "comment": "synthesize digital firewall",
+        "quality": null
+      },
+      "investmentNonNfrdInPercent": {
+        "value": 9.08,
+        "dataSource": {
+          "page": "840",
+          "fileName": "AnnualReport",
+          "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+          "tagName": "supply-chains"
+        },
+        "comment": "parse neural hard drive",
+        "quality": "Estimated"
+      },
+      "taxonomyEligibleActivityInPercent": {
+        "value": 83.42,
+        "dataSource": {
+          "page": "617",
+          "fileName": "AnnualReport",
+          "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+          "tagName": "communities"
+        },
+        "comment": "reboot digital system",
+        "quality": "NoDataFound"
+      },
+      "taxonomyNonEligibleActivityInPercent": {
+        "value": null,
+        "dataSource": {
+          "page": "582",
+          "fileName": "AnnualReport",
+          "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+          "tagName": "web services"
+        },
+        "comment": "back up back-end application",
+        "quality": "Incomplete"
+      }
+    }
+  },
+  "creditInstitutionKpis": null,
+  "investmentFirmKpis": null,
+  "insuranceKpis": {
+    "taxonomyEligibleNonLifeInsuranceActivitiesInPercent": {
+      "value": null,
+      "dataSource": {
+        "page": "859",
+        "fileName": "AnnualReport",
+        "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+        "tagName": "supply-chains"
+      },
+      "comment": "copy back-end panel",
+      "quality": "Incomplete"
+    }
+  },
+  "fiscalYearDeviation": {
+    "value": "Deviation"
+  },
+  "fiscalYearEnd": null,
+  "scopeOfEntities": {
+    "value": "NA"
+  },
+  "nfrdMandatory": {
+    "value": "Yes"
+  },
+  "euTaxonomyActivityLevelReporting": "No",
+  "assurance": {
+    "value": "LimitedAssurance",
+    "provider": null,
+    "dataSource": {
+      "page": "571",
+      "fileName": "AnnualReport",
+      "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+      "tagName": "channels"
+    }
+  },
+  "numberOfEmployees": null,
+  "referencedReports": {
+    "AnnualReport": {
+      "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+      "fileName": "AnnualReport",
+      "publicationDate": "2023-06-18"
+    }
+  }
+}
