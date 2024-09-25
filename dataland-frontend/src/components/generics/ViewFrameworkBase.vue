@@ -121,6 +121,7 @@ import InputSwitch from 'primevue/inputswitch';
 import { hasUserCompanyRoleForCompany } from '@/utils/CompanyRolesUtils';
 import { ReportingPeriodTableActions, type ReportingPeriodTableEntry } from '@/utils/PremadeDropdownDatasets';
 import { CompanyRole } from '@clients/communitymanager';
+import router from '@/router';
 
 export default defineComponent({
   name: 'ViewFrameworkBase',
@@ -254,7 +255,7 @@ export default defineComponent({
      * @param dataId data Id
      */
     gotoUpdateForm(companyID: string, dataType: DataTypeEnum, dataId: string) {
-      void this.$router.push(
+      void router.push(
         `/companies/${assertDefined(companyID)}/frameworks/${assertDefined(dataType)}/upload?templateDataId=${dataId}`
       );
     },
@@ -283,7 +284,7 @@ export default defineComponent({
      */
     handleChangeFrameworkEvent(dropDownChangeEvent: DropdownChangeEvent) {
       if (this.dataType != dropDownChangeEvent.value) {
-        void this.$router.push(`/companies/${this.companyID}/frameworks/${this.chosenDataTypeInDropdown}`);
+        void router.push(`/companies/${this.companyID}/frameworks/${this.chosenDataTypeInDropdown}`);
       }
     },
 
@@ -386,7 +387,7 @@ export default defineComponent({
      * @returns a router push to the edit url of the chosen dataset
      */
     handleReportingPeriodSelection(reportingPeriodTableEntry: ReportingPeriodTableEntry) {
-      return this.$router.push(reportingPeriodTableEntry.editUrl);
+      return router.push(reportingPeriodTableEntry.editUrl);
     },
   },
   watch: {

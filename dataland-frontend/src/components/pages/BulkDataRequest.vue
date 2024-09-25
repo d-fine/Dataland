@@ -225,6 +225,7 @@ import { AxiosError } from 'axios';
 import BasicFormSection from '@/components/general/BasicFormSection.vue';
 import ToggleChipFormInputs from '@/components/general/ToggleChipFormInputs.vue';
 import { type BulkDataRequest, type BulkDataRequestDataTypesEnum } from '@clients/communitymanager';
+import router from '@/router';
 
 export default defineComponent({
   name: 'BulkDataRequest',
@@ -392,7 +393,7 @@ export default defineComponent({
      * Go to RequestedDatasetsPage
      */
     goToMyRequests() {
-      void this.$router.push('/requests');
+      void router.push('/requests');
     },
   },
   mounted() {

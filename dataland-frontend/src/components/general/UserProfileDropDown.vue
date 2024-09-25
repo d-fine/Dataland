@@ -39,6 +39,7 @@ import type Keycloak from 'keycloak-js';
 import { assertDefined } from '@/utils/TypeScriptUtils';
 import defaultProfilePicture from '@/assets/images/elements/default_user_icon.svg';
 import { KEYCLOAK_ROLE_REVIEWER, logoutAndRedirectToUri } from '@/utils/KeycloakUtils';
+import router from '@/router';
 
 export default defineComponent({
   name: 'UserProfileDropDown',
@@ -141,19 +142,19 @@ export default defineComponent({
      * Redirects the user to the data-request/invite screen
      */
     async goToDataRequest() {
-      await this.$router.push('/bulkdatarequest');
+      await router.push('/bulkdatarequest');
     },
     /**
      * Redirects the user to the api-key management interface
      */
     async goToApiKeysPage() {
-      await this.$router.push('/api-key');
+      await router.push('/api-key');
     },
     /**
      * Redirects the user to the QA Services page
      */
     async goToQualityAssurance() {
-      await this.$router.push('/qualityassurance');
+      await router.push('/qualityassurance');
     },
     /**
      * Called when the profile picture could not load. Propagates the event and sets the profile picture

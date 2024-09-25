@@ -23,6 +23,7 @@ import TabPanel from 'primevue/tabpanel';
 import { checkIfUserHasRole, KEYCLOAK_ROLE_ADMIN, KEYCLOAK_ROLE_REVIEWER } from '@/utils/KeycloakUtils';
 import type Keycloak from 'keycloak-js';
 import { CompanyRole, type CompanyRoleAssignment } from '@clients/communitymanager';
+import router from '@/router';
 
 export default defineComponent({
   name: 'DatasetsTabMenu',
@@ -125,7 +126,7 @@ export default defineComponent({
      */
     async handleTabChange(event: { index: number }): Promise<void> {
       if (this.initialTabIndex != event.index) {
-        await this.$router.push(this.tabs[event.index].route);
+        await router.push(this.tabs[event.index].route);
       }
     },
   },

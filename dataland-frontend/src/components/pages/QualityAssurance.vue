@@ -155,6 +155,7 @@ import InputText from 'primevue/inputtext';
 import Calendar from 'primevue/calendar';
 import type Keycloak from 'keycloak-js';
 import { type GetInfoOnUnreviewedDatasetsDataTypesEnum, type ReviewQueueResponse } from '@clients/qaservice';
+import router from '@/router';
 
 export default defineComponent({
   name: 'QualityAssurance',
@@ -273,7 +274,7 @@ export default defineComponent({
     goToQaViewPage(event: DataTableRowClickEvent) {
       const qaDataObject = event.data as ReviewQueueResponse;
       const qaUri = `/companies/${qaDataObject.companyId}/frameworks/${qaDataObject.framework}/${qaDataObject.dataId}`;
-      return this.$router.push(qaUri);
+      return router.push(qaUri);
     },
 
     /**
