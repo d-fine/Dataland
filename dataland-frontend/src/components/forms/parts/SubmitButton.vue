@@ -15,6 +15,7 @@ import { defineComponent } from 'vue';
 import PrimeButton from 'primevue/button';
 import { useRoute } from 'vue-router';
 import { assertDefined } from '@/utils/TypeScriptUtils';
+import { submitForm, getNode } from '@formkit/core'
 
 export default defineComponent({
   name: 'SubmitButton',
@@ -37,7 +38,7 @@ export default defineComponent({
       return this.route.query.templateDataId !== undefined;
     },
     formIsValid(): boolean {
-      return assertDefined(this.$formkit.get(this.formId)?.context?.state.valid);
+      return assertDefined(getNode(this.formId)?.context?.state.valid);
     },
   },
   methods: {
@@ -45,7 +46,7 @@ export default defineComponent({
      * Submits the form associated with the provided form ID
      */
     submit() {
-      this.$formkit.submit(this.formId);
+      submitForm(this.formId);
     },
   },
 });
