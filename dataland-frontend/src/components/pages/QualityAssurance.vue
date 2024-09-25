@@ -154,7 +154,7 @@ import { retrieveAvailableFrameworks } from '@/utils/RequestsOverviewPageUtils';
 import InputText from 'primevue/inputtext';
 import Calendar from 'primevue/calendar';
 import type Keycloak from 'keycloak-js';
-import { type GetInfoOnUnreviewedDatasetsDataTypeEnum, type ReviewQueueResponse } from '@clients/qaservice';
+import { type GetInfoOnUnreviewedDatasetsDataTypesEnum, type ReviewQueueResponse } from '@clients/qaservice';
 
 export default defineComponent({
   name: 'QualityAssurance',
@@ -238,7 +238,7 @@ export default defineComponent({
         this.waitingForData = true;
         this.displayDataOfPage = [];
 
-        const selectedFrameworksAsSet = new Set<GetInfoOnUnreviewedDatasetsDataTypeEnum>(
+        const selectedFrameworksAsSet = new Set<GetInfoOnUnreviewedDatasetsDataTypesEnum>(
           this.selectedFrameworks.map((selectableItem) => selectableItem.frameworkDataType)
         );
         const reportingPeriodFilter: Set<string> = new Set<string>(
@@ -246,7 +246,7 @@ export default defineComponent({
         );
         const companyNameFilter = this.searchBarInput === '' ? undefined : this.searchBarInput;
         const response = await this.apiClientProvider.apiClients.qaController.getInfoOnUnreviewedDatasets(
-          selectedFrameworksAsSet as Set<GetInfoOnUnreviewedDatasetsDataTypeEnum>,
+          selectedFrameworksAsSet as Set<GetInfoOnUnreviewedDatasetsDataTypesEnum>,
           reportingPeriodFilter,
           companyNameFilter,
           this.datasetsPerPage,
@@ -255,7 +255,7 @@ export default defineComponent({
         this.displayDataOfPage = response.data;
         this.totalRecords = (
           await this.apiClientProvider.apiClients.qaController.getNumberOfUnreviewedDatasets(
-            selectedFrameworksAsSet as Set<GetInfoOnUnreviewedDatasetsDataTypeEnum>,
+            selectedFrameworksAsSet as Set<GetInfoOnUnreviewedDatasetsDataTypesEnum>,
             reportingPeriodFilter,
             companyNameFilter
           )
