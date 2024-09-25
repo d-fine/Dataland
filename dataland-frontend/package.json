@@ -72,7 +72,7 @@
     "tsconfig-paths": "4.2.0",
     "typescript": "5.4.5",
     "vite": "5.2.10",
-    "vite-plugin-istanbul": "6.0.0",
+    "vite-plugin-istanbul": "6.0.2",
     "vue-markdown-render": "^2.2.1",
     "vue-tsc": "2.0.21"
   }
