@@ -27,7 +27,6 @@
     "@formkit/themes": "^1.6.2",
     "@formkit/vue": "^1.6.2",
     "@ibm/plex": "^6.4.0",
-    "@typescript-eslint/eslint-plugin": "^8.7.0",
     "axios": "^1.6.8",
     "currency-codes": "^2.1.0",
     "i18n-iso-countries": "^7.11.1",
