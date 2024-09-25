@@ -6,12 +6,14 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.metainformation.DataMetaInformation
+import org.dataland.datalandbackendutils.model.QaStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
+import java.util.*
 
 /**
  * Defines the restful dataland-backend API regarding meta data searches.
@@ -24,9 +26,13 @@ interface MetaDataApi {
 
     /**
      * A method to search for meta info about data sets registered by Dataland
-     * @param companyId filters the requested meta info to a specific company.
-     * @param dataType filters the requested meta info to a specific data type.
-     * @param showOnlyActive if set to true, only active datasets will be returned (e.g. no outdated ones)
+     * @param companyId if set, filters the requested meta info to a specific company.
+     * @param dataType if set, filters the requested meta info to a specific data type.
+     * @param showOnlyActive if set to true, only active datasets will be returned (e.g. no outdated ones).
+     *   If set to false, all datasets will be returned regardless of their active status.
+     * @param reportingPeriod if set, the method only returns meta info with this reporting period
+     * @param uploaderUserIds if set, the method will only return meta info for datasets uploaded by these user ids.
+     * @param qaStatus if set, the method only returns meta info for datasets with this qa status
      * @return a list of matching DataMetaInformation
      */
     @Operation(
@@ -47,6 +53,8 @@ interface MetaDataApi {
         @RequestParam dataType: DataType? = null,
         @RequestParam(defaultValue = "true") showOnlyActive: Boolean,
         @RequestParam reportingPeriod: String? = null,
+        @RequestParam uploaderUserIds: Set<UUID>? = null,
+        @RequestParam qaStatus: QaStatus? = null,
     ):
         ResponseEntity<List<DataMetaInformation>>
 

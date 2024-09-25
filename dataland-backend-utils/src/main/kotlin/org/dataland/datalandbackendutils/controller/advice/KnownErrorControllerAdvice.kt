@@ -142,4 +142,23 @@ class KnownErrorControllerAdvice(
             ex,
         )
     }
+
+    /**
+     * Handles date time parse exceptions. These occur when the parsing of a LocalDate parameter fails.
+     */
+    @ExceptionHandler(java.time.format.DateTimeParseException::class)
+    fun handleDateTimeParseException(ex: java.time.format.DateTimeParseException): ResponseEntity<ErrorResponse> {
+        val message = StringBuilder()
+        message.append("Failed to parse a date time string.")
+        message.append("Error: ${ex.message}")
+        return prepareResponse(
+            ErrorDetails(
+                errorType = "bad-datetime-format",
+                summary = "Invalid DateTime format",
+                message = message.toString(),
+                httpStatus = HttpStatus.BAD_REQUEST,
+            ),
+            ex,
+        )
+    }
 }
