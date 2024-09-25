@@ -134,7 +134,6 @@
   "nfrdMandatory": {
     "value": "Yes"
   },
-  "euTaxonomyActivityLevelReporting": "No",
   "assurance": {
     "value": "LimitedAssurance",
     "provider": null,

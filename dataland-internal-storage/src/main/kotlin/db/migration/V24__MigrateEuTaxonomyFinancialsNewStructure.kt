@@ -41,20 +41,18 @@ class V24__MigrateEuTaxonomyFinancialsNewStructure : BaseJavaMigration() {
      * @param jsonObject JSON object
      */
     private fun checkForRelevantFieldsInJsonObjectKeys(jsonObject: JSONObject) {
+        val fieldsToRemove = listOf("euTaxonomyActivityLevelReporting")
+        fieldsToRemove.forEach {
+                key ->
+            jsonObject.remove(key)
+        }
         jsonObject.keys().forEach {
-            if (it == "absoluteShare" && jsonObject[it] != JSONObject.NULL) {
-                val absoluteShare = jsonObject[it] as JSONObject
-                val amount = absoluteShare["amount"]
-                absoluteShare.remove("amount")
-                absoluteShare.put("value", amount)
-            } else if (it != "absoluteShare" && it in fieldsWhichBecomeExtendedDataPoints) {
+            if (it in fieldsWhichBecomeExtendedDataPoints) {
                 updateObjectBehindKeyInJsonObject(jsonObject, it)
             } else {
                 // Do nothing as no more migration is required
             }
-            if (it != "alignedActivities" && it != "nonAlignedActivities") {
-                checkRecursivelyForRelevantFieldKeysInJsonObject(jsonObject, it)
-            }
+            checkRecursivelyForRelevantFieldKeysInJsonObject(jsonObject, it)
         }
     }
 
