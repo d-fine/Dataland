@@ -444,6 +444,149 @@
         ]
       }
     },
+    "/data/eu-taxonomy-financials/{dataId}/reports": {
+      "get": {
+        "tags": [
+          "eu-taxonomy-financials-data-qa-report-controller"
+        ],
+        "operationId": "getEuTaxonomyFinancialsDataAllQaReportsForDataset",
+        "parameters": [
+          {
+            "name": "dataId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "showInactive",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "reporterUserId",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved all QA reports.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/QaReportWithMetaInformationEuTaxonomyFinancialsData"
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      },
+      "post": {
+        "tags": [
+          "eu-taxonomy-financials-data-qa-report-controller"
+        ],
+        "operationId": "postEuTaxonomyFinancialsDataQaReport",
+        "parameters": [
+          {
+            "name": "dataId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EuTaxonomyFinancialsData"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully added QA report to dataland.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/QaReportMetaInformation"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
     "/data/additional-company-information/{dataId}/reports": {
       "get": {
         "tags": [
@@ -725,6 +868,75 @@
         ]
       }
     },
+    "/data/eu-taxonomy-financials/{dataId}/reports/{qaReportId}/status": {
+      "patch": {
+        "tags": [
+          "eu-taxonomy-financials-data-qa-report-controller"
+        ],
+        "operationId": "setEuTaxonomyFinancialsDataQaReportStatus",
+        "parameters": [
+          {
+            "name": "dataId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "qaReportId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/QaReportStatusPatch"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully marked QA report as active or inactive."
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
     "/data/additional-company-information/{dataId}/reports/{qaReportId}/status": {
       "patch": {
         "tags": [
@@ -813,6 +1025,7 @@
               "items": {
                 "type": "string",
                 "enum": [
+                  "eu-taxonomy-financials",
                   "eutaxonomy-financials",
                   "eutaxonomy-non-financials",
                   "lksg",
@@ -909,6 +1122,7 @@
               "items": {
                 "type": "string",
                 "enum": [
+                  "eu-taxonomy-financials",
                   "eutaxonomy-financials",
                   "eutaxonomy-non-financials",
                   "lksg",
@@ -1221,6 +1435,72 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/QaReportWithMetaInformationEutaxonomyNonFinancialsData"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
+    "/data/eu-taxonomy-financials/{dataId}/reports/{qaReportId}": {
+      "get": {
+        "tags": [
+          "eu-taxonomy-financials-data-qa-report-controller"
+        ],
+        "operationId": "getEuTaxonomyFinancialsDataQaReport",
+        "parameters": [
+          {
+            "name": "dataId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "qaReportId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved QA report.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/QaReportWithMetaInformationEuTaxonomyFinancialsData"
                 }
               }
             }
@@ -3409,6 +3689,87 @@
           }
         }
       },
+      "EuTaxonomyFinancialsData": {
+        "type": "object",
+        "properties": {
+          "general": {
+            "$ref": "#/components/schemas/EuTaxonomyFinancialsGeneral"
+          }
+        }
+      },
+      "EuTaxonomyFinancialsGeneral": {
+        "type": "object",
+        "properties": {
+          "reportingPeriod": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointLocalDate"
+          },
+          "fiscalYearDeviation": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointEuTaxonomyFinancialsGeneralFiscalYearDeviationOptions"
+          },
+          "fiscalYearEnd": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointLocalDate"
+          },
+          "referencedReports": {
+            "$ref": "#/components/schemas/QaReportDataPointMapStringCompanyReport"
+          },
+          "scopeOfEntities": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointYesNo"
+          },
+          "numberOfEmployees": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          },
+          "nfrdMandatory": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointYesNo"
+          }
+        }
+      },
+      "ExtendedDataPointEuTaxonomyFinancialsGeneralFiscalYearDeviationOptions": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "type": "string",
+            "enum": [
+              "Deviation",
+              "NoDeviation"
+            ]
+          },
+          "quality": {
+            "type": "string",
+            "enum": [
+              "Audited",
+              "Reported",
+              "Estimated",
+              "Incomplete",
+              "NoDataFound"
+            ]
+          },
+          "comment": {
+            "type": "string"
+          },
+          "dataSource": {
+            "$ref": "#/components/schemas/ExtendedDocumentReference"
+          }
+        }
+      },
+      "QaReportDataPointExtendedDataPointEuTaxonomyFinancialsGeneralFiscalYearDeviationOptions": {
+        "required": [
+          "comment",
+          "correctedData",
+          "verdict"
+        ],
+        "type": "object",
+        "properties": {
+          "comment": {
+            "type": "string"
+          },
+          "verdict": {
+            "$ref": "#/components/schemas/QaReportDataPointVerdict"
+          },
+          "correctedData": {
+            "$ref": "#/components/schemas/ExtendedDataPointEuTaxonomyFinancialsGeneralFiscalYearDeviationOptions"
+          }
+        }
+      },
       "AdditionalCompanyInformationData": {
         "type": "object",
         "properties": {
@@ -3527,23 +3888,23 @@
           "message": {
             "type": "string"
           },
-          "framework": {
+          "dataId": {
             "type": "string"
           },
-          "reportingPeriod": {
+          "companyName": {
             "type": "string"
           },
           "receptionTime": {
             "type": "integer",
             "format": "int64"
           },
-          "dataId": {
-            "type": "string"
-          },
           "companyId": {
             "type": "string"
           },
-          "companyName": {
+          "framework": {
+            "type": "string"
+          },
+          "reportingPeriod": {
             "type": "string"
           }
         }
@@ -3625,6 +3986,7 @@
           "dataType": {
             "type": "string",
             "enum": [
+              "eu-taxonomy-financials",
               "eutaxonomy-financials",
               "eutaxonomy-non-financials",
               "lksg",
@@ -3671,6 +4033,21 @@
           },
           "report": {
             "$ref": "#/components/schemas/EutaxonomyNonFinancialsData"
+          }
+        }
+      },
+      "QaReportWithMetaInformationEuTaxonomyFinancialsData": {
+        "required": [
+          "metaInfo",
+          "report"
+        ],
+        "type": "object",
+        "properties": {
+          "metaInfo": {
+            "$ref": "#/components/schemas/QaReportMetaInformation"
+          },
+          "report": {
+            "$ref": "#/components/schemas/EuTaxonomyFinancialsData"
           }
         }
       },

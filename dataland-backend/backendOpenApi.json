@@ -757,6 +757,75 @@
         ]
       }
     },
+    "/data/eu-taxonomy-financials": {
+      "post": {
+        "tags": [
+          "eu-taxonomy-financials-data-controller"
+        ],
+        "operationId": "postCompanyAssociatedEuTaxonomyFinancialsData",
+        "parameters": [
+          {
+            "name": "bypassQa",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": false
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CompanyAssociatedDataEuTaxonomyFinancialsData"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully added data to the data store.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DataMetaInformation"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
     "/data/esg-questionnaire": {
       "post": {
         "tags": [
@@ -2639,6 +2708,142 @@
                   "type": "array",
                   "items": {
                     "$ref": "#/components/schemas/DataAndMetaInformationEuTaxonomyDataForFinancials"
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
+    "/data/eu-taxonomy-financials/{dataId}": {
+      "get": {
+        "tags": [
+          "eu-taxonomy-financials-data-controller"
+        ],
+        "operationId": "getCompanyAssociatedEuTaxonomyFinancialsData",
+        "parameters": [
+          {
+            "name": "dataId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved data set.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CompanyAssociatedDataEuTaxonomyFinancialsData"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
+    "/data/eu-taxonomy-financials/companies/{companyId}": {
+      "get": {
+        "tags": [
+          "eu-taxonomy-financials-data-controller"
+        ],
+        "operationId": "getAllCompanyEuTaxonomyFinancialsData",
+        "parameters": [
+          {
+            "name": "companyId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "showOnlyActive",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": true
+            }
+          },
+          {
+            "name": "reportingPeriod",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved framework datasets with meta info.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/DataAndMetaInformationEuTaxonomyFinancialsData"
                   }
                 }
               }
@@ -13556,6 +13761,427 @@
           }
         }
       },
+      "CompanyAssociatedDataEuTaxonomyFinancialsData": {
+        "required": [
+          "companyId",
+          "data",
+          "reportingPeriod"
+        ],
+        "type": "object",
+        "properties": {
+          "companyId": {
+            "type": "string"
+          },
+          "reportingPeriod": {
+            "type": "string"
+          },
+          "data": {
+            "$ref": "#/components/schemas/EuTaxonomyFinancialsData"
+          }
+        }
+      },
+      "EuTaxonomyFinancialsCreditInstitution": {
+        "type": "object",
+        "properties": {
+          "general": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/EuTaxonomyFinancialsCreditinstitutionGeneral"
+              }
+            ]
+          },
+          "turnoverBasedGreenAssetRatioStock": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/EuTaxonomyFinancialsCreditinstitutionTurnoverBasedGreenAssetRatioStock"
+              }
+            ]
+          },
+          "capexBasedGreenAssetRatioStock": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/EuTaxonomyFinancialsCreditinstitutionCapexBasedGreenAssetRatioStock"
+              }
+            ]
+          }
+        }
+      },
+      "EuTaxonomyFinancialsCreditinstitutionCapexBasedGreenAssetRatioStock": {
+        "type": "object",
+        "properties": {
+          "totalCapexBasedGreenAssetRatio": {
+            "type": "number",
+            "nullable": true
+          },
+          "substantialContributionToClimateChangeMitigationInPercentEligible": {
+            "type": "number",
+            "nullable": true
+          },
+          "substantialContributionToClimateChangeMitigationInPercentAligned": {
+            "type": "number",
+            "nullable": true
+          },
+          "substantialContributionToClimateChangeMitigationInPercentOfWhichUseOfProceeds": {
+            "type": "number",
+            "nullable": true
+          },
+          "substantialContributionToClimateChangeMitigationInPercentEnablingShare": {
+            "type": "number",
+            "nullable": true
+          },
+          "substantialContributionToClimateChangeMitigationInPercentTransitionalShare": {
+            "type": "number",
+            "nullable": true
+          },
+          "substantialContributionToClimateChangeAdaptationInPercentEligible": {
+            "type": "number",
+            "nullable": true
+          },
+          "substantialContributionToClimateChangeAdaptationInPercentAligned": {
+            "type": "number",
+            "nullable": true
+          },
+          "substantialContributionToClimateChangeAdaptationInPercentOfWhichUseOfProceeds": {
+            "type": "number",
+            "nullable": true
+          },
+          "substantialContributionToClimateChangeAdaptationInPercentEnablingShare": {
+            "type": "number",
+            "nullable": true
+          },
+          "substantialContributionToClimateChangeAdaptationInPercentAdaptingShare": {
+            "type": "number",
+            "nullable": true
+          },
+          "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentEligible": {
+            "type": "number",
+            "nullable": true
+          },
+          "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned": {
+            "type": "number",
+            "nullable": true
+          },
+          "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentOfWhichUseOfProceeds": {
+            "type": "number",
+            "nullable": true
+          },
+          "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentEnablingShare": {
+            "type": "number",
+            "nullable": true
+          },
+          "substantialContributionToTransitionToACircularEconomyInPercentEligible": {
+            "type": "number",
+            "nullable": true
+          },
+          "substantialContributionToTransitionToACircularEconomyInPercentAligned": {
+            "type": "number",
+            "nullable": true
+          },
+          "substantialContributionToTransitionToACircularEconomyInPercentOfWhichUseOfProceeds": {
+            "type": "number",
+            "nullable": true
+          },
+          "substantialContributionToTransitionToACircularEconomyInPercentEnablingShare": {
+            "type": "number",
+            "nullable": true
+          },
+          "substantialContributionToPollutionPreventionAndControlInPercentEligible": {
+            "type": "number",
+            "nullable": true
+          },
+          "substantialContributionToPollutionPreventionAndControlInPercentAligned": {
+            "type": "number",
+            "nullable": true
+          },
+          "substantialContributionToPollutionPreventionAndControlInPercentOfWhichUseOfProceeds": {
+            "type": "number",
+            "nullable": true
+          },
+          "substantialContributionToPollutionPreventionAndControlInPercentEnablingShare": {
+            "type": "number",
+            "nullable": true
+          },
+          "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentEligible": {
+            "type": "number",
+            "nullable": true
+          },
+          "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned": {
+            "type": "number",
+            "nullable": true
+          },
+          "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentOfWhichUseOfProceeds": {
+            "type": "number",
+            "nullable": true
+          },
+          "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentEnablingShare": {
+            "type": "number",
+            "nullable": true
+          }
+        }
+      },
+      "EuTaxonomyFinancialsCreditinstitutionGeneral": {
+        "type": "object",
+        "properties": {
+          "tradingPortfolio": {
+            "type": "number",
+            "nullable": true
+          },
+          "onDemandInterbankLoans": {
+            "type": "number",
+            "nullable": true
+          },
+          "tradingPortfolioAndOnDemandInterbankLoans": {
+            "type": "number",
+            "nullable": true
+          }
+        }
+      },
+      "EuTaxonomyFinancialsCreditinstitutionTurnoverBasedGreenAssetRatioStock": {
+        "type": "object",
+        "properties": {
+          "totalRevenueBasedGreenAssetRatio": {
+            "type": "number",
+            "nullable": true
+          },
+          "substantialContributionToClimateChangeMitigationInPercentEligible": {
+            "type": "number",
+            "nullable": true
+          },
+          "substantialContributionToClimateChangeMitigationInPercentAligned": {
+            "type": "number",
+            "nullable": true
+          },
+          "substantialContributionToClimateChangeMitigationInPercentOfWhichUseOfProceeds": {
+            "type": "number",
+            "nullable": true
+          },
+          "substantialContributionToClimateChangeMitigationInPercentEnablingShare": {
+            "type": "number",
+            "nullable": true
+          },
+          "substantialContributionToClimateChangeMitigationInPercentTransitionalShare": {
+            "type": "number",
+            "nullable": true
+          },
+          "substantialContributionToClimateChangeAdaptationInPercentEligible": {
+            "type": "number",
+            "nullable": true
+          },
+          "substantialContributionToClimateChangeAdaptationInPercentAligned": {
+            "type": "number",
+            "nullable": true
+          },
+          "substantialContributionToClimateChangeAdaptationInPercentOfWhichUseOfProceeds": {
+            "type": "number",
+            "nullable": true
+          },
+          "substantialContributionToClimateChangeAdaptationInPercentEnablingShare": {
+            "type": "number",
+            "nullable": true
+          },
+          "substantialContributionToClimateChangeAdaptationInPercentAdaptingShare": {
+            "type": "number",
+            "nullable": true
+          },
+          "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentEligible": {
+            "type": "number",
+            "nullable": true
+          },
+          "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned": {
+            "type": "number",
+            "nullable": true
+          },
+          "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentOfWhichUseOfProceeds": {
+            "type": "number",
+            "nullable": true
+          },
+          "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentEnablingShare": {
+            "type": "number",
+            "nullable": true
+          },
+          "substantialContributionToTransitionToACircularEconomyInPercentEligible": {
+            "type": "number",
+            "nullable": true
+          },
+          "substantialContributionToTransitionToACircularEconomyInPercentAligned": {
+            "type": "number",
+            "nullable": true
+          },
+          "substantialContributionToTransitionToACircularEconomyInPercentOfWhichUseOfProceeds": {
+            "type": "number",
+            "nullable": true
+          },
+          "substantialContributionToTransitionToACircularEconomyInPercentEnablingShare": {
+            "type": "number",
+            "nullable": true
+          },
+          "substantialContributionToPollutionPreventionAndControlInPercentEligible": {
+            "type": "number",
+            "nullable": true
+          },
+          "substantialContributionToPollutionPreventionAndControlInPercentAligned": {
+            "type": "number",
+            "nullable": true
+          },
+          "substantialContributionToPollutionPreventionAndControlInPercentOfWhichUseOfProceeds": {
+            "type": "number",
+            "nullable": true
+          },
+          "substantialContributionToPollutionPreventionAndControlInPercentEnablingShare": {
+            "type": "number",
+            "nullable": true
+          },
+          "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentEligible": {
+            "type": "number",
+            "nullable": true
+          },
+          "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned": {
+            "type": "number",
+            "nullable": true
+          },
+          "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentOfWhichUseOfProceeds": {
+            "type": "number",
+            "nullable": true
+          },
+          "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentEnablingShare": {
+            "type": "number",
+            "nullable": true
+          }
+        }
+      },
+      "EuTaxonomyFinancialsData": {
+        "type": "object",
+        "properties": {
+          "general": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/EuTaxonomyFinancialsGeneral"
+              }
+            ]
+          },
+          "creditInstitution": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/EuTaxonomyFinancialsCreditInstitution"
+              }
+            ]
+          }
+        }
+      },
+      "EuTaxonomyFinancialsGeneral": {
+        "type": "object",
+        "properties": {
+          "reportingPeriod": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointLocalDate"
+              }
+            ]
+          },
+          "fiscalYearDeviation": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointEuTaxonomyFinancialsGeneralFiscalYearDeviationOptions"
+              }
+            ]
+          },
+          "fiscalYearEnd": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointLocalDate"
+              }
+            ]
+          },
+          "referencedReports": {
+            "type": "object",
+            "additionalProperties": {
+              "$ref": "#/components/schemas/CompanyReport"
+            },
+            "nullable": true,
+            "example": "{\"string\": {\"fileReference\": \"string\",\"fileName\": \"string\",\"publicationDate\": \"2023-10-12\",}}"
+          },
+          "scopeOfEntities": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointYesNo"
+              }
+            ]
+          },
+          "numberOfEmployees": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          },
+          "nfrdMandatory": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointYesNo"
+              }
+            ]
+          },
+          "assurance": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/AssuranceDataPoint"
+              }
+            ]
+          }
+        }
+      },
+      "EuTaxonomyFinancialsGeneralFiscalYearDeviationOptions": {
+        "type": "string",
+        "enum": [
+          "Deviation",
+          "NoDeviation"
+        ]
+      },
+      "ExtendedDataPointEuTaxonomyFinancialsGeneralFiscalYearDeviationOptions": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/EuTaxonomyFinancialsGeneralFiscalYearDeviationOptions"
+              }
+            ]
+          },
+          "quality": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/QualityOptions"
+              }
+            ]
+          },
+          "comment": {
+            "type": "string",
+            "nullable": true
+          },
+          "dataSource": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDocumentReference"
+              }
+            ]
+          }
+        }
+      },
       "AuflistungDerSektorenOptions": {
         "type": "string",
         "enum": [
@@ -15688,6 +16314,21 @@
           }
         }
       },
+      "DataAndMetaInformationEuTaxonomyFinancialsData": {
+        "required": [
+          "data",
+          "metaInfo"
+        ],
+        "type": "object",
+        "properties": {
+          "metaInfo": {
+            "$ref": "#/components/schemas/DataMetaInformation"
+          },
+          "data": {
+            "$ref": "#/components/schemas/EuTaxonomyFinancialsData"
+          }
+        }
+      },
       "DataAndMetaInformationEsgQuestionnaireData": {
         "required": [
           "data",
@@ -15727,21 +16368,21 @@
         ],
         "type": "object",
         "properties": {
-          "sector": {
-            "type": "string",
-            "nullable": true
+          "companyId": {
+            "type": "string"
           },
           "companyName": {
             "type": "string"
           },
-          "companyId": {
+          "headquarters": {
             "type": "string"
           },
           "countryCode": {
             "type": "string"
           },
-          "headquarters": {
-            "type": "string"
+          "sector": {
+            "type": "string",
+            "nullable": true
           },
           "lei": {
             "type": "string",
@@ -15768,10 +16409,10 @@
         ],
         "type": "object",
         "properties": {
-          "companyName": {
+          "companyId": {
             "type": "string"
           },
-          "companyId": {
+          "companyName": {
             "type": "string"
           }
         }
@@ -15826,6 +16467,7 @@
       "DataTypeEnum": {
         "type": "string",
         "enum": [
+          "eu-taxonomy-financials",
           "eutaxonomy-financials",
           "eutaxonomy-non-financials",
           "lksg",
