@@ -63,7 +63,7 @@ export const euTaxonomyFinancialsDataModel = [
           {
             name: 'tradingPortfolio',
             label: 'Trading Portfolio',
-            description: 'For credit institutions, the trading portfolio as a percentage of total assets',
+            description: 'The Trading Portfolio as a Percentage of Total Assets',
 
             unit: '%',
             component: 'NumberFormField',
@@ -74,7 +74,7 @@ export const euTaxonomyFinancialsDataModel = [
           {
             name: 'onDemandInterbankLoans',
             label: 'On-demand Interbank Loans',
-            description: 'For credit institutions, the on-demand interbank loans as a percentage of total assets',
+            description: 'The On-demand Interbank Loans as a Percentage of Total Assets',
 
             unit: '%',
             component: 'NumberFormField',
@@ -85,8 +85,7 @@ export const euTaxonomyFinancialsDataModel = [
           {
             name: 'tradingPortfolioAndOnDemandInterbankLoans',
             label: 'Trading Portfolio & On-demand Interbank Loans',
-            description:
-              'For credit institutions, the trading portfolio and the on-demand interbank loans as a percentage of total assets',
+            description: 'The Trading Portfolio and the On-demand Interbank Loans as a Percentage of Total Assets',
 
             unit: '%',
             component: 'NumberFormField',
@@ -105,15 +104,15 @@ export const euTaxonomyFinancialsDataModel = [
             label: 'Total Revenue-based Green Asset Ratio',
             description: 'Total Revenue-based Green Asset Ratio',
 
-            component: 'NumberFormField',
+            component: 'BigDecimalExtendedDataPointFormField',
             required: false,
             showIf: (): boolean => true,
           },
           {
             name: 'substantialContributionToClimateChangeMitigationInPercentEligible',
-            label: 'Substantial Contribution to Climate Change Mitigation In Percent - Eligible',
+            label: 'Substantial Contribution to Climate Change Mitigation in Percent - Eligible',
             description:
-              'Taxonomy-eligible proportion of Revenue-based Green Asset Ratio substantially contributing to climate change mitigation',
+              'Taxonomy-eligible Proportion of Revenue-based Green Asset Ratio substantially contributing to Climate Change Mitigation',
 
             unit: '%',
             component: 'NumberFormField',
@@ -123,9 +122,9 @@ export const euTaxonomyFinancialsDataModel = [
           },
           {
             name: 'substantialContributionToClimateChangeMitigationInPercentAligned',
-            label: 'Substantial Contribution to Climate Change Mitigation In Percent - Aligned',
+            label: 'Substantial Contribution to Climate Change Mitigation in Percent - Aligned',
             description:
-              'Taxonomy-aligned proportion of Revenue-based Green Asset Ratio substantially contributing to climate change mitigation',
+              'Taxonomy-aligned Proportion of Revenue-based Green Asset Ratio substantially contributing to Climate Change Mitigation',
 
             unit: '%',
             component: 'NumberFormField',
@@ -135,9 +134,9 @@ export const euTaxonomyFinancialsDataModel = [
           },
           {
             name: 'substantialContributionToClimateChangeMitigationInPercentOfWhichUseOfProceeds',
-            label: 'Substantial Contribution to Climate Change Mitigation In Percent - Of which use of proceeds',
+            label: 'Substantial Contribution to Climate Change Mitigation in Percent - Of which Use of Proceeds',
             description:
-              'Taxonomy-aligned use of proceeds share substantially contributing to climate change mitigation',
+              'Taxonomy-aligned Use of Proceeds Share substantially contributing to Climate Change Mitigation',
 
             unit: '%',
             component: 'NumberFormField',
@@ -147,9 +146,9 @@ export const euTaxonomyFinancialsDataModel = [
           },
           {
             name: 'substantialContributionToClimateChangeMitigationInPercentEnablingShare',
-            label: 'Substantial Contribution to Climate Change Mitigation In Percent - Enabling Share',
+            label: 'Substantial Contribution to Climate Change Mitigation in Percent - Enabling Share',
             description:
-              'Taxonomy-aligned and enabling proportion of Revenue-based Green Asset Ratio substantially contributing to climate change mitigation',
+              'Taxonomy-aligned and enabling Proportion of Revenue-based Green Asset Ratio substantially contributing to Climate Change Mitigation',
 
             unit: '%',
             component: 'NumberFormField',
@@ -159,9 +158,9 @@ export const euTaxonomyFinancialsDataModel = [
           },
           {
             name: 'substantialContributionToClimateChangeMitigationInPercentTransitionalShare',
-            label: 'Substantial Contribution to Climate Change Mitigation In Percent - Transitional Share',
+            label: 'Substantial Contribution to Climate Change Mitigation in Percent - Transitional Share',
             description:
-              'Taxonomy-aligned and transitional proportion of Revenue-based Green Asset Ratio substantially contributing to climate change mitigation',
+              'Taxonomy-aligned and transitional Proportion of Revenue-based Green Asset Ratio substantially contributing to Climate Change Mitigation',
 
             unit: '%',
             component: 'NumberFormField',
@@ -171,9 +170,9 @@ export const euTaxonomyFinancialsDataModel = [
           },
           {
             name: 'substantialContributionToClimateChangeAdaptationInPercentEligible',
-            label: 'Substantial Contribution to Climate Change Adaptation In Percent - Eligible',
+            label: 'Substantial Contribution to Climate Change Adaptation in Percent - Eligible',
             description:
-              'Taxonomy-eligible proportion of Revenue-based Green Asset Ratio substantially contributing to climate change adaptation',
+              'Taxonomy-eligible Proportion of Revenue-based Green Asset Ratio substantially contributing to Climate Change Adaptation',
 
             unit: '%',
             component: 'NumberFormField',
@@ -183,9 +182,9 @@ export const euTaxonomyFinancialsDataModel = [
           },
           {
             name: 'substantialContributionToClimateChangeAdaptationInPercentAligned',
-            label: 'Substantial Contribution to Climate Change Adaptation In Percent - Aligned',
+            label: 'Substantial Contribution to Climate Change Adaptation in Percent - Aligned',
             description:
-              'Taxonomy-aligned proportion of Revenue-based Green Asset Ratio substantially contributing to climate change adaptation',
+              'Taxonomy-aligned Proportion of Revenue-based Green Asset Ratio substantially contributing to Climate Change Adaptation',
 
             unit: '%',
             component: 'NumberFormField',
@@ -195,9 +194,9 @@ export const euTaxonomyFinancialsDataModel = [
           },
           {
             name: 'substantialContributionToClimateChangeAdaptationInPercentOfWhichUseOfProceeds',
-            label: 'Substantial Contribution to Climate Change Adaptation In Percent - Of which use of proceeds',
+            label: 'Substantial Contribution to Climate Change Adaptation in Percent - Of which Use of Proceeds',
             description:
-              'Taxonomy-aligned use of proceeds share substantially contributing to climate change adaptation',
+              'Taxonomy-aligned Use of Proceeds Share substantially contributing to Climate Change Adaptation',
 
             unit: '%',
             component: 'NumberFormField',
@@ -207,9 +206,9 @@ export const euTaxonomyFinancialsDataModel = [
           },
           {
             name: 'substantialContributionToClimateChangeAdaptationInPercentEnablingShare',
-            label: 'Substantial Contribution to Climate Change Adaptation In Percent - Enabling Share',
+            label: 'Substantial Contribution to Climate Change Adaptation in Percent - Enabling Share',
             description:
-              'Taxonomy-aligned and enabling proportion of Revenue-based Green Asset Ratio substantially contributing to climate change adaptation',
+              'Taxonomy-aligned and enabling Proportion of Revenue-based Green Asset Ratio substantially contributing to Climate Change Adaptation',
 
             unit: '%',
             component: 'NumberFormField',
@@ -219,9 +218,9 @@ export const euTaxonomyFinancialsDataModel = [
           },
           {
             name: 'substantialContributionToClimateChangeAdaptationInPercentAdaptingShare',
-            label: 'Substantial Contribution to Climate Change Adaptation In Percent - Adapting Share',
+            label: 'Substantial Contribution to Climate Change Adaptation in Percent - Adapting Share',
             description:
-              'Taxonomy-aligned and adapting proportion of Revenue-based Green Asset Ratio substantially contributing to climate change adaptation',
+              'Taxonomy-aligned and adapting Proportion of Revenue-based Green Asset Ratio substantially contributing to Climate Change Adaptation',
 
             unit: '%',
             component: 'NumberFormField',
@@ -232,9 +231,9 @@ export const euTaxonomyFinancialsDataModel = [
           {
             name: 'substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentEligible',
             label:
-              'Substantial Contribution to Sustainable Use and Protection of Water and Marine Resources In Percent - Eligible',
+              'Substantial Contribution to Sustainable Use and Protection of Water and Marine Resources in Percent - Eligible',
             description:
-              'Taxonomy-eligible proportion of Revenue-based Green Asset Ratio substantially contributing to sustainable use and protection of water and marine resources',
+              'Taxonomy-eligible Proportion of Revenue-based Green Asset Ratio substantially contributing to Sustainable Use and Protection of Water and Marin Resources',
 
             unit: '%',
             component: 'NumberFormField',
@@ -245,9 +244,9 @@ export const euTaxonomyFinancialsDataModel = [
           {
             name: 'substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned',
             label:
-              'Substantial Contribution to Sustainable Use and Protection of Water and Marine Resources In Percent - Aligned',
+              'Substantial Contribution to Sustainable Use and Protection of Water and Marine Resources in Percent - Aligned',
             description:
-              'Taxonomy-aligned proportion of Revenue-based Green Asset Ratio substantially contributing to sustainable use and protection of water and marine resources',
+              'Taxonomy-aligned Proportion of Revenue-based Green Asset Ratio substantially contributing to Sustainable Use and Protection of Water and Marin Resources',
 
             unit: '%',
             component: 'NumberFormField',
@@ -258,9 +257,9 @@ export const euTaxonomyFinancialsDataModel = [
           {
             name: 'substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentOfWhichUseOfProceeds',
             label:
-              'Substantial Contribution to Sustainable Use and Protection of Water and Marine Resources In Percent - Of which use of proceeds',
+              'Substantial Contribution to Sustainable Use and Protection of Water and Marine Resources in Percent - Of which Use of Proceeds',
             description:
-              'Taxonomy-aligned use of proceeds share substantially contributing to sustainable use and protection of water and marine resources',
+              'Taxonomy-aligned Use of Proceeds Share substantially contributing to Sustainable Use and Protection of Water and Marin Resources',
 
             unit: '%',
             component: 'NumberFormField',
@@ -271,9 +270,9 @@ export const euTaxonomyFinancialsDataModel = [
           {
             name: 'substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentEnablingShare',
             label:
-              'Substantial Contribution to Sustainable Use and Protection of Water and Marine Resources In Percent - Enabling Share',
+              'Substantial Contribution to Sustainable Use and Protection of Water and Marine Resources in Percent - Enabling Share',
             description:
-              'Taxonomy-aligned and enabling proportion of Revenue-based Green Asset Ratio substantially contributing to sustainable use and protection of water and marine resources',
+              'Taxonomy-aligned and enabling Proportion of Revenue-based Green Asset Ratio substantially contributing to Sustainable Use and Protection of Water and Marin Resources',
 
             unit: '%',
             component: 'NumberFormField',
@@ -283,9 +282,9 @@ export const euTaxonomyFinancialsDataModel = [
           },
           {
             name: 'substantialContributionToTransitionToACircularEconomyInPercentEligible',
-            label: 'Substantial Contribution to Transition to a Circular Economy In Percent - Eligible',
+            label: 'Substantial Contribution to Transition to a Circular Economy in Percent - Eligible',
             description:
-              'Taxonomy-eligible proportion of Revenue-based Green Asset Ratio substantially contributing to circular economy',
+              'Taxonomy-eligible Proportion of Revenue-based Green Asset Ratio substantially contributing to Circular Economy',
 
             unit: '%',
             component: 'NumberFormField',
@@ -295,9 +294,9 @@ export const euTaxonomyFinancialsDataModel = [
           },
           {
             name: 'substantialContributionToTransitionToACircularEconomyInPercentAligned',
-            label: 'Substantial Contribution to Transition to a Circular Economy In Percent - Aligned',
+            label: 'Substantial Contribution to Transition to a Circular Economy in Percent - Aligned',
             description:
-              'Taxonomy-aligned proportion of Revenue-based Green Asset Ratio substantially contributing to circular economy',
+              'Taxonomy-aligned Proportion of Revenue-based Green Asset Ratio substantially contributing to Circular Economy',
 
             unit: '%',
             component: 'NumberFormField',
@@ -307,8 +306,8 @@ export const euTaxonomyFinancialsDataModel = [
           },
           {
             name: 'substantialContributionToTransitionToACircularEconomyInPercentOfWhichUseOfProceeds',
-            label: 'Substantial Contribution to Transition to a Circular Economy In Percent - Of which use of proceeds',
-            description: 'Taxonomy-aligned use of proceeds share substantially contributing to circular economy',
+            label: 'Substantial Contribution to Transition to a Circular Economy in Percent - Of which Use of Proceeds',
+            description: 'Taxonomy-aligned Use of Proceeds Share substantially contributing to Circular Economy',
 
             unit: '%',
             component: 'NumberFormField',
@@ -318,9 +317,9 @@ export const euTaxonomyFinancialsDataModel = [
           },
           {
             name: 'substantialContributionToTransitionToACircularEconomyInPercentEnablingShare',
-            label: 'Substantial Contribution to Transition to a Circular Economy In Percent - Enabling Share',
+            label: 'Substantial Contribution to Transition to a Circular Economy in Percent - Enabling Share',
             description:
-              'Taxonomy-aligned and enabling proportion of Revenue-based Green Asset Ratio substantially contributing to circular economy',
+              'Taxonomy-aligned and enabling Proportion of Revenue-based Green Asset Ratio substantially contributing to Circular Economy',
 
             unit: '%',
             component: 'NumberFormField',
@@ -330,9 +329,9 @@ export const euTaxonomyFinancialsDataModel = [
           },
           {
             name: 'substantialContributionToPollutionPreventionAndControlInPercentEligible',
-            label: 'Substantial Contribution to Pollution Prevention and Control In Percent - Eligible',
+            label: 'Substantial Contribution to Pollution Prevention and Control in Percent - Eligible',
             description:
-              'Taxonomy-eligible proportion of Revenue-based Green Asset Ratio substantially contributing to pollution prevention and control',
+              'Taxonomy-eligible Proportion of Revenue-based Green Asset Ratio substantially contributing to Pollution Prevention and Control',
 
             unit: '%',
             component: 'NumberFormField',
@@ -342,9 +341,9 @@ export const euTaxonomyFinancialsDataModel = [
           },
           {
             name: 'substantialContributionToPollutionPreventionAndControlInPercentAligned',
-            label: 'Substantial Contribution to Pollution Prevention and Control In Percent - Aligned',
+            label: 'Substantial Contribution to Pollution Prevention and Control in Percent - Aligned',
             description:
-              'Taxonomy-aligned proportion of Revenue-based Green Asset Ratio substantially contributing to pollution prevention and control',
+              'Taxonomy-aligned Proportion of Revenue-based Green Asset Ratio substantially contributing to Pollution Prevention and Control',
 
             unit: '%',
             component: 'NumberFormField',
@@ -354,9 +353,9 @@ export const euTaxonomyFinancialsDataModel = [
           },
           {
             name: 'substantialContributionToPollutionPreventionAndControlInPercentOfWhichUseOfProceeds',
-            label: 'Substantial Contribution to Pollution Prevention and Control In Percent - Of which use of proceeds',
+            label: 'Substantial Contribution to Pollution Prevention and Control in Percent - Of which Use of Proceeds',
             description:
-              'Taxonomy-aligned use of proceeds share substantially contributing to pollution prevention and control',
+              'Taxonomy-aligned Use of Proceeds Share substantially contributing to Pollution Prevention and Control',
 
             unit: '%',
             component: 'NumberFormField',
@@ -366,9 +365,9 @@ export const euTaxonomyFinancialsDataModel = [
           },
           {
             name: 'substantialContributionToPollutionPreventionAndControlInPercentEnablingShare',
-            label: 'Substantial Contribution to Pollution Prevention and Control In Percent - Enabling Share',
+            label: 'Substantial Contribution to Pollution Prevention and Control in Percent - Enabling Share',
             description:
-              'Taxonomy-aligned and enabling proportion of Revenue-based Green Asset Ratio substantially contributing to pollution prevention and control',
+              'Taxonomy-aligned and enabling Proportion of Revenue-based Green Asset Ratio substantially contributing to Pollution Prevention and Control',
 
             unit: '%',
             component: 'NumberFormField',
@@ -379,9 +378,9 @@ export const euTaxonomyFinancialsDataModel = [
           {
             name: 'substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentEligible',
             label:
-              'Substantial Contribution to Protection and Restoration of Biodiversity and Ecosystems In Percent - Eligible',
+              'Substantial Contribution to Protection and Restoration of Biodiversity and Ecosystems in Percent - Eligible',
             description:
-              'Taxonomy-eligible proportion of Revenue-based Green Asset Ratio substantially contributing to protection and restoration of biodiversity and ecosystems',
+              'Taxonomy-eligible Proportion of Revenue-based Green Asset Ratio substantially contributing to Protection and Restoration of Biodiversity and Ecosystems',
 
             unit: '%',
             component: 'NumberFormField',
@@ -392,9 +391,9 @@ export const euTaxonomyFinancialsDataModel = [
           {
             name: 'substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned',
             label:
-              'Substantial Contribution to Protection and Restoration of Biodiversity and Ecosystems In Percent - Aligned',
+              'Substantial Contribution to Protection and Restoration of Biodiversity and Ecosystems in Percent - Aligned',
             description:
-              'Taxonomy-aligned proportion of Revenue-based Green Asset Ratio substantially contributing to protection and restoration of biodiversity and ecosystems',
+              'Taxonomy-aligned Proportion of Revenue-based Green Asset Ratio substantially contributing to Protection and Restoration of Biodiversity and Ecosystems',
 
             unit: '%',
             component: 'NumberFormField',
@@ -405,9 +404,9 @@ export const euTaxonomyFinancialsDataModel = [
           {
             name: 'substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentOfWhichUseOfProceeds',
             label:
-              'Substantial Contribution to Protection and Restoration of Biodiversity and Ecosystems In Percent - Of which use of proceeds',
+              'Substantial Contribution to Protection and Restoration of Biodiversity and Ecosystems in Percent - Of which Use of Proceeds',
             description:
-              'Taxonomy-aligned use of proceeds share substantially contributing to protection and restoration of biodiversity and ecosystems',
+              'Taxonomy-aligned Use of Proceeds Share substantially contributing to Protection and Restoration of Biodiversity and Ecosystems',
 
             unit: '%',
             component: 'NumberFormField',
@@ -418,9 +417,9 @@ export const euTaxonomyFinancialsDataModel = [
           {
             name: 'substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentEnablingShare',
             label:
-              'Substantial Contribution to Protection and Restoration of Biodiversity and Ecosystems In Percent - Enabling Share',
+              'Substantial Contribution to Protection and Restoration of Biodiversity and Ecosystems in Percent - Enabling Share',
             description:
-              'Taxonomy-aligned and enabling proportion of Revenue-based Green Asset Ratio substantially contributing to protection and restoration of biodiversity and ecosystems',
+              'Taxonomy-aligned and enabling Proportion of Revenue-based Green Asset Ratio substantially contributing to Protection and Restoration of Biodiversity and Ecosystems',
 
             unit: '%',
             component: 'NumberFormField',
@@ -439,15 +438,15 @@ export const euTaxonomyFinancialsDataModel = [
             label: 'Total CapEx-based Green Asset Ratio',
             description: 'Total CapEx-based Green Asset Ratio',
 
-            component: 'NumberFormField',
+            component: 'BigDecimalExtendedDataPointFormField',
             required: false,
             showIf: (): boolean => true,
           },
           {
             name: 'substantialContributionToClimateChangeMitigationInPercentEligible',
-            label: 'Substantial Contribution to Climate Change Mitigation In Percent - Eligible',
+            label: 'Substantial Contribution to Climate Change Mitigation in Percent - Eligible',
             description:
-              'Taxonomy-eligible proportion of CapEx-based Green Asset Ratio substantially contributing to climate change mitigation',
+              'Taxonomy-eligible Proportion of CapEx-based Green Asset Ratio substantially contributing to Climate Change Mitigation',
 
             unit: '%',
             component: 'NumberFormField',
@@ -457,9 +456,9 @@ export const euTaxonomyFinancialsDataModel = [
           },
           {
             name: 'substantialContributionToClimateChangeMitigationInPercentAligned',
-            label: 'Substantial Contribution to Climate Change Mitigation In Percent - Aligned',
+            label: 'Substantial Contribution to Climate Change Mitigation in Percent - Aligned',
             description:
-              'Taxonomy-aligned proportion of CapEx-based Green Asset Ratio substantially contributing to climate change mitigation',
+              'Taxonomy-aligned Proportion of CapEx-based Green Asset Ratio substantially contributing to Climate Change Mitigation',
 
             unit: '%',
             component: 'NumberFormField',
@@ -469,9 +468,9 @@ export const euTaxonomyFinancialsDataModel = [
           },
           {
             name: 'substantialContributionToClimateChangeMitigationInPercentOfWhichUseOfProceeds',
-            label: 'Substantial Contribution to Climate Change Mitigation In Percent - Of which use of proceeds',
+            label: 'Substantial Contribution to Climate Change Mitigation in Percent - Of which Use of Proceeds',
             description:
-              'Taxonomy-aligned use of proceeds share substantially contributing to climate change mitigation',
+              'Taxonomy-aligned Use of Proceeds Share substantially contributing to Climate Change Mitigation',
 
             unit: '%',
             component: 'NumberFormField',
@@ -481,9 +480,9 @@ export const euTaxonomyFinancialsDataModel = [
           },
           {
             name: 'substantialContributionToClimateChangeMitigationInPercentEnablingShare',
-            label: 'Substantial Contribution to Climate Change Mitigation In Percent - Enabling Share',
+            label: 'Substantial Contribution to Climate Change Mitigation in Percent - Enabling Share',
             description:
-              'Taxonomy-aligned and enabling proportion of CapEx-based Green Asset Ratio substantially contributing to climate change mitigation',
+              'Taxonomy-aligned and enabling Proportion of CapEx-based Green Asset Ratio substantially contributing to Climate Change Mitigation',
 
             unit: '%',
             component: 'NumberFormField',
@@ -493,9 +492,9 @@ export const euTaxonomyFinancialsDataModel = [
           },
           {
             name: 'substantialContributionToClimateChangeMitigationInPercentTransitionalShare',
-            label: 'Substantial Contribution to Climate Change Mitigation In Percent - Transitional Share',
+            label: 'Substantial Contribution to Climate Change Mitigation in Percent - Transitional Share',
             description:
-              'Taxonomy-aligned and transitional proportion of CapEx-based Green Asset Ratio substantially contributing to climate change mitigation',
+              'Taxonomy-aligned and transitional Proportion of CapEx-based Green Asset Ratio substantially contributing to Climate Change Mitigation',
 
             unit: '%',
             component: 'NumberFormField',
@@ -505,9 +504,9 @@ export const euTaxonomyFinancialsDataModel = [
           },
           {
             name: 'substantialContributionToClimateChangeAdaptationInPercentEligible',
-            label: 'Substantial Contribution to Climate Change Adaptation In Percent - Eligible',
+            label: 'Substantial Contribution to Climate Change Adaptation in Percent - Eligible',
             description:
-              'Taxonomy-eligible proportion of CapEx-based Green Asset Ratio substantially contributing to climate change adaptation',
+              'Taxonomy-eligible Proportion of CapEx-based Green Asset Ratio substantially contributing to Climate Change Adaptation',
 
             unit: '%',
             component: 'NumberFormField',
@@ -517,9 +516,9 @@ export const euTaxonomyFinancialsDataModel = [
           },
           {
             name: 'substantialContributionToClimateChangeAdaptationInPercentAligned',
-            label: 'Substantial Contribution to Climate Change Adaptation In Percent - Aligned',
+            label: 'Substantial Contribution to Climate Change Adaptation in Percent - Aligned',
             description:
-              'Taxonomy-aligned proportion of CapEx-based Green Asset Ratio substantially contributing to climate change adaptation',
+              'Taxonomy-aligned Proportion of CapEx-based Green Asset Ratio substantially contributing to Climate Change Adaptation',
 
             unit: '%',
             component: 'NumberFormField',
@@ -529,9 +528,9 @@ export const euTaxonomyFinancialsDataModel = [
           },
           {
             name: 'substantialContributionToClimateChangeAdaptationInPercentOfWhichUseOfProceeds',
-            label: 'Substantial Contribution to Climate Change Adaptation In Percent - Of which use of proceeds',
+            label: 'Substantial Contribution to Climate Change Adaptation in Percent - Of which Use of Proceeds',
             description:
-              'Taxonomy-aligned use of proceeds share substantially contributing to climate change adaptation',
+              'Taxonomy-aligned Use of Proceeds Share substantially contributing to Climate Change Adaptation',
 
             unit: '%',
             component: 'NumberFormField',
@@ -541,9 +540,9 @@ export const euTaxonomyFinancialsDataModel = [
           },
           {
             name: 'substantialContributionToClimateChangeAdaptationInPercentEnablingShare',
-            label: 'Substantial Contribution to Climate Change Adaptation In Percent - Enabling Share',
+            label: 'Substantial Contribution to Climate Change Adaptation in Percent - Enabling Share',
             description:
-              'Taxonomy-aligned and enabling proportion of CapEx-based Green Asset Ratio substantially contributing to climate change adaptation',
+              'Taxonomy-aligned and enabling Proportion of CapEx-based Green Asset Ratio substantially contributing to Climate Change Adaptation',
 
             unit: '%',
             component: 'NumberFormField',
@@ -553,9 +552,9 @@ export const euTaxonomyFinancialsDataModel = [
           },
           {
             name: 'substantialContributionToClimateChangeAdaptationInPercentAdaptingShare',
-            label: 'Substantial Contribution to Climate Change Adaptation In Percent - Adapting Share',
+            label: 'Substantial Contribution to Climate Change Adaptation in Percent - Adapting Share',
             description:
-              'Taxonomy-aligned and adapting proportion of CapEx-based Green Asset Ratio substantially contributing to climate change adaptation',
+              'Taxonomy-aligned and adapting Proportion of CapEx-based Green Asset Ratio substantially contributing to Climate Change Adaptation',
 
             unit: '%',
             component: 'NumberFormField',
@@ -566,9 +565,9 @@ export const euTaxonomyFinancialsDataModel = [
           {
             name: 'substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentEligible',
             label:
-              'Substantial Contribution to Sustainable Use and Protection of Water and Marine Resources In Percent - Eligible',
+              'Substantial Contribution to Sustainable Use and Protection of Water and Marine Resources in Percent - Eligible',
             description:
-              'Taxonomy-eligible proportion of CapEx-based Green Asset Ratio substantially contributing to sustainable use and protection of water and marine resources',
+              'Taxonomy-eligible Proportion of CapEx-based Green Asset Ratio substantially contributing to Sustainable Use and Protection of Water and Marin Resources',
 
             unit: '%',
             component: 'NumberFormField',
@@ -579,9 +578,9 @@ export const euTaxonomyFinancialsDataModel = [
           {
             name: 'substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned',
             label:
-              'Substantial Contribution to Sustainable Use and Protection of Water and Marine Resources In Percent - Aligned',
+              'Substantial Contribution to Sustainable Use and Protection of Water and Marine Resources in Percent - Aligned',
             description:
-              'Taxonomy-aligned proportion of CapEx-based Green Asset Ratio substantially contributing to sustainable use and protection of water and marine resources',
+              'Taxonomy-aligned Proportion of CapEx-based Green Asset Ratio substantially contributing to Sustainable Use and Protection of Water and Marin Resources',
 
             unit: '%',
             component: 'NumberFormField',
@@ -592,9 +591,9 @@ export const euTaxonomyFinancialsDataModel = [
           {
             name: 'substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentOfWhichUseOfProceeds',
             label:
-              'Substantial Contribution to Sustainable Use and Protection of Water and Marine Resources In Percent - Of which use of proceeds',
+              'Substantial Contribution to Sustainable Use and Protection of Water and Marine Resources in Percent - Of which Use of Proceeds',
             description:
-              'Taxonomy-aligned use of proceeds share substantially contributing to sustainable use and protection of water and marine resources',
+              'Taxonomy-aligned Use of Proceeds Share substantially contributing to Sustainable Use and Protection of Water and Marin Resources',
 
             unit: '%',
             component: 'NumberFormField',
@@ -605,9 +604,9 @@ export const euTaxonomyFinancialsDataModel = [
           {
             name: 'substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentEnablingShare',
             label:
-              'Substantial Contribution to Sustainable Use and Protection of Water and Marine Resources In Percent - Enabling Share',
+              'Substantial Contribution to Sustainable Use and Protection of Water and Marine Resources in Percent - Enabling Share',
             description:
-              'Taxonomy-aligned and enabling proportion of CapEx-based Green Asset Ratio substantially contributing to sustainable use and protection of water and marine resources',
+              'Taxonomy-aligned and enabling Proportion of CapEx-based Green Asset Ratio substantially contributing to Sustainable Use and Protection of Water and Marin Resources',
 
             unit: '%',
             component: 'NumberFormField',
@@ -617,9 +616,9 @@ export const euTaxonomyFinancialsDataModel = [
           },
           {
             name: 'substantialContributionToTransitionToACircularEconomyInPercentEligible',
-            label: 'Substantial Contribution to Transition to a Circular Economy In Percent - Eligible',
+            label: 'Substantial Contribution to Transition to a Circular Economy in Percent - Eligible',
             description:
-              'Taxonomy-eligible proportion of CapEx-based Green Asset Ratio substantially contributing to circular economy',
+              'Taxonomy-eligible Proportion of CapEx-based Green Asset Ratio substantially contributing to Circular Economy',
 
             unit: '%',
             component: 'NumberFormField',
@@ -629,9 +628,9 @@ export const euTaxonomyFinancialsDataModel = [
           },
           {
             name: 'substantialContributionToTransitionToACircularEconomyInPercentAligned',
-            label: 'Substantial Contribution to Transition to a Circular Economy In Percent - Aligned',
+            label: 'Substantial Contribution to Transition to a Circular Economy in Percent - Aligned',
             description:
-              'Taxonomy-aligned proportion of CapEx-based Green Asset Ratio substantially contributing to circular economy',
+              'Taxonomy-aligned Proportion of CapEx-based Green Asset Ratio substantially contributing to Circular Economy',
 
             unit: '%',
             component: 'NumberFormField',
@@ -641,8 +640,8 @@ export const euTaxonomyFinancialsDataModel = [
           },
           {
             name: 'substantialContributionToTransitionToACircularEconomyInPercentOfWhichUseOfProceeds',
-            label: 'Substantial Contribution to Transition to a Circular Economy In Percent - Of which use of proceeds',
-            description: 'Taxonomy-aligned use of proceeds share substantially contributing to circular economy',
+            label: 'Substantial Contribution to Transition to a Circular Economy in Percent - Of which Use of Proceeds',
+            description: 'Taxonomy-aligned Use of Proceeds Share substantially contributing to Circular Economy',
 
             unit: '%',
             component: 'NumberFormField',
@@ -652,9 +651,9 @@ export const euTaxonomyFinancialsDataModel = [
           },
           {
             name: 'substantialContributionToTransitionToACircularEconomyInPercentEnablingShare',
-            label: 'Substantial Contribution to Transition to a Circular Economy In Percent - Enabling Share',
+            label: 'Substantial Contribution to Transition to a Circular Economy in Percent - Enabling Share',
             description:
-              'Taxonomy-aligned and enabling proportion of CapEx-based Green Asset Ratio substantially contributing to circular economy',
+              'Taxonomy-aligned and enabling Proportion of CapEx-based Green Asset Ratio substantially contributing to Circular Economy',
 
             unit: '%',
             component: 'NumberFormField',
@@ -664,9 +663,9 @@ export const euTaxonomyFinancialsDataModel = [
           },
           {
             name: 'substantialContributionToPollutionPreventionAndControlInPercentEligible',
-            label: 'Substantial Contribution to Pollution Prevention and Control In Percent - Eligible',
+            label: 'Substantial Contribution to Pollution Prevention and Control in Percent - Eligible',
             description:
-              'Taxonomy-eligible proportion of CapEx-based Green Asset Ratio substantially contributing to pollution prevention and control',
+              'Taxonomy-eligible Proportion of CapEx-based Green Asset Ratio substantially contributing to Pollution Prevention and Control',
 
             unit: '%',
             component: 'NumberFormField',
@@ -676,9 +675,9 @@ export const euTaxonomyFinancialsDataModel = [
           },
           {
             name: 'substantialContributionToPollutionPreventionAndControlInPercentAligned',
-            label: 'Substantial Contribution to Pollution Prevention and Control In Percent - Aligned',
+            label: 'Substantial Contribution to Pollution Prevention and Control in Percent - Aligned',
             description:
-              'Taxonomy-aligned proportion of CapEx-based Green Asset Ratio substantially contributing to pollution prevention and control',
+              'Taxonomy-aligned Proportion of CapEx-based Green Asset Ratio substantially contributing to Pollution Prevention and Control',
 
             unit: '%',
             component: 'NumberFormField',
@@ -688,9 +687,9 @@ export const euTaxonomyFinancialsDataModel = [
           },
           {
             name: 'substantialContributionToPollutionPreventionAndControlInPercentOfWhichUseOfProceeds',
-            label: 'Substantial Contribution to Pollution Prevention and Control In Percent - Of which use of proceeds',
+            label: 'Substantial Contribution to Pollution Prevention and Control in Percent - Of which Use of Proceeds',
             description:
-              'Taxonomy-aligned use of proceeds share substantially contributing to pollution prevention and control',
+              'Taxonomy-aligned Use of Proceeds Share substantially contributing to Pollution Prevention and Control',
 
             unit: '%',
             component: 'NumberFormField',
@@ -700,9 +699,9 @@ export const euTaxonomyFinancialsDataModel = [
           },
           {
             name: 'substantialContributionToPollutionPreventionAndControlInPercentEnablingShare',
-            label: 'Substantial Contribution to Pollution Prevention and Control In Percent - Enabling Share',
+            label: 'Substantial Contribution to Pollution Prevention and Control in Percent - Enabling Share',
             description:
-              'Taxonomy-aligned and enabling proportion of CapEx-based Green Asset Ratio substantially contributing to pollution prevention and control',
+              'Taxonomy-aligned and enabling Proportion of CapEx-based Green Asset Ratio substantially contributing to Pollution Prevention and Control',
 
             unit: '%',
             component: 'NumberFormField',
@@ -713,9 +712,9 @@ export const euTaxonomyFinancialsDataModel = [
           {
             name: 'substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentEligible',
             label:
-              'Substantial Contribution to Protection and Restoration of Biodiversity and Ecosystems In Percent - Eligible',
+              'Substantial Contribution to Protection and Restoration of Biodiversity and Ecosystems in Percent - Eligible',
             description:
-              'Taxonomy-eligible proportion of CapEx-based Green Asset Ratio substantially contributing to protection and restoration of biodiversity and ecosystems',
+              'Taxonomy-eligible Proportion of CapEx-based Green Asset Ratio substantially contributing to Protection and Restoration of Biodiversity and Ecosystems',
 
             unit: '%',
             component: 'NumberFormField',
@@ -726,9 +725,9 @@ export const euTaxonomyFinancialsDataModel = [
           {
             name: 'substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned',
             label:
-              'Substantial Contribution to Protection and Restoration of Biodiversity and Ecosystems In Percent - Aligned',
+              'Substantial Contribution to Protection and Restoration of Biodiversity and Ecosystems in Percent - Aligned',
             description:
-              'Taxonomy-aligned proportion of CapEx-based Green Asset Ratio substantially contributing to protection and restoration of biodiversity and ecosystems',
+              'Taxonomy-aligned Proportion of CapEx-based Green Asset Ratio substantially contributing to Protection and Restoration of Biodiversity and Ecosystems',
 
             unit: '%',
             component: 'NumberFormField',
@@ -739,9 +738,9 @@ export const euTaxonomyFinancialsDataModel = [
           {
             name: 'substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentOfWhichUseOfProceeds',
             label:
-              'Substantial Contribution to Protection and Restoration of Biodiversity and Ecosystems In Percent - Of which use of proceeds',
+              'Substantial Contribution to Protection and Restoration of Biodiversity and Ecosystems in Percent - Of which Use of Proceeds',
             description:
-              'Taxonomy-aligned use of proceeds share substantially contributing to protection and restoration of biodiversity and ecosystems',
+              'Taxonomy-aligned Use of Proceeds Share substantially contributing to Protection and Restoration of Biodiversity and Ecosystems',
 
             unit: '%',
             component: 'NumberFormField',
@@ -752,9 +751,1367 @@ export const euTaxonomyFinancialsDataModel = [
           {
             name: 'substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentEnablingShare',
             label:
-              'Substantial Contribution to Protection and Restoration of Biodiversity and Ecosystems In Percent - Enabling Share',
+              'Substantial Contribution to Protection and Restoration of Biodiversity and Ecosystems in Percent - Enabling Share',
             description:
-              'Taxonomy-aligned and enabling proportion of CapEx-based Green Asset Ratio substantially contributing to protection and restoration of biodiversity and ecosystems',
+              'Taxonomy-aligned and enabling Proportion of CapEx-based Green Asset Ratio substantially contributing to Protection and Restoration of Biodiversity and Ecosystems',
+
+            unit: '%',
+            component: 'NumberFormField',
+            required: false,
+            showIf: (): boolean => true,
+            validation: 'between:0,100',
+          },
+        ],
+      },
+    ],
+  },
+  {
+    name: 'assetManagement',
+    label: 'Asset Management',
+    color: '',
+    showIf: (): boolean => true,
+    subcategories: [
+      {
+        name: 'turnoverBasedKpi',
+        label: 'Turnover-based KPI',
+        fields: [
+          {
+            name: 'substantialContributionToClimateChangeMitigationInPercentAligned',
+            label: 'Substantial Contribution to Climate Change Mitigation in Percent - Aligned',
+            description:
+              'Taxonomy-aligned Share substantially contributing to Climate Change Mitigation.\nThe weighted average value of all the investments that are directed at funding, or are associated with Taxonomy-aligned economic activities relative to the value of total assets covered by the KPI, with following weights for investments in undertakings: Turnover-based (%).',
+
+            unit: '%',
+            component: 'NumberFormField',
+            required: false,
+            showIf: (): boolean => true,
+            validation: 'between:0,100',
+          },
+          {
+            name: 'substantialContributionToClimateChangeMitigationInPercentEnablingShare',
+            label: 'Substantial Contribution to Climate Change Mitigation in Percent - Enabling Share',
+            description:
+              'Taxonomy-aligned and enabling Share substantially contributing to Climate Change Mitigation.\nThe weighted average value of all the investments that are directed at funding, or are associated with taxonomy-aligned economic activities relative to the value of total assets covered by the KPI, with following weights for investments in undertakings: Turnover-based (%).',
+
+            unit: '%',
+            component: 'NumberFormField',
+            required: false,
+            showIf: (): boolean => true,
+            validation: 'between:0,100',
+          },
+          {
+            name: 'substantialContributionToClimateChangeMitigationInPercentTransitionalShare',
+            label: 'Substantial Contribution to Climate Change Mitigation in Percent - Transitional Share',
+            description:
+              'Taxonomy-aligned and transitional Share substantially contributing to Climate Change Mitigation.\nThe weighted average value of all the investments that are directed at funding, or are associated with taxonomy-aligned economic activities relative to the value of total assets covered by the KPI, with following weights for investments in undertakings: Turnover-based (%).',
+
+            unit: '%',
+            component: 'NumberFormField',
+            required: false,
+            showIf: (): boolean => true,
+            validation: 'between:0,100',
+          },
+          {
+            name: 'substantialContributionToClimateChangeAdaptationInPercentAligned',
+            label: 'Substantial Contribution to Climate Change Adaptation in Percent - Aligned',
+            description:
+              'Taxonomy-aligned Share substantially contributing to Climate Change Adaptation.\nThe weighted average value of all the investments that are directed at funding, or are associated with taxonomy-aligned economic activities relative to the value of total assets covered by the KPI, with following weights for investments in undertakings: Turnover-based (%).',
+
+            unit: '%',
+            component: 'NumberFormField',
+            required: false,
+            showIf: (): boolean => true,
+            validation: 'between:0,100',
+          },
+          {
+            name: 'substantialContributionToClimateChangeAdaptationInPercentEnablingShare',
+            label: 'Substantial Contribution to Climate Change Adaptation in Percent - Enabling Share',
+            description:
+              'Taxonomy-aligned and enabling Share substantially contributing to Climate Change Adaptation.\nThe weighted average value of all the investments that are directed at funding, or are associated with taxonomy-aligned economic activities relative to the value of total assets covered by the KPI, with following weights for investments in undertakings: Turnover-based (%).',
+
+            unit: '%',
+            component: 'NumberFormField',
+            required: false,
+            showIf: (): boolean => true,
+            validation: 'between:0,100',
+          },
+          {
+            name: 'substantialContributionToClimateChangeAdaptationInPercentAdaptingShare',
+            label: 'Substantial Contribution to Climate Change Adaptation in Percent - Adapting Share',
+            description:
+              'Taxonomy-aligned and adapting Share substantially contributing to Climate Change Adaptation.\nThe weighted average value of all the investments that are directed at funding, or are associated with taxonomy-aligned economic activities relative to the value of total assets covered by the KPI, with following weights for investments in undertakings: Turnover-based (%).',
+
+            unit: '%',
+            component: 'NumberFormField',
+            required: false,
+            showIf: (): boolean => true,
+            validation: 'between:0,100',
+          },
+          {
+            name: 'substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned',
+            label:
+              'Substantial Contribution to Sustainable Use and Protection of Water and Marine Resources in Percent - Aligned',
+            description:
+              'Taxonomy-aligned Share substantially contributing to Sustainable Use and Protection of Water and Marin Resources.\nThe weighted average value of all the investments that are directed at funding, or are associated with taxonomy-aligned economic activities relative to the value of total assets covered by the KPI, with following weights for investments in undertakings: Turnover-based (%).',
+
+            unit: '%',
+            component: 'NumberFormField',
+            required: false,
+            showIf: (): boolean => true,
+            validation: 'between:0,100',
+          },
+          {
+            name: 'substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentEnablingShare',
+            label:
+              'Substantial Contribution to Sustainable Use and Protection of Water and Marine Resources in Percent - Enabling Share',
+            description:
+              'Taxonomy-aligned and enabling Share substantially contributing to Sustainable Use and Protection of Water and Marin Resources.\nThe weighted average value of all the investments that are directed at funding, or are associated with taxonomy-aligned economic activities relative to the value of total assets covered by the KPI, with following weights for investments in undertakings: Turnover-based (%).',
+
+            unit: '%',
+            component: 'NumberFormField',
+            required: false,
+            showIf: (): boolean => true,
+            validation: 'between:0,100',
+          },
+          {
+            name: 'substantialContributionToTransitionToACircularEconomyInPercentAligned',
+            label: 'Substantial Contribution to Transition to a Circular Economy in Percent - Aligned',
+            description:
+              'Taxonomy-aligned Share substantially contributing to a Circular Economy.\nThe weighted average value of all the investments that are directed at funding, or are associated with taxonomy-aligned economic activities relative to the value of total assets covered by the KPI, with following weights for investments in undertakings: Turnover-based (%).',
+
+            unit: '%',
+            component: 'NumberFormField',
+            required: false,
+            showIf: (): boolean => true,
+            validation: 'between:0,100',
+          },
+          {
+            name: 'substantialContributionToTransitionToACircularEconomyInPercentEnablingShare',
+            label: 'Substantial Contribution to Transition to a Circular Economy in Percent - Enabling Share',
+            description:
+              'Taxonomy-aligned and enabling Share substantially contributing to a Circular Economy.\nThe weighted average value of all the investments that are directed at funding, or are associated with taxonomy-aligned economic activities relative to the value of total assets covered by the KPI, with following weights for investments in undertakings: Turnover-based (%).',
+
+            unit: '%',
+            component: 'NumberFormField',
+            required: false,
+            showIf: (): boolean => true,
+            validation: 'between:0,100',
+          },
+          {
+            name: 'substantialContributionToPollutionPreventionAndControlInPercentAligned',
+            label: 'Substantial Contribution to Pollution Prevention and Control in Percent - Aligned',
+            description:
+              'Taxonomy-aligned Share substantially contributing to Pollution Prevention and Control.\nThe weighted average value of all the investments that are directed at funding, or are associated with taxonomy-aligned economic activities relative to the value of total assets covered by the KPI, with following weights for investments in undertakings: Turnover-based (%).',
+
+            unit: '%',
+            component: 'NumberFormField',
+            required: false,
+            showIf: (): boolean => true,
+            validation: 'between:0,100',
+          },
+          {
+            name: 'substantialContributionToPollutionPreventionAndControlInPercentEnablingShare',
+            label: 'Substantial Contribution to Pollution Prevention and Control in Percent - Enabling Share',
+            description:
+              'Taxonomy-aligned and enabling Share substantially contributing to Pollution Prevention and Control.\nThe weighted average value of all the investments that are directed at funding, or are associated with taxonomy-aligned economic activities relative to the value of total assets covered by the KPI, with following weights for investments in undertakings: Turnover-based (%).',
+
+            unit: '%',
+            component: 'NumberFormField',
+            required: false,
+            showIf: (): boolean => true,
+            validation: 'between:0,100',
+          },
+          {
+            name: 'substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned',
+            label:
+              'Substantial Contribution to Protection and Restoration of Biodiversity and Ecosystems in Percent - Aligned',
+            description:
+              'Taxonomy-aligned Share substantially contributing to Protection and Restoration of Biodiversity and Ecosystems.\nThe weighted average value of all the investments that are directed at funding, or are associated with taxonomy-aligned economic activities relative to the value of total assets covered by the KPI, with following weights for investments in undertakings: Turnover-based (%).',
+
+            unit: '%',
+            component: 'NumberFormField',
+            required: false,
+            showIf: (): boolean => true,
+            validation: 'between:0,100',
+          },
+          {
+            name: 'substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentEnablingShare',
+            label:
+              'Substantial Contribution to Protection and Restoration of Biodiversity and Ecosystems in Percent - Enabling Share',
+            description:
+              'Taxonomy-aligned and enabling Share substantially contributing to Protection and Restoration of Biodiversity and Ecosystems.\nThe weighted average value of all the investments that are directed at funding, or are associated with taxonomy-aligned economic activities relative to the value of total assets covered by the KPI, with following weights for investments in undertakings: Turnover-based (%).',
+
+            unit: '%',
+            component: 'NumberFormField',
+            required: false,
+            showIf: (): boolean => true,
+            validation: 'between:0,100',
+          },
+        ],
+      },
+      {
+        name: 'capexBasedKpi',
+        label: 'Capex-based KPI',
+        fields: [
+          {
+            name: 'substantialContributionToClimateChangeMitigationInPercentAligned',
+            label: 'Substantial Contribution to Climate Change Mitigation in Percent - Aligned',
+            description:
+              'Taxonomy-aligned Share substantially contributing to Climate Change Mitigation.\nThe weighted average value of all the investments that are directed at funding, or are associated with taxonomy-aligned economic activities relative to the value of total assets covered by the KPI, with following weights for investments in undertakings: Capex-based (%).',
+
+            unit: '%',
+            component: 'NumberFormField',
+            required: false,
+            showIf: (): boolean => true,
+            validation: 'between:0,100',
+          },
+          {
+            name: 'substantialContributionToClimateChangeMitigationInPercentEnablingShare',
+            label: 'Substantial Contribution to Climate Change Mitigation in Percent - Enabling Share',
+            description:
+              'Taxonomy-aligned and enabling Share substantially contributing to Climate Change Mitigation.\nThe weighted average value of all the investments that are directed at funding, or are associated with taxonomy-aligned economic activities relative to the value of total assets covered by the KPI, with following weights for investments in undertakings: Capex-based (%).',
+
+            unit: '%',
+            component: 'NumberFormField',
+            required: false,
+            showIf: (): boolean => true,
+            validation: 'between:0,100',
+          },
+          {
+            name: 'substantialContributionToClimateChangeMitigationInPercentTransitionalShare',
+            label: 'Substantial Contribution to Climate Change Mitigation in Percent - Transitional Share',
+            description:
+              'Taxonomy-aligned and transitional Share substantially contributing to Climate Change Mitigation.\nThe weighted average value of all the investments that are directed at funding, or are associated with taxonomy-aligned economic activities relative to the value of total assets covered by the KPI, with following weights for investments in undertakings: Capex-based (%).',
+
+            unit: '%',
+            component: 'NumberFormField',
+            required: false,
+            showIf: (): boolean => true,
+            validation: 'between:0,100',
+          },
+          {
+            name: 'substantialContributionToClimateChangeAdaptationInPercentAligned',
+            label: 'Substantial Contribution to Climate Change Adaptation in Percent - Aligned',
+            description:
+              'Taxonomy-aligned Share substantially contributing to Climate Change Adaptation.\nThe weighted average value of all the investments that are directed at funding, or are associated with taxonomy-aligned economic activities relative to the value of total assets covered by the KPI, with following weights for investments in undertakings: Capex-based (%).',
+
+            unit: '%',
+            component: 'NumberFormField',
+            required: false,
+            showIf: (): boolean => true,
+            validation: 'between:0,100',
+          },
+          {
+            name: 'substantialContributionToClimateChangeAdaptationInPercentEnablingShare',
+            label: 'Substantial Contribution to Climate Change Adaptation in Percent - Enabling Share',
+            description:
+              'Taxonomy-aligned and enabling Share substantially contributing to Climate Change Adaptation.\nThe weighted average value of all the investments that are directed at funding, or are associated with taxonomy-aligned economic activities relative to the value of total assets covered by the KPI, with following weights for investments in undertakings: Capex-based (%).',
+
+            unit: '%',
+            component: 'NumberFormField',
+            required: false,
+            showIf: (): boolean => true,
+            validation: 'between:0,100',
+          },
+          {
+            name: 'substantialContributionToClimateChangeAdaptationInPercentAdaptingShare',
+            label: 'Substantial Contribution to Climate Change Adaptation in Percent - Adapting Share',
+            description:
+              'Taxonomy-aligned and adapting Share substantially contributing to Climate Change Adaptation.\nThe weighted average value of all the investments that are directed at funding, or are associated with taxonomy-aligned economic activities relative to the value of total assets covered by the KPI, with following weights for investments in undertakings: Capex-based (%).',
+
+            unit: '%',
+            component: 'NumberFormField',
+            required: false,
+            showIf: (): boolean => true,
+            validation: 'between:0,100',
+          },
+          {
+            name: 'substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned',
+            label:
+              'Substantial Contribution to Sustainable Use and Protection of Water and Marine Resources in Percent - Aligned',
+            description:
+              'Taxonomy-aligned Share substantially contributing to Sustainable Use and Protection of Water and Marin Resources.\nThe weighted average value of all the investments that are directed at funding, or are associated with taxonomy-aligned economic activities relative to the value of total assets covered by the KPI, with following weights for investments in undertakings: Capex-based (%).',
+
+            unit: '%',
+            component: 'NumberFormField',
+            required: false,
+            showIf: (): boolean => true,
+            validation: 'between:0,100',
+          },
+          {
+            name: 'substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentEnablingShare',
+            label:
+              'Substantial Contribution to Sustainable Use and Protection of Water and Marine Resources in Percent - Enabling Share',
+            description:
+              'Taxonomy-aligned and enabling Share substantially contributing to Sustainable Use and Protection of Water and Marin Resources.\nThe weighted average value of all the investments that are directed at funding, or are associated with taxonomy-aligned economic activities relative to the value of total assets covered by the KPI, with following weights for investments in undertakings: Capex-based (%).',
+
+            unit: '%',
+            component: 'NumberFormField',
+            required: false,
+            showIf: (): boolean => true,
+            validation: 'between:0,100',
+          },
+          {
+            name: 'substantialContributionToTransitionToACircularEconomyInPercentAligned',
+            label: 'Substantial Contribution to Transition to a Circular Economy in Percent - Aligned',
+            description:
+              'Taxonomy-aligned Share substantially contributing to a Circular Economy.\nThe weighted average value of all the investments that are directed at funding, or are associated with taxonomy-aligned economic activities relative to the value of total assets covered by the KPI, with following weights for investments in undertakings: Capex-based (%).',
+
+            unit: '%',
+            component: 'NumberFormField',
+            required: false,
+            showIf: (): boolean => true,
+            validation: 'between:0,100',
+          },
+          {
+            name: 'substantialContributionToTransitionToACircularEconomyInPercentEnablingShare',
+            label: 'Substantial Contribution to Transition to a Circular Economy in Percent - Enabling Share',
+            description:
+              'Taxonomy-aligned and enabling Share substantially contributing to a Circular Economy.\nThe weighted average value of all the investments that are directed at funding, or are associated with taxonomy-aligned economic activities relative to the value of total assets covered by the KPI, with following weights for investments in undertakings: Capex-based (%).',
+
+            unit: '%',
+            component: 'NumberFormField',
+            required: false,
+            showIf: (): boolean => true,
+            validation: 'between:0,100',
+          },
+          {
+            name: 'substantialContributionToPollutionPreventionAndControlInPercentAligned',
+            label: 'Substantial Contribution to Pollution Prevention and Control in Percent - Aligned',
+            description:
+              'Taxonomy-aligned Share substantially contributing to Pollution Prevention and Control.\nThe weighted average value of all the investments that are directed at funding, or are associated with taxonomy-aligned economic activities relative to the value of total assets covered by the KPI, with following weights for investments in undertakings: Capex-based (%).',
+
+            unit: '%',
+            component: 'NumberFormField',
+            required: false,
+            showIf: (): boolean => true,
+            validation: 'between:0,100',
+          },
+          {
+            name: 'substantialContributionToPollutionPreventionAndControlInPercentEnablingShare',
+            label: 'Substantial Contribution to Pollution Prevention and Control in Percent - Enabling Share',
+            description:
+              'Taxonomy-aligned and enabling Share substantially contributing to Pollution Prevention and Control.\nThe weighted average value of all the investments that are directed at funding, or are associated with taxonomy-aligned economic activities relative to the value of total assets covered by the KPI, with following weights for investments in undertakings: Capex-based (%).',
+
+            unit: '%',
+            component: 'NumberFormField',
+            required: false,
+            showIf: (): boolean => true,
+            validation: 'between:0,100',
+          },
+          {
+            name: 'substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned',
+            label:
+              'Substantial Contribution to Protection and Restoration of Biodiversity and Ecosystems in Percent - Aligned',
+            description:
+              'Taxonomy-aligned Share substantially contributing to Protection and Restoration of Biodiversity and Ecosystems.\nThe weighted average value of all the investments that are directed at funding, or are associated with taxonomy-aligned economic activities relative to the value of total assets covered by the KPI, with following weights for investments in undertakings: Capex-based (%).',
+
+            unit: '%',
+            component: 'NumberFormField',
+            required: false,
+            showIf: (): boolean => true,
+            validation: 'between:0,100',
+          },
+          {
+            name: 'substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentEnablingShare',
+            label:
+              'Substantial Contribution to Protection and Restoration of Biodiversity and Ecosystems in Percent - Enabling Share',
+            description:
+              'Taxonomy-aligned and enabling Share substantially contributing to Protection and Restoration of Biodiversity and Ecosystems.\nThe weighted average value of all the investments that are directed at funding, or are associated with taxonomy-aligned economic activities relative to the value of total assets covered by the KPI, with following weights for investments in undertakings: Capex-based (%).',
+
+            unit: '%',
+            component: 'NumberFormField',
+            required: false,
+            showIf: (): boolean => true,
+            validation: 'between:0,100',
+          },
+        ],
+      },
+    ],
+  },
+  {
+    name: 'insuranceReinsurance',
+    label: 'Insurance/Reinsurance',
+    color: '',
+    showIf: (): boolean => true,
+    subcategories: [
+      {
+        name: 'general',
+        label: 'General',
+        fields: [
+          {
+            name: 'taxonomyEligibleNonLifeInsuranceEconomicActivities',
+            label: 'Taxonomy-eligible Non-life Insurance Economic Activities',
+            description:
+              'The Percentage of Taxonomy-eligible Non-Life Insurance Economics Activities.\nInsurance and reinsurance undertakings other than life insurance undertakings shall calculate the KPI related to underwriting activities and present the ‘gross premiums written’ non-life insurance revenue or, as applicable, reinsurance revenue corresponding to Taxonomy-aligned insurance or reinsurance activities',
+
+            unit: '%',
+            component: 'NumberFormField',
+            required: false,
+            showIf: (): boolean => true,
+            validation: 'between:0,100',
+          },
+        ],
+      },
+      {
+        name: 'revenueBasedGrossPremiumsWrittenReInsuranceRevenue',
+        label: 'Revenue-based Gross premiums written/(re-insurance) revenue',
+        fields: [
+          {
+            name: 'substantialContributionToClimateChangeMitigationInPercentAligned',
+            label: 'Substantial Contribution to Climate Change Mitigation in Percent - Aligned',
+            description: 'Taxonomy-aligned Share substantially contributing to Climate Change Mitigation',
+
+            unit: '%',
+            component: 'NumberFormField',
+            required: false,
+            showIf: (): boolean => true,
+            validation: 'between:0,100',
+          },
+          {
+            name: 'substantialContributionToClimateChangeMitigationInPercentEnablingShare',
+            label: 'Substantial Contribution to Climate Change Mitigation in Percent - Enabling Share',
+            description: 'Taxonomy-aligned and enabling Share substantially contributing to Climate Change Mitigation',
+
+            unit: '%',
+            component: 'NumberFormField',
+            required: false,
+            showIf: (): boolean => true,
+            validation: 'between:0,100',
+          },
+          {
+            name: 'substantialContributionToClimateChangeMitigationInPercentTransitionalShare',
+            label: 'Substantial Contribution to Climate Change Mitigation in Percent - Transitional Share',
+            description:
+              'Taxonomy-aligned and transitional Share substantially contributing to Climate Change Mitigation',
+
+            unit: '%',
+            component: 'NumberFormField',
+            required: false,
+            showIf: (): boolean => true,
+            validation: 'between:0,100',
+          },
+          {
+            name: 'substantialContributionToClimateChangeAdaptationInPercentAligned',
+            label: 'Substantial Contribution to Climate Change Adaptation in Percent - Aligned',
+            description: 'Taxonomy-aligned Share substantially contributing to Climate Change Adaptation',
+
+            unit: '%',
+            component: 'NumberFormField',
+            required: false,
+            showIf: (): boolean => true,
+            validation: 'between:0,100',
+          },
+          {
+            name: 'substantialContributionToClimateChangeAdaptationInPercentEnablingShare',
+            label: 'Substantial Contribution to Climate Change Adaptation in Percent - Enabling Share',
+            description: 'Taxonomy-aligned and enabling Share substantially contributing to Climate Change Adaptation',
+
+            unit: '%',
+            component: 'NumberFormField',
+            required: false,
+            showIf: (): boolean => true,
+            validation: 'between:0,100',
+          },
+          {
+            name: 'substantialContributionToClimateChangeAdaptationInPercentAdaptingShare',
+            label: 'Substantial Contribution to Climate Change Adaptation in Percent - Adapting Share',
+            description: 'Taxonomy-aligned and adapting Share substantially contributing to Climate Change Adaptation',
+
+            unit: '%',
+            component: 'NumberFormField',
+            required: false,
+            showIf: (): boolean => true,
+            validation: 'between:0,100',
+          },
+          {
+            name: 'substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned',
+            label:
+              'Substantial Contribution to Sustainable Use and Protection of Water and Marine Resources in Percent - Aligned',
+            description:
+              'Taxonomy-aligned Share substantially contributing to Sustainable Use and Protection of Water and Marin Resources',
+
+            unit: '%',
+            component: 'NumberFormField',
+            required: false,
+            showIf: (): boolean => true,
+            validation: 'between:0,100',
+          },
+          {
+            name: 'substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentEnablingShare',
+            label:
+              'Substantial Contribution to Sustainable Use and Protection of Water and Marine Resources in Percent - Enabling Share',
+            description:
+              'Taxonomy-aligned and enabling Share substantially contributing to Sustainable Use and Protection of Water and Marin Resources',
+
+            unit: '%',
+            component: 'NumberFormField',
+            required: false,
+            showIf: (): boolean => true,
+            validation: 'between:0,100',
+          },
+          {
+            name: 'substantialContributionToTransitionToACircularEconomyInPercentAligned',
+            label: 'Substantial Contribution to Transition to a Circular Economy in Percent - Aligned',
+            description: 'Taxonomy-aligned Share substantially contributing to Circular Economy',
+
+            unit: '%',
+            component: 'NumberFormField',
+            required: false,
+            showIf: (): boolean => true,
+            validation: 'between:0,100',
+          },
+          {
+            name: 'substantialContributionToTransitionToACircularEconomyInPercentEnablingShare',
+            label: 'Substantial Contribution to Transition to a Circular Economy in Percent - Enabling Share',
+            description: 'Taxonomy-aligned and enabling Share substantially contributing to Circular Economy',
+
+            unit: '%',
+            component: 'NumberFormField',
+            required: false,
+            showIf: (): boolean => true,
+            validation: 'between:0,100',
+          },
+          {
+            name: 'substantialContributionToPollutionPreventionAndControlInPercentAligned',
+            label: 'Substantial Contribution to Pollution Prevention and Control in Percent - Aligned',
+            description: 'Taxonomy-aligned Share substantially contributing to Pollution Prevention and Control',
+
+            unit: '%',
+            component: 'NumberFormField',
+            required: false,
+            showIf: (): boolean => true,
+            validation: 'between:0,100',
+          },
+          {
+            name: 'substantialContributionToPollutionPreventionAndControlInPercentEnablingShare',
+            label: 'Substantial Contribution to Pollution Prevention and Control in Percent - Enabling Share',
+            description:
+              'Taxonomy-aligned and enabling Share substantially contributing to Pollution Prevention and Control',
+
+            unit: '%',
+            component: 'NumberFormField',
+            required: false,
+            showIf: (): boolean => true,
+            validation: 'between:0,100',
+          },
+          {
+            name: 'substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned',
+            label:
+              'Substantial Contribution to Protection and Restoration of Biodiversity and Ecosystems in Percent - Aligned',
+            description:
+              'Taxonomy-aligned Share substantially contributing to Protection and Restoration of Biodiversity and Ecosystems',
+
+            unit: '%',
+            component: 'NumberFormField',
+            required: false,
+            showIf: (): boolean => true,
+            validation: 'between:0,100',
+          },
+          {
+            name: 'substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentEnablingShare',
+            label:
+              'Substantial Contribution to Protection and Restoration of Biodiversity and Ecosystems in Percent - Enabling Share',
+            description:
+              'Taxonomy-aligned and enabling Share substantially contributing to Protection and Restoration of Biodiversity and Ecosystems',
+
+            unit: '%',
+            component: 'NumberFormField',
+            required: false,
+            showIf: (): boolean => true,
+            validation: 'between:0,100',
+          },
+        ],
+      },
+      {
+        name: 'capexBasedGrossPremiumsWrittenReInsuranceRevenue',
+        label: 'CapEx-based Gross premiums written/(re-insurance) revenue',
+        fields: [
+          {
+            name: 'substantialContributionToClimateChangeMitigationInPercentAligned',
+            label: 'Substantial Contribution to Climate Change Mitigation in Percent - Aligned',
+            description: 'Taxonomy-aligned Share substantially contributing to Climate Change Mitigation',
+
+            unit: '%',
+            component: 'NumberFormField',
+            required: false,
+            showIf: (): boolean => true,
+            validation: 'between:0,100',
+          },
+          {
+            name: 'substantialContributionToClimateChangeMitigationInPercentEnablingShare',
+            label: 'Substantial Contribution to Climate Change Mitigation in Percent - Enabling Share',
+            description: 'Taxonomy-aligned and enabling Share substantially contributing to Climate Change Mitigation',
+
+            unit: '%',
+            component: 'NumberFormField',
+            required: false,
+            showIf: (): boolean => true,
+            validation: 'between:0,100',
+          },
+          {
+            name: 'substantialContributionToClimateChangeMitigationInPercentTransitionalShare',
+            label: 'Substantial Contribution to Climate Change Mitigation in Percent - Transitional Share',
+            description:
+              'Taxonomy-aligned and transitional Share substantially contributing to Climate Change Mitigation',
+
+            unit: '%',
+            component: 'NumberFormField',
+            required: false,
+            showIf: (): boolean => true,
+            validation: 'between:0,100',
+          },
+          {
+            name: 'substantialContributionToClimateChangeAdaptationInPercentAligned',
+            label: 'Substantial Contribution to Climate Change Adaptation in Percent - Aligned',
+            description: 'Taxonomy-aligned Share substantially contributing to Climate Change Adaptation',
+
+            unit: '%',
+            component: 'NumberFormField',
+            required: false,
+            showIf: (): boolean => true,
+            validation: 'between:0,100',
+          },
+          {
+            name: 'substantialContributionToClimateChangeAdaptationInPercentEnablingShare',
+            label: 'Substantial Contribution to Climate Change Adaptation in Percent - Enabling Share',
+            description: 'Taxonomy-aligned and enabling Share substantially contributing to Climate Change Adaptation',
+
+            unit: '%',
+            component: 'NumberFormField',
+            required: false,
+            showIf: (): boolean => true,
+            validation: 'between:0,100',
+          },
+          {
+            name: 'substantialContributionToClimateChangeAdaptationInPercentAdaptingShare',
+            label: 'Substantial Contribution to Climate Change Adaptation in Percent - Adapting Share',
+            description: 'Taxonomy-aligned and adapting Share substantially contributing to Climate Change Adaptation',
+
+            unit: '%',
+            component: 'NumberFormField',
+            required: false,
+            showIf: (): boolean => true,
+            validation: 'between:0,100',
+          },
+          {
+            name: 'substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned',
+            label:
+              'Substantial Contribution to Sustainable Use and Protection of Water and Marine Resources in Percent - Aligned',
+            description:
+              'Taxonomy-aligned Share substantially contributing to Sustainable Use and Protection of Water and Marin Resources',
+
+            unit: '%',
+            component: 'NumberFormField',
+            required: false,
+            showIf: (): boolean => true,
+            validation: 'between:0,100',
+          },
+          {
+            name: 'substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentEnablingShare',
+            label:
+              'Substantial Contribution to Sustainable Use and Protection of Water and Marine Resources in Percent - Enabling Share',
+            description:
+              'Taxonomy-aligned and enabling Share substantially contributing to Sustainable Use and Protection of Water and Marin Resources',
+
+            unit: '%',
+            component: 'NumberFormField',
+            required: false,
+            showIf: (): boolean => true,
+            validation: 'between:0,100',
+          },
+          {
+            name: 'substantialContributionToTransitionToACircularEconomyInPercentAligned',
+            label: 'Substantial Contribution to Transition to a Circular Economy in Percent - Aligned',
+            description: 'Taxonomy-aligned Share substantially contributing to Circular Economy',
+
+            unit: '%',
+            component: 'NumberFormField',
+            required: false,
+            showIf: (): boolean => true,
+            validation: 'between:0,100',
+          },
+          {
+            name: 'substantialContributionToTransitionToACircularEconomyInPercentEnablingShare',
+            label: 'Substantial Contribution to Transition to a Circular Economy in Percent - Enabling Share',
+            description: 'Taxonomy-aligned and enabling Share substantially contributing to Circular Economy',
+
+            unit: '%',
+            component: 'NumberFormField',
+            required: false,
+            showIf: (): boolean => true,
+            validation: 'between:0,100',
+          },
+          {
+            name: 'substantialContributionToPollutionPreventionAndControlInPercentAligned',
+            label: 'Substantial Contribution to Pollution Prevention and Control in Percent - Aligned',
+            description: 'Taxonomy-aligned Share substantially contributing to Pollution Prevention and Control',
+
+            unit: '%',
+            component: 'NumberFormField',
+            required: false,
+            showIf: (): boolean => true,
+            validation: 'between:0,100',
+          },
+          {
+            name: 'substantialContributionToPollutionPreventionAndControlInPercentEnablingShare',
+            label: 'Substantial Contribution to Pollution Prevention and Control in Percent - Enabling Share',
+            description:
+              'Taxonomy-aligned and enabling Share substantially contributing to Pollution Prevention and Control',
+
+            unit: '%',
+            component: 'NumberFormField',
+            required: false,
+            showIf: (): boolean => true,
+            validation: 'between:0,100',
+          },
+          {
+            name: 'substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned',
+            label:
+              'Substantial Contribution to Protection and Restoration of Biodiversity and Ecosystems in Percent - Aligned',
+            description:
+              'Taxonomy-aligned Share substantially contributing to Protection and Restoration of Biodiversity and Ecosystems',
+
+            unit: '%',
+            component: 'NumberFormField',
+            required: false,
+            showIf: (): boolean => true,
+            validation: 'between:0,100',
+          },
+          {
+            name: 'substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentEnablingShare',
+            label:
+              'Substantial Contribution to Protection and Restoration of Biodiversity and Ecosystems in Percent - Enabling Share',
+            description:
+              'Taxonomy-aligned and enabling Share substantially contributing to Protection and Restoration of Biodiversity and Ecosystems',
+
+            unit: '%',
+            component: 'NumberFormField',
+            required: false,
+            showIf: (): boolean => true,
+            validation: 'between:0,100',
+          },
+        ],
+      },
+    ],
+  },
+  {
+    name: 'investmentFirms',
+    label: 'Investment firms',
+    color: '',
+    showIf: (): boolean => true,
+    subcategories: [
+      {
+        name: 'turnoverBasedKpi',
+        label: 'Turnover-based KPI',
+        fields: [
+          {
+            name: 'totalAssetsInvestedRevenueFromInvestmentAndServices',
+            label: 'Total assets invested / revenue from investment and services',
+            description:
+              "Investment firms dealing on own account: total assets invested under investment firms' activities dealing on own account (as per Section A of Annex I to Directive 2014/65/EU)\nInvestment firms not dealing on own account: revenue (i.e. fees, commissions and other monetary benefits) from investment and services and activities other than on own account (as per Section A of Annex I to Directive 2014/65/EU)",
+
+            component: 'BigDecimalExtendedDataPointFormField',
+            required: false,
+            showIf: (): boolean => true,
+          },
+          {
+            name: 'substantialContributionToClimateChangeMitigationInPercentEligible',
+            label: 'Substantial Contribution to Climate Change Mitigation in Percent - Eligible',
+            description:
+              "Share substantially contributing to Climate Change Mitigation\n- Investment firms dealing on own account: total assets invested under investment firms' activities dealing on own account (as per Section A of Annex I to Directive 2014/65/EU) of which assets covered by the Taxonomy (Taxonomy-eligible)\n- Investment firms not dealing on own account: revenue (i.e. fees, commissions and other monetary benefits) from investment and services and activities other than on own account (as per Section A of Annex I to Directive 2014/65/EU) of which assets covered by the Taxonomy (Taxonomy-eligible)",
+
+            unit: '%',
+            component: 'NumberFormField',
+            required: false,
+            showIf: (): boolean => true,
+            validation: 'between:0,100',
+          },
+          {
+            name: 'substantialContributionToClimateChangeMitigationInPercentAligned',
+            label: 'Substantial Contribution to Climate Change Mitigation in Percent - Aligned',
+            description:
+              "Share substantially contributing to Climate Change Mitigation\n- Investment firms dealing on own account: total assets invested under investment firms' activities dealing on own account (as per Section A of Annex I to Directive 2014/65/EU) of which linked to activities aligned with the EU Taxonomy (Taxonomy-aligned)\n- Investment firms not dealing on own account: revenue (i.e. fees, commissions and other monetary benefits) from investment and services and activities other than on own account (as per Section A of Annex I to Directive 2014/65/EU) of which from services and activities linked to activities aligned with the EU Taxonomy (Taxonomy-aligned)",
+
+            unit: '%',
+            component: 'NumberFormField',
+            required: false,
+            showIf: (): boolean => true,
+            validation: 'between:0,100',
+          },
+          {
+            name: 'substantialContributionToClimateChangeMitigationInPercentEnablingShare',
+            label: 'Substantial Contribution to Climate Change Mitigation in Percent - Enabling Share',
+            description:
+              "Share substantially contributing to Climate Change Mitigation\n- Investment firms dealing on own account: total assets invested under investment firms' activities dealing on own account (as per Section A of Annex I to Directive 2014/65/EU) of which enabling\n- Investment firms not dealing on own account: revenue (i.e. fees, commissions and other monetary benefits) from investment and services and activities other than on own account (as per Section A of Annex I to Directive 2014/65/EU) of which enabling",
+
+            unit: '%',
+            component: 'NumberFormField',
+            required: false,
+            showIf: (): boolean => true,
+            validation: 'between:0,100',
+          },
+          {
+            name: 'substantialContributionToClimateChangeMitigationInPercentTransitionalShare',
+            label: 'Substantial Contribution to Climate Change Mitigation in Percent - Transitional Share',
+            description:
+              "Share substantially contributing to Climate Change Mitigation\n- Investment firms dealing on own account: total assets invested under investment firms' activities dealing on own account (as per Section A of Annex I to Directive 2014/65/EU) of which transitional\n- Investment firms not dealing on own account: revenue (i.e. fees, commissions and other monetary benefits) from investment and services and activities other than on own account (as per Section A of Annex I to Directive 2014/65/EU) of which transitional",
+
+            unit: '%',
+            component: 'NumberFormField',
+            required: false,
+            showIf: (): boolean => true,
+            validation: 'between:0,100',
+          },
+          {
+            name: 'substantialContributionToClimateChangeAdaptationInPercentEligible',
+            label: 'Substantial Contribution to Climate Change Adaptation in Percent - Eligible',
+            description:
+              "Share substantially contributing to Climate Change Adaptation\n- Investment firms dealing on own account: total assets invested under investment firms' activities dealing on own account (as per Section A of Annex I to Directive 2014/65/EU) of which assets covered by the Taxonomy (Taxonomy-eligible)\n- Investment firms not dealing on own account: revenue (i.e. fees, commissions and other monetary benefits) from investment and services and activities other than on own account (as per Section A of Annex I to Directive 2014/65/EU) of which assets covered by the Taxonomy (Taxonomy-eligible)",
+
+            unit: '%',
+            component: 'NumberFormField',
+            required: false,
+            showIf: (): boolean => true,
+            validation: 'between:0,100',
+          },
+          {
+            name: 'substantialContributionToClimateChangeAdaptationInPercentAligned',
+            label: 'Substantial Contribution to Climate Change Adaptation in Percent - Aligned',
+            description:
+              "Share substantially contributing to Climate Change Adaptation\n- Investment firms dealing on own account: total assets invested under investment firms' activities dealing on own account (as per Section A of Annex I to Directive 2014/65/EU) of which linked to activities aligned with the EU Taxonomy (Taxonomy-aligned)\n- Investment firms not dealing on own account: revenue (i.e. fees, commissions and other monetary benefits) from investment and services and activities other than on own account (as per Section A of Annex I to Directive 2014/65/EU) of which from services and activities linked to activities aligned with the EU Taxonomy (Taxonomy-aligned)",
+
+            unit: '%',
+            component: 'NumberFormField',
+            required: false,
+            showIf: (): boolean => true,
+            validation: 'between:0,100',
+          },
+          {
+            name: 'substantialContributionToClimateChangeAdaptationInPercentEnablingShare',
+            label: 'Substantial Contribution to Climate Change Adaptation in Percent - Enabling Share',
+            description:
+              "Share substantially contributing to Climate Change Adaptation\n- Investment firms dealing on own account: total assets invested under investment firms' activities dealing on own account (as per Section A of Annex I to Directive 2014/65/EU) of which enabling\n- Investment firms not dealing on own account: revenue (i.e. fees, commissions and other monetary benefits) from investment and services and activities other than on own account (as per Section A of Annex I to Directive 2014/65/EU) of which enabling",
+
+            unit: '%',
+            component: 'NumberFormField',
+            required: false,
+            showIf: (): boolean => true,
+            validation: 'between:0,100',
+          },
+          {
+            name: 'substantialContributionToClimateChangeAdaptationInPercentAdaptingShare',
+            label: 'Substantial Contribution to Climate Change Adaptation in Percent - Adapting Share',
+            description:
+              "Share substantially contributing to Climate Change Adaptation\n- Investment firms dealing on own account: total assets invested under investment firms' activities dealing on own account (as per Section A of Annex I to Directive 2014/65/EU) of which adapting\n- Investment firms not dealing on own account: revenue (i.e. fees, commissions and other monetary benefits) from investment and services and activities other than on own account (as per Section A of Annex I to Directive 2014/65/EU) of which adapting",
+
+            unit: '%',
+            component: 'NumberFormField',
+            required: false,
+            showIf: (): boolean => true,
+            validation: 'between:0,100',
+          },
+          {
+            name: 'substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentEligible',
+            label:
+              'Substantial Contribution to Sustainable Use and Protection of Water and Marine Resources in Percent - Eligible',
+            description:
+              "Share substantially contributing to Sustainable Use and Protection of Water and Marine Resources\n- Investment firms dealing on own account: total assets invested under investment firms' activities dealing on own account (as per Section A of Annex I to Directive 2014/65/EU) of which assets covered by the Taxonomy (Taxonomy-eligible)\n- Investment firms not dealing on own account: revenue (i.e. fees, commissions and other monetary benefits) from investment and services and activities other than on own account (as per Section A of Annex I to Directive 2014/65/EU) of which assets covered by the Taxonomy (Taxonomy-eligible)",
+
+            unit: '%',
+            component: 'NumberFormField',
+            required: false,
+            showIf: (): boolean => true,
+            validation: 'between:0,100',
+          },
+          {
+            name: 'substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned',
+            label:
+              'Substantial Contribution to Sustainable Use and Protection of Water and Marine Resources in Percent - Aligned',
+            description:
+              "Share substantially contributing to Sustainable Use and Protection of Water and Marine Resources\n- Investment firms dealing on own account: total assets invested under investment firms' activities dealing on own account (as per Section A of Annex I to Directive 2014/65/EU) of which linked to activities aligned with the EU Taxonomy (Taxonomy-aligned)\n- Investment firms not dealing on own account: revenue (i.e. fees, commissions and other monetary benefits) from investment and services and activities other than on own account (as per Section A of Annex I to Directive 2014/65/EU) of which from services and activities linked to activities aligned with the EU Taxonomy (Taxonomy-aligned)",
+
+            unit: '%',
+            component: 'NumberFormField',
+            required: false,
+            showIf: (): boolean => true,
+            validation: 'between:0,100',
+          },
+          {
+            name: 'substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentEnablingShare',
+            label:
+              'Substantial Contribution to Sustainable Use and Protection of Water and Marine Resources in Percent - Enabling Share',
+            description:
+              "Share substantially contributing to Sustainable Use and Protection of Water and Marine Resources\n- Investment firms dealing on own account: total assets invested under investment firms' activities dealing on own account (as per Section A of Annex I to Directive 2014/65/EU) of which enabling\n- Investment firms not dealing on own account: revenue (i.e. fees, commissions and other monetary benefits) from investment and services and activities other than on own account (as per Section A of Annex I to Directive 2014/65/EU) of which enabling",
+
+            unit: '%',
+            component: 'NumberFormField',
+            required: false,
+            showIf: (): boolean => true,
+            validation: 'between:0,100',
+          },
+          {
+            name: 'substantialContributionToTransitionToACircularEconomyInPercentEligible',
+            label: 'Substantial Contribution to Transition to a Circular Economy in Percent - Eligible',
+            description:
+              "Share substantially contributing to Transition to a Circular Economy\n- Investment firms dealing on own account: total assets invested under investment firms' activities dealing on own account (as per Section A of Annex I to Directive 2014/65/EU) of which assets covered by the Taxonomy (Taxonomy-eligible)\n- Investment firms not dealing on own account: revenue (i.e. fees, commissions and other monetary benefits) from investment and services and activities other than on own account (as per Section A of Annex I to Directive 2014/65/EU) of which assets covered by the Taxonomy (Taxonomy-eligible)",
+
+            unit: '%',
+            component: 'NumberFormField',
+            required: false,
+            showIf: (): boolean => true,
+            validation: 'between:0,100',
+          },
+          {
+            name: 'substantialContributionToTransitionToACircularEconomyInPercentAligned',
+            label: 'Substantial Contribution to Transition to a Circular Economy in Percent - Aligned',
+            description:
+              "Share substantially contributing to Transition to a Circular Economy\n- Investment firms dealing on own account: total assets invested under investment firms' activities dealing on own account (as per Section A of Annex I to Directive 2014/65/EU) of which linked to activities aligned with the EU Taxonomy (Taxonomy-aligned)\n- Investment firms not dealing on own account: revenue (i.e. fees, commissions and other monetary benefits) from investment and services and activities other than on own account (as per Section A of Annex I to Directive 2014/65/EU) of which from services and activities linked to activities aligned with the EU Taxonomy (Taxonomy-aligned)",
+
+            unit: '%',
+            component: 'NumberFormField',
+            required: false,
+            showIf: (): boolean => true,
+            validation: 'between:0,100',
+          },
+          {
+            name: 'substantialContributionToTransitionToACircularEconomyInPercentEnablingShare',
+            label: 'Substantial Contribution to Transition to a Circular Economy in Percent - Enabling Share',
+            description:
+              "Share substantially contributing to Transition to a Circular Economy\n- Investment firms dealing on own account: total assets invested under investment firms' activities dealing on own account (as per Section A of Annex I to Directive 2014/65/EU) of which enabling\n- Investment firms not dealing on own account: revenue (i.e. fees, commissions and other monetary benefits) from investment and services and activities other than on own account (as per Section A of Annex I to Directive 2014/65/EU) of which enabling",
+
+            unit: '%',
+            component: 'NumberFormField',
+            required: false,
+            showIf: (): boolean => true,
+            validation: 'between:0,100',
+          },
+          {
+            name: 'substantialContributionToPollutionPreventionAndControlInPercentEligible',
+            label: 'Substantial Contribution to Pollution Prevention and Control in Percent - Eligible',
+            description:
+              "Share substantially contributing to Pollution Prevention and Control\n- Investment firms dealing on own account: total assets invested under investment firms' activities dealing on own account (as per Section A of Annex I to Directive 2014/65/EU) of which assets covered by the Taxonomy (Taxonomy-eligible)\n- Investment firms not dealing on own account: revenue (i.e. fees, commissions and other monetary benefits) from investment and services and activities other than on own account (as per Section A of Annex I to Directive 2014/65/EU) of which assets covered by the Taxonomy (Taxonomy-eligible)",
+
+            unit: '%',
+            component: 'NumberFormField',
+            required: false,
+            showIf: (): boolean => true,
+            validation: 'between:0,100',
+          },
+          {
+            name: 'substantialContributionToPollutionPreventionAndControlInPercentAligned',
+            label: 'Substantial Contribution to Pollution Prevention and Control in Percent - Aligned',
+            description:
+              "Share substantially contributing to Pollution Prevention and Control\n- Investment firms dealing on own account: total assets invested under investment firms' activities dealing on own account (as per Section A of Annex I to Directive 2014/65/EU) of which linked to activities aligned with the EU Taxonomy (Taxonomy-aligned)\n- Investment firms not dealing on own account: revenue (i.e. fees, commissions and other monetary benefits) from investment and services and activities other than on own account (as per Section A of Annex I to Directive 2014/65/EU) of which from services and activities linked to activities aligned with the EU Taxonomy (Taxonomy-aligned)",
+
+            unit: '%',
+            component: 'NumberFormField',
+            required: false,
+            showIf: (): boolean => true,
+            validation: 'between:0,100',
+          },
+          {
+            name: 'substantialContributionToPollutionPreventionAndControlInPercentEnablingShare',
+            label: 'Substantial Contribution to Pollution Prevention and Control in Percent - Enabling Share',
+            description:
+              "Share substantially contributing to Pollution Prevention and Control\n- Investment firms dealing on own account: total assets invested under investment firms' activities dealing on own account (as per Section A of Annex I to Directive 2014/65/EU) of which enabling\n- Investment firms not dealing on own account: revenue (i.e. fees, commissions and other monetary benefits) from investment and services and activities other than on own account (as per Section A of Annex I to Directive 2014/65/EU) of which enabling",
+
+            unit: '%',
+            component: 'NumberFormField',
+            required: false,
+            showIf: (): boolean => true,
+            validation: 'between:0,100',
+          },
+          {
+            name: 'substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentEligible',
+            label:
+              'Substantial Contribution to Protection and Restoration of Biodiversity and Ecosystems in Percent - Eligible',
+            description:
+              "Share substantially contributing to Protection and Restoration of Biodiversity and Ecosystems\n- Investment firms dealing on own account: total assets invested under investment firms' activities dealing on own account (as per Section A of Annex I to Directive 2014/65/EU) of which assets covered by the Taxonomy (Taxonomy-eligible)\n- Investment firms not dealing on own account: revenue (i.e. fees, commissions and other monetary benefits) from investment and services and activities other than on own account (as per Section A of Annex I to Directive 2014/65/EU) of which assets covered by the Taxonomy (Taxonomy-eligible)",
+
+            unit: '%',
+            component: 'NumberFormField',
+            required: false,
+            showIf: (): boolean => true,
+            validation: 'between:0,100',
+          },
+          {
+            name: 'substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned',
+            label:
+              'Substantial Contribution to Protection and Restoration of Biodiversity and Ecosystems in Percent - Aligned',
+            description:
+              "Share substantially contributing to Protection and Restoration of Biodiversity and Ecosystems\n- Investment firms dealing on own account: total assets invested under investment firms' activities dealing on own account (as per Section A of Annex I to Directive 2014/65/EU) of which linked to activities aligned with the EU Taxonomy (Taxonomy-aligned)\n- Investment firms not dealing on own account: revenue (i.e. fees, commissions and other monetary benefits) from investment and services and activities other than on own account (as per Section A of Annex I to Directive 2014/65/EU) of which from services and activities linked to activities aligned with the EU Taxonomy (Taxonomy-aligned)",
+
+            unit: '%',
+            component: 'NumberFormField',
+            required: false,
+            showIf: (): boolean => true,
+            validation: 'between:0,100',
+          },
+          {
+            name: 'substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentEnablingShare',
+            label:
+              'Substantial Contribution to Protection and Restoration of Biodiversity and Ecosystems in Percent - Enabling Share',
+            description:
+              "Share substantially contributing to Protection and Restoration of Biodiversity and Ecosystems\n- Investment firms dealing on own account: total assets invested under investment firms' activities dealing on own account (as per Section A of Annex I to Directive 2014/65/EU) of which enabling\n- Investment firms not dealing on own account: revenue (i.e. fees, commissions and other monetary benefits) from investment and services and activities other than on own account (as per Section A of Annex I to Directive 2014/65/EU) of which enabling",
+
+            unit: '%',
+            component: 'NumberFormField',
+            required: false,
+            showIf: (): boolean => true,
+            validation: 'between:0,100',
+          },
+          {
+            name: 'totalAssetsInvestedRevenueFromInvestmentAndServicesInPercentEligible',
+            label: 'Total assets invested / revenue from investment and services in Percent - Eligible',
+            description:
+              "Investment firms dealing on own account: total assets invested under investment firms' activities dealing on own account (as per Section A of Annex I to Directive 2014/65/EU) of which assets covered by the Taxonomy (Taxonomy-eligible)\nInvestment firms not dealing on own account: revenue (i.e. fees, commissions and other monetary benefits) from investment and services and activities other than on own account (as per Section A of Annex I to Directive 2014/65/EU) of which assets covered by the Taxonomy (Taxonomy-eligible)",
+
+            unit: '%',
+            component: 'NumberFormField',
+            required: false,
+            showIf: (): boolean => true,
+            validation: 'between:0,100',
+          },
+          {
+            name: 'totalAssetsInvestedRevenueFromInvestmentAndServicesInPercentAligned',
+            label: 'Total assets invested / revenue from investment and services in Percent - Aligned',
+            description:
+              "Investment firms dealing on own account: total assets invested under investment firms' activities dealing on own account (as per Section A of Annex I to Directive 2014/65/EU) of which linked to activities aligned with the EU Taxonomy (Taxonomy-aligned)\nInvestment firms not dealing on own account: revenue (i.e. fees, commissions and other monetary benefits) from investment and services and activities other than on own account (as per Section A of Annex I to Directive 2014/65/EU) of which from services and activities linked to activities aligned with the EU Taxonomy (Taxonomy-aligned)",
+
+            unit: '%',
+            component: 'NumberFormField',
+            required: false,
+            showIf: (): boolean => true,
+            validation: 'between:0,100',
+          },
+          {
+            name: 'totalAssetsInvestedRevenueFromInvestmentAndServicesInPercentEnabling',
+            label: 'Total assets invested / revenue from investment and services in Percent - Enabling',
+            description:
+              "Investment firms dealing on own account: total assets invested under investment firms' activities dealing on own account (as per Section A of Annex I to Directive 2014/65/EU) of which enabling\nInvestment firms not dealing on own account: revenue (i.e. fees, commissions and other monetary benefits) from investment and services and activities other than on own account (as per Section A of Annex I to Directive 2014/65/EU) of which enabling",
+
+            unit: '%',
+            component: 'NumberFormField',
+            required: false,
+            showIf: (): boolean => true,
+            validation: 'between:0,100',
+          },
+          {
+            name: 'totalAssetsInvestedRevenueFromInvestmentAndServicesInPercentTransitional',
+            label: 'Total assets invested / revenue from investment and services in Percent - Transitional',
+            description:
+              "Investment firms dealing on own account: total assets invested under investment firms' activities dealing on own account (as per Section A of Annex I to Directive 2014/65/EU) of which transitional\nInvestment firms not dealing on own account: revenue (i.e. fees, commissions and other monetary benefits) from investment and services and activities other than on own account (as per Section A of Annex I to Directive 2014/65/EU) of which transitional",
+
+            unit: '%',
+            component: 'NumberFormField',
+            required: false,
+            showIf: (): boolean => true,
+            validation: 'between:0,100',
+          },
+        ],
+      },
+      {
+        name: 'capexBasedKpi',
+        label: 'Capex-based KPI',
+        fields: [
+          {
+            name: 'totalAssetsInvestedRevenueFromInvestmentAndServices',
+            label: 'Total assets invested / revenue from investment and services',
+            description:
+              "Investment firms dealing on own account: total assets invested under investment firms' activities dealing on own account (as per Section A of Annex I to Directive 2014/65/EU)\nInvestment firms not dealing on own account: revenue (i.e. fees, commissions and other monetary benefits) from investment and services and activities other than on own account (as per Section A of Annex I to Directive 2014/65/EU)",
+
+            component: 'BigDecimalExtendedDataPointFormField',
+            required: false,
+            showIf: (): boolean => true,
+          },
+          {
+            name: 'substantialContributionToClimateChangeMitigationInPercentEligible',
+            label: 'Substantial Contribution to Climate Change Mitigation in Percent - Eligible',
+            description:
+              "Share substantially contributing to Climate Change Mitigation\n- Investment firms dealing on own account: total assets invested under investment firms' activities dealing on own account (as per Section A of Annex I to Directive 2014/65/EU) of which assets covered by the Taxonomy (Taxonomy-eligible)\n- Investment firms not dealing on own account: revenue (i.e. fees, commissions and other monetary benefits) from investment and services and activities other than on own account (as per Section A of Annex I to Directive 2014/65/EU) of which assets covered by the Taxonomy (Taxonomy-eligible)",
+
+            unit: '%',
+            component: 'NumberFormField',
+            required: false,
+            showIf: (): boolean => true,
+            validation: 'between:0,100',
+          },
+          {
+            name: 'substantialContributionToClimateChangeMitigationInPercentAligned',
+            label: 'Substantial Contribution to Climate Change Mitigation in Percent - Aligned',
+            description:
+              "Share substantially contributing to Climate Change Mitigation\n- Investment firms dealing on own account: total assets invested under investment firms' activities dealing on own account (as per Section A of Annex I to Directive 2014/65/EU) of which linked to activities aligned with the EU Taxonomy (Taxonomy-aligned)\n- Investment firms not dealing on own account: revenue (i.e. fees, commissions and other monetary benefits) from investment and services and activities other than on own account (as per Section A of Annex I to Directive 2014/65/EU) of which from services and activities linked to activities aligned with the EU Taxonomy (Taxonomy-aligned)",
+
+            unit: '%',
+            component: 'NumberFormField',
+            required: false,
+            showIf: (): boolean => true,
+            validation: 'between:0,100',
+          },
+          {
+            name: 'substantialContributionToClimateChangeMitigationInPercentEnablingShare',
+            label: 'Substantial Contribution to Climate Change Mitigation in Percent - Enabling Share',
+            description:
+              "Share substantially contributing to Climate Change Mitigation\n- Investment firms dealing on own account: total assets invested under investment firms' activities dealing on own account (as per Section A of Annex I to Directive 2014/65/EU) of which enabling\n- Investment firms not dealing on own account: revenue (i.e. fees, commissions and other monetary benefits) from investment and services and activities other than on own account (as per Section A of Annex I to Directive 2014/65/EU) of which enabling",
+
+            unit: '%',
+            component: 'NumberFormField',
+            required: false,
+            showIf: (): boolean => true,
+            validation: 'between:0,100',
+          },
+          {
+            name: 'substantialContributionToClimateChangeMitigationInPercentTransitionalShare',
+            label: 'Substantial Contribution to Climate Change Mitigation in Percent - Transitional Share',
+            description:
+              "Share substantially contributing to Climate Change Mitigation\n- Investment firms dealing on own account: total assets invested under investment firms' activities dealing on own account (as per Section A of Annex I to Directive 2014/65/EU) of which transitional\n- Investment firms not dealing on own account: revenue (i.e. fees, commissions and other monetary benefits) from investment and services and activities other than on own account (as per Section A of Annex I to Directive 2014/65/EU) of which transitional",
+
+            unit: '%',
+            component: 'NumberFormField',
+            required: false,
+            showIf: (): boolean => true,
+            validation: 'between:0,100',
+          },
+          {
+            name: 'substantialContributionToClimateChangeAdaptationInPercentEligible',
+            label: 'Substantial Contribution to Climate Change Adaptation in Percent - Eligible',
+            description:
+              "Share substantially contributing to Climate Change Adaptation\n- Investment firms dealing on own account: total assets invested under investment firms' activities dealing on own account (as per Section A of Annex I to Directive 2014/65/EU) of which assets covered by the Taxonomy (Taxonomy-eligible)\n- Investment firms not dealing on own account: revenue (i.e. fees, commissions and other monetary benefits) from investment and services and activities other than on own account (as per Section A of Annex I to Directive 2014/65/EU) of which assets covered by the Taxonomy (Taxonomy-eligible)",
+
+            unit: '%',
+            component: 'NumberFormField',
+            required: false,
+            showIf: (): boolean => true,
+            validation: 'between:0,100',
+          },
+          {
+            name: 'substantialContributionToClimateChangeAdaptationInPercentAligned',
+            label: 'Substantial Contribution to Climate Change Adaptation in Percent - Aligned',
+            description:
+              "Share substantially contributing to Climate Change Adaptation\n- Investment firms dealing on own account: total assets invested under investment firms' activities dealing on own account (as per Section A of Annex I to Directive 2014/65/EU) of which linked to activities aligned with the EU Taxonomy (Taxonomy-aligned)\n- Investment firms not dealing on own account: revenue (i.e. fees, commissions and other monetary benefits) from investment and services and activities other than on own account (as per Section A of Annex I to Directive 2014/65/EU) of which from services and activities linked to activities aligned with the EU Taxonomy (Taxonomy-aligned)",
+
+            unit: '%',
+            component: 'NumberFormField',
+            required: false,
+            showIf: (): boolean => true,
+            validation: 'between:0,100',
+          },
+          {
+            name: 'substantialContributionToClimateChangeAdaptationInPercentEnablingShare',
+            label: 'Substantial Contribution to Climate Change Adaptation in Percent - Enabling Share',
+            description:
+              "Share substantially contributing to Climate Change Adaptation\n- Investment firms dealing on own account: total assets invested under investment firms' activities dealing on own account (as per Section A of Annex I to Directive 2014/65/EU) of which enabling\n- Investment firms not dealing on own account: revenue (i.e. fees, commissions and other monetary benefits) from investment and services and activities other than on own account (as per Section A of Annex I to Directive 2014/65/EU) of which enabling",
+
+            unit: '%',
+            component: 'NumberFormField',
+            required: false,
+            showIf: (): boolean => true,
+            validation: 'between:0,100',
+          },
+          {
+            name: 'substantialContributionToClimateChangeAdaptationInPercentAdaptingShare',
+            label: 'Substantial Contribution to Climate Change Adaptation in Percent - Adapting Share',
+            description:
+              "Share substantially contributing to Climate Change Adaptation\n- Investment firms dealing on own account: total assets invested under investment firms' activities dealing on own account (as per Section A of Annex I to Directive 2014/65/EU) of which adapting\n- Investment firms not dealing on own account: revenue (i.e. fees, commissions and other monetary benefits) from investment and services and activities other than on own account (as per Section A of Annex I to Directive 2014/65/EU) of which adapting",
+
+            unit: '%',
+            component: 'NumberFormField',
+            required: false,
+            showIf: (): boolean => true,
+            validation: 'between:0,100',
+          },
+          {
+            name: 'substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentEligible',
+            label:
+              'Substantial Contribution to Sustainable Use and Protection of Water and Marine Resources in Percent - Eligible',
+            description:
+              "Share substantially contributing to Sustainable Use and Protection of Water and Marine Resources\n- Investment firms dealing on own account: total assets invested under investment firms' activities dealing on own account (as per Section A of Annex I to Directive 2014/65/EU) of which assets covered by the Taxonomy (Taxonomy-eligible)\n- Investment firms not dealing on own account: revenue (i.e. fees, commissions and other monetary benefits) from investment and services and activities other than on own account (as per Section A of Annex I to Directive 2014/65/EU) of which assets covered by the Taxonomy (Taxonomy-eligible)",
+
+            unit: '%',
+            component: 'NumberFormField',
+            required: false,
+            showIf: (): boolean => true,
+            validation: 'between:0,100',
+          },
+          {
+            name: 'substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned',
+            label:
+              'Substantial Contribution to Sustainable Use and Protection of Water and Marine Resources in Percent - Aligned',
+            description:
+              "Share substantially contributing to Sustainable Use and Protection of Water and Marine Resources\n- Investment firms dealing on own account: total assets invested under investment firms' activities dealing on own account (as per Section A of Annex I to Directive 2014/65/EU) of which linked to activities aligned with the EU Taxonomy (Taxonomy-aligned)\n- Investment firms not dealing on own account: revenue (i.e. fees, commissions and other monetary benefits) from investment and services and activities other than on own account (as per Section A of Annex I to Directive 2014/65/EU) of which from services and activities linked to activities aligned with the EU Taxonomy (Taxonomy-aligned)",
+
+            unit: '%',
+            component: 'NumberFormField',
+            required: false,
+            showIf: (): boolean => true,
+            validation: 'between:0,100',
+          },
+          {
+            name: 'substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentEnablingShare',
+            label:
+              'Substantial Contribution to Sustainable Use and Protection of Water and Marine Resources in Percent - Enabling Share',
+            description:
+              "Share substantially contributing to Sustainable Use and Protection of Water and Marine Resources\n- Investment firms dealing on own account: total assets invested under investment firms' activities dealing on own account (as per Section A of Annex I to Directive 2014/65/EU) of which enabling\n- Investment firms not dealing on own account: revenue (i.e. fees, commissions and other monetary benefits) from investment and services and activities other than on own account (as per Section A of Annex I to Directive 2014/65/EU) of which enabling",
+
+            unit: '%',
+            component: 'NumberFormField',
+            required: false,
+            showIf: (): boolean => true,
+            validation: 'between:0,100',
+          },
+          {
+            name: 'substantialContributionToTransitionToACircularEconomyInPercentEligible',
+            label: 'Substantial Contribution to Transition to a Circular Economy in Percent - Eligible',
+            description:
+              "Share substantially contributing to Transition to a Circular Economy\n- Investment firms dealing on own account: total assets invested under investment firms' activities dealing on own account (as per Section A of Annex I to Directive 2014/65/EU) of which assets covered by the Taxonomy (Taxonomy-eligible)\n- Investment firms not dealing on own account: revenue (i.e. fees, commissions and other monetary benefits) from investment and services and activities other than on own account (as per Section A of Annex I to Directive 2014/65/EU) of which assets covered by the Taxonomy (Taxonomy-eligible)",
+
+            unit: '%',
+            component: 'NumberFormField',
+            required: false,
+            showIf: (): boolean => true,
+            validation: 'between:0,100',
+          },
+          {
+            name: 'substantialContributionToTransitionToACircularEconomyInPercentAligned',
+            label: 'Substantial Contribution to Transition to a Circular Economy in Percent - Aligned',
+            description:
+              "Share substantially contributing to Transition to a Circular Economy\n- Investment firms dealing on own account: total assets invested under investment firms' activities dealing on own account (as per Section A of Annex I to Directive 2014/65/EU) of which linked to activities aligned with the EU Taxonomy (Taxonomy-aligned)\n- Investment firms not dealing on own account: revenue (i.e. fees, commissions and other monetary benefits) from investment and services and activities other than on own account (as per Section A of Annex I to Directive 2014/65/EU) of which from services and activities linked to activities aligned with the EU Taxonomy (Taxonomy-aligned)",
+
+            unit: '%',
+            component: 'NumberFormField',
+            required: false,
+            showIf: (): boolean => true,
+            validation: 'between:0,100',
+          },
+          {
+            name: 'substantialContributionToTransitionToACircularEconomyInPercentEnablingShare',
+            label: 'Substantial Contribution to Transition to a Circular Economy in Percent - Enabling Share',
+            description:
+              "Share substantially contributing to Transition to a Circular Economy\n- Investment firms dealing on own account: total assets invested under investment firms' activities dealing on own account (as per Section A of Annex I to Directive 2014/65/EU) of which enabling\n- Investment firms not dealing on own account: revenue (i.e. fees, commissions and other monetary benefits) from investment and services and activities other than on own account (as per Section A of Annex I to Directive 2014/65/EU) of which enabling",
+
+            unit: '%',
+            component: 'NumberFormField',
+            required: false,
+            showIf: (): boolean => true,
+            validation: 'between:0,100',
+          },
+          {
+            name: 'substantialContributionToPollutionPreventionAndControlInPercentEligible',
+            label: 'Substantial Contribution to Pollution Prevention and Control in Percent - Eligible',
+            description:
+              "Share substantially contributing to Pollution Prevention and Control\n- Investment firms dealing on own account: total assets invested under investment firms' activities dealing on own account (as per Section A of Annex I to Directive 2014/65/EU) of which assets covered by the Taxonomy (Taxonomy-eligible)\n- Investment firms not dealing on own account: revenue (i.e. fees, commissions and other monetary benefits) from investment and services and activities other than on own account (as per Section A of Annex I to Directive 2014/65/EU) of which assets covered by the Taxonomy (Taxonomy-eligible)",
+
+            unit: '%',
+            component: 'NumberFormField',
+            required: false,
+            showIf: (): boolean => true,
+            validation: 'between:0,100',
+          },
+          {
+            name: 'substantialContributionToPollutionPreventionAndControlInPercentAligned',
+            label: 'Substantial Contribution to Pollution Prevention and Control in Percent - Aligned',
+            description:
+              "Share substantially contributing to Pollution Prevention and Control\n- Investment firms dealing on own account: total assets invested under investment firms' activities dealing on own account (as per Section A of Annex I to Directive 2014/65/EU) of which linked to activities aligned with the EU Taxonomy (Taxonomy-aligned)\n- Investment firms not dealing on own account: revenue (i.e. fees, commissions and other monetary benefits) from investment and services and activities other than on own account (as per Section A of Annex I to Directive 2014/65/EU) of which from services and activities linked to activities aligned with the EU Taxonomy (Taxonomy-aligned)",
+
+            unit: '%',
+            component: 'NumberFormField',
+            required: false,
+            showIf: (): boolean => true,
+            validation: 'between:0,100',
+          },
+          {
+            name: 'substantialContributionToPollutionPreventionAndControlInPercentEnablingShare',
+            label: 'Substantial Contribution to Pollution Prevention and Control in Percent - Enabling Share',
+            description:
+              "Share substantially contributing to Pollution Prevention and Control\n- Investment firms dealing on own account: total assets invested under investment firms' activities dealing on own account (as per Section A of Annex I to Directive 2014/65/EU) of which enabling\n- Investment firms not dealing on own account: revenue (i.e. fees, commissions and other monetary benefits) from investment and services and activities other than on own account (as per Section A of Annex I to Directive 2014/65/EU) of which enabling",
+
+            unit: '%',
+            component: 'NumberFormField',
+            required: false,
+            showIf: (): boolean => true,
+            validation: 'between:0,100',
+          },
+          {
+            name: 'substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentEligible',
+            label:
+              'Substantial Contribution to Protection and Restoration of Biodiversity and Ecosystems in Percent - Eligible',
+            description:
+              "Share substantially contributing to Protection and Restoration of Biodiversity and Ecosystems\n- Investment firms dealing on own account: total assets invested under investment firms' activities dealing on own account (as per Section A of Annex I to Directive 2014/65/EU) of which assets covered by the Taxonomy (Taxonomy-eligible)\n- Investment firms not dealing on own account: revenue (i.e. fees, commissions and other monetary benefits) from investment and services and activities other than on own account (as per Section A of Annex I to Directive 2014/65/EU) of which assets covered by the Taxonomy (Taxonomy-eligible)",
+
+            unit: '%',
+            component: 'NumberFormField',
+            required: false,
+            showIf: (): boolean => true,
+            validation: 'between:0,100',
+          },
+          {
+            name: 'substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned',
+            label:
+              'Substantial Contribution to Protection and Restoration of Biodiversity and Ecosystems in Percent - Aligned',
+            description:
+              "Share substantially contributing to Protection and Restoration of Biodiversity and Ecosystems\n- Investment firms dealing on own account: total assets invested under investment firms' activities dealing on own account (as per Section A of Annex I to Directive 2014/65/EU) of which linked to activities aligned with the EU Taxonomy (Taxonomy-aligned)\n- Investment firms not dealing on own account: revenue (i.e. fees, commissions and other monetary benefits) from investment and services and activities other than on own account (as per Section A of Annex I to Directive 2014/65/EU) of which from services and activities linked to activities aligned with the EU Taxonomy (Taxonomy-aligned)",
+
+            unit: '%',
+            component: 'NumberFormField',
+            required: false,
+            showIf: (): boolean => true,
+            validation: 'between:0,100',
+          },
+          {
+            name: 'substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentEnablingShare',
+            label:
+              'Substantial Contribution to Protection and Restoration of Biodiversity and Ecosystems in Percent - Enabling Share',
+            description:
+              "Share substantially contributing to Protection and Restoration of Biodiversity and Ecosystems\n- Investment firms dealing on own account: total assets invested under investment firms' activities dealing on own account (as per Section A of Annex I to Directive 2014/65/EU) of which enabling\n- Investment firms not dealing on own account: revenue (i.e. fees, commissions and other monetary benefits) from investment and services and activities other than on own account (as per Section A of Annex I to Directive 2014/65/EU) of which enabling",
+
+            unit: '%',
+            component: 'NumberFormField',
+            required: false,
+            showIf: (): boolean => true,
+            validation: 'between:0,100',
+          },
+          {
+            name: 'totalAssetsInvestedRevenueFromInvestmentAndServicesInPercentEligible',
+            label: 'Total assets invested / revenue from investment and services in Percent - Eligible',
+            description:
+              "Investment firms dealing on own account: total assets invested under investment firms' activities dealing on own account (as per Section A of Annex I to Directive 2014/65/EU) of which assets covered by the Taxonomy (Taxonomy-eligible)\nInvestment firms not dealing on own account: revenue (i.e. fees, commissions and other monetary benefits) from investment and services and activities other than on own account (as per Section A of Annex I to Directive 2014/65/EU) of which assets covered by the Taxonomy (Taxonomy-eligible)",
+
+            unit: '%',
+            component: 'NumberFormField',
+            required: false,
+            showIf: (): boolean => true,
+            validation: 'between:0,100',
+          },
+          {
+            name: 'totalAssetsInvestedRevenueFromInvestmentAndServicesInPercentAligned',
+            label: 'Total assets invested / revenue from investment and services in Percent - Aligned',
+            description:
+              "Investment firms dealing on own account: total assets invested under investment firms' activities dealing on own account (as per Section A of Annex I to Directive 2014/65/EU) of which linked to activities aligned with the EU Taxonomy (Taxonomy-aligned)\nInvestment firms not dealing on own account: revenue (i.e. fees, commissions and other monetary benefits) from investment and services and activities other than on own account (as per Section A of Annex I to Directive 2014/65/EU) of which from services and activities linked to activities aligned with the EU Taxonomy (Taxonomy-aligned)",
+
+            unit: '%',
+            component: 'NumberFormField',
+            required: false,
+            showIf: (): boolean => true,
+            validation: 'between:0,100',
+          },
+          {
+            name: 'totalAssetsInvestedRevenueFromInvestmentAndServicesInPercentEnabling',
+            label: 'Total assets invested / revenue from investment and services in Percent - Enabling',
+            description:
+              "Investment firms dealing on own account: total assets invested under investment firms' activities dealing on own account (as per Section A of Annex I to Directive 2014/65/EU) of which enabling\nInvestment firms not dealing on own account: revenue (i.e. fees, commissions and other monetary benefits) from investment and services and activities other than on own account (as per Section A of Annex I to Directive 2014/65/EU) of which enabling",
+
+            unit: '%',
+            component: 'NumberFormField',
+            required: false,
+            showIf: (): boolean => true,
+            validation: 'between:0,100',
+          },
+          {
+            name: 'totalAssetsInvestedRevenueFromInvestmentAndServicesInPercentTransitional',
+            label: 'Total assets invested / revenue from investment and services in Percent - Transitional',
+            description:
+              "Investment firms dealing on own account: total assets invested under investment firms' activities dealing on own account (as per Section A of Annex I to Directive 2014/65/EU) of which transitional\nInvestment firms not dealing on own account: revenue (i.e. fees, commissions and other monetary benefits) from investment and services and activities other than on own account (as per Section A of Annex I to Directive 2014/65/EU) of which transitional",
 
             unit: '%',
             component: 'NumberFormField',

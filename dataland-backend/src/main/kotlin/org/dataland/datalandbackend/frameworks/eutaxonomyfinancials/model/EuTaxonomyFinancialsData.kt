@@ -3,9 +3,15 @@ package org.dataland.datalandbackend.frameworks.eutaxonomyfinancials.model
 
 import jakarta.validation.Valid
 import org.dataland.datalandbackend.annotations.DataType
+import org.dataland.datalandbackend.frameworks.eutaxonomyfinancials.model.assetManagement
+    .EuTaxonomyFinancialsAssetManagement
 import org.dataland.datalandbackend.frameworks.eutaxonomyfinancials.model.creditInstitution
     .EuTaxonomyFinancialsCreditInstitution
 import org.dataland.datalandbackend.frameworks.eutaxonomyfinancials.model.general.EuTaxonomyFinancialsGeneral
+import org.dataland.datalandbackend.frameworks.eutaxonomyfinancials.model.insuranceReinsurance
+    .EuTaxonomyFinancialsInsuranceReinsurance
+import org.dataland.datalandbackend.frameworks.eutaxonomyfinancials.model.investmentFirms
+    .EuTaxonomyFinancialsInvestmentFirms
 import org.dataland.datalandbackend.frameworks.eutaxonomyfinancials.model.validator.ReferencedReportsListValidator
 
 /**
@@ -20,5 +26,14 @@ data class EuTaxonomyFinancialsData(
 
     @field:Valid()
     val creditInstitution: EuTaxonomyFinancialsCreditInstitution? = null,
+
+    @field:Valid()
+    val assetManagement: EuTaxonomyFinancialsAssetManagement? = null,
+
+    @field:Valid()
+    val insuranceReinsurance: EuTaxonomyFinancialsInsuranceReinsurance? = null,
+
+    @field:Valid()
+    val investmentFirms: EuTaxonomyFinancialsInvestmentFirms? = null,
 
 )

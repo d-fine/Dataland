@@ -2,7 +2,15 @@
 package org.dataland.datalandqaservice.frameworks.eutaxonomyfinancials.model
 
 import jakarta.validation.Valid
+import org.dataland.datalandqaservice.frameworks.eutaxonomyfinancials.model.assetManagement
+    .EuTaxonomyFinancialsAssetManagement
+import org.dataland.datalandqaservice.frameworks.eutaxonomyfinancials.model.creditInstitution
+    .EuTaxonomyFinancialsCreditInstitution
 import org.dataland.datalandqaservice.frameworks.eutaxonomyfinancials.model.general.EuTaxonomyFinancialsGeneral
+import org.dataland.datalandqaservice.frameworks.eutaxonomyfinancials.model.insuranceReinsurance
+    .EuTaxonomyFinancialsInsuranceReinsurance
+import org.dataland.datalandqaservice.frameworks.eutaxonomyfinancials.model.investmentFirms
+    .EuTaxonomyFinancialsInvestmentFirms
 
 /**
  * The root QA data-model for the Eu-taxonomy-financials Framework
@@ -10,5 +18,17 @@ import org.dataland.datalandqaservice.frameworks.eutaxonomyfinancials.model.gene
 data class EuTaxonomyFinancialsData(
     @field:Valid()
     val general: EuTaxonomyFinancialsGeneral? = null,
+
+    @field:Valid()
+    val creditInstitution: EuTaxonomyFinancialsCreditInstitution? = null,
+
+    @field:Valid()
+    val assetManagement: EuTaxonomyFinancialsAssetManagement? = null,
+
+    @field:Valid()
+    val insuranceReinsurance: EuTaxonomyFinancialsInsuranceReinsurance? = null,
+
+    @field:Valid()
+    val investmentFirms: EuTaxonomyFinancialsInvestmentFirms? = null,
 
 )
