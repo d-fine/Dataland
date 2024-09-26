@@ -301,6 +301,149 @@
         ]
       }
     },
+    "/data/nuclear-and-gas/{dataId}/reports": {
+      "get": {
+        "tags": [
+          "nuclear-and-gas-data-qa-report-controller"
+        ],
+        "operationId": "getNuclearAndGasDataAllQaReportsForDataset",
+        "parameters": [
+          {
+            "name": "dataId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "showInactive",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "reporterUserId",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved all QA reports.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/QaReportWithMetaInformationNuclearAndGasData"
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      },
+      "post": {
+        "tags": [
+          "nuclear-and-gas-data-qa-report-controller"
+        ],
+        "operationId": "postNuclearAndGasDataQaReport",
+        "parameters": [
+          {
+            "name": "dataId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NuclearAndGasData"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully added QA report to dataland.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/QaReportMetaInformation"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
     "/data/eutaxonomy-non-financials/{dataId}/reports": {
       "get": {
         "tags": [
@@ -656,6 +799,75 @@
         ]
       }
     },
+    "/data/nuclear-and-gas/{dataId}/reports/{qaReportId}/status": {
+      "patch": {
+        "tags": [
+          "nuclear-and-gas-data-qa-report-controller"
+        ],
+        "operationId": "setNuclearAndGasDataQaReportStatus",
+        "parameters": [
+          {
+            "name": "dataId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "qaReportId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/QaReportStatusPatch"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully marked QA report as active or inactive."
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
     "/data/eutaxonomy-non-financials/{dataId}/reports/{qaReportId}/status": {
       "patch": {
         "tags": [
@@ -816,6 +1028,7 @@
                   "eutaxonomy-financials",
                   "eutaxonomy-non-financials",
                   "lksg",
+                  "nuclear-and-gas",
                   "p2p",
                   "sfdr",
                   "vsme",
@@ -912,6 +1125,7 @@
                   "eutaxonomy-financials",
                   "eutaxonomy-non-financials",
                   "lksg",
+                  "nuclear-and-gas",
                   "p2p",
                   "sfdr",
                   "vsme",
@@ -1155,6 +1369,72 @@
                   "items": {
                     "$ref": "#/components/schemas/DataAndQaReportMetadata"
                   }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
+    "/data/nuclear-and-gas/{dataId}/reports/{qaReportId}": {
+      "get": {
+        "tags": [
+          "nuclear-and-gas-data-qa-report-controller"
+        ],
+        "operationId": "getNuclearAndGasDataQaReport",
+        "parameters": [
+          {
+            "name": "dataId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "qaReportId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved QA report.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/QaReportWithMetaInformationNuclearAndGasData"
                 }
               }
             }
@@ -2287,6 +2567,45 @@
           },
           "active": {
             "type": "boolean"
+          }
+        }
+      },
+      "NuclearAndGasData": {
+        "type": "object",
+        "properties": {
+          "nuclearAndGas": {
+            "$ref": "#/components/schemas/NuclearAndGasNuclearAndGas"
+          }
+        }
+      },
+      "NuclearAndGasNuclearAndGas": {
+        "type": "object",
+        "properties": {
+          "nuclearAndFossilGasRelatedActivities": {
+            "$ref": "#/components/schemas/NuclearAndGasNuclearandgasNuclearAndFossilGasRelatedActivities"
+          }
+        }
+      },
+      "NuclearAndGasNuclearandgasNuclearAndFossilGasRelatedActivities": {
+        "type": "object",
+        "properties": {
+          "nuclearEnergyRelatedActivitiesSection426": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointYesNo"
+          },
+          "nuclearEnergyRelatedActivitiesSection427": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointYesNo"
+          },
+          "nuclearEnergyRelatedActivitiesSection428": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointYesNo"
+          },
+          "fossilGasRelatedActivitiesSection429": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointYesNo"
+          },
+          "fossilGasRelatedActivitiesSection430": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointYesNo"
+          },
+          "fossilGasRelatedActivitiesSection431": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointYesNo"
           }
         }
       },
@@ -3527,10 +3846,16 @@
           "message": {
             "type": "string"
           },
-          "framework": {
+          "companyId": {
+            "type": "string"
+          },
+          "companyName": {
             "type": "string"
           },
           "reportingPeriod": {
+            "type": "string"
+          },
+          "framework": {
             "type": "string"
           },
           "receptionTime": {
@@ -3538,12 +3863,6 @@
             "format": "int64"
           },
           "dataId": {
-            "type": "string"
-          },
-          "companyId": {
-            "type": "string"
-          },
-          "companyName": {
             "type": "string"
           }
         }
@@ -3628,6 +3947,7 @@
               "eutaxonomy-financials",
               "eutaxonomy-non-financials",
               "lksg",
+              "nuclear-and-gas",
               "p2p",
               "sfdr",
               "vsme",
@@ -3656,6 +3976,21 @@
           },
           "uploaderUserId": {
             "type": "string"
+          }
+        }
+      },
+      "QaReportWithMetaInformationNuclearAndGasData": {
+        "required": [
+          "metaInfo",
+          "report"
+        ],
+        "type": "object",
+        "properties": {
+          "metaInfo": {
+            "$ref": "#/components/schemas/QaReportMetaInformation"
+          },
+          "report": {
+            "$ref": "#/components/schemas/NuclearAndGasData"
           }
         }
       },

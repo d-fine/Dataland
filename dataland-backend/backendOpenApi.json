@@ -481,6 +481,75 @@
         ]
       }
     },
+    "/data/nuclear-and-gas": {
+      "post": {
+        "tags": [
+          "nuclear-and-gas-data-controller"
+        ],
+        "operationId": "postCompanyAssociatedNuclearAndGasData",
+        "parameters": [
+          {
+            "name": "bypassQa",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": false
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CompanyAssociatedDataNuclearAndGasData"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully added data to the data store.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DataMetaInformation"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
     "/data/lksg": {
       "post": {
         "tags": [
@@ -2095,6 +2164,142 @@
                   "type": "array",
                   "items": {
                     "$ref": "#/components/schemas/DataAndMetaInformationPathwaysToParisData"
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
+    "/data/nuclear-and-gas/{dataId}": {
+      "get": {
+        "tags": [
+          "nuclear-and-gas-data-controller"
+        ],
+        "operationId": "getCompanyAssociatedNuclearAndGasData",
+        "parameters": [
+          {
+            "name": "dataId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved data set.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CompanyAssociatedDataNuclearAndGasData"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
+    "/data/nuclear-and-gas/companies/{companyId}": {
+      "get": {
+        "tags": [
+          "nuclear-and-gas-data-controller"
+        ],
+        "operationId": "getAllCompanyNuclearAndGasData",
+        "parameters": [
+          {
+            "name": "companyId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "showOnlyActive",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": true
+            }
+          },
+          {
+            "name": "reportingPeriod",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved framework datasets with meta info.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/DataAndMetaInformationNuclearAndGasData"
                   }
                 }
               }
@@ -7390,6 +7595,104 @@
             "allOf": [
               {
                 "$ref": "#/components/schemas/P2pCement"
+              }
+            ]
+          }
+        }
+      },
+      "CompanyAssociatedDataNuclearAndGasData": {
+        "required": [
+          "companyId",
+          "data",
+          "reportingPeriod"
+        ],
+        "type": "object",
+        "properties": {
+          "companyId": {
+            "type": "string"
+          },
+          "reportingPeriod": {
+            "type": "string"
+          },
+          "data": {
+            "$ref": "#/components/schemas/NuclearAndGasData"
+          }
+        }
+      },
+      "NuclearAndGasData": {
+        "type": "object",
+        "properties": {
+          "nuclearAndGas": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/NuclearAndGasNuclearAndGas"
+              }
+            ]
+          }
+        }
+      },
+      "NuclearAndGasNuclearAndGas": {
+        "type": "object",
+        "properties": {
+          "nuclearAndFossilGasRelatedActivities": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/NuclearAndGasNuclearandgasNuclearAndFossilGasRelatedActivities"
+              }
+            ]
+          }
+        }
+      },
+      "NuclearAndGasNuclearandgasNuclearAndFossilGasRelatedActivities": {
+        "type": "object",
+        "properties": {
+          "nuclearEnergyRelatedActivitiesSection426": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointYesNo"
+              }
+            ]
+          },
+          "nuclearEnergyRelatedActivitiesSection427": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointYesNo"
+              }
+            ]
+          },
+          "nuclearEnergyRelatedActivitiesSection428": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointYesNo"
+              }
+            ]
+          },
+          "fossilGasRelatedActivitiesSection429": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointYesNo"
+              }
+            ]
+          },
+          "fossilGasRelatedActivitiesSection430": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointYesNo"
+              }
+            ]
+          },
+          "fossilGasRelatedActivitiesSection431": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointYesNo"
               }
             ]
           }
@@ -15628,6 +15931,21 @@
           }
         }
       },
+      "DataAndMetaInformationNuclearAndGasData": {
+        "required": [
+          "data",
+          "metaInfo"
+        ],
+        "type": "object",
+        "properties": {
+          "metaInfo": {
+            "$ref": "#/components/schemas/DataMetaInformation"
+          },
+          "data": {
+            "$ref": "#/components/schemas/NuclearAndGasData"
+          }
+        }
+      },
       "DataAndMetaInformationLksgData": {
         "required": [
           "data",
@@ -15727,21 +16045,21 @@
         ],
         "type": "object",
         "properties": {
-          "sector": {
-            "type": "string",
-            "nullable": true
-          },
           "companyName": {
             "type": "string"
           },
           "companyId": {
             "type": "string"
           },
+          "headquarters": {
+            "type": "string"
+          },
           "countryCode": {
             "type": "string"
           },
-          "headquarters": {
-            "type": "string"
+          "sector": {
+            "type": "string",
+            "nullable": true
           },
           "lei": {
             "type": "string",
@@ -15829,6 +16147,7 @@
           "eutaxonomy-financials",
           "eutaxonomy-non-financials",
           "lksg",
+          "nuclear-and-gas",
           "p2p",
           "sfdr",
           "vsme",
