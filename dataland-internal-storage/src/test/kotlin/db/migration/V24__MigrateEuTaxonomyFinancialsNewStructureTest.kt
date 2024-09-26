@@ -7,7 +7,7 @@ class V24__MigrateEuTaxonomyFinancialsNewStructureTest {
     private val framework = "eutaxonomy-financials"
 
     @Test
-    fun `test with basic data`() {
+    fun `test with company-for-all-types data`() {
         TestUtils().testMigrationOfSingleDataset(
             dataType = framework,
             oldDataFileLocation = "V24/EuTaxonomyFinancialsOriginal.json",

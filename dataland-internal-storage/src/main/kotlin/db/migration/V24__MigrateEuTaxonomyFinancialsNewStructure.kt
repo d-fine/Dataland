@@ -18,8 +18,22 @@ class V24__MigrateEuTaxonomyFinancialsNewStructure : BaseJavaMigration() {
         "fiscalYearDeviation",
         "fiscalYearEnd",
         "scopeOfEntities",
-        "numberOfEmloyees",
+        "numberOfEmployees",
         "nfrdMandatory",
+    )
+
+    private val fieldsWhichMoveFromTToGeneral = listOf(
+        "fiscalYearDeviation",
+        "fiscalYearEnd",
+        "referencedReports",
+        "scopeOfEntities",
+        "numberOfEmployees",
+        "nfrdMandatory",
+        "assurance",
+    )
+
+    private val fieldsToRemove = listOf(
+        "euTaxonomyActivityLevelReporting",
     )
 
     /**
@@ -41,16 +55,12 @@ class V24__MigrateEuTaxonomyFinancialsNewStructure : BaseJavaMigration() {
      * @param jsonObject JSON object
      */
     private fun checkForRelevantFieldsInJsonObjectKeys(jsonObject: JSONObject) {
-        val fieldsToRemove = listOf("euTaxonomyActivityLevelReporting")
         fieldsToRemove.forEach {
-                key ->
-            jsonObject.remove(key)
+            jsonObject.remove(it)
         }
         jsonObject.keys().forEach {
             if (it in fieldsWhichBecomeExtendedDataPoints) {
                 updateObjectBehindKeyInJsonObject(jsonObject, it)
-            } else {
-                // Do nothing as no more migration is required
             }
             checkRecursivelyForRelevantFieldKeysInJsonObject(jsonObject, it)
         }
@@ -84,14 +94,41 @@ class V24__MigrateEuTaxonomyFinancialsNewStructure : BaseJavaMigration() {
         }
     }
 
+    private fun migrateExtendedDocumentSupport(dataTableEntity: DataTableEntity) {
+        val dataTableObject = dataTableEntity.dataJsonObject
+        checkForRelevantFieldsInJsonObjectKeys(dataTableObject)
+        dataTableEntity.companyAssociatedData.put("data", dataTableObject.toString())
+    }
+
+    private fun migrateReportingPeriod(dataTableEntity: DataTableEntity) {
+        val jsonObject = dataTableEntity.dataJsonObject
+        val tObject = jsonObject["t"] as JSONObject
+        val referencedReportsObject = JSONObject()
+        referencedReportsObject.put("reportingPeriod", jsonObject["reportingPeriod"])
+        tObject.put("general", referencedReportsObject)
+        jsonObject.remove("reportingPeriod")
+        dataTableEntity.companyAssociatedData.put("data", jsonObject.toString())
+    }
+
+    private fun migrateFromTToGeneral(dataTableEntity: DataTableEntity) {
+        val jsonObject = dataTableEntity.dataJsonObject
+        val tObject = jsonObject["t"] as JSONObject
+        val generalObject = tObject["general"] as JSONObject
+        fieldsWhichMoveFromTToGeneral.forEach {
+            generalObject.put(it, tObject[it])
+            tObject.remove(it)
+        }
+        dataTableEntity.companyAssociatedData.put("data", jsonObject.toString())
+    }
+
     /**
      * Migrate a DataTableEntity so that the relevant fields are turned into ExtendedDataPoints.
      * @param dataTableEntity DataTableEntity
      */
     fun migrateEuTaxonomyFinancialsData(dataTableEntity: DataTableEntity) {
-        val jsonObject = dataTableEntity.dataJsonObject
-        checkForRelevantFieldsInJsonObjectKeys(jsonObject)
-        dataTableEntity.companyAssociatedData.put("data", jsonObject.toString())
+        migrateExtendedDocumentSupport(dataTableEntity)
+        migrateReportingPeriod(dataTableEntity)
+        migrateFromTToGeneral(dataTableEntity)
     }
 
     override fun migrate(context: Context?) {
