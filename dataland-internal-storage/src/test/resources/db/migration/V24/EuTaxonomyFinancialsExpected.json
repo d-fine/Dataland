@@ -296,19 +296,6 @@
         "quality": "Audited"
       }
     },
-    "insuranceKpis": {
-      "taxonomyEligibleNonLifeInsuranceActivitiesInPercent": {
-        "value": 79.01,
-        "dataSource": {
-          "page": "728-1196",
-          "fileName": "AnnualReport",
-          "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-          "tagName": "methodologies"
-        },
-        "comment": "reboot digital matrix",
-        "quality": "NoDataFound"
-      }
-    },
     "general": {
       "reportingPeriod": "2023",
       "fiscalYearDeviation": {
@@ -377,6 +364,21 @@
             "tagName": "action-items"
           },
           "comment": "connect open-source feed",
+          "quality": "NoDataFound"
+        }
+      }
+    },
+    "insuranceReinsurance": {
+      "general": {
+        "taxonomyEligibleNonLifeInsuranceEconomicActivities": {
+          "value": 79.01,
+          "dataSource": {
+            "page": "728-1196",
+            "fileName": "AnnualReport",
+            "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+            "tagName": "methodologies"
+          },
+          "comment": "reboot digital matrix",
           "quality": "NoDataFound"
         }
       }

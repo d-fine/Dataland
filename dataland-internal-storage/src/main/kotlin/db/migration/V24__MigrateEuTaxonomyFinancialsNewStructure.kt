@@ -63,9 +63,9 @@ class V24__MigrateEuTaxonomyFinancialsNewStructure : BaseJavaMigration() {
     private fun migrateReportingPeriod(dataTableEntity: DataTableEntity) {
         val jsonObject = dataTableEntity.dataJsonObject
         val tObject = jsonObject["t"] as JSONObject
-        val referencedReportsObject = JSONObject()
-        referencedReportsObject.put("reportingPeriod", jsonObject["reportingPeriod"])
-        tObject.put("general", referencedReportsObject)
+        val generalObject = JSONObject()
+        generalObject.put("reportingPeriod", jsonObject["reportingPeriod"])
+        tObject.put("general", generalObject)
         jsonObject.remove("reportingPeriod")
         dataTableEntity.companyAssociatedData.put("data", jsonObject.toString())
     }
@@ -98,6 +98,24 @@ class V24__MigrateEuTaxonomyFinancialsNewStructure : BaseJavaMigration() {
         dataTableEntity.companyAssociatedData.put("data", jsonObject.toString())
     }
 
+    // add JavaDoc
+    private fun migrateInsuranceReinsurance(dataTableEntity: DataTableEntity) {
+        val jsonObject = dataTableEntity.dataJsonObject
+        val tObject = jsonObject["t"] as JSONObject
+        val insuranceKpisObject = tObject["insuranceKpis"] as JSONObject
+        val insuranceReinsuranceGeneralObject = JSONObject()
+        val insuranceReinsuranceObject = JSONObject()
+        insuranceReinsuranceGeneralObject
+            .put(
+                "taxonomyEligibleNonLifeInsuranceEconomicActivities",
+                insuranceKpisObject["taxonomyEligibleNonLifeInsuranceActivitiesInPercent"],
+            )
+        insuranceReinsuranceObject.put("general", insuranceReinsuranceGeneralObject)
+        tObject.put("insuranceReinsurance", insuranceReinsuranceObject)
+        tObject.remove("insuranceKpis")
+        dataTableEntity.companyAssociatedData.put("data", jsonObject.toString())
+    }
+
     /**
      * Migrate a DataTableEntity so that the relevant fields are turned into ExtendedDataPoints.
      * @param dataTableEntity DataTableEntity
@@ -107,6 +125,7 @@ class V24__MigrateEuTaxonomyFinancialsNewStructure : BaseJavaMigration() {
         migrateReportingPeriod(dataTableEntity)
         migrateFromTToGeneral(dataTableEntity)
         migrateToCreditInstitutionGeneral(dataTableEntity)
+        migrateInsuranceReinsurance(dataTableEntity)
     }
 
     override fun migrate(context: Context?) {
