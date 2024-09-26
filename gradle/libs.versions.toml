@@ -40,11 +40,11 @@ okhttp3 = "4.12.0"
 
 moshi = "1.15.1"
 
-mockito = "5.12.0"
+mockito = "5.13.0"
 
 junit-jupiter = "5.10.3"
 
-log4j = "2.23.1"
+log4j = "2.24.0"
 
 [libraries]
 
@@ -70,7 +70,7 @@ logback-classic = "ch.qos.logback:logback-classic:1.5.6"
 
 logback-core = "ch.qos.logback:logback-core:1.5.6"
 
-slf4j-api = "org.slf4j:slf4j-api:2.0.13"
+slf4j-api = "org.slf4j:slf4j-api:2.0.16"
 
 spring-boot-starter-web = { module = "org.springframework.boot:spring-boot-starter-web" }
 
@@ -82,9 +82,9 @@ spring-boot-starter-validation = { module = "org.springframework.boot:spring-boo
 
 spring-boot-starter-security = { module = "org.springframework.boot:spring-boot-starter-security" }
 
-postgresql = "org.postgresql:postgresql:42.7.3"
+postgresql = "org.postgresql:postgresql:42.7.4"
 
-h2 = "com.h2database:h2:2.2.224"
+h2 = "com.h2database:h2:2.3.232"
 
 spring-boot-configuration-processor = { module = "org.springframework.boot:spring-boot-configuration-processor" }
 
@@ -108,8 +108,8 @@ spring-boot-starter-amqp = { module = "org.springframework.boot:spring-boot-star
 
 mailjet-client = "com.mailjet:mailjet-client:5.2.5"
 
-flyway = "org.flywaydb:flyway-database-postgresql:10.14.0"
-flyway-core = "org.flywaydb:flyway-core:10.14.0"
+flyway = "org.flywaydb:flyway-database-postgresql:10.18.0"
+flyway-core = "org.flywaydb:flyway-core:10.18.0"
 
 kotlin-serialization-compiler-plugin-embeddable = { group = "org.jetbrains.kotlin", name = "kotlin-serialization-compiler-plugin-embeddable", version.ref = "kotlin" }
 
@@ -140,7 +140,7 @@ pdfbox = "org.apache.pdfbox:pdfbox:3.0.3"
 
 mockito-inline = { group = "org.mockito", name = "mockito-inline", version.ref = "mockito" }
 
-mockito-kotlin = "org.mockito.kotlin:mockito-kotlin:5.3.1"
+mockito-kotlin = "org.mockito.kotlin:mockito-kotlin:5.4.0"
 
 junit-jupiter = { group = "org.junit.jupiter", name = "junit-jupiter", version.ref = "junit-jupiter" }
 
@@ -163,7 +163,7 @@ cloudevents-json-jackson = "io.cloudevents:cloudevents-json-jackson:4.0.1"
 
 cloudevents-core = "io.cloudevents:cloudevents-core:4.0.1"
 
-spring-cloud-function-context = "org.springframework.cloud:spring-cloud-function-context:4.1.2"
+spring-cloud-function-context = "org.springframework.cloud:spring-cloud-function-context:4.1.3"
 
 spring-amqp = "org.springframework.amqp:spring-amqp:3.1.7"
 
@@ -175,11 +175,11 @@ jackson-kotlin = "com.fasterxml.jackson.module:jackson-module-kotlin:2.17.2"
 freemarker = "org.freemarker:freemarker:2.3.33"
 
 
-flyway-database-postgresql = "org.flywaydb:flyway-database-postgresql:10.15.0"
+flyway-database-postgresql = "org.flywaydb:flyway-database-postgresql:10.18.0"
 
-jodconverter-core = "org.jodconverter:jodconverter-core:4.4.7"
+jodconverter-core = "org.jodconverter:jodconverter-core:4.4.8"
 
-jodconverter-local = "org.jodconverter:jodconverter-local:4.4.7"
+jodconverter-local = "org.jodconverter:jodconverter-local:4.4.8"
 
 itext-core = "com.itextpdf:itext-core:8.0.5"
 
