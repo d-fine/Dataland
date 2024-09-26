@@ -1,11 +1,9 @@
 package db.migration
 
 import db.migration.utils.DataTableEntity
-import db.migration.utils.getOrJavaNull
 import db.migration.utils.migrateCompanyAssociatedDataOfDatatype
 import org.flywaydb.core.api.migration.BaseJavaMigration
 import org.flywaydb.core.api.migration.Context
-import org.json.JSONArray
 import org.json.JSONObject
 
 /**
@@ -42,70 +40,26 @@ class V24__MigrateEuTaxonomyFinancialsNewStructure : BaseJavaMigration() {
         "tradingPortfolioAndInterbankLoansInPercent",
     )
 
-    /**
-     * Move key: object to key: { "value": object }
-     * @param jsonObject JSON object
-     * @param key key corresponding to the JSON object
-     */
-    private fun updateObjectBehindKeyInJsonObject(jsonObject: JSONObject, key: String) {
-        val newValue = JSONObject()
-        val oldValue = jsonObject[key]
-        if (oldValue != JSONObject.NULL) {
-            newValue.put("value", oldValue)
-            jsonObject.put(key, newValue)
-        }
-    }
-
-    /**
-     * Check if the keys of a JSON object are relevant fields and, if so, update the object behind these keys.
-     * @param jsonObject JSON object
-     */
-    private fun checkForRelevantFieldsInJsonObjectKeys(jsonObject: JSONObject) {
-        fieldsToRemove.forEach {
-            jsonObject.remove(it)
-        }
-        jsonObject.keys().forEach {
-            if (it in fieldsWhichBecomeExtendedDataPoints) {
-                updateObjectBehindKeyInJsonObject(jsonObject, it)
-            }
-            checkRecursivelyForRelevantFieldKeysInJsonObject(jsonObject, it)
-        }
-    }
-
-    /**
-     * Check recursively for relevant field keys in a JSON array.
-     * @param jsonArray JSON array
-     */
-    private fun checkRecursivelyForRelevantFieldKeysInJsonArray(jsonArray: JSONArray) {
-        jsonArray.forEach {
-            if (it != null && it is JSONObject) {
-                checkForRelevantFieldsInJsonObjectKeys(it)
-            }
-        }
-    }
-
-    /**
-     * Check recursively for relevant field keys in a JSON object.
-     * @param jsonObject JSON object
-     * @param key key corresponding to the JSON object
-     */
-    private fun checkRecursivelyForRelevantFieldKeysInJsonObject(jsonObject: JSONObject, key: String) {
-        val obj = jsonObject.getOrJavaNull(key)
-        if (obj !== null && obj is JSONObject) {
-            checkForRelevantFieldsInJsonObjectKeys(obj)
-        } else if (obj != null && obj is JSONArray) {
-            checkRecursivelyForRelevantFieldKeysInJsonArray(obj)
-        } else {
-            // Do nothing as no more migration is required
-        }
-    }
-
+    // add JavaDoc
     private fun migrateExtendedDocumentSupport(dataTableEntity: DataTableEntity) {
-        val dataTableObject = dataTableEntity.dataJsonObject
-        checkForRelevantFieldsInJsonObjectKeys(dataTableObject)
-        dataTableEntity.companyAssociatedData.put("data", dataTableObject.toString())
+        val jsonObject = dataTableEntity.dataJsonObject
+        val tObject = jsonObject["t"] as JSONObject
+        fieldsWhichBecomeExtendedDataPoints.forEach {
+            val newValue = JSONObject()
+            val oldValue = tObject[it]
+            if (oldValue != JSONObject.NULL) {
+                newValue.put("value", oldValue)
+                tObject.put(it, newValue)
+            }
+        }
+        // put the removal in an extra function
+        fieldsToRemove.forEach {
+            tObject.remove(it)
+        }
+        dataTableEntity.companyAssociatedData.put("data", jsonObject.toString())
     }
 
+    // add JavaDoc
     private fun migrateReportingPeriod(dataTableEntity: DataTableEntity) {
         val jsonObject = dataTableEntity.dataJsonObject
         val tObject = jsonObject["t"] as JSONObject
@@ -116,6 +70,7 @@ class V24__MigrateEuTaxonomyFinancialsNewStructure : BaseJavaMigration() {
         dataTableEntity.companyAssociatedData.put("data", jsonObject.toString())
     }
 
+    // add JavaDoc
     private fun migrateFromTToGeneral(dataTableEntity: DataTableEntity) {
         val jsonObject = dataTableEntity.dataJsonObject
         val tObject = jsonObject["t"] as JSONObject
@@ -127,6 +82,7 @@ class V24__MigrateEuTaxonomyFinancialsNewStructure : BaseJavaMigration() {
         dataTableEntity.companyAssociatedData.put("data", jsonObject.toString())
     }
 
+    // add JavaDoc
     private fun migrateToCreditInstitutionGeneral(dataTableEntity: DataTableEntity) {
         val jsonObject = dataTableEntity.dataJsonObject
         val tObject = jsonObject["t"] as JSONObject
