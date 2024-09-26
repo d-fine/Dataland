@@ -20,7 +20,8 @@ class V24__MigrateEuTaxonomyFinancialsNewStructure : BaseJavaMigration() {
         "nfrdMandatory",
     )
 
-    private val fieldsWhichMoveFromTToGeneral = listOf(
+    private val fieldsWhichMoveToGeneral = listOf(
+        "reportingPeriod",
         "fiscalYearDeviation",
         "fiscalYearEnd",
         "referencedReports",
@@ -30,20 +31,26 @@ class V24__MigrateEuTaxonomyFinancialsNewStructure : BaseJavaMigration() {
         "assurance",
     )
 
-    private val fieldsToRemove = listOf(
-        "euTaxonomyActivityLevelReporting",
-    )
-
     private val fieldsWhichMoveToCreditInstitutionGeneral = listOf(
         "interbankLoansInPercent",
         "tradingPortfolioInPercent",
         "tradingPortfolioAndInterbankLoansInPercent",
     )
 
-    // add JavaDoc
-    private fun migrateExtendedDocumentSupport(dataTableEntity: DataTableEntity) {
-        val jsonObject = dataTableEntity.dataJsonObject
-        val tObject = jsonObject["t"] as JSONObject
+    private val fieldsWhichAreRemoved = listOf(
+        "euTaxonomyActivityLevelReporting",
+        "financialServicesTypes",
+        "eligibilityKpis",
+        "creditInstitutionKpis",
+        "investmentFirmKpis",
+        "insuranceKpis",
+    )
+
+    /**
+     * Give fields ExtendedDocumentSupport
+     * @param tObject JSONObject, represents the data table
+     */
+    private fun migrateExtendedDocumentSupport(tObject: JSONObject) {
         fieldsWhichBecomeExtendedDataPoints.forEach {
             val newValue = JSONObject()
             val oldValue = tObject[it]
@@ -52,80 +59,88 @@ class V24__MigrateEuTaxonomyFinancialsNewStructure : BaseJavaMigration() {
                 tObject.put(it, newValue)
             }
         }
-        // put the removal in an extra function
-        fieldsToRemove.forEach {
-            tObject.remove(it)
-        }
-        dataTableEntity.companyAssociatedData.put("data", jsonObject.toString())
-    }
-
-    // add JavaDoc
-    private fun migrateReportingPeriod(dataTableEntity: DataTableEntity) {
-        val jsonObject = dataTableEntity.dataJsonObject
-        val tObject = jsonObject["t"] as JSONObject
-        val generalObject = JSONObject()
-        generalObject.put("reportingPeriod", jsonObject["reportingPeriod"])
-        tObject.put("general", generalObject)
-        jsonObject.remove("reportingPeriod")
-        dataTableEntity.companyAssociatedData.put("data", jsonObject.toString())
-    }
-
-    // add JavaDoc
-    private fun migrateFromTToGeneral(dataTableEntity: DataTableEntity) {
-        val jsonObject = dataTableEntity.dataJsonObject
-        val tObject = jsonObject["t"] as JSONObject
-        val generalObject = tObject["general"] as JSONObject
-        fieldsWhichMoveFromTToGeneral.forEach {
-            generalObject.put(it, tObject[it])
-            tObject.remove(it)
-        }
-        dataTableEntity.companyAssociatedData.put("data", jsonObject.toString())
-    }
-
-    // add JavaDoc
-    private fun migrateToCreditInstitutionGeneral(dataTableEntity: DataTableEntity) {
-        val jsonObject = dataTableEntity.dataJsonObject
-        val tObject = jsonObject["t"] as JSONObject
-        val creditInstitutionKpisObject = tObject["creditInstitutionKpis"] as JSONObject
-        val creditInstitutionGeneralObject = JSONObject()
-        val creditInstitutionObject = JSONObject()
-        fieldsWhichMoveToCreditInstitutionGeneral.forEach {
-            creditInstitutionGeneralObject.put(it, creditInstitutionKpisObject[it])
-            creditInstitutionKpisObject.remove(it)
-        }
-        creditInstitutionObject.put("general", creditInstitutionGeneralObject)
-        tObject.put("creditInstitution", creditInstitutionObject)
-        dataTableEntity.companyAssociatedData.put("data", jsonObject.toString())
-    }
-
-    // add JavaDoc
-    private fun migrateInsuranceReinsurance(dataTableEntity: DataTableEntity) {
-        val jsonObject = dataTableEntity.dataJsonObject
-        val tObject = jsonObject["t"] as JSONObject
-        val insuranceKpisObject = tObject["insuranceKpis"] as JSONObject
-        val insuranceReinsuranceGeneralObject = JSONObject()
-        val insuranceReinsuranceObject = JSONObject()
-        insuranceReinsuranceGeneralObject
-            .put(
-                "taxonomyEligibleNonLifeInsuranceEconomicActivities",
-                insuranceKpisObject["taxonomyEligibleNonLifeInsuranceActivitiesInPercent"],
-            )
-        insuranceReinsuranceObject.put("general", insuranceReinsuranceGeneralObject)
-        tObject.put("insuranceReinsurance", insuranceReinsuranceObject)
-        tObject.remove("insuranceKpis")
-        dataTableEntity.companyAssociatedData.put("data", jsonObject.toString())
     }
 
     /**
-     * Migrate a DataTableEntity so that the relevant fields are turned into ExtendedDataPoints.
+     * Migrate data to general
+     * @param dataObject JSONObject, represents the full data
+     * @param tObject JSONObject, represents the data table
+     */
+    private fun migrateToGeneral(dataObject: JSONObject, tObject: JSONObject) {
+        val generalObject = JSONObject()
+        fieldsWhichMoveToGeneral.forEach {
+            if (it == "reportingPeriod") {
+                generalObject.put(it, dataObject[it])
+                dataObject.remove(it)
+            } else {
+                generalObject.put(it, tObject[it])
+                tObject.remove(it)
+            }
+        }
+        tObject.put("general", generalObject)
+    }
+
+    /**
+     * Migrate Credit Institution data to creditInstitution/general
+     * @param tObject JSONObject, represents the data table
+     */
+    private fun migrateToCreditInstitutionGeneral(tObject: JSONObject) {
+        if (tObject["creditInstitutionKpis"] != JSONObject.NULL) {
+            val creditInstitutionKpisObject = tObject["creditInstitutionKpis"] as JSONObject
+            val creditInstitutionGeneralObject = JSONObject()
+            val creditInstitutionObject = JSONObject()
+            fieldsWhichMoveToCreditInstitutionGeneral.forEach {
+                creditInstitutionGeneralObject.put(it, creditInstitutionKpisObject[it])
+                creditInstitutionKpisObject.remove(it)
+            }
+            creditInstitutionObject.put("general", creditInstitutionGeneralObject)
+            tObject.put("creditInstitution", creditInstitutionObject)
+        }
+    }
+
+    /**
+     * Migrate Insurance/Reinsurance data
+     * @param tObject JSONObject, represents the data table
+     */
+    private fun migrateInsuranceReinsurance(tObject: JSONObject) {
+        if (tObject["insuranceKpis"] != JSONObject.NULL) {
+            val insuranceKpisObject = tObject["insuranceKpis"] as JSONObject
+            val insuranceReinsuranceGeneralObject = JSONObject()
+            val insuranceReinsuranceObject = JSONObject()
+            insuranceReinsuranceGeneralObject
+                .put(
+                    "taxonomyEligibleNonLifeInsuranceEconomicActivities",
+                    insuranceKpisObject["taxonomyEligibleNonLifeInsuranceActivitiesInPercent"],
+                )
+            insuranceReinsuranceObject.put("general", insuranceReinsuranceGeneralObject)
+            tObject.put("insuranceReinsurance", insuranceReinsuranceObject)
+        }
+    }
+
+    /**
+     * Remove data which no longer fit the new data model.
+     * @param tObject JSONObject, represents the data table
+     */
+    private fun removeDeprecatedData(tObject: JSONObject) {
+        // this function must be modified later (at least to account for the green asset ratio)
+        fieldsWhichAreRemoved.forEach {
+            tObject.remove(it)
+        }
+    }
+
+    /**
+     * Migrate a DataTableEntity for the EuTaxonomyFinancials framework.
      * @param dataTableEntity DataTableEntity
      */
     fun migrateEuTaxonomyFinancialsData(dataTableEntity: DataTableEntity) {
-        migrateExtendedDocumentSupport(dataTableEntity)
-        migrateReportingPeriod(dataTableEntity)
-        migrateFromTToGeneral(dataTableEntity)
-        migrateToCreditInstitutionGeneral(dataTableEntity)
-        migrateInsuranceReinsurance(dataTableEntity)
+        val dataObject = dataTableEntity.dataJsonObject
+        val tObject = dataObject["t"] as JSONObject
+        migrateExtendedDocumentSupport(tObject)
+        migrateToGeneral(dataObject, tObject)
+        migrateToCreditInstitutionGeneral(tObject)
+        migrateInsuranceReinsurance(tObject)
+        removeDeprecatedData(tObject)
+        dataTableEntity.companyAssociatedData.put("data", dataObject.toString())
     }
 
     override fun migrate(context: Context?) {
