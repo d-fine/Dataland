@@ -45,7 +45,6 @@ if (testGroupingDisabled || cypressTestGroup === 2) {
   require('./p2p');
   require('./vsme');
   require('./esg-questionnaire');
-  require('./heimathafen');
   require('./company-ownership');
 }
 
@@ -56,6 +55,7 @@ if (testGroupingDisabled || cypressTestGroup === 3) {
    */
   require('./user-authentication');
   require('./admin-tools');
+  require('./additional-company-information');
 }
 
 if (testGroupingDisabled || cypressTestGroup === 4) {

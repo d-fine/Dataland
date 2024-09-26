@@ -32,6 +32,7 @@ class AccessRequestEmailSender(
      */
     data class GrantedEmailInformation(
         val datalandCompanyId: String,
+        val dataType: String,
         val dataTypeDescription: String,
         val reportingPeriod: String,
         val userId: String,
@@ -41,6 +42,7 @@ class AccessRequestEmailSender(
         constructor(dataRequestEntity: DataRequestEntity) :
             this(
                 dataRequestEntity.datalandCompanyId,
+                dataRequestEntity.dataType,
                 dataRequestEntity.getDataTypeDescription(),
                 dataRequestEntity.reportingPeriod,
                 dataRequestEntity.userId,
@@ -61,9 +63,10 @@ class AccessRequestEmailSender(
         dateFormat.timeZone = TimeZone.getTimeZone("Europe/Berlin")
 
         val properties = mapOf(
-            "dataRequestId" to emailInformation.dataRequestId,
+            "companyId" to emailInformation.datalandCompanyId,
             "companyName" to companyName,
-            "dataType" to emailInformation.dataTypeDescription,
+            "dataType" to emailInformation.dataType,
+            "dataTypeDescription" to emailInformation.dataTypeDescription,
             "reportingPeriod" to emailInformation.reportingPeriod,
             "creationDate" to dateFormat.format(emailInformation.creationTimestamp),
         )

@@ -1,0 +1,5739 @@
+[
+	{
+		"companyInformation": {
+			"companyName": "Conn - Pouros",
+			"headquarters": "Hoboken",
+			"headquartersPostalCode": "36932",
+			"sector": "action-items",
+			"identifiers": {
+				"Lei": [],
+				"Isin": [
+					"bBnOKFxFGHQb",
+					"lGmSoun5RdEQ"
+				],
+				"PermId": [
+					"i5A2fk5dGi"
+				],
+				"Ticker": [],
+				"Duns": [
+					"LnkLLcTpX"
+				],
+				"VatNumber": [
+					"DzgQaS8Y4"
+				],
+				"CompanyRegistrationNumber": [
+					"d1revmWyT9jVZ8h"
+				]
+			},
+			"countryCode": "BW",
+			"companyContactDetails": [
+				"Brannon5@example.com"
+			],
+			"companyAlternativeNames": [
+				"Howe, Baumbach and Hartmann"
+			],
+			"companyLegalForm": "Partnership without Limited Liability",
+			"website": null,
+			"isTeaserCompany": false
+		},
+		"t": {
+			"general": {
+				"general": {
+					"fiscalYearDeviation": {
+						"value": "Deviation",
+						"dataSource": {
+							"page": "213",
+							"fileName": "AnnualReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "e-business"
+						},
+						"comment": "generate primary application",
+						"quality": null
+					},
+					"fiscalYearEnd": {
+						"value": "2024-09-30",
+						"dataSource": {
+							"page": "270-1149",
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "channels"
+						},
+						"comment": "reboot solid state firewall",
+						"quality": "Reported"
+					},
+					"referencedReports": {
+						"IntegratedReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": null,
+							"publicationDate": "2023-11-04"
+						},
+						"AnnualReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "AnnualReport",
+							"publicationDate": "2023-05-03"
+						},
+						"ESEFReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "ESEFReport",
+							"publicationDate": null
+						}
+					}
+				},
+				"financialInformation": {
+					"equity": {
+						"value": 8173295496.97,
+						"dataSource": null,
+						"comment": "override 1080p interface",
+						"quality": "NoDataFound",
+						"currency": "MOP"
+					},
+					"debt": {
+						"value": 7380764472.77,
+						"dataSource": null,
+						"comment": "input digital protocol",
+						"quality": "Incomplete",
+						"currency": "MRU"
+					},
+					"balanceSheetTotal": {
+						"value": null,
+						"dataSource": {
+							"page": "252-258",
+							"fileName": "AnnualReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "solutions"
+						},
+						"comment": "compress cross-platform microchip",
+						"quality": "Audited",
+						"currency": "QAR"
+					},
+					"evic": {
+						"value": 962349269.54,
+						"dataSource": {
+							"page": "729-941",
+							"fileName": "IntegratedReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "lifetime value"
+						},
+						"comment": "connect haptic alarm",
+						"quality": "Estimated",
+						"currency": "SOS"
+					}
+				}
+			}
+		},
+		"reportingPeriod": "2021"
+	},
+	{
+		"companyInformation": {
+			"companyName": "Ankunding Inc",
+			"headquarters": "Rohnert Park",
+			"headquartersPostalCode": "25276-2584",
+			"sector": "channels",
+			"identifiers": {
+				"Lei": [],
+				"Isin": [
+					"697y5hDAmFgs"
+				],
+				"PermId": [],
+				"Ticker": [],
+				"Duns": [],
+				"VatNumber": [],
+				"CompanyRegistrationNumber": [
+					"HvFyS1lbCgDMkf1"
+				]
+			},
+			"countryCode": "IM",
+			"companyContactDetails": null,
+			"companyAlternativeNames": [],
+			"companyLegalForm": "GmbH & Co. KG",
+			"website": null,
+			"isTeaserCompany": false,
+			"parentCompanyLei": null
+		},
+		"t": {
+			"general": {
+				"general": {
+					"fiscalYearDeviation": {
+						"value": null,
+						"dataSource": {
+							"page": "550-1011",
+							"fileName": "AnnualReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "methodologies"
+						},
+						"comment": null,
+						"quality": null
+					},
+					"fiscalYearEnd": {
+						"value": "2024-05-05",
+						"dataSource": {
+							"page": "1172-1292",
+							"fileName": "AnnualReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "initiatives"
+						},
+						"comment": "parse primary port",
+						"quality": "NoDataFound"
+					},
+					"referencedReports": {
+						"IntegratedReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "IntegratedReport",
+							"publicationDate": null
+						},
+						"AnnualReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "AnnualReport",
+							"publicationDate": "2024-01-07"
+						},
+						"SustainabilityReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "SustainabilityReport",
+							"publicationDate": "2023-05-08"
+						}
+					}
+				},
+				"financialInformation": {
+					"equity": {
+						"value": 9893078310.42,
+						"dataSource": {
+							"page": "617-842",
+							"fileName": "AnnualReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "mindshare"
+						},
+						"comment": "generate redundant microchip",
+						"quality": "Reported",
+						"currency": "GMD"
+					},
+					"debt": {
+						"value": 6081421002.75,
+						"dataSource": {
+							"page": "472",
+							"fileName": "AnnualReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "paradigms"
+						},
+						"comment": "navigate cross-platform bandwidth",
+						"quality": "Audited",
+						"currency": "PHP"
+					},
+					"balanceSheetTotal": {
+						"value": 8972885662.23,
+						"dataSource": {
+							"page": "453",
+							"fileName": "AnnualReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "lifetime value"
+						},
+						"comment": "back up bluetooth bus",
+						"quality": "Audited",
+						"currency": "ILS"
+					},
+					"evic": {
+						"value": 7797353626.23,
+						"dataSource": {
+							"page": "499-1006",
+							"fileName": "SustainabilityReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "paradigms"
+						},
+						"comment": "reboot auxiliary bus",
+						"quality": "Reported",
+						"currency": "HTG"
+					}
+				}
+			}
+		},
+		"reportingPeriod": "2020"
+	},
+	{
+		"companyInformation": {
+			"companyName": "Johns Group",
+			"headquarters": "Jazmynchester",
+			"headquartersPostalCode": "15621-9520",
+			"sector": "networks",
+			"identifiers": {
+				"Lei": [
+					"9FcE8H2qX5PBNLiRrk6w"
+				],
+				"Isin": [
+					"oBwQvlPYrsls"
+				],
+				"PermId": [
+					"MzpAfNCA0S"
+				],
+				"Ticker": [
+					"0Z4WnvK"
+				],
+				"Duns": [
+					"X8O2MeRHD"
+				],
+				"VatNumber": [
+					"aZLITI1Jw"
+				],
+				"CompanyRegistrationNumber": []
+			},
+			"countryCode": "GP",
+			"companyContactDetails": null,
+			"companyAlternativeNames": [
+				"Auer Group",
+				"Mohr Group",
+				"Renner LLC",
+				"Weissnat, MacGyver and Deckow"
+			],
+			"companyLegalForm": null,
+			"website": "https://haunting-pants.com/",
+			"isTeaserCompany": false,
+			"parentCompanyLei": null
+		},
+		"t": {
+			"general": {
+				"general": {
+					"fiscalYearDeviation": {
+						"value": "NoDeviation",
+						"dataSource": {
+							"page": "1181",
+							"fileName": "SustainabilityReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "users"
+						},
+						"comment": "parse virtual port",
+						"quality": "NoDataFound"
+					},
+					"fiscalYearEnd": {
+						"value": null,
+						"dataSource": {
+							"page": "100",
+							"fileName": "AnnualReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "portals"
+						},
+						"comment": "input virtual port",
+						"quality": "Incomplete"
+					},
+					"referencedReports": {
+						"SustainabilityReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "SustainabilityReport",
+							"publicationDate": "2023-12-19"
+						},
+						"ESEFReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": null,
+							"publicationDate": "2023-11-20"
+						},
+						"AnnualReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "AnnualReport",
+							"publicationDate": "2023-02-13"
+						},
+						"IntegratedReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "IntegratedReport",
+							"publicationDate": "2023-06-04"
+						}
+					}
+				},
+				"financialInformation": {
+					"equity": {
+						"value": null,
+						"dataSource": {
+							"page": "431-562",
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "bandwidth"
+						},
+						"comment": "bypass 1080p capacitor",
+						"quality": "NoDataFound",
+						"currency": "ZWL"
+					},
+					"debt": {
+						"value": null,
+						"dataSource": {
+							"page": "240-1248",
+							"fileName": "IntegratedReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "synergies"
+						},
+						"comment": "bypass haptic alarm",
+						"quality": "Audited",
+						"currency": "CRC"
+					},
+					"balanceSheetTotal": {
+						"value": 9645959993.36,
+						"dataSource": {
+							"page": "255-480",
+							"fileName": "AnnualReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "experiences"
+						},
+						"comment": "compress virtual monitor",
+						"quality": "NoDataFound",
+						"currency": "KPW"
+					},
+					"evic": {
+						"value": 8120128698.65,
+						"dataSource": null,
+						"comment": "override primary matrix",
+						"quality": null,
+						"currency": "STN"
+					}
+				}
+			}
+		},
+		"reportingPeriod": "2021"
+	},
+	{
+		"companyInformation": {
+			"companyName": "Mraz, Abshire and Toy",
+			"headquarters": "Halvorsonport",
+			"headquartersPostalCode": null,
+			"sector": null,
+			"identifiers": {
+				"Lei": [],
+				"Isin": [
+					"mCeGHZyEp9P5",
+					"RO3s0iRbX42o"
+				],
+				"PermId": [],
+				"Ticker": [
+					"17NtaSQ"
+				],
+				"Duns": [
+					"w2Sv4k2da"
+				],
+				"VatNumber": [
+					"kgfUfAOc5"
+				],
+				"CompanyRegistrationNumber": [
+					"BG42qOsZyr5HXU6"
+				]
+			},
+			"countryCode": "SI",
+			"companyContactDetails": [
+				"Derick_Schmitt-Steuber62@example.com",
+				"Wilbert_Cole@example.com",
+				"Jaunita9@example.com",
+				"Reilly43@example.com"
+			],
+			"companyAlternativeNames": [],
+			"companyLegalForm": "GmbH",
+			"website": "https://dearest-heel.com",
+			"isTeaserCompany": false,
+			"parentCompanyLei": "9FcE8H2qX5PBNLiRrk6w"
+		},
+		"t": {
+			"general": {
+				"general": {
+					"fiscalYearDeviation": {
+						"value": null,
+						"dataSource": {
+							"page": "48",
+							"fileName": "SustainabilityReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "blockchains"
+						},
+						"comment": "override primary system",
+						"quality": "Estimated"
+					},
+					"fiscalYearEnd": {
+						"value": "2025-01-11",
+						"dataSource": {
+							"page": "273",
+							"fileName": "AnnualReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "relationships"
+						},
+						"comment": "hack neural microchip",
+						"quality": "Incomplete"
+					},
+					"referencedReports": {
+						"ESEFReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "ESEFReport",
+							"publicationDate": "2023-02-13"
+						},
+						"IntegratedReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "IntegratedReport",
+							"publicationDate": "2023-07-07"
+						},
+						"SustainabilityReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "SustainabilityReport",
+							"publicationDate": "2023-01-24"
+						},
+						"AnnualReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": null,
+							"publicationDate": "2023-12-20"
+						}
+					}
+				},
+				"financialInformation": {
+					"equity": {
+						"value": 2754976053.25,
+						"dataSource": {
+							"page": "252-724",
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "web services"
+						},
+						"comment": "index digital protocol",
+						"quality": "Incomplete",
+						"currency": "GNF"
+					},
+					"debt": null,
+					"balanceSheetTotal": null,
+					"evic": {
+						"value": null,
+						"dataSource": {
+							"page": "204-1231",
+							"fileName": "SustainabilityReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "models"
+						},
+						"comment": "compress open-source microchip",
+						"quality": "Estimated",
+						"currency": "TMT"
+					}
+				}
+			}
+		},
+		"reportingPeriod": "2024"
+	},
+	{
+		"companyInformation": {
+			"companyName": "Heaney - Zulauf",
+			"headquarters": "Lake Darrel",
+			"headquartersPostalCode": "78109",
+			"sector": "deliverables",
+			"identifiers": {
+				"Lei": [],
+				"Isin": [
+					"vGiAgAXjtBZN"
+				],
+				"PermId": [
+					"wwGu8SIYVL"
+				],
+				"Ticker": [
+					"5nnNGNh"
+				],
+				"Duns": [],
+				"VatNumber": [
+					"mPy0mEHcB"
+				],
+				"CompanyRegistrationNumber": []
+			},
+			"countryCode": "MG",
+			"companyContactDetails": [],
+			"companyAlternativeNames": [
+				"Abbott, Ortiz and Olson",
+				"Renner Inc",
+				"Wolff Group"
+			],
+			"companyLegalForm": "Partnership without Limited Liability",
+			"website": "https://yawning-witch-hunt.name",
+			"isTeaserCompany": false,
+			"parentCompanyLei": null
+		},
+		"t": {
+			"general": {
+				"general": {
+					"fiscalYearDeviation": {
+						"value": "Deviation",
+						"dataSource": {
+							"page": "861",
+							"fileName": "AnnualReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "convergence"
+						},
+						"comment": "override wireless firewall",
+						"quality": "Estimated"
+					},
+					"fiscalYearEnd": {
+						"value": "2024-02-13",
+						"dataSource": {
+							"page": "681",
+							"fileName": "SustainabilityReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "e-commerce"
+						},
+						"comment": "generate back-end transmitter",
+						"quality": "Reported"
+					},
+					"referencedReports": {
+						"ESEFReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "ESEFReport",
+							"publicationDate": null
+						},
+						"AnnualReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": null,
+							"publicationDate": "2023-08-11"
+						},
+						"SustainabilityReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "SustainabilityReport",
+							"publicationDate": "2023-01-28"
+						}
+					}
+				},
+				"financialInformation": {
+					"equity": null,
+					"debt": {
+						"value": null,
+						"dataSource": {
+							"page": "567",
+							"fileName": "AnnualReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "platforms"
+						},
+						"comment": "navigate mobile driver",
+						"quality": "Incomplete",
+						"currency": "RSD"
+					},
+					"balanceSheetTotal": {
+						"value": 2692419725.93,
+						"dataSource": {
+							"page": "111",
+							"fileName": "AnnualReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "e-business"
+						},
+						"comment": "parse virtual matrix",
+						"quality": null,
+						"currency": "JOD"
+					},
+					"evic": {
+						"value": 2454513506.96,
+						"dataSource": {
+							"page": "958-1108",
+							"fileName": "AnnualReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "users"
+						},
+						"comment": "connect wireless monitor",
+						"quality": "Reported",
+						"currency": "SBD"
+					}
+				}
+			}
+		},
+		"reportingPeriod": "2024"
+	},
+	{
+		"companyInformation": {
+			"companyName": "Welch LLC",
+			"headquarters": "Anaheim",
+			"headquartersPostalCode": null,
+			"sector": "blockchains",
+			"identifiers": {
+				"Lei": [
+					"BDLvA0XlBBC8KsJpnT2Y"
+				],
+				"Isin": [
+					"L7dsAoSjFhHO"
+				],
+				"PermId": [],
+				"Ticker": [],
+				"Duns": [
+					"OO4d2Lms9"
+				],
+				"VatNumber": [
+					"MKxUe0HHi"
+				],
+				"CompanyRegistrationNumber": []
+			},
+			"countryCode": "NU",
+			"companyContactDetails": [
+				"Toni.Greenholt45@example.com",
+				"Wendy.Harris@example.com"
+			],
+			"companyAlternativeNames": [
+				"Wuckert, Tromp and Volkman"
+			],
+			"companyLegalForm": "Public Limited Company (PLC)",
+			"website": null,
+			"isTeaserCompany": false,
+			"parentCompanyLei": null
+		},
+		"t": {
+			"general": {
+				"general": {
+					"fiscalYearDeviation": null,
+					"fiscalYearEnd": {
+						"value": "2025-01-18",
+						"dataSource": {
+							"page": "683-776",
+							"fileName": "AnnualReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "systems"
+						},
+						"comment": "program optical firewall",
+						"quality": "Audited"
+					},
+					"referencedReports": {
+						"IntegratedReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "IntegratedReport",
+							"publicationDate": "2023-03-11"
+						},
+						"AnnualReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "AnnualReport",
+							"publicationDate": "2023-09-11"
+						}
+					}
+				},
+				"financialInformation": {
+					"equity": {
+						"value": 5187401177.83,
+						"dataSource": {
+							"page": "478",
+							"fileName": "AnnualReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "architectures"
+						},
+						"comment": "synthesize solid state feed",
+						"quality": "NoDataFound",
+						"currency": "CUP"
+					},
+					"debt": {
+						"value": 3026852833.57,
+						"dataSource": {
+							"page": "1064",
+							"fileName": "AnnualReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "schemas"
+						},
+						"comment": "transmit cross-platform application",
+						"quality": "NoDataFound",
+						"currency": "SGD"
+					},
+					"balanceSheetTotal": {
+						"value": 6900283701.25,
+						"dataSource": {
+							"page": "748-1041",
+							"fileName": "AnnualReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "platforms"
+						},
+						"comment": "parse optical interface",
+						"quality": "Reported",
+						"currency": "AZN"
+					},
+					"evic": null
+				}
+			}
+		},
+		"reportingPeriod": "2023"
+	},
+	{
+		"companyInformation": {
+			"companyName": "Friesen - Nader",
+			"headquarters": "Lake Jarrett",
+			"headquartersPostalCode": "05811-8011",
+			"sector": null,
+			"identifiers": {
+				"Lei": [],
+				"Isin": [
+					"IrjYh3WiLhlv",
+					"6eC7hVj9Ia1W"
+				],
+				"PermId": [],
+				"Ticker": [],
+				"Duns": [
+					"kGwjV5W2k"
+				],
+				"VatNumber": [
+					"lNoMoDPxR"
+				],
+				"CompanyRegistrationNumber": [
+					"PU5VYkqitUQWNDk"
+				]
+			},
+			"countryCode": "CC",
+			"companyContactDetails": [
+				"Jazmyne25@example.com"
+			],
+			"companyAlternativeNames": [
+				"Kub, Hegmann and Feeney",
+				"Stracke, Klocko and Marks"
+			],
+			"companyLegalForm": "GmbH & Co. KG",
+			"website": "https://secondary-elver.info",
+			"isTeaserCompany": false,
+			"parentCompanyLei": "BDLvA0XlBBC8KsJpnT2Y"
+		},
+		"t": {
+			"general": {
+				"general": {
+					"fiscalYearDeviation": {
+						"value": "Deviation",
+						"dataSource": {
+							"page": "1029",
+							"fileName": "SustainabilityReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "markets"
+						},
+						"comment": "quantify back-end matrix",
+						"quality": "Audited"
+					},
+					"fiscalYearEnd": null,
+					"referencedReports": {
+						"ESEFReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "ESEFReport",
+							"publicationDate": "2023-07-27"
+						},
+						"AnnualReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": null,
+							"publicationDate": "2023-08-06"
+						},
+						"SustainabilityReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "SustainabilityReport",
+							"publicationDate": "2023-05-01"
+						}
+					}
+				},
+				"financialInformation": {
+					"equity": {
+						"value": null,
+						"dataSource": {
+							"page": "871",
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "convergence"
+						},
+						"comment": "index 1080p microchip",
+						"quality": "NoDataFound",
+						"currency": "ARS"
+					},
+					"debt": null,
+					"balanceSheetTotal": {
+						"value": 6570146291.05,
+						"dataSource": {
+							"page": "790",
+							"fileName": "AnnualReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "experiences"
+						},
+						"comment": "reboot bluetooth hard drive",
+						"quality": "Incomplete",
+						"currency": "MVR"
+					},
+					"evic": null
+				}
+			}
+		},
+		"reportingPeriod": "2021"
+	},
+	{
+		"companyInformation": {
+			"companyName": "Kris - Rau",
+			"headquarters": "North Trishaboro",
+			"headquartersPostalCode": "69623",
+			"sector": "users",
+			"identifiers": {
+				"Lei": [],
+				"Isin": [
+					"51giF3PdOHaj",
+					"3HEJ5sPXNvXF"
+				],
+				"PermId": [],
+				"Ticker": [],
+				"Duns": [],
+				"VatNumber": [
+					"fMr8CghIf"
+				],
+				"CompanyRegistrationNumber": []
+			},
+			"countryCode": "NZ",
+			"companyContactDetails": [
+				"Hilbert46@example.com",
+				"Helmer84@example.com"
+			],
+			"companyAlternativeNames": [
+				"Abshire - Bartell",
+				"O'Conner, Halvorson and Gislason",
+				"Roberts Inc"
+			],
+			"companyLegalForm": "Partnership without Limited Liability",
+			"website": "https://lavish-iridescence.com",
+			"isTeaserCompany": false,
+			"parentCompanyLei": null
+		},
+		"t": {
+			"general": {
+				"general": {
+					"fiscalYearDeviation": {
+						"value": null,
+						"dataSource": {
+							"page": "686-801",
+							"fileName": "IntegratedReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "interfaces"
+						},
+						"comment": "parse bluetooth panel",
+						"quality": "Estimated"
+					},
+					"fiscalYearEnd": {
+						"value": null,
+						"dataSource": {
+							"page": "777-1161",
+							"fileName": "IntegratedReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "initiatives"
+						},
+						"comment": "calculate haptic firewall",
+						"quality": null
+					},
+					"referencedReports": {
+						"SustainabilityReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "SustainabilityReport",
+							"publicationDate": "2023-04-17"
+						},
+						"IntegratedReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": null,
+							"publicationDate": "2024-01-09"
+						}
+					}
+				},
+				"financialInformation": {
+					"equity": {
+						"value": 6054080056.49,
+						"dataSource": {
+							"page": "296",
+							"fileName": "IntegratedReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "synergies"
+						},
+						"comment": null,
+						"quality": "Reported",
+						"currency": "VUV"
+					},
+					"debt": null,
+					"balanceSheetTotal": {
+						"value": 4087910838.42,
+						"dataSource": {
+							"page": "219",
+							"fileName": "SustainabilityReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "supply-chains"
+						},
+						"comment": "back up back-end sensor",
+						"quality": "Reported",
+						"currency": "CVE"
+					},
+					"evic": {
+						"value": null,
+						"dataSource": {
+							"page": "785-1159",
+							"fileName": "IntegratedReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "e-commerce"
+						},
+						"comment": "quantify cross-platform interface",
+						"quality": "NoDataFound",
+						"currency": "DZD"
+					}
+				}
+			}
+		},
+		"reportingPeriod": "2024"
+	},
+	{
+		"companyInformation": {
+			"companyName": "Pfannerstill LLC",
+			"headquarters": "East Larissastad",
+			"headquartersPostalCode": "97058-2457",
+			"sector": null,
+			"identifiers": {
+				"Lei": [],
+				"Isin": [
+					"WRJLIwWCru47"
+				],
+				"PermId": [],
+				"Ticker": [],
+				"Duns": [
+					"4O33M39c4"
+				],
+				"VatNumber": [],
+				"CompanyRegistrationNumber": [
+					"0PamxAVrmfbNdHK"
+				]
+			},
+			"countryCode": "TW",
+			"companyContactDetails": [
+				"Judge81@example.com",
+				"Rashad.Weber@example.com",
+				"Katrine.Rice23@example.com"
+			],
+			"companyAlternativeNames": [
+				"McCullough and Sons",
+				"Morar Inc",
+				"Schulist Inc"
+			],
+			"companyLegalForm": "Public Limited Company (PLC)",
+			"website": "https://dutiful-dust.com/",
+			"isTeaserCompany": false,
+			"parentCompanyLei": null
+		},
+		"t": {
+			"general": {
+				"general": {
+					"fiscalYearDeviation": {
+						"value": "NoDeviation",
+						"dataSource": {
+							"page": "763-1151",
+							"fileName": "IntegratedReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "synergies"
+						},
+						"comment": "generate virtual sensor",
+						"quality": "Audited"
+					},
+					"fiscalYearEnd": null,
+					"referencedReports": {
+						"SustainabilityReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "SustainabilityReport",
+							"publicationDate": "2023-05-20"
+						},
+						"AnnualReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "AnnualReport",
+							"publicationDate": null
+						},
+						"ESEFReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "ESEFReport",
+							"publicationDate": "2023-02-18"
+						},
+						"IntegratedReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "IntegratedReport",
+							"publicationDate": "2023-06-20"
+						}
+					}
+				},
+				"financialInformation": {
+					"equity": {
+						"value": 7526906621.64,
+						"dataSource": {
+							"page": "1087-1280",
+							"fileName": "SustainabilityReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "portals"
+						},
+						"comment": "program redundant monitor",
+						"quality": "NoDataFound",
+						"currency": "UAH"
+					},
+					"debt": {
+						"value": 8639228818.94,
+						"dataSource": {
+							"page": "452-912",
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "metrics"
+						},
+						"comment": null,
+						"quality": "Reported",
+						"currency": "XCD"
+					},
+					"balanceSheetTotal": {
+						"value": 9977410922.3,
+						"dataSource": {
+							"page": "314-893",
+							"fileName": "SustainabilityReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "portals"
+						},
+						"comment": "reboot mobile panel",
+						"quality": null,
+						"currency": "CUP"
+					},
+					"evic": null
+				}
+			}
+		},
+		"reportingPeriod": "2020"
+	},
+	{
+		"companyInformation": {
+			"companyName": "Prosacco, Rau and Franecki",
+			"headquarters": "Port Gilbertoton",
+			"headquartersPostalCode": "65876",
+			"sector": "platforms",
+			"identifiers": {
+				"Lei": [],
+				"Isin": [
+					"wtvKawjf39z6",
+					"mogHyGCG9P7f"
+				],
+				"PermId": [],
+				"Ticker": [],
+				"Duns": [],
+				"VatNumber": [],
+				"CompanyRegistrationNumber": []
+			},
+			"countryCode": "SD",
+			"companyContactDetails": [],
+			"companyAlternativeNames": [
+				"Conn - Pfeffer",
+				"Hayes, Boyle and Cole",
+				"Ledner - Veum",
+				"McGlynn - Lynch"
+			],
+			"companyLegalForm": "Partnership without Limited Liability",
+			"website": "https://well-off-district.info",
+			"isTeaserCompany": false,
+			"parentCompanyLei": null
+		},
+		"t": {
+			"general": {
+				"general": {
+					"fiscalYearDeviation": null,
+					"fiscalYearEnd": {
+						"value": "2024-04-16",
+						"dataSource": {
+							"page": "812-978",
+							"fileName": "IntegratedReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "metrics"
+						},
+						"comment": "bypass bluetooth card",
+						"quality": "Audited"
+					},
+					"referencedReports": {
+						"ESEFReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "ESEFReport",
+							"publicationDate": "2023-07-09"
+						},
+						"IntegratedReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "IntegratedReport",
+							"publicationDate": "2024-01-11"
+						}
+					}
+				},
+				"financialInformation": {
+					"equity": {
+						"value": 4679837578.44,
+						"dataSource": null,
+						"comment": "hack virtual bandwidth",
+						"quality": null,
+						"currency": "INR"
+					},
+					"debt": {
+						"value": 4066165592.52,
+						"dataSource": {
+							"page": "445-1086",
+							"fileName": "IntegratedReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "mindshare"
+						},
+						"comment": "quantify virtual card",
+						"quality": "NoDataFound",
+						"currency": "PKR"
+					},
+					"balanceSheetTotal": {
+						"value": 348678666.63,
+						"dataSource": {
+							"page": "369",
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "initiatives"
+						},
+						"comment": "bypass solid state microchip",
+						"quality": "Reported",
+						"currency": "IQD"
+					},
+					"evic": {
+						"value": 4437121660.45,
+						"dataSource": {
+							"page": "82",
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "models"
+						},
+						"comment": "synthesize mobile bus",
+						"quality": "Reported",
+						"currency": "ANG"
+					}
+				}
+			}
+		},
+		"reportingPeriod": "2020"
+	},
+	{
+		"companyInformation": {
+			"companyName": "Langworth, Mayer and Bernhard",
+			"headquarters": "Shanahanbury",
+			"headquartersPostalCode": "54138-4372",
+			"sector": null,
+			"identifiers": {
+				"Lei": [],
+				"Isin": [
+					"i3eAl9p7kMMC"
+				],
+				"PermId": [],
+				"Ticker": [],
+				"Duns": [
+					"AdYBKr58B"
+				],
+				"VatNumber": [
+					"f95spkbJ1"
+				],
+				"CompanyRegistrationNumber": []
+			},
+			"countryCode": "GN",
+			"companyContactDetails": [
+				"Isabel.Aufderhar@example.com",
+				"Macie_Bernier4@example.com",
+				"Emelia33@example.com"
+			],
+			"companyAlternativeNames": [
+				"McDermott - Kilback",
+				"Pouros Group",
+				"Spencer LLC"
+			],
+			"companyLegalForm": "Sole Trader",
+			"website": "https://posh-transport.name",
+			"isTeaserCompany": false,
+			"parentCompanyLei": null
+		},
+		"t": {
+			"general": {
+				"general": {
+					"fiscalYearDeviation": {
+						"value": "NoDeviation",
+						"dataSource": {
+							"page": "2-1043",
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "metrics"
+						},
+						"comment": null,
+						"quality": "Reported"
+					},
+					"fiscalYearEnd": {
+						"value": "2024-04-16",
+						"dataSource": {
+							"page": "684-1109",
+							"fileName": "AnnualReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "models"
+						},
+						"comment": "copy solid state hard drive",
+						"quality": "Reported"
+					},
+					"referencedReports": {
+						"AnnualReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": null,
+							"publicationDate": "2023-09-10"
+						},
+						"ESEFReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "ESEFReport",
+							"publicationDate": "2023-05-04"
+						}
+					}
+				},
+				"financialInformation": {
+					"equity": null,
+					"debt": null,
+					"balanceSheetTotal": null,
+					"evic": null
+				}
+			}
+		},
+		"reportingPeriod": "2024"
+	},
+	{
+		"companyInformation": {
+			"companyName": "Grimes - Smith",
+			"headquarters": "Brooklyncester",
+			"headquartersPostalCode": null,
+			"sector": "initiatives",
+			"identifiers": {
+				"Lei": [
+					"6B8cZoS41hrSY7AG5RlE"
+				],
+				"Isin": [
+					"7vw4RxEUHhBG"
+				],
+				"PermId": [],
+				"Ticker": [],
+				"Duns": [],
+				"VatNumber": [
+					"NkDxhFxG6"
+				],
+				"CompanyRegistrationNumber": []
+			},
+			"countryCode": "EH",
+			"companyContactDetails": [
+				"Kayden.Bradtke97@example.com"
+			],
+			"companyAlternativeNames": [
+				"D'Amore - Bahringer",
+				"Hartmann - Gutmann",
+				"Nikolaus - Kassulke",
+				"Rippin - Cole"
+			],
+			"companyLegalForm": "GmbH & Co. KG",
+			"website": null,
+			"isTeaserCompany": false,
+			"parentCompanyLei": null
+		},
+		"t": {
+			"general": {
+				"general": {
+					"fiscalYearDeviation": null,
+					"fiscalYearEnd": null,
+					"referencedReports": {
+						"SustainabilityReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "SustainabilityReport",
+							"publicationDate": "2023-10-10"
+						}
+					}
+				},
+				"financialInformation": {
+					"equity": {
+						"value": 510951036.12,
+						"dataSource": {
+							"page": "744-845",
+							"fileName": "SustainabilityReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "ROI"
+						},
+						"comment": "compress open-source capacitor",
+						"quality": "Reported",
+						"currency": "NGN"
+					},
+					"debt": null,
+					"balanceSheetTotal": {
+						"value": null,
+						"dataSource": {
+							"page": "804-986",
+							"fileName": "SustainabilityReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "methodologies"
+						},
+						"comment": "index digital sensor",
+						"quality": "Reported",
+						"currency": "MRU"
+					},
+					"evic": {
+						"value": 2988300882.28,
+						"dataSource": null,
+						"comment": "compress open-source alarm",
+						"quality": null,
+						"currency": "AZN"
+					}
+				}
+			}
+		},
+		"reportingPeriod": "2020"
+	},
+	{
+		"companyInformation": {
+			"companyName": "Moore - Schamberger",
+			"headquarters": "Port Jarrettmouth",
+			"headquartersPostalCode": "94461",
+			"sector": "functionalities",
+			"identifiers": {
+				"Lei": [
+					"5i4MVsjdp318fC8hLbgK"
+				],
+				"Isin": [
+					"wU8zjT6a66i1",
+					"9oVs6exVkSIE"
+				],
+				"PermId": [],
+				"Ticker": [
+					"glibn7L"
+				],
+				"Duns": [],
+				"VatNumber": [],
+				"CompanyRegistrationNumber": [
+					"oXIzor1WOFxV44B"
+				]
+			},
+			"countryCode": "KH",
+			"companyContactDetails": [
+				"Mike.OConnell44@example.com",
+				"Odie69@example.com",
+				"Jettie.Krajcik3@example.com"
+			],
+			"companyAlternativeNames": [
+				"Wiza Inc"
+			],
+			"companyLegalForm": "GmbH & Co. KG",
+			"website": "https://adorable-chorus.net",
+			"isTeaserCompany": false,
+			"parentCompanyLei": "6B8cZoS41hrSY7AG5RlE"
+		},
+		"t": {
+			"general": {
+				"general": {
+					"fiscalYearDeviation": null,
+					"fiscalYearEnd": null,
+					"referencedReports": {
+						"IntegratedReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "IntegratedReport",
+							"publicationDate": "2023-03-04"
+						},
+						"SustainabilityReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "SustainabilityReport",
+							"publicationDate": "2023-10-16"
+						},
+						"ESEFReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "ESEFReport",
+							"publicationDate": null
+						}
+					}
+				},
+				"financialInformation": {
+					"equity": {
+						"value": 8415686197.12,
+						"dataSource": {
+							"page": "1114",
+							"fileName": "IntegratedReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "supply-chains"
+						},
+						"comment": "program optical panel",
+						"quality": "NoDataFound",
+						"currency": "SCR"
+					},
+					"debt": {
+						"value": 3004392641.59,
+						"dataSource": {
+							"page": "150",
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "portals"
+						},
+						"comment": null,
+						"quality": "NoDataFound",
+						"currency": "BTN"
+					},
+					"balanceSheetTotal": {
+						"value": null,
+						"dataSource": {
+							"page": "878",
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "lifetime value"
+						},
+						"comment": null,
+						"quality": "Audited",
+						"currency": "BND"
+					},
+					"evic": null
+				}
+			}
+		},
+		"reportingPeriod": "2024"
+	},
+	{
+		"companyInformation": {
+			"companyName": "Pacocha and Sons",
+			"headquarters": "Clovisview",
+			"headquartersPostalCode": null,
+			"sector": "eyeballs",
+			"identifiers": {
+				"Lei": [
+					"oHMp0UxFOaZsVu4FYaRH"
+				],
+				"Isin": [
+					"ndJkqvyMKpJR",
+					"SlC9wRk5ZDB4"
+				],
+				"PermId": [
+					"Q2mTD0OGUz"
+				],
+				"Ticker": [],
+				"Duns": [],
+				"VatNumber": [],
+				"CompanyRegistrationNumber": []
+			},
+			"countryCode": "MF",
+			"companyContactDetails": [
+				"Willy99@example.com",
+				"Dante39@example.com",
+				"Efren.Beer1@example.com",
+				"Kaela.Legros@example.com"
+			],
+			"companyAlternativeNames": [
+				"Halvorson, Kautzer and Rowe",
+				"Klein and Sons",
+				"Ledner - Rath",
+				"Murazik, Bartell and Howe"
+			],
+			"companyLegalForm": "AG",
+			"website": null,
+			"isTeaserCompany": false,
+			"parentCompanyLei": "5i4MVsjdp318fC8hLbgK"
+		},
+		"t": {
+			"general": {
+				"general": {
+					"fiscalYearDeviation": {
+						"value": "Deviation",
+						"dataSource": {
+							"page": "17",
+							"fileName": "AnnualReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "schemas"
+						},
+						"comment": "connect redundant transmitter",
+						"quality": "NoDataFound"
+					},
+					"fiscalYearEnd": {
+						"value": "2024-04-30",
+						"dataSource": {
+							"page": "915-1253",
+							"fileName": "SustainabilityReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "initiatives"
+						},
+						"comment": null,
+						"quality": "Reported"
+					},
+					"referencedReports": {
+						"AnnualReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "AnnualReport",
+							"publicationDate": "2023-10-16"
+						},
+						"ESEFReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "ESEFReport",
+							"publicationDate": "2023-07-11"
+						},
+						"IntegratedReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "IntegratedReport",
+							"publicationDate": "2023-02-17"
+						},
+						"SustainabilityReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "SustainabilityReport",
+							"publicationDate": null
+						}
+					}
+				},
+				"financialInformation": {
+					"equity": {
+						"value": 8150827942.88,
+						"dataSource": {
+							"page": "1071-1086",
+							"fileName": "AnnualReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "e-markets"
+						},
+						"comment": "transmit bluetooth hard drive",
+						"quality": "NoDataFound",
+						"currency": "CZK"
+					},
+					"debt": {
+						"value": 5455240090.38,
+						"dataSource": null,
+						"comment": "reboot haptic capacitor",
+						"quality": null,
+						"currency": "XOF"
+					},
+					"balanceSheetTotal": {
+						"value": 8823742310.05,
+						"dataSource": {
+							"page": "447",
+							"fileName": "AnnualReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "technologies"
+						},
+						"comment": "synthesize cross-platform port",
+						"quality": null,
+						"currency": "AUD"
+					},
+					"evic": {
+						"value": 3706501848.06,
+						"dataSource": {
+							"page": "263",
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "networks"
+						},
+						"comment": "hack haptic driver",
+						"quality": null,
+						"currency": "PYG"
+					}
+				}
+			}
+		},
+		"reportingPeriod": "2024"
+	},
+	{
+		"companyInformation": {
+			"companyName": "Lakin - Volkman",
+			"headquarters": "Francescochester",
+			"headquartersPostalCode": null,
+			"sector": "methodologies",
+			"identifiers": {
+				"Lei": [
+					"5elYaiwvV1nvr67fByLh"
+				],
+				"Isin": [
+					"PZwhjp9ptogS"
+				],
+				"PermId": [
+					"pS78mrHErZ"
+				],
+				"Ticker": [
+					"aWfA4HC"
+				],
+				"Duns": [
+					"SYxw6cfMO"
+				],
+				"VatNumber": [
+					"0KK8s7yCM"
+				],
+				"CompanyRegistrationNumber": [
+					"vnBVMKX9crHjMTe"
+				]
+			},
+			"countryCode": "IQ",
+			"companyContactDetails": [
+				"Vivienne_Koch6@example.com",
+				"Gerardo76@example.com",
+				"Vinnie10@example.com"
+			],
+			"companyAlternativeNames": [
+				"Auer, Stamm and Sauer",
+				"Hilll - Vandervort",
+				"Mante - Schowalter",
+				"Schroeder, Ratke and Lebsack"
+			],
+			"companyLegalForm": "GmbH & Co. KG",
+			"website": null,
+			"isTeaserCompany": false,
+			"parentCompanyLei": "oHMp0UxFOaZsVu4FYaRH"
+		},
+		"t": {
+			"general": {
+				"general": {
+					"fiscalYearDeviation": {
+						"value": null,
+						"dataSource": {
+							"page": "1076-1157",
+							"fileName": "AnnualReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "blockchains"
+						},
+						"comment": "generate haptic monitor",
+						"quality": "NoDataFound"
+					},
+					"fiscalYearEnd": {
+						"value": "2024-12-08",
+						"dataSource": {
+							"page": "450",
+							"fileName": "AnnualReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "partnerships"
+						},
+						"comment": null,
+						"quality": null
+					},
+					"referencedReports": {
+						"SustainabilityReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "SustainabilityReport",
+							"publicationDate": "2023-10-20"
+						},
+						"IntegratedReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "IntegratedReport",
+							"publicationDate": "2023-07-19"
+						},
+						"AnnualReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "AnnualReport",
+							"publicationDate": "2023-08-08"
+						}
+					}
+				},
+				"financialInformation": {
+					"equity": {
+						"value": 6554168879.52,
+						"dataSource": {
+							"page": "775-1029",
+							"fileName": "AnnualReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "portals"
+						},
+						"comment": "copy 1080p matrix",
+						"quality": "Incomplete",
+						"currency": "AFN"
+					},
+					"debt": null,
+					"balanceSheetTotal": {
+						"value": null,
+						"dataSource": {
+							"page": "647",
+							"fileName": "IntegratedReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "supply-chains"
+						},
+						"comment": "bypass 1080p hard drive",
+						"quality": "Incomplete",
+						"currency": "PEN"
+					},
+					"evic": {
+						"value": 651104243,
+						"dataSource": {
+							"page": "618-842",
+							"fileName": "SustainabilityReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "eyeballs"
+						},
+						"comment": null,
+						"quality": "Audited",
+						"currency": "GTQ"
+					}
+				}
+			}
+		},
+		"reportingPeriod": "2021"
+	},
+	{
+		"companyInformation": {
+			"companyName": "Borer LLC",
+			"headquarters": "East Royalton",
+			"headquartersPostalCode": null,
+			"sector": "relationships",
+			"identifiers": {
+				"Lei": [
+					"GaxnYGyxH1w2bkF32Ftx"
+				],
+				"Isin": [
+					"lGzXHVtmbiCY"
+				],
+				"PermId": [],
+				"Ticker": [
+					"aRtfN6b"
+				],
+				"Duns": [],
+				"VatNumber": [],
+				"CompanyRegistrationNumber": []
+			},
+			"countryCode": "KN",
+			"companyContactDetails": null,
+			"companyAlternativeNames": [],
+			"companyLegalForm": "GmbH",
+			"website": "https://marvelous-tab.net/",
+			"isTeaserCompany": false,
+			"parentCompanyLei": "5elYaiwvV1nvr67fByLh"
+		},
+		"t": {
+			"general": {
+				"general": {
+					"fiscalYearDeviation": null,
+					"fiscalYearEnd": {
+						"value": "2024-11-11",
+						"dataSource": {
+							"page": "1164",
+							"fileName": "SustainabilityReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "deliverables"
+						},
+						"comment": "synthesize primary application",
+						"quality": "Incomplete"
+					},
+					"referencedReports": {
+						"ESEFReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "ESEFReport",
+							"publicationDate": "2023-10-21"
+						},
+						"AnnualReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "AnnualReport",
+							"publicationDate": "2023-02-24"
+						},
+						"SustainabilityReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": null,
+							"publicationDate": "2023-09-25"
+						}
+					}
+				},
+				"financialInformation": {
+					"equity": null,
+					"debt": null,
+					"balanceSheetTotal": null,
+					"evic": {
+						"value": 9762757769.79,
+						"dataSource": {
+							"page": "287-626",
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "bandwidth"
+						},
+						"comment": "transmit 1080p bandwidth",
+						"quality": "Audited",
+						"currency": "MYR"
+					}
+				}
+			}
+		},
+		"reportingPeriod": "2021"
+	},
+	{
+		"companyInformation": {
+			"companyName": "Smitham, Sipes and Wilkinson",
+			"headquarters": "Lesleyborough",
+			"headquartersPostalCode": "94210-6971",
+			"sector": "partnerships",
+			"identifiers": {
+				"Lei": [],
+				"Isin": [
+					"xKTDyZr895JC"
+				],
+				"PermId": [],
+				"Ticker": [
+					"JPyzJDi"
+				],
+				"Duns": [],
+				"VatNumber": [
+					"hOYcfgKUh"
+				],
+				"CompanyRegistrationNumber": [
+					"U4sDThBijwuYu0v"
+				]
+			},
+			"countryCode": "KG",
+			"companyContactDetails": [
+				"Kenneth.Franey63@example.com",
+				"Theo.Predovic@example.com"
+			],
+			"companyAlternativeNames": [],
+			"companyLegalForm": "GmbH & Co. KG",
+			"website": "https://handmade-ignorant.org/",
+			"isTeaserCompany": false,
+			"parentCompanyLei": "GaxnYGyxH1w2bkF32Ftx"
+		},
+		"t": {
+			"general": {
+				"general": {
+					"fiscalYearDeviation": {
+						"value": "Deviation",
+						"dataSource": {
+							"page": "504-1274",
+							"fileName": "AnnualReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "methodologies"
+						},
+						"comment": null,
+						"quality": null
+					},
+					"fiscalYearEnd": {
+						"value": "2024-03-30",
+						"dataSource": {
+							"page": "758-910",
+							"fileName": "AnnualReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "supply-chains"
+						},
+						"comment": "back up 1080p sensor",
+						"quality": "Reported"
+					},
+					"referencedReports": {
+						"AnnualReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "AnnualReport",
+							"publicationDate": "2023-05-25"
+						}
+					}
+				},
+				"financialInformation": {
+					"equity": {
+						"value": 1403049477.37,
+						"dataSource": null,
+						"comment": "bypass redundant sensor",
+						"quality": "Incomplete",
+						"currency": "VND"
+					},
+					"debt": {
+						"value": 9585038663.36,
+						"dataSource": {
+							"page": "917",
+							"fileName": "AnnualReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "e-commerce"
+						},
+						"comment": "calculate haptic program",
+						"quality": "Audited",
+						"currency": "LRD"
+					},
+					"balanceSheetTotal": {
+						"value": 17363701.48,
+						"dataSource": {
+							"page": "343-670",
+							"fileName": "AnnualReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "paradigms"
+						},
+						"comment": "parse primary transmitter",
+						"quality": "Estimated",
+						"currency": "AOA"
+					},
+					"evic": {
+						"value": 3884857425,
+						"dataSource": {
+							"page": "369",
+							"fileName": "AnnualReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "e-business"
+						},
+						"comment": "connect open-source hard drive",
+						"quality": "NoDataFound",
+						"currency": "PKR"
+					}
+				}
+			}
+		},
+		"reportingPeriod": "2023"
+	},
+	{
+		"companyInformation": {
+			"companyName": "Gislason - Wisozk",
+			"headquarters": "Hauckside",
+			"headquartersPostalCode": "20551-9874",
+			"sector": "eyeballs",
+			"identifiers": {
+				"Lei": [],
+				"Isin": [
+					"fIZbu3Gj1CW4"
+				],
+				"PermId": [],
+				"Ticker": [],
+				"Duns": [
+					"R4IrIoTrX"
+				],
+				"VatNumber": [],
+				"CompanyRegistrationNumber": [
+					"vSTVbrzYEQafUyH"
+				]
+			},
+			"countryCode": "CG",
+			"companyContactDetails": [
+				"Kyle.Connelly@example.com"
+			],
+			"companyAlternativeNames": [
+				"Bayer - Marvin",
+				"Grant, Becker and Ondricka",
+				"Harber LLC",
+				"Langworth Group"
+			],
+			"companyLegalForm": "GmbH & Co. KG",
+			"website": "https://black-forager.name/",
+			"isTeaserCompany": false,
+			"parentCompanyLei": null
+		},
+		"t": {
+			"general": {
+				"general": {
+					"fiscalYearDeviation": {
+						"value": "Deviation",
+						"dataSource": {
+							"page": "410",
+							"fileName": "SustainabilityReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "deliverables"
+						},
+						"comment": null,
+						"quality": "NoDataFound"
+					},
+					"fiscalYearEnd": {
+						"value": null,
+						"dataSource": {
+							"page": "979-1252",
+							"fileName": "SustainabilityReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "action-items"
+						},
+						"comment": null,
+						"quality": null
+					},
+					"referencedReports": {
+						"SustainabilityReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "SustainabilityReport",
+							"publicationDate": "2023-03-27"
+						}
+					}
+				},
+				"financialInformation": {
+					"equity": {
+						"value": 5330514323.43,
+						"dataSource": {
+							"page": "883-1080",
+							"fileName": "SustainabilityReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "convergence"
+						},
+						"comment": "input solid state program",
+						"quality": null,
+						"currency": "BSD"
+					},
+					"debt": null,
+					"balanceSheetTotal": {
+						"value": 8155167973.6,
+						"dataSource": {
+							"page": "1145-1211",
+							"fileName": "SustainabilityReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "functionalities"
+						},
+						"comment": null,
+						"quality": "Reported",
+						"currency": "MAD"
+					},
+					"evic": {
+						"value": 1894469701.22,
+						"dataSource": {
+							"page": "788-1157",
+							"fileName": "SustainabilityReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "bandwidth"
+						},
+						"comment": "hack wireless interface",
+						"quality": "Reported",
+						"currency": "ZWL"
+					}
+				}
+			}
+		},
+		"reportingPeriod": "2022"
+	},
+	{
+		"companyInformation": {
+			"companyName": "Gislason Group",
+			"headquarters": "New Ludwigport",
+			"headquartersPostalCode": null,
+			"sector": "users",
+			"identifiers": {
+				"Lei": [
+					"pMfS4peZjNTt0S8hFMWl"
+				],
+				"Isin": [
+					"kB2b03JlijdM"
+				],
+				"PermId": [
+					"ArbEp8CtzC"
+				],
+				"Ticker": [],
+				"Duns": [],
+				"VatNumber": [],
+				"CompanyRegistrationNumber": [
+					"G1uuxK6ez6vrIRE"
+				]
+			},
+			"countryCode": "CD",
+			"companyContactDetails": [
+				"Jordyn_Beier71@example.com"
+			],
+			"companyAlternativeNames": [
+				"Bosco - Rohan",
+				"Cruickshank - Padberg",
+				"Dietrich - Hyatt",
+				"Mann - Smith"
+			],
+			"companyLegalForm": "Private Limited Company (Ltd)",
+			"website": "https://married-model.biz/",
+			"isTeaserCompany": false,
+			"parentCompanyLei": null
+		},
+		"t": {
+			"general": {
+				"general": {
+					"fiscalYearDeviation": {
+						"value": "Deviation",
+						"dataSource": {
+							"page": "166",
+							"fileName": "AnnualReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "e-commerce"
+						},
+						"comment": "connect redundant system",
+						"quality": "Reported"
+					},
+					"fiscalYearEnd": {
+						"value": "2024-06-18",
+						"dataSource": {
+							"page": "138",
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "technologies"
+						},
+						"comment": "quantify wireless firewall",
+						"quality": null
+					},
+					"referencedReports": {
+						"AnnualReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "AnnualReport",
+							"publicationDate": "2023-02-15"
+						},
+						"ESEFReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "ESEFReport",
+							"publicationDate": null
+						},
+						"IntegratedReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "IntegratedReport",
+							"publicationDate": "2023-08-11"
+						},
+						"SustainabilityReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "SustainabilityReport",
+							"publicationDate": "2024-01-18"
+						}
+					}
+				},
+				"financialInformation": {
+					"equity": {
+						"value": 6165002370.25,
+						"dataSource": {
+							"page": "1041",
+							"fileName": "IntegratedReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "interfaces"
+						},
+						"comment": "hack optical card",
+						"quality": "Audited",
+						"currency": "ZAR"
+					},
+					"debt": {
+						"value": 4571089879.61,
+						"dataSource": {
+							"page": "1151-1292",
+							"fileName": "AnnualReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "web services"
+						},
+						"comment": "synthesize solid state hard drive",
+						"quality": "Estimated",
+						"currency": "SCR"
+					},
+					"balanceSheetTotal": null,
+					"evic": {
+						"value": null,
+						"dataSource": {
+							"page": "28",
+							"fileName": "IntegratedReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "platforms"
+						},
+						"comment": "quantify multi-byte transmitter",
+						"quality": null,
+						"currency": "KGS"
+					}
+				}
+			}
+		},
+		"reportingPeriod": "2021"
+	},
+	{
+		"companyInformation": {
+			"companyName": "Runolfsson Inc",
+			"headquarters": "Wymanberg",
+			"headquartersPostalCode": "98039-3758",
+			"sector": "solutions",
+			"identifiers": {
+				"Lei": [],
+				"Isin": [
+					"POWEfB2OXX8I"
+				],
+				"PermId": [
+					"7lihbUAQJF"
+				],
+				"Ticker": [],
+				"Duns": [],
+				"VatNumber": [
+					"CpoF9zI6O"
+				],
+				"CompanyRegistrationNumber": [
+					"ODDJo7npp9xZiUz"
+				]
+			},
+			"countryCode": "AW",
+			"companyContactDetails": [
+				"Aylin.Douglas@example.com",
+				"Douglas_Thiel@example.com",
+				"Enrique_Mueller@example.com",
+				"Haylee54@example.com",
+				"Jimmie.Brakus@example.com"
+			],
+			"companyAlternativeNames": [
+				"Adams - Halvorson",
+				"Armstrong Inc",
+				"Miller, Moore and Murazik",
+				"O'Kon Inc"
+			],
+			"companyLegalForm": "GmbH & Co. KG",
+			"website": "https://sentimental-amusement.com/",
+			"isTeaserCompany": false,
+			"parentCompanyLei": "pMfS4peZjNTt0S8hFMWl"
+		},
+		"t": {
+			"general": {
+				"general": {
+					"fiscalYearDeviation": null,
+					"fiscalYearEnd": {
+						"value": "2024-05-16",
+						"dataSource": {
+							"page": "177-268",
+							"fileName": "AnnualReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "architectures"
+						},
+						"comment": "back up neural microchip",
+						"quality": null
+					},
+					"referencedReports": {
+						"AnnualReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "AnnualReport",
+							"publicationDate": "2023-09-10"
+						},
+						"IntegratedReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "IntegratedReport",
+							"publicationDate": "2023-07-21"
+						},
+						"ESEFReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "ESEFReport",
+							"publicationDate": null
+						},
+						"SustainabilityReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "SustainabilityReport",
+							"publicationDate": "2023-02-15"
+						}
+					}
+				},
+				"financialInformation": {
+					"equity": {
+						"value": null,
+						"dataSource": {
+							"page": "900",
+							"fileName": "AnnualReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "architectures"
+						},
+						"comment": "reboot open-source microchip",
+						"quality": "Incomplete",
+						"currency": "AUD"
+					},
+					"debt": {
+						"value": 8375473483.47,
+						"dataSource": {
+							"page": "173-221",
+							"fileName": "IntegratedReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "mindshare"
+						},
+						"comment": "index neural monitor",
+						"quality": "NoDataFound",
+						"currency": "NOK"
+					},
+					"balanceSheetTotal": null,
+					"evic": {
+						"value": 1447336603.88,
+						"dataSource": {
+							"page": "1014",
+							"fileName": "AnnualReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "architectures"
+						},
+						"comment": null,
+						"quality": "NoDataFound",
+						"currency": "ERN"
+					}
+				}
+			}
+		},
+		"reportingPeriod": "2020"
+	},
+	{
+		"companyInformation": {
+			"companyName": "Stehr, Cummerata and Schaden",
+			"headquarters": "Emerybury",
+			"headquartersPostalCode": "07279",
+			"sector": "partnerships",
+			"identifiers": {
+				"Lei": [],
+				"Isin": [
+					"KUQaIGybJbNk",
+					"85zUqUVuEKf7"
+				],
+				"PermId": [],
+				"Ticker": [
+					"4TnoKpH"
+				],
+				"Duns": [
+					"UrJIFVBfE"
+				],
+				"VatNumber": [
+					"IEJEILLAa"
+				],
+				"CompanyRegistrationNumber": [
+					"EpuVzfpIMpcBz6i"
+				]
+			},
+			"countryCode": "RU",
+			"companyContactDetails": [
+				"Brennon_Moore@example.com"
+			],
+			"companyAlternativeNames": [],
+			"companyLegalForm": "Partnership without Limited Liability",
+			"website": "https://rusty-championship.info",
+			"isTeaserCompany": false,
+			"parentCompanyLei": null
+		},
+		"t": {
+			"general": {
+				"general": {
+					"fiscalYearDeviation": {
+						"value": "NoDeviation",
+						"dataSource": {
+							"page": "813",
+							"fileName": "AnnualReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "models"
+						},
+						"comment": "program 1080p capacitor",
+						"quality": "Audited"
+					},
+					"fiscalYearEnd": {
+						"value": "2024-07-11",
+						"dataSource": {
+							"page": "305-463",
+							"fileName": "AnnualReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "deliverables"
+						},
+						"comment": null,
+						"quality": "Audited"
+					},
+					"referencedReports": {
+						"ESEFReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "ESEFReport",
+							"publicationDate": null
+						},
+						"SustainabilityReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "SustainabilityReport",
+							"publicationDate": null
+						},
+						"AnnualReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": null,
+							"publicationDate": "2023-06-01"
+						}
+					}
+				},
+				"financialInformation": {
+					"equity": {
+						"value": 6479543468.45,
+						"dataSource": {
+							"page": "905",
+							"fileName": "SustainabilityReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "blockchains"
+						},
+						"comment": "bypass online card",
+						"quality": "Estimated",
+						"currency": "OMR"
+					},
+					"debt": {
+						"value": 7705967221.41,
+						"dataSource": {
+							"page": "556",
+							"fileName": "SustainabilityReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "channels"
+						},
+						"comment": "calculate optical driver",
+						"quality": "Incomplete",
+						"currency": "MRU"
+					},
+					"balanceSheetTotal": null,
+					"evic": null
+				}
+			}
+		},
+		"reportingPeriod": "2021"
+	},
+	{
+		"companyInformation": {
+			"companyName": "Pollich Inc",
+			"headquarters": "East Brianhaven",
+			"headquartersPostalCode": "74460",
+			"sector": null,
+			"identifiers": {
+				"Lei": [
+					"2IWkfgwHtCAakHQmdOTy"
+				],
+				"Isin": [
+					"aIU1ujFtjU7F",
+					"GdZp1gGATHEA"
+				],
+				"PermId": [],
+				"Ticker": [
+					"PQuu6pF"
+				],
+				"Duns": [
+					"54CLaitvl"
+				],
+				"VatNumber": [
+					"hHZzsI0RX"
+				],
+				"CompanyRegistrationNumber": []
+			},
+			"countryCode": "KP",
+			"companyContactDetails": [
+				"Shad.Tremblay@example.com"
+			],
+			"companyAlternativeNames": [
+				"Cummings, Marks and Hoeger",
+				"Fadel, Bogisich and Bartoletti",
+				"Kihn, Murphy and Hickle"
+			],
+			"companyLegalForm": "Partnership without Limited Liability",
+			"website": null,
+			"isTeaserCompany": false,
+			"parentCompanyLei": null
+		},
+		"t": {
+			"general": {
+				"general": {
+					"fiscalYearDeviation": {
+						"value": "Deviation",
+						"dataSource": {
+							"page": "779",
+							"fileName": "AnnualReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "action-items"
+						},
+						"comment": "compress back-end feed",
+						"quality": "NoDataFound"
+					},
+					"fiscalYearEnd": {
+						"value": "2024-10-12",
+						"dataSource": {
+							"page": "405-1268",
+							"fileName": "IntegratedReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "technologies"
+						},
+						"comment": null,
+						"quality": null
+					},
+					"referencedReports": {
+						"AnnualReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "AnnualReport",
+							"publicationDate": "2023-08-21"
+						},
+						"IntegratedReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": null,
+							"publicationDate": "2023-09-17"
+						}
+					}
+				},
+				"financialInformation": {
+					"equity": null,
+					"debt": {
+						"value": 4666012909.73,
+						"dataSource": {
+							"page": "417-1206",
+							"fileName": "IntegratedReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "metrics"
+						},
+						"comment": "transmit back-end application",
+						"quality": "Reported",
+						"currency": "CDF"
+					},
+					"balanceSheetTotal": {
+						"value": 3330788786.99,
+						"dataSource": {
+							"page": "456",
+							"fileName": "AnnualReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "methodologies"
+						},
+						"comment": "generate open-source protocol",
+						"quality": "Incomplete",
+						"currency": "JPY"
+					},
+					"evic": {
+						"value": 8681673174.73,
+						"dataSource": {
+							"page": "221",
+							"fileName": "IntegratedReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "methodologies"
+						},
+						"comment": "navigate multi-byte interface",
+						"quality": "Audited",
+						"currency": "TOP"
+					}
+				}
+			}
+		},
+		"reportingPeriod": "2024"
+	},
+	{
+		"companyInformation": {
+			"companyName": "Kerluke - Nader",
+			"headquarters": "South Lelandshire",
+			"headquartersPostalCode": "90642-1399",
+			"sector": "schemas",
+			"identifiers": {
+				"Lei": [
+					"EDidOkcYK87V7olzyGTc"
+				],
+				"Isin": [
+					"Hy7VLFe0S2Y4",
+					"UHrQ6eRA1m4o"
+				],
+				"PermId": [],
+				"Ticker": [
+					"riJcL7P"
+				],
+				"Duns": [],
+				"VatNumber": [
+					"sTBlROCyo"
+				],
+				"CompanyRegistrationNumber": []
+			},
+			"countryCode": "BR",
+			"companyContactDetails": [],
+			"companyAlternativeNames": [
+				"Gusikowski, Pacocha and Rolfson"
+			],
+			"companyLegalForm": null,
+			"website": "https://granular-godmother.name",
+			"isTeaserCompany": false,
+			"parentCompanyLei": "2IWkfgwHtCAakHQmdOTy"
+		},
+		"t": {
+			"general": {
+				"general": {
+					"fiscalYearDeviation": {
+						"value": null,
+						"dataSource": {
+							"page": "63-636",
+							"fileName": "SustainabilityReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "models"
+						},
+						"comment": "calculate open-source matrix",
+						"quality": "Reported"
+					},
+					"fiscalYearEnd": {
+						"value": "2024-04-13",
+						"dataSource": {
+							"page": "856-1258",
+							"fileName": "SustainabilityReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "portals"
+						},
+						"comment": "copy primary panel",
+						"quality": "Audited"
+					},
+					"referencedReports": {
+						"SustainabilityReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "SustainabilityReport",
+							"publicationDate": "2023-09-01"
+						}
+					}
+				},
+				"financialInformation": {
+					"equity": {
+						"value": null,
+						"dataSource": {
+							"page": "325-546",
+							"fileName": "SustainabilityReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "markets"
+						},
+						"comment": null,
+						"quality": "Incomplete",
+						"currency": "DOP"
+					},
+					"debt": {
+						"value": 219999807.88,
+						"dataSource": {
+							"page": "250",
+							"fileName": "SustainabilityReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "solutions"
+						},
+						"comment": null,
+						"quality": "Incomplete",
+						"currency": "SAR"
+					},
+					"balanceSheetTotal": {
+						"value": 1894649697.93,
+						"dataSource": null,
+						"comment": "quantify online alarm",
+						"quality": "NoDataFound",
+						"currency": "AUD"
+					},
+					"evic": {
+						"value": 8029325949.03,
+						"dataSource": {
+							"page": "536",
+							"fileName": "SustainabilityReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "e-markets"
+						},
+						"comment": "parse wireless program",
+						"quality": "Audited",
+						"currency": "BZD"
+					}
+				}
+			}
+		},
+		"reportingPeriod": "2020"
+	},
+	{
+		"companyInformation": {
+			"companyName": "Dickinson, Johns and Bosco",
+			"headquarters": "Hamillbury",
+			"headquartersPostalCode": "93545",
+			"sector": "e-business",
+			"identifiers": {
+				"Lei": [
+					"c6cNiu5zeyck0Sxkp3FG"
+				],
+				"Isin": [
+					"8u4B4Mdjmq9m",
+					"9vNuIFt6Yu18"
+				],
+				"PermId": [
+					"I2fdHxIwFa"
+				],
+				"Ticker": [
+					"7X0KcqX"
+				],
+				"Duns": [
+					"75uDGVpon"
+				],
+				"VatNumber": [
+					"84iU8ylIn"
+				],
+				"CompanyRegistrationNumber": [
+					"dEMkYlJtA2XbS23"
+				]
+			},
+			"countryCode": "GF",
+			"companyContactDetails": [
+				"Fletcher_Hills@example.com"
+			],
+			"companyAlternativeNames": [
+				"Hane and Sons",
+				"Wunsch, Smith and Schuppe"
+			],
+			"companyLegalForm": "Limited Liability Partnership (LLP)",
+			"website": "https://ethical-shortwave.biz/",
+			"isTeaserCompany": false,
+			"parentCompanyLei": "EDidOkcYK87V7olzyGTc"
+		},
+		"t": {
+			"general": {
+				"general": {
+					"fiscalYearDeviation": {
+						"value": "NoDeviation",
+						"dataSource": {
+							"page": "613",
+							"fileName": "IntegratedReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "applications"
+						},
+						"comment": null,
+						"quality": "Audited"
+					},
+					"fiscalYearEnd": null,
+					"referencedReports": {
+						"IntegratedReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "IntegratedReport",
+							"publicationDate": "2023-10-17"
+						},
+						"SustainabilityReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "SustainabilityReport",
+							"publicationDate": "2023-12-04"
+						}
+					}
+				},
+				"financialInformation": {
+					"equity": {
+						"value": null,
+						"dataSource": {
+							"page": "1197-1276",
+							"fileName": "IntegratedReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "relationships"
+						},
+						"comment": "input multi-byte sensor",
+						"quality": null,
+						"currency": "UYU"
+					},
+					"debt": null,
+					"balanceSheetTotal": {
+						"value": 2654435397.12,
+						"dataSource": {
+							"page": "684",
+							"fileName": "IntegratedReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "niches"
+						},
+						"comment": "synthesize primary bus",
+						"quality": "Reported",
+						"currency": "TRY"
+					},
+					"evic": {
+						"value": 9975960680.75,
+						"dataSource": {
+							"page": "996",
+							"fileName": "SustainabilityReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "architectures"
+						},
+						"comment": "reboot virtual port",
+						"quality": "Reported",
+						"currency": "SCR"
+					}
+				}
+			}
+		},
+		"reportingPeriod": "2021"
+	},
+	{
+		"companyInformation": {
+			"companyName": "Shanahan, Leuschke and Deckow",
+			"headquarters": "South Drew",
+			"headquartersPostalCode": "24580-6276",
+			"sector": "applications",
+			"identifiers": {
+				"Lei": [],
+				"Isin": [
+					"kqtbuNSkizHI",
+					"7QzqUVSZigzM"
+				],
+				"PermId": [
+					"qIdYWMjKM9"
+				],
+				"Ticker": [],
+				"Duns": [],
+				"VatNumber": [
+					"9CeYudPYa"
+				],
+				"CompanyRegistrationNumber": []
+			},
+			"countryCode": "ME",
+			"companyContactDetails": [
+				"Aglae_Pacocha@example.com",
+				"Reid_Beier38@example.com",
+				"Favian13@example.com",
+				"Dejuan_Rath12@example.com",
+				"Jazmin.Friesen@example.com"
+			],
+			"companyAlternativeNames": [
+				"Balistreri, Von and Ward",
+				"Johnston Inc"
+			],
+			"companyLegalForm": null,
+			"website": "https://peaceful-diversity.net/",
+			"isTeaserCompany": false,
+			"parentCompanyLei": "c6cNiu5zeyck0Sxkp3FG"
+		},
+		"t": {
+			"general": {
+				"general": {
+					"fiscalYearDeviation": null,
+					"fiscalYearEnd": {
+						"value": null,
+						"dataSource": null,
+						"comment": "input open-source array",
+						"quality": null
+					},
+					"referencedReports": {
+						"IntegratedReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "IntegratedReport",
+							"publicationDate": null
+						}
+					}
+				},
+				"financialInformation": {
+					"equity": {
+						"value": null,
+						"dataSource": {
+							"page": "277",
+							"fileName": "IntegratedReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "platforms"
+						},
+						"comment": "hack haptic feed",
+						"quality": "NoDataFound",
+						"currency": "SOS"
+					},
+					"debt": null,
+					"balanceSheetTotal": {
+						"value": 4561745610.55,
+						"dataSource": {
+							"page": "685-884",
+							"fileName": "IntegratedReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "niches"
+						},
+						"comment": "override neural panel",
+						"quality": "Audited",
+						"currency": "SOS"
+					},
+					"evic": null
+				}
+			}
+		},
+		"reportingPeriod": "2021"
+	},
+	{
+		"companyInformation": {
+			"companyName": "Conn Group",
+			"headquarters": "North Zelmaton",
+			"headquartersPostalCode": null,
+			"sector": "e-commerce",
+			"identifiers": {
+				"Lei": [
+					"ssM5MwOcnTmdhKgJrslW"
+				],
+				"Isin": [
+					"Mq9aeUnRuCuL"
+				],
+				"PermId": [
+					"qOaqmM7LUA"
+				],
+				"Ticker": [],
+				"Duns": [],
+				"VatNumber": [],
+				"CompanyRegistrationNumber": []
+			},
+			"countryCode": "MH",
+			"companyContactDetails": [],
+			"companyAlternativeNames": [
+				"Bergstrom Group",
+				"Klocko - Prosacco",
+				"Marquardt LLC",
+				"Schoen, Padberg and Bradtke"
+			],
+			"companyLegalForm": null,
+			"website": "https://minor-escalator.biz",
+			"isTeaserCompany": false,
+			"parentCompanyLei": null
+		},
+		"t": {
+			"general": {
+				"general": {
+					"fiscalYearDeviation": null,
+					"fiscalYearEnd": {
+						"value": "2024-11-27",
+						"dataSource": {
+							"page": "1121",
+							"fileName": "IntegratedReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "e-business"
+						},
+						"comment": "reboot auxiliary transmitter",
+						"quality": "Audited"
+					},
+					"referencedReports": {
+						"IntegratedReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "IntegratedReport",
+							"publicationDate": null
+						},
+						"AnnualReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "AnnualReport",
+							"publicationDate": "2024-01-03"
+						},
+						"ESEFReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "ESEFReport",
+							"publicationDate": "2023-11-06"
+						}
+					}
+				},
+				"financialInformation": {
+					"equity": {
+						"value": 230103507.63,
+						"dataSource": {
+							"page": "1125-1144",
+							"fileName": "AnnualReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "bandwidth"
+						},
+						"comment": "hack auxiliary capacitor",
+						"quality": "Incomplete",
+						"currency": "PAB"
+					},
+					"debt": {
+						"value": 1410639258.1,
+						"dataSource": {
+							"page": "950",
+							"fileName": "AnnualReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "interfaces"
+						},
+						"comment": "calculate digital card",
+						"quality": "Estimated",
+						"currency": "BAM"
+					},
+					"balanceSheetTotal": {
+						"value": 6497737690.81,
+						"dataSource": {
+							"page": "325",
+							"fileName": "AnnualReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "partnerships"
+						},
+						"comment": "program 1080p hard drive",
+						"quality": "Incomplete",
+						"currency": "NIO"
+					},
+					"evic": {
+						"value": 791735849.34,
+						"dataSource": {
+							"page": "321",
+							"fileName": "IntegratedReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "models"
+						},
+						"comment": "copy multi-byte interface",
+						"quality": "Estimated",
+						"currency": "LBP"
+					}
+				}
+			}
+		},
+		"reportingPeriod": "2020"
+	},
+	{
+		"companyInformation": {
+			"companyName": "Bayer Group",
+			"headquarters": "East Kelley",
+			"headquartersPostalCode": "98331",
+			"sector": null,
+			"identifiers": {
+				"Lei": [
+					"APKJnqNuLR2xvh8qpCq0"
+				],
+				"Isin": [
+					"Xkf9J2lRrJqN"
+				],
+				"PermId": [
+					"cc3eScQDuB"
+				],
+				"Ticker": [
+					"JuaBE3w"
+				],
+				"Duns": [],
+				"VatNumber": [],
+				"CompanyRegistrationNumber": []
+			},
+			"countryCode": "BD",
+			"companyContactDetails": null,
+			"companyAlternativeNames": [
+				"Ward and Sons"
+			],
+			"companyLegalForm": "Limited Liability Partnership (LLP)",
+			"website": null,
+			"isTeaserCompany": false,
+			"parentCompanyLei": "ssM5MwOcnTmdhKgJrslW"
+		},
+		"t": {
+			"general": {
+				"general": {
+					"fiscalYearDeviation": {
+						"value": null,
+						"dataSource": {
+							"page": "15",
+							"fileName": "IntegratedReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "metrics"
+						},
+						"comment": "generate cross-platform matrix",
+						"quality": "Incomplete"
+					},
+					"fiscalYearEnd": {
+						"value": "2024-12-30",
+						"dataSource": {
+							"page": "502-740",
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "lifetime value"
+						},
+						"comment": "connect online circuit",
+						"quality": "Audited"
+					},
+					"referencedReports": {
+						"ESEFReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "ESEFReport",
+							"publicationDate": "2023-10-28"
+						},
+						"SustainabilityReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "SustainabilityReport",
+							"publicationDate": "2023-03-31"
+						},
+						"AnnualReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "AnnualReport",
+							"publicationDate": "2023-06-05"
+						},
+						"IntegratedReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "IntegratedReport",
+							"publicationDate": "2023-12-22"
+						}
+					}
+				},
+				"financialInformation": {
+					"equity": {
+						"value": 1037714476.69,
+						"dataSource": {
+							"page": "1058",
+							"fileName": "AnnualReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "mindshare"
+						},
+						"comment": "generate digital card",
+						"quality": "Audited",
+						"currency": "NAD"
+					},
+					"debt": null,
+					"balanceSheetTotal": {
+						"value": 5198508806.06,
+						"dataSource": {
+							"page": "733",
+							"fileName": "SustainabilityReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "technologies"
+						},
+						"comment": "quantify cross-platform system",
+						"quality": "Audited",
+						"currency": "JPY"
+					},
+					"evic": {
+						"value": 4633080910.43,
+						"dataSource": null,
+						"comment": "copy bluetooth matrix",
+						"quality": "Incomplete",
+						"currency": "SGD"
+					}
+				}
+			}
+		},
+		"reportingPeriod": "2023"
+	},
+	{
+		"companyInformation": {
+			"companyName": "Gulgowski LLC",
+			"headquarters": "Rempelstead",
+			"headquartersPostalCode": "47676",
+			"sector": "content",
+			"identifiers": {
+				"Lei": [],
+				"Isin": [
+					"zc8S01umCB8B",
+					"v0KvKA30Egj0"
+				],
+				"PermId": [],
+				"Ticker": [],
+				"Duns": [],
+				"VatNumber": [],
+				"CompanyRegistrationNumber": []
+			},
+			"countryCode": "TD",
+			"companyContactDetails": [],
+			"companyAlternativeNames": [
+				"Weimann, Schinner and Leuschke"
+			],
+			"companyLegalForm": "Public Limited Company (PLC)",
+			"website": "https://soupy-worshiper.org/",
+			"isTeaserCompany": false,
+			"parentCompanyLei": "APKJnqNuLR2xvh8qpCq0"
+		},
+		"t": {
+			"general": {
+				"general": {
+					"fiscalYearDeviation": {
+						"value": null,
+						"dataSource": null,
+						"comment": "input mobile capacitor",
+						"quality": null
+					},
+					"fiscalYearEnd": {
+						"value": "2024-12-28",
+						"dataSource": {
+							"page": "155-1047",
+							"fileName": "AnnualReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "web services"
+						},
+						"comment": "generate redundant protocol",
+						"quality": "Audited"
+					},
+					"referencedReports": {
+						"IntegratedReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "IntegratedReport",
+							"publicationDate": "2023-12-26"
+						},
+						"ESEFReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "ESEFReport",
+							"publicationDate": "2023-10-14"
+						},
+						"AnnualReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "AnnualReport",
+							"publicationDate": "2024-01-05"
+						},
+						"SustainabilityReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "SustainabilityReport",
+							"publicationDate": "2023-02-16"
+						}
+					}
+				},
+				"financialInformation": {
+					"equity": null,
+					"debt": {
+						"value": 1897033534.48,
+						"dataSource": {
+							"page": "299-1155",
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "models"
+						},
+						"comment": "compress neural interface",
+						"quality": null,
+						"currency": "IDR"
+					},
+					"balanceSheetTotal": {
+						"value": 5610665518.33,
+						"dataSource": null,
+						"comment": "back up multi-byte hard drive",
+						"quality": null,
+						"currency": "BDT"
+					},
+					"evic": {
+						"value": 1268700724.46,
+						"dataSource": {
+							"page": "397",
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "content"
+						},
+						"comment": null,
+						"quality": "Reported",
+						"currency": "KHR"
+					}
+				}
+			}
+		},
+		"reportingPeriod": "2024"
+	},
+	{
+		"companyInformation": {
+			"companyName": "Hirthe LLC",
+			"headquarters": "Walshworth",
+			"headquartersPostalCode": "89506",
+			"sector": null,
+			"identifiers": {
+				"Lei": [],
+				"Isin": [
+					"li7zFWc1n3aH",
+					"WoycxXkgcavm"
+				],
+				"PermId": [],
+				"Ticker": [
+					"MG3Ppba"
+				],
+				"Duns": [],
+				"VatNumber": [
+					"dScHk1iB9"
+				],
+				"CompanyRegistrationNumber": []
+			},
+			"countryCode": "NI",
+			"companyContactDetails": [
+				"Ari_Nicolas@example.com",
+				"Whitney.Waelchi91@example.com",
+				"Trevion_Schowalter@example.com",
+				"Clifford_Dooley@example.com",
+				"Moses.Beer60@example.com"
+			],
+			"companyAlternativeNames": [
+				"Kessler and Sons",
+				"Spinka, Pfeffer and Hilpert"
+			],
+			"companyLegalForm": "Limited Liability Partnership (LLP)",
+			"website": "https://muddy-driving.org/",
+			"isTeaserCompany": false,
+			"parentCompanyLei": null
+		},
+		"t": {
+			"general": {
+				"general": {
+					"fiscalYearDeviation": null,
+					"fiscalYearEnd": {
+						"value": null,
+						"dataSource": null,
+						"comment": "program online pixel",
+						"quality": "NoDataFound"
+					},
+					"referencedReports": {
+						"ESEFReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": null,
+							"publicationDate": null
+						}
+					}
+				},
+				"financialInformation": {
+					"equity": {
+						"value": 1056210473.18,
+						"dataSource": {
+							"page": "768-950",
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "communities"
+						},
+						"comment": "input mobile bus",
+						"quality": "Estimated",
+						"currency": "CLP"
+					},
+					"debt": {
+						"value": 8369236204.31,
+						"dataSource": {
+							"page": "1076",
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "e-commerce"
+						},
+						"comment": "calculate back-end feed",
+						"quality": "Audited",
+						"currency": "SHP"
+					},
+					"balanceSheetTotal": null,
+					"evic": {
+						"value": 5447250299.62,
+						"dataSource": {
+							"page": "781-972",
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "technologies"
+						},
+						"comment": null,
+						"quality": "Incomplete",
+						"currency": "SCR"
+					}
+				}
+			}
+		},
+		"reportingPeriod": "2022"
+	},
+	{
+		"companyInformation": {
+			"companyName": "Witting Inc",
+			"headquarters": "Torphyboro",
+			"headquartersPostalCode": "55402",
+			"sector": "niches",
+			"identifiers": {
+				"Lei": [
+					"Bbwdg80Dojv0E6WGiTWP"
+				],
+				"Isin": [
+					"YTmKZxBfu4ET"
+				],
+				"PermId": [],
+				"Ticker": [
+					"idCb5oB"
+				],
+				"Duns": [
+					"1iqR0NC47"
+				],
+				"VatNumber": [
+					"jwBdtuNlh"
+				],
+				"CompanyRegistrationNumber": []
+			},
+			"countryCode": "HK",
+			"companyContactDetails": null,
+			"companyAlternativeNames": [
+				"King, Kassulke and Raynor"
+			],
+			"companyLegalForm": null,
+			"website": "https://likable-daylight.com/",
+			"isTeaserCompany": false,
+			"parentCompanyLei": null
+		},
+		"t": {
+			"general": {
+				"general": {
+					"fiscalYearDeviation": {
+						"value": null,
+						"dataSource": {
+							"page": "1128",
+							"fileName": "AnnualReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "deliverables"
+						},
+						"comment": "copy optical microchip",
+						"quality": "NoDataFound"
+					},
+					"fiscalYearEnd": {
+						"value": "2024-10-27",
+						"dataSource": {
+							"page": "566",
+							"fileName": "AnnualReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "interfaces"
+						},
+						"comment": "program virtual matrix",
+						"quality": "NoDataFound"
+					},
+					"referencedReports": {
+						"AnnualReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "AnnualReport",
+							"publicationDate": "2023-04-27"
+						}
+					}
+				},
+				"financialInformation": {
+					"equity": {
+						"value": 3940181869.55,
+						"dataSource": {
+							"page": "763",
+							"fileName": "AnnualReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "portals"
+						},
+						"comment": "program virtual protocol",
+						"quality": "NoDataFound",
+						"currency": "IDR"
+					},
+					"debt": {
+						"value": null,
+						"dataSource": {
+							"page": "1014",
+							"fileName": "AnnualReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "initiatives"
+						},
+						"comment": "generate cross-platform bus",
+						"quality": "Estimated",
+						"currency": "BZD"
+					},
+					"balanceSheetTotal": {
+						"value": 7770242469.85,
+						"dataSource": {
+							"page": "676-777",
+							"fileName": "AnnualReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "systems"
+						},
+						"comment": "back up redundant array",
+						"quality": null,
+						"currency": "HUF"
+					},
+					"evic": {
+						"value": null,
+						"dataSource": {
+							"page": "940-973",
+							"fileName": "AnnualReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "experiences"
+						},
+						"comment": null,
+						"quality": "Audited",
+						"currency": "AUD"
+					}
+				}
+			}
+		},
+		"reportingPeriod": "2020"
+	},
+	{
+		"companyInformation": {
+			"companyName": "Koch Inc",
+			"headquarters": "Hoppeport",
+			"headquartersPostalCode": "41090-5631",
+			"sector": "portals",
+			"identifiers": {
+				"Lei": [
+					"yfTgtHnoHtGj57rtySS2"
+				],
+				"Isin": [
+					"lpddJ5aaDmWV"
+				],
+				"PermId": [
+					"tFAUZlgTNS"
+				],
+				"Ticker": [],
+				"Duns": [
+					"aIYHBZ5sk"
+				],
+				"VatNumber": [
+					"k7AMPEcvr"
+				],
+				"CompanyRegistrationNumber": [
+					"Hmj75Q4gyNbdy4s"
+				]
+			},
+			"countryCode": "PR",
+			"companyContactDetails": [
+				"Kasandra_Strosin23@example.com"
+			],
+			"companyAlternativeNames": [
+				"Boyle Inc"
+			],
+			"companyLegalForm": "Partnership without Limited Liability",
+			"website": null,
+			"isTeaserCompany": false,
+			"parentCompanyLei": "Bbwdg80Dojv0E6WGiTWP"
+		},
+		"t": {
+			"general": {
+				"general": {
+					"fiscalYearDeviation": {
+						"value": "Deviation",
+						"dataSource": {
+							"page": "1189",
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "convergence"
+						},
+						"comment": "index redundant panel",
+						"quality": null
+					},
+					"fiscalYearEnd": null,
+					"referencedReports": {
+						"IntegratedReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "IntegratedReport",
+							"publicationDate": "2023-08-17"
+						},
+						"AnnualReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "AnnualReport",
+							"publicationDate": "2023-01-29"
+						},
+						"ESEFReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "ESEFReport",
+							"publicationDate": "2023-04-29"
+						},
+						"SustainabilityReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "SustainabilityReport",
+							"publicationDate": "2023-08-28"
+						}
+					}
+				},
+				"financialInformation": {
+					"equity": null,
+					"debt": null,
+					"balanceSheetTotal": {
+						"value": null,
+						"dataSource": {
+							"page": "423",
+							"fileName": "IntegratedReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "e-commerce"
+						},
+						"comment": "compress auxiliary alarm",
+						"quality": "Audited",
+						"currency": "EUR"
+					},
+					"evic": {
+						"value": 6877565183.68,
+						"dataSource": {
+							"page": "572-1098",
+							"fileName": "AnnualReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "infrastructures"
+						},
+						"comment": "compress back-end protocol",
+						"quality": "Estimated",
+						"currency": "DJF"
+					}
+				}
+			}
+		},
+		"reportingPeriod": "2024"
+	},
+	{
+		"companyInformation": {
+			"companyName": "Fahey, Hamill and Feest",
+			"headquarters": "New Rodolfo",
+			"headquartersPostalCode": "02411-6244",
+			"sector": null,
+			"identifiers": {
+				"Lei": [],
+				"Isin": [
+					"80l307i34dYp",
+					"EFCDTXoUY7V8"
+				],
+				"PermId": [
+					"viMLxVGUDC"
+				],
+				"Ticker": [
+					"JyrDzZQ"
+				],
+				"Duns": [
+					"rzscDLOq7"
+				],
+				"VatNumber": [],
+				"CompanyRegistrationNumber": []
+			},
+			"countryCode": "UZ",
+			"companyContactDetails": [
+				"Rachael.Steuber@example.com",
+				"Vernie98@example.com",
+				"Brittany18@example.com",
+				"Cheyanne_Frami85@example.com",
+				"Newell0@example.com"
+			],
+			"companyAlternativeNames": [
+				"Casper - Cremin",
+				"Herzog, Kiehn and Franey"
+			],
+			"companyLegalForm": "Sole Trader",
+			"website": "https://fuzzy-estate.com",
+			"isTeaserCompany": false,
+			"parentCompanyLei": "yfTgtHnoHtGj57rtySS2"
+		},
+		"t": {
+			"general": {
+				"general": {
+					"fiscalYearDeviation": {
+						"value": null,
+						"dataSource": {
+							"page": "278-406",
+							"fileName": "SustainabilityReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "content"
+						},
+						"comment": "compress mobile system",
+						"quality": "Reported"
+					},
+					"fiscalYearEnd": {
+						"value": "2024-05-28",
+						"dataSource": {
+							"page": "257",
+							"fileName": "SustainabilityReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "networks"
+						},
+						"comment": "index open-source alarm",
+						"quality": "Audited"
+					},
+					"referencedReports": {
+						"IntegratedReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "IntegratedReport",
+							"publicationDate": "2023-07-01"
+						},
+						"SustainabilityReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "SustainabilityReport",
+							"publicationDate": "2023-09-27"
+						}
+					}
+				},
+				"financialInformation": {
+					"equity": {
+						"value": 2532670439.68,
+						"dataSource": null,
+						"comment": "index auxiliary capacitor",
+						"quality": null,
+						"currency": "MMK"
+					},
+					"debt": {
+						"value": 3780607443.77,
+						"dataSource": null,
+						"comment": "generate 1080p hard drive",
+						"quality": "Incomplete",
+						"currency": "PYG"
+					},
+					"balanceSheetTotal": {
+						"value": null,
+						"dataSource": {
+							"page": "612",
+							"fileName": "SustainabilityReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "systems"
+						},
+						"comment": "calculate solid state microchip",
+						"quality": "Incomplete",
+						"currency": "CRC"
+					},
+					"evic": null
+				}
+			}
+		},
+		"reportingPeriod": "2022"
+	},
+	{
+		"companyInformation": {
+			"companyName": "Beahan, Schaden and Howell",
+			"headquarters": "Sawaynfurt",
+			"headquartersPostalCode": "21772-6453",
+			"sector": "content",
+			"identifiers": {
+				"Lei": [],
+				"Isin": [
+					"WnnuzPwUoVaF"
+				],
+				"PermId": [],
+				"Ticker": [],
+				"Duns": [
+					"a19ISDfud"
+				],
+				"VatNumber": [],
+				"CompanyRegistrationNumber": []
+			},
+			"countryCode": "MC",
+			"companyContactDetails": null,
+			"companyAlternativeNames": [
+				"Dietrich and Sons",
+				"Jaskolski - Roberts",
+				"Rippin - Lindgren"
+			],
+			"companyLegalForm": null,
+			"website": "https://our-grandmother.name/",
+			"isTeaserCompany": false,
+			"parentCompanyLei": null
+		},
+		"t": {
+			"general": {
+				"general": {
+					"fiscalYearDeviation": {
+						"value": "Deviation",
+						"dataSource": {
+							"page": "184",
+							"fileName": "SustainabilityReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "e-business"
+						},
+						"comment": "compress virtual monitor",
+						"quality": "Reported"
+					},
+					"fiscalYearEnd": {
+						"value": "2024-11-07",
+						"dataSource": {
+							"page": "984",
+							"fileName": "AnnualReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "supply-chains"
+						},
+						"comment": null,
+						"quality": "Incomplete"
+					},
+					"referencedReports": {
+						"ESEFReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "ESEFReport",
+							"publicationDate": "2023-08-23"
+						},
+						"IntegratedReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "IntegratedReport",
+							"publicationDate": "2023-07-14"
+						},
+						"SustainabilityReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "SustainabilityReport",
+							"publicationDate": "2024-01-03"
+						},
+						"AnnualReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "AnnualReport",
+							"publicationDate": "2023-07-09"
+						}
+					}
+				},
+				"financialInformation": {
+					"equity": {
+						"value": 6788004678.68,
+						"dataSource": {
+							"page": "1015",
+							"fileName": "AnnualReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "networks"
+						},
+						"comment": "program haptic bus",
+						"quality": "Audited",
+						"currency": "ZMW"
+					},
+					"debt": null,
+					"balanceSheetTotal": {
+						"value": 6716615578.63,
+						"dataSource": {
+							"page": "646",
+							"fileName": "AnnualReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "architectures"
+						},
+						"comment": "connect primary bus",
+						"quality": "Reported",
+						"currency": "GYD"
+					},
+					"evic": null
+				}
+			}
+		},
+		"reportingPeriod": "2021"
+	},
+	{
+		"companyInformation": {
+			"companyName": "Treutel Group",
+			"headquarters": "Port Dino",
+			"headquartersPostalCode": null,
+			"sector": "metrics",
+			"identifiers": {
+				"Lei": [
+					"z6DxB779PSIHYicChWUF"
+				],
+				"Isin": [
+					"1pDGyjFDwSiW"
+				],
+				"PermId": [
+					"gd7jAhcnzj"
+				],
+				"Ticker": [
+					"UBYTxPI"
+				],
+				"Duns": [],
+				"VatNumber": [
+					"uM2P1xqkv"
+				],
+				"CompanyRegistrationNumber": [
+					"zowoZ0ZxV0pt9bP"
+				]
+			},
+			"countryCode": "GT",
+			"companyContactDetails": [
+				"Fidel_Mertz@example.com",
+				"Ramiro_Conn62@example.com",
+				"Emile_Toy@example.com"
+			],
+			"companyAlternativeNames": [
+				"Bartoletti, Kassulke and Hyatt",
+				"Monahan and Sons"
+			],
+			"companyLegalForm": null,
+			"website": "https://vengeful-season.org",
+			"isTeaserCompany": false,
+			"parentCompanyLei": null
+		},
+		"t": {
+			"general": {
+				"general": {
+					"fiscalYearDeviation": null,
+					"fiscalYearEnd": {
+						"value": "2024-08-28",
+						"dataSource": {
+							"page": "942",
+							"fileName": "IntegratedReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "platforms"
+						},
+						"comment": "hack haptic hard drive",
+						"quality": "Estimated"
+					},
+					"referencedReports": {
+						"IntegratedReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "IntegratedReport",
+							"publicationDate": "2023-04-06"
+						}
+					}
+				},
+				"financialInformation": {
+					"equity": {
+						"value": 9344206186.95,
+						"dataSource": {
+							"page": "168",
+							"fileName": "IntegratedReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "applications"
+						},
+						"comment": "calculate open-source protocol",
+						"quality": "Estimated",
+						"currency": "KPW"
+					},
+					"debt": {
+						"value": 8980444124.9,
+						"dataSource": {
+							"page": "552",
+							"fileName": "IntegratedReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "action-items"
+						},
+						"comment": "calculate redundant feed",
+						"quality": "Incomplete",
+						"currency": "MUR"
+					},
+					"balanceSheetTotal": {
+						"value": 3615640336.65,
+						"dataSource": {
+							"page": "430",
+							"fileName": "IntegratedReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "methodologies"
+						},
+						"comment": "quantify open-source capacitor",
+						"quality": "Audited",
+						"currency": "VUV"
+					},
+					"evic": {
+						"value": 3146129227.24,
+						"dataSource": {
+							"page": "627",
+							"fileName": "IntegratedReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "methodologies"
+						},
+						"comment": null,
+						"quality": "Incomplete",
+						"currency": "TMT"
+					}
+				}
+			}
+		},
+		"reportingPeriod": "2024"
+	},
+	{
+		"companyInformation": {
+			"companyName": "Harvey Inc",
+			"headquarters": "Muellerboro",
+			"headquartersPostalCode": "65374-7124",
+			"sector": "partnerships",
+			"identifiers": {
+				"Lei": [
+					"Kh63jc1LtT7wSc31ufJZ"
+				],
+				"Isin": [
+					"6g13oswCvUus",
+					"7r9LiDJVbNYZ"
+				],
+				"PermId": [],
+				"Ticker": [
+					"nPA1ymT"
+				],
+				"Duns": [],
+				"VatNumber": [
+					"uDGeXuZlT"
+				],
+				"CompanyRegistrationNumber": [
+					"5zcswnnBcZdAWjC"
+				]
+			},
+			"countryCode": "JP",
+			"companyContactDetails": [
+				"Domingo.Considine@example.com",
+				"Geovanni_Greenfelder@example.com",
+				"Cyril_Rowe6@example.com",
+				"Jeramy73@example.com",
+				"Kelsie.Stehr46@example.com"
+			],
+			"companyAlternativeNames": [
+				"Borer LLC",
+				"Bosco, O'Keefe and Stiedemann",
+				"Gerlach, Conroy and Stanton"
+			],
+			"companyLegalForm": "GmbH",
+			"website": "https://enchanted-ant.com",
+			"isTeaserCompany": false,
+			"parentCompanyLei": "z6DxB779PSIHYicChWUF"
+		},
+		"t": {
+			"general": {
+				"general": {
+					"fiscalYearDeviation": {
+						"value": "NoDeviation",
+						"dataSource": {
+							"page": "375",
+							"fileName": "AnnualReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "channels"
+						},
+						"comment": "calculate optical monitor",
+						"quality": "Audited"
+					},
+					"fiscalYearEnd": {
+						"value": null,
+						"dataSource": {
+							"page": "269",
+							"fileName": "AnnualReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "interfaces"
+						},
+						"comment": "override back-end panel",
+						"quality": "NoDataFound"
+					},
+					"referencedReports": {
+						"IntegratedReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "IntegratedReport",
+							"publicationDate": "2023-02-09"
+						},
+						"ESEFReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "ESEFReport",
+							"publicationDate": "2023-08-04"
+						},
+						"SustainabilityReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "SustainabilityReport",
+							"publicationDate": "2023-03-02"
+						},
+						"AnnualReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "AnnualReport",
+							"publicationDate": "2024-01-15"
+						}
+					}
+				},
+				"financialInformation": {
+					"equity": {
+						"value": 4429539220.87,
+						"dataSource": {
+							"page": "1047",
+							"fileName": "AnnualReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "e-business"
+						},
+						"comment": "hack 1080p card",
+						"quality": "Incomplete",
+						"currency": "INR"
+					},
+					"debt": {
+						"value": 5297658371.27,
+						"dataSource": {
+							"page": "653",
+							"fileName": "AnnualReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "deliverables"
+						},
+						"comment": "synthesize auxiliary interface",
+						"quality": "Estimated",
+						"currency": "SAR"
+					},
+					"balanceSheetTotal": {
+						"value": 1660065292.38,
+						"dataSource": {
+							"page": "411-797",
+							"fileName": "SustainabilityReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "platforms"
+						},
+						"comment": "index solid state interface",
+						"quality": null,
+						"currency": "RSD"
+					},
+					"evic": {
+						"value": 7218711928,
+						"dataSource": {
+							"page": "1193-1291",
+							"fileName": "AnnualReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "channels"
+						},
+						"comment": null,
+						"quality": null,
+						"currency": "BHD"
+					}
+				}
+			}
+		},
+		"reportingPeriod": "2024"
+	},
+	{
+		"companyInformation": {
+			"companyName": "Nader and Sons",
+			"headquarters": "Chesterfield",
+			"headquartersPostalCode": "49694",
+			"sector": null,
+			"identifiers": {
+				"Lei": [
+					"7cJHxioNaKihpFGiGA9y"
+				],
+				"Isin": [
+					"d8CXiuXa2EEv"
+				],
+				"PermId": [],
+				"Ticker": [],
+				"Duns": [
+					"xuRpquaMn"
+				],
+				"VatNumber": [],
+				"CompanyRegistrationNumber": []
+			},
+			"countryCode": "BY",
+			"companyContactDetails": [
+				"Lyla91@example.com",
+				"Coty93@example.com"
+			],
+			"companyAlternativeNames": [
+				"Borer Inc",
+				"Howe, Gorczany and Turner",
+				"Macejkovic, Kassulke and Fadel"
+			],
+			"companyLegalForm": "Limited Liability Partnership (LLP)",
+			"website": "https://finished-whale.org/",
+			"isTeaserCompany": false,
+			"parentCompanyLei": "Kh63jc1LtT7wSc31ufJZ"
+		},
+		"t": {
+			"general": {
+				"general": {
+					"fiscalYearDeviation": {
+						"value": "NoDeviation",
+						"dataSource": null,
+						"comment": "override cross-platform matrix",
+						"quality": "NoDataFound"
+					},
+					"fiscalYearEnd": {
+						"value": null,
+						"dataSource": {
+							"page": "224-554",
+							"fileName": "SustainabilityReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "synergies"
+						},
+						"comment": "navigate open-source driver",
+						"quality": null
+					},
+					"referencedReports": {
+						"AnnualReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "AnnualReport",
+							"publicationDate": "2023-05-28"
+						},
+						"ESEFReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "ESEFReport",
+							"publicationDate": "2023-06-04"
+						},
+						"SustainabilityReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "SustainabilityReport",
+							"publicationDate": "2023-07-12"
+						},
+						"IntegratedReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "IntegratedReport",
+							"publicationDate": "2023-03-31"
+						}
+					}
+				},
+				"financialInformation": {
+					"equity": {
+						"value": 9098240626.05,
+						"dataSource": {
+							"page": "1110-1176",
+							"fileName": "AnnualReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "communities"
+						},
+						"comment": "hack mobile program",
+						"quality": "Audited",
+						"currency": "ANG"
+					},
+					"debt": {
+						"value": 3165612332.52,
+						"dataSource": {
+							"page": "1123-1157",
+							"fileName": "SustainabilityReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "supply-chains"
+						},
+						"comment": "override optical pixel",
+						"quality": "Reported",
+						"currency": "SEK"
+					},
+					"balanceSheetTotal": {
+						"value": 2994648655.87,
+						"dataSource": {
+							"page": "438",
+							"fileName": "IntegratedReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "infrastructures"
+						},
+						"comment": "parse wireless hard drive",
+						"quality": null,
+						"currency": "YER"
+					},
+					"evic": {
+						"value": 5906246863.31,
+						"dataSource": {
+							"page": "541",
+							"fileName": "SustainabilityReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "functionalities"
+						},
+						"comment": "input auxiliary feed",
+						"quality": null,
+						"currency": "AZN"
+					}
+				}
+			}
+		},
+		"reportingPeriod": "2020"
+	},
+	{
+		"companyInformation": {
+			"companyName": "Nienow LLC",
+			"headquarters": "Port Cullenshire",
+			"headquartersPostalCode": "11143-0640",
+			"sector": "infrastructures",
+			"identifiers": {
+				"Lei": [],
+				"Isin": [
+					"tl05n5lcq99b"
+				],
+				"PermId": [],
+				"Ticker": [
+					"OkzbdFX"
+				],
+				"Duns": [
+					"B0X8g1KMt"
+				],
+				"VatNumber": [
+					"PeabPLN6l"
+				],
+				"CompanyRegistrationNumber": []
+			},
+			"countryCode": "TJ",
+			"companyContactDetails": [
+				"Christiana16@example.com",
+				"Jace_Schoen42@example.com"
+			],
+			"companyAlternativeNames": [
+				"Beer, Dooley and Muller",
+				"Hackett, Zemlak and Johnson"
+			],
+			"companyLegalForm": null,
+			"website": "https://euphoric-apology.biz/",
+			"isTeaserCompany": false,
+			"parentCompanyLei": "7cJHxioNaKihpFGiGA9y"
+		},
+		"t": {
+			"general": {
+				"general": {
+					"fiscalYearDeviation": {
+						"value": "NoDeviation",
+						"dataSource": {
+							"page": "845-1056",
+							"fileName": "AnnualReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "ROI"
+						},
+						"comment": "synthesize 1080p protocol",
+						"quality": "Audited"
+					},
+					"fiscalYearEnd": null,
+					"referencedReports": {
+						"AnnualReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "AnnualReport",
+							"publicationDate": "2023-07-14"
+						},
+						"IntegratedReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "IntegratedReport",
+							"publicationDate": "2023-10-22"
+						}
+					}
+				},
+				"financialInformation": {
+					"equity": null,
+					"debt": {
+						"value": 2303727513.64,
+						"dataSource": {
+							"page": "962",
+							"fileName": "IntegratedReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "metrics"
+						},
+						"comment": "compress solid state pixel",
+						"quality": "Reported",
+						"currency": "MWK"
+					},
+					"balanceSheetTotal": {
+						"value": 2158480191.13,
+						"dataSource": {
+							"page": "851-1239",
+							"fileName": "AnnualReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "platforms"
+						},
+						"comment": null,
+						"quality": "Audited",
+						"currency": "PKR"
+					},
+					"evic": {
+						"value": null,
+						"dataSource": {
+							"page": "862-990",
+							"fileName": "AnnualReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "niches"
+						},
+						"comment": "compress redundant feed",
+						"quality": "Reported",
+						"currency": "JOD"
+					}
+				}
+			}
+		},
+		"reportingPeriod": "2020"
+	},
+	{
+		"companyInformation": {
+			"companyName": "Shields, Beahan and Maggio",
+			"headquarters": "Lindgrenstad",
+			"headquartersPostalCode": "29682",
+			"sector": "experiences",
+			"identifiers": {
+				"Lei": [],
+				"Isin": [
+					"JH96CShYzKYL",
+					"giktVPRxxTYl"
+				],
+				"PermId": [],
+				"Ticker": [],
+				"Duns": [
+					"hUgBEJWD3"
+				],
+				"VatNumber": [],
+				"CompanyRegistrationNumber": []
+			},
+			"countryCode": "QA",
+			"companyContactDetails": [
+				"Casandra98@example.com",
+				"Gianni24@example.com",
+				"Raphaelle.Christiansen87@example.com",
+				"Natalia85@example.com"
+			],
+			"companyAlternativeNames": [
+				"Denesik - Volkman",
+				"Ondricka, Murphy and Balistreri"
+			],
+			"companyLegalForm": "Limited Liability Partnership (LLP)",
+			"website": "https://scrawny-public.name/",
+			"isTeaserCompany": false,
+			"parentCompanyLei": null
+		},
+		"t": {
+			"general": {
+				"general": {
+					"fiscalYearDeviation": {
+						"value": null,
+						"dataSource": {
+							"page": "361",
+							"fileName": "IntegratedReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "infrastructures"
+						},
+						"comment": "input bluetooth array",
+						"quality": "Reported"
+					},
+					"fiscalYearEnd": {
+						"value": "2025-01-10",
+						"dataSource": null,
+						"comment": "hack virtual pixel",
+						"quality": "Incomplete"
+					},
+					"referencedReports": {
+						"SustainabilityReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "SustainabilityReport",
+							"publicationDate": "2023-02-09"
+						},
+						"IntegratedReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "IntegratedReport",
+							"publicationDate": "2023-12-18"
+						}
+					}
+				},
+				"financialInformation": {
+					"equity": null,
+					"debt": null,
+					"balanceSheetTotal": {
+						"value": null,
+						"dataSource": {
+							"page": "600",
+							"fileName": "IntegratedReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "content"
+						},
+						"comment": "navigate haptic driver",
+						"quality": "Incomplete",
+						"currency": "SLE"
+					},
+					"evic": {
+						"value": 7269560070.71,
+						"dataSource": {
+							"page": "1084",
+							"fileName": "IntegratedReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "technologies"
+						},
+						"comment": "calculate mobile transmitter",
+						"quality": "Reported",
+						"currency": "DKK"
+					}
+				}
+			}
+		},
+		"reportingPeriod": "2020"
+	},
+	{
+		"companyInformation": {
+			"companyName": "Borer - Padberg",
+			"headquarters": "Antioch",
+			"headquartersPostalCode": null,
+			"sector": "technologies",
+			"identifiers": {
+				"Lei": [],
+				"Isin": [
+					"VzqqcShuP72i"
+				],
+				"PermId": [],
+				"Ticker": [],
+				"Duns": [
+					"pu0wMzJk3"
+				],
+				"VatNumber": [],
+				"CompanyRegistrationNumber": [
+					"5d8YzSBBxUuDk4n"
+				]
+			},
+			"countryCode": "WS",
+			"companyContactDetails": [
+				"Mohammed14@example.com",
+				"Aurelia20@example.com",
+				"Nelson_Waelchi21@example.com",
+				"Antonette16@example.com"
+			],
+			"companyAlternativeNames": [
+				"Christiansen - Welch",
+				"Hintz Group",
+				"Jenkins Group"
+			],
+			"companyLegalForm": "GmbH",
+			"website": null,
+			"isTeaserCompany": false,
+			"parentCompanyLei": null
+		},
+		"t": {
+			"general": {
+				"general": {
+					"fiscalYearDeviation": {
+						"value": "NoDeviation",
+						"dataSource": null,
+						"comment": "program mobile feed",
+						"quality": null
+					},
+					"fiscalYearEnd": {
+						"value": "2024-02-02",
+						"dataSource": null,
+						"comment": null,
+						"quality": null
+					},
+					"referencedReports": {
+						"SustainabilityReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "SustainabilityReport",
+							"publicationDate": null
+						},
+						"ESEFReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": null,
+							"publicationDate": "2023-08-16"
+						},
+						"AnnualReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "AnnualReport",
+							"publicationDate": null
+						},
+						"IntegratedReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": null,
+							"publicationDate": "2023-04-06"
+						}
+					}
+				},
+				"financialInformation": {
+					"equity": {
+						"value": 7840942540.21,
+						"dataSource": {
+							"page": "156-776",
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "interfaces"
+						},
+						"comment": "calculate open-source sensor",
+						"quality": "Incomplete",
+						"currency": "BTN"
+					},
+					"debt": {
+						"value": 2653480439.91,
+						"dataSource": {
+							"page": "930",
+							"fileName": "IntegratedReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "functionalities"
+						},
+						"comment": "back up optical firewall",
+						"quality": "Reported",
+						"currency": "TJS"
+					},
+					"balanceSheetTotal": {
+						"value": 6142100607.98,
+						"dataSource": {
+							"page": "803",
+							"fileName": "AnnualReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "functionalities"
+						},
+						"comment": "navigate primary program",
+						"quality": null,
+						"currency": "BZD"
+					},
+					"evic": {
+						"value": 1603201676.62,
+						"dataSource": null,
+						"comment": "back up haptic sensor",
+						"quality": "Estimated",
+						"currency": "TJS"
+					}
+				}
+			}
+		},
+		"reportingPeriod": "2024"
+	},
+	{
+		"companyInformation": {
+			"companyName": "White, Wunsch and Lockman",
+			"headquarters": "Ernatown",
+			"headquartersPostalCode": "51982-5620",
+			"sector": null,
+			"identifiers": {
+				"Lei": [
+					"XcncY0IDUiw8JMdXfgnW"
+				],
+				"Isin": [
+					"GdXMVfTQMV1s"
+				],
+				"PermId": [],
+				"Ticker": [],
+				"Duns": [
+					"BiqbkbTif"
+				],
+				"VatNumber": [
+					"0EVlvGq4j"
+				],
+				"CompanyRegistrationNumber": [
+					"uqagDdAYMnqM4kq"
+				]
+			},
+			"countryCode": "IS",
+			"companyContactDetails": [
+				"Geovany_Keeling@example.com",
+				"Kasey11@example.com",
+				"Nash.Klocko@example.com",
+				"Nadia_Fritsch@example.com",
+				"Martina_Green@example.com"
+			],
+			"companyAlternativeNames": [],
+			"companyLegalForm": "Public Limited Company (PLC)",
+			"website": null,
+			"isTeaserCompany": false,
+			"parentCompanyLei": null
+		},
+		"t": {
+			"general": {
+				"general": {
+					"fiscalYearDeviation": {
+						"value": null,
+						"dataSource": {
+							"page": "435-725",
+							"fileName": "SustainabilityReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "schemas"
+						},
+						"comment": "quantify multi-byte protocol",
+						"quality": "Estimated"
+					},
+					"fiscalYearEnd": {
+						"value": "2024-12-01",
+						"dataSource": {
+							"page": "745",
+							"fileName": "SustainabilityReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "e-business"
+						},
+						"comment": null,
+						"quality": "Audited"
+					},
+					"referencedReports": {
+						"IntegratedReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": null,
+							"publicationDate": "2023-04-30"
+						},
+						"SustainabilityReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "SustainabilityReport",
+							"publicationDate": "2023-12-26"
+						}
+					}
+				},
+				"financialInformation": {
+					"equity": {
+						"value": 9590970729.48,
+						"dataSource": {
+							"page": "352",
+							"fileName": "IntegratedReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "supply-chains"
+						},
+						"comment": "transmit auxiliary firewall",
+						"quality": "Audited",
+						"currency": "KZT"
+					},
+					"debt": {
+						"value": 1058201189.15,
+						"dataSource": {
+							"page": "767-825",
+							"fileName": "SustainabilityReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "portals"
+						},
+						"comment": "transmit virtual system",
+						"quality": "Reported",
+						"currency": "MVR"
+					},
+					"balanceSheetTotal": {
+						"value": 3369586849.58,
+						"dataSource": {
+							"page": "842",
+							"fileName": "SustainabilityReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "users"
+						},
+						"comment": "index open-source interface",
+						"quality": "Audited",
+						"currency": "LSL"
+					},
+					"evic": {
+						"value": 4535897255.41,
+						"dataSource": {
+							"page": "845-1224",
+							"fileName": "IntegratedReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "paradigms"
+						},
+						"comment": "calculate optical alarm",
+						"quality": null,
+						"currency": "RWF"
+					}
+				}
+			}
+		},
+		"reportingPeriod": "2023"
+	},
+	{
+		"companyInformation": {
+			"companyName": "Rowe, Hackett and Halvorson",
+			"headquarters": "East Chelsea",
+			"headquartersPostalCode": "04010",
+			"sector": null,
+			"identifiers": {
+				"Lei": [],
+				"Isin": [
+					"dkAOV62IlDbf",
+					"GAVE645NaiTY"
+				],
+				"PermId": [
+					"xzOaRptU3Y"
+				],
+				"Ticker": [],
+				"Duns": [],
+				"VatNumber": [],
+				"CompanyRegistrationNumber": [
+					"gw8embtzzFFWDyc"
+				]
+			},
+			"countryCode": "BQ",
+			"companyContactDetails": [
+				"Johnpaul_Huel@example.com",
+				"Keyon_Murray@example.com",
+				"Chanel19@example.com",
+				"Hiram_Hartmann29@example.com"
+			],
+			"companyAlternativeNames": [],
+			"companyLegalForm": "Sole Trader",
+			"website": "https://bountiful-auditorium.name",
+			"isTeaserCompany": false,
+			"parentCompanyLei": "XcncY0IDUiw8JMdXfgnW"
+		},
+		"t": {
+			"general": {
+				"general": {
+					"fiscalYearDeviation": {
+						"value": "NoDeviation",
+						"dataSource": {
+							"page": "1042-1087",
+							"fileName": "AnnualReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "niches"
+						},
+						"comment": "program redundant panel",
+						"quality": "Reported"
+					},
+					"fiscalYearEnd": {
+						"value": "2024-12-24",
+						"dataSource": null,
+						"comment": null,
+						"quality": "Estimated"
+					},
+					"referencedReports": {
+						"AnnualReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": null,
+							"publicationDate": "2023-09-02"
+						}
+					}
+				},
+				"financialInformation": {
+					"equity": {
+						"value": null,
+						"dataSource": {
+							"page": "421",
+							"fileName": "AnnualReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "action-items"
+						},
+						"comment": null,
+						"quality": "Audited",
+						"currency": "TZS"
+					},
+					"debt": {
+						"value": 9719134510.97,
+						"dataSource": null,
+						"comment": "navigate redundant sensor",
+						"quality": "Estimated",
+						"currency": "THB"
+					},
+					"balanceSheetTotal": null,
+					"evic": {
+						"value": null,
+						"dataSource": {
+							"page": "780-1286",
+							"fileName": "AnnualReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "deliverables"
+						},
+						"comment": "program haptic bus",
+						"quality": "NoDataFound",
+						"currency": "KWD"
+					}
+				}
+			}
+		},
+		"reportingPeriod": "2022"
+	},
+	{
+		"companyInformation": {
+			"companyName": "Wisoky, Shanahan and Crist",
+			"headquarters": "West Leonor",
+			"headquartersPostalCode": "18783-3346",
+			"sector": "e-business",
+			"identifiers": {
+				"Lei": [],
+				"Isin": [
+					"W1VJImZpBXHq",
+					"sS48JCfMxXNZ"
+				],
+				"PermId": [],
+				"Ticker": [],
+				"Duns": [],
+				"VatNumber": [
+					"Hoj76hfCh"
+				],
+				"CompanyRegistrationNumber": []
+			},
+			"countryCode": "TM",
+			"companyContactDetails": null,
+			"companyAlternativeNames": [
+				"Lemke and Sons",
+				"Sawayn, Sauer and Wehner"
+			],
+			"companyLegalForm": "Public Limited Company (PLC)",
+			"website": "https://irresponsible-guava.biz",
+			"isTeaserCompany": false,
+			"parentCompanyLei": null
+		},
+		"t": {
+			"general": {
+				"general": {
+					"fiscalYearDeviation": {
+						"value": "NoDeviation",
+						"dataSource": {
+							"page": "33",
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "methodologies"
+						},
+						"comment": "synthesize mobile pixel",
+						"quality": "NoDataFound"
+					},
+					"fiscalYearEnd": {
+						"value": "2024-02-19",
+						"dataSource": {
+							"page": "72",
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "content"
+						},
+						"comment": "parse online transmitter",
+						"quality": null
+					},
+					"referencedReports": {
+						"ESEFReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "ESEFReport",
+							"publicationDate": null
+						}
+					}
+				},
+				"financialInformation": {
+					"equity": {
+						"value": 5126556858.89,
+						"dataSource": {
+							"page": "1189-1201",
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "schemas"
+						},
+						"comment": "input solid state system",
+						"quality": null,
+						"currency": "GTQ"
+					},
+					"debt": {
+						"value": 3850746233.95,
+						"dataSource": {
+							"page": "627-1180",
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "niches"
+						},
+						"comment": "hack auxiliary alarm",
+						"quality": null,
+						"currency": "EUR"
+					},
+					"balanceSheetTotal": null,
+					"evic": {
+						"value": 6149396940.6,
+						"dataSource": {
+							"page": "639-1010",
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "relationships"
+						},
+						"comment": null,
+						"quality": "Estimated",
+						"currency": "SLE"
+					}
+				}
+			}
+		},
+		"reportingPeriod": "2022"
+	},
+	{
+		"companyInformation": {
+			"companyName": "Murray - Dicki",
+			"headquarters": "Port Justinestad",
+			"headquartersPostalCode": "54707-1685",
+			"sector": null,
+			"identifiers": {
+				"Lei": [],
+				"Isin": [
+					"Ku0FzEVC1e8c"
+				],
+				"PermId": [
+					"toSQcAprav"
+				],
+				"Ticker": [],
+				"Duns": [],
+				"VatNumber": [],
+				"CompanyRegistrationNumber": [
+					"kcaXDeMw8H001BZ"
+				]
+			},
+			"countryCode": "SZ",
+			"companyContactDetails": [],
+			"companyAlternativeNames": [
+				"Hills Group",
+				"Rippin, Runolfsdottir and Lockman",
+				"Ullrich - Walker"
+			],
+			"companyLegalForm": "Limited Liability Partnership (LLP)",
+			"website": "https://useful-start.com",
+			"isTeaserCompany": false,
+			"parentCompanyLei": null
+		},
+		"t": {
+			"general": {
+				"general": {
+					"fiscalYearDeviation": {
+						"value": "Deviation",
+						"dataSource": {
+							"page": "504-1191",
+							"fileName": "AnnualReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "technologies"
+						},
+						"comment": "copy auxiliary circuit",
+						"quality": "Incomplete"
+					},
+					"fiscalYearEnd": {
+						"value": null,
+						"dataSource": {
+							"page": "590",
+							"fileName": "AnnualReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "action-items"
+						},
+						"comment": "reboot solid state port",
+						"quality": "NoDataFound"
+					},
+					"referencedReports": {
+						"AnnualReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "AnnualReport",
+							"publicationDate": null
+						}
+					}
+				},
+				"financialInformation": {
+					"equity": {
+						"value": 5890945096.04,
+						"dataSource": {
+							"page": "114",
+							"fileName": "AnnualReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "portals"
+						},
+						"comment": null,
+						"quality": "Reported",
+						"currency": "GEL"
+					},
+					"debt": {
+						"value": null,
+						"dataSource": {
+							"page": "473",
+							"fileName": "AnnualReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "mindshare"
+						},
+						"comment": "bypass mobile transmitter",
+						"quality": "NoDataFound",
+						"currency": "SRD"
+					},
+					"balanceSheetTotal": {
+						"value": null,
+						"dataSource": {
+							"page": "982",
+							"fileName": "AnnualReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "relationships"
+						},
+						"comment": "quantify mobile port",
+						"quality": "Reported",
+						"currency": "CVE"
+					},
+					"evic": {
+						"value": 6813253161.96,
+						"dataSource": {
+							"page": "687",
+							"fileName": "AnnualReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "communities"
+						},
+						"comment": "back up digital array",
+						"quality": "Audited",
+						"currency": "TRY"
+					}
+				}
+			}
+		},
+		"reportingPeriod": "2022"
+	},
+	{
+		"companyInformation": {
+			"companyName": "Schuppe - Braun",
+			"headquarters": "East Kory",
+			"headquartersPostalCode": "18239-2155",
+			"sector": "users",
+			"identifiers": {
+				"Lei": [
+					"ZMogWijbLFgg2ppoJvQY"
+				],
+				"Isin": [
+					"YlQTcGWylV2G"
+				],
+				"PermId": [
+					"kKln5t7s6M"
+				],
+				"Ticker": [
+					"sFvSMoZ"
+				],
+				"Duns": [
+					"sZL3hR6DN"
+				],
+				"VatNumber": [],
+				"CompanyRegistrationNumber": [
+					"Z7IxrczXgiZyVvQ"
+				]
+			},
+			"countryCode": "AT",
+			"companyContactDetails": [
+				"Aletha86@example.com",
+				"Elyse.Predovic16@example.com",
+				"Parker43@example.com"
+			],
+			"companyAlternativeNames": [],
+			"companyLegalForm": null,
+			"website": null,
+			"isTeaserCompany": false,
+			"parentCompanyLei": null
+		},
+		"t": {
+			"general": {
+				"general": {
+					"fiscalYearDeviation": null,
+					"fiscalYearEnd": {
+						"value": null,
+						"dataSource": null,
+						"comment": "override optical microchip",
+						"quality": null
+					},
+					"referencedReports": {
+						"AnnualReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "AnnualReport",
+							"publicationDate": "2023-10-17"
+						}
+					}
+				},
+				"financialInformation": {
+					"equity": {
+						"value": 5274924694.1,
+						"dataSource": null,
+						"comment": "synthesize multi-byte feed",
+						"quality": null,
+						"currency": "TZS"
+					},
+					"debt": {
+						"value": 6838819303.09,
+						"dataSource": {
+							"page": "422-822",
+							"fileName": "AnnualReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "models"
+						},
+						"comment": "back up wireless transmitter",
+						"quality": null,
+						"currency": "YER"
+					},
+					"balanceSheetTotal": {
+						"value": 6876680755.52,
+						"dataSource": {
+							"page": "1192",
+							"fileName": "AnnualReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "portals"
+						},
+						"comment": null,
+						"quality": "Audited",
+						"currency": "IQD"
+					},
+					"evic": {
+						"value": 3810761361.38,
+						"dataSource": {
+							"page": "800-1033",
+							"fileName": "AnnualReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "deliverables"
+						},
+						"comment": "parse bluetooth microchip",
+						"quality": "Reported",
+						"currency": "AFN"
+					}
+				}
+			}
+		},
+		"reportingPeriod": "2020"
+	},
+	{
+		"companyInformation": {
+			"companyName": "Hansen Inc",
+			"headquarters": "Lakinfurt",
+			"headquartersPostalCode": null,
+			"sector": "relationships",
+			"identifiers": {
+				"Lei": [
+					"oxa3HMVtVZ4rCAMu65Jf"
+				],
+				"Isin": [
+					"pOET83CZ9B7I",
+					"zrVceFzwKZ87"
+				],
+				"PermId": [],
+				"Ticker": [],
+				"Duns": [
+					"jaNRW9nbm"
+				],
+				"VatNumber": [],
+				"CompanyRegistrationNumber": [
+					"Nrce17p7qqgw97t"
+				]
+			},
+			"countryCode": "BD",
+			"companyContactDetails": null,
+			"companyAlternativeNames": [
+				"Beer Group",
+				"Mills Inc",
+				"Schimmel, Denesik and Lakin",
+				"Wisoky - Ziemann"
+			],
+			"companyLegalForm": "Limited Liability Partnership (LLP)",
+			"website": null,
+			"isTeaserCompany": false,
+			"parentCompanyLei": "ZMogWijbLFgg2ppoJvQY"
+		},
+		"t": {
+			"general": {
+				"general": {
+					"fiscalYearDeviation": {
+						"value": "NoDeviation",
+						"dataSource": null,
+						"comment": "back up haptic transmitter",
+						"quality": "Estimated"
+					},
+					"fiscalYearEnd": {
+						"value": "2024-10-04",
+						"dataSource": {
+							"page": "1111-1263",
+							"fileName": "AnnualReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "paradigms"
+						},
+						"comment": null,
+						"quality": null
+					},
+					"referencedReports": {
+						"SustainabilityReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "SustainabilityReport",
+							"publicationDate": "2023-03-16"
+						},
+						"ESEFReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "ESEFReport",
+							"publicationDate": null
+						},
+						"AnnualReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": null,
+							"publicationDate": "2023-02-17"
+						},
+						"IntegratedReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": null,
+							"publicationDate": "2023-10-27"
+						}
+					}
+				},
+				"financialInformation": {
+					"equity": {
+						"value": 489885844.29,
+						"dataSource": {
+							"page": "440-1251",
+							"fileName": "AnnualReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "systems"
+						},
+						"comment": null,
+						"quality": "NoDataFound",
+						"currency": "XAF"
+					},
+					"debt": {
+						"value": 1042089348.19,
+						"dataSource": {
+							"page": "145-367",
+							"fileName": "IntegratedReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "channels"
+						},
+						"comment": "parse cross-platform panel",
+						"quality": "NoDataFound",
+						"currency": "KMF"
+					},
+					"balanceSheetTotal": {
+						"value": 4869389098.6,
+						"dataSource": null,
+						"comment": "parse bluetooth feed",
+						"quality": "NoDataFound",
+						"currency": "TRY"
+					},
+					"evic": {
+						"value": 5817415530.33,
+						"dataSource": {
+							"page": "923",
+							"fileName": "SustainabilityReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "markets"
+						},
+						"comment": "copy back-end application",
+						"quality": "NoDataFound",
+						"currency": "AZN"
+					}
+				}
+			}
+		},
+		"reportingPeriod": "2020"
+	},
+	{
+		"companyInformation": {
+			"companyName": "Borer Group",
+			"headquarters": "Wisozkbury",
+			"headquartersPostalCode": "27937-9528",
+			"sector": "networks",
+			"identifiers": {
+				"Lei": [
+					"VcCGQQxghdxxPqXWqr2T"
+				],
+				"Isin": [
+					"nuiyVoWd3jPO"
+				],
+				"PermId": [
+					"q45JBavZiv"
+				],
+				"Ticker": [
+					"WLd8xoV"
+				],
+				"Duns": [],
+				"VatNumber": [
+					"WCQmS6tuD"
+				],
+				"CompanyRegistrationNumber": [
+					"cDv5hHKa71ivmrW"
+				]
+			},
+			"countryCode": "TF",
+			"companyContactDetails": [
+				"Meta.Keebler44@example.com",
+				"Jillian_Herman@example.com",
+				"Hope36@example.com"
+			],
+			"companyAlternativeNames": [
+				"Terry, Russel and Reilly"
+			],
+			"companyLegalForm": "GmbH",
+			"website": "https://plain-energy.name/",
+			"isTeaserCompany": false,
+			"parentCompanyLei": "oxa3HMVtVZ4rCAMu65Jf"
+		},
+		"t": {
+			"general": {
+				"general": {
+					"fiscalYearDeviation": {
+						"value": "NoDeviation",
+						"dataSource": {
+							"page": "1111",
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "synergies"
+						},
+						"comment": "parse open-source bus",
+						"quality": "Estimated"
+					},
+					"fiscalYearEnd": null,
+					"referencedReports": {
+						"IntegratedReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": null,
+							"publicationDate": "2023-12-31"
+						},
+						"SustainabilityReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "SustainabilityReport",
+							"publicationDate": "2023-10-09"
+						},
+						"ESEFReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "ESEFReport",
+							"publicationDate": "2023-06-25"
+						},
+						"AnnualReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "AnnualReport",
+							"publicationDate": "2023-06-06"
+						}
+					}
+				},
+				"financialInformation": {
+					"equity": {
+						"value": 5456889262.42,
+						"dataSource": {
+							"page": "526-924",
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "markets"
+						},
+						"comment": "hack digital transmitter",
+						"quality": "Audited",
+						"currency": "KHR"
+					},
+					"debt": {
+						"value": 145437486.93,
+						"dataSource": {
+							"page": "1147-1165",
+							"fileName": "IntegratedReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "mindshare"
+						},
+						"comment": "reboot back-end port",
+						"quality": "Reported",
+						"currency": "BZD"
+					},
+					"balanceSheetTotal": {
+						"value": 8181153514.89,
+						"dataSource": {
+							"page": "1129",
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "initiatives"
+						},
+						"comment": "copy neural interface",
+						"quality": "Audited",
+						"currency": "HUF"
+					},
+					"evic": {
+						"value": 1451141785.36,
+						"dataSource": {
+							"page": "532",
+							"fileName": "IntegratedReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "technologies"
+						},
+						"comment": "synthesize redundant monitor",
+						"quality": null,
+						"currency": "ETB"
+					}
+				}
+			}
+		},
+		"reportingPeriod": "2021"
+	},
+	{
+		"companyInformation": {
+			"companyName": "Baumbach Inc",
+			"headquarters": "New Dayanabury",
+			"headquartersPostalCode": "20117-4069",
+			"sector": null,
+			"identifiers": {
+				"Lei": [
+					"vPNAEIfzGz9NE1jGneyI"
+				],
+				"Isin": [
+					"kgvcP7wqcYHY"
+				],
+				"PermId": [],
+				"Ticker": [],
+				"Duns": [
+					"mgt8ILL2D"
+				],
+				"VatNumber": [
+					"OKn0ksj7N"
+				],
+				"CompanyRegistrationNumber": []
+			},
+			"countryCode": "GG",
+			"companyContactDetails": [],
+			"companyAlternativeNames": [
+				"Romaguera, Steuber and Schulist"
+			],
+			"companyLegalForm": "Limited Liability Partnership (LLP)",
+			"website": "https://regular-pheromone.net",
+			"isTeaserCompany": false,
+			"parentCompanyLei": "VcCGQQxghdxxPqXWqr2T"
+		},
+		"t": {
+			"general": {
+				"general": {
+					"fiscalYearDeviation": {
+						"value": "Deviation",
+						"dataSource": {
+							"page": "866-1044",
+							"fileName": "AnnualReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "applications"
+						},
+						"comment": "compress cross-platform transmitter",
+						"quality": null
+					},
+					"fiscalYearEnd": {
+						"value": null,
+						"dataSource": {
+							"page": "316",
+							"fileName": "IntegratedReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "solutions"
+						},
+						"comment": null,
+						"quality": null
+					},
+					"referencedReports": {
+						"IntegratedReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "IntegratedReport",
+							"publicationDate": "2023-04-27"
+						},
+						"AnnualReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "AnnualReport",
+							"publicationDate": "2024-01-11"
+						}
+					}
+				},
+				"financialInformation": {
+					"equity": {
+						"value": 8817744783.6,
+						"dataSource": {
+							"page": "919-1292",
+							"fileName": "AnnualReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "action-items"
+						},
+						"comment": null,
+						"quality": null,
+						"currency": "UAH"
+					},
+					"debt": null,
+					"balanceSheetTotal": {
+						"value": 8648403706.03,
+						"dataSource": {
+							"page": "197-625",
+							"fileName": "IntegratedReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "e-commerce"
+						},
+						"comment": null,
+						"quality": null,
+						"currency": "BHD"
+					},
+					"evic": {
+						"value": 8483063492.46,
+						"dataSource": {
+							"page": "192-913",
+							"fileName": "IntegratedReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "functionalities"
+						},
+						"comment": "calculate multi-byte system",
+						"quality": null,
+						"currency": "MDL"
+					}
+				}
+			}
+		},
+		"reportingPeriod": "2024"
+	},
+	{
+		"companyInformation": {
+			"companyName": "Cartwright - Leuschke",
+			"headquarters": "Cameronfurt",
+			"headquartersPostalCode": "43542-5890",
+			"sector": "lifetime value",
+			"identifiers": {
+				"Lei": [
+					"1ymD8NHnb3lqAIkgXJsN"
+				],
+				"Isin": [
+					"wmE2Hr8XGNJM"
+				],
+				"PermId": [],
+				"Ticker": [
+					"w2HRx8H"
+				],
+				"Duns": [
+					"u0OMfvESU"
+				],
+				"VatNumber": [
+					"3ffxblHYY"
+				],
+				"CompanyRegistrationNumber": []
+			},
+			"countryCode": "NP",
+			"companyContactDetails": [
+				"Hector23@example.com",
+				"Oren_Parisian@example.com",
+				"Esteban_McClure@example.com",
+				"Fred81@example.com",
+				"Leo.Dare62@example.com"
+			],
+			"companyAlternativeNames": [
+				"Bechtelar and Sons",
+				"Rath, Huel and Stracke",
+				"Spencer, Herman and Jast"
+			],
+			"companyLegalForm": "Public Limited Company (PLC)",
+			"website": "https://dependent-achievement.name/",
+			"isTeaserCompany": false,
+			"parentCompanyLei": "vPNAEIfzGz9NE1jGneyI"
+		},
+		"t": {
+			"general": {
+				"general": {
+					"fiscalYearDeviation": null,
+					"fiscalYearEnd": {
+						"value": "2024-06-26",
+						"dataSource": {
+							"page": "932",
+							"fileName": "AnnualReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "eyeballs"
+						},
+						"comment": "override auxiliary alarm",
+						"quality": "Incomplete"
+					},
+					"referencedReports": {
+						"AnnualReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "AnnualReport",
+							"publicationDate": "2023-07-14"
+						}
+					}
+				},
+				"financialInformation": {
+					"equity": null,
+					"debt": {
+						"value": 1948996449.35,
+						"dataSource": {
+							"page": "704",
+							"fileName": "AnnualReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "mindshare"
+						},
+						"comment": "transmit open-source protocol",
+						"quality": "Estimated",
+						"currency": "TWD"
+					},
+					"balanceSheetTotal": {
+						"value": 2708521878.81,
+						"dataSource": null,
+						"comment": "transmit 1080p array",
+						"quality": "Estimated",
+						"currency": "IQD"
+					},
+					"evic": {
+						"value": 5659366410.69,
+						"dataSource": null,
+						"comment": "reboot online capacitor",
+						"quality": "NoDataFound",
+						"currency": "GMD"
+					}
+				}
+			}
+		},
+		"reportingPeriod": "2022"
+	},
+	{
+		"companyInformation": {
+			"companyName": "Zieme - Schmidt",
+			"headquarters": "Fort Gonzaloworth",
+			"headquartersPostalCode": "37733-8946",
+			"sector": "initiatives",
+			"identifiers": {
+				"Lei": [],
+				"Isin": [
+					"aTPR1RRpwR0U"
+				],
+				"PermId": [],
+				"Ticker": [
+					"XfQaFlJ"
+				],
+				"Duns": [
+					"JCSJxz6Yx"
+				],
+				"VatNumber": [],
+				"CompanyRegistrationNumber": [
+					"y2IsoKra4ADvDUG"
+				]
+			},
+			"countryCode": "LS",
+			"companyContactDetails": null,
+			"companyAlternativeNames": [],
+			"companyLegalForm": "AG",
+			"website": "https://trained-comfort.info",
+			"isTeaserCompany": false,
+			"parentCompanyLei": "1ymD8NHnb3lqAIkgXJsN"
+		},
+		"t": {
+			"general": {
+				"general": {
+					"fiscalYearDeviation": {
+						"value": null,
+						"dataSource": {
+							"page": "465-773",
+							"fileName": "AnnualReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "interfaces"
+						},
+						"comment": "override optical matrix",
+						"quality": "Reported"
+					},
+					"fiscalYearEnd": {
+						"value": "2024-05-19",
+						"dataSource": null,
+						"comment": null,
+						"quality": null
+					},
+					"referencedReports": {
+						"SustainabilityReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "SustainabilityReport",
+							"publicationDate": "2023-05-06"
+						},
+						"AnnualReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": null,
+							"publicationDate": "2023-09-28"
+						},
+						"IntegratedReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "IntegratedReport",
+							"publicationDate": "2023-12-04"
+						}
+					}
+				},
+				"financialInformation": {
+					"equity": {
+						"value": 8192342976.11,
+						"dataSource": {
+							"page": "126",
+							"fileName": "SustainabilityReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "eyeballs"
+						},
+						"comment": "compress neural array",
+						"quality": "NoDataFound",
+						"currency": "PAB"
+					},
+					"debt": {
+						"value": null,
+						"dataSource": {
+							"page": "71",
+							"fileName": "SustainabilityReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "relationships"
+						},
+						"comment": null,
+						"quality": "Incomplete",
+						"currency": "MYR"
+					},
+					"balanceSheetTotal": {
+						"value": 5356211778.71,
+						"dataSource": {
+							"page": "392",
+							"fileName": "AnnualReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "users"
+						},
+						"comment": "back up back-end circuit",
+						"quality": "Incomplete",
+						"currency": "WST"
+					},
+					"evic": {
+						"value": 5090898068.16,
+						"dataSource": {
+							"page": "699",
+							"fileName": "AnnualReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "networks"
+						},
+						"comment": "parse solid state sensor",
+						"quality": "Estimated",
+						"currency": "BTN"
+					}
+				}
+			}
+		},
+		"reportingPeriod": "2021"
+	},
+	{
+		"companyInformation": {
+			"companyName": "Mills LLC",
+			"headquarters": "McKenziecester",
+			"headquartersPostalCode": "01483-9122",
+			"sector": "convergence",
+			"identifiers": {
+				"Lei": [
+					"fg6hRxbdE5dR7g1HCvMn"
+				],
+				"Isin": [
+					"xBDHvNPu7nMW"
+				],
+				"PermId": [],
+				"Ticker": [
+					"e0G5aW6"
+				],
+				"Duns": [
+					"69eDWkLjW"
+				],
+				"VatNumber": [],
+				"CompanyRegistrationNumber": [
+					"5BYRyUNmUWEsiTK"
+				]
+			},
+			"countryCode": "GT",
+			"companyContactDetails": null,
+			"companyAlternativeNames": [
+				"Harvey - Schultz"
+			],
+			"companyLegalForm": null,
+			"website": null,
+			"isTeaserCompany": false,
+			"parentCompanyLei": null
+		},
+		"t": {
+			"general": {
+				"general": {
+					"fiscalYearDeviation": {
+						"value": null,
+						"dataSource": {
+							"page": "593-1051",
+							"fileName": "IntegratedReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "users"
+						},
+						"comment": null,
+						"quality": "Estimated"
+					},
+					"fiscalYearEnd": {
+						"value": "2024-12-10",
+						"dataSource": {
+							"page": "955-1189",
+							"fileName": "IntegratedReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "applications"
+						},
+						"comment": "program 1080p port",
+						"quality": "Reported"
+					},
+					"referencedReports": {
+						"IntegratedReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": null,
+							"publicationDate": "2023-08-30"
+						},
+						"SustainabilityReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "SustainabilityReport",
+							"publicationDate": "2023-06-03"
+						},
+						"ESEFReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "ESEFReport",
+							"publicationDate": "2023-04-14"
+						},
+						"AnnualReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "AnnualReport",
+							"publicationDate": "2023-02-12"
+						}
+					}
+				},
+				"financialInformation": {
+					"equity": null,
+					"debt": null,
+					"balanceSheetTotal": {
+						"value": 1140866205.09,
+						"dataSource": {
+							"page": "302",
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "eyeballs"
+						},
+						"comment": "index auxiliary bus",
+						"quality": "Incomplete",
+						"currency": "NAD"
+					},
+					"evic": null
+				}
+			}
+		},
+		"reportingPeriod": "2024"
+	}
+]

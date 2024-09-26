@@ -105,7 +105,7 @@ class ${frameworkDataType.shortenedQualifier}Controller(
                 logMessageBuilder.getFrameworkDatasetsForCompanyMessage(dataType, companyId, reportingPeriodInLog),
             )
             val metaInfos = dataMetaInformationManager.searchDataMetaInfo(
-                companyId, dataType, showOnlyActive, reportingPeriod,
+                companyId, dataType, showOnlyActive, reportingPeriod, null, null,
             )
             val authentication = DatalandAuthentication.fromContextOrNull()
             val frameworkDataAndMetaInfo = mutableListOf<DataAndMetaInformation<${frameworkDataType.shortenedQualifier}>>()

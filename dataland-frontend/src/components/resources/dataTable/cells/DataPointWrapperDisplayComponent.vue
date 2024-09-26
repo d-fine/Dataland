@@ -23,6 +23,7 @@ import {
 } from '@/components/resources/dataTable/MultiLayerDataTableCellDisplayer';
 import DataPointDataTable from '@/components/general/DataPointDataTable.vue';
 import { type DataMetaInformation, type ExtendedDocumentReference } from '@clients/backend';
+import { isDatapointCommentConsideredMissing } from '@/components/resources/dataTable/conversion/DataPoints';
 
 export default defineComponent({
   name: 'DataPointWrapperDisplayComponent',
@@ -72,9 +73,13 @@ export default defineComponent({
     },
     isAnyDataPointPropertyAvailableThatIsWorthShowingInModal() {
       const dataSource = this.dataPointProperties.dataSource as ExtendedDocumentReference | undefined | null;
-      const comment = this.dataPointProperties.comment;
       const quality = this.dataPointProperties.quality;
-      return comment != undefined || quality != undefined || dataSource != undefined;
+
+      return (
+        !isDatapointCommentConsideredMissing(this.dataPointProperties) ||
+        quality != undefined ||
+        dataSource != undefined
+      );
     },
   },
 });

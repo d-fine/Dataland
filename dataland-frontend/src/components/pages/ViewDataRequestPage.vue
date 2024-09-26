@@ -62,6 +62,8 @@
             <div class="card" data-test="card_requestDetails">
               <div class="card__title">Request Details</div>
               <div class="card__separator" />
+              <div class="card__subtitle" v-if="isUserKeycloakAdmin">Requester</div>
+              <div class="card__data" v-if="isUserKeycloakAdmin">{{ storedDataRequest.userEmailAddress }}</div>
               <div class="card__subtitle">Company</div>
               <div class="card__data">{{ companyName }}</div>
               <div class="card__subtitle">Framework</div>
@@ -97,13 +99,17 @@
                   <div :class="badgeClass(storedDataRequest.requestStatus)" style="display: inline-flex">
                     {{ storedDataRequest.requestStatus }}
                   </div>
+                  <div class="card__title">and Access is:</div>
+                  <div :class="accessStatusBadgeClass(storedDataRequest.accessStatus)" style="display: inline-flex">
+                    {{ storedDataRequest.accessStatus }}
+                  </div>
                   <div class="card__subtitle">
                     since {{ convertUnixTimeInMsToDateString(storedDataRequest.lastModifiedDate) }}
                   </div>
                   <div style="margin-left: auto">
                     <PrimeButton
                       data-test="resolveRequestButton"
-                      v-show="isRequestStatusAnswered()"
+                      v-show="isUsersOwnRequest && isRequestStatusAnswered()"
                       @click="goToResolveDataRequestPage()"
                     >
                       <span class="d-letters pl-2"> Resolve Request </span>
@@ -113,7 +119,7 @@
                 <div class="card__separator" />
                 <StatusHistory :status-history="storedDataRequest.dataRequestStatusHistory" />
               </div>
-              <div class="card" data-test="card_providedContactDetails">
+              <div class="card" data-test="card_providedContactDetails" v-if="isUsersOwnRequest">
                 <span style="display: flex; align-items: center">
                   <div class="card__title" style="margin-right: auto">Provided Contact Details & Messages</div>
                   <div
@@ -174,7 +180,7 @@ import { ApiClientProvider } from '@/services/ApiClients';
 import { RequestStatus, type StoredDataRequest } from '@clients/communitymanager';
 import type Keycloak from 'keycloak-js';
 import { frameworkHasSubTitle, getFrameworkSubtitle, getFrameworkTitle } from '@/utils/StringFormatter';
-import { badgeClass, patchDataRequest } from '@/utils/RequestUtils';
+import { accessStatusBadgeClass, badgeClass, patchDataRequest } from '@/utils/RequestUtils';
 import { convertUnixTimeInMsToDateString } from '@/utils/DataFormatUtils';
 import PrimeButton from 'primevue/button';
 import PrimeDialog from 'primevue/dialog';
@@ -182,6 +188,7 @@ import EmailDetails from '@/components/resources/dataRequest/EmailDetails.vue';
 import { type DataTypeEnum, QaStatus } from '@clients/backend';
 import TheContent from '@/components/generics/TheContent.vue';
 import StatusHistory from '@/components/resources/dataRequest/StatusHistory.vue';
+import { checkIfUserHasRole, getUserId, KEYCLOAK_ROLE_ADMIN } from '@/utils/KeycloakUtils';
 
 export default defineComponent({
   name: 'ViewDataRequest',
@@ -212,6 +219,8 @@ export default defineComponent({
       toggleEmailDetailsError: false,
       successModalIsVisible: false,
       isDatasetAvailable: false,
+      isUsersOwnRequest: false,
+      isUserKeycloakAdmin: false,
       storedDataRequest: {} as StoredDataRequest,
       companyName: '',
       showNewMessageDialog: false,
@@ -227,10 +236,12 @@ export default defineComponent({
         this.getCompanyName(this.storedDataRequest.datalandCompanyId).catch((error) => console.error(error));
         this.checkForAvailableData(this.storedDataRequest).catch((error) => console.error(error));
         this.storedDataRequest.dataRequestStatusHistory.sort((a, b) => b.creationTimestamp - a.creationTimestamp);
+        this.setUserAccessFields();
       })
       .catch((error) => console.error(error));
   },
   methods: {
+    accessStatusBadgeClass,
     convertUnixTimeInMsToDateString,
     badgeClass,
     getFrameworkSubtitle,
@@ -325,6 +336,22 @@ export default defineComponent({
       }
       this.successModalIsVisible = true;
       this.storedDataRequest.requestStatus = RequestStatus.Withdrawn;
+    },
+    /**
+     * This function sets the components fields 'isUsersOwnRequest' and 'isUserKeycloakAdmin'.
+     * Both variables are used to show information on page depending on who's visiting
+     */
+    async setUserAccessFields() {
+      try {
+        if (this.getKeycloakPromise) {
+          const userId = await getUserId(this.getKeycloakPromise);
+          this.isUsersOwnRequest = this.storedDataRequest.userId == userId;
+          this.isUserKeycloakAdmin = await checkIfUserHasRole(KEYCLOAK_ROLE_ADMIN, this.getKeycloakPromise);
+        }
+      } catch (error) {
+        console.error(error);
+        return;
+      }
     },
     /**
      * Method to update the request message when clicking on the button

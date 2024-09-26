@@ -99,7 +99,7 @@ abstract class DataController<T>(
         val reportingPeriodInLog = reportingPeriod ?: "all reporting periods"
         logger.info(logMessageBuilder.getFrameworkDatasetsForCompanyMessage(dataType, companyId, reportingPeriodInLog))
         val metaInfos = dataMetaInformationManager.searchDataMetaInfo(
-            companyId, dataType, showOnlyActive, reportingPeriod,
+            companyId, dataType, showOnlyActive, reportingPeriod, null, null,
         )
         val authentication = DatalandAuthentication.fromContextOrNull()
         val listOfFrameworkDataAndMetaInfo = mutableListOf<DataAndMetaInformation<T>>()

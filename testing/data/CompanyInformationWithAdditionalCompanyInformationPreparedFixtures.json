@@ -1,0 +1,128 @@
+[
+	{
+		"companyInformation": {
+			"companyName": "additional-company-information-dataset-with-no-null-fields",
+			"headquarters": "Keventown",
+			"headquartersPostalCode": "08624-9889",
+			"sector": "web services",
+			"identifiers": {
+				"Lei": [
+					"ZSW19V9gRjT8dOwHuHw8"
+				],
+				"Isin": [
+					"7isXp6iT68ka"
+				],
+				"PermId": [],
+				"Ticker": [
+					"NJ56EIw"
+				],
+				"Duns": [
+					"Uv5q40XAG"
+				],
+				"VatNumber": [],
+				"CompanyRegistrationNumber": [
+					"ZpBjhhkxNgn3BlA"
+				]
+			},
+			"countryCode": "AE",
+			"companyContactDetails": [],
+			"companyAlternativeNames": [
+				"Abbott, Stroman and Rempel"
+			],
+			"companyLegalForm": "Limited Liability Partnership (LLP)",
+			"website": "https://reflecting-jungle.name",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"general": {
+				"general": {
+					"fiscalYearDeviation": {
+						"value": "Deviation",
+						"dataSource": {
+							"page": "109-1241",
+							"fileName": "SustainabilityReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "web services"
+						},
+						"comment": "parse optical driver",
+						"quality": "Estimated"
+					},
+					"fiscalYearEnd": {
+						"value": "2024-12-10",
+						"dataSource": {
+							"page": "1197-1214",
+							"fileName": "IntegratedReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "portals"
+						},
+						"comment": "synthesize mobile pixel",
+						"quality": "Reported"
+					},
+					"referencedReports": {
+						"IntegratedReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "IntegratedReport",
+							"publicationDate": "2023-04-01"
+						},
+						"SustainabilityReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "SustainabilityReport",
+							"publicationDate": "2023-08-18"
+						}
+					}
+				},
+				"financialInformation": {
+					"equity": {
+						"value": 9602059661.42,
+						"dataSource": {
+							"page": "689",
+							"fileName": "IntegratedReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "web services"
+						},
+						"comment": "input mobile microchip",
+						"quality": "Estimated",
+						"currency": "LAK"
+					},
+					"debt": {
+						"value": 1098737262.65,
+						"dataSource": {
+							"page": "752-1062",
+							"fileName": "SustainabilityReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "ROI"
+						},
+						"comment": "index 1080p bus",
+						"quality": "Reported",
+						"currency": "CDF"
+					},
+					"balanceSheetTotal": {
+						"value": 4386258840.09,
+						"dataSource": {
+							"page": "300-1131",
+							"fileName": "IntegratedReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "systems"
+						},
+						"comment": "program primary monitor",
+						"quality": "Incomplete",
+						"currency": "MAD"
+					},
+					"evic": {
+						"value": 5305528752.51,
+						"dataSource": {
+							"page": "599",
+							"fileName": "IntegratedReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "markets"
+						},
+						"comment": "copy optical array",
+						"quality": "NoDataFound",
+						"currency": "BWP"
+					}
+				}
+			}
+		},
+		"reportingPeriod": "2021"
+	}
+]

@@ -12,7 +12,8 @@ import org.dataland.datalandcommunitymanager.model.dataRequest.StoredDataRequest
 import org.dataland.datalandcommunitymanager.repositories.DataRequestRepository
 import org.dataland.datalandcommunitymanager.utils.DataRequestLogger
 import org.dataland.datalandcommunitymanager.utils.DataRequestProcessingUtils
-import org.dataland.datalandcommunitymanager.utils.GetDataRequestsSearchFilter
+import org.dataland.datalandcommunitymanager.utils.DataRequestsFilter
+import org.dataland.datalandcommunitymanager.utils.GetAggregatedRequestsSearchFilter
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
@@ -23,11 +24,15 @@ import kotlin.jvm.optionals.getOrElse
  * Implementation of a request manager service for all request queries
  */
 @Service
-class DataRequestQueryManager(
-    @Autowired private val dataRequestRepository: DataRequestRepository,
-    @Autowired private val dataRequestLogger: DataRequestLogger,
-    @Autowired private val companyDataControllerApi: CompanyDataControllerApi,
-    @Autowired private val processingUtils: DataRequestProcessingUtils,
+class DataRequestQueryManager
+@Suppress("LongParameterList")
+@Autowired
+constructor(
+    private val dataRequestRepository: DataRequestRepository,
+    private val dataRequestLogger: DataRequestLogger,
+    private val companyDataControllerApi: CompanyDataControllerApi,
+    private val processingUtils: DataRequestProcessingUtils,
+    private val keycloakUserControllerApiService: KeycloakUserControllerApiService,
 ) {
 
     /** This method retrieves all the data requests for the current user from the database and logs a message.
@@ -38,7 +43,7 @@ class DataRequestQueryManager(
         val retrievedStoredDataRequestEntitiesForUser =
             dataRequestRepository.fetchStatusHistory(dataRequestRepository.findByUserId(currentUserId))
         val extendedStoredDataRequests = retrievedStoredDataRequestEntitiesForUser.map { dataRequestEntity ->
-            getExtendedStoredDataRequestByRequestEntity(dataRequestEntity)
+            convertRequestEntityToExtendedStoredDataRequest(dataRequestEntity)
         }
         dataRequestLogger.logMessageForRetrievingDataRequestsForUser()
         return extendedStoredDataRequests
@@ -48,9 +53,10 @@ class DataRequestQueryManager(
      * @param dataRequestEntity dataland data request entity
      * @returns extended stored data request
      */
-    fun getExtendedStoredDataRequestByRequestEntity(dataRequestEntity: DataRequestEntity): ExtendedStoredDataRequest {
+    private fun convertRequestEntityToExtendedStoredDataRequest(dataRequestEntity: DataRequestEntity):
+        ExtendedStoredDataRequest {
         val companyInformation = companyDataControllerApi.getCompanyInfo(dataRequestEntity.datalandCompanyId)
-        return ExtendedStoredDataRequest(dataRequestEntity, companyInformation.companyName)
+        return ExtendedStoredDataRequest(dataRequestEntity, companyInformation.companyName, null)
     }
 
     /** This method triggers a query to get aggregated data requests.
@@ -73,10 +79,12 @@ class DataRequestQueryManager(
         }
         val aggregatedDataRequestEntities =
             dataRequestRepository.getAggregatedDataRequests(
-                identifierValue,
-                dataTypesFilterForQuery,
-                reportingPeriod,
-                status,
+                GetAggregatedRequestsSearchFilter(
+                    dataTypeFilter = dataTypesFilterForQuery ?: setOf(),
+                    reportingPeriodFilter = reportingPeriod,
+                    requestStatus = status?.name ?: "",
+                    datalandCompanyIdFilter = identifierValue,
+                ),
             )
         val aggregatedDataRequests = aggregatedDataRequestEntities.map { aggregatedDataRequestEntity ->
             AggregatedDataRequest(
@@ -100,36 +108,60 @@ class DataRequestQueryManager(
         val dataRequestEntity = dataRequestRepository.findById(dataRequestId).getOrElse {
             throw DataRequestNotFoundApiException(dataRequestId)
         }
-        return dataRequestEntity.toStoredDataRequest()
+        val emailAddress = keycloakUserControllerApiService.getUser(dataRequestEntity.userId).email ?: ""
+        return dataRequestEntity.toStoredDataRequest(emailAddress)
     }
 
     /**
      * Method to get all data requests based on filters.
-     * @param dataType the framework to apply to the data request
-     * @param requestStatus the status to apply to the data request
-     * @param userId the user to apply to the data request
-     * @param reportingPeriod the reporting period to apply to the data request
-     * @param datalandCompanyId the Dataland company ID to apply to the data request
+     * @param isUserAdmin whether the requesting user is an admin
+     * @param ownedCompanyIdsByUser the company ids for which the user is a company owner
+     * @param filter the search filter containing relevant search parameters
+     * @param chunkIndex the index of the chunked results which should be returned
+     * @param chunkSize the size of entries per chunk which should be returned
      * @return all filtered data requests
      */
     @Transactional
     fun getDataRequests(
-        dataType: DataTypeEnum?,
-        userId: String?,
-        requestStatus: RequestStatus?,
-        accessStatus: AccessStatus?,
-        reportingPeriod: String?,
-        datalandCompanyId: String?,
-    ): List<StoredDataRequest>? {
-        val filter = GetDataRequestsSearchFilter(
-            dataTypeFilter = dataType?.value ?: "",
-            userIdFilter = userId ?: "",
-            requestStatus = requestStatus,
-            accessStatus = accessStatus,
-            reportingPeriodFilter = reportingPeriod ?: "",
-            datalandCompanyIdFilter = datalandCompanyId ?: "",
-        )
-        val result = dataRequestRepository.searchDataRequestEntity(filter)
-        return dataRequestRepository.fetchStatusHistory(result).map { it.toStoredDataRequest() }
+        isUserAdmin: Boolean,
+        ownedCompanyIdsByUser: List<String>,
+        filter: DataRequestsFilter,
+        chunkIndex: Int?,
+        chunkSize: Int?,
+    ): List<ExtendedStoredDataRequest>? {
+        val offset = (chunkIndex ?: 0) * (chunkSize ?: 0)
+
+        val usersMatchingEmailFilter = filter.setupEmailAddressFilter(keycloakUserControllerApiService)
+        val extendedStoredDataRequests = dataRequestRepository.searchDataRequestEntity(
+            searchFilter = filter, resultOffset = offset, resultLimit = chunkSize,
+        ).map { dataRequestEntity -> convertRequestEntityToExtendedStoredDataRequest(dataRequestEntity) }
+
+        val userIdsToEmails = usersMatchingEmailFilter.associate { it.userId to it.email }.toMutableMap()
+
+        val extendedStoredDataRequestsWithMails = extendedStoredDataRequests.map {
+            val allowedToSeeEmailAddress = isUserAdmin ||
+                (
+                    ownedCompanyIdsByUser.contains(it.datalandCompanyId) &&
+                        it.accessStatus != AccessStatus.Public
+                    )
+
+            it.userEmailAddress = it.userId
+                .takeIf { allowedToSeeEmailAddress }
+                ?.let { userIdsToEmails.getOrPut(it) { keycloakUserControllerApiService.getUser(it).email ?: "" } }
+
+            it
+        }
+        return extendedStoredDataRequestsWithMails
+    }
+
+    /**
+     * Returns the number of requests for a specific filter.
+     */
+    @Transactional
+    fun getNumberOfDataRequests(
+        filter: DataRequestsFilter,
+    ): Int {
+        filter.setupEmailAddressFilter(keycloakUserControllerApiService)
+        return dataRequestRepository.getNumberOfRequests(filter)
     }
 }

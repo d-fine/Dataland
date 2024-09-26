@@ -5,7 +5,7 @@
         <tbody class="p-datatable-body">
           <tr
             v-if="
-              dialogData.dataPointDisplay.value && dialogData.dataPointDisplay.value != ONLY_AUXILIARY_DATA_PROVIDED()
+              dialogData.dataPointDisplay.value && dialogData.dataPointDisplay.value != ONLY_AUXILIARY_DATA_PROVIDED
             "
           >
             <th class="headers-bg width-auto"><span class="table-left-label">Value</span></th>
@@ -13,7 +13,7 @@
           </tr>
           <tr v-if="dialogData.dataPointDisplay.quality">
             <th class="headers-bg width-auto"><span class="table-left-label">Quality</span></th>
-            <td>{{ dialogData.dataPointDisplay.quality }}</td>
+            <td>{{ humanizeStringOrNumber(dialogData.dataPointDisplay.quality) }}</td>
           </tr>
           <tr v-if="dialogData.dataPointDisplay.dataSource">
             <th class="headers-bg width-auto"><span class="table-left-label">Data source</span></th>
@@ -33,7 +33,9 @@
           </tr>
           <tr v-if="dialogData.dataPointDisplay.comment">
             <th class="headers-bg width-auto"><span class="table-left-label">Comment</span></th>
-            <td><AutoFormattingTextSpan :text="dialogData.dataPointDisplay.comment" /></td>
+            <td>
+              <RenderSanitizedMarkdownInput :text="dialogData.dataPointDisplay.comment" />
+            </td>
           </tr>
         </tbody>
       </table>
@@ -47,8 +49,9 @@ import { type DynamicDialogInstance } from 'primevue/dynamicdialogoptions';
 import DocumentLink from '@/components/resources/frameworkDataSearch/DocumentLink.vue';
 import { type DataPointDisplay } from '@/utils/DataPoint';
 import { ONLY_AUXILIARY_DATA_PROVIDED } from '@/utils/Constants';
-import AutoFormattingTextSpan from '@/components/general/AutoFormattingTextSpan.vue';
 import { assertDefined } from '@/utils/TypeScriptUtils';
+import RenderSanitizedMarkdownInput from '@/components/general/RenderSanitizedMarkdownInput.vue';
+import { humanizeStringOrNumber } from '@/utils/StringFormatter';
 
 interface DataPointDataTableRefProps {
   dataPointDisplay: DataPointDisplay;
@@ -58,17 +61,14 @@ interface DataPointDataTableRefProps {
 
 export default defineComponent({
   methods: {
-    /**
-     * Returns only-auxiliary-data-provided string
-     * @class
-     */
-    ONLY_AUXILIARY_DATA_PROVIDED() {
-      return ONLY_AUXILIARY_DATA_PROVIDED;
-    },
+    humanizeStringOrNumber,
   },
-  components: { AutoFormattingTextSpan, DocumentLink },
+  components: { RenderSanitizedMarkdownInput, DocumentLink },
   inject: ['dialogRef'],
   name: 'DataPointDataTable',
+  data: () => {
+    return { ONLY_AUXILIARY_DATA_PROVIDED };
+  },
   computed: {
     dialogData(): DataPointDataTableRefProps {
       return assertDefined(this.dialogRef as DynamicDialogInstance).data as DataPointDataTableRefProps;
@@ -77,7 +77,10 @@ export default defineComponent({
       const dataSource = this.dialogData.dataPointDisplay.dataSource;
       if (!dataSource) return '';
       if ('page' in dataSource) {
-        return dataSource.page === null ? `${dataSource.fileName}` : `${dataSource.fileName}, page ${dataSource.page}`;
+        return dataSource.page === null
+          ? `${dataSource.fileName}`
+          : `${dataSource.fileName},
+         page(s) ${dataSource.page}`;
       } else {
         return dataSource.fileName ?? '';
       }
@@ -91,6 +94,7 @@ export default defineComponent({
   border-spacing: 0;
   border-collapse: collapse;
 }
+
 .width-auto {
   width: auto;
 }
