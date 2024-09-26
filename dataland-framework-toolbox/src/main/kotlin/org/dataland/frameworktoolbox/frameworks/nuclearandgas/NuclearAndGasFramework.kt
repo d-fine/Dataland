@@ -1,6 +1,7 @@
 package org.dataland.frameworktoolbox.frameworks.nuclearandgas
 import org.dataland.frameworktoolbox.frameworks.FrameworkGenerationFeatures
 import org.dataland.frameworktoolbox.frameworks.InDevelopmentPavedRoadFramework
+import org.dataland.frameworktoolbox.template.components.ComponentGenerationUtils
 import org.springframework.stereotype.Component
 import java.io.File
 
@@ -16,4 +17,8 @@ class NuclearAndGasFramework : InDevelopmentPavedRoadFramework(
     File("./dataland-framework-toolbox/inputs/nuclear-and-gas/nuclear-and-gas.xlsx"),
     order = 3,
     enabledFeatures = FrameworkGenerationFeatures.ENTRY_SET,
-)
+) {
+    override fun getComponentGenerationUtils(): ComponentGenerationUtils {
+        return ComponentGenerationUtils()
+    }
+}
