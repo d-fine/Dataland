@@ -1,7 +1,13 @@
 package org.dataland.frameworktoolbox.frameworks.nuclearandgas
+import org.dataland.frameworktoolbox.SpringConfig
 import org.dataland.frameworktoolbox.frameworks.FrameworkGenerationFeatures
 import org.dataland.frameworktoolbox.frameworks.InDevelopmentPavedRoadFramework
-import org.dataland.frameworktoolbox.template.components.ComponentGenerationUtils
+import org.dataland.frameworktoolbox.specific.frameworkregistryimports.FrameworkRegistryImportsUpdater
+import org.dataland.frameworktoolbox.template.ExcelTemplate
+import org.dataland.frameworktoolbox.utils.DatalandRepository
+import org.dataland.frameworktoolbox.utils.diagnostic.DiagnosticManager
+import org.springframework.beans.factory.getBean
+import org.springframework.context.annotation.AnnotationConfigApplicationContext
 import org.springframework.stereotype.Component
 import java.io.File
 
@@ -18,7 +24,31 @@ class NuclearAndGasFramework : InDevelopmentPavedRoadFramework(
     order = 3,
     enabledFeatures = FrameworkGenerationFeatures.ENTRY_SET,
 ) {
-    override fun getComponentGenerationUtils(): ComponentGenerationUtils {
-        return ComponentGenerationUtils()
+    override fun compileFramework(datalandProject: DatalandRepository) {
+        val context = AnnotationConfigApplicationContext(SpringConfig::class.java)
+        val diagnostics = context.getBean<DiagnosticManager>()
+
+        configureDiagnostics(diagnostics)
+        val excelTemplate = ExcelTemplate.fromFile(frameworkTemplateCsvFile, "Framework Data Model")
+        customizeExcelTemplate(excelTemplate)
+
+        val frameworkIntermediateRepresentation = convertExcelTemplateToToHighLevelComponentRepresentation(
+            template = excelTemplate,
+            context = context,
+        )
+        diagnostics.finalizeDiagnosticStream()
+
+        customizeHighLevelIntermediateRepresentation(frameworkIntermediateRepresentation)
+
+        compileDataModel(datalandProject)
+        compileQaModel(datalandProject)
+        compileViewModel(datalandProject)
+        compileUploadModel(datalandProject)
+        compileFixtureGenerator(datalandProject)
+
+        FrameworkRegistryImportsUpdater().update(datalandProject)
+        datalandProject.gradleInterface.executeGradleTasks(listOf(":dataland-frontend:npm_run_typecheck"))
+        diagnostics.finalizeDiagnosticStream()
+        logger.info("✔ Framework toolbox finished for framework $identifier ✨")
     }
 }

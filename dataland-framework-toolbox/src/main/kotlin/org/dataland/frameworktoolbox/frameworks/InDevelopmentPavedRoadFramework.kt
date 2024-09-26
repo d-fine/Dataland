@@ -34,7 +34,7 @@ abstract class InDevelopmentPavedRoadFramework(
         isPrivateFramework,
     ) {
 
-    private fun compileDataModel(datalandProject: DatalandRepository) {
+    protected fun compileDataModel(datalandProject: DatalandRepository) {
         if (!enabledFeatures.contains(FrameworkGenerationFeatures.BackendDataModel)) {
             return
         }
@@ -55,7 +55,7 @@ abstract class InDevelopmentPavedRoadFramework(
         }
     }
 
-    private fun compileQaModel(datalandProject: DatalandRepository) {
+    protected fun compileQaModel(datalandProject: DatalandRepository) {
         if (!enabledFeatures.contains(FrameworkGenerationFeatures.QaModel)) {
             return
         }
@@ -72,7 +72,7 @@ abstract class InDevelopmentPavedRoadFramework(
         }
     }
 
-    private fun insertReferencedReportValidatorIfNeeded(dataModel: FrameworkDataModelBuilder) {
+    protected fun insertReferencedReportValidatorIfNeeded(dataModel: FrameworkDataModelBuilder) {
         logger.info(
             "Searching for report preupload component to determine " +
                 "if a referenced report validator is needed.",
@@ -102,7 +102,7 @@ abstract class InDevelopmentPavedRoadFramework(
         }
     }
 
-    private fun compileViewModel(datalandProject: DatalandRepository) {
+    protected fun compileViewModel(datalandProject: DatalandRepository) {
         if (!enabledFeatures.contains(FrameworkGenerationFeatures.ViewPage)) {
             return
         }
@@ -117,7 +117,7 @@ abstract class InDevelopmentPavedRoadFramework(
         }
     }
 
-    private fun compileFixtureGenerator(datalandProject: DatalandRepository) {
+    protected fun compileFixtureGenerator(datalandProject: DatalandRepository) {
         if (!enabledFeatures.contains(FrameworkGenerationFeatures.FakeFixtures)) {
             return
         }
@@ -132,7 +132,7 @@ abstract class InDevelopmentPavedRoadFramework(
         }
     }
 
-    private fun compileUploadModel(datalandProject: DatalandRepository) {
+    protected fun compileUploadModel(datalandProject: DatalandRepository) {
         if (!enabledFeatures.contains(FrameworkGenerationFeatures.UploadPage)) {
             return
         }
