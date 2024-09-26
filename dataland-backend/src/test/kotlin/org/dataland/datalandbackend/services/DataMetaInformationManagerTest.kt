@@ -34,7 +34,9 @@ class DataMetaInformationManagerTest(
                 companyId = nonExistingCompanyId,
                 dataType = null,
                 showOnlyActive = true,
-                reportingPeriod = "",
+                reportingPeriod = null,
+                uploaderUserIds = null,
+                qaStatus = null,
             )
         }
         assertEquals(

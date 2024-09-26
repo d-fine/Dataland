@@ -2,12 +2,17 @@ package org.dataland.frameworktoolbox.frameworks.eutaxonomynonfinancials.custom
 
 import org.apache.commons.text.StringEscapeUtils
 import org.dataland.frameworktoolbox.intermediate.FieldNodeParent
+import org.dataland.frameworktoolbox.intermediate.components.ComponentBase
 import org.dataland.frameworktoolbox.intermediate.components.addStandardCellWithValueGetterFactory
 import org.dataland.frameworktoolbox.intermediate.components.addStandardUploadConfigCell
-import org.dataland.frameworktoolbox.intermediate.components.basecomponents.SimpleKotlinBackedBaseComponent
 import org.dataland.frameworktoolbox.intermediate.components.requireDocumentSupportIn
 import org.dataland.frameworktoolbox.intermediate.datapoints.NoDocumentSupport
+import org.dataland.frameworktoolbox.intermediate.datapoints.addPropertyWithDocumentSupport
+import org.dataland.frameworktoolbox.specific.datamodel.TypeReference
+import org.dataland.frameworktoolbox.specific.datamodel.annotations.ValidAnnotation
+import org.dataland.frameworktoolbox.specific.datamodel.elements.DataClassBuilder
 import org.dataland.frameworktoolbox.specific.fixturegenerator.elements.FixtureSectionBuilder
+import org.dataland.frameworktoolbox.specific.qamodel.addQaPropertyWithDocumentSupport
 import org.dataland.frameworktoolbox.specific.uploadconfig.elements.UploadCategoryBuilder
 import org.dataland.frameworktoolbox.specific.viewconfig.elements.SectionConfigBuilder
 import org.dataland.frameworktoolbox.specific.viewconfig.elements.getKotlinFieldAccessor
@@ -21,11 +26,28 @@ import org.dataland.frameworktoolbox.utils.typescript.TypeScriptImport
 class EuTaxonomyAssuranceComponent(
     identifier: String,
     parent: FieldNodeParent,
-) : SimpleKotlinBackedBaseComponent(
-    identifier, parent,
-    "org.dataland.datalandbackend.frameworks" +
-        ".eutaxonomynonfinancials.custom.AssuranceDataPoint",
-) {
+) : ComponentBase(identifier, parent) {
+
+    private val fullyQualifiedNameOfKotlinType =
+        "org.dataland.datalandbackend.frameworks.eutaxonomynonfinancials.custom.AssuranceDataPoint"
+
+    override fun generateDefaultDataModel(dataClassBuilder: DataClassBuilder) {
+        dataClassBuilder.addPropertyWithDocumentSupport(
+            documentSupport,
+            identifier,
+            TypeReference(fullyQualifiedNameOfKotlinType, isNullable),
+            listOf(ValidAnnotation),
+        )
+    }
+
+    override fun generateDefaultQaModel(dataClassBuilder: DataClassBuilder) {
+        dataClassBuilder.addQaPropertyWithDocumentSupport(
+            documentSupport,
+            identifier,
+            TypeReference(fullyQualifiedNameOfKotlinType, isNullable),
+            listOf(ValidAnnotation),
+        )
+    }
 
     override fun generateDefaultViewConfig(sectionConfigBuilder: SectionConfigBuilder) {
         requireDocumentSupportIn(setOf(NoDocumentSupport))

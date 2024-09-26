@@ -1,0 +1,235 @@
+{
+  "assurance": {
+    "dataSource": {
+      "fileName": "Sustainability Report",
+      "fileReference": "83c4d065194bd46ca5afd55880243495ad2cb491219f9504eb74876303ed8f44",
+      "page": "66",
+      "tagName": null
+    },
+    "provider": "PwC GmbH",
+    "value": "LimitedAssurance"
+  },
+  "creditInstitutionKpis": {
+    "greenAssetRatioInPercent": {
+      "comment": null,
+      "dataSource": null,
+      "quality": "Reported",
+      "value": null
+    },
+    "interbankLoansInPercent": {
+      "comment": null,
+      "dataSource": null,
+      "quality": "Reported",
+      "value": null
+    },
+    "tradingPortfolioAndInterbankLoansInPercent": {
+      "comment": null,
+      "dataSource": null,
+      "quality": "Reported",
+      "value": null
+    },
+    "tradingPortfolioInPercent": {
+      "comment": null,
+      "dataSource": {
+        "fileName": "Sustainability Report",
+        "fileReference": "83c4d065194bd46ca5afd55880243495ad2cb491219f9504eb74876303ed8f44",
+        "page": null,
+        "tagName": null
+      },
+      "quality": "Reported",
+      "value": null
+    }
+  },
+  "eligibilityKpis": {
+    "AssetManagement": {
+      "banksAndIssuersInPercent": {
+        "comment": null,
+        "dataSource": {
+          "fileName": "Sustainability Report",
+          "fileReference": "83c4d065194bd46ca5afd55880243495ad2cb491219f9504eb74876303ed8f44",
+          "page": "22",
+          "tagName": null
+        },
+        "quality": "Reported",
+        "value": 20.8
+      },
+      "derivativesInPercent": {
+        "comment": null,
+        "dataSource": {
+          "fileName": "Sustainability Report",
+          "fileReference": "83c4d065194bd46ca5afd55880243495ad2cb491219f9504eb74876303ed8f44",
+          "page": "22",
+          "tagName": null
+        },
+        "quality": "Reported",
+        "value": 0.3
+      },
+      "investmentNonNfrdInPercent": {
+        "comment": null,
+        "dataSource": {
+          "fileName": "Sustainability Report",
+          "fileReference": "83c4d065194bd46ca5afd55880243495ad2cb491219f9504eb74876303ed8f44",
+          "page": "22",
+          "tagName": null
+        },
+        "quality": "Reported",
+        "value": 58.7
+      },
+      "taxonomyEligibleActivityInPercent": {
+        "comment": null,
+        "dataSource": {
+          "fileName": "Sustainability Report",
+          "fileReference": "83c4d065194bd46ca5afd55880243495ad2cb491219f9504eb74876303ed8f44",
+          "page": "22",
+          "tagName": null
+        },
+        "quality": "Reported",
+        "value": 7.8
+      },
+      "taxonomyNonEligibleActivityInPercent": {
+        "comment": null,
+        "dataSource": {
+          "fileName": "Sustainability Report",
+          "fileReference": "83c4d065194bd46ca5afd55880243495ad2cb491219f9504eb74876303ed8f44",
+          "page": "22",
+          "tagName": null
+        },
+        "quality": "Reported",
+        "value": 33.2
+      }
+    },
+    "CreditInstitution": {
+      "banksAndIssuersInPercent": {
+        "comment": null,
+        "dataSource": null,
+        "quality": "Reported",
+        "value": null
+      },
+      "derivativesInPercent": {
+        "comment": null,
+        "dataSource": null,
+        "quality": "Reported",
+        "value": null
+      },
+      "investmentNonNfrdInPercent": {
+        "comment": null,
+        "dataSource": null,
+        "quality": "Reported",
+        "value": null
+      },
+      "taxonomyEligibleActivityInPercent": {
+        "comment": null,
+        "dataSource": null,
+        "quality": "Reported",
+        "value": null
+      },
+      "taxonomyNonEligibleActivityInPercent": {
+        "comment": null,
+        "dataSource": null,
+        "quality": "Reported",
+        "value": null
+      }
+    },
+    "InsuranceOrReinsurance": {
+      "banksAndIssuersInPercent": {
+        "comment": null,
+        "dataSource": null,
+        "quality": "Reported",
+        "value": null
+      },
+      "derivativesInPercent": {
+        "comment": null,
+        "dataSource": null,
+        "quality": "Reported",
+        "value": null
+      },
+      "investmentNonNfrdInPercent": {
+        "comment": null,
+        "dataSource": null,
+        "quality": "Reported",
+        "value": null
+      },
+      "taxonomyEligibleActivityInPercent": {
+        "comment": null,
+        "dataSource": null,
+        "quality": "Reported",
+        "value": null
+      },
+      "taxonomyNonEligibleActivityInPercent": {
+        "comment": null,
+        "dataSource": null,
+        "quality": "Reported",
+        "value": null
+      }
+    },
+    "InvestmentFirm": {
+      "banksAndIssuersInPercent": {
+        "comment": null,
+        "dataSource": null,
+        "quality": "Reported",
+        "value": null
+      },
+      "derivativesInPercent": {
+        "comment": null,
+        "dataSource": null,
+        "quality": "Reported",
+        "value": null
+      },
+      "investmentNonNfrdInPercent": {
+        "comment": null,
+        "dataSource": null,
+        "quality": "Reported",
+        "value": null
+      },
+      "taxonomyEligibleActivityInPercent": {
+        "comment": null,
+        "dataSource": null,
+        "quality": "Reported",
+        "value": null
+      },
+      "taxonomyNonEligibleActivityInPercent": {
+        "comment": null,
+        "dataSource": null,
+        "quality": "Reported",
+        "value": null
+      }
+    }
+  },
+  "euTaxonomyActivityLevelReporting": "Yes",
+  "financialServicesTypes": [
+    "AssetManagement"
+  ],
+  "fiscalYearDeviation": "NoDeviation",
+  "fiscalYearEnd": "2021-12-31",
+  "insuranceKpis": {
+    "taxonomyEligibleNonLifeInsuranceActivitiesInPercent": {
+      "comment": null,
+      "dataSource": null,
+      "quality": "Reported",
+      "value": null
+    }
+  },
+  "investmentFirmKpis": {
+    "greenAssetRatioInPercent": {
+      "comment": null,
+      "dataSource": null,
+      "quality": "Reported",
+      "value": null
+    }
+  },
+  "nfrdMandatory": "Yes",
+  "numberOfEmployees": 23954,
+  "referencedReports": {
+    "Annual Report": {
+      "fileName": "Annual Report",
+      "fileReference": "28ad8f99b8b94c0ed6a61218ca58dd49351084c35c9b6659ee7b464b2612255d",
+      "publicationDate": null
+    },
+    "Sustainability Report": {
+      "fileName": "Sustainability Report",
+      "fileReference": "83c4d065194bd46ca5afd55880243495ad2cb491219f9504eb74876303ed8f44",
+      "publicationDate": null
+    }
+  },
+  "scopeOfEntities": null
+}

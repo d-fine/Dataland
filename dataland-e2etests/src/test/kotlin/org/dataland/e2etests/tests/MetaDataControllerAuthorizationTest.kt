@@ -40,6 +40,7 @@ class MetaDataControllerAuthorizationTest {
                 listOfUploadInfo[0].actualStoredCompany.companyId,
                 testDataType,
                 uploadTime,
+                TechnicalUser.Admin,
             ),
             dataMetaInformation.copy(uploadTime = uploadTime),
             "The meta info of the posted eu taxonomy data does not match the retrieved meta info.",
@@ -71,6 +72,7 @@ class MetaDataControllerAuthorizationTest {
             dataId = testDataId, companyId = testCompanyId,
             testDataType = testDataType,
             uploadTime = uploadTime,
+            user = TechnicalUser.Admin,
         )
         Assertions.assertTrue(
             apiAccessor.unauthorizedMetaDataControllerApi.getListOfDataMetaInfo(testCompanyId, testDataType)
@@ -93,7 +95,7 @@ class MetaDataControllerAuthorizationTest {
     }
 
     @Test
-    fun `post two companies with data and check that the access to the uploaderUserId field is restricted`() {
+    fun `post two companies with data and check that the access to the uploaderUserId field is not restricted`() {
         val testDataType = DataTypeEnum.eutaxonomyMinusFinancials
         val metaInfoOfUploaderUpload = apiAccessor.uploadCompanyAndFrameworkDataForMultipleFrameworks(
             companyInformationPerFramework = mapOf(testDataType to listOfOneNonTeaserTestCompanyInformation),
@@ -107,9 +109,9 @@ class MetaDataControllerAuthorizationTest {
             UploadConfiguration(TechnicalUser.Admin),
         )[0].actualStoredDataMetaInfo!!
 
-        expectUserIdToBe(metaInfoOfAdminUpload, TechnicalUser.Reader, null)
+        expectUserIdToBe(metaInfoOfAdminUpload, TechnicalUser.Reader, TechnicalUser.Admin.technicalUserId)
         expectUserIdToBe(metaInfoOfUploaderUpload, TechnicalUser.Uploader, TechnicalUser.Uploader.technicalUserId)
-        expectUserIdToBe(metaInfoOfAdminUpload, TechnicalUser.Uploader, null)
+        expectUserIdToBe(metaInfoOfAdminUpload, TechnicalUser.Uploader, TechnicalUser.Admin.technicalUserId)
         expectUserIdToBe(metaInfoOfUploaderUpload, TechnicalUser.Admin, TechnicalUser.Uploader.technicalUserId)
         expectUserIdToBe(metaInfoOfAdminUpload, TechnicalUser.Admin, TechnicalUser.Admin.technicalUserId)
     }

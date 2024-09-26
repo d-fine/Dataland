@@ -1,6 +1,8 @@
 package org.dataland.datalandqaservice.services
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
+import org.dataland.datalandbackend.openApiClient.api.MetaDataControllerApi
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
 import org.dataland.datalandmessagequeueutils.constants.ExchangeName
@@ -32,12 +34,16 @@ import java.time.Instant
  * @param cloudEventMessageHandler service for managing CloudEvents messages
  */
 @Component
-class QaEventListenerQaService(
+class QaEventListenerQaService
+@Suppress("LongParameterList")
+constructor(
     @Autowired var cloudEventMessageHandler: CloudEventMessageHandler,
     @Autowired var objectMapper: ObjectMapper,
     @Autowired var messageUtils: MessageQueueUtils,
     @Autowired val reviewQueueRepository: ReviewQueueRepository,
     @Autowired val reviewHistoryRepository: ReviewHistoryRepository,
+    @Autowired val companyDataControllerApi: CompanyDataControllerApi,
+    @Autowired val metaDataControllerApi: MetaDataControllerApi,
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
 
@@ -84,21 +90,44 @@ class QaEventListenerQaService(
     ) {
         messageUtils.validateMessageType(type, MessageType.ManualQaRequested)
         val message = objectMapper.readValue(messageAsJsonString, ForwardedQaMessage::class.java)
-        val dataId = message.identifier
+
         val comment = message.comment
+        val dataId = message.identifier
         if (dataId.isEmpty()) {
             throw MessageQueueRejectException("Provided data ID is empty")
         }
+
+        val dataMetaInfo = metaDataControllerApi.getDataMetaInfo(dataId)
+        val companyName = companyDataControllerApi.getCompanyById(dataMetaInfo.companyId).companyInformation.companyName
+
         messageUtils.rejectMessageOnException {
             logger.info("Received data with DataId: $dataId on QA message queue with Correlation Id: $correlationId")
-            storeDatasetAsToBeReviewed(dataId, comment)
+            storeDatasetAsToBeReviewed(
+                dataId,
+                dataMetaInfo.companyId,
+                companyName,
+                dataMetaInfo.dataType.value,
+                dataMetaInfo.reportingPeriod,
+                comment,
+            )
         }
     }
 
-    private fun storeDatasetAsToBeReviewed(dataId: String, comment: String) {
+    private fun storeDatasetAsToBeReviewed(
+        dataId: String,
+        companyId: String,
+        companyName: String,
+        framework: String,
+        reportingPeriod: String,
+        comment: String,
+    ) {
         reviewQueueRepository.save(
             ReviewQueueEntity(
                 dataId = dataId,
+                companyId = companyId,
+                companyName = companyName,
+                framework = framework,
+                reportingPeriod = reportingPeriod,
                 receptionTime = Instant.now().toEpochMilli(),
                 comment = comment,
             ),
@@ -184,12 +213,13 @@ class QaEventListenerQaService(
         val persistAutomatedQaResultMessage =
             objectMapper.readValue(messageAsJsonString, PersistAutomatedQaResultMessage::class.java)
         if (persistAutomatedQaResultMessage.resourceType == "data") {
+            val validationResult = persistAutomatedQaResultMessage.validationResult
+            val reviewerId = persistAutomatedQaResultMessage.reviewerId
             val dataId = persistAutomatedQaResultMessage.identifier
             if (dataId.isEmpty()) {
                 throw MessageQueueRejectException("Provided data ID is empty")
             }
-            val validationResult = persistAutomatedQaResultMessage.validationResult
-            val reviewerId = persistAutomatedQaResultMessage.reviewerId
+
             messageUtils.rejectMessageOnException {
                 logger.info(
                     "Received data with DataId: $dataId on QA message queue with Correlation Id: $correlationId",

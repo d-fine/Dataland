@@ -1357,6 +1357,27 @@
             "schema": {
               "type": "string"
             }
+          },
+          {
+            "name": "uploaderUserIds",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "uniqueItems": true,
+              "type": "array",
+              "items": {
+                "type": "string",
+                "format": "uuid"
+              }
+            }
+          },
+          {
+            "name": "qaStatus",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/QaStatus"
+            }
           }
         ],
         "responses": {
@@ -3919,8 +3940,7 @@
         "type": "object",
         "properties": {
           "page": {
-            "type": "integer",
-            "format": "int64",
+            "type": "string",
             "nullable": true
           },
           "tagName": {
@@ -15717,10 +15737,10 @@
           "companyId": {
             "type": "string"
           },
-          "headquarters": {
+          "countryCode": {
             "type": "string"
           },
-          "countryCode": {
+          "headquarters": {
             "type": "string"
           },
           "lei": {

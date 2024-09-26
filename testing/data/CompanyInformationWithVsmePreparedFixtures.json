@@ -2,42 +2,36 @@
 	{
 		"companyInformation": {
 			"companyName": "Vsme-dataset-with-no-null-fields",
-			"headquarters": "North Loyworth",
-			"headquartersPostalCode": null,
+			"headquarters": "Kettering",
+			"headquartersPostalCode": "87417-7746",
 			"sector": "randomSector",
 			"identifiers": {
-				"Lei": [
-					"HgUVhXL6oE3n7sgLW1q2"
-				],
+				"Lei": [],
 				"Isin": [
-					"UpkWneT6wQP0",
-					"TKDb4RCpR2GZ"
+					"zgKC9AK5wmTp",
+					"7x5y3r1Vi5OU"
 				],
-				"PermId": [
-					"dCK2LQimil"
+				"PermId": [],
+				"Ticker": [
+					"Ha08AH5"
 				],
-				"Ticker": [],
-				"Duns": [],
+				"Duns": [
+					"6LwRfTJQC"
+				],
 				"VatNumber": [
-					"OyipxYISt"
+					"b5ZZw6y5V"
 				],
-				"CompanyRegistrationNumber": [
-					"LpQeinIDkz3ipee"
-				]
+				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "ZA",
+			"countryCode": "DO",
 			"companyContactDetails": [
-				"Freida47@example.com",
-				"Jairo_Kuphal32@example.com",
-				"Layla_Skiles81@example.com",
-				"Piper_McLaughlin@example.com"
+				"Brycen_Gislason64@example.com",
+				"Susan.Von@example.com",
+				"Chanel_Kihn13@example.com"
 			],
-			"companyAlternativeNames": [
-				"Hansen and Sons",
-				"Larkin, Jenkins and Mayert"
-			],
-			"companyLegalForm": null,
-			"website": "https://vapid-storm.name/",
+			"companyAlternativeNames": [],
+			"companyLegalForm": "Private Limited Company (Ltd)",
+			"website": "https://daring-spirit.info/",
 			"isTeaserCompany": false
 		},
 		"t": {
@@ -46,56 +40,78 @@
 					"reportingBasis": {
 						"value": "Yes",
 						"dataSource": {
-							"fileName": "Certification",
+							"fileName": "Policy",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
 						}
 					},
 					"subsidiary": [
 						{
-							"nameOfSubsidiary": "Beahan - Lindgren",
+							"nameOfSubsidiary": "Macejkovic, Wiza and Cruickshank",
 							"addressOfSubsidiary": {
-								"streetAndHouseNumber": "Cale Rue 5673",
-								"postalCode": "22663-2943",
-								"city": "Portage",
-								"state": "Kansas",
-								"country": "IL"
+								"streetAndHouseNumber": "Dashawn Trail 470",
+								"postalCode": "54495-6861",
+								"city": "San Francisco",
+								"state": "Florida",
+								"country": "AI"
 							}
 						},
 						{
-							"nameOfSubsidiary": "Runolfsson - Rolfson",
+							"nameOfSubsidiary": "Huels, Haag and Hermiston",
 							"addressOfSubsidiary": {
-								"streetAndHouseNumber": "Durgan Mountain 48731",
-								"postalCode": "69268-8472",
-								"city": "Piercefort",
-								"state": "Nevada",
-								"country": "GU"
+								"streetAndHouseNumber": "Karelle Unions 769",
+								"postalCode": "88772-6575",
+								"city": "Gustaveboro",
+								"state": "Alaska",
+								"country": "ID"
+							}
+						},
+						{
+							"nameOfSubsidiary": "Fay and Sons",
+							"addressOfSubsidiary": {
+								"streetAndHouseNumber": "Manchester Road 87422",
+								"postalCode": "29531",
+								"city": "Faheyport",
+								"state": "Louisiana",
+								"country": "MM"
 							}
 						}
 					],
 					"referencedReports": {
-						"IntegratedReport": {
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"fileName": "IntegratedReport",
-							"publicationDate": "2023-11-05"
-						},
 						"AnnualReport": {
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"fileName": "AnnualReport",
-							"publicationDate": "2023-03-04"
+							"publicationDate": "2023-02-28"
 						},
 						"SustainabilityReport": {
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"fileName": "SustainabilityReport",
-							"publicationDate": "2023-06-11"
+							"publicationDate": "2023-12-29"
+						},
+						"ESEFReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "ESEFReport",
+							"publicationDate": "2023-03-20"
+						},
+						"IntegratedReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "IntegratedReport",
+							"publicationDate": "2023-07-05"
 						}
 					}
 				},
 				"practicesForTransitioningTowardsAMoreSustainableEconomy": {
 					"undertakenMeasures": [
 						{
-							"value": "applications",
+							"value": "niches",
 							"dataSource": {
 								"fileName": "Certification",
+								"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
+							}
+						},
+						{
+							"value": "networks",
+							"dataSource": {
+								"fileName": "Policy",
 								"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
 							}
 						},
@@ -105,300 +121,330 @@
 								"fileName": "Policy",
 								"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
 							}
-						},
-						{
-							"value": "architectures",
-							"dataSource": {
-								"fileName": "Certification",
-								"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
-							}
-						},
-						{
-							"value": "systems",
-							"dataSource": {
-								"fileName": "Certification",
-								"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
-							}
-						},
-						{
-							"value": "experiences",
-							"dataSource": {
-								"fileName": "Certification",
-								"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
-							}
 						}
 					]
 				},
 				"energyAndGreenhousGasEmissions": {
-					"energyFossilFuelsInMWh": 6087.84,
+					"energyFossilFuelsInMWh": 33600.1,
 					"electricityTotalInMWh": {
-						"value": 20595.25,
+						"value": 1247.39,
 						"dataSource": {
-							"page": 518,
-							"fileName": "SustainabilityReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "deliverables"
-						},
-						"comment": "compress primary panel",
-						"quality": "NoDataFound"
-					},
-					"electricityNonRenewableInMWh": 50907.25,
-					"electricityRenewableInMWh": 46203.47,
-					"totalEmissionsInTonnesOfCO2Equivalents": {
-						"value": 60240.24,
-						"dataSource": {
-							"page": 4,
-							"fileName": "AnnualReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "e-business"
-						},
-						"comment": "hack online driver",
-						"quality": "Audited"
-					},
-					"scope1EmissionsInTonnesOfCO2Equivalents": {
-						"value": 3061.15,
-						"dataSource": {
-							"page": 250,
-							"fileName": "AnnualReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "metrics"
-						},
-						"comment": "connect virtual matrix",
-						"quality": "Estimated"
-					},
-					"scope2EmissionsInTonnesOfCO2Equivalents": {
-						"value": 56339.02,
-						"dataSource": {
-							"page": 790,
+							"page": "1179-1222",
 							"fileName": "IntegratedReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "platforms"
 						},
-						"comment": "reboot optical program",
+						"comment": "bypass multi-byte protocol",
 						"quality": "Reported"
 					},
-					"scope3EmissionsInTonnesOfCO2Equivalents": {
-						"value": 47477.11,
+					"electricityNonRenewableInMWh": 36190.53,
+					"electricityRenewableInMWh": 25821.68,
+					"totalEmissionsInTonnesOfCO2Equivalents": {
+						"value": 44077.63,
 						"dataSource": {
-							"page": 526,
-							"fileName": "AnnualReport",
+							"page": "292",
+							"fileName": "ESEFReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "metrics"
+							"tagName": "ROI"
 						},
-						"comment": "hack optical monitor",
-						"quality": "Incomplete"
+						"comment": "copy mobile application",
+						"quality": "Reported"
+					},
+					"scope1EmissionsInTonnesOfCO2Equivalents": {
+						"value": 16803.79,
+						"dataSource": {
+							"page": "175-649",
+							"fileName": "SustainabilityReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "e-markets"
+						},
+						"comment": "override virtual program",
+						"quality": "Estimated"
+					},
+					"scope2EmissionsInTonnesOfCO2Equivalents": {
+						"value": 36033.65,
+						"dataSource": {
+							"page": "1145-1293",
+							"fileName": "SustainabilityReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "architectures"
+						},
+						"comment": "compress redundant sensor",
+						"quality": "Audited"
+					},
+					"scope3EmissionsInTonnesOfCO2Equivalents": {
+						"value": 15619.53,
+						"dataSource": {
+							"page": "62-933",
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "channels"
+						},
+						"comment": "transmit optical circuit",
+						"quality": "NoDataFound"
 					}
 				},
 				"pollutionOfAirWaterSoil": {
 					"pollutionEmission": [
 						{
-							"pollutionType": "Chromium",
-							"emissionInKilograms": 31344.53,
-							"releaseMedium": "Soil"
+							"pollutionType": "Palladium",
+							"emissionInKilograms": 83642.83,
+							"releaseMedium": "Water"
 						},
 						{
-							"pollutionType": "Bohrium",
-							"emissionInKilograms": 77759.17,
+							"pollutionType": "Boron",
+							"emissionInKilograms": 70973.41,
 							"releaseMedium": "Air"
 						},
 						{
-							"pollutionType": "Gallium",
-							"emissionInKilograms": 27328.3,
-							"releaseMedium": "Soil"
+							"pollutionType": "Thorium",
+							"emissionInKilograms": 13046.15,
+							"releaseMedium": "Air"
 						}
 					]
 				},
 				"biodiversity": {
 					"sitesAndAreas": [
 						{
-							"siteName": "Metz, Windler and Hahn",
+							"siteName": "Hintz, Schumm and Roob",
 							"areaAddress": {
-								"streetAndHouseNumber": "Gibson Motorway 257",
-								"postalCode": "75945",
-								"city": "Marciaton",
-								"state": "Maryland",
-								"country": "BB"
+								"streetAndHouseNumber": "Bramble Close 838",
+								"postalCode": "05704",
+								"city": "Jairotown",
+								"state": "New York",
+								"country": "SB"
 							},
-							"areaInHectare": 7681.06,
-							"biodiversitySensitiveArea": "Voluntarius suscipio culpa. Aer depono voluptates ipsa vinitor apparatus damno. Nisi dedico conicio amet vitiosus contabesco nostrum confero.\nVirtus timor aetas stultus. Caritas cavus angulus uredo cultellus tametsi. Aliquid decens solvo alii desolo.\nDebilito aegrotatio vulnus quod suppono. Patrocinor amo vae incidunt sol cicuta viriliter. Claudeo balbus arceo crepusculum accusantium magni torqueo adulescens argumentum ducimus.",
+							"areaInHectare": 57860.93,
+							"biodiversitySensitiveArea": "Vilis valde virga credo armarium comparo aggredior adicio. Verto adopto amicitia. Verto suscipit blanditiis celo.",
 							"siteAddress": {
-								"streetAndHouseNumber": "Reagan Overpass 64538",
-								"postalCode": "06401",
-								"city": "West Gustave",
-								"state": "Illinois",
-								"country": "ID"
-							},
-							"specificationOfAdjointness": "In",
-							"siteGeocoordinateLongitudeval": 79218196.03,
-							"siteGeocoordinateLatitude": 49964871.91,
-							"areaGeocoordinateLongitude": 28383191.49,
-							"areaGeocoordinateLatitude": 45158085.79
-						},
-						{
-							"siteName": "Padberg - Graham",
-							"areaAddress": {
-								"streetAndHouseNumber": "Mosciski Estates 950",
-								"postalCode": "06853",
-								"city": "Manchester",
-								"state": "New Mexico",
-								"country": "SJ"
-							},
-							"areaInHectare": 3760.97,
-							"biodiversitySensitiveArea": "Adulatio cohibeo defaeco cogo conor defendo. Tener tantillus urbanus conor comburo adeptio vos stabilis cohaero. Conservo quasi vacuus atque cernuus tempore accusantium torrens.\nPatria corporis illo sopor angelus mollitia. Atqui atrox sursum. Quae cupiditate quia toties sufficio suggero.",
-							"siteAddress": {
-								"streetAndHouseNumber": "The Causeway 1732",
-								"postalCode": "93819-4439",
-								"city": "Brittanyburgh",
-								"state": "Arizona",
-								"country": "GH"
+								"streetAndHouseNumber": "Leffler Mews 586",
+								"postalCode": "09624",
+								"city": "Lake Rosario",
+								"state": "New Jersey",
+								"country": "TZ"
 							},
 							"specificationOfAdjointness": "Near",
-							"siteGeocoordinateLongitudeval": 84187142.16,
-							"siteGeocoordinateLatitude": 7618306.67,
-							"areaGeocoordinateLongitude": 16201373.19,
-							"areaGeocoordinateLatitude": 4512912.33
+							"siteGeocoordinateLongitudeval": 38357863.92,
+							"siteGeocoordinateLatitude": 90482969.56,
+							"areaGeocoordinateLongitude": 87117679.16,
+							"areaGeocoordinateLatitude": 48988120.12
+						},
+						{
+							"siteName": "Brakus - Cronin",
+							"areaAddress": {
+								"streetAndHouseNumber": "Immanuel Oval 7338",
+								"postalCode": "82497",
+								"city": "West Jamaal",
+								"state": "South Carolina",
+								"country": "GI"
+							},
+							"areaInHectare": 25569.64,
+							"biodiversitySensitiveArea": "Votum capitulus crux cubicularis alter iste cerno blanditiis eius sol. Similique totidem casso tergiversatio. Hic aperte delibero curatio adhuc eaque celer assumenda amiculum cum.",
+							"siteAddress": {
+								"streetAndHouseNumber": "Walsh Shores 28084",
+								"postalCode": "44245-6262",
+								"city": "South Lesterburgh",
+								"state": "Hawaii",
+								"country": "AI"
+							},
+							"specificationOfAdjointness": "Near",
+							"siteGeocoordinateLongitudeval": 80559850.81,
+							"siteGeocoordinateLatitude": 13104007.65,
+							"areaGeocoordinateLongitude": 44494151.09,
+							"areaGeocoordinateLatitude": 11852809.62
+						},
+						{
+							"siteName": "Predovic - Carter",
+							"areaAddress": {
+								"streetAndHouseNumber": "Conn Loaf 42182",
+								"postalCode": "78409-1272",
+								"city": "East Nonaport",
+								"state": "Idaho",
+								"country": "MU"
+							},
+							"areaInHectare": 81223.92,
+							"biodiversitySensitiveArea": "Termes conturbo tepesco cibus carbo coma cauda. Cubo tollo suasoria sequi. Celo provident spectaculum.",
+							"siteAddress": {
+								"streetAndHouseNumber": "4th Avenue 7459",
+								"postalCode": "64674-1639",
+								"city": "Bridgettefort",
+								"state": "Wisconsin",
+								"country": "GW"
+							},
+							"specificationOfAdjointness": "Near",
+							"siteGeocoordinateLongitudeval": 11223190.6,
+							"siteGeocoordinateLatitude": 67229361.86,
+							"areaGeocoordinateLongitude": 72617642.49,
+							"areaGeocoordinateLatitude": 74000036.81
 						}
 					],
-					"totalSealedAreaPreviousYearInHectare": 53420.71,
-					"totalSealedAreaReportingYearInHectare": 2754.21,
-					"relativeChangeSealedArea": 94.95,
-					"totalNatureOrientedAreaOnSitePreviousYearInHectare": 11146.09,
-					"totalNatureOrientedAreaOnSiteReportingYearInHectare": 69169.93,
-					"relativeChangeNatureOrientedOnSite": 53.75,
-					"totalNatureOrientedAreaOffSitePreviousYearInHectare": 78732.64,
-					"totalNatureOrientedAreaOffSiteReportingYearInHectare": 48900.78,
-					"relativeChangeNatureOrientedOffSite": 10.42,
-					"totalUseOfLandPreviousYearInHectare": 44835.75,
-					"totalUseOfLandReportingYearInHectare": 7780,
-					"relativeChangeLandUse": 44.73
+					"totalSealedAreaPreviousYearInHectare": 54835.03,
+					"totalSealedAreaReportingYearInHectare": 43619.46,
+					"relativeChangeSealedArea": 15.87,
+					"totalNatureOrientedAreaOnSitePreviousYearInHectare": 35253.55,
+					"totalNatureOrientedAreaOnSiteReportingYearInHectare": 75545.6,
+					"relativeChangeNatureOrientedOnSite": 3.96,
+					"totalNatureOrientedAreaOffSitePreviousYearInHectare": 6758.85,
+					"totalNatureOrientedAreaOffSiteReportingYearInHectare": 78196.67,
+					"relativeChangeNatureOrientedOffSite": 76.32,
+					"totalUseOfLandPreviousYearInHectare": 76363.15,
+					"totalUseOfLandReportingYearInHectare": 32576.89,
+					"relativeChangeLandUse": 33.32
 				},
 				"water": {
 					"waterWithdrawalAllSitesInCubicMeters": {
-						"value": 51769.82,
+						"value": 46341.83,
 						"dataSource": {
-							"page": 620,
+							"page": "122",
 							"fileName": "SustainabilityReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "users"
+							"tagName": "applications"
 						},
-						"comment": "calculate 1080p bandwidth",
-						"quality": "Reported"
+						"comment": "program redundant pixel",
+						"quality": "Audited"
 					},
-					"waterWithdrawalStressSitesInCubicMeters": 45690.51,
-					"waterDischargeAllSitesInCubicMeters": 27856.7,
-					"waterDischargeStressSitesInCubicMeters": 84754.69,
-					"rainwaterAllSitesInCubicMeters": 98452.99,
-					"rainwaterStressSitesInCubicMeters": 45143.72,
-					"waterConsumptionAllSitesInCubicMeters": 82828.36,
-					"waterConsumptionStressSitesInCubicMeters": 71172.18
+					"waterWithdrawalStressSitesInCubicMeters": 75297.21,
+					"waterDischargeAllSitesInCubicMeters": 103.15,
+					"waterDischargeStressSitesInCubicMeters": 772.23,
+					"rainwaterAllSitesInCubicMeters": 36829.95,
+					"rainwaterStressSitesInCubicMeters": 91779.16,
+					"waterConsumptionAllSitesInCubicMeters": 78347.66,
+					"waterConsumptionStressSitesInCubicMeters": 33455.59
 				},
 				"resourceUseCircularEconomyAndWasteManagement": {
-					"totalWeightMaterialsInTonnes": 87081.62,
-					"weightRecycledMaterialsInTonnes": 8020.01,
-					"percentageRecycledMaterials": 41.54,
-					"weightRecyclableMaterialsInTonnes": 16232.51,
-					"percentageRecyclableMaterials": 5.12,
-					"measureWaste": "WeightPreferred",
+					"totalWeightMaterialsInTonnes": 13153.55,
+					"weightRecycledMaterialsInTonnes": 74714.33,
+					"percentageRecycledMaterials": 68.89,
+					"weightRecyclableMaterialsInTonnes": 65423.49,
+					"percentageRecyclableMaterials": 80.96,
+					"measureWaste": "Volume",
 					"wasteClassification": [
 						{
 							"wasteClassification": "NonHazardous",
-							"typeOfWaste": "solutions",
-							"totalAmountOfWasteInTonnes": 97535599.77,
-							"wasteRecycleOrReuseInTonnes": 58658057.82,
-							"wasteDisposalInTonnes": 45729771,
-							"totalAmountOfWasteInCubicMeters": 87.21,
-							"wasteRecycleOrReuseInCubicMeters": 34.12,
-							"wasteDisposalInCubicMeters": 84.44
+							"typeOfWaste": "niches",
+							"totalAmountOfWasteInTonnes": 46555324.08,
+							"wasteRecycleOrReuseInTonnes": 45209431.16,
+							"wasteDisposalInTonnes": 39172328.36,
+							"totalAmountOfWasteInCubicMeters": 17.25,
+							"wasteRecycleOrReuseInCubicMeters": 53.15,
+							"wasteDisposalInCubicMeters": 89.54
+						},
+						{
+							"wasteClassification": "Hazardous",
+							"typeOfWaste": "channels",
+							"totalAmountOfWasteInTonnes": 75857616.27,
+							"wasteRecycleOrReuseInTonnes": 59551059.32,
+							"wasteDisposalInTonnes": 90169087.92,
+							"totalAmountOfWasteInCubicMeters": 24.88,
+							"wasteRecycleOrReuseInCubicMeters": 62.65,
+							"wasteDisposalInCubicMeters": 0.83
+						},
+						{
+							"wasteClassification": "Hazardous",
+							"typeOfWaste": "e-commerce",
+							"totalAmountOfWasteInTonnes": 35600952.01,
+							"wasteRecycleOrReuseInTonnes": 12780119.41,
+							"wasteDisposalInTonnes": 6854478.54,
+							"totalAmountOfWasteInCubicMeters": 36.82,
+							"wasteRecycleOrReuseInCubicMeters": 74.9,
+							"wasteDisposalInCubicMeters": 64.59
 						}
 					]
 				},
 				"workforceGeneralCharacteristics": {
 					"measureEmployees": "HeadCount",
-					"numberOfEmployeesInFte": 74049.26,
-					"numberOfEmployeesInHeadcount": 2397.43,
-					"numberOfTemporaryContractEmployeesInFte": 34386.1,
-					"numberOfTemporaryContractEmployeesInHeadcount": 1155.85,
-					"numberOfPermanentContractEmployeesInFte": 36695.36,
-					"numberOfPermanentContractEmployeesInHeadcount": 47878.61,
-					"numberOfMaleEmployeesInFte": 74422,
-					"numberOfMaleEmployeesInHeadcount": 54629.7,
-					"numberFemaleEmployeesInFte": 86658.23,
-					"numberOfFemaleEmployeesInHeadcount": 84822.8,
-					"numberOfOtherEmployeesInFte": 40821.67,
-					"numberOfOtherEmployeesInHeadcount": 45908.49,
-					"numberOfNotReportedEmployeesInFte": 61596.07,
-					"numberOfNotReportedEmployeesInHeadcount": 47904.3,
+					"numberOfEmployeesInFte": 82101.6,
+					"numberOfEmployeesInHeadcount": 67840.82,
+					"numberOfTemporaryContractEmployeesInFte": 58321.85,
+					"numberOfTemporaryContractEmployeesInHeadcount": 43280.45,
+					"numberOfPermanentContractEmployeesInFte": 32987.8,
+					"numberOfPermanentContractEmployeesInHeadcount": 94600.7,
+					"numberOfMaleEmployeesInFte": 97199.09,
+					"numberOfMaleEmployeesInHeadcount": 89243.99,
+					"numberFemaleEmployeesInFte": 78033.68,
+					"numberOfFemaleEmployeesInHeadcount": 96517.31,
+					"numberOfOtherEmployeesInFte": 11501.73,
+					"numberOfOtherEmployeesInHeadcount": 15110.26,
+					"numberOfNotReportedEmployeesInFte": 467.81,
+					"numberOfNotReportedEmployeesInHeadcount": 54196.99,
 					"employeesPerCountry": [
 						{
-							"country": "TR",
-							"numberOfEmployeesInHeadCount": 1859,
-							"numberOfEmployeesInFullTimeEquivalent": 937.23
+							"country": "HN",
+							"numberOfEmployeesInHeadCount": 544,
+							"numberOfEmployeesInFullTimeEquivalent": 398.34
 						}
 					]
 				},
 				"workforceHealthAndSafety": {
-					"totalHours": 32422.77,
-					"numberOfAccidents": 2953,
-					"accidentLevel": 90839.27,
-					"numberOfTotalFatalitiesInFte": 1675,
-					"numberOfTotalFatalitiesInHeadcount": 4844,
-					"numberOfFatalitiesOfAccidentsInFte": 5865,
-					"numberOfFatalitiesOfAccidentsInHeadcount": 9453,
-					"numberOfHealthFatalitiesInFte": 113,
-					"numberOfHealthFatalitiesInHeadcount": 4936
+					"totalHours": 88076.5,
+					"numberOfAccidents": 6420,
+					"accidentLevel": 10732.38,
+					"numberOfTotalFatalitiesInFte": 9486,
+					"numberOfTotalFatalitiesInHeadcount": 2839,
+					"numberOfFatalitiesOfAccidentsInFte": 6967,
+					"numberOfFatalitiesOfAccidentsInHeadcount": 7248,
+					"numberOfHealthFatalitiesInFte": 1421,
+					"numberOfHealthFatalitiesInHeadcount": 6677
 				},
 				"workforceRenumerationCollectiveBargainingAndTraining": {
-					"numberOfMinimumWageEmployeesInFte": 17988.4,
-					"numberOfMinimumWageEmployeesInHeadcount": 40013,
-					"percentageOfMinimumWageEmployees": 98.3,
-					"majorityOfMinimumWageEmployees": "No",
-					"entryLevelWageInEuro": 91225.2,
-					"minimumWageInEuro": 44585.27,
-					"wageRatio": 71985.91,
+					"numberOfMinimumWageEmployeesInFte": 15396.54,
+					"numberOfMinimumWageEmployeesInHeadcount": 25507.78,
+					"percentageOfMinimumWageEmployees": 14.93,
+					"majorityOfMinimumWageEmployees": "Yes",
+					"entryLevelWageInEuro": 15108.14,
+					"minimumWageInEuro": 19516.25,
+					"wageRatio": 8110.1,
 					"payGapBasis": "Annual",
-					"grossPayMaleInEuro": 22956.14,
-					"grossPayFemaleInEuro": 24049.29,
-					"totalWorkHoursMale": 70329.32,
-					"totalWorkHoursFemale": 43764.89,
-					"averageWorkHoursMale": 75889.53,
-					"averageWorkHoursFemale": 93302.74,
-					"averageHourlyPayMaleInEuroPerHour": 51099.31,
-					"averageHourlyPayFemaleInEuroPerHour": 61484.13,
-					"payGap": 49516.54,
-					"numberBargainingAgreementsInFte": 58980.88,
-					"numberBargainingAgreementsInHeadcount": 71384.27,
-					"ratioBargainingAgreement": 93.11,
-					"totalTrainingHoursMale": 95197,
-					"totalTrainingHoursFemale": 3824.87,
-					"averageTrainingHoursMale": 85291.08,
-					"averageTrainingHoursFemale": 15154.81
+					"grossPayMaleInEuro": 73312.66,
+					"grossPayFemaleInEuro": 91808.45,
+					"totalWorkHoursMale": 63128.21,
+					"totalWorkHoursFemale": 87283.68,
+					"averageWorkHoursMale": 50840.06,
+					"averageWorkHoursFemale": 61377.93,
+					"averageHourlyPayMaleInEuroPerHour": 20703.82,
+					"averageHourlyPayFemaleInEuroPerHour": 9905.31,
+					"payGap": 16743.48,
+					"numberBargainingAgreementsInFte": 2413.97,
+					"numberBargainingAgreementsInHeadcount": 74768.08,
+					"ratioBargainingAgreement": 23.99,
+					"totalTrainingHoursMale": 85132.57,
+					"totalTrainingHoursFemale": 82625.92,
+					"averageTrainingHoursMale": 79245.26,
+					"averageTrainingHoursFemale": 79545.65
 				},
 				"workersInTheValueChainAffectedCommunitiesConsumersAndEndUsers": {
 					"negativeEffects": [
 						{
 							"value": "eyeballs",
 							"dataSource": {
-								"fileName": "Policy",
+								"fileName": "Certification",
 								"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
 							}
 						},
 						{
-							"value": "functionalities",
+							"value": "action-items",
+							"dataSource": {
+								"fileName": "Certification",
+								"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
+							}
+						},
+						{
+							"value": "e-markets",
 							"dataSource": {
 								"fileName": "Policy",
 								"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
 							}
 						},
 						{
-							"value": "lifetime value",
+							"value": "users",
 							"dataSource": {
 								"fileName": "Certification",
 								"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
 							}
 						}
 					],
-					"numberOfConvictions": 5078.26,
-					"sumOfFinesInEuro": 24829.35
+					"numberOfConvictions": 2760.8,
+					"sumOfFinesInEuro": 83406.32
 				}
 			}
 		},
