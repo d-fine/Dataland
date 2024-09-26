@@ -271,39 +271,6 @@
       }
     },
     "creditInstitutionKpis": {
-      "interbankLoansInPercent": {
-        "value": 4.2,
-        "dataSource": {
-          "page": "671",
-          "fileName": "AnnualReport",
-          "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-          "tagName": "metrics"
-        },
-        "comment": "calculate cross-platform system",
-        "quality": "Reported"
-      },
-      "tradingPortfolioInPercent": {
-        "value": 65.47,
-        "dataSource": {
-          "page": "971",
-          "fileName": "AnnualReport",
-          "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-          "tagName": "partnerships"
-        },
-        "comment": "synthesize mobile panel",
-        "quality": "Estimated"
-      },
-      "tradingPortfolioAndInterbankLoansInPercent": {
-        "value": 52.39,
-        "dataSource": {
-          "page": "871",
-          "fileName": "AnnualReport",
-          "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-          "tagName": "action-items"
-        },
-        "comment": "connect open-source feed",
-        "quality": "NoDataFound"
-      },
       "greenAssetRatioInPercent": {
         "value": 56.59,
         "dataSource": {
@@ -374,6 +341,43 @@
           "fileName": "AnnualReport",
           "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
           "tagName": "experiences"
+        }
+      }
+    },
+    "creditInstitution": {
+      "general": {
+        "interbankLoansInPercent": {
+          "value": 4.2,
+          "dataSource": {
+            "page": "671",
+            "fileName": "AnnualReport",
+            "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+            "tagName": "metrics"
+          },
+          "comment": "calculate cross-platform system",
+          "quality": "Reported"
+        },
+        "tradingPortfolioInPercent": {
+          "value": 65.47,
+          "dataSource": {
+            "page": "971",
+            "fileName": "AnnualReport",
+            "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+            "tagName": "partnerships"
+          },
+          "comment": "synthesize mobile panel",
+          "quality": "Estimated"
+        },
+        "tradingPortfolioAndInterbankLoansInPercent": {
+          "value": 52.39,
+          "dataSource": {
+            "page": "871",
+            "fileName": "AnnualReport",
+            "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+            "tagName": "action-items"
+          },
+          "comment": "connect open-source feed",
+          "quality": "NoDataFound"
         }
       }
     }

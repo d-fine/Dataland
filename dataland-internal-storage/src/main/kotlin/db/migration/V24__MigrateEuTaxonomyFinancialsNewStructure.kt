@@ -36,6 +36,12 @@ class V24__MigrateEuTaxonomyFinancialsNewStructure : BaseJavaMigration() {
         "euTaxonomyActivityLevelReporting",
     )
 
+    private val fieldsWhichMoveToCreditInstitutionGeneral = listOf(
+        "interbankLoansInPercent",
+        "tradingPortfolioInPercent",
+        "tradingPortfolioAndInterbankLoansInPercent",
+    )
+
     /**
      * Move key: object to key: { "value": object }
      * @param jsonObject JSON object
@@ -121,6 +127,21 @@ class V24__MigrateEuTaxonomyFinancialsNewStructure : BaseJavaMigration() {
         dataTableEntity.companyAssociatedData.put("data", jsonObject.toString())
     }
 
+    private fun migrateToCreditInstitutionGeneral(dataTableEntity: DataTableEntity) {
+        val jsonObject = dataTableEntity.dataJsonObject
+        val tObject = jsonObject["t"] as JSONObject
+        val creditInstitutionKpisObject = tObject["creditInstitutionKpis"] as JSONObject
+        val creditInstitutionGeneralObject = JSONObject()
+        val creditInstitutionObject = JSONObject()
+        fieldsWhichMoveToCreditInstitutionGeneral.forEach {
+            creditInstitutionGeneralObject.put(it, creditInstitutionKpisObject[it])
+            creditInstitutionKpisObject.remove(it)
+        }
+        creditInstitutionObject.put("general", creditInstitutionGeneralObject)
+        tObject.put("creditInstitution", creditInstitutionObject)
+        dataTableEntity.companyAssociatedData.put("data", jsonObject.toString())
+    }
+
     /**
      * Migrate a DataTableEntity so that the relevant fields are turned into ExtendedDataPoints.
      * @param dataTableEntity DataTableEntity
@@ -129,6 +150,7 @@ class V24__MigrateEuTaxonomyFinancialsNewStructure : BaseJavaMigration() {
         migrateExtendedDocumentSupport(dataTableEntity)
         migrateReportingPeriod(dataTableEntity)
         migrateFromTToGeneral(dataTableEntity)
+        migrateToCreditInstitutionGeneral(dataTableEntity)
     }
 
     override fun migrate(context: Context?) {
