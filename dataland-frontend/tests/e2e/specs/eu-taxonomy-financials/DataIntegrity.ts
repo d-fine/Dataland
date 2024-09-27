@@ -2,11 +2,10 @@ import { describeIf } from '@e2e/support/TestUtility';
 import { admin_name, admin_pw, getBaseUrl } from '@e2e/utils/Cypress';
 import { getKeycloakToken } from '@e2e/utils/Auth';
 import {
-  Configuration,
-  type DataMetaInformation,
-  DataTypeEnum,
-  type EuTaxonomyDataForFinancials,
-  EuTaxonomyDataForFinancialsControllerApi,
+    Configuration,
+    type DataMetaInformation,
+    DataTypeEnum,
+    EuTaxonomyDataForFinancialsControllerApi, type EuTaxonomyFinancialsData,
 } from '@clients/backend';
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from '@e2e/utils/CompanyUpload';
 import { assignCompanyOwnershipToDatalandAdmin, isDatasetApproved } from '@e2e/utils/CompanyRolesUtils';
@@ -16,10 +15,10 @@ import { compareObjectKeysAndValuesDeep } from '@e2e/utils/GeneralUtils';
 import { type FixtureData, getPreparedFixture } from '@sharedUtils/Fixtures';
 import EuTaxonomyFinancialsBaseFrameworkDefinition from '@/frameworks/eu-taxonomy-financials/BaseFrameworkDefinition';
 
-let euTaxonomyFinancialsFixtureForTest: FixtureData<EuTaxonomyDataForFinancials>;
+let euTaxonomyFinancialsFixtureForTest: FixtureData<EuTaxonomyFinancialsData>;
 before(function () {
   cy.fixture('CompanyInformationWithEuTaxonomyDataForFinancialsPreparedFixtures').then(function (jsonContent) {
-    const preparedFixturesEuTaxonomyFinancials = jsonContent as Array<FixtureData<EuTaxonomyDataForFinancials>>;
+    const preparedFixturesEuTaxonomyFinancials = jsonContent as Array<FixtureData<EuTaxonomyFinancialsData>>;
     euTaxonomyFinancialsFixtureForTest = getPreparedFixture(
       'company-for-all-types',
         preparedFixturesEuTaxonomyFinancials
@@ -51,7 +50,7 @@ describeIf(
                 token,
                 storedCompany.companyId,
                 '2023',
-                euTaxonomyForFinancialsFixtureForTest.t,
+                euTaxonomyFinancialsFixtureForTest.t,
                 true
               ).then((dataMetaInformation) => {
                 cy.intercept(`**/api/data/${DataTypeEnum.EuTaxonomyFinancials}/${dataMetaInformation.dataId}`).as(
@@ -82,10 +81,7 @@ describeIf(
                       .getCompanyAssociatedEuTaxonomyDataForFinancials(dataMetaInformationOfReuploadedDataset.dataId)
                       .then((axiosResponse) => {
                         const frontendSubmittedEuTaxonomyFinancialsDataset = axiosResponse.data
-                          .data as unknown as EuTaxonomyDataForFinancials;
-
-                        frontendSubmittedEuTaxonomyFinancialsDataset.financialServicesTypes?.sort();
-                        euTaxonomyFinancialsFixtureForTest.t.financialServicesTypes?.sort();
+                          .data as unknown as EuTaxonomyFinancialsData;
 
                         compareObjectKeysAndValuesDeep(
                           euTaxonomyFinancialsFixtureForTest.t as unknown as Record<string, object>,
