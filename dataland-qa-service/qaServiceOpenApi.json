@@ -4500,21 +4500,21 @@
           "companyName": {
             "type": "string"
           },
+          "reportingPeriod": {
+            "type": "string"
+          },
+          "framework": {
+            "type": "string"
+          },
           "companyId": {
+            "type": "string"
+          },
+          "dataId": {
             "type": "string"
           },
           "receptionTime": {
             "type": "integer",
             "format": "int64"
-          },
-          "framework": {
-            "type": "string"
-          },
-          "reportingPeriod": {
-            "type": "string"
-          },
-          "dataId": {
-            "type": "string"
           }
         }
       },
