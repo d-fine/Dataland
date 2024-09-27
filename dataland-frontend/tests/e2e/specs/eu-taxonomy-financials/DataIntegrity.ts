@@ -2,10 +2,11 @@ import { describeIf } from '@e2e/support/TestUtility';
 import { admin_name, admin_pw, getBaseUrl } from '@e2e/utils/Cypress';
 import { getKeycloakToken } from '@e2e/utils/Auth';
 import {
-    Configuration,
-    type DataMetaInformation,
-    DataTypeEnum,
-    EuTaxonomyDataForFinancialsControllerApi, type EuTaxonomyFinancialsData,
+  Configuration,
+  type DataMetaInformation,
+  DataTypeEnum,
+  EuTaxonomyDataForFinancialsControllerApi,
+  type EuTaxonomyFinancialsData,
 } from '@clients/backend';
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from '@e2e/utils/CompanyUpload';
 import { assignCompanyOwnershipToDatalandAdmin, isDatasetApproved } from '@e2e/utils/CompanyRolesUtils';
@@ -21,7 +22,7 @@ before(function () {
     const preparedFixturesEuTaxonomyFinancials = jsonContent as Array<FixtureData<EuTaxonomyFinancialsData>>;
     euTaxonomyFinancialsFixtureForTest = getPreparedFixture(
       'company-for-all-types',
-        preparedFixturesEuTaxonomyFinancials
+      preparedFixturesEuTaxonomyFinancials
     );
   });
 });

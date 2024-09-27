@@ -1,10 +1,6 @@
 import { type FrameworkDataTypes } from '@/utils/api/FrameworkDataTypes';
 import { type PublicFrameworkDataApi, translateFrameworkApi } from '@/utils/api/UnifiedFrameworkDataApi';
-import {
-  type Configuration,
-  DataTypeEnum,
-  P2pDataControllerApi,
-} from '@clients/backend';
+import { type Configuration, DataTypeEnum, P2pDataControllerApi } from '@clients/backend';
 import { assertNever } from '@/utils/TypeScriptUtils';
 import { type AxiosInstance } from 'axios';
 

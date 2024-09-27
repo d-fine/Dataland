@@ -1,8 +1,4 @@
-import {
-  type DataTypeEnum,
-  type P2pDataControllerApi,
-  type PathwaysToParisData,
-} from '@clients/backend';
+import { type DataTypeEnum, type P2pDataControllerApi, type PathwaysToParisData } from '@clients/backend';
 
 export type FrameworkDataTypes = {
   [DataTypeEnum.P2p]: {
