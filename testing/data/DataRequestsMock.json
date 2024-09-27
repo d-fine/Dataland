@@ -3,7 +3,7 @@
 		"dataRequestId": "5ad959bb-e6e4-4086-932c-efeab6e3d132",
 		"userId": "eec7807b-f79b-4189-984d-710edd63ef5b",
 		"creationTimestamp": 98,
-		"dataType": "eutaxonomy-financials",
+		"dataType": "eu-taxonomy-financials",
 		"reportingPeriod": "2023",
 		"datalandCompanyId": "71019f93-5230-4201-954e-ea76af4fb168",
 		"messageHistory": [

@@ -1,11 +1,11 @@
 {
-	"eutaxonomy-financials": [
+	"eu-taxonomy-financials": [
 		[
 			"2015",
 			{
 				"dataId": "45e4ae2e-aa34-47cf-b447-285ec106953a",
 				"companyId": "fce5b5e0-981d-4544-98d6-cc6d9d609b83",
-				"dataType": "eutaxonomy-financials",
+				"dataType": "eu-taxonomy-financials",
 				"reportingPeriod": "2015",
 				"currentlyActive": true,
 				"qaStatus": "Accepted",
@@ -18,7 +18,7 @@
 			{
 				"dataId": "09c90aa2-6521-4837-8fa3-92f7ea924c50",
 				"companyId": "fce5b5e0-981d-4544-98d6-cc6d9d609b83",
-				"dataType": "eutaxonomy-financials",
+				"dataType": "eu-taxonomy-financials",
 				"reportingPeriod": "2016",
 				"currentlyActive": true,
 				"qaStatus": "Accepted",
