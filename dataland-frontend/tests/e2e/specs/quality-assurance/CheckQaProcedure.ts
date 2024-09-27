@@ -53,7 +53,7 @@ describeIf(
       const data = getPreparedFixture('company-for-all-types', preparedEuTaxonomyFixtures);
       getKeycloakToken(uploader_name, uploader_pw).then((token: string) => {
         return uploadFrameworkDataForLegacyFramework(
-          DataTypeEnum.EutaxonomyFinancials,
+          DataTypeEnum.EuTaxonomyFinancials,
           token,
           storedCompany.companyId,
           '2022',

@@ -12,7 +12,7 @@
     <ShowMultipleReportsBanner
       data-test="multipleReportsBanner"
       v-if="
-        frameworkIdentifier == DataTypeEnum.EutaxonomyFinancials ||
+        frameworkIdentifier == DataTypeEnum.EuTaxonomyFinancials ||
         frameworkIdentifier == DataTypeEnum.EutaxonomyNonFinancials ||
         frameworkIdentifier == DataTypeEnum.Sfdr
       "
@@ -116,7 +116,7 @@ const sortedReports = computed(() => {
         )
         .filter((reports): reports is { [key: string]: CompanyReport } => reports !== null && reports !== undefined);
     }
-    case DataTypeEnum.EutaxonomyFinancials: {
+    case DataTypeEnum.EuTaxonomyFinancials: {
       return sortedDataAndMetaInfo.value
         .map((singleDataAndMetaInfo) => (singleDataAndMetaInfo.data as EuTaxonomyDataForFinancials).referencedReports)
         .filter((reports): reports is { [key: string]: CompanyReport } => reports !== null && reports !== undefined);

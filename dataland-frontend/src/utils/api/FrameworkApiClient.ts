@@ -3,7 +3,6 @@ import { type PublicFrameworkDataApi, translateFrameworkApi } from '@/utils/api/
 import {
   type Configuration,
   DataTypeEnum,
-  EuTaxonomyDataForFinancialsControllerApi,
   P2pDataControllerApi,
 } from '@clients/backend';
 import { assertNever } from '@/utils/TypeScriptUtils';
@@ -26,11 +25,6 @@ export function getUnifiedFrameworkDataControllerFromConfiguration<K extends key
       return translateFrameworkApi<typeof DataTypeEnum.P2p>(
         'P2pData',
         new P2pDataControllerApi(configuration, undefined, axiosInstance)
-      );
-    case DataTypeEnum.EutaxonomyFinancials:
-      return translateFrameworkApi<typeof DataTypeEnum.EutaxonomyFinancials>(
-        'EuTaxonomyDataForFinancials',
-        new EuTaxonomyDataForFinancialsControllerApi(configuration, undefined, axiosInstance)
       );
     default:
       return assertNever(framework);

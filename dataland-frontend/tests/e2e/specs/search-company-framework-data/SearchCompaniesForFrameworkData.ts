@@ -125,10 +125,10 @@ describeIf(
       const inputValue = 'A company name';
 
       getKeycloakToken(uploader_name, uploader_pw).then((token) => {
-        cy.browserThen(searchBasicCompanyInformationForDataType(token, DataTypeEnum.EutaxonomyFinancials)).then(
+        cy.browserThen(searchBasicCompanyInformationForDataType(token, DataTypeEnum.EuTaxonomyFinancials)).then(
           (basicCompanyInformations: Array<BasicCompanyInformation>) => {
             cy.visitAndCheckAppMount(
-              `/companies/${basicCompanyInformations[0].companyId}/frameworks/${DataTypeEnum.EutaxonomyFinancials}`
+              `/companies/${basicCompanyInformations[0].companyId}/frameworks/${DataTypeEnum.EuTaxonomyFinancials}`
             );
             cy.get('input[id=company_search_bar_standard]').should('not.be.disabled').type(inputValue);
             cy.get('input[id=company_search_bar_standard]')
@@ -144,7 +144,7 @@ describeIf(
       const primevueHighlightedSuggestionClass = 'p-focus';
       const searchStringResultingInAtLeastTwoAutocompleteSuggestions = 'abs';
       getKeycloakToken(uploader_name, uploader_pw).then((token) => {
-        cy.browserThen(searchBasicCompanyInformationForDataType(token, DataTypeEnum.EutaxonomyFinancials)).then(
+        cy.browserThen(searchBasicCompanyInformationForDataType(token, DataTypeEnum.EuTaxonomyFinancials)).then(
           (basicCompanyInformations: Array<BasicCompanyInformation>) => {
             const testCompany = basicCompanyInformations[0];
             cy.visitAndCheckAppMount('/companies');

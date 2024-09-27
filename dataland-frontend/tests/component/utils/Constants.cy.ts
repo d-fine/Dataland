@@ -21,7 +21,7 @@ describe('Unit test for the data type sorting in the Constants', () => {
     function removeFrameworksWithNoToolboxSupport(frameworkIdentifiers: string[]): string[] {
       const nonToolboxSupportedFrameworkIdentifiers = [
         DataTypeEnum.P2p.toString(),
-        DataTypeEnum.EutaxonomyFinancials.toString(),
+        DataTypeEnum.EuTaxonomyFinancials.toString(),
       ];
       return frameworkIdentifiers.filter(
         (frameworkIdentifier) => !nonToolboxSupportedFrameworkIdentifiers.includes(frameworkIdentifier)

@@ -1,6 +1,6 @@
 import { DataTypeEnum } from '@clients/backend';
 
 export const frameworkFixtureMap = {
-  [DataTypeEnum.EutaxonomyFinancials]: 'CompanyInformationWithEuTaxonomyDataForFinancials',
+  [DataTypeEnum.EuTaxonomyFinancials]: 'CompanyInformationWithEuTaxonomyDataForFinancials',
   [DataTypeEnum.P2p]: 'CompanyInformationWithP2pData',
 };

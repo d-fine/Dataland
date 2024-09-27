@@ -15,15 +15,15 @@ describe('Component test for ViewFrameworkBase', () => {
       },
     }).then((mounted) => {
       void mounted.wrapper.setProps({
-        dataType: DataTypeEnum.EutaxonomyFinancials,
+        dataType: DataTypeEnum.EuTaxonomyFinancials,
         companyID: 'mock-company-id',
       });
       cy.wait('@metaDataFetch').then(() => {
         expect(mounted.wrapper.vm.dataTypesInDropdown).to.be.an('array').that.is.not.empty;
         expect(mounted.wrapper.vm.dataTypesInDropdown).to.deep.equal([
           {
-            label: humanizeStringOrNumber(DataTypeEnum.EutaxonomyFinancials),
-            value: DataTypeEnum.EutaxonomyFinancials,
+            label: humanizeStringOrNumber(DataTypeEnum.EuTaxonomyFinancials),
+            value: DataTypeEnum.EuTaxonomyFinancials,
           },
           {
             label: humanizeStringOrNumber(DataTypeEnum.EutaxonomyNonFinancials),
