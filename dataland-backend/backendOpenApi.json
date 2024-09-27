@@ -688,75 +688,6 @@
         ]
       }
     },
-    "/data/eutaxonomy-financials": {
-      "post": {
-        "tags": [
-          "eu-taxonomy-data-for-financials-controller"
-        ],
-        "operationId": "postCompanyAssociatedEuTaxonomyDataForFinancials",
-        "parameters": [
-          {
-            "name": "bypassQa",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "boolean",
-              "default": false
-            }
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CompanyAssociatedDataEuTaxonomyDataForFinancials"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "Successfully added data to the data store.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/DataMetaInformation"
-                }
-              }
-            }
-          },
-          "default": {
-            "description": "An error occurred",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "headers": {
-              "WWW-Authenticate": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "default-oauth": []
-          },
-          {
-            "default-bearer-auth": []
-          }
-        ]
-      }
-    },
     "/data/eu-taxonomy-financials": {
       "post": {
         "tags": [
@@ -2572,142 +2503,6 @@
                   "type": "array",
                   "items": {
                     "$ref": "#/components/schemas/DataAndMetaInformationEutaxonomyNonFinancialsData"
-                  }
-                }
-              }
-            }
-          },
-          "default": {
-            "description": "An error occurred",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "headers": {
-              "WWW-Authenticate": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "default-oauth": []
-          },
-          {
-            "default-bearer-auth": []
-          }
-        ]
-      }
-    },
-    "/data/eutaxonomy-financials/{dataId}": {
-      "get": {
-        "tags": [
-          "eu-taxonomy-data-for-financials-controller"
-        ],
-        "operationId": "getCompanyAssociatedEuTaxonomyDataForFinancials",
-        "parameters": [
-          {
-            "name": "dataId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successfully retrieved data set.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/CompanyAssociatedDataEuTaxonomyDataForFinancials"
-                }
-              }
-            }
-          },
-          "default": {
-            "description": "An error occurred",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "headers": {
-              "WWW-Authenticate": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "default-oauth": []
-          },
-          {
-            "default-bearer-auth": []
-          }
-        ]
-      }
-    },
-    "/data/eutaxonomy-financials/companies/{companyId}": {
-      "get": {
-        "tags": [
-          "eu-taxonomy-data-for-financials-controller"
-        ],
-        "operationId": "getAllCompanyEuTaxonomyDataForFinancials",
-        "parameters": [
-          {
-            "name": "companyId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "showOnlyActive",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "boolean",
-              "default": true
-            }
-          },
-          {
-            "name": "reportingPeriod",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successfully retrieved framework datasets with meta info.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/DataAndMetaInformationEuTaxonomyDataForFinancials"
                   }
                 }
               }
@@ -13413,354 +13208,6 @@
           }
         }
       },
-      "CompanyAssociatedDataEuTaxonomyDataForFinancials": {
-        "required": [
-          "companyId",
-          "data",
-          "reportingPeriod"
-        ],
-        "type": "object",
-        "properties": {
-          "companyId": {
-            "type": "string"
-          },
-          "reportingPeriod": {
-            "type": "string"
-          },
-          "data": {
-            "$ref": "#/components/schemas/EuTaxonomyDataForFinancials"
-          }
-        }
-      },
-      "CreditInstitutionKpis": {
-        "type": "object",
-        "properties": {
-          "tradingPortfolioInPercent": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
-              }
-            ]
-          },
-          "interbankLoansInPercent": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
-              }
-            ]
-          },
-          "tradingPortfolioAndInterbankLoansInPercent": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
-              }
-            ]
-          },
-          "greenAssetRatioInPercent": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
-              }
-            ]
-          }
-        }
-      },
-      "EligibilityKpis": {
-        "type": "object",
-        "properties": {
-          "taxonomyEligibleActivityInPercent": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
-              }
-            ]
-          },
-          "taxonomyNonEligibleActivityInPercent": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
-              }
-            ]
-          },
-          "derivativesInPercent": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
-              }
-            ]
-          },
-          "banksAndIssuersInPercent": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
-              }
-            ]
-          },
-          "investmentNonNfrdInPercent": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
-              }
-            ]
-          }
-        },
-        "example": {
-          "CreditInstitution": {
-            "taxonomyEligibleActivityInPercent": {
-              "value": 0,
-              "quality": "Audited",
-              "dataSource": {
-                "page": 0,
-                "tagName": "string",
-                "fileName": "string",
-                "fileReference": "string"
-              },
-              "comment": "string"
-            }
-          },
-          "InsuranceOrReinsurance": {
-            "taxonomyEligibleActivityInPercent": {
-              "value": 0,
-              "quality": "Audited",
-              "dataSource": {
-                "page": 0,
-                "tagName": "string",
-                "fileName": "string",
-                "fileReference": "string"
-              },
-              "comment": "string"
-            }
-          },
-          "AssetManagement": {
-            "taxonomyEligibleActivityInPercent": {
-              "value": 0,
-              "quality": "Audited",
-              "dataSource": {
-                "page": 0,
-                "tagName": "string",
-                "fileName": "string",
-                "fileReference": "string"
-              },
-              "comment": "string"
-            }
-          },
-          "InvestmentFirm": {
-            "taxonomyEligibleActivityInPercent": {
-              "value": 0,
-              "quality": "Audited",
-              "dataSource": {
-                "page": 0,
-                "tagName": "string",
-                "fileName": "string",
-                "fileReference": "string"
-              },
-              "comment": "string"
-            }
-          }
-        }
-      },
-      "EuTaxonomyDataForFinancials": {
-        "type": "object",
-        "properties": {
-          "financialServicesTypes": {
-            "type": "array",
-            "nullable": true,
-            "items": {
-              "type": "string",
-              "enum": [
-                "CreditInstitution",
-                "InsuranceOrReinsurance",
-                "AssetManagement",
-                "InvestmentFirm"
-              ]
-            }
-          },
-          "eligibilityKpis": {
-            "type": "object",
-            "additionalProperties": {
-              "$ref": "#/components/schemas/EligibilityKpis"
-            },
-            "nullable": true,
-            "example": {
-              "CreditInstitution": {
-                "taxonomyEligibleActivityInPercent": {
-                  "value": 0,
-                  "quality": "Audited",
-                  "dataSource": {
-                    "page": 0,
-                    "tagName": "string",
-                    "fileName": "string",
-                    "fileReference": "string"
-                  },
-                  "comment": "string"
-                }
-              },
-              "InsuranceOrReinsurance": {
-                "taxonomyEligibleActivityInPercent": {
-                  "value": 0,
-                  "quality": "Audited",
-                  "dataSource": {
-                    "page": 0,
-                    "tagName": "string",
-                    "fileName": "string",
-                    "fileReference": "string"
-                  },
-                  "comment": "string"
-                }
-              },
-              "AssetManagement": {
-                "taxonomyEligibleActivityInPercent": {
-                  "value": 0,
-                  "quality": "Audited",
-                  "dataSource": {
-                    "page": 0,
-                    "tagName": "string",
-                    "fileName": "string",
-                    "fileReference": "string"
-                  },
-                  "comment": "string"
-                }
-              },
-              "InvestmentFirm": {
-                "taxonomyEligibleActivityInPercent": {
-                  "value": 0,
-                  "quality": "Audited",
-                  "dataSource": {
-                    "page": 0,
-                    "tagName": "string",
-                    "fileName": "string",
-                    "fileReference": "string"
-                  },
-                  "comment": "string"
-                }
-              }
-            }
-          },
-          "creditInstitutionKpis": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/CreditInstitutionKpis"
-              }
-            ]
-          },
-          "investmentFirmKpis": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/InvestmentFirmKpis"
-              }
-            ]
-          },
-          "insuranceKpis": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/InsuranceKpis"
-              }
-            ]
-          },
-          "fiscalYearDeviation": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/FiscalYearDeviation"
-              }
-            ]
-          },
-          "fiscalYearEnd": {
-            "type": "string",
-            "format": "date",
-            "nullable": true
-          },
-          "scopeOfEntities": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/YesNoNa"
-              }
-            ]
-          },
-          "nfrdMandatory": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/YesNo"
-              }
-            ]
-          },
-          "euTaxonomyActivityLevelReporting": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/YesNo"
-              }
-            ]
-          },
-          "assurance": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/AssuranceDataPoint"
-              }
-            ]
-          },
-          "numberOfEmployees": {
-            "type": "number",
-            "nullable": true
-          },
-          "referencedReports": {
-            "type": "object",
-            "additionalProperties": {
-              "$ref": "#/components/schemas/CompanyReport"
-            },
-            "nullable": true,
-            "example": "{\"string\": {\"fileReference\": \"string\",\"fileName\": \"string\",\"publicationDate\": \"2023-10-12\",}}"
-          }
-        }
-      },
-      "FiscalYearDeviation": {
-        "type": "string",
-        "enum": [
-          "Deviation",
-          "NoDeviation"
-        ]
-      },
-      "InsuranceKpis": {
-        "type": "object",
-        "properties": {
-          "taxonomyEligibleNonLifeInsuranceActivitiesInPercent": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
-              }
-            ]
-          }
-        }
-      },
-      "InvestmentFirmKpis": {
-        "type": "object",
-        "properties": {
-          "greenAssetRatioInPercent": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
-              }
-            ]
-          }
-        }
-      },
       "CompanyAssociatedDataEuTaxonomyFinancialsData": {
         "required": [
           "companyId",
@@ -17518,21 +16965,6 @@
           }
         }
       },
-      "DataAndMetaInformationEuTaxonomyDataForFinancials": {
-        "required": [
-          "data",
-          "metaInfo"
-        ],
-        "type": "object",
-        "properties": {
-          "metaInfo": {
-            "$ref": "#/components/schemas/DataMetaInformation"
-          },
-          "data": {
-            "$ref": "#/components/schemas/EuTaxonomyDataForFinancials"
-          }
-        }
-      },
       "DataAndMetaInformationEuTaxonomyFinancialsData": {
         "required": [
           "data",
@@ -17587,11 +17019,9 @@
         ],
         "type": "object",
         "properties": {
-          "companyName": {
-            "type": "string"
-          },
-          "companyId": {
-            "type": "string"
+          "lei": {
+            "type": "string",
+            "nullable": true
           },
           "countryCode": {
             "type": "string"
@@ -17599,13 +17029,15 @@
           "headquarters": {
             "type": "string"
           },
+          "companyId": {
+            "type": "string"
+          },
           "sector": {
             "type": "string",
             "nullable": true
           },
-          "lei": {
-            "type": "string",
-            "nullable": true
+          "companyName": {
+            "type": "string"
           }
         }
       },
@@ -17628,10 +17060,10 @@
         ],
         "type": "object",
         "properties": {
-          "companyName": {
+          "companyId": {
             "type": "string"
           },
-          "companyId": {
+          "companyName": {
             "type": "string"
           }
         }
@@ -17687,7 +17119,6 @@
         "type": "string",
         "enum": [
           "eu-taxonomy-financials",
-          "eutaxonomy-financials",
           "eutaxonomy-non-financials",
           "lksg",
           "p2p",
