@@ -5,7 +5,7 @@ import {
   Configuration,
   type DataMetaInformation,
   DataTypeEnum,
-  EuTaxonomyDataForFinancialsControllerApi,
+  EuTaxonomyFinancialsDataControllerApi,
   type EuTaxonomyFinancialsData,
 } from '@clients/backend';
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from '@e2e/utils/CompanyUpload';
@@ -78,8 +78,8 @@ describeIf(
                     isDatasetApproved();
                     const dataMetaInformationOfReuploadedDataset = postInterception.response
                       ?.body as DataMetaInformation;
-                    return new EuTaxonomyDataForFinancialsControllerApi(new Configuration({ accessToken: token }))
-                      .getCompanyAssociatedEuTaxonomyDataForFinancials(dataMetaInformationOfReuploadedDataset.dataId)
+                    return new EuTaxonomyFinancialsDataControllerApi(new Configuration({ accessToken: token }))
+                      .getCompanyAssociatedEuTaxonomyFinancialsData(dataMetaInformationOfReuploadedDataset.dataId)
                       .then((axiosResponse) => {
                         const frontendSubmittedEuTaxonomyFinancialsDataset = axiosResponse.data
                           .data as unknown as EuTaxonomyFinancialsData;

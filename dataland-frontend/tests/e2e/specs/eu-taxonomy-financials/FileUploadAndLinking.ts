@@ -1,9 +1,9 @@
 import { describeIf } from '@e2e/support/TestUtility';
 import { checkIfLinkedReportsAreDownloadable, gotoEditForm } from '@e2e/utils/EuTaxonomyFinancialsUpload';
 import {
-  type EuTaxonomyDataForFinancials,
-  type CompanyAssociatedDataEuTaxonomyDataForFinancials,
+  type CompanyAssociatedDataEuTaxonomyFinancialsData,
   DataTypeEnum,
+  type EuTaxonomyFinancialsData,
 } from '@clients/backend';
 import { type FixtureData, getPreparedFixture } from '@sharedUtils/Fixtures';
 import { admin_name, admin_pw } from '@e2e/utils/Cypress';
@@ -11,9 +11,10 @@ import { assertDefined } from '@/utils/TypeScriptUtils';
 import { TEST_PDF_FILE_NAME } from '@sharedUtils/ConstantsForPdfs';
 import { getKeycloakToken } from '@e2e/utils/Auth';
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from '@e2e/utils/CompanyUpload';
-import { uploadFrameworkDataForLegacyFramework } from '@e2e/utils/FrameworkUpload';
+import { uploadFrameworkDataForPublicToolboxFramework } from '@e2e/utils/FrameworkUpload';
 import { UploadReports } from '@sharedUtils/components/UploadReports';
 import { selectItemFromDropdownByValue } from '@sharedUtils/Dropdown';
+import EuTaxonomyFinancialsBaseFrameworkDefinition from '@/frameworks/eu-taxonomy-financials/BaseFrameworkDefinition';
 
 describeIf(
   'As a user, I want to add and link documents to the EU Taxonomy form',
@@ -22,12 +23,12 @@ describeIf(
     executionEnvironments: ['developmentLocal', 'ci', 'developmentCd'],
   },
   function () {
-    let euTaxoFinancialsFixture: FixtureData<EuTaxonomyDataForFinancials>;
+    let euTaxoFinancialsFixture: FixtureData<EuTaxonomyFinancialsData>;
     const uploadReports = new UploadReports();
 
     before(function () {
       cy.fixture('CompanyInformationWithEuTaxonomyDataForFinancialsPreparedFixtures').then(function (jsonContent) {
-        const preparedFixtures = jsonContent as Array<FixtureData<EuTaxonomyDataForFinancials>>;
+        const preparedFixtures = jsonContent as Array<FixtureData<EuTaxonomyFinancialsData>>;
         euTaxoFinancialsFixture = getPreparedFixture('company-for-all-types', preparedFixtures);
       });
     });
@@ -43,8 +44,8 @@ describeIf(
           generateDummyCompanyInformation(euTaxoFinancialsFixture.companyInformation.companyName)
         ).then((storedCompany) => {
           storedCompanyId = storedCompany.companyId;
-          return uploadFrameworkDataForLegacyFramework(
-            DataTypeEnum.EuTaxonomyFinancials,
+          return uploadFrameworkDataForPublicToolboxFramework(
+            EuTaxonomyFinancialsBaseFrameworkDefinition,
             token,
             storedCompanyId,
             '2023',
@@ -100,7 +101,7 @@ describeIf(
                 times: 1,
               },
               (request) => {
-                const data = assertDefined((request.body as CompanyAssociatedDataEuTaxonomyDataForFinancials).data);
+                const data = assertDefined((request.body as CompanyAssociatedDataEuTaxonomyFinancialsData).data);
                 expect(TEST_PDF_FILE_NAME in assertDefined(data.referencedReports)).to.equal(
                   areBothDocumentsStillUploaded
                 );
@@ -131,7 +132,7 @@ describeIf(
                 times: 1,
               },
               (request) => {
-                const data = assertDefined((request.body as CompanyAssociatedDataEuTaxonomyDataForFinancials).data);
+                const data = assertDefined((request.body as CompanyAssociatedDataEuTaxonomyFinancialsData).data);
                 expect(TEST_PDF_FILE_NAME in assertDefined(data.referencedReports)).to.equal(
                   areBothDocumentsStillUploaded
                 );

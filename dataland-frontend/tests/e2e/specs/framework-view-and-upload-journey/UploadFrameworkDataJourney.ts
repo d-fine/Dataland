@@ -4,7 +4,7 @@ import { getKeycloakToken } from '@e2e/utils/Auth';
 import {
   IdentifierType,
   DataTypeEnum,
-  type EuTaxonomyDataForFinancials,
+  type EuTaxonomyFinancialsData,
   type LksgData,
   type StoredCompany,
 } from '@clients/backend';
@@ -13,11 +13,9 @@ import { assertDefined } from '@/utils/TypeScriptUtils';
 import { describeIf } from '@e2e/support/TestUtility';
 import { generateReportingPeriod } from '@e2e/fixtures/common//ReportingPeriodFixtures';
 import { type FixtureData, getPreparedFixture } from '@sharedUtils/Fixtures';
-import {
-  uploadFrameworkDataForLegacyFramework,
-  uploadFrameworkDataForPublicToolboxFramework,
-} from '@e2e/utils/FrameworkUpload';
+import { uploadFrameworkDataForPublicToolboxFramework } from '@e2e/utils/FrameworkUpload';
 import LksgBaseFrameworkDefinition from '@/frameworks/lksg/BaseFrameworkDefinition';
+import EuTaxonomyFinancialsBaseFrameworkDefinition from '@/frameworks/eu-taxonomy-financials/BaseFrameworkDefinition';
 
 describe('As a user, I expect the dataset upload process to behave as I expect', function () {
   describeIf(
@@ -42,10 +40,10 @@ describe('As a user, I expect the dataset upload process to behave as I expect',
       let storedCompanyForManyDatasetsCompany: StoredCompany;
 
       before(function uploadOneCompanyWithoutDataAndOneCompanyWithManyDatasets() {
-        let euTaxoFinancialPreparedFixtures: Array<FixtureData<EuTaxonomyDataForFinancials>>;
+        let euTaxoFinancialPreparedFixtures: Array<FixtureData<EuTaxonomyFinancialsData>>;
         let lksgPreparedFixtures: Array<FixtureData<LksgData>>;
         cy.fixture('CompanyInformationWithEuTaxonomyDataForFinancialsPreparedFixtures').then(function (jsonContent) {
-          euTaxoFinancialPreparedFixtures = jsonContent as Array<FixtureData<EuTaxonomyDataForFinancials>>;
+          euTaxoFinancialPreparedFixtures = jsonContent as Array<FixtureData<EuTaxonomyFinancialsData>>;
         });
         cy.fixture('CompanyInformationWithLksgPreparedFixtures').then(function (jsonContent) {
           lksgPreparedFixtures = jsonContent as Array<FixtureData<LksgData>>;
@@ -58,8 +56,8 @@ describe('As a user, I expect the dataset upload process to behave as I expect',
             .then((storedCompany) => {
               const preparedFixture = getPreparedFixture('eligible-activity-Point-29', euTaxoFinancialPreparedFixtures);
               storedCompanyForManyDatasetsCompany = storedCompany;
-              return uploadFrameworkDataForLegacyFramework(
-                DataTypeEnum.EuTaxonomyFinancials,
+              return uploadFrameworkDataForPublicToolboxFramework(
+                EuTaxonomyFinancialsBaseFrameworkDefinition,
                 token,
                 storedCompanyForManyDatasetsCompany.companyId,
                 '2023',
@@ -77,8 +75,8 @@ describe('As a user, I expect the dataset upload process to behave as I expect',
                     'eligible-activity-Point-26',
                     euTaxoFinancialPreparedFixtures
                   );
-                  return uploadFrameworkDataForLegacyFramework(
-                    DataTypeEnum.EuTaxonomyFinancials,
+                  return uploadFrameworkDataForPublicToolboxFramework(
+                    EuTaxonomyFinancialsBaseFrameworkDefinition,
                     token,
                     storedCompanyForManyDatasetsCompany.companyId,
                     '2022',

@@ -11,12 +11,12 @@
       <div v-else class="grid uploadFormWrapper">
         <div id="uploadForm" class="text-left uploadForm col-9">
           <FormKit
-            v-model="companyAssociatedEutaxonomyFinancialsData"
+            v-model="companyAssociatedEuTaxonomyFinancialsData"
             :actions="false"
             type="form"
             :id="formId"
             :name="formId"
-            @submit="postEutaxonomyFinancialsData"
+            @submit="postEuTaxonomyFinancialsData"
             @submit-invalid="checkCustomInputs"
           >
             <FormKit type="hidden" name="companyId" :model-value="companyID" />
@@ -70,7 +70,7 @@
                     <div class="col-9 formFields">
                       <FormKit v-for="field in subcategory.fields" :key="field" type="group" :name="subcategory.name">
                         <component
-                          v-if="field.showIf(companyAssociatedEutaxonomyFinancialsData.data)"
+                          v-if="field.showIf(companyAssociatedEuTaxonomyFinancialsData.data)"
                           :is="field.component"
                           :label="field.label"
                           :placeholder="field.placeholder"
@@ -95,7 +95,7 @@
         </div>
         <SubmitSideBar>
           <SubmitButton :formId="formId" />
-          <div v-if="postEutaxonomyFinancialsDataProcessed">
+          <div v-if="postEuTaxonomyFinancialsDataProcessed">
             <SuccessMessage v-if="uploadSucceded" :messageId="messageCounter" />
             <FailMessage v-else :message="message" :messageId="messageCounter" />
           </div>
@@ -228,13 +228,13 @@ export default defineComponent({
       formId: 'createEuTaxonomyFinancialsForm',
       waitingForData: true,
       dataDate: undefined as Date | undefined,
-      companyAssociatedEutaxonomyFinancialsData: {} as CompanyAssociatedDataEuTaxonomyFinancialsData,
+      companyAssociatedEuTaxonomyFinancialsData: {} as CompanyAssociatedDataEuTaxonomyFinancialsData,
       euTaxonomyFinancialsDataModel,
       route: useRoute(),
       message: '',
       smoothScroll: smoothScroll,
       uploadSucceded: false,
-      postEutaxonomyFinancialsDataProcessed: false,
+      postEuTaxonomyFinancialsDataProcessed: false,
       messageCounter: 0,
       checkCustomInputs,
       documentsToUpload: [] as DocumentToUpload[],
@@ -255,7 +255,7 @@ export default defineComponent({
     subcategoryVisibility(): Map<Subcategory, boolean> {
       return createSubcategoryVisibilityMap(
         this.euTaxonomyFinancialsDataModel,
-        this.companyAssociatedEutaxonomyFinancialsData.data
+        this.companyAssociatedEuTaxonomyFinancialsData.data
       );
     },
   },
@@ -269,7 +269,7 @@ export default defineComponent({
     const dataId = this.route.query.templateDataId;
     if (dataId && typeof dataId === 'string' && dataId !== '') {
       this.editMode = true;
-      this.loadEutaxonomyFinancialsData(dataId);
+      this.loadEuTaxonomyFinancialsData(dataId);
     } else {
       this.waitingForData = false;
     }
@@ -290,11 +290,11 @@ export default defineComponent({
       } else return undefined;
     },
     /**
-     * Loads the EutaxonomyFinancials-Dataset identified by the provided dataId and pre-configures the form to contain the data
+     * Loads the EuTaxonomyFinancials-Dataset identified by the provided dataId and pre-configures the form to contain the data
      * from the dataset
      * @param dataId the id of the dataset to load
      */
-    async loadEutaxonomyFinancialsData(dataId: string): Promise<void> {
+    async loadEuTaxonomyFinancialsData(dataId: string): Promise<void> {
       this.waitingForData = true;
       const euTaxonomyFinancialsDataControllerApi = this.buildEuTaxonomyFinancialsDataApi();
 
@@ -306,19 +306,19 @@ export default defineComponent({
       }
       this.referencedReportsForPrefill =
         euTaxonomyFinancialsResponseData.data.general?.general?.referencedReports ?? {};
-      this.companyAssociatedEutaxonomyFinancialsData = objectDropNull(euTaxonomyFinancialsResponseData);
+      this.companyAssociatedEuTaxonomyFinancialsData = objectDropNull(euTaxonomyFinancialsResponseData);
       this.waitingForData = false;
     },
 
     /**
      * Sends data to add EuTaxonomyFinancials data
      */
-    async postEutaxonomyFinancialsData(): Promise<void> {
+    async postEuTaxonomyFinancialsData(): Promise<void> {
       this.messageCounter++;
       try {
         if (this.documentsToUpload.length > 0) {
           checkIfAllUploadedReportsAreReferencedInDataModel(
-            this.companyAssociatedEutaxonomyFinancialsData.data as ObjectType,
+            this.companyAssociatedEuTaxonomyFinancialsData.data as ObjectType,
             Object.keys(this.namesAndReferencesOfAllCompanyReportsForTheDataset)
           );
 
@@ -328,12 +328,12 @@ export default defineComponent({
         const euTaxonomyFinancialsDataControllerApi = this.buildEuTaxonomyFinancialsDataApi();
 
         const isCompanyOwnerOrDataUploader = await hasUserCompanyOwnerOrDataUploaderRole(
-          this.companyAssociatedEutaxonomyFinancialsData.companyId,
+          this.companyAssociatedEuTaxonomyFinancialsData.companyId,
           this.getKeycloakPromise
         );
 
         await euTaxonomyFinancialsDataControllerApi!.postFrameworkData(
-          this.companyAssociatedEutaxonomyFinancialsData,
+          this.companyAssociatedEuTaxonomyFinancialsData,
           isCompanyOwnerOrDataUploader
         );
 
@@ -351,7 +351,7 @@ export default defineComponent({
         }
         this.uploadSucceded = false;
       } finally {
-        this.postEutaxonomyFinancialsDataProcessed = true;
+        this.postEuTaxonomyFinancialsDataProcessed = true;
       }
     },
     /**

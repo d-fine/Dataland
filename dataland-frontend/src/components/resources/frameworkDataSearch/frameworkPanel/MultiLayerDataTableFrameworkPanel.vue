@@ -65,7 +65,7 @@ import {
   type CompanyReport,
   type DataMetaInformation,
   DataTypeEnum,
-  type EuTaxonomyDataForFinancials,
+  type EuTaxonomyFinancialsData,
   type EutaxonomyNonFinancialsData,
   type SfdrData,
 } from '@clients/backend';
@@ -118,7 +118,7 @@ const sortedReports = computed(() => {
     }
     case DataTypeEnum.EuTaxonomyFinancials: {
       return sortedDataAndMetaInfo.value
-        .map((singleDataAndMetaInfo) => (singleDataAndMetaInfo.data as EuTaxonomyDataForFinancials).referencedReports)
+        .map((singleDataAndMetaInfo) => (singleDataAndMetaInfo.data as EuTaxonomyFinancialsData).referencedReports)
         .filter((reports): reports is { [key: string]: CompanyReport } => reports !== null && reports !== undefined);
     }
     case DataTypeEnum.Sfdr: {

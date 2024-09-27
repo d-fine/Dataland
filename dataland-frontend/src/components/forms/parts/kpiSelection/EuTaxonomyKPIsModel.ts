@@ -1,60 +1,6 @@
-import { EuTaxonomyDataForFinancialsFinancialServicesTypesEnum } from '@clients/backend';
 import { PAGE_NUMBER_DESCRIPTION } from '@/utils/FileUploadUtils';
 
-export const euTaxonomyKPIsModel = {
-  creditInstitutionKpis: [
-    'tradingPortfolioInPercent',
-    'interbankLoansInPercent',
-    'tradingPortfolioAndInterbankLoansInPercent',
-    'greenAssetRatioInPercent',
-  ],
-  insuranceKpis: ['taxonomyEligibleNonLifeInsuranceActivitiesInPercent'],
-  investmentFirmKpis: ['greenAssetRatioInPercent'],
-  eligibilityKpis: [
-    'taxonomyEligibleActivityInPercent',
-    'taxonomyNonEligibleActivityInPercent',
-    'derivativesInPercent',
-    'banksAndIssuersInPercent',
-    'investmentNonNfrdInPercent',
-  ],
-  kpisFieldNameToFinancialServiceType: {
-    creditInstitutionKpis: EuTaxonomyDataForFinancialsFinancialServicesTypesEnum.CreditInstitution,
-    insuranceKpis: EuTaxonomyDataForFinancialsFinancialServicesTypesEnum.InsuranceOrReinsurance,
-    investmentFirmKpis: EuTaxonomyDataForFinancialsFinancialServicesTypesEnum.InvestmentFirm,
-    assetManagementKpis: EuTaxonomyDataForFinancialsFinancialServicesTypesEnum.AssetManagement,
-  },
-  euTaxonomyDetailsPerCashFlowType: ['total', 'aligned', 'eligible'],
-  euTaxonomyDetailsPerCashFlowFilesNames: {
-    total: 'totalAmount',
-    aligned: 'alignedData',
-    eligible: 'eligibleData',
-  },
-};
-
-/**
- * Returns the kpi field name for a financial services type enum that is passed as param.
- * E.g. the input "EuTaxonomyDataForFinancialsFinancialServicesTypesEnum.CreditInstitution" should return
- * "creditInstitutionKpis".
- * @param financialServiceType The financial service type enum for which the kpi field name shall be returned
- * @returns the kpi field name
- */
-export function getKpiFieldNameForOneFinancialServiceType(
-  financialServiceType: EuTaxonomyDataForFinancialsFinancialServicesTypesEnum
-): string {
-  const matchingKeys = [];
-  for (const [key, value] of Object.entries(euTaxonomyKPIsModel.kpisFieldNameToFinancialServiceType)) {
-    if (value === financialServiceType) {
-      matchingKeys.push(key);
-    }
-  }
-  if (matchingKeys.length === 0) {
-    throw new Error(`No matching key found for financial service type: ${financialServiceType}`);
-  } else if (matchingKeys.length > 1) {
-    throw new Error(`Multiple matching keys found for financial service type: ${financialServiceType}`);
-  }
-  return matchingKeys[0];
-}
-
+// ToDo is this still needed?
 export const euTaxonomyKpiNameMappings = {
   investmentNonNfrdInPercent: 'Exposures To Non-NFRD Entities',
   banksAndIssuersInPercent: 'Exposures To Central Governments, Central Banks, Supranational Issuers',

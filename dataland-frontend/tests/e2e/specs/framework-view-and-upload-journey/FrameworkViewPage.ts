@@ -5,7 +5,7 @@ import { type FixtureData, getPreparedFixture } from '@sharedUtils/Fixtures';
 import { validateCompanyCockpitPage, verifySearchResultTableExists } from '@sharedUtils/ElementChecks';
 import {
   DataTypeEnum,
-  type EuTaxonomyDataForFinancials,
+  type EuTaxonomyFinancialsData,
   type LksgData,
   type SfdrData,
   type PathwaysToParisData,
@@ -19,6 +19,7 @@ import {
 import { getCellValueContainer } from '@sharedUtils/components/resources/dataTable/MultiLayerDataTableTestUtils';
 import LksgBaseFrameworkDefinition from '@/frameworks/lksg/BaseFrameworkDefinition';
 import SfdrBaseFrameworkDefinition from '@/frameworks/sfdr/BaseFrameworkDefinition';
+import EuTaxonomyFinancialsBaseFrameworkDefinition from '@/frameworks/eu-taxonomy-financials/BaseFrameworkDefinition';
 
 describeIf(
   'As a user, I expect to search and select companies, see their company-cockpits and dataset-view-pages, ' +
@@ -294,8 +295,8 @@ describeIf(
             );
           })
           .then(() => {
-            return uploadFrameworkDataForLegacyFramework(
-              DataTypeEnum.EuTaxonomyFinancials,
+            return uploadFrameworkDataForPublicToolboxFramework(
+              EuTaxonomyFinancialsBaseFrameworkDefinition,
               token,
               companyIdOfAlpha,
               '2019',
@@ -343,14 +344,14 @@ describeIf(
       });
     }
 
-    let euTaxoFinancialPreparedFixtures: Array<FixtureData<EuTaxonomyDataForFinancials>>;
+    let euTaxoFinancialPreparedFixtures: Array<FixtureData<EuTaxonomyFinancialsData>>;
     let p2pFixtures: Array<FixtureData<PathwaysToParisData>>;
     let lksgPreparedFixtures: Array<FixtureData<LksgData>>;
     let sfdrPreparedFixtures: Array<FixtureData<SfdrData>>;
 
     before(() => {
       cy.fixture('CompanyInformationWithEuTaxonomyDataForFinancialsPreparedFixtures').then(function (jsonContent) {
-        euTaxoFinancialPreparedFixtures = jsonContent as Array<FixtureData<EuTaxonomyDataForFinancials>>;
+        euTaxoFinancialPreparedFixtures = jsonContent as Array<FixtureData<EuTaxonomyFinancialsData>>;
       });
       cy.fixture('CompanyInformationWithP2pData').then(function (jsonContent) {
         p2pFixtures = jsonContent as Array<FixtureData<PathwaysToParisData>>;

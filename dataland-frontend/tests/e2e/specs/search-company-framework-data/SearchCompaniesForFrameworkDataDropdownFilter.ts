@@ -1,7 +1,7 @@
 import { describeIf } from '@e2e/support/TestUtility';
 import { getFirstEuTaxonomyFinancialsFixtureDataFromFixtures } from '@e2e/utils/EuTaxonomyFinancialsUpload';
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from '@e2e/utils/CompanyUpload';
-import { DataTypeEnum, type EuTaxonomyDataForFinancials, type SfdrData } from '@clients/backend';
+import { DataTypeEnum, type EuTaxonomyFinancialsData, type SfdrData } from '@clients/backend';
 import { getCountryNameFromCountryCode } from '@/utils/CountryCodeConverter';
 import { admin_name, admin_pw, getBaseUrl, uploader_name, uploader_pw } from '@e2e/utils/Cypress';
 import { type FixtureData } from '@sharedUtils/Fixtures';
@@ -10,18 +10,19 @@ import { getKeycloakToken } from '@e2e/utils/Auth';
 import { convertStringToQueryParamFormat } from '@e2e/utils/Converters';
 import { assertDefined } from '@/utils/TypeScriptUtils';
 import {
-  uploadFrameworkDataForLegacyFramework,
   uploadCompanyAndFrameworkDataForPublicToolboxFramework,
+  uploadFrameworkDataForPublicToolboxFramework,
 } from '@e2e/utils/FrameworkUpload';
 import { humanizeStringOrNumber } from '@/utils/StringFormatter';
 import SfdrBaseFrameworkDefinition from '@/frameworks/sfdr/BaseFrameworkDefinition';
 import { ALL_FRAMEWORKS_ORDERED } from '@/utils/Constants';
+import EuTaxonomyFinancialsBaseFrameworkDefinition from '@/frameworks/eu-taxonomy-financials/BaseFrameworkDefinition';
 
-let companiesWithEuTaxonomyDataForFinancials: Array<FixtureData<EuTaxonomyDataForFinancials>>;
+let companiesWithEuTaxonomyFinancialsData: Array<FixtureData<EuTaxonomyFinancialsData>>;
 let companiesWithSfdrData: Array<FixtureData<SfdrData>>;
 before(function () {
   cy.fixture('CompanyInformationWithEuTaxonomyDataForFinancials').then(function (jsonContent) {
-    companiesWithEuTaxonomyDataForFinancials = jsonContent as Array<FixtureData<EuTaxonomyDataForFinancials>>;
+    companiesWithEuTaxonomyFinancialsData = jsonContent as Array<FixtureData<EuTaxonomyFinancialsData>>;
   });
   cy.fixture('CompanyInformationWithSfdrData').then(function (jsonContent) {
     companiesWithSfdrData = jsonContent as Array<FixtureData<SfdrData>>;
@@ -93,8 +94,8 @@ describe('As a user, I expect the search functionality on the /companies page to
         'Checks that the country-code filter synchronises between the search bar and the drop down and works',
         { scrollBehavior: false },
         () => {
-          const demoCompanyToTestFor = companiesWithEuTaxonomyDataForFinancials[0].companyInformation;
-          const demoCompanyWithDifferentCountryCode = companiesWithEuTaxonomyDataForFinancials.find(
+          const demoCompanyToTestFor = companiesWithEuTaxonomyFinancialsData[0].companyInformation;
+          const demoCompanyWithDifferentCountryCode = companiesWithEuTaxonomyFinancialsData.find(
             (it) => it.companyInformation.countryCode !== demoCompanyToTestFor.countryCode
           )!.companyInformation;
 
@@ -127,12 +128,12 @@ describe('As a user, I expect the search functionality on the /companies page to
         { scrollBehavior: false },
         () => {
           const demoCompanyToTestFor = assertDefined(
-            companiesWithEuTaxonomyDataForFinancials.find((it) => it.companyInformation?.sector)?.companyInformation
+            companiesWithEuTaxonomyFinancialsData.find((it) => it.companyInformation?.sector)?.companyInformation
           );
           expect(demoCompanyToTestFor?.sector).to.not.be.undefined;
 
           const demoCompanyWithDifferentSector = assertDefined(
-            companiesWithEuTaxonomyDataForFinancials.find(
+            companiesWithEuTaxonomyFinancialsData.find(
               (it) => it.companyInformation?.sector !== demoCompanyToTestFor.sector && it.companyInformation?.sector
             )?.companyInformation
           );
@@ -337,8 +338,8 @@ describe('As a user, I expect the search functionality on the /companies page to
           getKeycloakToken(admin_name, admin_pw).then((token) => {
             getFirstEuTaxonomyFinancialsFixtureDataFromFixtures().then((fixtureData) => {
               return uploadCompanyViaApi(token, generateDummyCompanyInformation(companyName)).then((storedCompany) => {
-                return uploadFrameworkDataForLegacyFramework(
-                  DataTypeEnum.EuTaxonomyFinancials,
+                return uploadFrameworkDataForPublicToolboxFramework(
+                  EuTaxonomyFinancialsBaseFrameworkDefinition,
                   token,
                   storedCompany.companyId,
                   fixtureData.reportingPeriod,

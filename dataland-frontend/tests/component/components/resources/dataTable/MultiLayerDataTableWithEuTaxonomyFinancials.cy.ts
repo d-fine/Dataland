@@ -1,5 +1,5 @@
 import { type FixtureData, getPreparedFixture } from '@sharedUtils/Fixtures';
-import { DataTypeEnum, type EligibilityKpis, type EuTaxonomyDataForFinancials } from '@clients/backend';
+import { DataTypeEnum, type EligibilityKpis, type EuTaxonomyFinancialsData } from '@clients/backend';
 
 import {
   getCellValueContainer,
@@ -13,14 +13,14 @@ import { assertDefined } from '@/utils/TypeScriptUtils';
 import { euTaxonomyKpiNameMappings } from '@/components/forms/parts/kpiSelection/EuTaxonomyKPIsModel';
 
 describe('Component test for EuTaxonomyFinancialPanel', () => {
-  let preparedFixtures: Array<FixtureData<EuTaxonomyDataForFinancials>>;
+  let preparedFixtures: Array<FixtureData<EuTaxonomyFinancialsData>>;
   //ToDo fix this test and the import below
   const EuTaxonomyFinancialDisplayConfiguration =
-    configForEuTaxonomyFinancialsMLDT as MLDTConfig<EuTaxonomyDataForFinancials>;
+    configForEuTaxonomyFinancialsMLDT as MLDTConfig<EuTaxonomyFinancialsData>;
 
   before(function () {
     cy.fixture('CompanyInformationWithEuTaxonomyDataForFinancialsPreparedFixtures').then(function (jsonContent) {
-      preparedFixtures = jsonContent as Array<FixtureData<EuTaxonomyDataForFinancials>>;
+      preparedFixtures = jsonContent as Array<FixtureData<EuTaxonomyFinancialsData>>;
     });
   });
 
@@ -61,7 +61,7 @@ describe('Component test for EuTaxonomyFinancialPanel', () => {
    * Verifies that the frontend correctly displays the credit institution KPIs
    * @param testData he dataset used as the source of truth
    */
-  function checkCreditInstitutionValues(testData: EuTaxonomyDataForFinancials): void {
+  function checkCreditInstitutionValues(testData: EuTaxonomyFinancialsData): void {
     checkCommonFields('Credit Institution', testData.eligibilityKpis!.CreditInstitution);
 
     getCellValueContainer(euTaxonomyKpiNameMappings.tradingPortfolioInPercent).should(
@@ -94,7 +94,7 @@ describe('Component test for EuTaxonomyFinancialPanel', () => {
    * Verifies that the frontend correctly displays the insurance firm KPIs
    * @param testData the dataset used as the source of truth
    */
-  function checkInsuranceValues(testData: EuTaxonomyDataForFinancials): void {
+  function checkInsuranceValues(testData: EuTaxonomyFinancialsData): void {
     checkCommonFields('Insurance or Reinsurance', testData.eligibilityKpis!.InsuranceOrReinsurance);
     getCellValueContainer(euTaxonomyKpiNameMappings.taxonomyEligibleNonLifeInsuranceActivitiesInPercent).should(
       'contain',
@@ -110,7 +110,7 @@ describe('Component test for EuTaxonomyFinancialPanel', () => {
    * Verifies that the frontend correctly displays the investment firm KPIs
    * @param testData the dataset used as the source of truth
    */
-  function checkInvestmentFirmValues(testData: EuTaxonomyDataForFinancials): void {
+  function checkInvestmentFirmValues(testData: EuTaxonomyFinancialsData): void {
     checkCommonFields('Investment Firm', testData.eligibilityKpis!.InvestmentFirm);
     getCellValueContainer(euTaxonomyKpiNameMappings.greenAssetRatioInPercent).should(
       'contain',

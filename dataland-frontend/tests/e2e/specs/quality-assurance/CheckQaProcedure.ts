@@ -1,7 +1,6 @@
 import {
   type DataMetaInformation,
-  DataTypeEnum,
-  type EuTaxonomyDataForFinancials,
+  type EuTaxonomyFinancialsData,
   type LksgData,
   type StoredCompany,
 } from '@clients/backend';
@@ -18,11 +17,9 @@ import {
   uploader_pw,
 } from '@e2e/utils/Cypress';
 import { type FixtureData, getPreparedFixture } from '@sharedUtils/Fixtures';
-import {
-  uploadFrameworkDataForLegacyFramework,
-  uploadFrameworkDataForPublicToolboxFramework,
-} from '@e2e/utils/FrameworkUpload';
+import { uploadFrameworkDataForPublicToolboxFramework } from '@e2e/utils/FrameworkUpload';
 import LksgBaseFrameworkDefinition from '@/frameworks/lksg/BaseFrameworkDefinition';
+import EuTaxonomyFinancialsBaseFrameworkDefinition from '@/frameworks/eu-taxonomy-financials/BaseFrameworkDefinition';
 
 describeIf(
   'As a user, I expect to be able to add a new dataset and see it as pending',
@@ -31,12 +28,12 @@ describeIf(
   },
   function () {
     let storedCompany: StoredCompany;
-    let preparedEuTaxonomyFixtures: Array<FixtureData<EuTaxonomyDataForFinancials>>;
+    let preparedEuTaxonomyFixtures: Array<FixtureData<EuTaxonomyFinancialsData>>;
     let preparedLksgFixtures: Array<FixtureData<LksgData>>;
 
     before(function () {
       cy.fixture('CompanyInformationWithEuTaxonomyDataForFinancialsPreparedFixtures').then(function (jsonContent) {
-        preparedEuTaxonomyFixtures = jsonContent as Array<FixtureData<EuTaxonomyDataForFinancials>>;
+        preparedEuTaxonomyFixtures = jsonContent as Array<FixtureData<EuTaxonomyFinancialsData>>;
       });
 
       cy.fixture('CompanyInformationWithLksgPreparedFixtures').then(function (jsonContent) {
@@ -52,8 +49,8 @@ describeIf(
     it('Check whether newly added dataset has Pending status and can be approved by a reviewer', () => {
       const data = getPreparedFixture('company-for-all-types', preparedEuTaxonomyFixtures);
       getKeycloakToken(uploader_name, uploader_pw).then((token: string) => {
-        return uploadFrameworkDataForLegacyFramework(
-          DataTypeEnum.EuTaxonomyFinancials,
+        return uploadFrameworkDataForPublicToolboxFramework(
+          EuTaxonomyFinancialsBaseFrameworkDefinition,
           token,
           storedCompany.companyId,
           '2022',
