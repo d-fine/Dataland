@@ -21,7 +21,7 @@ before(function () {
     const preparedFixturesEuTaxonomyFinancials = jsonContent as Array<FixtureData<EuTaxonomyDataForFinancials>>;
     euTaxonomyFinancialsFixtureForTest = getPreparedFixture(
       'company-for-all-types',
-      preparedFixtures
+        preparedFixturesEuTaxonomyFinancials
     );
   });
 });
