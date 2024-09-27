@@ -674,7 +674,7 @@
               "items": {
                 "type": "string",
                 "enum": [
-                  "eutaxonomy-financials",
+                  "eu-taxonomy-financials",
                   "eutaxonomy-non-financials",
                   "lksg",
                   "p2p",
@@ -942,7 +942,7 @@
               "items": {
                 "type": "string",
                 "enum": [
-                  "eutaxonomy-financials",
+                  "eu-taxonomy-financials",
                   "eutaxonomy-non-financials",
                   "lksg",
                   "p2p",
@@ -1082,7 +1082,7 @@
               "items": {
                 "type": "string",
                 "enum": [
-                  "eutaxonomy-financials",
+                  "eu-taxonomy-financials",
                   "eutaxonomy-non-financials",
                   "lksg",
                   "p2p",
@@ -1492,7 +1492,7 @@
             "type": "string",
             "example": "p2p",
             "enum": [
-              "eutaxonomy-financials",
+              "eu-taxonomy-financials",
               "eutaxonomy-non-financials",
               "lksg",
               "p2p",
@@ -1589,7 +1589,7 @@
             "items": {
               "type": "string",
               "enum": [
-                "eutaxonomy-financials",
+                "eu-taxonomy-financials",
                 "eutaxonomy-non-financials",
                 "lksg",
                 "p2p",
@@ -1855,7 +1855,7 @@
           "dataType": {
             "type": "string",
             "enum": [
-              "eutaxonomy-financials",
+              "eu-taxonomy-financials",
               "eutaxonomy-non-financials",
               "lksg",
               "p2p",
