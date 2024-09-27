@@ -25,7 +25,7 @@ class QaReportMetadataService(
     /**
      * Method to search all data and the connected meta information associated with a data set.
      * @param uploaderUserIds set of user ids of the uploader
-     * @param showOnlyActive whether to show only active data
+     * @param showOnlyActive whether to show only active qa reports
      * @param qaStatus the qa status
      * @param minUploadDate searches for reports uploaded after the minUploadDate.
      * @param maxUploadDate searches for reports uploaded before the maxUploadDate.
