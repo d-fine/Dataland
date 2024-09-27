@@ -62,7 +62,7 @@ class ExcelTemplate(val rows: MutableList<TemplateRow>) {
         /**
          * Parse an Excel Template from a CSV file.
          */
-        fun fromCsv(csvFile: File): ExcelTemplate {
+        private fun fromCsv(csvFile: File): ExcelTemplate {
             val csvSchema = CsvSchema
                 .emptySchema()
                 .withHeader()
