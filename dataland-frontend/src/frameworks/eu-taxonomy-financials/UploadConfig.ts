@@ -9,44 +9,85 @@ export const euTaxonomyFinancialsDataModel = [
     showIf: (): boolean => true,
     subcategories: [
       {
-        name: 'reportingPeriod',
-        label: 'Reporting Period',
-        fields: [],
-      },
-      {
-        name: 'fiscalYearDeviation',
-        label: 'Fiscal Year Deviation',
-        fields: [],
-      },
-      {
-        name: 'fiscalYearEnd',
-        label: 'Fiscal Year End',
-        fields: [],
-      },
-      {
-        name: 'referencedReports',
-        label: 'Referenced Reports',
-        fields: [],
-      },
-      {
-        name: 'scopeOfEntities',
-        label: 'Scope of Entities',
-        fields: [],
-      },
-      {
-        name: 'numberOfEmployees',
-        label: 'Number of Employees',
-        fields: [],
-      },
-      {
-        name: 'nfrdMandatory',
-        label: 'NFRD Mandatory',
-        fields: [],
-      },
-      {
-        name: 'assurance',
-        label: 'Assurance',
-        fields: [],
+        name: 'general',
+        label: 'General',
+        fields: [
+          {
+            name: 'fiscalYearDeviation',
+            label: 'Fiscal Year Deviation',
+            description: 'Does the fiscal year deviate from the calendar year?',
+            options: [
+              {
+                label: 'Deviation',
+                value: 'Deviation',
+              },
+              {
+                label: 'No Deviation',
+                value: 'NoDeviation',
+              },
+            ],
+
+            component: 'RadioButtonsExtendedDataPointFormField',
+            required: false,
+            showIf: (): boolean => true,
+          },
+          {
+            name: 'fiscalYearEnd',
+            label: 'Fiscal Year End',
+            description: 'The date at which the fiscal year ends.',
+
+            component: 'DateExtendedDataPointFormField',
+            required: false,
+            showIf: (): boolean => true,
+          },
+          {
+            name: 'referencedReports',
+            label: 'Referenced Reports',
+            description: 'Please upload all relevant reports for this dataset in the PDF format.',
+
+            component: 'UploadReports',
+            required: false,
+            showIf: (): boolean => true,
+          },
+          {
+            name: 'scopeOfEntities',
+            label: 'Scope of Entities',
+            description: 'Are all Group legal entities covered in the reports?',
+
+            component: 'YesNoExtendedDataPointFormField',
+            required: false,
+            showIf: (): boolean => true,
+          },
+          {
+            name: 'numberOfEmployees',
+            label: 'Number of Employees',
+            description:
+              'Total Number of Employees (including temporary workers with assignment duration longer than 6 months)',
+
+            component: 'BigDecimalExtendedDataPointFormField',
+            required: false,
+            showIf: (): boolean => true,
+          },
+          {
+            name: 'nfrdMandatory',
+            label: 'NFRD Mandatory',
+            description: 'Is the NFRD mandatory for your company?',
+
+            component: 'YesNoExtendedDataPointFormField',
+            required: false,
+            showIf: (): boolean => true,
+          },
+          {
+            name: 'assurance',
+            label: 'Assurance',
+            description:
+              'Level of Assurance of the EU Taxonomy Disclosure (Reasonable Assurance, Limited Assurance, None)',
+
+            component: 'AssuranceFormField',
+            required: false,
+            showIf: (): boolean => true,
+          },
+        ],
       },
     ],
   },
@@ -57,8 +98,8 @@ export const euTaxonomyFinancialsDataModel = [
     showIf: (): boolean => true,
     subcategories: [
       {
-        name: 'general',
-        label: 'General',
+        name: 'tradingAndLoans',
+        label: 'Trading and Loans',
         fields: [
           {
             name: 'tradingPortfolio',
@@ -1136,8 +1177,8 @@ export const euTaxonomyFinancialsDataModel = [
     showIf: (): boolean => true,
     subcategories: [
       {
-        name: 'general',
-        label: 'General',
+        name: 'activities',
+        label: 'Activities',
         fields: [
           {
             name: 'taxonomyEligibleNonLifeInsuranceEconomicActivities',

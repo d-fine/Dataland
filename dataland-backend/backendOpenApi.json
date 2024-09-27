@@ -14038,11 +14038,11 @@
       "EuTaxonomyFinancialsCreditInstitution": {
         "type": "object",
         "properties": {
-          "general": {
+          "tradingAndLoans": {
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/EuTaxonomyFinancialsCreditinstitutionGeneral"
+                "$ref": "#/components/schemas/EuTaxonomyFinancialsCreditinstitutionTradingAndLoans"
               }
             ]
           },
@@ -14285,7 +14285,7 @@
           }
         }
       },
-      "EuTaxonomyFinancialsCreditinstitutionGeneral": {
+      "EuTaxonomyFinancialsCreditinstitutionTradingAndLoans": {
         "type": "object",
         "properties": {
           "tradingPortfolio": {
@@ -14583,19 +14583,24 @@
       "EuTaxonomyFinancialsGeneral": {
         "type": "object",
         "properties": {
-          "reportingPeriod": {
+          "general": {
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/ExtendedDataPointLocalDate"
+                "$ref": "#/components/schemas/EuTaxonomyFinancialsGeneralGeneral"
               }
             ]
-          },
+          }
+        }
+      },
+      "EuTaxonomyFinancialsGeneralGeneral": {
+        "type": "object",
+        "properties": {
           "fiscalYearDeviation": {
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/ExtendedDataPointEuTaxonomyFinancialsGeneralFiscalYearDeviationOptions"
+                "$ref": "#/components/schemas/ExtendedDataPointEuTaxonomyFinancialsGeneralGeneralFiscalYearDeviationOptions"
               }
             ]
           },
@@ -14649,7 +14654,7 @@
           }
         }
       },
-      "EuTaxonomyFinancialsGeneralFiscalYearDeviationOptions": {
+      "EuTaxonomyFinancialsGeneralGeneralFiscalYearDeviationOptions": {
         "type": "string",
         "enum": [
           "Deviation",
@@ -14659,11 +14664,11 @@
       "EuTaxonomyFinancialsInsuranceReinsurance": {
         "type": "object",
         "properties": {
-          "general": {
+          "activities": {
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/EuTaxonomyFinancialsInsurancereinsuranceGeneral"
+                "$ref": "#/components/schemas/EuTaxonomyFinancialsInsurancereinsuranceActivities"
               }
             ]
           },
@@ -14680,6 +14685,19 @@
             "allOf": [
               {
                 "$ref": "#/components/schemas/EuTaxonomyFinancialsInsurancereinsuranceCapexBasedGrossPremiumsWrittenReInsuranceRevenue"
+              }
+            ]
+          }
+        }
+      },
+      "EuTaxonomyFinancialsInsurancereinsuranceActivities": {
+        "type": "object",
+        "properties": {
+          "taxonomyEligibleNonLifeInsuranceEconomicActivities": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
               }
             ]
           }
@@ -14793,19 +14811,6 @@
             ]
           },
           "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentEnablingShare": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
-              }
-            ]
-          }
-        }
-      },
-      "EuTaxonomyFinancialsInsurancereinsuranceGeneral": {
-        "type": "object",
-        "properties": {
-          "taxonomyEligibleNonLifeInsuranceEconomicActivities": {
             "nullable": true,
             "allOf": [
               {
@@ -15363,14 +15368,14 @@
           }
         }
       },
-      "ExtendedDataPointEuTaxonomyFinancialsGeneralFiscalYearDeviationOptions": {
+      "ExtendedDataPointEuTaxonomyFinancialsGeneralGeneralFiscalYearDeviationOptions": {
         "type": "object",
         "properties": {
           "value": {
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/EuTaxonomyFinancialsGeneralFiscalYearDeviationOptions"
+                "$ref": "#/components/schemas/EuTaxonomyFinancialsGeneralGeneralFiscalYearDeviationOptions"
               }
             ]
           },
@@ -17582,21 +17587,21 @@
         ],
         "type": "object",
         "properties": {
-          "sector": {
-            "type": "string",
-            "nullable": true
+          "companyName": {
+            "type": "string"
           },
           "companyId": {
             "type": "string"
           },
-          "companyName": {
+          "countryCode": {
             "type": "string"
           },
           "headquarters": {
             "type": "string"
           },
-          "countryCode": {
-            "type": "string"
+          "sector": {
+            "type": "string",
+            "nullable": true
           },
           "lei": {
             "type": "string",
@@ -17623,10 +17628,10 @@
         ],
         "type": "object",
         "properties": {
-          "companyId": {
+          "companyName": {
             "type": "string"
           },
-          "companyName": {
+          "companyId": {
             "type": "string"
           }
         }

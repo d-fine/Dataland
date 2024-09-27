@@ -1,5 +1,5 @@
 // @ts-nocheck
-import CreateEuTaxonomyForFinancials from '@/components/forms/CreateEuTaxonomyForFinancials.vue';
+import CreateEuTaxonomyForFinancials from '@/components/forms/CreateEuTaxonomyForFinancialsOld.vue';
 import { minimalKeycloakMock } from '@ct/testUtils/Keycloak';
 import { submitButton } from '@sharedUtils/components/SubmitButton';
 import { noReportLabel } from '@/utils/DataSource';

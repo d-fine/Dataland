@@ -3797,8 +3797,8 @@
       "EuTaxonomyFinancialsCreditInstitution": {
         "type": "object",
         "properties": {
-          "general": {
-            "$ref": "#/components/schemas/EuTaxonomyFinancialsCreditinstitutionGeneral"
+          "tradingAndLoans": {
+            "$ref": "#/components/schemas/EuTaxonomyFinancialsCreditinstitutionTradingAndLoans"
           },
           "turnoverBasedGreenAssetRatioStock": {
             "$ref": "#/components/schemas/EuTaxonomyFinancialsCreditinstitutionTurnoverBasedGreenAssetRatioStock"
@@ -3894,7 +3894,7 @@
           }
         }
       },
-      "EuTaxonomyFinancialsCreditinstitutionGeneral": {
+      "EuTaxonomyFinancialsCreditinstitutionTradingAndLoans": {
         "type": "object",
         "properties": {
           "tradingPortfolio": {
@@ -4017,11 +4017,16 @@
       "EuTaxonomyFinancialsGeneral": {
         "type": "object",
         "properties": {
-          "reportingPeriod": {
-            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointLocalDate"
-          },
+          "general": {
+            "$ref": "#/components/schemas/EuTaxonomyFinancialsGeneralGeneral"
+          }
+        }
+      },
+      "EuTaxonomyFinancialsGeneralGeneral": {
+        "type": "object",
+        "properties": {
           "fiscalYearDeviation": {
-            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointEuTaxonomyFinancialsGeneralFiscalYearDeviationOptions"
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointEuTaxonomyFinancialsGeneralGeneralFiscalYearDeviationOptions"
           },
           "fiscalYearEnd": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointLocalDate"
@@ -4043,14 +4048,22 @@
       "EuTaxonomyFinancialsInsuranceReinsurance": {
         "type": "object",
         "properties": {
-          "general": {
-            "$ref": "#/components/schemas/EuTaxonomyFinancialsInsurancereinsuranceGeneral"
+          "activities": {
+            "$ref": "#/components/schemas/EuTaxonomyFinancialsInsurancereinsuranceActivities"
           },
           "revenueBasedGrossPremiumsWrittenReInsuranceRevenue": {
             "$ref": "#/components/schemas/EuTaxonomyFinancialsInsurancereinsuranceRevenueBasedGrossPremiumsWrittenReInsuranceRevenue"
           },
           "capexBasedGrossPremiumsWrittenReInsuranceRevenue": {
             "$ref": "#/components/schemas/EuTaxonomyFinancialsInsurancereinsuranceCapexBasedGrossPremiumsWrittenReInsuranceRevenue"
+          }
+        }
+      },
+      "EuTaxonomyFinancialsInsurancereinsuranceActivities": {
+        "type": "object",
+        "properties": {
+          "taxonomyEligibleNonLifeInsuranceEconomicActivities": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
           }
         }
       },
@@ -4097,14 +4110,6 @@
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
           },
           "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentEnablingShare": {
-            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
-          }
-        }
-      },
-      "EuTaxonomyFinancialsInsurancereinsuranceGeneral": {
-        "type": "object",
-        "properties": {
-          "taxonomyEligibleNonLifeInsuranceEconomicActivities": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
           }
         }
@@ -4327,7 +4332,7 @@
           }
         }
       },
-      "ExtendedDataPointEuTaxonomyFinancialsGeneralFiscalYearDeviationOptions": {
+      "ExtendedDataPointEuTaxonomyFinancialsGeneralGeneralFiscalYearDeviationOptions": {
         "type": "object",
         "properties": {
           "value": {
@@ -4355,7 +4360,7 @@
           }
         }
       },
-      "QaReportDataPointExtendedDataPointEuTaxonomyFinancialsGeneralFiscalYearDeviationOptions": {
+      "QaReportDataPointExtendedDataPointEuTaxonomyFinancialsGeneralGeneralFiscalYearDeviationOptions": {
         "required": [
           "comment",
           "correctedData",
@@ -4370,7 +4375,7 @@
             "$ref": "#/components/schemas/QaReportDataPointVerdict"
           },
           "correctedData": {
-            "$ref": "#/components/schemas/ExtendedDataPointEuTaxonomyFinancialsGeneralFiscalYearDeviationOptions"
+            "$ref": "#/components/schemas/ExtendedDataPointEuTaxonomyFinancialsGeneralGeneralFiscalYearDeviationOptions"
           }
         }
       },
@@ -4492,20 +4497,20 @@
           "message": {
             "type": "string"
           },
-          "framework": {
+          "companyName": {
             "type": "string"
           },
-          "reportingPeriod": {
+          "companyId": {
             "type": "string"
           },
           "receptionTime": {
             "type": "integer",
             "format": "int64"
           },
-          "companyId": {
+          "framework": {
             "type": "string"
           },
-          "companyName": {
+          "reportingPeriod": {
             "type": "string"
           },
           "dataId": {

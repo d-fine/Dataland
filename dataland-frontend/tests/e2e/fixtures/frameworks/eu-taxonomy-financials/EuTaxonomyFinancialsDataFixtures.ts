@@ -3,7 +3,10 @@ import { DEFAULT_PROBABILITY } from '@e2e/utils/FakeFixtureUtils';
 import { type FixtureData } from '@sharedUtils/Fixtures';
 import { EuTaxonomyFinancialsGenerator } from '@e2e/fixtures/frameworks/eu-taxonomy-financials/EuTaxonomyFinancialsGenerator';
 import { pickOneElement, generateFixtureDataset } from '@e2e/fixtures/FixtureUtils';
-import { EuTaxonomyFinancialsGeneralFiscalYearDeviationOptions, type EuTaxonomyFinancialsData } from '@clients/backend';
+import {
+  EuTaxonomyFinancialsGeneralGeneralFiscalYearDeviationOptions,
+  type EuTaxonomyFinancialsData,
+} from '@clients/backend';
 
 /**
  * Generates a set number of eu-taxonomy-financials fixtures
@@ -30,19 +33,22 @@ export function generateEuTaxonomyFinancialsData(nullProbability = DEFAULT_PROBA
   const dataGenerator = new EuTaxonomyFinancialsGenerator(nullProbability);
   return {
     general: {
-      reportingPeriod: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFutureDate()),
-      fiscalYearDeviation: dataGenerator.randomExtendedDataPoint(
-        dataGenerator.valueOrNull(pickOneElement(Object.values(EuTaxonomyFinancialsGeneralFiscalYearDeviationOptions)))
-      ),
-      fiscalYearEnd: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFutureDate()),
-      referencedReports: dataGenerator.reports,
-      scopeOfEntities: dataGenerator.randomExtendedDataPoint(dataGenerator.randomYesNo()),
-      numberOfEmployees: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat()),
-      nfrdMandatory: dataGenerator.randomExtendedDataPoint(dataGenerator.randomYesNo()),
-      assurance: dataGenerator.valueOrNull(dataGenerator.generateAssuranceDatapoint()),
+      general: {
+        fiscalYearDeviation: dataGenerator.randomExtendedDataPoint(
+          dataGenerator.valueOrNull(
+            pickOneElement(Object.values(EuTaxonomyFinancialsGeneralGeneralFiscalYearDeviationOptions))
+          )
+        ),
+        fiscalYearEnd: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFutureDate()),
+        referencedReports: dataGenerator.reports,
+        scopeOfEntities: dataGenerator.randomExtendedDataPoint(dataGenerator.randomYesNo()),
+        numberOfEmployees: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat()),
+        nfrdMandatory: dataGenerator.randomExtendedDataPoint(dataGenerator.randomYesNo()),
+        assurance: dataGenerator.valueOrNull(dataGenerator.generateAssuranceDatapoint()),
+      },
     },
     creditInstitution: {
-      general: {
+      tradingAndLoans: {
         tradingPortfolio: dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
         onDemandInterbankLoans: dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
         tradingPortfolioAndOnDemandInterbankLoans: dataGenerator.randomExtendedDataPoint(
@@ -259,7 +265,7 @@ export function generateEuTaxonomyFinancialsData(nullProbability = DEFAULT_PROBA
       },
     },
     insuranceReinsurance: {
-      general: {
+      activities: {
         taxonomyEligibleNonLifeInsuranceEconomicActivities: dataGenerator.randomExtendedDataPoint(
           dataGenerator.randomPercentageValue()
         ),

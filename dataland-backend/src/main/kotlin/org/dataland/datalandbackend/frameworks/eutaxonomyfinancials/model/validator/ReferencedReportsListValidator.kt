@@ -32,7 +32,7 @@ class ReferencedReportsListConstraintValidator :
         if (dataset == null) {
             return false
         }
-        val referencedReportsMap = dataset.general?.referencedReports
+        val referencedReportsMap = dataset.general?.general?.referencedReports
         val referencedReportsFileReference = getFileReferencesFromReports(referencedReportsMap)
 
         val extendedDocumentsFileReferences = getExtendedDocumentReferences(dataset).filterNotNull()
@@ -53,16 +53,15 @@ class ReferencedReportsListConstraintValidator :
     @Suppress("MaxLineLength", "LongMethod")
     private fun getExtendedDocumentReferences(dataset: EuTaxonomyFinancialsData): List<String?> {
         return listOf(
-            dataset.general?.reportingPeriod?.dataSource?.fileReference,
-            dataset.general?.fiscalYearDeviation?.dataSource?.fileReference,
-            dataset.general?.fiscalYearEnd?.dataSource?.fileReference,
-            dataset.general?.scopeOfEntities?.dataSource?.fileReference,
-            dataset.general?.numberOfEmployees?.dataSource?.fileReference,
-            dataset.general?.nfrdMandatory?.dataSource?.fileReference,
-            dataset.general?.assurance?.dataSource?.fileReference,
-            dataset.creditInstitution?.general?.tradingPortfolio?.dataSource?.fileReference,
-            dataset.creditInstitution?.general?.onDemandInterbankLoans?.dataSource?.fileReference,
-            dataset.creditInstitution?.general?.tradingPortfolioAndOnDemandInterbankLoans?.dataSource?.fileReference,
+            dataset.general?.general?.fiscalYearDeviation?.dataSource?.fileReference,
+            dataset.general?.general?.fiscalYearEnd?.dataSource?.fileReference,
+            dataset.general?.general?.scopeOfEntities?.dataSource?.fileReference,
+            dataset.general?.general?.numberOfEmployees?.dataSource?.fileReference,
+            dataset.general?.general?.nfrdMandatory?.dataSource?.fileReference,
+            dataset.general?.general?.assurance?.dataSource?.fileReference,
+            dataset.creditInstitution?.tradingAndLoans?.tradingPortfolio?.dataSource?.fileReference,
+            dataset.creditInstitution?.tradingAndLoans?.onDemandInterbankLoans?.dataSource?.fileReference,
+            dataset.creditInstitution?.tradingAndLoans?.tradingPortfolioAndOnDemandInterbankLoans?.dataSource?.fileReference,
             dataset.creditInstitution?.turnoverBasedGreenAssetRatioStock?.totalRevenueBasedGreenAssetRatio?.dataSource?.fileReference,
             dataset.creditInstitution?.turnoverBasedGreenAssetRatioStock?.substantialContributionToClimateChangeMitigationInPercentEligible?.dataSource?.fileReference,
             dataset.creditInstitution?.turnoverBasedGreenAssetRatioStock?.substantialContributionToClimateChangeMitigationInPercentAligned?.dataSource?.fileReference,
@@ -145,7 +144,7 @@ class ReferencedReportsListConstraintValidator :
             dataset.assetManagement?.capexBasedKpi?.substantialContributionToPollutionPreventionAndControlInPercentEnablingShare?.dataSource?.fileReference,
             dataset.assetManagement?.capexBasedKpi?.substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned?.dataSource?.fileReference,
             dataset.assetManagement?.capexBasedKpi?.substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentEnablingShare?.dataSource?.fileReference,
-            dataset.insuranceReinsurance?.general?.taxonomyEligibleNonLifeInsuranceEconomicActivities?.dataSource?.fileReference,
+            dataset.insuranceReinsurance?.activities?.taxonomyEligibleNonLifeInsuranceEconomicActivities?.dataSource?.fileReference,
             dataset.insuranceReinsurance?.revenueBasedGrossPremiumsWrittenReInsuranceRevenue?.substantialContributionToClimateChangeMitigationInPercentAligned?.dataSource?.fileReference,
             dataset.insuranceReinsurance?.revenueBasedGrossPremiumsWrittenReInsuranceRevenue?.substantialContributionToClimateChangeMitigationInPercentEnablingShare?.dataSource?.fileReference,
             dataset.insuranceReinsurance?.revenueBasedGrossPremiumsWrittenReInsuranceRevenue?.substantialContributionToClimateChangeMitigationInPercentTransitionalShare?.dataSource?.fileReference,

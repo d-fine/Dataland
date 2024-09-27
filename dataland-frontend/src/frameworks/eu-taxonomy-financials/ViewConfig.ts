@@ -20,103 +20,100 @@ export const euTaxonomyFinancialsViewConfiguration: MLDTConfig<EuTaxonomyFinanci
     shouldDisplay: (): boolean => true,
     children: [
       {
-        type: 'cell',
-        label: 'Reporting Period',
-        explanation: 'The Reporting Period the Dataset belongs to (e.g. Fiscal Year).',
+        type: 'section',
+        label: 'General',
+        expandOnPageLoad: true,
         shouldDisplay: (): boolean => true,
-        valueGetter: (dataset: EuTaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
-          wrapDisplayValueWithDatapointInformation(
-            formatStringForDatatable(dataset.general?.reportingPeriod?.value),
-            'Reporting Period',
-            dataset.general?.reportingPeriod
-          ),
-      },
-      {
-        type: 'cell',
-        label: 'Fiscal Year Deviation',
-        explanation: 'Does the fiscal year deviate from the calendar year?',
-        shouldDisplay: (): boolean => true,
-        valueGetter: (dataset: EuTaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
-          wrapDisplayValueWithDatapointInformation(
-            ((): AvailableMLDTDisplayObjectTypes => {
-              const mappings = {
-                Deviation: 'Deviation',
-                NoDeviation: 'No Deviation',
-              };
-              return formatStringForDatatable(
-                dataset.general?.fiscalYearDeviation?.value
-                  ? getOriginalNameFromTechnicalName(dataset.general?.fiscalYearDeviation?.value, mappings)
-                  : ''
-              );
-            })(),
-            'Fiscal Year Deviation',
-            dataset.general?.fiscalYearDeviation
-          ),
-      },
-      {
-        type: 'cell',
-        label: 'Fiscal Year End',
-        explanation: 'The date at which the fiscal year ends.',
-        shouldDisplay: (): boolean => true,
-        valueGetter: (dataset: EuTaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
-          wrapDisplayValueWithDatapointInformation(
-            formatStringForDatatable(dataset.general?.fiscalYearEnd?.value),
-            'Fiscal Year End',
-            dataset.general?.fiscalYearEnd
-          ),
-      },
-      {
-        type: 'cell',
-        label: 'Scope of Entities',
-        explanation: 'Are all Group legal entities covered in the reports?',
-        shouldDisplay: (): boolean => true,
-        valueGetter: (dataset: EuTaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
-          wrapDisplayValueWithDatapointInformation(
-            formatYesNoValueForDatatable(dataset.general?.scopeOfEntities?.value),
-            'Scope of Entities',
-            dataset.general?.scopeOfEntities
-          ),
-      },
-      {
-        type: 'cell',
-        label: 'Number of Employees',
-        explanation:
-          'Total Number of Employees (including temporary workers with assignment duration longer than 6 months)',
-        shouldDisplay: (): boolean => true,
-        valueGetter: (dataset: EuTaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
-          wrapDisplayValueWithDatapointInformation(
-            formatNumberForDatatable(dataset.general?.numberOfEmployees?.value, ''),
-            'Number of Employees',
-            dataset.general?.numberOfEmployees
-          ),
-      },
-      {
-        type: 'cell',
-        label: 'NFRD Mandatory',
-        explanation: 'Is the NFRD mandatory for your company?',
-        shouldDisplay: (): boolean => true,
-        valueGetter: (dataset: EuTaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
-          wrapDisplayValueWithDatapointInformation(
-            formatYesNoValueForDatatable(dataset.general?.nfrdMandatory?.value),
-            'NFRD Mandatory',
-            dataset.general?.nfrdMandatory
-          ),
-      },
-      {
-        type: 'cell',
-        label: 'Assurance',
-        explanation: 'Level of Assurance of the EU Taxonomy Disclosure (Reasonable Assurance, Limited Assurance, None)',
-        shouldDisplay: (): boolean => true,
-        valueGetter: (dataset: EuTaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
-          formatAssuranceForDataTable(dataset.general?.assurance, 'Assurance'),
-      },
-      {
-        type: 'cell',
-        label: 'Assurance Provider',
-        explanation: 'Provider of the Assurance',
-        shouldDisplay: (): boolean => true,
-        valueGetter: (dataset: EuTaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
-          formatAssuranceProviderForDataTable(dataset.general?.assurance),
+        children: [
+          {
+            type: 'cell',
+            label: 'Fiscal Year Deviation',
+            explanation: 'Does the fiscal year deviate from the calendar year?',
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: EuTaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                ((): AvailableMLDTDisplayObjectTypes => {
+                  const mappings = {
+                    Deviation: 'Deviation',
+                    NoDeviation: 'No Deviation',
+                  };
+                  return formatStringForDatatable(
+                    dataset.general?.general?.fiscalYearDeviation?.value
+                      ? getOriginalNameFromTechnicalName(dataset.general?.general?.fiscalYearDeviation?.value, mappings)
+                      : ''
+                  );
+                })(),
+                'Fiscal Year Deviation',
+                dataset.general?.general?.fiscalYearDeviation
+              ),
+          },
+          {
+            type: 'cell',
+            label: 'Fiscal Year End',
+            explanation: 'The date at which the fiscal year ends.',
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: EuTaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatStringForDatatable(dataset.general?.general?.fiscalYearEnd?.value),
+                'Fiscal Year End',
+                dataset.general?.general?.fiscalYearEnd
+              ),
+          },
+          {
+            type: 'cell',
+            label: 'Scope of Entities',
+            explanation: 'Are all Group legal entities covered in the reports?',
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: EuTaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatYesNoValueForDatatable(dataset.general?.general?.scopeOfEntities?.value),
+                'Scope of Entities',
+                dataset.general?.general?.scopeOfEntities
+              ),
+          },
+          {
+            type: 'cell',
+            label: 'Number of Employees',
+            explanation:
+              'Total Number of Employees (including temporary workers with assignment duration longer than 6 months)',
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: EuTaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatNumberForDatatable(dataset.general?.general?.numberOfEmployees?.value, ''),
+                'Number of Employees',
+                dataset.general?.general?.numberOfEmployees
+              ),
+          },
+          {
+            type: 'cell',
+            label: 'NFRD Mandatory',
+            explanation: 'Is the NFRD mandatory for your company?',
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: EuTaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatYesNoValueForDatatable(dataset.general?.general?.nfrdMandatory?.value),
+                'NFRD Mandatory',
+                dataset.general?.general?.nfrdMandatory
+              ),
+          },
+          {
+            type: 'cell',
+            label: 'Assurance',
+            explanation:
+              'Level of Assurance of the EU Taxonomy Disclosure (Reasonable Assurance, Limited Assurance, None)',
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: EuTaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
+              formatAssuranceForDataTable(dataset.general?.general?.assurance, 'Assurance'),
+          },
+          {
+            type: 'cell',
+            label: 'Assurance Provider',
+            explanation: 'Provider of the Assurance',
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: EuTaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
+              formatAssuranceProviderForDataTable(dataset.general?.general?.assurance),
+          },
+        ],
       },
     ],
   },
@@ -128,7 +125,7 @@ export const euTaxonomyFinancialsViewConfiguration: MLDTConfig<EuTaxonomyFinanci
     children: [
       {
         type: 'section',
-        label: 'General',
+        label: 'Trading and Loans',
         expandOnPageLoad: true,
         shouldDisplay: (): boolean => true,
         children: [
@@ -139,9 +136,9 @@ export const euTaxonomyFinancialsViewConfiguration: MLDTConfig<EuTaxonomyFinanci
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EuTaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
-                formatPercentageForDatatable(dataset.creditInstitution?.general?.tradingPortfolio?.value),
+                formatPercentageForDatatable(dataset.creditInstitution?.tradingAndLoans?.tradingPortfolio?.value),
                 'Trading Portfolio',
-                dataset.creditInstitution?.general?.tradingPortfolio
+                dataset.creditInstitution?.tradingAndLoans?.tradingPortfolio
               ),
           },
           {
@@ -151,9 +148,9 @@ export const euTaxonomyFinancialsViewConfiguration: MLDTConfig<EuTaxonomyFinanci
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EuTaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
-                formatPercentageForDatatable(dataset.creditInstitution?.general?.onDemandInterbankLoans?.value),
+                formatPercentageForDatatable(dataset.creditInstitution?.tradingAndLoans?.onDemandInterbankLoans?.value),
                 'On-demand Interbank Loans',
-                dataset.creditInstitution?.general?.onDemandInterbankLoans
+                dataset.creditInstitution?.tradingAndLoans?.onDemandInterbankLoans
               ),
           },
           {
@@ -164,10 +161,10 @@ export const euTaxonomyFinancialsViewConfiguration: MLDTConfig<EuTaxonomyFinanci
             valueGetter: (dataset: EuTaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
                 formatPercentageForDatatable(
-                  dataset.creditInstitution?.general?.tradingPortfolioAndOnDemandInterbankLoans?.value
+                  dataset.creditInstitution?.tradingAndLoans?.tradingPortfolioAndOnDemandInterbankLoans?.value
                 ),
                 'Trading Portfolio & On-demand Interbank Loans',
-                dataset.creditInstitution?.general?.tradingPortfolioAndOnDemandInterbankLoans
+                dataset.creditInstitution?.tradingAndLoans?.tradingPortfolioAndOnDemandInterbankLoans
               ),
           },
         ],
@@ -1656,7 +1653,7 @@ export const euTaxonomyFinancialsViewConfiguration: MLDTConfig<EuTaxonomyFinanci
     children: [
       {
         type: 'section',
-        label: 'General',
+        label: 'Activities',
         expandOnPageLoad: true,
         shouldDisplay: (): boolean => true,
         children: [
@@ -1669,10 +1666,10 @@ export const euTaxonomyFinancialsViewConfiguration: MLDTConfig<EuTaxonomyFinanci
             valueGetter: (dataset: EuTaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
                 formatPercentageForDatatable(
-                  dataset.insuranceReinsurance?.general?.taxonomyEligibleNonLifeInsuranceEconomicActivities?.value
+                  dataset.insuranceReinsurance?.activities?.taxonomyEligibleNonLifeInsuranceEconomicActivities?.value
                 ),
                 'Taxonomy-eligible Non-life Insurance Economic Activities',
-                dataset.insuranceReinsurance?.general?.taxonomyEligibleNonLifeInsuranceEconomicActivities
+                dataset.insuranceReinsurance?.activities?.taxonomyEligibleNonLifeInsuranceEconomicActivities
               ),
           },
         ],

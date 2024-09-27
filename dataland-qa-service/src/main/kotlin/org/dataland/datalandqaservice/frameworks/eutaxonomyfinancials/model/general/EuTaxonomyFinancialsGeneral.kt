@@ -2,37 +2,14 @@
 package org.dataland.datalandqaservice.frameworks.eutaxonomyfinancials.model.general
 
 import jakarta.validation.Valid
-import org.dataland.datalandbackend.openApiClient.model.CompanyReport
-import org.dataland.datalandbackend.openApiClient.model.ExtendedDataPointBigDecimal
-import org.dataland.datalandbackend.openApiClient.model
-    .ExtendedDataPointEuTaxonomyFinancialsGeneralFiscalYearDeviationOptions
-import org.dataland.datalandbackend.openApiClient.model.ExtendedDataPointLocalDate
-import org.dataland.datalandbackend.openApiClient.model.ExtendedDataPointYesNo
-import org.dataland.datalandqaservice.model.reports.QaReportDataPoint
+import org.dataland.datalandqaservice.frameworks.eutaxonomyfinancials.model.general.general
+    .EuTaxonomyFinancialsGeneralGeneral
 
 /**
  * The QA-model for the General section
  */
 data class EuTaxonomyFinancialsGeneral(
     @field:Valid()
-    val reportingPeriod: QaReportDataPoint<ExtendedDataPointLocalDate?>? = null,
-
-    @field:Valid()
-    val fiscalYearDeviation:
-    QaReportDataPoint<ExtendedDataPointEuTaxonomyFinancialsGeneralFiscalYearDeviationOptions?>? = null,
-
-    @field:Valid()
-    val fiscalYearEnd: QaReportDataPoint<ExtendedDataPointLocalDate?>? = null,
-
-    val referencedReports: QaReportDataPoint<Map<String, CompanyReport>>? = null,
-
-    @field:Valid()
-    val scopeOfEntities: QaReportDataPoint<ExtendedDataPointYesNo?>? = null,
-
-    @field:Valid()
-    val numberOfEmployees: QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
-
-    @field:Valid()
-    val nfrdMandatory: QaReportDataPoint<ExtendedDataPointYesNo?>? = null,
+    val general: EuTaxonomyFinancialsGeneralGeneral? = null,
 
 )

@@ -4,8 +4,8 @@ package org.dataland.datalandbackend.frameworks.eutaxonomyfinancials.model.credi
 import jakarta.validation.Valid
 import org.dataland.datalandbackend.frameworks.eutaxonomyfinancials.model.creditInstitution
     .capexBasedGreenAssetRatioStock.EuTaxonomyFinancialsCreditinstitutionCapexBasedGreenAssetRatioStock
-import org.dataland.datalandbackend.frameworks.eutaxonomyfinancials.model.creditInstitution.general
-    .EuTaxonomyFinancialsCreditinstitutionGeneral
+import org.dataland.datalandbackend.frameworks.eutaxonomyfinancials.model.creditInstitution.tradingAndLoans
+    .EuTaxonomyFinancialsCreditinstitutionTradingAndLoans
 import org.dataland.datalandbackend.frameworks.eutaxonomyfinancials.model.creditInstitution
     .turnoverBasedGreenAssetRatioStock.EuTaxonomyFinancialsCreditinstitutionTurnoverBasedGreenAssetRatioStock
 
@@ -14,7 +14,7 @@ import org.dataland.datalandbackend.frameworks.eutaxonomyfinancials.model.credit
  */
 data class EuTaxonomyFinancialsCreditInstitution(
     @field:Valid()
-    val general: EuTaxonomyFinancialsCreditinstitutionGeneral? = null,
+    val tradingAndLoans: EuTaxonomyFinancialsCreditinstitutionTradingAndLoans? = null,
 
     @field:Valid()
     val turnoverBasedGreenAssetRatioStock:

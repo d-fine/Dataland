@@ -26,7 +26,8 @@ import { DataTypeEnum } from '@clients/backend';
 import CreateEsgQuestionnaireDataset from '@/components/forms/CreateEsgQuestionnaireDataset.vue';
 import CreateSfdrDataset from '@/components/forms/CreateSfdrDataset.vue';
 import CreateP2pDataset from '@/components/forms/CreateP2pDataset.vue';
-import CreateEuTaxonomyForFinancials from '@/components/forms/CreateEuTaxonomyForFinancials.vue';
+import CreateEuTaxonomyForFinancialsOld from '@/components/forms/CreateEuTaxonomyForFinancialsOld.vue';
+import CreateEuTaxonomyForFinancials from '@/components/forms/CreateEuTaxonomyFinancials.vue';
 import CreateEuTaxonomyNonFinancials from '@/components/forms/CreateEuTaxonomyNonFinancials.vue';
 import CreateHeimathafenDataset from '@/components/forms/CreateHeimathafenDataset.vue';
 import CreateLksgDataset from '@/components/forms/CreateLksgDataset.vue';
@@ -82,6 +83,8 @@ export default defineComponent({
         case `${DataTypeEnum.EutaxonomyNonFinancials}`:
           return CreateEuTaxonomyNonFinancials;
         case `${DataTypeEnum.EutaxonomyFinancials}`:
+          return CreateEuTaxonomyForFinancialsOld;
+        case `${DataTypeEnum.EuTaxonomyFinancials}`:
           return CreateEuTaxonomyForFinancials;
         case `${DataTypeEnum.P2p}`:
           return CreateP2pDataset;
