@@ -8,13 +8,13 @@ import {
 
 import { type MLDTConfig } from '@/components/resources/dataTable/MultiLayerDataTableConfiguration';
 import { mountMLDTFrameworkPanelFromFakeFixture } from '@ct/testUtils/MultiLayerDataTableComponentTestUtils';
-import { configForEuTaxonomyFinancialsMLDT } from '@/components/resources/frameworkDataSearch/euTaxonomy/configForEutaxonomyFinancialsMLDT';
 import { formatPercentageNumberAsString } from '@/utils/Formatter';
 import { assertDefined } from '@/utils/TypeScriptUtils';
 import { euTaxonomyKpiNameMappings } from '@/components/forms/parts/kpiSelection/EuTaxonomyKPIsModel';
 
 describe('Component test for EuTaxonomyFinancialPanel', () => {
   let preparedFixtures: Array<FixtureData<EuTaxonomyDataForFinancials>>;
+  //ToDo fix this test and the import below
   const EuTaxonomyFinancialDisplayConfiguration =
     configForEuTaxonomyFinancialsMLDT as MLDTConfig<EuTaxonomyDataForFinancials>;
 
@@ -122,7 +122,7 @@ describe('Component test for EuTaxonomyFinancialPanel', () => {
     const preparedFixture = getPreparedFixture('company-for-all-types', preparedFixtures);
     const EuTaxonomyFinancialData = preparedFixture.t;
 
-    mountMLDTFrameworkPanelFromFakeFixture(DataTypeEnum.EutaxonomyFinancials, EuTaxonomyFinancialDisplayConfiguration, [
+    mountMLDTFrameworkPanelFromFakeFixture(DataTypeEnum.EuTaxonomyFinancials, EuTaxonomyFinancialDisplayConfiguration, [
       preparedFixture,
     ]);
 

@@ -66,7 +66,7 @@ describeIf(
       cy.get("[data-test='eutaxonomy-financials-summary-panel'] a").click();
       cy.url().should(
         'contain',
-        `/companies/${alphaCompanyIdAndName.companyId}/frameworks/${DataTypeEnum.EutaxonomyFinancials}/upload`
+        `/companies/${alphaCompanyIdAndName.companyId}/frameworks/${DataTypeEnum.EuTaxonomyFinancials}/upload`
       );
       submitButton.exists();
     });

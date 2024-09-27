@@ -30,7 +30,7 @@ describeIf(
     const uniqueCompanyMarker = Date.now().toString();
     const nameOfCompanyAlpha = 'company-alpha-with-four-different-framework-types-' + uniqueCompanyMarker;
     const expectedFrameworkDropdownItemsForAlpha = new Set<string>([
-      humanizeStringOrNumber(DataTypeEnum.EutaxonomyFinancials),
+      humanizeStringOrNumber(DataTypeEnum.EuTaxonomyFinancials),
       humanizeStringOrNumber(DataTypeEnum.P2p),
       humanizeStringOrNumber(DataTypeEnum.Lksg),
       humanizeStringOrNumber(DataTypeEnum.Sfdr),
@@ -295,7 +295,7 @@ describeIf(
           })
           .then(() => {
             return uploadFrameworkDataForLegacyFramework(
-              DataTypeEnum.EutaxonomyFinancials,
+              DataTypeEnum.EuTaxonomyFinancials,
               token,
               companyIdOfAlpha,
               '2019',
@@ -401,9 +401,9 @@ describeIf(
 
     it('Check that using back-button and dropdowns on the view-page work as expected', () => {
       cy.ensureLoggedIn();
-      cy.visit(`/companies/${companyIdOfAlpha}/frameworks/${DataTypeEnum.EutaxonomyFinancials}`);
+      cy.visit(`/companies/${companyIdOfAlpha}/frameworks/${DataTypeEnum.EuTaxonomyFinancials}`);
       validateNoErrorMessagesAreShown();
-      validateChosenFramework(DataTypeEnum.EutaxonomyFinancials);
+      validateChosenFramework(DataTypeEnum.EuTaxonomyFinancials);
       validateFrameworkDropdownOptions(expectedFrameworkDropdownItemsForAlpha);
 
       selectFrameworkInDropdown(DataTypeEnum.P2p);
@@ -427,7 +427,7 @@ describeIf(
 
     it("Check that invalid data ID, reporting period or company ID in URL don't break any user flow on the view-page", () => {
       cy.ensureLoggedIn();
-      cy.visit(`/companies/${companyIdOfAlpha}/frameworks/${DataTypeEnum.EutaxonomyFinancials}/${nonExistingDataId}`);
+      cy.visit(`/companies/${companyIdOfAlpha}/frameworks/${DataTypeEnum.EuTaxonomyFinancials}/${nonExistingDataId}`);
 
       getElementAndAssertExistence('noDataForThisDataIdPresentErrorIndicator', 'exist');
       getElementAndAssertExistence('claimOwnershipPanelLink', 'not.exist');

@@ -27,7 +27,7 @@ export function generateMetaInfoDataForOneCompany(): DataMetaInformation[] {
     listOfMetaInfo.push(metaInfo);
   }
 
-  range(2).forEach(() => generateActiveMetaInfoWithTypeAndAppend(DataTypeEnum.EutaxonomyFinancials));
+  range(2).forEach(() => generateActiveMetaInfoWithTypeAndAppend(DataTypeEnum.EuTaxonomyFinancials));
   range(4).forEach(() => generateActiveMetaInfoWithTypeAndAppend(DataTypeEnum.EutaxonomyNonFinancials));
   range(2).forEach(() => generateActiveMetaInfoWithTypeAndAppend(DataTypeEnum.Lksg));
   range(1).forEach(() => generateActiveMetaInfoWithTypeAndAppend(DataTypeEnum.Sfdr));

@@ -1,10 +1,11 @@
 // @ts-nocheck
-import CreateEuTaxonomyForFinancials from '@/components/forms/CreateEuTaxonomyForFinancialsOld.vue';
+import CreateEuTaxonomyForFinancials from '@/components/forms/CreateEuTaxonomyForFinancials.vue';
 import { minimalKeycloakMock } from '@ct/testUtils/Keycloak';
 import { submitButton } from '@sharedUtils/components/SubmitButton';
 import { noReportLabel } from '@/utils/DataSource';
 import { DataTypeEnum } from '@clients/backend';
 
+//ToDo check weather these tests still make sense (update or remove accordingly)
 describe('Component tests for the Eu Taxonomy for financials that test dependent fields', () => {
   /**
    * Fills the required fields of the form which are always present
@@ -45,7 +46,7 @@ describe('Component tests for the Eu Taxonomy for financials that test dependent
       {
         method: 'POST',
         times: 1,
-        url: `/api/data/${DataTypeEnum.EutaxonomyFinancials}*`,
+        url: `/api/data/${DataTypeEnum.EuTaxonomyFinancials}*`,
       },
       {
         statusCode: 200,

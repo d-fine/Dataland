@@ -44,7 +44,7 @@ describeIf(
         ).then((storedCompany) => {
           storedCompanyId = storedCompany.companyId;
           return uploadFrameworkDataForLegacyFramework(
-            DataTypeEnum.EutaxonomyFinancials,
+            DataTypeEnum.EuTaxonomyFinancials,
             token,
             storedCompanyId,
             '2023',
@@ -52,14 +52,14 @@ describeIf(
             true
           ).then((dataMetaInformation) => {
             cy.ensureLoggedIn(admin_name, admin_pw);
-            cy.intercept(`**/api/data/${DataTypeEnum.EutaxonomyFinancials}/${dataMetaInformation.dataId}`).as(
+            cy.intercept(`**/api/data/${DataTypeEnum.EuTaxonomyFinancials}/${dataMetaInformation.dataId}`).as(
               'fetchDataForPrefill'
             );
             cy.visitAndCheckAppMount(
               '/companies/' +
                 storedCompanyId +
                 '/frameworks/' +
-                DataTypeEnum.EutaxonomyFinancials +
+                DataTypeEnum.EuTaxonomyFinancials +
                 '/upload?templateDataId=' +
                 dataMetaInformation.dataId
             );

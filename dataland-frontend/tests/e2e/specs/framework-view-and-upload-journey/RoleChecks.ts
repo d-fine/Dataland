@@ -39,7 +39,7 @@ describeIf(
           '/dataprivacy',
           '/imprint',
           '/nocontent',
-          `/companies/${companyId}/frameworks/${DataTypeEnum.EutaxonomyFinancials}`,
+          `/companies/${companyId}/frameworks/${DataTypeEnum.EuTaxonomyFinancials}`,
           `/companies/${companyId}/frameworks/${DataTypeEnum.EutaxonomyNonFinancials}`,
           `/companies/${companyId}/frameworks/${DataTypeEnum.Lksg}`,
           `/companies/${companyId}/frameworks/${DataTypeEnum.Sfdr}`,
@@ -47,7 +47,7 @@ describeIf(
         uploaderOnlyPages = [
           '/companies/choose',
           `/companies/${companyId}/frameworks/upload`,
-          `/companies/${companyId}/frameworks/${DataTypeEnum.EutaxonomyFinancials}/upload`,
+          `/companies/${companyId}/frameworks/${DataTypeEnum.EuTaxonomyFinancials}/upload`,
           `/companies/${companyId}/frameworks/${DataTypeEnum.EutaxonomyNonFinancials}/upload`,
           `/companies/${companyId}/frameworks/${DataTypeEnum.Lksg}/upload`,
         ];

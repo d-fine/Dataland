@@ -159,7 +159,7 @@ describe('As a user, I expect the search functionality on the /companies page to
   );
   it('Checks that the reset button works as expected', { scrollBehavior: false }, () => {
     cy.ensureLoggedIn();
-    cy.visit(`/companies?sector=dummy&countryCode=dummy&framework=${DataTypeEnum.EutaxonomyFinancials}`);
+    cy.visit(`/companies?sector=dummy&countryCode=dummy&framework=${DataTypeEnum.EuTaxonomyFinancials}`);
     cy.get("span:contains('RESET')").click();
     cy.url().should('eq', getBaseUrl() + '/companies');
   });
@@ -338,7 +338,7 @@ describe('As a user, I expect the search functionality on the /companies page to
             getFirstEuTaxonomyFinancialsFixtureDataFromFixtures().then((fixtureData) => {
               return uploadCompanyViaApi(token, generateDummyCompanyInformation(companyName)).then((storedCompany) => {
                 return uploadFrameworkDataForLegacyFramework(
-                  DataTypeEnum.EutaxonomyFinancials,
+                  DataTypeEnum.EuTaxonomyFinancials,
                   token,
                   storedCompany.companyId,
                   fixtureData.reportingPeriod,
@@ -353,7 +353,7 @@ describe('As a user, I expect the search functionality on the /companies page to
             .get("td[class='d-bg-white w-3 d-datatable-column-left']")
             .contains(companyName)
             .should('exist');
-          cy.visit(`/companies?input=${companyName}&framework=${DataTypeEnum.EutaxonomyFinancials}`)
+          cy.visit(`/companies?input=${companyName}&framework=${DataTypeEnum.EuTaxonomyFinancials}`)
             .get("td[class='d-bg-white w-3 d-datatable-column-left']")
             .contains(companyName)
             .should('exist');
@@ -361,7 +361,7 @@ describe('As a user, I expect the search functionality on the /companies page to
             .get("div[class='col-12 text-left']")
             .should('contain.text', failureMessageOnAvailableDatasetsPage);
           cy.visit(
-            `/companies?input=${companyName}&framework=${DataTypeEnum.Sfdr}&framework=${DataTypeEnum.EutaxonomyFinancials}`
+            `/companies?input=${companyName}&framework=${DataTypeEnum.Sfdr}&framework=${DataTypeEnum.EuTaxonomyFinancials}`
           )
             .get("td[class='d-bg-white w-3 d-datatable-column-left']")
             .contains(companyName)

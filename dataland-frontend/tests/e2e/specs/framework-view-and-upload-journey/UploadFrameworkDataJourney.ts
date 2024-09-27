@@ -59,7 +59,7 @@ describe('As a user, I expect the dataset upload process to behave as I expect',
               const preparedFixture = getPreparedFixture('eligible-activity-Point-29', euTaxoFinancialPreparedFixtures);
               storedCompanyForManyDatasetsCompany = storedCompany;
               return uploadFrameworkDataForLegacyFramework(
-                DataTypeEnum.EutaxonomyFinancials,
+                DataTypeEnum.EuTaxonomyFinancials,
                 token,
                 storedCompanyForManyDatasetsCompany.companyId,
                 '2023',
@@ -78,7 +78,7 @@ describe('As a user, I expect the dataset upload process to behave as I expect',
                     euTaxoFinancialPreparedFixtures
                   );
                   return uploadFrameworkDataForLegacyFramework(
-                    DataTypeEnum.EutaxonomyFinancials,
+                    DataTypeEnum.EuTaxonomyFinancials,
                     token,
                     storedCompanyForManyDatasetsCompany.companyId,
                     '2022',
@@ -187,7 +187,7 @@ describe('As a user, I expect the dataset upload process to behave as I expect',
           .should(
             'eq',
             getBaseUrl() +
-              `/companies/${storedCompanyForTest.companyId}/frameworks/${DataTypeEnum.EutaxonomyFinancials}/${dataIdOfFirstUploadedEuTaxoFinancialsDataset}`
+              `/companies/${storedCompanyForTest.companyId}/frameworks/${DataTypeEnum.EuTaxonomyFinancials}/${dataIdOfFirstUploadedEuTaxoFinancialsDataset}`
           );
         cy.go('back');
         cy.get('div[id=eutaxonomyDataSetsContainer')
@@ -199,7 +199,7 @@ describe('As a user, I expect the dataset upload process to behave as I expect',
           .should(
             'eq',
             getBaseUrl() +
-              `/companies/${storedCompanyForTest.companyId}/frameworks/${DataTypeEnum.EutaxonomyFinancials}/${dataIdOfSecondUploadedEuTaxoFinancialsDataset}`
+              `/companies/${storedCompanyForTest.companyId}/frameworks/${DataTypeEnum.EuTaxonomyFinancials}/${dataIdOfSecondUploadedEuTaxoFinancialsDataset}`
           );
         cy.go('back');
         cy.get('div[id=lksgContainer').find(`a.text-primary:contains(LkSG)`).click({ force: true });

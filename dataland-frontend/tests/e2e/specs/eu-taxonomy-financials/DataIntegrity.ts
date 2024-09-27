@@ -11,9 +11,10 @@ import {
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from '@e2e/utils/CompanyUpload';
 import { assignCompanyOwnershipToDatalandAdmin, isDatasetApproved } from '@e2e/utils/CompanyRolesUtils';
 import { submitButton } from '@sharedUtils/components/SubmitButton';
-import { uploadFrameworkDataForLegacyFramework } from '@e2e/utils/FrameworkUpload';
+import { uploadFrameworkDataForPublicToolboxFramework } from '@e2e/utils/FrameworkUpload';
 import { compareObjectKeysAndValuesDeep } from '@e2e/utils/GeneralUtils';
 import { type FixtureData, getPreparedFixture } from '@sharedUtils/Fixtures';
+import EuTaxonomyFinancialsBaseFrameworkDefinition from '@/frameworks/eu-taxonomy-financials/BaseFrameworkDefinition';
 
 let euTaxonomyFinancialsFixtureForTest: FixtureData<EuTaxonomyDataForFinancials>;
 before(function () {
@@ -21,7 +22,7 @@ before(function () {
     const preparedFixturesEuTaxonomyFinancials = jsonContent as Array<FixtureData<EuTaxonomyDataForFinancials>>;
     euTaxonomyFinancialsFixtureForTest = getPreparedFixture(
       'company-for-all-types',
-      preparedFixturesEuTaxonomyFinancials
+        preparedFixturesEuTaxonomyFinancials
     );
   });
 });
@@ -45,29 +46,29 @@ describeIf(
         getKeycloakToken(admin_name, admin_pw).then((token: string) => {
           return uploadCompanyViaApi(token, generateDummyCompanyInformation(testCompanyName)).then((storedCompany) => {
             return assignCompanyOwnershipToDatalandAdmin(token, storedCompany.companyId).then(() => {
-              return uploadFrameworkDataForLegacyFramework(
-                DataTypeEnum.EutaxonomyFinancials,
+              return uploadFrameworkDataForPublicToolboxFramework(
+                EuTaxonomyFinancialsBaseFrameworkDefinition,
                 token,
                 storedCompany.companyId,
                 '2023',
-                euTaxonomyFinancialsFixtureForTest.t,
+                euTaxonomyForFinancialsFixtureForTest.t,
                 true
               ).then((dataMetaInformation) => {
-                cy.intercept(`**/api/data/${DataTypeEnum.EutaxonomyFinancials}/${dataMetaInformation.dataId}`).as(
+                cy.intercept(`**/api/data/${DataTypeEnum.EuTaxonomyFinancials}/${dataMetaInformation.dataId}`).as(
                   'fetchDataForPrefill'
                 );
                 cy.visitAndCheckAppMount(
                   '/companies/' +
                     storedCompany.companyId +
                     '/frameworks/' +
-                    DataTypeEnum.EutaxonomyFinancials +
+                    DataTypeEnum.EuTaxonomyFinancials +
                     '/upload?templateDataId=' +
                     dataMetaInformation.dataId
                 );
                 cy.wait('@fetchDataForPrefill', { timeout: Cypress.env('medium_timeout_in_ms') as number });
                 cy.get('h1').should('contain', testCompanyName);
                 cy.intercept({
-                  url: `**/api/data/${DataTypeEnum.EutaxonomyFinancials}?bypassQa=true`,
+                  url: `**/api/data/${DataTypeEnum.EuTaxonomyFinancials}?bypassQa=true`,
                   times: 1,
                 }).as('postCompanyAssociatedData');
                 submitButton.clickButton();
