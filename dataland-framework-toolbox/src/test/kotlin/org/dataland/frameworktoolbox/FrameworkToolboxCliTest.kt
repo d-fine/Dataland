@@ -4,7 +4,6 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 
 class FrameworkToolboxCliTest {
-
     @Test
     fun `an error message should be thrown if called without arguments`() {
         assertThrows<IllegalArgumentException> {

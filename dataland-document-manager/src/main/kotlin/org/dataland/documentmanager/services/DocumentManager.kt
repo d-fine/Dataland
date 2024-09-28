@@ -60,7 +60,7 @@ class DocumentManager(
         saveMetaInfoToDatabase(documentMetaInfo, correlationId)
         inMemoryDocumentStore.storeDataInMemory(documentMetaInfo.documentId, documentBody)
         cloudEventMessageHandler.buildCEMessageAndSendToQueue(
-            documentMetaInfo.documentId, MessageType.DocumentReceived, correlationId, ExchangeName.DocumentReceived,
+            documentMetaInfo.documentId, MessageType.DOCUMENT_RECEIVED, correlationId, ExchangeName.DOCUMENT_RECEIVED,
         )
         return DocumentUploadResponse(documentMetaInfo.documentId)
     }
@@ -81,7 +81,10 @@ class DocumentManager(
      * @param documentMetaInfo the document meta information to store
      */
     @Transactional(propagation = Propagation.NEVER)
-    fun saveMetaInfoToDatabase(documentMetaInfo: DocumentMetaInfo, correlationId: String) {
+    fun saveMetaInfoToDatabase(
+        documentMetaInfo: DocumentMetaInfo,
+        correlationId: String,
+    ) {
         logger.info("Saving meta info of document with correlation ID: $correlationId")
         documentMetaInfoRepository.save(DocumentMetaInfoEntity(documentMetaInfo))
     }
@@ -127,12 +130,13 @@ class DocumentManager(
      */
     fun retrieveDocumentById(documentId: String): DocumentStream {
         val correlationId = randomUUID().toString()
-        val metaDataInfoEntity = documentMetaInfoRepository.findById(documentId).orElseThrow {
-            ResourceNotFoundApiException(
-                "No document found",
-                "No document with ID: $documentId could be found. Correlation ID: $correlationId",
-            )
-        }
+        val metaDataInfoEntity =
+            documentMetaInfoRepository.findById(documentId).orElseThrow {
+                ResourceNotFoundApiException(
+                    "No document found",
+                    "No document with ID: $documentId could be found. Correlation ID: $correlationId",
+                )
+            }
         if (metaDataInfoEntity.qaStatus != QaStatus.Accepted) {
             throw ResourceNotFoundApiException(
                 "No accepted document found",

@@ -10,64 +10,35 @@ import org.dataland.datalandbackend.model.enums.commons.YesNo
  */
 data class HeimathafenGeneralMethodik(
     val verstaendnisVonNachhaltigkeitAlsTeilDerBewertung: String? = null,
-
     val kriterienFuerIhreNachhaltigkeitsratings: String? = null,
-
     val verfahrenZurVorbereitungDerAnalyseOderMethodik: String? = null,
-
     val definitionBewertungsskala: String? = null,
-
     val aktualitaetDerRatings: String? = null,
-
     val unabhaengigkeitDerRatings: String? = null,
-
     val datenerfassung: String? = null,
-
     val methodikUmfasstUmweltSozialesUndGovernance: String? = null,
-
     @field:Valid()
     val datenquellen: List<BaseDataPoint<String>>? = null,
-
     val datenPlausibilitaetspruefung: String? = null,
-
     val intervalleFuerDieDatenaktualisierung: String? = null,
-
     val zuverlaessigkeitDerMethodikSicherstellen: String? = null,
-
     val minimierungOderVerhinderungSubjektiverFaktoren: String? = null,
-
     val listePotenziellerInteressenkonflikte: String? = null,
-
     val interessenkonfliktenEntgegenwirken: String? = null,
-
     val dokumentationDerDatenerfassungUndSicherstellungDesProzesses: String? = null,
-
     val bewertungVonQualitaetsstandards: String? = null,
-
     val ratingTransparenzstandards: String? = null,
-
     val qualitaetssicherungsprozess: YesNo? = null,
-
     val fallsNeinGebenSieBitteDieGruendeAn: String? = null,
-
     val strukturDesQualitaetssicherungsprozesses: String? = null,
-
     val dieAktualitaetDerMethodik: String? = null,
-
     val paisInDieAnalyseEinbezogen: YesNo? = null,
-
     val listeDerEingeschlossenenPais: String? = null,
-
     @field:Valid()
     val quelleDerPaiSammlung: List<BaseDataPoint<String>>? = null,
-
     val umgangMitAusreissern: String? = null,
-
     val identifizierungVonKontroversenGeschaeften: String? = null,
-
     val aktuelleKontroversen: String? = null,
-
     @field:Valid()
     val quellenZurErfassungVonKontroversen: List<BaseDataPoint<String>>? = null,
-
 )

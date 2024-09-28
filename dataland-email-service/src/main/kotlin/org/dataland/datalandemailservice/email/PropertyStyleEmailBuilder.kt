@@ -45,29 +45,28 @@ abstract class PropertyStyleEmailBuilder(
         </head>
     """
 
-    private fun getEmailContactsFromStringList(propWithSemicolonSeperatedEmailAddresses: String?):
-        List<EmailContact>? {
-        return propWithSemicolonSeperatedEmailAddresses?.split(";")?.map {
-                emailAddressString ->
+    private fun getEmailContactsFromStringList(propWithSemicolonSeperatedEmailAddresses: String?): List<EmailContact>? =
+        propWithSemicolonSeperatedEmailAddresses?.split(";")?.map { emailAddressString ->
             EmailContact(assertEmailAddressFormatAndReturnIt(emailAddressString))
         }
-    }
 
     protected fun buildPropertyStyleEmailContent(
         subject: String,
         textTitle: String,
         htmlTitle: String,
         properties: Map<String, String?>,
-    ): EmailContent {
-        return EmailContent(
+    ): EmailContent =
+        EmailContent(
             subject,
             buildPropertyStyleTextContent(textTitle, properties),
             buildPropertyStyleHtmlContent(htmlTitle, properties),
         )
-    }
 
-    private fun buildPropertyStyleTextContent(title: String, properties: Map<String, String?>): String {
-        return StringBuilder()
+    private fun buildPropertyStyleTextContent(
+        title: String,
+        properties: Map<String, String?>,
+    ): String =
+        StringBuilder()
             .append("$title:\n")
             .apply {
                 properties.filter { it.value != null }.forEach {
@@ -76,12 +75,13 @@ abstract class PropertyStyleEmailBuilder(
                     append(it.value)
                     append("\n")
                 }
-            }
-            .toString()
-    }
+            }.toString()
 
-    private fun buildPropertyStyleHtmlContent(title: String, properties: Map<String, String?>): String {
-        return StringBuilder()
+    private fun buildPropertyStyleHtmlContent(
+        title: String,
+        properties: Map<String, String?>,
+    ): String =
+        StringBuilder()
             .append(
                 """
         <html>
@@ -92,23 +92,24 @@ abstract class PropertyStyleEmailBuilder(
                 """
         </html>
             """,
-            ).toString().trimIndent()
-    }
+            ).toString()
+            .trimIndent()
 
-    private fun StringBuilder.computePropertyStyleHtmlBody(title: String, properties: Map<String, String?>):
-        StringBuilder {
-        return this.append(
-            """
+    private fun StringBuilder.computePropertyStyleHtmlBody(
+        title: String,
+        properties: Map<String, String?>,
+    ): StringBuilder =
+        this
+            .append(
+                """
         <body>
         <div class="container">
         """,
-        )
-            .append(
+            ).append(
                 """
         <div class="header">$title</div>
         """,
-            )
-            .apply {
+            ).apply {
                 properties.filter { it.value != null }.forEach {
                     append(
                         """
@@ -116,14 +117,12 @@ abstract class PropertyStyleEmailBuilder(
         """,
                     )
                 }
-            }
-            .append(
+            }.append(
                 """
         </div>
         </body>
         """,
             )
-    }
 
     protected fun buildPropertyStyleEmail(
         subject: String,

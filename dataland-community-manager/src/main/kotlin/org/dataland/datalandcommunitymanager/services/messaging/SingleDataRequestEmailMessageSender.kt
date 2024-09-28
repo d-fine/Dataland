@@ -44,28 +44,30 @@ class SingleDataRequestEmailMessageSender(
         correlationId: String,
     ) {
         val companyName = companyApi.getCompanyInfo(messageInformation.datalandCompanyId).companyName
-        val properties = mapOf(
-            "User" to messageInformation.userAuthentication.userDescription,
-            "E-Mail" to messageInformation.userAuthentication.username,
-            "First Name" to messageInformation.userAuthentication.firstName,
-            "Last Name" to messageInformation.userAuthentication.lastName,
-            "Data Type" to messageInformation.dataType.value,
-            "Reporting Periods" to formatReportingPeriods(messageInformation.reportingPeriods),
-            "Dataland Company ID" to messageInformation.datalandCompanyId,
-            "Company Name" to companyName,
-        )
-        val message = InternalEmailMessage(
-            "Dataland Single Data Request",
-            "A single data request has been submitted",
-            "Single Data Request",
-            properties,
-        )
+        val properties =
+            mapOf(
+                "User" to messageInformation.userAuthentication.userDescription,
+                "E-Mail" to messageInformation.userAuthentication.username,
+                "First Name" to messageInformation.userAuthentication.firstName,
+                "Last Name" to messageInformation.userAuthentication.lastName,
+                "Data Type" to messageInformation.dataType.value,
+                "Reporting Periods" to formatReportingPeriods(messageInformation.reportingPeriods),
+                "Dataland Company ID" to messageInformation.datalandCompanyId,
+                "Company Name" to companyName,
+            )
+        val message =
+            InternalEmailMessage(
+                "Dataland Single Data Request",
+                "A single data request has been submitted",
+                "Single Data Request",
+                properties,
+            )
         cloudEventMessageHandler.buildCEMessageAndSendToQueue(
             objectMapper.writeValueAsString(message),
-            MessageType.SendInternalEmail,
+            MessageType.SEND_INTERNAL_EMAIL,
             correlationId,
-            ExchangeName.SendEmail,
-            RoutingKeyNames.internalEmail,
+            ExchangeName.SEND_EMAIL,
+            RoutingKeyNames.INTERNAL_EMAIL,
         )
     }
 
@@ -79,28 +81,31 @@ class SingleDataRequestEmailMessageSender(
         correlationId: String,
     ) {
         val companyName = companyApi.getCompanyInfo(messageInformation.datalandCompanyId).companyName
-        val properties = mapOf(
-            "companyId" to messageInformation.datalandCompanyId,
-            "companyName" to companyName,
-            "requesterEmail" to messageInformation.userAuthentication.username,
-            "firstName" to messageInformation.userAuthentication.firstName.takeIf { it.isNotBlank() },
-            "lastName" to messageInformation.userAuthentication.lastName.takeIf { it.isNotBlank() },
-            "dataType" to readableFrameworkNameMapping.getValue(messageInformation.dataType),
-            "reportingPeriods" to formatReportingPeriods(messageInformation.reportingPeriods),
-            "message" to contactMessage.takeIf { !contactMessage.isNullOrBlank() },
-        )
+        val properties =
+            mapOf(
+                "companyId" to messageInformation.datalandCompanyId,
+                "companyName" to companyName,
+                "requesterEmail" to messageInformation.userAuthentication.username,
+                "firstName" to messageInformation.userAuthentication.firstName.takeIf { it.isNotBlank() },
+                "lastName" to messageInformation.userAuthentication.lastName.takeIf { it.isNotBlank() },
+                "dataType" to readableFrameworkNameMapping.getValue(messageInformation.dataType),
+                "reportingPeriods" to formatReportingPeriods(messageInformation.reportingPeriods),
+                "message" to contactMessage.takeIf { !contactMessage.isNullOrBlank() },
+            )
 
-        val receiverList = receiverSet.flatMap {
-            MessageEntity.addContact(it, companyRolesManager, messageInformation.datalandCompanyId)
-        }
+        val receiverList =
+            receiverSet.flatMap {
+                MessageEntity.addContact(it, companyRolesManager, messageInformation.datalandCompanyId)
+            }
 
         receiverList.forEach {
-            val message = TemplateEmailMessage(
-                emailTemplateType = TemplateEmailMessage.Type.ClaimOwnership, receiver = it, properties = properties,
-            )
+            val message =
+                TemplateEmailMessage(
+                    emailTemplateType = TemplateEmailMessage.Type.ClaimOwnership, receiver = it, properties = properties,
+                )
             cloudEventMessageHandler.buildCEMessageAndSendToQueue(
-                objectMapper.writeValueAsString(message), MessageType.SendTemplateEmail, correlationId,
-                ExchangeName.SendEmail, RoutingKeyNames.templateEmail,
+                objectMapper.writeValueAsString(message), MessageType.SEND_TEMPLATE_EMAIL, correlationId,
+                ExchangeName.SEND_EMAIL, RoutingKeyNames.TEMPLATE_EMAIL,
             )
         }
     }

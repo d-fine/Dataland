@@ -1,6 +1,6 @@
 package org.dataland.datalandbackendutils.utils
 
-import java.util.*
+import java.util.Base64
 import java.util.zip.CRC32
 
 /**
@@ -12,18 +12,14 @@ object EncodingUtils {
      * @param input is the byte array to be encoded
      * @return the base64 encoded input byte array
      */
-    fun encodeToBase64(input: ByteArray): String {
-        return Base64.getEncoder().encodeToString(input)
-    }
+    fun encodeToBase64(input: ByteArray): String = Base64.getEncoder().encodeToString(input)
 
     /**
      * Decodes a string that is base64 encoded
      * @param input the encoded string
      * @return the byte array obtained from decoding the base64 encoded input string
      */
-    fun decodeFromBase64(input: String): ByteArray {
-        return Base64.getDecoder().decode(input)
-    }
+    fun decodeFromBase64(input: String): ByteArray = Base64.getDecoder().decode(input)
 
     /**
      * Calculates the CRC32 checksum from a byte array

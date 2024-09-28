@@ -4,7 +4,6 @@ import org.junit.jupiter.api.Test
 import kotlin.test.assertFails
 
 class DiagnosticManagerTest {
-
     private val testMessageId = "test-message"
     private val testMessageSummary = "Test Message Summary"
 

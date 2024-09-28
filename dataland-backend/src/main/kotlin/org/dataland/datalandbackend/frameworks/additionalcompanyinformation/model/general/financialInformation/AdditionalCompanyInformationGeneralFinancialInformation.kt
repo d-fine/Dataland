@@ -10,14 +10,10 @@ import org.dataland.datalandbackend.model.datapoints.CurrencyDataPoint
 data class AdditionalCompanyInformationGeneralFinancialInformation(
     @field:Valid()
     val equity: CurrencyDataPoint? = null,
-
     @field:Valid()
     val debt: CurrencyDataPoint? = null,
-
     @field:Valid()
     val balanceSheetTotal: CurrencyDataPoint? = null,
-
     @field:Valid()
     val evic: CurrencyDataPoint? = null,
-
 )

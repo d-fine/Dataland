@@ -27,32 +27,22 @@ import org.dataland.datalandbackend.frameworks.lksg.model.social.withholdingAdeq
 data class LksgSocial(
     @field:Valid()
     val childLabor: LksgSocialChildLabor? = null,
-
     @field:Valid()
     val forcedLaborSlavery: LksgSocialForcedLaborSlavery? = null,
-
     @field:Valid()
     val withholdingAdequateWages: LksgSocialWithholdingAdequateWages? = null,
-
     @field:Valid()
     val disregardForOccupationalHealthSafety: LksgSocialDisregardForOccupationalHealthSafety? = null,
-
     @field:Valid()
     val disregardForFreedomOfAssociation: LksgSocialDisregardForFreedomOfAssociation? = null,
-
     @field:Valid()
     val unequalTreatmentOfEmployment: LksgSocialUnequalTreatmentOfEmployment? = null,
-
     @field:Valid()
     val contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption:
-    LksgSocialContaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption? = null,
-
+        LksgSocialContaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption? = null,
     @field:Valid()
-    val unlawfulEvictionDeprivationOfLandForestAndWater:
-    LksgSocialUnlawfulEvictionDeprivationOfLandForestAndWater? = null,
-
+    val unlawfulEvictionDeprivationOfLandForestAndWater: LksgSocialUnlawfulEvictionDeprivationOfLandForestAndWater? = null,
     @field:Valid()
     val useOfPrivatePublicSecurityForcesWithDisregardForHumanRights:
-    LksgSocialUseOfPrivatePublicSecurityForcesWithDisregardForHumanRights? = null,
-
+        LksgSocialUseOfPrivatePublicSecurityForcesWithDisregardForHumanRights? = null,
 )

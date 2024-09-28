@@ -21,7 +21,9 @@ fun String.validateIsEmailAddress() {
 /**
  * An API exception which should be raised if an email format is violated
  */
-class InvalidEmailFormatApiException(email: String) : InvalidInputApiException(
-    "Invalid email address \"$email\"",
-    "The email address \"$email\" you have provided has an invalid format.",
-)
+class InvalidEmailFormatApiException(
+    email: String,
+) : InvalidInputApiException(
+        "Invalid email address \"$email\"",
+        "The email address \"$email\" you have provided has an invalid format.",
+    )

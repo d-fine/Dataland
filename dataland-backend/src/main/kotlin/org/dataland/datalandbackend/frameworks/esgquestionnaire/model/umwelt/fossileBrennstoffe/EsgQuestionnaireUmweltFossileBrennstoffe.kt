@@ -9,8 +9,6 @@ import org.dataland.datalandbackend.model.enums.commons.YesNo
  */
 data class EsgQuestionnaireUmweltFossileBrennstoffe(
     val einnahmenAusFossilenBrennstoffen: YesNo? = null,
-
     val berichterstattungEinnahmenAusFossilenBrennstoffen:
-    YearlyTimeseriesData<BerichterstattungEinnahmenAusFossilenBrennstoffenValues?>? = null,
-
+        YearlyTimeseriesData<BerichterstattungEinnahmenAusFossilenBrennstoffenValues?>? = null,
 )

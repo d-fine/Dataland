@@ -13,23 +13,22 @@ object EsgQuestionnaireSozialesRollingWindowComponents {
     /**
      * Creates the "Auswirkungen auf Anteil befrister Verträge und Fluktuation" field
      */
-    fun auswirkungenAufAnteilBefristerVertraegeUndFluktuation(
-        componentGroupSoziales: ComponentGroup,
-    ) {
+    fun auswirkungenAufAnteilBefristerVertraegeUndFluktuation(componentGroupSoziales: ComponentGroup) {
         componentGroupSoziales.edit<ComponentGroup>("unternehmensstrukturaenderungen") {
             edit<EsgQuestionnaireYearlyDecimalTimeseriesDataComponent>(
                 "auswirkungenAufAnteilBefristerVertraegeUndFluktuation",
             ) {
-                decimalRows = mutableListOf(
-                    EsgQuestionnaireYearlyDecimalTimeseriesDataComponent.TimeseriesRow(
-                        "anzahlDerBefristetenVertraege",
-                        "# der befristeten Verträge", "",
-                    ),
-                    EsgQuestionnaireYearlyDecimalTimeseriesDataComponent.TimeseriesRow(
-                        "fluktuation", "Fluktuation",
-                        "%",
-                    ),
-                )
+                decimalRows =
+                    mutableListOf(
+                        EsgQuestionnaireYearlyDecimalTimeseriesDataComponent.TimeseriesRow(
+                            "anzahlDerBefristetenVertraege",
+                            "# der befristeten Verträge", "",
+                        ),
+                        EsgQuestionnaireYearlyDecimalTimeseriesDataComponent.TimeseriesRow(
+                            "fluktuation", "Fluktuation",
+                            "%",
+                        ),
+                    )
             }
         }
     }
@@ -42,12 +41,13 @@ object EsgQuestionnaireSozialesRollingWindowComponents {
             edit<EsgQuestionnaireYearlyDecimalTimeseriesDataComponent>(
                 "budgetFuerSchulungAusbildung",
             ) {
-                decimalRows = mutableListOf(
-                    EsgQuestionnaireYearlyDecimalTimeseriesDataComponent.TimeseriesRow(
-                        "budgetProMitarbeiter",
-                        "Budget pro Mitarbeiter", "€",
-                    ),
-                )
+                decimalRows =
+                    mutableListOf(
+                        EsgQuestionnaireYearlyDecimalTimeseriesDataComponent.TimeseriesRow(
+                            "budgetProMitarbeiter",
+                            "Budget pro Mitarbeiter", "€",
+                        ),
+                    )
             }
         }
     }
@@ -60,12 +60,13 @@ object EsgQuestionnaireSozialesRollingWindowComponents {
             edit<EsgQuestionnaireYearlyDecimalTimeseriesDataComponent>(
                 "unfallrate",
             ) {
-                decimalRows = mutableListOf(
-                    EsgQuestionnaireYearlyDecimalTimeseriesDataComponent.TimeseriesRow(
-                        "haeufigkeitsrateVonArbeitsunfaellenMitZeitverlust",
-                        "Häufigkeitsrate von Arbeitsunfällen mit Zeitverlust", "",
-                    ),
-                )
+                decimalRows =
+                    mutableListOf(
+                        EsgQuestionnaireYearlyDecimalTimeseriesDataComponent.TimeseriesRow(
+                            "haeufigkeitsrateVonArbeitsunfaellenMitZeitverlust",
+                            "Häufigkeitsrate von Arbeitsunfällen mit Zeitverlust", "",
+                        ),
+                    )
             }
         }
     }
@@ -73,27 +74,26 @@ object EsgQuestionnaireSozialesRollingWindowComponents {
     /**
      * Creates the "Überwachung der Einkommensungleichheit" field
      */
-    fun massnahmenZurVerbesserungDerEinkommensungleichheit(
-        componentGroupSoziales: ComponentGroup,
-    ) {
+    fun massnahmenZurVerbesserungDerEinkommensungleichheit(componentGroupSoziales: ComponentGroup) {
         componentGroupSoziales.edit<ComponentGroup>("einkommensgleichheit") {
             edit<EsgQuestionnaireYearlyDecimalTimeseriesDataComponent>(
                 "ueberwachungDerEinkommensungleichheit",
             ) {
-                decimalRows = mutableListOf(
-                    EsgQuestionnaireYearlyDecimalTimeseriesDataComponent.TimeseriesRow(
-                        "unbereinigtesGeschlechtsspezifischesLohngefaelle",
-                        "Unbereinigtes geschlechtsspezifisches Lohngefälle", "%",
-                    ),
-                    EsgQuestionnaireYearlyDecimalTimeseriesDataComponent.TimeseriesRow(
-                        "einkommensungleichheitsverhaeltnis",
-                        "Einkommensungleichheitsverhältnis", "%",
-                    ),
-                    EsgQuestionnaireYearlyDecimalTimeseriesDataComponent.TimeseriesRow(
-                        "ceoEinkommensungleichheitsverhaeltnis",
-                        "CEO-Einkommensungleichheitsverhältnis", "%",
-                    ),
-                )
+                decimalRows =
+                    mutableListOf(
+                        EsgQuestionnaireYearlyDecimalTimeseriesDataComponent.TimeseriesRow(
+                            "unbereinigtesGeschlechtsspezifischesLohngefaelle",
+                            "Unbereinigtes geschlechtsspezifisches Lohngefälle", "%",
+                        ),
+                        EsgQuestionnaireYearlyDecimalTimeseriesDataComponent.TimeseriesRow(
+                            "einkommensungleichheitsverhaeltnis",
+                            "Einkommensungleichheitsverhältnis", "%",
+                        ),
+                        EsgQuestionnaireYearlyDecimalTimeseriesDataComponent.TimeseriesRow(
+                            "ceoEinkommensungleichheitsverhaeltnis",
+                            "CEO-Einkommensungleichheitsverhältnis", "%",
+                        ),
+                    )
             }
         }
     }

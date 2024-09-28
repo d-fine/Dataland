@@ -18,18 +18,19 @@ import org.springframework.web.multipart.MultipartFile
 class FileProcessorTest(
     @Autowired val toPdfConverters: List<FileConverter>,
 ) {
-    private val expectedToPdfConverters = listOf(
-        DocxToPdfConverter::class.java,
-        DocToPdfConverter::class.java,
-        XlsxToXlsxConverter::class.java,
-        XlsToXlsConverter::class.java,
-        ImageToPdfConverter::class.java,
-        OdsToOdsConverter::class.java,
-        PdfToPdfConverter::class.java,
-        PptxToPdfConverter::class.java,
-        PptToPdfConverter::class.java,
-        TextToPdfConverter::class.java,
-    )
+    private val expectedToPdfConverters =
+        listOf(
+            DocxToPdfConverter::class.java,
+            DocToPdfConverter::class.java,
+            XlsxToXlsxConverter::class.java,
+            XlsToXlsConverter::class.java,
+            ImageToPdfConverter::class.java,
+            OdsToOdsConverter::class.java,
+            PdfToPdfConverter::class.java,
+            PptxToPdfConverter::class.java,
+            PptToPdfConverter::class.java,
+            TextToPdfConverter::class.java,
+        )
     private val testPdf = "sampleFiles/sample.pdf"
 
     @Test
@@ -48,30 +49,39 @@ class FileProcessorTest(
 
     @Test
     fun `check if an error is thrown if there are file converters with overlapping file extension responsibility`() {
-        val exception = assertThrows<IllegalArgumentException> {
-            FileProcessor(
-                listOf(
-                    object : FileConverter(
-                        mapOf(
-                            "a" to setOf("abc"),
-                            "b" to setOf("defg"),
-                        ),
-                    ) {
-                        override val logger = LoggerFactory.getLogger("TestLogger")
-                        override fun convert(file: MultipartFile, correlationId: String) = "test".encodeToByteArray()
-                    },
-                    object : FileConverter(
-                        mapOf(
-                            "b" to setOf("hijk"),
-                            "c" to setOf("lmnop"),
-                        ),
-                    ) {
-                        override val logger = LoggerFactory.getLogger("TestLogger")
-                        override fun convert(file: MultipartFile, correlationId: String) = "test".encodeToByteArray()
-                    },
-                ),
-            )
-        }
+        val exception =
+            assertThrows<IllegalArgumentException> {
+                FileProcessor(
+                    listOf(
+                        object : FileConverter(
+                            mapOf(
+                                "a" to setOf("abc"),
+                                "b" to setOf("defg"),
+                            ),
+                        ) {
+                            override val logger = LoggerFactory.getLogger("TestLogger")
+
+                            override fun convert(
+                                file: MultipartFile,
+                                correlationId: String,
+                            ) = "test".encodeToByteArray()
+                        },
+                        object : FileConverter(
+                            mapOf(
+                                "b" to setOf("hijk"),
+                                "c" to setOf("lmnop"),
+                            ),
+                        ) {
+                            override val logger = LoggerFactory.getLogger("TestLogger")
+
+                            override fun convert(
+                                file: MultipartFile,
+                                correlationId: String,
+                            ) = "test".encodeToByteArray()
+                        },
+                    ),
+                )
+            }
         assertEquals("There are multiple file converters which target the same file extensions.", exception.message)
     }
 
@@ -86,7 +96,11 @@ class FileProcessorTest(
                     ),
                 ) {
                     override val logger = LoggerFactory.getLogger("TestLogger")
-                    override fun convert(file: MultipartFile, correlationId: String) = "test".encodeToByteArray()
+
+                    override fun convert(
+                        file: MultipartFile,
+                        correlationId: String,
+                    ) = "test".encodeToByteArray()
                 },
                 object : FileConverter(
                     mapOf(
@@ -94,7 +108,11 @@ class FileProcessorTest(
                     ),
                 ) {
                     override val logger = LoggerFactory.getLogger("TestLogger")
-                    override fun convert(file: MultipartFile, correlationId: String) = "test".encodeToByteArray()
+
+                    override fun convert(
+                        file: MultipartFile,
+                        correlationId: String,
+                    ) = "test".encodeToByteArray()
                 },
             ),
         )
@@ -102,15 +120,17 @@ class FileProcessorTest(
 
     @Test
     fun `verifies that an unsupported type is detected`() {
-        val testFile = MockMultipartFile(
-            "test.json",
-            "test.json",
-            MediaType.APPLICATION_JSON_VALUE,
-            TestUtils().loadFileBytes(testPdf),
-        )
-        val thrown = assertThrows<InvalidInputApiException> {
-            FileProcessor(toPdfConverters).processFile(testFile, "")
-        }
+        val testFile =
+            MockMultipartFile(
+                "test.json",
+                "test.json",
+                MediaType.APPLICATION_JSON_VALUE,
+                TestUtils().loadFileBytes(testPdf),
+            )
+        val thrown =
+            assertThrows<InvalidInputApiException> {
+                FileProcessor(toPdfConverters).processFile(testFile, "")
+            }
         assertEquals(
             "File extension json could not be recognized",
             thrown.message,

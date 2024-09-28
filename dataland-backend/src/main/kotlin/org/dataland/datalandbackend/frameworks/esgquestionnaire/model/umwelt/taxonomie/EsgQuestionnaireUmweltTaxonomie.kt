@@ -10,10 +10,7 @@ import java.util.EnumSet
  */
 data class EsgQuestionnaireUmweltTaxonomie(
     val taxonomieBerichterstattung: EsgQuestionnaireUmweltTaxonomieTaxonomieBerichterstattungOptions? = null,
-
     val euTaxonomieKompassAktivitaeten: EnumSet<Activity>? = null,
-
     val umsatzInvestitionsaufwandFuerNachhaltigeAktivitaeten:
-    YearlyTimeseriesData<UmsatzInvestitionsaufwandFuerNachhaltigeAktivitaetenValues?>? = null,
-
+        YearlyTimeseriesData<UmsatzInvestitionsaufwandFuerNachhaltigeAktivitaetenValues?>? = null,
 )

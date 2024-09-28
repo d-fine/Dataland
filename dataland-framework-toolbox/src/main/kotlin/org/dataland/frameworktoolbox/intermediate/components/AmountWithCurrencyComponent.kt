@@ -17,10 +17,9 @@ class AmountWithCurrencyComponent(
     identifier: String,
     parent: FieldNodeParent,
 ) : SimpleKotlinBackedBaseComponent(
-    identifier, parent,
-    "org.dataland.datalandbackend.model.generics.AmountWithCurrency",
-) {
-
+        identifier, parent,
+        "org.dataland.datalandbackend.model.generics.AmountWithCurrency",
+    ) {
     override fun generateDefaultViewConfig(sectionConfigBuilder: SectionConfigBuilder) {
         sectionConfigBuilder.addStandardCellWithValueGetterFactory(
             this,
@@ -54,11 +53,12 @@ class AmountWithCurrencyComponent(
     override fun generateDefaultFixtureGenerator(sectionBuilder: FixtureSectionBuilder) {
         requireDocumentSupportIn(setOf(NoDocumentSupport))
         val guaranteedAmountWithCurrencyGenerator = "dataGenerator.generateAmountWithCurrency()"
-        val fixtureExpression = if (isNullable) {
-            "dataGenerator.valueOrNull($guaranteedAmountWithCurrencyGenerator)"
-        } else {
-            guaranteedAmountWithCurrencyGenerator
-        }
+        val fixtureExpression =
+            if (isNullable) {
+                "dataGenerator.valueOrNull($guaranteedAmountWithCurrencyGenerator)"
+            } else {
+                guaranteedAmountWithCurrencyGenerator
+            }
         sectionBuilder.addAtomicExpression(
             identifier,
             fixtureExpression,

@@ -33,48 +33,51 @@ class MessageQueueListenerTest(
     @Autowired val inMemoryDocumentStore: InMemoryDocumentStore,
     @Autowired private var objectMapper: ObjectMapper,
 ) {
-
     lateinit var mockDocumentMetaInfoRepository: DocumentMetaInfoRepository
     lateinit var messageQueueListener: MessageQueueListener
 
     @BeforeEach
     fun setup() {
         mockDocumentMetaInfoRepository = mock(DocumentMetaInfoRepository::class.java)
-        messageQueueListener = MessageQueueListener(
-            messageUtils = MessageQueueUtils(),
-            objectMapper = objectMapper,
-            documentMetaInfoRepository = mockDocumentMetaInfoRepository,
-            inMemoryDocumentStore = inMemoryDocumentStore,
-        )
+        messageQueueListener =
+            MessageQueueListener(
+                messageUtils = MessageQueueUtils(),
+                objectMapper = objectMapper,
+                documentMetaInfoRepository = mockDocumentMetaInfoRepository,
+                inMemoryDocumentStore = inMemoryDocumentStore,
+            )
     }
 
     @Test
     fun `check that an exception is thrown in updating of meta data when documentId is empty`() {
-        val messageWithEmptyDocumentID = objectMapper.writeValueAsString(
-            QaCompletedMessage(
-                identifier = "",
-                validationResult = QaStatus.Accepted,
-                reviewerId = "",
-                message = null,
-            ),
-        )
-        val thrown = assertThrows<MessageQueueRejectException> {
-            messageQueueListener.updateDocumentMetaData(messageWithEmptyDocumentID, "", MessageType.QaCompleted)
-        }
+        val messageWithEmptyDocumentID =
+            objectMapper.writeValueAsString(
+                QaCompletedMessage(
+                    identifier = "",
+                    validationResult = QaStatus.Accepted,
+                    reviewerId = "",
+                    message = null,
+                ),
+            )
+        val thrown =
+            assertThrows<MessageQueueRejectException> {
+                messageQueueListener.updateDocumentMetaData(messageWithEmptyDocumentID, "", MessageType.QA_COMPLETED)
+            }
         assertEquals("Message was rejected: Provided document ID is empty", thrown.message)
     }
 
     @Test
     fun `check that updating meta data after QA works for an existing document`() {
         val documentId = "abc"
-        val message = objectMapper.writeValueAsString(
-            QaCompletedMessage(
-                identifier = documentId,
-                validationResult = QaStatus.Accepted,
-                reviewerId = "",
-                message = null,
-            ),
-        )
+        val message =
+            objectMapper.writeValueAsString(
+                QaCompletedMessage(
+                    identifier = documentId,
+                    validationResult = QaStatus.Accepted,
+                    reviewerId = "",
+                    message = null,
+                ),
+            )
 
         `when`(mockDocumentMetaInfoRepository.findById(anyString()))
             .thenReturn(
@@ -89,17 +92,18 @@ class MessageQueueListenerTest(
                 ),
             )
 
-        assertDoesNotThrow { messageQueueListener.updateDocumentMetaData(message, "", MessageType.QaCompleted) }
+        assertDoesNotThrow { messageQueueListener.updateDocumentMetaData(message, "", MessageType.QA_COMPLETED) }
     }
 
     @Test
     fun `check that an exception is thrown in removing of stored document if documentId is empty`() {
-        val thrown = assertThrows<AmqpRejectAndDontRequeueException> {
-            messageQueueListener.removeStoredDocumentFromTemporaryStore(
-                "", "",
-                MessageType.DocumentStored,
-            )
-        }
+        val thrown =
+            assertThrows<AmqpRejectAndDontRequeueException> {
+                messageQueueListener.removeStoredDocumentFromTemporaryStore(
+                    "", "",
+                    MessageType.DOCUMENT_STORED,
+                )
+            }
         assertEquals("Message was rejected: Provided document ID is empty", thrown.message)
     }
 }

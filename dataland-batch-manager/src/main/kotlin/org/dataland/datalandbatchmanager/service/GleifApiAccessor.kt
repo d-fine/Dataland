@@ -57,7 +57,11 @@ class GleifApiAccessor(
         }
     }
 
-    private fun downloadFileFromGleif(urlSuffx: String, targetFile: File, fileDescription: String) {
+    private fun downloadFileFromGleif(
+        urlSuffx: String,
+        targetFile: File,
+        fileDescription: String,
+    ) {
         logger.info("Starting download of $fileDescription.")
         val downloadUrl = URI("$gleifBaseUrl/$urlSuffx").toURL()
         externalFileDownload.downloadFile(downloadUrl, targetFile)
@@ -69,7 +73,10 @@ class GleifApiAccessor(
      * @param zipFile the zip file
      * @return CSV file inside Zip file
      */
-    private fun getCsvFileFromZip(zipFile: File, prefixForCsvFile: String): File {
+    private fun getCsvFileFromZip(
+        zipFile: File,
+        prefixForCsvFile: String,
+    ): File {
         val csvFile = File.createTempFile(prefixForCsvFile, ".csv")
         csvFile.deleteOnExit()
 

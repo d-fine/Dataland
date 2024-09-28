@@ -50,17 +50,21 @@ class GleifGoldenCopyIngestor(
      * @param downloadFile the method which is executed to retrieve the external data
      */
     @Synchronized
-    fun processGleifFile(zipFile: File, downloadFile: (file: File) -> Unit) {
-        val duration = measureTime {
-            try {
-                downloadFile(zipFile)
-                uploadCompanies(zipFile)
-            } finally {
-                if (!zipFile.delete()) {
-                    logger.error("Unable to delete temporary file $zipFile")
+    fun processGleifFile(
+        zipFile: File,
+        downloadFile: (file: File) -> Unit,
+    ) {
+        val duration =
+            measureTime {
+                try {
+                    downloadFile(zipFile)
+                    uploadCompanies(zipFile)
+                } finally {
+                    if (!zipFile.delete()) {
+                        logger.error("Unable to delete temporary file $zipFile")
+                    }
                 }
             }
-        }
         logger.info("Finished processing of GLEIF file $zipFile in ${formatExecutionTime(duration)}.")
     }
 
@@ -72,13 +76,14 @@ class GleifGoldenCopyIngestor(
     fun processRelationshipFile(updateAllCompanies: Boolean = false) {
         logger.info("Starting parent mapping update cycle for latest file.")
         val newRelationshipFile = File.createTempFile("gleif_relationship_golden_copy", ".zip")
-        val duration = measureTime {
-            gleifApiAccessor.getFullGoldenCopyOfRelationships(newRelationshipFile)
-            val gleifDataStream = gleifParser.getCsvStreamFromZip(newRelationshipFile)
-            val gleifCsvParser = gleifParser.readGleifRelationshipDataFromBufferedReader(gleifDataStream)
-            relationshipExtractor.prepareFinalParentMapping(gleifCsvParser)
-            if (updateAllCompanies) companyUploader.updateRelationships(relationshipExtractor.finalParentMapping)
-        }
+        val duration =
+            measureTime {
+                gleifApiAccessor.getFullGoldenCopyOfRelationships(newRelationshipFile)
+                val gleifDataStream = gleifParser.getCsvStreamFromZip(newRelationshipFile)
+                val gleifCsvParser = gleifParser.readGleifRelationshipDataFromBufferedReader(gleifDataStream)
+                relationshipExtractor.prepareFinalParentMapping(gleifCsvParser)
+                if (updateAllCompanies) companyUploader.updateRelationships(relationshipExtractor.finalParentMapping)
+            }
         logger.info("Finished processing of GLEIF RR file $newRelationshipFile in ${formatExecutionTime(duration)}.")
     }
 
@@ -89,22 +94,23 @@ class GleifGoldenCopyIngestor(
     fun processIsinMappingFile() {
         logger.info("Starting LEI-ISIN mapping update cycle for latest file.")
         val newMappingFile = File.createTempFile("gleif_mapping_update", ".csv")
-        val duration = measureTime {
-            gleifApiAccessor.getFullIsinMappingFile(newMappingFile)
-            val deltaMapping: Map<String, Set<String>> =
-                if (!savedIsinMappingFile.exists() || savedIsinMappingFile.length() == 0L) {
-                    isinDeltaBuilder.createDeltaOfMappingFile(newMappingFile, null)
-                } else {
-                    isinDeltaBuilder.createDeltaOfMappingFile(newMappingFile, savedIsinMappingFile)
+        val duration =
+            measureTime {
+                gleifApiAccessor.getFullIsinMappingFile(newMappingFile)
+                val deltaMapping: Map<String, Set<String>> =
+                    if (!savedIsinMappingFile.exists() || savedIsinMappingFile.length() == 0L) {
+                        isinDeltaBuilder.createDeltaOfMappingFile(newMappingFile, null)
+                    } else {
+                        isinDeltaBuilder.createDeltaOfMappingFile(newMappingFile, savedIsinMappingFile)
+                    }
+                val newPersistentFile = File("${savedIsinMappingFile.parent}/newIsinMapping.csv")
+                FileUtils.copyFile(newMappingFile, newPersistentFile)
+                if (!newMappingFile.delete()) {
+                    logger.error("failed to delete temporary mapping file $newMappingFile")
                 }
-            val newPersistentFile = File("${savedIsinMappingFile.parent}/newIsinMapping.csv")
-            FileUtils.copyFile(newMappingFile, newPersistentFile)
-            if (!newMappingFile.delete()) {
-                logger.error("failed to delete temporary mapping file $newMappingFile")
+                companyUploader.updateIsins(deltaMapping)
+                replaceOldMappingFile(File("${savedIsinMappingFile.parent}/newIsinMapping.csv"))
             }
-            companyUploader.updateIsins(deltaMapping)
-            replaceOldMappingFile(File("${savedIsinMappingFile.parent}/newIsinMapping.csv"))
-        }
         logger.info("Finished processing of file $newMappingFile in ${formatExecutionTime(duration)}.")
     }
 
@@ -114,30 +120,31 @@ class GleifGoldenCopyIngestor(
 
         val uploadThreadPool = ForkJoinPool(UPLOAD_THREAD_POOL_SIZE)
         try {
-            uploadThreadPool.submit {
-                StreamSupport.stream(gleifIterable.spliterator(), true)
-                    .forEach {
-                        companyUploader.uploadOrPatchSingleCompany(
-                            GleifCompanyCombinedInformation(
-                                it,
-                                relationshipExtractor.finalParentMapping.getOrDefault(it.lei, null),
-                            ),
-                        )
-                    }
-            }.get()
+            uploadThreadPool
+                .submit {
+                    StreamSupport
+                        .stream(gleifIterable.spliterator(), true)
+                        .forEach {
+                            companyUploader.uploadOrPatchSingleCompany(
+                                GleifCompanyCombinedInformation(
+                                    it,
+                                    relationshipExtractor.finalParentMapping.getOrDefault(it.lei, null),
+                                ),
+                            )
+                        }
+                }.get()
         } finally {
             uploadThreadPool.shutdown()
         }
     }
 
-    private fun formatExecutionTime(duration: Duration): String {
-        return duration
+    private fun formatExecutionTime(duration: Duration): String =
+        duration
             .toComponents { hours, minutes, seconds, _ ->
                 String.format(
                     Locale.getDefault(), "%02dh %02dm %02ds", hours, minutes, seconds,
                 )
             }
-    }
 
     /**
      * Replaces the locally saved old mapping file with the recently downloaded one after creating delta is done

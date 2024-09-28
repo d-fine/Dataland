@@ -14,26 +14,15 @@ import java.math.BigDecimal
 data class LksgGovernanceGrievanceMechanismOwnOperations(
     @field:Valid()
     val grievanceHandlingMechanism: BaseDataPoint<YesNo>? = null,
-
     val grievanceHandlingReportingAccessible: YesNo? = null,
-
     val appropriateGrievanceHandlingInformation: YesNo? = null,
-
     val appropriateGrievanceHandlingSupport: YesNo? = null,
-
     val accessToExpertiseForGrievanceHandling: YesNo? = null,
-
     val grievanceComplaints: YesNo? = null,
-
     @field:MinimumValue(minimumValue = 0)
     val complaintsNumber: BigDecimal? = null,
-
     val complaintsRiskPosition: List<LksgGrievanceAssessmentMechanism?>? = null,
-
     val publicAccessToGrievanceHandling: YesNo? = null,
-
     val whistleblowerProtection: YesNo? = null,
-
     val dueDiligenceProcessForGrievanceHandling: YesNo? = null,
-
 )

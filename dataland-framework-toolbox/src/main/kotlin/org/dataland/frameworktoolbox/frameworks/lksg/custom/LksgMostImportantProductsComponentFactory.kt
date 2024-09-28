@@ -14,10 +14,10 @@ import org.springframework.stereotype.Component
  * Represents the most Important Products component for the Lksg Framework
  */
 @Component
-class LksgMostImportantProductsComponentFactory(@Autowired val templateDiagnostic: TemplateDiagnostic) :
-    TemplateComponentFactory {
-    override fun canGenerateComponent(row: TemplateRow): Boolean =
-        row.component == "LkSG Most Important Products"
+class LksgMostImportantProductsComponentFactory(
+    @Autowired val templateDiagnostic: TemplateDiagnostic,
+) : TemplateComponentFactory {
+    override fun canGenerateComponent(row: TemplateRow): Boolean = row.component == "LkSG Most Important Products"
 
     override fun generateComponent(
         row: TemplateRow,

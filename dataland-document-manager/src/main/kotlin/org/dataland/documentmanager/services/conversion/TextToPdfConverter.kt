@@ -17,14 +17,19 @@ import java.io.InputStreamReader
  * A converter for txt files to the pdf format
  */
 @Component
-class TextToPdfConverter : FileConverter(
-    allowedMimeTypesPerFileExtension = mapOf(
-        "txt" to setOf("text/plain"),
-    ),
-) {
+class TextToPdfConverter :
+    FileConverter(
+        allowedMimeTypesPerFileExtension =
+            mapOf(
+                "txt" to setOf("text/plain"),
+            ),
+    ) {
     override val logger: Logger = LoggerFactory.getLogger(javaClass)
 
-    override fun validateFileContent(file: MultipartFile, correlationId: String) {
+    override fun validateFileContent(
+        file: MultipartFile,
+        correlationId: String,
+    ) {
         if (file.bytes.decodeToString().isBlank()) {
             throw InvalidInputApiException(
                 fileIsEmptySummary,
@@ -33,7 +38,10 @@ class TextToPdfConverter : FileConverter(
         }
     }
 
-    override fun convert(file: MultipartFile, correlationId: String): ByteArray {
+    override fun convert(
+        file: MultipartFile,
+        correlationId: String,
+    ): ByteArray {
         logger.info("Converting plain text file to pdf document.(correlation ID: $correlationId)")
         val outputStream = ByteArrayOutputStream()
         val pdfDocument = PdfDocument(PdfWriter(outputStream))

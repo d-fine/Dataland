@@ -23,9 +23,7 @@ class ApiClients(
     @Bean
     fun getCompanyRolesApi(
         @Qualifier("AuthenticatedOkHttpClient") authenticatedOkHttpClient: OkHttpClient,
-    ): CompanyRolesControllerApi {
-        return CompanyRolesControllerApi(communitymanagerBaseUrl, authenticatedOkHttpClient)
-    }
+    ): CompanyRolesControllerApi = CompanyRolesControllerApi(communitymanagerBaseUrl, authenticatedOkHttpClient)
 
     /**
      * Creates an auto-authenticated version of the RequestControllerApi of the community manager
@@ -33,9 +31,7 @@ class ApiClients(
     @Bean
     fun getRequestsApi(
         @Qualifier("AuthenticatedOkHttpClient") authenticatedOkHttpClient: OkHttpClient,
-    ): RequestControllerApi {
-        return RequestControllerApi(communitymanagerBaseUrl, authenticatedOkHttpClient)
-    }
+    ): RequestControllerApi = RequestControllerApi(communitymanagerBaseUrl, authenticatedOkHttpClient)
 
     /**
      * Creates an auto-authenticated version of the CompanyDataControllerApi of the backend
@@ -43,7 +39,5 @@ class ApiClients(
     @Bean
     fun getDocumentControllerApi(
         @Qualifier("AuthenticatedOkHttpClient") authenticatedOkHttpClient: OkHttpClient,
-    ): DocumentControllerApi {
-        return DocumentControllerApi(documentManagerBaseUrl, authenticatedOkHttpClient)
-    }
+    ): DocumentControllerApi = DocumentControllerApi(documentManagerBaseUrl, authenticatedOkHttpClient)
 }

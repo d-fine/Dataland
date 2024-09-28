@@ -11,16 +11,12 @@ import java.math.BigDecimal
 data class EligibilityKpis(
     @field:Valid()
     val taxonomyEligibleActivityInPercent: ExtendedDataPoint<BigDecimal>? = null,
-
     @field:Valid()
     val taxonomyNonEligibleActivityInPercent: ExtendedDataPoint<BigDecimal>? = null,
-
     @field:Valid()
     val derivativesInPercent: ExtendedDataPoint<BigDecimal>? = null,
-
     @field:Valid()
     val banksAndIssuersInPercent: ExtendedDataPoint<BigDecimal>? = null,
-
     @field:Valid()
     val investmentNonNfrdInPercent: ExtendedDataPoint<BigDecimal>? = null,
 )

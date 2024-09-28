@@ -22,28 +22,28 @@ class DataRequestedClaimOwnershipEmailFactoryTest {
     private val dummyFirstName = "testUserName"
     private val dummyLastName = "testUserLastName"
 
-    private fun buildTestEmail(
-        reportingPeriods: String,
-    ): Email {
-        val properties = mapOf(
-            "companyId" to companyId,
-            "companyName" to companyName,
-            "requesterEmail" to requesterEmail,
-            "dataType" to dataType,
-            "reportingPeriods" to reportingPeriods,
-            "message" to contactMessage,
-            "firstName" to dummyFirstName,
-            "lastName" to dummyLastName,
-        )
+    private fun buildTestEmail(reportingPeriods: String): Email {
+        val properties =
+            mapOf(
+                "companyId" to companyId,
+                "companyName" to companyName,
+                "requesterEmail" to requesterEmail,
+                "dataType" to dataType,
+                "reportingPeriods" to reportingPeriods,
+                "message" to contactMessage,
+                "firstName" to dummyFirstName,
+                "lastName" to dummyLastName,
+            )
 
-        val email = DataRequestedClaimOwnershipEmailFactory(
-            proxyPrimaryUrl = proxyPrimaryUrl,
-            senderEmail = senderEmail,
-            senderName = senderName,
-        ).buildEmail(
-            receiverEmail = receiverEmail,
-            properties = properties,
-        )
+        val email =
+            DataRequestedClaimOwnershipEmailFactory(
+                proxyPrimaryUrl = proxyPrimaryUrl,
+                senderEmail = senderEmail,
+                senderName = senderName,
+            ).buildEmail(
+                receiverEmail = receiverEmail,
+                properties = properties,
+            )
 
         return email
     }

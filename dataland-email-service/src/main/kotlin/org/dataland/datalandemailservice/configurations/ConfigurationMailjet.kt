@@ -18,11 +18,13 @@ open class ConfigurationMailjet(
      */
     @Bean
     open fun getMailjetClient(): MailjetClient {
-        val clientOptions = ClientOptions.builder()
-            .baseUrl(mailjetApiUrl)
-            .apiKey(System.getenv("MAILJET_API_ID"))
-            .apiSecretKey(System.getenv("MAILJET_API_SECRET"))
-            .build()
+        val clientOptions =
+            ClientOptions
+                .builder()
+                .baseUrl(mailjetApiUrl)
+                .apiKey(System.getenv("MAILJET_API_ID"))
+                .apiSecretKey(System.getenv("MAILJET_API_SECRET"))
+                .build()
         return MailjetClient(clientOptions)
     }
 }

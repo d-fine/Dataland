@@ -47,9 +47,10 @@ class DataRequestAlterationManager(
         message: String? = null,
         correlationId: String? = null,
     ): StoredDataRequest {
-        val dataRequestEntity = dataRequestRepository.findById(dataRequestId).getOrElse {
-            throw DataRequestNotFoundApiException(dataRequestId)
-        }
+        val dataRequestEntity =
+            dataRequestRepository.findById(dataRequestId).getOrElse {
+                throw DataRequestNotFoundApiException(dataRequestId)
+            }
         val filteredContacts = contacts.takeIf { !it.isNullOrEmpty() }
         val filteredMessage = message.takeIf { !it.isNullOrEmpty() }
         filteredContacts?.forEach {
@@ -85,15 +86,19 @@ class DataRequestAlterationManager(
      * @param correlationId dataland correlationId
      */
     @Transactional
-    fun patchRequestStatusFromOpenToAnsweredByDataId(dataId: String, correlationId: String) {
+    fun patchRequestStatusFromOpenToAnsweredByDataId(
+        dataId: String,
+        correlationId: String,
+    ) {
         val metaData = metaDataControllerApi.getDataMetaInfo(dataId)
-        val dataRequestEntities = dataRequestRepository.searchDataRequestEntity(
-            DataRequestsFilter(
-                dataType = setOf(metaData.dataType), userId = null, emailAddress = null,
-                requestStatus = setOf(RequestStatus.Open), accessStatus = null,
-                reportingPeriod = metaData.reportingPeriod, datalandCompanyId = metaData.companyId,
-            ),
-        )
+        val dataRequestEntities =
+            dataRequestRepository.searchDataRequestEntity(
+                DataRequestsFilter(
+                    dataType = setOf(metaData.dataType), userId = null, emailAddress = null,
+                    requestStatus = setOf(RequestStatus.Open), accessStatus = null,
+                    reportingPeriod = metaData.reportingPeriod, datalandCompanyId = metaData.companyId,
+                ),
+            )
         dataRequestEntities.forEach {
             if (it.dataType == DataTypeEnum.vsme.name && it.accessStatus != AccessStatus.Granted) {
                 patchDataRequest(

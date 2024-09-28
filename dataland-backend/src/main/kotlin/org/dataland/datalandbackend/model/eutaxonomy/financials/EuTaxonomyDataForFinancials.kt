@@ -23,35 +23,23 @@ import java.util.EnumSet
 @ValidateReferencedReportsListForEuTaxonomyFinancials
 data class EuTaxonomyDataForFinancials(
     val financialServicesTypes: EnumSet<FinancialServicesType>? = null,
-
     @field:Schema(example = JsonExampleFormattingConstants.ELIGIBILITY_KPIS_DEFAULT_VALUE)
     @field:Valid()
     val eligibilityKpis: Map<FinancialServicesType, EligibilityKpis>? = null,
-
     @field:Valid()
     val creditInstitutionKpis: CreditInstitutionKpis? = null,
-
     @field:Valid()
     val investmentFirmKpis: InvestmentFirmKpis? = null,
-
     @field:Valid()
     val insuranceKpis: InsuranceKpis? = null,
-
     val fiscalYearDeviation: FiscalYearDeviation? = null,
-
     val fiscalYearEnd: LocalDate? = null,
-
     val scopeOfEntities: YesNoNa? = null,
-
     val nfrdMandatory: YesNo? = null,
-
     val euTaxonomyActivityLevelReporting: YesNo? = null,
-
     @field:Valid()
     val assurance: AssuranceDataPoint? = null,
-
     val numberOfEmployees: BigDecimal? = null,
-
     @field:Valid
     @field:Schema(example = JsonExampleFormattingConstants.REFERENCED_REPORTS_DEFAULT_VALUE)
     val referencedReports: Map<String, CompanyReport>? = null,

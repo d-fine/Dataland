@@ -33,8 +33,10 @@ class FieldMaximumValidator : ConstraintValidator<MaximumValue, Number> {
         this.maximumValue = constraintAnnotation.maximumValue
     }
 
-    override fun isValid(value: Number?, context: ConstraintValidatorContext?): Boolean =
-        isValidNumber(value, maximumValue)
+    override fun isValid(
+        value: Number?,
+        context: ConstraintValidatorContext?,
+    ): Boolean = isValidNumber(value, maximumValue)
 }
 
 /**
@@ -47,7 +49,10 @@ class DataPointMaximumValidator : ConstraintValidator<MaximumValue, BaseDataPoin
         this.maximumValue = constraintAnnotation.maximumValue
     }
 
-    override fun isValid(dataPoint: BaseDataPoint<*>?, context: ConstraintValidatorContext?): Boolean =
+    override fun isValid(
+        dataPoint: BaseDataPoint<*>?,
+        context: ConstraintValidatorContext?,
+    ): Boolean =
         if (dataPoint?.value == null) {
             true
         } else if (dataPoint.value !is Number) {
@@ -60,7 +65,10 @@ class DataPointMaximumValidator : ConstraintValidator<MaximumValue, BaseDataPoin
         }
 }
 
-private fun isValidNumber(value: Number?, maximumValue: Long) = when (value) {
+private fun isValidNumber(
+    value: Number?,
+    maximumValue: Long,
+) = when (value) {
     null -> true
     is BigDecimal -> value <= BigDecimal.valueOf(maximumValue)
     is BigInteger -> value <= BigInteger.valueOf(maximumValue)

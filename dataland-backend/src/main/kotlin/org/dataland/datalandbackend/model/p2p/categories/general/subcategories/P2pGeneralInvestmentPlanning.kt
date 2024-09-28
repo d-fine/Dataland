@@ -9,10 +9,7 @@ import java.math.BigDecimal
 */
 data class P2pGeneralInvestmentPlanning(
     val investmentPlanForClimateTargets: YesNo? = null,
-
     val capexShareInNetZeroSolutionsInPercent: BigDecimal? = null,
-
     val capexShareInGhgIntensivePlantsInPercent: BigDecimal? = null,
-
     val researchAndDevelopmentExpenditureForNetZeroSolutionsInPercent: BigDecimal? = null,
 )

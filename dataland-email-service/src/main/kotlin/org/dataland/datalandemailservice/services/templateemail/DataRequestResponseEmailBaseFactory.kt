@@ -9,10 +9,10 @@ abstract class DataRequestResponseEmailBaseFactory protected constructor(
     senderEmail: String,
     senderName: String,
 ) : TemplateEmailFactory(
-    proxyPrimaryUrl = proxyPrimaryUrl,
-    senderEmail = senderEmail,
-    senderName = senderName,
-) {
+        proxyPrimaryUrl = proxyPrimaryUrl,
+        senderEmail = senderEmail,
+        senderName = senderName,
+    ) {
     protected object Keys {
         const val COMPANY_ID = "companyId"
         const val COMPANY_NAME = "companyName"
@@ -24,9 +24,10 @@ abstract class DataRequestResponseEmailBaseFactory protected constructor(
         const val DATA_TYPE_DESCRIPTION = "dataTypeDescription"
     }
 
-    override val requiredProperties = setOf(
-        Keys.COMPANY_ID, Keys.COMPANY_NAME, Keys.DATA_TYPE, Keys.REPORTING_PERIOD, Keys.CREATION_DATE,
-        Keys.DATA_REQUEST_ID, Keys.CLOSED_IN_DAYS,
-    )
+    override val requiredProperties =
+        setOf(
+            Keys.COMPANY_ID, Keys.COMPANY_NAME, Keys.DATA_TYPE, Keys.REPORTING_PERIOD, Keys.CREATION_DATE,
+            Keys.DATA_REQUEST_ID, Keys.CLOSED_IN_DAYS,
+        )
     override val optionalProperties = setOf(Keys.DATA_TYPE_DESCRIPTION)
 }

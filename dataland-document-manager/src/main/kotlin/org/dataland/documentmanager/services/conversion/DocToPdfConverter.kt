@@ -17,18 +17,23 @@ class DocToPdfConverter(
     @Value("\${dataland.libreoffice.path}")
     pathToLibre: String,
 ) : MsOfficeToPdfConverterBase(
-    converterSourceType = DefaultDocumentFormatRegistry.DOC,
-    pathToLibre = pathToLibre,
-    allowedMimeTypesPerFileExtension = mapOf(
-        "doc" to setOf(
-            "application/msword",
-            "application/x-tika-msoffice",
-        ),
-    ),
-) {
+        converterSourceType = DefaultDocumentFormatRegistry.DOC,
+        pathToLibre = pathToLibre,
+        allowedMimeTypesPerFileExtension =
+            mapOf(
+                "doc" to
+                    setOf(
+                        "application/msword",
+                        "application/x-tika-msoffice",
+                    ),
+            ),
+    ) {
     override val logger: Logger = LoggerFactory.getLogger(javaClass)
 
-    override fun validateFileContent(file: MultipartFile, correlationId: String) {
+    override fun validateFileContent(
+        file: MultipartFile,
+        correlationId: String,
+    ) {
         file.inputStream.use { inputStream ->
             HWPFDocument(inputStream).use { document ->
                 validateDocumentContent(document)

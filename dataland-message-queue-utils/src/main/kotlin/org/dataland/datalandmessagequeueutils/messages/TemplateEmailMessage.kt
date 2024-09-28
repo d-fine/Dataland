@@ -42,10 +42,14 @@ data class TemplateEmailMessage(
     /**
      * data class that represents an email recipient as email
      */
-    data class EmailAddressEmailRecipient(val email: String) : EmailRecipient()
+    data class EmailAddressEmailRecipient(
+        val email: String,
+    ) : EmailRecipient()
 
     /**
      * data class that represents an email recipient as userId
      */
-    data class UserIdEmailRecipient(val userId: String) : EmailRecipient()
+    data class UserIdEmailRecipient(
+        val userId: String,
+    ) : EmailRecipient()
 }

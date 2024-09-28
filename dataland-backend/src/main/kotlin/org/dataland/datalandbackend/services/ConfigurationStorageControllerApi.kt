@@ -21,15 +21,11 @@ class ConfigurationStorageControllerApi(
      * The bean to configure the internal client StorageControllerApi
      */
     @Bean
-    fun getApiInternalClient(): StorageControllerApi {
-        return StorageControllerApi(basePath = internalStorageBaseUrl)
-    }
+    fun getApiInternalClient(): StorageControllerApi = StorageControllerApi(basePath = internalStorageBaseUrl)
 
     /**
      * The bean to configure the external client StorageControllerApi
      */
     @Bean
-    fun getApiExternalClient(): ExternalStorageControllerApi {
-        return ExternalStorageControllerApi(basePath = externalStorageBaseUrl)
-    }
+    fun getApiExternalClient(): ExternalStorageControllerApi = ExternalStorageControllerApi(basePath = externalStorageBaseUrl)
 }

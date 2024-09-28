@@ -23,7 +23,6 @@ data class EnumBuilder(
     val comment: String,
     val options: Set<SelectionOption>,
 ) : DataModelElement {
-
     private val logger by LoggerDelegate()
 
     override val empty: Boolean
@@ -39,18 +38,15 @@ data class EnumBuilder(
      * Create a type-reference for this enum
      * @param nullable true iff the reference should allow null values
      */
-    fun getTypeReference(nullable: Boolean): TypeReference {
-        return TypeReference(fullyQualifiedName, nullable)
-    }
+    fun getTypeReference(nullable: Boolean): TypeReference = TypeReference(fullyQualifiedName, nullable)
 
-    private fun getFreeMarkerContext(): Map<String, *> {
-        return mapOf(
+    private fun getFreeMarkerContext(): Map<String, *> =
+        mapOf(
             "package" to parentPackage.fullyQualifiedName,
             "enumName" to name,
             "options" to options,
             "comment_lines" to comment.lines(),
         )
-    }
 
     override fun build(into: Path) {
         require(SourceVersion.isName(fullyQualifiedName)) {
@@ -68,15 +64,14 @@ data class EnumBuilder(
         val classPath = into / "${fullyQualifiedName.replace(".", "/")}.kt"
         logger.trace("Building enum '{}' into '{}'", fullyQualifiedName, classPath)
 
-        val freemarkerTemplate = FreeMarker.configuration
-            .getTemplate("/specific/datamodel/elements/Enum.kt.ftl")
+        val freemarkerTemplate =
+            FreeMarker.configuration
+                .getTemplate("/specific/datamodel/elements/Enum.kt.ftl")
 
         val writer = FileWriter(classPath.toFile())
         freemarkerTemplate.process(getFreeMarkerContext(), writer)
         writer.close()
     }
 
-    override fun toString(): String {
-        return "$name.kt: enum of $options"
-    }
+    override fun toString(): String = "$name.kt: enum of $options"
 }

@@ -22,7 +22,6 @@ class CurrencyComponent(
     identifier: String,
     parent: FieldNodeParent,
 ) : NumberBaseComponent(identifier, parent) {
-
     var minimumValue: Long? = null
     var maximumValue: Long? = null
 
@@ -39,10 +38,11 @@ class CurrencyComponent(
 
     override fun generateDefaultQaModel(dataClassBuilder: DataClassBuilder) {
         requireDocumentSupportIn(setOf(ExtendedDocumentSupport))
-        val backendCurrencyDatapoint = TypeReference(
-            "org.dataland.datalandbackend.model.datapoints.CurrencyDataPoint",
-            isNullable,
-        )
+        val backendCurrencyDatapoint =
+            TypeReference(
+                "org.dataland.datalandbackend.model.datapoints.CurrencyDataPoint",
+                isNullable,
+            )
         dataClassBuilder.addProperty(
             identifier,
             TypeReference(
@@ -86,11 +86,12 @@ class CurrencyComponent(
     override fun generateDefaultFixtureGenerator(sectionBuilder: FixtureSectionBuilder) {
         requireDocumentSupportIn(setOf(ExtendedDocumentSupport))
         val rangeParameterSpecification = getFakeFixtureMinMaxRangeParameterSpec(minimumValue, maximumValue)
-        val expression = if (isRequired) {
-            "dataGenerator.guaranteedCurrencyDataPoint($rangeParameterSpecification)"
-        } else {
-            "dataGenerator.randomCurrencyDataPoint($rangeParameterSpecification)"
-        }
+        val expression =
+            if (isRequired) {
+                "dataGenerator.guaranteedCurrencyDataPoint($rangeParameterSpecification)"
+            } else {
+                "dataGenerator.randomCurrencyDataPoint($rangeParameterSpecification)"
+            }
 
         sectionBuilder.addAtomicExpression(
             identifier,

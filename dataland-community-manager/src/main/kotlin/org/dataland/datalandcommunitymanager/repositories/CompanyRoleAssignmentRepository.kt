@@ -12,7 +12,6 @@ import org.springframework.transaction.annotation.Transactional
  * A JPA repository for accessing the CompanyRoleAssignment Entity
  */
 interface CompanyRoleAssignmentRepository : JpaRepository<CompanyRoleAssignmentEntity, CompanyRoleAssignmentId> {
-
     /** Queries for company role assignments with the provided params
      * @param companyRole to check for
      * @param companyId to check for
@@ -42,5 +41,8 @@ interface CompanyRoleAssignmentRepository : JpaRepository<CompanyRoleAssignmentE
             "WHERE roleAssignment.companyId = :companyId " +
             "AND roleAssignment.userId = :userId",
     )
-    fun deleteAllRolesByCompanyIdAndUserId(companyId: String, userId: String)
+    fun deleteAllRolesByCompanyIdAndUserId(
+        companyId: String,
+        userId: String,
+    )
 }

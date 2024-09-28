@@ -25,23 +25,25 @@ class CsvExporterTest {
     private lateinit var mockSfdrDataControllerApi: SfdrDataControllerApi
     private lateinit var mockCompanyDataControllerApi: CompanyDataControllerApi
 
-    private val mockMetaData = listOf(
-        DataMetaInformation(
-            dataType = DataTypeEnum.sfdr,
-            reportingPeriod = "2021",
-            companyId = "mockCompanyId",
-            dataId = "mockDataId",
-            qaStatus = QaStatus.Accepted,
-            uploadTime = 1,
-            currentlyActive = true,
-        ),
-    )
+    private val mockMetaData =
+        listOf(
+            DataMetaInformation(
+                dataType = DataTypeEnum.sfdr,
+                reportingPeriod = "2021",
+                companyId = "mockCompanyId",
+                dataId = "mockDataId",
+                qaStatus = QaStatus.Accepted,
+                uploadTime = 1,
+                currentlyActive = true,
+            ),
+        )
 
-    private val mockCompanyAssociatedSfdrData = CompanyAssociatedDataSfdrData(
-        companyId = "mockCompanyId",
-        reportingPeriod = "2021",
-        data = TestDataProvider.getMockSfdrData(),
-    )
+    private val mockCompanyAssociatedSfdrData =
+        CompanyAssociatedDataSfdrData(
+            companyId = "mockCompanyId",
+            reportingPeriod = "2021",
+            data = TestDataProvider.getMockSfdrData(),
+        )
 
     private fun setupMockMetaDataControllerApi(): MetaDataControllerApi {
         val mockMetaDataControllerApi = mock(MetaDataControllerApi::class.java)
@@ -68,20 +70,23 @@ class CsvExporterTest {
         return mockSfdrDataControllerApi
     }
 
-    private val mockStoredCompany = StoredCompany(
-        companyId = "mockCompanyId",
-        companyInformation = CompanyInformation(
-            companyName = "mockCompanyName",
-            identifiers = mapOf(
-                LEI_IDENTIFIER to listOf("mockLei"),
-                ISIN_IDENTIFIER to listOf("mockIsin1", "mockIsin2"),
-            ),
-            sector = "mockSector",
-            countryCode = "mockCountryCode",
-            headquarters = "mockHeadquarters",
-        ),
-        dataRegisteredByDataland = emptyList(),
-    )
+    private val mockStoredCompany =
+        StoredCompany(
+            companyId = "mockCompanyId",
+            companyInformation =
+                CompanyInformation(
+                    companyName = "mockCompanyName",
+                    identifiers =
+                        mapOf(
+                            LEI_IDENTIFIER to listOf("mockLei"),
+                            ISIN_IDENTIFIER to listOf("mockIsin1", "mockIsin2"),
+                        ),
+                    sector = "mockSector",
+                    countryCode = "mockCountryCode",
+                    headquarters = "mockHeadquarters",
+                ),
+            dataRegisteredByDataland = emptyList(),
+        )
 
     private fun setupMockCompanyDataControllerApi(): CompanyDataControllerApi {
         val mockCompanyDataControllerApi = mock(CompanyDataControllerApi::class.java)
@@ -99,11 +104,12 @@ class CsvExporterTest {
         mockSfdrDataControllerApi = setupMockSfdrDataControllerApi()
         mockCompanyDataControllerApi = setupMockCompanyDataControllerApi()
 
-        csvDataExporter = CsvExporter(
-            metaDataControllerApi = mockMetadataControllerApi,
-            sfdrDataControllerApi = mockSfdrDataControllerApi,
-            companyDataControllerApi = mockCompanyDataControllerApi,
-        )
+        csvDataExporter =
+            CsvExporter(
+                metaDataControllerApi = mockMetadataControllerApi,
+                sfdrDataControllerApi = mockSfdrDataControllerApi,
+                companyDataControllerApi = mockCompanyDataControllerApi,
+            )
     }
 
     @Test

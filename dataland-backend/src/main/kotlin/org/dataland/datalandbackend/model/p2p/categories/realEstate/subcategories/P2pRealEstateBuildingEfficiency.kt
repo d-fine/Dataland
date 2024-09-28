@@ -8,8 +8,6 @@ import java.math.BigDecimal
  */
 data class P2pRealEstateBuildingEfficiency(
     val buildingSpecificRefurbishmentRoadmapInPercent: BigDecimal? = null,
-
     val zeroEmissionBuildingShareInPercent: BigDecimal? = null,
-
     val buildingEnergyEfficiencyInCorrespondingUnit: BigDecimal? = null,
 )

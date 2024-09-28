@@ -41,23 +41,22 @@ class RequestController(
     @Autowired private val dataAccessManager: DataAccessManager,
     @Autowired private val companyRolesManager: CompanyRolesManager,
 ) : RequestApi {
-    override fun postBulkDataRequest(bulkDataRequest: BulkDataRequest): ResponseEntity<BulkDataRequestResponse> {
-        return ResponseEntity.ok(
+    override fun postBulkDataRequest(bulkDataRequest: BulkDataRequest): ResponseEntity<BulkDataRequestResponse> =
+        ResponseEntity.ok(
             bulkDataRequestManager.processBulkDataRequest(bulkDataRequest),
         )
-    }
 
-    override fun getDataRequestsForRequestingUser(): ResponseEntity<List<ExtendedStoredDataRequest>> {
-        return ResponseEntity.ok(dataRequestQueryManager.getDataRequestsForRequestingUser())
-    }
+    override fun getDataRequestsForRequestingUser(): ResponseEntity<List<ExtendedStoredDataRequest>> =
+        ResponseEntity
+            .ok(dataRequestQueryManager.getDataRequestsForRequestingUser())
 
     override fun getAggregatedDataRequests(
         identifierValue: String?,
         dataTypes: Set<DataTypeEnum>?,
         reportingPeriod: String?,
         status: RequestStatus?,
-    ): ResponseEntity<List<AggregatedDataRequest>> {
-        return ResponseEntity.ok(
+    ): ResponseEntity<List<AggregatedDataRequest>> =
+        ResponseEntity.ok(
             dataRequestQueryManager.getAggregatedDataRequests(
                 identifierValue,
                 dataTypes,
@@ -65,19 +64,15 @@ class RequestController(
                 status,
             ),
         )
-    }
 
-    override fun postSingleDataRequest(
-        singleDataRequest: SingleDataRequest,
-    ): ResponseEntity<SingleDataRequestResponse> {
-        return ResponseEntity.ok(
+    override fun postSingleDataRequest(singleDataRequest: SingleDataRequest): ResponseEntity<SingleDataRequestResponse> =
+        ResponseEntity.ok(
             singleDataRequestManager.processSingleDataRequest(singleDataRequest),
         )
-    }
 
-    override fun getDataRequestById(dataRequestId: UUID): ResponseEntity<StoredDataRequest> {
-        return ResponseEntity.ok(dataRequestQueryManager.getDataRequestById(dataRequestId.toString()))
-    }
+    override fun getDataRequestById(dataRequestId: UUID): ResponseEntity<StoredDataRequest> =
+        ResponseEntity
+            .ok(dataRequestQueryManager.getDataRequestById(dataRequestId.toString()))
 
     override fun getDataRequests(
         dataType: Set<DataTypeEnum>?,
@@ -90,15 +85,17 @@ class RequestController(
         chunkSize: Int,
         chunkIndex: Int,
     ): ResponseEntity<List<ExtendedStoredDataRequest>> {
-        val filter = DataRequestsFilter(
-            dataType, userId, emailAddress, datalandCompanyId, reportingPeriod, requestStatus, accessStatus,
-        )
+        val filter =
+            DataRequestsFilter(
+                dataType, userId, emailAddress, datalandCompanyId, reportingPeriod, requestStatus, accessStatus,
+            )
 
         val authenticationContext = DatalandAuthentication.fromContext()
 
-        val ownedCompanyIdsByUser = companyRolesManager
-            .getCompanyRoleAssignmentsByParameters(CompanyRole.CompanyOwner, null, authenticationContext.userId)
-            .map { it.companyId }
+        val ownedCompanyIdsByUser =
+            companyRolesManager
+                .getCompanyRoleAssignmentsByParameters(CompanyRole.CompanyOwner, null, authenticationContext.userId)
+                .map { it.companyId }
 
         return ResponseEntity.ok(
             dataRequestQueryManager.getDataRequests(
@@ -120,14 +117,20 @@ class RequestController(
         reportingPeriod: String?,
         datalandCompanyId: String?,
     ): ResponseEntity<Int> {
-        val filter = DataRequestsFilter(
-            dataType, userId, emailAddress, datalandCompanyId, reportingPeriod, requestStatus, accessStatus,
-        )
+        val filter =
+            DataRequestsFilter(
+                dataType, userId, emailAddress, datalandCompanyId, reportingPeriod, requestStatus, accessStatus,
+            )
 
         return ResponseEntity.ok(dataRequestQueryManager.getNumberOfDataRequests(filter))
     }
 
-    override fun hasAccessToDataset(companyId: UUID, dataType: String, reportingPeriod: String, userId: UUID) {
+    override fun hasAccessToDataset(
+        companyId: UUID,
+        dataType: String,
+        reportingPeriod: String,
+        userId: UUID,
+    ) {
         dataAccessManager.hasAccessToDataset(companyId.toString(), reportingPeriod, dataType, userId.toString())
     }
 
@@ -137,8 +140,8 @@ class RequestController(
         accessStatus: AccessStatus?,
         contacts: Set<String>?,
         message: String?,
-    ): ResponseEntity<StoredDataRequest> {
-        return ResponseEntity.ok(
+    ): ResponseEntity<StoredDataRequest> =
+        ResponseEntity.ok(
             dataRequestAlterationManager.patchDataRequest(
                 dataRequestId.toString(),
                 requestStatus,
@@ -147,5 +150,4 @@ class RequestController(
                 message,
             ),
         )
-    }
 }

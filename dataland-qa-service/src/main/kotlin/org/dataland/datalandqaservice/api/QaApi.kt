@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestParam
-import java.util.*
+import java.util.UUID
 
 /**
  * Defines the restful dataland qa service API
@@ -53,9 +53,10 @@ interface QaApi {
      */
     @Operation(
         summary = "Gets the QA review status of an uploaded dataset for a given id.",
-        description = "Get the QA review status of uploaded dataset for a given id." +
-            "Users can get the review status of their own datasets." +
-            "Admins and reviewer can get the review status for all datasets.",
+        description =
+            "Get the QA review status of uploaded dataset for a given id." +
+                "Users can get the review status of their own datasets." +
+                "Admins and reviewer can get the review status for all datasets.",
     )
     @ApiResponses(
         value = [

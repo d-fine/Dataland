@@ -10,28 +10,17 @@ import org.dataland.datalandbackend.model.enums.commons.YesNo
  */
 data class LksgSocialForcedLaborSlavery(
     val forcedLaborAndSlaveryPractices: YesNo? = null,
-
     val forcedLaborAndSlaveryPracticesSpecification: String? = null,
-
     val forcedLaborAndSlaveryPreventionMeasures: YesNo? = null,
-
     val forcedLaborAndSlaveryPreventionEmploymentContracts: YesNo? = null,
-
     val forcedLaborAndSlaveryPreventionIdentityDocuments: YesNo? = null,
-
     val forcedLaborAndSlaveryPreventionFreeMovement: YesNo? = null,
-
     val forcedLaborAndSlaveryPreventionProvisionSocialRoomsAndToilets: YesNo? = null,
-
     @field:Valid()
     val forcedLaborAndSlaveryPreventionTraining: BaseDataPoint<YesNo>? = null,
-
     @field:Valid()
     val forcedLaborPreventionPolicy: BaseDataPoint<YesNo>? = null,
-
     @field:Valid()
     val forcedLaborAndSlaveryPreventionOtherMeasures: BaseDataPoint<YesNo>? = null,
-
     val forcedLaborAndSlaveryPreventionOtherMeasuresDescription: String? = null,
-
 )

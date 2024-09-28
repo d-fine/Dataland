@@ -7,11 +7,7 @@ import org.dataland.datalandbackend.frameworks.esgquestionnaire.custom.YearlyTim
  * The data-model for the Treibhausgasemissionen section
  */
 data class EsgQuestionnaireUmweltTreibhausgasemissionen(
-    val treibhausgasBerichterstattungUndPrognosen:
-    YearlyTimeseriesData<TreibhausgasBerichterstattungUndPrognosenValues?>? = null,
-
+    val treibhausgasBerichterstattungUndPrognosen: YearlyTimeseriesData<TreibhausgasBerichterstattungUndPrognosenValues?>? = null,
     val treibhausgasEmissionsintensitaetDerUnternehmenInDieInvestiertWird: String? = null,
-
     val strategieUndZieleZurReduzierungVonTreibhausgasEmissionen: String? = null,
-
 )

@@ -19,7 +19,6 @@ data class PackageBuilder(
     override val parentPackage: PackageBuilder?,
     val childElements: MutableList<DataModelElement> = mutableListOf(),
 ) : DataModelElement {
-
     private val logger by LoggerDelegate()
 
     override val empty: Boolean
@@ -41,12 +40,13 @@ data class PackageBuilder(
         comment: String,
         annotations: MutableList<Annotation> = mutableListOf(),
     ): DataClassBuilder {
-        val newDataClass = DataClassBuilder(
-            name = name,
-            parentPackage = this,
-            comment = comment,
-            annotations = annotations,
-        )
+        val newDataClass =
+            DataClassBuilder(
+                name = name,
+                parentPackage = this,
+                comment = comment,
+                annotations = annotations,
+            )
         childElements.add(newDataClass)
         return newDataClass
     }
@@ -56,10 +56,11 @@ data class PackageBuilder(
      * @param name the name of the package
      */
     fun addPackage(name: String): PackageBuilder {
-        val newPackage = PackageBuilder(
-            name = name,
-            parentPackage = this,
-        )
+        val newPackage =
+            PackageBuilder(
+                name = name,
+                parentPackage = this,
+            )
         childElements.add(newPackage)
         return newPackage
     }
@@ -68,20 +69,23 @@ data class PackageBuilder(
      * Add a new enum to the package
      * @param name the name of the package
      */
-    fun addEnum(name: String, options: Set<SelectionOption>, comment: String): EnumBuilder {
-        val newEnum = EnumBuilder(
-            name = name,
-            parentPackage = this,
-            options = options,
-            comment = comment,
-        )
+    fun addEnum(
+        name: String,
+        options: Set<SelectionOption>,
+        comment: String,
+    ): EnumBuilder {
+        val newEnum =
+            EnumBuilder(
+                name = name,
+                parentPackage = this,
+                options = options,
+                comment = comment,
+            )
         childElements.add(newEnum)
         return newEnum
     }
 
-    override fun toString(): String {
-        return "$name/\n" + childElements.joinToString("\n") { it.toString().prependIndent("  ") }
-    }
+    override fun toString(): String = "$name/\n" + childElements.joinToString("\n") { it.toString().prependIndent("  ") }
 
     override fun build(into: Path) {
         require(SourceVersion.isName(fullyQualifiedName)) {

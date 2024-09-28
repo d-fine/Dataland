@@ -6,6 +6,7 @@ import org.flywaydb.core.api.migration.Context
 /**
  * This migration script creates an index for a faster search for company names and identifiers
  */
+@Suppress("ClassName")
 class V2__GenerateCompanyNameIdentifierIndex : BaseJavaMigration() {
     override fun migrate(context: Context?) {
         context!!.connection.createStatement().execute(

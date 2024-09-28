@@ -67,11 +67,12 @@ class GleifGoldenCopyIngestorTest {
             6000,6667
         """
 
-    private val emptyGleifCompanyCombinedInformation = GleifCompanyCombinedInformation(
-        GleifCompanyInformation(
-            headquarters = "", companyName = "", headquartersPostalCode = "", lei = "", countryCode = "",
-        ),
-    )
+    private val emptyGleifCompanyCombinedInformation =
+        GleifCompanyCombinedInformation(
+            GleifCompanyInformation(
+                headquarters = "", companyName = "", headquartersPostalCode = "", lei = "", countryCode = "",
+            ),
+        )
 
     @BeforeEach
     fun setup() {
@@ -127,11 +128,12 @@ class GleifGoldenCopyIngestorTest {
 
     private fun commonMock(): Pair<BufferedReader, MockedStatic<File>> {
         val bufferedReader = BufferedReader(FileReader("./build/resources/test/GleifTestData.csv"))
-        companyIngestor = GleifGoldenCopyIngestor(
-            mockGleifApiAccessor, mockCsvParser, mockCompanyUploader, mockIsinDeltaBuilder,
-            mockRelationshipExtractor,
-            oldFile,
-        )
+        companyIngestor =
+            GleifGoldenCopyIngestor(
+                mockGleifApiAccessor, mockCsvParser, mockCompanyUploader, mockIsinDeltaBuilder,
+                mockRelationshipExtractor,
+                oldFile,
+            )
         val mockStaticFile = mockStatic(File::class.java)
         return Pair(bufferedReader, mockStaticFile)
     }
@@ -141,11 +143,12 @@ class GleifGoldenCopyIngestorTest {
         val flagFile = File.createTempFile("test", ".csv")
         flagFile.deleteOnExit()
         val newLines: List<String> = File(newFile.toString()).useLines { lines -> lines.take(5).toList() }
-        companyIngestor = GleifGoldenCopyIngestor(
-            mockGleifApiAccessor, mockCsvParser, mockCompanyUploader, mockIsinDeltaBuilder,
-            mockRelationshipExtractor,
-            oldFile,
-        )
+        companyIngestor =
+            GleifGoldenCopyIngestor(
+                mockGleifApiAccessor, mockCsvParser, mockCompanyUploader, mockIsinDeltaBuilder,
+                mockRelationshipExtractor,
+                oldFile,
+            )
 
         assert(newFile.exists())
         assert(oldFile.exists())
@@ -162,17 +165,19 @@ class GleifGoldenCopyIngestorTest {
     fun`test failing of file deletion`() {
         val flagFile = File.createTempFile("flagFile", ".csv")
         flagFile.deleteOnExit()
-        companyIngestor = GleifGoldenCopyIngestor(
-            mockGleifApiAccessor, mockCsvParser, mockCompanyUploader, mockIsinDeltaBuilder,
-            mockRelationshipExtractor,
-            oldFile,
-        )
+        companyIngestor =
+            GleifGoldenCopyIngestor(
+                mockGleifApiAccessor, mockCsvParser, mockCompanyUploader, mockIsinDeltaBuilder,
+                mockRelationshipExtractor,
+                oldFile,
+            )
 
-        val newMappingFile = spy(
-            File.createTempFile("newMappingFile", ".csv").apply {
-                deleteOnExit()
-            },
-        )
+        val newMappingFile =
+            spy(
+                File.createTempFile("newMappingFile", ".csv").apply {
+                    deleteOnExit()
+                },
+            )
         doReturn(false).`when`(newMappingFile).delete()
         companyIngestor.replaceOldMappingFile(newMappingFile)
 

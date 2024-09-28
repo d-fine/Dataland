@@ -9,7 +9,6 @@ import java.util.UUID
  * A JPA repository for storing and retrieving elementary events
  */
 interface ElementaryEventRepository : JpaRepository<ElementaryEventEntity, UUID> {
-
     /**
      * A function for searching for elementary events by companyId and the type of the elementary events
      * @param companyId to filter for

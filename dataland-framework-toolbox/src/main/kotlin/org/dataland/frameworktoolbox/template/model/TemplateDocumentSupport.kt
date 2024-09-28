@@ -19,8 +19,8 @@ enum class TemplateDocumentSupport {
          */
         @JsonCreator
         @JvmStatic
-        fun fromString(input: String): TemplateDocumentSupport {
-            return when (input.trim()) {
+        fun fromString(input: String): TemplateDocumentSupport =
+            when (input.trim()) {
                 "Simple" -> Simple
                 "Extended" -> Extended
                 "None", "" -> None
@@ -28,6 +28,5 @@ enum class TemplateDocumentSupport {
                     "Cannot convert '$input' to a TemplateDocumentSupport value.",
                 )
             }
-        }
     }
 }

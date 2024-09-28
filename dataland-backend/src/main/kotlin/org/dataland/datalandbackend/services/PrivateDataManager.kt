@@ -74,27 +74,34 @@ class PrivateDataManager(
         )
 
         val userAuthentication = DatalandAuthentication.fromContext()
-        val storableDataSet = StorableDataSet(
-            companyId = companyAssociatedVsmeData.companyId,
-            dataType = DataType.of(VsmeData::class.java),
-            uploaderUserId = userAuthentication.userId,
-            uploadTime = uploadTime,
-            reportingPeriod = companyAssociatedVsmeData.reportingPeriod,
-            data = objectMapper.writeValueAsString(companyAssociatedVsmeData.data),
-        )
+        val storableDataSet =
+            StorableDataSet(
+                companyId = companyAssociatedVsmeData.companyId,
+                dataType = DataType.of(VsmeData::class.java),
+                uploaderUserId = userAuthentication.userId,
+                uploadTime = uploadTime,
+                reportingPeriod = companyAssociatedVsmeData.reportingPeriod,
+                data = objectMapper.writeValueAsString(companyAssociatedVsmeData.data),
+            )
         val dataId = generateUUID()
 
         storeJsonInMemory(dataId, storableDataSet, correlationId)
         val metaInfoEntity = buildMetaInfoEntity(dataId, storableDataSet)
         storeMetaInfoEntityInMemory(dataId, metaInfoEntity, correlationId)
-        val documentHashes = documents?.takeIf { it.isNotEmpty() }
-            ?.let { storeDocumentsInMemoryAndReturnTheirHashes(dataId, it, correlationId) }
-            ?: mutableMapOf()
+        val documentHashes =
+            documents
+                ?.takeIf { it.isNotEmpty() }
+                ?.let { storeDocumentsInMemoryAndReturnTheirHashes(dataId, it, correlationId) }
+                ?: mutableMapOf()
         sendReceptionMessage(dataId, storableDataSet, correlationId, documentHashes)
         return metaInfoEntity.toApiModel(userAuthentication)
     }
 
-    private fun storeJsonInMemory(dataId: String, storableDataSet: StorableDataSet, correlationId: String) {
+    private fun storeJsonInMemory(
+        dataId: String,
+        storableDataSet: StorableDataSet,
+        correlationId: String,
+    ) {
         val storableVsmeDatasetAsString = objectMapper.writeValueAsString(storableDataSet)
         jsonDataInMemoryStorage[dataId] = storableVsmeDatasetAsString
         logger.info(
@@ -103,7 +110,10 @@ class PrivateDataManager(
         )
     }
 
-    private fun buildMetaInfoEntity(dataId: String, storableDataSet: StorableDataSet): DataMetaInformationEntity {
+    private fun buildMetaInfoEntity(
+        dataId: String,
+        storableDataSet: StorableDataSet,
+    ): DataMetaInformationEntity {
         val company = dataManagerUtils.getCompanyByCompanyId(storableDataSet.companyId)
         return DataMetaInformationEntity(
             dataId,
@@ -150,9 +160,7 @@ class PrivateDataManager(
         return documentHashes
     }
 
-    private fun convertMultipartFileToByteArray(multipartFile: MultipartFile): ByteArray {
-        return multipartFile.bytes
-    }
+    private fun convertMultipartFileToByteArray(multipartFile: MultipartFile): ByteArray = multipartFile.bytes
 
     private fun sendReceptionMessage(
         dataId: String,
@@ -164,19 +172,20 @@ class PrivateDataManager(
             "Processed data to be stored in EuroDaT, sending message for dataId $dataId and " +
                 "correlationId $correlationId",
         )
-        val payload = JSONObject(
-            mapOf(
-                "dataId" to dataId,
-                "companyId" to storableDataset.companyId,
-                "framework" to storableDataset.dataType.toString(),
-                "reportingPeriod" to storableDataset.reportingPeriod,
-                "actionType" to ActionType.StorePrivateDataAndDocuments,
-                "documentHashes" to documentHashes,
-            ),
-        ).toString()
+        val payload =
+            JSONObject(
+                mapOf(
+                    "dataId" to dataId,
+                    "companyId" to storableDataset.companyId,
+                    "framework" to storableDataset.dataType.toString(),
+                    "reportingPeriod" to storableDataset.reportingPeriod,
+                    "actionType" to ActionType.STORE_PRIVATE_DATA_AND_DOCUMENTS,
+                    "documentHashes" to documentHashes,
+                ),
+            ).toString()
         cloudEventMessageHandler.buildCEMessageAndSendToQueue(
-            payload, MessageType.PrivateDataReceived, correlationId,
-            ExchangeName.PrivateRequestReceived, RoutingKeyNames.privateDataAndDocument,
+            payload, MessageType.PRIVATE_DATA_RECEIVED, correlationId,
+            ExchangeName.PRIVATE_REQUEST_RECEIVED, RoutingKeyNames.PRIVATE_DATA_AND_DOCUMENT,
         )
         logger.info("Message to EuroDaT-storage-service for dataId $dataId and correlationId $correlationId was sent")
     }
@@ -186,7 +195,10 @@ class PrivateDataManager(
      * @param dataId the dataId for which connected entries in the in-memory storages should be removed
      * @param correlationId the correlationId of the storing process
      */
-    fun removeRelatedEntriesFromInMemoryStorages(dataId: String, correlationId: String) {
+    fun removeRelatedEntriesFromInMemoryStorages(
+        dataId: String,
+        correlationId: String,
+    ) {
         logger.info(
             "Removing entries related to dataId $dataId and correlationId $correlationId from in-memory-storages",
         )
@@ -201,14 +213,18 @@ class PrivateDataManager(
      * @param dataId the dataId for which the respective information should be persisted
      * @param correlationId the correlationId of the storing process
      */
-    fun persistMappingInfo(dataId: String, correlationId: String) {
+    fun persistMappingInfo(
+        dataId: String,
+        correlationId: String,
+    ) {
         logger.info(
             "Persisting mapping info for dataId $dataId and correlationId $correlationId",
         )
-        val dataIdToJsonMappingEntity = DataIdAndHashToEurodatIdMappingEntity(
-            dataId = dataId, hash = "JSON",
-            eurodatId = "JSON",
-        )
+        val dataIdToJsonMappingEntity =
+            DataIdAndHashToEurodatIdMappingEntity(
+                dataId = dataId, hash = "JSON",
+                eurodatId = "JSON",
+            )
         dataIdAndHashToEurodatIdMappingRepository.save(dataIdToJsonMappingEntity)
         val documentHashes = documentHashesInMemoryStorage[dataId]
         if (!documentHashes.isNullOrEmpty()) {
@@ -216,8 +232,7 @@ class PrivateDataManager(
                 documentHashes.map { documentHash ->
                     DataIdAndHashToEurodatIdMappingEntity(dataId, documentHash.key, documentHash.value)
                 }
-            dataIdToDocumentHashMappingEntities.forEach {
-                    mappingEntity ->
+            dataIdToDocumentHashMappingEntities.forEach { mappingEntity ->
                 dataIdAndHashToEurodatIdMappingRepository.save(mappingEntity)
             }
         }
@@ -228,7 +243,10 @@ class PrivateDataManager(
      * @param dataId the dataId for which the metaDataInformation should be persisted
      * @param correlationId the correlationId of the storing process
      */
-    fun persistMetaInfo(dataId: String, correlationId: String): DataMetaInformationEntity {
+    fun persistMetaInfo(
+        dataId: String,
+        correlationId: String,
+    ): DataMetaInformationEntity {
         logger.info(
             "Persisting meta info for dataId $dataId and correlationId $correlationId",
         )
@@ -253,12 +271,13 @@ class PrivateDataManager(
      * @return stringified data entry from the temporary store
      */
     fun getJsonFromInMemoryStore(dataId: String): String {
-        val rawValue = jsonDataInMemoryStorage.getOrElse(dataId) {
-            throw ResourceNotFoundApiException(
-                "Data ID not found in temporary storage",
-                "Dataland does not know the data id $dataId",
-            )
-        }
+        val rawValue =
+            jsonDataInMemoryStorage.getOrElse(dataId) {
+                throw ResourceNotFoundApiException(
+                    "Data ID not found in temporary storage",
+                    "Dataland does not know the data id $dataId",
+                )
+            }
         return objectMapper.writeValueAsString(rawValue)
     }
 
@@ -266,9 +285,7 @@ class PrivateDataManager(
      * Retrieves the document identified by the given hash from the in-memory store.
      * @param hash of the document which should be retrieved
      */
-    fun getDocumentFromInMemoryStore(hash: String): ByteArray? {
-        return documentInMemoryStorage[hash]
-    }
+    fun getDocumentFromInMemoryStore(hash: String): ByteArray? = documentInMemoryStorage[hash]
 
     /**
      * Retrieves a private vsme data object from the private storage
@@ -276,22 +293,32 @@ class PrivateDataManager(
      * @param correlationId the correlationId of the request
      * @return the vsme dataset
      */
-    fun getPrivateVsmeData(dataId: String, correlationId: String): VsmeData {
-        return objectMapper.readValue(
-            dataManagerUtils.getStorableDataset(
-                dataId, DataType.of(VsmeData::class.java), correlationId,
-                ::getJsonStringFromCacheOrExternalStorage,
-            ).data,
+    fun getPrivateVsmeData(
+        dataId: String,
+        correlationId: String,
+    ): VsmeData =
+        objectMapper.readValue(
+            dataManagerUtils
+                .getStorableDataset(
+                    dataId, DataType.of(VsmeData::class.java), correlationId,
+                    ::getJsonStringFromCacheOrExternalStorage,
+                ).data,
             VsmeData::class.java,
         )
-    }
-    private fun getJsonStringFromCacheOrExternalStorage(dataId: String, correlationId: String): String {
-        return jsonDataInMemoryStorage[dataId] ?: dataManagerUtils
+
+    private fun getJsonStringFromCacheOrExternalStorage(
+        dataId: String,
+        correlationId: String,
+    ): String =
+        jsonDataInMemoryStorage[dataId] ?: dataManagerUtils
             .getDatasetAsJsonStringFromStorageService(dataId, correlationId, ::getJsonStringFromExternalStorage)
-    }
-    private fun getJsonStringFromExternalStorage(dataId: String, correlationId: String): String {
-        return externalStorageDataGetter.getJsonFromExternalStorage(dataId, correlationId)
-    }
+
+    private fun getJsonStringFromExternalStorage(
+        dataId: String,
+        correlationId: String,
+    ): String =
+        externalStorageDataGetter
+            .getJsonFromExternalStorage(dataId, correlationId)
 
     /**
      * This method retrieves a document from the storage
@@ -299,13 +326,18 @@ class PrivateDataManager(
      * @param hash the hash of the requested document
      * @param correlationId the correlationId of the request
      */
-    fun retrievePrivateDocumentById(dataId: String, hash: String, correlationId: String): DocumentStream {
-        val eurodatId = dataIdAndHashToEurodatIdMappingRepository.findByDataIdAndHash(dataId, hash)?.eurodatId
-            ?: throw ResourceNotFoundApiException(
-                "No matching eurodatId found",
-                "Dataland cannot match the dataId $dataId and hash $hash to a eurodatId to retrieve the document " +
-                    "from EuroDaT",
-            )
+    fun retrievePrivateDocumentById(
+        dataId: String,
+        hash: String,
+        correlationId: String,
+    ): DocumentStream {
+        val eurodatId =
+            dataIdAndHashToEurodatIdMappingRepository.findByDataIdAndHash(dataId, hash)?.eurodatId
+                ?: throw ResourceNotFoundApiException(
+                    "No matching eurodatId found",
+                    "Dataland cannot match the dataId $dataId and hash $hash to a eurodatId to retrieve the document " +
+                        "from EuroDaT",
+                )
         logger.info(
             "Matched dataId $dataId and hash $hash with eurodatId $eurodatId, CorrelationId $correlationId",
         )

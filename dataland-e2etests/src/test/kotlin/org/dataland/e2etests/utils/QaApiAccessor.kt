@@ -11,9 +11,10 @@ import java.util.concurrent.TimeUnit
 
 class QaApiAccessor {
     val sfdrQaReportControllerApi = SfdrDataQaReportControllerApi(BASE_PATH_TO_QA_SERVICE)
-    val euTaxonomyNonFinancialsQaReportControllerApi = EutaxonomyNonFinancialsDataQaReportControllerApi(
-        BASE_PATH_TO_QA_SERVICE,
-    )
+    val euTaxonomyNonFinancialsQaReportControllerApi =
+        EutaxonomyNonFinancialsDataQaReportControllerApi(
+            BASE_PATH_TO_QA_SERVICE,
+        )
 
     /**
      * Wait until QaStatus is accepted for all Upload Infos or throw error. The metadata of the provided uploadInfos
@@ -37,10 +38,11 @@ class QaApiAccessor {
         metaDataControllerApi: MetaDataControllerApi,
     ): Boolean {
         return uploadInfos.all { uploadInfo ->
-            val metaData = uploadInfo.actualStoredDataMetaInfo
-                ?: throw NullPointerException(
-                    "To check QA Status, metadata is required but was null for $uploadInfo",
-                )
+            val metaData =
+                uploadInfo.actualStoredDataMetaInfo
+                    ?: throw NullPointerException(
+                        "To check QA Status, metadata is required but was null for $uploadInfo",
+                    )
             if (metaData.qaStatus != QaStatus.Accepted) {
                 uploadInfo.actualStoredDataMetaInfo = metaDataControllerApi.getDataMetaInfo(metaData.dataId)
             }

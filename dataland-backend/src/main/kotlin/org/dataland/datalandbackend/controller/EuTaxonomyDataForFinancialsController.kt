@@ -25,32 +25,27 @@ class EuTaxonomyDataForFinancialsController(
     @Autowired var myMetaDataManager: DataMetaInformationManager,
     @Autowired var myObjectMapper: ObjectMapper,
 ) : DataController<EuTaxonomyDataForFinancials>(
-    myDataManager,
-    myMetaDataManager,
-    myObjectMapper,
-    EuTaxonomyDataForFinancials::class.java,
-) {
+        myDataManager,
+        myMetaDataManager,
+        myObjectMapper,
+        EuTaxonomyDataForFinancials::class.java,
+    ) {
     @Operation(operationId = "getCompanyAssociatedEuTaxonomyDataForFinancials")
-    override fun getCompanyAssociatedData(dataId: String):
-        ResponseEntity<CompanyAssociatedData<EuTaxonomyDataForFinancials>> {
-        return super.getCompanyAssociatedData(dataId)
-    }
+    override fun getCompanyAssociatedData(dataId: String): ResponseEntity<CompanyAssociatedData<EuTaxonomyDataForFinancials>> =
+        super.getCompanyAssociatedData(dataId)
 
     @Operation(operationId = "postCompanyAssociatedEuTaxonomyDataForFinancials")
     override fun postCompanyAssociatedData(
         companyAssociatedData: CompanyAssociatedData<EuTaxonomyDataForFinancials>,
         bypassQa: Boolean,
-    ):
-        ResponseEntity<DataMetaInformation> {
-        return super.postCompanyAssociatedData(companyAssociatedData, bypassQa)
-    }
+    ): ResponseEntity<DataMetaInformation> = super.postCompanyAssociatedData(companyAssociatedData, bypassQa)
 
     @Operation(operationId = "getAllCompanyEuTaxonomyDataForFinancials")
     override fun getFrameworkDatasetsForCompany(
         companyId: String,
         showOnlyActive: Boolean,
         reportingPeriod: String?,
-    ): ResponseEntity<List<DataAndMetaInformation<EuTaxonomyDataForFinancials>>> {
-        return super.getFrameworkDatasetsForCompany(companyId, showOnlyActive, reportingPeriod)
-    }
+    ): ResponseEntity<List<DataAndMetaInformation<EuTaxonomyDataForFinancials>>> =
+        super
+            .getFrameworkDatasetsForCompany(companyId, showOnlyActive, reportingPeriod)
 }

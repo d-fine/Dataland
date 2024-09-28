@@ -30,7 +30,10 @@ data class EmailMatchingPattern(
     val expectedNotToBeContainedInHtmlContent: Set<String> = emptySet(),
 )
 
-fun assertEmailMatchesPattern(email: Email, validationPattern: EmailMatchingPattern) {
+fun assertEmailMatchesPattern(
+    email: Email,
+    validationPattern: EmailMatchingPattern,
+) {
     assertEmailContactInformationEquals(
         validationPattern.expectedSender,
         validationPattern.expectedReceiversGetter(),

@@ -9,5 +9,4 @@ import org.dataland.datalandqaservice.model.reports.QaReportDataPoint
  */
 data class SfdrGeneralGeneral(
     val referencedReports: QaReportDataPoint<Map<String, CompanyReport>>? = null,
-
 )

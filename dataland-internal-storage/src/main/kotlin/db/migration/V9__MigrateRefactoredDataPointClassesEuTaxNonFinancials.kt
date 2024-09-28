@@ -12,6 +12,7 @@ import org.json.JSONObject
  * This migration script migrates the eu taxonomy non financials data to the various new class structures for
  * data points
  */
+@Suppress("ClassName")
 class V9__MigrateRefactoredDataPointClassesEuTaxNonFinancials : BaseJavaMigration() {
     override fun migrate(context: Context?) {
         migrateCompanyAssociatedDataOfDatatype(
@@ -21,21 +22,25 @@ class V9__MigrateRefactoredDataPointClassesEuTaxNonFinancials : BaseJavaMigratio
         )
     }
 
-    private val oldToNewFieldNamesForReports = mapOf(
-        "reference" to "fileReference",
-    )
+    private val oldToNewFieldNamesForReports =
+        mapOf(
+            "reference" to "fileReference",
+        )
 
-    private val oldToNewFieldNamesForDocuments = mapOf(
-        "report" to "fileName",
-    )
+    private val oldToNewFieldNamesForDocuments =
+        mapOf(
+            "report" to "fileName",
+        )
 
-    private val oldToNewFieldNamesForAssurance = mapOf(
-        "assurance" to "value",
-    )
+    private val oldToNewFieldNamesForAssurance =
+        mapOf(
+            "assurance" to "value",
+        )
 
-    private val oldToNewFieldNamesForCurrencyDataPoint = mapOf(
-        "unit" to "currency",
-    )
+    private val oldToNewFieldNamesForCurrencyDataPoint =
+        mapOf(
+            "unit" to "currency",
+        )
 
     /**
      * Migrates the data to new variable names in data point structures

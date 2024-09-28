@@ -13,7 +13,9 @@ import org.springframework.stereotype.Component
  * Generates DateComponents from rows with the component "Date"
  */
 @Component
-class DateComponentFactory(@Autowired val templateDiagnostic: TemplateDiagnostic) : TemplateComponentFactory {
+class DateComponentFactory(
+    @Autowired val templateDiagnostic: TemplateDiagnostic,
+) : TemplateComponentFactory {
     override fun canGenerateComponent(row: TemplateRow): Boolean = row.component == "Date"
 
     override fun generateComponent(

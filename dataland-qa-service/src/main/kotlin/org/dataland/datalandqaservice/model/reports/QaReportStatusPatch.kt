@@ -3,4 +3,6 @@ package org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.repo
 /**
  * A patch for the status of a QA report.
  */
-data class QaReportStatusPatch(val active: Boolean)
+data class QaReportStatusPatch(
+    val active: Boolean,
+)

@@ -13,8 +13,9 @@ import org.springframework.stereotype.Component
  * Generates ReportPreuploadComponents from rows with the component "Report Preupload"
  */
 @Component
-class ReportPreuploadComponentFactory(@Autowired val templateDiagnostic: TemplateDiagnostic) :
-    TemplateComponentFactory {
+class ReportPreuploadComponentFactory(
+    @Autowired val templateDiagnostic: TemplateDiagnostic,
+) : TemplateComponentFactory {
     override fun canGenerateComponent(row: TemplateRow): Boolean = row.component == "Report Preupload"
 
     override fun generateComponent(

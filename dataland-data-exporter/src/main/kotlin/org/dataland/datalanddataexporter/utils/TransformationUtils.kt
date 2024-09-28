@@ -11,7 +11,6 @@ import java.text.SimpleDateFormat
  * A class containing utility methods for transforming data from JSON to CSV.
  */
 object TransformationUtils {
-
     const val LEI_IDENTIFIER = "Lei"
     const val ISIN_IDENTIFIER = "Isin"
     const val LEI_HEADER = "LEI"
@@ -56,16 +55,18 @@ object TransformationUtils {
      * Gets the headers for company-related entries that are independent of the data transformation rules.
      * @return A list of headers
      */
-    private fun getCompanyRelatedHeaders(): List<String> {
-        return listOf(COMPANY_ID_HEADER, COMPANY_NAME_HEADER, REPORTING_PERIOD_HEADER, LEI_HEADER)
-    }
+    private fun getCompanyRelatedHeaders(): List<String> =
+        listOf(COMPANY_ID_HEADER, COMPANY_NAME_HEADER, REPORTING_PERIOD_HEADER, LEI_HEADER)
 
     /**
      * Checks the consistency of the transformation rules with the JSON data.
      * @param node The JSON node
      * @param transformationRules The transformation rules
      */
-    fun checkConsistency(node: JsonNode, transformationRules: Map<String, String>) {
+    fun checkConsistency(
+        node: JsonNode,
+        transformationRules: Map<String, String>,
+    ) {
         val leafNodesInJsonNode = getNonArrayLeafNodeFieldNames(node, "")
         val filteredNodes = leafNodesInJsonNode.filter { !it.contains(NODE_FILTER) }
         require(transformationRules.keys.containsAll(filteredNodes)) {
@@ -79,7 +80,10 @@ object TransformationUtils {
      * @param currentPath The current path
      * @return A list of leaf node field names
      */
-    fun getNonArrayLeafNodeFieldNames(node: JsonNode, currentPath: String): MutableList<String> {
+    fun getNonArrayLeafNodeFieldNames(
+        node: JsonNode,
+        currentPath: String,
+    ): MutableList<String> {
         val leafNodeFieldNames = mutableListOf<String>()
         if (node.isValueNode) {
             if (!node.isNull) {
@@ -101,9 +105,12 @@ object TransformationUtils {
      * @param jsonPath The JSON path identifying the value
      * @return The string representation of the value
      */
-    fun getValueFromJsonNode(jsonNode: JsonNode, jsonPath: String): String {
+    fun getValueFromJsonNode(
+        jsonNode: JsonNode,
+        jsonPath: String,
+    ): String {
         var currentNode = jsonNode
-        jsonPath.split(".").forEach() { path ->
+        jsonPath.split(".").forEach { path ->
             currentNode = currentNode.get(path) ?: return ""
         }
         return if (currentNode.isNull) {
@@ -121,7 +128,10 @@ object TransformationUtils {
      * @param transformationRules The transformation rules
      * @return A map of CSV headers to values
      */
-    fun mapJsonToCsv(jsonNode: JsonNode, transformationRules: Map<String, String>): Map<String, String> {
+    fun mapJsonToCsv(
+        jsonNode: JsonNode,
+        transformationRules: Map<String, String>,
+    ): Map<String, String> {
         val csvData = mutableMapOf<String, String>()
         transformationRules.forEach { (jsonPath, csvHeader) ->
             if (csvHeader.isEmpty()) return@forEach

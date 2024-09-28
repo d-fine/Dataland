@@ -6,7 +6,5 @@ package org.dataland.datalandbackend.frameworks.esgquestionnaire.model.allgemein
  */
 data class EsgQuestionnaireAllgemeinRisiken(
     val wichtigsteESUndGRisikenUndBewertung: String? = null,
-
     val hindernisseBeimUmgangMitEsgBedenken: String? = null,
-
 )

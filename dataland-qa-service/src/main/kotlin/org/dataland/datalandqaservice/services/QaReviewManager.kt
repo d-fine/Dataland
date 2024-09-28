@@ -36,17 +36,17 @@ class QaReviewManager(
             companyIds =
                 companyDataControllerApi.getCompaniesBySearchString(companyName).map { it.companyId }.toSet()
         }
-        val searchFilter = QaSearchFilter(
-            dataTypes = dataTypes,
-            reportingPeriods = reportingPeriods,
-            companyIds = companyIds,
-            companyName = companyName,
-        )
+        val searchFilter =
+            QaSearchFilter(
+                dataTypes = dataTypes,
+                reportingPeriods = reportingPeriods,
+                companyIds = companyIds,
+                companyName = companyName,
+            )
         val offset = (chunkIndex) * (chunkSize)
         return reviewQueueRepository.getSortedPendingMetadataSet(
             searchFilter, resultOffset = offset,
             resultLimit = chunkSize,
-
         )
     }
 
@@ -66,10 +66,11 @@ class QaReviewManager(
             companyIds =
                 companyDataControllerApi.getCompaniesBySearchString(companyName).map { it.companyId }.toSet()
         }
-        val filter = QaSearchFilter(
-            dataTypes = dataTypes, companyName = companyName, reportingPeriods = reportingPeriods,
-            companyIds = companyIds,
-        )
+        val filter =
+            QaSearchFilter(
+                dataTypes = dataTypes, companyName = companyName, reportingPeriods = reportingPeriods,
+                companyIds = companyIds,
+            )
         return reviewQueueRepository.getNumberOfRequests(filter)
     }
 }

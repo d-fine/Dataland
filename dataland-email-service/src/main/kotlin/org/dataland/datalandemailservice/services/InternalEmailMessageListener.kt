@@ -41,25 +41,26 @@ class InternalEmailMessageListener(
     @RabbitListener(
         bindings = [
             QueueBinding(
-                value = Queue(
-                    "sendInternalEmailService",
-                    arguments = [
-                        Argument(name = "x-dead-letter-exchange", value = ExchangeName.DeadLetter),
-                        Argument(name = "x-dead-letter-routing-key", value = "deadLetterKey"),
-                        Argument(name = "defaultRequeueRejected", value = "false"),
-                    ],
-                ),
-                exchange = Exchange(ExchangeName.SendEmail, declare = "false"),
-                key = [RoutingKeyNames.internalEmail],
+                value =
+                    Queue(
+                        "sendInternalEmailService",
+                        arguments = [
+                            Argument(name = "x-dead-letter-exchange", value = ExchangeName.DEAD_LETTER),
+                            Argument(name = "x-dead-letter-routing-key", value = "deadLetterKey"),
+                            Argument(name = "defaultRequeueRejected", value = "false"),
+                        ],
+                    ),
+                exchange = Exchange(ExchangeName.SEND_EMAIL, declare = "false"),
+                key = [RoutingKeyNames.INTERNAL_EMAIL],
             ),
         ],
     )
     fun sendInternalEmail(
         @Payload jsonString: String,
-        @Header(MessageHeaderKey.Type) type: String,
-        @Header(MessageHeaderKey.CorrelationId) correlationId: String,
+        @Header(MessageHeaderKey.TYPE) type: String,
+        @Header(MessageHeaderKey.CORRELATION_ID) correlationId: String,
     ) {
-        messageQueueUtils.validateMessageType(type, MessageType.SendInternalEmail)
+        messageQueueUtils.validateMessageType(type, MessageType.SEND_INTERNAL_EMAIL)
         val internalEmailMessage = objectMapper.readValue(jsonString, InternalEmailMessage::class.java)
         logger.info("Received internal email message with correlationId $correlationId.")
 

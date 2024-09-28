@@ -9,14 +9,15 @@ import org.dataland.frameworktoolbox.template.components.TemplateComponentFactor
 import org.dataland.frameworktoolbox.template.model.TemplateRow
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
+
 /**
  * Generates the Lksg general violations component
  */
 @Component
-class LksgGrievanceMechanismAssessmentsComponentFactory(@Autowired val templateDiagnostic: TemplateDiagnostic) :
-    TemplateComponentFactory {
-    override fun canGenerateComponent(row: TemplateRow): Boolean =
-        row.component == "LkSG Grievance Mechanism Assessment"
+class LksgGrievanceMechanismAssessmentsComponentFactory(
+    @Autowired val templateDiagnostic: TemplateDiagnostic,
+) : TemplateComponentFactory {
+    override fun canGenerateComponent(row: TemplateRow): Boolean = row.component == "LkSG Grievance Mechanism Assessment"
 
     override fun generateComponent(
         row: TemplateRow,

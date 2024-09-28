@@ -14,8 +14,8 @@ class LogMessageBuilder {
      * Generates an "access denied" message if a user without the necessary role tries to bypass the QA process
      * @param qaStatus the qa status of the respective dataset
      */
-    fun generateAccessDeniedExceptionMessage(qaStatus: QaStatus) =
-        "You are trying to access a ${qaStatus.toString().lowercase()} dataset."
+    fun generateAccessDeniedExceptionMessage(qaStatus: QaStatus) = "You are trying to access a ${qaStatus.toString().lowercase()} dataset."
+
     val bypassQaDeniedExceptionMessage = "You do not have the required permissions to bypass QA checks."
 
     /**
@@ -26,7 +26,11 @@ class LogMessageBuilder {
      * @param dataId associated with the operation
      * @returns the message to log
      */
-    fun generateCorrelationIdMessage(correlationId: String, companyId: String?, dataId: String?): String {
+    fun generateCorrelationIdMessage(
+        correlationId: String,
+        companyId: String?,
+        dataId: String?,
+    ): String {
         val parts = mutableListOf<String>()
 
         companyId?.let { parts.add("companyId: $it") }
@@ -50,10 +54,9 @@ class LogMessageBuilder {
         dataType: DataType,
         companyId: String,
         reportingPeriod: String,
-    ): String {
-        return "Received a request from user '$userId' to post company associated data of type $dataType " +
+    ): String =
+        "Received a request from user '$userId' to post company associated data of type $dataType " +
             "for company ID '$companyId' and the reporting period $reportingPeriod"
-    }
 
     /**
      * Generates a message to inform that a dataset for a specific company has been successfully posted
@@ -61,9 +64,10 @@ class LogMessageBuilder {
      * @param correlationId The correlation ID in association with this operation
      * @returns the message to log
      */
-    fun postCompanyAssociatedDataSuccessMessage(companyId: String, correlationId: String): String {
-        return "Posted company associated data for companyId '$companyId'. Correlation ID: $correlationId"
-    }
+    fun postCompanyAssociatedDataSuccessMessage(
+        companyId: String,
+        correlationId: String,
+    ): String = "Posted company associated data for companyId '$companyId'. Correlation ID: $correlationId"
 
     /**
      * Generates a message to inform that a request was received to return all datasets together with meta info for
@@ -73,10 +77,13 @@ class LogMessageBuilder {
      * @param reportingPeriod The reporting period for which all datasets shall be returned
      * @returns the message to log
      */
-    fun getFrameworkDatasetsForCompanyMessage(dataType: DataType, companyId: String, reportingPeriod: String): String {
-        return "Received a request to get all datasets together with meta info for framework '$dataType', " +
+    fun getFrameworkDatasetsForCompanyMessage(
+        dataType: DataType,
+        companyId: String,
+        reportingPeriod: String,
+    ): String =
+        "Received a request to get all datasets together with meta info for framework '$dataType', " +
             "companyId '$companyId' and reporting period '$reportingPeriod'"
-    }
 
     /**
      * Generates a message to inform that a request was received to return a dataset by its data ID
@@ -84,9 +91,10 @@ class LogMessageBuilder {
      * @param companyId The ID of the company for which this dataset shall be returned
      * @returns the message to log
      */
-    fun getCompanyAssociatedDataMessage(dataId: String, companyId: String): String {
-        return "Received a request to get company data with dataId '$dataId' for companyId '$companyId'. "
-    }
+    fun getCompanyAssociatedDataMessage(
+        dataId: String,
+        companyId: String,
+    ): String = "Received a request to get company data with dataId '$dataId' for companyId '$companyId'. "
 
     /**
      * Generates a message to inform that a dataset has been successfully returned by its data ID
@@ -95,8 +103,11 @@ class LogMessageBuilder {
      * @param correlationId The correlation ID in association with this operation
      * @returns the message to log
      */
-    fun getCompanyAssociatedDataSuccessMessage(dataId: String, companyId: String, correlationId: String): String {
-        return "Received company data with dataId '$dataId' for companyId '$companyId' from framework data storage. " +
+    fun getCompanyAssociatedDataSuccessMessage(
+        dataId: String,
+        companyId: String,
+        correlationId: String,
+    ): String =
+        "Received company data with dataId '$dataId' for companyId '$companyId' from framework data storage. " +
             "Correlation ID '$correlationId'"
-    }
 }

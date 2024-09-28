@@ -4,7 +4,6 @@ import org.dataland.datalandbackend.openApiClient.model.CompanyInformation
 import org.dataland.datalandbackend.openApiClient.model.IdentifierType
 
 class GeneralTestDataProvider {
-
     private fun getRandomAlphaNumericString(): String {
         val allowedChars = ('a'..'z') + ('0'..'9')
         return (1..10)
@@ -12,19 +11,21 @@ class GeneralTestDataProvider {
             .joinToString("")
     }
 
-    fun generateCompanyInformation(companyName: String, sector: String?): CompanyInformation {
-        return CompanyInformation(
+    fun generateCompanyInformation(
+        companyName: String,
+        sector: String?,
+    ): CompanyInformation =
+        CompanyInformation(
             companyName,
             "DummyCity",
             (
                 mapOf(
                     IdentifierType.PermId.value to listOf(getRandomAlphaNumericString()),
                 )
-                ),
+            ),
             "DE",
             sector = sector,
         )
-    }
 
     fun generateCompanyInformationWithNameAndIdentifiers(
         lei: String?,

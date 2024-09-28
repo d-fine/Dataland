@@ -18,7 +18,6 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.messaging.handler.annotation.Header
 import org.springframework.messaging.handler.annotation.Payload
 import org.springframework.stereotype.Component
-import java.util.*
 
 /**
  * Implementation of a data manager for Dataland including metadata storages
@@ -42,25 +41,26 @@ class MessageQueueListenerForPrivateDataManager(
     @RabbitListener(
         bindings = [
             QueueBinding(
-                value = Queue(
-                    "dataStoredBackendPrivateDataManager",
-                    arguments = [
-                        Argument(name = "x-dead-letter-exchange", value = ExchangeName.DeadLetter),
-                        Argument(name = "x-dead-letter-routing-key", value = "deadLetterKey"),
-                        Argument(name = "defaultRequeueRejected", value = "false"),
-                    ],
-                ),
-                exchange = Exchange(ExchangeName.PrivateItemStored, declare = "false"),
-                key = [RoutingKeyNames.data],
+                value =
+                    Queue(
+                        "dataStoredBackendPrivateDataManager",
+                        arguments = [
+                            Argument(name = "x-dead-letter-exchange", value = ExchangeName.DEAD_LETTER),
+                            Argument(name = "x-dead-letter-routing-key", value = "deadLetterKey"),
+                            Argument(name = "defaultRequeueRejected", value = "false"),
+                        ],
+                    ),
+                exchange = Exchange(ExchangeName.PRIVATE_ITEM_STORED, declare = "false"),
+                key = [RoutingKeyNames.DATA],
             ),
         ],
     )
     fun processStoredPrivateVsmeData(
         @Payload payload: String,
-        @Header(MessageHeaderKey.CorrelationId) correlationId: String,
-        @Header(MessageHeaderKey.Type) type: String,
+        @Header(MessageHeaderKey.CORRELATION_ID) correlationId: String,
+        @Header(MessageHeaderKey.TYPE) type: String,
     ) {
-        messageQueueUtils.validateMessageType(type, MessageType.PrivateDataStored)
+        messageQueueUtils.validateMessageType(type, MessageType.PRIVATE_DATA_STORED)
         val dataId = messageQueueUtils.getDataId(payload)
         logger.info(
             "Received message that dataset with dataId $dataId and correlationId $correlationId was successfully " +
@@ -70,18 +70,19 @@ class MessageQueueListenerForPrivateDataManager(
             privateDataManager.persistMappingInfo(dataId, correlationId)
             val metaData = privateDataManager.persistMetaInfo(dataId, correlationId)
             privateDataManager.removeRelatedEntriesFromInMemoryStorages(dataId, correlationId)
-            val outboundPayload = JSONObject(
-                mapOf(
-                    "dataId" to dataId,
-                    "actionType" to ActionType.StorePrivateDataAndDocuments,
-                    "companyId" to metaData.company.companyId,
-                    "framework" to metaData.dataType,
-                    "reportingPeriod" to metaData.reportingPeriod,
-                ),
-            ).toString()
+            val outboundPayload =
+                JSONObject(
+                    mapOf(
+                        "dataId" to dataId,
+                        "actionType" to ActionType.STORE_PRIVATE_DATA_AND_DOCUMENTS,
+                        "companyId" to metaData.company.companyId,
+                        "framework" to metaData.dataType,
+                        "reportingPeriod" to metaData.reportingPeriod,
+                    ),
+                ).toString()
             cloudEventMessageHandler.buildCEMessageAndSendToQueue(
-                outboundPayload, MessageType.PrivateDataReceived, correlationId,
-                ExchangeName.PrivateRequestReceived, RoutingKeyNames.metaDataPersisted,
+                outboundPayload, MessageType.PRIVATE_DATA_RECEIVED, correlationId,
+                ExchangeName.PRIVATE_REQUEST_RECEIVED, RoutingKeyNames.META_DATA_PERSISTED,
             )
             logger.info(
                 "Persisting of meta data information is done. Sending out message for dataId $dataId and " +

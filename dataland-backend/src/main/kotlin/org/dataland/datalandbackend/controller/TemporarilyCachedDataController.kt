@@ -20,21 +20,23 @@ class TemporarilyCachedDataController(
     @Autowired var dataManager: DataManager,
     @Autowired var privateDataManager: PrivateDataManager,
 ) : TemporarilyCachedDataApi {
+    override fun getReceivedPublicData(dataId: String): ResponseEntity<String> =
+        ResponseEntity.ok(dataManager.selectPublicDataSetFromTemporaryStorage(dataId))
 
-    override fun getReceivedPublicData(dataId: String): ResponseEntity<String> {
-        return ResponseEntity.ok(dataManager.selectPublicDataSetFromTemporaryStorage(dataId))
-    }
+    override fun getReceivedPrivateJson(dataId: String): ResponseEntity<String> =
+        ResponseEntity
+            .ok(privateDataManager.getJsonFromInMemoryStore(dataId))
 
-    override fun getReceivedPrivateJson(dataId: String): ResponseEntity<String> {
-        return ResponseEntity.ok(privateDataManager.getJsonFromInMemoryStore(dataId))
-    }
     override fun getReceivedPrivateDocument(hash: String): ResponseEntity<InputStreamResource> {
-        val blob = privateDataManager.getDocumentFromInMemoryStore(hash)
-            ?: throw ResourceNotFoundApiException(
-                "Documents for hash \"$hash\" not found in temporary storage",
-                "Dataland does not know the files associated to \"$hash\"",
-            )
-        return ResponseEntity.ok().contentType(MediaType.APPLICATION_OCTET_STREAM)
+        val blob =
+            privateDataManager.getDocumentFromInMemoryStore(hash)
+                ?: throw ResourceNotFoundApiException(
+                    "Documents for hash \"$hash\" not found in temporary storage",
+                    "Dataland does not know the files associated to \"$hash\"",
+                )
+        return ResponseEntity
+            .ok()
+            .contentType(MediaType.APPLICATION_OCTET_STREAM)
             .body(InputStreamResource(ByteArrayInputStream(blob)))
     }
 }

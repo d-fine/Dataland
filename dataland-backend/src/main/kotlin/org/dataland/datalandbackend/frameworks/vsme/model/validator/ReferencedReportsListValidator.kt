@@ -16,8 +16,9 @@ import kotlin.reflect.KClass
 @Constraint(validatedBy = [ReferencedReportsListConstraintValidator::class])
 @Target(AnnotationTarget.FIELD, AnnotationTarget.CLASS)
 annotation class ReferencedReportsListValidator(
-    val message: String = "The list of referenced reports is not complete. Please ensure that any file used as a " +
-        "data source in the dataset is included in the list of referenced reports.",
+    val message: String =
+        "The list of referenced reports is not complete. Please ensure that any file used as a " +
+            "data source in the dataset is included in the list of referenced reports.",
     val groups: Array<KClass<*>> = [],
     val payload: Array<KClass<out Payload>> = [],
 )
@@ -25,10 +26,11 @@ annotation class ReferencedReportsListValidator(
 /**
 * Class holding the validation logic for referenced reports list. It checks if the referenced reports list is complete
 */
-class ReferencedReportsListConstraintValidator :
-    ConstraintValidator<ReferencedReportsListValidator, VsmeData> {
-
-    override fun isValid(dataset: VsmeData?, context: ConstraintValidatorContext?): Boolean {
+class ReferencedReportsListConstraintValidator : ConstraintValidator<ReferencedReportsListValidator, VsmeData> {
+    override fun isValid(
+        dataset: VsmeData?,
+        context: ConstraintValidatorContext?,
+    ): Boolean {
         if (dataset == null) {
             return false
         }
@@ -51,14 +53,37 @@ class ReferencedReportsListConstraintValidator :
     }
 
     @Suppress("MaxLineLength", "LongMethod")
-    private fun getExtendedDocumentReferences(dataset: VsmeData): List<String?> {
-        return listOf(
-            dataset.basic?.energyAndGreenhousGasEmissions?.electricityTotalInMWh?.dataSource?.fileReference,
-            dataset.basic?.energyAndGreenhousGasEmissions?.totalEmissionsInTonnesOfCO2Equivalents?.dataSource?.fileReference,
-            dataset.basic?.energyAndGreenhousGasEmissions?.scope1EmissionsInTonnesOfCO2Equivalents?.dataSource?.fileReference,
-            dataset.basic?.energyAndGreenhousGasEmissions?.scope2EmissionsInTonnesOfCO2Equivalents?.dataSource?.fileReference,
-            dataset.basic?.energyAndGreenhousGasEmissions?.scope3EmissionsInTonnesOfCO2Equivalents?.dataSource?.fileReference,
-            dataset.basic?.water?.waterWithdrawalAllSitesInCubicMeters?.dataSource?.fileReference,
+    private fun getExtendedDocumentReferences(dataset: VsmeData): List<String?> =
+        listOf(
+            dataset.basic
+                ?.energyAndGreenhousGasEmissions
+                ?.electricityTotalInMWh
+                ?.dataSource
+                ?.fileReference,
+            dataset.basic
+                ?.energyAndGreenhousGasEmissions
+                ?.totalEmissionsInTonnesOfCO2Equivalents
+                ?.dataSource
+                ?.fileReference,
+            dataset.basic
+                ?.energyAndGreenhousGasEmissions
+                ?.scope1EmissionsInTonnesOfCO2Equivalents
+                ?.dataSource
+                ?.fileReference,
+            dataset.basic
+                ?.energyAndGreenhousGasEmissions
+                ?.scope2EmissionsInTonnesOfCO2Equivalents
+                ?.dataSource
+                ?.fileReference,
+            dataset.basic
+                ?.energyAndGreenhousGasEmissions
+                ?.scope3EmissionsInTonnesOfCO2Equivalents
+                ?.dataSource
+                ?.fileReference,
+            dataset.basic
+                ?.water
+                ?.waterWithdrawalAllSitesInCubicMeters
+                ?.dataSource
+                ?.fileReference,
         )
-    }
 }

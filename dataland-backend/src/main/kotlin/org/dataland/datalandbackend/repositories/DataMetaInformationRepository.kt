@@ -12,7 +12,6 @@ import org.springframework.data.repository.query.Param
  * A JPA repository for accessing DataMetaInformationEntities
  */
 interface DataMetaInformationRepository : JpaRepository<DataMetaInformationEntity, String> {
-
     /**
      * Searches for dataMetaInformation based on a filter defined in DataMetaInformationSearchFilter.
      * The filtering parameters are companyId, dataType, reportingPeriod, uploaderUserId, qaStatus, active status.
@@ -85,24 +84,23 @@ interface DataMetaInformationRepository : JpaRepository<DataMetaInformationEntit
      */
     @Query(
         nativeQuery = true,
-        value = "SELECT " +
-            " datainfo.data_id as dataId," +
-            " datainfo.company_id as companyId," +
-            " company.company_name as companyName," +
-            " datainfo.data_type as dataType," +
-            " datainfo.reporting_period as reportingPeriod," +
-            " datainfo.quality_status as qualityStatus," +
-            " datainfo.currently_active as currentlyActive," +
-            " datainfo.upload_time as uploadTime" +
-            " from (" +
-            " SELECT company_id, data_id, data_type, reporting_period, quality_status, currently_active, upload_time " +
-            " from data_meta_information meta" +
-            " where uploader_user_id = :userId" +
-            " ) datainfo" +
-            " LEFT JOIN stored_companies company" +
-            " ON company.company_id = datainfo.company_id",
+        value =
+            "SELECT " +
+                " datainfo.data_id as dataId," +
+                " datainfo.company_id as companyId," +
+                " company.company_name as companyName," +
+                " datainfo.data_type as dataType," +
+                " datainfo.reporting_period as reportingPeriod," +
+                " datainfo.quality_status as qualityStatus," +
+                " datainfo.currently_active as currentlyActive," +
+                " datainfo.upload_time as uploadTime" +
+                " from (" +
+                " SELECT company_id, data_id, data_type, reporting_period, quality_status, currently_active, upload_time " +
+                " from data_meta_information meta" +
+                " where uploader_user_id = :userId" +
+                " ) datainfo" +
+                " LEFT JOIN stored_companies company" +
+                " ON company.company_id = datainfo.company_id",
     )
-    fun getUserUploadsDataMetaInfos(
-        userId: String,
-    ): List<DatasetMetaInfoEntityForMyDatasets>
+    fun getUserUploadsDataMetaInfos(userId: String): List<DatasetMetaInfoEntityForMyDatasets>
 }

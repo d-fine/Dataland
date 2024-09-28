@@ -14,8 +14,10 @@ data class EmailContent(
 /**
  * Uses a Content object for the build of a TransactionalEmail
  */
-fun TransactionalEmail.TransactionalEmailBuilder.integrateContentIntoTransactionalEmailBuilder(content: EmailContent):
-    TransactionalEmail.TransactionalEmailBuilder {
-    return this.subject(content.subject)
+fun TransactionalEmail.TransactionalEmailBuilder.integrateContentIntoTransactionalEmailBuilder(
+    content: EmailContent,
+): TransactionalEmail.TransactionalEmailBuilder =
+    this
+        .subject(content.subject)
         .textPart(content.textContent)
-        .htmlPart(content.htmlContent) }
+        .htmlPart(content.htmlContent)

@@ -8,8 +8,6 @@ import org.dataland.datalandbackend.frameworks.esgquestionnaire.custom.YearlyTim
  */
 data class EsgQuestionnaireUmweltEnergieeffizienzImmobilienanlagen(
     val berichterstattungEnergieverbrauchVonImmobilienvermoegen:
-    YearlyTimeseriesData<BerichterstattungEnergieverbrauchVonImmobilienvermoegenValues?>? = null,
-
+        YearlyTimeseriesData<BerichterstattungEnergieverbrauchVonImmobilienvermoegenValues?>? = null,
     val unternehmensGruppenStrategieBzglEnergieeffizientenImmobilienanlagen: String? = null,
-
 )

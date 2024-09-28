@@ -28,12 +28,10 @@ abstract class InDevelopmentPavedRoadFramework(
     order: Int,
     enabledFeatures: Set<FrameworkGenerationFeatures> = FrameworkGenerationFeatures.ENTRY_SET,
     isPrivateFramework: Boolean = false,
-) :
-    PavedRoadFramework(
+) : PavedRoadFramework(
         identifier, label, explanation, frameworkTemplateCsvFile, order, enabledFeatures,
         isPrivateFramework,
     ) {
-
     private fun compileDataModel(datalandProject: DatalandRepository) {
         if (!enabledFeatures.contains(FrameworkGenerationFeatures.BackendDataModel)) {
             return
@@ -81,19 +79,22 @@ abstract class InDevelopmentPavedRoadFramework(
         if (referencedReports != null) {
             val referencedReportsPath = referencedReports.getKotlinFieldAccessor()
             val extendedDocumentFileReferences =
-                framework.root.nestedChildren.flatMap { it.getExtendedDocumentReference() }.toList()
+                framework.root.nestedChildren
+                    .flatMap { it.getExtendedDocumentReference() }
+                    .toList()
             logger.info(
                 "The validator will check for ${extendedDocumentFileReferences.size} " +
                     "extended document file references.",
             )
             val validatorPackage = dataModel.rootPackageBuilder.addPackage("validator")
-            val referencedReportValidatorBuilder = ReferencedReportValidatorBuilder(
-                validatorPackage,
-                dataModel.rootDataModelClass,
-                framework.identifier,
-                referencedReportsPath,
-                extendedDocumentFileReferences,
-            )
+            val referencedReportValidatorBuilder =
+                ReferencedReportValidatorBuilder(
+                    validatorPackage,
+                    dataModel.rootDataModelClass,
+                    framework.identifier,
+                    referencedReportsPath,
+                    extendedDocumentFileReferences,
+                )
             validatorPackage.childElements.add(referencedReportValidatorBuilder)
 
             dataModel.rootDataModelClass.annotations.add(
@@ -155,10 +156,11 @@ abstract class InDevelopmentPavedRoadFramework(
         val excelTemplate = ExcelTemplate.fromFile(frameworkTemplateCsvFile)
         customizeExcelTemplate(excelTemplate)
 
-        val frameworkIntermediateRepresentation = convertExcelTemplateToToHighLevelComponentRepresentation(
-            template = excelTemplate,
-            context = context,
-        )
+        val frameworkIntermediateRepresentation =
+            convertExcelTemplateToToHighLevelComponentRepresentation(
+                template = excelTemplate,
+                context = context,
+            )
 
         customizeHighLevelIntermediateRepresentation(frameworkIntermediateRepresentation)
 

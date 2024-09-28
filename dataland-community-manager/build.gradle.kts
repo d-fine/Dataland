@@ -72,7 +72,12 @@ tasks.test {
     useJUnitPlatform()
 
     extensions.configure(JacocoTaskExtension::class) {
-        setDestinationFile(layout.buildDirectory.dir("jacoco/jacoco.exec").get().asFile)
+        setDestinationFile(
+            layout.buildDirectory
+                .dir("jacoco/jacoco.exec")
+                .get()
+                .asFile,
+        )
     }
 }
 
@@ -81,7 +86,12 @@ tasks.register("generateBackendClient", org.openapitools.generator.gradle.plugin
     group = "clients"
     val backendClientDestinationPackage = "org.dataland.datalandbackend.openApiClient"
     input = project.file("${project.rootDir}/dataland-backend/backendOpenApi.json").path
-    outputDir.set(layout.buildDirectory.dir("clients/backend").get().toString())
+    outputDir.set(
+        layout.buildDirectory
+            .dir("clients/backend")
+            .get()
+            .toString(),
+    )
     packageName.set(backendClientDestinationPackage)
     modelPackage.set("$backendClientDestinationPackage.model")
     apiPackage.set("$backendClientDestinationPackage.api")

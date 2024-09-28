@@ -13,7 +13,6 @@ import org.springframework.stereotype.Service
  */
 @Service("DataRequestLogger")
 class DataRequestLogger {
-
     private val bulkDataRequestLogger = LoggerFactory.getLogger(BulkDataRequestManager::class.java)
     private val singleDataRequestLogger = LoggerFactory.getLogger(SingleDataRequestManager::class.java)
 
@@ -24,14 +23,17 @@ class DataRequestLogger {
         bulkDataRequestLogger.info(
             "Received a bulk data request from a user. " +
                 "-> Processing it with correlationId: $correlationId",
-
         )
     }
 
     /**
      * Logs an appropriate message when a single data request has happened.
      */
-    fun logMessageForReceivingSingleDataRequest(companyIdentifier: String, userId: String, correlationId: String) {
+    fun logMessageForReceivingSingleDataRequest(
+        companyIdentifier: String,
+        userId: String,
+        correlationId: String,
+    ) {
         singleDataRequestLogger.info(
             "Received a single data request with Identifier $companyIdentifier by user $userId. " +
                 "-> Processing it. (correlationId: $correlationId)",
@@ -45,7 +47,6 @@ class DataRequestLogger {
         bulkDataRequestLogger.info(
             "Notifying email sender that an email should be sent after BulkDataRequest" +
                 " with correlationId: $correlationId has been processed",
-
         )
     }
 
@@ -82,11 +83,12 @@ class DataRequestLogger {
         companyId: String?,
     ) {
         var logMessage = "The identifier value $identifierValue "
-        logMessage += if (companyId == null) {
-            "is currently not associated with a company that exists on Dataland."
-        } else {
-            "can be associated with the companyId $companyId on Dataland."
-        }
+        logMessage +=
+            if (companyId == null) {
+                "is currently not associated with a company that exists on Dataland."
+            } else {
+                "can be associated with the companyId $companyId on Dataland."
+            }
         bulkDataRequestLogger.info(logMessage)
     }
 
@@ -114,9 +116,7 @@ class DataRequestLogger {
     /**
      * Logs an appropriate message when the message of a data request is updated
      */
-    fun logMessageForPatchingRequestMessage(
-        dataRequestId: String,
-    ) {
+    fun logMessageForPatchingRequestMessage(dataRequestId: String) {
         singleDataRequestLogger.info(
             "Patching request $dataRequestId " +
                 "with new message.",

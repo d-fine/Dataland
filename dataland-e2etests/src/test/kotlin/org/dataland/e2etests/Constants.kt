@@ -45,26 +45,29 @@ val READER_USER_PASSWORD: String = System.getenv("KEYCLOAK_READER_PASSWORD")
 val MUTUAL_ROLES_DATALAND_USERS =
     listOf("default-roles-datalandsecurity", "ROLE_USER", "offline_access", "uma_authorization")
 
-val FRONTEND_DISPLAYED_FRAMEWORKS = listOf(
-    DataTypeEnum.eutaxonomyMinusFinancials,
-    DataTypeEnum.eutaxonomyMinusNonMinusFinancials,
-    DataTypeEnum.lksg,
-    DataTypeEnum.sfdr,
-    DataTypeEnum.p2p,
-    DataTypeEnum.vsme,
-)
+val FRONTEND_DISPLAYED_FRAMEWORKS =
+    listOf(
+        DataTypeEnum.eutaxonomyMinusFinancials,
+        DataTypeEnum.eutaxonomyMinusNonMinusFinancials,
+        DataTypeEnum.lksg,
+        DataTypeEnum.sfdr,
+        DataTypeEnum.p2p,
+        DataTypeEnum.vsme,
+    )
 
 // Set maxNumberOfDaysSelectableForApiKeyValidity
 private val valueFromEnv = System.getenv("MAX_NUMBER_OF_DAYS_SELECTABLE_FOR_API_KEY_VALIDITY")
-val MAX_NUMBER_OF_DAYS_SELECTABLE_FOR_API_KEY_VALIDITY = if (valueFromEnv.isNullOrEmpty()) {
-    3650
-} else {
-    valueFromEnv.toInt()
-}
+val MAX_NUMBER_OF_DAYS_SELECTABLE_FOR_API_KEY_VALIDITY =
+    if (valueFromEnv.isNullOrEmpty()) {
+        3650
+    } else {
+        valueFromEnv.toInt()
+    }
 
 private val quotaValueFromEnv = System.getenv("NUMBER_OF_SINGLE_DATA_REQUESTS_PER_DAY_AS_NON_PREMIUM_USER")
-val NUMBER_OF_SINGLE_DATA_REQUESTS_PER_DAY_AS_NON_PREMIUM_USER = if (quotaValueFromEnv.isNullOrEmpty()) {
-    10
-} else {
-    quotaValueFromEnv.toInt()
-}
+val NUMBER_OF_SINGLE_DATA_REQUESTS_PER_DAY_AS_NON_PREMIUM_USER =
+    if (quotaValueFromEnv.isNullOrEmpty()) {
+        10
+    } else {
+        quotaValueFromEnv.toInt()
+    }

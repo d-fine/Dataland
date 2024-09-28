@@ -18,8 +18,9 @@ import kotlin.reflect.KClass
 @Constraint(validatedBy = [FieldMinimumValidator::class, DataPointMinimumValidator::class])
 annotation class MinimumValue(
     val minimumValue: Long = 0,
-    val message: String = "Input validation failed: A base data point holding a number" +
-        " is smaller than the set minimum.",
+    val message: String =
+        "Input validation failed: A base data point holding a number" +
+            " is smaller than the set minimum.",
     val groups: Array<KClass<*>> = [],
     val payload: Array<KClass<out Payload>> = [],
 )
@@ -34,8 +35,10 @@ class FieldMinimumValidator : ConstraintValidator<MinimumValue, Number> {
         this.minimumValue = constraintAnnotation.minimumValue
     }
 
-    override fun isValid(value: Number?, context: ConstraintValidatorContext?): Boolean =
-        isValidNumber(value, minimumValue)
+    override fun isValid(
+        value: Number?,
+        context: ConstraintValidatorContext?,
+    ): Boolean = isValidNumber(value, minimumValue)
 }
 
 /**
@@ -48,7 +51,10 @@ class DataPointMinimumValidator : ConstraintValidator<MinimumValue, BaseDataPoin
         this.minimumValue = constraintAnnotation.minimumValue
     }
 
-    override fun isValid(dataPoint: BaseDataPoint<*>?, context: ConstraintValidatorContext?): Boolean =
+    override fun isValid(
+        dataPoint: BaseDataPoint<*>?,
+        context: ConstraintValidatorContext?,
+    ): Boolean =
         if (dataPoint?.value == null) {
             true
         } else if (dataPoint.value !is Number) {
@@ -61,7 +67,10 @@ class DataPointMinimumValidator : ConstraintValidator<MinimumValue, BaseDataPoin
         }
 }
 
-private fun isValidNumber(value: Number?, minimumValue: Long) = when (value) {
+private fun isValidNumber(
+    value: Number?,
+    minimumValue: Long,
+) = when (value) {
     null -> true
     is BigDecimal -> value >= BigDecimal.valueOf(minimumValue)
     is BigInteger -> value >= BigInteger.valueOf(minimumValue)

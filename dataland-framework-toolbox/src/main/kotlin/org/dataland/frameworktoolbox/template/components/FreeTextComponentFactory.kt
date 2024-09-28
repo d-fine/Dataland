@@ -13,7 +13,9 @@ import org.springframework.stereotype.Component
  * Generates FreeTextComponents from rows with the component "FreeText"
  */
 @Component
-class FreeTextComponentFactory(@Autowired val templateDiagnostic: TemplateDiagnostic) : TemplateComponentFactory {
+class FreeTextComponentFactory(
+    @Autowired val templateDiagnostic: TemplateDiagnostic,
+) : TemplateComponentFactory {
     override fun canGenerateComponent(row: TemplateRow): Boolean = row.component == "FreeText"
 
     override fun generateComponent(

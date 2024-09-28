@@ -14,19 +14,18 @@ import org.dataland.datalandbackend.openApiClient.model.DataMetaInformation
 import org.dataland.e2etests.BASE_PATH_TO_DATALAND_BACKEND
 import java.io.File
 
-class CustomVsmeDataControllerApi(private val token: String) {
-
+class CustomVsmeDataControllerApi(
+    private val token: String,
+) {
     private val client = OkHttpClient()
 
-    private fun transferJsonToDataMetaInformation(inputString: String):
-        DataMetaInformation {
+    private fun transferJsonToDataMetaInformation(inputString: String): DataMetaInformation {
         val jsonAdapter: JsonAdapter<DataMetaInformation> =
             moshi.adapter(DataMetaInformation::class.java)
         return jsonAdapter.fromJson(inputString)!!
     }
 
-    private fun transferCompanyAssociatedDataVsmeDataToJson(input: CompanyAssociatedDataVsmeData):
-        String {
+    private fun transferCompanyAssociatedDataVsmeDataToJson(input: CompanyAssociatedDataVsmeData): String {
         val jsonAdapter: JsonAdapter<CompanyAssociatedDataVsmeData> =
             moshi.adapter(CompanyAssociatedDataVsmeData::class.java)
         return jsonAdapter.toJson(input)
@@ -36,13 +35,15 @@ class CustomVsmeDataControllerApi(private val token: String) {
         companyAssociatedVsmeData: CompanyAssociatedDataVsmeData,
         documents: List<File>,
     ): Request {
-        val requestBodyBuilder = MultipartBody.Builder()
-            .setType(MultipartBody.FORM)
-            .addFormDataPart(
-                "companyAssociatedVsmeData",
-                null,
-                transferCompanyAssociatedDataVsmeDataToJson(companyAssociatedVsmeData).toRequestBody(),
-            )
+        val requestBodyBuilder =
+            MultipartBody
+                .Builder()
+                .setType(MultipartBody.FORM)
+                .addFormDataPart(
+                    "companyAssociatedVsmeData",
+                    null,
+                    transferCompanyAssociatedDataVsmeDataToJson(companyAssociatedVsmeData).toRequestBody(),
+                )
 
         documents.forEach { file ->
             requestBodyBuilder.addFormDataPart(
@@ -54,7 +55,8 @@ class CustomVsmeDataControllerApi(private val token: String) {
 
         val requestBody = requestBodyBuilder.build()
 
-        return Request.Builder()
+        return Request
+            .Builder()
             .url("$BASE_PATH_TO_DATALAND_BACKEND/data/vsme")
             .post(requestBody)
             .addHeader("Authorization", "Bearer $token")
@@ -64,15 +66,18 @@ class CustomVsmeDataControllerApi(private val token: String) {
     fun postCompanyAssociatedDataVsmeData(
         companyAssociatedVsmeData: CompanyAssociatedDataVsmeData,
         documents: List<File>,
-    ):
-        DataMetaInformation {
-        val response = client.newCall(
-            buildRequestForPostingCompanyAssociatedVsmeData(
-                companyAssociatedVsmeData,
-                documents,
-            ),
-        ).execute()
-        if (response.code == 403) { throw ClientException("Client error : 403 ") }
+    ): DataMetaInformation {
+        val response =
+            client
+                .newCall(
+                    buildRequestForPostingCompanyAssociatedVsmeData(
+                        companyAssociatedVsmeData,
+                        documents,
+                    ),
+                ).execute()
+        if (response.code == 403) {
+            throw ClientException("Client error : 403 ")
+        }
         require(response.isSuccessful) { "Request failed with unexpected reason, response is: $response" }
         val responseBodyAsString = response.body!!.string()
         return transferJsonToDataMetaInformation(responseBodyAsString)

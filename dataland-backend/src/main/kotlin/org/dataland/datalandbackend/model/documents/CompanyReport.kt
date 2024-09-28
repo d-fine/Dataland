@@ -15,8 +15,6 @@ data class CompanyReport(
     @field:NotBlank
     @field:DocumentExists
     override val fileReference: String,
-
     override val fileName: String? = null,
-
     val publicationDate: LocalDate? = null,
 ) : BaseDocumentReference

@@ -23,7 +23,6 @@ data class UploadCategoryBuilder(
     var children: MutableList<UploadConfigElement> = mutableListOf(),
     var labelBadgeColor: LabelBadgeColor? = null,
 ) : UploadConfigElement {
-
     override val imports: Set<TypeScriptImport>
         get() = children.foldRight(setOf()) { it, acc -> acc + it.imports }
 
@@ -64,13 +63,14 @@ data class UploadCategoryBuilder(
         labelBadgeColor: LabelBadgeColor?,
         shouldDisplay: FrameworkBooleanLambda,
     ): UploadCategoryBuilder {
-        val newSection = UploadCategoryBuilder(
-            parentSection = this,
-            name = identifier,
-            label = label,
-            labelBadgeColor = labelBadgeColor,
-            shouldDisplay = shouldDisplay,
-        )
+        val newSection =
+            UploadCategoryBuilder(
+                parentSection = this,
+                name = identifier,
+                label = label,
+                labelBadgeColor = labelBadgeColor,
+                shouldDisplay = shouldDisplay,
+            )
         children.add(newSection)
         return newSection
     }
@@ -89,18 +89,19 @@ data class UploadCategoryBuilder(
         frameworkUploadOptions: FrameworkUploadOptions?,
         validation: String?,
     ): UploadCellConfigBuilder {
-        val newCell = UploadCellConfigBuilder(
-            parentSection = this,
-            label = label,
-            name = identifier,
-            explanation = explanation,
-            shouldDisplay = shouldDisplay,
-            unit = unit,
-            required = required,
-            uploadComponentName = uploadComponentName,
-            frameworkUploadOptions = frameworkUploadOptions,
-            validation = validation,
-        )
+        val newCell =
+            UploadCellConfigBuilder(
+                parentSection = this,
+                label = label,
+                name = identifier,
+                explanation = explanation,
+                shouldDisplay = shouldDisplay,
+                unit = unit,
+                required = required,
+                uploadComponentName = uploadComponentName,
+                frameworkUploadOptions = frameworkUploadOptions,
+                validation = validation,
+            )
         children.add(newCell)
         return newCell
     }

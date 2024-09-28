@@ -15,22 +15,27 @@ import java.io.ByteArrayOutputStream
  * A converter for multiple image types to the pdf format
  */
 @Component
-class ImageToPdfConverter : FileConverter(
-    allowedMimeTypesPerFileExtension = mapOf(
-        "png" to imageMimeTypes,
-        "jpg" to imageMimeTypes,
-        "jpeg" to imageMimeTypes,
-        "jpe" to imageMimeTypes,
-        "jxr" to imageMimeTypes,
-        "tif" to imageMimeTypes,
-        "tiff" to imageMimeTypes,
-        "heic" to imageMimeTypes,
-        "heif" to imageMimeTypes,
-    ),
-) {
+class ImageToPdfConverter :
+    FileConverter(
+        allowedMimeTypesPerFileExtension =
+            mapOf(
+                "png" to imageMimeTypes,
+                "jpg" to imageMimeTypes,
+                "jpeg" to imageMimeTypes,
+                "jpe" to imageMimeTypes,
+                "jxr" to imageMimeTypes,
+                "tif" to imageMimeTypes,
+                "tiff" to imageMimeTypes,
+                "heic" to imageMimeTypes,
+                "heif" to imageMimeTypes,
+            ),
+    ) {
     override val logger: Logger = LoggerFactory.getLogger(javaClass)
 
-    override fun convert(file: MultipartFile, correlationId: String): ByteArray {
+    override fun convert(
+        file: MultipartFile,
+        correlationId: String,
+    ): ByteArray {
         logger.info("Converting image to a pdf document. (correlation ID: $correlationId)")
         val outputStream = ByteArrayOutputStream()
 
@@ -48,14 +53,15 @@ class ImageToPdfConverter : FileConverter(
     }
 }
 
-private val imageMimeTypes = setOf(
-    "image/png",
-    "image/jpeg", "image/vnd.ms-photo", "image/jxr",
-    "image/tiff",
-    "image/tiff-fx",
-    "image/heif",
-    "image/heif-sequence",
-    "image/heic",
-    "image/heic-sequence",
-    "image/avif",
-)
+private val imageMimeTypes =
+    setOf(
+        "image/png",
+        "image/jpeg", "image/vnd.ms-photo", "image/jxr",
+        "image/tiff",
+        "image/tiff-fx",
+        "image/heif",
+        "image/heif-sequence",
+        "image/heic",
+        "image/heic-sequence",
+        "image/avif",
+    )

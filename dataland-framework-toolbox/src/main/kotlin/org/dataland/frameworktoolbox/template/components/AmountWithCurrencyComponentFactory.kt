@@ -13,10 +13,10 @@ import org.springframework.stereotype.Component
  * Generates AmountWithCurrency from rows with the component "AmountWithCurrencyComponent"
  */
 @Component
-class AmountWithCurrencyComponentFactory(@Autowired val templateDiagnostic: TemplateDiagnostic) :
-    TemplateComponentFactory {
-    override fun canGenerateComponent(row: TemplateRow): Boolean =
-        row.component.trim() == "AmountWithCurrencyComponent"
+class AmountWithCurrencyComponentFactory(
+    @Autowired val templateDiagnostic: TemplateDiagnostic,
+) : TemplateComponentFactory {
+    override fun canGenerateComponent(row: TemplateRow): Boolean = row.component.trim() == "AmountWithCurrencyComponent"
 
     override fun generateComponent(
         row: TemplateRow,

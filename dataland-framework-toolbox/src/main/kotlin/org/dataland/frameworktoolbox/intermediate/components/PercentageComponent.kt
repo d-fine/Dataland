@@ -20,7 +20,6 @@ class PercentageComponent(
     identifier: String,
     parent: FieldNodeParent,
 ) : NumberBaseComponent(identifier, parent) {
-
     override fun generateDefaultDataModel(dataClassBuilder: DataClassBuilder) {
         dataClassBuilder.addPropertyWithDocumentSupport(
             documentSupport,

@@ -23,7 +23,6 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.messaging.handler.annotation.Header
 import org.springframework.messaging.handler.annotation.Payload
 import org.springframework.stereotype.Component
-import java.util.*
 
 /**
  * Defines the processing of private framework data upload events as elementary events
@@ -35,10 +34,9 @@ class PrivateDataUploadProcessor(
     @Autowired elementaryEventRepository: ElementaryEventRepository,
     @Autowired objectMapper: ObjectMapper,
 ) : BaseEventProcessor(messageUtils, notificationService, elementaryEventRepository, objectMapper) {
-
     override var elementaryEventType = ElementaryEventType.UploadEvent
-    override var messageType = MessageType.PrivateDataReceived
-    override var actionType = ActionType.StorePrivateDataAndDocuments
+    override var messageType = MessageType.PRIVATE_DATA_RECEIVED
+    override var actionType = ActionType.STORE_PRIVATE_DATA_AND_DOCUMENTS
     override var logger: Logger = LoggerFactory.getLogger(this.javaClass)
 
     /**
@@ -51,23 +49,24 @@ class PrivateDataUploadProcessor(
     @RabbitListener(
         bindings = [
             QueueBinding(
-                value = Queue(
-                    "privateRequestReceivedCommunityManagerNotificationService",
-                    arguments = [
-                        Argument(name = "x-dead-letter-exchange", value = ExchangeName.DeadLetter),
-                        Argument(name = "x-dead-letter-routing-key", value = "deadLetterKey"),
-                        Argument(name = "defaultRequeueRejected", value = "false"),
-                    ],
-                ),
-                exchange = Exchange(ExchangeName.PrivateRequestReceived, declare = "false"),
-                key = [RoutingKeyNames.metaDataPersisted],
+                value =
+                    Queue(
+                        "privateRequestReceivedCommunityManagerNotificationService",
+                        arguments = [
+                            Argument(name = "x-dead-letter-exchange", value = ExchangeName.DEAD_LETTER),
+                            Argument(name = "x-dead-letter-routing-key", value = "deadLetterKey"),
+                            Argument(name = "defaultRequeueRejected", value = "false"),
+                        ],
+                    ),
+                exchange = Exchange(ExchangeName.PRIVATE_REQUEST_RECEIVED, declare = "false"),
+                key = [RoutingKeyNames.META_DATA_PERSISTED],
             ),
         ],
     )
     fun processEvent(
         @Payload payload: String,
-        @Header(MessageHeaderKey.CorrelationId) correlationId: String,
-        @Header(MessageHeaderKey.Type) type: String,
+        @Header(MessageHeaderKey.CORRELATION_ID) correlationId: String,
+        @Header(MessageHeaderKey.TYPE) type: String,
     ) {
         validateIncomingPayloadAndReturnDataId(payload, type)
 
@@ -78,7 +77,10 @@ class PrivateDataUploadProcessor(
         )
     }
 
-    override fun validateIncomingPayloadAndReturnDataId(payload: String, messageType: String): String {
+    override fun validateIncomingPayloadAndReturnDataId(
+        payload: String,
+        messageType: String,
+    ): String {
         messageUtils.validateMessageType(messageType, this.messageType)
 
         val payloadJsonObject = JSONObject(payload)
@@ -91,7 +93,8 @@ class PrivateDataUploadProcessor(
             )
         }
 
-        return payloadJsonObject.getString("dataId")
+        return payloadJsonObject
+            .getString("dataId")
             .takeIf { it.isNotEmpty() }
             ?: throw MessageQueueRejectException("The dataId in the message payload is empty.")
     }

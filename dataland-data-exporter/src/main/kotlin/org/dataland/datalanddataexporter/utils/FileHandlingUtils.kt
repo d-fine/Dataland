@@ -12,7 +12,6 @@ import java.util.Properties
  * A class containing utility methods for handling files in the connection of CSV data export.
  */
 object FileHandlingUtils {
-
     /**
      * Method to get the current timestamp in the format yyyyMMdd
      * @return the current timestamp
@@ -56,14 +55,19 @@ object FileHandlingUtils {
      * @param outputFile The output file
      * @param headers The headers
      */
-    fun writeCsv(data: List<Map<String, String>>, outputFile: File, headers: List<String>) {
+    fun writeCsv(
+        data: List<Map<String, String>>,
+        outputFile: File,
+        headers: List<String>,
+    ) {
         if (data.isEmpty()) return
 
         val csvSchemaBuilder = CsvSchema.builder()
         headers.forEach { header -> csvSchemaBuilder.addColumn(header) }
         val csvSchema = csvSchemaBuilder.build().withHeader().withColumnSeparator("|".first())
 
-        CsvMapper().writerFor(List::class.java)
+        CsvMapper()
+            .writerFor(List::class.java)
             .with(csvSchema)
             .writeValue(outputFile, data)
     }

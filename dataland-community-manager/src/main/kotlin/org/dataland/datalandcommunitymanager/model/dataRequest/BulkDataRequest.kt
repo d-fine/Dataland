@@ -14,28 +14,29 @@ import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 data class BulkDataRequest(
     @field:JsonProperty(required = true)
     @field:ArraySchema(
-        arraySchema = Schema(
-            type = "string",
-            example = "[\"enterValidIdentifiers\"]",
-        ),
+        arraySchema =
+            Schema(
+                type = "string",
+                example = "[\"enterValidIdentifiers\"]",
+            ),
     )
     val companyIdentifiers: Set<String>,
-
     @field:JsonProperty(required = true)
     @field:ArraySchema(
-        arraySchema = Schema(
-            implementation = DataTypeEnum::class,
-            example = "[\"p2p\", \"vsme\"]",
-        ),
+        arraySchema =
+            Schema(
+                implementation = DataTypeEnum::class,
+                example = "[\"p2p\", \"vsme\"]",
+            ),
     )
     val dataTypes: Set<DataTypeEnum>,
-
     @field:JsonProperty(required = true)
     @field:ArraySchema(
-        arraySchema = Schema(
-            type = "string",
-            example = "[\"2022\", \"2023\"]",
-        ),
+        arraySchema =
+            Schema(
+                type = "string",
+                example = "[\"2022\", \"2023\"]",
+            ),
     )
     val reportingPeriods: Set<String>,
 )

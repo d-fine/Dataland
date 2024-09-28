@@ -34,7 +34,6 @@ import java.util.UUID
 @SecurityRequirement(name = "default-bearer-auth")
 @SecurityRequirement(name = "default-oauth")
 interface RequestApi {
-
     /**
      * A method to post a bulk request to Dataland.
      * @param bulkDataRequest includes necessary info for the bulk request
@@ -58,8 +57,7 @@ interface RequestApi {
     fun postBulkDataRequest(
         @Valid @RequestBody
         bulkDataRequest: BulkDataRequest,
-    ):
-        ResponseEntity<BulkDataRequestResponse>
+    ): ResponseEntity<BulkDataRequestResponse>
 
     /** A method for users to get all their existing data requests.
      * @return all data requests of the user in a list
@@ -128,8 +126,7 @@ interface RequestApi {
     fun postSingleDataRequest(
         @Valid @RequestBody
         singleDataRequest: SingleDataRequest,
-    ):
-        ResponseEntity<SingleDataRequestResponse>
+    ): ResponseEntity<SingleDataRequestResponse>
 
     /** A method for users to get a data request by its ID.
      * @return the data requests corresponding to the provided ID
@@ -148,7 +145,9 @@ interface RequestApi {
         produces = ["application/json"],
     )
     @PreAuthorize("hasRole('ROLE_ADMIN') or @SecurityUtilsService.isUserAskingForOwnRequest(#dataRequestId)")
-    fun getDataRequestById(@PathVariable dataRequestId: UUID): ResponseEntity<StoredDataRequest>
+    fun getDataRequestById(
+        @PathVariable dataRequestId: UUID,
+    ): ResponseEntity<StoredDataRequest>
 
     /** Changes request status and message history of existing data request
      * @return the modified data request

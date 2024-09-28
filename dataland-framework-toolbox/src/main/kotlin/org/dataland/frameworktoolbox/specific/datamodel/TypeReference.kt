@@ -22,21 +22,23 @@ data class TypeReference(
     val shortenedQualifier: String
         get() {
             val optionalSuffix = if (nullable) "?" else ""
-            val genericParameterSuffix = if (genericTypeParameters?.isNotEmpty() == true) {
-                "<${genericTypeParameters.joinToString(", ") { it.shortenedQualifier }}>"
-            } else {
-                ""
-            }
+            val genericParameterSuffix =
+                if (genericTypeParameters?.isNotEmpty() == true) {
+                    "<${genericTypeParameters.joinToString(", ") { it.shortenedQualifier }}>"
+                } else {
+                    ""
+                }
             return "${fullyQualifiedName.substringAfterLast(".")}$genericParameterSuffix$optionalSuffix"
         }
 
     override fun toString(): String {
         val optionalSuffix = if (nullable) "?" else ""
-        val genericParameterSuffix = if (genericTypeParameters?.isNotEmpty() == true) {
-            "<${genericTypeParameters.joinToString(", ") { it.toString() }}>"
-        } else {
-            ""
-        }
+        val genericParameterSuffix =
+            if (genericTypeParameters?.isNotEmpty() == true) {
+                "<${genericTypeParameters.joinToString(", ") { it.toString() }}>"
+            } else {
+                ""
+            }
 
         return "$fullyQualifiedName$genericParameterSuffix$optionalSuffix"
     }

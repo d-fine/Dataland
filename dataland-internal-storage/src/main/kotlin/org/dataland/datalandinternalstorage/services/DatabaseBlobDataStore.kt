@@ -43,25 +43,26 @@ class DatabaseBlobDataStore(
     @RabbitListener(
         bindings = [
             QueueBinding(
-                value = Queue(
-                    "documentReceivedDatabaseDataStore",
-                    arguments = [
-                        Argument(name = "x-dead-letter-exchange", value = ExchangeName.DeadLetter),
-                        Argument(name = "x-dead-letter-routing-key", value = "deadLetterKey"),
-                        Argument(name = "defaultRequeueRejected", value = "false"),
-                    ],
-                ),
-                exchange = Exchange(ExchangeName.DocumentReceived, declare = "false"),
+                value =
+                    Queue(
+                        "documentReceivedDatabaseDataStore",
+                        arguments = [
+                            Argument(name = "x-dead-letter-exchange", value = ExchangeName.DEAD_LETTER),
+                            Argument(name = "x-dead-letter-routing-key", value = "deadLetterKey"),
+                            Argument(name = "defaultRequeueRejected", value = "false"),
+                        ],
+                    ),
+                exchange = Exchange(ExchangeName.DOCUMENT_RECEIVED, declare = "false"),
                 key = [""],
             ),
         ],
     )
     fun retrieveBlobFromDocumentManagerAndStoreToDatabase(
         @Payload blobId: String,
-        @Header(MessageHeaderKey.CorrelationId) correlationId: String,
-        @Header(MessageHeaderKey.Type) type: String,
+        @Header(MessageHeaderKey.CORRELATION_ID) correlationId: String,
+        @Header(MessageHeaderKey.TYPE) type: String,
     ) {
-        messageUtils.validateMessageType(type, MessageType.DocumentReceived)
+        messageUtils.validateMessageType(type, MessageType.DOCUMENT_RECEIVED)
         if (blobId.isEmpty()) {
             throw MessageQueueRejectException("Provided document ID is empty")
         }
@@ -73,8 +74,8 @@ class DatabaseBlobDataStore(
                 "Inserting blob into database with blob ID: $blobId and correlation ID: $correlationId.",
             )
             cloudEventMessageHandler.buildCEMessageAndSendToQueue(
-                blobId, MessageType.DocumentStored, correlationId, ExchangeName.ItemStored,
-                RoutingKeyNames.document,
+                blobId, MessageType.DOCUMENT_STORED, correlationId, ExchangeName.ITEM_STORED,
+                RoutingKeyNames.DOCUMENT,
             )
         }
     }
@@ -87,7 +88,10 @@ class DatabaseBlobDataStore(
      * @return the stored database entity
      */
     @Transactional(propagation = Propagation.NEVER)
-    fun storeBlobToDatabase(blobId: String, blob: ByteArray): BlobItem {
+    fun storeBlobToDatabase(
+        blobId: String,
+        blob: ByteArray,
+    ): BlobItem {
         val blobItem = BlobItem(blobId, blob)
         blobItemRepository.save(blobItem)
         return blobItem
@@ -98,13 +102,17 @@ class DatabaseBlobDataStore(
      * @param blobId the hash of the data to be retrieved
      * @return the blob retrieved from the database
      */
-    fun selectBlobById(blobId: String, correlationId: String): ByteArray {
-        return blobItemRepository.findById(blobId).orElseThrow {
-            logger.info("Blob with ID: $blobId could not be found. Correlation ID: $correlationId.")
-            ResourceNotFoundApiException(
-                "Dataset not found",
-                "No blob with the ID: $blobId could be found in the data store.",
-            )
-        }.data
-    }
+    fun selectBlobById(
+        blobId: String,
+        correlationId: String,
+    ): ByteArray =
+        blobItemRepository
+            .findById(blobId)
+            .orElseThrow {
+                logger.info("Blob with ID: $blobId could not be found. Correlation ID: $correlationId.")
+                ResourceNotFoundApiException(
+                    "Dataset not found",
+                    "No blob with the ID: $blobId could be found in the data store.",
+                )
+            }.data
 }

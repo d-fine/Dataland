@@ -26,10 +26,17 @@ class StreamingStorageControllerApi(
      * @param correlationId an identifier used to identify the transaction across services
      * @returns a stream of the blob
      */
-    fun getBlobFromInternalStorage(blobId: String, correlationId: String): InputStream {
-        val requestUrl = "$internalStorageBaseUrl/blobs".toHttpUrl()
-            .newBuilder().addPathSegment(blobId).addQueryParameter("correlationId", correlationId)
-            .build()
+    fun getBlobFromInternalStorage(
+        blobId: String,
+        correlationId: String,
+    ): InputStream {
+        val requestUrl =
+            "$internalStorageBaseUrl/blobs"
+                .toHttpUrl()
+                .newBuilder()
+                .addPathSegment(blobId)
+                .addQueryParameter("correlationId", correlationId)
+                .build()
         val request = Request.Builder().url(requestUrl).build()
         val response = client.newCall(request).execute()
         if (!response.isSuccessful) {

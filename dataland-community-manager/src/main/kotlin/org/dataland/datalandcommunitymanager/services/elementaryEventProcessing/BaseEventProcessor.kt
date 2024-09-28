@@ -47,11 +47,12 @@ abstract class BaseEventProcessor(
             return
         }
 
-        val visibilityType = when (messageType) {
-            MessageType.PrivateDataReceived -> "private"
-            MessageType.QaCompleted -> "public"
-            else -> ""
-        }
+        val visibilityType =
+            when (messageType) {
+                MessageType.PRIVATE_DATA_RECEIVED -> "private"
+                MessageType.QA_COMPLETED -> "public"
+                else -> ""
+            }
 
         logger.info(
             "Processing elementary event: Request for storage of $visibilityType framework data. " +
@@ -69,8 +70,8 @@ abstract class BaseEventProcessor(
     protected fun createAndSaveElementaryEvent(
         elementaryEventBasicInfo: ElementaryEventBasicInfo,
         elementaryEventType: ElementaryEventType,
-    ): ElementaryEventEntity {
-        return elementaryEventRepository.saveAndFlush(
+    ): ElementaryEventEntity =
+        elementaryEventRepository.saveAndFlush(
             ElementaryEventEntity(
                 elementaryEventType = elementaryEventType,
                 companyId = elementaryEventBasicInfo.companyId,
@@ -80,7 +81,6 @@ abstract class BaseEventProcessor(
                 notificationEvent = null,
             ),
         )
-    }
 
     /**
      * Each EventProcessor listens to a different messageQueue which will contain different message payloads.
@@ -89,7 +89,10 @@ abstract class BaseEventProcessor(
      * @throws MessageQueueRejectException if the validation fails
      */
     @Throws(MessageQueueRejectException::class)
-    abstract fun validateIncomingPayloadAndReturnDataId(payload: String, messageType: String): String
+    abstract fun validateIncomingPayloadAndReturnDataId(
+        payload: String,
+        messageType: String,
+    ): String
 
     /**
      * Parses a message payload from the rabbit mq as object.
@@ -98,8 +101,10 @@ abstract class BaseEventProcessor(
      * @returns an object that contains basic info about the elementary event associated with the payload
      */
     fun createElementaryEventBasicInfo(jsonString: String): ElementaryEventBasicInfo {
-        val temporaryObjectMapper = objectMapper.copy()
-            .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
+        val temporaryObjectMapper =
+            objectMapper
+                .copy()
+                .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
 
         return temporaryObjectMapper.readValue(jsonString, ElementaryEventBasicInfo::class.java)
     }

@@ -8,9 +8,6 @@ import java.math.BigDecimal
  */
 data class BerichterstattungEnergieverbrauchValues(
     val energieverbrauch: BigDecimal? = null,
-
     val prozentDesVerbrauchsErneuerbarerEnergien: BigDecimal? = null,
-
     val ggfProzentDerErneuerbarenEnergieerzeugung: BigDecimal? = null,
-
 )

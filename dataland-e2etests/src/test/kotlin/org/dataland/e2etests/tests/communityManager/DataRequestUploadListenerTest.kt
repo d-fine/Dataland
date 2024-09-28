@@ -24,7 +24,7 @@ import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
 import org.junit.jupiter.api.assertThrows
-import java.util.*
+import java.util.UUID
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class DataRequestUploadListenerTest {
@@ -34,11 +34,15 @@ class DataRequestUploadListenerTest {
     private val requestControllerApi = apiAccessor.requestControllerApi
     private val dataController = apiAccessor.dataControllerApiForEuTaxonomyNonFinancials
     private lateinit var dummyCompanyAssociatedData: CompanyAssociatedDataEutaxonomyNonFinancialsData
-    private val testDataEuTaxonomyNonFinancials = apiAccessor.testDataProviderForEuTaxonomyDataForNonFinancials
-        .getTData(1).first()
+    private val testDataEuTaxonomyNonFinancials =
+        apiAccessor.testDataProviderForEuTaxonomyDataForNonFinancials
+            .getTData(1)
+            .first()
 
-    private val testCompanyInformation = apiAccessor.testDataProviderForEuTaxonomyDataForNonFinancials
-        .getCompanyInformationWithoutIdentifiers(1).first()
+    private val testCompanyInformation =
+        apiAccessor.testDataProviderForEuTaxonomyDataForNonFinancials
+            .getCompanyInformationWithoutIdentifiers(1)
+            .first()
     private val message = "test message"
     private val contacts = setOf("test@example.com", "test2@example.com")
     private val errorMessageForRequestStatusHistory = "The status history was not patched correctly."
@@ -50,17 +54,19 @@ class DataRequestUploadListenerTest {
 
     @Test
     fun `post single data request and provide data and check that status has changed to answered`() {
-        val mapOfIds = apiAccessor.uploadOneCompanyAndEuTaxonomyDataForNonFinancials(
-            testCompanyInformation,
-            testDataEuTaxonomyNonFinancials,
-        )
-        val singleDataRequest = SingleDataRequest(
-            companyIdentifier = mapOfIds["companyId"].toString(),
-            dataType = SingleDataRequest.DataType.eutaxonomyMinusNonMinusFinancials,
-            reportingPeriods = setOf("2022", "2023"),
-            contacts = setOf("someContact@example.com", "valid@example.com"),
-            message = "This is a test. The current timestamp is ${System.currentTimeMillis()}",
-        )
+        val mapOfIds =
+            apiAccessor.uploadOneCompanyAndEuTaxonomyDataForNonFinancials(
+                testCompanyInformation,
+                testDataEuTaxonomyNonFinancials,
+            )
+        val singleDataRequest =
+            SingleDataRequest(
+                companyIdentifier = mapOfIds["companyId"].toString(),
+                dataType = SingleDataRequest.DataType.eutaxonomyMinusNonMinusFinancials,
+                reportingPeriods = setOf("2022", "2023"),
+                contacts = setOf("someContact@example.com", "valid@example.com"),
+                message = "This is a test. The current timestamp is ${System.currentTimeMillis()}",
+            )
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.PremiumUser)
         val timestampBeforeSingleRequest = retrieveTimeAndWaitOneMillisecond()
         val response = requestControllerApi.postSingleDataRequest(singleDataRequest)
@@ -105,9 +111,10 @@ class DataRequestUploadListenerTest {
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(technicalUser)
         val timestampBeforeSingleRequest = retrieveTimeAndWaitOneMillisecond()
         postStandardSingleDataRequest(companyId)
-        val dataRequestId = UUID.fromString(
-            getNewlyStoredRequestsAfterTimestamp(timestampBeforeSingleRequest)[0].dataRequestId,
-        )
+        val dataRequestId =
+            UUID.fromString(
+                getNewlyStoredRequestsAfterTimestamp(timestampBeforeSingleRequest)[0].dataRequestId,
+            )
         assertStatusForDataRequestId(dataRequestId, RequestStatus.Open)
         return dataRequestId
     }
@@ -121,12 +128,13 @@ class DataRequestUploadListenerTest {
         message: String? = null,
     ) {
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(technicalUser)
-        val clientException = assertThrows<ClientException> {
-            requestControllerApi.patchDataRequest(
-                dataRequestId = dataRequestId, requestStatus = requestStatus,
-                accessStatus = accessStatus, contacts = contacts, message = message,
-            )
-        }
+        val clientException =
+            assertThrows<ClientException> {
+                requestControllerApi.patchDataRequest(
+                    dataRequestId = dataRequestId, requestStatus = requestStatus,
+                    accessStatus = accessStatus, contacts = contacts, message = message,
+                )
+            }
         assertEquals("Client error : 403 ", clientException.message)
     }
 
@@ -204,9 +212,10 @@ class DataRequestUploadListenerTest {
         val nonExistingDataRequestId = UUID.randomUUID()
 
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
-        val clientException = assertThrows<ClientException> {
-            requestControllerApi.patchDataRequest(nonExistingDataRequestId, RequestStatus.Answered)
-        }
+        val clientException =
+            assertThrows<ClientException> {
+                requestControllerApi.patchDataRequest(nonExistingDataRequestId, RequestStatus.Answered)
+            }
         val responseBody = (clientException.response as ClientError<*>).body as String
 
         assertEquals("Client error : 404 ", clientException.message)

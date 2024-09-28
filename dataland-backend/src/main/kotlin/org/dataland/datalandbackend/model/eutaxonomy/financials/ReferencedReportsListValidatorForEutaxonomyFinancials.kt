@@ -9,6 +9,7 @@ import org.dataland.datalandbackend.model.documents.ExtendedDocumentReference
 import kotlin.reflect.KCallable
 import kotlin.reflect.KClass
 import kotlin.reflect.full.declaredMemberProperties
+
 /**
  * Annotation Class holding the validation logic for referenced reports list.
  * It checks if the referenced reports list is complete
@@ -17,8 +18,9 @@ import kotlin.reflect.full.declaredMemberProperties
 @Constraint(validatedBy = [ReferencedReportsListValidatorForEutaxonomyFinancials::class])
 @Target(AnnotationTarget.FIELD, AnnotationTarget.CLASS)
 annotation class ValidateReferencedReportsListForEuTaxonomyFinancials(
-    val message: String = "The list of referenced reports is not complete. Please ensure that any file used as a " +
-        "data source in the dataset is included in the list of referenced reports.",
+    val message: String =
+        "The list of referenced reports is not complete. Please ensure that any file used as a " +
+            "data source in the dataset is included in the list of referenced reports.",
     val groups: Array<KClass<*>> = [],
     val payload: Array<KClass<out Payload>> = [],
 )
@@ -28,8 +30,10 @@ annotation class ValidateReferencedReportsListForEuTaxonomyFinancials(
  */
 class ReferencedReportsListValidatorForEutaxonomyFinancials :
     ConstraintValidator<ValidateReferencedReportsListForEuTaxonomyFinancials, EuTaxonomyDataForFinancials> {
-
-    override fun isValid(dataset: EuTaxonomyDataForFinancials?, context: ConstraintValidatorContext?): Boolean {
+    override fun isValid(
+        dataset: EuTaxonomyDataForFinancials?,
+        context: ConstraintValidatorContext?,
+    ): Boolean {
         if (dataset == null) {
             return false
         }
@@ -48,6 +52,7 @@ class ReferencedReportsListValidatorForEutaxonomyFinancials :
             referencedReportsFileReference.contains(it)
         }
     }
+
     private fun getFileReferencesFromReports(map: Map<String, CompanyReport>?): List<String> {
         if (map == null) return emptyList()
         val referencedReportsList = mutableListOf<String>()
@@ -56,7 +61,11 @@ class ReferencedReportsListValidatorForEutaxonomyFinancials :
         }
         return referencedReportsList
     }
-    private fun collectFileReferences(data: Any?, fileReferences: MutableList<String>) {
+
+    private fun collectFileReferences(
+        data: Any?,
+        fileReferences: MutableList<String>,
+    ) {
         if (data == null) return
         when (data) {
             is ExtendedDocumentReference -> {

@@ -11,14 +11,17 @@ import org.springframework.context.annotation.Configuration
 
 @Configuration
 class SwaggerUiConfig {
-
     /**
      * This method returns all public endpoints to be displayed in the swagger ui
      */
     @Bean
-    fun publicApi(esgQuestionnaireCustomizer: OpenApiEsgQuestionnaireExampleCustomizer): GroupedOpenApi? {
-        return GroupedOpenApi.builder().group("public").pathsToExclude("/internal/**").addOpenApiCustomizer(
-            DataTypeSchemaCustomizer(),
-        ).addOpenApiCustomizer(esgQuestionnaireCustomizer).build()
-    }
+    fun publicApi(esgQuestionnaireCustomizer: OpenApiEsgQuestionnaireExampleCustomizer): GroupedOpenApi? =
+        GroupedOpenApi
+            .builder()
+            .group("public")
+            .pathsToExclude("/internal/**")
+            .addOpenApiCustomizer(
+                DataTypeSchemaCustomizer(),
+            ).addOpenApiCustomizer(esgQuestionnaireCustomizer)
+            .build()
 }

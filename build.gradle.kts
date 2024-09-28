@@ -81,7 +81,10 @@ sonar {
         property("sonar.host.url", "https://sonarcloud.io")
         property(
             "sonar.coverage.jacoco.xmlReportPaths",
-            layout.buildDirectory.dir("reports/jacoco/test/jacocoTestReport.xml").get().asFile,
+            layout.buildDirectory
+                .dir("reports/jacoco/test/jacocoTestReport.xml")
+                .get()
+                .asFile,
         )
         property("sonar.qualitygate.wait", true)
         property("sonar.javascript.lcov.reportPaths", fileTree("$projectDir/fe-coverage").files)
@@ -103,7 +106,6 @@ sonar {
         property("sonar.scanner.metadataFilePath", "$projectDir/build/reports/report_task.txt")
         property(
             "sonar.cpd.exclusions",
-
             // frontend
             "dataland-frontend/src/components/forms/parts/elements/derived/NaceCodeTree.ts," +
                 "dataland-frontend/src/components/forms/parts/elements/derived/ActivityTree.ts," +
@@ -137,7 +139,6 @@ sonar {
         )
         property(
             "sonar.exclusions",
-
             // frontend components
             "dataland-frontend/src/components/general/SlideShow.vue," +
                 "dataland-frontend/src/components/pages/AboutPage.vue," +

@@ -16,11 +16,8 @@ import java.util.UUID
 data class NotificationEventEntity(
     @Id
     val notificationEventId: UUID = UUID.randomUUID(),
-
     val companyId: UUID,
-
     @Enumerated(EnumType.STRING)
     val elementaryEventType: ElementaryEventType,
-
     val creationTimestamp: Long,
 )

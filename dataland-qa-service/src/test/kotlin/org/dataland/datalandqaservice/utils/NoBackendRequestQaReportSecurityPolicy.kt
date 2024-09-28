@@ -11,7 +11,10 @@ import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 class NoBackendRequestQaReportSecurityPolicy(
     userAuthenticatedBackendClient: UserAuthenticatedBackendClient,
 ) : QaReportSecurityPolicy(userAuthenticatedBackendClient) {
-    override fun ensureUserCanViewQaReportForDataId(dataId: String, user: DatalandAuthentication) {
+    override fun ensureUserCanViewQaReportForDataId(
+        dataId: String,
+        user: DatalandAuthentication,
+    ) {
         // Do nothing. This function is checked in an E2E-test.
     }
 }

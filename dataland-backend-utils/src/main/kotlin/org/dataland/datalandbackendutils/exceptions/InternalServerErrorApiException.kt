@@ -14,7 +14,6 @@ class InternalServerErrorApiException(
     internalMessage: String,
     internalCause: Throwable? = null,
 ) : SingleApiException(internalMessage, internalCause) {
-
     constructor(internalMessage: String, internalCause: Throwable? = null) : this(
         "An internal server error occurred",
         "An unexpected internal server error occurred. Please contact support if this error persists",
@@ -22,12 +21,11 @@ class InternalServerErrorApiException(
         internalCause,
     )
 
-    override fun getErrorResponse(): ErrorDetails {
-        return ErrorDetails(
+    override fun getErrorResponse(): ErrorDetails =
+        ErrorDetails(
             errorType = "internal-server-error",
             summary = publicSummary,
             message = publicMessage,
             httpStatus = HttpStatus.INTERNAL_SERVER_ERROR,
         )
-    }
 }

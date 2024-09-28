@@ -14,23 +14,17 @@ data class SfdrEnvironmentalWater(
     @field:MinimumValue(minimumValue = 0)
     @field:Valid()
     val emissionsToWaterInTonnes: ExtendedDataPoint<BigDecimal?>? = null,
-
     @field:MinimumValue(minimumValue = 0)
     @field:Valid()
     val waterConsumptionInCubicMeters: ExtendedDataPoint<BigDecimal?>? = null,
-
     @field:MinimumValue(minimumValue = 0)
     @field:Valid()
     val waterReusedInCubicMeters: ExtendedDataPoint<BigDecimal?>? = null,
-
     @field:MinimumValue(minimumValue = 0)
     @field:Valid()
     val relativeWaterUsageInCubicMetersPerMillionEURRevenue: ExtendedDataPoint<BigDecimal?>? = null,
-
     @field:Valid()
     val waterManagementPolicy: ExtendedDataPoint<YesNo?>? = null,
-
     @field:Valid()
     val highWaterStressAreaExposure: ExtendedDataPoint<YesNo?>? = null,
-
 )

@@ -27,29 +27,20 @@ import org.dataland.datalandbackend.frameworks.esgquestionnaire.model.unternehme
 data class EsgQuestionnaireUnternehmensfuehrungGovernance(
     @field:Valid()
     val aufsichtsrat: EsgQuestionnaireUnternehmensfuehrunggovernanceAufsichtsrat? = null,
-
     @field:Valid()
     val verguetungsausschuss: EsgQuestionnaireUnternehmensfuehrunggovernanceVerguetungsausschuss? = null,
-
     @field:Valid()
     val nominierungsausschuss: EsgQuestionnaireUnternehmensfuehrunggovernanceNominierungsausschuss? = null,
-
     @field:Valid()
     val pruefungsausschuss: EsgQuestionnaireUnternehmensfuehrunggovernancePruefungsausschuss? = null,
-
     @field:Valid()
     val nachhaltigkeitsausschuss: EsgQuestionnaireUnternehmensfuehrunggovernanceNachhaltigkeitsausschuss? = null,
-
     @field:Valid()
     val sonstige: EsgQuestionnaireUnternehmensfuehrunggovernanceSonstige? = null,
-
     @field:Valid()
     val stakeholder: EsgQuestionnaireUnternehmensfuehrunggovernanceStakeholder? = null,
-
     @field:Valid()
     val unternehmensrichtlinien: EsgQuestionnaireUnternehmensfuehrunggovernanceUnternehmensrichtlinien? = null,
-
     @field:Valid()
     val lieferantenauswahl: EsgQuestionnaireUnternehmensfuehrunggovernanceLieferantenauswahl? = null,
-
 )

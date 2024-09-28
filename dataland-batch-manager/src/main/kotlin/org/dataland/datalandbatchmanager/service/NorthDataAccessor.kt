@@ -27,7 +27,11 @@ class NorthDataAccessor(
         )
     }
 
-    private fun downloadFileFromNorthdata(urlSuffx: String, targetFile: File, fileDescription: String) {
+    private fun downloadFileFromNorthdata(
+        urlSuffx: String,
+        targetFile: File,
+        fileDescription: String,
+    ) {
         logger.info("Starting download of $fileDescription.")
         val downloadUrl = URI("$northdataBaseUrl/$urlSuffx").toURL()
         logger.info(

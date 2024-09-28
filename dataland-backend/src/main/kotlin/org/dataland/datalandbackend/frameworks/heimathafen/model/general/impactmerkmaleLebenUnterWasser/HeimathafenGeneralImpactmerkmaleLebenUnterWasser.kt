@@ -10,16 +10,10 @@ import org.dataland.datalandbackend.model.enums.commons.YesNo
  */
 data class HeimathafenGeneralImpactmerkmaleLebenUnterWasser(
     val sdgLebenUnterWasser: YesNo? = null,
-
     val wennNeinBitteBegruenden: String? = null,
-
     val verwendeteSchluesselzahlen: String? = null,
-
     val datenerfassung: String? = null,
-
     val datenPlausibilitaetspruefung: String? = null,
-
     @field:Valid()
     val datenquellen: List<BaseDataPoint<String>>? = null,
-
 )

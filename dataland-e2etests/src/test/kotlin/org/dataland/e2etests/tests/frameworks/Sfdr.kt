@@ -13,13 +13,13 @@ import org.junit.jupiter.api.assertThrows
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class Sfdr {
-
     private val apiAccessor = ApiAccessor()
     private val documentManagerAccessor = DocumentManagerAccessor()
 
     private val listOfOneSfdrDataSet = apiAccessor.testDataProviderForSfdrData.getTData(1)
-    private val listOfOneCompanyInformation = apiAccessor.testDataProviderForSfdrData
-        .getCompanyInformationWithoutIdentifiers(1)
+    private val listOfOneCompanyInformation =
+        apiAccessor.testDataProviderForSfdrData
+            .getCompanyInformationWithoutIdentifiers(1)
 
     @BeforeAll
     fun postTestDocuments() {
@@ -28,16 +28,20 @@ class Sfdr {
 
     @Test
     fun `post a company with Sfdr data and check if the data can be retrieved correctly`() {
-        val listOfUploadInfo = apiAccessor.uploadCompanyAndFrameworkDataForOneFramework(
-            listOfOneCompanyInformation,
-            listOfOneSfdrDataSet,
-            apiAccessor::sfdrUploaderFunction,
-        )
+        val listOfUploadInfo =
+            apiAccessor.uploadCompanyAndFrameworkDataForOneFramework(
+                listOfOneCompanyInformation,
+                listOfOneSfdrDataSet,
+                apiAccessor::sfdrUploaderFunction,
+            )
         val receivedDataMetaInformation = listOfUploadInfo[0].actualStoredDataMetaInfo
-        val downloadedAssociatedData = apiAccessor.dataControllerApiForSfdrData
-            .getCompanyAssociatedSfdrData(receivedDataMetaInformation!!.dataId)
-        val downloadedAssociatedDataType = apiAccessor.metaDataControllerApi
-            .getDataMetaInfo(receivedDataMetaInformation.dataId).dataType
+        val downloadedAssociatedData =
+            apiAccessor.dataControllerApiForSfdrData
+                .getCompanyAssociatedSfdrData(receivedDataMetaInformation!!.dataId)
+        val downloadedAssociatedDataType =
+            apiAccessor.metaDataControllerApi
+                .getDataMetaInfo(receivedDataMetaInformation.dataId)
+                .dataType
 
         assertEquals(receivedDataMetaInformation.companyId, downloadedAssociatedData.companyId)
         assertEquals(receivedDataMetaInformation.dataType, downloadedAssociatedDataType)
@@ -60,24 +64,29 @@ class Sfdr {
         )
     }
 
-    private fun tryToUploadDataWithInvalidInputAndAssertThatItsForbidden(companyName: String, errorMessage: String) {
+    private fun tryToUploadDataWithInvalidInputAndAssertThatItsForbidden(
+        companyName: String,
+        errorMessage: String,
+    ) {
         val companyId = apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId
 
-        val companyInformation = apiAccessor.testDataProviderForSfdrData
-            .getSpecificCompanyByNameFromSfdrPreparedFixtures(companyName)
+        val companyInformation =
+            apiAccessor.testDataProviderForSfdrData
+                .getSpecificCompanyByNameFromSfdrPreparedFixtures(companyName)
 
         val dataSet = companyInformation!!.t
 
         val uploadPair = Pair(dataSet, "2022")
 
-        val exception = assertThrows<ClientException> {
-            apiAccessor.uploadWithWait(
-                companyId = companyId,
-                frameworkData = uploadPair.first,
-                reportingPeriod = uploadPair.second,
-                uploadFunction = apiAccessor::sfdrUploaderFunction,
-            )
-        }
+        val exception =
+            assertThrows<ClientException> {
+                apiAccessor.uploadWithWait(
+                    companyId = companyId,
+                    frameworkData = uploadPair.first,
+                    reportingPeriod = uploadPair.second,
+                    uploadFunction = apiAccessor::sfdrUploaderFunction,
+                )
+            }
 
         val testClientError = exception.response as ClientError<*>
 

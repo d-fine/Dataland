@@ -22,9 +22,7 @@ class ApiClients(
     @Bean
     fun getSfdrDataControllerApi(
         @Qualifier("AuthenticatedOkHttpClient") authenticatedOkHttpClient: OkHttpClient,
-    ): SfdrDataControllerApi {
-        return SfdrDataControllerApi(backendBaseUrl, authenticatedOkHttpClient)
-    }
+    ): SfdrDataControllerApi = SfdrDataControllerApi(backendBaseUrl, authenticatedOkHttpClient)
 
     /**
      * Creates an auto-authenticated version of the CompanyDataControllerApi of the backend
@@ -32,9 +30,7 @@ class ApiClients(
     @Bean
     fun getCompanyDataControllerApi(
         @Qualifier("AuthenticatedOkHttpClient") authenticatedOkHttpClient: OkHttpClient,
-    ): CompanyDataControllerApi {
-        return CompanyDataControllerApi(backendBaseUrl, authenticatedOkHttpClient)
-    }
+    ): CompanyDataControllerApi = CompanyDataControllerApi(backendBaseUrl, authenticatedOkHttpClient)
 
     /**
      * Creates an auto-authenticated version of the MetaDataControllerApi of the backend
@@ -42,7 +38,5 @@ class ApiClients(
     @Bean
     fun getMetaDataControllerApi(
         @Qualifier("AuthenticatedOkHttpClient") authenticatedOkHttpClient: OkHttpClient,
-    ): MetaDataControllerApi {
-        return MetaDataControllerApi(backendBaseUrl, authenticatedOkHttpClient)
-    }
+    ): MetaDataControllerApi = MetaDataControllerApi(backendBaseUrl, authenticatedOkHttpClient)
 }

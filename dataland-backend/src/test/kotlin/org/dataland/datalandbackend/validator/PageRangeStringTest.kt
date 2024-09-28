@@ -5,7 +5,6 @@ import jakarta.validation.Validator
 import org.junit.jupiter.api.Test
 
 class PageRangeStringTest {
-
     private val validator: Validator = Validation.buildDefaultValidatorFactory().validator
 
     private data class PageRangeHolder(

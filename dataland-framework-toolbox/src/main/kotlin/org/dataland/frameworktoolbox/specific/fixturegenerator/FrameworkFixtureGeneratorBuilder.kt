@@ -25,20 +25,23 @@ class FrameworkFixtureGeneratorBuilder(
     private val logger by LoggerDelegate()
     private val generatedTsFiles = mutableListOf<Path>()
 
-    val rootSectionBuilder = FixtureSectionBuilder(
-        parentSection = null,
-        identifier = "root",
-        elements = mutableListOf(),
-    )
-
-    private fun buildIndexTs(indexTsPath: Path) {
-        val freeMarkerContext = mapOf(
-            "frameworkIdentifier" to framework.identifier,
-            "frameworkBaseName" to getNameFromLabel(framework.identifier).capitalizeEn(),
+    val rootSectionBuilder =
+        FixtureSectionBuilder(
+            parentSection = null,
+            identifier = "root",
+            elements = mutableListOf(),
         )
 
-        val freemarkerTemplate = FreeMarker.configuration
-            .getTemplate("/specific/fixturegenerator/index.ts.ftl")
+    private fun buildIndexTs(indexTsPath: Path) {
+        val freeMarkerContext =
+            mapOf(
+                "frameworkIdentifier" to framework.identifier,
+                "frameworkBaseName" to getNameFromLabel(framework.identifier).capitalizeEn(),
+            )
+
+        val freemarkerTemplate =
+            FreeMarker.configuration
+                .getTemplate("/specific/fixturegenerator/index.ts.ftl")
 
         val writer = FileWriter(indexTsPath.toFile())
         generatedTsFiles.add(indexTsPath)
@@ -47,13 +50,15 @@ class FrameworkFixtureGeneratorBuilder(
     }
 
     private fun buildPreparedFixturesTs(preparedFixturesTsPath: Path) {
-        val freeMarkerContext = mapOf(
-            "frameworkIdentifier" to framework.identifier,
-            "frameworkBaseName" to getNameFromLabel(framework.identifier).capitalizeEn(),
-        )
+        val freeMarkerContext =
+            mapOf(
+                "frameworkIdentifier" to framework.identifier,
+                "frameworkBaseName" to getNameFromLabel(framework.identifier).capitalizeEn(),
+            )
 
-        val freemarkerTemplate = FreeMarker.configuration
-            .getTemplate("/specific/fixturegenerator/PreparedFixtures.ts.ftl")
+        val freemarkerTemplate =
+            FreeMarker.configuration
+                .getTemplate("/specific/fixturegenerator/PreparedFixtures.ts.ftl")
 
         if (preparedFixturesTsPath.notExists()) {
             val writer = FileWriter(preparedFixturesTsPath.toFile())
@@ -64,12 +69,14 @@ class FrameworkFixtureGeneratorBuilder(
     }
 
     private fun buildFrameworkGeneratorsTs(frameworkGeneratorTsPath: Path) {
-        val freeMarkerContext = mapOf(
-            "frameworkBaseName" to getNameFromLabel(framework.identifier).capitalizeEn(),
-        )
+        val freeMarkerContext =
+            mapOf(
+                "frameworkBaseName" to getNameFromLabel(framework.identifier).capitalizeEn(),
+            )
 
-        val freemarkerTemplate = FreeMarker.configuration
-            .getTemplate("/specific/fixturegenerator/FrameworkGenerator.ts.ftl")
+        val freemarkerTemplate =
+            FreeMarker.configuration
+                .getTemplate("/specific/fixturegenerator/FrameworkGenerator.ts.ftl")
 
         if (frameworkGeneratorTsPath.notExists()) {
             val writer = FileWriter(frameworkGeneratorTsPath.toFile())
@@ -80,23 +87,26 @@ class FrameworkFixtureGeneratorBuilder(
     }
 
     private fun buildDataFixtures(dataFixturesTsPath: Path) {
-        val imports = rootSectionBuilder.imports +
-            TypeScriptImport("generateFixtureDataset", "@e2e/fixtures/FixtureUtils") +
-            TypeScriptImport(
-                "type ${getNameFromLabel(framework.identifier).capitalizeEn()}" +
-                    "Data",
-                "@clients/backend",
+        val imports =
+            rootSectionBuilder.imports +
+                TypeScriptImport("generateFixtureDataset", "@e2e/fixtures/FixtureUtils") +
+                TypeScriptImport(
+                    "type ${getNameFromLabel(framework.identifier).capitalizeEn()}" +
+                        "Data",
+                    "@clients/backend",
+                )
+
+        val freeMarkerContext =
+            mapOf(
+                "frameworkIdentifier" to framework.identifier,
+                "frameworkBaseName" to getNameFromLabel(framework.identifier).capitalizeEn(),
+                "imports" to TypeScriptImport.mergeImports(imports),
+                "rootSection" to rootSectionBuilder,
             )
 
-        val freeMarkerContext = mapOf(
-            "frameworkIdentifier" to framework.identifier,
-            "frameworkBaseName" to getNameFromLabel(framework.identifier).capitalizeEn(),
-            "imports" to TypeScriptImport.mergeImports(imports),
-            "rootSection" to rootSectionBuilder,
-        )
-
-        val freemarkerTemplate = FreeMarker.configuration
-            .getTemplate("/specific/fixturegenerator/DataFixtures.ts.ftl")
+        val freemarkerTemplate =
+            FreeMarker.configuration
+                .getTemplate("/specific/fixturegenerator/DataFixtures.ts.ftl")
 
         val writer = FileWriter(dataFixturesTsPath.toFile())
         generatedTsFiles.add(dataFixturesTsPath)
@@ -110,8 +120,9 @@ class FrameworkFixtureGeneratorBuilder(
     fun build(into: DatalandRepository) {
         logger.info("Starting to build the fixture generator into the dataland-repository at ${into.path}")
 
-        val frameworkConfigDir = into.path / "dataland-frontend" / "tests" /
-            "e2e" / "fixtures" / "frameworks" / framework.identifier
+        val frameworkConfigDir =
+            into.path / "dataland-frontend" / "tests" /
+                "e2e" / "fixtures" / "frameworks" / framework.identifier
 
         frameworkConfigDir.toFile().mkdirs()
 

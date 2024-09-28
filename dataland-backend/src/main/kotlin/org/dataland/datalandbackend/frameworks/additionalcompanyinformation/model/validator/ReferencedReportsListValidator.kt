@@ -16,8 +16,9 @@ import kotlin.reflect.KClass
 @Constraint(validatedBy = [ReferencedReportsListConstraintValidator::class])
 @Target(AnnotationTarget.FIELD, AnnotationTarget.CLASS)
 annotation class ReferencedReportsListValidator(
-    val message: String = "The list of referenced reports is not complete. Please ensure that any file used as a " +
-        "data source in the dataset is included in the list of referenced reports.",
+    val message: String =
+        "The list of referenced reports is not complete. Please ensure that any file used as a " +
+            "data source in the dataset is included in the list of referenced reports.",
     val groups: Array<KClass<*>> = [],
     val payload: Array<KClass<out Payload>> = [],
 )
@@ -25,10 +26,11 @@ annotation class ReferencedReportsListValidator(
 /**
 * Class holding the validation logic for referenced reports list. It checks if the referenced reports list is complete
 */
-class ReferencedReportsListConstraintValidator :
-    ConstraintValidator<ReferencedReportsListValidator, AdditionalCompanyInformationData> {
-
-    override fun isValid(dataset: AdditionalCompanyInformationData?, context: ConstraintValidatorContext?): Boolean {
+class ReferencedReportsListConstraintValidator : ConstraintValidator<ReferencedReportsListValidator, AdditionalCompanyInformationData> {
+    override fun isValid(
+        dataset: AdditionalCompanyInformationData?,
+        context: ConstraintValidatorContext?,
+    ): Boolean {
         if (dataset == null) {
             return false
         }
@@ -51,14 +53,37 @@ class ReferencedReportsListConstraintValidator :
     }
 
     @Suppress("MaxLineLength", "LongMethod")
-    private fun getExtendedDocumentReferences(dataset: AdditionalCompanyInformationData): List<String?> {
-        return listOf(
-            dataset.general?.general?.fiscalYearDeviation?.dataSource?.fileReference,
-            dataset.general?.general?.fiscalYearEnd?.dataSource?.fileReference,
-            dataset.general?.financialInformation?.equity?.dataSource?.fileReference,
-            dataset.general?.financialInformation?.debt?.dataSource?.fileReference,
-            dataset.general?.financialInformation?.balanceSheetTotal?.dataSource?.fileReference,
-            dataset.general?.financialInformation?.evic?.dataSource?.fileReference,
+    private fun getExtendedDocumentReferences(dataset: AdditionalCompanyInformationData): List<String?> =
+        listOf(
+            dataset.general
+                ?.general
+                ?.fiscalYearDeviation
+                ?.dataSource
+                ?.fileReference,
+            dataset.general
+                ?.general
+                ?.fiscalYearEnd
+                ?.dataSource
+                ?.fileReference,
+            dataset.general
+                ?.financialInformation
+                ?.equity
+                ?.dataSource
+                ?.fileReference,
+            dataset.general
+                ?.financialInformation
+                ?.debt
+                ?.dataSource
+                ?.fileReference,
+            dataset.general
+                ?.financialInformation
+                ?.balanceSheetTotal
+                ?.dataSource
+                ?.fileReference,
+            dataset.general
+                ?.financialInformation
+                ?.evic
+                ?.dataSource
+                ?.fileReference,
         )
-    }
 }

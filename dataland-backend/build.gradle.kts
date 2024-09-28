@@ -73,7 +73,12 @@ tasks.test {
     useJUnitPlatform()
 
     extensions.configure(JacocoTaskExtension::class) {
-        setDestinationFile(layout.buildDirectory.dir("jacoco/jacoco.exec").get().asFile)
+        setDestinationFile(
+            layout.buildDirectory
+                .dir("jacoco/jacoco.exec")
+                .get()
+                .asFile,
+        )
     }
 }
 
@@ -85,7 +90,12 @@ tasks.register<Copy>("getTestData") {
     description = "Task to copy required testing data."
     group = "verification"
     from("$rootDir/testing/data/CompanyInformationWithEutaxonomyNonFinancialsData.json")
-    into(layout.buildDirectory.dir("resources/test").get().toString())
+    into(
+        layout.buildDirectory
+            .dir("resources/test")
+            .get()
+            .toString(),
+    )
 }
 
 tasks.getByName("processTestResources") {
@@ -100,9 +110,16 @@ tasks.register("generateInternalStorageClient", org.openapitools.generator.gradl
     description = "Task to generate clients for the internal storage service."
     group = "clients"
     val internalStorageClientDestinationPackage = "org.dataland.datalandinternalstorage.openApiClient"
-    input = project.file("${project.rootDir}/dataland-internal-storage/internalStorageOpenApi.json")
-        .path
-    outputDir.set(layout.buildDirectory.dir("clients/internal-storage").get().toString())
+    input =
+        project
+            .file("${project.rootDir}/dataland-internal-storage/internalStorageOpenApi.json")
+            .path
+    outputDir.set(
+        layout.buildDirectory
+            .dir("clients/internal-storage")
+            .get()
+            .toString(),
+    )
     packageName.set(internalStorageClientDestinationPackage)
     modelPackage.set("$internalStorageClientDestinationPackage.model")
     apiPackage.set("$internalStorageClientDestinationPackage.api")
@@ -124,9 +141,16 @@ tasks.register("generateExternalStorageClient", org.openapitools.generator.gradl
     description = "Task to generate clients for the external storage service."
     group = "clients"
     val externalStorageClientDestinationPackage = "org.dataland.datalandexternalstorage.openApiClient"
-    input = project.file("${project.rootDir}/dataland-external-storage/externalStorageOpenApi.json")
-        .path
-    outputDir.set(layout.buildDirectory.dir("clients/external-storage").get().toString())
+    input =
+        project
+            .file("${project.rootDir}/dataland-external-storage/externalStorageOpenApi.json")
+            .path
+    outputDir.set(
+        layout.buildDirectory
+            .dir("clients/external-storage")
+            .get()
+            .toString(),
+    )
     packageName.set(externalStorageClientDestinationPackage)
     modelPackage.set("$externalStorageClientDestinationPackage.model")
     apiPackage.set("$externalStorageClientDestinationPackage.api")
@@ -149,9 +173,16 @@ tasks.register("generateCommunityManagerClient", org.openapitools.generator.grad
     description = "Task to generate clients for the community manager service."
     group = "clients"
     val communityManagerClientDestinationPackage = "org.dataland.datalandcommunitymanager.openApiClient"
-    input = project.file("${project.rootDir}/dataland-community-manager/communityManagerOpenApi.json")
-        .path
-    outputDir.set(layout.buildDirectory.dir("clients/community-manager").get().toString())
+    input =
+        project
+            .file("${project.rootDir}/dataland-community-manager/communityManagerOpenApi.json")
+            .path
+    outputDir.set(
+        layout.buildDirectory
+            .dir("clients/community-manager")
+            .get()
+            .toString(),
+    )
     packageName.set(communityManagerClientDestinationPackage)
     modelPackage.set("$communityManagerClientDestinationPackage.model")
     apiPackage.set("$communityManagerClientDestinationPackage.api")
@@ -175,7 +206,12 @@ tasks.register("generateDocumentManagerClient", org.openapitools.generator.gradl
     group = "clients"
     val documentManagerClientDestinationPackage = "org.dataland.documentmanager.openApiClient"
     input = project.file("${project.rootDir}/dataland-document-manager/documentManagerOpenApi.json").path
-    outputDir.set(layout.buildDirectory.dir("clients/document-manager").get().toString())
+    outputDir.set(
+        layout.buildDirectory
+            .dir("clients/document-manager")
+            .get()
+            .toString(),
+    )
     packageName.set(documentManagerClientDestinationPackage)
     modelPackage.set("$documentManagerClientDestinationPackage.model")
     apiPackage.set("$documentManagerClientDestinationPackage.api")
@@ -223,6 +259,6 @@ sourceSets {
 
 ktlint {
     filter {
-        exclude("**/openApiClient/**")
+        exclude("**/openApiClient/**", "**/Activity.kt")
     }
 }

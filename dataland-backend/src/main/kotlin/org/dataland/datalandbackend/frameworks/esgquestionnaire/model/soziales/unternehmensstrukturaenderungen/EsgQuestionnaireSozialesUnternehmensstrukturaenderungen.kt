@@ -10,20 +10,12 @@ import java.math.BigInteger
  */
 data class EsgQuestionnaireSozialesUnternehmensstrukturaenderungen(
     val vorhandenseinKuerzlicherAenderungenDerUnternehmensstruktur: YesNo? = null,
-
     val anzahlUnbefristeterVertraegeInDeutschland: BigInteger? = null,
-
     val anzahlDerVonEinemVerkaufBetroffenenUnbefristetenVertraegeInDeutschland: BigInteger? = null,
-
     val anzahlDerVonEinerAkquisitionBetroffenenUnbefristetenVertraegeInDeutschland: BigInteger? = null,
-
     val anzahlUnbefristeterVertraegeInDerGesamtgruppe: BigInteger? = null,
-
     val anzahlDerVonEinemVerkaufBetroffenenUnbefristetenVertraegeInDerGesamtgruppe: BigInteger? = null,
-
     val anzahlDerVonEinerAkquisitionBetroffenenUnbefristetenVertraegeInDerGesamtgruppe: BigInteger? = null,
-
     val auswirkungenAufAnteilBefristerVertraegeUndFluktuation:
-    YearlyTimeseriesData<AuswirkungenAufAnteilBefristerVertraegeUndFluktuationValues?>? = null,
-
+        YearlyTimeseriesData<AuswirkungenAufAnteilBefristerVertraegeUndFluktuationValues?>? = null,
 )

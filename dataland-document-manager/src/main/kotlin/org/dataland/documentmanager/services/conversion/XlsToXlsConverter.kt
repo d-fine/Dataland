@@ -11,21 +11,30 @@ import org.springframework.web.multipart.MultipartFile
  * Validates the file content of an xlsx document
  */
 @Component
-class XlsToXlsConverter : FileConverter(
-    allowedMimeTypesPerFileExtension = mapOf(
-        "xls" to setOf(
-            "application/vnd.ms-excel",
-            "application/x-tika-msoffice",
-        ),
-    ),
-) {
+class XlsToXlsConverter :
+    FileConverter(
+        allowedMimeTypesPerFileExtension =
+            mapOf(
+                "xls" to
+                    setOf(
+                        "application/vnd.ms-excel",
+                        "application/x-tika-msoffice",
+                    ),
+            ),
+    ) {
     override val logger: Logger = LoggerFactory.getLogger(javaClass)
 
-    override fun validateFileContent(file: MultipartFile, correlationId: String) {
+    override fun validateFileContent(
+        file: MultipartFile,
+        correlationId: String,
+    ) {
         validateFileNotEmpty(file, correlationId)
     }
 
-    private fun validateFileNotEmpty(file: MultipartFile, correlationId: String) {
+    private fun validateFileNotEmpty(
+        file: MultipartFile,
+        correlationId: String,
+    ) {
         logger.info("Validating that excel file is not empty. (correlation ID: $correlationId)")
         file.inputStream.use { inputStream ->
             HSSFWorkbook(inputStream).use { workbook ->
@@ -47,5 +56,8 @@ class XlsToXlsConverter : FileConverter(
         )
     }
 
-    override fun convert(file: MultipartFile, correlationId: String) = file.bytes
+    override fun convert(
+        file: MultipartFile,
+        correlationId: String,
+    ) = file.bytes
 }

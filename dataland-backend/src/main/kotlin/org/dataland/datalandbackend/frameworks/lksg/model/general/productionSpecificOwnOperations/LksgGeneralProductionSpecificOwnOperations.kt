@@ -13,8 +13,6 @@ import kotlin.collections.List
  */
 data class LksgGeneralProductionSpecificOwnOperations(
     val mostImportantProducts: List<LksgProduct>? = null,
-
     @field:Schema(example = JsonExampleFormattingConstants.PROCUREMENT_CATEGORIES_DEFAULT_VALUE)
     val procurementCategories: Map<ProcurementCategoryType, LksgProcurementCategory>? = null,
-
 )

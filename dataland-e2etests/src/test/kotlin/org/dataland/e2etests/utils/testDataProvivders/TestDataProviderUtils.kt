@@ -22,6 +22,7 @@ object LocalDateAdapter {
     @ToJson
     fun toJson(value: LocalDate) = value.toString()
 }
+
 data class CompanyInformationWithT<T>(
     @Json var companyInformation: CompanyInformation,
     @Json var t: T,

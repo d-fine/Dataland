@@ -17,20 +17,22 @@ class SuccessfullyClaimedOwnershipEmailFactoryTest {
     private val numberOfOpenDataRequestsForCompany = "3"
 
     private fun buildTestEmail(): Email {
-        val properties = mapOf(
-            "companyId" to companyId,
-            "companyName" to companyName,
-            "numberOfOpenDataRequestsForCompany" to numberOfOpenDataRequestsForCompany,
-        )
+        val properties =
+            mapOf(
+                "companyId" to companyId,
+                "companyName" to companyName,
+                "numberOfOpenDataRequestsForCompany" to numberOfOpenDataRequestsForCompany,
+            )
 
-        val email = SuccessfullyClaimedOwnershipEmailFactory(
-            proxyPrimaryUrl = proxyPrimaryUrl,
-            senderEmail = senderEmail,
-            senderName = senderName,
-        ).buildEmail(
-            receiverEmail = receiverEmail,
-            properties = properties,
-        )
+        val email =
+            SuccessfullyClaimedOwnershipEmailFactory(
+                proxyPrimaryUrl = proxyPrimaryUrl,
+                senderEmail = senderEmail,
+                senderName = senderName,
+            ).buildEmail(
+                receiverEmail = receiverEmail,
+                properties = properties,
+            )
 
         return email
     }

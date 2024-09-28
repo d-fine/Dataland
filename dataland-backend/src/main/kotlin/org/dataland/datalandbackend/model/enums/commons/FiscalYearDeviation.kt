@@ -9,5 +9,6 @@ import io.swagger.v3.oas.annotations.media.Schema
     enumAsRef = true,
 )
 enum class FiscalYearDeviation {
-    Deviation, NoDeviation
+    Deviation,
+    NoDeviation,
 }

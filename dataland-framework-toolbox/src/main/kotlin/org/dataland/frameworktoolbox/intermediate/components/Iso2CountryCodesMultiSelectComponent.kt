@@ -22,7 +22,6 @@ open class Iso2CountryCodesMultiSelectComponent(
     identifier: String,
     parent: FieldNodeParent,
 ) : ComponentBase(identifier, parent) {
-
     var options: Set<SelectionOption> = mutableSetOf()
     var filePathOfPremadeDropdownDatasets: String = "@/utils/PremadeDropdownDatasets"
 
@@ -37,7 +36,9 @@ open class Iso2CountryCodesMultiSelectComponent(
             ),
         )
     }
+
     private val mappings = "const mappings = getDatasetAsMap(DropdownDatasetIdentifier.CountryCodesIso2);"
+
     override fun generateDefaultViewConfig(sectionConfigBuilder: SectionConfigBuilder) {
         requireDocumentSupportIn(setOf(NoDocumentSupport))
         sectionConfigBuilder.addStandardCellWithValueGetterFactory(
@@ -69,14 +70,15 @@ open class Iso2CountryCodesMultiSelectComponent(
     override fun generateDefaultUploadConfig(uploadCategoryBuilder: UploadCategoryBuilder) {
         requireDocumentSupportIn(setOf(NoDocumentSupport))
         uploadCategoryBuilder.addStandardUploadConfigCell(
-            frameworkUploadOptions = FrameworkUploadOptions(
-                body = "getDataset(DropdownDatasetIdentifier.CountryCodesIso2)",
-                imports =
-                setOf(
-                    TypeScriptImport("DropdownDatasetIdentifier", filePathOfPremadeDropdownDatasets),
-                    TypeScriptImport("getDataset", filePathOfPremadeDropdownDatasets),
+            frameworkUploadOptions =
+                FrameworkUploadOptions(
+                    body = "getDataset(DropdownDatasetIdentifier.CountryCodesIso2)",
+                    imports =
+                        setOf(
+                            TypeScriptImport("DropdownDatasetIdentifier", filePathOfPremadeDropdownDatasets),
+                            TypeScriptImport("getDataset", filePathOfPremadeDropdownDatasets),
+                        ),
                 ),
-            ),
             component = this,
             uploadComponentName = "MultiSelectFormField",
         )
@@ -91,20 +93,20 @@ open class Iso2CountryCodesMultiSelectComponent(
                 nullableFixtureExpression = "dataGenerator.valueOrNull(pickSubsetOfElements($formattedString))",
                 nullable = isNullable,
             ),
-            imports = setOf(
-                TypeScriptImport(
-                    "pickSubsetOfElements",
-                    "@e2e/fixtures/FixtureUtils",
+            imports =
+                setOf(
+                    TypeScriptImport(
+                        "pickSubsetOfElements",
+                        "@e2e/fixtures/FixtureUtils",
+                    ),
                 ),
-            ),
         )
     }
 
-    private fun generateReturnStatement(): String {
-        return "return formatListOfStringsForDatatable(" +
+    private fun generateReturnStatement(): String =
+        "return formatListOfStringsForDatatable(" +
             "${getTypescriptFieldAccessor()}?.map(it => \n" +
             "   getOriginalNameFromTechnicalName(it, mappings)), " +
             "'${escapeEcmaScript(label)}'" +
             ")"
-    }
 }

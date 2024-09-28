@@ -15,26 +15,15 @@ package org.dataland.datalandcommunitymanager.model.dataRequest
  */
 data class StoredDataRequest(
     val dataRequestId: String,
-
     val userId: String,
-
     val userEmailAddress: String?,
-
     val creationTimestamp: Long,
-
     val dataType: String,
-
     val reportingPeriod: String,
-
     val datalandCompanyId: String,
-
     val messageHistory: List<StoredDataRequestMessageObject>,
-
     val dataRequestStatusHistory: List<StoredDataRequestStatusObject>,
-
     val lastModifiedDate: Long,
-
     val requestStatus: RequestStatus,
-
     val accessStatus: AccessStatus,
 )

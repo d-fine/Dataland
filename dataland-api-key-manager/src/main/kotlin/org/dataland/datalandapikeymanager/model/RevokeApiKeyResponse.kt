@@ -11,7 +11,6 @@ import com.fasterxml.jackson.annotation.JsonProperty
 data class RevokeApiKeyResponse(
     @field:JsonProperty(required = true)
     val revokementProcessSuccessful: Boolean,
-
     @field:JsonProperty(required = true)
     val revokementProcessMessage: String,
 )

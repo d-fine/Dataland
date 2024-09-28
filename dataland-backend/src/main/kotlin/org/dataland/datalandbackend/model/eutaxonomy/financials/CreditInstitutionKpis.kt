@@ -11,13 +11,10 @@ import java.math.BigDecimal
 data class CreditInstitutionKpis(
     @field:Valid()
     val tradingPortfolioInPercent: ExtendedDataPoint<BigDecimal>? = null,
-
     @field:Valid()
     val interbankLoansInPercent: ExtendedDataPoint<BigDecimal>? = null,
-
     @field:Valid()
     val tradingPortfolioAndInterbankLoansInPercent: ExtendedDataPoint<BigDecimal>? = null,
-
     @field:Valid()
     val greenAssetRatioInPercent: ExtendedDataPoint<BigDecimal>? = null,
 )

@@ -9,6 +9,5 @@ import org.dataland.datalandbackend.model.p2p.categories.steel.subcategories.P2p
 */
 data class P2pSteel(
     val energy: P2pSteelEnergy? = null,
-
     val technology: P2pSteelTechnology? = null,
 )

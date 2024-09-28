@@ -20,7 +20,7 @@ import org.mockito.Mockito.mock
 import org.mockito.Mockito.`when`
 import org.springframework.security.core.context.SecurityContext
 import org.springframework.security.core.context.SecurityContextHolder
-import java.util.*
+import java.util.UUID
 
 class DataRequestResponseEmailSenderTest {
     private val reportingPeriod = "2022"
@@ -37,24 +37,26 @@ class DataRequestResponseEmailSenderTest {
     @BeforeEach
     fun setupAuthentication() {
         val mockSecurityContext = mock(SecurityContext::class.java)
-        val authenticationMock = AuthenticationMock.mockJwtAuthentication(
-            "userEmail",
-            userId,
-            setOf(DatalandRealmRole.ROLE_USER),
-        )
+        val authenticationMock =
+            AuthenticationMock.mockJwtAuthentication(
+                "userEmail",
+                userId,
+                setOf(DatalandRealmRole.ROLE_USER),
+            )
         `when`(mockSecurityContext.authentication).thenReturn(authenticationMock)
         `when`(authenticationMock.credentials).thenReturn("")
         SecurityContextHolder.setContext(mockSecurityContext)
     }
-    private fun getDataRequestEntityWithDataType(dataType: String): DataRequestEntity {
-        return DataRequestEntity(
+
+    private fun getDataRequestEntityWithDataType(dataType: String): DataRequestEntity =
+        DataRequestEntity(
             userId = userId,
             creationTimestamp = creationTimestamp,
             dataType = dataType,
             reportingPeriod = reportingPeriod,
             datalandCompanyId = companyId,
         )
-    }
+
     private fun checkPropertiesOfDataRequestResponseEmail(
         dataRequestId: String,
         properties: Map<String, String?>,
@@ -70,6 +72,7 @@ class DataRequestResponseEmailSenderTest {
         assertEquals(dataRequestId, properties.getValue("dataRequestId"))
         assertEquals(staleDaysThreshold, properties.getValue("closedInDays"))
     }
+
     private fun getCompanyDataControllerMock(): CompanyDataControllerApi {
         val companyDataControllerMock = mock(CompanyDataControllerApi::class.java)
         `when`(companyDataControllerMock.getCompanyInfo(companyId))
@@ -84,8 +87,8 @@ class DataRequestResponseEmailSenderTest {
         return companyDataControllerMock
     }
 
-    private fun getListOfAllDataTypes(): List<List<String>> {
-        return listOf(
+    private fun getListOfAllDataTypes(): List<List<String>> =
+        listOf(
             listOf("p2p", "WWF Pathways to Paris"),
             listOf("eutaxonomy-financials", "EU Taxonomy for financial companies"),
             listOf("eutaxonomy-non-financials", "EU Taxonomy for non-financial companies"),
@@ -95,7 +98,6 @@ class DataRequestResponseEmailSenderTest {
             listOf("esg-questionnaire", "ESG Questionnaire"),
             listOf("heimathafen", "Heimathafen"),
         )
-    }
 
     private fun getMockCloudEventMessageHandlerAndSetChecks(
         dataType: String,
@@ -112,7 +114,7 @@ class DataRequestResponseEmailSenderTest {
                 ArgumentMatchers.anyString(),
                 ArgumentMatchers.anyString(),
             ),
-        ).then() {
+        ).then {
             val arg1 =
                 objectMapper.readValue(it.getArgument<String>(0), TemplateEmailMessage::class.java)
             val arg2 = it.getArgument<String>(1)
@@ -124,10 +126,10 @@ class DataRequestResponseEmailSenderTest {
             checkPropertiesOfDataRequestResponseEmail(
                 dataRequestId, arg1.properties, dataType, dataTypeDescription,
             )
-            assertEquals(MessageType.SendTemplateEmail, arg2)
+            assertEquals(MessageType.SEND_TEMPLATE_EMAIL, arg2)
             assertEquals(correlationId, arg3)
-            assertEquals(ExchangeName.SendEmail, arg4)
-            assertEquals(RoutingKeyNames.templateEmail, arg5)
+            assertEquals(ExchangeName.SEND_EMAIL, arg4)
+            assertEquals(RoutingKeyNames.TEMPLATE_EMAIL, arg5)
         }
         return cloudEventMessageHandlerMock
     }

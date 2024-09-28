@@ -16,23 +16,31 @@ abstract class MsOfficeToPdfConverterBase(
     private val pathToLibre: String,
     allowedMimeTypesPerFileExtension: Map<String, Set<String>>,
 ) : FileConverter(
-    allowedMimeTypesPerFileExtension = allowedMimeTypesPerFileExtension,
-) {
-    override fun convert(file: MultipartFile, correlationId: String): ByteArray {
+        allowedMimeTypesPerFileExtension = allowedMimeTypesPerFileExtension,
+    ) {
+    override fun convert(
+        file: MultipartFile,
+        correlationId: String,
+    ): ByteArray {
         logger.info("Converting ${file.lowercaseExtension()} to a pdf document. (correlation ID: $correlationId)")
         val outputStream = ByteArrayOutputStream()
 
-        val officeManager: OfficeManager = LocalOfficeManager.builder()
-            .officeHome(pathToLibre)
-            .build()
+        val officeManager: OfficeManager =
+            LocalOfficeManager
+                .builder()
+                .officeHome(pathToLibre)
+                .build()
         officeManager.start()
 
-        val converter = LocalConverter.builder()
-            .officeManager(officeManager)
-            .build()
+        val converter =
+            LocalConverter
+                .builder()
+                .officeManager(officeManager)
+                .build()
 
         file.inputStream.use { inputStream ->
-            converter.convert(inputStream)
+            converter
+                .convert(inputStream)
                 .`as`(converterSourceType)
                 .to(outputStream)
                 .`as`(DefaultDocumentFormatRegistry.PDF)

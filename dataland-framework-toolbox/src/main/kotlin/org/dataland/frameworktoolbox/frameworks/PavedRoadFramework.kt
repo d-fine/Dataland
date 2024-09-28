@@ -39,12 +39,13 @@ abstract class PavedRoadFramework(
     val enabledFeatures: Set<FrameworkGenerationFeatures> = FrameworkGenerationFeatures.ENTRY_SET,
     val isPrivateFramework: Boolean = false,
 ) {
-    val framework = Framework(
-        identifier = identifier,
-        label = label,
-        explanation = explanation,
-        order = order,
-    )
+    val framework =
+        Framework(
+            identifier = identifier,
+            label = label,
+            explanation = explanation,
+            order = order,
+        )
 
     val logger by LoggerDelegate()
 
@@ -66,17 +67,13 @@ abstract class PavedRoadFramework(
      * Retrieve the ComponentGenerationUtils instance for this framework.
      * Can be overwritten to supply a custom, framework-specific instance (to e.g., customize the field-name generation)
      */
-    open fun getComponentGenerationUtils(): ComponentGenerationUtils {
-        return ComponentGenerationUtils()
-    }
+    open fun getComponentGenerationUtils(): ComponentGenerationUtils = ComponentGenerationUtils()
 
     /**
      * Retrieve a list of TemplateComponentFactories that are responsible for converting template rows.
      * Can be overwritten to e.g., insert factories for framework-specific components
      */
-    open fun getComponentFactoriesForIntermediateRepresentation(
-        context: ApplicationContext,
-    ): List<TemplateComponentFactory> {
+    open fun getComponentFactoriesForIntermediateRepresentation(context: ApplicationContext): List<TemplateComponentFactory> {
         val containerBean = context.getBean<ComponentFactoryContainer>()
         return containerBean.factories.reversed()
     }
@@ -91,11 +88,12 @@ abstract class PavedRoadFramework(
         val generationUtils = getComponentGenerationUtils()
         val componentFactories = getComponentFactoriesForIntermediateRepresentation(context)
 
-        val intermediateBuilder = TemplateComponentBuilder(
-            template = template,
-            componentFactories = componentFactories,
-            generationUtils = generationUtils,
-        )
+        val intermediateBuilder =
+            TemplateComponentBuilder(
+                template = template,
+                componentFactories = componentFactories,
+                generationUtils = generationUtils,
+            )
         intermediateBuilder.build(into = framework.root)
         return framework
     }
@@ -111,9 +109,7 @@ abstract class PavedRoadFramework(
     /**
      * Generate the data-model for the framework
      */
-    open fun generateDataModel(framework: Framework): FrameworkDataModelBuilder {
-        return framework.generateDataModel()
-    }
+    open fun generateDataModel(framework: Framework): FrameworkDataModelBuilder = framework.generateDataModel()
 
     /**
      * Can be overwritten to programmatically customize the dataModel
@@ -126,9 +122,7 @@ abstract class PavedRoadFramework(
     /**
      * Generate the QA-model for the framework
      */
-    open fun generateQaModel(framework: Framework): FrameworkQaModelBuilder {
-        return framework.generateQaModel()
-    }
+    open fun generateQaModel(framework: Framework): FrameworkQaModelBuilder = framework.generateQaModel()
 
     /**
      * Can be overwritten to programmatically customize the QA dataModel
@@ -141,16 +135,12 @@ abstract class PavedRoadFramework(
     /**
      * Generate the view-model for the framework
      */
-    open fun generateViewModel(framework: Framework): FrameworkViewConfigBuilder {
-        return framework.generateViewModel()
-    }
+    open fun generateViewModel(framework: Framework): FrameworkViewConfigBuilder = framework.generateViewModel()
 
     /**
      * Generate the upload-model for the framework
      */
-    open fun generateUploadModel(framework: Framework): FrameworkUploadConfigBuilder {
-        return framework.generateUploadModel()
-    }
+    open fun generateUploadModel(framework: Framework): FrameworkUploadConfigBuilder = framework.generateUploadModel()
 
     /**
      * Can be overwritten to programmatically customize the viewModel
@@ -171,9 +161,7 @@ abstract class PavedRoadFramework(
     /**
      * Generate the fixture-generator for the framework
      */
-    open fun generateFakeFixtureGenerator(framework: Framework): FrameworkFixtureGeneratorBuilder {
-        return framework.generateFixtureGenerator()
-    }
+    open fun generateFakeFixtureGenerator(framework: Framework): FrameworkFixtureGeneratorBuilder = framework.generateFixtureGenerator()
 
     /**
      * Can be overwritten to programmatically customize the fixtureGenerator
@@ -216,16 +204,19 @@ abstract class PavedRoadFramework(
         if (referencedReports != null) {
             val referencedReportsPath = referencedReports.getKotlinFieldAccessor()
             val extendedDocumentFileReferences =
-                framework.root.nestedChildren.flatMap { it.getExtendedDocumentReference() }.toList()
+                framework.root.nestedChildren
+                    .flatMap { it.getExtendedDocumentReference() }
+                    .toList()
 
             val validatorPackage = dataModel.rootPackageBuilder.addPackage("validator")
-            val referencedReportValidatorBuilder = ReferencedReportValidatorBuilder(
-                validatorPackage,
-                dataModel.rootDataModelClass,
-                framework.identifier,
-                referencedReportsPath,
-                extendedDocumentFileReferences,
-            )
+            val referencedReportValidatorBuilder =
+                ReferencedReportValidatorBuilder(
+                    validatorPackage,
+                    dataModel.rootDataModelClass,
+                    framework.identifier,
+                    referencedReportsPath,
+                    extendedDocumentFileReferences,
+                )
             validatorPackage.childElements.add(referencedReportValidatorBuilder)
 
             dataModel.rootDataModelClass.annotations.add(
@@ -272,10 +263,11 @@ abstract class PavedRoadFramework(
         val excelTemplate = ExcelTemplate.fromFile(frameworkTemplateCsvFile)
         customizeExcelTemplate(excelTemplate)
 
-        val frameworkIntermediateRepresentation = convertExcelTemplateToToHighLevelComponentRepresentation(
-            template = excelTemplate,
-            context = context,
-        )
+        val frameworkIntermediateRepresentation =
+            convertExcelTemplateToToHighLevelComponentRepresentation(
+                template = excelTemplate,
+                context = context,
+            )
         diagnostics.finalizeDiagnosticStream()
 
         customizeHighLevelIntermediateRepresentation(frameworkIntermediateRepresentation)

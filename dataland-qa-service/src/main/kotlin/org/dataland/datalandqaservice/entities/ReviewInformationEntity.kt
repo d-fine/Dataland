@@ -25,13 +25,12 @@ data class ReviewInformationEntity(
      * The ReviewInformationResponse can optionally hide the reviewerKeycloakId by setting showReviewerKeycloakId
      * to false.
      */
-    fun toReviewInformationResponse(showReviewerKeycloakId: Boolean): ReviewInformationResponse {
-        return ReviewInformationResponse(
+    fun toReviewInformationResponse(showReviewerKeycloakId: Boolean): ReviewInformationResponse =
+        ReviewInformationResponse(
             dataId,
             receptionTime,
             qaStatus,
             if (showReviewerKeycloakId) reviewerKeycloakId else null,
             message,
         )
-    }
 }

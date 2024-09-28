@@ -5,7 +5,8 @@ import org.dataland.frameworktoolbox.intermediate.components.ComponentBase
 
 class DemoComponentGroupApiImpl(
     private val componentGroupApi: ComponentGroupApiImpl = ComponentGroupApiImpl(),
-) : ComponentGroupApi by componentGroupApi, FieldNodeParent {
+) : ComponentGroupApi by componentGroupApi,
+    FieldNodeParent {
     override val children: Sequence<ComponentBase>
         get() = componentGroupApi.children
 

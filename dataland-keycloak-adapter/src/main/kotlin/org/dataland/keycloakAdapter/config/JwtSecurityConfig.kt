@@ -19,10 +19,11 @@ internal class JwtSecurityConfig {
      */
     @Bean
     fun jwtDecoder(properties: OAuth2ResourceServerProperties): JwtDecoder {
-        val jwtDecoder = NimbusJwtDecoder
-            .withJwkSetUri(properties.getJwt().getJwkSetUri())
-            .jwsAlgorithms { algs -> algs.addAll(setOf(SignatureAlgorithm.RS256, SignatureAlgorithm.ES256)) }
-            .build()
+        val jwtDecoder =
+            NimbusJwtDecoder
+                .withJwkSetUri(properties.getJwt().getJwkSetUri())
+                .jwsAlgorithms { algs -> algs.addAll(setOf(SignatureAlgorithm.RS256, SignatureAlgorithm.ES256)) }
+                .build()
         val validators = JwtValidators.createDefaultWithIssuer(properties.jwt.issuerUri)
         jwtDecoder.setJwtValidator(DelegatingOAuth2TokenValidator(validators))
         return jwtDecoder

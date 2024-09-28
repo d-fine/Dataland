@@ -20,13 +20,14 @@ class RelationshipExtractor {
         val mappings = parseCsvToGroupedMap(gleifParser)
 
         val localFinalParentMapping = mappings[GleifRelationshipTypes.IS_ULTIMATELY_CONSOLIDATED_BY] ?: mutableMapOf()
-        val orderOfImportance = listOf(
-            GleifRelationshipTypes.IS_DIRECTLY_CONSOLIDATED_BY,
-            GleifRelationshipTypes.IS_FUNDMANAGED_BY,
-            GleifRelationshipTypes.IS_SUBFUND_OF,
-            GleifRelationshipTypes.IS_INTERNATIONAL_BRANCH_OF,
-            GleifRelationshipTypes.IS_FEEDER_TO,
-        )
+        val orderOfImportance =
+            listOf(
+                GleifRelationshipTypes.IS_DIRECTLY_CONSOLIDATED_BY,
+                GleifRelationshipTypes.IS_FUNDMANAGED_BY,
+                GleifRelationshipTypes.IS_SUBFUND_OF,
+                GleifRelationshipTypes.IS_INTERNATIONAL_BRANCH_OF,
+                GleifRelationshipTypes.IS_FEEDER_TO,
+            )
 
         orderOfImportance.forEach { relationshipType ->
             val relationshipMap = mappings[relationshipType]
@@ -53,8 +54,9 @@ class RelationshipExtractor {
      * relationship type: Map of RelationshipType - (Map of startLEI - endLEI)
      * @param gleifParser The iterator returned from the csv reader to loop through the GleifRelationshipInformation
      */
-    private fun parseCsvToGroupedMap(gleifParser: Iterable<GleifRelationshipInformation>):
-        MutableMap<GleifRelationshipTypes, MutableMap<String, String>> {
+    private fun parseCsvToGroupedMap(
+        gleifParser: Iterable<GleifRelationshipInformation>,
+    ): MutableMap<GleifRelationshipTypes, MutableMap<String, String>> {
         val mappings = mutableMapOf<GleifRelationshipTypes, MutableMap<String, String>>()
         gleifParser.forEach { entry ->
             val relationShipMap = mappings.getOrPut(entry.relationshipType) { mutableMapOf() }
