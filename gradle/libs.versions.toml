@@ -42,7 +42,7 @@ moshi = "1.15.1"
 
 mockito = "5.13.0"
 
-junit-jupiter = "5.10.3"
+junit-jupiter = "5.11.1"
 
 log4j = "2.24.0"
 
