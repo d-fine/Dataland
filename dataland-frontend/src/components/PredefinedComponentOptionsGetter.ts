@@ -1,6 +1,6 @@
 import Card from 'primevue/card';
 import Tooltip from 'primevue/tooltip';
-import { type ComponentOptionsWithObjectProps, type PropType } from 'vue';
+import { type ComponentOptions, type PropType } from 'vue';
 import { humanizeStringOrNumber } from '@/utils/StringFormatter';
 
 /**
@@ -9,7 +9,7 @@ import { humanizeStringOrNumber } from '@/utils/StringFormatter';
  * @param componentName the name of the vue component to generate standard options for
  * @returns a set of pre-defined options for the defineCopmonent method
  */
-export function getComponentOptionsForDatalandInfoCard(componentName: string): ComponentOptionsWithObjectProps {
+export function getComponentOptionsForDatalandInfoCard(componentName: string): ComponentOptions {
   return {
     name: componentName,
     components: { Card },
@@ -34,5 +34,5 @@ export function getComponentOptionsForDatalandInfoCard(componentName: string): C
         return humanizedValue !== '' ? humanizedValue : 'No data has been reported';
       },
     },
-  } as ComponentOptionsWithObjectProps;
+  } as ComponentOptions;
 }
