@@ -40,13 +40,18 @@ describe('As a user, I expect the dataset upload process to behave as I expect',
       let storedCompanyForManyDatasetsCompany: StoredCompany;
 
       before(function uploadOneCompanyWithoutDataAndOneCompanyWithManyDatasets() {
-        let euTaxoFinancialPreparedFixtures: Array<FixtureData<EuTaxonomyFinancialsData>>;
-        let lksgPreparedFixtures: Array<FixtureData<LksgData>>;
+        let euTaxoFinancialPreparedFixture: FixtureData<EuTaxonomyFinancialsData>;
+        let lksgPreparedFixture: FixtureData<LksgData>;
         cy.fixture('CompanyInformationWithEuTaxonomyFinancialsPreparedFixtures').then(function (jsonContent) {
-          euTaxoFinancialPreparedFixtures = jsonContent as Array<FixtureData<EuTaxonomyFinancialsData>>;
+          const euTaxoFinancialPreparedFixtures = jsonContent as Array<FixtureData<EuTaxonomyFinancialsData>>;
+          euTaxoFinancialPreparedFixture = getPreparedFixture(
+            'eu-taxonomy-financials-dataset-with-no-null-fields',
+            euTaxoFinancialPreparedFixtures
+          );
         });
         cy.fixture('CompanyInformationWithLksgPreparedFixtures').then(function (jsonContent) {
-          lksgPreparedFixtures = jsonContent as Array<FixtureData<LksgData>>;
+          const lksgPreparedFixtures = jsonContent as Array<FixtureData<LksgData>>;
+          lksgPreparedFixture = getPreparedFixture('LkSG-date-2022-07-30', lksgPreparedFixtures);
         });
         getKeycloakToken(admin_name, admin_pw).then((token: string) => {
           return uploadCompanyViaApi(token, generateDummyCompanyInformation(testCompanyNameForApiUpload))
@@ -54,14 +59,13 @@ describe('As a user, I expect the dataset upload process to behave as I expect',
               return uploadCompanyViaApi(token, generateDummyCompanyInformation(testCompanyNameForManyDatasetsCompany));
             })
             .then((storedCompany) => {
-              const preparedFixture = getPreparedFixture('eligible-activity-Point-29', euTaxoFinancialPreparedFixtures);
               storedCompanyForManyDatasetsCompany = storedCompany;
               return uploadFrameworkDataForPublicToolboxFramework(
                 EuTaxonomyFinancialsBaseFrameworkDefinition,
                 token,
                 storedCompanyForManyDatasetsCompany.companyId,
                 '2023',
-                preparedFixture.t
+                euTaxoFinancialPreparedFixture.t
               );
             })
             .then((dataMetaInformationOfFirstUpload) => {
@@ -71,27 +75,22 @@ describe('As a user, I expect the dataset upload process to behave as I expect',
               return cy
                 .wait(timeDelayInMillisecondsBeforeNextUploadToAssureDifferentTimestamps)
                 .then(() => {
-                  const preparedFixture = getPreparedFixture(
-                    'eligible-activity-Point-26',
-                    euTaxoFinancialPreparedFixtures
-                  );
                   return uploadFrameworkDataForPublicToolboxFramework(
                     EuTaxonomyFinancialsBaseFrameworkDefinition,
                     token,
                     storedCompanyForManyDatasetsCompany.companyId,
                     '2022',
-                    preparedFixture.t
+                    euTaxoFinancialPreparedFixture.t
                   );
                 })
                 .then((dataMetaInformationOfSecondUpload) => {
                   dataIdOfSecondEuTaxoFinancialsUpload = dataMetaInformationOfSecondUpload.dataId;
-                  const preparedFixture = getPreparedFixture('LkSG-date-2022-07-30', lksgPreparedFixtures);
                   return uploadFrameworkDataForPublicToolboxFramework(
                     LksgBaseFrameworkDefinition,
                     token,
                     storedCompanyForManyDatasetsCompany.companyId,
                     generateReportingPeriod(),
-                    preparedFixture.t
+                    lksgPreparedFixture.t
                   );
                 })
                 .then((dataMetaInformationLksgUpload) => {
@@ -143,9 +142,7 @@ describe('As a user, I expect the dataset upload process to behave as I expect',
         cy.contains('h1', uploadedTestCompanyName);
 
         cy.get('div[id=eutaxonomyDataSetsContainer]').contains('Be the first to create this dataset');
-        cy.get('div[id=eutaxonomyDataSetsContainer]').contains(
-          'Create another dataset for EU Taxonomy for financial companies'
-        );
+        cy.get('div[id=eutaxonomyDataSetsContainer]').contains('Create another dataset for EU Taxonomy Financials');
         cy.get('div[id=eutaxonomyDataSetsContainer]')
           .find("[data-test='createDatasetButton']")
           .should('have.length', 2);
