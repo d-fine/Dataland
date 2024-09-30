@@ -108,8 +108,8 @@ spring-boot-starter-amqp = { module = "org.springframework.boot:spring-boot-star
 
 mailjet-client = "com.mailjet:mailjet-client:5.2.5"
 
-flyway = "org.flywaydb:flyway-database-postgresql:10.18.0"
-flyway-core = "org.flywaydb:flyway-core:10.18.0"
+flyway = "org.flywaydb:flyway-database-postgresql:10.18.2"
+flyway-core = "org.flywaydb:flyway-core:10.18.2"
 
 kotlin-serialization-compiler-plugin-embeddable = { group = "org.jetbrains.kotlin", name = "kotlin-serialization-compiler-plugin-embeddable", version.ref = "kotlin" }
 
