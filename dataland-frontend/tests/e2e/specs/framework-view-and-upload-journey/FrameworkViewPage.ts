@@ -300,7 +300,8 @@ describeIf(
               token,
               companyIdOfAlpha,
               '2019',
-              getPreparedFixture('eligible-activity-Point-29', euTaxoFinancialPreparedFixtures).t
+              getPreparedFixture('eu-taxonomy-financials-dataset-with-no-null-fields', euTaxoFinancialPreparedFixtures)
+                .t
             );
           })
           .then(() => {
