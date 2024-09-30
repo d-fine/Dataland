@@ -20,6 +20,7 @@ include(
     "dataland-email-service",
     "dataland-external-storage",
     "dataland-dummy-eurodat-client",
+    "dataland-data-exporter",
 )
 
 plugins {

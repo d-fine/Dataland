@@ -1014,7 +1014,7 @@
         ],
         "responses": {
           "200": {
-            "description": "TODO.",
+            "description": "Successfully retrieved the number of data requests.",
             "content": {
               "application/json": {
                 "schema": {

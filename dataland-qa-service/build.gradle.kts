@@ -48,6 +48,8 @@ dependencies {
     runtimeOnly(libs.h2)
     testImplementation(Spring.boot.test)
     testImplementation(Spring.rabbitTest)
+    testImplementation(libs.spring.security.test)
+    testImplementation(libs.mockito.kotlin)
     kapt(Spring.boot.configurationProcessor)
 }
 
