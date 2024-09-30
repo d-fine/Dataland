@@ -31,7 +31,8 @@ export function gotoEditForm(companyId: string, expectIncludedFile: boolean): vo
   goToEditFormOfMostRecentDatasetForCompanyAndFramework(companyId, DataTypeEnum.EuTaxonomyFinancials).then(
     (interception) => {
       const referencedReports = assertDefined(
-        (interception?.response?.body as CompanyAssociatedDataEuTaxonomyFinancialsData)?.data?.referencedReports
+        (interception?.response?.body as CompanyAssociatedDataEuTaxonomyFinancialsData)?.data?.general?.general
+          ?.referencedReports
       );
       expect(TEST_PDF_FILE_NAME in referencedReports).to.equal(expectIncludedFile);
       expect(`${TEST_PDF_FILE_NAME}2` in referencedReports).to.equal(true);
