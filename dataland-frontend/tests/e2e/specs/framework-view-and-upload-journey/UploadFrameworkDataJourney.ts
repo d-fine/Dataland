@@ -42,7 +42,7 @@ describe('As a user, I expect the dataset upload process to behave as I expect',
       before(function uploadOneCompanyWithoutDataAndOneCompanyWithManyDatasets() {
         let euTaxoFinancialPreparedFixtures: Array<FixtureData<EuTaxonomyFinancialsData>>;
         let lksgPreparedFixtures: Array<FixtureData<LksgData>>;
-        cy.fixture('CompanyInformationWithEuTaxonomyDataForFinancialsPreparedFixtures').then(function (jsonContent) {
+        cy.fixture('CompanyInformationWithEuTaxonomyFinancialsPreparedFixtures').then(function (jsonContent) {
           euTaxoFinancialPreparedFixtures = jsonContent as Array<FixtureData<EuTaxonomyFinancialsData>>;
         });
         cy.fixture('CompanyInformationWithLksgPreparedFixtures').then(function (jsonContent) {

@@ -19,7 +19,7 @@ describe('Component test for EuTaxonomyFinancialPanel', () => {
     configForEuTaxonomyFinancialsMLDT as MLDTConfig<EuTaxonomyFinancialsData>;
 
   before(function () {
-    cy.fixture('CompanyInformationWithEuTaxonomyDataForFinancialsPreparedFixtures').then(function (jsonContent) {
+    cy.fixture('CompanyInformationWithEuTaxonomyFinancialsPreparedFixtures').then(function (jsonContent) {
       preparedFixtures = jsonContent as Array<FixtureData<EuTaxonomyFinancialsData>>;
     });
   });

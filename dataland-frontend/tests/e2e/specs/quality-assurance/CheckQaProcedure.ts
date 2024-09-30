@@ -32,7 +32,7 @@ describeIf(
     let preparedLksgFixtures: Array<FixtureData<LksgData>>;
 
     before(function () {
-      cy.fixture('CompanyInformationWithEuTaxonomyDataForFinancialsPreparedFixtures').then(function (jsonContent) {
+      cy.fixture('CompanyInformationWithEuTaxonomyFinancialsPreparedFixtures').then(function (jsonContent) {
         preparedEuTaxonomyFixtures = jsonContent as Array<FixtureData<EuTaxonomyFinancialsData>>;
       });
 

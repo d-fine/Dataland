@@ -27,7 +27,7 @@ describeIf(
     const uploadReports = new UploadReports();
 
     before(function () {
-      cy.fixture('CompanyInformationWithEuTaxonomyDataForFinancialsPreparedFixtures').then(function (jsonContent) {
+      cy.fixture('CompanyInformationWithEuTaxonomyFinancialsPreparedFixtures').then(function (jsonContent) {
         const preparedFixtures = jsonContent as Array<FixtureData<EuTaxonomyFinancialsData>>;
         euTaxoFinancialsFixture = getPreparedFixture('company-for-all-types', preparedFixtures);
       });
@@ -102,10 +102,12 @@ describeIf(
               },
               (request) => {
                 const data = assertDefined((request.body as CompanyAssociatedDataEuTaxonomyFinancialsData).data);
-                expect(TEST_PDF_FILE_NAME in assertDefined(data.referencedReports)).to.equal(
+                expect(TEST_PDF_FILE_NAME in assertDefined(data.general?.general?.referencedReports)).to.equal(
                   areBothDocumentsStillUploaded
                 );
-                expect(`${TEST_PDF_FILE_NAME}2` in assertDefined(data.referencedReports)).to.equal(true);
+                expect(`${TEST_PDF_FILE_NAME}2` in assertDefined(data.general?.general?.referencedReports)).to.equal(
+                  true
+                );
               }
             ).as('postDataWithTwoReports');
             cy.get('button[data-test="submitButton"]').click();
@@ -133,10 +135,12 @@ describeIf(
               },
               (request) => {
                 const data = assertDefined((request.body as CompanyAssociatedDataEuTaxonomyFinancialsData).data);
-                expect(TEST_PDF_FILE_NAME in assertDefined(data.referencedReports)).to.equal(
+                expect(TEST_PDF_FILE_NAME in assertDefined(data.general?.general?.referencedReports)).to.equal(
                   areBothDocumentsStillUploaded
                 );
-                expect(`${TEST_PDF_FILE_NAME}2` in assertDefined(data.referencedReports)).to.equal(true);
+                expect(`${TEST_PDF_FILE_NAME}2` in assertDefined(data.general?.general?.referencedReports)).to.equal(
+                  true
+                );
               }
             ).as('postDataWithOneReport');
             cy.get('button[data-test="submitButton"]').click();

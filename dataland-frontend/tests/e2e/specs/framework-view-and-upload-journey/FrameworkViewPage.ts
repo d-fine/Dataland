@@ -350,7 +350,7 @@ describeIf(
     let sfdrPreparedFixtures: Array<FixtureData<SfdrData>>;
 
     before(() => {
-      cy.fixture('CompanyInformationWithEuTaxonomyDataForFinancialsPreparedFixtures').then(function (jsonContent) {
+      cy.fixture('CompanyInformationWithEuTaxonomyFinancialsPreparedFixtures').then(function (jsonContent) {
         euTaxoFinancialPreparedFixtures = jsonContent as Array<FixtureData<EuTaxonomyFinancialsData>>;
       });
       cy.fixture('CompanyInformationWithP2pData').then(function (jsonContent) {

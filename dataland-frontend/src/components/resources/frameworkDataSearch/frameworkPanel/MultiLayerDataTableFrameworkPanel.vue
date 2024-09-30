@@ -118,7 +118,10 @@ const sortedReports = computed(() => {
     }
     case DataTypeEnum.EuTaxonomyFinancials: {
       return sortedDataAndMetaInfo.value
-        .map((singleDataAndMetaInfo) => (singleDataAndMetaInfo.data as EuTaxonomyFinancialsData).referencedReports)
+        .map(
+          (singleDataAndMetaInfo) =>
+            (singleDataAndMetaInfo.data as EuTaxonomyFinancialsData).general?.general?.referencedReports
+        )
         .filter((reports): reports is { [key: string]: CompanyReport } => reports !== null && reports !== undefined);
     }
     case DataTypeEnum.Sfdr: {

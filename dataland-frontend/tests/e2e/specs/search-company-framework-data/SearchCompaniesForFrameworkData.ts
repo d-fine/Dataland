@@ -11,7 +11,7 @@ let companiesWithEuTaxonomyFinancialsData: Array<FixtureData<EuTaxonomyFinancial
 const executionEnvironments: ExecutionEnvironment[] = ['developmentLocal', 'ci', 'developmentCd'];
 
 before(function () {
-  cy.fixture('CompanyInformationWithEuTaxonomyDataForFinancials').then(function (jsonContent) {
+  cy.fixture('CompanyInformationWithEuTaxonomyFinancialsData').then(function (jsonContent) {
     companiesWithEuTaxonomyFinancialsData = jsonContent as Array<FixtureData<EuTaxonomyFinancialsData>>;
   });
 });

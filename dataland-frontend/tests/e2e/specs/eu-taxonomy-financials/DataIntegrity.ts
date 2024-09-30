@@ -18,7 +18,7 @@ import EuTaxonomyFinancialsBaseFrameworkDefinition from '@/frameworks/eu-taxonom
 
 let euTaxonomyFinancialsFixtureForTest: FixtureData<EuTaxonomyFinancialsData>;
 before(function () {
-  cy.fixture('CompanyInformationWithEuTaxonomyDataForFinancialsPreparedFixtures').then(function (jsonContent) {
+  cy.fixture('CompanyInformationWithEuTaxonomyFinancialsPreparedFixtures').then(function (jsonContent) {
     const preparedFixturesEuTaxonomyFinancials = jsonContent as Array<FixtureData<EuTaxonomyFinancialsData>>;
     euTaxonomyFinancialsFixtureForTest = getPreparedFixture(
       'company-for-all-types',
