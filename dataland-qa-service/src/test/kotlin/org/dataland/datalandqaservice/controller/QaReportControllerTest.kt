@@ -190,7 +190,7 @@ class QaReportControllerTest(
                 DataMetaInformation(
                     dataId = dataId,
                     companyId = UUID.randomUUID().toString(),
-                    dataType = DataTypeEnum.eutaxonomyMinusFinancials,
+                    dataType = DataTypeEnum.euMinusTaxonomyMinusFinancials,
                     reportingPeriod = "period",
                     qaStatus = QaStatus.Accepted,
                     currentlyActive = true,

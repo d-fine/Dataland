@@ -1026,7 +1026,6 @@
                 "type": "string",
                 "enum": [
                   "eu-taxonomy-financials",
-                  "eutaxonomy-financials",
                   "eutaxonomy-non-financials",
                   "lksg",
                   "p2p",
@@ -1123,7 +1122,6 @@
                 "type": "string",
                 "enum": [
                   "eu-taxonomy-financials",
-                  "eutaxonomy-financials",
                   "eutaxonomy-non-financials",
                   "lksg",
                   "p2p",
@@ -4497,15 +4495,15 @@
           "message": {
             "type": "string"
           },
-          "receptionTime": {
-            "type": "integer",
-            "format": "int64"
+          "companyName": {
+            "type": "string"
           },
           "companyId": {
             "type": "string"
           },
-          "companyName": {
-            "type": "string"
+          "receptionTime": {
+            "type": "integer",
+            "format": "int64"
           },
           "dataId": {
             "type": "string"
@@ -4596,7 +4594,6 @@
             "type": "string",
             "enum": [
               "eu-taxonomy-financials",
-              "eutaxonomy-financials",
               "eutaxonomy-non-financials",
               "lksg",
               "p2p",
