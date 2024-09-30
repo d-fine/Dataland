@@ -3,6 +3,7 @@ import DatasetOverview from '@/components/pages/DatasetOverview.vue';
 import SearchCompaniesForFrameworkData from '@/components/pages/SearchCompaniesForFrameworkData.vue';
 import type Keycloak from 'keycloak-js';
 import { KEYCLOAK_ROLE_REVIEWER, KEYCLOAK_ROLE_UPLOADER, KEYCLOAK_ROLE_USER } from '@/utils/KeycloakUtils';
+import router from '@/router';
 
 describe('Component tests for the DatasetOverview page', () => {
   it('Should not display the New Dataset button to non-uploader users', () => {
@@ -73,6 +74,7 @@ describe('Component tests for the DatasetOverview page', () => {
     cy.intercept('**/api/companies/meta-information', mockDistinctValues);
     cy.mountWithPlugins(SearchCompaniesForFrameworkData, {
       keycloak: keycloakMock,
+      router: router
     }).then((mounted) => {
       validateTabBar(0, keycloakMock);
       cy.wait(100);
@@ -93,6 +95,7 @@ describe('Component tests for the DatasetOverview page', () => {
     cy.intercept('**/api/companies/meta-information', mockDistinctValues);
     cy.mountWithPlugins(SearchCompaniesForFrameworkData, {
       keycloak: keycloakMock,
+      router: router
     }).then((mounted) => {
       validateTabBar(0, keycloakMock);
       cy.wait(100);
@@ -106,6 +109,7 @@ describe('Component tests for the DatasetOverview page', () => {
     cy.intercept('**/api/companies?**', []);
     cy.mountWithPlugins(DatasetOverview, {
       keycloak: keycloakMock,
+      router: router
     }).then((mounted) => {
       validateTabBar(1, keycloakMock);
       cy.wait(100);
