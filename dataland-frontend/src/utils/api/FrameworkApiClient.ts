@@ -11,11 +11,11 @@ import { type AxiosInstance } from 'axios';
  * @param axiosInstance an Axios instance
  * @returns the unified API client
  */
-export function getUnifiedFrameworkDataControllerFromConfiguration<K extends keyof FrameworkDataTypes>(
-  framework: K,
+export function getUnifiedFrameworkDataControllerFromConfiguration(
+  framework: keyof FrameworkDataTypes,
   configuration: Configuration | undefined,
   axiosInstance?: AxiosInstance
-): PublicFrameworkDataApi<FrameworkDataTypes[K]['data']> {
+): PublicFrameworkDataApi<FrameworkDataTypes[keyof FrameworkDataTypes]['data']> {
   switch (framework) {
     case DataTypeEnum.P2p:
       return translateFrameworkApi<typeof DataTypeEnum.P2p>(
