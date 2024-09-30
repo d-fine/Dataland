@@ -1,1 +1,1946 @@
-[]
+[
+	{
+		"companyInformation": {
+			"companyName": "eu-taxonomy-financials-dataset-with-no-null-fields",
+			"headquarters": "Beverlybury",
+			"headquartersPostalCode": null,
+			"sector": "methodologies",
+			"identifiers": {
+				"Lei": [],
+				"Isin": [
+					"zEbIllrTXbiJ"
+				],
+				"PermId": [
+					"1Zsv4kvaHU"
+				],
+				"Ticker": [],
+				"Duns": [
+					"oeKy1Xgze"
+				],
+				"VatNumber": [],
+				"CompanyRegistrationNumber": []
+			},
+			"countryCode": "PG",
+			"companyContactDetails": [
+				"Lyric_Schiller22@example.com"
+			],
+			"companyAlternativeNames": [
+				"Miller LLC"
+			],
+			"companyLegalForm": "Limited Liability Partnership (LLP)",
+			"website": null,
+			"isTeaserCompany": false
+		},
+		"t": {
+			"general": {
+				"general": {
+					"fiscalYearDeviation": {
+						"value": "NoDeviation",
+						"dataSource": {
+							"page": "318",
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "schemas"
+						},
+						"comment": "copy back-end card",
+						"quality": "Incomplete"
+					},
+					"fiscalYearEnd": {
+						"value": "2024-10-26",
+						"dataSource": {
+							"page": "843",
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "eyeballs"
+						},
+						"comment": "transmit optical transmitter",
+						"quality": "Audited"
+					},
+					"referencedReports": {
+						"ESEFReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "ESEFReport",
+							"publicationDate": "2023-10-15"
+						}
+					},
+					"scopeOfEntities": {
+						"value": "No",
+						"dataSource": {
+							"page": "173",
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "e-business"
+						},
+						"comment": "transmit auxiliary interface",
+						"quality": "Incomplete"
+					},
+					"numberOfEmployees": {
+						"value": 56318,
+						"dataSource": {
+							"page": "316-1196",
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "niches"
+						},
+						"comment": "index cross-platform sensor",
+						"quality": "Incomplete"
+					},
+					"nfrdMandatory": {
+						"value": "Yes",
+						"dataSource": {
+							"page": "153",
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "channels"
+						},
+						"comment": "index primary array",
+						"quality": "Audited"
+					},
+					"assurance": {
+						"value": "LimitedAssurance",
+						"provider": "Bailey Group",
+						"dataSource": {
+							"page": "977-1031",
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "markets"
+						}
+					}
+				}
+			},
+			"creditInstitution": {
+				"tradingAndLoans": {
+					"tradingPortfolio": {
+						"value": 34.49,
+						"dataSource": {
+							"page": "647-953",
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "niches"
+						},
+						"comment": "compress 1080p feed",
+						"quality": "Estimated"
+					},
+					"onDemandInterbankLoans": {
+						"value": 62.43,
+						"dataSource": {
+							"page": "775-1291",
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "interfaces"
+						},
+						"comment": "connect haptic port",
+						"quality": "Estimated"
+					},
+					"tradingPortfolioAndOnDemandInterbankLoans": {
+						"value": 25.41,
+						"dataSource": {
+							"page": "87-434",
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "e-business"
+						},
+						"comment": "override 1080p sensor",
+						"quality": "Estimated"
+					}
+				},
+				"turnoverBasedGreenAssetRatioStock": {
+					"totalRevenueBasedGreenAssetRatio": {
+						"value": 90527.29,
+						"dataSource": {
+							"page": "1150",
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "applications"
+						},
+						"comment": "hack virtual bandwidth",
+						"quality": "Incomplete"
+					},
+					"substantialContributionToClimateChangeMitigationInPercentEligible": {
+						"value": 66.09,
+						"dataSource": {
+							"page": "817-1173",
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "solutions"
+						},
+						"comment": "quantify cross-platform alarm",
+						"quality": "Estimated"
+					},
+					"substantialContributionToClimateChangeMitigationInPercentAligned": {
+						"value": 93.58,
+						"dataSource": {
+							"page": "752",
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "systems"
+						},
+						"comment": "navigate auxiliary microchip",
+						"quality": "NoDataFound"
+					},
+					"substantialContributionToClimateChangeMitigationInPercentOfWhichUseOfProceeds": {
+						"value": 72.03,
+						"dataSource": {
+							"page": "378-1190",
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "markets"
+						},
+						"comment": "navigate mobile feed",
+						"quality": "Estimated"
+					},
+					"substantialContributionToClimateChangeMitigationInPercentEnablingShare": {
+						"value": 28.79,
+						"dataSource": {
+							"page": "447-621",
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "supply-chains"
+						},
+						"comment": "parse mobile panel",
+						"quality": "Reported"
+					},
+					"substantialContributionToClimateChangeMitigationInPercentTransitionalShare": {
+						"value": 51.57,
+						"dataSource": {
+							"page": "327-508",
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "content"
+						},
+						"comment": "program mobile circuit",
+						"quality": "Incomplete"
+					},
+					"substantialContributionToClimateChangeAdaptationInPercentEligible": {
+						"value": 38.13,
+						"dataSource": {
+							"page": "283",
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "networks"
+						},
+						"comment": "synthesize 1080p pixel",
+						"quality": "Audited"
+					},
+					"substantialContributionToClimateChangeAdaptationInPercentAligned": {
+						"value": 4.16,
+						"dataSource": {
+							"page": "42-1040",
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "supply-chains"
+						},
+						"comment": "connect 1080p sensor",
+						"quality": "NoDataFound"
+					},
+					"substantialContributionToClimateChangeAdaptationInPercentOfWhichUseOfProceeds": {
+						"value": 16.67,
+						"dataSource": {
+							"page": "441-1100",
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "deliverables"
+						},
+						"comment": "override cross-platform microchip",
+						"quality": "NoDataFound"
+					},
+					"substantialContributionToClimateChangeAdaptationInPercentEnablingShare": {
+						"value": 83.99,
+						"dataSource": {
+							"page": "506-566",
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "action-items"
+						},
+						"comment": "back up wireless sensor",
+						"quality": "Reported"
+					},
+					"substantialContributionToClimateChangeAdaptationInPercentAdaptingShare": {
+						"value": 44.9,
+						"dataSource": {
+							"page": "894-967",
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "architectures"
+						},
+						"comment": "input back-end card",
+						"quality": "Incomplete"
+					},
+					"substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentEligible": {
+						"value": 99.07,
+						"dataSource": {
+							"page": "294",
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "functionalities"
+						},
+						"comment": "reboot digital interface",
+						"quality": "Audited"
+					},
+					"substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned": {
+						"value": 70.7,
+						"dataSource": {
+							"page": "592-988",
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "communities"
+						},
+						"comment": "synthesize back-end microchip",
+						"quality": "Estimated"
+					},
+					"substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentOfWhichUseOfProceeds": {
+						"value": 18.59,
+						"dataSource": {
+							"page": "980-1184",
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "action-items"
+						},
+						"comment": "navigate mobile pixel",
+						"quality": "Estimated"
+					},
+					"substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentEnablingShare": {
+						"value": 67.05,
+						"dataSource": {
+							"page": "435",
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "infrastructures"
+						},
+						"comment": "back up haptic interface",
+						"quality": "Estimated"
+					},
+					"substantialContributionToTransitionToACircularEconomyInPercentEligible": {
+						"value": 1.95,
+						"dataSource": {
+							"page": "624-921",
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "experiences"
+						},
+						"comment": "calculate cross-platform alarm",
+						"quality": "Incomplete"
+					},
+					"substantialContributionToTransitionToACircularEconomyInPercentAligned": {
+						"value": 69.78,
+						"dataSource": {
+							"page": "722",
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "communities"
+						},
+						"comment": "compress solid state feed",
+						"quality": "Estimated"
+					},
+					"substantialContributionToTransitionToACircularEconomyInPercentOfWhichUseOfProceeds": {
+						"value": 94.65,
+						"dataSource": {
+							"page": "458",
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "paradigms"
+						},
+						"comment": "navigate wireless port",
+						"quality": "Audited"
+					},
+					"substantialContributionToTransitionToACircularEconomyInPercentEnablingShare": {
+						"value": 76.98,
+						"dataSource": {
+							"page": "295",
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "solutions"
+						},
+						"comment": "override cross-platform panel",
+						"quality": "Incomplete"
+					},
+					"substantialContributionToPollutionPreventionAndControlInPercentEligible": {
+						"value": 11.52,
+						"dataSource": {
+							"page": "203-1128",
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "action-items"
+						},
+						"comment": "hack redundant firewall",
+						"quality": "Incomplete"
+					},
+					"substantialContributionToPollutionPreventionAndControlInPercentAligned": {
+						"value": 57.83,
+						"dataSource": {
+							"page": "185-1117",
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "functionalities"
+						},
+						"comment": "back up auxiliary matrix",
+						"quality": "NoDataFound"
+					},
+					"substantialContributionToPollutionPreventionAndControlInPercentOfWhichUseOfProceeds": {
+						"value": 67.29,
+						"dataSource": {
+							"page": "623-1222",
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "partnerships"
+						},
+						"comment": "transmit open-source interface",
+						"quality": "Reported"
+					},
+					"substantialContributionToPollutionPreventionAndControlInPercentEnablingShare": {
+						"value": 48.25,
+						"dataSource": {
+							"page": "781",
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "action-items"
+						},
+						"comment": "calculate solid state driver",
+						"quality": "NoDataFound"
+					},
+					"substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentEligible": {
+						"value": 61.41,
+						"dataSource": {
+							"page": "84",
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "markets"
+						},
+						"comment": "reboot virtual circuit",
+						"quality": "Incomplete"
+					},
+					"substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned": {
+						"value": 36.97,
+						"dataSource": {
+							"page": "531",
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "paradigms"
+						},
+						"comment": "input virtual hard drive",
+						"quality": "Incomplete"
+					},
+					"substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentOfWhichUseOfProceeds": {
+						"value": 18.58,
+						"dataSource": {
+							"page": "322",
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "solutions"
+						},
+						"comment": "calculate digital alarm",
+						"quality": "Reported"
+					},
+					"substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentEnablingShare": {
+						"value": 42.08,
+						"dataSource": {
+							"page": "213-1088",
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "web services"
+						},
+						"comment": "input bluetooth capacitor",
+						"quality": "Estimated"
+					}
+				},
+				"capexBasedGreenAssetRatioStock": {
+					"totalCapexBasedGreenAssetRatio": {
+						"value": 38646.28,
+						"dataSource": {
+							"page": "749-1110",
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "ROI"
+						},
+						"comment": "generate cross-platform card",
+						"quality": "Reported"
+					},
+					"substantialContributionToClimateChangeMitigationInPercentEligible": {
+						"value": 20.65,
+						"dataSource": {
+							"page": "22-206",
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "content"
+						},
+						"comment": "calculate auxiliary application",
+						"quality": "Audited"
+					},
+					"substantialContributionToClimateChangeMitigationInPercentAligned": {
+						"value": 52.4,
+						"dataSource": {
+							"page": "837-1008",
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "networks"
+						},
+						"comment": "transmit redundant bus",
+						"quality": "NoDataFound"
+					},
+					"substantialContributionToClimateChangeMitigationInPercentOfWhichUseOfProceeds": {
+						"value": 6.13,
+						"dataSource": {
+							"page": "857",
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "e-markets"
+						},
+						"comment": "bypass back-end interface",
+						"quality": "Incomplete"
+					},
+					"substantialContributionToClimateChangeMitigationInPercentEnablingShare": {
+						"value": 37.49,
+						"dataSource": {
+							"page": "403-418",
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "blockchains"
+						},
+						"comment": "bypass mobile monitor",
+						"quality": "Audited"
+					},
+					"substantialContributionToClimateChangeMitigationInPercentTransitionalShare": {
+						"value": 80.66,
+						"dataSource": {
+							"page": "603",
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "infrastructures"
+						},
+						"comment": "back up mobile matrix",
+						"quality": "Audited"
+					},
+					"substantialContributionToClimateChangeAdaptationInPercentEligible": {
+						"value": 71.97,
+						"dataSource": {
+							"page": "367-1249",
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "systems"
+						},
+						"comment": "back up neural microchip",
+						"quality": "Audited"
+					},
+					"substantialContributionToClimateChangeAdaptationInPercentAligned": {
+						"value": 13.78,
+						"dataSource": {
+							"page": "1190-1224",
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "bandwidth"
+						},
+						"comment": "input auxiliary feed",
+						"quality": "Audited"
+					},
+					"substantialContributionToClimateChangeAdaptationInPercentOfWhichUseOfProceeds": {
+						"value": 14.64,
+						"dataSource": {
+							"page": "232",
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "networks"
+						},
+						"comment": "index bluetooth protocol",
+						"quality": "Incomplete"
+					},
+					"substantialContributionToClimateChangeAdaptationInPercentEnablingShare": {
+						"value": 5.51,
+						"dataSource": {
+							"page": "1112",
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "e-commerce"
+						},
+						"comment": "connect back-end port",
+						"quality": "Reported"
+					},
+					"substantialContributionToClimateChangeAdaptationInPercentAdaptingShare": {
+						"value": 85.86,
+						"dataSource": {
+							"page": "1118-1264",
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "deliverables"
+						},
+						"comment": "back up cross-platform alarm",
+						"quality": "Audited"
+					},
+					"substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentEligible": {
+						"value": 87.5,
+						"dataSource": {
+							"page": "94",
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "architectures"
+						},
+						"comment": "program bluetooth hard drive",
+						"quality": "Incomplete"
+					},
+					"substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned": {
+						"value": 49.53,
+						"dataSource": {
+							"page": "85",
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "channels"
+						},
+						"comment": "connect virtual sensor",
+						"quality": "Estimated"
+					},
+					"substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentOfWhichUseOfProceeds": {
+						"value": 68.73,
+						"dataSource": {
+							"page": "195-444",
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "web services"
+						},
+						"comment": "synthesize bluetooth protocol",
+						"quality": "Incomplete"
+					},
+					"substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentEnablingShare": {
+						"value": 44.31,
+						"dataSource": {
+							"page": "1099-1296",
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "experiences"
+						},
+						"comment": "connect digital panel",
+						"quality": "Reported"
+					},
+					"substantialContributionToTransitionToACircularEconomyInPercentEligible": {
+						"value": 46.15,
+						"dataSource": {
+							"page": "46",
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "metrics"
+						},
+						"comment": "quantify redundant circuit",
+						"quality": "Audited"
+					},
+					"substantialContributionToTransitionToACircularEconomyInPercentAligned": {
+						"value": 25.85,
+						"dataSource": {
+							"page": "267",
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "interfaces"
+						},
+						"comment": "synthesize cross-platform bus",
+						"quality": "Audited"
+					},
+					"substantialContributionToTransitionToACircularEconomyInPercentOfWhichUseOfProceeds": {
+						"value": 62.76,
+						"dataSource": {
+							"page": "407",
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "users"
+						},
+						"comment": "calculate open-source pixel",
+						"quality": "NoDataFound"
+					},
+					"substantialContributionToTransitionToACircularEconomyInPercentEnablingShare": {
+						"value": 42.76,
+						"dataSource": {
+							"page": "179",
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "systems"
+						},
+						"comment": "parse auxiliary feed",
+						"quality": "NoDataFound"
+					},
+					"substantialContributionToPollutionPreventionAndControlInPercentEligible": {
+						"value": 97.45,
+						"dataSource": {
+							"page": "973-1183",
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "portals"
+						},
+						"comment": "reboot solid state pixel",
+						"quality": "Reported"
+					},
+					"substantialContributionToPollutionPreventionAndControlInPercentAligned": {
+						"value": 80.47,
+						"dataSource": {
+							"page": "1091-1291",
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "schemas"
+						},
+						"comment": "input virtual card",
+						"quality": "NoDataFound"
+					},
+					"substantialContributionToPollutionPreventionAndControlInPercentOfWhichUseOfProceeds": {
+						"value": 1.81,
+						"dataSource": {
+							"page": "1122",
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "schemas"
+						},
+						"comment": "transmit neural port",
+						"quality": "Audited"
+					},
+					"substantialContributionToPollutionPreventionAndControlInPercentEnablingShare": {
+						"value": 2.82,
+						"dataSource": {
+							"page": "1038",
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "ROI"
+						},
+						"comment": "quantify solid state port",
+						"quality": "Estimated"
+					},
+					"substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentEligible": {
+						"value": 73.44,
+						"dataSource": {
+							"page": "590-682",
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "web services"
+						},
+						"comment": "back up multi-byte card",
+						"quality": "Audited"
+					},
+					"substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned": {
+						"value": 42.31,
+						"dataSource": {
+							"page": "670-723",
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "infrastructures"
+						},
+						"comment": "compress 1080p pixel",
+						"quality": "Audited"
+					},
+					"substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentOfWhichUseOfProceeds": {
+						"value": 2.99,
+						"dataSource": {
+							"page": "771",
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "bandwidth"
+						},
+						"comment": "parse multi-byte port",
+						"quality": "Estimated"
+					},
+					"substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentEnablingShare": {
+						"value": 87.99,
+						"dataSource": {
+							"page": "897",
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "schemas"
+						},
+						"comment": "back up auxiliary matrix",
+						"quality": "NoDataFound"
+					}
+				}
+			},
+			"assetManagement": {
+				"turnoverBasedKpi": {
+					"substantialContributionToClimateChangeMitigationInPercentAligned": {
+						"value": 34.75,
+						"dataSource": {
+							"page": "743-767",
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "applications"
+						},
+						"comment": "parse digital hard drive",
+						"quality": "NoDataFound"
+					},
+					"substantialContributionToClimateChangeMitigationInPercentEnablingShare": {
+						"value": 77.93,
+						"dataSource": {
+							"page": "571",
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "lifetime value"
+						},
+						"comment": "navigate wireless protocol",
+						"quality": "Reported"
+					},
+					"substantialContributionToClimateChangeMitigationInPercentTransitionalShare": {
+						"value": 6.43,
+						"dataSource": {
+							"page": "917",
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "technologies"
+						},
+						"comment": "input back-end circuit",
+						"quality": "Estimated"
+					},
+					"substantialContributionToClimateChangeAdaptationInPercentAligned": {
+						"value": 56.45,
+						"dataSource": {
+							"page": "1086",
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "ROI"
+						},
+						"comment": "hack multi-byte monitor",
+						"quality": "NoDataFound"
+					},
+					"substantialContributionToClimateChangeAdaptationInPercentEnablingShare": {
+						"value": 75.36,
+						"dataSource": {
+							"page": "45-546",
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "schemas"
+						},
+						"comment": "calculate online monitor",
+						"quality": "NoDataFound"
+					},
+					"substantialContributionToClimateChangeAdaptationInPercentAdaptingShare": {
+						"value": 7.13,
+						"dataSource": {
+							"page": "420-970",
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "e-business"
+						},
+						"comment": "copy digital matrix",
+						"quality": "Incomplete"
+					},
+					"substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned": {
+						"value": 16.77,
+						"dataSource": {
+							"page": "214-479",
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "paradigms"
+						},
+						"comment": "compress wireless firewall",
+						"quality": "Incomplete"
+					},
+					"substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentEnablingShare": {
+						"value": 74.11,
+						"dataSource": {
+							"page": "560",
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "supply-chains"
+						},
+						"comment": "bypass neural circuit",
+						"quality": "Reported"
+					},
+					"substantialContributionToTransitionToACircularEconomyInPercentAligned": {
+						"value": 91.65,
+						"dataSource": {
+							"page": "863-1140",
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "models"
+						},
+						"comment": "compress open-source bus",
+						"quality": "Reported"
+					},
+					"substantialContributionToTransitionToACircularEconomyInPercentEnablingShare": {
+						"value": 87.75,
+						"dataSource": {
+							"page": "861",
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "e-markets"
+						},
+						"comment": "override cross-platform bus",
+						"quality": "Estimated"
+					},
+					"substantialContributionToPollutionPreventionAndControlInPercentAligned": {
+						"value": 57.36,
+						"dataSource": {
+							"page": "283-1171",
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "solutions"
+						},
+						"comment": "synthesize cross-platform microchip",
+						"quality": "Audited"
+					},
+					"substantialContributionToPollutionPreventionAndControlInPercentEnablingShare": {
+						"value": 42.85,
+						"dataSource": {
+							"page": "400",
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "users"
+						},
+						"comment": "quantify neural application",
+						"quality": "Estimated"
+					},
+					"substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned": {
+						"value": 42.39,
+						"dataSource": {
+							"page": "191",
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "action-items"
+						},
+						"comment": "hack digital pixel",
+						"quality": "Estimated"
+					},
+					"substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentEnablingShare": {
+						"value": 84.2,
+						"dataSource": {
+							"page": "287-1201",
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "models"
+						},
+						"comment": "index primary hard drive",
+						"quality": "Audited"
+					}
+				},
+				"capexBasedKpi": {
+					"substantialContributionToClimateChangeMitigationInPercentAligned": {
+						"value": 22.93,
+						"dataSource": {
+							"page": "76-580",
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "technologies"
+						},
+						"comment": "hack open-source array",
+						"quality": "Estimated"
+					},
+					"substantialContributionToClimateChangeMitigationInPercentEnablingShare": {
+						"value": 48.15,
+						"dataSource": {
+							"page": "811-963",
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "synergies"
+						},
+						"comment": "synthesize virtual bandwidth",
+						"quality": "Incomplete"
+					},
+					"substantialContributionToClimateChangeMitigationInPercentTransitionalShare": {
+						"value": 5.96,
+						"dataSource": {
+							"page": "483",
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "eyeballs"
+						},
+						"comment": "quantify bluetooth panel",
+						"quality": "Reported"
+					},
+					"substantialContributionToClimateChangeAdaptationInPercentAligned": {
+						"value": 87.86,
+						"dataSource": {
+							"page": "877-1288",
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "experiences"
+						},
+						"comment": "compress bluetooth feed",
+						"quality": "Estimated"
+					},
+					"substantialContributionToClimateChangeAdaptationInPercentEnablingShare": {
+						"value": 7.16,
+						"dataSource": {
+							"page": "1035-1204",
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "networks"
+						},
+						"comment": "index virtual system",
+						"quality": "Reported"
+					},
+					"substantialContributionToClimateChangeAdaptationInPercentAdaptingShare": {
+						"value": 26.13,
+						"dataSource": {
+							"page": "323-1007",
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "ROI"
+						},
+						"comment": "hack 1080p interface",
+						"quality": "Reported"
+					},
+					"substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned": {
+						"value": 27.23,
+						"dataSource": {
+							"page": "1057",
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "paradigms"
+						},
+						"comment": "parse optical pixel",
+						"quality": "Estimated"
+					},
+					"substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentEnablingShare": {
+						"value": 33.35,
+						"dataSource": {
+							"page": "1172-1237",
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "paradigms"
+						},
+						"comment": "index neural array",
+						"quality": "Reported"
+					},
+					"substantialContributionToTransitionToACircularEconomyInPercentAligned": {
+						"value": 4.97,
+						"dataSource": {
+							"page": "720",
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "synergies"
+						},
+						"comment": "back up open-source capacitor",
+						"quality": "Estimated"
+					},
+					"substantialContributionToTransitionToACircularEconomyInPercentEnablingShare": {
+						"value": 25.42,
+						"dataSource": {
+							"page": "262",
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "partnerships"
+						},
+						"comment": "connect redundant bandwidth",
+						"quality": "Incomplete"
+					},
+					"substantialContributionToPollutionPreventionAndControlInPercentAligned": {
+						"value": 10.78,
+						"dataSource": {
+							"page": "360-1192",
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "platforms"
+						},
+						"comment": "back up digital application",
+						"quality": "Estimated"
+					},
+					"substantialContributionToPollutionPreventionAndControlInPercentEnablingShare": {
+						"value": 27.72,
+						"dataSource": {
+							"page": "922",
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "supply-chains"
+						},
+						"comment": "input bluetooth matrix",
+						"quality": "Audited"
+					},
+					"substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned": {
+						"value": 3.25,
+						"dataSource": {
+							"page": "1094",
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "e-business"
+						},
+						"comment": "connect haptic interface",
+						"quality": "NoDataFound"
+					},
+					"substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentEnablingShare": {
+						"value": 72.69,
+						"dataSource": {
+							"page": "410-705",
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "infrastructures"
+						},
+						"comment": "bypass haptic sensor",
+						"quality": "Audited"
+					}
+				}
+			},
+			"insuranceReinsurance": {
+				"activities": {
+					"taxonomyEligibleNonLifeInsuranceEconomicActivities": {
+						"value": 60.34,
+						"dataSource": {
+							"page": "537-783",
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "functionalities"
+						},
+						"comment": "back up primary bandwidth",
+						"quality": "Estimated"
+					}
+				},
+				"revenueBasedGrossPremiumsWrittenReInsuranceRevenue": {
+					"substantialContributionToClimateChangeMitigationInPercentAligned": {
+						"value": 67.77,
+						"dataSource": {
+							"page": "937",
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "users"
+						},
+						"comment": "generate 1080p capacitor",
+						"quality": "Estimated"
+					},
+					"substantialContributionToClimateChangeMitigationInPercentEnablingShare": {
+						"value": 22.93,
+						"dataSource": {
+							"page": "378-906",
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "web services"
+						},
+						"comment": "connect multi-byte microchip",
+						"quality": "Reported"
+					},
+					"substantialContributionToClimateChangeMitigationInPercentTransitionalShare": {
+						"value": 33.67,
+						"dataSource": {
+							"page": "188-878",
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "portals"
+						},
+						"comment": "reboot redundant application",
+						"quality": "Estimated"
+					},
+					"substantialContributionToClimateChangeAdaptationInPercentAligned": {
+						"value": 99.11,
+						"dataSource": {
+							"page": "204-254",
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "schemas"
+						},
+						"comment": "compress primary program",
+						"quality": "Estimated"
+					},
+					"substantialContributionToClimateChangeAdaptationInPercentEnablingShare": {
+						"value": 28.46,
+						"dataSource": {
+							"page": "187",
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "technologies"
+						},
+						"comment": "transmit virtual firewall",
+						"quality": "Audited"
+					},
+					"substantialContributionToClimateChangeAdaptationInPercentAdaptingShare": {
+						"value": 27.63,
+						"dataSource": {
+							"page": "1193",
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "eyeballs"
+						},
+						"comment": "parse digital program",
+						"quality": "Incomplete"
+					},
+					"substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned": {
+						"value": 78.2,
+						"dataSource": {
+							"page": "859-1246",
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "platforms"
+						},
+						"comment": "connect cross-platform bandwidth",
+						"quality": "NoDataFound"
+					},
+					"substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentEnablingShare": {
+						"value": 33.42,
+						"dataSource": {
+							"page": "314-880",
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "partnerships"
+						},
+						"comment": "compress wireless array",
+						"quality": "Estimated"
+					},
+					"substantialContributionToTransitionToACircularEconomyInPercentAligned": {
+						"value": 74.11,
+						"dataSource": {
+							"page": "4",
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "metrics"
+						},
+						"comment": "bypass back-end port",
+						"quality": "Incomplete"
+					},
+					"substantialContributionToTransitionToACircularEconomyInPercentEnablingShare": {
+						"value": 51.27,
+						"dataSource": {
+							"page": "36-897",
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "bandwidth"
+						},
+						"comment": "reboot optical matrix",
+						"quality": "Incomplete"
+					},
+					"substantialContributionToPollutionPreventionAndControlInPercentAligned": {
+						"value": 43.8,
+						"dataSource": {
+							"page": "86",
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "infrastructures"
+						},
+						"comment": "hack open-source microchip",
+						"quality": "Estimated"
+					},
+					"substantialContributionToPollutionPreventionAndControlInPercentEnablingShare": {
+						"value": 39.58,
+						"dataSource": {
+							"page": "1097",
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "synergies"
+						},
+						"comment": "back up 1080p hard drive",
+						"quality": "Incomplete"
+					},
+					"substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned": {
+						"value": 75.28,
+						"dataSource": {
+							"page": "165-802",
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "blockchains"
+						},
+						"comment": "program optical array",
+						"quality": "Estimated"
+					},
+					"substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentEnablingShare": {
+						"value": 45.73,
+						"dataSource": {
+							"page": "566-924",
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "lifetime value"
+						},
+						"comment": "quantify redundant port",
+						"quality": "Estimated"
+					}
+				},
+				"capexBasedGrossPremiumsWrittenReInsuranceRevenue": {
+					"substantialContributionToClimateChangeMitigationInPercentAligned": {
+						"value": 30.02,
+						"dataSource": {
+							"page": "1098-1114",
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "content"
+						},
+						"comment": "copy virtual sensor",
+						"quality": "Incomplete"
+					},
+					"substantialContributionToClimateChangeMitigationInPercentEnablingShare": {
+						"value": 10.59,
+						"dataSource": {
+							"page": "182-356",
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "deliverables"
+						},
+						"comment": "generate digital monitor",
+						"quality": "Reported"
+					},
+					"substantialContributionToClimateChangeMitigationInPercentTransitionalShare": {
+						"value": 91.16,
+						"dataSource": {
+							"page": "824",
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "initiatives"
+						},
+						"comment": "copy back-end bandwidth",
+						"quality": "Audited"
+					},
+					"substantialContributionToClimateChangeAdaptationInPercentAligned": {
+						"value": 63.98,
+						"dataSource": {
+							"page": "17-790",
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "action-items"
+						},
+						"comment": "input cross-platform firewall",
+						"quality": "Audited"
+					},
+					"substantialContributionToClimateChangeAdaptationInPercentEnablingShare": {
+						"value": 71.91,
+						"dataSource": {
+							"page": "517",
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "models"
+						},
+						"comment": "program primary feed",
+						"quality": "Reported"
+					},
+					"substantialContributionToClimateChangeAdaptationInPercentAdaptingShare": {
+						"value": 66.33,
+						"dataSource": {
+							"page": "104-1060",
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "markets"
+						},
+						"comment": "bypass bluetooth card",
+						"quality": "Estimated"
+					},
+					"substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned": {
+						"value": 4.83,
+						"dataSource": {
+							"page": "299",
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "markets"
+						},
+						"comment": "calculate bluetooth array",
+						"quality": "Incomplete"
+					},
+					"substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentEnablingShare": {
+						"value": 78.41,
+						"dataSource": {
+							"page": "1132",
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "solutions"
+						},
+						"comment": "compress virtual circuit",
+						"quality": "Incomplete"
+					},
+					"substantialContributionToTransitionToACircularEconomyInPercentAligned": {
+						"value": 98.85,
+						"dataSource": {
+							"page": "82-839",
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "users"
+						},
+						"comment": "copy solid state firewall",
+						"quality": "Reported"
+					},
+					"substantialContributionToTransitionToACircularEconomyInPercentEnablingShare": {
+						"value": 10.12,
+						"dataSource": {
+							"page": "281",
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "models"
+						},
+						"comment": "index bluetooth feed",
+						"quality": "Audited"
+					},
+					"substantialContributionToPollutionPreventionAndControlInPercentAligned": {
+						"value": 39.7,
+						"dataSource": {
+							"page": "1194",
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "eyeballs"
+						},
+						"comment": "parse solid state driver",
+						"quality": "Audited"
+					},
+					"substantialContributionToPollutionPreventionAndControlInPercentEnablingShare": {
+						"value": 63.43,
+						"dataSource": {
+							"page": "905",
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "action-items"
+						},
+						"comment": "reboot redundant alarm",
+						"quality": "Audited"
+					},
+					"substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned": {
+						"value": 31.25,
+						"dataSource": {
+							"page": "1186",
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "convergence"
+						},
+						"comment": "copy neural program",
+						"quality": "Estimated"
+					},
+					"substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentEnablingShare": {
+						"value": 14.96,
+						"dataSource": {
+							"page": "1067-1211",
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "action-items"
+						},
+						"comment": "program bluetooth bandwidth",
+						"quality": "Reported"
+					}
+				}
+			},
+			"investmentFirms": {
+				"turnoverBasedKpi": {
+					"totalAssetsInvestedRevenueFromInvestmentAndServices": {
+						"value": 90079.21,
+						"dataSource": {
+							"page": "22-1018",
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "niches"
+						},
+						"comment": "synthesize online system",
+						"quality": "NoDataFound"
+					},
+					"substantialContributionToClimateChangeMitigationInPercentEligible": {
+						"value": 37.98,
+						"dataSource": {
+							"page": "844",
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "e-business"
+						},
+						"comment": "copy open-source sensor",
+						"quality": "Estimated"
+					},
+					"substantialContributionToClimateChangeMitigationInPercentAligned": {
+						"value": 22.34,
+						"dataSource": {
+							"page": "1114",
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "paradigms"
+						},
+						"comment": "generate haptic feed",
+						"quality": "NoDataFound"
+					},
+					"substantialContributionToClimateChangeMitigationInPercentEnablingShare": {
+						"value": 71.41,
+						"dataSource": {
+							"page": "234",
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "solutions"
+						},
+						"comment": "program virtual array",
+						"quality": "NoDataFound"
+					},
+					"substantialContributionToClimateChangeMitigationInPercentTransitionalShare": {
+						"value": 67.68,
+						"dataSource": {
+							"page": "111-286",
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "action-items"
+						},
+						"comment": "back up bluetooth panel",
+						"quality": "Incomplete"
+					},
+					"substantialContributionToClimateChangeAdaptationInPercentEligible": {
+						"value": 51.04,
+						"dataSource": {
+							"page": "505-1260",
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "paradigms"
+						},
+						"comment": "bypass mobile hard drive",
+						"quality": "NoDataFound"
+					},
+					"substantialContributionToClimateChangeAdaptationInPercentAligned": {
+						"value": 22.49,
+						"dataSource": {
+							"page": "994-1074",
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "partnerships"
+						},
+						"comment": "quantify haptic bandwidth",
+						"quality": "NoDataFound"
+					},
+					"substantialContributionToClimateChangeAdaptationInPercentEnablingShare": {
+						"value": 35.56,
+						"dataSource": {
+							"page": "262-1035",
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "blockchains"
+						},
+						"comment": "navigate mobile array",
+						"quality": "NoDataFound"
+					},
+					"substantialContributionToClimateChangeAdaptationInPercentAdaptingShare": {
+						"value": 62.08,
+						"dataSource": {
+							"page": "810-845",
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "applications"
+						},
+						"comment": "connect multi-byte firewall",
+						"quality": "NoDataFound"
+					},
+					"substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentEligible": {
+						"value": 89.01,
+						"dataSource": {
+							"page": "206",
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "synergies"
+						},
+						"comment": "bypass primary port",
+						"quality": "Estimated"
+					},
+					"substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned": {
+						"value": 23.51,
+						"dataSource": {
+							"page": "348",
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "markets"
+						},
+						"comment": "synthesize 1080p protocol",
+						"quality": "Estimated"
+					},
+					"substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentEnablingShare": {
+						"value": 89.37,
+						"dataSource": {
+							"page": "421-541",
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "bandwidth"
+						},
+						"comment": "program back-end monitor",
+						"quality": "Audited"
+					},
+					"substantialContributionToTransitionToACircularEconomyInPercentEligible": {
+						"value": 88.39,
+						"dataSource": {
+							"page": "467",
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "eyeballs"
+						},
+						"comment": "connect mobile firewall",
+						"quality": "Incomplete"
+					},
+					"substantialContributionToTransitionToACircularEconomyInPercentAligned": {
+						"value": 95.2,
+						"dataSource": {
+							"page": "892-1276",
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "architectures"
+						},
+						"comment": "program 1080p interface",
+						"quality": "Incomplete"
+					},
+					"substantialContributionToTransitionToACircularEconomyInPercentEnablingShare": {
+						"value": 13.63,
+						"dataSource": {
+							"page": "1177",
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "metrics"
+						},
+						"comment": "transmit primary driver",
+						"quality": "Estimated"
+					},
+					"substantialContributionToPollutionPreventionAndControlInPercentEligible": {
+						"value": 46.67,
+						"dataSource": {
+							"page": "785",
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "markets"
+						},
+						"comment": "compress haptic panel",
+						"quality": "Estimated"
+					},
+					"substantialContributionToPollutionPreventionAndControlInPercentAligned": {
+						"value": 77.59,
+						"dataSource": {
+							"page": "379-513",
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "interfaces"
+						},
+						"comment": "generate primary sensor",
+						"quality": "Incomplete"
+					},
+					"substantialContributionToPollutionPreventionAndControlInPercentEnablingShare": {
+						"value": 49.32,
+						"dataSource": {
+							"page": "590-955",
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "bandwidth"
+						},
+						"comment": "bypass neural bandwidth",
+						"quality": "Incomplete"
+					},
+					"substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentEligible": {
+						"value": 98.58,
+						"dataSource": {
+							"page": "2-627",
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "models"
+						},
+						"comment": "parse primary firewall",
+						"quality": "Audited"
+					},
+					"substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned": {
+						"value": 23.93,
+						"dataSource": {
+							"page": "706-927",
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "infrastructures"
+						},
+						"comment": "copy bluetooth circuit",
+						"quality": "Estimated"
+					},
+					"substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentEnablingShare": {
+						"value": 28.02,
+						"dataSource": {
+							"page": "582",
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "infrastructures"
+						},
+						"comment": "bypass back-end array",
+						"quality": "NoDataFound"
+					},
+					"totalAssetsInvestedRevenueFromInvestmentAndServicesInPercentEligible": {
+						"value": 20.74,
+						"dataSource": {
+							"page": "659",
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "niches"
+						},
+						"comment": "transmit mobile driver",
+						"quality": "Estimated"
+					},
+					"totalAssetsInvestedRevenueFromInvestmentAndServicesInPercentAligned": {
+						"value": 27.06,
+						"dataSource": {
+							"page": "96-164",
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "experiences"
+						},
+						"comment": "parse mobile protocol",
+						"quality": "Incomplete"
+					},
+					"totalAssetsInvestedRevenueFromInvestmentAndServicesInPercentEnabling": {
+						"value": 63.31,
+						"dataSource": {
+							"page": "209-812",
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "content"
+						},
+						"comment": "index haptic pixel",
+						"quality": "Estimated"
+					},
+					"totalAssetsInvestedRevenueFromInvestmentAndServicesInPercentTransitional": {
+						"value": 84.14,
+						"dataSource": {
+							"page": "935-1226",
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "functionalities"
+						},
+						"comment": "index auxiliary array",
+						"quality": "Audited"
+					}
+				},
+				"capexBasedKpi": {
+					"totalAssetsInvestedRevenueFromInvestmentAndServices": {
+						"value": 2626.53,
+						"dataSource": {
+							"page": "477",
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "e-commerce"
+						},
+						"comment": "synthesize solid state circuit",
+						"quality": "Estimated"
+					},
+					"substantialContributionToClimateChangeMitigationInPercentEligible": {
+						"value": 70.75,
+						"dataSource": {
+							"page": "117",
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "relationships"
+						},
+						"comment": "input primary driver",
+						"quality": "NoDataFound"
+					},
+					"substantialContributionToClimateChangeMitigationInPercentAligned": {
+						"value": 93.79,
+						"dataSource": {
+							"page": "962-1000",
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "users"
+						},
+						"comment": "index redundant driver",
+						"quality": "Estimated"
+					},
+					"substantialContributionToClimateChangeMitigationInPercentEnablingShare": {
+						"value": 61.67,
+						"dataSource": {
+							"page": "686",
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "web services"
+						},
+						"comment": "bypass multi-byte monitor",
+						"quality": "Estimated"
+					},
+					"substantialContributionToClimateChangeMitigationInPercentTransitionalShare": {
+						"value": 24.41,
+						"dataSource": {
+							"page": "1015",
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "markets"
+						},
+						"comment": "input wireless microchip",
+						"quality": "Incomplete"
+					},
+					"substantialContributionToClimateChangeAdaptationInPercentEligible": {
+						"value": 64.78,
+						"dataSource": {
+							"page": "660-714",
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "action-items"
+						},
+						"comment": "navigate online capacitor",
+						"quality": "Reported"
+					},
+					"substantialContributionToClimateChangeAdaptationInPercentAligned": {
+						"value": 10.53,
+						"dataSource": {
+							"page": "246-1266",
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "platforms"
+						},
+						"comment": "override neural interface",
+						"quality": "Reported"
+					},
+					"substantialContributionToClimateChangeAdaptationInPercentEnablingShare": {
+						"value": 81.43,
+						"dataSource": {
+							"page": "892",
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "networks"
+						},
+						"comment": "calculate back-end transmitter",
+						"quality": "NoDataFound"
+					},
+					"substantialContributionToClimateChangeAdaptationInPercentAdaptingShare": {
+						"value": 73.75,
+						"dataSource": {
+							"page": "919-938",
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "ROI"
+						},
+						"comment": "reboot wireless microchip",
+						"quality": "NoDataFound"
+					},
+					"substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentEligible": {
+						"value": 33.19,
+						"dataSource": {
+							"page": "137-424",
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "paradigms"
+						},
+						"comment": "program redundant program",
+						"quality": "Reported"
+					},
+					"substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned": {
+						"value": 4.73,
+						"dataSource": {
+							"page": "575",
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "deliverables"
+						},
+						"comment": "back up primary bus",
+						"quality": "Reported"
+					},
+					"substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentEnablingShare": {
+						"value": 90.31,
+						"dataSource": {
+							"page": "1165-1221",
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "applications"
+						},
+						"comment": "reboot digital system",
+						"quality": "Estimated"
+					},
+					"substantialContributionToTransitionToACircularEconomyInPercentEligible": {
+						"value": 87.13,
+						"dataSource": {
+							"page": "1039-1205",
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "mindshare"
+						},
+						"comment": "reboot multi-byte transmitter",
+						"quality": "Audited"
+					},
+					"substantialContributionToTransitionToACircularEconomyInPercentAligned": {
+						"value": 4,
+						"dataSource": {
+							"page": "1140-1209",
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "portals"
+						},
+						"comment": "compress optical sensor",
+						"quality": "Audited"
+					},
+					"substantialContributionToTransitionToACircularEconomyInPercentEnablingShare": {
+						"value": 4.58,
+						"dataSource": {
+							"page": "924-1197",
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "experiences"
+						},
+						"comment": "compress optical panel",
+						"quality": "Audited"
+					},
+					"substantialContributionToPollutionPreventionAndControlInPercentEligible": {
+						"value": 96.88,
+						"dataSource": {
+							"page": "751",
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "blockchains"
+						},
+						"comment": "hack online application",
+						"quality": "Reported"
+					},
+					"substantialContributionToPollutionPreventionAndControlInPercentAligned": {
+						"value": 33.67,
+						"dataSource": {
+							"page": "642",
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "platforms"
+						},
+						"comment": "calculate wireless protocol",
+						"quality": "Estimated"
+					},
+					"substantialContributionToPollutionPreventionAndControlInPercentEnablingShare": {
+						"value": 72.13,
+						"dataSource": {
+							"page": "893-965",
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "models"
+						},
+						"comment": "back up virtual feed",
+						"quality": "Incomplete"
+					},
+					"substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentEligible": {
+						"value": 77.24,
+						"dataSource": {
+							"page": "126-883",
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "users"
+						},
+						"comment": "reboot bluetooth hard drive",
+						"quality": "Audited"
+					},
+					"substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned": {
+						"value": 76.95,
+						"dataSource": {
+							"page": "862-1133",
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "supply-chains"
+						},
+						"comment": "navigate cross-platform sensor",
+						"quality": "Reported"
+					},
+					"substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentEnablingShare": {
+						"value": 42.27,
+						"dataSource": {
+							"page": "538",
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "e-business"
+						},
+						"comment": "reboot online firewall",
+						"quality": "Estimated"
+					},
+					"totalAssetsInvestedRevenueFromInvestmentAndServicesInPercentEligible": {
+						"value": 42.84,
+						"dataSource": {
+							"page": "148-951",
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "convergence"
+						},
+						"comment": "transmit solid state alarm",
+						"quality": "Reported"
+					},
+					"totalAssetsInvestedRevenueFromInvestmentAndServicesInPercentAligned": {
+						"value": 30.8,
+						"dataSource": {
+							"page": "143",
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "applications"
+						},
+						"comment": "quantify redundant feed",
+						"quality": "Audited"
+					},
+					"totalAssetsInvestedRevenueFromInvestmentAndServicesInPercentEnabling": {
+						"value": 13.01,
+						"dataSource": {
+							"page": "196",
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "metrics"
+						},
+						"comment": "bypass optical array",
+						"quality": "Incomplete"
+					},
+					"totalAssetsInvestedRevenueFromInvestmentAndServicesInPercentTransitional": {
+						"value": 58.64,
+						"dataSource": {
+							"page": "511",
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "e-markets"
+						},
+						"comment": "transmit virtual pixel",
+						"quality": "Estimated"
+					}
+				}
+			}
+		},
+		"reportingPeriod": "2023"
+	}
+]

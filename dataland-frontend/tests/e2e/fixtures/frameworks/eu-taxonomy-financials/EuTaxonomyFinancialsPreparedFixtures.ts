@@ -9,16 +9,16 @@ import { generateEuTaxonomyFinancialsFixtures } from './EuTaxonomyFinancialsData
  */
 export function generateEuTaxonomyFinancialsPreparedFixtures(): Array<FixtureData<EuTaxonomyFinancialsData>> {
   const preparedFixtures = [];
-  // Note: Put the code for prepared fixture generation below. This file will not be overwritten automatically
-
-  const manipulatorFunctions: Array<
-    (input: FixtureData<EuTaxonomyFinancialsData>) => FixtureData<EuTaxonomyFinancialsData>
-  > = [];
-  const preparedFixturesBeforeManipulation = generateEuTaxonomyFinancialsFixtures(manipulatorFunctions.length);
-
-  for (let i = 0; i < manipulatorFunctions.length; i++) {
-    preparedFixtures.push(manipulatorFunctions[i](preparedFixturesBeforeManipulation[i]));
-  }
-
+  preparedFixtures.push(generateFixturesWithNoNullFields());
   return preparedFixtures;
+}
+
+/**
+ * Generate a prepared Fixture with no null entries
+ * @returns the fixture
+ */
+function generateFixturesWithNoNullFields(): FixtureData<EuTaxonomyFinancialsData> {
+  const newFixture = generateEuTaxonomyFinancialsFixtures(1, 0)[0];
+  newFixture.companyInformation.companyName = 'eu-taxonomy-financials-dataset-with-no-null-fields';
+  return newFixture;
 }
