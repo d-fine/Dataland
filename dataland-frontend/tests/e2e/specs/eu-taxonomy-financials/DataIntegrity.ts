@@ -5,23 +5,23 @@ import {
   Configuration,
   type DataMetaInformation,
   DataTypeEnum,
-  EuTaxonomyFinancialsDataControllerApi,
   type EuTaxonomyFinancialsData,
+  EuTaxonomyFinancialsDataControllerApi,
 } from '@clients/backend';
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from '@e2e/utils/CompanyUpload';
 import { assignCompanyOwnershipToDatalandAdmin, isDatasetApproved } from '@e2e/utils/CompanyRolesUtils';
 import { submitButton } from '@sharedUtils/components/SubmitButton';
-import { uploadFrameworkDataForPublicToolboxFramework } from '@e2e/utils/FrameworkUpload';
+import { uploadGenericFrameworkData } from '@e2e/utils/FrameworkUpload';
 import { compareObjectKeysAndValuesDeep } from '@e2e/utils/GeneralUtils';
 import { type FixtureData, getPreparedFixture } from '@sharedUtils/Fixtures';
-import EuTaxonomyFinancialsBaseFrameworkDefinition from '@/frameworks/eu-taxonomy-financials/BaseFrameworkDefinition';
+import { getBasePublicFrameworkDefinition } from '@/frameworks/BasePublicFrameworkRegistry';
 
 let euTaxonomyFinancialsFixtureForTest: FixtureData<EuTaxonomyFinancialsData>;
 before(function () {
   cy.fixture('CompanyInformationWithEuTaxonomyFinancialsPreparedFixtures').then(function (jsonContent) {
     const preparedFixturesEuTaxonomyFinancials = jsonContent as Array<FixtureData<EuTaxonomyFinancialsData>>;
     euTaxonomyFinancialsFixtureForTest = getPreparedFixture(
-      'company-for-all-types',
+      'eu-taxonomy-financials-dataset-with-no-null-fields',
       preparedFixturesEuTaxonomyFinancials
     );
   });
@@ -46,25 +46,26 @@ describeIf(
         getKeycloakToken(admin_name, admin_pw).then((token: string) => {
           return uploadCompanyViaApi(token, generateDummyCompanyInformation(testCompanyName)).then((storedCompany) => {
             return assignCompanyOwnershipToDatalandAdmin(token, storedCompany.companyId).then(() => {
-              return uploadFrameworkDataForPublicToolboxFramework(
-                EuTaxonomyFinancialsBaseFrameworkDefinition,
+              return uploadGenericFrameworkData(
                 token,
                 storedCompany.companyId,
                 '2023',
                 euTaxonomyFinancialsFixtureForTest.t,
-                true
+                (config) =>
+                  getBasePublicFrameworkDefinition(DataTypeEnum.EuTaxonomyFinancials)!.getPublicFrameworkApiClient(
+                    config
+                  )
               ).then((dataMetaInformation) => {
-                cy.intercept(`**/api/data/${DataTypeEnum.EuTaxonomyFinancials}/${dataMetaInformation.dataId}`).as(
-                  'fetchDataForPrefill'
-                );
-                cy.visitAndCheckAppMount(
-                  '/companies/' +
-                    storedCompany.companyId +
-                    '/frameworks/' +
-                    DataTypeEnum.EuTaxonomyFinancials +
-                    '/upload?templateDataId=' +
-                    dataMetaInformation.dataId
-                );
+                cy.intercept(`**/api/data/${DataTypeEnum.EuTaxonomyFinancials}/${dataMetaInformation.dataId}**`)
+                  .as('fetchDataForPrefill')
+                  .visitAndCheckAppMount(
+                    '/companies/' +
+                      storedCompany.companyId +
+                      '/frameworks/' +
+                      DataTypeEnum.EuTaxonomyFinancials +
+                      '/upload?templateDataId=' +
+                      dataMetaInformation.dataId
+                  );
                 cy.wait('@fetchDataForPrefill', { timeout: Cypress.env('medium_timeout_in_ms') as number });
                 cy.get('h1').should('contain', testCompanyName);
                 cy.intercept({
