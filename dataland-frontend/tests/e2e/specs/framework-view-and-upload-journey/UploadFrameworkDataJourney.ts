@@ -174,7 +174,7 @@ describe('As a user, I expect the dataset upload process to behave as I expect',
         dataIdOfLksgDataset: string
       ): void {
         cy.get('div[id=eutaxonomyDataSetsContainer')
-          .find(`a.text-primary:contains(financial companies)`)
+          .find(`a.text-primary:contains(EU Taxonomy Financials)`)
           .eq(0)
           .click({ force: true });
         cy.contains('h1', storedCompanyForTest.companyInformation.companyName)
@@ -186,7 +186,7 @@ describe('As a user, I expect the dataset upload process to behave as I expect',
           );
         cy.go('back');
         cy.get('div[id=eutaxonomyDataSetsContainer')
-          .find(`a.text-primary:contains(financial companies)`)
+          .find(`a.text-primary:contains(EU Taxonomy Financials)`)
           .eq(1)
           .click({ force: true });
         cy.contains('h1', storedCompanyForTest.companyInformation.companyName)
@@ -213,7 +213,7 @@ describe('As a user, I expect the dataset upload process to behave as I expect',
        */
       function checkIfDropDownSwitchRendersData(): void {
         cy.get('div[data-test="chooseFrameworkDropdown"]').click();
-        cy.get("li:contains('EU Taxonomy for financial companies')").click();
+        cy.get("li:contains('EU Taxonomy Financials')").click();
         cy.get('td[data-cell-label="Fiscal Year End"]').should('be.visible');
 
         cy.get('div[data-test="chooseFrameworkDropdown"]').click();
