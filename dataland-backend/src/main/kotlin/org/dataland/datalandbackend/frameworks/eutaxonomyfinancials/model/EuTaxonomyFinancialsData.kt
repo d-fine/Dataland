@@ -3,11 +3,15 @@ package org.dataland.datalandbackend.frameworks.eutaxonomyfinancials.model
 
 import jakarta.validation.Valid
 import org.dataland.datalandbackend.annotations.DataType
-import org.dataland.datalandbackend.frameworks.eutaxonomyfinancials.model.assetManagement.EuTaxonomyFinancialsAssetManagement
-import org.dataland.datalandbackend.frameworks.eutaxonomyfinancials.model.creditInstitution.EuTaxonomyFinancialsCreditInstitution
+import org.dataland.datalandbackend.frameworks.eutaxonomyfinancials.model.assetManagement
+    .EuTaxonomyFinancialsAssetManagement
+import org.dataland.datalandbackend.frameworks.eutaxonomyfinancials.model.creditInstitution
+    .EuTaxonomyFinancialsCreditInstitution
 import org.dataland.datalandbackend.frameworks.eutaxonomyfinancials.model.general.EuTaxonomyFinancialsGeneral
-import org.dataland.datalandbackend.frameworks.eutaxonomyfinancials.model.insuranceReinsurance.EuTaxonomyFinancialsInsuranceReinsurance
-import org.dataland.datalandbackend.frameworks.eutaxonomyfinancials.model.investmentFirms.EuTaxonomyFinancialsInvestmentFirms
+import org.dataland.datalandbackend.frameworks.eutaxonomyfinancials.model.insuranceReinsurance
+    .EuTaxonomyFinancialsInsuranceReinsurance
+import org.dataland.datalandbackend.frameworks.eutaxonomyfinancials.model.investmentFirms
+    .EuTaxonomyFinancialsInvestmentFirms
 import org.dataland.datalandbackend.frameworks.eutaxonomyfinancials.model.validator.ReferencedReportsListValidator
 
 /**
