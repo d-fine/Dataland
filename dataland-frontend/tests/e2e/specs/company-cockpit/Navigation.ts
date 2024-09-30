@@ -52,7 +52,7 @@ describeIf(
     it('From the company cockpit page visit a view page', () => {
       cy.ensureLoggedIn(uploader_name, uploader_pw);
       visitCockpitForCompanyAlpha();
-      cy.get("[data-test='eutaxonomy-non-financials-summary-panel']").click();
+      cy.get(`[data-test='${DataTypeEnum.EutaxonomyNonFinancials}-summary-panel']`).click();
       cy.url().should(
         'contain',
         `/companies/${alphaCompanyIdAndName.companyId}/frameworks/${DataTypeEnum.EutaxonomyNonFinancials}`
@@ -63,7 +63,7 @@ describeIf(
     it('From the company cockpit page visit an upload page', () => {
       cy.ensureLoggedIn(uploader_name, uploader_pw);
       visitCockpitForCompanyAlpha();
-      cy.get("[data-test='eutaxonomy-financials-summary-panel'] a").click();
+      cy.get(`[data-test='${DataTypeEnum.EuTaxonomyFinancials}-summary-panel'] a`).click();
       cy.url().should(
         'contain',
         `/companies/${alphaCompanyIdAndName.companyId}/frameworks/${DataTypeEnum.EuTaxonomyFinancials}/upload`
