@@ -14,11 +14,11 @@ data class EuTaxonomyFinancialsInsurancereinsuranceCapexBasedGrossPremiumsWritte
     QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
 
     @field:Valid()
-    val substantialContributionToClimateChangeMitigationInPercentEnablingShare:
+    val substantialContributionToClimateChangeMitigationInPercentOfWhichEnabling:
     QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
 
     @field:Valid()
-    val substantialContributionToClimateChangeMitigationInPercentTransitionalShare:
+    val substantialContributionToClimateChangeMitigationInPercentOfWhichTransitional:
     QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
 
     @field:Valid()
@@ -26,11 +26,7 @@ data class EuTaxonomyFinancialsInsurancereinsuranceCapexBasedGrossPremiumsWritte
     QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
 
     @field:Valid()
-    val substantialContributionToClimateChangeAdaptationInPercentEnablingShare:
-    QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
-
-    @field:Valid()
-    val substantialContributionToClimateChangeAdaptationInPercentAdaptingShare:
+    val substantialContributionToClimateChangeAdaptationInPercentOfWhichEnabling:
     QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
 
     @field:Valid()
@@ -38,7 +34,7 @@ data class EuTaxonomyFinancialsInsurancereinsuranceCapexBasedGrossPremiumsWritte
     QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
 
     @field:Valid()
-    val substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentEnablingShare:
+    val substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentOfWhichEnabling:
     QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
 
     @field:Valid()
@@ -46,7 +42,7 @@ data class EuTaxonomyFinancialsInsurancereinsuranceCapexBasedGrossPremiumsWritte
     QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
 
     @field:Valid()
-    val substantialContributionToTransitionToACircularEconomyInPercentEnablingShare:
+    val substantialContributionToTransitionToACircularEconomyInPercentOfWhichEnabling:
     QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
 
     @field:Valid()
@@ -54,7 +50,7 @@ data class EuTaxonomyFinancialsInsurancereinsuranceCapexBasedGrossPremiumsWritte
     QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
 
     @field:Valid()
-    val substantialContributionToPollutionPreventionAndControlInPercentEnablingShare:
+    val substantialContributionToPollutionPreventionAndControlInPercentOfWhichEnabling:
     QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
 
     @field:Valid()
@@ -62,7 +58,7 @@ data class EuTaxonomyFinancialsInsurancereinsuranceCapexBasedGrossPremiumsWritte
     QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
 
     @field:Valid()
-    val substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentEnablingShare:
+    val substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentOfWhichEnabling:
     QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
 
 )

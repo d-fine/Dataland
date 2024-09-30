@@ -2,11 +2,11 @@
 package org.dataland.datalandqaservice.frameworks.eutaxonomyfinancials.model.insuranceReinsurance
 
 import jakarta.validation.Valid
-import org.dataland.datalandqaservice.frameworks.eutaxonomyfinancials.model.insuranceReinsurance.activities
-    .EuTaxonomyFinancialsInsurancereinsuranceActivities
 import org.dataland.datalandqaservice.frameworks.eutaxonomyfinancials.model.insuranceReinsurance
     .capexBasedGrossPremiumsWrittenReInsuranceRevenue
     .EuTaxonomyFinancialsInsurancereinsuranceCapexBasedGrossPremiumsWrittenReInsuranceRevenue
+import org.dataland.datalandqaservice.frameworks.eutaxonomyfinancials.model.insuranceReinsurance.general
+    .EuTaxonomyFinancialsInsurancereinsuranceGeneral
 import org.dataland.datalandqaservice.frameworks.eutaxonomyfinancials.model.insuranceReinsurance
     .revenueBasedGrossPremiumsWrittenReInsuranceRevenue
     .EuTaxonomyFinancialsInsurancereinsuranceRevenueBasedGrossPremiumsWrittenReInsuranceRevenue
@@ -16,7 +16,7 @@ import org.dataland.datalandqaservice.frameworks.eutaxonomyfinancials.model.insu
  */
 data class EuTaxonomyFinancialsInsuranceReinsurance(
     @field:Valid()
-    val activities: EuTaxonomyFinancialsInsurancereinsuranceActivities? = null,
+    val general: EuTaxonomyFinancialsInsurancereinsuranceGeneral? = null,
 
     @field:Valid()
     val revenueBasedGrossPremiumsWrittenReInsuranceRevenue:

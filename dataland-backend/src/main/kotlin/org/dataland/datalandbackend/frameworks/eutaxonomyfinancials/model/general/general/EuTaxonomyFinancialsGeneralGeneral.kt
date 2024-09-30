@@ -8,6 +8,7 @@ import org.dataland.datalandbackend.model.datapoints.ExtendedDataPoint
 import org.dataland.datalandbackend.model.documents.CompanyReport
 import org.dataland.datalandbackend.model.enums.commons.YesNo
 import org.dataland.datalandbackend.utils.JsonExampleFormattingConstants
+import org.dataland.datalandbackend.validator.MinimumValue
 import java.math.BigDecimal
 import java.time.LocalDate
 
@@ -15,6 +16,8 @@ import java.time.LocalDate
  * The data-model for the General section
  */
 data class EuTaxonomyFinancialsGeneralGeneral(
+    val reportingPeriod: LocalDate? = null,
+
     @field:Valid()
     val fiscalYearDeviation: ExtendedDataPoint<EuTaxonomyFinancialsGeneralGeneralFiscalYearDeviationOptions?>? = null,
 
@@ -26,15 +29,16 @@ data class EuTaxonomyFinancialsGeneralGeneral(
     val referencedReports: Map<String, CompanyReport>? = null,
 
     @field:Valid()
-    val scopeOfEntities: ExtendedDataPoint<YesNo?>? = null,
+    val areAllGroupEntitiesCovered: ExtendedDataPoint<YesNo?>? = null,
 
+    @field:MinimumValue(minimumValue = 0)
     @field:Valid()
     val numberOfEmployees: ExtendedDataPoint<BigDecimal?>? = null,
 
     @field:Valid()
-    val nfrdMandatory: ExtendedDataPoint<YesNo?>? = null,
+    val isNfrdMandatory: ExtendedDataPoint<YesNo?>? = null,
 
     @field:Valid()
-    val assurance: AssuranceDataPoint? = null,
+    val levelOfAssurance: AssuranceDataPoint? = null,
 
 )

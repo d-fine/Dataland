@@ -13,41 +13,40 @@ data class EuTaxonomyFinancialsInsurancereinsuranceCapexBasedGrossPremiumsWritte
     val substantialContributionToClimateChangeMitigationInPercentAligned: ExtendedDataPoint<BigDecimal?>? = null,
 
     @field:Valid()
-    val substantialContributionToClimateChangeMitigationInPercentEnablingShare: ExtendedDataPoint<BigDecimal?>? = null,
+    val substantialContributionToClimateChangeMitigationInPercentOfWhichEnabling:
+    ExtendedDataPoint<BigDecimal?>? = null,
 
     @field:Valid()
-    val substantialContributionToClimateChangeMitigationInPercentTransitionalShare:
+    val substantialContributionToClimateChangeMitigationInPercentOfWhichTransitional:
     ExtendedDataPoint<BigDecimal?>? = null,
 
     @field:Valid()
     val substantialContributionToClimateChangeAdaptationInPercentAligned: ExtendedDataPoint<BigDecimal?>? = null,
 
     @field:Valid()
-    val substantialContributionToClimateChangeAdaptationInPercentEnablingShare: ExtendedDataPoint<BigDecimal?>? = null,
-
-    @field:Valid()
-    val substantialContributionToClimateChangeAdaptationInPercentAdaptingShare: ExtendedDataPoint<BigDecimal?>? = null,
+    val substantialContributionToClimateChangeAdaptationInPercentOfWhichEnabling:
+    ExtendedDataPoint<BigDecimal?>? = null,
 
     @field:Valid()
     val substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned:
     ExtendedDataPoint<BigDecimal?>? = null,
 
     @field:Valid()
-    val substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentEnablingShare:
+    val substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentOfWhichEnabling:
     ExtendedDataPoint<BigDecimal?>? = null,
 
     @field:Valid()
     val substantialContributionToTransitionToACircularEconomyInPercentAligned: ExtendedDataPoint<BigDecimal?>? = null,
 
     @field:Valid()
-    val substantialContributionToTransitionToACircularEconomyInPercentEnablingShare:
+    val substantialContributionToTransitionToACircularEconomyInPercentOfWhichEnabling:
     ExtendedDataPoint<BigDecimal?>? = null,
 
     @field:Valid()
     val substantialContributionToPollutionPreventionAndControlInPercentAligned: ExtendedDataPoint<BigDecimal?>? = null,
 
     @field:Valid()
-    val substantialContributionToPollutionPreventionAndControlInPercentEnablingShare:
+    val substantialContributionToPollutionPreventionAndControlInPercentOfWhichEnabling:
     ExtendedDataPoint<BigDecimal?>? = null,
 
     @field:Valid()
@@ -55,7 +54,7 @@ data class EuTaxonomyFinancialsInsurancereinsuranceCapexBasedGrossPremiumsWritte
     ExtendedDataPoint<BigDecimal?>? = null,
 
     @field:Valid()
-    val substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentEnablingShare:
+    val substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentOfWhichEnabling:
     ExtendedDataPoint<BigDecimal?>? = null,
 
 )

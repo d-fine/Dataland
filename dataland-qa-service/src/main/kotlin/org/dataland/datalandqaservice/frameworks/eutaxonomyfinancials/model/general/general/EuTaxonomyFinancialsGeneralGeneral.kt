@@ -24,12 +24,12 @@ data class EuTaxonomyFinancialsGeneralGeneral(
     val referencedReports: QaReportDataPoint<Map<String, CompanyReport>>? = null,
 
     @field:Valid()
-    val scopeOfEntities: QaReportDataPoint<ExtendedDataPointYesNo?>? = null,
+    val areAllGroupEntitiesCovered: QaReportDataPoint<ExtendedDataPointYesNo?>? = null,
 
     @field:Valid()
     val numberOfEmployees: QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
 
     @field:Valid()
-    val nfrdMandatory: QaReportDataPoint<ExtendedDataPointYesNo?>? = null,
+    val isNfrdMandatory: QaReportDataPoint<ExtendedDataPointYesNo?>? = null,
 
 )

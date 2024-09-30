@@ -3,12 +3,14 @@ package org.dataland.datalandbackend.frameworks.eutaxonomyfinancials.model.inves
 
 import jakarta.validation.Valid
 import org.dataland.datalandbackend.model.datapoints.ExtendedDataPoint
+import org.dataland.datalandbackend.validator.MinimumValue
 import java.math.BigDecimal
 
 /**
  * The data-model for the TurnoverBasedKpi section
  */
 data class EuTaxonomyFinancialsInvestmentfirmsTurnoverBasedKpi(
+    @field:MinimumValue(minimumValue = 0)
     @field:Valid()
     val totalAssetsInvestedRevenueFromInvestmentAndServices: ExtendedDataPoint<BigDecimal?>? = null,
 
@@ -19,10 +21,11 @@ data class EuTaxonomyFinancialsInvestmentfirmsTurnoverBasedKpi(
     val substantialContributionToClimateChangeMitigationInPercentAligned: ExtendedDataPoint<BigDecimal?>? = null,
 
     @field:Valid()
-    val substantialContributionToClimateChangeMitigationInPercentEnablingShare: ExtendedDataPoint<BigDecimal?>? = null,
+    val substantialContributionToClimateChangeMitigationInPercentOfWhichEnabling:
+    ExtendedDataPoint<BigDecimal?>? = null,
 
     @field:Valid()
-    val substantialContributionToClimateChangeMitigationInPercentTransitionalShare:
+    val substantialContributionToClimateChangeMitigationInPercentOfWhichTransitional:
     ExtendedDataPoint<BigDecimal?>? = null,
 
     @field:Valid()
@@ -32,10 +35,8 @@ data class EuTaxonomyFinancialsInvestmentfirmsTurnoverBasedKpi(
     val substantialContributionToClimateChangeAdaptationInPercentAligned: ExtendedDataPoint<BigDecimal?>? = null,
 
     @field:Valid()
-    val substantialContributionToClimateChangeAdaptationInPercentEnablingShare: ExtendedDataPoint<BigDecimal?>? = null,
-
-    @field:Valid()
-    val substantialContributionToClimateChangeAdaptationInPercentAdaptingShare: ExtendedDataPoint<BigDecimal?>? = null,
+    val substantialContributionToClimateChangeAdaptationInPercentOfWhichEnabling:
+    ExtendedDataPoint<BigDecimal?>? = null,
 
     @field:Valid()
     val substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentEligible:
@@ -46,7 +47,7 @@ data class EuTaxonomyFinancialsInvestmentfirmsTurnoverBasedKpi(
     ExtendedDataPoint<BigDecimal?>? = null,
 
     @field:Valid()
-    val substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentEnablingShare:
+    val substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentOfWhichEnabling:
     ExtendedDataPoint<BigDecimal?>? = null,
 
     @field:Valid()
@@ -56,7 +57,7 @@ data class EuTaxonomyFinancialsInvestmentfirmsTurnoverBasedKpi(
     val substantialContributionToTransitionToACircularEconomyInPercentAligned: ExtendedDataPoint<BigDecimal?>? = null,
 
     @field:Valid()
-    val substantialContributionToTransitionToACircularEconomyInPercentEnablingShare:
+    val substantialContributionToTransitionToACircularEconomyInPercentOfWhichEnabling:
     ExtendedDataPoint<BigDecimal?>? = null,
 
     @field:Valid()
@@ -67,7 +68,7 @@ data class EuTaxonomyFinancialsInvestmentfirmsTurnoverBasedKpi(
     val substantialContributionToPollutionPreventionAndControlInPercentAligned: ExtendedDataPoint<BigDecimal?>? = null,
 
     @field:Valid()
-    val substantialContributionToPollutionPreventionAndControlInPercentEnablingShare:
+    val substantialContributionToPollutionPreventionAndControlInPercentOfWhichEnabling:
     ExtendedDataPoint<BigDecimal?>? = null,
 
     @field:Valid()
@@ -79,7 +80,7 @@ data class EuTaxonomyFinancialsInvestmentfirmsTurnoverBasedKpi(
     ExtendedDataPoint<BigDecimal?>? = null,
 
     @field:Valid()
-    val substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentEnablingShare:
+    val substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentOfWhichEnabling:
     ExtendedDataPoint<BigDecimal?>? = null,
 
     @field:Valid()
@@ -89,10 +90,11 @@ data class EuTaxonomyFinancialsInvestmentfirmsTurnoverBasedKpi(
     val totalAssetsInvestedRevenueFromInvestmentAndServicesInPercentAligned: ExtendedDataPoint<BigDecimal?>? = null,
 
     @field:Valid()
-    val totalAssetsInvestedRevenueFromInvestmentAndServicesInPercentEnabling: ExtendedDataPoint<BigDecimal?>? = null,
+    val totalAssetsInvestedRevenueFromInvestmentAndServicesInPercentOfWhichEnabling:
+    ExtendedDataPoint<BigDecimal?>? = null,
 
     @field:Valid()
-    val totalAssetsInvestedRevenueFromInvestmentAndServicesInPercentTransitional:
+    val totalAssetsInvestedRevenueFromInvestmentAndServicesInPercentOfWhichTransitional:
     ExtendedDataPoint<BigDecimal?>? = null,
 
 )
