@@ -63,9 +63,9 @@ export class ApiClientProvider {
         }
         return config;
       },
-        (error) => {
-          return Promise.reject(new Error(error.message || 'Unknown error occurred'));
-        }
+      (error) => {
+        return Promise.reject(new Error(error.message || 'Unknown error occurred'));
+      }
     );
   }
 
