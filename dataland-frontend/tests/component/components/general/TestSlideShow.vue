@@ -7,9 +7,11 @@
     :slide-count="3"
     :scroll-screen-width-limit="1800"
   >
-    <div v-for="index in [0, 1, 2]" :key="index" role="listitem" class="test__slide">
-      <p>Content</p>
-    </div>
+    <ul>
+      <li v-for="index in [0, 1, 2]" :key="index" class="test__slide">
+        <p>Content</p>
+      </li>
+    </ul>
   </SlideShow>
 </template>
 
