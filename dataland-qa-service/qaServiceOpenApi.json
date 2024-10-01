@@ -3827,7 +3827,7 @@
         "type": "object",
         "properties": {
           "substantialContributionToClimateChangeMitigationInPercentEligible": {
-            "$ref": "#/components/schemas/QaReportDataPointCurrencyDataPoint"
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
           },
           "substantialContributionToClimateChangeMitigationInPercentAligned": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
@@ -4508,19 +4508,19 @@
             "type": "integer",
             "format": "int64"
           },
-          "companyName": {
+          "companyId": {
             "type": "string"
           },
-          "companyId": {
+          "companyName": {
             "type": "string"
           },
           "dataId": {
             "type": "string"
           },
-          "framework": {
+          "reportingPeriod": {
             "type": "string"
           },
-          "reportingPeriod": {
+          "framework": {
             "type": "string"
           }
         }

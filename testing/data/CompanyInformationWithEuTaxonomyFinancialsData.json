@@ -1944,7 +1944,7 @@
 				},
 				"capexBasedGreenAssetRatioStock": {
 					"substantialContributionToClimateChangeMitigationInPercentEligible": {
-						"value": 6645560604.52,
+						"value": 2.19,
 						"dataSource": {
 							"page": "871",
 							"fileName": "SustainabilityReport",
@@ -1952,8 +1952,7 @@
 							"tagName": "synergies"
 						},
 						"comment": null,
-						"quality": "Audited",
-						"currency": "AMD"
+						"quality": "Audited"
 					},
 					"substantialContributionToClimateChangeMitigationInPercentAligned": {
 						"value": 38.55,
@@ -3411,7 +3410,7 @@
 				},
 				"capexBasedGreenAssetRatioStock": {
 					"substantialContributionToClimateChangeMitigationInPercentEligible": {
-						"value": 440549813.21,
+						"value": null,
 						"dataSource": {
 							"page": "196",
 							"fileName": "AnnualReport",
@@ -3419,8 +3418,7 @@
 							"tagName": "niches"
 						},
 						"comment": "hack auxiliary matrix",
-						"quality": "Incomplete",
-						"currency": "AMD"
+						"quality": "Incomplete"
 					},
 					"substantialContributionToClimateChangeMitigationInPercentAligned": {
 						"value": null,
@@ -6478,7 +6476,7 @@
 				},
 				"capexBasedGreenAssetRatioStock": {
 					"substantialContributionToClimateChangeMitigationInPercentEligible": {
-						"value": 8619182645.35,
+						"value": 40.19,
 						"dataSource": {
 							"page": "405",
 							"fileName": "AnnualReport",
@@ -6486,8 +6484,7 @@
 							"tagName": "blockchains"
 						},
 						"comment": "connect auxiliary matrix",
-						"quality": "Audited",
-						"currency": "IRR"
+						"quality": "Audited"
 					},
 					"substantialContributionToClimateChangeMitigationInPercentAligned": {
 						"value": null,
@@ -8066,8 +8063,7 @@
 							"tagName": "channels"
 						},
 						"comment": null,
-						"quality": null,
-						"currency": "PKR"
+						"quality": null
 					},
 					"substantialContributionToClimateChangeMitigationInPercentAligned": {
 						"value": 78.65,
@@ -9542,7 +9538,7 @@
 				},
 				"capexBasedGreenAssetRatioStock": {
 					"substantialContributionToClimateChangeMitigationInPercentEligible": {
-						"value": 227817299.31,
+						"value": null,
 						"dataSource": {
 							"page": "998-1152",
 							"fileName": "SustainabilityReport",
@@ -9550,8 +9546,7 @@
 							"tagName": "deliverables"
 						},
 						"comment": "index solid state bus",
-						"quality": "Reported",
-						"currency": "GMD"
+						"quality": "Reported"
 					},
 					"substantialContributionToClimateChangeMitigationInPercentAligned": {
 						"value": 80.97,
@@ -11071,8 +11066,7 @@
 							"tagName": "niches"
 						},
 						"comment": "back up open-source bus",
-						"quality": "Reported",
-						"currency": "XAF"
+						"quality": "Reported"
 					},
 					"substantialContributionToClimateChangeMitigationInPercentAligned": {
 						"value": 70.03,
@@ -14073,7 +14067,7 @@
 				},
 				"capexBasedGreenAssetRatioStock": {
 					"substantialContributionToClimateChangeMitigationInPercentEligible": {
-						"value": 4774771484.08,
+						"value": 82.45,
 						"dataSource": {
 							"page": "1086",
 							"fileName": "AnnualReport",
@@ -14081,8 +14075,7 @@
 							"tagName": "e-markets"
 						},
 						"comment": "override auxiliary card",
-						"quality": "Estimated",
-						"currency": "THB"
+						"quality": "Estimated"
 					},
 					"substantialContributionToClimateChangeMitigationInPercentAligned": {
 						"value": null,
@@ -15653,7 +15646,7 @@
 				},
 				"capexBasedGreenAssetRatioStock": {
 					"substantialContributionToClimateChangeMitigationInPercentEligible": {
-						"value": 2075395302.38,
+						"value": 42.74,
 						"dataSource": {
 							"page": "42",
 							"fileName": "IntegratedReport",
@@ -15661,8 +15654,7 @@
 							"tagName": "convergence"
 						},
 						"comment": "transmit online application",
-						"quality": "Audited",
-						"currency": "JPY"
+						"quality": "Audited"
 					},
 					"substantialContributionToClimateChangeMitigationInPercentAligned": {
 						"value": null,
@@ -17218,7 +17210,7 @@
 				},
 				"capexBasedGreenAssetRatioStock": {
 					"substantialContributionToClimateChangeMitigationInPercentEligible": {
-						"value": 3361576444,
+						"value": 45.48,
 						"dataSource": {
 							"page": "942-1294",
 							"fileName": "SustainabilityReport",
@@ -17226,8 +17218,7 @@
 							"tagName": "e-markets"
 						},
 						"comment": "calculate cross-platform sensor",
-						"quality": "Incomplete",
-						"currency": "KPW"
+						"quality": "Incomplete"
 					},
 					"substantialContributionToClimateChangeMitigationInPercentAligned": {
 						"value": 42.88,
@@ -21884,7 +21875,7 @@
 				},
 				"capexBasedGreenAssetRatioStock": {
 					"substantialContributionToClimateChangeMitigationInPercentEligible": {
-						"value": 9092252664.27,
+						"value": 85.51,
 						"dataSource": {
 							"page": "1021",
 							"fileName": "SustainabilityReport",
@@ -21892,8 +21883,7 @@
 							"tagName": "initiatives"
 						},
 						"comment": "navigate auxiliary transmitter",
-						"quality": "Estimated",
-						"currency": "TRY"
+						"quality": "Estimated"
 					},
 					"substantialContributionToClimateChangeMitigationInPercentAligned": {
 						"value": 67.8,
@@ -23419,7 +23409,7 @@
 				},
 				"capexBasedGreenAssetRatioStock": {
 					"substantialContributionToClimateChangeMitigationInPercentEligible": {
-						"value": 5888098352.59,
+						"value": 25.52,
 						"dataSource": {
 							"page": "530",
 							"fileName": "AnnualReport",
@@ -23427,8 +23417,7 @@
 							"tagName": "functionalities"
 						},
 						"comment": null,
-						"quality": null,
-						"currency": "ERN"
+						"quality": null
 					},
 					"substantialContributionToClimateChangeMitigationInPercentAligned": {
 						"value": 97.53,
@@ -25052,8 +25041,7 @@
 							"tagName": "bandwidth"
 						},
 						"comment": "reboot mobile port",
-						"quality": "Estimated",
-						"currency": "MVR"
+						"quality": "Estimated"
 					},
 					"substantialContributionToClimateChangeMitigationInPercentAligned": {
 						"value": 33.86,
@@ -28106,7 +28094,7 @@
 				},
 				"capexBasedGreenAssetRatioStock": {
 					"substantialContributionToClimateChangeMitigationInPercentEligible": {
-						"value": 1537137534.47,
+						"value": null,
 						"dataSource": {
 							"page": "1012",
 							"fileName": "SustainabilityReport",
@@ -28114,8 +28102,7 @@
 							"tagName": "experiences"
 						},
 						"comment": "parse online system",
-						"quality": null,
-						"currency": "TTD"
+						"quality": null
 					},
 					"substantialContributionToClimateChangeMitigationInPercentAligned": {
 						"value": 84.96,
@@ -29725,7 +29712,7 @@
 				},
 				"capexBasedGreenAssetRatioStock": {
 					"substantialContributionToClimateChangeMitigationInPercentEligible": {
-						"value": 9701155975.93,
+						"value": 44.26,
 						"dataSource": {
 							"page": "274-669",
 							"fileName": "SustainabilityReport",
@@ -29733,8 +29720,7 @@
 							"tagName": "systems"
 						},
 						"comment": "quantify open-source feed",
-						"quality": null,
-						"currency": "KHR"
+						"quality": null
 					},
 					"substantialContributionToClimateChangeMitigationInPercentAligned": {
 						"value": 11.53,
@@ -31329,7 +31315,7 @@
 				},
 				"capexBasedGreenAssetRatioStock": {
 					"substantialContributionToClimateChangeMitigationInPercentEligible": {
-						"value": 5186227608.94,
+						"value": 31.67,
 						"dataSource": {
 							"page": "71",
 							"fileName": "SustainabilityReport",
@@ -31337,8 +31323,7 @@
 							"tagName": "schemas"
 						},
 						"comment": "hack virtual driver",
-						"quality": null,
-						"currency": "GMD"
+						"quality": null
 					},
 					"substantialContributionToClimateChangeMitigationInPercentAligned": null,
 					"substantialContributionToClimateChangeMitigationInPercentOfWhichUseOfProceeds": {
@@ -32878,8 +32863,7 @@
 							"tagName": "architectures"
 						},
 						"comment": null,
-						"quality": "NoDataFound",
-						"currency": "BOB"
+						"quality": "NoDataFound"
 					},
 					"substantialContributionToClimateChangeMitigationInPercentAligned": {
 						"value": null,
@@ -34440,7 +34424,7 @@
 				},
 				"capexBasedGreenAssetRatioStock": {
 					"substantialContributionToClimateChangeMitigationInPercentEligible": {
-						"value": 9243294848.13,
+						"value": 79.51,
 						"dataSource": {
 							"page": "260",
 							"fileName": "AnnualReport",
@@ -34448,8 +34432,7 @@
 							"tagName": "channels"
 						},
 						"comment": "hack virtual driver",
-						"quality": "Audited",
-						"currency": "SSP"
+						"quality": "Audited"
 					},
 					"substantialContributionToClimateChangeMitigationInPercentAligned": {
 						"value": 93.06,
@@ -35970,7 +35953,7 @@
 				},
 				"capexBasedGreenAssetRatioStock": {
 					"substantialContributionToClimateChangeMitigationInPercentEligible": {
-						"value": 5537873120.05,
+						"value": 35.28,
 						"dataSource": {
 							"page": "266",
 							"fileName": "IntegratedReport",
@@ -35978,8 +35961,7 @@
 							"tagName": "content"
 						},
 						"comment": null,
-						"quality": "Audited",
-						"currency": "HTG"
+						"quality": "Audited"
 					},
 					"substantialContributionToClimateChangeMitigationInPercentAligned": null,
 					"substantialContributionToClimateChangeMitigationInPercentOfWhichUseOfProceeds": null,
@@ -37587,11 +37569,10 @@
 				},
 				"capexBasedGreenAssetRatioStock": {
 					"substantialContributionToClimateChangeMitigationInPercentEligible": {
-						"value": 9014977135.23,
+						"value": 66.61,
 						"dataSource": null,
 						"comment": "calculate virtual feed",
-						"quality": "Estimated",
-						"currency": "PGK"
+						"quality": "Estimated"
 					},
 					"substantialContributionToClimateChangeMitigationInPercentAligned": null,
 					"substantialContributionToClimateChangeMitigationInPercentOfWhichUseOfProceeds": {
@@ -39105,7 +39086,7 @@
 				},
 				"capexBasedGreenAssetRatioStock": {
 					"substantialContributionToClimateChangeMitigationInPercentEligible": {
-						"value": 5836547028.74,
+						"value": 45.11,
 						"dataSource": {
 							"page": "963-1232",
 							"fileName": "SustainabilityReport",
@@ -39113,8 +39094,7 @@
 							"tagName": "solutions"
 						},
 						"comment": null,
-						"quality": "Incomplete",
-						"currency": "KMF"
+						"quality": "Incomplete"
 					},
 					"substantialContributionToClimateChangeMitigationInPercentAligned": null,
 					"substantialContributionToClimateChangeMitigationInPercentOfWhichUseOfProceeds": {
@@ -43688,7 +43668,7 @@
 				},
 				"capexBasedGreenAssetRatioStock": {
 					"substantialContributionToClimateChangeMitigationInPercentEligible": {
-						"value": 7995895966.89,
+						"value": 68.97,
 						"dataSource": {
 							"page": "633-1262",
 							"fileName": "SustainabilityReport",
@@ -43696,8 +43676,7 @@
 							"tagName": "web services"
 						},
 						"comment": null,
-						"quality": "Audited",
-						"currency": "PYG"
+						"quality": "Audited"
 					},
 					"substantialContributionToClimateChangeMitigationInPercentAligned": {
 						"value": null,
@@ -45217,7 +45196,7 @@
 				},
 				"capexBasedGreenAssetRatioStock": {
 					"substantialContributionToClimateChangeMitigationInPercentEligible": {
-						"value": 3176123953.89,
+						"value": 39.43,
 						"dataSource": {
 							"page": "562-629",
 							"fileName": "ESEFReport",
@@ -45225,8 +45204,7 @@
 							"tagName": "e-commerce"
 						},
 						"comment": null,
-						"quality": "Reported",
-						"currency": "IQD"
+						"quality": "Reported"
 					},
 					"substantialContributionToClimateChangeMitigationInPercentAligned": null,
 					"substantialContributionToClimateChangeMitigationInPercentOfWhichUseOfProceeds": {
@@ -46842,7 +46820,7 @@
 				},
 				"capexBasedGreenAssetRatioStock": {
 					"substantialContributionToClimateChangeMitigationInPercentEligible": {
-						"value": 7838760071.9,
+						"value": 86.84,
 						"dataSource": {
 							"page": "232",
 							"fileName": "IntegratedReport",
@@ -46850,8 +46828,7 @@
 							"tagName": "models"
 						},
 						"comment": "generate optical alarm",
-						"quality": "Incomplete",
-						"currency": "TWD"
+						"quality": "Incomplete"
 					},
 					"substantialContributionToClimateChangeMitigationInPercentAligned": null,
 					"substantialContributionToClimateChangeMitigationInPercentOfWhichUseOfProceeds": {
@@ -48450,7 +48427,7 @@
 				},
 				"capexBasedGreenAssetRatioStock": {
 					"substantialContributionToClimateChangeMitigationInPercentEligible": {
-						"value": 3049217381.05,
+						"value": 39.16,
 						"dataSource": {
 							"page": "1109-1198",
 							"fileName": "IntegratedReport",
@@ -48458,8 +48435,7 @@
 							"tagName": "infrastructures"
 						},
 						"comment": "transmit virtual feed",
-						"quality": "Audited",
-						"currency": "IQD"
+						"quality": "Audited"
 					},
 					"substantialContributionToClimateChangeMitigationInPercentAligned": {
 						"value": 66.07,
@@ -50037,7 +50013,7 @@
 				},
 				"capexBasedGreenAssetRatioStock": {
 					"substantialContributionToClimateChangeMitigationInPercentEligible": {
-						"value": 5501229730.44,
+						"value": 46.78,
 						"dataSource": {
 							"page": "1105-1234",
 							"fileName": "SustainabilityReport",
@@ -50045,8 +50021,7 @@
 							"tagName": "solutions"
 						},
 						"comment": "bypass redundant sensor",
-						"quality": "Reported",
-						"currency": "KWD"
+						"quality": "Reported"
 					},
 					"substantialContributionToClimateChangeMitigationInPercentAligned": {
 						"value": 9.61,
@@ -51553,8 +51528,7 @@
 							"tagName": "systems"
 						},
 						"comment": "program virtual firewall",
-						"quality": "NoDataFound",
-						"currency": "KGS"
+						"quality": "NoDataFound"
 					},
 					"substantialContributionToClimateChangeMitigationInPercentAligned": {
 						"value": null,
@@ -53084,7 +53058,7 @@
 				},
 				"capexBasedGreenAssetRatioStock": {
 					"substantialContributionToClimateChangeMitigationInPercentEligible": {
-						"value": 482644848.52,
+						"value": null,
 						"dataSource": {
 							"page": "959",
 							"fileName": "SustainabilityReport",
@@ -53092,8 +53066,7 @@
 							"tagName": "relationships"
 						},
 						"comment": "program bluetooth bandwidth",
-						"quality": "NoDataFound",
-						"currency": "LRD"
+						"quality": "NoDataFound"
 					},
 					"substantialContributionToClimateChangeMitigationInPercentAligned": {
 						"value": 47.34,
@@ -54666,8 +54639,7 @@
 							"tagName": "e-business"
 						},
 						"comment": "transmit bluetooth firewall",
-						"quality": "Audited",
-						"currency": "AWG"
+						"quality": "Audited"
 					},
 					"substantialContributionToClimateChangeMitigationInPercentAligned": null,
 					"substantialContributionToClimateChangeMitigationInPercentOfWhichUseOfProceeds": {
@@ -56278,7 +56250,7 @@
 				},
 				"capexBasedGreenAssetRatioStock": {
 					"substantialContributionToClimateChangeMitigationInPercentEligible": {
-						"value": 9644382658.88,
+						"value": 37.32,
 						"dataSource": {
 							"page": "418",
 							"fileName": "ESEFReport",
@@ -56286,8 +56258,7 @@
 							"tagName": "niches"
 						},
 						"comment": "synthesize digital protocol",
-						"quality": "Incomplete",
-						"currency": "ILS"
+						"quality": "Incomplete"
 					},
 					"substantialContributionToClimateChangeMitigationInPercentAligned": {
 						"value": 45.83,
@@ -59312,7 +59283,7 @@
 				},
 				"capexBasedGreenAssetRatioStock": {
 					"substantialContributionToClimateChangeMitigationInPercentEligible": {
-						"value": 8489736814.52,
+						"value": 47.95,
 						"dataSource": {
 							"page": "100-119",
 							"fileName": "SustainabilityReport",
@@ -59320,8 +59291,7 @@
 							"tagName": "blockchains"
 						},
 						"comment": "quantify wireless bandwidth",
-						"quality": null,
-						"currency": "KYD"
+						"quality": null
 					},
 					"substantialContributionToClimateChangeMitigationInPercentAligned": {
 						"value": 15.16,
@@ -62359,7 +62329,7 @@
 				},
 				"capexBasedGreenAssetRatioStock": {
 					"substantialContributionToClimateChangeMitigationInPercentEligible": {
-						"value": 8010548998.14,
+						"value": 61.97,
 						"dataSource": {
 							"page": "426",
 							"fileName": "ESEFReport",
@@ -62367,8 +62337,7 @@
 							"tagName": "portals"
 						},
 						"comment": null,
-						"quality": "Incomplete",
-						"currency": "NIO"
+						"quality": "Incomplete"
 					},
 					"substantialContributionToClimateChangeMitigationInPercentAligned": {
 						"value": null,
@@ -63903,7 +63872,7 @@
 				},
 				"capexBasedGreenAssetRatioStock": {
 					"substantialContributionToClimateChangeMitigationInPercentEligible": {
-						"value": 449086083.09,
+						"value": null,
 						"dataSource": {
 							"page": "37",
 							"fileName": "ESEFReport",
@@ -63911,8 +63880,7 @@
 							"tagName": "partnerships"
 						},
 						"comment": null,
-						"quality": "Estimated",
-						"currency": "HTG"
+						"quality": "Estimated"
 					},
 					"substantialContributionToClimateChangeMitigationInPercentAligned": {
 						"value": null,
@@ -66987,7 +66955,7 @@
 				},
 				"capexBasedGreenAssetRatioStock": {
 					"substantialContributionToClimateChangeMitigationInPercentEligible": {
-						"value": 4591495553.03,
+						"value": 95.45,
 						"dataSource": {
 							"page": "1163",
 							"fileName": "SustainabilityReport",
@@ -66995,8 +66963,7 @@
 							"tagName": "portals"
 						},
 						"comment": "override mobile system",
-						"quality": "Incomplete",
-						"currency": "XOF"
+						"quality": "Incomplete"
 					},
 					"substantialContributionToClimateChangeMitigationInPercentAligned": {
 						"value": null,
@@ -68579,7 +68546,7 @@
 				},
 				"capexBasedGreenAssetRatioStock": {
 					"substantialContributionToClimateChangeMitigationInPercentEligible": {
-						"value": 6992750826.76,
+						"value": 44.44,
 						"dataSource": {
 							"page": "821",
 							"fileName": "ESEFReport",
@@ -68587,8 +68554,7 @@
 							"tagName": "markets"
 						},
 						"comment": "hack multi-byte alarm",
-						"quality": "NoDataFound",
-						"currency": "KHR"
+						"quality": "NoDataFound"
 					},
 					"substantialContributionToClimateChangeMitigationInPercentAligned": {
 						"value": 36.47,
@@ -70114,7 +70080,7 @@
 				},
 				"capexBasedGreenAssetRatioStock": {
 					"substantialContributionToClimateChangeMitigationInPercentEligible": {
-						"value": 3368312770.03,
+						"value": 21.38,
 						"dataSource": {
 							"page": "619-637",
 							"fileName": "IntegratedReport",
@@ -70122,8 +70088,7 @@
 							"tagName": "blockchains"
 						},
 						"comment": "input bluetooth system",
-						"quality": "Audited",
-						"currency": "CVE"
+						"quality": "Audited"
 					},
 					"substantialContributionToClimateChangeMitigationInPercentAligned": {
 						"value": 47.37,
@@ -73172,7 +73137,7 @@
 				},
 				"capexBasedGreenAssetRatioStock": {
 					"substantialContributionToClimateChangeMitigationInPercentEligible": {
-						"value": 2251544743.77,
+						"value": 88.29,
 						"dataSource": {
 							"page": "489-560",
 							"fileName": "SustainabilityReport",
@@ -73180,8 +73145,7 @@
 							"tagName": "niches"
 						},
 						"comment": null,
-						"quality": "Reported",
-						"currency": "UAH"
+						"quality": "Reported"
 					},
 					"substantialContributionToClimateChangeMitigationInPercentAligned": {
 						"value": null,
@@ -74771,7 +74735,7 @@
 				},
 				"capexBasedGreenAssetRatioStock": {
 					"substantialContributionToClimateChangeMitigationInPercentEligible": {
-						"value": 8497701978.78,
+						"value": 6.95,
 						"dataSource": {
 							"page": "409-900",
 							"fileName": "AnnualReport",
@@ -74779,8 +74743,7 @@
 							"tagName": "e-business"
 						},
 						"comment": null,
-						"quality": "Audited",
-						"currency": "BAM"
+						"quality": "Audited"
 					},
 					"substantialContributionToClimateChangeMitigationInPercentAligned": {
 						"value": null,
@@ -76300,11 +76263,10 @@
 				},
 				"capexBasedGreenAssetRatioStock": {
 					"substantialContributionToClimateChangeMitigationInPercentEligible": {
-						"value": 5472467795.48,
+						"value": 82.57,
 						"dataSource": null,
 						"comment": "override optical pixel",
-						"quality": null,
-						"currency": "TJS"
+						"quality": null
 					},
 					"substantialContributionToClimateChangeMitigationInPercentAligned": {
 						"value": null,

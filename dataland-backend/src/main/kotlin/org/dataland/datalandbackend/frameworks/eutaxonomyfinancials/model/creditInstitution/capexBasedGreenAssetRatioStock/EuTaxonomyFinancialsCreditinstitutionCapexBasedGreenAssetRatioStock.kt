@@ -2,18 +2,15 @@
 package org.dataland.datalandbackend.frameworks.eutaxonomyfinancials.model.creditInstitution.capexBasedGreenAssetRatioStock
 
 import jakarta.validation.Valid
-import org.dataland.datalandbackend.model.datapoints.CurrencyDataPoint
 import org.dataland.datalandbackend.model.datapoints.ExtendedDataPoint
-import org.dataland.datalandbackend.validator.MinimumValue
 import java.math.BigDecimal
 
 /**
  * The data-model for the CapexBasedGreenAssetRatioStock section
  */
 data class EuTaxonomyFinancialsCreditinstitutionCapexBasedGreenAssetRatioStock(
-    @field:MinimumValue(minimumValue = 0)
     @field:Valid()
-    val substantialContributionToClimateChangeMitigationInPercentEligible: CurrencyDataPoint? = null,
+    val substantialContributionToClimateChangeMitigationInPercentEligible: ExtendedDataPoint<BigDecimal?>? = null,
 
     @field:Valid()
     val substantialContributionToClimateChangeMitigationInPercentAligned: ExtendedDataPoint<BigDecimal?>? = null,

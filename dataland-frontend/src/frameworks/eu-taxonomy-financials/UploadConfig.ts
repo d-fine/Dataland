@@ -287,7 +287,7 @@ export const euTaxonomyFinancialsDataModel = [
             label:
               'Substantial Contribution to Sustainable Use and Protection of Water and Marine Resources in Percent - Eligible',
             description:
-              'Taxonomy-eligible Proportion of Revenue-based Green Asset Ratio substantially contributing to Sustainable Use and Protection of Water and Marin Resources',
+              'Taxonomy-eligible Proportion of Revenue-based Green Asset Ratio substantially contributing to Sustainable Use and Protection of Water and Marine Resources',
 
             unit: '%',
             component: 'PercentageExtendedDataPointFormField',
@@ -300,7 +300,7 @@ export const euTaxonomyFinancialsDataModel = [
             label:
               'Substantial Contribution to Sustainable Use and Protection of Water and Marine Resources in Percent - Aligned',
             description:
-              'Taxonomy-aligned Proportion of Revenue-based Green Asset Ratio substantially contributing to Sustainable Use and Protection of Water and Marin Resources',
+              'Taxonomy-aligned Proportion of Revenue-based Green Asset Ratio substantially contributing to Sustainable Use and Protection of Water and Marine Resources',
 
             unit: '%',
             component: 'PercentageExtendedDataPointFormField',
@@ -313,7 +313,7 @@ export const euTaxonomyFinancialsDataModel = [
             label:
               'Substantial Contribution to Sustainable Use and Protection of Water and Marine Resources in Percent - Of which Use of Proceeds',
             description:
-              'Taxonomy-aligned Use of Proceeds Share substantially contributing to Sustainable Use and Protection of Water and Marin Resources',
+              'Taxonomy-aligned Use of Proceeds Share substantially contributing to Sustainable Use and Protection of Water and Marine Resources',
 
             unit: '%',
             component: 'PercentageExtendedDataPointFormField',
@@ -326,7 +326,7 @@ export const euTaxonomyFinancialsDataModel = [
             label:
               'Substantial Contribution to Sustainable Use and Protection of Water and Marine Resources in Percent - Of which Enabling',
             description:
-              'Taxonomy-aligned and enabling Proportion of Revenue-based Green Asset Ratio substantially contributing to Sustainable Use and Protection of Water and Marin Resources',
+              'Taxonomy-aligned and enabling Proportion of Revenue-based Green Asset Ratio substantially contributing to Sustainable Use and Protection of Water and Marine Resources',
 
             unit: '%',
             component: 'PercentageExtendedDataPointFormField',
@@ -485,7 +485,7 @@ export const euTaxonomyFinancialsDataModel = [
             name: 'substantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentEligible',
             label: 'Substantial Contribution to any of the six Environmental Objectives in Percent - Eligible',
             description:
-              'Taxonomy-eligible Proportion of Revenue-based Green Asset Ratio substantially contributing to to any of the six Environmental Objectives',
+              'Taxonomy-eligible Proportion of Revenue-based Green Asset Ratio substantially contributing to any of the six Environmental Objectives',
 
             unit: '%',
             component: 'PercentageExtendedDataPointFormField',
@@ -555,10 +555,11 @@ export const euTaxonomyFinancialsDataModel = [
             description:
               'Taxonomy-eligible Proportion of CapEx-based Green Asset Ratio substantially contributing to Climate Change Mitigation',
 
-            component: 'CurrencyDataPointFormField',
+            unit: '%',
+            component: 'PercentageExtendedDataPointFormField',
             required: false,
             showIf: (): boolean => true,
-            validation: 'min:0',
+            validation: 'between:0,100',
           },
           {
             name: 'substantialContributionToClimateChangeMitigationInPercentAligned',
@@ -661,7 +662,7 @@ export const euTaxonomyFinancialsDataModel = [
             label:
               'Substantial Contribution to Sustainable Use and Protection of Water and Marine Resources in Percent - Eligible',
             description:
-              'Taxonomy-eligible Proportion of CapEx-based Green Asset Ratio substantially contributing to Sustainable Use and Protection of Water and Marin Resources',
+              'Taxonomy-eligible Proportion of CapEx-based Green Asset Ratio substantially contributing to Sustainable Use and Protection of Water and Marine Resources',
 
             unit: '%',
             component: 'PercentageExtendedDataPointFormField',
@@ -674,7 +675,7 @@ export const euTaxonomyFinancialsDataModel = [
             label:
               'Substantial Contribution to Sustainable Use and Protection of Water and Marine Resources in Percent - Aligned',
             description:
-              'Taxonomy-aligned Proportion of CapEx-based Green Asset Ratio substantially contributing to Sustainable Use and Protection of Water and Marin Resources',
+              'Taxonomy-aligned Proportion of CapEx-based Green Asset Ratio substantially contributing to Sustainable Use and Protection of Water and Marine Resources',
 
             unit: '%',
             component: 'PercentageExtendedDataPointFormField',
@@ -687,7 +688,7 @@ export const euTaxonomyFinancialsDataModel = [
             label:
               'Substantial Contribution to Sustainable Use and Protection of Water and Marine Resources in Percent - Of which Use of Proceeds',
             description:
-              'Taxonomy-aligned Use of Proceeds Share substantially contributing to Sustainable Use and Protection of Water and Marin Resources',
+              'Taxonomy-aligned Use of Proceeds Share substantially contributing to Sustainable Use and Protection of Water and Marine Resources',
 
             unit: '%',
             component: 'PercentageExtendedDataPointFormField',
@@ -700,7 +701,7 @@ export const euTaxonomyFinancialsDataModel = [
             label:
               'Substantial Contribution to Sustainable Use and Protection of Water and Marine Resources in Percent - Of which Enabling',
             description:
-              'Taxonomy-aligned and enabling Proportion of CapEx-based Green Asset Ratio substantially contributing to Sustainable Use and Protection of Water and Marin Resources',
+              'Taxonomy-aligned and enabling Proportion of CapEx-based Green Asset Ratio substantially contributing to Sustainable Use and Protection of Water and Marine Resources',
 
             unit: '%',
             component: 'PercentageExtendedDataPointFormField',
@@ -847,7 +848,7 @@ export const euTaxonomyFinancialsDataModel = [
             label:
               'Substantial Contribution to Protection and Restoration of Biodiversity and Ecosystems in Percent - Of which Enabling',
             description:
-              'Taxonomy-aligned and enabling Proportion of CapEx-based Green Asset Ratio substantially contributing to Circular Economy',
+              'Taxonomy-aligned and enabling Proportion of CapEx-based Green Asset Ratio substantially contributing to Protection and Restoration of Biodiversity and Ecosystems',
 
             unit: '%',
             component: 'PercentageExtendedDataPointFormField',
@@ -859,7 +860,7 @@ export const euTaxonomyFinancialsDataModel = [
             name: 'substantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentEligible',
             label: 'Substantial Contribution to any of the six Environmental Objectives in Percent - Eligible',
             description:
-              'Taxonomy-eligible Proportion of CapEx-based Green Asset Ratio substantially contributing to to any of the six Environmental Objectives',
+              'Taxonomy-eligible Proportion of CapEx-based Green Asset Ratio substantially contributing to any of the six Environmental Objectives',
 
             unit: '%',
             component: 'PercentageExtendedDataPointFormField',
@@ -935,7 +936,7 @@ export const euTaxonomyFinancialsDataModel = [
             name: 'substantialContributionToClimateChangeMitigationInPercentAligned',
             label: 'Substantial Contribution to Climate Change Mitigation in Percent - Aligned',
             description:
-              'Taxonomy-aligned Share substantially contributing to Climate Change Mitigation.\nThe weighted average value of all the investments that are directed at funding, or are associated with Taxonomy-aligned economic activities relative to the value of total assets covered by the KPI, with following weights for investments in undertakings: Turnover-based (%).',
+              'Taxonomy-aligned Share substantially contributing to Climate Change Mitigation.\nThe weighted average value of all the investments that are directed at funding, or are associated with Taxonomy-aligned economic activities relative to the value of total assets covered by the KPI, with the following weights for investments in undertakings: Turnover-based (%).',
 
             unit: '%',
             component: 'PercentageExtendedDataPointFormField',
@@ -947,7 +948,7 @@ export const euTaxonomyFinancialsDataModel = [
             name: 'substantialContributionToClimateChangeMitigationInPercentOfWhichEnabling',
             label: 'Substantial Contribution to Climate Change Mitigation in Percent - Of which Enabling',
             description:
-              'Taxonomy-aligned and Enabling substantially contributing to Climate Change Mitigation.\nThe weighted average value of all the investments that are directed at funding, or are associated with taxonomy-aligned economic activities relative to the value of total assets covered by the KPI, with following weights for investments in undertakings: Turnover-based (%).',
+              'Taxonomy-aligned and Enabling substantially contributing to Climate Change Mitigation.\nThe weighted average value of all the investments that are directed at funding, or are associated with taxonomy-aligned economic activities relative to the value of total assets covered by the KPI, with the following weights for investments in undertakings: Turnover-based (%).',
 
             unit: '%',
             component: 'PercentageExtendedDataPointFormField',
@@ -959,7 +960,7 @@ export const euTaxonomyFinancialsDataModel = [
             name: 'substantialContributionToClimateChangeMitigationInPercentOfWhichTransitional',
             label: 'Substantial Contribution to Climate Change Mitigation in Percent - Of which Transitional',
             description:
-              'Taxonomy-aligned and Of which Transitional substantially contributing to Climate Change Mitigation.\nThe weighted average value of all the investments that are directed at funding, or are associated with taxonomy-aligned economic activities relative to the value of total assets covered by the KPI, with following weights for investments in undertakings: Turnover-based (%).',
+              'Taxonomy-aligned and Of which Transitional substantially contributing to Climate Change Mitigation.\nThe weighted average value of all the investments that are directed at funding, or are associated with taxonomy-aligned economic activities relative to the value of total assets covered by the KPI, with the following weights for investments in undertakings: Turnover-based (%).',
 
             unit: '%',
             component: 'PercentageExtendedDataPointFormField',
@@ -971,7 +972,7 @@ export const euTaxonomyFinancialsDataModel = [
             name: 'substantialContributionToClimateChangeAdaptationInPercentAligned',
             label: 'Substantial Contribution to Climate Change Adaptation in Percent - Aligned',
             description:
-              'Taxonomy-aligned Share substantially contributing to Climate Change Adaptation.\nThe weighted average value of all the investments that are directed at funding, or are associated with taxonomy-aligned economic activities relative to the value of total assets covered by the KPI, with following weights for investments in undertakings: Turnover-based (%).',
+              'Taxonomy-aligned Share substantially contributing to Climate Change Adaptation.\nThe weighted average value of all the investments that are directed at funding, or are associated with taxonomy-aligned economic activities relative to the value of total assets covered by the KPI, with the following weights for investments in undertakings: Turnover-based (%).',
 
             unit: '%',
             component: 'PercentageExtendedDataPointFormField',
@@ -983,7 +984,7 @@ export const euTaxonomyFinancialsDataModel = [
             name: 'substantialContributionToClimateChangeAdaptationInPercentOfWhichEnabling',
             label: 'Substantial Contribution to Climate Change Adaptation in Percent - Of which Enabling',
             description:
-              'Taxonomy-aligned and Enabling substantially contributing to Climate Change Adaptation.\nThe weighted average value of all the investments that are directed at funding, or are associated with taxonomy-aligned economic activities relative to the value of total assets covered by the KPI, with following weights for investments in undertakings: Turnover-based (%).',
+              'Taxonomy-aligned and Enabling substantially contributing to Climate Change Adaptation.\nThe weighted average value of all the investments that are directed at funding, or are associated with taxonomy-aligned economic activities relative to the value of total assets covered by the KPI, with the following weights for investments in undertakings: Turnover-based (%).',
 
             unit: '%',
             component: 'PercentageExtendedDataPointFormField',
@@ -996,7 +997,7 @@ export const euTaxonomyFinancialsDataModel = [
             label:
               'Substantial Contribution to Sustainable Use and Protection of Water and Marine Resources in Percent - Aligned',
             description:
-              'Taxonomy-aligned Share substantially contributing to Sustainable Use and Protection of Water and Marin Resources.\nThe weighted average value of all the investments that are directed at funding, or are associated with taxonomy-aligned economic activities relative to the value of total assets covered by the KPI, with following weights for investments in undertakings: Turnover-based (%).',
+              'Taxonomy-aligned Share substantially contributing to Sustainable Use and Protection of Water and Marine Resources.\nThe weighted average value of all the investments that are directed at funding, or are associated with taxonomy-aligned economic activities relative to the value of total assets covered by the KPI, with the following weights for investments in undertakings: Turnover-based (%).',
 
             unit: '%',
             component: 'PercentageExtendedDataPointFormField',
@@ -1009,7 +1010,7 @@ export const euTaxonomyFinancialsDataModel = [
             label:
               'Substantial Contribution to Sustainable Use and Protection of Water and Marine Resources in Percent - Of which Enabling',
             description:
-              'Taxonomy-aligned and Enabling substantially contributing to Sustainable Use and Protection of Water and Marin Resources.\nThe weighted average value of all the investments that are directed at funding, or are associated with taxonomy-aligned economic activities relative to the value of total assets covered by the KPI, with following weights for investments in undertakings: Turnover-based (%).',
+              'Taxonomy-aligned and Enabling substantially contributing to Sustainable Use and Protection of Water and Marine Resources.\nThe weighted average value of all the investments that are directed at funding, or are associated with taxonomy-aligned economic activities relative to the value of total assets covered by the KPI, with the following weights for investments in undertakings: Turnover-based (%).',
 
             unit: '%',
             component: 'PercentageExtendedDataPointFormField',
@@ -1021,7 +1022,7 @@ export const euTaxonomyFinancialsDataModel = [
             name: 'substantialContributionToTransitionToACircularEconomyInPercentAligned',
             label: 'Substantial Contribution to Transition to a Circular Economy in Percent - Aligned',
             description:
-              'Taxonomy-aligned Share substantially contributing to a Circular Economy.\nThe weighted average value of all the investments that are directed at funding, or are associated with taxonomy-aligned economic activities relative to the value of total assets covered by the KPI, with following weights for investments in undertakings: Turnover-based (%).',
+              'Taxonomy-aligned Share substantially contributing to a Circular Economy.\nThe weighted average value of all the investments that are directed at funding, or are associated with taxonomy-aligned economic activities relative to the value of total assets covered by the KPI, with the following weights for investments in undertakings: Turnover-based (%).',
 
             unit: '%',
             component: 'PercentageExtendedDataPointFormField',
@@ -1033,7 +1034,7 @@ export const euTaxonomyFinancialsDataModel = [
             name: 'substantialContributionToTransitionToACircularEconomyInPercentOfWhichEnabling',
             label: 'Substantial Contribution to Transition to a Circular Economy in Percent - Of which Enabling',
             description:
-              'Taxonomy-aligned and Enabling substantially contributing to a Circular Economy.\nThe weighted average value of all the investments that are directed at funding, or are associated with taxonomy-aligned economic activities relative to the value of total assets covered by the KPI, with following weights for investments in undertakings: Turnover-based (%).',
+              'Taxonomy-aligned and Enabling substantially contributing to a Circular Economy.\nThe weighted average value of all the investments that are directed at funding, or are associated with taxonomy-aligned economic activities relative to the value of total assets covered by the KPI, with the following weights for investments in undertakings: Turnover-based (%).',
 
             unit: '%',
             component: 'PercentageExtendedDataPointFormField',
@@ -1045,7 +1046,7 @@ export const euTaxonomyFinancialsDataModel = [
             name: 'substantialContributionToPollutionPreventionAndControlInPercentAligned',
             label: 'Substantial Contribution to Pollution Prevention and Control in Percent - Aligned',
             description:
-              'Taxonomy-aligned Share substantially contributing to Pollution Prevention and Control.\nThe weighted average value of all the investments that are directed at funding, or are associated with taxonomy-aligned economic activities relative to the value of total assets covered by the KPI, with following weights for investments in undertakings: Turnover-based (%).',
+              'Taxonomy-aligned Share substantially contributing to Pollution Prevention and Control.\nThe weighted average value of all the investments that are directed at funding, or are associated with taxonomy-aligned economic activities relative to the value of total assets covered by the KPI, with the following weights for investments in undertakings: Turnover-based (%).',
 
             unit: '%',
             component: 'PercentageExtendedDataPointFormField',
@@ -1057,7 +1058,7 @@ export const euTaxonomyFinancialsDataModel = [
             name: 'substantialContributionToPollutionPreventionAndControlInPercentOfWhichEnabling',
             label: 'Substantial Contribution to Pollution Prevention and Control in Percent - Of which Enabling',
             description:
-              'Taxonomy-aligned and Enabling substantially contributing to Pollution Prevention and Control.\nThe weighted average value of all the investments that are directed at funding, or are associated with taxonomy-aligned economic activities relative to the value of total assets covered by the KPI, with following weights for investments in undertakings: Turnover-based (%).',
+              'Taxonomy-aligned and Enabling substantially contributing to Pollution Prevention and Control.\nThe weighted average value of all the investments that are directed at funding, or are associated with taxonomy-aligned economic activities relative to the value of total assets covered by the KPI, with the following weights for investments in undertakings: Turnover-based (%).',
 
             unit: '%',
             component: 'PercentageExtendedDataPointFormField',
@@ -1070,7 +1071,7 @@ export const euTaxonomyFinancialsDataModel = [
             label:
               'Substantial Contribution to Protection and Restoration of Biodiversity and Ecosystems in Percent - Aligned',
             description:
-              'Taxonomy-aligned Share substantially contributing to Protection and Restoration of Biodiversity and Ecosystems.\nThe weighted average value of all the investments that are directed at funding, or are associated with taxonomy-aligned economic activities relative to the value of total assets covered by the KPI, with following weights for investments in undertakings: Turnover-based (%).',
+              'Taxonomy-aligned Share substantially contributing to Protection and Restoration of Biodiversity and Ecosystems.\nThe weighted average value of all the investments that are directed at funding, or are associated with taxonomy-aligned economic activities relative to the value of total assets covered by the KPI, with the following weights for investments in undertakings: Turnover-based (%).',
 
             unit: '%',
             component: 'PercentageExtendedDataPointFormField',
@@ -1083,7 +1084,7 @@ export const euTaxonomyFinancialsDataModel = [
             label:
               'Substantial Contribution to Protection and Restoration of Biodiversity and Ecosystems in Percent - Of which Enabling',
             description:
-              'Taxonomy-aligned and Enabling substantially contributing to Protection and Restoration of Biodiversity and Ecosystems.\nThe weighted average value of all the investments that are directed at funding, or are associated with taxonomy-aligned economic activities relative to the value of total assets covered by the KPI, with following weights for investments in undertakings: Turnover-based (%).',
+              'Taxonomy-aligned and Enabling substantially contributing to Protection and Restoration of Biodiversity and Ecosystems.\nThe weighted average value of all the investments that are directed at funding, or are associated with taxonomy-aligned economic activities relative to the value of total assets covered by the KPI, with the following weights for investments in undertakings: Turnover-based (%).',
 
             unit: '%',
             component: 'PercentageExtendedDataPointFormField',
@@ -1101,7 +1102,7 @@ export const euTaxonomyFinancialsDataModel = [
             name: 'substantialContributionToClimateChangeMitigationInPercentAligned',
             label: 'Substantial Contribution to Climate Change Mitigation in Percent - Aligned',
             description:
-              'Taxonomy-aligned Share substantially contributing to Climate Change Mitigation.\nThe weighted average value of all the investments that are directed at funding, or are associated with taxonomy-aligned economic activities relative to the value of total assets covered by the KPI, with following weights for investments in undertakings: Capex-based (%).',
+              'Taxonomy-aligned Share substantially contributing to Climate Change Mitigation.\nThe weighted average value of all the investments that are directed at funding, or are associated with taxonomy-aligned economic activities relative to the value of total assets covered by the KPI, with the following weights for investments in undertakings: Capex-based (%).',
 
             unit: '%',
             component: 'PercentageExtendedDataPointFormField',
@@ -1113,7 +1114,7 @@ export const euTaxonomyFinancialsDataModel = [
             name: 'substantialContributionToClimateChangeMitigationInPercentOfWhichEnabling',
             label: 'Substantial Contribution to Climate Change Mitigation in Percent - Of which Enabling',
             description:
-              'Taxonomy-aligned and Enabling substantially contributing to Climate Change Mitigation.\nThe weighted average value of all the investments that are directed at funding, or are associated with taxonomy-aligned economic activities relative to the value of total assets covered by the KPI, with following weights for investments in undertakings: Capex-based (%).',
+              'Taxonomy-aligned and Enabling substantially contributing to Climate Change Mitigation.\nThe weighted average value of all the investments that are directed at funding, or are associated with taxonomy-aligned economic activities relative to the value of total assets covered by the KPI, with the following weights for investments in undertakings: Capex-based (%).',
 
             unit: '%',
             component: 'PercentageExtendedDataPointFormField',
@@ -1125,7 +1126,7 @@ export const euTaxonomyFinancialsDataModel = [
             name: 'substantialContributionToClimateChangeMitigationInPercentOfWhichTransitional',
             label: 'Substantial Contribution to Climate Change Mitigation in Percent - Of which Transitional',
             description:
-              'Taxonomy-aligned and Of which Transitional substantially contributing to Climate Change Mitigation.\nThe weighted average value of all the investments that are directed at funding, or are associated with taxonomy-aligned economic activities relative to the value of total assets covered by the KPI, with following weights for investments in undertakings: Capex-based (%).',
+              'Taxonomy-aligned and Of which Transitional substantially contributing to Climate Change Mitigation.\nThe weighted average value of all the investments that are directed at funding, or are associated with taxonomy-aligned economic activities relative to the value of total assets covered by the KPI, with the following weights for investments in undertakings: Capex-based (%).',
 
             unit: '%',
             component: 'PercentageExtendedDataPointFormField',
@@ -1137,7 +1138,7 @@ export const euTaxonomyFinancialsDataModel = [
             name: 'substantialContributionToClimateChangeAdaptationInPercentAligned',
             label: 'Substantial Contribution to Climate Change Adaptation in Percent - Aligned',
             description:
-              'Taxonomy-aligned Share substantially contributing to Climate Change Adaptation.\nThe weighted average value of all the investments that are directed at funding, or are associated with taxonomy-aligned economic activities relative to the value of total assets covered by the KPI, with following weights for investments in undertakings: Capex-based (%).',
+              'Taxonomy-aligned Share substantially contributing to Climate Change Adaptation.\nThe weighted average value of all the investments that are directed at funding, or are associated with taxonomy-aligned economic activities relative to the value of total assets covered by the KPI, with the following weights for investments in undertakings: Capex-based (%).',
 
             unit: '%',
             component: 'PercentageExtendedDataPointFormField',
@@ -1149,7 +1150,7 @@ export const euTaxonomyFinancialsDataModel = [
             name: 'substantialContributionToClimateChangeAdaptationInPercentOfWhichEnabling',
             label: 'Substantial Contribution to Climate Change Adaptation in Percent - Of which Enabling',
             description:
-              'Taxonomy-aligned and Enabling substantially contributing to Climate Change Adaptation.\nThe weighted average value of all the investments that are directed at funding, or are associated with taxonomy-aligned economic activities relative to the value of total assets covered by the KPI, with following weights for investments in undertakings: Capex-based (%).',
+              'Taxonomy-aligned and Enabling substantially contributing to Climate Change Adaptation.\nThe weighted average value of all the investments that are directed at funding, or are associated with taxonomy-aligned economic activities relative to the value of total assets covered by the KPI, with the following weights for investments in undertakings: Capex-based (%).',
 
             unit: '%',
             component: 'PercentageExtendedDataPointFormField',
@@ -1162,7 +1163,7 @@ export const euTaxonomyFinancialsDataModel = [
             label:
               'Substantial Contribution to Sustainable Use and Protection of Water and Marine Resources in Percent - Aligned',
             description:
-              'Taxonomy-aligned Share substantially contributing to Sustainable Use and Protection of Water and Marin Resources.\nThe weighted average value of all the investments that are directed at funding, or are associated with taxonomy-aligned economic activities relative to the value of total assets covered by the KPI, with following weights for investments in undertakings: Capex-based (%).',
+              'Taxonomy-aligned Share substantially contributing to Sustainable Use and Protection of Water and Marine Resources.\nThe weighted average value of all the investments that are directed at funding, or are associated with taxonomy-aligned economic activities relative to the value of total assets covered by the KPI, with the following weights for investments in undertakings: Capex-based (%).',
 
             unit: '%',
             component: 'PercentageExtendedDataPointFormField',
@@ -1175,7 +1176,7 @@ export const euTaxonomyFinancialsDataModel = [
             label:
               'Substantial Contribution to Sustainable Use and Protection of Water and Marine Resources in Percent - Of which Enabling',
             description:
-              'Taxonomy-aligned and Enabling substantially contributing to Sustainable Use and Protection of Water and Marin Resources.\nThe weighted average value of all the investments that are directed at funding, or are associated with taxonomy-aligned economic activities relative to the value of total assets covered by the KPI, with following weights for investments in undertakings: Capex-based (%).',
+              'Taxonomy-aligned and Enabling substantially contributing to Sustainable Use and Protection of Water and Marine Resources.\nThe weighted average value of all the investments that are directed at funding, or are associated with taxonomy-aligned economic activities relative to the value of total assets covered by the KPI, with the following weights for investments in undertakings: Capex-based (%).',
 
             unit: '%',
             component: 'PercentageExtendedDataPointFormField',
@@ -1187,7 +1188,7 @@ export const euTaxonomyFinancialsDataModel = [
             name: 'substantialContributionToTransitionToACircularEconomyInPercentAligned',
             label: 'Substantial Contribution to Transition to a Circular Economy in Percent - Aligned',
             description:
-              'Taxonomy-aligned Share substantially contributing to a Circular Economy.\nThe weighted average value of all the investments that are directed at funding, or are associated with taxonomy-aligned economic activities relative to the value of total assets covered by the KPI, with following weights for investments in undertakings: Capex-based (%).',
+              'Taxonomy-aligned Share substantially contributing to a Circular Economy.\nThe weighted average value of all the investments that are directed at funding, or are associated with taxonomy-aligned economic activities relative to the value of total assets covered by the KPI, with the following weights for investments in undertakings: Capex-based (%).',
 
             unit: '%',
             component: 'PercentageExtendedDataPointFormField',
@@ -1199,7 +1200,7 @@ export const euTaxonomyFinancialsDataModel = [
             name: 'substantialContributionToTransitionToACircularEconomyInPercentOfWhichEnabling',
             label: 'Substantial Contribution to Transition to a Circular Economy in Percent - Of which Enabling',
             description:
-              'Taxonomy-aligned and Enabling substantially contributing to a Circular Economy.\nThe weighted average value of all the investments that are directed at funding, or are associated with taxonomy-aligned economic activities relative to the value of total assets covered by the KPI, with following weights for investments in undertakings: Capex-based (%).',
+              'Taxonomy-aligned and Enabling substantially contributing to a Circular Economy.\nThe weighted average value of all the investments that are directed at funding, or are associated with taxonomy-aligned economic activities relative to the value of total assets covered by the KPI, with the following weights for investments in undertakings: Capex-based (%).',
 
             unit: '%',
             component: 'PercentageExtendedDataPointFormField',
@@ -1211,7 +1212,7 @@ export const euTaxonomyFinancialsDataModel = [
             name: 'substantialContributionToPollutionPreventionAndControlInPercentAligned',
             label: 'Substantial Contribution to Pollution Prevention and Control in Percent - Aligned',
             description:
-              'Taxonomy-aligned Share substantially contributing to Pollution Prevention and Control.\nThe weighted average value of all the investments that are directed at funding, or are associated with taxonomy-aligned economic activities relative to the value of total assets covered by the KPI, with following weights for investments in undertakings: Capex-based (%).',
+              'Taxonomy-aligned Share substantially contributing to Pollution Prevention and Control.\nThe weighted average value of all the investments that are directed at funding, or are associated with taxonomy-aligned economic activities relative to the value of total assets covered by the KPI, with the following weights for investments in undertakings: Capex-based (%).',
 
             unit: '%',
             component: 'PercentageExtendedDataPointFormField',
@@ -1223,7 +1224,7 @@ export const euTaxonomyFinancialsDataModel = [
             name: 'substantialContributionToPollutionPreventionAndControlInPercentOfWhichEnabling',
             label: 'Substantial Contribution to Pollution Prevention and Control in Percent - Of which Enabling',
             description:
-              'Taxonomy-aligned and Enabling substantially contributing to Pollution Prevention and Control.\nThe weighted average value of all the investments that are directed at funding, or are associated with taxonomy-aligned economic activities relative to the value of total assets covered by the KPI, with following weights for investments in undertakings: Capex-based (%).',
+              'Taxonomy-aligned and Enabling substantially contributing to Pollution Prevention and Control.\nThe weighted average value of all the investments that are directed at funding, or are associated with taxonomy-aligned economic activities relative to the value of total assets covered by the KPI, with the following weights for investments in undertakings: Capex-based (%).',
 
             unit: '%',
             component: 'PercentageExtendedDataPointFormField',
@@ -1236,7 +1237,7 @@ export const euTaxonomyFinancialsDataModel = [
             label:
               'Substantial Contribution to Protection and Restoration of Biodiversity and Ecosystems in Percent - Aligned',
             description:
-              'Taxonomy-aligned Share substantially contributing to Protection and Restoration of Biodiversity and Ecosystems.\nThe weighted average value of all the investments that are directed at funding, or are associated with taxonomy-aligned economic activities relative to the value of total assets covered by the KPI, with following weights for investments in undertakings: Capex-based (%).',
+              'Taxonomy-aligned Share substantially contributing to Protection and Restoration of Biodiversity and Ecosystems.\nThe weighted average value of all the investments that are directed at funding, or are associated with taxonomy-aligned economic activities relative to the value of total assets covered by the KPI, with the following weights for investments in undertakings: Capex-based (%).',
 
             unit: '%',
             component: 'PercentageExtendedDataPointFormField',
@@ -1249,7 +1250,7 @@ export const euTaxonomyFinancialsDataModel = [
             label:
               'Substantial Contribution to Protection and Restoration of Biodiversity and Ecosystems in Percent - Of which Enabling',
             description:
-              'Taxonomy-aligned and Enabling substantially contributing to Protection and Restoration of Biodiversity and Ecosystems.\nThe weighted average value of all the investments that are directed at funding, or are associated with taxonomy-aligned economic activities relative to the value of total assets covered by the KPI, with following weights for investments in undertakings: Capex-based (%).',
+              'Taxonomy-aligned and Enabling substantially contributing to Protection and Restoration of Biodiversity and Ecosystems.\nThe weighted average value of all the investments that are directed at funding, or are associated with taxonomy-aligned economic activities relative to the value of total assets covered by the KPI, with the following weights for investments in undertakings: Capex-based (%).',
 
             unit: '%',
             component: 'PercentageExtendedDataPointFormField',
@@ -1275,7 +1276,7 @@ export const euTaxonomyFinancialsDataModel = [
             name: 'taxonomyEligibleNonLifeInsuranceEconomicActivities',
             label: 'Taxonomy-eligible Non-life Insurance Economic Activities',
             description:
-              'The Percentage of Taxonomy-eligible Non-Life Insurance Economics Activities.\nInsurance and reinsurance undertakings other than life insurance undertakings shall calculate the KPI related to underwriting activities and present the ‘gross premiums written’ non-life insurance revenue or, as applicable, reinsurance revenue corresponding to Taxonomy-aligned insurance or reinsurance activities',
+              'The Percentage of Taxonomy-eligible Non-Life Insurance Economic Activities.\nInsurance and reinsurance undertakings other than life insurance undertakings shall calculate the KPI related to underwriting activities and present the ‘gross premiums written’ non-life insurance revenue or, as applicable, reinsurance revenue corresponding to Taxonomy-aligned insurance or reinsurance activities',
 
             unit: '%',
             component: 'PercentageExtendedDataPointFormField',
@@ -1350,7 +1351,7 @@ export const euTaxonomyFinancialsDataModel = [
             label:
               'Substantial Contribution to Sustainable Use and Protection of Water and Marine Resources in Percent - Aligned',
             description:
-              'Taxonomy-aligned Share substantially contributing to Sustainable Use and Protection of Water and Marin Resources',
+              'Taxonomy-aligned Share substantially contributing to Sustainable Use and Protection of Water and Marine Resources',
 
             unit: '%',
             component: 'PercentageExtendedDataPointFormField',
@@ -1363,7 +1364,7 @@ export const euTaxonomyFinancialsDataModel = [
             label:
               'Substantial Contribution to Sustainable Use and Protection of Water and Marine Resources in Percent - Of which Enabling',
             description:
-              'Taxonomy-aligned and Enabling substantially contributing to Sustainable Use and Protection of Water and Marin Resources',
+              'Taxonomy-aligned and Enabling substantially contributing to Sustainable Use and Protection of Water and Marine Resources',
 
             unit: '%',
             component: 'PercentageExtendedDataPointFormField',
@@ -1508,7 +1509,7 @@ export const euTaxonomyFinancialsDataModel = [
             label:
               'Substantial Contribution to Sustainable Use and Protection of Water and Marine Resources in Percent - Aligned',
             description:
-              'Taxonomy-aligned Share substantially contributing to Sustainable Use and Protection of Water and Marin Resources',
+              'Taxonomy-aligned Share substantially contributing to Sustainable Use and Protection of Water and Marine Resources',
 
             unit: '%',
             component: 'PercentageExtendedDataPointFormField',
@@ -1521,7 +1522,7 @@ export const euTaxonomyFinancialsDataModel = [
             label:
               'Substantial Contribution to Sustainable Use and Protection of Water and Marine Resources in Percent - Of which Enabling',
             description:
-              'Taxonomy-aligned and Enabling substantially contributing to Sustainable Use and Protection of Water and Marin Resources',
+              'Taxonomy-aligned and Enabling substantially contributing to Sustainable Use and Protection of Water and Marine Resources',
 
             unit: '%',
             component: 'PercentageExtendedDataPointFormField',

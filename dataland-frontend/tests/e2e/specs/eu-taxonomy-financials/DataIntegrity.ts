@@ -11,10 +11,10 @@ import {
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from '@e2e/utils/CompanyUpload';
 import { assignCompanyOwnershipToDatalandAdmin, isDatasetApproved } from '@e2e/utils/CompanyRolesUtils';
 import { submitButton } from '@sharedUtils/components/SubmitButton';
-import { uploadGenericFrameworkData } from '@e2e/utils/FrameworkUpload';
+import { uploadFrameworkDataForPublicToolboxFramework } from '@e2e/utils/FrameworkUpload';
 import { compareObjectKeysAndValuesDeep } from '@e2e/utils/GeneralUtils';
 import { type FixtureData, getPreparedFixture } from '@sharedUtils/Fixtures';
-import { getBasePublicFrameworkDefinition } from '@/frameworks/BasePublicFrameworkRegistry';
+import EuTaxonomyFinancialsBaseFrameworkDefinition from '@/frameworks/eu-taxonomy-financials/BaseFrameworkDefinition';
 
 let euTaxonomyFinancialsFixtureForTest: FixtureData<EuTaxonomyFinancialsData>;
 before(function () {
@@ -46,15 +46,12 @@ describeIf(
         getKeycloakToken(admin_name, admin_pw).then((token: string) => {
           return uploadCompanyViaApi(token, generateDummyCompanyInformation(testCompanyName)).then((storedCompany) => {
             return assignCompanyOwnershipToDatalandAdmin(token, storedCompany.companyId).then(() => {
-              return uploadGenericFrameworkData(
+              return uploadFrameworkDataForPublicToolboxFramework(
+                EuTaxonomyFinancialsBaseFrameworkDefinition,
                 token,
                 storedCompany.companyId,
                 '2023',
-                euTaxonomyFinancialsFixtureForTest.t,
-                (config) =>
-                  getBasePublicFrameworkDefinition(DataTypeEnum.EuTaxonomyFinancials)!.getPublicFrameworkApiClient(
-                    config
-                  )
+                euTaxonomyFinancialsFixtureForTest.t
               ).then((dataMetaInformation) => {
                 cy.intercept(`**/api/data/${DataTypeEnum.EuTaxonomyFinancials}/${dataMetaInformation.dataId}**`)
                   .as('fetchDataForPrefill')

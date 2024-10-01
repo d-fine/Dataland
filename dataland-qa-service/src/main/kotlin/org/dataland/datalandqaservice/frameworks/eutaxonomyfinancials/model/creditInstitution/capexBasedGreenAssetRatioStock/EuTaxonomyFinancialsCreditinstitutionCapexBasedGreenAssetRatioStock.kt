@@ -2,7 +2,6 @@
 package org.dataland.datalandqaservice.frameworks.eutaxonomyfinancials.model.creditInstitution.capexBasedGreenAssetRatioStock
 
 import jakarta.validation.Valid
-import org.dataland.datalandbackend.openApiClient.model.CurrencyDataPoint
 import org.dataland.datalandbackend.openApiClient.model.ExtendedDataPointBigDecimal
 import org.dataland.datalandqaservice.model.reports.QaReportDataPoint
 
@@ -10,8 +9,9 @@ import org.dataland.datalandqaservice.model.reports.QaReportDataPoint
  * The QA-model for the CapexBasedGreenAssetRatioStock section
  */
 data class EuTaxonomyFinancialsCreditinstitutionCapexBasedGreenAssetRatioStock(
+    @field:Valid()
     val substantialContributionToClimateChangeMitigationInPercentEligible:
-    QaReportDataPoint<CurrencyDataPoint?>? = null,
+    QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
 
     @field:Valid()
     val substantialContributionToClimateChangeMitigationInPercentAligned:
