@@ -236,7 +236,6 @@ import { MAX_NUMBER_OF_DATA_REQUESTS_PER_DAY_FOR_ROLE_USER } from '@/DatalandSet
 import { hasCompanyAtLeastOneCompanyOwner } from '@/utils/CompanyRolesUtils';
 import SingleSelectFormElement from '@/components/forms/parts/elements/basic/SingleSelectFormElement.vue';
 import router from '@/router';
-import { useRoute } from 'vue-router';
 
 export default defineComponent({
   name: 'SingleDataRequest',
@@ -278,7 +277,7 @@ export default defineComponent({
       footerContent,
       fetchedCompanyInformation: {} as CompanyInformation,
       frameworkOptions: [] as { value: DataTypeEnum; label: string }[],
-      frameworkName: useRoute().query.preSelectedFramework as SingleDataRequestDataTypeEnum,
+      frameworkName: router.currentRoute.value.query.preSelectedFramework as SingleDataRequestDataTypeEnum,
       contactsAsString: '',
       allowAccessDataRequesterMessage: false,
       dataRequesterMessage: dataRequesterMessageAccessDisabledText,
@@ -316,7 +315,7 @@ export default defineComponent({
         .filter((email) => email);
     },
     companyIdentifier(): string {
-      return useRoute().params.companyId as string;
+      return router.currentRoute.value.params.companyId as string;
     },
   },
   methods: {
