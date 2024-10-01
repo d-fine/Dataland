@@ -129,7 +129,9 @@ export function generateEuTaxonomyFinancialsData(nullProbability = DEFAULT_PROBA
           dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
       },
       capexBasedGreenAssetRatioStock: {
-        substantialContributionToClimateChangeMitigationInPercentEligible: dataGenerator.randomCurrencyDataPoint(0),
+        substantialContributionToClimateChangeMitigationInPercentEligible: dataGenerator.randomExtendedDataPoint(
+          dataGenerator.randomPercentageValue()
+        ),
         substantialContributionToClimateChangeMitigationInPercentAligned: dataGenerator.randomExtendedDataPoint(
           dataGenerator.randomPercentageValue()
         ),
