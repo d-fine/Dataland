@@ -28,14 +28,6 @@ export const euTaxonomyFinancialsViewConfiguration: MLDTConfig<EuTaxonomyFinanci
         children: [
           {
             type: 'cell',
-            label: 'Reporting Period',
-            explanation: 'The Reporting Period the Dataset belongs to (e.g. Fiscal Year).',
-            shouldDisplay: (): boolean => true,
-            valueGetter: (dataset: EuTaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.general?.general?.reportingPeriod),
-          },
-          {
-            type: 'cell',
             label: 'Fiscal Year Deviation',
             explanation: 'Does the fiscal year deviate from the calendar year?',
             shouldDisplay: (): boolean => true,
@@ -142,7 +134,7 @@ export const euTaxonomyFinancialsViewConfiguration: MLDTConfig<EuTaxonomyFinanci
             type: 'cell',
             label: 'Total (gross) Carrying Amount',
             explanation:
-              'Total over all covered assets which are included in the numerator. Do not include assets which not covered for GAR calculation.',
+              'Total overall covered assets which are included in the numerator. Do not include assets which not covered for GAR calculation.',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EuTaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
               formatCurrencyForDisplay(

@@ -4504,17 +4504,17 @@
           "message": {
             "type": "string"
           },
-          "dataId": {
-            "type": "string"
-          },
           "receptionTime": {
             "type": "integer",
             "format": "int64"
           },
-          "companyName": {
+          "dataId": {
             "type": "string"
           },
           "companyId": {
+            "type": "string"
+          },
+          "companyName": {
             "type": "string"
           },
           "framework": {

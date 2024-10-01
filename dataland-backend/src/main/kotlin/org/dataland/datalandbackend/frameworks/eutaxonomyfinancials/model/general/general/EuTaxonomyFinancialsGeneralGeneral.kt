@@ -16,8 +16,6 @@ import java.time.LocalDate
  * The data-model for the General section
  */
 data class EuTaxonomyFinancialsGeneralGeneral(
-    val reportingPeriod: LocalDate? = null,
-
     @field:Valid()
     val fiscalYearDeviation: ExtendedDataPoint<EuTaxonomyFinancialsGeneralGeneralFiscalYearDeviationOptions?>? = null,
 

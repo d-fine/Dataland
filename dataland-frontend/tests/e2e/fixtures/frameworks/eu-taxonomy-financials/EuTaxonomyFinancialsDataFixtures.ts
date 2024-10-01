@@ -34,7 +34,6 @@ export function generateEuTaxonomyFinancialsData(nullProbability = DEFAULT_PROBA
   return {
     general: {
       general: {
-        reportingPeriod: dataGenerator.randomFutureDate(),
         fiscalYearDeviation: dataGenerator.randomExtendedDataPoint(
           dataGenerator.valueOrNull(
             pickOneElement(Object.values(EuTaxonomyFinancialsGeneralGeneralFiscalYearDeviationOptions))

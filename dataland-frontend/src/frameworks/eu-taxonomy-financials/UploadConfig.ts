@@ -13,15 +13,6 @@ export const euTaxonomyFinancialsDataModel = [
         label: 'General',
         fields: [
           {
-            name: 'reportingPeriod',
-            label: 'Reporting Period',
-            description: 'The Reporting Period the Dataset belongs to (e.g. Fiscal Year).',
-
-            component: 'DateFormField',
-            required: false,
-            showIf: (): boolean => true,
-          },
-          {
             name: 'fiscalYearDeviation',
             label: 'Fiscal Year Deviation',
             description: 'Does the fiscal year deviate from the calendar year?',
@@ -115,7 +106,7 @@ export const euTaxonomyFinancialsDataModel = [
             name: 'totalGrossCarryingAmount',
             label: 'Total (gross) Carrying Amount',
             description:
-              'Total over all covered assets which are included in the numerator. Do not include assets which not covered for GAR calculation.',
+              'Total overall covered assets which are included in the numerator. Do not include assets which not covered for GAR calculation.',
 
             component: 'CurrencyDataPointFormField',
             required: false,
