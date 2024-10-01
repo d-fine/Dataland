@@ -300,7 +300,7 @@ export default defineComponent({
 
       const dataResponse = await euTaxonomyFinancialsDataControllerApi!.getFrameworkData(dataId);
       const euTaxonomyFinancialsResponseData = dataResponse.data;
-      this.listOfFilledKpis = getFilledKpis(euTaxonomyFinancialsResponseData);
+      this.listOfFilledKpis = getFilledKpis(euTaxonomyFinancialsResponseData.data);
       if (euTaxonomyFinancialsResponseData?.reportingPeriod) {
         this.reportingPeriod = new Date(euTaxonomyFinancialsResponseData.reportingPeriod);
       }
