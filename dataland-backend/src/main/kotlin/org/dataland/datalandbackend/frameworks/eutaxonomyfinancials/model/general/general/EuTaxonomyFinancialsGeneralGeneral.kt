@@ -37,6 +37,6 @@ data class EuTaxonomyFinancialsGeneralGeneral(
     val isNfrdMandatory: ExtendedDataPoint<YesNo?>? = null,
 
     @field:Valid()
-    val levelOfAssurance: AssuranceDataPoint? = null,
+    val assurance: AssuranceDataPoint? = null,
 
 )

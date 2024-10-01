@@ -79,8 +79,8 @@ export const euTaxonomyFinancialsDataModel = [
             showIf: (): boolean => true,
           },
           {
-            name: 'levelOfAssurance',
-            label: 'Level of Assurance',
+            name: 'assurance',
+            label: 'Assurance',
             description:
               'Level of Assurance of the EU Taxonomy Disclosure (Reasonable Assurance, Limited Assurance, None)',
 

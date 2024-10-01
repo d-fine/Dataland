@@ -14147,7 +14147,7 @@
               }
             ]
           },
-          "levelOfAssurance": {
+          "assurance": {
             "nullable": true,
             "allOf": [
               {

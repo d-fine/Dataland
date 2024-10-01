@@ -122,7 +122,7 @@
 						"comment": "calculate primary driver",
 						"quality": "Estimated"
 					},
-					"levelOfAssurance": {
+					"assurance": {
 						"value": "LimitedAssurance",
 						"provider": "Gorczany, Schowalter and Moore",
 						"dataSource": {

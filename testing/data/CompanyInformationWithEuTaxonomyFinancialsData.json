@@ -98,7 +98,7 @@
 						"comment": "compress mobile panel",
 						"quality": "Estimated"
 					},
-					"levelOfAssurance": {
+					"assurance": {
 						"value": "ReasonableAssurance",
 						"provider": "Boehm, Satterfield and Rutherford",
 						"dataSource": {
@@ -1623,7 +1623,7 @@
 						"quality": "Incomplete"
 					},
 					"isNfrdMandatory": null,
-					"levelOfAssurance": {
+					"assurance": {
 						"value": "LimitedAssurance",
 						"provider": null,
 						"dataSource": null
@@ -3059,7 +3059,7 @@
 						"comment": "input multi-byte system",
 						"quality": "Audited"
 					},
-					"levelOfAssurance": {
+					"assurance": {
 						"value": "ReasonableAssurance",
 						"provider": "Senger - Ullrich",
 						"dataSource": {
@@ -4601,7 +4601,7 @@
 						"quality": "Incomplete"
 					},
 					"isNfrdMandatory": null,
-					"levelOfAssurance": null
+					"assurance": null
 				}
 			},
 			"creditInstitution": {
@@ -6150,7 +6150,7 @@
 						"comment": "navigate haptic sensor",
 						"quality": "NoDataFound"
 					},
-					"levelOfAssurance": null
+					"assurance": null
 				}
 			},
 			"creditInstitution": {
@@ -7715,7 +7715,7 @@
 					},
 					"numberOfEmployees": null,
 					"isNfrdMandatory": null,
-					"levelOfAssurance": {
+					"assurance": {
 						"value": "None",
 						"provider": null,
 						"dataSource": null
@@ -9243,7 +9243,7 @@
 						"comment": "bypass online panel",
 						"quality": "Reported"
 					},
-					"levelOfAssurance": {
+					"assurance": {
 						"value": "ReasonableAssurance",
 						"provider": "Hammes and Sons",
 						"dataSource": {
@@ -10763,7 +10763,7 @@
 						"comment": "program neural matrix",
 						"quality": "Reported"
 					},
-					"levelOfAssurance": {
+					"assurance": {
 						"value": "ReasonableAssurance",
 						"provider": "Davis LLC",
 						"dataSource": null
@@ -12308,7 +12308,7 @@
 						"comment": "bypass multi-byte protocol",
 						"quality": null
 					},
-					"levelOfAssurance": {
+					"assurance": {
 						"value": "ReasonableAssurance",
 						"provider": "Buckridge, Koepp and Cummings",
 						"dataSource": null
@@ -13730,7 +13730,7 @@
 						"comment": null,
 						"quality": "Audited"
 					},
-					"levelOfAssurance": null
+					"assurance": null
 				}
 			},
 			"creditInstitution": {
@@ -15295,7 +15295,7 @@
 						"comment": "override solid state transmitter",
 						"quality": "Estimated"
 					},
-					"levelOfAssurance": null
+					"assurance": null
 				}
 			},
 			"creditInstitution": {
@@ -16834,7 +16834,7 @@
 						"comment": "synthesize 1080p program",
 						"quality": "Audited"
 					},
-					"levelOfAssurance": {
+					"assurance": {
 						"value": "ReasonableAssurance",
 						"provider": "Nicolas Group",
 						"dataSource": {
@@ -18418,7 +18418,7 @@
 						"comment": "parse online sensor",
 						"quality": null
 					},
-					"levelOfAssurance": {
+					"assurance": {
 						"value": "ReasonableAssurance",
 						"provider": null,
 						"dataSource": {
@@ -19976,7 +19976,7 @@
 						"comment": "input multi-byte card",
 						"quality": "NoDataFound"
 					},
-					"levelOfAssurance": {
+					"assurance": {
 						"value": "LimitedAssurance",
 						"provider": "Senger - Kihn",
 						"dataSource": {
@@ -21590,7 +21590,7 @@
 						"comment": "back up back-end microchip",
 						"quality": "Audited"
 					},
-					"levelOfAssurance": {
+					"assurance": {
 						"value": "LimitedAssurance",
 						"provider": "Champlin, Konopelski and Gorczany",
 						"dataSource": {
@@ -23098,7 +23098,7 @@
 						"comment": "hack cross-platform program",
 						"quality": null
 					},
-					"levelOfAssurance": {
+					"assurance": {
 						"value": "ReasonableAssurance",
 						"provider": "Considine - Kling",
 						"dataSource": {
@@ -24681,7 +24681,7 @@
 						"comment": "bypass neural circuit",
 						"quality": "Estimated"
 					},
-					"levelOfAssurance": null
+					"assurance": null
 				}
 			},
 			"creditInstitution": {
@@ -26232,7 +26232,7 @@
 						"comment": "input haptic array",
 						"quality": null
 					},
-					"levelOfAssurance": {
+					"assurance": {
 						"value": "ReasonableAssurance",
 						"provider": "Pollich - Dibbert",
 						"dataSource": {
@@ -27749,7 +27749,7 @@
 						"comment": "generate back-end driver",
 						"quality": "Audited"
 					},
-					"levelOfAssurance": {
+					"assurance": {
 						"value": "None",
 						"provider": null,
 						"dataSource": null
@@ -29378,7 +29378,7 @@
 						"comment": null,
 						"quality": null
 					},
-					"levelOfAssurance": {
+					"assurance": {
 						"value": "LimitedAssurance",
 						"provider": null,
 						"dataSource": {
@@ -30970,7 +30970,7 @@
 						"comment": "index primary program",
 						"quality": "NoDataFound"
 					},
-					"levelOfAssurance": {
+					"assurance": {
 						"value": "ReasonableAssurance",
 						"provider": "Grady - Greenholt",
 						"dataSource": {
@@ -32575,7 +32575,7 @@
 						"comment": "input wireless bus",
 						"quality": null
 					},
-					"levelOfAssurance": null
+					"assurance": null
 				}
 			},
 			"creditInstitution": {
@@ -34120,7 +34120,7 @@
 						"comment": "parse digital firewall",
 						"quality": "Audited"
 					},
-					"levelOfAssurance": {
+					"assurance": {
 						"value": "ReasonableAssurance",
 						"provider": "Breitenberg - Turner",
 						"dataSource": null
@@ -35607,7 +35607,7 @@
 						"quality": "Incomplete"
 					},
 					"isNfrdMandatory": null,
-					"levelOfAssurance": {
+					"assurance": {
 						"value": "LimitedAssurance",
 						"provider": "Cartwright, Jaskolski and Ebert",
 						"dataSource": {
@@ -37219,7 +37219,7 @@
 						"comment": "override back-end bandwidth",
 						"quality": "Incomplete"
 					},
-					"levelOfAssurance": {
+					"assurance": {
 						"value": "LimitedAssurance",
 						"provider": null,
 						"dataSource": {
@@ -38746,7 +38746,7 @@
 						"comment": "bypass 1080p card",
 						"quality": "NoDataFound"
 					},
-					"levelOfAssurance": {
+					"assurance": {
 						"value": "None",
 						"provider": null,
 						"dataSource": null
@@ -40341,7 +40341,7 @@
 						"comment": null,
 						"quality": "Audited"
 					},
-					"levelOfAssurance": {
+					"assurance": {
 						"value": "ReasonableAssurance",
 						"provider": "Wilkinson, Conroy and Mueller",
 						"dataSource": {
@@ -41903,7 +41903,7 @@
 						"quality": "Reported"
 					},
 					"isNfrdMandatory": null,
-					"levelOfAssurance": {
+					"assurance": {
 						"value": "None",
 						"provider": null,
 						"dataSource": null
@@ -43343,7 +43343,7 @@
 						"comment": null,
 						"quality": "Estimated"
 					},
-					"levelOfAssurance": {
+					"assurance": {
 						"value": "ReasonableAssurance",
 						"provider": "Cummings - Terry",
 						"dataSource": null
@@ -44872,7 +44872,7 @@
 						"comment": "copy back-end application",
 						"quality": "NoDataFound"
 					},
-					"levelOfAssurance": {
+					"assurance": {
 						"value": "None",
 						"provider": null,
 						"dataSource": null
@@ -46484,7 +46484,7 @@
 						"comment": "transmit primary driver",
 						"quality": "Estimated"
 					},
-					"levelOfAssurance": {
+					"assurance": {
 						"value": "None",
 						"provider": null,
 						"dataSource": null
@@ -48056,7 +48056,7 @@
 					},
 					"numberOfEmployees": null,
 					"isNfrdMandatory": null,
-					"levelOfAssurance": null
+					"assurance": null
 				}
 			},
 			"creditInstitution": {
@@ -49688,7 +49688,7 @@
 						"comment": null,
 						"quality": "Incomplete"
 					},
-					"levelOfAssurance": {
+					"assurance": {
 						"value": "LimitedAssurance",
 						"provider": null,
 						"dataSource": {
@@ -51190,7 +51190,7 @@
 						"comment": "reboot solid state pixel",
 						"quality": "Estimated"
 					},
-					"levelOfAssurance": {
+					"assurance": {
 						"value": "ReasonableAssurance",
 						"provider": "Cummings - Witting",
 						"dataSource": {
@@ -52748,7 +52748,7 @@
 						"comment": "parse back-end circuit",
 						"quality": "Reported"
 					},
-					"levelOfAssurance": {
+					"assurance": {
 						"value": "ReasonableAssurance",
 						"provider": "Klein - Howe",
 						"dataSource": {
@@ -54306,7 +54306,7 @@
 						"comment": null,
 						"quality": "Incomplete"
 					},
-					"levelOfAssurance": {
+					"assurance": {
 						"value": "LimitedAssurance",
 						"provider": "Wisoky - O'Conner",
 						"dataSource": null
@@ -55895,7 +55895,7 @@
 						"comment": "override virtual bandwidth",
 						"quality": null
 					},
-					"levelOfAssurance": {
+					"assurance": {
 						"value": "None",
 						"provider": null,
 						"dataSource": null
@@ -57407,7 +57407,7 @@
 						"quality": "Incomplete"
 					},
 					"isNfrdMandatory": null,
-					"levelOfAssurance": {
+					"assurance": {
 						"value": "ReasonableAssurance",
 						"provider": "Cummerata - Bechtelar",
 						"dataSource": null
@@ -58933,7 +58933,7 @@
 						"comment": "connect neural capacitor",
 						"quality": "Estimated"
 					},
-					"levelOfAssurance": {
+					"assurance": {
 						"value": "ReasonableAssurance",
 						"provider": "Hermiston Group",
 						"dataSource": {
@@ -60550,7 +60550,7 @@
 						"comment": "synthesize bluetooth feed",
 						"quality": "Reported"
 					},
-					"levelOfAssurance": {
+					"assurance": {
 						"value": "None",
 						"provider": null,
 						"dataSource": null
@@ -62012,7 +62012,7 @@
 						"comment": "generate redundant microchip",
 						"quality": "NoDataFound"
 					},
-					"levelOfAssurance": null
+					"assurance": null
 				}
 			},
 			"creditInstitution": {
@@ -63551,7 +63551,7 @@
 						"comment": "parse primary monitor",
 						"quality": null
 					},
-					"levelOfAssurance": {
+					"assurance": {
 						"value": "None",
 						"provider": null,
 						"dataSource": null
@@ -65077,7 +65077,7 @@
 						"comment": "index back-end panel",
 						"quality": null
 					},
-					"levelOfAssurance": {
+					"assurance": {
 						"value": "None",
 						"provider": null,
 						"dataSource": null
@@ -66604,7 +66604,7 @@
 					"areAllGroupEntitiesCovered": null,
 					"numberOfEmployees": null,
 					"isNfrdMandatory": null,
-					"levelOfAssurance": {
+					"assurance": {
 						"value": "LimitedAssurance",
 						"provider": "Friesen, McClure and Weissnat",
 						"dataSource": {
@@ -68214,7 +68214,7 @@
 						"quality": "Audited"
 					},
 					"isNfrdMandatory": null,
-					"levelOfAssurance": null
+					"assurance": null
 				}
 			},
 			"creditInstitution": {
@@ -69756,7 +69756,7 @@
 						"comment": "back up 1080p alarm",
 						"quality": "Audited"
 					},
-					"levelOfAssurance": {
+					"assurance": {
 						"value": "LimitedAssurance",
 						"provider": "Mayer - Stiedemann",
 						"dataSource": {
@@ -71305,7 +71305,7 @@
 						"comment": "synthesize solid state panel",
 						"quality": "NoDataFound"
 					},
-					"levelOfAssurance": {
+					"assurance": {
 						"value": "LimitedAssurance",
 						"provider": "Spinka - DuBuque",
 						"dataSource": {
@@ -72877,7 +72877,7 @@
 						"comment": "compress virtual application",
 						"quality": "Audited"
 					},
-					"levelOfAssurance": null
+					"assurance": null
 				}
 			},
 			"creditInstitution": {
@@ -74406,7 +74406,7 @@
 						"comment": "transmit primary program",
 						"quality": "Audited"
 					},
-					"levelOfAssurance": {
+					"assurance": {
 						"value": "LimitedAssurance",
 						"provider": null,
 						"dataSource": {
@@ -75952,7 +75952,7 @@
 						"comment": "compress open-source bandwidth",
 						"quality": "Estimated"
 					},
-					"levelOfAssurance": {
+					"assurance": {
 						"value": "ReasonableAssurance",
 						"provider": "Swaniawski, Stamm and Hintz",
 						"dataSource": {

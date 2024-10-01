@@ -99,12 +99,12 @@ export const euTaxonomyFinancialsViewConfiguration: MLDTConfig<EuTaxonomyFinanci
           },
           {
             type: 'cell',
-            label: 'Level of Assurance',
+            label: 'Assurance',
             explanation:
               'Level of Assurance of the EU Taxonomy Disclosure (Reasonable Assurance, Limited Assurance, None)',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EuTaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
-              formatAssuranceForDataTable(dataset.general?.general?.levelOfAssurance, 'Level of Assurance'),
+              formatAssuranceForDataTable(dataset.general?.general?.assurance, 'Assurance'),
           },
           {
             type: 'cell',
@@ -112,7 +112,7 @@ export const euTaxonomyFinancialsViewConfiguration: MLDTConfig<EuTaxonomyFinanci
             explanation: 'Provider of the Assurance',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EuTaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
-              formatAssuranceProviderForDataTable(dataset.general?.general?.levelOfAssurance),
+              formatAssuranceProviderForDataTable(dataset.general?.general?.assurance),
           },
         ],
       },
