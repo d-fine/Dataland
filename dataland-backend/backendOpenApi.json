@@ -14099,11 +14099,6 @@
       "EuTaxonomyFinancialsGeneralGeneral": {
         "type": "object",
         "properties": {
-          "reportingPeriod": {
-            "type": "string",
-            "format": "date",
-            "nullable": true
-          },
           "fiscalYearDeviation": {
             "nullable": true,
             "allOf": [
@@ -17048,8 +17043,9 @@
         ],
         "type": "object",
         "properties": {
-          "companyName": {
-            "type": "string"
+          "lei": {
+            "type": "string",
+            "nullable": true
           },
           "sector": {
             "type": "string",
@@ -17058,15 +17054,14 @@
           "companyId": {
             "type": "string"
           },
-          "headquarters": {
+          "companyName": {
             "type": "string"
           },
           "countryCode": {
             "type": "string"
           },
-          "lei": {
-            "type": "string",
-            "nullable": true
+          "headquarters": {
+            "type": "string"
           }
         }
       },
@@ -17089,10 +17084,10 @@
         ],
         "type": "object",
         "properties": {
-          "companyName": {
+          "companyId": {
             "type": "string"
           },
-          "companyId": {
+          "companyName": {
             "type": "string"
           }
         }
