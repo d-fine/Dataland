@@ -40,9 +40,9 @@ okhttp3 = "4.12.0"
 
 moshi = "1.15.1"
 
-mockito = "5.13.0"
+mockito = "5.14.0"
 
-junit-jupiter = "5.10.3"
+junit-jupiter = "5.11.1"
 
 log4j = "2.24.0"
 
@@ -108,8 +108,8 @@ spring-boot-starter-amqp = { module = "org.springframework.boot:spring-boot-star
 
 mailjet-client = "com.mailjet:mailjet-client:5.2.5"
 
-flyway = "org.flywaydb:flyway-database-postgresql:10.18.0"
-flyway-core = "org.flywaydb:flyway-core:10.18.0"
+flyway = "org.flywaydb:flyway-database-postgresql:10.18.2"
+flyway-core = "org.flywaydb:flyway-core:10.18.2"
 
 kotlin-serialization-compiler-plugin-embeddable = { group = "org.jetbrains.kotlin", name = "kotlin-serialization-compiler-plugin-embeddable", version.ref = "kotlin" }
 
@@ -131,7 +131,7 @@ jackson-dataformat-csv = "com.fasterxml.jackson.dataformat:jackson-dataformat-cs
 
 jackson-module-kotlin = "com.fasterxml.jackson.module:jackson-module-kotlin:2.17.2"
 
-commons-io = "commons-io:commons-io:2.16.1"
+commons-io = "commons-io:commons-io:2.17.0"
 
 commons-codec = "commons-codec:commons-codec:1.17.1"
 commons-text = "org.apache.commons:commons-text:1.12.0"
