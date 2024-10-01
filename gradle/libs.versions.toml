@@ -40,9 +40,9 @@ okhttp3 = "4.12.0"
 
 moshi = "1.15.1"
 
-mockito = "5.13.0"
+mockito = "5.14.0"
 
-junit-jupiter = "5.10.3"
+junit-jupiter = "5.11.1"
 
 log4j = "2.24.0"
 
@@ -131,7 +131,7 @@ jackson-dataformat-csv = "com.fasterxml.jackson.dataformat:jackson-dataformat-cs
 
 jackson-module-kotlin = "com.fasterxml.jackson.module:jackson-module-kotlin:2.17.2"
 
-commons-io = "commons-io:commons-io:2.16.1"
+commons-io = "commons-io:commons-io:2.17.0"
 
 commons-codec = "commons-codec:commons-codec:1.17.1"
 commons-text = "org.apache.commons:commons-text:1.12.0"
@@ -150,8 +150,8 @@ kotlin-reflect = { group = "org.jetbrains.kotlin", name = "kotlin-reflect", vers
 
 json = "org.json:json:20240303"
 
-spring-context = "org.springframework:spring-context:6.1.12"
-spring-test = "org.springframework:spring-test:6.1.12"
+spring-context = "org.springframework:spring-context:6.1.13"
+spring-test = "org.springframework:spring-test:6.1.13"
 
 spring-boot = "org.springframework.boot:spring-boot:3.3.2"
 
