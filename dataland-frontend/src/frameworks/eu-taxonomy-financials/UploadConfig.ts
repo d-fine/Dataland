@@ -111,6 +111,7 @@ export const euTaxonomyFinancialsDataModel = [
             component: 'CurrencyDataPointFormField',
             required: false,
             showIf: (): boolean => true,
+            validation: 'min:0',
           },
           {
             name: 'totalAmountOfAssetsTowardsTaxonomyRelevantSectorsTaxonomyEligible',
@@ -121,6 +122,7 @@ export const euTaxonomyFinancialsDataModel = [
             component: 'CurrencyDataPointFormField',
             required: false,
             showIf: (): boolean => true,
+            validation: 'min:0',
           },
           {
             name: 'totalAmountOfAssetsWhichAreEnvironmentallySustainableTaxonomyAligned',
@@ -131,6 +133,7 @@ export const euTaxonomyFinancialsDataModel = [
             component: 'CurrencyDataPointFormField',
             required: false,
             showIf: (): boolean => true,
+            validation: 'min:0',
           },
           {
             name: 'totalAmountOfEnvironmentallySustainableAssetsWhichAreUseOfProceeds',
@@ -141,6 +144,7 @@ export const euTaxonomyFinancialsDataModel = [
             component: 'CurrencyDataPointFormField',
             required: false,
             showIf: (): boolean => true,
+            validation: 'min:0',
           },
           {
             name: 'totalAmountOfEnvironmentallySustainableAssetsWhichAreTransitional',
@@ -151,6 +155,7 @@ export const euTaxonomyFinancialsDataModel = [
             component: 'CurrencyDataPointFormField',
             required: false,
             showIf: (): boolean => true,
+            validation: 'min:0',
           },
           {
             name: 'totalAmountOfEnvironmentallySustainableAssetsWhichAreEnabling',
@@ -161,6 +166,7 @@ export const euTaxonomyFinancialsDataModel = [
             component: 'CurrencyDataPointFormField',
             required: false,
             showIf: (): boolean => true,
+            validation: 'min:0',
           },
         ],
       },
@@ -552,6 +558,7 @@ export const euTaxonomyFinancialsDataModel = [
             component: 'CurrencyDataPointFormField',
             required: false,
             showIf: (): boolean => true,
+            validation: 'min:0',
           },
           {
             name: 'substantialContributionToClimateChangeMitigationInPercentAligned',

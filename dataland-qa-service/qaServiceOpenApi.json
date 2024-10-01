@@ -4508,13 +4508,13 @@
             "type": "integer",
             "format": "int64"
           },
-          "dataId": {
+          "companyName": {
             "type": "string"
           },
           "companyId": {
             "type": "string"
           },
-          "companyName": {
+          "dataId": {
             "type": "string"
           },
           "framework": {

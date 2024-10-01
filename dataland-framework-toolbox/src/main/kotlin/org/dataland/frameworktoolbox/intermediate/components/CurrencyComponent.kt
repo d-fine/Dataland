@@ -80,6 +80,7 @@ class CurrencyComponent(
         uploadCategoryBuilder.addStandardUploadConfigCell(
             component = this,
             uploadComponentName = "CurrencyDataPointFormField",
+            validation = getMinMaxValidationRule(minimumValue, maximumValue),
         )
     }
 
