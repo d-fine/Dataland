@@ -63,10 +63,10 @@ describeIf(
     it('From the company cockpit page visit an upload page', () => {
       cy.ensureLoggedIn(uploader_name, uploader_pw);
       visitCockpitForCompanyAlpha();
-      cy.get(`[data-test='${DataTypeEnum.EuTaxonomyFinancials}-summary-panel'] a`).click();
+      cy.get(`[data-test='${DataTypeEnum.EutaxonomyFinancials}-summary-panel'] a`).click();
       cy.url().should(
         'contain',
-        `/companies/${alphaCompanyIdAndName.companyId}/frameworks/${DataTypeEnum.EuTaxonomyFinancials}/upload`
+        `/companies/${alphaCompanyIdAndName.companyId}/frameworks/${DataTypeEnum.EutaxonomyFinancials}/upload`
       );
       submitButton.exists();
     });

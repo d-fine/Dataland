@@ -1,6 +1,6 @@
 import {
   type DataMetaInformation,
-  type EuTaxonomyFinancialsData,
+  type EutaxonomyFinancialsData,
   type LksgData,
   type StoredCompany,
 } from '@clients/backend';
@@ -19,7 +19,7 @@ import {
 import { type FixtureData, getPreparedFixture } from '@sharedUtils/Fixtures';
 import { uploadFrameworkDataForPublicToolboxFramework } from '@e2e/utils/FrameworkUpload';
 import LksgBaseFrameworkDefinition from '@/frameworks/lksg/BaseFrameworkDefinition';
-import EuTaxonomyFinancialsBaseFrameworkDefinition from '@/frameworks/eu-taxonomy-financials/BaseFrameworkDefinition';
+import EuTaxonomyFinancialsBaseFrameworkDefinition from '@/frameworks/eutaxonomy-financials/BaseFrameworkDefinition';
 
 describeIf(
   'As a user, I expect to be able to add a new dataset and see it as pending',
@@ -28,12 +28,12 @@ describeIf(
   },
   function () {
     let storedCompany: StoredCompany;
-    let preparedEuTaxonomyFixtures: Array<FixtureData<EuTaxonomyFinancialsData>>;
+    let preparedEuTaxonomyFixtures: Array<FixtureData<EutaxonomyFinancialsData>>;
     let preparedLksgFixtures: Array<FixtureData<LksgData>>;
 
     before(function () {
-      cy.fixture('CompanyInformationWithEuTaxonomyFinancialsPreparedFixtures').then(function (jsonContent) {
-        preparedEuTaxonomyFixtures = jsonContent as Array<FixtureData<EuTaxonomyFinancialsData>>;
+      cy.fixture('CompanyInformationWithEutaxonomyFinancialsPreparedFixtures').then(function (jsonContent) {
+        preparedEuTaxonomyFixtures = jsonContent as Array<FixtureData<EutaxonomyFinancialsData>>;
       });
 
       cy.fixture('CompanyInformationWithLksgPreparedFixtures').then(function (jsonContent) {

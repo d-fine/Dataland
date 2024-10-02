@@ -1,7 +1,7 @@
 import { describeIf } from '@e2e/support/TestUtility';
 import { getFirstEuTaxonomyFinancialsFixtureDataFromFixtures } from '@e2e/utils/EuTaxonomyFinancialsUpload';
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from '@e2e/utils/CompanyUpload';
-import { DataTypeEnum, type EuTaxonomyFinancialsData, type SfdrData } from '@clients/backend';
+import { DataTypeEnum, type EutaxonomyFinancialsData, type SfdrData } from '@clients/backend';
 import { getCountryNameFromCountryCode } from '@/utils/CountryCodeConverter';
 import { admin_name, admin_pw, getBaseUrl, uploader_name, uploader_pw } from '@e2e/utils/Cypress';
 import { type FixtureData } from '@sharedUtils/Fixtures';
@@ -16,13 +16,13 @@ import {
 import { humanizeStringOrNumber } from '@/utils/StringFormatter';
 import SfdrBaseFrameworkDefinition from '@/frameworks/sfdr/BaseFrameworkDefinition';
 import { ALL_FRAMEWORKS_ORDERED } from '@/utils/Constants';
-import EuTaxonomyFinancialsBaseFrameworkDefinition from '@/frameworks/eu-taxonomy-financials/BaseFrameworkDefinition';
+import EuTaxonomyFinancialsBaseFrameworkDefinition from '@/frameworks/eutaxonomy-financials/BaseFrameworkDefinition';
 
-let companiesWithEuTaxonomyFinancialsData: Array<FixtureData<EuTaxonomyFinancialsData>>;
+let companiesWithEuTaxonomyFinancialsData: Array<FixtureData<EutaxonomyFinancialsData>>;
 let companiesWithSfdrData: Array<FixtureData<SfdrData>>;
 before(function () {
   cy.fixture('CompanyInformationWithEuTaxonomyFinancialsData').then(function (jsonContent) {
-    companiesWithEuTaxonomyFinancialsData = jsonContent as Array<FixtureData<EuTaxonomyFinancialsData>>;
+    companiesWithEuTaxonomyFinancialsData = jsonContent as Array<FixtureData<EutaxonomyFinancialsData>>;
   });
   cy.fixture('CompanyInformationWithSfdrData').then(function (jsonContent) {
     companiesWithSfdrData = jsonContent as Array<FixtureData<SfdrData>>;
@@ -160,7 +160,7 @@ describe('As a user, I expect the search functionality on the /companies page to
   );
   it('Checks that the reset button works as expected', { scrollBehavior: false }, () => {
     cy.ensureLoggedIn();
-    cy.visit(`/companies?sector=dummy&countryCode=dummy&framework=${DataTypeEnum.EuTaxonomyFinancials}`);
+    cy.visit(`/companies?sector=dummy&countryCode=dummy&framework=${DataTypeEnum.EutaxonomyFinancials}`);
     cy.get("span:contains('RESET')").click();
     cy.url().should('eq', getBaseUrl() + '/companies');
   });
@@ -354,7 +354,7 @@ describe('As a user, I expect the search functionality on the /companies page to
             .get("td[class='d-bg-white w-3 d-datatable-column-left']")
             .contains(companyName)
             .should('exist');
-          cy.visit(`/companies?input=${companyName}&framework=${DataTypeEnum.EuTaxonomyFinancials}`)
+          cy.visit(`/companies?input=${companyName}&framework=${DataTypeEnum.EutaxonomyFinancials}`)
             .get("td[class='d-bg-white w-3 d-datatable-column-left']")
             .contains(companyName)
             .should('exist');
@@ -362,7 +362,7 @@ describe('As a user, I expect the search functionality on the /companies page to
             .get("div[class='col-12 text-left']")
             .should('contain.text', failureMessageOnAvailableDatasetsPage);
           cy.visit(
-            `/companies?input=${companyName}&framework=${DataTypeEnum.Sfdr}&framework=${DataTypeEnum.EuTaxonomyFinancials}`
+            `/companies?input=${companyName}&framework=${DataTypeEnum.Sfdr}&framework=${DataTypeEnum.EutaxonomyFinancials}`
           )
             .get("td[class='d-bg-white w-3 d-datatable-column-left']")
             .contains(companyName)

@@ -1,8 +1,8 @@
 import { assertDefined } from '@/utils/TypeScriptUtils';
 import {
-  type CompanyAssociatedDataEuTaxonomyFinancialsData,
+  type CompanyAssociatedDataEutaxonomyFinancialsData,
   DataTypeEnum,
-  type EuTaxonomyFinancialsData,
+  type EutaxonomyFinancialsData,
 } from '@clients/backend';
 import { TEST_PDF_FILE_NAME, TEST_PDF_FILE_PATH } from '@sharedUtils/ConstantsForPdfs';
 import { type FixtureData } from '@sharedUtils/Fixtures';
@@ -14,10 +14,10 @@ import { goToEditFormOfMostRecentDatasetForCompanyAndFramework } from './General
  * @returns the first eutaxonomy-financials dataset from the fake fixtures
  */
 export function getFirstEuTaxonomyFinancialsFixtureDataFromFixtures(): Cypress.Chainable<
-  FixtureData<EuTaxonomyFinancialsData>
+  FixtureData<EutaxonomyFinancialsData>
 > {
   return cy.fixture('CompanyInformationWithEuTaxonomyFinancialsData').then(function (jsonContent) {
-    const companiesWithEuTaxonomyFinancialsData = jsonContent as Array<FixtureData<EuTaxonomyFinancialsData>>;
+    const companiesWithEuTaxonomyFinancialsData = jsonContent as Array<FixtureData<EutaxonomyFinancialsData>>;
     return companiesWithEuTaxonomyFinancialsData[0];
   });
 }
@@ -28,10 +28,10 @@ export function getFirstEuTaxonomyFinancialsFixtureDataFromFixtures(): Cypress.C
  * @param expectIncludedFile specifies if the test file is expected to be in the server response
  */
 export function gotoEditForm(companyId: string, expectIncludedFile: boolean): void {
-  goToEditFormOfMostRecentDatasetForCompanyAndFramework(companyId, DataTypeEnum.EuTaxonomyFinancials).then(
+  goToEditFormOfMostRecentDatasetForCompanyAndFramework(companyId, DataTypeEnum.EutaxonomyFinancials).then(
     (interception) => {
       const referencedReports = assertDefined(
-        (interception?.response?.body as CompanyAssociatedDataEuTaxonomyFinancialsData)?.data?.general?.general
+        (interception?.response?.body as CompanyAssociatedDataEutaxonomyFinancialsData)?.data?.general?.general
           ?.referencedReports
       );
       expect(TEST_PDF_FILE_NAME in referencedReports).to.equal(expectIncludedFile);
@@ -45,7 +45,7 @@ export function gotoEditForm(companyId: string, expectIncludedFile: boolean): vo
  * @param companyId the ID of the company whose data to view
  */
 export function checkIfLinkedReportsAreDownloadable(companyId: string): void {
-  cy.visitAndCheckAppMount(`/companies/${companyId}/frameworks/${DataTypeEnum.EuTaxonomyFinancials}`);
+  cy.visitAndCheckAppMount(`/companies/${companyId}/frameworks/${DataTypeEnum.EutaxonomyFinancials}`);
   const expectedPathToDownloadedReport = Cypress.config('downloadsFolder') + `/${TEST_PDF_FILE_NAME}.pdf`;
   const downloadLinkSelector = `span[data-test="Report-Download-${TEST_PDF_FILE_NAME}"]`;
   cy.readFile(expectedPathToDownloadedReport).should('not.exist');

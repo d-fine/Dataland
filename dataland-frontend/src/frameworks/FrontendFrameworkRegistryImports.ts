@@ -2,6 +2,7 @@
 import additionalCompanyInformationFrontendFrameworkDefinition from '@/frameworks/additional-company-information/FrontendFrameworkDefinition';
 import esgQuestionnaireFrontendFrameworkDefinition from '@/frameworks/esg-questionnaire/FrontendFrameworkDefinition';
 import euTaxonomyFinancialsFrontendFrameworkDefinition from '@/frameworks/eu-taxonomy-financials/FrontendFrameworkDefinition';
+import eutaxonomyFinancialsFrontendFrameworkDefinition from '@/frameworks/eutaxonomy-financials/FrontendFrameworkDefinition';
 import eutaxonomyNonFinancialsFrontendFrameworkDefinition from '@/frameworks/eutaxonomy-non-financials/FrontendFrameworkDefinition';
 import heimathafenFrontendFrameworkDefinition from '@/frameworks/heimathafen/FrontendFrameworkDefinition';
 import lksgFrontendFrameworkDefinition from '@/frameworks/lksg/FrontendFrameworkDefinition';
@@ -14,6 +15,7 @@ export const FrontendFrameworkDefinitions: Record<string, FrontendFrameworkDefin
   additionalCompanyInformation: additionalCompanyInformationFrontendFrameworkDefinition,
   esgQuestionnaire: esgQuestionnaireFrontendFrameworkDefinition,
   euTaxonomyFinancials: euTaxonomyFinancialsFrontendFrameworkDefinition,
+  eutaxonomyFinancials: eutaxonomyFinancialsFrontendFrameworkDefinition,
   eutaxonomyNonFinancials: eutaxonomyNonFinancialsFrontendFrameworkDefinition,
   heimathafen: heimathafenFrontendFrameworkDefinition,
   lksg: lksgFrontendFrameworkDefinition,

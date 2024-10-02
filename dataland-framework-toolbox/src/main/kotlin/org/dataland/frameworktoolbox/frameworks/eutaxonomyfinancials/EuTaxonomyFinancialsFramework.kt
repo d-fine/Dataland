@@ -10,7 +10,7 @@ import java.io.File
  */
 @Component
 class EuTaxonomyFinancialsFramework : InDevelopmentPavedRoadFramework(
-    identifier = "eu-taxonomy-financials",
+    identifier = "eutaxonomy-financials",
     label = "EU Taxonomy Financials",
     explanation = "Additional Taxonomy for Financials",
     File("./dataland-framework-toolbox/inputs/eu-taxonomy-financials/eu-taxonomy-financials.xlsx"),

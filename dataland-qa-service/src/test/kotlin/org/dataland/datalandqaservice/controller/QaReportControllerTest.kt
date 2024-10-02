@@ -190,7 +190,7 @@ class QaReportControllerTest(
                 DataMetaInformation(
                     dataId = dataId,
                     companyId = UUID.randomUUID().toString(),
-                    dataType = DataTypeEnum.euMinusTaxonomyMinusFinancials,
+                    dataType = DataTypeEnum.eutaxonomyMinusFinancials,
                     reportingPeriod = "period",
                     qaStatus = QaStatus.Accepted,
                     currentlyActive = true,
@@ -202,7 +202,7 @@ class QaReportControllerTest(
             }
             assertTrue(
                 ex.message.contains(
-                    "is of type '${DataTypeEnum.euMinusTaxonomyMinusFinancials}', but the expected type is 'sfdr'",
+                    "is of type '${DataTypeEnum.eutaxonomyMinusFinancials}', but the expected type is 'sfdr'",
                 ),
                 "The exception message should indicate the framework mismatch",
             )

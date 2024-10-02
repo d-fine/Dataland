@@ -5,12 +5,12 @@ import jakarta.validation.Constraint
 import jakarta.validation.ConstraintValidator
 import jakarta.validation.ConstraintValidatorContext
 import jakarta.validation.Payload
-import org.dataland.datalandbackend.frameworks.eutaxonomyfinancials.model.EuTaxonomyFinancialsData
+import org.dataland.datalandbackend.frameworks.eutaxonomyfinancials.model.EutaxonomyFinancialsData
 import org.dataland.datalandbackend.model.documents.CompanyReport
 import kotlin.reflect.KClass
 
 /**
-* Annotation for the validation of referenced reports list for eu-taxonomy-financials
+* Annotation for the validation of referenced reports list for eutaxonomy-financials
 */
 
 @Constraint(validatedBy = [ReferencedReportsListConstraintValidator::class])
@@ -26,9 +26,9 @@ annotation class ReferencedReportsListValidator(
 * Class holding the validation logic for referenced reports list. It checks if the referenced reports list is complete
 */
 class ReferencedReportsListConstraintValidator :
-    ConstraintValidator<ReferencedReportsListValidator, EuTaxonomyFinancialsData> {
+    ConstraintValidator<ReferencedReportsListValidator, EutaxonomyFinancialsData> {
 
-    override fun isValid(dataset: EuTaxonomyFinancialsData?, context: ConstraintValidatorContext?): Boolean {
+    override fun isValid(dataset: EutaxonomyFinancialsData?, context: ConstraintValidatorContext?): Boolean {
         if (dataset == null) {
             return false
         }
@@ -51,7 +51,7 @@ class ReferencedReportsListConstraintValidator :
     }
 
     @Suppress("MaxLineLength", "LongMethod")
-    private fun getExtendedDocumentReferences(dataset: EuTaxonomyFinancialsData): List<String?> {
+    private fun getExtendedDocumentReferences(dataset: EutaxonomyFinancialsData): List<String?> {
         return listOf(
             dataset.general?.general?.fiscalYearDeviation?.dataSource?.fileReference,
             dataset.general?.general?.fiscalYearEnd?.dataSource?.fileReference,

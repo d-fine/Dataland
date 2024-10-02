@@ -1,5 +1,5 @@
 import { searchBasicCompanyInformationForDataType } from '@e2e//utils/GeneralApiUtils';
-import { DataTypeEnum, type EuTaxonomyFinancialsData, type BasicCompanyInformation } from '@clients/backend';
+import { DataTypeEnum, type EutaxonomyFinancialsData, type BasicCompanyInformation } from '@clients/backend';
 import { getKeycloakToken } from '@e2e/utils/Auth';
 import { validateCompanyCockpitPage, verifySearchResultTableExists } from '@sharedUtils/ElementChecks';
 import { uploader_name, uploader_pw } from '@e2e/utils/Cypress';
@@ -7,12 +7,12 @@ import { type FixtureData } from '@sharedUtils/Fixtures';
 import { describeIf, type ExecutionEnvironment } from '@e2e/support/TestUtility';
 import { assertDefined } from '@/utils/TypeScriptUtils';
 
-let companiesWithEuTaxonomyFinancialsData: Array<FixtureData<EuTaxonomyFinancialsData>>;
+let companiesWithEuTaxonomyFinancialsData: Array<FixtureData<EutaxonomyFinancialsData>>;
 const executionEnvironments: ExecutionEnvironment[] = ['developmentLocal', 'ci', 'developmentCd'];
 
 before(function () {
   cy.fixture('CompanyInformationWithEuTaxonomyFinancialsData').then(function (jsonContent) {
-    companiesWithEuTaxonomyFinancialsData = jsonContent as Array<FixtureData<EuTaxonomyFinancialsData>>;
+    companiesWithEuTaxonomyFinancialsData = jsonContent as Array<FixtureData<EutaxonomyFinancialsData>>;
   });
 });
 
@@ -102,7 +102,7 @@ describeIf(
      * Returns the first company from the fake fixture that has at least one alternative name
      * @returns the matching company from the fake fixtures
      */
-    function getCompanyWithAlternativeName(): FixtureData<EuTaxonomyFinancialsData> {
+    function getCompanyWithAlternativeName(): FixtureData<EutaxonomyFinancialsData> {
       return assertDefined(
         companiesWithEuTaxonomyFinancialsData.find((it) => {
           return (
@@ -125,10 +125,10 @@ describeIf(
       const inputValue = 'A company name';
 
       getKeycloakToken(uploader_name, uploader_pw).then((token) => {
-        cy.browserThen(searchBasicCompanyInformationForDataType(token, DataTypeEnum.EuTaxonomyFinancials)).then(
+        cy.browserThen(searchBasicCompanyInformationForDataType(token, DataTypeEnum.EutaxonomyFinancials)).then(
           (basicCompanyInformations: Array<BasicCompanyInformation>) => {
             cy.visitAndCheckAppMount(
-              `/companies/${basicCompanyInformations[0].companyId}/frameworks/${DataTypeEnum.EuTaxonomyFinancials}`
+              `/companies/${basicCompanyInformations[0].companyId}/frameworks/${DataTypeEnum.EutaxonomyFinancials}`
             );
             cy.get('input[id=company_search_bar_standard]').should('not.be.disabled').type(inputValue);
             cy.get('input[id=company_search_bar_standard]')
@@ -144,7 +144,7 @@ describeIf(
       const primevueHighlightedSuggestionClass = 'p-focus';
       const searchStringResultingInAtLeastTwoAutocompleteSuggestions = 'abs';
       getKeycloakToken(uploader_name, uploader_pw).then((token) => {
-        cy.browserThen(searchBasicCompanyInformationForDataType(token, DataTypeEnum.EuTaxonomyFinancials)).then(
+        cy.browserThen(searchBasicCompanyInformationForDataType(token, DataTypeEnum.EutaxonomyFinancials)).then(
           (basicCompanyInformations: Array<BasicCompanyInformation>) => {
             const testCompany = basicCompanyInformations[0];
             cy.visitAndCheckAppMount('/companies');

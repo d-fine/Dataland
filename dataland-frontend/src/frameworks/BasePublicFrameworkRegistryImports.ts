@@ -3,6 +3,7 @@ import { type BasePublicFrameworkDefinition } from '@/frameworks/BasePublicFrame
 import additionalCompanyInformationBaseFrameworkDefinition from '@/frameworks/additional-company-information/BaseFrameworkDefinition';
 import esgQuestionnaireBaseFrameworkDefinition from '@/frameworks/esg-questionnaire/BaseFrameworkDefinition';
 import euTaxonomyFinancialsBaseFrameworkDefinition from '@/frameworks/eu-taxonomy-financials/BaseFrameworkDefinition';
+import eutaxonomyFinancialsBaseFrameworkDefinition from '@/frameworks/eutaxonomy-financials/BaseFrameworkDefinition';
 import eutaxonomyNonFinancialsBaseFrameworkDefinition from '@/frameworks/eutaxonomy-non-financials/BaseFrameworkDefinition';
 import heimathafenBaseFrameworkDefinition from '@/frameworks/heimathafen/BaseFrameworkDefinition';
 import lksgBaseFrameworkDefinition from '@/frameworks/lksg/BaseFrameworkDefinition';
@@ -12,6 +13,7 @@ export const PublicFrameworkDefinitions: Record<string, BasePublicFrameworkDefin
   additionalCompanyInformation: additionalCompanyInformationBaseFrameworkDefinition,
   esgQuestionnaire: esgQuestionnaireBaseFrameworkDefinition,
   euTaxonomyFinancials: euTaxonomyFinancialsBaseFrameworkDefinition,
+  eutaxonomyFinancials: eutaxonomyFinancialsBaseFrameworkDefinition,
   eutaxonomyNonFinancials: eutaxonomyNonFinancialsBaseFrameworkDefinition,
   heimathafen: heimathafenBaseFrameworkDefinition,
   lksg: lksgBaseFrameworkDefinition,

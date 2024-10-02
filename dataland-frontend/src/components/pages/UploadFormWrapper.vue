@@ -81,7 +81,7 @@ export default defineComponent({
       switch (this.frameworkType) {
         case `${DataTypeEnum.EutaxonomyNonFinancials}`:
           return CreateEuTaxonomyNonFinancials;
-        case `${DataTypeEnum.EuTaxonomyFinancials}`:
+        case `${DataTypeEnum.EutaxonomyFinancials}`:
           return CreateEuTaxonomyForFinancials;
         case `${DataTypeEnum.P2p}`:
           return CreateP2pDataset;

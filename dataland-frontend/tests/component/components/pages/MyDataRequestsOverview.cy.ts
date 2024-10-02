@@ -64,7 +64,7 @@ before(function () {
 
   mockDataRequests.push(
     buildExtendedStoredDataRequest(
-      DataTypeEnum.EuTaxonomyFinancials,
+      DataTypeEnum.EutaxonomyFinancials,
       '3021',
       'z-company-that-will-always-be-sorted-to-bottom',
       'someId',

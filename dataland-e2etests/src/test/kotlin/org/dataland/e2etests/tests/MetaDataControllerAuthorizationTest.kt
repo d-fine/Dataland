@@ -27,7 +27,7 @@ class MetaDataControllerAuthorizationTest {
 
     @Test
     fun `post a dummy teaser company and data for it and confirm unauthorized meta info access succeeds`() {
-        val testDataType = DataTypeEnum.euMinusTaxonomyMinusFinancials
+        val testDataType = DataTypeEnum.eutaxonomyMinusFinancials
         val listOfUploadInfo = apiAccessor.uploadCompanyAndFrameworkDataForMultipleFrameworks(
             mapOf(testDataType to listOfOneTeaserTestCompanyInformation), 1,
         )
@@ -50,7 +50,7 @@ class MetaDataControllerAuthorizationTest {
     @Test
     fun `post a dummy company and taxonomy data for it and confirm unauthorized meta info access is denied`() {
         val listOfUploadInfo = apiAccessor.uploadCompanyAndFrameworkDataForMultipleFrameworks(
-            mapOf(DataTypeEnum.euMinusTaxonomyMinusFinancials to listOfOneNonTeaserTestCompanyInformation), 1,
+            mapOf(DataTypeEnum.eutaxonomyMinusFinancials to listOfOneNonTeaserTestCompanyInformation), 1,
         )
         val testDataId = listOfUploadInfo[0].actualStoredDataMetaInfo!!.dataId
         val exception = assertThrows<IllegalArgumentException> {
@@ -61,7 +61,7 @@ class MetaDataControllerAuthorizationTest {
 
     @Test
     fun `post a dummy company as teaser company and data for it and confirm unauthorized meta info search succeeds`() {
-        val testDataType = DataTypeEnum.euMinusTaxonomyMinusFinancials
+        val testDataType = DataTypeEnum.eutaxonomyMinusFinancials
         val listOfUploadInfo = apiAccessor.uploadCompanyAndFrameworkDataForMultipleFrameworks(
             mapOf(testDataType to listOfOneTeaserTestCompanyInformation), 1,
         )
@@ -84,7 +84,7 @@ class MetaDataControllerAuthorizationTest {
 
     @Test
     fun `post a dummy company and taxonomy data for it and confirm unauthorized meta info search is denied`() {
-        val testDataType = DataTypeEnum.euMinusTaxonomyMinusFinancials
+        val testDataType = DataTypeEnum.eutaxonomyMinusFinancials
         val testCompanyId = apiAccessor.uploadCompanyAndFrameworkDataForMultipleFrameworks(
             mapOf(testDataType to listOfOneNonTeaserTestCompanyInformation), 1,
         )[0].actualStoredCompany.companyId
@@ -96,7 +96,7 @@ class MetaDataControllerAuthorizationTest {
 
     @Test
     fun `post two companies with data and check that the access to the uploaderUserId field is not restricted`() {
-        val testDataType = DataTypeEnum.euMinusTaxonomyMinusFinancials
+        val testDataType = DataTypeEnum.eutaxonomyMinusFinancials
         val metaInfoOfUploaderUpload = apiAccessor.uploadCompanyAndFrameworkDataForMultipleFrameworks(
             companyInformationPerFramework = mapOf(testDataType to listOfOneNonTeaserTestCompanyInformation),
             numberOfDataSetsPerCompany = 1,

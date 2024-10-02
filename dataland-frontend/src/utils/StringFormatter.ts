@@ -103,7 +103,7 @@ export function humanizeStringOrNumber(rawInput: string | number | null | undefi
  */
 export function getFrameworkTitle(framework: string): string {
   switch (framework) {
-    case DataTypeEnum.EuTaxonomyFinancials:
+    case DataTypeEnum.EutaxonomyFinancials:
       return 'EU Taxonomy';
     case DataTypeEnum.EutaxonomyNonFinancials:
       return 'EU Taxonomy';
@@ -123,7 +123,7 @@ export function getFrameworkTitle(framework: string): string {
 export function frameworkHasSubTitle(framework: string): boolean {
   return (
     framework == DataTypeEnum.P2p ||
-    framework == DataTypeEnum.EuTaxonomyFinancials ||
+    framework == DataTypeEnum.EutaxonomyFinancials ||
     framework == DataTypeEnum.EutaxonomyNonFinancials ||
     framework == DataTypeEnum.EsgQuestionnaire
   );
@@ -135,7 +135,7 @@ export function frameworkHasSubTitle(framework: string): boolean {
  */
 export function getFrameworkSubtitle(framework: string): string {
   switch (framework) {
-    case DataTypeEnum.EuTaxonomyFinancials:
+    case DataTypeEnum.EutaxonomyFinancials:
       return 'for financial companies';
     case DataTypeEnum.EutaxonomyNonFinancials:
       return 'for non-financial companies';
