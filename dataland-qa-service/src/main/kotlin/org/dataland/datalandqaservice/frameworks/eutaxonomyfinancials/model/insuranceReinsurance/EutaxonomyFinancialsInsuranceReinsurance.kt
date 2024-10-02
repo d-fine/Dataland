@@ -3,27 +3,34 @@ package org.dataland.datalandqaservice.frameworks.eutaxonomyfinancials.model.ins
 
 import jakarta.validation.Valid
 import org.dataland.datalandqaservice.frameworks.eutaxonomyfinancials.model.insuranceReinsurance
-    .capexBasedGrossPremiumsWrittenReInsuranceRevenue
-    .EutaxonomyFinancialsInsurancereinsuranceCapexBasedGrossPremiumsWrittenReInsuranceRevenue
-import org.dataland.datalandqaservice.frameworks.eutaxonomyfinancials.model.insuranceReinsurance.general
-    .EutaxonomyFinancialsInsurancereinsuranceGeneral
+    .averageValueOfTaxonomyAlignedUndertakings
+    .EutaxonomyFinancialsInsurancereinsuranceAverageValueOfTaxonomyAlignedUndertakings
 import org.dataland.datalandqaservice.frameworks.eutaxonomyfinancials.model.insuranceReinsurance
-    .revenueBasedGrossPremiumsWrittenReInsuranceRevenue
-    .EutaxonomyFinancialsInsurancereinsuranceRevenueBasedGrossPremiumsWrittenReInsuranceRevenue
+    .breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBased
+    .EutaxonomyFinancialsInsurancereinsuranceBreakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBased
+import org.dataland.datalandqaservice.frameworks.eutaxonomyfinancials.model.insuranceReinsurance
+    .breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBased
+    .EutaxonomyFinancialsInsurancereinsuranceBreakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBased
+import org.dataland.datalandqaservice.frameworks.eutaxonomyfinancials.model.insuranceReinsurance.underwritingKpi
+    .EutaxonomyFinancialsInsurancereinsuranceUnderwritingKpi
 
 /**
  * The QA-model for the InsuranceReinsurance section
  */
 data class EutaxonomyFinancialsInsuranceReinsurance(
     @field:Valid()
-    val general: EutaxonomyFinancialsInsurancereinsuranceGeneral? = null,
+    val underwritingKpi: EutaxonomyFinancialsInsurancereinsuranceUnderwritingKpi? = null,
 
     @field:Valid()
-    val revenueBasedGrossPremiumsWrittenReInsuranceRevenue:
-    EutaxonomyFinancialsInsurancereinsuranceRevenueBasedGrossPremiumsWrittenReInsuranceRevenue? = null,
+    val averageValueOfTaxonomyAlignedUndertakings:
+    EutaxonomyFinancialsInsurancereinsuranceAverageValueOfTaxonomyAlignedUndertakings? = null,
 
     @field:Valid()
-    val capexBasedGrossPremiumsWrittenReInsuranceRevenue:
-    EutaxonomyFinancialsInsurancereinsuranceCapexBasedGrossPremiumsWrittenReInsuranceRevenue? = null,
+    val breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBased:
+    EutaxonomyFinancialsInsurancereinsuranceBreakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBased? = null,
+
+    @field:Valid()
+    val breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBased:
+    EutaxonomyFinancialsInsurancereinsuranceBreakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBased? = null,
 
 )

@@ -81,6 +81,9 @@ export function generateEutaxonomyFinancialsData(nullProbability = DEFAULT_PROBA
         substantialContributionToClimateChangeAdaptationInPercentOfWhichEnabling: dataGenerator.randomExtendedDataPoint(
           dataGenerator.randomPercentageValue()
         ),
+        substantialContributionToClimateChangeAdaptationInPercentOfWhichAdapting: dataGenerator.randomExtendedDataPoint(
+          dataGenerator.randomPercentageValue()
+        ),
         substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentEligible:
           dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
         substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned:
@@ -153,6 +156,9 @@ export function generateEutaxonomyFinancialsData(nullProbability = DEFAULT_PROBA
         substantialContributionToClimateChangeAdaptationInPercentOfWhichEnabling: dataGenerator.randomExtendedDataPoint(
           dataGenerator.randomPercentageValue()
         ),
+        substantialContributionToClimateChangeAdaptationInPercentOfWhichAdapting: dataGenerator.randomExtendedDataPoint(
+          dataGenerator.randomPercentageValue()
+        ),
         substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentEligible:
           dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
         substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned:
@@ -202,275 +208,354 @@ export function generateEutaxonomyFinancialsData(nullProbability = DEFAULT_PROBA
       },
     },
     assetManagement: {
-      turnoverBasedKpi: {
-        substantialContributionToClimateChangeMitigationInPercentAligned: dataGenerator.randomExtendedDataPoint(
+      averageValueOfTaxonomyAlignedUndertakings: {
+        weightedAverageValueOfAllInvestmentsTurnoverBasedInPercent: dataGenerator.randomExtendedDataPoint(
           dataGenerator.randomPercentageValue()
         ),
-        substantialContributionToClimateChangeMitigationInPercentOfWhichEnabling: dataGenerator.randomExtendedDataPoint(
+        weightedAverageValueOfAllInvestmentsCapexBasedInPercent: dataGenerator.randomExtendedDataPoint(
           dataGenerator.randomPercentageValue()
         ),
-        substantialContributionToClimateChangeMitigationInPercentOfWhichTransitional:
+        weightedAverageValueOfAllInvestmentsTurnoverBasedMonetaryAmount: dataGenerator.randomCurrencyDataPoint(0),
+        weightedAverageValueOfAllInvestmentsCapexBasedMonetaryAmount: dataGenerator.randomCurrencyDataPoint(0),
+      },
+      breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBased: {
+        shareOfTurnoverBasedKpiSubstantiallyContributingToClimateChangeMitigationInPercentAligned:
           dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
-        substantialContributionToClimateChangeAdaptationInPercentAligned: dataGenerator.randomExtendedDataPoint(
-          dataGenerator.randomPercentageValue()
-        ),
-        substantialContributionToClimateChangeAdaptationInPercentOfWhichEnabling: dataGenerator.randomExtendedDataPoint(
-          dataGenerator.randomPercentageValue()
-        ),
-        substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned:
+        shareOfTurnoverBasedKpiSubstantiallyContributingToClimateChangeMitigationInPercentOfWhichEnabling:
           dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
-        substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentOfWhichEnabling:
+        shareOfTurnoverBasedKpiSubstantiallyContributingToClimateChangeMitigationInPercentOfWhichTransitional:
           dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
-        substantialContributionToTransitionToACircularEconomyInPercentAligned: dataGenerator.randomExtendedDataPoint(
-          dataGenerator.randomPercentageValue()
-        ),
-        substantialContributionToTransitionToACircularEconomyInPercentOfWhichEnabling:
+        shareOfTurnoverBasedKpiSubstantiallyContributingToClimateChangeAdaptationInPercentAligned:
           dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
-        substantialContributionToPollutionPreventionAndControlInPercentAligned: dataGenerator.randomExtendedDataPoint(
-          dataGenerator.randomPercentageValue()
-        ),
-        substantialContributionToPollutionPreventionAndControlInPercentOfWhichEnabling:
+        shareOfTurnoverBasedKpiSubstantiallyContributingToClimateChangeAdaptationInPercentOfWhichEnabling:
           dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
-        substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned:
+        shareOfTurnoverBasedKpiSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned:
           dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
-        substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentOfWhichEnabling:
+        shareOfTurnoverBasedKpiSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentOfWhichEnabling:
+          dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
+        shareOfTurnoverBasedKpiSubstantiallyContributingToTransitionToACircularEconomyInPercentAligned:
+          dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
+        shareOfTurnoverBasedKpiSubstantiallyContributingToTransitionToACircularEconomyInPercentOfWhichEnabling:
+          dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
+        shareOfTurnoverBasedKpiSubstantiallyContributingToPollutionPreventionAndControlInPercentAligned:
+          dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
+        shareOfTurnoverBasedKpiSubstantiallyContributingToPollutionPreventionAndControlInPercentOfWhichEnabling:
+          dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
+        shareOfTurnoverBasedKpiSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned:
+          dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
+        shareOfTurnoverBasedKpiSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentOfWhichEnabling:
           dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
       },
-      capexBasedKpi: {
-        substantialContributionToClimateChangeMitigationInPercentAligned: dataGenerator.randomExtendedDataPoint(
-          dataGenerator.randomPercentageValue()
-        ),
-        substantialContributionToClimateChangeMitigationInPercentOfWhichEnabling: dataGenerator.randomExtendedDataPoint(
-          dataGenerator.randomPercentageValue()
-        ),
-        substantialContributionToClimateChangeMitigationInPercentOfWhichTransitional:
+      breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBased: {
+        shareOfCapexBasedKpiSubstantiallyContributingToClimateChangeMitigationInPercentAligned:
           dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
-        substantialContributionToClimateChangeAdaptationInPercentAligned: dataGenerator.randomExtendedDataPoint(
-          dataGenerator.randomPercentageValue()
-        ),
-        substantialContributionToClimateChangeAdaptationInPercentOfWhichEnabling: dataGenerator.randomExtendedDataPoint(
-          dataGenerator.randomPercentageValue()
-        ),
-        substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned:
+        shareOfCapexBasedKpiSubstantiallyContributingToClimateChangeMitigationInPercentOfWhichEnabling:
           dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
-        substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentOfWhichEnabling:
+        shareOfCapexBasedKpiSubstantiallyContributingToClimateChangeMitigationInPercentOfWhichTransitional:
           dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
-        substantialContributionToTransitionToACircularEconomyInPercentAligned: dataGenerator.randomExtendedDataPoint(
-          dataGenerator.randomPercentageValue()
-        ),
-        substantialContributionToTransitionToACircularEconomyInPercentOfWhichEnabling:
+        shareOfCapexBasedKpiSubstantiallyContributingToClimateChangeAdaptationInPercentAligned:
           dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
-        substantialContributionToPollutionPreventionAndControlInPercentAligned: dataGenerator.randomExtendedDataPoint(
-          dataGenerator.randomPercentageValue()
-        ),
-        substantialContributionToPollutionPreventionAndControlInPercentOfWhichEnabling:
+        shareOfCapexBasedKpiSubstantiallyContributingToClimateChangeAdaptationInPercentOfWhichEnabling:
           dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
-        substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned:
+        shareOfCapexBasedKpiSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned:
           dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
-        substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentOfWhichEnabling:
+        shareOfCapexBasedKpiSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentOfWhichEnabling:
+          dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
+        shareOfCapexBasedKpiSubstantiallyContributingToTransitionToACircularEconomyInPercentAligned:
+          dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
+        shareOfCapexBasedKpiSubstantiallyContributingToTransitionToACircularEconomyInPercentOfWhichEnabling:
+          dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
+        shareOfCapexBasedKpiSubstantiallyContributingToPollutionPreventionAndControlInPercentAligned:
+          dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
+        shareOfCapexBasedKpiSubstantiallyContributingToPollutionPreventionAndControlInPercentOfWhichEnabling:
+          dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
+        shareOfCapexBasedKpiSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned:
+          dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
+        shareOfCapexBasedKpiSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentOfWhichEnabling:
           dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
       },
     },
     insuranceReinsurance: {
-      general: {
-        taxonomyEligibleNonLifeInsuranceEconomicActivities: dataGenerator.randomExtendedDataPoint(
+      underwritingKpi: {
+        totalOfAbsolutePremiumsOfTaxonomyAlignedActivities: dataGenerator.randomCurrencyDataPoint(0),
+        totalOfAbsolutePremiumsOfTaxonomyEligibleButTaxonomyNonAlignedActivities:
+          dataGenerator.randomCurrencyDataPoint(0),
+        totalOfAbsolutePremiumsOfTaxonomyNonEligibleActivities: dataGenerator.randomCurrencyDataPoint(0),
+        proportionOfAbsolutePremiumsOfTaxonomyAlignedActivities: dataGenerator.randomExtendedDataPoint(
+          dataGenerator.randomPercentageValue()
+        ),
+        proportionOfAbsolutePremiumsOfTaxonomyEligibleButTaxonomyNonAlignedActivities:
+          dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
+        proportionOfAbsolutePremiumsOfTaxonomyNonEligibleActivities: dataGenerator.randomExtendedDataPoint(
           dataGenerator.randomPercentageValue()
         ),
       },
-      revenueBasedGrossPremiumsWrittenReInsuranceRevenue: {
-        substantialContributionToClimateChangeMitigationInPercentAligned: dataGenerator.randomExtendedDataPoint(
+      averageValueOfTaxonomyAlignedUndertakings: {
+        weightedAverageValueOfAllInvestmentsTurnoverBasedInPercent: dataGenerator.randomExtendedDataPoint(
           dataGenerator.randomPercentageValue()
         ),
-        substantialContributionToClimateChangeMitigationInPercentOfWhichEnabling: dataGenerator.randomExtendedDataPoint(
+        weightedAverageValueOfAllInvestmentsCapexBasedInPercent: dataGenerator.randomExtendedDataPoint(
           dataGenerator.randomPercentageValue()
         ),
-        substantialContributionToClimateChangeMitigationInPercentOfWhichTransitional:
+        weightedAverageValueOfAllInvestmentsTurnoverBasedMonetaryAmount: dataGenerator.randomCurrencyDataPoint(0),
+        weightedAverageValueOfAllInvestmentsCapexBasedMonetaryAmount: dataGenerator.randomCurrencyDataPoint(0),
+      },
+      breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBased: {
+        shareOfTurnoverBasedKpiSubstantiallyContributingToClimateChangeMitigationInPercentAligned:
           dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
-        substantialContributionToClimateChangeAdaptationInPercentAligned: dataGenerator.randomExtendedDataPoint(
-          dataGenerator.randomPercentageValue()
-        ),
-        substantialContributionToClimateChangeAdaptationInPercentOfWhichEnabling: dataGenerator.randomExtendedDataPoint(
-          dataGenerator.randomPercentageValue()
-        ),
-        substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned:
+        shareOfTurnoverBasedKpiSubstantiallyContributingToClimateChangeMitigationInPercentOfWhichEnabling:
           dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
-        substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentOfWhichEnabling:
+        shareOfTurnoverBasedKpiSubstantiallyContributingToClimateChangeMitigationInPercentOfWhichTransitional:
           dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
-        substantialContributionToTransitionToACircularEconomyInPercentAligned: dataGenerator.randomExtendedDataPoint(
-          dataGenerator.randomPercentageValue()
-        ),
-        substantialContributionToTransitionToACircularEconomyInPercentOfWhichEnabling:
+        shareOfTurnoverBasedKpiSubstantiallyContributingToClimateChangeAdaptationInPercentAligned:
           dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
-        substantialContributionToPollutionPreventionAndControlInPercentAligned: dataGenerator.randomExtendedDataPoint(
-          dataGenerator.randomPercentageValue()
-        ),
-        substantialContributionToPollutionPreventionAndControlInPercentOfWhichEnabling:
+        shareOfTurnoverBasedKpiSubstantiallyContributingToClimateChangeAdaptationInPercentOfWhichEnabling:
           dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
-        substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned:
+        shareOfTurnoverBasedKpiSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned:
           dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
-        substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentOfWhichEnabling:
+        shareOfTurnoverBasedKpiSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentOfWhichEnabling:
+          dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
+        shareOfTurnoverBasedKpiSubstantiallyContributingToTransitionToACircularEconomyInPercentAligned:
+          dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
+        shareOfTurnoverBasedKpiSubstantiallyContributingToTransitionToACircularEconomyInPercentOfWhichEnabling:
+          dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
+        shareOfTurnoverBasedKpiSubstantiallyContributingToPollutionPreventionAndControlInPercentAligned:
+          dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
+        shareOfTurnoverBasedKpiSubstantiallyContributingToPollutionPreventionAndControlInPercentOfWhichEnabling:
+          dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
+        shareOfTurnoverBasedKpiSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned:
+          dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
+        shareOfTurnoverBasedKpiSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentOfWhichEnabling:
           dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
       },
-      capexBasedGrossPremiumsWrittenReInsuranceRevenue: {
-        substantialContributionToClimateChangeMitigationInPercentAligned: dataGenerator.randomExtendedDataPoint(
-          dataGenerator.randomPercentageValue()
-        ),
-        substantialContributionToClimateChangeMitigationInPercentOfWhichEnabling: dataGenerator.randomExtendedDataPoint(
-          dataGenerator.randomPercentageValue()
-        ),
-        substantialContributionToClimateChangeMitigationInPercentOfWhichTransitional:
+      breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBased: {
+        shareOfCapexBasedKpiSubstantiallyContributingToClimateChangeMitigationInPercentAligned:
           dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
-        substantialContributionToClimateChangeAdaptationInPercentAligned: dataGenerator.randomExtendedDataPoint(
-          dataGenerator.randomPercentageValue()
-        ),
-        substantialContributionToClimateChangeAdaptationInPercentOfWhichEnabling: dataGenerator.randomExtendedDataPoint(
-          dataGenerator.randomPercentageValue()
-        ),
-        substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned:
+        shareOfCapexBasedKpiSubstantiallyContributingToClimateChangeMitigationInPercentOfWhichEnabling:
           dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
-        substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentOfWhichEnabling:
+        shareOfCapexBasedKpiSubstantiallyContributingToClimateChangeMitigationInPercentOfWhichTransitional:
           dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
-        substantialContributionToTransitionToACircularEconomyInPercentAligned: dataGenerator.randomExtendedDataPoint(
-          dataGenerator.randomPercentageValue()
-        ),
-        substantialContributionToTransitionToACircularEconomyInPercentOfWhichEnabling:
+        shareOfCapexBasedKpiSubstantiallyContributingToClimateChangeAdaptationInPercentAligned:
           dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
-        substantialContributionToPollutionPreventionAndControlInPercentAligned: dataGenerator.randomExtendedDataPoint(
-          dataGenerator.randomPercentageValue()
-        ),
-        substantialContributionToPollutionPreventionAndControlInPercentOfWhichEnabling:
+        shareOfCapexBasedKpiSubstantiallyContributingToClimateChangeAdaptationInPercentOfWhichEnabling:
           dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
-        substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned:
+        shareOfCapexBasedKpiSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned:
           dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
-        substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentOfWhichEnabling:
+        shareOfCapexBasedKpiSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentOfWhichEnabling:
+          dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
+        shareOfCapexBasedKpiSubstantiallyContributingToTransitionToACircularEconomyInPercentAligned:
+          dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
+        shareOfCapexBasedKpiSubstantiallyContributingToTransitionToACircularEconomyInPercentOfWhichEnabling:
+          dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
+        shareOfCapexBasedKpiSubstantiallyContributingToPollutionPreventionAndControlInPercentAligned:
+          dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
+        shareOfCapexBasedKpiSubstantiallyContributingToPollutionPreventionAndControlInPercentOfWhichEnabling:
+          dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
+        shareOfCapexBasedKpiSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned:
+          dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
+        shareOfCapexBasedKpiSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentOfWhichEnabling:
           dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
       },
     },
     investmentFirms: {
-      turnoverBasedKpi: {
-        totalAssetsInvestedRevenueFromInvestmentAndServices: dataGenerator.randomExtendedDataPoint(
-          dataGenerator.randomFloat(0)
-        ),
-        substantialContributionToClimateChangeMitigationInPercentEligible: dataGenerator.randomExtendedDataPoint(
-          dataGenerator.randomPercentageValue()
-        ),
-        substantialContributionToClimateChangeMitigationInPercentAligned: dataGenerator.randomExtendedDataPoint(
-          dataGenerator.randomPercentageValue()
-        ),
-        substantialContributionToClimateChangeMitigationInPercentOfWhichEnabling: dataGenerator.randomExtendedDataPoint(
-          dataGenerator.randomPercentageValue()
-        ),
-        substantialContributionToClimateChangeMitigationInPercentOfWhichTransitional:
+      dealingOnOwnAccountServicesTurnoverBased: {
+        turnoverBasedTotalAssetsInvestedUnderInvestmentFirmsActivitiesDealingOnOwnAccount:
+          dataGenerator.randomCurrencyDataPoint(0),
+        turnoverBasedProportionOfAssetsSubstantiallyContributingToClimateChangeMitigationEligible:
           dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
-        substantialContributionToClimateChangeAdaptationInPercentEligible: dataGenerator.randomExtendedDataPoint(
-          dataGenerator.randomPercentageValue()
-        ),
-        substantialContributionToClimateChangeAdaptationInPercentAligned: dataGenerator.randomExtendedDataPoint(
-          dataGenerator.randomPercentageValue()
-        ),
-        substantialContributionToClimateChangeAdaptationInPercentOfWhichEnabling: dataGenerator.randomExtendedDataPoint(
-          dataGenerator.randomPercentageValue()
-        ),
-        substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentEligible:
+        turnoverBasedProportionOfAssetsSubstantiallyContributingToClimateChangeMitigationAligned:
           dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
-        substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned:
+        turnoverBasedProportionOfAssetsSubstantiallyContributingToClimateChangeMitigationOfWhichTransitional:
           dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
-        substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentOfWhichEnabling:
+        turnoverBasedProportionOfAssetsSubstantiallyContributingToClimateChangeMitigationOfWhichEnabling:
           dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
-        substantialContributionToTransitionToACircularEconomyInPercentEligible: dataGenerator.randomExtendedDataPoint(
-          dataGenerator.randomPercentageValue()
-        ),
-        substantialContributionToTransitionToACircularEconomyInPercentAligned: dataGenerator.randomExtendedDataPoint(
-          dataGenerator.randomPercentageValue()
-        ),
-        substantialContributionToTransitionToACircularEconomyInPercentOfWhichEnabling:
+        turnoverBasedProportionOfAssetsSubstantiallyContributingToClimateChangeAdaptationEligible:
           dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
-        substantialContributionToPollutionPreventionAndControlInPercentEligible: dataGenerator.randomExtendedDataPoint(
-          dataGenerator.randomPercentageValue()
-        ),
-        substantialContributionToPollutionPreventionAndControlInPercentAligned: dataGenerator.randomExtendedDataPoint(
-          dataGenerator.randomPercentageValue()
-        ),
-        substantialContributionToPollutionPreventionAndControlInPercentOfWhichEnabling:
+        turnoverBasedProportionOfAssetsSubstantiallyContributingToClimateChangeAdaptationAligned:
           dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
-        substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentEligible:
+        turnoverBasedProportionOfAssetsSubstantiallyContributingToClimateChangeAdaptationOfWhichEnabling:
           dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
-        substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned:
+        turnoverBasedProportionOfAssetsSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesEligible:
           dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
-        substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentOfWhichEnabling:
+        turnoverBasedProportionOfAssetsSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesAligned:
           dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
-        totalAssetsInvestedRevenueFromInvestmentAndServicesInPercentEligible: dataGenerator.randomExtendedDataPoint(
-          dataGenerator.randomPercentageValue()
-        ),
-        totalAssetsInvestedRevenueFromInvestmentAndServicesInPercentAligned: dataGenerator.randomExtendedDataPoint(
-          dataGenerator.randomPercentageValue()
-        ),
-        totalAssetsInvestedRevenueFromInvestmentAndServicesInPercentOfWhichEnabling:
+        turnoverBasedProportionOfAssetsSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesOfWhichEnabling:
           dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
-        totalAssetsInvestedRevenueFromInvestmentAndServicesInPercentOfWhichTransitional:
+        turnoverBasedProportionOfAssetsSubstantiallyContributingToCircularEconomyEligible:
+          dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
+        turnoverBasedProportionOfAssetsSubstantiallyContributingToCircularEconomyAligned:
+          dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
+        turnoverBasedProportionOfAssetsSubstantiallyContributingToCircularEconomyOfWhichEnabling:
+          dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
+        turnoverBasedProportionOfAssetsSubstantiallyContributingToPollutionPreventionAndControlEligible:
+          dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
+        turnoverBasedProportionOfAssetsSubstantiallyContributingToPollutionPreventionAndControlAligned:
+          dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
+        turnoverBasedProportionOfAssetsSubstantiallyContributingToPollutionPreventionAndControlOfWhichEnabling:
+          dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
+        turnoverBasedProportionOfAssetsSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsEligible:
+          dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
+        turnoverBasedProportionOfAssetsSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsAligned:
+          dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
+        turnoverBasedProportionOfAssetsSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsOfWhichEnabling:
+          dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
+        turnoverBasedProportionOfAssetsSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesEligible:
+          dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
+        turnoverBasedProportionOfAssetsSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesAligned:
+          dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
+        turnoverBasedProportionOfAssetsSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesOfWhichTransitional:
+          dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
+        turnoverBasedProportionOfAssetsSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesOfWhichEnabling:
           dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
       },
-      capexBasedKpi: {
-        totalAssetsInvestedRevenueFromInvestmentAndServices: dataGenerator.randomExtendedDataPoint(
-          dataGenerator.randomFloat(0)
-        ),
-        substantialContributionToClimateChangeMitigationInPercentEligible: dataGenerator.randomExtendedDataPoint(
-          dataGenerator.randomPercentageValue()
-        ),
-        substantialContributionToClimateChangeMitigationInPercentAligned: dataGenerator.randomExtendedDataPoint(
-          dataGenerator.randomPercentageValue()
-        ),
-        substantialContributionToClimateChangeMitigationInPercentOfWhichEnabling: dataGenerator.randomExtendedDataPoint(
-          dataGenerator.randomPercentageValue()
-        ),
-        substantialContributionToClimateChangeMitigationInPercentOfWhichTransitional:
+      dealingOnOwnAccountServicesCapexBased: {
+        capexBasedTotalAssetsInvestedUnderInvestmentFirmsActivitiesDealingOnOwnAccount:
+          dataGenerator.randomCurrencyDataPoint(0),
+        capexBasedProportionOfAssetsSubstantiallyContributingToClimateChangeMitigationEligible:
           dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
-        substantialContributionToClimateChangeAdaptationInPercentEligible: dataGenerator.randomExtendedDataPoint(
-          dataGenerator.randomPercentageValue()
-        ),
-        substantialContributionToClimateChangeAdaptationInPercentAligned: dataGenerator.randomExtendedDataPoint(
-          dataGenerator.randomPercentageValue()
-        ),
-        substantialContributionToClimateChangeAdaptationInPercentOfWhichEnabling: dataGenerator.randomExtendedDataPoint(
-          dataGenerator.randomPercentageValue()
-        ),
-        substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentEligible:
+        capexBasedProportionOfAssetsSubstantiallyContributingToClimateChangeMitigationAligned:
           dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
-        substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned:
+        capexBasedProportionOfAssetsSubstantiallyContributingToClimateChangeMitigationOfWhichTransitional:
           dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
-        substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentOfWhichEnabling:
+        capexBasedProportionOfAssetsSubstantiallyContributingToClimateChangeMitigationOfWhichEnabling:
           dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
-        substantialContributionToTransitionToACircularEconomyInPercentEligible: dataGenerator.randomExtendedDataPoint(
-          dataGenerator.randomPercentageValue()
-        ),
-        substantialContributionToTransitionToACircularEconomyInPercentAligned: dataGenerator.randomExtendedDataPoint(
-          dataGenerator.randomPercentageValue()
-        ),
-        substantialContributionToTransitionToACircularEconomyInPercentOfWhichEnabling:
+        capexBasedProportionOfAssetsSubstantiallyContributingToClimateChangeAdaptationEligible:
           dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
-        substantialContributionToPollutionPreventionAndControlInPercentEligible: dataGenerator.randomExtendedDataPoint(
-          dataGenerator.randomPercentageValue()
-        ),
-        substantialContributionToPollutionPreventionAndControlInPercentAligned: dataGenerator.randomExtendedDataPoint(
-          dataGenerator.randomPercentageValue()
-        ),
-        substantialContributionToPollutionPreventionAndControlInPercentOfWhichEnabling:
+        capexBasedProportionOfAssetsSubstantiallyContributingToClimateChangeAdaptationAligned:
           dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
-        substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentEligible:
+        capexBasedProportionOfAssetsSubstantiallyContributingToClimateChangeAdaptationOfWhichEnabling:
           dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
-        substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned:
+        capexBasedProportionOfAssetsSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesEligible:
           dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
-        substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentOfWhichEnabling:
+        capexBasedProportionOfAssetsSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesAligned:
           dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
-        totalAssetsInvestedRevenueFromInvestmentAndServicesInPercentEligible: dataGenerator.randomExtendedDataPoint(
-          dataGenerator.randomPercentageValue()
-        ),
-        totalAssetsInvestedRevenueFromInvestmentAndServicesInPercentAligned: dataGenerator.randomExtendedDataPoint(
-          dataGenerator.randomPercentageValue()
-        ),
-        totalAssetsInvestedRevenueFromInvestmentAndServicesInPercentOfWhichEnabling:
+        capexBasedProportionOfAssetsSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesOfWhichEnabling:
           dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
-        totalAssetsInvestedRevenueFromInvestmentAndServicesInPercentOfWhichTransitional:
+        capexBasedProportionOfAssetsSubstantiallyContributingToCircularEconomyEligible:
+          dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
+        capexBasedProportionOfAssetsSubstantiallyContributingToCircularEconomyAligned:
+          dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
+        capexBasedProportionOfAssetsSubstantiallyContributingToCircularEconomyOfWhichEnabling:
+          dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
+        capexBasedProportionOfAssetsSubstantiallyContributingToPollutionPreventionAndControlEligible:
+          dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
+        capexBasedProportionOfAssetsSubstantiallyContributingToPollutionPreventionAndControlAligned:
+          dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
+        capexBasedProportionOfAssetsSubstantiallyContributingToPollutionPreventionAndControlOfWhichEnabling:
+          dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
+        capexBasedProportionOfAssetsSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsEligible:
+          dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
+        capexBasedProportionOfAssetsSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsAligned:
+          dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
+        capexBasedProportionOfAssetsSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsOfWhichEnabling:
+          dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
+        capexBasedProportionOfAssetsSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesEligible:
+          dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
+        capexBasedProportionOfAssetsSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesAligned:
+          dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
+        capexBasedProportionOfAssetsSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesOfWhichTransitional:
+          dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
+        capexBasedProportionOfAssetsSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesOfWhichEnabling:
+          dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
+      },
+      otherServicesTurnoverBased: {
+        turnoverBasedTotalRevenueFromInvestmentsAndServicesAndActivitiesOtherThanDealingOnOwnAccount:
+          dataGenerator.randomCurrencyDataPoint(0),
+        turnoverBasedProportionOfRevenueSubstantiallyContributingToClimateChangeMitigationEligible:
+          dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
+        turnoverBasedProportionOfRevenueSubstantiallyContributingToClimateChangeMitigationAligned:
+          dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
+        turnoverBasedProportionOfRevenueSubstantiallyContributingToClimateChangeMitigationOfWhichTransitional:
+          dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
+        turnoverBasedProportionOfRevenueSubstantiallyContributingToClimateChangeMitigationOfWhichEnabling:
+          dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
+        turnoverBasedProportionOfRevenueSubstantiallyContributingToClimateChangeAdaptationEligible:
+          dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
+        turnoverBasedProportionOfRevenueSubstantiallyContributingToClimateChangeAdaptationAligned:
+          dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
+        turnoverBasedProportionOfRevenueSubstantiallyContributingToClimateChangeAdaptationOfWhichEnabling:
+          dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
+        turnoverBasedProportionOfRevenueSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesEligible:
+          dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
+        turnoverBasedProportionOfRevenueSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesAligned:
+          dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
+        turnoverBasedProportionOfRevenueSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesOfWhichEnabling:
+          dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
+        turnoverBasedProportionOfRevenueSubstantiallyContributingToCircularEconomyEligible:
+          dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
+        turnoverBasedProportionOfRevenueSubstantiallyContributingToCircularEconomyAligned:
+          dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
+        turnoverBasedProportionOfRevenueSubstantiallyContributingToCircularEconomyOfWhichEnabling:
+          dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
+        turnoverBasedProportionOfRevenueSubstantiallyContributingToPollutionPreventionAndControlEligible:
+          dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
+        turnoverBasedProportionOfRevenueSubstantiallyContributingToPollutionPreventionAndControlAligned:
+          dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
+        turnoverBasedProportionOfRevenueSubstantiallyContributingToPollutionPreventionAndControlOfWhichEnabling:
+          dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
+        turnoverBasedProportionOfRevenueSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsEligible:
+          dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
+        turnoverBasedProportionOfRevenueSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsAligned:
+          dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
+        turnoverBasedProportionOfRevenueSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsOfWhichEnabling:
+          dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
+        turnoverBasedProportionOfRevenueSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesEligible:
+          dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
+        turnoverBasedProportionOfRevenueSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesAligned:
+          dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
+        turnoverBasedProportionOfRevenueSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesOfWhichTransitional:
+          dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
+        turnoverBasedProportionOfRevenueSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesOfWhichEnabling:
+          dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
+      },
+      otherServicesCapexBased: {
+        capexBasedTotalRevenueFromInvestmentsAndServicesAndActivitiesOtherThanDealingOnOwnAccount:
+          dataGenerator.randomCurrencyDataPoint(0),
+        capexBasedProportionOfRevenueSubstantiallyContributingToClimateChangeMitigationEligible:
+          dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
+        capexBasedProportionOfRevenueSubstantiallyContributingToClimateChangeMitigationAligned:
+          dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
+        capexBasedProportionOfRevenueSubstantiallyContributingToClimateChangeMitigationOfWhichTransitional:
+          dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
+        capexBasedProportionOfRevenueSubstantiallyContributingToClimateChangeMitigationOfWhichEnabling:
+          dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
+        capexBasedProportionOfRevenueSubstantiallyContributingToClimateChangeAdaptationEligible:
+          dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
+        capexBasedProportionOfRevenueSubstantiallyContributingToClimateChangeAdaptationAligned:
+          dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
+        capexBasedProportionOfRevenueSubstantiallyContributingToClimateChangeAdaptationOfWhichEnabling:
+          dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
+        capexBasedProportionOfRevenueSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesEligible:
+          dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
+        capexBasedProportionOfRevenueSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesAligned:
+          dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
+        capexBasedProportionOfRevenueSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesOfWhichEnabling:
+          dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
+        capexBasedProportionOfRevenueSubstantiallyContributingToCircularEconomyEligible:
+          dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
+        capexBasedProportionOfRevenueSubstantiallyContributingToCircularEconomyAligned:
+          dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
+        capexBasedProportionOfRevenueSubstantiallyContributingToCircularEconomyOfWhichEnabling:
+          dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
+        capexBasedProportionOfRevenueSubstantiallyContributingToPollutionPreventionAndControlEligible:
+          dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
+        capexBasedProportionOfRevenueSubstantiallyContributingToPollutionPreventionAndControlAligned:
+          dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
+        capexBasedProportionOfRevenueSubstantiallyContributingToPollutionPreventionAndControlOfWhichEnabling:
+          dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
+        capexBasedProportionOfRevenueSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsEligible:
+          dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
+        capexBasedProportionOfRevenueSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsAligned:
+          dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
+        capexBasedProportionOfRevenueSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsOfWhichEnabling:
+          dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
+        capexBasedProportionOfRevenueSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesEligible:
+          dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
+        capexBasedProportionOfRevenueSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesAligned:
+          dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
+        capexBasedProportionOfRevenueSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesOfWhichTransitional:
+          dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
+        capexBasedProportionOfRevenueSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesOfWhichEnabling:
           dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
       },
     },

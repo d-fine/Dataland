@@ -46,6 +46,10 @@ data class EutaxonomyFinancialsCreditinstitutionCapexBasedGreenAssetRatioStock(
     QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
 
     @field:Valid()
+    val substantialContributionToClimateChangeAdaptationInPercentOfWhichAdapting:
+    QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
+
+    @field:Valid()
     val substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentEligible:
     QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
 
