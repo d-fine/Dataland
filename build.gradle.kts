@@ -109,7 +109,7 @@ sonar {
                 "dataland-frontend/src/components/forms/parts/elements/derived/ActivityTree.ts," +
                 "dataland-frontend/tests/e2e/fixtures/frameworks/eutaxonomy-non-financials/" +
                 "EutaxonomyNonFinancialsDataFixtures.ts," +
-                "dataland-frontend/tests/e2e/fixtures/frameworks/eu-taxonomy-financials/" +
+                "dataland-frontend/tests/e2e/fixtures/frameworks/eutaxonomy-financials/" +
                 "EutaxonomyFinancialsDataFixtures.ts," +
                 // frontend configs
                 "dataland-frontend/src/components/resources/frameworkDataSearch/euTaxonomy/configMLDT/" +
