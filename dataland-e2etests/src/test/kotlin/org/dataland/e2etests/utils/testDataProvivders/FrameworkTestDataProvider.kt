@@ -21,7 +21,7 @@ class FrameworkTestDataProvider<T> (private val clazz: Class<T>) {
         EutaxonomyNonFinancialsData::class.java to
             File("./build/resources/test/CompanyInformationWithEutaxonomyNonFinancialsData.json"),
         EutaxonomyFinancialsData::class.java to
-            File("./build/resources/test/CompanyInformationWithEuTaxonomyFinancialsData.json"),
+            File("./build/resources/test/CompanyInformationWithEutaxonomyFinancialsData.json"),
         LksgData::class.java to
             File("./build/resources/test/CompanyInformationWithLksgData.json"),
         SfdrData::class.java to
