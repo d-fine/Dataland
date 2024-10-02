@@ -156,6 +156,7 @@ import Calendar from 'primevue/calendar';
 import type Keycloak from 'keycloak-js';
 import { type GetInfoOnUnreviewedDatasetsDataTypesEnum, type ReviewQueueResponse } from '@clients/qaservice';
 import router from '@/router';
+import { DataTypeEnum } from '@clients/backend';
 
 export default defineComponent({
   name: 'QualityAssurance',
@@ -232,6 +233,12 @@ export default defineComponent({
     convertUnixTimeInMsToDateString,
     humanizeString: humanizeStringOrNumber,
     /**
+     * Converts from DataTypeEnum to GetInfoOnUnreviewedDatasetsDataTypesEnum
+     */
+    convertDataType(input: DataTypeEnum): GetInfoOnUnreviewedDatasetsDataTypesEnum {
+      return input as GetInfoOnUnreviewedDatasetsDataTypesEnum;
+    },
+    /**
      * Uses the dataland QA API to retrieve the information that is displayed on the quality assurance page
      */
     async getQaDataForCurrentPage() {
@@ -240,7 +247,7 @@ export default defineComponent({
         this.displayDataOfPage = [];
 
         const selectedFrameworksAsSet = new Set<GetInfoOnUnreviewedDatasetsDataTypesEnum>(
-          this.selectedFrameworks.map((selectableItem) => selectableItem.frameworkDataType)
+          this.selectedFrameworks.map((selectableItem) => this.convertDataType(selectableItem.frameworkDataType))
         );
         const reportingPeriodFilter: Set<string> = new Set<string>(
           this.availableReportingPeriods?.map((date) => date.getFullYear().toString())
