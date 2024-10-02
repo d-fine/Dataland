@@ -6,12 +6,12 @@
     <div class="form-field">
       <div class="lg:col-4 md:col-6 col-12 p-0 formkit-outer normal-line-height">
         <SingleSelectFormField
-          :label="euTaxonomyKpiNameMappings.assurance ?? ''"
-          :description="euTaxonomyKpiInfoMappings.assurance ?? ''"
+          :label="euTaxonomyKpiNameMappings.assurance"
+          :description="euTaxonomyKpiInfoMappings.assurance"
           :required="true"
           name="value"
           placeholder="Please choose..."
-          :validation-label="euTaxonomyKpiNameMappings.assurance ?? ''"
+          :validation-label="euTaxonomyKpiNameMappings.assurance"
           validation="required"
           :options="assuranceData"
         />
@@ -19,15 +19,12 @@
     </div>
     <!-- Assurance provider -->
     <div class="form-field">
-      <UploadFormHeader
-        :label="euTaxonomyKpiNameMappings.provider ?? ''"
-        :description="euTaxonomyKpiInfoMappings.provider ?? ''"
-      />
+      <UploadFormHeader :label="euTaxonomyKpiNameMappings.provider" :description="euTaxonomyKpiInfoMappings.provider" />
       <FormKit
         type="text"
         name="provider"
-        :placeholder="euTaxonomyKpiNameMappings.provider ?? ''"
-        :validation-label="euTaxonomyKpiNameMappings.provider ?? ''"
+        :placeholder="euTaxonomyKpiNameMappings.provider"
+        :validation-label="euTaxonomyKpiNameMappings.provider"
       />
     </div>
 
@@ -37,8 +34,8 @@
       <div class="next-to-each-other">
         <div class="flex-1">
           <SingleSelectFormField
-            :label="euTaxonomyKpiNameMappings.report ?? ''"
-            :description="euTaxonomyKpiInfoMappings.report ?? ''"
+            :label="euTaxonomyKpiNameMappings.report"
+            :description="euTaxonomyKpiInfoMappings.report"
             :required="true"
             v-model="currentReportValue"
             placeholder="Select a report"

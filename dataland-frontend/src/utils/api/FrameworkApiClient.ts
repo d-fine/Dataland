@@ -16,13 +16,10 @@ export function getUnifiedFrameworkDataControllerFromConfiguration(
   configuration: Configuration | undefined,
   axiosInstance?: AxiosInstance
 ): PublicFrameworkDataApi<FrameworkDataTypes[keyof FrameworkDataTypes]['data']> {
-  switch (framework) {
-    case DataTypeEnum.P2p:
-      return translateFrameworkApi<typeof DataTypeEnum.P2p>(
-        'P2pData',
-        new P2pDataControllerApi(configuration, undefined, axiosInstance)
-      );
-    default:
-      return assertNever(framework);
-  }
+  if (framework === DataTypeEnum.P2p) {
+    return translateFrameworkApi<typeof DataTypeEnum.P2p>(
+      'P2pData',
+      new P2pDataControllerApi(configuration, undefined, axiosInstance)
+    );
+  } else return assertNever(framework);
 }
