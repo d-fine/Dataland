@@ -52,7 +52,7 @@ export default defineConfig({
       'vue-markdown-render',
       'markdown-it',
       '@faker-js/faker',
-      'primevue/icons/chevronup'
+      'primevue/icons/chevronup',
     ],
   },
   plugins: [

@@ -86,7 +86,7 @@ describe('Component test for the admin-requests-overview page', () => {
         roles: [KEYCLOAK_ROLE_ADMIN],
         userId: crypto.randomUUID(),
       }),
-      router: router
+      router: router,
     })(AdminAllRequestsOverview);
 
     assertNumberOfSearchResults(expectedNumberOfRequests);

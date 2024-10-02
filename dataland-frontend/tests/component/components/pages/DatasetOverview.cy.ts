@@ -74,7 +74,7 @@ describe('Component tests for the DatasetOverview page', () => {
     cy.intercept('**/api/companies/meta-information', mockDistinctValues);
     cy.mountWithPlugins(SearchCompaniesForFrameworkData, {
       keycloak: keycloakMock,
-      router: router
+      router: router,
     }).then((mounted) => {
       validateTabBar(0, keycloakMock);
       cy.wait(100);
@@ -95,7 +95,7 @@ describe('Component tests for the DatasetOverview page', () => {
     cy.intercept('**/api/companies/meta-information', mockDistinctValues);
     cy.mountWithPlugins(SearchCompaniesForFrameworkData, {
       keycloak: keycloakMock,
-      router: router
+      router: router,
     }).then((mounted) => {
       validateTabBar(0, keycloakMock);
       cy.wait(100);
@@ -109,7 +109,7 @@ describe('Component tests for the DatasetOverview page', () => {
     cy.intercept('**/api/companies?**', []);
     cy.mountWithPlugins(DatasetOverview, {
       keycloak: keycloakMock,
-      router: router
+      router: router,
     }).then((mounted) => {
       validateTabBar(1, keycloakMock);
       cy.wait(100);

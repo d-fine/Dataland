@@ -15,7 +15,7 @@ import { defineComponent } from 'vue';
 import PrimeButton from 'primevue/button';
 import { useRoute } from 'vue-router';
 import { assertDefined } from '@/utils/TypeScriptUtils';
-import { submitForm, getNode } from '@formkit/core'
+import { submitForm, getNode } from '@formkit/core';
 
 export default defineComponent({
   name: 'SubmitButton',

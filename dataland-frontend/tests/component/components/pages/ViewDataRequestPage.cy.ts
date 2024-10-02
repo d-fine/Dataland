@@ -166,11 +166,14 @@ describe('Component tests for the view data request page', function (): void {
     interceptUserAskForCompanyNameOnMounted();
     interceptUserActiveDatasetOnMounted(QaStatus.Accepted);
     interceptPatchRequest();
-    getMountingFunction({ keycloak: minimalKeycloakMock({ userId: dummyUserId }), router:router})(ViewDataRequestPage, {
-      props: {
-        requestId: requestId,
-      },
-    }).then((mounted) => {
+    getMountingFunction({ keycloak: minimalKeycloakMock({ userId: dummyUserId }), router: router })(
+      ViewDataRequestPage,
+      {
+        props: {
+          requestId: requestId,
+        },
+      }
+    ).then((mounted) => {
       checkBasicPageElementsAsUser(RequestStatus.Resolved);
       cy.get('[data-test="newMessage"]').should('exist').should('not.be.visible');
       cy.get('[data-test="card_withdrawn"]').should('exist').should('not.be.visible');
@@ -232,9 +235,12 @@ describe('Component tests for the view data request page', function (): void {
     interceptUserAskForCompanyNameOnMounted();
     interceptUserActiveDatasetOnMounted(QaStatus.Accepted);
     interceptPatchRequest();
-    getMountingFunction({ keycloak: minimalKeycloakMock({ userId: dummyUserId }), router: router })(ViewDataRequestPage, {
-      props: { requestId: requestId },
-    }).then((mounted) => {
+    getMountingFunction({ keycloak: minimalKeycloakMock({ userId: dummyUserId }), router: router })(
+      ViewDataRequestPage,
+      {
+        props: { requestId: requestId },
+      }
+    ).then((mounted) => {
       checkBasicPageElementsAsUser(RequestStatus.Open);
       cy.get('[data-test="viewDataset"]').should('exist').click();
       cy.wrap(mounted.component)
@@ -253,7 +259,7 @@ describe('Component tests for the view data request page', function (): void {
       interceptUserActiveDatasetOnMounted(QaStatus.Accepted);
       interceptPatchRequest();
       getMountingFunction({ keycloak: minimalKeycloakMock({ userId: dummyUserId }), router })(ViewDataRequestPage, {
-        props: { requestId: requestId }
+        props: { requestId: requestId },
       }).then((mounted) => {
         checkBasicPageElementsAsUser(dummyRequest.requestStatus);
         cy.get('[data-test="resolveRequestButton"]').should('exist').click();

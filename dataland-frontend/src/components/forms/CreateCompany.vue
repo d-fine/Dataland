@@ -231,7 +231,7 @@ import UploadFormHeader from '@/components/forms/parts/elements/basic/UploadForm
 import { AxiosError } from 'axios';
 import { type FormKitNode } from '@formkit/core';
 import SingleSelectFormField from '@/components/forms/parts/fields/SingleSelectFormField.vue';
-import { reset } from '@formkit/core'
+import { reset } from '@formkit/core';
 
 export default defineComponent({
   name: 'CreateCompany',

@@ -133,7 +133,7 @@ describe('Component tests for the data requests search page', function (): void 
     }).as('UserRequests');
     cy.mountWithPlugins(MyDataRequestsOverview, {
       keycloak: minimalKeycloakMock({}),
-      router: router
+      router: router,
     }).then((mounted) => {
       cy.get('[data-test="requested-Datasets-table"]').should('not.exist');
       cy.get('[data-test="bulkDataRequestButton"]').should('exist').should('be.visible').click();
@@ -204,7 +204,7 @@ describe('Component tests for the data requests search page', function (): void 
 
     cy.mountWithPlugins(MyDataRequestsOverview, {
       keycloak: minimalKeycloakMock({}),
-      router: router
+      router: router,
     }).then((mounted) => {
       cy.get('[data-test="requested-Datasets-searchbar"]')
         .should('exist')
@@ -262,7 +262,7 @@ describe('Component tests for the data requests search page', function (): void 
     }).as('UserRequests');
     cy.mountWithPlugins(MyDataRequestsOverview, {
       keycloak: minimalKeycloakMock({}),
-      router: router
+      router: router,
     }).then((mounted) => {
       cy.get('[data-test="requested-Datasets-table"]').within(() => {
         cy.get('tr:last').click();

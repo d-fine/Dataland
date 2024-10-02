@@ -9,7 +9,7 @@ describe('Component tests for the single data request page', function (): void {
   it('check submitting with message', function () {
     cy.mountWithPlugins(SingleDataRequestComponent, {
       keycloak: minimalKeycloakMock({}),
-      router: router
+      router: router,
     }).then(() => {
       fillMandatoryFields();
 
@@ -44,7 +44,7 @@ describe('Component tests for the single data request page', function (): void {
   it('check email validation', function (): void {
     cy.mountWithPlugins(SingleDataRequestComponent, {
       keycloak: minimalKeycloakMock({}),
-      router: router
+      router: router,
     }).then(() => {
       fillMandatoryFields();
 

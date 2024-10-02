@@ -72,7 +72,7 @@ describe('Component test for the view multiple dataset display base component', 
         companyId: mockedData2023.metaInfo.companyId,
         dataType: DataTypeEnum.Lksg,
         viewInPreviewMode: false,
-      }
+      },
     }).then((mounted) => {
       cy.get('[data-test="editDatasetButton"').find('.material-icons-outlined').should('exist').click();
       cy.get('[data-test="select-reporting-period-dialog"')

@@ -152,15 +152,13 @@ export default defineComponent({
     customDate: {
       get() {
         // Convert number to a Date object
-        return this.customDateInMilliseconds
-            ? new Date(this.customDateInMilliseconds)
-            : null;
+        return this.customDateInMilliseconds ? new Date(this.customDateInMilliseconds) : null;
       },
       set(value: Date | null) {
         // Convert Date object back to number
         this.customDateInMilliseconds = value ? value.getTime() : null;
       },
-    }
+    },
   },
   watch: {
     customDateInMilliseconds: function (newValue: number) {

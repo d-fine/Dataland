@@ -35,7 +35,7 @@ describe('Component test for UserProfileDropDown', () => {
 
     cy.mountWithPlugins(UserProfileDropDown, {
       keycloak: reviewerKeycloakMock,
-      router: router
+      router: router,
     }).then((mounted) => {
       cy.get(profileDropdownToggleSelector).click().get(qaAnchorSelector).should('exist').should('be.visible');
       cy.get(qaAnchorSelector).click();
