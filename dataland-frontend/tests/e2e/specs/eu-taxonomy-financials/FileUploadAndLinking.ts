@@ -33,6 +33,24 @@ describeIf(
       });
     });
 
+    /**
+     * Clicks the report dropdown in a datapoint and selects a report.
+     * @param fullLabelOfDatapoint determines the datapoint of which the dropdown will be clicked
+     * @param reportName determines the report that will be chosen from the dropdown
+     */
+    function selectReportForDatapoint(fullLabelOfDatapoint: string, reportName: string): void {
+      selectItemFromDropdownByValue(
+        cy
+          .get('h5')
+          .contains(fullLabelOfDatapoint + ' Report')
+          .parent()
+          .parent()
+          .parent()
+          .find(`[name="fileName"]`),
+        reportName
+      );
+    }
+
     it('Check if the files upload works as expected', () => {
       euTaxoFinancialsFixture.companyInformation.companyName =
         'financials-upload-form-document-upload-test' + Date.now();
@@ -79,28 +97,10 @@ describeIf(
 
             uploadReports.fillAllFormsOfReportsSelectedForUpload(2);
 
-            // TODO encapsulate in function?
+            selectReportForDatapoint('Total (gross) Carrying Amount', TEST_PDF_FILE_NAME);
 
-            selectItemFromDropdownByValue(
-              cy
-                .get('h5')
-                .contains('Total (gross) Carrying Amount Report')
-                .parent()
-                .parent()
-                .parent()
-                .find(`[name="fileName"]`),
-              TEST_PDF_FILE_NAME
-            );
-            // TODO
-
-            selectItemFromDropdownByValue(
-              cy
-                .get('h5')
-                .contains('Total Amount of Assets towards Taxonomy-relevant Sectors (Taxonomy-eligible) Report')
-                .parent()
-                .parent()
-                .parent()
-                .find(`[name="fileName"]`),
+            selectReportForDatapoint(
+              'Total Amount of Assets towards Taxonomy-relevant Sectors (Taxonomy-eligible)',
               `${TEST_PDF_FILE_NAME}2`
             );
 
