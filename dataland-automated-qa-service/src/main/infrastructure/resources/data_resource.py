@@ -13,8 +13,8 @@ from dataland_backend_api_documentation_client.api.meta_data_controller.get_data
     sync as get_data_meta_info,
 )
 
-from dataland_backend_api_documentation_client.models.company_associated_data_eu_taxonomy_data_for_financials import (
-    CompanyAssociatedDataEuTaxonomyDataForFinancials,
+from dataland_backend_api_documentation_client.models.company_associated_data_eutaxonomy_data_for_financials import (
+    CompanyAssociatedDataEutaxonomyDataForFinancials,
 )
 from dataland_backend_api_documentation_client.models.company_associated_data_eutaxonomy_non_financials_data import (
     CompanyAssociatedDataEutaxonomyNonFinancialsData,
@@ -64,7 +64,7 @@ class DataResource(Resource):
 
 def _get_data(data_type: DataTypeEnum, data_id: str, client: AuthenticatedClient) -> any:
     type_to_company_associated_data = {
-        DataTypeEnum.EUTAXONOMY_FINANCIALS: CompanyAssociatedDataEuTaxonomyDataForFinancials,
+        DataTypeEnum.EUTAXONOMY_FINANCIALS: CompanyAssociatedDataEutaxonomyDataForFinancials,
         DataTypeEnum.EUTAXONOMY_NON_FINANCIALS: CompanyAssociatedDataEutaxonomyNonFinancialsData,
         DataTypeEnum.LKSG: CompanyAssociatedDataLksgData,
         DataTypeEnum.SFDR: CompanyAssociatedDataSfdrData,
