@@ -40,5 +40,5 @@ function generateLightweightEuTaxoFinancialsFixture(): FixtureData<EutaxonomyFin
     newFixture.t.creditInstitution.assetsForCalculationOfGreenAssetRatio =
       fullDataSet.creditInstitution?.assetsForCalculationOfGreenAssetRatio;
   }
-  return newFixture; // TODO replace all tests that dont need lots of data with this!  then they need less memory
+  return newFixture;
 }

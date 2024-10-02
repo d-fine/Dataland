@@ -42,7 +42,7 @@ describe('As a user, I expect the dataset upload process to behave as I expect',
       before(function uploadOneCompanyWithoutDataAndOneCompanyWithManyDatasets() {
         let euTaxoFinancialPreparedFixture: FixtureData<EutaxonomyFinancialsData>;
         let lksgPreparedFixture: FixtureData<LksgData>;
-        cy.fixture('CompanyInformationWithEuTaxonomyFinancialsPreparedFixtures').then(function (jsonContent) {
+        cy.fixture('CompanyInformationWithEutaxonomyFinancialsPreparedFixtures').then(function (jsonContent) {
           const euTaxoFinancialPreparedFixtures = jsonContent as Array<FixtureData<EutaxonomyFinancialsData>>;
           euTaxoFinancialPreparedFixture = getPreparedFixture(
             'lighweight-eu-taxo-financials-dataset',
