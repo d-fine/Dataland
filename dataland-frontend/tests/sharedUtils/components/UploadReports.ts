@@ -1,7 +1,7 @@
 import { UploadDocuments } from '@sharedUtils/components/UploadDocuments';
 
 export class UploadReports extends UploadDocuments {
-  private uploadReportsSelector: string;
+  private readonly uploadReportsSelector: string;
   constructor(name: string = 'UploadReports') {
     super(name);
     this.uploadReportsSelector = `div[data-test="upload-reports-${name}"]`;
