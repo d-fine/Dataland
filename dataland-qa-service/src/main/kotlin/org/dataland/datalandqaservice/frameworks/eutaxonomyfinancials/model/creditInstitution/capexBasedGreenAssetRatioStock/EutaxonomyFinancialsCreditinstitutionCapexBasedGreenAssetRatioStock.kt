@@ -8,6 +8,7 @@ import org.dataland.datalandqaservice.model.reports.QaReportDataPoint
 /**
  * The QA-model for the CapexBasedGreenAssetRatioStock section
  */
+@Suppress("MaxLineLength")
 data class EutaxonomyFinancialsCreditinstitutionCapexBasedGreenAssetRatioStock(
     @field:Valid()
     val substantialContributionToClimateChangeMitigationInPercentEligible:

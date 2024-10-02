@@ -12,6 +12,7 @@ import org.dataland.datalandbackend.frameworks.eutaxonomyfinancials.model.credit
 /**
  * The data-model for the CreditInstitution section
  */
+@Suppress("MaxLineLength")
 data class EutaxonomyFinancialsCreditInstitution(
     @field:Valid()
     val assetsForCalculationOfGreenAssetRatio:

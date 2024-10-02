@@ -8,6 +8,7 @@ import org.dataland.datalandqaservice.model.reports.QaReportDataPoint
 /**
  * The QA-model for the BreakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBased section
  */
+@Suppress("MaxLineLength")
 data class EutaxonomyFinancialsInsurancereinsuranceBreakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBased(
     @field:Valid()
     val shareOfTurnoverBasedKpiSubstantiallyContributingToClimateChangeMitigationInPercentAligned:

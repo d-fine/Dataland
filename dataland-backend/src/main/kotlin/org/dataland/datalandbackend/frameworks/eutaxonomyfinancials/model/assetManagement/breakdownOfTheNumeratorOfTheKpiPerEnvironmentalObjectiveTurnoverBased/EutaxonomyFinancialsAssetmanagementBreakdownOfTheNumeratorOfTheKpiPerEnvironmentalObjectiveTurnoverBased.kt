@@ -8,6 +8,7 @@ import java.math.BigDecimal
 /**
  * The data-model for the BreakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBased section
  */
+@Suppress("MaxLineLength")
 data class EutaxonomyFinancialsAssetmanagementBreakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBased(
     @field:Valid()
     val shareOfTurnoverBasedKpiSubstantiallyContributingToClimateChangeMitigationInPercentAligned:

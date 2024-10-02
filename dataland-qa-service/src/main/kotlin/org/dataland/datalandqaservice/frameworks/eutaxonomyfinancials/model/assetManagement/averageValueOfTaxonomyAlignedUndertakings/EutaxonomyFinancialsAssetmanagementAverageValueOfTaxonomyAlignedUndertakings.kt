@@ -9,6 +9,7 @@ import org.dataland.datalandqaservice.model.reports.QaReportDataPoint
 /**
  * The QA-model for the AverageValueOfTaxonomyAlignedUndertakings section
  */
+@Suppress("MaxLineLength")
 data class EutaxonomyFinancialsAssetmanagementAverageValueOfTaxonomyAlignedUndertakings(
     @field:Valid()
     val weightedAverageValueOfAllInvestmentsTurnoverBasedInPercent:

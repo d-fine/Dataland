@@ -17,6 +17,7 @@ import org.dataland.datalandqaservice.frameworks.eutaxonomyfinancials.model.insu
 /**
  * The QA-model for the InsuranceReinsurance section
  */
+@Suppress("MaxLineLength")
 data class EutaxonomyFinancialsInsuranceReinsurance(
     @field:Valid()
     val underwritingKpi: EutaxonomyFinancialsInsurancereinsuranceUnderwritingKpi? = null,

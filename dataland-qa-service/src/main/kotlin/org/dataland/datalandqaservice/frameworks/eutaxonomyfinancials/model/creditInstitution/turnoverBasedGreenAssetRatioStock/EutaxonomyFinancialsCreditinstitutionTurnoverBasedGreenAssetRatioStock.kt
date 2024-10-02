@@ -8,6 +8,7 @@ import org.dataland.datalandqaservice.model.reports.QaReportDataPoint
 /**
  * The QA-model for the TurnoverBasedGreenAssetRatioStock section
  */
+@Suppress("MaxLineLength")
 data class EutaxonomyFinancialsCreditinstitutionTurnoverBasedGreenAssetRatioStock(
     @field:Valid()
     val substantialContributionToClimateChangeMitigationInPercentEligible:

@@ -7,6 +7,7 @@ import org.dataland.datalandqaservice.model.reports.QaReportDataPoint
 /**
  * The QA-model for the AssetsForCalculationOfGreenAssetRatio section
  */
+@Suppress("MaxLineLength")
 data class EutaxonomyFinancialsCreditinstitutionAssetsForCalculationOfGreenAssetRatio(
     val totalGrossCarryingAmount: QaReportDataPoint<CurrencyDataPoint?>? = null,
 

@@ -15,6 +15,7 @@ import org.dataland.datalandbackend.frameworks.eutaxonomyfinancials.model.assetM
 /**
  * The data-model for the AssetManagement section
  */
+@Suppress("MaxLineLength")
 data class EutaxonomyFinancialsAssetManagement(
     @field:Valid()
     val averageValueOfTaxonomyAlignedUndertakings:

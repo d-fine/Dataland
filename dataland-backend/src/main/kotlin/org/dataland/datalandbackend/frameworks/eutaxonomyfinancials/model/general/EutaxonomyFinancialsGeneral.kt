@@ -8,6 +8,7 @@ import org.dataland.datalandbackend.frameworks.eutaxonomyfinancials.model.genera
 /**
  * The data-model for the General section
  */
+@Suppress("MaxLineLength")
 data class EutaxonomyFinancialsGeneral(
     @field:Valid()
     val general: EutaxonomyFinancialsGeneralGeneral? = null,

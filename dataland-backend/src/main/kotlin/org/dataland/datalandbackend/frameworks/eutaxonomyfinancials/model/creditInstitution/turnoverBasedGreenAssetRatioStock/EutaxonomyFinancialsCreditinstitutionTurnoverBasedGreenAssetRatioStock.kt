@@ -8,6 +8,7 @@ import java.math.BigDecimal
 /**
  * The data-model for the TurnoverBasedGreenAssetRatioStock section
  */
+@Suppress("MaxLineLength")
 data class EutaxonomyFinancialsCreditinstitutionTurnoverBasedGreenAssetRatioStock(
     @field:Valid()
     val substantialContributionToClimateChangeMitigationInPercentEligible: ExtendedDataPoint<BigDecimal?>? = null,
