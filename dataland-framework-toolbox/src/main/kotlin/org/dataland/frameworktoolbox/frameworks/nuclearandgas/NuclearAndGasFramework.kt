@@ -32,13 +32,24 @@ class NuclearAndGasFramework : InDevelopmentPavedRoadFramework(
         val excelTemplate = ExcelTemplate.fromFile(frameworkTemplateCsvFile, "Framework Data Model")
         customizeExcelTemplate(excelTemplate)
 
+        val customComponentData = ExcelTemplate.fromFile(frameworkTemplateCsvFile, "Custom Component Data")
+        customizeExcelTemplate(customComponentData)
+
         val frameworkIntermediateRepresentation = convertExcelTemplateToToHighLevelComponentRepresentation(
             template = excelTemplate,
             context = context,
         )
+
+        val frameworkCustomComponentIntermediateRepresentation =
+            convertExcelTemplateToToHighLevelComponentRepresentation(
+                template = customComponentData,
+                context = context,
+            )
+
         diagnostics.finalizeDiagnosticStream()
 
         customizeHighLevelIntermediateRepresentation(frameworkIntermediateRepresentation)
+        customizeHighLevelIntermediateRepresentation(frameworkCustomComponentIntermediateRepresentation)
 
         compileDataModel(datalandProject)
         compileQaModel(datalandProject)
