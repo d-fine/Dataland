@@ -1,6 +1,9 @@
 import { type FixtureData } from '@sharedUtils/Fixtures';
 import { type EutaxonomyFinancialsData } from '@clients/backend';
-import { generateEutaxonomyFinancialsFixtures } from './EutaxonomyFinancialsDataFixtures';
+import {
+  generateEutaxonomyFinancialsData,
+  generateEutaxonomyFinancialsFixtures,
+} from './EutaxonomyFinancialsDataFixtures';
 
 /**
  * Generates eutaxonomy-financials prepared fixtures by generating random eutaxonomy-financials datasets and
@@ -9,7 +12,8 @@ import { generateEutaxonomyFinancialsFixtures } from './EutaxonomyFinancialsData
  */
 export function generateEutaxonomyFinancialsPreparedFixtures(): Array<FixtureData<EutaxonomyFinancialsData>> {
   const preparedFixtures = [];
-  preparedFixtures.push(generateFixturesWithNoNullFields());
+  preparedFixtures.push(generateFixtureWithNoNullFields());
+  preparedFixtures.push(generateLightweightEuTaxoFinancialsFixture());
   return preparedFixtures;
 }
 
@@ -17,8 +21,24 @@ export function generateEutaxonomyFinancialsPreparedFixtures(): Array<FixtureDat
  * Generate a prepared Fixture with no null entries
  * @returns the fixture
  */
-function generateFixturesWithNoNullFields(): FixtureData<EutaxonomyFinancialsData> {
+function generateFixtureWithNoNullFields(): FixtureData<EutaxonomyFinancialsData> {
   const newFixture = generateEutaxonomyFinancialsFixtures(1, 0)[0];
   newFixture.companyInformation.companyName = 'eutaxonomy-financials-dataset-with-no-null-fields';
   return newFixture;
+}
+
+/**
+ * Generate a prepared Fixture with a couple of datapoints filled. The rest is null to keep the fixture small.
+ * @returns the fixture
+ */
+function generateLightweightEuTaxoFinancialsFixture(): FixtureData<EutaxonomyFinancialsData> {
+  const newFixture = generateEutaxonomyFinancialsFixtures(1, 1)[0];
+  const fullDataSet = generateEutaxonomyFinancialsData(0);
+  newFixture.companyInformation.companyName = 'for-file-upload-and-linking-test';
+  newFixture.t.general = fullDataSet.general;
+  if (newFixture.t.creditInstitution?.assetsForCalculationOfGreenAssetRatio) {
+    newFixture.t.creditInstitution.assetsForCalculationOfGreenAssetRatio =
+      fullDataSet.creditInstitution?.assetsForCalculationOfGreenAssetRatio;
+  }
+  return newFixture; // TODO replace all tests that dont need lots of data with this!  then they need less memory
 }
