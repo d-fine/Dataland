@@ -21,7 +21,7 @@ import EuTaxonomyFinancialsBaseFrameworkDefinition from '@/frameworks/eutaxonomy
 let companiesWithEuTaxonomyFinancialsData: Array<FixtureData<EutaxonomyFinancialsData>>;
 let companiesWithSfdrData: Array<FixtureData<SfdrData>>;
 before(function () {
-  cy.fixture('CompanyInformationWithEuTaxonomyFinancialsData').then(function (jsonContent) {
+  cy.fixture('CompanyInformationWithEutaxonomyFinancialsData').then(function (jsonContent) {
     companiesWithEuTaxonomyFinancialsData = jsonContent as Array<FixtureData<EutaxonomyFinancialsData>>;
   });
   cy.fixture('CompanyInformationWithSfdrData').then(function (jsonContent) {

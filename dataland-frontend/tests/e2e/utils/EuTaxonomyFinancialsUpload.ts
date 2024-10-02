@@ -16,7 +16,7 @@ import { goToEditFormOfMostRecentDatasetForCompanyAndFramework } from './General
 export function getFirstEuTaxonomyFinancialsFixtureDataFromFixtures(): Cypress.Chainable<
   FixtureData<EutaxonomyFinancialsData>
 > {
-  return cy.fixture('CompanyInformationWithEuTaxonomyFinancialsData').then(function (jsonContent) {
+  return cy.fixture('CompanyInformationWithEutaxonomyFinancialsData').then(function (jsonContent) {
     const companiesWithEuTaxonomyFinancialsData = jsonContent as Array<FixtureData<EutaxonomyFinancialsData>>;
     return companiesWithEuTaxonomyFinancialsData[0];
   });
