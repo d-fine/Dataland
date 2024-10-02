@@ -24,12 +24,15 @@ describeIf(
   },
   function () {
     let euTaxoFinancialsFixture: FixtureData<EuTaxonomyFinancialsData>;
-    const uploadReports = new UploadReports();
+    const uploadReports = new UploadReports('referencedReports');
 
     before(function () {
       cy.fixture('CompanyInformationWithEuTaxonomyFinancialsPreparedFixtures').then(function (jsonContent) {
         const preparedFixtures = jsonContent as Array<FixtureData<EuTaxonomyFinancialsData>>;
-        euTaxoFinancialsFixture = getPreparedFixture('company-for-all-types', preparedFixtures);
+        euTaxoFinancialsFixture = getPreparedFixture(
+          'eu-taxonomy-financials-dataset-with-no-null-fields',
+          preparedFixtures
+        ); // TODO too heavy?
       });
     });
 
@@ -78,19 +81,29 @@ describeIf(
             uploadReports.validateReportToUploadHasContainerWithInfoForm(`${TEST_PDF_FILE_NAME}2`);
 
             uploadReports.fillAllFormsOfReportsSelectedForUpload(2);
-            selectItemFromDropdownByValue(
-              cy
-                .get(`[data-test="assetManagementKpis"]`)
-                .find(`[data-test="banksAndIssuersInPercent"]`)
-                .find('div[name="fileName"]'),
-              TEST_PDF_FILE_NAME
-            );
+
+            // TODO encapsulate in function?
 
             selectItemFromDropdownByValue(
               cy
-                .get(`[data-test="assetManagementKpis"]`)
-                .find(`[data-test="investmentNonNfrdInPercent"]`)
-                .find('div[name="fileName"]'),
+                .get('h5')
+                .contains('Total (gross) Carrying Amount Report')
+                .parent()
+                .parent()
+                .parent()
+                .find(`[name="fileName"]`),
+              TEST_PDF_FILE_NAME
+            );
+            // TODO
+
+            selectItemFromDropdownByValue(
+              cy
+                .get('h5')
+                .contains('Total Amount of Assets towards Taxonomy-relevant Sectors (Taxonomy-eligible) Report')
+                .parent()
+                .parent()
+                .parent()
+                .find(`[name="fileName"]`),
               `${TEST_PDF_FILE_NAME}2`
             );
 
