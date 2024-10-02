@@ -93,11 +93,11 @@ class DataManagerTest(
             storableEuTaxonomyDataSetForNonFinancials, false, correlationId,
         )
         val thrown = assertThrows<InvalidInputApiException> {
-            dataManager.getPublicDataSet(dataId, DataType("eu-taxonomy-financials"), correlationId)
+            dataManager.getPublicDataSet(dataId, DataType("eutaxonomy-financials"), correlationId)
         }
         assertEquals(
             "The data with the id: $dataId is registered as type eutaxonomy-non-financials by " +
-                "Dataland instead of your requested type eu-taxonomy-financials.",
+                "Dataland instead of your requested type eutaxonomy-financials.",
             thrown.message,
         )
     }
@@ -126,7 +126,7 @@ class DataManagerTest(
             storableEuTaxonomyDataSetForNonFinancials, false, correlationId,
         )
         val expectedDataTypeName = getExpectedDataTypeName(
-            storableEuTaxonomyDataSetForNonFinancials, dataId, "eu-taxonomy-financials",
+            storableEuTaxonomyDataSetForNonFinancials, dataId, "eutaxonomy-financials",
         )
         messageQueueListenerForDataManager.removeStoredItemFromTemporaryStore(dataId, "", MessageType.DataStored)
         val thrown = assertThrows<InternalServerErrorApiException> {
