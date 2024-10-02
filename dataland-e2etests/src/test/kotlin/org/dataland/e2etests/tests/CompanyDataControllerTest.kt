@@ -4,7 +4,6 @@ import org.dataland.communitymanager.openApiClient.model.CompanyRole
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientError
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
 import org.dataland.datalandbackend.openApiClient.model.AggregatedFrameworkDataSummary
-import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataEutaxonomyNonFinancialsData
 import org.dataland.datalandbackend.openApiClient.model.CompanyInformation
 import org.dataland.datalandbackend.openApiClient.model.CompanyInformationPatch
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
@@ -12,6 +11,7 @@ import org.dataland.datalandbackend.openApiClient.model.IdentifierType
 import org.dataland.datalandbackend.openApiClient.model.StoredCompany
 import org.dataland.e2etests.auth.TechnicalUser
 import org.dataland.e2etests.utils.ApiAccessor
+import org.dataland.e2etests.utils.CompanyDataControllerTestUtils
 import org.dataland.e2etests.utils.DocumentManagerAccessor
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
@@ -26,31 +26,7 @@ import java.util.UUID
 class CompanyDataControllerTest {
     private val apiAccessor = ApiAccessor()
     private val documentManagerAccessor = DocumentManagerAccessor()
-    private val baseCompanyInformation =
-        apiAccessor.testDataProviderForEuTaxonomyDataForNonFinancials
-            .getCompanyInformationWithRandomIdentifiers(1)
-            .first()
-    private val checkOtherCompanyTrue = "Other Company true"
-    private val checkOtherCompanyFalse = "Other Company false"
-    private val dataReaderUserId = UUID.fromString(TechnicalUser.Reader.technicalUserId)
-    private val fullPatchObject =
-        CompanyInformationPatch(
-            companyContactDetails = listOf("NewcompanyContactDetails@example.com"),
-            companyName = "New-companyName",
-            companyAlternativeNames = listOf("New-companyAlternativeNames"),
-            companyLegalForm = "New-companyLegalForm",
-            headquarters = "New-headquarters",
-            headquartersPostalCode = "New-headquartersPostalCode",
-            sector = "New-sector",
-            countryCode = "New-countryCode",
-            isTeaserCompany = false,
-            website = "New-website",
-            parentCompanyLei = "New-parentCompanyLei",
-            identifiers =
-                mapOf(
-                    IdentifierType.Duns.value to listOf("Test-DUNS${UUID.randomUUID()}"),
-                ),
-        )
+    private val companyDataControllerTestUtils = CompanyDataControllerTestUtils()
 
     @BeforeAll
     fun postTestDocuments() {
@@ -378,7 +354,7 @@ class CompanyDataControllerTest {
     fun `check if the new companies search via name and ids endpoint works as expected`() {
         val testString = "unique-test-string-${UUID.randomUUID()}"
         apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
-        uploadCompaniesInReverseToExpectedOrder(testString)
+        companyDataControllerTestUtils.uploadCompaniesInReverseToExpectedOrder(testString)
         sleep(2000)
         val sortedCompanyNames =
             apiAccessor.companyDataControllerApi
@@ -386,71 +362,29 @@ class CompanyDataControllerTest {
                     searchString = testString,
                 ).map { it.companyName }
         assertEquals(
-            listOf("$testString true", checkOtherCompanyTrue, "$testString none"),
+            listOf("$testString true", companyDataControllerTestUtils.checkOtherCompanyTrue, "$testString none"),
             sortedCompanyNames.filter { it.contains("none") || it.contains("true") },
         )
         assertEquals(
-            listOf("$testString true", checkOtherCompanyTrue, "$testString false"),
+            listOf("$testString true", companyDataControllerTestUtils.checkOtherCompanyTrue, "$testString false"),
             sortedCompanyNames.filter { it.contains("$testString false") || it.contains("true") },
         )
         assertEquals(
-            listOf("$testString true", checkOtherCompanyTrue, checkOtherCompanyFalse),
-            sortedCompanyNames.filter { it.contains(checkOtherCompanyFalse) || it.contains("true") },
-        )
-    }
-
-    private fun uploadCompaniesInReverseToExpectedOrder(expectedSearchString: String) {
-        uploadModifiedBaseCompany("$expectedSearchString none", null)
-        var companyId = uploadModifiedBaseCompany("$expectedSearchString false", null)
-        uploadDummyDataset(companyId = companyId, bypassQa = false)
-        companyId = uploadModifiedBaseCompany("$expectedSearchString true", null)
-        uploadDummyDataset(companyId = companyId, bypassQa = true)
-        companyId = uploadModifiedBaseCompany(checkOtherCompanyFalse, listOf("1${expectedSearchString}2"))
-        uploadDummyDataset(companyId = companyId, bypassQa = false)
-        companyId = uploadModifiedBaseCompany(checkOtherCompanyTrue, listOf("1${expectedSearchString}2"))
-        uploadDummyDataset(companyId = companyId, bypassQa = true)
-    }
-
-    private fun uploadModifiedBaseCompany(
-        name: String,
-        alternativeNames: List<String>?,
-    ): String {
-        val companyInformation =
-            baseCompanyInformation.copy(
-                companyName = name,
-                companyAlternativeNames = alternativeNames,
-                identifiers =
-                    mapOf(
-                        IdentifierType.Isin.value to listOf(UUID.randomUUID().toString()),
-                    ),
-            )
-        return apiAccessor.companyDataControllerApi.postCompany(companyInformation).companyId
-    }
-
-    val dummyCompanyAssociatedDataWithoutCompanyId =
-        CompanyAssociatedDataEutaxonomyNonFinancialsData(
-            companyId = "placeholder",
-            reportingPeriod = "placeholder",
-            data = apiAccessor.testDataProviderForEuTaxonomyDataForNonFinancials.getTData(1).first(),
-        )
-
-    private fun uploadDummyDataset(
-        companyId: String,
-        reportingPeriod: String = "default",
-        bypassQa: Boolean = false,
-    ) {
-        apiAccessor.dataControllerApiForEuTaxonomyNonFinancials.postCompanyAssociatedEutaxonomyNonFinancialsData(
-            dummyCompanyAssociatedDataWithoutCompanyId.copy(companyId = companyId, reportingPeriod = reportingPeriod),
-            bypassQa,
+            listOf(
+                "$testString true",
+                companyDataControllerTestUtils.checkOtherCompanyTrue,
+                companyDataControllerTestUtils.checkOtherCompanyFalse,
+            ),
+            sortedCompanyNames.filter { it.contains(companyDataControllerTestUtils.checkOtherCompanyFalse) || it.contains("true") },
         )
     }
 
     @Test
     fun `counts the number of datasets for a company`() {
         apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
-        val companyId = uploadModifiedBaseCompany("AggregatedInformation", null)
-        uploadDummyDataset(companyId = companyId, reportingPeriod = "2022", bypassQa = true)
-        uploadDummyDataset(companyId = companyId, reportingPeriod = "2021", bypassQa = true)
+        val companyId = companyDataControllerTestUtils.uploadModifiedBaseCompany("AggregatedInformation", null)
+        companyDataControllerTestUtils.uploadDummyDataset(companyId = companyId, reportingPeriod = "2022", bypassQa = true)
+        companyDataControllerTestUtils.uploadDummyDataset(companyId = companyId, reportingPeriod = "2021", bypassQa = true)
         sleep(100)
         val exceptionMap: Map<DataTypeEnum, Long> = mapOf(DataTypeEnum.eutaxonomyMinusNonMinusFinancials to 2)
         val expectedMap =
@@ -582,7 +516,7 @@ class CompanyDataControllerTest {
         assertThrows<ClientException> {
             apiAccessor.companyDataControllerApi.patchCompanyById(
                 companyId,
-                fullPatchObject,
+                companyDataControllerTestUtils.fullPatchObject,
             )
         }
 
@@ -608,7 +542,7 @@ class CompanyDataControllerTest {
         apiAccessor.companyRolesControllerApi.assignCompanyRole(
             CompanyRole.CompanyOwner,
             UUID.fromString(companyId),
-            dataReaderUserId,
+            companyDataControllerTestUtils.dataReaderUserId,
         )
 
         val patchObject =
@@ -641,7 +575,7 @@ class CompanyDataControllerTest {
         apiAccessor.companyRolesControllerApi.assignCompanyRole(
             CompanyRole.CompanyOwner,
             UUID.fromString(companyId),
-            dataReaderUserId,
+            companyDataControllerTestUtils.dataReaderUserId,
         )
 
         apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader)
@@ -650,7 +584,7 @@ class CompanyDataControllerTest {
             assertThrows<ClientException> {
                 apiAccessor.companyDataControllerApi.patchCompanyById(
                     companyId,
-                    fullPatchObject,
+                    companyDataControllerTestUtils.fullPatchObject,
                 )
             }
         val responseBody = (exception.response as ClientError<*>).body as String
@@ -669,7 +603,7 @@ class CompanyDataControllerTest {
             assertThrows<ClientException> {
                 apiAccessor.companyDataControllerApi.patchCompanyById(
                     UUID.randomUUID().toString(),
-                    fullPatchObject,
+                    companyDataControllerTestUtils.fullPatchObject,
                 )
             }
 
