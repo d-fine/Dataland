@@ -122,7 +122,7 @@ class MetaDataControllerTest {
 
     @Test
     fun `post companies and eu taxonomy data and check meta info search with filter on data type`() {
-        val testDataType = DataTypeEnum.euMinusTaxonomyMinusFinancials
+        val testDataType = DataTypeEnum.eutaxonomyMinusFinancials
         val initListSizeDataMetaInfoForEuTaxoFinancials =
             apiAccessor.getNumberOfDataMetaInfo(dataType = testDataType, showOnlyActive = false)
         apiAccessor.uploadCompanyAndFrameworkDataForMultipleFrameworks(

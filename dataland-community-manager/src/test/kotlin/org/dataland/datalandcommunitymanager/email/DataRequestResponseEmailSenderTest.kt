@@ -88,7 +88,7 @@ class DataRequestResponseEmailSenderTest {
     private fun getMapOfAllDataTypes(): Map<String, String> {
         return mapOf(
             DataTypeEnum.p2p.toString() to "WWF Pathways to Paris",
-            DataTypeEnum.euMinusTaxonomyMinusFinancials.toString() to "EU Taxonomy for financial companies",
+            DataTypeEnum.eutaxonomyMinusFinancials.toString() to "EU Taxonomy for financial companies",
             DataTypeEnum.eutaxonomyMinusNonMinusFinancials.toString() to "EU Taxonomy for non-financial companies",
             DataTypeEnum.lksg.toString() to "LkSG",
             DataTypeEnum.sfdr.toString() to "SFDR",

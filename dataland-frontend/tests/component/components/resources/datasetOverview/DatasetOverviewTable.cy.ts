@@ -12,7 +12,7 @@ describe('Component test for DatasetOverviewTable', () => {
   const datasetTableInfoMockForAlpha = createDatasetTableInfoMock(nameOfCompanyAlpha, dataTypeOfDatasetForAlpha);
 
   const nameOfCompanyBeta = 'Dream-Insurance';
-  const dataTypeOfDatasetForBeta = DataTypeEnum.EuTaxonomyFinancials;
+  const dataTypeOfDatasetForBeta = DataTypeEnum.EutaxonomyFinancials;
   const datasetTableInfoMockForBeta = createDatasetTableInfoMock(nameOfCompanyBeta, dataTypeOfDatasetForBeta);
 
   /**

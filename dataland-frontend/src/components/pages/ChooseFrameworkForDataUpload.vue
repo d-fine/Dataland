@@ -29,10 +29,10 @@
                     />
 
                     <MetaInfoPerCompanyAndFramework
-                      :data-type="DataTypeEnum.EuTaxonomyFinancials"
+                      :data-type="DataTypeEnum.EutaxonomyFinancials"
                       :companyId="companyID"
                       :isWaitingForData="waitingForData"
-                      :listOfFrameworkData="getFrameworkMetaInfos(DataTypeEnum.EuTaxonomyFinancials)"
+                      :listOfFrameworkData="getFrameworkMetaInfos(DataTypeEnum.EutaxonomyFinancials)"
                     />
                   </div>
                 </div>
@@ -129,7 +129,7 @@ export default defineComponent({
     return {
       allFrameworksExceptEuTaxonomy: FRONTEND_SUPPORTED_FRAMEWORKS.filter(
         (frameworkName) =>
-          [DataTypeEnum.EuTaxonomyFinancials as string, DataTypeEnum.EutaxonomyNonFinancials as string].indexOf(
+          [DataTypeEnum.EutaxonomyFinancials as string, DataTypeEnum.EutaxonomyNonFinancials as string].indexOf(
             frameworkName
           ) === -1
       ),

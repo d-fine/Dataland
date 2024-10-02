@@ -11,7 +11,7 @@ export function extractMetaInfoAssociatedWithReportingPeriodByDataType(
   metaInfoDataForOneCompany: DataMetaInformation[]
 ): MetaInfoAssociatedWithReportingPeriodByDataType {
   const holdingObject: MetaInfoAssociatedWithReportingPeriodByDataType = {};
-  [DataTypeEnum.EuTaxonomyFinancials, DataTypeEnum.Lksg].forEach((dataType) => {
+  [DataTypeEnum.EutaxonomyFinancials, DataTypeEnum.Lksg].forEach((dataType) => {
     holdingObject[dataType] = metaInfoDataForOneCompany
       .filter((metaInfo) => metaInfo.dataType == dataType)
       .map((metaInfo) => [metaInfo.reportingPeriod, metaInfo]);

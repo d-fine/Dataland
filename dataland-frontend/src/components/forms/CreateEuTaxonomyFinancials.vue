@@ -49,7 +49,7 @@
             <FormKit type="group" name="data" label="data">
               <FormKit
                 type="group"
-                v-for="category in euTaxonomyFinancialsDataModel"
+                v-for="category in eutaxonomyFinancialsDataModel"
                 :key="category"
                 :label="category.label"
                 :name="category.name"
@@ -102,7 +102,7 @@
 
           <h4 id="topicTitles" class="title pt-3">On this page</h4>
           <ul>
-            <li v-for="category in euTaxonomyFinancialsDataModel" :key="category.name">
+            <li v-for="category in eutaxonomyFinancialsDataModel" :key="category.name">
               <ul>
                 <li v-for="subcategory in category.subcategories" :key="subcategory.name">
                   <a
@@ -133,12 +133,12 @@ import YesNoFormField from '@/components/forms/parts/fields/YesNoFormField.vue';
 import Calendar from 'primevue/calendar';
 import SuccessMessage from '@/components/messages/SuccessMessage.vue';
 import FailMessage from '@/components/messages/FailMessage.vue';
-import { euTaxonomyFinancialsDataModel } from '@/frameworks/eu-taxonomy-financials/UploadConfig';
+import { eutaxonomyFinancialsDataModel } from '@/frameworks/eutaxonomy-financials/UploadConfig';
 import {
-  type CompanyAssociatedDataEuTaxonomyFinancialsData,
+  type CompanyAssociatedDataEutaxonomyFinancialsData,
   type CompanyReport,
   DataTypeEnum,
-  type EuTaxonomyFinancialsData,
+  type EutaxonomyFinancialsData,
 } from '@clients/backend';
 import { useRoute } from 'vue-router';
 import { checkCustomInputs, checkIfAllUploadedReportsAreReferencedInDataModel } from '@/utils/ValidationUtils';
@@ -228,8 +228,8 @@ export default defineComponent({
       formId: 'createEuTaxonomyFinancialsForm',
       waitingForData: true,
       dataDate: undefined as Date | undefined,
-      companyAssociatedEuTaxonomyFinancialsData: {} as CompanyAssociatedDataEuTaxonomyFinancialsData,
-      euTaxonomyFinancialsDataModel,
+      companyAssociatedEuTaxonomyFinancialsData: {} as CompanyAssociatedDataEutaxonomyFinancialsData,
+      eutaxonomyFinancialsDataModel,
       route: useRoute(),
       message: '',
       smoothScroll: smoothScroll,
@@ -254,7 +254,7 @@ export default defineComponent({
     },
     subcategoryVisibility(): Map<Subcategory, boolean> {
       return createSubcategoryVisibilityMap(
-        this.euTaxonomyFinancialsDataModel,
+        this.eutaxonomyFinancialsDataModel,
         this.companyAssociatedEuTaxonomyFinancialsData.data
       );
     },
@@ -282,9 +282,9 @@ export default defineComponent({
      * Builds an api to get and upload EU Taxonomy financials data
      * @returns the api
      */
-    buildEuTaxonomyFinancialsDataApi(): PublicFrameworkDataApi<EuTaxonomyFinancialsData> | undefined {
+    buildEuTaxonomyFinancialsDataApi(): PublicFrameworkDataApi<EutaxonomyFinancialsData> | undefined {
       const apiClientProvider = new ApiClientProvider(assertDefined(this.getKeycloakPromise)());
-      const frameworkDefinition = getBasePublicFrameworkDefinition(DataTypeEnum.EuTaxonomyFinancials);
+      const frameworkDefinition = getBasePublicFrameworkDefinition(DataTypeEnum.EutaxonomyFinancials);
       if (frameworkDefinition) {
         return frameworkDefinition.getPublicFrameworkApiClient(undefined, apiClientProvider.axiosInstance);
       } else return undefined;

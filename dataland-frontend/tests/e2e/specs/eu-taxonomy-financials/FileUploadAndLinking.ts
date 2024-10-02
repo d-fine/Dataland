@@ -1,9 +1,9 @@
 import { describeIf } from '@e2e/support/TestUtility';
 import { checkIfLinkedReportsAreDownloadable, gotoEditForm } from '@e2e/utils/EuTaxonomyFinancialsUpload';
 import {
-  type CompanyAssociatedDataEuTaxonomyFinancialsData,
+  type CompanyAssociatedDataEutaxonomyFinancialsData,
   DataTypeEnum,
-  type EuTaxonomyFinancialsData,
+  type EutaxonomyFinancialsData,
 } from '@clients/backend';
 import { type FixtureData, getPreparedFixture } from '@sharedUtils/Fixtures';
 import { admin_name, admin_pw } from '@e2e/utils/Cypress';
@@ -14,7 +14,7 @@ import { generateDummyCompanyInformation, uploadCompanyViaApi } from '@e2e/utils
 import { uploadFrameworkDataForPublicToolboxFramework } from '@e2e/utils/FrameworkUpload';
 import { UploadReports } from '@sharedUtils/components/UploadReports';
 import { selectItemFromDropdownByValue } from '@sharedUtils/Dropdown';
-import EuTaxonomyFinancialsBaseFrameworkDefinition from '@/frameworks/eu-taxonomy-financials/BaseFrameworkDefinition';
+import EuTaxonomyFinancialsBaseFrameworkDefinition from '@/frameworks/eutaxonomy-financials/BaseFrameworkDefinition';
 
 describeIf(
   'As a user, I want to add and link documents to the EU Taxonomy form',
@@ -23,12 +23,12 @@ describeIf(
     executionEnvironments: ['developmentLocal', 'ci', 'developmentCd'],
   },
   function () {
-    let euTaxoFinancialsFixture: FixtureData<EuTaxonomyFinancialsData>;
+    let euTaxoFinancialsFixture: FixtureData<EutaxonomyFinancialsData>;
     const uploadReports = new UploadReports('referencedReports');
 
     before(function () {
-      cy.fixture('CompanyInformationWithEuTaxonomyFinancialsPreparedFixtures').then(function (jsonContent) {
-        const preparedFixtures = jsonContent as Array<FixtureData<EuTaxonomyFinancialsData>>;
+      cy.fixture('CompanyInformationWithEutaxonomyFinancialsPreparedFixtures').then(function (jsonContent) {
+        const preparedFixtures = jsonContent as Array<FixtureData<EutaxonomyFinancialsData>>;
         euTaxoFinancialsFixture = getPreparedFixture('for-file-upload-and-linking-test', preparedFixtures);
       });
     });
@@ -71,14 +71,14 @@ describeIf(
             true
           ).then((dataMetaInformation) => {
             cy.ensureLoggedIn(admin_name, admin_pw);
-            cy.intercept(`**/api/data/${DataTypeEnum.EuTaxonomyFinancials}/${dataMetaInformation.dataId}`).as(
+            cy.intercept(`**/api/data/${DataTypeEnum.EutaxonomyFinancials}/${dataMetaInformation.dataId}`).as(
               'fetchDataForPrefill'
             );
             cy.visitAndCheckAppMount(
               '/companies/' +
                 storedCompanyId +
                 '/frameworks/' +
-                DataTypeEnum.EuTaxonomyFinancials +
+                DataTypeEnum.EutaxonomyFinancials +
                 '/upload?templateDataId=' +
                 dataMetaInformation.dataId
             );
@@ -111,7 +111,7 @@ describeIf(
                 times: 1,
               },
               (request) => {
-                const data = assertDefined((request.body as CompanyAssociatedDataEuTaxonomyFinancialsData).data);
+                const data = assertDefined((request.body as CompanyAssociatedDataEutaxonomyFinancialsData).data);
                 expect(TEST_PDF_FILE_NAME in assertDefined(data.general?.general?.referencedReports)).to.equal(
                   areBothDocumentsStillUploaded
                 );
@@ -144,7 +144,7 @@ describeIf(
                 times: 1,
               },
               (request) => {
-                const data = assertDefined((request.body as CompanyAssociatedDataEuTaxonomyFinancialsData).data);
+                const data = assertDefined((request.body as CompanyAssociatedDataEutaxonomyFinancialsData).data);
                 expect(TEST_PDF_FILE_NAME in assertDefined(data.general?.general?.referencedReports)).to.equal(
                   areBothDocumentsStillUploaded
                 );

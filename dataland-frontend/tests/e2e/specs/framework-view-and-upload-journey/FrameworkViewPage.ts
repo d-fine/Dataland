@@ -5,7 +5,7 @@ import { type FixtureData, getPreparedFixture } from '@sharedUtils/Fixtures';
 import { validateCompanyCockpitPage, verifySearchResultTableExists } from '@sharedUtils/ElementChecks';
 import {
   DataTypeEnum,
-  type EuTaxonomyFinancialsData,
+  type EutaxonomyFinancialsData,
   type LksgData,
   type SfdrData,
   type PathwaysToParisData,
@@ -19,7 +19,7 @@ import {
 import { getCellValueContainer } from '@sharedUtils/components/resources/dataTable/MultiLayerDataTableTestUtils';
 import LksgBaseFrameworkDefinition from '@/frameworks/lksg/BaseFrameworkDefinition';
 import SfdrBaseFrameworkDefinition from '@/frameworks/sfdr/BaseFrameworkDefinition';
-import EuTaxonomyFinancialsBaseFrameworkDefinition from '@/frameworks/eu-taxonomy-financials/BaseFrameworkDefinition';
+import EuTaxonomyFinancialsBaseFrameworkDefinition from '@/frameworks/eutaxonomy-financials/BaseFrameworkDefinition';
 
 describeIf(
   'As a user, I expect to search and select companies, see their company-cockpits and dataset-view-pages, ' +
@@ -31,7 +31,7 @@ describeIf(
     const uniqueCompanyMarker = Date.now().toString();
     const nameOfCompanyAlpha = 'company-alpha-with-four-different-framework-types-' + uniqueCompanyMarker;
     const expectedFrameworkDropdownItemsForAlpha = new Set<string>([
-      humanizeStringOrNumber(DataTypeEnum.EuTaxonomyFinancials),
+      humanizeStringOrNumber(DataTypeEnum.EutaxonomyFinancials),
       humanizeStringOrNumber(DataTypeEnum.P2p),
       humanizeStringOrNumber(DataTypeEnum.Lksg),
       humanizeStringOrNumber(DataTypeEnum.Sfdr),
@@ -345,14 +345,14 @@ describeIf(
       });
     }
 
-    let euTaxoFinancialPreparedFixtures: Array<FixtureData<EuTaxonomyFinancialsData>>;
+    let euTaxoFinancialPreparedFixtures: Array<FixtureData<EutaxonomyFinancialsData>>;
     let p2pFixtures: Array<FixtureData<PathwaysToParisData>>;
     let lksgPreparedFixtures: Array<FixtureData<LksgData>>;
     let sfdrPreparedFixtures: Array<FixtureData<SfdrData>>;
 
     before(() => {
       cy.fixture('CompanyInformationWithEuTaxonomyFinancialsPreparedFixtures').then(function (jsonContent) {
-        euTaxoFinancialPreparedFixtures = jsonContent as Array<FixtureData<EuTaxonomyFinancialsData>>;
+        euTaxoFinancialPreparedFixtures = jsonContent as Array<FixtureData<EutaxonomyFinancialsData>>;
       });
       cy.fixture('CompanyInformationWithP2pData').then(function (jsonContent) {
         p2pFixtures = jsonContent as Array<FixtureData<PathwaysToParisData>>;
@@ -403,9 +403,9 @@ describeIf(
 
     it('Check that using back-button and dropdowns on the view-page work as expected', () => {
       cy.ensureLoggedIn();
-      cy.visit(`/companies/${companyIdOfAlpha}/frameworks/${DataTypeEnum.EuTaxonomyFinancials}`);
+      cy.visit(`/companies/${companyIdOfAlpha}/frameworks/${DataTypeEnum.EutaxonomyFinancials}`);
       validateNoErrorMessagesAreShown();
-      validateChosenFramework(DataTypeEnum.EuTaxonomyFinancials);
+      validateChosenFramework(DataTypeEnum.EutaxonomyFinancials);
       validateFrameworkDropdownOptions(expectedFrameworkDropdownItemsForAlpha);
 
       selectFrameworkInDropdown(DataTypeEnum.P2p);
@@ -429,7 +429,7 @@ describeIf(
 
     it("Check that invalid data ID, reporting period or company ID in URL don't break any user flow on the view-page", () => {
       cy.ensureLoggedIn();
-      cy.visit(`/companies/${companyIdOfAlpha}/frameworks/${DataTypeEnum.EuTaxonomyFinancials}/${nonExistingDataId}`);
+      cy.visit(`/companies/${companyIdOfAlpha}/frameworks/${DataTypeEnum.EutaxonomyFinancials}/${nonExistingDataId}`);
 
       getElementAndAssertExistence('noDataForThisDataIdPresentErrorIndicator', 'exist');
       getElementAndAssertExistence('claimOwnershipPanelLink', 'not.exist');

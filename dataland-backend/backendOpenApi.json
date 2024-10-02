@@ -688,12 +688,12 @@
         ]
       }
     },
-    "/data/eu-taxonomy-financials": {
+    "/data/eutaxonomy-financials": {
       "post": {
         "tags": [
-          "eu-taxonomy-financials-data-controller"
+          "eutaxonomy-financials-data-controller"
         ],
-        "operationId": "postCompanyAssociatedEuTaxonomyFinancialsData",
+        "operationId": "postCompanyAssociatedEutaxonomyFinancialsData",
         "parameters": [
           {
             "name": "bypassQa",
@@ -709,7 +709,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/CompanyAssociatedDataEuTaxonomyFinancialsData"
+                "$ref": "#/components/schemas/CompanyAssociatedDataEutaxonomyFinancialsData"
               }
             }
           },
@@ -2539,12 +2539,12 @@
         ]
       }
     },
-    "/data/eu-taxonomy-financials/{dataId}": {
+    "/data/eutaxonomy-financials/{dataId}": {
       "get": {
         "tags": [
-          "eu-taxonomy-financials-data-controller"
+          "eutaxonomy-financials-data-controller"
         ],
-        "operationId": "getCompanyAssociatedEuTaxonomyFinancialsData",
+        "operationId": "getCompanyAssociatedEutaxonomyFinancialsData",
         "parameters": [
           {
             "name": "dataId",
@@ -2561,7 +2561,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/CompanyAssociatedDataEuTaxonomyFinancialsData"
+                  "$ref": "#/components/schemas/CompanyAssociatedDataEutaxonomyFinancialsData"
                 }
               }
             }
@@ -2597,12 +2597,12 @@
         ]
       }
     },
-    "/data/eu-taxonomy-financials/companies/{companyId}": {
+    "/data/eutaxonomy-financials/companies/{companyId}": {
       "get": {
         "tags": [
-          "eu-taxonomy-financials-data-controller"
+          "eutaxonomy-financials-data-controller"
         ],
-        "operationId": "getAllCompanyEuTaxonomyFinancialsData",
+        "operationId": "getAllCompanyEutaxonomyFinancialsData",
         "parameters": [
           {
             "name": "companyId",
@@ -2638,7 +2638,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/DataAndMetaInformationEuTaxonomyFinancialsData"
+                    "$ref": "#/components/schemas/DataAndMetaInformationEutaxonomyFinancialsData"
                   }
                 }
               }
@@ -13208,7 +13208,7 @@
           }
         }
       },
-      "CompanyAssociatedDataEuTaxonomyFinancialsData": {
+      "CompanyAssociatedDataEutaxonomyFinancialsData": {
         "required": [
           "companyId",
           "data",
@@ -13223,18 +13223,18 @@
             "type": "string"
           },
           "data": {
-            "$ref": "#/components/schemas/EuTaxonomyFinancialsData"
+            "$ref": "#/components/schemas/EutaxonomyFinancialsData"
           }
         }
       },
-      "EuTaxonomyFinancialsAssetManagement": {
+      "EutaxonomyFinancialsAssetManagement": {
         "type": "object",
         "properties": {
           "turnoverBasedKpi": {
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/EuTaxonomyFinancialsAssetmanagementTurnoverBasedKpi"
+                "$ref": "#/components/schemas/EutaxonomyFinancialsAssetmanagementTurnoverBasedKpi"
               }
             ]
           },
@@ -13242,13 +13242,13 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/EuTaxonomyFinancialsAssetmanagementCapexBasedKpi"
+                "$ref": "#/components/schemas/EutaxonomyFinancialsAssetmanagementCapexBasedKpi"
               }
             ]
           }
         }
       },
-      "EuTaxonomyFinancialsAssetmanagementCapexBasedKpi": {
+      "EutaxonomyFinancialsAssetmanagementCapexBasedKpi": {
         "type": "object",
         "properties": {
           "substantialContributionToClimateChangeMitigationInPercentAligned": {
@@ -13357,7 +13357,7 @@
           }
         }
       },
-      "EuTaxonomyFinancialsAssetmanagementTurnoverBasedKpi": {
+      "EutaxonomyFinancialsAssetmanagementTurnoverBasedKpi": {
         "type": "object",
         "properties": {
           "substantialContributionToClimateChangeMitigationInPercentAligned": {
@@ -13466,14 +13466,14 @@
           }
         }
       },
-      "EuTaxonomyFinancialsCreditInstitution": {
+      "EutaxonomyFinancialsCreditInstitution": {
         "type": "object",
         "properties": {
           "assetsForCalculationOfGreenAssetRatio": {
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/EuTaxonomyFinancialsCreditinstitutionAssetsForCalculationOfGreenAssetRatio"
+                "$ref": "#/components/schemas/EutaxonomyFinancialsCreditinstitutionAssetsForCalculationOfGreenAssetRatio"
               }
             ]
           },
@@ -13481,7 +13481,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/EuTaxonomyFinancialsCreditinstitutionTurnoverBasedGreenAssetRatioStock"
+                "$ref": "#/components/schemas/EutaxonomyFinancialsCreditinstitutionTurnoverBasedGreenAssetRatioStock"
               }
             ]
           },
@@ -13489,13 +13489,13 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/EuTaxonomyFinancialsCreditinstitutionCapexBasedGreenAssetRatioStock"
+                "$ref": "#/components/schemas/EutaxonomyFinancialsCreditinstitutionCapexBasedGreenAssetRatioStock"
               }
             ]
           }
         }
       },
-      "EuTaxonomyFinancialsCreditinstitutionAssetsForCalculationOfGreenAssetRatio": {
+      "EutaxonomyFinancialsCreditinstitutionAssetsForCalculationOfGreenAssetRatio": {
         "type": "object",
         "properties": {
           "totalGrossCarryingAmount": {
@@ -13548,7 +13548,7 @@
           }
         }
       },
-      "EuTaxonomyFinancialsCreditinstitutionCapexBasedGreenAssetRatioStock": {
+      "EutaxonomyFinancialsCreditinstitutionCapexBasedGreenAssetRatioStock": {
         "type": "object",
         "properties": {
           "substantialContributionToClimateChangeMitigationInPercentEligible": {
@@ -13793,7 +13793,7 @@
           }
         }
       },
-      "EuTaxonomyFinancialsCreditinstitutionTurnoverBasedGreenAssetRatioStock": {
+      "EutaxonomyFinancialsCreditinstitutionTurnoverBasedGreenAssetRatioStock": {
         "type": "object",
         "properties": {
           "substantialContributionToClimateChangeMitigationInPercentEligible": {
@@ -14038,14 +14038,14 @@
           }
         }
       },
-      "EuTaxonomyFinancialsData": {
+      "EutaxonomyFinancialsData": {
         "type": "object",
         "properties": {
           "general": {
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/EuTaxonomyFinancialsGeneral"
+                "$ref": "#/components/schemas/EutaxonomyFinancialsGeneral"
               }
             ]
           },
@@ -14053,7 +14053,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/EuTaxonomyFinancialsCreditInstitution"
+                "$ref": "#/components/schemas/EutaxonomyFinancialsCreditInstitution"
               }
             ]
           },
@@ -14061,7 +14061,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/EuTaxonomyFinancialsAssetManagement"
+                "$ref": "#/components/schemas/EutaxonomyFinancialsAssetManagement"
               }
             ]
           },
@@ -14069,7 +14069,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/EuTaxonomyFinancialsInsuranceReinsurance"
+                "$ref": "#/components/schemas/EutaxonomyFinancialsInsuranceReinsurance"
               }
             ]
           },
@@ -14077,33 +14077,33 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/EuTaxonomyFinancialsInvestmentFirms"
+                "$ref": "#/components/schemas/EutaxonomyFinancialsInvestmentFirms"
               }
             ]
           }
         }
       },
-      "EuTaxonomyFinancialsGeneral": {
+      "EutaxonomyFinancialsGeneral": {
         "type": "object",
         "properties": {
           "general": {
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/EuTaxonomyFinancialsGeneralGeneral"
+                "$ref": "#/components/schemas/EutaxonomyFinancialsGeneralGeneral"
               }
             ]
           }
         }
       },
-      "EuTaxonomyFinancialsGeneralGeneral": {
+      "EutaxonomyFinancialsGeneralGeneral": {
         "type": "object",
         "properties": {
           "fiscalYearDeviation": {
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/ExtendedDataPointEuTaxonomyFinancialsGeneralGeneralFiscalYearDeviationOptions"
+                "$ref": "#/components/schemas/ExtendedDataPointEutaxonomyFinancialsGeneralGeneralFiscalYearDeviationOptions"
               }
             ]
           },
@@ -14157,21 +14157,21 @@
           }
         }
       },
-      "EuTaxonomyFinancialsGeneralGeneralFiscalYearDeviationOptions": {
+      "EutaxonomyFinancialsGeneralGeneralFiscalYearDeviationOptions": {
         "type": "string",
         "enum": [
           "Deviation",
           "NoDeviation"
         ]
       },
-      "EuTaxonomyFinancialsInsuranceReinsurance": {
+      "EutaxonomyFinancialsInsuranceReinsurance": {
         "type": "object",
         "properties": {
           "general": {
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/EuTaxonomyFinancialsInsurancereinsuranceGeneral"
+                "$ref": "#/components/schemas/EutaxonomyFinancialsInsurancereinsuranceGeneral"
               }
             ]
           },
@@ -14179,7 +14179,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/EuTaxonomyFinancialsInsurancereinsuranceRevenueBasedGrossPremiumsWrittenReInsuranceRevenue"
+                "$ref": "#/components/schemas/EutaxonomyFinancialsInsurancereinsuranceRevenueBasedGrossPremiumsWrittenReInsuranceRevenue"
               }
             ]
           },
@@ -14187,13 +14187,13 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/EuTaxonomyFinancialsInsurancereinsuranceCapexBasedGrossPremiumsWrittenReInsuranceRevenue"
+                "$ref": "#/components/schemas/EutaxonomyFinancialsInsurancereinsuranceCapexBasedGrossPremiumsWrittenReInsuranceRevenue"
               }
             ]
           }
         }
       },
-      "EuTaxonomyFinancialsInsurancereinsuranceCapexBasedGrossPremiumsWrittenReInsuranceRevenue": {
+      "EutaxonomyFinancialsInsurancereinsuranceCapexBasedGrossPremiumsWrittenReInsuranceRevenue": {
         "type": "object",
         "properties": {
           "substantialContributionToClimateChangeMitigationInPercentAligned": {
@@ -14302,7 +14302,7 @@
           }
         }
       },
-      "EuTaxonomyFinancialsInsurancereinsuranceGeneral": {
+      "EutaxonomyFinancialsInsurancereinsuranceGeneral": {
         "type": "object",
         "properties": {
           "taxonomyEligibleNonLifeInsuranceEconomicActivities": {
@@ -14315,7 +14315,7 @@
           }
         }
       },
-      "EuTaxonomyFinancialsInsurancereinsuranceRevenueBasedGrossPremiumsWrittenReInsuranceRevenue": {
+      "EutaxonomyFinancialsInsurancereinsuranceRevenueBasedGrossPremiumsWrittenReInsuranceRevenue": {
         "type": "object",
         "properties": {
           "substantialContributionToClimateChangeMitigationInPercentAligned": {
@@ -14424,14 +14424,14 @@
           }
         }
       },
-      "EuTaxonomyFinancialsInvestmentFirms": {
+      "EutaxonomyFinancialsInvestmentFirms": {
         "type": "object",
         "properties": {
           "turnoverBasedKpi": {
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/EuTaxonomyFinancialsInvestmentfirmsTurnoverBasedKpi"
+                "$ref": "#/components/schemas/EutaxonomyFinancialsInvestmentfirmsTurnoverBasedKpi"
               }
             ]
           },
@@ -14439,13 +14439,13 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/EuTaxonomyFinancialsInvestmentfirmsCapexBasedKpi"
+                "$ref": "#/components/schemas/EutaxonomyFinancialsInvestmentfirmsCapexBasedKpi"
               }
             ]
           }
         }
       },
-      "EuTaxonomyFinancialsInvestmentfirmsCapexBasedKpi": {
+      "EutaxonomyFinancialsInvestmentfirmsCapexBasedKpi": {
         "type": "object",
         "properties": {
           "totalAssetsInvestedRevenueFromInvestmentAndServices": {
@@ -14642,7 +14642,7 @@
           }
         }
       },
-      "EuTaxonomyFinancialsInvestmentfirmsTurnoverBasedKpi": {
+      "EutaxonomyFinancialsInvestmentfirmsTurnoverBasedKpi": {
         "type": "object",
         "properties": {
           "totalAssetsInvestedRevenueFromInvestmentAndServices": {
@@ -14839,14 +14839,14 @@
           }
         }
       },
-      "ExtendedDataPointEuTaxonomyFinancialsGeneralGeneralFiscalYearDeviationOptions": {
+      "ExtendedDataPointEutaxonomyFinancialsGeneralGeneralFiscalYearDeviationOptions": {
         "type": "object",
         "properties": {
           "value": {
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/EuTaxonomyFinancialsGeneralGeneralFiscalYearDeviationOptions"
+                "$ref": "#/components/schemas/EutaxonomyFinancialsGeneralGeneralFiscalYearDeviationOptions"
               }
             ]
           },
@@ -16989,7 +16989,7 @@
           }
         }
       },
-      "DataAndMetaInformationEuTaxonomyFinancialsData": {
+      "DataAndMetaInformationEutaxonomyFinancialsData": {
         "required": [
           "data",
           "metaInfo"
@@ -17000,7 +17000,7 @@
             "$ref": "#/components/schemas/DataMetaInformation"
           },
           "data": {
-            "$ref": "#/components/schemas/EuTaxonomyFinancialsData"
+            "$ref": "#/components/schemas/EutaxonomyFinancialsData"
           }
         }
       },
@@ -17047,16 +17047,16 @@
             "type": "string",
             "nullable": true
           },
-          "countryCode": {
-            "type": "string"
-          },
-          "headquarters": {
+          "companyName": {
             "type": "string"
           },
           "companyId": {
             "type": "string"
           },
-          "companyName": {
+          "countryCode": {
+            "type": "string"
+          },
+          "headquarters": {
             "type": "string"
           },
           "lei": {
@@ -17084,10 +17084,10 @@
         ],
         "type": "object",
         "properties": {
-          "companyId": {
+          "companyName": {
             "type": "string"
           },
-          "companyName": {
+          "companyId": {
             "type": "string"
           }
         }
@@ -17142,7 +17142,7 @@
       "DataTypeEnum": {
         "type": "string",
         "enum": [
-          "eu-taxonomy-financials",
+          "eutaxonomy-financials",
           "eutaxonomy-non-financials",
           "lksg",
           "p2p",

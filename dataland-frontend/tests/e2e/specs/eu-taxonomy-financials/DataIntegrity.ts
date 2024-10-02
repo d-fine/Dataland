@@ -5,8 +5,8 @@ import {
   Configuration,
   type DataMetaInformation,
   DataTypeEnum,
-  type EuTaxonomyFinancialsData,
-  EuTaxonomyFinancialsDataControllerApi,
+  type EutaxonomyFinancialsData,
+  EutaxonomyFinancialsDataControllerApi,
 } from '@clients/backend';
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from '@e2e/utils/CompanyUpload';
 import { assignCompanyOwnershipToDatalandAdmin, isDatasetApproved } from '@e2e/utils/CompanyRolesUtils';
@@ -14,14 +14,14 @@ import { submitButton } from '@sharedUtils/components/SubmitButton';
 import { uploadFrameworkDataForPublicToolboxFramework } from '@e2e/utils/FrameworkUpload';
 import { compareObjectKeysAndValuesDeep } from '@e2e/utils/GeneralUtils';
 import { type FixtureData, getPreparedFixture } from '@sharedUtils/Fixtures';
-import EuTaxonomyFinancialsBaseFrameworkDefinition from '@/frameworks/eu-taxonomy-financials/BaseFrameworkDefinition';
+import EuTaxonomyFinancialsBaseFrameworkDefinition from '@/frameworks/eutaxonomy-financials/BaseFrameworkDefinition';
 
-let euTaxonomyFinancialsFixtureForTest: FixtureData<EuTaxonomyFinancialsData>;
+let euTaxonomyFinancialsFixtureForTest: FixtureData<EutaxonomyFinancialsData>;
 before(function () {
-  cy.fixture('CompanyInformationWithEuTaxonomyFinancialsPreparedFixtures').then(function (jsonContent) {
-    const preparedFixturesEuTaxonomyFinancials = jsonContent as Array<FixtureData<EuTaxonomyFinancialsData>>;
+  cy.fixture('CompanyInformationWithEutaxonomyFinancialsPreparedFixtures').then(function (jsonContent) {
+    const preparedFixturesEuTaxonomyFinancials = jsonContent as Array<FixtureData<EutaxonomyFinancialsData>>;
     euTaxonomyFinancialsFixtureForTest = getPreparedFixture(
-      'eu-taxonomy-financials-dataset-with-no-null-fields',
+      'eutaxonomy-financials-dataset-with-no-null-fields',
       preparedFixturesEuTaxonomyFinancials
     );
   });
@@ -53,20 +53,20 @@ describeIf(
                 '2023',
                 euTaxonomyFinancialsFixtureForTest.t
               ).then((dataMetaInformation) => {
-                cy.intercept(`**/api/data/${DataTypeEnum.EuTaxonomyFinancials}/${dataMetaInformation.dataId}**`)
+                cy.intercept(`**/api/data/${DataTypeEnum.EutaxonomyFinancials}/${dataMetaInformation.dataId}**`)
                   .as('fetchDataForPrefill')
                   .visitAndCheckAppMount(
                     '/companies/' +
                       storedCompany.companyId +
                       '/frameworks/' +
-                      DataTypeEnum.EuTaxonomyFinancials +
+                      DataTypeEnum.EutaxonomyFinancials +
                       '/upload?templateDataId=' +
                       dataMetaInformation.dataId
                   );
                 cy.wait('@fetchDataForPrefill', { timeout: Cypress.env('medium_timeout_in_ms') as number });
                 cy.get('h1').should('contain', testCompanyName);
                 cy.intercept({
-                  url: `**/api/data/${DataTypeEnum.EuTaxonomyFinancials}?bypassQa=true`,
+                  url: `**/api/data/${DataTypeEnum.EutaxonomyFinancials}?bypassQa=true`,
                   times: 1,
                 }).as('postCompanyAssociatedData');
                 submitButton.clickButton();
@@ -76,11 +76,11 @@ describeIf(
                     isDatasetApproved();
                     const dataMetaInformationOfReuploadedDataset = postInterception.response
                       ?.body as DataMetaInformation;
-                    return new EuTaxonomyFinancialsDataControllerApi(new Configuration({ accessToken: token }))
-                      .getCompanyAssociatedEuTaxonomyFinancialsData(dataMetaInformationOfReuploadedDataset.dataId)
+                    return new EutaxonomyFinancialsDataControllerApi(new Configuration({ accessToken: token }))
+                      .getCompanyAssociatedEutaxonomyFinancialsData(dataMetaInformationOfReuploadedDataset.dataId)
                       .then((axiosResponse) => {
                         const frontendSubmittedEuTaxonomyFinancialsDataset = axiosResponse.data
-                          .data as unknown as EuTaxonomyFinancialsData;
+                          .data as unknown as EutaxonomyFinancialsData;
 
                         compareObjectKeysAndValuesDeep(
                           euTaxonomyFinancialsFixtureForTest.t as unknown as Record<string, object>,

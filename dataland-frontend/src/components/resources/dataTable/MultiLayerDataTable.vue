@@ -64,7 +64,7 @@ import { convertUnixTimeInMsToDateString, dateStringFormatter } from '@/utils/Da
 import {
   type CompanyReport,
   DataTypeEnum,
-  type EuTaxonomyFinancialsData,
+  type EutaxonomyFinancialsData,
   type EutaxonomyNonFinancialsData,
   type SfdrData,
 } from '@clients/backend';
@@ -83,8 +83,8 @@ function reportingYearToolTip(singleDataAndMetaInfo: DataAndMetaInformation<T>):
     case DataTypeEnum.Sfdr:
       referencedReports = (singleDataAndMetaInfo.data as SfdrData).general?.general.referencedReports;
       break;
-    case DataTypeEnum.EuTaxonomyFinancials:
-      referencedReports = (singleDataAndMetaInfo.data as EuTaxonomyFinancialsData).general?.general?.referencedReports;
+    case DataTypeEnum.EutaxonomyFinancials:
+      referencedReports = (singleDataAndMetaInfo.data as EutaxonomyFinancialsData).general?.general?.referencedReports;
       break;
     case DataTypeEnum.EutaxonomyNonFinancials:
       referencedReports = (singleDataAndMetaInfo.data as EutaxonomyNonFinancialsData).general?.referencedReports;

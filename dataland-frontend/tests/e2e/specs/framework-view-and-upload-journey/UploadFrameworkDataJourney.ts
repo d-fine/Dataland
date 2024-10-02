@@ -4,7 +4,7 @@ import { getKeycloakToken } from '@e2e/utils/Auth';
 import {
   IdentifierType,
   DataTypeEnum,
-  type EuTaxonomyFinancialsData,
+  type EutaxonomyFinancialsData,
   type LksgData,
   type StoredCompany,
 } from '@clients/backend';
@@ -15,7 +15,7 @@ import { generateReportingPeriod } from '@e2e/fixtures/common//ReportingPeriodFi
 import { type FixtureData, getPreparedFixture } from '@sharedUtils/Fixtures';
 import { uploadFrameworkDataForPublicToolboxFramework } from '@e2e/utils/FrameworkUpload';
 import LksgBaseFrameworkDefinition from '@/frameworks/lksg/BaseFrameworkDefinition';
-import EuTaxonomyFinancialsBaseFrameworkDefinition from '@/frameworks/eu-taxonomy-financials/BaseFrameworkDefinition';
+import EuTaxonomyFinancialsBaseFrameworkDefinition from '@/frameworks/eutaxonomy-financials/BaseFrameworkDefinition';
 
 describe('As a user, I expect the dataset upload process to behave as I expect', function () {
   describeIf(
@@ -40,10 +40,10 @@ describe('As a user, I expect the dataset upload process to behave as I expect',
       let storedCompanyForManyDatasetsCompany: StoredCompany;
 
       before(function uploadOneCompanyWithoutDataAndOneCompanyWithManyDatasets() {
-        let euTaxoFinancialPreparedFixture: FixtureData<EuTaxonomyFinancialsData>;
+        let euTaxoFinancialPreparedFixture: FixtureData<EutaxonomyFinancialsData>;
         let lksgPreparedFixture: FixtureData<LksgData>;
         cy.fixture('CompanyInformationWithEuTaxonomyFinancialsPreparedFixtures').then(function (jsonContent) {
-          const euTaxoFinancialPreparedFixtures = jsonContent as Array<FixtureData<EuTaxonomyFinancialsData>>;
+          const euTaxoFinancialPreparedFixtures = jsonContent as Array<FixtureData<EutaxonomyFinancialsData>>;
           euTaxoFinancialPreparedFixture = getPreparedFixture(
             'eu-taxonomy-financials-dataset-with-no-null-fields',
             euTaxoFinancialPreparedFixtures
@@ -182,7 +182,7 @@ describe('As a user, I expect the dataset upload process to behave as I expect',
           .should(
             'eq',
             getBaseUrl() +
-              `/companies/${storedCompanyForTest.companyId}/frameworks/${DataTypeEnum.EuTaxonomyFinancials}/${dataIdOfFirstUploadedEuTaxoFinancialsDataset}`
+              `/companies/${storedCompanyForTest.companyId}/frameworks/${DataTypeEnum.EutaxonomyFinancials}/${dataIdOfFirstUploadedEuTaxoFinancialsDataset}`
           );
         cy.go('back');
         cy.get('div[id=eutaxonomyDataSetsContainer')
@@ -194,7 +194,7 @@ describe('As a user, I expect the dataset upload process to behave as I expect',
           .should(
             'eq',
             getBaseUrl() +
-              `/companies/${storedCompanyForTest.companyId}/frameworks/${DataTypeEnum.EuTaxonomyFinancials}/${dataIdOfSecondUploadedEuTaxoFinancialsDataset}`
+              `/companies/${storedCompanyForTest.companyId}/frameworks/${DataTypeEnum.EutaxonomyFinancials}/${dataIdOfSecondUploadedEuTaxoFinancialsDataset}`
           );
         cy.go('back');
         cy.get('div[id=lksgContainer').find(`a.text-primary:contains(LkSG)`).click({ force: true });
