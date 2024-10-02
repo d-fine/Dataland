@@ -29,7 +29,7 @@ describeIf(
     before(function () {
       cy.fixture('CompanyInformationWithEutaxonomyFinancialsPreparedFixtures').then(function (jsonContent) {
         const preparedFixtures = jsonContent as Array<FixtureData<EutaxonomyFinancialsData>>;
-        euTaxoFinancialsFixture = getPreparedFixture('for-file-upload-and-linking-test', preparedFixtures);
+        euTaxoFinancialsFixture = getPreparedFixture('lighweight-eu-taxo-financials-dataset', preparedFixtures);
       });
     });
 

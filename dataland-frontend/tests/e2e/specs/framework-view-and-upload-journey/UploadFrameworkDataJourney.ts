@@ -45,7 +45,7 @@ describe('As a user, I expect the dataset upload process to behave as I expect',
         cy.fixture('CompanyInformationWithEuTaxonomyFinancialsPreparedFixtures').then(function (jsonContent) {
           const euTaxoFinancialPreparedFixtures = jsonContent as Array<FixtureData<EutaxonomyFinancialsData>>;
           euTaxoFinancialPreparedFixture = getPreparedFixture(
-            'eu-taxonomy-financials-dataset-with-no-null-fields',
+            'lighweight-eu-taxo-financials-dataset',
             euTaxoFinancialPreparedFixtures
           );
         });
