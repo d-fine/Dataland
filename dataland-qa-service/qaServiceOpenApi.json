@@ -3690,98 +3690,118 @@
       "EutaxonomyFinancialsAssetManagement": {
         "type": "object",
         "properties": {
-          "turnoverBasedKpi": {
-            "$ref": "#/components/schemas/EutaxonomyFinancialsAssetmanagementTurnoverBasedKpi"
+          "averageValueOfTaxonomyAlignedUndertakings": {
+            "$ref": "#/components/schemas/EutaxonomyFinancialsAssetmanagementAverageValueOfTaxonomyAlignedUndertakings"
           },
-          "capexBasedKpi": {
-            "$ref": "#/components/schemas/EutaxonomyFinancialsAssetmanagementCapexBasedKpi"
+          "breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBased": {
+            "$ref": "#/components/schemas/EutaxonomyFinancialsAssetmanagementBreakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBased"
+          },
+          "breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBased": {
+            "$ref": "#/components/schemas/EutaxonomyFinancialsAssetmanagementBreakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBased"
           }
         }
       },
-      "EutaxonomyFinancialsAssetmanagementCapexBasedKpi": {
+      "EutaxonomyFinancialsAssetmanagementAverageValueOfTaxonomyAlignedUndertakings": {
         "type": "object",
         "properties": {
-          "substantialContributionToClimateChangeMitigationInPercentAligned": {
+          "weightedAverageValueOfAllInvestmentsTurnoverBasedInPercent": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
           },
-          "substantialContributionToClimateChangeMitigationInPercentOfWhichEnabling": {
+          "weightedAverageValueOfAllInvestmentsCapexBasedInPercent": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
           },
-          "substantialContributionToClimateChangeMitigationInPercentOfWhichTransitional": {
+          "weightedAverageValueOfAllInvestmentsTurnoverBasedMonetaryAmount": {
+            "$ref": "#/components/schemas/QaReportDataPointCurrencyDataPoint"
+          },
+          "weightedAverageValueOfAllInvestmentsCapexBasedMonetaryAmount": {
+            "$ref": "#/components/schemas/QaReportDataPointCurrencyDataPoint"
+          }
+        }
+      },
+      "EutaxonomyFinancialsAssetmanagementBreakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBased": {
+        "type": "object",
+        "properties": {
+          "shareOfCapexBasedKpiSubstantiallyContributingToClimateChangeMitigationInPercentAligned": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
           },
-          "substantialContributionToClimateChangeAdaptationInPercentAligned": {
+          "shareOfCapexBasedKpiSubstantiallyContributingToClimateChangeMitigationInPercentOfWhichEnabling": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
           },
-          "substantialContributionToClimateChangeAdaptationInPercentOfWhichEnabling": {
+          "shareOfCapexBasedKpiSubstantiallyContributingToClimateChangeMitigationInPercentOfWhichTransitional": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
           },
-          "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned": {
+          "shareOfCapexBasedKpiSubstantiallyContributingToClimateChangeAdaptationInPercentAligned": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
           },
-          "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentOfWhichEnabling": {
+          "shareOfCapexBasedKpiSubstantiallyContributingToClimateChangeAdaptationInPercentOfWhichEnabling": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
           },
-          "substantialContributionToTransitionToACircularEconomyInPercentAligned": {
+          "shareOfCapexBasedKpiSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
           },
-          "substantialContributionToTransitionToACircularEconomyInPercentOfWhichEnabling": {
+          "shareOfCapexBasedKpiSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentOfWhichEnabling": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
           },
-          "substantialContributionToPollutionPreventionAndControlInPercentAligned": {
+          "shareOfCapexBasedKpiSubstantiallyContributingToTransitionToACircularEconomyInPercentAligned": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
           },
-          "substantialContributionToPollutionPreventionAndControlInPercentOfWhichEnabling": {
+          "shareOfCapexBasedKpiSubstantiallyContributingToTransitionToACircularEconomyInPercentOfWhichEnabling": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
           },
-          "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned": {
+          "shareOfCapexBasedKpiSubstantiallyContributingToPollutionPreventionAndControlInPercentAligned": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
           },
-          "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentOfWhichEnabling": {
+          "shareOfCapexBasedKpiSubstantiallyContributingToPollutionPreventionAndControlInPercentOfWhichEnabling": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          },
+          "shareOfCapexBasedKpiSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          },
+          "shareOfCapexBasedKpiSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentOfWhichEnabling": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
           }
         }
       },
-      "EutaxonomyFinancialsAssetmanagementTurnoverBasedKpi": {
+      "EutaxonomyFinancialsAssetmanagementBreakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBased": {
         "type": "object",
         "properties": {
-          "substantialContributionToClimateChangeMitigationInPercentAligned": {
+          "shareOfTurnoverBasedKpiSubstantiallyContributingToClimateChangeMitigationInPercentAligned": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
           },
-          "substantialContributionToClimateChangeMitigationInPercentOfWhichEnabling": {
+          "shareOfTurnoverBasedKpiSubstantiallyContributingToClimateChangeMitigationInPercentOfWhichEnabling": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
           },
-          "substantialContributionToClimateChangeMitigationInPercentOfWhichTransitional": {
+          "shareOfTurnoverBasedKpiSubstantiallyContributingToClimateChangeMitigationInPercentOfWhichTransitional": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
           },
-          "substantialContributionToClimateChangeAdaptationInPercentAligned": {
+          "shareOfTurnoverBasedKpiSubstantiallyContributingToClimateChangeAdaptationInPercentAligned": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
           },
-          "substantialContributionToClimateChangeAdaptationInPercentOfWhichEnabling": {
+          "shareOfTurnoverBasedKpiSubstantiallyContributingToClimateChangeAdaptationInPercentOfWhichEnabling": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
           },
-          "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned": {
+          "shareOfTurnoverBasedKpiSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
           },
-          "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentOfWhichEnabling": {
+          "shareOfTurnoverBasedKpiSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentOfWhichEnabling": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
           },
-          "substantialContributionToTransitionToACircularEconomyInPercentAligned": {
+          "shareOfTurnoverBasedKpiSubstantiallyContributingToTransitionToACircularEconomyInPercentAligned": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
           },
-          "substantialContributionToTransitionToACircularEconomyInPercentOfWhichEnabling": {
+          "shareOfTurnoverBasedKpiSubstantiallyContributingToTransitionToACircularEconomyInPercentOfWhichEnabling": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
           },
-          "substantialContributionToPollutionPreventionAndControlInPercentAligned": {
+          "shareOfTurnoverBasedKpiSubstantiallyContributingToPollutionPreventionAndControlInPercentAligned": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
           },
-          "substantialContributionToPollutionPreventionAndControlInPercentOfWhichEnabling": {
+          "shareOfTurnoverBasedKpiSubstantiallyContributingToPollutionPreventionAndControlInPercentOfWhichEnabling": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
           },
-          "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned": {
+          "shareOfTurnoverBasedKpiSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
           },
-          "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentOfWhichEnabling": {
+          "shareOfTurnoverBasedKpiSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentOfWhichEnabling": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
           }
         }
@@ -3851,6 +3871,9 @@
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
           },
           "substantialContributionToClimateChangeAdaptationInPercentOfWhichEnabling": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          },
+          "substantialContributionToClimateChangeAdaptationInPercentOfWhichAdapting": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
           },
           "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentEligible": {
@@ -3946,6 +3969,9 @@
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
           },
           "substantialContributionToClimateChangeAdaptationInPercentOfWhichEnabling": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          },
+          "substantialContributionToClimateChangeAdaptationInPercentOfWhichAdapting": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
           },
           "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentEligible": {
@@ -4067,109 +4093,144 @@
       "EutaxonomyFinancialsInsuranceReinsurance": {
         "type": "object",
         "properties": {
-          "general": {
-            "$ref": "#/components/schemas/EutaxonomyFinancialsInsurancereinsuranceGeneral"
+          "underwritingKpi": {
+            "$ref": "#/components/schemas/EutaxonomyFinancialsInsurancereinsuranceUnderwritingKpi"
           },
-          "revenueBasedGrossPremiumsWrittenReInsuranceRevenue": {
-            "$ref": "#/components/schemas/EutaxonomyFinancialsInsurancereinsuranceRevenueBasedGrossPremiumsWrittenReInsuranceRevenue"
+          "averageValueOfTaxonomyAlignedUndertakings": {
+            "$ref": "#/components/schemas/EutaxonomyFinancialsInsurancereinsuranceAverageValueOfTaxonomyAlignedUndertakings"
           },
-          "capexBasedGrossPremiumsWrittenReInsuranceRevenue": {
-            "$ref": "#/components/schemas/EutaxonomyFinancialsInsurancereinsuranceCapexBasedGrossPremiumsWrittenReInsuranceRevenue"
+          "breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBased": {
+            "$ref": "#/components/schemas/EutaxonomyFinancialsInsurancereinsuranceBreakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBased"
+          },
+          "breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBased": {
+            "$ref": "#/components/schemas/EutaxonomyFinancialsInsurancereinsuranceBreakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBased"
           }
         }
       },
-      "EutaxonomyFinancialsInsurancereinsuranceCapexBasedGrossPremiumsWrittenReInsuranceRevenue": {
+      "EutaxonomyFinancialsInsurancereinsuranceAverageValueOfTaxonomyAlignedUndertakings": {
         "type": "object",
         "properties": {
-          "substantialContributionToClimateChangeMitigationInPercentAligned": {
+          "weightedAverageValueOfAllInvestmentsTurnoverBasedInPercent": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
           },
-          "substantialContributionToClimateChangeMitigationInPercentOfWhichEnabling": {
+          "weightedAverageValueOfAllInvestmentsCapexBasedInPercent": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
           },
-          "substantialContributionToClimateChangeMitigationInPercentOfWhichTransitional": {
+          "weightedAverageValueOfAllInvestmentsTurnoverBasedMonetaryAmount": {
+            "$ref": "#/components/schemas/QaReportDataPointCurrencyDataPoint"
+          },
+          "weightedAverageValueOfAllInvestmentsCapexBasedMonetaryAmount": {
+            "$ref": "#/components/schemas/QaReportDataPointCurrencyDataPoint"
+          }
+        }
+      },
+      "EutaxonomyFinancialsInsurancereinsuranceBreakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBased": {
+        "type": "object",
+        "properties": {
+          "shareOfCapexBasedKpiSubstantiallyContributingToClimateChangeMitigationInPercentAligned": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
           },
-          "substantialContributionToClimateChangeAdaptationInPercentAligned": {
+          "shareOfCapexBasedKpiSubstantiallyContributingToClimateChangeMitigationInPercentOfWhichEnabling": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
           },
-          "substantialContributionToClimateChangeAdaptationInPercentOfWhichEnabling": {
+          "shareOfCapexBasedKpiSubstantiallyContributingToClimateChangeMitigationInPercentOfWhichTransitional": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
           },
-          "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned": {
+          "shareOfCapexBasedKpiSubstantiallyContributingToClimateChangeAdaptationInPercentAligned": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
           },
-          "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentOfWhichEnabling": {
+          "shareOfCapexBasedKpiSubstantiallyContributingToClimateChangeAdaptationInPercentOfWhichEnabling": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
           },
-          "substantialContributionToTransitionToACircularEconomyInPercentAligned": {
+          "shareOfCapexBasedKpiSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
           },
-          "substantialContributionToTransitionToACircularEconomyInPercentOfWhichEnabling": {
+          "shareOfCapexBasedKpiSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentOfWhichEnabling": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
           },
-          "substantialContributionToPollutionPreventionAndControlInPercentAligned": {
+          "shareOfCapexBasedKpiSubstantiallyContributingToTransitionToACircularEconomyInPercentAligned": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
           },
-          "substantialContributionToPollutionPreventionAndControlInPercentOfWhichEnabling": {
+          "shareOfCapexBasedKpiSubstantiallyContributingToTransitionToACircularEconomyInPercentOfWhichEnabling": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
           },
-          "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned": {
+          "shareOfCapexBasedKpiSubstantiallyContributingToPollutionPreventionAndControlInPercentAligned": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
           },
-          "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentOfWhichEnabling": {
+          "shareOfCapexBasedKpiSubstantiallyContributingToPollutionPreventionAndControlInPercentOfWhichEnabling": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          },
+          "shareOfCapexBasedKpiSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          },
+          "shareOfCapexBasedKpiSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentOfWhichEnabling": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
           }
         }
       },
-      "EutaxonomyFinancialsInsurancereinsuranceGeneral": {
+      "EutaxonomyFinancialsInsurancereinsuranceBreakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBased": {
         "type": "object",
         "properties": {
-          "taxonomyEligibleNonLifeInsuranceEconomicActivities": {
+          "shareOfTurnoverBasedKpiSubstantiallyContributingToClimateChangeMitigationInPercentAligned": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          },
+          "shareOfTurnoverBasedKpiSubstantiallyContributingToClimateChangeMitigationInPercentOfWhichEnabling": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          },
+          "shareOfTurnoverBasedKpiSubstantiallyContributingToClimateChangeMitigationInPercentOfWhichTransitional": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          },
+          "shareOfTurnoverBasedKpiSubstantiallyContributingToClimateChangeAdaptationInPercentAligned": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          },
+          "shareOfTurnoverBasedKpiSubstantiallyContributingToClimateChangeAdaptationInPercentOfWhichEnabling": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          },
+          "shareOfTurnoverBasedKpiSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          },
+          "shareOfTurnoverBasedKpiSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentOfWhichEnabling": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          },
+          "shareOfTurnoverBasedKpiSubstantiallyContributingToTransitionToACircularEconomyInPercentAligned": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          },
+          "shareOfTurnoverBasedKpiSubstantiallyContributingToTransitionToACircularEconomyInPercentOfWhichEnabling": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          },
+          "shareOfTurnoverBasedKpiSubstantiallyContributingToPollutionPreventionAndControlInPercentAligned": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          },
+          "shareOfTurnoverBasedKpiSubstantiallyContributingToPollutionPreventionAndControlInPercentOfWhichEnabling": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          },
+          "shareOfTurnoverBasedKpiSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          },
+          "shareOfTurnoverBasedKpiSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentOfWhichEnabling": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
           }
         }
       },
-      "EutaxonomyFinancialsInsurancereinsuranceRevenueBasedGrossPremiumsWrittenReInsuranceRevenue": {
+      "EutaxonomyFinancialsInsurancereinsuranceUnderwritingKpi": {
         "type": "object",
         "properties": {
-          "substantialContributionToClimateChangeMitigationInPercentAligned": {
+          "totalOfAbsolutePremiumsOfTaxonomyAlignedActivities": {
+            "$ref": "#/components/schemas/QaReportDataPointCurrencyDataPoint"
+          },
+          "totalOfAbsolutePremiumsOfTaxonomyEligibleButTaxonomyNonAlignedActivities": {
+            "$ref": "#/components/schemas/QaReportDataPointCurrencyDataPoint"
+          },
+          "totalOfAbsolutePremiumsOfTaxonomyNonEligibleActivities": {
+            "$ref": "#/components/schemas/QaReportDataPointCurrencyDataPoint"
+          },
+          "proportionOfAbsolutePremiumsOfTaxonomyAlignedActivities": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
           },
-          "substantialContributionToClimateChangeMitigationInPercentOfWhichEnabling": {
+          "proportionOfAbsolutePremiumsOfTaxonomyEligibleButTaxonomyNonAlignedActivities": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
           },
-          "substantialContributionToClimateChangeMitigationInPercentOfWhichTransitional": {
-            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
-          },
-          "substantialContributionToClimateChangeAdaptationInPercentAligned": {
-            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
-          },
-          "substantialContributionToClimateChangeAdaptationInPercentOfWhichEnabling": {
-            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
-          },
-          "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned": {
-            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
-          },
-          "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentOfWhichEnabling": {
-            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
-          },
-          "substantialContributionToTransitionToACircularEconomyInPercentAligned": {
-            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
-          },
-          "substantialContributionToTransitionToACircularEconomyInPercentOfWhichEnabling": {
-            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
-          },
-          "substantialContributionToPollutionPreventionAndControlInPercentAligned": {
-            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
-          },
-          "substantialContributionToPollutionPreventionAndControlInPercentOfWhichEnabling": {
-            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
-          },
-          "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned": {
-            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
-          },
-          "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentOfWhichEnabling": {
+          "proportionOfAbsolutePremiumsOfTaxonomyNonEligibleActivities": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
           }
         }
@@ -4177,164 +4238,324 @@
       "EutaxonomyFinancialsInvestmentFirms": {
         "type": "object",
         "properties": {
-          "turnoverBasedKpi": {
-            "$ref": "#/components/schemas/EutaxonomyFinancialsInvestmentfirmsTurnoverBasedKpi"
+          "dealingOnOwnAccountServicesTurnoverBased": {
+            "$ref": "#/components/schemas/EutaxonomyFinancialsInvestmentfirmsDealingOnOwnAccountServicesTurnoverBased"
           },
-          "capexBasedKpi": {
-            "$ref": "#/components/schemas/EutaxonomyFinancialsInvestmentfirmsCapexBasedKpi"
+          "dealingOnOwnAccountServicesCapexBased": {
+            "$ref": "#/components/schemas/EutaxonomyFinancialsInvestmentfirmsDealingOnOwnAccountServicesCapexBased"
+          },
+          "otherServicesTurnoverBased": {
+            "$ref": "#/components/schemas/EutaxonomyFinancialsInvestmentfirmsOtherServicesTurnoverBased"
+          },
+          "otherServicesCapexBased": {
+            "$ref": "#/components/schemas/EutaxonomyFinancialsInvestmentfirmsOtherServicesCapexBased"
           }
         }
       },
-      "EutaxonomyFinancialsInvestmentfirmsCapexBasedKpi": {
+      "EutaxonomyFinancialsInvestmentfirmsDealingOnOwnAccountServicesCapexBased": {
         "type": "object",
         "properties": {
-          "totalAssetsInvestedRevenueFromInvestmentAndServices": {
+          "capexBasedTotalAssetsInvestedUnderInvestmentFirmsActivitiesDealingOnOwnAccount": {
+            "$ref": "#/components/schemas/QaReportDataPointCurrencyDataPoint"
+          },
+          "capexBasedProportionOfAssetsSubstantiallyContributingToClimateChangeMitigationEligible": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
           },
-          "substantialContributionToClimateChangeMitigationInPercentEligible": {
+          "capexBasedProportionOfAssetsSubstantiallyContributingToClimateChangeMitigationAligned": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
           },
-          "substantialContributionToClimateChangeMitigationInPercentAligned": {
+          "capexBasedProportionOfAssetsSubstantiallyContributingToClimateChangeMitigationOfWhichTransitional": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
           },
-          "substantialContributionToClimateChangeMitigationInPercentOfWhichEnabling": {
+          "capexBasedProportionOfAssetsSubstantiallyContributingToClimateChangeMitigationOfWhichEnabling": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
           },
-          "substantialContributionToClimateChangeMitigationInPercentOfWhichTransitional": {
+          "capexBasedProportionOfAssetsSubstantiallyContributingToClimateChangeAdaptationEligible": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
           },
-          "substantialContributionToClimateChangeAdaptationInPercentEligible": {
+          "capexBasedProportionOfAssetsSubstantiallyContributingToClimateChangeAdaptationAligned": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
           },
-          "substantialContributionToClimateChangeAdaptationInPercentAligned": {
+          "capexBasedProportionOfAssetsSubstantiallyContributingToClimateChangeAdaptationOfWhichEnabling": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
           },
-          "substantialContributionToClimateChangeAdaptationInPercentOfWhichEnabling": {
+          "capexBasedProportionOfAssetsSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesEligible": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
           },
-          "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentEligible": {
+          "capexBasedProportionOfAssetsSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesAligned": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
           },
-          "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned": {
+          "capexBasedProportionOfAssetsSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesOfWhichEnabling": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
           },
-          "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentOfWhichEnabling": {
+          "capexBasedProportionOfAssetsSubstantiallyContributingToCircularEconomyEligible": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
           },
-          "substantialContributionToTransitionToACircularEconomyInPercentEligible": {
+          "capexBasedProportionOfAssetsSubstantiallyContributingToCircularEconomyAligned": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
           },
-          "substantialContributionToTransitionToACircularEconomyInPercentAligned": {
+          "capexBasedProportionOfAssetsSubstantiallyContributingToCircularEconomyOfWhichEnabling": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
           },
-          "substantialContributionToTransitionToACircularEconomyInPercentOfWhichEnabling": {
+          "capexBasedProportionOfAssetsSubstantiallyContributingToPollutionPreventionAndControlEligible": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
           },
-          "substantialContributionToPollutionPreventionAndControlInPercentEligible": {
+          "capexBasedProportionOfAssetsSubstantiallyContributingToPollutionPreventionAndControlAligned": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
           },
-          "substantialContributionToPollutionPreventionAndControlInPercentAligned": {
+          "capexBasedProportionOfAssetsSubstantiallyContributingToPollutionPreventionAndControlOfWhichEnabling": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
           },
-          "substantialContributionToPollutionPreventionAndControlInPercentOfWhichEnabling": {
+          "capexBasedProportionOfAssetsSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsEligible": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
           },
-          "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentEligible": {
+          "capexBasedProportionOfAssetsSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsAligned": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
           },
-          "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned": {
+          "capexBasedProportionOfAssetsSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsOfWhichEnabling": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
           },
-          "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentOfWhichEnabling": {
+          "capexBasedProportionOfAssetsSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesEligible": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
           },
-          "totalAssetsInvestedRevenueFromInvestmentAndServicesInPercentEligible": {
+          "capexBasedProportionOfAssetsSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesAligned": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
           },
-          "totalAssetsInvestedRevenueFromInvestmentAndServicesInPercentAligned": {
+          "capexBasedProportionOfAssetsSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesOfWhichTransitional": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
           },
-          "totalAssetsInvestedRevenueFromInvestmentAndServicesInPercentOfWhichEnabling": {
-            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
-          },
-          "totalAssetsInvestedRevenueFromInvestmentAndServicesInPercentOfWhichTransitional": {
+          "capexBasedProportionOfAssetsSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesOfWhichEnabling": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
           }
         }
       },
-      "EutaxonomyFinancialsInvestmentfirmsTurnoverBasedKpi": {
+      "EutaxonomyFinancialsInvestmentfirmsDealingOnOwnAccountServicesTurnoverBased": {
         "type": "object",
         "properties": {
-          "totalAssetsInvestedRevenueFromInvestmentAndServices": {
+          "turnoverBasedTotalAssetsInvestedUnderInvestmentFirmsActivitiesDealingOnOwnAccount": {
+            "$ref": "#/components/schemas/QaReportDataPointCurrencyDataPoint"
+          },
+          "turnoverBasedProportionOfAssetsSubstantiallyContributingToClimateChangeMitigationEligible": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
           },
-          "substantialContributionToClimateChangeMitigationInPercentEligible": {
+          "turnoverBasedProportionOfAssetsSubstantiallyContributingToClimateChangeMitigationAligned": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
           },
-          "substantialContributionToClimateChangeMitigationInPercentAligned": {
+          "turnoverBasedProportionOfAssetsSubstantiallyContributingToClimateChangeMitigationOfWhichTransitional": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
           },
-          "substantialContributionToClimateChangeMitigationInPercentOfWhichEnabling": {
+          "turnoverBasedProportionOfAssetsSubstantiallyContributingToClimateChangeMitigationOfWhichEnabling": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
           },
-          "substantialContributionToClimateChangeMitigationInPercentOfWhichTransitional": {
+          "turnoverBasedProportionOfAssetsSubstantiallyContributingToClimateChangeAdaptationEligible": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
           },
-          "substantialContributionToClimateChangeAdaptationInPercentEligible": {
+          "turnoverBasedProportionOfAssetsSubstantiallyContributingToClimateChangeAdaptationAligned": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
           },
-          "substantialContributionToClimateChangeAdaptationInPercentAligned": {
+          "turnoverBasedProportionOfAssetsSubstantiallyContributingToClimateChangeAdaptationOfWhichEnabling": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
           },
-          "substantialContributionToClimateChangeAdaptationInPercentOfWhichEnabling": {
+          "turnoverBasedProportionOfAssetsSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesEligible": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
           },
-          "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentEligible": {
+          "turnoverBasedProportionOfAssetsSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesAligned": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
           },
-          "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned": {
+          "turnoverBasedProportionOfAssetsSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesOfWhichEnabling": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
           },
-          "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentOfWhichEnabling": {
+          "turnoverBasedProportionOfAssetsSubstantiallyContributingToCircularEconomyEligible": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
           },
-          "substantialContributionToTransitionToACircularEconomyInPercentEligible": {
+          "turnoverBasedProportionOfAssetsSubstantiallyContributingToCircularEconomyAligned": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
           },
-          "substantialContributionToTransitionToACircularEconomyInPercentAligned": {
+          "turnoverBasedProportionOfAssetsSubstantiallyContributingToCircularEconomyOfWhichEnabling": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
           },
-          "substantialContributionToTransitionToACircularEconomyInPercentOfWhichEnabling": {
+          "turnoverBasedProportionOfAssetsSubstantiallyContributingToPollutionPreventionAndControlEligible": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
           },
-          "substantialContributionToPollutionPreventionAndControlInPercentEligible": {
+          "turnoverBasedProportionOfAssetsSubstantiallyContributingToPollutionPreventionAndControlAligned": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
           },
-          "substantialContributionToPollutionPreventionAndControlInPercentAligned": {
+          "turnoverBasedProportionOfAssetsSubstantiallyContributingToPollutionPreventionAndControlOfWhichEnabling": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
           },
-          "substantialContributionToPollutionPreventionAndControlInPercentOfWhichEnabling": {
+          "turnoverBasedProportionOfAssetsSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsEligible": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
           },
-          "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentEligible": {
+          "turnoverBasedProportionOfAssetsSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsAligned": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
           },
-          "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned": {
+          "turnoverBasedProportionOfAssetsSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsOfWhichEnabling": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
           },
-          "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentOfWhichEnabling": {
+          "turnoverBasedProportionOfAssetsSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesEligible": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
           },
-          "totalAssetsInvestedRevenueFromInvestmentAndServicesInPercentEligible": {
+          "turnoverBasedProportionOfAssetsSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesAligned": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
           },
-          "totalAssetsInvestedRevenueFromInvestmentAndServicesInPercentAligned": {
+          "turnoverBasedProportionOfAssetsSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesOfWhichTransitional": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
           },
-          "totalAssetsInvestedRevenueFromInvestmentAndServicesInPercentOfWhichEnabling": {
+          "turnoverBasedProportionOfAssetsSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesOfWhichEnabling": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          }
+        }
+      },
+      "EutaxonomyFinancialsInvestmentfirmsOtherServicesCapexBased": {
+        "type": "object",
+        "properties": {
+          "capexBasedTotalRevenueFromInvestmentsAndServicesAndActivitiesOtherThanDealingOnOwnAccount": {
+            "$ref": "#/components/schemas/QaReportDataPointCurrencyDataPoint"
+          },
+          "capexBasedProportionOfRevenueSubstantiallyContributingToClimateChangeMitigationEligible": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
           },
-          "totalAssetsInvestedRevenueFromInvestmentAndServicesInPercentOfWhichTransitional": {
+          "capexBasedProportionOfRevenueSubstantiallyContributingToClimateChangeMitigationAligned": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          },
+          "capexBasedProportionOfRevenueSubstantiallyContributingToClimateChangeMitigationOfWhichTransitional": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          },
+          "capexBasedProportionOfRevenueSubstantiallyContributingToClimateChangeMitigationOfWhichEnabling": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          },
+          "capexBasedProportionOfRevenueSubstantiallyContributingToClimateChangeAdaptationEligible": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          },
+          "capexBasedProportionOfRevenueSubstantiallyContributingToClimateChangeAdaptationAligned": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          },
+          "capexBasedProportionOfRevenueSubstantiallyContributingToClimateChangeAdaptationOfWhichEnabling": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          },
+          "capexBasedProportionOfRevenueSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesEligible": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          },
+          "capexBasedProportionOfRevenueSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesAligned": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          },
+          "capexBasedProportionOfRevenueSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesOfWhichEnabling": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          },
+          "capexBasedProportionOfRevenueSubstantiallyContributingToCircularEconomyEligible": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          },
+          "capexBasedProportionOfRevenueSubstantiallyContributingToCircularEconomyAligned": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          },
+          "capexBasedProportionOfRevenueSubstantiallyContributingToCircularEconomyOfWhichEnabling": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          },
+          "capexBasedProportionOfRevenueSubstantiallyContributingToPollutionPreventionAndControlEligible": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          },
+          "capexBasedProportionOfRevenueSubstantiallyContributingToPollutionPreventionAndControlAligned": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          },
+          "capexBasedProportionOfRevenueSubstantiallyContributingToPollutionPreventionAndControlOfWhichEnabling": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          },
+          "capexBasedProportionOfRevenueSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsEligible": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          },
+          "capexBasedProportionOfRevenueSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsAligned": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          },
+          "capexBasedProportionOfRevenueSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsOfWhichEnabling": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          },
+          "capexBasedProportionOfRevenueSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesEligible": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          },
+          "capexBasedProportionOfRevenueSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesAligned": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          },
+          "capexBasedProportionOfRevenueSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesOfWhichTransitional": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          },
+          "capexBasedProportionOfRevenueSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesOfWhichEnabling": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          }
+        }
+      },
+      "EutaxonomyFinancialsInvestmentfirmsOtherServicesTurnoverBased": {
+        "type": "object",
+        "properties": {
+          "turnoverBasedTotalRevenueFromInvestmentsAndServicesAndActivitiesOtherThanDealingOnOwnAccount": {
+            "$ref": "#/components/schemas/QaReportDataPointCurrencyDataPoint"
+          },
+          "turnoverBasedProportionOfRevenueSubstantiallyContributingToClimateChangeMitigationEligible": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          },
+          "turnoverBasedProportionOfRevenueSubstantiallyContributingToClimateChangeMitigationAligned": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          },
+          "turnoverBasedProportionOfRevenueSubstantiallyContributingToClimateChangeMitigationOfWhichTransitional": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          },
+          "turnoverBasedProportionOfRevenueSubstantiallyContributingToClimateChangeMitigationOfWhichEnabling": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          },
+          "turnoverBasedProportionOfRevenueSubstantiallyContributingToClimateChangeAdaptationEligible": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          },
+          "turnoverBasedProportionOfRevenueSubstantiallyContributingToClimateChangeAdaptationAligned": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          },
+          "turnoverBasedProportionOfRevenueSubstantiallyContributingToClimateChangeAdaptationOfWhichEnabling": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          },
+          "turnoverBasedProportionOfRevenueSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesEligible": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          },
+          "turnoverBasedProportionOfRevenueSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesAligned": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          },
+          "turnoverBasedProportionOfRevenueSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesOfWhichEnabling": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          },
+          "turnoverBasedProportionOfRevenueSubstantiallyContributingToCircularEconomyEligible": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          },
+          "turnoverBasedProportionOfRevenueSubstantiallyContributingToCircularEconomyAligned": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          },
+          "turnoverBasedProportionOfRevenueSubstantiallyContributingToCircularEconomyOfWhichEnabling": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          },
+          "turnoverBasedProportionOfRevenueSubstantiallyContributingToPollutionPreventionAndControlEligible": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          },
+          "turnoverBasedProportionOfRevenueSubstantiallyContributingToPollutionPreventionAndControlAligned": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          },
+          "turnoverBasedProportionOfRevenueSubstantiallyContributingToPollutionPreventionAndControlOfWhichEnabling": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          },
+          "turnoverBasedProportionOfRevenueSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsEligible": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          },
+          "turnoverBasedProportionOfRevenueSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsAligned": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          },
+          "turnoverBasedProportionOfRevenueSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsOfWhichEnabling": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          },
+          "turnoverBasedProportionOfRevenueSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesEligible": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          },
+          "turnoverBasedProportionOfRevenueSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesAligned": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          },
+          "turnoverBasedProportionOfRevenueSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesOfWhichTransitional": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          },
+          "turnoverBasedProportionOfRevenueSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesOfWhichEnabling": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
           }
         }
@@ -4507,10 +4728,10 @@
           "dataId": {
             "type": "string"
           },
-          "companyId": {
+          "companyName": {
             "type": "string"
           },
-          "companyName": {
+          "companyId": {
             "type": "string"
           },
           "receptionTime": {

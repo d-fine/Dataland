@@ -4,13 +4,13 @@ import { type MLDTConfig } from '@/components/resources/dataTable/MultiLayerData
 import { type AvailableMLDTDisplayObjectTypes } from '@/components/resources/dataTable/MultiLayerDataTableCellDisplayer';
 import { formatPercentageForDatatable } from '@/components/resources/dataTable/conversion/PercentageValueGetterFactory';
 import { wrapDisplayValueWithDatapointInformation } from '@/components/resources/dataTable/conversion/DataPoints';
-import { formatNumberForDatatable } from '@/components/resources/dataTable/conversion/NumberValueGetterFactory';
 import { formatCurrencyForDisplay } from '@/components/resources/dataTable/conversion/CurrencyDataPointValueGetterFactory';
 import {
   formatAssuranceProviderForDataTable,
   formatAssuranceForDataTable,
 } from '@/components/resources/dataTable/conversion/EutaxonomyAssuranceValueGetterFactory';
 import { formatYesNoValueForDatatable } from '@/components/resources/dataTable/conversion/YesNoValueGetterFactory';
+import { formatNumberForDatatable } from '@/components/resources/dataTable/conversion/NumberValueGetterFactory';
 import { formatStringForDatatable } from '@/components/resources/dataTable/conversion/PlainStringValueGetterFactory';
 import { getOriginalNameFromTechnicalName } from '@/components/resources/dataTable/conversion/Utils';
 export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinancialsData> = [
@@ -366,6 +366,23 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 'Substantial Contribution to Climate Change Adaptation in Percent - Of which Enabling',
                 dataset.creditInstitution?.turnoverBasedGreenAssetRatioStock
                   ?.substantialContributionToClimateChangeAdaptationInPercentOfWhichEnabling
+              ),
+          },
+          {
+            type: 'cell',
+            label: 'Substantial Contribution to Climate Change Adaptation in Percent - Of which Adapting',
+            explanation:
+              'Legacy Field: Taxonomy-aligned and adapting  Proportion of Revenue-based Green Asset Ratio substantially contributing to Climate Change Adaptation',
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatPercentageForDatatable(
+                  dataset.creditInstitution?.turnoverBasedGreenAssetRatioStock
+                    ?.substantialContributionToClimateChangeAdaptationInPercentOfWhichAdapting?.value
+                ),
+                'Substantial Contribution to Climate Change Adaptation in Percent - Of which Adapting',
+                dataset.creditInstitution?.turnoverBasedGreenAssetRatioStock
+                  ?.substantialContributionToClimateChangeAdaptationInPercentOfWhichAdapting
               ),
           },
           {
@@ -905,6 +922,23 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
           },
           {
             type: 'cell',
+            label: 'Substantial Contribution to Climate Change Adaptation in Percent - Of which Adapting',
+            explanation:
+              'Legacy Field: Taxonomy-aligned and adapting  Proportion of CapEx-based Green Asset Ratio substantially contributing to Climate Change Adaptation',
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatPercentageForDatatable(
+                  dataset.creditInstitution?.capexBasedGreenAssetRatioStock
+                    ?.substantialContributionToClimateChangeAdaptationInPercentOfWhichAdapting?.value
+                ),
+                'Substantial Contribution to Climate Change Adaptation in Percent - Of which Adapting',
+                dataset.creditInstitution?.capexBasedGreenAssetRatioStock
+                  ?.substantialContributionToClimateChangeAdaptationInPercentOfWhichAdapting
+              ),
+          },
+          {
+            type: 'cell',
             label:
               'Substantial Contribution to Sustainable Use and Protection of Water and Marine Resources in Percent - Eligible',
             explanation:
@@ -1289,472 +1323,573 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
     children: [
       {
         type: 'section',
-        label: 'Turnover-based KPI',
+        label: 'Average Value of Taxonomy-aligned Undertakings',
         expandOnPageLoad: true,
         shouldDisplay: (): boolean => true,
         children: [
           {
             type: 'cell',
-            label: 'Substantial Contribution to Climate Change Mitigation in Percent - Aligned',
+            label: 'Weighted Average Value of all Investments - Turnover-based in Percent',
             explanation:
-              'Taxonomy-aligned Share substantially contributing to Climate Change Mitigation.\nThe weighted average value of all the investments that are directed at funding, or are associated with Taxonomy-aligned economic activities relative to the value of total assets covered by the KPI, with the following weights for investments in undertakings: Turnover-based (%).',
+              'The weighted average value of all the investments that are directed at funding, or are associated with taxonomy-aligned economic activities relative to the value of total assets covered by the KPI, with following weights for investments in undertakings - Turnover-based in Percent.',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
                 formatPercentageForDatatable(
-                  dataset.assetManagement?.turnoverBasedKpi
-                    ?.substantialContributionToClimateChangeMitigationInPercentAligned?.value
+                  dataset.assetManagement?.averageValueOfTaxonomyAlignedUndertakings
+                    ?.weightedAverageValueOfAllInvestmentsTurnoverBasedInPercent?.value
                 ),
-                'Substantial Contribution to Climate Change Mitigation in Percent - Aligned',
-                dataset.assetManagement?.turnoverBasedKpi
-                  ?.substantialContributionToClimateChangeMitigationInPercentAligned
+                'Weighted Average Value of all Investments - Turnover-based in Percent',
+                dataset.assetManagement?.averageValueOfTaxonomyAlignedUndertakings
+                  ?.weightedAverageValueOfAllInvestmentsTurnoverBasedInPercent
               ),
           },
           {
             type: 'cell',
-            label: 'Substantial Contribution to Climate Change Mitigation in Percent - Of which Enabling',
+            label: 'Weighted Average Value of all Investments - CapEx-based in Percent',
             explanation:
-              'Taxonomy-aligned and Enabling substantially contributing to Climate Change Mitigation.\nThe weighted average value of all the investments that are directed at funding, or are associated with taxonomy-aligned economic activities relative to the value of total assets covered by the KPI, with the following weights for investments in undertakings: Turnover-based (%).',
+              'The weighted average value of all the investments that are directed at funding, or are associated with taxonomy-aligned economic activities relative to the value of total assets covered by the KPI, with following weights for investments in undertakings - CapEx-based in Percent.',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
                 formatPercentageForDatatable(
-                  dataset.assetManagement?.turnoverBasedKpi
-                    ?.substantialContributionToClimateChangeMitigationInPercentOfWhichEnabling?.value
+                  dataset.assetManagement?.averageValueOfTaxonomyAlignedUndertakings
+                    ?.weightedAverageValueOfAllInvestmentsCapexBasedInPercent?.value
                 ),
-                'Substantial Contribution to Climate Change Mitigation in Percent - Of which Enabling',
-                dataset.assetManagement?.turnoverBasedKpi
-                  ?.substantialContributionToClimateChangeMitigationInPercentOfWhichEnabling
+                'Weighted Average Value of all Investments - CapEx-based in Percent',
+                dataset.assetManagement?.averageValueOfTaxonomyAlignedUndertakings
+                  ?.weightedAverageValueOfAllInvestmentsCapexBasedInPercent
               ),
           },
           {
             type: 'cell',
-            label: 'Substantial Contribution to Climate Change Mitigation in Percent - Of which Transitional',
+            label: 'Weighted Average Value of all Investments - Turnover-based monetary amount',
             explanation:
-              'Taxonomy-aligned and Of which Transitional substantially contributing to Climate Change Mitigation.\nThe weighted average value of all the investments that are directed at funding, or are associated with taxonomy-aligned economic activities relative to the value of total assets covered by the KPI, with the following weights for investments in undertakings: Turnover-based (%).',
+              'The weighted average value of all the investments that are directed at funding, or are associated with taxonomy-aligned economic activities, with following weights for investments in undertakings - Turnover based monetary amount.',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
-              wrapDisplayValueWithDatapointInformation(
-                formatPercentageForDatatable(
-                  dataset.assetManagement?.turnoverBasedKpi
-                    ?.substantialContributionToClimateChangeMitigationInPercentOfWhichTransitional?.value
-                ),
-                'Substantial Contribution to Climate Change Mitigation in Percent - Of which Transitional',
-                dataset.assetManagement?.turnoverBasedKpi
-                  ?.substantialContributionToClimateChangeMitigationInPercentOfWhichTransitional
+              formatCurrencyForDisplay(
+                dataset.assetManagement?.averageValueOfTaxonomyAlignedUndertakings
+                  ?.weightedAverageValueOfAllInvestmentsTurnoverBasedMonetaryAmount,
+                'Weighted Average Value of all Investments - Turnover-based monetary amount'
               ),
           },
           {
             type: 'cell',
-            label: 'Substantial Contribution to Climate Change Adaptation in Percent - Aligned',
+            label: 'Weighted Average Value of all Investments - CapEx-based monetary amount',
             explanation:
-              'Taxonomy-aligned Share substantially contributing to Climate Change Adaptation.\nThe weighted average value of all the investments that are directed at funding, or are associated with taxonomy-aligned economic activities relative to the value of total assets covered by the KPI, with the following weights for investments in undertakings: Turnover-based (%).',
+              'The weighted average value of all the investments that are directed at funding, or are associated with taxonomy-aligned economic activities, with following weights for investments in undertakings - CapEx-based monetary amount.',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
-              wrapDisplayValueWithDatapointInformation(
-                formatPercentageForDatatable(
-                  dataset.assetManagement?.turnoverBasedKpi
-                    ?.substantialContributionToClimateChangeAdaptationInPercentAligned?.value
-                ),
-                'Substantial Contribution to Climate Change Adaptation in Percent - Aligned',
-                dataset.assetManagement?.turnoverBasedKpi
-                  ?.substantialContributionToClimateChangeAdaptationInPercentAligned
-              ),
-          },
-          {
-            type: 'cell',
-            label: 'Substantial Contribution to Climate Change Adaptation in Percent - Of which Enabling',
-            explanation:
-              'Taxonomy-aligned and Enabling substantially contributing to Climate Change Adaptation.\nThe weighted average value of all the investments that are directed at funding, or are associated with taxonomy-aligned economic activities relative to the value of total assets covered by the KPI, with the following weights for investments in undertakings: Turnover-based (%).',
-            shouldDisplay: (): boolean => true,
-            valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
-              wrapDisplayValueWithDatapointInformation(
-                formatPercentageForDatatable(
-                  dataset.assetManagement?.turnoverBasedKpi
-                    ?.substantialContributionToClimateChangeAdaptationInPercentOfWhichEnabling?.value
-                ),
-                'Substantial Contribution to Climate Change Adaptation in Percent - Of which Enabling',
-                dataset.assetManagement?.turnoverBasedKpi
-                  ?.substantialContributionToClimateChangeAdaptationInPercentOfWhichEnabling
-              ),
-          },
-          {
-            type: 'cell',
-            label:
-              'Substantial Contribution to Sustainable Use and Protection of Water and Marine Resources in Percent - Aligned',
-            explanation:
-              'Taxonomy-aligned Share substantially contributing to Sustainable Use and Protection of Water and Marine Resources.\nThe weighted average value of all the investments that are directed at funding, or are associated with taxonomy-aligned economic activities relative to the value of total assets covered by the KPI, with the following weights for investments in undertakings: Turnover-based (%).',
-            shouldDisplay: (): boolean => true,
-            valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
-              wrapDisplayValueWithDatapointInformation(
-                formatPercentageForDatatable(
-                  dataset.assetManagement?.turnoverBasedKpi
-                    ?.substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned
-                    ?.value
-                ),
-                'Substantial Contribution to Sustainable Use and Protection of Water and Marine Resources in Percent - Aligned',
-                dataset.assetManagement?.turnoverBasedKpi
-                  ?.substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned
-              ),
-          },
-          {
-            type: 'cell',
-            label:
-              'Substantial Contribution to Sustainable Use and Protection of Water and Marine Resources in Percent - Of which Enabling',
-            explanation:
-              'Taxonomy-aligned and Enabling substantially contributing to Sustainable Use and Protection of Water and Marine Resources.\nThe weighted average value of all the investments that are directed at funding, or are associated with taxonomy-aligned economic activities relative to the value of total assets covered by the KPI, with the following weights for investments in undertakings: Turnover-based (%).',
-            shouldDisplay: (): boolean => true,
-            valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
-              wrapDisplayValueWithDatapointInformation(
-                formatPercentageForDatatable(
-                  dataset.assetManagement?.turnoverBasedKpi
-                    ?.substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentOfWhichEnabling
-                    ?.value
-                ),
-                'Substantial Contribution to Sustainable Use and Protection of Water and Marine Resources in Percent - Of which Enabling',
-                dataset.assetManagement?.turnoverBasedKpi
-                  ?.substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentOfWhichEnabling
-              ),
-          },
-          {
-            type: 'cell',
-            label: 'Substantial Contribution to Transition to a Circular Economy in Percent - Aligned',
-            explanation:
-              'Taxonomy-aligned Share substantially contributing to a Circular Economy.\nThe weighted average value of all the investments that are directed at funding, or are associated with taxonomy-aligned economic activities relative to the value of total assets covered by the KPI, with the following weights for investments in undertakings: Turnover-based (%).',
-            shouldDisplay: (): boolean => true,
-            valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
-              wrapDisplayValueWithDatapointInformation(
-                formatPercentageForDatatable(
-                  dataset.assetManagement?.turnoverBasedKpi
-                    ?.substantialContributionToTransitionToACircularEconomyInPercentAligned?.value
-                ),
-                'Substantial Contribution to Transition to a Circular Economy in Percent - Aligned',
-                dataset.assetManagement?.turnoverBasedKpi
-                  ?.substantialContributionToTransitionToACircularEconomyInPercentAligned
-              ),
-          },
-          {
-            type: 'cell',
-            label: 'Substantial Contribution to Transition to a Circular Economy in Percent - Of which Enabling',
-            explanation:
-              'Taxonomy-aligned and Enabling substantially contributing to a Circular Economy.\nThe weighted average value of all the investments that are directed at funding, or are associated with taxonomy-aligned economic activities relative to the value of total assets covered by the KPI, with the following weights for investments in undertakings: Turnover-based (%).',
-            shouldDisplay: (): boolean => true,
-            valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
-              wrapDisplayValueWithDatapointInformation(
-                formatPercentageForDatatable(
-                  dataset.assetManagement?.turnoverBasedKpi
-                    ?.substantialContributionToTransitionToACircularEconomyInPercentOfWhichEnabling?.value
-                ),
-                'Substantial Contribution to Transition to a Circular Economy in Percent - Of which Enabling',
-                dataset.assetManagement?.turnoverBasedKpi
-                  ?.substantialContributionToTransitionToACircularEconomyInPercentOfWhichEnabling
-              ),
-          },
-          {
-            type: 'cell',
-            label: 'Substantial Contribution to Pollution Prevention and Control in Percent - Aligned',
-            explanation:
-              'Taxonomy-aligned Share substantially contributing to Pollution Prevention and Control.\nThe weighted average value of all the investments that are directed at funding, or are associated with taxonomy-aligned economic activities relative to the value of total assets covered by the KPI, with the following weights for investments in undertakings: Turnover-based (%).',
-            shouldDisplay: (): boolean => true,
-            valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
-              wrapDisplayValueWithDatapointInformation(
-                formatPercentageForDatatable(
-                  dataset.assetManagement?.turnoverBasedKpi
-                    ?.substantialContributionToPollutionPreventionAndControlInPercentAligned?.value
-                ),
-                'Substantial Contribution to Pollution Prevention and Control in Percent - Aligned',
-                dataset.assetManagement?.turnoverBasedKpi
-                  ?.substantialContributionToPollutionPreventionAndControlInPercentAligned
-              ),
-          },
-          {
-            type: 'cell',
-            label: 'Substantial Contribution to Pollution Prevention and Control in Percent - Of which Enabling',
-            explanation:
-              'Taxonomy-aligned and Enabling substantially contributing to Pollution Prevention and Control.\nThe weighted average value of all the investments that are directed at funding, or are associated with taxonomy-aligned economic activities relative to the value of total assets covered by the KPI, with the following weights for investments in undertakings: Turnover-based (%).',
-            shouldDisplay: (): boolean => true,
-            valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
-              wrapDisplayValueWithDatapointInformation(
-                formatPercentageForDatatable(
-                  dataset.assetManagement?.turnoverBasedKpi
-                    ?.substantialContributionToPollutionPreventionAndControlInPercentOfWhichEnabling?.value
-                ),
-                'Substantial Contribution to Pollution Prevention and Control in Percent - Of which Enabling',
-                dataset.assetManagement?.turnoverBasedKpi
-                  ?.substantialContributionToPollutionPreventionAndControlInPercentOfWhichEnabling
-              ),
-          },
-          {
-            type: 'cell',
-            label:
-              'Substantial Contribution to Protection and Restoration of Biodiversity and Ecosystems in Percent - Aligned',
-            explanation:
-              'Taxonomy-aligned Share substantially contributing to Protection and Restoration of Biodiversity and Ecosystems.\nThe weighted average value of all the investments that are directed at funding, or are associated with taxonomy-aligned economic activities relative to the value of total assets covered by the KPI, with the following weights for investments in undertakings: Turnover-based (%).',
-            shouldDisplay: (): boolean => true,
-            valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
-              wrapDisplayValueWithDatapointInformation(
-                formatPercentageForDatatable(
-                  dataset.assetManagement?.turnoverBasedKpi
-                    ?.substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned
-                    ?.value
-                ),
-                'Substantial Contribution to Protection and Restoration of Biodiversity and Ecosystems in Percent - Aligned',
-                dataset.assetManagement?.turnoverBasedKpi
-                  ?.substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned
-              ),
-          },
-          {
-            type: 'cell',
-            label:
-              'Substantial Contribution to Protection and Restoration of Biodiversity and Ecosystems in Percent - Of which Enabling',
-            explanation:
-              'Taxonomy-aligned and Enabling substantially contributing to Protection and Restoration of Biodiversity and Ecosystems.\nThe weighted average value of all the investments that are directed at funding, or are associated with taxonomy-aligned economic activities relative to the value of total assets covered by the KPI, with the following weights for investments in undertakings: Turnover-based (%).',
-            shouldDisplay: (): boolean => true,
-            valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
-              wrapDisplayValueWithDatapointInformation(
-                formatPercentageForDatatable(
-                  dataset.assetManagement?.turnoverBasedKpi
-                    ?.substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentOfWhichEnabling
-                    ?.value
-                ),
-                'Substantial Contribution to Protection and Restoration of Biodiversity and Ecosystems in Percent - Of which Enabling',
-                dataset.assetManagement?.turnoverBasedKpi
-                  ?.substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentOfWhichEnabling
+              formatCurrencyForDisplay(
+                dataset.assetManagement?.averageValueOfTaxonomyAlignedUndertakings
+                  ?.weightedAverageValueOfAllInvestmentsCapexBasedMonetaryAmount,
+                'Weighted Average Value of all Investments - CapEx-based monetary amount'
               ),
           },
         ],
       },
       {
         type: 'section',
-        label: 'Capex-based KPI',
+        label: 'Breakdown of the Numerator of the KPI per Environmental Objective - Turnover-based',
         expandOnPageLoad: true,
         shouldDisplay: (): boolean => true,
         children: [
           {
             type: 'cell',
-            label: 'Substantial Contribution to Climate Change Mitigation in Percent - Aligned',
+            label:
+              'Share of Turnover-based KPI substantially contributing to Climate Change Mitigation in Percent - Aligned',
             explanation:
-              'Taxonomy-aligned Share substantially contributing to Climate Change Mitigation.\nThe weighted average value of all the investments that are directed at funding, or are associated with taxonomy-aligned economic activities relative to the value of total assets covered by the KPI, with the following weights for investments in undertakings: Capex-based (%).',
+              'Taxonomy-aligned Proportion of Turnover-based KPI substantially contributing to Climate Change Mitigation',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
                 formatPercentageForDatatable(
-                  dataset.assetManagement?.capexBasedKpi
-                    ?.substantialContributionToClimateChangeMitigationInPercentAligned?.value
+                  dataset.assetManagement?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBased
+                    ?.shareOfTurnoverBasedKpiSubstantiallyContributingToClimateChangeMitigationInPercentAligned?.value
                 ),
-                'Substantial Contribution to Climate Change Mitigation in Percent - Aligned',
-                dataset.assetManagement?.capexBasedKpi?.substantialContributionToClimateChangeMitigationInPercentAligned
-              ),
-          },
-          {
-            type: 'cell',
-            label: 'Substantial Contribution to Climate Change Mitigation in Percent - Of which Enabling',
-            explanation:
-              'Taxonomy-aligned and Enabling substantially contributing to Climate Change Mitigation.\nThe weighted average value of all the investments that are directed at funding, or are associated with taxonomy-aligned economic activities relative to the value of total assets covered by the KPI, with the following weights for investments in undertakings: Capex-based (%).',
-            shouldDisplay: (): boolean => true,
-            valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
-              wrapDisplayValueWithDatapointInformation(
-                formatPercentageForDatatable(
-                  dataset.assetManagement?.capexBasedKpi
-                    ?.substantialContributionToClimateChangeMitigationInPercentOfWhichEnabling?.value
-                ),
-                'Substantial Contribution to Climate Change Mitigation in Percent - Of which Enabling',
-                dataset.assetManagement?.capexBasedKpi
-                  ?.substantialContributionToClimateChangeMitigationInPercentOfWhichEnabling
-              ),
-          },
-          {
-            type: 'cell',
-            label: 'Substantial Contribution to Climate Change Mitigation in Percent - Of which Transitional',
-            explanation:
-              'Taxonomy-aligned and Of which Transitional substantially contributing to Climate Change Mitigation.\nThe weighted average value of all the investments that are directed at funding, or are associated with taxonomy-aligned economic activities relative to the value of total assets covered by the KPI, with the following weights for investments in undertakings: Capex-based (%).',
-            shouldDisplay: (): boolean => true,
-            valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
-              wrapDisplayValueWithDatapointInformation(
-                formatPercentageForDatatable(
-                  dataset.assetManagement?.capexBasedKpi
-                    ?.substantialContributionToClimateChangeMitigationInPercentOfWhichTransitional?.value
-                ),
-                'Substantial Contribution to Climate Change Mitigation in Percent - Of which Transitional',
-                dataset.assetManagement?.capexBasedKpi
-                  ?.substantialContributionToClimateChangeMitigationInPercentOfWhichTransitional
-              ),
-          },
-          {
-            type: 'cell',
-            label: 'Substantial Contribution to Climate Change Adaptation in Percent - Aligned',
-            explanation:
-              'Taxonomy-aligned Share substantially contributing to Climate Change Adaptation.\nThe weighted average value of all the investments that are directed at funding, or are associated with taxonomy-aligned economic activities relative to the value of total assets covered by the KPI, with the following weights for investments in undertakings: Capex-based (%).',
-            shouldDisplay: (): boolean => true,
-            valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
-              wrapDisplayValueWithDatapointInformation(
-                formatPercentageForDatatable(
-                  dataset.assetManagement?.capexBasedKpi
-                    ?.substantialContributionToClimateChangeAdaptationInPercentAligned?.value
-                ),
-                'Substantial Contribution to Climate Change Adaptation in Percent - Aligned',
-                dataset.assetManagement?.capexBasedKpi?.substantialContributionToClimateChangeAdaptationInPercentAligned
-              ),
-          },
-          {
-            type: 'cell',
-            label: 'Substantial Contribution to Climate Change Adaptation in Percent - Of which Enabling',
-            explanation:
-              'Taxonomy-aligned and Enabling substantially contributing to Climate Change Adaptation.\nThe weighted average value of all the investments that are directed at funding, or are associated with taxonomy-aligned economic activities relative to the value of total assets covered by the KPI, with the following weights for investments in undertakings: Capex-based (%).',
-            shouldDisplay: (): boolean => true,
-            valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
-              wrapDisplayValueWithDatapointInformation(
-                formatPercentageForDatatable(
-                  dataset.assetManagement?.capexBasedKpi
-                    ?.substantialContributionToClimateChangeAdaptationInPercentOfWhichEnabling?.value
-                ),
-                'Substantial Contribution to Climate Change Adaptation in Percent - Of which Enabling',
-                dataset.assetManagement?.capexBasedKpi
-                  ?.substantialContributionToClimateChangeAdaptationInPercentOfWhichEnabling
+                'Share of Turnover-based KPI substantially contributing to Climate Change Mitigation in Percent - Aligned',
+                dataset.assetManagement?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBased
+                  ?.shareOfTurnoverBasedKpiSubstantiallyContributingToClimateChangeMitigationInPercentAligned
               ),
           },
           {
             type: 'cell',
             label:
-              'Substantial Contribution to Sustainable Use and Protection of Water and Marine Resources in Percent - Aligned',
+              'Share of Turnover-based KPI substantially contributing to Climate Change Mitigation in Percent - Of which Enabling',
             explanation:
-              'Taxonomy-aligned Share substantially contributing to Sustainable Use and Protection of Water and Marine Resources.\nThe weighted average value of all the investments that are directed at funding, or are associated with taxonomy-aligned economic activities relative to the value of total assets covered by the KPI, with the following weights for investments in undertakings: Capex-based (%).',
+              'Taxonomy-aligned and enabling Proportion of Turnover-based KPI substantially contributing to Climate Change Mitigation',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
                 formatPercentageForDatatable(
-                  dataset.assetManagement?.capexBasedKpi
-                    ?.substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned
+                  dataset.assetManagement?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBased
+                    ?.shareOfTurnoverBasedKpiSubstantiallyContributingToClimateChangeMitigationInPercentOfWhichEnabling
                     ?.value
                 ),
-                'Substantial Contribution to Sustainable Use and Protection of Water and Marine Resources in Percent - Aligned',
-                dataset.assetManagement?.capexBasedKpi
-                  ?.substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned
+                'Share of Turnover-based KPI substantially contributing to Climate Change Mitigation in Percent - Of which Enabling',
+                dataset.assetManagement?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBased
+                  ?.shareOfTurnoverBasedKpiSubstantiallyContributingToClimateChangeMitigationInPercentOfWhichEnabling
               ),
           },
           {
             type: 'cell',
             label:
-              'Substantial Contribution to Sustainable Use and Protection of Water and Marine Resources in Percent - Of which Enabling',
+              'Share of Turnover-based KPI substantially contributing to Climate Change Mitigation in Percent - Of which Transitional',
             explanation:
-              'Taxonomy-aligned and Enabling substantially contributing to Sustainable Use and Protection of Water and Marine Resources.\nThe weighted average value of all the investments that are directed at funding, or are associated with taxonomy-aligned economic activities relative to the value of total assets covered by the KPI, with the following weights for investments in undertakings: Capex-based (%).',
+              'Taxonomy-aligned and transitional Proportion of Turnover-based KPI substantially contributing to Climate Change Mitigation',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
                 formatPercentageForDatatable(
-                  dataset.assetManagement?.capexBasedKpi
-                    ?.substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentOfWhichEnabling
+                  dataset.assetManagement?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBased
+                    ?.shareOfTurnoverBasedKpiSubstantiallyContributingToClimateChangeMitigationInPercentOfWhichTransitional
                     ?.value
                 ),
-                'Substantial Contribution to Sustainable Use and Protection of Water and Marine Resources in Percent - Of which Enabling',
-                dataset.assetManagement?.capexBasedKpi
-                  ?.substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentOfWhichEnabling
-              ),
-          },
-          {
-            type: 'cell',
-            label: 'Substantial Contribution to Transition to a Circular Economy in Percent - Aligned',
-            explanation:
-              'Taxonomy-aligned Share substantially contributing to a Circular Economy.\nThe weighted average value of all the investments that are directed at funding, or are associated with taxonomy-aligned economic activities relative to the value of total assets covered by the KPI, with the following weights for investments in undertakings: Capex-based (%).',
-            shouldDisplay: (): boolean => true,
-            valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
-              wrapDisplayValueWithDatapointInformation(
-                formatPercentageForDatatable(
-                  dataset.assetManagement?.capexBasedKpi
-                    ?.substantialContributionToTransitionToACircularEconomyInPercentAligned?.value
-                ),
-                'Substantial Contribution to Transition to a Circular Economy in Percent - Aligned',
-                dataset.assetManagement?.capexBasedKpi
-                  ?.substantialContributionToTransitionToACircularEconomyInPercentAligned
-              ),
-          },
-          {
-            type: 'cell',
-            label: 'Substantial Contribution to Transition to a Circular Economy in Percent - Of which Enabling',
-            explanation:
-              'Taxonomy-aligned and Enabling substantially contributing to a Circular Economy.\nThe weighted average value of all the investments that are directed at funding, or are associated with taxonomy-aligned economic activities relative to the value of total assets covered by the KPI, with the following weights for investments in undertakings: Capex-based (%).',
-            shouldDisplay: (): boolean => true,
-            valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
-              wrapDisplayValueWithDatapointInformation(
-                formatPercentageForDatatable(
-                  dataset.assetManagement?.capexBasedKpi
-                    ?.substantialContributionToTransitionToACircularEconomyInPercentOfWhichEnabling?.value
-                ),
-                'Substantial Contribution to Transition to a Circular Economy in Percent - Of which Enabling',
-                dataset.assetManagement?.capexBasedKpi
-                  ?.substantialContributionToTransitionToACircularEconomyInPercentOfWhichEnabling
-              ),
-          },
-          {
-            type: 'cell',
-            label: 'Substantial Contribution to Pollution Prevention and Control in Percent - Aligned',
-            explanation:
-              'Taxonomy-aligned Share substantially contributing to Pollution Prevention and Control.\nThe weighted average value of all the investments that are directed at funding, or are associated with taxonomy-aligned economic activities relative to the value of total assets covered by the KPI, with the following weights for investments in undertakings: Capex-based (%).',
-            shouldDisplay: (): boolean => true,
-            valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
-              wrapDisplayValueWithDatapointInformation(
-                formatPercentageForDatatable(
-                  dataset.assetManagement?.capexBasedKpi
-                    ?.substantialContributionToPollutionPreventionAndControlInPercentAligned?.value
-                ),
-                'Substantial Contribution to Pollution Prevention and Control in Percent - Aligned',
-                dataset.assetManagement?.capexBasedKpi
-                  ?.substantialContributionToPollutionPreventionAndControlInPercentAligned
-              ),
-          },
-          {
-            type: 'cell',
-            label: 'Substantial Contribution to Pollution Prevention and Control in Percent - Of which Enabling',
-            explanation:
-              'Taxonomy-aligned and Enabling substantially contributing to Pollution Prevention and Control.\nThe weighted average value of all the investments that are directed at funding, or are associated with taxonomy-aligned economic activities relative to the value of total assets covered by the KPI, with the following weights for investments in undertakings: Capex-based (%).',
-            shouldDisplay: (): boolean => true,
-            valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
-              wrapDisplayValueWithDatapointInformation(
-                formatPercentageForDatatable(
-                  dataset.assetManagement?.capexBasedKpi
-                    ?.substantialContributionToPollutionPreventionAndControlInPercentOfWhichEnabling?.value
-                ),
-                'Substantial Contribution to Pollution Prevention and Control in Percent - Of which Enabling',
-                dataset.assetManagement?.capexBasedKpi
-                  ?.substantialContributionToPollutionPreventionAndControlInPercentOfWhichEnabling
+                'Share of Turnover-based KPI substantially contributing to Climate Change Mitigation in Percent - Of which Transitional',
+                dataset.assetManagement?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBased
+                  ?.shareOfTurnoverBasedKpiSubstantiallyContributingToClimateChangeMitigationInPercentOfWhichTransitional
               ),
           },
           {
             type: 'cell',
             label:
-              'Substantial Contribution to Protection and Restoration of Biodiversity and Ecosystems in Percent - Aligned',
+              'Share of Turnover-based KPI substantially contributing to Climate Change Adaptation in Percent - Aligned',
             explanation:
-              'Taxonomy-aligned Share substantially contributing to Protection and Restoration of Biodiversity and Ecosystems.\nThe weighted average value of all the investments that are directed at funding, or are associated with taxonomy-aligned economic activities relative to the value of total assets covered by the KPI, with the following weights for investments in undertakings: Capex-based (%).',
+              'Taxonomy-aligned Proportion of Turnover-based KPI substantially contributing to Climate Change Adaption',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
                 formatPercentageForDatatable(
-                  dataset.assetManagement?.capexBasedKpi
-                    ?.substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned
-                    ?.value
+                  dataset.assetManagement?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBased
+                    ?.shareOfTurnoverBasedKpiSubstantiallyContributingToClimateChangeAdaptationInPercentAligned?.value
                 ),
-                'Substantial Contribution to Protection and Restoration of Biodiversity and Ecosystems in Percent - Aligned',
-                dataset.assetManagement?.capexBasedKpi
-                  ?.substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned
+                'Share of Turnover-based KPI substantially contributing to Climate Change Adaptation in Percent - Aligned',
+                dataset.assetManagement?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBased
+                  ?.shareOfTurnoverBasedKpiSubstantiallyContributingToClimateChangeAdaptationInPercentAligned
               ),
           },
           {
             type: 'cell',
             label:
-              'Substantial Contribution to Protection and Restoration of Biodiversity and Ecosystems in Percent - Of which Enabling',
+              'Share of Turnover-based KPI substantially contributing to Climate Change Adaptation in Percent - Of which Enabling',
             explanation:
-              'Taxonomy-aligned and Enabling substantially contributing to Protection and Restoration of Biodiversity and Ecosystems.\nThe weighted average value of all the investments that are directed at funding, or are associated with taxonomy-aligned economic activities relative to the value of total assets covered by the KPI, with the following weights for investments in undertakings: Capex-based (%).',
+              'Taxonomy-aligned and enabling Proportion of Turnover-based KPI substantially contributing to Climate Change Adaption',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
                 formatPercentageForDatatable(
-                  dataset.assetManagement?.capexBasedKpi
-                    ?.substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentOfWhichEnabling
+                  dataset.assetManagement?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBased
+                    ?.shareOfTurnoverBasedKpiSubstantiallyContributingToClimateChangeAdaptationInPercentOfWhichEnabling
                     ?.value
                 ),
-                'Substantial Contribution to Protection and Restoration of Biodiversity and Ecosystems in Percent - Of which Enabling',
-                dataset.assetManagement?.capexBasedKpi
-                  ?.substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentOfWhichEnabling
+                'Share of Turnover-based KPI substantially contributing to Climate Change Adaptation in Percent - Of which Enabling',
+                dataset.assetManagement?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBased
+                  ?.shareOfTurnoverBasedKpiSubstantiallyContributingToClimateChangeAdaptationInPercentOfWhichEnabling
+              ),
+          },
+          {
+            type: 'cell',
+            label:
+              'Share of Turnover-based KPI substantially contributing to Sustainable Use and Protection of Water and Marine Resources in Percent - Aligned',
+            explanation:
+              'Taxonomy-aligned Proportion of Turnover-based KPI substantially contributing to Sustainable Use and Protection of Water and Marine Resources',
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatPercentageForDatatable(
+                  dataset.assetManagement?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBased
+                    ?.shareOfTurnoverBasedKpiSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned
+                    ?.value
+                ),
+                'Share of Turnover-based KPI substantially contributing to Sustainable Use and Protection of Water and Marine Resources in Percent - Aligned',
+                dataset.assetManagement?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBased
+                  ?.shareOfTurnoverBasedKpiSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned
+              ),
+          },
+          {
+            type: 'cell',
+            label:
+              'Share of Turnover-based KPI substantially contributing to Sustainable Use and Protection of Water and Marine Resources in Percent - Of which Enabling',
+            explanation:
+              'Taxonomy-aligned and enabling Proportion of Turnover-based KPI substantially contributing to Sustainable Use and Protection of Water and Marine Resources',
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatPercentageForDatatable(
+                  dataset.assetManagement?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBased
+                    ?.shareOfTurnoverBasedKpiSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentOfWhichEnabling
+                    ?.value
+                ),
+                'Share of Turnover-based KPI substantially contributing to Sustainable Use and Protection of Water and Marine Resources in Percent - Of which Enabling',
+                dataset.assetManagement?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBased
+                  ?.shareOfTurnoverBasedKpiSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentOfWhichEnabling
+              ),
+          },
+          {
+            type: 'cell',
+            label:
+              'Share of Turnover-based KPI substantially contributing to Transition to a Circular Economy in Percent - Aligned',
+            explanation:
+              'Taxonomy-aligned Proportion of Turnover-based KPI substantially contributing to Circular Economy',
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatPercentageForDatatable(
+                  dataset.assetManagement?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBased
+                    ?.shareOfTurnoverBasedKpiSubstantiallyContributingToTransitionToACircularEconomyInPercentAligned
+                    ?.value
+                ),
+                'Share of Turnover-based KPI substantially contributing to Transition to a Circular Economy in Percent - Aligned',
+                dataset.assetManagement?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBased
+                  ?.shareOfTurnoverBasedKpiSubstantiallyContributingToTransitionToACircularEconomyInPercentAligned
+              ),
+          },
+          {
+            type: 'cell',
+            label:
+              'Share of Turnover-based KPI substantially contributing to Transition to a Circular Economy in Percent - Of which Enabling',
+            explanation:
+              'Taxonomy-aligned and enabling Proportion of Turnover-based KPI substantially contributing to Circular Economy',
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatPercentageForDatatable(
+                  dataset.assetManagement?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBased
+                    ?.shareOfTurnoverBasedKpiSubstantiallyContributingToTransitionToACircularEconomyInPercentOfWhichEnabling
+                    ?.value
+                ),
+                'Share of Turnover-based KPI substantially contributing to Transition to a Circular Economy in Percent - Of which Enabling',
+                dataset.assetManagement?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBased
+                  ?.shareOfTurnoverBasedKpiSubstantiallyContributingToTransitionToACircularEconomyInPercentOfWhichEnabling
+              ),
+          },
+          {
+            type: 'cell',
+            label:
+              'Share of Turnover-based KPI substantially contributing to Pollution Prevention and Control in Percent - Aligned',
+            explanation:
+              'Taxonomy-aligned Proportion of Turnover-based KPI substantially contributing to Pollution Prevention and Control',
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatPercentageForDatatable(
+                  dataset.assetManagement?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBased
+                    ?.shareOfTurnoverBasedKpiSubstantiallyContributingToPollutionPreventionAndControlInPercentAligned
+                    ?.value
+                ),
+                'Share of Turnover-based KPI substantially contributing to Pollution Prevention and Control in Percent - Aligned',
+                dataset.assetManagement?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBased
+                  ?.shareOfTurnoverBasedKpiSubstantiallyContributingToPollutionPreventionAndControlInPercentAligned
+              ),
+          },
+          {
+            type: 'cell',
+            label:
+              'Share of Turnover-based KPI substantially contributing to Pollution Prevention and Control in Percent - Of which Enabling',
+            explanation:
+              'Taxonomy-aligned and enabling Proportion of Turnover-based KPI substantially contributing to Pollution Prevention and Control',
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatPercentageForDatatable(
+                  dataset.assetManagement?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBased
+                    ?.shareOfTurnoverBasedKpiSubstantiallyContributingToPollutionPreventionAndControlInPercentOfWhichEnabling
+                    ?.value
+                ),
+                'Share of Turnover-based KPI substantially contributing to Pollution Prevention and Control in Percent - Of which Enabling',
+                dataset.assetManagement?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBased
+                  ?.shareOfTurnoverBasedKpiSubstantiallyContributingToPollutionPreventionAndControlInPercentOfWhichEnabling
+              ),
+          },
+          {
+            type: 'cell',
+            label:
+              'Share of Turnover-based KPI substantially contributing to Protection and Restoration of Biodiversity and Ecosystems in Percent - Aligned',
+            explanation:
+              'Taxonomy-aligned Proportion of Turnover-based KPI substantially contributing to Protection and Restoration of Biodiversity and Ecosystems',
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatPercentageForDatatable(
+                  dataset.assetManagement?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBased
+                    ?.shareOfTurnoverBasedKpiSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned
+                    ?.value
+                ),
+                'Share of Turnover-based KPI substantially contributing to Protection and Restoration of Biodiversity and Ecosystems in Percent - Aligned',
+                dataset.assetManagement?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBased
+                  ?.shareOfTurnoverBasedKpiSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned
+              ),
+          },
+          {
+            type: 'cell',
+            label:
+              'Share of Turnover-based KPI substantially contributing to Protection and Restoration of Biodiversity and Ecosystems in Percent - Of which Enabling',
+            explanation:
+              'Taxonomy-aligned and enabling Proportion of Turnover-based KPI substantially contributing to Protection and Restoration of Biodiversity and Ecosystems',
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatPercentageForDatatable(
+                  dataset.assetManagement?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBased
+                    ?.shareOfTurnoverBasedKpiSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentOfWhichEnabling
+                    ?.value
+                ),
+                'Share of Turnover-based KPI substantially contributing to Protection and Restoration of Biodiversity and Ecosystems in Percent - Of which Enabling',
+                dataset.assetManagement?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBased
+                  ?.shareOfTurnoverBasedKpiSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentOfWhichEnabling
+              ),
+          },
+        ],
+      },
+      {
+        type: 'section',
+        label: 'Breakdown of the Numerator of the KPI per Environmental Objective - CapEx-based',
+        expandOnPageLoad: true,
+        shouldDisplay: (): boolean => true,
+        children: [
+          {
+            type: 'cell',
+            label:
+              'Share of CapEx-based KPI substantially contributing to Climate Change Mitigation in Percent - Aligned',
+            explanation:
+              'Taxonomy-aligned Proportion of CapEx-based KPI substantially contributing to Climate Change Mitigation',
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatPercentageForDatatable(
+                  dataset.assetManagement?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBased
+                    ?.shareOfCapexBasedKpiSubstantiallyContributingToClimateChangeMitigationInPercentAligned?.value
+                ),
+                'Share of CapEx-based KPI substantially contributing to Climate Change Mitigation in Percent - Aligned',
+                dataset.assetManagement?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBased
+                  ?.shareOfCapexBasedKpiSubstantiallyContributingToClimateChangeMitigationInPercentAligned
+              ),
+          },
+          {
+            type: 'cell',
+            label:
+              'Share of CapEx-based KPI substantially contributing to Climate Change Mitigation in Percent - Of which Enabling',
+            explanation:
+              'Taxonomy-aligned and enabling Proportion of CapEx-based KPI substantially contributing to Climate Change Mitigation',
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatPercentageForDatatable(
+                  dataset.assetManagement?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBased
+                    ?.shareOfCapexBasedKpiSubstantiallyContributingToClimateChangeMitigationInPercentOfWhichEnabling
+                    ?.value
+                ),
+                'Share of CapEx-based KPI substantially contributing to Climate Change Mitigation in Percent - Of which Enabling',
+                dataset.assetManagement?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBased
+                  ?.shareOfCapexBasedKpiSubstantiallyContributingToClimateChangeMitigationInPercentOfWhichEnabling
+              ),
+          },
+          {
+            type: 'cell',
+            label:
+              'Share of CapEx-based KPI substantially contributing to Climate Change Mitigation in Percent - Of which Transitional',
+            explanation:
+              'Taxonomy-aligned and transitional Proportion of CapEx-based KPI substantially contributing to Climate Change Mitigation',
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatPercentageForDatatable(
+                  dataset.assetManagement?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBased
+                    ?.shareOfCapexBasedKpiSubstantiallyContributingToClimateChangeMitigationInPercentOfWhichTransitional
+                    ?.value
+                ),
+                'Share of CapEx-based KPI substantially contributing to Climate Change Mitigation in Percent - Of which Transitional',
+                dataset.assetManagement?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBased
+                  ?.shareOfCapexBasedKpiSubstantiallyContributingToClimateChangeMitigationInPercentOfWhichTransitional
+              ),
+          },
+          {
+            type: 'cell',
+            label:
+              'Share of CapEx-based KPI substantially contributing to Climate Change Adaptation in Percent - Aligned',
+            explanation:
+              'Taxonomy-aligned Proportion of CapEx-based KPI substantially contributing to Climate Change Adaption',
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatPercentageForDatatable(
+                  dataset.assetManagement?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBased
+                    ?.shareOfCapexBasedKpiSubstantiallyContributingToClimateChangeAdaptationInPercentAligned?.value
+                ),
+                'Share of CapEx-based KPI substantially contributing to Climate Change Adaptation in Percent - Aligned',
+                dataset.assetManagement?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBased
+                  ?.shareOfCapexBasedKpiSubstantiallyContributingToClimateChangeAdaptationInPercentAligned
+              ),
+          },
+          {
+            type: 'cell',
+            label:
+              'Share of CapEx-based KPI substantially contributing to Climate Change Adaptation in Percent - Of which Enabling',
+            explanation:
+              'Taxonomy-aligned and enabling Proportion of CapEx-based KPI substantially contributing to Climate Change Adaption',
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatPercentageForDatatable(
+                  dataset.assetManagement?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBased
+                    ?.shareOfCapexBasedKpiSubstantiallyContributingToClimateChangeAdaptationInPercentOfWhichEnabling
+                    ?.value
+                ),
+                'Share of CapEx-based KPI substantially contributing to Climate Change Adaptation in Percent - Of which Enabling',
+                dataset.assetManagement?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBased
+                  ?.shareOfCapexBasedKpiSubstantiallyContributingToClimateChangeAdaptationInPercentOfWhichEnabling
+              ),
+          },
+          {
+            type: 'cell',
+            label:
+              'Share of CapEx-based KPI substantially contributing to Sustainable Use and Protection of Water and Marine Resources in Percent - Aligned',
+            explanation:
+              'Taxonomy-aligned Proportion of CapEx-based KPI substantially contributing to Sustainable Use and Protection of Water and Marine Resources',
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatPercentageForDatatable(
+                  dataset.assetManagement?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBased
+                    ?.shareOfCapexBasedKpiSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned
+                    ?.value
+                ),
+                'Share of CapEx-based KPI substantially contributing to Sustainable Use and Protection of Water and Marine Resources in Percent - Aligned',
+                dataset.assetManagement?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBased
+                  ?.shareOfCapexBasedKpiSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned
+              ),
+          },
+          {
+            type: 'cell',
+            label:
+              'Share of CapEx-based KPI substantially contributing to Sustainable Use and Protection of Water and Marine Resources in Percent - Of which Enabling',
+            explanation:
+              'Taxonomy-aligned and enabling Proportion of CapEx-based KPI substantially contributing to Sustainable Use and Protection of Water and Marine Resources',
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatPercentageForDatatable(
+                  dataset.assetManagement?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBased
+                    ?.shareOfCapexBasedKpiSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentOfWhichEnabling
+                    ?.value
+                ),
+                'Share of CapEx-based KPI substantially contributing to Sustainable Use and Protection of Water and Marine Resources in Percent - Of which Enabling',
+                dataset.assetManagement?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBased
+                  ?.shareOfCapexBasedKpiSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentOfWhichEnabling
+              ),
+          },
+          {
+            type: 'cell',
+            label:
+              'Share of CapEx-based KPI substantially contributing to Transition to a Circular Economy in Percent - Aligned',
+            explanation:
+              'Taxonomy-aligned Proportion of CapEx-based KPI substantially contributing to Circular Economy',
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatPercentageForDatatable(
+                  dataset.assetManagement?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBased
+                    ?.shareOfCapexBasedKpiSubstantiallyContributingToTransitionToACircularEconomyInPercentAligned?.value
+                ),
+                'Share of CapEx-based KPI substantially contributing to Transition to a Circular Economy in Percent - Aligned',
+                dataset.assetManagement?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBased
+                  ?.shareOfCapexBasedKpiSubstantiallyContributingToTransitionToACircularEconomyInPercentAligned
+              ),
+          },
+          {
+            type: 'cell',
+            label:
+              'Share of CapEx-based KPI substantially contributing to Transition to a Circular Economy in Percent - Of which Enabling',
+            explanation:
+              'Taxonomy-aligned and enabling Proportion of CapEx-based KPI substantially contributing to Circular Economy',
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatPercentageForDatatable(
+                  dataset.assetManagement?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBased
+                    ?.shareOfCapexBasedKpiSubstantiallyContributingToTransitionToACircularEconomyInPercentOfWhichEnabling
+                    ?.value
+                ),
+                'Share of CapEx-based KPI substantially contributing to Transition to a Circular Economy in Percent - Of which Enabling',
+                dataset.assetManagement?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBased
+                  ?.shareOfCapexBasedKpiSubstantiallyContributingToTransitionToACircularEconomyInPercentOfWhichEnabling
+              ),
+          },
+          {
+            type: 'cell',
+            label:
+              'Share of CapEx-based KPI substantially contributing to Pollution Prevention and Control in Percent - Aligned',
+            explanation:
+              'Taxonomy-aligned Proportion of CapEx-based KPI substantially contributing to Pollution Prevention and Control',
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatPercentageForDatatable(
+                  dataset.assetManagement?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBased
+                    ?.shareOfCapexBasedKpiSubstantiallyContributingToPollutionPreventionAndControlInPercentAligned
+                    ?.value
+                ),
+                'Share of CapEx-based KPI substantially contributing to Pollution Prevention and Control in Percent - Aligned',
+                dataset.assetManagement?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBased
+                  ?.shareOfCapexBasedKpiSubstantiallyContributingToPollutionPreventionAndControlInPercentAligned
+              ),
+          },
+          {
+            type: 'cell',
+            label:
+              'Share of CapEx-based KPI substantially contributing to Pollution Prevention and Control in Percent - Of which Enabling',
+            explanation:
+              'Taxonomy-aligned and enabling Proportion of CapEx-based KPI substantially contributing to Pollution Prevention and Control',
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatPercentageForDatatable(
+                  dataset.assetManagement?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBased
+                    ?.shareOfCapexBasedKpiSubstantiallyContributingToPollutionPreventionAndControlInPercentOfWhichEnabling
+                    ?.value
+                ),
+                'Share of CapEx-based KPI substantially contributing to Pollution Prevention and Control in Percent - Of which Enabling',
+                dataset.assetManagement?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBased
+                  ?.shareOfCapexBasedKpiSubstantiallyContributingToPollutionPreventionAndControlInPercentOfWhichEnabling
+              ),
+          },
+          {
+            type: 'cell',
+            label:
+              'Share of CapEx-based KPI substantially contributing to Protection and Restoration of Biodiversity and Ecosystems in Percent - Aligned',
+            explanation:
+              'Taxonomy-aligned Proportion of CapEx-based KPI substantially contributing to Protection and Restoration of Biodiversity and Ecosystems',
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatPercentageForDatatable(
+                  dataset.assetManagement?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBased
+                    ?.shareOfCapexBasedKpiSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned
+                    ?.value
+                ),
+                'Share of CapEx-based KPI substantially contributing to Protection and Restoration of Biodiversity and Ecosystems in Percent - Aligned',
+                dataset.assetManagement?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBased
+                  ?.shareOfCapexBasedKpiSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned
+              ),
+          },
+          {
+            type: 'cell',
+            label:
+              'Share of CapEx-based KPI substantially contributing to Protection and Restoration of Biodiversity and Ecosystems in Percent - Of which Enabling',
+            explanation:
+              'Taxonomy-aligned and enabling Proportion of CapEx-based KPI substantially contributing to Protection and Restoration of Biodiversity and Ecosystems',
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatPercentageForDatatable(
+                  dataset.assetManagement?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBased
+                    ?.shareOfCapexBasedKpiSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentOfWhichEnabling
+                    ?.value
+                ),
+                'Share of CapEx-based KPI substantially contributing to Protection and Restoration of Biodiversity and Ecosystems in Percent - Of which Enabling',
+                dataset.assetManagement?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBased
+                  ?.shareOfCapexBasedKpiSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentOfWhichEnabling
               ),
           },
         ],
@@ -1769,481 +1904,668 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
     children: [
       {
         type: 'section',
-        label: 'General',
+        label: 'Underwriting KPI',
         expandOnPageLoad: true,
         shouldDisplay: (): boolean => true,
         children: [
           {
             type: 'cell',
-            label: 'Taxonomy-eligible Non-life Insurance Economic Activities',
+            label: 'Total of Absolute Premiums of Taxonomy-aligned Activities',
             explanation:
-              'The Percentage of Taxonomy-eligible Non-Life Insurance Economic Activities.\nInsurance and reinsurance undertakings other than life insurance undertakings shall calculate the KPI related to underwriting activities and present the ‘gross premiums written’ non-life insurance revenue or, as applicable, reinsurance revenue corresponding to Taxonomy-aligned insurance or reinsurance activities',
+              'Non-life Insurance and Reinsurance Undertakings underwriting Taxonomy-aligned Activities. Shall be reported as ‘gross premiums written’ or, as applicable, turnover relating to non-life insurance and reinsurance activity.',
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
+              formatCurrencyForDisplay(
+                dataset.insuranceReinsurance?.underwritingKpi?.totalOfAbsolutePremiumsOfTaxonomyAlignedActivities,
+                'Total of Absolute Premiums of Taxonomy-aligned Activities'
+              ),
+          },
+          {
+            type: 'cell',
+            label: 'Total of Absolute Premiums of Taxonomy-eligible but Taxonomy-non-aligned Activities',
+            explanation:
+              'Non-life Insurance and Reinsurance Undertakings underwriting Taxonomy-eligble but not Taxonomy-aligned Activities. Shall be reported as ‘gross premiums written’ or, as applicable, turnover relating to non-life insurance and reinsurance activity.',
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
+              formatCurrencyForDisplay(
+                dataset.insuranceReinsurance?.underwritingKpi
+                  ?.totalOfAbsolutePremiumsOfTaxonomyEligibleButTaxonomyNonAlignedActivities,
+                'Total of Absolute Premiums of Taxonomy-eligible but Taxonomy-non-aligned Activities'
+              ),
+          },
+          {
+            type: 'cell',
+            label: 'Total of Absolute Premiums of Taxonomy-non-eligible Activities',
+            explanation:
+              'Total of Absolute Premiums of Taxonomy-non-eligible Activities. Shall be reported as ‘gross premiums written’ or, as applicable, turnover relating to non-life insurance and reinsurance activity.',
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
+              formatCurrencyForDisplay(
+                dataset.insuranceReinsurance?.underwritingKpi?.totalOfAbsolutePremiumsOfTaxonomyNonEligibleActivities,
+                'Total of Absolute Premiums of Taxonomy-non-eligible Activities'
+              ),
+          },
+          {
+            type: 'cell',
+            label: 'Proportion of Absolute Premiums of Taxonomy-aligned Activities',
+            explanation:
+              'Proportion of Non-life Insurance and Reinsurance Undertakings underwriting Taxonomy-aligned Activities. Shall be reported as ‘gross premiums written’ or, as applicable, turnover relating to non-life insurance and reinsurance activity.',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
                 formatPercentageForDatatable(
-                  dataset.insuranceReinsurance?.general?.taxonomyEligibleNonLifeInsuranceEconomicActivities?.value
+                  dataset.insuranceReinsurance?.underwritingKpi?.proportionOfAbsolutePremiumsOfTaxonomyAlignedActivities
+                    ?.value
                 ),
-                'Taxonomy-eligible Non-life Insurance Economic Activities',
-                dataset.insuranceReinsurance?.general?.taxonomyEligibleNonLifeInsuranceEconomicActivities
+                'Proportion of Absolute Premiums of Taxonomy-aligned Activities',
+                dataset.insuranceReinsurance?.underwritingKpi?.proportionOfAbsolutePremiumsOfTaxonomyAlignedActivities
+              ),
+          },
+          {
+            type: 'cell',
+            label: 'Proportion of Absolute Premiums of Taxonomy-eligible but Taxonomy-non-aligned Activities',
+            explanation:
+              'Proportion of Non-life Insurance and Reinsurance Undertakings underwriting Taxonomy-eligble but not Taxonomy-aligned Activities. Shall be reported as ‘gross premiums written’ or, as applicable, turnover relating to non-life insurance and reinsurance activity.',
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatPercentageForDatatable(
+                  dataset.insuranceReinsurance?.underwritingKpi
+                    ?.proportionOfAbsolutePremiumsOfTaxonomyEligibleButTaxonomyNonAlignedActivities?.value
+                ),
+                'Proportion of Absolute Premiums of Taxonomy-eligible but Taxonomy-non-aligned Activities',
+                dataset.insuranceReinsurance?.underwritingKpi
+                  ?.proportionOfAbsolutePremiumsOfTaxonomyEligibleButTaxonomyNonAlignedActivities
+              ),
+          },
+          {
+            type: 'cell',
+            label: 'Proportion of Absolute Premiums of Taxonomy-non-eligible Activities',
+            explanation:
+              'Proportion of Total of Absolute Premiums of Taxonomy-non-eligible Activities. Shall be reported as ‘gross premiums written’ or, as applicable, turnover relating to non-life insurance and reinsurance activity.',
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatPercentageForDatatable(
+                  dataset.insuranceReinsurance?.underwritingKpi
+                    ?.proportionOfAbsolutePremiumsOfTaxonomyNonEligibleActivities?.value
+                ),
+                'Proportion of Absolute Premiums of Taxonomy-non-eligible Activities',
+                dataset.insuranceReinsurance?.underwritingKpi
+                  ?.proportionOfAbsolutePremiumsOfTaxonomyNonEligibleActivities
               ),
           },
         ],
       },
       {
         type: 'section',
-        label: 'Revenue-based Gross premiums written/(re-insurance) revenue',
+        label: 'Average Value of Taxonomy-aligned Undertakings',
         expandOnPageLoad: true,
         shouldDisplay: (): boolean => true,
         children: [
           {
             type: 'cell',
-            label: 'Substantial Contribution to Climate Change Mitigation in Percent - Aligned',
-            explanation: 'Taxonomy-aligned Share substantially contributing to Climate Change Mitigation',
-            shouldDisplay: (): boolean => true,
-            valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
-              wrapDisplayValueWithDatapointInformation(
-                formatPercentageForDatatable(
-                  dataset.insuranceReinsurance?.revenueBasedGrossPremiumsWrittenReInsuranceRevenue
-                    ?.substantialContributionToClimateChangeMitigationInPercentAligned?.value
-                ),
-                'Substantial Contribution to Climate Change Mitigation in Percent - Aligned',
-                dataset.insuranceReinsurance?.revenueBasedGrossPremiumsWrittenReInsuranceRevenue
-                  ?.substantialContributionToClimateChangeMitigationInPercentAligned
-              ),
-          },
-          {
-            type: 'cell',
-            label: 'Substantial Contribution to Climate Change Mitigation in Percent - Of which Enabling',
-            explanation: 'Taxonomy-aligned and Enabling substantially contributing to Climate Change Mitigation',
-            shouldDisplay: (): boolean => true,
-            valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
-              wrapDisplayValueWithDatapointInformation(
-                formatPercentageForDatatable(
-                  dataset.insuranceReinsurance?.revenueBasedGrossPremiumsWrittenReInsuranceRevenue
-                    ?.substantialContributionToClimateChangeMitigationInPercentOfWhichEnabling?.value
-                ),
-                'Substantial Contribution to Climate Change Mitigation in Percent - Of which Enabling',
-                dataset.insuranceReinsurance?.revenueBasedGrossPremiumsWrittenReInsuranceRevenue
-                  ?.substantialContributionToClimateChangeMitigationInPercentOfWhichEnabling
-              ),
-          },
-          {
-            type: 'cell',
-            label: 'Substantial Contribution to Climate Change Mitigation in Percent - Of which Transitional',
+            label: 'Weighted Average Value of all Investments - Turnover-based in Percent',
             explanation:
-              'Taxonomy-aligned and Of which Transitional substantially contributing to Climate Change Mitigation',
+              'The weighted average value of all the investments of insurance or reinsurance undertakings that are directed at funding, or are associated with Taxonomy-aligned economic activities relative to the value of total assets covered by the KPI, with following weights for investments in undertakings - Turnover-based in Percent.',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
                 formatPercentageForDatatable(
-                  dataset.insuranceReinsurance?.revenueBasedGrossPremiumsWrittenReInsuranceRevenue
-                    ?.substantialContributionToClimateChangeMitigationInPercentOfWhichTransitional?.value
+                  dataset.insuranceReinsurance?.averageValueOfTaxonomyAlignedUndertakings
+                    ?.weightedAverageValueOfAllInvestmentsTurnoverBasedInPercent?.value
                 ),
-                'Substantial Contribution to Climate Change Mitigation in Percent - Of which Transitional',
-                dataset.insuranceReinsurance?.revenueBasedGrossPremiumsWrittenReInsuranceRevenue
-                  ?.substantialContributionToClimateChangeMitigationInPercentOfWhichTransitional
+                'Weighted Average Value of all Investments - Turnover-based in Percent',
+                dataset.insuranceReinsurance?.averageValueOfTaxonomyAlignedUndertakings
+                  ?.weightedAverageValueOfAllInvestmentsTurnoverBasedInPercent
               ),
           },
           {
             type: 'cell',
-            label: 'Substantial Contribution to Climate Change Adaptation in Percent - Aligned',
-            explanation: 'Taxonomy-aligned Share substantially contributing to Climate Change Adaptation',
-            shouldDisplay: (): boolean => true,
-            valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
-              wrapDisplayValueWithDatapointInformation(
-                formatPercentageForDatatable(
-                  dataset.insuranceReinsurance?.revenueBasedGrossPremiumsWrittenReInsuranceRevenue
-                    ?.substantialContributionToClimateChangeAdaptationInPercentAligned?.value
-                ),
-                'Substantial Contribution to Climate Change Adaptation in Percent - Aligned',
-                dataset.insuranceReinsurance?.revenueBasedGrossPremiumsWrittenReInsuranceRevenue
-                  ?.substantialContributionToClimateChangeAdaptationInPercentAligned
-              ),
-          },
-          {
-            type: 'cell',
-            label: 'Substantial Contribution to Climate Change Adaptation in Percent - Of which Enabling',
-            explanation: 'Taxonomy-aligned and Enabling substantially contributing to Climate Change Adaptation',
-            shouldDisplay: (): boolean => true,
-            valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
-              wrapDisplayValueWithDatapointInformation(
-                formatPercentageForDatatable(
-                  dataset.insuranceReinsurance?.revenueBasedGrossPremiumsWrittenReInsuranceRevenue
-                    ?.substantialContributionToClimateChangeAdaptationInPercentOfWhichEnabling?.value
-                ),
-                'Substantial Contribution to Climate Change Adaptation in Percent - Of which Enabling',
-                dataset.insuranceReinsurance?.revenueBasedGrossPremiumsWrittenReInsuranceRevenue
-                  ?.substantialContributionToClimateChangeAdaptationInPercentOfWhichEnabling
-              ),
-          },
-          {
-            type: 'cell',
-            label:
-              'Substantial Contribution to Sustainable Use and Protection of Water and Marine Resources in Percent - Aligned',
+            label: 'Weighted Average Value of all Investments - CapEx-based in Percent',
             explanation:
-              'Taxonomy-aligned Share substantially contributing to Sustainable Use and Protection of Water and Marine Resources',
+              'The weighted average value of all the investments of insurance or reinsurance undertakings that are directed at funding, or are associated with Taxonomy-aligned economic activities relative to the value of total assets covered by the KPI, with following weights for investments in undertakings - CapEx-based in Percent.',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
                 formatPercentageForDatatable(
-                  dataset.insuranceReinsurance?.revenueBasedGrossPremiumsWrittenReInsuranceRevenue
-                    ?.substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned
-                    ?.value
+                  dataset.insuranceReinsurance?.averageValueOfTaxonomyAlignedUndertakings
+                    ?.weightedAverageValueOfAllInvestmentsCapexBasedInPercent?.value
                 ),
-                'Substantial Contribution to Sustainable Use and Protection of Water and Marine Resources in Percent - Aligned',
-                dataset.insuranceReinsurance?.revenueBasedGrossPremiumsWrittenReInsuranceRevenue
-                  ?.substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned
+                'Weighted Average Value of all Investments - CapEx-based in Percent',
+                dataset.insuranceReinsurance?.averageValueOfTaxonomyAlignedUndertakings
+                  ?.weightedAverageValueOfAllInvestmentsCapexBasedInPercent
               ),
           },
           {
             type: 'cell',
-            label:
-              'Substantial Contribution to Sustainable Use and Protection of Water and Marine Resources in Percent - Of which Enabling',
+            label: 'Weighted Average Value of all Investments - Turnover-based monetary amount',
             explanation:
-              'Taxonomy-aligned and Enabling substantially contributing to Sustainable Use and Protection of Water and Marine Resources',
+              'The weighted average value of all the investments of insurance or reinsurance undertakings that are directed at funding, or are associated with Taxonomy-aligned economic activities, with following weights for investments in undertakings - Turnover based monetary amount.',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
-              wrapDisplayValueWithDatapointInformation(
-                formatPercentageForDatatable(
-                  dataset.insuranceReinsurance?.revenueBasedGrossPremiumsWrittenReInsuranceRevenue
-                    ?.substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentOfWhichEnabling
-                    ?.value
-                ),
-                'Substantial Contribution to Sustainable Use and Protection of Water and Marine Resources in Percent - Of which Enabling',
-                dataset.insuranceReinsurance?.revenueBasedGrossPremiumsWrittenReInsuranceRevenue
-                  ?.substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentOfWhichEnabling
+              formatCurrencyForDisplay(
+                dataset.insuranceReinsurance?.averageValueOfTaxonomyAlignedUndertakings
+                  ?.weightedAverageValueOfAllInvestmentsTurnoverBasedMonetaryAmount,
+                'Weighted Average Value of all Investments - Turnover-based monetary amount'
               ),
           },
           {
             type: 'cell',
-            label: 'Substantial Contribution to Transition to a Circular Economy in Percent - Aligned',
-            explanation: 'Taxonomy-aligned Share substantially contributing to Circular Economy',
-            shouldDisplay: (): boolean => true,
-            valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
-              wrapDisplayValueWithDatapointInformation(
-                formatPercentageForDatatable(
-                  dataset.insuranceReinsurance?.revenueBasedGrossPremiumsWrittenReInsuranceRevenue
-                    ?.substantialContributionToTransitionToACircularEconomyInPercentAligned?.value
-                ),
-                'Substantial Contribution to Transition to a Circular Economy in Percent - Aligned',
-                dataset.insuranceReinsurance?.revenueBasedGrossPremiumsWrittenReInsuranceRevenue
-                  ?.substantialContributionToTransitionToACircularEconomyInPercentAligned
-              ),
-          },
-          {
-            type: 'cell',
-            label: 'Substantial Contribution to Transition to a Circular Economy in Percent - Of which Enabling',
-            explanation: 'Taxonomy-aligned and Enabling substantially contributing to Circular Economy',
-            shouldDisplay: (): boolean => true,
-            valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
-              wrapDisplayValueWithDatapointInformation(
-                formatPercentageForDatatable(
-                  dataset.insuranceReinsurance?.revenueBasedGrossPremiumsWrittenReInsuranceRevenue
-                    ?.substantialContributionToTransitionToACircularEconomyInPercentOfWhichEnabling?.value
-                ),
-                'Substantial Contribution to Transition to a Circular Economy in Percent - Of which Enabling',
-                dataset.insuranceReinsurance?.revenueBasedGrossPremiumsWrittenReInsuranceRevenue
-                  ?.substantialContributionToTransitionToACircularEconomyInPercentOfWhichEnabling
-              ),
-          },
-          {
-            type: 'cell',
-            label: 'Substantial Contribution to Pollution Prevention and Control in Percent - Aligned',
-            explanation: 'Taxonomy-aligned Share substantially contributing to Pollution Prevention and Control',
-            shouldDisplay: (): boolean => true,
-            valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
-              wrapDisplayValueWithDatapointInformation(
-                formatPercentageForDatatable(
-                  dataset.insuranceReinsurance?.revenueBasedGrossPremiumsWrittenReInsuranceRevenue
-                    ?.substantialContributionToPollutionPreventionAndControlInPercentAligned?.value
-                ),
-                'Substantial Contribution to Pollution Prevention and Control in Percent - Aligned',
-                dataset.insuranceReinsurance?.revenueBasedGrossPremiumsWrittenReInsuranceRevenue
-                  ?.substantialContributionToPollutionPreventionAndControlInPercentAligned
-              ),
-          },
-          {
-            type: 'cell',
-            label: 'Substantial Contribution to Pollution Prevention and Control in Percent - Of which Enabling',
-            explanation: 'Taxonomy-aligned and Enabling substantially contributing to Pollution Prevention and Control',
-            shouldDisplay: (): boolean => true,
-            valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
-              wrapDisplayValueWithDatapointInformation(
-                formatPercentageForDatatable(
-                  dataset.insuranceReinsurance?.revenueBasedGrossPremiumsWrittenReInsuranceRevenue
-                    ?.substantialContributionToPollutionPreventionAndControlInPercentOfWhichEnabling?.value
-                ),
-                'Substantial Contribution to Pollution Prevention and Control in Percent - Of which Enabling',
-                dataset.insuranceReinsurance?.revenueBasedGrossPremiumsWrittenReInsuranceRevenue
-                  ?.substantialContributionToPollutionPreventionAndControlInPercentOfWhichEnabling
-              ),
-          },
-          {
-            type: 'cell',
-            label:
-              'Substantial Contribution to Protection and Restoration of Biodiversity and Ecosystems in Percent - Aligned',
+            label: 'Weighted Average Value of all Investments - CapEx-based monetary amount',
             explanation:
-              'Taxonomy-aligned Share substantially contributing to Protection and Restoration of Biodiversity and Ecosystems',
+              'The weighted average value of all the investments of insurance or reinsurance undertakings that are directed at funding, or are associated with Taxonomy-aligned economic activities, with following weights for investments in undertakings - CapEx-based monetary amount.',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
-              wrapDisplayValueWithDatapointInformation(
-                formatPercentageForDatatable(
-                  dataset.insuranceReinsurance?.revenueBasedGrossPremiumsWrittenReInsuranceRevenue
-                    ?.substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned
-                    ?.value
-                ),
-                'Substantial Contribution to Protection and Restoration of Biodiversity and Ecosystems in Percent - Aligned',
-                dataset.insuranceReinsurance?.revenueBasedGrossPremiumsWrittenReInsuranceRevenue
-                  ?.substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned
-              ),
-          },
-          {
-            type: 'cell',
-            label:
-              'Substantial Contribution to Protection and Restoration of Biodiversity and Ecosystems in Percent - Of which Enabling',
-            explanation:
-              'Taxonomy-aligned and Enabling substantially contributing to Protection and Restoration of Biodiversity and Ecosystems',
-            shouldDisplay: (): boolean => true,
-            valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
-              wrapDisplayValueWithDatapointInformation(
-                formatPercentageForDatatable(
-                  dataset.insuranceReinsurance?.revenueBasedGrossPremiumsWrittenReInsuranceRevenue
-                    ?.substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentOfWhichEnabling
-                    ?.value
-                ),
-                'Substantial Contribution to Protection and Restoration of Biodiversity and Ecosystems in Percent - Of which Enabling',
-                dataset.insuranceReinsurance?.revenueBasedGrossPremiumsWrittenReInsuranceRevenue
-                  ?.substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentOfWhichEnabling
+              formatCurrencyForDisplay(
+                dataset.insuranceReinsurance?.averageValueOfTaxonomyAlignedUndertakings
+                  ?.weightedAverageValueOfAllInvestmentsCapexBasedMonetaryAmount,
+                'Weighted Average Value of all Investments - CapEx-based monetary amount'
               ),
           },
         ],
       },
       {
         type: 'section',
-        label: 'CapEx-based Gross premiums written/(re-insurance) revenue',
+        label: 'Breakdown of the Numerator of the KPI per Environmental Objective - Turnover-based',
         expandOnPageLoad: true,
         shouldDisplay: (): boolean => true,
         children: [
           {
             type: 'cell',
-            label: 'Substantial Contribution to Climate Change Mitigation in Percent - Aligned',
-            explanation: 'Taxonomy-aligned Share substantially contributing to Climate Change Mitigation',
-            shouldDisplay: (): boolean => true,
-            valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
-              wrapDisplayValueWithDatapointInformation(
-                formatPercentageForDatatable(
-                  dataset.insuranceReinsurance?.capexBasedGrossPremiumsWrittenReInsuranceRevenue
-                    ?.substantialContributionToClimateChangeMitigationInPercentAligned?.value
-                ),
-                'Substantial Contribution to Climate Change Mitigation in Percent - Aligned',
-                dataset.insuranceReinsurance?.capexBasedGrossPremiumsWrittenReInsuranceRevenue
-                  ?.substantialContributionToClimateChangeMitigationInPercentAligned
-              ),
-          },
-          {
-            type: 'cell',
-            label: 'Substantial Contribution to Climate Change Mitigation in Percent - Of which Enabling',
-            explanation: 'Taxonomy-aligned and Enabling substantially contributing to Climate Change Mitigation',
-            shouldDisplay: (): boolean => true,
-            valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
-              wrapDisplayValueWithDatapointInformation(
-                formatPercentageForDatatable(
-                  dataset.insuranceReinsurance?.capexBasedGrossPremiumsWrittenReInsuranceRevenue
-                    ?.substantialContributionToClimateChangeMitigationInPercentOfWhichEnabling?.value
-                ),
-                'Substantial Contribution to Climate Change Mitigation in Percent - Of which Enabling',
-                dataset.insuranceReinsurance?.capexBasedGrossPremiumsWrittenReInsuranceRevenue
-                  ?.substantialContributionToClimateChangeMitigationInPercentOfWhichEnabling
-              ),
-          },
-          {
-            type: 'cell',
-            label: 'Substantial Contribution to Climate Change Mitigation in Percent - Of which Transitional',
+            label:
+              'Share of Turnover-based KPI substantially contributing to Climate Change Mitigation in Percent - Aligned',
             explanation:
-              'Taxonomy-aligned and Of which Transitional substantially contributing to Climate Change Mitigation',
+              "Taxonomy-aligned Proportion of Turnover-based KPI substantially contributing to Climate Change Mitigation - provided 'do-not-significant harm' (DNSH) and social safeguards positive assessment",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
                 formatPercentageForDatatable(
-                  dataset.insuranceReinsurance?.capexBasedGrossPremiumsWrittenReInsuranceRevenue
-                    ?.substantialContributionToClimateChangeMitigationInPercentOfWhichTransitional?.value
+                  dataset.insuranceReinsurance?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBased
+                    ?.shareOfTurnoverBasedKpiSubstantiallyContributingToClimateChangeMitigationInPercentAligned?.value
                 ),
-                'Substantial Contribution to Climate Change Mitigation in Percent - Of which Transitional',
-                dataset.insuranceReinsurance?.capexBasedGrossPremiumsWrittenReInsuranceRevenue
-                  ?.substantialContributionToClimateChangeMitigationInPercentOfWhichTransitional
-              ),
-          },
-          {
-            type: 'cell',
-            label: 'Substantial Contribution to Climate Change Adaptation in Percent - Aligned',
-            explanation: 'Taxonomy-aligned Share substantially contributing to Climate Change Adaptation',
-            shouldDisplay: (): boolean => true,
-            valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
-              wrapDisplayValueWithDatapointInformation(
-                formatPercentageForDatatable(
-                  dataset.insuranceReinsurance?.capexBasedGrossPremiumsWrittenReInsuranceRevenue
-                    ?.substantialContributionToClimateChangeAdaptationInPercentAligned?.value
-                ),
-                'Substantial Contribution to Climate Change Adaptation in Percent - Aligned',
-                dataset.insuranceReinsurance?.capexBasedGrossPremiumsWrittenReInsuranceRevenue
-                  ?.substantialContributionToClimateChangeAdaptationInPercentAligned
-              ),
-          },
-          {
-            type: 'cell',
-            label: 'Substantial Contribution to Climate Change Adaptation in Percent - Of which Enabling',
-            explanation: 'Taxonomy-aligned and Enabling substantially contributing to Climate Change Adaptation',
-            shouldDisplay: (): boolean => true,
-            valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
-              wrapDisplayValueWithDatapointInformation(
-                formatPercentageForDatatable(
-                  dataset.insuranceReinsurance?.capexBasedGrossPremiumsWrittenReInsuranceRevenue
-                    ?.substantialContributionToClimateChangeAdaptationInPercentOfWhichEnabling?.value
-                ),
-                'Substantial Contribution to Climate Change Adaptation in Percent - Of which Enabling',
-                dataset.insuranceReinsurance?.capexBasedGrossPremiumsWrittenReInsuranceRevenue
-                  ?.substantialContributionToClimateChangeAdaptationInPercentOfWhichEnabling
+                'Share of Turnover-based KPI substantially contributing to Climate Change Mitigation in Percent - Aligned',
+                dataset.insuranceReinsurance?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBased
+                  ?.shareOfTurnoverBasedKpiSubstantiallyContributingToClimateChangeMitigationInPercentAligned
               ),
           },
           {
             type: 'cell',
             label:
-              'Substantial Contribution to Sustainable Use and Protection of Water and Marine Resources in Percent - Aligned',
+              'Share of Turnover-based KPI substantially contributing to Climate Change Mitigation in Percent - Of which Enabling',
             explanation:
-              'Taxonomy-aligned Share substantially contributing to Sustainable Use and Protection of Water and Marine Resources',
+              "Taxonomy-aligned and enabling Proportion of Turnover-based KPI substantially contributing to Climate Change Mitigation - provided 'do-not-significant harm' (DNSH) and social safeguards positive assessment",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
                 formatPercentageForDatatable(
-                  dataset.insuranceReinsurance?.capexBasedGrossPremiumsWrittenReInsuranceRevenue
-                    ?.substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned
+                  dataset.insuranceReinsurance?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBased
+                    ?.shareOfTurnoverBasedKpiSubstantiallyContributingToClimateChangeMitigationInPercentOfWhichEnabling
                     ?.value
                 ),
-                'Substantial Contribution to Sustainable Use and Protection of Water and Marine Resources in Percent - Aligned',
-                dataset.insuranceReinsurance?.capexBasedGrossPremiumsWrittenReInsuranceRevenue
-                  ?.substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned
+                'Share of Turnover-based KPI substantially contributing to Climate Change Mitigation in Percent - Of which Enabling',
+                dataset.insuranceReinsurance?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBased
+                  ?.shareOfTurnoverBasedKpiSubstantiallyContributingToClimateChangeMitigationInPercentOfWhichEnabling
               ),
           },
           {
             type: 'cell',
             label:
-              'Substantial Contribution to Sustainable Use and Protection of Water and Marine Resources in Percent - Of which Enabling',
+              'Share of Turnover-based KPI substantially contributing to Climate Change Mitigation in Percent - Of which Transitional',
             explanation:
-              'Taxonomy-aligned and Enabling substantially contributing to Sustainable Use and Protection of Water and Marine Resources',
+              "Taxonomy-aligned and transitional Proportion of Turnover-based KPI substantially contributing to Climate Change Mitigation - provided 'do-not-significant harm' (DNSH) and social safeguards positive assessment",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
                 formatPercentageForDatatable(
-                  dataset.insuranceReinsurance?.capexBasedGrossPremiumsWrittenReInsuranceRevenue
-                    ?.substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentOfWhichEnabling
+                  dataset.insuranceReinsurance?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBased
+                    ?.shareOfTurnoverBasedKpiSubstantiallyContributingToClimateChangeMitigationInPercentOfWhichTransitional
                     ?.value
                 ),
-                'Substantial Contribution to Sustainable Use and Protection of Water and Marine Resources in Percent - Of which Enabling',
-                dataset.insuranceReinsurance?.capexBasedGrossPremiumsWrittenReInsuranceRevenue
-                  ?.substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentOfWhichEnabling
-              ),
-          },
-          {
-            type: 'cell',
-            label: 'Substantial Contribution to Transition to a Circular Economy in Percent - Aligned',
-            explanation: 'Taxonomy-aligned Share substantially contributing to Circular Economy',
-            shouldDisplay: (): boolean => true,
-            valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
-              wrapDisplayValueWithDatapointInformation(
-                formatPercentageForDatatable(
-                  dataset.insuranceReinsurance?.capexBasedGrossPremiumsWrittenReInsuranceRevenue
-                    ?.substantialContributionToTransitionToACircularEconomyInPercentAligned?.value
-                ),
-                'Substantial Contribution to Transition to a Circular Economy in Percent - Aligned',
-                dataset.insuranceReinsurance?.capexBasedGrossPremiumsWrittenReInsuranceRevenue
-                  ?.substantialContributionToTransitionToACircularEconomyInPercentAligned
-              ),
-          },
-          {
-            type: 'cell',
-            label: 'Substantial Contribution to Transition to a Circular Economy in Percent - Of which Enabling',
-            explanation: 'Taxonomy-aligned and Enabling substantially contributing to Circular Economy',
-            shouldDisplay: (): boolean => true,
-            valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
-              wrapDisplayValueWithDatapointInformation(
-                formatPercentageForDatatable(
-                  dataset.insuranceReinsurance?.capexBasedGrossPremiumsWrittenReInsuranceRevenue
-                    ?.substantialContributionToTransitionToACircularEconomyInPercentOfWhichEnabling?.value
-                ),
-                'Substantial Contribution to Transition to a Circular Economy in Percent - Of which Enabling',
-                dataset.insuranceReinsurance?.capexBasedGrossPremiumsWrittenReInsuranceRevenue
-                  ?.substantialContributionToTransitionToACircularEconomyInPercentOfWhichEnabling
-              ),
-          },
-          {
-            type: 'cell',
-            label: 'Substantial Contribution to Pollution Prevention and Control in Percent - Aligned',
-            explanation: 'Taxonomy-aligned Share substantially contributing to Pollution Prevention and Control',
-            shouldDisplay: (): boolean => true,
-            valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
-              wrapDisplayValueWithDatapointInformation(
-                formatPercentageForDatatable(
-                  dataset.insuranceReinsurance?.capexBasedGrossPremiumsWrittenReInsuranceRevenue
-                    ?.substantialContributionToPollutionPreventionAndControlInPercentAligned?.value
-                ),
-                'Substantial Contribution to Pollution Prevention and Control in Percent - Aligned',
-                dataset.insuranceReinsurance?.capexBasedGrossPremiumsWrittenReInsuranceRevenue
-                  ?.substantialContributionToPollutionPreventionAndControlInPercentAligned
-              ),
-          },
-          {
-            type: 'cell',
-            label: 'Substantial Contribution to Pollution Prevention and Control in Percent - Of which Enabling',
-            explanation: 'Taxonomy-aligned and Enabling substantially contributing to Pollution Prevention and Control',
-            shouldDisplay: (): boolean => true,
-            valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
-              wrapDisplayValueWithDatapointInformation(
-                formatPercentageForDatatable(
-                  dataset.insuranceReinsurance?.capexBasedGrossPremiumsWrittenReInsuranceRevenue
-                    ?.substantialContributionToPollutionPreventionAndControlInPercentOfWhichEnabling?.value
-                ),
-                'Substantial Contribution to Pollution Prevention and Control in Percent - Of which Enabling',
-                dataset.insuranceReinsurance?.capexBasedGrossPremiumsWrittenReInsuranceRevenue
-                  ?.substantialContributionToPollutionPreventionAndControlInPercentOfWhichEnabling
+                'Share of Turnover-based KPI substantially contributing to Climate Change Mitigation in Percent - Of which Transitional',
+                dataset.insuranceReinsurance?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBased
+                  ?.shareOfTurnoverBasedKpiSubstantiallyContributingToClimateChangeMitigationInPercentOfWhichTransitional
               ),
           },
           {
             type: 'cell',
             label:
-              'Substantial Contribution to Protection and Restoration of Biodiversity and Ecosystems in Percent - Aligned',
+              'Share of Turnover-based KPI substantially contributing to Climate Change Adaptation in Percent - Aligned',
             explanation:
-              'Taxonomy-aligned Share substantially contributing to Protection and Restoration of Biodiversity and Ecosystems',
+              "Taxonomy-aligned Proportion of Turnover-based KPI substantially contributing to Climate Change Adaption - provided 'do-not-significant harm' (DNSH) and social safeguards positive assessment",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
                 formatPercentageForDatatable(
-                  dataset.insuranceReinsurance?.capexBasedGrossPremiumsWrittenReInsuranceRevenue
-                    ?.substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned
-                    ?.value
+                  dataset.insuranceReinsurance?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBased
+                    ?.shareOfTurnoverBasedKpiSubstantiallyContributingToClimateChangeAdaptationInPercentAligned?.value
                 ),
-                'Substantial Contribution to Protection and Restoration of Biodiversity and Ecosystems in Percent - Aligned',
-                dataset.insuranceReinsurance?.capexBasedGrossPremiumsWrittenReInsuranceRevenue
-                  ?.substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned
+                'Share of Turnover-based KPI substantially contributing to Climate Change Adaptation in Percent - Aligned',
+                dataset.insuranceReinsurance?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBased
+                  ?.shareOfTurnoverBasedKpiSubstantiallyContributingToClimateChangeAdaptationInPercentAligned
               ),
           },
           {
             type: 'cell',
             label:
-              'Substantial Contribution to Protection and Restoration of Biodiversity and Ecosystems in Percent - Of which Enabling',
+              'Share of Turnover-based KPI substantially contributing to Climate Change Adaptation in Percent - Of which Enabling',
             explanation:
-              'Taxonomy-aligned and Enabling substantially contributing to Protection and Restoration of Biodiversity and Ecosystems',
+              "Taxonomy-aligned and enabling Proportion of Turnover-based KPI substantially contributing to Climate Change Adaption - provided 'do-not-significant harm' (DNSH) and social safeguards positive assessment",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
                 formatPercentageForDatatable(
-                  dataset.insuranceReinsurance?.capexBasedGrossPremiumsWrittenReInsuranceRevenue
-                    ?.substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentOfWhichEnabling
+                  dataset.insuranceReinsurance?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBased
+                    ?.shareOfTurnoverBasedKpiSubstantiallyContributingToClimateChangeAdaptationInPercentOfWhichEnabling
                     ?.value
                 ),
-                'Substantial Contribution to Protection and Restoration of Biodiversity and Ecosystems in Percent - Of which Enabling',
-                dataset.insuranceReinsurance?.capexBasedGrossPremiumsWrittenReInsuranceRevenue
-                  ?.substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentOfWhichEnabling
+                'Share of Turnover-based KPI substantially contributing to Climate Change Adaptation in Percent - Of which Enabling',
+                dataset.insuranceReinsurance?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBased
+                  ?.shareOfTurnoverBasedKpiSubstantiallyContributingToClimateChangeAdaptationInPercentOfWhichEnabling
+              ),
+          },
+          {
+            type: 'cell',
+            label:
+              'Share of Turnover-based KPI substantially contributing to Sustainable Use and Protection of Water and Marine Resources in Percent - Aligned',
+            explanation:
+              "Taxonomy-aligned Proportion of Turnover-based KPI substantially contributing to Sustainable Use and Protection of Water and Marine Resources - provided 'do-not-significant harm' (DNSH) and social safeguards positive assessment",
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatPercentageForDatatable(
+                  dataset.insuranceReinsurance?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBased
+                    ?.shareOfTurnoverBasedKpiSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned
+                    ?.value
+                ),
+                'Share of Turnover-based KPI substantially contributing to Sustainable Use and Protection of Water and Marine Resources in Percent - Aligned',
+                dataset.insuranceReinsurance?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBased
+                  ?.shareOfTurnoverBasedKpiSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned
+              ),
+          },
+          {
+            type: 'cell',
+            label:
+              'Share of Turnover-based KPI substantially contributing to Sustainable Use and Protection of Water and Marine Resources in Percent - Of which Enabling',
+            explanation:
+              "Taxonomy-aligned and enabling Proportion of Turnover-based KPI substantially contributing to Sustainable Use and Protection of Water and Marine Resources - provided 'do-not-significant harm' (DNSH) and social safeguards positive assessment",
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatPercentageForDatatable(
+                  dataset.insuranceReinsurance?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBased
+                    ?.shareOfTurnoverBasedKpiSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentOfWhichEnabling
+                    ?.value
+                ),
+                'Share of Turnover-based KPI substantially contributing to Sustainable Use and Protection of Water and Marine Resources in Percent - Of which Enabling',
+                dataset.insuranceReinsurance?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBased
+                  ?.shareOfTurnoverBasedKpiSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentOfWhichEnabling
+              ),
+          },
+          {
+            type: 'cell',
+            label:
+              'Share of Turnover-based KPI substantially contributing to Transition to a Circular Economy in Percent - Aligned',
+            explanation:
+              "Taxonomy-aligned Proportion of Turnover-based KPI substantially contributing to Circular Economy - provided 'do-not-significant harm' (DNSH) and social safeguards positive assessment",
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatPercentageForDatatable(
+                  dataset.insuranceReinsurance?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBased
+                    ?.shareOfTurnoverBasedKpiSubstantiallyContributingToTransitionToACircularEconomyInPercentAligned
+                    ?.value
+                ),
+                'Share of Turnover-based KPI substantially contributing to Transition to a Circular Economy in Percent - Aligned',
+                dataset.insuranceReinsurance?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBased
+                  ?.shareOfTurnoverBasedKpiSubstantiallyContributingToTransitionToACircularEconomyInPercentAligned
+              ),
+          },
+          {
+            type: 'cell',
+            label:
+              'Share of Turnover-based KPI substantially contributing to Transition to a Circular Economy in Percent - Of which Enabling',
+            explanation:
+              "Taxonomy-aligned and enabling Proportion of Turnover-based KPI substantially contributing to Circular Economy - provided 'do-not-significant harm' (DNSH) and social safeguards positive assessment",
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatPercentageForDatatable(
+                  dataset.insuranceReinsurance?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBased
+                    ?.shareOfTurnoverBasedKpiSubstantiallyContributingToTransitionToACircularEconomyInPercentOfWhichEnabling
+                    ?.value
+                ),
+                'Share of Turnover-based KPI substantially contributing to Transition to a Circular Economy in Percent - Of which Enabling',
+                dataset.insuranceReinsurance?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBased
+                  ?.shareOfTurnoverBasedKpiSubstantiallyContributingToTransitionToACircularEconomyInPercentOfWhichEnabling
+              ),
+          },
+          {
+            type: 'cell',
+            label:
+              'Share of Turnover-based KPI substantially contributing to Pollution Prevention and Control in Percent - Aligned',
+            explanation:
+              "Taxonomy-aligned Proportion of Turnover-based KPI substantially contributing to Pollution Prevention and Control - provided 'do-not-significant harm' (DNSH) and social safeguards positive assessment",
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatPercentageForDatatable(
+                  dataset.insuranceReinsurance?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBased
+                    ?.shareOfTurnoverBasedKpiSubstantiallyContributingToPollutionPreventionAndControlInPercentAligned
+                    ?.value
+                ),
+                'Share of Turnover-based KPI substantially contributing to Pollution Prevention and Control in Percent - Aligned',
+                dataset.insuranceReinsurance?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBased
+                  ?.shareOfTurnoverBasedKpiSubstantiallyContributingToPollutionPreventionAndControlInPercentAligned
+              ),
+          },
+          {
+            type: 'cell',
+            label:
+              'Share of Turnover-based KPI substantially contributing to Pollution Prevention and Control in Percent - Of which Enabling',
+            explanation:
+              "Taxonomy-aligned and enabling Proportion of Turnover-based KPI substantially contributing to Pollution Prevention and Control - provided 'do-not-significant harm' (DNSH) and social safeguards positive assessment",
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatPercentageForDatatable(
+                  dataset.insuranceReinsurance?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBased
+                    ?.shareOfTurnoverBasedKpiSubstantiallyContributingToPollutionPreventionAndControlInPercentOfWhichEnabling
+                    ?.value
+                ),
+                'Share of Turnover-based KPI substantially contributing to Pollution Prevention and Control in Percent - Of which Enabling',
+                dataset.insuranceReinsurance?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBased
+                  ?.shareOfTurnoverBasedKpiSubstantiallyContributingToPollutionPreventionAndControlInPercentOfWhichEnabling
+              ),
+          },
+          {
+            type: 'cell',
+            label:
+              'Share of Turnover-based KPI substantially contributing to Protection and Restoration of Biodiversity and Ecosystems in Percent - Aligned',
+            explanation:
+              "Taxonomy-aligned Proportion of Turnover-based KPI substantially contributing to Protection and Restoration of Biodiversity and Ecosystems - provided 'do-not-significant harm' (DNSH) and social safeguards positive assessment",
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatPercentageForDatatable(
+                  dataset.insuranceReinsurance?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBased
+                    ?.shareOfTurnoverBasedKpiSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned
+                    ?.value
+                ),
+                'Share of Turnover-based KPI substantially contributing to Protection and Restoration of Biodiversity and Ecosystems in Percent - Aligned',
+                dataset.insuranceReinsurance?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBased
+                  ?.shareOfTurnoverBasedKpiSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned
+              ),
+          },
+          {
+            type: 'cell',
+            label:
+              'Share of Turnover-based KPI substantially contributing to Protection and Restoration of Biodiversity and Ecosystems in Percent - Of which Enabling',
+            explanation:
+              "Taxonomy-aligned and enabling Proportion of Turnover-based KPI substantially contributing to Protection and Restoration of Biodiversity and Ecosystems - provided 'do-not-significant harm' (DNSH) and social safeguards positive assessment",
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatPercentageForDatatable(
+                  dataset.insuranceReinsurance?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBased
+                    ?.shareOfTurnoverBasedKpiSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentOfWhichEnabling
+                    ?.value
+                ),
+                'Share of Turnover-based KPI substantially contributing to Protection and Restoration of Biodiversity and Ecosystems in Percent - Of which Enabling',
+                dataset.insuranceReinsurance?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBased
+                  ?.shareOfTurnoverBasedKpiSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentOfWhichEnabling
+              ),
+          },
+        ],
+      },
+      {
+        type: 'section',
+        label: 'Breakdown of the Numerator of the KPI per Environmental Objective - CapEx-based',
+        expandOnPageLoad: true,
+        shouldDisplay: (): boolean => true,
+        children: [
+          {
+            type: 'cell',
+            label:
+              'Share of CapEx-based KPI substantially contributing to Climate Change Mitigation in Percent - Aligned',
+            explanation:
+              "Taxonomy-aligned Proportion of CapEx-based KPI substantially contributing to Climate Change Mitigation - provided 'do-not-significant harm' (DNSH) and social safeguards positive assessment",
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatPercentageForDatatable(
+                  dataset.insuranceReinsurance?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBased
+                    ?.shareOfCapexBasedKpiSubstantiallyContributingToClimateChangeMitigationInPercentAligned?.value
+                ),
+                'Share of CapEx-based KPI substantially contributing to Climate Change Mitigation in Percent - Aligned',
+                dataset.insuranceReinsurance?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBased
+                  ?.shareOfCapexBasedKpiSubstantiallyContributingToClimateChangeMitigationInPercentAligned
+              ),
+          },
+          {
+            type: 'cell',
+            label:
+              'Share of CapEx-based KPI substantially contributing to Climate Change Mitigation in Percent - Of which Enabling',
+            explanation:
+              "Taxonomy-aligned and enabling Proportion of CapEx-based KPI substantially contributing to Climate Change Mitigation - provided 'do-not-significant harm' (DNSH) and social safeguards positive assessment",
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatPercentageForDatatable(
+                  dataset.insuranceReinsurance?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBased
+                    ?.shareOfCapexBasedKpiSubstantiallyContributingToClimateChangeMitigationInPercentOfWhichEnabling
+                    ?.value
+                ),
+                'Share of CapEx-based KPI substantially contributing to Climate Change Mitigation in Percent - Of which Enabling',
+                dataset.insuranceReinsurance?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBased
+                  ?.shareOfCapexBasedKpiSubstantiallyContributingToClimateChangeMitigationInPercentOfWhichEnabling
+              ),
+          },
+          {
+            type: 'cell',
+            label:
+              'Share of CapEx-based KPI substantially contributing to Climate Change Mitigation in Percent - Of which Transitional',
+            explanation:
+              "Taxonomy-aligned and transitional Proportion of CapEx-based KPI substantially contributing to Climate Change Mitigation - provided 'do-not-significant harm' (DNSH) and social safeguards positive assessment",
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatPercentageForDatatable(
+                  dataset.insuranceReinsurance?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBased
+                    ?.shareOfCapexBasedKpiSubstantiallyContributingToClimateChangeMitigationInPercentOfWhichTransitional
+                    ?.value
+                ),
+                'Share of CapEx-based KPI substantially contributing to Climate Change Mitigation in Percent - Of which Transitional',
+                dataset.insuranceReinsurance?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBased
+                  ?.shareOfCapexBasedKpiSubstantiallyContributingToClimateChangeMitigationInPercentOfWhichTransitional
+              ),
+          },
+          {
+            type: 'cell',
+            label:
+              'Share of CapEx-based KPI substantially contributing to Climate Change Adaptation in Percent - Aligned',
+            explanation:
+              "Taxonomy-aligned Proportion of CapEx-based KPI substantially contributing to Climate Change Adaption - provided 'do-not-significant harm' (DNSH) and social safeguards positive assessment",
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatPercentageForDatatable(
+                  dataset.insuranceReinsurance?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBased
+                    ?.shareOfCapexBasedKpiSubstantiallyContributingToClimateChangeAdaptationInPercentAligned?.value
+                ),
+                'Share of CapEx-based KPI substantially contributing to Climate Change Adaptation in Percent - Aligned',
+                dataset.insuranceReinsurance?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBased
+                  ?.shareOfCapexBasedKpiSubstantiallyContributingToClimateChangeAdaptationInPercentAligned
+              ),
+          },
+          {
+            type: 'cell',
+            label:
+              'Share of CapEx-based KPI substantially contributing to Climate Change Adaptation in Percent - Of which Enabling',
+            explanation:
+              "Taxonomy-aligned and enabling Proportion of CapEx-based KPI substantially contributing to Climate Change Adaption - provided 'do-not-significant harm' (DNSH) and social safeguards positive assessment",
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatPercentageForDatatable(
+                  dataset.insuranceReinsurance?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBased
+                    ?.shareOfCapexBasedKpiSubstantiallyContributingToClimateChangeAdaptationInPercentOfWhichEnabling
+                    ?.value
+                ),
+                'Share of CapEx-based KPI substantially contributing to Climate Change Adaptation in Percent - Of which Enabling',
+                dataset.insuranceReinsurance?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBased
+                  ?.shareOfCapexBasedKpiSubstantiallyContributingToClimateChangeAdaptationInPercentOfWhichEnabling
+              ),
+          },
+          {
+            type: 'cell',
+            label:
+              'Share of CapEx-based KPI substantially contributing to Sustainable Use and Protection of Water and Marine Resources in Percent - Aligned',
+            explanation:
+              "Taxonomy-aligned Proportion of CapEx-based KPI substantially contributing to Sustainable Use and Protection of Water and Marine Resources - provided 'do-not-significant harm' (DNSH) and social safeguards positive assessment",
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatPercentageForDatatable(
+                  dataset.insuranceReinsurance?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBased
+                    ?.shareOfCapexBasedKpiSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned
+                    ?.value
+                ),
+                'Share of CapEx-based KPI substantially contributing to Sustainable Use and Protection of Water and Marine Resources in Percent - Aligned',
+                dataset.insuranceReinsurance?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBased
+                  ?.shareOfCapexBasedKpiSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned
+              ),
+          },
+          {
+            type: 'cell',
+            label:
+              'Share of CapEx-based KPI substantially contributing to Sustainable Use and Protection of Water and Marine Resources in Percent - Of which Enabling',
+            explanation:
+              "Taxonomy-aligned and enabling Proportion of CapEx-based KPI substantially contributing to Sustainable Use and Protection of Water and Marine Resources - provided 'do-not-significant harm' (DNSH) and social safeguards positive assessment",
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatPercentageForDatatable(
+                  dataset.insuranceReinsurance?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBased
+                    ?.shareOfCapexBasedKpiSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentOfWhichEnabling
+                    ?.value
+                ),
+                'Share of CapEx-based KPI substantially contributing to Sustainable Use and Protection of Water and Marine Resources in Percent - Of which Enabling',
+                dataset.insuranceReinsurance?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBased
+                  ?.shareOfCapexBasedKpiSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentOfWhichEnabling
+              ),
+          },
+          {
+            type: 'cell',
+            label:
+              'Share of CapEx-based KPI substantially contributing to Transition to a Circular Economy in Percent - Aligned',
+            explanation:
+              "Taxonomy-aligned Proportion of CapEx-based KPI substantially contributing to Circular Economy - provided 'do-not-significant harm' (DNSH) and social safeguards positive assessment",
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatPercentageForDatatable(
+                  dataset.insuranceReinsurance?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBased
+                    ?.shareOfCapexBasedKpiSubstantiallyContributingToTransitionToACircularEconomyInPercentAligned?.value
+                ),
+                'Share of CapEx-based KPI substantially contributing to Transition to a Circular Economy in Percent - Aligned',
+                dataset.insuranceReinsurance?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBased
+                  ?.shareOfCapexBasedKpiSubstantiallyContributingToTransitionToACircularEconomyInPercentAligned
+              ),
+          },
+          {
+            type: 'cell',
+            label:
+              'Share of CapEx-based KPI substantially contributing to Transition to a Circular Economy in Percent - Of which Enabling',
+            explanation:
+              "Taxonomy-aligned and enabling Proportion of CapEx-based KPI substantially contributing to Circular Economy - provided 'do-not-significant harm' (DNSH) and social safeguards positive assessment",
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatPercentageForDatatable(
+                  dataset.insuranceReinsurance?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBased
+                    ?.shareOfCapexBasedKpiSubstantiallyContributingToTransitionToACircularEconomyInPercentOfWhichEnabling
+                    ?.value
+                ),
+                'Share of CapEx-based KPI substantially contributing to Transition to a Circular Economy in Percent - Of which Enabling',
+                dataset.insuranceReinsurance?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBased
+                  ?.shareOfCapexBasedKpiSubstantiallyContributingToTransitionToACircularEconomyInPercentOfWhichEnabling
+              ),
+          },
+          {
+            type: 'cell',
+            label:
+              'Share of CapEx-based KPI substantially contributing to Pollution Prevention and Control in Percent - Aligned',
+            explanation:
+              "Taxonomy-aligned Proportion of CapEx-based KPI substantially contributing to Pollution Prevention and Control - provided 'do-not-significant harm' (DNSH) and social safeguards positive assessment",
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatPercentageForDatatable(
+                  dataset.insuranceReinsurance?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBased
+                    ?.shareOfCapexBasedKpiSubstantiallyContributingToPollutionPreventionAndControlInPercentAligned
+                    ?.value
+                ),
+                'Share of CapEx-based KPI substantially contributing to Pollution Prevention and Control in Percent - Aligned',
+                dataset.insuranceReinsurance?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBased
+                  ?.shareOfCapexBasedKpiSubstantiallyContributingToPollutionPreventionAndControlInPercentAligned
+              ),
+          },
+          {
+            type: 'cell',
+            label:
+              'Share of CapEx-based KPI substantially contributing to Pollution Prevention and Control in Percent - Of which Enabling',
+            explanation:
+              "Taxonomy-aligned and enabling Proportion of CapEx-based KPI substantially contributing to Pollution Prevention and Control - provided 'do-not-significant harm' (DNSH) and social safeguards positive assessment",
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatPercentageForDatatable(
+                  dataset.insuranceReinsurance?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBased
+                    ?.shareOfCapexBasedKpiSubstantiallyContributingToPollutionPreventionAndControlInPercentOfWhichEnabling
+                    ?.value
+                ),
+                'Share of CapEx-based KPI substantially contributing to Pollution Prevention and Control in Percent - Of which Enabling',
+                dataset.insuranceReinsurance?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBased
+                  ?.shareOfCapexBasedKpiSubstantiallyContributingToPollutionPreventionAndControlInPercentOfWhichEnabling
+              ),
+          },
+          {
+            type: 'cell',
+            label:
+              'Share of CapEx-based KPI substantially contributing to Protection and Restoration of Biodiversity and Ecosystems in Percent - Aligned',
+            explanation:
+              "Taxonomy-aligned Proportion of CapEx-based KPI substantially contributing to Protection and Restoration of Biodiversity and Ecosystems - provided 'do-not-significant harm' (DNSH) and social safeguards positive assessment",
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatPercentageForDatatable(
+                  dataset.insuranceReinsurance?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBased
+                    ?.shareOfCapexBasedKpiSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned
+                    ?.value
+                ),
+                'Share of CapEx-based KPI substantially contributing to Protection and Restoration of Biodiversity and Ecosystems in Percent - Aligned',
+                dataset.insuranceReinsurance?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBased
+                  ?.shareOfCapexBasedKpiSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned
+              ),
+          },
+          {
+            type: 'cell',
+            label:
+              'Share of CapEx-based KPI substantially contributing to Protection and Restoration of Biodiversity and Ecosystems in Percent - Of which Enabling',
+            explanation:
+              "Taxonomy-aligned and enabling Proportion of CapEx-based KPI substantially contributing to Protection and Restoration of Biodiversity and Ecosystems - provided 'do-not-significant harm' (DNSH) and social safeguards positive assessment",
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatPercentageForDatatable(
+                  dataset.insuranceReinsurance?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBased
+                    ?.shareOfCapexBasedKpiSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentOfWhichEnabling
+                    ?.value
+                ),
+                'Share of CapEx-based KPI substantially contributing to Protection and Restoration of Biodiversity and Ecosystems in Percent - Of which Enabling',
+                dataset.insuranceReinsurance?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBased
+                  ?.shareOfCapexBasedKpiSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentOfWhichEnabling
               ),
           },
         ],
@@ -2258,852 +2580,1795 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
     children: [
       {
         type: 'section',
-        label: 'Turnover-based KPI',
+        label: 'Dealing on own Account Services - Turnover-based',
         expandOnPageLoad: true,
         shouldDisplay: (): boolean => true,
         children: [
           {
             type: 'cell',
-            label: 'Total assets invested / revenue from investment and services',
+            label: "Turnover-based Total Assets invested under Investment Firm's Activities dealing on own Account",
             explanation:
-              "Investment firms dealing on own account: total assets invested under investment firms' activities dealing on own account (as per Section A of Annex I to Directive 2014/65/EU)\nInvestment firms not dealing on own account: revenue (i.e. fees, commissions and other monetary benefits) from investment and services and activities other than on own account (as per Section A of Annex I to Directive 2014/65/EU)",
+              "Total assets invested under investment firms' activities dealing on own account (as per Section A of Annex I to Directive 2014/65/EU)",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
-              wrapDisplayValueWithDatapointInformation(
-                formatNumberForDatatable(
-                  dataset.investmentFirms?.turnoverBasedKpi?.totalAssetsInvestedRevenueFromInvestmentAndServices?.value,
-                  ''
-                ),
-                'Total assets invested / revenue from investment and services',
-                dataset.investmentFirms?.turnoverBasedKpi?.totalAssetsInvestedRevenueFromInvestmentAndServices
-              ),
-          },
-          {
-            type: 'cell',
-            label: 'Substantial Contribution to Climate Change Mitigation in Percent - Eligible',
-            explanation:
-              "Share substantially contributing to Climate Change Mitigation\n- Investment firms dealing on own account: total assets invested under investment firms' activities dealing on own account (as per Section A of Annex I to Directive 2014/65/EU) of which assets covered by the Taxonomy (Taxonomy-eligible)\n- Investment firms not dealing on own account: revenue (i.e. fees, commissions and other monetary benefits) from investment and services and activities other than on own account (as per Section A of Annex I to Directive 2014/65/EU) of which assets covered by the Taxonomy (Taxonomy-eligible)",
-            shouldDisplay: (): boolean => true,
-            valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
-              wrapDisplayValueWithDatapointInformation(
-                formatPercentageForDatatable(
-                  dataset.investmentFirms?.turnoverBasedKpi
-                    ?.substantialContributionToClimateChangeMitigationInPercentEligible?.value
-                ),
-                'Substantial Contribution to Climate Change Mitigation in Percent - Eligible',
-                dataset.investmentFirms?.turnoverBasedKpi
-                  ?.substantialContributionToClimateChangeMitigationInPercentEligible
-              ),
-          },
-          {
-            type: 'cell',
-            label: 'Substantial Contribution to Climate Change Mitigation in Percent - Aligned',
-            explanation:
-              "Share substantially contributing to Climate Change Mitigation\n- Investment firms dealing on own account: total assets invested under investment firms' activities dealing on own account (as per Section A of Annex I to Directive 2014/65/EU) of which linked to activities aligned with the EU Taxonomy (Taxonomy-aligned)\n- Investment firms not dealing on own account: revenue (i.e. fees, commissions and other monetary benefits) from investment and services and activities other than on own account (as per Section A of Annex I to Directive 2014/65/EU) of which from services and activities linked to activities aligned with the EU Taxonomy (Taxonomy-aligned)",
-            shouldDisplay: (): boolean => true,
-            valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
-              wrapDisplayValueWithDatapointInformation(
-                formatPercentageForDatatable(
-                  dataset.investmentFirms?.turnoverBasedKpi
-                    ?.substantialContributionToClimateChangeMitigationInPercentAligned?.value
-                ),
-                'Substantial Contribution to Climate Change Mitigation in Percent - Aligned',
-                dataset.investmentFirms?.turnoverBasedKpi
-                  ?.substantialContributionToClimateChangeMitigationInPercentAligned
-              ),
-          },
-          {
-            type: 'cell',
-            label: 'Substantial Contribution to Climate Change Mitigation in Percent - Of which Enabling',
-            explanation:
-              "Share substantially contributing to Climate Change Mitigation\n- Investment firms dealing on own account: total assets invested under investment firms' activities dealing on own account (as per Section A of Annex I to Directive 2014/65/EU) of which enabling\n- Investment firms not dealing on own account: revenue (i.e. fees, commissions and other monetary benefits) from investment and services and activities other than on own account (as per Section A of Annex I to Directive 2014/65/EU) of which enabling",
-            shouldDisplay: (): boolean => true,
-            valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
-              wrapDisplayValueWithDatapointInformation(
-                formatPercentageForDatatable(
-                  dataset.investmentFirms?.turnoverBasedKpi
-                    ?.substantialContributionToClimateChangeMitigationInPercentOfWhichEnabling?.value
-                ),
-                'Substantial Contribution to Climate Change Mitigation in Percent - Of which Enabling',
-                dataset.investmentFirms?.turnoverBasedKpi
-                  ?.substantialContributionToClimateChangeMitigationInPercentOfWhichEnabling
-              ),
-          },
-          {
-            type: 'cell',
-            label: 'Substantial Contribution to Climate Change Mitigation in Percent - Of which Transitional',
-            explanation:
-              "Share substantially contributing to Climate Change Mitigation\n- Investment firms dealing on own account: total assets invested under investment firms' activities dealing on own account (as per Section A of Annex I to Directive 2014/65/EU) of which transitional\n- Investment firms not dealing on own account: revenue (i.e. fees, commissions and other monetary benefits) from investment and services and activities other than on own account (as per Section A of Annex I to Directive 2014/65/EU) of which transitional",
-            shouldDisplay: (): boolean => true,
-            valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
-              wrapDisplayValueWithDatapointInformation(
-                formatPercentageForDatatable(
-                  dataset.investmentFirms?.turnoverBasedKpi
-                    ?.substantialContributionToClimateChangeMitigationInPercentOfWhichTransitional?.value
-                ),
-                'Substantial Contribution to Climate Change Mitigation in Percent - Of which Transitional',
-                dataset.investmentFirms?.turnoverBasedKpi
-                  ?.substantialContributionToClimateChangeMitigationInPercentOfWhichTransitional
-              ),
-          },
-          {
-            type: 'cell',
-            label: 'Substantial Contribution to Climate Change Adaptation in Percent - Eligible',
-            explanation:
-              "Share substantially contributing to Climate Change Adaptation\n- Investment firms dealing on own account: total assets invested under investment firms' activities dealing on own account (as per Section A of Annex I to Directive 2014/65/EU) of which assets covered by the Taxonomy (Taxonomy-eligible)\n- Investment firms not dealing on own account: revenue (i.e. fees, commissions and other monetary benefits) from investment and services and activities other than on own account (as per Section A of Annex I to Directive 2014/65/EU) of which assets covered by the Taxonomy (Taxonomy-eligible)",
-            shouldDisplay: (): boolean => true,
-            valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
-              wrapDisplayValueWithDatapointInformation(
-                formatPercentageForDatatable(
-                  dataset.investmentFirms?.turnoverBasedKpi
-                    ?.substantialContributionToClimateChangeAdaptationInPercentEligible?.value
-                ),
-                'Substantial Contribution to Climate Change Adaptation in Percent - Eligible',
-                dataset.investmentFirms?.turnoverBasedKpi
-                  ?.substantialContributionToClimateChangeAdaptationInPercentEligible
-              ),
-          },
-          {
-            type: 'cell',
-            label: 'Substantial Contribution to Climate Change Adaptation in Percent - Aligned',
-            explanation:
-              "Share substantially contributing to Climate Change Adaptation\n- Investment firms dealing on own account: total assets invested under investment firms' activities dealing on own account (as per Section A of Annex I to Directive 2014/65/EU) of which linked to activities aligned with the EU Taxonomy (Taxonomy-aligned)\n- Investment firms not dealing on own account: revenue (i.e. fees, commissions and other monetary benefits) from investment and services and activities other than on own account (as per Section A of Annex I to Directive 2014/65/EU) of which from services and activities linked to activities aligned with the EU Taxonomy (Taxonomy-aligned)",
-            shouldDisplay: (): boolean => true,
-            valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
-              wrapDisplayValueWithDatapointInformation(
-                formatPercentageForDatatable(
-                  dataset.investmentFirms?.turnoverBasedKpi
-                    ?.substantialContributionToClimateChangeAdaptationInPercentAligned?.value
-                ),
-                'Substantial Contribution to Climate Change Adaptation in Percent - Aligned',
-                dataset.investmentFirms?.turnoverBasedKpi
-                  ?.substantialContributionToClimateChangeAdaptationInPercentAligned
-              ),
-          },
-          {
-            type: 'cell',
-            label: 'Substantial Contribution to Climate Change Adaptation in Percent - Of which Enabling',
-            explanation:
-              "Share substantially contributing to Climate Change Adaptation\n- Investment firms dealing on own account: total assets invested under investment firms' activities dealing on own account (as per Section A of Annex I to Directive 2014/65/EU) of which enabling\n- Investment firms not dealing on own account: revenue (i.e. fees, commissions and other monetary benefits) from investment and services and activities other than on own account (as per Section A of Annex I to Directive 2014/65/EU) of which enabling",
-            shouldDisplay: (): boolean => true,
-            valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
-              wrapDisplayValueWithDatapointInformation(
-                formatPercentageForDatatable(
-                  dataset.investmentFirms?.turnoverBasedKpi
-                    ?.substantialContributionToClimateChangeAdaptationInPercentOfWhichEnabling?.value
-                ),
-                'Substantial Contribution to Climate Change Adaptation in Percent - Of which Enabling',
-                dataset.investmentFirms?.turnoverBasedKpi
-                  ?.substantialContributionToClimateChangeAdaptationInPercentOfWhichEnabling
+              formatCurrencyForDisplay(
+                dataset.investmentFirms?.dealingOnOwnAccountServicesTurnoverBased
+                  ?.turnoverBasedTotalAssetsInvestedUnderInvestmentFirmsActivitiesDealingOnOwnAccount,
+                "Turnover-based Total Assets invested under Investment Firm's Activities dealing on own Account"
               ),
           },
           {
             type: 'cell',
             label:
-              'Substantial Contribution to Sustainable Use and Protection of Water and Marine Resources in Percent - Eligible',
+              'Turnover-based Proportion of Assets substantially contributing to Climate Change Mitigation - Eligible',
             explanation:
-              "Share substantially contributing to Sustainable Use and Protection of Water and Marine Resources\n- Investment firms dealing on own account: total assets invested under investment firms' activities dealing on own account (as per Section A of Annex I to Directive 2014/65/EU) of which assets covered by the Taxonomy (Taxonomy-eligible)\n- Investment firms not dealing on own account: revenue (i.e. fees, commissions and other monetary benefits) from investment and services and activities other than on own account (as per Section A of Annex I to Directive 2014/65/EU) of which assets covered by the Taxonomy (Taxonomy-eligible)",
+              "Taxonomy-aligned Turnover-based Proportion of Total Assets invested under Investment Firms' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to Climate Change Mitigation",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
                 formatPercentageForDatatable(
-                  dataset.investmentFirms?.turnoverBasedKpi
-                    ?.substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentEligible
-                    ?.value
+                  dataset.investmentFirms?.dealingOnOwnAccountServicesTurnoverBased
+                    ?.turnoverBasedProportionOfAssetsSubstantiallyContributingToClimateChangeMitigationEligible?.value
                 ),
-                'Substantial Contribution to Sustainable Use and Protection of Water and Marine Resources in Percent - Eligible',
-                dataset.investmentFirms?.turnoverBasedKpi
-                  ?.substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentEligible
+                'Turnover-based Proportion of Assets substantially contributing to Climate Change Mitigation - Eligible',
+                dataset.investmentFirms?.dealingOnOwnAccountServicesTurnoverBased
+                  ?.turnoverBasedProportionOfAssetsSubstantiallyContributingToClimateChangeMitigationEligible
               ),
           },
           {
             type: 'cell',
             label:
-              'Substantial Contribution to Sustainable Use and Protection of Water and Marine Resources in Percent - Aligned',
+              'Turnover-based Proportion of Assets substantially contributing to Climate Change Mitigation - Aligned',
             explanation:
-              "Share substantially contributing to Sustainable Use and Protection of Water and Marine Resources\n- Investment firms dealing on own account: total assets invested under investment firms' activities dealing on own account (as per Section A of Annex I to Directive 2014/65/EU) of which linked to activities aligned with the EU Taxonomy (Taxonomy-aligned)\n- Investment firms not dealing on own account: revenue (i.e. fees, commissions and other monetary benefits) from investment and services and activities other than on own account (as per Section A of Annex I to Directive 2014/65/EU) of which from services and activities linked to activities aligned with the EU Taxonomy (Taxonomy-aligned)",
+              "Taxonomy-aligned Turnover-based Proportion of Total Assets invested under Investment Firms' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to Climate Change Mitigation",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
                 formatPercentageForDatatable(
-                  dataset.investmentFirms?.turnoverBasedKpi
-                    ?.substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned
-                    ?.value
+                  dataset.investmentFirms?.dealingOnOwnAccountServicesTurnoverBased
+                    ?.turnoverBasedProportionOfAssetsSubstantiallyContributingToClimateChangeMitigationAligned?.value
                 ),
-                'Substantial Contribution to Sustainable Use and Protection of Water and Marine Resources in Percent - Aligned',
-                dataset.investmentFirms?.turnoverBasedKpi
-                  ?.substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned
+                'Turnover-based Proportion of Assets substantially contributing to Climate Change Mitigation - Aligned',
+                dataset.investmentFirms?.dealingOnOwnAccountServicesTurnoverBased
+                  ?.turnoverBasedProportionOfAssetsSubstantiallyContributingToClimateChangeMitigationAligned
               ),
           },
           {
             type: 'cell',
             label:
-              'Substantial Contribution to Sustainable Use and Protection of Water and Marine Resources in Percent - Of which Enabling',
+              'Turnover-based Proportion of Assets substantially contributing to Climate Change Mitigation - Of which Transitional',
             explanation:
-              "Share substantially contributing to Sustainable Use and Protection of Water and Marine Resources\n- Investment firms dealing on own account: total assets invested under investment firms' activities dealing on own account (as per Section A of Annex I to Directive 2014/65/EU) of which enabling\n- Investment firms not dealing on own account: revenue (i.e. fees, commissions and other monetary benefits) from investment and services and activities other than on own account (as per Section A of Annex I to Directive 2014/65/EU) of which enabling",
+              "Taxonomy-aligned and transitional Turnover-based Proportion of Total Assets invested under Investment Firms' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to Climate Change Mitigation",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
                 formatPercentageForDatatable(
-                  dataset.investmentFirms?.turnoverBasedKpi
-                    ?.substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentOfWhichEnabling
+                  dataset.investmentFirms?.dealingOnOwnAccountServicesTurnoverBased
+                    ?.turnoverBasedProportionOfAssetsSubstantiallyContributingToClimateChangeMitigationOfWhichTransitional
                     ?.value
                 ),
-                'Substantial Contribution to Sustainable Use and Protection of Water and Marine Resources in Percent - Of which Enabling',
-                dataset.investmentFirms?.turnoverBasedKpi
-                  ?.substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentOfWhichEnabling
-              ),
-          },
-          {
-            type: 'cell',
-            label: 'Substantial Contribution to Transition to a Circular Economy in Percent - Eligible',
-            explanation:
-              "Share substantially contributing to Transition to a Circular Economy\n- Investment firms dealing on own account: total assets invested under investment firms' activities dealing on own account (as per Section A of Annex I to Directive 2014/65/EU) of which assets covered by the Taxonomy (Taxonomy-eligible)\n- Investment firms not dealing on own account: revenue (i.e. fees, commissions and other monetary benefits) from investment and services and activities other than on own account (as per Section A of Annex I to Directive 2014/65/EU) of which assets covered by the Taxonomy (Taxonomy-eligible)",
-            shouldDisplay: (): boolean => true,
-            valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
-              wrapDisplayValueWithDatapointInformation(
-                formatPercentageForDatatable(
-                  dataset.investmentFirms?.turnoverBasedKpi
-                    ?.substantialContributionToTransitionToACircularEconomyInPercentEligible?.value
-                ),
-                'Substantial Contribution to Transition to a Circular Economy in Percent - Eligible',
-                dataset.investmentFirms?.turnoverBasedKpi
-                  ?.substantialContributionToTransitionToACircularEconomyInPercentEligible
-              ),
-          },
-          {
-            type: 'cell',
-            label: 'Substantial Contribution to Transition to a Circular Economy in Percent - Aligned',
-            explanation:
-              "Share substantially contributing to Transition to a Circular Economy\n- Investment firms dealing on own account: total assets invested under investment firms' activities dealing on own account (as per Section A of Annex I to Directive 2014/65/EU) of which linked to activities aligned with the EU Taxonomy (Taxonomy-aligned)\n- Investment firms not dealing on own account: revenue (i.e. fees, commissions and other monetary benefits) from investment and services and activities other than on own account (as per Section A of Annex I to Directive 2014/65/EU) of which from services and activities linked to activities aligned with the EU Taxonomy (Taxonomy-aligned)",
-            shouldDisplay: (): boolean => true,
-            valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
-              wrapDisplayValueWithDatapointInformation(
-                formatPercentageForDatatable(
-                  dataset.investmentFirms?.turnoverBasedKpi
-                    ?.substantialContributionToTransitionToACircularEconomyInPercentAligned?.value
-                ),
-                'Substantial Contribution to Transition to a Circular Economy in Percent - Aligned',
-                dataset.investmentFirms?.turnoverBasedKpi
-                  ?.substantialContributionToTransitionToACircularEconomyInPercentAligned
-              ),
-          },
-          {
-            type: 'cell',
-            label: 'Substantial Contribution to Transition to a Circular Economy in Percent - Of which Enabling',
-            explanation:
-              "Share substantially contributing to Transition to a Circular Economy\n- Investment firms dealing on own account: total assets invested under investment firms' activities dealing on own account (as per Section A of Annex I to Directive 2014/65/EU) of which enabling\n- Investment firms not dealing on own account: revenue (i.e. fees, commissions and other monetary benefits) from investment and services and activities other than on own account (as per Section A of Annex I to Directive 2014/65/EU) of which enabling",
-            shouldDisplay: (): boolean => true,
-            valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
-              wrapDisplayValueWithDatapointInformation(
-                formatPercentageForDatatable(
-                  dataset.investmentFirms?.turnoverBasedKpi
-                    ?.substantialContributionToTransitionToACircularEconomyInPercentOfWhichEnabling?.value
-                ),
-                'Substantial Contribution to Transition to a Circular Economy in Percent - Of which Enabling',
-                dataset.investmentFirms?.turnoverBasedKpi
-                  ?.substantialContributionToTransitionToACircularEconomyInPercentOfWhichEnabling
-              ),
-          },
-          {
-            type: 'cell',
-            label: 'Substantial Contribution to Pollution Prevention and Control in Percent - Eligible',
-            explanation:
-              "Share substantially contributing to Pollution Prevention and Control\n- Investment firms dealing on own account: total assets invested under investment firms' activities dealing on own account (as per Section A of Annex I to Directive 2014/65/EU) of which assets covered by the Taxonomy (Taxonomy-eligible)\n- Investment firms not dealing on own account: revenue (i.e. fees, commissions and other monetary benefits) from investment and services and activities other than on own account (as per Section A of Annex I to Directive 2014/65/EU) of which assets covered by the Taxonomy (Taxonomy-eligible)",
-            shouldDisplay: (): boolean => true,
-            valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
-              wrapDisplayValueWithDatapointInformation(
-                formatPercentageForDatatable(
-                  dataset.investmentFirms?.turnoverBasedKpi
-                    ?.substantialContributionToPollutionPreventionAndControlInPercentEligible?.value
-                ),
-                'Substantial Contribution to Pollution Prevention and Control in Percent - Eligible',
-                dataset.investmentFirms?.turnoverBasedKpi
-                  ?.substantialContributionToPollutionPreventionAndControlInPercentEligible
-              ),
-          },
-          {
-            type: 'cell',
-            label: 'Substantial Contribution to Pollution Prevention and Control in Percent - Aligned',
-            explanation:
-              "Share substantially contributing to Pollution Prevention and Control\n- Investment firms dealing on own account: total assets invested under investment firms' activities dealing on own account (as per Section A of Annex I to Directive 2014/65/EU) of which linked to activities aligned with the EU Taxonomy (Taxonomy-aligned)\n- Investment firms not dealing on own account: revenue (i.e. fees, commissions and other monetary benefits) from investment and services and activities other than on own account (as per Section A of Annex I to Directive 2014/65/EU) of which from services and activities linked to activities aligned with the EU Taxonomy (Taxonomy-aligned)",
-            shouldDisplay: (): boolean => true,
-            valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
-              wrapDisplayValueWithDatapointInformation(
-                formatPercentageForDatatable(
-                  dataset.investmentFirms?.turnoverBasedKpi
-                    ?.substantialContributionToPollutionPreventionAndControlInPercentAligned?.value
-                ),
-                'Substantial Contribution to Pollution Prevention and Control in Percent - Aligned',
-                dataset.investmentFirms?.turnoverBasedKpi
-                  ?.substantialContributionToPollutionPreventionAndControlInPercentAligned
-              ),
-          },
-          {
-            type: 'cell',
-            label: 'Substantial Contribution to Pollution Prevention and Control in Percent - Of which Enabling',
-            explanation:
-              "Share substantially contributing to Pollution Prevention and Control\n- Investment firms dealing on own account: total assets invested under investment firms' activities dealing on own account (as per Section A of Annex I to Directive 2014/65/EU) of which enabling\n- Investment firms not dealing on own account: revenue (i.e. fees, commissions and other monetary benefits) from investment and services and activities other than on own account (as per Section A of Annex I to Directive 2014/65/EU) of which enabling",
-            shouldDisplay: (): boolean => true,
-            valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
-              wrapDisplayValueWithDatapointInformation(
-                formatPercentageForDatatable(
-                  dataset.investmentFirms?.turnoverBasedKpi
-                    ?.substantialContributionToPollutionPreventionAndControlInPercentOfWhichEnabling?.value
-                ),
-                'Substantial Contribution to Pollution Prevention and Control in Percent - Of which Enabling',
-                dataset.investmentFirms?.turnoverBasedKpi
-                  ?.substantialContributionToPollutionPreventionAndControlInPercentOfWhichEnabling
+                'Turnover-based Proportion of Assets substantially contributing to Climate Change Mitigation - Of which Transitional',
+                dataset.investmentFirms?.dealingOnOwnAccountServicesTurnoverBased
+                  ?.turnoverBasedProportionOfAssetsSubstantiallyContributingToClimateChangeMitigationOfWhichTransitional
               ),
           },
           {
             type: 'cell',
             label:
-              'Substantial Contribution to Protection and Restoration of Biodiversity and Ecosystems in Percent - Eligible',
+              'Turnover-based Proportion of Assets substantially contributing to Climate Change Mitigation - Of which Enabling',
             explanation:
-              "Share substantially contributing to Protection and Restoration of Biodiversity and Ecosystems\n- Investment firms dealing on own account: total assets invested under investment firms' activities dealing on own account (as per Section A of Annex I to Directive 2014/65/EU) of which assets covered by the Taxonomy (Taxonomy-eligible)\n- Investment firms not dealing on own account: revenue (i.e. fees, commissions and other monetary benefits) from investment and services and activities other than on own account (as per Section A of Annex I to Directive 2014/65/EU) of which assets covered by the Taxonomy (Taxonomy-eligible)",
+              "Taxonomy-aligned and enabling Turnover-based Proportion of Total Assets invested under Investment Firms' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to Climate Change Mitigation",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
                 formatPercentageForDatatable(
-                  dataset.investmentFirms?.turnoverBasedKpi
-                    ?.substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentEligible
+                  dataset.investmentFirms?.dealingOnOwnAccountServicesTurnoverBased
+                    ?.turnoverBasedProportionOfAssetsSubstantiallyContributingToClimateChangeMitigationOfWhichEnabling
                     ?.value
                 ),
-                'Substantial Contribution to Protection and Restoration of Biodiversity and Ecosystems in Percent - Eligible',
-                dataset.investmentFirms?.turnoverBasedKpi
-                  ?.substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentEligible
+                'Turnover-based Proportion of Assets substantially contributing to Climate Change Mitigation - Of which Enabling',
+                dataset.investmentFirms?.dealingOnOwnAccountServicesTurnoverBased
+                  ?.turnoverBasedProportionOfAssetsSubstantiallyContributingToClimateChangeMitigationOfWhichEnabling
               ),
           },
           {
             type: 'cell',
             label:
-              'Substantial Contribution to Protection and Restoration of Biodiversity and Ecosystems in Percent - Aligned',
+              'Turnover-based Proportion of Assets substantially contributing to Climate Change Adaptation - Eligible',
             explanation:
-              "Share substantially contributing to Protection and Restoration of Biodiversity and Ecosystems\n- Investment firms dealing on own account: total assets invested under investment firms' activities dealing on own account (as per Section A of Annex I to Directive 2014/65/EU) of which linked to activities aligned with the EU Taxonomy (Taxonomy-aligned)\n- Investment firms not dealing on own account: revenue (i.e. fees, commissions and other monetary benefits) from investment and services and activities other than on own account (as per Section A of Annex I to Directive 2014/65/EU) of which from services and activities linked to activities aligned with the EU Taxonomy (Taxonomy-aligned)",
+              "Taxonomy-aligned Turnover-based Proportion of Total Assets invested under Investment Firms' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to Climate Change Adaptation",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
                 formatPercentageForDatatable(
-                  dataset.investmentFirms?.turnoverBasedKpi
-                    ?.substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned
-                    ?.value
+                  dataset.investmentFirms?.dealingOnOwnAccountServicesTurnoverBased
+                    ?.turnoverBasedProportionOfAssetsSubstantiallyContributingToClimateChangeAdaptationEligible?.value
                 ),
-                'Substantial Contribution to Protection and Restoration of Biodiversity and Ecosystems in Percent - Aligned',
-                dataset.investmentFirms?.turnoverBasedKpi
-                  ?.substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned
+                'Turnover-based Proportion of Assets substantially contributing to Climate Change Adaptation - Eligible',
+                dataset.investmentFirms?.dealingOnOwnAccountServicesTurnoverBased
+                  ?.turnoverBasedProportionOfAssetsSubstantiallyContributingToClimateChangeAdaptationEligible
               ),
           },
           {
             type: 'cell',
             label:
-              'Substantial Contribution to Protection and Restoration of Biodiversity and Ecosystems in Percent - Of which Enabling',
+              'Turnover-based Proportion of Assets substantially contributing to Climate Change Adaptation - Aligned',
             explanation:
-              "Share substantially contributing to Protection and Restoration of Biodiversity and Ecosystems\n- Investment firms dealing on own account: total assets invested under investment firms' activities dealing on own account (as per Section A of Annex I to Directive 2014/65/EU) of which enabling\n- Investment firms not dealing on own account: revenue (i.e. fees, commissions and other monetary benefits) from investment and services and activities other than on own account (as per Section A of Annex I to Directive 2014/65/EU) of which enabling",
+              "Taxonomy-aligned Turnover-based Proportion of Total Assets invested under Investment Firms' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to Climate Change Adaptation",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
                 formatPercentageForDatatable(
-                  dataset.investmentFirms?.turnoverBasedKpi
-                    ?.substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentOfWhichEnabling
+                  dataset.investmentFirms?.dealingOnOwnAccountServicesTurnoverBased
+                    ?.turnoverBasedProportionOfAssetsSubstantiallyContributingToClimateChangeAdaptationAligned?.value
+                ),
+                'Turnover-based Proportion of Assets substantially contributing to Climate Change Adaptation - Aligned',
+                dataset.investmentFirms?.dealingOnOwnAccountServicesTurnoverBased
+                  ?.turnoverBasedProportionOfAssetsSubstantiallyContributingToClimateChangeAdaptationAligned
+              ),
+          },
+          {
+            type: 'cell',
+            label:
+              'Turnover-based Proportion of Assets substantially contributing to Climate Change Adaptation - Of which Enabling',
+            explanation:
+              "Taxonomy-aligned and enabling Turnover-based Proportion of Total Assets invested under Investment Firms' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to Climate Change Adaptation",
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatPercentageForDatatable(
+                  dataset.investmentFirms?.dealingOnOwnAccountServicesTurnoverBased
+                    ?.turnoverBasedProportionOfAssetsSubstantiallyContributingToClimateChangeAdaptationOfWhichEnabling
                     ?.value
                 ),
-                'Substantial Contribution to Protection and Restoration of Biodiversity and Ecosystems in Percent - Of which Enabling',
-                dataset.investmentFirms?.turnoverBasedKpi
-                  ?.substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentOfWhichEnabling
+                'Turnover-based Proportion of Assets substantially contributing to Climate Change Adaptation - Of which Enabling',
+                dataset.investmentFirms?.dealingOnOwnAccountServicesTurnoverBased
+                  ?.turnoverBasedProportionOfAssetsSubstantiallyContributingToClimateChangeAdaptationOfWhichEnabling
               ),
           },
           {
             type: 'cell',
-            label: 'Total assets invested / revenue from investment and services in Percent - Eligible',
+            label:
+              'Turnover-based Proportion of Assets substantially contributing to Sustainable Use and Protection of Water and Marine Resources - Eligible',
             explanation:
-              "Investment firms dealing on own account: total assets invested under investment firms' activities dealing on own account (as per Section A of Annex I to Directive 2014/65/EU) of which assets covered by the Taxonomy (Taxonomy-eligible)\nInvestment firms not dealing on own account: revenue (i.e. fees, commissions and other monetary benefits) from investment and services and activities other than on own account (as per Section A of Annex I to Directive 2014/65/EU) of which assets covered by the Taxonomy (Taxonomy-eligible)",
+              "Taxonomy-aligned Turnover-based Proportion of Total Assets invested under Investment Firms' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to Sustainable Use and Protection of Water and Marine Resources",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
                 formatPercentageForDatatable(
-                  dataset.investmentFirms?.turnoverBasedKpi
-                    ?.totalAssetsInvestedRevenueFromInvestmentAndServicesInPercentEligible?.value
+                  dataset.investmentFirms?.dealingOnOwnAccountServicesTurnoverBased
+                    ?.turnoverBasedProportionOfAssetsSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesEligible
+                    ?.value
                 ),
-                'Total assets invested / revenue from investment and services in Percent - Eligible',
-                dataset.investmentFirms?.turnoverBasedKpi
-                  ?.totalAssetsInvestedRevenueFromInvestmentAndServicesInPercentEligible
+                'Turnover-based Proportion of Assets substantially contributing to Sustainable Use and Protection of Water and Marine Resources - Eligible',
+                dataset.investmentFirms?.dealingOnOwnAccountServicesTurnoverBased
+                  ?.turnoverBasedProportionOfAssetsSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesEligible
               ),
           },
           {
             type: 'cell',
-            label: 'Total assets invested / revenue from investment and services in Percent - Aligned',
+            label:
+              'Turnover-based Proportion of Assets substantially contributing to Sustainable Use and Protection of Water and Marine Resources - Aligned',
             explanation:
-              "Investment firms dealing on own account: total assets invested under investment firms' activities dealing on own account (as per Section A of Annex I to Directive 2014/65/EU) of which linked to activities aligned with the EU Taxonomy (Taxonomy-aligned)\nInvestment firms not dealing on own account: revenue (i.e. fees, commissions and other monetary benefits) from investment and services and activities other than on own account (as per Section A of Annex I to Directive 2014/65/EU) of which from services and activities linked to activities aligned with the EU Taxonomy (Taxonomy-aligned)",
+              "Taxonomy-aligned Turnover-based Proportion of Total Assets invested under Investment Firms' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to Sustainable Use and Protection of Water and Marine Resources",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
                 formatPercentageForDatatable(
-                  dataset.investmentFirms?.turnoverBasedKpi
-                    ?.totalAssetsInvestedRevenueFromInvestmentAndServicesInPercentAligned?.value
+                  dataset.investmentFirms?.dealingOnOwnAccountServicesTurnoverBased
+                    ?.turnoverBasedProportionOfAssetsSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesAligned
+                    ?.value
                 ),
-                'Total assets invested / revenue from investment and services in Percent - Aligned',
-                dataset.investmentFirms?.turnoverBasedKpi
-                  ?.totalAssetsInvestedRevenueFromInvestmentAndServicesInPercentAligned
+                'Turnover-based Proportion of Assets substantially contributing to Sustainable Use and Protection of Water and Marine Resources - Aligned',
+                dataset.investmentFirms?.dealingOnOwnAccountServicesTurnoverBased
+                  ?.turnoverBasedProportionOfAssetsSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesAligned
               ),
           },
           {
             type: 'cell',
-            label: 'Total assets invested / revenue from investment and services in Percent - Of which Enabling',
+            label:
+              'Turnover-based Proportion of Assets substantially contributing to Sustainable Use and Protection of Water and Marine Resources - Of which Enabling',
             explanation:
-              "Investment firms dealing on own account: total assets invested under investment firms' activities dealing on own account (as per Section A of Annex I to Directive 2014/65/EU) of which enabling\nInvestment firms not dealing on own account: revenue (i.e. fees, commissions and other monetary benefits) from investment and services and activities other than on own account (as per Section A of Annex I to Directive 2014/65/EU) of which enabling",
+              "Taxonomy-aligned and enabling Turnover-based Proportion of Total Assets invested under Investment Firms' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to Sustainable Use and Protection of Water and Marine Resources",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
                 formatPercentageForDatatable(
-                  dataset.investmentFirms?.turnoverBasedKpi
-                    ?.totalAssetsInvestedRevenueFromInvestmentAndServicesInPercentOfWhichEnabling?.value
+                  dataset.investmentFirms?.dealingOnOwnAccountServicesTurnoverBased
+                    ?.turnoverBasedProportionOfAssetsSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesOfWhichEnabling
+                    ?.value
                 ),
-                'Total assets invested / revenue from investment and services in Percent - Of which Enabling',
-                dataset.investmentFirms?.turnoverBasedKpi
-                  ?.totalAssetsInvestedRevenueFromInvestmentAndServicesInPercentOfWhichEnabling
+                'Turnover-based Proportion of Assets substantially contributing to Sustainable Use and Protection of Water and Marine Resources - Of which Enabling',
+                dataset.investmentFirms?.dealingOnOwnAccountServicesTurnoverBased
+                  ?.turnoverBasedProportionOfAssetsSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesOfWhichEnabling
               ),
           },
           {
             type: 'cell',
-            label: 'Total assets invested / revenue from investment and services in Percent - Of which Transitional',
+            label: 'Turnover-based Proportion of Assets substantially contributing to Circular Economy - Eligible',
             explanation:
-              "Investment firms dealing on own account: total assets invested under investment firms' activities dealing on own account (as per Section A of Annex I to Directive 2014/65/EU) of which transitional\nInvestment firms not dealing on own account: revenue (i.e. fees, commissions and other monetary benefits) from investment and services and activities other than on own account (as per Section A of Annex I to Directive 2014/65/EU) of which transitional",
+              "Taxonomy-aligned Turnover-based Proportion of Total Assets invested under Investment Firms' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to Circular Economy",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
                 formatPercentageForDatatable(
-                  dataset.investmentFirms?.turnoverBasedKpi
-                    ?.totalAssetsInvestedRevenueFromInvestmentAndServicesInPercentOfWhichTransitional?.value
+                  dataset.investmentFirms?.dealingOnOwnAccountServicesTurnoverBased
+                    ?.turnoverBasedProportionOfAssetsSubstantiallyContributingToCircularEconomyEligible?.value
                 ),
-                'Total assets invested / revenue from investment and services in Percent - Of which Transitional',
-                dataset.investmentFirms?.turnoverBasedKpi
-                  ?.totalAssetsInvestedRevenueFromInvestmentAndServicesInPercentOfWhichTransitional
+                'Turnover-based Proportion of Assets substantially contributing to Circular Economy - Eligible',
+                dataset.investmentFirms?.dealingOnOwnAccountServicesTurnoverBased
+                  ?.turnoverBasedProportionOfAssetsSubstantiallyContributingToCircularEconomyEligible
+              ),
+          },
+          {
+            type: 'cell',
+            label: 'Turnover-based Proportion of Assets substantially contributing to Circular Economy - Aligned',
+            explanation:
+              "Taxonomy-aligned Turnover-based Proportion of Total Assets invested under Investment Firms' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to Circular Economy",
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatPercentageForDatatable(
+                  dataset.investmentFirms?.dealingOnOwnAccountServicesTurnoverBased
+                    ?.turnoverBasedProportionOfAssetsSubstantiallyContributingToCircularEconomyAligned?.value
+                ),
+                'Turnover-based Proportion of Assets substantially contributing to Circular Economy - Aligned',
+                dataset.investmentFirms?.dealingOnOwnAccountServicesTurnoverBased
+                  ?.turnoverBasedProportionOfAssetsSubstantiallyContributingToCircularEconomyAligned
+              ),
+          },
+          {
+            type: 'cell',
+            label:
+              'Turnover-based Proportion of Assets substantially contributing to Circular Economy - Of which Enabling',
+            explanation:
+              "Taxonomy-aligned and enabling Turnover-based Proportion of Total Assets invested under Investment Firms' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to Circular Economy",
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatPercentageForDatatable(
+                  dataset.investmentFirms?.dealingOnOwnAccountServicesTurnoverBased
+                    ?.turnoverBasedProportionOfAssetsSubstantiallyContributingToCircularEconomyOfWhichEnabling?.value
+                ),
+                'Turnover-based Proportion of Assets substantially contributing to Circular Economy - Of which Enabling',
+                dataset.investmentFirms?.dealingOnOwnAccountServicesTurnoverBased
+                  ?.turnoverBasedProportionOfAssetsSubstantiallyContributingToCircularEconomyOfWhichEnabling
+              ),
+          },
+          {
+            type: 'cell',
+            label:
+              'Turnover-based Proportion of Assets substantially contributing to Pollution Prevention and Control - Eligible',
+            explanation:
+              "Taxonomy-aligned Turnover-based Proportion of Total Assets invested under Investment Firms' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to Pollution Prevention and Control",
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatPercentageForDatatable(
+                  dataset.investmentFirms?.dealingOnOwnAccountServicesTurnoverBased
+                    ?.turnoverBasedProportionOfAssetsSubstantiallyContributingToPollutionPreventionAndControlEligible
+                    ?.value
+                ),
+                'Turnover-based Proportion of Assets substantially contributing to Pollution Prevention and Control - Eligible',
+                dataset.investmentFirms?.dealingOnOwnAccountServicesTurnoverBased
+                  ?.turnoverBasedProportionOfAssetsSubstantiallyContributingToPollutionPreventionAndControlEligible
+              ),
+          },
+          {
+            type: 'cell',
+            label:
+              'Turnover-based Proportion of Assets substantially contributing to Pollution Prevention and Control - Aligned',
+            explanation:
+              "Taxonomy-aligned Turnover-based Proportion of Total Assets invested under Investment Firms' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to Pollution Prevention and Control",
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatPercentageForDatatable(
+                  dataset.investmentFirms?.dealingOnOwnAccountServicesTurnoverBased
+                    ?.turnoverBasedProportionOfAssetsSubstantiallyContributingToPollutionPreventionAndControlAligned
+                    ?.value
+                ),
+                'Turnover-based Proportion of Assets substantially contributing to Pollution Prevention and Control - Aligned',
+                dataset.investmentFirms?.dealingOnOwnAccountServicesTurnoverBased
+                  ?.turnoverBasedProportionOfAssetsSubstantiallyContributingToPollutionPreventionAndControlAligned
+              ),
+          },
+          {
+            type: 'cell',
+            label:
+              'Turnover-based Proportion of Assets substantially contributing to Pollution Prevention and Control - Of which Enabling',
+            explanation:
+              "Taxonomy-aligned and enabling Turnover-based Proportion of Total Assets invested under Investment Firms' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to Pollution Prevention and Control",
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatPercentageForDatatable(
+                  dataset.investmentFirms?.dealingOnOwnAccountServicesTurnoverBased
+                    ?.turnoverBasedProportionOfAssetsSubstantiallyContributingToPollutionPreventionAndControlOfWhichEnabling
+                    ?.value
+                ),
+                'Turnover-based Proportion of Assets substantially contributing to Pollution Prevention and Control - Of which Enabling',
+                dataset.investmentFirms?.dealingOnOwnAccountServicesTurnoverBased
+                  ?.turnoverBasedProportionOfAssetsSubstantiallyContributingToPollutionPreventionAndControlOfWhichEnabling
+              ),
+          },
+          {
+            type: 'cell',
+            label:
+              'Turnover-based Proportion of Assets substantially contributing to Protection and Restoration of Biodiversity and Ecosystems - Eligible',
+            explanation:
+              "Taxonomy-aligned Turnover-based Proportion of Total Assets invested under Investment Firms' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to Protection and Restoration of Biodiversity and Ecosystems",
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatPercentageForDatatable(
+                  dataset.investmentFirms?.dealingOnOwnAccountServicesTurnoverBased
+                    ?.turnoverBasedProportionOfAssetsSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsEligible
+                    ?.value
+                ),
+                'Turnover-based Proportion of Assets substantially contributing to Protection and Restoration of Biodiversity and Ecosystems - Eligible',
+                dataset.investmentFirms?.dealingOnOwnAccountServicesTurnoverBased
+                  ?.turnoverBasedProportionOfAssetsSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsEligible
+              ),
+          },
+          {
+            type: 'cell',
+            label:
+              'Turnover-based Proportion of Assets substantially contributing to Protection and Restoration of Biodiversity and Ecosystems - Aligned',
+            explanation:
+              "Taxonomy-aligned Turnover-based Proportion of Total Assets invested under Investment Firms' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to Protection and Restoration of Biodiversity and Ecosystems",
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatPercentageForDatatable(
+                  dataset.investmentFirms?.dealingOnOwnAccountServicesTurnoverBased
+                    ?.turnoverBasedProportionOfAssetsSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsAligned
+                    ?.value
+                ),
+                'Turnover-based Proportion of Assets substantially contributing to Protection and Restoration of Biodiversity and Ecosystems - Aligned',
+                dataset.investmentFirms?.dealingOnOwnAccountServicesTurnoverBased
+                  ?.turnoverBasedProportionOfAssetsSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsAligned
+              ),
+          },
+          {
+            type: 'cell',
+            label:
+              'Turnover-based Proportion of Assets substantially contributing to Protection and Restoration of Biodiversity and Ecosystems - Of which Enabling',
+            explanation:
+              "Taxonomy-aligned and enabling Turnover-based Proportion of Total Assets invested under Investment Firms' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to Protection and Restoration of Biodiversity and Ecosystems",
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatPercentageForDatatable(
+                  dataset.investmentFirms?.dealingOnOwnAccountServicesTurnoverBased
+                    ?.turnoverBasedProportionOfAssetsSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsOfWhichEnabling
+                    ?.value
+                ),
+                'Turnover-based Proportion of Assets substantially contributing to Protection and Restoration of Biodiversity and Ecosystems - Of which Enabling',
+                dataset.investmentFirms?.dealingOnOwnAccountServicesTurnoverBased
+                  ?.turnoverBasedProportionOfAssetsSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsOfWhichEnabling
+              ),
+          },
+          {
+            type: 'cell',
+            label:
+              'Turnover-based Proportion of Assets substantially contributing to any of the six Environmental Objectives - Eligible',
+            explanation:
+              "Taxonomy-aligned Turnover-based Proportion of Total Assets invested under Investment Firms' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to any of the six Environmental Objectives",
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatPercentageForDatatable(
+                  dataset.investmentFirms?.dealingOnOwnAccountServicesTurnoverBased
+                    ?.turnoverBasedProportionOfAssetsSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesEligible
+                    ?.value
+                ),
+                'Turnover-based Proportion of Assets substantially contributing to any of the six Environmental Objectives - Eligible',
+                dataset.investmentFirms?.dealingOnOwnAccountServicesTurnoverBased
+                  ?.turnoverBasedProportionOfAssetsSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesEligible
+              ),
+          },
+          {
+            type: 'cell',
+            label:
+              'Turnover-based Proportion of Assets substantially contributing to any of the six Environmental Objectives - Aligned',
+            explanation:
+              "Taxonomy-aligned Turnover-based Proportion of Total Assets invested under Investment Firms' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to any of the six Environmental Objectives",
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatPercentageForDatatable(
+                  dataset.investmentFirms?.dealingOnOwnAccountServicesTurnoverBased
+                    ?.turnoverBasedProportionOfAssetsSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesAligned
+                    ?.value
+                ),
+                'Turnover-based Proportion of Assets substantially contributing to any of the six Environmental Objectives - Aligned',
+                dataset.investmentFirms?.dealingOnOwnAccountServicesTurnoverBased
+                  ?.turnoverBasedProportionOfAssetsSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesAligned
+              ),
+          },
+          {
+            type: 'cell',
+            label:
+              'Turnover-based Proportion of Assets substantially contributing to any of the six Environmental Objectives - Of which Transitional',
+            explanation:
+              "Taxonomy-aligned and transitional Turnover-based Proportion of Total Assets invested under Investment Firms' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to any of the six Environmental Objectives",
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatPercentageForDatatable(
+                  dataset.investmentFirms?.dealingOnOwnAccountServicesTurnoverBased
+                    ?.turnoverBasedProportionOfAssetsSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesOfWhichTransitional
+                    ?.value
+                ),
+                'Turnover-based Proportion of Assets substantially contributing to any of the six Environmental Objectives - Of which Transitional',
+                dataset.investmentFirms?.dealingOnOwnAccountServicesTurnoverBased
+                  ?.turnoverBasedProportionOfAssetsSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesOfWhichTransitional
+              ),
+          },
+          {
+            type: 'cell',
+            label:
+              'Turnover-based Proportion of Assets substantially contributing to any of the six Environmental Objectives - Of which Enabling',
+            explanation:
+              "Taxonomy-aligned and enabling Turnover-based Proportion of Total Assets invested under Investment Firms' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to any of the six Environmental Objectives",
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatPercentageForDatatable(
+                  dataset.investmentFirms?.dealingOnOwnAccountServicesTurnoverBased
+                    ?.turnoverBasedProportionOfAssetsSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesOfWhichEnabling
+                    ?.value
+                ),
+                'Turnover-based Proportion of Assets substantially contributing to any of the six Environmental Objectives - Of which Enabling',
+                dataset.investmentFirms?.dealingOnOwnAccountServicesTurnoverBased
+                  ?.turnoverBasedProportionOfAssetsSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesOfWhichEnabling
               ),
           },
         ],
       },
       {
         type: 'section',
-        label: 'Capex-based KPI',
+        label: 'Dealing on own Account Services - CapEx-based',
         expandOnPageLoad: true,
         shouldDisplay: (): boolean => true,
         children: [
           {
             type: 'cell',
-            label: 'Total assets invested / revenue from investment and services',
+            label: "CapEx-based Total Assets invested under Investment Firm's Activities dealing on own Account",
             explanation:
-              "Investment firms dealing on own account: total assets invested under investment firms' activities dealing on own account (as per Section A of Annex I to Directive 2014/65/EU)\nInvestment firms not dealing on own account: revenue (i.e. fees, commissions and other monetary benefits) from investment and services and activities other than on own account (as per Section A of Annex I to Directive 2014/65/EU)",
+              "Total assets invested under investment firms' activities dealing on own account (as per Section A of Annex I to Directive 2014/65/EU)",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
-              wrapDisplayValueWithDatapointInformation(
-                formatNumberForDatatable(
-                  dataset.investmentFirms?.capexBasedKpi?.totalAssetsInvestedRevenueFromInvestmentAndServices?.value,
-                  ''
-                ),
-                'Total assets invested / revenue from investment and services',
-                dataset.investmentFirms?.capexBasedKpi?.totalAssetsInvestedRevenueFromInvestmentAndServices
-              ),
-          },
-          {
-            type: 'cell',
-            label: 'Substantial Contribution to Climate Change Mitigation in Percent - Eligible',
-            explanation:
-              "Share substantially contributing to Climate Change Mitigation\n- Investment firms dealing on own account: total assets invested under investment firms' activities dealing on own account (as per Section A of Annex I to Directive 2014/65/EU) of which assets covered by the Taxonomy (Taxonomy-eligible)\n- Investment firms not dealing on own account: revenue (i.e. fees, commissions and other monetary benefits) from investment and services and activities other than on own account (as per Section A of Annex I to Directive 2014/65/EU) of which assets covered by the Taxonomy (Taxonomy-eligible)",
-            shouldDisplay: (): boolean => true,
-            valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
-              wrapDisplayValueWithDatapointInformation(
-                formatPercentageForDatatable(
-                  dataset.investmentFirms?.capexBasedKpi
-                    ?.substantialContributionToClimateChangeMitigationInPercentEligible?.value
-                ),
-                'Substantial Contribution to Climate Change Mitigation in Percent - Eligible',
-                dataset.investmentFirms?.capexBasedKpi
-                  ?.substantialContributionToClimateChangeMitigationInPercentEligible
-              ),
-          },
-          {
-            type: 'cell',
-            label: 'Substantial Contribution to Climate Change Mitigation in Percent - Aligned',
-            explanation:
-              "Share substantially contributing to Climate Change Mitigation\n- Investment firms dealing on own account: total assets invested under investment firms' activities dealing on own account (as per Section A of Annex I to Directive 2014/65/EU) of which linked to activities aligned with the EU Taxonomy (Taxonomy-aligned)\n- Investment firms not dealing on own account: revenue (i.e. fees, commissions and other monetary benefits) from investment and services and activities other than on own account (as per Section A of Annex I to Directive 2014/65/EU) of which from services and activities linked to activities aligned with the EU Taxonomy (Taxonomy-aligned)",
-            shouldDisplay: (): boolean => true,
-            valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
-              wrapDisplayValueWithDatapointInformation(
-                formatPercentageForDatatable(
-                  dataset.investmentFirms?.capexBasedKpi
-                    ?.substantialContributionToClimateChangeMitigationInPercentAligned?.value
-                ),
-                'Substantial Contribution to Climate Change Mitigation in Percent - Aligned',
-                dataset.investmentFirms?.capexBasedKpi?.substantialContributionToClimateChangeMitigationInPercentAligned
-              ),
-          },
-          {
-            type: 'cell',
-            label: 'Substantial Contribution to Climate Change Mitigation in Percent - Of which Enabling',
-            explanation:
-              "Share substantially contributing to Climate Change Mitigation\n- Investment firms dealing on own account: total assets invested under investment firms' activities dealing on own account (as per Section A of Annex I to Directive 2014/65/EU) of which enabling\n- Investment firms not dealing on own account: revenue (i.e. fees, commissions and other monetary benefits) from investment and services and activities other than on own account (as per Section A of Annex I to Directive 2014/65/EU) of which enabling",
-            shouldDisplay: (): boolean => true,
-            valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
-              wrapDisplayValueWithDatapointInformation(
-                formatPercentageForDatatable(
-                  dataset.investmentFirms?.capexBasedKpi
-                    ?.substantialContributionToClimateChangeMitigationInPercentOfWhichEnabling?.value
-                ),
-                'Substantial Contribution to Climate Change Mitigation in Percent - Of which Enabling',
-                dataset.investmentFirms?.capexBasedKpi
-                  ?.substantialContributionToClimateChangeMitigationInPercentOfWhichEnabling
-              ),
-          },
-          {
-            type: 'cell',
-            label: 'Substantial Contribution to Climate Change Mitigation in Percent - Of which Transitional',
-            explanation:
-              "Share substantially contributing to Climate Change Mitigation\n- Investment firms dealing on own account: total assets invested under investment firms' activities dealing on own account (as per Section A of Annex I to Directive 2014/65/EU) of which transitional\n- Investment firms not dealing on own account: revenue (i.e. fees, commissions and other monetary benefits) from investment and services and activities other than on own account (as per Section A of Annex I to Directive 2014/65/EU) of which transitional",
-            shouldDisplay: (): boolean => true,
-            valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
-              wrapDisplayValueWithDatapointInformation(
-                formatPercentageForDatatable(
-                  dataset.investmentFirms?.capexBasedKpi
-                    ?.substantialContributionToClimateChangeMitigationInPercentOfWhichTransitional?.value
-                ),
-                'Substantial Contribution to Climate Change Mitigation in Percent - Of which Transitional',
-                dataset.investmentFirms?.capexBasedKpi
-                  ?.substantialContributionToClimateChangeMitigationInPercentOfWhichTransitional
-              ),
-          },
-          {
-            type: 'cell',
-            label: 'Substantial Contribution to Climate Change Adaptation in Percent - Eligible',
-            explanation:
-              "Share substantially contributing to Climate Change Adaptation\n- Investment firms dealing on own account: total assets invested under investment firms' activities dealing on own account (as per Section A of Annex I to Directive 2014/65/EU) of which assets covered by the Taxonomy (Taxonomy-eligible)\n- Investment firms not dealing on own account: revenue (i.e. fees, commissions and other monetary benefits) from investment and services and activities other than on own account (as per Section A of Annex I to Directive 2014/65/EU) of which assets covered by the Taxonomy (Taxonomy-eligible)",
-            shouldDisplay: (): boolean => true,
-            valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
-              wrapDisplayValueWithDatapointInformation(
-                formatPercentageForDatatable(
-                  dataset.investmentFirms?.capexBasedKpi
-                    ?.substantialContributionToClimateChangeAdaptationInPercentEligible?.value
-                ),
-                'Substantial Contribution to Climate Change Adaptation in Percent - Eligible',
-                dataset.investmentFirms?.capexBasedKpi
-                  ?.substantialContributionToClimateChangeAdaptationInPercentEligible
-              ),
-          },
-          {
-            type: 'cell',
-            label: 'Substantial Contribution to Climate Change Adaptation in Percent - Aligned',
-            explanation:
-              "Share substantially contributing to Climate Change Adaptation\n- Investment firms dealing on own account: total assets invested under investment firms' activities dealing on own account (as per Section A of Annex I to Directive 2014/65/EU) of which linked to activities aligned with the EU Taxonomy (Taxonomy-aligned)\n- Investment firms not dealing on own account: revenue (i.e. fees, commissions and other monetary benefits) from investment and services and activities other than on own account (as per Section A of Annex I to Directive 2014/65/EU) of which from services and activities linked to activities aligned with the EU Taxonomy (Taxonomy-aligned)",
-            shouldDisplay: (): boolean => true,
-            valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
-              wrapDisplayValueWithDatapointInformation(
-                formatPercentageForDatatable(
-                  dataset.investmentFirms?.capexBasedKpi
-                    ?.substantialContributionToClimateChangeAdaptationInPercentAligned?.value
-                ),
-                'Substantial Contribution to Climate Change Adaptation in Percent - Aligned',
-                dataset.investmentFirms?.capexBasedKpi?.substantialContributionToClimateChangeAdaptationInPercentAligned
-              ),
-          },
-          {
-            type: 'cell',
-            label: 'Substantial Contribution to Climate Change Adaptation in Percent - Of which Enabling',
-            explanation:
-              "Share substantially contributing to Climate Change Adaptation\n- Investment firms dealing on own account: total assets invested under investment firms' activities dealing on own account (as per Section A of Annex I to Directive 2014/65/EU) of which enabling\n- Investment firms not dealing on own account: revenue (i.e. fees, commissions and other monetary benefits) from investment and services and activities other than on own account (as per Section A of Annex I to Directive 2014/65/EU) of which enabling",
-            shouldDisplay: (): boolean => true,
-            valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
-              wrapDisplayValueWithDatapointInformation(
-                formatPercentageForDatatable(
-                  dataset.investmentFirms?.capexBasedKpi
-                    ?.substantialContributionToClimateChangeAdaptationInPercentOfWhichEnabling?.value
-                ),
-                'Substantial Contribution to Climate Change Adaptation in Percent - Of which Enabling',
-                dataset.investmentFirms?.capexBasedKpi
-                  ?.substantialContributionToClimateChangeAdaptationInPercentOfWhichEnabling
+              formatCurrencyForDisplay(
+                dataset.investmentFirms?.dealingOnOwnAccountServicesCapexBased
+                  ?.capexBasedTotalAssetsInvestedUnderInvestmentFirmsActivitiesDealingOnOwnAccount,
+                "CapEx-based Total Assets invested under Investment Firm's Activities dealing on own Account"
               ),
           },
           {
             type: 'cell',
             label:
-              'Substantial Contribution to Sustainable Use and Protection of Water and Marine Resources in Percent - Eligible',
+              'CapEx-based Proportion of Assets substantially contributing to Climate Change Mitigation - Eligible',
             explanation:
-              "Share substantially contributing to Sustainable Use and Protection of Water and Marine Resources\n- Investment firms dealing on own account: total assets invested under investment firms' activities dealing on own account (as per Section A of Annex I to Directive 2014/65/EU) of which assets covered by the Taxonomy (Taxonomy-eligible)\n- Investment firms not dealing on own account: revenue (i.e. fees, commissions and other monetary benefits) from investment and services and activities other than on own account (as per Section A of Annex I to Directive 2014/65/EU) of which assets covered by the Taxonomy (Taxonomy-eligible)",
+              "Taxonomy-aligned CapEx-based Proportion of Total Assets invested under Investment Firms' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to Climate Change Mitigation",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
                 formatPercentageForDatatable(
-                  dataset.investmentFirms?.capexBasedKpi
-                    ?.substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentEligible
-                    ?.value
+                  dataset.investmentFirms?.dealingOnOwnAccountServicesCapexBased
+                    ?.capexBasedProportionOfAssetsSubstantiallyContributingToClimateChangeMitigationEligible?.value
                 ),
-                'Substantial Contribution to Sustainable Use and Protection of Water and Marine Resources in Percent - Eligible',
-                dataset.investmentFirms?.capexBasedKpi
-                  ?.substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentEligible
+                'CapEx-based Proportion of Assets substantially contributing to Climate Change Mitigation - Eligible',
+                dataset.investmentFirms?.dealingOnOwnAccountServicesCapexBased
+                  ?.capexBasedProportionOfAssetsSubstantiallyContributingToClimateChangeMitigationEligible
+              ),
+          },
+          {
+            type: 'cell',
+            label: 'CapEx-based Proportion of Assets substantially contributing to Climate Change Mitigation - Aligned',
+            explanation:
+              "Taxonomy-aligned CapEx-based Proportion of Total Assets invested under Investment Firms' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to Climate Change Mitigation",
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatPercentageForDatatable(
+                  dataset.investmentFirms?.dealingOnOwnAccountServicesCapexBased
+                    ?.capexBasedProportionOfAssetsSubstantiallyContributingToClimateChangeMitigationAligned?.value
+                ),
+                'CapEx-based Proportion of Assets substantially contributing to Climate Change Mitigation - Aligned',
+                dataset.investmentFirms?.dealingOnOwnAccountServicesCapexBased
+                  ?.capexBasedProportionOfAssetsSubstantiallyContributingToClimateChangeMitigationAligned
               ),
           },
           {
             type: 'cell',
             label:
-              'Substantial Contribution to Sustainable Use and Protection of Water and Marine Resources in Percent - Aligned',
+              'CapEx-based Proportion of Assets substantially contributing to Climate Change Mitigation - Of which Transitional',
             explanation:
-              "Share substantially contributing to Sustainable Use and Protection of Water and Marine Resources\n- Investment firms dealing on own account: total assets invested under investment firms' activities dealing on own account (as per Section A of Annex I to Directive 2014/65/EU) of which linked to activities aligned with the EU Taxonomy (Taxonomy-aligned)\n- Investment firms not dealing on own account: revenue (i.e. fees, commissions and other monetary benefits) from investment and services and activities other than on own account (as per Section A of Annex I to Directive 2014/65/EU) of which from services and activities linked to activities aligned with the EU Taxonomy (Taxonomy-aligned)",
+              "Taxonomy-aligned and transitional CapEx-based Proportion of Total Assets invested under Investment Firms' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to Climate Change Mitigation",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
                 formatPercentageForDatatable(
-                  dataset.investmentFirms?.capexBasedKpi
-                    ?.substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned
+                  dataset.investmentFirms?.dealingOnOwnAccountServicesCapexBased
+                    ?.capexBasedProportionOfAssetsSubstantiallyContributingToClimateChangeMitigationOfWhichTransitional
                     ?.value
                 ),
-                'Substantial Contribution to Sustainable Use and Protection of Water and Marine Resources in Percent - Aligned',
-                dataset.investmentFirms?.capexBasedKpi
-                  ?.substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned
+                'CapEx-based Proportion of Assets substantially contributing to Climate Change Mitigation - Of which Transitional',
+                dataset.investmentFirms?.dealingOnOwnAccountServicesCapexBased
+                  ?.capexBasedProportionOfAssetsSubstantiallyContributingToClimateChangeMitigationOfWhichTransitional
               ),
           },
           {
             type: 'cell',
             label:
-              'Substantial Contribution to Sustainable Use and Protection of Water and Marine Resources in Percent - Of which Enabling',
+              'CapEx-based Proportion of Assets substantially contributing to Climate Change Mitigation - Of which Enabling',
             explanation:
-              "Share substantially contributing to Sustainable Use and Protection of Water and Marine Resources\n- Investment firms dealing on own account: total assets invested under investment firms' activities dealing on own account (as per Section A of Annex I to Directive 2014/65/EU) of which enabling\n- Investment firms not dealing on own account: revenue (i.e. fees, commissions and other monetary benefits) from investment and services and activities other than on own account (as per Section A of Annex I to Directive 2014/65/EU) of which enabling",
+              "Taxonomy-aligned and enabling CapEx-based Proportion of Total Assets invested under Investment Firms' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to Climate Change Mitigation",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
                 formatPercentageForDatatable(
-                  dataset.investmentFirms?.capexBasedKpi
-                    ?.substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentOfWhichEnabling
+                  dataset.investmentFirms?.dealingOnOwnAccountServicesCapexBased
+                    ?.capexBasedProportionOfAssetsSubstantiallyContributingToClimateChangeMitigationOfWhichEnabling
                     ?.value
                 ),
-                'Substantial Contribution to Sustainable Use and Protection of Water and Marine Resources in Percent - Of which Enabling',
-                dataset.investmentFirms?.capexBasedKpi
-                  ?.substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentOfWhichEnabling
-              ),
-          },
-          {
-            type: 'cell',
-            label: 'Substantial Contribution to Transition to a Circular Economy in Percent - Eligible',
-            explanation:
-              "Share substantially contributing to Transition to a Circular Economy\n- Investment firms dealing on own account: total assets invested under investment firms' activities dealing on own account (as per Section A of Annex I to Directive 2014/65/EU) of which assets covered by the Taxonomy (Taxonomy-eligible)\n- Investment firms not dealing on own account: revenue (i.e. fees, commissions and other monetary benefits) from investment and services and activities other than on own account (as per Section A of Annex I to Directive 2014/65/EU) of which assets covered by the Taxonomy (Taxonomy-eligible)",
-            shouldDisplay: (): boolean => true,
-            valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
-              wrapDisplayValueWithDatapointInformation(
-                formatPercentageForDatatable(
-                  dataset.investmentFirms?.capexBasedKpi
-                    ?.substantialContributionToTransitionToACircularEconomyInPercentEligible?.value
-                ),
-                'Substantial Contribution to Transition to a Circular Economy in Percent - Eligible',
-                dataset.investmentFirms?.capexBasedKpi
-                  ?.substantialContributionToTransitionToACircularEconomyInPercentEligible
-              ),
-          },
-          {
-            type: 'cell',
-            label: 'Substantial Contribution to Transition to a Circular Economy in Percent - Aligned',
-            explanation:
-              "Share substantially contributing to Transition to a Circular Economy\n- Investment firms dealing on own account: total assets invested under investment firms' activities dealing on own account (as per Section A of Annex I to Directive 2014/65/EU) of which linked to activities aligned with the EU Taxonomy (Taxonomy-aligned)\n- Investment firms not dealing on own account: revenue (i.e. fees, commissions and other monetary benefits) from investment and services and activities other than on own account (as per Section A of Annex I to Directive 2014/65/EU) of which from services and activities linked to activities aligned with the EU Taxonomy (Taxonomy-aligned)",
-            shouldDisplay: (): boolean => true,
-            valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
-              wrapDisplayValueWithDatapointInformation(
-                formatPercentageForDatatable(
-                  dataset.investmentFirms?.capexBasedKpi
-                    ?.substantialContributionToTransitionToACircularEconomyInPercentAligned?.value
-                ),
-                'Substantial Contribution to Transition to a Circular Economy in Percent - Aligned',
-                dataset.investmentFirms?.capexBasedKpi
-                  ?.substantialContributionToTransitionToACircularEconomyInPercentAligned
-              ),
-          },
-          {
-            type: 'cell',
-            label: 'Substantial Contribution to Transition to a Circular Economy in Percent - Of which Enabling',
-            explanation:
-              "Share substantially contributing to Transition to a Circular Economy\n- Investment firms dealing on own account: total assets invested under investment firms' activities dealing on own account (as per Section A of Annex I to Directive 2014/65/EU) of which enabling\n- Investment firms not dealing on own account: revenue (i.e. fees, commissions and other monetary benefits) from investment and services and activities other than on own account (as per Section A of Annex I to Directive 2014/65/EU) of which enabling",
-            shouldDisplay: (): boolean => true,
-            valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
-              wrapDisplayValueWithDatapointInformation(
-                formatPercentageForDatatable(
-                  dataset.investmentFirms?.capexBasedKpi
-                    ?.substantialContributionToTransitionToACircularEconomyInPercentOfWhichEnabling?.value
-                ),
-                'Substantial Contribution to Transition to a Circular Economy in Percent - Of which Enabling',
-                dataset.investmentFirms?.capexBasedKpi
-                  ?.substantialContributionToTransitionToACircularEconomyInPercentOfWhichEnabling
-              ),
-          },
-          {
-            type: 'cell',
-            label: 'Substantial Contribution to Pollution Prevention and Control in Percent - Eligible',
-            explanation:
-              "Share substantially contributing to Pollution Prevention and Control\n- Investment firms dealing on own account: total assets invested under investment firms' activities dealing on own account (as per Section A of Annex I to Directive 2014/65/EU) of which assets covered by the Taxonomy (Taxonomy-eligible)\n- Investment firms not dealing on own account: revenue (i.e. fees, commissions and other monetary benefits) from investment and services and activities other than on own account (as per Section A of Annex I to Directive 2014/65/EU) of which assets covered by the Taxonomy (Taxonomy-eligible)",
-            shouldDisplay: (): boolean => true,
-            valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
-              wrapDisplayValueWithDatapointInformation(
-                formatPercentageForDatatable(
-                  dataset.investmentFirms?.capexBasedKpi
-                    ?.substantialContributionToPollutionPreventionAndControlInPercentEligible?.value
-                ),
-                'Substantial Contribution to Pollution Prevention and Control in Percent - Eligible',
-                dataset.investmentFirms?.capexBasedKpi
-                  ?.substantialContributionToPollutionPreventionAndControlInPercentEligible
-              ),
-          },
-          {
-            type: 'cell',
-            label: 'Substantial Contribution to Pollution Prevention and Control in Percent - Aligned',
-            explanation:
-              "Share substantially contributing to Pollution Prevention and Control\n- Investment firms dealing on own account: total assets invested under investment firms' activities dealing on own account (as per Section A of Annex I to Directive 2014/65/EU) of which linked to activities aligned with the EU Taxonomy (Taxonomy-aligned)\n- Investment firms not dealing on own account: revenue (i.e. fees, commissions and other monetary benefits) from investment and services and activities other than on own account (as per Section A of Annex I to Directive 2014/65/EU) of which from services and activities linked to activities aligned with the EU Taxonomy (Taxonomy-aligned)",
-            shouldDisplay: (): boolean => true,
-            valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
-              wrapDisplayValueWithDatapointInformation(
-                formatPercentageForDatatable(
-                  dataset.investmentFirms?.capexBasedKpi
-                    ?.substantialContributionToPollutionPreventionAndControlInPercentAligned?.value
-                ),
-                'Substantial Contribution to Pollution Prevention and Control in Percent - Aligned',
-                dataset.investmentFirms?.capexBasedKpi
-                  ?.substantialContributionToPollutionPreventionAndControlInPercentAligned
-              ),
-          },
-          {
-            type: 'cell',
-            label: 'Substantial Contribution to Pollution Prevention and Control in Percent - Of which Enabling',
-            explanation:
-              "Share substantially contributing to Pollution Prevention and Control\n- Investment firms dealing on own account: total assets invested under investment firms' activities dealing on own account (as per Section A of Annex I to Directive 2014/65/EU) of which enabling\n- Investment firms not dealing on own account: revenue (i.e. fees, commissions and other monetary benefits) from investment and services and activities other than on own account (as per Section A of Annex I to Directive 2014/65/EU) of which enabling",
-            shouldDisplay: (): boolean => true,
-            valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
-              wrapDisplayValueWithDatapointInformation(
-                formatPercentageForDatatable(
-                  dataset.investmentFirms?.capexBasedKpi
-                    ?.substantialContributionToPollutionPreventionAndControlInPercentOfWhichEnabling?.value
-                ),
-                'Substantial Contribution to Pollution Prevention and Control in Percent - Of which Enabling',
-                dataset.investmentFirms?.capexBasedKpi
-                  ?.substantialContributionToPollutionPreventionAndControlInPercentOfWhichEnabling
+                'CapEx-based Proportion of Assets substantially contributing to Climate Change Mitigation - Of which Enabling',
+                dataset.investmentFirms?.dealingOnOwnAccountServicesCapexBased
+                  ?.capexBasedProportionOfAssetsSubstantiallyContributingToClimateChangeMitigationOfWhichEnabling
               ),
           },
           {
             type: 'cell',
             label:
-              'Substantial Contribution to Protection and Restoration of Biodiversity and Ecosystems in Percent - Eligible',
+              'CapEx-based Proportion of Assets substantially contributing to Climate Change Adaptation - Eligible',
             explanation:
-              "Share substantially contributing to Protection and Restoration of Biodiversity and Ecosystems\n- Investment firms dealing on own account: total assets invested under investment firms' activities dealing on own account (as per Section A of Annex I to Directive 2014/65/EU) of which assets covered by the Taxonomy (Taxonomy-eligible)\n- Investment firms not dealing on own account: revenue (i.e. fees, commissions and other monetary benefits) from investment and services and activities other than on own account (as per Section A of Annex I to Directive 2014/65/EU) of which assets covered by the Taxonomy (Taxonomy-eligible)",
+              "Taxonomy-aligned CapEx-based Proportion of Total Assets invested under Investment Firms' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to Climate Change Adaptation",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
                 formatPercentageForDatatable(
-                  dataset.investmentFirms?.capexBasedKpi
-                    ?.substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentEligible
-                    ?.value
+                  dataset.investmentFirms?.dealingOnOwnAccountServicesCapexBased
+                    ?.capexBasedProportionOfAssetsSubstantiallyContributingToClimateChangeAdaptationEligible?.value
                 ),
-                'Substantial Contribution to Protection and Restoration of Biodiversity and Ecosystems in Percent - Eligible',
-                dataset.investmentFirms?.capexBasedKpi
-                  ?.substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentEligible
+                'CapEx-based Proportion of Assets substantially contributing to Climate Change Adaptation - Eligible',
+                dataset.investmentFirms?.dealingOnOwnAccountServicesCapexBased
+                  ?.capexBasedProportionOfAssetsSubstantiallyContributingToClimateChangeAdaptationEligible
+              ),
+          },
+          {
+            type: 'cell',
+            label: 'CapEx-based Proportion of Assets substantially contributing to Climate Change Adaptation - Aligned',
+            explanation:
+              "Taxonomy-aligned CapEx-based Proportion of Total Assets invested under Investment Firms' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to Climate Change Adaptation",
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatPercentageForDatatable(
+                  dataset.investmentFirms?.dealingOnOwnAccountServicesCapexBased
+                    ?.capexBasedProportionOfAssetsSubstantiallyContributingToClimateChangeAdaptationAligned?.value
+                ),
+                'CapEx-based Proportion of Assets substantially contributing to Climate Change Adaptation - Aligned',
+                dataset.investmentFirms?.dealingOnOwnAccountServicesCapexBased
+                  ?.capexBasedProportionOfAssetsSubstantiallyContributingToClimateChangeAdaptationAligned
               ),
           },
           {
             type: 'cell',
             label:
-              'Substantial Contribution to Protection and Restoration of Biodiversity and Ecosystems in Percent - Aligned',
+              'CapEx-based Proportion of Assets substantially contributing to Climate Change Adaptation - Of which Enabling',
             explanation:
-              "Share substantially contributing to Protection and Restoration of Biodiversity and Ecosystems\n- Investment firms dealing on own account: total assets invested under investment firms' activities dealing on own account (as per Section A of Annex I to Directive 2014/65/EU) of which linked to activities aligned with the EU Taxonomy (Taxonomy-aligned)\n- Investment firms not dealing on own account: revenue (i.e. fees, commissions and other monetary benefits) from investment and services and activities other than on own account (as per Section A of Annex I to Directive 2014/65/EU) of which from services and activities linked to activities aligned with the EU Taxonomy (Taxonomy-aligned)",
+              "Taxonomy-aligned and enabling CapEx-based Proportion of Total Assets invested under Investment Firms' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to Climate Change Adaptation",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
                 formatPercentageForDatatable(
-                  dataset.investmentFirms?.capexBasedKpi
-                    ?.substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned
+                  dataset.investmentFirms?.dealingOnOwnAccountServicesCapexBased
+                    ?.capexBasedProportionOfAssetsSubstantiallyContributingToClimateChangeAdaptationOfWhichEnabling
                     ?.value
                 ),
-                'Substantial Contribution to Protection and Restoration of Biodiversity and Ecosystems in Percent - Aligned',
-                dataset.investmentFirms?.capexBasedKpi
-                  ?.substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned
+                'CapEx-based Proportion of Assets substantially contributing to Climate Change Adaptation - Of which Enabling',
+                dataset.investmentFirms?.dealingOnOwnAccountServicesCapexBased
+                  ?.capexBasedProportionOfAssetsSubstantiallyContributingToClimateChangeAdaptationOfWhichEnabling
               ),
           },
           {
             type: 'cell',
             label:
-              'Substantial Contribution to Protection and Restoration of Biodiversity and Ecosystems in Percent - Of which Enabling',
+              'CapEx-based Proportion of Assets substantially contributing to Sustainable Use and Protection of Water and Marine Resources - Eligible',
             explanation:
-              "Share substantially contributing to Protection and Restoration of Biodiversity and Ecosystems\n- Investment firms dealing on own account: total assets invested under investment firms' activities dealing on own account (as per Section A of Annex I to Directive 2014/65/EU) of which enabling\n- Investment firms not dealing on own account: revenue (i.e. fees, commissions and other monetary benefits) from investment and services and activities other than on own account (as per Section A of Annex I to Directive 2014/65/EU) of which enabling",
+              "Taxonomy-aligned CapEx-based Proportion of Total Assets invested under Investment Firms' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to Sustainable Use and Protection of Water and Marine Resources",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
                 formatPercentageForDatatable(
-                  dataset.investmentFirms?.capexBasedKpi
-                    ?.substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentOfWhichEnabling
+                  dataset.investmentFirms?.dealingOnOwnAccountServicesCapexBased
+                    ?.capexBasedProportionOfAssetsSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesEligible
                     ?.value
                 ),
-                'Substantial Contribution to Protection and Restoration of Biodiversity and Ecosystems in Percent - Of which Enabling',
-                dataset.investmentFirms?.capexBasedKpi
-                  ?.substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentOfWhichEnabling
+                'CapEx-based Proportion of Assets substantially contributing to Sustainable Use and Protection of Water and Marine Resources - Eligible',
+                dataset.investmentFirms?.dealingOnOwnAccountServicesCapexBased
+                  ?.capexBasedProportionOfAssetsSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesEligible
               ),
           },
           {
             type: 'cell',
-            label: 'Total assets invested / revenue from investment and services in Percent - Eligible',
+            label:
+              'CapEx-based Proportion of Assets substantially contributing to Sustainable Use and Protection of Water and Marine Resources - Aligned',
             explanation:
-              "Investment firms dealing on own account: total assets invested under investment firms' activities dealing on own account (as per Section A of Annex I to Directive 2014/65/EU) of which assets covered by the Taxonomy (Taxonomy-eligible)\nInvestment firms not dealing on own account: revenue (i.e. fees, commissions and other monetary benefits) from investment and services and activities other than on own account (as per Section A of Annex I to Directive 2014/65/EU) of which assets covered by the Taxonomy (Taxonomy-eligible)",
+              "Taxonomy-aligned CapEx-based Proportion of Total Assets invested under Investment Firms' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to Sustainable Use and Protection of Water and Marine Resources",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
                 formatPercentageForDatatable(
-                  dataset.investmentFirms?.capexBasedKpi
-                    ?.totalAssetsInvestedRevenueFromInvestmentAndServicesInPercentEligible?.value
+                  dataset.investmentFirms?.dealingOnOwnAccountServicesCapexBased
+                    ?.capexBasedProportionOfAssetsSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesAligned
+                    ?.value
                 ),
-                'Total assets invested / revenue from investment and services in Percent - Eligible',
-                dataset.investmentFirms?.capexBasedKpi
-                  ?.totalAssetsInvestedRevenueFromInvestmentAndServicesInPercentEligible
+                'CapEx-based Proportion of Assets substantially contributing to Sustainable Use and Protection of Water and Marine Resources - Aligned',
+                dataset.investmentFirms?.dealingOnOwnAccountServicesCapexBased
+                  ?.capexBasedProportionOfAssetsSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesAligned
               ),
           },
           {
             type: 'cell',
-            label: 'Total assets invested / revenue from investment and services in Percent - Aligned',
+            label:
+              'CapEx-based Proportion of Assets substantially contributing to Sustainable Use and Protection of Water and Marine Resources - Of which Enabling',
             explanation:
-              "Investment firms dealing on own account: total assets invested under investment firms' activities dealing on own account (as per Section A of Annex I to Directive 2014/65/EU) of which linked to activities aligned with the EU Taxonomy (Taxonomy-aligned)\nInvestment firms not dealing on own account: revenue (i.e. fees, commissions and other monetary benefits) from investment and services and activities other than on own account (as per Section A of Annex I to Directive 2014/65/EU) of which from services and activities linked to activities aligned with the EU Taxonomy (Taxonomy-aligned)",
+              "Taxonomy-aligned and enabling CapEx-based Proportion of Total Assets invested under Investment Firms' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to Sustainable Use and Protection of Water and Marine Resources",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
                 formatPercentageForDatatable(
-                  dataset.investmentFirms?.capexBasedKpi
-                    ?.totalAssetsInvestedRevenueFromInvestmentAndServicesInPercentAligned?.value
+                  dataset.investmentFirms?.dealingOnOwnAccountServicesCapexBased
+                    ?.capexBasedProportionOfAssetsSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesOfWhichEnabling
+                    ?.value
                 ),
-                'Total assets invested / revenue from investment and services in Percent - Aligned',
-                dataset.investmentFirms?.capexBasedKpi
-                  ?.totalAssetsInvestedRevenueFromInvestmentAndServicesInPercentAligned
+                'CapEx-based Proportion of Assets substantially contributing to Sustainable Use and Protection of Water and Marine Resources - Of which Enabling',
+                dataset.investmentFirms?.dealingOnOwnAccountServicesCapexBased
+                  ?.capexBasedProportionOfAssetsSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesOfWhichEnabling
               ),
           },
           {
             type: 'cell',
-            label: 'Total assets invested / revenue from investment and services in Percent - Of which Enabling',
+            label: 'CapEx-based Proportion of Assets substantially contributing to Circular Economy - Eligible',
             explanation:
-              "Investment firms dealing on own account: total assets invested under investment firms' activities dealing on own account (as per Section A of Annex I to Directive 2014/65/EU) of which enabling\nInvestment firms not dealing on own account: revenue (i.e. fees, commissions and other monetary benefits) from investment and services and activities other than on own account (as per Section A of Annex I to Directive 2014/65/EU) of which enabling",
+              "Taxonomy-aligned CapEx-based Proportion of Total Assets invested under Investment Firms' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to Circular Economy",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
                 formatPercentageForDatatable(
-                  dataset.investmentFirms?.capexBasedKpi
-                    ?.totalAssetsInvestedRevenueFromInvestmentAndServicesInPercentOfWhichEnabling?.value
+                  dataset.investmentFirms?.dealingOnOwnAccountServicesCapexBased
+                    ?.capexBasedProportionOfAssetsSubstantiallyContributingToCircularEconomyEligible?.value
                 ),
-                'Total assets invested / revenue from investment and services in Percent - Of which Enabling',
-                dataset.investmentFirms?.capexBasedKpi
-                  ?.totalAssetsInvestedRevenueFromInvestmentAndServicesInPercentOfWhichEnabling
+                'CapEx-based Proportion of Assets substantially contributing to Circular Economy - Eligible',
+                dataset.investmentFirms?.dealingOnOwnAccountServicesCapexBased
+                  ?.capexBasedProportionOfAssetsSubstantiallyContributingToCircularEconomyEligible
               ),
           },
           {
             type: 'cell',
-            label: 'Total assets invested / revenue from investment and services in Percent - Of which Transitional',
+            label: 'CapEx-based Proportion of Assets substantially contributing to Circular Economy - Aligned',
             explanation:
-              "Investment firms dealing on own account: total assets invested under investment firms' activities dealing on own account (as per Section A of Annex I to Directive 2014/65/EU) of which transitional\nInvestment firms not dealing on own account: revenue (i.e. fees, commissions and other monetary benefits) from investment and services and activities other than on own account (as per Section A of Annex I to Directive 2014/65/EU) of which transitional",
+              "Taxonomy-aligned CapEx-based Proportion of Total Assets invested under Investment Firms' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to Circular Economy",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
                 formatPercentageForDatatable(
-                  dataset.investmentFirms?.capexBasedKpi
-                    ?.totalAssetsInvestedRevenueFromInvestmentAndServicesInPercentOfWhichTransitional?.value
+                  dataset.investmentFirms?.dealingOnOwnAccountServicesCapexBased
+                    ?.capexBasedProportionOfAssetsSubstantiallyContributingToCircularEconomyAligned?.value
                 ),
-                'Total assets invested / revenue from investment and services in Percent - Of which Transitional',
-                dataset.investmentFirms?.capexBasedKpi
-                  ?.totalAssetsInvestedRevenueFromInvestmentAndServicesInPercentOfWhichTransitional
+                'CapEx-based Proportion of Assets substantially contributing to Circular Economy - Aligned',
+                dataset.investmentFirms?.dealingOnOwnAccountServicesCapexBased
+                  ?.capexBasedProportionOfAssetsSubstantiallyContributingToCircularEconomyAligned
+              ),
+          },
+          {
+            type: 'cell',
+            label:
+              'CapEx-based Proportion of Assets substantially contributing to Circular Economy - Of which Enabling',
+            explanation:
+              "Taxonomy-aligned and enabling CapEx-based Proportion of Total Assets invested under Investment Firms' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to Circular Economy",
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatPercentageForDatatable(
+                  dataset.investmentFirms?.dealingOnOwnAccountServicesCapexBased
+                    ?.capexBasedProportionOfAssetsSubstantiallyContributingToCircularEconomyOfWhichEnabling?.value
+                ),
+                'CapEx-based Proportion of Assets substantially contributing to Circular Economy - Of which Enabling',
+                dataset.investmentFirms?.dealingOnOwnAccountServicesCapexBased
+                  ?.capexBasedProportionOfAssetsSubstantiallyContributingToCircularEconomyOfWhichEnabling
+              ),
+          },
+          {
+            type: 'cell',
+            label:
+              'CapEx-based Proportion of Assets substantially contributing to Pollution Prevention and Control - Eligible',
+            explanation:
+              "Taxonomy-aligned CapEx-based Proportion of Total Assets invested under Investment Firms' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to Pollution Prevention and Control",
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatPercentageForDatatable(
+                  dataset.investmentFirms?.dealingOnOwnAccountServicesCapexBased
+                    ?.capexBasedProportionOfAssetsSubstantiallyContributingToPollutionPreventionAndControlEligible
+                    ?.value
+                ),
+                'CapEx-based Proportion of Assets substantially contributing to Pollution Prevention and Control - Eligible',
+                dataset.investmentFirms?.dealingOnOwnAccountServicesCapexBased
+                  ?.capexBasedProportionOfAssetsSubstantiallyContributingToPollutionPreventionAndControlEligible
+              ),
+          },
+          {
+            type: 'cell',
+            label:
+              'CapEx-based Proportion of Assets substantially contributing to Pollution Prevention and Control - Aligned',
+            explanation:
+              "Taxonomy-aligned CapEx-based Proportion of Total Assets invested under Investment Firms' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to Pollution Prevention and Control",
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatPercentageForDatatable(
+                  dataset.investmentFirms?.dealingOnOwnAccountServicesCapexBased
+                    ?.capexBasedProportionOfAssetsSubstantiallyContributingToPollutionPreventionAndControlAligned?.value
+                ),
+                'CapEx-based Proportion of Assets substantially contributing to Pollution Prevention and Control - Aligned',
+                dataset.investmentFirms?.dealingOnOwnAccountServicesCapexBased
+                  ?.capexBasedProportionOfAssetsSubstantiallyContributingToPollutionPreventionAndControlAligned
+              ),
+          },
+          {
+            type: 'cell',
+            label:
+              'CapEx-based Proportion of Assets substantially contributing to Pollution Prevention and Control - Of which Enabling',
+            explanation:
+              "Taxonomy-aligned and enabling CapEx-based Proportion of Total Assets invested under Investment Firms' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to Pollution Prevention and Control",
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatPercentageForDatatable(
+                  dataset.investmentFirms?.dealingOnOwnAccountServicesCapexBased
+                    ?.capexBasedProportionOfAssetsSubstantiallyContributingToPollutionPreventionAndControlOfWhichEnabling
+                    ?.value
+                ),
+                'CapEx-based Proportion of Assets substantially contributing to Pollution Prevention and Control - Of which Enabling',
+                dataset.investmentFirms?.dealingOnOwnAccountServicesCapexBased
+                  ?.capexBasedProportionOfAssetsSubstantiallyContributingToPollutionPreventionAndControlOfWhichEnabling
+              ),
+          },
+          {
+            type: 'cell',
+            label:
+              'CapEx-based Proportion of Assets substantially contributing to Protection and Restoration of Biodiversity and Ecosystems - Eligible',
+            explanation:
+              "Taxonomy-aligned CapEx-based Proportion of Total Assets invested under Investment Firms' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to Protection and Restoration of Biodiversity and Ecosystems",
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatPercentageForDatatable(
+                  dataset.investmentFirms?.dealingOnOwnAccountServicesCapexBased
+                    ?.capexBasedProportionOfAssetsSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsEligible
+                    ?.value
+                ),
+                'CapEx-based Proportion of Assets substantially contributing to Protection and Restoration of Biodiversity and Ecosystems - Eligible',
+                dataset.investmentFirms?.dealingOnOwnAccountServicesCapexBased
+                  ?.capexBasedProportionOfAssetsSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsEligible
+              ),
+          },
+          {
+            type: 'cell',
+            label:
+              'CapEx-based Proportion of Assets substantially contributing to Protection and Restoration of Biodiversity and Ecosystems - Aligned',
+            explanation:
+              "Taxonomy-aligned CapEx-based Proportion of Total Assets invested under Investment Firms' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to Protection and Restoration of Biodiversity and Ecosystems",
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatPercentageForDatatable(
+                  dataset.investmentFirms?.dealingOnOwnAccountServicesCapexBased
+                    ?.capexBasedProportionOfAssetsSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsAligned
+                    ?.value
+                ),
+                'CapEx-based Proportion of Assets substantially contributing to Protection and Restoration of Biodiversity and Ecosystems - Aligned',
+                dataset.investmentFirms?.dealingOnOwnAccountServicesCapexBased
+                  ?.capexBasedProportionOfAssetsSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsAligned
+              ),
+          },
+          {
+            type: 'cell',
+            label:
+              'CapEx-based Proportion of Assets substantially contributing to Protection and Restoration of Biodiversity and Ecosystems - Of which Enabling',
+            explanation:
+              "Taxonomy-aligned and enabling CapEx-based Proportion of Total Assets invested under Investment Firms' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to Protection and Restoration of Biodiversity and Ecosystems",
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatPercentageForDatatable(
+                  dataset.investmentFirms?.dealingOnOwnAccountServicesCapexBased
+                    ?.capexBasedProportionOfAssetsSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsOfWhichEnabling
+                    ?.value
+                ),
+                'CapEx-based Proportion of Assets substantially contributing to Protection and Restoration of Biodiversity and Ecosystems - Of which Enabling',
+                dataset.investmentFirms?.dealingOnOwnAccountServicesCapexBased
+                  ?.capexBasedProportionOfAssetsSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsOfWhichEnabling
+              ),
+          },
+          {
+            type: 'cell',
+            label:
+              'CapEx-based Proportion of Assets substantially contributing to any of the six Environmental Objectives - Eligible',
+            explanation:
+              "Taxonomy-aligned CapEx-based Proportion of Total Assets invested under Investment Firms' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to any of the six Environmental Objectives",
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatPercentageForDatatable(
+                  dataset.investmentFirms?.dealingOnOwnAccountServicesCapexBased
+                    ?.capexBasedProportionOfAssetsSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesEligible
+                    ?.value
+                ),
+                'CapEx-based Proportion of Assets substantially contributing to any of the six Environmental Objectives - Eligible',
+                dataset.investmentFirms?.dealingOnOwnAccountServicesCapexBased
+                  ?.capexBasedProportionOfAssetsSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesEligible
+              ),
+          },
+          {
+            type: 'cell',
+            label:
+              'CapEx-based Proportion of Assets substantially contributing to any of the six Environmental Objectives - Aligned',
+            explanation:
+              "Taxonomy-aligned CapEx-based Proportion of Total Assets invested under Investment Firms' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to any of the six Environmental Objectives",
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatPercentageForDatatable(
+                  dataset.investmentFirms?.dealingOnOwnAccountServicesCapexBased
+                    ?.capexBasedProportionOfAssetsSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesAligned
+                    ?.value
+                ),
+                'CapEx-based Proportion of Assets substantially contributing to any of the six Environmental Objectives - Aligned',
+                dataset.investmentFirms?.dealingOnOwnAccountServicesCapexBased
+                  ?.capexBasedProportionOfAssetsSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesAligned
+              ),
+          },
+          {
+            type: 'cell',
+            label:
+              'CapEx-based Proportion of Assets substantially contributing to any of the six Environmental Objectives - Of which Transitional',
+            explanation:
+              "Taxonomy-aligned and transitional CapEx-based Proportion of Total Assets invested under Investment Firms' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to any of the six Environmental Objectives",
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatPercentageForDatatable(
+                  dataset.investmentFirms?.dealingOnOwnAccountServicesCapexBased
+                    ?.capexBasedProportionOfAssetsSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesOfWhichTransitional
+                    ?.value
+                ),
+                'CapEx-based Proportion of Assets substantially contributing to any of the six Environmental Objectives - Of which Transitional',
+                dataset.investmentFirms?.dealingOnOwnAccountServicesCapexBased
+                  ?.capexBasedProportionOfAssetsSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesOfWhichTransitional
+              ),
+          },
+          {
+            type: 'cell',
+            label:
+              'CapEx-based Proportion of Assets substantially contributing to any of the six Environmental Objectives - Of which Enabling',
+            explanation:
+              "Taxonomy-aligned and enabling CapEx-based Proportion of Total Assets invested under Investment Firms' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to any of the six Environmental Objectives",
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatPercentageForDatatable(
+                  dataset.investmentFirms?.dealingOnOwnAccountServicesCapexBased
+                    ?.capexBasedProportionOfAssetsSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesOfWhichEnabling
+                    ?.value
+                ),
+                'CapEx-based Proportion of Assets substantially contributing to any of the six Environmental Objectives - Of which Enabling',
+                dataset.investmentFirms?.dealingOnOwnAccountServicesCapexBased
+                  ?.capexBasedProportionOfAssetsSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesOfWhichEnabling
+              ),
+          },
+        ],
+      },
+      {
+        type: 'section',
+        label: 'Other Services - Turnover-based',
+        expandOnPageLoad: true,
+        shouldDisplay: (): boolean => true,
+        children: [
+          {
+            type: 'cell',
+            label:
+              'Turnover-based Total Revenue from Investments and Services and Activities other than Dealing on own Account',
+            explanation:
+              'Total Revenue (i.e. fees, commissions and other monetary benefits) from investment and services and activities other than dealing on own account (as per Section A of Annex I to Directive 2014/65/EU)',
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
+              formatCurrencyForDisplay(
+                dataset.investmentFirms?.otherServicesTurnoverBased
+                  ?.turnoverBasedTotalRevenueFromInvestmentsAndServicesAndActivitiesOtherThanDealingOnOwnAccount,
+                'Turnover-based Total Revenue from Investments and Services and Activities other than Dealing on own Account'
+              ),
+          },
+          {
+            type: 'cell',
+            label:
+              'Turnover-based Proportion of Revenue substantially contributing to Climate Change Mitigation - Eligible',
+            explanation:
+              'Taxonomy-aligned Turnover-based Proportion of Revenue (Fees, Commissions and other Monetary Services) from Investments and Services and Activities substantially contributing to Climate Change Mitigation',
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatPercentageForDatatable(
+                  dataset.investmentFirms?.otherServicesTurnoverBased
+                    ?.turnoverBasedProportionOfRevenueSubstantiallyContributingToClimateChangeMitigationEligible?.value
+                ),
+                'Turnover-based Proportion of Revenue substantially contributing to Climate Change Mitigation - Eligible',
+                dataset.investmentFirms?.otherServicesTurnoverBased
+                  ?.turnoverBasedProportionOfRevenueSubstantiallyContributingToClimateChangeMitigationEligible
+              ),
+          },
+          {
+            type: 'cell',
+            label:
+              'Turnover-based Proportion of Revenue substantially contributing to Climate Change Mitigation - Aligned',
+            explanation:
+              'Taxonomy-aligned Turnover-based Proportion of Revenue (Fees, Commissions and other Monetary Services) from Investments and Services and Activities substantially contributing to Climate Change Mitigation',
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatPercentageForDatatable(
+                  dataset.investmentFirms?.otherServicesTurnoverBased
+                    ?.turnoverBasedProportionOfRevenueSubstantiallyContributingToClimateChangeMitigationAligned?.value
+                ),
+                'Turnover-based Proportion of Revenue substantially contributing to Climate Change Mitigation - Aligned',
+                dataset.investmentFirms?.otherServicesTurnoverBased
+                  ?.turnoverBasedProportionOfRevenueSubstantiallyContributingToClimateChangeMitigationAligned
+              ),
+          },
+          {
+            type: 'cell',
+            label:
+              'Turnover-based Proportion of Revenue substantially contributing to Climate Change Mitigation - Of which Transitional',
+            explanation:
+              'Taxonomy-aligned and transitional Turnover-based Proportion of Revenue (Fees, Commissions and other Monetary Services) from Investments and Services and Activities substantially contributing to Climate Change Mitigation',
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatPercentageForDatatable(
+                  dataset.investmentFirms?.otherServicesTurnoverBased
+                    ?.turnoverBasedProportionOfRevenueSubstantiallyContributingToClimateChangeMitigationOfWhichTransitional
+                    ?.value
+                ),
+                'Turnover-based Proportion of Revenue substantially contributing to Climate Change Mitigation - Of which Transitional',
+                dataset.investmentFirms?.otherServicesTurnoverBased
+                  ?.turnoverBasedProportionOfRevenueSubstantiallyContributingToClimateChangeMitigationOfWhichTransitional
+              ),
+          },
+          {
+            type: 'cell',
+            label:
+              'Turnover-based Proportion of Revenue substantially contributing to Climate Change Mitigation - Of which Enabling',
+            explanation:
+              'Taxonomy-aligned and enabling Turnover-based Proportion of Revenue (Fees, Commissions and other Monetary Services) from Investments and Services and Activities substantially contributing to Climate Change Mitigation',
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatPercentageForDatatable(
+                  dataset.investmentFirms?.otherServicesTurnoverBased
+                    ?.turnoverBasedProportionOfRevenueSubstantiallyContributingToClimateChangeMitigationOfWhichEnabling
+                    ?.value
+                ),
+                'Turnover-based Proportion of Revenue substantially contributing to Climate Change Mitigation - Of which Enabling',
+                dataset.investmentFirms?.otherServicesTurnoverBased
+                  ?.turnoverBasedProportionOfRevenueSubstantiallyContributingToClimateChangeMitigationOfWhichEnabling
+              ),
+          },
+          {
+            type: 'cell',
+            label:
+              'Turnover-based Proportion of Revenue substantially contributing to Climate Change Adaptation - Eligible',
+            explanation:
+              'Taxonomy-aligned Turnover-based Proportion of Revenue (Fees, Commissions and other Monetary Services) from Investments and Services and Activities substantially contributing to Climate Change Adaptation',
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatPercentageForDatatable(
+                  dataset.investmentFirms?.otherServicesTurnoverBased
+                    ?.turnoverBasedProportionOfRevenueSubstantiallyContributingToClimateChangeAdaptationEligible?.value
+                ),
+                'Turnover-based Proportion of Revenue substantially contributing to Climate Change Adaptation - Eligible',
+                dataset.investmentFirms?.otherServicesTurnoverBased
+                  ?.turnoverBasedProportionOfRevenueSubstantiallyContributingToClimateChangeAdaptationEligible
+              ),
+          },
+          {
+            type: 'cell',
+            label:
+              'Turnover-based Proportion of Revenue substantially contributing to Climate Change Adaptation - Aligned',
+            explanation:
+              'Taxonomy-aligned Turnover-based Proportion of Revenue (Fees, Commissions and other Monetary Services) from Investments and Services and Activities substantially contributing to Climate Change Adaptation',
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatPercentageForDatatable(
+                  dataset.investmentFirms?.otherServicesTurnoverBased
+                    ?.turnoverBasedProportionOfRevenueSubstantiallyContributingToClimateChangeAdaptationAligned?.value
+                ),
+                'Turnover-based Proportion of Revenue substantially contributing to Climate Change Adaptation - Aligned',
+                dataset.investmentFirms?.otherServicesTurnoverBased
+                  ?.turnoverBasedProportionOfRevenueSubstantiallyContributingToClimateChangeAdaptationAligned
+              ),
+          },
+          {
+            type: 'cell',
+            label:
+              'Turnover-based Proportion of Revenue substantially contributing to Climate Change Adaptation - Of which Enabling',
+            explanation:
+              'Taxonomy-aligned and enabling Turnover-based Proportion of Revenue (Fees, Commissions and other Monetary Services) from Investments and Services and Activities substantially contributing to Climate Change Adaptation',
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatPercentageForDatatable(
+                  dataset.investmentFirms?.otherServicesTurnoverBased
+                    ?.turnoverBasedProportionOfRevenueSubstantiallyContributingToClimateChangeAdaptationOfWhichEnabling
+                    ?.value
+                ),
+                'Turnover-based Proportion of Revenue substantially contributing to Climate Change Adaptation - Of which Enabling',
+                dataset.investmentFirms?.otherServicesTurnoverBased
+                  ?.turnoverBasedProportionOfRevenueSubstantiallyContributingToClimateChangeAdaptationOfWhichEnabling
+              ),
+          },
+          {
+            type: 'cell',
+            label:
+              'Turnover-based Proportion of Revenue substantially contributing to Sustainable Use and Protection of Water and Marine Resources - Eligible',
+            explanation:
+              'Taxonomy-aligned Turnover-based Proportion of Revenue (Fees, Commissions and other Monetary Services) from Investments and Services and Activities substantially contributing to Sustainable Use and Protection of Water and Marine Resources',
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatPercentageForDatatable(
+                  dataset.investmentFirms?.otherServicesTurnoverBased
+                    ?.turnoverBasedProportionOfRevenueSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesEligible
+                    ?.value
+                ),
+                'Turnover-based Proportion of Revenue substantially contributing to Sustainable Use and Protection of Water and Marine Resources - Eligible',
+                dataset.investmentFirms?.otherServicesTurnoverBased
+                  ?.turnoverBasedProportionOfRevenueSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesEligible
+              ),
+          },
+          {
+            type: 'cell',
+            label:
+              'Turnover-based Proportion of Revenue substantially contributing to Sustainable Use and Protection of Water and Marine Resources - Aligned',
+            explanation:
+              'Taxonomy-aligned Turnover-based Proportion of Revenue (Fees, Commissions and other Monetary Services) from Investments and Services and Activities substantially contributing to Sustainable Use and Protection of Water and Marine Resources',
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatPercentageForDatatable(
+                  dataset.investmentFirms?.otherServicesTurnoverBased
+                    ?.turnoverBasedProportionOfRevenueSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesAligned
+                    ?.value
+                ),
+                'Turnover-based Proportion of Revenue substantially contributing to Sustainable Use and Protection of Water and Marine Resources - Aligned',
+                dataset.investmentFirms?.otherServicesTurnoverBased
+                  ?.turnoverBasedProportionOfRevenueSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesAligned
+              ),
+          },
+          {
+            type: 'cell',
+            label:
+              'Turnover-based Proportion of Revenue substantially contributing to Sustainable Use and Protection of Water and Marine Resources - Of which Enabling',
+            explanation:
+              'Taxonomy-aligned and enabling Turnover-based Proportion of Revenue (Fees, Commissions and other Monetary Services) from Investments and Services and Activities substantially contributing to Sustainable Use and Protection of Water and Marine Resources',
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatPercentageForDatatable(
+                  dataset.investmentFirms?.otherServicesTurnoverBased
+                    ?.turnoverBasedProportionOfRevenueSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesOfWhichEnabling
+                    ?.value
+                ),
+                'Turnover-based Proportion of Revenue substantially contributing to Sustainable Use and Protection of Water and Marine Resources - Of which Enabling',
+                dataset.investmentFirms?.otherServicesTurnoverBased
+                  ?.turnoverBasedProportionOfRevenueSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesOfWhichEnabling
+              ),
+          },
+          {
+            type: 'cell',
+            label: 'Turnover-based Proportion of Revenue substantially contributing to Circular Economy - Eligible',
+            explanation:
+              'Taxonomy-aligned Turnover-based Proportion of Revenue (Fees, Commissions and other Monetary Services) from Investments and Services and Activities substantially contributing to Circular Economy',
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatPercentageForDatatable(
+                  dataset.investmentFirms?.otherServicesTurnoverBased
+                    ?.turnoverBasedProportionOfRevenueSubstantiallyContributingToCircularEconomyEligible?.value
+                ),
+                'Turnover-based Proportion of Revenue substantially contributing to Circular Economy - Eligible',
+                dataset.investmentFirms?.otherServicesTurnoverBased
+                  ?.turnoverBasedProportionOfRevenueSubstantiallyContributingToCircularEconomyEligible
+              ),
+          },
+          {
+            type: 'cell',
+            label: 'Turnover-based Proportion of Revenue substantially contributing to Circular Economy - Aligned',
+            explanation:
+              'Taxonomy-aligned Turnover-based Proportion of Revenue (Fees, Commissions and other Monetary Services) from Investments and Services and Activities substantially contributing to Circular Economy',
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatPercentageForDatatable(
+                  dataset.investmentFirms?.otherServicesTurnoverBased
+                    ?.turnoverBasedProportionOfRevenueSubstantiallyContributingToCircularEconomyAligned?.value
+                ),
+                'Turnover-based Proportion of Revenue substantially contributing to Circular Economy - Aligned',
+                dataset.investmentFirms?.otherServicesTurnoverBased
+                  ?.turnoverBasedProportionOfRevenueSubstantiallyContributingToCircularEconomyAligned
+              ),
+          },
+          {
+            type: 'cell',
+            label:
+              'Turnover-based Proportion of Revenue substantially contributing to Circular Economy - Of which Enabling',
+            explanation:
+              'Taxonomy-aligned and enabling Turnover-based Proportion of Revenue (Fees, Commissions and other Monetary Services) from Investments and Services and Activities substantially contributing to Circular Economy',
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatPercentageForDatatable(
+                  dataset.investmentFirms?.otherServicesTurnoverBased
+                    ?.turnoverBasedProportionOfRevenueSubstantiallyContributingToCircularEconomyOfWhichEnabling?.value
+                ),
+                'Turnover-based Proportion of Revenue substantially contributing to Circular Economy - Of which Enabling',
+                dataset.investmentFirms?.otherServicesTurnoverBased
+                  ?.turnoverBasedProportionOfRevenueSubstantiallyContributingToCircularEconomyOfWhichEnabling
+              ),
+          },
+          {
+            type: 'cell',
+            label:
+              'Turnover-based Proportion of Revenue substantially contributing to Pollution Prevention and Control - Eligible',
+            explanation:
+              'Taxonomy-aligned Turnover-based Proportion of Revenue (Fees, Commissions and other Monetary Services) from Investments and Services and Activities substantially contributing to Pollution Prevention and Control',
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatPercentageForDatatable(
+                  dataset.investmentFirms?.otherServicesTurnoverBased
+                    ?.turnoverBasedProportionOfRevenueSubstantiallyContributingToPollutionPreventionAndControlEligible
+                    ?.value
+                ),
+                'Turnover-based Proportion of Revenue substantially contributing to Pollution Prevention and Control - Eligible',
+                dataset.investmentFirms?.otherServicesTurnoverBased
+                  ?.turnoverBasedProportionOfRevenueSubstantiallyContributingToPollutionPreventionAndControlEligible
+              ),
+          },
+          {
+            type: 'cell',
+            label:
+              'Turnover-based Proportion of Revenue substantially contributing to Pollution Prevention and Control - Aligned',
+            explanation:
+              'Taxonomy-aligned Turnover-based Proportion of Revenue (Fees, Commissions and other Monetary Services) from Investments and Services and Activities substantially contributing to Pollution Prevention and Control',
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatPercentageForDatatable(
+                  dataset.investmentFirms?.otherServicesTurnoverBased
+                    ?.turnoverBasedProportionOfRevenueSubstantiallyContributingToPollutionPreventionAndControlAligned
+                    ?.value
+                ),
+                'Turnover-based Proportion of Revenue substantially contributing to Pollution Prevention and Control - Aligned',
+                dataset.investmentFirms?.otherServicesTurnoverBased
+                  ?.turnoverBasedProportionOfRevenueSubstantiallyContributingToPollutionPreventionAndControlAligned
+              ),
+          },
+          {
+            type: 'cell',
+            label:
+              'Turnover-based Proportion of Revenue substantially contributing to Pollution Prevention and Control - Of which Enabling',
+            explanation:
+              'Taxonomy-aligned and enabling Turnover-based Proportion of Revenue (Fees, Commissions and other Monetary Services) from Investments and Services and Activities substantially contributing to Pollution Prevention and Control',
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatPercentageForDatatable(
+                  dataset.investmentFirms?.otherServicesTurnoverBased
+                    ?.turnoverBasedProportionOfRevenueSubstantiallyContributingToPollutionPreventionAndControlOfWhichEnabling
+                    ?.value
+                ),
+                'Turnover-based Proportion of Revenue substantially contributing to Pollution Prevention and Control - Of which Enabling',
+                dataset.investmentFirms?.otherServicesTurnoverBased
+                  ?.turnoverBasedProportionOfRevenueSubstantiallyContributingToPollutionPreventionAndControlOfWhichEnabling
+              ),
+          },
+          {
+            type: 'cell',
+            label:
+              'Turnover-based Proportion of Revenue substantially contributing to Protection and Restoration of Biodiversity and Ecosystems - Eligible',
+            explanation:
+              'Taxonomy-aligned Turnover-based Proportion of Revenue (Fees, Commissions and other Monetary Services) from Investments and Services and Activities substantially contributing to Protection and Restoration of Biodiversity and Ecosystems',
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatPercentageForDatatable(
+                  dataset.investmentFirms?.otherServicesTurnoverBased
+                    ?.turnoverBasedProportionOfRevenueSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsEligible
+                    ?.value
+                ),
+                'Turnover-based Proportion of Revenue substantially contributing to Protection and Restoration of Biodiversity and Ecosystems - Eligible',
+                dataset.investmentFirms?.otherServicesTurnoverBased
+                  ?.turnoverBasedProportionOfRevenueSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsEligible
+              ),
+          },
+          {
+            type: 'cell',
+            label:
+              'Turnover-based Proportion of Revenue substantially contributing to Protection and Restoration of Biodiversity and Ecosystems - Aligned',
+            explanation:
+              'Taxonomy-aligned Turnover-based Proportion of Revenue (Fees, Commissions and other Monetary Services) from Investments and Services and Activities substantially contributing to Protection and Restoration of Biodiversity and Ecosystems',
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatPercentageForDatatable(
+                  dataset.investmentFirms?.otherServicesTurnoverBased
+                    ?.turnoverBasedProportionOfRevenueSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsAligned
+                    ?.value
+                ),
+                'Turnover-based Proportion of Revenue substantially contributing to Protection and Restoration of Biodiversity and Ecosystems - Aligned',
+                dataset.investmentFirms?.otherServicesTurnoverBased
+                  ?.turnoverBasedProportionOfRevenueSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsAligned
+              ),
+          },
+          {
+            type: 'cell',
+            label:
+              'Turnover-based Proportion of Revenue substantially contributing to Protection and Restoration of Biodiversity and Ecosystems - Of which Enabling',
+            explanation:
+              'Taxonomy-aligned and enabling Turnover-based Proportion of Revenue (Fees, Commissions and other Monetary Services) from Investments and Services and Activities substantially contributing to Protection and Restoration of Biodiversity and Ecosystems',
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatPercentageForDatatable(
+                  dataset.investmentFirms?.otherServicesTurnoverBased
+                    ?.turnoverBasedProportionOfRevenueSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsOfWhichEnabling
+                    ?.value
+                ),
+                'Turnover-based Proportion of Revenue substantially contributing to Protection and Restoration of Biodiversity and Ecosystems - Of which Enabling',
+                dataset.investmentFirms?.otherServicesTurnoverBased
+                  ?.turnoverBasedProportionOfRevenueSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsOfWhichEnabling
+              ),
+          },
+          {
+            type: 'cell',
+            label:
+              'Turnover-based Proportion of Revenue substantially contributing to any of the six Environmental Objectives - Eligible',
+            explanation:
+              'Taxonomy-aligned Turnover-based Proportion of Revenue (Fees, Commissions and other Monetary Services) from Investments and Services and Activities substantially contributing to any of the six Environmental Objectives',
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatPercentageForDatatable(
+                  dataset.investmentFirms?.otherServicesTurnoverBased
+                    ?.turnoverBasedProportionOfRevenueSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesEligible
+                    ?.value
+                ),
+                'Turnover-based Proportion of Revenue substantially contributing to any of the six Environmental Objectives - Eligible',
+                dataset.investmentFirms?.otherServicesTurnoverBased
+                  ?.turnoverBasedProportionOfRevenueSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesEligible
+              ),
+          },
+          {
+            type: 'cell',
+            label:
+              'Turnover-based Proportion of Revenue substantially contributing to any of the six Environmental Objectives - Aligned',
+            explanation:
+              'Taxonomy-aligned Turnover-based Proportion of Revenue (Fees, Commissions and other Monetary Services) from Investments and Services and Activities substantially contributing to any of the six Environmental Objectives',
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatPercentageForDatatable(
+                  dataset.investmentFirms?.otherServicesTurnoverBased
+                    ?.turnoverBasedProportionOfRevenueSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesAligned
+                    ?.value
+                ),
+                'Turnover-based Proportion of Revenue substantially contributing to any of the six Environmental Objectives - Aligned',
+                dataset.investmentFirms?.otherServicesTurnoverBased
+                  ?.turnoverBasedProportionOfRevenueSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesAligned
+              ),
+          },
+          {
+            type: 'cell',
+            label:
+              'Turnover-based Proportion of Revenue substantially contributing to any of the six Environmental Objectives - Of which Transitional',
+            explanation:
+              'Taxonomy-aligned and transitional Turnover-based Proportion of Revenue (Fees, Commissions and other Monetary Services) from Investments and Services and Activities substantially contributing to any of the six Environmental Objectives',
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatPercentageForDatatable(
+                  dataset.investmentFirms?.otherServicesTurnoverBased
+                    ?.turnoverBasedProportionOfRevenueSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesOfWhichTransitional
+                    ?.value
+                ),
+                'Turnover-based Proportion of Revenue substantially contributing to any of the six Environmental Objectives - Of which Transitional',
+                dataset.investmentFirms?.otherServicesTurnoverBased
+                  ?.turnoverBasedProportionOfRevenueSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesOfWhichTransitional
+              ),
+          },
+          {
+            type: 'cell',
+            label:
+              'Turnover-based Proportion of Revenue substantially contributing to any of the six Environmental Objectives - Of which Enabling',
+            explanation:
+              'Taxonomy-aligned and enabling Turnover-based Proportion of Revenue (Fees, Commissions and other Monetary Services) from Investments and Services and Activities substantially contributing to any of the six Environmental Objectives',
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatPercentageForDatatable(
+                  dataset.investmentFirms?.otherServicesTurnoverBased
+                    ?.turnoverBasedProportionOfRevenueSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesOfWhichEnabling
+                    ?.value
+                ),
+                'Turnover-based Proportion of Revenue substantially contributing to any of the six Environmental Objectives - Of which Enabling',
+                dataset.investmentFirms?.otherServicesTurnoverBased
+                  ?.turnoverBasedProportionOfRevenueSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesOfWhichEnabling
+              ),
+          },
+        ],
+      },
+      {
+        type: 'section',
+        label: 'Other Services - CapEx-based',
+        expandOnPageLoad: true,
+        shouldDisplay: (): boolean => true,
+        children: [
+          {
+            type: 'cell',
+            label:
+              'CapEx-based Total Revenue from Investments and Services and Activities other than Dealing on own Account',
+            explanation:
+              "Total assets invested under investment firms' activities Other Services (as per Section A of Annex I to Directive 2014/65/EU)",
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
+              formatCurrencyForDisplay(
+                dataset.investmentFirms?.otherServicesCapexBased
+                  ?.capexBasedTotalRevenueFromInvestmentsAndServicesAndActivitiesOtherThanDealingOnOwnAccount,
+                'CapEx-based Total Revenue from Investments and Services and Activities other than Dealing on own Account'
+              ),
+          },
+          {
+            type: 'cell',
+            label:
+              'CapEx-based Proportion of Revenue substantially contributing to Climate Change Mitigation - Eligible',
+            explanation:
+              'Taxonomy-aligned CapEx-based Proportion of Revenue (Fees, Commissions and other Monetary Services) from Investments and Services and Activities substantially contributing to Climate Change Mitigation',
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatPercentageForDatatable(
+                  dataset.investmentFirms?.otherServicesCapexBased
+                    ?.capexBasedProportionOfRevenueSubstantiallyContributingToClimateChangeMitigationEligible?.value
+                ),
+                'CapEx-based Proportion of Revenue substantially contributing to Climate Change Mitigation - Eligible',
+                dataset.investmentFirms?.otherServicesCapexBased
+                  ?.capexBasedProportionOfRevenueSubstantiallyContributingToClimateChangeMitigationEligible
+              ),
+          },
+          {
+            type: 'cell',
+            label:
+              'CapEx-based Proportion of Revenue substantially contributing to Climate Change Mitigation - Aligned',
+            explanation:
+              'Taxonomy-aligned CapEx-based Proportion of Revenue (Fees, Commissions and other Monetary Services) from Investments and Services and Activities substantially contributing to Climate Change Mitigation',
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatPercentageForDatatable(
+                  dataset.investmentFirms?.otherServicesCapexBased
+                    ?.capexBasedProportionOfRevenueSubstantiallyContributingToClimateChangeMitigationAligned?.value
+                ),
+                'CapEx-based Proportion of Revenue substantially contributing to Climate Change Mitigation - Aligned',
+                dataset.investmentFirms?.otherServicesCapexBased
+                  ?.capexBasedProportionOfRevenueSubstantiallyContributingToClimateChangeMitigationAligned
+              ),
+          },
+          {
+            type: 'cell',
+            label:
+              'CapEx-based Proportion of Revenue substantially contributing to Climate Change Mitigation - Of which Transitional',
+            explanation:
+              'Taxonomy-aligned and transitional CapEx-based Proportion of Revenue (Fees, Commissions and other Monetary Services) from Investments and Services and Activities substantially contributing to Climate Change Mitigation',
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatPercentageForDatatable(
+                  dataset.investmentFirms?.otherServicesCapexBased
+                    ?.capexBasedProportionOfRevenueSubstantiallyContributingToClimateChangeMitigationOfWhichTransitional
+                    ?.value
+                ),
+                'CapEx-based Proportion of Revenue substantially contributing to Climate Change Mitigation - Of which Transitional',
+                dataset.investmentFirms?.otherServicesCapexBased
+                  ?.capexBasedProportionOfRevenueSubstantiallyContributingToClimateChangeMitigationOfWhichTransitional
+              ),
+          },
+          {
+            type: 'cell',
+            label:
+              'CapEx-based Proportion of Revenue substantially contributing to Climate Change Mitigation - Of which Enabling',
+            explanation:
+              'Taxonomy-aligned and enabling CapEx-based Proportion of Revenue (Fees, Commissions and other Monetary Services) from Investments and Services and Activities substantially contributing to Climate Change Mitigation',
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatPercentageForDatatable(
+                  dataset.investmentFirms?.otherServicesCapexBased
+                    ?.capexBasedProportionOfRevenueSubstantiallyContributingToClimateChangeMitigationOfWhichEnabling
+                    ?.value
+                ),
+                'CapEx-based Proportion of Revenue substantially contributing to Climate Change Mitigation - Of which Enabling',
+                dataset.investmentFirms?.otherServicesCapexBased
+                  ?.capexBasedProportionOfRevenueSubstantiallyContributingToClimateChangeMitigationOfWhichEnabling
+              ),
+          },
+          {
+            type: 'cell',
+            label:
+              'CapEx-based Proportion of Revenue substantially contributing to Climate Change Adaptation - Eligible',
+            explanation:
+              'Taxonomy-aligned CapEx-based Proportion of Revenue (Fees, Commissions and other Monetary Services) from Investments and Services and Activities substantially contributing to Climate Change Adaptation',
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatPercentageForDatatable(
+                  dataset.investmentFirms?.otherServicesCapexBased
+                    ?.capexBasedProportionOfRevenueSubstantiallyContributingToClimateChangeAdaptationEligible?.value
+                ),
+                'CapEx-based Proportion of Revenue substantially contributing to Climate Change Adaptation - Eligible',
+                dataset.investmentFirms?.otherServicesCapexBased
+                  ?.capexBasedProportionOfRevenueSubstantiallyContributingToClimateChangeAdaptationEligible
+              ),
+          },
+          {
+            type: 'cell',
+            label:
+              'CapEx-based Proportion of Revenue substantially contributing to Climate Change Adaptation - Aligned',
+            explanation:
+              'Taxonomy-aligned CapEx-based Proportion of Revenue (Fees, Commissions and other Monetary Services) from Investments and Services and Activities substantially contributing to Climate Change Adaptation',
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatPercentageForDatatable(
+                  dataset.investmentFirms?.otherServicesCapexBased
+                    ?.capexBasedProportionOfRevenueSubstantiallyContributingToClimateChangeAdaptationAligned?.value
+                ),
+                'CapEx-based Proportion of Revenue substantially contributing to Climate Change Adaptation - Aligned',
+                dataset.investmentFirms?.otherServicesCapexBased
+                  ?.capexBasedProportionOfRevenueSubstantiallyContributingToClimateChangeAdaptationAligned
+              ),
+          },
+          {
+            type: 'cell',
+            label:
+              'CapEx-based Proportion of Revenue substantially contributing to Climate Change Adaptation - Of which Enabling',
+            explanation:
+              'Taxonomy-aligned and enabling CapEx-based Proportion of Revenue (Fees, Commissions and other Monetary Services) from Investments and Services and Activities substantially contributing to Climate Change Adaptation',
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatPercentageForDatatable(
+                  dataset.investmentFirms?.otherServicesCapexBased
+                    ?.capexBasedProportionOfRevenueSubstantiallyContributingToClimateChangeAdaptationOfWhichEnabling
+                    ?.value
+                ),
+                'CapEx-based Proportion of Revenue substantially contributing to Climate Change Adaptation - Of which Enabling',
+                dataset.investmentFirms?.otherServicesCapexBased
+                  ?.capexBasedProportionOfRevenueSubstantiallyContributingToClimateChangeAdaptationOfWhichEnabling
+              ),
+          },
+          {
+            type: 'cell',
+            label:
+              'CapEx-based Proportion of Revenue substantially contributing to Sustainable Use and Protection of Water and Marine Resources - Eligible',
+            explanation:
+              'Taxonomy-aligned CapEx-based Proportion of Revenue (Fees, Commissions and other Monetary Services) from Investments and Services and Activities substantially contributing to Sustainable Use and Protection of Water and Marine Resources',
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatPercentageForDatatable(
+                  dataset.investmentFirms?.otherServicesCapexBased
+                    ?.capexBasedProportionOfRevenueSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesEligible
+                    ?.value
+                ),
+                'CapEx-based Proportion of Revenue substantially contributing to Sustainable Use and Protection of Water and Marine Resources - Eligible',
+                dataset.investmentFirms?.otherServicesCapexBased
+                  ?.capexBasedProportionOfRevenueSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesEligible
+              ),
+          },
+          {
+            type: 'cell',
+            label:
+              'CapEx-based Proportion of Revenue substantially contributing to Sustainable Use and Protection of Water and Marine Resources - Aligned',
+            explanation:
+              'Taxonomy-aligned CapEx-based Proportion of Revenue (Fees, Commissions and other Monetary Services) from Investments and Services and Activities substantially contributing to Sustainable Use and Protection of Water and Marine Resources',
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatPercentageForDatatable(
+                  dataset.investmentFirms?.otherServicesCapexBased
+                    ?.capexBasedProportionOfRevenueSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesAligned
+                    ?.value
+                ),
+                'CapEx-based Proportion of Revenue substantially contributing to Sustainable Use and Protection of Water and Marine Resources - Aligned',
+                dataset.investmentFirms?.otherServicesCapexBased
+                  ?.capexBasedProportionOfRevenueSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesAligned
+              ),
+          },
+          {
+            type: 'cell',
+            label:
+              'CapEx-based Proportion of Revenue substantially contributing to Sustainable Use and Protection of Water and Marine Resources - Of which Enabling',
+            explanation:
+              'Taxonomy-aligned and enabling CapEx-based Proportion of Revenue (Fees, Commissions and other Monetary Services) from Investments and Services and Activities substantially contributing to Sustainable Use and Protection of Water and Marine Resources',
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatPercentageForDatatable(
+                  dataset.investmentFirms?.otherServicesCapexBased
+                    ?.capexBasedProportionOfRevenueSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesOfWhichEnabling
+                    ?.value
+                ),
+                'CapEx-based Proportion of Revenue substantially contributing to Sustainable Use and Protection of Water and Marine Resources - Of which Enabling',
+                dataset.investmentFirms?.otherServicesCapexBased
+                  ?.capexBasedProportionOfRevenueSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesOfWhichEnabling
+              ),
+          },
+          {
+            type: 'cell',
+            label: 'CapEx-based Proportion of Revenue substantially contributing to Circular Economy - Eligible',
+            explanation:
+              'Taxonomy-aligned CapEx-based Proportion of Revenue (Fees, Commissions and other Monetary Services) from Investments and Services and Activities substantially contributing to Circular Economy',
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatPercentageForDatatable(
+                  dataset.investmentFirms?.otherServicesCapexBased
+                    ?.capexBasedProportionOfRevenueSubstantiallyContributingToCircularEconomyEligible?.value
+                ),
+                'CapEx-based Proportion of Revenue substantially contributing to Circular Economy - Eligible',
+                dataset.investmentFirms?.otherServicesCapexBased
+                  ?.capexBasedProportionOfRevenueSubstantiallyContributingToCircularEconomyEligible
+              ),
+          },
+          {
+            type: 'cell',
+            label: 'CapEx-based Proportion of Revenue substantially contributing to Circular Economy - Aligned',
+            explanation:
+              'Taxonomy-aligned CapEx-based Proportion of Revenue (Fees, Commissions and other Monetary Services) from Investments and Services and Activities substantially contributing to Circular Economy',
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatPercentageForDatatable(
+                  dataset.investmentFirms?.otherServicesCapexBased
+                    ?.capexBasedProportionOfRevenueSubstantiallyContributingToCircularEconomyAligned?.value
+                ),
+                'CapEx-based Proportion of Revenue substantially contributing to Circular Economy - Aligned',
+                dataset.investmentFirms?.otherServicesCapexBased
+                  ?.capexBasedProportionOfRevenueSubstantiallyContributingToCircularEconomyAligned
+              ),
+          },
+          {
+            type: 'cell',
+            label:
+              'CapEx-based Proportion of Revenue substantially contributing to Circular Economy - Of which Enabling',
+            explanation:
+              'Taxonomy-aligned and enabling CapEx-based Proportion of Revenue (Fees, Commissions and other Monetary Services) from Investments and Services and Activities substantially contributing to Circular Economy',
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatPercentageForDatatable(
+                  dataset.investmentFirms?.otherServicesCapexBased
+                    ?.capexBasedProportionOfRevenueSubstantiallyContributingToCircularEconomyOfWhichEnabling?.value
+                ),
+                'CapEx-based Proportion of Revenue substantially contributing to Circular Economy - Of which Enabling',
+                dataset.investmentFirms?.otherServicesCapexBased
+                  ?.capexBasedProportionOfRevenueSubstantiallyContributingToCircularEconomyOfWhichEnabling
+              ),
+          },
+          {
+            type: 'cell',
+            label:
+              'CapEx-based Proportion of Revenue substantially contributing to Pollution Prevention and Control - Eligible',
+            explanation:
+              'Taxonomy-aligned CapEx-based Proportion of Revenue (Fees, Commissions and other Monetary Services) from Investments and Services and Activities substantially contributing to Pollution Prevention and Control',
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatPercentageForDatatable(
+                  dataset.investmentFirms?.otherServicesCapexBased
+                    ?.capexBasedProportionOfRevenueSubstantiallyContributingToPollutionPreventionAndControlEligible
+                    ?.value
+                ),
+                'CapEx-based Proportion of Revenue substantially contributing to Pollution Prevention and Control - Eligible',
+                dataset.investmentFirms?.otherServicesCapexBased
+                  ?.capexBasedProportionOfRevenueSubstantiallyContributingToPollutionPreventionAndControlEligible
+              ),
+          },
+          {
+            type: 'cell',
+            label:
+              'CapEx-based Proportion of Revenue substantially contributing to Pollution Prevention and Control - Aligned',
+            explanation:
+              'Taxonomy-aligned CapEx-based Proportion of Revenue (Fees, Commissions and other Monetary Services) from Investments and Services and Activities substantially contributing to Pollution Prevention and Control',
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatPercentageForDatatable(
+                  dataset.investmentFirms?.otherServicesCapexBased
+                    ?.capexBasedProportionOfRevenueSubstantiallyContributingToPollutionPreventionAndControlAligned
+                    ?.value
+                ),
+                'CapEx-based Proportion of Revenue substantially contributing to Pollution Prevention and Control - Aligned',
+                dataset.investmentFirms?.otherServicesCapexBased
+                  ?.capexBasedProportionOfRevenueSubstantiallyContributingToPollutionPreventionAndControlAligned
+              ),
+          },
+          {
+            type: 'cell',
+            label:
+              'CapEx-based Proportion of Revenue substantially contributing to Pollution Prevention and Control - Of which Enabling',
+            explanation:
+              'Taxonomy-aligned and enabling CapEx-based Proportion of Revenue (Fees, Commissions and other Monetary Services) from Investments and Services and Activities substantially contributing to Pollution Prevention and Control',
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatPercentageForDatatable(
+                  dataset.investmentFirms?.otherServicesCapexBased
+                    ?.capexBasedProportionOfRevenueSubstantiallyContributingToPollutionPreventionAndControlOfWhichEnabling
+                    ?.value
+                ),
+                'CapEx-based Proportion of Revenue substantially contributing to Pollution Prevention and Control - Of which Enabling',
+                dataset.investmentFirms?.otherServicesCapexBased
+                  ?.capexBasedProportionOfRevenueSubstantiallyContributingToPollutionPreventionAndControlOfWhichEnabling
+              ),
+          },
+          {
+            type: 'cell',
+            label:
+              'CapEx-based Proportion of Revenue substantially contributing to Protection and Restoration of Biodiversity and Ecosystems - Eligible',
+            explanation:
+              'Taxonomy-aligned CapEx-based Proportion of Revenue (Fees, Commissions and other Monetary Services) from Investments and Services and Activities substantially contributing to Protection and Restoration of Biodiversity and Ecosystems',
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatPercentageForDatatable(
+                  dataset.investmentFirms?.otherServicesCapexBased
+                    ?.capexBasedProportionOfRevenueSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsEligible
+                    ?.value
+                ),
+                'CapEx-based Proportion of Revenue substantially contributing to Protection and Restoration of Biodiversity and Ecosystems - Eligible',
+                dataset.investmentFirms?.otherServicesCapexBased
+                  ?.capexBasedProportionOfRevenueSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsEligible
+              ),
+          },
+          {
+            type: 'cell',
+            label:
+              'CapEx-based Proportion of Revenue substantially contributing to Protection and Restoration of Biodiversity and Ecosystems - Aligned',
+            explanation:
+              'Taxonomy-aligned CapEx-based Proportion of Revenue (Fees, Commissions and other Monetary Services) from Investments and Services and Activities substantially contributing to Protection and Restoration of Biodiversity and Ecosystems',
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatPercentageForDatatable(
+                  dataset.investmentFirms?.otherServicesCapexBased
+                    ?.capexBasedProportionOfRevenueSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsAligned
+                    ?.value
+                ),
+                'CapEx-based Proportion of Revenue substantially contributing to Protection and Restoration of Biodiversity and Ecosystems - Aligned',
+                dataset.investmentFirms?.otherServicesCapexBased
+                  ?.capexBasedProportionOfRevenueSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsAligned
+              ),
+          },
+          {
+            type: 'cell',
+            label:
+              'CapEx-based Proportion of Revenue substantially contributing to Protection and Restoration of Biodiversity and Ecosystems - Of which Enabling',
+            explanation:
+              'Taxonomy-aligned and enabling CapEx-based Proportion of Revenue (Fees, Commissions and other Monetary Services) from Investments and Services and Activities substantially contributing to Protection and Restoration of Biodiversity and Ecosystems',
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatPercentageForDatatable(
+                  dataset.investmentFirms?.otherServicesCapexBased
+                    ?.capexBasedProportionOfRevenueSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsOfWhichEnabling
+                    ?.value
+                ),
+                'CapEx-based Proportion of Revenue substantially contributing to Protection and Restoration of Biodiversity and Ecosystems - Of which Enabling',
+                dataset.investmentFirms?.otherServicesCapexBased
+                  ?.capexBasedProportionOfRevenueSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsOfWhichEnabling
+              ),
+          },
+          {
+            type: 'cell',
+            label:
+              'CapEx-based Proportion of Revenue substantially contributing to any of the six Environmental Objectives - Eligible',
+            explanation:
+              'Taxonomy-aligned CapEx-based Proportion of Revenue (Fees, Commissions and other Monetary Services) from Investments and Services and Activities substantially contributing to any of the six Environmental Objectives',
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatPercentageForDatatable(
+                  dataset.investmentFirms?.otherServicesCapexBased
+                    ?.capexBasedProportionOfRevenueSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesEligible
+                    ?.value
+                ),
+                'CapEx-based Proportion of Revenue substantially contributing to any of the six Environmental Objectives - Eligible',
+                dataset.investmentFirms?.otherServicesCapexBased
+                  ?.capexBasedProportionOfRevenueSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesEligible
+              ),
+          },
+          {
+            type: 'cell',
+            label:
+              'CapEx-based Proportion of Revenue substantially contributing to any of the six Environmental Objectives - Aligned',
+            explanation:
+              'Taxonomy-aligned CapEx-based Proportion of Revenue (Fees, Commissions and other Monetary Services) from Investments and Services and Activities substantially contributing to any of the six Environmental Objectives',
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatPercentageForDatatable(
+                  dataset.investmentFirms?.otherServicesCapexBased
+                    ?.capexBasedProportionOfRevenueSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesAligned
+                    ?.value
+                ),
+                'CapEx-based Proportion of Revenue substantially contributing to any of the six Environmental Objectives - Aligned',
+                dataset.investmentFirms?.otherServicesCapexBased
+                  ?.capexBasedProportionOfRevenueSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesAligned
+              ),
+          },
+          {
+            type: 'cell',
+            label:
+              'CapEx-based Proportion of Revenue substantially contributing to any of the six Environmental Objectives - Of which Transitional',
+            explanation:
+              'Taxonomy-aligned and transitional CapEx-based Proportion of Revenue (Fees, Commissions and other Monetary Services) from Investments and Services and Activities substantially contributing to any of the six Environmental Objectives',
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatPercentageForDatatable(
+                  dataset.investmentFirms?.otherServicesCapexBased
+                    ?.capexBasedProportionOfRevenueSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesOfWhichTransitional
+                    ?.value
+                ),
+                'CapEx-based Proportion of Revenue substantially contributing to any of the six Environmental Objectives - Of which Transitional',
+                dataset.investmentFirms?.otherServicesCapexBased
+                  ?.capexBasedProportionOfRevenueSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesOfWhichTransitional
+              ),
+          },
+          {
+            type: 'cell',
+            label:
+              'CapEx-based Proportion of Revenue substantially contributing to any of the six Environmental Objectives - Of which Enabling',
+            explanation:
+              'Taxonomy-aligned and enabling CapEx-based Proportion of Revenue (Fees, Commissions and other Monetary Services) from Investments and Services and Activities substantially contributing to any of the six Environmental Objectives',
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatPercentageForDatatable(
+                  dataset.investmentFirms?.otherServicesCapexBased
+                    ?.capexBasedProportionOfRevenueSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesOfWhichEnabling
+                    ?.value
+                ),
+                'CapEx-based Proportion of Revenue substantially contributing to any of the six Environmental Objectives - Of which Enabling',
+                dataset.investmentFirms?.otherServicesCapexBased
+                  ?.capexBasedProportionOfRevenueSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesOfWhichEnabling
               ),
           },
         ],

@@ -2,19 +2,30 @@
 package org.dataland.datalandbackend.frameworks.eutaxonomyfinancials.model.assetManagement
 
 import jakarta.validation.Valid
-import org.dataland.datalandbackend.frameworks.eutaxonomyfinancials.model.assetManagement.capexBasedKpi
-    .EutaxonomyFinancialsAssetmanagementCapexBasedKpi
-import org.dataland.datalandbackend.frameworks.eutaxonomyfinancials.model.assetManagement.turnoverBasedKpi
-    .EutaxonomyFinancialsAssetmanagementTurnoverBasedKpi
+import org.dataland.datalandbackend.frameworks.eutaxonomyfinancials.model.assetManagement
+    .averageValueOfTaxonomyAlignedUndertakings
+    .EutaxonomyFinancialsAssetmanagementAverageValueOfTaxonomyAlignedUndertakings
+import org.dataland.datalandbackend.frameworks.eutaxonomyfinancials.model.assetManagement
+    .breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBased
+    .EutaxonomyFinancialsAssetmanagementBreakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBased
+import org.dataland.datalandbackend.frameworks.eutaxonomyfinancials.model.assetManagement
+    .breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBased
+    .EutaxonomyFinancialsAssetmanagementBreakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBased
 
 /**
  * The data-model for the AssetManagement section
  */
 data class EutaxonomyFinancialsAssetManagement(
     @field:Valid()
-    val turnoverBasedKpi: EutaxonomyFinancialsAssetmanagementTurnoverBasedKpi? = null,
+    val averageValueOfTaxonomyAlignedUndertakings:
+    EutaxonomyFinancialsAssetmanagementAverageValueOfTaxonomyAlignedUndertakings? = null,
 
     @field:Valid()
-    val capexBasedKpi: EutaxonomyFinancialsAssetmanagementCapexBasedKpi? = null,
+    val breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBased:
+    EutaxonomyFinancialsAssetmanagementBreakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBased? = null,
+
+    @field:Valid()
+    val breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBased:
+    EutaxonomyFinancialsAssetmanagementBreakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBased? = null,
 
 )

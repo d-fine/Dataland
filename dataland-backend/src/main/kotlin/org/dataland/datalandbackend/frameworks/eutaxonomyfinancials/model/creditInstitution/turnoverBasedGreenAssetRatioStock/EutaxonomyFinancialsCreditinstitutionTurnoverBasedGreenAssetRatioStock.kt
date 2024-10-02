@@ -42,6 +42,10 @@ data class EutaxonomyFinancialsCreditinstitutionTurnoverBasedGreenAssetRatioStoc
     ExtendedDataPoint<BigDecimal?>? = null,
 
     @field:Valid()
+    val substantialContributionToClimateChangeAdaptationInPercentOfWhichAdapting:
+    ExtendedDataPoint<BigDecimal?>? = null,
+
+    @field:Valid()
     val substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentEligible:
     ExtendedDataPoint<BigDecimal?>? = null,
 

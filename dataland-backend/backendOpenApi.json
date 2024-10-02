@@ -13230,28 +13230,36 @@
       "EutaxonomyFinancialsAssetManagement": {
         "type": "object",
         "properties": {
-          "turnoverBasedKpi": {
+          "averageValueOfTaxonomyAlignedUndertakings": {
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/EutaxonomyFinancialsAssetmanagementTurnoverBasedKpi"
+                "$ref": "#/components/schemas/EutaxonomyFinancialsAssetmanagementAverageValueOfTaxonomyAlignedUndertakings"
               }
             ]
           },
-          "capexBasedKpi": {
+          "breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBased": {
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/EutaxonomyFinancialsAssetmanagementCapexBasedKpi"
+                "$ref": "#/components/schemas/EutaxonomyFinancialsAssetmanagementBreakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBased"
+              }
+            ]
+          },
+          "breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBased": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/EutaxonomyFinancialsAssetmanagementBreakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBased"
               }
             ]
           }
         }
       },
-      "EutaxonomyFinancialsAssetmanagementCapexBasedKpi": {
+      "EutaxonomyFinancialsAssetmanagementAverageValueOfTaxonomyAlignedUndertakings": {
         "type": "object",
         "properties": {
-          "substantialContributionToClimateChangeMitigationInPercentAligned": {
+          "weightedAverageValueOfAllInvestmentsTurnoverBasedInPercent": {
             "nullable": true,
             "allOf": [
               {
@@ -13259,7 +13267,7 @@
               }
             ]
           },
-          "substantialContributionToClimateChangeMitigationInPercentOfWhichEnabling": {
+          "weightedAverageValueOfAllInvestmentsCapexBasedInPercent": {
             "nullable": true,
             "allOf": [
               {
@@ -13267,7 +13275,28 @@
               }
             ]
           },
-          "substantialContributionToClimateChangeMitigationInPercentOfWhichTransitional": {
+          "weightedAverageValueOfAllInvestmentsTurnoverBasedMonetaryAmount": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/CurrencyDataPoint"
+              }
+            ]
+          },
+          "weightedAverageValueOfAllInvestmentsCapexBasedMonetaryAmount": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/CurrencyDataPoint"
+              }
+            ]
+          }
+        }
+      },
+      "EutaxonomyFinancialsAssetmanagementBreakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBased": {
+        "type": "object",
+        "properties": {
+          "shareOfCapexBasedKpiSubstantiallyContributingToClimateChangeMitigationInPercentAligned": {
             "nullable": true,
             "allOf": [
               {
@@ -13275,7 +13304,7 @@
               }
             ]
           },
-          "substantialContributionToClimateChangeAdaptationInPercentAligned": {
+          "shareOfCapexBasedKpiSubstantiallyContributingToClimateChangeMitigationInPercentOfWhichEnabling": {
             "nullable": true,
             "allOf": [
               {
@@ -13283,7 +13312,7 @@
               }
             ]
           },
-          "substantialContributionToClimateChangeAdaptationInPercentOfWhichEnabling": {
+          "shareOfCapexBasedKpiSubstantiallyContributingToClimateChangeMitigationInPercentOfWhichTransitional": {
             "nullable": true,
             "allOf": [
               {
@@ -13291,7 +13320,7 @@
               }
             ]
           },
-          "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned": {
+          "shareOfCapexBasedKpiSubstantiallyContributingToClimateChangeAdaptationInPercentAligned": {
             "nullable": true,
             "allOf": [
               {
@@ -13299,7 +13328,7 @@
               }
             ]
           },
-          "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentOfWhichEnabling": {
+          "shareOfCapexBasedKpiSubstantiallyContributingToClimateChangeAdaptationInPercentOfWhichEnabling": {
             "nullable": true,
             "allOf": [
               {
@@ -13307,7 +13336,7 @@
               }
             ]
           },
-          "substantialContributionToTransitionToACircularEconomyInPercentAligned": {
+          "shareOfCapexBasedKpiSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned": {
             "nullable": true,
             "allOf": [
               {
@@ -13315,7 +13344,7 @@
               }
             ]
           },
-          "substantialContributionToTransitionToACircularEconomyInPercentOfWhichEnabling": {
+          "shareOfCapexBasedKpiSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentOfWhichEnabling": {
             "nullable": true,
             "allOf": [
               {
@@ -13323,7 +13352,7 @@
               }
             ]
           },
-          "substantialContributionToPollutionPreventionAndControlInPercentAligned": {
+          "shareOfCapexBasedKpiSubstantiallyContributingToTransitionToACircularEconomyInPercentAligned": {
             "nullable": true,
             "allOf": [
               {
@@ -13331,7 +13360,7 @@
               }
             ]
           },
-          "substantialContributionToPollutionPreventionAndControlInPercentOfWhichEnabling": {
+          "shareOfCapexBasedKpiSubstantiallyContributingToTransitionToACircularEconomyInPercentOfWhichEnabling": {
             "nullable": true,
             "allOf": [
               {
@@ -13339,7 +13368,7 @@
               }
             ]
           },
-          "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned": {
+          "shareOfCapexBasedKpiSubstantiallyContributingToPollutionPreventionAndControlInPercentAligned": {
             "nullable": true,
             "allOf": [
               {
@@ -13347,7 +13376,23 @@
               }
             ]
           },
-          "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentOfWhichEnabling": {
+          "shareOfCapexBasedKpiSubstantiallyContributingToPollutionPreventionAndControlInPercentOfWhichEnabling": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          },
+          "shareOfCapexBasedKpiSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          },
+          "shareOfCapexBasedKpiSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentOfWhichEnabling": {
             "nullable": true,
             "allOf": [
               {
@@ -13357,10 +13402,10 @@
           }
         }
       },
-      "EutaxonomyFinancialsAssetmanagementTurnoverBasedKpi": {
+      "EutaxonomyFinancialsAssetmanagementBreakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBased": {
         "type": "object",
         "properties": {
-          "substantialContributionToClimateChangeMitigationInPercentAligned": {
+          "shareOfTurnoverBasedKpiSubstantiallyContributingToClimateChangeMitigationInPercentAligned": {
             "nullable": true,
             "allOf": [
               {
@@ -13368,7 +13413,7 @@
               }
             ]
           },
-          "substantialContributionToClimateChangeMitigationInPercentOfWhichEnabling": {
+          "shareOfTurnoverBasedKpiSubstantiallyContributingToClimateChangeMitigationInPercentOfWhichEnabling": {
             "nullable": true,
             "allOf": [
               {
@@ -13376,7 +13421,7 @@
               }
             ]
           },
-          "substantialContributionToClimateChangeMitigationInPercentOfWhichTransitional": {
+          "shareOfTurnoverBasedKpiSubstantiallyContributingToClimateChangeMitigationInPercentOfWhichTransitional": {
             "nullable": true,
             "allOf": [
               {
@@ -13384,7 +13429,7 @@
               }
             ]
           },
-          "substantialContributionToClimateChangeAdaptationInPercentAligned": {
+          "shareOfTurnoverBasedKpiSubstantiallyContributingToClimateChangeAdaptationInPercentAligned": {
             "nullable": true,
             "allOf": [
               {
@@ -13392,7 +13437,7 @@
               }
             ]
           },
-          "substantialContributionToClimateChangeAdaptationInPercentOfWhichEnabling": {
+          "shareOfTurnoverBasedKpiSubstantiallyContributingToClimateChangeAdaptationInPercentOfWhichEnabling": {
             "nullable": true,
             "allOf": [
               {
@@ -13400,7 +13445,7 @@
               }
             ]
           },
-          "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned": {
+          "shareOfTurnoverBasedKpiSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned": {
             "nullable": true,
             "allOf": [
               {
@@ -13408,7 +13453,7 @@
               }
             ]
           },
-          "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentOfWhichEnabling": {
+          "shareOfTurnoverBasedKpiSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentOfWhichEnabling": {
             "nullable": true,
             "allOf": [
               {
@@ -13416,7 +13461,7 @@
               }
             ]
           },
-          "substantialContributionToTransitionToACircularEconomyInPercentAligned": {
+          "shareOfTurnoverBasedKpiSubstantiallyContributingToTransitionToACircularEconomyInPercentAligned": {
             "nullable": true,
             "allOf": [
               {
@@ -13424,7 +13469,7 @@
               }
             ]
           },
-          "substantialContributionToTransitionToACircularEconomyInPercentOfWhichEnabling": {
+          "shareOfTurnoverBasedKpiSubstantiallyContributingToTransitionToACircularEconomyInPercentOfWhichEnabling": {
             "nullable": true,
             "allOf": [
               {
@@ -13432,7 +13477,7 @@
               }
             ]
           },
-          "substantialContributionToPollutionPreventionAndControlInPercentAligned": {
+          "shareOfTurnoverBasedKpiSubstantiallyContributingToPollutionPreventionAndControlInPercentAligned": {
             "nullable": true,
             "allOf": [
               {
@@ -13440,7 +13485,7 @@
               }
             ]
           },
-          "substantialContributionToPollutionPreventionAndControlInPercentOfWhichEnabling": {
+          "shareOfTurnoverBasedKpiSubstantiallyContributingToPollutionPreventionAndControlInPercentOfWhichEnabling": {
             "nullable": true,
             "allOf": [
               {
@@ -13448,7 +13493,7 @@
               }
             ]
           },
-          "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned": {
+          "shareOfTurnoverBasedKpiSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned": {
             "nullable": true,
             "allOf": [
               {
@@ -13456,7 +13501,7 @@
               }
             ]
           },
-          "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentOfWhichEnabling": {
+          "shareOfTurnoverBasedKpiSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentOfWhichEnabling": {
             "nullable": true,
             "allOf": [
               {
@@ -13616,6 +13661,14 @@
             ]
           },
           "substantialContributionToClimateChangeAdaptationInPercentOfWhichEnabling": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          },
+          "substantialContributionToClimateChangeAdaptationInPercentOfWhichAdapting": {
             "nullable": true,
             "allOf": [
               {
@@ -13861,6 +13914,14 @@
             ]
           },
           "substantialContributionToClimateChangeAdaptationInPercentOfWhichEnabling": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          },
+          "substantialContributionToClimateChangeAdaptationInPercentOfWhichAdapting": {
             "nullable": true,
             "allOf": [
               {
@@ -14167,36 +14228,44 @@
       "EutaxonomyFinancialsInsuranceReinsurance": {
         "type": "object",
         "properties": {
-          "general": {
+          "underwritingKpi": {
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/EutaxonomyFinancialsInsurancereinsuranceGeneral"
+                "$ref": "#/components/schemas/EutaxonomyFinancialsInsurancereinsuranceUnderwritingKpi"
               }
             ]
           },
-          "revenueBasedGrossPremiumsWrittenReInsuranceRevenue": {
+          "averageValueOfTaxonomyAlignedUndertakings": {
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/EutaxonomyFinancialsInsurancereinsuranceRevenueBasedGrossPremiumsWrittenReInsuranceRevenue"
+                "$ref": "#/components/schemas/EutaxonomyFinancialsInsurancereinsuranceAverageValueOfTaxonomyAlignedUndertakings"
               }
             ]
           },
-          "capexBasedGrossPremiumsWrittenReInsuranceRevenue": {
+          "breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBased": {
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/EutaxonomyFinancialsInsurancereinsuranceCapexBasedGrossPremiumsWrittenReInsuranceRevenue"
+                "$ref": "#/components/schemas/EutaxonomyFinancialsInsurancereinsuranceBreakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBased"
+              }
+            ]
+          },
+          "breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBased": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/EutaxonomyFinancialsInsurancereinsuranceBreakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBased"
               }
             ]
           }
         }
       },
-      "EutaxonomyFinancialsInsurancereinsuranceCapexBasedGrossPremiumsWrittenReInsuranceRevenue": {
+      "EutaxonomyFinancialsInsurancereinsuranceAverageValueOfTaxonomyAlignedUndertakings": {
         "type": "object",
         "properties": {
-          "substantialContributionToClimateChangeMitigationInPercentAligned": {
+          "weightedAverageValueOfAllInvestmentsTurnoverBasedInPercent": {
             "nullable": true,
             "allOf": [
               {
@@ -14204,7 +14273,7 @@
               }
             ]
           },
-          "substantialContributionToClimateChangeMitigationInPercentOfWhichEnabling": {
+          "weightedAverageValueOfAllInvestmentsCapexBasedInPercent": {
             "nullable": true,
             "allOf": [
               {
@@ -14212,7 +14281,28 @@
               }
             ]
           },
-          "substantialContributionToClimateChangeMitigationInPercentOfWhichTransitional": {
+          "weightedAverageValueOfAllInvestmentsTurnoverBasedMonetaryAmount": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/CurrencyDataPoint"
+              }
+            ]
+          },
+          "weightedAverageValueOfAllInvestmentsCapexBasedMonetaryAmount": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/CurrencyDataPoint"
+              }
+            ]
+          }
+        }
+      },
+      "EutaxonomyFinancialsInsurancereinsuranceBreakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBased": {
+        "type": "object",
+        "properties": {
+          "shareOfCapexBasedKpiSubstantiallyContributingToClimateChangeMitigationInPercentAligned": {
             "nullable": true,
             "allOf": [
               {
@@ -14220,7 +14310,7 @@
               }
             ]
           },
-          "substantialContributionToClimateChangeAdaptationInPercentAligned": {
+          "shareOfCapexBasedKpiSubstantiallyContributingToClimateChangeMitigationInPercentOfWhichEnabling": {
             "nullable": true,
             "allOf": [
               {
@@ -14228,7 +14318,7 @@
               }
             ]
           },
-          "substantialContributionToClimateChangeAdaptationInPercentOfWhichEnabling": {
+          "shareOfCapexBasedKpiSubstantiallyContributingToClimateChangeMitigationInPercentOfWhichTransitional": {
             "nullable": true,
             "allOf": [
               {
@@ -14236,7 +14326,7 @@
               }
             ]
           },
-          "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned": {
+          "shareOfCapexBasedKpiSubstantiallyContributingToClimateChangeAdaptationInPercentAligned": {
             "nullable": true,
             "allOf": [
               {
@@ -14244,7 +14334,7 @@
               }
             ]
           },
-          "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentOfWhichEnabling": {
+          "shareOfCapexBasedKpiSubstantiallyContributingToClimateChangeAdaptationInPercentOfWhichEnabling": {
             "nullable": true,
             "allOf": [
               {
@@ -14252,7 +14342,7 @@
               }
             ]
           },
-          "substantialContributionToTransitionToACircularEconomyInPercentAligned": {
+          "shareOfCapexBasedKpiSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned": {
             "nullable": true,
             "allOf": [
               {
@@ -14260,7 +14350,7 @@
               }
             ]
           },
-          "substantialContributionToTransitionToACircularEconomyInPercentOfWhichEnabling": {
+          "shareOfCapexBasedKpiSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentOfWhichEnabling": {
             "nullable": true,
             "allOf": [
               {
@@ -14268,7 +14358,7 @@
               }
             ]
           },
-          "substantialContributionToPollutionPreventionAndControlInPercentAligned": {
+          "shareOfCapexBasedKpiSubstantiallyContributingToTransitionToACircularEconomyInPercentAligned": {
             "nullable": true,
             "allOf": [
               {
@@ -14276,7 +14366,7 @@
               }
             ]
           },
-          "substantialContributionToPollutionPreventionAndControlInPercentOfWhichEnabling": {
+          "shareOfCapexBasedKpiSubstantiallyContributingToTransitionToACircularEconomyInPercentOfWhichEnabling": {
             "nullable": true,
             "allOf": [
               {
@@ -14284,7 +14374,7 @@
               }
             ]
           },
-          "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned": {
+          "shareOfCapexBasedKpiSubstantiallyContributingToPollutionPreventionAndControlInPercentAligned": {
             "nullable": true,
             "allOf": [
               {
@@ -14292,7 +14382,23 @@
               }
             ]
           },
-          "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentOfWhichEnabling": {
+          "shareOfCapexBasedKpiSubstantiallyContributingToPollutionPreventionAndControlInPercentOfWhichEnabling": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          },
+          "shareOfCapexBasedKpiSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          },
+          "shareOfCapexBasedKpiSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentOfWhichEnabling": {
             "nullable": true,
             "allOf": [
               {
@@ -14302,10 +14408,106 @@
           }
         }
       },
-      "EutaxonomyFinancialsInsurancereinsuranceGeneral": {
+      "EutaxonomyFinancialsInsurancereinsuranceBreakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBased": {
         "type": "object",
         "properties": {
-          "taxonomyEligibleNonLifeInsuranceEconomicActivities": {
+          "shareOfTurnoverBasedKpiSubstantiallyContributingToClimateChangeMitigationInPercentAligned": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          },
+          "shareOfTurnoverBasedKpiSubstantiallyContributingToClimateChangeMitigationInPercentOfWhichEnabling": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          },
+          "shareOfTurnoverBasedKpiSubstantiallyContributingToClimateChangeMitigationInPercentOfWhichTransitional": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          },
+          "shareOfTurnoverBasedKpiSubstantiallyContributingToClimateChangeAdaptationInPercentAligned": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          },
+          "shareOfTurnoverBasedKpiSubstantiallyContributingToClimateChangeAdaptationInPercentOfWhichEnabling": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          },
+          "shareOfTurnoverBasedKpiSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          },
+          "shareOfTurnoverBasedKpiSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentOfWhichEnabling": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          },
+          "shareOfTurnoverBasedKpiSubstantiallyContributingToTransitionToACircularEconomyInPercentAligned": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          },
+          "shareOfTurnoverBasedKpiSubstantiallyContributingToTransitionToACircularEconomyInPercentOfWhichEnabling": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          },
+          "shareOfTurnoverBasedKpiSubstantiallyContributingToPollutionPreventionAndControlInPercentAligned": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          },
+          "shareOfTurnoverBasedKpiSubstantiallyContributingToPollutionPreventionAndControlInPercentOfWhichEnabling": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          },
+          "shareOfTurnoverBasedKpiSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          },
+          "shareOfTurnoverBasedKpiSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentOfWhichEnabling": {
             "nullable": true,
             "allOf": [
               {
@@ -14315,10 +14517,34 @@
           }
         }
       },
-      "EutaxonomyFinancialsInsurancereinsuranceRevenueBasedGrossPremiumsWrittenReInsuranceRevenue": {
+      "EutaxonomyFinancialsInsurancereinsuranceUnderwritingKpi": {
         "type": "object",
         "properties": {
-          "substantialContributionToClimateChangeMitigationInPercentAligned": {
+          "totalOfAbsolutePremiumsOfTaxonomyAlignedActivities": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/CurrencyDataPoint"
+              }
+            ]
+          },
+          "totalOfAbsolutePremiumsOfTaxonomyEligibleButTaxonomyNonAlignedActivities": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/CurrencyDataPoint"
+              }
+            ]
+          },
+          "totalOfAbsolutePremiumsOfTaxonomyNonEligibleActivities": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/CurrencyDataPoint"
+              }
+            ]
+          },
+          "proportionOfAbsolutePremiumsOfTaxonomyAlignedActivities": {
             "nullable": true,
             "allOf": [
               {
@@ -14326,7 +14552,7 @@
               }
             ]
           },
-          "substantialContributionToClimateChangeMitigationInPercentOfWhichEnabling": {
+          "proportionOfAbsolutePremiumsOfTaxonomyEligibleButTaxonomyNonAlignedActivities": {
             "nullable": true,
             "allOf": [
               {
@@ -14334,87 +14560,7 @@
               }
             ]
           },
-          "substantialContributionToClimateChangeMitigationInPercentOfWhichTransitional": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
-              }
-            ]
-          },
-          "substantialContributionToClimateChangeAdaptationInPercentAligned": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
-              }
-            ]
-          },
-          "substantialContributionToClimateChangeAdaptationInPercentOfWhichEnabling": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
-              }
-            ]
-          },
-          "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
-              }
-            ]
-          },
-          "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentOfWhichEnabling": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
-              }
-            ]
-          },
-          "substantialContributionToTransitionToACircularEconomyInPercentAligned": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
-              }
-            ]
-          },
-          "substantialContributionToTransitionToACircularEconomyInPercentOfWhichEnabling": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
-              }
-            ]
-          },
-          "substantialContributionToPollutionPreventionAndControlInPercentAligned": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
-              }
-            ]
-          },
-          "substantialContributionToPollutionPreventionAndControlInPercentOfWhichEnabling": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
-              }
-            ]
-          },
-          "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
-              }
-            ]
-          },
-          "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentOfWhichEnabling": {
+          "proportionOfAbsolutePremiumsOfTaxonomyNonEligibleActivities": {
             "nullable": true,
             "allOf": [
               {
@@ -14427,28 +14573,52 @@
       "EutaxonomyFinancialsInvestmentFirms": {
         "type": "object",
         "properties": {
-          "turnoverBasedKpi": {
+          "dealingOnOwnAccountServicesTurnoverBased": {
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/EutaxonomyFinancialsInvestmentfirmsTurnoverBasedKpi"
+                "$ref": "#/components/schemas/EutaxonomyFinancialsInvestmentfirmsDealingOnOwnAccountServicesTurnoverBased"
               }
             ]
           },
-          "capexBasedKpi": {
+          "dealingOnOwnAccountServicesCapexBased": {
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/EutaxonomyFinancialsInvestmentfirmsCapexBasedKpi"
+                "$ref": "#/components/schemas/EutaxonomyFinancialsInvestmentfirmsDealingOnOwnAccountServicesCapexBased"
+              }
+            ]
+          },
+          "otherServicesTurnoverBased": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/EutaxonomyFinancialsInvestmentfirmsOtherServicesTurnoverBased"
+              }
+            ]
+          },
+          "otherServicesCapexBased": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/EutaxonomyFinancialsInvestmentfirmsOtherServicesCapexBased"
               }
             ]
           }
         }
       },
-      "EutaxonomyFinancialsInvestmentfirmsCapexBasedKpi": {
+      "EutaxonomyFinancialsInvestmentfirmsDealingOnOwnAccountServicesCapexBased": {
         "type": "object",
         "properties": {
-          "totalAssetsInvestedRevenueFromInvestmentAndServices": {
+          "capexBasedTotalAssetsInvestedUnderInvestmentFirmsActivitiesDealingOnOwnAccount": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/CurrencyDataPoint"
+              }
+            ]
+          },
+          "capexBasedProportionOfAssetsSubstantiallyContributingToClimateChangeMitigationEligible": {
             "nullable": true,
             "allOf": [
               {
@@ -14456,7 +14626,7 @@
               }
             ]
           },
-          "substantialContributionToClimateChangeMitigationInPercentEligible": {
+          "capexBasedProportionOfAssetsSubstantiallyContributingToClimateChangeMitigationAligned": {
             "nullable": true,
             "allOf": [
               {
@@ -14464,7 +14634,7 @@
               }
             ]
           },
-          "substantialContributionToClimateChangeMitigationInPercentAligned": {
+          "capexBasedProportionOfAssetsSubstantiallyContributingToClimateChangeMitigationOfWhichTransitional": {
             "nullable": true,
             "allOf": [
               {
@@ -14472,7 +14642,7 @@
               }
             ]
           },
-          "substantialContributionToClimateChangeMitigationInPercentOfWhichEnabling": {
+          "capexBasedProportionOfAssetsSubstantiallyContributingToClimateChangeMitigationOfWhichEnabling": {
             "nullable": true,
             "allOf": [
               {
@@ -14480,7 +14650,7 @@
               }
             ]
           },
-          "substantialContributionToClimateChangeMitigationInPercentOfWhichTransitional": {
+          "capexBasedProportionOfAssetsSubstantiallyContributingToClimateChangeAdaptationEligible": {
             "nullable": true,
             "allOf": [
               {
@@ -14488,7 +14658,7 @@
               }
             ]
           },
-          "substantialContributionToClimateChangeAdaptationInPercentEligible": {
+          "capexBasedProportionOfAssetsSubstantiallyContributingToClimateChangeAdaptationAligned": {
             "nullable": true,
             "allOf": [
               {
@@ -14496,7 +14666,7 @@
               }
             ]
           },
-          "substantialContributionToClimateChangeAdaptationInPercentAligned": {
+          "capexBasedProportionOfAssetsSubstantiallyContributingToClimateChangeAdaptationOfWhichEnabling": {
             "nullable": true,
             "allOf": [
               {
@@ -14504,7 +14674,7 @@
               }
             ]
           },
-          "substantialContributionToClimateChangeAdaptationInPercentOfWhichEnabling": {
+          "capexBasedProportionOfAssetsSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesEligible": {
             "nullable": true,
             "allOf": [
               {
@@ -14512,7 +14682,7 @@
               }
             ]
           },
-          "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentEligible": {
+          "capexBasedProportionOfAssetsSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesAligned": {
             "nullable": true,
             "allOf": [
               {
@@ -14520,7 +14690,7 @@
               }
             ]
           },
-          "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned": {
+          "capexBasedProportionOfAssetsSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesOfWhichEnabling": {
             "nullable": true,
             "allOf": [
               {
@@ -14528,7 +14698,7 @@
               }
             ]
           },
-          "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentOfWhichEnabling": {
+          "capexBasedProportionOfAssetsSubstantiallyContributingToCircularEconomyEligible": {
             "nullable": true,
             "allOf": [
               {
@@ -14536,7 +14706,7 @@
               }
             ]
           },
-          "substantialContributionToTransitionToACircularEconomyInPercentEligible": {
+          "capexBasedProportionOfAssetsSubstantiallyContributingToCircularEconomyAligned": {
             "nullable": true,
             "allOf": [
               {
@@ -14544,7 +14714,7 @@
               }
             ]
           },
-          "substantialContributionToTransitionToACircularEconomyInPercentAligned": {
+          "capexBasedProportionOfAssetsSubstantiallyContributingToCircularEconomyOfWhichEnabling": {
             "nullable": true,
             "allOf": [
               {
@@ -14552,7 +14722,7 @@
               }
             ]
           },
-          "substantialContributionToTransitionToACircularEconomyInPercentOfWhichEnabling": {
+          "capexBasedProportionOfAssetsSubstantiallyContributingToPollutionPreventionAndControlEligible": {
             "nullable": true,
             "allOf": [
               {
@@ -14560,7 +14730,7 @@
               }
             ]
           },
-          "substantialContributionToPollutionPreventionAndControlInPercentEligible": {
+          "capexBasedProportionOfAssetsSubstantiallyContributingToPollutionPreventionAndControlAligned": {
             "nullable": true,
             "allOf": [
               {
@@ -14568,7 +14738,7 @@
               }
             ]
           },
-          "substantialContributionToPollutionPreventionAndControlInPercentAligned": {
+          "capexBasedProportionOfAssetsSubstantiallyContributingToPollutionPreventionAndControlOfWhichEnabling": {
             "nullable": true,
             "allOf": [
               {
@@ -14576,7 +14746,7 @@
               }
             ]
           },
-          "substantialContributionToPollutionPreventionAndControlInPercentOfWhichEnabling": {
+          "capexBasedProportionOfAssetsSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsEligible": {
             "nullable": true,
             "allOf": [
               {
@@ -14584,7 +14754,7 @@
               }
             ]
           },
-          "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentEligible": {
+          "capexBasedProportionOfAssetsSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsAligned": {
             "nullable": true,
             "allOf": [
               {
@@ -14592,7 +14762,7 @@
               }
             ]
           },
-          "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned": {
+          "capexBasedProportionOfAssetsSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsOfWhichEnabling": {
             "nullable": true,
             "allOf": [
               {
@@ -14600,7 +14770,7 @@
               }
             ]
           },
-          "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentOfWhichEnabling": {
+          "capexBasedProportionOfAssetsSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesEligible": {
             "nullable": true,
             "allOf": [
               {
@@ -14608,7 +14778,7 @@
               }
             ]
           },
-          "totalAssetsInvestedRevenueFromInvestmentAndServicesInPercentEligible": {
+          "capexBasedProportionOfAssetsSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesAligned": {
             "nullable": true,
             "allOf": [
               {
@@ -14616,7 +14786,7 @@
               }
             ]
           },
-          "totalAssetsInvestedRevenueFromInvestmentAndServicesInPercentAligned": {
+          "capexBasedProportionOfAssetsSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesOfWhichTransitional": {
             "nullable": true,
             "allOf": [
               {
@@ -14624,15 +14794,7 @@
               }
             ]
           },
-          "totalAssetsInvestedRevenueFromInvestmentAndServicesInPercentOfWhichEnabling": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
-              }
-            ]
-          },
-          "totalAssetsInvestedRevenueFromInvestmentAndServicesInPercentOfWhichTransitional": {
+          "capexBasedProportionOfAssetsSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesOfWhichEnabling": {
             "nullable": true,
             "allOf": [
               {
@@ -14642,10 +14804,18 @@
           }
         }
       },
-      "EutaxonomyFinancialsInvestmentfirmsTurnoverBasedKpi": {
+      "EutaxonomyFinancialsInvestmentfirmsDealingOnOwnAccountServicesTurnoverBased": {
         "type": "object",
         "properties": {
-          "totalAssetsInvestedRevenueFromInvestmentAndServices": {
+          "turnoverBasedTotalAssetsInvestedUnderInvestmentFirmsActivitiesDealingOnOwnAccount": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/CurrencyDataPoint"
+              }
+            ]
+          },
+          "turnoverBasedProportionOfAssetsSubstantiallyContributingToClimateChangeMitigationEligible": {
             "nullable": true,
             "allOf": [
               {
@@ -14653,7 +14823,7 @@
               }
             ]
           },
-          "substantialContributionToClimateChangeMitigationInPercentEligible": {
+          "turnoverBasedProportionOfAssetsSubstantiallyContributingToClimateChangeMitigationAligned": {
             "nullable": true,
             "allOf": [
               {
@@ -14661,7 +14831,7 @@
               }
             ]
           },
-          "substantialContributionToClimateChangeMitigationInPercentAligned": {
+          "turnoverBasedProportionOfAssetsSubstantiallyContributingToClimateChangeMitigationOfWhichTransitional": {
             "nullable": true,
             "allOf": [
               {
@@ -14669,7 +14839,7 @@
               }
             ]
           },
-          "substantialContributionToClimateChangeMitigationInPercentOfWhichEnabling": {
+          "turnoverBasedProportionOfAssetsSubstantiallyContributingToClimateChangeMitigationOfWhichEnabling": {
             "nullable": true,
             "allOf": [
               {
@@ -14677,7 +14847,7 @@
               }
             ]
           },
-          "substantialContributionToClimateChangeMitigationInPercentOfWhichTransitional": {
+          "turnoverBasedProportionOfAssetsSubstantiallyContributingToClimateChangeAdaptationEligible": {
             "nullable": true,
             "allOf": [
               {
@@ -14685,7 +14855,7 @@
               }
             ]
           },
-          "substantialContributionToClimateChangeAdaptationInPercentEligible": {
+          "turnoverBasedProportionOfAssetsSubstantiallyContributingToClimateChangeAdaptationAligned": {
             "nullable": true,
             "allOf": [
               {
@@ -14693,7 +14863,7 @@
               }
             ]
           },
-          "substantialContributionToClimateChangeAdaptationInPercentAligned": {
+          "turnoverBasedProportionOfAssetsSubstantiallyContributingToClimateChangeAdaptationOfWhichEnabling": {
             "nullable": true,
             "allOf": [
               {
@@ -14701,7 +14871,7 @@
               }
             ]
           },
-          "substantialContributionToClimateChangeAdaptationInPercentOfWhichEnabling": {
+          "turnoverBasedProportionOfAssetsSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesEligible": {
             "nullable": true,
             "allOf": [
               {
@@ -14709,7 +14879,7 @@
               }
             ]
           },
-          "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentEligible": {
+          "turnoverBasedProportionOfAssetsSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesAligned": {
             "nullable": true,
             "allOf": [
               {
@@ -14717,7 +14887,7 @@
               }
             ]
           },
-          "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned": {
+          "turnoverBasedProportionOfAssetsSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesOfWhichEnabling": {
             "nullable": true,
             "allOf": [
               {
@@ -14725,7 +14895,7 @@
               }
             ]
           },
-          "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentOfWhichEnabling": {
+          "turnoverBasedProportionOfAssetsSubstantiallyContributingToCircularEconomyEligible": {
             "nullable": true,
             "allOf": [
               {
@@ -14733,7 +14903,7 @@
               }
             ]
           },
-          "substantialContributionToTransitionToACircularEconomyInPercentEligible": {
+          "turnoverBasedProportionOfAssetsSubstantiallyContributingToCircularEconomyAligned": {
             "nullable": true,
             "allOf": [
               {
@@ -14741,7 +14911,7 @@
               }
             ]
           },
-          "substantialContributionToTransitionToACircularEconomyInPercentAligned": {
+          "turnoverBasedProportionOfAssetsSubstantiallyContributingToCircularEconomyOfWhichEnabling": {
             "nullable": true,
             "allOf": [
               {
@@ -14749,7 +14919,7 @@
               }
             ]
           },
-          "substantialContributionToTransitionToACircularEconomyInPercentOfWhichEnabling": {
+          "turnoverBasedProportionOfAssetsSubstantiallyContributingToPollutionPreventionAndControlEligible": {
             "nullable": true,
             "allOf": [
               {
@@ -14757,7 +14927,7 @@
               }
             ]
           },
-          "substantialContributionToPollutionPreventionAndControlInPercentEligible": {
+          "turnoverBasedProportionOfAssetsSubstantiallyContributingToPollutionPreventionAndControlAligned": {
             "nullable": true,
             "allOf": [
               {
@@ -14765,7 +14935,7 @@
               }
             ]
           },
-          "substantialContributionToPollutionPreventionAndControlInPercentAligned": {
+          "turnoverBasedProportionOfAssetsSubstantiallyContributingToPollutionPreventionAndControlOfWhichEnabling": {
             "nullable": true,
             "allOf": [
               {
@@ -14773,7 +14943,7 @@
               }
             ]
           },
-          "substantialContributionToPollutionPreventionAndControlInPercentOfWhichEnabling": {
+          "turnoverBasedProportionOfAssetsSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsEligible": {
             "nullable": true,
             "allOf": [
               {
@@ -14781,7 +14951,7 @@
               }
             ]
           },
-          "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentEligible": {
+          "turnoverBasedProportionOfAssetsSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsAligned": {
             "nullable": true,
             "allOf": [
               {
@@ -14789,7 +14959,7 @@
               }
             ]
           },
-          "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned": {
+          "turnoverBasedProportionOfAssetsSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsOfWhichEnabling": {
             "nullable": true,
             "allOf": [
               {
@@ -14797,7 +14967,7 @@
               }
             ]
           },
-          "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentOfWhichEnabling": {
+          "turnoverBasedProportionOfAssetsSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesEligible": {
             "nullable": true,
             "allOf": [
               {
@@ -14805,7 +14975,7 @@
               }
             ]
           },
-          "totalAssetsInvestedRevenueFromInvestmentAndServicesInPercentEligible": {
+          "turnoverBasedProportionOfAssetsSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesAligned": {
             "nullable": true,
             "allOf": [
               {
@@ -14813,7 +14983,7 @@
               }
             ]
           },
-          "totalAssetsInvestedRevenueFromInvestmentAndServicesInPercentAligned": {
+          "turnoverBasedProportionOfAssetsSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesOfWhichTransitional": {
             "nullable": true,
             "allOf": [
               {
@@ -14821,7 +14991,28 @@
               }
             ]
           },
-          "totalAssetsInvestedRevenueFromInvestmentAndServicesInPercentOfWhichEnabling": {
+          "turnoverBasedProportionOfAssetsSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesOfWhichEnabling": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          }
+        }
+      },
+      "EutaxonomyFinancialsInvestmentfirmsOtherServicesCapexBased": {
+        "type": "object",
+        "properties": {
+          "capexBasedTotalRevenueFromInvestmentsAndServicesAndActivitiesOtherThanDealingOnOwnAccount": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/CurrencyDataPoint"
+              }
+            ]
+          },
+          "capexBasedProportionOfRevenueSubstantiallyContributingToClimateChangeMitigationEligible": {
             "nullable": true,
             "allOf": [
               {
@@ -14829,7 +15020,372 @@
               }
             ]
           },
-          "totalAssetsInvestedRevenueFromInvestmentAndServicesInPercentOfWhichTransitional": {
+          "capexBasedProportionOfRevenueSubstantiallyContributingToClimateChangeMitigationAligned": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          },
+          "capexBasedProportionOfRevenueSubstantiallyContributingToClimateChangeMitigationOfWhichTransitional": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          },
+          "capexBasedProportionOfRevenueSubstantiallyContributingToClimateChangeMitigationOfWhichEnabling": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          },
+          "capexBasedProportionOfRevenueSubstantiallyContributingToClimateChangeAdaptationEligible": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          },
+          "capexBasedProportionOfRevenueSubstantiallyContributingToClimateChangeAdaptationAligned": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          },
+          "capexBasedProportionOfRevenueSubstantiallyContributingToClimateChangeAdaptationOfWhichEnabling": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          },
+          "capexBasedProportionOfRevenueSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesEligible": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          },
+          "capexBasedProportionOfRevenueSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesAligned": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          },
+          "capexBasedProportionOfRevenueSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesOfWhichEnabling": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          },
+          "capexBasedProportionOfRevenueSubstantiallyContributingToCircularEconomyEligible": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          },
+          "capexBasedProportionOfRevenueSubstantiallyContributingToCircularEconomyAligned": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          },
+          "capexBasedProportionOfRevenueSubstantiallyContributingToCircularEconomyOfWhichEnabling": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          },
+          "capexBasedProportionOfRevenueSubstantiallyContributingToPollutionPreventionAndControlEligible": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          },
+          "capexBasedProportionOfRevenueSubstantiallyContributingToPollutionPreventionAndControlAligned": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          },
+          "capexBasedProportionOfRevenueSubstantiallyContributingToPollutionPreventionAndControlOfWhichEnabling": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          },
+          "capexBasedProportionOfRevenueSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsEligible": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          },
+          "capexBasedProportionOfRevenueSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsAligned": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          },
+          "capexBasedProportionOfRevenueSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsOfWhichEnabling": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          },
+          "capexBasedProportionOfRevenueSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesEligible": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          },
+          "capexBasedProportionOfRevenueSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesAligned": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          },
+          "capexBasedProportionOfRevenueSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesOfWhichTransitional": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          },
+          "capexBasedProportionOfRevenueSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesOfWhichEnabling": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          }
+        }
+      },
+      "EutaxonomyFinancialsInvestmentfirmsOtherServicesTurnoverBased": {
+        "type": "object",
+        "properties": {
+          "turnoverBasedTotalRevenueFromInvestmentsAndServicesAndActivitiesOtherThanDealingOnOwnAccount": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/CurrencyDataPoint"
+              }
+            ]
+          },
+          "turnoverBasedProportionOfRevenueSubstantiallyContributingToClimateChangeMitigationEligible": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          },
+          "turnoverBasedProportionOfRevenueSubstantiallyContributingToClimateChangeMitigationAligned": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          },
+          "turnoverBasedProportionOfRevenueSubstantiallyContributingToClimateChangeMitigationOfWhichTransitional": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          },
+          "turnoverBasedProportionOfRevenueSubstantiallyContributingToClimateChangeMitigationOfWhichEnabling": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          },
+          "turnoverBasedProportionOfRevenueSubstantiallyContributingToClimateChangeAdaptationEligible": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          },
+          "turnoverBasedProportionOfRevenueSubstantiallyContributingToClimateChangeAdaptationAligned": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          },
+          "turnoverBasedProportionOfRevenueSubstantiallyContributingToClimateChangeAdaptationOfWhichEnabling": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          },
+          "turnoverBasedProportionOfRevenueSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesEligible": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          },
+          "turnoverBasedProportionOfRevenueSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesAligned": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          },
+          "turnoverBasedProportionOfRevenueSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesOfWhichEnabling": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          },
+          "turnoverBasedProportionOfRevenueSubstantiallyContributingToCircularEconomyEligible": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          },
+          "turnoverBasedProportionOfRevenueSubstantiallyContributingToCircularEconomyAligned": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          },
+          "turnoverBasedProportionOfRevenueSubstantiallyContributingToCircularEconomyOfWhichEnabling": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          },
+          "turnoverBasedProportionOfRevenueSubstantiallyContributingToPollutionPreventionAndControlEligible": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          },
+          "turnoverBasedProportionOfRevenueSubstantiallyContributingToPollutionPreventionAndControlAligned": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          },
+          "turnoverBasedProportionOfRevenueSubstantiallyContributingToPollutionPreventionAndControlOfWhichEnabling": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          },
+          "turnoverBasedProportionOfRevenueSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsEligible": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          },
+          "turnoverBasedProportionOfRevenueSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsAligned": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          },
+          "turnoverBasedProportionOfRevenueSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsOfWhichEnabling": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          },
+          "turnoverBasedProportionOfRevenueSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesEligible": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          },
+          "turnoverBasedProportionOfRevenueSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesAligned": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          },
+          "turnoverBasedProportionOfRevenueSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesOfWhichTransitional": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          },
+          "turnoverBasedProportionOfRevenueSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesOfWhichEnabling": {
             "nullable": true,
             "allOf": [
               {
@@ -17043,23 +17599,23 @@
         ],
         "type": "object",
         "properties": {
-          "sector": {
-            "type": "string",
-            "nullable": true
-          },
           "companyId": {
             "type": "string"
           },
           "companyName": {
             "type": "string"
           },
-          "headquarters": {
-            "type": "string"
-          },
           "countryCode": {
             "type": "string"
           },
+          "headquarters": {
+            "type": "string"
+          },
           "lei": {
+            "type": "string",
+            "nullable": true
+          },
+          "sector": {
             "type": "string",
             "nullable": true
           }

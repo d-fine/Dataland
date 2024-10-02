@@ -2,19 +2,32 @@
 package org.dataland.datalandqaservice.frameworks.eutaxonomyfinancials.model.investmentFirms
 
 import jakarta.validation.Valid
-import org.dataland.datalandqaservice.frameworks.eutaxonomyfinancials.model.investmentFirms.capexBasedKpi
-    .EutaxonomyFinancialsInvestmentfirmsCapexBasedKpi
-import org.dataland.datalandqaservice.frameworks.eutaxonomyfinancials.model.investmentFirms.turnoverBasedKpi
-    .EutaxonomyFinancialsInvestmentfirmsTurnoverBasedKpi
+import org.dataland.datalandqaservice.frameworks.eutaxonomyfinancials.model.investmentFirms
+    .dealingOnOwnAccountServicesCapexBased.EutaxonomyFinancialsInvestmentfirmsDealingOnOwnAccountServicesCapexBased
+import org.dataland.datalandqaservice.frameworks.eutaxonomyfinancials.model.investmentFirms
+    .dealingOnOwnAccountServicesTurnoverBased
+    .EutaxonomyFinancialsInvestmentfirmsDealingOnOwnAccountServicesTurnoverBased
+import org.dataland.datalandqaservice.frameworks.eutaxonomyfinancials.model.investmentFirms.otherServicesCapexBased
+    .EutaxonomyFinancialsInvestmentfirmsOtherServicesCapexBased
+import org.dataland.datalandqaservice.frameworks.eutaxonomyfinancials.model.investmentFirms.otherServicesTurnoverBased
+    .EutaxonomyFinancialsInvestmentfirmsOtherServicesTurnoverBased
 
 /**
  * The QA-model for the InvestmentFirms section
  */
 data class EutaxonomyFinancialsInvestmentFirms(
     @field:Valid()
-    val turnoverBasedKpi: EutaxonomyFinancialsInvestmentfirmsTurnoverBasedKpi? = null,
+    val dealingOnOwnAccountServicesTurnoverBased:
+    EutaxonomyFinancialsInvestmentfirmsDealingOnOwnAccountServicesTurnoverBased? = null,
 
     @field:Valid()
-    val capexBasedKpi: EutaxonomyFinancialsInvestmentfirmsCapexBasedKpi? = null,
+    val dealingOnOwnAccountServicesCapexBased:
+    EutaxonomyFinancialsInvestmentfirmsDealingOnOwnAccountServicesCapexBased? = null,
+
+    @field:Valid()
+    val otherServicesTurnoverBased: EutaxonomyFinancialsInvestmentfirmsOtherServicesTurnoverBased? = null,
+
+    @field:Valid()
+    val otherServicesCapexBased: EutaxonomyFinancialsInvestmentfirmsOtherServicesCapexBased? = null,
 
 )
