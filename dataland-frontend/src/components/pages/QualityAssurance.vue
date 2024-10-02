@@ -156,7 +156,7 @@ import Calendar from 'primevue/calendar';
 import type Keycloak from 'keycloak-js';
 import { type GetInfoOnUnreviewedDatasetsDataTypesEnum, type ReviewQueueResponse } from '@clients/qaservice';
 import router from '@/router';
-import { DataTypeEnum } from '@clients/backend';
+import { type DataTypeEnum } from '@clients/backend';
 
 export default defineComponent({
   name: 'QualityAssurance',
@@ -234,6 +234,8 @@ export default defineComponent({
     humanizeString: humanizeStringOrNumber,
     /**
      * Converts from DataTypeEnum to GetInfoOnUnreviewedDatasetsDataTypesEnum
+     * @param input DataTypeEnum
+     * @returns GetInfoOnUnreviewedDatasetsDataTypesEnum
      */
     convertDataType(input: DataTypeEnum): GetInfoOnUnreviewedDatasetsDataTypesEnum {
       return input as GetInfoOnUnreviewedDatasetsDataTypesEnum;
