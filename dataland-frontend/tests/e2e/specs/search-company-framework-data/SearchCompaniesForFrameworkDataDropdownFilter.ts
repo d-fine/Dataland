@@ -152,7 +152,7 @@ describe('As a user, I expect the search functionality on the /companies page to
           cy.get("td[class='d-bg-white w-3 d-datatable-column-left']")
             .contains(demoCompanyToTestFor.companyName)
             .should('exist');
-          cy.url().should('contain', `sector=${convertStringToQueryParamFormat(demoCompanyToTestFor.sector!)}`);
+          cy.url().should('contain', `sector=${demoCompanyToTestFor.sector!}`);
         }
       );
     }

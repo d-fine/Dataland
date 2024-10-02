@@ -1,9 +1,9 @@
 import { TEST_PDF_FILE_BASEPATH } from '@sharedUtils/ConstantsForPdfs';
 
 export class UploadDocuments {
-  private name: string;
-  private uploadDocumentsSelector: string;
-  private addDocumentButtonSelector: string;
+  private readonly name: string;
+  private readonly uploadDocumentsSelector: string;
+  private readonly addDocumentButtonSelector: string;
   constructor(name: string = 'UploadReports') {
     this.name = name;
     this.uploadDocumentsSelector = `div[data-test='upload-documents-${name}']`;

@@ -72,7 +72,7 @@ comments:
     excludes: ['**/test/**', '**/androidTest/**', '**/commonTest/**', '**/jvmTest/**', '**/jsTest/**', '**/iosTest/**']
     searchInNestedClass: true
     searchInInnerClass: true
-    searchInInnerObject: true
+    searchInInnerObject: false
     searchInInnerInterface: true
   UndocumentedPublicFunction:
     active: true

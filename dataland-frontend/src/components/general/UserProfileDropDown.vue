@@ -8,7 +8,7 @@
       ref="profile-picture"
       class="d-profile-picture"
       :src="profilePictureSource"
-      alt="User profile picture"
+      alt="User profile"
       referrerpolicy="no-referrer"
       @error="handleProfilePicError"
     />
