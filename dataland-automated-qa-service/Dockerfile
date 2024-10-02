@@ -3,4 +3,4 @@ FROM ghcr.io/d-fine/dataland/dataland_automated_qa_service_base:${DATALAND_AUTOM
 
 CMD ["sh", "-c", "python ./src/main/entrypoint.py"]
 
-HEALTHCHECK --interval=30s --timeout=3s CMD exit 0
+HEALTHCHECK --interval=30s --timeout=3s CMD kill -0 1
