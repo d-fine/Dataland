@@ -47,7 +47,7 @@ describeIf(
     });
 
     it('Check whether newly added dataset has Pending status and can be approved by a reviewer', () => {
-      const data = getPreparedFixture('eu-taxonomy-financials-dataset-with-no-null-fields', preparedEuTaxonomyFixtures);
+      const data = getPreparedFixture('eutaxonomy-financials-dataset-with-no-null-fields', preparedEuTaxonomyFixtures);
       getKeycloakToken(uploader_name, uploader_pw).then((token: string) => {
         return uploadFrameworkDataForPublicToolboxFramework(
           EuTaxonomyFinancialsBaseFrameworkDefinition,
