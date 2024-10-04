@@ -139,13 +139,13 @@ class ApiAccessor {
     }
 
     /**
-     * Uploads each of the datasets provided in [listOfFrameworkData] for each of the companies provided in
-     * [listOfCompanyInformation] via [frameworkDataUploadFunction]. If data for the same framework is uploaded multiple
+     * Uploads each of the datasets provided in [frameworkDatasets] for each of the companies provided in
+     * [companyInfo] via [frameworkDataUploadFunction]. If data for the same framework is uploaded multiple
      * times for the same company a wait of at least 1ms is necessary to avoid an error 500.
      */
     fun <T> uploadCompanyAndFrameworkDataForOneFramework(
-        listOfCompanyInformation: List<CompanyInformation>,
-        listOfFrameworkData: List<T>,
+        companyInfo: List<CompanyInformation>,
+        frameworkDatasets: List<T>,
         frameworkDataUploadFunction: (
             companyId: String,
             frameworkData: T,
@@ -156,13 +156,13 @@ class ApiAccessor {
         reportingPeriod: String = "",
         ensureQaPassed: Boolean = true,
     ): List<UploadInfo> {
-        val waitTimeBeforeNextUpload = if (listOfFrameworkData.size > 1) 1L else 0L
+        val waitTimeBeforeNextUpload = if (frameworkDatasets.size > 1) 1L else 0L
         val listOfUploadInfo: MutableList<UploadInfo> = mutableListOf()
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
-        val storedCompanyInfos = listOfCompanyInformation.map { companyDataControllerApi.postCompany(it) }
+        val storedCompanyInfos = companyInfo.map { companyDataControllerApi.postCompany(it) }
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(uploadConfig.uploadingTechnicalUser)
-        listOfFrameworkData.forEach { frameworkDataSet ->
-            listOfCompanyInformation.zip(storedCompanyInfos).forEach { pair ->
+        frameworkDatasets.forEach { frameworkDataSet ->
+            companyInfo.zip(storedCompanyInfos).forEach { pair ->
                 val receivedDataMetaInformation = frameworkDataUploadFunction(
                     pair.second.companyId, frameworkDataSet, reportingPeriod, uploadConfig.bypassQa,
                 )
@@ -207,8 +207,8 @@ class ApiAccessor {
                 bypassQa: Boolean,
             ) -> DataMetaInformation,
         ) = uploadCompanyAndFrameworkDataForOneFramework(
-            listOfCompanyInformation = listOfCompanyInformation,
-            listOfFrameworkData = testDataProvider.getTData(numberOfDataSetsPerCompany),
+            companyInfo = listOfCompanyInformation,
+            frameworkDatasets = testDataProvider.getTData(numberOfDataSetsPerCompany),
             frameworkDataUploadFunction = frameworkDataUploadFunction,
             uploadConfig = uploadConfig,
             reportingPeriod = reportingPeriod,

@@ -14,6 +14,7 @@ export function generateEutaxonomyFinancialsPreparedFixtures(): Array<FixtureDat
   const preparedFixtures = [];
   preparedFixtures.push(generateFixtureWithNoNullFields());
   preparedFixtures.push(generateLightweightEuTaxoFinancialsFixture());
+  preparedFixtures.push(generateEmptyReferencedReportsFixture());
   return preparedFixtures;
 }
 
@@ -39,6 +40,23 @@ function generateLightweightEuTaxoFinancialsFixture(): FixtureData<EutaxonomyFin
   if (newFixture.t.creditInstitution?.assetsForCalculationOfGreenAssetRatio) {
     newFixture.t.creditInstitution.assetsForCalculationOfGreenAssetRatio =
       fullDataSet.creditInstitution?.assetsForCalculationOfGreenAssetRatio;
+  } else {
+    throw Error('Could not set assetsForCalculationOfGreenAssetRatio due to missing parent-object.');
+  }
+  return newFixture;
+}
+
+/**
+ * Generate a prepared Fixture with the referenced reports property set to "null".
+ * @returns the fixture
+ */
+function generateEmptyReferencedReportsFixture(): FixtureData<EutaxonomyFinancialsData> {
+  const newFixture = generateEutaxonomyFinancialsFixtures(1, 0)[0];
+  newFixture.companyInformation.companyName = 'TestForIncompleteReferencedReport';
+  if (newFixture.t.general?.general?.referencedReports) {
+    newFixture.t.general.general.referencedReports = null;
+  } else {
+    throw Error('Could not set referenced reports to null due to missing parent-object.');
   }
   return newFixture;
 }

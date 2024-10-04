@@ -76,7 +76,7 @@ class FrameworkTestDataProvider<T> (private val clazz: Class<T>) {
 
     private fun companyListForTestingEuTaxonomyFinancialsSpecificValidation(): List<CompanyInformationWithT<T>> {
         return convertJsonToList(
-            File("./build/resources/test/CompanyInformationWithEuTaxonomyDataForFinancialsPreparedFixtures.json"),
+            File("./build/resources/test/CompanyInformationWithEutaxonomyFinancialsPreparedFixtures.json"),
         )
     }
 
