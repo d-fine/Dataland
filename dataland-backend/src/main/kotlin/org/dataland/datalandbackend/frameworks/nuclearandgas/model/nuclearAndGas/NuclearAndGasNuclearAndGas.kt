@@ -2,14 +2,34 @@
 package org.dataland.datalandbackend.frameworks.nuclearandgas.model.nuclearAndGas
 
 import jakarta.validation.Valid
-import org.dataland.datalandbackend.frameworks.nuclearandgas.model.nuclearAndGas.nuclearAndFossilGasRelatedActivities
-    .NuclearAndGasNuclearandgasNuclearAndFossilGasRelatedActivities
+import org.dataland.datalandbackend.frameworks.nuclearandgas.model.nuclearAndGas.general
+    .NuclearAndGasNuclearandgasGeneral
+import org.dataland.datalandbackend.frameworks.nuclearandgas.model.nuclearAndGas.taxonomyAlignedDenominator
+    .NuclearAndGasNuclearandgasTaxonomyAlignedDenominator
+import org.dataland.datalandbackend.frameworks.nuclearandgas.model.nuclearAndGas.taxonomyAlignedNumerator
+    .NuclearAndGasNuclearandgasTaxonomyAlignedNumerator
+import org.dataland.datalandbackend.frameworks.nuclearandgas.model.nuclearAndGas.taxonomyEligibleButNotAligned
+    .NuclearAndGasNuclearandgasTaxonomyEligibleButNotAligned
+import org.dataland.datalandbackend.frameworks.nuclearandgas.model.nuclearAndGas.taxonomyNonEligible
+    .NuclearAndGasNuclearandgasTaxonomyNonEligible
 
 /**
  * The data-model for the NuclearAndGas section
  */
 data class NuclearAndGasNuclearAndGas(
     @field:Valid()
-    val nuclearAndFossilGasRelatedActivities: NuclearAndGasNuclearandgasNuclearAndFossilGasRelatedActivities? = null,
+    val general: NuclearAndGasNuclearandgasGeneral? = null,
+
+    @field:Valid()
+    val taxonomyAlignedDenominator: NuclearAndGasNuclearandgasTaxonomyAlignedDenominator? = null,
+
+    @field:Valid()
+    val taxonomyAlignedNumerator: NuclearAndGasNuclearandgasTaxonomyAlignedNumerator? = null,
+
+    @field:Valid()
+    val taxonomyEligibleButNotAligned: NuclearAndGasNuclearandgasTaxonomyEligibleButNotAligned? = null,
+
+    @field:Valid()
+    val taxonomyNonEligible: NuclearAndGasNuclearandgasTaxonomyNonEligible? = null,
 
 )

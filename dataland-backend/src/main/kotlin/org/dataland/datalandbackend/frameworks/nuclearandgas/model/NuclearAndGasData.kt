@@ -9,7 +9,7 @@ import org.dataland.datalandbackend.frameworks.nuclearandgas.model.nuclearAndGas
  * The root data-model for the Nuclear-and-gas Framework
  */
 @Suppress("MagicNumber")
-@DataType("nuclear-and-gas", 3)
+@DataType("nuclear-and-gas", 9)
 data class NuclearAndGasData(
     @field:Valid()
     val nuclearAndGas: NuclearAndGasNuclearAndGas? = null,

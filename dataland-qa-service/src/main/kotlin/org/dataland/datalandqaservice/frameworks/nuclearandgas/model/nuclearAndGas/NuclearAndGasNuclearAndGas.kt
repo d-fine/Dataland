@@ -2,14 +2,14 @@
 package org.dataland.datalandqaservice.frameworks.nuclearandgas.model.nuclearAndGas
 
 import jakarta.validation.Valid
-import org.dataland.datalandqaservice.frameworks.nuclearandgas.model.nuclearAndGas.nuclearAndFossilGasRelatedActivities
-    .NuclearAndGasNuclearandgasNuclearAndFossilGasRelatedActivities
+import org.dataland.datalandqaservice.frameworks.nuclearandgas.model.nuclearAndGas.general
+    .NuclearAndGasNuclearandgasGeneral
 
 /**
  * The QA-model for the NuclearAndGas section
  */
 data class NuclearAndGasNuclearAndGas(
     @field:Valid()
-    val nuclearAndFossilGasRelatedActivities: NuclearAndGasNuclearandgasNuclearAndFossilGasRelatedActivities? = null,
+    val general: NuclearAndGasNuclearandgasGeneral? = null,
 
 )
