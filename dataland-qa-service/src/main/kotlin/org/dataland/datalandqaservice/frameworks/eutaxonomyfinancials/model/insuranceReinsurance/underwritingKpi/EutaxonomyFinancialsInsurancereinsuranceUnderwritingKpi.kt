@@ -9,6 +9,7 @@ import org.dataland.datalandqaservice.model.reports.QaReportDataPoint
 /**
  * The QA-model for the UnderwritingKpi section
  */
+@Suppress("MaxLineLength")
 data class EutaxonomyFinancialsInsurancereinsuranceUnderwritingKpi(
     val totalOfAbsolutePremiumsOfTaxonomyAlignedActivities: QaReportDataPoint<CurrencyDataPoint?>? = null,
 

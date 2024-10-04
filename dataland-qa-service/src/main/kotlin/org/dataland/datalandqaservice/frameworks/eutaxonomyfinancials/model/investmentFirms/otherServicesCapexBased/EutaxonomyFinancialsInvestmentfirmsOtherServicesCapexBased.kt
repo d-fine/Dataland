@@ -9,6 +9,7 @@ import org.dataland.datalandqaservice.model.reports.QaReportDataPoint
 /**
  * The QA-model for the OtherServicesCapexBased section
  */
+@Suppress("MaxLineLength")
 data class EutaxonomyFinancialsInvestmentfirmsOtherServicesCapexBased(
     val capexBasedTotalRevenueFromInvestmentsAndServicesAndActivitiesOtherThanDealingOnOwnAccount:
     QaReportDataPoint<CurrencyDataPoint?>? = null,

@@ -10,6 +10,7 @@ import java.math.BigDecimal
 /**
  * The data-model for the DealingOnOwnAccountServicesCapexBased section
  */
+@Suppress("MaxLineLength")
 data class EutaxonomyFinancialsInvestmentfirmsDealingOnOwnAccountServicesCapexBased(
     @field:MinimumValue(minimumValue = 0)
     @field:Valid()

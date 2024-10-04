@@ -15,6 +15,7 @@ import org.dataland.datalandqaservice.frameworks.eutaxonomyfinancials.model.inve
 /**
  * The QA-model for the InvestmentFirms section
  */
+@Suppress("MaxLineLength")
 data class EutaxonomyFinancialsInvestmentFirms(
     @field:Valid()
     val dealingOnOwnAccountServicesTurnoverBased:

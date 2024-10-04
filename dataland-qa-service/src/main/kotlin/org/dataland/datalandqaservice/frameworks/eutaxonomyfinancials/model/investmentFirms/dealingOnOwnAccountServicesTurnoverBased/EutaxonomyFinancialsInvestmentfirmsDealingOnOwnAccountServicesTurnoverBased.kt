@@ -9,6 +9,7 @@ import org.dataland.datalandqaservice.model.reports.QaReportDataPoint
 /**
  * The QA-model for the DealingOnOwnAccountServicesTurnoverBased section
  */
+@Suppress("MaxLineLength")
 data class EutaxonomyFinancialsInvestmentfirmsDealingOnOwnAccountServicesTurnoverBased(
     val turnoverBasedTotalAssetsInvestedUnderInvestmentFirmsActivitiesDealingOnOwnAccount:
     QaReportDataPoint<CurrencyDataPoint?>? = null,

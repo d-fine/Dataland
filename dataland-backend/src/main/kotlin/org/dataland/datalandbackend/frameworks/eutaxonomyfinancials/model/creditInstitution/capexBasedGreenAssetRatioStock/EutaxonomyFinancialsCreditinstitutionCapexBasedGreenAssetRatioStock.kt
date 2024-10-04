@@ -8,6 +8,7 @@ import java.math.BigDecimal
 /**
  * The data-model for the CapexBasedGreenAssetRatioStock section
  */
+@Suppress("MaxLineLength")
 data class EutaxonomyFinancialsCreditinstitutionCapexBasedGreenAssetRatioStock(
     @field:Valid()
     val substantialContributionToClimateChangeMitigationInPercentEligible: ExtendedDataPoint<BigDecimal?>? = null,

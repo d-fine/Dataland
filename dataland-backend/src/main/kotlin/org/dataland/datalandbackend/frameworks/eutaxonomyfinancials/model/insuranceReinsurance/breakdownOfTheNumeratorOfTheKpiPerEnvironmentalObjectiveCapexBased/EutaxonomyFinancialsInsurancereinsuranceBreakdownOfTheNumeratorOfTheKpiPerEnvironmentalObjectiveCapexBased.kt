@@ -8,6 +8,7 @@ import java.math.BigDecimal
 /**
  * The data-model for the BreakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBased section
  */
+@Suppress("MaxLineLength")
 data class EutaxonomyFinancialsInsurancereinsuranceBreakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBased(
     @field:Valid()
     val shareOfCapexBasedKpiSubstantiallyContributingToClimateChangeMitigationInPercentAligned:

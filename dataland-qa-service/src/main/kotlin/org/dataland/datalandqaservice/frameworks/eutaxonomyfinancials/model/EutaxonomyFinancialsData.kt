@@ -15,6 +15,7 @@ import org.dataland.datalandqaservice.frameworks.eutaxonomyfinancials.model.inve
 /**
  * The root QA data-model for the Eutaxonomy-financials Framework
  */
+@Suppress("MaxLineLength")
 data class EutaxonomyFinancialsData(
     @field:Valid()
     val general: EutaxonomyFinancialsGeneral? = null,

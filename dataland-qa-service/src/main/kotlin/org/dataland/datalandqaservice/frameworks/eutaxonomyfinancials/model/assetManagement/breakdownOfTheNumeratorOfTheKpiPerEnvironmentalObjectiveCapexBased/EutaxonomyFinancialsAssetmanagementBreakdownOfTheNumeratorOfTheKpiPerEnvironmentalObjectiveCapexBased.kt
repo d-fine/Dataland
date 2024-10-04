@@ -8,6 +8,7 @@ import org.dataland.datalandqaservice.model.reports.QaReportDataPoint
 /**
  * The QA-model for the BreakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBased section
  */
+@Suppress("MaxLineLength")
 data class EutaxonomyFinancialsAssetmanagementBreakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBased(
     @field:Valid()
     val shareOfCapexBasedKpiSubstantiallyContributingToClimateChangeMitigationInPercentAligned:

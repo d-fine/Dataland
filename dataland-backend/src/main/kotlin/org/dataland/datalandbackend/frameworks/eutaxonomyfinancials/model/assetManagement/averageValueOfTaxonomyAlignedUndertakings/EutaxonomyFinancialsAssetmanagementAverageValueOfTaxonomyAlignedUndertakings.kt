@@ -10,6 +10,7 @@ import java.math.BigDecimal
 /**
  * The data-model for the AverageValueOfTaxonomyAlignedUndertakings section
  */
+@Suppress("MaxLineLength")
 data class EutaxonomyFinancialsAssetmanagementAverageValueOfTaxonomyAlignedUndertakings(
     @field:Valid()
     val weightedAverageValueOfAllInvestmentsTurnoverBasedInPercent: ExtendedDataPoint<BigDecimal?>? = null,

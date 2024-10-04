@@ -10,6 +10,7 @@ import java.math.BigDecimal
 /**
  * The data-model for the UnderwritingKpi section
  */
+@Suppress("MaxLineLength")
 data class EutaxonomyFinancialsInsurancereinsuranceUnderwritingKpi(
     @field:MinimumValue(minimumValue = 0)
     @field:Valid()

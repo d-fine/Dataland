@@ -15,6 +15,7 @@ import java.time.LocalDate
 /**
  * The data-model for the General section
  */
+@Suppress("MaxLineLength")
 data class EutaxonomyFinancialsGeneralGeneral(
     @field:Valid()
     val fiscalYearDeviation: ExtendedDataPoint<EutaxonomyFinancialsGeneralGeneralFiscalYearDeviationOptions?>? = null,

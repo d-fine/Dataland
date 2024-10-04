@@ -4725,23 +4725,23 @@
           "message": {
             "type": "string"
           },
-          "dataId": {
+          "receptionTime": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "companyId": {
             "type": "string"
           },
           "companyName": {
             "type": "string"
           },
-          "companyId": {
-            "type": "string"
-          },
-          "receptionTime": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "framework": {
+          "dataId": {
             "type": "string"
           },
           "reportingPeriod": {
+            "type": "string"
+          },
+          "framework": {
             "type": "string"
           }
         }

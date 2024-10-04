@@ -10,6 +10,7 @@ import java.math.BigDecimal
 /**
  * The data-model for the OtherServicesTurnoverBased section
  */
+@Suppress("MaxLineLength")
 data class EutaxonomyFinancialsInvestmentfirmsOtherServicesTurnoverBased(
     @field:MinimumValue(minimumValue = 0)
     @field:Valid()

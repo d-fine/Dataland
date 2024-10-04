@@ -8,6 +8,7 @@ import org.dataland.datalandbackend.validator.MinimumValue
 /**
  * The data-model for the AssetsForCalculationOfGreenAssetRatio section
  */
+@Suppress("MaxLineLength")
 data class EutaxonomyFinancialsCreditinstitutionAssetsForCalculationOfGreenAssetRatio(
     @field:MinimumValue(minimumValue = 0)
     @field:Valid()
