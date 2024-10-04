@@ -53,13 +53,13 @@ class ComponentGroupApiImpl(var parent: FieldNodeParent? = null) : ComponentGrou
     ): ((String, FieldNodeParent) -> T)? {
         val componentConstructors = clazz.constructors
         for (constructor in componentConstructors) {
-            val nonOptimalParameters = constructor.parameters.filter { !it.isOptional }
-            val validConstructor = nonOptimalParameters.size == 2 &&
-                nonOptimalParameters[0].type.classifier == String::class &&
-                nonOptimalParameters[1].type.classifier == FieldNodeParent::class
+            val nonOptionalParameters = constructor.parameters.filter { !it.isOptional }
+            val validConstructor = nonOptionalParameters.size == 2 &&
+                nonOptionalParameters[0].type.classifier == String::class &&
+                nonOptionalParameters[1].type.classifier == FieldNodeParent::class
             if (validConstructor) {
                 return { identifier, parent ->
-                    constructor.callBy(mapOf(nonOptimalParameters[0] to identifier, nonOptimalParameters[1] to parent))
+                    constructor.callBy(mapOf(nonOptionalParameters[0] to identifier, nonOptionalParameters[1] to parent))
                 }
             }
         }

@@ -1028,12 +1028,12 @@
                   "eutaxonomy-financials",
                   "eutaxonomy-non-financials",
                   "lksg",
-                  "nuclear-and-gas",
                   "p2p",
                   "sfdr",
                   "vsme",
                   "esg-questionnaire",
                   "heimathafen",
+                  "nuclear-and-gas",
                   "additional-company-information"
                 ]
               }
@@ -1125,12 +1125,12 @@
                   "eutaxonomy-financials",
                   "eutaxonomy-non-financials",
                   "lksg",
-                  "nuclear-and-gas",
                   "p2p",
                   "sfdr",
                   "vsme",
                   "esg-questionnaire",
                   "heimathafen",
+                  "nuclear-and-gas",
                   "additional-company-information"
                 ]
               }
@@ -2570,6 +2570,410 @@
           }
         }
       },
+      "CustomComponentAlignedDenominator": {
+        "type": "object",
+        "properties": {
+          "taxonomyAlignedShareDenominatorClimateChangeMitigationAndClimateChangeAdaptationNAndG426": {
+            "type": "number"
+          },
+          "taxonomyAlignedShareDenominatorSubstantiallyContributingToClimateChangeMitigationNAndG426": {
+            "type": "number"
+          },
+          "taxonomyAlignedShareDenominatorSubstantiallyContributingToClimateChangeAdaptationNAndG426": {
+            "type": "number"
+          },
+          "taxonomyAlignedShareDenominatorClimateChangeMitigationAndClimateChangeAdaptationNAndG427": {
+            "type": "number"
+          },
+          "taxonomyAlignedShareDenominatorSubstantiallyContributingToClimateChangeMitigationNAndG427": {
+            "type": "number"
+          },
+          "taxonomyAlignedShareDenominatorSubstantiallyContributingToClimateChangeAdaptationNAndG427": {
+            "type": "number"
+          },
+          "taxonomyAlignedShareDenominatorClimateChangeMitigationAndClimateChangeAdaptationNAndG428": {
+            "type": "number"
+          },
+          "taxonomyAlignedShareDenominatorSubstantiallyContributingToClimateChangeMitigationNAndG428": {
+            "type": "number"
+          },
+          "taxonomyAlignedShareDenominatorSubstantiallyContributingToClimateChangeAdaptationNAndG428": {
+            "type": "number"
+          },
+          "taxonomyAlignedShareDenominatorClimateChangeMitigationAndClimateChangeAdaptationNAndG429": {
+            "type": "number"
+          },
+          "taxonomyAlignedShareDenominatorSubstantiallyContributingToClimateChangeMitigationNAndG429": {
+            "type": "number"
+          },
+          "taxonomyAlignedShareDenominatorSubstantiallyContributingToClimateChangeAdaptationNAndG429": {
+            "type": "number"
+          },
+          "taxonomyAlignedShareDenominatorClimateChangeMitigationAndClimateChangeAdaptationNAndG430": {
+            "type": "number"
+          },
+          "taxonomyAlignedShareDenominatorSubstantiallyContributingToClimateChangeMitigationNAndG430": {
+            "type": "number"
+          },
+          "taxonomyAlignedShareDenominatorSubstantiallyContributingToClimateChangeAdaptationNAndG430": {
+            "type": "number"
+          },
+          "taxonomyAlignedShareDenominatorClimateChangeMitigationAndClimateChangeAdaptationNAndG431": {
+            "type": "number"
+          },
+          "taxonomyAlignedShareDenominatorSubstantiallyContributingToClimateChangeMitigationNAndG431": {
+            "type": "number"
+          },
+          "taxonomyAlignedShareDenominatorSubstantiallyContributingToClimateChangeAdaptationNAndG431": {
+            "type": "number"
+          },
+          "taxonomyAlignedShareDenominatorClimateChangeMitigationAndClimateChangeAdaptationOtherActivities": {
+            "type": "number"
+          },
+          "taxonomyAlignedShareDenominatorSubstantiallyContributingToClimateChangeMitigationOtherActivities": {
+            "type": "number"
+          },
+          "taxonomyAlignedShareDenominatorSubstantiallyContributingToClimateChangeAdaptationOtherActivities": {
+            "type": "number"
+          },
+          "taxonomyAlignedShareDenominatorClimateChangeMitigationAndClimateChangeAdaptation": {
+            "type": "number"
+          },
+          "taxonomyAlignedShareDenominatorSubstantiallyContributingToClimateChangeMitigation": {
+            "type": "number"
+          },
+          "taxonomyAlignedShareDenominatorSubstantiallyContributingToClimateChangeAdaptation": {
+            "type": "number"
+          }
+        }
+      },
+      "CustomComponentAlignedNumerator": {
+        "type": "object",
+        "properties": {
+          "taxonomyAlignedShareNumeratorClimateChangeMitigationAndClimateChangeAdaptationNAndG426": {
+            "type": "number"
+          },
+          "taxonomyAlignedShareNumeratorSubstantiallyContributingToClimateChangeMitigationNAndG426": {
+            "type": "number"
+          },
+          "taxonomyAlignedShareNumeratorSubstantiallyContributingToClimateChangeAdaptationNAndG426": {
+            "type": "number"
+          },
+          "taxonomyAlignedShareNumeratorClimateChangeMitigationAndClimateChangeAdaptationNAndG427": {
+            "type": "number"
+          },
+          "taxonomyAlignedShareNumeratorSubstantiallyContributingToClimateChangeMitigationNAndG427": {
+            "type": "number"
+          },
+          "taxonomyAlignedShareNumeratorSubstantiallyContributingToClimateChangeAdaptationNAndG427": {
+            "type": "number"
+          },
+          "taxonomyAlignedShareNumeratorClimateChangeMitigationAndClimateChangeAdaptationNAndG428": {
+            "type": "number"
+          },
+          "taxonomyAlignedShareNumeratorSubstantiallyContributingToClimateChangeMitigationNAndG428": {
+            "type": "number"
+          },
+          "taxonomyAlignedShareNumeratorSubstantiallyContributingToClimateChangeAdaptationNAndG428": {
+            "type": "number"
+          },
+          "taxonomyAlignedShareNumeratorClimateChangeMitigationAndClimateChangeAdaptationNAndG429": {
+            "type": "number"
+          },
+          "taxonomyAlignedShareNumeratorSubstantiallyContributingToClimateChangeMitigationNAndG429": {
+            "type": "number"
+          },
+          "taxonomyAlignedShareNumeratorSubstantiallyContributingToClimateChangeAdaptationNAndG429": {
+            "type": "number"
+          },
+          "taxonomyAlignedShareNumeratorClimateChangeMitigationAndClimateChangeAdaptationNAndG430": {
+            "type": "number"
+          },
+          "taxonomyAlignedShareNumeratorSubstantiallyContributingToClimateChangeMitigationNAndG430": {
+            "type": "number"
+          },
+          "taxonomyAlignedShareNumeratorSubstantiallyContributingToClimateChangeAdaptationNAndG430": {
+            "type": "number"
+          },
+          "taxonomyAlignedShareNumeratorClimateChangeMitigationAndClimateChangeAdaptationNAndG431": {
+            "type": "number"
+          },
+          "taxonomyAlignedShareNumeratorSubstantiallyContributingToClimateChangeMitigationNAndG431": {
+            "type": "number"
+          },
+          "taxonomyAlignedShareNumeratorSubstantiallyContributingToClimateChangeAdaptationNAndG431": {
+            "type": "number"
+          },
+          "taxonomyAlignedShareNumeratorClimateChangeMitigationAndClimateChangeAdaptationOtherActivities": {
+            "type": "number"
+          },
+          "taxonomyAlignedShareNumeratorSubstantiallyContributingToClimateChangeMitigationOtherActivities": {
+            "type": "number"
+          },
+          "taxonomyAlignedShareNumeratorSubstantiallyContributingToClimateChangeAdaptationOtherActivities": {
+            "type": "number"
+          },
+          "taxonomyAlignedShareNumeratorClimateChangeMitigationAndClimateChangeAdaptation": {
+            "type": "number"
+          },
+          "taxonomyAlignedShareNumeratorSubstantiallyContributingToClimateChangeMitigation": {
+            "type": "number"
+          },
+          "taxonomyAlignedShareNumeratorSubstantiallyContributingToClimateChangeAdaptation": {
+            "type": "number"
+          }
+        }
+      },
+      "CustomComponentEligibleButNotAligned": {
+        "type": "object",
+        "properties": {
+          "taxonomyEligibleButNotAlignedShareClimateChangeMitigationAndClimateChangeAdaptationNAndG426": {
+            "type": "number"
+          },
+          "taxonomyEligibleButNotAlignedShareSubstantiallyContributingToClimateChangeMitigationNAndG426": {
+            "type": "number"
+          },
+          "taxonomyEligibleButNotAlignedShareSubstantiallyContributingToClimateChangeAdaptationNAndG426": {
+            "type": "number"
+          },
+          "taxonomyEligibleButNotAlignedShareClimateChangeMitigationAndClimateChangeAdaptationNAndG427": {
+            "type": "number"
+          },
+          "taxonomyEligibleButNotAlignedShareSubstantiallyContributingToClimateChangeMitigationNAndG427": {
+            "type": "number"
+          },
+          "taxonomyEligibleButNotAlignedShareSubstantiallyContributingToClimateChangeAdaptationNAndG427": {
+            "type": "number"
+          },
+          "taxonomyEligibleButNotAlignedShareClimateChangeMitigationAndClimateChangeAdaptationNAndG428": {
+            "type": "number"
+          },
+          "taxonomyEligibleButNotAlignedShareSubstantiallyContributingToClimateChangeMitigationNAndG428": {
+            "type": "number"
+          },
+          "taxonomyEligibleButNotAlignedShareSubstantiallyContributingToClimateChangeAdaptationNAndG428": {
+            "type": "number"
+          },
+          "taxonomyEligibleButNotAlignedShareClimateChangeMitigationAndClimateChangeAdaptationNAndG429": {
+            "type": "number"
+          },
+          "taxonomyEligibleButNotAlignedShareSubstantiallyContributingToClimateChangeMitigationNAndG429": {
+            "type": "number"
+          },
+          "taxonomyEligibleButNotAlignedShareSubstantiallyContributingToClimateChangeAdaptationNAndG429": {
+            "type": "number"
+          },
+          "taxonomyEligibleButNotAlignedShareClimateChangeMitigationAndClimateChangeAdaptationNAndG430": {
+            "type": "number"
+          },
+          "taxonomyEligibleButNotAlignedShareSubstantiallyContributingToClimateChangeMitigationNAndG430": {
+            "type": "number"
+          },
+          "taxonomyEligibleButNotAlignedShareSubstantiallyContributingToClimateChangeAdaptationNAndG430": {
+            "type": "number"
+          },
+          "taxonomyEligibleButNotAlignedShareClimateChangeMitigationAndClimateChangeAdaptationNAndG431": {
+            "type": "number"
+          },
+          "taxonomyEligibleButNotAlignedShareSubstantiallyContributingToClimateChangeMitigationNAndG431": {
+            "type": "number"
+          },
+          "taxonomyEligibleButNotAlignedShareSubstantiallyContributingToClimateChangeAdaptationNAndG431": {
+            "type": "number"
+          },
+          "taxonomyEligibleButNotAlignedShareClimateChangeMitigationAndClimateChangeAdaptationOtherActivities": {
+            "type": "number"
+          },
+          "taxonomyEligibleButNotAlignedShareSubstantiallyContributingToClimateChangeMitigationOtherActivities": {
+            "type": "number"
+          },
+          "taxonomyEligibleButNotAlignedShareSubstantiallyContributingToClimateChangeAdaptationOtherActivities": {
+            "type": "number"
+          },
+          "taxonomyEligibleButNotAlignedShareClimateChangeMitigationAndClimateChangeAdaptation": {
+            "type": "number"
+          },
+          "taxonomyEligibleButNotAlignedShareSubstantiallyContributingToClimateChangeMitigation": {
+            "type": "number"
+          },
+          "taxonomyEligibleButNotAlignedShareSubstantiallyContributingToClimateChangeAdaptation": {
+            "type": "number"
+          }
+        }
+      },
+      "CustomComponentNonEligible": {
+        "type": "object",
+        "properties": {
+          "taxonomyNonEligibleShareClimateChangeMitigationAndClimateChangeAdaptationNAndG426": {
+            "type": "number"
+          },
+          "taxonomyNonEligibleShareSubstantiallyContributingToClimateChangeMitigationNAndG426": {
+            "type": "number"
+          },
+          "taxonomyNonEligibleShareSubstantiallyContributingToClimateChangeAdaptationNAndG426": {
+            "type": "number"
+          },
+          "taxonomyNonEligibleShareClimateChangeMitigationAndClimateChangeAdaptationNAndG427": {
+            "type": "number"
+          },
+          "taxonomyNonEligibleShareSubstantiallyContributingToClimateChangeMitigationNAndG427": {
+            "type": "number"
+          },
+          "taxonomyNonEligibleShareSubstantiallyContributingToClimateChangeAdaptationNAndG427": {
+            "type": "number"
+          },
+          "taxonomyNonEligibleShareClimateChangeMitigationAndClimateChangeAdaptationNAndG428": {
+            "type": "number"
+          },
+          "taxonomyNonEligibleShareSubstantiallyContributingToClimateChangeMitigationNAndG428": {
+            "type": "number"
+          },
+          "taxonomyNonEligibleShareSubstantiallyContributingToClimateChangeAdaptationNAndG428": {
+            "type": "number"
+          },
+          "taxonomyNonEligibleShareClimateChangeMitigationAndClimateChangeAdaptationNAndG429": {
+            "type": "number"
+          },
+          "taxonomyNonEligibleShareSubstantiallyContributingToClimateChangeMitigationNAndG429": {
+            "type": "number"
+          },
+          "taxonomyNonEligibleShareSubstantiallyContributingToClimateChangeAdaptationNAndG429": {
+            "type": "number"
+          },
+          "taxonomyNonEligibleShareClimateChangeMitigationAndClimateChangeAdaptationNAndG430": {
+            "type": "number"
+          },
+          "taxonomyNonEligibleShareSubstantiallyContributingToClimateChangeMitigationNAndG430": {
+            "type": "number"
+          },
+          "taxonomyNonEligibleShareSubstantiallyContributingToClimateChangeAdaptationNAndG430": {
+            "type": "number"
+          },
+          "taxonomyNonEligibleShareClimateChangeMitigationAndClimateChangeAdaptationNAndG431": {
+            "type": "number"
+          },
+          "taxonomyNonEligibleShareSubstantiallyContributingToClimateChangeMitigationNAndG431": {
+            "type": "number"
+          },
+          "taxonomyNonEligibleShareSubstantiallyContributingToClimateChangeAdaptationNAndG431": {
+            "type": "number"
+          },
+          "taxonomyNonEligibleShareClimateChangeMitigationAndClimateChangeAdaptationOtherActivities": {
+            "type": "number"
+          },
+          "taxonomyNonEligibleShareSubstantiallyContributingToClimateChangeMitigationOtherActivities": {
+            "type": "number"
+          },
+          "taxonomyNonEligibleShareSubstantiallyContributingToClimateChangeAdaptationOtherActivities": {
+            "type": "number"
+          },
+          "taxonomyNonEligibleShareClimateChangeMitigationAndClimateChangeAdaptation": {
+            "type": "number"
+          },
+          "taxonomyNonEligibleShareSubstantiallyContributingToClimateChangeMitigation": {
+            "type": "number"
+          },
+          "taxonomyNonEligibleShareSubstantiallyContributingToClimateChangeAdaptation": {
+            "type": "number"
+          }
+        }
+      },
+      "ExtendedDataPointCustomComponentAlignedDenominator": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "$ref": "#/components/schemas/CustomComponentAlignedDenominator"
+          },
+          "quality": {
+            "type": "string",
+            "enum": [
+              "Audited",
+              "Reported",
+              "Estimated",
+              "Incomplete",
+              "NoDataFound"
+            ]
+          },
+          "comment": {
+            "type": "string"
+          },
+          "dataSource": {
+            "$ref": "#/components/schemas/ExtendedDocumentReference"
+          }
+        }
+      },
+      "ExtendedDataPointCustomComponentAlignedNumerator": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "$ref": "#/components/schemas/CustomComponentAlignedNumerator"
+          },
+          "quality": {
+            "type": "string",
+            "enum": [
+              "Audited",
+              "Reported",
+              "Estimated",
+              "Incomplete",
+              "NoDataFound"
+            ]
+          },
+          "comment": {
+            "type": "string"
+          },
+          "dataSource": {
+            "$ref": "#/components/schemas/ExtendedDocumentReference"
+          }
+        }
+      },
+      "ExtendedDataPointCustomComponentEligibleButNotAligned": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "$ref": "#/components/schemas/CustomComponentEligibleButNotAligned"
+          },
+          "quality": {
+            "type": "string",
+            "enum": [
+              "Audited",
+              "Reported",
+              "Estimated",
+              "Incomplete",
+              "NoDataFound"
+            ]
+          },
+          "comment": {
+            "type": "string"
+          },
+          "dataSource": {
+            "$ref": "#/components/schemas/ExtendedDocumentReference"
+          }
+        }
+      },
+      "ExtendedDataPointCustomComponentNonEligible": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "$ref": "#/components/schemas/CustomComponentNonEligible"
+          },
+          "quality": {
+            "type": "string",
+            "enum": [
+              "Audited",
+              "Reported",
+              "Estimated",
+              "Incomplete",
+              "NoDataFound"
+            ]
+          },
+          "comment": {
+            "type": "string"
+          },
+          "dataSource": {
+            "$ref": "#/components/schemas/ExtendedDocumentReference"
+          }
+        }
+      },
       "NuclearAndGasData": {
         "type": "object",
         "properties": {
@@ -2581,12 +2985,24 @@
       "NuclearAndGasNuclearAndGas": {
         "type": "object",
         "properties": {
-          "nuclearAndFossilGasRelatedActivities": {
-            "$ref": "#/components/schemas/NuclearAndGasNuclearandgasNuclearAndFossilGasRelatedActivities"
+          "general": {
+            "$ref": "#/components/schemas/NuclearAndGasNuclearandgasGeneral"
+          },
+          "taxonomyAlignedDenominator": {
+            "$ref": "#/components/schemas/NuclearAndGasNuclearandgasTaxonomyAlignedDenominator"
+          },
+          "taxonomyAlignedNumerator": {
+            "$ref": "#/components/schemas/NuclearAndGasNuclearandgasTaxonomyAlignedNumerator"
+          },
+          "taxonomyEligibleButNotAligned": {
+            "$ref": "#/components/schemas/NuclearAndGasNuclearandgasTaxonomyEligibleButNotAligned"
+          },
+          "taxonomyNonEligible": {
+            "$ref": "#/components/schemas/NuclearAndGasNuclearandgasTaxonomyNonEligible"
           }
         }
       },
-      "NuclearAndGasNuclearandgasNuclearAndFossilGasRelatedActivities": {
+      "NuclearAndGasNuclearandgasGeneral": {
         "type": "object",
         "properties": {
           "nuclearEnergyRelatedActivitiesSection426": {
@@ -2606,6 +3022,126 @@
           },
           "fossilGasRelatedActivitiesSection431": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointYesNo"
+          }
+        }
+      },
+      "NuclearAndGasNuclearandgasTaxonomyAlignedDenominator": {
+        "type": "object",
+        "properties": {
+          "nuclearAndGasTaxonomyAlignedRevenueDenominator": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointCustomComponentAlignedDenominator"
+          },
+          "nuclearAndGasTaxonomyAlignedCapexDenominator": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointCustomComponentAlignedDenominator"
+          }
+        }
+      },
+      "NuclearAndGasNuclearandgasTaxonomyAlignedNumerator": {
+        "type": "object",
+        "properties": {
+          "nuclearAndGasTaxonomyAlignedRevenueNumerator": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointCustomComponentAlignedNumerator"
+          },
+          "nuclearAndGasTaxonomyAlignedCapexNumerator": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointCustomComponentAlignedNumerator"
+          }
+        }
+      },
+      "NuclearAndGasNuclearandgasTaxonomyEligibleButNotAligned": {
+        "type": "object",
+        "properties": {
+          "nuclearAndGasTaxonomyEligibleButNotAlignedRevenue": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointCustomComponentEligibleButNotAligned"
+          },
+          "nuclearAndGasTaxonomyEligibleButNotAlignedCapex": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointCustomComponentEligibleButNotAligned"
+          }
+        }
+      },
+      "NuclearAndGasNuclearandgasTaxonomyNonEligible": {
+        "type": "object",
+        "properties": {
+          "nuclearAndGasTaxonomyNonEligibleRevenue": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointCustomComponentNonEligible"
+          },
+          "nuclearAndGasTaxonomyNonEligibleCapex": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointCustomComponentNonEligible"
+          }
+        }
+      },
+      "QaReportDataPointExtendedDataPointCustomComponentAlignedDenominator": {
+        "required": [
+          "comment",
+          "correctedData",
+          "verdict"
+        ],
+        "type": "object",
+        "properties": {
+          "comment": {
+            "type": "string"
+          },
+          "verdict": {
+            "$ref": "#/components/schemas/QaReportDataPointVerdict"
+          },
+          "correctedData": {
+            "$ref": "#/components/schemas/ExtendedDataPointCustomComponentAlignedDenominator"
+          }
+        }
+      },
+      "QaReportDataPointExtendedDataPointCustomComponentAlignedNumerator": {
+        "required": [
+          "comment",
+          "correctedData",
+          "verdict"
+        ],
+        "type": "object",
+        "properties": {
+          "comment": {
+            "type": "string"
+          },
+          "verdict": {
+            "$ref": "#/components/schemas/QaReportDataPointVerdict"
+          },
+          "correctedData": {
+            "$ref": "#/components/schemas/ExtendedDataPointCustomComponentAlignedNumerator"
+          }
+        }
+      },
+      "QaReportDataPointExtendedDataPointCustomComponentEligibleButNotAligned": {
+        "required": [
+          "comment",
+          "correctedData",
+          "verdict"
+        ],
+        "type": "object",
+        "properties": {
+          "comment": {
+            "type": "string"
+          },
+          "verdict": {
+            "$ref": "#/components/schemas/QaReportDataPointVerdict"
+          },
+          "correctedData": {
+            "$ref": "#/components/schemas/ExtendedDataPointCustomComponentEligibleButNotAligned"
+          }
+        }
+      },
+      "QaReportDataPointExtendedDataPointCustomComponentNonEligible": {
+        "required": [
+          "comment",
+          "correctedData",
+          "verdict"
+        ],
+        "type": "object",
+        "properties": {
+          "comment": {
+            "type": "string"
+          },
+          "verdict": {
+            "$ref": "#/components/schemas/QaReportDataPointVerdict"
+          },
+          "correctedData": {
+            "$ref": "#/components/schemas/ExtendedDataPointCustomComponentNonEligible"
           }
         }
       },
@@ -3846,16 +4382,10 @@
           "message": {
             "type": "string"
           },
-          "companyId": {
-            "type": "string"
-          },
-          "companyName": {
+          "framework": {
             "type": "string"
           },
           "reportingPeriod": {
-            "type": "string"
-          },
-          "framework": {
             "type": "string"
           },
           "receptionTime": {
@@ -3863,6 +4393,12 @@
             "format": "int64"
           },
           "dataId": {
+            "type": "string"
+          },
+          "companyName": {
+            "type": "string"
+          },
+          "companyId": {
             "type": "string"
           }
         }
@@ -3947,12 +4483,12 @@
               "eutaxonomy-financials",
               "eutaxonomy-non-financials",
               "lksg",
-              "nuclear-and-gas",
               "p2p",
               "sfdr",
               "vsme",
               "esg-questionnaire",
               "heimathafen",
+              "nuclear-and-gas",
               "additional-company-information"
             ]
           },
