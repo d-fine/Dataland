@@ -19,7 +19,7 @@ describe('It should be possible to construct Unified API Clients for every frame
         {}
       ).as('api-client-test-request');
 
-      void frameworkApiClient.getFrameworkData('test-data-id');
+      cy.wrap(frameworkApiClient.getFrameworkData('test-data-id'));
 
       cy.wait('@api-client-test-request');
     });
