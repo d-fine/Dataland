@@ -57,6 +57,7 @@ class FrameworkTestDataProvider<T> (private val clazz: Class<T>) {
             .map {
                 it.companyInformation.copy(
                     identifiers = IdentifierType.entries.map { id -> id.value }.associateWith { emptyList() },
+                    companyContactDetails = emptyList(),
                 )
             }
     }

@@ -303,7 +303,8 @@ class ApiAccessor {
     fun uploadOneCompanyWithoutIdentifiersWithExplicitTeaserConfig(setAsTeaserCompany: Boolean): UploadInfo {
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
         val testCompanyInformation = testDataProviderEuTaxonomyForFinancials
-            .getCompanyInformationWithoutIdentifiers(1).first().copy(isTeaserCompany = setAsTeaserCompany)
+            .getCompanyInformationWithoutIdentifiers(1).first()
+            .copy(isTeaserCompany = setAsTeaserCompany, companyContactDetails = emptyList())
         return UploadInfo(testCompanyInformation, companyDataControllerApi.postCompany(testCompanyInformation))
     }
 
