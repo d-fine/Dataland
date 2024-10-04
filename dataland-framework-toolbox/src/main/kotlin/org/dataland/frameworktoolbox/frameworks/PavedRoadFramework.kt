@@ -17,6 +17,7 @@ import org.dataland.frameworktoolbox.template.TemplateComponentBuilder
 import org.dataland.frameworktoolbox.template.components.ComponentFactoryContainer
 import org.dataland.frameworktoolbox.template.components.ComponentGenerationUtils
 import org.dataland.frameworktoolbox.template.components.TemplateComponentFactory
+import org.dataland.frameworktoolbox.template.model.TemplateRow
 import org.dataland.frameworktoolbox.utils.DatalandRepository
 import org.dataland.frameworktoolbox.utils.LoggerDelegate
 import org.dataland.frameworktoolbox.utils.diagnostic.DiagnosticManager
@@ -260,7 +261,7 @@ abstract class PavedRoadFramework(
         val diagnostics = context.getBean<DiagnosticManager>()
 
         configureDiagnostics(diagnostics)
-        val excelTemplate = ExcelTemplate.fromFile(frameworkTemplateCsvFile)
+        val excelTemplate = ExcelTemplate.fromFile<TemplateRow>(frameworkTemplateCsvFile)
         customizeExcelTemplate(excelTemplate)
 
         val frameworkIntermediateRepresentation =
