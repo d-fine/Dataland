@@ -1,0 +1,48 @@
+{
+  "general": {
+    "general": {
+      "assurance": {
+        "dataSource": null,
+        "provider": null,
+        "value": "None"
+      },
+      "fiscalYearEnd": {
+        "value": null
+      },
+      "referencedReports": {
+        "FR0000045072_IntegratedReport": {
+          "fileName": "FR0000045072_IntegratedReport",
+          "fileReference": "efaa4d4642bb9d7bfc1fbe317e0e3d537c45218910f22fc143c69e80e8d60d23",
+          "publicationDate": null
+        }
+      },
+      "areAllGroupEntitiesCovered": {
+        "value": null
+      },
+      "fiscalYearDeviation": {
+        "value": "NoDeviation"
+      },
+      "isNfrdMandatory": {
+        "value": "No"
+      },
+      "numberOfEmployees": {
+        "value": 75975
+      }
+    }
+  },
+  "creditInstitution": {
+    "turnoverBasedGreenAssetRatioStock": {
+      "substantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentEligible": {
+        "comment": null,
+        "dataSource": {
+          "fileName": "FR0000045072_IntegratedReport",
+          "fileReference": "efaa4d4642bb9d7bfc1fbe317e0e3d537c45218910f22fc143c69e80e8d60d23",
+          "page": "111",
+          "tagName": null
+        },
+        "quality": "Reported",
+        "value": 27
+      }
+    }
+  }
+}
