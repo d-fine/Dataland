@@ -1,124 +1,67 @@
 {
-  "companyInformation": {
-    "companyName": "company-for-all-types",
-    "headquarters": "Leannonmouth",
-    "headquartersPostalCode": "67285-8972",
-    "sector": "communities",
-    "identifiers": {
-      "Lei": [],
-      "Isin": [
-        "pgmy03fw1qlx"
-      ],
-      "PermId": [
-        "68mPGF3954"
-      ],
-      "Ticker": [
-        "6oqHVz9"
-      ],
-      "Duns": [],
-      "VatNumber": [],
-      "CompanyRegistrationNumber": [
-        "t9bsbfxiU9oAUso"
-      ]
-    },
-    "countryCode": "VC",
-    "companyContactDetails": null,
-    "companyAlternativeNames": [
-      "Lehner, Lockman and Oberbrunner",
-      "Rippin - Kunde",
-      "Rohan - Bernhard"
-    ],
-    "companyLegalForm": "Public Limited Company (PLC)",
-    "website": "https://last-acquisition.biz/",
-    "isTeaserCompany": false,
-    "parentCompanyLei": "zH1p1i8FYz2AGArwQmgt"
+  "insuranceReinsurance": {
+    "underwritingKpi": {
+      "proportionOfAbsolutePremiumsOfTaxonomyNonEligibleActivities": {
+        "comment": "compress primary program",
+        "value": 82.04,
+        "dataSource": {
+          "fileName": "AnnualReport",
+          "page": "978-1097",
+          "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+          "tagName": "metrics"
+        },
+        "quality": "Estimated"
+      }
+    }
   },
-  "t": {
+  "general": {
     "general": {
-      "reportingPeriod": "2023",
-      "fiscalYearDeviation": {
-        "value": "NoDeviation"
+      "assurance": {
+        "provider": "Orn - Welch",
+        "value": "LimitedAssurance",
+        "dataSource": {
+          "fileName": "AnnualReport",
+          "page": "225",
+          "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+          "tagName": "experiences"
+        }
       },
       "fiscalYearEnd": {
         "value": "2023-07-23"
       },
       "referencedReports": {
         "AnnualReport": {
-          "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
           "fileName": "AnnualReport",
+          "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
           "publicationDate": "2023-07-26"
         }
       },
-      "scopeOfEntities": {
+      "areAllGroupEntitiesCovered": {
         "value": "NA"
+      },
+      "fiscalYearDeviation": {
+        "value": "NoDeviation"
+      },
+      "isNfrdMandatory": {
+        "value": "No"
       },
       "numberOfEmployees": {
         "value": 9665
-      },
-      "nfrdMandatory": {
-        "value": "No"
-      },
-      "assurance": {
-        "value": "LimitedAssurance",
-        "provider": "Orn - Welch",
+      }
+    }
+  },
+  "creditInstitution": {
+    "turnoverBasedGreenAssetRatioStock": {
+      "substantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentEligible": {
+        "comment": "parse bluetooth monitor",
+        "value": 2.2,
         "dataSource": {
-          "page": "225",
           "fileName": "AnnualReport",
+          "page": "308",
           "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
           "tagName": "experiences"
-        }
-      }
-    },
-    "creditInstitution": {
-      "general": {
-        "interbankLoansInPercent": {
-          "value": 4.2,
-          "dataSource": {
-            "page": "671",
-            "fileName": "AnnualReport",
-            "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-            "tagName": "metrics"
-          },
-          "comment": "calculate cross-platform system",
-          "quality": "Reported"
         },
-        "tradingPortfolioInPercent": {
-          "value": 65.47,
-          "dataSource": {
-            "page": "971",
-            "fileName": "AnnualReport",
-            "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-            "tagName": "partnerships"
-          },
-          "comment": "synthesize mobile panel",
-          "quality": "Estimated"
-        },
-        "tradingPortfolioAndInterbankLoansInPercent": {
-          "value": 52.39,
-          "dataSource": {
-            "page": "871",
-            "fileName": "AnnualReport",
-            "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-            "tagName": "action-items"
-          },
-          "comment": "connect open-source feed",
-          "quality": "NoDataFound"
-        }
-      }
-    },
-    "insuranceReinsurance": {
-      "general": {
-        "taxonomyEligibleNonLifeInsuranceEconomicActivities": {
-          "value": 79.01,
-          "dataSource": {
-            "page": "728-1196",
-            "fileName": "AnnualReport",
-            "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-            "tagName": "methodologies"
-          },
-          "comment": "reboot digital matrix",
-          "quality": "NoDataFound"
-        }
+        "quality": "Reported"
       }
     }
   }

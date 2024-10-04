@@ -1,0 +1,83 @@
+{
+  "assurance": {
+    "dataSource": null,
+    "provider": "Ernst & Young GmbH",
+    "value": "LimitedAssurance"
+  },
+  "creditInstitutionKpis": null,
+  "eligibilityKpis": {
+    "InsuranceOrReinsurance": {
+      "banksAndIssuersInPercent": null,
+      "derivativesInPercent": null,
+      "investmentNonNfrdInPercent": null,
+      "taxonomyEligibleActivityInPercent": {
+        "comment": null,
+        "dataSource": null,
+        "quality": "Audited",
+        "value": 54.9
+      },
+      "taxonomyNonEligibleActivityInPercent": {
+        "comment": null,
+        "dataSource": null,
+        "quality": "Audited",
+        "value": 45.1
+      }
+    },
+    "InvestmentFirm": {
+      "banksAndIssuersInPercent": {
+        "comment": null,
+        "dataSource": null,
+        "quality": "Audited",
+        "value": 27.1
+      },
+      "derivativesInPercent": {
+        "comment": null,
+        "dataSource": null,
+        "quality": "Audited",
+        "value": 1.8
+      },
+      "investmentNonNfrdInPercent": {
+        "comment": null,
+        "dataSource": null,
+        "quality": "Audited",
+        "value": 32.2
+      },
+      "taxonomyEligibleActivityInPercent": {
+        "comment": null,
+        "dataSource": null,
+        "quality": "Audited",
+        "value": 15.4
+      },
+      "taxonomyNonEligibleActivityInPercent": {
+        "comment": null,
+        "dataSource": null,
+        "quality": "Audited",
+        "value": 34
+      }
+    }
+  },
+  "euTaxonomyActivityLevelReporting": null,
+  "financialServicesTypes": [
+    "InsuranceOrReinsurance",
+    "InvestmentFirm"
+  ],
+  "fiscalYearDeviation": "NoDeviation",
+  "fiscalYearEnd": "2022-12-31",
+  "insuranceKpis": null,
+  "investmentFirmKpis": null,
+  "nfrdMandatory": "Yes",
+  "numberOfEmployees": 41389,
+  "referencedReports": {
+    "Annual Report": {
+      "fileName": null,
+      "fileReference": "0294a167243780261930651e9d5922b62d8de7f61a11ffc6e6e5b1d447637c33",
+      "publicationDate": "2022-12-31"
+    },
+    "Sustainability Report": {
+      "fileName": null,
+      "fileReference": "9b9151a567895a56d84e5aa86f2163807d3de73a29e0e542a1ee84f31e989a92",
+      "publicationDate": "2022-12-31"
+    }
+  },
+  "scopeOfEntities": "Yes"
+}

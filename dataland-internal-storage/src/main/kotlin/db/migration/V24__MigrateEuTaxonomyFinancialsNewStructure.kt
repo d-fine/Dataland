@@ -24,12 +24,40 @@ class V24__MigrateEuTaxonomyFinancialsNewStructure : BaseJavaMigration() {
     }
 
     private val migrations = listOf(
+        // general
         Triple(listOf("fiscalYearDeviation"), listOf("general", "general", "fiscalYearDeviation"), this::extend),
-        Triple(listOf("bla"), listOf("general", "general", "fiscalYearDeviation"), this::identity),
+        Triple(listOf("fiscalYearEnd"), listOf("general", "general", "fiscalYearEnd"), this::extend),
+        Triple(listOf("referencedReports"), listOf("general", "general", "referencedReports"), this::identity),
+        Triple(listOf("scopeOfEntities"), listOf("general", "general", "areAllGroupEntitiesCovered"), this::extend),
+        Triple(listOf("numberOfEmployees"), listOf("general", "general", "numberOfEmployees"), this::extend),
+        Triple(listOf("nfrdMandatory"), listOf("general", "general", "isNfrdMandatory"), this::extend),
+        Triple(listOf("assurance"), listOf("general", "general", "assurance"), this::identity),
+        // credit institutions
+        Triple(
+            listOf("eligibilityKpis", "CreditInstitution", "taxonomyEligibleActivityInPercent"),
+            listOf(
+                "creditInstitution",
+                "turnoverBasedGreenAssetRatioStock",
+                "substantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentEligible",
+            ),
+            this::identity,
+        ),
+        // asset management: no migration possible
+        // insurances and re-insurances
+        Triple(
+            listOf("eligibilityKpis", "InsuranceOrReinsurance", "taxonomyNonEligibleActivityInPercent"),
+            listOf(
+                "insuranceReinsurance",
+                "underwritingKpi",
+                "proportionOfAbsolutePremiumsOfTaxonomyNonEligibleActivities",
+            ),
+            this::identity,
+        ),
+        // investment firms: no migration possible
     )
 
     /**
-     * Migrate a DataTableEntity to the new structure of the eu taxonomy non financials.
+     * Migrate a DataTableEntity to the structure of the new EU-Taxonomy Financials Framework.
      * @param dataTableEntity DataTableEntity
      */
     fun migrateEuTaxonomyFinancialsData(dataTableEntity: DataTableEntity) {
