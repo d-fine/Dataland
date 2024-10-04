@@ -39,7 +39,11 @@ class EuTaxonomyFinancialsFramework : PavedRoadFramework(
                 is DataClassBuilder -> {
                     addSuppressMaxLineLengthToDataClass(dataModelElement)
                 }
-                else -> {}
+                else -> {
+                    throw IllegalArgumentException(
+                        "Unsupported data model element type: ${dataModelElement::class.simpleName}",
+                    )
+                }
             }
         }
     }
