@@ -15,6 +15,7 @@ export function generateEutaxonomyFinancialsPreparedFixtures(): Array<FixtureDat
   preparedFixtures.push(generateFixtureWithNoNullFields());
   preparedFixtures.push(generateLightweightEuTaxoFinancialsFixture());
   preparedFixtures.push(generateEmptyReferencedReportsFixture());
+  preparedFixtures.push(generateMinimalisticEuTaxoFinancialsFixtureForBlanketTest());
   return preparedFixtures;
 }
 
@@ -57,6 +58,35 @@ function generateEmptyReferencedReportsFixture(): FixtureData<EutaxonomyFinancia
     newFixture.t.general.general.referencedReports = null;
   } else {
     throw Error('Could not set referenced reports to null due to missing parent-object.');
+  }
+  return newFixture;
+}
+
+/**
+ * Generates a minimalistic dataset with all "field-types" for the blanket test, as a complete "non-null"-dataset
+ * is too memory-heavy for cypress to render.
+ * @returns the fixture
+ */
+function generateMinimalisticEuTaxoFinancialsFixtureForBlanketTest(): FixtureData<EutaxonomyFinancialsData> {
+  const newFixture = generateEutaxonomyFinancialsFixtures(1, 1)[0];
+  const fullDataSet = generateEutaxonomyFinancialsData(0);
+  newFixture.companyInformation.companyName = 'minimalistic-all-field-types-dataset-for-blanket-test';
+  newFixture.t.general = fullDataSet.general;
+
+  if (newFixture.t.creditInstitution?.assetsForCalculationOfGreenAssetRatio) {
+    newFixture.t.creditInstitution.assetsForCalculationOfGreenAssetRatio =
+      fullDataSet.creditInstitution?.assetsForCalculationOfGreenAssetRatio;
+  } else {
+    throw Error('Could not set assetsForCalculationOfGreenAssetRatio due to missing parent-object.');
+  }
+
+  if (newFixture.t.creditInstitution?.turnoverBasedGreenAssetRatioStock) {
+    newFixture.t.creditInstitution.turnoverBasedGreenAssetRatioStock.substantialContributionToClimateChangeAdaptationInPercentEligible =
+      fullDataSet.creditInstitution?.turnoverBasedGreenAssetRatioStock?.substantialContributionToClimateChangeAdaptationInPercentEligible;
+  } else {
+    throw Error(
+      'Could not set substantialContributionToClimateChangeAdaptationInPercentEligible due to missing parent-object.'
+    );
   }
   return newFixture;
 }

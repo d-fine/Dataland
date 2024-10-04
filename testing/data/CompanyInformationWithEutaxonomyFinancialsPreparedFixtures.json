@@ -5868,5 +5868,478 @@
 			}
 		},
 		"reportingPeriod": "2021"
+	},
+	{
+		"companyInformation": {
+			"companyName": "minimalistic-all-field-types-dataset-for-blanket-test",
+			"headquarters": "Beattyville",
+			"headquartersPostalCode": "67226-9689",
+			"sector": null,
+			"identifiers": {
+				"Lei": [],
+				"Isin": [
+					"fXFuKszLDNJw",
+					"tvUm8yXs2USg"
+				],
+				"PermId": [],
+				"Ticker": [
+					"CIksak2"
+				],
+				"Duns": [
+					"EgVFQ2mYU"
+				],
+				"VatNumber": [
+					"pgcSBFFgk"
+				],
+				"CompanyRegistrationNumber": [
+					"T0wSvA8y2pEQeh9"
+				]
+			},
+			"countryCode": "BH",
+			"companyContactDetails": null,
+			"companyAlternativeNames": [
+				"Hirthe LLC",
+				"Rice Group"
+			],
+			"companyLegalForm": "GmbH",
+			"website": "https://muffled-frame.name",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"general": {
+				"general": {
+					"fiscalYearDeviation": {
+						"value": "NoDeviation",
+						"dataSource": {
+							"page": "642-780",
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "channels"
+						},
+						"comment": "transmit digital firewall",
+						"quality": "Incomplete"
+					},
+					"fiscalYearEnd": {
+						"value": "2024-07-03",
+						"dataSource": {
+							"page": "112-198",
+							"fileName": "SustainabilityReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "infrastructures"
+						},
+						"comment": "program primary application",
+						"quality": "Reported"
+					},
+					"referencedReports": {
+						"IntegratedReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "IntegratedReport",
+							"publicationDate": "2023-02-28"
+						},
+						"SustainabilityReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "SustainabilityReport",
+							"publicationDate": "2023-08-22"
+						},
+						"ESEFReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "ESEFReport",
+							"publicationDate": "2023-08-23"
+						},
+						"AnnualReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "AnnualReport",
+							"publicationDate": "2023-05-28"
+						}
+					},
+					"areAllGroupEntitiesCovered": {
+						"value": "No",
+						"dataSource": {
+							"page": "872-1275",
+							"fileName": "IntegratedReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "web services"
+						},
+						"comment": "reboot haptic firewall",
+						"quality": "Audited"
+					},
+					"numberOfEmployees": {
+						"value": 41741.16,
+						"dataSource": {
+							"page": "418",
+							"fileName": "SustainabilityReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "eyeballs"
+						},
+						"comment": "transmit open-source card",
+						"quality": "Estimated"
+					},
+					"isNfrdMandatory": {
+						"value": "No",
+						"dataSource": {
+							"page": "324-619",
+							"fileName": "IntegratedReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "niches"
+						},
+						"comment": "transmit cross-platform alarm",
+						"quality": "Incomplete"
+					},
+					"assurance": {
+						"value": "LimitedAssurance",
+						"provider": "Ernser Group",
+						"dataSource": {
+							"page": "559-946",
+							"fileName": "SustainabilityReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "interfaces"
+						}
+					}
+				}
+			},
+			"creditInstitution": {
+				"assetsForCalculationOfGreenAssetRatio": {
+					"totalGrossCarryingAmount": {
+						"value": 4218001011.76,
+						"dataSource": {
+							"page": "1069",
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "infrastructures"
+						},
+						"comment": "program open-source firewall",
+						"quality": "Reported",
+						"currency": "MAD"
+					},
+					"totalAmountOfAssetsTowardsTaxonomyRelevantSectorsTaxonomyEligible": {
+						"value": 4753722683.53,
+						"dataSource": {
+							"page": "719",
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "interfaces"
+						},
+						"comment": "synthesize haptic application",
+						"quality": "Estimated",
+						"currency": "ARS"
+					},
+					"totalAmountOfAssetsWhichAreEnvironmentallySustainableTaxonomyAligned": {
+						"value": 8671163034.16,
+						"dataSource": {
+							"page": "545-670",
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "convergence"
+						},
+						"comment": "connect auxiliary port",
+						"quality": "Audited",
+						"currency": "ETB"
+					},
+					"totalAmountOfEnvironmentallySustainableAssetsWhichAreUseOfProceeds": {
+						"value": 8524742187,
+						"dataSource": {
+							"page": "1139",
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "lifetime value"
+						},
+						"comment": "input optical feed",
+						"quality": "Reported",
+						"currency": "TND"
+					},
+					"totalAmountOfEnvironmentallySustainableAssetsWhichAreTransitional": {
+						"value": 8476917508.53,
+						"dataSource": {
+							"page": "434",
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "content"
+						},
+						"comment": "navigate wireless system",
+						"quality": "NoDataFound",
+						"currency": "GMD"
+					},
+					"totalAmountOfEnvironmentallySustainableAssetsWhichAreEnabling": {
+						"value": 3397544247.56,
+						"dataSource": {
+							"page": "686",
+							"fileName": "IntegratedReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "applications"
+						},
+						"comment": "copy bluetooth program",
+						"quality": "Audited",
+						"currency": "RON"
+					}
+				},
+				"turnoverBasedGreenAssetRatioStock": {
+					"substantialContributionToClimateChangeMitigationInPercentEligible": null,
+					"substantialContributionToClimateChangeMitigationInPercentAligned": null,
+					"substantialContributionToClimateChangeMitigationInPercentOfWhichUseOfProceeds": null,
+					"substantialContributionToClimateChangeMitigationInPercentOfWhichEnabling": null,
+					"substantialContributionToClimateChangeMitigationInPercentOfWhichTransitional": null,
+					"substantialContributionToClimateChangeAdaptationInPercentEligible": {
+						"value": 4.27,
+						"dataSource": {
+							"page": "380",
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "niches"
+						},
+						"comment": "calculate online hard drive",
+						"quality": "Incomplete"
+					},
+					"substantialContributionToClimateChangeAdaptationInPercentAligned": null,
+					"substantialContributionToClimateChangeAdaptationInPercentOfWhichUseOfProceeds": null,
+					"substantialContributionToClimateChangeAdaptationInPercentOfWhichEnabling": null,
+					"substantialContributionToClimateChangeAdaptationInPercentOfWhichAdapting": null,
+					"substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentEligible": null,
+					"substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned": null,
+					"substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentOfWhichUseOfProceeds": null,
+					"substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentOfWhichEnabling": null,
+					"substantialContributionToTransitionToACircularEconomyInPercentEligible": null,
+					"substantialContributionToTransitionToACircularEconomyInPercentAligned": null,
+					"substantialContributionToTransitionToACircularEconomyInPercentOfWhichUseOfProceeds": null,
+					"substantialContributionToTransitionToACircularEconomyInPercentOfWhichEnabling": null,
+					"substantialContributionToPollutionPreventionAndControlInPercentEligible": null,
+					"substantialContributionToPollutionPreventionAndControlInPercentAligned": null,
+					"substantialContributionToPollutionPreventionAndControlInPercentOfWhichUseOfProceeds": null,
+					"substantialContributionToPollutionPreventionAndControlInPercentOfWhichEnabling": null,
+					"substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentEligible": null,
+					"substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned": null,
+					"substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentOfWhichUseOfProceeds": null,
+					"substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentOfWhichEnabling": null,
+					"substantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentEligible": null,
+					"substantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentAligned": null,
+					"substantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentOfWhichUseOfProceeds": null,
+					"substantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentOfWhichEnabling": null,
+					"substantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentOfWhichTransitional": null
+				},
+				"capexBasedGreenAssetRatioStock": {
+					"substantialContributionToClimateChangeMitigationInPercentEligible": null,
+					"substantialContributionToClimateChangeMitigationInPercentAligned": null,
+					"substantialContributionToClimateChangeMitigationInPercentOfWhichUseOfProceeds": null,
+					"substantialContributionToClimateChangeMitigationInPercentOfWhichEnabling": null,
+					"substantialContributionToClimateChangeMitigationInPercentOfWhichTransitional": null,
+					"substantialContributionToClimateChangeAdaptationInPercentEligible": null,
+					"substantialContributionToClimateChangeAdaptationInPercentAligned": null,
+					"substantialContributionToClimateChangeAdaptationInPercentOfWhichUseOfProceeds": null,
+					"substantialContributionToClimateChangeAdaptationInPercentOfWhichEnabling": null,
+					"substantialContributionToClimateChangeAdaptationInPercentOfWhichAdapting": null,
+					"substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentEligible": null,
+					"substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned": null,
+					"substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentOfWhichUseOfProceeds": null,
+					"substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentOfWhichEnabling": null,
+					"substantialContributionToTransitionToACircularEconomyInPercentEligible": null,
+					"substantialContributionToTransitionToACircularEconomyInPercentAligned": null,
+					"substantialContributionToTransitionToACircularEconomyInPercentOfWhichUseOfProceeds": null,
+					"substantialContributionToTransitionToACircularEconomyInPercentOfWhichEnabling": null,
+					"substantialContributionToPollutionPreventionAndControlInPercentEligible": null,
+					"substantialContributionToPollutionPreventionAndControlInPercentAligned": null,
+					"substantialContributionToPollutionPreventionAndControlInPercentOfWhichUseOfProceeds": null,
+					"substantialContributionToPollutionPreventionAndControlInPercentOfWhichEnabling": null,
+					"substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentEligible": null,
+					"substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned": null,
+					"substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentOfWhichUseOfProceeds": null,
+					"substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentOfWhichEnabling": null,
+					"substantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentEligible": null,
+					"substantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentAligned": null,
+					"substantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentOfWhichUseOfProceeds": null,
+					"substantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentOfWhichEnabling": null,
+					"substantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentOfWhichTransitional": null
+				}
+			},
+			"assetManagement": {
+				"averageValueOfTaxonomyAlignedUndertakings": {
+					"weightedAverageValueOfAllInvestmentsTurnoverBasedInPercent": null,
+					"weightedAverageValueOfAllInvestmentsCapexBasedInPercent": null,
+					"weightedAverageValueOfAllInvestmentsTurnoverBasedMonetaryAmount": null,
+					"weightedAverageValueOfAllInvestmentsCapexBasedMonetaryAmount": null
+				},
+				"breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBased": {
+					"shareOfTurnoverBasedKpiSubstantiallyContributingToClimateChangeMitigationInPercentAligned": null,
+					"shareOfTurnoverBasedKpiSubstantiallyContributingToClimateChangeMitigationInPercentOfWhichEnabling": null,
+					"shareOfTurnoverBasedKpiSubstantiallyContributingToClimateChangeMitigationInPercentOfWhichTransitional": null,
+					"shareOfTurnoverBasedKpiSubstantiallyContributingToClimateChangeAdaptationInPercentAligned": null,
+					"shareOfTurnoverBasedKpiSubstantiallyContributingToClimateChangeAdaptationInPercentOfWhichEnabling": null,
+					"shareOfTurnoverBasedKpiSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned": null,
+					"shareOfTurnoverBasedKpiSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentOfWhichEnabling": null,
+					"shareOfTurnoverBasedKpiSubstantiallyContributingToTransitionToACircularEconomyInPercentAligned": null,
+					"shareOfTurnoverBasedKpiSubstantiallyContributingToTransitionToACircularEconomyInPercentOfWhichEnabling": null,
+					"shareOfTurnoverBasedKpiSubstantiallyContributingToPollutionPreventionAndControlInPercentAligned": null,
+					"shareOfTurnoverBasedKpiSubstantiallyContributingToPollutionPreventionAndControlInPercentOfWhichEnabling": null,
+					"shareOfTurnoverBasedKpiSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned": null,
+					"shareOfTurnoverBasedKpiSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentOfWhichEnabling": null
+				},
+				"breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBased": {
+					"shareOfCapexBasedKpiSubstantiallyContributingToClimateChangeMitigationInPercentAligned": null,
+					"shareOfCapexBasedKpiSubstantiallyContributingToClimateChangeMitigationInPercentOfWhichEnabling": null,
+					"shareOfCapexBasedKpiSubstantiallyContributingToClimateChangeMitigationInPercentOfWhichTransitional": null,
+					"shareOfCapexBasedKpiSubstantiallyContributingToClimateChangeAdaptationInPercentAligned": null,
+					"shareOfCapexBasedKpiSubstantiallyContributingToClimateChangeAdaptationInPercentOfWhichEnabling": null,
+					"shareOfCapexBasedKpiSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned": null,
+					"shareOfCapexBasedKpiSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentOfWhichEnabling": null,
+					"shareOfCapexBasedKpiSubstantiallyContributingToTransitionToACircularEconomyInPercentAligned": null,
+					"shareOfCapexBasedKpiSubstantiallyContributingToTransitionToACircularEconomyInPercentOfWhichEnabling": null,
+					"shareOfCapexBasedKpiSubstantiallyContributingToPollutionPreventionAndControlInPercentAligned": null,
+					"shareOfCapexBasedKpiSubstantiallyContributingToPollutionPreventionAndControlInPercentOfWhichEnabling": null,
+					"shareOfCapexBasedKpiSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned": null,
+					"shareOfCapexBasedKpiSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentOfWhichEnabling": null
+				}
+			},
+			"insuranceReinsurance": {
+				"underwritingKpi": {
+					"totalOfAbsolutePremiumsOfTaxonomyAlignedActivities": null,
+					"totalOfAbsolutePremiumsOfTaxonomyEligibleButTaxonomyNonAlignedActivities": null,
+					"totalOfAbsolutePremiumsOfTaxonomyNonEligibleActivities": null,
+					"proportionOfAbsolutePremiumsOfTaxonomyAlignedActivities": null,
+					"proportionOfAbsolutePremiumsOfTaxonomyEligibleButTaxonomyNonAlignedActivities": null,
+					"proportionOfAbsolutePremiumsOfTaxonomyNonEligibleActivities": null
+				},
+				"averageValueOfTaxonomyAlignedUndertakings": {
+					"weightedAverageValueOfAllInvestmentsTurnoverBasedInPercent": null,
+					"weightedAverageValueOfAllInvestmentsCapexBasedInPercent": null,
+					"weightedAverageValueOfAllInvestmentsTurnoverBasedMonetaryAmount": null,
+					"weightedAverageValueOfAllInvestmentsCapexBasedMonetaryAmount": null
+				},
+				"breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBased": {
+					"shareOfTurnoverBasedKpiSubstantiallyContributingToClimateChangeMitigationInPercentAligned": null,
+					"shareOfTurnoverBasedKpiSubstantiallyContributingToClimateChangeMitigationInPercentOfWhichEnabling": null,
+					"shareOfTurnoverBasedKpiSubstantiallyContributingToClimateChangeMitigationInPercentOfWhichTransitional": null,
+					"shareOfTurnoverBasedKpiSubstantiallyContributingToClimateChangeAdaptationInPercentAligned": null,
+					"shareOfTurnoverBasedKpiSubstantiallyContributingToClimateChangeAdaptationInPercentOfWhichEnabling": null,
+					"shareOfTurnoverBasedKpiSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned": null,
+					"shareOfTurnoverBasedKpiSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentOfWhichEnabling": null,
+					"shareOfTurnoverBasedKpiSubstantiallyContributingToTransitionToACircularEconomyInPercentAligned": null,
+					"shareOfTurnoverBasedKpiSubstantiallyContributingToTransitionToACircularEconomyInPercentOfWhichEnabling": null,
+					"shareOfTurnoverBasedKpiSubstantiallyContributingToPollutionPreventionAndControlInPercentAligned": null,
+					"shareOfTurnoverBasedKpiSubstantiallyContributingToPollutionPreventionAndControlInPercentOfWhichEnabling": null,
+					"shareOfTurnoverBasedKpiSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned": null,
+					"shareOfTurnoverBasedKpiSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentOfWhichEnabling": null
+				},
+				"breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBased": {
+					"shareOfCapexBasedKpiSubstantiallyContributingToClimateChangeMitigationInPercentAligned": null,
+					"shareOfCapexBasedKpiSubstantiallyContributingToClimateChangeMitigationInPercentOfWhichEnabling": null,
+					"shareOfCapexBasedKpiSubstantiallyContributingToClimateChangeMitigationInPercentOfWhichTransitional": null,
+					"shareOfCapexBasedKpiSubstantiallyContributingToClimateChangeAdaptationInPercentAligned": null,
+					"shareOfCapexBasedKpiSubstantiallyContributingToClimateChangeAdaptationInPercentOfWhichEnabling": null,
+					"shareOfCapexBasedKpiSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned": null,
+					"shareOfCapexBasedKpiSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentOfWhichEnabling": null,
+					"shareOfCapexBasedKpiSubstantiallyContributingToTransitionToACircularEconomyInPercentAligned": null,
+					"shareOfCapexBasedKpiSubstantiallyContributingToTransitionToACircularEconomyInPercentOfWhichEnabling": null,
+					"shareOfCapexBasedKpiSubstantiallyContributingToPollutionPreventionAndControlInPercentAligned": null,
+					"shareOfCapexBasedKpiSubstantiallyContributingToPollutionPreventionAndControlInPercentOfWhichEnabling": null,
+					"shareOfCapexBasedKpiSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned": null,
+					"shareOfCapexBasedKpiSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentOfWhichEnabling": null
+				}
+			},
+			"investmentFirms": {
+				"dealingOnOwnAccountServicesTurnoverBased": {
+					"turnoverBasedTotalAssetsInvestedUnderInvestmentFirmsActivitiesDealingOnOwnAccount": null,
+					"turnoverBasedProportionOfAssetsSubstantiallyContributingToClimateChangeMitigationEligible": null,
+					"turnoverBasedProportionOfAssetsSubstantiallyContributingToClimateChangeMitigationAligned": null,
+					"turnoverBasedProportionOfAssetsSubstantiallyContributingToClimateChangeMitigationOfWhichTransitional": null,
+					"turnoverBasedProportionOfAssetsSubstantiallyContributingToClimateChangeMitigationOfWhichEnabling": null,
+					"turnoverBasedProportionOfAssetsSubstantiallyContributingToClimateChangeAdaptationEligible": null,
+					"turnoverBasedProportionOfAssetsSubstantiallyContributingToClimateChangeAdaptationAligned": null,
+					"turnoverBasedProportionOfAssetsSubstantiallyContributingToClimateChangeAdaptationOfWhichEnabling": null,
+					"turnoverBasedProportionOfAssetsSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesEligible": null,
+					"turnoverBasedProportionOfAssetsSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesAligned": null,
+					"turnoverBasedProportionOfAssetsSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesOfWhichEnabling": null,
+					"turnoverBasedProportionOfAssetsSubstantiallyContributingToCircularEconomyEligible": null,
+					"turnoverBasedProportionOfAssetsSubstantiallyContributingToCircularEconomyAligned": null,
+					"turnoverBasedProportionOfAssetsSubstantiallyContributingToCircularEconomyOfWhichEnabling": null,
+					"turnoverBasedProportionOfAssetsSubstantiallyContributingToPollutionPreventionAndControlEligible": null,
+					"turnoverBasedProportionOfAssetsSubstantiallyContributingToPollutionPreventionAndControlAligned": null,
+					"turnoverBasedProportionOfAssetsSubstantiallyContributingToPollutionPreventionAndControlOfWhichEnabling": null,
+					"turnoverBasedProportionOfAssetsSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsEligible": null,
+					"turnoverBasedProportionOfAssetsSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsAligned": null,
+					"turnoverBasedProportionOfAssetsSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsOfWhichEnabling": null,
+					"turnoverBasedProportionOfAssetsSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesEligible": null,
+					"turnoverBasedProportionOfAssetsSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesAligned": null,
+					"turnoverBasedProportionOfAssetsSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesOfWhichTransitional": null,
+					"turnoverBasedProportionOfAssetsSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesOfWhichEnabling": null
+				},
+				"dealingOnOwnAccountServicesCapexBased": {
+					"capexBasedTotalAssetsInvestedUnderInvestmentFirmsActivitiesDealingOnOwnAccount": null,
+					"capexBasedProportionOfAssetsSubstantiallyContributingToClimateChangeMitigationEligible": null,
+					"capexBasedProportionOfAssetsSubstantiallyContributingToClimateChangeMitigationAligned": null,
+					"capexBasedProportionOfAssetsSubstantiallyContributingToClimateChangeMitigationOfWhichTransitional": null,
+					"capexBasedProportionOfAssetsSubstantiallyContributingToClimateChangeMitigationOfWhichEnabling": null,
+					"capexBasedProportionOfAssetsSubstantiallyContributingToClimateChangeAdaptationEligible": null,
+					"capexBasedProportionOfAssetsSubstantiallyContributingToClimateChangeAdaptationAligned": null,
+					"capexBasedProportionOfAssetsSubstantiallyContributingToClimateChangeAdaptationOfWhichEnabling": null,
+					"capexBasedProportionOfAssetsSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesEligible": null,
+					"capexBasedProportionOfAssetsSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesAligned": null,
+					"capexBasedProportionOfAssetsSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesOfWhichEnabling": null,
+					"capexBasedProportionOfAssetsSubstantiallyContributingToCircularEconomyEligible": null,
+					"capexBasedProportionOfAssetsSubstantiallyContributingToCircularEconomyAligned": null,
+					"capexBasedProportionOfAssetsSubstantiallyContributingToCircularEconomyOfWhichEnabling": null,
+					"capexBasedProportionOfAssetsSubstantiallyContributingToPollutionPreventionAndControlEligible": null,
+					"capexBasedProportionOfAssetsSubstantiallyContributingToPollutionPreventionAndControlAligned": null,
+					"capexBasedProportionOfAssetsSubstantiallyContributingToPollutionPreventionAndControlOfWhichEnabling": null,
+					"capexBasedProportionOfAssetsSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsEligible": null,
+					"capexBasedProportionOfAssetsSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsAligned": null,
+					"capexBasedProportionOfAssetsSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsOfWhichEnabling": null,
+					"capexBasedProportionOfAssetsSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesEligible": null,
+					"capexBasedProportionOfAssetsSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesAligned": null,
+					"capexBasedProportionOfAssetsSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesOfWhichTransitional": null,
+					"capexBasedProportionOfAssetsSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesOfWhichEnabling": null
+				},
+				"otherServicesTurnoverBased": {
+					"turnoverBasedTotalRevenueFromInvestmentsAndServicesAndActivitiesOtherThanDealingOnOwnAccount": null,
+					"turnoverBasedProportionOfRevenueSubstantiallyContributingToClimateChangeMitigationEligible": null,
+					"turnoverBasedProportionOfRevenueSubstantiallyContributingToClimateChangeMitigationAligned": null,
+					"turnoverBasedProportionOfRevenueSubstantiallyContributingToClimateChangeMitigationOfWhichTransitional": null,
+					"turnoverBasedProportionOfRevenueSubstantiallyContributingToClimateChangeMitigationOfWhichEnabling": null,
+					"turnoverBasedProportionOfRevenueSubstantiallyContributingToClimateChangeAdaptationEligible": null,
+					"turnoverBasedProportionOfRevenueSubstantiallyContributingToClimateChangeAdaptationAligned": null,
+					"turnoverBasedProportionOfRevenueSubstantiallyContributingToClimateChangeAdaptationOfWhichEnabling": null,
+					"turnoverBasedProportionOfRevenueSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesEligible": null,
+					"turnoverBasedProportionOfRevenueSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesAligned": null,
+					"turnoverBasedProportionOfRevenueSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesOfWhichEnabling": null,
+					"turnoverBasedProportionOfRevenueSubstantiallyContributingToCircularEconomyEligible": null,
+					"turnoverBasedProportionOfRevenueSubstantiallyContributingToCircularEconomyAligned": null,
+					"turnoverBasedProportionOfRevenueSubstantiallyContributingToCircularEconomyOfWhichEnabling": null,
+					"turnoverBasedProportionOfRevenueSubstantiallyContributingToPollutionPreventionAndControlEligible": null,
+					"turnoverBasedProportionOfRevenueSubstantiallyContributingToPollutionPreventionAndControlAligned": null,
+					"turnoverBasedProportionOfRevenueSubstantiallyContributingToPollutionPreventionAndControlOfWhichEnabling": null,
+					"turnoverBasedProportionOfRevenueSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsEligible": null,
+					"turnoverBasedProportionOfRevenueSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsAligned": null,
+					"turnoverBasedProportionOfRevenueSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsOfWhichEnabling": null,
+					"turnoverBasedProportionOfRevenueSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesEligible": null,
+					"turnoverBasedProportionOfRevenueSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesAligned": null,
+					"turnoverBasedProportionOfRevenueSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesOfWhichTransitional": null,
+					"turnoverBasedProportionOfRevenueSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesOfWhichEnabling": null
+				},
+				"otherServicesCapexBased": {
+					"capexBasedTotalRevenueFromInvestmentsAndServicesAndActivitiesOtherThanDealingOnOwnAccount": null,
+					"capexBasedProportionOfRevenueSubstantiallyContributingToClimateChangeMitigationEligible": null,
+					"capexBasedProportionOfRevenueSubstantiallyContributingToClimateChangeMitigationAligned": null,
+					"capexBasedProportionOfRevenueSubstantiallyContributingToClimateChangeMitigationOfWhichTransitional": null,
+					"capexBasedProportionOfRevenueSubstantiallyContributingToClimateChangeMitigationOfWhichEnabling": null,
+					"capexBasedProportionOfRevenueSubstantiallyContributingToClimateChangeAdaptationEligible": null,
+					"capexBasedProportionOfRevenueSubstantiallyContributingToClimateChangeAdaptationAligned": null,
+					"capexBasedProportionOfRevenueSubstantiallyContributingToClimateChangeAdaptationOfWhichEnabling": null,
+					"capexBasedProportionOfRevenueSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesEligible": null,
+					"capexBasedProportionOfRevenueSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesAligned": null,
+					"capexBasedProportionOfRevenueSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesOfWhichEnabling": null,
+					"capexBasedProportionOfRevenueSubstantiallyContributingToCircularEconomyEligible": null,
+					"capexBasedProportionOfRevenueSubstantiallyContributingToCircularEconomyAligned": null,
+					"capexBasedProportionOfRevenueSubstantiallyContributingToCircularEconomyOfWhichEnabling": null,
+					"capexBasedProportionOfRevenueSubstantiallyContributingToPollutionPreventionAndControlEligible": null,
+					"capexBasedProportionOfRevenueSubstantiallyContributingToPollutionPreventionAndControlAligned": null,
+					"capexBasedProportionOfRevenueSubstantiallyContributingToPollutionPreventionAndControlOfWhichEnabling": null,
+					"capexBasedProportionOfRevenueSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsEligible": null,
+					"capexBasedProportionOfRevenueSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsAligned": null,
+					"capexBasedProportionOfRevenueSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsOfWhichEnabling": null,
+					"capexBasedProportionOfRevenueSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesEligible": null,
+					"capexBasedProportionOfRevenueSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesAligned": null,
+					"capexBasedProportionOfRevenueSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesOfWhichTransitional": null,
+					"capexBasedProportionOfRevenueSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesOfWhichEnabling": null
+				}
+			}
+		},
+		"reportingPeriod": "2021"
 	}
 ]
