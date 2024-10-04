@@ -13,107 +13,129 @@ export const nuclearAndGasViewConfiguration: MLDTConfig<NuclearAndGasData> = [
     children: [
       {
         type: 'section',
-        label: 'Nuclear and Fossil Gas related Activities',
+        label: 'General',
         expandOnPageLoad: true,
         shouldDisplay: (): boolean => true,
         children: [
           {
             type: 'cell',
-            label: 'Nuclear energy related activities (Section 4.26)',
+            label: 'Nuclear Energy related Activities (Section 4.26)',
             explanation:
               'The undertaking carries out, funds, or has exposures to research, development, demonstration and deployment of innovative electricity generation facilities that produce energy from nuclear processes with minimal waste from the fuel cycle.',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: NuclearAndGasData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
                 formatYesNoValueForDatatable(
-                  dataset.nuclearAndGas?.nuclearAndFossilGasRelatedActivities?.nuclearEnergyRelatedActivitiesSection426
-                    ?.value
+                  dataset.nuclearAndGas?.general?.nuclearEnergyRelatedActivitiesSection426?.value
                 ),
-                'Nuclear energy related activities (Section 4.26)',
-                dataset.nuclearAndGas?.nuclearAndFossilGasRelatedActivities?.nuclearEnergyRelatedActivitiesSection426
+                'Nuclear Energy related Activities (Section 4.26)',
+                dataset.nuclearAndGas?.general?.nuclearEnergyRelatedActivitiesSection426
               ),
           },
           {
             type: 'cell',
-            label: 'Nuclear energy related activities (Section 4.27)',
+            label: 'Nuclear Energy related Activities (Section 4.27)',
             explanation:
               'The undertaking carries out, funds, or has exposures to construction and safe operation of new nuclear installations to produce electricity or process heat, including for the purposes of district heating or industrial processes such as hydrogen production, as well as their safety upgrades, using best available technologies.',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: NuclearAndGasData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
                 formatYesNoValueForDatatable(
-                  dataset.nuclearAndGas?.nuclearAndFossilGasRelatedActivities?.nuclearEnergyRelatedActivitiesSection427
-                    ?.value
+                  dataset.nuclearAndGas?.general?.nuclearEnergyRelatedActivitiesSection427?.value
                 ),
-                'Nuclear energy related activities (Section 4.27)',
-                dataset.nuclearAndGas?.nuclearAndFossilGasRelatedActivities?.nuclearEnergyRelatedActivitiesSection427
+                'Nuclear Energy related Activities (Section 4.27)',
+                dataset.nuclearAndGas?.general?.nuclearEnergyRelatedActivitiesSection427
               ),
           },
           {
             type: 'cell',
-            label: 'Nuclear energy related activities (Section 4.28)',
+            label: 'Nuclear Energy related Activities (Section 4.28)',
             explanation:
               'The undertaking carries out, funds, or has exposures to safe operation of existing nuclear installations that produce electricity or process heat, including for the purposes of district heating or industrial processes such as hydrogen production from nuclear energy, as well as their safety upgrades.',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: NuclearAndGasData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
                 formatYesNoValueForDatatable(
-                  dataset.nuclearAndGas?.nuclearAndFossilGasRelatedActivities?.nuclearEnergyRelatedActivitiesSection428
-                    ?.value
+                  dataset.nuclearAndGas?.general?.nuclearEnergyRelatedActivitiesSection428?.value
                 ),
-                'Nuclear energy related activities (Section 4.28)',
-                dataset.nuclearAndGas?.nuclearAndFossilGasRelatedActivities?.nuclearEnergyRelatedActivitiesSection428
+                'Nuclear Energy related Activities (Section 4.28)',
+                dataset.nuclearAndGas?.general?.nuclearEnergyRelatedActivitiesSection428
               ),
           },
           {
             type: 'cell',
-            label: 'Fossil gas related activities (Section 4.29)',
+            label: 'Fossil Gas related Activities (Section 4.29)',
             explanation:
               'The undertaking carries out, funds, or has exposures to construction or operation of electricity generation facilities that produce electricity using fossil gaseous fuels.',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: NuclearAndGasData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
                 formatYesNoValueForDatatable(
-                  dataset.nuclearAndGas?.nuclearAndFossilGasRelatedActivities?.fossilGasRelatedActivitiesSection429
-                    ?.value
+                  dataset.nuclearAndGas?.general?.fossilGasRelatedActivitiesSection429?.value
                 ),
-                'Fossil gas related activities (Section 4.29)',
-                dataset.nuclearAndGas?.nuclearAndFossilGasRelatedActivities?.fossilGasRelatedActivitiesSection429
+                'Fossil Gas related Activities (Section 4.29)',
+                dataset.nuclearAndGas?.general?.fossilGasRelatedActivitiesSection429
               ),
           },
           {
             type: 'cell',
-            label: 'Fossil gas related activities (Section 4.30)',
+            label: 'Fossil Gas related Activities (Section 4.30)',
             explanation:
               'The undertaking carries out, funds, or has exposures to construction, refurbishment, and operation of combined heat/cool and power generation facilities using fossil gaseous fuels.',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: NuclearAndGasData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
                 formatYesNoValueForDatatable(
-                  dataset.nuclearAndGas?.nuclearAndFossilGasRelatedActivities?.fossilGasRelatedActivitiesSection430
-                    ?.value
+                  dataset.nuclearAndGas?.general?.fossilGasRelatedActivitiesSection430?.value
                 ),
-                'Fossil gas related activities (Section 4.30)',
-                dataset.nuclearAndGas?.nuclearAndFossilGasRelatedActivities?.fossilGasRelatedActivitiesSection430
+                'Fossil Gas related Activities (Section 4.30)',
+                dataset.nuclearAndGas?.general?.fossilGasRelatedActivitiesSection430
               ),
           },
           {
             type: 'cell',
-            label: 'Fossil gas related activities (Section 4.31)',
+            label: 'Fossil Gas related Activities (Section 4.31)',
             explanation:
               'The undertaking carries out, funds, or has exposures to construction, refurbishment and operation of heat generation facilities that produce heat/cool using fossil gaseous fuels.',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: NuclearAndGasData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
                 formatYesNoValueForDatatable(
-                  dataset.nuclearAndGas?.nuclearAndFossilGasRelatedActivities?.fossilGasRelatedActivitiesSection431
-                    ?.value
+                  dataset.nuclearAndGas?.general?.fossilGasRelatedActivitiesSection431?.value
                 ),
-                'Fossil gas related activities (Section 4.31)',
-                dataset.nuclearAndGas?.nuclearAndFossilGasRelatedActivities?.fossilGasRelatedActivitiesSection431
+                'Fossil Gas related Activities (Section 4.31)',
+                dataset.nuclearAndGas?.general?.fossilGasRelatedActivitiesSection431
               ),
           },
         ],
+      },
+      {
+        type: 'section',
+        label: 'Taxonomy-aligned (denominator)',
+        expandOnPageLoad: true,
+        shouldDisplay: (): boolean => true,
+        children: [],
+      },
+      {
+        type: 'section',
+        label: 'Taxonomy-aligned (numerator)',
+        expandOnPageLoad: true,
+        shouldDisplay: (): boolean => true,
+        children: [],
+      },
+      {
+        type: 'section',
+        label: 'Taxonomy-eligible but not aligned',
+        expandOnPageLoad: true,
+        shouldDisplay: (): boolean => true,
+        children: [],
+      },
+      {
+        type: 'section',
+        label: 'Taxonomy-non-eligible',
+        expandOnPageLoad: true,
+        shouldDisplay: (): boolean => true,
+        children: [],
       },
     ],
   },
