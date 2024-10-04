@@ -1,370 +1,333 @@
 {
-  "companyInformation": {
-    "companyName": "company-for-all-types",
-    "headquarters": "Leannonmouth",
-    "headquartersPostalCode": "67285-8972",
-    "sector": "communities",
-    "identifiers": {
-      "Lei": [],
-      "Isin": [
-        "pgmy03fw1qlx"
-      ],
-      "PermId": [
-        "68mPGF3954"
-      ],
-      "Ticker": [
-        "6oqHVz9"
-      ],
-      "Duns": [],
-      "VatNumber": [],
-      "CompanyRegistrationNumber": [
-        "t9bsbfxiU9oAUso"
-      ]
-    },
-    "countryCode": "VC",
-    "companyContactDetails": null,
-    "companyAlternativeNames": [
-      "Lehner, Lockman and Oberbrunner",
-      "Rippin - Kunde",
-      "Rohan - Bernhard"
-    ],
-    "companyLegalForm": "Public Limited Company (PLC)",
-    "website": "https://last-acquisition.biz/",
-    "isTeaserCompany": false,
-    "parentCompanyLei": "zH1p1i8FYz2AGArwQmgt"
-  },
-  "t": {
-    "financialServicesTypes": [
-      "InvestmentFirm",
-      "AssetManagement",
-      "InsuranceOrReinsurance",
-      "CreditInstitution"
-    ],
-    "eligibilityKpis": {
-      "InvestmentFirm": {
-        "banksAndIssuersInPercent": {
-          "value": 83.21,
-          "dataSource": {
-            "page": "896-925",
-            "fileName": "AnnualReport",
-            "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-            "tagName": "relationships"
-          },
-          "comment": "compress wireless monitor",
-          "quality": "Estimated"
+  "financialServicesTypes": [
+    "InvestmentFirm",
+    "AssetManagement",
+    "InsuranceOrReinsurance",
+    "CreditInstitution"
+  ],
+  "eligibilityKpis": {
+    "InvestmentFirm": {
+      "banksAndIssuersInPercent": {
+        "value": 83.21,
+        "dataSource": {
+          "page": "896-925",
+          "fileName": "AnnualReport",
+          "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+          "tagName": "relationships"
         },
-        "derivativesInPercent": {
-          "value": 42.02,
-          "dataSource": {
-            "page": "725",
-            "fileName": "AnnualReport",
-            "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-            "tagName": "models"
-          },
-          "comment": "generate online interface",
-          "quality": "Reported"
-        },
-        "investmentNonNfrdInPercent": {
-          "value": 6.65,
-          "dataSource": {
-            "page": "42-220",
-            "fileName": "AnnualReport",
-            "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-            "tagName": "interfaces"
-          },
-          "comment": "transmit solid state firewall",
-          "quality": "Audited"
-        },
-        "taxonomyEligibleActivityInPercent": {
-          "value": 21.35,
-          "dataSource": {
-            "page": "425",
-            "fileName": "AnnualReport",
-            "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-            "tagName": "synergies"
-          },
-          "comment": "generate auxiliary capacitor",
-          "quality": "NoDataFound"
-        },
-        "taxonomyNonEligibleActivityInPercent": {
-          "value": 28.61,
-          "dataSource": {
-            "page": "798-894",
-            "fileName": "AnnualReport",
-            "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-            "tagName": "web services"
-          },
-          "comment": "reboot primary interface",
-          "quality": "NoDataFound"
-        }
+        "comment": "compress wireless monitor",
+        "quality": "Estimated"
       },
-      "AssetManagement": {
-        "banksAndIssuersInPercent": {
-          "value": 60.38,
-          "dataSource": {
-            "page": "213",
-            "fileName": "AnnualReport",
-            "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-            "tagName": "eyeballs"
-          },
-          "comment": "hack multi-byte sensor",
-          "quality": "Reported"
+      "derivativesInPercent": {
+        "value": 42.02,
+        "dataSource": {
+          "page": "725",
+          "fileName": "AnnualReport",
+          "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+          "tagName": "models"
         },
-        "derivativesInPercent": {
-          "value": 25.7,
-          "dataSource": {
-            "page": "1049",
-            "fileName": "AnnualReport",
-            "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-            "tagName": "initiatives"
-          },
-          "comment": "parse neural firewall",
-          "quality": "Estimated"
-        },
-        "investmentNonNfrdInPercent": {
-          "value": 28.7,
-          "dataSource": {
-            "page": "344",
-            "fileName": "AnnualReport",
-            "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-            "tagName": "infrastructures"
-          },
-          "comment": "navigate solid state driver",
-          "quality": "Incomplete"
-        },
-        "taxonomyEligibleActivityInPercent": {
-          "value": 29.05,
-          "dataSource": {
-            "page": "448-916",
-            "fileName": "AnnualReport",
-            "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-            "tagName": "functionalities"
-          },
-          "comment": "input open-source hard drive",
-          "quality": "Reported"
-        },
-        "taxonomyNonEligibleActivityInPercent": {
-          "value": 52.07,
-          "dataSource": {
-            "page": "323",
-            "fileName": "AnnualReport",
-            "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-            "tagName": "applications"
-          },
-          "comment": "hack online hard drive",
-          "quality": "Audited"
-        }
+        "comment": "generate online interface",
+        "quality": "Reported"
       },
-      "InsuranceOrReinsurance": {
-        "banksAndIssuersInPercent": {
-          "value": 51.25,
-          "dataSource": {
-            "page": "317-1138",
-            "fileName": "AnnualReport",
-            "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-            "tagName": "applications"
-          },
-          "comment": "quantify redundant alarm",
-          "quality": "Audited"
+      "investmentNonNfrdInPercent": {
+        "value": 6.65,
+        "dataSource": {
+          "page": "42-220",
+          "fileName": "AnnualReport",
+          "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+          "tagName": "interfaces"
         },
-        "derivativesInPercent": {
-          "value": 67.53,
-          "dataSource": {
-            "page": "269-499",
-            "fileName": "AnnualReport",
-            "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-            "tagName": "users"
-          },
-          "comment": "hack wireless capacitor",
-          "quality": "Audited"
-        },
-        "investmentNonNfrdInPercent": {
-          "value": 7.32,
-          "dataSource": {
-            "page": "911-1143",
-            "fileName": "AnnualReport",
-            "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-            "tagName": "portals"
-          },
-          "comment": "reboot neural port",
-          "quality": "Reported"
-        },
-        "taxonomyEligibleActivityInPercent": {
-          "value": 41.32,
-          "dataSource": {
-            "page": "846",
-            "fileName": "AnnualReport",
-            "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-            "tagName": "portals"
-          },
-          "comment": "connect online matrix",
-          "quality": "Reported"
-        },
-        "taxonomyNonEligibleActivityInPercent": {
-          "value": 82.04,
-          "dataSource": {
-            "page": "978-1097",
-            "fileName": "AnnualReport",
-            "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-            "tagName": "metrics"
-          },
-          "comment": "compress primary program",
-          "quality": "Estimated"
-        }
+        "comment": "transmit solid state firewall",
+        "quality": "Audited"
       },
-      "CreditInstitution": {
-        "banksAndIssuersInPercent": {
-          "value": 50.87,
-          "dataSource": {
-            "page": "485",
-            "fileName": "AnnualReport",
-            "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-            "tagName": "ROI"
-          },
-          "comment": "program bluetooth feed",
-          "quality": "Audited"
+      "taxonomyEligibleActivityInPercent": {
+        "value": 21.35,
+        "dataSource": {
+          "page": "425",
+          "fileName": "AnnualReport",
+          "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+          "tagName": "synergies"
         },
-        "derivativesInPercent": {
-          "value": 24.5,
-          "dataSource": {
-            "page": "224-978",
-            "fileName": "AnnualReport",
-            "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-            "tagName": "blockchains"
-          },
-          "comment": "reboot cross-platform circuit",
-          "quality": "Reported"
+        "comment": "generate auxiliary capacitor",
+        "quality": "NoDataFound"
+      },
+      "taxonomyNonEligibleActivityInPercent": {
+        "value": 28.61,
+        "dataSource": {
+          "page": "798-894",
+          "fileName": "AnnualReport",
+          "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+          "tagName": "web services"
         },
-        "investmentNonNfrdInPercent": {
-          "value": 74.71,
-          "dataSource": {
-            "page": "1149-1222",
-            "fileName": "AnnualReport",
-            "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-            "tagName": "channels"
-          },
-          "comment": "synthesize redundant panel",
-          "quality": "NoDataFound"
-        },
-        "taxonomyEligibleActivityInPercent": {
-          "value": 2.2,
-          "dataSource": {
-            "page": "308",
-            "fileName": "AnnualReport",
-            "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-            "tagName": "experiences"
-          },
-          "comment": "parse bluetooth monitor",
-          "quality": "Reported"
-        },
-        "taxonomyNonEligibleActivityInPercent": {
-          "value": 8.07,
-          "dataSource": {
-            "page": "657-827",
-            "fileName": "AnnualReport",
-            "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-            "tagName": "functionalities"
-          },
-          "comment": "back up solid state program",
-          "quality": "NoDataFound"
-        }
+        "comment": "reboot primary interface",
+        "quality": "NoDataFound"
       }
     },
-    "creditInstitutionKpis": {
-      "interbankLoansInPercent": {
-        "value": 4.2,
+    "AssetManagement": {
+      "banksAndIssuersInPercent": {
+        "value": 60.38,
         "dataSource": {
-          "page": "671",
+          "page": "213",
+          "fileName": "AnnualReport",
+          "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+          "tagName": "eyeballs"
+        },
+        "comment": "hack multi-byte sensor",
+        "quality": "Reported"
+      },
+      "derivativesInPercent": {
+        "value": 25.7,
+        "dataSource": {
+          "page": "1049",
+          "fileName": "AnnualReport",
+          "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+          "tagName": "initiatives"
+        },
+        "comment": "parse neural firewall",
+        "quality": "Estimated"
+      },
+      "investmentNonNfrdInPercent": {
+        "value": 28.7,
+        "dataSource": {
+          "page": "344",
+          "fileName": "AnnualReport",
+          "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+          "tagName": "infrastructures"
+        },
+        "comment": "navigate solid state driver",
+        "quality": "Incomplete"
+      },
+      "taxonomyEligibleActivityInPercent": {
+        "value": 29.05,
+        "dataSource": {
+          "page": "448-916",
+          "fileName": "AnnualReport",
+          "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+          "tagName": "functionalities"
+        },
+        "comment": "input open-source hard drive",
+        "quality": "Reported"
+      },
+      "taxonomyNonEligibleActivityInPercent": {
+        "value": 52.07,
+        "dataSource": {
+          "page": "323",
+          "fileName": "AnnualReport",
+          "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+          "tagName": "applications"
+        },
+        "comment": "hack online hard drive",
+        "quality": "Audited"
+      }
+    },
+    "InsuranceOrReinsurance": {
+      "banksAndIssuersInPercent": {
+        "value": 51.25,
+        "dataSource": {
+          "page": "317-1138",
+          "fileName": "AnnualReport",
+          "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+          "tagName": "applications"
+        },
+        "comment": "quantify redundant alarm",
+        "quality": "Audited"
+      },
+      "derivativesInPercent": {
+        "value": 67.53,
+        "dataSource": {
+          "page": "269-499",
+          "fileName": "AnnualReport",
+          "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+          "tagName": "users"
+        },
+        "comment": "hack wireless capacitor",
+        "quality": "Audited"
+      },
+      "investmentNonNfrdInPercent": {
+        "value": 7.32,
+        "dataSource": {
+          "page": "911-1143",
+          "fileName": "AnnualReport",
+          "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+          "tagName": "portals"
+        },
+        "comment": "reboot neural port",
+        "quality": "Reported"
+      },
+      "taxonomyEligibleActivityInPercent": {
+        "value": 41.32,
+        "dataSource": {
+          "page": "846",
+          "fileName": "AnnualReport",
+          "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+          "tagName": "portals"
+        },
+        "comment": "connect online matrix",
+        "quality": "Reported"
+      },
+      "taxonomyNonEligibleActivityInPercent": {
+        "value": 82.04,
+        "dataSource": {
+          "page": "978-1097",
           "fileName": "AnnualReport",
           "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
           "tagName": "metrics"
         },
-        "comment": "calculate cross-platform system",
+        "comment": "compress primary program",
+        "quality": "Estimated"
+      }
+    },
+    "CreditInstitution": {
+      "banksAndIssuersInPercent": {
+        "value": 50.87,
+        "dataSource": {
+          "page": "485",
+          "fileName": "AnnualReport",
+          "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+          "tagName": "ROI"
+        },
+        "comment": "program bluetooth feed",
+        "quality": "Audited"
+      },
+      "derivativesInPercent": {
+        "value": 24.5,
+        "dataSource": {
+          "page": "224-978",
+          "fileName": "AnnualReport",
+          "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+          "tagName": "blockchains"
+        },
+        "comment": "reboot cross-platform circuit",
         "quality": "Reported"
       },
-      "tradingPortfolioInPercent": {
-        "value": 65.47,
+      "investmentNonNfrdInPercent": {
+        "value": 74.71,
         "dataSource": {
-          "page": "971",
+          "page": "1149-1222",
           "fileName": "AnnualReport",
           "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-          "tagName": "partnerships"
+          "tagName": "channels"
         },
-        "comment": "synthesize mobile panel",
-        "quality": "Estimated"
-      },
-      "tradingPortfolioAndInterbankLoansInPercent": {
-        "value": 52.39,
-        "dataSource": {
-          "page": "871",
-          "fileName": "AnnualReport",
-          "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-          "tagName": "action-items"
-        },
-        "comment": "connect open-source feed",
+        "comment": "synthesize redundant panel",
         "quality": "NoDataFound"
       },
-      "greenAssetRatioInPercent": {
-        "value": 56.59,
+      "taxonomyEligibleActivityInPercent": {
+        "value": 2.2,
         "dataSource": {
-          "page": "818",
+          "page": "308",
           "fileName": "AnnualReport",
           "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-          "tagName": "partnerships"
+          "tagName": "experiences"
         },
-        "comment": "quantify 1080p program",
-        "quality": "Estimated"
-      }
-    },
-    "investmentFirmKpis": {
-      "greenAssetRatioInPercent": {
-        "value": 26.62,
+        "comment": "parse bluetooth monitor",
+        "quality": "Reported"
+      },
+      "taxonomyNonEligibleActivityInPercent": {
+        "value": 8.07,
         "dataSource": {
-          "page": "1042-1111",
+          "page": "657-827",
           "fileName": "AnnualReport",
           "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-          "tagName": "mindshare"
+          "tagName": "functionalities"
         },
-        "comment": "calculate multi-byte protocol",
-        "quality": "Audited"
-      }
-    },
-    "insuranceKpis": {
-      "taxonomyEligibleNonLifeInsuranceActivitiesInPercent": {
-        "value": 79.01,
-        "dataSource": {
-          "page": "728-1196",
-          "fileName": "AnnualReport",
-          "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-          "tagName": "methodologies"
-        },
-        "comment": "reboot digital matrix",
+        "comment": "back up solid state program",
         "quality": "NoDataFound"
-      }
-    },
-    "fiscalYearDeviation": "NoDeviation",
-    "fiscalYearEnd": "2023-07-23",
-    "scopeOfEntities": "NA",
-    "nfrdMandatory": "No",
-    "euTaxonomyActivityLevelReporting": "Yes",
-    "assurance": {
-      "value": "LimitedAssurance",
-      "provider": "Orn - Welch",
-      "dataSource": {
-        "page": "225",
-        "fileName": "AnnualReport",
-        "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-        "tagName": "experiences"
-      }
-    },
-    "numberOfEmployees": 9665,
-    "referencedReports": {
-      "AnnualReport": {
-        "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-        "fileName": "AnnualReport",
-        "publicationDate": "2023-07-26"
       }
     }
   },
-  "reportingPeriod": "2023"
+  "creditInstitutionKpis": {
+    "interbankLoansInPercent": {
+      "value": 4.2,
+      "dataSource": {
+        "page": "671",
+        "fileName": "AnnualReport",
+        "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+        "tagName": "metrics"
+      },
+      "comment": "calculate cross-platform system",
+      "quality": "Reported"
+    },
+    "tradingPortfolioInPercent": {
+      "value": 65.47,
+      "dataSource": {
+        "page": "971",
+        "fileName": "AnnualReport",
+        "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+        "tagName": "partnerships"
+      },
+      "comment": "synthesize mobile panel",
+      "quality": "Estimated"
+    },
+    "tradingPortfolioAndInterbankLoansInPercent": {
+      "value": 52.39,
+      "dataSource": {
+        "page": "871",
+        "fileName": "AnnualReport",
+        "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+        "tagName": "action-items"
+      },
+      "comment": "connect open-source feed",
+      "quality": "NoDataFound"
+    },
+    "greenAssetRatioInPercent": {
+      "value": 56.59,
+      "dataSource": {
+        "page": "818",
+        "fileName": "AnnualReport",
+        "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+        "tagName": "partnerships"
+      },
+      "comment": "quantify 1080p program",
+      "quality": "Estimated"
+    }
+  },
+  "investmentFirmKpis": {
+    "greenAssetRatioInPercent": {
+      "value": 26.62,
+      "dataSource": {
+        "page": "1042-1111",
+        "fileName": "AnnualReport",
+        "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+        "tagName": "mindshare"
+      },
+      "comment": "calculate multi-byte protocol",
+      "quality": "Audited"
+    }
+  },
+  "insuranceKpis": {
+    "taxonomyEligibleNonLifeInsuranceActivitiesInPercent": {
+      "value": 79.01,
+      "dataSource": {
+        "page": "728-1196",
+        "fileName": "AnnualReport",
+        "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+        "tagName": "methodologies"
+      },
+      "comment": "reboot digital matrix",
+      "quality": "NoDataFound"
+    }
+  },
+  "fiscalYearDeviation": "NoDeviation",
+  "fiscalYearEnd": "2023-07-23",
+  "scopeOfEntities": "NA",
+  "nfrdMandatory": "No",
+  "euTaxonomyActivityLevelReporting": "Yes",
+  "assurance": {
+    "value": "LimitedAssurance",
+    "provider": "Orn - Welch",
+    "dataSource": {
+      "page": "225",
+      "fileName": "AnnualReport",
+      "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+      "tagName": "experiences"
+    }
+  },
+  "numberOfEmployees": 9665,
+  "referencedReports": {
+    "AnnualReport": {
+      "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+      "fileName": "AnnualReport",
+      "publicationDate": "2023-07-26"
+    }
+  }
 }
