@@ -237,7 +237,7 @@ export default defineComponent({
      * @param input DataTypeEnum
      * @returns GetInfoOnUnreviewedDatasetsDataTypesEnum
      */
-    convertDataType(input: DataTypeEnum): GetInfoOnUnreviewedDatasetsDataTypesEnum {
+    manuallyChangeTypeOfDataTypeEnum (input: DataTypeEnum): GetInfoOnUnreviewedDatasetsDataTypesEnum {
       return input as GetInfoOnUnreviewedDatasetsDataTypesEnum;
     },
     /**
@@ -249,14 +249,14 @@ export default defineComponent({
         this.displayDataOfPage = [];
 
         const selectedFrameworksAsSet = new Set<GetInfoOnUnreviewedDatasetsDataTypesEnum>(
-          this.selectedFrameworks.map((selectableItem) => this.convertDataType(selectableItem.frameworkDataType))
+          this.selectedFrameworks.map((selectableItem) => this.manuallyChangeTypeOfDataTypeEnum (selectableItem.frameworkDataType))
         );
         const reportingPeriodFilter: Set<string> = new Set<string>(
           this.availableReportingPeriods?.map((date) => date.getFullYear().toString())
         );
         const companyNameFilter = this.searchBarInput === '' ? undefined : this.searchBarInput;
         const response = await this.apiClientProvider.apiClients.qaController.getInfoOnUnreviewedDatasets(
-          selectedFrameworksAsSet as Set<GetInfoOnUnreviewedDatasetsDataTypesEnum>,
+          selectedFrameworksAsSet,
           reportingPeriodFilter,
           companyNameFilter,
           this.datasetsPerPage,
