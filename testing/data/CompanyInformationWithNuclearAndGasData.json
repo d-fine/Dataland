@@ -39,65 +39,63 @@
 			"isTeaserCompany": false
 		},
 		"t": {
-			"nuclearAndGas": {
-				"general": {
-					"nuclearEnergyRelatedActivitiesSection426": {
-						"value": "No",
-						"dataSource": {
-							"page": "318-434",
-							"fileName": "AnnualReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "web services"
-						},
-						"comment": "program haptic microchip",
-						"quality": "Reported"
+			"general": {
+				"nuclearEnergyRelatedActivitiesSection426": {
+					"value": "No",
+					"dataSource": {
+						"page": "318-434",
+						"fileName": "AnnualReport",
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"tagName": "web services"
 					},
-					"nuclearEnergyRelatedActivitiesSection427": null,
-					"nuclearEnergyRelatedActivitiesSection428": {
-						"value": "Yes",
-						"dataSource": {
-							"page": "798",
-							"fileName": "ESEFReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "solutions"
-						},
-						"comment": "bypass multi-byte pixel",
-						"quality": "Audited"
-					},
-					"fossilGasRelatedActivitiesSection429": {
-						"value": "Yes",
-						"dataSource": {
-							"page": "860-891",
-							"fileName": "SustainabilityReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "ROI"
-						},
-						"comment": "navigate redundant system",
-						"quality": "Audited"
-					},
-					"fossilGasRelatedActivitiesSection430": {
-						"value": null,
-						"dataSource": {
-							"page": "178",
-							"fileName": "SustainabilityReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "experiences"
-						},
-						"comment": null,
-						"quality": "Reported"
-					},
-					"fossilGasRelatedActivitiesSection431": {
-						"value": null,
-						"dataSource": null,
-						"comment": "transmit neural hard drive",
-						"quality": null
-					}
+					"comment": "program haptic microchip",
+					"quality": "Reported"
 				},
-				"taxonomyAlignedDenominator": {},
-				"taxonomyAlignedNumerator": {},
-				"taxonomyEligibleButNotAligned": {},
-				"taxonomyNonEligible": {}
-			}
+				"nuclearEnergyRelatedActivitiesSection427": null,
+				"nuclearEnergyRelatedActivitiesSection428": {
+					"value": "Yes",
+					"dataSource": {
+						"page": "798",
+						"fileName": "ESEFReport",
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"tagName": "solutions"
+					},
+					"comment": "bypass multi-byte pixel",
+					"quality": "Audited"
+				},
+				"fossilGasRelatedActivitiesSection429": {
+					"value": "Yes",
+					"dataSource": {
+						"page": "860-891",
+						"fileName": "SustainabilityReport",
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"tagName": "ROI"
+					},
+					"comment": "navigate redundant system",
+					"quality": "Audited"
+				},
+				"fossilGasRelatedActivitiesSection430": {
+					"value": null,
+					"dataSource": {
+						"page": "178",
+						"fileName": "SustainabilityReport",
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"tagName": "experiences"
+					},
+					"comment": null,
+					"quality": "Reported"
+				},
+				"fossilGasRelatedActivitiesSection431": {
+					"value": null,
+					"dataSource": null,
+					"comment": "transmit neural hard drive",
+					"quality": null
+				}
+			},
+			"taxonomyAlignedDenominator": {},
+			"taxonomyAlignedNumerator": {},
+			"taxonomyEligibleButNotAligned": {},
+			"taxonomyNonEligible": {}
 		},
 		"reportingPeriod": "2024"
 	},
@@ -136,60 +134,58 @@
 			"parentCompanyLei": "qVhzA90CSdRQ3KsBeuiX"
 		},
 		"t": {
-			"nuclearAndGas": {
-				"general": {
-					"nuclearEnergyRelatedActivitiesSection426": {
-						"value": "No",
-						"dataSource": {
-							"page": "138",
-							"fileName": "AnnualReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "niches"
-						},
-						"comment": "bypass virtual firewall",
-						"quality": "Incomplete"
+			"general": {
+				"nuclearEnergyRelatedActivitiesSection426": {
+					"value": "No",
+					"dataSource": {
+						"page": "138",
+						"fileName": "AnnualReport",
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"tagName": "niches"
 					},
-					"nuclearEnergyRelatedActivitiesSection427": {
-						"value": "No",
-						"dataSource": {
-							"page": "628-1047",
-							"fileName": "ESEFReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "lifetime value"
-						},
-						"comment": "bypass primary matrix",
-						"quality": "Audited"
-					},
-					"nuclearEnergyRelatedActivitiesSection428": null,
-					"fossilGasRelatedActivitiesSection429": {
-						"value": "No",
-						"dataSource": {
-							"page": "815",
-							"fileName": "IntegratedReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "architectures"
-						},
-						"comment": "parse online feed",
-						"quality": "Reported"
-					},
-					"fossilGasRelatedActivitiesSection430": null,
-					"fossilGasRelatedActivitiesSection431": {
-						"value": "Yes",
-						"dataSource": {
-							"page": "644",
-							"fileName": "ESEFReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "channels"
-						},
-						"comment": "copy cross-platform microchip",
-						"quality": null
-					}
+					"comment": "bypass virtual firewall",
+					"quality": "Incomplete"
 				},
-				"taxonomyAlignedDenominator": {},
-				"taxonomyAlignedNumerator": {},
-				"taxonomyEligibleButNotAligned": {},
-				"taxonomyNonEligible": {}
-			}
+				"nuclearEnergyRelatedActivitiesSection427": {
+					"value": "No",
+					"dataSource": {
+						"page": "628-1047",
+						"fileName": "ESEFReport",
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"tagName": "lifetime value"
+					},
+					"comment": "bypass primary matrix",
+					"quality": "Audited"
+				},
+				"nuclearEnergyRelatedActivitiesSection428": null,
+				"fossilGasRelatedActivitiesSection429": {
+					"value": "No",
+					"dataSource": {
+						"page": "815",
+						"fileName": "IntegratedReport",
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"tagName": "architectures"
+					},
+					"comment": "parse online feed",
+					"quality": "Reported"
+				},
+				"fossilGasRelatedActivitiesSection430": null,
+				"fossilGasRelatedActivitiesSection431": {
+					"value": "Yes",
+					"dataSource": {
+						"page": "644",
+						"fileName": "ESEFReport",
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"tagName": "channels"
+					},
+					"comment": "copy cross-platform microchip",
+					"quality": null
+				}
+			},
+			"taxonomyAlignedDenominator": {},
+			"taxonomyAlignedNumerator": {},
+			"taxonomyEligibleButNotAligned": {},
+			"taxonomyNonEligible": {}
 		},
 		"reportingPeriod": "2022"
 	},
@@ -237,60 +233,58 @@
 			"parentCompanyLei": "pAqgO11fvCa8fS3iei8V"
 		},
 		"t": {
-			"nuclearAndGas": {
-				"general": {
-					"nuclearEnergyRelatedActivitiesSection426": {
-						"value": null,
-						"dataSource": {
-							"page": "1000-1238",
-							"fileName": "AnnualReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "infrastructures"
-						},
-						"comment": "navigate online port",
-						"quality": "NoDataFound"
+			"general": {
+				"nuclearEnergyRelatedActivitiesSection426": {
+					"value": null,
+					"dataSource": {
+						"page": "1000-1238",
+						"fileName": "AnnualReport",
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"tagName": "infrastructures"
 					},
-					"nuclearEnergyRelatedActivitiesSection427": null,
-					"nuclearEnergyRelatedActivitiesSection428": {
-						"value": "No",
-						"dataSource": {
-							"page": "1124-1161",
-							"fileName": "AnnualReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "portals"
-						},
-						"comment": "parse multi-byte card",
-						"quality": "Incomplete"
-					},
-					"fossilGasRelatedActivitiesSection429": {
-						"value": "No",
-						"dataSource": {
-							"page": "779-975",
-							"fileName": "ESEFReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "action-items"
-						},
-						"comment": "bypass haptic driver",
-						"quality": "Reported"
-					},
-					"fossilGasRelatedActivitiesSection430": null,
-					"fossilGasRelatedActivitiesSection431": {
-						"value": null,
-						"dataSource": {
-							"page": "382",
-							"fileName": "ESEFReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "content"
-						},
-						"comment": null,
-						"quality": "NoDataFound"
-					}
+					"comment": "navigate online port",
+					"quality": "NoDataFound"
 				},
-				"taxonomyAlignedDenominator": {},
-				"taxonomyAlignedNumerator": {},
-				"taxonomyEligibleButNotAligned": {},
-				"taxonomyNonEligible": {}
-			}
+				"nuclearEnergyRelatedActivitiesSection427": null,
+				"nuclearEnergyRelatedActivitiesSection428": {
+					"value": "No",
+					"dataSource": {
+						"page": "1124-1161",
+						"fileName": "AnnualReport",
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"tagName": "portals"
+					},
+					"comment": "parse multi-byte card",
+					"quality": "Incomplete"
+				},
+				"fossilGasRelatedActivitiesSection429": {
+					"value": "No",
+					"dataSource": {
+						"page": "779-975",
+						"fileName": "ESEFReport",
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"tagName": "action-items"
+					},
+					"comment": "bypass haptic driver",
+					"quality": "Reported"
+				},
+				"fossilGasRelatedActivitiesSection430": null,
+				"fossilGasRelatedActivitiesSection431": {
+					"value": null,
+					"dataSource": {
+						"page": "382",
+						"fileName": "ESEFReport",
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"tagName": "content"
+					},
+					"comment": null,
+					"quality": "NoDataFound"
+				}
+			},
+			"taxonomyAlignedDenominator": {},
+			"taxonomyAlignedNumerator": {},
+			"taxonomyEligibleButNotAligned": {},
+			"taxonomyNonEligible": {}
 		},
 		"reportingPeriod": "2022"
 	},
@@ -334,60 +328,58 @@
 			"parentCompanyLei": "i1cS3JeqnnBHXuHwP71N"
 		},
 		"t": {
-			"nuclearAndGas": {
-				"general": {
-					"nuclearEnergyRelatedActivitiesSection426": {
-						"value": "No",
-						"dataSource": {
-							"page": "134-953",
-							"fileName": "SustainabilityReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "convergence"
-						},
-						"comment": null,
-						"quality": "NoDataFound"
+			"general": {
+				"nuclearEnergyRelatedActivitiesSection426": {
+					"value": "No",
+					"dataSource": {
+						"page": "134-953",
+						"fileName": "SustainabilityReport",
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"tagName": "convergence"
 					},
-					"nuclearEnergyRelatedActivitiesSection427": null,
-					"nuclearEnergyRelatedActivitiesSection428": {
-						"value": null,
-						"dataSource": {
-							"page": "125",
-							"fileName": "SustainabilityReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "functionalities"
-						},
-						"comment": "index multi-byte protocol",
-						"quality": "Reported"
-					},
-					"fossilGasRelatedActivitiesSection429": {
-						"value": "Yes",
-						"dataSource": {
-							"page": "909-1099",
-							"fileName": "ESEFReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "communities"
-						},
-						"comment": "transmit virtual bus",
-						"quality": "Audited"
-					},
-					"fossilGasRelatedActivitiesSection430": {
-						"value": "No",
-						"dataSource": {
-							"page": "597",
-							"fileName": "SustainabilityReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "interfaces"
-						},
-						"comment": "hack optical card",
-						"quality": "Reported"
-					},
-					"fossilGasRelatedActivitiesSection431": null
+					"comment": null,
+					"quality": "NoDataFound"
 				},
-				"taxonomyAlignedDenominator": {},
-				"taxonomyAlignedNumerator": {},
-				"taxonomyEligibleButNotAligned": {},
-				"taxonomyNonEligible": {}
-			}
+				"nuclearEnergyRelatedActivitiesSection427": null,
+				"nuclearEnergyRelatedActivitiesSection428": {
+					"value": null,
+					"dataSource": {
+						"page": "125",
+						"fileName": "SustainabilityReport",
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"tagName": "functionalities"
+					},
+					"comment": "index multi-byte protocol",
+					"quality": "Reported"
+				},
+				"fossilGasRelatedActivitiesSection429": {
+					"value": "Yes",
+					"dataSource": {
+						"page": "909-1099",
+						"fileName": "ESEFReport",
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"tagName": "communities"
+					},
+					"comment": "transmit virtual bus",
+					"quality": "Audited"
+				},
+				"fossilGasRelatedActivitiesSection430": {
+					"value": "No",
+					"dataSource": {
+						"page": "597",
+						"fileName": "SustainabilityReport",
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"tagName": "interfaces"
+					},
+					"comment": "hack optical card",
+					"quality": "Reported"
+				},
+				"fossilGasRelatedActivitiesSection431": null
+			},
+			"taxonomyAlignedDenominator": {},
+			"taxonomyAlignedNumerator": {},
+			"taxonomyEligibleButNotAligned": {},
+			"taxonomyNonEligible": {}
 		},
 		"reportingPeriod": "2023"
 	},
@@ -423,75 +415,73 @@
 			"parentCompanyLei": null
 		},
 		"t": {
-			"nuclearAndGas": {
-				"general": {
-					"nuclearEnergyRelatedActivitiesSection426": {
-						"value": "Yes",
-						"dataSource": {
-							"page": "752-784",
-							"fileName": "SustainabilityReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "deliverables"
-						},
-						"comment": "input neural bus",
-						"quality": "NoDataFound"
+			"general": {
+				"nuclearEnergyRelatedActivitiesSection426": {
+					"value": "Yes",
+					"dataSource": {
+						"page": "752-784",
+						"fileName": "SustainabilityReport",
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"tagName": "deliverables"
 					},
-					"nuclearEnergyRelatedActivitiesSection427": {
-						"value": null,
-						"dataSource": {
-							"page": "1046",
-							"fileName": "SustainabilityReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "synergies"
-						},
-						"comment": null,
-						"quality": "Reported"
-					},
-					"nuclearEnergyRelatedActivitiesSection428": {
-						"value": null,
-						"dataSource": null,
-						"comment": "synthesize online bus",
-						"quality": null
-					},
-					"fossilGasRelatedActivitiesSection429": {
-						"value": "Yes",
-						"dataSource": {
-							"page": "492",
-							"fileName": "SustainabilityReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "lifetime value"
-						},
-						"comment": "input 1080p bandwidth",
-						"quality": null
-					},
-					"fossilGasRelatedActivitiesSection430": {
-						"value": "Yes",
-						"dataSource": {
-							"page": "378",
-							"fileName": "SustainabilityReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "ROI"
-						},
-						"comment": null,
-						"quality": "Incomplete"
-					},
-					"fossilGasRelatedActivitiesSection431": {
-						"value": "No",
-						"dataSource": {
-							"page": "29",
-							"fileName": "SustainabilityReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "models"
-						},
-						"comment": "bypass redundant interface",
-						"quality": "Incomplete"
-					}
+					"comment": "input neural bus",
+					"quality": "NoDataFound"
 				},
-				"taxonomyAlignedDenominator": {},
-				"taxonomyAlignedNumerator": {},
-				"taxonomyEligibleButNotAligned": {},
-				"taxonomyNonEligible": {}
-			}
+				"nuclearEnergyRelatedActivitiesSection427": {
+					"value": null,
+					"dataSource": {
+						"page": "1046",
+						"fileName": "SustainabilityReport",
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"tagName": "synergies"
+					},
+					"comment": null,
+					"quality": "Reported"
+				},
+				"nuclearEnergyRelatedActivitiesSection428": {
+					"value": null,
+					"dataSource": null,
+					"comment": "synthesize online bus",
+					"quality": null
+				},
+				"fossilGasRelatedActivitiesSection429": {
+					"value": "Yes",
+					"dataSource": {
+						"page": "492",
+						"fileName": "SustainabilityReport",
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"tagName": "lifetime value"
+					},
+					"comment": "input 1080p bandwidth",
+					"quality": null
+				},
+				"fossilGasRelatedActivitiesSection430": {
+					"value": "Yes",
+					"dataSource": {
+						"page": "378",
+						"fileName": "SustainabilityReport",
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"tagName": "ROI"
+					},
+					"comment": null,
+					"quality": "Incomplete"
+				},
+				"fossilGasRelatedActivitiesSection431": {
+					"value": "No",
+					"dataSource": {
+						"page": "29",
+						"fileName": "SustainabilityReport",
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"tagName": "models"
+					},
+					"comment": "bypass redundant interface",
+					"quality": "Incomplete"
+				}
+			},
+			"taxonomyAlignedDenominator": {},
+			"taxonomyAlignedNumerator": {},
+			"taxonomyEligibleButNotAligned": {},
+			"taxonomyNonEligible": {}
 		},
 		"reportingPeriod": "2024"
 	},
@@ -534,60 +524,58 @@
 			"parentCompanyLei": "qhGYPDdO6tU1stUnbC80"
 		},
 		"t": {
-			"nuclearAndGas": {
-				"general": {
-					"nuclearEnergyRelatedActivitiesSection426": {
-						"value": null,
-						"dataSource": {
-							"page": "915-1050",
-							"fileName": "SustainabilityReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "networks"
-						},
-						"comment": "copy wireless circuit",
-						"quality": "Incomplete"
+			"general": {
+				"nuclearEnergyRelatedActivitiesSection426": {
+					"value": null,
+					"dataSource": {
+						"page": "915-1050",
+						"fileName": "SustainabilityReport",
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"tagName": "networks"
 					},
-					"nuclearEnergyRelatedActivitiesSection427": null,
-					"nuclearEnergyRelatedActivitiesSection428": {
-						"value": null,
-						"dataSource": {
-							"page": "676",
-							"fileName": "IntegratedReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "niches"
-						},
-						"comment": "parse solid state capacitor",
-						"quality": "Estimated"
-					},
-					"fossilGasRelatedActivitiesSection429": null,
-					"fossilGasRelatedActivitiesSection430": {
-						"value": null,
-						"dataSource": {
-							"page": "808-1012",
-							"fileName": "AnnualReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "portals"
-						},
-						"comment": null,
-						"quality": "Reported"
-					},
-					"fossilGasRelatedActivitiesSection431": {
-						"value": "No",
-						"dataSource": {
-							"page": "352-428",
-							"fileName": "SustainabilityReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "synergies"
-						},
-						"comment": "quantify 1080p port",
-						"quality": null
-					}
+					"comment": "copy wireless circuit",
+					"quality": "Incomplete"
 				},
-				"taxonomyAlignedDenominator": {},
-				"taxonomyAlignedNumerator": {},
-				"taxonomyEligibleButNotAligned": {},
-				"taxonomyNonEligible": {}
-			}
+				"nuclearEnergyRelatedActivitiesSection427": null,
+				"nuclearEnergyRelatedActivitiesSection428": {
+					"value": null,
+					"dataSource": {
+						"page": "676",
+						"fileName": "IntegratedReport",
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"tagName": "niches"
+					},
+					"comment": "parse solid state capacitor",
+					"quality": "Estimated"
+				},
+				"fossilGasRelatedActivitiesSection429": null,
+				"fossilGasRelatedActivitiesSection430": {
+					"value": null,
+					"dataSource": {
+						"page": "808-1012",
+						"fileName": "AnnualReport",
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"tagName": "portals"
+					},
+					"comment": null,
+					"quality": "Reported"
+				},
+				"fossilGasRelatedActivitiesSection431": {
+					"value": "No",
+					"dataSource": {
+						"page": "352-428",
+						"fileName": "SustainabilityReport",
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"tagName": "synergies"
+					},
+					"comment": "quantify 1080p port",
+					"quality": null
+				}
+			},
+			"taxonomyAlignedDenominator": {},
+			"taxonomyAlignedNumerator": {},
+			"taxonomyEligibleButNotAligned": {},
+			"taxonomyNonEligible": {}
 		},
 		"reportingPeriod": "2024"
 	},
@@ -622,55 +610,53 @@
 			"parentCompanyLei": null
 		},
 		"t": {
-			"nuclearAndGas": {
-				"general": {
-					"nuclearEnergyRelatedActivitiesSection426": {
-						"value": "Yes",
-						"dataSource": null,
-						"comment": "transmit 1080p driver",
-						"quality": "Incomplete"
-					},
-					"nuclearEnergyRelatedActivitiesSection427": {
-						"value": null,
-						"dataSource": {
-							"page": "308",
-							"fileName": "ESEFReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "mindshare"
-						},
-						"comment": "index open-source sensor",
-						"quality": "NoDataFound"
-					},
-					"nuclearEnergyRelatedActivitiesSection428": null,
-					"fossilGasRelatedActivitiesSection429": {
-						"value": "Yes",
-						"dataSource": {
-							"page": "68",
-							"fileName": "ESEFReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "e-business"
-						},
-						"comment": "reboot mobile monitor",
-						"quality": "NoDataFound"
-					},
-					"fossilGasRelatedActivitiesSection430": null,
-					"fossilGasRelatedActivitiesSection431": {
-						"value": null,
-						"dataSource": {
-							"page": "861",
-							"fileName": "ESEFReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "eyeballs"
-						},
-						"comment": "input online matrix",
-						"quality": "Incomplete"
-					}
+			"general": {
+				"nuclearEnergyRelatedActivitiesSection426": {
+					"value": "Yes",
+					"dataSource": null,
+					"comment": "transmit 1080p driver",
+					"quality": "Incomplete"
 				},
-				"taxonomyAlignedDenominator": {},
-				"taxonomyAlignedNumerator": {},
-				"taxonomyEligibleButNotAligned": {},
-				"taxonomyNonEligible": {}
-			}
+				"nuclearEnergyRelatedActivitiesSection427": {
+					"value": null,
+					"dataSource": {
+						"page": "308",
+						"fileName": "ESEFReport",
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"tagName": "mindshare"
+					},
+					"comment": "index open-source sensor",
+					"quality": "NoDataFound"
+				},
+				"nuclearEnergyRelatedActivitiesSection428": null,
+				"fossilGasRelatedActivitiesSection429": {
+					"value": "Yes",
+					"dataSource": {
+						"page": "68",
+						"fileName": "ESEFReport",
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"tagName": "e-business"
+					},
+					"comment": "reboot mobile monitor",
+					"quality": "NoDataFound"
+				},
+				"fossilGasRelatedActivitiesSection430": null,
+				"fossilGasRelatedActivitiesSection431": {
+					"value": null,
+					"dataSource": {
+						"page": "861",
+						"fileName": "ESEFReport",
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"tagName": "eyeballs"
+					},
+					"comment": "input online matrix",
+					"quality": "Incomplete"
+				}
+			},
+			"taxonomyAlignedDenominator": {},
+			"taxonomyAlignedNumerator": {},
+			"taxonomyEligibleButNotAligned": {},
+			"taxonomyNonEligible": {}
 		},
 		"reportingPeriod": "2024"
 	},
@@ -707,70 +693,68 @@
 			"parentCompanyLei": null
 		},
 		"t": {
-			"nuclearAndGas": {
-				"general": {
-					"nuclearEnergyRelatedActivitiesSection426": {
-						"value": "Yes",
-						"dataSource": {
-							"page": "251-461",
-							"fileName": "ESEFReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "synergies"
-						},
-						"comment": "compress back-end capacitor",
-						"quality": "Incomplete"
+			"general": {
+				"nuclearEnergyRelatedActivitiesSection426": {
+					"value": "Yes",
+					"dataSource": {
+						"page": "251-461",
+						"fileName": "ESEFReport",
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"tagName": "synergies"
 					},
-					"nuclearEnergyRelatedActivitiesSection427": {
-						"value": "Yes",
-						"dataSource": {
-							"page": "963",
-							"fileName": "SustainabilityReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "users"
-						},
-						"comment": "index open-source card",
-						"quality": "Incomplete"
-					},
-					"nuclearEnergyRelatedActivitiesSection428": {
-						"value": "Yes",
-						"dataSource": {
-							"page": "572",
-							"fileName": "SustainabilityReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "mindshare"
-						},
-						"comment": "transmit back-end port",
-						"quality": "Audited"
-					},
-					"fossilGasRelatedActivitiesSection429": null,
-					"fossilGasRelatedActivitiesSection430": {
-						"value": "Yes",
-						"dataSource": {
-							"page": "415",
-							"fileName": "SustainabilityReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "experiences"
-						},
-						"comment": "parse wireless system",
-						"quality": "NoDataFound"
-					},
-					"fossilGasRelatedActivitiesSection431": {
-						"value": null,
-						"dataSource": {
-							"page": "552-593",
-							"fileName": "ESEFReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "e-commerce"
-						},
-						"comment": "bypass online sensor",
-						"quality": "Incomplete"
-					}
+					"comment": "compress back-end capacitor",
+					"quality": "Incomplete"
 				},
-				"taxonomyAlignedDenominator": {},
-				"taxonomyAlignedNumerator": {},
-				"taxonomyEligibleButNotAligned": {},
-				"taxonomyNonEligible": {}
-			}
+				"nuclearEnergyRelatedActivitiesSection427": {
+					"value": "Yes",
+					"dataSource": {
+						"page": "963",
+						"fileName": "SustainabilityReport",
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"tagName": "users"
+					},
+					"comment": "index open-source card",
+					"quality": "Incomplete"
+				},
+				"nuclearEnergyRelatedActivitiesSection428": {
+					"value": "Yes",
+					"dataSource": {
+						"page": "572",
+						"fileName": "SustainabilityReport",
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"tagName": "mindshare"
+					},
+					"comment": "transmit back-end port",
+					"quality": "Audited"
+				},
+				"fossilGasRelatedActivitiesSection429": null,
+				"fossilGasRelatedActivitiesSection430": {
+					"value": "Yes",
+					"dataSource": {
+						"page": "415",
+						"fileName": "SustainabilityReport",
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"tagName": "experiences"
+					},
+					"comment": "parse wireless system",
+					"quality": "NoDataFound"
+				},
+				"fossilGasRelatedActivitiesSection431": {
+					"value": null,
+					"dataSource": {
+						"page": "552-593",
+						"fileName": "ESEFReport",
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"tagName": "e-commerce"
+					},
+					"comment": "bypass online sensor",
+					"quality": "Incomplete"
+				}
+			},
+			"taxonomyAlignedDenominator": {},
+			"taxonomyAlignedNumerator": {},
+			"taxonomyEligibleButNotAligned": {},
+			"taxonomyNonEligible": {}
 		},
 		"reportingPeriod": "2023"
 	},
@@ -813,65 +797,63 @@
 			"parentCompanyLei": null
 		},
 		"t": {
-			"nuclearAndGas": {
-				"general": {
-					"nuclearEnergyRelatedActivitiesSection426": {
-						"value": "No",
-						"dataSource": {
-							"page": "525",
-							"fileName": "IntegratedReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "ROI"
-						},
-						"comment": "calculate bluetooth panel",
-						"quality": null
+			"general": {
+				"nuclearEnergyRelatedActivitiesSection426": {
+					"value": "No",
+					"dataSource": {
+						"page": "525",
+						"fileName": "IntegratedReport",
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"tagName": "ROI"
 					},
-					"nuclearEnergyRelatedActivitiesSection427": null,
-					"nuclearEnergyRelatedActivitiesSection428": {
-						"value": "Yes",
-						"dataSource": null,
-						"comment": "compress redundant microchip",
-						"quality": "Incomplete"
-					},
-					"fossilGasRelatedActivitiesSection429": {
-						"value": "No",
-						"dataSource": {
-							"page": "754-1083",
-							"fileName": "IntegratedReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "platforms"
-						},
-						"comment": "back up online sensor",
-						"quality": "Estimated"
-					},
-					"fossilGasRelatedActivitiesSection430": {
-						"value": null,
-						"dataSource": {
-							"page": "1098-1118",
-							"fileName": "SustainabilityReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "initiatives"
-						},
-						"comment": "input 1080p transmitter",
-						"quality": "Reported"
-					},
-					"fossilGasRelatedActivitiesSection431": {
-						"value": "No",
-						"dataSource": {
-							"page": "21-375",
-							"fileName": "ESEFReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "e-business"
-						},
-						"comment": "hack redundant circuit",
-						"quality": "Reported"
-					}
+					"comment": "calculate bluetooth panel",
+					"quality": null
 				},
-				"taxonomyAlignedDenominator": {},
-				"taxonomyAlignedNumerator": {},
-				"taxonomyEligibleButNotAligned": {},
-				"taxonomyNonEligible": {}
-			}
+				"nuclearEnergyRelatedActivitiesSection427": null,
+				"nuclearEnergyRelatedActivitiesSection428": {
+					"value": "Yes",
+					"dataSource": null,
+					"comment": "compress redundant microchip",
+					"quality": "Incomplete"
+				},
+				"fossilGasRelatedActivitiesSection429": {
+					"value": "No",
+					"dataSource": {
+						"page": "754-1083",
+						"fileName": "IntegratedReport",
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"tagName": "platforms"
+					},
+					"comment": "back up online sensor",
+					"quality": "Estimated"
+				},
+				"fossilGasRelatedActivitiesSection430": {
+					"value": null,
+					"dataSource": {
+						"page": "1098-1118",
+						"fileName": "SustainabilityReport",
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"tagName": "initiatives"
+					},
+					"comment": "input 1080p transmitter",
+					"quality": "Reported"
+				},
+				"fossilGasRelatedActivitiesSection431": {
+					"value": "No",
+					"dataSource": {
+						"page": "21-375",
+						"fileName": "ESEFReport",
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"tagName": "e-business"
+					},
+					"comment": "hack redundant circuit",
+					"quality": "Reported"
+				}
+			},
+			"taxonomyAlignedDenominator": {},
+			"taxonomyAlignedNumerator": {},
+			"taxonomyEligibleButNotAligned": {},
+			"taxonomyNonEligible": {}
 		},
 		"reportingPeriod": "2021"
 	},
@@ -917,60 +899,58 @@
 			"parentCompanyLei": null
 		},
 		"t": {
-			"nuclearAndGas": {
-				"general": {
-					"nuclearEnergyRelatedActivitiesSection426": {
-						"value": null,
-						"dataSource": {
-							"page": "645-759",
-							"fileName": "AnnualReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "lifetime value"
-						},
-						"comment": null,
-						"quality": "Reported"
+			"general": {
+				"nuclearEnergyRelatedActivitiesSection426": {
+					"value": null,
+					"dataSource": {
+						"page": "645-759",
+						"fileName": "AnnualReport",
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"tagName": "lifetime value"
 					},
-					"nuclearEnergyRelatedActivitiesSection427": null,
-					"nuclearEnergyRelatedActivitiesSection428": {
-						"value": "No",
-						"dataSource": {
-							"page": "884",
-							"fileName": "IntegratedReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "channels"
-						},
-						"comment": "connect back-end protocol",
-						"quality": "NoDataFound"
-					},
-					"fossilGasRelatedActivitiesSection429": null,
-					"fossilGasRelatedActivitiesSection430": {
-						"value": "Yes",
-						"dataSource": {
-							"page": "333",
-							"fileName": "AnnualReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "markets"
-						},
-						"comment": "reboot optical panel",
-						"quality": "Estimated"
-					},
-					"fossilGasRelatedActivitiesSection431": {
-						"value": "No",
-						"dataSource": {
-							"page": "444-997",
-							"fileName": "IntegratedReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "experiences"
-						},
-						"comment": "navigate digital program",
-						"quality": "NoDataFound"
-					}
+					"comment": null,
+					"quality": "Reported"
 				},
-				"taxonomyAlignedDenominator": {},
-				"taxonomyAlignedNumerator": {},
-				"taxonomyEligibleButNotAligned": {},
-				"taxonomyNonEligible": {}
-			}
+				"nuclearEnergyRelatedActivitiesSection427": null,
+				"nuclearEnergyRelatedActivitiesSection428": {
+					"value": "No",
+					"dataSource": {
+						"page": "884",
+						"fileName": "IntegratedReport",
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"tagName": "channels"
+					},
+					"comment": "connect back-end protocol",
+					"quality": "NoDataFound"
+				},
+				"fossilGasRelatedActivitiesSection429": null,
+				"fossilGasRelatedActivitiesSection430": {
+					"value": "Yes",
+					"dataSource": {
+						"page": "333",
+						"fileName": "AnnualReport",
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"tagName": "markets"
+					},
+					"comment": "reboot optical panel",
+					"quality": "Estimated"
+				},
+				"fossilGasRelatedActivitiesSection431": {
+					"value": "No",
+					"dataSource": {
+						"page": "444-997",
+						"fileName": "IntegratedReport",
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"tagName": "experiences"
+					},
+					"comment": "navigate digital program",
+					"quality": "NoDataFound"
+				}
+			},
+			"taxonomyAlignedDenominator": {},
+			"taxonomyAlignedNumerator": {},
+			"taxonomyEligibleButNotAligned": {},
+			"taxonomyNonEligible": {}
 		},
 		"reportingPeriod": "2024"
 	},
@@ -1018,75 +998,73 @@
 			"parentCompanyLei": "E0Dze6QmKyZw12H32F09"
 		},
 		"t": {
-			"nuclearAndGas": {
-				"general": {
-					"nuclearEnergyRelatedActivitiesSection426": {
-						"value": "Yes",
-						"dataSource": {
-							"page": "205-687",
-							"fileName": "ESEFReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "action-items"
-						},
-						"comment": "copy back-end circuit",
-						"quality": "Estimated"
+			"general": {
+				"nuclearEnergyRelatedActivitiesSection426": {
+					"value": "Yes",
+					"dataSource": {
+						"page": "205-687",
+						"fileName": "ESEFReport",
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"tagName": "action-items"
 					},
-					"nuclearEnergyRelatedActivitiesSection427": {
-						"value": "Yes",
-						"dataSource": {
-							"page": "103-985",
-							"fileName": "ESEFReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "action-items"
-						},
-						"comment": null,
-						"quality": "Audited"
-					},
-					"nuclearEnergyRelatedActivitiesSection428": {
-						"value": "Yes",
-						"dataSource": {
-							"page": "1",
-							"fileName": "ESEFReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "portals"
-						},
-						"comment": null,
-						"quality": "NoDataFound"
-					},
-					"fossilGasRelatedActivitiesSection429": {
-						"value": "No",
-						"dataSource": {
-							"page": "583",
-							"fileName": "ESEFReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "action-items"
-						},
-						"comment": "copy multi-byte panel",
-						"quality": "Audited"
-					},
-					"fossilGasRelatedActivitiesSection430": {
-						"value": "No",
-						"dataSource": null,
-						"comment": null,
-						"quality": "Estimated"
-					},
-					"fossilGasRelatedActivitiesSection431": {
-						"value": null,
-						"dataSource": {
-							"page": "914-1146",
-							"fileName": "AnnualReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "deliverables"
-						},
-						"comment": "override neural circuit",
-						"quality": "Incomplete"
-					}
+					"comment": "copy back-end circuit",
+					"quality": "Estimated"
 				},
-				"taxonomyAlignedDenominator": {},
-				"taxonomyAlignedNumerator": {},
-				"taxonomyEligibleButNotAligned": {},
-				"taxonomyNonEligible": {}
-			}
+				"nuclearEnergyRelatedActivitiesSection427": {
+					"value": "Yes",
+					"dataSource": {
+						"page": "103-985",
+						"fileName": "ESEFReport",
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"tagName": "action-items"
+					},
+					"comment": null,
+					"quality": "Audited"
+				},
+				"nuclearEnergyRelatedActivitiesSection428": {
+					"value": "Yes",
+					"dataSource": {
+						"page": "1",
+						"fileName": "ESEFReport",
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"tagName": "portals"
+					},
+					"comment": null,
+					"quality": "NoDataFound"
+				},
+				"fossilGasRelatedActivitiesSection429": {
+					"value": "No",
+					"dataSource": {
+						"page": "583",
+						"fileName": "ESEFReport",
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"tagName": "action-items"
+					},
+					"comment": "copy multi-byte panel",
+					"quality": "Audited"
+				},
+				"fossilGasRelatedActivitiesSection430": {
+					"value": "No",
+					"dataSource": null,
+					"comment": null,
+					"quality": "Estimated"
+				},
+				"fossilGasRelatedActivitiesSection431": {
+					"value": null,
+					"dataSource": {
+						"page": "914-1146",
+						"fileName": "AnnualReport",
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"tagName": "deliverables"
+					},
+					"comment": "override neural circuit",
+					"quality": "Incomplete"
+				}
+			},
+			"taxonomyAlignedDenominator": {},
+			"taxonomyAlignedNumerator": {},
+			"taxonomyEligibleButNotAligned": {},
+			"taxonomyNonEligible": {}
 		},
 		"reportingPeriod": "2023"
 	},
@@ -1130,70 +1108,68 @@
 			"parentCompanyLei": "zgeZiXXOEe4fIHJ8pw8p"
 		},
 		"t": {
-			"nuclearAndGas": {
-				"general": {
-					"nuclearEnergyRelatedActivitiesSection426": {
-						"value": "Yes",
-						"dataSource": {
-							"page": "154",
-							"fileName": "IntegratedReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "relationships"
-						},
-						"comment": "program bluetooth matrix",
-						"quality": "NoDataFound"
+			"general": {
+				"nuclearEnergyRelatedActivitiesSection426": {
+					"value": "Yes",
+					"dataSource": {
+						"page": "154",
+						"fileName": "IntegratedReport",
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"tagName": "relationships"
 					},
-					"nuclearEnergyRelatedActivitiesSection427": {
-						"value": null,
-						"dataSource": {
-							"page": "372",
-							"fileName": "AnnualReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "web services"
-						},
-						"comment": "connect solid state port",
-						"quality": "Audited"
-					},
-					"nuclearEnergyRelatedActivitiesSection428": {
-						"value": null,
-						"dataSource": {
-							"page": "740",
-							"fileName": "IntegratedReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "action-items"
-						},
-						"comment": "reboot optical card",
-						"quality": "Reported"
-					},
-					"fossilGasRelatedActivitiesSection429": {
-						"value": null,
-						"dataSource": {
-							"page": "1155-1235",
-							"fileName": "SustainabilityReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "networks"
-						},
-						"comment": "hack open-source hard drive",
-						"quality": "Incomplete"
-					},
-					"fossilGasRelatedActivitiesSection430": {
-						"value": "No",
-						"dataSource": {
-							"page": "553-888",
-							"fileName": "SustainabilityReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "models"
-						},
-						"comment": "copy primary transmitter",
-						"quality": null
-					},
-					"fossilGasRelatedActivitiesSection431": null
+					"comment": "program bluetooth matrix",
+					"quality": "NoDataFound"
 				},
-				"taxonomyAlignedDenominator": {},
-				"taxonomyAlignedNumerator": {},
-				"taxonomyEligibleButNotAligned": {},
-				"taxonomyNonEligible": {}
-			}
+				"nuclearEnergyRelatedActivitiesSection427": {
+					"value": null,
+					"dataSource": {
+						"page": "372",
+						"fileName": "AnnualReport",
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"tagName": "web services"
+					},
+					"comment": "connect solid state port",
+					"quality": "Audited"
+				},
+				"nuclearEnergyRelatedActivitiesSection428": {
+					"value": null,
+					"dataSource": {
+						"page": "740",
+						"fileName": "IntegratedReport",
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"tagName": "action-items"
+					},
+					"comment": "reboot optical card",
+					"quality": "Reported"
+				},
+				"fossilGasRelatedActivitiesSection429": {
+					"value": null,
+					"dataSource": {
+						"page": "1155-1235",
+						"fileName": "SustainabilityReport",
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"tagName": "networks"
+					},
+					"comment": "hack open-source hard drive",
+					"quality": "Incomplete"
+				},
+				"fossilGasRelatedActivitiesSection430": {
+					"value": "No",
+					"dataSource": {
+						"page": "553-888",
+						"fileName": "SustainabilityReport",
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"tagName": "models"
+					},
+					"comment": "copy primary transmitter",
+					"quality": null
+				},
+				"fossilGasRelatedActivitiesSection431": null
+			},
+			"taxonomyAlignedDenominator": {},
+			"taxonomyAlignedNumerator": {},
+			"taxonomyEligibleButNotAligned": {},
+			"taxonomyNonEligible": {}
 		},
 		"reportingPeriod": "2023"
 	},
@@ -1239,65 +1215,63 @@
 			"parentCompanyLei": null
 		},
 		"t": {
-			"nuclearAndGas": {
-				"general": {
-					"nuclearEnergyRelatedActivitiesSection426": null,
-					"nuclearEnergyRelatedActivitiesSection427": {
-						"value": "Yes",
-						"dataSource": {
-							"page": "1099-1175",
-							"fileName": "ESEFReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "e-markets"
-						},
-						"comment": "connect multi-byte monitor",
-						"quality": "Reported"
+			"general": {
+				"nuclearEnergyRelatedActivitiesSection426": null,
+				"nuclearEnergyRelatedActivitiesSection427": {
+					"value": "Yes",
+					"dataSource": {
+						"page": "1099-1175",
+						"fileName": "ESEFReport",
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"tagName": "e-markets"
 					},
-					"nuclearEnergyRelatedActivitiesSection428": {
-						"value": "Yes",
-						"dataSource": {
-							"page": "1125-1287",
-							"fileName": "ESEFReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "e-markets"
-						},
-						"comment": null,
-						"quality": null
-					},
-					"fossilGasRelatedActivitiesSection429": {
-						"value": "Yes",
-						"dataSource": null,
-						"comment": "parse wireless bus",
-						"quality": "NoDataFound"
-					},
-					"fossilGasRelatedActivitiesSection430": {
-						"value": "Yes",
-						"dataSource": {
-							"page": "947",
-							"fileName": "AnnualReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "infrastructures"
-						},
-						"comment": "index cross-platform bandwidth",
-						"quality": null
-					},
-					"fossilGasRelatedActivitiesSection431": {
-						"value": "Yes",
-						"dataSource": {
-							"page": "79-775",
-							"fileName": "ESEFReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "schemas"
-						},
-						"comment": "navigate online firewall",
-						"quality": "Reported"
-					}
+					"comment": "connect multi-byte monitor",
+					"quality": "Reported"
 				},
-				"taxonomyAlignedDenominator": {},
-				"taxonomyAlignedNumerator": {},
-				"taxonomyEligibleButNotAligned": {},
-				"taxonomyNonEligible": {}
-			}
+				"nuclearEnergyRelatedActivitiesSection428": {
+					"value": "Yes",
+					"dataSource": {
+						"page": "1125-1287",
+						"fileName": "ESEFReport",
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"tagName": "e-markets"
+					},
+					"comment": null,
+					"quality": null
+				},
+				"fossilGasRelatedActivitiesSection429": {
+					"value": "Yes",
+					"dataSource": null,
+					"comment": "parse wireless bus",
+					"quality": "NoDataFound"
+				},
+				"fossilGasRelatedActivitiesSection430": {
+					"value": "Yes",
+					"dataSource": {
+						"page": "947",
+						"fileName": "AnnualReport",
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"tagName": "infrastructures"
+					},
+					"comment": "index cross-platform bandwidth",
+					"quality": null
+				},
+				"fossilGasRelatedActivitiesSection431": {
+					"value": "Yes",
+					"dataSource": {
+						"page": "79-775",
+						"fileName": "ESEFReport",
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"tagName": "schemas"
+					},
+					"comment": "navigate online firewall",
+					"quality": "Reported"
+				}
+			},
+			"taxonomyAlignedDenominator": {},
+			"taxonomyAlignedNumerator": {},
+			"taxonomyEligibleButNotAligned": {},
+			"taxonomyNonEligible": {}
 		},
 		"reportingPeriod": "2021"
 	},
@@ -1340,65 +1314,63 @@
 			"parentCompanyLei": null
 		},
 		"t": {
-			"nuclearAndGas": {
-				"general": {
-					"nuclearEnergyRelatedActivitiesSection426": null,
-					"nuclearEnergyRelatedActivitiesSection427": {
-						"value": "Yes",
-						"dataSource": {
-							"page": "914-1029",
-							"fileName": "SustainabilityReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "models"
-						},
-						"comment": "hack cross-platform driver",
-						"quality": "Audited"
+			"general": {
+				"nuclearEnergyRelatedActivitiesSection426": null,
+				"nuclearEnergyRelatedActivitiesSection427": {
+					"value": "Yes",
+					"dataSource": {
+						"page": "914-1029",
+						"fileName": "SustainabilityReport",
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"tagName": "models"
 					},
-					"nuclearEnergyRelatedActivitiesSection428": {
-						"value": null,
-						"dataSource": {
-							"page": "78",
-							"fileName": "SustainabilityReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "blockchains"
-						},
-						"comment": "program virtual pixel",
-						"quality": "Estimated"
-					},
-					"fossilGasRelatedActivitiesSection429": {
-						"value": "Yes",
-						"dataSource": null,
-						"comment": null,
-						"quality": null
-					},
-					"fossilGasRelatedActivitiesSection430": {
-						"value": null,
-						"dataSource": {
-							"page": "767",
-							"fileName": "AnnualReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "paradigms"
-						},
-						"comment": "program online matrix",
-						"quality": "Audited"
-					},
-					"fossilGasRelatedActivitiesSection431": {
-						"value": "No",
-						"dataSource": {
-							"page": "787",
-							"fileName": "SustainabilityReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "solutions"
-						},
-						"comment": null,
-						"quality": "Estimated"
-					}
+					"comment": "hack cross-platform driver",
+					"quality": "Audited"
 				},
-				"taxonomyAlignedDenominator": {},
-				"taxonomyAlignedNumerator": {},
-				"taxonomyEligibleButNotAligned": {},
-				"taxonomyNonEligible": {}
-			}
+				"nuclearEnergyRelatedActivitiesSection428": {
+					"value": null,
+					"dataSource": {
+						"page": "78",
+						"fileName": "SustainabilityReport",
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"tagName": "blockchains"
+					},
+					"comment": "program virtual pixel",
+					"quality": "Estimated"
+				},
+				"fossilGasRelatedActivitiesSection429": {
+					"value": "Yes",
+					"dataSource": null,
+					"comment": null,
+					"quality": null
+				},
+				"fossilGasRelatedActivitiesSection430": {
+					"value": null,
+					"dataSource": {
+						"page": "767",
+						"fileName": "AnnualReport",
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"tagName": "paradigms"
+					},
+					"comment": "program online matrix",
+					"quality": "Audited"
+				},
+				"fossilGasRelatedActivitiesSection431": {
+					"value": "No",
+					"dataSource": {
+						"page": "787",
+						"fileName": "SustainabilityReport",
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"tagName": "solutions"
+					},
+					"comment": null,
+					"quality": "Estimated"
+				}
+			},
+			"taxonomyAlignedDenominator": {},
+			"taxonomyAlignedNumerator": {},
+			"taxonomyEligibleButNotAligned": {},
+			"taxonomyNonEligible": {}
 		},
 		"reportingPeriod": "2022"
 	},
@@ -1440,70 +1412,68 @@
 			"parentCompanyLei": "3a3yWXPfbGnbE8Qvv0xj"
 		},
 		"t": {
-			"nuclearAndGas": {
-				"general": {
-					"nuclearEnergyRelatedActivitiesSection426": {
-						"value": "Yes",
-						"dataSource": {
-							"page": "849-1060",
-							"fileName": "SustainabilityReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "methodologies"
-						},
-						"comment": "reboot bluetooth bus",
-						"quality": "NoDataFound"
+			"general": {
+				"nuclearEnergyRelatedActivitiesSection426": {
+					"value": "Yes",
+					"dataSource": {
+						"page": "849-1060",
+						"fileName": "SustainabilityReport",
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"tagName": "methodologies"
 					},
-					"nuclearEnergyRelatedActivitiesSection427": {
-						"value": null,
-						"dataSource": {
-							"page": "550-1142",
-							"fileName": "SustainabilityReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "initiatives"
-						},
-						"comment": "input primary application",
-						"quality": "NoDataFound"
-					},
-					"nuclearEnergyRelatedActivitiesSection428": {
-						"value": "Yes",
-						"dataSource": {
-							"page": "1100-1133",
-							"fileName": "SustainabilityReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "models"
-						},
-						"comment": "connect open-source protocol",
-						"quality": "Incomplete"
-					},
-					"fossilGasRelatedActivitiesSection429": {
-						"value": null,
-						"dataSource": {
-							"page": "520",
-							"fileName": "SustainabilityReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "systems"
-						},
-						"comment": null,
-						"quality": null
-					},
-					"fossilGasRelatedActivitiesSection430": null,
-					"fossilGasRelatedActivitiesSection431": {
-						"value": "No",
-						"dataSource": {
-							"page": "216-893",
-							"fileName": "SustainabilityReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "communities"
-						},
-						"comment": "synthesize primary monitor",
-						"quality": "NoDataFound"
-					}
+					"comment": "reboot bluetooth bus",
+					"quality": "NoDataFound"
 				},
-				"taxonomyAlignedDenominator": {},
-				"taxonomyAlignedNumerator": {},
-				"taxonomyEligibleButNotAligned": {},
-				"taxonomyNonEligible": {}
-			}
+				"nuclearEnergyRelatedActivitiesSection427": {
+					"value": null,
+					"dataSource": {
+						"page": "550-1142",
+						"fileName": "SustainabilityReport",
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"tagName": "initiatives"
+					},
+					"comment": "input primary application",
+					"quality": "NoDataFound"
+				},
+				"nuclearEnergyRelatedActivitiesSection428": {
+					"value": "Yes",
+					"dataSource": {
+						"page": "1100-1133",
+						"fileName": "SustainabilityReport",
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"tagName": "models"
+					},
+					"comment": "connect open-source protocol",
+					"quality": "Incomplete"
+				},
+				"fossilGasRelatedActivitiesSection429": {
+					"value": null,
+					"dataSource": {
+						"page": "520",
+						"fileName": "SustainabilityReport",
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"tagName": "systems"
+					},
+					"comment": null,
+					"quality": null
+				},
+				"fossilGasRelatedActivitiesSection430": null,
+				"fossilGasRelatedActivitiesSection431": {
+					"value": "No",
+					"dataSource": {
+						"page": "216-893",
+						"fileName": "SustainabilityReport",
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"tagName": "communities"
+					},
+					"comment": "synthesize primary monitor",
+					"quality": "NoDataFound"
+				}
+			},
+			"taxonomyAlignedDenominator": {},
+			"taxonomyAlignedNumerator": {},
+			"taxonomyEligibleButNotAligned": {},
+			"taxonomyNonEligible": {}
 		},
 		"reportingPeriod": "2021"
 	},
@@ -1552,70 +1522,68 @@
 			"parentCompanyLei": "E03klHCcSr4nePx3mM2O"
 		},
 		"t": {
-			"nuclearAndGas": {
-				"general": {
-					"nuclearEnergyRelatedActivitiesSection426": {
-						"value": "Yes",
-						"dataSource": {
-							"page": "1063-1166",
-							"fileName": "AnnualReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "solutions"
-						},
-						"comment": "parse virtual monitor",
-						"quality": "Audited"
+			"general": {
+				"nuclearEnergyRelatedActivitiesSection426": {
+					"value": "Yes",
+					"dataSource": {
+						"page": "1063-1166",
+						"fileName": "AnnualReport",
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"tagName": "solutions"
 					},
-					"nuclearEnergyRelatedActivitiesSection427": {
-						"value": "No",
-						"dataSource": {
-							"page": "1064-1265",
-							"fileName": "AnnualReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "deliverables"
-						},
-						"comment": "quantify bluetooth driver",
-						"quality": "Estimated"
-					},
-					"nuclearEnergyRelatedActivitiesSection428": {
-						"value": "Yes",
-						"dataSource": {
-							"page": "1130",
-							"fileName": "AnnualReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "e-markets"
-						},
-						"comment": "copy auxiliary capacitor",
-						"quality": null
-					},
-					"fossilGasRelatedActivitiesSection429": null,
-					"fossilGasRelatedActivitiesSection430": {
-						"value": null,
-						"dataSource": {
-							"page": "1058",
-							"fileName": "AnnualReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "lifetime value"
-						},
-						"comment": "compress multi-byte bandwidth",
-						"quality": "Reported"
-					},
-					"fossilGasRelatedActivitiesSection431": {
-						"value": null,
-						"dataSource": {
-							"page": "989",
-							"fileName": "AnnualReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "interfaces"
-						},
-						"comment": "synthesize mobile panel",
-						"quality": "Estimated"
-					}
+					"comment": "parse virtual monitor",
+					"quality": "Audited"
 				},
-				"taxonomyAlignedDenominator": {},
-				"taxonomyAlignedNumerator": {},
-				"taxonomyEligibleButNotAligned": {},
-				"taxonomyNonEligible": {}
-			}
+				"nuclearEnergyRelatedActivitiesSection427": {
+					"value": "No",
+					"dataSource": {
+						"page": "1064-1265",
+						"fileName": "AnnualReport",
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"tagName": "deliverables"
+					},
+					"comment": "quantify bluetooth driver",
+					"quality": "Estimated"
+				},
+				"nuclearEnergyRelatedActivitiesSection428": {
+					"value": "Yes",
+					"dataSource": {
+						"page": "1130",
+						"fileName": "AnnualReport",
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"tagName": "e-markets"
+					},
+					"comment": "copy auxiliary capacitor",
+					"quality": null
+				},
+				"fossilGasRelatedActivitiesSection429": null,
+				"fossilGasRelatedActivitiesSection430": {
+					"value": null,
+					"dataSource": {
+						"page": "1058",
+						"fileName": "AnnualReport",
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"tagName": "lifetime value"
+					},
+					"comment": "compress multi-byte bandwidth",
+					"quality": "Reported"
+				},
+				"fossilGasRelatedActivitiesSection431": {
+					"value": null,
+					"dataSource": {
+						"page": "989",
+						"fileName": "AnnualReport",
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"tagName": "interfaces"
+					},
+					"comment": "synthesize mobile panel",
+					"quality": "Estimated"
+				}
+			},
+			"taxonomyAlignedDenominator": {},
+			"taxonomyAlignedNumerator": {},
+			"taxonomyEligibleButNotAligned": {},
+			"taxonomyNonEligible": {}
 		},
 		"reportingPeriod": "2023"
 	},
@@ -1654,65 +1622,63 @@
 			"parentCompanyLei": "0keq4FfEXGOuhCz4KceD"
 		},
 		"t": {
-			"nuclearAndGas": {
-				"general": {
-					"nuclearEnergyRelatedActivitiesSection426": {
-						"value": "No",
-						"dataSource": null,
-						"comment": "override primary alarm",
-						"quality": "Incomplete"
-					},
-					"nuclearEnergyRelatedActivitiesSection427": {
-						"value": null,
-						"dataSource": {
-							"page": "741",
-							"fileName": "IntegratedReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "synergies"
-						},
-						"comment": "back up auxiliary bus",
-						"quality": "Estimated"
-					},
-					"nuclearEnergyRelatedActivitiesSection428": null,
-					"fossilGasRelatedActivitiesSection429": {
-						"value": "No",
-						"dataSource": {
-							"page": "1032-1158",
-							"fileName": "SustainabilityReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "communities"
-						},
-						"comment": "back up bluetooth capacitor",
-						"quality": "Reported"
-					},
-					"fossilGasRelatedActivitiesSection430": {
-						"value": "Yes",
-						"dataSource": {
-							"page": "1111",
-							"fileName": "SustainabilityReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "e-commerce"
-						},
-						"comment": "copy neural feed",
-						"quality": null
-					},
-					"fossilGasRelatedActivitiesSection431": {
-						"value": null,
-						"dataSource": {
-							"page": "810-915",
-							"fileName": "ESEFReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "eyeballs"
-						},
-						"comment": "hack neural transmitter",
-						"quality": null
-					}
+			"general": {
+				"nuclearEnergyRelatedActivitiesSection426": {
+					"value": "No",
+					"dataSource": null,
+					"comment": "override primary alarm",
+					"quality": "Incomplete"
 				},
-				"taxonomyAlignedDenominator": {},
-				"taxonomyAlignedNumerator": {},
-				"taxonomyEligibleButNotAligned": {},
-				"taxonomyNonEligible": {}
-			}
+				"nuclearEnergyRelatedActivitiesSection427": {
+					"value": null,
+					"dataSource": {
+						"page": "741",
+						"fileName": "IntegratedReport",
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"tagName": "synergies"
+					},
+					"comment": "back up auxiliary bus",
+					"quality": "Estimated"
+				},
+				"nuclearEnergyRelatedActivitiesSection428": null,
+				"fossilGasRelatedActivitiesSection429": {
+					"value": "No",
+					"dataSource": {
+						"page": "1032-1158",
+						"fileName": "SustainabilityReport",
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"tagName": "communities"
+					},
+					"comment": "back up bluetooth capacitor",
+					"quality": "Reported"
+				},
+				"fossilGasRelatedActivitiesSection430": {
+					"value": "Yes",
+					"dataSource": {
+						"page": "1111",
+						"fileName": "SustainabilityReport",
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"tagName": "e-commerce"
+					},
+					"comment": "copy neural feed",
+					"quality": null
+				},
+				"fossilGasRelatedActivitiesSection431": {
+					"value": null,
+					"dataSource": {
+						"page": "810-915",
+						"fileName": "ESEFReport",
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"tagName": "eyeballs"
+					},
+					"comment": "hack neural transmitter",
+					"quality": null
+				}
+			},
+			"taxonomyAlignedDenominator": {},
+			"taxonomyAlignedNumerator": {},
+			"taxonomyEligibleButNotAligned": {},
+			"taxonomyNonEligible": {}
 		},
 		"reportingPeriod": "2023"
 	},
@@ -1753,55 +1719,53 @@
 			"parentCompanyLei": "5AhCU5V1PtQ8mpA6DVKX"
 		},
 		"t": {
-			"nuclearAndGas": {
-				"general": {
-					"nuclearEnergyRelatedActivitiesSection426": {
-						"value": null,
-						"dataSource": {
-							"page": "413-612",
-							"fileName": "IntegratedReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "paradigms"
-						},
-						"comment": "index auxiliary hard drive",
-						"quality": "Incomplete"
+			"general": {
+				"nuclearEnergyRelatedActivitiesSection426": {
+					"value": null,
+					"dataSource": {
+						"page": "413-612",
+						"fileName": "IntegratedReport",
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"tagName": "paradigms"
 					},
-					"nuclearEnergyRelatedActivitiesSection427": null,
-					"nuclearEnergyRelatedActivitiesSection428": null,
-					"fossilGasRelatedActivitiesSection429": {
-						"value": null,
-						"dataSource": {
-							"page": "144-1177",
-							"fileName": "IntegratedReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "metrics"
-						},
-						"comment": "synthesize mobile array",
-						"quality": "Estimated"
-					},
-					"fossilGasRelatedActivitiesSection430": {
-						"value": "Yes",
-						"dataSource": null,
-						"comment": null,
-						"quality": "NoDataFound"
-					},
-					"fossilGasRelatedActivitiesSection431": {
-						"value": "No",
-						"dataSource": {
-							"page": "996-1049",
-							"fileName": "IntegratedReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "paradigms"
-						},
-						"comment": "hack back-end application",
-						"quality": "Audited"
-					}
+					"comment": "index auxiliary hard drive",
+					"quality": "Incomplete"
 				},
-				"taxonomyAlignedDenominator": {},
-				"taxonomyAlignedNumerator": {},
-				"taxonomyEligibleButNotAligned": {},
-				"taxonomyNonEligible": {}
-			}
+				"nuclearEnergyRelatedActivitiesSection427": null,
+				"nuclearEnergyRelatedActivitiesSection428": null,
+				"fossilGasRelatedActivitiesSection429": {
+					"value": null,
+					"dataSource": {
+						"page": "144-1177",
+						"fileName": "IntegratedReport",
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"tagName": "metrics"
+					},
+					"comment": "synthesize mobile array",
+					"quality": "Estimated"
+				},
+				"fossilGasRelatedActivitiesSection430": {
+					"value": "Yes",
+					"dataSource": null,
+					"comment": null,
+					"quality": "NoDataFound"
+				},
+				"fossilGasRelatedActivitiesSection431": {
+					"value": "No",
+					"dataSource": {
+						"page": "996-1049",
+						"fileName": "IntegratedReport",
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"tagName": "paradigms"
+					},
+					"comment": "hack back-end application",
+					"quality": "Audited"
+				}
+			},
+			"taxonomyAlignedDenominator": {},
+			"taxonomyAlignedNumerator": {},
+			"taxonomyEligibleButNotAligned": {},
+			"taxonomyNonEligible": {}
 		},
 		"reportingPeriod": "2021"
 	},
@@ -1839,70 +1803,68 @@
 			"parentCompanyLei": "DzquJvGmCgoH2ircdQRh"
 		},
 		"t": {
-			"nuclearAndGas": {
-				"general": {
-					"nuclearEnergyRelatedActivitiesSection426": null,
-					"nuclearEnergyRelatedActivitiesSection427": {
-						"value": "Yes",
-						"dataSource": {
-							"page": "441",
-							"fileName": "SustainabilityReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "synergies"
-						},
-						"comment": null,
-						"quality": "Audited"
+			"general": {
+				"nuclearEnergyRelatedActivitiesSection426": null,
+				"nuclearEnergyRelatedActivitiesSection427": {
+					"value": "Yes",
+					"dataSource": {
+						"page": "441",
+						"fileName": "SustainabilityReport",
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"tagName": "synergies"
 					},
-					"nuclearEnergyRelatedActivitiesSection428": {
-						"value": "Yes",
-						"dataSource": {
-							"page": "406",
-							"fileName": "SustainabilityReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "lifetime value"
-						},
-						"comment": "navigate back-end driver",
-						"quality": null
-					},
-					"fossilGasRelatedActivitiesSection429": {
-						"value": null,
-						"dataSource": {
-							"page": "354-449",
-							"fileName": "SustainabilityReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "web services"
-						},
-						"comment": null,
-						"quality": "Reported"
-					},
-					"fossilGasRelatedActivitiesSection430": {
-						"value": null,
-						"dataSource": {
-							"page": "800-968",
-							"fileName": "SustainabilityReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "initiatives"
-						},
-						"comment": "quantify open-source bus",
-						"quality": "Audited"
-					},
-					"fossilGasRelatedActivitiesSection431": {
-						"value": "No",
-						"dataSource": {
-							"page": "995-1005",
-							"fileName": "SustainabilityReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "supply-chains"
-						},
-						"comment": null,
-						"quality": "Incomplete"
-					}
+					"comment": null,
+					"quality": "Audited"
 				},
-				"taxonomyAlignedDenominator": {},
-				"taxonomyAlignedNumerator": {},
-				"taxonomyEligibleButNotAligned": {},
-				"taxonomyNonEligible": {}
-			}
+				"nuclearEnergyRelatedActivitiesSection428": {
+					"value": "Yes",
+					"dataSource": {
+						"page": "406",
+						"fileName": "SustainabilityReport",
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"tagName": "lifetime value"
+					},
+					"comment": "navigate back-end driver",
+					"quality": null
+				},
+				"fossilGasRelatedActivitiesSection429": {
+					"value": null,
+					"dataSource": {
+						"page": "354-449",
+						"fileName": "SustainabilityReport",
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"tagName": "web services"
+					},
+					"comment": null,
+					"quality": "Reported"
+				},
+				"fossilGasRelatedActivitiesSection430": {
+					"value": null,
+					"dataSource": {
+						"page": "800-968",
+						"fileName": "SustainabilityReport",
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"tagName": "initiatives"
+					},
+					"comment": "quantify open-source bus",
+					"quality": "Audited"
+				},
+				"fossilGasRelatedActivitiesSection431": {
+					"value": "No",
+					"dataSource": {
+						"page": "995-1005",
+						"fileName": "SustainabilityReport",
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"tagName": "supply-chains"
+					},
+					"comment": null,
+					"quality": "Incomplete"
+				}
+			},
+			"taxonomyAlignedDenominator": {},
+			"taxonomyAlignedNumerator": {},
+			"taxonomyEligibleButNotAligned": {},
+			"taxonomyNonEligible": {}
 		},
 		"reportingPeriod": "2020"
 	},
@@ -1938,65 +1900,63 @@
 			"parentCompanyLei": null
 		},
 		"t": {
-			"nuclearAndGas": {
-				"general": {
-					"nuclearEnergyRelatedActivitiesSection426": {
-						"value": "Yes",
-						"dataSource": null,
-						"comment": "synthesize wireless firewall",
-						"quality": null
-					},
-					"nuclearEnergyRelatedActivitiesSection427": null,
-					"nuclearEnergyRelatedActivitiesSection428": {
-						"value": null,
-						"dataSource": {
-							"page": "319",
-							"fileName": "SustainabilityReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "applications"
-						},
-						"comment": "compress back-end driver",
-						"quality": "Audited"
-					},
-					"fossilGasRelatedActivitiesSection429": {
-						"value": "No",
-						"dataSource": {
-							"page": "1114-1121",
-							"fileName": "IntegratedReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "niches"
-						},
-						"comment": "generate back-end card",
-						"quality": "Incomplete"
-					},
-					"fossilGasRelatedActivitiesSection430": {
-						"value": null,
-						"dataSource": {
-							"page": "303-736",
-							"fileName": "SustainabilityReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "networks"
-						},
-						"comment": "index optical protocol",
-						"quality": "NoDataFound"
-					},
-					"fossilGasRelatedActivitiesSection431": {
-						"value": null,
-						"dataSource": {
-							"page": "230-1151",
-							"fileName": "IntegratedReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "eyeballs"
-						},
-						"comment": "reboot online firewall",
-						"quality": "Reported"
-					}
+			"general": {
+				"nuclearEnergyRelatedActivitiesSection426": {
+					"value": "Yes",
+					"dataSource": null,
+					"comment": "synthesize wireless firewall",
+					"quality": null
 				},
-				"taxonomyAlignedDenominator": {},
-				"taxonomyAlignedNumerator": {},
-				"taxonomyEligibleButNotAligned": {},
-				"taxonomyNonEligible": {}
-			}
+				"nuclearEnergyRelatedActivitiesSection427": null,
+				"nuclearEnergyRelatedActivitiesSection428": {
+					"value": null,
+					"dataSource": {
+						"page": "319",
+						"fileName": "SustainabilityReport",
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"tagName": "applications"
+					},
+					"comment": "compress back-end driver",
+					"quality": "Audited"
+				},
+				"fossilGasRelatedActivitiesSection429": {
+					"value": "No",
+					"dataSource": {
+						"page": "1114-1121",
+						"fileName": "IntegratedReport",
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"tagName": "niches"
+					},
+					"comment": "generate back-end card",
+					"quality": "Incomplete"
+				},
+				"fossilGasRelatedActivitiesSection430": {
+					"value": null,
+					"dataSource": {
+						"page": "303-736",
+						"fileName": "SustainabilityReport",
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"tagName": "networks"
+					},
+					"comment": "index optical protocol",
+					"quality": "NoDataFound"
+				},
+				"fossilGasRelatedActivitiesSection431": {
+					"value": null,
+					"dataSource": {
+						"page": "230-1151",
+						"fileName": "IntegratedReport",
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"tagName": "eyeballs"
+					},
+					"comment": "reboot online firewall",
+					"quality": "Reported"
+				}
+			},
+			"taxonomyAlignedDenominator": {},
+			"taxonomyAlignedNumerator": {},
+			"taxonomyEligibleButNotAligned": {},
+			"taxonomyNonEligible": {}
 		},
 		"reportingPeriod": "2022"
 	},
@@ -2042,65 +2002,63 @@
 			"parentCompanyLei": "0CjmiyAKMLtIOBhJSneC"
 		},
 		"t": {
-			"nuclearAndGas": {
-				"general": {
-					"nuclearEnergyRelatedActivitiesSection426": {
-						"value": "Yes",
-						"dataSource": {
-							"page": "997-1210",
-							"fileName": "ESEFReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "niches"
-						},
-						"comment": "back up multi-byte sensor",
-						"quality": "Reported"
+			"general": {
+				"nuclearEnergyRelatedActivitiesSection426": {
+					"value": "Yes",
+					"dataSource": {
+						"page": "997-1210",
+						"fileName": "ESEFReport",
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"tagName": "niches"
 					},
-					"nuclearEnergyRelatedActivitiesSection427": {
-						"value": "Yes",
-						"dataSource": {
-							"page": "20",
-							"fileName": "IntegratedReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "platforms"
-						},
-						"comment": "quantify virtual hard drive",
-						"quality": "NoDataFound"
-					},
-					"nuclearEnergyRelatedActivitiesSection428": {
-						"value": "Yes",
-						"dataSource": {
-							"page": "58",
-							"fileName": "IntegratedReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "relationships"
-						},
-						"comment": null,
-						"quality": "NoDataFound"
-					},
-					"fossilGasRelatedActivitiesSection429": null,
-					"fossilGasRelatedActivitiesSection430": {
-						"value": "No",
-						"dataSource": null,
-						"comment": "quantify virtual application",
-						"quality": "Estimated"
-					},
-					"fossilGasRelatedActivitiesSection431": {
-						"value": "Yes",
-						"dataSource": {
-							"page": "65",
-							"fileName": "IntegratedReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "platforms"
-						},
-						"comment": null,
-						"quality": "NoDataFound"
-					}
+					"comment": "back up multi-byte sensor",
+					"quality": "Reported"
 				},
-				"taxonomyAlignedDenominator": {},
-				"taxonomyAlignedNumerator": {},
-				"taxonomyEligibleButNotAligned": {},
-				"taxonomyNonEligible": {}
-			}
+				"nuclearEnergyRelatedActivitiesSection427": {
+					"value": "Yes",
+					"dataSource": {
+						"page": "20",
+						"fileName": "IntegratedReport",
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"tagName": "platforms"
+					},
+					"comment": "quantify virtual hard drive",
+					"quality": "NoDataFound"
+				},
+				"nuclearEnergyRelatedActivitiesSection428": {
+					"value": "Yes",
+					"dataSource": {
+						"page": "58",
+						"fileName": "IntegratedReport",
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"tagName": "relationships"
+					},
+					"comment": null,
+					"quality": "NoDataFound"
+				},
+				"fossilGasRelatedActivitiesSection429": null,
+				"fossilGasRelatedActivitiesSection430": {
+					"value": "No",
+					"dataSource": null,
+					"comment": "quantify virtual application",
+					"quality": "Estimated"
+				},
+				"fossilGasRelatedActivitiesSection431": {
+					"value": "Yes",
+					"dataSource": {
+						"page": "65",
+						"fileName": "IntegratedReport",
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"tagName": "platforms"
+					},
+					"comment": null,
+					"quality": "NoDataFound"
+				}
+			},
+			"taxonomyAlignedDenominator": {},
+			"taxonomyAlignedNumerator": {},
+			"taxonomyEligibleButNotAligned": {},
+			"taxonomyNonEligible": {}
 		},
 		"reportingPeriod": "2020"
 	},
@@ -2141,65 +2099,63 @@
 			"parentCompanyLei": null
 		},
 		"t": {
-			"nuclearAndGas": {
-				"general": {
-					"nuclearEnergyRelatedActivitiesSection426": {
-						"value": "Yes",
-						"dataSource": {
-							"page": "625-956",
-							"fileName": "AnnualReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "lifetime value"
-						},
-						"comment": null,
-						"quality": null
+			"general": {
+				"nuclearEnergyRelatedActivitiesSection426": {
+					"value": "Yes",
+					"dataSource": {
+						"page": "625-956",
+						"fileName": "AnnualReport",
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"tagName": "lifetime value"
 					},
-					"nuclearEnergyRelatedActivitiesSection427": {
-						"value": null,
-						"dataSource": {
-							"page": "1171-1202",
-							"fileName": "ESEFReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "channels"
-						},
-						"comment": "generate mobile program",
-						"quality": "NoDataFound"
-					},
-					"nuclearEnergyRelatedActivitiesSection428": {
-						"value": "Yes",
-						"dataSource": {
-							"page": "80",
-							"fileName": "ESEFReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "systems"
-						},
-						"comment": "back up virtual capacitor",
-						"quality": "Audited"
-					},
-					"fossilGasRelatedActivitiesSection429": {
-						"value": "No",
-						"dataSource": null,
-						"comment": "index online array",
-						"quality": null
-					},
-					"fossilGasRelatedActivitiesSection430": null,
-					"fossilGasRelatedActivitiesSection431": {
-						"value": null,
-						"dataSource": {
-							"page": "34",
-							"fileName": "AnnualReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "initiatives"
-						},
-						"comment": "calculate digital protocol",
-						"quality": "NoDataFound"
-					}
+					"comment": null,
+					"quality": null
 				},
-				"taxonomyAlignedDenominator": {},
-				"taxonomyAlignedNumerator": {},
-				"taxonomyEligibleButNotAligned": {},
-				"taxonomyNonEligible": {}
-			}
+				"nuclearEnergyRelatedActivitiesSection427": {
+					"value": null,
+					"dataSource": {
+						"page": "1171-1202",
+						"fileName": "ESEFReport",
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"tagName": "channels"
+					},
+					"comment": "generate mobile program",
+					"quality": "NoDataFound"
+				},
+				"nuclearEnergyRelatedActivitiesSection428": {
+					"value": "Yes",
+					"dataSource": {
+						"page": "80",
+						"fileName": "ESEFReport",
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"tagName": "systems"
+					},
+					"comment": "back up virtual capacitor",
+					"quality": "Audited"
+				},
+				"fossilGasRelatedActivitiesSection429": {
+					"value": "No",
+					"dataSource": null,
+					"comment": "index online array",
+					"quality": null
+				},
+				"fossilGasRelatedActivitiesSection430": null,
+				"fossilGasRelatedActivitiesSection431": {
+					"value": null,
+					"dataSource": {
+						"page": "34",
+						"fileName": "AnnualReport",
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"tagName": "initiatives"
+					},
+					"comment": "calculate digital protocol",
+					"quality": "NoDataFound"
+				}
+			},
+			"taxonomyAlignedDenominator": {},
+			"taxonomyAlignedNumerator": {},
+			"taxonomyEligibleButNotAligned": {},
+			"taxonomyNonEligible": {}
 		},
 		"reportingPeriod": "2023"
 	},
@@ -2246,80 +2202,78 @@
 			"parentCompanyLei": null
 		},
 		"t": {
-			"nuclearAndGas": {
-				"general": {
-					"nuclearEnergyRelatedActivitiesSection426": {
-						"value": "Yes",
-						"dataSource": {
-							"page": "1164-1198",
-							"fileName": "AnnualReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "systems"
-						},
-						"comment": "index neural feed",
-						"quality": "Reported"
+			"general": {
+				"nuclearEnergyRelatedActivitiesSection426": {
+					"value": "Yes",
+					"dataSource": {
+						"page": "1164-1198",
+						"fileName": "AnnualReport",
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"tagName": "systems"
 					},
-					"nuclearEnergyRelatedActivitiesSection427": {
-						"value": "Yes",
-						"dataSource": {
-							"page": "242",
-							"fileName": "AnnualReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "web services"
-						},
-						"comment": "compress neural array",
-						"quality": "Estimated"
-					},
-					"nuclearEnergyRelatedActivitiesSection428": {
-						"value": "No",
-						"dataSource": {
-							"page": "443-1239",
-							"fileName": "IntegratedReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "communities"
-						},
-						"comment": "connect redundant bus",
-						"quality": "Estimated"
-					},
-					"fossilGasRelatedActivitiesSection429": {
-						"value": null,
-						"dataSource": {
-							"page": "1159-1179",
-							"fileName": "IntegratedReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "metrics"
-						},
-						"comment": "index neural sensor",
-						"quality": "Audited"
-					},
-					"fossilGasRelatedActivitiesSection430": {
-						"value": null,
-						"dataSource": {
-							"page": "982-1202",
-							"fileName": "AnnualReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "deliverables"
-						},
-						"comment": null,
-						"quality": "Audited"
-					},
-					"fossilGasRelatedActivitiesSection431": {
-						"value": null,
-						"dataSource": {
-							"page": "95",
-							"fileName": "IntegratedReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "partnerships"
-						},
-						"comment": "quantify auxiliary hard drive",
-						"quality": "Estimated"
-					}
+					"comment": "index neural feed",
+					"quality": "Reported"
 				},
-				"taxonomyAlignedDenominator": {},
-				"taxonomyAlignedNumerator": {},
-				"taxonomyEligibleButNotAligned": {},
-				"taxonomyNonEligible": {}
-			}
+				"nuclearEnergyRelatedActivitiesSection427": {
+					"value": "Yes",
+					"dataSource": {
+						"page": "242",
+						"fileName": "AnnualReport",
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"tagName": "web services"
+					},
+					"comment": "compress neural array",
+					"quality": "Estimated"
+				},
+				"nuclearEnergyRelatedActivitiesSection428": {
+					"value": "No",
+					"dataSource": {
+						"page": "443-1239",
+						"fileName": "IntegratedReport",
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"tagName": "communities"
+					},
+					"comment": "connect redundant bus",
+					"quality": "Estimated"
+				},
+				"fossilGasRelatedActivitiesSection429": {
+					"value": null,
+					"dataSource": {
+						"page": "1159-1179",
+						"fileName": "IntegratedReport",
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"tagName": "metrics"
+					},
+					"comment": "index neural sensor",
+					"quality": "Audited"
+				},
+				"fossilGasRelatedActivitiesSection430": {
+					"value": null,
+					"dataSource": {
+						"page": "982-1202",
+						"fileName": "AnnualReport",
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"tagName": "deliverables"
+					},
+					"comment": null,
+					"quality": "Audited"
+				},
+				"fossilGasRelatedActivitiesSection431": {
+					"value": null,
+					"dataSource": {
+						"page": "95",
+						"fileName": "IntegratedReport",
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"tagName": "partnerships"
+					},
+					"comment": "quantify auxiliary hard drive",
+					"quality": "Estimated"
+				}
+			},
+			"taxonomyAlignedDenominator": {},
+			"taxonomyAlignedNumerator": {},
+			"taxonomyEligibleButNotAligned": {},
+			"taxonomyNonEligible": {}
 		},
 		"reportingPeriod": "2021"
 	},
@@ -2364,70 +2318,68 @@
 			"parentCompanyLei": "3lSwSSkND9m0C0ErKd02"
 		},
 		"t": {
-			"nuclearAndGas": {
-				"general": {
-					"nuclearEnergyRelatedActivitiesSection426": {
-						"value": "No",
-						"dataSource": {
-							"page": "1125",
-							"fileName": "IntegratedReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "synergies"
-						},
-						"comment": "navigate mobile array",
-						"quality": "Incomplete"
+			"general": {
+				"nuclearEnergyRelatedActivitiesSection426": {
+					"value": "No",
+					"dataSource": {
+						"page": "1125",
+						"fileName": "IntegratedReport",
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"tagName": "synergies"
 					},
-					"nuclearEnergyRelatedActivitiesSection427": {
-						"value": null,
-						"dataSource": {
-							"page": "910-1027",
-							"fileName": "IntegratedReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "deliverables"
-						},
-						"comment": "transmit haptic interface",
-						"quality": "Reported"
-					},
-					"nuclearEnergyRelatedActivitiesSection428": {
-						"value": "Yes",
-						"dataSource": {
-							"page": "1051",
-							"fileName": "ESEFReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "channels"
-						},
-						"comment": "hack digital program",
-						"quality": "Estimated"
-					},
-					"fossilGasRelatedActivitiesSection429": {
-						"value": null,
-						"dataSource": {
-							"page": "1101",
-							"fileName": "IntegratedReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "functionalities"
-						},
-						"comment": "back up bluetooth microchip",
-						"quality": "Audited"
-					},
-					"fossilGasRelatedActivitiesSection430": null,
-					"fossilGasRelatedActivitiesSection431": {
-						"value": "No",
-						"dataSource": {
-							"page": "813",
-							"fileName": "IntegratedReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "methodologies"
-						},
-						"comment": "generate digital pixel",
-						"quality": "Audited"
-					}
+					"comment": "navigate mobile array",
+					"quality": "Incomplete"
 				},
-				"taxonomyAlignedDenominator": {},
-				"taxonomyAlignedNumerator": {},
-				"taxonomyEligibleButNotAligned": {},
-				"taxonomyNonEligible": {}
-			}
+				"nuclearEnergyRelatedActivitiesSection427": {
+					"value": null,
+					"dataSource": {
+						"page": "910-1027",
+						"fileName": "IntegratedReport",
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"tagName": "deliverables"
+					},
+					"comment": "transmit haptic interface",
+					"quality": "Reported"
+				},
+				"nuclearEnergyRelatedActivitiesSection428": {
+					"value": "Yes",
+					"dataSource": {
+						"page": "1051",
+						"fileName": "ESEFReport",
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"tagName": "channels"
+					},
+					"comment": "hack digital program",
+					"quality": "Estimated"
+				},
+				"fossilGasRelatedActivitiesSection429": {
+					"value": null,
+					"dataSource": {
+						"page": "1101",
+						"fileName": "IntegratedReport",
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"tagName": "functionalities"
+					},
+					"comment": "back up bluetooth microchip",
+					"quality": "Audited"
+				},
+				"fossilGasRelatedActivitiesSection430": null,
+				"fossilGasRelatedActivitiesSection431": {
+					"value": "No",
+					"dataSource": {
+						"page": "813",
+						"fileName": "IntegratedReport",
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"tagName": "methodologies"
+					},
+					"comment": "generate digital pixel",
+					"quality": "Audited"
+				}
+			},
+			"taxonomyAlignedDenominator": {},
+			"taxonomyAlignedNumerator": {},
+			"taxonomyEligibleButNotAligned": {},
+			"taxonomyNonEligible": {}
 		},
 		"reportingPeriod": "2024"
 	},
@@ -2474,70 +2426,68 @@
 			"parentCompanyLei": "PDo4OYTVqPDB78pGvimc"
 		},
 		"t": {
-			"nuclearAndGas": {
-				"general": {
-					"nuclearEnergyRelatedActivitiesSection426": {
-						"value": null,
-						"dataSource": {
-							"page": "541",
-							"fileName": "IntegratedReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "blockchains"
-						},
-						"comment": null,
-						"quality": "Audited"
+			"general": {
+				"nuclearEnergyRelatedActivitiesSection426": {
+					"value": null,
+					"dataSource": {
+						"page": "541",
+						"fileName": "IntegratedReport",
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"tagName": "blockchains"
 					},
-					"nuclearEnergyRelatedActivitiesSection427": {
-						"value": "Yes",
-						"dataSource": {
-							"page": "398",
-							"fileName": "IntegratedReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "markets"
-						},
-						"comment": null,
-						"quality": null
-					},
-					"nuclearEnergyRelatedActivitiesSection428": null,
-					"fossilGasRelatedActivitiesSection429": {
-						"value": null,
-						"dataSource": {
-							"page": "66-297",
-							"fileName": "IntegratedReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "models"
-						},
-						"comment": "reboot bluetooth application",
-						"quality": "NoDataFound"
-					},
-					"fossilGasRelatedActivitiesSection430": {
-						"value": null,
-						"dataSource": {
-							"page": "191",
-							"fileName": "IntegratedReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "applications"
-						},
-						"comment": null,
-						"quality": "Audited"
-					},
-					"fossilGasRelatedActivitiesSection431": {
-						"value": "No",
-						"dataSource": {
-							"page": "1084",
-							"fileName": "IntegratedReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "experiences"
-						},
-						"comment": "transmit haptic protocol",
-						"quality": null
-					}
+					"comment": null,
+					"quality": "Audited"
 				},
-				"taxonomyAlignedDenominator": {},
-				"taxonomyAlignedNumerator": {},
-				"taxonomyEligibleButNotAligned": {},
-				"taxonomyNonEligible": {}
-			}
+				"nuclearEnergyRelatedActivitiesSection427": {
+					"value": "Yes",
+					"dataSource": {
+						"page": "398",
+						"fileName": "IntegratedReport",
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"tagName": "markets"
+					},
+					"comment": null,
+					"quality": null
+				},
+				"nuclearEnergyRelatedActivitiesSection428": null,
+				"fossilGasRelatedActivitiesSection429": {
+					"value": null,
+					"dataSource": {
+						"page": "66-297",
+						"fileName": "IntegratedReport",
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"tagName": "models"
+					},
+					"comment": "reboot bluetooth application",
+					"quality": "NoDataFound"
+				},
+				"fossilGasRelatedActivitiesSection430": {
+					"value": null,
+					"dataSource": {
+						"page": "191",
+						"fileName": "IntegratedReport",
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"tagName": "applications"
+					},
+					"comment": null,
+					"quality": "Audited"
+				},
+				"fossilGasRelatedActivitiesSection431": {
+					"value": "No",
+					"dataSource": {
+						"page": "1084",
+						"fileName": "IntegratedReport",
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"tagName": "experiences"
+					},
+					"comment": "transmit haptic protocol",
+					"quality": null
+				}
+			},
+			"taxonomyAlignedDenominator": {},
+			"taxonomyAlignedNumerator": {},
+			"taxonomyEligibleButNotAligned": {},
+			"taxonomyNonEligible": {}
 		},
 		"reportingPeriod": "2023"
 	},
@@ -2580,60 +2530,58 @@
 			"parentCompanyLei": null
 		},
 		"t": {
-			"nuclearAndGas": {
-				"general": {
-					"nuclearEnergyRelatedActivitiesSection426": null,
-					"nuclearEnergyRelatedActivitiesSection427": {
-						"value": null,
-						"dataSource": {
-							"page": "933-1215",
-							"fileName": "IntegratedReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "synergies"
-						},
-						"comment": "compress wireless bandwidth",
-						"quality": "Reported"
+			"general": {
+				"nuclearEnergyRelatedActivitiesSection426": null,
+				"nuclearEnergyRelatedActivitiesSection427": {
+					"value": null,
+					"dataSource": {
+						"page": "933-1215",
+						"fileName": "IntegratedReport",
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"tagName": "synergies"
 					},
-					"nuclearEnergyRelatedActivitiesSection428": null,
-					"fossilGasRelatedActivitiesSection429": {
-						"value": "No",
-						"dataSource": {
-							"page": "75-517",
-							"fileName": "IntegratedReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "e-markets"
-						},
-						"comment": "navigate auxiliary protocol",
-						"quality": "NoDataFound"
-					},
-					"fossilGasRelatedActivitiesSection430": {
-						"value": "No",
-						"dataSource": {
-							"page": "469-1187",
-							"fileName": "ESEFReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "metrics"
-						},
-						"comment": "override digital alarm",
-						"quality": null
-					},
-					"fossilGasRelatedActivitiesSection431": {
-						"value": null,
-						"dataSource": {
-							"page": "887",
-							"fileName": "ESEFReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "eyeballs"
-						},
-						"comment": null,
-						"quality": null
-					}
+					"comment": "compress wireless bandwidth",
+					"quality": "Reported"
 				},
-				"taxonomyAlignedDenominator": {},
-				"taxonomyAlignedNumerator": {},
-				"taxonomyEligibleButNotAligned": {},
-				"taxonomyNonEligible": {}
-			}
+				"nuclearEnergyRelatedActivitiesSection428": null,
+				"fossilGasRelatedActivitiesSection429": {
+					"value": "No",
+					"dataSource": {
+						"page": "75-517",
+						"fileName": "IntegratedReport",
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"tagName": "e-markets"
+					},
+					"comment": "navigate auxiliary protocol",
+					"quality": "NoDataFound"
+				},
+				"fossilGasRelatedActivitiesSection430": {
+					"value": "No",
+					"dataSource": {
+						"page": "469-1187",
+						"fileName": "ESEFReport",
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"tagName": "metrics"
+					},
+					"comment": "override digital alarm",
+					"quality": null
+				},
+				"fossilGasRelatedActivitiesSection431": {
+					"value": null,
+					"dataSource": {
+						"page": "887",
+						"fileName": "ESEFReport",
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"tagName": "eyeballs"
+					},
+					"comment": null,
+					"quality": null
+				}
+			},
+			"taxonomyAlignedDenominator": {},
+			"taxonomyAlignedNumerator": {},
+			"taxonomyEligibleButNotAligned": {},
+			"taxonomyNonEligible": {}
 		},
 		"reportingPeriod": "2023"
 	},
@@ -2674,75 +2622,73 @@
 			"parentCompanyLei": "rhK7GGhY4EnccbM1e737"
 		},
 		"t": {
-			"nuclearAndGas": {
-				"general": {
-					"nuclearEnergyRelatedActivitiesSection426": {
-						"value": "No",
-						"dataSource": {
-							"page": "1166-1190",
-							"fileName": "AnnualReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "initiatives"
-						},
-						"comment": "override 1080p matrix",
-						"quality": "Incomplete"
+			"general": {
+				"nuclearEnergyRelatedActivitiesSection426": {
+					"value": "No",
+					"dataSource": {
+						"page": "1166-1190",
+						"fileName": "AnnualReport",
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"tagName": "initiatives"
 					},
-					"nuclearEnergyRelatedActivitiesSection427": {
-						"value": null,
-						"dataSource": null,
-						"comment": "reboot digital matrix",
-						"quality": null
-					},
-					"nuclearEnergyRelatedActivitiesSection428": {
-						"value": "Yes",
-						"dataSource": {
-							"page": "878",
-							"fileName": "AnnualReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "applications"
-						},
-						"comment": "reboot open-source firewall",
-						"quality": "Reported"
-					},
-					"fossilGasRelatedActivitiesSection429": {
-						"value": "No",
-						"dataSource": {
-							"page": "999",
-							"fileName": "IntegratedReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "paradigms"
-						},
-						"comment": "program optical interface",
-						"quality": "Estimated"
-					},
-					"fossilGasRelatedActivitiesSection430": {
-						"value": null,
-						"dataSource": {
-							"page": "33-153",
-							"fileName": "AnnualReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "deliverables"
-						},
-						"comment": "navigate cross-platform bandwidth",
-						"quality": "NoDataFound"
-					},
-					"fossilGasRelatedActivitiesSection431": {
-						"value": null,
-						"dataSource": {
-							"page": "877-1235",
-							"fileName": "IntegratedReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "methodologies"
-						},
-						"comment": null,
-						"quality": "Reported"
-					}
+					"comment": "override 1080p matrix",
+					"quality": "Incomplete"
 				},
-				"taxonomyAlignedDenominator": {},
-				"taxonomyAlignedNumerator": {},
-				"taxonomyEligibleButNotAligned": {},
-				"taxonomyNonEligible": {}
-			}
+				"nuclearEnergyRelatedActivitiesSection427": {
+					"value": null,
+					"dataSource": null,
+					"comment": "reboot digital matrix",
+					"quality": null
+				},
+				"nuclearEnergyRelatedActivitiesSection428": {
+					"value": "Yes",
+					"dataSource": {
+						"page": "878",
+						"fileName": "AnnualReport",
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"tagName": "applications"
+					},
+					"comment": "reboot open-source firewall",
+					"quality": "Reported"
+				},
+				"fossilGasRelatedActivitiesSection429": {
+					"value": "No",
+					"dataSource": {
+						"page": "999",
+						"fileName": "IntegratedReport",
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"tagName": "paradigms"
+					},
+					"comment": "program optical interface",
+					"quality": "Estimated"
+				},
+				"fossilGasRelatedActivitiesSection430": {
+					"value": null,
+					"dataSource": {
+						"page": "33-153",
+						"fileName": "AnnualReport",
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"tagName": "deliverables"
+					},
+					"comment": "navigate cross-platform bandwidth",
+					"quality": "NoDataFound"
+				},
+				"fossilGasRelatedActivitiesSection431": {
+					"value": null,
+					"dataSource": {
+						"page": "877-1235",
+						"fileName": "IntegratedReport",
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"tagName": "methodologies"
+					},
+					"comment": null,
+					"quality": "Reported"
+				}
+			},
+			"taxonomyAlignedDenominator": {},
+			"taxonomyAlignedNumerator": {},
+			"taxonomyEligibleButNotAligned": {},
+			"taxonomyNonEligible": {}
 		},
 		"reportingPeriod": "2024"
 	},
@@ -2791,70 +2737,68 @@
 			"parentCompanyLei": "lXCu2auSiwtytIUsLx4R"
 		},
 		"t": {
-			"nuclearAndGas": {
-				"general": {
-					"nuclearEnergyRelatedActivitiesSection426": null,
-					"nuclearEnergyRelatedActivitiesSection427": {
-						"value": "No",
-						"dataSource": {
-							"page": "1097-1226",
-							"fileName": "SustainabilityReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "deliverables"
-						},
-						"comment": "reboot neural firewall",
-						"quality": null
+			"general": {
+				"nuclearEnergyRelatedActivitiesSection426": null,
+				"nuclearEnergyRelatedActivitiesSection427": {
+					"value": "No",
+					"dataSource": {
+						"page": "1097-1226",
+						"fileName": "SustainabilityReport",
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"tagName": "deliverables"
 					},
-					"nuclearEnergyRelatedActivitiesSection428": {
-						"value": "No",
-						"dataSource": {
-							"page": "20-1041",
-							"fileName": "SustainabilityReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "paradigms"
-						},
-						"comment": "bypass online program",
-						"quality": "Reported"
-					},
-					"fossilGasRelatedActivitiesSection429": {
-						"value": "Yes",
-						"dataSource": {
-							"page": "1187",
-							"fileName": "SustainabilityReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "e-markets"
-						},
-						"comment": "copy bluetooth circuit",
-						"quality": "Incomplete"
-					},
-					"fossilGasRelatedActivitiesSection430": {
-						"value": "Yes",
-						"dataSource": {
-							"page": "307",
-							"fileName": "SustainabilityReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "markets"
-						},
-						"comment": "reboot primary circuit",
-						"quality": "Reported"
-					},
-					"fossilGasRelatedActivitiesSection431": {
-						"value": "Yes",
-						"dataSource": {
-							"page": "985",
-							"fileName": "SustainabilityReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "methodologies"
-						},
-						"comment": "input digital card",
-						"quality": null
-					}
+					"comment": "reboot neural firewall",
+					"quality": null
 				},
-				"taxonomyAlignedDenominator": {},
-				"taxonomyAlignedNumerator": {},
-				"taxonomyEligibleButNotAligned": {},
-				"taxonomyNonEligible": {}
-			}
+				"nuclearEnergyRelatedActivitiesSection428": {
+					"value": "No",
+					"dataSource": {
+						"page": "20-1041",
+						"fileName": "SustainabilityReport",
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"tagName": "paradigms"
+					},
+					"comment": "bypass online program",
+					"quality": "Reported"
+				},
+				"fossilGasRelatedActivitiesSection429": {
+					"value": "Yes",
+					"dataSource": {
+						"page": "1187",
+						"fileName": "SustainabilityReport",
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"tagName": "e-markets"
+					},
+					"comment": "copy bluetooth circuit",
+					"quality": "Incomplete"
+				},
+				"fossilGasRelatedActivitiesSection430": {
+					"value": "Yes",
+					"dataSource": {
+						"page": "307",
+						"fileName": "SustainabilityReport",
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"tagName": "markets"
+					},
+					"comment": "reboot primary circuit",
+					"quality": "Reported"
+				},
+				"fossilGasRelatedActivitiesSection431": {
+					"value": "Yes",
+					"dataSource": {
+						"page": "985",
+						"fileName": "SustainabilityReport",
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"tagName": "methodologies"
+					},
+					"comment": "input digital card",
+					"quality": null
+				}
+			},
+			"taxonomyAlignedDenominator": {},
+			"taxonomyAlignedNumerator": {},
+			"taxonomyEligibleButNotAligned": {},
+			"taxonomyNonEligible": {}
 		},
 		"reportingPeriod": "2022"
 	},
@@ -2897,75 +2841,73 @@
 			"parentCompanyLei": "5sMPPqNM61oXpoCBBnSs"
 		},
 		"t": {
-			"nuclearAndGas": {
-				"general": {
-					"nuclearEnergyRelatedActivitiesSection426": {
-						"value": null,
-						"dataSource": {
-							"page": "236",
-							"fileName": "AnnualReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "interfaces"
-						},
-						"comment": null,
-						"quality": null
+			"general": {
+				"nuclearEnergyRelatedActivitiesSection426": {
+					"value": null,
+					"dataSource": {
+						"page": "236",
+						"fileName": "AnnualReport",
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"tagName": "interfaces"
 					},
-					"nuclearEnergyRelatedActivitiesSection427": {
-						"value": null,
-						"dataSource": {
-							"page": "280-376",
-							"fileName": "SustainabilityReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "relationships"
-						},
-						"comment": "synthesize wireless monitor",
-						"quality": "NoDataFound"
-					},
-					"nuclearEnergyRelatedActivitiesSection428": {
-						"value": "No",
-						"dataSource": {
-							"page": "370-732",
-							"fileName": "AnnualReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "methodologies"
-						},
-						"comment": "bypass primary port",
-						"quality": null
-					},
-					"fossilGasRelatedActivitiesSection429": {
-						"value": "No",
-						"dataSource": {
-							"page": "323",
-							"fileName": "SustainabilityReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "systems"
-						},
-						"comment": "copy mobile pixel",
-						"quality": "Estimated"
-					},
-					"fossilGasRelatedActivitiesSection430": {
-						"value": null,
-						"dataSource": null,
-						"comment": "navigate virtual bus",
-						"quality": "NoDataFound"
-					},
-					"fossilGasRelatedActivitiesSection431": {
-						"value": "No",
-						"dataSource": {
-							"page": "375-830",
-							"fileName": "AnnualReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "methodologies"
-						},
-						"comment": "reboot digital pixel",
-						"quality": "Reported"
-					}
+					"comment": null,
+					"quality": null
 				},
-				"taxonomyAlignedDenominator": {},
-				"taxonomyAlignedNumerator": {},
-				"taxonomyEligibleButNotAligned": {},
-				"taxonomyNonEligible": {}
-			}
+				"nuclearEnergyRelatedActivitiesSection427": {
+					"value": null,
+					"dataSource": {
+						"page": "280-376",
+						"fileName": "SustainabilityReport",
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"tagName": "relationships"
+					},
+					"comment": "synthesize wireless monitor",
+					"quality": "NoDataFound"
+				},
+				"nuclearEnergyRelatedActivitiesSection428": {
+					"value": "No",
+					"dataSource": {
+						"page": "370-732",
+						"fileName": "AnnualReport",
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"tagName": "methodologies"
+					},
+					"comment": "bypass primary port",
+					"quality": null
+				},
+				"fossilGasRelatedActivitiesSection429": {
+					"value": "No",
+					"dataSource": {
+						"page": "323",
+						"fileName": "SustainabilityReport",
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"tagName": "systems"
+					},
+					"comment": "copy mobile pixel",
+					"quality": "Estimated"
+				},
+				"fossilGasRelatedActivitiesSection430": {
+					"value": null,
+					"dataSource": null,
+					"comment": "navigate virtual bus",
+					"quality": "NoDataFound"
+				},
+				"fossilGasRelatedActivitiesSection431": {
+					"value": "No",
+					"dataSource": {
+						"page": "375-830",
+						"fileName": "AnnualReport",
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"tagName": "methodologies"
+					},
+					"comment": "reboot digital pixel",
+					"quality": "Reported"
+				}
+			},
+			"taxonomyAlignedDenominator": {},
+			"taxonomyAlignedNumerator": {},
+			"taxonomyEligibleButNotAligned": {},
+			"taxonomyNonEligible": {}
 		},
 		"reportingPeriod": "2024"
 	},
@@ -3009,65 +2951,63 @@
 			"parentCompanyLei": null
 		},
 		"t": {
-			"nuclearAndGas": {
-				"general": {
-					"nuclearEnergyRelatedActivitiesSection426": {
-						"value": "Yes",
-						"dataSource": null,
-						"comment": "calculate haptic hard drive",
-						"quality": "Estimated"
-					},
-					"nuclearEnergyRelatedActivitiesSection427": {
-						"value": null,
-						"dataSource": {
-							"page": "566",
-							"fileName": "IntegratedReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "metrics"
-						},
-						"comment": null,
-						"quality": "Reported"
-					},
-					"nuclearEnergyRelatedActivitiesSection428": {
-						"value": "No",
-						"dataSource": null,
-						"comment": "bypass virtual port",
-						"quality": "Estimated"
-					},
-					"fossilGasRelatedActivitiesSection429": {
-						"value": "No",
-						"dataSource": {
-							"page": "852",
-							"fileName": "IntegratedReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "functionalities"
-						},
-						"comment": "override solid state alarm",
-						"quality": "Incomplete"
-					},
-					"fossilGasRelatedActivitiesSection430": {
-						"value": "No",
-						"dataSource": {
-							"page": "189",
-							"fileName": "IntegratedReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "synergies"
-						},
-						"comment": "input redundant capacitor",
-						"quality": "Audited"
-					},
-					"fossilGasRelatedActivitiesSection431": {
-						"value": "Yes",
-						"dataSource": null,
-						"comment": "back up multi-byte firewall",
-						"quality": null
-					}
+			"general": {
+				"nuclearEnergyRelatedActivitiesSection426": {
+					"value": "Yes",
+					"dataSource": null,
+					"comment": "calculate haptic hard drive",
+					"quality": "Estimated"
 				},
-				"taxonomyAlignedDenominator": {},
-				"taxonomyAlignedNumerator": {},
-				"taxonomyEligibleButNotAligned": {},
-				"taxonomyNonEligible": {}
-			}
+				"nuclearEnergyRelatedActivitiesSection427": {
+					"value": null,
+					"dataSource": {
+						"page": "566",
+						"fileName": "IntegratedReport",
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"tagName": "metrics"
+					},
+					"comment": null,
+					"quality": "Reported"
+				},
+				"nuclearEnergyRelatedActivitiesSection428": {
+					"value": "No",
+					"dataSource": null,
+					"comment": "bypass virtual port",
+					"quality": "Estimated"
+				},
+				"fossilGasRelatedActivitiesSection429": {
+					"value": "No",
+					"dataSource": {
+						"page": "852",
+						"fileName": "IntegratedReport",
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"tagName": "functionalities"
+					},
+					"comment": "override solid state alarm",
+					"quality": "Incomplete"
+				},
+				"fossilGasRelatedActivitiesSection430": {
+					"value": "No",
+					"dataSource": {
+						"page": "189",
+						"fileName": "IntegratedReport",
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"tagName": "synergies"
+					},
+					"comment": "input redundant capacitor",
+					"quality": "Audited"
+				},
+				"fossilGasRelatedActivitiesSection431": {
+					"value": "Yes",
+					"dataSource": null,
+					"comment": "back up multi-byte firewall",
+					"quality": null
+				}
+			},
+			"taxonomyAlignedDenominator": {},
+			"taxonomyAlignedNumerator": {},
+			"taxonomyEligibleButNotAligned": {},
+			"taxonomyNonEligible": {}
 		},
 		"reportingPeriod": "2024"
 	},
@@ -3119,60 +3059,58 @@
 			"parentCompanyLei": null
 		},
 		"t": {
-			"nuclearAndGas": {
-				"general": {
-					"nuclearEnergyRelatedActivitiesSection426": null,
-					"nuclearEnergyRelatedActivitiesSection427": {
-						"value": "Yes",
-						"dataSource": {
-							"page": "728-871",
-							"fileName": "AnnualReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "systems"
-						},
-						"comment": "quantify cross-platform bus",
-						"quality": "NoDataFound"
+			"general": {
+				"nuclearEnergyRelatedActivitiesSection426": null,
+				"nuclearEnergyRelatedActivitiesSection427": {
+					"value": "Yes",
+					"dataSource": {
+						"page": "728-871",
+						"fileName": "AnnualReport",
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"tagName": "systems"
 					},
-					"nuclearEnergyRelatedActivitiesSection428": {
-						"value": "No",
-						"dataSource": {
-							"page": "779-809",
-							"fileName": "IntegratedReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "e-business"
-						},
-						"comment": "compress cross-platform driver",
-						"quality": "Audited"
-					},
-					"fossilGasRelatedActivitiesSection429": null,
-					"fossilGasRelatedActivitiesSection430": {
-						"value": "No",
-						"dataSource": {
-							"page": "184-494",
-							"fileName": "ESEFReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "blockchains"
-						},
-						"comment": "quantify cross-platform hard drive",
-						"quality": null
-					},
-					"fossilGasRelatedActivitiesSection431": {
-						"value": null,
-						"dataSource": {
-							"page": "104",
-							"fileName": "IntegratedReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "markets"
-						},
-						"comment": null,
-						"quality": "Audited"
-					}
+					"comment": "quantify cross-platform bus",
+					"quality": "NoDataFound"
 				},
-				"taxonomyAlignedDenominator": {},
-				"taxonomyAlignedNumerator": {},
-				"taxonomyEligibleButNotAligned": {},
-				"taxonomyNonEligible": {}
-			}
+				"nuclearEnergyRelatedActivitiesSection428": {
+					"value": "No",
+					"dataSource": {
+						"page": "779-809",
+						"fileName": "IntegratedReport",
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"tagName": "e-business"
+					},
+					"comment": "compress cross-platform driver",
+					"quality": "Audited"
+				},
+				"fossilGasRelatedActivitiesSection429": null,
+				"fossilGasRelatedActivitiesSection430": {
+					"value": "No",
+					"dataSource": {
+						"page": "184-494",
+						"fileName": "ESEFReport",
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"tagName": "blockchains"
+					},
+					"comment": "quantify cross-platform hard drive",
+					"quality": null
+				},
+				"fossilGasRelatedActivitiesSection431": {
+					"value": null,
+					"dataSource": {
+						"page": "104",
+						"fileName": "IntegratedReport",
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"tagName": "markets"
+					},
+					"comment": null,
+					"quality": "Audited"
+				}
+			},
+			"taxonomyAlignedDenominator": {},
+			"taxonomyAlignedNumerator": {},
+			"taxonomyEligibleButNotAligned": {},
+			"taxonomyNonEligible": {}
 		},
 		"reportingPeriod": "2023"
 	},
@@ -3214,60 +3152,58 @@
 			"parentCompanyLei": "xeTsydBnCSrPDk41CEEf"
 		},
 		"t": {
-			"nuclearAndGas": {
-				"general": {
-					"nuclearEnergyRelatedActivitiesSection426": {
-						"value": "No",
-						"dataSource": {
-							"page": "439",
-							"fileName": "ESEFReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "ROI"
-						},
-						"comment": "quantify cross-platform pixel",
-						"quality": "Audited"
+			"general": {
+				"nuclearEnergyRelatedActivitiesSection426": {
+					"value": "No",
+					"dataSource": {
+						"page": "439",
+						"fileName": "ESEFReport",
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"tagName": "ROI"
 					},
-					"nuclearEnergyRelatedActivitiesSection427": null,
-					"nuclearEnergyRelatedActivitiesSection428": {
-						"value": "Yes",
-						"dataSource": {
-							"page": "486-954",
-							"fileName": "ESEFReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "experiences"
-						},
-						"comment": "input online hard drive",
-						"quality": "Audited"
-					},
-					"fossilGasRelatedActivitiesSection429": null,
-					"fossilGasRelatedActivitiesSection430": {
-						"value": "No",
-						"dataSource": {
-							"page": "1005-1099",
-							"fileName": "IntegratedReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "partnerships"
-						},
-						"comment": "program primary feed",
-						"quality": "Audited"
-					},
-					"fossilGasRelatedActivitiesSection431": {
-						"value": null,
-						"dataSource": {
-							"page": "352-1043",
-							"fileName": "ESEFReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "paradigms"
-						},
-						"comment": "connect open-source bus",
-						"quality": "Reported"
-					}
+					"comment": "quantify cross-platform pixel",
+					"quality": "Audited"
 				},
-				"taxonomyAlignedDenominator": {},
-				"taxonomyAlignedNumerator": {},
-				"taxonomyEligibleButNotAligned": {},
-				"taxonomyNonEligible": {}
-			}
+				"nuclearEnergyRelatedActivitiesSection427": null,
+				"nuclearEnergyRelatedActivitiesSection428": {
+					"value": "Yes",
+					"dataSource": {
+						"page": "486-954",
+						"fileName": "ESEFReport",
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"tagName": "experiences"
+					},
+					"comment": "input online hard drive",
+					"quality": "Audited"
+				},
+				"fossilGasRelatedActivitiesSection429": null,
+				"fossilGasRelatedActivitiesSection430": {
+					"value": "No",
+					"dataSource": {
+						"page": "1005-1099",
+						"fileName": "IntegratedReport",
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"tagName": "partnerships"
+					},
+					"comment": "program primary feed",
+					"quality": "Audited"
+				},
+				"fossilGasRelatedActivitiesSection431": {
+					"value": null,
+					"dataSource": {
+						"page": "352-1043",
+						"fileName": "ESEFReport",
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"tagName": "paradigms"
+					},
+					"comment": "connect open-source bus",
+					"quality": "Reported"
+				}
+			},
+			"taxonomyAlignedDenominator": {},
+			"taxonomyAlignedNumerator": {},
+			"taxonomyEligibleButNotAligned": {},
+			"taxonomyNonEligible": {}
 		},
 		"reportingPeriod": "2021"
 	},
@@ -3309,60 +3245,58 @@
 			"parentCompanyLei": null
 		},
 		"t": {
-			"nuclearAndGas": {
-				"general": {
-					"nuclearEnergyRelatedActivitiesSection426": {
-						"value": "Yes",
-						"dataSource": {
-							"page": "62-688",
-							"fileName": "AnnualReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "e-markets"
-						},
-						"comment": "connect open-source alarm",
-						"quality": "Incomplete"
+			"general": {
+				"nuclearEnergyRelatedActivitiesSection426": {
+					"value": "Yes",
+					"dataSource": {
+						"page": "62-688",
+						"fileName": "AnnualReport",
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"tagName": "e-markets"
 					},
-					"nuclearEnergyRelatedActivitiesSection427": null,
-					"nuclearEnergyRelatedActivitiesSection428": null,
-					"fossilGasRelatedActivitiesSection429": {
-						"value": "No",
-						"dataSource": {
-							"page": "747",
-							"fileName": "AnnualReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "supply-chains"
-						},
-						"comment": "index wireless pixel",
-						"quality": "Audited"
-					},
-					"fossilGasRelatedActivitiesSection430": {
-						"value": "Yes",
-						"dataSource": {
-							"page": "898-937",
-							"fileName": "AnnualReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "deliverables"
-						},
-						"comment": "copy multi-byte monitor",
-						"quality": "NoDataFound"
-					},
-					"fossilGasRelatedActivitiesSection431": {
-						"value": "Yes",
-						"dataSource": {
-							"page": "102",
-							"fileName": "AnnualReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "synergies"
-						},
-						"comment": null,
-						"quality": "Audited"
-					}
+					"comment": "connect open-source alarm",
+					"quality": "Incomplete"
 				},
-				"taxonomyAlignedDenominator": {},
-				"taxonomyAlignedNumerator": {},
-				"taxonomyEligibleButNotAligned": {},
-				"taxonomyNonEligible": {}
-			}
+				"nuclearEnergyRelatedActivitiesSection427": null,
+				"nuclearEnergyRelatedActivitiesSection428": null,
+				"fossilGasRelatedActivitiesSection429": {
+					"value": "No",
+					"dataSource": {
+						"page": "747",
+						"fileName": "AnnualReport",
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"tagName": "supply-chains"
+					},
+					"comment": "index wireless pixel",
+					"quality": "Audited"
+				},
+				"fossilGasRelatedActivitiesSection430": {
+					"value": "Yes",
+					"dataSource": {
+						"page": "898-937",
+						"fileName": "AnnualReport",
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"tagName": "deliverables"
+					},
+					"comment": "copy multi-byte monitor",
+					"quality": "NoDataFound"
+				},
+				"fossilGasRelatedActivitiesSection431": {
+					"value": "Yes",
+					"dataSource": {
+						"page": "102",
+						"fileName": "AnnualReport",
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"tagName": "synergies"
+					},
+					"comment": null,
+					"quality": "Audited"
+				}
+			},
+			"taxonomyAlignedDenominator": {},
+			"taxonomyAlignedNumerator": {},
+			"taxonomyEligibleButNotAligned": {},
+			"taxonomyNonEligible": {}
 		},
 		"reportingPeriod": "2022"
 	},
@@ -3409,75 +3343,73 @@
 			"parentCompanyLei": "EaAsNKHkL151lLZfipuT"
 		},
 		"t": {
-			"nuclearAndGas": {
-				"general": {
-					"nuclearEnergyRelatedActivitiesSection426": {
-						"value": null,
-						"dataSource": {
-							"page": "574-646",
-							"fileName": "AnnualReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "web services"
-						},
-						"comment": null,
-						"quality": "Audited"
+			"general": {
+				"nuclearEnergyRelatedActivitiesSection426": {
+					"value": null,
+					"dataSource": {
+						"page": "574-646",
+						"fileName": "AnnualReport",
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"tagName": "web services"
 					},
-					"nuclearEnergyRelatedActivitiesSection427": {
-						"value": null,
-						"dataSource": {
-							"page": "284",
-							"fileName": "AnnualReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "platforms"
-						},
-						"comment": null,
-						"quality": "Reported"
-					},
-					"nuclearEnergyRelatedActivitiesSection428": {
-						"value": null,
-						"dataSource": {
-							"page": "509-952",
-							"fileName": "AnnualReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "channels"
-						},
-						"comment": "hack primary alarm",
-						"quality": "Reported"
-					},
-					"fossilGasRelatedActivitiesSection429": {
-						"value": "Yes",
-						"dataSource": {
-							"page": "195",
-							"fileName": "AnnualReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "interfaces"
-						},
-						"comment": "connect auxiliary circuit",
-						"quality": "Reported"
-					},
-					"fossilGasRelatedActivitiesSection430": {
-						"value": "No",
-						"dataSource": null,
-						"comment": "parse primary transmitter",
-						"quality": "Incomplete"
-					},
-					"fossilGasRelatedActivitiesSection431": {
-						"value": "Yes",
-						"dataSource": {
-							"page": "1165",
-							"fileName": "AnnualReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "niches"
-						},
-						"comment": "parse cross-platform program",
-						"quality": "NoDataFound"
-					}
+					"comment": null,
+					"quality": "Audited"
 				},
-				"taxonomyAlignedDenominator": {},
-				"taxonomyAlignedNumerator": {},
-				"taxonomyEligibleButNotAligned": {},
-				"taxonomyNonEligible": {}
-			}
+				"nuclearEnergyRelatedActivitiesSection427": {
+					"value": null,
+					"dataSource": {
+						"page": "284",
+						"fileName": "AnnualReport",
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"tagName": "platforms"
+					},
+					"comment": null,
+					"quality": "Reported"
+				},
+				"nuclearEnergyRelatedActivitiesSection428": {
+					"value": null,
+					"dataSource": {
+						"page": "509-952",
+						"fileName": "AnnualReport",
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"tagName": "channels"
+					},
+					"comment": "hack primary alarm",
+					"quality": "Reported"
+				},
+				"fossilGasRelatedActivitiesSection429": {
+					"value": "Yes",
+					"dataSource": {
+						"page": "195",
+						"fileName": "AnnualReport",
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"tagName": "interfaces"
+					},
+					"comment": "connect auxiliary circuit",
+					"quality": "Reported"
+				},
+				"fossilGasRelatedActivitiesSection430": {
+					"value": "No",
+					"dataSource": null,
+					"comment": "parse primary transmitter",
+					"quality": "Incomplete"
+				},
+				"fossilGasRelatedActivitiesSection431": {
+					"value": "Yes",
+					"dataSource": {
+						"page": "1165",
+						"fileName": "AnnualReport",
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"tagName": "niches"
+					},
+					"comment": "parse cross-platform program",
+					"quality": "NoDataFound"
+				}
+			},
+			"taxonomyAlignedDenominator": {},
+			"taxonomyAlignedNumerator": {},
+			"taxonomyEligibleButNotAligned": {},
+			"taxonomyNonEligible": {}
 		},
 		"reportingPeriod": "2022"
 	},
@@ -3512,65 +3444,63 @@
 			"parentCompanyLei": "pDC9tXQqxKVtJ5Nz9LGa"
 		},
 		"t": {
-			"nuclearAndGas": {
-				"general": {
-					"nuclearEnergyRelatedActivitiesSection426": {
-						"value": "Yes",
-						"dataSource": {
-							"page": "214",
-							"fileName": "SustainabilityReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "niches"
-						},
-						"comment": "quantify 1080p driver",
-						"quality": "Reported"
+			"general": {
+				"nuclearEnergyRelatedActivitiesSection426": {
+					"value": "Yes",
+					"dataSource": {
+						"page": "214",
+						"fileName": "SustainabilityReport",
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"tagName": "niches"
 					},
-					"nuclearEnergyRelatedActivitiesSection427": {
-						"value": "No",
-						"dataSource": {
-							"page": "775",
-							"fileName": "SustainabilityReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "synergies"
-						},
-						"comment": "input primary system",
-						"quality": "Incomplete"
-					},
-					"nuclearEnergyRelatedActivitiesSection428": {
-						"value": "Yes",
-						"dataSource": {
-							"page": "976",
-							"fileName": "SustainabilityReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "systems"
-						},
-						"comment": "program mobile matrix",
-						"quality": "Reported"
-					},
-					"fossilGasRelatedActivitiesSection429": {
-						"value": null,
-						"dataSource": {
-							"page": "931-941",
-							"fileName": "SustainabilityReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "e-business"
-						},
-						"comment": "back up primary driver",
-						"quality": "Incomplete"
-					},
-					"fossilGasRelatedActivitiesSection430": {
-						"value": null,
-						"dataSource": null,
-						"comment": "connect cross-platform feed",
-						"quality": "NoDataFound"
-					},
-					"fossilGasRelatedActivitiesSection431": null
+					"comment": "quantify 1080p driver",
+					"quality": "Reported"
 				},
-				"taxonomyAlignedDenominator": {},
-				"taxonomyAlignedNumerator": {},
-				"taxonomyEligibleButNotAligned": {},
-				"taxonomyNonEligible": {}
-			}
+				"nuclearEnergyRelatedActivitiesSection427": {
+					"value": "No",
+					"dataSource": {
+						"page": "775",
+						"fileName": "SustainabilityReport",
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"tagName": "synergies"
+					},
+					"comment": "input primary system",
+					"quality": "Incomplete"
+				},
+				"nuclearEnergyRelatedActivitiesSection428": {
+					"value": "Yes",
+					"dataSource": {
+						"page": "976",
+						"fileName": "SustainabilityReport",
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"tagName": "systems"
+					},
+					"comment": "program mobile matrix",
+					"quality": "Reported"
+				},
+				"fossilGasRelatedActivitiesSection429": {
+					"value": null,
+					"dataSource": {
+						"page": "931-941",
+						"fileName": "SustainabilityReport",
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"tagName": "e-business"
+					},
+					"comment": "back up primary driver",
+					"quality": "Incomplete"
+				},
+				"fossilGasRelatedActivitiesSection430": {
+					"value": null,
+					"dataSource": null,
+					"comment": "connect cross-platform feed",
+					"quality": "NoDataFound"
+				},
+				"fossilGasRelatedActivitiesSection431": null
+			},
+			"taxonomyAlignedDenominator": {},
+			"taxonomyAlignedNumerator": {},
+			"taxonomyEligibleButNotAligned": {},
+			"taxonomyNonEligible": {}
 		},
 		"reportingPeriod": "2024"
 	},
@@ -3612,40 +3542,38 @@
 			"parentCompanyLei": "PoVpd7uXMwO3YLsYPH0X"
 		},
 		"t": {
-			"nuclearAndGas": {
-				"general": {
-					"nuclearEnergyRelatedActivitiesSection426": null,
-					"nuclearEnergyRelatedActivitiesSection427": null,
-					"nuclearEnergyRelatedActivitiesSection428": {
-						"value": "Yes",
-						"dataSource": {
-							"page": "664",
-							"fileName": "AnnualReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "convergence"
-						},
-						"comment": null,
-						"quality": "Estimated"
+			"general": {
+				"nuclearEnergyRelatedActivitiesSection426": null,
+				"nuclearEnergyRelatedActivitiesSection427": null,
+				"nuclearEnergyRelatedActivitiesSection428": {
+					"value": "Yes",
+					"dataSource": {
+						"page": "664",
+						"fileName": "AnnualReport",
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"tagName": "convergence"
 					},
-					"fossilGasRelatedActivitiesSection429": {
-						"value": "Yes",
-						"dataSource": {
-							"page": "729-1167",
-							"fileName": "AnnualReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "models"
-						},
-						"comment": "override neural circuit",
-						"quality": null
-					},
-					"fossilGasRelatedActivitiesSection430": null,
-					"fossilGasRelatedActivitiesSection431": null
+					"comment": null,
+					"quality": "Estimated"
 				},
-				"taxonomyAlignedDenominator": {},
-				"taxonomyAlignedNumerator": {},
-				"taxonomyEligibleButNotAligned": {},
-				"taxonomyNonEligible": {}
-			}
+				"fossilGasRelatedActivitiesSection429": {
+					"value": "Yes",
+					"dataSource": {
+						"page": "729-1167",
+						"fileName": "AnnualReport",
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"tagName": "models"
+					},
+					"comment": "override neural circuit",
+					"quality": null
+				},
+				"fossilGasRelatedActivitiesSection430": null,
+				"fossilGasRelatedActivitiesSection431": null
+			},
+			"taxonomyAlignedDenominator": {},
+			"taxonomyAlignedNumerator": {},
+			"taxonomyEligibleButNotAligned": {},
+			"taxonomyNonEligible": {}
 		},
 		"reportingPeriod": "2020"
 	},
@@ -3690,70 +3618,68 @@
 			"parentCompanyLei": null
 		},
 		"t": {
-			"nuclearAndGas": {
-				"general": {
-					"nuclearEnergyRelatedActivitiesSection426": {
-						"value": "Yes",
-						"dataSource": {
-							"page": "929-1102",
-							"fileName": "SustainabilityReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "e-markets"
-						},
-						"comment": "program virtual sensor",
-						"quality": "Reported"
+			"general": {
+				"nuclearEnergyRelatedActivitiesSection426": {
+					"value": "Yes",
+					"dataSource": {
+						"page": "929-1102",
+						"fileName": "SustainabilityReport",
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"tagName": "e-markets"
 					},
-					"nuclearEnergyRelatedActivitiesSection427": {
-						"value": null,
-						"dataSource": {
-							"page": "35",
-							"fileName": "SustainabilityReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "channels"
-						},
-						"comment": "quantify redundant port",
-						"quality": "NoDataFound"
-					},
-					"nuclearEnergyRelatedActivitiesSection428": {
-						"value": "No",
-						"dataSource": {
-							"page": "356-409",
-							"fileName": "SustainabilityReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "experiences"
-						},
-						"comment": "transmit neural card",
-						"quality": "Incomplete"
-					},
-					"fossilGasRelatedActivitiesSection429": {
-						"value": "No",
-						"dataSource": {
-							"page": "693-1256",
-							"fileName": "SustainabilityReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "metrics"
-						},
-						"comment": "transmit 1080p transmitter",
-						"quality": "Reported"
-					},
-					"fossilGasRelatedActivitiesSection430": {
-						"value": null,
-						"dataSource": {
-							"page": "926",
-							"fileName": "SustainabilityReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "functionalities"
-						},
-						"comment": "calculate mobile system",
-						"quality": null
-					},
-					"fossilGasRelatedActivitiesSection431": null
+					"comment": "program virtual sensor",
+					"quality": "Reported"
 				},
-				"taxonomyAlignedDenominator": {},
-				"taxonomyAlignedNumerator": {},
-				"taxonomyEligibleButNotAligned": {},
-				"taxonomyNonEligible": {}
-			}
+				"nuclearEnergyRelatedActivitiesSection427": {
+					"value": null,
+					"dataSource": {
+						"page": "35",
+						"fileName": "SustainabilityReport",
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"tagName": "channels"
+					},
+					"comment": "quantify redundant port",
+					"quality": "NoDataFound"
+				},
+				"nuclearEnergyRelatedActivitiesSection428": {
+					"value": "No",
+					"dataSource": {
+						"page": "356-409",
+						"fileName": "SustainabilityReport",
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"tagName": "experiences"
+					},
+					"comment": "transmit neural card",
+					"quality": "Incomplete"
+				},
+				"fossilGasRelatedActivitiesSection429": {
+					"value": "No",
+					"dataSource": {
+						"page": "693-1256",
+						"fileName": "SustainabilityReport",
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"tagName": "metrics"
+					},
+					"comment": "transmit 1080p transmitter",
+					"quality": "Reported"
+				},
+				"fossilGasRelatedActivitiesSection430": {
+					"value": null,
+					"dataSource": {
+						"page": "926",
+						"fileName": "SustainabilityReport",
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"tagName": "functionalities"
+					},
+					"comment": "calculate mobile system",
+					"quality": null
+				},
+				"fossilGasRelatedActivitiesSection431": null
+			},
+			"taxonomyAlignedDenominator": {},
+			"taxonomyAlignedNumerator": {},
+			"taxonomyEligibleButNotAligned": {},
+			"taxonomyNonEligible": {}
 		},
 		"reportingPeriod": "2023"
 	},
@@ -3790,55 +3716,53 @@
 			"parentCompanyLei": null
 		},
 		"t": {
-			"nuclearAndGas": {
-				"general": {
-					"nuclearEnergyRelatedActivitiesSection426": {
-						"value": null,
-						"dataSource": {
-							"page": "477-952",
-							"fileName": "AnnualReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "web services"
-						},
-						"comment": "index online system",
-						"quality": null
+			"general": {
+				"nuclearEnergyRelatedActivitiesSection426": {
+					"value": null,
+					"dataSource": {
+						"page": "477-952",
+						"fileName": "AnnualReport",
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"tagName": "web services"
 					},
-					"nuclearEnergyRelatedActivitiesSection427": {
-						"value": null,
-						"dataSource": {
-							"page": "439-1007",
-							"fileName": "SustainabilityReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "interfaces"
-						},
-						"comment": "transmit primary monitor",
-						"quality": null
-					},
-					"nuclearEnergyRelatedActivitiesSection428": {
-						"value": "No",
-						"dataSource": null,
-						"comment": "program bluetooth microchip",
-						"quality": null
-					},
-					"fossilGasRelatedActivitiesSection429": null,
-					"fossilGasRelatedActivitiesSection430": null,
-					"fossilGasRelatedActivitiesSection431": {
-						"value": "Yes",
-						"dataSource": {
-							"page": "896",
-							"fileName": "SustainabilityReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "networks"
-						},
-						"comment": null,
-						"quality": "Incomplete"
-					}
+					"comment": "index online system",
+					"quality": null
 				},
-				"taxonomyAlignedDenominator": {},
-				"taxonomyAlignedNumerator": {},
-				"taxonomyEligibleButNotAligned": {},
-				"taxonomyNonEligible": {}
-			}
+				"nuclearEnergyRelatedActivitiesSection427": {
+					"value": null,
+					"dataSource": {
+						"page": "439-1007",
+						"fileName": "SustainabilityReport",
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"tagName": "interfaces"
+					},
+					"comment": "transmit primary monitor",
+					"quality": null
+				},
+				"nuclearEnergyRelatedActivitiesSection428": {
+					"value": "No",
+					"dataSource": null,
+					"comment": "program bluetooth microchip",
+					"quality": null
+				},
+				"fossilGasRelatedActivitiesSection429": null,
+				"fossilGasRelatedActivitiesSection430": null,
+				"fossilGasRelatedActivitiesSection431": {
+					"value": "Yes",
+					"dataSource": {
+						"page": "896",
+						"fileName": "SustainabilityReport",
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"tagName": "networks"
+					},
+					"comment": null,
+					"quality": "Incomplete"
+				}
+			},
+			"taxonomyAlignedDenominator": {},
+			"taxonomyAlignedNumerator": {},
+			"taxonomyEligibleButNotAligned": {},
+			"taxonomyNonEligible": {}
 		},
 		"reportingPeriod": "2022"
 	},
@@ -3875,70 +3799,68 @@
 			"parentCompanyLei": "9ZokQIjMUHNH5blCwktI"
 		},
 		"t": {
-			"nuclearAndGas": {
-				"general": {
-					"nuclearEnergyRelatedActivitiesSection426": {
-						"value": null,
-						"dataSource": {
-							"page": "485-1252",
-							"fileName": "IntegratedReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "ROI"
-						},
-						"comment": "synthesize neural pixel",
-						"quality": "Incomplete"
+			"general": {
+				"nuclearEnergyRelatedActivitiesSection426": {
+					"value": null,
+					"dataSource": {
+						"page": "485-1252",
+						"fileName": "IntegratedReport",
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"tagName": "ROI"
 					},
-					"nuclearEnergyRelatedActivitiesSection427": {
-						"value": null,
-						"dataSource": {
-							"page": "836-1005",
-							"fileName": "IntegratedReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "relationships"
-						},
-						"comment": "copy online alarm",
-						"quality": "Estimated"
-					},
-					"nuclearEnergyRelatedActivitiesSection428": null,
-					"fossilGasRelatedActivitiesSection429": {
-						"value": "Yes",
-						"dataSource": {
-							"page": "981",
-							"fileName": "IntegratedReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "bandwidth"
-						},
-						"comment": "generate bluetooth alarm",
-						"quality": "Incomplete"
-					},
-					"fossilGasRelatedActivitiesSection430": {
-						"value": "No",
-						"dataSource": {
-							"page": "445-559",
-							"fileName": "IntegratedReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "systems"
-						},
-						"comment": "transmit cross-platform monitor",
-						"quality": "NoDataFound"
-					},
-					"fossilGasRelatedActivitiesSection431": {
-						"value": "Yes",
-						"dataSource": {
-							"page": "1160-1215",
-							"fileName": "IntegratedReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "experiences"
-						},
-						"comment": null,
-						"quality": "Estimated"
-					}
+					"comment": "synthesize neural pixel",
+					"quality": "Incomplete"
 				},
-				"taxonomyAlignedDenominator": {},
-				"taxonomyAlignedNumerator": {},
-				"taxonomyEligibleButNotAligned": {},
-				"taxonomyNonEligible": {}
-			}
+				"nuclearEnergyRelatedActivitiesSection427": {
+					"value": null,
+					"dataSource": {
+						"page": "836-1005",
+						"fileName": "IntegratedReport",
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"tagName": "relationships"
+					},
+					"comment": "copy online alarm",
+					"quality": "Estimated"
+				},
+				"nuclearEnergyRelatedActivitiesSection428": null,
+				"fossilGasRelatedActivitiesSection429": {
+					"value": "Yes",
+					"dataSource": {
+						"page": "981",
+						"fileName": "IntegratedReport",
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"tagName": "bandwidth"
+					},
+					"comment": "generate bluetooth alarm",
+					"quality": "Incomplete"
+				},
+				"fossilGasRelatedActivitiesSection430": {
+					"value": "No",
+					"dataSource": {
+						"page": "445-559",
+						"fileName": "IntegratedReport",
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"tagName": "systems"
+					},
+					"comment": "transmit cross-platform monitor",
+					"quality": "NoDataFound"
+				},
+				"fossilGasRelatedActivitiesSection431": {
+					"value": "Yes",
+					"dataSource": {
+						"page": "1160-1215",
+						"fileName": "IntegratedReport",
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"tagName": "experiences"
+					},
+					"comment": null,
+					"quality": "Estimated"
+				}
+			},
+			"taxonomyAlignedDenominator": {},
+			"taxonomyAlignedNumerator": {},
+			"taxonomyEligibleButNotAligned": {},
+			"taxonomyNonEligible": {}
 		},
 		"reportingPeriod": "2020"
 	},
@@ -3982,75 +3904,73 @@
 			"parentCompanyLei": null
 		},
 		"t": {
-			"nuclearAndGas": {
-				"general": {
-					"nuclearEnergyRelatedActivitiesSection426": {
-						"value": null,
-						"dataSource": {
-							"page": "612",
-							"fileName": "IntegratedReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "architectures"
-						},
-						"comment": "hack open-source card",
-						"quality": "Audited"
+			"general": {
+				"nuclearEnergyRelatedActivitiesSection426": {
+					"value": null,
+					"dataSource": {
+						"page": "612",
+						"fileName": "IntegratedReport",
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"tagName": "architectures"
 					},
-					"nuclearEnergyRelatedActivitiesSection427": {
-						"value": null,
-						"dataSource": {
-							"page": "1027-1167",
-							"fileName": "IntegratedReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "networks"
-						},
-						"comment": null,
-						"quality": "Reported"
-					},
-					"nuclearEnergyRelatedActivitiesSection428": {
-						"value": "No",
-						"dataSource": {
-							"page": "931-942",
-							"fileName": "IntegratedReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "models"
-						},
-						"comment": "input bluetooth protocol",
-						"quality": "NoDataFound"
-					},
-					"fossilGasRelatedActivitiesSection429": {
-						"value": null,
-						"dataSource": null,
-						"comment": "program online firewall",
-						"quality": "Estimated"
-					},
-					"fossilGasRelatedActivitiesSection430": {
-						"value": null,
-						"dataSource": {
-							"page": "951-1211",
-							"fileName": "IntegratedReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "functionalities"
-						},
-						"comment": "synthesize primary microchip",
-						"quality": "Estimated"
-					},
-					"fossilGasRelatedActivitiesSection431": {
-						"value": "No",
-						"dataSource": {
-							"page": "1013-1142",
-							"fileName": "IntegratedReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "models"
-						},
-						"comment": "bypass open-source bus",
-						"quality": "Reported"
-					}
+					"comment": "hack open-source card",
+					"quality": "Audited"
 				},
-				"taxonomyAlignedDenominator": {},
-				"taxonomyAlignedNumerator": {},
-				"taxonomyEligibleButNotAligned": {},
-				"taxonomyNonEligible": {}
-			}
+				"nuclearEnergyRelatedActivitiesSection427": {
+					"value": null,
+					"dataSource": {
+						"page": "1027-1167",
+						"fileName": "IntegratedReport",
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"tagName": "networks"
+					},
+					"comment": null,
+					"quality": "Reported"
+				},
+				"nuclearEnergyRelatedActivitiesSection428": {
+					"value": "No",
+					"dataSource": {
+						"page": "931-942",
+						"fileName": "IntegratedReport",
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"tagName": "models"
+					},
+					"comment": "input bluetooth protocol",
+					"quality": "NoDataFound"
+				},
+				"fossilGasRelatedActivitiesSection429": {
+					"value": null,
+					"dataSource": null,
+					"comment": "program online firewall",
+					"quality": "Estimated"
+				},
+				"fossilGasRelatedActivitiesSection430": {
+					"value": null,
+					"dataSource": {
+						"page": "951-1211",
+						"fileName": "IntegratedReport",
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"tagName": "functionalities"
+					},
+					"comment": "synthesize primary microchip",
+					"quality": "Estimated"
+				},
+				"fossilGasRelatedActivitiesSection431": {
+					"value": "No",
+					"dataSource": {
+						"page": "1013-1142",
+						"fileName": "IntegratedReport",
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"tagName": "models"
+					},
+					"comment": "bypass open-source bus",
+					"quality": "Reported"
+				}
+			},
+			"taxonomyAlignedDenominator": {},
+			"taxonomyAlignedNumerator": {},
+			"taxonomyEligibleButNotAligned": {},
+			"taxonomyNonEligible": {}
 		},
 		"reportingPeriod": "2023"
 	},
@@ -4091,60 +4011,58 @@
 			"parentCompanyLei": null
 		},
 		"t": {
-			"nuclearAndGas": {
-				"general": {
-					"nuclearEnergyRelatedActivitiesSection426": {
-						"value": "Yes",
-						"dataSource": {
-							"page": "1105-1206",
-							"fileName": "AnnualReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "ROI"
-						},
-						"comment": "parse open-source firewall",
-						"quality": null
+			"general": {
+				"nuclearEnergyRelatedActivitiesSection426": {
+					"value": "Yes",
+					"dataSource": {
+						"page": "1105-1206",
+						"fileName": "AnnualReport",
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"tagName": "ROI"
 					},
-					"nuclearEnergyRelatedActivitiesSection427": {
-						"value": null,
-						"dataSource": {
-							"page": "903-1132",
-							"fileName": "SustainabilityReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "e-markets"
-						},
-						"comment": "compress haptic application",
-						"quality": null
-					},
-					"nuclearEnergyRelatedActivitiesSection428": null,
-					"fossilGasRelatedActivitiesSection429": {
-						"value": "No",
-						"dataSource": {
-							"page": "452",
-							"fileName": "AnnualReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "web services"
-						},
-						"comment": null,
-						"quality": null
-					},
-					"fossilGasRelatedActivitiesSection430": {
-						"value": "No",
-						"dataSource": {
-							"page": "225",
-							"fileName": "IntegratedReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "content"
-						},
-						"comment": "connect redundant card",
-						"quality": "Reported"
-					},
-					"fossilGasRelatedActivitiesSection431": null
+					"comment": "parse open-source firewall",
+					"quality": null
 				},
-				"taxonomyAlignedDenominator": {},
-				"taxonomyAlignedNumerator": {},
-				"taxonomyEligibleButNotAligned": {},
-				"taxonomyNonEligible": {}
-			}
+				"nuclearEnergyRelatedActivitiesSection427": {
+					"value": null,
+					"dataSource": {
+						"page": "903-1132",
+						"fileName": "SustainabilityReport",
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"tagName": "e-markets"
+					},
+					"comment": "compress haptic application",
+					"quality": null
+				},
+				"nuclearEnergyRelatedActivitiesSection428": null,
+				"fossilGasRelatedActivitiesSection429": {
+					"value": "No",
+					"dataSource": {
+						"page": "452",
+						"fileName": "AnnualReport",
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"tagName": "web services"
+					},
+					"comment": null,
+					"quality": null
+				},
+				"fossilGasRelatedActivitiesSection430": {
+					"value": "No",
+					"dataSource": {
+						"page": "225",
+						"fileName": "IntegratedReport",
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"tagName": "content"
+					},
+					"comment": "connect redundant card",
+					"quality": "Reported"
+				},
+				"fossilGasRelatedActivitiesSection431": null
+			},
+			"taxonomyAlignedDenominator": {},
+			"taxonomyAlignedNumerator": {},
+			"taxonomyEligibleButNotAligned": {},
+			"taxonomyNonEligible": {}
 		},
 		"reportingPeriod": "2023"
 	},
@@ -4184,65 +4102,63 @@
 			"parentCompanyLei": "uhxU3EW8bTKCZtXPhlJO"
 		},
 		"t": {
-			"nuclearAndGas": {
-				"general": {
-					"nuclearEnergyRelatedActivitiesSection426": {
-						"value": "Yes",
-						"dataSource": {
-							"page": "164",
-							"fileName": "AnnualReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "partnerships"
-						},
-						"comment": "bypass online system",
-						"quality": null
+			"general": {
+				"nuclearEnergyRelatedActivitiesSection426": {
+					"value": "Yes",
+					"dataSource": {
+						"page": "164",
+						"fileName": "AnnualReport",
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"tagName": "partnerships"
 					},
-					"nuclearEnergyRelatedActivitiesSection427": {
-						"value": "Yes",
-						"dataSource": {
-							"page": "902",
-							"fileName": "AnnualReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "ROI"
-						},
-						"comment": "program primary port",
-						"quality": null
-					},
-					"nuclearEnergyRelatedActivitiesSection428": null,
-					"fossilGasRelatedActivitiesSection429": {
-						"value": null,
-						"dataSource": {
-							"page": "445",
-							"fileName": "ESEFReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "e-business"
-						},
-						"comment": "compress online array",
-						"quality": null
-					},
-					"fossilGasRelatedActivitiesSection430": {
-						"value": null,
-						"dataSource": {
-							"page": "685",
-							"fileName": "IntegratedReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "metrics"
-						},
-						"comment": "generate haptic pixel",
-						"quality": null
-					},
-					"fossilGasRelatedActivitiesSection431": {
-						"value": null,
-						"dataSource": null,
-						"comment": "reboot bluetooth capacitor",
-						"quality": "Incomplete"
-					}
+					"comment": "bypass online system",
+					"quality": null
 				},
-				"taxonomyAlignedDenominator": {},
-				"taxonomyAlignedNumerator": {},
-				"taxonomyEligibleButNotAligned": {},
-				"taxonomyNonEligible": {}
-			}
+				"nuclearEnergyRelatedActivitiesSection427": {
+					"value": "Yes",
+					"dataSource": {
+						"page": "902",
+						"fileName": "AnnualReport",
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"tagName": "ROI"
+					},
+					"comment": "program primary port",
+					"quality": null
+				},
+				"nuclearEnergyRelatedActivitiesSection428": null,
+				"fossilGasRelatedActivitiesSection429": {
+					"value": null,
+					"dataSource": {
+						"page": "445",
+						"fileName": "ESEFReport",
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"tagName": "e-business"
+					},
+					"comment": "compress online array",
+					"quality": null
+				},
+				"fossilGasRelatedActivitiesSection430": {
+					"value": null,
+					"dataSource": {
+						"page": "685",
+						"fileName": "IntegratedReport",
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"tagName": "metrics"
+					},
+					"comment": "generate haptic pixel",
+					"quality": null
+				},
+				"fossilGasRelatedActivitiesSection431": {
+					"value": null,
+					"dataSource": null,
+					"comment": "reboot bluetooth capacitor",
+					"quality": "Incomplete"
+				}
+			},
+			"taxonomyAlignedDenominator": {},
+			"taxonomyAlignedNumerator": {},
+			"taxonomyEligibleButNotAligned": {},
+			"taxonomyNonEligible": {}
 		},
 		"reportingPeriod": "2023"
 	},
@@ -4284,70 +4200,68 @@
 			"parentCompanyLei": null
 		},
 		"t": {
-			"nuclearAndGas": {
-				"general": {
-					"nuclearEnergyRelatedActivitiesSection426": {
-						"value": "No",
-						"dataSource": {
-							"page": "232-418",
-							"fileName": "IntegratedReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "architectures"
-						},
-						"comment": "transmit multi-byte bandwidth",
-						"quality": "Incomplete"
+			"general": {
+				"nuclearEnergyRelatedActivitiesSection426": {
+					"value": "No",
+					"dataSource": {
+						"page": "232-418",
+						"fileName": "IntegratedReport",
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"tagName": "architectures"
 					},
-					"nuclearEnergyRelatedActivitiesSection427": {
-						"value": "Yes",
-						"dataSource": {
-							"page": "616",
-							"fileName": "IntegratedReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "technologies"
-						},
-						"comment": "parse neural panel",
-						"quality": "Reported"
-					},
-					"nuclearEnergyRelatedActivitiesSection428": {
-						"value": null,
-						"dataSource": {
-							"page": "207-1022",
-							"fileName": "IntegratedReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "metrics"
-						},
-						"comment": "generate cross-platform application",
-						"quality": "Estimated"
-					},
-					"fossilGasRelatedActivitiesSection429": null,
-					"fossilGasRelatedActivitiesSection430": {
-						"value": "No",
-						"dataSource": {
-							"page": "454-934",
-							"fileName": "IntegratedReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "solutions"
-						},
-						"comment": "quantify back-end feed",
-						"quality": "Reported"
-					},
-					"fossilGasRelatedActivitiesSection431": {
-						"value": "No",
-						"dataSource": {
-							"page": "981",
-							"fileName": "IntegratedReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "convergence"
-						},
-						"comment": "copy primary port",
-						"quality": "Audited"
-					}
+					"comment": "transmit multi-byte bandwidth",
+					"quality": "Incomplete"
 				},
-				"taxonomyAlignedDenominator": {},
-				"taxonomyAlignedNumerator": {},
-				"taxonomyEligibleButNotAligned": {},
-				"taxonomyNonEligible": {}
-			}
+				"nuclearEnergyRelatedActivitiesSection427": {
+					"value": "Yes",
+					"dataSource": {
+						"page": "616",
+						"fileName": "IntegratedReport",
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"tagName": "technologies"
+					},
+					"comment": "parse neural panel",
+					"quality": "Reported"
+				},
+				"nuclearEnergyRelatedActivitiesSection428": {
+					"value": null,
+					"dataSource": {
+						"page": "207-1022",
+						"fileName": "IntegratedReport",
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"tagName": "metrics"
+					},
+					"comment": "generate cross-platform application",
+					"quality": "Estimated"
+				},
+				"fossilGasRelatedActivitiesSection429": null,
+				"fossilGasRelatedActivitiesSection430": {
+					"value": "No",
+					"dataSource": {
+						"page": "454-934",
+						"fileName": "IntegratedReport",
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"tagName": "solutions"
+					},
+					"comment": "quantify back-end feed",
+					"quality": "Reported"
+				},
+				"fossilGasRelatedActivitiesSection431": {
+					"value": "No",
+					"dataSource": {
+						"page": "981",
+						"fileName": "IntegratedReport",
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"tagName": "convergence"
+					},
+					"comment": "copy primary port",
+					"quality": "Audited"
+				}
+			},
+			"taxonomyAlignedDenominator": {},
+			"taxonomyAlignedNumerator": {},
+			"taxonomyEligibleButNotAligned": {},
+			"taxonomyNonEligible": {}
 		},
 		"reportingPeriod": "2020"
 	},
@@ -4386,65 +4300,63 @@
 			"parentCompanyLei": null
 		},
 		"t": {
-			"nuclearAndGas": {
-				"general": {
-					"nuclearEnergyRelatedActivitiesSection426": null,
-					"nuclearEnergyRelatedActivitiesSection427": {
-						"value": "No",
-						"dataSource": {
-							"page": "976-1105",
-							"fileName": "ESEFReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "action-items"
-						},
-						"comment": "compress solid state hard drive",
-						"quality": null
+			"general": {
+				"nuclearEnergyRelatedActivitiesSection426": null,
+				"nuclearEnergyRelatedActivitiesSection427": {
+					"value": "No",
+					"dataSource": {
+						"page": "976-1105",
+						"fileName": "ESEFReport",
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"tagName": "action-items"
 					},
-					"nuclearEnergyRelatedActivitiesSection428": {
-						"value": null,
-						"dataSource": {
-							"page": "778",
-							"fileName": "AnnualReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "communities"
-						},
-						"comment": "generate cross-platform array",
-						"quality": "Estimated"
-					},
-					"fossilGasRelatedActivitiesSection429": {
-						"value": "Yes",
-						"dataSource": null,
-						"comment": "copy digital hard drive",
-						"quality": null
-					},
-					"fossilGasRelatedActivitiesSection430": {
-						"value": "Yes",
-						"dataSource": {
-							"page": "894",
-							"fileName": "SustainabilityReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "eyeballs"
-						},
-						"comment": "bypass back-end transmitter",
-						"quality": "Incomplete"
-					},
-					"fossilGasRelatedActivitiesSection431": {
-						"value": "No",
-						"dataSource": {
-							"page": "969",
-							"fileName": "ESEFReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "architectures"
-						},
-						"comment": null,
-						"quality": "Reported"
-					}
+					"comment": "compress solid state hard drive",
+					"quality": null
 				},
-				"taxonomyAlignedDenominator": {},
-				"taxonomyAlignedNumerator": {},
-				"taxonomyEligibleButNotAligned": {},
-				"taxonomyNonEligible": {}
-			}
+				"nuclearEnergyRelatedActivitiesSection428": {
+					"value": null,
+					"dataSource": {
+						"page": "778",
+						"fileName": "AnnualReport",
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"tagName": "communities"
+					},
+					"comment": "generate cross-platform array",
+					"quality": "Estimated"
+				},
+				"fossilGasRelatedActivitiesSection429": {
+					"value": "Yes",
+					"dataSource": null,
+					"comment": "copy digital hard drive",
+					"quality": null
+				},
+				"fossilGasRelatedActivitiesSection430": {
+					"value": "Yes",
+					"dataSource": {
+						"page": "894",
+						"fileName": "SustainabilityReport",
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"tagName": "eyeballs"
+					},
+					"comment": "bypass back-end transmitter",
+					"quality": "Incomplete"
+				},
+				"fossilGasRelatedActivitiesSection431": {
+					"value": "No",
+					"dataSource": {
+						"page": "969",
+						"fileName": "ESEFReport",
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"tagName": "architectures"
+					},
+					"comment": null,
+					"quality": "Reported"
+				}
+			},
+			"taxonomyAlignedDenominator": {},
+			"taxonomyAlignedNumerator": {},
+			"taxonomyEligibleButNotAligned": {},
+			"taxonomyNonEligible": {}
 		},
 		"reportingPeriod": "2020"
 	},
@@ -4483,75 +4395,73 @@
 			"parentCompanyLei": "ctvPMyKlOhe7OamJ4AQH"
 		},
 		"t": {
-			"nuclearAndGas": {
-				"general": {
-					"nuclearEnergyRelatedActivitiesSection426": {
-						"value": null,
-						"dataSource": {
-							"page": "710",
-							"fileName": "AnnualReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "niches"
-						},
-						"comment": null,
-						"quality": "NoDataFound"
+			"general": {
+				"nuclearEnergyRelatedActivitiesSection426": {
+					"value": null,
+					"dataSource": {
+						"page": "710",
+						"fileName": "AnnualReport",
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"tagName": "niches"
 					},
-					"nuclearEnergyRelatedActivitiesSection427": {
-						"value": "Yes",
-						"dataSource": {
-							"page": "970",
-							"fileName": "IntegratedReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "initiatives"
-						},
-						"comment": "program digital port",
-						"quality": "Reported"
-					},
-					"nuclearEnergyRelatedActivitiesSection428": {
-						"value": "Yes",
-						"dataSource": null,
-						"comment": "index bluetooth circuit",
-						"quality": "Incomplete"
-					},
-					"fossilGasRelatedActivitiesSection429": {
-						"value": "No",
-						"dataSource": {
-							"page": "1053-1273",
-							"fileName": "IntegratedReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "solutions"
-						},
-						"comment": "synthesize online driver",
-						"quality": "Estimated"
-					},
-					"fossilGasRelatedActivitiesSection430": {
-						"value": null,
-						"dataSource": {
-							"page": "194-786",
-							"fileName": "AnnualReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "initiatives"
-						},
-						"comment": "bypass online application",
-						"quality": "Incomplete"
-					},
-					"fossilGasRelatedActivitiesSection431": {
-						"value": "Yes",
-						"dataSource": {
-							"page": "1075-1167",
-							"fileName": "ESEFReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "web services"
-						},
-						"comment": "quantify virtual matrix",
-						"quality": "Audited"
-					}
+					"comment": null,
+					"quality": "NoDataFound"
 				},
-				"taxonomyAlignedDenominator": {},
-				"taxonomyAlignedNumerator": {},
-				"taxonomyEligibleButNotAligned": {},
-				"taxonomyNonEligible": {}
-			}
+				"nuclearEnergyRelatedActivitiesSection427": {
+					"value": "Yes",
+					"dataSource": {
+						"page": "970",
+						"fileName": "IntegratedReport",
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"tagName": "initiatives"
+					},
+					"comment": "program digital port",
+					"quality": "Reported"
+				},
+				"nuclearEnergyRelatedActivitiesSection428": {
+					"value": "Yes",
+					"dataSource": null,
+					"comment": "index bluetooth circuit",
+					"quality": "Incomplete"
+				},
+				"fossilGasRelatedActivitiesSection429": {
+					"value": "No",
+					"dataSource": {
+						"page": "1053-1273",
+						"fileName": "IntegratedReport",
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"tagName": "solutions"
+					},
+					"comment": "synthesize online driver",
+					"quality": "Estimated"
+				},
+				"fossilGasRelatedActivitiesSection430": {
+					"value": null,
+					"dataSource": {
+						"page": "194-786",
+						"fileName": "AnnualReport",
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"tagName": "initiatives"
+					},
+					"comment": "bypass online application",
+					"quality": "Incomplete"
+				},
+				"fossilGasRelatedActivitiesSection431": {
+					"value": "Yes",
+					"dataSource": {
+						"page": "1075-1167",
+						"fileName": "ESEFReport",
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"tagName": "web services"
+					},
+					"comment": "quantify virtual matrix",
+					"quality": "Audited"
+				}
+			},
+			"taxonomyAlignedDenominator": {},
+			"taxonomyAlignedNumerator": {},
+			"taxonomyEligibleButNotAligned": {},
+			"taxonomyNonEligible": {}
 		},
 		"reportingPeriod": "2024"
 	},
@@ -4586,65 +4496,63 @@
 			"parentCompanyLei": "yoZdAfBVc1P3tYx5ZHjF"
 		},
 		"t": {
-			"nuclearAndGas": {
-				"general": {
-					"nuclearEnergyRelatedActivitiesSection426": {
-						"value": null,
-						"dataSource": {
-							"page": "45",
-							"fileName": "SustainabilityReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "solutions"
-						},
-						"comment": "calculate redundant protocol",
-						"quality": "Incomplete"
+			"general": {
+				"nuclearEnergyRelatedActivitiesSection426": {
+					"value": null,
+					"dataSource": {
+						"page": "45",
+						"fileName": "SustainabilityReport",
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"tagName": "solutions"
 					},
-					"nuclearEnergyRelatedActivitiesSection427": {
-						"value": null,
-						"dataSource": {
-							"page": "208",
-							"fileName": "SustainabilityReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "ROI"
-						},
-						"comment": "reboot solid state bus",
-						"quality": "Audited"
-					},
-					"nuclearEnergyRelatedActivitiesSection428": {
-						"value": "No",
-						"dataSource": {
-							"page": "948",
-							"fileName": "ESEFReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "initiatives"
-						},
-						"comment": "transmit online array",
-						"quality": "Audited"
-					},
-					"fossilGasRelatedActivitiesSection429": null,
-					"fossilGasRelatedActivitiesSection430": {
-						"value": "Yes",
-						"dataSource": null,
-						"comment": "input haptic alarm",
-						"quality": "Incomplete"
-					},
-					"fossilGasRelatedActivitiesSection431": {
-						"value": "Yes",
-						"dataSource": {
-							"page": "480",
-							"fileName": "ESEFReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "infrastructures"
-						},
-						"comment": "copy cross-platform driver",
-						"quality": "Audited"
-					}
+					"comment": "calculate redundant protocol",
+					"quality": "Incomplete"
 				},
-				"taxonomyAlignedDenominator": {},
-				"taxonomyAlignedNumerator": {},
-				"taxonomyEligibleButNotAligned": {},
-				"taxonomyNonEligible": {}
-			}
+				"nuclearEnergyRelatedActivitiesSection427": {
+					"value": null,
+					"dataSource": {
+						"page": "208",
+						"fileName": "SustainabilityReport",
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"tagName": "ROI"
+					},
+					"comment": "reboot solid state bus",
+					"quality": "Audited"
+				},
+				"nuclearEnergyRelatedActivitiesSection428": {
+					"value": "No",
+					"dataSource": {
+						"page": "948",
+						"fileName": "ESEFReport",
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"tagName": "initiatives"
+					},
+					"comment": "transmit online array",
+					"quality": "Audited"
+				},
+				"fossilGasRelatedActivitiesSection429": null,
+				"fossilGasRelatedActivitiesSection430": {
+					"value": "Yes",
+					"dataSource": null,
+					"comment": "input haptic alarm",
+					"quality": "Incomplete"
+				},
+				"fossilGasRelatedActivitiesSection431": {
+					"value": "Yes",
+					"dataSource": {
+						"page": "480",
+						"fileName": "ESEFReport",
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"tagName": "infrastructures"
+					},
+					"comment": "copy cross-platform driver",
+					"quality": "Audited"
+				}
+			},
+			"taxonomyAlignedDenominator": {},
+			"taxonomyAlignedNumerator": {},
+			"taxonomyEligibleButNotAligned": {},
+			"taxonomyNonEligible": {}
 		},
 		"reportingPeriod": "2021"
 	},
@@ -4681,55 +4589,53 @@
 			"parentCompanyLei": null
 		},
 		"t": {
-			"nuclearAndGas": {
-				"general": {
-					"nuclearEnergyRelatedActivitiesSection426": {
-						"value": "No",
-						"dataSource": {
-							"page": "1029-1050",
-							"fileName": "AnnualReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "content"
-						},
-						"comment": "synthesize primary firewall",
-						"quality": null
+			"general": {
+				"nuclearEnergyRelatedActivitiesSection426": {
+					"value": "No",
+					"dataSource": {
+						"page": "1029-1050",
+						"fileName": "AnnualReport",
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"tagName": "content"
 					},
-					"nuclearEnergyRelatedActivitiesSection427": null,
-					"nuclearEnergyRelatedActivitiesSection428": {
-						"value": "No",
-						"dataSource": {
-							"page": "180",
-							"fileName": "AnnualReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "initiatives"
-						},
-						"comment": "reboot open-source application",
-						"quality": "Estimated"
-					},
-					"fossilGasRelatedActivitiesSection429": {
-						"value": null,
-						"dataSource": null,
-						"comment": null,
-						"quality": null
-					},
-					"fossilGasRelatedActivitiesSection430": {
-						"value": "No",
-						"dataSource": {
-							"page": "317-954",
-							"fileName": "AnnualReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "e-markets"
-						},
-						"comment": null,
-						"quality": "Estimated"
-					},
-					"fossilGasRelatedActivitiesSection431": null
+					"comment": "synthesize primary firewall",
+					"quality": null
 				},
-				"taxonomyAlignedDenominator": {},
-				"taxonomyAlignedNumerator": {},
-				"taxonomyEligibleButNotAligned": {},
-				"taxonomyNonEligible": {}
-			}
+				"nuclearEnergyRelatedActivitiesSection427": null,
+				"nuclearEnergyRelatedActivitiesSection428": {
+					"value": "No",
+					"dataSource": {
+						"page": "180",
+						"fileName": "AnnualReport",
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"tagName": "initiatives"
+					},
+					"comment": "reboot open-source application",
+					"quality": "Estimated"
+				},
+				"fossilGasRelatedActivitiesSection429": {
+					"value": null,
+					"dataSource": null,
+					"comment": null,
+					"quality": null
+				},
+				"fossilGasRelatedActivitiesSection430": {
+					"value": "No",
+					"dataSource": {
+						"page": "317-954",
+						"fileName": "AnnualReport",
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"tagName": "e-markets"
+					},
+					"comment": null,
+					"quality": "Estimated"
+				},
+				"fossilGasRelatedActivitiesSection431": null
+			},
+			"taxonomyAlignedDenominator": {},
+			"taxonomyAlignedNumerator": {},
+			"taxonomyEligibleButNotAligned": {},
+			"taxonomyNonEligible": {}
 		},
 		"reportingPeriod": "2023"
 	},
@@ -4769,80 +4675,78 @@
 			"parentCompanyLei": null
 		},
 		"t": {
-			"nuclearAndGas": {
-				"general": {
-					"nuclearEnergyRelatedActivitiesSection426": {
-						"value": "Yes",
-						"dataSource": {
-							"page": "337-790",
-							"fileName": "SustainabilityReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "channels"
-						},
-						"comment": "parse optical system",
-						"quality": null
+			"general": {
+				"nuclearEnergyRelatedActivitiesSection426": {
+					"value": "Yes",
+					"dataSource": {
+						"page": "337-790",
+						"fileName": "SustainabilityReport",
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"tagName": "channels"
 					},
-					"nuclearEnergyRelatedActivitiesSection427": {
-						"value": "No",
-						"dataSource": {
-							"page": "380-717",
-							"fileName": "SustainabilityReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "markets"
-						},
-						"comment": "back up back-end system",
-						"quality": "Estimated"
-					},
-					"nuclearEnergyRelatedActivitiesSection428": {
-						"value": null,
-						"dataSource": {
-							"page": "40-1169",
-							"fileName": "IntegratedReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "convergence"
-						},
-						"comment": "calculate solid state monitor",
-						"quality": "Audited"
-					},
-					"fossilGasRelatedActivitiesSection429": {
-						"value": "No",
-						"dataSource": {
-							"page": "535-776",
-							"fileName": "SustainabilityReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "communities"
-						},
-						"comment": "bypass mobile firewall",
-						"quality": "Audited"
-					},
-					"fossilGasRelatedActivitiesSection430": {
-						"value": "Yes",
-						"dataSource": {
-							"page": "870",
-							"fileName": "SustainabilityReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "deliverables"
-						},
-						"comment": null,
-						"quality": "Incomplete"
-					},
-					"fossilGasRelatedActivitiesSection431": {
-						"value": "No",
-						"dataSource": {
-							"page": "484",
-							"fileName": "SustainabilityReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "infrastructures"
-						},
-						"comment": "hack haptic alarm",
-						"quality": "Incomplete"
-					}
+					"comment": "parse optical system",
+					"quality": null
 				},
-				"taxonomyAlignedDenominator": {},
-				"taxonomyAlignedNumerator": {},
-				"taxonomyEligibleButNotAligned": {},
-				"taxonomyNonEligible": {}
-			}
+				"nuclearEnergyRelatedActivitiesSection427": {
+					"value": "No",
+					"dataSource": {
+						"page": "380-717",
+						"fileName": "SustainabilityReport",
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"tagName": "markets"
+					},
+					"comment": "back up back-end system",
+					"quality": "Estimated"
+				},
+				"nuclearEnergyRelatedActivitiesSection428": {
+					"value": null,
+					"dataSource": {
+						"page": "40-1169",
+						"fileName": "IntegratedReport",
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"tagName": "convergence"
+					},
+					"comment": "calculate solid state monitor",
+					"quality": "Audited"
+				},
+				"fossilGasRelatedActivitiesSection429": {
+					"value": "No",
+					"dataSource": {
+						"page": "535-776",
+						"fileName": "SustainabilityReport",
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"tagName": "communities"
+					},
+					"comment": "bypass mobile firewall",
+					"quality": "Audited"
+				},
+				"fossilGasRelatedActivitiesSection430": {
+					"value": "Yes",
+					"dataSource": {
+						"page": "870",
+						"fileName": "SustainabilityReport",
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"tagName": "deliverables"
+					},
+					"comment": null,
+					"quality": "Incomplete"
+				},
+				"fossilGasRelatedActivitiesSection431": {
+					"value": "No",
+					"dataSource": {
+						"page": "484",
+						"fileName": "SustainabilityReport",
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"tagName": "infrastructures"
+					},
+					"comment": "hack haptic alarm",
+					"quality": "Incomplete"
+				}
+			},
+			"taxonomyAlignedDenominator": {},
+			"taxonomyAlignedNumerator": {},
+			"taxonomyEligibleButNotAligned": {},
+			"taxonomyNonEligible": {}
 		},
 		"reportingPeriod": "2023"
 	},
@@ -4877,55 +4781,53 @@
 			"parentCompanyLei": "7IZhmvjEacvI8Daz5lsJ"
 		},
 		"t": {
-			"nuclearAndGas": {
-				"general": {
-					"nuclearEnergyRelatedActivitiesSection426": {
-						"value": "Yes",
-						"dataSource": null,
-						"comment": null,
-						"quality": null
-					},
-					"nuclearEnergyRelatedActivitiesSection427": {
-						"value": null,
-						"dataSource": {
-							"page": "206",
-							"fileName": "AnnualReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "lifetime value"
-						},
-						"comment": null,
-						"quality": "Estimated"
-					},
-					"nuclearEnergyRelatedActivitiesSection428": null,
-					"fossilGasRelatedActivitiesSection429": {
-						"value": "Yes",
-						"dataSource": {
-							"page": "704-736",
-							"fileName": "SustainabilityReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "models"
-						},
-						"comment": "override cross-platform hard drive",
-						"quality": "Reported"
-					},
-					"fossilGasRelatedActivitiesSection430": {
-						"value": "No",
-						"dataSource": {
-							"page": "790-926",
-							"fileName": "AnnualReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "networks"
-						},
-						"comment": "quantify neural capacitor",
-						"quality": "Audited"
-					},
-					"fossilGasRelatedActivitiesSection431": null
+			"general": {
+				"nuclearEnergyRelatedActivitiesSection426": {
+					"value": "Yes",
+					"dataSource": null,
+					"comment": null,
+					"quality": null
 				},
-				"taxonomyAlignedDenominator": {},
-				"taxonomyAlignedNumerator": {},
-				"taxonomyEligibleButNotAligned": {},
-				"taxonomyNonEligible": {}
-			}
+				"nuclearEnergyRelatedActivitiesSection427": {
+					"value": null,
+					"dataSource": {
+						"page": "206",
+						"fileName": "AnnualReport",
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"tagName": "lifetime value"
+					},
+					"comment": null,
+					"quality": "Estimated"
+				},
+				"nuclearEnergyRelatedActivitiesSection428": null,
+				"fossilGasRelatedActivitiesSection429": {
+					"value": "Yes",
+					"dataSource": {
+						"page": "704-736",
+						"fileName": "SustainabilityReport",
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"tagName": "models"
+					},
+					"comment": "override cross-platform hard drive",
+					"quality": "Reported"
+				},
+				"fossilGasRelatedActivitiesSection430": {
+					"value": "No",
+					"dataSource": {
+						"page": "790-926",
+						"fileName": "AnnualReport",
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"tagName": "networks"
+					},
+					"comment": "quantify neural capacitor",
+					"quality": "Audited"
+				},
+				"fossilGasRelatedActivitiesSection431": null
+			},
+			"taxonomyAlignedDenominator": {},
+			"taxonomyAlignedNumerator": {},
+			"taxonomyEligibleButNotAligned": {},
+			"taxonomyNonEligible": {}
 		},
 		"reportingPeriod": "2022"
 	},
@@ -4969,45 +4871,43 @@
 			"parentCompanyLei": "uXmhO0ZFTkROAAsmKnwG"
 		},
 		"t": {
-			"nuclearAndGas": {
-				"general": {
-					"nuclearEnergyRelatedActivitiesSection426": null,
-					"nuclearEnergyRelatedActivitiesSection427": {
-						"value": null,
-						"dataSource": {
-							"page": "426-1154",
-							"fileName": "IntegratedReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "experiences"
-						},
-						"comment": null,
-						"quality": "Incomplete"
+			"general": {
+				"nuclearEnergyRelatedActivitiesSection426": null,
+				"nuclearEnergyRelatedActivitiesSection427": {
+					"value": null,
+					"dataSource": {
+						"page": "426-1154",
+						"fileName": "IntegratedReport",
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"tagName": "experiences"
 					},
-					"nuclearEnergyRelatedActivitiesSection428": {
-						"value": "No",
-						"dataSource": null,
-						"comment": "quantify online sensor",
-						"quality": "Incomplete"
-					},
-					"fossilGasRelatedActivitiesSection429": null,
-					"fossilGasRelatedActivitiesSection430": null,
-					"fossilGasRelatedActivitiesSection431": {
-						"value": null,
-						"dataSource": {
-							"page": "908-985",
-							"fileName": "ESEFReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "users"
-						},
-						"comment": null,
-						"quality": "Estimated"
-					}
+					"comment": null,
+					"quality": "Incomplete"
 				},
-				"taxonomyAlignedDenominator": {},
-				"taxonomyAlignedNumerator": {},
-				"taxonomyEligibleButNotAligned": {},
-				"taxonomyNonEligible": {}
-			}
+				"nuclearEnergyRelatedActivitiesSection428": {
+					"value": "No",
+					"dataSource": null,
+					"comment": "quantify online sensor",
+					"quality": "Incomplete"
+				},
+				"fossilGasRelatedActivitiesSection429": null,
+				"fossilGasRelatedActivitiesSection430": null,
+				"fossilGasRelatedActivitiesSection431": {
+					"value": null,
+					"dataSource": {
+						"page": "908-985",
+						"fileName": "ESEFReport",
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"tagName": "users"
+					},
+					"comment": null,
+					"quality": "Estimated"
+				}
+			},
+			"taxonomyAlignedDenominator": {},
+			"taxonomyAlignedNumerator": {},
+			"taxonomyEligibleButNotAligned": {},
+			"taxonomyNonEligible": {}
 		},
 		"reportingPeriod": "2023"
 	}
