@@ -4,7 +4,7 @@ package org.dataland.datalandbackend.frameworks.nuclearandgas.model.custom
 import java.math.BigDecimal
 
 /**
- * TODO
+ * The data-model for the NuclearAndGasNonEligible custom component.
  */
 data class NuclearAndGasNonEligible(
     val taxonomyNonEligibleShareNAndG426: BigDecimal? = null,

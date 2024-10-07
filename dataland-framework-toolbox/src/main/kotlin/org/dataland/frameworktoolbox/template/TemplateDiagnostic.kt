@@ -33,6 +33,12 @@ class TemplateDiagnostic(
      */
     fun showWhenValueIsNotUsed(row: TemplateRow) = unusedColumn("showWhenValueIs", "", row, row.showWhenValueIs)
 
+    /**
+     * Attests that this generator does not use "No" within the mandatory column of the CSV
+     */
+    fun mandatoryIsNotUsed(row: TemplateRow) =
+        unusedColumn("mandatoryField", "No", row, row.mandatoryField.toString())
+
     private fun unusedColumn(
         columnName: String,
         expectedColumnValue: String,

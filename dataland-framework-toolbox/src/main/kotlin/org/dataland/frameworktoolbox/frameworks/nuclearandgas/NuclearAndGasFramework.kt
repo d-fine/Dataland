@@ -3,6 +3,7 @@ import org.dataland.frameworktoolbox.frameworks.FrameworkGenerationFeatures
 import org.dataland.frameworktoolbox.frameworks.PavedRoadFramework
 import org.dataland.frameworktoolbox.frameworks.nuclearandgas.custom.CustomComponentFactory
 import org.dataland.frameworktoolbox.specific.datamodel.FrameworkDataModelBuilder
+import org.dataland.frameworktoolbox.specific.fixturegenerator.FrameworkFixtureGeneratorBuilder
 import org.dataland.frameworktoolbox.template.TemplateDiagnostic
 import org.dataland.frameworktoolbox.template.components.TemplateComponentFactory
 import org.springframework.beans.factory.getBean
@@ -37,20 +38,16 @@ class NuclearAndGasFramework : PavedRoadFramework(
         return customComponentFactories + superFactories
     }
 
-    /**
-     * TODOs:
-     * 1. Clean up the code, better naming for custom components, also generated file names contain nuclear and gas twice
-     * 2. Fake fixture generation
-     * 3. We need to generate a mapping file. That creates a map from the data points in the component
-     *    To the tooltips, that is then stored as ts file somewhere
-     *    export const Mapping { fieldName: "Super nice explanation of the field" }
-     *    Maybe we want to use a ftl template, maybe not
-     */
-
     override fun customizeDataModel(dataModel: FrameworkDataModelBuilder) {
         val customPackage = dataModel.rootPackageBuilder.addPackage(CustomComponentFactory.PACKAGE_NAME)
         customComponentFactories.forEach {
             it.addClassToPackageBuilder(customPackage)
+        }
+    }
+
+    override fun customizeFixtureGenerator(fixtureGenerator: FrameworkFixtureGeneratorBuilder) {
+        customComponentFactories.forEach {
+            it.addGeneratorToFixtureGeneratorBuilder(fixtureGenerator)
         }
     }
 }

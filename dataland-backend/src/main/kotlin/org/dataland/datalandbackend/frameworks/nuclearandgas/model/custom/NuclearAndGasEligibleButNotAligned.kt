@@ -4,7 +4,7 @@ package org.dataland.datalandbackend.frameworks.nuclearandgas.model.custom
 import java.math.BigDecimal
 
 /**
- * TODO
+ * The data-model for the NuclearAndGasEligibleButNotAligned custom component.
  */
 data class NuclearAndGasEligibleButNotAligned(
     val taxonomyEligibleButNotAlignedShareClimateChangeMitigationAndClimateChangeAdaptationNAndG426:
