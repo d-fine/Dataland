@@ -233,11 +233,12 @@ export default defineComponent({
     convertUnixTimeInMsToDateString,
     humanizeString: humanizeStringOrNumber,
     /**
-     * Converts from DataTypeEnum to GetInfoOnUnreviewedDatasetsDataTypesEnum
-     * @param input DataTypeEnum
+     * Tells the typescript compiler to handle the DataTypeEnum input as type GetInfoOnUnreviewedDatasetsDataTypesEnum.
+     * This is acceptable because both enums sahre the same origin (DataTypeEnum in backend).
+     * @param input is a value with type DataTypeEnum
      * @returns GetInfoOnUnreviewedDatasetsDataTypesEnum
      */
-    manuallyChangeTypeOfDataTypeEnum (input: DataTypeEnum): GetInfoOnUnreviewedDatasetsDataTypesEnum {
+    manuallyChangeTypeOfDataTypeEnum(input: DataTypeEnum): GetInfoOnUnreviewedDatasetsDataTypesEnum {
       return input as GetInfoOnUnreviewedDatasetsDataTypesEnum;
     },
     /**
@@ -249,7 +250,9 @@ export default defineComponent({
         this.displayDataOfPage = [];
 
         const selectedFrameworksAsSet = new Set<GetInfoOnUnreviewedDatasetsDataTypesEnum>(
-          this.selectedFrameworks.map((selectableItem) => this.manuallyChangeTypeOfDataTypeEnum (selectableItem.frameworkDataType))
+          this.selectedFrameworks.map((selectableItem) =>
+            this.manuallyChangeTypeOfDataTypeEnum(selectableItem.frameworkDataType)
+          )
         );
         const reportingPeriodFilter: Set<string> = new Set<string>(
           this.availableReportingPeriods?.map((date) => date.getFullYear().toString())
@@ -265,7 +268,7 @@ export default defineComponent({
         this.displayDataOfPage = response.data;
         this.totalRecords = (
           await this.apiClientProvider.apiClients.qaController.getNumberOfUnreviewedDatasets(
-            selectedFrameworksAsSet as Set<GetInfoOnUnreviewedDatasetsDataTypesEnum>,
+            selectedFrameworksAsSet,
             reportingPeriodFilter,
             companyNameFilter
           )
