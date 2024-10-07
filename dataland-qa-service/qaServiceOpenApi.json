@@ -2570,7 +2570,103 @@
           }
         }
       },
-      "CustomComponentAlignedDenominator": {
+      "ExtendedDataPointNuclearAndGasAlignedDenominator": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "$ref": "#/components/schemas/NuclearAndGasAlignedDenominator"
+          },
+          "quality": {
+            "type": "string",
+            "enum": [
+              "Audited",
+              "Reported",
+              "Estimated",
+              "Incomplete",
+              "NoDataFound"
+            ]
+          },
+          "comment": {
+            "type": "string"
+          },
+          "dataSource": {
+            "$ref": "#/components/schemas/ExtendedDocumentReference"
+          }
+        }
+      },
+      "ExtendedDataPointNuclearAndGasAlignedNumerator": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "$ref": "#/components/schemas/NuclearAndGasAlignedNumerator"
+          },
+          "quality": {
+            "type": "string",
+            "enum": [
+              "Audited",
+              "Reported",
+              "Estimated",
+              "Incomplete",
+              "NoDataFound"
+            ]
+          },
+          "comment": {
+            "type": "string"
+          },
+          "dataSource": {
+            "$ref": "#/components/schemas/ExtendedDocumentReference"
+          }
+        }
+      },
+      "ExtendedDataPointNuclearAndGasEligibleButNotAligned": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "$ref": "#/components/schemas/NuclearAndGasEligibleButNotAligned"
+          },
+          "quality": {
+            "type": "string",
+            "enum": [
+              "Audited",
+              "Reported",
+              "Estimated",
+              "Incomplete",
+              "NoDataFound"
+            ]
+          },
+          "comment": {
+            "type": "string"
+          },
+          "dataSource": {
+            "$ref": "#/components/schemas/ExtendedDocumentReference"
+          }
+        }
+      },
+      "ExtendedDataPointNuclearAndGasNonEligible": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "$ref": "#/components/schemas/NuclearAndGasNonEligible"
+          },
+          "quality": {
+            "type": "string",
+            "enum": [
+              "Audited",
+              "Reported",
+              "Estimated",
+              "Incomplete",
+              "NoDataFound"
+            ]
+          },
+          "comment": {
+            "type": "string"
+          },
+          "dataSource": {
+            "$ref": "#/components/schemas/ExtendedDocumentReference"
+          }
+        }
+      },
+      "NuclearAndGasAlignedDenominator": {
         "type": "object",
         "properties": {
           "taxonomyAlignedShareDenominatorClimateChangeMitigationAndClimateChangeAdaptationNAndG426": {
@@ -2647,7 +2743,7 @@
           }
         }
       },
-      "CustomComponentAlignedNumerator": {
+      "NuclearAndGasAlignedNumerator": {
         "type": "object",
         "properties": {
           "taxonomyAlignedShareNumeratorClimateChangeMitigationAndClimateChangeAdaptationNAndG426": {
@@ -2724,7 +2820,27 @@
           }
         }
       },
-      "CustomComponentEligibleButNotAligned": {
+      "NuclearAndGasData": {
+        "type": "object",
+        "properties": {
+          "general": {
+            "$ref": "#/components/schemas/NuclearAndGasGeneral"
+          },
+          "taxonomyAlignedDenominator": {
+            "$ref": "#/components/schemas/NuclearAndGasTaxonomyAlignedDenominator"
+          },
+          "taxonomyAlignedNumerator": {
+            "$ref": "#/components/schemas/NuclearAndGasTaxonomyAlignedNumerator"
+          },
+          "taxonomyEligibleButNotAligned": {
+            "$ref": "#/components/schemas/NuclearAndGasTaxonomyEligibleButNotAligned"
+          },
+          "taxonomyNonEligible": {
+            "$ref": "#/components/schemas/NuclearAndGasTaxonomyNonEligible"
+          }
+        }
+      },
+      "NuclearAndGasEligibleButNotAligned": {
         "type": "object",
         "properties": {
           "taxonomyEligibleButNotAlignedShareClimateChangeMitigationAndClimateChangeAdaptationNAndG426": {
@@ -2801,7 +2917,30 @@
           }
         }
       },
-      "CustomComponentNonEligible": {
+      "NuclearAndGasGeneral": {
+        "type": "object",
+        "properties": {
+          "nuclearEnergyRelatedActivitiesSection426": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointYesNo"
+          },
+          "nuclearEnergyRelatedActivitiesSection427": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointYesNo"
+          },
+          "nuclearEnergyRelatedActivitiesSection428": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointYesNo"
+          },
+          "fossilGasRelatedActivitiesSection429": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointYesNo"
+          },
+          "fossilGasRelatedActivitiesSection430": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointYesNo"
+          },
+          "fossilGasRelatedActivitiesSection431": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointYesNo"
+          }
+        }
+      },
+      "NuclearAndGasNonEligible": {
         "type": "object",
         "properties": {
           "taxonomyNonEligibleShareNAndG426": {
@@ -2830,153 +2969,14 @@
           }
         }
       },
-      "ExtendedDataPointCustomComponentAlignedDenominator": {
-        "type": "object",
-        "properties": {
-          "value": {
-            "$ref": "#/components/schemas/CustomComponentAlignedDenominator"
-          },
-          "quality": {
-            "type": "string",
-            "enum": [
-              "Audited",
-              "Reported",
-              "Estimated",
-              "Incomplete",
-              "NoDataFound"
-            ]
-          },
-          "comment": {
-            "type": "string"
-          },
-          "dataSource": {
-            "$ref": "#/components/schemas/ExtendedDocumentReference"
-          }
-        }
-      },
-      "ExtendedDataPointCustomComponentAlignedNumerator": {
-        "type": "object",
-        "properties": {
-          "value": {
-            "$ref": "#/components/schemas/CustomComponentAlignedNumerator"
-          },
-          "quality": {
-            "type": "string",
-            "enum": [
-              "Audited",
-              "Reported",
-              "Estimated",
-              "Incomplete",
-              "NoDataFound"
-            ]
-          },
-          "comment": {
-            "type": "string"
-          },
-          "dataSource": {
-            "$ref": "#/components/schemas/ExtendedDocumentReference"
-          }
-        }
-      },
-      "ExtendedDataPointCustomComponentEligibleButNotAligned": {
-        "type": "object",
-        "properties": {
-          "value": {
-            "$ref": "#/components/schemas/CustomComponentEligibleButNotAligned"
-          },
-          "quality": {
-            "type": "string",
-            "enum": [
-              "Audited",
-              "Reported",
-              "Estimated",
-              "Incomplete",
-              "NoDataFound"
-            ]
-          },
-          "comment": {
-            "type": "string"
-          },
-          "dataSource": {
-            "$ref": "#/components/schemas/ExtendedDocumentReference"
-          }
-        }
-      },
-      "ExtendedDataPointCustomComponentNonEligible": {
-        "type": "object",
-        "properties": {
-          "value": {
-            "$ref": "#/components/schemas/CustomComponentNonEligible"
-          },
-          "quality": {
-            "type": "string",
-            "enum": [
-              "Audited",
-              "Reported",
-              "Estimated",
-              "Incomplete",
-              "NoDataFound"
-            ]
-          },
-          "comment": {
-            "type": "string"
-          },
-          "dataSource": {
-            "$ref": "#/components/schemas/ExtendedDocumentReference"
-          }
-        }
-      },
-      "NuclearAndGasData": {
-        "type": "object",
-        "properties": {
-          "general": {
-            "$ref": "#/components/schemas/NuclearAndGasGeneral"
-          },
-          "taxonomyAlignedDenominator": {
-            "$ref": "#/components/schemas/NuclearAndGasTaxonomyAlignedDenominator"
-          },
-          "taxonomyAlignedNumerator": {
-            "$ref": "#/components/schemas/NuclearAndGasTaxonomyAlignedNumerator"
-          },
-          "taxonomyEligibleButNotAligned": {
-            "$ref": "#/components/schemas/NuclearAndGasTaxonomyEligibleButNotAligned"
-          },
-          "taxonomyNonEligible": {
-            "$ref": "#/components/schemas/NuclearAndGasTaxonomyNonEligible"
-          }
-        }
-      },
-      "NuclearAndGasGeneral": {
-        "type": "object",
-        "properties": {
-          "nuclearEnergyRelatedActivitiesSection426": {
-            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointYesNo"
-          },
-          "nuclearEnergyRelatedActivitiesSection427": {
-            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointYesNo"
-          },
-          "nuclearEnergyRelatedActivitiesSection428": {
-            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointYesNo"
-          },
-          "fossilGasRelatedActivitiesSection429": {
-            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointYesNo"
-          },
-          "fossilGasRelatedActivitiesSection430": {
-            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointYesNo"
-          },
-          "fossilGasRelatedActivitiesSection431": {
-            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointYesNo"
-          }
-        }
-      },
       "NuclearAndGasTaxonomyAlignedDenominator": {
         "type": "object",
         "properties": {
           "nuclearAndGasTaxonomyAlignedRevenueDenominator": {
-            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointCustomComponentAlignedDenominator"
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointNuclearAndGasAlignedDenominator"
           },
           "nuclearAndGasTaxonomyAlignedCapexDenominator": {
-            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointCustomComponentAlignedDenominator"
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointNuclearAndGasAlignedDenominator"
           }
         }
       },
@@ -2984,10 +2984,10 @@
         "type": "object",
         "properties": {
           "nuclearAndGasTaxonomyAlignedRevenueNumerator": {
-            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointCustomComponentAlignedNumerator"
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointNuclearAndGasAlignedNumerator"
           },
           "nuclearAndGasTaxonomyAlignedCapexNumerator": {
-            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointCustomComponentAlignedNumerator"
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointNuclearAndGasAlignedNumerator"
           }
         }
       },
@@ -2995,10 +2995,10 @@
         "type": "object",
         "properties": {
           "nuclearAndGasTaxonomyEligibleButNotAlignedRevenue": {
-            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointCustomComponentEligibleButNotAligned"
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointNuclearAndGasEligibleButNotAligned"
           },
           "nuclearAndGasTaxonomyEligibleButNotAlignedCapex": {
-            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointCustomComponentEligibleButNotAligned"
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointNuclearAndGasEligibleButNotAligned"
           }
         }
       },
@@ -3006,14 +3006,14 @@
         "type": "object",
         "properties": {
           "nuclearAndGasTaxonomyNonEligibleRevenue": {
-            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointCustomComponentNonEligible"
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointNuclearAndGasNonEligible"
           },
           "nuclearAndGasTaxonomyNonEligibleCapex": {
-            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointCustomComponentNonEligible"
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointNuclearAndGasNonEligible"
           }
         }
       },
-      "QaReportDataPointExtendedDataPointCustomComponentAlignedDenominator": {
+      "QaReportDataPointExtendedDataPointNuclearAndGasAlignedDenominator": {
         "required": [
           "comment",
           "correctedData",
@@ -3028,11 +3028,11 @@
             "$ref": "#/components/schemas/QaReportDataPointVerdict"
           },
           "correctedData": {
-            "$ref": "#/components/schemas/ExtendedDataPointCustomComponentAlignedDenominator"
+            "$ref": "#/components/schemas/ExtendedDataPointNuclearAndGasAlignedDenominator"
           }
         }
       },
-      "QaReportDataPointExtendedDataPointCustomComponentAlignedNumerator": {
+      "QaReportDataPointExtendedDataPointNuclearAndGasAlignedNumerator": {
         "required": [
           "comment",
           "correctedData",
@@ -3047,11 +3047,11 @@
             "$ref": "#/components/schemas/QaReportDataPointVerdict"
           },
           "correctedData": {
-            "$ref": "#/components/schemas/ExtendedDataPointCustomComponentAlignedNumerator"
+            "$ref": "#/components/schemas/ExtendedDataPointNuclearAndGasAlignedNumerator"
           }
         }
       },
-      "QaReportDataPointExtendedDataPointCustomComponentEligibleButNotAligned": {
+      "QaReportDataPointExtendedDataPointNuclearAndGasEligibleButNotAligned": {
         "required": [
           "comment",
           "correctedData",
@@ -3066,11 +3066,11 @@
             "$ref": "#/components/schemas/QaReportDataPointVerdict"
           },
           "correctedData": {
-            "$ref": "#/components/schemas/ExtendedDataPointCustomComponentEligibleButNotAligned"
+            "$ref": "#/components/schemas/ExtendedDataPointNuclearAndGasEligibleButNotAligned"
           }
         }
       },
-      "QaReportDataPointExtendedDataPointCustomComponentNonEligible": {
+      "QaReportDataPointExtendedDataPointNuclearAndGasNonEligible": {
         "required": [
           "comment",
           "correctedData",
@@ -3085,7 +3085,7 @@
             "$ref": "#/components/schemas/QaReportDataPointVerdict"
           },
           "correctedData": {
-            "$ref": "#/components/schemas/ExtendedDataPointCustomComponentNonEligible"
+            "$ref": "#/components/schemas/ExtendedDataPointNuclearAndGasNonEligible"
           }
         }
       },
@@ -4323,6 +4323,18 @@
         ],
         "type": "object",
         "properties": {
+          "dataId": {
+            "type": "string"
+          },
+          "framework": {
+            "type": "string"
+          },
+          "reportingPeriod": {
+            "type": "string"
+          },
+          "companyName": {
+            "type": "string"
+          },
           "message": {
             "type": "string"
           },
@@ -4330,19 +4342,7 @@
             "type": "integer",
             "format": "int64"
           },
-          "dataId": {
-            "type": "string"
-          },
-          "companyName": {
-            "type": "string"
-          },
           "companyId": {
-            "type": "string"
-          },
-          "framework": {
-            "type": "string"
-          },
-          "reportingPeriod": {
             "type": "string"
           }
         }

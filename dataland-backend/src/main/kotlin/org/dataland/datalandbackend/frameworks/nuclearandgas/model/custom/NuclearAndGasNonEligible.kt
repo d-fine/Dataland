@@ -6,7 +6,7 @@ import java.math.BigDecimal
 /**
  * TODO
  */
-data class CustomComponentNonEligible(
+data class NuclearAndGasNonEligible(
     val taxonomyNonEligibleShareNAndG426: BigDecimal? = null,
 
     val taxonomyNonEligibleShareNAndG427: BigDecimal? = null,

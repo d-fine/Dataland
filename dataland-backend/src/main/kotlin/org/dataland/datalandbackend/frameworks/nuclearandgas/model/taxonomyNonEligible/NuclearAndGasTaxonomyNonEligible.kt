@@ -2,7 +2,7 @@
 package org.dataland.datalandbackend.frameworks.nuclearandgas.model.taxonomyNonEligible
 
 import jakarta.validation.Valid
-import org.dataland.datalandbackend.frameworks.nuclearandgas.model.custom.CustomComponentNonEligible
+import org.dataland.datalandbackend.frameworks.nuclearandgas.model.custom.NuclearAndGasNonEligible
 import org.dataland.datalandbackend.model.datapoints.ExtendedDataPoint
 
 /**
@@ -10,9 +10,9 @@ import org.dataland.datalandbackend.model.datapoints.ExtendedDataPoint
  */
 data class NuclearAndGasTaxonomyNonEligible(
     @field:Valid()
-    val nuclearAndGasTaxonomyNonEligibleRevenue: ExtendedDataPoint<CustomComponentNonEligible?>? = null,
+    val nuclearAndGasTaxonomyNonEligibleRevenue: ExtendedDataPoint<NuclearAndGasNonEligible?>? = null,
 
     @field:Valid()
-    val nuclearAndGasTaxonomyNonEligibleCapex: ExtendedDataPoint<CustomComponentNonEligible?>? = null,
+    val nuclearAndGasTaxonomyNonEligibleCapex: ExtendedDataPoint<NuclearAndGasNonEligible?>? = null,
 
 )

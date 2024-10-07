@@ -2,7 +2,7 @@
 package org.dataland.datalandqaservice.frameworks.nuclearandgas.model.taxonomyAlignedNumerator
 
 import jakarta.validation.Valid
-import org.dataland.datalandbackend.openApiClient.model.ExtendedDataPointCustomComponentAlignedNumerator
+import org.dataland.datalandbackend.openApiClient.model.ExtendedDataPointNuclearAndGasAlignedNumerator
 import org.dataland.datalandqaservice.model.reports.QaReportDataPoint
 
 /**
@@ -11,10 +11,10 @@ import org.dataland.datalandqaservice.model.reports.QaReportDataPoint
 data class NuclearAndGasTaxonomyAlignedNumerator(
     @field:Valid()
     val nuclearAndGasTaxonomyAlignedRevenueNumerator:
-    QaReportDataPoint<ExtendedDataPointCustomComponentAlignedNumerator?>? = null,
+    QaReportDataPoint<ExtendedDataPointNuclearAndGasAlignedNumerator?>? = null,
 
     @field:Valid()
     val nuclearAndGasTaxonomyAlignedCapexNumerator:
-    QaReportDataPoint<ExtendedDataPointCustomComponentAlignedNumerator?>? = null,
+    QaReportDataPoint<ExtendedDataPointNuclearAndGasAlignedNumerator?>? = null,
 
 )

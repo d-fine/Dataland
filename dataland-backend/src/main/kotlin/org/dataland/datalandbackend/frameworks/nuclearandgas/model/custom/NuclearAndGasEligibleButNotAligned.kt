@@ -6,7 +6,7 @@ import java.math.BigDecimal
 /**
  * TODO
  */
-data class CustomComponentEligibleButNotAligned(
+data class NuclearAndGasEligibleButNotAligned(
     val taxonomyEligibleButNotAlignedShareClimateChangeMitigationAndClimateChangeAdaptationNAndG426:
     BigDecimal? = null,
 

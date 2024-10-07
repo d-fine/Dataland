@@ -2,7 +2,7 @@
 package org.dataland.datalandbackend.frameworks.nuclearandgas.model.taxonomyAlignedDenominator
 
 import jakarta.validation.Valid
-import org.dataland.datalandbackend.frameworks.nuclearandgas.model.custom.CustomComponentAlignedDenominator
+import org.dataland.datalandbackend.frameworks.nuclearandgas.model.custom.NuclearAndGasAlignedDenominator
 import org.dataland.datalandbackend.model.datapoints.ExtendedDataPoint
 
 /**
@@ -10,9 +10,9 @@ import org.dataland.datalandbackend.model.datapoints.ExtendedDataPoint
  */
 data class NuclearAndGasTaxonomyAlignedDenominator(
     @field:Valid()
-    val nuclearAndGasTaxonomyAlignedRevenueDenominator: ExtendedDataPoint<CustomComponentAlignedDenominator?>? = null,
+    val nuclearAndGasTaxonomyAlignedRevenueDenominator: ExtendedDataPoint<NuclearAndGasAlignedDenominator?>? = null,
 
     @field:Valid()
-    val nuclearAndGasTaxonomyAlignedCapexDenominator: ExtendedDataPoint<CustomComponentAlignedDenominator?>? = null,
+    val nuclearAndGasTaxonomyAlignedCapexDenominator: ExtendedDataPoint<NuclearAndGasAlignedDenominator?>? = null,
 
 )

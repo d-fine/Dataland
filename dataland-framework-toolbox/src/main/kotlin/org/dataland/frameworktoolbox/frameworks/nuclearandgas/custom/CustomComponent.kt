@@ -11,10 +11,10 @@ import org.dataland.frameworktoolbox.specific.qamodel.addQaPropertyWithDocumentS
 import org.dataland.frameworktoolbox.specific.uploadconfig.elements.UploadCategoryBuilder
 import org.dataland.frameworktoolbox.specific.viewconfig.elements.SectionConfigBuilder
 
-class CustomComponent (
+class CustomComponent(
     identifier: String,
     parent: FieldNodeParent,
-    ) : ComponentBase(identifier, parent) {
+) : ComponentBase(identifier, parent) {
 
     companion object {
         fun frameworkRoot(packageBuilder: PackageBuilder): String =
@@ -34,7 +34,7 @@ class CustomComponent (
                 fullyQualifiedName(dataClassBuilder),
                 isNullable,
             ),
-            emptyList()
+            emptyList(),
         )
     }
 

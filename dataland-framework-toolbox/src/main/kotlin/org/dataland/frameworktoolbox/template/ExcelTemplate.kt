@@ -34,8 +34,9 @@ class ParsedExcel<T>(val rows: MutableList<T>) {
          * Parse an Excel Template from a xlsx file.
          */
         inline fun <reified T> fromXlsx(xlsxFile: File, sheetName: String = DEFAULT_SHEET_NAME): ParsedExcel<T> {
+            val suffix = if (sheetName != DEFAULT_SHEET_NAME) "-$sheetName" else ""
             val targetCsvFile = xlsxFile.parentFile
-                .resolve("${xlsxFile.nameWithoutExtension}-$sheetName.csv")
+                .resolve("${xlsxFile.nameWithoutExtension}$suffix.csv")
 
             ExcelToCsvConverter(xlsxFile, sheetName, targetCsvFile).convert()
 

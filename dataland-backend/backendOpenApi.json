@@ -7619,7 +7619,139 @@
           }
         }
       },
-      "CustomComponentAlignedDenominator": {
+      "ExtendedDataPointNuclearAndGasAlignedDenominator": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/NuclearAndGasAlignedDenominator"
+              }
+            ]
+          },
+          "quality": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/QualityOptions"
+              }
+            ]
+          },
+          "comment": {
+            "type": "string",
+            "nullable": true
+          },
+          "dataSource": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDocumentReference"
+              }
+            ]
+          }
+        }
+      },
+      "ExtendedDataPointNuclearAndGasAlignedNumerator": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/NuclearAndGasAlignedNumerator"
+              }
+            ]
+          },
+          "quality": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/QualityOptions"
+              }
+            ]
+          },
+          "comment": {
+            "type": "string",
+            "nullable": true
+          },
+          "dataSource": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDocumentReference"
+              }
+            ]
+          }
+        }
+      },
+      "ExtendedDataPointNuclearAndGasEligibleButNotAligned": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/NuclearAndGasEligibleButNotAligned"
+              }
+            ]
+          },
+          "quality": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/QualityOptions"
+              }
+            ]
+          },
+          "comment": {
+            "type": "string",
+            "nullable": true
+          },
+          "dataSource": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDocumentReference"
+              }
+            ]
+          }
+        }
+      },
+      "ExtendedDataPointNuclearAndGasNonEligible": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/NuclearAndGasNonEligible"
+              }
+            ]
+          },
+          "quality": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/QualityOptions"
+              }
+            ]
+          },
+          "comment": {
+            "type": "string",
+            "nullable": true
+          },
+          "dataSource": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDocumentReference"
+              }
+            ]
+          }
+        }
+      },
+      "NuclearAndGasAlignedDenominator": {
         "type": "object",
         "properties": {
           "taxonomyAlignedShareDenominatorClimateChangeMitigationAndClimateChangeAdaptationNAndG426": {
@@ -7720,7 +7852,7 @@
           }
         }
       },
-      "CustomComponentAlignedNumerator": {
+      "NuclearAndGasAlignedNumerator": {
         "type": "object",
         "properties": {
           "taxonomyAlignedShareNumeratorClimateChangeMitigationAndClimateChangeAdaptationNAndG426": {
@@ -7821,7 +7953,52 @@
           }
         }
       },
-      "CustomComponentEligibleButNotAligned": {
+      "NuclearAndGasData": {
+        "type": "object",
+        "properties": {
+          "general": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/NuclearAndGasGeneral"
+              }
+            ]
+          },
+          "taxonomyAlignedDenominator": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/NuclearAndGasTaxonomyAlignedDenominator"
+              }
+            ]
+          },
+          "taxonomyAlignedNumerator": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/NuclearAndGasTaxonomyAlignedNumerator"
+              }
+            ]
+          },
+          "taxonomyEligibleButNotAligned": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/NuclearAndGasTaxonomyEligibleButNotAligned"
+              }
+            ]
+          },
+          "taxonomyNonEligible": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/NuclearAndGasTaxonomyNonEligible"
+              }
+            ]
+          }
+        }
+      },
+      "NuclearAndGasEligibleButNotAligned": {
         "type": "object",
         "properties": {
           "taxonomyEligibleButNotAlignedShareClimateChangeMitigationAndClimateChangeAdaptationNAndG426": {
@@ -7922,220 +8099,6 @@
           }
         }
       },
-      "CustomComponentNonEligible": {
-        "type": "object",
-        "properties": {
-          "taxonomyNonEligibleShareNAndG426": {
-            "type": "number",
-            "nullable": true
-          },
-          "taxonomyNonEligibleShareNAndG427": {
-            "type": "number",
-            "nullable": true
-          },
-          "taxonomyNonEligibleShareNAndG428": {
-            "type": "number",
-            "nullable": true
-          },
-          "taxonomyNonEligibleShareNAndG429": {
-            "type": "number",
-            "nullable": true
-          },
-          "taxonomyNonEligibleShareNAndG430": {
-            "type": "number",
-            "nullable": true
-          },
-          "taxonomyNonEligibleShareNAndG431": {
-            "type": "number",
-            "nullable": true
-          },
-          "taxonomyNonEligibleShareOtherActivities": {
-            "type": "number",
-            "nullable": true
-          },
-          "taxonomyNonEligibleShare": {
-            "type": "number",
-            "nullable": true
-          }
-        }
-      },
-      "ExtendedDataPointCustomComponentAlignedDenominator": {
-        "type": "object",
-        "properties": {
-          "value": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/CustomComponentAlignedDenominator"
-              }
-            ]
-          },
-          "quality": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/QualityOptions"
-              }
-            ]
-          },
-          "comment": {
-            "type": "string",
-            "nullable": true
-          },
-          "dataSource": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ExtendedDocumentReference"
-              }
-            ]
-          }
-        }
-      },
-      "ExtendedDataPointCustomComponentAlignedNumerator": {
-        "type": "object",
-        "properties": {
-          "value": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/CustomComponentAlignedNumerator"
-              }
-            ]
-          },
-          "quality": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/QualityOptions"
-              }
-            ]
-          },
-          "comment": {
-            "type": "string",
-            "nullable": true
-          },
-          "dataSource": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ExtendedDocumentReference"
-              }
-            ]
-          }
-        }
-      },
-      "ExtendedDataPointCustomComponentEligibleButNotAligned": {
-        "type": "object",
-        "properties": {
-          "value": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/CustomComponentEligibleButNotAligned"
-              }
-            ]
-          },
-          "quality": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/QualityOptions"
-              }
-            ]
-          },
-          "comment": {
-            "type": "string",
-            "nullable": true
-          },
-          "dataSource": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ExtendedDocumentReference"
-              }
-            ]
-          }
-        }
-      },
-      "ExtendedDataPointCustomComponentNonEligible": {
-        "type": "object",
-        "properties": {
-          "value": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/CustomComponentNonEligible"
-              }
-            ]
-          },
-          "quality": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/QualityOptions"
-              }
-            ]
-          },
-          "comment": {
-            "type": "string",
-            "nullable": true
-          },
-          "dataSource": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ExtendedDocumentReference"
-              }
-            ]
-          }
-        }
-      },
-      "NuclearAndGasData": {
-        "type": "object",
-        "properties": {
-          "general": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/NuclearAndGasGeneral"
-              }
-            ]
-          },
-          "taxonomyAlignedDenominator": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/NuclearAndGasTaxonomyAlignedDenominator"
-              }
-            ]
-          },
-          "taxonomyAlignedNumerator": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/NuclearAndGasTaxonomyAlignedNumerator"
-              }
-            ]
-          },
-          "taxonomyEligibleButNotAligned": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/NuclearAndGasTaxonomyEligibleButNotAligned"
-              }
-            ]
-          },
-          "taxonomyNonEligible": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/NuclearAndGasTaxonomyNonEligible"
-              }
-            ]
-          }
-        }
-      },
       "NuclearAndGasGeneral": {
         "type": "object",
         "properties": {
@@ -8189,6 +8152,43 @@
           }
         }
       },
+      "NuclearAndGasNonEligible": {
+        "type": "object",
+        "properties": {
+          "taxonomyNonEligibleShareNAndG426": {
+            "type": "number",
+            "nullable": true
+          },
+          "taxonomyNonEligibleShareNAndG427": {
+            "type": "number",
+            "nullable": true
+          },
+          "taxonomyNonEligibleShareNAndG428": {
+            "type": "number",
+            "nullable": true
+          },
+          "taxonomyNonEligibleShareNAndG429": {
+            "type": "number",
+            "nullable": true
+          },
+          "taxonomyNonEligibleShareNAndG430": {
+            "type": "number",
+            "nullable": true
+          },
+          "taxonomyNonEligibleShareNAndG431": {
+            "type": "number",
+            "nullable": true
+          },
+          "taxonomyNonEligibleShareOtherActivities": {
+            "type": "number",
+            "nullable": true
+          },
+          "taxonomyNonEligibleShare": {
+            "type": "number",
+            "nullable": true
+          }
+        }
+      },
       "NuclearAndGasTaxonomyAlignedDenominator": {
         "type": "object",
         "properties": {
@@ -8196,7 +8196,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/ExtendedDataPointCustomComponentAlignedDenominator"
+                "$ref": "#/components/schemas/ExtendedDataPointNuclearAndGasAlignedDenominator"
               }
             ]
           },
@@ -8204,7 +8204,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/ExtendedDataPointCustomComponentAlignedDenominator"
+                "$ref": "#/components/schemas/ExtendedDataPointNuclearAndGasAlignedDenominator"
               }
             ]
           }
@@ -8217,7 +8217,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/ExtendedDataPointCustomComponentAlignedNumerator"
+                "$ref": "#/components/schemas/ExtendedDataPointNuclearAndGasAlignedNumerator"
               }
             ]
           },
@@ -8225,7 +8225,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/ExtendedDataPointCustomComponentAlignedNumerator"
+                "$ref": "#/components/schemas/ExtendedDataPointNuclearAndGasAlignedNumerator"
               }
             ]
           }
@@ -8238,7 +8238,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/ExtendedDataPointCustomComponentEligibleButNotAligned"
+                "$ref": "#/components/schemas/ExtendedDataPointNuclearAndGasEligibleButNotAligned"
               }
             ]
           },
@@ -8246,7 +8246,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/ExtendedDataPointCustomComponentEligibleButNotAligned"
+                "$ref": "#/components/schemas/ExtendedDataPointNuclearAndGasEligibleButNotAligned"
               }
             ]
           }
@@ -8259,7 +8259,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/ExtendedDataPointCustomComponentNonEligible"
+                "$ref": "#/components/schemas/ExtendedDataPointNuclearAndGasNonEligible"
               }
             ]
           },
@@ -8267,7 +8267,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/ExtendedDataPointCustomComponentNonEligible"
+                "$ref": "#/components/schemas/ExtendedDataPointNuclearAndGasNonEligible"
               }
             ]
           }
@@ -16624,16 +16624,16 @@
             "type": "string",
             "nullable": true
           },
-          "headquarters": {
-            "type": "string"
-          },
-          "countryCode": {
+          "companyName": {
             "type": "string"
           },
           "companyId": {
             "type": "string"
           },
-          "companyName": {
+          "headquarters": {
+            "type": "string"
+          },
+          "countryCode": {
             "type": "string"
           },
           "lei": {
@@ -16661,10 +16661,10 @@
         ],
         "type": "object",
         "properties": {
-          "companyId": {
+          "companyName": {
             "type": "string"
           },
-          "companyName": {
+          "companyId": {
             "type": "string"
           }
         }

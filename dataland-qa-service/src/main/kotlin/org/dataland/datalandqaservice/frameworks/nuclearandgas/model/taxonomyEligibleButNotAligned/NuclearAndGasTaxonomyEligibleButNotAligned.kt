@@ -2,7 +2,7 @@
 package org.dataland.datalandqaservice.frameworks.nuclearandgas.model.taxonomyEligibleButNotAligned
 
 import jakarta.validation.Valid
-import org.dataland.datalandbackend.openApiClient.model.ExtendedDataPointCustomComponentEligibleButNotAligned
+import org.dataland.datalandbackend.openApiClient.model.ExtendedDataPointNuclearAndGasEligibleButNotAligned
 import org.dataland.datalandqaservice.model.reports.QaReportDataPoint
 
 /**
@@ -11,10 +11,10 @@ import org.dataland.datalandqaservice.model.reports.QaReportDataPoint
 data class NuclearAndGasTaxonomyEligibleButNotAligned(
     @field:Valid()
     val nuclearAndGasTaxonomyEligibleButNotAlignedRevenue:
-    QaReportDataPoint<ExtendedDataPointCustomComponentEligibleButNotAligned?>? = null,
+    QaReportDataPoint<ExtendedDataPointNuclearAndGasEligibleButNotAligned?>? = null,
 
     @field:Valid()
     val nuclearAndGasTaxonomyEligibleButNotAlignedCapex:
-    QaReportDataPoint<ExtendedDataPointCustomComponentEligibleButNotAligned?>? = null,
+    QaReportDataPoint<ExtendedDataPointNuclearAndGasEligibleButNotAligned?>? = null,
 
 )
