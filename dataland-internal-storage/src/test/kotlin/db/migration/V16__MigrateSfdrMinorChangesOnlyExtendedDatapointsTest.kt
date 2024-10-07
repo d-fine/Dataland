@@ -40,7 +40,7 @@ class V16__MigrateSfdrMinorChangesOnlyExtendedDatapointsTest {
     @Test
     fun `check migration of eu taxonomy financials`() {
         TestUtils().testMigrationOfSingleDataset(
-            "eu-taxonomy-financials",
+            "eutaxonomy-financials",
             "V16/originalEuTaxonomyFinancials.json",
             "V16/expectedEuTaxonomyFinancials.json",
             V16__MigrateSfdrMinorChangesOnlyExtendedDatapoints()::migrateDataPoints,

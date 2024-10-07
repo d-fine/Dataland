@@ -1,9 +1,9 @@
 import { describeIf } from '@e2e/support/TestUtility';
 import { checkIfLinkedReportsAreDownloadable, gotoEditForm } from '@e2e/utils/EuTaxonomyFinancialsUpload';
 import {
-  type EuTaxonomyDataForFinancials,
-  type CompanyAssociatedDataEuTaxonomyDataForFinancials,
+  type CompanyAssociatedDataEutaxonomyFinancialsData,
   DataTypeEnum,
+  type EutaxonomyFinancialsData,
 } from '@clients/backend';
 import { type FixtureData, getPreparedFixture } from '@sharedUtils/Fixtures';
 import { admin_name, admin_pw } from '@e2e/utils/Cypress';
@@ -11,9 +11,10 @@ import { assertDefined } from '@/utils/TypeScriptUtils';
 import { TEST_PDF_FILE_NAME } from '@sharedUtils/ConstantsForPdfs';
 import { getKeycloakToken } from '@e2e/utils/Auth';
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from '@e2e/utils/CompanyUpload';
-import { uploadFrameworkDataForLegacyFramework } from '@e2e/utils/FrameworkUpload';
+import { uploadFrameworkDataForPublicToolboxFramework } from '@e2e/utils/FrameworkUpload';
 import { UploadReports } from '@sharedUtils/components/UploadReports';
 import { selectItemFromDropdownByValue } from '@sharedUtils/Dropdown';
+import EuTaxonomyFinancialsBaseFrameworkDefinition from '@/frameworks/eutaxonomy-financials/BaseFrameworkDefinition';
 
 describeIf(
   'As a user, I want to add and link documents to the EU Taxonomy form',
@@ -22,15 +23,33 @@ describeIf(
     executionEnvironments: ['developmentLocal', 'ci', 'developmentCd'],
   },
   function () {
-    let euTaxoFinancialsFixture: FixtureData<EuTaxonomyDataForFinancials>;
-    const uploadReports = new UploadReports();
+    let euTaxoFinancialsFixture: FixtureData<EutaxonomyFinancialsData>;
+    const uploadReports = new UploadReports('referencedReports');
 
     before(function () {
-      cy.fixture('CompanyInformationWithEuTaxonomyDataForFinancialsPreparedFixtures').then(function (jsonContent) {
-        const preparedFixtures = jsonContent as Array<FixtureData<EuTaxonomyDataForFinancials>>;
-        euTaxoFinancialsFixture = getPreparedFixture('company-for-all-types', preparedFixtures);
+      cy.fixture('CompanyInformationWithEutaxonomyFinancialsPreparedFixtures').then(function (jsonContent) {
+        const preparedFixtures = jsonContent as Array<FixtureData<EutaxonomyFinancialsData>>;
+        euTaxoFinancialsFixture = getPreparedFixture('lighweight-eu-taxo-financials-dataset', preparedFixtures);
       });
     });
+
+    /**
+     * Clicks the report dropdown in a datapoint and selects a report.
+     * @param fullLabelOfDatapoint determines the datapoint of which the dropdown will be clicked
+     * @param reportName determines the report that will be chosen from the dropdown
+     */
+    function selectReportForDatapoint(fullLabelOfDatapoint: string, reportName: string): void {
+      selectItemFromDropdownByValue(
+        cy
+          .get('h5')
+          .contains(fullLabelOfDatapoint + ' Report')
+          .parent()
+          .parent()
+          .parent()
+          .find(`[name="fileName"]`),
+        reportName
+      );
+    }
 
     it('Check if the files upload works as expected', () => {
       euTaxoFinancialsFixture.companyInformation.companyName =
@@ -43,8 +62,8 @@ describeIf(
           generateDummyCompanyInformation(euTaxoFinancialsFixture.companyInformation.companyName)
         ).then((storedCompany) => {
           storedCompanyId = storedCompany.companyId;
-          return uploadFrameworkDataForLegacyFramework(
-            DataTypeEnum.EutaxonomyFinancials,
+          return uploadFrameworkDataForPublicToolboxFramework(
+            EuTaxonomyFinancialsBaseFrameworkDefinition,
             token,
             storedCompanyId,
             '2023',
@@ -77,19 +96,11 @@ describeIf(
             uploadReports.validateReportToUploadHasContainerWithInfoForm(`${TEST_PDF_FILE_NAME}2`);
 
             uploadReports.fillAllFormsOfReportsSelectedForUpload(2);
-            selectItemFromDropdownByValue(
-              cy
-                .get(`[data-test="assetManagementKpis"]`)
-                .find(`[data-test="banksAndIssuersInPercent"]`)
-                .find('div[name="fileName"]'),
-              TEST_PDF_FILE_NAME
-            );
 
-            selectItemFromDropdownByValue(
-              cy
-                .get(`[data-test="assetManagementKpis"]`)
-                .find(`[data-test="investmentNonNfrdInPercent"]`)
-                .find('div[name="fileName"]'),
+            selectReportForDatapoint('Total (gross) Carrying Amount', TEST_PDF_FILE_NAME);
+
+            selectReportForDatapoint(
+              'Total Amount of Assets towards Taxonomy-relevant Sectors (Taxonomy-eligible)',
               `${TEST_PDF_FILE_NAME}2`
             );
 
@@ -100,11 +111,13 @@ describeIf(
                 times: 1,
               },
               (request) => {
-                const data = assertDefined((request.body as CompanyAssociatedDataEuTaxonomyDataForFinancials).data);
-                expect(TEST_PDF_FILE_NAME in assertDefined(data.referencedReports)).to.equal(
+                const data = assertDefined((request.body as CompanyAssociatedDataEutaxonomyFinancialsData).data);
+                expect(TEST_PDF_FILE_NAME in assertDefined(data.general?.general?.referencedReports)).to.equal(
                   areBothDocumentsStillUploaded
                 );
-                expect(`${TEST_PDF_FILE_NAME}2` in assertDefined(data.referencedReports)).to.equal(true);
+                expect(`${TEST_PDF_FILE_NAME}2` in assertDefined(data.general?.general?.referencedReports)).to.equal(
+                  true
+                );
               }
             ).as('postDataWithTwoReports');
             cy.get('button[data-test="submitButton"]').click();
@@ -131,11 +144,13 @@ describeIf(
                 times: 1,
               },
               (request) => {
-                const data = assertDefined((request.body as CompanyAssociatedDataEuTaxonomyDataForFinancials).data);
-                expect(TEST_PDF_FILE_NAME in assertDefined(data.referencedReports)).to.equal(
+                const data = assertDefined((request.body as CompanyAssociatedDataEutaxonomyFinancialsData).data);
+                expect(TEST_PDF_FILE_NAME in assertDefined(data.general?.general?.referencedReports)).to.equal(
                   areBothDocumentsStillUploaded
                 );
-                expect(`${TEST_PDF_FILE_NAME}2` in assertDefined(data.referencedReports)).to.equal(true);
+                expect(`${TEST_PDF_FILE_NAME}2` in assertDefined(data.general?.general?.referencedReports)).to.equal(
+                  true
+                );
               }
             ).as('postDataWithOneReport');
             cy.get('button[data-test="submitButton"]').click();

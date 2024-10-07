@@ -10,6 +10,7 @@ import {
 } from '@clients/backend';
 import { type FixtureData, getPreparedFixture } from '@sharedUtils/Fixtures';
 import { KEYCLOAK_ROLE_UPLOADER } from '@/utils/KeycloakUtils';
+import router from '@/router';
 
 describe('Component test for the view multiple dataset display base component', () => {
   let preparedFixtures: Array<FixtureData<LksgData>>;
@@ -64,6 +65,7 @@ describe('Component test for the view multiple dataset display base component', 
     });
     cy.mountWithPlugins(ViewMultipleDatasetsDisplayBase, {
       keycloak: minimalKeycloakMock({ roles: [KEYCLOAK_ROLE_UPLOADER] }),
+      router: router,
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
       props: {

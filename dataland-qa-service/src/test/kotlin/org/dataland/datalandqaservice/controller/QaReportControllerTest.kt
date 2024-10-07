@@ -216,7 +216,9 @@ class QaReportControllerTest(
                     qaReportController.postQaReport(dataId, SfdrData())
                 }
             assertTrue(
-                ex.message.contains("is of type 'eutaxonomy-financials', but the expected type is 'sfdr'"),
+                ex.message.contains(
+                    "is of type '${DataTypeEnum.eutaxonomyMinusFinancials}', but the expected type is 'sfdr'",
+                ),
                 "The exception message should indicate the framework mismatch",
             )
         }

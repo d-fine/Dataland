@@ -63,7 +63,8 @@ import Tooltip from 'primevue/tooltip';
 import { convertUnixTimeInMsToDateString, dateStringFormatter } from '@/utils/DataFormatUtils';
 import {
   type CompanyReport,
-  type EuTaxonomyDataForFinancials,
+  DataTypeEnum,
+  type EutaxonomyFinancialsData,
   type EutaxonomyNonFinancialsData,
   type SfdrData,
 } from '@clients/backend';
@@ -79,13 +80,13 @@ function reportingYearToolTip(singleDataAndMetaInfo: DataAndMetaInformation<T>):
   let latestDate = null;
   let referencedReports;
   switch (singleDataAndMetaInfo.metaInfo.dataType) {
-    case 'sfdr':
+    case DataTypeEnum.Sfdr:
       referencedReports = (singleDataAndMetaInfo.data as SfdrData).general?.general.referencedReports;
       break;
-    case 'eutaxonomy-financials':
-      referencedReports = (singleDataAndMetaInfo.data as EuTaxonomyDataForFinancials).referencedReports;
+    case DataTypeEnum.EutaxonomyFinancials:
+      referencedReports = (singleDataAndMetaInfo.data as EutaxonomyFinancialsData).general?.general?.referencedReports;
       break;
-    case 'eutaxonomy-non-financials':
+    case DataTypeEnum.EutaxonomyNonFinancials:
       referencedReports = (singleDataAndMetaInfo.data as EutaxonomyNonFinancialsData).general?.referencedReports;
       break;
     default:

@@ -14,7 +14,9 @@ object Naming {
         useCapitalCase: Boolean = false,
     ): String {
         val sanitizedLabel = label.replace("&", " And ")
-        return CaseUtils.toCamelCase(sanitizedLabel, useCapitalCase, '-', ',', '/', '(', ')', ':', '.', '"')
+        return removeUnallowedJavaIdentifierCharacters(
+            CaseUtils.toCamelCase(sanitizedLabel, useCapitalCase, '-', ',', '/', '(', ')', ':', '.', '"'),
+        )
     }
 
     /**
@@ -22,7 +24,7 @@ object Naming {
      * @param inputString the string to remove unallowed characters from
      */
     fun removeUnallowedJavaIdentifierCharacters(inputString: String): String {
-        val regex = Regex("[-,/():.]")
+        val regex = Regex("[-,/():.?']")
         return inputString.replace(regex, "")
     }
 }

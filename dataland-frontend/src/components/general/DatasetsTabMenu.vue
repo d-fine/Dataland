@@ -23,6 +23,7 @@ import TabPanel from 'primevue/tabpanel';
 import { checkIfUserHasRole, KEYCLOAK_ROLE_ADMIN, KEYCLOAK_ROLE_REVIEWER } from '@/utils/KeycloakUtils';
 import type Keycloak from 'keycloak-js';
 import { CompanyRole, type CompanyRoleAssignment } from '@clients/communitymanager';
+import router from '@/router';
 
 export default defineComponent({
   name: 'DatasetsTabMenu',
@@ -36,40 +37,18 @@ export default defineComponent({
       required: true,
     },
   },
-  data: () => ({
-    tabs: [
-      {
-        label: 'COMPANIES',
-        route: '/companies',
-        isVisible: true,
-      },
-      {
-        label: 'MY DATASETS',
-        route: '/datasets',
-        isVisible: true,
-      },
-      {
-        label: 'QA',
-        route: '/qualityassurance',
-        isVisible: false,
-      },
-      {
-        label: 'MY DATA REQUESTS',
-        route: '/requests',
-        isVisible: true,
-      },
-      {
-        label: 'DATA REQUESTS FOR MY COMPANIES',
-        route: '/companyrequests',
-        isVisible: false,
-      },
-      {
-        label: 'ALL DATA REQUESTS',
-        route: '/requestoverview',
-        isVisible: false,
-      },
-    ] as Tab[],
-  }),
+  data(): { tabs: Tab[] } {
+    return {
+      tabs: [
+        { label: 'COMPANIES', route: '/companies', isVisible: true },
+        { label: 'MY DATASETS', route: '/datasets', isVisible: true },
+        { label: 'QA', route: '/qualityassurance', isVisible: false },
+        { label: 'MY DATA REQUESTS', route: '/requests', isVisible: true },
+        { label: 'DATA REQUESTS FOR MY COMPANIES', route: '/companyrequests', isVisible: false },
+        { label: 'ALL DATA REQUESTS', route: '/requestoverview', isVisible: false },
+      ],
+    };
+  },
   setup() {
     return {
       getKeycloakPromise: inject<() => Promise<Keycloak>>('getKeycloakPromise'),
@@ -125,7 +104,7 @@ export default defineComponent({
      */
     async handleTabChange(event: { index: number }): Promise<void> {
       if (this.initialTabIndex != event.index) {
-        await this.$router.push(this.tabs[event.index].route);
+        await router.push(this.tabs[event.index].route);
       }
     },
   },

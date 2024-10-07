@@ -35,6 +35,7 @@ import { TIME_DISTANCE_SET_INTERVAL_SESSION_CHECK_IN_MS } from '@/utils/Constant
 import { useSharedSessionStateStore } from '@/stores/Stores';
 import { loginAndRedirectToSearchPage } from '@/utils/KeycloakUtils';
 import { assertDefined } from '@/utils/TypeScriptUtils';
+import router from '@/router';
 
 export default defineComponent({
   inject: ['dialogRef'],
@@ -59,7 +60,7 @@ export default defineComponent({
     currentRefreshTokenInSharedStore() {
       this.closeTheDialog();
       if (this.sessionDialogMode === SessionDialogMode.ExternalLogout) {
-        void this.$router.push({ path: '/companies', replace: true });
+        void router.push({ path: '/companies', replace: true });
       }
     },
   },

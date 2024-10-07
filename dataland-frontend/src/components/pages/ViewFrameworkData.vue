@@ -17,6 +17,7 @@ import { DataTypeEnum } from '@clients/backend';
 import ViewMultipleDatasetsDisplayBase from '@/components/generics/ViewMultipleDatasetsDisplayBase.vue';
 import AuthenticationWrapper from '@/components/wrapper/AuthenticationWrapper.vue';
 import { getAllFrameworkIdentifiers } from '@/frameworks/FrontendFrameworkRegistry';
+import router from '@/router';
 
 export default defineComponent({
   name: 'ViewFrameworkData',
@@ -46,7 +47,7 @@ export default defineComponent({
      * Navigate to the not found page.
      */
     gotoNotFound() {
-      void this.$router.push('/nocontent');
+      void router.push('/nocontent');
     },
   },
   mounted() {

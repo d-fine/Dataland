@@ -25,7 +25,7 @@
     <div v-if="inputFocused && isMobile" class="back-button" @click="handleInputBlur">Back</div>
 
     <CompaniesOnlySearchBar
-      @select-company="$router.push(`/companies/${$event.companyId}`)"
+      @select-company="router.push(`/companies/${$event.companyId}`)"
       wrapper-class="p-input-icon-left p-input-icon-right p-input-icon-align search"
       input-class="h-3rem search__field"
       icon-class="pi pi-search search__icon"
@@ -37,7 +37,7 @@
       :label="aboutIntroSection?.text[2] || 'EXPLORE OUR PRINCIPLES'"
       buttonType="button-component about__button"
       aria-label="About Page"
-      @click="$router.push('/about')"
+      @click="router.push('/about')"
     />
   </section>
 </template>
@@ -47,6 +47,7 @@ import { computed, ref, watch, onUnmounted } from 'vue';
 import type { Section } from '@/types/ContentTypes';
 import CompaniesOnlySearchBar from '@/components/resources/companiesOnlySearch/CompaniesOnlySearchBar.vue';
 import ButtonComponent from '@/components/resources/newLandingPage/ButtonComponent.vue';
+import router from '@/router';
 
 const props = defineProps<{ sections?: Section[] }>();
 

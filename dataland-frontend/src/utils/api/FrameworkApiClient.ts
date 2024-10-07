@@ -1,11 +1,6 @@
 import { type FrameworkDataTypes } from '@/utils/api/FrameworkDataTypes';
 import { type PublicFrameworkDataApi, translateFrameworkApi } from '@/utils/api/UnifiedFrameworkDataApi';
-import {
-  type Configuration,
-  DataTypeEnum,
-  EuTaxonomyDataForFinancialsControllerApi,
-  P2pDataControllerApi,
-} from '@clients/backend';
+import { type Configuration, DataTypeEnum, P2pDataControllerApi } from '@clients/backend';
 import { assertNever } from '@/utils/TypeScriptUtils';
 import { type AxiosInstance } from 'axios';
 
@@ -16,23 +11,15 @@ import { type AxiosInstance } from 'axios';
  * @param axiosInstance an Axios instance
  * @returns the unified API client
  */
-export function getUnifiedFrameworkDataControllerFromConfiguration<K extends keyof FrameworkDataTypes>(
-  framework: K,
+export function getUnifiedFrameworkDataControllerFromConfiguration(
+  framework: keyof FrameworkDataTypes,
   configuration: Configuration | undefined,
   axiosInstance?: AxiosInstance
-): PublicFrameworkDataApi<FrameworkDataTypes[K]['data']> {
-  switch (framework) {
-    case DataTypeEnum.P2p:
-      return translateFrameworkApi<typeof DataTypeEnum.P2p>(
-        'P2pData',
-        new P2pDataControllerApi(configuration, undefined, axiosInstance)
-      );
-    case DataTypeEnum.EutaxonomyFinancials:
-      return translateFrameworkApi<typeof DataTypeEnum.EutaxonomyFinancials>(
-        'EuTaxonomyDataForFinancials',
-        new EuTaxonomyDataForFinancialsControllerApi(configuration, undefined, axiosInstance)
-      );
-    default:
-      return assertNever(framework);
-  }
+): PublicFrameworkDataApi<FrameworkDataTypes[keyof FrameworkDataTypes]['data']> {
+  if (framework === DataTypeEnum.P2p) {
+    return translateFrameworkApi<typeof DataTypeEnum.P2p>(
+      'P2pData',
+      new P2pDataControllerApi(configuration, undefined, axiosInstance)
+    );
+  } else return assertNever(framework);
 }

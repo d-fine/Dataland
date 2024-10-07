@@ -7,11 +7,7 @@
           <BackButton id="backButton" class="mt-2" />
           <CompanyInformation :companyId="companyID" />
         </MarginWrapper>
-        <component
-          :is="frameworkToUploadComponent"
-          :companyID="companyID"
-          @datasetCreated="redirectToMyDatasets($router)"
-        />
+        <component :is="frameworkToUploadComponent" :companyID="companyID" @datasetCreated="redirectToMyDatasets()" />
       </AuthorizationWrapper>
     </TheContent>
     <TheFooter :is-light-version="true" :sections="footerContent" />
@@ -26,7 +22,7 @@ import { DataTypeEnum } from '@clients/backend';
 import CreateEsgQuestionnaireDataset from '@/components/forms/CreateEsgQuestionnaireDataset.vue';
 import CreateSfdrDataset from '@/components/forms/CreateSfdrDataset.vue';
 import CreateP2pDataset from '@/components/forms/CreateP2pDataset.vue';
-import CreateEuTaxonomyForFinancials from '@/components/forms/CreateEuTaxonomyForFinancials.vue';
+import CreateEuTaxonomyForFinancials from '@/components/forms/CreateEuTaxonomyFinancials.vue';
 import CreateEuTaxonomyNonFinancials from '@/components/forms/CreateEuTaxonomyNonFinancials.vue';
 import CreateHeimathafenDataset from '@/components/forms/CreateHeimathafenDataset.vue';
 import CreateLksgDataset from '@/components/forms/CreateLksgDataset.vue';

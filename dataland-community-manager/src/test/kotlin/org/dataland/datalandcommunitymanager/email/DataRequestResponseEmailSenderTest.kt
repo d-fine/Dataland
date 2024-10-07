@@ -3,6 +3,7 @@ package org.dataland.datalandcommunitymanager.email
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.model.CompanyInformation
+import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandcommunitymanager.entities.DataRequestEntity
 import org.dataland.datalandcommunitymanager.services.messaging.DataRequestResponseEmailSender
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
@@ -20,7 +21,7 @@ import org.mockito.Mockito.mock
 import org.mockito.Mockito.`when`
 import org.springframework.security.core.context.SecurityContext
 import org.springframework.security.core.context.SecurityContextHolder
-import java.util.UUID
+import java.util.*
 
 class DataRequestResponseEmailSenderTest {
     private val reportingPeriod = "2022"
@@ -32,31 +33,29 @@ class DataRequestResponseEmailSenderTest {
     private val objectMapper = jacksonObjectMapper()
     private val correlationId = UUID.randomUUID().toString()
     private val staleDaysThreshold = "some number"
-    private val dataTypes = getListOfAllDataTypes()
+    private val dataTypes = getMapOfAllDataTypes()
 
     @BeforeEach
     fun setupAuthentication() {
         val mockSecurityContext = mock(SecurityContext::class.java)
-        val authenticationMock =
-            AuthenticationMock.mockJwtAuthentication(
-                "userEmail",
-                userId,
-                setOf(DatalandRealmRole.ROLE_USER),
-            )
+        val authenticationMock = AuthenticationMock.mockJwtAuthentication(
+            "userEmail",
+            userId,
+            setOf(DatalandRealmRole.ROLE_USER),
+        )
         `when`(mockSecurityContext.authentication).thenReturn(authenticationMock)
         `when`(authenticationMock.credentials).thenReturn("")
         SecurityContextHolder.setContext(mockSecurityContext)
     }
-
-    private fun getDataRequestEntityWithDataType(dataType: String): DataRequestEntity =
-        DataRequestEntity(
+    private fun getDataRequestEntityWithDataType(dataType: String): DataRequestEntity {
+        return DataRequestEntity(
             userId = userId,
             creationTimestamp = creationTimestamp,
             dataType = dataType,
             reportingPeriod = reportingPeriod,
             datalandCompanyId = companyId,
         )
-
+    }
     private fun checkPropertiesOfDataRequestResponseEmail(
         dataRequestId: String,
         properties: Map<String, String?>,
@@ -72,7 +71,6 @@ class DataRequestResponseEmailSenderTest {
         assertEquals(dataRequestId, properties.getValue("dataRequestId"))
         assertEquals(staleDaysThreshold, properties.getValue("closedInDays"))
     }
-
     private fun getCompanyDataControllerMock(): CompanyDataControllerApi {
         val companyDataControllerMock = mock(CompanyDataControllerApi::class.java)
         `when`(companyDataControllerMock.getCompanyInfo(companyId))
@@ -87,17 +85,18 @@ class DataRequestResponseEmailSenderTest {
         return companyDataControllerMock
     }
 
-    private fun getListOfAllDataTypes(): List<List<String>> =
-        listOf(
-            listOf("p2p", "WWF Pathways to Paris"),
-            listOf("eutaxonomy-financials", "EU Taxonomy for financial companies"),
-            listOf("eutaxonomy-non-financials", "EU Taxonomy for non-financial companies"),
-            listOf("lksg", "LkSG"),
-            listOf("sfdr", "SFDR"),
-            listOf("vsme", "VSME"),
-            listOf("esg-questionnaire", "ESG Questionnaire"),
-            listOf("heimathafen", "Heimathafen"),
+    private fun getMapOfAllDataTypes(): Map<String, String> {
+        return mapOf(
+            DataTypeEnum.p2p.toString() to "WWF Pathways to Paris",
+            DataTypeEnum.eutaxonomyMinusFinancials.toString() to "EU Taxonomy for financial companies",
+            DataTypeEnum.eutaxonomyMinusNonMinusFinancials.toString() to "EU Taxonomy for non-financial companies",
+            DataTypeEnum.lksg.toString() to "LkSG",
+            DataTypeEnum.sfdr.toString() to "SFDR",
+            DataTypeEnum.vsme.toString() to "VSME",
+            DataTypeEnum.esgMinusQuestionnaire.toString() to "ESG Questionnaire",
+            DataTypeEnum.heimathafen.toString() to "Heimathafen",
         )
+    }
 
     private fun getMockCloudEventMessageHandlerAndSetChecks(
         dataType: String,
@@ -114,7 +113,7 @@ class DataRequestResponseEmailSenderTest {
                 ArgumentMatchers.anyString(),
                 ArgumentMatchers.anyString(),
             ),
-        ).then {
+        ).then() {
             val arg1 =
                 objectMapper.readValue(it.getArgument<String>(0), TemplateEmailMessage::class.java)
             val arg2 = it.getArgument<String>(1)
@@ -126,10 +125,10 @@ class DataRequestResponseEmailSenderTest {
             checkPropertiesOfDataRequestResponseEmail(
                 dataRequestId, arg1.properties, dataType, dataTypeDescription,
             )
-            assertEquals(MessageType.SEND_TEMPLATE_EMAIL, arg2)
+            assertEquals(MessageType.SendTemplateEmail, arg2)
             assertEquals(correlationId, arg3)
-            assertEquals(ExchangeName.SEND_EMAIL, arg4)
-            assertEquals(RoutingKeyNames.TEMPLATE_EMAIL, arg5)
+            assertEquals(ExchangeName.SendEmail, arg4)
+            assertEquals(RoutingKeyNames.templateEmail, arg5)
         }
         return cloudEventMessageHandlerMock
     }
@@ -137,11 +136,11 @@ class DataRequestResponseEmailSenderTest {
     @Test
     fun `validate that the output of the closed request email message sender is correctly build for all frameworks`() {
         dataTypes.forEach {
-            val dataRequestEntity = getDataRequestEntityWithDataType(it[0])
+            val dataRequestEntity = getDataRequestEntityWithDataType(it.key)
             val dataRequestId = dataRequestEntity.dataRequestId
             val cloudEventMessageHandlerMock =
                 getMockCloudEventMessageHandlerAndSetChecks(
-                    it[0], it[1], dataRequestId, TemplateEmailMessage.Type.DataRequestClosed,
+                    it.key, it.value, dataRequestId, TemplateEmailMessage.Type.DataRequestClosed,
                 )
 
             val dataRequestClosedEmailMessageSender =
@@ -160,11 +159,11 @@ class DataRequestResponseEmailSenderTest {
     @Test
     fun `check that the output of the answered request email message sender is correctly build for all frameworks`() {
         dataTypes.forEach {
-            val dataRequestEntity = getDataRequestEntityWithDataType(it[0])
+            val dataRequestEntity = getDataRequestEntityWithDataType(it.key)
             val dataRequestId = dataRequestEntity.dataRequestId
             val cloudEventMessageHandlerMock =
                 getMockCloudEventMessageHandlerAndSetChecks(
-                    it[0], it[1], dataRequestId, TemplateEmailMessage.Type.DataRequestedAnswered,
+                    it.key, it.value, dataRequestId, TemplateEmailMessage.Type.DataRequestedAnswered,
                 )
 
             val dataRequestClosedEmailMessageSender =
