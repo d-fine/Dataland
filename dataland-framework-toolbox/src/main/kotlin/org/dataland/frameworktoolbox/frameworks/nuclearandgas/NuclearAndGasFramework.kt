@@ -31,20 +31,21 @@ class NuclearAndGasFramework : PavedRoadFramework(
     ): List<TemplateComponentFactory> {
         val superFactories = super.getComponentFactoriesForIntermediateRepresentation(context)
         val templateDiagnostic = context.getBean<TemplateDiagnostic>()
-        customComponentFactories = CustomComponentFactory.fromExcel(frameworkTemplateCsvFile, templateDiagnostic)
-        customComponentFactories.forEach { it.build(superFactories) }
+        customComponentFactories =
+            CustomComponentFactory.fromExcel(frameworkTemplateCsvFile, templateDiagnostic, "Nuclear and Gas")
+        customComponentFactories.forEach { it.buildInternalFramework(superFactories) }
         return customComponentFactories + superFactories
     }
 
     /**
      * TODOs:
-     * Clean up the code, better naming for custom components, also generated file names contain nuclear and gas twice
+     * 1. Clean up the code, better naming for custom components, also generated file names contain nuclear and gas twice
+     * 2. Fake fixture generation
      * 3. We need to generate a mapping file. That creates a map from the data points in the component
      *    To the tooltips, that is then stored as ts file somewhere
      *    export const Mapping { fieldName: "Super nice explanation of the field" }
      *    Maybe we want to use a ftl template, maybe not
      */
-
 
     override fun customizeDataModel(dataModel: FrameworkDataModelBuilder) {
         val customPackage = dataModel.rootPackageBuilder.addPackage(CustomComponentFactory.PACKAGE_NAME)
@@ -52,5 +53,4 @@ class NuclearAndGasFramework : PavedRoadFramework(
             it.addClassToPackageBuilder(customPackage)
         }
     }
-
 }

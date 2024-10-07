@@ -6,7 +6,6 @@ import org.dataland.frameworktoolbox.intermediate.Framework
 import org.dataland.frameworktoolbox.intermediate.components.ComponentBase
 import org.dataland.frameworktoolbox.intermediate.group.ComponentGroupApi
 import org.dataland.frameworktoolbox.intermediate.group.create
-import org.dataland.frameworktoolbox.specific.datamodel.elements.DataClassBuilder
 import org.dataland.frameworktoolbox.specific.datamodel.elements.PackageBuilder
 import org.dataland.frameworktoolbox.template.ExcelTemplate
 import org.dataland.frameworktoolbox.template.ParsedExcel
@@ -38,7 +37,7 @@ data class CustomComponentRow(
     @JsonProperty("Component")
     var component: String,
 ) {
-    fun toTemplateRow() : TemplateRow {
+    fun toTemplateRow(): TemplateRow {
         return TemplateRow(
             fieldIdentifier,
             "",
@@ -53,35 +52,37 @@ data class CustomComponentRow(
             TemplateDocumentSupport.None,
             "",
             "",
-            TemplateYesNo.No)
+            TemplateYesNo.No,
+        )
     }
 }
 
-
 class CustomComponentFactory(
     val templateDiagnostic: TemplateDiagnostic,
-    val name: String,
-    val customComponentRows: List<CustomComponentRow>
+    baseFrameworkName: String,
+    private val componentName: String,
+    private val customComponentRows: List<CustomComponentRow>,
 ) : TemplateComponentFactory {
 
     companion object {
 
         private const val SHEET_NAME = "Custom Component Data"
+        const val PACKAGE_NAME = "custom"
 
-        fun fromExcel(file: File, templateDiagnostic: TemplateDiagnostic) : List<CustomComponentFactory> {
+        fun fromExcel(file: File, templateDiagnostic: TemplateDiagnostic, baseFrameworkName: String): List<CustomComponentFactory> {
             val parsedExcel = ParsedExcel.fromXlsx<CustomComponentRow>(file, SHEET_NAME)
             val rowsByTemplate = parsedExcel.rows
                 .groupBy { it.template.trim() }
-            return rowsByTemplate.entries.map { CustomComponentFactory(templateDiagnostic, it.key, it.value) }
+            return rowsByTemplate.entries.map {
+                CustomComponentFactory(templateDiagnostic, baseFrameworkName, it.key, it.value)
+            }
         }
-
-        const val PACKAGE_NAME = "custom"
     }
 
-    val framework = Framework("CustomComponentFramework$name", "", "", -1)
-    private val className = Naming.getNameFromLabel("Custom Component $name").capitalizeEn()
+    val framework = Framework("$baseFrameworkName Custom Component $componentName", "", "", -1)
+    private val className = Naming.getNameFromLabel("$baseFrameworkName $componentName").capitalizeEn()
 
-    fun build(componentFactories: List<TemplateComponentFactory>) {
+    fun buildInternalFramework(componentFactories: List<TemplateComponentFactory>) {
         val templateRows = customComponentRows.map(CustomComponentRow::toTemplateRow).toMutableList()
         val excelTemplate = ExcelTemplate(templateRows)
 
@@ -98,17 +99,13 @@ class CustomComponentFactory(
     fun addClassToPackageBuilder(packageBuilder: PackageBuilder) {
         val dataClassBuilder =
             packageBuilder.addClass(className, "TODO")
-        generateDataModel(dataClassBuilder)
-    }
-
-    private fun generateDataModel(dataClassBuilder: DataClassBuilder) {
         framework.root.children.forEach {
             it.generateDataModel(dataClassBuilder)
         }
     }
 
     override fun canGenerateComponent(row: TemplateRow): Boolean =
-        row.component.trim() == "CustomComponent $name"
+        row.component.trim() == "CustomComponent $componentName"
 
     override fun generateComponent(
         row: TemplateRow,
@@ -122,7 +119,7 @@ class CustomComponentFactory(
             utils.generateFieldIdentifierFromRow(row),
         ) {
             utils.setCommonProperties(row, this)
-            this.qualifiedNameRelativeToFrameworkRoot = "${PACKAGE_NAME}.${className}"
+            this.qualifiedNameRelativeToFrameworkRoot = "$PACKAGE_NAME.$className"
         }
     }
 

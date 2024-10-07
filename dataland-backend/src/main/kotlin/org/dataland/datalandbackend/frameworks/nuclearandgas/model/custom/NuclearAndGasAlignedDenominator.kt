@@ -6,7 +6,7 @@ import java.math.BigDecimal
 /**
  * TODO
  */
-data class CustomComponentAlignedDenominator(
+data class NuclearAndGasAlignedDenominator(
     val taxonomyAlignedShareDenominatorClimateChangeMitigationAndClimateChangeAdaptationNAndG426: BigDecimal? = null,
 
     val taxonomyAlignedShareDenominatorSubstantiallyContributingToClimateChangeMitigationNAndG426: BigDecimal? = null,
