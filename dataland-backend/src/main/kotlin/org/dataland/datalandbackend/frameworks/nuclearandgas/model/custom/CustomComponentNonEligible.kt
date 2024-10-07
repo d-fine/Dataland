@@ -7,52 +7,20 @@ import java.math.BigDecimal
  * TODO
  */
 data class CustomComponentNonEligible(
-    val taxonomyNonEligibleShareClimateChangeMitigationAndClimateChangeAdaptationNAndG426: BigDecimal? = null,
+    val taxonomyNonEligibleShareNAndG426: BigDecimal? = null,
 
-    val taxonomyNonEligibleShareSubstantiallyContributingToClimateChangeMitigationNAndG426: BigDecimal? = null,
+    val taxonomyNonEligibleShareNAndG427: BigDecimal? = null,
 
-    val taxonomyNonEligibleShareSubstantiallyContributingToClimateChangeAdaptationNAndG426: BigDecimal? = null,
+    val taxonomyNonEligibleShareNAndG428: BigDecimal? = null,
 
-    val taxonomyNonEligibleShareClimateChangeMitigationAndClimateChangeAdaptationNAndG427: BigDecimal? = null,
+    val taxonomyNonEligibleShareNAndG429: BigDecimal? = null,
 
-    val taxonomyNonEligibleShareSubstantiallyContributingToClimateChangeMitigationNAndG427: BigDecimal? = null,
+    val taxonomyNonEligibleShareNAndG430: BigDecimal? = null,
 
-    val taxonomyNonEligibleShareSubstantiallyContributingToClimateChangeAdaptationNAndG427: BigDecimal? = null,
+    val taxonomyNonEligibleShareNAndG431: BigDecimal? = null,
 
-    val taxonomyNonEligibleShareClimateChangeMitigationAndClimateChangeAdaptationNAndG428: BigDecimal? = null,
+    val taxonomyNonEligibleShareOtherActivities: BigDecimal? = null,
 
-    val taxonomyNonEligibleShareSubstantiallyContributingToClimateChangeMitigationNAndG428: BigDecimal? = null,
-
-    val taxonomyNonEligibleShareSubstantiallyContributingToClimateChangeAdaptationNAndG428: BigDecimal? = null,
-
-    val taxonomyNonEligibleShareClimateChangeMitigationAndClimateChangeAdaptationNAndG429: BigDecimal? = null,
-
-    val taxonomyNonEligibleShareSubstantiallyContributingToClimateChangeMitigationNAndG429: BigDecimal? = null,
-
-    val taxonomyNonEligibleShareSubstantiallyContributingToClimateChangeAdaptationNAndG429: BigDecimal? = null,
-
-    val taxonomyNonEligibleShareClimateChangeMitigationAndClimateChangeAdaptationNAndG430: BigDecimal? = null,
-
-    val taxonomyNonEligibleShareSubstantiallyContributingToClimateChangeMitigationNAndG430: BigDecimal? = null,
-
-    val taxonomyNonEligibleShareSubstantiallyContributingToClimateChangeAdaptationNAndG430: BigDecimal? = null,
-
-    val taxonomyNonEligibleShareClimateChangeMitigationAndClimateChangeAdaptationNAndG431: BigDecimal? = null,
-
-    val taxonomyNonEligibleShareSubstantiallyContributingToClimateChangeMitigationNAndG431: BigDecimal? = null,
-
-    val taxonomyNonEligibleShareSubstantiallyContributingToClimateChangeAdaptationNAndG431: BigDecimal? = null,
-
-    val taxonomyNonEligibleShareClimateChangeMitigationAndClimateChangeAdaptationOtherActivities: BigDecimal? = null,
-
-    val taxonomyNonEligibleShareSubstantiallyContributingToClimateChangeMitigationOtherActivities: BigDecimal? = null,
-
-    val taxonomyNonEligibleShareSubstantiallyContributingToClimateChangeAdaptationOtherActivities: BigDecimal? = null,
-
-    val taxonomyNonEligibleShareClimateChangeMitigationAndClimateChangeAdaptation: BigDecimal? = null,
-
-    val taxonomyNonEligibleShareSubstantiallyContributingToClimateChangeMitigation: BigDecimal? = null,
-
-    val taxonomyNonEligibleShareSubstantiallyContributingToClimateChangeAdaptation: BigDecimal? = null,
+    val taxonomyNonEligibleShare: BigDecimal? = null,
 
 )

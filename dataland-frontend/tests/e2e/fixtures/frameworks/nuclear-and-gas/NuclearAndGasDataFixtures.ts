@@ -26,19 +26,17 @@ export function generateNuclearAndGasFixtures(
 export function generateNuclearAndGasData(nullProbability = DEFAULT_PROBABILITY): NuclearAndGasData {
   const dataGenerator = new NuclearAndGasGenerator(nullProbability);
   return {
-    nuclearAndGas: {
-      general: {
-        nuclearEnergyRelatedActivitiesSection426: dataGenerator.randomExtendedDataPoint(dataGenerator.randomYesNo()),
-        nuclearEnergyRelatedActivitiesSection427: dataGenerator.randomExtendedDataPoint(dataGenerator.randomYesNo()),
-        nuclearEnergyRelatedActivitiesSection428: dataGenerator.randomExtendedDataPoint(dataGenerator.randomYesNo()),
-        fossilGasRelatedActivitiesSection429: dataGenerator.randomExtendedDataPoint(dataGenerator.randomYesNo()),
-        fossilGasRelatedActivitiesSection430: dataGenerator.randomExtendedDataPoint(dataGenerator.randomYesNo()),
-        fossilGasRelatedActivitiesSection431: dataGenerator.randomExtendedDataPoint(dataGenerator.randomYesNo()),
-      },
-      taxonomyAlignedDenominator: {},
-      taxonomyAlignedNumerator: {},
-      taxonomyEligibleButNotAligned: {},
-      taxonomyNonEligible: {},
+    general: {
+      nuclearEnergyRelatedActivitiesSection426: dataGenerator.randomExtendedDataPoint(dataGenerator.randomYesNo()),
+      nuclearEnergyRelatedActivitiesSection427: dataGenerator.randomExtendedDataPoint(dataGenerator.randomYesNo()),
+      nuclearEnergyRelatedActivitiesSection428: dataGenerator.randomExtendedDataPoint(dataGenerator.randomYesNo()),
+      fossilGasRelatedActivitiesSection429: dataGenerator.randomExtendedDataPoint(dataGenerator.randomYesNo()),
+      fossilGasRelatedActivitiesSection430: dataGenerator.randomExtendedDataPoint(dataGenerator.randomYesNo()),
+      fossilGasRelatedActivitiesSection431: dataGenerator.randomExtendedDataPoint(dataGenerator.randomYesNo()),
     },
+    taxonomyAlignedDenominator: {},
+    taxonomyAlignedNumerator: {},
+    taxonomyEligibleButNotAligned: {},
+    taxonomyNonEligible: {},
   };
 }

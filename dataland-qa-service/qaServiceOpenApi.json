@@ -2804,76 +2804,28 @@
       "CustomComponentNonEligible": {
         "type": "object",
         "properties": {
-          "taxonomyNonEligibleShareClimateChangeMitigationAndClimateChangeAdaptationNAndG426": {
+          "taxonomyNonEligibleShareNAndG426": {
             "type": "number"
           },
-          "taxonomyNonEligibleShareSubstantiallyContributingToClimateChangeMitigationNAndG426": {
+          "taxonomyNonEligibleShareNAndG427": {
             "type": "number"
           },
-          "taxonomyNonEligibleShareSubstantiallyContributingToClimateChangeAdaptationNAndG426": {
+          "taxonomyNonEligibleShareNAndG428": {
             "type": "number"
           },
-          "taxonomyNonEligibleShareClimateChangeMitigationAndClimateChangeAdaptationNAndG427": {
+          "taxonomyNonEligibleShareNAndG429": {
             "type": "number"
           },
-          "taxonomyNonEligibleShareSubstantiallyContributingToClimateChangeMitigationNAndG427": {
+          "taxonomyNonEligibleShareNAndG430": {
             "type": "number"
           },
-          "taxonomyNonEligibleShareSubstantiallyContributingToClimateChangeAdaptationNAndG427": {
+          "taxonomyNonEligibleShareNAndG431": {
             "type": "number"
           },
-          "taxonomyNonEligibleShareClimateChangeMitigationAndClimateChangeAdaptationNAndG428": {
+          "taxonomyNonEligibleShareOtherActivities": {
             "type": "number"
           },
-          "taxonomyNonEligibleShareSubstantiallyContributingToClimateChangeMitigationNAndG428": {
-            "type": "number"
-          },
-          "taxonomyNonEligibleShareSubstantiallyContributingToClimateChangeAdaptationNAndG428": {
-            "type": "number"
-          },
-          "taxonomyNonEligibleShareClimateChangeMitigationAndClimateChangeAdaptationNAndG429": {
-            "type": "number"
-          },
-          "taxonomyNonEligibleShareSubstantiallyContributingToClimateChangeMitigationNAndG429": {
-            "type": "number"
-          },
-          "taxonomyNonEligibleShareSubstantiallyContributingToClimateChangeAdaptationNAndG429": {
-            "type": "number"
-          },
-          "taxonomyNonEligibleShareClimateChangeMitigationAndClimateChangeAdaptationNAndG430": {
-            "type": "number"
-          },
-          "taxonomyNonEligibleShareSubstantiallyContributingToClimateChangeMitigationNAndG430": {
-            "type": "number"
-          },
-          "taxonomyNonEligibleShareSubstantiallyContributingToClimateChangeAdaptationNAndG430": {
-            "type": "number"
-          },
-          "taxonomyNonEligibleShareClimateChangeMitigationAndClimateChangeAdaptationNAndG431": {
-            "type": "number"
-          },
-          "taxonomyNonEligibleShareSubstantiallyContributingToClimateChangeMitigationNAndG431": {
-            "type": "number"
-          },
-          "taxonomyNonEligibleShareSubstantiallyContributingToClimateChangeAdaptationNAndG431": {
-            "type": "number"
-          },
-          "taxonomyNonEligibleShareClimateChangeMitigationAndClimateChangeAdaptationOtherActivities": {
-            "type": "number"
-          },
-          "taxonomyNonEligibleShareSubstantiallyContributingToClimateChangeMitigationOtherActivities": {
-            "type": "number"
-          },
-          "taxonomyNonEligibleShareSubstantiallyContributingToClimateChangeAdaptationOtherActivities": {
-            "type": "number"
-          },
-          "taxonomyNonEligibleShareClimateChangeMitigationAndClimateChangeAdaptation": {
-            "type": "number"
-          },
-          "taxonomyNonEligibleShareSubstantiallyContributingToClimateChangeMitigation": {
-            "type": "number"
-          },
-          "taxonomyNonEligibleShareSubstantiallyContributingToClimateChangeAdaptation": {
+          "taxonomyNonEligibleShare": {
             "type": "number"
           }
         }
@@ -2977,32 +2929,24 @@
       "NuclearAndGasData": {
         "type": "object",
         "properties": {
-          "nuclearAndGas": {
-            "$ref": "#/components/schemas/NuclearAndGasNuclearAndGas"
-          }
-        }
-      },
-      "NuclearAndGasNuclearAndGas": {
-        "type": "object",
-        "properties": {
           "general": {
-            "$ref": "#/components/schemas/NuclearAndGasNuclearandgasGeneral"
+            "$ref": "#/components/schemas/NuclearAndGasGeneral"
           },
           "taxonomyAlignedDenominator": {
-            "$ref": "#/components/schemas/NuclearAndGasNuclearandgasTaxonomyAlignedDenominator"
+            "$ref": "#/components/schemas/NuclearAndGasTaxonomyAlignedDenominator"
           },
           "taxonomyAlignedNumerator": {
-            "$ref": "#/components/schemas/NuclearAndGasNuclearandgasTaxonomyAlignedNumerator"
+            "$ref": "#/components/schemas/NuclearAndGasTaxonomyAlignedNumerator"
           },
           "taxonomyEligibleButNotAligned": {
-            "$ref": "#/components/schemas/NuclearAndGasNuclearandgasTaxonomyEligibleButNotAligned"
+            "$ref": "#/components/schemas/NuclearAndGasTaxonomyEligibleButNotAligned"
           },
           "taxonomyNonEligible": {
-            "$ref": "#/components/schemas/NuclearAndGasNuclearandgasTaxonomyNonEligible"
+            "$ref": "#/components/schemas/NuclearAndGasTaxonomyNonEligible"
           }
         }
       },
-      "NuclearAndGasNuclearandgasGeneral": {
+      "NuclearAndGasGeneral": {
         "type": "object",
         "properties": {
           "nuclearEnergyRelatedActivitiesSection426": {
@@ -3025,7 +2969,7 @@
           }
         }
       },
-      "NuclearAndGasNuclearandgasTaxonomyAlignedDenominator": {
+      "NuclearAndGasTaxonomyAlignedDenominator": {
         "type": "object",
         "properties": {
           "nuclearAndGasTaxonomyAlignedRevenueDenominator": {
@@ -3036,7 +2980,7 @@
           }
         }
       },
-      "NuclearAndGasNuclearandgasTaxonomyAlignedNumerator": {
+      "NuclearAndGasTaxonomyAlignedNumerator": {
         "type": "object",
         "properties": {
           "nuclearAndGasTaxonomyAlignedRevenueNumerator": {
@@ -3047,7 +2991,7 @@
           }
         }
       },
-      "NuclearAndGasNuclearandgasTaxonomyEligibleButNotAligned": {
+      "NuclearAndGasTaxonomyEligibleButNotAligned": {
         "type": "object",
         "properties": {
           "nuclearAndGasTaxonomyEligibleButNotAlignedRevenue": {
@@ -3058,7 +3002,7 @@
           }
         }
       },
-      "NuclearAndGasNuclearandgasTaxonomyNonEligible": {
+      "NuclearAndGasTaxonomyNonEligible": {
         "type": "object",
         "properties": {
           "nuclearAndGasTaxonomyNonEligibleRevenue": {
@@ -4382,12 +4326,6 @@
           "message": {
             "type": "string"
           },
-          "framework": {
-            "type": "string"
-          },
-          "reportingPeriod": {
-            "type": "string"
-          },
           "receptionTime": {
             "type": "integer",
             "format": "int64"
@@ -4399,6 +4337,12 @@
             "type": "string"
           },
           "companyId": {
+            "type": "string"
+          },
+          "framework": {
+            "type": "string"
+          },
+          "reportingPeriod": {
             "type": "string"
           }
         }
