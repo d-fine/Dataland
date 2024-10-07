@@ -114,8 +114,9 @@ class CustomComponentFactory(
     private val classComment = "The data-model for the $className custom component."
 
     /**
-     * After creating the CustomComponentFactory the content of the respective Excel sheet is parsed.
-     * This function build the in-memory representation of the internal framework used by this factory.
+     * When creating the CustomComponentFactory the content of the respective Excel sheet is parsed.
+     * This function builds the in-memory representation of the internal framework of the Excel rows
+     * used by this factory.
      * To build the internal framework we need the [componentFactories] to create the component defined in the
      * internal framework.
      */
@@ -155,6 +156,16 @@ class CustomComponentFactory(
             NULLABLE_GENERATOR_PREFIX,
             framework.generateFixtureGenerator().rootSectionBuilder,
         )
+    }
+
+    /**
+     * Just a short prototype that shows how to retrieve the data
+     */
+    fun printTooltips() {
+        println("className $className")
+        for (child in framework.root.children) {
+            println("${child.identifier}: ${child.uploadPageExplanation}")
+        }
     }
 
     override fun canGenerateComponent(row: TemplateRow): Boolean =

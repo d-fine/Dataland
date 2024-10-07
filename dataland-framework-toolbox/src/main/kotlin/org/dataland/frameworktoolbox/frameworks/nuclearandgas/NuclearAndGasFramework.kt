@@ -35,6 +35,7 @@ class NuclearAndGasFramework : PavedRoadFramework(
         customComponentFactories =
             CustomComponentFactory.fromExcel(frameworkTemplateCsvFile, templateDiagnostic, "Nuclear and Gas")
         customComponentFactories.forEach { it.buildInternalFramework(superFactories) }
+        customComponentFactories.forEach { it.printTooltips() }
         return customComponentFactories + superFactories
     }
 
