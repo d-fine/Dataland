@@ -260,5 +260,6 @@ sourceSets {
 ktlint {
     filter {
         exclude("**/openApiClient/**", "**/Activity.kt")
+        exclude("**/ReferencedReportsListValidator.kt")
     }
 }

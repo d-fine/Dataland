@@ -25,7 +25,6 @@ class PercentageComponent(
     identifier: String,
     parent: FieldNodeParent,
 ) : NumberBaseComponent(identifier, parent) {
-
     override var constantUnitSuffix: String? = "%"
 
     override fun generateDefaultDataModel(dataClassBuilder: DataClassBuilder) {
@@ -66,14 +65,15 @@ class PercentageComponent(
 
     override fun generateDefaultUploadConfig(uploadCategoryBuilder: UploadCategoryBuilder) {
         requireDocumentSupportIn(setOf(NoDocumentSupport, ExtendedDocumentSupport))
-        val uploadComponent = when (documentSupport) {
-            is NoDocumentSupport -> "NumberFormField"
-            is ExtendedDocumentSupport -> "PercentageExtendedDataPointFormField"
-            else -> throw IllegalArgumentException(
-                "Upload-page generation for this component " +
-                    "does not support $documentSupport",
-            )
-        }
+        val uploadComponent =
+            when (documentSupport) {
+                is NoDocumentSupport -> "NumberFormField"
+                is ExtendedDocumentSupport -> "PercentageExtendedDataPointFormField"
+                else -> throw IllegalArgumentException(
+                    "Upload-page generation for this component " +
+                        "does not support $documentSupport",
+                )
+            }
 
         uploadCategoryBuilder.addStandardUploadConfigCell(
             component = this,

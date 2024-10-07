@@ -14,14 +14,15 @@ import java.io.File
  * The EU Taxonomy Financials framework
  */
 @Component
-class EuTaxonomyFinancialsFramework : PavedRoadFramework(
-    identifier = "eutaxonomy-financials",
-    label = "EU Taxonomy Financials",
-    explanation = "Additional Taxonomy for Financials",
-    File("./dataland-framework-toolbox/inputs/eu-taxonomy-financials/eu-taxonomy-financials.xlsx"),
-    order = 1,
-    enabledFeatures = FrameworkGenerationFeatures.ENTRY_SET,
-) {
+class EuTaxonomyFinancialsFramework :
+    PavedRoadFramework(
+        identifier = "eutaxonomy-financials",
+        label = "EU Taxonomy Financials",
+        explanation = "Additional Taxonomy for Financials",
+        File("./dataland-framework-toolbox/inputs/eu-taxonomy-financials/eu-taxonomy-financials.xlsx"),
+        order = 1,
+        enabledFeatures = FrameworkGenerationFeatures.ENTRY_SET,
+    ) {
     override fun customizeDataModel(dataModel: FrameworkDataModelBuilder) {
         addSupressMaxLineLengthToPackageBuilder(dataModel.rootPackageBuilder)
     }
@@ -40,15 +41,13 @@ class EuTaxonomyFinancialsFramework : PavedRoadFramework(
                     addSuppressMaxLineLengthToDataClass(dataModelElement)
                 }
                 else -> {
-                    /* Do nothing */
+                    // Do nothing
                 }
             }
         }
     }
 
-    private fun addSuppressMaxLineLengthToDataClass(
-        dataModelElement: DataClassBuilder,
-    ) {
+    private fun addSuppressMaxLineLengthToDataClass(dataModelElement: DataClassBuilder) {
         val fullyQualifiedName = "Suppress"
         val rawParameterSpec = "\"MaxLineLength\""
 

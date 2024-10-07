@@ -15,14 +15,9 @@ import org.dataland.datalandqaservice.frameworks.eutaxonomyfinancials.model.cred
 @Suppress("MaxLineLength")
 data class EutaxonomyFinancialsCreditInstitution(
     @field:Valid()
-    val assetsForCalculationOfGreenAssetRatio:
-    EutaxonomyFinancialsCreditinstitutionAssetsForCalculationOfGreenAssetRatio? = null,
-
+    val assetsForCalculationOfGreenAssetRatio: EutaxonomyFinancialsCreditinstitutionAssetsForCalculationOfGreenAssetRatio? = null,
     @field:Valid()
-    val turnoverBasedGreenAssetRatioStock:
-    EutaxonomyFinancialsCreditinstitutionTurnoverBasedGreenAssetRatioStock? = null,
-
+    val turnoverBasedGreenAssetRatioStock: EutaxonomyFinancialsCreditinstitutionTurnoverBasedGreenAssetRatioStock? = null,
     @field:Valid()
     val capexBasedGreenAssetRatioStock: EutaxonomyFinancialsCreditinstitutionCapexBasedGreenAssetRatioStock? = null,
-
 )
