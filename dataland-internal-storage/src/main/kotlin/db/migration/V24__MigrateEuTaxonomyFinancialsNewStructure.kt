@@ -61,24 +61,31 @@ class V24__MigrateEuTaxonomyFinancialsNewStructure : BaseJavaMigration() {
      * @param dataTableEntity DataTableEntity
      */
     fun migrateEuTaxonomyFinancialsData(dataTableEntity: DataTableEntity) {
-        val dataObject = dataTableEntity.dataJsonObject
-        val newObject = JSONObject()
+        val oldData = dataTableEntity.dataJsonObject
+        val newData = JSONObject()
 
-        for ((from, to, transform) in migrations) {
-            getJSONObjectByPath(dataObject, from)?.let {
-                insertIntoJSONObjectAtPath(newObject, to, transform(it))
+        for ((sourcePath, destinationPath, transform) in migrations) {
+            getJSONObjectByPath(oldData, sourcePath)?.let {
+                insertIntoJSONObjectAtPath(newData, destinationPath, transform(it))
             }
         }
 
-        dataTableEntity.companyAssociatedData.put("data", newObject.toString())
+        dataTableEntity.companyAssociatedData.put("data", newData.toString())
     }
 
-    private fun identity(some: Any): Any = some
+    private fun identity(value: Any): Any = value
 
-    private fun extend(some: Any): Any = JSONObject(mapOf("value" to some))
+    private fun extend(value: Any): Any = JSONObject(mapOf("value" to value))
 
-    private fun getJSONObjectByPath(json: JSONObject, path: List<String>): Any? {
-        var currentObject: Any = json
+    /**
+     * Retrieves a value from the given JSONObject following the specified path.
+     * @param sourceObject The JSONObject to retrieve the value from.
+     * @param path A list of keys representing the path to the desired value.
+     * @return The value found at the specified path, or `null` if no object at the path exists.
+     * @throws IllegalArgumentException If an intermediate element in the path is not a JSONObject.
+     */
+    private fun getJSONObjectByPath(sourceObject: JSONObject, path: List<String>): Any? {
+        var currentObject: Any = sourceObject
 
         for (key in path) {
             require(currentObject is JSONObject)
@@ -87,10 +94,18 @@ class V24__MigrateEuTaxonomyFinancialsNewStructure : BaseJavaMigration() {
         return currentObject
     }
 
-    private fun insertIntoJSONObjectAtPath(target: JSONObject, path: List<String>, newObject: Any) {
+    /**
+     * Inserts a value into the specified JSONObject at the given path.
+     * Creates intermediate JSONObjects on the path if they do not exist.
+     * @param destinationObject The JSONObject to modify.
+     * @param path A list of keys representing the path where the value will be inserted.
+     * @param objectToInsert The value to insert at the path.
+     * @throws IllegalArgumentException If the provided path is empty.
+     */
+    private fun insertIntoJSONObjectAtPath(destinationObject: JSONObject, path: List<String>, objectToInsert: Any) {
         require(path.isNotEmpty()) { "Path cannot be empty." }
 
-        var current = target
+        var current = destinationObject
         for (key in path.dropLast(1)) {
             when (val value = current.opt(key)) {
                 is JSONObject -> {
@@ -107,6 +122,6 @@ class V24__MigrateEuTaxonomyFinancialsNewStructure : BaseJavaMigration() {
             }
         }
 
-        current.put(path.last(), newObject)
+        current.put(path.last(), objectToInsert)
     }
 }
