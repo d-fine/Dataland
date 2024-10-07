@@ -943,6 +943,7 @@ export const sfdrDataModel = [
             component: 'CurrencyDataPointFormField',
             required: false,
             showIf: (): boolean => true,
+            validation: 'min:0',
           },
           {
             name: 'averageGrossHourlyEarningsFemaleEmployees',
@@ -952,6 +953,7 @@ export const sfdrDataModel = [
             component: 'CurrencyDataPointFormField',
             required: false,
             showIf: (): boolean => true,
+            validation: 'min:0',
           },
           {
             name: 'unadjustedGenderPayGapInPercent',
@@ -1257,6 +1259,7 @@ export const sfdrDataModel = [
             component: 'CurrencyDataPointFormField',
             required: false,
             showIf: (): boolean => true,
+            validation: 'min:0',
           },
         ],
       },

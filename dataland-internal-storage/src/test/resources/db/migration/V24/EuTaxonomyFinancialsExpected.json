@@ -1,0 +1,68 @@
+{
+  "insuranceReinsurance": {
+    "underwritingKpi": {
+      "proportionOfAbsolutePremiumsOfTaxonomyNonEligibleActivities": {
+        "comment": "compress primary program",
+        "value": 82.04,
+        "dataSource": {
+          "fileName": "AnnualReport",
+          "page": "978-1097",
+          "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+          "tagName": "metrics"
+        },
+        "quality": "Estimated"
+      }
+    }
+  },
+  "general": {
+    "general": {
+      "assurance": {
+        "provider": "Orn - Welch",
+        "value": "LimitedAssurance",
+        "dataSource": {
+          "fileName": "AnnualReport",
+          "page": "225",
+          "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+          "tagName": "experiences"
+        }
+      },
+      "fiscalYearEnd": {
+        "value": "2023-07-23"
+      },
+      "referencedReports": {
+        "AnnualReport": {
+          "fileName": "AnnualReport",
+          "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+          "publicationDate": "2023-07-26"
+        }
+      },
+      "areAllGroupEntitiesCovered": {
+        "value": "NA"
+      },
+      "fiscalYearDeviation": {
+        "value": "NoDeviation"
+      },
+      "isNfrdMandatory": {
+        "value": "No"
+      },
+      "numberOfEmployees": {
+        "value": 9665
+      }
+    }
+  },
+  "creditInstitution": {
+    "turnoverBasedGreenAssetRatioStock": {
+      "substantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentEligible": {
+        "comment": "parse bluetooth monitor",
+        "value": 2.2,
+        "dataSource": {
+          "fileName": "AnnualReport",
+          "page": "308",
+          "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+          "tagName": "experiences"
+        },
+        "quality": "Reported"
+      }
+    }
+  }
+}

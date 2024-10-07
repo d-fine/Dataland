@@ -4,14 +4,14 @@ import org.dataland.communitymanager.openApiClient.api.CompanyRolesControllerApi
 import org.dataland.communitymanager.openApiClient.api.RequestControllerApi
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.api.DataDeletionControllerApi
-import org.dataland.datalandbackend.openApiClient.api.EuTaxonomyDataForFinancialsControllerApi
+import org.dataland.datalandbackend.openApiClient.api.EutaxonomyFinancialsDataControllerApi
 import org.dataland.datalandbackend.openApiClient.api.EutaxonomyNonFinancialsDataControllerApi
 import org.dataland.datalandbackend.openApiClient.api.LksgDataControllerApi
 import org.dataland.datalandbackend.openApiClient.api.MetaDataControllerApi
 import org.dataland.datalandbackend.openApiClient.api.P2pDataControllerApi
 import org.dataland.datalandbackend.openApiClient.api.SfdrDataControllerApi
 import org.dataland.datalandbackend.openApiClient.model.BasicCompanyInformation
-import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataEuTaxonomyDataForFinancials
+import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataEutaxonomyFinancialsData
 import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataEutaxonomyNonFinancialsData
 import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataLksgData
 import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataPathwaysToParisData
@@ -19,7 +19,7 @@ import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataSfd
 import org.dataland.datalandbackend.openApiClient.model.CompanyInformation
 import org.dataland.datalandbackend.openApiClient.model.DataMetaInformation
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
-import org.dataland.datalandbackend.openApiClient.model.EuTaxonomyDataForFinancials
+import org.dataland.datalandbackend.openApiClient.model.EutaxonomyFinancialsData
 import org.dataland.datalandbackend.openApiClient.model.EutaxonomyNonFinancialsData
 import org.dataland.datalandbackend.openApiClient.model.LksgData
 import org.dataland.datalandbackend.openApiClient.model.PathwaysToParisData
@@ -79,19 +79,19 @@ class ApiAccessor {
     }
 
     val dataControllerApiForEuTaxonomyFinancials =
-        EuTaxonomyDataForFinancialsControllerApi(BASE_PATH_TO_DATALAND_BACKEND)
+        EutaxonomyFinancialsDataControllerApi(BASE_PATH_TO_DATALAND_BACKEND)
     val testDataProviderEuTaxonomyForFinancials =
-        FrameworkTestDataProvider(EuTaxonomyDataForFinancials::class.java)
+        FrameworkTestDataProvider(EutaxonomyFinancialsData::class.java)
 
     fun euTaxonomyFinancialsUploaderFunction(
         companyId: String,
-        euTaxonomyFinancialsData: EuTaxonomyDataForFinancials,
+        euTaxonomyFinancialsData: EutaxonomyFinancialsData,
         reportingPeriod: String,
         bypassQa: Boolean = true,
     ): DataMetaInformation {
         val companyAssociatedEuTaxonomyFinancialsData =
-            CompanyAssociatedDataEuTaxonomyDataForFinancials(companyId, reportingPeriod, euTaxonomyFinancialsData)
-        return dataControllerApiForEuTaxonomyFinancials.postCompanyAssociatedEuTaxonomyDataForFinancials(
+            CompanyAssociatedDataEutaxonomyFinancialsData(companyId, reportingPeriod, euTaxonomyFinancialsData)
+        return dataControllerApiForEuTaxonomyFinancials.postCompanyAssociatedEutaxonomyFinancialsData(
             companyAssociatedEuTaxonomyFinancialsData, bypassQa,
         )
     }
@@ -139,13 +139,13 @@ class ApiAccessor {
     }
 
     /**
-     * Uploads each of the datasets provided in [listOfFrameworkData] for each of the companies provided in
-     * [listOfCompanyInformation] via [frameworkDataUploadFunction]. If data for the same framework is uploaded multiple
+     * Uploads each of the datasets provided in [frameworkDatasets] for each of the companies provided in
+     * [companyInfo] via [frameworkDataUploadFunction]. If data for the same framework is uploaded multiple
      * times for the same company a wait of at least 1ms is necessary to avoid an error 500.
      */
     fun <T> uploadCompanyAndFrameworkDataForOneFramework(
-        listOfCompanyInformation: List<CompanyInformation>,
-        listOfFrameworkData: List<T>,
+        companyInfo: List<CompanyInformation>,
+        frameworkDatasets: List<T>,
         frameworkDataUploadFunction: (
             companyId: String,
             frameworkData: T,
@@ -156,13 +156,13 @@ class ApiAccessor {
         reportingPeriod: String = "",
         ensureQaPassed: Boolean = true,
     ): List<UploadInfo> {
-        val waitTimeBeforeNextUpload = if (listOfFrameworkData.size > 1) 1L else 0L
+        val waitTimeBeforeNextUpload = if (frameworkDatasets.size > 1) 1L else 0L
         val listOfUploadInfo: MutableList<UploadInfo> = mutableListOf()
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
-        val storedCompanyInfos = listOfCompanyInformation.map { companyDataControllerApi.postCompany(it) }
+        val storedCompanyInfos = companyInfo.map { companyDataControllerApi.postCompany(it) }
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(uploadConfig.uploadingTechnicalUser)
-        listOfFrameworkData.forEach { frameworkDataSet ->
-            listOfCompanyInformation.zip(storedCompanyInfos).forEach { pair ->
+        frameworkDatasets.forEach { frameworkDataSet ->
+            companyInfo.zip(storedCompanyInfos).forEach { pair ->
                 val receivedDataMetaInformation = frameworkDataUploadFunction(
                     pair.second.companyId, frameworkDataSet, reportingPeriod, uploadConfig.bypassQa,
                 )
@@ -207,8 +207,8 @@ class ApiAccessor {
                 bypassQa: Boolean,
             ) -> DataMetaInformation,
         ) = uploadCompanyAndFrameworkDataForOneFramework(
-            listOfCompanyInformation = listOfCompanyInformation,
-            listOfFrameworkData = testDataProvider.getTData(numberOfDataSetsPerCompany),
+            companyInfo = listOfCompanyInformation,
+            frameworkDatasets = testDataProvider.getTData(numberOfDataSetsPerCompany),
             frameworkDataUploadFunction = frameworkDataUploadFunction,
             uploadConfig = uploadConfig,
             reportingPeriod = reportingPeriod,
@@ -303,7 +303,8 @@ class ApiAccessor {
     fun uploadOneCompanyWithoutIdentifiersWithExplicitTeaserConfig(setAsTeaserCompany: Boolean): UploadInfo {
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
         val testCompanyInformation = testDataProviderEuTaxonomyForFinancials
-            .getCompanyInformationWithoutIdentifiers(1).first().copy(isTeaserCompany = setAsTeaserCompany)
+            .getCompanyInformationWithoutIdentifiers(1).first()
+            .copy(isTeaserCompany = setAsTeaserCompany, companyContactDetails = emptyList())
         return UploadInfo(testCompanyInformation, companyDataControllerApi.postCompany(testCompanyInformation))
     }
 

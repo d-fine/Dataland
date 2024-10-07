@@ -4,7 +4,7 @@ import { getKeycloakToken } from '@e2e/utils/Auth';
 import {
   IdentifierType,
   DataTypeEnum,
-  type EuTaxonomyDataForFinancials,
+  type EutaxonomyFinancialsData,
   type LksgData,
   type StoredCompany,
 } from '@clients/backend';
@@ -13,11 +13,9 @@ import { assertDefined } from '@/utils/TypeScriptUtils';
 import { describeIf } from '@e2e/support/TestUtility';
 import { generateReportingPeriod } from '@e2e/fixtures/common//ReportingPeriodFixtures';
 import { type FixtureData, getPreparedFixture } from '@sharedUtils/Fixtures';
-import {
-  uploadFrameworkDataForLegacyFramework,
-  uploadFrameworkDataForPublicToolboxFramework,
-} from '@e2e/utils/FrameworkUpload';
+import { uploadFrameworkDataForPublicToolboxFramework } from '@e2e/utils/FrameworkUpload';
 import LksgBaseFrameworkDefinition from '@/frameworks/lksg/BaseFrameworkDefinition';
+import EuTaxonomyFinancialsBaseFrameworkDefinition from '@/frameworks/eutaxonomy-financials/BaseFrameworkDefinition';
 
 describe('As a user, I expect the dataset upload process to behave as I expect', function () {
   describeIf(
@@ -42,13 +40,18 @@ describe('As a user, I expect the dataset upload process to behave as I expect',
       let storedCompanyForManyDatasetsCompany: StoredCompany;
 
       before(function uploadOneCompanyWithoutDataAndOneCompanyWithManyDatasets() {
-        let euTaxoFinancialPreparedFixtures: Array<FixtureData<EuTaxonomyDataForFinancials>>;
-        let lksgPreparedFixtures: Array<FixtureData<LksgData>>;
-        cy.fixture('CompanyInformationWithEuTaxonomyDataForFinancialsPreparedFixtures').then(function (jsonContent) {
-          euTaxoFinancialPreparedFixtures = jsonContent as Array<FixtureData<EuTaxonomyDataForFinancials>>;
+        let euTaxoFinancialPreparedFixture: FixtureData<EutaxonomyFinancialsData>;
+        let lksgPreparedFixture: FixtureData<LksgData>;
+        cy.fixture('CompanyInformationWithEutaxonomyFinancialsPreparedFixtures').then(function (jsonContent) {
+          const euTaxoFinancialPreparedFixtures = jsonContent as Array<FixtureData<EutaxonomyFinancialsData>>;
+          euTaxoFinancialPreparedFixture = getPreparedFixture(
+            'lighweight-eu-taxo-financials-dataset',
+            euTaxoFinancialPreparedFixtures
+          );
         });
         cy.fixture('CompanyInformationWithLksgPreparedFixtures').then(function (jsonContent) {
-          lksgPreparedFixtures = jsonContent as Array<FixtureData<LksgData>>;
+          const lksgPreparedFixtures = jsonContent as Array<FixtureData<LksgData>>;
+          lksgPreparedFixture = getPreparedFixture('LkSG-date-2022-07-30', lksgPreparedFixtures);
         });
         getKeycloakToken(admin_name, admin_pw).then((token: string) => {
           return uploadCompanyViaApi(token, generateDummyCompanyInformation(testCompanyNameForApiUpload))
@@ -56,14 +59,13 @@ describe('As a user, I expect the dataset upload process to behave as I expect',
               return uploadCompanyViaApi(token, generateDummyCompanyInformation(testCompanyNameForManyDatasetsCompany));
             })
             .then((storedCompany) => {
-              const preparedFixture = getPreparedFixture('eligible-activity-Point-29', euTaxoFinancialPreparedFixtures);
               storedCompanyForManyDatasetsCompany = storedCompany;
-              return uploadFrameworkDataForLegacyFramework(
-                DataTypeEnum.EutaxonomyFinancials,
+              return uploadFrameworkDataForPublicToolboxFramework(
+                EuTaxonomyFinancialsBaseFrameworkDefinition,
                 token,
                 storedCompanyForManyDatasetsCompany.companyId,
                 '2023',
-                preparedFixture.t
+                euTaxoFinancialPreparedFixture.t
               );
             })
             .then((dataMetaInformationOfFirstUpload) => {
@@ -73,27 +75,22 @@ describe('As a user, I expect the dataset upload process to behave as I expect',
               return cy
                 .wait(timeDelayInMillisecondsBeforeNextUploadToAssureDifferentTimestamps)
                 .then(() => {
-                  const preparedFixture = getPreparedFixture(
-                    'eligible-activity-Point-26',
-                    euTaxoFinancialPreparedFixtures
-                  );
-                  return uploadFrameworkDataForLegacyFramework(
-                    DataTypeEnum.EutaxonomyFinancials,
+                  return uploadFrameworkDataForPublicToolboxFramework(
+                    EuTaxonomyFinancialsBaseFrameworkDefinition,
                     token,
                     storedCompanyForManyDatasetsCompany.companyId,
                     '2022',
-                    preparedFixture.t
+                    euTaxoFinancialPreparedFixture.t
                   );
                 })
                 .then((dataMetaInformationOfSecondUpload) => {
                   dataIdOfSecondEuTaxoFinancialsUpload = dataMetaInformationOfSecondUpload.dataId;
-                  const preparedFixture = getPreparedFixture('LkSG-date-2022-07-30', lksgPreparedFixtures);
                   return uploadFrameworkDataForPublicToolboxFramework(
                     LksgBaseFrameworkDefinition,
                     token,
                     storedCompanyForManyDatasetsCompany.companyId,
                     generateReportingPeriod(),
-                    preparedFixture.t
+                    lksgPreparedFixture.t
                   );
                 })
                 .then((dataMetaInformationLksgUpload) => {
@@ -145,9 +142,7 @@ describe('As a user, I expect the dataset upload process to behave as I expect',
         cy.contains('h1', uploadedTestCompanyName);
 
         cy.get('div[id=eutaxonomyDataSetsContainer]').contains('Be the first to create this dataset');
-        cy.get('div[id=eutaxonomyDataSetsContainer]').contains(
-          'Create another dataset for EU Taxonomy for financial companies'
-        );
+        cy.get('div[id=eutaxonomyDataSetsContainer]').contains('Create another dataset for EU Taxonomy Financials');
         cy.get('div[id=eutaxonomyDataSetsContainer]')
           .find("[data-test='createDatasetButton']")
           .should('have.length', 2);
@@ -179,7 +174,7 @@ describe('As a user, I expect the dataset upload process to behave as I expect',
         dataIdOfLksgDataset: string
       ): void {
         cy.get('div[id=eutaxonomyDataSetsContainer')
-          .find(`a.text-primary:contains(financial companies)`)
+          .find(`a.text-primary:contains(EU Taxonomy Financials)`)
           .eq(0)
           .click({ force: true });
         cy.contains('h1', storedCompanyForTest.companyInformation.companyName)
@@ -191,7 +186,7 @@ describe('As a user, I expect the dataset upload process to behave as I expect',
           );
         cy.go('back');
         cy.get('div[id=eutaxonomyDataSetsContainer')
-          .find(`a.text-primary:contains(financial companies)`)
+          .find(`a.text-primary:contains(EU Taxonomy Financials)`)
           .eq(1)
           .click({ force: true });
         cy.contains('h1', storedCompanyForTest.companyInformation.companyName)
@@ -218,7 +213,7 @@ describe('As a user, I expect the dataset upload process to behave as I expect',
        */
       function checkIfDropDownSwitchRendersData(): void {
         cy.get('div[data-test="chooseFrameworkDropdown"]').click();
-        cy.get("li:contains('EU Taxonomy for financial companies')").click();
+        cy.get("li:contains('EU Taxonomy Financials')").click();
         cy.get('td[data-cell-label="Fiscal Year End"]').should('be.visible');
 
         cy.get('div[data-test="chooseFrameworkDropdown"]').click();

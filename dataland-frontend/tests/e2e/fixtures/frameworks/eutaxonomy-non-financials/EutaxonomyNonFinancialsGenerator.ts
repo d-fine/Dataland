@@ -1,19 +1,10 @@
 import { Generator } from '@e2e/utils/FakeFixtureUtils';
-import type { AssuranceDataPoint, EuTaxonomyActivity, EuTaxonomyAlignedActivity } from '@clients/backend';
-import { generateAssuranceDatapoint } from '@e2e/fixtures/eutaxonomy-shared/AssuranceDataFixture';
+import type { EuTaxonomyActivity, EuTaxonomyAlignedActivity } from '@clients/backend';
 import { pickOneElement } from '@e2e/fixtures/FixtureUtils';
 import { Activity } from '@clients/backend';
 import { getRandomNumberOfNaceCodesForSpecificActivity } from '@e2e/fixtures/common/NaceCodeFixtures';
 
 export class EutaxonomyNonFinancialsGenerator extends Generator {
-  /**
-   * Generates random assurance data
-   * @returns the generated random assurance data
-   */
-  generateAssuranceDatapoint(): AssuranceDataPoint {
-    return generateAssuranceDatapoint(this.reports, this.nullProbability);
-  }
-
   /**
    * Generates a random eu taxonomy activity
    * @returns a random eu taxonomy activity

@@ -3,6 +3,7 @@ package org.dataland.datalandcommunitymanager.email
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.model.CompanyInformation
+import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandcommunitymanager.entities.DataRequestEntity
 import org.dataland.datalandcommunitymanager.services.messaging.DataRequestResponseEmailSender
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
@@ -32,7 +33,7 @@ class DataRequestResponseEmailSenderTest {
     private val objectMapper = jacksonObjectMapper()
     private val correlationId = UUID.randomUUID().toString()
     private val staleDaysThreshold = "some number"
-    private val dataTypes = getListOfAllDataTypes()
+    private val dataTypes = getMapOfAllDataTypes()
 
     @BeforeEach
     fun setupAuthentication() {
@@ -84,16 +85,16 @@ class DataRequestResponseEmailSenderTest {
         return companyDataControllerMock
     }
 
-    private fun getListOfAllDataTypes(): List<List<String>> {
-        return listOf(
-            listOf("p2p", "WWF Pathways to Paris"),
-            listOf("eutaxonomy-financials", "EU Taxonomy for financial companies"),
-            listOf("eutaxonomy-non-financials", "EU Taxonomy for non-financial companies"),
-            listOf("lksg", "LkSG"),
-            listOf("sfdr", "SFDR"),
-            listOf("vsme", "VSME"),
-            listOf("esg-questionnaire", "ESG Questionnaire"),
-            listOf("heimathafen", "Heimathafen"),
+    private fun getMapOfAllDataTypes(): Map<String, String> {
+        return mapOf(
+            DataTypeEnum.p2p.toString() to "WWF Pathways to Paris",
+            DataTypeEnum.eutaxonomyMinusFinancials.toString() to "EU Taxonomy for financial companies",
+            DataTypeEnum.eutaxonomyMinusNonMinusFinancials.toString() to "EU Taxonomy for non-financial companies",
+            DataTypeEnum.lksg.toString() to "LkSG",
+            DataTypeEnum.sfdr.toString() to "SFDR",
+            DataTypeEnum.vsme.toString() to "VSME",
+            DataTypeEnum.esgMinusQuestionnaire.toString() to "ESG Questionnaire",
+            DataTypeEnum.heimathafen.toString() to "Heimathafen",
         )
     }
 
@@ -135,11 +136,11 @@ class DataRequestResponseEmailSenderTest {
     @Test
     fun `validate that the output of the closed request email message sender is correctly build for all frameworks`() {
         dataTypes.forEach {
-            val dataRequestEntity = getDataRequestEntityWithDataType(it[0])
+            val dataRequestEntity = getDataRequestEntityWithDataType(it.key)
             val dataRequestId = dataRequestEntity.dataRequestId
             val cloudEventMessageHandlerMock =
                 getMockCloudEventMessageHandlerAndSetChecks(
-                    it[0], it[1], dataRequestId, TemplateEmailMessage.Type.DataRequestClosed,
+                    it.key, it.value, dataRequestId, TemplateEmailMessage.Type.DataRequestClosed,
                 )
 
             val dataRequestClosedEmailMessageSender =
@@ -158,11 +159,11 @@ class DataRequestResponseEmailSenderTest {
     @Test
     fun `check that the output of the answered request email message sender is correctly build for all frameworks`() {
         dataTypes.forEach {
-            val dataRequestEntity = getDataRequestEntityWithDataType(it[0])
+            val dataRequestEntity = getDataRequestEntityWithDataType(it.key)
             val dataRequestId = dataRequestEntity.dataRequestId
             val cloudEventMessageHandlerMock =
                 getMockCloudEventMessageHandlerAndSetChecks(
-                    it[0], it[1], dataRequestId, TemplateEmailMessage.Type.DataRequestedAnswered,
+                    it.key, it.value, dataRequestId, TemplateEmailMessage.Type.DataRequestedAnswered,
                 )
 
             val dataRequestClosedEmailMessageSender =

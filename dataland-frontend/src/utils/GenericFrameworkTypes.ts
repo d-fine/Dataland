@@ -1,7 +1,7 @@
 import { type DropdownOption } from '@/utils/PremadeDropdownDatasets';
 import {
   type EsgQuestionnaireData,
-  type EuTaxonomyDataForFinancials,
+  type EutaxonomyFinancialsData,
   type EutaxonomyNonFinancialsData,
   type HeimathafenData,
   type LksgData,
@@ -46,7 +46,7 @@ export interface Field {
 }
 
 export type FrameworkData =
-  | EuTaxonomyDataForFinancials
+  | EutaxonomyFinancialsData
   | EutaxonomyNonFinancialsData
   | LksgData
   | SfdrData

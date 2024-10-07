@@ -5,7 +5,7 @@ import com.squareup.moshi.Moshi
 import com.squareup.moshi.Types
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import org.dataland.datalandbackend.openApiClient.model.CompanyInformation
-import org.dataland.datalandbackend.openApiClient.model.EuTaxonomyDataForFinancials
+import org.dataland.datalandbackend.openApiClient.model.EutaxonomyFinancialsData
 import org.dataland.datalandbackend.openApiClient.model.EutaxonomyNonFinancialsData
 import org.dataland.datalandbackend.openApiClient.model.IdentifierType
 import org.dataland.datalandbackend.openApiClient.model.LksgData
@@ -20,8 +20,8 @@ class FrameworkTestDataProvider<T> (private val clazz: Class<T>) {
     private val jsonFilesForTesting = mapOf(
         EutaxonomyNonFinancialsData::class.java to
             File("./build/resources/test/CompanyInformationWithEutaxonomyNonFinancialsData.json"),
-        EuTaxonomyDataForFinancials::class.java to
-            File("./build/resources/test/CompanyInformationWithEuTaxonomyDataForFinancials.json"),
+        EutaxonomyFinancialsData::class.java to
+            File("./build/resources/test/CompanyInformationWithEutaxonomyFinancialsData.json"),
         LksgData::class.java to
             File("./build/resources/test/CompanyInformationWithLksgData.json"),
         SfdrData::class.java to
@@ -57,6 +57,7 @@ class FrameworkTestDataProvider<T> (private val clazz: Class<T>) {
             .map {
                 it.companyInformation.copy(
                     identifiers = IdentifierType.entries.map { id -> id.value }.associateWith { emptyList() },
+                    companyContactDetails = emptyList(),
                 )
             }
     }
@@ -76,7 +77,7 @@ class FrameworkTestDataProvider<T> (private val clazz: Class<T>) {
 
     private fun companyListForTestingEuTaxonomyFinancialsSpecificValidation(): List<CompanyInformationWithT<T>> {
         return convertJsonToList(
-            File("./build/resources/test/CompanyInformationWithEuTaxonomyDataForFinancialsPreparedFixtures.json"),
+            File("./build/resources/test/CompanyInformationWithEutaxonomyFinancialsPreparedFixtures.json"),
         )
     }
 
