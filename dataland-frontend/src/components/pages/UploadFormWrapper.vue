@@ -7,11 +7,7 @@
           <BackButton id="backButton" class="mt-2" />
           <CompanyInformation :companyId="companyID" />
         </MarginWrapper>
-        <component
-          :is="frameworkToUploadComponent"
-          :companyID="companyID"
-          @datasetCreated="redirectToMyDatasets($router)"
-        />
+        <component :is="frameworkToUploadComponent" :companyID="companyID" @datasetCreated="redirectToMyDatasets()" />
       </AuthorizationWrapper>
     </TheContent>
     <TheFooter :is-light-version="true" :sections="footerContent" />

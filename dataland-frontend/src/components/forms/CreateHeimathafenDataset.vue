@@ -39,7 +39,12 @@
                       </div>
 
                       <div class="col-9 formFields">
-                        <FormKit v-for="field in subcategory.fields" :key="field" type="group" :name="subcategory.name">
+                        <FormKit
+                          v-for="field in subcategory.fields"
+                          :key="field.name"
+                          type="group"
+                          :name="subcategory.name"
+                        >
                           <component
                             v-if="field.showIf(companyAssociatedHeimathafenData.data)"
                             :is="field.component"
