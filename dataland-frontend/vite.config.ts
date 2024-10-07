@@ -48,11 +48,6 @@ export default defineConfig({
       'axios',
       'i18n-iso-countries',
       'currency-codes/data',
-      'dompurify',
-      'vue-markdown-render',
-      'markdown-it',
-      '@faker-js/faker',
-      'primevue/icons/chevronup',
     ],
   },
   plugins: [

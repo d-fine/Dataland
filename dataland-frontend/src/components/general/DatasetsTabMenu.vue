@@ -132,7 +132,7 @@ export default defineComponent({
   },
 });
 
-export interface Tab {
+interface Tab {
   label: string;
   route: string;
   isVisible: boolean;
