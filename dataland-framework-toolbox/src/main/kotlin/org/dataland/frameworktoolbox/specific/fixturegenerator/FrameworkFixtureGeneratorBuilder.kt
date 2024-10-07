@@ -92,12 +92,12 @@ class FrameworkFixtureGeneratorBuilder(
         val freemarkerTemplate = FreeMarker.configuration
             .getTemplate("/specific/fixturegenerator/FrameworkGenerator.ts.ftl")
 
-        // if (frameworkGeneratorTsPath.notExists()) {
-        val writer = FileWriter(frameworkGeneratorTsPath.toFile())
-        generatedTsFiles.add(frameworkGeneratorTsPath)
-        freemarkerTemplate.process(freeMarkerContext, writer)
-        writer.close()
-        // }
+        if (frameworkGeneratorTsPath.notExists()) {
+            val writer = FileWriter(frameworkGeneratorTsPath.toFile())
+            generatedTsFiles.add(frameworkGeneratorTsPath)
+            freemarkerTemplate.process(freeMarkerContext, writer)
+            writer.close()
+        }
     }
 
     private fun buildDataFixtures(dataFixturesTsPath: Path) {
