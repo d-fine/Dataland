@@ -163,7 +163,7 @@ function buildDisplayValueWhenDataPointMetaInfoIsAvailable(
 
   return {
     innerContents: innerContent,
-    quality: isOnlyQualityProvided ? undefined : (datapointProperties?.quality ?? undefined),
+    quality: isOnlyQualityProvided ? undefined : datapointProperties?.quality ?? undefined,
     comment: datapointProperties?.comment ?? undefined,
     dataSource: datapointProperties?.dataSource ?? undefined,
     fieldLabel: fieldLabel,

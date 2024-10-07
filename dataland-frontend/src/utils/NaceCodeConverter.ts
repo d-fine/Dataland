@@ -13,7 +13,7 @@ import { naceCodeMap } from '@/components/forms/parts/elements/derived/NaceCodeT
 export function convertNace(kpiValue: KpiValue): KpiValue {
   return Array.isArray(kpiValue)
     ? kpiValue.map((naceCodeShort: string) => naceCodeMap.get(naceCodeShort)?.label ?? naceCodeShort)
-    : (naceCodeMap.get(kpiValue as string)?.label ?? kpiValue);
+    : naceCodeMap.get(kpiValue as string)?.label ?? kpiValue;
 }
 
 /**

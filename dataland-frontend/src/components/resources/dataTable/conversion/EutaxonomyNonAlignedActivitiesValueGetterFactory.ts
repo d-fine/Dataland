@@ -62,7 +62,7 @@ export function formatNonAlignedActivitiesForDataTable(
   return <MLDTDisplayObject<MLDTDisplayComponentName.ModalLinkWithDataSourceDisplayComponent>>{
     displayComponentName: MLDTDisplayComponentName.ModalLinkWithDataSourceDisplayComponent,
     displayValue: {
-      label: `Show ${nonAlignedActivities.value?.length} activit${(nonAlignedActivities.value?.length ?? 0 > 1) ? 'ies' : 'y'}`,
+      label: `Show ${nonAlignedActivities.value?.length} activit${nonAlignedActivities.value?.length ?? 0 > 1 ? 'ies' : 'y'}`,
       modalComponent: NonAlignedActivitiesDataTable,
       modalOptions: {
         props: {

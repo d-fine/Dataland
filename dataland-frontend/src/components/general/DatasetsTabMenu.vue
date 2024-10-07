@@ -37,40 +37,18 @@ export default defineComponent({
       required: true,
     },
   },
-  data: () => ({
-    tabs: [
-      {
-        label: 'COMPANIES',
-        route: '/companies',
-        isVisible: true,
-      },
-      {
-        label: 'MY DATASETS',
-        route: '/datasets',
-        isVisible: true,
-      },
-      {
-        label: 'QA',
-        route: '/qualityassurance',
-        isVisible: false,
-      },
-      {
-        label: 'MY DATA REQUESTS',
-        route: '/requests',
-        isVisible: true,
-      },
-      {
-        label: 'DATA REQUESTS FOR MY COMPANIES',
-        route: '/companyrequests',
-        isVisible: false,
-      },
-      {
-        label: 'ALL DATA REQUESTS',
-        route: '/requestoverview',
-        isVisible: false,
-      },
-    ] as Tab[],
-  }),
+  data(): { tabs: Tab[] } {
+    return {
+      tabs: [
+        { label: 'COMPANIES', route: '/companies', isVisible: true },
+        { label: 'MY DATASETS', route: '/datasets', isVisible: true },
+        { label: 'QA', route: '/qualityassurance', isVisible: false },
+        { label: 'MY DATA REQUESTS', route: '/requests', isVisible: true },
+        { label: 'DATA REQUESTS FOR MY COMPANIES', route: '/companyrequests', isVisible: false },
+        { label: 'ALL DATA REQUESTS', route: '/requestoverview', isVisible: false },
+      ],
+    };
+  },
   setup() {
     return {
       getKeycloakPromise: inject<() => Promise<Keycloak>>('getKeycloakPromise'),
