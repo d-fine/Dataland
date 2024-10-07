@@ -4323,18 +4323,6 @@
         ],
         "type": "object",
         "properties": {
-          "dataId": {
-            "type": "string"
-          },
-          "framework": {
-            "type": "string"
-          },
-          "reportingPeriod": {
-            "type": "string"
-          },
-          "companyName": {
-            "type": "string"
-          },
           "message": {
             "type": "string"
           },
@@ -4342,7 +4330,19 @@
             "type": "integer",
             "format": "int64"
           },
+          "dataId": {
+            "type": "string"
+          },
+          "companyName": {
+            "type": "string"
+          },
           "companyId": {
+            "type": "string"
+          },
+          "framework": {
+            "type": "string"
+          },
+          "reportingPeriod": {
             "type": "string"
           }
         }

@@ -4,7 +4,7 @@ package org.dataland.datalandbackend.frameworks.nuclearandgas.model.custom
 import java.math.BigDecimal
 
 /**
- * TODO
+ * The data-model for the NuclearAndGasAlignedDenominator custom component.
  */
 data class NuclearAndGasAlignedDenominator(
     val taxonomyAlignedShareDenominatorClimateChangeMitigationAndClimateChangeAdaptationNAndG426: BigDecimal? = null,

@@ -59,7 +59,9 @@ class ComponentGroupApiImpl(var parent: FieldNodeParent? = null) : ComponentGrou
                 nonOptionalParameters[1].type.classifier == FieldNodeParent::class
             if (validConstructor) {
                 return { identifier, parent ->
-                    constructor.callBy(mapOf(nonOptionalParameters[0] to identifier, nonOptionalParameters[1] to parent))
+                    constructor.callBy(
+                        mapOf(nonOptionalParameters[0] to identifier, nonOptionalParameters[1] to parent),
+                    )
                 }
             }
         }
