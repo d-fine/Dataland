@@ -39,6 +39,7 @@ import { KEYCLOAK_ROLE_UPLOADER } from '@/utils/KeycloakUtils';
 import { defineComponent } from 'vue';
 import TheContent from '@/components/generics/TheContent.vue';
 import MarginWrapper from '@/components/wrapper/MarginWrapper.vue';
+import CreateNuclearGasDataset from "@/components/forms/CreateNuclearGasDataset.vue";
 
 export default defineComponent({
   name: 'UploadFormWrapper',
@@ -91,6 +92,8 @@ export default defineComponent({
           return CreateEsgQuestionnaireDataset;
         case `${DataTypeEnum.Vsme}`:
           return CreateVsmeDataset;
+        case `${DataTypeEnum.NuclearAndGas}`:
+          return CreateNuclearGasDataset;
         case `${DataTypeEnum.AdditionalCompanyInformation}`:
           return CreateAdditionalCompanyInformationDataset;
         default:
