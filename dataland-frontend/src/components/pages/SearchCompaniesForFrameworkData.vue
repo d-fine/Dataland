@@ -106,6 +106,7 @@ import BulkDataRequestButton from '@/components/resources/frameworkDataSearch/Bu
 import { checkIfUserHasRole, KEYCLOAK_ROLE_UPLOADER } from '@/utils/KeycloakUtils';
 import DatasetsTabMenu from '@/components/general/DatasetsTabMenu.vue';
 import NewDatasetButton from '@/components/general/NewDatasetButton.vue';
+import router from '@/router';
 
 export default defineComponent({
   setup() {
@@ -383,7 +384,7 @@ export default defineComponent({
         this.currentFilteredCountryCodes.length == 0 ? undefined : this.currentFilteredCountryCodes;
 
       const querySectors = this.currentFilteredSectors.length == 0 ? undefined : this.currentFilteredSectors;
-      return this.$router.push({
+      return router.push({
         name: 'Search Companies for Framework Data',
         query: {
           input: queryInput,

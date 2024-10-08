@@ -189,6 +189,7 @@ import { type DataTypeEnum, QaStatus } from '@clients/backend';
 import TheContent from '@/components/generics/TheContent.vue';
 import StatusHistory from '@/components/resources/dataRequest/StatusHistory.vue';
 import { checkIfUserHasRole, getUserId, KEYCLOAK_ROLE_ADMIN } from '@/utils/KeycloakUtils';
+import router from '@/router';
 
 export default defineComponent({
   name: 'ViewDataRequest',
@@ -391,7 +392,7 @@ export default defineComponent({
      */
     goToResolveDataRequestPage() {
       const url = `/companies/${this.storedDataRequest.datalandCompanyId}/frameworks/${this.storedDataRequest.dataType}`;
-      return this.$router.push(url);
+      return router.push(url);
     },
     /**
      * Method to check if request status is answered

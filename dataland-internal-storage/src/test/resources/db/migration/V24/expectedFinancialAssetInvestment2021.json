@@ -1,0 +1,63 @@
+{
+  "insuranceReinsurance": {
+    "underwritingKpi": {
+      "proportionOfAbsolutePremiumsOfTaxonomyNonEligibleActivities": {
+        "comment": null,
+        "dataSource": null,
+        "quality": "Reported",
+        "value": null
+      }
+    }
+  },
+  "general": {
+    "general": {
+      "assurance": {
+        "dataSource": {
+          "fileName": "Sustainability Report",
+          "fileReference": "83c4d065194bd46ca5afd55880243495ad2cb491219f9504eb74876303ed8f44",
+          "page": "66",
+          "tagName": null
+        },
+        "provider": "PwC GmbH",
+        "value": "LimitedAssurance"
+      },
+      "fiscalYearEnd": {
+        "value": "2021-12-31"
+      },
+      "referencedReports": {
+        "Annual Report": {
+          "fileName": "Annual Report",
+          "fileReference": "28ad8f99b8b94c0ed6a61218ca58dd49351084c35c9b6659ee7b464b2612255d",
+          "publicationDate": null
+        },
+        "Sustainability Report": {
+          "fileName": "Sustainability Report",
+          "fileReference": "83c4d065194bd46ca5afd55880243495ad2cb491219f9504eb74876303ed8f44",
+          "publicationDate": null
+        }
+      },
+      "areAllGroupEntitiesCovered": {
+        "value": null
+      },
+      "fiscalYearDeviation": {
+        "value": "NoDeviation"
+      },
+      "isNfrdMandatory": {
+        "value": "Yes"
+      },
+      "numberOfEmployees": {
+        "value": 23954
+      }
+    }
+  },
+  "creditInstitution": {
+    "turnoverBasedGreenAssetRatioStock": {
+      "substantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentEligible": {
+        "comment": null,
+        "dataSource": null,
+        "quality": "Reported",
+        "value": null
+      }
+    }
+  }
+}

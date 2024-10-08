@@ -1,0 +1,43 @@
+{
+  "insuranceReinsurance": {
+    "underwritingKpi": {
+      "proportionOfAbsolutePremiumsOfTaxonomyNonEligibleActivities": {
+        "comment": null,
+        "dataSource": null,
+        "quality": "Reported",
+        "value": null
+      }
+    }
+  },
+  "general": {
+    "general": {
+      "assurance": {
+        "dataSource": null,
+        "provider": null,
+        "value": "LimitedAssurance"
+      },
+      "fiscalYearEnd": {
+        "value": null
+      },
+      "referencedReports": {
+        "DE0008430026_IntegratedReport": {
+          "fileName": "DE0008430026_IntegratedReport",
+          "fileReference": "3ac4c812203f5766a2da6ba12cd959804413b02e4c0da09144079d14f7178368",
+          "publicationDate": null
+        }
+      },
+      "areAllGroupEntitiesCovered": {
+        "value": null
+      },
+      "fiscalYearDeviation": {
+        "value": "NoDeviation"
+      },
+      "isNfrdMandatory": {
+        "value": "Yes"
+      },
+      "numberOfEmployees": {
+        "value": 39281
+      }
+    }
+  }
+}

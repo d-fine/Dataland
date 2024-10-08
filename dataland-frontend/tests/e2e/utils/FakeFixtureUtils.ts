@@ -7,6 +7,8 @@ import {
 import { generateYesNo, generateYesNoNa } from '@e2e/fixtures/common/YesNoFixtures';
 import {
   type AmountWithCurrency,
+  type AssuranceDataPoint,
+  AssuranceDataPointValueEnum,
   type CurrencyDataPoint,
   type ExtendedDocumentReference,
   QualityOptions,
@@ -220,6 +222,34 @@ export class Generator {
     return {
       amount: this.randomCurrencyValue(),
       currency: this.valueOrNull(generateCurrencyCode()),
+    };
+  }
+
+  /**
+   * Generates random assurance data
+   * @returns the generated random assurance data
+   */
+  generateAssuranceDatapoint(): AssuranceDataPoint {
+    const isAssuranceProviderExisting = faker.datatype.boolean(1 - this.nullProbability);
+
+    const assuranceValuesForExistingProvider = Object.values(AssuranceDataPointValueEnum).filter(
+      (value) => value !== AssuranceDataPointValueEnum.None
+    );
+
+    const assurance = isAssuranceProviderExisting
+      ? pickOneElement(assuranceValuesForExistingProvider)
+      : AssuranceDataPointValueEnum.None;
+
+    const provider = isAssuranceProviderExisting ? valueOrNull(faker.company.name(), this.nullProbability) : null;
+
+    const dataSource = isAssuranceProviderExisting
+      ? valueOrNull(generateDataSource(this.reports), this.nullProbability)
+      : null;
+
+    return {
+      value: assurance,
+      provider: provider,
+      dataSource: dataSource,
     };
   }
 }

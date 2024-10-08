@@ -1,0 +1,48 @@
+{
+  "insuranceReinsurance": {
+    "underwritingKpi": {
+      "proportionOfAbsolutePremiumsOfTaxonomyNonEligibleActivities": {
+        "comment": null,
+        "dataSource": null,
+        "quality": "Audited",
+        "value": 36.4
+      }
+    }
+  },
+  "general": {
+    "general": {
+      "assurance": {
+        "dataSource": null,
+        "provider": "PricewaterhouseCoopers GmbH",
+        "value": "LimitedAssurance"
+      },
+      "fiscalYearEnd": {
+        "value": "2022-12-31"
+      },
+      "referencedReports": {
+        "Annual Report": {
+          "fileName": null,
+          "fileReference": "690d820e3c709519d2ca02e739828c0d83e36218757a8be24c42d8ae18509d19",
+          "publicationDate": "2022-12-31"
+        },
+        "Sustainability Report": {
+          "fileName": null,
+          "fileReference": "aadc853bdafb9d5c0cac0b0d625a5cb082b1c929d25c2ddb48431267bc4c9349",
+          "publicationDate": "2022-12-31"
+        }
+      },
+      "areAllGroupEntitiesCovered": {
+        "value": "Yes"
+      },
+      "fiscalYearDeviation": {
+        "value": "NoDeviation"
+      },
+      "isNfrdMandatory": {
+        "value": "Yes"
+      },
+      "numberOfEmployees": {
+        "value": 23669
+      }
+    }
+  }
+}

@@ -5,22 +5,23 @@ import {
   Configuration,
   type DataMetaInformation,
   DataTypeEnum,
-  type EuTaxonomyDataForFinancials,
-  EuTaxonomyDataForFinancialsControllerApi,
+  type EutaxonomyFinancialsData,
+  EutaxonomyFinancialsDataControllerApi,
 } from '@clients/backend';
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from '@e2e/utils/CompanyUpload';
 import { assignCompanyOwnershipToDatalandAdmin, isDatasetApproved } from '@e2e/utils/CompanyRolesUtils';
 import { submitButton } from '@sharedUtils/components/SubmitButton';
-import { uploadFrameworkDataForLegacyFramework } from '@e2e/utils/FrameworkUpload';
+import { uploadFrameworkDataForPublicToolboxFramework } from '@e2e/utils/FrameworkUpload';
 import { compareObjectKeysAndValuesDeep } from '@e2e/utils/GeneralUtils';
 import { type FixtureData, getPreparedFixture } from '@sharedUtils/Fixtures';
+import EuTaxonomyFinancialsBaseFrameworkDefinition from '@/frameworks/eutaxonomy-financials/BaseFrameworkDefinition';
 
-let euTaxonomyFinancialsFixtureForTest: FixtureData<EuTaxonomyDataForFinancials>;
+let euTaxonomyFinancialsFixtureForTest: FixtureData<EutaxonomyFinancialsData>;
 before(function () {
-  cy.fixture('CompanyInformationWithEuTaxonomyDataForFinancialsPreparedFixtures').then(function (jsonContent) {
-    const preparedFixturesEuTaxonomyFinancials = jsonContent as Array<FixtureData<EuTaxonomyDataForFinancials>>;
+  cy.fixture('CompanyInformationWithEutaxonomyFinancialsPreparedFixtures').then(function (jsonContent) {
+    const preparedFixturesEuTaxonomyFinancials = jsonContent as Array<FixtureData<EutaxonomyFinancialsData>>;
     euTaxonomyFinancialsFixtureForTest = getPreparedFixture(
-      'company-for-all-types',
+      'lighweight-eu-taxo-financials-dataset',
       preparedFixturesEuTaxonomyFinancials
     );
   });
@@ -45,25 +46,23 @@ describeIf(
         getKeycloakToken(admin_name, admin_pw).then((token: string) => {
           return uploadCompanyViaApi(token, generateDummyCompanyInformation(testCompanyName)).then((storedCompany) => {
             return assignCompanyOwnershipToDatalandAdmin(token, storedCompany.companyId).then(() => {
-              return uploadFrameworkDataForLegacyFramework(
-                DataTypeEnum.EutaxonomyFinancials,
+              return uploadFrameworkDataForPublicToolboxFramework(
+                EuTaxonomyFinancialsBaseFrameworkDefinition,
                 token,
                 storedCompany.companyId,
                 '2023',
-                euTaxonomyFinancialsFixtureForTest.t,
-                true
+                euTaxonomyFinancialsFixtureForTest.t
               ).then((dataMetaInformation) => {
-                cy.intercept(`**/api/data/${DataTypeEnum.EutaxonomyFinancials}/${dataMetaInformation.dataId}`).as(
-                  'fetchDataForPrefill'
-                );
-                cy.visitAndCheckAppMount(
-                  '/companies/' +
-                    storedCompany.companyId +
-                    '/frameworks/' +
-                    DataTypeEnum.EutaxonomyFinancials +
-                    '/upload?templateDataId=' +
-                    dataMetaInformation.dataId
-                );
+                cy.intercept(`**/api/data/${DataTypeEnum.EutaxonomyFinancials}/${dataMetaInformation.dataId}**`)
+                  .as('fetchDataForPrefill')
+                  .visitAndCheckAppMount(
+                    '/companies/' +
+                      storedCompany.companyId +
+                      '/frameworks/' +
+                      DataTypeEnum.EutaxonomyFinancials +
+                      '/upload?templateDataId=' +
+                      dataMetaInformation.dataId
+                  );
                 cy.wait('@fetchDataForPrefill', { timeout: Cypress.env('medium_timeout_in_ms') as number });
                 cy.get('h1').should('contain', testCompanyName);
                 cy.intercept({
@@ -77,14 +76,11 @@ describeIf(
                     isDatasetApproved();
                     const dataMetaInformationOfReuploadedDataset = postInterception.response
                       ?.body as DataMetaInformation;
-                    return new EuTaxonomyDataForFinancialsControllerApi(new Configuration({ accessToken: token }))
-                      .getCompanyAssociatedEuTaxonomyDataForFinancials(dataMetaInformationOfReuploadedDataset.dataId)
+                    return new EutaxonomyFinancialsDataControllerApi(new Configuration({ accessToken: token }))
+                      .getCompanyAssociatedEutaxonomyFinancialsData(dataMetaInformationOfReuploadedDataset.dataId)
                       .then((axiosResponse) => {
                         const frontendSubmittedEuTaxonomyFinancialsDataset = axiosResponse.data
-                          .data as unknown as EuTaxonomyDataForFinancials;
-
-                        frontendSubmittedEuTaxonomyFinancialsDataset.financialServicesTypes?.sort();
-                        euTaxonomyFinancialsFixtureForTest.t.financialServicesTypes?.sort();
+                          .data as unknown as EutaxonomyFinancialsData;
 
                         compareObjectKeysAndValuesDeep(
                           euTaxonomyFinancialsFixtureForTest.t as unknown as Record<string, object>,

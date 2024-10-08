@@ -59,6 +59,7 @@ import DatasetStatusBadge from '@/components/general/DatasetStatusBadge.vue';
 import { hasUserCompanyRoleForCompany } from '@/utils/CompanyRolesUtils';
 import type Keycloak from 'keycloak-js';
 import { CompanyRole } from '@clients/communitymanager';
+import router from '@/router';
 
 export default defineComponent({
   name: 'MetaInfoPerCompanyAndFramework',
@@ -162,7 +163,7 @@ export default defineComponent({
      * Executes a router push to the upload page of a given company and framework
      */
     async redirectToUploadForm() {
-      await this.$router.push(`/companies/${this.companyId}/frameworks/${this.dataType}/upload`);
+      await router.push(`/companies/${this.companyId}/frameworks/${this.dataType}/upload`);
     },
   },
 });

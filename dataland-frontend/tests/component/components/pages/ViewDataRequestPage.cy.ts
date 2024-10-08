@@ -13,6 +13,7 @@ import { humanizeStringOrNumber } from '@/utils/StringFormatter';
 import { checkEmailFieldsAndCheckBox } from '@ct/testUtils/EmailDetails';
 import { getMountingFunction } from '@ct/testUtils/Mount';
 import { KEYCLOAK_ROLE_ADMIN } from '@/utils/KeycloakUtils';
+import router from '@/router';
 
 describe('Component tests for the view data request page', function (): void {
   const requestId = 'dummyRequestId';
@@ -165,11 +166,14 @@ describe('Component tests for the view data request page', function (): void {
     interceptUserAskForCompanyNameOnMounted();
     interceptUserActiveDatasetOnMounted(QaStatus.Accepted);
     interceptPatchRequest();
-    getMountingFunction({ keycloak: minimalKeycloakMock({ userId: dummyUserId }) })(ViewDataRequestPage, {
-      props: {
-        requestId: requestId,
-      },
-    }).then((mounted) => {
+    getMountingFunction({ keycloak: minimalKeycloakMock({ userId: dummyUserId }), router: router })(
+      ViewDataRequestPage,
+      {
+        props: {
+          requestId: requestId,
+        },
+      }
+    ).then((mounted) => {
       checkBasicPageElementsAsUser(RequestStatus.Resolved);
       cy.get('[data-test="newMessage"]').should('exist').should('not.be.visible');
       cy.get('[data-test="card_withdrawn"]').should('exist').should('not.be.visible');
@@ -231,9 +235,12 @@ describe('Component tests for the view data request page', function (): void {
     interceptUserAskForCompanyNameOnMounted();
     interceptUserActiveDatasetOnMounted(QaStatus.Accepted);
     interceptPatchRequest();
-    getMountingFunction({ keycloak: minimalKeycloakMock({ userId: dummyUserId }) })(ViewDataRequestPage, {
-      props: { requestId: requestId },
-    }).then((mounted) => {
+    getMountingFunction({ keycloak: minimalKeycloakMock({ userId: dummyUserId }), router: router })(
+      ViewDataRequestPage,
+      {
+        props: { requestId: requestId },
+      }
+    ).then((mounted) => {
       checkBasicPageElementsAsUser(RequestStatus.Open);
       cy.get('[data-test="viewDataset"]').should('exist').click();
       cy.wrap(mounted.component)
@@ -251,7 +258,7 @@ describe('Component tests for the view data request page', function (): void {
       interceptUserAskForCompanyNameOnMounted();
       interceptUserActiveDatasetOnMounted(QaStatus.Accepted);
       interceptPatchRequest();
-      getMountingFunction({ keycloak: minimalKeycloakMock({ userId: dummyUserId }) })(ViewDataRequestPage, {
+      getMountingFunction({ keycloak: minimalKeycloakMock({ userId: dummyUserId }), router })(ViewDataRequestPage, {
         props: { requestId: requestId },
       }).then((mounted) => {
         checkBasicPageElementsAsUser(dummyRequest.requestStatus);

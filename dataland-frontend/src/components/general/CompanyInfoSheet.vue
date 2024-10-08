@@ -7,7 +7,7 @@
 
       <CompaniesOnlySearchBar
         v-if="showSearchBar"
-        @select-company="$router.push(`/companies/${$event.companyId}`)"
+        @select-company="router.push(`/companies/${$event.companyId}`)"
         class="w-8 mt-2"
       />
     </template>
@@ -44,6 +44,7 @@ import CompanyInformationBanner from '@/components/pages/CompanyInformation.vue'
 import CompaniesOnlySearchBar from '@/components/resources/companiesOnlySearch/CompaniesOnlySearchBar.vue';
 import { type CompanyInformation, type DataMetaInformation, type DataTypeEnum } from '@clients/backend';
 import { computed, inject, onMounted, onUnmounted, type PropType, ref } from 'vue';
+import router from '@/router';
 
 const injectedMobileView = inject<{ value: boolean }>('useMobileView');
 const useMobileView = computed<boolean | undefined>(() => injectedMobileView?.value);

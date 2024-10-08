@@ -196,6 +196,7 @@ import {
   retrieveAvailableAccessStatus,
   retrieveAvailableFrameworks,
 } from '@/utils/RequestsOverviewPageUtils';
+import router from '@/router';
 
 export default defineComponent({
   name: 'MyDataRequestsOverview',
@@ -281,7 +282,7 @@ export default defineComponent({
      */
     goToResolveDataRequestPage(companyId: string, framework: DataTypeEnum) {
       const url = `/companies/${companyId}/frameworks/${framework}`;
-      return this.$router.push(url);
+      return router.push(url);
     },
     /**
      * Navigates to the bulk data request page
@@ -289,7 +290,7 @@ export default defineComponent({
      */
     goToBulkDataRequestPage() {
       const url = `/bulkdatarequest`;
-      return this.$router.push(url);
+      return router.push(url);
     },
 
     /**
@@ -323,7 +324,7 @@ export default defineComponent({
       const isResolveButtonClick = clickedElement.id === 'resolveButton';
       if (!isResolveButtonClick) {
         const requestIdOfClickedRow = event.data.dataRequestId;
-        return this.$router.push(`/requests/${requestIdOfClickedRow}`);
+        return router.push(`/requests/${requestIdOfClickedRow}`);
       }
     },
     /**

@@ -66,6 +66,7 @@ import Column from 'primevue/column';
 import Tooltip from 'primevue/tooltip';
 import { defineComponent, type PropType } from 'vue';
 import { type BasicCompanyInformation } from '@clients/backend';
+import router from '@/router';
 
 export default defineComponent({
   name: 'FrameworkDataSearchResults',
@@ -109,7 +110,7 @@ export default defineComponent({
      */
     goToCompanyCockpit(event: { data: BasicCompanyInformation }) {
       const companyIdOfClickedRow = event.data.companyId;
-      return this.$router.push(`/companies/${companyIdOfClickedRow}`);
+      return router.push(`/companies/${companyIdOfClickedRow}`);
     },
   },
 });

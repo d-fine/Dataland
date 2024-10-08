@@ -1,0 +1,83 @@
+{
+  "assurance": {
+    "dataSource": null,
+    "provider": "PricewaterhouseCoopers GmbH",
+    "value": "LimitedAssurance"
+  },
+  "creditInstitutionKpis": null,
+  "eligibilityKpis": {
+    "InsuranceOrReinsurance": {
+      "banksAndIssuersInPercent": null,
+      "derivativesInPercent": null,
+      "investmentNonNfrdInPercent": null,
+      "taxonomyEligibleActivityInPercent": {
+        "comment": null,
+        "dataSource": null,
+        "quality": "Audited",
+        "value": 63.6
+      },
+      "taxonomyNonEligibleActivityInPercent": {
+        "comment": null,
+        "dataSource": null,
+        "quality": "Audited",
+        "value": 36.4
+      }
+    },
+    "InvestmentFirm": {
+      "banksAndIssuersInPercent": {
+        "comment": null,
+        "dataSource": null,
+        "quality": "Audited",
+        "value": 26.31
+      },
+      "derivativesInPercent": {
+        "comment": null,
+        "dataSource": null,
+        "quality": "Audited",
+        "value": 0.55
+      },
+      "investmentNonNfrdInPercent": {
+        "comment": null,
+        "dataSource": null,
+        "quality": "Audited",
+        "value": 45.05
+      },
+      "taxonomyEligibleActivityInPercent": {
+        "comment": null,
+        "dataSource": null,
+        "quality": "Audited",
+        "value": 11.83
+      },
+      "taxonomyNonEligibleActivityInPercent": {
+        "comment": null,
+        "dataSource": null,
+        "quality": "Audited",
+        "value": 42.57
+      }
+    }
+  },
+  "euTaxonomyActivityLevelReporting": null,
+  "financialServicesTypes": [
+    "InsuranceOrReinsurance",
+    "InvestmentFirm"
+  ],
+  "fiscalYearDeviation": "NoDeviation",
+  "fiscalYearEnd": "2022-12-31",
+  "insuranceKpis": null,
+  "investmentFirmKpis": null,
+  "nfrdMandatory": "Yes",
+  "numberOfEmployees": 23669,
+  "referencedReports": {
+    "Annual Report": {
+      "fileName": null,
+      "fileReference": "690d820e3c709519d2ca02e739828c0d83e36218757a8be24c42d8ae18509d19",
+      "publicationDate": "2022-12-31"
+    },
+    "Sustainability Report": {
+      "fileName": null,
+      "fileReference": "aadc853bdafb9d5c0cac0b0d625a5cb082b1c929d25c2ddb48431267bc4c9349",
+      "publicationDate": "2022-12-31"
+    }
+  },
+  "scopeOfEntities": "Yes"
+}

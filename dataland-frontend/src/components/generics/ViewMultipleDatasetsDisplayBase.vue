@@ -22,15 +22,6 @@
           </div>
           <div class="col-12">
             <MultiLayerDataTableFrameworkPanel
-              v-if="dataType === DataTypeEnum.EutaxonomyFinancials"
-              :frameworkIdentifier="DataTypeEnum.EutaxonomyFinancials"
-              :companyId="companyId"
-              :display-configuration="configForEuTaxonomyFinancialsMLDT"
-              :singleDataMetaInfoToDisplay="singleDataMetaInfoToDisplay"
-              :inReviewMode="slotProps.inReviewMode"
-              data-test="MultiLayerDataTableFrameworkPanelFinancials"
-            />
-            <MultiLayerDataTableFrameworkPanel
               v-if="dataType === DataTypeEnum.P2p"
               :frameworkIdentifier="DataTypeEnum.P2p"
               :companyId="companyId"
@@ -96,7 +87,6 @@ import {
   type FrontendFrameworkDefinition,
   type FrameworkViewConfiguration,
 } from '@/frameworks/BaseFrameworkDefinition';
-import { configForEuTaxonomyFinancialsMLDT } from '@/components/resources/frameworkDataSearch/euTaxonomy/configForEutaxonomyFinancialsMLDT';
 
 export default defineComponent({
   name: 'ViewMultipleDatasetsDisplayBase',
@@ -109,9 +99,6 @@ export default defineComponent({
     },
     frameworkViewConfiguration(): FrameworkViewConfiguration<unknown> | undefined {
       return this.frameworkConfiguration?.getFrameworkViewConfiguration();
-    },
-    configForEuTaxonomyFinancialsMLDT() {
-      return configForEuTaxonomyFinancialsMLDT;
     },
   },
   components: {

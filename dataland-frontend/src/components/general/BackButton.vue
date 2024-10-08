@@ -9,6 +9,7 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
+import router from '@/router';
 
 export default defineComponent({
   name: 'BackButton',
@@ -27,7 +28,7 @@ export default defineComponent({
      * Performs a go-back operation on the vue router
      */
     goBack(): void {
-      this.$router.go(-1);
+      router.go(-1);
     },
   },
 });

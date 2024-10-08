@@ -1,0 +1,43 @@
+{
+  "general": {
+    "general": {
+      "assurance": {
+        "dataSource": null,
+        "provider": null,
+        "value": "None"
+      },
+      "fiscalYearEnd": {
+        "value": "2022-12-31"
+      },
+      "referencedReports": {
+        "Integrated Report": {
+          "fileName": null,
+          "fileReference": "ba0bc7fe774fe8afbbac5fbe9f105896b25ef0266be496b82cf80df8ff64f2e7",
+          "publicationDate": "2022-12-31"
+        }
+      },
+      "areAllGroupEntitiesCovered": {
+        "value": "Yes"
+      },
+      "fiscalYearDeviation": {
+        "value": "NoDeviation"
+      },
+      "isNfrdMandatory": {
+        "value": "Yes"
+      },
+      "numberOfEmployees": {
+        "value": 71652
+      }
+    }
+  },
+  "creditInstitution": {
+    "turnoverBasedGreenAssetRatioStock": {
+      "substantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentEligible": {
+        "comment": null,
+        "dataSource": null,
+        "quality": "Reported",
+        "value": 29
+      }
+    }
+  }
+}

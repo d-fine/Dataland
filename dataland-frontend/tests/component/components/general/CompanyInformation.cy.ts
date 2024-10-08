@@ -5,6 +5,7 @@ import { type CompanyInformation, type DataMetaInformation, DataTypeEnum, type V
 import { type FixtureData, getPreparedFixture } from '@sharedUtils/Fixtures';
 import { type StoredDataRequest } from '@clients/communitymanager';
 let vsmeFixtureForTest: FixtureData<VsmeData>;
+import router from '@/router';
 
 describe('Component tests for the company info sheet', function (): void {
   let companyInformationForTest: CompanyInformation;
@@ -55,6 +56,7 @@ describe('Component tests for the company info sheet', function (): void {
     mockRequestsOnMounted();
     cy.mountWithPlugins(CompanyInformationComponent, {
       keycloak: minimalKeycloakMock({}),
+      router: router,
     }).then((mounted) => {
       void mounted.wrapper.setProps({
         companyId: dummyCompanyId,

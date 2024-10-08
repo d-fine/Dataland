@@ -154,7 +154,9 @@ import { retrieveAvailableFrameworks } from '@/utils/RequestsOverviewPageUtils';
 import InputText from 'primevue/inputtext';
 import Calendar from 'primevue/calendar';
 import type Keycloak from 'keycloak-js';
-import { type GetInfoOnUnreviewedDatasetsDataTypeEnum, type ReviewQueueResponse } from '@clients/qaservice';
+import { type GetInfoOnUnreviewedDatasetsDataTypesEnum, type ReviewQueueResponse } from '@clients/qaservice';
+import router from '@/router';
+import { type DataTypeEnum } from '@clients/backend';
 
 export default defineComponent({
   name: 'QualityAssurance',
@@ -231,6 +233,15 @@ export default defineComponent({
     convertUnixTimeInMsToDateString,
     humanizeString: humanizeStringOrNumber,
     /**
+     * Tells the typescript compiler to handle the DataTypeEnum input as type GetInfoOnUnreviewedDatasetsDataTypesEnum.
+     * This is acceptable because both enums sahre the same origin (DataTypeEnum in backend).
+     * @param input is a value with type DataTypeEnum
+     * @returns GetInfoOnUnreviewedDatasetsDataTypesEnum
+     */
+    manuallyChangeTypeOfDataTypeEnum(input: DataTypeEnum): GetInfoOnUnreviewedDatasetsDataTypesEnum {
+      return input as GetInfoOnUnreviewedDatasetsDataTypesEnum;
+    },
+    /**
      * Uses the dataland QA API to retrieve the information that is displayed on the quality assurance page
      */
     async getQaDataForCurrentPage() {
@@ -238,15 +249,17 @@ export default defineComponent({
         this.waitingForData = true;
         this.displayDataOfPage = [];
 
-        const selectedFrameworksAsSet = new Set<GetInfoOnUnreviewedDatasetsDataTypeEnum>(
-          this.selectedFrameworks.map((selectableItem) => selectableItem.frameworkDataType)
+        const selectedFrameworksAsSet = new Set<GetInfoOnUnreviewedDatasetsDataTypesEnum>(
+          this.selectedFrameworks.map((selectableItem) =>
+            this.manuallyChangeTypeOfDataTypeEnum(selectableItem.frameworkDataType)
+          )
         );
         const reportingPeriodFilter: Set<string> = new Set<string>(
           this.availableReportingPeriods?.map((date) => date.getFullYear().toString())
         );
         const companyNameFilter = this.searchBarInput === '' ? undefined : this.searchBarInput;
         const response = await this.apiClientProvider.apiClients.qaController.getInfoOnUnreviewedDatasets(
-          selectedFrameworksAsSet as Set<GetInfoOnUnreviewedDatasetsDataTypeEnum>,
+          selectedFrameworksAsSet,
           reportingPeriodFilter,
           companyNameFilter,
           this.datasetsPerPage,
@@ -255,7 +268,7 @@ export default defineComponent({
         this.displayDataOfPage = response.data;
         this.totalRecords = (
           await this.apiClientProvider.apiClients.qaController.getNumberOfUnreviewedDatasets(
-            selectedFrameworksAsSet as Set<GetInfoOnUnreviewedDatasetsDataTypeEnum>,
+            selectedFrameworksAsSet,
             reportingPeriodFilter,
             companyNameFilter
           )
@@ -273,7 +286,7 @@ export default defineComponent({
     goToQaViewPage(event: DataTableRowClickEvent) {
       const qaDataObject = event.data as ReviewQueueResponse;
       const qaUri = `/companies/${qaDataObject.companyId}/frameworks/${qaDataObject.framework}/${qaDataObject.dataId}`;
-      return this.$router.push(qaUri);
+      return router.push(qaUri);
     },
 
     /**

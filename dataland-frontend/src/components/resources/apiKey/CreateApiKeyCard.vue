@@ -37,7 +37,7 @@
           <Calendar
             data-test="expiryDatePicker"
             inputId="icon"
-            v-model="customDateInMilliseconds"
+            v-model="customDate"
             :showIcon="true"
             dateFormat="D, M dd, yy"
             :minDate="minDate"
@@ -148,6 +148,14 @@ export default defineComponent({
   computed: {
     expiryDateFormated(): string {
       return calculateExpiryDateAsDateString(assertDefined(this.expiryTimeDays));
+    },
+    customDate: {
+      get() {
+        return this.customDateInMilliseconds ? new Date(this.customDateInMilliseconds) : null;
+      },
+      set(value: Date | null) {
+        this.customDateInMilliseconds = value ? value.getTime() : null;
+      },
     },
   },
   watch: {

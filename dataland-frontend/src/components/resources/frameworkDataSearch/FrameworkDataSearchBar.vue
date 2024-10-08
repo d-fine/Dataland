@@ -65,6 +65,7 @@ import { useRoute } from 'vue-router';
 import { assertDefined } from '@/utils/TypeScriptUtils';
 import { FRAMEWORKS_WITH_VIEW_PAGE } from '@/utils/Constants';
 import { type BasicCompanyInformation, type DataTypeEnum } from '@clients/backend';
+import router from '@/router';
 
 /**
  * This interface defines the internal state of the autocomplete component
@@ -209,7 +210,7 @@ export default defineComponent({
      */
     handleItemSelect(event: { value: BasicCompanyInformation }) {
       const companyIdOfSelectedItem = event.value.companyId;
-      void this.$router.push(`/companies/${companyIdOfSelectedItem}`);
+      void router.push(`/companies/${companyIdOfSelectedItem}`);
     },
 
     /**

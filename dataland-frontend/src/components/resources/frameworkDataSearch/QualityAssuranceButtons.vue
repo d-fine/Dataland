@@ -25,6 +25,7 @@ import PrimeButton from 'primevue/button';
 import { QaStatus } from '@clients/qaservice';
 import QaDatasetModal from '@/components/general/QaDatasetModal.vue';
 import { type DataMetaInformation } from '@clients/backend';
+import router from '@/router';
 
 export default defineComponent({
   name: 'QualityAssuranceButtons',
@@ -64,7 +65,7 @@ export default defineComponent({
           message,
         },
         onClose: () => {
-          void this.$router.push('/qualityassurance');
+          void router.push('/qualityassurance');
         },
       });
     },

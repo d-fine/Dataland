@@ -14,7 +14,7 @@
         <UploadFormHeader :label="label" :description="description" :is-required="required" />
         <FormKit
           type="checkbox"
-          name="doesNotMatter"
+          name="name"
           v-model="checkboxValue"
           :options="options"
           :outer-class="{

@@ -109,6 +109,8 @@ sonar {
                 "dataland-frontend/src/components/forms/parts/elements/derived/ActivityTree.ts," +
                 "dataland-frontend/tests/e2e/fixtures/frameworks/eutaxonomy-non-financials/" +
                 "EutaxonomyNonFinancialsDataFixtures.ts," +
+                "dataland-frontend/tests/e2e/fixtures/frameworks/eutaxonomy-financials/" +
+                "EutaxonomyFinancialsDataFixtures.ts," +
                 // frontend configs
                 "dataland-frontend/src/components/resources/frameworkDataSearch/euTaxonomy/configMLDT/" +
                 "configForEutaxonomyFinancialsMLDT.ts," +
@@ -121,6 +123,7 @@ sonar {
                 "dataland-frontend/src/frameworks/sfdr/UploadConfig.ts," +
                 "dataland-frontend/src/frameworks/vsme/UploadConfig.ts," +
                 "dataland-frontend/src/frameworks/lksg/UploadConfig.ts," +
+                "dataland-frontend/src/frameworks/eutaxonomy-financials/UploadConfig.ts," +
                 "dataland-frontend/src/frameworks/custom/EuTaxoNonFinancialsStaticUploadConfig.ts," +
                 "dataland-frontend/src/components/resources/frameworkDataSearch/p2p/P2pDataModel.ts," +
                 "dataland-frontend/tests/component/utils/LinkExtraction.cy.ts," +

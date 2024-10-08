@@ -3,11 +3,13 @@ import { minimalKeycloakMock } from '@ct/testUtils/Keycloak';
 import { assertDefined } from '@/utils/TypeScriptUtils';
 import { singleDataRequestPage } from '@sharedUtils/components/SingleDataRequest';
 import { type SingleDataRequest } from '@clients/communitymanager';
+import router from '@/router';
 
 describe('Component tests for the single data request page', function (): void {
   it('check submitting with message', function () {
     cy.mountWithPlugins(SingleDataRequestComponent, {
       keycloak: minimalKeycloakMock({}),
+      router: router,
     }).then(() => {
       fillMandatoryFields();
 
@@ -42,6 +44,7 @@ describe('Component tests for the single data request page', function (): void {
   it('check email validation', function (): void {
     cy.mountWithPlugins(SingleDataRequestComponent, {
       keycloak: minimalKeycloakMock({}),
+      router: router,
     }).then(() => {
       fillMandatoryFields();
 

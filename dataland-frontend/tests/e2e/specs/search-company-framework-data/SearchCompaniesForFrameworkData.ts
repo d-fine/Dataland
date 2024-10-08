@@ -1,5 +1,5 @@
 import { searchBasicCompanyInformationForDataType } from '@e2e//utils/GeneralApiUtils';
-import { DataTypeEnum, type EuTaxonomyDataForFinancials, type BasicCompanyInformation } from '@clients/backend';
+import { DataTypeEnum, type EutaxonomyFinancialsData, type BasicCompanyInformation } from '@clients/backend';
 import { getKeycloakToken } from '@e2e/utils/Auth';
 import { validateCompanyCockpitPage, verifySearchResultTableExists } from '@sharedUtils/ElementChecks';
 import { uploader_name, uploader_pw } from '@e2e/utils/Cypress';
@@ -7,12 +7,12 @@ import { type FixtureData } from '@sharedUtils/Fixtures';
 import { describeIf, type ExecutionEnvironment } from '@e2e/support/TestUtility';
 import { assertDefined } from '@/utils/TypeScriptUtils';
 
-let companiesWithEuTaxonomyDataForFinancials: Array<FixtureData<EuTaxonomyDataForFinancials>>;
+let companiesWithEuTaxonomyFinancialsData: Array<FixtureData<EutaxonomyFinancialsData>>;
 const executionEnvironments: ExecutionEnvironment[] = ['developmentLocal', 'ci', 'developmentCd'];
 
 before(function () {
-  cy.fixture('CompanyInformationWithEuTaxonomyDataForFinancials').then(function (jsonContent) {
-    companiesWithEuTaxonomyDataForFinancials = jsonContent as Array<FixtureData<EuTaxonomyDataForFinancials>>;
+  cy.fixture('CompanyInformationWithEutaxonomyFinancialsData').then(function (jsonContent) {
+    companiesWithEuTaxonomyFinancialsData = jsonContent as Array<FixtureData<EutaxonomyFinancialsData>>;
   });
 });
 
@@ -71,7 +71,7 @@ describeIf(
 
             cy.visitAndCheckAppMount('/companies');
             verifySearchResultTableExists();
-            const testCompanyName = companiesWithEuTaxonomyDataForFinancials[0].companyInformation.companyName;
+            const testCompanyName = companiesWithEuTaxonomyFinancialsData[0].companyInformation.companyName;
             checkPermIdToolTip();
             executeCompanySearchWithStandardSearchBar(testCompanyName);
             clickFirstSearchResult();
@@ -85,7 +85,7 @@ describeIf(
 
         it('Execute a company Search by identifier and assure that the company is found', () => {
           cy.visitAndCheckAppMount('/companies');
-          const testCompanyInformation = companiesWithEuTaxonomyDataForFinancials[0].companyInformation;
+          const testCompanyInformation = companiesWithEuTaxonomyFinancialsData[0].companyInformation;
           const testCompanyIdentifiersObject = testCompanyInformation.identifiers;
           const testCompanyIdentifierTypeWithExistingValues = assertDefined(
             Object.keys(testCompanyIdentifiersObject).find((it) => testCompanyIdentifiersObject[it].length > 0)
@@ -102,9 +102,9 @@ describeIf(
      * Returns the first company from the fake fixture that has at least one alternative name
      * @returns the matching company from the fake fixtures
      */
-    function getCompanyWithAlternativeName(): FixtureData<EuTaxonomyDataForFinancials> {
+    function getCompanyWithAlternativeName(): FixtureData<EutaxonomyFinancialsData> {
       return assertDefined(
-        companiesWithEuTaxonomyDataForFinancials.find((it) => {
+        companiesWithEuTaxonomyFinancialsData.find((it) => {
           return (
             it.companyInformation.companyAlternativeNames != undefined &&
             it.companyInformation.companyAlternativeNames.length > 0

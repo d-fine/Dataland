@@ -1,0 +1,87 @@
+{
+  "assurance": {
+    "dataSource": null,
+    "provider": null,
+    "value": "LimitedAssurance"
+  },
+  "creditInstitutionKpis": {
+    "greenAssetRatioInPercent": null,
+    "interbankLoansInPercent": {
+      "comment": null,
+      "dataSource": null,
+      "quality": "Reported",
+      "value": null
+    },
+    "tradingPortfolioAndInterbankLoansInPercent": {
+      "comment": null,
+      "dataSource": null,
+      "quality": "Reported",
+      "value": null
+    },
+    "tradingPortfolioInPercent": {
+      "comment": null,
+      "dataSource": null,
+      "quality": "Reported",
+      "value": null
+    }
+  },
+  "eligibilityKpis": {
+    "InsuranceOrReinsurance": {
+      "banksAndIssuersInPercent": {
+        "comment": null,
+        "dataSource": null,
+        "quality": "Reported",
+        "value": 32.4
+      },
+      "derivativesInPercent": {
+        "comment": null,
+        "dataSource": null,
+        "quality": "Reported",
+        "value": 1.5
+      },
+      "investmentNonNfrdInPercent": {
+        "comment": null,
+        "dataSource": null,
+        "quality": "Reported",
+        "value": 28
+      },
+      "taxonomyEligibleActivityInPercent": {
+        "comment": null,
+        "dataSource": null,
+        "quality": "Reported",
+        "value": 9.1
+      },
+      "taxonomyNonEligibleActivityInPercent": {
+        "comment": null,
+        "dataSource": null,
+        "quality": "Reported",
+        "value": null
+      }
+    }
+  },
+  "euTaxonomyActivityLevelReporting": null,
+  "financialServicesTypes": [
+    "InsuranceOrReinsurance"
+  ],
+  "fiscalYearDeviation": "NoDeviation",
+  "fiscalYearEnd": null,
+  "insuranceKpis": {
+    "taxonomyEligibleNonLifeInsuranceActivitiesInPercent": {
+      "comment": null,
+      "dataSource": null,
+      "quality": "Reported",
+      "value": null
+    }
+  },
+  "investmentFirmKpis": null,
+  "nfrdMandatory": "Yes",
+  "numberOfEmployees": 39281,
+  "referencedReports": {
+    "DE0008430026_IntegratedReport": {
+      "fileName": "DE0008430026_IntegratedReport",
+      "fileReference": "3ac4c812203f5766a2da6ba12cd959804413b02e4c0da09144079d14f7178368",
+      "publicationDate": null
+    }
+  },
+  "scopeOfEntities": null
+}

@@ -73,6 +73,7 @@ import { type DatasetTableInfo } from '@/components/resources/datasetOverview/Da
 import InputText from 'primevue/inputtext';
 import { convertUnixTimeInMsToDateString } from '@/utils/DataFormatUtils';
 import DatasetStatusBadge from '@/components/general/DatasetStatusBadge.vue';
+import router from '@/router';
 
 export default defineComponent({
   name: 'DatasetOverviewTable',
@@ -145,7 +146,7 @@ export default defineComponent({
      * @param event.data the DatasetTableInfo to be pushed to
      */
     rerouteRowClick(event: { data: DatasetTableInfo }) {
-      void this.$router.push(this.getTableRowLinkTarget(event.data));
+      void router.push(this.getTableRowLinkTarget(event.data));
     },
   },
 });

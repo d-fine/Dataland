@@ -90,6 +90,7 @@ import { hasCompanyAtLeastOneCompanyOwner, hasUserCompanyRoleForCompany } from '
 import ReviewRequestButtons from '@/components/resources/dataRequest/ReviewRequestButtons.vue';
 import { getCompanyDataForFrameworkDataSearchPageWithoutFilters } from '@/utils/SearchCompaniesForFrameworkDataPageDataRequester';
 import { CompanyRole } from '@clients/communitymanager';
+import router from '@/router';
 
 export default defineComponent({
   name: 'CompanyInformation',
@@ -186,7 +187,7 @@ export default defineComponent({
     async visitParentCompany() {
       if (this.parentCompany) {
         const parentCompanyUrl = `/companies/${this.parentCompany.companyId}`;
-        return this.$router.push(parentCompanyUrl);
+        return router.push(parentCompanyUrl);
       }
     },
     /**
