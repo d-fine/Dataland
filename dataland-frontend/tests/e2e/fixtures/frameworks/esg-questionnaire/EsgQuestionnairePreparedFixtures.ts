@@ -35,6 +35,7 @@ function modifyPreparedFixturesPartOne(newFixture: FixtureData<EsgQuestionnaireD
   if (newFixture.t.general?.masterData) {
     newFixture.t.general.masterData.berichtspflichtUndEinwilligungZurVeroeffentlichung = YesNo.Yes;
   }
+  /*
   if (newFixture.t.allgemein?.esgZiele?.existenzVonEsgZielen) {
     newFixture.t.allgemein.esgZiele.existenzVonEsgZielen = YesNo.Yes;
   }
@@ -43,7 +44,7 @@ function modifyPreparedFixturesPartOne(newFixture: FixtureData<EsgQuestionnaireD
   }
   if (newFixture.t.allgemein?.esgBerichte?.nachhaltigkeitsberichte) {
     newFixture.t.allgemein.esgBerichte.nachhaltigkeitsberichte = YesNo.Yes;
-  }
+  } */ // TODO comment out changed fields
   if (newFixture.t.allgemein?.unGlobalConceptPrinzipien?.mechanismenZurUeberwachungDerEinhaltungDerUngcp) {
     newFixture.t.allgemein.unGlobalConceptPrinzipien.mechanismenZurUeberwachungDerEinhaltungDerUngcp = YesNo.Yes;
   }

@@ -15428,20 +15428,6 @@
           }
         }
       },
-      "AuflistungDerSektorenOptions": {
-        "type": "string",
-        "enum": [
-          "ALandwirtschaftForstwirtschaftUndFischerei",
-          "BBergbauUndGewinnungVonSteinenUndErden",
-          "CVerarbeitendesGewerbeHerstellungVonWaren",
-          "DEnergieversorgung",
-          "EWasserversorgungAbwasserAndAbfallentsorgungBeseitigungenVonUmweltverschmutzungen",
-          "FBaugewerbeBau",
-          "GHandelInstandhaltungUndReparaturVonKraftfahrzeugen",
-          "HVerkehrUndLagerhaltung",
-          "LGrundstuecksUndWohnungswesen"
-        ]
-      },
       "AuswirkungenAufAnteilBefristerVertraegeUndFluktuationValues": {
         "type": "object",
         "properties": {
@@ -15552,19 +15538,19 @@
       "EsgQuestionnaireAllgemein": {
         "type": "object",
         "properties": {
-          "esgZiele": {
+          "generelleEsgStrategie": {
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/EsgQuestionnaireAllgemeinEsgZiele"
+                "$ref": "#/components/schemas/EsgQuestionnaireAllgemeinGenerelleEsgStrategie"
               }
             ]
           },
-          "sektoren": {
+          "taxonomieKpisAndBestimmteAktivitaeten": {
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/EsgQuestionnaireAllgemeinSektoren"
+                "$ref": "#/components/schemas/EsgQuestionnaireAllgemeinTaxonomieKpisAndBestimmteAktivitaeten"
               }
             ]
           },
@@ -15726,22 +15712,6 @@
       "EsgQuestionnaireAllgemeinEsgBerichte": {
         "type": "object",
         "properties": {
-          "nachhaltigkeitsberichte": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/YesNo"
-              }
-            ]
-          },
-          "frequenzDerBerichterstattung": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/EsgQuestionnaireAllgemeinEsgberichteFrequenzDerBerichterstattungOptions"
-              }
-            ]
-          },
           "aktuelleBerichte": {
             "type": "array",
             "nullable": true,
@@ -15750,36 +15720,6 @@
             }
           }
         }
-      },
-      "EsgQuestionnaireAllgemeinEsgZiele": {
-        "type": "object",
-        "properties": {
-          "existenzVonEsgZielen": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/YesNo"
-              }
-            ]
-          },
-          "beschreibungDerEsgZiele": {
-            "type": "string",
-            "nullable": true
-          },
-          "investitionenInZielerreichung": {
-            "type": "string",
-            "nullable": true
-          }
-        }
-      },
-      "EsgQuestionnaireAllgemeinEsgberichteFrequenzDerBerichterstattungOptions": {
-        "type": "string",
-        "enum": [
-          "Jaehrlich",
-          "Halbjaehrlich",
-          "Vierteljaehrlich",
-          "Monatlich"
-        ]
       },
       "EsgQuestionnaireAllgemeinFuehrungsstandards": {
         "type": "object",
@@ -15827,6 +15767,66 @@
           "JaGeschaeftsleitung",
           "JaAufsichtsratUndGeschaeftsleitung"
         ]
+      },
+      "EsgQuestionnaireAllgemeinGenerelleEsgStrategie": {
+        "type": "object",
+        "properties": {
+          "nachhaltigkeitsstrategieVorhanden": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
+          },
+          "dokumenteZurNachhaltigkeitsstrategie": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/BaseDataPointString"
+            }
+          },
+          "massnahmenBezueglich15GradCelsiusZielVorhanden": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
+          },
+          "beschreibungMassnahmenBezueglich15GradCelsiusZiel": {
+            "type": "string",
+            "nullable": true
+          },
+          "zugewieseneBudgetsBis2030": {
+            "type": "number",
+            "nullable": true
+          },
+          "zugewieseneBudgetsAb2031": {
+            "type": "number",
+            "nullable": true
+          },
+          "erwarteterFinanzierungsbedarfBis2030": {
+            "type": "number",
+            "nullable": true
+          },
+          "erwarteterFinanzierungsbedarfAb2031": {
+            "type": "number",
+            "nullable": true
+          },
+          "geplanteVollzeitaequivalenteBis2023": {
+            "type": "number",
+            "nullable": true
+          },
+          "geplanteVollzeitaequivalenteAb2031": {
+            "type": "number",
+            "nullable": true
+          },
+          "chancenOderHindernisse": {
+            "type": "string",
+            "nullable": true
+          }
+        }
       },
       "EsgQuestionnaireAllgemeinOecdLeitsaetze": {
         "type": "object",
@@ -15992,26 +15992,6 @@
           }
         }
       },
-      "EsgQuestionnaireAllgemeinSektoren": {
-        "type": "object",
-        "properties": {
-          "sektorenMitHohenKlimaauswirkungen": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/YesNo"
-              }
-            ]
-          },
-          "auflistungDerSektoren": {
-            "type": "array",
-            "nullable": true,
-            "items": {
-              "$ref": "#/components/schemas/AuflistungDerSektorenOptions"
-            }
-          }
-        }
-      },
       "EsgQuestionnaireAllgemeinSonstige": {
         "type": "object",
         "properties": {
@@ -16029,6 +16009,118 @@
           },
           "ausschlusslisten": {
             "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "EsgQuestionnaireAllgemeinTaxonomieKpisAndBestimmteAktivitaeten": {
+        "type": "object",
+        "properties": {
+          "wirtschaftszweige": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "type": "string"
+            }
+          },
+          "gesamtumsatz": {
+            "type": "number",
+            "nullable": true
+          },
+          "taxonomiefaehigerUmsatz": {
+            "type": "number",
+            "nullable": true
+          },
+          "taxonomiekonformerUmsatz": {
+            "type": "number",
+            "nullable": true
+          },
+          "gesamtCapex": {
+            "type": "number",
+            "nullable": true
+          },
+          "taxonomiefaehigeCapex": {
+            "type": "number",
+            "nullable": true
+          },
+          "taxonomiekonformeCapex": {
+            "type": "number",
+            "nullable": true
+          },
+          "taxonomiebezogeneCapexPlanungVorhanden": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
+          },
+          "geplanteTaxonomiefaehigeCapexIn5Jahren": {
+            "type": "number",
+            "nullable": true
+          },
+          "geplanteTaxonomiekonformeCapexIn5Jahren": {
+            "type": "number",
+            "nullable": true
+          },
+          "aktivitaetImSektorFossileBrennstoffe": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
+          },
+          "aktuellerProzentualerUmsatzanteilImSektorFossileBrennstoffe": {
+            "type": "number",
+            "nullable": true
+          },
+          "geplanterProzentualerUmsatzanteilImSektorFossileBrennstoffeIn2030": {
+            "type": "number",
+            "nullable": true
+          },
+          "geplanterProzentualerUmsatzanteilImSektorFossileBrennstoffeIn2040": {
+            "type": "number",
+            "nullable": true
+          },
+          "aktivitaetImSektorHerstellungVonChemikalien": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
+          },
+          "aktuellerProzentualerUmsatzanteilImSektorHerstellungVonChemikalien": {
+            "type": "number",
+            "nullable": true
+          },
+          "geplanterProzentualerUmsatzanteilImSektorHerstellungVonChemikalienIn2030": {
+            "type": "number",
+            "nullable": true
+          },
+          "geplanterProzentualerUmsatzanteilImSektorHerstellungVonChemikalienIn2040": {
+            "type": "number",
+            "nullable": true
+          },
+          "aktivitaetImSektorUmstritteneWaffen": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
+          },
+          "aktuellerProzentualerUmsatzanteilImSektorUmstritteneWaffen": {
+            "type": "number",
+            "nullable": true
+          },
+          "geplanterProzentualerUmsatzanteilImSektorUmstritteneWaffenIn2030": {
+            "type": "number",
+            "nullable": true
+          },
+          "geplanterProzentualerUmsatzanteilImSektorUmstritteneWaffenIn2040": {
+            "type": "number",
             "nullable": true
           }
         }
@@ -17599,14 +17691,6 @@
         ],
         "type": "object",
         "properties": {
-          "lei": {
-            "type": "string",
-            "nullable": true
-          },
-          "sector": {
-            "type": "string",
-            "nullable": true
-          },
           "companyName": {
             "type": "string"
           },
@@ -17618,6 +17702,14 @@
           },
           "headquarters": {
             "type": "string"
+          },
+          "sector": {
+            "type": "string",
+            "nullable": true
+          },
+          "lei": {
+            "type": "string",
+            "nullable": true
           }
         }
       },

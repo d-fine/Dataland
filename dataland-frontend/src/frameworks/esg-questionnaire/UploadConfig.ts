@@ -45,14 +45,13 @@ export const esgQuestionnaireDataModel = [
     showIf: (): boolean => true,
     subcategories: [
       {
-        name: 'esgZiele',
-        label: 'ESG Ziele',
+        name: 'generelleEsgStrategie',
+        label: 'Generelle ESG-Strategie',
         fields: [
           {
-            name: 'existenzVonEsgZielen',
-            label: 'Existenz von ESG-Zielen',
-            description:
-              'Hat das Unternehmen spezifische ESG-Ziele / Engagements? Werden bspw. spezifische Ziele / Maßnahmen ergriffen, um das 1,5 Grad Ziel zu erreichen?',
+            name: 'nachhaltigkeitsstrategieVorhanden',
+            label: 'Nachhaltigkeitsstrategie vorhanden',
+            description: 'Verfügt das Unternehmen über eine Nachhaltigkeitsstrategie?',
 
             component: 'YesNoFormField',
             required: false,
@@ -60,37 +59,206 @@ export const esgQuestionnaireDataModel = [
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
           },
           {
-            name: 'beschreibungDerEsgZiele',
-            label: 'Beschreibung der ESG-Ziele',
-            description: 'Bitte geben Sie eine genaue Beschreibung der ESG-Ziele.',
+            name: 'dokumenteZurNachhaltigkeitsstrategie',
+            label: 'Dokumente zur Nachhaltigkeitsstrategie',
+            description:
+              'Bitte hängen Sie Ihre Nachhaltigkeitsstrategie an. Nachhaltigkeit in diesem Sinne umfasst die Themen Umwelt (E), Soziales (S) und Unternehmensführung (G). Sie können mehrere Dokumente anhängen und pro Dokument eine Beschreibung angeben.',
 
-            component: 'FreeTextFormField',
+            component: 'ListOfBaseDataPointsFormField',
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.allgemein?.esgZiele?.existenzVonEsgZielen == 'Yes',
+              dataset.allgemein?.generelleEsgStrategie?.nachhaltigkeitsstrategieVorhanden == 'Yes',
           },
           {
-            name: 'investitionenInZielerreichung',
-            label: 'Investitionen in Zielerreichung',
-            description:
-              'Bitte geben Sie an wieviele Budgets/Vollzeitäquivalente für das Erreichen der ESG-Ziele zugewiesen wurden.',
+            name: 'massnahmenBezueglich15GradCelsiusZielVorhanden',
+            label: 'Maßnahmen bezüglich 1,5 Grad Celsius Ziel vorhanden',
+            description: 'Werden spezielle Ziele / Maßnahmen ergriffen, um das 1,5 °C Ziel zu erreichen?',
+
+            component: 'YesNoFormField',
+            required: false,
+            showIf: (dataset: EsgQuestionnaireData): boolean =>
+              dataset.allgemein?.generelleEsgStrategie?.nachhaltigkeitsstrategieVorhanden == 'Yes',
+          },
+          {
+            name: 'beschreibungMassnahmenBezueglich15GradCelsiusZiel',
+            label: 'Beschreibung Maßnahmen bezüglich 1,5 Grad Celsius Ziel',
+            description: 'Beschreiben Sie spezielle Ziele / Maßnahmen, um das 1,5°C Ziel zu erreichen.',
 
             component: 'FreeTextFormField',
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.allgemein?.esgZiele?.existenzVonEsgZielen == 'Yes',
+              dataset.allgemein?.generelleEsgStrategie?.massnahmenBezueglich15GradCelsiusZielVorhanden == 'Yes',
+          },
+          {
+            name: 'zugewieseneBudgetsBis2030',
+            label: 'Zugewiesene Budgets bis 2030',
+            description:
+              'Bezüglich der angegebenen Maßnahmen: Bitte die zugewiesenen Budgets bis zum Jahr 2030 angeben.',
+
+            unit: 'Euro',
+            component: 'NumberFormField',
+            required: false,
+            showIf: (dataset: EsgQuestionnaireData): boolean =>
+              dataset.allgemein?.generelleEsgStrategie?.massnahmenBezueglich15GradCelsiusZielVorhanden == 'Yes',
+          },
+          {
+            name: 'zugewieseneBudgetsAb2031',
+            label: 'Zugewiesene Budgets ab 2031',
+            description:
+              'Bezüglich der angegebenen Maßnahmen: Bitte die zugewiesenen Budgets ab dem Jahr 2031 angeben.',
+
+            unit: 'Euro',
+            component: 'NumberFormField',
+            required: false,
+            showIf: (dataset: EsgQuestionnaireData): boolean =>
+              dataset.allgemein?.generelleEsgStrategie?.massnahmenBezueglich15GradCelsiusZielVorhanden == 'Yes',
+          },
+          {
+            name: 'erwarteterFinanzierungsbedarfBis2030',
+            label: 'Erwarteter Finanzierungsbedarf bis 2030',
+            description:
+              'Bezüglich der angegebenen Maßnahmen: Bitte den erwarteten Finanzierungsbedarf bis zum Jahr 2030 angeben.',
+
+            unit: 'Euro',
+            component: 'NumberFormField',
+            required: false,
+            showIf: (dataset: EsgQuestionnaireData): boolean =>
+              dataset.allgemein?.generelleEsgStrategie?.massnahmenBezueglich15GradCelsiusZielVorhanden == 'Yes',
+          },
+          {
+            name: 'erwarteterFinanzierungsbedarfAb2031',
+            label: 'Erwarteter Finanzierungsbedarf ab 2031',
+            description:
+              'Bezüglich der angegebenen Maßnahmen: Bitte den erwarteten Finanzierungsbedarf ab dem Jahr 2031 angeben.',
+
+            unit: 'Euro',
+            component: 'NumberFormField',
+            required: false,
+            showIf: (dataset: EsgQuestionnaireData): boolean =>
+              dataset.allgemein?.generelleEsgStrategie?.massnahmenBezueglich15GradCelsiusZielVorhanden == 'Yes',
+          },
+          {
+            name: 'geplanteVollzeitaequivalenteBis2023',
+            label: 'Geplante Vollzeitäquivalente bis 2023',
+            description:
+              'Bezüglich der angegebenen Maßnahmen: Bitte die geplanten Vollzeitäquivalente bis zum Jahr 2030 angeben.',
+
+            unit: 'FTEs',
+            component: 'NumberFormField',
+            required: false,
+            showIf: (dataset: EsgQuestionnaireData): boolean =>
+              dataset.allgemein?.generelleEsgStrategie?.massnahmenBezueglich15GradCelsiusZielVorhanden == 'Yes',
+          },
+          {
+            name: 'geplanteVollzeitaequivalenteAb2031',
+            label: 'Geplante Vollzeitäquivalente ab 2031',
+            description:
+              'Bezüglich der angegebenen Maßnahmen: Bitte die geplanten Vollzeitäquivalente ab dem Jahr 2031 angeben.',
+
+            unit: 'FTEs',
+            component: 'NumberFormField',
+            required: false,
+            showIf: (dataset: EsgQuestionnaireData): boolean =>
+              dataset.allgemein?.generelleEsgStrategie?.massnahmenBezueglich15GradCelsiusZielVorhanden == 'Yes',
+          },
+          {
+            name: 'chancenOderHindernisse',
+            label: 'Chancen oder Hindernisse',
+            description:
+              'Welche grundsätzlichen Chancen oder Hindernisse bestehen für das Unternehmen bei der Berücksichtigung von ESG-Belangen?',
+
+            component: 'FreeTextFormField',
+            required: false,
+            showIf: (dataset: EsgQuestionnaireData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
           },
         ],
       },
       {
-        name: 'sektoren',
-        label: 'Sektoren',
+        name: 'taxonomieKpisAndBestimmteAktivitaeten',
+        label: 'Taxonomie KPIs & bestimmte Aktivitäten',
         fields: [
           {
-            name: 'sektorenMitHohenKlimaauswirkungen',
-            label: 'Sektoren mit hohen Klimaauswirkungen',
+            name: 'wirtschaftszweige',
+            label: 'Wirtschaftszweige',
             description:
-              'Kann das Unternehmen einem oder mehreren Sektoren mit hohen Klimaauswirkungen zugeordnet werden?',
+              'In welchen Wirtschaftszweigen ist das Unternehmen primär aktiv? Bitte Angabe des primären NACE-Codes (4-stellig).',
+
+            component: 'NaceCodeFormField',
+            required: false,
+            showIf: (dataset: EsgQuestionnaireData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+          },
+          {
+            name: 'gesamtumsatz',
+            label: 'Gesamtumsatz',
+            description: 'Geben Sie den Gesamtumsatz des Unternehmens in € an.',
+
+            unit: 'Euro',
+            component: 'NumberFormField',
+            required: false,
+            showIf: (dataset: EsgQuestionnaireData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+          },
+          {
+            name: 'taxonomiefaehigerUmsatz',
+            label: 'Taxonomiefähiger Umsatz',
+            description: 'Geben Sie den taxonomiefähigen Teilbetrag des Gesamtumsatzes in € an.',
+
+            unit: 'Euro',
+            component: 'NumberFormField',
+            required: false,
+            showIf: (dataset: EsgQuestionnaireData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+          },
+          {
+            name: 'taxonomiekonformerUmsatz',
+            label: 'Taxonomiekonformer Umsatz',
+            description: 'Geben Sie den taxonomiekonformen Teilbetrag des taxonomiefähigen Betrags in € an.',
+
+            unit: 'Euro',
+            component: 'NumberFormField',
+            required: false,
+            showIf: (dataset: EsgQuestionnaireData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+          },
+          {
+            name: 'gesamtCapex',
+            label: 'Gesamt-CapEx',
+            description: 'Geben Sie die CapEx des Unternehmens in € an.',
+
+            unit: 'Euro',
+            component: 'NumberFormField',
+            required: false,
+            showIf: (dataset: EsgQuestionnaireData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+          },
+          {
+            name: 'taxonomiefaehigeCapex',
+            label: 'Taxonomiefähige CapEx',
+            description: 'Geben Sie den taxonomiefähigen Teilbetrag der Gesamt-CapEx in € an.',
+
+            unit: 'Euro',
+            component: 'NumberFormField',
+            required: false,
+            showIf: (dataset: EsgQuestionnaireData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+          },
+          {
+            name: 'taxonomiekonformeCapex',
+            label: 'Taxonomiekonforme CapEx',
+            description: 'Geben Sie den taxonomiekonformen Teilbetrag der taxonomiefähigen CapEx in € an.',
+
+            unit: 'Euro',
+            component: 'NumberFormField',
+            required: false,
+            showIf: (dataset: EsgQuestionnaireData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+          },
+          {
+            name: 'taxonomiebezogeneCapexPlanungVorhanden',
+            label: 'Taxonomiebezogene CapEx-Planung vorhanden',
+            description: 'Hat das Unternehmen eine taxonomiebezogene CapEx-Planung? ',
 
             component: 'YesNoFormField',
             required: false,
@@ -98,53 +266,180 @@ export const esgQuestionnaireDataModel = [
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
           },
           {
-            name: 'auflistungDerSektoren',
-            label: 'Auflistung der Sektoren',
+            name: 'geplanteTaxonomiefaehigeCapexIn5Jahren',
+            label: 'Geplante taxonomiefähige CapEx in 5 Jahren',
             description:
-              'Bitte geben Sie an, zu welchen Sektoren (mit hohen Klimaauswirkungen) das Unternehmen zugeordnet werden kann.',
-            options: [
-              {
-                label: 'A - Landwirtschaft, Forstwirtschaft und Fischerei',
-                value: 'ALandwirtschaftForstwirtschaftUndFischerei',
-              },
-              {
-                label: 'B - Bergbau und Gewinnung von Steinen und Erden',
-                value: 'BBergbauUndGewinnungVonSteinenUndErden',
-              },
-              {
-                label: 'C - Verarbeitendes Gewerbe / Herstellung von Waren',
-                value: 'CVerarbeitendesGewerbeHerstellungVonWaren',
-              },
-              {
-                label: 'D - Energieversorgung',
-                value: 'DEnergieversorgung',
-              },
-              {
-                label: 'E - Wasserversorgung; Abwasser & Abfallentsorgung; Beseitigungen von Umweltverschmutzungen',
-                value: 'EWasserversorgungAbwasserAndAbfallentsorgungBeseitigungenVonUmweltverschmutzungen',
-              },
-              {
-                label: 'F - Baugewerbe / Bau',
-                value: 'FBaugewerbeBau',
-              },
-              {
-                label: 'G - Handel; Instandhaltung und Reparatur von Kraftfahrzeugen',
-                value: 'GHandelInstandhaltungUndReparaturVonKraftfahrzeugen',
-              },
-              {
-                label: 'H - Verkehr und Lagerhaltung',
-                value: 'HVerkehrUndLagerhaltung',
-              },
-              {
-                label: 'L - Grundstücks- und Wohnungswesen',
-                value: 'LGrundstuecksUndWohnungswesen',
-              },
-            ],
+              'Welcher taxonomiefähige prozentuale Anteil an der Gesamt-CapEx wird im Rahmen der CapEx-Planung voraussichtlich in 5 Jahren erreicht werden? ',
 
-            component: 'MultiSelectFormField',
+            unit: '%',
+            component: 'NumberFormField',
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.allgemein?.sektoren?.sektorenMitHohenKlimaauswirkungen == 'Yes',
+              dataset.allgemein?.taxonomieKpisAndBestimmteAktivitaeten?.taxonomiebezogeneCapexPlanungVorhanden == 'Yes',
+            validation: 'between:0,100',
+          },
+          {
+            name: 'geplanteTaxonomiekonformeCapexIn5Jahren',
+            label: 'Geplante taxonomiekonforme CapEx in 5 Jahren',
+            description:
+              'Welcher taxonomiekonforme prozentuale Anteil an der Gesamt-CapEx wird im Rahmen der CapEx-Planung voraussichtlich in 5 Jahren erreicht werden? ',
+
+            unit: '%',
+            component: 'NumberFormField',
+            required: false,
+            showIf: (dataset: EsgQuestionnaireData): boolean =>
+              dataset.allgemein?.taxonomieKpisAndBestimmteAktivitaeten?.taxonomiebezogeneCapexPlanungVorhanden == 'Yes',
+            validation: 'between:0,100',
+          },
+          {
+            name: 'aktivitaetImSektorFossileBrennstoffe',
+            label: 'Aktivität im Sektor Fossile Brennstoffe',
+            description: 'Ist das Unternehmen im Sektor "Fossile Brennstoffe (Kohle, Gas, Öl)" aktiv?',
+
+            component: 'YesNoFormField',
+            required: false,
+            showIf: (dataset: EsgQuestionnaireData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+          },
+          {
+            name: 'aktuellerProzentualerUmsatzanteilImSektorFossileBrennstoffe',
+            label: 'Aktueller prozentualer Umsatzanteil im Sektor "Fossile Brennstoffe"',
+            description:
+              'Welcher prozentuale Anteil am Gesamtumsatz ist auf den Sektor "Fossile Brennstoffe (Kohle, Gas, Öl)" zurückzuführen?',
+
+            unit: '%',
+            component: 'NumberFormField',
+            required: false,
+            showIf: (dataset: EsgQuestionnaireData): boolean =>
+              dataset.allgemein?.taxonomieKpisAndBestimmteAktivitaeten?.aktivitaetImSektorFossileBrennstoffe == 'Yes',
+            validation: 'between:0,100',
+          },
+          {
+            name: 'geplanterProzentualerUmsatzanteilImSektorFossileBrennstoffeIn2030',
+            label: 'Geplanter prozentualer Umsatzanteil im Sektor "Fossile Brennstoffe" in 2030',
+            description:
+              'Welcher prozentuale Anteil am Gesamtumsatz wird im Jahr 2030 voraussichtlich auf den Sektor "Fossile Brennstoffe (Kohle, Gas, Öl)" zurückzuführen sein?',
+
+            unit: '%',
+            component: 'NumberFormField',
+            required: false,
+            showIf: (dataset: EsgQuestionnaireData): boolean =>
+              dataset.allgemein?.taxonomieKpisAndBestimmteAktivitaeten?.aktivitaetImSektorFossileBrennstoffe == 'Yes',
+            validation: 'between:0,100',
+          },
+          {
+            name: 'geplanterProzentualerUmsatzanteilImSektorFossileBrennstoffeIn2040',
+            label: 'Geplanter prozentualer Umsatzanteil im Sektor "Fossile Brennstoffe" in 2040',
+            description:
+              'Welcher prozentuale Anteil am Gesamtumsatz wird im Jahr 2040 voraussichtlich auf den Sektor "Fossile Brennstoffe (Kohle, Gas, Öl)" zurückzuführen sein?',
+
+            unit: '%',
+            component: 'NumberFormField',
+            required: false,
+            showIf: (dataset: EsgQuestionnaireData): boolean =>
+              dataset.allgemein?.taxonomieKpisAndBestimmteAktivitaeten?.aktivitaetImSektorFossileBrennstoffe == 'Yes',
+            validation: 'between:0,100',
+          },
+          {
+            name: 'aktivitaetImSektorHerstellungVonChemikalien',
+            label: 'Aktivität im Sektor "Herstellung von Chemikalien"',
+            description: 'Ist das Unternehmen im Sektor "Herstellung von Chemikalien" aktiv?',
+
+            component: 'YesNoFormField',
+            required: false,
+            showIf: (dataset: EsgQuestionnaireData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+          },
+          {
+            name: 'aktuellerProzentualerUmsatzanteilImSektorHerstellungVonChemikalien',
+            label: 'Aktueller prozentualer Umsatzanteil im Sektor "Herstellung von Chemikalien"',
+            description:
+              'Welcher prozentuale Anteil am Gesamtumsatz ist auf den Sektor "Herstellung von Chemikalien" zurückzuführen?',
+
+            unit: '%',
+            component: 'NumberFormField',
+            required: false,
+            showIf: (dataset: EsgQuestionnaireData): boolean =>
+              dataset.allgemein?.taxonomieKpisAndBestimmteAktivitaeten?.aktivitaetImSektorHerstellungVonChemikalien ==
+              'Yes',
+            validation: 'between:0,100',
+          },
+          {
+            name: 'geplanterProzentualerUmsatzanteilImSektorHerstellungVonChemikalienIn2030',
+            label: 'Geplanter prozentualer Umsatzanteil im Sektor "Herstellung von Chemikalien" in 2030',
+            description:
+              'Welcher prozentuale Anteil am Gesamtumsatz wird im Jahr 2030 voraussichtlich auf den Sektor "Herstellung von Chemikalien" zurückzuführen sein?',
+
+            unit: '%',
+            component: 'NumberFormField',
+            required: false,
+            showIf: (dataset: EsgQuestionnaireData): boolean =>
+              dataset.allgemein?.taxonomieKpisAndBestimmteAktivitaeten?.aktivitaetImSektorHerstellungVonChemikalien ==
+              'Yes',
+            validation: 'between:0,100',
+          },
+          {
+            name: 'geplanterProzentualerUmsatzanteilImSektorHerstellungVonChemikalienIn2040',
+            label: 'Geplanter prozentualer Umsatzanteil im Sektor "Herstellung von Chemikalien" in 2040',
+            description:
+              'Welcher prozentuale Anteil am Gesamtumsatz wird im Jahr 2040 voraussichtlich auf den Sektor "Herstellung von Chemikalien" zurückzuführen sein?',
+
+            unit: '%',
+            component: 'NumberFormField',
+            required: false,
+            showIf: (dataset: EsgQuestionnaireData): boolean =>
+              dataset.allgemein?.taxonomieKpisAndBestimmteAktivitaeten?.aktivitaetImSektorHerstellungVonChemikalien ==
+              'Yes',
+            validation: 'between:0,100',
+          },
+          {
+            name: 'aktivitaetImSektorUmstritteneWaffen',
+            label: 'Aktivität im Sektor "Umstrittene Waffen"',
+            description: 'Ist das Unternehmen im Sektor "Umstrittene Waffen" aktiv?',
+
+            component: 'YesNoFormField',
+            required: false,
+            showIf: (dataset: EsgQuestionnaireData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+          },
+          {
+            name: 'aktuellerProzentualerUmsatzanteilImSektorUmstritteneWaffen',
+            label: 'Aktueller prozentualer Umsatzanteil im Sektor "Umstrittene Waffen"',
+            description:
+              'Welcher prozentuale Anteil am Gesamtumsatz ist auf den Sektor "Umstrittene Waffen" zurückzuführen?',
+
+            unit: '%',
+            component: 'NumberFormField',
+            required: false,
+            showIf: (dataset: EsgQuestionnaireData): boolean =>
+              dataset.allgemein?.taxonomieKpisAndBestimmteAktivitaeten?.aktivitaetImSektorUmstritteneWaffen == 'Yes',
+            validation: 'between:0,100',
+          },
+          {
+            name: 'geplanterProzentualerUmsatzanteilImSektorUmstritteneWaffenIn2030',
+            label: 'Geplanter prozentualer Umsatzanteil im Sektor "Umstrittene Waffen" in 2030',
+            description:
+              'Welcher prozentuale Anteil am Gesamtumsatz wird im Jahr 2030 voraussichtlich auf den Sektor "Umstrittene Waffen" zurückzuführen sein?',
+
+            unit: '%',
+            component: 'NumberFormField',
+            required: false,
+            showIf: (dataset: EsgQuestionnaireData): boolean =>
+              dataset.allgemein?.taxonomieKpisAndBestimmteAktivitaeten?.aktivitaetImSektorUmstritteneWaffen == 'Yes',
+            validation: 'between:0,100',
+          },
+          {
+            name: 'geplanterProzentualerUmsatzanteilImSektorUmstritteneWaffenIn2040',
+            label: 'Geplanter prozentualer Umsatzanteil im Sektor "Umstrittene Waffen" in 2040',
+            description:
+              'Welcher prozentuale Anteil am Gesamtumsatz wird im Jahr 2040 voraussichtlich auf den Sektor "Umstrittene Waffen" zurückzuführen sein?',
+
+            unit: '%',
+            component: 'NumberFormField',
+            required: false,
+            showIf: (dataset: EsgQuestionnaireData): boolean =>
+              dataset.allgemein?.taxonomieKpisAndBestimmteAktivitaeten?.aktivitaetImSektorUmstritteneWaffen == 'Yes',
+            validation: 'between:0,100',
           },
         ],
       },
@@ -153,44 +448,6 @@ export const esgQuestionnaireDataModel = [
         label: 'ESG Berichte',
         fields: [
           {
-            name: 'nachhaltigkeitsberichte',
-            label: 'Nachhaltigkeitsberichte',
-            description: 'Erstellt das Unternehmen Nachhaltigkeits- oder ESG-Berichte?',
-
-            component: 'YesNoFormField',
-            required: false,
-            showIf: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
-          },
-          {
-            name: 'frequenzDerBerichterstattung',
-            label: 'Frequenz der Berichterstattung',
-            description: 'In welchen Zeitabständen werden die Berichte erstellt?',
-            options: [
-              {
-                label: 'jährlich',
-                value: 'Jaehrlich',
-              },
-              {
-                label: 'halbjährlich',
-                value: 'Halbjaehrlich',
-              },
-              {
-                label: 'vierteljährlich',
-                value: 'Vierteljaehrlich',
-              },
-              {
-                label: 'monatlich',
-                value: 'Monatlich',
-              },
-            ],
-
-            component: 'SingleSelectFormField',
-            required: false,
-            showIf: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.allgemein?.esgBerichte?.nachhaltigkeitsberichte == 'Yes',
-          },
-          {
             name: 'aktuelleBerichte',
             label: 'Aktuelle Berichte',
             description: 'Bitte teilen Sie die letzten Berichte mit uns (vorzugsweise die letzten drei).',
@@ -198,7 +455,7 @@ export const esgQuestionnaireDataModel = [
             component: 'ListOfBaseDataPointsFormField',
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.allgemein?.esgBerichte?.nachhaltigkeitsberichte == 'Yes',
+              dataset.allgemein?.generelleEsgStrategie?.chancenOderHindernisse == 'Yes',
           },
         ],
       },

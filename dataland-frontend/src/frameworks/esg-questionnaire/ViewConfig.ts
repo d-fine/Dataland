@@ -12,6 +12,8 @@ import { formatEsgQuestionnaireYearlyDecimalTimeseriesDataForTable } from '@/com
 import { activityApiNameToHumanizedName } from '@/components/resources/frameworkDataSearch/EuTaxonomyActivityNames';
 import { wrapDisplayValueWithDatapointInformation } from '@/components/resources/dataTable/conversion/DataPoints';
 import { formatListOfBaseDataPoint } from '@/components/resources/dataTable/conversion/ListOfBaseDataPointGetterFactory';
+import { formatPercentageForDatatable } from '@/components/resources/dataTable/conversion/PercentageValueGetterFactory';
+import { formatNaceCodesForDatatable } from '@/components/resources/dataTable/conversion/NaceCodeValueGetterFactory';
 export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData> = [
   {
     type: 'section',
@@ -56,83 +58,413 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
     children: [
       {
         type: 'section',
-        label: 'ESG Ziele',
+        label: 'Generelle ESG-Strategie',
         expandOnPageLoad: true,
         shouldDisplay: (): boolean => true,
         children: [
           {
             type: 'cell',
-            label: 'Existenz von ESG-Zielen',
-            explanation:
-              'Hat das Unternehmen spezifische ESG-Ziele / Engagements? Werden bspw. spezifische Ziele / Maßnahmen ergriffen, um das 1,5 Grad Ziel zu erreichen?',
+            label: 'Nachhaltigkeitsstrategie vorhanden',
+            explanation: 'Verfügt das Unternehmen über eine Nachhaltigkeitsstrategie?',
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
-              formatYesNoValueForDatatable(dataset.allgemein?.esgZiele?.existenzVonEsgZielen),
+              formatYesNoValueForDatatable(dataset.allgemein?.generelleEsgStrategie?.nachhaltigkeitsstrategieVorhanden),
           },
           {
             type: 'cell',
-            label: 'Beschreibung der ESG-Ziele',
-            explanation: 'Beschreibung der ESG-Ziele',
+            label: 'Dokumente zur Nachhaltigkeitsstrategie',
+            explanation:
+              'Bitte hängen Sie Ihre Nachhaltigkeitsstrategie an. Nachhaltigkeit in diesem Sinne umfasst die Themen Umwelt (E), Soziales (S) und Unternehmensführung (G). Sie können mehrere Dokumente anhängen und pro Dokument eine Beschreibung angeben.',
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.allgemein?.esgZiele?.existenzVonEsgZielen == 'Yes',
-            valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
-              formatFreeTextForDatatable(dataset.allgemein?.esgZiele?.beschreibungDerEsgZiele),
+              dataset.allgemein?.generelleEsgStrategie?.nachhaltigkeitsstrategieVorhanden == 'Yes',
+            valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes => {
+              return formatListOfBaseDataPoint(
+                'Dokumente zur Nachhaltigkeitsstrategie',
+                dataset.allgemein?.generelleEsgStrategie?.dokumenteZurNachhaltigkeitsstrategie,
+                'Description',
+                'Document'
+              );
+            },
           },
           {
             type: 'cell',
-            label: 'Investitionen in Zielerreichung',
-            explanation: 'Budgets/Vollzeitäquivalente für das Erreichen der ESG-Ziele',
+            label: 'Maßnahmen bezüglich 1,5 Grad Celsius Ziel vorhanden',
+            explanation: 'Werden spezielle Ziele / Maßnahmen ergriffen, um das 1,5 °C Ziel zu erreichen?',
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.allgemein?.esgZiele?.existenzVonEsgZielen == 'Yes',
+              dataset.allgemein?.generelleEsgStrategie?.nachhaltigkeitsstrategieVorhanden == 'Yes',
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
-              formatFreeTextForDatatable(dataset.allgemein?.esgZiele?.investitionenInZielerreichung),
+              formatYesNoValueForDatatable(
+                dataset.allgemein?.generelleEsgStrategie?.massnahmenBezueglich15GradCelsiusZielVorhanden
+              ),
+          },
+          {
+            type: 'cell',
+            label: 'Beschreibung Maßnahmen bezüglich 1,5 Grad Celsius Ziel',
+            explanation: 'Beschreiben Sie spezielle Ziele / Maßnahmen, um das 1,5°C Ziel zu erreichen.',
+            shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
+              dataset.allgemein?.generelleEsgStrategie?.massnahmenBezueglich15GradCelsiusZielVorhanden == 'Yes',
+            valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
+              formatFreeTextForDatatable(
+                dataset.allgemein?.generelleEsgStrategie?.beschreibungMassnahmenBezueglich15GradCelsiusZiel
+              ),
+          },
+          {
+            type: 'cell',
+            label: 'Zugewiesene Budgets bis 2030',
+            explanation:
+              'Bezüglich der angegebenen Maßnahmen: Bitte die zugewiesenen Budgets bis zum Jahr 2030 angeben.',
+            shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
+              dataset.allgemein?.generelleEsgStrategie?.massnahmenBezueglich15GradCelsiusZielVorhanden == 'Yes',
+            valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
+              formatNumberForDatatable(dataset.allgemein?.generelleEsgStrategie?.zugewieseneBudgetsBis2030, 'Euro'),
+          },
+          {
+            type: 'cell',
+            label: 'Zugewiesene Budgets ab 2031',
+            explanation:
+              'Bezüglich der angegebenen Maßnahmen: Bitte die zugewiesenen Budgets ab dem Jahr 2031 angeben.',
+            shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
+              dataset.allgemein?.generelleEsgStrategie?.massnahmenBezueglich15GradCelsiusZielVorhanden == 'Yes',
+            valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
+              formatNumberForDatatable(dataset.allgemein?.generelleEsgStrategie?.zugewieseneBudgetsAb2031, 'Euro'),
+          },
+          {
+            type: 'cell',
+            label: 'Erwarteter Finanzierungsbedarf bis 2030',
+            explanation:
+              'Bezüglich der angegebenen Maßnahmen: Bitte den erwarteten Finanzierungsbedarf bis zum Jahr 2030 angeben.',
+            shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
+              dataset.allgemein?.generelleEsgStrategie?.massnahmenBezueglich15GradCelsiusZielVorhanden == 'Yes',
+            valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
+              formatNumberForDatatable(
+                dataset.allgemein?.generelleEsgStrategie?.erwarteterFinanzierungsbedarfBis2030,
+                'Euro'
+              ),
+          },
+          {
+            type: 'cell',
+            label: 'Erwarteter Finanzierungsbedarf ab 2031',
+            explanation:
+              'Bezüglich der angegebenen Maßnahmen: Bitte den erwarteten Finanzierungsbedarf ab dem Jahr 2031 angeben.',
+            shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
+              dataset.allgemein?.generelleEsgStrategie?.massnahmenBezueglich15GradCelsiusZielVorhanden == 'Yes',
+            valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
+              formatNumberForDatatable(
+                dataset.allgemein?.generelleEsgStrategie?.erwarteterFinanzierungsbedarfAb2031,
+                'Euro'
+              ),
+          },
+          {
+            type: 'cell',
+            label: 'Geplante Vollzeitäquivalente bis 2023',
+            explanation:
+              'Bezüglich der angegebenen Maßnahmen: Bitte die geplanten Vollzeitäquivalente bis zum Jahr 2030 angeben.',
+            shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
+              dataset.allgemein?.generelleEsgStrategie?.massnahmenBezueglich15GradCelsiusZielVorhanden == 'Yes',
+            valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
+              formatNumberForDatatable(
+                dataset.allgemein?.generelleEsgStrategie?.geplanteVollzeitaequivalenteBis2023,
+                'FTEs'
+              ),
+          },
+          {
+            type: 'cell',
+            label: 'Geplante Vollzeitäquivalente ab 2031',
+            explanation:
+              'Bezüglich der angegebenen Maßnahmen: Bitte die geplanten Vollzeitäquivalente ab dem Jahr 2031 angeben.',
+            shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
+              dataset.allgemein?.generelleEsgStrategie?.massnahmenBezueglich15GradCelsiusZielVorhanden == 'Yes',
+            valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
+              formatNumberForDatatable(
+                dataset.allgemein?.generelleEsgStrategie?.geplanteVollzeitaequivalenteAb2031,
+                'FTEs'
+              ),
+          },
+          {
+            type: 'cell',
+            label: 'Chancen oder Hindernisse',
+            explanation:
+              'Welche grundsätzlichen Chancen oder Hindernisse bestehen für das Unternehmen bei der Berücksichtigung von ESG-Belangen?',
+            shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
+              formatFreeTextForDatatable(dataset.allgemein?.generelleEsgStrategie?.chancenOderHindernisse),
           },
         ],
       },
       {
         type: 'section',
-        label: 'Sektoren',
+        label: 'Taxonomie KPIs & bestimmte Aktivitäten',
         expandOnPageLoad: true,
         shouldDisplay: (): boolean => true,
         children: [
           {
             type: 'cell',
-            label: 'Sektoren mit hohen Klimaauswirkungen',
+            label: 'Wirtschaftszweige',
             explanation:
-              'Kann das Unternehmen einem oder mehreren Sektoren mit hohen Klimaauswirkungen zugeordnet werden?',
+              'In welchen Wirtschaftszweigen ist das Unternehmen primär aktiv? Bitte Angabe des primären NACE-Codes (4-stellig).',
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
-              formatYesNoValueForDatatable(dataset.allgemein?.sektoren?.sektorenMitHohenKlimaauswirkungen),
+              formatNaceCodesForDatatable(
+                dataset.allgemein?.taxonomieKpisAndBestimmteAktivitaeten?.wirtschaftszweige,
+                'Wirtschaftszweige'
+              ),
           },
           {
             type: 'cell',
-            label: 'Auflistung der Sektoren',
-            explanation: 'Sektoren (mit hohen Klimaauswirkungen), denen das Unternehmen zugeordnet werden kann.',
+            label: 'Gesamtumsatz',
+            explanation: 'Geben Sie den Gesamtumsatz des Unternehmens in € an.',
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.allgemein?.sektoren?.sektorenMitHohenKlimaauswirkungen == 'Yes',
-            valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes => {
-              const mappings = {
-                ALandwirtschaftForstwirtschaftUndFischerei: 'A - Landwirtschaft, Forstwirtschaft und Fischerei',
-                BBergbauUndGewinnungVonSteinenUndErden: 'B - Bergbau und Gewinnung von Steinen und Erden',
-                CVerarbeitendesGewerbeHerstellungVonWaren: 'C - Verarbeitendes Gewerbe / Herstellung von Waren',
-                DEnergieversorgung: 'D - Energieversorgung',
-                EWasserversorgungAbwasserAndAbfallentsorgungBeseitigungenVonUmweltverschmutzungen:
-                  'E - Wasserversorgung; Abwasser & Abfallentsorgung; Beseitigungen von Umweltverschmutzungen',
-                FBaugewerbeBau: 'F - Baugewerbe / Bau',
-                GHandelInstandhaltungUndReparaturVonKraftfahrzeugen:
-                  'G - Handel; Instandhaltung und Reparatur von Kraftfahrzeugen',
-                HVerkehrUndLagerhaltung: 'H - Verkehr und Lagerhaltung',
-                LGrundstuecksUndWohnungswesen: 'L - Grundstücks- und Wohnungswesen',
-              };
-              return formatListOfStringsForDatatable(
-                dataset.allgemein?.sektoren?.auflistungDerSektoren?.map((it) =>
-                  getOriginalNameFromTechnicalName(it, mappings)
-                ),
-                'Auflistung der Sektoren'
-              );
-            },
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
+              formatNumberForDatatable(dataset.allgemein?.taxonomieKpisAndBestimmteAktivitaeten?.gesamtumsatz, 'Euro'),
+          },
+          {
+            type: 'cell',
+            label: 'Taxonomiefähiger Umsatz',
+            explanation: 'Geben Sie den taxonomiefähigen Teilbetrag des Gesamtumsatzes in € an.',
+            shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
+              formatNumberForDatatable(
+                dataset.allgemein?.taxonomieKpisAndBestimmteAktivitaeten?.taxonomiefaehigerUmsatz,
+                'Euro'
+              ),
+          },
+          {
+            type: 'cell',
+            label: 'Taxonomiekonformer Umsatz',
+            explanation: 'Geben Sie den taxonomiekonformen Teilbetrag des taxonomiefähigen Betrags in € an.',
+            shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
+              formatNumberForDatatable(
+                dataset.allgemein?.taxonomieKpisAndBestimmteAktivitaeten?.taxonomiekonformerUmsatz,
+                'Euro'
+              ),
+          },
+          {
+            type: 'cell',
+            label: 'Gesamt-CapEx',
+            explanation: 'Geben Sie die CapEx des Unternehmens in € an.',
+            shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
+              formatNumberForDatatable(dataset.allgemein?.taxonomieKpisAndBestimmteAktivitaeten?.gesamtCapex, 'Euro'),
+          },
+          {
+            type: 'cell',
+            label: 'Taxonomiefähige CapEx',
+            explanation: 'Geben Sie den taxonomiefähigen Teilbetrag der Gesamt-CapEx in € an.',
+            shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
+              formatNumberForDatatable(
+                dataset.allgemein?.taxonomieKpisAndBestimmteAktivitaeten?.taxonomiefaehigeCapex,
+                'Euro'
+              ),
+          },
+          {
+            type: 'cell',
+            label: 'Taxonomiekonforme CapEx',
+            explanation: 'Geben Sie den taxonomiekonformen Teilbetrag der taxonomiefähigen CapEx in € an.',
+            shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
+              formatNumberForDatatable(
+                dataset.allgemein?.taxonomieKpisAndBestimmteAktivitaeten?.taxonomiekonformeCapex,
+                'Euro'
+              ),
+          },
+          {
+            type: 'cell',
+            label: 'Taxonomiebezogene CapEx-Planung vorhanden',
+            explanation: 'Hat das Unternehmen eine taxonomiebezogene CapEx-Planung? ',
+            shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
+              formatYesNoValueForDatatable(
+                dataset.allgemein?.taxonomieKpisAndBestimmteAktivitaeten?.taxonomiebezogeneCapexPlanungVorhanden
+              ),
+          },
+          {
+            type: 'cell',
+            label: 'Geplante taxonomiefähige CapEx in 5 Jahren',
+            explanation:
+              'Welcher taxonomiefähige prozentuale Anteil an der Gesamt-CapEx wird im Rahmen der CapEx-Planung voraussichtlich in 5 Jahren erreicht werden? ',
+            shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
+              dataset.allgemein?.taxonomieKpisAndBestimmteAktivitaeten?.taxonomiebezogeneCapexPlanungVorhanden == 'Yes',
+            valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
+              formatPercentageForDatatable(
+                dataset.allgemein?.taxonomieKpisAndBestimmteAktivitaeten?.geplanteTaxonomiefaehigeCapexIn5Jahren
+              ),
+          },
+          {
+            type: 'cell',
+            label: 'Geplante taxonomiekonforme CapEx in 5 Jahren',
+            explanation:
+              'Welcher taxonomiekonforme prozentuale Anteil an der Gesamt-CapEx wird im Rahmen der CapEx-Planung voraussichtlich in 5 Jahren erreicht werden? ',
+            shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
+              dataset.allgemein?.taxonomieKpisAndBestimmteAktivitaeten?.taxonomiebezogeneCapexPlanungVorhanden == 'Yes',
+            valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
+              formatPercentageForDatatable(
+                dataset.allgemein?.taxonomieKpisAndBestimmteAktivitaeten?.geplanteTaxonomiekonformeCapexIn5Jahren
+              ),
+          },
+          {
+            type: 'cell',
+            label: 'Aktivität im Sektor Fossile Brennstoffe',
+            explanation: 'Ist das Unternehmen im Sektor "Fossile Brennstoffe (Kohle, Gas, Öl)" aktiv?',
+            shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
+              formatYesNoValueForDatatable(
+                dataset.allgemein?.taxonomieKpisAndBestimmteAktivitaeten?.aktivitaetImSektorFossileBrennstoffe
+              ),
+          },
+          {
+            type: 'cell',
+            label: 'Aktueller prozentualer Umsatzanteil im Sektor "Fossile Brennstoffe"',
+            explanation:
+              'Welcher prozentuale Anteil am Gesamtumsatz ist auf den Sektor "Fossile Brennstoffe (Kohle, Gas, Öl)" zurückzuführen?',
+            shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
+              dataset.allgemein?.taxonomieKpisAndBestimmteAktivitaeten?.aktivitaetImSektorFossileBrennstoffe == 'Yes',
+            valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
+              formatPercentageForDatatable(
+                dataset.allgemein?.taxonomieKpisAndBestimmteAktivitaeten
+                  ?.aktuellerProzentualerUmsatzanteilImSektorFossileBrennstoffe
+              ),
+          },
+          {
+            type: 'cell',
+            label: 'Geplanter prozentualer Umsatzanteil im Sektor "Fossile Brennstoffe" in 2030',
+            explanation:
+              'Welcher prozentuale Anteil am Gesamtumsatz wird im Jahr 2030 voraussichtlich auf den Sektor "Fossile Brennstoffe (Kohle, Gas, Öl)" zurückzuführen sein?',
+            shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
+              dataset.allgemein?.taxonomieKpisAndBestimmteAktivitaeten?.aktivitaetImSektorFossileBrennstoffe == 'Yes',
+            valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
+              formatPercentageForDatatable(
+                dataset.allgemein?.taxonomieKpisAndBestimmteAktivitaeten
+                  ?.geplanterProzentualerUmsatzanteilImSektorFossileBrennstoffeIn2030
+              ),
+          },
+          {
+            type: 'cell',
+            label: 'Geplanter prozentualer Umsatzanteil im Sektor "Fossile Brennstoffe" in 2040',
+            explanation:
+              'Welcher prozentuale Anteil am Gesamtumsatz wird im Jahr 2040 voraussichtlich auf den Sektor "Fossile Brennstoffe (Kohle, Gas, Öl)" zurückzuführen sein?',
+            shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
+              dataset.allgemein?.taxonomieKpisAndBestimmteAktivitaeten?.aktivitaetImSektorFossileBrennstoffe == 'Yes',
+            valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
+              formatPercentageForDatatable(
+                dataset.allgemein?.taxonomieKpisAndBestimmteAktivitaeten
+                  ?.geplanterProzentualerUmsatzanteilImSektorFossileBrennstoffeIn2040
+              ),
+          },
+          {
+            type: 'cell',
+            label: 'Aktivität im Sektor "Herstellung von Chemikalien"',
+            explanation: 'Ist das Unternehmen im Sektor "Herstellung von Chemikalien" aktiv?',
+            shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
+              formatYesNoValueForDatatable(
+                dataset.allgemein?.taxonomieKpisAndBestimmteAktivitaeten?.aktivitaetImSektorHerstellungVonChemikalien
+              ),
+          },
+          {
+            type: 'cell',
+            label: 'Aktueller prozentualer Umsatzanteil im Sektor "Herstellung von Chemikalien"',
+            explanation:
+              'Welcher prozentuale Anteil am Gesamtumsatz ist auf den Sektor "Herstellung von Chemikalien" zurückzuführen?',
+            shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
+              dataset.allgemein?.taxonomieKpisAndBestimmteAktivitaeten?.aktivitaetImSektorHerstellungVonChemikalien ==
+              'Yes',
+            valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
+              formatPercentageForDatatable(
+                dataset.allgemein?.taxonomieKpisAndBestimmteAktivitaeten
+                  ?.aktuellerProzentualerUmsatzanteilImSektorHerstellungVonChemikalien
+              ),
+          },
+          {
+            type: 'cell',
+            label: 'Geplanter prozentualer Umsatzanteil im Sektor "Herstellung von Chemikalien" in 2030',
+            explanation:
+              'Welcher prozentuale Anteil am Gesamtumsatz wird im Jahr 2030 voraussichtlich auf den Sektor "Herstellung von Chemikalien" zurückzuführen sein?',
+            shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
+              dataset.allgemein?.taxonomieKpisAndBestimmteAktivitaeten?.aktivitaetImSektorHerstellungVonChemikalien ==
+              'Yes',
+            valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
+              formatPercentageForDatatable(
+                dataset.allgemein?.taxonomieKpisAndBestimmteAktivitaeten
+                  ?.geplanterProzentualerUmsatzanteilImSektorHerstellungVonChemikalienIn2030
+              ),
+          },
+          {
+            type: 'cell',
+            label: 'Geplanter prozentualer Umsatzanteil im Sektor "Herstellung von Chemikalien" in 2040',
+            explanation:
+              'Welcher prozentuale Anteil am Gesamtumsatz wird im Jahr 2040 voraussichtlich auf den Sektor "Herstellung von Chemikalien" zurückzuführen sein?',
+            shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
+              dataset.allgemein?.taxonomieKpisAndBestimmteAktivitaeten?.aktivitaetImSektorHerstellungVonChemikalien ==
+              'Yes',
+            valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
+              formatPercentageForDatatable(
+                dataset.allgemein?.taxonomieKpisAndBestimmteAktivitaeten
+                  ?.geplanterProzentualerUmsatzanteilImSektorHerstellungVonChemikalienIn2040
+              ),
+          },
+          {
+            type: 'cell',
+            label: 'Aktivität im Sektor "Umstrittene Waffen"',
+            explanation: 'Ist das Unternehmen im Sektor "Umstrittene Waffen" aktiv?',
+            shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
+              formatYesNoValueForDatatable(
+                dataset.allgemein?.taxonomieKpisAndBestimmteAktivitaeten?.aktivitaetImSektorUmstritteneWaffen
+              ),
+          },
+          {
+            type: 'cell',
+            label: 'Aktueller prozentualer Umsatzanteil im Sektor "Umstrittene Waffen"',
+            explanation:
+              'Welcher prozentuale Anteil am Gesamtumsatz ist auf den Sektor "Umstrittene Waffen" zurückzuführen?',
+            shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
+              dataset.allgemein?.taxonomieKpisAndBestimmteAktivitaeten?.aktivitaetImSektorUmstritteneWaffen == 'Yes',
+            valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
+              formatPercentageForDatatable(
+                dataset.allgemein?.taxonomieKpisAndBestimmteAktivitaeten
+                  ?.aktuellerProzentualerUmsatzanteilImSektorUmstritteneWaffen
+              ),
+          },
+          {
+            type: 'cell',
+            label: 'Geplanter prozentualer Umsatzanteil im Sektor "Umstrittene Waffen" in 2030',
+            explanation:
+              'Welcher prozentuale Anteil am Gesamtumsatz wird im Jahr 2030 voraussichtlich auf den Sektor "Umstrittene Waffen" zurückzuführen sein?',
+            shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
+              dataset.allgemein?.taxonomieKpisAndBestimmteAktivitaeten?.aktivitaetImSektorUmstritteneWaffen == 'Yes',
+            valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
+              formatPercentageForDatatable(
+                dataset.allgemein?.taxonomieKpisAndBestimmteAktivitaeten
+                  ?.geplanterProzentualerUmsatzanteilImSektorUmstritteneWaffenIn2030
+              ),
+          },
+          {
+            type: 'cell',
+            label: 'Geplanter prozentualer Umsatzanteil im Sektor "Umstrittene Waffen" in 2040',
+            explanation:
+              'Welcher prozentuale Anteil am Gesamtumsatz wird im Jahr 2040 voraussichtlich auf den Sektor "Umstrittene Waffen" zurückzuführen sein?',
+            shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
+              dataset.allgemein?.taxonomieKpisAndBestimmteAktivitaeten?.aktivitaetImSektorUmstritteneWaffen == 'Yes',
+            valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
+              formatPercentageForDatatable(
+                dataset.allgemein?.taxonomieKpisAndBestimmteAktivitaeten
+                  ?.geplanterProzentualerUmsatzanteilImSektorUmstritteneWaffenIn2040
+              ),
           },
         ],
       },
@@ -144,43 +476,10 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
         children: [
           {
             type: 'cell',
-            label: 'Nachhaltigkeitsberichte',
-            explanation: 'Erstellt das Unternehmen Nachhaltigkeits- oder ESG-Berichte?',
-            shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
-            valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
-              formatYesNoValueForDatatable(dataset.allgemein?.esgBerichte?.nachhaltigkeitsberichte),
-          },
-          {
-            type: 'cell',
-            label: 'Frequenz der Berichterstattung',
-            explanation: 'In welchen Zeitabständen werden die Berichte erstellt?',
-            shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.allgemein?.esgBerichte?.nachhaltigkeitsberichte == 'Yes',
-            valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
-              ((): AvailableMLDTDisplayObjectTypes => {
-                const mappings = {
-                  Jaehrlich: 'jährlich',
-                  Halbjaehrlich: 'halbjährlich',
-                  Vierteljaehrlich: 'vierteljährlich',
-                  Monatlich: 'monatlich',
-                };
-                return formatStringForDatatable(
-                  dataset.allgemein?.esgBerichte?.frequenzDerBerichterstattung
-                    ? getOriginalNameFromTechnicalName(
-                        dataset.allgemein?.esgBerichte?.frequenzDerBerichterstattung,
-                        mappings
-                      )
-                    : ''
-                );
-              })(),
-          },
-          {
-            type: 'cell',
             label: 'Aktuelle Berichte',
             explanation: 'Letzten ESG Berichte',
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.allgemein?.esgBerichte?.nachhaltigkeitsberichte == 'Yes',
+              dataset.allgemein?.generelleEsgStrategie?.chancenOderHindernisse == 'Yes',
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes => {
               return formatListOfBaseDataPoint(
                 'Aktuelle Berichte',

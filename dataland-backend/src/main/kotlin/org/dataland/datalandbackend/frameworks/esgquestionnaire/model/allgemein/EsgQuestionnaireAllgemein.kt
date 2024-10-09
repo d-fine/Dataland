@@ -8,20 +8,20 @@ import org.dataland.datalandbackend.frameworks.esgquestionnaire.model.allgemein.
     .EsgQuestionnaireAllgemeinAnleihen
 import org.dataland.datalandbackend.frameworks.esgquestionnaire.model.allgemein.esgBerichte
     .EsgQuestionnaireAllgemeinEsgBerichte
-import org.dataland.datalandbackend.frameworks.esgquestionnaire.model.allgemein.esgZiele
-    .EsgQuestionnaireAllgemeinEsgZiele
 import org.dataland.datalandbackend.frameworks.esgquestionnaire.model.allgemein.fuehrungsstandards
     .EsgQuestionnaireAllgemeinFuehrungsstandards
+import org.dataland.datalandbackend.frameworks.esgquestionnaire.model.allgemein.generelleEsgStrategie
+    .EsgQuestionnaireAllgemeinGenerelleEsgStrategie
 import org.dataland.datalandbackend.frameworks.esgquestionnaire.model.allgemein.oecdLeitsaetze
     .EsgQuestionnaireAllgemeinOecdLeitsaetze
 import org.dataland.datalandbackend.frameworks.esgquestionnaire.model.allgemein.rating.EsgQuestionnaireAllgemeinRating
 import org.dataland.datalandbackend.frameworks.esgquestionnaire.model.allgemein.rechtsstreitigkeiten
     .EsgQuestionnaireAllgemeinRechtsstreitigkeiten
 import org.dataland.datalandbackend.frameworks.esgquestionnaire.model.allgemein.risiken.EsgQuestionnaireAllgemeinRisiken
-import org.dataland.datalandbackend.frameworks.esgquestionnaire.model.allgemein.sektoren
-    .EsgQuestionnaireAllgemeinSektoren
 import org.dataland.datalandbackend.frameworks.esgquestionnaire.model.allgemein.sonstige
     .EsgQuestionnaireAllgemeinSonstige
+import org.dataland.datalandbackend.frameworks.esgquestionnaire.model.allgemein.taxonomieKpisAndBestimmteAktivitaeten
+    .EsgQuestionnaireAllgemeinTaxonomieKpisAndBestimmteAktivitaeten
 import org.dataland.datalandbackend.frameworks.esgquestionnaire.model.allgemein.unGlobalConceptPrinzipien
     .EsgQuestionnaireAllgemeinUnGlobalConceptPrinzipien
 
@@ -30,10 +30,10 @@ import org.dataland.datalandbackend.frameworks.esgquestionnaire.model.allgemein.
  */
 data class EsgQuestionnaireAllgemein(
     @field:Valid()
-    val esgZiele: EsgQuestionnaireAllgemeinEsgZiele? = null,
+    val generelleEsgStrategie: EsgQuestionnaireAllgemeinGenerelleEsgStrategie? = null,
 
     @field:Valid()
-    val sektoren: EsgQuestionnaireAllgemeinSektoren? = null,
+    val taxonomieKpisAndBestimmteAktivitaeten: EsgQuestionnaireAllgemeinTaxonomieKpisAndBestimmteAktivitaeten? = null,
 
     @field:Valid()
     val esgBerichte: EsgQuestionnaireAllgemeinEsgBerichte? = null,

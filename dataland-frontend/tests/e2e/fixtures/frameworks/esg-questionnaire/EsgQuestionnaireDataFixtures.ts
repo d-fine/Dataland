@@ -17,9 +17,9 @@ import {
   EsgQuestionnaireAllgemeinRechtsstreitigkeitenStatusZuEOptions,
   EsgQuestionnaireAllgemeinFuehrungsstandardsAnreizmechanismenFuerDasManagementSozialesOptions,
   EsgQuestionnaireAllgemeinFuehrungsstandardsAnreizmechanismenFuerDasManagementUmweltOptions,
-  EsgQuestionnaireAllgemeinEsgberichteFrequenzDerBerichterstattungOptions,
   type EsgQuestionnaireData,
 } from '@clients/backend';
+import { generateNaceCodes } from '@e2e/fixtures/common/NaceCodeFixtures';
 
 /**
  * Generates a set number of esg-questionnaire fixtures
@@ -49,32 +49,46 @@ export function generateEsgQuestionnaireData(nullProbability = DEFAULT_PROBABILI
       },
     },
     allgemein: {
-      esgZiele: {
-        existenzVonEsgZielen: dataGenerator.randomYesNo(),
-        beschreibungDerEsgZiele: dataGenerator.randomParagraphs(),
-        investitionenInZielerreichung: dataGenerator.randomParagraphs(),
-      },
-      sektoren: {
-        sektorenMitHohenKlimaauswirkungen: dataGenerator.randomYesNo(),
-        auflistungDerSektoren: dataGenerator.valueOrNull(
-          pickSubsetOfElements([
-            'ALandwirtschaftForstwirtschaftUndFischerei',
-            'BBergbauUndGewinnungVonSteinenUndErden',
-            'CVerarbeitendesGewerbeHerstellungVonWaren',
-            'DEnergieversorgung',
-            'EWasserversorgungAbwasserAndAbfallentsorgungBeseitigungenVonUmweltverschmutzungen',
-            'FBaugewerbeBau',
-            'GHandelInstandhaltungUndReparaturVonKraftfahrzeugen',
-            'HVerkehrUndLagerhaltung',
-            'LGrundstuecksUndWohnungswesen',
-          ])
+      generelleEsgStrategie: {
+        nachhaltigkeitsstrategieVorhanden: dataGenerator.randomYesNo(),
+        dokumenteZurNachhaltigkeitsstrategie: dataGenerator.valueOrNull(
+          generateArray(() => dataGenerator.guaranteedBaseDataPoint(dataGenerator.guaranteedShortString()), 1, 5, 0)
         ),
+        massnahmenBezueglich15GradCelsiusZielVorhanden: dataGenerator.randomYesNo(),
+        beschreibungMassnahmenBezueglich15GradCelsiusZiel: dataGenerator.randomParagraphs(),
+        zugewieseneBudgetsBis2030: dataGenerator.randomFloat(),
+        zugewieseneBudgetsAb2031: dataGenerator.randomFloat(),
+        erwarteterFinanzierungsbedarfBis2030: dataGenerator.randomFloat(),
+        erwarteterFinanzierungsbedarfAb2031: dataGenerator.randomFloat(),
+        geplanteVollzeitaequivalenteBis2023: dataGenerator.randomFloat(),
+        geplanteVollzeitaequivalenteAb2031: dataGenerator.randomFloat(),
+        chancenOderHindernisse: dataGenerator.randomParagraphs(),
+      },
+      taxonomieKpisAndBestimmteAktivitaeten: {
+        wirtschaftszweige: dataGenerator.valueOrNull(generateNaceCodes()),
+        gesamtumsatz: dataGenerator.randomFloat(),
+        taxonomiefaehigerUmsatz: dataGenerator.randomFloat(),
+        taxonomiekonformerUmsatz: dataGenerator.randomFloat(),
+        gesamtCapex: dataGenerator.randomFloat(),
+        taxonomiefaehigeCapex: dataGenerator.randomFloat(),
+        taxonomiekonformeCapex: dataGenerator.randomFloat(),
+        taxonomiebezogeneCapexPlanungVorhanden: dataGenerator.randomYesNo(),
+        geplanteTaxonomiefaehigeCapexIn5Jahren: dataGenerator.randomPercentageValue(),
+        geplanteTaxonomiekonformeCapexIn5Jahren: dataGenerator.randomPercentageValue(),
+        aktivitaetImSektorFossileBrennstoffe: dataGenerator.randomYesNo(),
+        aktuellerProzentualerUmsatzanteilImSektorFossileBrennstoffe: dataGenerator.randomPercentageValue(),
+        geplanterProzentualerUmsatzanteilImSektorFossileBrennstoffeIn2030: dataGenerator.randomPercentageValue(),
+        geplanterProzentualerUmsatzanteilImSektorFossileBrennstoffeIn2040: dataGenerator.randomPercentageValue(),
+        aktivitaetImSektorHerstellungVonChemikalien: dataGenerator.randomYesNo(),
+        aktuellerProzentualerUmsatzanteilImSektorHerstellungVonChemikalien: dataGenerator.randomPercentageValue(),
+        geplanterProzentualerUmsatzanteilImSektorHerstellungVonChemikalienIn2030: dataGenerator.randomPercentageValue(),
+        geplanterProzentualerUmsatzanteilImSektorHerstellungVonChemikalienIn2040: dataGenerator.randomPercentageValue(),
+        aktivitaetImSektorUmstritteneWaffen: dataGenerator.randomYesNo(),
+        aktuellerProzentualerUmsatzanteilImSektorUmstritteneWaffen: dataGenerator.randomPercentageValue(),
+        geplanterProzentualerUmsatzanteilImSektorUmstritteneWaffenIn2030: dataGenerator.randomPercentageValue(),
+        geplanterProzentualerUmsatzanteilImSektorUmstritteneWaffenIn2040: dataGenerator.randomPercentageValue(),
       },
       esgBerichte: {
-        nachhaltigkeitsberichte: dataGenerator.randomYesNo(),
-        frequenzDerBerichterstattung: dataGenerator.valueOrNull(
-          pickOneElement(Object.values(EsgQuestionnaireAllgemeinEsgberichteFrequenzDerBerichterstattungOptions))
-        ),
         aktuelleBerichte: dataGenerator.valueOrNull(
           generateArray(() => dataGenerator.guaranteedBaseDataPoint(dataGenerator.guaranteedShortString()), 1, 5, 0)
         ),

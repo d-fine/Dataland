@@ -3,16 +3,11 @@ package org.dataland.datalandbackend.frameworks.esgquestionnaire.model.allgemein
 
 import jakarta.validation.Valid
 import org.dataland.datalandbackend.model.datapoints.BaseDataPoint
-import org.dataland.datalandbackend.model.enums.commons.YesNo
 
 /**
  * The data-model for the EsgBerichte section
  */
 data class EsgQuestionnaireAllgemeinEsgBerichte(
-    val nachhaltigkeitsberichte: YesNo? = null,
-
-    val frequenzDerBerichterstattung: EsgQuestionnaireAllgemeinEsgberichteFrequenzDerBerichterstattungOptions? = null,
-
     @field:Valid()
     val aktuelleBerichte: List<BaseDataPoint<String>>? = null,
 
