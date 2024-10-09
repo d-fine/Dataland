@@ -441,33 +441,109 @@ export const esgQuestionnaireDataModel = [
               dataset.allgemein?.taxonomieKpisAndBestimmteAktivitaeten?.aktivitaetImSektorUmstritteneWaffen == 'Yes',
             validation: 'between:0,100',
           },
-        ],
-      },
-      {
-        name: 'esgBerichte',
-        label: 'ESG Berichte',
-        fields: [
           {
-            name: 'aktuelleBerichte',
-            label: 'Aktuelle Berichte',
-            description: 'Bitte teilen Sie die letzten Berichte mit uns (vorzugsweise die letzten drei).',
+            name: 'aktivitaetImSektorTabakanbauUndVerarbeitung',
+            label: 'Aktivität im Sektor "Tabakanbau und -verarbeitung"',
+            description: 'Ist das Unternehmen im Sektor "Tabakanbau und -verarbeitung" aktiv?',
 
-            component: 'ListOfBaseDataPointsFormField',
+            component: 'YesNoFormField',
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.allgemein?.generelleEsgStrategie?.chancenOderHindernisse == 'Yes',
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+          },
+          {
+            name: 'aktuellerProzentualerUmsatzanteilImSektorTabakanbauUndVerarbeitung',
+            label: 'Aktueller prozentualer Umsatzanteil im Sektor "Tabakanbau und -verarbeitung"',
+            description:
+              'Welcher prozentuale Anteil am Gesamtumsatz ist auf den Sektor "Tabakanbau und -verarbeitung" zurückzuführen?',
+
+            unit: '%',
+            component: 'NumberFormField',
+            required: false,
+            showIf: (dataset: EsgQuestionnaireData): boolean =>
+              dataset.allgemein?.taxonomieKpisAndBestimmteAktivitaeten?.aktivitaetImSektorTabakanbauUndVerarbeitung ==
+              'Yes',
+            validation: 'between:0,100',
+          },
+          {
+            name: 'geplanterProzentualerUmsatzanteilImSektorTabakanbauUndVerarbeitungIn2030',
+            label: 'Geplanter prozentualer Umsatzanteil im Sektor "Tabakanbau und -verarbeitung" in 2030',
+            description:
+              'Welcher prozentuale Anteil am Gesamtumsatz wird im Jahr 2030 voraussichtlich auf den Sektor "Tabakanbau und -verarbeitung" zurückzuführen sein?',
+
+            unit: '%',
+            component: 'NumberFormField',
+            required: false,
+            showIf: (dataset: EsgQuestionnaireData): boolean =>
+              dataset.allgemein?.taxonomieKpisAndBestimmteAktivitaeten?.aktivitaetImSektorTabakanbauUndVerarbeitung ==
+              'Yes',
+            validation: 'between:0,100',
+          },
+          {
+            name: 'geplanterProzentualerUmsatzanteilImSektorTabakanbauUndVerarbeitungIn2040',
+            label: 'Geplanter prozentualer Umsatzanteil im Sektor "Tabakanbau und -verarbeitung" in 2040',
+            description:
+              'Welcher prozentuale Anteil am Gesamtumsatz wird im Jahr 2040 voraussichtlich auf den Sektor "Tabakanbau und -verarbeitung" zurückzuführen sein?',
+
+            unit: '%',
+            component: 'NumberFormField',
+            required: false,
+            showIf: (dataset: EsgQuestionnaireData): boolean =>
+              dataset.allgemein?.taxonomieKpisAndBestimmteAktivitaeten?.aktivitaetImSektorTabakanbauUndVerarbeitung ==
+              'Yes',
+            validation: 'between:0,100',
           },
         ],
       },
       {
-        name: 'akkreditierungen',
-        label: 'Akkreditierungen',
+        name: 'esgRatingAndZertifizierung',
+        label: 'ESG-Rating & Zertifizierung',
         fields: [
+          {
+            name: 'esgRating',
+            label: 'ESG-Rating',
+            description: 'Hat das Unternehmen bereits ein ESG-Rating einer anerkannten Ratingagentur?',
+
+            component: 'YesNoFormField',
+            required: false,
+            showIf: (dataset: EsgQuestionnaireData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+          },
+          {
+            name: 'ratingagentur',
+            label: 'Ratingagentur',
+            description: 'Welche Rating Agentur hat das Rating durchgeführt?',
+
+            component: 'InputTextFormField',
+            required: false,
+            showIf: (dataset: EsgQuestionnaireData): boolean =>
+              dataset.allgemein?.esgRatingAndZertifizierung?.esgRating == 'Yes',
+          },
+          {
+            name: 'ergebnisDesEsgRatings',
+            label: 'Ergebnis des ESG-Ratings',
+            description: 'Wie lautet das Rating?',
+
+            component: 'InputTextFormField',
+            required: false,
+            showIf: (dataset: EsgQuestionnaireData): boolean =>
+              dataset.allgemein?.esgRatingAndZertifizierung?.esgRating == 'Yes',
+          },
+          {
+            name: 'ratingbericht',
+            label: 'Ratingbericht',
+            description: 'Liegt ein Ratingbericht vor?',
+
+            component: 'YesNoBaseDataPointFormField',
+            required: false,
+            showIf: (dataset: EsgQuestionnaireData): boolean =>
+              dataset.allgemein?.esgRatingAndZertifizierung?.esgRating == 'Yes',
+          },
           {
             name: 'iso14001',
             label: 'ISO 14001',
             description:
-              'Haben Sie eine ISO 14001 Akkreditierung? Bitte teilen Sie das entsprechende Zertifikat mit uns.',
+              'Hat das Unternehmen oder seine wesentlichen Produktionsstandorte eine ISO 14001 Zertifizierung? Bitte teilen Sie das entsprechende Zertifikat mit uns.',
 
             component: 'YesNoBaseDataPointFormField',
             required: false,
@@ -478,7 +554,7 @@ export const esgQuestionnaireDataModel = [
             name: 'iso45001',
             label: 'ISO 45001',
             description:
-              'Haben Sie eine ISO 45001 Akkreditierung? Bitte teilen Sie das entsprechende Zertifikat mit uns.',
+              'Hat das Unternehmen oder seine wesentlichen Produktionsstandorte eine ISO 45001 Zertifizierung? Bitte teilen Sie das entsprechende Zertifikat mit uns.',
 
             component: 'YesNoBaseDataPointFormField',
             required: false,
@@ -489,7 +565,7 @@ export const esgQuestionnaireDataModel = [
             name: 'iso27001',
             label: 'ISO 27001',
             description:
-              'Haben Sie eine ISO 27001 Akkreditierung? Bitte teilen Sie das entsprechende Zertifikat mit uns.',
+              'Hat das Unternehmen oder seine wesentlichen Produktionsstandorte eine ISO 27001 Zertifizierung? Bitte teilen Sie das entsprechende Zertifikat mit uns.',
 
             component: 'YesNoBaseDataPointFormField',
             required: false,
@@ -500,7 +576,7 @@ export const esgQuestionnaireDataModel = [
             name: 'iso50001',
             label: 'ISO 50001',
             description:
-              'Haben Sie eine ISO 50001 Akkreditierung? Bitte teilen Sie das entsprechende Zertifikat mit uns.',
+              'Hat das Unternehmen oder seine wesentlichen Produktionsstandorte eine ISO 50001 Zertifizierung? Bitte teilen Sie das entsprechende Zertifikat mit uns.',
 
             component: 'YesNoBaseDataPointFormField',
             required: false,
@@ -508,12 +584,34 @@ export const esgQuestionnaireDataModel = [
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
           },
           {
-            name: 'weitereAkkreditierungen',
-            label: 'Weitere Akkreditierungen',
+            name: 'iso14040Ivm14044',
+            label: 'ISO 14040 (i.V.m. 14044)',
             description:
-              'Bitte führen Sie weitere Akkreditierungen auf, sofern diese nicht bereits gelistet sind, und teilen Sie entsprechende Zertifikate mit uns.',
+              'Hat das Unternehmen oder seine wesentlichen Produktionsstandorte eine ISO 14040 Zertifizierung in Verbindung mit einer ISO 14044 Zertifizierung? Bitte teilen Sie das entsprechende Zertifikat mit uns.',
 
-            component: 'ListOfBaseDataPointsFormField',
+            component: 'YesNoBaseDataPointFormField',
+            required: false,
+            showIf: (dataset: EsgQuestionnaireData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+          },
+          {
+            name: 'iso14064',
+            label: 'ISO 14064',
+            description:
+              'Hat das Unternehmen oder seine wesentlichen Produktionsstandorte eine ISO 14064 Zertifizierung? Bitte teilen Sie das entsprechende Zertifikat mit uns.',
+
+            component: 'YesNoBaseDataPointFormField',
+            required: false,
+            showIf: (dataset: EsgQuestionnaireData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+          },
+          {
+            name: 'emas',
+            label: 'EMAS',
+            description:
+              'Hat das Unternehmen oder seine wesentlichen Produktionsstandorte eine EMAS Zertifizierung? Bitte teilen Sie das entsprechende Zertifikat mit uns.',
+
+            component: 'YesNoBaseDataPointFormField',
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
@@ -521,8 +619,8 @@ export const esgQuestionnaireDataModel = [
         ],
       },
       {
-        name: 'unGlobalConceptPrinzipien',
-        label: 'UN Global Concept Prinzipien',
+        name: 'unGlobalCompactPrinzipien',
+        label: 'UN Global Compact Prinzipien',
         fields: [
           {
             name: 'mechanismenZurUeberwachungDerEinhaltungDerUngcp',
@@ -539,12 +637,12 @@ export const esgQuestionnaireDataModel = [
             name: 'richtlinienZurEinhaltungDerUngcp',
             label: 'Richtlinien zur Einhaltung der UNGCP',
             description:
-              'Bitte teilen Sie die Richtlinien mit uns die beschreiben oder Informationen darüber liefern, wie das Unternehmen die Einhaltung der UN Global Compact Prinzipien überwacht.',
+              'Bitte teilen Sie die Richtlinien mit uns die beschreiben oder Informationen darüber liefern, wie das Unternehmen die Einhaltung der UN Global Compact Prinzipien (alle vier Säulen) überwacht.',
 
             component: 'ListOfBaseDataPointsFormField',
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.allgemein?.unGlobalConceptPrinzipien?.mechanismenZurUeberwachungDerEinhaltungDerUngcp == 'Yes',
+              dataset.allgemein?.unGlobalCompactPrinzipien?.mechanismenZurUeberwachungDerEinhaltungDerUngcp == 'Yes',
           },
           {
             name: 'erklaerungDerEinhaltungDerUngcp',
@@ -554,7 +652,7 @@ export const esgQuestionnaireDataModel = [
             component: 'FreeTextFormField',
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.allgemein?.unGlobalConceptPrinzipien?.mechanismenZurUeberwachungDerEinhaltungDerUngcp == 'Yes',
+              dataset.allgemein?.unGlobalCompactPrinzipien?.mechanismenZurUeberwachungDerEinhaltungDerUngcp == 'Yes',
           },
         ],
       },
@@ -630,7 +728,7 @@ export const esgQuestionnaireDataModel = [
             component: 'FreeTextFormField',
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.allgemein?.sonstige?.ausschlusslistenAufBasisVonEsgKriterien == 'Yes',
+              dataset.allgemein?.oecdLeitsaetze?.mechanismenZurUeberwachungDerEinhaltungDerOecdLeitsaetze == 'Yes',
           },
         ],
       },

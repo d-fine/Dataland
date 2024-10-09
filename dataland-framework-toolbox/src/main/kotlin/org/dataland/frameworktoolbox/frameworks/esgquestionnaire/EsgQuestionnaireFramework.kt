@@ -107,9 +107,9 @@ class EsgQuestionnaireFramework : PavedRoadFramework(
     private fun editListOfStringBaseDatapointComponents(framework: Framework) {
         framework.root.edit<ComponentGroup>("allgemein") {
             val componentGroupAllgemein = this
+            println(componentGroupAllgemein)
             with(EsgQuestionnaireListOfStringBaseDataPointComponents) {
-                aktuelleBerichte(componentGroupAllgemein)
-                weitereAkkreditierungen(componentGroupAllgemein)
+                dokumenteZurNachhaltigkeitsstrategie(componentGroupAllgemein)
                 richtlinienZurEinhaltungDerUngcp(componentGroupAllgemein)
                 richtlinienZurEinhaltungDerOecdLeitsaetze(componentGroupAllgemein)
             }

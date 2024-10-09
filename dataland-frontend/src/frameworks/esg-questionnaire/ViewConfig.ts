@@ -82,8 +82,8 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
               return formatListOfBaseDataPoint(
                 'Dokumente zur Nachhaltigkeitsstrategie',
                 dataset.allgemein?.generelleEsgStrategie?.dokumenteZurNachhaltigkeitsstrategie,
-                'Description',
-                'Document'
+                'Beschreibung des Dokuments zur Nachhaltigkeitsstrategie',
+                'Dokument'
               );
             },
           },
@@ -466,109 +466,204 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
                   ?.geplanterProzentualerUmsatzanteilImSektorUmstritteneWaffenIn2040
               ),
           },
-        ],
-      },
-      {
-        type: 'section',
-        label: 'ESG Berichte',
-        expandOnPageLoad: true,
-        shouldDisplay: (): boolean => true,
-        children: [
           {
             type: 'cell',
-            label: 'Aktuelle Berichte',
-            explanation: 'Letzten ESG Berichte',
+            label: 'Aktivität im Sektor "Tabakanbau und -verarbeitung"',
+            explanation: 'Ist das Unternehmen im Sektor "Tabakanbau und -verarbeitung" aktiv?',
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.allgemein?.generelleEsgStrategie?.chancenOderHindernisse == 'Yes',
-            valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes => {
-              return formatListOfBaseDataPoint(
-                'Aktuelle Berichte',
-                dataset.allgemein?.esgBerichte?.aktuelleBerichte,
-                'Beschreibung des Berichts',
-                'Bericht'
-              );
-            },
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
+              formatYesNoValueForDatatable(
+                dataset.allgemein?.taxonomieKpisAndBestimmteAktivitaeten?.aktivitaetImSektorTabakanbauUndVerarbeitung
+              ),
+          },
+          {
+            type: 'cell',
+            label: 'Aktueller prozentualer Umsatzanteil im Sektor "Tabakanbau und -verarbeitung"',
+            explanation:
+              'Welcher prozentuale Anteil am Gesamtumsatz ist auf den Sektor "Tabakanbau und -verarbeitung" zurückzuführen?',
+            shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
+              dataset.allgemein?.taxonomieKpisAndBestimmteAktivitaeten?.aktivitaetImSektorTabakanbauUndVerarbeitung ==
+              'Yes',
+            valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
+              formatPercentageForDatatable(
+                dataset.allgemein?.taxonomieKpisAndBestimmteAktivitaeten
+                  ?.aktuellerProzentualerUmsatzanteilImSektorTabakanbauUndVerarbeitung
+              ),
+          },
+          {
+            type: 'cell',
+            label: 'Geplanter prozentualer Umsatzanteil im Sektor "Tabakanbau und -verarbeitung" in 2030',
+            explanation:
+              'Welcher prozentuale Anteil am Gesamtumsatz wird im Jahr 2030 voraussichtlich auf den Sektor "Tabakanbau und -verarbeitung" zurückzuführen sein?',
+            shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
+              dataset.allgemein?.taxonomieKpisAndBestimmteAktivitaeten?.aktivitaetImSektorTabakanbauUndVerarbeitung ==
+              'Yes',
+            valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
+              formatPercentageForDatatable(
+                dataset.allgemein?.taxonomieKpisAndBestimmteAktivitaeten
+                  ?.geplanterProzentualerUmsatzanteilImSektorTabakanbauUndVerarbeitungIn2030
+              ),
+          },
+          {
+            type: 'cell',
+            label: 'Geplanter prozentualer Umsatzanteil im Sektor "Tabakanbau und -verarbeitung" in 2040',
+            explanation:
+              'Welcher prozentuale Anteil am Gesamtumsatz wird im Jahr 2040 voraussichtlich auf den Sektor "Tabakanbau und -verarbeitung" zurückzuführen sein?',
+            shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
+              dataset.allgemein?.taxonomieKpisAndBestimmteAktivitaeten?.aktivitaetImSektorTabakanbauUndVerarbeitung ==
+              'Yes',
+            valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
+              formatPercentageForDatatable(
+                dataset.allgemein?.taxonomieKpisAndBestimmteAktivitaeten
+                  ?.geplanterProzentualerUmsatzanteilImSektorTabakanbauUndVerarbeitungIn2040
+              ),
           },
         ],
       },
       {
         type: 'section',
-        label: 'Akkreditierungen',
+        label: 'ESG-Rating & Zertifizierung',
         expandOnPageLoad: true,
         shouldDisplay: (): boolean => true,
         children: [
           {
             type: 'cell',
+            label: 'ESG-Rating',
+            explanation: 'Hat das Unternehmen bereits ein ESG-Rating einer anerkannten Ratingagentur?',
+            shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
+              formatYesNoValueForDatatable(dataset.allgemein?.esgRatingAndZertifizierung?.esgRating),
+          },
+          {
+            type: 'cell',
+            label: 'Ratingagentur',
+            explanation: 'Welche Rating Agentur hat das Rating durchgeführt?',
+            shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
+              dataset.allgemein?.esgRatingAndZertifizierung?.esgRating == 'Yes',
+            valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
+              formatStringForDatatable(dataset.allgemein?.esgRatingAndZertifizierung?.ratingagentur),
+          },
+          {
+            type: 'cell',
+            label: 'Ergebnis des ESG-Ratings',
+            explanation: 'Wie lautet das Rating?',
+            shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
+              dataset.allgemein?.esgRatingAndZertifizierung?.esgRating == 'Yes',
+            valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
+              formatStringForDatatable(dataset.allgemein?.esgRatingAndZertifizierung?.ergebnisDesEsgRatings),
+          },
+          {
+            type: 'cell',
+            label: 'Ratingbericht',
+            explanation: 'Liegt ein Ratingbericht vor?',
+            shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
+              dataset.allgemein?.esgRatingAndZertifizierung?.esgRating == 'Yes',
+            valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatYesNoValueForDatatable(dataset.allgemein?.esgRatingAndZertifizierung?.ratingbericht?.value),
+                'Ratingbericht',
+                dataset.allgemein?.esgRatingAndZertifizierung?.ratingbericht
+              ),
+          },
+          {
+            type: 'cell',
             label: 'ISO 14001',
-            explanation: 'Hat das Unternehmen eine ISO 14001-Akkreditierung?',
+            explanation: 'Hat das Unternehmen eine ISO 14001 Zertifizierung?',
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
-                formatYesNoValueForDatatable(dataset.allgemein?.akkreditierungen?.iso14001?.value),
+                formatYesNoValueForDatatable(dataset.allgemein?.esgRatingAndZertifizierung?.iso14001?.value),
                 'ISO 14001',
-                dataset.allgemein?.akkreditierungen?.iso14001
+                dataset.allgemein?.esgRatingAndZertifizierung?.iso14001
               ),
           },
           {
             type: 'cell',
             label: 'ISO 45001',
-            explanation: 'Hat das Unternehmen eine ISO 45001-Akkreditierung?',
+            explanation: 'Hat das Unternehmen eine ISO 45001 Zertifizierung?',
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
-                formatYesNoValueForDatatable(dataset.allgemein?.akkreditierungen?.iso45001?.value),
+                formatYesNoValueForDatatable(dataset.allgemein?.esgRatingAndZertifizierung?.iso45001?.value),
                 'ISO 45001',
-                dataset.allgemein?.akkreditierungen?.iso45001
+                dataset.allgemein?.esgRatingAndZertifizierung?.iso45001
               ),
           },
           {
             type: 'cell',
             label: 'ISO 27001',
-            explanation: 'Hat das Unternehmen eine ISO 27001-Akkreditierung?',
+            explanation: 'Hat das Unternehmen eine ISO 27001 Zertifizierung?',
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
-                formatYesNoValueForDatatable(dataset.allgemein?.akkreditierungen?.iso27001?.value),
+                formatYesNoValueForDatatable(dataset.allgemein?.esgRatingAndZertifizierung?.iso27001?.value),
                 'ISO 27001',
-                dataset.allgemein?.akkreditierungen?.iso27001
+                dataset.allgemein?.esgRatingAndZertifizierung?.iso27001
               ),
           },
           {
             type: 'cell',
             label: 'ISO 50001',
-            explanation: 'Hat das Unternehmen eine ISO 50001-Akkreditierung?',
+            explanation: 'Hat das Unternehmen eine ISO 50001 Zertifizierung?',
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
-                formatYesNoValueForDatatable(dataset.allgemein?.akkreditierungen?.iso50001?.value),
+                formatYesNoValueForDatatable(dataset.allgemein?.esgRatingAndZertifizierung?.iso50001?.value),
                 'ISO 50001',
-                dataset.allgemein?.akkreditierungen?.iso50001
+                dataset.allgemein?.esgRatingAndZertifizierung?.iso50001
               ),
           },
           {
             type: 'cell',
-            label: 'Weitere Akkreditierungen',
-            explanation: 'Weitere Akkreditierungen',
+            label: 'ISO 14040 (i.V.m. 14044)',
+            explanation:
+              'Hat das Unternehmen eine ISO 14040 Zertifizierung in Verbindung mit einer ISO 14044 Zertifizierung?',
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
-            valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes => {
-              return formatListOfBaseDataPoint(
-                'Weitere Akkreditierungen',
-                dataset.allgemein?.akkreditierungen?.weitereAkkreditierungen,
-                'Beschreibung der Akkreditierung',
-                'Akkreditierung'
-              );
-            },
+            valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatYesNoValueForDatatable(dataset.allgemein?.esgRatingAndZertifizierung?.iso14040Ivm14044?.value),
+                'ISO 14040 (i.V.m. 14044)',
+                dataset.allgemein?.esgRatingAndZertifizierung?.iso14040Ivm14044
+              ),
+          },
+          {
+            type: 'cell',
+            label: 'ISO 14064',
+            explanation: 'Hat das Unternehmen eine ISO 14064 Zertifizierung?',
+            shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatYesNoValueForDatatable(dataset.allgemein?.esgRatingAndZertifizierung?.iso14064?.value),
+                'ISO 14064',
+                dataset.allgemein?.esgRatingAndZertifizierung?.iso14064
+              ),
+          },
+          {
+            type: 'cell',
+            label: 'EMAS',
+            explanation: 'Hat das Unternehmen eine EMAS Zertifizierung?',
+            shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatYesNoValueForDatatable(dataset.allgemein?.esgRatingAndZertifizierung?.emas?.value),
+                'EMAS',
+                dataset.allgemein?.esgRatingAndZertifizierung?.emas
+              ),
           },
         ],
       },
       {
         type: 'section',
-        label: 'UN Global Concept Prinzipien',
+        label: 'UN Global Compact Prinzipien',
         expandOnPageLoad: true,
         shouldDisplay: (): boolean => true,
         children: [
@@ -581,7 +676,7 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
               formatYesNoValueForDatatable(
-                dataset.allgemein?.unGlobalConceptPrinzipien?.mechanismenZurUeberwachungDerEinhaltungDerUngcp
+                dataset.allgemein?.unGlobalCompactPrinzipien?.mechanismenZurUeberwachungDerEinhaltungDerUngcp
               ),
           },
           {
@@ -590,11 +685,11 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
             explanation:
               'Richtlinien die beschreiben oder Informationen darüber liefern, wie das Unternehmen die Einhaltung der UN Global Compact Prinzipien überwacht.',
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.allgemein?.unGlobalConceptPrinzipien?.mechanismenZurUeberwachungDerEinhaltungDerUngcp == 'Yes',
+              dataset.allgemein?.unGlobalCompactPrinzipien?.mechanismenZurUeberwachungDerEinhaltungDerUngcp == 'Yes',
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes => {
               return formatListOfBaseDataPoint(
                 'Richtlinien zur Einhaltung der UNGCP',
-                dataset.allgemein?.unGlobalConceptPrinzipien?.richtlinienZurEinhaltungDerUngcp,
+                dataset.allgemein?.unGlobalCompactPrinzipien?.richtlinienZurEinhaltungDerUngcp,
                 'Beschreibung der Richtlinie',
                 'Richtlinie'
               );
@@ -605,9 +700,9 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
             label: 'Erklärung der Einhaltung der UNGCP',
             explanation: 'Erklärung, dass keine Verstöße gegen diese Grundsätze vorliegen',
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.allgemein?.unGlobalConceptPrinzipien?.mechanismenZurUeberwachungDerEinhaltungDerUngcp == 'Yes',
+              dataset.allgemein?.unGlobalCompactPrinzipien?.mechanismenZurUeberwachungDerEinhaltungDerUngcp == 'Yes',
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
-              formatFreeTextForDatatable(dataset.allgemein?.unGlobalConceptPrinzipien?.erklaerungDerEinhaltungDerUngcp),
+              formatFreeTextForDatatable(dataset.allgemein?.unGlobalCompactPrinzipien?.erklaerungDerEinhaltungDerUngcp),
           },
         ],
       },
@@ -687,7 +782,7 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
             label: 'Ausschlusslisten',
             explanation: 'Ausschlusslisten auf Basis von ESG Kriterien',
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.allgemein?.sonstige?.ausschlusslistenAufBasisVonEsgKriterien == 'Yes',
+              dataset.allgemein?.oecdLeitsaetze?.mechanismenZurUeberwachungDerEinhaltungDerOecdLeitsaetze == 'Yes',
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
               formatFreeTextForDatatable(dataset.allgemein?.sonstige?.ausschlusslisten),
           },

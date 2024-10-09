@@ -11,26 +11,13 @@ import org.dataland.frameworktoolbox.intermediate.group.get
 object EsgQuestionnaireListOfStringBaseDataPointComponents {
 
     /**
-     * Sets german headers for the "Aktuelle Berichte" component
+     * Sets german headers for the "Dokumente zur Nachhaltigkeitsstrategie" component
      */
-    fun aktuelleBerichte(componentGroupAllgemein: ComponentGroup) {
-        componentGroupAllgemein.get<ComponentGroup>("esgBerichte")
-            .edit<ListOfStringBaseDataPointComponent>("aktuelleBerichte") {
-                descriptionColumnHeader = "Beschreibung des Berichts"
-                documentColumnHeader = "Bericht"
-            }
-    }
-
-    /**
-     * Sets german headers for the "Weitere Akkreditierungen" component
-     */
-    fun weitereAkkreditierungen(
-        componentGroupAllgemein: ComponentGroup,
-    ) {
-        componentGroupAllgemein.get<ComponentGroup>("akkreditierungen")
-            .edit<ListOfStringBaseDataPointComponent>("weitereAkkreditierungen") {
-                descriptionColumnHeader = "Beschreibung der Akkreditierung"
-                documentColumnHeader = "Akkreditierung"
+    fun dokumenteZurNachhaltigkeitsstrategie(componentGroupAllgemein: ComponentGroup) {
+        componentGroupAllgemein.get<ComponentGroup>("generelleEsgStrategie")
+            .edit<ListOfStringBaseDataPointComponent>("dokumenteZurNachhaltigkeitsstrategie") {
+                descriptionColumnHeader = "Beschreibung des Dokuments zur Nachhaltigkeitsstrategie"
+                documentColumnHeader = "Dokument"
             }
     }
 
@@ -40,7 +27,7 @@ object EsgQuestionnaireListOfStringBaseDataPointComponents {
     fun richtlinienZurEinhaltungDerUngcp(
         componentGroupAllgemein: ComponentGroup,
     ) {
-        componentGroupAllgemein.get<ComponentGroup>("unGlobalConceptPrinzipien")
+        componentGroupAllgemein.get<ComponentGroup>("unGlobalCompactPrinzipien")
             .edit<ListOfStringBaseDataPointComponent>("richtlinienZurEinhaltungDerUngcp") {
                 descriptionColumnHeader = "Beschreibung der Richtlinie"
                 documentColumnHeader = "Richtlinie"

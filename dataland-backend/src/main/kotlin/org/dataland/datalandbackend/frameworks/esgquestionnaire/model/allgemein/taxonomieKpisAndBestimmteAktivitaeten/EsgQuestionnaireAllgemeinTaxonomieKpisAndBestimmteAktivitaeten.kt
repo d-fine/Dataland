@@ -52,4 +52,12 @@ data class EsgQuestionnaireAllgemeinTaxonomieKpisAndBestimmteAktivitaeten(
 
     val geplanterProzentualerUmsatzanteilImSektorUmstritteneWaffenIn2040: BigDecimal? = null,
 
+    val aktivitaetImSektorTabakanbauUndVerarbeitung: YesNo? = null,
+
+    val aktuellerProzentualerUmsatzanteilImSektorTabakanbauUndVerarbeitung: BigDecimal? = null,
+
+    val geplanterProzentualerUmsatzanteilImSektorTabakanbauUndVerarbeitungIn2030: BigDecimal? = null,
+
+    val geplanterProzentualerUmsatzanteilImSektorTabakanbauUndVerarbeitungIn2040: BigDecimal? = null,
+
 )

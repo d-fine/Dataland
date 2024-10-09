@@ -15554,27 +15554,19 @@
               }
             ]
           },
-          "esgBerichte": {
+          "esgRatingAndZertifizierung": {
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/EsgQuestionnaireAllgemeinEsgBerichte"
+                "$ref": "#/components/schemas/EsgQuestionnaireAllgemeinEsgRatingAndZertifizierung"
               }
             ]
           },
-          "akkreditierungen": {
+          "unGlobalCompactPrinzipien": {
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/EsgQuestionnaireAllgemeinAkkreditierungen"
-              }
-            ]
-          },
-          "unGlobalConceptPrinzipien": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/EsgQuestionnaireAllgemeinUnGlobalConceptPrinzipien"
+                "$ref": "#/components/schemas/EsgQuestionnaireAllgemeinUnGlobalCompactPrinzipien"
               }
             ]
           },
@@ -15636,9 +15628,62 @@
           }
         }
       },
-      "EsgQuestionnaireAllgemeinAkkreditierungen": {
+      "EsgQuestionnaireAllgemeinAnleihen": {
         "type": "object",
         "properties": {
+          "grueneSozialeUndOderNachhaltigeEmissionen": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
+          },
+          "ausstehendeGrueneSozialeUndOderNachhaltigeEmissionen": {
+            "type": "number",
+            "nullable": true
+          },
+          "sustainibilityLinkedDebt": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
+          },
+          "ausstehendeSustainibilityLinkedDebt": {
+            "type": "number",
+            "nullable": true
+          }
+        }
+      },
+      "EsgQuestionnaireAllgemeinEsgRatingAndZertifizierung": {
+        "type": "object",
+        "properties": {
+          "esgRating": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
+          },
+          "ratingagentur": {
+            "type": "string",
+            "nullable": true
+          },
+          "ergebnisDesEsgRatings": {
+            "type": "string",
+            "nullable": true
+          },
+          "ratingbericht": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/BaseDataPointYesNo"
+              }
+            ]
+          },
           "iso14001": {
             "nullable": true,
             "allOf": [
@@ -15671,53 +15716,29 @@
               }
             ]
           },
-          "weitereAkkreditierungen": {
-            "type": "array",
-            "nullable": true,
-            "items": {
-              "$ref": "#/components/schemas/BaseDataPointString"
-            }
-          }
-        }
-      },
-      "EsgQuestionnaireAllgemeinAnleihen": {
-        "type": "object",
-        "properties": {
-          "grueneSozialeUndOderNachhaltigeEmissionen": {
+          "iso14040Ivm14044": {
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/YesNo"
+                "$ref": "#/components/schemas/BaseDataPointYesNo"
               }
             ]
           },
-          "ausstehendeGrueneSozialeUndOderNachhaltigeEmissionen": {
-            "type": "number",
-            "nullable": true
-          },
-          "sustainibilityLinkedDebt": {
+          "iso14064": {
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/YesNo"
+                "$ref": "#/components/schemas/BaseDataPointYesNo"
               }
             ]
           },
-          "ausstehendeSustainibilityLinkedDebt": {
-            "type": "number",
-            "nullable": true
-          }
-        }
-      },
-      "EsgQuestionnaireAllgemeinEsgBerichte": {
-        "type": "object",
-        "properties": {
-          "aktuelleBerichte": {
-            "type": "array",
+          "emas": {
             "nullable": true,
-            "items": {
-              "$ref": "#/components/schemas/BaseDataPointString"
-            }
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/BaseDataPointYesNo"
+              }
+            ]
           }
         }
       },
@@ -16122,10 +16143,30 @@
           "geplanterProzentualerUmsatzanteilImSektorUmstritteneWaffenIn2040": {
             "type": "number",
             "nullable": true
+          },
+          "aktivitaetImSektorTabakanbauUndVerarbeitung": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
+          },
+          "aktuellerProzentualerUmsatzanteilImSektorTabakanbauUndVerarbeitung": {
+            "type": "number",
+            "nullable": true
+          },
+          "geplanterProzentualerUmsatzanteilImSektorTabakanbauUndVerarbeitungIn2030": {
+            "type": "number",
+            "nullable": true
+          },
+          "geplanterProzentualerUmsatzanteilImSektorTabakanbauUndVerarbeitungIn2040": {
+            "type": "number",
+            "nullable": true
           }
         }
       },
-      "EsgQuestionnaireAllgemeinUnGlobalConceptPrinzipien": {
+      "EsgQuestionnaireAllgemeinUnGlobalCompactPrinzipien": {
         "type": "object",
         "properties": {
           "mechanismenZurUeberwachungDerEinhaltungDerUngcp": {
@@ -17691,25 +17732,25 @@
         ],
         "type": "object",
         "properties": {
-          "companyName": {
-            "type": "string"
+          "lei": {
+            "type": "string",
+            "nullable": true
           },
-          "companyId": {
+          "headquarters": {
             "type": "string"
           },
           "countryCode": {
-            "type": "string"
-          },
-          "headquarters": {
             "type": "string"
           },
           "sector": {
             "type": "string",
             "nullable": true
           },
-          "lei": {
-            "type": "string",
-            "nullable": true
+          "companyName": {
+            "type": "string"
+          },
+          "companyId": {
+            "type": "string"
           }
         }
       },

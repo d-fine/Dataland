@@ -87,22 +87,25 @@ export function generateEsgQuestionnaireData(nullProbability = DEFAULT_PROBABILI
         aktuellerProzentualerUmsatzanteilImSektorUmstritteneWaffen: dataGenerator.randomPercentageValue(),
         geplanterProzentualerUmsatzanteilImSektorUmstritteneWaffenIn2030: dataGenerator.randomPercentageValue(),
         geplanterProzentualerUmsatzanteilImSektorUmstritteneWaffenIn2040: dataGenerator.randomPercentageValue(),
+        aktivitaetImSektorTabakanbauUndVerarbeitung: dataGenerator.randomYesNo(),
+        aktuellerProzentualerUmsatzanteilImSektorTabakanbauUndVerarbeitung: dataGenerator.randomPercentageValue(),
+        geplanterProzentualerUmsatzanteilImSektorTabakanbauUndVerarbeitungIn2030: dataGenerator.randomPercentageValue(),
+        geplanterProzentualerUmsatzanteilImSektorTabakanbauUndVerarbeitungIn2040: dataGenerator.randomPercentageValue(),
       },
-      esgBerichte: {
-        aktuelleBerichte: dataGenerator.valueOrNull(
-          generateArray(() => dataGenerator.guaranteedBaseDataPoint(dataGenerator.guaranteedShortString()), 1, 5, 0)
-        ),
-      },
-      akkreditierungen: {
+      esgRatingAndZertifizierung: {
+        esgRating: dataGenerator.randomYesNo(),
+        ratingagentur: dataGenerator.randomShortString(),
+        ergebnisDesEsgRatings: dataGenerator.randomShortString(),
+        ratingbericht: dataGenerator.randomBaseDataPoint(dataGenerator.guaranteedYesNo()),
         iso14001: dataGenerator.randomBaseDataPoint(dataGenerator.guaranteedYesNo()),
         iso45001: dataGenerator.randomBaseDataPoint(dataGenerator.guaranteedYesNo()),
         iso27001: dataGenerator.randomBaseDataPoint(dataGenerator.guaranteedYesNo()),
         iso50001: dataGenerator.randomBaseDataPoint(dataGenerator.guaranteedYesNo()),
-        weitereAkkreditierungen: dataGenerator.valueOrNull(
-          generateArray(() => dataGenerator.guaranteedBaseDataPoint(dataGenerator.guaranteedShortString()), 1, 5, 0)
-        ),
+        iso14040Ivm14044: dataGenerator.randomBaseDataPoint(dataGenerator.guaranteedYesNo()),
+        iso14064: dataGenerator.randomBaseDataPoint(dataGenerator.guaranteedYesNo()),
+        emas: dataGenerator.randomBaseDataPoint(dataGenerator.guaranteedYesNo()),
       },
-      unGlobalConceptPrinzipien: {
+      unGlobalCompactPrinzipien: {
         mechanismenZurUeberwachungDerEinhaltungDerUngcp: dataGenerator.randomYesNo(),
         richtlinienZurEinhaltungDerUngcp: dataGenerator.valueOrNull(
           generateArray(() => dataGenerator.guaranteedBaseDataPoint(dataGenerator.guaranteedShortString()), 1, 5, 0)

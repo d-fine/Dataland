@@ -45,8 +45,8 @@ function modifyPreparedFixturesPartOne(newFixture: FixtureData<EsgQuestionnaireD
   if (newFixture.t.allgemein?.esgBerichte?.nachhaltigkeitsberichte) {
     newFixture.t.allgemein.esgBerichte.nachhaltigkeitsberichte = YesNo.Yes;
   } */ // TODO comment out changed fields
-  if (newFixture.t.allgemein?.unGlobalConceptPrinzipien?.mechanismenZurUeberwachungDerEinhaltungDerUngcp) {
-    newFixture.t.allgemein.unGlobalConceptPrinzipien.mechanismenZurUeberwachungDerEinhaltungDerUngcp = YesNo.Yes;
+  if (newFixture.t.allgemein?.unGlobalCompactPrinzipien?.mechanismenZurUeberwachungDerEinhaltungDerUngcp) {
+    newFixture.t.allgemein.unGlobalCompactPrinzipien.mechanismenZurUeberwachungDerEinhaltungDerUngcp = YesNo.Yes;
   }
   if (newFixture.t.allgemein?.oecdLeitsaetze?.mechanismenZurUeberwachungDerEinhaltungDerOecdLeitsaetze) {
     newFixture.t.allgemein.oecdLeitsaetze.mechanismenZurUeberwachungDerEinhaltungDerOecdLeitsaetze = YesNo.Yes;
@@ -88,8 +88,8 @@ function modifyPreparedFixturesPartTwo(newFixture: FixtureData<EsgQuestionnaireD
   if (newFixture.t.allgemein?.anleihen?.sustainibilityLinkedDebt) {
     newFixture.t.allgemein.anleihen.sustainibilityLinkedDebt = YesNo.Yes;
   }
-  if (newFixture.t.allgemein?.esgBerichte?.aktuelleBerichte) {
-    newFixture.t.allgemein?.esgBerichte?.aktuelleBerichte.push({
+  if (newFixture.t.allgemein?.generelleEsgStrategie?.dokumenteZurNachhaltigkeitsstrategie) {
+    newFixture.t.allgemein.generelleEsgStrategie.dokumenteZurNachhaltigkeitsstrategie.push({
       value: 'Report with null data source',
       dataSource: null,
     });

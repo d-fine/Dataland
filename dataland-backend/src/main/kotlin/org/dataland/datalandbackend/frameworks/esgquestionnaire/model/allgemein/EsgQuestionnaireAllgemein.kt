@@ -2,12 +2,10 @@
 package org.dataland.datalandbackend.frameworks.esgquestionnaire.model.allgemein
 
 import jakarta.validation.Valid
-import org.dataland.datalandbackend.frameworks.esgquestionnaire.model.allgemein.akkreditierungen
-    .EsgQuestionnaireAllgemeinAkkreditierungen
 import org.dataland.datalandbackend.frameworks.esgquestionnaire.model.allgemein.anleihen
     .EsgQuestionnaireAllgemeinAnleihen
-import org.dataland.datalandbackend.frameworks.esgquestionnaire.model.allgemein.esgBerichte
-    .EsgQuestionnaireAllgemeinEsgBerichte
+import org.dataland.datalandbackend.frameworks.esgquestionnaire.model.allgemein.esgRatingAndZertifizierung
+    .EsgQuestionnaireAllgemeinEsgRatingAndZertifizierung
 import org.dataland.datalandbackend.frameworks.esgquestionnaire.model.allgemein.fuehrungsstandards
     .EsgQuestionnaireAllgemeinFuehrungsstandards
 import org.dataland.datalandbackend.frameworks.esgquestionnaire.model.allgemein.generelleEsgStrategie
@@ -22,8 +20,8 @@ import org.dataland.datalandbackend.frameworks.esgquestionnaire.model.allgemein.
     .EsgQuestionnaireAllgemeinSonstige
 import org.dataland.datalandbackend.frameworks.esgquestionnaire.model.allgemein.taxonomieKpisAndBestimmteAktivitaeten
     .EsgQuestionnaireAllgemeinTaxonomieKpisAndBestimmteAktivitaeten
-import org.dataland.datalandbackend.frameworks.esgquestionnaire.model.allgemein.unGlobalConceptPrinzipien
-    .EsgQuestionnaireAllgemeinUnGlobalConceptPrinzipien
+import org.dataland.datalandbackend.frameworks.esgquestionnaire.model.allgemein.unGlobalCompactPrinzipien
+    .EsgQuestionnaireAllgemeinUnGlobalCompactPrinzipien
 
 /**
  * The data-model for the Allgemein section
@@ -36,13 +34,10 @@ data class EsgQuestionnaireAllgemein(
     val taxonomieKpisAndBestimmteAktivitaeten: EsgQuestionnaireAllgemeinTaxonomieKpisAndBestimmteAktivitaeten? = null,
 
     @field:Valid()
-    val esgBerichte: EsgQuestionnaireAllgemeinEsgBerichte? = null,
+    val esgRatingAndZertifizierung: EsgQuestionnaireAllgemeinEsgRatingAndZertifizierung? = null,
 
     @field:Valid()
-    val akkreditierungen: EsgQuestionnaireAllgemeinAkkreditierungen? = null,
-
-    @field:Valid()
-    val unGlobalConceptPrinzipien: EsgQuestionnaireAllgemeinUnGlobalConceptPrinzipien? = null,
+    val unGlobalCompactPrinzipien: EsgQuestionnaireAllgemeinUnGlobalCompactPrinzipien? = null,
 
     @field:Valid()
     val oecdLeitsaetze: EsgQuestionnaireAllgemeinOecdLeitsaetze? = null,
