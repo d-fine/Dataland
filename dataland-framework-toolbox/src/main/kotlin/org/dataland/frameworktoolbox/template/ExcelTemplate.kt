@@ -8,15 +8,21 @@ import com.fasterxml.jackson.module.kotlin.kotlinModule
 import org.dataland.frameworktoolbox.template.model.TemplateRow
 import java.io.File
 
+typealias ExcelTemplate = ParsedExcel<TemplateRow>
+
 /**
  * An In-Memory representation of a single Excel-Template file
  */
-class ExcelTemplate(val rows: MutableList<TemplateRow>) {
+class ParsedExcel<T>(val rows: MutableList<T>) {
+
     companion object {
+
+        const val DEFAULT_SHEET_NAME: String = "Framework Data Model"
+
         /**
          * Load a csv or xlsx file to an ExcelTemplate.
          */
-        fun fromFile(file: File): ExcelTemplate {
+        inline fun <reified T> fromFile(file: File): ParsedExcel<T> {
             return when (file.extension) {
                 "xlsx" -> fromXlsx(file)
                 "csv" -> fromCsv(file)
@@ -27,11 +33,12 @@ class ExcelTemplate(val rows: MutableList<TemplateRow>) {
         /**
          * Parse an Excel Template from a xlsx file.
          */
-        fun fromXlsx(xlsxFile: File): ExcelTemplate {
+        inline fun <reified T> fromXlsx(xlsxFile: File, sheetName: String = DEFAULT_SHEET_NAME): ParsedExcel<T> {
+            val suffix = if (sheetName != DEFAULT_SHEET_NAME) "-$sheetName" else ""
             val targetCsvFile = xlsxFile.parentFile
-                .resolve("${xlsxFile.nameWithoutExtension}.csv")
+                .resolve("${xlsxFile.nameWithoutExtension}$suffix.csv")
 
-            ExcelToCsvConverter(xlsxFile, "Framework Data Model", targetCsvFile).convert()
+            ExcelToCsvConverter(xlsxFile, sheetName, targetCsvFile).convert()
 
             return fromCsv(targetCsvFile)
         }
@@ -39,22 +46,22 @@ class ExcelTemplate(val rows: MutableList<TemplateRow>) {
         /**
          * Parse an Excel Template from a CSV file.
          */
-        fun fromCsv(csvFile: File): ExcelTemplate {
+        inline fun <reified T> fromCsv(csvFile: File): ParsedExcel<T> {
             val csvSchema = CsvSchema
                 .emptySchema()
                 .withHeader()
                 .withColumnSeparator(',')
                 .withArrayElementSeparator(null)
 
-            val iterator: MappingIterator<TemplateRow> = CsvMapper()
+            val iterator: MappingIterator<T> = CsvMapper()
                 .registerModule(kotlinModule())
-                .readerFor(TemplateRow::class.java)
+                .readerFor(T::class.java)
                 .with(CsvParser.Feature.SKIP_EMPTY_LINES)
                 .with(csvSchema)
                 .readValues(csvFile)
 
             val allEntries = iterator.asSequence().toMutableList()
-            return ExcelTemplate(allEntries)
+            return ParsedExcel<T>(allEntries)
         }
     }
 }

@@ -31,6 +31,26 @@ class FrameworkFixtureGeneratorBuilder(
         elements = mutableListOf(),
     )
 
+    /**
+     * This data class defines a custom generator that can be used to define additional custom fake fixture
+     * generators during the initial run of the framework toolbox.
+     * These custom generators consist of a [className] of the data-model for which the custom generator generates the
+     * data. Additionally, we can specify a [prefix] for the function that defines the custom generator. The [prefix]
+     * is usually 'random' or 'guaranteed'.
+     * The [rootSection] defines the structure of the fake fixture generator.
+     */
+    data class CustomGenerator(val className: String, val prefix: String, val rootSection: FixtureSectionBuilder)
+
+    private val customGenerators = mutableListOf<CustomGenerator>()
+
+    /**
+     * This function adds a new custom generator that is generated during the first run of the toolbox.
+     * The [className], [prefix] and [rootSection] work as described for the [CustomGenerator] class.
+     */
+    fun addCustomGenerator(className: String, prefix: String, rootSection: FixtureSectionBuilder) {
+        customGenerators.add(CustomGenerator(className, prefix, rootSection))
+    }
+
     private fun buildIndexTs(indexTsPath: Path) {
         val freeMarkerContext = mapOf(
             "frameworkIdentifier" to framework.identifier,
@@ -66,6 +86,7 @@ class FrameworkFixtureGeneratorBuilder(
     private fun buildFrameworkGeneratorsTs(frameworkGeneratorTsPath: Path) {
         val freeMarkerContext = mapOf(
             "frameworkBaseName" to getNameFromLabel(framework.identifier).capitalizeEn(),
+            "generators" to customGenerators,
         )
 
         val freemarkerTemplate = FreeMarker.configuration
