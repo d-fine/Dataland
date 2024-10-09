@@ -695,12 +695,12 @@ export const esgQuestionnaireDataModel = [
         ],
       },
       {
-        name: 'sonstige',
-        label: 'Sonstige',
+        name: 'unSgds',
+        label: 'UN SGDs',
         fields: [
           {
-            name: 'ausrichtungAufDieUnSdgsUndAktivesVerfolgen',
-            label: 'Ausrichtung auf die UN SDGs und aktives Verfolgen',
+            name: 'ausrichtungNachDenUnSdgsUndAktivesVerfolgen',
+            label: 'Ausrichtung nach den UN SDGs und aktives Verfolgen',
             description:
               'Wie steht das Unternehmen in Einklang mit den 17 UN-Zielen für nachhaltige Entwicklung? Welche dieser Ziele verfolgt das Unternehmen aktiv, entweder durch ihre Geschäftstätigkeit oder durch die Unternehmensführung?',
 
@@ -709,26 +709,69 @@ export const esgQuestionnaireDataModel = [
             showIf: (dataset: EsgQuestionnaireData): boolean =>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
           },
+        ],
+      },
+      {
+        name: 'richtlinienDesUnternehmens',
+        label: 'Richtlinien des Unternehmens',
+        fields: [
           {
-            name: 'ausschlusslistenAufBasisVonEsgKriterien',
-            label: 'Ausschlusslisten auf Basis von ESG Kriterien',
-            description:
-              'Führt das Unternehmen Ausschlusslisten? Von besonderem Interesse sind Listen die Ausschlusskriterien, die einen Bezug zu den Bereichen E, S oder G haben.',
+            name: 'existenzVonRichtlinienZuSpezifischenThemen',
+            label: 'Existenz von Richtlinien zu spezifischen Themen',
+            description: 'Zu welchen der genannten Themen verfügt das Unternehmen über Richtlinien?',
+            options: [
+              {
+                label: 'Diversität & Inklusion',
+                value: 'DiversitaetAndInklusion',
+              },
+              {
+                label: 'Anti-Diskriminierung',
+                value: 'AntiDiskriminierung',
+              },
+              {
+                label: 'Arbeitsschutz',
+                value: 'Arbeitsschutz',
+              },
+              {
+                label: 'Interessenskonflikte',
+                value: 'Interessenskonflikte',
+              },
+              {
+                label: 'Anti-Korruption',
+                value: 'AntiKorruption',
+              },
+              {
+                label: 'Whistleblowing',
+                value: 'Whistleblowing',
+              },
+              {
+                label: 'Menschenrechte',
+                value: 'Menschenrechte',
+              },
+              {
+                label: 'Umgang mit Kunden',
+                value: 'UmgangMitKunden',
+              },
+              {
+                label: 'Gesundheit & Sicherheit',
+                value: 'GesundheitAndSicherheit',
+              },
+            ],
 
-            component: 'YesNoFormField',
+            component: 'MultiSelectFormField',
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
           },
           {
-            name: 'ausschlusslisten',
-            label: 'Ausschlusslisten',
-            description: 'Bitte nennen Sie die Ausschlusslisten auf Basis von ESG Kriterien.',
+            name: 'beruecksichtigungVonNachhaltigkeitskriterienBeiDerLieferantenauswahl',
+            label: 'Berücksichtigung von Nachhaltigkeitskriterien bei der Lieferantenauswahl',
+            description: 'Wie berücksichtigt das Unternehmen Nachhaltigkeitskriterien bei der Auswahl der Lieferanten?',
 
             component: 'FreeTextFormField',
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.allgemein?.oecdLeitsaetze?.mechanismenZurUeberwachungDerEinhaltungDerOecdLeitsaetze == 'Yes',
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
           },
         ],
       },
@@ -941,58 +984,6 @@ export const esgQuestionnaireDataModel = [
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
               dataset.allgemein?.rechtsstreitigkeiten?.rechtsstreitigkeitenMitBezugZuG == 'Yes',
-          },
-        ],
-      },
-      {
-        name: 'rating',
-        label: 'Rating',
-        fields: [
-          {
-            name: 'esgRating',
-            label: 'ESG-Rating',
-            description: 'Hat das Unternehmen bereits ein ESG-Rating einer anerkannten Ratingagentur?',
-
-            component: 'YesNoFormField',
-            required: false,
-            showIf: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
-          },
-          {
-            name: 'agentur',
-            label: 'Agentur',
-            description: 'Welche Rating Agentur hat das Rating durchgeführt?',
-
-            component: 'InputTextFormField',
-            required: false,
-            showIf: (dataset: EsgQuestionnaireData): boolean => dataset.allgemein?.rating?.esgRating == 'Yes',
-          },
-          {
-            name: 'ergebnis',
-            label: 'Ergebnis',
-            description: 'Wie lautet das Rating?',
-
-            component: 'InputTextFormField',
-            required: false,
-            showIf: (dataset: EsgQuestionnaireData): boolean => dataset.allgemein?.rating?.esgRating == 'Yes',
-          },
-          {
-            name: 'ratingbericht',
-            label: 'Ratingbericht',
-            description: 'Liegt ein Ratingbericht vor?',
-
-            component: 'YesNoBaseDataPointFormField',
-            required: false,
-            showIf: (dataset: EsgQuestionnaireData): boolean => dataset.allgemein?.rating?.esgRating == 'Yes',
-          },
-          {
-            name: 'kritischePunkte',
-            label: 'Kritische Punkte',
-            description: 'Was waren die kritischen Punkte beim ESG-Rating?',
-
-            component: 'FreeTextFormField',
-            required: false,
-            showIf: (dataset: EsgQuestionnaireData): boolean => dataset.allgemein?.rating?.esgRating == 'Yes',
           },
         ],
       },

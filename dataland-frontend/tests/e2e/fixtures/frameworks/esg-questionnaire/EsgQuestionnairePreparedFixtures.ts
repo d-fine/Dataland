@@ -51,9 +51,6 @@ function modifyPreparedFixturesPartOne(newFixture: FixtureData<EsgQuestionnaireD
   if (newFixture.t.allgemein?.oecdLeitsaetze?.mechanismenZurUeberwachungDerEinhaltungDerOecdLeitsaetze) {
     newFixture.t.allgemein.oecdLeitsaetze.mechanismenZurUeberwachungDerEinhaltungDerOecdLeitsaetze = YesNo.Yes;
   }
-  if (newFixture.t.allgemein?.sonstige?.ausschlusslistenAufBasisVonEsgKriterien) {
-    newFixture.t.allgemein.sonstige.ausschlusslistenAufBasisVonEsgKriterien = YesNo.Yes;
-  }
   if (newFixture.t.allgemein?.fuehrungsstandards?.oekologischeSozialeFuehrungsstandardsOderPrinzipien) {
     newFixture.t.allgemein.fuehrungsstandards.oekologischeSozialeFuehrungsstandardsOderPrinzipien = YesNo.Yes;
   }
@@ -69,8 +66,8 @@ function modifyPreparedFixturesPartOne(newFixture: FixtureData<EsgQuestionnaireD
   if (newFixture.t.allgemein?.rechtsstreitigkeiten?.rechtsstreitigkeitenMitBezugZuG) {
     newFixture.t.allgemein.rechtsstreitigkeiten.rechtsstreitigkeitenMitBezugZuG = YesNo.Yes;
   }
-  if (newFixture.t.allgemein?.rating?.esgRating) {
-    newFixture.t.allgemein.rating.esgRating = YesNo.Yes;
+  if (newFixture.t.allgemein?.esgRatingAndZertifizierung?.esgRating) {
+    newFixture.t.allgemein.esgRatingAndZertifizierung.esgRating = YesNo.Yes;
   }
 }
 
@@ -79,8 +76,8 @@ function modifyPreparedFixturesPartOne(newFixture: FixtureData<EsgQuestionnaireD
  * @param newFixture generated prepared fixture to modify
  */
 function modifyPreparedFixturesPartTwo(newFixture: FixtureData<EsgQuestionnaireData>): void {
-  if (newFixture.t.allgemein?.rating?.ratingbericht) {
-    newFixture.t.allgemein.rating.ratingbericht.value = YesNo.Yes;
+  if (newFixture.t.allgemein?.esgRatingAndZertifizierung?.ratingbericht) {
+    newFixture.t.allgemein.esgRatingAndZertifizierung.ratingbericht.value = YesNo.Yes;
   }
   if (newFixture.t.allgemein?.anleihen?.grueneSozialeUndOderNachhaltigeEmissionen) {
     newFixture.t.allgemein.anleihen.grueneSozialeUndOderNachhaltigeEmissionen = YesNo.Yes;

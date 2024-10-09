@@ -119,10 +119,24 @@ export function generateEsgQuestionnaireData(nullProbability = DEFAULT_PROBABILI
         ),
         erklaerungDerEinhaltungDerOecdLeitsaetze: dataGenerator.randomParagraphs(),
       },
-      sonstige: {
-        ausrichtungAufDieUnSdgsUndAktivesVerfolgen: dataGenerator.randomParagraphs(),
-        ausschlusslistenAufBasisVonEsgKriterien: dataGenerator.randomYesNo(),
-        ausschlusslisten: dataGenerator.randomParagraphs(),
+      unSgds: {
+        ausrichtungNachDenUnSdgsUndAktivesVerfolgen: dataGenerator.randomParagraphs(),
+      },
+      richtlinienDesUnternehmens: {
+        existenzVonRichtlinienZuSpezifischenThemen: dataGenerator.valueOrNull(
+          pickSubsetOfElements([
+            'DiversitaetAndInklusion',
+            'AntiDiskriminierung',
+            'Arbeitsschutz',
+            'Interessenskonflikte',
+            'AntiKorruption',
+            'Whistleblowing',
+            'Menschenrechte',
+            'UmgangMitKunden',
+            'GesundheitAndSicherheit',
+          ])
+        ),
+        beruecksichtigungVonNachhaltigkeitskriterienBeiDerLieferantenauswahl: dataGenerator.randomParagraphs(),
       },
       fuehrungsstandards: {
         oekologischeSozialeFuehrungsstandardsOderPrinzipien: dataGenerator.randomYesNo(),
@@ -154,13 +168,6 @@ export function generateEsgQuestionnaireData(nullProbability = DEFAULT_PROBABILI
           pickOneElement(Object.values(EsgQuestionnaireAllgemeinRechtsstreitigkeitenStatusZuGOptions))
         ),
         einzelheitenZuDenRechtsstreitigkeitenZuG: dataGenerator.randomParagraphs(),
-      },
-      rating: {
-        esgRating: dataGenerator.randomYesNo(),
-        agentur: dataGenerator.randomShortString(),
-        ergebnis: dataGenerator.randomShortString(),
-        ratingbericht: dataGenerator.randomBaseDataPoint(dataGenerator.guaranteedYesNo()),
-        kritischePunkte: dataGenerator.randomParagraphs(),
       },
       anleihen: {
         grueneSozialeUndOderNachhaltigeEmissionen: dataGenerator.randomYesNo(),

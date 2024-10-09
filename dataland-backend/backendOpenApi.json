@@ -15578,11 +15578,19 @@
               }
             ]
           },
-          "sonstige": {
+          "unSgds": {
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/EsgQuestionnaireAllgemeinSonstige"
+                "$ref": "#/components/schemas/EsgQuestionnaireAllgemeinUnSgds"
+              }
+            ]
+          },
+          "richtlinienDesUnternehmens": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/EsgQuestionnaireAllgemeinRichtlinienDesUnternehmens"
               }
             ]
           },
@@ -15599,14 +15607,6 @@
             "allOf": [
               {
                 "$ref": "#/components/schemas/EsgQuestionnaireAllgemeinRechtsstreitigkeiten"
-              }
-            ]
-          },
-          "rating": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/EsgQuestionnaireAllgemeinRating"
               }
             ]
           },
@@ -15873,39 +15873,6 @@
           }
         }
       },
-      "EsgQuestionnaireAllgemeinRating": {
-        "type": "object",
-        "properties": {
-          "esgRating": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/YesNo"
-              }
-            ]
-          },
-          "agentur": {
-            "type": "string",
-            "nullable": true
-          },
-          "ergebnis": {
-            "type": "string",
-            "nullable": true
-          },
-          "ratingbericht": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/BaseDataPointYesNo"
-              }
-            ]
-          },
-          "kritischePunkte": {
-            "type": "string",
-            "nullable": true
-          }
-        }
-      },
       "EsgQuestionnaireAllgemeinRechtsstreitigkeiten": {
         "type": "object",
         "properties": {
@@ -16000,6 +15967,22 @@
           "Geklaert"
         ]
       },
+      "EsgQuestionnaireAllgemeinRichtlinienDesUnternehmens": {
+        "type": "object",
+        "properties": {
+          "existenzVonRichtlinienZuSpezifischenThemen": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/ExistenzVonRichtlinienZuSpezifischenThemenOptions"
+            }
+          },
+          "beruecksichtigungVonNachhaltigkeitskriterienBeiDerLieferantenauswahl": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
       "EsgQuestionnaireAllgemeinRisiken": {
         "type": "object",
         "properties": {
@@ -16008,27 +15991,6 @@
             "nullable": true
           },
           "hindernisseBeimUmgangMitEsgBedenken": {
-            "type": "string",
-            "nullable": true
-          }
-        }
-      },
-      "EsgQuestionnaireAllgemeinSonstige": {
-        "type": "object",
-        "properties": {
-          "ausrichtungAufDieUnSdgsUndAktivesVerfolgen": {
-            "type": "string",
-            "nullable": true
-          },
-          "ausschlusslistenAufBasisVonEsgKriterien": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/YesNo"
-              }
-            ]
-          },
-          "ausschlusslisten": {
             "type": "string",
             "nullable": true
           }
@@ -16185,6 +16147,15 @@
             }
           },
           "erklaerungDerEinhaltungDerUngcp": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "EsgQuestionnaireAllgemeinUnSgds": {
+        "type": "object",
+        "properties": {
+          "ausrichtungNachDenUnSdgsUndAktivesVerfolgen": {
             "type": "string",
             "nullable": true
           }
@@ -16979,6 +16950,20 @@
           }
         }
       },
+      "ExistenzVonRichtlinienZuSpezifischenThemenOptions": {
+        "type": "string",
+        "enum": [
+          "DiversitaetAndInklusion",
+          "AntiDiskriminierung",
+          "Arbeitsschutz",
+          "Interessenskonflikte",
+          "AntiKorruption",
+          "Whistleblowing",
+          "Menschenrechte",
+          "UmgangMitKunden",
+          "GesundheitAndSicherheit"
+        ]
+      },
       "RecyclingImProduktionsprozessValues": {
         "type": "object",
         "properties": {
@@ -17732,25 +17717,25 @@
         ],
         "type": "object",
         "properties": {
-          "lei": {
-            "type": "string",
-            "nullable": true
+          "companyId": {
+            "type": "string"
           },
-          "headquarters": {
+          "companyName": {
             "type": "string"
           },
           "countryCode": {
+            "type": "string"
+          },
+          "headquarters": {
             "type": "string"
           },
           "sector": {
             "type": "string",
             "nullable": true
           },
-          "companyName": {
-            "type": "string"
-          },
-          "companyId": {
-            "type": "string"
+          "lei": {
+            "type": "string",
+            "nullable": true
           }
         }
       },
@@ -17773,10 +17758,10 @@
         ],
         "type": "object",
         "properties": {
-          "companyName": {
+          "companyId": {
             "type": "string"
           },
-          "companyId": {
+          "companyName": {
             "type": "string"
           }
         }

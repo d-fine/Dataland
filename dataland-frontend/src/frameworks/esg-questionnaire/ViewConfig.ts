@@ -10,8 +10,8 @@ import { formatNumberForDatatable } from '@/components/resources/dataTable/conve
 import { formatStringForDatatable } from '@/components/resources/dataTable/conversion/PlainStringValueGetterFactory';
 import { formatEsgQuestionnaireYearlyDecimalTimeseriesDataForTable } from '@/components/resources/dataTable/conversion/esg-questionnaire/EsgQuestionnaireYearlyDecimalTimeseriesDataGetterFactory';
 import { activityApiNameToHumanizedName } from '@/components/resources/frameworkDataSearch/EuTaxonomyActivityNames';
-import { wrapDisplayValueWithDatapointInformation } from '@/components/resources/dataTable/conversion/DataPoints';
 import { formatListOfBaseDataPoint } from '@/components/resources/dataTable/conversion/ListOfBaseDataPointGetterFactory';
+import { wrapDisplayValueWithDatapointInformation } from '@/components/resources/dataTable/conversion/DataPoints';
 import { formatPercentageForDatatable } from '@/components/resources/dataTable/conversion/PercentageValueGetterFactory';
 import { formatNaceCodesForDatatable } from '@/components/resources/dataTable/conversion/NaceCodeValueGetterFactory';
 export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData> = [
@@ -753,38 +753,65 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
       },
       {
         type: 'section',
-        label: 'Sonstige',
+        label: 'UN SGDs',
         expandOnPageLoad: true,
         shouldDisplay: (): boolean => true,
         children: [
           {
             type: 'cell',
-            label: 'Ausrichtung auf die UN SDGs und aktives Verfolgen',
+            label: 'Ausrichtung nach den UN SDGs und aktives Verfolgen',
             explanation:
               'Wie steht das Unternehmen in Einklang mit den 17 UN-Zielen für nachhaltige Entwicklung? Welche dieser Ziele verfolgt das Unternehmen aktiv, entweder durch ihre Geschäftstätigkeit oder durch die Unternehmensführung?',
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
-              formatFreeTextForDatatable(dataset.allgemein?.sonstige?.ausrichtungAufDieUnSdgsUndAktivesVerfolgen),
+              formatFreeTextForDatatable(dataset.allgemein?.unSgds?.ausrichtungNachDenUnSdgsUndAktivesVerfolgen),
+          },
+        ],
+      },
+      {
+        type: 'section',
+        label: 'Richtlinien des Unternehmens',
+        expandOnPageLoad: true,
+        shouldDisplay: (): boolean => true,
+        children: [
+          {
+            type: 'cell',
+            label: 'Existenz von Richtlinien zu spezifischen Themen',
+            explanation: 'Zu welchen der genannten Themen verfügt das Unternehmen über Richtlinien?',
+            shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes => {
+              const mappings = {
+                DiversitaetAndInklusion: 'Diversität & Inklusion',
+                AntiDiskriminierung: 'Anti-Diskriminierung',
+                Arbeitsschutz: 'Arbeitsschutz',
+                Interessenskonflikte: 'Interessenskonflikte',
+                AntiKorruption: 'Anti-Korruption',
+                Whistleblowing: 'Whistleblowing',
+                Menschenrechte: 'Menschenrechte',
+                UmgangMitKunden: 'Umgang mit Kunden',
+                GesundheitAndSicherheit: 'Gesundheit & Sicherheit',
+              };
+              return formatListOfStringsForDatatable(
+                dataset.allgemein?.richtlinienDesUnternehmens?.existenzVonRichtlinienZuSpezifischenThemen?.map((it) =>
+                  getOriginalNameFromTechnicalName(it, mappings)
+                ),
+                'Existenz von Richtlinien zu spezifischen Themen'
+              );
+            },
           },
           {
             type: 'cell',
-            label: 'Ausschlusslisten auf Basis von ESG Kriterien',
-            explanation:
-              'Führt das Unternehmen Ausschlusslisten? Von besonderem Interesse sind Listen die Ausschlusskriterien, die einen Bezug zu den Bereichen E, S oder G haben.',
+            label: 'Berücksichtigung von Nachhaltigkeitskriterien bei der Lieferantenauswahl',
+            explanation: 'Wie berücksichtigt das Unternehmen Nachhaltigkeitskriterien bei der Auswahl der Lieferanten?',
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
-              formatYesNoValueForDatatable(dataset.allgemein?.sonstige?.ausschlusslistenAufBasisVonEsgKriterien),
-          },
-          {
-            type: 'cell',
-            label: 'Ausschlusslisten',
-            explanation: 'Ausschlusslisten auf Basis von ESG Kriterien',
-            shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.allgemein?.oecdLeitsaetze?.mechanismenZurUeberwachungDerEinhaltungDerOecdLeitsaetze == 'Yes',
-            valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
-              formatFreeTextForDatatable(dataset.allgemein?.sonstige?.ausschlusslisten),
+              formatFreeTextForDatatable(
+                dataset.allgemein?.richtlinienDesUnternehmens
+                  ?.beruecksichtigungVonNachhaltigkeitskriterienBeiDerLieferantenauswahl
+              ),
           },
         ],
       },
@@ -990,59 +1017,6 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
               formatFreeTextForDatatable(
                 dataset.allgemein?.rechtsstreitigkeiten?.einzelheitenZuDenRechtsstreitigkeitenZuG
               ),
-          },
-        ],
-      },
-      {
-        type: 'section',
-        label: 'Rating',
-        expandOnPageLoad: true,
-        shouldDisplay: (): boolean => true,
-        children: [
-          {
-            type: 'cell',
-            label: 'ESG-Rating',
-            explanation: 'Hat das Unternehmen bereits ein ESG-Rating einer anerkannten Ratingagentur?',
-            shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
-            valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
-              formatYesNoValueForDatatable(dataset.allgemein?.rating?.esgRating),
-          },
-          {
-            type: 'cell',
-            label: 'Agentur',
-            explanation: 'Welche Rating Agentur hat das Rating durchgeführt?',
-            shouldDisplay: (dataset: EsgQuestionnaireData): boolean => dataset.allgemein?.rating?.esgRating == 'Yes',
-            valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.allgemein?.rating?.agentur),
-          },
-          {
-            type: 'cell',
-            label: 'Ergebnis',
-            explanation: 'Wie lautet das Rating?',
-            shouldDisplay: (dataset: EsgQuestionnaireData): boolean => dataset.allgemein?.rating?.esgRating == 'Yes',
-            valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.allgemein?.rating?.ergebnis),
-          },
-          {
-            type: 'cell',
-            label: 'Ratingbericht',
-            explanation: 'Liegt ein Ratingbericht vor?',
-            shouldDisplay: (dataset: EsgQuestionnaireData): boolean => dataset.allgemein?.rating?.esgRating == 'Yes',
-            valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
-              wrapDisplayValueWithDatapointInformation(
-                formatYesNoValueForDatatable(dataset.allgemein?.rating?.ratingbericht?.value),
-                'Ratingbericht',
-                dataset.allgemein?.rating?.ratingbericht
-              ),
-          },
-          {
-            type: 'cell',
-            label: 'Kritische Punkte',
-            explanation: 'Was waren die kritischen Punkte beim ESG-Rating?',
-            shouldDisplay: (dataset: EsgQuestionnaireData): boolean => dataset.allgemein?.rating?.esgRating == 'Yes',
-            valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
-              formatFreeTextForDatatable(dataset.allgemein?.rating?.kritischePunkte),
           },
         ],
       },

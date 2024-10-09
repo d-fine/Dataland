@@ -12,16 +12,16 @@ import org.dataland.datalandbackend.frameworks.esgquestionnaire.model.allgemein.
     .EsgQuestionnaireAllgemeinGenerelleEsgStrategie
 import org.dataland.datalandbackend.frameworks.esgquestionnaire.model.allgemein.oecdLeitsaetze
     .EsgQuestionnaireAllgemeinOecdLeitsaetze
-import org.dataland.datalandbackend.frameworks.esgquestionnaire.model.allgemein.rating.EsgQuestionnaireAllgemeinRating
 import org.dataland.datalandbackend.frameworks.esgquestionnaire.model.allgemein.rechtsstreitigkeiten
     .EsgQuestionnaireAllgemeinRechtsstreitigkeiten
+import org.dataland.datalandbackend.frameworks.esgquestionnaire.model.allgemein.richtlinienDesUnternehmens
+    .EsgQuestionnaireAllgemeinRichtlinienDesUnternehmens
 import org.dataland.datalandbackend.frameworks.esgquestionnaire.model.allgemein.risiken.EsgQuestionnaireAllgemeinRisiken
-import org.dataland.datalandbackend.frameworks.esgquestionnaire.model.allgemein.sonstige
-    .EsgQuestionnaireAllgemeinSonstige
 import org.dataland.datalandbackend.frameworks.esgquestionnaire.model.allgemein.taxonomieKpisAndBestimmteAktivitaeten
     .EsgQuestionnaireAllgemeinTaxonomieKpisAndBestimmteAktivitaeten
 import org.dataland.datalandbackend.frameworks.esgquestionnaire.model.allgemein.unGlobalCompactPrinzipien
     .EsgQuestionnaireAllgemeinUnGlobalCompactPrinzipien
+import org.dataland.datalandbackend.frameworks.esgquestionnaire.model.allgemein.unSgds.EsgQuestionnaireAllgemeinUnSgds
 
 /**
  * The data-model for the Allgemein section
@@ -43,16 +43,16 @@ data class EsgQuestionnaireAllgemein(
     val oecdLeitsaetze: EsgQuestionnaireAllgemeinOecdLeitsaetze? = null,
 
     @field:Valid()
-    val sonstige: EsgQuestionnaireAllgemeinSonstige? = null,
+    val unSgds: EsgQuestionnaireAllgemeinUnSgds? = null,
+
+    @field:Valid()
+    val richtlinienDesUnternehmens: EsgQuestionnaireAllgemeinRichtlinienDesUnternehmens? = null,
 
     @field:Valid()
     val fuehrungsstandards: EsgQuestionnaireAllgemeinFuehrungsstandards? = null,
 
     @field:Valid()
     val rechtsstreitigkeiten: EsgQuestionnaireAllgemeinRechtsstreitigkeiten? = null,
-
-    @field:Valid()
-    val rating: EsgQuestionnaireAllgemeinRating? = null,
 
     @field:Valid()
     val anleihen: EsgQuestionnaireAllgemeinAnleihen? = null,
