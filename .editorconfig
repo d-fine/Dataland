@@ -4,5 +4,5 @@ root = true
 ktlint_standard_argument-list-wrapping = disabled
 
 #Without this line ktlintformat will not ignore excluded files, ktlintcheck works correctly even without it
-[{**/openApiClient/**,**/DataAccessRequestedEmailFactory.kt}]
+[{**/openApiClient/**,**/DataAccessRequestedEmailFactory.kt,**/ReferencedReportsListValidator.kt}]
 ktlint = disabled
