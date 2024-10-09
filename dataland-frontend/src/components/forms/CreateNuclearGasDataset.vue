@@ -18,17 +18,44 @@
               @submit-invalid="checkCustomInputs"
           >
             <FormKit type="hidden" name="companyId" :model-value="companyID" />
-            <FormKit type="hidden" name="reportingPeriod" v-model="yearOfDataDate" />
+            <div class="uploadFormSection grid">
+              <div class="col-3 p-3 topicLabel">
+                <h4 id="reportingPeriod" class="anchor title">Reporting Period</h4>
+              </div>
+              <div class="col-9 form-field formFields uploaded-files">
+                <UploadFormHeader
+                    :label="'Reporting Period'"
+                    :description="'The reporting period the dataset belongs to (e.g. a fiscal year).'"
+                    :is-required="true"
+                />
+                <div class="lg:col-4 md:col-6 col-12 pl-0">
+                  <Calendar
+                      data-test="reportingPeriod"
+                      v-model="reportingPeriod"
+                      inputId="icon"
+                      :showIcon="true"
+                      view="year"
+                      dateFormat="yy"
+                      validation="required"
+                  />
+                </div>
+
+                <FormKit type="hidden" :modelValue="reportingPeriodYear.toString()" name="reportingPeriod" />
+              </div>
+            </div>
 
             <FormKit type="group" name="data" label="data">
               <FormKit
                   type="group"
                   v-for="category in nuclearAndGasDataModel"
-                  :key="category"
+                  :key="category.name"
                   :label="category.label"
                   :name="category.name"
               >
-                <div class="uploadFormSection grid" v-for="subcategory in category.subcategories" :key="subcategory">
+                <div class="uploadFormSection grid"
+                     v-for="subcategory in category.subcategories"
+                     :key="subcategory.name"
+                >
                   <template v-if="subcategoryVisibility.get(subcategory) ?? true">
                     <div class="col-3 p-3 topicLabel">
                       <h4 :id="subcategory.name" class="anchor title">{{ subcategory.label }}</h4>
@@ -38,7 +65,12 @@
                     </div>
 
                     <div class="col-9 formFields">
-                      <FormKit v-for="field in subcategory.fields" :key="field" type="group" :name="subcategory.name">
+                      <FormKit
+                          v-for="field in subcategory.fields"
+                          :key="field"
+                          type="group"
+                          :name="subcategory.name"
+                      >
                         <component
                             v-if="field.showIf(companyAssociatedNuclearAndGasData.data)"
                             :is="field.component"
@@ -53,9 +85,6 @@
                             :data-test="field.name"
                             :unit="field.unit"
                             @reports-updated="updateDocumentsList"
-                            @field-specific-documents-updated="
-                            updateDocumentsOnField(`${category.name}.${subcategory.name}.${field.name}`, $event)
-                          "
                             :ref="field.name"
                         />
                       </FormKit>
@@ -75,13 +104,13 @@
 
           <h4 id="topicTitles" class="title pt-3">On this page</h4>
           <ul>
-            <li v-for="category in nuclearAndGasDataModel" :key="category">
+            <li v-for="category in nuclearAndGasDataModel" :key="category.name">
               <ul>
-                <li v-for="subcategory in category.subcategories" :key="subcategory">
+                <li v-for="subcategory in category.subcategories" :key="subcategory.name">
                   <a
-                      v-if="subcategoryVisibility.get(subcategory) ?? true"
-                      @click="smoothScroll(`#${subcategory.name}`)"
-                  >{{ subcategory.label }}</a
+                    v-if="subcategoryVisibility.get(subcategory) ?? true"
+                    @click="smoothScroll(`#${subcategory.name}`)"
+                    >{{ subcategory.label }}</a
                   >
                 </li>
               </ul>
@@ -110,11 +139,10 @@ import FailMessage from '@/components/messages/FailMessage.vue';
 import { nuclearAndGasDataModel } from '@/frameworks/nuclear-and-gas/UploadConfig';
 import {
   CompanyAssociatedDataNuclearAndGasData,
-  type CompanyReport,
   DataTypeEnum, NuclearAndGasData,
 } from '@clients/backend';
 import { useRoute } from 'vue-router';
-import { checkCustomInputs, checkIfAllUploadedReportsAreReferencedInDataModel } from '@/utils/ValidationUtils';
+import { checkCustomInputs } from '@/utils/ValidationUtils';
 import NaceCodeFormField from '@/components/forms/parts/fields/NaceCodeFormField.vue';
 import InputTextFormField from '@/components/forms/parts/fields/InputTextFormField.vue';
 import FreeTextFormField from '@/components/forms/parts/fields/FreeTextFormField.vue';
@@ -132,14 +160,12 @@ import PercentageFormField from '@/components/forms/parts/fields/PercentageFormF
 import ProductionSitesFormField from '@/components/forms/parts/fields/ProductionSitesFormField.vue';
 import { objectDropNull, type ObjectType } from '@/utils/UpdateObjectUtils';
 import { smoothScroll } from '@/utils/SmoothScroll';
-import { type DocumentToUpload, getAvailableFileNames, uploadFiles } from '@/utils/FileUploadUtils';
 import MostImportantProductsFormField from '@/components/forms/parts/fields/MostImportantProductsFormField.vue';
 import { type Subcategory } from '@/utils/GenericFrameworkTypes';
 import ProcurementCategoriesFormField from '@/components/forms/parts/fields/ProcurementCategoriesFormField.vue';
 import { createSubcategoryVisibilityMap } from '@/utils/UploadFormUtils';
 import HighImpactClimateSectorsFormField from '@/components/forms/parts/fields/HighImpactClimateSectorsFormField.vue';
 import { formatAxiosErrorMessage } from '@/utils/AxiosErrorMessageFormatter';
-import { HighImpactClimateSectorsNaceCodes } from '@/types/HighImpactClimateSectors';
 import IntegerExtendedDataPointFormField from '@/components/forms/parts/fields/IntegerExtendedDataPointFormField.vue';
 import BigDecimalExtendedDataPointFormField from '@/components/forms/parts/fields/BigDecimalExtendedDataPointFormField.vue';
 import CurrencyDataPointFormField from '@/components/forms/parts/fields/CurrencyDataPointFormField.vue';
@@ -151,8 +177,6 @@ import { getFilledKpis } from '@/utils/DataPoint';
 import { type PublicFrameworkDataApi } from '@/utils/api/UnifiedFrameworkDataApi';
 import { getBasePublicFrameworkDefinition } from '@/frameworks/BasePublicFrameworkRegistry';
 import { hasUserCompanyOwnerOrDataUploaderRole } from '@/utils/CompanyRolesUtils';
-
-const referenceableReportsFieldId = 'referenceableReports';
 
 export default defineComponent({
   setup() {
@@ -214,31 +238,16 @@ export default defineComponent({
       postNuclearAndGasDataProcessed: false,
       messageCounter: 0,
       checkCustomInputs,
-      referencedReportsForPrefill: {} as { [key: string]: CompanyReport },
-      climateSectorsForPrefill: [] as Array<string>,
+      reportingPeriod: undefined as undefined | Date,
       listOfFilledKpis: [] as Array<string>,
-      namesAndReferencesOfAllCompanyReportsForTheDataset: {},
-      fieldSpecificDocuments: new Map<string, DocumentToUpload[]>(),
-      yearOfDataDate: 2024 as string, //todo
     };
   },
   computed: {
-/*    yearOfDataDate: {
-      get(): string {
-        const currentDate = this.companyAssociatedNuclearAndGasData.data?.general?.general?.fiscalYearEnd;
-        if (currentDate === undefined) {
-          return '';
-        } else {
-          const currentDateSegments = currentDate.split('-');
-          return currentDateSegments[0] ?? new Date().getFullYear();
-        }
-      },
-      set() {
-        // IGNORED
-      },
-    },*/
-    namesOfAllCompanyReportsForTheDataset(): string[] {
-      return getAvailableFileNames(this.namesAndReferencesOfAllCompanyReportsForTheDataset);
+    reportingPeriodYear(): number {
+      if (this.reportingPeriod) {
+        return this.reportingPeriod.getFullYear();
+      }
+      return 0;
     },
     subcategoryVisibility(): Map<Subcategory, boolean> {
       return createSubcategoryVisibilityMap(this.nuclearAndGasDataModel, this.companyAssociatedNuclearAndGasData.data);
@@ -252,11 +261,13 @@ export default defineComponent({
   },
   created() {
     const dataId = this.route.query.templateDataId;
-    console.log('dataid: '+ dataId) //todo
     if (dataId && typeof dataId === 'string') {
       void this.loadNuclearAndGasData(dataId);
     } else {
       this.waitingForData = false;
+    }
+    if (this.reportingPeriod === undefined) {
+      this.reportingPeriod = new Date();
     }
   },
   methods: {
@@ -284,35 +295,19 @@ export default defineComponent({
       const NuclearAndGasDataControllerApi = this.buildNuclearAndGasDataApi();
       const dataResponse = await NuclearAndGasDataControllerApi.getFrameworkData(dataId);
       const NuclearAndGasResponseData = dataResponse.data;
-      this.listOfFilledKpis = getFilledKpis(NuclearAndGasResponseData.data);
-      this.referencedReportsForPrefill = NuclearAndGasResponseData.data.general.general.referencedReports ?? {};
-      this.climateSectorsForPrefill = NuclearAndGasResponseData?.data?.environmental?.energyPerformance
-          ?.applicableHighImpactClimateSectors
-          ? Object.keys(NuclearAndGasResponseData?.data?.environmental?.energyPerformance?.applicableHighImpactClimateSectors).map(
-              (it): string => {
-                return HighImpactClimateSectorsNaceCodes[it as keyof typeof HighImpactClimateSectorsNaceCodes] ?? it;
-              }
-          )
-          : [];
+      this.listOfFilledKpis = getFilledKpis(NuclearAndGasResponseData);
+      if (NuclearAndGasResponseData?.reportingPeriod) {
+        this.reportingPeriod = new Date(NuclearAndGasResponseData.reportingPeriod);
+      }
       this.companyAssociatedNuclearAndGasData = objectDropNull(NuclearAndGasResponseData as ObjectType) as CompanyAssociatedDataNuclearAndGasResponseData;
-
       this.waitingForData = false;
     },
-   /* /!**
-     * Sends data to add Nuclear and Gas data
-     *!/
+    /**
+     * Sends data to add NuclearandGas data
+     */
     async postNuclearandGasData(): Promise<void> {
-      console.log('bin in postNuclearandGasData')
       this.messageCounter++;
       try {
-        if (this.fieldSpecificDocuments.get(referenceableReportsFieldId)?.length) {
-          checkIfAllUploadedReportsAreReferencedInDataModel(
-              this.companyAssociatedNuclearAndGasData.data as ObjectType,
-              this.namesOfAllCompanyReportsForTheDataset
-          );
-        }
-        const documentsToUpload = Array.from(this.fieldSpecificDocuments.values()).flat();
-        await uploadFiles(documentsToUpload, assertDefined(this.getKeycloakPromise));
 
         const NuclearAndGasDataControllerApi = this.buildNuclearAndGasDataApi();
 
@@ -340,47 +335,44 @@ export default defineComponent({
         this.postNuclearAndGasDataProcessed = true;
       }
     },
-    /!**
-     * updates the list of documents that were uploaded
-     * @param reportsNamesAndReferences repots names and references
-     * @param reportsToUpload reports to upload
-     *!/
-    updateDocumentsList(reportsNamesAndReferences: object, reportsToUpload: DocumentToUpload[]) {
-      this.namesAndReferencesOfAllCompanyReportsForTheDataset = reportsNamesAndReferences;
-      if (reportsToUpload.length) {
-        this.fieldSpecificDocuments.set(referenceableReportsFieldId, reportsToUpload);
-      } else {
-        this.fieldSpecificDocuments.delete(referenceableReportsFieldId);
-      }
-    },
-    /!**
-     * Updates the referenced document for a specific field
-     * @param fieldId an identifier for the field
-     * @param referencedDocument the documen that is referenced
-     *!/
-    updateDocumentsOnField(fieldId: string, referencedDocument: DocumentToUpload | undefined) {
-      if (referencedDocument) {
-        this.fieldSpecificDocuments.set(fieldId, [referencedDocument]);
-      } else {
-        this.fieldSpecificDocuments.delete(fieldId);
-      }
-    },*/
+/*   /!**
+    * updates the list of documents that were uploaded
+    * @param reportsNamesAndReferences repots names and references
+    * @param reportsToUpload reports to upload
+    *!/
+   updateDocumentsList(reportsNamesAndReferences: object, reportsToUpload: DocumentToUpload[]) {
+     this.namesAndReferencesOfAllCompanyReportsForTheDataset = reportsNamesAndReferences;
+     if (reportsToUpload.length) {
+       this.fieldSpecificDocuments.set(referenceableReportsFieldId, reportsToUpload);
+     } else {
+       this.fieldSpecificDocuments.delete(referenceableReportsFieldId);
+     }
+   },
+   /!**
+    * Updates the referenced document for a specific field
+    * @param fieldId an identifier for the field
+    * @param referencedDocument the documen that is referenced
+    *!/
+   updateDocumentsOnField(fieldId: string, referencedDocument: DocumentToUpload | undefined) {
+     if (referencedDocument) {
+       this.fieldSpecificDocuments.set(fieldId, [referencedDocument]);
+     } else {
+       this.fieldSpecificDocuments.delete(fieldId);
+     }
+   },*/
   },
-/*  provide() {
+  provide() {
     return {
-      namesAndReferencesOfAllCompanyReportsForTheDataset: computed(() => {
-        return this.namesAndReferencesOfAllCompanyReportsForTheDataset;
-      }),
-      referencedReportsForPrefill: computed(() => {
-        return this.referencedReportsForPrefill;
-      }),
-      climateSectorsForPrefill: computed(() => {
-        return this.climateSectorsForPrefill;
-      }),
-      listOfFilledKpis: computed(() => {
-        return this.listOfFilledKpis;
-      }),
-    };
-  },*/
+      /*  namesAndReferencesOfAllCompanyReportsForTheDataset: computed(() => {
+          return this.namesAndReferencesOfAllCompanyReportsForTheDataset;
+        }),
+        referencedReportsForPrefill: computed(() => {
+          return this.referencedReportsForPrefill;
+        }),*/
+        listOfFilledKpis: computed(() => {
+          return this.listOfFilledKpis;
+        }),
+      };
+    },
 });
 </script>
