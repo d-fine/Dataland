@@ -1,0 +1,69 @@
+package org.dataland.datalandbackend.validator
+
+import jakarta.validation.Constraint
+import jakarta.validation.ConstraintValidator
+import jakarta.validation.ConstraintValidatorContext
+import jakarta.validation.Payload
+import kotlin.reflect.KClass
+
+/**
+ * A custom validation annotation that checks the length of a string after trimming whitespace.
+ *
+ * Validates that the trimmed string's length is between [min] and [max] inclusive.
+ *
+ * @property min The minimum allowed length of the trimmed string.
+ * @property max The maximum allowed length of the trimmed string.
+ * @property message The error message to display if validation fails.
+ * @property groups Allows specification of validation groups.
+ * @property payload Can be used by clients to assign custom payload objects to a constraint.
+ */
+@Target(AnnotationTarget.VALUE_PARAMETER, AnnotationTarget.FIELD)
+@Retention(AnnotationRetention.RUNTIME)
+@Constraint(validatedBy = [TrimmedSizeValidator::class])
+annotation class TrimmedSize(
+    val min: Int = 0,
+    val max: Int = Int.MAX_VALUE,
+    val message: String = "Length must be between {min} and {max} characters after trimming.",
+    val groups: Array<KClass<*>> = [],
+    val payload: Array<KClass<out Payload>> = [],
+)
+
+/**
+ * A validator that implements the validation logic for the [TrimmedSize] annotation.
+ *
+ * Checks if the trimmed string length is within the specified [min] and [max] bounds.
+ */
+class TrimmedSizeValidator : ConstraintValidator<TrimmedSize, String?> {
+    private var min: Int = 0
+    private var max: Int = Int.MAX_VALUE
+
+    /**
+     * Initializes the validator with the annotation parameters.
+     *
+     * @param constraintAnnotation The [TrimmedSize] annotation instance.
+     */
+    override fun initialize(constraintAnnotation: TrimmedSize) {
+        min = constraintAnnotation.min
+        max = constraintAnnotation.max
+    }
+
+    /**
+     * Validates the given string after trimming whitespace.
+     *
+     * @param value The string value to validate.
+     * @param context The context in which the constraint is evaluated.
+     * @return `true` if the trimmed string's length is within bounds or if the value is null or empty; `false` otherwise.
+     */
+    override fun isValid(
+        value: String?,
+        context: ConstraintValidatorContext,
+    ): Boolean {
+        val trimmedValue = value?.trim()
+        if (trimmedValue.isNullOrEmpty()) {
+            // Return true if null or empty; adjust as needed based on validation requirements
+            return true
+        }
+        val length = trimmedValue.length
+        return length in min..max
+    }
+}

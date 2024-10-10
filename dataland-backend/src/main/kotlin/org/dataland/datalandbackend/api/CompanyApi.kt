@@ -1,6 +1,7 @@
 package org.dataland.datalandbackend.api
 
 import io.swagger.v3.oas.annotations.Operation
+import io.swagger.v3.oas.annotations.Parameter
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
@@ -15,8 +16,10 @@ import org.dataland.datalandbackend.model.companies.CompanyId
 import org.dataland.datalandbackend.model.companies.CompanyInformation
 import org.dataland.datalandbackend.model.companies.CompanyInformationPatch
 import org.dataland.datalandbackend.model.enums.company.IdentifierType
+import org.dataland.datalandbackend.validator.TrimmedSize
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
+import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PatchMapping
 import org.springframework.web.bind.annotation.PathVariable
@@ -33,6 +36,7 @@ import org.springframework.web.bind.annotation.RequestParam
 @RequestMapping("/companies")
 @SecurityRequirement(name = "default-bearer-auth")
 @SecurityRequirement(name = "default-oauth")
+@Validated
 interface CompanyApi {
     /**
      * A method to create a new company entry in dataland
@@ -87,7 +91,14 @@ interface CompanyApi {
     )
     @PreAuthorize("hasRole('ROLE_USER')")
     fun getCompanies(
-        @RequestParam searchString: String? = null,
+        @RequestParam
+        @TrimmedSize(min = 2, message = "Search string must be at least 2 non-nullish characters long.")
+        @Parameter(
+            description = "Search string used for substring matching. Must be at least 2 non-nullish characters long.",
+            required = false,
+            example = "Acme",
+        )
+        searchString: String? = null,
         @RequestParam dataTypes: Set<DataType>? = null,
         @RequestParam countryCodes: Set<String>? = null,
         @RequestParam sectors: Set<String>? = null,
