@@ -1167,12 +1167,360 @@ export const esgQuestionnaireDataModel = [
             name: 'beschreibungDerNutzungVonSzenarioanalysen',
             label: 'Beschreibung der Nutzung von Szenarioanalysen',
             description:
-              'Bitte beschreiben Sie in welcher Art und Weise Szenarioanalysen genutzt werden, um Klima- und Umweltrisiken zu messen, steuern und zu überwachen.',
+              'Bitte beschreiben Sie auf welcher Art und Weise Szenarioanalysen genutzt werden, um Klima- und Umweltirisken zu messen, zu steuern und zu überwachen.',
 
             component: 'FreeTextFormField',
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
               dataset.umwelt?.risikenAndMassnahmenKlima?.nutzungVonSzenarioanalysen == 'Yes',
+          },
+          {
+            name: 'beruecksichtigungVonKlimaUndUmweltrisiken',
+            label: 'Berücksichtigung von Klima- und Umweltrisiken',
+            description:
+              'Werden Klima- und Umweltrisiken in der Geschäftsstrategie und/oder im Geschäftsmodell des Unternehmens thematisiert?',
+
+            component: 'YesNoFormField',
+            required: false,
+            showIf: (dataset: EsgQuestionnaireData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+          },
+          {
+            name: 'zeithorizontDerBeruecksichtigungVonKlimaUndUmweltrisikenImGeschaeftsmodell',
+            label: 'Zeithorizont der Berücksichtigung von Klima- und Umweltrisiken im Geschäftsmodell',
+            description:
+              'Stellen Sie die genutzten Zeithorizonte dar, welche bei der Berücksichtigung von Klima- und Umweltrisiken in der Geschäftsstrategie und/oder im Geschäftsmodell des Unternehmens betrachtet werden.',
+
+            component: 'FreeTextFormField',
+            required: false,
+            showIf: (dataset: EsgQuestionnaireData): boolean =>
+              dataset.umwelt?.risikenAndMassnahmenKlima?.beruecksichtigungVonKlimaUndUmweltrisiken == 'Yes',
+          },
+          {
+            name: 'transitionsplanVorhanden',
+            label: 'Transitionsplan vorhanden',
+            description: 'Verfügt das Unternehmen über einen Transitionsplan?',
+
+            component: 'YesNoBaseDataPointFormField',
+            required: false,
+            showIf: (dataset: EsgQuestionnaireData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+          },
+        ],
+      },
+      {
+        name: 'risikenUndMassnahmenKlima',
+        label: 'Risiken und Maßnahmen Klima',
+        fields: [
+          {
+            name: 'transitorischeRisiken',
+            label: 'Transitorische Risiken',
+            description:
+              'Welche Maßnahmen hat das Unternehmen zur Reduzierung transitorischer Risiken getroffen bzw. geplant? Bitte zudem darstellen, ob das Unternehmen über interne Richtlinien verfügt, die einen ökologischen Mindeststandard im Produktionsprozess sicherstellen.',
+
+            component: 'FreeTextFormField',
+            required: false,
+            showIf: (dataset: EsgQuestionnaireData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+          },
+          {
+            name: 'physischeRisiken',
+            label: 'Physische Risiken',
+            description:
+              'Welche Maßnahmen hat das Unternehmen zur Reduzierung physischer Risiken getroffen bzw. geplant? Bitte zudem darstellen, ob das Unternehmen über interne Richtlinien verfügt, die einen ökologischen Mindeststandard im Produktionsprozess sicherstellen.',
+
+            component: 'FreeTextFormField',
+            required: false,
+            showIf: (dataset: EsgQuestionnaireData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+          },
+          {
+            name: 'produkteZurReduzierungDerUmweltbelastung',
+            label: 'Produkte zur Reduzierung der Umweltbelastung',
+            description:
+              'Entwickelt, produziert oder vertreibt das Unternehmen Produkte, die die Umweltbelastung verringern? ',
+
+            component: 'YesNoNaFormField',
+            required: false,
+            showIf: (dataset: EsgQuestionnaireData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+          },
+          {
+            name: 'produkteZurReduzierungDerUmweltbelastungErlaeuterungen',
+            label: 'Produkte zur Reduzierung der Umweltbelastung Erläuterungen',
+            description: 'Bitte kurz skizzieren wie die Produkte die Umweltbelastung verringern.',
+
+            component: 'FreeTextFormField',
+            required: false,
+            showIf: (dataset: EsgQuestionnaireData): boolean =>
+              dataset.umwelt?.risikenUndMassnahmenKlima?.produkteZurReduzierungDerUmweltbelastung == 'Yes',
+          },
+          {
+            name: 'zielReduzierungTreibhausgasemmissionen2030',
+            label: 'Ziel Reduzierung Treibhausgasemmissionen 2030',
+            description:
+              'Welche Zielsetzung verfolgt das Unternehmen bei der Reduzierung seiner Treibhausgasemissionen für 2030?',
+
+            unit: '%',
+            component: 'NumberFormField',
+            required: false,
+            showIf: (dataset: EsgQuestionnaireData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            validation: 'between:0,100',
+          },
+          {
+            name: 'zielReduzierungTreibhausgasemmissionen2040',
+            label: 'Ziel Reduzierung Treibhausgasemmissionen 2040',
+            description:
+              'Welche Zielsetzung verfolgt das Unternehmen bei der Reduzierung seiner Treibhausgasemissionen für 2040?',
+
+            unit: '%',
+            component: 'NumberFormField',
+            required: false,
+            showIf: (dataset: EsgQuestionnaireData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            validation: 'between:0,100',
+          },
+          {
+            name: 'zielReduzierungTreibhausgasemmissionen2050',
+            label: 'Ziel Reduzierung Treibhausgasemmissionen 2050',
+            description:
+              'Welche Zielsetzung verfolgt das Unternehmen bei der Reduzierung seiner Treibhausgasemissionen für 2050?',
+
+            unit: '%',
+            component: 'NumberFormField',
+            required: false,
+            showIf: (dataset: EsgQuestionnaireData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            validation: 'between:0,100',
+          },
+          {
+            name: 'zielReduzierungTreibhausgasemmissionenErlaeuterungen',
+            label: 'Ziel Reduzierung Treibhausgasemmissionen Erläuterungen',
+            description:
+              'Bitte die Zielsetzung konkretisieren, inkl. Zielwerte, Zwischenziele und zugrundeliegendem Scope der Treibhausgas-Emissionen. Soweit eine dezidierte Planung Planung zu Scope 1, 2, 3 besteht, bitte diese kurz darstellen. Bitte zudem kurze Darstellung, ob Reduktion konstant erfolgt oder von Einzelmaßnahmen abhängt sowie ob Pläne mit den Zielen des Pariser Klimaabkommens kompatibel sind.',
+
+            component: 'FreeTextFormField',
+            required: false,
+            showIf: (dataset: EsgQuestionnaireData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+          },
+          {
+            name: 'kompensationsinstrumenteTreibhausgasemissionen',
+            label: 'Kompensationsinstrumente Treibhausgasemissionen',
+            description: 'Nutzt das Unternehmen Kompensationsinstrumente in Bezug auf Treibhausgasemissionen?',
+
+            component: 'YesNoFormField',
+            required: false,
+            showIf: (dataset: EsgQuestionnaireData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+          },
+          {
+            name: 'kompensationsinstrumenteTreibhausgasemissionenZertifizierungen',
+            label: 'Kompensationsinstrumente Treibhausgasemissionen Zertifizierungen',
+            description:
+              'Bitte benennen Sie die der Kompensation für Treibhasgasemissionen zugrundeliegenden Zertifizierungen.',
+
+            component: 'FreeTextFormField',
+            required: false,
+            showIf: (dataset: EsgQuestionnaireData): boolean =>
+              dataset.umwelt?.risikenUndMassnahmenKlima?.kompensationsinstrumenteTreibhausgasemissionen == 'Yes',
+          },
+          {
+            name: 'zielAnteilErneuerbarerEnergien2030',
+            label: 'Ziel Anteil erneuerbarer Energien 2030',
+            description:
+              'Welche Zielsetzung verfolgt das Unternehmen bzgl. des Anteils erneuerbarer Energien am gesamten Energieverbrauch für 2030?',
+
+            unit: '%',
+            component: 'NumberFormField',
+            required: false,
+            showIf: (dataset: EsgQuestionnaireData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            validation: 'between:0,100',
+          },
+          {
+            name: 'zielAnteilErneuerbarerEnergien2040',
+            label: 'Ziel Anteil erneuerbarer Energien 2040',
+            description:
+              'Welche Zielsetzung verfolgt das Unternehmen bzgl. des Anteils erneuerbarer Energien am gesamten Energieverbrauch für 2040?',
+
+            unit: '%',
+            component: 'NumberFormField',
+            required: false,
+            showIf: (dataset: EsgQuestionnaireData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            validation: 'between:0,100',
+          },
+          {
+            name: 'zielAnteilErneuerbarerEnergien2050',
+            label: 'Ziel Anteil erneuerbarer Energien 2050',
+            description:
+              'Welche Zielsetzung verfolgt das Unternehmen bzgl. des Anteils erneuerbarer Energien am gesamten Energieverbrauch für 2050?',
+
+            unit: '%',
+            component: 'NumberFormField',
+            required: false,
+            showIf: (dataset: EsgQuestionnaireData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            validation: 'between:0,100',
+          },
+          {
+            name: 'zielAnteilErneuerbarerEnergienErlaeuterungen',
+            label: 'Ziel Anteil erneuerbarer Energien Erläuterungen',
+            description: 'Bitte erläutern sie Ihren Plan für den Anteil erneuerbarer Energien, falls erforderlich.',
+
+            component: 'FreeTextFormField',
+            required: false,
+            showIf: (dataset: EsgQuestionnaireData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+          },
+        ],
+      },
+      {
+        name: 'risikenUndMassnahmenKreislaufwirtschaft',
+        label: 'Risiken und Maßnahmen Kreislaufwirtschaft',
+        fields: [
+          {
+            name: 'abfallmanagementsystem',
+            label: 'Abfallmanagementsystem',
+            description: 'Verfügt das Unternehmen über ein Abfallmanagementsystem?',
+
+            component: 'YesNoNaFormField',
+            required: false,
+            showIf: (dataset: EsgQuestionnaireData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+          },
+          {
+            name: 'abfallmanagementsystemErlaeuterungen',
+            label: 'Abfallmanagementsystem Erläuterungen',
+            description:
+              'Bitte skizzieren sie kurz das vorhandene System, insbesondere zur Produktion von und Umgang mit gefährlichen Abfällen.',
+
+            component: 'FreeTextFormField',
+            required: false,
+            showIf: (dataset: EsgQuestionnaireData): boolean =>
+              dataset.umwelt?.risikenUndMassnahmenKreislaufwirtschaft?.abfallmanagementsystem == 'Yes',
+          },
+          {
+            name: 'anteilWiederverwendeterOderRecycelterKomponentenProdukteUndMaterialienImProduktionsprozess',
+            label:
+              'Anteil wiederverwendeter oder recycelter Komponenten, Produkte und Materialien im Produktionsprozess',
+            description:
+              'Wie hoch ist der Anteil von wiederverwendeten oder recycelten sekundären Komponenten, Produkten und Materialien, der im Produktionsprozess des Unternehmens verwendet wird?',
+
+            unit: '%',
+            component: 'NumberFormField',
+            required: false,
+            showIf: (dataset: EsgQuestionnaireData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            validation: 'between:0,100',
+          },
+          {
+            name: 'geplanteErhoehungDesAnteilsVonRecyclaten',
+            label: 'Geplante Erhöhung des Anteils von Recyclaten',
+            description: 'Plant das Unternehmen den Anteil von Recyclaten im Produktionsprozess zu erhöhen?',
+
+            component: 'YesNoNaFormField',
+            required: false,
+            showIf: (dataset: EsgQuestionnaireData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+          },
+          {
+            name: 'geplanteErhoehungDesAnteilsVonRecyclatenErlaeuterungen',
+            label: 'Geplante Erhöhung des Anteils von Recyclaten Erläuterungen',
+            description: 'Bitte Basisjahr / Basiswert und entsprechende Planwerte angeben.',
+
+            component: 'FreeTextFormField',
+            required: false,
+            showIf: (dataset: EsgQuestionnaireData): boolean =>
+              dataset.umwelt?.risikenUndMassnahmenKreislaufwirtschaft?.geplanteErhoehungDesAnteilsVonRecyclaten ==
+              'Yes',
+          },
+        ],
+      },
+      {
+        name: 'risikenUndMassnahmenBiodiversitaetUndOekosysteme',
+        label: 'Risiken und Maßnahmen Biodiversität und Ökosysteme',
+        fields: [
+          {
+            name: 'negativeAuswirkungenAufBiodiversitaetUndOekosystem',
+            label: 'Negative Auswirkungen auf Biodiversität und Ökosystem',
+            description:
+              'Wirken sich die Geschäftsaktivitäten des Unternehmens negativ auf die Biodiversität oder das Ökosystem aus?',
+
+            component: 'YesNoNaFormField',
+            required: false,
+            showIf: (dataset: EsgQuestionnaireData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+          },
+          {
+            name: 'negativeAuswirkungenAufBiodiversitaetUndOekosystemErlaeuterungen',
+            label: 'Negative Auswirkungen auf Biodiversität und Ökosystem Erläuterungen',
+            description:
+              'Soweit vorhanden, bitte verwendete Methodik benennen auf deren Basis das Ergebnis ermittelt wurde.',
+
+            component: 'FreeTextFormField',
+            required: false,
+            showIf: (dataset: EsgQuestionnaireData): boolean =>
+              dataset.umwelt?.risikenUndMassnahmenBiodiversitaetUndOekosysteme
+                ?.negativeAuswirkungenAufBiodiversitaetUndOekosystem == 'Yes',
+          },
+          {
+            name: 'positiveAuswirkungenAufBiodiversitaetUndOekosystem',
+            label: 'Positive Auswirkungen auf Biodiversität und Ökosystem',
+            description:
+              'Wirken sich die Geschäftsaktivitäten des Unternehmens positiv auf die Biodiversität oder das Ökosystem aus?',
+
+            component: 'YesNoNaFormField',
+            required: false,
+            showIf: (dataset: EsgQuestionnaireData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+          },
+          {
+            name: 'positiveAuswirkungenAufBiodiversitaetUndOekosystemErlaeuterungen',
+            label: 'Positive Auswirkungen auf Biodiversität und Ökosystem Erläuterungen',
+            description:
+              'Soweit vorhanden, bitte verwendete Methodik benennen auf deren Basis das Ergebnis ermittelt wurde.',
+
+            component: 'FreeTextFormField',
+            required: false,
+            showIf: (dataset: EsgQuestionnaireData): boolean =>
+              dataset.umwelt?.risikenUndMassnahmenBiodiversitaetUndOekosysteme
+                ?.positiveAuswirkungenAufBiodiversitaetUndOekosystem == 'Yes',
+          },
+          {
+            name: 'gegenmassnahmenNegativeAuswirkungenAufBiodiversitaetUndOekosystem',
+            label: 'Gegenmaßnahmen negative Auswirkungen auf Biodiversität und Ökosystem',
+            description:
+              'Welche Gegenmaßnahmen ergreift das Unternehmen bezüglich negativer Auswirkungen gegenüber Biodiversität und Ökosystem?',
+
+            component: 'FreeTextFormField',
+            required: false,
+            showIf: (dataset: EsgQuestionnaireData): boolean =>
+              dataset.umwelt?.risikenUndMassnahmenBiodiversitaetUndOekosysteme
+                ?.positiveAuswirkungenAufBiodiversitaetUndOekosystem == 'Yes',
+          },
+          {
+            name: 'planZurReduktionDesWasserverbrauchs',
+            label: 'Plan zur Reduktion des Wasserverbrauchs',
+            description: 'Plant das Unternehmen seinen Wasserverbrauch zu reduzieren?',
+
+            component: 'YesNoNaFormField',
+            required: false,
+            showIf: (dataset: EsgQuestionnaireData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+          },
+          {
+            name: 'planZurReduktionDesWasserverbrauchsErlaeuterung',
+            label: 'Plan zur Reduktion des Wasserverbrauchs Erläuterung',
+            description: 'Bitte skizzieren sie kurz, wie der Wasserverbrauch reduziert werden soll.',
+
+            component: 'FreeTextFormField',
+            required: false,
+            showIf: (dataset: EsgQuestionnaireData): boolean =>
+              dataset.umwelt?.risikenUndMassnahmenBiodiversitaetUndOekosysteme?.planZurReduktionDesWasserverbrauchs ==
+              'Yes',
           },
         ],
       },

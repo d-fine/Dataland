@@ -9,8 +9,8 @@ import { formatStringForDatatable } from '@/components/resources/dataTable/conve
 import { getOriginalNameFromTechnicalName } from '@/components/resources/dataTable/conversion/Utils';
 import { formatNumberForDatatable } from '@/components/resources/dataTable/conversion/NumberValueGetterFactory';
 import { formatListOfStringsForDatatable } from '@/components/resources/dataTable/conversion/MultiSelectValueGetterFactory';
-import { formatListOfBaseDataPoint } from '@/components/resources/dataTable/conversion/ListOfBaseDataPointGetterFactory';
 import { wrapDisplayValueWithDatapointInformation } from '@/components/resources/dataTable/conversion/DataPoints';
+import { formatListOfBaseDataPoint } from '@/components/resources/dataTable/conversion/ListOfBaseDataPointGetterFactory';
 import { formatNaceCodesForDatatable } from '@/components/resources/dataTable/conversion/NaceCodeValueGetterFactory';
 export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData> = [
   {
@@ -1180,12 +1180,391 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
             type: 'cell',
             label: 'Beschreibung der Nutzung von Szenarioanalysen',
             explanation:
-              'Bitte beschreiben Sie in welcher Art und Weise Szenarioanalysen genutzt werden, um Klima- und Umweltrisiken zu messen, steuern und zu überwachen.',
+              'Bitte beschreiben Sie auf welcher Art und Weise Szenarioanalysen genutzt werden, um Klima- und Umweltirisken zu messen, zu steuern und zu überwachen.',
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
               dataset.umwelt?.risikenAndMassnahmenKlima?.nutzungVonSzenarioanalysen == 'Yes',
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
               formatFreeTextForDatatable(
                 dataset.umwelt?.risikenAndMassnahmenKlima?.beschreibungDerNutzungVonSzenarioanalysen
+              ),
+          },
+          {
+            type: 'cell',
+            label: 'Berücksichtigung von Klima- und Umweltrisiken',
+            explanation:
+              'Werden Klima- und Umweltrisiken in der Geschäftsstrategie und/oder im Geschäftsmodell des Unternehmens thematisiert?',
+            shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
+              formatYesNoValueForDatatable(
+                dataset.umwelt?.risikenAndMassnahmenKlima?.beruecksichtigungVonKlimaUndUmweltrisiken
+              ),
+          },
+          {
+            type: 'cell',
+            label: 'Zeithorizont der Berücksichtigung von Klima- und Umweltrisiken im Geschäftsmodell',
+            explanation:
+              'Stellen Sie die genutzten Zeithorizonte dar, welche bei der Berücksichtigung von Klima- und Umweltrisiken in der Geschäftsstrategie und/oder im Geschäftsmodell des Unternehmens betrachtet werden.',
+            shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
+              dataset.umwelt?.risikenAndMassnahmenKlima?.beruecksichtigungVonKlimaUndUmweltrisiken == 'Yes',
+            valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
+              formatFreeTextForDatatable(
+                dataset.umwelt?.risikenAndMassnahmenKlima
+                  ?.zeithorizontDerBeruecksichtigungVonKlimaUndUmweltrisikenImGeschaeftsmodell
+              ),
+          },
+          {
+            type: 'cell',
+            label: 'Transitionsplan vorhanden',
+            explanation: 'Verfügt das Unternehmen über einen Transitionsplan?',
+            shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatYesNoValueForDatatable(
+                  dataset.umwelt?.risikenAndMassnahmenKlima?.transitionsplanVorhanden?.value
+                ),
+                'Transitionsplan vorhanden',
+                dataset.umwelt?.risikenAndMassnahmenKlima?.transitionsplanVorhanden
+              ),
+          },
+        ],
+      },
+      {
+        type: 'section',
+        label: 'Risiken und Maßnahmen Klima',
+        expandOnPageLoad: true,
+        shouldDisplay: (): boolean => true,
+        children: [
+          {
+            type: 'cell',
+            label: 'Transitorische Risiken',
+            explanation:
+              'Welche Maßnahmen hat das Unternehmen zur Reduzierung transitorischer Risiken getroffen bzw. geplant? Bitte zudem darstellen, ob das Unternehmen über interne Richtlinien verfügt, die einen ökologischen Mindeststandard im Produktionsprozess sicherstellen.',
+            shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
+              formatFreeTextForDatatable(dataset.umwelt?.risikenUndMassnahmenKlima?.transitorischeRisiken),
+          },
+          {
+            type: 'cell',
+            label: 'Physische Risiken',
+            explanation:
+              'Welche Maßnahmen hat das Unternehmen zur Reduzierung physischer Risiken getroffen bzw. geplant? Bitte zudem darstellen, ob das Unternehmen über interne Richtlinien verfügt, die einen ökologischen Mindeststandard im Produktionsprozess sicherstellen.',
+            shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
+              formatFreeTextForDatatable(dataset.umwelt?.risikenUndMassnahmenKlima?.physischeRisiken),
+          },
+          {
+            type: 'cell',
+            label: 'Produkte zur Reduzierung der Umweltbelastung',
+            explanation:
+              'Entwickelt, produziert oder vertreibt das Unternehmen Produkte, die die Umweltbelastung verringern? ',
+            shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
+              formatYesNoValueForDatatable(
+                dataset.umwelt?.risikenUndMassnahmenKlima?.produkteZurReduzierungDerUmweltbelastung
+              ),
+          },
+          {
+            type: 'cell',
+            label: 'Produkte zur Reduzierung der Umweltbelastung Erläuterungen',
+            explanation: 'Bitte kurz skizzieren wie die Produkte die Umweltbelastung verringern.',
+            shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
+              dataset.umwelt?.risikenUndMassnahmenKlima?.produkteZurReduzierungDerUmweltbelastung == 'Yes',
+            valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
+              formatFreeTextForDatatable(
+                dataset.umwelt?.risikenUndMassnahmenKlima?.produkteZurReduzierungDerUmweltbelastungErlaeuterungen
+              ),
+          },
+          {
+            type: 'cell',
+            label: 'Ziel Reduzierung Treibhausgasemmissionen 2030',
+            explanation:
+              'Welche Zielsetzung verfolgt das Unternehmen bei der Reduzierung seiner Treibhausgasemissionen für 2030?',
+            shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
+              formatPercentageForDatatable(
+                dataset.umwelt?.risikenUndMassnahmenKlima?.zielReduzierungTreibhausgasemmissionen2030
+              ),
+          },
+          {
+            type: 'cell',
+            label: 'Ziel Reduzierung Treibhausgasemmissionen 2040',
+            explanation:
+              'Welche Zielsetzung verfolgt das Unternehmen bei der Reduzierung seiner Treibhausgasemissionen für 2040?',
+            shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
+              formatPercentageForDatatable(
+                dataset.umwelt?.risikenUndMassnahmenKlima?.zielReduzierungTreibhausgasemmissionen2040
+              ),
+          },
+          {
+            type: 'cell',
+            label: 'Ziel Reduzierung Treibhausgasemmissionen 2050',
+            explanation:
+              'Welche Zielsetzung verfolgt das Unternehmen bei der Reduzierung seiner Treibhausgasemissionen für 2050?',
+            shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
+              formatPercentageForDatatable(
+                dataset.umwelt?.risikenUndMassnahmenKlima?.zielReduzierungTreibhausgasemmissionen2050
+              ),
+          },
+          {
+            type: 'cell',
+            label: 'Ziel Reduzierung Treibhausgasemmissionen Erläuterungen',
+            explanation:
+              'Bitte die Zielsetzung konkretisieren, inkl. Zielwerte, Zwischenziele und zugrundeliegendem Scope der Treibhausgas-Emissionen. Soweit eine dezidierte Planung Planung zu Scope 1, 2, 3 besteht, bitte diese kurz darstellen. Bitte zudem kurze Darstellung, ob Reduktion konstant erfolgt oder von Einzelmaßnahmen abhängt sowie ob Pläne mit den Zielen des Pariser Klimaabkommens kompatibel sind.',
+            shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
+              formatFreeTextForDatatable(
+                dataset.umwelt?.risikenUndMassnahmenKlima?.zielReduzierungTreibhausgasemmissionenErlaeuterungen
+              ),
+          },
+          {
+            type: 'cell',
+            label: 'Kompensationsinstrumente Treibhausgasemissionen',
+            explanation: 'Nutzt das Unternehmen Kompensationsinstrumente in Bezug auf Treibhausgasemissionen?',
+            shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
+              formatYesNoValueForDatatable(
+                dataset.umwelt?.risikenUndMassnahmenKlima?.kompensationsinstrumenteTreibhausgasemissionen
+              ),
+          },
+          {
+            type: 'cell',
+            label: 'Kompensationsinstrumente Treibhausgasemissionen Zertifizierungen',
+            explanation:
+              'Bitte benennen Sie die der Kompensation für Treibhasgasemissionen zugrundeliegenden Zertifizierungen.',
+            shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
+              dataset.umwelt?.risikenUndMassnahmenKlima?.kompensationsinstrumenteTreibhausgasemissionen == 'Yes',
+            valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
+              formatFreeTextForDatatable(
+                dataset.umwelt?.risikenUndMassnahmenKlima
+                  ?.kompensationsinstrumenteTreibhausgasemissionenZertifizierungen
+              ),
+          },
+          {
+            type: 'cell',
+            label: 'Ziel Anteil erneuerbarer Energien 2030',
+            explanation:
+              'Welche Zielsetzung verfolgt das Unternehmen bzgl. des Anteils erneuerbarer Energien am gesamten Energieverbrauch für 2030?',
+            shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
+              formatPercentageForDatatable(
+                dataset.umwelt?.risikenUndMassnahmenKlima?.zielAnteilErneuerbarerEnergien2030
+              ),
+          },
+          {
+            type: 'cell',
+            label: 'Ziel Anteil erneuerbarer Energien 2040',
+            explanation:
+              'Welche Zielsetzung verfolgt das Unternehmen bzgl. des Anteils erneuerbarer Energien am gesamten Energieverbrauch für 2040?',
+            shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
+              formatPercentageForDatatable(
+                dataset.umwelt?.risikenUndMassnahmenKlima?.zielAnteilErneuerbarerEnergien2040
+              ),
+          },
+          {
+            type: 'cell',
+            label: 'Ziel Anteil erneuerbarer Energien 2050',
+            explanation:
+              'Welche Zielsetzung verfolgt das Unternehmen bzgl. des Anteils erneuerbarer Energien am gesamten Energieverbrauch für 2050?',
+            shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
+              formatPercentageForDatatable(
+                dataset.umwelt?.risikenUndMassnahmenKlima?.zielAnteilErneuerbarerEnergien2050
+              ),
+          },
+          {
+            type: 'cell',
+            label: 'Ziel Anteil erneuerbarer Energien Erläuterungen',
+            explanation: 'Bitte erläutern sie Ihren Plan für den Anteil erneuerbarer Energien, falls erforderlich.',
+            shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
+              formatFreeTextForDatatable(
+                dataset.umwelt?.risikenUndMassnahmenKlima?.zielAnteilErneuerbarerEnergienErlaeuterungen
+              ),
+          },
+        ],
+      },
+      {
+        type: 'section',
+        label: 'Risiken und Maßnahmen Kreislaufwirtschaft',
+        expandOnPageLoad: true,
+        shouldDisplay: (): boolean => true,
+        children: [
+          {
+            type: 'cell',
+            label: 'Abfallmanagementsystem',
+            explanation: 'Verfügt das Unternehmen über ein Abfallmanagementsystem?',
+            shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
+              formatYesNoValueForDatatable(
+                dataset.umwelt?.risikenUndMassnahmenKreislaufwirtschaft?.abfallmanagementsystem
+              ),
+          },
+          {
+            type: 'cell',
+            label: 'Abfallmanagementsystem Erläuterungen',
+            explanation:
+              'Bitte skizzieren sie kurz das vorhandene System, insbesondere zur Produktion von und Umgang mit gefährlichen Abfällen.',
+            shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
+              dataset.umwelt?.risikenUndMassnahmenKreislaufwirtschaft?.abfallmanagementsystem == 'Yes',
+            valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
+              formatFreeTextForDatatable(
+                dataset.umwelt?.risikenUndMassnahmenKreislaufwirtschaft?.abfallmanagementsystemErlaeuterungen
+              ),
+          },
+          {
+            type: 'cell',
+            label:
+              'Anteil wiederverwendeter oder recycelter Komponenten, Produkte und Materialien im Produktionsprozess',
+            explanation:
+              'Wie hoch ist der Anteil von wiederverwendeten oder recycelten sekundären Komponenten, Produkten und Materialien, der im Produktionsprozess des Unternehmens verwendet wird?',
+            shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
+              formatPercentageForDatatable(
+                dataset.umwelt?.risikenUndMassnahmenKreislaufwirtschaft
+                  ?.anteilWiederverwendeterOderRecycelterKomponentenProdukteUndMaterialienImProduktionsprozess
+              ),
+          },
+          {
+            type: 'cell',
+            label: 'Geplante Erhöhung des Anteils von Recyclaten',
+            explanation: 'Plant das Unternehmen den Anteil von Recyclaten im Produktionsprozess zu erhöhen?',
+            shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
+              formatYesNoValueForDatatable(
+                dataset.umwelt?.risikenUndMassnahmenKreislaufwirtschaft?.geplanteErhoehungDesAnteilsVonRecyclaten
+              ),
+          },
+          {
+            type: 'cell',
+            label: 'Geplante Erhöhung des Anteils von Recyclaten Erläuterungen',
+            explanation: 'Bitte Basisjahr / Basiswert und entsprechende Planwerte angeben.',
+            shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
+              dataset.umwelt?.risikenUndMassnahmenKreislaufwirtschaft?.geplanteErhoehungDesAnteilsVonRecyclaten ==
+              'Yes',
+            valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
+              formatFreeTextForDatatable(
+                dataset.umwelt?.risikenUndMassnahmenKreislaufwirtschaft
+                  ?.geplanteErhoehungDesAnteilsVonRecyclatenErlaeuterungen
+              ),
+          },
+        ],
+      },
+      {
+        type: 'section',
+        label: 'Risiken und Maßnahmen Biodiversität und Ökosysteme',
+        expandOnPageLoad: true,
+        shouldDisplay: (): boolean => true,
+        children: [
+          {
+            type: 'cell',
+            label: 'Negative Auswirkungen auf Biodiversität und Ökosystem',
+            explanation:
+              'Wirken sich die Geschäftsaktivitäten des Unternehmens negativ auf die Biodiversität oder das Ökosystem aus?',
+            shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
+              formatYesNoValueForDatatable(
+                dataset.umwelt?.risikenUndMassnahmenBiodiversitaetUndOekosysteme
+                  ?.negativeAuswirkungenAufBiodiversitaetUndOekosystem
+              ),
+          },
+          {
+            type: 'cell',
+            label: 'Negative Auswirkungen auf Biodiversität und Ökosystem Erläuterungen',
+            explanation:
+              'Soweit vorhanden, bitte verwendete Methodik benennen auf deren Basis das Ergebnis ermittelt wurde.',
+            shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
+              dataset.umwelt?.risikenUndMassnahmenBiodiversitaetUndOekosysteme
+                ?.negativeAuswirkungenAufBiodiversitaetUndOekosystem == 'Yes',
+            valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
+              formatFreeTextForDatatable(
+                dataset.umwelt?.risikenUndMassnahmenBiodiversitaetUndOekosysteme
+                  ?.negativeAuswirkungenAufBiodiversitaetUndOekosystemErlaeuterungen
+              ),
+          },
+          {
+            type: 'cell',
+            label: 'Positive Auswirkungen auf Biodiversität und Ökosystem',
+            explanation:
+              'Wirken sich die Geschäftsaktivitäten des Unternehmens positiv auf die Biodiversität oder das Ökosystem aus?',
+            shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
+              formatYesNoValueForDatatable(
+                dataset.umwelt?.risikenUndMassnahmenBiodiversitaetUndOekosysteme
+                  ?.positiveAuswirkungenAufBiodiversitaetUndOekosystem
+              ),
+          },
+          {
+            type: 'cell',
+            label: 'Positive Auswirkungen auf Biodiversität und Ökosystem Erläuterungen',
+            explanation:
+              'Soweit vorhanden, bitte verwendete Methodik benennen auf deren Basis das Ergebnis ermittelt wurde.',
+            shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
+              dataset.umwelt?.risikenUndMassnahmenBiodiversitaetUndOekosysteme
+                ?.positiveAuswirkungenAufBiodiversitaetUndOekosystem == 'Yes',
+            valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
+              formatFreeTextForDatatable(
+                dataset.umwelt?.risikenUndMassnahmenBiodiversitaetUndOekosysteme
+                  ?.positiveAuswirkungenAufBiodiversitaetUndOekosystemErlaeuterungen
+              ),
+          },
+          {
+            type: 'cell',
+            label: 'Gegenmaßnahmen negative Auswirkungen auf Biodiversität und Ökosystem',
+            explanation:
+              'Welche Gegenmaßnahmen ergreift das Unternehmen bezüglich negativer Auswirkungen gegenüber Biodiversität und Ökosystem?',
+            shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
+              dataset.umwelt?.risikenUndMassnahmenBiodiversitaetUndOekosysteme
+                ?.positiveAuswirkungenAufBiodiversitaetUndOekosystem == 'Yes',
+            valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
+              formatFreeTextForDatatable(
+                dataset.umwelt?.risikenUndMassnahmenBiodiversitaetUndOekosysteme
+                  ?.gegenmassnahmenNegativeAuswirkungenAufBiodiversitaetUndOekosystem
+              ),
+          },
+          {
+            type: 'cell',
+            label: 'Plan zur Reduktion des Wasserverbrauchs',
+            explanation: 'Plant das Unternehmen seinen Wasserverbrauch zu reduzieren?',
+            shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
+              formatYesNoValueForDatatable(
+                dataset.umwelt?.risikenUndMassnahmenBiodiversitaetUndOekosysteme?.planZurReduktionDesWasserverbrauchs
+              ),
+          },
+          {
+            type: 'cell',
+            label: 'Plan zur Reduktion des Wasserverbrauchs Erläuterung',
+            explanation: 'Bitte skizzieren sie kurz, wie der Wasserverbrauch reduziert werden soll.',
+            shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
+              dataset.umwelt?.risikenUndMassnahmenBiodiversitaetUndOekosysteme?.planZurReduktionDesWasserverbrauchs ==
+              'Yes',
+            valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
+              formatFreeTextForDatatable(
+                dataset.umwelt?.risikenUndMassnahmenBiodiversitaetUndOekosysteme
+                  ?.planZurReduktionDesWasserverbrauchsErlaeuterung
               ),
           },
         ],

@@ -6,6 +6,13 @@ import org.dataland.datalandbackend.frameworks.esgquestionnaire.model.umwelt.abf
 import org.dataland.datalandbackend.frameworks.esgquestionnaire.model.umwelt.emissionen.EsgQuestionnaireUmweltEmissionen
 import org.dataland.datalandbackend.frameworks.esgquestionnaire.model.umwelt.risikenAndMassnahmenKlima
     .EsgQuestionnaireUmweltRisikenAndMassnahmenKlima
+import org.dataland.datalandbackend.frameworks.esgquestionnaire.model.umwelt
+    .risikenUndMassnahmenBiodiversitaetUndOekosysteme
+    .EsgQuestionnaireUmweltRisikenUndMassnahmenBiodiversitaetUndOekosysteme
+import org.dataland.datalandbackend.frameworks.esgquestionnaire.model.umwelt.risikenUndMassnahmenKlima
+    .EsgQuestionnaireUmweltRisikenUndMassnahmenKlima
+import org.dataland.datalandbackend.frameworks.esgquestionnaire.model.umwelt.risikenUndMassnahmenKreislaufwirtschaft
+    .EsgQuestionnaireUmweltRisikenUndMassnahmenKreislaufwirtschaft
 import org.dataland.datalandbackend.frameworks.esgquestionnaire.model.umwelt.verbrauchsangaben
     .EsgQuestionnaireUmweltVerbrauchsangaben
 
@@ -24,5 +31,15 @@ data class EsgQuestionnaireUmwelt(
 
     @field:Valid()
     val risikenAndMassnahmenKlima: EsgQuestionnaireUmweltRisikenAndMassnahmenKlima? = null,
+
+    @field:Valid()
+    val risikenUndMassnahmenKlima: EsgQuestionnaireUmweltRisikenUndMassnahmenKlima? = null,
+
+    @field:Valid()
+    val risikenUndMassnahmenKreislaufwirtschaft: EsgQuestionnaireUmweltRisikenUndMassnahmenKreislaufwirtschaft? = null,
+
+    @field:Valid()
+    val risikenUndMassnahmenBiodiversitaetUndOekosysteme:
+    EsgQuestionnaireUmweltRisikenUndMassnahmenBiodiversitaetUndOekosysteme? = null,
 
 )

@@ -16274,6 +16274,30 @@
                 "$ref": "#/components/schemas/EsgQuestionnaireUmweltRisikenAndMassnahmenKlima"
               }
             ]
+          },
+          "risikenUndMassnahmenKlima": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/EsgQuestionnaireUmweltRisikenUndMassnahmenKlima"
+              }
+            ]
+          },
+          "risikenUndMassnahmenKreislaufwirtschaft": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/EsgQuestionnaireUmweltRisikenUndMassnahmenKreislaufwirtschaft"
+              }
+            ]
+          },
+          "risikenUndMassnahmenBiodiversitaetUndOekosysteme": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/EsgQuestionnaireUmweltRisikenUndMassnahmenBiodiversitaetUndOekosysteme"
+              }
+            ]
           }
         }
       },
@@ -16370,6 +16394,173 @@
             ]
           },
           "beschreibungDerNutzungVonSzenarioanalysen": {
+            "type": "string",
+            "nullable": true
+          },
+          "beruecksichtigungVonKlimaUndUmweltrisiken": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
+          },
+          "zeithorizontDerBeruecksichtigungVonKlimaUndUmweltrisikenImGeschaeftsmodell": {
+            "type": "string",
+            "nullable": true
+          },
+          "transitionsplanVorhanden": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/BaseDataPointYesNo"
+              }
+            ]
+          }
+        }
+      },
+      "EsgQuestionnaireUmweltRisikenUndMassnahmenBiodiversitaetUndOekosysteme": {
+        "type": "object",
+        "properties": {
+          "negativeAuswirkungenAufBiodiversitaetUndOekosystem": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNoNa"
+              }
+            ]
+          },
+          "negativeAuswirkungenAufBiodiversitaetUndOekosystemErlaeuterungen": {
+            "type": "string",
+            "nullable": true
+          },
+          "positiveAuswirkungenAufBiodiversitaetUndOekosystem": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNoNa"
+              }
+            ]
+          },
+          "positiveAuswirkungenAufBiodiversitaetUndOekosystemErlaeuterungen": {
+            "type": "string",
+            "nullable": true
+          },
+          "gegenmassnahmenNegativeAuswirkungenAufBiodiversitaetUndOekosystem": {
+            "type": "string",
+            "nullable": true
+          },
+          "planZurReduktionDesWasserverbrauchs": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNoNa"
+              }
+            ]
+          },
+          "planZurReduktionDesWasserverbrauchsErlaeuterung": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "EsgQuestionnaireUmweltRisikenUndMassnahmenKlima": {
+        "type": "object",
+        "properties": {
+          "transitorischeRisiken": {
+            "type": "string",
+            "nullable": true
+          },
+          "physischeRisiken": {
+            "type": "string",
+            "nullable": true
+          },
+          "produkteZurReduzierungDerUmweltbelastung": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNoNa"
+              }
+            ]
+          },
+          "produkteZurReduzierungDerUmweltbelastungErlaeuterungen": {
+            "type": "string",
+            "nullable": true
+          },
+          "zielReduzierungTreibhausgasemmissionen2030": {
+            "type": "number",
+            "nullable": true
+          },
+          "zielReduzierungTreibhausgasemmissionen2040": {
+            "type": "number",
+            "nullable": true
+          },
+          "zielReduzierungTreibhausgasemmissionen2050": {
+            "type": "number",
+            "nullable": true
+          },
+          "zielReduzierungTreibhausgasemmissionenErlaeuterungen": {
+            "type": "string",
+            "nullable": true
+          },
+          "kompensationsinstrumenteTreibhausgasemissionen": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
+          },
+          "kompensationsinstrumenteTreibhausgasemissionenZertifizierungen": {
+            "type": "string",
+            "nullable": true
+          },
+          "zielAnteilErneuerbarerEnergien2030": {
+            "type": "number",
+            "nullable": true
+          },
+          "zielAnteilErneuerbarerEnergien2040": {
+            "type": "number",
+            "nullable": true
+          },
+          "zielAnteilErneuerbarerEnergien2050": {
+            "type": "number",
+            "nullable": true
+          },
+          "zielAnteilErneuerbarerEnergienErlaeuterungen": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "EsgQuestionnaireUmweltRisikenUndMassnahmenKreislaufwirtschaft": {
+        "type": "object",
+        "properties": {
+          "abfallmanagementsystem": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNoNa"
+              }
+            ]
+          },
+          "abfallmanagementsystemErlaeuterungen": {
+            "type": "string",
+            "nullable": true
+          },
+          "anteilWiederverwendeterOderRecycelterKomponentenProdukteUndMaterialienImProduktionsprozess": {
+            "type": "number",
+            "nullable": true
+          },
+          "geplanteErhoehungDesAnteilsVonRecyclaten": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNoNa"
+              }
+            ]
+          },
+          "geplanteErhoehungDesAnteilsVonRecyclatenErlaeuterungen": {
             "type": "string",
             "nullable": true
           }
@@ -16858,13 +17049,7 @@
         ],
         "type": "object",
         "properties": {
-          "headquarters": {
-            "type": "string"
-          },
-          "countryCode": {
-            "type": "string"
-          },
-          "sector": {
+          "lei": {
             "type": "string",
             "nullable": true
           },
@@ -16874,7 +17059,13 @@
           "companyId": {
             "type": "string"
           },
-          "lei": {
+          "headquarters": {
+            "type": "string"
+          },
+          "countryCode": {
+            "type": "string"
+          },
+          "sector": {
             "type": "string",
             "nullable": true
           }
