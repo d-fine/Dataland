@@ -18,7 +18,6 @@ import org.mockito.kotlin.verifyNoInteractions
 import org.mockito.kotlin.verifyNoMoreInteractions
 
 class RequestEmailManagerTest {
-
     private lateinit var dataRequestResponseEmailMessageSender: DataRequestResponseEmailSender
     private lateinit var singleDataRequestEmailMessageSender: SingleDataRequestEmailMessageSender
     private lateinit var accessRequestEmailSender: AccessRequestEmailSender
@@ -31,11 +30,12 @@ class RequestEmailManagerTest {
         singleDataRequestEmailMessageSender = mock(SingleDataRequestEmailMessageSender::class.java)
         accessRequestEmailSender = mock(AccessRequestEmailSender::class.java)
 
-        requestEmailManager = RequestEmailManager(
-            dataRequestResponseEmailMessageSender,
-            singleDataRequestEmailMessageSender,
-            accessRequestEmailSender,
-        )
+        requestEmailManager =
+            RequestEmailManager(
+                dataRequestResponseEmailMessageSender,
+                singleDataRequestEmailMessageSender,
+                accessRequestEmailSender,
+            )
     }
 
     @Test

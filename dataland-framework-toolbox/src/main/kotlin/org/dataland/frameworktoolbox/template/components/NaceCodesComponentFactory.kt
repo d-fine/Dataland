@@ -13,7 +13,9 @@ import org.springframework.stereotype.Component
  * Generates NaceCodesComponents from rows with the component "NACE codes"
  */
 @Component
-class NaceCodesComponentFactory(@Autowired val templateDiagnostic: TemplateDiagnostic) : TemplateComponentFactory {
+class NaceCodesComponentFactory(
+    @Autowired val templateDiagnostic: TemplateDiagnostic,
+) : TemplateComponentFactory {
     override fun canGenerateComponent(row: TemplateRow): Boolean = row.component == "NACE codes"
 
     override fun generateComponent(

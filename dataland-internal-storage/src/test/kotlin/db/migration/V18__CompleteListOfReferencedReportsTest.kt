@@ -8,8 +8,8 @@ private const val EUTAXONOMY_NON_FINANCIALS = "eutaxonomy-non-financials"
 private const val EUTAXONOMY_FINANCIALS = "eutaxonomy-financials"
 private const val SFDR = "sfdr"
 
+@Suppress("ClassName")
 class V18__CompleteListOfReferencedReportsTest {
-
     @Test
     fun `check migration script for SFDR referencedReports empty`() {
         TestUtils().testMigrationOfSingleDataset(

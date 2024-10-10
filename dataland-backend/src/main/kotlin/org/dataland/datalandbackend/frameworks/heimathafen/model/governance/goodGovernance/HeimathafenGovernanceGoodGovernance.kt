@@ -10,14 +10,9 @@ import org.dataland.datalandbackend.model.enums.commons.YesNo
  */
 data class HeimathafenGovernanceGoodGovernance(
     val methodikDerGutenRegierungsfuehrung: YesNo? = null,
-
     val wennNeinBitteBegruenden: String? = null,
-
     val definitionVonGuterRegierungsfuehrung: String? = null,
-
     val listeDerKpisFuerGuteUnternehmensfuehrung: String? = null,
-
     @field:Valid()
     val verwendeteQuellen: List<BaseDataPoint<String>>? = null,
-
 )

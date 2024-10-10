@@ -9,10 +9,7 @@ import java.math.BigDecimal
 */
 data class P2pHvcPlasticsDefossilisation(
     val useOfRenewableFeedstocksInPercent: BigDecimal? = null,
-
     val useOfBioplasticsInPercent: BigDecimal? = null,
-
     val useOfCo2FromCarbonCaptureAndReUseTechnologiesInPercent: BigDecimal? = null,
-
     val carbonCaptureAndUseStorageTechnologies: YesNo? = null,
 )

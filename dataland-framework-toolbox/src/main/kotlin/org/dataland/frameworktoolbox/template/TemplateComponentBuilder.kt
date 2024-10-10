@@ -20,40 +20,42 @@ class TemplateComponentBuilder(
     private val componentFactories: List<TemplateComponentFactory>,
     private val generationUtils: ComponentGenerationUtils,
 ) {
-
-    private fun getSubsectionForRow(base: ComponentGroupApi, row: TemplateRow): ComponentGroupApi {
-        return if (row.category.isBlank()) {
+    private fun getSubsectionForRow(
+        base: ComponentGroupApi,
+        row: TemplateRow,
+    ): ComponentGroupApi =
+        if (row.category.isBlank()) {
             require(row.subCategory.isBlank()) {
                 "Row ${row.fieldIdentifier} defines a subcategory but no category"
             }
             base
         } else {
             val sectionName = generationUtils.generateSectionIdentifierFromRow(row)
-            val section = base.getOrNull<ComponentGroup>(sectionName)
-                ?: base.create(sectionName) {
-                    label = row.category
-                }
+            val section =
+                base.getOrNull<ComponentGroup>(sectionName)
+                    ?: base.create(sectionName) {
+                        label = row.category
+                    }
 
             if (row.subCategory.isBlank()) {
                 section
             } else {
                 val subsectionName = generationUtils.generateSubSectionIdentifierFromRow(row)
-                val subsection = section.getOrNull<ComponentGroup>(subsectionName)
-                    ?: section.create(subsectionName) {
-                        label = row.subCategory
-                    }
+                val subsection =
+                    section.getOrNull<ComponentGroup>(subsectionName)
+                        ?: section.create(subsectionName) {
+                            label = row.subCategory
+                        }
 
                 subsection
             }
         }
-    }
 
-    private fun getFactoryForRow(row: TemplateRow): TemplateComponentFactory {
-        return componentFactories.firstOrNull { it.canGenerateComponent(row) }
+    private fun getFactoryForRow(row: TemplateRow): TemplateComponentFactory =
+        componentFactories.firstOrNull { it.canGenerateComponent(row) }
             ?: throw IllegalStateException(
                 "Cannot find a suitable converter for the row $row. Maybe it has an invalid component name?",
             )
-    }
 
     private fun initialBuildPassForCreatingComponents(into: ComponentGroupApi): Map<String, ComponentBase> {
         val componentMapForDependencies = mutableMapOf<String, ComponentBase>()

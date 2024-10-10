@@ -27,7 +27,6 @@ class EuTaxonomyAssuranceComponent(
     identifier: String,
     parent: FieldNodeParent,
 ) : ComponentBase(identifier, parent) {
-
     private val fullyQualifiedNameOfKotlinType =
         "org.dataland.datalandbackend.frameworks.eutaxonomynonfinancials.custom.AssuranceDataPoint"
 
@@ -81,11 +80,12 @@ class EuTaxonomyAssuranceComponent(
     override fun generateDefaultFixtureGenerator(sectionBuilder: FixtureSectionBuilder) {
         requireDocumentSupportIn(setOf(NoDocumentSupport))
         val guaranteedAssuranceDataPointGenerator = "dataGenerator.generateAssuranceDatapoint()"
-        val fixtureExpression = if (isNullable) {
-            "dataGenerator.valueOrNull($guaranteedAssuranceDataPointGenerator)"
-        } else {
-            guaranteedAssuranceDataPointGenerator
-        }
+        val fixtureExpression =
+            if (isNullable) {
+                "dataGenerator.valueOrNull($guaranteedAssuranceDataPointGenerator)"
+            } else {
+                guaranteedAssuranceDataPointGenerator
+            }
         sectionBuilder.addAtomicExpression(
             identifier,
             fixtureExpression,
@@ -97,19 +97,18 @@ class EuTaxonomyAssuranceComponent(
             label = "Assurance Provider",
             explanation = "Provider of the Assurance",
             shouldDisplay = availableIf.toFrameworkBooleanLambda(),
-            valueGetter = FrameworkDisplayValueLambda(
-                "formatAssuranceProviderForDataTable(${getTypescriptFieldAccessor(true)})",
-                setOf(
-                    TypeScriptImport(
-                        "formatAssuranceProviderForDataTable",
-                        "@/components/resources/dataTable/conversion/EutaxonomyAssuranceValueGetterFactory",
+            valueGetter =
+                FrameworkDisplayValueLambda(
+                    "formatAssuranceProviderForDataTable(${getTypescriptFieldAccessor(true)})",
+                    setOf(
+                        TypeScriptImport(
+                            "formatAssuranceProviderForDataTable",
+                            "@/components/resources/dataTable/conversion/EutaxonomyAssuranceValueGetterFactory",
+                        ),
                     ),
                 ),
-            ),
         )
     }
 
-    override fun getExtendedDocumentReference(): List<String> {
-        return listOf("${this.getKotlinFieldAccessor()}?.dataSource?.fileReference")
-    }
+    override fun getExtendedDocumentReference(): List<String> = listOf("${this.getKotlinFieldAccessor()}?.dataSource?.fileReference")
 }

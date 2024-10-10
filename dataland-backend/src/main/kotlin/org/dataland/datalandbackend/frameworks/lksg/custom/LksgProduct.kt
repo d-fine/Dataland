@@ -10,8 +10,6 @@ import org.dataland.datalandbackend.interfaces.frameworks.ProductBase
 data class LksgProduct(
     @field:JsonProperty(required = true)
     override val name: String,
-
     val productionSteps: List<String>?,
-
     val relatedCorporateSupplyChain: String?,
 ) : ProductBase

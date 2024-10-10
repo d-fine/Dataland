@@ -30,17 +30,18 @@ import java.io.File
  * Definition of the Heimathafen framework
  */
 @Component
-class EsgQuestionnaireFramework : PavedRoadFramework(
-    identifier = "esg-questionnaire",
-    label = "ESG Questionnaire für Corporate Schuldscheindarlehen",
-    explanation = "Der ESG Questionnaire für Corporate Schuldscheindarlehen ist ein ESG-Fragebogen des " +
-        "Gesamtverbands der Versicherer und des Bundesverbands Öffentlicher Banken",
-    File("./dataland-framework-toolbox/inputs/esg-questionnaire/esg-questionnaire.xlsx"),
-    order = 7,
-    enabledFeatures =
-    FrameworkGenerationFeatures.allExcept(FrameworkGenerationFeatures.QaModel),
-) {
-
+class EsgQuestionnaireFramework :
+    PavedRoadFramework(
+        identifier = "esg-questionnaire",
+        label = "ESG Questionnaire für Corporate Schuldscheindarlehen",
+        explanation =
+            "Der ESG Questionnaire für Corporate Schuldscheindarlehen ist ein ESG-Fragebogen des " +
+                "Gesamtverbands der Versicherer und des Bundesverbands Öffentlicher Banken",
+        File("./dataland-framework-toolbox/inputs/esg-questionnaire/esg-questionnaire.xlsx"),
+        order = 7,
+        enabledFeatures =
+            FrameworkGenerationFeatures.allExcept(FrameworkGenerationFeatures.QaModel),
+    ) {
     override fun configureDiagnostics(diagnosticManager: DiagnosticManager) {
         diagnosticManager.suppress("IgnoredRow-38-3118f246")
     }
@@ -72,9 +73,7 @@ class EsgQuestionnaireFramework : PavedRoadFramework(
         }
     }
 
-    private fun createRollingWindowComponentsInCategoryUmwelt(
-        framework: Framework,
-    ) {
+    private fun createRollingWindowComponentsInCategoryUmwelt(framework: Framework) {
         framework.root.edit<ComponentGroup>("umwelt") {
             val umweltGroup = this
             with(EsgQuestionnaireUmweltRollingWindowComponents) {
@@ -90,9 +89,7 @@ class EsgQuestionnaireFramework : PavedRoadFramework(
         }
     }
 
-    private fun createRollingWindowComponentsInCategorySoziales(
-        framework: Framework,
-    ) {
+    private fun createRollingWindowComponentsInCategorySoziales(framework: Framework) {
         framework.root.edit<ComponentGroup>("soziales") {
             val sozialesGroup = this
             with(EsgQuestionnaireSozialesRollingWindowComponents) {
@@ -119,10 +116,11 @@ class EsgQuestionnaireFramework : PavedRoadFramework(
     override fun customizeHighLevelIntermediateRepresentation(framework: Framework) {
         setGroupsThatAreExpandedOnPageLoad(framework)
         overwriteFakeFixtureGenerationForDataDate(framework)
-        val berichtsPflicht = framework.root
-            .get<ComponentGroup>("general")
-            .get<ComponentGroup>("masterData")
-            .get<YesNoComponent>("berichtspflichtUndEinwilligungZurVeroeffentlichung")
+        val berichtsPflicht =
+            framework.root
+                .get<ComponentGroup>("general")
+                .get<ComponentGroup>("masterData")
+                .get<YesNoComponent>("berichtspflichtUndEinwilligungZurVeroeffentlichung")
 
         createRollingWindowComponentsInCategoryUmwelt(framework)
         createRollingWindowComponentsInCategorySoziales(framework)
@@ -134,7 +132,9 @@ class EsgQuestionnaireFramework : PavedRoadFramework(
                 }
             }
         }
-        framework.root.get<ComponentGroup>("umwelt").get<ComponentGroup>("taxonomie")
+        framework.root
+            .get<ComponentGroup>("umwelt")
+            .get<ComponentGroup>("taxonomie")
             .create<MultiSelectComponent>(
                 "euTaxonomieKompassAktivitaeten",
                 "umsatzInvestitionsaufwandFuerNachhaltigeAktivitaeten",
@@ -144,9 +144,7 @@ class EsgQuestionnaireFramework : PavedRoadFramework(
             }
     }
 
-    override fun getComponentGenerationUtils(): ComponentGenerationUtils {
-        return ComponentGenerationUtilsForGermanFrameworks()
-    }
+    override fun getComponentGenerationUtils(): ComponentGenerationUtils = ComponentGenerationUtilsForGermanFrameworks()
 
     private fun setEuTaxonomieKompassAktivitaeten(component: MultiSelectComponent) {
         component.label = "EU Taxonomie Kompass Aktivitäten"
@@ -164,12 +162,13 @@ class EsgQuestionnaireFramework : PavedRoadFramework(
                 component.documentSupport.getFixtureExpression(
                     fixtureExpression = "pickSubsetOfElements(Object.values(Activity))",
                     nullableFixtureExpression =
-                    "dataGenerator.valueOrNull(pickSubsetOfElements(Object.values(Activity)))",
+                        "dataGenerator.valueOrNull(pickSubsetOfElements(Object.values(Activity)))",
                     nullable = component.isNullable,
                 ),
-                imports = setOf(
-                    TypeScriptImport("Activity", "@clients/backend"),
-                ),
+                imports =
+                    setOf(
+                        TypeScriptImport("Activity", "@clients/backend"),
+                    ),
             )
         }
     }
@@ -202,15 +201,17 @@ class EsgQuestionnaireFramework : PavedRoadFramework(
     private fun setEuTaxonomieKompassAktivitaetenUploadGenerator(component: MultiSelectComponent) {
         component.uploadConfigGenerator = { sectionUploadConfigBuilder ->
             sectionUploadConfigBuilder.addStandardUploadConfigCell(
-                frameworkUploadOptions = FrameworkUploadOptions(
-                    body = "getActivityNamesAsDropdownOptions()",
-                    imports = setOf(
-                        TypeScriptImport(
-                            "getActivityNamesAsDropdownOptions",
-                            "@/components/resources/frameworkDataSearch/EuTaxonomyActivityNames",
-                        ),
+                frameworkUploadOptions =
+                    FrameworkUploadOptions(
+                        body = "getActivityNamesAsDropdownOptions()",
+                        imports =
+                            setOf(
+                                TypeScriptImport(
+                                    "getActivityNamesAsDropdownOptions",
+                                    "@/components/resources/frameworkDataSearch/EuTaxonomyActivityNames",
+                                ),
+                            ),
                     ),
-                ),
                 component = component,
                 uploadComponentName = "MultiSelectFormField",
             )

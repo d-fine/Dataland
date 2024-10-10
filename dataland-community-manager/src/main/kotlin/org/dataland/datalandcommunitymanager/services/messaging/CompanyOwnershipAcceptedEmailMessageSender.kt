@@ -34,22 +34,24 @@ class CompanyOwnershipAcceptedEmailMessageSender(
         companyName: String,
         correlationId: String,
     ) {
-        val properties = mapOf(
-            "companyId" to datalandCompanyId,
-            "companyName" to companyName,
-            "numberOfOpenDataRequestsForCompany" to getNumberOfOpenDataRequestsForCompany(datalandCompanyId).toString(),
-        )
-        val message = TemplateEmailMessage(
-            TemplateEmailMessage.Type.SuccessfullyClaimedOwnership,
-            TemplateEmailMessage.UserIdEmailRecipient(newCompanyOwnerId),
-            properties,
-        )
+        val properties =
+            mapOf(
+                "companyId" to datalandCompanyId,
+                "companyName" to companyName,
+                "numberOfOpenDataRequestsForCompany" to getNumberOfOpenDataRequestsForCompany(datalandCompanyId).toString(),
+            )
+        val message =
+            TemplateEmailMessage(
+                TemplateEmailMessage.Type.SuccessfullyClaimedOwnership,
+                TemplateEmailMessage.UserIdEmailRecipient(newCompanyOwnerId),
+                properties,
+            )
         cloudEventMessageHandler.buildCEMessageAndSendToQueue(
             objectMapper.writeValueAsString(message),
-            MessageType.SendTemplateEmail,
+            MessageType.SEND_TEMPLATE_EMAIL,
             correlationId,
-            ExchangeName.SendEmail,
-            RoutingKeyNames.templateEmail,
+            ExchangeName.SEND_EMAIL,
+            RoutingKeyNames.TEMPLATE_EMAIL,
         )
     }
 
@@ -58,12 +60,13 @@ class CompanyOwnershipAcceptedEmailMessageSender(
      * @param datalandCompanyId of the company to count the open data requests for
      * @return the number of opened data requests
      */
-    fun getNumberOfOpenDataRequestsForCompany(datalandCompanyId: String): Int {
-        return dataRequestQueryManager.getAggregatedDataRequests(
-            identifierValue = datalandCompanyId,
-            dataTypes = null,
-            reportingPeriod = null,
-            status = RequestStatus.Open,
-        ).filter { it.count > 0 }.size
-    }
+    fun getNumberOfOpenDataRequestsForCompany(datalandCompanyId: String): Int =
+        dataRequestQueryManager
+            .getAggregatedDataRequests(
+                identifierValue = datalandCompanyId,
+                dataTypes = null,
+                reportingPeriod = null,
+                status = RequestStatus.Open,
+            ).filter { it.count > 0 }
+            .size
 }

@@ -16,8 +16,11 @@ import org.springframework.security.oauth2.server.resource.authentication.Bearer
  * This provider supports login via JWTs provided as bearer tokens.
  * Generates a DatalandJwtAuthentication upon successful validation of the JWT.
  */
-class KeycloakJwtAuthenticationProvider(val jwtDecoder: JwtDecoder) : AuthenticationProvider {
+class KeycloakJwtAuthenticationProvider(
+    val jwtDecoder: JwtDecoder,
+) : AuthenticationProvider {
     private val logger = LoggerFactory.getLogger(javaClass)
+
     override fun authenticate(authentication: Authentication): DatalandJwtAuthentication {
         val bearerToken = authentication as BearerTokenAuthenticationToken
         logger.trace("Received request for authentication with bearer token ${bearerToken.token}")
@@ -28,8 +31,8 @@ class KeycloakJwtAuthenticationProvider(val jwtDecoder: JwtDecoder) : Authentica
         return jwtAuthentication
     }
 
-    private fun decodeAndValidateJwt(bearer: BearerTokenAuthenticationToken): Jwt {
-        return try {
+    private fun decodeAndValidateJwt(bearer: BearerTokenAuthenticationToken): Jwt =
+        try {
             jwtDecoder.decode(bearer.token)
         } catch (ex: BadJwtException) {
             logger.trace("Authentication failed as the JWT was invalid", ex)
@@ -38,9 +41,6 @@ class KeycloakJwtAuthenticationProvider(val jwtDecoder: JwtDecoder) : Authentica
             logger.trace("Internal JWT handling exception", ex)
             throw AuthenticationServiceException(ex.message, ex)
         }
-    }
 
-    override fun supports(authentication: Class<*>?): Boolean {
-        return BearerTokenAuthenticationToken::class.java.isAssignableFrom(authentication)
-    }
+    override fun supports(authentication: Class<*>?): Boolean = BearerTokenAuthenticationToken::class.java.isAssignableFrom(authentication)
 }

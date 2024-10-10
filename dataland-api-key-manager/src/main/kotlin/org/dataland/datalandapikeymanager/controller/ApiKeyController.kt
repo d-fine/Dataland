@@ -17,20 +17,14 @@ import org.springframework.web.bind.annotation.RestController
 class ApiKeyController(
     @Autowired private val apiKeyManager: ApiKeyManager,
 ) : ApiKeyAPI {
+    override fun generateApiKey(daysValid: Int?): ResponseEntity<ApiKeyAndMetaInfo> =
+        ResponseEntity.ok(apiKeyManager.generateNewApiKey(daysValid))
 
-    override fun generateApiKey(daysValid: Int?): ResponseEntity<ApiKeyAndMetaInfo> {
-        return ResponseEntity.ok(apiKeyManager.generateNewApiKey(daysValid))
-    }
+    override fun getApiKeyMetaInfoForUser(): ResponseEntity<ApiKeyMetaInfo> =
+        ResponseEntity
+            .ok(apiKeyManager.getApiKeyMetaInfoForFrontendUser())
 
-    override fun getApiKeyMetaInfoForUser(): ResponseEntity<ApiKeyMetaInfo> {
-        return ResponseEntity.ok(apiKeyManager.getApiKeyMetaInfoForFrontendUser())
-    }
+    override fun validateApiKey(apiKey: String): ResponseEntity<ApiKeyMetaInfo> = ResponseEntity.ok(apiKeyManager.validateApiKey(apiKey))
 
-    override fun validateApiKey(apiKey: String): ResponseEntity<ApiKeyMetaInfo> {
-        return ResponseEntity.ok(apiKeyManager.validateApiKey(apiKey))
-    }
-
-    override fun revokeApiKey(): ResponseEntity<RevokeApiKeyResponse> {
-        return ResponseEntity.ok(apiKeyManager.revokeApiKey())
-    }
+    override fun revokeApiKey(): ResponseEntity<RevokeApiKeyResponse> = ResponseEntity.ok(apiKeyManager.revokeApiKey())
 }

@@ -32,14 +32,20 @@ abstract class FileConverter(
      * Validates that a file is what it claims to be, e.g. by mime type and content validation
      * @param file the file to validate
      */
-    fun validateFile(file: MultipartFile, correlationId: String) {
+    fun validateFile(
+        file: MultipartFile,
+        correlationId: String,
+    ) {
         logger.info("Validating uploaded file. (correlation ID: $correlationId)")
         validateFileNameWithinNamingConvention(file.originalFilename!!, correlationId)
         validateMimeType(file)
         validateFileContent(file, correlationId)
     }
 
-    protected open fun validateFileContent(file: MultipartFile, correlationId: String) {
+    protected open fun validateFileContent(
+        file: MultipartFile,
+        correlationId: String,
+    ) {
         // Empty, just for customization
     }
 
@@ -47,12 +53,18 @@ abstract class FileConverter(
      * @param file the file to convert
      * @returns the converted file as bytes
      */
-    fun convertFile(file: MultipartFile, correlationId: String): ByteArray {
+    fun convertFile(
+        file: MultipartFile,
+        correlationId: String,
+    ): ByteArray {
         logger.info("Converting uploaded file. (correlation ID: $correlationId)")
         return convert(file, correlationId)
     }
 
-    protected abstract fun convert(file: MultipartFile, correlationId: String): ByteArray
+    protected abstract fun convert(
+        file: MultipartFile,
+        correlationId: String,
+    ): ByteArray
 
     private fun validateMimeType(file: MultipartFile) {
         val fileExtension = file.lowercaseExtension()
@@ -73,7 +85,10 @@ abstract class FileConverter(
     private val allowedFilenameRegex =
         Regex("^[^<>:\"|?/*\\\\\\s][^<>:\"|?/*\\\\]{0,252}[^<>:\"|?/*\\\\.\\s]\$")
 
-    private fun validateFileNameWithinNamingConvention(name: String, correlationId: String) {
+    private fun validateFileNameWithinNamingConvention(
+        name: String,
+        correlationId: String,
+    ) {
         if (!allowedFilenameRegex.matches(name)) {
             logger.info(
                 "Document uploaded with correlation ID: $correlationId violates the naming convention" +

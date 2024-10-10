@@ -14,16 +14,13 @@ import org.springframework.transaction.annotation.Transactional
 class CompanyBaseManager(
     @Autowired private val companyBaseRepository: StoredCompanyBaseRepository,
 ) {
-
     /**
      * Method to get the number of companies satisfying the filter
      * @param filter The filter to use during counting
      */
     @Transactional
-    fun countNumberOfCompanies(
-        filter: StoredCompanySearchFilter,
-    ): Int {
-        return if (filter.searchStringLength == 0) {
+    fun countNumberOfCompanies(filter: StoredCompanySearchFilter): Int =
+        if (filter.searchStringLength == 0) {
             companyBaseRepository
                 .getNumberOfCompaniesWithoutSearchString(
                     filter,
@@ -31,19 +28,14 @@ class CompanyBaseManager(
         } else {
             companyBaseRepository.getNumberOfCompanies(filter)
         }
-    }
 
     /**
      * Returns a list of available country codes across all stored companies
      */
-    fun getDistinctCountryCodes(): Set<String> {
-        return companyBaseRepository.fetchDistinctCountryCodes()
-    }
+    fun getDistinctCountryCodes(): Set<String> = companyBaseRepository.fetchDistinctCountryCodes()
 
     /**
      * Returns a list of available sectors across all stored companies
      */
-    fun getDistinctSectors(): Set<String> {
-        return companyBaseRepository.fetchDistinctSectors()
-    }
+    fun getDistinctSectors(): Set<String> = companyBaseRepository.fetchDistinctSectors()
 }

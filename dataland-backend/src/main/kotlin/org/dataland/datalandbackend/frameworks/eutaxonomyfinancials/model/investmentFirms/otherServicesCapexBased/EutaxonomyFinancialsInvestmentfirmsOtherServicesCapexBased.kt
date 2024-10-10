@@ -14,99 +14,67 @@ import java.math.BigDecimal
 data class EutaxonomyFinancialsInvestmentfirmsOtherServicesCapexBased(
     @field:MinimumValue(minimumValue = 0)
     @field:Valid()
-    val capexBasedTotalRevenueFromInvestmentsAndServicesAndActivitiesOtherThanDealingOnOwnAccount:
-    CurrencyDataPoint? = null,
-
+    val capexBasedTotalRevenueFromInvestmentsAndServicesAndActivitiesOtherThanDealingOnOwnAccount: CurrencyDataPoint? = null,
     @field:Valid()
-    val capexBasedProportionOfRevenueSubstantiallyContributingToClimateChangeMitigationEligible:
-    ExtendedDataPoint<BigDecimal?>? = null,
-
+    val capexBasedProportionOfRevenueSubstantiallyContributingToClimateChangeMitigationEligible: ExtendedDataPoint<BigDecimal?>? = null,
     @field:Valid()
-    val capexBasedProportionOfRevenueSubstantiallyContributingToClimateChangeMitigationAligned:
-    ExtendedDataPoint<BigDecimal?>? = null,
-
+    val capexBasedProportionOfRevenueSubstantiallyContributingToClimateChangeMitigationAligned: ExtendedDataPoint<BigDecimal?>? = null,
     @field:Valid()
     val capexBasedProportionOfRevenueSubstantiallyContributingToClimateChangeMitigationOfWhichTransitional:
-    ExtendedDataPoint<BigDecimal?>? = null,
-
+        ExtendedDataPoint<BigDecimal?>? = null,
     @field:Valid()
     val capexBasedProportionOfRevenueSubstantiallyContributingToClimateChangeMitigationOfWhichEnabling:
-    ExtendedDataPoint<BigDecimal?>? = null,
-
+        ExtendedDataPoint<BigDecimal?>? = null,
     @field:Valid()
-    val capexBasedProportionOfRevenueSubstantiallyContributingToClimateChangeAdaptationEligible:
-    ExtendedDataPoint<BigDecimal?>? = null,
-
+    val capexBasedProportionOfRevenueSubstantiallyContributingToClimateChangeAdaptationEligible: ExtendedDataPoint<BigDecimal?>? = null,
     @field:Valid()
-    val capexBasedProportionOfRevenueSubstantiallyContributingToClimateChangeAdaptationAligned:
-    ExtendedDataPoint<BigDecimal?>? = null,
-
+    val capexBasedProportionOfRevenueSubstantiallyContributingToClimateChangeAdaptationAligned: ExtendedDataPoint<BigDecimal?>? = null,
     @field:Valid()
     val capexBasedProportionOfRevenueSubstantiallyContributingToClimateChangeAdaptationOfWhichEnabling:
-    ExtendedDataPoint<BigDecimal?>? = null,
-
+        ExtendedDataPoint<BigDecimal?>? = null,
     @field:Valid()
     val capexBasedProportionOfRevenueSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesEligible:
-    ExtendedDataPoint<BigDecimal?>? = null,
-
+        ExtendedDataPoint<BigDecimal?>? = null,
     @field:Valid()
     val capexBasedProportionOfRevenueSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesAligned:
-    ExtendedDataPoint<BigDecimal?>? = null,
-
+        ExtendedDataPoint<BigDecimal?>? = null,
     @field:Valid()
     val capexBasedProportionOfRevenueSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesOfWhichEnabling:
-    ExtendedDataPoint<BigDecimal?>? = null,
-
+        ExtendedDataPoint<BigDecimal?>? = null,
     @field:Valid()
-    val capexBasedProportionOfRevenueSubstantiallyContributingToCircularEconomyEligible:
-    ExtendedDataPoint<BigDecimal?>? = null,
-
+    val capexBasedProportionOfRevenueSubstantiallyContributingToCircularEconomyEligible: ExtendedDataPoint<BigDecimal?>? = null,
     @field:Valid()
-    val capexBasedProportionOfRevenueSubstantiallyContributingToCircularEconomyAligned:
-    ExtendedDataPoint<BigDecimal?>? = null,
-
+    val capexBasedProportionOfRevenueSubstantiallyContributingToCircularEconomyAligned: ExtendedDataPoint<BigDecimal?>? = null,
     @field:Valid()
-    val capexBasedProportionOfRevenueSubstantiallyContributingToCircularEconomyOfWhichEnabling:
-    ExtendedDataPoint<BigDecimal?>? = null,
-
+    val capexBasedProportionOfRevenueSubstantiallyContributingToCircularEconomyOfWhichEnabling: ExtendedDataPoint<BigDecimal?>? = null,
     @field:Valid()
     val capexBasedProportionOfRevenueSubstantiallyContributingToPollutionPreventionAndControlEligible:
-    ExtendedDataPoint<BigDecimal?>? = null,
-
+        ExtendedDataPoint<BigDecimal?>? = null,
     @field:Valid()
     val capexBasedProportionOfRevenueSubstantiallyContributingToPollutionPreventionAndControlAligned:
-    ExtendedDataPoint<BigDecimal?>? = null,
-
+        ExtendedDataPoint<BigDecimal?>? = null,
     @field:Valid()
     val capexBasedProportionOfRevenueSubstantiallyContributingToPollutionPreventionAndControlOfWhichEnabling:
-    ExtendedDataPoint<BigDecimal?>? = null,
-
+        ExtendedDataPoint<BigDecimal?>? = null,
     @field:Valid()
     val capexBasedProportionOfRevenueSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsEligible:
-    ExtendedDataPoint<BigDecimal?>? = null,
-
+        ExtendedDataPoint<BigDecimal?>? = null,
     @field:Valid()
     val capexBasedProportionOfRevenueSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsAligned:
-    ExtendedDataPoint<BigDecimal?>? = null,
-
+        ExtendedDataPoint<BigDecimal?>? = null,
     @field:Valid()
     val capexBasedProportionOfRevenueSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsOfWhichEnabling:
-    ExtendedDataPoint<BigDecimal?>? = null,
-
+        ExtendedDataPoint<BigDecimal?>? = null,
     @field:Valid()
     val capexBasedProportionOfRevenueSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesEligible:
-    ExtendedDataPoint<BigDecimal?>? = null,
-
+        ExtendedDataPoint<BigDecimal?>? = null,
     @field:Valid()
     val capexBasedProportionOfRevenueSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesAligned:
-    ExtendedDataPoint<BigDecimal?>? = null,
-
+        ExtendedDataPoint<BigDecimal?>? = null,
     @field:Valid()
     val capexBasedProportionOfRevenueSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesOfWhichTransitional:
-    ExtendedDataPoint<BigDecimal?>? = null,
-
+        ExtendedDataPoint<BigDecimal?>? = null,
     @field:Valid()
     val capexBasedProportionOfRevenueSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesOfWhichEnabling:
-    ExtendedDataPoint<BigDecimal?>? = null,
-
+        ExtendedDataPoint<BigDecimal?>? = null,
 )

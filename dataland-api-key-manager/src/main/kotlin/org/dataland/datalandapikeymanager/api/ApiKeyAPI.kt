@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestParam
  * Defines the api-key-manager API.
  */
 interface ApiKeyAPI {
-
     /**
      * A method to generate a new API key
      * @param daysValid defines how many days the generated API key can be used, a null value results in an
@@ -26,8 +25,9 @@ interface ApiKeyAPI {
      */
     @Operation(
         summary = "Generate a new API key.",
-        description = "Generates and persists a new API key for the requesting user with an expiry date based on " +
-            "the number of valid days in the request param.",
+        description =
+            "Generates and persists a new API key for the requesting user with an expiry date based on " +
+                "the number of valid days in the request param.",
     )
     @ApiResponses(
         value = [
@@ -88,7 +88,9 @@ interface ApiKeyAPI {
         value = ["/validateApiKey"],
         produces = ["application/json"],
     )
-    fun validateApiKey(@RequestParam apiKey: String): ResponseEntity<ApiKeyMetaInfo>
+    fun validateApiKey(
+        @RequestParam apiKey: String,
+    ): ResponseEntity<ApiKeyMetaInfo>
 
     /**
      * A method to revoke the API key of the requesting user.
@@ -96,8 +98,9 @@ interface ApiKeyAPI {
      */
     @Operation(
         summary = "Revoke an existing API key.",
-        description = "Checks if API key exists in storage for the requesting user and revokes it. If there is no " +
-            "API key registered for the user, this is reported in the response.",
+        description =
+            "Checks if API key exists in storage for the requesting user and revokes it. If there is no " +
+                "API key registered for the user, this is reported in the response.",
     )
     @ApiResponses(
         value = [

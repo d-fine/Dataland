@@ -22,10 +22,11 @@ interface StoredCompanyBaseRepository : JpaRepository<StoredCompanyEntity, Strin
      */
     @Query(
         nativeQuery = true,
-        value = " SELECT COUNT(*) " +
-            " FROM " + TemporaryTables.TABLE_FILTERED_TEXT_RESULTS +
-            " INNER JOIN " + TemporaryTables.TABLE_FILTERED_DROPDOWN_RESULTS +
-            " ON filtered_text_results.company_id = filtered_dropdown_results.company_id ",
+        value =
+            " SELECT COUNT(*) " +
+                " FROM " + TemporaryTables.TABLE_FILTERED_TEXT_RESULTS +
+                " INNER JOIN " + TemporaryTables.TABLE_FILTERED_DROPDOWN_RESULTS +
+                " ON filtered_text_results.company_id = filtered_dropdown_results.company_id ",
     )
     fun getNumberOfCompanies(
         @Param("searchFilter") searchFilter: StoredCompanySearchFilter,
@@ -40,8 +41,9 @@ interface StoredCompanyBaseRepository : JpaRepository<StoredCompanyEntity, Strin
      */
     @Query(
         nativeQuery = true,
-        value = " SELECT COUNT(*)" +
-            " FROM " + TemporaryTables.TABLE_FILTERED_DROPDOWN_RESULTS,
+        value =
+            " SELECT COUNT(*)" +
+                " FROM " + TemporaryTables.TABLE_FILTERED_DROPDOWN_RESULTS,
     )
     fun getNumberOfCompaniesWithoutSearchString(
         @Param("searchFilter") searchFilter: StoredCompanySearchFilter,

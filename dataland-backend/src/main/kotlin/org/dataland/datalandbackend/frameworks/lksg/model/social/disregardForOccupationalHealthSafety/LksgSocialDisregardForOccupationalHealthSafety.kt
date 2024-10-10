@@ -10,25 +10,16 @@ import org.dataland.datalandbackend.model.enums.commons.YesNo
  */
 data class LksgSocialDisregardForOccupationalHealthSafety(
     val lowSkillWork: YesNo? = null,
-
     val hazardousMachines: YesNo? = null,
-
     val oshMeasures: YesNo? = null,
-
     @field:Valid()
     val oshPolicy: BaseDataPoint<YesNo>? = null,
-
     @field:Valid()
     val oshTraining: BaseDataPoint<YesNo>? = null,
-
     @field:Valid()
     val healthAndSafetyPolicy: BaseDataPoint<YesNo>? = null,
-
     @field:Valid()
     val otherOshMeasures: BaseDataPoint<YesNo>? = null,
-
     val otherOshMeasuresDescription: String? = null,
-
     val under10WorkplaceAccidents: YesNo? = null,
-
 )

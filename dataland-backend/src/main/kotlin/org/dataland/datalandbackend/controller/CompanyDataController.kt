@@ -46,7 +46,8 @@ class CompanyDataController(
         logger.info("Received a request to post a company with name '${companyInformation.companyName}'")
         companyInformation.companyContactDetails?.forEach { it.validateIsEmailAddress() }
         return ResponseEntity.ok(
-            companyAlterationManager.addCompany(companyInformation)
+            companyAlterationManager
+                .addCompany(companyInformation)
                 .toApiModel(DatalandAuthentication.fromContext()),
         )
     }
@@ -76,6 +77,7 @@ class CompanyDataController(
             ),
         )
     }
+
     override fun getNumberOfCompanies(
         searchString: String?,
         dataTypes: Set<DataType>?,
@@ -101,16 +103,18 @@ class CompanyDataController(
     override fun getCompaniesBySearchString(
         searchString: String,
         resultLimit: Int,
-    ): ResponseEntity<List<CompanyIdAndName>> {
-        return ResponseEntity.ok(
+    ): ResponseEntity<List<CompanyIdAndName>> =
+        ResponseEntity.ok(
             companyQueryManager.searchCompaniesByNameOrIdentifierAndGetApiModel(
                 searchString,
                 resultLimit,
             ),
         )
-    }
 
-    override fun existsIdentifier(identifierType: IdentifierType, identifier: String) {
+    override fun existsIdentifier(
+        identifierType: IdentifierType,
+        identifier: String,
+    ) {
         try {
             companyIdentifierRepositoryInterface.getReferenceById(CompanyIdentifierEntityId(identifier, identifierType))
         } catch (e: JpaObjectRetrievalFailureException) {
@@ -122,15 +126,19 @@ class CompanyDataController(
         }
     }
 
-    override fun getCompanyIdByIdentifier(identifierType: IdentifierType, identifier: String):
-        ResponseEntity<CompanyId> {
+    override fun getCompanyIdByIdentifier(
+        identifierType: IdentifierType,
+        identifier: String,
+    ): ResponseEntity<CompanyId> {
         val companyNotFoundSummary = "Company identifier does not exist"
         val companyNotFoundMessage = "Company identifier $identifier of type $identifierType does not exist"
         logger.info("Trying to retrieve company for $identifierType: $identifier")
         try {
-            val companyId = companyIdentifierRepositoryInterface
-                .getReferenceById(CompanyIdentifierEntityId(identifier, identifierType))
-                .company!!.companyId
+            val companyId =
+                companyIdentifierRepositoryInterface
+                    .getReferenceById(CompanyIdentifierEntityId(identifier, identifierType))
+                    .company!!
+                    .companyId
             logger.info("Retrieved company ID: $companyId")
             return ResponseEntity.ok(CompanyId(companyId))
         } catch (e: JpaObjectRetrievalFailureException) {
@@ -143,21 +151,19 @@ class CompanyDataController(
         }
     }
 
-    override fun getAvailableCompanySearchFilters(): ResponseEntity<CompanyAvailableDistinctValues> {
-        return ResponseEntity.ok(
+    override fun getAvailableCompanySearchFilters(): ResponseEntity<CompanyAvailableDistinctValues> =
+        ResponseEntity.ok(
             CompanyAvailableDistinctValues(
                 countryCodes = companyBaseManager.getDistinctCountryCodes(),
                 sectors = companyBaseManager.getDistinctSectors(),
             ),
         )
-    }
 
-    override fun getCompanyById(companyId: String): ResponseEntity<StoredCompany> {
-        return ResponseEntity.ok(
+    override fun getCompanyById(companyId: String): ResponseEntity<StoredCompany> =
+        ResponseEntity.ok(
             companyQueryManager
                 .getCompanyApiModelById(companyId, DatalandAuthentication.fromContextOrNull()),
         )
-    }
 
     override fun patchCompanyById(
         companyId: String,
@@ -183,26 +189,22 @@ class CompanyDataController(
         )
     }
 
-    override fun getTeaserCompanies(): List<String> {
-        return companyQueryManager.getTeaserCompanyIds()
-    }
+    override fun getTeaserCompanies(): List<String> = companyQueryManager.getTeaserCompanyIds()
 
-    override fun getAggregatedFrameworkDataSummary(
-        companyId: String,
-    ): ResponseEntity<Map<DataType, AggregatedFrameworkDataSummary>> {
-        return ResponseEntity.ok(
+    override fun getAggregatedFrameworkDataSummary(companyId: String): ResponseEntity<Map<DataType, AggregatedFrameworkDataSummary>> =
+        ResponseEntity.ok(
             DataType.values.associateWith {
                 AggregatedFrameworkDataSummary(companyQueryManager.countActiveDatasets(companyId, it))
             },
         )
-    }
 
-    override fun getCompanyInfo(companyId: String): ResponseEntity<CompanyInformation> {
-        return ResponseEntity.ok(
+    override fun getCompanyInfo(companyId: String): ResponseEntity<CompanyInformation> =
+        ResponseEntity.ok(
             companyQueryManager
-                .getCompanyApiModelById(companyId, DatalandAuthentication.fromContextOrNull()).companyInformation,
+                .getCompanyApiModelById(companyId, DatalandAuthentication.fromContextOrNull())
+                .companyInformation,
         )
-    }
+
     override fun isCompanyIdValid(companyId: String) {
         companyQueryManager.verifyCompanyIdExists(companyId)
     }

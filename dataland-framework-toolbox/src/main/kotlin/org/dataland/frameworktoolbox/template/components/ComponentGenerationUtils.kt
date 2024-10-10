@@ -17,32 +17,28 @@ import org.springframework.stereotype.Component
  */
 @Component
 open class ComponentGenerationUtils {
-
     /**
      * Generate a camelCase identifier for a section from a template row
      */
-    open fun generateSectionIdentifierFromRow(row: TemplateRow): String {
-        return Naming.getNameFromLabel(row.category)
-    }
+    open fun generateSectionIdentifierFromRow(row: TemplateRow): String = Naming.getNameFromLabel(row.category)
 
     /**
      * Generate a camelCase identifier for a subSection from a template row
      */
-    open fun generateSubSectionIdentifierFromRow(row: TemplateRow): String {
-        return Naming.getNameFromLabel(row.subCategory)
-    }
+    open fun generateSubSectionIdentifierFromRow(row: TemplateRow): String = Naming.getNameFromLabel(row.subCategory)
 
     /**
      * Generate a camelCase identifier for a component from a template row
      */
-    open fun generateFieldIdentifierFromRow(row: TemplateRow): String {
-        return Naming.getNameFromLabel(row.fieldName)
-    }
+    open fun generateFieldIdentifierFromRow(row: TemplateRow): String = Naming.getNameFromLabel(row.fieldName)
 
     /**
      * Loads properties shared across components from the row into the component
      */
-    open fun setCommonProperties(row: TemplateRow, component: ComponentBase) {
+    open fun setCommonProperties(
+        row: TemplateRow,
+        component: ComponentBase,
+    ) {
         component.label = row.fieldName
         component.uploadPageExplanation =
             if (row.combinedTooltip?.isNotBlank() == true) {
@@ -68,16 +64,19 @@ open class ComponentGenerationUtils {
      * Loads the options column required for some components (e.g. drop-downs)
      */
     open fun getSelectionOptionsFromOptionColumn(row: TemplateRow): Set<SelectionOption> {
-        val stringOptions = row.options
-            .split("|")
-            .map { it.trim() }
+        val stringOptions =
+            row.options
+                .split("|")
+                .map { it.trim() }
 
-        val mappedOptions = stringOptions.map {
-            SelectionOption(
-                identifier = Naming.getNameFromLabel(it).capitalizeEn(),
-                label = it,
-            )
-        }.toSet()
+        val mappedOptions =
+            stringOptions
+                .map {
+                    SelectionOption(
+                        identifier = Naming.getNameFromLabel(it).capitalizeEn(),
+                        label = it,
+                    )
+                }.toSet()
 
         require(mappedOptions.isNotEmpty()) {
             "Field ${row.fieldIdentifier} does not specify required options for component ${row.component}."

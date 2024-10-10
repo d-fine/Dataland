@@ -8,8 +8,8 @@ import org.dataland.frameworktoolbox.utils.capitalizeEn
  * Custom utility class used during Template conversion for the German frameworks.
  */
 class ComponentGenerationUtilsForGermanFrameworks : ComponentGenerationUtils() {
-    private fun getFieldNameFromGermanString(technicalFieldName: String): String {
-        return Naming.getNameFromLabel(
+    private fun getFieldNameFromGermanString(technicalFieldName: String): String =
+        Naming.getNameFromLabel(
             technicalFieldName
                 .replace("ö", "oe")
                 .replace("Ö", "Oe")
@@ -22,31 +22,27 @@ class ComponentGenerationUtilsForGermanFrameworks : ComponentGenerationUtils() {
                 .replace(".", "")
                 .replace(";", ""),
         )
-    }
 
-    override fun generateSectionIdentifierFromRow(row: TemplateRow): String {
-        return getFieldNameFromGermanString(row.category)
-    }
+    override fun generateSectionIdentifierFromRow(row: TemplateRow): String = getFieldNameFromGermanString(row.category)
 
-    override fun generateSubSectionIdentifierFromRow(row: TemplateRow): String {
-        return getFieldNameFromGermanString(row.subCategory)
-    }
+    override fun generateSubSectionIdentifierFromRow(row: TemplateRow): String = getFieldNameFromGermanString(row.subCategory)
 
-    override fun generateFieldIdentifierFromRow(row: TemplateRow): String {
-        return getFieldNameFromGermanString(row.fieldName)
-    }
+    override fun generateFieldIdentifierFromRow(row: TemplateRow): String = getFieldNameFromGermanString(row.fieldName)
 
     override fun getSelectionOptionsFromOptionColumn(row: TemplateRow): Set<SelectionOption> {
-        val stringOptions = row.options
-            .split("|")
-            .map { it.trim() }
+        val stringOptions =
+            row.options
+                .split("|")
+                .map { it.trim() }
 
-        val mappedOptions = stringOptions.map {
-            SelectionOption(
-                identifier = getFieldNameFromGermanString(it).capitalizeEn(),
-                label = it,
-            )
-        }.toSet()
+        val mappedOptions =
+            stringOptions
+                .map {
+                    SelectionOption(
+                        identifier = getFieldNameFromGermanString(it).capitalizeEn(),
+                        label = it,
+                    )
+                }.toSet()
 
         require(mappedOptions.isNotEmpty()) {
             "Field ${row.fieldIdentifier} does not specify required options for component ${row.component}."

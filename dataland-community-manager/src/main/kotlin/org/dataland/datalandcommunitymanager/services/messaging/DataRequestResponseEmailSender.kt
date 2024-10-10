@@ -12,7 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
 import java.text.SimpleDateFormat
-import java.util.*
+import java.util.TimeZone
 
 /**
  * A class that provided utility for generating emails messages for data request responses
@@ -25,15 +25,13 @@ class DataRequestResponseEmailSender(
     @Value("\${dataland.community-manager.data-request.answered.stale-days-threshold}")
     private val staleDaysThreshold: String,
 ) {
-
     /**
      * Method to retrieve companyName by companyId
      * @param companyId dataland companyId
      * @returns companyName as string
      */
-    private fun getCompanyNameById(companyId: String): String {
-        return companyDataControllerApi.getCompanyInfo(companyId).companyName.ifEmpty { companyId }
-    }
+    private fun getCompanyNameById(companyId: String): String =
+        companyDataControllerApi.getCompanyInfo(companyId).companyName.ifEmpty { companyId }
 
     /**
      * Method to convert unit time in ms to human-readable date
@@ -46,8 +44,11 @@ class DataRequestResponseEmailSender(
         return dateFormat.format(creationTimestamp)
     }
 
-    private fun getProperties(dataRequestEntity: DataRequestEntity, staleDaysThreshold: String): Map<String, String> {
-        return mapOf(
+    private fun getProperties(
+        dataRequestEntity: DataRequestEntity,
+        staleDaysThreshold: String,
+    ): Map<String, String> =
+        mapOf(
             "companyId" to dataRequestEntity.datalandCompanyId,
             "companyName" to getCompanyNameById(dataRequestEntity.datalandCompanyId),
             "dataType" to dataRequestEntity.dataType,
@@ -57,7 +58,6 @@ class DataRequestResponseEmailSender(
             "dataRequestId" to dataRequestEntity.dataRequestId,
             "closedInDays" to staleDaysThreshold,
         )
-    }
 
     /**
      * Method to informs user by mail that his request is answered.
@@ -71,17 +71,18 @@ class DataRequestResponseEmailSender(
         correlationId: String,
     ) {
         val properties = getProperties(dataRequestEntity, staleDaysThreshold)
-        val message = TemplateEmailMessage(
-            emailTemplateType = emailType,
-            receiver = TemplateEmailMessage.UserIdEmailRecipient(dataRequestEntity.userId),
-            properties = properties,
-        )
+        val message =
+            TemplateEmailMessage(
+                emailTemplateType = emailType,
+                receiver = TemplateEmailMessage.UserIdEmailRecipient(dataRequestEntity.userId),
+                properties = properties,
+            )
         cloudEventMessageHandler.buildCEMessageAndSendToQueue(
             objectMapper.writeValueAsString(message),
-            MessageType.SendTemplateEmail,
+            MessageType.SEND_TEMPLATE_EMAIL,
             correlationId,
-            ExchangeName.SendEmail,
-            RoutingKeyNames.templateEmail,
+            ExchangeName.SEND_EMAIL,
+            RoutingKeyNames.TEMPLATE_EMAIL,
         )
     }
 }

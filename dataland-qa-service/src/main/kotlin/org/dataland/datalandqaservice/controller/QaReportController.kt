@@ -26,18 +26,22 @@ open class QaReportController<QaReportType>(
     private val logger = LoggerFactory.getLogger(javaClass)
     private val qaLogMessageBuilder = QaLogMessageBuilder()
 
-    override fun postQaReport(dataId: String, qaReport: QaReportType): ResponseEntity<QaReportMetaInformation> {
+    override fun postQaReport(
+        dataId: String,
+        qaReport: QaReportType,
+    ): ResponseEntity<QaReportMetaInformation> {
         val reportingUser = DatalandAuthentication.fromContext()
         logger.info(qaLogMessageBuilder.postQaReportMessage(dataId, reportingUser.userId))
         qaReportSecurityPolicy.ensureUserCanViewQaReportForDataId(dataId, reportingUser)
         val uploadTime = Instant.now().toEpochMilli()
-        val reportEntity = qaReportManager.createQaReport(
-            report = qaReport,
-            dataId = dataId,
-            dataType = dataType,
-            reporterUserId = reportingUser.userId,
-            uploadTime = uploadTime,
-        )
+        val reportEntity =
+            qaReportManager.createQaReport(
+                report = qaReport,
+                dataId = dataId,
+                dataType = dataType,
+                reporterUserId = reportingUser.userId,
+                uploadTime = uploadTime,
+            )
         val apiModel = reportEntity.toMetaInformationApiModel()
         return ResponseEntity.ok(apiModel)
     }
@@ -54,7 +58,11 @@ open class QaReportController<QaReportType>(
         return ResponseEntity.ok(apiModel)
     }
 
-    override fun setQaReportStatus(dataId: String, qaReportId: String, statusPatch: QaReportStatusPatch) {
+    override fun setQaReportStatus(
+        dataId: String,
+        qaReportId: String,
+        statusPatch: QaReportStatusPatch,
+    ) {
         val user = DatalandAuthentication.fromContext()
         logger.info(qaLogMessageBuilder.requestChangeQaReportStatus(qaReportId, dataId, statusPatch.active))
         qaReportManager.setQaReportStatus(
@@ -74,15 +82,17 @@ open class QaReportController<QaReportType>(
         val user = DatalandAuthentication.fromContext()
         qaReportSecurityPolicy.ensureUserCanViewQaReportForDataId(dataId, user)
         logger.info(qaLogMessageBuilder.getAllQaReportsForDataIdMessage(dataId, reporterUserId))
-        val reportEntities = qaReportManager.searchQaReportMetaInfo(
-            dataId = dataId,
-            dataType = dataType,
-            reporterUserId = reporterUserId,
-            showInactive = showInactive ?: false,
-        )
-        val apiModel = reportEntities.map {
-            it.toFullApiModel(objectMapper, clazz)
-        }
+        val reportEntities =
+            qaReportManager.searchQaReportMetaInfo(
+                dataId = dataId,
+                dataType = dataType,
+                reporterUserId = reporterUserId,
+                showInactive = showInactive ?: false,
+            )
+        val apiModel =
+            reportEntities.map {
+                it.toFullApiModel(objectMapper, clazz)
+            }
 
         return ResponseEntity.ok(apiModel)
     }

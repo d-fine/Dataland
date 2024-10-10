@@ -10,7 +10,6 @@ import org.dataland.datalandbackend.model.generics.Address
 data class VsmeSubsidiary(
     @field:JsonProperty(required = true)
     val nameOfSubsidiary: String,
-
     @field:JsonProperty(required = true)
     val addressOfSubsidiary: Address,
 )

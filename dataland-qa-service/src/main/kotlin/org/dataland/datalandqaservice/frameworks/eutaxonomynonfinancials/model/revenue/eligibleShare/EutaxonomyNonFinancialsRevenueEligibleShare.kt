@@ -12,7 +12,5 @@ import org.dataland.datalandqaservice.model.reports.QaReportDataPoint
 data class EutaxonomyNonFinancialsRevenueEligibleShare(
     @field:Valid()
     val relativeShareInPercent: QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
-
     val absoluteShare: QaReportDataPoint<CurrencyDataPoint?>? = null,
-
 )

@@ -17,25 +17,15 @@ import org.dataland.datalandcommunitymanager.entities.DataRequestEntity
  */
 data class ExtendedStoredDataRequest(
     val dataRequestId: String,
-
     val userId: String,
-
     var userEmailAddress: String?,
-
     val creationTimestamp: Long,
-
     val dataType: String,
-
     val reportingPeriod: String,
-
     val datalandCompanyId: String,
-
     val companyName: String,
-
     val lastModifiedDate: Long,
-
     val requestStatus: RequestStatus,
-
     val accessStatus: AccessStatus,
 ) {
     constructor(dataRequestEntity: DataRequestEntity, companyName: String, userEmailAddress: String?) : this(

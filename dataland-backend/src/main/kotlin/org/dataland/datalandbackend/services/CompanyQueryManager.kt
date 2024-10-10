@@ -66,11 +66,10 @@ class CompanyQueryManager(
      * Method to check if ever dropdownFilter is deactivated
      * @param filter The filter to use during searching
      */
-    private fun areAllDropdownFiltersDeactivated(filter: StoredCompanySearchFilter): Boolean {
-        return (
+    private fun areAllDropdownFiltersDeactivated(filter: StoredCompanySearchFilter): Boolean =
+        (
             filter.dataTypeFilterSize + filter.sectorFilterSize + filter.countryCodeFilterSize == 0
-            )
-    }
+        )
 
     /**
      * Method to search for companies matching the company name or identifier
@@ -81,12 +80,11 @@ class CompanyQueryManager(
     fun searchCompaniesByNameOrIdentifierAndGetApiModel(
         searchString: String,
         resultLimit: Int,
-    ): List<CompanyIdAndName> {
-        return companyRepository.searchCompaniesByNameOrIdentifier(
+    ): List<CompanyIdAndName> =
+        companyRepository.searchCompaniesByNameOrIdentifier(
             StoredCompanySearchFilter(emptyList(), emptyList(), emptyList(), searchString),
             resultLimit,
         )
-    }
 
     private fun fetchAllStoredCompanyFields(storedCompanies: List<StoredCompanyEntity>): List<StoredCompanyEntity> {
         var companiesWithFetchedFields = companyRepository.fetchIdentifiers(storedCompanies)
@@ -113,7 +111,10 @@ class CompanyQueryManager(
      * @return the StoredCompany object of the retrieved company
      */
     @Transactional
-    fun getCompanyApiModelById(companyId: String, viewingUser: DatalandAuthentication? = null): StoredCompany {
+    fun getCompanyApiModelById(
+        companyId: String,
+        viewingUser: DatalandAuthentication? = null,
+    ): StoredCompany {
         val searchResult = getCompanyById(companyId)
         return fetchAllStoredCompanyFields(listOf(searchResult)).first().toApiModel(viewingUser)
     }
@@ -122,18 +123,14 @@ class CompanyQueryManager(
      * Method to retrieve the list of currently set teaser company IDs
      * @return a list of company IDs that are currently labeled as teaser companies
      */
-    fun getTeaserCompanyIds(): List<String> {
-        return companyRepository.getAllByIsTeaserCompanyIsTrue().map { it.companyId }
-    }
+    fun getTeaserCompanyIds(): List<String> = companyRepository.getAllByIsTeaserCompanyIsTrue().map { it.companyId }
 
     /**
      * Method to check if a company is a teaser company and hence publicly available
      * @param companyId the ID of the company to be checked
      * @return a boolean signalling if the company is public or not
      */
-    fun isCompanyPublic(companyId: String): Boolean {
-        return getCompanyById(companyId).isTeaserCompany
-    }
+    fun isCompanyPublic(companyId: String): Boolean = getCompanyById(companyId).isTeaserCompany
 
     /**
      * Counts the active data sets of a company and a specific data type
@@ -141,11 +138,13 @@ class CompanyQueryManager(
      * @param dataType the data type for which the datasets should be counted
      * @returns the number of active data sets of the specified company and data type
      */
-    fun countActiveDatasets(companyId: String, dataType: DataType): Long {
-        return dataMetaInfoRepository.countByCompanyIdAndDataTypeAndCurrentlyActive(
+    fun countActiveDatasets(
+        companyId: String,
+        dataType: DataType,
+    ): Long =
+        dataMetaInfoRepository.countByCompanyIdAndDataTypeAndCurrentlyActive(
             companyId,
             dataType.name,
             true,
         )
-    }
 }

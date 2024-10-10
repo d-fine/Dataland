@@ -127,9 +127,10 @@ class QueryDataRequestsCountingTests {
             2,
             api.getNumberOfRequests(
                 datalandCompanyId = companyIdA,
-                dataType = listOf(
-                    dataTypeGetNumberOfRequestsP2p, dataTypeGetNumberOfRequestsVsme, dataTypeGetNumberOfRequestsSfdr,
-                ),
+                dataType =
+                    listOf(
+                        dataTypeGetNumberOfRequestsP2p, dataTypeGetNumberOfRequestsVsme, dataTypeGetNumberOfRequestsSfdr,
+                    ),
             ),
         )
     }
@@ -153,9 +154,10 @@ class QueryDataRequestsCountingTests {
             1,
             api.getNumberOfRequests(
                 datalandCompanyId = companyIdB,
-                dataType = listOf(
-                    dataTypeGetNumberOfRequestsP2p, dataTypeGetNumberOfRequestsVsme, dataTypeGetNumberOfRequestsSfdr,
-                ),
+                dataType =
+                    listOf(
+                        dataTypeGetNumberOfRequestsP2p, dataTypeGetNumberOfRequestsVsme, dataTypeGetNumberOfRequestsSfdr,
+                    ),
             ),
         )
     }
@@ -228,9 +230,10 @@ class QueryDataRequestsCountingTests {
         )
         assertTrue(
             api.getNumberOfRequests(
-                dataType = listOf(
-                    dataTypeGetNumberOfRequestsP2p, dataTypeGetNumberOfRequestsVsme, dataTypeGetNumberOfRequestsSfdr,
-                ),
+                dataType =
+                    listOf(
+                        dataTypeGetNumberOfRequestsP2p, dataTypeGetNumberOfRequestsVsme, dataTypeGetNumberOfRequestsSfdr,
+                    ),
                 userId = requesterUserId,
             ) >= 3,
         )
@@ -243,16 +246,18 @@ class QueryDataRequestsCountingTests {
         assertTrue(api.getNumberOfRequests(dataType = listOf(dataTypeGetNumberOfRequestsP2p)) >= 1)
         assertTrue(
             api.getNumberOfRequests(
-                dataType = listOf(
-                    dataTypeGetNumberOfRequestsP2p, dataTypeGetNumberOfRequestsVsme,
-                ),
+                dataType =
+                    listOf(
+                        dataTypeGetNumberOfRequestsP2p, dataTypeGetNumberOfRequestsVsme,
+                    ),
             ) >= 3,
         )
         assertTrue(
             api.getNumberOfRequests(
-                dataType = listOf(
-                    dataTypeGetNumberOfRequestsP2p, dataTypeGetNumberOfRequestsVsme, dataTypeGetNumberOfRequestsSfdr,
-                ),
+                dataType =
+                    listOf(
+                        dataTypeGetNumberOfRequestsP2p, dataTypeGetNumberOfRequestsVsme, dataTypeGetNumberOfRequestsSfdr,
+                    ),
             ) >= 3,
         )
     }

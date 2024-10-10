@@ -8,9 +8,6 @@ import org.dataland.datalandbackend.frameworks.esgquestionnaire.custom.YearlyTim
  */
 data class EsgQuestionnaireSozialesSicherheitUndWeiterbildung(
     val sicherheitsmassnahmenFuerMitarbeiter: String? = null,
-
     val unfallrate: YearlyTimeseriesData<UnfallrateValues?>? = null,
-
     val budgetFuerSchulungAusbildung: YearlyTimeseriesData<BudgetFuerSchulungAusbildungValues?>? = null,
-
 )

@@ -18,14 +18,10 @@ import org.dataland.datalandbackend.frameworks.eutaxonomynonfinancials.model.val
 data class EutaxonomyNonFinancialsData(
     @field:Valid()
     val general: EutaxonomyNonFinancialsGeneral? = null,
-
     @field:Valid()
     val revenue: EutaxonomyNonFinancialsRevenue? = null,
-
     @field:Valid()
     val capex: EutaxonomyNonFinancialsCapex? = null,
-
     @field:Valid()
     val opex: EutaxonomyNonFinancialsOpex? = null,
-
 )

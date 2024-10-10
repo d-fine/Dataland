@@ -8,6 +8,5 @@ import org.dataland.datalandbackend.model.enums.commons.YesNo
 */
 data class P2pGeneralClimateTargets(
     val shortTermScienceBasedClimateTarget: YesNo? = null,
-
     val longTermScienceBasedClimateTarget: YesNo? = null,
 )

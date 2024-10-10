@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestMapping
  */
 @RequestMapping("/internal/cached")
 interface TemporarilyCachedDataApi {
-
     /**
      * This method retrieves data entries from the temporary storage
      * @param dataId filters the requested data to a specific entry.
@@ -32,8 +31,9 @@ interface TemporarilyCachedDataApi {
         value = ["/public/{dataId}"],
         produces = ["application/json"],
     )
-    fun getReceivedPublicData(@PathVariable("dataId") dataId: String):
-        ResponseEntity<String>
+    fun getReceivedPublicData(
+        @PathVariable("dataId") dataId: String,
+    ): ResponseEntity<String>
 
     /**
      * This method retrieves private data entries from the temporary storage
@@ -52,8 +52,9 @@ interface TemporarilyCachedDataApi {
         value = ["/private/{dataId}"],
         produces = ["application/json"],
     )
-    fun getReceivedPrivateJson(@PathVariable("dataId") dataId: String):
-        ResponseEntity<String>
+    fun getReceivedPrivateJson(
+        @PathVariable("dataId") dataId: String,
+    ): ResponseEntity<String>
 
     /**
      * This method retrieves data entries from the temporary storage
@@ -72,5 +73,7 @@ interface TemporarilyCachedDataApi {
         value = ["/private/document/{hash}"],
         produces = ["application/octet-stream"],
     )
-    fun getReceivedPrivateDocument(@PathVariable("hash") hash: String): ResponseEntity<InputStreamResource>
+    fun getReceivedPrivateDocument(
+        @PathVariable("hash") hash: String,
+    ): ResponseEntity<InputStreamResource>
 }

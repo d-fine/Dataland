@@ -10,10 +10,7 @@ import org.dataland.datalandbackend.model.enums.commons.YesNo
  */
 data class EsgQuestionnaireAllgemeinEsgBerichte(
     val nachhaltigkeitsberichte: YesNo? = null,
-
     val frequenzDerBerichterstattung: EsgQuestionnaireAllgemeinEsgberichteFrequenzDerBerichterstattungOptions? = null,
-
     @field:Valid()
     val aktuelleBerichte: List<BaseDataPoint<String>>? = null,
-
 )

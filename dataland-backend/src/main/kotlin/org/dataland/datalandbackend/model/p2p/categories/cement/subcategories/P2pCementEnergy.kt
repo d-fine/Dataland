@@ -8,10 +8,7 @@ import java.math.BigDecimal
 */
 data class P2pCementEnergy(
     val energyMixInPercent: BigDecimal? = null,
-
     val fuelMixInPercent: BigDecimal? = null,
-
     val thermalEnergyEfficiencyInPercent: BigDecimal? = null,
-
     val compositionOfThermalInputInPercent: BigDecimal? = null,
 )

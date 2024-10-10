@@ -10,8 +10,6 @@ import java.time.LocalDate
 */
 data class P2pAutomotiveTechnologyValueCreation(
     val driveMixInPercent: BigDecimal? = null,
-
     val icAndHybridEnginePhaseOutDate: LocalDate? = null,
-
     val futureValueCreationStrategy: YesNo? = null,
 )

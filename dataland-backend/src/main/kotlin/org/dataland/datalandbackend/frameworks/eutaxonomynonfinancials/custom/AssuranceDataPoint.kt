@@ -13,9 +13,7 @@ import org.dataland.datalandbackend.model.enums.eutaxonomy.AssuranceOptions
 data class AssuranceDataPoint(
     @field:JsonProperty(required = true)
     override val value: AssuranceOptions,
-
     @field:Valid()
     override val dataSource: ExtendedDocumentReference? = null,
-
     val provider: String? = null,
 ) : BaseDataPoint<AssuranceOptions>

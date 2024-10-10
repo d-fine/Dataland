@@ -30,17 +30,19 @@ class RequestRejectedExceptionHandler(
         response: HttpServletResponse,
         ex: RequestRejectedException,
     ) {
-        val responseObject = ErrorResponse(
-            errors = listOf(
-                ErrorDetails(
-                    errorType = "request-rejected",
-                    summary = "Your request has been rejected",
-                    message = ex.message ?: "Your request has been rejected by our internal firewall",
-                    httpStatus = HttpStatus.BAD_REQUEST,
-                    stackTrace = if (trace) ExceptionUtils.getStackTrace(ex) else null,
-                ),
-            ),
-        )
+        val responseObject =
+            ErrorResponse(
+                errors =
+                    listOf(
+                        ErrorDetails(
+                            errorType = "request-rejected",
+                            summary = "Your request has been rejected",
+                            message = ex.message ?: "Your request has been rejected by our internal firewall",
+                            httpStatus = HttpStatus.BAD_REQUEST,
+                            stackTrace = if (trace) ExceptionUtils.getStackTrace(ex) else null,
+                        ),
+                    ),
+            )
         val responseString = objectMapper.writeValueAsString(responseObject)
         val printWriter = response.writer
         response.contentType = "application/json"

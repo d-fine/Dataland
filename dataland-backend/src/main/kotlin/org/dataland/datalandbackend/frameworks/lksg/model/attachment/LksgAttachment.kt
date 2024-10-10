@@ -10,5 +10,4 @@ import org.dataland.datalandbackend.frameworks.lksg.model.attachment.attachment.
 data class LksgAttachment(
     @field:Valid()
     val attachment: LksgAttachmentAttachment? = null,
-
 )

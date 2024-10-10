@@ -17,12 +17,11 @@ import org.junit.jupiter.api.TestInstance
 import org.junit.jupiter.api.assertThrows
 import java.math.BigDecimal
 import java.time.Instant
-import java.util.*
+import java.util.UUID
 import kotlin.math.abs
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class MetaDataControllerTest {
-
     private val apiAccessor = ApiAccessor()
     private val documentManagerAccessor = DocumentManagerAccessor()
 
@@ -31,8 +30,9 @@ class MetaDataControllerTest {
     private val totalNumberOfDataSetsPerFramework =
         numberOfCompaniesToPostPerFramework * numberOfDataSetsToPostPerCompany
 
-    private val listOfTestCompanyInformation = apiAccessor.testDataProviderForEuTaxonomyDataForNonFinancials
-        .getCompanyInformationWithoutIdentifiers(numberOfCompaniesToPostPerFramework)
+    private val listOfTestCompanyInformation =
+        apiAccessor.testDataProviderForEuTaxonomyDataForNonFinancials
+            .getCompanyInformationWithoutIdentifiers(numberOfCompaniesToPostPerFramework)
     private val listOfOneTestCompanyInformation = listOf(listOfTestCompanyInformation[0])
 
     @BeforeAll
@@ -43,6 +43,7 @@ class MetaDataControllerTest {
     companion object {
         private const val SLEEP_DURATION_MS: Long = 1000
     }
+
     fun buildAcceptedAndActiveDataMetaInformation(
         dataId: String,
         companyId: String,
@@ -57,15 +58,19 @@ class MetaDataControllerTest {
     @Test
     fun `post dummy company and taxonomy data for it and check if meta info about that data can be retrieved`() {
         val testDataType = DataTypeEnum.eutaxonomyMinusNonMinusFinancials
-        val uploadedMetaInfo = apiAccessor.uploadCompanyAndFrameworkDataForMultipleFrameworks(
-            mapOf(testDataType to listOfOneTestCompanyInformation), 1,
-        )[0].actualStoredDataMetaInfo!!
+        val uploadedMetaInfo =
+            apiAccessor
+                .uploadCompanyAndFrameworkDataForMultipleFrameworks(
+                    mapOf(testDataType to listOfOneTestCompanyInformation), 1,
+                )[0]
+                .actualStoredDataMetaInfo!!
         apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader)
         val actualDataMetaInfo = apiAccessor.metaDataControllerApi.getDataMetaInfo(uploadedMetaInfo.dataId)
-        val expectedDataMetaInfo = buildAcceptedAndActiveDataMetaInformation(
-            dataId = uploadedMetaInfo.dataId, companyId = uploadedMetaInfo.companyId,
-            testDataType = testDataType, uploadTime = Instant.now().toEpochMilli(), TechnicalUser.Admin,
-        )
+        val expectedDataMetaInfo =
+            buildAcceptedAndActiveDataMetaInformation(
+                dataId = uploadedMetaInfo.dataId, companyId = uploadedMetaInfo.companyId,
+                testDataType = testDataType, uploadTime = Instant.now().toEpochMilli(), TechnicalUser.Admin,
+            )
         assertEquals(
             expectedDataMetaInfo, actualDataMetaInfo.copy(uploadTime = expectedDataMetaInfo.uploadTime),
             "The meta info of the posted eu taxonomy data does not match the retrieved meta info.",
@@ -79,9 +84,10 @@ class MetaDataControllerTest {
     @Test
     fun `search for a company that does not exist and check that a 404 error is returned`() {
         apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader)
-        val clientException = assertThrows<ClientException> {
-            apiAccessor.companyDataControllerApi.getCompanyById("this-should-not-exist")
-        }
+        val clientException =
+            assertThrows<ClientException> {
+                apiAccessor.companyDataControllerApi.getCompanyById("this-should-not-exist")
+            }
         assertEquals(clientException.statusCode, 404)
     }
 
@@ -104,10 +110,11 @@ class MetaDataControllerTest {
 
     @Test
     fun `post companies and eu taxonomy data and check meta info search with filter on company ID`() {
-        val listOfUploadInfo = apiAccessor.uploadCompanyAndFrameworkDataForMultipleFrameworks(
-            mapOf(DataTypeEnum.eutaxonomyMinusNonMinusFinancials to listOfTestCompanyInformation),
-            numberOfDataSetsToPostPerCompany,
-        )
+        val listOfUploadInfo =
+            apiAccessor.uploadCompanyAndFrameworkDataForMultipleFrameworks(
+                mapOf(DataTypeEnum.eutaxonomyMinusNonMinusFinancials to listOfTestCompanyInformation),
+                numberOfDataSetsToPostPerCompany,
+            )
         val companyIdOfFirstUploadedCompany = listOfUploadInfo[0].actualStoredCompany.companyId
         val listOfDataMetaInfoForFirstCompanyId =
             apiAccessor.metaDataControllerApi.getListOfDataMetaInfo(
@@ -144,15 +151,17 @@ class MetaDataControllerTest {
     @Test
     fun `post companies and eu taxonomy data and check meta info search with filters on company ID and data type`() {
         val testDataType = DataTypeEnum.eutaxonomyMinusNonMinusFinancials
-        val listOfUploadInfo = apiAccessor.uploadCompanyAndFrameworkDataForMultipleFrameworks(
-            mapOf(testDataType to listOfTestCompanyInformation), numberOfDataSetsToPostPerCompany,
-        )
+        val listOfUploadInfo =
+            apiAccessor.uploadCompanyAndFrameworkDataForMultipleFrameworks(
+                mapOf(testDataType to listOfTestCompanyInformation), numberOfDataSetsToPostPerCompany,
+            )
         Thread.sleep(SLEEP_DURATION_MS)
-        val sizeOfListOfDataMetaInfoPerCompanyIdAndDataType = apiAccessor.getNumberOfDataMetaInfo(
-            listOfUploadInfo[0].actualStoredCompany.companyId,
-            testDataType,
-            false,
-        )
+        val sizeOfListOfDataMetaInfoPerCompanyIdAndDataType =
+            apiAccessor.getNumberOfDataMetaInfo(
+                listOfUploadInfo[0].actualStoredCompany.companyId,
+                testDataType,
+                false,
+            )
         assertEquals(
             numberOfDataSetsToPostPerCompany, sizeOfListOfDataMetaInfoPerCompanyIdAndDataType,
             "The first posted company is expected to have meta info about $numberOfDataSetsToPostPerCompany " +
@@ -193,7 +202,11 @@ class MetaDataControllerTest {
                 activeDatasets[0].dataId,
             )
         assertTrue(
-            (retrievedDataset.data.general!!.numberOfEmployees!!.value == newNumberOfEmployees),
+            (
+                retrievedDataset.data.general!!
+                    .numberOfEmployees!!
+                    .value == newNumberOfEmployees
+            ),
             "The active dataset does not have numberOfEmployees of the old one plus 1.",
         )
     }
@@ -201,8 +214,9 @@ class MetaDataControllerTest {
     private fun uploadTwoDataSetsForACompany(): Triple<String, String, BigDecimal> {
         val companyId = apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId
 
-        val frameworkDataAlpha = apiAccessor.testDataProviderForEuTaxonomyDataForNonFinancials
-            .getTData(1)[0]
+        val frameworkDataAlpha =
+            apiAccessor.testDataProviderForEuTaxonomyDataForNonFinancials
+                .getTData(1)[0]
         val reportingPeriod = "2022"
         apiAccessor.uploadWithWait(
             companyId = companyId,
@@ -210,15 +224,19 @@ class MetaDataControllerTest {
             reportingPeriod = reportingPeriod,
             uploadFunction = apiAccessor::euTaxonomyNonFinancialsUploaderFunction,
         )
-        val newNumberOfEmployees = (frameworkDataAlpha.general!!.numberOfEmployees!!.value ?: BigDecimal.ZERO) +
-            BigDecimal.ONE
-        val frameworkDataBeta = frameworkDataAlpha.copy(
-            general = frameworkDataAlpha.general!!.copy(
-                numberOfEmployees = frameworkDataAlpha.general!!.numberOfEmployees!!.copy(
-                    value = newNumberOfEmployees,
-                ),
-            ),
-        )
+        val newNumberOfEmployees =
+            (frameworkDataAlpha.general!!.numberOfEmployees!!.value ?: BigDecimal.ZERO) +
+                BigDecimal.ONE
+        val frameworkDataBeta =
+            frameworkDataAlpha.copy(
+                general =
+                    frameworkDataAlpha.general!!.copy(
+                        numberOfEmployees =
+                            frameworkDataAlpha.general!!.numberOfEmployees!!.copy(
+                                value = newNumberOfEmployees,
+                            ),
+                    ),
+            )
         apiAccessor.uploadSingleFrameworkDataSet(
             companyId = companyId,
             frameworkData = frameworkDataBeta,
@@ -252,9 +270,10 @@ class MetaDataControllerTest {
             "The active data meta info for the two different reporting Periods are identical.",
         )
         assertTrue(
-            listOfActiveMetaData.size == 2 && listOfActiveMetaData.map { it.dataId }.containsAll(
-                setOf(listOfActiveMetaData2022[0].dataId, listOfActiveMetaData2023[0].dataId),
-            ),
+            listOfActiveMetaData.size == 2 &&
+                listOfActiveMetaData.map { it.dataId }.containsAll(
+                    setOf(listOfActiveMetaData2022[0].dataId, listOfActiveMetaData2023[0].dataId),
+                ),
             "The list of active meta data for all reporting periods does not consist of the expected elements.",
         )
     }
@@ -262,10 +281,11 @@ class MetaDataControllerTest {
     private fun uploadFourDatasetsForACompany(): String {
         val companyId = apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId
         val frameWorkData = apiAccessor.testDataProviderForEuTaxonomyDataForNonFinancials.getTData(1)[0]
-        val uploadPairs = listOf(
-            Pair(frameWorkData, "2022"), Pair(frameWorkData, "2022"), Pair(frameWorkData, "2023"),
-            Pair(frameWorkData, "2023"),
-        )
+        val uploadPairs =
+            listOf(
+                Pair(frameWorkData, "2022"), Pair(frameWorkData, "2022"), Pair(frameWorkData, "2023"),
+                Pair(frameWorkData, "2023"),
+            )
         uploadPairs.forEach { pair ->
             apiAccessor.uploadWithWait(
                 companyId = companyId,
@@ -288,13 +308,14 @@ class MetaDataControllerTest {
         val uploadFunction = apiAccessor::sfdrUploaderFunction
 
         val reportingPeriods = listOf("2005", "2006")
-        val combinations = reportingPeriods.flatMap { reportingPeriod ->
-            listOf(
-                Triple(reportingPeriod, TechnicalUser.Admin, true),
-                Triple(reportingPeriod, TechnicalUser.Admin, false),
-                Triple(reportingPeriod, TechnicalUser.Uploader, false),
-            )
-        }
+        val combinations =
+            reportingPeriods.flatMap { reportingPeriod ->
+                listOf(
+                    Triple(reportingPeriod, TechnicalUser.Admin, true),
+                    Triple(reportingPeriod, TechnicalUser.Admin, false),
+                    Triple(reportingPeriod, TechnicalUser.Uploader, false),
+                )
+            }
 
         val waitForQaList = mutableListOf<DataMetaInformation>()
 
@@ -320,22 +341,26 @@ class MetaDataControllerTest {
                 companyId, null, false, null, null, null,
             )
 
-        val combinations = listOf("2005", "2006").flatMap { reportingPeriod ->
-            QaStatus.entries.flatMap { qaStatus ->
-                listOf(
-                    Triple(listOf(TechnicalUser.Admin, TechnicalUser.Uploader), qaStatus, reportingPeriod),
-                    Triple(listOf(TechnicalUser.Uploader), qaStatus, reportingPeriod),
-                    Triple(listOf(TechnicalUser.Admin), qaStatus, reportingPeriod),
-                )
+        val combinations =
+            listOf("2005", "2006").flatMap { reportingPeriod ->
+                QaStatus.entries.flatMap { qaStatus ->
+                    listOf(
+                        Triple(listOf(TechnicalUser.Admin, TechnicalUser.Uploader), qaStatus, reportingPeriod),
+                        Triple(listOf(TechnicalUser.Uploader), qaStatus, reportingPeriod),
+                        Triple(listOf(TechnicalUser.Admin), qaStatus, reportingPeriod),
+                    )
+                }
             }
-        }
 
         combinations.forEach { (users, qaStatus, reportingPeriod) ->
             val userIds = users.map { UUID.fromString(it.technicalUserId) }.toSet()
-            val filteredMetaDatas = metaDataList.filter {
-                it.companyId == companyId && userIds.contains(UUID.fromString(it.uploaderUserId)) &&
-                    it.qaStatus == qaStatus && it.reportingPeriod == reportingPeriod
-            }
+            val filteredMetaDatas =
+                metaDataList.filter {
+                    it.companyId == companyId &&
+                        userIds.contains(UUID.fromString(it.uploaderUserId)) &&
+                        it.qaStatus == qaStatus &&
+                        it.reportingPeriod == reportingPeriod
+                }
             val returnedMetaDatas =
                 apiAccessor.metaDataControllerApi.getListOfDataMetaInfo(
                     companyId, null, false, reportingPeriod, userIds, qaStatus,

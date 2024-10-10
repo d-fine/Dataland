@@ -16,24 +16,16 @@ import org.dataland.datalandqaservice.model.reports.QaReportDataPoint
  */
 data class EutaxonomyNonFinancialsGeneral(
     @field:Valid()
-    val fiscalYearDeviation:
-    QaReportDataPoint<ExtendedDataPointEutaxonomyNonFinancialsGeneralFiscalYearDeviationOptions?>? = null,
-
+    val fiscalYearDeviation: QaReportDataPoint<ExtendedDataPointEutaxonomyNonFinancialsGeneralFiscalYearDeviationOptions?>? = null,
     @field:Valid()
     val fiscalYearEnd: QaReportDataPoint<ExtendedDataPointLocalDate?>? = null,
-
     @field:Valid()
     val scopeOfEntities: QaReportDataPoint<ExtendedDataPointYesNoNa?>? = null,
-
     @field:Valid()
     val nfrdMandatory: QaReportDataPoint<ExtendedDataPointYesNo?>? = null,
-
     @field:Valid()
     val euTaxonomyActivityLevelReporting: QaReportDataPoint<ExtendedDataPointYesNo?>? = null,
-
     @field:Valid()
     val numberOfEmployees: QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
-
     val referencedReports: QaReportDataPoint<Map<String, CompanyReport>>? = null,
-
 )

@@ -13,20 +13,20 @@ import java.io.IOException
  * This migration script removes all file references that are not hashes and all
  * file references that are hashes but do not exist.
  */
+@Suppress("ClassName")
 class V15__MigrateGetRidOfFaultyDatasources : BaseJavaMigration() {
-
     private val regex = "^[a-fA-F0-9]{64}$".toRegex()
 
-    private val dataTypesToMigrate = listOf(
-        "eutaxonomy-non-financials",
-        "eutaxonomy-financials",
-        "sfdr",
-        "lksg",
-        "esg-questionnaire",
-        "heimathafen",
-        "sme",
-
-    )
+    private val dataTypesToMigrate =
+        listOf(
+            "eutaxonomy-non-financials",
+            "eutaxonomy-financials",
+            "sfdr",
+            "lksg",
+            "esg-questionnaire",
+            "heimathafen",
+            "sme",
+        )
 
     private val logger = LoggerFactory.getLogger("Migration V15")
 
@@ -66,15 +66,17 @@ class V15__MigrateGetRidOfFaultyDatasources : BaseJavaMigration() {
         }
     }
 
-    private fun isFaultyFileReference(fileReference: String): Boolean {
-        return (fileReference !in validFileReferences) || (!isSha256(fileReference))
-    }
+    private fun isFaultyFileReference(fileReference: String): Boolean =
+        (fileReference !in validFileReferences) || (!isSha256(fileReference))
 
     /**
      * Remove company reports with invalid fileReference from map of company reports.
      * If no company reports are left, replace referencedReports with null.
      */
-    private fun replaceFaultyFileReferenceReferencedReports(companyReportMap: JSONObject, obj: JSONObject) {
+    private fun replaceFaultyFileReferenceReferencedReports(
+        companyReportMap: JSONObject,
+        obj: JSONObject,
+    ) {
         val keysToBeRemoved: ArrayList<String> = ArrayList()
 
         companyReportMap.keys().forEach {
@@ -101,7 +103,10 @@ class V15__MigrateGetRidOfFaultyDatasources : BaseJavaMigration() {
     /**
      * Replace dataSource with null if fileReference is invalid
      */
-    private fun replaceFaultyFileReferenceDataSource(dataSource: JSONObject, obj: JSONObject) {
+    private fun replaceFaultyFileReferenceDataSource(
+        dataSource: JSONObject,
+        obj: JSONObject,
+    ) {
         val fileReference = dataSource["fileReference"] as String
         if (isFaultyFileReference(fileReference)) {
             logger.info("Replace reference to document with null. Broken file reference: $fileReference")
@@ -133,9 +138,7 @@ class V15__MigrateGetRidOfFaultyDatasources : BaseJavaMigration() {
         }
     }
 
-    private fun isSha256(fileReference: String): Boolean {
-        return fileReference.matches(regex)
-    }
+    private fun isSha256(fileReference: String): Boolean = fileReference.matches(regex)
 
     private val dataSourceKey = "dataSource"
     private val referencedReportsKey = "referencedReports"

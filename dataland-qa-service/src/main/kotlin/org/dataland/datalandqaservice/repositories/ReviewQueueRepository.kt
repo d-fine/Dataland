@@ -17,19 +17,19 @@ interface ReviewQueueRepository : JpaRepository<ReviewQueueEntity, String> {
     @Query(
         nativeQuery = true,
         value =
-        "SELECT status.data_id, status.company_id, status.company_name, status.framework, status.reporting_period, " +
-            "status.reception_time " +
-            "FROM review_queue status " +
-            "WHERE " +
-            "(:#{#searchFilter.shouldFilterByDataType} = false " +
-            "OR status.framework IN :#{#searchFilter.preparedDataTypes}) AND " +
-            "(:#{#searchFilter.shouldFilterByReportingPeriod} = false " +
-            "OR status.reporting_period IN :#{#searchFilter.preparedReportingPeriods}) AND " +
-            "( (:#{#searchFilter.shouldFilterByCompanyName } = false AND " +
-            ":#{#searchFilter.shouldFilterByCompanyId} = false) " +
-            "OR status.company_id IN :#{#searchFilter.preparedCompanyIds}) " +
-            "ORDER BY status.reception_time ASC " +
-            "LIMIT :#{#resultLimit} OFFSET :#{#resultOffset}",
+            "SELECT status.data_id, status.company_id, status.company_name, status.framework, status.reporting_period, " +
+                "status.reception_time " +
+                "FROM review_queue status " +
+                "WHERE " +
+                "(:#{#searchFilter.shouldFilterByDataType} = false " +
+                "OR status.framework IN :#{#searchFilter.preparedDataTypes}) AND " +
+                "(:#{#searchFilter.shouldFilterByReportingPeriod} = false " +
+                "OR status.reporting_period IN :#{#searchFilter.preparedReportingPeriods}) AND " +
+                "( (:#{#searchFilter.shouldFilterByCompanyName } = false AND " +
+                ":#{#searchFilter.shouldFilterByCompanyId} = false) " +
+                "OR status.company_id IN :#{#searchFilter.preparedCompanyIds}) " +
+                "ORDER BY status.reception_time ASC " +
+                "LIMIT :#{#resultLimit} OFFSET :#{#resultOffset}",
     )
     fun getSortedPendingMetadataSet(
         @Param("searchFilter") searchFilter: QaSearchFilter,
@@ -42,17 +42,20 @@ interface ReviewQueueRepository : JpaRepository<ReviewQueueEntity, String> {
      */
     @Query(
         nativeQuery = true,
-        value = "SELECT COUNT(*) FROM review_queue status " +
-            "WHERE " +
-            "(:#{#searchFilter.shouldFilterByDataType} = false " +
-            "OR status.framework IN :#{#searchFilter.preparedDataTypes}) AND " +
-            "(:#{#searchFilter.shouldFilterByReportingPeriod} = false " +
-            "OR status.reporting_period IN :#{#searchFilter.preparedReportingPeriods}) AND " +
-            "( (:#{#searchFilter.shouldFilterByCompanyName } = false AND " +
-            ":#{#searchFilter.shouldFilterByCompanyId} = false) " +
-            "OR status.company_id IN :#{#searchFilter.preparedCompanyIds}) ",
+        value =
+            "SELECT COUNT(*) FROM review_queue status " +
+                "WHERE " +
+                "(:#{#searchFilter.shouldFilterByDataType} = false " +
+                "OR status.framework IN :#{#searchFilter.preparedDataTypes}) AND " +
+                "(:#{#searchFilter.shouldFilterByReportingPeriod} = false " +
+                "OR status.reporting_period IN :#{#searchFilter.preparedReportingPeriods}) AND " +
+                "( (:#{#searchFilter.shouldFilterByCompanyName } = false AND " +
+                ":#{#searchFilter.shouldFilterByCompanyId} = false) " +
+                "OR status.company_id IN :#{#searchFilter.preparedCompanyIds}) ",
     )
-    fun getNumberOfRequests(@Param("searchFilter") searchFilter: QaSearchFilter): Int
+    fun getNumberOfRequests(
+        @Param("searchFilter") searchFilter: QaSearchFilter,
+    ): Int
 
     /**
      * Deletes queued QA request for a specific dataId.

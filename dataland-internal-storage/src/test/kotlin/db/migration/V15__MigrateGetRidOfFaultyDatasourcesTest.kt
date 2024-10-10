@@ -3,6 +3,7 @@ package db.migration
 import db.migration.utils.TestUtils
 import org.junit.jupiter.api.Test
 
+@Suppress("ClassName")
 class V15__MigrateGetRidOfFaultyDatasourcesTest {
     @Test
     fun `check migration script for faulty file references in lksg works properly`() {

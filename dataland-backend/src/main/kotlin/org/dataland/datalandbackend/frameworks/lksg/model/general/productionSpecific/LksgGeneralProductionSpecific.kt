@@ -13,22 +13,13 @@ import java.util.EnumSet
  */
 data class LksgGeneralProductionSpecific(
     val manufacturingCompany: YesNo? = null,
-
     val capacity: String? = null,
-
     val productionViaSubcontracting: YesNo? = null,
-
     @field:Schema(example = JsonExampleFormattingConstants.SUBCONTRACTING_COMPANIES_DEFAULT_VALUE)
     val subcontractingCompaniesCountries: Map<String, List<String>>? = null,
-
     val productionSites: YesNo? = null,
-
     val numberOfProductionSites: BigDecimal? = null,
-
     val listOfProductionSites: List<LksgProductionSite?>? = null,
-
     val market: LksgGeneralProductionspecificMarketOptions? = null,
-
     val specificProcurement: EnumSet<SpecificProcurementOptions>? = null,
-
 )

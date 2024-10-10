@@ -12,13 +12,8 @@ import org.dataland.datalandbackend.model.enums.commons.YesNo
 data class LksgGovernanceRiskManagementOwnOperations(
     @field:Valid()
     val riskManagementSystem: BaseDataPoint<YesNo>? = null,
-
     val riskAnalysisInFiscalYear: YesNo? = null,
-
     val risksIdentified: YesNo? = null,
-
     val identifiedRisks: List<LksgRiskOrViolationAssessment?>? = null,
-
     val regulatedRiskManagementResponsibility: YesNo? = null,
-
 )

@@ -35,8 +35,10 @@ abstract class DataController<T>(
     private val logger = LoggerFactory.getLogger(javaClass)
     private val logMessageBuilder = LogMessageBuilder()
 
-    override fun postCompanyAssociatedData(companyAssociatedData: CompanyAssociatedData<T>, bypassQa: Boolean):
-        ResponseEntity<DataMetaInformation> {
+    override fun postCompanyAssociatedData(
+        companyAssociatedData: CompanyAssociatedData<T>,
+        bypassQa: Boolean,
+    ): ResponseEntity<DataMetaInformation> {
         val companyId = companyAssociatedData.companyId
         val reportingPeriod = companyAssociatedData.reportingPeriod
         val userId = DatalandAuthentication.fromContext().userId
@@ -61,8 +63,8 @@ abstract class DataController<T>(
         companyAssociatedData: CompanyAssociatedData<T>,
         userId: String,
         uploadTime: Long,
-    ): StorableDataSet {
-        return StorableDataSet(
+    ): StorableDataSet =
+        StorableDataSet(
             companyId = companyAssociatedData.companyId,
             dataType = dataType,
             uploaderUserId = userId,
@@ -70,7 +72,6 @@ abstract class DataController<T>(
             reportingPeriod = companyAssociatedData.reportingPeriod,
             data = objectMapper.writeValueAsString(companyAssociatedData.data),
         )
-    }
 
     override fun getCompanyAssociatedData(dataId: String): ResponseEntity<CompanyAssociatedData<T>> {
         val metaInfo = dataMetaInformationManager.getDataMetaInformationByDataId(dataId)
@@ -80,11 +81,12 @@ abstract class DataController<T>(
         val companyId = metaInfo.company.companyId
         val correlationId = generateCorrelationId(companyId = companyId, dataId = dataId)
         logger.info(logMessageBuilder.getCompanyAssociatedDataMessage(dataId, companyId))
-        val companyAssociatedData = CompanyAssociatedData(
-            companyId = companyId,
-            reportingPeriod = metaInfo.reportingPeriod,
-            data = objectMapper.readValue(dataManager.getPublicDataSet(dataId, dataType, correlationId).data, clazz),
-        )
+        val companyAssociatedData =
+            CompanyAssociatedData(
+                companyId = companyId,
+                reportingPeriod = metaInfo.reportingPeriod,
+                data = objectMapper.readValue(dataManager.getPublicDataSet(dataId, dataType, correlationId).data, clazz),
+            )
         logger.info(
             logMessageBuilder.getCompanyAssociatedDataSuccessMessage(dataId, companyId, correlationId),
         )
@@ -98,17 +100,20 @@ abstract class DataController<T>(
     ): ResponseEntity<List<DataAndMetaInformation<T>>> {
         val reportingPeriodInLog = reportingPeriod ?: "all reporting periods"
         logger.info(logMessageBuilder.getFrameworkDatasetsForCompanyMessage(dataType, companyId, reportingPeriodInLog))
-        val metaInfos = dataMetaInformationManager.searchDataMetaInfo(
-            companyId, dataType, showOnlyActive, reportingPeriod, null, null,
-        )
+        val metaInfos =
+            dataMetaInformationManager.searchDataMetaInfo(
+                companyId, dataType, showOnlyActive, reportingPeriod, null, null,
+            )
         val authentication = DatalandAuthentication.fromContextOrNull()
         val listOfFrameworkDataAndMetaInfo = mutableListOf<DataAndMetaInformation<T>>()
         metaInfos.filter { it.isDatasetViewableByUser(authentication) }.forEach {
             val correlationId = generateCorrelationId(companyId = companyId, dataId = null)
-            val dataAsString = dataManager.getPublicDataSet(
-                it.dataId, DataType.valueOf(it.dataType),
-                correlationId,
-            ).data
+            val dataAsString =
+                dataManager
+                    .getPublicDataSet(
+                        it.dataId, DataType.valueOf(it.dataType),
+                        correlationId,
+                    ).data
             listOfFrameworkDataAndMetaInfo.add(
                 DataAndMetaInformation(
                     it.toApiModel(DatalandAuthentication.fromContext()), objectMapper.readValue(dataAsString, clazz),

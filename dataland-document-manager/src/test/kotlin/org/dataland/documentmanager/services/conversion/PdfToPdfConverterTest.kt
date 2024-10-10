@@ -20,12 +20,13 @@ class PdfToPdfConverterTest {
 
     @Test
     fun `verify that the converter validates a pdf file but do not convert the pdf file`() {
-        val testInput = MockMultipartFile(
-            testFileName,
-            testFileName,
-            mimeType,
-            TestUtils().loadFileBytes(testPdf),
-        )
+        val testInput =
+            MockMultipartFile(
+                testFileName,
+                testFileName,
+                mimeType,
+                TestUtils().loadFileBytes(testPdf),
+            )
         assertEquals(mimeType, Tika().detect(testInput.bytes))
         pdfToPdfConverter.validateFile(testInput, correlationId)
         val convertedDocument = pdfToPdfConverter.convertFile(testInput, correlationId)
@@ -35,15 +36,17 @@ class PdfToPdfConverterTest {
 
     @Test
     fun `check that an empty pdf file is not validated`() {
-        val testInput = MockMultipartFile(
-            testFileName,
-            testFileName,
-            mimeType,
-            createEmptyPDFByteArray(),
-        )
-        val exception = assertThrows<InvalidInputApiException> {
-            pdfToPdfConverter.validateFile(testInput, correlationId)
-        }
+        val testInput =
+            MockMultipartFile(
+                testFileName,
+                testFileName,
+                mimeType,
+                createEmptyPDFByteArray(),
+            )
+        val exception =
+            assertThrows<InvalidInputApiException> {
+                pdfToPdfConverter.validateFile(testInput, correlationId)
+            }
         assertEquals("The file you uploaded seems to be empty.", exception.message)
     }
 

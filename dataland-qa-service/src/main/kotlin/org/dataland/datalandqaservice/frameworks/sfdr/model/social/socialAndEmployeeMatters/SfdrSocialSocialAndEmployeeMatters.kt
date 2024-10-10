@@ -14,111 +14,74 @@ import org.dataland.datalandqaservice.model.reports.QaReportDataPoint
 data class SfdrSocialSocialAndEmployeeMatters(
     @field:Valid()
     val humanRightsLegalProceedings: QaReportDataPoint<ExtendedDataPointYesNo?>? = null,
-
     @field:Valid()
     val iloCoreLabourStandards: QaReportDataPoint<ExtendedDataPointYesNo?>? = null,
-
     @field:Valid()
     val environmentalPolicy: QaReportDataPoint<ExtendedDataPointYesNo?>? = null,
-
     @field:Valid()
     val corruptionLegalProceedings: QaReportDataPoint<ExtendedDataPointYesNo?>? = null,
-
     @field:Valid()
     val transparencyDisclosurePolicy: QaReportDataPoint<ExtendedDataPointYesNo?>? = null,
-
     @field:Valid()
     val humanRightsDueDiligencePolicy: QaReportDataPoint<ExtendedDataPointYesNo?>? = null,
-
     @field:Valid()
     val policyAgainstChildLabour: QaReportDataPoint<ExtendedDataPointYesNo?>? = null,
-
     @field:Valid()
     val policyAgainstForcedLabour: QaReportDataPoint<ExtendedDataPointYesNo?>? = null,
-
     @field:Valid()
     val policyAgainstDiscriminationInTheWorkplace: QaReportDataPoint<ExtendedDataPointYesNo?>? = null,
-
     @field:Valid()
     val iso14001Certificate: QaReportDataPoint<ExtendedDataPointYesNo?>? = null,
-
     @field:Valid()
     val policyAgainstBriberyAndCorruption: QaReportDataPoint<ExtendedDataPointYesNo?>? = null,
-
     @field:Valid()
     val fairBusinessMarketingAdvertisingPolicy: QaReportDataPoint<ExtendedDataPointYesNo?>? = null,
-
     @field:Valid()
     val technologiesExpertiseTransferPolicy: QaReportDataPoint<ExtendedDataPointYesNo?>? = null,
-
     @field:Valid()
     val fairCompetitionPolicy: QaReportDataPoint<ExtendedDataPointYesNo?>? = null,
-
     @field:Valid()
     val violationOfTaxRulesAndRegulation: QaReportDataPoint<ExtendedDataPointYesNo?>? = null,
-
     @field:Valid()
     val unGlobalCompactPrinciplesCompliancePolicy: QaReportDataPoint<ExtendedDataPointYesNo?>? = null,
-
     @field:Valid()
     val oecdGuidelinesForMultinationalEnterprisesGrievanceHandling: QaReportDataPoint<ExtendedDataPointYesNo?>? = null,
-
     val averageGrossHourlyEarningsMaleEmployees: QaReportDataPoint<CurrencyDataPoint?>? = null,
-
     val averageGrossHourlyEarningsFemaleEmployees: QaReportDataPoint<CurrencyDataPoint?>? = null,
-
     @field:Valid()
     val unadjustedGenderPayGapInPercent: QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
-
     @field:Valid()
     val femaleBoardMembersSupervisoryBoard: QaReportDataPoint<ExtendedDataPointBigInteger?>? = null,
-
     @field:Valid()
     val femaleBoardMembersBoardOfDirectors: QaReportDataPoint<ExtendedDataPointBigInteger?>? = null,
-
     @field:Valid()
     val maleBoardMembersSupervisoryBoard: QaReportDataPoint<ExtendedDataPointBigInteger?>? = null,
-
     @field:Valid()
     val maleBoardMembersBoardOfDirectors: QaReportDataPoint<ExtendedDataPointBigInteger?>? = null,
-
     @field:Valid()
     val boardGenderDiversitySupervisoryBoardInPercent: QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
-
     @field:Valid()
     val boardGenderDiversityBoardOfDirectorsInPercent: QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
-
     @field:Valid()
     val controversialWeaponsExposure: QaReportDataPoint<ExtendedDataPointYesNo?>? = null,
-
     @field:Valid()
     val workplaceAccidentPreventionPolicy: QaReportDataPoint<ExtendedDataPointYesNo?>? = null,
-
     @field:Valid()
     val rateOfAccidentsInPercent: QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
-
     @field:Valid()
     val workdaysLostInDays: QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
-
     @field:Valid()
     val supplierCodeOfConduct: QaReportDataPoint<ExtendedDataPointYesNo?>? = null,
-
     @field:Valid()
     val grievanceHandlingMechanism: QaReportDataPoint<ExtendedDataPointYesNo?>? = null,
-
     @field:Valid()
     val whistleblowerProtectionPolicy: QaReportDataPoint<ExtendedDataPointYesNo?>? = null,
-
     @field:Valid()
     val reportedIncidentsOfDiscrimination: QaReportDataPoint<ExtendedDataPointBigInteger?>? = null,
-
     @field:Valid()
     val sanctionedIncidentsOfDiscrimination: QaReportDataPoint<ExtendedDataPointBigInteger?>? = null,
-
     @field:Valid()
     val ceoToEmployeePayGapRatio: QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
-
     @field:Valid()
     val excessiveCeoPayRatioInPercent: QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
-
 )

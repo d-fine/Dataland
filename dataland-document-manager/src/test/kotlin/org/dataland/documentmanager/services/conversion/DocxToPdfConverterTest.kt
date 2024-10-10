@@ -19,12 +19,13 @@ class DocxToPdfConverterTest {
 
     @Test
     fun `verify that a docx file can be converted to pdf`() {
-        val testInput = MockMultipartFile(
-            testFileName,
-            testFileName,
-            "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-            TestUtils().loadFileBytes(testDocx),
-        )
+        val testInput =
+            MockMultipartFile(
+                testFileName,
+                testFileName,
+                "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+                TestUtils().loadFileBytes(testDocx),
+            )
         assertEquals(mimeType, Tika().detect(testInput.bytes))
         docxToPdfConverter.validateFile(testInput, correlationId)
         val convertedDocument = docxToPdfConverter.convertFile(testInput, correlationId)
@@ -33,16 +34,18 @@ class DocxToPdfConverterTest {
 
     @Test
     fun `check that an empty docx file is not validated`() {
-        val testInput = MockMultipartFile(
-            testFileName,
-            testFileName,
-            "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-            TestUtils().loadFileBytes(emptyDocx),
-        )
+        val testInput =
+            MockMultipartFile(
+                testFileName,
+                testFileName,
+                "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+                TestUtils().loadFileBytes(emptyDocx),
+            )
         assertEquals(mimeType, Tika().detect(testInput.bytes))
-        val exception = assertThrows<InvalidInputApiException> {
-            docxToPdfConverter.validateFile(testInput, correlationId)
-        }
+        val exception =
+            assertThrows<InvalidInputApiException> {
+                docxToPdfConverter.validateFile(testInput, correlationId)
+            }
         assertEquals("The file you uploaded seems to be empty.", exception.message)
     }
 }

@@ -25,7 +25,7 @@ import org.springframework.http.ResponseEntity
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.transaction.annotation.Transactional
 import org.springframework.web.bind.annotation.RestController
-import java.util.*
+import java.util.UUID
 import java.util.UUID.randomUUID
 import kotlin.jvm.optionals.getOrElse
 
@@ -79,7 +79,11 @@ class QaController(
     }
 
     @Transactional
-    override fun assignQaStatus(dataId: String, qaStatus: QaStatus, message: String?) {
+    override fun assignQaStatus(
+        dataId: String,
+        qaStatus: QaStatus,
+        message: String?,
+    ) {
         val correlationId = randomUUID().toString()
         logger.info(
             "Received request to change the quality status of dataset with ID $dataId " +
@@ -111,14 +115,13 @@ class QaController(
      * @param dataId the ID of the data to validate
      * @returns the ReviewQueueEntity corresponding the dataId
      */
-    fun validateDataIdAndGetDataReviewStatus(dataId: String): ReviewQueueEntity {
-        return reviewQueueRepository.findById(dataId).getOrElse {
+    fun validateDataIdAndGetDataReviewStatus(dataId: String): ReviewQueueEntity =
+        reviewQueueRepository.findById(dataId).getOrElse {
             throw InvalidInputApiException(
                 "There is no reviewable dataset with ID $dataId.",
                 "There is no reviewable dataset with ID $dataId.",
             )
         }
-    }
 
     /**
      * Sends the QA completed message
@@ -127,14 +130,20 @@ class QaController(
      * @param correlationId the ID of the process
      * @param message optional message attached to the QA completion
      */
-    fun sendQaCompletedMessage(dataId: String, qaStatus: QaStatus, correlationId: String, message: String?) {
+    fun sendQaCompletedMessage(
+        dataId: String,
+        qaStatus: QaStatus,
+        correlationId: String,
+        message: String?,
+    ) {
         val reviewerId = SecurityContextHolder.getContext().authentication.name
-        val messageBody = objectMapper.writeValueAsString(
-            QaCompletedMessage(dataId, qaStatus, reviewerId, message),
-        )
+        val messageBody =
+            objectMapper.writeValueAsString(
+                QaCompletedMessage(dataId, qaStatus, reviewerId, message),
+            )
         cloudEventMessageHandler.buildCEMessageAndSendToQueue(
-            messageBody, MessageType.QaCompleted, correlationId, ExchangeName.DataQualityAssured,
-            RoutingKeyNames.data,
+            messageBody, MessageType.QA_COMPLETED, correlationId, ExchangeName.DATA_QUALITY_ASSURED,
+            RoutingKeyNames.DATA,
         )
     }
 

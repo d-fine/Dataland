@@ -18,17 +18,12 @@ import org.dataland.datalandbackend.frameworks.esgquestionnaire.model.soziales.u
 data class EsgQuestionnaireSoziales(
     @field:Valid()
     val unternehmensstrukturaenderungen: EsgQuestionnaireSozialesUnternehmensstrukturaenderungen? = null,
-
     @field:Valid()
     val sicherheitUndWeiterbildung: EsgQuestionnaireSozialesSicherheitUndWeiterbildung? = null,
-
     @field:Valid()
     val einkommensgleichheit: EsgQuestionnaireSozialesEinkommensgleichheit? = null,
-
     @field:Valid()
     val geschlechterdiversitaet: EsgQuestionnaireSozialesGeschlechterdiversitaet? = null,
-
     @field:Valid()
     val audit: EsgQuestionnaireSozialesAudit? = null,
-
 )

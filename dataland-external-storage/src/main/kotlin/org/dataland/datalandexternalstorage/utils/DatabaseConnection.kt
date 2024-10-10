@@ -21,7 +21,12 @@ object DatabaseConnection {
      * @param dataId the dataId of the data to be inserted
      * @param data the data to be inserted
      */
-    fun insertDataIntoSqlDatabase(conn: Connection, sqlStatement: String, dataId: String, data: String): Boolean {
+    fun insertDataIntoSqlDatabase(
+        conn: Connection,
+        sqlStatement: String,
+        dataId: String,
+        data: String,
+    ): Boolean {
         val preparedStatement: PreparedStatement = conn.prepareStatement(sqlStatement)
         preparedStatement.setObject(1, UUID.fromString(dataId))
         preparedStatement.setString(2, data)
@@ -49,10 +54,11 @@ object DatabaseConnection {
         preparedStatement.setObject(1, UUID.fromString(documentId))
         preparedStatement.setBytes(2, document)
 
-        val successFlag = executeSqlInsertStatement(
-            preparedStatement,
-            "A Document with the eurodatId $documentId was inserted successfully.",
-        )
+        val successFlag =
+            executeSqlInsertStatement(
+                preparedStatement,
+                "A Document with the eurodatId $documentId was inserted successfully.",
+            )
         conn.close()
         return successFlag
     }
@@ -79,7 +85,11 @@ object DatabaseConnection {
      * @param password the password to log into the database
      * @param databaseUrl the url of the database
      */
-    fun getConnection(username: String, password: String, databaseUrl: String): Connection {
+    fun getConnection(
+        username: String,
+        password: String,
+        databaseUrl: String,
+    ): Connection {
         val connectionProps = Properties()
         connectionProps["user"] = username
         connectionProps["password"] = password
@@ -95,7 +105,11 @@ object DatabaseConnection {
      * @param sqlStatement the sql statement which should be executed
      * @param dataId the dataId of the dataset to be retrieved
      */
-    fun selectJsonStringFromSqlDatabase(conn: Connection, sqlStatement: String, dataId: String): String {
+    fun selectJsonStringFromSqlDatabase(
+        conn: Connection,
+        sqlStatement: String,
+        dataId: String,
+    ): String {
         var data = String()
         logger.info("Retrieving data from eurodat storage for dataId: $dataId")
         val preparedStatement = conn.prepareStatement(sqlStatement)
@@ -113,7 +127,11 @@ object DatabaseConnection {
      * @param sqlStatement the sql statement which should be executed
      * @param documentId the documentId of the document to be retrieved
      */
-    fun selectDocumentFromSqlDatabase(conn: Connection, sqlStatement: String, documentId: String): ByteArray {
+    fun selectDocumentFromSqlDatabase(
+        conn: Connection,
+        sqlStatement: String,
+        documentId: String,
+    ): ByteArray {
         var blob = ByteArray(0)
         logger.info("Retrieving document from eurodat storage for documentId: $documentId")
         val preparedStatement: PreparedStatement = conn.prepareStatement(sqlStatement)

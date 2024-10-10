@@ -11,6 +11,5 @@ import org.dataland.datalandbackend.model.p2p.categories
 */
 data class P2pFreightTransportByRoad(
     val technology: P2pFreightTransportByRoadTechnology? = null,
-
     val energy: P2pFreightTransportByRoadEnergy? = null,
 )

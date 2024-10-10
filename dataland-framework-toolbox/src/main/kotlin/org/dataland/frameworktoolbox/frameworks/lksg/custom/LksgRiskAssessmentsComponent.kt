@@ -12,15 +12,17 @@ class LksgRiskAssessmentsComponent(
     identifier: String,
     parent: FieldNodeParent,
 ) : LksgSimpleCustomComponentBase(
-    identifier = identifier,
-    parent = parent,
-    viewFormattingFunctionName = "formatLksgRisksOrViolationsForDisplay",
-    uploadComponentName = "RiskAssessmentsFormField",
-    guaranteedFixtureExpression = "dataGenerator.guaranteedArray(() => " +
-        "dataGenerator.generateLksgRiskOrViolationAssessment(), 1, 5)",
-    randomFixtureExpression = "dataGenerator.randomArray(() => " +
-        "dataGenerator.generateLksgRiskOrViolationAssessment(), 1, 5)",
-) {
+        identifier = identifier,
+        parent = parent,
+        viewFormattingFunctionName = "formatLksgRisksOrViolationsForDisplay",
+        uploadComponentName = "RiskAssessmentsFormField",
+        guaranteedFixtureExpression =
+            "dataGenerator.guaranteedArray(() => " +
+                "dataGenerator.generateLksgRiskOrViolationAssessment(), 1, 5)",
+        randomFixtureExpression =
+            "dataGenerator.randomArray(() => " +
+                "dataGenerator.generateLksgRiskOrViolationAssessment(), 1, 5)",
+    ) {
     override fun generateDefaultDataModel(dataClassBuilder: DataClassBuilder) {
         requireDocumentSupportIn(setOf(NoDocumentSupport))
         dataClassBuilder.addProperty(
@@ -32,10 +34,8 @@ class LksgRiskAssessmentsComponent(
                         "org.dataland.datalandbackend.frameworks.lksg.custom.LksgRiskOrViolationAssessment",
                         true,
                     ),
-
                 ),
             ),
-
         )
     }
 }

@@ -41,11 +41,12 @@ class DataAccessManager(
         dataType: DataTypeEnum,
         userId: String,
     ): Boolean {
-        val hasAccess = dataRequestRepository
-            .findByUserIdAndDatalandCompanyIdAndDataTypeAndReportingPeriod(
-                userId = userId, datalandCompanyId = companyId, dataType = dataType.name,
-                reportingPeriod = reportingPeriod,
-            )?.any { it.accessStatus == AccessStatus.Granted } ?: false
+        val hasAccess =
+            dataRequestRepository
+                .findByUserIdAndDatalandCompanyIdAndDataTypeAndReportingPeriod(
+                    userId = userId, datalandCompanyId = companyId, dataType = dataType.name,
+                    reportingPeriod = reportingPeriod,
+                )?.any { it.accessStatus == AccessStatus.Granted } ?: false
 
         if (hasAccess) {
             logger.info(
@@ -74,11 +75,12 @@ class DataAccessManager(
         dataType: String,
         userId: String,
     ) {
-        val dataTypeEnum = DataTypeEnum.decode(dataType)
-            ?: throw InvalidInputApiException(
-                "The provided input did not match expected values.",
-                "The $dataType was not recognized by the system. Please check your input",
-            )
+        val dataTypeEnum =
+            DataTypeEnum.decode(dataType)
+                ?: throw InvalidInputApiException(
+                    "The provided input did not match expected values.",
+                    "The $dataType was not recognized by the system. Please check your input",
+                )
 
         if (dataTypeEnum != DataTypeEnum.vsme) {
             return
@@ -111,18 +113,20 @@ class DataAccessManager(
         contacts: Set<String>?,
         message: String?,
     ) {
-        val existingRequestsOfUser = dataRequestRepository
-            .findByUserIdAndDatalandCompanyIdAndDataTypeAndReportingPeriod(
-                userId = userId, datalandCompanyId = companyId, dataType = dataType.name,
-                reportingPeriod = reportingPeriod,
-            )
+        val existingRequestsOfUser =
+            dataRequestRepository
+                .findByUserIdAndDatalandCompanyIdAndDataTypeAndReportingPeriod(
+                    userId = userId, datalandCompanyId = companyId, dataType = dataType.name,
+                    reportingPeriod = reportingPeriod,
+                )
         if (!existingRequestsOfUser.isNullOrEmpty()) {
             val dataRequestEntity = existingRequestsOfUser[0]
 
             val modificationTime = Instant.now().toEpochMilli()
             dataRequestEntity.lastModifiedDate = modificationTime
             dataRequestRepository.save(dataRequestEntity)
-            if (dataRequestEntity.accessStatus == AccessStatus.Revoked || dataRequestEntity.accessStatus ==
+            if (dataRequestEntity.accessStatus == AccessStatus.Revoked ||
+                dataRequestEntity.accessStatus ==
                 AccessStatus.Declined
             ) {
                 dataRequestProcessingUtils.addNewRequestStatusToHistory(
@@ -157,13 +161,14 @@ class DataAccessManager(
     ): DataRequestEntity {
         val creationTime = Instant.now().toEpochMilli()
 
-        val dataRequestEntity = DataRequestEntity(
-            userId = DatalandAuthentication.fromContext().userId,
-            dataType = dataType.value,
-            reportingPeriod = reportingPeriod,
-            datalandCompanyId = datalandCompanyId,
-            creationTimestamp = creationTime,
-        )
+        val dataRequestEntity =
+            DataRequestEntity(
+                userId = DatalandAuthentication.fromContext().userId,
+                dataType = dataType.value,
+                reportingPeriod = reportingPeriod,
+                datalandCompanyId = datalandCompanyId,
+                creationTimestamp = creationTime,
+            )
         dataRequestRepository.save(dataRequestEntity)
 
         dataRequestProcessingUtils.addNewRequestStatusToHistory(
@@ -194,11 +199,12 @@ class DataAccessManager(
         framework: DataTypeEnum,
         reportingPeriod: String,
     ): Boolean {
-        val pendingDataRequests = findAlreadyExistingAccessRequestForCurrentUser(
-            companyId = companyId, framework = framework, reportingPeriod = reportingPeriod,
-            accessStatus =
-            AccessStatus.Pending,
-        )
+        val pendingDataRequests =
+            findAlreadyExistingAccessRequestForCurrentUser(
+                companyId = companyId, framework = framework, reportingPeriod = reportingPeriod,
+                accessStatus =
+                    AccessStatus.Pending,
+            )
 
         return (!pendingDataRequests.isNullOrEmpty())
     }
@@ -218,12 +224,13 @@ class DataAccessManager(
         accessStatus: AccessStatus,
     ): List<DataRequestEntity>? {
         val requestingUserId = DatalandAuthentication.fromContext().userId
-        val foundRequests = dataRequestRepository
-            .findByUserIdAndDatalandCompanyIdAndDataTypeAndReportingPeriod(
-                requestingUserId, companyId, framework.name, reportingPeriod,
-            )?.filter {
-            it.accessStatus == accessStatus
-        }
+        val foundRequests =
+            dataRequestRepository
+                .findByUserIdAndDatalandCompanyIdAndDataTypeAndReportingPeriod(
+                    requestingUserId, companyId, framework.name, reportingPeriod,
+                )?.filter {
+                    it.accessStatus == accessStatus
+                }
         return foundRequests
     }
 }

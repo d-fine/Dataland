@@ -41,9 +41,11 @@ class EurodatSafeDepositBoxInitializer(
     fun createSafeDepositBox() {
         logger.info("Checking if safe deposit box exits. If not creating safe deposit box")
         if (isErrorIgnored) {
-            try { retryWrapperMethod("create SafeDepositBox in EuroDaT") {
-                isSafeDepositBoxAvailable()
-            } } catch (e: Exception) {
+            try {
+                retryWrapperMethod("create SafeDepositBox in EuroDaT") {
+                    isSafeDepositBoxAvailable()
+                }
+            } catch (e: Exception) {
                 logger.error(
                     "An error occurred while trying to create the EuroDaT SafeDepositBox: ${e.message}.",
                 )

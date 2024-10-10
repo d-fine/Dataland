@@ -16,7 +16,7 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertDoesNotThrow
 import org.junit.jupiter.api.assertThrows
 import org.mockito.Mockito.mock
-import java.util.*
+import java.util.UUID
 
 class PublicDataUploadProcessorTest {
     private lateinit var publicDataUploadProcessor: PublicDataUploadProcessor
@@ -29,24 +29,27 @@ class PublicDataUploadProcessorTest {
         val metaDataControllerApiMock = mock(MetaDataControllerApi::class.java)
         val objectMapper = jacksonObjectMapper()
 
-        publicDataUploadProcessor = PublicDataUploadProcessor(
-            messageUtilsMock,
-            notificationServiceMock,
-            elementaryEventRepositoryMock,
-            objectMapper,
-            metaDataControllerApiMock,
-        )
+        publicDataUploadProcessor =
+            PublicDataUploadProcessor(
+                messageUtilsMock,
+                notificationServiceMock,
+                elementaryEventRepositoryMock,
+                objectMapper,
+                metaDataControllerApiMock,
+            )
     }
 
     @Test
     fun `empty identifier leads to rejection exception`() {
-        val payload = JSONObject(
-            mapOf("identifier" to ""),
-        ).toString()
+        val payload =
+            JSONObject(
+                mapOf("identifier" to ""),
+            ).toString()
 
-        val exception = assertThrows<MessageQueueRejectException> {
-            publicDataUploadProcessor.validateIncomingPayloadAndReturnDataId(payload, MessageType.QaCompleted)
-        }
+        val exception =
+            assertThrows<MessageQueueRejectException> {
+                publicDataUploadProcessor.validateIncomingPayloadAndReturnDataId(payload, MessageType.QA_COMPLETED)
+            }
 
         assertEquals("Message was rejected: The identifier in the message payload is empty.", exception.message)
     }
@@ -54,13 +57,15 @@ class PublicDataUploadProcessorTest {
     @Test
     fun `non empty dataId leads to valid return of dataId`() {
         val dummyId = "123"
-        val payload = JSONObject(
-            mapOf("identifier" to dummyId),
-        ).toString()
+        val payload =
+            JSONObject(
+                mapOf("identifier" to dummyId),
+            ).toString()
 
-        val dataId = assertDoesNotThrow {
-            publicDataUploadProcessor.validateIncomingPayloadAndReturnDataId(payload, MessageType.QaCompleted)
-        }
+        val dataId =
+            assertDoesNotThrow {
+                publicDataUploadProcessor.validateIncomingPayloadAndReturnDataId(payload, MessageType.QA_COMPLETED)
+            }
 
         assertEquals(dummyId, dataId)
     }
@@ -69,14 +74,15 @@ class PublicDataUploadProcessorTest {
     fun `create valid elementaryEventBasicInfo`() {
         val dummyCompanyId = UUID.randomUUID()
         val dummyReportingPeriod = "2022"
-        val jsonString = JSONObject(
-            mapOf(
-                "dataId" to "abc",
-                "companyId" to dummyCompanyId,
-                "dataType" to DataTypeEnum.heimathafen.toString(),
-                "reportingPeriod" to dummyReportingPeriod,
-            ),
-        ).toString()
+        val jsonString =
+            JSONObject(
+                mapOf(
+                    "dataId" to "abc",
+                    "companyId" to dummyCompanyId,
+                    "dataType" to DataTypeEnum.heimathafen.toString(),
+                    "reportingPeriod" to dummyReportingPeriod,
+                ),
+            ).toString()
 
         val actualElementaryEventBasicInfo = publicDataUploadProcessor.createElementaryEventBasicInfo(jsonString)
         val expectedElementaryEventBasicInfo =

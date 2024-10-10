@@ -11,7 +11,6 @@ import com.fasterxml.jackson.annotation.JsonProperty
 data class QaReportWithMetaInformation<QaReportType>(
     @field:JsonProperty(required = true)
     val metaInfo: QaReportMetaInformation,
-
     @field:JsonProperty(required = true)
     val report: QaReportType,
 )

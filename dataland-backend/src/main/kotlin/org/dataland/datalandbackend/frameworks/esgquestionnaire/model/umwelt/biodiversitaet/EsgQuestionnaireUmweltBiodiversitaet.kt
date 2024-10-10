@@ -8,11 +8,7 @@ import org.dataland.datalandbackend.model.enums.commons.YesNo
  */
 data class EsgQuestionnaireUmweltBiodiversitaet(
     val negativeAktivitaetenFuerDieBiologischeVielfalt: YesNo? = null,
-
     val negativeMassnahmenFuerDieBiologischeVielfalt: String? = null,
-
     val positiveAktivitaetenFuerDieBiologischeVielfalt: YesNo? = null,
-
     val positiveMassnahmenFuerDieBiologischeVielfalt: String? = null,
-
 )

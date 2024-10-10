@@ -19,12 +19,13 @@ class OdsToOdsConverterTest {
 
     @Test
     fun `verify that the converter validates a ods file but do not convert a ods file`() {
-        val testInput = MockMultipartFile(
-            testFileName,
-            testFileName,
-            mimeType,
-            TestUtils().loadFileBytes(testOds),
-        )
+        val testInput =
+            MockMultipartFile(
+                testFileName,
+                testFileName,
+                mimeType,
+                TestUtils().loadFileBytes(testOds),
+            )
         assertEquals(mimeType, Tika().detect(testInput.bytes))
         odsToOdsConverter.validateFile(testInput, correlationId)
         val convertedDocument = odsToOdsConverter.convertFile(testInput, correlationId)
@@ -34,16 +35,18 @@ class OdsToOdsConverterTest {
 
     @Test
     fun `check that an empty ods file is not validated`() {
-        val testInput = MockMultipartFile(
-            testFileName,
-            testFileName,
-            mimeType,
-            TestUtils().loadFileBytes(emptyOds),
-        )
+        val testInput =
+            MockMultipartFile(
+                testFileName,
+                testFileName,
+                mimeType,
+                TestUtils().loadFileBytes(emptyOds),
+            )
         assertEquals(mimeType, Tika().detect(testInput.bytes))
-        val exception = assertThrows<InvalidInputApiException> {
-            odsToOdsConverter.validateFile(testInput, correlationId)
-        }
+        val exception =
+            assertThrows<InvalidInputApiException> {
+                odsToOdsConverter.validateFile(testInput, correlationId)
+            }
         assertEquals("The file you uploaded seems to be empty.", exception.message)
     }
 }

@@ -15,11 +15,8 @@ import org.dataland.datalandbackend.frameworks.heimathafen.model.governance.good
 data class HeimathafenGovernance(
     @field:Valid()
     val goodGovernance: HeimathafenGovernanceGoodGovernance? = null,
-
     @field:Valid()
     val goodGovernanceUngc: HeimathafenGovernanceGoodGovernanceUngc? = null,
-
     @field:Valid()
     val bestechungUndKorruption: HeimathafenGovernanceBestechungUndKorruption? = null,
-
 )

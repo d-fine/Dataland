@@ -11,127 +11,85 @@ import org.dataland.datalandqaservice.model.reports.QaReportDataPoint
 @Suppress("MaxLineLength")
 data class EutaxonomyFinancialsCreditinstitutionCapexBasedGreenAssetRatioStock(
     @field:Valid()
-    val substantialContributionToClimateChangeMitigationInPercentEligible:
-    QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
-
+    val substantialContributionToClimateChangeMitigationInPercentEligible: QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
     @field:Valid()
-    val substantialContributionToClimateChangeMitigationInPercentAligned:
-    QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
-
+    val substantialContributionToClimateChangeMitigationInPercentAligned: QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
     @field:Valid()
     val substantialContributionToClimateChangeMitigationInPercentOfWhichUseOfProceeds:
-    QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
-
+        QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
     @field:Valid()
-    val substantialContributionToClimateChangeMitigationInPercentOfWhichEnabling:
-    QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
-
+    val substantialContributionToClimateChangeMitigationInPercentOfWhichEnabling: QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
     @field:Valid()
     val substantialContributionToClimateChangeMitigationInPercentOfWhichTransitional:
-    QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
-
+        QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
     @field:Valid()
-    val substantialContributionToClimateChangeAdaptationInPercentEligible:
-    QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
-
+    val substantialContributionToClimateChangeAdaptationInPercentEligible: QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
     @field:Valid()
-    val substantialContributionToClimateChangeAdaptationInPercentAligned:
-    QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
-
+    val substantialContributionToClimateChangeAdaptationInPercentAligned: QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
     @field:Valid()
     val substantialContributionToClimateChangeAdaptationInPercentOfWhichUseOfProceeds:
-    QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
-
+        QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
     @field:Valid()
-    val substantialContributionToClimateChangeAdaptationInPercentOfWhichEnabling:
-    QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
-
+    val substantialContributionToClimateChangeAdaptationInPercentOfWhichEnabling: QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
     @field:Valid()
-    val substantialContributionToClimateChangeAdaptationInPercentOfWhichAdapting:
-    QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
-
+    val substantialContributionToClimateChangeAdaptationInPercentOfWhichAdapting: QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
     @field:Valid()
     val substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentEligible:
-    QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
-
+        QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
     @field:Valid()
     val substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned:
-    QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
-
+        QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
     @field:Valid()
     val substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentOfWhichUseOfProceeds:
-    QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
-
+        QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
     @field:Valid()
     val substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentOfWhichEnabling:
-    QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
-
+        QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
     @field:Valid()
-    val substantialContributionToTransitionToACircularEconomyInPercentEligible:
-    QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
-
+    val substantialContributionToTransitionToACircularEconomyInPercentEligible: QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
     @field:Valid()
-    val substantialContributionToTransitionToACircularEconomyInPercentAligned:
-    QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
-
+    val substantialContributionToTransitionToACircularEconomyInPercentAligned: QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
     @field:Valid()
     val substantialContributionToTransitionToACircularEconomyInPercentOfWhichUseOfProceeds:
-    QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
-
+        QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
     @field:Valid()
     val substantialContributionToTransitionToACircularEconomyInPercentOfWhichEnabling:
-    QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
-
+        QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
     @field:Valid()
-    val substantialContributionToPollutionPreventionAndControlInPercentEligible:
-    QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
-
+    val substantialContributionToPollutionPreventionAndControlInPercentEligible: QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
     @field:Valid()
-    val substantialContributionToPollutionPreventionAndControlInPercentAligned:
-    QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
-
+    val substantialContributionToPollutionPreventionAndControlInPercentAligned: QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
     @field:Valid()
     val substantialContributionToPollutionPreventionAndControlInPercentOfWhichUseOfProceeds:
-    QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
-
+        QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
     @field:Valid()
     val substantialContributionToPollutionPreventionAndControlInPercentOfWhichEnabling:
-    QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
-
+        QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
     @field:Valid()
     val substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentEligible:
-    QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
-
+        QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
     @field:Valid()
     val substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned:
-    QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
-
+        QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
     @field:Valid()
     val substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentOfWhichUseOfProceeds:
-    QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
-
+        QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
     @field:Valid()
     val substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentOfWhichEnabling:
-    QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
-
+        QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
     @field:Valid()
     val substantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentEligible:
-    QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
-
+        QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
     @field:Valid()
     val substantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentAligned:
-    QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
-
+        QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
     @field:Valid()
     val substantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentOfWhichUseOfProceeds:
-    QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
-
+        QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
     @field:Valid()
     val substantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentOfWhichEnabling:
-    QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
-
+        QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
     @field:Valid()
     val substantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentOfWhichTransitional:
-    QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
-
+        QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
 )

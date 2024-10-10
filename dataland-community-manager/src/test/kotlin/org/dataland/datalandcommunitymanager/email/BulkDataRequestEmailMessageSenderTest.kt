@@ -22,39 +22,44 @@ import org.mockito.ArgumentMatchers
 import org.mockito.Mockito
 import org.springframework.security.core.context.SecurityContext
 import org.springframework.security.core.context.SecurityContextHolder
-import java.util.*
+import java.util.UUID
 
 class BulkDataRequestEmailMessageSenderTest {
-    val objectMapper = jacksonObjectMapper()
+    private val objectMapper = jacksonObjectMapper()
     private lateinit var authenticationMock: DatalandJwtAuthentication
     private val cloudEventMessageHandlerMock = Mockito.mock(CloudEventMessageHandler::class.java)
     private val mockProxyPrimaryUrl = "mockurl.dataland.com"
     private val correlationId = UUID.randomUUID().toString()
     private val companyName = "Company Name"
-    private val bulkDataRequest = BulkDataRequest(
-        companyIdentifiers = setOf(
-            "AR8756188701," +
-                "9856177321",
-            "28f05156-e1ba-1ea8-8d1e-d4833f6c7afgh",
-        ),
-        dataTypes = setOf(DataTypeEnum.p2p, DataTypeEnum.lksg),
-        reportingPeriods = setOf("2020, 2023"),
-    )
-    private val acceptedCompanyIdentifiers = listOf(
-        CompanyIdAndName(companyId = "AR8756188701,9856177321", companyName = companyName),
-    )
-    private val expectedFormatting = "<a href=\"https://mockurl.dataland.com/companies/AR8756188701,9856177321\">" +
-        "Company Name</a> (AR8756188701,9856177321)"
+    private val bulkDataRequest =
+        BulkDataRequest(
+            companyIdentifiers =
+                setOf(
+                    "AR8756188701," +
+                        "9856177321",
+                    "28f05156-e1ba-1ea8-8d1e-d4833f6c7afgh",
+                ),
+            dataTypes = setOf(DataTypeEnum.p2p, DataTypeEnum.lksg),
+            reportingPeriods = setOf("2020, 2023"),
+        )
+    private val acceptedCompanyIdentifiers =
+        listOf(
+            CompanyIdAndName(companyId = "AR8756188701,9856177321", companyName = companyName),
+        )
+    private val expectedFormatting =
+        "<a href=\"https://mockurl.dataland.com/companies/AR8756188701,9856177321\">" +
+            "Company Name</a> (AR8756188701,9856177321)"
     private lateinit var bulkDataRequestEmailMessageSender: BulkDataRequestEmailMessageSender
 
     @BeforeEach
     fun setup() {
         val mockSecurityContext = Mockito.mock(SecurityContext::class.java)
-        authenticationMock = AuthenticationMock.mockJwtAuthentication(
-            "requester@example.com",
-            "1234-221-1111elf",
-            setOf(DatalandRealmRole.ROLE_USER),
-        )
+        authenticationMock =
+            AuthenticationMock.mockJwtAuthentication(
+                "requester@example.com",
+                "1234-221-1111elf",
+                setOf(DatalandRealmRole.ROLE_USER),
+            )
         Mockito.`when`(mockSecurityContext.authentication).thenReturn(authenticationMock)
         Mockito.`when`(authenticationMock.credentials).thenReturn("")
         SecurityContextHolder.setContext(mockSecurityContext)
@@ -62,31 +67,34 @@ class BulkDataRequestEmailMessageSenderTest {
         val companyInfoMock = Mockito.mock(CompanyInformation::class.java)
         Mockito.`when`(companyInfoMock.companyName).thenReturn(companyName)
         Mockito.`when`(companyApiMock.getCompanyInfo(ArgumentMatchers.anyString())).thenReturn(companyInfoMock)
-        bulkDataRequestEmailMessageSender = BulkDataRequestEmailMessageSender(
-            cloudEventMessageHandler = cloudEventMessageHandlerMock,
-            objectMapper = objectMapper,
-            proxyPrimaryUrl = mockProxyPrimaryUrl,
-        )
+        bulkDataRequestEmailMessageSender =
+            BulkDataRequestEmailMessageSender(
+                cloudEventMessageHandler = cloudEventMessageHandlerMock,
+                objectMapper = objectMapper,
+                proxyPrimaryUrl = mockProxyPrimaryUrl,
+            )
     }
 
     private fun buildInternalBulkEmailMessageMock() {
-        Mockito.`when`(
-            cloudEventMessageHandlerMock.buildCEMessageAndSendToQueue(
-                ArgumentMatchers.anyString(),
-                ArgumentMatchers.anyString(),
-                ArgumentMatchers.anyString(),
-                ArgumentMatchers.anyString(),
-                ArgumentMatchers.anyString(),
-            ),
-        ).thenAnswer() {
-            val arg1 = objectMapper.readValue(it.getArgument<String>(0), InternalEmailMessage::class.java)
-            val arg2 = it.getArgument<String>(1)
-            val arg3 = it.getArgument<String>(2)
-            val arg4 = it.getArgument<String>(3)
-            val arg5 = it.getArgument<String>(4)
-            validateBuildInternalBulkEmailMessageMock(arg1, arg2, arg3, arg4, arg5)
-        }
+        Mockito
+            .`when`(
+                cloudEventMessageHandlerMock.buildCEMessageAndSendToQueue(
+                    ArgumentMatchers.anyString(),
+                    ArgumentMatchers.anyString(),
+                    ArgumentMatchers.anyString(),
+                    ArgumentMatchers.anyString(),
+                    ArgumentMatchers.anyString(),
+                ),
+            ).thenAnswer {
+                val arg1 = objectMapper.readValue(it.getArgument<String>(0), InternalEmailMessage::class.java)
+                val arg2 = it.getArgument<String>(1)
+                val arg3 = it.getArgument<String>(2)
+                val arg4 = it.getArgument<String>(3)
+                val arg5 = it.getArgument<String>(4)
+                validateBuildInternalBulkEmailMessageMock(arg1, arg2, arg3, arg4, arg5)
+            }
     }
+
     private fun validateBuildInternalBulkEmailMessageMock(
         arg1: InternalEmailMessage,
         arg2: String,
@@ -107,10 +115,10 @@ class BulkDataRequestEmailMessageSenderTest {
             expectedFormatting,
             arg1.properties.getValue("Accepted Companies (Dataland ID)"),
         )
-        Assertions.assertEquals(MessageType.SendInternalEmail, arg2)
+        Assertions.assertEquals(MessageType.SEND_INTERNAL_EMAIL, arg2)
         Assertions.assertEquals(correlationId, arg3)
-        Assertions.assertEquals(ExchangeName.SendEmail, arg4)
-        Assertions.assertEquals(RoutingKeyNames.internalEmail, arg5)
+        Assertions.assertEquals(ExchangeName.SEND_EMAIL, arg4)
+        Assertions.assertEquals(RoutingKeyNames.INTERNAL_EMAIL, arg5)
     }
 
     @Test

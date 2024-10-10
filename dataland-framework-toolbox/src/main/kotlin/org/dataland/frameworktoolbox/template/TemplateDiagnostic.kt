@@ -10,7 +10,9 @@ import org.springframework.stereotype.Component
  * A diagnostic utility to log common warning encountered during Excel-Conversion
  */
 @Component
-class TemplateDiagnostic(@Autowired val diagnostic: DiagnosticManager) {
+class TemplateDiagnostic(
+    @Autowired val diagnostic: DiagnosticManager,
+) {
     /**
      * Attests that this generator does not use the "options" column of the CSV
      */
@@ -24,16 +26,19 @@ class TemplateDiagnostic(@Autowired val diagnostic: DiagnosticManager) {
     /**
      * Attests that this generator does not use the "documentSupport" column of the CSV
      */
-    fun documentSupportNotUsed(row: TemplateRow) =
-        unusedColumn("documentSupport", "None", row, row.documentSupport.toString())
+    fun documentSupportNotUsed(row: TemplateRow) = unusedColumn("documentSupport", "None", row, row.documentSupport.toString())
 
     /**
      * Attests that this generator does not use the "Show when value is" column of the CSV
      */
-    fun showWhenValueIsNotUsed(row: TemplateRow) =
-        unusedColumn("showWhenValueIs", "", row, row.showWhenValueIs)
+    fun showWhenValueIsNotUsed(row: TemplateRow) = unusedColumn("showWhenValueIs", "", row, row.showWhenValueIs)
 
-    private fun unusedColumn(columnName: String, expectedColumnValue: String, row: TemplateRow, columnValue: String) {
+    private fun unusedColumn(
+        columnName: String,
+        expectedColumnValue: String,
+        row: TemplateRow,
+        columnValue: String,
+    ) {
         diagnostic.warnIf(
             columnValue.trim() != expectedColumnValue,
             "TemplateConversion-UnusedColumn-$columnName-Row-${row.fieldIdentifier}-${columnValue.shortSha()}",

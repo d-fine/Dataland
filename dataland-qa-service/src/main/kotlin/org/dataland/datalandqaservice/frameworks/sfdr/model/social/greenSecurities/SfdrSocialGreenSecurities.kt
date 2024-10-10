@@ -11,5 +11,4 @@ import org.dataland.datalandqaservice.model.reports.QaReportDataPoint
 data class SfdrSocialGreenSecurities(
     @field:Valid()
     val securitiesNotCertifiedAsGreen: QaReportDataPoint<ExtendedDataPointYesNo?>? = null,
-
 )

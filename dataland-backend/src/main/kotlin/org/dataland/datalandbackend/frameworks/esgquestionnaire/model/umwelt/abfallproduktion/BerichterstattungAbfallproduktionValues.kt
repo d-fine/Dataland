@@ -8,9 +8,6 @@ import java.math.BigDecimal
  */
 data class BerichterstattungAbfallproduktionValues(
     val gesamteAbfallmenge: BigDecimal? = null,
-
     val prozentAbfallRecyclet: BigDecimal? = null,
-
     val prozentGefaehrlicherAbfall: BigDecimal? = null,
-
 )

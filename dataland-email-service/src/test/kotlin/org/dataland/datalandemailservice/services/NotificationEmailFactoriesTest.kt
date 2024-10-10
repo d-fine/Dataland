@@ -21,13 +21,14 @@ class NotificationEmailFactoriesTest {
 
         val someFramework = "some-framework"
         val someYear = "2019"
-        val properties = mapOf(
-            "companyName" to dummyCompanyName,
-            "companyId" to dummyCompanyId,
-            "framework" to someFramework,
-            "year" to someYear,
-            "baseUrl" to proxyPrimaryUrl,
-        )
+        val properties =
+            mapOf(
+                "companyName" to dummyCompanyName,
+                "companyId" to dummyCompanyId,
+                "framework" to someFramework,
+                "year" to someYear,
+                "baseUrl" to proxyPrimaryUrl,
+            )
 
         val mail = singleNotificationEmailFactory.buildEmail(receiverEmail, properties)
         assertEquals(
@@ -47,13 +48,14 @@ class NotificationEmailFactoriesTest {
 
         val frameworks = "framework-alpha, framework-beta"
         val numberOfDays = "12"
-        val properties = mutableMapOf(
-            "companyName" to dummyCompanyName,
-            "companyId" to dummyCompanyId,
-            "frameworks" to frameworks,
-            "baseUrl" to proxyPrimaryUrl,
-            "numberOfDays" to numberOfDays,
-        )
+        val properties =
+            mutableMapOf(
+                "companyName" to dummyCompanyName,
+                "companyId" to dummyCompanyId,
+                "frameworks" to frameworks,
+                "baseUrl" to proxyPrimaryUrl,
+                "numberOfDays" to numberOfDays,
+            )
 
         val mail = summaryNotificationEmailFactory.buildEmail(receiverEmail, properties)
         assertEquals(

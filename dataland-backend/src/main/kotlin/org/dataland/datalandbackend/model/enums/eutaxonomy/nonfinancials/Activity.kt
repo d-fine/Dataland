@@ -3,12 +3,14 @@ package org.dataland.datalandbackend.model.enums.eutaxonomy.nonfinancials
 import io.swagger.v3.oas.annotations.media.Schema
 
 /**
- * An enum that holds the different activities related to EU taxonomy for non financial companies
+ * An enum that holds the different activities related to EU taxonomy for non-financial companies
  */
 @Schema(
     enumAsRef = true,
 )
-enum class Activity(val value: String) {
+enum class Activity(
+    val value: String,
+) {
     AcquisitionAndOwnershipOfBuildings("Acquisition and ownership of buildings"),
     Afforestation("Afforestation"),
     AirTransportGroundHandlingOperations("Air transport ground handling operations"),

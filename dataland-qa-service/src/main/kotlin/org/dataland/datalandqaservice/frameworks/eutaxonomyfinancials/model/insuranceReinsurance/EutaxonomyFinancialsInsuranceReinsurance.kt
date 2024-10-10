@@ -21,17 +21,13 @@ import org.dataland.datalandqaservice.frameworks.eutaxonomyfinancials.model.insu
 data class EutaxonomyFinancialsInsuranceReinsurance(
     @field:Valid()
     val underwritingKpi: EutaxonomyFinancialsInsurancereinsuranceUnderwritingKpi? = null,
-
     @field:Valid()
     val averageValueOfTaxonomyAlignedUndertakings:
-    EutaxonomyFinancialsInsurancereinsuranceAverageValueOfTaxonomyAlignedUndertakings? = null,
-
+        EutaxonomyFinancialsInsurancereinsuranceAverageValueOfTaxonomyAlignedUndertakings? = null,
     @field:Valid()
     val breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBased:
-    EutaxonomyFinancialsInsurancereinsuranceBreakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBased? = null,
-
+        EutaxonomyFinancialsInsurancereinsuranceBreakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBased? = null,
     @field:Valid()
     val breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBased:
-    EutaxonomyFinancialsInsurancereinsuranceBreakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBased? = null,
-
+        EutaxonomyFinancialsInsurancereinsuranceBreakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBased? = null,
 )

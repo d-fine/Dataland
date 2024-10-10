@@ -16,8 +16,9 @@ data class EmailAttachment(
 /**
  * Uses a list of EmailAttachment objects for the build of a TransactionalEmail
  */
-fun TransactionalEmail.TransactionalEmailBuilder.attachments(attachments: Collection<EmailAttachment>):
-    TransactionalEmail.TransactionalEmailBuilder {
+fun TransactionalEmail.TransactionalEmailBuilder.attachments(
+    attachments: Collection<EmailAttachment>,
+): TransactionalEmail.TransactionalEmailBuilder {
     attachments.forEach {
         this.attachment(
             Attachment.fromInputStream(

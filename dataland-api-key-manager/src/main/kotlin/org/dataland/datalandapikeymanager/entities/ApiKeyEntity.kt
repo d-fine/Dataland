@@ -13,15 +13,11 @@ import org.dataland.datalandapikeymanager.model.ApiKeyMetaInfo
 @Entity
 @Table(name = "api_keys")
 data class ApiKeyEntity(
-
     val encodedSecret: String,
-
     @Id
     var keycloakUserId: String,
-
     @ElementCollection(fetch = FetchType.EAGER)
     var keycloakRoles: List<String>,
-
     var expiryDate: Long?,
 ) {
     constructor(encodedSecret: String, apiKeyMetaInfo: ApiKeyMetaInfo) :

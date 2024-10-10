@@ -28,7 +28,6 @@ class EsgQuestionnaireYearlyDecimalTimeseriesDataComponent(
     identifier: String,
     parent: FieldNodeParent,
 ) : ComponentBase(identifier, parent) {
-
     companion object {
         const val THREE_YEARS = 3
     }
@@ -36,14 +35,22 @@ class EsgQuestionnaireYearlyDecimalTimeseriesDataComponent(
     /**
      * A TimeseriesRow specifies a single property that is to be tracked across time
      */
-    data class TimeseriesRow(val identifier: String, val label: String, val unitSuffix: String)
+    data class TimeseriesRow(
+        val identifier: String,
+        val label: String,
+        val unitSuffix: String,
+    )
 
     /**
      * The UploadBehaviour specifies how many years this component is expected to be filled out with
      * during upload
      */
-    enum class UploadBehaviour(val yearsIntoPast: Int, val yearsIntoFuture: Int) {
-        ThreeYearDelta(THREE_YEARS, THREE_YEARS), ThreeYearPast(THREE_YEARS, 0)
+    enum class UploadBehaviour(
+        val yearsIntoPast: Int,
+        val yearsIntoFuture: Int,
+    ) {
+        ThreeYearDelta(THREE_YEARS, THREE_YEARS),
+        ThreeYearPast(THREE_YEARS, 0),
     }
 
     var decimalRows: MutableList<TimeseriesRow> = mutableListOf()
@@ -55,10 +62,11 @@ class EsgQuestionnaireYearlyDecimalTimeseriesDataComponent(
                 "to receive useful output."
         }
 
-        val fieldDataClass = dataClassBuilder.parentPackage.addClass(
-            name = "${this.identifier.capitalizeEn()}Values",
-            comment = "Data class for the timeseries data contained in the field ${this.identifier}",
-        )
+        val fieldDataClass =
+            dataClassBuilder.parentPackage.addClass(
+                name = "${this.identifier.capitalizeEn()}Values",
+                comment = "Data class for the timeseries data contained in the field ${this.identifier}",
+            )
 
         for (decimalRow in decimalRows) {
             fieldDataClass.addProperty(
@@ -82,25 +90,29 @@ class EsgQuestionnaireYearlyDecimalTimeseriesDataComponent(
     }
 
     override fun generateDefaultUploadConfig(uploadCategoryBuilder: UploadCategoryBuilder) {
-        val componentName = when (uploadBehaviour) {
-            UploadBehaviour.ThreeYearDelta -> "EsgQuestionnaireYearlyDecimalTimeseriesThreeYearDeltaDataFormField"
-            UploadBehaviour.ThreeYearPast -> "EsgQuestionnaireYearlyDecimalTimeseriesThreeYearPastDataFormField"
-        }
+        val componentName =
+            when (uploadBehaviour) {
+                UploadBehaviour.ThreeYearDelta -> "EsgQuestionnaireYearlyDecimalTimeseriesThreeYearDeltaDataFormField"
+                UploadBehaviour.ThreeYearPast -> "EsgQuestionnaireYearlyDecimalTimeseriesThreeYearPastDataFormField"
+            }
 
         uploadCategoryBuilder.addStandardUploadConfigCell(
-            frameworkUploadOptions = FrameworkUploadOptions(
-                body = generateTsCodeForOptionsOfSelectionFormFields(
-                    decimalRows.map {
-                        var rowLabel = it.label
-                        if (it.unitSuffix.isNotBlank()) {
-                            rowLabel += " (in ${it.unitSuffix})"
-                        }
+            frameworkUploadOptions =
+                FrameworkUploadOptions(
+                    body =
+                        generateTsCodeForOptionsOfSelectionFormFields(
+                            decimalRows
+                                .map {
+                                    var rowLabel = it.label
+                                    if (it.unitSuffix.isNotBlank()) {
+                                        rowLabel += " (in ${it.unitSuffix})"
+                                    }
 
-                        SelectionOption(it.identifier, rowLabel)
-                    }.toSet(),
+                                    SelectionOption(it.identifier, rowLabel)
+                                }.toSet(),
+                        ),
+                    imports = null,
                 ),
-                imports = null,
-            ),
             component = this,
             uploadComponentName = componentName,
         )
@@ -109,10 +121,11 @@ class EsgQuestionnaireYearlyDecimalTimeseriesDataComponent(
     override fun generateDefaultViewConfig(sectionConfigBuilder: SectionConfigBuilder) {
         val configurationObject = mutableMapOf<String, Map<String, String>>()
         for (row in decimalRows) {
-            configurationObject[row.identifier] = mapOf(
-                "label" to row.label,
-                "unitSuffix" to row.unitSuffix,
-            )
+            configurationObject[row.identifier] =
+                mapOf(
+                    "label" to row.label,
+                    "unitSuffix" to row.unitSuffix,
+                )
         }
 
         val objectMapper = jacksonObjectMapper()
@@ -148,10 +161,12 @@ class EsgQuestionnaireYearlyDecimalTimeseriesDataComponent(
         sectionBuilder.addAtomicExpression(
             identifier,
             documentSupport.getFixtureExpression(
-                fixtureExpression = "dataGenerator.guaranteedDecimalYearlyTimeseriesData" +
-                    "($jsIdentifierArray, ${uploadBehaviour.yearsIntoPast}, ${uploadBehaviour.yearsIntoFuture})",
-                nullableFixtureExpression = "dataGenerator.randomDecimalYearlyTimeseriesData" +
-                    "($jsIdentifierArray, ${uploadBehaviour.yearsIntoPast}, ${uploadBehaviour.yearsIntoFuture})",
+                fixtureExpression =
+                    "dataGenerator.guaranteedDecimalYearlyTimeseriesData" +
+                        "($jsIdentifierArray, ${uploadBehaviour.yearsIntoPast}, ${uploadBehaviour.yearsIntoFuture})",
+                nullableFixtureExpression =
+                    "dataGenerator.randomDecimalYearlyTimeseriesData" +
+                        "($jsIdentifierArray, ${uploadBehaviour.yearsIntoPast}, ${uploadBehaviour.yearsIntoFuture})",
                 nullable = isNullable,
             ),
         )

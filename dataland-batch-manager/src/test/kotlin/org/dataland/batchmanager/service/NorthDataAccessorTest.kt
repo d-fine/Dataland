@@ -10,7 +10,6 @@ import org.mockito.Mockito.`when`
 import java.io.File
 
 class NorthDataAccessorTest {
-
     private val dummyUrl = "https://dummy.com"
 
     @Test

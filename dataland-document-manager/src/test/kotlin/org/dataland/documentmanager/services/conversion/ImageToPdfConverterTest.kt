@@ -14,12 +14,13 @@ class ImageToPdfConverterTest {
 
     @Test
     fun `verify that a png file can be converted to pdf`() {
-        val testInput = MockMultipartFile(
-            "test.png",
-            "test.png",
-            MediaType.IMAGE_PNG_VALUE,
-            TestUtils().loadFileBytes(testPng),
-        )
+        val testInput =
+            MockMultipartFile(
+                "test.png",
+                "test.png",
+                MediaType.IMAGE_PNG_VALUE,
+                TestUtils().loadFileBytes(testPng),
+            )
         assertEquals("image/png", Tika().detect(testInput.bytes))
         val convertedDocument = imageToPdfConverter.convertFile(testInput, correlationId)
         assertEquals("application/pdf", Tika().detect(convertedDocument))

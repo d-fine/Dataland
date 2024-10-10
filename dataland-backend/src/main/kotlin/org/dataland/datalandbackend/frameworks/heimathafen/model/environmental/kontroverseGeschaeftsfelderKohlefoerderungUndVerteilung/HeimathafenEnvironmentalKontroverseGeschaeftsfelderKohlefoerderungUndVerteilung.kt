@@ -10,14 +10,9 @@ import org.dataland.datalandbackend.model.enums.commons.YesNo
  */
 data class HeimathafenEnvironmentalKontroverseGeschaeftsfelderKohlefoerderungUndVerteilung(
     val ausschlussDerKohlefoerderungUndVerteilung: YesNo? = null,
-
     val wennNeinBitteBegruenden: String? = null,
-
     val verwendeteKennzahl: String? = null,
-
     val methodikDerBerechnung: String? = null,
-
     @field:Valid()
     val verwendeteQuellen: List<BaseDataPoint<String>>? = null,
-
 )

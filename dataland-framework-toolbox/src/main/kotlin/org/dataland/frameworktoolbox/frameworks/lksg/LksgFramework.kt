@@ -17,32 +17,35 @@ import java.io.File
  * The Lksg Framework
  */
 @Component
-class LksgFramework : PavedRoadFramework(
-    identifier = "lksg",
-    label = "LkSG",
-    explanation = "Lieferkettensorgfaltspflichtengesetz",
-    File("./dataland-framework-toolbox/inputs/lksg/lksg.xlsx"),
-    order = 3,
-    enabledFeatures =
-    FrameworkGenerationFeatures.allExcept(FrameworkGenerationFeatures.QaModel),
-) {
-
+class LksgFramework :
+    PavedRoadFramework(
+        identifier = "lksg",
+        label = "LkSG",
+        explanation = "Lieferkettensorgfaltspflichtengesetz",
+        File("./dataland-framework-toolbox/inputs/lksg/lksg.xlsx"),
+        order = 3,
+        enabledFeatures =
+            FrameworkGenerationFeatures.allExcept(FrameworkGenerationFeatures.QaModel),
+    ) {
     override fun customizeHighLevelIntermediateRepresentation(framework: Framework) {
         setSectionColorsAndExpansion(framework.root)
-        framework.root.get<ComponentGroup>("general")
-            .get<ComponentGroup>("masterData").let { parent ->
+        framework.root
+            .get<ComponentGroup>("general")
+            .get<ComponentGroup>("masterData")
+            .let { parent ->
                 editShareOfTemporaryWorkersOptions(parent)
             }
     }
 
     private fun editShareOfTemporaryWorkersOptions(parent: ComponentGroup) {
         parent.edit<SingleSelectComponent>("shareOfTemporaryWorkers") {
-            options = mutableSetOf(
-                SelectionOption("Smaller10", "<10%"),
-                SelectionOption("Between10And25", "10-25%"),
-                SelectionOption("Between25And50", "25-50%"),
-                SelectionOption("Greater50", ">50%"),
-            )
+            options =
+                mutableSetOf(
+                    SelectionOption("Smaller10", "<10%"),
+                    SelectionOption("Between10And25", "10-25%"),
+                    SelectionOption("Between25And50", "25-50%"),
+                    SelectionOption("Greater50", ">50%"),
+                )
         }
     }
 

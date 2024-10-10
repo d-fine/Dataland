@@ -9,21 +9,12 @@ import org.dataland.datalandbackend.model.enums.commons.YesNo
  */
 data class LksgGovernanceGeneralViolations(
     val legalProceedings: YesNo? = null,
-
     val humanRightsOrEnvironmentalViolations: YesNo? = null,
-
     val humanRightsOrEnvironmentalViolationsDefinition: List<LksgRiskOrViolationAssessment?>? = null,
-
     val highRiskCountriesRawMaterials: YesNo? = null,
-
     val highRiskCountriesRawMaterialsLocation: List<String>? = null,
-
     val highRiskCountriesActivity: YesNo? = null,
-
     val highRiskCountries: List<String>? = null,
-
     val highRiskCountriesProcurement: YesNo? = null,
-
     val highRiskCountriesProcurementName: List<String>? = null,
-
 )

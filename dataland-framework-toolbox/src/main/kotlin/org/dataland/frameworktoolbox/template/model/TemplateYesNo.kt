@@ -17,8 +17,8 @@ enum class TemplateYesNo {
          */
         @JsonCreator
         @JvmStatic
-        fun fromString(input: String): TemplateYesNo {
-            return if (input == "Yes") {
+        fun fromString(input: String): TemplateYesNo =
+            if (input == "Yes") {
                 Yes
             } else if (input.isBlank() || input == "No") {
                 No
@@ -27,6 +27,5 @@ enum class TemplateYesNo {
                     "Cannot convert '$input' to a YesNo value. Please Specify one of 'Yes' or 'No'",
                 )
             }
-        }
     }
 }

@@ -13,13 +13,13 @@ class VsmeSiteAndAreaComponent(
     identifier: String,
     parent: FieldNodeParent,
 ) : VsmeSimpleCustomComponentBase(
-    identifier = identifier,
-    parent = parent,
-    viewFormattingFunctionName = "formatVsmeSiteAndAreaForDisplay",
-    uploadComponentName = "SiteAndAreaFormField",
-    guaranteedFixtureExpression = "dataGenerator.randomArray(() => dataGenerator.generateVsmeSiteAndArea(), 0, 5)",
-    randomFixtureExpression = null,
-) {
+        identifier = identifier,
+        parent = parent,
+        viewFormattingFunctionName = "formatVsmeSiteAndAreaForDisplay",
+        uploadComponentName = "SiteAndAreaFormField",
+        guaranteedFixtureExpression = "dataGenerator.randomArray(() => dataGenerator.generateVsmeSiteAndArea(), 0, 5)",
+        randomFixtureExpression = null,
+    ) {
     override fun generateDefaultDataModel(dataClassBuilder: DataClassBuilder) {
         requireDocumentSupportIn(setOf(NoDocumentSupport))
         dataClassBuilder.addProperty(
@@ -31,10 +31,8 @@ class VsmeSiteAndAreaComponent(
                         "org.dataland.datalandbackend.frameworks.vsme.custom.VsmeSiteAndArea",
                         true,
                     ),
-
                 ),
             ),
-
         )
     }
 }

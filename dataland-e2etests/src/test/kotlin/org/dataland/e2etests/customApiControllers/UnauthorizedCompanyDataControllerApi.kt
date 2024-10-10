@@ -8,7 +8,6 @@ import org.dataland.datalandbackend.openApiClient.model.StoredCompany
 import org.dataland.e2etests.BASE_PATH_TO_DATALAND_BACKEND
 
 class UnauthorizedCompanyDataControllerApi {
-
     private val client = OkHttpClient()
 
     private fun transferJsonToStoredCompany(inputString: String): StoredCompany {
@@ -16,12 +15,12 @@ class UnauthorizedCompanyDataControllerApi {
         return jsonAdapter.fromJson(inputString)!!
     }
 
-    private fun buildGetCompanyByIdRequest(companyId: String): Request {
-        return Request.Builder()
+    private fun buildGetCompanyByIdRequest(companyId: String): Request =
+        Request
+            .Builder()
             .url("$BASE_PATH_TO_DATALAND_BACKEND/companies/$companyId")
             .get()
             .build()
-    }
 
     fun getCompanyById(companyId: String): StoredCompany {
         val response = client.newCall(buildGetCompanyByIdRequest(companyId)).execute()

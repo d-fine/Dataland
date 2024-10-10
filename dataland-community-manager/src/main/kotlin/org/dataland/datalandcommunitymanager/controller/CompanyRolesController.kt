@@ -30,13 +30,15 @@ class CompanyRolesController(
             "Received a request to assign the company role $companyRole for company $companyId to the user $userId",
         )
         return ResponseEntity.ok(
-            companyRolesManager.assignCompanyRoleForCompanyToUser(
-                companyRole,
-                companyId.toString(),
-                userId.toString(),
-            ).toApiModel(),
+            companyRolesManager
+                .assignCompanyRoleForCompanyToUser(
+                    companyRole,
+                    companyId.toString(),
+                    userId.toString(),
+                ).toApiModel(),
         )
     }
+
     override fun getCompanyRoleAssignments(
         companyRole: CompanyRole?,
         companyId: UUID?,
@@ -45,8 +47,9 @@ class CompanyRolesController(
         logger.info(
             "Received a request to get company role assignments for company role $companyRole for company $companyId",
         )
-        val entities = companyRolesManager
-            .getCompanyRoleAssignmentsByParameters(companyRole, companyId?.toString(), userId?.toString())
+        val entities =
+            companyRolesManager
+                .getCompanyRoleAssignmentsByParameters(companyRole, companyId?.toString(), userId?.toString())
         return ResponseEntity.ok(
             entities.map { it.toApiModel() },
         )
@@ -63,7 +66,11 @@ class CompanyRolesController(
         companyRolesManager.removeCompanyRoleForCompanyFromUser(companyRole, companyId.toString(), userId.toString())
     }
 
-    override fun hasUserCompanyRole(companyRole: CompanyRole, companyId: UUID, userId: UUID) {
+    override fun hasUserCompanyRole(
+        companyRole: CompanyRole,
+        companyId: UUID,
+        userId: UUID,
+    ) {
         logger.info(
             "Received a request to check if user with Id $userId has the role $companyRole for the company $companyId",
         )
@@ -74,7 +81,10 @@ class CompanyRolesController(
         )
     }
 
-    override fun postCompanyOwnershipRequest(companyId: UUID, comment: String?) {
+    override fun postCompanyOwnershipRequest(
+        companyId: UUID,
+        comment: String?,
+    ) {
         val userAuthentication = DatalandAuthentication.fromContext()
         val correlationId = UUID.randomUUID().toString()
         logger.info(

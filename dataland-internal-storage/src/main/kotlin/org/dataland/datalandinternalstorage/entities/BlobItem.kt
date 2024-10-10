@@ -15,7 +15,6 @@ data class BlobItem(
     @Id
     @Column(name = "blob_id")
     val blobId: String,
-
     @Lob
     @Column(name = "data")
     val data: ByteArray,

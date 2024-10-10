@@ -2,7 +2,7 @@ package org.dataland.frameworktoolbox.utils.freemarker
 
 import freemarker.template.Configuration
 import freemarker.template.TemplateExceptionHandler
-import java.util.*
+import java.util.TimeZone
 
 /**
  * Configures a global FreeMarker instance for generating code

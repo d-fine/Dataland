@@ -9,14 +9,9 @@ import java.math.BigDecimal
 */
 data class P2pGeneralEmissionsPlanning(
     val absoluteEmissionsInTonnesCO2e: BigDecimal? = null,
-
     val relativeEmissionsInPercent: BigDecimal? = null,
-
     val reductionOfAbsoluteEmissionsInTonnesCO2e: BigDecimal? = null,
-
     val reductionOfRelativeEmissionsInPercent: BigDecimal? = null,
-
     val climateActionPlan: YesNo? = null,
-
     val useOfInternalCarbonPrice: YesNo? = null,
 )

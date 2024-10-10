@@ -25,28 +25,27 @@ class ApiKeyManager(
     @Value("\${dataland.max-days-selectable-for-api-key-validity}")
     private val maxDaysSelectableForApiKeyValidity: Int,
 ) {
-
     companion object {
-        private const val milliSecondsInADay = 24 * 60 * 60 * 1000
+        private const val MILLI_SECONDS_IN_A_DAY = 24 * 60 * 60 * 1000
     }
 
-    private val validationMessageNoApiKeyRegistered = "Your Dataland account has no API key registered. " +
-        "Please generate one."
+    private val validationMessageNoApiKeyRegistered =
+        "Your Dataland account has no API key registered. " +
+            "Please generate one."
     private val validationMessageWrongApiKey = "The API key you provided for your Dataland account is not correct."
     private val validationMessageExpiredApiKey = "The API key you provided for your Dataland account is expired."
     private val validationMessageSuccess = "The API key you provided was successfully validated."
 
-    private val revokementMessageNonExistingApiKey = "Your Dataland account has no API key registered. Therefore no " +
-        "revokement took place."
+    private val revokementMessageNonExistingApiKey =
+        "Your Dataland account has no API key registered. Therefore no " +
+            "revokement took place."
     private val revokementMessageSuccess = "The API key for your Dataland account was successfully revoked."
 
     private val logger = LoggerFactory.getLogger(javaClass)
 
     private val apiKeyUtility = ApiKeyUtility()
 
-    private fun getAuthentication(): Authentication {
-        return SecurityContextHolder.getContext().authentication
-    }
+    private fun getAuthentication(): Authentication = SecurityContextHolder.getContext().authentication
 
     private fun checkIfDaysValidValueIsValid(daysValid: Int?) {
         if (daysValid != null) {
@@ -72,7 +71,7 @@ class ApiKeyManager(
             null -> null
             else -> {
                 val daysValidAsLong = daysValid.toLong()
-                val millisecondsValid = (daysValidAsLong * milliSecondsInADay)
+                val millisecondsValid = (daysValidAsLong * MILLI_SECONDS_IN_A_DAY)
                 millisecondsValid + Instant.now().toEpochMilli()
             }
         }
@@ -90,9 +89,8 @@ class ApiKeyManager(
         return ApiKeyMetaInfo(keycloakUserId, keycloakRoles, calculateExpiryDate(daysValid), active = true)
     }
 
-    private fun isApiKeyExpired(expiryDateOfApiKey: Long?): Boolean {
-        return (expiryDateOfApiKey ?: Instant.now().toEpochMilli()) < Instant.now().toEpochMilli()
-    }
+    private fun isApiKeyExpired(expiryDateOfApiKey: Long?): Boolean =
+        (expiryDateOfApiKey ?: Instant.now().toEpochMilli()) < Instant.now().toEpochMilli()
 
     /**
      * A method that generates an API key which is valid for the specified number of days
@@ -136,7 +134,9 @@ class ApiKeyManager(
                     expiryDate = apiKeyEntityOfKeycloakUser.expiryDate,
                     keycloakRoles = apiKeyEntityOfKeycloakUser.keycloakRoles,
                 )
-            } else { ApiKeyMetaInfo(active = false, validationMessage = validationMessageExpiredApiKey) }
+            } else {
+                ApiKeyMetaInfo(active = false, validationMessage = validationMessageExpiredApiKey)
+            }
         }
     }
 
@@ -148,9 +148,10 @@ class ApiKeyManager(
     fun validateApiKey(receivedApiKey: String): ApiKeyMetaInfo {
         val receivedAndParsedApiKey = apiKeyUtility.parseApiKey(receivedApiKey)
 
-        val apiKeyEntityOptional = apiKeyRepository.findById(
-            receivedAndParsedApiKey.keycloakUserId,
-        )
+        val apiKeyEntityOptional =
+            apiKeyRepository.findById(
+                receivedAndParsedApiKey.keycloakUserId,
+            )
 
         if (apiKeyEntityOptional.isEmpty) {
             logger.info(
@@ -163,14 +164,18 @@ class ApiKeyManager(
         return getApiKeyMetaInfo(receivedAndParsedApiKey.apiKeySecret, apiKeyEntity)
     }
 
-    private fun getApiKeyMetaInfo(secret: String, apiKeyEntity: ApiKeyEntity): ApiKeyMetaInfo {
-        val apiKeyMetaInfo = if (!apiKeyUtility.matchesSecretAndEncodedSecret(secret, apiKeyEntity.encodedSecret)) {
-            ApiKeyMetaInfo(active = false, validationMessage = validationMessageWrongApiKey)
-        } else if (!isApiKeyExpired(apiKeyEntity.expiryDate)) {
-            ApiKeyMetaInfo(apiKeyEntity, true, validationMessageSuccess)
-        } else {
-            ApiKeyMetaInfo(apiKeyEntity, false, validationMessageExpiredApiKey)
-        }
+    private fun getApiKeyMetaInfo(
+        secret: String,
+        apiKeyEntity: ApiKeyEntity,
+    ): ApiKeyMetaInfo {
+        val apiKeyMetaInfo =
+            if (!apiKeyUtility.matchesSecretAndEncodedSecret(secret, apiKeyEntity.encodedSecret)) {
+                ApiKeyMetaInfo(active = false, validationMessage = validationMessageWrongApiKey)
+            } else if (!isApiKeyExpired(apiKeyEntity.expiryDate)) {
+                ApiKeyMetaInfo(apiKeyEntity, true, validationMessageSuccess)
+            } else {
+                ApiKeyMetaInfo(apiKeyEntity, false, validationMessageExpiredApiKey)
+            }
         logger.info("Validated Api Key for user ${apiKeyEntity.keycloakUserId} as active=${apiKeyMetaInfo.active}")
         return apiKeyMetaInfo
     }

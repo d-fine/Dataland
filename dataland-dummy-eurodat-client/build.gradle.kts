@@ -24,7 +24,8 @@ plugins {
     id("org.jetbrains.kotlin.plugin.jpa")
 }
 
-dependencies { // TODO At the end: Reduce one by one and check if still works
+dependencies {
+    // TODO At the end: Reduce one by one and check if still works
     implementation(libs.springdoc.openapi.ui)
     implementation(libs.jackson.module.kotlin)
     implementation(libs.log4j)

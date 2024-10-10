@@ -1,4 +1,5 @@
-/* ktlint-disable comment-spacing */
+@file:Suppress("ktlint:standard:comment-spacing")
+
 import de.fayard.refreshVersions.core.StabilityLevel
 rootProject.name = "Dataland"
 

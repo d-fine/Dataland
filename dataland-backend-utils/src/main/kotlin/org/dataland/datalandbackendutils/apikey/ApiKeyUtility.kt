@@ -15,14 +15,13 @@ import java.util.HexFormat
  */
 @Component("ApiKeyUtility")
 class ApiKeyUtility {
-
     companion object {
-        private const val keyByteLength = 40
+        private const val KEY_BYTE_LENGTH = 40
     }
 
     private val numberOfUnderscoreDelimitersExpectedInApiKey = 2
 
-    private val regexFor80HexCharacters = Regex("^[a-fA-F0-9]{${keyByteLength * 2}}\$")
+    private val regexFor80HexCharacters = Regex("^[a-fA-F0-9]{${KEY_BYTE_LENGTH * 2}}\$")
 
     private val charset = Charsets.UTF_8
 
@@ -72,16 +71,20 @@ class ApiKeyUtility {
             throw InvalidInputApiException(apiKeyInvalidFormatSummary, validateApiKeyChecksumWrongValueExceptionMessage)
         }
 
-        val keycloakUserId = try {
-            String(decodeFromBase64(parsedKeycloakUserIdBase64Encoded), Charsets.UTF_8)
-        } catch (e: IllegalArgumentException) {
-            throw InvalidInputApiException(apiKeyInvalidFormatSummary, validateKeycloakUserIdExceptionMessage, e)
-        }
+        val keycloakUserId =
+            try {
+                String(decodeFromBase64(parsedKeycloakUserIdBase64Encoded), Charsets.UTF_8)
+            } catch (e: IllegalArgumentException) {
+                throw InvalidInputApiException(apiKeyInvalidFormatSummary, validateKeycloakUserIdExceptionMessage, e)
+            }
         validateApiKeySecret(parsedApiKeySecret)
         return ParsedApiKey(keycloakUserId, parsedApiKeySecret)
     }
 
-    private fun getCrc(keycloakUserIdBase64Encoded: String, apiKeySecret: String): String {
+    private fun getCrc(
+        keycloakUserIdBase64Encoded: String,
+        apiKeySecret: String,
+    ): String {
         val apiKeyWithoutCrc32Value = keycloakUserIdBase64Encoded + "_" + apiKeySecret
 
         return calculateCrc32Value(
@@ -93,7 +96,7 @@ class ApiKeyUtility {
      * generates a random secret (in hex format)
      */
     fun generateApiKeySecret(): String {
-        val bytes = ByteArray(keyByteLength)
+        val bytes = ByteArray(KEY_BYTE_LENGTH)
         SecureRandom().nextBytes(bytes)
         return HexFormat.of().formatHex(bytes)
     }
@@ -101,16 +104,15 @@ class ApiKeyUtility {
     /**
      * verifies whether an encoded secret and a secret match
      */
-    fun matchesSecretAndEncodedSecret(secret: String, encodedSecret: String): Boolean {
-        return Argon2PasswordEncoder.defaultsForSpringSecurity_v5_8().matches(secret, encodedSecret)
-    }
+    fun matchesSecretAndEncodedSecret(
+        secret: String,
+        encodedSecret: String,
+    ): Boolean = Argon2PasswordEncoder.defaultsForSpringSecurity_v5_8().matches(secret, encodedSecret)
 
     /**
      * Encodes a secret to a storable format
      */
-    fun encodeSecret(secret: String): String {
-        return Argon2PasswordEncoder.defaultsForSpringSecurity_v5_8().encode(secret)
-    }
+    fun encodeSecret(secret: String): String = Argon2PasswordEncoder.defaultsForSpringSecurity_v5_8().encode(secret)
 
     /**
      * converts a ParsedApiKey Object (with secret and userId) to an API-Key in the correct parseable format.

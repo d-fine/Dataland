@@ -11,7 +11,6 @@ import com.fasterxml.jackson.annotation.JsonProperty
 data class ApiKeyAndMetaInfo(
     @field:JsonProperty(required = true)
     val apiKey: String,
-
     @field:JsonProperty(required = true)
     val apiKeyMetaInfo: ApiKeyMetaInfo,
 )

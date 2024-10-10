@@ -18,17 +18,12 @@ import org.dataland.datalandbackend.frameworks.esgquestionnaire.model.unternehme
 data class EsgQuestionnaireData(
     @field:Valid()
     val general: EsgQuestionnaireGeneral,
-
     @field:Valid()
     val allgemein: EsgQuestionnaireAllgemein? = null,
-
     @field:Valid()
     val umwelt: EsgQuestionnaireUmwelt? = null,
-
     @field:Valid()
     val soziales: EsgQuestionnaireSoziales? = null,
-
     @field:Valid()
     val unternehmensfuehrungGovernance: EsgQuestionnaireUnternehmensfuehrungGovernance? = null,
-
 )

@@ -27,7 +27,6 @@ data class DataClassBuilder(
     val properties: MutableList<ClassProperty> = mutableListOf(),
     val annotations: MutableList<Annotation> = mutableListOf(),
 ) : DataModelElement {
-
     private val logger by LoggerDelegate()
 
     override val empty: Boolean
@@ -46,9 +45,7 @@ data class DataClassBuilder(
      * Create a type-reference for this DataClass
      * @param nullable true iff the reference should allow null values
      */
-    fun getTypeReference(nullable: Boolean): TypeReference {
-        return TypeReference(fullyQualifiedName, nullable)
-    }
+    fun getTypeReference(nullable: Boolean): TypeReference = TypeReference(fullyQualifiedName, nullable)
 
     /**
      * Add a new property to this DataClass
@@ -66,8 +63,8 @@ data class DataClassBuilder(
         return newProperty
     }
 
-    private fun getFreeMarkerContext(): Map<String, *> {
-        return mapOf(
+    private fun getFreeMarkerContext(): Map<String, *> =
+        mapOf(
             "package" to parentPackage.fullyQualifiedName,
             "className" to name,
             "properties" to properties,
@@ -76,7 +73,6 @@ data class DataClassBuilder(
             "import_formatter" to ImportFormatter,
             "comment_lines" to comment.lines(),
         )
-    }
 
     override fun build(into: Path) {
         require(SourceVersion.isName(fullyQualifiedName)) {
@@ -87,15 +83,14 @@ data class DataClassBuilder(
         val classPath = into / "${fullyQualifiedName.replace(".", "/")}.kt"
         logger.trace("Building class '{}' into '{}'", fullyQualifiedName, classPath)
 
-        val freemarkerTemplate = FreeMarker.configuration
-            .getTemplate("/specific/datamodel/elements/DataClass.kt.ftl")
+        val freemarkerTemplate =
+            FreeMarker.configuration
+                .getTemplate("/specific/datamodel/elements/DataClass.kt.ftl")
 
         val writer = FileWriter(classPath.toFile())
         freemarkerTemplate.process(getFreeMarkerContext(), writer)
         writer.close()
     }
 
-    override fun toString(): String {
-        return "$name.kt:\n" + properties.joinToString("\n") { it.toString().prependIndent("  ") }
-    }
+    override fun toString(): String = "$name.kt:\n" + properties.joinToString("\n") { it.toString().prependIndent("  ") }
 }

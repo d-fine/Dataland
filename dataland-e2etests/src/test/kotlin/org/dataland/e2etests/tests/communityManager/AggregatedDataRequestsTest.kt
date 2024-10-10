@@ -26,13 +26,14 @@ import org.junit.jupiter.api.TestInstance
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class AggregatedDataRequestsTest {
-
     val jwtHelper = JwtAuthenticationHelper()
     val apiAccessor = ApiAccessor()
     private val requestControllerApi = RequestControllerApi(BASE_PATH_TO_COMMUNITY_MANAGER)
 
     @BeforeAll
-    fun authenticateAsReader() { jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader) }
+    fun authenticateAsReader() {
+        jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader)
+    }
 
     private fun authenticateSendBulkRequestAndCheckAcceptedIdentifiers(
         technicalUser: TechnicalUser,
@@ -41,9 +42,10 @@ class AggregatedDataRequestsTest {
         reportingPeriods: Set<String>,
     ) {
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(technicalUser)
-        val responseForReader = requestControllerApi.postBulkDataRequest(
-            BulkDataRequest(identifiers, frameworks, reportingPeriods),
-        )
+        val responseForReader =
+            requestControllerApi.postBulkDataRequest(
+                BulkDataRequest(identifiers, frameworks, reportingPeriods),
+            )
         checkThatAllIdentifiersWereAccepted(responseForReader, identifiers.size, 0)
     }
 
@@ -84,25 +86,31 @@ class AggregatedDataRequestsTest {
 
     @Test
     fun `post bulk data request and check that filter for the identifier value on aggregated level works properly`() {
-        val identifiersToMap = mapOf(
-            IdentifierType.PermId to generateRandomPermId(10),
-            IdentifierType.Lei to generateRandomLei(),
-            IdentifierType.Isin to generateRandomIsin(),
-        )
+        val identifiersToMap =
+            mapOf(
+                IdentifierType.PermId to generateRandomPermId(10),
+                IdentifierType.Lei to generateRandomLei(),
+                IdentifierType.Isin to generateRandomIsin(),
+            )
         generateCompaniesWithOneRandomValueForEachIdentifierType(identifiersToMap)
         val identifierNotToRecognizeSet = setOf(generateRandomLei())
         val identifiers = identifiersToMap.values.toSet() + identifierNotToRecognizeSet
         val frameworks = setOf(BulkDataRequest.DataTypes.lksg)
         val reportingPeriods = setOf("2023")
-        val response = requestControllerApi.postBulkDataRequest(
-            BulkDataRequest(identifiers, frameworks, reportingPeriods),
-        )
+        val response =
+            requestControllerApi.postBulkDataRequest(
+                BulkDataRequest(identifiers, frameworks, reportingPeriods),
+            )
         checkThatAllIdentifiersWereAccepted(response, identifiers.size - 1, 1)
-        val aggregatedDataRequest = requestControllerApi.getAggregatedDataRequests(
-            identifierValue = apiAccessor.companyDataControllerApi.getCompaniesBySearchString(
-                identifiersToMap.getValue(IdentifierType.Isin),
-            ).first().companyId,
-        )
+        val aggregatedDataRequest =
+            requestControllerApi.getAggregatedDataRequests(
+                identifierValue =
+                    apiAccessor.companyDataControllerApi
+                        .getCompaniesBySearchString(
+                            identifiersToMap.getValue(IdentifierType.Isin),
+                        ).first()
+                        .companyId,
+            )
         iterateThroughAllThreeSpecificationsAndCheckAggregationWithCount(
             aggregatedDataRequest, frameworks, reportingPeriods,
             identifiersToMap.filterKeys { it == IdentifierType.Isin }.values.toSet(), 1,
@@ -119,9 +127,10 @@ class AggregatedDataRequestsTest {
     ) {
         listOf(1, (2 until frameworks.size).random(), frameworks.size).forEach { numberOfRandomFrameworks ->
             val randomFrameworks = frameworks.shuffled().take(numberOfRandomFrameworks)
-            val aggregatedDataRequests = requestControllerApi.getAggregatedDataRequests(
-                dataTypes = randomFrameworks.map { findRequestControllerApiDataTypeForFramework(it) },
-            )
+            val aggregatedDataRequests =
+                requestControllerApi.getAggregatedDataRequests(
+                    dataTypes = randomFrameworks.map { findRequestControllerApiDataTypeForFramework(it) },
+                )
             iterateThroughAllThreeSpecificationsAndCheckAggregationWithCount(
                 aggregatedDataRequests, randomFrameworks.toSet(), reportingPeriods, identifiers, 1,
             )
@@ -142,9 +151,10 @@ class AggregatedDataRequestsTest {
         val reportingPeriods = setOf("2023")
         val identifierMap = mapOf(IdentifierType.Lei to generateRandomLei())
         generateCompaniesWithOneRandomValueForEachIdentifierType(identifierMap)
-        val response = requestControllerApi.postBulkDataRequest(
-            BulkDataRequest(identifierMap.values.toSet(), frameworks, reportingPeriods),
-        )
+        val response =
+            requestControllerApi.postBulkDataRequest(
+                BulkDataRequest(identifierMap.values.toSet(), frameworks, reportingPeriods),
+            )
         checkThatAllIdentifiersWereAccepted(response, identifierMap.size, 0)
         checkAggregationForNonTrivialFrameworkFilter(frameworks, reportingPeriods, identifierMap.values.toSet())
         val aggregatedDataRequestsWithoutFilter = requestControllerApi.getAggregatedDataRequests(dataTypes = null)
@@ -163,14 +173,16 @@ class AggregatedDataRequestsTest {
         val frameworks = setOf(BulkDataRequest.DataTypes.lksg)
         val reportingPeriods = setOf("2020", "2021", "2022", "2023")
         generateCompaniesWithOneRandomValueForEachIdentifierType(identifierMap)
-        val response = requestControllerApi.postBulkDataRequest(
-            BulkDataRequest(identifierMap.values.toSet(), frameworks, reportingPeriods),
-        )
+        val response =
+            requestControllerApi.postBulkDataRequest(
+                BulkDataRequest(identifierMap.values.toSet(), frameworks, reportingPeriods),
+            )
         checkThatAllIdentifiersWereAccepted(response, identifierMap.size, 0)
         val randomReportingPeriod = reportingPeriods.random()
-        val aggregatedDataRequests = requestControllerApi.getAggregatedDataRequests(
-            reportingPeriod = randomReportingPeriod,
-        )
+        val aggregatedDataRequests =
+            requestControllerApi.getAggregatedDataRequests(
+                reportingPeriod = randomReportingPeriod,
+            )
         iterateThroughAllThreeSpecificationsAndCheckAggregationWithCount(
             aggregatedDataRequests, frameworks, setOf(randomReportingPeriod), identifierMap.values.toSet(), 1,
         )
@@ -192,14 +204,16 @@ class AggregatedDataRequestsTest {
         val randomLei = generateRandomLei()
         val identifierMap = mapOf(IdentifierType.Lei to randomLei)
         generateCompaniesWithOneRandomValueForEachIdentifierType(identifierMap)
-        val datalandCompanyIDForLei = getUniqueDatalandCompanyIdForIdentifierValue(
-            identifierMap.getValue(IdentifierType.Lei),
-        )
+        val datalandCompanyIDForLei =
+            getUniqueDatalandCompanyIdForIdentifierValue(
+                identifierMap.getValue(IdentifierType.Lei),
+            )
         val frameworks = setOf(BulkDataRequest.DataTypes.lksg)
         val reportingPeriods = setOf("2020", "2021")
-        val response = requestControllerApi.postBulkDataRequest(
-            BulkDataRequest(identifierMap.values.toSet(), frameworks, reportingPeriods),
-        )
+        val response =
+            requestControllerApi.postBulkDataRequest(
+                BulkDataRequest(identifierMap.values.toSet(), frameworks, reportingPeriods),
+            )
         checkThatAllIdentifiersWereAccepted(response, identifierMap.size, 0)
         val aggregatedDataRequests = requestControllerApi.getAggregatedDataRequests(status = RequestStatus.Open)
         assertNumberOfMatchesOnExclusivelyOpenRequestsEquals(
@@ -237,10 +251,12 @@ class AggregatedDataRequestsTest {
         stati: Set<String>,
         count: Long,
     ) {
-        val numberOfStatusMatches = aggregatedDataRequests.filter {
-            it.datalandCompanyId == companyIdentifier &&
-                it.requestStatus in stati
-        }.sumOf { it.count }
+        val numberOfStatusMatches =
+            aggregatedDataRequests
+                .filter {
+                    it.datalandCompanyId == companyIdentifier &&
+                        it.requestStatus in stati
+                }.sumOf { it.count }
         assertEquals(count, numberOfStatusMatches)
     }
 }

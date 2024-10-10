@@ -6,6 +6,7 @@ import org.flywaydb.core.api.migration.Context
 /**
  * This migration script extends the data_requests table
  */
+@Suppress("ClassName")
 class V2__ExtendDataRequest : BaseJavaMigration() {
     override fun migrate(context: Context?) {
         context!!.connection.createStatement().execute(

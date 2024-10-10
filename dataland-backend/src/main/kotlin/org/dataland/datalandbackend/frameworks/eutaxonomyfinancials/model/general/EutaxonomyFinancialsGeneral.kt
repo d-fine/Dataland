@@ -12,5 +12,4 @@ import org.dataland.datalandbackend.frameworks.eutaxonomyfinancials.model.genera
 data class EutaxonomyFinancialsGeneral(
     @field:Valid()
     val general: EutaxonomyFinancialsGeneralGeneral? = null,
-
 )

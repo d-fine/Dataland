@@ -59,8 +59,7 @@ interface DataApi<T> {
         @Valid @RequestBody
         companyAssociatedData: CompanyAssociatedData<T>,
         @RequestParam(defaultValue = "false") bypassQa: Boolean,
-    ):
-        ResponseEntity<DataMetaInformation>
+    ): ResponseEntity<DataMetaInformation>
 
     /**
      * A method to retrieve specific data identified by its ID
@@ -81,8 +80,9 @@ interface DataApi<T> {
         produces = ["application/json"],
     )
     @PreAuthorize("hasRole('ROLE_USER') or @DataManager.isDataSetPublic(#dataId)")
-    fun getCompanyAssociatedData(@PathVariable("dataId") dataId: String):
-        ResponseEntity<CompanyAssociatedData<T>>
+    fun getCompanyAssociatedData(
+        @PathVariable("dataId") dataId: String,
+    ): ResponseEntity<CompanyAssociatedData<T>>
 
     /**
      * A method to retrieve framework datasets together with their meta info for one specific company identified by its

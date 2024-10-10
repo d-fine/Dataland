@@ -17,18 +17,23 @@ class PptToPdfConverter(
     @Value("\${dataland.libreoffice.path}")
     val pathToLibre: String,
 ) : MsOfficeToPdfConverterBase(
-    converterSourceType = DefaultDocumentFormatRegistry.PPT,
-    pathToLibre = pathToLibre,
-    allowedMimeTypesPerFileExtension = mapOf(
-        "ppt" to setOf(
-            "application/vnd.ms-powerpoint",
-            "application/x-tika-msoffice",
-        ),
-    ),
-) {
+        converterSourceType = DefaultDocumentFormatRegistry.PPT,
+        pathToLibre = pathToLibre,
+        allowedMimeTypesPerFileExtension =
+            mapOf(
+                "ppt" to
+                    setOf(
+                        "application/vnd.ms-powerpoint",
+                        "application/x-tika-msoffice",
+                    ),
+            ),
+    ) {
     override val logger: Logger = LoggerFactory.getLogger(javaClass)
 
-    override fun validateFileContent(file: MultipartFile, correlationId: String) {
+    override fun validateFileContent(
+        file: MultipartFile,
+        correlationId: String,
+    ) {
         file.inputStream.use { inputStream ->
             HSLFSlideShow(inputStream).use { slideShow ->
                 if (slideShow.slides.isEmpty()) {

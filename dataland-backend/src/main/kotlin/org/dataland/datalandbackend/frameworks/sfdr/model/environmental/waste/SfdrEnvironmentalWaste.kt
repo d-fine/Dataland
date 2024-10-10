@@ -13,9 +13,7 @@ data class SfdrEnvironmentalWaste(
     @field:MinimumValue(minimumValue = 0)
     @field:Valid()
     val hazardousAndRadioactiveWasteInTonnes: ExtendedDataPoint<BigDecimal?>? = null,
-
     @field:MinimumValue(minimumValue = 0)
     @field:Valid()
     val nonRecycledWasteInTonnes: ExtendedDataPoint<BigDecimal?>? = null,
-
 )

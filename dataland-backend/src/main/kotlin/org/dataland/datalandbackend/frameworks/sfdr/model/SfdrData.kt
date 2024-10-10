@@ -17,11 +17,8 @@ import org.dataland.datalandbackend.frameworks.sfdr.model.validator.ReferencedRe
 data class SfdrData(
     @field:Valid()
     val general: SfdrGeneral,
-
     @field:Valid()
     val environmental: SfdrEnvironmental? = null,
-
     @field:Valid()
     val social: SfdrSocial? = null,
-
 )

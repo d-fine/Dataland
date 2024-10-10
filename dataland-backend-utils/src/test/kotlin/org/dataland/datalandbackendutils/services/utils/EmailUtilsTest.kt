@@ -5,7 +5,6 @@ import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 
 class EmailUtilsTest {
-
     @Test
     fun `validate that the email regex correctly matches dots`() {
         assertEquals("test.test@test.com".isEmailAddress(), true)

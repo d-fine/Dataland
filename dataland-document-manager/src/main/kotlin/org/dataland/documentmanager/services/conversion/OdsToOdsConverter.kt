@@ -11,14 +11,19 @@ import org.springframework.web.multipart.MultipartFile
  * Validates the content of an ods file
  */
 @Component
-class OdsToOdsConverter : FileConverter(
-    allowedMimeTypesPerFileExtension = mapOf(
-        "ods" to setOf("application/vnd.oasis.opendocument.spreadsheet"),
-    ),
-) {
+class OdsToOdsConverter :
+    FileConverter(
+        allowedMimeTypesPerFileExtension =
+            mapOf(
+                "ods" to setOf("application/vnd.oasis.opendocument.spreadsheet"),
+            ),
+    ) {
     override val logger: Logger = LoggerFactory.getLogger(javaClass)
 
-    override fun validateFileContent(file: MultipartFile, correlationId: String) {
+    override fun validateFileContent(
+        file: MultipartFile,
+        correlationId: String,
+    ) {
         logger.info("Validating that ods file is not empty. (correlation ID: $correlationId)")
         file.inputStream.use { inputStream ->
             SpreadsheetDocument.loadDocument(inputStream).use { document ->
@@ -43,7 +48,8 @@ class OdsToOdsConverter : FileConverter(
         return false
     }
 
-    override fun convert(file: MultipartFile, correlationId: String): ByteArray {
-        return file.bytes
-    }
+    override fun convert(
+        file: MultipartFile,
+        correlationId: String,
+    ): ByteArray = file.bytes
 }

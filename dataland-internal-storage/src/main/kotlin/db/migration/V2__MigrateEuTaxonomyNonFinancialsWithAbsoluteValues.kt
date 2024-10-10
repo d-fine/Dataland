@@ -12,12 +12,15 @@ import org.json.JSONObject
  * This migration script updates the EU Taxonomy for non-financials data model switching
  * from a field called value for percentages only to a structure holding the absolute value of a cash flow type as well
  */
+@Suppress("ClassName")
 class V2__MigrateEuTaxonomyNonFinancialsWithAbsoluteValues : BaseJavaMigration() {
-
     private val cashFlowTypes = listOf("capex", "opex", "revenue")
     private val fieldsToMigrate = mapOf("alignedPercentage" to "alignedData", "eligiblePercentage" to "eligibleData")
 
-    private fun migrateFieldForCashFlow(fieldToMigrate: String, cashFlow: JSONObject) {
+    private fun migrateFieldForCashFlow(
+        fieldToMigrate: String,
+        cashFlow: JSONObject,
+    ) {
         val dataToMigrate = cashFlow.opt(fieldToMigrate) ?: return
         if (dataToMigrate != JSONObject.NULL && dataToMigrate is JSONObject) {
             dataToMigrate.put("valueAsPercentage", dataToMigrate.getOrJsonNull("value"))

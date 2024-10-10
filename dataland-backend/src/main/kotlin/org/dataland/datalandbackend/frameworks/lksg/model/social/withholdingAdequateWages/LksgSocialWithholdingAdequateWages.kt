@@ -11,24 +11,15 @@ import org.dataland.datalandbackend.model.enums.commons.YesNoNa
  */
 data class LksgSocialWithholdingAdequateWages(
     val adequateWageWithholding: YesNo? = null,
-
     val adequateWagesMeasures: YesNo? = null,
-
     @field:Valid()
     val documentedWorkingHoursAndWages: BaseDataPoint<YesNo>? = null,
-
     @field:Valid()
     val adequateLivingWage: BaseDataPoint<YesNo>? = null,
-
     val regularWagesProcessFlow: YesNo? = null,
-
     val fixedHourlyWages: YesNoNa? = null,
-
     val fixedPieceworkWages: YesNoNa? = null,
-
     @field:Valid()
     val adequateWageOtherMeasures: BaseDataPoint<YesNo>? = null,
-
     val adequateWageOtherMeasuresDescription: String? = null,
-
 )

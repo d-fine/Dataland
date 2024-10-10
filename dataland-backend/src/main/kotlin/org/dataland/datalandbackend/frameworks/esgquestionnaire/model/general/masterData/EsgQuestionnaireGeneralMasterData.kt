@@ -9,7 +9,5 @@ import java.time.LocalDate
  */
 data class EsgQuestionnaireGeneralMasterData(
     val berichtspflichtUndEinwilligungZurVeroeffentlichung: YesNo,
-
     val gueltigkeitsDatum: LocalDate? = null,
-
 )

@@ -9,16 +9,20 @@ import kotlin.reflect.KClass
  * provide the backbone for components that require dynamic subcomponents
  * (e.g., Sections or Lists of Objects)
  */
-class ComponentGroupApiImpl(var parent: FieldNodeParent? = null) : ComponentGroupApi {
+class ComponentGroupApiImpl(
+    var parent: FieldNodeParent? = null,
+) : ComponentGroupApi {
     private val components: MutableList<ComponentBase> = mutableListOf()
 
     val children: Sequence<ComponentBase>
         get() = components.asSequence()
 
-    private fun <T : ComponentBase> getComponentWithIdentifierAndType(identifier: String, clazz: KClass<T>): T {
-        return getOrNull(identifier, clazz)
+    private fun <T : ComponentBase> getComponentWithIdentifierAndType(
+        identifier: String,
+        clazz: KClass<T>,
+    ): T =
+        getOrNull(identifier, clazz)
             ?: throw IllegalArgumentException("Could not find the component with identifier $identifier.")
-    }
 
     private fun <T : ComponentBase> initComponent(
         component: T,
@@ -30,7 +34,8 @@ class ComponentGroupApiImpl(var parent: FieldNodeParent? = null) : ComponentGrou
         }
         init?.let { component.init() }
         if (insertBeforeIdentifier == null) {
-            components.add(component) } else {
+            components.add(component)
+        } else {
             val indexOfInsertBeforeIdentifier = components.indexOfFirst { it.identifier == insertBeforeIdentifier }
 
             require(indexOfInsertBeforeIdentifier != -1) {
@@ -48,15 +53,14 @@ class ComponentGroupApiImpl(var parent: FieldNodeParent? = null) : ComponentGrou
      * A constructor is suitable if it has two required arguments
      * (1: Identifier as a string, 2: Parent as a FieldNodeParent)
      */
-    private fun <T : ComponentBase> getComponentConstructorByReflection(
-        clazz: KClass<T>,
-    ): ((String, FieldNodeParent) -> T)? {
+    private fun <T : ComponentBase> getComponentConstructorByReflection(clazz: KClass<T>): ((String, FieldNodeParent) -> T)? {
         val componentConstructors = clazz.constructors
         for (constructor in componentConstructors) {
             val nonOptimalParameters = constructor.parameters.filter { !it.isOptional }
-            val validConstructor = nonOptimalParameters.size == 2 &&
-                nonOptimalParameters[0].type.classifier == String::class &&
-                nonOptimalParameters[1].type.classifier == FieldNodeParent::class
+            val validConstructor =
+                nonOptimalParameters.size == 2 &&
+                    nonOptimalParameters[0].type.classifier == String::class &&
+                    nonOptimalParameters[1].type.classifier == FieldNodeParent::class
             if (validConstructor) {
                 return { identifier, parent ->
                     constructor.callBy(mapOf(nonOptimalParameters[0] to identifier, nonOptimalParameters[1] to parent))
@@ -82,17 +86,25 @@ class ComponentGroupApiImpl(var parent: FieldNodeParent? = null) : ComponentGrou
         return initComponent(component, insertBeforeIdentifier, init)
     }
 
-    override fun <T : ComponentBase> edit(identifier: String, clazz: KClass<T>, editFunction: T.() -> Unit): T {
+    override fun <T : ComponentBase> edit(
+        identifier: String,
+        clazz: KClass<T>,
+        editFunction: T.() -> Unit,
+    ): T {
         val component = getComponentWithIdentifierAndType(identifier, clazz)
         editFunction(component)
         return component
     }
 
-    override fun <T : ComponentBase> get(identifier: String, clazz: KClass<T>): T {
-        return getComponentWithIdentifierAndType(identifier, clazz)
-    }
+    override fun <T : ComponentBase> get(
+        identifier: String,
+        clazz: KClass<T>,
+    ): T = getComponentWithIdentifierAndType(identifier, clazz)
 
-    override fun <T : ComponentBase> getOrNull(identifier: String, clazz: KClass<T>): T? {
+    override fun <T : ComponentBase> getOrNull(
+        identifier: String,
+        clazz: KClass<T>,
+    ): T? {
         val componentWithIdentifier = components.find { it.identifier == identifier } ?: return null
 
         require(clazz.isInstance(componentWithIdentifier)) {
@@ -103,7 +115,10 @@ class ComponentGroupApiImpl(var parent: FieldNodeParent? = null) : ComponentGrou
         return componentWithIdentifier as T
     }
 
-    override fun <T : ComponentBase> delete(identifier: String, clazz: KClass<T>) {
+    override fun <T : ComponentBase> delete(
+        identifier: String,
+        clazz: KClass<T>,
+    ) {
         val component = getComponentWithIdentifierAndType(identifier, clazz)
         components.remove(component)
     }

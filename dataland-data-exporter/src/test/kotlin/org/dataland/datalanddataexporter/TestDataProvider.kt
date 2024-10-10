@@ -11,7 +11,6 @@ import java.text.SimpleDateFormat
  *  A provider for test data used in different tests.
  * */
 object TestDataProvider {
-
     private val sfdrJsonFilePath = File("./src/test/resources/csv/inputs/mockSfdrData.json")
 
     private fun getMockSfdrObjectMapper(): ObjectMapper {
@@ -23,14 +22,10 @@ object TestDataProvider {
     /**
      * This function loads test data for the SFDR framework and reads it into the SfdrData class
      */
-    fun getMockSfdrData(): SfdrData {
-        return getMockSfdrObjectMapper().readValue(sfdrJsonFilePath, SfdrData::class.java)
-    }
+    fun getMockSfdrData(): SfdrData = getMockSfdrObjectMapper().readValue(sfdrJsonFilePath, SfdrData::class.java)
 
     /**
      * This function loads tests data for the SFDR framework and reads it into a JSONNode
      */
-    fun getMockSfdrJsonNode(): JsonNode {
-        return getMockSfdrObjectMapper().readTree(sfdrJsonFilePath)
-    }
+    fun getMockSfdrJsonNode(): JsonNode = getMockSfdrObjectMapper().readTree(sfdrJsonFilePath)
 }

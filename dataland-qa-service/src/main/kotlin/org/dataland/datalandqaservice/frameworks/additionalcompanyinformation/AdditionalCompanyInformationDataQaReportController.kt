@@ -25,30 +25,30 @@ class AdditionalCompanyInformationDataQaReportController(
     @Autowired qaReportManager: QaReportManager,
     @Autowired qaReportSecurityPolicy: QaReportSecurityPolicy,
 ) : QaReportController<AdditionalCompanyInformationData>(
-    objectMapper = objectMapper,
-    qaReportManager = qaReportManager,
-    qaReportSecurityPolicy = qaReportSecurityPolicy,
-    clazz = AdditionalCompanyInformationData::class.java,
-    dataType = "additional-company-information",
-) {
+        objectMapper = objectMapper,
+        qaReportManager = qaReportManager,
+        qaReportSecurityPolicy = qaReportSecurityPolicy,
+        clazz = AdditionalCompanyInformationData::class.java,
+        dataType = "additional-company-information",
+    ) {
     @Operation(operationId = "postAdditionalCompanyInformationDataQaReport")
     override fun postQaReport(
         dataId: String,
         qaReport: AdditionalCompanyInformationData,
-    ): ResponseEntity<QaReportMetaInformation> {
-        return super.postQaReport(dataId, qaReport)
-    }
+    ): ResponseEntity<QaReportMetaInformation> = super.postQaReport(dataId, qaReport)
 
     @Operation(operationId = "getAdditionalCompanyInformationDataQaReport")
     override fun getQaReport(
         dataId: String,
         qaReportId: String,
-    ): ResponseEntity<QaReportWithMetaInformation<AdditionalCompanyInformationData>> {
-        return super.getQaReport(dataId, qaReportId)
-    }
+    ): ResponseEntity<QaReportWithMetaInformation<AdditionalCompanyInformationData>> = super.getQaReport(dataId, qaReportId)
 
     @Operation(operationId = "setAdditionalCompanyInformationDataQaReportStatus")
-    override fun setQaReportStatus(dataId: String, qaReportId: String, statusPatch: QaReportStatusPatch) {
+    override fun setQaReportStatus(
+        dataId: String,
+        qaReportId: String,
+        statusPatch: QaReportStatusPatch,
+    ) {
         super.setQaReportStatus(dataId, qaReportId, statusPatch)
     }
 
@@ -57,7 +57,7 @@ class AdditionalCompanyInformationDataQaReportController(
         dataId: String,
         showInactive: Boolean?,
         reporterUserId: String?,
-    ): ResponseEntity<List<QaReportWithMetaInformation<AdditionalCompanyInformationData>>> {
-        return super.getAllQaReportsForDataset(dataId, showInactive, reporterUserId)
-    }
+    ): ResponseEntity<List<QaReportWithMetaInformation<AdditionalCompanyInformationData>>> =
+        super
+            .getAllQaReportsForDataset(dataId, showInactive, reporterUserId)
 }

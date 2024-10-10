@@ -17,13 +17,13 @@ import org.junit.jupiter.api.assertThrows
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class Lksg {
-
     private val apiAccessor = ApiAccessor()
     private val documentManagerAccessor = DocumentManagerAccessor()
 
     private val listOfOneLksgDataSet = apiAccessor.testDataProviderForLksgData.getTData(1)
-    private val listOfOneCompanyInformation = apiAccessor.testDataProviderForLksgData
-        .getCompanyInformationWithoutIdentifiers(1)
+    private val listOfOneCompanyInformation =
+        apiAccessor.testDataProviderForLksgData
+            .getCompanyInformationWithoutIdentifiers(1)
 
     @BeforeAll
     fun postTestDocuments() {
@@ -48,9 +48,10 @@ class Lksg {
         }
 
         val fixedDataSetWithSortedComplaintsRisks = sortComplaintRisksInDataset(fixedDataSet)
-        val fixedDataSetWithAllSortedRiskPositions = sortDatasetsInSecondTest(
-            listOf(fixedDataSetWithSortedComplaintsRisks),
-        )[0]
+        val fixedDataSetWithAllSortedRiskPositions =
+            sortDatasetsInSecondTest(
+                listOf(fixedDataSetWithSortedComplaintsRisks),
+            )[0]
 
         return fixedDataSetWithAllSortedRiskPositions
     }
@@ -58,16 +59,20 @@ class Lksg {
     @Test
     fun `post a company with Lksg data and check if the data can be retrieved correctly`() {
         val fixedDataSet = removeNullMapEntriesFromSupplierCountryCountAndSortAllRiskPositions(listOfOneLksgDataSet[0])
-        val listOfUploadInfo = apiAccessor.uploadCompanyAndFrameworkDataForOneFramework(
-            listOfOneCompanyInformation,
-            listOf(fixedDataSet),
-            apiAccessor::lksgUploaderFunction,
-        )
+        val listOfUploadInfo =
+            apiAccessor.uploadCompanyAndFrameworkDataForOneFramework(
+                listOfOneCompanyInformation,
+                listOf(fixedDataSet),
+                apiAccessor::lksgUploaderFunction,
+            )
         val receivedDataMetaInformation = listOfUploadInfo[0].actualStoredDataMetaInfo
-        val downloadedAssociatedData = apiAccessor.dataControllerApiForLksgData
-            .getCompanyAssociatedLksgData(receivedDataMetaInformation!!.dataId)
-        val downloadedAssociatedDataType = apiAccessor.metaDataControllerApi
-            .getDataMetaInfo(receivedDataMetaInformation.dataId).dataType
+        val downloadedAssociatedData =
+            apiAccessor.dataControllerApiForLksgData
+                .getCompanyAssociatedLksgData(receivedDataMetaInformation!!.dataId)
+        val downloadedAssociatedDataType =
+            apiAccessor.metaDataControllerApi
+                .getDataMetaInfo(receivedDataMetaInformation.dataId)
+                .dataType
 
         assertEquals(receivedDataMetaInformation.companyId, downloadedAssociatedData.companyId)
         assertEquals(receivedDataMetaInformation.dataType, downloadedAssociatedDataType)
@@ -77,19 +82,22 @@ class Lksg {
     @Test
     fun `check that reporting period and version history parameters of GET endpoint for companies work correctly`() {
         val (companyId, uploadedDataSets) = uploadFourDatasetsForACompany()
-        val downLoadedDataSets = apiAccessor.dataControllerApiForLksgData.getAllCompanyLksgData(
-            companyId = companyId,
-            showOnlyActive = false,
-        )
-        val activeDownloadedDatasets = apiAccessor.dataControllerApiForLksgData.getAllCompanyLksgData(
-            companyId = companyId,
-            showOnlyActive = true,
-        )
-        val downloaded2023Datasets = apiAccessor.dataControllerApiForLksgData.getAllCompanyLksgData(
-            companyId = companyId,
-            showOnlyActive = false,
-            reportingPeriod = "2023",
-        )
+        val downLoadedDataSets =
+            apiAccessor.dataControllerApiForLksgData.getAllCompanyLksgData(
+                companyId = companyId,
+                showOnlyActive = false,
+            )
+        val activeDownloadedDatasets =
+            apiAccessor.dataControllerApiForLksgData.getAllCompanyLksgData(
+                companyId = companyId,
+                showOnlyActive = true,
+            )
+        val downloaded2023Datasets =
+            apiAccessor.dataControllerApiForLksgData.getAllCompanyLksgData(
+                companyId = companyId,
+                showOnlyActive = false,
+                reportingPeriod = "2023",
+            )
         val downloadedActive2023Datasets =
             apiAccessor.dataControllerApiForLksgData.getAllCompanyLksgData(
                 companyId = companyId,
@@ -109,22 +117,24 @@ class Lksg {
     fun `check that dataset cannot be uploaded if document does not exist`() {
         val companyId = "1908273127903192839781293898312983"
         val companyName = "TestForBrokenFileReference"
-        val companyInformation = apiAccessor.testDataProviderForLksgData
-            .getSpecificCompanyByNameFromLksgPreparedFixtures(companyName)
+        val companyInformation =
+            apiAccessor.testDataProviderForLksgData
+                .getSpecificCompanyByNameFromLksgPreparedFixtures(companyName)
         val lksgData = companyInformation!!.t
 
         val dataSet = removeNullMapEntriesFromSupplierCountryCountAndSortAllRiskPositions(lksgData)
 
         val uploadPair = Pair(dataSet, "2022")
 
-        val exception = assertThrows<ClientException> {
-            apiAccessor.uploadWithWait(
-                companyId = companyId,
-                frameworkData = uploadPair.first,
-                reportingPeriod = uploadPair.second,
-                uploadFunction = apiAccessor::lksgUploaderFunction,
-            )
-        }
+        val exception =
+            assertThrows<ClientException> {
+                apiAccessor.uploadWithWait(
+                    companyId = companyId,
+                    frameworkData = uploadPair.first,
+                    reportingPeriod = uploadPair.second,
+                    uploadFunction = apiAccessor::lksgUploaderFunction,
+                )
+            }
 
         val testClientError = exception.response as ClientError<*>
 
@@ -141,8 +151,10 @@ class Lksg {
         uploadedDataSets: List<Any>,
     ) {
         assertTrue(
-            downLoadedDataSets.size == 4 && activeDownloadedDatasets.size == 2 &&
-                downloaded2023Datasets.size == 2 && downloadedActive2023Datasets.size == 1,
+            downLoadedDataSets.size == 4 &&
+                activeDownloadedDatasets.size == 2 &&
+                downloaded2023Datasets.size == 2 &&
+                downloadedActive2023Datasets.size == 1,
             "At least of the retrieved meta data lists does not have the expected size.",
         )
         assertEquals(
@@ -153,8 +165,11 @@ class Lksg {
     }
 
     private fun sortComplaintRisksInDataset(dataset: LksgData): LksgData {
-        val complaintRisksIdentifiedRisks = dataset.governance?.grievanceMechanismOwnOperations
-            ?.complaintsRiskPosition?.toMutableList() ?: mutableListOf()
+        val complaintRisksIdentifiedRisks =
+            dataset.governance
+                ?.grievanceMechanismOwnOperations
+                ?.complaintsRiskPosition
+                ?.toMutableList() ?: mutableListOf()
         val complaintRisksIdentifiedRisksSorted: MutableList<LksgGrievanceAssessmentMechanism> = mutableListOf()
         for (i in complaintRisksIdentifiedRisks.indices) {
             complaintRisksIdentifiedRisksSorted.add(
@@ -164,44 +179,63 @@ class Lksg {
             )
         }
 
-        val datasetWithSortedIdentifiedRisks = dataset.copy(
-            governance = dataset.governance?.copy(
-                grievanceMechanismOwnOperations = dataset.governance?.grievanceMechanismOwnOperations?.copy(
-                    complaintsRiskPosition = complaintRisksIdentifiedRisksSorted.sortedBy { it.riskPositions.first() },
-                ),
-            ),
-        )
+        val datasetWithSortedIdentifiedRisks =
+            dataset.copy(
+                governance =
+                    dataset.governance?.copy(
+                        grievanceMechanismOwnOperations =
+                            dataset.governance?.grievanceMechanismOwnOperations?.copy(
+                                complaintsRiskPosition = complaintRisksIdentifiedRisksSorted.sortedBy { it.riskPositions.first() },
+                            ),
+                    ),
+            )
         return datasetWithSortedIdentifiedRisks
     }
 
     private fun sortDatasetsInFirstTest(fixedDataSet: LksgData): LksgData {
-        val firstSorting = fixedDataSet.copy(
-            general = fixedDataSet.general.copy(
-                productionSpecific = fixedDataSet.general.productionSpecific?.copy(
-                    specificProcurement = fixedDataSet.general.productionSpecific?.specificProcurement?.sorted(),
-                ),
-            ),
-            governance = fixedDataSet.governance?.copy(
-                riskManagementOwnOperations = fixedDataSet.governance?.riskManagementOwnOperations?.copy(
-                    identifiedRisks = fixedDataSet.governance?.riskManagementOwnOperations?.identifiedRisks?.sortedBy
-                        { it.riskPosition },
-                ),
-                generalViolations = fixedDataSet.governance?.generalViolations?.copy(
-                    humanRightsOrEnvironmentalViolationsDefinition = fixedDataSet.governance?.generalViolations
-                        ?.humanRightsOrEnvironmentalViolationsDefinition?.sortedBy { it.riskPosition },
-                ),
-            ),
-        )
+        val firstSorting =
+            fixedDataSet.copy(
+                general =
+                    fixedDataSet.general.copy(
+                        productionSpecific =
+                            fixedDataSet.general.productionSpecific?.copy(
+                                specificProcurement =
+                                    fixedDataSet.general.productionSpecific
+                                        ?.specificProcurement
+                                        ?.sorted(),
+                            ),
+                    ),
+                governance =
+                    fixedDataSet.governance?.copy(
+                        riskManagementOwnOperations =
+                            fixedDataSet.governance?.riskManagementOwnOperations?.copy(
+                                identifiedRisks =
+                                    fixedDataSet.governance?.riskManagementOwnOperations?.identifiedRisks?.sortedBy
+                                        { it.riskPosition },
+                            ),
+                        generalViolations =
+                            fixedDataSet.governance?.generalViolations?.copy(
+                                humanRightsOrEnvironmentalViolationsDefinition =
+                                    fixedDataSet.governance
+                                        ?.generalViolations
+                                        ?.humanRightsOrEnvironmentalViolationsDefinition
+                                        ?.sortedBy { it.riskPosition },
+                            ),
+                    ),
+            )
         val complaintsRiskPosition = firstSorting.governance?.grievanceMechanismOwnOperations?.complaintsRiskPosition
         complaintsRiskPosition?.forEach { it.riskPositions.sorted() }
 
-        val secondSorting = firstSorting.copy(
-            governance = firstSorting.governance?.copy(
-                grievanceMechanismOwnOperations = firstSorting.governance!!.grievanceMechanismOwnOperations?.copy(
-                    complaintsRiskPosition = complaintsRiskPosition?.sortedBy { it.riskPositions.first() },
-                ),
-            ),
-        )
+        val secondSorting =
+            firstSorting.copy(
+                governance =
+                    firstSorting.governance?.copy(
+                        grievanceMechanismOwnOperations =
+                            firstSorting.governance!!.grievanceMechanismOwnOperations?.copy(
+                                complaintsRiskPosition = complaintsRiskPosition?.sortedBy { it.riskPositions.first() },
+                            ),
+                    ),
+            )
         return secondSorting
     }
 
@@ -212,31 +246,45 @@ class Lksg {
 
             sortedUploadedDatasets.add(
                 dataset.copy(
-                    general = sortedDataset.general.copy(
-                        productionSpecific = sortedDataset.general.productionSpecific?.copy(
-                            specificProcurement = sortedDataset.general.productionSpecific?.specificProcurement
-                                ?.sorted(),
+                    general =
+                        sortedDataset.general.copy(
+                            productionSpecific =
+                                sortedDataset.general.productionSpecific?.copy(
+                                    specificProcurement =
+                                        sortedDataset.general.productionSpecific
+                                            ?.specificProcurement
+                                            ?.sorted(),
+                                ),
                         ),
-                    ),
-                    governance = sortedDataset.governance?.copy(
-                        riskManagementOwnOperations =
-                        sortedDataset.governance?.riskManagementOwnOperations?.copy(
-                            identifiedRisks = sortedDataset.governance
-                                ?.riskManagementOwnOperations?.identifiedRisks?.sortedBy { it.riskPosition },
+                    governance =
+                        sortedDataset.governance?.copy(
+                            riskManagementOwnOperations =
+                                sortedDataset.governance?.riskManagementOwnOperations?.copy(
+                                    identifiedRisks =
+                                        sortedDataset.governance
+                                            ?.riskManagementOwnOperations
+                                            ?.identifiedRisks
+                                            ?.sortedBy { it.riskPosition },
+                                ),
+                            grievanceMechanismOwnOperations =
+                                sortedDataset.governance?.grievanceMechanismOwnOperations?.copy(
+                                    complaintsRiskPosition =
+                                        sortedDataset.governance
+                                            ?.grievanceMechanismOwnOperations
+                                            ?.complaintsRiskPosition
+                                            ?.sortedBy
+                                            { it.riskPositions.first() },
+                                ),
+                            generalViolations =
+                                sortedDataset.governance?.generalViolations?.copy(
+                                    humanRightsOrEnvironmentalViolationsDefinition =
+                                        sortedDataset.governance
+                                            ?.generalViolations
+                                            ?.humanRightsOrEnvironmentalViolationsDefinition
+                                            ?.sortedBy
+                                            { it.riskPosition },
+                                ),
                         ),
-                        grievanceMechanismOwnOperations =
-                        sortedDataset.governance?.grievanceMechanismOwnOperations?.copy(
-                            complaintsRiskPosition = sortedDataset.governance
-                                ?.grievanceMechanismOwnOperations?.complaintsRiskPosition?.sortedBy
-                                { it.riskPositions.first() },
-                        ),
-                        generalViolations =
-                        sortedDataset.governance?.generalViolations?.copy(
-                            humanRightsOrEnvironmentalViolationsDefinition = sortedDataset.governance
-                                ?.generalViolations?.humanRightsOrEnvironmentalViolationsDefinition?.sortedBy
-                                { it.riskPosition },
-                        ),
-                    ),
                 ),
             )
         }
@@ -248,12 +296,13 @@ class Lksg {
         val lksgData = apiAccessor.testDataProviderForLksgData.getTData(2)
         val firstDataset = removeNullMapEntriesFromSupplierCountryCountAndSortAllRiskPositions(lksgData[0])
         val secondDataset = removeNullMapEntriesFromSupplierCountryCountAndSortAllRiskPositions(lksgData[1])
-        val uploadPairs = listOf(
-            Pair(firstDataset, "2022"),
-            Pair(firstDataset, "2022"),
-            Pair(secondDataset, "2023"),
-            Pair(secondDataset, "2023"),
-        )
+        val uploadPairs =
+            listOf(
+                Pair(firstDataset, "2022"),
+                Pair(firstDataset, "2022"),
+                Pair(secondDataset, "2023"),
+                Pair(secondDataset, "2023"),
+            )
         uploadPairs.forEach { pair ->
             apiAccessor.uploadWithWait(
                 companyId = companyId,

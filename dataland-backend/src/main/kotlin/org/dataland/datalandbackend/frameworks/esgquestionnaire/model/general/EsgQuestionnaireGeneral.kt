@@ -11,5 +11,4 @@ import org.dataland.datalandbackend.frameworks.esgquestionnaire.model.general.ma
 data class EsgQuestionnaireGeneral(
     @field:Valid()
     val masterData: EsgQuestionnaireGeneralMasterData,
-
 )

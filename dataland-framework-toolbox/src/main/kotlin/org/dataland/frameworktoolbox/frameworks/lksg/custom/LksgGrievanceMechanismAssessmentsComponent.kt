@@ -5,6 +5,7 @@ import org.dataland.frameworktoolbox.intermediate.components.requireDocumentSupp
 import org.dataland.frameworktoolbox.intermediate.datapoints.NoDocumentSupport
 import org.dataland.frameworktoolbox.specific.datamodel.TypeReference
 import org.dataland.frameworktoolbox.specific.datamodel.elements.DataClassBuilder
+
 /**
  * Represents the Lksg general violations component
  */
@@ -12,15 +13,17 @@ class LksgGrievanceMechanismAssessmentsComponent(
     identifier: String,
     parent: FieldNodeParent,
 ) : LksgSimpleCustomComponentBase(
-    identifier = identifier,
-    parent = parent,
-    viewFormattingFunctionName = "formatLksgGrievanceMechanismsForDisplay",
-    uploadComponentName = "GrievanceMechanismAssessmentsFormField",
-    guaranteedFixtureExpression = "dataGenerator.guaranteedArray(() => " +
-        "dataGenerator.generateLksgGrievanceMechanismAssessment(), 1, 5)",
-    randomFixtureExpression = "dataGenerator.randomArray(() => " +
-        "dataGenerator.generateLksgGrievanceMechanismAssessment(), 1, 5)",
-) {
+        identifier = identifier,
+        parent = parent,
+        viewFormattingFunctionName = "formatLksgGrievanceMechanismsForDisplay",
+        uploadComponentName = "GrievanceMechanismAssessmentsFormField",
+        guaranteedFixtureExpression =
+            "dataGenerator.guaranteedArray(() => " +
+                "dataGenerator.generateLksgGrievanceMechanismAssessment(), 1, 5)",
+        randomFixtureExpression =
+            "dataGenerator.randomArray(() => " +
+                "dataGenerator.generateLksgGrievanceMechanismAssessment(), 1, 5)",
+    ) {
     override fun generateDefaultDataModel(dataClassBuilder: DataClassBuilder) {
         requireDocumentSupportIn(setOf(NoDocumentSupport))
         dataClassBuilder.addProperty(
@@ -33,10 +36,8 @@ class LksgGrievanceMechanismAssessmentsComponent(
                             "LksgGrievanceAssessmentMechanism",
                         true,
                     ),
-
                 ),
             ),
-
         )
     }
 }

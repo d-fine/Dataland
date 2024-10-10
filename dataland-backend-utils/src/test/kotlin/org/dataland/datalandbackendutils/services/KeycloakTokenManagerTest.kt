@@ -37,7 +37,8 @@ class KeycloakTokenManagerTest {
         val expectedToken = "expectedToken"
         val mockCall = mock(Call::class.java)
         `when`(mockCall.execute()).thenReturn(
-            Response.Builder()
+            Response
+                .Builder()
                 .request(Request.Builder().url("http://into.void").build())
                 .protocol(Protocol.HTTP_1_1)
                 .message("")

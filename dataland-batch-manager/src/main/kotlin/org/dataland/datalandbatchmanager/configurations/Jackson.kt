@@ -14,7 +14,5 @@ class Jackson {
      * The getter for the object mapper
      */
     @Bean
-    fun getObjectMapper(): ObjectMapper {
-        return jacksonObjectMapper()
-    }
+    fun getObjectMapper(): ObjectMapper = jacksonObjectMapper()
 }

@@ -11,13 +11,11 @@ open class InvalidInputApiException(
     override val message: String,
     cause: Throwable? = null,
 ) : SingleApiException(message, cause) {
-
-    override fun getErrorResponse(): ErrorDetails {
-        return ErrorDetails(
+    override fun getErrorResponse(): ErrorDetails =
+        ErrorDetails(
             errorType = "invalid-input",
             summary = summary,
             message = message,
             httpStatus = HttpStatus.BAD_REQUEST,
         )
-    }
 }

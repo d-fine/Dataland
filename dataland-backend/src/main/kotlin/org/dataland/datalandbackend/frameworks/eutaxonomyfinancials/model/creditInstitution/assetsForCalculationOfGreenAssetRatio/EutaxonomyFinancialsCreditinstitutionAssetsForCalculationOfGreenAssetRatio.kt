@@ -13,25 +13,19 @@ data class EutaxonomyFinancialsCreditinstitutionAssetsForCalculationOfGreenAsset
     @field:MinimumValue(minimumValue = 0)
     @field:Valid()
     val totalGrossCarryingAmount: CurrencyDataPoint? = null,
-
     @field:MinimumValue(minimumValue = 0)
     @field:Valid()
     val totalAmountOfAssetsTowardsTaxonomyRelevantSectorsTaxonomyEligible: CurrencyDataPoint? = null,
-
     @field:MinimumValue(minimumValue = 0)
     @field:Valid()
     val totalAmountOfAssetsWhichAreEnvironmentallySustainableTaxonomyAligned: CurrencyDataPoint? = null,
-
     @field:MinimumValue(minimumValue = 0)
     @field:Valid()
     val totalAmountOfEnvironmentallySustainableAssetsWhichAreUseOfProceeds: CurrencyDataPoint? = null,
-
     @field:MinimumValue(minimumValue = 0)
     @field:Valid()
     val totalAmountOfEnvironmentallySustainableAssetsWhichAreTransitional: CurrencyDataPoint? = null,
-
     @field:MinimumValue(minimumValue = 0)
     @field:Valid()
     val totalAmountOfEnvironmentallySustainableAssetsWhichAreEnabling: CurrencyDataPoint? = null,
-
 )

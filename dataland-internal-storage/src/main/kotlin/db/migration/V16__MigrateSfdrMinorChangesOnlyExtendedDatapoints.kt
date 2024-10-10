@@ -11,23 +11,25 @@ import org.json.JSONObject
  * This migration script updates the existing SFDR datasets and migrates all existing BaseDataPoints to Extended ones
  * Furthermore, some Points are moved from Wastes to Biodiversity
  */
+@Suppress("ClassName")
 class V16__MigrateSfdrMinorChangesOnlyExtendedDatapoints : BaseJavaMigration() {
+    private val frameworksToMigrateDataPointsNoSfdr =
+        listOf(
+            "eutaxonomy-non-financials",
+            "eutaxonomy-financials",
+            "sme",
+        )
 
-    private val frameworksToMigrateDataPointsNoSfdr = listOf(
-        "eutaxonomy-non-financials",
-        "eutaxonomy-financials",
-        "sme",
-    )
-
-    private val listOfWasteToBiodiversity = listOf(
-        "manufactureOfAgrochemicalPesticidesProducts",
-        "landDegradationDesertificationSoilSealingExposure",
-        "sustainableAgriculturePolicy",
-        "sustainableOceansAndSeasPolicy",
-        "threatenedSpeciesExposure",
-        "biodiversityProtectionPolicy",
-        "deforestationPolicy",
-    )
+    private val listOfWasteToBiodiversity =
+        listOf(
+            "manufactureOfAgrochemicalPesticidesProducts",
+            "landDegradationDesertificationSoilSealingExposure",
+            "sustainableAgriculturePolicy",
+            "sustainableOceansAndSeasPolicy",
+            "threatenedSpeciesExposure",
+            "biodiversityProtectionPolicy",
+            "deforestationPolicy",
+        )
 
     /**
      * Move the required fields from wastes to biodiversity

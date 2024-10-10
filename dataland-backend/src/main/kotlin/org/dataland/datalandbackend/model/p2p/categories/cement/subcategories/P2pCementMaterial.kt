@@ -9,8 +9,6 @@ import java.math.BigDecimal
 */
 data class P2pCementMaterial(
     val clinkerFactorReduction: BigDecimal? = null,
-
     val preCalcinedClayUsageInPercent: BigDecimal? = null,
-
     val circularEconomyContribution: YesNo? = null,
 )

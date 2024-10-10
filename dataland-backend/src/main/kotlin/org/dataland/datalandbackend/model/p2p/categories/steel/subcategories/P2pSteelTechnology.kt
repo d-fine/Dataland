@@ -8,6 +8,5 @@ import java.math.BigDecimal
 */
 data class P2pSteelTechnology(
     val blastFurnacePhaseOutInPercent: BigDecimal? = null,
-
     val lowCarbonSteelScaleUpInPercent: BigDecimal? = null,
 )

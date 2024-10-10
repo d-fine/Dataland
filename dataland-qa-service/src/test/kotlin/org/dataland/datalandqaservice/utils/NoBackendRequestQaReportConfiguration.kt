@@ -17,7 +17,5 @@ class NoBackendRequestQaReportConfiguration {
     @Primary
     fun getQaReportSecurityPolicy(
         @Autowired userAuthenticatedBackendClient: UserAuthenticatedBackendClient,
-    ): QaReportSecurityPolicy {
-        return NoBackendRequestQaReportSecurityPolicy(userAuthenticatedBackendClient)
-    }
+    ): QaReportSecurityPolicy = NoBackendRequestQaReportSecurityPolicy(userAuthenticatedBackendClient)
 }

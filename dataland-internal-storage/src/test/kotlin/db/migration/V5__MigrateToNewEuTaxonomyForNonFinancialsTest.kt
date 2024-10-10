@@ -6,6 +6,7 @@ import org.json.JSONObject
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 
+@Suppress("ClassName")
 class V5__MigrateToNewEuTaxonomyForNonFinancialsTest {
     private val newEuTaxonomyForNonFinancials = "new-eutaxonomy-non-financials"
     private val euTaxonomyForNonFinancials = "eutaxonomy-non-financials"
@@ -13,22 +14,24 @@ class V5__MigrateToNewEuTaxonomyForNonFinancialsTest {
 
     @Test
     fun `test that eu taxonomy for non financials migration script works as expected for migrating new data`() {
-        val originalDataEntity = DataTableEntity.fromJsonObject(
-            mockDataId, newEuTaxonomyForNonFinancials,
-            JSONObject(
-                "{" +
-                    "\"something\": \"something\"" +
-                    "}",
-            ),
-        )
-        val expectedDataEntity = DataTableEntity.fromJsonObject(
-            mockDataId, euTaxonomyForNonFinancials,
-            JSONObject(
-                "{" +
-                    "\"something\": \"something\"" +
-                    "}",
-            ),
-        )
+        val originalDataEntity =
+            DataTableEntity.fromJsonObject(
+                mockDataId, newEuTaxonomyForNonFinancials,
+                JSONObject(
+                    "{" +
+                        "\"something\": \"something\"" +
+                        "}",
+                ),
+            )
+        val expectedDataEntity =
+            DataTableEntity.fromJsonObject(
+                mockDataId, euTaxonomyForNonFinancials,
+                JSONObject(
+                    "{" +
+                        "\"something\": \"something\"" +
+                        "}",
+                ),
+            )
         val migration = V5__MigrateToNewEuTaxonomyForNonFinancials()
         migration.migrateNewEuTaxonomyData(originalDataEntity)
         Assertions.assertEquals(originalDataEntity, expectedDataEntity)

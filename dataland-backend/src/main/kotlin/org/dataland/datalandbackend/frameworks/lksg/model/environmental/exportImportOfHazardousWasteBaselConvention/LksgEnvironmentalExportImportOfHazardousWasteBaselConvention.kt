@@ -10,29 +10,17 @@ import org.dataland.datalandbackend.model.enums.commons.YesNo
  */
 data class LksgEnvironmentalExportImportOfHazardousWasteBaselConvention(
     val persistentOrganicPollutantsProductionAndUseTransboundaryMovements: YesNo? = null,
-
     val persistentOrganicPollutantsProductionAndUseRiskForImportingState: YesNo? = null,
-
     val hazardousWasteTransboundaryMovementsLocatedOecdEuLiechtenstein: YesNo? = null,
-
     val hazardousWasteTransboundaryMovementsOutsideOecdEuOrLiechtenstein: YesNo? = null,
-
     val hazardousWasteTransportPreventionMeasures: YesNo? = null,
-
     @field:Valid()
     val wastePolicy: BaseDataPoint<YesNo>? = null,
-
     @field:Valid()
     val hazardousWasteTransportPreventionOtherMeasures: BaseDataPoint<YesNo>? = null,
-
     val hazardousWasteTransportPreventionOtherMeasuresDescription: String? = null,
-
     val hazardousWasteDisposal: YesNo? = null,
-
     val hazardousWasteDisposalRiskOfImport: YesNo? = null,
-
     val hazardousWasteDisposalOtherWasteImport: YesNo? = null,
-
     val hazardousWasteDisposalOtherWasteImportDescription: String? = null,
-
 )

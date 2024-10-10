@@ -23,47 +23,32 @@ import kotlin.collections.MutableList
 data class EutaxonomyNonFinancialsOpex(
     @field:Valid()
     val totalAmount: CurrencyDataPoint? = null,
-
     @field:Valid()
     val nonEligibleShare: EutaxonomyNonFinancialsOpexNonEligibleShare? = null,
-
     @field:Valid()
     val eligibleShare: EutaxonomyNonFinancialsOpexEligibleShare? = null,
-
     @field:Valid()
     val nonAlignedShare: EutaxonomyNonFinancialsOpexNonAlignedShare? = null,
-
     val nonAlignedActivities: ExtendedDataPoint<MutableList<EuTaxonomyActivity>?>? = null,
-
     @field:Valid()
     val alignedShare: EutaxonomyNonFinancialsOpexAlignedShare? = null,
-
     @field:Valid()
     val substantialContributionToClimateChangeMitigationInPercentAligned: ExtendedDataPoint<BigDecimal?>? = null,
-
     @field:Valid()
     val substantialContributionToClimateChangeAdaptationInPercentAligned: ExtendedDataPoint<BigDecimal?>? = null,
-
     @field:Valid()
     val substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned:
-    ExtendedDataPoint<BigDecimal?>? = null,
-
+        ExtendedDataPoint<BigDecimal?>? = null,
     @field:Valid()
     val substantialContributionToTransitionToACircularEconomyInPercentAligned: ExtendedDataPoint<BigDecimal?>? = null,
-
     @field:Valid()
     val substantialContributionToPollutionPreventionAndControlInPercentAligned: ExtendedDataPoint<BigDecimal?>? = null,
-
     @field:Valid()
     val substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned:
-    ExtendedDataPoint<BigDecimal?>? = null,
-
+        ExtendedDataPoint<BigDecimal?>? = null,
     val alignedActivities: ExtendedDataPoint<MutableList<EuTaxonomyAlignedActivity>?>? = null,
-
     @field:Valid()
     val enablingShareInPercent: ExtendedDataPoint<BigDecimal?>? = null,
-
     @field:Valid()
     val transitionalShareInPercent: ExtendedDataPoint<BigDecimal?>? = null,
-
 )

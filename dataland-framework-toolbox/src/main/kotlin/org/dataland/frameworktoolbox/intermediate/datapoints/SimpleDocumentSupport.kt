@@ -11,17 +11,20 @@ import org.dataland.frameworktoolbox.utils.typescript.TypeScriptImport
  * Elements marked with SimpleDocumentSupport are converted to BaseDataPoints
  */
 data object SimpleDocumentSupport : DocumentSupport {
-    override fun getJvmTypeReference(innerType: TypeReference, nullable: Boolean): TypeReference {
-        return TypeReference(
+    override fun getJvmTypeReference(
+        innerType: TypeReference,
+        nullable: Boolean,
+    ): TypeReference =
+        TypeReference(
             "org.dataland.datalandbackend.model.datapoints.BaseDataPoint",
             nullable,
             listOf(innerType.copy(nullable = false)),
         )
-    }
 
-    override fun getQaJvmTypeReference(innerType: TypeReference, nullable: Boolean): TypeReference? {
-        return null
-    }
+    override fun getQaJvmTypeReference(
+        innerType: TypeReference,
+        nullable: Boolean,
+    ): TypeReference? = null
 
     override fun getFrameworkDisplayValueLambda(
         innerLambda: FrameworkDisplayValueLambda,
@@ -33,34 +36,35 @@ data object SimpleDocumentSupport : DocumentSupport {
             "wrapDisplayValueWithDatapointInformation(${innerLambda.lambdaBody}," +
                 " \"${StringEscapeUtils.escapeEcmaScript(fieldLabel)}\"," +
                 " $dataPointAccessor)",
-            imports = innerLambda.imports + TypeScriptImport(
-                "wrapDisplayValueWithDatapointInformation",
-                "@/components/resources/dataTable/conversion/DataPoints",
-            ),
+            imports =
+                innerLambda.imports +
+                    TypeScriptImport(
+                        "wrapDisplayValueWithDatapointInformation",
+                        "@/components/resources/dataTable/conversion/DataPoints",
+                    ),
         )
     }
 
-    override fun getDataAccessor(dataPointAccessor: String, nullable: Boolean): String {
-        return if (nullable) {
+    override fun getDataAccessor(
+        dataPointAccessor: String,
+        nullable: Boolean,
+    ): String =
+        if (nullable) {
             "$dataPointAccessor?.value"
         } else {
             "$dataPointAccessor.value"
         }
-    }
 
     override fun getFixtureExpression(
         nullableFixtureExpression: String,
         fixtureExpression: String,
         nullable: Boolean,
-    ): String {
-        return if (nullable) {
+    ): String =
+        if (nullable) {
             "dataGenerator.randomBaseDataPoint($fixtureExpression)"
         } else {
             "dataGenerator.guaranteedBaseDataPoint($fixtureExpression)"
         }
-    }
 
-    override fun getJvmAnnotations(): List<Annotation> {
-        return listOf(ValidAnnotation)
-    }
+    override fun getJvmAnnotations(): List<Annotation> = listOf(ValidAnnotation)
 }

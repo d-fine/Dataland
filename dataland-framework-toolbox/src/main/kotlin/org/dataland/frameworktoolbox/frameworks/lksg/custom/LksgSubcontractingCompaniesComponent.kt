@@ -14,13 +14,13 @@ class LksgSubcontractingCompaniesComponent(
     identifier: String,
     parent: FieldNodeParent,
 ) : LksgSimpleCustomComponentBase(
-    identifier = identifier,
-    parent = parent,
-    viewFormattingFunctionName = "formatLksgSubcontractingCompaniesForDisplay",
-    uploadComponentName = "LksgSubcontractingCompaniesFormField",
-    guaranteedFixtureExpression = "dataGenerator.generateSubcontractingCompanies()",
-    randomFixtureExpression = "dataGenerator.valueOrNull(dataGenerator.generateSubcontractingCompanies())",
-) {
+        identifier = identifier,
+        parent = parent,
+        viewFormattingFunctionName = "formatLksgSubcontractingCompaniesForDisplay",
+        uploadComponentName = "LksgSubcontractingCompaniesFormField",
+        guaranteedFixtureExpression = "dataGenerator.generateSubcontractingCompanies()",
+        randomFixtureExpression = "dataGenerator.valueOrNull(dataGenerator.generateSubcontractingCompanies())",
+    ) {
     override fun generateDefaultDataModel(dataClassBuilder: DataClassBuilder) {
         requireDocumentSupportIn(setOf(NoDocumentSupport))
         dataClassBuilder.addProperty(
@@ -43,7 +43,7 @@ class LksgSubcontractingCompaniesComponent(
                 Annotation(
                     fullyQualifiedName = "io.swagger.v3.oas.annotations.media.Schema",
                     rawParameterSpec =
-                    "example = JsonExampleFormattingConstants.SUBCONTRACTING_COMPANIES_DEFAULT_VALUE",
+                        "example = JsonExampleFormattingConstants.SUBCONTRACTING_COMPANIES_DEFAULT_VALUE",
                     applicationTargetPrefix = "field",
                     additionalImports = setOf("org.dataland.datalandbackend.utils.JsonExampleFormattingConstants"),
                 ),

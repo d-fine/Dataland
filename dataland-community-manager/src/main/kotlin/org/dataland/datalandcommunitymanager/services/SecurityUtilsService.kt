@@ -26,12 +26,13 @@ class SecurityUtilsService(
     @Autowired private val dataRequestQueryManager: DataRequestQueryManager,
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
-    private val roleModificationPermissionsMap = mapOf(
-        CompanyRole.CompanyOwner to enumValues<CompanyRole>().toList(),
-        CompanyRole.DataUploader to emptyList(),
-        CompanyRole.MemberAdmin to listOf(CompanyRole.MemberAdmin, CompanyRole.Member),
-        CompanyRole.Member to emptyList(),
-    )
+    private val roleModificationPermissionsMap =
+        mapOf(
+            CompanyRole.CompanyOwner to enumValues<CompanyRole>().toList(),
+            CompanyRole.DataUploader to emptyList(),
+            CompanyRole.MemberAdmin to listOf(CompanyRole.MemberAdmin, CompanyRole.Member),
+            CompanyRole.Member to emptyList(),
+        )
 
     /**
      * Returns true if and only if the currently authenticated user is asking for him/herself
@@ -72,9 +73,11 @@ class SecurityUtilsService(
         val statusChangeFromOpenToWithdrawn =
             currentRequestStatus == RequestStatus.Open && requestStatusToPatch == RequestStatus.Withdrawn
         return (
-            statusChangeFromAnsweredToResolved || statusChangeFromAnsweredToOpen ||
-                statusChangeFromAnsweredToWithdrawn || statusChangeFromOpenToWithdrawn
-            )
+            statusChangeFromAnsweredToResolved ||
+                statusChangeFromAnsweredToOpen ||
+                statusChangeFromAnsweredToWithdrawn ||
+                statusChangeFromOpenToWithdrawn
+        )
     }
 
     /**
@@ -91,9 +94,10 @@ class SecurityUtilsService(
     ): Boolean {
         if (contacts == null) return true
         val currentRequestStatus = dataRequestRepository.findById(requestId.toString()).get().requestStatus
-        return message != null && (
-            currentRequestStatus == RequestStatus.Open ||
-                (currentRequestStatus == RequestStatus.Answered && requestStatusToPatch == RequestStatus.Open)
+        return message != null &&
+            (
+                currentRequestStatus == RequestStatus.Open ||
+                    (currentRequestStatus == RequestStatus.Answered && requestStatusToPatch == RequestStatus.Open)
             )
     }
 
@@ -102,14 +106,13 @@ class SecurityUtilsService(
      * @param companyId dataland companyId
      */
     @Transactional
-    fun isUserMemberOfTheCompany(
-        companyId: UUID?,
-    ): Boolean {
+    fun isUserMemberOfTheCompany(companyId: UUID?): Boolean {
         val userId = SecurityContextHolder.getContext().authentication.name
         if (companyId == null || userId == null) return false
-        return companyRoleAssignmentRepository.getCompanyRoleAssignmentsByProvidedParameters(
-            companyId = companyId.toString(), userId = userId, companyRole = null,
-        ).isNotEmpty()
+        return companyRoleAssignmentRepository
+            .getCompanyRoleAssignmentsByProvidedParameters(
+                companyId = companyId.toString(), userId = userId, companyRole = null,
+            ).isNotEmpty()
     }
 
     /**
@@ -137,19 +140,13 @@ class SecurityUtilsService(
      * @param accessStatusPatch the accessStatus of the patch
      */
     @Transactional
-    fun isNotTryingToPatchAccessStatus(
-        accessStatusPatch: AccessStatus?,
-    ): Boolean {
-        return accessStatusPatch == null
-    }
+    fun isNotTryingToPatchAccessStatus(accessStatusPatch: AccessStatus?): Boolean = accessStatusPatch == null
 
     /**
      * Returns true if the requesting user is company owner
      * @param requestId the requestId for which a company ownership check should be done
      */
-    fun isUserCompanyOwnerForRequestId(
-        requestId: String,
-    ): Boolean {
+    fun isUserCompanyOwnerForRequestId(requestId: String): Boolean {
         val requestEntity = dataRequestQueryManager.getDataRequestById(requestId)
         return isUserCompanyOwnerForCompanyId(requestEntity.datalandCompanyId)
     }
@@ -158,10 +155,8 @@ class SecurityUtilsService(
      * Returns true if the requesting user is company owner
      * @param companyId the company Id for which ownership should be tested
      */
-    fun isUserCompanyOwnerForCompanyId(
-        companyId: String?,
-    ): Boolean {
-        return if (companyId.isNullOrBlank()) {
+    fun isUserCompanyOwnerForCompanyId(companyId: String?): Boolean =
+        if (companyId.isNullOrBlank()) {
             false
         } else {
             val userId = DatalandAuthentication.fromContext().userId
@@ -176,7 +171,6 @@ class SecurityUtilsService(
                 false
             }
         }
-    }
 
     /**
      * This method checks that only access status of a request entity can be patched
@@ -184,8 +178,9 @@ class SecurityUtilsService(
      * @param contacts the contacts of the patch request
      * @param message the message of the patch request
      */
-    fun areOnlyAuthorizedFieldsPatched(requestStatus: RequestStatus?, contacts: Set<String>?, message: String?):
-        Boolean {
-        return requestStatus == null && contacts.isNullOrEmpty() && message.isNullOrBlank()
-    }
+    fun areOnlyAuthorizedFieldsPatched(
+        requestStatus: RequestStatus?,
+        contacts: Set<String>?,
+        message: String?,
+    ): Boolean = requestStatus == null && contacts.isNullOrEmpty() && message.isNullOrBlank()
 }

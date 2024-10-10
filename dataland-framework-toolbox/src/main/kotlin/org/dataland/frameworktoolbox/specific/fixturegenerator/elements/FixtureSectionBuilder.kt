@@ -14,12 +14,11 @@ class FixtureSectionBuilder(
     val parentSection: FixtureSectionBuilder?,
     val elements: MutableList<FixtureGeneratorElement>,
 ) : FixtureGeneratorElement {
-
     override val imports: Set<TypeScriptImport>
-        get() = elements.foldRight(emptySet()) {
-                element, imports ->
-            imports + element.imports
-        }
+        get() =
+            elements.foldRight(emptySet()) { element, imports ->
+                imports + element.imports
+            }
 
     private fun <T : FixtureGeneratorElement> addElement(element: T): T {
         require(elements.none { it.identifier == element.identifier }) {
@@ -32,9 +31,7 @@ class FixtureSectionBuilder(
     /**
      * Add a new section to this object
      */
-    fun addSection(identifier: String): FixtureSectionBuilder {
-        return addElement(FixtureSectionBuilder(identifier, this, mutableListOf()))
-    }
+    fun addSection(identifier: String): FixtureSectionBuilder = addElement(FixtureSectionBuilder(identifier, this, mutableListOf()))
 
     /**
      * Add a new atomic TS expression to this object
@@ -43,13 +40,12 @@ class FixtureSectionBuilder(
         identifier: String,
         typescriptExpression: String,
         imports: Set<TypeScriptImport> = emptySet(),
-    ): FixtureAtomicExpression {
-        return addElement(
+    ): FixtureAtomicExpression =
+        addElement(
             FixtureAtomicExpression(
                 identifier = identifier,
                 typescriptExpression = typescriptExpression,
                 imports = imports,
             ),
         )
-    }
 }

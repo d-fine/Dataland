@@ -64,10 +64,11 @@ internal class DataControllerTest(
         mockSecurityContext = mock(SecurityContext::class.java)
         mockDataManager = mock(DataManager::class.java)
         mockDataMetaInformationManager = mock(DataMetaInformationManager::class.java)
-        dataController = EutaxonomyNonFinancialsDataController(
-            mockDataManager,
-            mockDataMetaInformationManager, objectMapper,
-        )
+        dataController =
+            EutaxonomyNonFinancialsDataController(
+                mockDataManager,
+                mockDataMetaInformationManager, objectMapper,
+            )
     }
 
     @Test
@@ -91,14 +92,13 @@ internal class DataControllerTest(
         `when`(
             mockDataMetaInformationManager
                 .searchDataMetaInfo("", testDataType, false, "", uploaderUserIds = null, qaStatus = null),
+        ).thenReturn(
+            listOf(
+                testUserPendingDataMetaInformationEntity,
+                otherUserPendingDataMetaInformationEntity,
+                otherUserAcceptedDataMetaInformationEntity,
+            ),
         )
-            .thenReturn(
-                listOf(
-                    testUserPendingDataMetaInformationEntity,
-                    otherUserPendingDataMetaInformationEntity,
-                    otherUserAcceptedDataMetaInformationEntity,
-                ),
-            )
     }
 
     private fun mockDataManager() {
@@ -118,8 +118,8 @@ internal class DataControllerTest(
         dataId: String,
         uploaderId: String,
         qaStatus: QaStatus,
-    ): DataMetaInformationEntity {
-        return DataMetaInformationEntity(
+    ): DataMetaInformationEntity =
+        DataMetaInformationEntity(
             dataId,
             storedCompanyEntity,
             testDataType.toString(),
@@ -129,7 +129,6 @@ internal class DataControllerTest(
             null,
             qaStatus,
         )
-    }
 
     private fun testGetCompanyAssociatedDataEndpoint() {
         mockJwtAuthentication(DatalandRealmRole.ROLE_UPLOADER)

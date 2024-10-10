@@ -37,11 +37,10 @@ import org.junit.jupiter.api.TestInstance
 import org.junit.jupiter.api.assertDoesNotThrow
 import org.junit.jupiter.api.assertThrows
 import java.time.Instant
-import java.util.*
+import java.util.UUID
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class SingleDataRequestsTest {
-
     val apiAccessor = ApiAccessor()
     val jwtHelper = JwtAuthenticationHelper()
     private val requestControllerApi = RequestControllerApi(BASE_PATH_TO_COMMUNITY_MANAGER)
@@ -58,13 +57,14 @@ class SingleDataRequestsTest {
         val stringThatMatchesThePermIdRegex = System.currentTimeMillis().toString()
         val companyId = getIdForUploadedCompanyWithIdentifiers(permId = stringThatMatchesThePermIdRegex)
         val reportingPeriods = setOf("2022", "2023")
-        val singleDataRequest = SingleDataRequest(
-            companyIdentifier = stringThatMatchesThePermIdRegex,
-            dataType = SingleDataRequest.DataType.lksg,
-            reportingPeriods = reportingPeriods,
-            contacts = setOf("someContact@example.com", "simpleString@example.com"),
-            message = "This is a test. The current timestamp is ${System.currentTimeMillis()}",
-        )
+        val singleDataRequest =
+            SingleDataRequest(
+                companyIdentifier = stringThatMatchesThePermIdRegex,
+                dataType = SingleDataRequest.DataType.lksg,
+                reportingPeriods = reportingPeriods,
+                contacts = setOf("someContact@example.com", "simpleString@example.com"),
+                message = "This is a test. The current timestamp is ${System.currentTimeMillis()}",
+            )
         val timestampBeforeSingleRequest = retrieveTimeAndWaitOneMillisecond()
         val response = requestControllerApi.postSingleDataRequest(singleDataRequest)
         checkThatAllReportingPeriodsAreTreatedAsExpected(
@@ -87,14 +87,16 @@ class SingleDataRequestsTest {
     @Test
     fun `post single data request for companyId with invalid format and assert exception`() {
         val invalidCompanyIdentifier = "invalid-identifier-${Instant.now().toEpochMilli()}"
-        val invalidSingleDataRequest = SingleDataRequest(
-            companyIdentifier = invalidCompanyIdentifier,
-            dataType = SingleDataRequest.DataType.lksg,
-            reportingPeriods = setOf("2022"),
-        )
-        val clientException = assertThrows<ClientException> {
-            requestControllerApi.postSingleDataRequest(invalidSingleDataRequest)
-        }
+        val invalidSingleDataRequest =
+            SingleDataRequest(
+                companyIdentifier = invalidCompanyIdentifier,
+                dataType = SingleDataRequest.DataType.lksg,
+                reportingPeriods = setOf("2022"),
+            )
+        val clientException =
+            assertThrows<ClientException> {
+                requestControllerApi.postSingleDataRequest(invalidSingleDataRequest)
+            }
         check400ClientExceptionErrorMessage(clientException)
         val responseBody = (clientException.response as ClientError<*>).body as String
         assertTrue(responseBody.contains("The specified company is unknown to Dataland"))
@@ -111,27 +113,30 @@ class SingleDataRequestsTest {
         val isin = permId + "1"
         val framework = SingleDataRequest.DataType.lksg
         val reportingPeriods = setOf("2023")
-        val companyOne = CompanyInformation(
-            companyName = "company1",
-            headquarters = "HQ",
-            identifiers = mapOf(IdentifierType.PermId.value to listOf(permId)),
-            countryCode = "DE",
-        )
-        val companyTwo = CompanyInformation(
-            companyName = "company2",
-            headquarters = "HQ",
-            identifiers = mapOf(IdentifierType.Isin.value to listOf(isin)),
-            countryCode = "DE",
-        )
+        val companyOne =
+            CompanyInformation(
+                companyName = "company1",
+                headquarters = "HQ",
+                identifiers = mapOf(IdentifierType.PermId.value to listOf(permId)),
+                countryCode = "DE",
+            )
+        val companyTwo =
+            CompanyInformation(
+                companyName = "company2",
+                headquarters = "HQ",
+                identifiers = mapOf(IdentifierType.Isin.value to listOf(isin)),
+                countryCode = "DE",
+            )
 
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
         apiAccessor.companyDataControllerApi.postCompany(companyOne)
         apiAccessor.companyDataControllerApi.postCompany(companyTwo)
 
-        val clientException = causeClientExceptionBySingleDataRequest(
-            permId, framework,
-            reportingPeriods,
-        )
+        val clientException =
+            causeClientExceptionBySingleDataRequest(
+                permId, framework,
+                reportingPeriods,
+            )
         assertNotNull(clientException, "invalidInputApiException should not be null")
         checkErrorMessageForNonUniqueIdentifiersInSingleRequest(clientException)
     }
@@ -139,15 +144,16 @@ class SingleDataRequestsTest {
     @Test
     fun `post single data request without reporting periods and assert exception`() {
         val companyId = getIdForUploadedCompanyWithIdentifiers(lei = generateRandomLei())
-        val clientException = assertThrows<ClientException> {
-            requestControllerApi.postSingleDataRequest(
-                SingleDataRequest(
-                    companyIdentifier = companyId,
-                    dataType = SingleDataRequest.DataType.lksg,
-                    reportingPeriods = setOf(),
-                ),
-            )
-        }
+        val clientException =
+            assertThrows<ClientException> {
+                requestControllerApi.postSingleDataRequest(
+                    SingleDataRequest(
+                        companyIdentifier = companyId,
+                        dataType = SingleDataRequest.DataType.lksg,
+                        reportingPeriods = setOf(),
+                    ),
+                )
+            }
         check400ClientExceptionErrorMessage(clientException)
         val responseBody = (clientException.response as ClientError<*>).body as String
         assertTrue(responseBody.contains("The list of reporting periods must not be empty."))
@@ -161,14 +167,16 @@ class SingleDataRequestsTest {
     @Test
     fun `post single data request for a companyId which is unknown to Dataland and assert exception`() {
         val unknownCompanyId = UUID.randomUUID().toString()
-        val singleDataRequest = SingleDataRequest(
-            companyIdentifier = unknownCompanyId,
-            dataType = SingleDataRequest.DataType.lksg,
-            reportingPeriods = setOf("2022"),
-        )
-        val clientException = assertThrows<ClientException> {
-            requestControllerApi.postSingleDataRequest(singleDataRequest)
-        }
+        val singleDataRequest =
+            SingleDataRequest(
+                companyIdentifier = unknownCompanyId,
+                dataType = SingleDataRequest.DataType.lksg,
+                reportingPeriods = setOf("2022"),
+            )
+        val clientException =
+            assertThrows<ClientException> {
+                requestControllerApi.postSingleDataRequest(singleDataRequest)
+            }
         assertEquals("Client error : 404 ", clientException.message)
 
         val responseBody = (clientException.response as ClientError<*>).body as String
@@ -179,11 +187,12 @@ class SingleDataRequestsTest {
     fun `post a single data request with a valid Dataland companyId and assure that it is stored as expected`() {
         val companyIdOfNewCompany =
             apiAccessor.uploadOneCompanyWithIdentifiers(permId = generateRandomPermId())!!.actualStoredCompany.companyId
-        val singleDataRequest = SingleDataRequest(
-            companyIdentifier = companyIdOfNewCompany,
-            dataType = SingleDataRequest.DataType.lksg,
-            reportingPeriods = setOf("2022"),
-        )
+        val singleDataRequest =
+            SingleDataRequest(
+                companyIdentifier = companyIdOfNewCompany,
+                dataType = SingleDataRequest.DataType.lksg,
+                reportingPeriods = setOf("2022"),
+            )
         val timestampBeforeSingleRequest = retrieveTimeAndWaitOneMillisecond()
         val response = requestControllerApi.postSingleDataRequest(singleDataRequest)
         checkThatAllReportingPeriodsAreTreatedAsExpected(
@@ -213,9 +222,10 @@ class SingleDataRequestsTest {
         val contactListsThatContainInvalidEmailAddresses =
             listOf(listOf(""), listOf(" "), listOf("invalidMail@", "validMail@example.com"))
         contactListsThatContainInvalidEmailAddresses.forEach {
-            val clientException = assertThrows<ClientException> {
-                postStandardSingleDataRequest(validLei, it.toSet(), "Dummy test message.")
-            }
+            val clientException =
+                assertThrows<ClientException> {
+                    postStandardSingleDataRequest(validLei, it.toSet(), "Dummy test message.")
+                }
             check400ClientExceptionErrorMessage(clientException)
             val responseBody = (clientException.response as ClientError<*>).body as String
             assertTrue(responseBody.contains("Invalid contact ${it[0]}"))
@@ -236,9 +246,10 @@ class SingleDataRequestsTest {
         val contactSetsThatDontHaveEmailAddresses =
             listOf<Set<String>?>(null, setOf())
         contactSetsThatDontHaveEmailAddresses.forEach {
-            val clientException = assertThrows<ClientException> {
-                postStandardSingleDataRequest(validLei, it, "Dummy test message.")
-            }
+            val clientException =
+                assertThrows<ClientException> {
+                    postStandardSingleDataRequest(validLei, it, "Dummy test message.")
+                }
             check400ClientExceptionErrorMessage(clientException)
             val responseBody = (clientException.response as ClientError<*>).body as String
             assertTrue(responseBody.contains("No recipients provided for the message"))
@@ -287,9 +298,10 @@ class SingleDataRequestsTest {
         val companyId = getIdForUploadedCompanyWithIdentifiers(permId = System.currentTimeMillis().toString())
         val timestampBeforeSingleRequest = retrieveTimeAndWaitOneMillisecond()
         postStandardSingleDataRequest(companyId)
-        val dataRequestId = UUID.fromString(
-            getNewlyStoredRequestsAfterTimestamp(timestampBeforeSingleRequest)[0].dataRequestId,
-        )
+        val dataRequestId =
+            UUID.fromString(
+                getNewlyStoredRequestsAfterTimestamp(timestampBeforeSingleRequest)[0].dataRequestId,
+            )
         assertStatusForDataRequestId(dataRequestId, RequestStatus.Open)
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
         patchDataRequestAndAssertNewStatusAndLastModifiedUpdated(dataRequestId, RequestStatus.Answered)
@@ -301,9 +313,10 @@ class SingleDataRequestsTest {
     fun `query the data requests as an uploader and assert that it is forbidden`() {
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Uploader)
 
-        val clientException = assertThrows<ClientException> {
-            requestControllerApi.getDataRequests()
-        }
+        val clientException =
+            assertThrows<ClientException> {
+                requestControllerApi.getDataRequests()
+            }
         assertEquals("Client error : 403 ", clientException.message)
     }
 
@@ -314,13 +327,14 @@ class SingleDataRequestsTest {
         postSingleDataRequestForReportingPeriodAndUpdateStatus(companyId, "2022", RequestStatus.Answered)
         postSingleDataRequestForReportingPeriodAndUpdateStatus(companyId, "2023", RequestStatus.Resolved)
         val timestampBeforeFinalRequest = retrieveTimeAndWaitOneMillisecond()
-        val response = requestControllerApi.postSingleDataRequest(
-            SingleDataRequest(
-                companyIdentifier = companyId,
-                dataType = SingleDataRequest.DataType.lksg,
-                reportingPeriods = setOf("2021", "2022", "2023"),
-            ),
-        )
+        val response =
+            requestControllerApi.postSingleDataRequest(
+                SingleDataRequest(
+                    companyIdentifier = companyId,
+                    dataType = SingleDataRequest.DataType.lksg,
+                    reportingPeriods = setOf("2021", "2022", "2023"),
+                ),
+            )
         checkThatAllReportingPeriodsAreTreatedAsExpected(
             singleDataRequestResponse = response,
             expectedNumberOfStoredReportingPeriods = 1,
@@ -340,13 +354,14 @@ class SingleDataRequestsTest {
         val stringThatMatchesThePermIdRegex = System.currentTimeMillis().toString()
         val companyId = getIdForUploadedCompanyWithIdentifiers(permId = stringThatMatchesThePermIdRegex)
         val reportingPeriods = (2000..(2000 + maxRequestsForUser + 1)).map { it.toString() }.toSet()
-        val singleDataRequest = SingleDataRequest(
-            companyIdentifier = stringThatMatchesThePermIdRegex,
-            dataType = SingleDataRequest.DataType.lksg,
-            reportingPeriods = reportingPeriods,
-            contacts = setOf("someContact@example.com", "simpleString@example.com"),
-            message = "This is a test. The current timestamp is ${System.currentTimeMillis()}",
-        )
+        val singleDataRequest =
+            SingleDataRequest(
+                companyIdentifier = stringThatMatchesThePermIdRegex,
+                dataType = SingleDataRequest.DataType.lksg,
+                reportingPeriods = reportingPeriods,
+                contacts = setOf("someContact@example.com", "simpleString@example.com"),
+                message = "This is a test. The current timestamp is ${System.currentTimeMillis()}",
+            )
 
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader)
         assertThrows<ClientException> { requestControllerApi.postSingleDataRequest(singleDataRequest) }

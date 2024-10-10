@@ -31,5 +31,7 @@ fun interface TemporarilyCachedDocumentApi {
         value = ["/{hash}"],
         produces = ["application/octet-stream"],
     )
-    fun getReceivedData(@PathVariable("hash") hash: String): ResponseEntity<InputStreamResource>
+    fun getReceivedData(
+        @PathVariable("hash") hash: String,
+    ): ResponseEntity<InputStreamResource>
 }
