@@ -218,7 +218,7 @@ export default defineComponent({
      * if no specific company is highlighted
      */
     executeSearchIfNoItemFocused() {
-      if (this.currentFocusedOptionIndex === -1 && this.wereKeysPressed) {
+      if (this.searchBarInput.length >= 2 && this.currentFocusedOptionIndex === -1 && this.wereKeysPressed) {
         this.autocomplete?.hide();
         this.autocomplete?.$refs.focusInput.blur();
         this.$emit('search-confirmed', this.searchBarInput);
