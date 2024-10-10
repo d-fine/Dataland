@@ -909,10 +909,8 @@
             "in": "query",
             "required": false,
             "schema": {
-              "type": "string",
-              "minLength": 2
-            },
-            "description": "Search string used for substring matching. Must be at least 2 characters long."
+              "type": "string"
+            }
           },
           {
             "name": "dataTypes",
