@@ -2,12 +2,8 @@
 package org.dataland.datalandbackend.frameworks.esgquestionnaire.model.allgemein
 
 import jakarta.validation.Valid
-import org.dataland.datalandbackend.frameworks.esgquestionnaire.model.allgemein.anleihen
-    .EsgQuestionnaireAllgemeinAnleihen
 import org.dataland.datalandbackend.frameworks.esgquestionnaire.model.allgemein.esgRatingAndZertifizierung
     .EsgQuestionnaireAllgemeinEsgRatingAndZertifizierung
-import org.dataland.datalandbackend.frameworks.esgquestionnaire.model.allgemein.fuehrungsstandards
-    .EsgQuestionnaireAllgemeinFuehrungsstandards
 import org.dataland.datalandbackend.frameworks.esgquestionnaire.model.allgemein.generelleEsgStrategie
     .EsgQuestionnaireAllgemeinGenerelleEsgStrategie
 import org.dataland.datalandbackend.frameworks.esgquestionnaire.model.allgemein.oecdLeitsaetze
@@ -16,9 +12,10 @@ import org.dataland.datalandbackend.frameworks.esgquestionnaire.model.allgemein.
     .EsgQuestionnaireAllgemeinRechtsstreitigkeiten
 import org.dataland.datalandbackend.frameworks.esgquestionnaire.model.allgemein.richtlinienDesUnternehmens
     .EsgQuestionnaireAllgemeinRichtlinienDesUnternehmens
-import org.dataland.datalandbackend.frameworks.esgquestionnaire.model.allgemein.risiken.EsgQuestionnaireAllgemeinRisiken
 import org.dataland.datalandbackend.frameworks.esgquestionnaire.model.allgemein.taxonomieKpisAndBestimmteAktivitaeten
     .EsgQuestionnaireAllgemeinTaxonomieKpisAndBestimmteAktivitaeten
+import org.dataland.datalandbackend.frameworks.esgquestionnaire.model.allgemein
+    .transaktionenMitNachhaltigkeitskomponenten.EsgQuestionnaireAllgemeinTransaktionenMitNachhaltigkeitskomponenten
 import org.dataland.datalandbackend.frameworks.esgquestionnaire.model.allgemein.unGlobalCompactPrinzipien
     .EsgQuestionnaireAllgemeinUnGlobalCompactPrinzipien
 import org.dataland.datalandbackend.frameworks.esgquestionnaire.model.allgemein.unSgds.EsgQuestionnaireAllgemeinUnSgds
@@ -49,15 +46,10 @@ data class EsgQuestionnaireAllgemein(
     val richtlinienDesUnternehmens: EsgQuestionnaireAllgemeinRichtlinienDesUnternehmens? = null,
 
     @field:Valid()
-    val fuehrungsstandards: EsgQuestionnaireAllgemeinFuehrungsstandards? = null,
-
-    @field:Valid()
     val rechtsstreitigkeiten: EsgQuestionnaireAllgemeinRechtsstreitigkeiten? = null,
 
     @field:Valid()
-    val anleihen: EsgQuestionnaireAllgemeinAnleihen? = null,
-
-    @field:Valid()
-    val risiken: EsgQuestionnaireAllgemeinRisiken? = null,
+    val transaktionenMitNachhaltigkeitskomponenten:
+    EsgQuestionnaireAllgemeinTransaktionenMitNachhaltigkeitskomponenten? = null,
 
 )

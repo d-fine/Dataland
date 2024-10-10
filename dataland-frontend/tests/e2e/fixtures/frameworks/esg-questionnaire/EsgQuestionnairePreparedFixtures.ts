@@ -1,5 +1,5 @@
 import { type FixtureData } from '@sharedUtils/Fixtures';
-import { type BerichterstattungEnergieverbrauchValues, type EsgQuestionnaireData, YesNo } from '@clients/backend';
+import { type EsgQuestionnaireData, YesNo } from '@clients/backend';
 import { generateEsgQuestionnaireFixtures } from './EsgQuestionnaireDataFixtures';
 
 /**
@@ -51,21 +51,6 @@ function modifyPreparedFixturesPartOne(newFixture: FixtureData<EsgQuestionnaireD
   if (newFixture.t.allgemein?.oecdLeitsaetze?.mechanismenZurUeberwachungDerEinhaltungDerOecdLeitsaetze) {
     newFixture.t.allgemein.oecdLeitsaetze.mechanismenZurUeberwachungDerEinhaltungDerOecdLeitsaetze = YesNo.Yes;
   }
-  if (newFixture.t.allgemein?.fuehrungsstandards?.oekologischeSozialeFuehrungsstandardsOderPrinzipien) {
-    newFixture.t.allgemein.fuehrungsstandards.oekologischeSozialeFuehrungsstandardsOderPrinzipien = YesNo.Yes;
-  }
-  if (newFixture.t.allgemein?.rechtsstreitigkeiten?.esgBezogeneRechtsstreitigkeiten) {
-    newFixture.t.allgemein.rechtsstreitigkeiten.esgBezogeneRechtsstreitigkeiten = YesNo.Yes;
-  }
-  if (newFixture.t.allgemein?.rechtsstreitigkeiten?.rechtsstreitigkeitenMitBezugZuE) {
-    newFixture.t.allgemein.rechtsstreitigkeiten.rechtsstreitigkeitenMitBezugZuE = YesNo.Yes;
-  }
-  if (newFixture.t.allgemein?.rechtsstreitigkeiten?.rechtsstreitigkeitenMitBezugZuS) {
-    newFixture.t.allgemein.rechtsstreitigkeiten.rechtsstreitigkeitenMitBezugZuS = YesNo.Yes;
-  }
-  if (newFixture.t.allgemein?.rechtsstreitigkeiten?.rechtsstreitigkeitenMitBezugZuG) {
-    newFixture.t.allgemein.rechtsstreitigkeiten.rechtsstreitigkeitenMitBezugZuG = YesNo.Yes;
-  }
   if (newFixture.t.allgemein?.esgRatingAndZertifizierung?.esgRating) {
     newFixture.t.allgemein.esgRatingAndZertifizierung.esgRating = YesNo.Yes;
   }
@@ -79,37 +64,21 @@ function modifyPreparedFixturesPartTwo(newFixture: FixtureData<EsgQuestionnaireD
   if (newFixture.t.allgemein?.esgRatingAndZertifizierung?.ratingbericht) {
     newFixture.t.allgemein.esgRatingAndZertifizierung.ratingbericht.value = YesNo.Yes;
   }
-  if (newFixture.t.allgemein?.anleihen?.grueneSozialeUndOderNachhaltigeEmissionen) {
-    newFixture.t.allgemein.anleihen.grueneSozialeUndOderNachhaltigeEmissionen = YesNo.Yes;
+  if (
+    newFixture.t.allgemein?.transaktionenMitNachhaltigkeitskomponenten
+      ?.emissionGruenerSozialerUndOderNachhaltigerSchuldtitel
+  ) {
+    newFixture.t.allgemein.transaktionenMitNachhaltigkeitskomponenten.emissionGruenerSozialerUndOderNachhaltigerSchuldtitel =
+      YesNo.Yes;
   }
-  if (newFixture.t.allgemein?.anleihen?.sustainibilityLinkedDebt) {
-    newFixture.t.allgemein.anleihen.sustainibilityLinkedDebt = YesNo.Yes;
+  if (newFixture.t.allgemein?.transaktionenMitNachhaltigkeitskomponenten?.emissionVonSustainibilityLinkedDebt) {
+    newFixture.t.allgemein.transaktionenMitNachhaltigkeitskomponenten.emissionVonSustainibilityLinkedDebt = YesNo.Yes;
   }
   if (newFixture.t.allgemein?.generelleEsgStrategie?.dokumenteZurNachhaltigkeitsstrategie) {
     newFixture.t.allgemein.generelleEsgStrategie.dokumenteZurNachhaltigkeitsstrategie.push({
       value: 'Report with null data source',
       dataSource: null,
     });
-  }
-  if (newFixture.t.umwelt?.produktion?.produkteZurVerringerungDerUmweltbelastung) {
-    newFixture.t.umwelt.produktion.produkteZurVerringerungDerUmweltbelastung = YesNo.Yes;
-  }
-  if (newFixture.t.umwelt?.produktion?.oekologischerMindestStandardFuerProduktionsprozesse) {
-    newFixture.t.umwelt.produktion.oekologischerMindestStandardFuerProduktionsprozesse = YesNo.Yes;
-  }
-  if (newFixture.t.umwelt?.energieverbrauch?.berichterstattungEnergieverbrauch) {
-    const currentYear = newFixture.t.umwelt.energieverbrauch.berichterstattungEnergieverbrauch.currentYear;
-    newFixture.t.umwelt.energieverbrauch.berichterstattungEnergieverbrauch.yearlyData =
-      createEnergieverbrauchWithNullNumbers(currentYear);
-  }
-  if (newFixture.t.umwelt?.biodiversitaet?.negativeAktivitaetenFuerDieBiologischeVielfalt) {
-    newFixture.t.umwelt.biodiversitaet.negativeAktivitaetenFuerDieBiologischeVielfalt = YesNo.Yes;
-  }
-  if (newFixture.t.umwelt?.biodiversitaet?.positiveAktivitaetenFuerDieBiologischeVielfalt) {
-    newFixture.t.umwelt.biodiversitaet.positiveAktivitaetenFuerDieBiologischeVielfalt = YesNo.Yes;
-  }
-  if (newFixture.t.umwelt?.fossileBrennstoffe?.einnahmenAusFossilenBrennstoffen) {
-    newFixture.t.umwelt.fossileBrennstoffe.einnahmenAusFossilenBrennstoffen = YesNo.Yes;
   }
   if (
     newFixture.t.soziales?.unternehmensstrukturaenderungen?.vorhandenseinKuerzlicherAenderungenDerUnternehmensstruktur
@@ -130,23 +99,4 @@ function modifyPreparedFixturesPartTwo(newFixture: FixtureData<EsgQuestionnaireD
     newFixture.t.unternehmensfuehrungGovernance.lieferantenauswahl.esgKriterienUndUeberwachungDerLieferanten =
       YesNo.Yes;
   }
-}
-
-/**
- * Creates the contents for a time series based on a current year value and sets null for all numbers
- * @param currentYear is the base year for the time series
- * @returns the map of years to time series data objects
- */
-function createEnergieverbrauchWithNullNumbers(currentYear: number): {
-  [p: string]: BerichterstattungEnergieverbrauchValues;
-} {
-  const objectToReturn: { [p: string]: BerichterstattungEnergieverbrauchValues } = {};
-  for (let i = -3; i <= 3; i++) {
-    objectToReturn[(currentYear + i).toString()] = {
-      energieverbrauch: null,
-      prozentDesVerbrauchsErneuerbarerEnergien: null,
-      ggfProzentDerErneuerbarenEnergieerzeugung: null,
-    };
-  }
-  return objectToReturn;
 }

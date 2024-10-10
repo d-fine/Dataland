@@ -8,17 +8,7 @@ import {
   generateArray,
   generateFixtureDataset,
 } from '@e2e/fixtures/FixtureUtils';
-import {
-  EsgQuestionnaireSozialesAuditArtDesAuditsOptions,
-  Activity,
-  EsgQuestionnaireUmweltTaxonomieTaxonomieBerichterstattungOptions,
-  EsgQuestionnaireAllgemeinRechtsstreitigkeitenStatusZuGOptions,
-  EsgQuestionnaireAllgemeinRechtsstreitigkeitenStatusZuSOptions,
-  EsgQuestionnaireAllgemeinRechtsstreitigkeitenStatusZuEOptions,
-  EsgQuestionnaireAllgemeinFuehrungsstandardsAnreizmechanismenFuerDasManagementSozialesOptions,
-  EsgQuestionnaireAllgemeinFuehrungsstandardsAnreizmechanismenFuerDasManagementUmweltOptions,
-  type EsgQuestionnaireData,
-} from '@clients/backend';
+import { EsgQuestionnaireSozialesAuditArtDesAuditsOptions, type EsgQuestionnaireData } from '@clients/backend';
 import { generateNaceCodes } from '@e2e/fixtures/common/NaceCodeFixtures';
 
 /**
@@ -138,130 +128,61 @@ export function generateEsgQuestionnaireData(nullProbability = DEFAULT_PROBABILI
         ),
         beruecksichtigungVonNachhaltigkeitskriterienBeiDerLieferantenauswahl: dataGenerator.randomParagraphs(),
       },
-      fuehrungsstandards: {
-        oekologischeSozialeFuehrungsstandardsOderPrinzipien: dataGenerator.randomYesNo(),
-        anreizmechanismenFuerDasManagementUmwelt: dataGenerator.valueOrNull(
-          pickOneElement(
-            Object.values(EsgQuestionnaireAllgemeinFuehrungsstandardsAnreizmechanismenFuerDasManagementUmweltOptions)
-          )
-        ),
-        anreizmechanismenFuerDasManagementSoziales: dataGenerator.valueOrNull(
-          pickOneElement(
-            Object.values(EsgQuestionnaireAllgemeinFuehrungsstandardsAnreizmechanismenFuerDasManagementSozialesOptions)
-          )
-        ),
-      },
       rechtsstreitigkeiten: {
-        esgBezogeneRechtsstreitigkeiten: dataGenerator.randomYesNo(),
-        rechtsstreitigkeitenMitBezugZuE: dataGenerator.randomYesNo(),
-        statusZuE: dataGenerator.valueOrNull(
-          pickOneElement(Object.values(EsgQuestionnaireAllgemeinRechtsstreitigkeitenStatusZuEOptions))
-        ),
-        einzelheitenZuDenRechtsstreitigkeitenZuE: dataGenerator.randomParagraphs(),
-        rechtsstreitigkeitenMitBezugZuS: dataGenerator.randomYesNo(),
-        statusZuS: dataGenerator.valueOrNull(
-          pickOneElement(Object.values(EsgQuestionnaireAllgemeinRechtsstreitigkeitenStatusZuSOptions))
-        ),
-        einzelheitenZuDenRechtsstreitigkeitenZuS: dataGenerator.randomParagraphs(),
-        rechtsstreitigkeitenMitBezugZuG: dataGenerator.randomYesNo(),
-        statusZuG: dataGenerator.valueOrNull(
-          pickOneElement(Object.values(EsgQuestionnaireAllgemeinRechtsstreitigkeitenStatusZuGOptions))
-        ),
-        einzelheitenZuDenRechtsstreitigkeitenZuG: dataGenerator.randomParagraphs(),
+        esgBezogeneRechtsstreitigkeitenInvolvierung: dataGenerator.randomYesNo(),
+        einzelheitenZuEsgBezogenenRechtsstreitigkeiten: dataGenerator.randomParagraphs(),
       },
-      anleihen: {
-        grueneSozialeUndOderNachhaltigeEmissionen: dataGenerator.randomYesNo(),
-        ausstehendeGrueneSozialeUndOderNachhaltigeEmissionen: dataGenerator.randomFloat(),
-        sustainibilityLinkedDebt: dataGenerator.randomYesNo(),
-        ausstehendeSustainibilityLinkedDebt: dataGenerator.randomFloat(),
-      },
-      risiken: {
-        wichtigsteESUndGRisikenUndBewertung: dataGenerator.randomParagraphs(),
-        hindernisseBeimUmgangMitEsgBedenken: dataGenerator.randomParagraphs(),
+      transaktionenMitNachhaltigkeitskomponenten: {
+        emissionGruenerSozialerUndOderNachhaltigerSchuldtitel: dataGenerator.randomYesNo(),
+        detailsZuEmissionenGruenerSozialerUndOderNachhaltigerSchuldtitel: dataGenerator.randomParagraphs(),
+        emissionVonSustainibilityLinkedDebt: dataGenerator.randomYesNo(),
+        detailsZuEmissionenVonSustainibilityLinkedDebt: dataGenerator.randomParagraphs(),
       },
     },
     umwelt: {
-      treibhausgasemissionen: {
-        treibhausgasBerichterstattungUndPrognosen: dataGenerator.randomDecimalYearlyTimeseriesData(
-          ['scope1', 'scope2', 'scope3'],
-          3,
-          3
-        ),
-        treibhausgasEmissionsintensitaetDerUnternehmenInDieInvestiertWird: dataGenerator.randomParagraphs(),
-        strategieUndZieleZurReduzierungVonTreibhausgasEmissionen: dataGenerator.randomParagraphs(),
+      emissionen: {
+        scope1Treibhausgasemissionen: dataGenerator.randomFloat(),
+        scope2TreibhausgasemissionenMarktbasiert: dataGenerator.randomFloat(),
+        scope2TreibhausgasemissionenStandortbasiert: dataGenerator.randomFloat(),
+        scope3Treibhausgasemissionen: dataGenerator.randomFloat(),
+        co2IntensitaetDesUnternehmens: dataGenerator.randomFloat(),
+        luftschadstoffe: dataGenerator.randomFloat(),
+        wassergefaehrdendeStoffe: dataGenerator.randomFloat(),
+        bodenverschmutzendeStoffe: dataGenerator.randomFloat(),
       },
-      produktion: {
-        produkteZurVerringerungDerUmweltbelastung: dataGenerator.randomYesNo(),
-        verringerungenDerUmweltbelastung: dataGenerator.randomParagraphs(),
-        oekologischerMindestStandardFuerProduktionsprozesse: dataGenerator.randomYesNo(),
+      verbrauchsangaben: {
+        energieverbrauch: dataGenerator.randomFloat(),
+        anteilErneuerbarerEnergienAmGesamtEnergieverbrauch: dataGenerator.randomPercentageValue(),
+        wasserverbrauch: dataGenerator.randomFloat(),
       },
-      energieverbrauch: {
-        berichterstattungEnergieverbrauch: dataGenerator.randomDecimalYearlyTimeseriesData(
-          ['energieverbrauch', 'prozentDesVerbrauchsErneuerbarerEnergien', 'ggfProzentDerErneuerbarenEnergieerzeugung'],
-          3,
-          3
-        ),
-        unternehmensGruppenStrategieBzglEnergieverbrauch: dataGenerator.randomParagraphs(),
+      abfall: {
+        abfallmenge: dataGenerator.randomFloat(),
+        anteilDesNichtRecycletenAbfallsAnDerGesamtAbfallmenge: dataGenerator.randomPercentageValue(),
+        mengeAnGefaehrlichenAbfaellen: dataGenerator.randomFloat(),
       },
-      energieeffizienzImmobilienanlagen: {
-        berichterstattungEnergieverbrauchVonImmobilienvermoegen: dataGenerator.randomDecimalYearlyTimeseriesData(
-          ['engagementAnteilInEnergieineffizientenImmobilienanlagen'],
-          3,
-          3
+      risikenAndMassnahmenKlima: {
+        transitorischeKlimaUndUmweltrisiken: dataGenerator.randomParagraphs(),
+        physischeKlimaUndUmweltrisiken: dataGenerator.valueOrNull(
+          pickSubsetOfElements([
+            'DuerrenAndHitzewellen',
+            'Hochwasser',
+            'Wassermangel',
+            'RadioaktiveStrahlung',
+            'ErdHangabbruch',
+            'StarkregenHagel',
+            'VerlustBiodiversitaet',
+            'Waldbraende',
+            'Stuerme',
+            'Erdbeben',
+            'Meeresspiegelanstieg',
+            'Sonstige',
+          ])
         ),
-        unternehmensGruppenStrategieBzglEnergieeffizientenImmobilienanlagen: dataGenerator.randomParagraphs(),
-      },
-      wasserverbrauch: {
-        berichterstattungWasserverbrauch: dataGenerator.randomDecimalYearlyTimeseriesData(
-          ['wasserverbrauch', 'emissionenInWasser'],
-          3,
-          3
-        ),
-        unternehmensGruppenStrategieBzglWasserverbrauch: dataGenerator.randomParagraphs(),
-      },
-      abfallproduktion: {
-        berichterstattungAbfallproduktion: dataGenerator.randomDecimalYearlyTimeseriesData(
-          ['gesamteAbfallmenge', 'prozentAbfallRecyclet', 'prozentGefaehrlicherAbfall'],
-          3,
-          3
-        ),
-        unternehmensGruppenStrategieBzglAbfallproduktion: dataGenerator.randomParagraphs(),
-        recyclingImProduktionsprozess: dataGenerator.randomDecimalYearlyTimeseriesData(
-          ['prozentRecycelteWerkstoffeImProduktionsprozess'],
-          3,
-          3
-        ),
-        gefaehrlicherAbfall: dataGenerator.randomParagraphs(),
-      },
-      biodiversitaet: {
-        negativeAktivitaetenFuerDieBiologischeVielfalt: dataGenerator.randomYesNo(),
-        negativeMassnahmenFuerDieBiologischeVielfalt: dataGenerator.randomParagraphs(),
-        positiveAktivitaetenFuerDieBiologischeVielfalt: dataGenerator.randomYesNo(),
-        positiveMassnahmenFuerDieBiologischeVielfalt: dataGenerator.randomParagraphs(),
-      },
-      fossileBrennstoffe: {
-        einnahmenAusFossilenBrennstoffen: dataGenerator.randomYesNo(),
-        berichterstattungEinnahmenAusFossilenBrennstoffen: dataGenerator.randomDecimalYearlyTimeseriesData(
-          ['prozentDerEinnahmenAusFossilenBrennstoffen'],
-          3,
-          3
-        ),
-      },
-      taxonomie: {
-        taxonomieBerichterstattung: dataGenerator.valueOrNull(
-          pickOneElement(Object.values(EsgQuestionnaireUmweltTaxonomieTaxonomieBerichterstattungOptions))
-        ),
-        euTaxonomieKompassAktivitaeten: dataGenerator.valueOrNull(pickSubsetOfElements(Object.values(Activity))),
-        umsatzInvestitionsaufwandFuerNachhaltigeAktivitaeten: dataGenerator.randomDecimalYearlyTimeseriesData(
-          [
-            'taxonomieGeeignetNachProzentUmsatz',
-            'taxonomieGeeignetNachProzentCapex',
-            'taxonomieKonformNachProzentUmsatz',
-            'taxonomieKonformNachProzentCapex',
-          ],
-          3,
-          3
-        ),
+        vonPhysischenKlimaUndUmweltrisikenBetroffeneStandorte: dataGenerator.randomParagraphs(),
+        messungSteuerungUndUeberwachungDerKlimaUndUmweltrisiken: dataGenerator.randomYesNo(),
+        beschreibungDerMessungSteuerungUndUeberwachungDerKlimaUndUmweltrisiken: dataGenerator.randomParagraphs(),
+        nutzungVonSzenarioanalysen: dataGenerator.randomYesNo(),
+        beschreibungDerNutzungVonSzenarioanalysen: dataGenerator.randomParagraphs(),
       },
     },
     soziales: {

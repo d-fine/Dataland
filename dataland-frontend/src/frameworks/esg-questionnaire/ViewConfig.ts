@@ -9,10 +9,9 @@ import { getOriginalNameFromTechnicalName } from '@/components/resources/dataTab
 import { formatNumberForDatatable } from '@/components/resources/dataTable/conversion/NumberValueGetterFactory';
 import { formatStringForDatatable } from '@/components/resources/dataTable/conversion/PlainStringValueGetterFactory';
 import { formatEsgQuestionnaireYearlyDecimalTimeseriesDataForTable } from '@/components/resources/dataTable/conversion/esg-questionnaire/EsgQuestionnaireYearlyDecimalTimeseriesDataGetterFactory';
-import { activityApiNameToHumanizedName } from '@/components/resources/frameworkDataSearch/EuTaxonomyActivityNames';
+import { formatPercentageForDatatable } from '@/components/resources/dataTable/conversion/PercentageValueGetterFactory';
 import { formatListOfBaseDataPoint } from '@/components/resources/dataTable/conversion/ListOfBaseDataPointGetterFactory';
 import { wrapDisplayValueWithDatapointInformation } from '@/components/resources/dataTable/conversion/DataPoints';
-import { formatPercentageForDatatable } from '@/components/resources/dataTable/conversion/PercentageValueGetterFactory';
 import { formatNaceCodesForDatatable } from '@/components/resources/dataTable/conversion/NaceCodeValueGetterFactory';
 export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData> = [
   {
@@ -817,280 +816,89 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
       },
       {
         type: 'section',
-        label: 'Führungsstandards',
-        expandOnPageLoad: true,
-        shouldDisplay: (): boolean => true,
-        children: [
-          {
-            type: 'cell',
-            label: 'Ökologische/soziale Führungsstandards oder -prinzipien',
-            explanation:
-              'Hat sich das Unternehmen zu ökologischen/sozialen Führungsstandards oder Prinzipien verpflichtet?',
-            shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
-            valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
-              formatYesNoValueForDatatable(
-                dataset.allgemein?.fuehrungsstandards?.oekologischeSozialeFuehrungsstandardsOderPrinzipien
-              ),
-          },
-          {
-            type: 'cell',
-            label: 'Anreizmechanismen für das Management (Umwelt)',
-            explanation:
-              'Wie spiegeln sich die Anreizmechanismen für den Bereich Umwelt in der jährlichen Zielsetzung für das Management wieder?',
-            shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.allgemein?.fuehrungsstandards?.oekologischeSozialeFuehrungsstandardsOderPrinzipien == 'Yes',
-            valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
-              ((): AvailableMLDTDisplayObjectTypes => {
-                const mappings = {
-                  Nein: 'Nein',
-                  JaAufsichtsrat: 'Ja, Aufsichtsrat',
-                  JaGeschaeftsleitung: 'Ja, Geschäftsleitung',
-                  JaAufsichtsratUndGeschaeftsleitung: 'Ja, Aufsichtsrat und Geschäftsleitung',
-                };
-                return formatStringForDatatable(
-                  dataset.allgemein?.fuehrungsstandards?.anreizmechanismenFuerDasManagementUmwelt
-                    ? getOriginalNameFromTechnicalName(
-                        dataset.allgemein?.fuehrungsstandards?.anreizmechanismenFuerDasManagementUmwelt,
-                        mappings
-                      )
-                    : ''
-                );
-              })(),
-          },
-          {
-            type: 'cell',
-            label: 'Anreizmechanismen für das Management (Soziales)',
-            explanation:
-              'Wie spiegeln sich die Anreizmechanismen für den Bereich Soziales in der jährlichen Zielsetzung für das Management wieder?',
-            shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.allgemein?.fuehrungsstandards?.oekologischeSozialeFuehrungsstandardsOderPrinzipien == 'Yes',
-            valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
-              ((): AvailableMLDTDisplayObjectTypes => {
-                const mappings = {
-                  Nein: 'Nein',
-                  JaAufsichtsrat: 'Ja, Aufsichtsrat',
-                  JaGeschaeftsleitung: 'Ja, Geschäftsleitung',
-                  JaAufsichtsratUndGeschaeftsleitung: 'Ja, Aufsichtsrat und Geschäftsleitung',
-                };
-                return formatStringForDatatable(
-                  dataset.allgemein?.fuehrungsstandards?.anreizmechanismenFuerDasManagementSoziales
-                    ? getOriginalNameFromTechnicalName(
-                        dataset.allgemein?.fuehrungsstandards?.anreizmechanismenFuerDasManagementSoziales,
-                        mappings
-                      )
-                    : ''
-                );
-              })(),
-          },
-        ],
-      },
-      {
-        type: 'section',
         label: 'Rechtsstreitigkeiten',
         expandOnPageLoad: true,
         shouldDisplay: (): boolean => true,
         children: [
           {
             type: 'cell',
-            label: 'ESG-bezogene Rechtsstreitigkeiten',
+            label: 'ESG-bezogene Rechtsstreitigkeiten Involvierung',
             explanation:
-              'Ist das Unternehmen in laufende bzw. war das Unternehmen in den letzten 3 Jahren in abgeschlossenen Rechtsstreitigkeiten im Zusammenhang mit ESG involviert?',
+              'Ist das Unternehmen in laufende bzw. war das Unternehmen in den letzten 3 Jahren in rechtskräftig abgeschlossene Rechtsstreitigkeiten im Zusammenhang mit Nachhaltigkeit / ESG involviert? Im Vordergrund stehen vor Gericht bereits anhängige Verfahren.',
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
-              formatYesNoValueForDatatable(dataset.allgemein?.rechtsstreitigkeiten?.esgBezogeneRechtsstreitigkeiten),
-          },
-          {
-            type: 'cell',
-            label: 'Rechtsstreitigkeiten mit Bezug zu E',
-            explanation: 'Haben bzw. hatten die Rechtsstreitigkeiten Bezug zu "E"',
-            shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.allgemein?.rechtsstreitigkeiten?.esgBezogeneRechtsstreitigkeiten == 'Yes',
-            valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
-              formatYesNoValueForDatatable(dataset.allgemein?.rechtsstreitigkeiten?.rechtsstreitigkeitenMitBezugZuE),
-          },
-          {
-            type: 'cell',
-            label: 'Status zu E',
-            explanation: 'Sind die Rechtsstreitigkeiten mit Bezug zu "E" noch offen oder bereits geklärt?',
-            shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.allgemein?.rechtsstreitigkeiten?.rechtsstreitigkeitenMitBezugZuE == 'Yes',
-            valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
-              ((): AvailableMLDTDisplayObjectTypes => {
-                const mappings = {
-                  Offen: 'offen',
-                  Geklaert: 'geklärt',
-                };
-                return formatStringForDatatable(
-                  dataset.allgemein?.rechtsstreitigkeiten?.statusZuE
-                    ? getOriginalNameFromTechnicalName(dataset.allgemein?.rechtsstreitigkeiten?.statusZuE, mappings)
-                    : ''
-                );
-              })(),
-          },
-          {
-            type: 'cell',
-            label: 'Einzelheiten zu den Rechtsstreitigkeiten zu E',
-            explanation: 'Einzelheiten zu den Rechtsstreitigkeiten.',
-            shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.allgemein?.rechtsstreitigkeiten?.rechtsstreitigkeitenMitBezugZuE == 'Yes',
-            valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
-              formatFreeTextForDatatable(
-                dataset.allgemein?.rechtsstreitigkeiten?.einzelheitenZuDenRechtsstreitigkeitenZuE
+              formatYesNoValueForDatatable(
+                dataset.allgemein?.rechtsstreitigkeiten?.esgBezogeneRechtsstreitigkeitenInvolvierung
               ),
           },
           {
             type: 'cell',
-            label: 'Rechtsstreitigkeiten mit Bezug zu S',
-            explanation: 'Haben bzw. hatten die Rechtsstreitigkeiten Bezug zu "S"',
+            label: 'Einzelheiten zu ESG-bezogenen Rechtsstreitigkeiten',
+            explanation: 'Bitte Einzelheiten zu den Verfahren angeben.',
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.allgemein?.rechtsstreitigkeiten?.esgBezogeneRechtsstreitigkeiten == 'Yes',
-            valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
-              formatYesNoValueForDatatable(dataset.allgemein?.rechtsstreitigkeiten?.rechtsstreitigkeitenMitBezugZuS),
-          },
-          {
-            type: 'cell',
-            label: 'Status zu S',
-            explanation: 'Sind die Rechtsstreitigkeiten mit Bezug zu "S" noch offen oder bereits geklärt?',
-            shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.allgemein?.rechtsstreitigkeiten?.rechtsstreitigkeitenMitBezugZuS == 'Yes',
-            valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
-              ((): AvailableMLDTDisplayObjectTypes => {
-                const mappings = {
-                  Offen: 'offen',
-                  Geklaert: 'geklärt',
-                };
-                return formatStringForDatatable(
-                  dataset.allgemein?.rechtsstreitigkeiten?.statusZuS
-                    ? getOriginalNameFromTechnicalName(dataset.allgemein?.rechtsstreitigkeiten?.statusZuS, mappings)
-                    : ''
-                );
-              })(),
-          },
-          {
-            type: 'cell',
-            label: 'Einzelheiten zu den Rechtsstreitigkeiten zu S',
-            explanation: 'Einzelheiten zu den Rechtsstreitigkeiten.',
-            shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.allgemein?.rechtsstreitigkeiten?.rechtsstreitigkeitenMitBezugZuS == 'Yes',
+              dataset.allgemein?.rechtsstreitigkeiten?.esgBezogeneRechtsstreitigkeitenInvolvierung == 'Yes',
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
               formatFreeTextForDatatable(
-                dataset.allgemein?.rechtsstreitigkeiten?.einzelheitenZuDenRechtsstreitigkeitenZuS
-              ),
-          },
-          {
-            type: 'cell',
-            label: 'Rechtsstreitigkeiten mit Bezug zu G',
-            explanation: 'Haben bzw. hatten die Rechtsstreitigkeiten Bezug zu "G"',
-            shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.allgemein?.rechtsstreitigkeiten?.esgBezogeneRechtsstreitigkeiten == 'Yes',
-            valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
-              formatYesNoValueForDatatable(dataset.allgemein?.rechtsstreitigkeiten?.rechtsstreitigkeitenMitBezugZuG),
-          },
-          {
-            type: 'cell',
-            label: 'Status zu G',
-            explanation: 'Sind die Rechtsstreitigkeiten mit Bezug zu "G" noch offen oder bereits geklärt?',
-            shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.allgemein?.rechtsstreitigkeiten?.rechtsstreitigkeitenMitBezugZuG == 'Yes',
-            valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
-              ((): AvailableMLDTDisplayObjectTypes => {
-                const mappings = {
-                  Offen: 'offen',
-                  Geklaert: 'geklärt',
-                };
-                return formatStringForDatatable(
-                  dataset.allgemein?.rechtsstreitigkeiten?.statusZuG
-                    ? getOriginalNameFromTechnicalName(dataset.allgemein?.rechtsstreitigkeiten?.statusZuG, mappings)
-                    : ''
-                );
-              })(),
-          },
-          {
-            type: 'cell',
-            label: 'Einzelheiten zu den Rechtsstreitigkeiten zu G',
-            explanation: 'Einzelheiten zu den Rechtsstreitigkeiten.',
-            shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.allgemein?.rechtsstreitigkeiten?.rechtsstreitigkeitenMitBezugZuG == 'Yes',
-            valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
-              formatFreeTextForDatatable(
-                dataset.allgemein?.rechtsstreitigkeiten?.einzelheitenZuDenRechtsstreitigkeitenZuG
+                dataset.allgemein?.rechtsstreitigkeiten?.einzelheitenZuEsgBezogenenRechtsstreitigkeiten
               ),
           },
         ],
       },
       {
         type: 'section',
-        label: 'Anleihen',
+        label: 'Transaktionen mit Nachhaltigkeitskomponenten',
         expandOnPageLoad: true,
         shouldDisplay: (): boolean => true,
         children: [
           {
             type: 'cell',
-            label: 'Grüne, soziale und/oder nachhaltige Emissionen',
+            label: 'Emission grüner, sozialer und/oder nachhaltiger Schuldtitel',
             explanation: 'Hat das Unternehmen „grüne“, „soziale“ und/oder „nachhaltige“ Schuldtitel begeben?',
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
-              formatYesNoValueForDatatable(dataset.allgemein?.anleihen?.grueneSozialeUndOderNachhaltigeEmissionen),
-          },
-          {
-            type: 'cell',
-            label: 'Ausstehende grüne, soziale und/oder nachhaltige Emissionen',
-            explanation: 'Details zu den ausstehenden Emissionen für das letzte Jahr der Berichterstattung (in Mio €)',
-            shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.allgemein?.anleihen?.grueneSozialeUndOderNachhaltigeEmissionen == 'Yes',
-            valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
-              formatNumberForDatatable(
-                dataset.allgemein?.anleihen?.ausstehendeGrueneSozialeUndOderNachhaltigeEmissionen,
-                ''
+              formatYesNoValueForDatatable(
+                dataset.allgemein?.transaktionenMitNachhaltigkeitskomponenten
+                  ?.emissionGruenerSozialerUndOderNachhaltigerSchuldtitel
               ),
           },
           {
             type: 'cell',
-            label: 'Sustainibility Linked Debt',
+            label: 'Details zu Emissionen grüner, sozialer und/oder nachhaltiger Schuldtitel',
+            explanation: 'Bitte Details zur Emission der grünen, sozialen und/oder nachhaltigen Schuldtitel angeben.',
+            shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
+              dataset.allgemein?.transaktionenMitNachhaltigkeitskomponenten
+                ?.emissionGruenerSozialerUndOderNachhaltigerSchuldtitel == 'Yes',
+            valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
+              formatFreeTextForDatatable(
+                dataset.allgemein?.transaktionenMitNachhaltigkeitskomponenten
+                  ?.detailsZuEmissionenGruenerSozialerUndOderNachhaltigerSchuldtitel
+              ),
+          },
+          {
+            type: 'cell',
+            label: 'Emission von Sustainibility Linked Debt',
             explanation: 'Hat das Unternehmen Sustainability Linked Debt („SLD“) emittiert?',
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
-              formatYesNoValueForDatatable(dataset.allgemein?.anleihen?.sustainibilityLinkedDebt),
+              formatYesNoValueForDatatable(
+                dataset.allgemein?.transaktionenMitNachhaltigkeitskomponenten?.emissionVonSustainibilityLinkedDebt
+              ),
           },
           {
             type: 'cell',
-            label: 'Ausstehende Sustainibility Linked Debt',
-            explanation: 'Details zu den ausstehenden Emissionen für das letzte Jahr der Berichterstattung (in Mio €).',
+            label: 'Details zu Emissionen von Sustainibility Linked Debt',
+            explanation: 'Bitte Details zur Emission der Sustainibility Linked Debt angeben.',
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.allgemein?.anleihen?.sustainibilityLinkedDebt == 'Yes',
+              dataset.allgemein?.transaktionenMitNachhaltigkeitskomponenten?.emissionVonSustainibilityLinkedDebt ==
+              'Yes',
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
-              formatNumberForDatatable(dataset.allgemein?.anleihen?.ausstehendeSustainibilityLinkedDebt, ''),
-          },
-        ],
-      },
-      {
-        type: 'section',
-        label: 'Risiken',
-        expandOnPageLoad: true,
-        shouldDisplay: (): boolean => true,
-        children: [
-          {
-            type: 'cell',
-            label: 'Wichtigste E-, S- und G-Risiken und Bewertung',
-            explanation: 'Welche sind die wichtigsten von der Gruppe identifizierten E-, S- und G-Risiken?',
-            shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
-            valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
-              formatFreeTextForDatatable(dataset.allgemein?.risiken?.wichtigsteESUndGRisikenUndBewertung),
-          },
-          {
-            type: 'cell',
-            label: 'Hindernisse beim Umgang mit ESG-Bedenken',
-            explanation:
-              'Welche grundsätzlichen Hindernisse bestehen für das Unternehmen bei der Berücksichtigung von ESG-Belangen?',
-            shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
-            valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
-              formatFreeTextForDatatable(dataset.allgemein?.risiken?.hindernisseBeimUmgangMitEsgBedenken),
+              formatFreeTextForDatatable(
+                dataset.allgemein?.transaktionenMitNachhaltigkeitskomponenten
+                  ?.detailsZuEmissionenVonSustainibilityLinkedDebt
+              ),
           },
         ],
       },
@@ -1104,440 +912,281 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
     children: [
       {
         type: 'section',
-        label: 'Treibhausgasemissionen',
+        label: 'Emissionen',
         expandOnPageLoad: true,
         shouldDisplay: (): boolean => true,
         children: [
           {
             type: 'cell',
-            label: 'Treibhausgas-Berichterstattung und Prognosen',
+            label: 'Scope 1 Treibhausgasemissionen',
             explanation:
-              'Welche Treibhausgasinformationen werden derzeit auf Unternehmens-/Konzernebene berichtet und prognostiziert? Scope 1, Scope 2 und Scope 3 Emissionen für das aktuelle Kalenderjahr, die letzten drei Jahre sowie die Prognosen für die kommenden drei Jahre (in tCO2-Äquiv.)',
+              'Wie hoch waren die Scope 1 Treibhausgasemissionen des Unternehmens im letzten abgeschlossenen Geschäftsjahr (in tCO2eq)? Der Scope 1 umfasst alle direkten Treibhausgasemissionen aus eigenen Anlagen des Unternehmens sowie von ihm kontrollierten Anlagen.',
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
-              formatEsgQuestionnaireYearlyDecimalTimeseriesDataForTable(
-                dataset.umwelt?.treibhausgasemissionen?.treibhausgasBerichterstattungUndPrognosen,
-                {
-                  scope1: { label: 'Scope 1', unitSuffix: 'tCO2-Äquiv.' },
-                  scope2: { label: 'Scope 2', unitSuffix: 'tCO2-Äquiv.' },
-                  scope3: { label: 'Scope 3', unitSuffix: 'tCO2-Äquiv.' },
-                },
-                'Treibhausgas-Berichterstattung und Prognosen'
+              formatNumberForDatatable(dataset.umwelt?.emissionen?.scope1Treibhausgasemissionen, 'tCO\u00B2eq'),
+          },
+          {
+            type: 'cell',
+            label: 'Scope 2 Treibhausgasemissionen (marktbasiert)',
+            explanation:
+              'Wie hoch waren die marktbasiert berechneten Scope 2 Treibhausgasemissionen des Unternehmens im letzten abgeschlossenen Geschäftsjahr (in tCO2eq)? Der Scope 2 umfasst indirekte Treibhausgasemissionen, die im Rahmen der Erzeugung des vom Unternehmen verbrauchten Stroms, Dampf, Wärme und Kälte entstehen.',
+            shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
+              formatNumberForDatatable(
+                dataset.umwelt?.emissionen?.scope2TreibhausgasemissionenMarktbasiert,
+                'tCO\u00B2eq'
               ),
           },
           {
             type: 'cell',
-            label: 'Treibhausgas-Emissionsintensität der Unternehmen, in die investiert wird',
+            label: 'Scope 2 Treibhausgasemissionen (standortbasiert)',
             explanation:
-              'THG-Emissionsintensität der Unternehmen, in die investiert wird. (1) Scope 1 + Scope 2 Treibhausgasemissionen / Umsatz in Millionen EUR, (2) Scope 1 + Scope 2 Treibhausgasemissionen / Unternehmensgröße in Mio. EUR',
+              'Wie hoch waren die standortbasiert berechneten Scope 2 Treibhausgasemissionen des Unternehmens im letzten abgeschlossenen Geschäftsjahr (in tCO2eq)? Der Scope 2 umfasst indirekte Treibhausgasemissionen, die im Rahmen der Erzeugung des vom Unternehmen verbrauchten Stroms, Dampf, Wärme und Kälte entstehen.',
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
-              formatFreeTextForDatatable(
-                dataset.umwelt?.treibhausgasemissionen
-                  ?.treibhausgasEmissionsintensitaetDerUnternehmenInDieInvestiertWird
+              formatNumberForDatatable(
+                dataset.umwelt?.emissionen?.scope2TreibhausgasemissionenStandortbasiert,
+                'tCO\u00B2eq'
               ),
           },
           {
             type: 'cell',
-            label: 'Strategie und Ziele zur Reduzierung von Treibhausgas-Emissionen',
+            label: 'Scope 3 Treibhausgasemissionen',
             explanation:
-              'Welchen Entwicklungspfad bzgl. der (Reduktion von) Treibhausgasemissionen verfolgt das Unternehmen. Gibt es einen Zeitplan bzw. konkrete Ziele? Wie plant das Unternehmen, diesen Kurs zu erreichen?',
+              'Wie hoch waren die Scope 3 Treibhausgasemissionen des Unternehmens im letzten abgeschlossenen Geschäftsjahr (in tCO2eq)? Der Scope 3 umfasst alle sonstigen indirekten Treibhausgasemissionen, bspw. Emissionen die in der Herstellung und im Transport zugekaufter Güter (einschließlich Immobilien), in der Distribution oder Nutzung eigener Produkte oder in der Abfallentsorgung entstehen. Es ist die vor- und nachgelagerte Wertschöpfungskette zu betrachten. ',
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
-              formatFreeTextForDatatable(
-                dataset.umwelt?.treibhausgasemissionen?.strategieUndZieleZurReduzierungVonTreibhausgasEmissionen
-              ),
+              formatNumberForDatatable(dataset.umwelt?.emissionen?.scope3Treibhausgasemissionen, 'tCO\u00B2eq'),
+          },
+          {
+            type: 'cell',
+            label: 'CO2-Intensität des Unternehmens',
+            explanation:
+              'Welche CO²-Intensität berechnet sich für das Unternehmen? Hierzu die Treibhausgasemissionen nach Scope 1 bis 3 addieren und durch den Gesamtumsatz des Unternehmens teilen. Daraus ergibt sich die CO²-Intensität in der Einheit tCO²eq pro Euro Umsatz.',
+            shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
+              formatNumberForDatatable(dataset.umwelt?.emissionen?.co2IntensitaetDesUnternehmens, 'tCO\u00B2eq/\u20AC'),
+          },
+          {
+            type: 'cell',
+            label: 'Luftschadstoffe',
+            explanation:
+              'Wie hoch waren die Emissionen von Luftschadstoffen im letzten abgeschlossenen Geschäftsjahr? Analog zu ESRS E2-4 sind hier die Emissionen von Schadstoffen, die in Annex II der Verordnung (EG) Nr. 166/2006 des Europäischen Parlaments und des Rates (Europäisches Schadstofffreisetzungs- und -verbringungsregister, E-PRTR) aufgeführt sind, relevant. Treibhausgasemissionen gemäß ESRS E1 sind für diese Angaben nicht relevant.',
+            shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
+              formatNumberForDatatable(dataset.umwelt?.emissionen?.luftschadstoffe, 't'),
+          },
+          {
+            type: 'cell',
+            label: 'Wassergefährdende Stoffe',
+            explanation:
+              'Wie hoch waren die Emissionen von wassergefährdenden Stoffen im letzten abgeschlossenen Geschäftsjahr? Analog zu ESRS E2-4 sind hier die Emissionen von Schadstoffen, die in Annex II der Verordnung (EG) Nr. 166/2006 des Europäischen Parlaments und des Rates (Europäisches Schadstofffreisetzungs- und -verbringungsregister, E-PRTR) aufgeführt sind, relevant. Treibhausgasemissionen gemäß ESRS E1 sind für diese Angaben nicht relevant.',
+            shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
+              formatNumberForDatatable(dataset.umwelt?.emissionen?.wassergefaehrdendeStoffe, 't'),
+          },
+          {
+            type: 'cell',
+            label: 'Bodenverschmutzende Stoffe',
+            explanation:
+              'Wie hoch waren die Emissionen von bodenverschmutzenden Stoffen im letzten abgeschlossenen Geschäftsjahr? Analog zu ESRS E2-4 sind hier die Emissionen von Schadstoffen, die in Annex II der Verordnung (EG) Nr. 166/2006 des Europäischen Parlaments und des Rates (Europäisches Schadstofffreisetzungs- und -verbringungsregister, E-PRTR) aufgeführt sind, relevant. Treibhausgasemissionen gemäß ESRS E1 sind für diese Angaben nicht relevant.',
+            shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
+              formatNumberForDatatable(dataset.umwelt?.emissionen?.bodenverschmutzendeStoffe, 't'),
           },
         ],
       },
       {
         type: 'section',
-        label: 'Produktion',
+        label: 'Verbrauchsangaben',
         expandOnPageLoad: true,
         shouldDisplay: (): boolean => true,
         children: [
           {
             type: 'cell',
-            label: 'Produkte zur Verringerung der Umweltbelastung',
+            label: 'Energieverbrauch',
             explanation:
-              'Entwickelt, produziert oder vertreibt das Unternehmen Produkte, die die Umweltbelastung verringern?',
+              'Wie hoch war der Energieverbrauch des Unternehmens im letzten abgeschlossenen Geschäftsjahr (in MWh)? Die Methodik analog zu ESRS E1-5.',
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
-              formatYesNoValueForDatatable(dataset.umwelt?.produktion?.produkteZurVerringerungDerUmweltbelastung),
+              formatNumberForDatatable(dataset.umwelt?.verbrauchsangaben?.energieverbrauch, 'Mwh'),
           },
           {
             type: 'cell',
-            label: 'Verringerungen der Umweltbelastung',
-            explanation: 'Die Art und Weise, wie die Produkte die Umweltbelastung reduzieren',
+            label: 'Anteil erneuerbarer Energien am Gesamt-Energieverbrauch',
+            explanation: 'Welcher Anteil der bezogenen Energie stammte aus erneuerbaren Energiequellen (in %)?',
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.umwelt?.produktion?.produkteZurVerringerungDerUmweltbelastung == 'Yes',
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
-              formatFreeTextForDatatable(dataset.umwelt?.produktion?.verringerungenDerUmweltbelastung),
+              formatPercentageForDatatable(
+                dataset.umwelt?.verbrauchsangaben?.anteilErneuerbarerEnergienAmGesamtEnergieverbrauch
+              ),
           },
           {
             type: 'cell',
-            label: 'Ökologischer Mindest-Standard für Produktionsprozesse',
+            label: 'Wasserverbrauch',
             explanation:
-              'Verfügt das Unternehmen über interne Richtlinien, die einen Mindestumweltstandard im Produktionsprozess sicherstellen?',
+              'Wie hoch war der Wasserverbrauch des Unternehmens im letzten abgeschlossenen Geschäftsjahr (in m³)?',
+            shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
+              formatNumberForDatatable(dataset.umwelt?.verbrauchsangaben?.wasserverbrauch, 'm\u00B3'),
+          },
+        ],
+      },
+      {
+        type: 'section',
+        label: 'Abfall',
+        expandOnPageLoad: true,
+        shouldDisplay: (): boolean => true,
+        children: [
+          {
+            type: 'cell',
+            label: 'Abfallmenge',
+            explanation: 'Welche Abfallmenge fiel im Unternehmen im letzten abgeschlossenen Geschäftsjahr an (in t)?',
+            shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
+              formatNumberForDatatable(dataset.umwelt?.abfall?.abfallmenge, 't'),
+          },
+          {
+            type: 'cell',
+            label: 'Anteil des nicht recycleten Abfalls an der Gesamt-Abfallmenge',
+            explanation:
+              'Welcher Anteil der Abfälle des Unternehmens wurden im letzten abgeschlossenen Geschäftsjahr nicht recycelt (in %)?',
+            shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
+              formatPercentageForDatatable(
+                dataset.umwelt?.abfall?.anteilDesNichtRecycletenAbfallsAnDerGesamtAbfallmenge
+              ),
+          },
+          {
+            type: 'cell',
+            label: 'Menge an gefährlichen Abfällen',
+            explanation:
+              'Welche Menge an gefährlichen Abfällen fielen im Unternehmen im letzten abgeschlossenen Geschäftsjahr (in t) an? Gefährliche Abfälle umfassen Abfälle, die bspw. eine der folgenden Eigenschaften aufweisen: explosiv, brandfördernden, entzündbar, reizend oder toxisch.',
+            shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
+              formatNumberForDatatable(dataset.umwelt?.abfall?.mengeAnGefaehrlichenAbfaellen, 't'),
+          },
+        ],
+      },
+      {
+        type: 'section',
+        label: 'Risiken & Maßnahmen Klima',
+        expandOnPageLoad: true,
+        shouldDisplay: (): boolean => true,
+        children: [
+          {
+            type: 'cell',
+            label: 'Transitorische Klima- und Umweltrisiken',
+            explanation:
+              'Welchen wesentlichen transitorischen Klima- und Umweltrisiken ist das Unternehmen ausgesetzt? Transitorische Risiken sind Übergangsrisiken, die sich aus einer unzureichenden Anpassung des Unternehmens an Maßnahmen zum Schutz, zur Wiederherstellung und/oder zur Verringerung negativer Auswirkungen auf die Natur ergeben. Diese Risiken können z. B. durch Änderungen in der Gesetzgebung und Politik, Präzedenzfälle, Technologien, die Stimmung der Investoren und Verbraucherpräferenzen, Haftungsrisiken oder Reputationsrisiken ausgelöst werden. Sie können auch aus Aktivitäten entstehen, die auf die Wiederherstellung der Natur abzielen, aber beispielsweise nicht mehr mit der geänderten Politik übereinstimmen.',
+            shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
+              formatFreeTextForDatatable(
+                dataset.umwelt?.risikenAndMassnahmenKlima?.transitorischeKlimaUndUmweltrisiken
+              ),
+          },
+          {
+            type: 'cell',
+            label: 'Physische Klima- und Umweltrisiken',
+            explanation: 'Welchen physischen Klima- und Umweltrisiken ist das Unternehmen ausgesetzt?',
+            shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes => {
+              const mappings = {
+                DuerrenAndHitzewellen: 'Dürren & Hitzewellen',
+                Hochwasser: 'Hochwasser',
+                Wassermangel: 'Wassermangel',
+                RadioaktiveStrahlung: 'Radioaktive Strahlung',
+                ErdHangabbruch: 'Erd-/Hangabbruch',
+                StarkregenHagel: 'Starkregen/Hagel',
+                VerlustBiodiversitaet: 'Verlust Biodiversität',
+                Waldbraende: 'Waldbrände',
+                Stuerme: 'Stürme',
+                Erdbeben: 'Erdbeben',
+                Meeresspiegelanstieg: 'Meeresspiegelanstieg',
+                Sonstige: 'Sonstige',
+              };
+              return formatListOfStringsForDatatable(
+                dataset.umwelt?.risikenAndMassnahmenKlima?.physischeKlimaUndUmweltrisiken?.map((it) =>
+                  getOriginalNameFromTechnicalName(it, mappings)
+                ),
+                'Physische Klima- und Umweltrisiken'
+              );
+            },
+          },
+          {
+            type: 'cell',
+            label: 'Von physischen Klima- und Umweltrisiken betroffene Standorte',
+            explanation:
+              'Bitte geben Sie zu jedem relevanten Klima-/Umweltrisiko jene Standorte des Unternehmens an, welche dem jeweiligen Risiko ausgesetzt sind.',
+            shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
+              formatFreeTextForDatatable(
+                dataset.umwelt?.risikenAndMassnahmenKlima?.vonPhysischenKlimaUndUmweltrisikenBetroffeneStandorte
+              ),
+          },
+          {
+            type: 'cell',
+            label: 'Messung, Steuerung und Überwachung der Klima- und Umweltrisiken',
+            explanation: 'Misst, steuert und überwacht das Unternehmen diese Klima- und Umweltrisiken?',
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
               formatYesNoValueForDatatable(
-                dataset.umwelt?.produktion?.oekologischerMindestStandardFuerProduktionsprozesse
-              ),
-          },
-        ],
-      },
-      {
-        type: 'section',
-        label: 'Energieverbrauch',
-        expandOnPageLoad: true,
-        shouldDisplay: (): boolean => true,
-        children: [
-          {
-            type: 'cell',
-            label: 'Berichterstattung Energieverbrauch',
-            explanation:
-              'Energieverbrauch (in GWh), sowie den Verbrauch erneuerbaren Energien (%) und, falls zutreffend, die Erzeugung erneuerbaren Energien (%) für das aktuelle Kalenderjahr, die letzten drei Jahre sowie die Prognosen für die kommenden drei Jahre',
-            shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
-            valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
-              formatEsgQuestionnaireYearlyDecimalTimeseriesDataForTable(
-                dataset.umwelt?.energieverbrauch?.berichterstattungEnergieverbrauch,
-                {
-                  energieverbrauch: { label: 'Energieverbrauch', unitSuffix: 'GWh' },
-                  prozentDesVerbrauchsErneuerbarerEnergien: {
-                    label: '% des Verbrauchs erneuerbarer Energien',
-                    unitSuffix: '%',
-                  },
-                  ggfProzentDerErneuerbarenEnergieerzeugung: {
-                    label: 'Gegebenenfalls % der erneuerbaren Energieerzeugung',
-                    unitSuffix: '%',
-                  },
-                },
-                'Berichterstattung Energieverbrauch'
+                dataset.umwelt?.risikenAndMassnahmenKlima?.messungSteuerungUndUeberwachungDerKlimaUndUmweltrisiken
               ),
           },
           {
             type: 'cell',
-            label: 'Unternehmens/Gruppen Strategie bzgl Energieverbrauch',
+            label: 'Beschreibung der Messung, Steuerung und Überwachung der Klima- und Umweltrisiken',
             explanation:
-              'Der von der Gruppe/Unternehmen definierte Entwicklungspfad (Zeitplan und Ziel - falls vorhanden) und wie das Unternehmen den geplanten Entwicklungspfad erreichen möchte.',
+              'Bitte beschreiben Sie das Vorgehen, mit dem Klima- und Umweltrisiken gemessen, gesteuert und überwacht werden.',
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+              dataset.umwelt?.risikenAndMassnahmenKlima?.messungSteuerungUndUeberwachungDerKlimaUndUmweltrisiken ==
+              'Yes',
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
               formatFreeTextForDatatable(
-                dataset.umwelt?.energieverbrauch?.unternehmensGruppenStrategieBzglEnergieverbrauch
+                dataset.umwelt?.risikenAndMassnahmenKlima
+                  ?.beschreibungDerMessungSteuerungUndUeberwachungDerKlimaUndUmweltrisiken
               ),
           },
-        ],
-      },
-      {
-        type: 'section',
-        label: 'Energieeffizienz Immobilienanlagen',
-        expandOnPageLoad: true,
-        shouldDisplay: (): boolean => true,
-        children: [
           {
             type: 'cell',
-            label: 'Berichterstattung Energieverbrauch von Immobilienvermögen',
+            label: 'Nutzung von Szenarioanalysen',
             explanation:
-              'Anteil an energieeffizienten Immobilienanlagen (%) für das aktuelle Kalenderjahr, die letzten drei Jahre sowie die Prognosen für die kommenden drei Jahre',
+              'Werden bei der Messung, Steuerung und Überwachung der Klima- und Umweltrisiken Szenarioanalysen genutzt?',
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+              dataset.umwelt?.risikenAndMassnahmenKlima?.messungSteuerungUndUeberwachungDerKlimaUndUmweltrisiken ==
+              'Yes',
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
-              formatEsgQuestionnaireYearlyDecimalTimeseriesDataForTable(
-                dataset.umwelt?.energieeffizienzImmobilienanlagen
-                  ?.berichterstattungEnergieverbrauchVonImmobilienvermoegen,
-                {
-                  engagementAnteilInEnergieineffizientenImmobilienanlagen: {
-                    label: 'Engagement/Anteil in energieineffizienten Immobilienanlagen',
-                    unitSuffix: '',
-                  },
-                },
-                'Berichterstattung Energieverbrauch von Immobilienverm\u00F6gen'
-              ),
+              formatYesNoValueForDatatable(dataset.umwelt?.risikenAndMassnahmenKlima?.nutzungVonSzenarioanalysen),
           },
           {
             type: 'cell',
-            label: 'Unternehmens/Gruppen Strategie bzgl energieeffizienten Immobilienanlagen',
+            label: 'Beschreibung der Nutzung von Szenarioanalysen',
             explanation:
-              'Der von der Gruppe/Unternehmen definierte Entwicklungspfad (Zeitplan und Ziel - falls vorhanden) und wie das Unternehmen den geplanten Entwicklungspfad erreichen möchte.',
+              'Bitte beschreiben Sie in welcher Art und Weise Szenarioanalysen genutzt werden, um Klima- und Umweltrisiken zu messen, steuern und zu überwachen.',
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+              dataset.umwelt?.risikenAndMassnahmenKlima?.nutzungVonSzenarioanalysen == 'Yes',
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
               formatFreeTextForDatatable(
-                dataset.umwelt?.energieeffizienzImmobilienanlagen
-                  ?.unternehmensGruppenStrategieBzglEnergieeffizientenImmobilienanlagen
-              ),
-          },
-        ],
-      },
-      {
-        type: 'section',
-        label: 'Wasserverbrauch',
-        expandOnPageLoad: true,
-        shouldDisplay: (): boolean => true,
-        children: [
-          {
-            type: 'cell',
-            label: 'Berichterstattung Wasserverbrauch',
-            explanation:
-              'Wasserverbrauch (in l), sowie die Emissionen in Wasser (in Tonnen) für das aktuelle Kalenderjahr, die letzten drei Jahre sowie die Prognosen für die kommenden drei Jahre',
-            shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
-            valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
-              formatEsgQuestionnaireYearlyDecimalTimeseriesDataForTable(
-                dataset.umwelt?.wasserverbrauch?.berichterstattungWasserverbrauch,
-                {
-                  wasserverbrauch: { label: 'Wasserverbrauch', unitSuffix: 'l' },
-                  emissionenInWasser: { label: 'Emissionen in Wasser', unitSuffix: 't' },
-                },
-                'Berichterstattung Wasserverbrauch'
-              ),
-          },
-          {
-            type: 'cell',
-            label: 'Unternehmens/Gruppen Strategie bzgl Wasserverbrauch',
-            explanation:
-              'Der von der Gruppe/Unternehmen definierte Entwicklungspfad (Zeitplan und Ziel - falls vorhanden) und wie das Unternehmen den geplanten Entwicklungspfad erreichen möchte.',
-            shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
-            valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
-              formatFreeTextForDatatable(
-                dataset.umwelt?.wasserverbrauch?.unternehmensGruppenStrategieBzglWasserverbrauch
-              ),
-          },
-        ],
-      },
-      {
-        type: 'section',
-        label: 'Abfallproduktion',
-        expandOnPageLoad: true,
-        shouldDisplay: (): boolean => true,
-        children: [
-          {
-            type: 'cell',
-            label: 'Berichterstattung Abfallproduktion',
-            explanation:
-              'Gesamte Abfallmenge (in Tonnen), sowie den Anteil (%) der gesamten Abfallmenge, der recyclet wird, sowie den Anteil (%) gefährlicher Abfall der gesamten Abfallmenge für das aktuelle Kalenderjahr, die letzten drei Jahre sowie die Prognosen für die kommenden drei Jahre',
-            shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
-            valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
-              formatEsgQuestionnaireYearlyDecimalTimeseriesDataForTable(
-                dataset.umwelt?.abfallproduktion?.berichterstattungAbfallproduktion,
-                {
-                  gesamteAbfallmenge: { label: 'Gesamte Abfallmenge', unitSuffix: 't' },
-                  prozentAbfallRecyclet: { label: '% Abfall recycelt', unitSuffix: '%' },
-                  prozentGefaehrlicherAbfall: { label: '% Gefährlicher Abfall', unitSuffix: '%' },
-                },
-                'Berichterstattung Abfallproduktion'
-              ),
-          },
-          {
-            type: 'cell',
-            label: 'Unternehmens/Gruppen Strategie bzgl Abfallproduktion',
-            explanation:
-              'Der von der Gruppe/Unternehmen definierte Entwicklungspfad (Zeitplan und Ziel - falls vorhanden) und wie das Unternehmen den geplanten Entwicklungspfad erreichen möchte.',
-            shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
-            valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
-              formatFreeTextForDatatable(
-                dataset.umwelt?.abfallproduktion?.unternehmensGruppenStrategieBzglAbfallproduktion
-              ),
-          },
-          {
-            type: 'cell',
-            label: 'Recycling im Produktionsprozess',
-            explanation:
-              'Anteil an Recyclaten (bereits recyceltes wiederverwertetes Material) im Produktionsprozess für das aktuelle Kalenderjahr, die letzten drei Jahre sowie die Prognosen für die kommenden drei Jahre',
-            shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
-            valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
-              formatEsgQuestionnaireYearlyDecimalTimeseriesDataForTable(
-                dataset.umwelt?.abfallproduktion?.recyclingImProduktionsprozess,
-                {
-                  prozentRecycelteWerkstoffeImProduktionsprozess: {
-                    label: '% Recycelte Werkstoffe im Produktionsprozess',
-                    unitSuffix: '%',
-                  },
-                },
-                'Recycling im Produktionsprozess'
-              ),
-          },
-          {
-            type: 'cell',
-            label: 'Gefährlicher Abfall',
-            explanation:
-              'Wie wird in dem Unternehmen während der Produktion und Verarbeitung mit gefährlichen Abfällen (brennbar, reaktiv, giftig, radioaktiv) umgegangen?',
-            shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
-            valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
-              formatFreeTextForDatatable(dataset.umwelt?.abfallproduktion?.gefaehrlicherAbfall),
-          },
-        ],
-      },
-      {
-        type: 'section',
-        label: 'Biodiversität',
-        expandOnPageLoad: true,
-        shouldDisplay: (): boolean => true,
-        children: [
-          {
-            type: 'cell',
-            label: 'Negative Aktivitäten für die biologische Vielfalt',
-            explanation:
-              'Hat das Unternehmen Standorte / Betriebe in oder in der Nähe von biodiversitätssensiblen Gebieten, in denen sich die Aktivitäten des Unternehmens negativ auf diese Gebiete auswirken?',
-            shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
-            valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
-              formatYesNoValueForDatatable(
-                dataset.umwelt?.biodiversitaet?.negativeAktivitaetenFuerDieBiologischeVielfalt
-              ),
-          },
-          {
-            type: 'cell',
-            label: 'Negative Maßnahmen für die biologische Vielfalt',
-            explanation:
-              'Aktivitäten, die sich negativ auf die Biodiversität auswirken, und der von der Gruppe/Unternehmen definierte Entwicklungspfad für den Umgang mit diesen Maßnahmen (Zeitplan und Ziel - falls vorhanden) und wie das Unternehmen den geplanten Entwicklungspfad erreichen möchte.',
-            shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.umwelt?.biodiversitaet?.negativeAktivitaetenFuerDieBiologischeVielfalt == 'Yes',
-            valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
-              formatFreeTextForDatatable(dataset.umwelt?.biodiversitaet?.negativeMassnahmenFuerDieBiologischeVielfalt),
-          },
-          {
-            type: 'cell',
-            label: 'Positive Aktivitäten für die biologische Vielfalt',
-            explanation:
-              'Hat das Unternehmen Standorte / Betriebe in oder in der Nähe von biodiversitätssensiblen Gebieten, in denen sich die Aktivitäten des Unternehmens positiv auf diese Gebiete auswirken?',
-            shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
-            valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
-              formatYesNoValueForDatatable(
-                dataset.umwelt?.biodiversitaet?.positiveAktivitaetenFuerDieBiologischeVielfalt
-              ),
-          },
-          {
-            type: 'cell',
-            label: 'Positive Maßnahmen für die biologische Vielfalt',
-            explanation:
-              'Aktivitäten, die sich positiv auf die Biodiversität auswirken, und der von der Gruppe/Unternehmen definierte Entwicklungspfad für die Weiterentwicklung dieser Maßnahmen (Zeitplan und Ziel - falls vorhanden) und wie das Unternehmen den geplanten Entwicklungspfad erreichen möchte.',
-            shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.umwelt?.biodiversitaet?.positiveAktivitaetenFuerDieBiologischeVielfalt == 'Yes',
-            valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
-              formatFreeTextForDatatable(dataset.umwelt?.biodiversitaet?.positiveMassnahmenFuerDieBiologischeVielfalt),
-          },
-        ],
-      },
-      {
-        type: 'section',
-        label: 'Fossile Brennstoffe',
-        expandOnPageLoad: true,
-        shouldDisplay: (): boolean => true,
-        children: [
-          {
-            type: 'cell',
-            label: 'Einnahmen aus fossilen Brennstoffen',
-            explanation:
-              'Erzielt das Unternehmen einen Teil seiner Einnahmen aus Aktivitäten im Bereich fossiler Brennstoffe und/oder besitzt das Unternehmen Immobilien, die an der Gewinnung, Lagerung, dem Transport oder der Herstellung fossiler Brennstoffe beteiligt sind?',
-            shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
-            valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
-              formatYesNoValueForDatatable(dataset.umwelt?.fossileBrennstoffe?.einnahmenAusFossilenBrennstoffen),
-          },
-          {
-            type: 'cell',
-            label: 'Berichterstattung Einnahmen aus fossilen Brennstoffen',
-            explanation:
-              'Anteil (%) der Einnahmen aus fossilen Brennstoffen aus den gesamten Einnahmen für das aktuelle Kalenderjahr, die letzten drei Jahre sowie die Prognosen für die kommenden drei Jahre',
-            shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.umwelt?.fossileBrennstoffe?.einnahmenAusFossilenBrennstoffen == 'Yes',
-            valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
-              formatEsgQuestionnaireYearlyDecimalTimeseriesDataForTable(
-                dataset.umwelt?.fossileBrennstoffe?.berichterstattungEinnahmenAusFossilenBrennstoffen,
-                {
-                  prozentDerEinnahmenAusFossilenBrennstoffen: {
-                    label: '% der Einnahmen aus fossilen Brennstoffen',
-                    unitSuffix: '%',
-                  },
-                },
-                'Berichterstattung Einnahmen aus fossilen Brennstoffen'
-              ),
-          },
-        ],
-      },
-      {
-        type: 'section',
-        label: 'Taxonomie',
-        expandOnPageLoad: true,
-        shouldDisplay: (): boolean => true,
-        children: [
-          {
-            type: 'cell',
-            label: 'Taxonomie Berichterstattung',
-            explanation: 'Wird der EU-Taxonomie Bericht auf Basis NFRD oder auf Basis CSRD erstellt?',
-            shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
-            valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
-              ((): AvailableMLDTDisplayObjectTypes => {
-                const mappings = {
-                  Nfrd: 'NFRD',
-                  Csrd: 'CSRD',
-                };
-                return formatStringForDatatable(
-                  dataset.umwelt?.taxonomie?.taxonomieBerichterstattung
-                    ? getOriginalNameFromTechnicalName(dataset.umwelt?.taxonomie?.taxonomieBerichterstattung, mappings)
-                    : ''
-                );
-              })(),
-          },
-          {
-            type: 'cell',
-            label: 'EU Taxonomie Kompass Aktivitäten',
-            explanation: 'Welche Aktivitäten gem. dem EU Taxonomie-Kompass übt das Unternehmen aus?',
-            shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
-            valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
-              formatListOfStringsForDatatable(
-                dataset.umwelt?.taxonomie?.euTaxonomieKompassAktivitaeten?.map((it) => {
-                  return activityApiNameToHumanizedName(it);
-                }),
-                'EU Taxonomie Kompass Aktivit\u00E4ten'
-              ),
-          },
-          {
-            type: 'cell',
-            label: 'Umsatz/Investitionsaufwand für nachhaltige Aktivitäten',
-            explanation:
-              'Wie hoch ist der Umsatz/Investitionsaufwand des Unternehmens aus nachhaltigen Aktivitäten (Mio. €) gemäß einer Definition der EU-Taxonomie?',
-            shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
-            valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
-              formatEsgQuestionnaireYearlyDecimalTimeseriesDataForTable(
-                dataset.umwelt?.taxonomie?.umsatzInvestitionsaufwandFuerNachhaltigeAktivitaeten,
-                {
-                  taxonomieGeeignetNachProzentUmsatz: {
-                    label: 'Taxonomie geeignet (eligible) nach % Umsatz',
-                    unitSuffix: '%',
-                  },
-                  taxonomieGeeignetNachProzentCapex: {
-                    label: 'Taxonomie geeignet (eligible) nach % Capex',
-                    unitSuffix: '%',
-                  },
-                  taxonomieKonformNachProzentUmsatz: {
-                    label: 'Taxonomie konform (aligned) nach % Umsatz',
-                    unitSuffix: '%',
-                  },
-                  taxonomieKonformNachProzentCapex: {
-                    label: 'Taxonomie konform (aligned) nach % Capex',
-                    unitSuffix: '%',
-                  },
-                },
-                'Umsatz/Investitionsaufwand f\u00FCr nachhaltige Aktivit\u00E4ten'
+                dataset.umwelt?.risikenAndMassnahmenKlima?.beschreibungDerNutzungVonSzenarioanalysen
               ),
           },
         ],

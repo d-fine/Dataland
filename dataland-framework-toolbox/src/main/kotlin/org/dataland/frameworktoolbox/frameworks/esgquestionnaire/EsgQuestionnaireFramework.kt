@@ -1,28 +1,16 @@
 package org.dataland.frameworktoolbox.frameworks.esgquestionnaire
 
 import ComponentGenerationUtilsForGermanFrameworks
-import org.apache.commons.text.StringEscapeUtils.escapeEcmaScript
 import org.dataland.frameworktoolbox.frameworks.FrameworkGenerationFeatures
 import org.dataland.frameworktoolbox.frameworks.PavedRoadFramework
 import org.dataland.frameworktoolbox.intermediate.Framework
 import org.dataland.frameworktoolbox.intermediate.components.DateComponent
-import org.dataland.frameworktoolbox.intermediate.components.MultiSelectComponent
 import org.dataland.frameworktoolbox.intermediate.components.YesNoComponent
-import org.dataland.frameworktoolbox.intermediate.components.addStandardCellWithValueGetterFactory
 import org.dataland.frameworktoolbox.intermediate.components.addStandardUploadConfigCell
 import org.dataland.frameworktoolbox.intermediate.group.ComponentGroup
-import org.dataland.frameworktoolbox.intermediate.group.create
 import org.dataland.frameworktoolbox.intermediate.group.edit
 import org.dataland.frameworktoolbox.intermediate.group.get
-import org.dataland.frameworktoolbox.intermediate.logic.DependsOnComponentValue
-import org.dataland.frameworktoolbox.specific.datamodel.TypeReference
-import org.dataland.frameworktoolbox.specific.fixturegenerator.elements.FixtureSectionBuilder
-import org.dataland.frameworktoolbox.specific.uploadconfig.functional.FrameworkUploadOptions
-import org.dataland.frameworktoolbox.specific.viewconfig.elements.getTypescriptFieldAccessor
-import org.dataland.frameworktoolbox.specific.viewconfig.functional.FrameworkDisplayValueLambda
 import org.dataland.frameworktoolbox.template.components.ComponentGenerationUtils
-import org.dataland.frameworktoolbox.utils.diagnostic.DiagnosticManager
-import org.dataland.frameworktoolbox.utils.typescript.TypeScriptImport
 import org.springframework.stereotype.Component
 import java.io.File
 
@@ -41,9 +29,9 @@ class EsgQuestionnaireFramework : PavedRoadFramework(
     FrameworkGenerationFeatures.allExcept(FrameworkGenerationFeatures.QaModel),
 ) {
 
-    override fun configureDiagnostics(diagnosticManager: DiagnosticManager) {
+    /*override fun configureDiagnostics(diagnosticManager: DiagnosticManager) {
         diagnosticManager.suppress("IgnoredRow-38-3118f246")
-    }
+    } TODO suppression is probably not needed anymore. remove at the every end*/
 
     private fun setGroupsThatAreExpandedOnPageLoad(framework: Framework) {
         framework.root.edit<ComponentGroup>("allgemein") {
@@ -71,25 +59,6 @@ class EsgQuestionnaireFramework : PavedRoadFramework(
             }
         }
     }
-
-    private fun createRollingWindowComponentsInCategoryUmwelt(
-        framework: Framework,
-    ) {
-        framework.root.edit<ComponentGroup>("umwelt") {
-            val umweltGroup = this
-            with(EsgQuestionnaireUmweltRollingWindowComponents) {
-                treibhausgasBerichterstattungUndPrognosen(umweltGroup)
-                berichterstattungEnergieverbrauch(umweltGroup)
-                energieeffizienzImmobilienanlagen(umweltGroup)
-                berichterstattungWasserverbrauch(umweltGroup)
-                unternehmensGruppenStrategieBzglAbfallproduktion(umweltGroup)
-                recyclingImProduktionsprozess(umweltGroup)
-                berichterstattungEinnahmenAusFossilenBrennstoffen(umweltGroup)
-                umsatzInvestitionsaufwandFuerNachhaltige(umweltGroup)
-            }
-        }
-    }
-
     private fun createRollingWindowComponentsInCategorySoziales(
         framework: Framework,
     ) {
@@ -119,12 +88,7 @@ class EsgQuestionnaireFramework : PavedRoadFramework(
     override fun customizeHighLevelIntermediateRepresentation(framework: Framework) {
         setGroupsThatAreExpandedOnPageLoad(framework)
         overwriteFakeFixtureGenerationForDataDate(framework)
-        val berichtsPflicht = framework.root
-            .get<ComponentGroup>("general")
-            .get<ComponentGroup>("masterData")
-            .get<YesNoComponent>("berichtspflichtUndEinwilligungZurVeroeffentlichung")
 
-        createRollingWindowComponentsInCategoryUmwelt(framework)
         createRollingWindowComponentsInCategorySoziales(framework)
         editListOfStringBaseDatapointComponents(framework)
         framework.root.edit<ComponentGroup>("general") {
@@ -134,109 +98,10 @@ class EsgQuestionnaireFramework : PavedRoadFramework(
                 }
             }
         }
-        framework.root.get<ComponentGroup>("umwelt").get<ComponentGroup>("taxonomie")
-            .create<MultiSelectComponent>(
-                "euTaxonomieKompassAktivitaeten",
-                "umsatzInvestitionsaufwandFuerNachhaltigeAktivitaeten",
-            ) {
-                setEuTaxonomieKompassAktivitaeten(this)
-                availableIf = DependsOnComponentValue(berichtsPflicht, "Yes")
-            }
     }
 
     override fun getComponentGenerationUtils(): ComponentGenerationUtils {
         return ComponentGenerationUtilsForGermanFrameworks()
-    }
-
-    private fun setEuTaxonomieKompassAktivitaeten(component: MultiSelectComponent) {
-        component.label = "EU Taxonomie Kompass Aktivitäten"
-        component.uploadPageExplanation = "Welche Aktivitäten gem. dem EU Taxonomie-Kompass übt das Unternehmen aus?"
-        setEuTaxonomieKompassAktivitaetenFixtureGenerator(component)
-        setEuTaxonomieKompassAktivitaetenViewConfigGenerator(component)
-        setEuTaxonomieKompassAktivitaetenUploadGenerator(component)
-        setEuTaxonomieKompassAktivitaetenDataModelGenerator(component)
-    }
-
-    private fun setEuTaxonomieKompassAktivitaetenFixtureGenerator(component: MultiSelectComponent) {
-        component.fixtureGeneratorGenerator = { sectionConfigBuilder: FixtureSectionBuilder ->
-            sectionConfigBuilder.addAtomicExpression(
-                component.identifier,
-                component.documentSupport.getFixtureExpression(
-                    fixtureExpression = "pickSubsetOfElements(Object.values(Activity))",
-                    nullableFixtureExpression =
-                    "dataGenerator.valueOrNull(pickSubsetOfElements(Object.values(Activity)))",
-                    nullable = component.isNullable,
-                ),
-                imports = setOf(
-                    TypeScriptImport("Activity", "@clients/backend"),
-                ),
-            )
-        }
-    }
-
-    private fun setEuTaxonomieKompassAktivitaetenViewConfigGenerator(component: MultiSelectComponent) {
-        component.viewConfigGenerator = { sectionConfigBuilder ->
-            sectionConfigBuilder.addStandardCellWithValueGetterFactory(
-                component,
-                FrameworkDisplayValueLambda(
-                    "formatListOfStringsForDatatable(" +
-                        "${component.getTypescriptFieldAccessor()}?.map(it => {\n" +
-                        "                  return activityApiNameToHumanizedName(it)}), " +
-                        "'${escapeEcmaScript(component.label)}'" +
-                        ")",
-                    setOf(
-                        TypeScriptImport(
-                            "activityApiNameToHumanizedName",
-                            "@/components/resources/frameworkDataSearch/EuTaxonomyActivityNames",
-                        ),
-                        TypeScriptImport(
-                            "formatListOfStringsForDatatable",
-                            "@/components/resources/dataTable/conversion/MultiSelectValueGetterFactory",
-                        ),
-                    ),
-                ),
-            )
-        }
-    }
-
-    private fun setEuTaxonomieKompassAktivitaetenUploadGenerator(component: MultiSelectComponent) {
-        component.uploadConfigGenerator = { sectionUploadConfigBuilder ->
-            sectionUploadConfigBuilder.addStandardUploadConfigCell(
-                frameworkUploadOptions = FrameworkUploadOptions(
-                    body = "getActivityNamesAsDropdownOptions()",
-                    imports = setOf(
-                        TypeScriptImport(
-                            "getActivityNamesAsDropdownOptions",
-                            "@/components/resources/frameworkDataSearch/EuTaxonomyActivityNames",
-                        ),
-                    ),
-                ),
-                component = component,
-                uploadComponentName = "MultiSelectFormField",
-            )
-        }
-    }
-
-    private fun setEuTaxonomieKompassAktivitaetenDataModelGenerator(component: MultiSelectComponent) {
-        component.dataModelGenerator = { dataClassBuilder ->
-            dataClassBuilder.addProperty(
-                component.identifier,
-                component.documentSupport.getJvmTypeReference(
-                    TypeReference(
-                        "java.util.EnumSet",
-                        true,
-                        listOf(
-                            TypeReference(
-                                "org.dataland.datalandbackend.model.enums.eutaxonomy.nonfinancials.Activity",
-                                false,
-                            ),
-                        ),
-                    ),
-                    true,
-                ),
-                component.documentSupport.getJvmAnnotations(),
-            )
-        }
     }
 
     private fun customizeBerichtsPflicht(component: YesNoComponent) {

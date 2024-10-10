@@ -88,11 +88,9 @@ describeIf(
                         const frontendSubmittedEsgQuestionnaireDataset = axiosResponse.data.data;
 
                         // esgQuestionnaireFixtureForTest.t.allgemein?.sektoren?.auflistungDerSektoren?.sort(); TODO deactivate for now
-                        esgQuestionnaireFixtureForTest.t.umwelt?.taxonomie?.euTaxonomieKompassAktivitaeten?.sort();
                         esgQuestionnaireFixtureForTest.t.unternehmensfuehrungGovernance?.unternehmensrichtlinien?.veroeffentlichteUnternehmensrichtlinien?.sort();
 
                         // frontendSubmittedEsgQuestionnaireDataset.allgemein?.sektoren?.auflistungDerSektoren?.sort(); TODO deactivate for now
-                        frontendSubmittedEsgQuestionnaireDataset.umwelt?.taxonomie?.euTaxonomieKompassAktivitaeten?.sort();
                         frontendSubmittedEsgQuestionnaireDataset.unternehmensfuehrungGovernance?.unternehmensrichtlinien?.veroeffentlichteUnternehmensrichtlinien?.sort();
 
                         compareObjectKeysAndValuesDeep(
