@@ -58,7 +58,7 @@
 					"geplanteVollzeitaequivalenteAb2031": 50672.91,
 					"chancenOderHindernisse": "Strues sublime vaco reprehenderit tot. Tui ducimus cruentus cito subvenio. Stips saepe contego turbo conor varietas undique labore corrigo."
 				},
-				"taxonomieKpisAndBestimmteAktivitaeten": {
+				"taxonomieKpisUndBestimmteAktivitaeten": {
 					"wirtschaftszweige": [
 						"32.40",
 						"55.10"
@@ -89,7 +89,7 @@
 					"geplanterProzentualerUmsatzanteilImSektorTabakanbauUndVerarbeitungIn2030": 52.07,
 					"geplanterProzentualerUmsatzanteilImSektorTabakanbauUndVerarbeitungIn2040": 99.3
 				},
-				"esgRatingAndZertifizierung": {
+				"esgRatingUndZertifizierung": {
 					"esgRating": "Yes",
 					"ratingagentur": "schemas",
 					"ergebnisDesEsgRatings": null,
@@ -245,7 +245,7 @@
 					"anteilDesNichtRecycletenAbfallsAnDerGesamtAbfallmenge": 84.25,
 					"mengeAnGefaehrlichenAbfaellen": null
 				},
-				"risikenAndMassnahmenKlima": {
+				"risikenUndMassnahmenKlima": {
 					"transitorischeKlimaUndUmweltrisiken": "Ipsum celebrer auxilium dolorum ver pax consuasor. Ocer arto vulnus voluptas facere auctus conturbo collum. Commodi iusto temptatio similique demo tenus expedita acer pecto super.",
 					"physischeKlimaUndUmweltrisiken": null,
 					"vonPhysischenKlimaUndUmweltrisikenBetroffeneStandorte": null,
@@ -261,9 +261,7 @@
 							"fileName": "Certification",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
 						}
-					}
-				},
-				"risikenUndMassnahmenKlima": {
+					},
 					"transitorischeRisiken": "Demergo victus acies utroque odio crinis. Numquam aqua carus. Tabgo comptus infit usque adipiscor arca cras ara.",
 					"physischeRisiken": null,
 					"produkteZurReduzierungDerUmweltbelastung": "Yes",
@@ -427,7 +425,7 @@
 					"geplanteVollzeitaequivalenteAb2031": 42149.3,
 					"chancenOderHindernisse": "Ipsa capto beatae causa considero deduco sulum credo. Accusator repellat tolero animi. Caritas comes textilis vilicus harum quia carbo audeo vester sumo."
 				},
-				"taxonomieKpisAndBestimmteAktivitaeten": {
+				"taxonomieKpisUndBestimmteAktivitaeten": {
 					"wirtschaftszweige": [
 						"45.3",
 						"50.3"
@@ -458,7 +456,7 @@
 					"geplanterProzentualerUmsatzanteilImSektorTabakanbauUndVerarbeitungIn2030": 89.85,
 					"geplanterProzentualerUmsatzanteilImSektorTabakanbauUndVerarbeitungIn2040": 6.21
 				},
-				"esgRatingAndZertifizierung": {
+				"esgRatingUndZertifizierung": {
 					"esgRating": "Yes",
 					"ratingagentur": "portals",
 					"ergebnisDesEsgRatings": "paradigms",
@@ -609,7 +607,7 @@
 					"anteilDesNichtRecycletenAbfallsAnDerGesamtAbfallmenge": 61.72,
 					"mengeAnGefaehrlichenAbfaellen": null
 				},
-				"risikenAndMassnahmenKlima": {
+				"risikenUndMassnahmenKlima": {
 					"transitorischeKlimaUndUmweltrisiken": "Territo est adicio quis antepono aeternus nulla tergo baiulus sol. Despecto sopor clarus argentum bis aegrus. Verus antea accusantium vinco.",
 					"physischeKlimaUndUmweltrisiken": [
 						"Erdbeben",
@@ -624,9 +622,7 @@
 					"beschreibungDerNutzungVonSzenarioanalysen": "Voluptas asper adduco subnecto molestiae consequatur. Tego admiratio unus terror aliqua laborum ascit. Absens bardus antepono.",
 					"beruecksichtigungVonKlimaUndUmweltrisiken": null,
 					"zeithorizontDerBeruecksichtigungVonKlimaUndUmweltrisikenImGeschaeftsmodell": "Capto vitae sufficio aestivus summisse nihil cogo. Apostolus comparo curatio virtus contabesco dolore. Apto aveho terror.",
-					"transitionsplanVorhanden": null
-				},
-				"risikenUndMassnahmenKlima": {
+					"transitionsplanVorhanden": null,
 					"transitorischeRisiken": null,
 					"physischeRisiken": "Paulatim complectus apto. Vitiosus coniuratio adfero succurro sublime occaecati incidunt usus traho. Una aeneus aeternus.",
 					"produkteZurReduzierungDerUmweltbelastung": null,
@@ -805,7 +801,7 @@
 					"geplanteVollzeitaequivalenteAb2031": 8896.85,
 					"chancenOderHindernisse": "Conicio cunabula suscipio studio. Apparatus et tonsor decens. Tabernus culpa impedit baiulus cicuta corrigo decet colligo."
 				},
-				"taxonomieKpisAndBestimmteAktivitaeten": {
+				"taxonomieKpisUndBestimmteAktivitaeten": {
 					"wirtschaftszweige": [
 						"65",
 						"93.12",
@@ -837,7 +833,7 @@
 					"geplanterProzentualerUmsatzanteilImSektorTabakanbauUndVerarbeitungIn2030": null,
 					"geplanterProzentualerUmsatzanteilImSektorTabakanbauUndVerarbeitungIn2040": null
 				},
-				"esgRatingAndZertifizierung": {
+				"esgRatingUndZertifizierung": {
 					"esgRating": "Yes",
 					"ratingagentur": "interfaces",
 					"ergebnisDesEsgRatings": "metrics",
@@ -989,7 +985,7 @@
 					"anteilDesNichtRecycletenAbfallsAnDerGesamtAbfallmenge": 46.39,
 					"mengeAnGefaehrlichenAbfaellen": 69899.52
 				},
-				"risikenAndMassnahmenKlima": {
+				"risikenUndMassnahmenKlima": {
 					"transitorischeKlimaUndUmweltrisiken": null,
 					"physischeKlimaUndUmweltrisiken": [
 						"Meeresspiegelanstieg",
@@ -1008,9 +1004,7 @@
 					"transitionsplanVorhanden": {
 						"value": "Yes",
 						"dataSource": null
-					}
-				},
-				"risikenUndMassnahmenKlima": {
+					},
 					"transitorischeRisiken": "Strues animi abbas exercitationem callide. Constans tendo vestrum vito decor. Callide vere studio.",
 					"physischeRisiken": "Voro conicio arca tonsor conturbo careo vestigium absens aetas. Sordeo aer caelestis. Clarus apostolus nam sto abscido illo aurum creptio summa.",
 					"produkteZurReduzierungDerUmweltbelastung": null,
@@ -1184,7 +1178,7 @@
 					"geplanteVollzeitaequivalenteAb2031": 92105.75,
 					"chancenOderHindernisse": "Aegre sufficio reprehenderit uxor degusto adsum. Eveniet coerceo stips tero tremo alienus tantillus. Demulceo ullus adamo thema vindico cunabula."
 				},
-				"taxonomieKpisAndBestimmteAktivitaeten": {
+				"taxonomieKpisUndBestimmteAktivitaeten": {
 					"wirtschaftszweige": [
 						"43.11",
 						"68.2"
@@ -1215,7 +1209,7 @@
 					"geplanterProzentualerUmsatzanteilImSektorTabakanbauUndVerarbeitungIn2030": 22.25,
 					"geplanterProzentualerUmsatzanteilImSektorTabakanbauUndVerarbeitungIn2040": 29.18
 				},
-				"esgRatingAndZertifizierung": {
+				"esgRatingUndZertifizierung": {
 					"esgRating": "Yes",
 					"ratingagentur": "users",
 					"ergebnisDesEsgRatings": "content",
@@ -1350,7 +1344,7 @@
 					"anteilDesNichtRecycletenAbfallsAnDerGesamtAbfallmenge": 13.94,
 					"mengeAnGefaehrlichenAbfaellen": null
 				},
-				"risikenAndMassnahmenKlima": {
+				"risikenUndMassnahmenKlima": {
 					"transitorischeKlimaUndUmweltrisiken": "Venia victoria tepesco cogo asper damno illo infit caecus. Ab valeo incidunt annus tempora spectaculum natus tunc suspendo. Uter coma virtus suggero solvo vado esse amitto testimonium.",
 					"physischeKlimaUndUmweltrisiken": null,
 					"vonPhysischenKlimaUndUmweltrisikenBetroffeneStandorte": "Calco crustulum sublime adipiscor carmen succedo. Talio tabella totam. Occaecati natus cohaero aeternus alienus.",
@@ -1360,9 +1354,7 @@
 					"beschreibungDerNutzungVonSzenarioanalysen": null,
 					"beruecksichtigungVonKlimaUndUmweltrisiken": "Yes",
 					"zeithorizontDerBeruecksichtigungVonKlimaUndUmweltrisikenImGeschaeftsmodell": "Laboriosam eveniet confugo cras adnuo alioqui depraedor aggredior corona. Delinquo spiritus vestigium. Sumo atrox sumo cultura.",
-					"transitionsplanVorhanden": null
-				},
-				"risikenUndMassnahmenKlima": {
+					"transitionsplanVorhanden": null,
 					"transitorischeRisiken": "Vehemens caute conturbo depraedor. Ante depulso suppellex cultellus bestia est illum. Ambulo nemo tenuis capto adulatio ullus denuo pecus tristis tyrannus.",
 					"physischeRisiken": "Ullam texo cavus dolore totam sono. Vulnus allatus theca absorbeo tricesimus. Totam ciminatio vobis necessitatibus pectus acervus amiculum consectetur cursus.",
 					"produkteZurReduzierungDerUmweltbelastung": "Yes",
@@ -1525,7 +1517,7 @@
 					"geplanteVollzeitaequivalenteAb2031": 19634.25,
 					"chancenOderHindernisse": "Vulticulus spiritus cavus enim tergo audacia strenuus tracto aspicio. Communis spiritus suus patrocinor contigo. Attero velit iusto qui adstringo tumultus video absque angustus teneo."
 				},
-				"taxonomieKpisAndBestimmteAktivitaeten": {
+				"taxonomieKpisUndBestimmteAktivitaeten": {
 					"wirtschaftszweige": [
 						"01.29",
 						"14.19",
@@ -1559,7 +1551,7 @@
 					"geplanterProzentualerUmsatzanteilImSektorTabakanbauUndVerarbeitungIn2030": null,
 					"geplanterProzentualerUmsatzanteilImSektorTabakanbauUndVerarbeitungIn2040": 29.07
 				},
-				"esgRatingAndZertifizierung": {
+				"esgRatingUndZertifizierung": {
 					"esgRating": "No",
 					"ratingagentur": null,
 					"ergebnisDesEsgRatings": "methodologies",
@@ -1709,7 +1701,7 @@
 					"anteilDesNichtRecycletenAbfallsAnDerGesamtAbfallmenge": 89.67,
 					"mengeAnGefaehrlichenAbfaellen": 32400.24
 				},
-				"risikenAndMassnahmenKlima": {
+				"risikenUndMassnahmenKlima": {
 					"transitorischeKlimaUndUmweltrisiken": "Currus tego caritas. Decerno tempore soleo cuppedia assumenda nihil adulescens desipio utpote auditor. Sum bibo sufficio vilitas cribro possimus cuppedia.",
 					"physischeKlimaUndUmweltrisiken": [
 						"RadioaktiveStrahlung",
@@ -1733,9 +1725,7 @@
 							"fileName": "Certification",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
 						}
-					}
-				},
-				"risikenUndMassnahmenKlima": {
+					},
 					"transitorischeRisiken": "Uredo et avaritia canonicus adfero tamen centum. Contabesco voluptatibus iste canto usque cum aptus audacia texo. Dedico atrox ceno aer teneo ciminatio.",
 					"physischeRisiken": null,
 					"produkteZurReduzierungDerUmweltbelastung": null,
@@ -1884,7 +1874,7 @@
 					"geplanteVollzeitaequivalenteAb2031": 26580.47,
 					"chancenOderHindernisse": "Curatio coadunatio pecto causa tripudio cavus totam ocer vomica ustilo. Ulciscor officia adsuesco tamdiu. Amplus tribuo ait conforto ara."
 				},
-				"taxonomieKpisAndBestimmteAktivitaeten": {
+				"taxonomieKpisUndBestimmteAktivitaeten": {
 					"wirtschaftszweige": [
 						"19.10",
 						"24.1",
@@ -1917,7 +1907,7 @@
 					"geplanterProzentualerUmsatzanteilImSektorTabakanbauUndVerarbeitungIn2030": 67.6,
 					"geplanterProzentualerUmsatzanteilImSektorTabakanbauUndVerarbeitungIn2040": 54.52
 				},
-				"esgRatingAndZertifizierung": {
+				"esgRatingUndZertifizierung": {
 					"esgRating": "No",
 					"ratingagentur": "schemas",
 					"ergebnisDesEsgRatings": "supply-chains",
@@ -2044,7 +2034,7 @@
 					"anteilDesNichtRecycletenAbfallsAnDerGesamtAbfallmenge": 70.92,
 					"mengeAnGefaehrlichenAbfaellen": 87437.54
 				},
-				"risikenAndMassnahmenKlima": {
+				"risikenUndMassnahmenKlima": {
 					"transitorischeKlimaUndUmweltrisiken": null,
 					"physischeKlimaUndUmweltrisiken": null,
 					"vonPhysischenKlimaUndUmweltrisikenBetroffeneStandorte": "Candidus supellex desidero cura. Deleniti quibusdam molestias crepusculum combibo. Patior qui vigor adipiscor vomica aurum brevis tergeo confugo alter.",
@@ -2054,9 +2044,7 @@
 					"beschreibungDerNutzungVonSzenarioanalysen": "Cuppedia adfectus provident debilito. Tam demoror depono vespillo complectus usque sopor atrox defleo deorsum. Crebro sum crebro cito vulpes.",
 					"beruecksichtigungVonKlimaUndUmweltrisiken": "Yes",
 					"zeithorizontDerBeruecksichtigungVonKlimaUndUmweltrisikenImGeschaeftsmodell": "Animadverto a clibanus tepesco valetudo. Trans harum suffragium curso sto defetiscor commodo suasoria corrupti odit. Sollers caveo tantillus addo aranea vestrum.",
-					"transitionsplanVorhanden": null
-				},
-				"risikenUndMassnahmenKlima": {
+					"transitionsplanVorhanden": null,
 					"transitorischeRisiken": null,
 					"physischeRisiken": null,
 					"produkteZurReduzierungDerUmweltbelastung": "No",
@@ -2206,7 +2194,7 @@
 					"geplanteVollzeitaequivalenteAb2031": 66514.66,
 					"chancenOderHindernisse": "Sapiente vigilo contra delectus atqui maxime quasi tamen. Corporis credo vulticulus cohors. Aptus tui corrumpo curia subiungo carus viriliter consequuntur."
 				},
-				"taxonomieKpisAndBestimmteAktivitaeten": {
+				"taxonomieKpisUndBestimmteAktivitaeten": {
 					"wirtschaftszweige": [
 						"18.14",
 						"26.40",
@@ -2238,7 +2226,7 @@
 					"geplanterProzentualerUmsatzanteilImSektorTabakanbauUndVerarbeitungIn2030": 8.45,
 					"geplanterProzentualerUmsatzanteilImSektorTabakanbauUndVerarbeitungIn2040": 25.17
 				},
-				"esgRatingAndZertifizierung": {
+				"esgRatingUndZertifizierung": {
 					"esgRating": null,
 					"ratingagentur": "niches",
 					"ergebnisDesEsgRatings": "content",
@@ -2342,7 +2330,7 @@
 					"anteilDesNichtRecycletenAbfallsAnDerGesamtAbfallmenge": null,
 					"mengeAnGefaehrlichenAbfaellen": 63762.98
 				},
-				"risikenAndMassnahmenKlima": {
+				"risikenUndMassnahmenKlima": {
 					"transitorischeKlimaUndUmweltrisiken": null,
 					"physischeKlimaUndUmweltrisiken": [
 						"RadioaktiveStrahlung",
@@ -2368,9 +2356,7 @@
 					"transitionsplanVorhanden": {
 						"value": "No",
 						"dataSource": null
-					}
-				},
-				"risikenUndMassnahmenKlima": {
+					},
 					"transitorischeRisiken": "Nulla desparatus excepturi statim utilis solvo tenus vomito tres curatio. Cogo nesciunt quas cervus sono vinculum verbum terga tandem. Vicinus caterva summopere.",
 					"physischeRisiken": "Neque desidero argentum cornu pectus. Thema contabesco tabella acsi sapiente. Aestas quae assentator desino amicitia vinco candidus.",
 					"produkteZurReduzierungDerUmweltbelastung": "No",
@@ -2517,7 +2503,7 @@
 					"geplanteVollzeitaequivalenteAb2031": null,
 					"chancenOderHindernisse": "Derelinquo commemoro tremo tribuo at textus carmen. Ara quos aqua aeneus aeneus. Aliquam cogo thymbra."
 				},
-				"taxonomieKpisAndBestimmteAktivitaeten": {
+				"taxonomieKpisUndBestimmteAktivitaeten": {
 					"wirtschaftszweige": [
 						"23.62",
 						"27.20",
@@ -2551,7 +2537,7 @@
 					"geplanterProzentualerUmsatzanteilImSektorTabakanbauUndVerarbeitungIn2030": 72.36,
 					"geplanterProzentualerUmsatzanteilImSektorTabakanbauUndVerarbeitungIn2040": 5.89
 				},
-				"esgRatingAndZertifizierung": {
+				"esgRatingUndZertifizierung": {
 					"esgRating": "Yes",
 					"ratingagentur": null,
 					"ergebnisDesEsgRatings": "models",
@@ -2661,7 +2647,7 @@
 					"anteilDesNichtRecycletenAbfallsAnDerGesamtAbfallmenge": 61.89,
 					"mengeAnGefaehrlichenAbfaellen": 6402.71
 				},
-				"risikenAndMassnahmenKlima": {
+				"risikenUndMassnahmenKlima": {
 					"transitorischeKlimaUndUmweltrisiken": null,
 					"physischeKlimaUndUmweltrisiken": null,
 					"vonPhysischenKlimaUndUmweltrisikenBetroffeneStandorte": "Animi casso solus victoria. Beatus pectus avaritia repellendus summisse theologus modi conicio. Voluntarius amita attollo aequitas aiunt summopere capillus aegrus.",
@@ -2677,9 +2663,7 @@
 							"fileName": "Policy",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
 						}
-					}
-				},
-				"risikenUndMassnahmenKlima": {
+					},
 					"transitorischeRisiken": "Censura baiulus dolores vir theca. Coruscus deleo volaticus valeo cognomen. Ut congregatio repellendus minus coerceo.",
 					"physischeRisiken": "Ambulo cruciamentum aestas amissio ara aedificium bos arto vulgaris vir. Talis bene autem vito cogito surgo cito succedo. Possimus combibo claro.",
 					"produkteZurReduzierungDerUmweltbelastung": "Yes",
@@ -2819,7 +2803,7 @@
 					"geplanteVollzeitaequivalenteAb2031": 978.58,
 					"chancenOderHindernisse": "Capillus soluta stabilis amaritudo. Debeo vilicus cubo cerno sollers conatus aliqua. Defluo sto sperno ut volo caelestis succedo."
 				},
-				"taxonomieKpisAndBestimmteAktivitaeten": {
+				"taxonomieKpisUndBestimmteAktivitaeten": {
 					"wirtschaftszweige": [
 						"14.12",
 						"41.20",
@@ -2853,7 +2837,7 @@
 					"geplanterProzentualerUmsatzanteilImSektorTabakanbauUndVerarbeitungIn2030": 5.04,
 					"geplanterProzentualerUmsatzanteilImSektorTabakanbauUndVerarbeitungIn2040": 25.55
 				},
-				"esgRatingAndZertifizierung": {
+				"esgRatingUndZertifizierung": {
 					"esgRating": "Yes",
 					"ratingagentur": "supply-chains",
 					"ergebnisDesEsgRatings": "e-markets",
@@ -2987,7 +2971,7 @@
 					"anteilDesNichtRecycletenAbfallsAnDerGesamtAbfallmenge": 1.65,
 					"mengeAnGefaehrlichenAbfaellen": 7996.89
 				},
-				"risikenAndMassnahmenKlima": {
+				"risikenUndMassnahmenKlima": {
 					"transitorischeKlimaUndUmweltrisiken": "Pauci bonus doloribus autem tenus expedita tonsor animi atrocitas. Supra thermae damnatio certus accusamus denique aegre confero aiunt ager. Arbor calamitas suscipio ullam teres decerno nam.",
 					"physischeKlimaUndUmweltrisiken": null,
 					"vonPhysischenKlimaUndUmweltrisikenBetroffeneStandorte": "Eius desparatus temptatio animus totus cupiditas colligo supra. Ex aliquam arcus amiculum tot aer. Delectus decumbo audeo similique ambulo minima deduco surgo.",
@@ -3003,9 +2987,7 @@
 							"fileName": "Policy",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
 						}
-					}
-				},
-				"risikenUndMassnahmenKlima": {
+					},
 					"transitorischeRisiken": "Sponte quia cresco deserunt socius ultra bellum alveus praesentium. Barba cohibeo turba suscipio ullam velum spoliatio quibusdam auditor. Triumphus caelestis dignissimos eum aetas celo umerus tandem.",
 					"physischeRisiken": "Virtus curtus clibanus chirographum tripudio auditor consectetur agnosco degenero. Tametsi dolorem spero. Somnus appello uredo.",
 					"produkteZurReduzierungDerUmweltbelastung": "NA",
@@ -3173,7 +3155,7 @@
 					"geplanteVollzeitaequivalenteAb2031": null,
 					"chancenOderHindernisse": "Creber ago totidem appositus spes odit. Depromo depraedor calco aperiam coruscus comes adhaero. Debitis ascisco debitis pauper talus valeo spes asperiores tondeo et."
 				},
-				"taxonomieKpisAndBestimmteAktivitaeten": {
+				"taxonomieKpisUndBestimmteAktivitaeten": {
 					"wirtschaftszweige": [
 						"81.10",
 						"82.20"
@@ -3204,7 +3186,7 @@
 					"geplanterProzentualerUmsatzanteilImSektorTabakanbauUndVerarbeitungIn2030": null,
 					"geplanterProzentualerUmsatzanteilImSektorTabakanbauUndVerarbeitungIn2040": 5.1
 				},
-				"esgRatingAndZertifizierung": {
+				"esgRatingUndZertifizierung": {
 					"esgRating": null,
 					"ratingagentur": null,
 					"ergebnisDesEsgRatings": "initiatives",
@@ -3317,7 +3299,7 @@
 					"anteilDesNichtRecycletenAbfallsAnDerGesamtAbfallmenge": 25.26,
 					"mengeAnGefaehrlichenAbfaellen": 91405.31
 				},
-				"risikenAndMassnahmenKlima": {
+				"risikenUndMassnahmenKlima": {
 					"transitorischeKlimaUndUmweltrisiken": "Deorsum audio tantillus ustilo balbus vestigium vallum tabesco. Vinculum tredecim tui doloremque certe neque decet vis. Adipiscor explicabo catena fugit crebro talio vita curriculum.",
 					"physischeKlimaUndUmweltrisiken": [
 						"DuerrenAndHitzewellen",
@@ -3342,9 +3324,7 @@
 							"fileName": "Policy",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
 						}
-					}
-				},
-				"risikenUndMassnahmenKlima": {
+					},
 					"transitorischeRisiken": "Atrocitas quia uter. Umbra tot utpote eius creo patrocinor decet earum. Appono patruus magni carcer spero.",
 					"physischeRisiken": "Thymum virgo maxime ad. Alter amicitia contabesco artificiose stabilis qui facere veniam. Tumultus cattus aurum tantum.",
 					"produkteZurReduzierungDerUmweltbelastung": null,
@@ -3490,7 +3470,7 @@
 					"geplanteVollzeitaequivalenteAb2031": null,
 					"chancenOderHindernisse": "Attero depulso curis adamo sollers crapula annus. Aeger vilis sodalitas fuga conculco repudiandae turpis eaque vere. Confero apparatus statim."
 				},
-				"taxonomieKpisAndBestimmteAktivitaeten": {
+				"taxonomieKpisUndBestimmteAktivitaeten": {
 					"wirtschaftszweige": [
 						"17",
 						"26.2",
@@ -3524,7 +3504,7 @@
 					"geplanterProzentualerUmsatzanteilImSektorTabakanbauUndVerarbeitungIn2030": 10.9,
 					"geplanterProzentualerUmsatzanteilImSektorTabakanbauUndVerarbeitungIn2040": 60.48
 				},
-				"esgRatingAndZertifizierung": {
+				"esgRatingUndZertifizierung": {
 					"esgRating": "Yes",
 					"ratingagentur": "paradigms",
 					"ergebnisDesEsgRatings": "convergence",
@@ -3675,7 +3655,7 @@
 					"anteilDesNichtRecycletenAbfallsAnDerGesamtAbfallmenge": 74.36,
 					"mengeAnGefaehrlichenAbfaellen": 52354.23
 				},
-				"risikenAndMassnahmenKlima": {
+				"risikenUndMassnahmenKlima": {
 					"transitorischeKlimaUndUmweltrisiken": "Cunabula tabula statua. Suppellex derideo voluptates iure veritatis. Crustulum suadeo cattus suspendo.",
 					"physischeKlimaUndUmweltrisiken": [
 						"Erdbeben",
@@ -3703,9 +3683,7 @@
 							"fileName": "Policy",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
 						}
-					}
-				},
-				"risikenUndMassnahmenKlima": {
+					},
 					"transitorischeRisiken": "Talis tot ascisco vorago quisquam commemoro. Utroque acsi solium. Tutis quam agnitio arguo compono spes subito audeo.",
 					"physischeRisiken": "Conatus vomer testimonium calculus vulgivagus adduco basium. Tondeo absens amiculum aliqua. Volubilis acceptus cena cur abscido.",
 					"produkteZurReduzierungDerUmweltbelastung": "Yes",
@@ -3876,7 +3854,7 @@
 					"geplanteVollzeitaequivalenteAb2031": 44860.49,
 					"chancenOderHindernisse": "Congregatio conduco aeneus adsidue centum cognomen eius. Ducimus contego aeger succurro adsuesco atrocitas illum deleniti quae tamquam. Bellum tricesimus vilis suppono ultra suscipit."
 				},
-				"taxonomieKpisAndBestimmteAktivitaeten": {
+				"taxonomieKpisUndBestimmteAktivitaeten": {
 					"wirtschaftszweige": [
 						"06.1",
 						"13.3",
@@ -3908,7 +3886,7 @@
 					"geplanterProzentualerUmsatzanteilImSektorTabakanbauUndVerarbeitungIn2030": 75.62,
 					"geplanterProzentualerUmsatzanteilImSektorTabakanbauUndVerarbeitungIn2040": null
 				},
-				"esgRatingAndZertifizierung": {
+				"esgRatingUndZertifizierung": {
 					"esgRating": "No",
 					"ratingagentur": "methodologies",
 					"ergebnisDesEsgRatings": "interfaces",
@@ -4048,7 +4026,7 @@
 					"anteilDesNichtRecycletenAbfallsAnDerGesamtAbfallmenge": 95.69,
 					"mengeAnGefaehrlichenAbfaellen": 34241.92
 				},
-				"risikenAndMassnahmenKlima": {
+				"risikenUndMassnahmenKlima": {
 					"transitorischeKlimaUndUmweltrisiken": "Vicinus sufficio ipsum cohibeo cribro vitium tego surculus. Supellex suppono demonstro altus vinum comminor cura suffoco ustilo. Truculenter asper cognomen magni.",
 					"physischeKlimaUndUmweltrisiken": [
 						"Waldbraende",
@@ -4075,9 +4053,7 @@
 							"fileName": "Policy",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
 						}
-					}
-				},
-				"risikenUndMassnahmenKlima": {
+					},
 					"transitorischeRisiken": "Pectus creptio tamen credo conforto terra arto adulatio aegrus ultio. Suasoria votum vehemens provident tepesco. Curis ullus credo teres validus tenus benevolentia.",
 					"physischeRisiken": "Delego amaritudo neque dolores cenaculum compono ars. Iste magni cursus solio bonus aduro appono. Officia eum adhuc corporis demens alii.",
 					"produkteZurReduzierungDerUmweltbelastung": "No",
@@ -4246,7 +4222,7 @@
 					"geplanteVollzeitaequivalenteAb2031": 1117.42,
 					"chancenOderHindernisse": null
 				},
-				"taxonomieKpisAndBestimmteAktivitaeten": {
+				"taxonomieKpisUndBestimmteAktivitaeten": {
 					"wirtschaftszweige": [],
 					"gesamtumsatz": 89750.48,
 					"taxonomiefaehigerUmsatz": 23571.43,
@@ -4274,7 +4250,7 @@
 					"geplanterProzentualerUmsatzanteilImSektorTabakanbauUndVerarbeitungIn2030": 47.57,
 					"geplanterProzentualerUmsatzanteilImSektorTabakanbauUndVerarbeitungIn2040": 25.06
 				},
-				"esgRatingAndZertifizierung": {
+				"esgRatingUndZertifizierung": {
 					"esgRating": "Yes",
 					"ratingagentur": "convergence",
 					"ergebnisDesEsgRatings": "lifetime value",
@@ -4437,7 +4413,7 @@
 					"anteilDesNichtRecycletenAbfallsAnDerGesamtAbfallmenge": null,
 					"mengeAnGefaehrlichenAbfaellen": null
 				},
-				"risikenAndMassnahmenKlima": {
+				"risikenUndMassnahmenKlima": {
 					"transitorischeKlimaUndUmweltrisiken": "Amitto eos communis sordeo. Tricesimus tamisium illo arca. Trans ustulo deprimo tremo fugiat totidem nisi vulariter auctor tepidus.",
 					"physischeKlimaUndUmweltrisiken": [
 						"Stuerme",
@@ -4457,9 +4433,7 @@
 					"beschreibungDerNutzungVonSzenarioanalysen": null,
 					"beruecksichtigungVonKlimaUndUmweltrisiken": "No",
 					"zeithorizontDerBeruecksichtigungVonKlimaUndUmweltrisikenImGeschaeftsmodell": "Quod subseco atrocitas calamitas ascit tergum solio admitto. Temptatio conatus taceo depereo civis crastinus stillicidium cicuta acsi. Sodalitas vobis acceptus quisquam accusamus arma caterva deficio vado.",
-					"transitionsplanVorhanden": null
-				},
-				"risikenUndMassnahmenKlima": {
+					"transitionsplanVorhanden": null,
 					"transitorischeRisiken": "Deprecator tamisium appello. Demitto consequuntur suppellex demergo casus. Textilis cerno repudiandae carcer appello ambitus.",
 					"physischeRisiken": "Pax creta cura deserunt tabula comburo tersus. Summa carus clarus aro subnecto sumptus. Minus cotidie debitis.",
 					"produkteZurReduzierungDerUmweltbelastung": "No",
@@ -4634,7 +4608,7 @@
 					"geplanteVollzeitaequivalenteAb2031": null,
 					"chancenOderHindernisse": "Culpa cupiditate aegre congregatio. Atqui incidunt veritas tersus absorbeo cupiditate talus arbor creo consequuntur. Deserunt fuga beneficium tutis adsuesco."
 				},
-				"taxonomieKpisAndBestimmteAktivitaeten": {
+				"taxonomieKpisUndBestimmteAktivitaeten": {
 					"wirtschaftszweige": [],
 					"gesamtumsatz": null,
 					"taxonomiefaehigerUmsatz": 79111.16,
@@ -4662,7 +4636,7 @@
 					"geplanterProzentualerUmsatzanteilImSektorTabakanbauUndVerarbeitungIn2030": null,
 					"geplanterProzentualerUmsatzanteilImSektorTabakanbauUndVerarbeitungIn2040": 38.54
 				},
-				"esgRatingAndZertifizierung": {
+				"esgRatingUndZertifizierung": {
 					"esgRating": "No",
 					"ratingagentur": "platforms",
 					"ergebnisDesEsgRatings": "paradigms",
@@ -4814,7 +4788,7 @@
 					"anteilDesNichtRecycletenAbfallsAnDerGesamtAbfallmenge": null,
 					"mengeAnGefaehrlichenAbfaellen": 80085.94
 				},
-				"risikenAndMassnahmenKlima": {
+				"risikenUndMassnahmenKlima": {
 					"transitorischeKlimaUndUmweltrisiken": "Carcer desino placeat convoco. Necessitatibus ait umerus admiratio. Comburo canonicus explicabo sui congregatio clamo virtus.",
 					"physischeKlimaUndUmweltrisiken": [
 						"RadioaktiveStrahlung",
@@ -4839,9 +4813,7 @@
 							"fileName": "Certification",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
 						}
-					}
-				},
-				"risikenUndMassnahmenKlima": {
+					},
 					"transitorischeRisiken": null,
 					"physischeRisiken": "Adamo atavus abscido derelinquo comedo. Delinquo summopere combibo explicabo ascit eius sublime adamo ait. Celebrer vinitor paulatim quos infit depulso.",
 					"produkteZurReduzierungDerUmweltbelastung": "Yes",
@@ -4997,7 +4969,7 @@
 					"geplanteVollzeitaequivalenteAb2031": 97717.72,
 					"chancenOderHindernisse": "Accommodo demitto teres at stella benevolentia trepide tepidus pariatur textus. Deleo acsi spiculum coerceo tepesco volubilis bellum tabernus absconditus. Vesica amita tremo labore deorsum tutamen crapula."
 				},
-				"taxonomieKpisAndBestimmteAktivitaeten": {
+				"taxonomieKpisUndBestimmteAktivitaeten": {
 					"wirtschaftszweige": [
 						"94.20"
 					],
@@ -5027,7 +4999,7 @@
 					"geplanterProzentualerUmsatzanteilImSektorTabakanbauUndVerarbeitungIn2030": null,
 					"geplanterProzentualerUmsatzanteilImSektorTabakanbauUndVerarbeitungIn2040": 49.74
 				},
-				"esgRatingAndZertifizierung": {
+				"esgRatingUndZertifizierung": {
 					"esgRating": null,
 					"ratingagentur": "networks",
 					"ergebnisDesEsgRatings": "e-markets",
@@ -5150,7 +5122,7 @@
 					"anteilDesNichtRecycletenAbfallsAnDerGesamtAbfallmenge": 45.19,
 					"mengeAnGefaehrlichenAbfaellen": 78460.6
 				},
-				"risikenAndMassnahmenKlima": {
+				"risikenUndMassnahmenKlima": {
 					"transitorischeKlimaUndUmweltrisiken": "Tero vitium curso cura arceo cumque utilis. Caveo perferendis utrum sublime alienus tremo sol spiritus sint deludo. Subnecto caput volva studio supra aeneus coerceo curtus.",
 					"physischeKlimaUndUmweltrisiken": [
 						"VerlustBiodiversitaet"
@@ -5168,9 +5140,7 @@
 							"fileName": "Policy",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
 						}
-					}
-				},
-				"risikenUndMassnahmenKlima": {
+					},
 					"transitorischeRisiken": null,
 					"physischeRisiken": "Aestas quod adimpleo spoliatio viriliter capitulus usque animus. Depraedor odit illum. Aeneus aiunt paens cometes.",
 					"produkteZurReduzierungDerUmweltbelastung": "No",
@@ -5318,7 +5288,7 @@
 					"geplanteVollzeitaequivalenteAb2031": 28309.99,
 					"chancenOderHindernisse": "Volutabrum unus avaritia conventus vorago timidus vilis depopulo patria. Demum vallum pauper ancilla adulatio deleo id. Cupressus cognatus crur aiunt adfero enim cogo chirographum valetudo."
 				},
-				"taxonomieKpisAndBestimmteAktivitaeten": {
+				"taxonomieKpisUndBestimmteAktivitaeten": {
 					"wirtschaftszweige": [
 						"24.4",
 						"49.20",
@@ -5350,7 +5320,7 @@
 					"geplanterProzentualerUmsatzanteilImSektorTabakanbauUndVerarbeitungIn2030": null,
 					"geplanterProzentualerUmsatzanteilImSektorTabakanbauUndVerarbeitungIn2040": 70.03
 				},
-				"esgRatingAndZertifizierung": {
+				"esgRatingUndZertifizierung": {
 					"esgRating": "No",
 					"ratingagentur": "web services",
 					"ergebnisDesEsgRatings": "content",
@@ -5460,7 +5430,7 @@
 					"anteilDesNichtRecycletenAbfallsAnDerGesamtAbfallmenge": null,
 					"mengeAnGefaehrlichenAbfaellen": 46239.75
 				},
-				"risikenAndMassnahmenKlima": {
+				"risikenUndMassnahmenKlima": {
 					"transitorischeKlimaUndUmweltrisiken": "Credo comparo amicitia pectus territo tam auxilium. Speciosus autem cuppedia comparo abundans. Synagoga contigo ad dedecor.",
 					"physischeKlimaUndUmweltrisiken": [
 						"ErdHangabbruch",
@@ -5488,9 +5458,7 @@
 							"fileName": "Certification",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
 						}
-					}
-				},
-				"risikenUndMassnahmenKlima": {
+					},
 					"transitorischeRisiken": "Patruus civis comis vesper. Casso coma contabesco aperiam eveniet occaecati canto. Denuo auditor attollo subseco.",
 					"physischeRisiken": null,
 					"produkteZurReduzierungDerUmweltbelastung": null,
@@ -5659,7 +5627,7 @@
 					"geplanteVollzeitaequivalenteAb2031": null,
 					"chancenOderHindernisse": null
 				},
-				"taxonomieKpisAndBestimmteAktivitaeten": {
+				"taxonomieKpisUndBestimmteAktivitaeten": {
 					"wirtschaftszweige": [
 						"13.3",
 						"16",
@@ -5693,7 +5661,7 @@
 					"geplanterProzentualerUmsatzanteilImSektorTabakanbauUndVerarbeitungIn2030": 52.79,
 					"geplanterProzentualerUmsatzanteilImSektorTabakanbauUndVerarbeitungIn2040": 84.04
 				},
-				"esgRatingAndZertifizierung": {
+				"esgRatingUndZertifizierung": {
 					"esgRating": null,
 					"ratingagentur": "experiences",
 					"ergebnisDesEsgRatings": "niches",
@@ -5835,7 +5803,7 @@
 					"anteilDesNichtRecycletenAbfallsAnDerGesamtAbfallmenge": 92.13,
 					"mengeAnGefaehrlichenAbfaellen": 38602.27
 				},
-				"risikenAndMassnahmenKlima": {
+				"risikenUndMassnahmenKlima": {
 					"transitorischeKlimaUndUmweltrisiken": "Averto praesentium tot ater aduro aro. Valens teneo cohaero curso supra quaerat commodo. Balbus succurro molestias tactus voro verumtamen comparo avarus atrox.",
 					"physischeKlimaUndUmweltrisiken": [
 						"Wassermangel",
@@ -5852,9 +5820,7 @@
 					"beschreibungDerNutzungVonSzenarioanalysen": "Acquiro vir surculus apud ubi quibusdam vacuus coniuratio. Tondeo calamitas dignissimos celo celebrer. Volo termes spero contego aspicio soleo culpa.",
 					"beruecksichtigungVonKlimaUndUmweltrisiken": null,
 					"zeithorizontDerBeruecksichtigungVonKlimaUndUmweltrisikenImGeschaeftsmodell": "Tredecim auctus strues nihil decerno cerno aliquid sol subnecto vel. Sol sui libero apparatus quos sumo hic utique conicio vobis. Titulus comparo demulceo vomito alienus modi.",
-					"transitionsplanVorhanden": null
-				},
-				"risikenUndMassnahmenKlima": {
+					"transitionsplanVorhanden": null,
 					"transitorischeRisiken": "Tabernus custodia caste animus cui adfectus numquam tot demum. Patrocinor tardus pel quas voro complectus adstringo pel arto depono. Qui uter creber.",
 					"physischeRisiken": "Creta delego timidus virtus derideo pecco. Capitulus tertius tersus cubicularis claro curto delectus comburo debeo defero. Tamen tres umerus bis tonsor aeneus terebro carus caritas.",
 					"produkteZurReduzierungDerUmweltbelastung": "No",
@@ -5996,7 +5962,7 @@
 					"geplanteVollzeitaequivalenteAb2031": 60821.67,
 					"chancenOderHindernisse": "Beneficium tabgo copiose cultura adamo subiungo cruciamentum tersus vulgus curtus. Arguo assentator carmen. Tenax aureus beatus itaque suspendo desidero distinctio sordeo aperiam theologus."
 				},
-				"taxonomieKpisAndBestimmteAktivitaeten": {
+				"taxonomieKpisUndBestimmteAktivitaeten": {
 					"wirtschaftszweige": [
 						"01.63",
 						"17.1",
@@ -6028,7 +5994,7 @@
 					"geplanterProzentualerUmsatzanteilImSektorTabakanbauUndVerarbeitungIn2030": 8.3,
 					"geplanterProzentualerUmsatzanteilImSektorTabakanbauUndVerarbeitungIn2040": 18.4
 				},
-				"esgRatingAndZertifizierung": {
+				"esgRatingUndZertifizierung": {
 					"esgRating": "No",
 					"ratingagentur": "technologies",
 					"ergebnisDesEsgRatings": "partnerships",
@@ -6173,7 +6139,7 @@
 					"anteilDesNichtRecycletenAbfallsAnDerGesamtAbfallmenge": 40.67,
 					"mengeAnGefaehrlichenAbfaellen": null
 				},
-				"risikenAndMassnahmenKlima": {
+				"risikenUndMassnahmenKlima": {
 					"transitorischeKlimaUndUmweltrisiken": "Benevolentia teres decipio. Vilitas usitas defessus pauci. Vere ater cariosus quia.",
 					"physischeKlimaUndUmweltrisiken": [
 						"Sonstige",
@@ -6187,9 +6153,7 @@
 					"beschreibungDerNutzungVonSzenarioanalysen": "Unde sufficio tutamen sit aeneus. Concedo reiciendis quam comes facere. Thalassinus cohors tollo cupio vivo sumo accusamus maiores asporto audentia.",
 					"beruecksichtigungVonKlimaUndUmweltrisiken": "No",
 					"zeithorizontDerBeruecksichtigungVonKlimaUndUmweltrisikenImGeschaeftsmodell": "Delicate cibo crebro laboriosam curo conscendo pauci aegre convoco. Adamo coniecto coniuratio coniuratio reprehenderit. Desparatus conitor sonitus tabernus apparatus charisma.",
-					"transitionsplanVorhanden": null
-				},
-				"risikenUndMassnahmenKlima": {
+					"transitionsplanVorhanden": null,
 					"transitorischeRisiken": "Desidero ventosus claro ascisco valetudo ut tunc culpo. Stabilis decet speculum usitas reprehenderit cariosus benigne. Degusto et civitas.",
 					"physischeRisiken": "Copiose aestas autem coniecto impedit coaegresco distinctio labore vito dolore. Tondeo administratio uredo omnis speculum speciosus conitor. Temperantia sed asporto celo.",
 					"produkteZurReduzierungDerUmweltbelastung": null,
@@ -6362,7 +6326,7 @@
 					"geplanteVollzeitaequivalenteAb2031": 10217.56,
 					"chancenOderHindernisse": null
 				},
-				"taxonomieKpisAndBestimmteAktivitaeten": {
+				"taxonomieKpisUndBestimmteAktivitaeten": {
 					"wirtschaftszweige": [],
 					"gesamtumsatz": 95036.02,
 					"taxonomiefaehigerUmsatz": 36644.66,
@@ -6390,7 +6354,7 @@
 					"geplanterProzentualerUmsatzanteilImSektorTabakanbauUndVerarbeitungIn2030": null,
 					"geplanterProzentualerUmsatzanteilImSektorTabakanbauUndVerarbeitungIn2040": 7.09
 				},
-				"esgRatingAndZertifizierung": {
+				"esgRatingUndZertifizierung": {
 					"esgRating": "Yes",
 					"ratingagentur": "functionalities",
 					"ergebnisDesEsgRatings": "deliverables",
@@ -6508,7 +6472,7 @@
 					"anteilDesNichtRecycletenAbfallsAnDerGesamtAbfallmenge": 91.8,
 					"mengeAnGefaehrlichenAbfaellen": 96271.98
 				},
-				"risikenAndMassnahmenKlima": {
+				"risikenUndMassnahmenKlima": {
 					"transitorischeKlimaUndUmweltrisiken": null,
 					"physischeKlimaUndUmweltrisiken": null,
 					"vonPhysischenKlimaUndUmweltrisikenBetroffeneStandorte": "Succedo alius argentum. Vox totidem blandior deludo tonsor claustrum certe. Credo abundans patrocinor desidero arbitro capto laboriosam thermae dedico.",
@@ -6524,9 +6488,7 @@
 							"fileName": "Policy",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
 						}
-					}
-				},
-				"risikenUndMassnahmenKlima": {
+					},
 					"transitorischeRisiken": "Verbera currus magni universe subseco acerbitas caelestis. Compello abbas amplexus perferendis calco. Tamdiu viscus placeat confido perspiciatis dolore.",
 					"physischeRisiken": "Curto infit basium somnus strues virtus cultura spes demum. Ulciscor rerum vitiosus comitatus ultio auctus creptio abundans trado vulariter. Varietas sursum cupiditate conatus tenax venustas aer adversus charisma turbo.",
 					"produkteZurReduzierungDerUmweltbelastung": "No",
@@ -6675,7 +6637,7 @@
 					"geplanteVollzeitaequivalenteAb2031": 1507.89,
 					"chancenOderHindernisse": "Tero supplanto cogo beneficium depereo certe defaeco. Sonitus ut videlicet tondeo acerbitas suggero tardus. Pariatur viriliter aspernatur clibanus quam viridis."
 				},
-				"taxonomieKpisAndBestimmteAktivitaeten": {
+				"taxonomieKpisUndBestimmteAktivitaeten": {
 					"wirtschaftszweige": [
 						"10.13"
 					],
@@ -6705,7 +6667,7 @@
 					"geplanterProzentualerUmsatzanteilImSektorTabakanbauUndVerarbeitungIn2030": 64.97,
 					"geplanterProzentualerUmsatzanteilImSektorTabakanbauUndVerarbeitungIn2040": 70.89
 				},
-				"esgRatingAndZertifizierung": {
+				"esgRatingUndZertifizierung": {
 					"esgRating": "Yes",
 					"ratingagentur": null,
 					"ergebnisDesEsgRatings": "solutions",
@@ -6845,7 +6807,7 @@
 					"anteilDesNichtRecycletenAbfallsAnDerGesamtAbfallmenge": 33.62,
 					"mengeAnGefaehrlichenAbfaellen": null
 				},
-				"risikenAndMassnahmenKlima": {
+				"risikenUndMassnahmenKlima": {
 					"transitorischeKlimaUndUmweltrisiken": "Alveus curso celo sublime abstergo sub beneficium depraedor caute occaecati. Vitae cras molestiae. Careo vulnero sufficio temporibus ater cito.",
 					"physischeKlimaUndUmweltrisiken": [
 						"DuerrenAndHitzewellen",
@@ -6869,9 +6831,7 @@
 							"fileName": "Policy",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
 						}
-					}
-				},
-				"risikenUndMassnahmenKlima": {
+					},
 					"transitorischeRisiken": "Vigor peccatus subiungo congregatio. Dens capillus tam complectus aestus conservo sordeo. Comitatus tot alter charisma depulso verbera.",
 					"physischeRisiken": null,
 					"produkteZurReduzierungDerUmweltbelastung": null,
@@ -7009,7 +6969,7 @@
 					"geplanteVollzeitaequivalenteAb2031": 21800.69,
 					"chancenOderHindernisse": "Video suffragium saepe. Aperiam alter absconditus. Corroboro ara damno tepesco ratione acceptus."
 				},
-				"taxonomieKpisAndBestimmteAktivitaeten": {
+				"taxonomieKpisUndBestimmteAktivitaeten": {
 					"wirtschaftszweige": [
 						"20.6",
 						"98.2"
@@ -7040,7 +7000,7 @@
 					"geplanterProzentualerUmsatzanteilImSektorTabakanbauUndVerarbeitungIn2030": 96.06,
 					"geplanterProzentualerUmsatzanteilImSektorTabakanbauUndVerarbeitungIn2040": 7.84
 				},
-				"esgRatingAndZertifizierung": {
+				"esgRatingUndZertifizierung": {
 					"esgRating": "Yes",
 					"ratingagentur": "bandwidth",
 					"ergebnisDesEsgRatings": "networks",
@@ -7163,7 +7123,7 @@
 					"anteilDesNichtRecycletenAbfallsAnDerGesamtAbfallmenge": null,
 					"mengeAnGefaehrlichenAbfaellen": 62268.44
 				},
-				"risikenAndMassnahmenKlima": {
+				"risikenUndMassnahmenKlima": {
 					"transitorischeKlimaUndUmweltrisiken": "Aro averto dignissimos. Vis aduro vado vel conor eius appello hic veritas odio. Facere deleniti adnuo odio charisma sustineo vulgo abstergo alii eos.",
 					"physischeKlimaUndUmweltrisiken": [
 						"Sonstige",
@@ -7188,9 +7148,7 @@
 					"transitionsplanVorhanden": {
 						"value": "No",
 						"dataSource": null
-					}
-				},
-				"risikenUndMassnahmenKlima": {
+					},
 					"transitorischeRisiken": "Tres deorsum caput claustrum cernuus virgo curia decumbo animi culpa. Attero audacia socius corrumpo celer unus deprimo trado compello. Terga amo trans vociferor taceo cado canto caterva cras condico.",
 					"physischeRisiken": "Ver armarium paens depraedor virga taedium. Enim curatio pecus vilitas cubicularis tergeo sodalitas ceno. Repellat textilis tendo.",
 					"produkteZurReduzierungDerUmweltbelastung": "NA",
@@ -7340,7 +7298,7 @@
 					"geplanteVollzeitaequivalenteAb2031": 2043.31,
 					"chancenOderHindernisse": "Advoco calculus venio cultellus stultus. Ut consuasor laboriosam acervus via fugiat crapula tremo. Adflicto quod capitulus curatio supellex annus non."
 				},
-				"taxonomieKpisAndBestimmteAktivitaeten": {
+				"taxonomieKpisUndBestimmteAktivitaeten": {
 					"wirtschaftszweige": [
 						"15.20",
 						"33.17"
@@ -7371,7 +7329,7 @@
 					"geplanterProzentualerUmsatzanteilImSektorTabakanbauUndVerarbeitungIn2030": 16.36,
 					"geplanterProzentualerUmsatzanteilImSektorTabakanbauUndVerarbeitungIn2040": 71.88
 				},
-				"esgRatingAndZertifizierung": {
+				"esgRatingUndZertifizierung": {
 					"esgRating": "No",
 					"ratingagentur": "content",
 					"ergebnisDesEsgRatings": null,
@@ -7523,7 +7481,7 @@
 					"anteilDesNichtRecycletenAbfallsAnDerGesamtAbfallmenge": 93.84,
 					"mengeAnGefaehrlichenAbfaellen": 93134.72
 				},
-				"risikenAndMassnahmenKlima": {
+				"risikenUndMassnahmenKlima": {
 					"transitorischeKlimaUndUmweltrisiken": "Bestia supra spectaculum quos. Odit iste tepidus callide adsuesco catena amissio arca. Itaque benevolentia conspergo delectatio audax stips sustineo carcer.",
 					"physischeKlimaUndUmweltrisiken": [
 						"Waldbraende",
@@ -7538,9 +7496,7 @@
 					"beschreibungDerNutzungVonSzenarioanalysen": null,
 					"beruecksichtigungVonKlimaUndUmweltrisiken": "Yes",
 					"zeithorizontDerBeruecksichtigungVonKlimaUndUmweltrisikenImGeschaeftsmodell": "Ullus cervus vesper officiis aspernatur comptus tepidus vilis velut thymum. Vix convoco cicuta calamitas et tabula assentator video. Curvo bonus aveho cohors subvenio tutis totidem comparo vulnus.",
-					"transitionsplanVorhanden": null
-				},
-				"risikenUndMassnahmenKlima": {
+					"transitionsplanVorhanden": null,
 					"transitorischeRisiken": null,
 					"physischeRisiken": "Deporto antiquus calamitas alter varius cogo curia urbanus. Calcar demoror alius solus. Bellicus tenetur conor decretum verbum sapiente uxor sperno.",
 					"produkteZurReduzierungDerUmweltbelastung": "No",
@@ -7685,7 +7641,7 @@
 					"geplanteVollzeitaequivalenteAb2031": 42378.47,
 					"chancenOderHindernisse": "Umerus abbas aurum adipisci. Odit consectetur cohors altus temeritas adsuesco tantillus collum synagoga votum. Cupiditas patrocinor voluptates canto deprecator."
 				},
-				"taxonomieKpisAndBestimmteAktivitaeten": {
+				"taxonomieKpisUndBestimmteAktivitaeten": {
 					"wirtschaftszweige": [
 						"22.1",
 						"92.0"
@@ -7716,7 +7672,7 @@
 					"geplanterProzentualerUmsatzanteilImSektorTabakanbauUndVerarbeitungIn2030": 41.07,
 					"geplanterProzentualerUmsatzanteilImSektorTabakanbauUndVerarbeitungIn2040": 46.61
 				},
-				"esgRatingAndZertifizierung": {
+				"esgRatingUndZertifizierung": {
 					"esgRating": null,
 					"ratingagentur": "content",
 					"ergebnisDesEsgRatings": null,
@@ -7855,7 +7811,7 @@
 					"anteilDesNichtRecycletenAbfallsAnDerGesamtAbfallmenge": 19.39,
 					"mengeAnGefaehrlichenAbfaellen": 82542.44
 				},
-				"risikenAndMassnahmenKlima": {
+				"risikenUndMassnahmenKlima": {
 					"transitorischeKlimaUndUmweltrisiken": "Timidus sequi thema cariosus contra. Vilis ullam ademptio vilitas supra voro quia incidunt contego. Vos vere degero.",
 					"physischeKlimaUndUmweltrisiken": null,
 					"vonPhysischenKlimaUndUmweltrisikenBetroffeneStandorte": "Tardus vulgus suscipio damnatio solio stipes civitas. Contigo consuasor veritas beneficium cunae. Sperno ater turpis adsum patria surgo admoneo celebrer viridis arbitro.",
@@ -7871,9 +7827,7 @@
 							"fileName": "Policy",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
 						}
-					}
-				},
-				"risikenUndMassnahmenKlima": {
+					},
 					"transitorischeRisiken": null,
 					"physischeRisiken": "Templum carpo capillus summa vulnero bellicus. Accusator conculco eum. Canis soleo exercitationem tandem tempora tergiversatio ars cursus derelinquo.",
 					"produkteZurReduzierungDerUmweltbelastung": "Yes",
@@ -8026,7 +7980,7 @@
 					"geplanteVollzeitaequivalenteAb2031": null,
 					"chancenOderHindernisse": null
 				},
-				"taxonomieKpisAndBestimmteAktivitaeten": {
+				"taxonomieKpisUndBestimmteAktivitaeten": {
 					"wirtschaftszweige": [
 						"28.12",
 						"84.25"
@@ -8057,7 +8011,7 @@
 					"geplanterProzentualerUmsatzanteilImSektorTabakanbauUndVerarbeitungIn2030": 29.63,
 					"geplanterProzentualerUmsatzanteilImSektorTabakanbauUndVerarbeitungIn2040": 31.45
 				},
-				"esgRatingAndZertifizierung": {
+				"esgRatingUndZertifizierung": {
 					"esgRating": "Yes",
 					"ratingagentur": "models",
 					"ergebnisDesEsgRatings": "architectures",
@@ -8213,7 +8167,7 @@
 					"anteilDesNichtRecycletenAbfallsAnDerGesamtAbfallmenge": 49.57,
 					"mengeAnGefaehrlichenAbfaellen": 38647.85
 				},
-				"risikenAndMassnahmenKlima": {
+				"risikenUndMassnahmenKlima": {
 					"transitorischeKlimaUndUmweltrisiken": "Avarus apto tergiversatio depraedor via. Sordeo utique sol verbum vociferor adinventitias. Addo arx confero theca.",
 					"physischeKlimaUndUmweltrisiken": [
 						"RadioaktiveStrahlung"
@@ -8225,9 +8179,7 @@
 					"beschreibungDerNutzungVonSzenarioanalysen": "Casso thesaurus dolorem aedificium utique atqui collum rem substantia celo. Patria cohaero adopto cumque acervus. Demoror cum vulgaris cometes conspergo tubineus curatio canis apparatus.",
 					"beruecksichtigungVonKlimaUndUmweltrisiken": "No",
 					"zeithorizontDerBeruecksichtigungVonKlimaUndUmweltrisikenImGeschaeftsmodell": "Tantum utpote tandem ater. Totus civitas creber suadeo repudiandae ante. Caelum articulus curso.",
-					"transitionsplanVorhanden": null
-				},
-				"risikenUndMassnahmenKlima": {
+					"transitionsplanVorhanden": null,
 					"transitorischeRisiken": null,
 					"physischeRisiken": "Caelum auditor tempus correptius terreo varius ara. Pectus villa beneficium sapiente cruentus ultio veritas a repellendus. Verbum comedo tepesco angustus accusator valetudo.",
 					"produkteZurReduzierungDerUmweltbelastung": "No",
@@ -8403,7 +8355,7 @@
 					"geplanteVollzeitaequivalenteAb2031": 76648.75,
 					"chancenOderHindernisse": "Molestiae absum tepesco eum absconditus considero. Animi sustineo iure vomica carbo tristis. Curso velut tot talis."
 				},
-				"taxonomieKpisAndBestimmteAktivitaeten": {
+				"taxonomieKpisUndBestimmteAktivitaeten": {
 					"wirtschaftszweige": null,
 					"gesamtumsatz": 25771.38,
 					"taxonomiefaehigerUmsatz": 30732.66,
@@ -8431,7 +8383,7 @@
 					"geplanterProzentualerUmsatzanteilImSektorTabakanbauUndVerarbeitungIn2030": 62.54,
 					"geplanterProzentualerUmsatzanteilImSektorTabakanbauUndVerarbeitungIn2040": null
 				},
-				"esgRatingAndZertifizierung": {
+				"esgRatingUndZertifizierung": {
 					"esgRating": "Yes",
 					"ratingagentur": "functionalities",
 					"ergebnisDesEsgRatings": "web services",
@@ -8529,7 +8481,7 @@
 					"anteilDesNichtRecycletenAbfallsAnDerGesamtAbfallmenge": null,
 					"mengeAnGefaehrlichenAbfaellen": null
 				},
-				"risikenAndMassnahmenKlima": {
+				"risikenUndMassnahmenKlima": {
 					"transitorischeKlimaUndUmweltrisiken": "Territo cena credo sopor vesica commemoro ubi. Depono congregatio decipio. Adsidue inventore tribuo deleo acceptus tamen tamquam vix campana cernuus.",
 					"physischeKlimaUndUmweltrisiken": [
 						"Sonstige",
@@ -8555,9 +8507,7 @@
 							"fileName": "Certification",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
 						}
-					}
-				},
-				"risikenUndMassnahmenKlima": {
+					},
 					"transitorischeRisiken": "Tibi corrumpo cuppedia depraedor verumtamen caveo. Spargo abundans uredo acceptus absum recusandae calamitas arcus ait. Arguo articulus speculum doloribus caelestis omnis perspiciatis arma capio civitas.",
 					"physischeRisiken": "Deficio qui auctus. Nobis cilicium admoneo adfero ventito ustilo. Umbra arcesso villa concido.",
 					"produkteZurReduzierungDerUmweltbelastung": null,
@@ -8718,7 +8668,7 @@
 					"geplanteVollzeitaequivalenteAb2031": 14096.76,
 					"chancenOderHindernisse": "Earum volaticus accendo ago quis. Capto atrox annus ulciscor vomito adduco cilicium. Deripio tremo cognomen coruscus deleo trans suppellex."
 				},
-				"taxonomieKpisAndBestimmteAktivitaeten": {
+				"taxonomieKpisUndBestimmteAktivitaeten": {
 					"wirtschaftszweige": [],
 					"gesamtumsatz": 52788.57,
 					"taxonomiefaehigerUmsatz": 26617.22,
@@ -8746,7 +8696,7 @@
 					"geplanterProzentualerUmsatzanteilImSektorTabakanbauUndVerarbeitungIn2030": 10.89,
 					"geplanterProzentualerUmsatzanteilImSektorTabakanbauUndVerarbeitungIn2040": 90.72
 				},
-				"esgRatingAndZertifizierung": {
+				"esgRatingUndZertifizierung": {
 					"esgRating": "Yes",
 					"ratingagentur": "metrics",
 					"ergebnisDesEsgRatings": "eyeballs",
@@ -8851,7 +8801,7 @@
 					"anteilDesNichtRecycletenAbfallsAnDerGesamtAbfallmenge": null,
 					"mengeAnGefaehrlichenAbfaellen": 29645.09
 				},
-				"risikenAndMassnahmenKlima": {
+				"risikenUndMassnahmenKlima": {
 					"transitorischeKlimaUndUmweltrisiken": "Tollo ter xiphias utpote temperantia. Copia copia triduana sopor perspiciatis degero. Laborum terga quae decet.",
 					"physischeKlimaUndUmweltrisiken": [
 						"VerlustBiodiversitaet",
@@ -8870,9 +8820,7 @@
 							"fileName": "Certification",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
 						}
-					}
-				},
-				"risikenUndMassnahmenKlima": {
+					},
 					"transitorischeRisiken": "Talus adsum calcar vestrum vulgus quidem defetiscor sub tripudio tum. Stabilis molestias torrens ars claro nisi claudeo commodo celo censura. Defendo speculum cunctatio aro tantum.",
 					"physischeRisiken": "Acceptus benigne assentator vivo rerum cicuta verecundia basium. Thalassinus arbitro caelestis inflammatio depraedor. Verumtamen adsidue patruus labore cauda astrum reprehenderit incidunt colligo culpo.",
 					"produkteZurReduzierungDerUmweltbelastung": "No",
@@ -9041,7 +8989,7 @@
 					"geplanteVollzeitaequivalenteAb2031": 12912.68,
 					"chancenOderHindernisse": "Abbas adversus tutis decumbo aggredior contra adiuvo advenio deserunt. Sustineo claudeo alias. Vitae sortitus admitto cursus callide stella cilicium volutabrum."
 				},
-				"taxonomieKpisAndBestimmteAktivitaeten": {
+				"taxonomieKpisUndBestimmteAktivitaeten": {
 					"wirtschaftszweige": null,
 					"gesamtumsatz": 54018.59,
 					"taxonomiefaehigerUmsatz": 44443.71,
@@ -9069,7 +9017,7 @@
 					"geplanterProzentualerUmsatzanteilImSektorTabakanbauUndVerarbeitungIn2030": 31.7,
 					"geplanterProzentualerUmsatzanteilImSektorTabakanbauUndVerarbeitungIn2040": null
 				},
-				"esgRatingAndZertifizierung": {
+				"esgRatingUndZertifizierung": {
 					"esgRating": null,
 					"ratingagentur": "initiatives",
 					"ergebnisDesEsgRatings": null,
@@ -9183,7 +9131,7 @@
 					"anteilDesNichtRecycletenAbfallsAnDerGesamtAbfallmenge": null,
 					"mengeAnGefaehrlichenAbfaellen": 40562.86
 				},
-				"risikenAndMassnahmenKlima": {
+				"risikenUndMassnahmenKlima": {
 					"transitorischeKlimaUndUmweltrisiken": "Deputo stabilis cohibeo arto. Acies comes solus crinis coniecto comedo stips deripio vel. Depopulo depereo eos trans crinis reiciendis omnis.",
 					"physischeKlimaUndUmweltrisiken": null,
 					"vonPhysischenKlimaUndUmweltrisikenBetroffeneStandorte": "Aut pectus cum considero tandem aestus provident conspergo. Cui apostolus sollicito quas. Ocer voro aptus sordeo cras sulum ulciscor voveo.",
@@ -9196,9 +9144,7 @@
 					"transitionsplanVorhanden": {
 						"value": "Yes",
 						"dataSource": null
-					}
-				},
-				"risikenUndMassnahmenKlima": {
+					},
 					"transitorischeRisiken": "Sequi placeat repellendus utilis surgo audio accusantium cunabula absens. Callide caput deinde debilito deserunt. Caecus recusandae amissio careo cerno sperno voluptatum volup defessus.",
 					"physischeRisiken": null,
 					"produkteZurReduzierungDerUmweltbelastung": "Yes",
@@ -9373,7 +9319,7 @@
 					"geplanteVollzeitaequivalenteAb2031": 1288.39,
 					"chancenOderHindernisse": "Comedo cedo sui comminor cruentus dignissimos. Basium supellex ulterius eius vivo perspiciatis tui. Voluptatibus abutor deludo utrum careo aeternus concido occaecati valens aptus."
 				},
-				"taxonomieKpisAndBestimmteAktivitaeten": {
+				"taxonomieKpisUndBestimmteAktivitaeten": {
 					"wirtschaftszweige": [
 						"46.1",
 						"49.32"
@@ -9404,7 +9350,7 @@
 					"geplanterProzentualerUmsatzanteilImSektorTabakanbauUndVerarbeitungIn2030": 34.23,
 					"geplanterProzentualerUmsatzanteilImSektorTabakanbauUndVerarbeitungIn2040": 48.02
 				},
-				"esgRatingAndZertifizierung": {
+				"esgRatingUndZertifizierung": {
 					"esgRating": "No",
 					"ratingagentur": "e-markets",
 					"ergebnisDesEsgRatings": "paradigms",
@@ -9513,7 +9459,7 @@
 					"anteilDesNichtRecycletenAbfallsAnDerGesamtAbfallmenge": 9.55,
 					"mengeAnGefaehrlichenAbfaellen": null
 				},
-				"risikenAndMassnahmenKlima": {
+				"risikenUndMassnahmenKlima": {
 					"transitorischeKlimaUndUmweltrisiken": "Attero claudeo correptius talio venustas pecus. Arma cura tremo aeneus conculco curto tertius adfero speciosus. Centum denuo absque voluntarius advoco arguo reprehenderit texo delinquo.",
 					"physischeKlimaUndUmweltrisiken": [
 						"RadioaktiveStrahlung",
@@ -9537,9 +9483,7 @@
 							"fileName": "Certification",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
 						}
-					}
-				},
-				"risikenUndMassnahmenKlima": {
+					},
 					"transitorischeRisiken": "Angulus victus curso amet quia ater aptus veniam nemo. Suffoco aestivus eius admiratio utroque turba aufero. Spiritus tristis copia sordeo viriliter amoveo aeternus vulgivagus vulnero ciminatio.",
 					"physischeRisiken": "Umerus abscido aeternus quod ceno culpo earum occaecati aliqua. Spes crapula spectaculum animi aperiam earum. Surgo civitas thema vigor demergo pecus vesper curso summopere ullus.",
 					"produkteZurReduzierungDerUmweltbelastung": "NA",
@@ -9701,7 +9645,7 @@
 					"geplanteVollzeitaequivalenteAb2031": 31302.42,
 					"chancenOderHindernisse": "Degusto consequuntur quod aperte amitto coadunatio claustrum. Dicta aetas calculus adversus viriliter optio. Terreo clementia paens."
 				},
-				"taxonomieKpisAndBestimmteAktivitaeten": {
+				"taxonomieKpisUndBestimmteAktivitaeten": {
 					"wirtschaftszweige": [
 						"25.30"
 					],
@@ -9731,7 +9675,7 @@
 					"geplanterProzentualerUmsatzanteilImSektorTabakanbauUndVerarbeitungIn2030": 60.39,
 					"geplanterProzentualerUmsatzanteilImSektorTabakanbauUndVerarbeitungIn2040": 45.04
 				},
-				"esgRatingAndZertifizierung": {
+				"esgRatingUndZertifizierung": {
 					"esgRating": null,
 					"ratingagentur": "action-items",
 					"ergebnisDesEsgRatings": "applications",
@@ -9840,7 +9784,7 @@
 					"anteilDesNichtRecycletenAbfallsAnDerGesamtAbfallmenge": 46.38,
 					"mengeAnGefaehrlichenAbfaellen": 89533.45
 				},
-				"risikenAndMassnahmenKlima": {
+				"risikenUndMassnahmenKlima": {
 					"transitorischeKlimaUndUmweltrisiken": "Desidero colligo absum conscendo odio thesaurus verus supellex cunctatio. Averto sustineo confugo pecto unus articulus voluptatibus. Carcer deorsum cotidie curiositas credo cui sursum.",
 					"physischeKlimaUndUmweltrisiken": [
 						"Erdbeben",
@@ -9862,9 +9806,7 @@
 							"fileName": "Certification",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
 						}
-					}
-				},
-				"risikenUndMassnahmenKlima": {
+					},
 					"transitorischeRisiken": "Damno vesco vesco dens defendo deporto sulum sollers. Acerbitas sophismata aestas cunae teres. Caput vel cribro thesis voco conor fugit vis.",
 					"physischeRisiken": "Antepono virga crepusculum una agnitio deduco. Viriliter triumphus vallum concedo. Voluptates necessitatibus ad.",
 					"produkteZurReduzierungDerUmweltbelastung": null,
@@ -10008,7 +9950,7 @@
 					"geplanteVollzeitaequivalenteAb2031": null,
 					"chancenOderHindernisse": "Nobis demum terra bellicus subiungo autem traho usque. Temperantia adimpleo suspendo talio strues despecto. Tabesco rerum cernuus amaritudo."
 				},
-				"taxonomieKpisAndBestimmteAktivitaeten": {
+				"taxonomieKpisUndBestimmteAktivitaeten": {
 					"wirtschaftszweige": null,
 					"gesamtumsatz": 7756.55,
 					"taxonomiefaehigerUmsatz": 74983.17,
@@ -10036,7 +9978,7 @@
 					"geplanterProzentualerUmsatzanteilImSektorTabakanbauUndVerarbeitungIn2030": 25.4,
 					"geplanterProzentualerUmsatzanteilImSektorTabakanbauUndVerarbeitungIn2040": null
 				},
-				"esgRatingAndZertifizierung": {
+				"esgRatingUndZertifizierung": {
 					"esgRating": "No",
 					"ratingagentur": "architectures",
 					"ergebnisDesEsgRatings": null,
@@ -10173,7 +10115,7 @@
 					"anteilDesNichtRecycletenAbfallsAnDerGesamtAbfallmenge": 44.9,
 					"mengeAnGefaehrlichenAbfaellen": 47457.26
 				},
-				"risikenAndMassnahmenKlima": {
+				"risikenUndMassnahmenKlima": {
 					"transitorischeKlimaUndUmweltrisiken": "Aut cicuta vespillo spectaculum aranea creptio verbera apparatus vinitor. Desolo cedo adsuesco tamquam vicinus vulgus. Comitatus adulatio quasi tutis claudeo.",
 					"physischeKlimaUndUmweltrisiken": null,
 					"vonPhysischenKlimaUndUmweltrisikenBetroffeneStandorte": "Arcesso condico aut tabesco eos defero. Verumtamen tot depopulo. Facilis terreo excepturi absque cuppedia vicinus supplanto aeneus.",
@@ -10186,9 +10128,7 @@
 					"transitionsplanVorhanden": {
 						"value": "No",
 						"dataSource": null
-					}
-				},
-				"risikenUndMassnahmenKlima": {
+					},
 					"transitorischeRisiken": "Amitto vulariter aestas denuncio collum terror. Desino ultra cicuta venia deleniti spargo aliquam. Stella pecto video.",
 					"physischeRisiken": null,
 					"produkteZurReduzierungDerUmweltbelastung": "NA",
@@ -10330,7 +10270,7 @@
 					"geplanteVollzeitaequivalenteAb2031": null,
 					"chancenOderHindernisse": "A aperte absorbeo creber defetiscor. Conitor atqui averto subseco comes. Desino ascit sonitus conventus denique."
 				},
-				"taxonomieKpisAndBestimmteAktivitaeten": {
+				"taxonomieKpisUndBestimmteAktivitaeten": {
 					"wirtschaftszweige": [
 						"93.13"
 					],
@@ -10360,7 +10300,7 @@
 					"geplanterProzentualerUmsatzanteilImSektorTabakanbauUndVerarbeitungIn2030": 67.46,
 					"geplanterProzentualerUmsatzanteilImSektorTabakanbauUndVerarbeitungIn2040": 23.81
 				},
-				"esgRatingAndZertifizierung": {
+				"esgRatingUndZertifizierung": {
 					"esgRating": "Yes",
 					"ratingagentur": "portals",
 					"ergebnisDesEsgRatings": "systems",
@@ -10509,7 +10449,7 @@
 					"anteilDesNichtRecycletenAbfallsAnDerGesamtAbfallmenge": 79.31,
 					"mengeAnGefaehrlichenAbfaellen": 37937.52
 				},
-				"risikenAndMassnahmenKlima": {
+				"risikenUndMassnahmenKlima": {
 					"transitorischeKlimaUndUmweltrisiken": "Officiis officia demulceo. Unus maiores tum. Solutio defessus sed venia veniam est titulus.",
 					"physischeKlimaUndUmweltrisiken": [
 						"Stuerme",
@@ -10525,9 +10465,7 @@
 					"transitionsplanVorhanden": {
 						"value": "Yes",
 						"dataSource": null
-					}
-				},
-				"risikenUndMassnahmenKlima": {
+					},
 					"transitorischeRisiken": "Aperio distinctio delectus. Abscido abbas decumbo carbo patria caelestis beatus. Bonus tandem abeo utique centum tabesco cito.",
 					"physischeRisiken": null,
 					"produkteZurReduzierungDerUmweltbelastung": "NA",
@@ -10682,7 +10620,7 @@
 					"geplanteVollzeitaequivalenteAb2031": 95088.54,
 					"chancenOderHindernisse": "Caritas basium volva cultellus casso possimus. Varietas conitor terreo sponte thalassinus supra tendo fugiat. Vulnus pel accendo teres sui tam."
 				},
-				"taxonomieKpisAndBestimmteAktivitaeten": {
+				"taxonomieKpisUndBestimmteAktivitaeten": {
 					"wirtschaftszweige": [
 						"28.13"
 					],
@@ -10712,7 +10650,7 @@
 					"geplanterProzentualerUmsatzanteilImSektorTabakanbauUndVerarbeitungIn2030": 8.56,
 					"geplanterProzentualerUmsatzanteilImSektorTabakanbauUndVerarbeitungIn2040": 32.44
 				},
-				"esgRatingAndZertifizierung": {
+				"esgRatingUndZertifizierung": {
 					"esgRating": "No",
 					"ratingagentur": "mindshare",
 					"ergebnisDesEsgRatings": "users",
@@ -10820,7 +10758,7 @@
 					"anteilDesNichtRecycletenAbfallsAnDerGesamtAbfallmenge": 18.32,
 					"mengeAnGefaehrlichenAbfaellen": 95407.69
 				},
-				"risikenAndMassnahmenKlima": {
+				"risikenUndMassnahmenKlima": {
 					"transitorischeKlimaUndUmweltrisiken": null,
 					"physischeKlimaUndUmweltrisiken": [
 						"Sonstige",
@@ -10845,9 +10783,7 @@
 							"fileName": "Policy",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
 						}
-					}
-				},
-				"risikenUndMassnahmenKlima": {
+					},
 					"transitorischeRisiken": "Vulgaris magni ut ulciscor ascit. Pecto sequi maxime ager surculus varius temptatio sint. Patria amplus ubi depereo verto corona.",
 					"physischeRisiken": "Voro audentia pecto aqua iste strenuus aptus cresco. Videlicet capitulus solum bonus quia solio strues pecus. Tamdiu animadverto coniecto defleo sub sulum audacia.",
 					"produkteZurReduzierungDerUmweltbelastung": "NA",
@@ -11016,7 +10952,7 @@
 					"geplanteVollzeitaequivalenteAb2031": 2277.82,
 					"chancenOderHindernisse": "Aedificium desipio baiulus vis patior catena animadverto. Corroboro pectus vita crastinus acies. Confido arcesso sit cibus dens cogo cerno acer animus."
 				},
-				"taxonomieKpisAndBestimmteAktivitaeten": {
+				"taxonomieKpisUndBestimmteAktivitaeten": {
 					"wirtschaftszweige": [
 						"41.1",
 						"74.30",
@@ -11048,7 +10984,7 @@
 					"geplanterProzentualerUmsatzanteilImSektorTabakanbauUndVerarbeitungIn2030": 41.93,
 					"geplanterProzentualerUmsatzanteilImSektorTabakanbauUndVerarbeitungIn2040": null
 				},
-				"esgRatingAndZertifizierung": {
+				"esgRatingUndZertifizierung": {
 					"esgRating": "No",
 					"ratingagentur": "supply-chains",
 					"ergebnisDesEsgRatings": null,
@@ -11191,7 +11127,7 @@
 					"anteilDesNichtRecycletenAbfallsAnDerGesamtAbfallmenge": null,
 					"mengeAnGefaehrlichenAbfaellen": 81951.18
 				},
-				"risikenAndMassnahmenKlima": {
+				"risikenUndMassnahmenKlima": {
 					"transitorischeKlimaUndUmweltrisiken": "Sint tergum adamo tantum conspergo vulpes totam spectaculum. Vallum ascit cunabula porro careo vita. Cito creber theologus coniecto theca compello crebro adsuesco textus.",
 					"physischeKlimaUndUmweltrisiken": [
 						"ErdHangabbruch",
@@ -11211,9 +11147,7 @@
 							"fileName": "Certification",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
 						}
-					}
-				},
-				"risikenUndMassnahmenKlima": {
+					},
 					"transitorischeRisiken": "Curtus dens civitas quas caput crudelis. Volutabrum suscipio turbo calco totam amplitudo pecto. Centum volutabrum speciosus.",
 					"physischeRisiken": "Curvo ventus torrens crapula sodalitas nobis molestias. Eaque aggero stipes tenus distinctio comptus. Aiunt succurro asporto terga appositus tandem crebro agnosco barba vesica.",
 					"produkteZurReduzierungDerUmweltbelastung": null,
@@ -11371,7 +11305,7 @@
 					"geplanteVollzeitaequivalenteAb2031": 77878,
 					"chancenOderHindernisse": "Atrox tabesco iure tabesco tenuis stipes. Degenero absens consuasor vinculum cotidie cunae considero utroque capillus volaticus. Dolore spoliatio taedium absconditus architecto maxime talio ocer."
 				},
-				"taxonomieKpisAndBestimmteAktivitaeten": {
+				"taxonomieKpisUndBestimmteAktivitaeten": {
 					"wirtschaftszweige": [],
 					"gesamtumsatz": 69933.83,
 					"taxonomiefaehigerUmsatz": 47146.79,
@@ -11399,7 +11333,7 @@
 					"geplanterProzentualerUmsatzanteilImSektorTabakanbauUndVerarbeitungIn2030": 99.12,
 					"geplanterProzentualerUmsatzanteilImSektorTabakanbauUndVerarbeitungIn2040": 70.99
 				},
-				"esgRatingAndZertifizierung": {
+				"esgRatingUndZertifizierung": {
 					"esgRating": "Yes",
 					"ratingagentur": "partnerships",
 					"ergebnisDesEsgRatings": "niches",
@@ -11525,7 +11459,7 @@
 					"anteilDesNichtRecycletenAbfallsAnDerGesamtAbfallmenge": 23.14,
 					"mengeAnGefaehrlichenAbfaellen": 70673.33
 				},
-				"risikenAndMassnahmenKlima": {
+				"risikenUndMassnahmenKlima": {
 					"transitorischeKlimaUndUmweltrisiken": "Cicuta thymum arceo aduro thalassinus videlicet autus deprecator. Sursum vestigium barba acceptus. Voluptatum studio tolero cubitum tres complectus valens reprehenderit suscipit.",
 					"physischeKlimaUndUmweltrisiken": [
 						"Erdbeben",
@@ -11546,9 +11480,7 @@
 							"fileName": "Policy",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
 						}
-					}
-				},
-				"risikenUndMassnahmenKlima": {
+					},
 					"transitorischeRisiken": null,
 					"physischeRisiken": "Verbera templum tonsor vitae cunae theologus sonitus vester cogo. Arcesso decor succurro explicabo tempus crapula ago. Demonstro tenetur talio aedificium vapulus.",
 					"produkteZurReduzierungDerUmweltbelastung": "Yes",
@@ -11698,7 +11630,7 @@
 					"geplanteVollzeitaequivalenteAb2031": null,
 					"chancenOderHindernisse": "Calco spero corona cresco atavus tutis tempora statim. Basium sono deleniti coepi cometes vacuus vespillo rerum eos. Temeritas adulatio tot."
 				},
-				"taxonomieKpisAndBestimmteAktivitaeten": {
+				"taxonomieKpisUndBestimmteAktivitaeten": {
 					"wirtschaftszweige": [
 						"13.30",
 						"16.2",
@@ -11730,7 +11662,7 @@
 					"geplanterProzentualerUmsatzanteilImSektorTabakanbauUndVerarbeitungIn2030": 41.39,
 					"geplanterProzentualerUmsatzanteilImSektorTabakanbauUndVerarbeitungIn2040": 49.37
 				},
-				"esgRatingAndZertifizierung": {
+				"esgRatingUndZertifizierung": {
 					"esgRating": "No",
 					"ratingagentur": "initiatives",
 					"ergebnisDesEsgRatings": "blockchains",
@@ -11854,7 +11786,7 @@
 					"anteilDesNichtRecycletenAbfallsAnDerGesamtAbfallmenge": null,
 					"mengeAnGefaehrlichenAbfaellen": 15931.35
 				},
-				"risikenAndMassnahmenKlima": {
+				"risikenUndMassnahmenKlima": {
 					"transitorischeKlimaUndUmweltrisiken": "Ventito tracto aqua accommodo illo defetiscor reprehenderit vacuus nemo amplexus. Delicate suggero depopulo. Odio aestivus candidus tantum valetudo amor utrum curis.",
 					"physischeKlimaUndUmweltrisiken": [
 						"Erdbeben",
@@ -11877,9 +11809,7 @@
 							"fileName": "Certification",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
 						}
-					}
-				},
-				"risikenUndMassnahmenKlima": {
+					},
 					"transitorischeRisiken": "Aestas reprehenderit atqui. Vorago degero bestia acies speciosus vis caveo vulgo tyrannus tres. Tremo crustulum sub.",
 					"physischeRisiken": "Utrimque cursim vulgo. Virga alius conduco taedium. Magni vulticulus ascit sodalitas alias vicissitudo decimus.",
 					"produkteZurReduzierungDerUmweltbelastung": "Yes",
@@ -12046,7 +11976,7 @@
 					"geplanteVollzeitaequivalenteAb2031": null,
 					"chancenOderHindernisse": "Vomer caecus arcesso confugo. Defetiscor speculum cilicium ventus. Quia concido vobis optio quasi sortitus texo correptius caelestis."
 				},
-				"taxonomieKpisAndBestimmteAktivitaeten": {
+				"taxonomieKpisUndBestimmteAktivitaeten": {
 					"wirtschaftszweige": null,
 					"gesamtumsatz": null,
 					"taxonomiefaehigerUmsatz": 11366.61,
@@ -12074,7 +12004,7 @@
 					"geplanterProzentualerUmsatzanteilImSektorTabakanbauUndVerarbeitungIn2030": 62.38,
 					"geplanterProzentualerUmsatzanteilImSektorTabakanbauUndVerarbeitungIn2040": 92.79
 				},
-				"esgRatingAndZertifizierung": {
+				"esgRatingUndZertifizierung": {
 					"esgRating": "No",
 					"ratingagentur": "models",
 					"ergebnisDesEsgRatings": "initiatives",
@@ -12220,7 +12150,7 @@
 					"anteilDesNichtRecycletenAbfallsAnDerGesamtAbfallmenge": null,
 					"mengeAnGefaehrlichenAbfaellen": 19221.24
 				},
-				"risikenAndMassnahmenKlima": {
+				"risikenUndMassnahmenKlima": {
 					"transitorischeKlimaUndUmweltrisiken": null,
 					"physischeKlimaUndUmweltrisiken": [
 						"ErdHangabbruch"
@@ -12232,9 +12162,7 @@
 					"beschreibungDerNutzungVonSzenarioanalysen": "Universe auditor excepturi compello suggero perspiciatis coaegresco veniam adversus. Crux cupio deduco via. Bardus calculus comparo utroque celebrer terga.",
 					"beruecksichtigungVonKlimaUndUmweltrisiken": "Yes",
 					"zeithorizontDerBeruecksichtigungVonKlimaUndUmweltrisikenImGeschaeftsmodell": "Vesco talis tolero cubitum stabilis aggredior trepide. Cogo tum synagoga umbra abstergo arceo tertius. Dolor optio tollo blandior confero ancilla.",
-					"transitionsplanVorhanden": null
-				},
-				"risikenUndMassnahmenKlima": {
+					"transitionsplanVorhanden": null,
 					"transitorischeRisiken": "Conspergo aequus voluptatem deorsum sui occaecati acer. Aegre arbitro nihil terminatio conventus amiculum decipio. Aegrus templum damnatio corona cohors defessus amplexus abscido.",
 					"physischeRisiken": "Collum arma paens vox sapiente. Crudelis accusamus dolorem tempora. Natus bellum tantum amoveo surculus dolores arguo tabesco acidus cubo.",
 					"produkteZurReduzierungDerUmweltbelastung": null,
@@ -12378,7 +12306,7 @@
 					"geplanteVollzeitaequivalenteAb2031": 84747.24,
 					"chancenOderHindernisse": "Cibo arbitro video. Capto turbo animi perferendis. Advoco pecto viridis curiositas quisquam conicio turpis tabesco at."
 				},
-				"taxonomieKpisAndBestimmteAktivitaeten": {
+				"taxonomieKpisUndBestimmteAktivitaeten": {
 					"wirtschaftszweige": null,
 					"gesamtumsatz": 52524.25,
 					"taxonomiefaehigerUmsatz": 80357.69,
@@ -12406,7 +12334,7 @@
 					"geplanterProzentualerUmsatzanteilImSektorTabakanbauUndVerarbeitungIn2030": null,
 					"geplanterProzentualerUmsatzanteilImSektorTabakanbauUndVerarbeitungIn2040": 8.01
 				},
-				"esgRatingAndZertifizierung": {
+				"esgRatingUndZertifizierung": {
 					"esgRating": "Yes",
 					"ratingagentur": null,
 					"ergebnisDesEsgRatings": "solutions",
@@ -12530,7 +12458,7 @@
 					"anteilDesNichtRecycletenAbfallsAnDerGesamtAbfallmenge": 60.88,
 					"mengeAnGefaehrlichenAbfaellen": 26431.38
 				},
-				"risikenAndMassnahmenKlima": {
+				"risikenUndMassnahmenKlima": {
 					"transitorischeKlimaUndUmweltrisiken": "Velit tum volup. Tandem bibo victoria attonbitus canto taceo sustineo civitas audeo vulgo. Stillicidium tenuis rerum occaecati tribuo accusantium aurum deinde sophismata cruciamentum.",
 					"physischeKlimaUndUmweltrisiken": [
 						"ErdHangabbruch"
@@ -12542,9 +12470,7 @@
 					"beschreibungDerNutzungVonSzenarioanalysen": "Porro turpis speculum articulus conculco utique quas. Atrox consectetur verto asporto demo attollo torqueo. Abbas conservo armarium cariosus cuius thesis commemoro admoveo vergo.",
 					"beruecksichtigungVonKlimaUndUmweltrisiken": null,
 					"zeithorizontDerBeruecksichtigungVonKlimaUndUmweltrisikenImGeschaeftsmodell": "Sortitus demergo adsidue amet blandior taedium adipisci ultio defero ceno. Curriculum degusto pauper ratione baiulus depromo comitatus arcesso. Ventosus thorax conculco caterva.",
-					"transitionsplanVorhanden": null
-				},
-				"risikenUndMassnahmenKlima": {
+					"transitionsplanVorhanden": null,
 					"transitorischeRisiken": "Appello spiritus supellex degusto abduco claudeo aptus undique. Ut incidunt bellum. Antepono addo recusandae amplus tendo labore.",
 					"physischeRisiken": null,
 					"produkteZurReduzierungDerUmweltbelastung": "NA",
@@ -12685,7 +12611,7 @@
 					"geplanteVollzeitaequivalenteAb2031": null,
 					"chancenOderHindernisse": "Eos degusto adaugeo depulso. Conservo vis conor bonus. Cumque articulus absum universe dedico."
 				},
-				"taxonomieKpisAndBestimmteAktivitaeten": {
+				"taxonomieKpisUndBestimmteAktivitaeten": {
 					"wirtschaftszweige": [
 						"45.20",
 						"56",
@@ -12717,7 +12643,7 @@
 					"geplanterProzentualerUmsatzanteilImSektorTabakanbauUndVerarbeitungIn2030": 86.84,
 					"geplanterProzentualerUmsatzanteilImSektorTabakanbauUndVerarbeitungIn2040": 69.34
 				},
-				"esgRatingAndZertifizierung": {
+				"esgRatingUndZertifizierung": {
 					"esgRating": "No",
 					"ratingagentur": "channels",
 					"ergebnisDesEsgRatings": "infrastructures",
@@ -12850,7 +12776,7 @@
 					"anteilDesNichtRecycletenAbfallsAnDerGesamtAbfallmenge": 98.02,
 					"mengeAnGefaehrlichenAbfaellen": 17059.91
 				},
-				"risikenAndMassnahmenKlima": {
+				"risikenUndMassnahmenKlima": {
 					"transitorischeKlimaUndUmweltrisiken": "Centum vivo deleniti articulus comitatus patruus tracto victus. Surgo accusator adduco sulum. Solitudo deleo temptatio xiphias turpis desipio circumvenio.",
 					"physischeKlimaUndUmweltrisiken": null,
 					"vonPhysischenKlimaUndUmweltrisikenBetroffeneStandorte": "Thymum teneo admiratio ulterius suffragium. Dedecor consectetur teneo ea conservo comprehendo conatus acervus cubitum collum. Coniecto stultus surculus amita canis apparatus decens decor subito.",
@@ -12866,9 +12792,7 @@
 							"fileName": "Certification",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
 						}
-					}
-				},
-				"risikenUndMassnahmenKlima": {
+					},
 					"transitorischeRisiken": "Defungo amo demens vinitor venia abundans crustulum delego bis. Ipsam ut ipsam adulescens deputo ducimus. Paens ocer undique crur venustas adiuvo alienus accommodo.",
 					"physischeRisiken": "Corroboro sed adhaero celebrer alveus aiunt viduo. Alveus tamen ceno possimus. Vitae voro compono sint cedo dedico dolore stultus vigilo voluptatum.",
 					"produkteZurReduzierungDerUmweltbelastung": null,
@@ -13035,7 +12959,7 @@
 					"geplanteVollzeitaequivalenteAb2031": 90750.48,
 					"chancenOderHindernisse": "Ventus quisquam perspiciatis bardus videlicet quis alo exercitationem. Vociferor terminatio appello delego appono tui deprimo comis cerno caelestis. Virga possimus bonus delicate ulterius curo vulticulus quod."
 				},
-				"taxonomieKpisAndBestimmteAktivitaeten": {
+				"taxonomieKpisUndBestimmteAktivitaeten": {
 					"wirtschaftszweige": null,
 					"gesamtumsatz": 501.4,
 					"taxonomiefaehigerUmsatz": 20.8,
@@ -13063,7 +12987,7 @@
 					"geplanterProzentualerUmsatzanteilImSektorTabakanbauUndVerarbeitungIn2030": 32.98,
 					"geplanterProzentualerUmsatzanteilImSektorTabakanbauUndVerarbeitungIn2040": null
 				},
-				"esgRatingAndZertifizierung": {
+				"esgRatingUndZertifizierung": {
 					"esgRating": "Yes",
 					"ratingagentur": "solutions",
 					"ergebnisDesEsgRatings": "portals",
@@ -13193,7 +13117,7 @@
 					"anteilDesNichtRecycletenAbfallsAnDerGesamtAbfallmenge": 39.69,
 					"mengeAnGefaehrlichenAbfaellen": null
 				},
-				"risikenAndMassnahmenKlima": {
+				"risikenUndMassnahmenKlima": {
 					"transitorischeKlimaUndUmweltrisiken": "Tribuo magnam paens capitulus apto adduco curtus defungo denuo vespillo. Dolore ipsum sui aranea articulus adfectus cohors decor turbo maxime. Arma minus timor clementia thermae ustulo facilis.",
 					"physischeKlimaUndUmweltrisiken": [
 						"DuerrenAndHitzewellen",
@@ -13216,9 +13140,7 @@
 					"transitionsplanVorhanden": {
 						"value": "Yes",
 						"dataSource": null
-					}
-				},
-				"risikenUndMassnahmenKlima": {
+					},
 					"transitorischeRisiken": "Angulus cruciamentum quod adulatio sumo aliqua brevis. Tunc bis cui trucido paulatim. Tero vado comitatus crapula aspicio vicissitudo.",
 					"physischeRisiken": "Auxilium suffragium callide depulso. Allatus subvenio audeo acerbitas. Quia crebro vigor.",
 					"produkteZurReduzierungDerUmweltbelastung": null,
@@ -13380,7 +13302,7 @@
 					"geplanteVollzeitaequivalenteAb2031": 85448.72,
 					"chancenOderHindernisse": "Aeneus canis cariosus argumentum consequatur amaritudo. Vilicus fugiat cohors vicissitudo canto caelestis deficio. Sapiente denique una decet audio calamitas calculus titulus."
 				},
-				"taxonomieKpisAndBestimmteAktivitaeten": {
+				"taxonomieKpisUndBestimmteAktivitaeten": {
 					"wirtschaftszweige": [
 						"16.23",
 						"43"
@@ -13411,7 +13333,7 @@
 					"geplanterProzentualerUmsatzanteilImSektorTabakanbauUndVerarbeitungIn2030": null,
 					"geplanterProzentualerUmsatzanteilImSektorTabakanbauUndVerarbeitungIn2040": null
 				},
-				"esgRatingAndZertifizierung": {
+				"esgRatingUndZertifizierung": {
 					"esgRating": "No",
 					"ratingagentur": null,
 					"ergebnisDesEsgRatings": "e-markets",
@@ -13545,7 +13467,7 @@
 					"anteilDesNichtRecycletenAbfallsAnDerGesamtAbfallmenge": null,
 					"mengeAnGefaehrlichenAbfaellen": 82664.24
 				},
-				"risikenAndMassnahmenKlima": {
+				"risikenUndMassnahmenKlima": {
 					"transitorischeKlimaUndUmweltrisiken": "Viridis ipsa comprehendo tibi cinis deleniti temptatio. Decet cupio ullus tabernus fugiat deputo. Infit arceo eos.",
 					"physischeKlimaUndUmweltrisiken": [
 						"VerlustBiodiversitaet",
@@ -13566,9 +13488,7 @@
 							"fileName": "Certification",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
 						}
-					}
-				},
-				"risikenUndMassnahmenKlima": {
+					},
 					"transitorischeRisiken": "Cavus synagoga subnecto catena supplanto accusantium synagoga. Volaticus alveus creptio arma. Turba beatus virga sordeo spectaculum versus.",
 					"physischeRisiken": "Reprehenderit coniecto cupiditas stultus accendo somnus civitas. Conor a urbanus odio. Auxilium vulgivagus ambulo utilis cornu impedit teneo summopere clementia.",
 					"produkteZurReduzierungDerUmweltbelastung": "No",
@@ -13722,7 +13642,7 @@
 					"geplanteVollzeitaequivalenteAb2031": 95607.9,
 					"chancenOderHindernisse": "Decumbo vaco nesciunt tam tutis terminatio tollo via accendo casus. Cunctatio inflammatio magni synagoga nisi desolo ea audax ambitus crux. Aestas est adhaero dapifer video bestia sed tonsor."
 				},
-				"taxonomieKpisAndBestimmteAktivitaeten": {
+				"taxonomieKpisUndBestimmteAktivitaeten": {
 					"wirtschaftszweige": [
 						"68.1",
 						"82"
@@ -13753,7 +13673,7 @@
 					"geplanterProzentualerUmsatzanteilImSektorTabakanbauUndVerarbeitungIn2030": 72.12,
 					"geplanterProzentualerUmsatzanteilImSektorTabakanbauUndVerarbeitungIn2040": 66.59
 				},
-				"esgRatingAndZertifizierung": {
+				"esgRatingUndZertifizierung": {
 					"esgRating": "No",
 					"ratingagentur": "mindshare",
 					"ergebnisDesEsgRatings": "action-items",
@@ -13860,7 +13780,7 @@
 					"anteilDesNichtRecycletenAbfallsAnDerGesamtAbfallmenge": 12.17,
 					"mengeAnGefaehrlichenAbfaellen": 21637.04
 				},
-				"risikenAndMassnahmenKlima": {
+				"risikenUndMassnahmenKlima": {
 					"transitorischeKlimaUndUmweltrisiken": "Adipiscor tepidus carus ubi labore. Quisquam ocer tego cornu socius ipsum sapiente clam despecto bardus. Alioqui iste at auctor aegre cumque veritas.",
 					"physischeKlimaUndUmweltrisiken": [
 						"Wassermangel",
@@ -13879,9 +13799,7 @@
 							"fileName": "Certification",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
 						}
-					}
-				},
-				"risikenUndMassnahmenKlima": {
+					},
 					"transitorischeRisiken": "Earum dolorum appositus veritatis. Atrocitas ademptio abscido tersus. Torqueo tantillus terminatio varietas.",
 					"physischeRisiken": "Creator sunt crepusculum audio tenus trado. Sortitus recusandae trepide super sui similique. Audio undique ter aspicio ab vinculum compello.",
 					"produkteZurReduzierungDerUmweltbelastung": "Yes",
@@ -14023,7 +13941,7 @@
 					"geplanteVollzeitaequivalenteAb2031": null,
 					"chancenOderHindernisse": "Una ullus magnam. Summisse arma sed suffragium adstringo vox tremo repudiandae velociter tego. Solvo aranea sed voco vesco auditor supra arbustum."
 				},
-				"taxonomieKpisAndBestimmteAktivitaeten": {
+				"taxonomieKpisUndBestimmteAktivitaeten": {
 					"wirtschaftszweige": [],
 					"gesamtumsatz": 38374.1,
 					"taxonomiefaehigerUmsatz": null,
@@ -14051,7 +13969,7 @@
 					"geplanterProzentualerUmsatzanteilImSektorTabakanbauUndVerarbeitungIn2030": 11.65,
 					"geplanterProzentualerUmsatzanteilImSektorTabakanbauUndVerarbeitungIn2040": 17.93
 				},
-				"esgRatingAndZertifizierung": {
+				"esgRatingUndZertifizierung": {
 					"esgRating": "No",
 					"ratingagentur": "e-business",
 					"ergebnisDesEsgRatings": "ROI",
@@ -14187,7 +14105,7 @@
 					"anteilDesNichtRecycletenAbfallsAnDerGesamtAbfallmenge": null,
 					"mengeAnGefaehrlichenAbfaellen": 23398.83
 				},
-				"risikenAndMassnahmenKlima": {
+				"risikenUndMassnahmenKlima": {
 					"transitorischeKlimaUndUmweltrisiken": "Vitiosus velut quos tracto. Delicate crinis nemo cur arbor tepidus validus ducimus arcesso confido. Placeat quisquam optio summa aedificium angulus omnis spiritus.",
 					"physischeKlimaUndUmweltrisiken": [
 						"Erdbeben",
@@ -14207,9 +14125,7 @@
 							"fileName": "Certification",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
 						}
-					}
-				},
-				"risikenUndMassnahmenKlima": {
+					},
 					"transitorischeRisiken": null,
 					"physischeRisiken": null,
 					"produkteZurReduzierungDerUmweltbelastung": "NA",
@@ -14364,7 +14280,7 @@
 					"geplanteVollzeitaequivalenteAb2031": 8120.83,
 					"chancenOderHindernisse": "Tantillus cotidie vesco. Amiculum strenuus viscus aegrus curis conventus ademptio. Accusamus conforto volup."
 				},
-				"taxonomieKpisAndBestimmteAktivitaeten": {
+				"taxonomieKpisUndBestimmteAktivitaeten": {
 					"wirtschaftszweige": [
 						"28.22",
 						"43.13",
@@ -14396,7 +14312,7 @@
 					"geplanterProzentualerUmsatzanteilImSektorTabakanbauUndVerarbeitungIn2030": 5.24,
 					"geplanterProzentualerUmsatzanteilImSektorTabakanbauUndVerarbeitungIn2040": 9.21
 				},
-				"esgRatingAndZertifizierung": {
+				"esgRatingUndZertifizierung": {
 					"esgRating": "No",
 					"ratingagentur": null,
 					"ergebnisDesEsgRatings": "paradigms",
@@ -14543,7 +14459,7 @@
 					"anteilDesNichtRecycletenAbfallsAnDerGesamtAbfallmenge": 6.81,
 					"mengeAnGefaehrlichenAbfaellen": 94863.62
 				},
-				"risikenAndMassnahmenKlima": {
+				"risikenUndMassnahmenKlima": {
 					"transitorischeKlimaUndUmweltrisiken": "Curiositas deorsum quia defluo aestivus acceptus. Brevis cur summisse arca tibi articulus. Aspicio vomica capto clam cohors voro blanditiis.",
 					"physischeKlimaUndUmweltrisiken": [
 						"Erdbeben"
@@ -14555,9 +14471,7 @@
 					"beschreibungDerNutzungVonSzenarioanalysen": "Defendo pauci demens amiculum vacuus. Synagoga cumque aequitas. Cur coniecto cohaero minima architecto.",
 					"beruecksichtigungVonKlimaUndUmweltrisiken": "Yes",
 					"zeithorizontDerBeruecksichtigungVonKlimaUndUmweltrisikenImGeschaeftsmodell": "Ante absconditus statua. Credo taceo conatus desipio caecus saepe tabernus depraedor. Absorbeo ducimus aperte volubilis sollers clibanus.",
-					"transitionsplanVorhanden": null
-				},
-				"risikenUndMassnahmenKlima": {
+					"transitionsplanVorhanden": null,
 					"transitorischeRisiken": "Utrum tumultus laudantium. Teneo quaerat suasoria. Conspergo corona dapifer sub.",
 					"physischeRisiken": "Est dolor tui artificiose altus constans vociferor. Quia solum voluptatibus dolore bellicus abbas velociter. Casso vito sollicito creptio cotidie adicio autus sol.",
 					"produkteZurReduzierungDerUmweltbelastung": "NA",
@@ -14711,7 +14625,7 @@
 					"geplanteVollzeitaequivalenteAb2031": 75507.41,
 					"chancenOderHindernisse": "Delinquo consectetur agnitio amet tutamen vigilo abduco. Caelestis atavus pecus cubo laudantium minima adipisci. Quas cruentus umbra."
 				},
-				"taxonomieKpisAndBestimmteAktivitaeten": {
+				"taxonomieKpisUndBestimmteAktivitaeten": {
 					"wirtschaftszweige": null,
 					"gesamtumsatz": 19356.4,
 					"taxonomiefaehigerUmsatz": null,
@@ -14739,7 +14653,7 @@
 					"geplanterProzentualerUmsatzanteilImSektorTabakanbauUndVerarbeitungIn2030": null,
 					"geplanterProzentualerUmsatzanteilImSektorTabakanbauUndVerarbeitungIn2040": null
 				},
-				"esgRatingAndZertifizierung": {
+				"esgRatingUndZertifizierung": {
 					"esgRating": "No",
 					"ratingagentur": "synergies",
 					"ergebnisDesEsgRatings": null,
@@ -14862,7 +14776,7 @@
 					"anteilDesNichtRecycletenAbfallsAnDerGesamtAbfallmenge": 88.92,
 					"mengeAnGefaehrlichenAbfaellen": null
 				},
-				"risikenAndMassnahmenKlima": {
+				"risikenUndMassnahmenKlima": {
 					"transitorischeKlimaUndUmweltrisiken": "Succurro colo terreo tyrannus comitatus carpo comes contego peccatus. Tamisium aureus defero tempus tergeo praesentium cotidie decet validus cena. Dolorum iste corroboro.",
 					"physischeKlimaUndUmweltrisiken": [
 						"Stuerme",
@@ -14891,9 +14805,7 @@
 							"fileName": "Policy",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
 						}
-					}
-				},
-				"risikenUndMassnahmenKlima": {
+					},
 					"transitorischeRisiken": "Vindico ad cinis cui. Deprecator avaritia amissio adulescens ultio tempore optio tolero unde. Sequi aestus peior aeneus coadunatio civis.",
 					"physischeRisiken": "Demoror summisse conduco conforto atrocitas maiores. Concedo ater comis vorago adamo cotidie. Tonsor varietas cubo nobis addo vomica amplus admoveo ancilla.",
 					"produkteZurReduzierungDerUmweltbelastung": "Yes",
@@ -15038,7 +14950,7 @@
 					"geplanteVollzeitaequivalenteAb2031": null,
 					"chancenOderHindernisse": "Comes accendo suadeo auxilium fuga cupressus vomica tabesco. Altus spes nulla appono aptus quo aestivus vesica terra. Calculus sollers necessitatibus aiunt tempus vulnus admitto ante."
 				},
-				"taxonomieKpisAndBestimmteAktivitaeten": {
+				"taxonomieKpisUndBestimmteAktivitaeten": {
 					"wirtschaftszweige": [
 						"32.12",
 						"43.31",
@@ -15071,7 +14983,7 @@
 					"geplanterProzentualerUmsatzanteilImSektorTabakanbauUndVerarbeitungIn2030": 87.23,
 					"geplanterProzentualerUmsatzanteilImSektorTabakanbauUndVerarbeitungIn2040": 54.71
 				},
-				"esgRatingAndZertifizierung": {
+				"esgRatingUndZertifizierung": {
 					"esgRating": null,
 					"ratingagentur": null,
 					"ergebnisDesEsgRatings": "interfaces",
@@ -15233,7 +15145,7 @@
 					"anteilDesNichtRecycletenAbfallsAnDerGesamtAbfallmenge": 73.14,
 					"mengeAnGefaehrlichenAbfaellen": 8744.62
 				},
-				"risikenAndMassnahmenKlima": {
+				"risikenUndMassnahmenKlima": {
 					"transitorischeKlimaUndUmweltrisiken": "Admitto tribuo amaritudo colo sapiente venustas trado. Absque cubo magni summisse abstergo defessus abeo cubicularis creber. Tactus debitis dedico.",
 					"physischeKlimaUndUmweltrisiken": [
 						"Stuerme",
@@ -15255,9 +15167,7 @@
 							"fileName": "Policy",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
 						}
-					}
-				},
-				"risikenUndMassnahmenKlima": {
+					},
 					"transitorischeRisiken": "Adsidue curso est cotidie animus vulnero causa vere. Calculus tollo coepi accusamus sodalitas vigilo aer. Crapula tremo adsuesco clementia.",
 					"physischeRisiken": "Copia asporto campana ascit correptius calamitas crudelis viscus dens vorago. Balbus vomica amaritudo explicabo trans anser. Aureus neque aqua unus adstringo curvo corrumpo tyrannus.",
 					"produkteZurReduzierungDerUmweltbelastung": "No",
@@ -15443,7 +15353,7 @@
 					"geplanteVollzeitaequivalenteAb2031": 99557.3,
 					"chancenOderHindernisse": "Verbum aedificium acervus quae appositus pauper cauda sophismata. Tero cohors trans sodalitas cruciamentum custodia socius aperiam. Defungo argentum necessitatibus trepide."
 				},
-				"taxonomieKpisAndBestimmteAktivitaeten": {
+				"taxonomieKpisUndBestimmteAktivitaeten": {
 					"wirtschaftszweige": null,
 					"gesamtumsatz": null,
 					"taxonomiefaehigerUmsatz": 2617.97,
@@ -15471,7 +15381,7 @@
 					"geplanterProzentualerUmsatzanteilImSektorTabakanbauUndVerarbeitungIn2030": 18.38,
 					"geplanterProzentualerUmsatzanteilImSektorTabakanbauUndVerarbeitungIn2040": 94.55
 				},
-				"esgRatingAndZertifizierung": {
+				"esgRatingUndZertifizierung": {
 					"esgRating": "Yes",
 					"ratingagentur": "partnerships",
 					"ergebnisDesEsgRatings": "niches",
@@ -15568,7 +15478,7 @@
 					"anteilDesNichtRecycletenAbfallsAnDerGesamtAbfallmenge": null,
 					"mengeAnGefaehrlichenAbfaellen": 97216.25
 				},
-				"risikenAndMassnahmenKlima": {
+				"risikenUndMassnahmenKlima": {
 					"transitorischeKlimaUndUmweltrisiken": "Umbra aqua adeptio. Cribro carus laborum calco curriculum quos non vito. Crustulum vigilo urbs.",
 					"physischeKlimaUndUmweltrisiken": null,
 					"vonPhysischenKlimaUndUmweltrisikenBetroffeneStandorte": "Suffoco vomica admitto aperiam conitor spiritus cohaero taceo. Cuius cui aranea suadeo aeneus bene. Debeo pectus amiculum tabella maiores sursum conor cohibeo tredecim attero.",
@@ -15584,9 +15494,7 @@
 							"fileName": "Policy",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
 						}
-					}
-				},
-				"risikenUndMassnahmenKlima": {
+					},
 					"transitorischeRisiken": "Placeat voluptate vergo termes. Amitto abbas vulgivagus vesica. Vado vos arbustum.",
 					"physischeRisiken": "Animus solus aegrus aiunt acies vespillo arx theologus. Ademptio trepide taedium deputo esse ex carus. Depraedor theatrum accusator ademptio abbas amicitia articulus collum.",
 					"produkteZurReduzierungDerUmweltbelastung": null,
@@ -15753,7 +15661,7 @@
 					"geplanteVollzeitaequivalenteAb2031": 29678.26,
 					"chancenOderHindernisse": null
 				},
-				"taxonomieKpisAndBestimmteAktivitaeten": {
+				"taxonomieKpisUndBestimmteAktivitaeten": {
 					"wirtschaftszweige": [
 						"03.21",
 						"46.15"
@@ -15784,7 +15692,7 @@
 					"geplanterProzentualerUmsatzanteilImSektorTabakanbauUndVerarbeitungIn2030": 86.1,
 					"geplanterProzentualerUmsatzanteilImSektorTabakanbauUndVerarbeitungIn2040": 37.2
 				},
-				"esgRatingAndZertifizierung": {
+				"esgRatingUndZertifizierung": {
 					"esgRating": "Yes",
 					"ratingagentur": "networks",
 					"ergebnisDesEsgRatings": null,
@@ -15914,7 +15822,7 @@
 					"anteilDesNichtRecycletenAbfallsAnDerGesamtAbfallmenge": 36.27,
 					"mengeAnGefaehrlichenAbfaellen": null
 				},
-				"risikenAndMassnahmenKlima": {
+				"risikenUndMassnahmenKlima": {
 					"transitorischeKlimaUndUmweltrisiken": "Maxime velum torqueo decimus tabesco. Calamitas ea at charisma triumphus. Voluptas virtus vehemens calco deduco compello facere coerceo pectus spiculum.",
 					"physischeKlimaUndUmweltrisiken": [
 						"DuerrenAndHitzewellen",
@@ -15943,9 +15851,7 @@
 							"fileName": "Policy",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
 						}
-					}
-				},
-				"risikenUndMassnahmenKlima": {
+					},
 					"transitorischeRisiken": "Arbor sodalitas cur. Vinculum aestas natus defaeco cedo pecco aegrotatio. Defluo adsum sperno cena.",
 					"physischeRisiken": "Demum torrens paulatim viriliter absens uredo comburo caelestis. Hic centum crustulum strenuus desolo supellex compello ipsum. Cognomen cornu adimpleo defessus.",
 					"produkteZurReduzierungDerUmweltbelastung": "No",
@@ -16088,7 +15994,7 @@
 					"geplanteVollzeitaequivalenteAb2031": 95565.62,
 					"chancenOderHindernisse": "Carus tempus suadeo benigne certe repellendus. Delinquo blanditiis ater. Ambulo civitas contigo aperte via vir nostrum paulatim desino."
 				},
-				"taxonomieKpisAndBestimmteAktivitaeten": {
+				"taxonomieKpisUndBestimmteAktivitaeten": {
 					"wirtschaftszweige": [
 						"39.00",
 						"63.12",
@@ -16120,7 +16026,7 @@
 					"geplanterProzentualerUmsatzanteilImSektorTabakanbauUndVerarbeitungIn2030": null,
 					"geplanterProzentualerUmsatzanteilImSektorTabakanbauUndVerarbeitungIn2040": 82.07
 				},
-				"esgRatingAndZertifizierung": {
+				"esgRatingUndZertifizierung": {
 					"esgRating": "No",
 					"ratingagentur": "interfaces",
 					"ergebnisDesEsgRatings": "eyeballs",
@@ -16226,7 +16132,7 @@
 					"anteilDesNichtRecycletenAbfallsAnDerGesamtAbfallmenge": 38.04,
 					"mengeAnGefaehrlichenAbfaellen": 8623.09
 				},
-				"risikenAndMassnahmenKlima": {
+				"risikenUndMassnahmenKlima": {
 					"transitorischeKlimaUndUmweltrisiken": "Verbera fugit vel usus deludo aeneus sapiente uter supellex spiculum. Perspiciatis vindico possimus distinctio stultus copia illum cibo pecco. Ambitus credo pecus claro angelus corpus distinctio.",
 					"physischeKlimaUndUmweltrisiken": [
 						"Wassermangel",
@@ -16247,9 +16153,7 @@
 							"fileName": "Policy",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
 						}
-					}
-				},
-				"risikenUndMassnahmenKlima": {
+					},
 					"transitorischeRisiken": "Utrimque apostolus quos. Celebrer charisma autem agnitio a. Sub a bis confero.",
 					"physischeRisiken": null,
 					"produkteZurReduzierungDerUmweltbelastung": "No",
@@ -16398,7 +16302,7 @@
 					"geplanteVollzeitaequivalenteAb2031": 71395.38,
 					"chancenOderHindernisse": null
 				},
-				"taxonomieKpisAndBestimmteAktivitaeten": {
+				"taxonomieKpisUndBestimmteAktivitaeten": {
 					"wirtschaftszweige": null,
 					"gesamtumsatz": 23509.2,
 					"taxonomiefaehigerUmsatz": null,
@@ -16426,7 +16330,7 @@
 					"geplanterProzentualerUmsatzanteilImSektorTabakanbauUndVerarbeitungIn2030": 21.63,
 					"geplanterProzentualerUmsatzanteilImSektorTabakanbauUndVerarbeitungIn2040": 5.12
 				},
-				"esgRatingAndZertifizierung": {
+				"esgRatingUndZertifizierung": {
 					"esgRating": "No",
 					"ratingagentur": "users",
 					"ergebnisDesEsgRatings": "users",
@@ -16555,7 +16459,7 @@
 					"anteilDesNichtRecycletenAbfallsAnDerGesamtAbfallmenge": 84.06,
 					"mengeAnGefaehrlichenAbfaellen": 45033.68
 				},
-				"risikenAndMassnahmenKlima": {
+				"risikenUndMassnahmenKlima": {
 					"transitorischeKlimaUndUmweltrisiken": "Odit umbra cornu avarus ultra comburo ambitus dapifer adopto brevis. Tabesco corrupti tolero sono vorax adstringo tener dolorum minima deporto. Odit capio cupiditas stultus mollitia aperio et cubitum adimpleo tondeo.",
 					"physischeKlimaUndUmweltrisiken": [
 						"Sonstige",
@@ -16575,9 +16479,7 @@
 							"fileName": "Policy",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
 						}
-					}
-				},
-				"risikenUndMassnahmenKlima": {
+					},
 					"transitorischeRisiken": "Attollo consuasor tondeo suppono. Tenax denuncio bene. Pecus thorax decumbo vulgaris.",
 					"physischeRisiken": "Catena vulgaris sed suadeo urbanus clementia acies. Ciminatio nulla complectus facere absens ceno corrupti tergiversatio. Cattus saepe sopor.",
 					"produkteZurReduzierungDerUmweltbelastung": "Yes",
@@ -16713,7 +16615,7 @@
 					"geplanteVollzeitaequivalenteAb2031": 58214.53,
 					"chancenOderHindernisse": "Paulatim cohaero deprimo constans thymum truculenter varius civitas iste. Asper textus balbus talio. Blanditiis spero sordeo abundans sperno."
 				},
-				"taxonomieKpisAndBestimmteAktivitaeten": {
+				"taxonomieKpisUndBestimmteAktivitaeten": {
 					"wirtschaftszweige": [
 						"26.5",
 						"28.91",
@@ -16745,7 +16647,7 @@
 					"geplanterProzentualerUmsatzanteilImSektorTabakanbauUndVerarbeitungIn2030": 14.07,
 					"geplanterProzentualerUmsatzanteilImSektorTabakanbauUndVerarbeitungIn2040": null
 				},
-				"esgRatingAndZertifizierung": {
+				"esgRatingUndZertifizierung": {
 					"esgRating": "No",
 					"ratingagentur": "ROI",
 					"ergebnisDesEsgRatings": "functionalities",
@@ -16857,7 +16759,7 @@
 					"anteilDesNichtRecycletenAbfallsAnDerGesamtAbfallmenge": null,
 					"mengeAnGefaehrlichenAbfaellen": 17006.59
 				},
-				"risikenAndMassnahmenKlima": {
+				"risikenUndMassnahmenKlima": {
 					"transitorischeKlimaUndUmweltrisiken": "Vis coma crastinus timor depulso cimentarius. Speculum carcer adflicto taceo vitium caute dens tripudio adinventitias tergum. Alter facere suadeo sum cauda terra vero victus similique tam.",
 					"physischeKlimaUndUmweltrisiken": [
 						"Waldbraende",
@@ -16878,9 +16780,7 @@
 					"beschreibungDerNutzungVonSzenarioanalysen": "Crepusculum deduco thorax deleo magni cenaculum subito culpo. Tenax usitas solio atqui approbo credo agnitio accedo cicuta. Aeneus quis capio.",
 					"beruecksichtigungVonKlimaUndUmweltrisiken": null,
 					"zeithorizontDerBeruecksichtigungVonKlimaUndUmweltrisikenImGeschaeftsmodell": "Versus vado speculum. Rem conduco aetas. Arcus adflicto trado anser stultus tergo despecto tamquam praesentium.",
-					"transitionsplanVorhanden": null
-				},
-				"risikenUndMassnahmenKlima": {
+					"transitionsplanVorhanden": null,
 					"transitorischeRisiken": null,
 					"physischeRisiken": "Vinculum deputo ancilla usitas cupiditate curatio cubo illum deputo corroboro. Vulgo colo attollo vado. Tum creptio varietas nam abduco ullus bellicus tredecim minus.",
 					"produkteZurReduzierungDerUmweltbelastung": "Yes",

@@ -57,7 +57,7 @@ export function generateEsgQuestionnaireData(nullProbability = DEFAULT_PROBABILI
         geplanteVollzeitaequivalenteAb2031: dataGenerator.randomFloat(),
         chancenOderHindernisse: dataGenerator.randomParagraphs(),
       },
-      taxonomieKpisAndBestimmteAktivitaeten: {
+      taxonomieKpisUndBestimmteAktivitaeten: {
         wirtschaftszweige: dataGenerator.valueOrNull(generateNaceCodes()),
         gesamtumsatz: dataGenerator.randomFloat(),
         taxonomiefaehigerUmsatz: dataGenerator.randomFloat(),
@@ -85,7 +85,7 @@ export function generateEsgQuestionnaireData(nullProbability = DEFAULT_PROBABILI
         geplanterProzentualerUmsatzanteilImSektorTabakanbauUndVerarbeitungIn2030: dataGenerator.randomPercentageValue(),
         geplanterProzentualerUmsatzanteilImSektorTabakanbauUndVerarbeitungIn2040: dataGenerator.randomPercentageValue(),
       },
-      esgRatingAndZertifizierung: {
+      esgRatingUndZertifizierung: {
         esgRating: dataGenerator.randomYesNo(),
         ratingagentur: dataGenerator.randomShortString(),
         ergebnisDesEsgRatings: dataGenerator.randomShortString(),
@@ -163,7 +163,7 @@ export function generateEsgQuestionnaireData(nullProbability = DEFAULT_PROBABILI
         anteilDesNichtRecycletenAbfallsAnDerGesamtAbfallmenge: dataGenerator.randomPercentageValue(),
         mengeAnGefaehrlichenAbfaellen: dataGenerator.randomFloat(),
       },
-      risikenAndMassnahmenKlima: {
+      risikenUndMassnahmenKlima: {
         transitorischeKlimaUndUmweltrisiken: dataGenerator.randomParagraphs(),
         physischeKlimaUndUmweltrisiken: dataGenerator.valueOrNull(
           pickSubsetOfElements([
@@ -189,8 +189,6 @@ export function generateEsgQuestionnaireData(nullProbability = DEFAULT_PROBABILI
         beruecksichtigungVonKlimaUndUmweltrisiken: dataGenerator.randomYesNo(),
         zeithorizontDerBeruecksichtigungVonKlimaUndUmweltrisikenImGeschaeftsmodell: dataGenerator.randomParagraphs(),
         transitionsplanVorhanden: dataGenerator.randomBaseDataPoint(dataGenerator.guaranteedYesNo()),
-      },
-      risikenUndMassnahmenKlima: {
         transitorischeRisiken: dataGenerator.randomParagraphs(),
         physischeRisiken: dataGenerator.randomParagraphs(),
         produkteZurReduzierungDerUmweltbelastung: dataGenerator.randomYesNoNa(),

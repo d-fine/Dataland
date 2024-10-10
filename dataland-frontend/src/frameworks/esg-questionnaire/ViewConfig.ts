@@ -193,7 +193,7 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
       },
       {
         type: 'section',
-        label: 'Taxonomie KPIs & bestimmte Aktivitäten',
+        label: 'Taxonomie KPIs und bestimmte Aktivitäten',
         expandOnPageLoad: true,
         shouldDisplay: (): boolean => true,
         children: [
@@ -206,7 +206,7 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
               formatNaceCodesForDatatable(
-                dataset.allgemein?.taxonomieKpisAndBestimmteAktivitaeten?.wirtschaftszweige,
+                dataset.allgemein?.taxonomieKpisUndBestimmteAktivitaeten?.wirtschaftszweige,
                 'Wirtschaftszweige'
               ),
           },
@@ -217,7 +217,7 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
-              formatNumberForDatatable(dataset.allgemein?.taxonomieKpisAndBestimmteAktivitaeten?.gesamtumsatz, 'Euro'),
+              formatNumberForDatatable(dataset.allgemein?.taxonomieKpisUndBestimmteAktivitaeten?.gesamtumsatz, 'Euro'),
           },
           {
             type: 'cell',
@@ -227,7 +227,7 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
               formatNumberForDatatable(
-                dataset.allgemein?.taxonomieKpisAndBestimmteAktivitaeten?.taxonomiefaehigerUmsatz,
+                dataset.allgemein?.taxonomieKpisUndBestimmteAktivitaeten?.taxonomiefaehigerUmsatz,
                 'Euro'
               ),
           },
@@ -239,7 +239,7 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
               formatNumberForDatatable(
-                dataset.allgemein?.taxonomieKpisAndBestimmteAktivitaeten?.taxonomiekonformerUmsatz,
+                dataset.allgemein?.taxonomieKpisUndBestimmteAktivitaeten?.taxonomiekonformerUmsatz,
                 'Euro'
               ),
           },
@@ -250,7 +250,7 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
-              formatNumberForDatatable(dataset.allgemein?.taxonomieKpisAndBestimmteAktivitaeten?.gesamtCapex, 'Euro'),
+              formatNumberForDatatable(dataset.allgemein?.taxonomieKpisUndBestimmteAktivitaeten?.gesamtCapex, 'Euro'),
           },
           {
             type: 'cell',
@@ -260,7 +260,7 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
               formatNumberForDatatable(
-                dataset.allgemein?.taxonomieKpisAndBestimmteAktivitaeten?.taxonomiefaehigeCapex,
+                dataset.allgemein?.taxonomieKpisUndBestimmteAktivitaeten?.taxonomiefaehigeCapex,
                 'Euro'
               ),
           },
@@ -272,7 +272,7 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
               formatNumberForDatatable(
-                dataset.allgemein?.taxonomieKpisAndBestimmteAktivitaeten?.taxonomiekonformeCapex,
+                dataset.allgemein?.taxonomieKpisUndBestimmteAktivitaeten?.taxonomiekonformeCapex,
                 'Euro'
               ),
           },
@@ -284,7 +284,7 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
               formatYesNoValueForDatatable(
-                dataset.allgemein?.taxonomieKpisAndBestimmteAktivitaeten?.taxonomiebezogeneCapexPlanungVorhanden
+                dataset.allgemein?.taxonomieKpisUndBestimmteAktivitaeten?.taxonomiebezogeneCapexPlanungVorhanden
               ),
           },
           {
@@ -293,10 +293,10 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
             explanation:
               'Welcher taxonomiefähige prozentuale Anteil an der Gesamt-CapEx wird im Rahmen der CapEx-Planung voraussichtlich in 5 Jahren erreicht werden? ',
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.allgemein?.taxonomieKpisAndBestimmteAktivitaeten?.taxonomiebezogeneCapexPlanungVorhanden == 'Yes',
+              dataset.allgemein?.taxonomieKpisUndBestimmteAktivitaeten?.taxonomiebezogeneCapexPlanungVorhanden == 'Yes',
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
               formatPercentageForDatatable(
-                dataset.allgemein?.taxonomieKpisAndBestimmteAktivitaeten?.geplanteTaxonomiefaehigeCapexIn5Jahren
+                dataset.allgemein?.taxonomieKpisUndBestimmteAktivitaeten?.geplanteTaxonomiefaehigeCapexIn5Jahren
               ),
           },
           {
@@ -305,21 +305,21 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
             explanation:
               'Welcher taxonomiekonforme prozentuale Anteil an der Gesamt-CapEx wird im Rahmen der CapEx-Planung voraussichtlich in 5 Jahren erreicht werden? ',
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.allgemein?.taxonomieKpisAndBestimmteAktivitaeten?.taxonomiebezogeneCapexPlanungVorhanden == 'Yes',
+              dataset.allgemein?.taxonomieKpisUndBestimmteAktivitaeten?.taxonomiebezogeneCapexPlanungVorhanden == 'Yes',
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
               formatPercentageForDatatable(
-                dataset.allgemein?.taxonomieKpisAndBestimmteAktivitaeten?.geplanteTaxonomiekonformeCapexIn5Jahren
+                dataset.allgemein?.taxonomieKpisUndBestimmteAktivitaeten?.geplanteTaxonomiekonformeCapexIn5Jahren
               ),
           },
           {
             type: 'cell',
-            label: 'Aktivität im Sektor Fossile Brennstoffe',
+            label: 'Aktivität im Sektor "Fossile Brennstoffe"',
             explanation: 'Ist das Unternehmen im Sektor "Fossile Brennstoffe (Kohle, Gas, Öl)" aktiv?',
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
               formatYesNoValueForDatatable(
-                dataset.allgemein?.taxonomieKpisAndBestimmteAktivitaeten?.aktivitaetImSektorFossileBrennstoffe
+                dataset.allgemein?.taxonomieKpisUndBestimmteAktivitaeten?.aktivitaetImSektorFossileBrennstoffe
               ),
           },
           {
@@ -328,10 +328,10 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
             explanation:
               'Welcher prozentuale Anteil am Gesamtumsatz ist auf den Sektor "Fossile Brennstoffe (Kohle, Gas, Öl)" zurückzuführen?',
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.allgemein?.taxonomieKpisAndBestimmteAktivitaeten?.aktivitaetImSektorFossileBrennstoffe == 'Yes',
+              dataset.allgemein?.taxonomieKpisUndBestimmteAktivitaeten?.aktivitaetImSektorFossileBrennstoffe == 'Yes',
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
               formatPercentageForDatatable(
-                dataset.allgemein?.taxonomieKpisAndBestimmteAktivitaeten
+                dataset.allgemein?.taxonomieKpisUndBestimmteAktivitaeten
                   ?.aktuellerProzentualerUmsatzanteilImSektorFossileBrennstoffe
               ),
           },
@@ -341,10 +341,10 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
             explanation:
               'Welcher prozentuale Anteil am Gesamtumsatz wird im Jahr 2030 voraussichtlich auf den Sektor "Fossile Brennstoffe (Kohle, Gas, Öl)" zurückzuführen sein?',
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.allgemein?.taxonomieKpisAndBestimmteAktivitaeten?.aktivitaetImSektorFossileBrennstoffe == 'Yes',
+              dataset.allgemein?.taxonomieKpisUndBestimmteAktivitaeten?.aktivitaetImSektorFossileBrennstoffe == 'Yes',
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
               formatPercentageForDatatable(
-                dataset.allgemein?.taxonomieKpisAndBestimmteAktivitaeten
+                dataset.allgemein?.taxonomieKpisUndBestimmteAktivitaeten
                   ?.geplanterProzentualerUmsatzanteilImSektorFossileBrennstoffeIn2030
               ),
           },
@@ -354,10 +354,10 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
             explanation:
               'Welcher prozentuale Anteil am Gesamtumsatz wird im Jahr 2040 voraussichtlich auf den Sektor "Fossile Brennstoffe (Kohle, Gas, Öl)" zurückzuführen sein?',
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.allgemein?.taxonomieKpisAndBestimmteAktivitaeten?.aktivitaetImSektorFossileBrennstoffe == 'Yes',
+              dataset.allgemein?.taxonomieKpisUndBestimmteAktivitaeten?.aktivitaetImSektorFossileBrennstoffe == 'Yes',
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
               formatPercentageForDatatable(
-                dataset.allgemein?.taxonomieKpisAndBestimmteAktivitaeten
+                dataset.allgemein?.taxonomieKpisUndBestimmteAktivitaeten
                   ?.geplanterProzentualerUmsatzanteilImSektorFossileBrennstoffeIn2040
               ),
           },
@@ -369,7 +369,7 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
               formatYesNoValueForDatatable(
-                dataset.allgemein?.taxonomieKpisAndBestimmteAktivitaeten?.aktivitaetImSektorHerstellungVonChemikalien
+                dataset.allgemein?.taxonomieKpisUndBestimmteAktivitaeten?.aktivitaetImSektorHerstellungVonChemikalien
               ),
           },
           {
@@ -378,11 +378,11 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
             explanation:
               'Welcher prozentuale Anteil am Gesamtumsatz ist auf den Sektor "Herstellung von Chemikalien" zurückzuführen?',
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.allgemein?.taxonomieKpisAndBestimmteAktivitaeten?.aktivitaetImSektorHerstellungVonChemikalien ==
+              dataset.allgemein?.taxonomieKpisUndBestimmteAktivitaeten?.aktivitaetImSektorHerstellungVonChemikalien ==
               'Yes',
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
               formatPercentageForDatatable(
-                dataset.allgemein?.taxonomieKpisAndBestimmteAktivitaeten
+                dataset.allgemein?.taxonomieKpisUndBestimmteAktivitaeten
                   ?.aktuellerProzentualerUmsatzanteilImSektorHerstellungVonChemikalien
               ),
           },
@@ -392,11 +392,11 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
             explanation:
               'Welcher prozentuale Anteil am Gesamtumsatz wird im Jahr 2030 voraussichtlich auf den Sektor "Herstellung von Chemikalien" zurückzuführen sein?',
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.allgemein?.taxonomieKpisAndBestimmteAktivitaeten?.aktivitaetImSektorHerstellungVonChemikalien ==
+              dataset.allgemein?.taxonomieKpisUndBestimmteAktivitaeten?.aktivitaetImSektorHerstellungVonChemikalien ==
               'Yes',
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
               formatPercentageForDatatable(
-                dataset.allgemein?.taxonomieKpisAndBestimmteAktivitaeten
+                dataset.allgemein?.taxonomieKpisUndBestimmteAktivitaeten
                   ?.geplanterProzentualerUmsatzanteilImSektorHerstellungVonChemikalienIn2030
               ),
           },
@@ -406,11 +406,11 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
             explanation:
               'Welcher prozentuale Anteil am Gesamtumsatz wird im Jahr 2040 voraussichtlich auf den Sektor "Herstellung von Chemikalien" zurückzuführen sein?',
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.allgemein?.taxonomieKpisAndBestimmteAktivitaeten?.aktivitaetImSektorHerstellungVonChemikalien ==
+              dataset.allgemein?.taxonomieKpisUndBestimmteAktivitaeten?.aktivitaetImSektorHerstellungVonChemikalien ==
               'Yes',
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
               formatPercentageForDatatable(
-                dataset.allgemein?.taxonomieKpisAndBestimmteAktivitaeten
+                dataset.allgemein?.taxonomieKpisUndBestimmteAktivitaeten
                   ?.geplanterProzentualerUmsatzanteilImSektorHerstellungVonChemikalienIn2040
               ),
           },
@@ -422,7 +422,7 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
               formatYesNoValueForDatatable(
-                dataset.allgemein?.taxonomieKpisAndBestimmteAktivitaeten?.aktivitaetImSektorUmstritteneWaffen
+                dataset.allgemein?.taxonomieKpisUndBestimmteAktivitaeten?.aktivitaetImSektorUmstritteneWaffen
               ),
           },
           {
@@ -431,10 +431,10 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
             explanation:
               'Welcher prozentuale Anteil am Gesamtumsatz ist auf den Sektor "Umstrittene Waffen" zurückzuführen?',
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.allgemein?.taxonomieKpisAndBestimmteAktivitaeten?.aktivitaetImSektorUmstritteneWaffen == 'Yes',
+              dataset.allgemein?.taxonomieKpisUndBestimmteAktivitaeten?.aktivitaetImSektorUmstritteneWaffen == 'Yes',
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
               formatPercentageForDatatable(
-                dataset.allgemein?.taxonomieKpisAndBestimmteAktivitaeten
+                dataset.allgemein?.taxonomieKpisUndBestimmteAktivitaeten
                   ?.aktuellerProzentualerUmsatzanteilImSektorUmstritteneWaffen
               ),
           },
@@ -444,10 +444,10 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
             explanation:
               'Welcher prozentuale Anteil am Gesamtumsatz wird im Jahr 2030 voraussichtlich auf den Sektor "Umstrittene Waffen" zurückzuführen sein?',
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.allgemein?.taxonomieKpisAndBestimmteAktivitaeten?.aktivitaetImSektorUmstritteneWaffen == 'Yes',
+              dataset.allgemein?.taxonomieKpisUndBestimmteAktivitaeten?.aktivitaetImSektorUmstritteneWaffen == 'Yes',
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
               formatPercentageForDatatable(
-                dataset.allgemein?.taxonomieKpisAndBestimmteAktivitaeten
+                dataset.allgemein?.taxonomieKpisUndBestimmteAktivitaeten
                   ?.geplanterProzentualerUmsatzanteilImSektorUmstritteneWaffenIn2030
               ),
           },
@@ -457,10 +457,10 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
             explanation:
               'Welcher prozentuale Anteil am Gesamtumsatz wird im Jahr 2040 voraussichtlich auf den Sektor "Umstrittene Waffen" zurückzuführen sein?',
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.allgemein?.taxonomieKpisAndBestimmteAktivitaeten?.aktivitaetImSektorUmstritteneWaffen == 'Yes',
+              dataset.allgemein?.taxonomieKpisUndBestimmteAktivitaeten?.aktivitaetImSektorUmstritteneWaffen == 'Yes',
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
               formatPercentageForDatatable(
-                dataset.allgemein?.taxonomieKpisAndBestimmteAktivitaeten
+                dataset.allgemein?.taxonomieKpisUndBestimmteAktivitaeten
                   ?.geplanterProzentualerUmsatzanteilImSektorUmstritteneWaffenIn2040
               ),
           },
@@ -472,7 +472,7 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
               formatYesNoValueForDatatable(
-                dataset.allgemein?.taxonomieKpisAndBestimmteAktivitaeten?.aktivitaetImSektorTabakanbauUndVerarbeitung
+                dataset.allgemein?.taxonomieKpisUndBestimmteAktivitaeten?.aktivitaetImSektorTabakanbauUndVerarbeitung
               ),
           },
           {
@@ -481,11 +481,11 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
             explanation:
               'Welcher prozentuale Anteil am Gesamtumsatz ist auf den Sektor "Tabakanbau und -verarbeitung" zurückzuführen?',
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.allgemein?.taxonomieKpisAndBestimmteAktivitaeten?.aktivitaetImSektorTabakanbauUndVerarbeitung ==
+              dataset.allgemein?.taxonomieKpisUndBestimmteAktivitaeten?.aktivitaetImSektorTabakanbauUndVerarbeitung ==
               'Yes',
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
               formatPercentageForDatatable(
-                dataset.allgemein?.taxonomieKpisAndBestimmteAktivitaeten
+                dataset.allgemein?.taxonomieKpisUndBestimmteAktivitaeten
                   ?.aktuellerProzentualerUmsatzanteilImSektorTabakanbauUndVerarbeitung
               ),
           },
@@ -495,11 +495,11 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
             explanation:
               'Welcher prozentuale Anteil am Gesamtumsatz wird im Jahr 2030 voraussichtlich auf den Sektor "Tabakanbau und -verarbeitung" zurückzuführen sein?',
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.allgemein?.taxonomieKpisAndBestimmteAktivitaeten?.aktivitaetImSektorTabakanbauUndVerarbeitung ==
+              dataset.allgemein?.taxonomieKpisUndBestimmteAktivitaeten?.aktivitaetImSektorTabakanbauUndVerarbeitung ==
               'Yes',
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
               formatPercentageForDatatable(
-                dataset.allgemein?.taxonomieKpisAndBestimmteAktivitaeten
+                dataset.allgemein?.taxonomieKpisUndBestimmteAktivitaeten
                   ?.geplanterProzentualerUmsatzanteilImSektorTabakanbauUndVerarbeitungIn2030
               ),
           },
@@ -509,11 +509,11 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
             explanation:
               'Welcher prozentuale Anteil am Gesamtumsatz wird im Jahr 2040 voraussichtlich auf den Sektor "Tabakanbau und -verarbeitung" zurückzuführen sein?',
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.allgemein?.taxonomieKpisAndBestimmteAktivitaeten?.aktivitaetImSektorTabakanbauUndVerarbeitung ==
+              dataset.allgemein?.taxonomieKpisUndBestimmteAktivitaeten?.aktivitaetImSektorTabakanbauUndVerarbeitung ==
               'Yes',
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
               formatPercentageForDatatable(
-                dataset.allgemein?.taxonomieKpisAndBestimmteAktivitaeten
+                dataset.allgemein?.taxonomieKpisUndBestimmteAktivitaeten
                   ?.geplanterProzentualerUmsatzanteilImSektorTabakanbauUndVerarbeitungIn2040
               ),
           },
@@ -521,7 +521,7 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
       },
       {
         type: 'section',
-        label: 'ESG-Rating & Zertifizierung',
+        label: 'ESG-Rating und Zertifizierung',
         expandOnPageLoad: true,
         shouldDisplay: (): boolean => true,
         children: [
@@ -532,37 +532,37 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
-              formatYesNoValueForDatatable(dataset.allgemein?.esgRatingAndZertifizierung?.esgRating),
+              formatYesNoValueForDatatable(dataset.allgemein?.esgRatingUndZertifizierung?.esgRating),
           },
           {
             type: 'cell',
             label: 'Ratingagentur',
             explanation: 'Welche Rating Agentur hat das Rating durchgeführt?',
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.allgemein?.esgRatingAndZertifizierung?.esgRating == 'Yes',
+              dataset.allgemein?.esgRatingUndZertifizierung?.esgRating == 'Yes',
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.allgemein?.esgRatingAndZertifizierung?.ratingagentur),
+              formatStringForDatatable(dataset.allgemein?.esgRatingUndZertifizierung?.ratingagentur),
           },
           {
             type: 'cell',
             label: 'Ergebnis des ESG-Ratings',
             explanation: 'Wie lautet das Rating?',
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.allgemein?.esgRatingAndZertifizierung?.esgRating == 'Yes',
+              dataset.allgemein?.esgRatingUndZertifizierung?.esgRating == 'Yes',
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.allgemein?.esgRatingAndZertifizierung?.ergebnisDesEsgRatings),
+              formatStringForDatatable(dataset.allgemein?.esgRatingUndZertifizierung?.ergebnisDesEsgRatings),
           },
           {
             type: 'cell',
             label: 'Ratingbericht',
             explanation: 'Liegt ein Ratingbericht vor?',
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.allgemein?.esgRatingAndZertifizierung?.esgRating == 'Yes',
+              dataset.allgemein?.esgRatingUndZertifizierung?.esgRating == 'Yes',
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
-                formatYesNoValueForDatatable(dataset.allgemein?.esgRatingAndZertifizierung?.ratingbericht?.value),
+                formatYesNoValueForDatatable(dataset.allgemein?.esgRatingUndZertifizierung?.ratingbericht?.value),
                 'Ratingbericht',
-                dataset.allgemein?.esgRatingAndZertifizierung?.ratingbericht
+                dataset.allgemein?.esgRatingUndZertifizierung?.ratingbericht
               ),
           },
           {
@@ -573,9 +573,9 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
-                formatYesNoValueForDatatable(dataset.allgemein?.esgRatingAndZertifizierung?.iso14001?.value),
+                formatYesNoValueForDatatable(dataset.allgemein?.esgRatingUndZertifizierung?.iso14001?.value),
                 'ISO 14001',
-                dataset.allgemein?.esgRatingAndZertifizierung?.iso14001
+                dataset.allgemein?.esgRatingUndZertifizierung?.iso14001
               ),
           },
           {
@@ -586,9 +586,9 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
-                formatYesNoValueForDatatable(dataset.allgemein?.esgRatingAndZertifizierung?.iso45001?.value),
+                formatYesNoValueForDatatable(dataset.allgemein?.esgRatingUndZertifizierung?.iso45001?.value),
                 'ISO 45001',
-                dataset.allgemein?.esgRatingAndZertifizierung?.iso45001
+                dataset.allgemein?.esgRatingUndZertifizierung?.iso45001
               ),
           },
           {
@@ -599,9 +599,9 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
-                formatYesNoValueForDatatable(dataset.allgemein?.esgRatingAndZertifizierung?.iso27001?.value),
+                formatYesNoValueForDatatable(dataset.allgemein?.esgRatingUndZertifizierung?.iso27001?.value),
                 'ISO 27001',
-                dataset.allgemein?.esgRatingAndZertifizierung?.iso27001
+                dataset.allgemein?.esgRatingUndZertifizierung?.iso27001
               ),
           },
           {
@@ -612,9 +612,9 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
-                formatYesNoValueForDatatable(dataset.allgemein?.esgRatingAndZertifizierung?.iso50001?.value),
+                formatYesNoValueForDatatable(dataset.allgemein?.esgRatingUndZertifizierung?.iso50001?.value),
                 'ISO 50001',
-                dataset.allgemein?.esgRatingAndZertifizierung?.iso50001
+                dataset.allgemein?.esgRatingUndZertifizierung?.iso50001
               ),
           },
           {
@@ -626,9 +626,9 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
-                formatYesNoValueForDatatable(dataset.allgemein?.esgRatingAndZertifizierung?.iso14040Ivm14044?.value),
+                formatYesNoValueForDatatable(dataset.allgemein?.esgRatingUndZertifizierung?.iso14040Ivm14044?.value),
                 'ISO 14040 (i.V.m. 14044)',
-                dataset.allgemein?.esgRatingAndZertifizierung?.iso14040Ivm14044
+                dataset.allgemein?.esgRatingUndZertifizierung?.iso14040Ivm14044
               ),
           },
           {
@@ -639,9 +639,9 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
-                formatYesNoValueForDatatable(dataset.allgemein?.esgRatingAndZertifizierung?.iso14064?.value),
+                formatYesNoValueForDatatable(dataset.allgemein?.esgRatingUndZertifizierung?.iso14064?.value),
                 'ISO 14064',
-                dataset.allgemein?.esgRatingAndZertifizierung?.iso14064
+                dataset.allgemein?.esgRatingUndZertifizierung?.iso14064
               ),
           },
           {
@@ -652,9 +652,9 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
-                formatYesNoValueForDatatable(dataset.allgemein?.esgRatingAndZertifizierung?.emas?.value),
+                formatYesNoValueForDatatable(dataset.allgemein?.esgRatingUndZertifizierung?.emas?.value),
                 'EMAS',
-                dataset.allgemein?.esgRatingAndZertifizierung?.emas
+                dataset.allgemein?.esgRatingUndZertifizierung?.emas
               ),
           },
         ],
@@ -1083,7 +1083,7 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
       },
       {
         type: 'section',
-        label: 'Risiken & Maßnahmen Klima',
+        label: 'Risiken und Maßnahmen Klima',
         expandOnPageLoad: true,
         shouldDisplay: (): boolean => true,
         children: [
@@ -1096,7 +1096,7 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
               formatFreeTextForDatatable(
-                dataset.umwelt?.risikenAndMassnahmenKlima?.transitorischeKlimaUndUmweltrisiken
+                dataset.umwelt?.risikenUndMassnahmenKlima?.transitorischeKlimaUndUmweltrisiken
               ),
           },
           {
@@ -1121,7 +1121,7 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
                 Sonstige: 'Sonstige',
               };
               return formatListOfStringsForDatatable(
-                dataset.umwelt?.risikenAndMassnahmenKlima?.physischeKlimaUndUmweltrisiken?.map((it) =>
+                dataset.umwelt?.risikenUndMassnahmenKlima?.physischeKlimaUndUmweltrisiken?.map((it) =>
                   getOriginalNameFromTechnicalName(it, mappings)
                 ),
                 'Physische Klima- und Umweltrisiken'
@@ -1137,7 +1137,7 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
               formatFreeTextForDatatable(
-                dataset.umwelt?.risikenAndMassnahmenKlima?.vonPhysischenKlimaUndUmweltrisikenBetroffeneStandorte
+                dataset.umwelt?.risikenUndMassnahmenKlima?.vonPhysischenKlimaUndUmweltrisikenBetroffeneStandorte
               ),
           },
           {
@@ -1148,7 +1148,7 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
               formatYesNoValueForDatatable(
-                dataset.umwelt?.risikenAndMassnahmenKlima?.messungSteuerungUndUeberwachungDerKlimaUndUmweltrisiken
+                dataset.umwelt?.risikenUndMassnahmenKlima?.messungSteuerungUndUeberwachungDerKlimaUndUmweltrisiken
               ),
           },
           {
@@ -1157,11 +1157,11 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
             explanation:
               'Bitte beschreiben Sie das Vorgehen, mit dem Klima- und Umweltrisiken gemessen, gesteuert und überwacht werden.',
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.umwelt?.risikenAndMassnahmenKlima?.messungSteuerungUndUeberwachungDerKlimaUndUmweltrisiken ==
+              dataset.umwelt?.risikenUndMassnahmenKlima?.messungSteuerungUndUeberwachungDerKlimaUndUmweltrisiken ==
               'Yes',
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
               formatFreeTextForDatatable(
-                dataset.umwelt?.risikenAndMassnahmenKlima
+                dataset.umwelt?.risikenUndMassnahmenKlima
                   ?.beschreibungDerMessungSteuerungUndUeberwachungDerKlimaUndUmweltrisiken
               ),
           },
@@ -1171,10 +1171,10 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
             explanation:
               'Werden bei der Messung, Steuerung und Überwachung der Klima- und Umweltrisiken Szenarioanalysen genutzt?',
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.umwelt?.risikenAndMassnahmenKlima?.messungSteuerungUndUeberwachungDerKlimaUndUmweltrisiken ==
+              dataset.umwelt?.risikenUndMassnahmenKlima?.messungSteuerungUndUeberwachungDerKlimaUndUmweltrisiken ==
               'Yes',
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
-              formatYesNoValueForDatatable(dataset.umwelt?.risikenAndMassnahmenKlima?.nutzungVonSzenarioanalysen),
+              formatYesNoValueForDatatable(dataset.umwelt?.risikenUndMassnahmenKlima?.nutzungVonSzenarioanalysen),
           },
           {
             type: 'cell',
@@ -1182,10 +1182,10 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
             explanation:
               'Bitte beschreiben Sie auf welcher Art und Weise Szenarioanalysen genutzt werden, um Klima- und Umweltirisken zu messen, zu steuern und zu überwachen.',
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.umwelt?.risikenAndMassnahmenKlima?.nutzungVonSzenarioanalysen == 'Yes',
+              dataset.umwelt?.risikenUndMassnahmenKlima?.nutzungVonSzenarioanalysen == 'Yes',
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
               formatFreeTextForDatatable(
-                dataset.umwelt?.risikenAndMassnahmenKlima?.beschreibungDerNutzungVonSzenarioanalysen
+                dataset.umwelt?.risikenUndMassnahmenKlima?.beschreibungDerNutzungVonSzenarioanalysen
               ),
           },
           {
@@ -1197,7 +1197,7 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
               formatYesNoValueForDatatable(
-                dataset.umwelt?.risikenAndMassnahmenKlima?.beruecksichtigungVonKlimaUndUmweltrisiken
+                dataset.umwelt?.risikenUndMassnahmenKlima?.beruecksichtigungVonKlimaUndUmweltrisiken
               ),
           },
           {
@@ -1206,10 +1206,10 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
             explanation:
               'Stellen Sie die genutzten Zeithorizonte dar, welche bei der Berücksichtigung von Klima- und Umweltrisiken in der Geschäftsstrategie und/oder im Geschäftsmodell des Unternehmens betrachtet werden.',
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.umwelt?.risikenAndMassnahmenKlima?.beruecksichtigungVonKlimaUndUmweltrisiken == 'Yes',
+              dataset.umwelt?.risikenUndMassnahmenKlima?.beruecksichtigungVonKlimaUndUmweltrisiken == 'Yes',
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
               formatFreeTextForDatatable(
-                dataset.umwelt?.risikenAndMassnahmenKlima
+                dataset.umwelt?.risikenUndMassnahmenKlima
                   ?.zeithorizontDerBeruecksichtigungVonKlimaUndUmweltrisikenImGeschaeftsmodell
               ),
           },
@@ -1222,20 +1222,12 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
                 formatYesNoValueForDatatable(
-                  dataset.umwelt?.risikenAndMassnahmenKlima?.transitionsplanVorhanden?.value
+                  dataset.umwelt?.risikenUndMassnahmenKlima?.transitionsplanVorhanden?.value
                 ),
                 'Transitionsplan vorhanden',
-                dataset.umwelt?.risikenAndMassnahmenKlima?.transitionsplanVorhanden
+                dataset.umwelt?.risikenUndMassnahmenKlima?.transitionsplanVorhanden
               ),
           },
-        ],
-      },
-      {
-        type: 'section',
-        label: 'Risiken und Maßnahmen Klima',
-        expandOnPageLoad: true,
-        shouldDisplay: (): boolean => true,
-        children: [
           {
             type: 'cell',
             label: 'Transitorische Risiken',

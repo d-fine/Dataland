@@ -35,24 +35,34 @@ function modifyPreparedFixturesPartOne(newFixture: FixtureData<EsgQuestionnaireD
   if (newFixture.t.general?.masterData) {
     newFixture.t.general.masterData.berichtspflichtUndEinwilligungZurVeroeffentlichung = YesNo.Yes;
   }
-  /*
-  if (newFixture.t.allgemein?.esgZiele?.existenzVonEsgZielen) {
-    newFixture.t.allgemein.esgZiele.existenzVonEsgZielen = YesNo.Yes;
+  if (newFixture.t.allgemein?.taxonomieKpisUndBestimmteAktivitaeten?.taxonomiebezogeneCapexPlanungVorhanden) {
+    newFixture.t.allgemein.taxonomieKpisUndBestimmteAktivitaeten.taxonomiebezogeneCapexPlanungVorhanden = YesNo.Yes;
   }
-  if (newFixture.t.allgemein?.sektoren?.sektorenMitHohenKlimaauswirkungen) {
-    newFixture.t.allgemein.sektoren.sektorenMitHohenKlimaauswirkungen = YesNo.Yes;
+  if (newFixture.t.allgemein?.taxonomieKpisUndBestimmteAktivitaeten?.aktivitaetImSektorFossileBrennstoffe) {
+    newFixture.t.allgemein.taxonomieKpisUndBestimmteAktivitaeten.aktivitaetImSektorFossileBrennstoffe == YesNo.Yes;
   }
-  if (newFixture.t.allgemein?.esgBerichte?.nachhaltigkeitsberichte) {
-    newFixture.t.allgemein.esgBerichte.nachhaltigkeitsberichte = YesNo.Yes;
-  } */ // TODO comment out changed fields
+  if (newFixture.t.allgemein?.taxonomieKpisUndBestimmteAktivitaeten?.aktivitaetImSektorHerstellungVonChemikalien) {
+    newFixture.t.allgemein.taxonomieKpisUndBestimmteAktivitaeten.aktivitaetImSektorHerstellungVonChemikalien =
+      YesNo.Yes;
+  }
+  if (newFixture.t.allgemein?.taxonomieKpisUndBestimmteAktivitaeten?.aktivitaetImSektorUmstritteneWaffen) {
+    newFixture.t.allgemein.taxonomieKpisUndBestimmteAktivitaeten.aktivitaetImSektorUmstritteneWaffen = YesNo.Yes;
+  }
+  if (newFixture.t.allgemein?.taxonomieKpisUndBestimmteAktivitaeten?.aktivitaetImSektorTabakanbauUndVerarbeitung) {
+    newFixture.t.allgemein.taxonomieKpisUndBestimmteAktivitaeten.aktivitaetImSektorTabakanbauUndVerarbeitung =
+      YesNo.Yes;
+  }
+  if (newFixture.t.allgemein?.esgRatingUndZertifizierung?.esgRating) {
+    newFixture.t.allgemein.esgRatingUndZertifizierung.esgRating = YesNo.Yes;
+  }
+  if (newFixture.t.allgemein?.esgRatingUndZertifizierung?.ratingbericht) {
+    newFixture.t.allgemein.esgRatingUndZertifizierung.ratingbericht.value = YesNo.Yes;
+  }
   if (newFixture.t.allgemein?.unGlobalCompactPrinzipien?.mechanismenZurUeberwachungDerEinhaltungDerUngcp) {
     newFixture.t.allgemein.unGlobalCompactPrinzipien.mechanismenZurUeberwachungDerEinhaltungDerUngcp = YesNo.Yes;
   }
   if (newFixture.t.allgemein?.oecdLeitsaetze?.mechanismenZurUeberwachungDerEinhaltungDerOecdLeitsaetze) {
     newFixture.t.allgemein.oecdLeitsaetze.mechanismenZurUeberwachungDerEinhaltungDerOecdLeitsaetze = YesNo.Yes;
-  }
-  if (newFixture.t.allgemein?.esgRatingAndZertifizierung?.esgRating) {
-    newFixture.t.allgemein.esgRatingAndZertifizierung.esgRating = YesNo.Yes;
   }
 }
 
@@ -61,8 +71,8 @@ function modifyPreparedFixturesPartOne(newFixture: FixtureData<EsgQuestionnaireD
  * @param newFixture generated prepared fixture to modify
  */
 function modifyPreparedFixturesPartTwo(newFixture: FixtureData<EsgQuestionnaireData>): void {
-  if (newFixture.t.allgemein?.esgRatingAndZertifizierung?.ratingbericht) {
-    newFixture.t.allgemein.esgRatingAndZertifizierung.ratingbericht.value = YesNo.Yes;
+  if (newFixture.t.allgemein?.rechtsstreitigkeiten?.esgBezogeneRechtsstreitigkeitenInvolvierung) {
+    newFixture.t.allgemein.rechtsstreitigkeiten.esgBezogeneRechtsstreitigkeitenInvolvierung = YesNo.Yes;
   }
   if (
     newFixture.t.allgemein?.transaktionenMitNachhaltigkeitskomponenten
@@ -74,6 +84,18 @@ function modifyPreparedFixturesPartTwo(newFixture: FixtureData<EsgQuestionnaireD
   if (newFixture.t.allgemein?.transaktionenMitNachhaltigkeitskomponenten?.emissionVonSustainibilityLinkedDebt) {
     newFixture.t.allgemein.transaktionenMitNachhaltigkeitskomponenten.emissionVonSustainibilityLinkedDebt = YesNo.Yes;
   }
+  if (newFixture.t.umwelt?.risikenUndMassnahmenKlima?.messungSteuerungUndUeberwachungDerKlimaUndUmweltrisiken) {
+    newFixture.t.umwelt.risikenUndMassnahmenKlima.messungSteuerungUndUeberwachungDerKlimaUndUmweltrisiken = YesNo.Yes;
+  }
+  if (newFixture.t.umwelt?.risikenUndMassnahmenKlima?.nutzungVonSzenarioanalysen) {
+    newFixture.t.umwelt.risikenUndMassnahmenKlima.nutzungVonSzenarioanalysen = YesNo.Yes;
+  }
+  if (newFixture.t.umwelt?.risikenUndMassnahmenKlima?.beruecksichtigungVonKlimaUndUmweltrisiken) {
+    newFixture.t.umwelt.risikenUndMassnahmenKlima.beruecksichtigungVonKlimaUndUmweltrisiken = YesNo.Yes;
+  }
+
+  // TODO wip
+
   if (newFixture.t.allgemein?.generelleEsgStrategie?.dokumenteZurNachhaltigkeitsstrategie) {
     newFixture.t.allgemein.generelleEsgStrategie.dokumenteZurNachhaltigkeitsstrategie.push({
       value: 'Report with null data source',

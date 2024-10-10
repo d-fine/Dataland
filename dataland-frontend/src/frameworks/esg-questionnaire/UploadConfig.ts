@@ -174,8 +174,8 @@ export const esgQuestionnaireDataModel = [
         ],
       },
       {
-        name: 'taxonomieKpisAndBestimmteAktivitaeten',
-        label: 'Taxonomie KPIs & bestimmte Aktivitäten',
+        name: 'taxonomieKpisUndBestimmteAktivitaeten',
+        label: 'Taxonomie KPIs und bestimmte Aktivitäten',
         fields: [
           {
             name: 'wirtschaftszweige',
@@ -274,7 +274,7 @@ export const esgQuestionnaireDataModel = [
             component: 'NumberFormField',
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.allgemein?.taxonomieKpisAndBestimmteAktivitaeten?.taxonomiebezogeneCapexPlanungVorhanden == 'Yes',
+              dataset.allgemein?.taxonomieKpisUndBestimmteAktivitaeten?.taxonomiebezogeneCapexPlanungVorhanden == 'Yes',
             validation: 'between:0,100',
           },
           {
@@ -287,12 +287,12 @@ export const esgQuestionnaireDataModel = [
             component: 'NumberFormField',
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.allgemein?.taxonomieKpisAndBestimmteAktivitaeten?.taxonomiebezogeneCapexPlanungVorhanden == 'Yes',
+              dataset.allgemein?.taxonomieKpisUndBestimmteAktivitaeten?.taxonomiebezogeneCapexPlanungVorhanden == 'Yes',
             validation: 'between:0,100',
           },
           {
             name: 'aktivitaetImSektorFossileBrennstoffe',
-            label: 'Aktivität im Sektor Fossile Brennstoffe',
+            label: 'Aktivität im Sektor "Fossile Brennstoffe"',
             description: 'Ist das Unternehmen im Sektor "Fossile Brennstoffe (Kohle, Gas, Öl)" aktiv?',
 
             component: 'YesNoFormField',
@@ -310,7 +310,7 @@ export const esgQuestionnaireDataModel = [
             component: 'NumberFormField',
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.allgemein?.taxonomieKpisAndBestimmteAktivitaeten?.aktivitaetImSektorFossileBrennstoffe == 'Yes',
+              dataset.allgemein?.taxonomieKpisUndBestimmteAktivitaeten?.aktivitaetImSektorFossileBrennstoffe == 'Yes',
             validation: 'between:0,100',
           },
           {
@@ -323,7 +323,7 @@ export const esgQuestionnaireDataModel = [
             component: 'NumberFormField',
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.allgemein?.taxonomieKpisAndBestimmteAktivitaeten?.aktivitaetImSektorFossileBrennstoffe == 'Yes',
+              dataset.allgemein?.taxonomieKpisUndBestimmteAktivitaeten?.aktivitaetImSektorFossileBrennstoffe == 'Yes',
             validation: 'between:0,100',
           },
           {
@@ -336,7 +336,7 @@ export const esgQuestionnaireDataModel = [
             component: 'NumberFormField',
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.allgemein?.taxonomieKpisAndBestimmteAktivitaeten?.aktivitaetImSektorFossileBrennstoffe == 'Yes',
+              dataset.allgemein?.taxonomieKpisUndBestimmteAktivitaeten?.aktivitaetImSektorFossileBrennstoffe == 'Yes',
             validation: 'between:0,100',
           },
           {
@@ -359,7 +359,7 @@ export const esgQuestionnaireDataModel = [
             component: 'NumberFormField',
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.allgemein?.taxonomieKpisAndBestimmteAktivitaeten?.aktivitaetImSektorHerstellungVonChemikalien ==
+              dataset.allgemein?.taxonomieKpisUndBestimmteAktivitaeten?.aktivitaetImSektorHerstellungVonChemikalien ==
               'Yes',
             validation: 'between:0,100',
           },
@@ -373,7 +373,7 @@ export const esgQuestionnaireDataModel = [
             component: 'NumberFormField',
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.allgemein?.taxonomieKpisAndBestimmteAktivitaeten?.aktivitaetImSektorHerstellungVonChemikalien ==
+              dataset.allgemein?.taxonomieKpisUndBestimmteAktivitaeten?.aktivitaetImSektorHerstellungVonChemikalien ==
               'Yes',
             validation: 'between:0,100',
           },
@@ -387,7 +387,7 @@ export const esgQuestionnaireDataModel = [
             component: 'NumberFormField',
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.allgemein?.taxonomieKpisAndBestimmteAktivitaeten?.aktivitaetImSektorHerstellungVonChemikalien ==
+              dataset.allgemein?.taxonomieKpisUndBestimmteAktivitaeten?.aktivitaetImSektorHerstellungVonChemikalien ==
               'Yes',
             validation: 'between:0,100',
           },
@@ -411,7 +411,7 @@ export const esgQuestionnaireDataModel = [
             component: 'NumberFormField',
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.allgemein?.taxonomieKpisAndBestimmteAktivitaeten?.aktivitaetImSektorUmstritteneWaffen == 'Yes',
+              dataset.allgemein?.taxonomieKpisUndBestimmteAktivitaeten?.aktivitaetImSektorUmstritteneWaffen == 'Yes',
             validation: 'between:0,100',
           },
           {
@@ -424,7 +424,7 @@ export const esgQuestionnaireDataModel = [
             component: 'NumberFormField',
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.allgemein?.taxonomieKpisAndBestimmteAktivitaeten?.aktivitaetImSektorUmstritteneWaffen == 'Yes',
+              dataset.allgemein?.taxonomieKpisUndBestimmteAktivitaeten?.aktivitaetImSektorUmstritteneWaffen == 'Yes',
             validation: 'between:0,100',
           },
           {
@@ -437,7 +437,7 @@ export const esgQuestionnaireDataModel = [
             component: 'NumberFormField',
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.allgemein?.taxonomieKpisAndBestimmteAktivitaeten?.aktivitaetImSektorUmstritteneWaffen == 'Yes',
+              dataset.allgemein?.taxonomieKpisUndBestimmteAktivitaeten?.aktivitaetImSektorUmstritteneWaffen == 'Yes',
             validation: 'between:0,100',
           },
           {
@@ -460,7 +460,7 @@ export const esgQuestionnaireDataModel = [
             component: 'NumberFormField',
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.allgemein?.taxonomieKpisAndBestimmteAktivitaeten?.aktivitaetImSektorTabakanbauUndVerarbeitung ==
+              dataset.allgemein?.taxonomieKpisUndBestimmteAktivitaeten?.aktivitaetImSektorTabakanbauUndVerarbeitung ==
               'Yes',
             validation: 'between:0,100',
           },
@@ -474,7 +474,7 @@ export const esgQuestionnaireDataModel = [
             component: 'NumberFormField',
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.allgemein?.taxonomieKpisAndBestimmteAktivitaeten?.aktivitaetImSektorTabakanbauUndVerarbeitung ==
+              dataset.allgemein?.taxonomieKpisUndBestimmteAktivitaeten?.aktivitaetImSektorTabakanbauUndVerarbeitung ==
               'Yes',
             validation: 'between:0,100',
           },
@@ -488,15 +488,15 @@ export const esgQuestionnaireDataModel = [
             component: 'NumberFormField',
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.allgemein?.taxonomieKpisAndBestimmteAktivitaeten?.aktivitaetImSektorTabakanbauUndVerarbeitung ==
+              dataset.allgemein?.taxonomieKpisUndBestimmteAktivitaeten?.aktivitaetImSektorTabakanbauUndVerarbeitung ==
               'Yes',
             validation: 'between:0,100',
           },
         ],
       },
       {
-        name: 'esgRatingAndZertifizierung',
-        label: 'ESG-Rating & Zertifizierung',
+        name: 'esgRatingUndZertifizierung',
+        label: 'ESG-Rating und Zertifizierung',
         fields: [
           {
             name: 'esgRating',
@@ -516,7 +516,7 @@ export const esgQuestionnaireDataModel = [
             component: 'InputTextFormField',
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.allgemein?.esgRatingAndZertifizierung?.esgRating == 'Yes',
+              dataset.allgemein?.esgRatingUndZertifizierung?.esgRating == 'Yes',
           },
           {
             name: 'ergebnisDesEsgRatings',
@@ -526,7 +526,7 @@ export const esgQuestionnaireDataModel = [
             component: 'InputTextFormField',
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.allgemein?.esgRatingAndZertifizierung?.esgRating == 'Yes',
+              dataset.allgemein?.esgRatingUndZertifizierung?.esgRating == 'Yes',
           },
           {
             name: 'ratingbericht',
@@ -536,7 +536,7 @@ export const esgQuestionnaireDataModel = [
             component: 'YesNoBaseDataPointFormField',
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.allgemein?.esgRatingAndZertifizierung?.esgRating == 'Yes',
+              dataset.allgemein?.esgRatingUndZertifizierung?.esgRating == 'Yes',
           },
           {
             name: 'iso14001',
@@ -1044,8 +1044,8 @@ export const esgQuestionnaireDataModel = [
         ],
       },
       {
-        name: 'risikenAndMassnahmenKlima',
-        label: 'Risiken & Maßnahmen Klima',
+        name: 'risikenUndMassnahmenKlima',
+        label: 'Risiken und Maßnahmen Klima',
         fields: [
           {
             name: 'transitorischeKlimaUndUmweltrisiken',
@@ -1148,7 +1148,7 @@ export const esgQuestionnaireDataModel = [
             component: 'FreeTextFormField',
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.umwelt?.risikenAndMassnahmenKlima?.messungSteuerungUndUeberwachungDerKlimaUndUmweltrisiken ==
+              dataset.umwelt?.risikenUndMassnahmenKlima?.messungSteuerungUndUeberwachungDerKlimaUndUmweltrisiken ==
               'Yes',
           },
           {
@@ -1160,7 +1160,7 @@ export const esgQuestionnaireDataModel = [
             component: 'YesNoFormField',
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.umwelt?.risikenAndMassnahmenKlima?.messungSteuerungUndUeberwachungDerKlimaUndUmweltrisiken ==
+              dataset.umwelt?.risikenUndMassnahmenKlima?.messungSteuerungUndUeberwachungDerKlimaUndUmweltrisiken ==
               'Yes',
           },
           {
@@ -1172,7 +1172,7 @@ export const esgQuestionnaireDataModel = [
             component: 'FreeTextFormField',
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.umwelt?.risikenAndMassnahmenKlima?.nutzungVonSzenarioanalysen == 'Yes',
+              dataset.umwelt?.risikenUndMassnahmenKlima?.nutzungVonSzenarioanalysen == 'Yes',
           },
           {
             name: 'beruecksichtigungVonKlimaUndUmweltrisiken',
@@ -1194,7 +1194,7 @@ export const esgQuestionnaireDataModel = [
             component: 'FreeTextFormField',
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.umwelt?.risikenAndMassnahmenKlima?.beruecksichtigungVonKlimaUndUmweltrisiken == 'Yes',
+              dataset.umwelt?.risikenUndMassnahmenKlima?.beruecksichtigungVonKlimaUndUmweltrisiken == 'Yes',
           },
           {
             name: 'transitionsplanVorhanden',
@@ -1206,12 +1206,6 @@ export const esgQuestionnaireDataModel = [
             showIf: (dataset: EsgQuestionnaireData): boolean =>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
           },
-        ],
-      },
-      {
-        name: 'risikenUndMassnahmenKlima',
-        label: 'Risiken und Maßnahmen Klima',
-        fields: [
           {
             name: 'transitorischeRisiken',
             label: 'Transitorische Risiken',

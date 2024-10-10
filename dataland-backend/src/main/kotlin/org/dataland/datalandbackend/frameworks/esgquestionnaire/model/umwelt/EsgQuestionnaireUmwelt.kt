@@ -4,8 +4,6 @@ package org.dataland.datalandbackend.frameworks.esgquestionnaire.model.umwelt
 import jakarta.validation.Valid
 import org.dataland.datalandbackend.frameworks.esgquestionnaire.model.umwelt.abfall.EsgQuestionnaireUmweltAbfall
 import org.dataland.datalandbackend.frameworks.esgquestionnaire.model.umwelt.emissionen.EsgQuestionnaireUmweltEmissionen
-import org.dataland.datalandbackend.frameworks.esgquestionnaire.model.umwelt.risikenAndMassnahmenKlima
-    .EsgQuestionnaireUmweltRisikenAndMassnahmenKlima
 import org.dataland.datalandbackend.frameworks.esgquestionnaire.model.umwelt
     .risikenUndMassnahmenBiodiversitaetUndOekosysteme
     .EsgQuestionnaireUmweltRisikenUndMassnahmenBiodiversitaetUndOekosysteme
@@ -28,9 +26,6 @@ data class EsgQuestionnaireUmwelt(
 
     @field:Valid()
     val abfall: EsgQuestionnaireUmweltAbfall? = null,
-
-    @field:Valid()
-    val risikenAndMassnahmenKlima: EsgQuestionnaireUmweltRisikenAndMassnahmenKlima? = null,
 
     @field:Valid()
     val risikenUndMassnahmenKlima: EsgQuestionnaireUmweltRisikenUndMassnahmenKlima? = null,

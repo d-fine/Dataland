@@ -2,8 +2,8 @@
 package org.dataland.datalandbackend.frameworks.esgquestionnaire.model.allgemein
 
 import jakarta.validation.Valid
-import org.dataland.datalandbackend.frameworks.esgquestionnaire.model.allgemein.esgRatingAndZertifizierung
-    .EsgQuestionnaireAllgemeinEsgRatingAndZertifizierung
+import org.dataland.datalandbackend.frameworks.esgquestionnaire.model.allgemein.esgRatingUndZertifizierung
+    .EsgQuestionnaireAllgemeinEsgRatingUndZertifizierung
 import org.dataland.datalandbackend.frameworks.esgquestionnaire.model.allgemein.generelleEsgStrategie
     .EsgQuestionnaireAllgemeinGenerelleEsgStrategie
 import org.dataland.datalandbackend.frameworks.esgquestionnaire.model.allgemein.oecdLeitsaetze
@@ -12,8 +12,8 @@ import org.dataland.datalandbackend.frameworks.esgquestionnaire.model.allgemein.
     .EsgQuestionnaireAllgemeinRechtsstreitigkeiten
 import org.dataland.datalandbackend.frameworks.esgquestionnaire.model.allgemein.richtlinienDesUnternehmens
     .EsgQuestionnaireAllgemeinRichtlinienDesUnternehmens
-import org.dataland.datalandbackend.frameworks.esgquestionnaire.model.allgemein.taxonomieKpisAndBestimmteAktivitaeten
-    .EsgQuestionnaireAllgemeinTaxonomieKpisAndBestimmteAktivitaeten
+import org.dataland.datalandbackend.frameworks.esgquestionnaire.model.allgemein.taxonomieKpisUndBestimmteAktivitaeten
+    .EsgQuestionnaireAllgemeinTaxonomieKpisUndBestimmteAktivitaeten
 import org.dataland.datalandbackend.frameworks.esgquestionnaire.model.allgemein
     .transaktionenMitNachhaltigkeitskomponenten.EsgQuestionnaireAllgemeinTransaktionenMitNachhaltigkeitskomponenten
 import org.dataland.datalandbackend.frameworks.esgquestionnaire.model.allgemein.unGlobalCompactPrinzipien
@@ -28,10 +28,10 @@ data class EsgQuestionnaireAllgemein(
     val generelleEsgStrategie: EsgQuestionnaireAllgemeinGenerelleEsgStrategie? = null,
 
     @field:Valid()
-    val taxonomieKpisAndBestimmteAktivitaeten: EsgQuestionnaireAllgemeinTaxonomieKpisAndBestimmteAktivitaeten? = null,
+    val taxonomieKpisUndBestimmteAktivitaeten: EsgQuestionnaireAllgemeinTaxonomieKpisUndBestimmteAktivitaeten? = null,
 
     @field:Valid()
-    val esgRatingAndZertifizierung: EsgQuestionnaireAllgemeinEsgRatingAndZertifizierung? = null,
+    val esgRatingUndZertifizierung: EsgQuestionnaireAllgemeinEsgRatingUndZertifizierung? = null,
 
     @field:Valid()
     val unGlobalCompactPrinzipien: EsgQuestionnaireAllgemeinUnGlobalCompactPrinzipien? = null,

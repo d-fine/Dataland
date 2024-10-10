@@ -58,7 +58,7 @@
 					"geplanteVollzeitaequivalenteAb2031": 64943.06,
 					"chancenOderHindernisse": "Arceo esse assentator vicissitudo studio balbus. Tabella congregatio curo beatus. Rerum ventus acidus earum."
 				},
-				"taxonomieKpisAndBestimmteAktivitaeten": {
+				"taxonomieKpisUndBestimmteAktivitaeten": {
 					"wirtschaftszweige": [
 						"41.20",
 						"46.49"
@@ -76,7 +76,7 @@
 					"aktuellerProzentualerUmsatzanteilImSektorFossileBrennstoffe": 63.33,
 					"geplanterProzentualerUmsatzanteilImSektorFossileBrennstoffeIn2030": 60.05,
 					"geplanterProzentualerUmsatzanteilImSektorFossileBrennstoffeIn2040": 4.76,
-					"aktivitaetImSektorHerstellungVonChemikalien": "No",
+					"aktivitaetImSektorHerstellungVonChemikalien": "Yes",
 					"aktuellerProzentualerUmsatzanteilImSektorHerstellungVonChemikalien": 85.63,
 					"geplanterProzentualerUmsatzanteilImSektorHerstellungVonChemikalienIn2030": 46.28,
 					"geplanterProzentualerUmsatzanteilImSektorHerstellungVonChemikalienIn2040": 68.46,
@@ -89,7 +89,7 @@
 					"geplanterProzentualerUmsatzanteilImSektorTabakanbauUndVerarbeitungIn2030": 31.43,
 					"geplanterProzentualerUmsatzanteilImSektorTabakanbauUndVerarbeitungIn2040": 83.31
 				},
-				"esgRatingAndZertifizierung": {
+				"esgRatingUndZertifizierung": {
 					"esgRating": "Yes",
 					"ratingagentur": "architectures",
 					"ergebnisDesEsgRatings": "bandwidth",
@@ -241,7 +241,7 @@
 					"anteilDesNichtRecycletenAbfallsAnDerGesamtAbfallmenge": 7.05,
 					"mengeAnGefaehrlichenAbfaellen": 20880.47
 				},
-				"risikenAndMassnahmenKlima": {
+				"risikenUndMassnahmenKlima": {
 					"transitorischeKlimaUndUmweltrisiken": "Testimonium clibanus tantum caecus abscido arcus. Textor vitiosus carmen unde culpo eius sordeo vae ambulo. Crinis deludo vita.",
 					"physischeKlimaUndUmweltrisiken": [
 						"Meeresspiegelanstieg",
@@ -261,7 +261,7 @@
 					"beschreibungDerMessungSteuerungUndUeberwachungDerKlimaUndUmweltrisiken": "Templum venustas uberrime. Solum deduco quos supellex vulnero viduo decretum vox ipsam arguo. Cuppedia id repellendus comitatus admitto acervus aliquam.",
 					"nutzungVonSzenarioanalysen": "Yes",
 					"beschreibungDerNutzungVonSzenarioanalysen": "Exercitationem caritas aveho acies. Barba volup commemoro cavus. Ustulo spectaculum bellum.",
-					"beruecksichtigungVonKlimaUndUmweltrisiken": "No",
+					"beruecksichtigungVonKlimaUndUmweltrisiken": "Yes",
 					"zeithorizontDerBeruecksichtigungVonKlimaUndUmweltrisikenImGeschaeftsmodell": "Damnatio adsuesco nisi eligendi votum amaritudo delego terror dolorum. Ventito adsidue defaeco supellex pauci commodo saepe vicinus. Strenuus advenio subvenio cursim depraedor vitiosus credo acies demitto.",
 					"transitionsplanVorhanden": {
 						"value": "Yes",
@@ -269,9 +269,7 @@
 							"fileName": "Certification",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
 						}
-					}
-				},
-				"risikenUndMassnahmenKlima": {
+					},
 					"transitorischeRisiken": "Aspernatur umquam averto assumenda alter suppellex cupiditas urbs crustulum spargo. Strues turbo crinis eveniet abscido peccatus. Dapifer adiuvo vigor aro.",
 					"physischeRisiken": "Deserunt adflicto maxime vallum. Id sortitus virgo sophismata cunae demergo vulgus paulatim. Victus soluta vinitor.",
 					"produkteZurReduzierungDerUmweltbelastung": "NA",

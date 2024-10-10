@@ -15469,19 +15469,19 @@
               }
             ]
           },
-          "taxonomieKpisAndBestimmteAktivitaeten": {
+          "taxonomieKpisUndBestimmteAktivitaeten": {
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/EsgQuestionnaireAllgemeinTaxonomieKpisAndBestimmteAktivitaeten"
+                "$ref": "#/components/schemas/EsgQuestionnaireAllgemeinTaxonomieKpisUndBestimmteAktivitaeten"
               }
             ]
           },
-          "esgRatingAndZertifizierung": {
+          "esgRatingUndZertifizierung": {
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/EsgQuestionnaireAllgemeinEsgRatingAndZertifizierung"
+                "$ref": "#/components/schemas/EsgQuestionnaireAllgemeinEsgRatingUndZertifizierung"
               }
             ]
           },
@@ -15535,7 +15535,7 @@
           }
         }
       },
-      "EsgQuestionnaireAllgemeinEsgRatingAndZertifizierung": {
+      "EsgQuestionnaireAllgemeinEsgRatingUndZertifizierung": {
         "type": "object",
         "properties": {
           "esgRating": {
@@ -15737,7 +15737,7 @@
           }
         }
       },
-      "EsgQuestionnaireAllgemeinTaxonomieKpisAndBestimmteAktivitaeten": {
+      "EsgQuestionnaireAllgemeinTaxonomieKpisUndBestimmteAktivitaeten": {
         "type": "object",
         "properties": {
           "wirtschaftszweige": {
@@ -16267,14 +16267,6 @@
               }
             ]
           },
-          "risikenAndMassnahmenKlima": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/EsgQuestionnaireUmweltRisikenAndMassnahmenKlima"
-              }
-            ]
-          },
           "risikenUndMassnahmenKlima": {
             "nullable": true,
             "allOf": [
@@ -16355,7 +16347,52 @@
           }
         }
       },
-      "EsgQuestionnaireUmweltRisikenAndMassnahmenKlima": {
+      "EsgQuestionnaireUmweltRisikenUndMassnahmenBiodiversitaetUndOekosysteme": {
+        "type": "object",
+        "properties": {
+          "negativeAuswirkungenAufBiodiversitaetUndOekosystem": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNoNa"
+              }
+            ]
+          },
+          "negativeAuswirkungenAufBiodiversitaetUndOekosystemErlaeuterungen": {
+            "type": "string",
+            "nullable": true
+          },
+          "positiveAuswirkungenAufBiodiversitaetUndOekosystem": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNoNa"
+              }
+            ]
+          },
+          "positiveAuswirkungenAufBiodiversitaetUndOekosystemErlaeuterungen": {
+            "type": "string",
+            "nullable": true
+          },
+          "gegenmassnahmenNegativeAuswirkungenAufBiodiversitaetUndOekosystem": {
+            "type": "string",
+            "nullable": true
+          },
+          "planZurReduktionDesWasserverbrauchs": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNoNa"
+              }
+            ]
+          },
+          "planZurReduktionDesWasserverbrauchsErlaeuterung": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "EsgQuestionnaireUmweltRisikenUndMassnahmenKlima": {
         "type": "object",
         "properties": {
           "transitorischeKlimaUndUmweltrisiken": {
@@ -16416,57 +16453,7 @@
                 "$ref": "#/components/schemas/BaseDataPointYesNo"
               }
             ]
-          }
-        }
-      },
-      "EsgQuestionnaireUmweltRisikenUndMassnahmenBiodiversitaetUndOekosysteme": {
-        "type": "object",
-        "properties": {
-          "negativeAuswirkungenAufBiodiversitaetUndOekosystem": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/YesNoNa"
-              }
-            ]
           },
-          "negativeAuswirkungenAufBiodiversitaetUndOekosystemErlaeuterungen": {
-            "type": "string",
-            "nullable": true
-          },
-          "positiveAuswirkungenAufBiodiversitaetUndOekosystem": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/YesNoNa"
-              }
-            ]
-          },
-          "positiveAuswirkungenAufBiodiversitaetUndOekosystemErlaeuterungen": {
-            "type": "string",
-            "nullable": true
-          },
-          "gegenmassnahmenNegativeAuswirkungenAufBiodiversitaetUndOekosystem": {
-            "type": "string",
-            "nullable": true
-          },
-          "planZurReduktionDesWasserverbrauchs": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/YesNoNa"
-              }
-            ]
-          },
-          "planZurReduktionDesWasserverbrauchsErlaeuterung": {
-            "type": "string",
-            "nullable": true
-          }
-        }
-      },
-      "EsgQuestionnaireUmweltRisikenUndMassnahmenKlima": {
-        "type": "object",
-        "properties": {
           "transitorischeRisiken": {
             "type": "string",
             "nullable": true
@@ -17053,6 +17040,10 @@
             "type": "string",
             "nullable": true
           },
+          "sector": {
+            "type": "string",
+            "nullable": true
+          },
           "companyName": {
             "type": "string"
           },
@@ -17064,10 +17055,6 @@
           },
           "countryCode": {
             "type": "string"
-          },
-          "sector": {
-            "type": "string",
-            "nullable": true
           }
         }
       },
