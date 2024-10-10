@@ -3,12 +3,15 @@ import { DEFAULT_PROBABILITY } from '@e2e/utils/FakeFixtureUtils';
 import { type FixtureData } from '@sharedUtils/Fixtures';
 import { EsgQuestionnaireGenerator } from '@e2e/fixtures/frameworks/esg-questionnaire/EsgQuestionnaireGenerator';
 import {
-  pickSubsetOfElements,
   pickOneElement,
+  pickSubsetOfElements,
   generateArray,
   generateFixtureDataset,
 } from '@e2e/fixtures/FixtureUtils';
-import { EsgQuestionnaireSozialesAuditArtDesAuditsOptions, type EsgQuestionnaireData } from '@clients/backend';
+import {
+  EsgQuestionnaireGovernanceVorstandsprofilUmfangDesTopManagementImUnternehmenOptions,
+  type EsgQuestionnaireData,
+} from '@clients/backend';
 import { generateNaceCodes } from '@e2e/fixtures/common/NaceCodeFixtures';
 
 /**
@@ -186,115 +189,61 @@ export function generateEsgQuestionnaireData(nullProbability = DEFAULT_PROBABILI
       },
     },
     soziales: {
-      unternehmensstrukturaenderungen: {
-        vorhandenseinKuerzlicherAenderungenDerUnternehmensstruktur: dataGenerator.randomYesNo(),
-        anzahlUnbefristeterVertraegeInDeutschland: dataGenerator.randomInt(),
-        anzahlDerVonEinemVerkaufBetroffenenUnbefristetenVertraegeInDeutschland: dataGenerator.randomInt(),
-        anzahlDerVonEinerAkquisitionBetroffenenUnbefristetenVertraegeInDeutschland: dataGenerator.randomInt(),
-        anzahlUnbefristeterVertraegeInDerGesamtgruppe: dataGenerator.randomInt(),
-        anzahlDerVonEinemVerkaufBetroffenenUnbefristetenVertraegeInDerGesamtgruppe: dataGenerator.randomInt(),
-        anzahlDerVonEinerAkquisitionBetroffenenUnbefristetenVertraegeInDerGesamtgruppe: dataGenerator.randomInt(),
-        auswirkungenAufAnteilBefristerVertraegeUndFluktuation: dataGenerator.randomDecimalYearlyTimeseriesData(
-          ['anzahlDerBefristetenVertraege', 'fluktuation'],
-          3,
-          0
-        ),
+      beschaeftigtenprofilUndEntlohnung: {
+        zahlDerBeschaeftigtenInsgesamt: dataGenerator.randomInt(),
+        anteilWeiblicherPersonenUnterDenBeschaeftigten: dataGenerator.randomPercentageValue(),
+        anteilMaennlicherPersonenUnterDenBeschaeftigten: dataGenerator.randomPercentageValue(),
+        anteilDiverserPersonenUnterDenBeschaeftigten: dataGenerator.randomPercentageValue(),
+        geschlechtsspezifischesLohngefaelle: dataGenerator.randomPercentageValue(),
+        jaehrlicheGesamtverguetungsquote: dataGenerator.randomPercentageValue(),
+        anteilVonUnterDreissigjaehrigen: dataGenerator.randomPercentageValue(),
+        anteilVonDreissigBisFuenfzigjaehrigen: dataGenerator.randomPercentageValue(),
+        anteilVonUeberFuenfzigjaehrigen: dataGenerator.randomPercentageValue(),
+        durchschnittlicheAnzahlAnTrainingsstunden: dataGenerator.randomFloat(),
+        fluktuationsquote: dataGenerator.randomPercentageValue(),
       },
-      sicherheitUndWeiterbildung: {
-        sicherheitsmassnahmenFuerMitarbeiter: dataGenerator.randomParagraphs(),
-        unfallrate: dataGenerator.randomDecimalYearlyTimeseriesData(
-          ['haeufigkeitsrateVonArbeitsunfaellenMitZeitverlust'],
-          3,
-          0
-        ),
-        budgetFuerSchulungAusbildung: dataGenerator.randomDecimalYearlyTimeseriesData(['budgetProMitarbeiter'], 3, 0),
-      },
-      einkommensgleichheit: {
-        ueberwachungDerEinkommensungleichheit: dataGenerator.randomDecimalYearlyTimeseriesData(
-          [
-            'unbereinigtesGeschlechtsspezifischesLohngefaelle',
-            'einkommensungleichheitsverhaeltnis',
-            'ceoEinkommensungleichheitsverhaeltnis',
-          ],
-          3,
-          0
-        ),
-        massnahmenZurVerbesserungDerEinkommensungleichheit: dataGenerator.randomParagraphs(),
-      },
-      geschlechterdiversitaet: {
-        mitarbeiterAufTopManagementEbene: dataGenerator.randomInt(),
-        frauenAufTopManagementEbene: dataGenerator.randomInt(),
-        mitgliederGeschaeftsfuehrung: dataGenerator.randomInt(),
-        frauenInDerGeschaeftsfuehrung: dataGenerator.randomInt(),
-        definitionTopManagement: dataGenerator.randomParagraphs(),
-        einhaltungRechtlicherVorgaben: dataGenerator.randomParagraphs(),
-      },
-      audit: {
-        auditsZurEinhaltungVonArbeitsstandards: dataGenerator.randomYesNo(),
-        artDesAudits: dataGenerator.valueOrNull(
-          pickOneElement(Object.values(EsgQuestionnaireSozialesAuditArtDesAuditsOptions))
-        ),
-        auditErgebnisse: dataGenerator.randomParagraphs(),
-      },
-    },
-    unternehmensfuehrungGovernance: {
-      aufsichtsrat: {
-        anzahlDerMitgliederImAufsichtsrat: dataGenerator.randomInt(),
-        anzahlUnabhaengigerMitgliederImAufsichtsrat: dataGenerator.randomInt(),
-        anzahlVonFrauenImAufsichtsrat: dataGenerator.randomInt(),
-      },
-      verguetungsausschuss: {
-        anzahlDerMitgliederImVerguetungsausschuss: dataGenerator.randomInt(),
-        anzahlUnabhaengigerMitgliederImVerguetungsausschuss: dataGenerator.randomInt(),
-        anzahlVonFrauenImVerguetungsausschuss: dataGenerator.randomInt(),
-      },
-      nominierungsausschuss: {
-        anzahlDerMitgliederImNominierungsausschuss: dataGenerator.randomInt(),
-        anzahlUnabhaengigerMitgliederImNominierungsausschuss: dataGenerator.randomInt(),
-        anzahlVonFrauenImVerguetungsausschuss: dataGenerator.randomInt(),
-      },
-      pruefungsausschuss: {
-        anzahlDerMitgliederImPruefungsausschuss: dataGenerator.randomInt(),
-        anzahlUnabhaengigerMitgliederImPruefungsausschuss: dataGenerator.randomInt(),
-        anzahlVonFrauenImPruefungsausschuss: dataGenerator.randomInt(),
-      },
-      nachhaltigkeitsausschuss: {
-        anzahlDerMitgliederImNachhaltigkeitsausschuss: dataGenerator.randomInt(),
-        anzahlUnabhaengigerMitgliederImNachhaltigkeitsausschuss: dataGenerator.randomInt(),
-        anzahlVonFrauenImNachhaltigkeitsausschuss: dataGenerator.randomInt(),
-      },
-      sonstige: {
-        wirtschaftspruefer: dataGenerator.randomShortString(),
-        trennungVonCeoOderVorsitzenden: dataGenerator.randomYesNo(),
-        amtszeitBisZurTrennung: dataGenerator.randomInt(),
-      },
-      stakeholder: {
-        einbeziehungVonStakeholdern: dataGenerator.randomYesNo(),
-        prozessDerEinbeziehungVonStakeholdern: dataGenerator.randomParagraphs(),
-        mechanismenZurAusrichtungAufStakeholder: dataGenerator.randomParagraphs(),
-      },
-      unternehmensrichtlinien: {
-        veroeffentlichteUnternehmensrichtlinien: dataGenerator.valueOrNull(
+      einbindungDerBeschaeftigten: {
+        einbindungVonBeschaeftigtenInEntscheidungen: dataGenerator.valueOrNull(
           pickSubsetOfElements([
-            'AntiKorruption',
-            'Verhaltenskodex',
-            'Interessenkonflikte',
-            'Datenschutz',
-            'DiversitaetAndInklusion',
-            'FaireBehandlungVonKunden',
-            'Zwangsarbeit',
-            'GesundheitUndSicherheit',
-            'MgtVonUmweltgefahren',
-            'VerantwortungsvollesMarketing',
-            'Whistleblowing',
-            'Other',
+            'EinbindungInBetriebsratGesetzlicheVertretungsorgane',
+            'Aufsichtsrat',
+            'Verwaltungsrat',
+            'KeineEinbindungInEntscheidungsgremien',
+            'KeinArbeitnehmervertretungGesetzlichVorgeschrieben',
           ])
         ),
-        weitereVeroeffentlicheUnternehmensrichtlinien: dataGenerator.randomParagraphs(),
+        einbindungVonBeschaeftigtenInEntscheidungenErlaeuterungen: dataGenerator.randomParagraphs(),
       },
-      lieferantenauswahl: {
-        esgKriterienUndUeberwachungDerLieferanten: dataGenerator.randomYesNo(),
-        auswahlkriterien: dataGenerator.randomParagraphs(),
+      arbeitsschutz: {
+        massnahmenZumSchutzDerGesundheitUndVerbesserungDerSicherheit: dataGenerator.randomParagraphs(),
+        anzahlDerArbeitsunfaelleProFuenfhundertVollzeitbeschaeftigte: dataGenerator.randomFloat(),
+      },
+      risikenUndMassnahmen: {
+        weitereWesentlicheSozialeRisiken: dataGenerator.randomYesNo(),
+        weitereWesentlicheSozialeRisikenErlaeuterung: dataGenerator.randomParagraphs(),
+        massnahmenZurReduzierungVonSozialenRisiken: dataGenerator.randomParagraphs(),
+      },
+    },
+    governance: {
+      vorstandsprofil: {
+        umfangDesTopManagementImUnternehmen: dataGenerator.valueOrNull(
+          pickOneElement(
+            Object.values(EsgQuestionnaireGovernanceVorstandsprofilUmfangDesTopManagementImUnternehmenOptions)
+          )
+        ),
+        anteilWeiblicherPersonenImTopManagement: dataGenerator.randomPercentageValue(),
+        anteilMaennlicherPersonenImTopManagement: dataGenerator.randomPercentageValue(),
+        anteilDiverserPersonenImTopManagement: dataGenerator.randomPercentageValue(),
+        kopplungVonVerguetungDesTopManagementsAnNachhaltigkeitsziele: dataGenerator.randomYesNo(),
+        kopplungVonVerguetungDesTopManagementsAnNachhaltigkeitszieleErlaeuterung: dataGenerator.randomParagraphs(),
+      },
+      stakeholderdialog: {
+        csrdKonformerProzessZurBeruecksichtigungDerStakeholderinteressen: dataGenerator.randomYesNo(),
+        csrdKonformerProzessZurBeruecksichtigungDerStakeholderinteressenErlaeuterung: dataGenerator.randomParagraphs(),
+      },
+      risikenUndMassnahmen: {
+        weitereWesentlicheGovernanceRisiken: dataGenerator.randomParagraphs(),
+        massnahmenZurReduzierungVonGovernanceRisiken: dataGenerator.randomParagraphs(),
       },
     },
   };

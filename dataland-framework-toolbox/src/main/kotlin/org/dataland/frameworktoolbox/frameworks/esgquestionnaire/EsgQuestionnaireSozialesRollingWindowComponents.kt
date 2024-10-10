@@ -1,18 +1,12 @@
 package org.dataland.frameworktoolbox.frameworks.esgquestionnaire
 
-import org.dataland.frameworktoolbox.frameworks.esgquestionnaire.custom
-    .EsgQuestionnaireYearlyDecimalTimeseriesDataComponent
-import org.dataland.frameworktoolbox.intermediate.group.ComponentGroup
-import org.dataland.frameworktoolbox.intermediate.group.edit
-
 /**
  * This object contains implementations for the rolling window components in the soziales category of the ESG
  * Questionnaire framework
  */
 object EsgQuestionnaireSozialesRollingWindowComponents {
-    /**
-     * Creates the "Auswirkungen auf Anteil befrister Verträge und Fluktuation" field
-     */
+
+    /*
     fun auswirkungenAufAnteilBefristerVertraegeUndFluktuation(
         componentGroupSoziales: ComponentGroup,
     ) {
@@ -32,11 +26,9 @@ object EsgQuestionnaireSozialesRollingWindowComponents {
                 )
             }
         }
-    }
+    } TODO */
 
-    /**
-     * Creates the "Budget für Schulung/Ausbildung" field
-     */
+    /*
     fun budgetFuerSchulungAusbildung(componentGroupSoziales: ComponentGroup) {
         componentGroupSoziales.edit<ComponentGroup>("sicherheitUndWeiterbildung") {
             edit<EsgQuestionnaireYearlyDecimalTimeseriesDataComponent>(
@@ -69,10 +61,9 @@ object EsgQuestionnaireSozialesRollingWindowComponents {
             }
         }
     }
+ TODO */
 
-    /**
-     * Creates the "Überwachung der Einkommensungleichheit" field
-     */
+    /*
     fun massnahmenZurVerbesserungDerEinkommensungleichheit(
         componentGroupSoziales: ComponentGroup,
     ) {
@@ -96,5 +87,5 @@ object EsgQuestionnaireSozialesRollingWindowComponents {
                 )
             }
         }
-    }
+    } TODO*/
 }

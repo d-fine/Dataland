@@ -15428,28 +15428,6 @@
           }
         }
       },
-      "AuswirkungenAufAnteilBefristerVertraegeUndFluktuationValues": {
-        "type": "object",
-        "properties": {
-          "anzahlDerBefristetenVertraege": {
-            "type": "number",
-            "nullable": true
-          },
-          "fluktuation": {
-            "type": "number",
-            "nullable": true
-          }
-        }
-      },
-      "BudgetFuerSchulungAusbildungValues": {
-        "type": "object",
-        "properties": {
-          "budgetProMitarbeiter": {
-            "type": "number",
-            "nullable": true
-          }
-        }
-      },
       "CompanyAssociatedDataEsgQuestionnaireData": {
         "required": [
           "companyId",
@@ -15469,6 +15447,16 @@
           }
         },
         "example": "{\n  \"companyId\": \"string\",\n  \"reportingPeriod\": \"2022\",\n  \"data\": {\n    \"general\": {\n      \"masterData\": {\n        \"berichtspflichtUndEinwilligungZurVeroeffentlichung\": \"Yes\",\n        \"gueltigkeitsDatum\": \"2022-12-31\"\n      }\n    },\n    \"allgemein\": {\n      \"esgZiele\": {\n        \"existenzVonEsgZielen\": \"Yes\",\n        \"beschreibungDerEsgZiele\": \"Transitioning to energy consumption from 100% renewable resources\",\n        \"investitionenInZielerreichung\": \"50000 EUR\"\n      },\n      \"sektoren\": {\n        \"sektorenMitHohenKlimaauswirkungen\": \"Yes\",\n        \"auflistungDerSektoren\": [\n          \"GHandelInstandhaltungUndReparaturVonKraftfahrzeugen\",\n          \"LGrundstuecksUndWohnungswesen\"\n        ]\n      },\n      \"esgBerichte\": {\n        \"nachhaltigkeitsberichte\": \"Yes\",\n        \"frequenzDerBerichterstattung\": \"Halbjaehrlich\",\n        \"aktuelleBerichte\": [\n          {\n            \"value\": \"Bayer Geschäftsbericht 2022\",\n            \"dataSource\": {\n              \"fileName\": \"Bayer-Geschaeftsbericht-2022\",\n              \"fileReference\": \"3bbdc1879acbc211af4b87a8593cfd7523adedd7100ca59326df05f8adbfe881\"\n            }\n          }\n        ]\n      },\n      \"akkreditierungen\": {\n        \"iso14001\": {\n          \"value\": \"Yes\",\n          \"dataSource\": {\n            \"fileName\": \"\",\n            \"fileReference\": \"\"\n          }\n        },\n        \"iso45001\": {\n          \"value\": \"No\",\n          \"dataSource\": null\n        },\n        \"iso27001\": {\n          \"value\": \"No\",\n          \"dataSource\": null\n        },\n        \"iso50001\": {\n          \"value\": \"No\",\n          \"dataSource\": null\n        },\n        \"weitereAkkreditierungen\": [\n          {\n            \"value\": \"Data quality\",\n            \"dataSource\": {\n              \"fileName\": \"Data_Quality_1_28_2019_FINAL_1\",\n              \"fileReference\": \"21567034fc692753175270d7eadeb135e9e885c77f71b79358a1fb897d992a7d\"\n            }\n          }\n        ]\n      },\n      \"unGlobalConceptPrinzipien\": {\n        \"mechanismenZurUeberwachungDerEinhaltungDerUngcp\": \"No\",\n        \"richtlinienZurEinhaltungDerUngcp\": null,\n        \"erklaerungDerEinhaltungDerUngcp\": null\n      },\n      \"oecdLeitsaetze\": {\n        \"mechanismenZurUeberwachungDerEinhaltungDerOecdLeitsaetze\": \"Yes\",\n        \"richtlinienZurEinhaltungDerOecdLeitsaetze\": [\n          {\n            \"value\": \"Annual report\",\n            \"dataSource\": {\n              \"fileName\": \"Bayer-Geschaeftsbericht-2022\",\n              \"fileReference\": \"3bbdc1879acbc211af4b87a8593cfd7523adedd7100ca59326df05f8adbfe881\"\n            }\n          }\n        ],\n        \"erklaerungDerEinhaltungDerOecdLeitsaetze\": \"Erklärung der Einhaltung\"\n      },\n      \"sonstige\": {\n        \"ausrichtungAufDieUnSdgsUndAktivesVerfolgen\": \"n/a\",\n        \"ausschlusslistenAufBasisVonEsgKriterien\": \"Yes\",\n        \"ausschlusslisten\": \"controversial weapons, tobacco, alcohol, gambling, adult entertainment, fossil fuels\"\n      },\n      \"fuehrungsstandards\": {\n        \"oekologischeSozialeFuehrungsstandardsOderPrinzipien\": \"Yes\",\n        \"anreizmechanismenFuerDasManagementUmwelt\": \"JaGeschaeftsleitung\",\n        \"anreizmechanismenFuerDasManagementSoziales\": \"JaAufsichtsrat\"\n      },\n      \"rechtsstreitigkeiten\": {\n        \"esgBezogeneRechtsstreitigkeiten\": \"Yes\",\n        \"rechtsstreitigkeitenMitBezugZuE\": \"Yes\",\n        \"statusZuE\": \"Geklaert\",\n        \"einzelheitenZuDenRechtsstreitigkeitenZuE\": \"Wasserverschmutzung\",\n        \"rechtsstreitigkeitenMitBezugZuS\": \"No\",\n        \"statusZuS\": null,\n        \"einzelheitenZuDenRechtsstreitigkeitenZuS\": null,\n        \"rechtsstreitigkeitenMitBezugZuG\": \"No\",\n        \"statusZuG\": null,\n        \"einzelheitenZuDenRechtsstreitigkeitenZuG\": null\n      },\n      \"rating\": {\n        \"esgRating\": \"Yes\",\n        \"agentur\": \"MSCI\",\n        \"ergebnis\": \"A\",\n        \"ratingbericht\": {\n          \"value\": \"No\",\n          \"dataSource\": null\n        },\n        \"kritischePunkte\": \"n/a\"\n      },\n      \"anleihen\": {\n        \"grueneSozialeUndOderNachhaltigeEmissionen\": \"Yes\",\n        \"ausstehendeGrueneSozialeUndOderNachhaltigeEmissionen\": 10000,\n        \"sustainibilityLinkedDebt\": \"Yes\",\n        \"ausstehendeSustainibilityLinkedDebt\": 20000\n      },\n      \"risiken\": {\n        \"wichtigsteESUndGRisikenUndBewertung\": \"Risiken und Bewertung\",\n        \"hindernisseBeimUmgangMitEsgBedenken\": \"Hindernisse 1, Hindernisse 2\"\n      }\n    },\n    \"umwelt\": {\n      \"treibhausgasemissionen\": {\n        \"treibhausgasBerichterstattungUndPrognosen\": {\n          \"currentYear\": 2023,\n          \"yearlyData\": {\n            \"2019\": {\n              \"scope1\": null,\n              \"scope2\": null,\n              \"scope3\": null\n            },\n            \"2020\": {\n              \"scope1\": null,\n              \"scope2\": null,\n              \"scope3\": null\n            },\n            \"2021\": {\n              \"scope1\": 305000,\n              \"scope2\": 51900,\n              \"scope3\": 223000\n            },\n            \"2022\": {\n              \"scope1\": 351000,\n              \"scope2\": 195000,\n              \"scope3\": 405000\n            },\n            \"2023\": {\n              \"scope1\": 293000,\n              \"scope2\": 318000,\n              \"scope3\": 561000\n            },\n            \"2024\": {\n              \"scope1\": null,\n              \"scope2\": null,\n              \"scope3\": null\n            },\n            \"2025\": {\n              \"scope1\": null,\n              \"scope2\": null,\n              \"scope3\": null\n            }\n          }\n        },\n        \"treibhausgasEmissionsintensitaetDerUnternehmenInDieInvestiertWird\": \"223000\",\n        \"strategieUndZieleZurReduzierungVonTreibhausgasEmissionen\": \"Strategie und Ziele\"\n      },\n      \"produktion\": {\n        \"produkteZurVerringerungDerUmweltbelastung\": \"Yes\",\n        \"verringerungenDerUmweltbelastung\": null,\n        \"oekologischerMindestStandardFuerProduktionsprozesse\": \"No\"\n      },\n      \"energieverbrauch\": {\n        \"berichterstattungEnergieverbrauch\": {\n          \"currentYear\": 2023,\n          \"yearlyData\": {\n            \"2019\": {\n              \"energieverbrauch\": null,\n              \"prozentDesVerbrauchsErneuerbarerEnergien\": null,\n              \"ggfProzentDerErneuerbarenEnergieerzeugung\": null\n            },\n            \"2020\": {\n              \"energieverbrauch\": null,\n              \"prozentDesVerbrauchsErneuerbarerEnergien\": null,\n              \"ggfProzentDerErneuerbarenEnergieerzeugung\": null\n            },\n            \"2021\": {\n              \"energieverbrauch\": 195000,\n              \"prozentDesVerbrauchsErneuerbarerEnergien\": 25,\n              \"ggfProzentDerErneuerbarenEnergieerzeugung\": null\n            },\n            \"2022\": {\n              \"energieverbrauch\": 561000,\n              \"prozentDesVerbrauchsErneuerbarerEnergien\": 70,\n              \"ggfProzentDerErneuerbarenEnergieerzeugung\": null\n            },\n            \"2023\": {\n              \"energieverbrauch\": 51900,\n              \"prozentDesVerbrauchsErneuerbarerEnergien\": 100,\n              \"ggfProzentDerErneuerbarenEnergieerzeugung\": 5\n            },\n            \"2024\": {\n              \"energieverbrauch\": null,\n              \"prozentDesVerbrauchsErneuerbarerEnergien\": null,\n              \"ggfProzentDerErneuerbarenEnergieerzeugung\": null\n            },\n            \"2025\": {\n              \"energieverbrauch\": null,\n              \"prozentDesVerbrauchsErneuerbarerEnergien\": null,\n              \"ggfProzentDerErneuerbarenEnergieerzeugung\": null\n            }\n          }\n        },\n        \"unternehmensGruppenStrategieBzglEnergieverbrauch\": null\n      },\n      \"energieeffizienzImmobilienanlagen\": {\n        \"berichterstattungEnergieverbrauchVonImmobilienvermoegen\": {\n          \"currentYear\": 2023,\n          \"yearlyData\": {\n            \"2019\": {\n              \"engagementAnteilInEnergieineffizientenImmobilienanlagen\": null\n            },\n            \"2020\": {\n              \"engagementAnteilInEnergieineffizientenImmobilienanlagen\": null\n            },\n            \"2021\": {\n              \"engagementAnteilInEnergieineffizientenImmobilienanlagen\": 30\n            },\n            \"2022\": {\n              \"engagementAnteilInEnergieineffizientenImmobilienanlagen\": 70\n            },\n            \"2023\": {\n              \"engagementAnteilInEnergieineffizientenImmobilienanlagen\": 90\n            },\n            \"2024\": {\n              \"engagementAnteilInEnergieineffizientenImmobilienanlagen\": null\n            },\n            \"2025\": {\n              \"engagementAnteilInEnergieineffizientenImmobilienanlagen\": null\n            }\n          }\n        },\n        \"unternehmensGruppenStrategieBzglEnergieeffizientenImmobilienanlagen\": null\n      },\n      \"wasserverbrauch\": {\n        \"berichterstattungWasserverbrauch\": {\n          \"currentYear\": 2023,\n          \"yearlyData\": {\n            \"2019\": {\n              \"wasserverbrauch\": null,\n              \"emissionenInWasser\": null\n            },\n            \"2020\": {\n              \"wasserverbrauch\": null,\n              \"emissionenInWasser\": null\n            },\n            \"2021\": {\n              \"wasserverbrauch\": 30000,\n              \"emissionenInWasser\": 5\n            },\n            \"2022\": {\n              \"wasserverbrauch\": 15000,\n              \"emissionenInWasser\": 0\n            },\n            \"2023\": {\n              \"wasserverbrauch\": 10000,\n              \"emissionenInWasser\": 0\n            },\n            \"2024\": {\n              \"wasserverbrauch\": null,\n              \"emissionenInWasser\": null\n            },\n            \"2025\": {\n              \"wasserverbrauch\": null,\n              \"emissionenInWasser\": null\n            }\n          }\n        },\n        \"unternehmensGruppenStrategieBzglWasserverbrauch\": null\n      },\n      \"abfallproduktion\": {\n        \"berichterstattungAbfallproduktion\": {\n          \"currentYear\": 2023,\n          \"yearlyData\": {\n            \"2019\": {\n              \"gesamteAbfallmenge\": null,\n              \"prozentAbfallRecyclet\": null,\n              \"prozentGefaehrlicherAbfall\": null\n            },\n            \"2020\": {\n              \"gesamteAbfallmenge\": null,\n              \"prozentAbfallRecyclet\": null,\n              \"prozentGefaehrlicherAbfall\": null\n            },\n            \"2021\": {\n              \"gesamteAbfallmenge\": 30,\n              \"prozentAbfallRecyclet\": 15,\n              \"prozentGefaehrlicherAbfall\": 0\n            },\n            \"2022\": {\n              \"gesamteAbfallmenge\": 20,\n              \"prozentAbfallRecyclet\": 47,\n              \"prozentGefaehrlicherAbfall\": 0\n            },\n            \"2023\": {\n              \"gesamteAbfallmenge\": 10,\n              \"prozentAbfallRecyclet\": 68,\n              \"prozentGefaehrlicherAbfall\": 0\n            },\n            \"2024\": {\n              \"gesamteAbfallmenge\": null,\n              \"prozentAbfallRecyclet\": null,\n              \"prozentGefaehrlicherAbfall\": null\n            },\n            \"2025\": {\n              \"gesamteAbfallmenge\": null,\n              \"prozentAbfallRecyclet\": null,\n              \"prozentGefaehrlicherAbfall\": null\n            }\n          }\n        },\n        \"unternehmensGruppenStrategieBzglAbfallproduktion\": null,\n        \"recyclingImProduktionsprozess\": {\n          \"currentYear\": 2023,\n          \"yearlyData\": {\n            \"2019\": {\n              \"prozentRecycelteWerkstoffeImProduktionsprozess\": null\n            },\n            \"2020\": {\n              \"prozentRecycelteWerkstoffeImProduktionsprozess\": null\n            },\n            \"2021\": {\n              \"prozentRecycelteWerkstoffeImProduktionsprozess\": 0\n            },\n            \"2022\": {\n              \"prozentRecycelteWerkstoffeImProduktionsprozess\": 0\n            },\n            \"2023\": {\n              \"prozentRecycelteWerkstoffeImProduktionsprozess\": 0\n            },\n            \"2024\": {\n              \"prozentRecycelteWerkstoffeImProduktionsprozess\": null\n            },\n            \"2025\": {\n              \"prozentRecycelteWerkstoffeImProduktionsprozess\": null\n            }\n          }\n        },\n        \"gefaehrlicherAbfall\": \"0\"\n      },\n      \"biodiversitaet\": {\n        \"negativeAktivitaetenFuerDieBiologischeVielfalt\": \"No\",\n        \"negativeMassnahmenFuerDieBiologischeVielfalt\": null,\n        \"positiveAktivitaetenFuerDieBiologischeVielfalt\": \"Yes\",\n        \"positiveMassnahmenFuerDieBiologischeVielfalt\": \"Positive Maßnahme\"\n      },\n      \"fossileBrennstoffe\": {\n        \"einnahmenAusFossilenBrennstoffen\": \"Yes\",\n        \"berichterstattungEinnahmenAusFossilenBrennstoffen\": {\n          \"currentYear\": 2022,\n          \"yearlyData\": {\n            \"2019\": {\n              \"prozentDerEinnahmenAusFossilenBrennstoffen\": null\n            },\n            \"2020\": {\n              \"prozentDerEinnahmenAusFossilenBrennstoffen\": null\n            },\n            \"2021\": {\n              \"prozentDerEinnahmenAusFossilenBrennstoffen\": 60\n            },\n            \"2022\": {\n              \"prozentDerEinnahmenAusFossilenBrennstoffen\": 15\n            },\n            \"2023\": {\n              \"prozentDerEinnahmenAusFossilenBrennstoffen\": 0\n            },\n            \"2024\": {\n              \"prozentDerEinnahmenAusFossilenBrennstoffen\": null\n            },\n            \"2025\": {\n              \"prozentDerEinnahmenAusFossilenBrennstoffen\": null\n            }\n          }\n        }\n      },\n      \"taxonomie\": {\n        \"taxonomieBerichterstattung\": \"Nfrd\",\n        \"euTaxonomieKompassAktivitaeten\": [\n          \"ForestManagement\",\n          \"ManufactureOfLowCarbonTechnologiesForTransport\",\n          \"ManufactureOfIronAndSteel\"\n        ],\n        \"umsatzInvestitionsaufwandFuerNachhaltigeAktivitaeten\": {\n          \"currentYear\": 2023,\n          \"yearlyData\": {\n            \"2019\": {\n              \"taxonomieGeeignetNachProzentUmsatz\": null,\n              \"taxonomieGeeignetNachProzentCapex\": null,\n              \"taxonomieKonformNachProzentUmsatz\": null,\n              \"taxonomieKonformNachProzentCapex\": null\n            },\n            \"2020\": {\n              \"taxonomieGeeignetNachProzentUmsatz\": null,\n              \"taxonomieGeeignetNachProzentCapex\": null,\n              \"taxonomieKonformNachProzentUmsatz\": null,\n              \"taxonomieKonformNachProzentCapex\": null\n            },\n            \"2021\": {\n              \"taxonomieGeeignetNachProzentUmsatz\": 25,\n              \"taxonomieGeeignetNachProzentCapex\": 7,\n              \"taxonomieKonformNachProzentUmsatz\": 15,\n              \"taxonomieKonformNachProzentCapex\": 5\n            },\n            \"2022\": {\n              \"taxonomieGeeignetNachProzentUmsatz\": 56,\n              \"taxonomieGeeignetNachProzentCapex\": 8,\n              \"taxonomieKonformNachProzentUmsatz\": 18,\n              \"taxonomieKonformNachProzentCapex\": 6\n            },\n            \"2023\": {\n              \"taxonomieGeeignetNachProzentUmsatz\": 70,\n              \"taxonomieGeeignetNachProzentCapex\": 14,\n              \"taxonomieKonformNachProzentUmsatz\": 24,\n              \"taxonomieKonformNachProzentCapex\": 10\n            },\n            \"2024\": {\n              \"taxonomieGeeignetNachProzentUmsatz\": null,\n              \"taxonomieGeeignetNachProzentCapex\": null,\n              \"taxonomieKonformNachProzentUmsatz\": null,\n              \"taxonomieKonformNachProzentCapex\": null\n            },\n            \"2025\": {\n              \"taxonomieGeeignetNachProzentUmsatz\": null,\n              \"taxonomieGeeignetNachProzentCapex\": null,\n              \"taxonomieKonformNachProzentUmsatz\": null,\n              \"taxonomieKonformNachProzentCapex\": null\n            }\n          }\n        }\n      }\n    },\n    \"soziales\": {\n      \"unternehmensstrukturaenderungen\": {\n        \"vorhandenseinKuerzlicherAenderungenDerUnternehmensstruktur\": \"Yes\",\n        \"anzahlUnbefristeterVertraegeInDeutschland\": 543,\n        \"anzahlDerVonEinemVerkaufBetroffenenUnbefristetenVertraegeInDeutschland\": 63,\n        \"anzahlDerVonEinerAkquisitionBetroffenenUnbefristetenVertraegeInDeutschland\": 34,\n        \"anzahlUnbefristeterVertraegeInDerGesamtgruppe\": 453,\n        \"anzahlDerVonEinemVerkaufBetroffenenUnbefristetenVertraegeInDerGesamtgruppe\": 75,\n        \"anzahlDerVonEinerAkquisitionBetroffenenUnbefristetenVertraegeInDerGesamtgruppe\": 967,\n        \"auswirkungenAufAnteilBefristerVertraegeUndFluktuation\": {\n          \"currentYear\": 2022,\n          \"yearlyData\": {\n            \"2019\": {\n              \"anzahlDerBefristetenVertraege\": null,\n              \"fluktuation\": null\n            },\n            \"2020\": {\n              \"anzahlDerBefristetenVertraege\": null,\n              \"fluktuation\": null\n            },\n            \"2021\": {\n              \"anzahlDerBefristetenVertraege\": 456,\n              \"fluktuation\": 24\n            },\n            \"2022\": {\n              \"anzahlDerBefristetenVertraege\": 477,\n              \"fluktuation\": 57\n            }\n          }\n        }\n      },\n      \"sicherheitUndWeiterbildung\": {\n        \"sicherheitsmassnahmenFuerMitarbeiter\": \"Sicherheitsmaßnahme\",\n        \"unfallrate\": {\n          \"currentYear\": 2023,\n          \"yearlyData\": {\n            \"2019\": {\n              \"haeufigkeitsrateVonArbeitsunfaellenMitZeitverlust\": null\n            },\n            \"2020\": {\n              \"haeufigkeitsrateVonArbeitsunfaellenMitZeitverlust\": null\n            },\n            \"2021\": {\n              \"haeufigkeitsrateVonArbeitsunfaellenMitZeitverlust\": 8\n            },\n            \"2022\": {\n              \"haeufigkeitsrateVonArbeitsunfaellenMitZeitverlust\": 3\n            }\n          }\n        },\n        \"budgetFuerSchulungAusbildung\": {\n          \"currentYear\": 2023,\n          \"yearlyData\": {\n            \"2019\": {\n              \"budgetProMitarbeiter\": null\n            },\n            \"2020\": {\n              \"budgetProMitarbeiter\": null\n            },\n            \"2021\": {\n              \"budgetProMitarbeiter\": 500\n            },\n            \"2022\": {\n              \"budgetProMitarbeiter\": 1000\n            }\n          }\n        }\n      },\n      \"einkommensgleichheit\": {\n        \"ueberwachungDerEinkommensungleichheit\": {\n          \"currentYear\": 2023,\n          \"yearlyData\": {\n            \"2019\": {\n              \"unbereinigtesGeschlechtsspezifischesLohngefaelle\": null,\n              \"einkommensungleichheitsverhaeltnis\": null,\n              \"ceoEinkommensungleichheitsverhaeltnis\": null\n            },\n            \"2020\": {\n              \"unbereinigtesGeschlechtsspezifischesLohngefaelle\": null,\n              \"einkommensungleichheitsverhaeltnis\": null,\n              \"ceoEinkommensungleichheitsverhaeltnis\": null\n            },\n            \"2021\": {\n              \"unbereinigtesGeschlechtsspezifischesLohngefaelle\": 45,\n              \"einkommensungleichheitsverhaeltnis\": 23,\n              \"ceoEinkommensungleichheitsverhaeltnis\": 12\n            },\n            \"2022\": {\n              \"unbereinigtesGeschlechtsspezifischesLohngefaelle\": 34,\n              \"einkommensungleichheitsverhaeltnis\": 34,\n              \"ceoEinkommensungleichheitsverhaeltnis\": 76\n            }\n          }\n        },\n        \"massnahmenZurVerbesserungDerEinkommensungleichheit\": null\n      },\n      \"geschlechterdiversitaet\": {\n        \"mitarbeiterAufTopManagementEbene\": 2,\n        \"frauenAufTopManagementEbene\": 6,\n        \"mitgliederGeschaeftsfuehrung\": 4671,\n        \"frauenInDerGeschaeftsfuehrung\": 2,\n        \"definitionTopManagement\": \"Definition \",\n        \"einhaltungRechtlicherVorgaben\": null\n      },\n      \"audit\": {\n        \"auditsZurEinhaltungVonArbeitsstandards\": \"Yes\",\n        \"artDesAudits\": \"PruefungDurchDritte\",\n        \"auditErgebnisse\": \"\"\n      }\n    },\n    \"unternehmensfuehrungGovernance\": {\n      \"aufsichtsrat\": {\n        \"anzahlDerMitgliederImAufsichtsrat\": 34,\n        \"anzahlUnabhaengigerMitgliederImAufsichtsrat\": 23,\n        \"anzahlVonFrauenImAufsichtsrat\": 15\n      },\n      \"verguetungsausschuss\": {\n        \"anzahlDerMitgliederImVerguetungsausschuss\": 36,\n        \"anzahlUnabhaengigerMitgliederImVerguetungsausschuss\": null,\n        \"anzahlVonFrauenImVerguetungsausschuss\": null\n      },\n      \"nominierungsausschuss\": {\n        \"anzahlDerMitgliederImNominierungsausschuss\": 43,\n        \"anzahlUnabhaengigerMitgliederImNominierungsausschuss\": null,\n        \"anzahlVonFrauenImVerguetungsausschuss\": 23\n      },\n      \"pruefungsausschuss\": {\n        \"anzahlDerMitgliederImPruefungsausschuss\": 41,\n        \"anzahlUnabhaengigerMitgliederImPruefungsausschuss\": 35,\n        \"anzahlVonFrauenImPruefungsausschuss\": null\n      },\n      \"nachhaltigkeitsausschuss\": {\n        \"anzahlDerMitgliederImNachhaltigkeitsausschuss\": 12,\n        \"anzahlUnabhaengigerMitgliederImNachhaltigkeitsausschuss\": 4,\n        \"anzahlVonFrauenImNachhaltigkeitsausschuss\": 4\n      },\n      \"sonstige\": {\n        \"wirtschaftspruefer\": \"John Doe\",\n        \"trennungVonCeoOderVorsitzenden\": \"Yes\",\n        \"amtszeitBisZurTrennung\": \"4\"\n      },\n      \"stakeholder\": {\n        \"einbeziehungVonStakeholdern\": \"Yes\",\n        \"prozessDerEinbeziehungVonStakeholdern\": \"Prozess\",\n        \"mechanismenZurAusrichtungAufStakeholder\": null\n      },\n      \"unternehmensrichtlinien\": {\n        \"veroeffentlichteUnternehmensrichtlinien\": [\n          \"Verhaltenskodex\",\n          \"Zwangsarbeit\",\n          \"MgtVonUmweltgefahren\"\n        ],\n        \"weitereVeroeffentlicheUnternehmensrichtlinien\": \"Keine\"\n      },\n      \"lieferantenauswahl\": {\n        \"esgKriterienUndUeberwachungDerLieferanten\": \"Yes\",\n        \"auswahlkriterien\": null\n      }\n    }\n  }\n}"
+      },
+      "EinbindungVonBeschaeftigtenInEntscheidungenOptions": {
+        "type": "string",
+        "enum": [
+          "EinbindungInBetriebsratGesetzlicheVertretungsorgane",
+          "Aufsichtsrat",
+          "Verwaltungsrat",
+          "KeineEinbindungInEntscheidungsgremien",
+          "KeinArbeitnehmervertretungGesetzlichVorgeschrieben"
+        ]
       },
       "EsgQuestionnaireAllgemein": {
         "type": "object",
@@ -15976,11 +15964,11 @@
               }
             ]
           },
-          "unternehmensfuehrungGovernance": {
+          "governance": {
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/EsgQuestionnaireUnternehmensfuehrungGovernance"
+                "$ref": "#/components/schemas/EsgQuestionnaireGovernance"
               }
             ]
           }
@@ -16013,55 +16001,228 @@
           }
         }
       },
+      "EsgQuestionnaireGovernance": {
+        "type": "object",
+        "properties": {
+          "vorstandsprofil": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/EsgQuestionnaireGovernanceVorstandsprofil"
+              }
+            ]
+          },
+          "stakeholderdialog": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/EsgQuestionnaireGovernanceStakeholderdialog"
+              }
+            ]
+          },
+          "risikenUndMassnahmen": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/EsgQuestionnaireGovernanceRisikenUndMassnahmen"
+              }
+            ]
+          }
+        }
+      },
+      "EsgQuestionnaireGovernanceRisikenUndMassnahmen": {
+        "type": "object",
+        "properties": {
+          "weitereWesentlicheGovernanceRisiken": {
+            "type": "string",
+            "nullable": true
+          },
+          "massnahmenZurReduzierungVonGovernanceRisiken": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "EsgQuestionnaireGovernanceStakeholderdialog": {
+        "type": "object",
+        "properties": {
+          "csrdKonformerProzessZurBeruecksichtigungDerStakeholderinteressen": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
+          },
+          "csrdKonformerProzessZurBeruecksichtigungDerStakeholderinteressenErlaeuterung": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "EsgQuestionnaireGovernanceVorstandsprofil": {
+        "type": "object",
+        "properties": {
+          "umfangDesTopManagementImUnternehmen": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/EsgQuestionnaireGovernanceVorstandsprofilUmfangDesTopManagementImUnternehmenOptions"
+              }
+            ]
+          },
+          "anteilWeiblicherPersonenImTopManagement": {
+            "type": "number",
+            "nullable": true
+          },
+          "anteilMaennlicherPersonenImTopManagement": {
+            "type": "number",
+            "nullable": true
+          },
+          "anteilDiverserPersonenImTopManagement": {
+            "type": "number",
+            "nullable": true
+          },
+          "kopplungVonVerguetungDesTopManagementsAnNachhaltigkeitsziele": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
+          },
+          "kopplungVonVerguetungDesTopManagementsAnNachhaltigkeitszieleErlaeuterung": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "EsgQuestionnaireGovernanceVorstandsprofilUmfangDesTopManagementImUnternehmenOptions": {
+        "type": "string",
+        "enum": [
+          "VorstandSowie1Ebene",
+          "VorstandSowie1Und2Ebene"
+        ]
+      },
       "EsgQuestionnaireSoziales": {
         "type": "object",
         "properties": {
-          "unternehmensstrukturaenderungen": {
+          "beschaeftigtenprofilUndEntlohnung": {
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/EsgQuestionnaireSozialesUnternehmensstrukturaenderungen"
+                "$ref": "#/components/schemas/EsgQuestionnaireSozialesBeschaeftigtenprofilUndEntlohnung"
               }
             ]
           },
-          "sicherheitUndWeiterbildung": {
+          "einbindungDerBeschaeftigten": {
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/EsgQuestionnaireSozialesSicherheitUndWeiterbildung"
+                "$ref": "#/components/schemas/EsgQuestionnaireSozialesEinbindungDerBeschaeftigten"
               }
             ]
           },
-          "einkommensgleichheit": {
+          "arbeitsschutz": {
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/EsgQuestionnaireSozialesEinkommensgleichheit"
+                "$ref": "#/components/schemas/EsgQuestionnaireSozialesArbeitsschutz"
               }
             ]
           },
-          "geschlechterdiversitaet": {
+          "risikenUndMassnahmen": {
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/EsgQuestionnaireSozialesGeschlechterdiversitaet"
-              }
-            ]
-          },
-          "audit": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/EsgQuestionnaireSozialesAudit"
+                "$ref": "#/components/schemas/EsgQuestionnaireSozialesRisikenUndMassnahmen"
               }
             ]
           }
         }
       },
-      "EsgQuestionnaireSozialesAudit": {
+      "EsgQuestionnaireSozialesArbeitsschutz": {
         "type": "object",
         "properties": {
-          "auditsZurEinhaltungVonArbeitsstandards": {
+          "massnahmenZumSchutzDerGesundheitUndVerbesserungDerSicherheit": {
+            "type": "string",
+            "nullable": true
+          },
+          "anzahlDerArbeitsunfaelleProFuenfhundertVollzeitbeschaeftigte": {
+            "type": "number",
+            "nullable": true
+          }
+        }
+      },
+      "EsgQuestionnaireSozialesBeschaeftigtenprofilUndEntlohnung": {
+        "type": "object",
+        "properties": {
+          "zahlDerBeschaeftigtenInsgesamt": {
+            "type": "integer",
+            "nullable": true
+          },
+          "anteilWeiblicherPersonenUnterDenBeschaeftigten": {
+            "type": "number",
+            "nullable": true
+          },
+          "anteilMaennlicherPersonenUnterDenBeschaeftigten": {
+            "type": "number",
+            "nullable": true
+          },
+          "anteilDiverserPersonenUnterDenBeschaeftigten": {
+            "type": "number",
+            "nullable": true
+          },
+          "geschlechtsspezifischesLohngefaelle": {
+            "type": "number",
+            "nullable": true
+          },
+          "jaehrlicheGesamtverguetungsquote": {
+            "type": "number",
+            "nullable": true
+          },
+          "anteilVonUnterDreissigjaehrigen": {
+            "type": "number",
+            "nullable": true
+          },
+          "anteilVonDreissigBisFuenfzigjaehrigen": {
+            "type": "number",
+            "nullable": true
+          },
+          "anteilVonUeberFuenfzigjaehrigen": {
+            "type": "number",
+            "nullable": true
+          },
+          "durchschnittlicheAnzahlAnTrainingsstunden": {
+            "type": "number",
+            "nullable": true
+          },
+          "fluktuationsquote": {
+            "type": "number",
+            "nullable": true
+          }
+        }
+      },
+      "EsgQuestionnaireSozialesEinbindungDerBeschaeftigten": {
+        "type": "object",
+        "properties": {
+          "einbindungVonBeschaeftigtenInEntscheidungen": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/EinbindungVonBeschaeftigtenInEntscheidungenOptions"
+            }
+          },
+          "einbindungVonBeschaeftigtenInEntscheidungenErlaeuterungen": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "EsgQuestionnaireSozialesRisikenUndMassnahmen": {
+        "type": "object",
+        "properties": {
+          "weitereWesentlicheSozialeRisiken": {
             "nullable": true,
             "allOf": [
               {
@@ -16069,141 +16230,13 @@
               }
             ]
           },
-          "artDesAudits": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/EsgQuestionnaireSozialesAuditArtDesAuditsOptions"
-              }
-            ]
-          },
-          "auditErgebnisse": {
-            "type": "string",
-            "nullable": true
-          }
-        }
-      },
-      "EsgQuestionnaireSozialesAuditArtDesAuditsOptions": {
-        "type": "string",
-        "enum": [
-          "InterneAnhoerung",
-          "PruefungDurchDritte",
-          "SowohlInternAlsAuchVonDrittanbietern"
-        ]
-      },
-      "EsgQuestionnaireSozialesEinkommensgleichheit": {
-        "type": "object",
-        "properties": {
-          "ueberwachungDerEinkommensungleichheit": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/YearlyTimeseriesDataUeberwachungDerEinkommensungleichheitValues"
-              }
-            ]
-          },
-          "massnahmenZurVerbesserungDerEinkommensungleichheit": {
-            "type": "string",
-            "nullable": true
-          }
-        }
-      },
-      "EsgQuestionnaireSozialesGeschlechterdiversitaet": {
-        "type": "object",
-        "properties": {
-          "mitarbeiterAufTopManagementEbene": {
-            "type": "integer",
-            "nullable": true
-          },
-          "frauenAufTopManagementEbene": {
-            "type": "integer",
-            "nullable": true
-          },
-          "mitgliederGeschaeftsfuehrung": {
-            "type": "integer",
-            "nullable": true
-          },
-          "frauenInDerGeschaeftsfuehrung": {
-            "type": "integer",
-            "nullable": true
-          },
-          "definitionTopManagement": {
+          "weitereWesentlicheSozialeRisikenErlaeuterung": {
             "type": "string",
             "nullable": true
           },
-          "einhaltungRechtlicherVorgaben": {
+          "massnahmenZurReduzierungVonSozialenRisiken": {
             "type": "string",
             "nullable": true
-          }
-        }
-      },
-      "EsgQuestionnaireSozialesSicherheitUndWeiterbildung": {
-        "type": "object",
-        "properties": {
-          "sicherheitsmassnahmenFuerMitarbeiter": {
-            "type": "string",
-            "nullable": true
-          },
-          "unfallrate": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/YearlyTimeseriesDataUnfallrateValues"
-              }
-            ]
-          },
-          "budgetFuerSchulungAusbildung": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/YearlyTimeseriesDataBudgetFuerSchulungAusbildungValues"
-              }
-            ]
-          }
-        }
-      },
-      "EsgQuestionnaireSozialesUnternehmensstrukturaenderungen": {
-        "type": "object",
-        "properties": {
-          "vorhandenseinKuerzlicherAenderungenDerUnternehmensstruktur": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/YesNo"
-              }
-            ]
-          },
-          "anzahlUnbefristeterVertraegeInDeutschland": {
-            "type": "integer",
-            "nullable": true
-          },
-          "anzahlDerVonEinemVerkaufBetroffenenUnbefristetenVertraegeInDeutschland": {
-            "type": "integer",
-            "nullable": true
-          },
-          "anzahlDerVonEinerAkquisitionBetroffenenUnbefristetenVertraegeInDeutschland": {
-            "type": "integer",
-            "nullable": true
-          },
-          "anzahlUnbefristeterVertraegeInDerGesamtgruppe": {
-            "type": "integer",
-            "nullable": true
-          },
-          "anzahlDerVonEinemVerkaufBetroffenenUnbefristetenVertraegeInDerGesamtgruppe": {
-            "type": "integer",
-            "nullable": true
-          },
-          "anzahlDerVonEinerAkquisitionBetroffenenUnbefristetenVertraegeInDerGesamtgruppe": {
-            "type": "integer",
-            "nullable": true
-          },
-          "auswirkungenAufAnteilBefristerVertraegeUndFluktuation": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/YearlyTimeseriesDataAuswirkungenAufAnteilBefristerVertraegeUndFluktuationValues"
-              }
-            ]
           }
         }
       },
@@ -16359,243 +16392,6 @@
           }
         }
       },
-      "EsgQuestionnaireUnternehmensfuehrungGovernance": {
-        "type": "object",
-        "properties": {
-          "aufsichtsrat": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/EsgQuestionnaireUnternehmensfuehrunggovernanceAufsichtsrat"
-              }
-            ]
-          },
-          "verguetungsausschuss": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/EsgQuestionnaireUnternehmensfuehrunggovernanceVerguetungsausschuss"
-              }
-            ]
-          },
-          "nominierungsausschuss": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/EsgQuestionnaireUnternehmensfuehrunggovernanceNominierungsausschuss"
-              }
-            ]
-          },
-          "pruefungsausschuss": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/EsgQuestionnaireUnternehmensfuehrunggovernancePruefungsausschuss"
-              }
-            ]
-          },
-          "nachhaltigkeitsausschuss": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/EsgQuestionnaireUnternehmensfuehrunggovernanceNachhaltigkeitsausschuss"
-              }
-            ]
-          },
-          "sonstige": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/EsgQuestionnaireUnternehmensfuehrunggovernanceSonstige"
-              }
-            ]
-          },
-          "stakeholder": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/EsgQuestionnaireUnternehmensfuehrunggovernanceStakeholder"
-              }
-            ]
-          },
-          "unternehmensrichtlinien": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/EsgQuestionnaireUnternehmensfuehrunggovernanceUnternehmensrichtlinien"
-              }
-            ]
-          },
-          "lieferantenauswahl": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/EsgQuestionnaireUnternehmensfuehrunggovernanceLieferantenauswahl"
-              }
-            ]
-          }
-        }
-      },
-      "EsgQuestionnaireUnternehmensfuehrunggovernanceAufsichtsrat": {
-        "type": "object",
-        "properties": {
-          "anzahlDerMitgliederImAufsichtsrat": {
-            "type": "integer",
-            "nullable": true
-          },
-          "anzahlUnabhaengigerMitgliederImAufsichtsrat": {
-            "type": "integer",
-            "nullable": true
-          },
-          "anzahlVonFrauenImAufsichtsrat": {
-            "type": "integer",
-            "nullable": true
-          }
-        }
-      },
-      "EsgQuestionnaireUnternehmensfuehrunggovernanceLieferantenauswahl": {
-        "type": "object",
-        "properties": {
-          "esgKriterienUndUeberwachungDerLieferanten": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/YesNo"
-              }
-            ]
-          },
-          "auswahlkriterien": {
-            "type": "string",
-            "nullable": true
-          }
-        }
-      },
-      "EsgQuestionnaireUnternehmensfuehrunggovernanceNachhaltigkeitsausschuss": {
-        "type": "object",
-        "properties": {
-          "anzahlDerMitgliederImNachhaltigkeitsausschuss": {
-            "type": "integer",
-            "nullable": true
-          },
-          "anzahlUnabhaengigerMitgliederImNachhaltigkeitsausschuss": {
-            "type": "integer",
-            "nullable": true
-          },
-          "anzahlVonFrauenImNachhaltigkeitsausschuss": {
-            "type": "integer",
-            "nullable": true
-          }
-        }
-      },
-      "EsgQuestionnaireUnternehmensfuehrunggovernanceNominierungsausschuss": {
-        "type": "object",
-        "properties": {
-          "anzahlDerMitgliederImNominierungsausschuss": {
-            "type": "integer",
-            "nullable": true
-          },
-          "anzahlUnabhaengigerMitgliederImNominierungsausschuss": {
-            "type": "integer",
-            "nullable": true
-          },
-          "anzahlVonFrauenImVerguetungsausschuss": {
-            "type": "integer",
-            "nullable": true
-          }
-        }
-      },
-      "EsgQuestionnaireUnternehmensfuehrunggovernancePruefungsausschuss": {
-        "type": "object",
-        "properties": {
-          "anzahlDerMitgliederImPruefungsausschuss": {
-            "type": "integer",
-            "nullable": true
-          },
-          "anzahlUnabhaengigerMitgliederImPruefungsausschuss": {
-            "type": "integer",
-            "nullable": true
-          },
-          "anzahlVonFrauenImPruefungsausschuss": {
-            "type": "integer",
-            "nullable": true
-          }
-        }
-      },
-      "EsgQuestionnaireUnternehmensfuehrunggovernanceSonstige": {
-        "type": "object",
-        "properties": {
-          "wirtschaftspruefer": {
-            "type": "string",
-            "nullable": true
-          },
-          "trennungVonCeoOderVorsitzenden": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/YesNo"
-              }
-            ]
-          },
-          "amtszeitBisZurTrennung": {
-            "type": "integer",
-            "nullable": true
-          }
-        }
-      },
-      "EsgQuestionnaireUnternehmensfuehrunggovernanceStakeholder": {
-        "type": "object",
-        "properties": {
-          "einbeziehungVonStakeholdern": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/YesNo"
-              }
-            ]
-          },
-          "prozessDerEinbeziehungVonStakeholdern": {
-            "type": "string",
-            "nullable": true
-          },
-          "mechanismenZurAusrichtungAufStakeholder": {
-            "type": "string",
-            "nullable": true
-          }
-        }
-      },
-      "EsgQuestionnaireUnternehmensfuehrunggovernanceUnternehmensrichtlinien": {
-        "type": "object",
-        "properties": {
-          "veroeffentlichteUnternehmensrichtlinien": {
-            "type": "array",
-            "nullable": true,
-            "items": {
-              "$ref": "#/components/schemas/VeroeffentlichteUnternehmensrichtlinienOptions"
-            }
-          },
-          "weitereVeroeffentlicheUnternehmensrichtlinien": {
-            "type": "string",
-            "nullable": true
-          }
-        }
-      },
-      "EsgQuestionnaireUnternehmensfuehrunggovernanceVerguetungsausschuss": {
-        "type": "object",
-        "properties": {
-          "anzahlDerMitgliederImVerguetungsausschuss": {
-            "type": "integer",
-            "nullable": true
-          },
-          "anzahlUnabhaengigerMitgliederImVerguetungsausschuss": {
-            "type": "integer",
-            "nullable": true
-          },
-          "anzahlVonFrauenImVerguetungsausschuss": {
-            "type": "integer",
-            "nullable": true
-          }
-        }
-      },
       "ExistenzVonRichtlinienZuSpezifischenThemenOptions": {
         "type": "string",
         "enum": [
@@ -16626,125 +16422,6 @@
           "Meeresspiegelanstieg",
           "Sonstige"
         ]
-      },
-      "UeberwachungDerEinkommensungleichheitValues": {
-        "type": "object",
-        "properties": {
-          "unbereinigtesGeschlechtsspezifischesLohngefaelle": {
-            "type": "number",
-            "nullable": true
-          },
-          "einkommensungleichheitsverhaeltnis": {
-            "type": "number",
-            "nullable": true
-          },
-          "ceoEinkommensungleichheitsverhaeltnis": {
-            "type": "number",
-            "nullable": true
-          }
-        }
-      },
-      "UnfallrateValues": {
-        "type": "object",
-        "properties": {
-          "haeufigkeitsrateVonArbeitsunfaellenMitZeitverlust": {
-            "type": "number",
-            "nullable": true
-          }
-        }
-      },
-      "VeroeffentlichteUnternehmensrichtlinienOptions": {
-        "type": "string",
-        "enum": [
-          "AntiKorruption",
-          "Verhaltenskodex",
-          "Interessenkonflikte",
-          "Datenschutz",
-          "DiversitaetAndInklusion",
-          "FaireBehandlungVonKunden",
-          "Zwangsarbeit",
-          "GesundheitUndSicherheit",
-          "MgtVonUmweltgefahren",
-          "VerantwortungsvollesMarketing",
-          "Whistleblowing",
-          "Other"
-        ]
-      },
-      "YearlyTimeseriesDataAuswirkungenAufAnteilBefristerVertraegeUndFluktuationValues": {
-        "required": [
-          "currentYear",
-          "yearlyData"
-        ],
-        "type": "object",
-        "properties": {
-          "currentYear": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "yearlyData": {
-            "type": "object",
-            "additionalProperties": {
-              "$ref": "#/components/schemas/AuswirkungenAufAnteilBefristerVertraegeUndFluktuationValues"
-            }
-          }
-        }
-      },
-      "YearlyTimeseriesDataBudgetFuerSchulungAusbildungValues": {
-        "required": [
-          "currentYear",
-          "yearlyData"
-        ],
-        "type": "object",
-        "properties": {
-          "currentYear": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "yearlyData": {
-            "type": "object",
-            "additionalProperties": {
-              "$ref": "#/components/schemas/BudgetFuerSchulungAusbildungValues"
-            }
-          }
-        }
-      },
-      "YearlyTimeseriesDataUeberwachungDerEinkommensungleichheitValues": {
-        "required": [
-          "currentYear",
-          "yearlyData"
-        ],
-        "type": "object",
-        "properties": {
-          "currentYear": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "yearlyData": {
-            "type": "object",
-            "additionalProperties": {
-              "$ref": "#/components/schemas/UeberwachungDerEinkommensungleichheitValues"
-            }
-          }
-        }
-      },
-      "YearlyTimeseriesDataUnfallrateValues": {
-        "required": [
-          "currentYear",
-          "yearlyData"
-        ],
-        "type": "object",
-        "properties": {
-          "currentYear": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "yearlyData": {
-            "type": "object",
-            "additionalProperties": {
-              "$ref": "#/components/schemas/UnfallrateValues"
-            }
-          }
-        }
       },
       "AdditionalCompanyInformationData": {
         "type": "object",
@@ -17181,10 +16858,6 @@
         ],
         "type": "object",
         "properties": {
-          "lei": {
-            "type": "string",
-            "nullable": true
-          },
           "headquarters": {
             "type": "string"
           },
@@ -17195,11 +16868,15 @@
             "type": "string",
             "nullable": true
           },
+          "companyName": {
+            "type": "string"
+          },
           "companyId": {
             "type": "string"
           },
-          "companyName": {
-            "type": "string"
+          "lei": {
+            "type": "string",
+            "nullable": true
           }
         }
       },
@@ -17222,10 +16899,10 @@
         ],
         "type": "object",
         "properties": {
-          "companyId": {
+          "companyName": {
             "type": "string"
           },
-          "companyName": {
+          "companyId": {
             "type": "string"
           }
         }

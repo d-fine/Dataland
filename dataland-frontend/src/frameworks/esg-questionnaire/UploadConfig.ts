@@ -1185,671 +1185,175 @@ export const esgQuestionnaireDataModel = [
     showIf: (): boolean => true,
     subcategories: [
       {
-        name: 'unternehmensstrukturaenderungen',
-        label: 'Unternehmensstrukturänderungen',
+        name: 'beschaeftigtenprofilUndEntlohnung',
+        label: 'Beschäftigtenprofil und Entlohnung',
         fields: [
           {
-            name: 'vorhandenseinKuerzlicherAenderungenDerUnternehmensstruktur',
-            label: 'Vorhandensein kürzlicher Änderungen der Unternehmensstruktur',
+            name: 'zahlDerBeschaeftigtenInsgesamt',
+            label: 'Zahl der Beschäftigten insgesamt',
             description:
-              'Gab es kürzlich eine Veränderung im Unternehmen / in der Gruppe (Umstrukturierung, Verkauf oder Übernahme)?',
+              'Wie viele Beschäftigte hat das Unternehmen insgesamt? Die Beschäftigtenanzahl bezieht sich auf die Anzahl der Arbeitnehmer, nicht auf die Anzahl von Vollzeitstellen. Besondere Beschäftigungsverhältnisse wie z. B. Praktika und Traineeprogramme sollten mit einbezogen werden, wenn die Arbeitsverträge die nationalen rechtlichen Vorrausetzungen für ein Arbeitnehmerverhältnis erfüllen.',
 
-            component: 'YesNoFormField',
+            component: 'NumberFormField',
+            required: false,
+            showIf: (dataset: EsgQuestionnaireData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            validation: 'integer',
+          },
+          {
+            name: 'anteilWeiblicherPersonenUnterDenBeschaeftigten',
+            label: 'Anteil weiblicher Personen unter den Beschäftigten',
+            description: 'Wie hoch ist der Anteil weiblicher Personen unter den Beschäftigten in Prozent?',
+
+            unit: '%',
+            component: 'NumberFormField',
+            required: false,
+            showIf: (dataset: EsgQuestionnaireData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            validation: 'between:0,100',
+          },
+          {
+            name: 'anteilMaennlicherPersonenUnterDenBeschaeftigten',
+            label: 'Anteil männlicher Personen unter den Beschäftigten',
+            description: 'Wie hoch ist der Anteil männlicher Personen unter den Beschäftigten in Prozent?',
+
+            unit: '%',
+            component: 'NumberFormField',
+            required: false,
+            showIf: (dataset: EsgQuestionnaireData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            validation: 'between:0,100',
+          },
+          {
+            name: 'anteilDiverserPersonenUnterDenBeschaeftigten',
+            label: 'Anteil diverser Personen unter den Beschäftigten',
+            description: 'Wie hoch ist der Anteil diverser Personen unter den Beschäftigten in Prozent?',
+
+            unit: '%',
+            component: 'NumberFormField',
+            required: false,
+            showIf: (dataset: EsgQuestionnaireData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            validation: 'between:0,100',
+          },
+          {
+            name: 'geschlechtsspezifischesLohngefaelle',
+            label: 'Geschlechtsspezifisches Lohngefälle',
+            description:
+              'Besteht im Unternehmen bei gleicher Tätigkeit ein signifikanter Unterschied in der Vergütung weiblicher und männlicher Personen? Methodik analog zu ESRS S1-16.',
+
+            unit: '%',
+            component: 'NumberFormField',
+            required: false,
+            showIf: (dataset: EsgQuestionnaireData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            validation: 'between:0,100',
+          },
+          {
+            name: 'jaehrlicheGesamtverguetungsquote',
+            label: 'Jährliche Gesamtvergütungsquote',
+            description:
+              'In welchem Verhältnis steht die Vergütung der höchstbezahlten Person des Unternehmens zum Median der jährlichen Gesamtvergütung aller Beschäftigen? Methodik analog zu ESRS S1-16.',
+
+            unit: '%',
+            component: 'NumberFormField',
+            required: false,
+            showIf: (dataset: EsgQuestionnaireData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            validation: 'between:0,100',
+          },
+          {
+            name: 'anteilVonUnterDreissigjaehrigen',
+            label: 'Anteil von unter Dreißigjährigen',
+            description:
+              'Wie hoch ist der Anteil der unter 30-Jährigen an der Beschäftigtenzahl in Prozent? Methodik analog zu ESRS S1-9.',
+
+            unit: '%',
+            component: 'NumberFormField',
+            required: false,
+            showIf: (dataset: EsgQuestionnaireData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            validation: 'between:0,100',
+          },
+          {
+            name: 'anteilVonDreissigBisFuenfzigjaehrigen',
+            label: 'Anteil von Dreißig- bis Fünfzigjährigen',
+            description:
+              'Wie hoch ist der Anteil der 30- bis 50-Jährigen an der Beschäftigtenzahl in Prozent? Methodik analog zu ESRS S1-9.',
+
+            unit: '%',
+            component: 'NumberFormField',
+            required: false,
+            showIf: (dataset: EsgQuestionnaireData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            validation: 'between:0,100',
+          },
+          {
+            name: 'anteilVonUeberFuenfzigjaehrigen',
+            label: 'Anteil von über Fünfzigjährigen',
+            description:
+              'Wie hoch ist der Anteil der über 50-Jährigen an der Beschäftigtenzahl in Prozent? Methodik analog zu ESRS S1-9.',
+
+            unit: '%',
+            component: 'NumberFormField',
+            required: false,
+            showIf: (dataset: EsgQuestionnaireData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            validation: 'between:0,100',
+          },
+          {
+            name: 'durchschnittlicheAnzahlAnTrainingsstunden',
+            label: 'Durchschnittliche Anzahl an Trainingsstunden',
+            description:
+              'Wieviele Tranings- und Fortbildungsstunden erhielten Beschäftigte im letzten abgeschlossenen Geschäftsjahr?',
+
+            component: 'NumberFormField',
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
           },
           {
-            name: 'anzahlUnbefristeterVertraegeInDeutschland',
-            label: 'Anzahl unbefristeter Verträge in Deutschland',
-            description: 'Bitte teilen Sie mit uns wieviele unbefristete Verträge es insgesamt in Deutschland gibt.',
+            name: 'fluktuationsquote',
+            label: 'Fluktuationsquote',
+            description: 'Wie hoch war die Fluktuationsquote im Unternehmen im letzten abgeschlossenen Geschäftsjahr?',
 
+            unit: '%',
             component: 'NumberFormField',
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.soziales?.unternehmensstrukturaenderungen
-                ?.vorhandenseinKuerzlicherAenderungenDerUnternehmensstruktur == 'Yes',
-            validation: 'integer',
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            validation: 'between:0,100',
           },
+        ],
+      },
+      {
+        name: 'einbindungDerBeschaeftigten',
+        label: 'Einbindung der Beschäftigten',
+        fields: [
           {
-            name: 'anzahlDerVonEinemVerkaufBetroffenenUnbefristetenVertraegeInDeutschland',
-            label: 'Anzahl der von einem Verkauf betroffenen unbefristeten Verträge in Deutschland ',
-            description:
-              'Bitte teilen Sie mit uns wieviele unbefristete Verträge in Deutschland von einem etwaigen Verkauf betroffen waren.',
-
-            component: 'NumberFormField',
-            required: false,
-            showIf: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.soziales?.unternehmensstrukturaenderungen
-                ?.vorhandenseinKuerzlicherAenderungenDerUnternehmensstruktur == 'Yes',
-            validation: 'integer',
-          },
-          {
-            name: 'anzahlDerVonEinerAkquisitionBetroffenenUnbefristetenVertraegeInDeutschland',
-            label: 'Anzahl der von einer Akquisition betroffenen unbefristeten Verträge in Deutschland ',
-            description:
-              'Bitte teilen Sie mit uns wieviele unbefristete Verträge in Deutschland von einer etwaigen Akquisition betroffen waren.',
-
-            component: 'NumberFormField',
-            required: false,
-            showIf: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.soziales?.unternehmensstrukturaenderungen
-                ?.vorhandenseinKuerzlicherAenderungenDerUnternehmensstruktur == 'Yes',
-            validation: 'integer',
-          },
-          {
-            name: 'anzahlUnbefristeterVertraegeInDerGesamtgruppe',
-            label: 'Anzahl unbefristeter Verträge in der Gesamtgruppe',
-            description:
-              'Bitte teilen Sie mit uns wieviele unbefristete Verträge es insgesamt in der Gesamtgruppe gibt.',
-
-            component: 'NumberFormField',
-            required: false,
-            showIf: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.soziales?.unternehmensstrukturaenderungen
-                ?.vorhandenseinKuerzlicherAenderungenDerUnternehmensstruktur == 'Yes',
-            validation: 'integer',
-          },
-          {
-            name: 'anzahlDerVonEinemVerkaufBetroffenenUnbefristetenVertraegeInDerGesamtgruppe',
-            label: 'Anzahl der von einem Verkauf betroffenen unbefristeten Verträge in der Gesamtgruppe',
-            description:
-              'Bitte teilen Sie mit uns wieviele unbefristete Verträge in der Gesamtgruppe von einem etwaigen Verkauf betroffen waren.',
-
-            component: 'NumberFormField',
-            required: false,
-            showIf: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.soziales?.unternehmensstrukturaenderungen
-                ?.vorhandenseinKuerzlicherAenderungenDerUnternehmensstruktur == 'Yes',
-            validation: 'integer',
-          },
-          {
-            name: 'anzahlDerVonEinerAkquisitionBetroffenenUnbefristetenVertraegeInDerGesamtgruppe',
-            label: 'Anzahl der von einer Akquisition betroffenen unbefristeten Verträge in der Gesamtgruppe',
-            description:
-              'Bitte teilen Sie mit uns wieviele unbefristete Verträge in der Gesamtgruppe von einer etwaigen Akquisition betroffen waren.',
-
-            component: 'NumberFormField',
-            required: false,
-            showIf: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.soziales?.unternehmensstrukturaenderungen
-                ?.vorhandenseinKuerzlicherAenderungenDerUnternehmensstruktur == 'Yes',
-            validation: 'integer',
-          },
-          {
-            name: 'auswirkungenAufAnteilBefristerVertraegeUndFluktuation',
-            label: 'Auswirkungen auf Anteil befrister Verträge und Fluktuation',
-            description:
-              'Bitte geben Sie die Anzahl der befristeten Verträge sowie die Fluktuation (%) für die letzten drei Jahre an.',
+            name: 'einbindungVonBeschaeftigtenInEntscheidungen',
+            label: 'Einbindung von Beschäftigten in Entscheidungen',
+            description: 'Sind Beschäftigte in betriebliche Entscheidungen des Unternehmens eingebunden?',
             options: [
               {
-                label: '# der befristeten Verträge',
-                value: 'anzahlDerBefristetenVertraege',
+                label: 'Einbindung in Betriebsrat / gesetzliche Vertretungsorgane',
+                value: 'EinbindungInBetriebsratGesetzlicheVertretungsorgane',
               },
               {
-                label: 'Fluktuation (in %)',
-                value: 'fluktuation',
-              },
-            ],
-
-            component: 'EsgQuestionnaireYearlyDecimalTimeseriesThreeYearPastDataFormField',
-            required: false,
-            showIf: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.soziales?.unternehmensstrukturaenderungen
-                ?.vorhandenseinKuerzlicherAenderungenDerUnternehmensstruktur == 'Yes',
-          },
-        ],
-      },
-      {
-        name: 'sicherheitUndWeiterbildung',
-        label: 'Sicherheit und Weiterbildung',
-        fields: [
-          {
-            name: 'sicherheitsmassnahmenFuerMitarbeiter',
-            label: 'Sicherheitsmaßnahmen für Mitarbeiter',
-            description:
-              'Welche Maßnahmen werden ergriffen, um die Gesundheit und Sicherheit der Mitarbeiter des Unternehmens zu verbessern?',
-
-            component: 'FreeTextFormField',
-            required: false,
-            showIf: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
-          },
-          {
-            name: 'unfallrate',
-            label: 'Unfallrate',
-            description:
-              'Wie hoch war die Häufigkeitsrate von Arbeitsunfällen mit Zeitverlust für die letzten drei Jahre?',
-            options: [
-              {
-                label: 'Häufigkeitsrate von Arbeitsunfällen mit Zeitverlust',
-                value: 'haeufigkeitsrateVonArbeitsunfaellenMitZeitverlust',
-              },
-            ],
-
-            component: 'EsgQuestionnaireYearlyDecimalTimeseriesThreeYearPastDataFormField',
-            required: false,
-            showIf: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
-          },
-          {
-            name: 'budgetFuerSchulungAusbildung',
-            label: 'Budget für Schulung/Ausbildung',
-            description:
-              'Bitte geben Sie an wie hoch das Budget ist, das pro Mitarbeiter und Jahr für Schulungen/Fortbildungen in den letzten drei Jahren ausgegeben wurde.',
-            options: [
-              {
-                label: 'Budget pro Mitarbeiter (in €)',
-                value: 'budgetProMitarbeiter',
-              },
-            ],
-
-            component: 'EsgQuestionnaireYearlyDecimalTimeseriesThreeYearPastDataFormField',
-            required: false,
-            showIf: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
-          },
-        ],
-      },
-      {
-        name: 'einkommensgleichheit',
-        label: 'Einkommensgleichheit',
-        fields: [
-          {
-            name: 'ueberwachungDerEinkommensungleichheit',
-            label: 'Überwachung der Einkommensungleichheit',
-            description:
-              'Bitte geben Sie das unbereinigte geschlechtsspezifische Lohngefälle, das Einkommensungleichheitsverhältnis, sowie das CEO-Einkommensungleichheitsverhältnis für die letzten drei Jahre an.',
-            options: [
-              {
-                label: 'Unbereinigtes geschlechtsspezifisches Lohngefälle (in %)',
-                value: 'unbereinigtesGeschlechtsspezifischesLohngefaelle',
+                label: 'Aufsichtsrat',
+                value: 'Aufsichtsrat',
               },
               {
-                label: 'Einkommensungleichheitsverhältnis (in %)',
-                value: 'einkommensungleichheitsverhaeltnis',
+                label: 'Verwaltungsrat',
+                value: 'Verwaltungsrat',
               },
               {
-                label: 'CEO-Einkommensungleichheitsverhältnis (in %)',
-                value: 'ceoEinkommensungleichheitsverhaeltnis',
-              },
-            ],
-
-            component: 'EsgQuestionnaireYearlyDecimalTimeseriesThreeYearPastDataFormField',
-            required: false,
-            showIf: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
-          },
-          {
-            name: 'massnahmenZurVerbesserungDerEinkommensungleichheit',
-            label: 'Maßnahmen zur Verbesserung der Einkommensungleichheit',
-            description:
-              'Wie überwacht das Unternehmen die Einkommens(un)gleichheit und welche Maßnahmen wurden ergriffen, um die Einkommensungleichheit abzustellen?',
-
-            component: 'FreeTextFormField',
-            required: false,
-            showIf: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
-          },
-        ],
-      },
-      {
-        name: 'geschlechterdiversitaet',
-        label: 'Geschlechterdiversität',
-        fields: [
-          {
-            name: 'mitarbeiterAufTopManagementEbene',
-            label: 'Mitarbeiter auf Top-Management Ebene',
-            description: 'Geben Sie bitte an wieviele Personen eine Top-Management Position innehaben.',
-
-            component: 'NumberFormField',
-            required: false,
-            showIf: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
-            validation: 'integer',
-          },
-          {
-            name: 'frauenAufTopManagementEbene',
-            label: 'Frauen auf Top-Management-Ebene',
-            description: 'Geben Sie bitte an wieviele Frauen eine Top-Management Position innehaben.',
-
-            component: 'NumberFormField',
-            required: false,
-            showIf: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
-            validation: 'integer',
-          },
-          {
-            name: 'mitgliederGeschaeftsfuehrung',
-            label: 'Mitglieder Geschäftsführung',
-            description: 'Geben Sie bitte an wieviele Mitglieder die Geschäftsführung hat.',
-
-            component: 'NumberFormField',
-            required: false,
-            showIf: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
-            validation: 'integer',
-          },
-          {
-            name: 'frauenInDerGeschaeftsfuehrung',
-            label: 'Frauen in der Geschäftsführung',
-            description: 'Geben Sie bitte an wieviele Frauen in der Geschäftsführung sind.',
-
-            component: 'NumberFormField',
-            required: false,
-            showIf: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
-            validation: 'integer',
-          },
-          {
-            name: 'definitionTopManagement',
-            label: 'Definition Top-Management',
-            description: 'Bitte geben Sie Ihre Definition von "Top-Management".',
-
-            component: 'FreeTextFormField',
-            required: false,
-            showIf: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
-          },
-          {
-            name: 'einhaltungRechtlicherVorgaben',
-            label: 'Einhaltung rechtlicher Vorgaben',
-            description:
-              'Welche Maßnahmen wurden ergriffen, um das geltende Recht in Bezug auf die Geschlechterdiversität von Exekutivinstanzen einzuhalten?',
-
-            component: 'FreeTextFormField',
-            required: false,
-            showIf: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
-          },
-        ],
-      },
-      {
-        name: 'audit',
-        label: 'Audit',
-        fields: [
-          {
-            name: 'auditsZurEinhaltungVonArbeitsstandards',
-            label: 'Audits zur Einhaltung von Arbeitsstandards',
-            description:
-              'Führt das Unternehmen interne oder externe Audits durch, um die Einhaltung der Arbeitsnormen durch das Unternehmen zu bewerten?',
-
-            component: 'YesNoFormField',
-            required: false,
-            showIf: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
-          },
-          {
-            name: 'artDesAudits',
-            label: 'Art des Audits',
-            description: 'Wie werden die Audits zur Einhaltung von Arbeitsstandards durchgeführt?',
-            options: [
-              {
-                label: 'Interne Anhörung',
-                value: 'InterneAnhoerung',
+                label: 'Keine Einbindung in Entscheidungsgremien',
+                value: 'KeineEinbindungInEntscheidungsgremien',
               },
               {
-                label: 'Prüfung durch Dritte',
-                value: 'PruefungDurchDritte',
-              },
-              {
-                label: 'Sowohl intern als auch von Drittanbietern',
-                value: 'SowohlInternAlsAuchVonDrittanbietern',
-              },
-            ],
-
-            component: 'SingleSelectFormField',
-            required: false,
-            showIf: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.soziales?.audit?.auditsZurEinhaltungVonArbeitsstandards == 'Yes',
-          },
-          {
-            name: 'auditErgebnisse',
-            label: 'Audit Ergebnisse',
-            description: 'Bitte geben Sie Informationen über das letzte Audit an.',
-
-            component: 'FreeTextFormField',
-            required: false,
-            showIf: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.soziales?.audit?.auditsZurEinhaltungVonArbeitsstandards == 'Yes',
-          },
-        ],
-      },
-    ],
-  },
-  {
-    name: 'unternehmensfuehrungGovernance',
-    label: 'Unternehmensführung/ Governance',
-    color: '',
-    showIf: (): boolean => true,
-    subcategories: [
-      {
-        name: 'aufsichtsrat',
-        label: 'Aufsichtsrat',
-        fields: [
-          {
-            name: 'anzahlDerMitgliederImAufsichtsrat',
-            label: 'Anzahl der Mitglieder im Aufsichtsrat',
-            description: 'Wieviele Mitglieder hat der Aufsichtsrat?',
-
-            component: 'NumberFormField',
-            required: false,
-            showIf: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
-            validation: 'integer',
-          },
-          {
-            name: 'anzahlUnabhaengigerMitgliederImAufsichtsrat',
-            label: 'Anzahl unabhängiger Mitglieder im Aufsichtsrat',
-            description: 'Wieviele unabhängige Mitglieder hat der Aufsichtsrat?',
-
-            component: 'NumberFormField',
-            required: false,
-            showIf: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
-            validation: 'integer',
-          },
-          {
-            name: 'anzahlVonFrauenImAufsichtsrat',
-            label: 'Anzahl von Frauen im Aufsichtsrat',
-            description: 'Wieviele Frauen sind im Aufsichtsrat?',
-
-            component: 'NumberFormField',
-            required: false,
-            showIf: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
-            validation: 'integer',
-          },
-        ],
-      },
-      {
-        name: 'verguetungsausschuss',
-        label: 'Vergütungsausschuss',
-        fields: [
-          {
-            name: 'anzahlDerMitgliederImVerguetungsausschuss',
-            label: 'Anzahl der Mitglieder im Vergütungsausschuss',
-            description: 'Wieviele Mitglieder hat der Vergütungsausschuss?',
-
-            component: 'NumberFormField',
-            required: false,
-            showIf: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
-            validation: 'integer',
-          },
-          {
-            name: 'anzahlUnabhaengigerMitgliederImVerguetungsausschuss',
-            label: 'Anzahl unabhängiger Mitglieder im Vergütungsausschuss',
-            description: 'Wieviele unabhängige Mitglieder hat der Vergütungsausschuss?',
-
-            component: 'NumberFormField',
-            required: false,
-            showIf: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
-            validation: 'integer',
-          },
-          {
-            name: 'anzahlVonFrauenImVerguetungsausschuss',
-            label: 'Anzahl von Frauen im Vergütungsausschuss',
-            description: 'Wieviele Frauen sind im Vergütungsausschuss?',
-
-            component: 'NumberFormField',
-            required: false,
-            showIf: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
-            validation: 'integer',
-          },
-        ],
-      },
-      {
-        name: 'nominierungsausschuss',
-        label: 'Nominierungsausschuss',
-        fields: [
-          {
-            name: 'anzahlDerMitgliederImNominierungsausschuss',
-            label: 'Anzahl der Mitglieder im Nominierungsausschuss',
-            description: 'Wieviele Mitglieder hat der Nominierungsausschuss?',
-
-            component: 'NumberFormField',
-            required: false,
-            showIf: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
-            validation: 'integer',
-          },
-          {
-            name: 'anzahlUnabhaengigerMitgliederImNominierungsausschuss',
-            label: 'Anzahl unabhängiger Mitglieder im Nominierungsausschuss',
-            description: 'Wieviele unabhängige Mitglieder hat der Nominierungsausschuss?',
-
-            component: 'NumberFormField',
-            required: false,
-            showIf: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
-            validation: 'integer',
-          },
-          {
-            name: 'anzahlVonFrauenImVerguetungsausschuss',
-            label: 'Anzahl von Frauen im Vergütungsausschuss',
-            description: 'Wieviele Frauen sind im Nominierungsausschuss?',
-
-            component: 'NumberFormField',
-            required: false,
-            showIf: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
-            validation: 'integer',
-          },
-        ],
-      },
-      {
-        name: 'pruefungsausschuss',
-        label: 'Prüfungsausschuss',
-        fields: [
-          {
-            name: 'anzahlDerMitgliederImPruefungsausschuss',
-            label: 'Anzahl der Mitglieder im Prüfungsausschuss',
-            description: 'Wieviele Mitglieder hat der Prüfungsausschuss?',
-
-            component: 'NumberFormField',
-            required: false,
-            showIf: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
-            validation: 'integer',
-          },
-          {
-            name: 'anzahlUnabhaengigerMitgliederImPruefungsausschuss',
-            label: 'Anzahl unabhängiger Mitglieder im Prüfungsausschuss',
-            description: 'Wieviele unabhängige Mitglieder hat der Prüfungsausschuss?',
-
-            component: 'NumberFormField',
-            required: false,
-            showIf: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
-            validation: 'integer',
-          },
-          {
-            name: 'anzahlVonFrauenImPruefungsausschuss',
-            label: 'Anzahl von Frauen im Prüfungsausschuss',
-            description: 'Wieviele Frauen sind im Prüfungsausschuss?',
-
-            component: 'NumberFormField',
-            required: false,
-            showIf: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
-            validation: 'integer',
-          },
-        ],
-      },
-      {
-        name: 'nachhaltigkeitsausschuss',
-        label: 'Nachhaltigkeitsausschuss',
-        fields: [
-          {
-            name: 'anzahlDerMitgliederImNachhaltigkeitsausschuss',
-            label: 'Anzahl der Mitglieder im Nachhaltigkeitsausschuss',
-            description: 'Wieviele Mitglieder hat der Nachhaltigkeitsausschuss?',
-
-            component: 'NumberFormField',
-            required: false,
-            showIf: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
-            validation: 'integer',
-          },
-          {
-            name: 'anzahlUnabhaengigerMitgliederImNachhaltigkeitsausschuss',
-            label: 'Anzahl unabhängiger Mitglieder im Nachhaltigkeitsausschuss',
-            description: 'Wieviele unabhängige Mitglieder hat der Nachhaltigkeitsausschuss?',
-
-            component: 'NumberFormField',
-            required: false,
-            showIf: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
-            validation: 'integer',
-          },
-          {
-            name: 'anzahlVonFrauenImNachhaltigkeitsausschuss',
-            label: 'Anzahl von Frauen im Nachhaltigkeitsausschuss',
-            description: 'Wieviele Frauen sind im Nachhaltigkeitsausschuss?',
-
-            component: 'NumberFormField',
-            required: false,
-            showIf: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
-            validation: 'integer',
-          },
-        ],
-      },
-      {
-        name: 'sonstige',
-        label: 'Sonstige',
-        fields: [
-          {
-            name: 'wirtschaftspruefer',
-            label: 'Wirtschaftsprüfer',
-
-            component: 'InputTextFormField',
-            required: false,
-            showIf: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
-          },
-          {
-            name: 'trennungVonCeoOderVorsitzenden',
-            label: 'Trennung von CEO oder Vorsitzenden',
-            description:
-              'Hat sich das Unternehmen im aktuellen Jahr der Berichterstattung von CEO/Vorsitzenden getrennt?',
-
-            component: 'YesNoFormField',
-            required: false,
-            showIf: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
-          },
-          {
-            name: 'amtszeitBisZurTrennung',
-            label: 'Amtszeit bis zur Trennung',
-            description: 'Wieviele Jahre war der/die CEO/Vorsitzende(r) im Amt?',
-
-            unit: 'Jahre',
-            component: 'NumberFormField',
-            required: false,
-            showIf: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.unternehmensfuehrungGovernance?.sonstige?.trennungVonCeoOderVorsitzenden == 'Yes',
-            validation: 'integer',
-          },
-        ],
-      },
-      {
-        name: 'stakeholder',
-        label: 'Stakeholder',
-        fields: [
-          {
-            name: 'einbeziehungVonStakeholdern',
-            label: 'Einbeziehung von Stakeholdern',
-            description: 'Gibt es einen kontinuierlichen Prozess des Dialogs mit den Stakeholdern des Unternehmens?',
-
-            component: 'YesNoFormField',
-            required: false,
-            showIf: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
-          },
-          {
-            name: 'prozessDerEinbeziehungVonStakeholdern',
-            label: 'Prozess der Einbeziehung von Stakeholdern',
-            description:
-              'Bitte geben Sie Einzelheiten zu einem solchen Prozess an, z.B. eine Umfrage zur Bewertung der Mitarbeiter- oder Kundenzufriedenheit. Falls zutreffend, teilen Sie uns bitte die wichtigsten Schlussfolgerungen mit.',
-
-            component: 'FreeTextFormField',
-            required: false,
-            showIf: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.unternehmensfuehrungGovernance?.stakeholder?.einbeziehungVonStakeholdern == 'Yes',
-          },
-          {
-            name: 'mechanismenZurAusrichtungAufStakeholder',
-            label: 'Mechanismen zur Ausrichtung auf Stakeholder',
-            description:
-              'Welche Mechanismen gibt es derzeit, um sicherzustellen, dass die Stakeholder im besten Interesse des Unternehmens handeln? Bitte erläutern Sie (falls zutreffend) die Beteiligungsmechanismen, verschiedene Anreizsysteme usw.',
-
-            component: 'FreeTextFormField',
-            required: false,
-            showIf: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.unternehmensfuehrungGovernance?.stakeholder?.einbeziehungVonStakeholdern == 'Yes',
-          },
-        ],
-      },
-      {
-        name: 'unternehmensrichtlinien',
-        label: 'Unternehmensrichtlinien',
-        fields: [
-          {
-            name: 'veroeffentlichteUnternehmensrichtlinien',
-            label: 'Veröffentlichte Unternehmensrichtlinien',
-            description: 'Welche Richtlinien sind im Unternehmen veröffentlicht?',
-            options: [
-              {
-                label: 'Anti-Korruption',
-                value: 'AntiKorruption',
-              },
-              {
-                label: 'Verhaltenskodex',
-                value: 'Verhaltenskodex',
-              },
-              {
-                label: 'Interessenkonflikte',
-                value: 'Interessenkonflikte',
-              },
-              {
-                label: 'Datenschutz',
-                value: 'Datenschutz',
-              },
-              {
-                label: 'Diversität & Inklusion',
-                value: 'DiversitaetAndInklusion',
-              },
-              {
-                label: 'Faire Behandlung von Kunden',
-                value: 'FaireBehandlungVonKunden',
-              },
-              {
-                label: 'Zwangsarbeit',
-                value: 'Zwangsarbeit',
-              },
-              {
-                label: 'Gesundheit und Sicherheit',
-                value: 'GesundheitUndSicherheit',
-              },
-              {
-                label: 'Mgt von Umweltgefahren',
-                value: 'MgtVonUmweltgefahren',
-              },
-              {
-                label: 'Verantwortungsvolles Marketing',
-                value: 'VerantwortungsvollesMarketing',
-              },
-              {
-                label: 'Whistleblowing',
-                value: 'Whistleblowing',
-              },
-              {
-                label: 'other',
-                value: 'Other',
+                label: 'Kein Arbeitnehmervertretung gesetzlich vorgeschrieben',
+                value: 'KeinArbeitnehmervertretungGesetzlichVorgeschrieben',
               },
             ],
 
@@ -1859,9 +1363,10 @@ export const esgQuestionnaireDataModel = [
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
           },
           {
-            name: 'weitereVeroeffentlicheUnternehmensrichtlinien',
-            label: 'Weitere veröffentliche Unternehmensrichtlinien',
-            description: 'Bitte nennen Sie weitere wichtige Richtlinien, falls diese nicht angegeben sind.',
+            name: 'einbindungVonBeschaeftigtenInEntscheidungenErlaeuterungen',
+            label: 'Einbindung von Beschäftigten in Entscheidungen Erläuterungen',
+            description:
+              'Bei Unternehmen, die aufgrund länderspezifischer Besonderheiten nicht zu einer eindeutigen Antwort kommen, bitte hier erläutern.',
 
             component: 'FreeTextFormField',
             required: false,
@@ -1871,14 +1376,41 @@ export const esgQuestionnaireDataModel = [
         ],
       },
       {
-        name: 'lieferantenauswahl',
-        label: 'Lieferantenauswahl',
+        name: 'arbeitsschutz',
+        label: 'Arbeitsschutz',
         fields: [
           {
-            name: 'esgKriterienUndUeberwachungDerLieferanten',
-            label: 'ESG-Kriterien und Überwachung der Lieferanten',
+            name: 'massnahmenZumSchutzDerGesundheitUndVerbesserungDerSicherheit',
+            label: 'Maßnahmen zum Schutz der Gesundheit und Verbesserung der Sicherheit',
             description:
-              'Wendet das Unternehmen ESG-Kriterien bei der Auswahl seiner Lieferanten an, einschließlich einer Bestandsaufnahme der Lieferkette?',
+              'Welche Maßnahmen hat das Unternehmen ergriffen, um die rechtlichen Vorgaben zum Schutz der Gesundheit und Verbesserung der Sicherheit von Beschäftigten umzusetzen?',
+
+            component: 'FreeTextFormField',
+            required: false,
+            showIf: (dataset: EsgQuestionnaireData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+          },
+          {
+            name: 'anzahlDerArbeitsunfaelleProFuenfhundertVollzeitbeschaeftigte',
+            label: 'Anzahl der Arbeitsunfälle pro fünfhundert Vollzeitbeschäftigte',
+            description:
+              'Wie hoch ist die Häufigkeitsrate von Arbeitsunfällen des Unternehmens pro 500 Vollzeitbeschäftigte?',
+
+            component: 'NumberFormField',
+            required: false,
+            showIf: (dataset: EsgQuestionnaireData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+          },
+        ],
+      },
+      {
+        name: 'risikenUndMassnahmen',
+        label: 'Risiken und Maßnahmen ',
+        fields: [
+          {
+            name: 'weitereWesentlicheSozialeRisiken',
+            label: 'Weitere wesentliche soziale Risiken',
+            description: 'Gibt es weitere wesentliche soziale Risiken für das Unternehmen?',
 
             component: 'YesNoFormField',
             required: false,
@@ -1886,16 +1418,173 @@ export const esgQuestionnaireDataModel = [
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
           },
           {
-            name: 'auswahlkriterien',
-            label: 'Auswahlkriterien',
-            description:
-              'Bitte nennen Sie die Auswahlkriterien und erläutern Sie, wie diese Kriterien im Laufe der Zeit überwacht/geprüft werden. Bezieht das Unternehmen beispielsweise Rohstoffe aus Gebieten, in denen umstrittene Abholzungsaktivitäten stattfinden (z.B. Soja, Palmöl, Tropenholz, Holz oder industrielle Viehzucht)?',
+            name: 'weitereWesentlicheSozialeRisikenErlaeuterung',
+            label: 'Weitere wesentliche soziale Risiken Erläuterung',
+            description: 'Erläutern sie die weiteren wesentlichenn sozialen Risiken.',
 
             component: 'FreeTextFormField',
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.unternehmensfuehrungGovernance?.lieferantenauswahl?.esgKriterienUndUeberwachungDerLieferanten ==
+              dataset.soziales?.risikenUndMassnahmen?.weitereWesentlicheSozialeRisiken == 'Yes',
+          },
+          {
+            name: 'massnahmenZurReduzierungVonSozialenRisiken',
+            label: 'Maßnahmen zur Reduzierung von sozialen Risiken',
+            description:
+              'Welche Maßnahmen hat das Unternehmen zur Reduzierung dieser sozialen Risiken getroffen, außer der in Frage 5.1 genannten Richtlinien?',
+
+            component: 'FreeTextFormField',
+            required: false,
+            showIf: (dataset: EsgQuestionnaireData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+          },
+        ],
+      },
+    ],
+  },
+  {
+    name: 'governance',
+    label: 'Governance',
+    color: '',
+    showIf: (): boolean => true,
+    subcategories: [
+      {
+        name: 'vorstandsprofil',
+        label: 'Vorstandsprofil',
+        fields: [
+          {
+            name: 'umfangDesTopManagementImUnternehmen',
+            label: 'Umfang des Top-Management im Unternehmen',
+            description: 'Welche Ebenen des Management werden in ihrem Unternehmen zum Top-Management gezählt?',
+            options: [
+              {
+                label: 'Vorstand sowie 1. Ebene',
+                value: 'VorstandSowie1Ebene',
+              },
+              {
+                label: 'Vorstand sowie 1. und 2. Ebene',
+                value: 'VorstandSowie1Und2Ebene',
+              },
+            ],
+
+            component: 'SingleSelectFormField',
+            required: false,
+            showIf: (dataset: EsgQuestionnaireData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+          },
+          {
+            name: 'anteilWeiblicherPersonenImTopManagement',
+            label: 'Anteil weiblicher Personen im Top-Management',
+            description: 'Wie hoch ist der Anteil weiblicher Personen im Top-Management in Prozent?',
+
+            unit: '%',
+            component: 'NumberFormField',
+            required: false,
+            showIf: (dataset: EsgQuestionnaireData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            validation: 'between:0,100',
+          },
+          {
+            name: 'anteilMaennlicherPersonenImTopManagement',
+            label: 'Anteil männlicher Personen im Top-Management',
+            description: 'Wie hoch ist der Anteil männlicher Personen im Top-Management in Prozent?',
+
+            unit: '%',
+            component: 'NumberFormField',
+            required: false,
+            showIf: (dataset: EsgQuestionnaireData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            validation: 'between:0,100',
+          },
+          {
+            name: 'anteilDiverserPersonenImTopManagement',
+            label: 'Anteil diverser Personen im Top-Management',
+            description: 'Wie hoch ist der Anteil diverser Personen im Top-Management in Prozent?',
+
+            unit: '%',
+            component: 'NumberFormField',
+            required: false,
+            showIf: (dataset: EsgQuestionnaireData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            validation: 'between:0,100',
+          },
+          {
+            name: 'kopplungVonVerguetungDesTopManagementsAnNachhaltigkeitsziele',
+            label: 'Kopplung von Vergütung des Top-Managements an Nachhaltigkeitsziele',
+            description:
+              'Ist die Vergütung des Top-Managements (auch) explizit an Nachhaltigkeitsziele gekoppelt (bspw. ESG-Rating)?',
+
+            component: 'YesNoFormField',
+            required: false,
+            showIf: (dataset: EsgQuestionnaireData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+          },
+          {
+            name: 'kopplungVonVerguetungDesTopManagementsAnNachhaltigkeitszieleErlaeuterung',
+            label: 'Kopplung von Vergütung des Top-Managements an Nachhaltigkeitsziele Erläuterung',
+            description: 'Bitte die bestehende Regelung skizzieren.',
+
+            component: 'FreeTextFormField',
+            required: false,
+            showIf: (dataset: EsgQuestionnaireData): boolean =>
+              dataset.governance?.vorstandsprofil?.kopplungVonVerguetungDesTopManagementsAnNachhaltigkeitsziele ==
               'Yes',
+          },
+        ],
+      },
+      {
+        name: 'stakeholderdialog',
+        label: 'Stakeholderdialog',
+        fields: [
+          {
+            name: 'csrdKonformerProzessZurBeruecksichtigungDerStakeholderinteressen',
+            label: 'CSRD-konformer Prozess zur Berücksichtigung der Stakeholderinteressen',
+            description:
+              'Verfügt das Unternehmen über einen institutionalisierten, CSRD-konformen Prozess zur Berücksichtigung der Interessen der Stakeholder des Unternehmens?',
+
+            component: 'YesNoFormField',
+            required: false,
+            showIf: (dataset: EsgQuestionnaireData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+          },
+          {
+            name: 'csrdKonformerProzessZurBeruecksichtigungDerStakeholderinteressenErlaeuterung',
+            label: 'CSRD-konformer Prozess zur Berücksichtigung der Stakeholderinteressen Erläuterung',
+            description:
+              'Bitte den Prozess in seiner Methodik skizzieren und wichtigste Schlussfolgerungen darstellen. ',
+
+            component: 'FreeTextFormField',
+            required: false,
+            showIf: (dataset: EsgQuestionnaireData): boolean =>
+              dataset.governance?.stakeholderdialog?.csrdKonformerProzessZurBeruecksichtigungDerStakeholderinteressen ==
+              'Yes',
+          },
+        ],
+      },
+      {
+        name: 'risikenUndMassnahmen',
+        label: 'Risiken und Maßnahmen',
+        fields: [
+          {
+            name: 'weitereWesentlicheGovernanceRisiken',
+            label: 'Weitere wesentliche Governance-Risiken',
+            description: 'Welchen weiteren wesentlichen governance-bezogenen Risiken ist das Unternehmen ausgesetzt?',
+
+            component: 'FreeTextFormField',
+            required: false,
+            showIf: (dataset: EsgQuestionnaireData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+          },
+          {
+            name: 'massnahmenZurReduzierungVonGovernanceRisiken',
+            label: 'Maßnahmen zur Reduzierung von Governance-Risiken',
+            description:
+              'Welche Maßnahmen hat das Unternehmen zur Reduzierung dieser governance-bezogenen Risiken getroffen, außer der in Frage 5.1 genannten Richtlinien?',
+
+            component: 'FreeTextFormField',
+            required: false,
+            showIf: (dataset: EsgQuestionnaireData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
           },
         ],
       },

@@ -5,10 +5,9 @@ import jakarta.validation.Valid
 import org.dataland.datalandbackend.annotations.DataType
 import org.dataland.datalandbackend.frameworks.esgquestionnaire.model.allgemein.EsgQuestionnaireAllgemein
 import org.dataland.datalandbackend.frameworks.esgquestionnaire.model.general.EsgQuestionnaireGeneral
+import org.dataland.datalandbackend.frameworks.esgquestionnaire.model.governance.EsgQuestionnaireGovernance
 import org.dataland.datalandbackend.frameworks.esgquestionnaire.model.soziales.EsgQuestionnaireSoziales
 import org.dataland.datalandbackend.frameworks.esgquestionnaire.model.umwelt.EsgQuestionnaireUmwelt
-import org.dataland.datalandbackend.frameworks.esgquestionnaire.model.unternehmensfuehrungGovernance
-    .EsgQuestionnaireUnternehmensfuehrungGovernance
 
 /**
  * The root data-model for the Esg-questionnaire Framework
@@ -29,6 +28,6 @@ data class EsgQuestionnaireData(
     val soziales: EsgQuestionnaireSoziales? = null,
 
     @field:Valid()
-    val unternehmensfuehrungGovernance: EsgQuestionnaireUnternehmensfuehrungGovernance? = null,
+    val governance: EsgQuestionnaireGovernance? = null,
 
 )

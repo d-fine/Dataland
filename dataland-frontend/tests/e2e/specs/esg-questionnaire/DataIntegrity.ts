@@ -88,10 +88,10 @@ describeIf(
                         const frontendSubmittedEsgQuestionnaireDataset = axiosResponse.data.data;
 
                         // esgQuestionnaireFixtureForTest.t.allgemein?.sektoren?.auflistungDerSektoren?.sort(); TODO deactivate for now
-                        esgQuestionnaireFixtureForTest.t.unternehmensfuehrungGovernance?.unternehmensrichtlinien?.veroeffentlichteUnternehmensrichtlinien?.sort();
+                        // esgQuestionnaireFixtureForTest.t.unternehmensfuehrungGovernance?.unternehmensrichtlinien?.veroeffentlichteUnternehmensrichtlinien?.sort(); TODO
 
                         // frontendSubmittedEsgQuestionnaireDataset.allgemein?.sektoren?.auflistungDerSektoren?.sort(); TODO deactivate for now
-                        frontendSubmittedEsgQuestionnaireDataset.unternehmensfuehrungGovernance?.unternehmensrichtlinien?.veroeffentlichteUnternehmensrichtlinien?.sort();
+                        // frontendSubmittedEsgQuestionnaireDataset.unternehmensfuehrungGovernance?.unternehmensrichtlinien?.veroeffentlichteUnternehmensrichtlinien?.sort(); TODO
 
                         compareObjectKeysAndValuesDeep(
                           esgQuestionnaireFixtureForTest.t as unknown as Record<string, object>,

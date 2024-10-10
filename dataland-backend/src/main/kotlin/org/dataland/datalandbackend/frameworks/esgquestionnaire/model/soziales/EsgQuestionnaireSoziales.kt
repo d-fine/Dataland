@@ -2,33 +2,29 @@
 package org.dataland.datalandbackend.frameworks.esgquestionnaire.model.soziales
 
 import jakarta.validation.Valid
-import org.dataland.datalandbackend.frameworks.esgquestionnaire.model.soziales.audit.EsgQuestionnaireSozialesAudit
-import org.dataland.datalandbackend.frameworks.esgquestionnaire.model.soziales.einkommensgleichheit
-    .EsgQuestionnaireSozialesEinkommensgleichheit
-import org.dataland.datalandbackend.frameworks.esgquestionnaire.model.soziales.geschlechterdiversitaet
-    .EsgQuestionnaireSozialesGeschlechterdiversitaet
-import org.dataland.datalandbackend.frameworks.esgquestionnaire.model.soziales.sicherheitUndWeiterbildung
-    .EsgQuestionnaireSozialesSicherheitUndWeiterbildung
-import org.dataland.datalandbackend.frameworks.esgquestionnaire.model.soziales.unternehmensstrukturaenderungen
-    .EsgQuestionnaireSozialesUnternehmensstrukturaenderungen
+import org.dataland.datalandbackend.frameworks.esgquestionnaire.model.soziales.arbeitsschutz
+    .EsgQuestionnaireSozialesArbeitsschutz
+import org.dataland.datalandbackend.frameworks.esgquestionnaire.model.soziales.beschaeftigtenprofilUndEntlohnung
+    .EsgQuestionnaireSozialesBeschaeftigtenprofilUndEntlohnung
+import org.dataland.datalandbackend.frameworks.esgquestionnaire.model.soziales.einbindungDerBeschaeftigten
+    .EsgQuestionnaireSozialesEinbindungDerBeschaeftigten
+import org.dataland.datalandbackend.frameworks.esgquestionnaire.model.soziales.risikenUndMassnahmen
+    .EsgQuestionnaireSozialesRisikenUndMassnahmen
 
 /**
  * The data-model for the Soziales section
  */
 data class EsgQuestionnaireSoziales(
     @field:Valid()
-    val unternehmensstrukturaenderungen: EsgQuestionnaireSozialesUnternehmensstrukturaenderungen? = null,
+    val beschaeftigtenprofilUndEntlohnung: EsgQuestionnaireSozialesBeschaeftigtenprofilUndEntlohnung? = null,
 
     @field:Valid()
-    val sicherheitUndWeiterbildung: EsgQuestionnaireSozialesSicherheitUndWeiterbildung? = null,
+    val einbindungDerBeschaeftigten: EsgQuestionnaireSozialesEinbindungDerBeschaeftigten? = null,
 
     @field:Valid()
-    val einkommensgleichheit: EsgQuestionnaireSozialesEinkommensgleichheit? = null,
+    val arbeitsschutz: EsgQuestionnaireSozialesArbeitsschutz? = null,
 
     @field:Valid()
-    val geschlechterdiversitaet: EsgQuestionnaireSozialesGeschlechterdiversitaet? = null,
-
-    @field:Valid()
-    val audit: EsgQuestionnaireSozialesAudit? = null,
+    val risikenUndMassnahmen: EsgQuestionnaireSozialesRisikenUndMassnahmen? = null,
 
 )

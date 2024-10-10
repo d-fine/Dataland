@@ -63,12 +63,12 @@ class EsgQuestionnaireFramework : PavedRoadFramework(
         framework: Framework,
     ) {
         framework.root.edit<ComponentGroup>("soziales") {
-            val sozialesGroup = this
+            // val sozialesGroup = this TODO
             with(EsgQuestionnaireSozialesRollingWindowComponents) {
-                auswirkungenAufAnteilBefristerVertraegeUndFluktuation(sozialesGroup)
-                budgetFuerSchulungAusbildung(sozialesGroup)
-                unfallrate(sozialesGroup)
-                massnahmenZurVerbesserungDerEinkommensungleichheit(sozialesGroup)
+                //  auswirkungenAufAnteilBefristerVertraegeUndFluktuation(sozialesGroup) TODO
+                // budgetFuerSchulungAusbildung(sozialesGroup) TODO
+                // unfallrate(sozialesGroup) TODO
+                // massnahmenZurVerbesserungDerEinkommensungleichheit(sozialesGroup) TODO
             }
         }
     }

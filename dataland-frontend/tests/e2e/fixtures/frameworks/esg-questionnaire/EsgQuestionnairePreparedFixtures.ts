@@ -80,23 +80,6 @@ function modifyPreparedFixturesPartTwo(newFixture: FixtureData<EsgQuestionnaireD
       dataSource: null,
     });
   }
-  if (
-    newFixture.t.soziales?.unternehmensstrukturaenderungen?.vorhandenseinKuerzlicherAenderungenDerUnternehmensstruktur
-  ) {
-    newFixture.t.soziales.unternehmensstrukturaenderungen.vorhandenseinKuerzlicherAenderungenDerUnternehmensstruktur =
-      YesNo.Yes;
-  }
-  if (newFixture.t.soziales?.audit) {
-    newFixture.t.soziales.audit.auditsZurEinhaltungVonArbeitsstandards = YesNo.Yes;
-  }
-  if (newFixture.t.unternehmensfuehrungGovernance?.sonstige?.trennungVonCeoOderVorsitzenden) {
-    newFixture.t.unternehmensfuehrungGovernance.sonstige.trennungVonCeoOderVorsitzenden = YesNo.Yes;
-  }
-  if (newFixture.t.unternehmensfuehrungGovernance?.stakeholder?.einbeziehungVonStakeholdern) {
-    newFixture.t.unternehmensfuehrungGovernance.stakeholder.einbeziehungVonStakeholdern = YesNo.Yes;
-  }
-  if (newFixture.t.unternehmensfuehrungGovernance?.lieferantenauswahl?.esgKriterienUndUeberwachungDerLieferanten) {
-    newFixture.t.unternehmensfuehrungGovernance.lieferantenauswahl.esgKriterienUndUeberwachungDerLieferanten =
-      YesNo.Yes;
-  }
+  // TODO at the end we need to make sure that all yes-no-questions that are depended on are set to "Yes" to enforce a
+  //  TODO full dataset and upload page in the blanket test
 }

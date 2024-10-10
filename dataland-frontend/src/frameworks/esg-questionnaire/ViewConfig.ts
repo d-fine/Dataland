@@ -4,12 +4,11 @@ import { type MLDTConfig } from '@/components/resources/dataTable/MultiLayerData
 import { type AvailableMLDTDisplayObjectTypes } from '@/components/resources/dataTable/MultiLayerDataTableCellDisplayer';
 import { formatFreeTextForDatatable } from '@/components/resources/dataTable/conversion/FreeTextValueGetterFactory';
 import { formatYesNoValueForDatatable } from '@/components/resources/dataTable/conversion/YesNoValueGetterFactory';
-import { formatListOfStringsForDatatable } from '@/components/resources/dataTable/conversion/MultiSelectValueGetterFactory';
+import { formatPercentageForDatatable } from '@/components/resources/dataTable/conversion/PercentageValueGetterFactory';
+import { formatStringForDatatable } from '@/components/resources/dataTable/conversion/PlainStringValueGetterFactory';
 import { getOriginalNameFromTechnicalName } from '@/components/resources/dataTable/conversion/Utils';
 import { formatNumberForDatatable } from '@/components/resources/dataTable/conversion/NumberValueGetterFactory';
-import { formatStringForDatatable } from '@/components/resources/dataTable/conversion/PlainStringValueGetterFactory';
-import { formatEsgQuestionnaireYearlyDecimalTimeseriesDataForTable } from '@/components/resources/dataTable/conversion/esg-questionnaire/EsgQuestionnaireYearlyDecimalTimeseriesDataGetterFactory';
-import { formatPercentageForDatatable } from '@/components/resources/dataTable/conversion/PercentageValueGetterFactory';
+import { formatListOfStringsForDatatable } from '@/components/resources/dataTable/conversion/MultiSelectValueGetterFactory';
 import { formatListOfBaseDataPoint } from '@/components/resources/dataTable/conversion/ListOfBaseDataPointGetterFactory';
 import { wrapDisplayValueWithDatapointInformation } from '@/components/resources/dataTable/conversion/DataPoints';
 import { formatNaceCodesForDatatable } from '@/components/resources/dataTable/conversion/NaceCodeValueGetterFactory';
@@ -1201,333 +1200,253 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
     children: [
       {
         type: 'section',
-        label: 'Unternehmensstrukturänderungen',
+        label: 'Beschäftigtenprofil und Entlohnung',
         expandOnPageLoad: true,
         shouldDisplay: (): boolean => true,
         children: [
           {
             type: 'cell',
-            label: 'Vorhandensein kürzlicher Änderungen der Unternehmensstruktur',
-            explanation:
-              'Gab es kürzlich eine Veränderung im Unternehmen / in der Gruppe (Umstrukturierung, Verkauf oder Übernahme)?',
+            label: 'Zahl der Beschäftigten insgesamt',
+            explanation: 'Die Zahl der im Unternehmen beschäftigten Personen.',
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
-              formatYesNoValueForDatatable(
-                dataset.soziales?.unternehmensstrukturaenderungen
-                  ?.vorhandenseinKuerzlicherAenderungenDerUnternehmensstruktur
-              ),
-          },
-          {
-            type: 'cell',
-            label: 'Anzahl unbefristeter Verträge in Deutschland',
-            explanation: 'Gesamtzahl der unbefristeten Verträge in Deutschland',
-            shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.soziales?.unternehmensstrukturaenderungen
-                ?.vorhandenseinKuerzlicherAenderungenDerUnternehmensstruktur == 'Yes',
-            valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
               formatNumberForDatatable(
-                dataset.soziales?.unternehmensstrukturaenderungen?.anzahlUnbefristeterVertraegeInDeutschland,
+                dataset.soziales?.beschaeftigtenprofilUndEntlohnung?.zahlDerBeschaeftigtenInsgesamt,
                 ''
               ),
           },
           {
             type: 'cell',
-            label: 'Anzahl der von einem Verkauf betroffenen unbefristeten Verträge in Deutschland ',
+            label: 'Anteil weiblicher Personen unter den Beschäftigten',
+            explanation: 'Der prozentuale Anteil weiblicher Personen unter den Beschäftigten',
+            shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
+              formatPercentageForDatatable(
+                dataset.soziales?.beschaeftigtenprofilUndEntlohnung?.anteilWeiblicherPersonenUnterDenBeschaeftigten
+              ),
+          },
+          {
+            type: 'cell',
+            label: 'Anteil männlicher Personen unter den Beschäftigten',
+            explanation: 'Der prozentuale Anteil männlicher Personen unter den Beschäftigten',
+            shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
+              formatPercentageForDatatable(
+                dataset.soziales?.beschaeftigtenprofilUndEntlohnung?.anteilMaennlicherPersonenUnterDenBeschaeftigten
+              ),
+          },
+          {
+            type: 'cell',
+            label: 'Anteil diverser Personen unter den Beschäftigten',
+            explanation: 'Der prozentuale Anteil diverser Personen unter den Beschäftigten',
+            shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
+              formatPercentageForDatatable(
+                dataset.soziales?.beschaeftigtenprofilUndEntlohnung?.anteilDiverserPersonenUnterDenBeschaeftigten
+              ),
+          },
+          {
+            type: 'cell',
+            label: 'Geschlechtsspezifisches Lohngefälle',
             explanation:
-              'Anzahl der unbefristeten Verträge in Deutschland, die von einem etwaigen Verkauf betroffen waren',
+              'Besteht im Unternehmen bei gleicher Tätigkeit ein signifikanter Unterschied in der Vergütung weiblicher und männlicher Personen? Methodik analog zu ESRS S1-16.',
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.soziales?.unternehmensstrukturaenderungen
-                ?.vorhandenseinKuerzlicherAenderungenDerUnternehmensstruktur == 'Yes',
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
-              formatNumberForDatatable(
-                dataset.soziales?.unternehmensstrukturaenderungen
-                  ?.anzahlDerVonEinemVerkaufBetroffenenUnbefristetenVertraegeInDeutschland,
-                ''
+              formatPercentageForDatatable(
+                dataset.soziales?.beschaeftigtenprofilUndEntlohnung?.geschlechtsspezifischesLohngefaelle
               ),
           },
           {
             type: 'cell',
-            label: 'Anzahl der von einer Akquisition betroffenen unbefristeten Verträge in Deutschland ',
+            label: 'Jährliche Gesamtvergütungsquote',
             explanation:
-              'Anzahl der unbefristeten Verträge in Deutschland, die von einer etwaigen Akquisition betroffen waren',
+              'In welchem Verhältnis steht die Vergütung der höchstbezahlten Person des Unternehmens zum Median der jährlichen Gesamtvergütung aller Beschäftigen? Methodik analog zu ESRS S1-16.',
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.soziales?.unternehmensstrukturaenderungen
-                ?.vorhandenseinKuerzlicherAenderungenDerUnternehmensstruktur == 'Yes',
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
-              formatNumberForDatatable(
-                dataset.soziales?.unternehmensstrukturaenderungen
-                  ?.anzahlDerVonEinerAkquisitionBetroffenenUnbefristetenVertraegeInDeutschland,
-                ''
+              formatPercentageForDatatable(
+                dataset.soziales?.beschaeftigtenprofilUndEntlohnung?.jaehrlicheGesamtverguetungsquote
               ),
           },
           {
             type: 'cell',
-            label: 'Anzahl unbefristeter Verträge in der Gesamtgruppe',
-            explanation: 'Gesamtzahl der unbefristeten Verträge in der Gesamtgruppe',
-            shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.soziales?.unternehmensstrukturaenderungen
-                ?.vorhandenseinKuerzlicherAenderungenDerUnternehmensstruktur == 'Yes',
-            valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
-              formatNumberForDatatable(
-                dataset.soziales?.unternehmensstrukturaenderungen?.anzahlUnbefristeterVertraegeInDerGesamtgruppe,
-                ''
-              ),
-          },
-          {
-            type: 'cell',
-            label: 'Anzahl der von einem Verkauf betroffenen unbefristeten Verträge in der Gesamtgruppe',
+            label: 'Anteil von unter Dreißigjährigen',
             explanation:
-              'Anzahl der unbefristeten Verträge in der Gesamtgruppe, die von einem etwaigen Verkauf betroffen waren',
+              'Wie hoch ist der Anteil der unter 30-Jährigen an der Beschäftigtenzahl in Prozent? Methodik analog zu ESRS S1-9.',
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.soziales?.unternehmensstrukturaenderungen
-                ?.vorhandenseinKuerzlicherAenderungenDerUnternehmensstruktur == 'Yes',
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
-              formatNumberForDatatable(
-                dataset.soziales?.unternehmensstrukturaenderungen
-                  ?.anzahlDerVonEinemVerkaufBetroffenenUnbefristetenVertraegeInDerGesamtgruppe,
-                ''
+              formatPercentageForDatatable(
+                dataset.soziales?.beschaeftigtenprofilUndEntlohnung?.anteilVonUnterDreissigjaehrigen
               ),
           },
           {
             type: 'cell',
-            label: 'Anzahl der von einer Akquisition betroffenen unbefristeten Verträge in der Gesamtgruppe',
+            label: 'Anteil von Dreißig- bis Fünfzigjährigen',
             explanation:
-              'Anzahl der unbefristeten Verträge in der Gesamtgruppe, die von einer etwaigen Akquisition betroffen waren',
+              'Wie hoch ist der Anteil der 30- bis 50-Jährigen an der Beschäftigtenzahl in Prozent? Methodik analog zu ESRS S1-9.',
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.soziales?.unternehmensstrukturaenderungen
-                ?.vorhandenseinKuerzlicherAenderungenDerUnternehmensstruktur == 'Yes',
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
+              formatPercentageForDatatable(
+                dataset.soziales?.beschaeftigtenprofilUndEntlohnung?.anteilVonDreissigBisFuenfzigjaehrigen
+              ),
+          },
+          {
+            type: 'cell',
+            label: 'Anteil von über Fünfzigjährigen',
+            explanation:
+              'Wie hoch ist der Anteil der über 50-Jährigen an der Beschäftigtenzahl in Prozent? Methodik analog zu ESRS S1-9.',
+            shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
+              formatPercentageForDatatable(
+                dataset.soziales?.beschaeftigtenprofilUndEntlohnung?.anteilVonUeberFuenfzigjaehrigen
+              ),
+          },
+          {
+            type: 'cell',
+            label: 'Durchschnittliche Anzahl an Trainingsstunden',
+            explanation:
+              'Wieviele Tranings- und Fortbildungsstunden erhielten Beschäftigte im letzten abgeschlossenen Geschäftsjahr?',
+            shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
               formatNumberForDatatable(
-                dataset.soziales?.unternehmensstrukturaenderungen
-                  ?.anzahlDerVonEinerAkquisitionBetroffenenUnbefristetenVertraegeInDerGesamtgruppe,
+                dataset.soziales?.beschaeftigtenprofilUndEntlohnung?.durchschnittlicheAnzahlAnTrainingsstunden,
                 ''
               ),
           },
           {
             type: 'cell',
-            label: 'Auswirkungen auf Anteil befrister Verträge und Fluktuation',
-            explanation: 'Anzahl der befristeten Verträge und Fluktuation (%) in den letzten drei Jahren',
+            label: 'Fluktuationsquote',
+            explanation: 'Wie hoch war die Fluktuationsquote im Unternehmen im letzten abgeschlossenen Geschäftsjahr?',
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.soziales?.unternehmensstrukturaenderungen
-                ?.vorhandenseinKuerzlicherAenderungenDerUnternehmensstruktur == 'Yes',
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
-              formatEsgQuestionnaireYearlyDecimalTimeseriesDataForTable(
-                dataset.soziales?.unternehmensstrukturaenderungen
-                  ?.auswirkungenAufAnteilBefristerVertraegeUndFluktuation,
-                {
-                  anzahlDerBefristetenVertraege: { label: '# der befristeten Verträge', unitSuffix: '' },
-                  fluktuation: { label: 'Fluktuation', unitSuffix: '%' },
-                },
-                'Auswirkungen auf Anteil befrister Vertr\u00E4ge und Fluktuation'
-              ),
+              formatPercentageForDatatable(dataset.soziales?.beschaeftigtenprofilUndEntlohnung?.fluktuationsquote),
           },
         ],
       },
       {
         type: 'section',
-        label: 'Sicherheit und Weiterbildung',
+        label: 'Einbindung der Beschäftigten',
         expandOnPageLoad: true,
         shouldDisplay: (): boolean => true,
         children: [
           {
             type: 'cell',
-            label: 'Sicherheitsmaßnahmen für Mitarbeiter',
+            label: 'Einbindung von Beschäftigten in Entscheidungen',
+            explanation: 'Sind Beschäftigte in betriebliche Entscheidungen des Unternehmens eingebunden?',
+            shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes => {
+              const mappings = {
+                EinbindungInBetriebsratGesetzlicheVertretungsorgane:
+                  'Einbindung in Betriebsrat / gesetzliche Vertretungsorgane',
+                Aufsichtsrat: 'Aufsichtsrat',
+                Verwaltungsrat: 'Verwaltungsrat',
+                KeineEinbindungInEntscheidungsgremien: 'Keine Einbindung in Entscheidungsgremien',
+                KeinArbeitnehmervertretungGesetzlichVorgeschrieben:
+                  'Kein Arbeitnehmervertretung gesetzlich vorgeschrieben',
+              };
+              return formatListOfStringsForDatatable(
+                dataset.soziales?.einbindungDerBeschaeftigten?.einbindungVonBeschaeftigtenInEntscheidungen?.map((it) =>
+                  getOriginalNameFromTechnicalName(it, mappings)
+                ),
+                'Einbindung von Besch\u00E4ftigten in Entscheidungen'
+              );
+            },
+          },
+          {
+            type: 'cell',
+            label: 'Einbindung von Beschäftigten in Entscheidungen Erläuterungen',
             explanation:
-              'Welche Maßnahmen werden ergriffen, um die Gesundheit und Sicherheit der Mitarbeiter des Unternehmens zu verbessern?',
+              'Bei Unternehmen, die aufgrund länderspezifischer Besonderheiten nicht zu einer eindeutigen Antwort kommen, bitte hier erläutern.',
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
               formatFreeTextForDatatable(
-                dataset.soziales?.sicherheitUndWeiterbildung?.sicherheitsmassnahmenFuerMitarbeiter
-              ),
-          },
-          {
-            type: 'cell',
-            label: 'Unfallrate',
-            explanation:
-              'Wie hoch war die Häufigkeitsrate von Arbeitsunfällen mit Zeitverlust für die letzten drei Jahre?',
-            shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
-            valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
-              formatEsgQuestionnaireYearlyDecimalTimeseriesDataForTable(
-                dataset.soziales?.sicherheitUndWeiterbildung?.unfallrate,
-                {
-                  haeufigkeitsrateVonArbeitsunfaellenMitZeitverlust: {
-                    label: 'Häufigkeitsrate von Arbeitsunfällen mit Zeitverlust',
-                    unitSuffix: '',
-                  },
-                },
-                'Unfallrate'
-              ),
-          },
-          {
-            type: 'cell',
-            label: 'Budget für Schulung/Ausbildung',
-            explanation:
-              'Budget, das pro Mitarbeiter und Jahr für Schulungen/Fortbildungen in den letzten drei Jahren ausgegeben wurde',
-            shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
-            valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
-              formatEsgQuestionnaireYearlyDecimalTimeseriesDataForTable(
-                dataset.soziales?.sicherheitUndWeiterbildung?.budgetFuerSchulungAusbildung,
-                { budgetProMitarbeiter: { label: 'Budget pro Mitarbeiter', unitSuffix: '€' } },
-                'Budget f\u00FCr Schulung/Ausbildung'
+                dataset.soziales?.einbindungDerBeschaeftigten?.einbindungVonBeschaeftigtenInEntscheidungenErlaeuterungen
               ),
           },
         ],
       },
       {
         type: 'section',
-        label: 'Einkommensgleichheit',
+        label: 'Arbeitsschutz',
         expandOnPageLoad: true,
         shouldDisplay: (): boolean => true,
         children: [
           {
             type: 'cell',
-            label: 'Überwachung der Einkommensungleichheit',
+            label: 'Maßnahmen zum Schutz der Gesundheit und Verbesserung der Sicherheit',
             explanation:
-              'Unbereinigte geschlechtsspezifische Lohngefälle, Einkommensungleichheitsverhältnis, und CEO-Einkommensungleichheitsverhältnis für die letzten drei Jahre',
-            shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
-            valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
-              formatEsgQuestionnaireYearlyDecimalTimeseriesDataForTable(
-                dataset.soziales?.einkommensgleichheit?.ueberwachungDerEinkommensungleichheit,
-                {
-                  unbereinigtesGeschlechtsspezifischesLohngefaelle: {
-                    label: 'Unbereinigtes geschlechtsspezifisches Lohngefälle',
-                    unitSuffix: '%',
-                  },
-                  einkommensungleichheitsverhaeltnis: { label: 'Einkommensungleichheitsverhältnis', unitSuffix: '%' },
-                  ceoEinkommensungleichheitsverhaeltnis: {
-                    label: 'CEO-Einkommensungleichheitsverhältnis',
-                    unitSuffix: '%',
-                  },
-                },
-                '\u00DCberwachung der Einkommensungleichheit'
-              ),
-          },
-          {
-            type: 'cell',
-            label: 'Maßnahmen zur Verbesserung der Einkommensungleichheit',
-            explanation:
-              'Wie überwacht das Unternehmen die Einkommens(un)gleichheit und welche Maßnahmen wurden ergriffen, um die Einkommensungleichheit abzustellen?',
+              'Welche Maßnahmen hat das Unternehmen ergriffen, um die rechtlichen Vorgaben zum Schutz der Gesundheit und Verbesserung der Sicherheit von Beschäftigten umzusetzen?',
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
               formatFreeTextForDatatable(
-                dataset.soziales?.einkommensgleichheit?.massnahmenZurVerbesserungDerEinkommensungleichheit
+                dataset.soziales?.arbeitsschutz?.massnahmenZumSchutzDerGesundheitUndVerbesserungDerSicherheit
+              ),
+          },
+          {
+            type: 'cell',
+            label: 'Anzahl der Arbeitsunfälle pro fünfhundert Vollzeitbeschäftigte',
+            explanation:
+              'Wie hoch ist die Häufigkeitsrate von Arbeitsunfällen des Unternehmens pro 500 Vollzeitbeschäftigte?',
+            shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
+              formatNumberForDatatable(
+                dataset.soziales?.arbeitsschutz?.anzahlDerArbeitsunfaelleProFuenfhundertVollzeitbeschaeftigte,
+                ''
               ),
           },
         ],
       },
       {
         type: 'section',
-        label: 'Geschlechterdiversität',
+        label: 'Risiken und Maßnahmen ',
         expandOnPageLoad: true,
         shouldDisplay: (): boolean => true,
         children: [
           {
             type: 'cell',
-            label: 'Mitarbeiter auf Top-Management Ebene',
-            explanation: 'Anzahl der Personen, die eine Top-Management-Position innehaben.',
+            label: 'Weitere wesentliche soziale Risiken',
+            explanation: 'Gibt es weitere wesentliche soziale Risiken für das Unternehmen?',
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
-              formatNumberForDatatable(dataset.soziales?.geschlechterdiversitaet?.mitarbeiterAufTopManagementEbene, ''),
+              formatYesNoValueForDatatable(dataset.soziales?.risikenUndMassnahmen?.weitereWesentlicheSozialeRisiken),
           },
           {
             type: 'cell',
-            label: 'Frauen auf Top-Management-Ebene',
-            explanation: 'Anzahl der Frauen in einer Top-Management Position',
+            label: 'Weitere wesentliche soziale Risiken Erläuterung',
+            explanation: 'Erläutern sie die weiteren wesentlichenn sozialen Risiken.',
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+              dataset.soziales?.risikenUndMassnahmen?.weitereWesentlicheSozialeRisiken == 'Yes',
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
-              formatNumberForDatatable(dataset.soziales?.geschlechterdiversitaet?.frauenAufTopManagementEbene, ''),
+              formatFreeTextForDatatable(
+                dataset.soziales?.risikenUndMassnahmen?.weitereWesentlicheSozialeRisikenErlaeuterung
+              ),
           },
           {
             type: 'cell',
-            label: 'Mitglieder Geschäftsführung',
-            explanation: 'Anzahl der Mitglieder der Geschäftsführung',
-            shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
-            valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
-              formatNumberForDatatable(dataset.soziales?.geschlechterdiversitaet?.mitgliederGeschaeftsfuehrung, ''),
-          },
-          {
-            type: 'cell',
-            label: 'Frauen in der Geschäftsführung',
-            explanation: 'Anzahl der Frauen in der Geschäftsführung',
-            shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
-            valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
-              formatNumberForDatatable(dataset.soziales?.geschlechterdiversitaet?.frauenInDerGeschaeftsfuehrung, ''),
-          },
-          {
-            type: 'cell',
-            label: 'Definition Top-Management',
-            explanation: 'Definition von "Top-Management"',
-            shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
-            valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
-              formatFreeTextForDatatable(dataset.soziales?.geschlechterdiversitaet?.definitionTopManagement),
-          },
-          {
-            type: 'cell',
-            label: 'Einhaltung rechtlicher Vorgaben',
+            label: 'Maßnahmen zur Reduzierung von sozialen Risiken',
             explanation:
-              'Welche Maßnahmen wurden ergriffen, um das geltende Recht in Bezug auf die Geschlechterdiversität von Exekutivinstanzen einzuhalten?',
+              'Welche Maßnahmen hat das Unternehmen zur Reduzierung dieser sozialen Risiken getroffen, außer der in Frage 5.1 genannten Richtlinien?',
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
-              formatFreeTextForDatatable(dataset.soziales?.geschlechterdiversitaet?.einhaltungRechtlicherVorgaben),
-          },
-        ],
-      },
-      {
-        type: 'section',
-        label: 'Audit',
-        expandOnPageLoad: true,
-        shouldDisplay: (): boolean => true,
-        children: [
-          {
-            type: 'cell',
-            label: 'Audits zur Einhaltung von Arbeitsstandards',
-            explanation:
-              'Führt das Unternehmen interne oder externe Audits durch, um die Einhaltung der Arbeitsnormen durch das Unternehmen zu bewerten?',
-            shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
-            valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
-              formatYesNoValueForDatatable(dataset.soziales?.audit?.auditsZurEinhaltungVonArbeitsstandards),
-          },
-          {
-            type: 'cell',
-            label: 'Art des Audits',
-            explanation: 'Wie werden die Audits zur Einhaltung von Arbeitsstandards durchgeführt?',
-            shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.soziales?.audit?.auditsZurEinhaltungVonArbeitsstandards == 'Yes',
-            valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
-              ((): AvailableMLDTDisplayObjectTypes => {
-                const mappings = {
-                  InterneAnhoerung: 'Interne Anhörung',
-                  PruefungDurchDritte: 'Prüfung durch Dritte',
-                  SowohlInternAlsAuchVonDrittanbietern: 'Sowohl intern als auch von Drittanbietern',
-                };
-                return formatStringForDatatable(
-                  dataset.soziales?.audit?.artDesAudits
-                    ? getOriginalNameFromTechnicalName(dataset.soziales?.audit?.artDesAudits, mappings)
-                    : ''
-                );
-              })(),
-          },
-          {
-            type: 'cell',
-            label: 'Audit Ergebnisse',
-            explanation: 'Informationen über das letzte Audit',
-            shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.soziales?.audit?.auditsZurEinhaltungVonArbeitsstandards == 'Yes',
-            valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
-              formatFreeTextForDatatable(dataset.soziales?.audit?.auditErgebnisse),
+              formatFreeTextForDatatable(
+                dataset.soziales?.risikenUndMassnahmen?.massnahmenZurReduzierungVonSozialenRisiken
+              ),
           },
         ],
       },
@@ -1535,397 +1454,155 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
   },
   {
     type: 'section',
-    label: 'Unternehmensführung/ Governance',
+    label: 'Governance',
     expandOnPageLoad: true,
     shouldDisplay: (): boolean => true,
     children: [
       {
         type: 'section',
-        label: 'Aufsichtsrat',
+        label: 'Vorstandsprofil',
         expandOnPageLoad: true,
         shouldDisplay: (): boolean => true,
         children: [
           {
             type: 'cell',
-            label: 'Anzahl der Mitglieder im Aufsichtsrat',
-            explanation: 'Wieviele Mitglieder hat der Aufsichtsrat?',
+            label: 'Umfang des Top-Management im Unternehmen',
+            explanation: 'Die Ebenen des Top-Managements im Unternehmen.',
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
-              formatNumberForDatatable(
-                dataset.unternehmensfuehrungGovernance?.aufsichtsrat?.anzahlDerMitgliederImAufsichtsrat,
-                ''
+              ((): AvailableMLDTDisplayObjectTypes => {
+                const mappings = {
+                  VorstandSowie1Ebene: 'Vorstand sowie 1. Ebene',
+                  VorstandSowie1Und2Ebene: 'Vorstand sowie 1. und 2. Ebene',
+                };
+                return formatStringForDatatable(
+                  dataset.governance?.vorstandsprofil?.umfangDesTopManagementImUnternehmen
+                    ? getOriginalNameFromTechnicalName(
+                        dataset.governance?.vorstandsprofil?.umfangDesTopManagementImUnternehmen,
+                        mappings
+                      )
+                    : ''
+                );
+              })(),
+          },
+          {
+            type: 'cell',
+            label: 'Anteil weiblicher Personen im Top-Management',
+            explanation: 'Anteil weiblicher Personen im Top-Management in Prozent.',
+            shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
+              formatPercentageForDatatable(
+                dataset.governance?.vorstandsprofil?.anteilWeiblicherPersonenImTopManagement
               ),
           },
           {
             type: 'cell',
-            label: 'Anzahl unabhängiger Mitglieder im Aufsichtsrat',
-            explanation: 'Wieviele unabhängige Mitglieder hat der Aufsichtsrat?',
+            label: 'Anteil männlicher Personen im Top-Management',
+            explanation: 'Anteil männlicher Personen im Top-Management in Prozent.',
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
-              formatNumberForDatatable(
-                dataset.unternehmensfuehrungGovernance?.aufsichtsrat?.anzahlUnabhaengigerMitgliederImAufsichtsrat,
-                ''
+              formatPercentageForDatatable(
+                dataset.governance?.vorstandsprofil?.anteilMaennlicherPersonenImTopManagement
               ),
           },
           {
             type: 'cell',
-            label: 'Anzahl von Frauen im Aufsichtsrat',
-            explanation: 'Wieviele Frauen sind im Aufsichtsrat?',
+            label: 'Anteil diverser Personen im Top-Management',
+            explanation: 'Anteil diverser Personen im Top-Management in Prozent.',
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
-              formatNumberForDatatable(
-                dataset.unternehmensfuehrungGovernance?.aufsichtsrat?.anzahlVonFrauenImAufsichtsrat,
-                ''
-              ),
-          },
-        ],
-      },
-      {
-        type: 'section',
-        label: 'Vergütungsausschuss',
-        expandOnPageLoad: true,
-        shouldDisplay: (): boolean => true,
-        children: [
-          {
-            type: 'cell',
-            label: 'Anzahl der Mitglieder im Vergütungsausschuss',
-            explanation: 'Wieviele Mitglieder hat der Vergütungsausschuss?',
-            shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
-            valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
-              formatNumberForDatatable(
-                dataset.unternehmensfuehrungGovernance?.verguetungsausschuss?.anzahlDerMitgliederImVerguetungsausschuss,
-                ''
-              ),
+              formatPercentageForDatatable(dataset.governance?.vorstandsprofil?.anteilDiverserPersonenImTopManagement),
           },
           {
             type: 'cell',
-            label: 'Anzahl unabhängiger Mitglieder im Vergütungsausschuss',
-            explanation: 'Wieviele unabhängige Mitglieder hat der Vergütungsausschuss?',
-            shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
-            valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
-              formatNumberForDatatable(
-                dataset.unternehmensfuehrungGovernance?.verguetungsausschuss
-                  ?.anzahlUnabhaengigerMitgliederImVerguetungsausschuss,
-                ''
-              ),
-          },
-          {
-            type: 'cell',
-            label: 'Anzahl von Frauen im Vergütungsausschuss',
-            explanation: 'Wieviele Frauen sind im Vergütungsausschuss?',
-            shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
-            valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
-              formatNumberForDatatable(
-                dataset.unternehmensfuehrungGovernance?.verguetungsausschuss?.anzahlVonFrauenImVerguetungsausschuss,
-                ''
-              ),
-          },
-        ],
-      },
-      {
-        type: 'section',
-        label: 'Nominierungsausschuss',
-        expandOnPageLoad: true,
-        shouldDisplay: (): boolean => true,
-        children: [
-          {
-            type: 'cell',
-            label: 'Anzahl der Mitglieder im Nominierungsausschuss',
-            explanation: 'Wieviele Mitglieder hat der Nominierungsausschuss?',
-            shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
-            valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
-              formatNumberForDatatable(
-                dataset.unternehmensfuehrungGovernance?.nominierungsausschuss
-                  ?.anzahlDerMitgliederImNominierungsausschuss,
-                ''
-              ),
-          },
-          {
-            type: 'cell',
-            label: 'Anzahl unabhängiger Mitglieder im Nominierungsausschuss',
-            explanation: 'Wieviele unabhängige Mitglieder hat der Nominierungsausschuss?',
-            shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
-            valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
-              formatNumberForDatatable(
-                dataset.unternehmensfuehrungGovernance?.nominierungsausschuss
-                  ?.anzahlUnabhaengigerMitgliederImNominierungsausschuss,
-                ''
-              ),
-          },
-          {
-            type: 'cell',
-            label: 'Anzahl von Frauen im Vergütungsausschuss',
-            explanation: 'Wieviele Frauen sind im Nominierungsausschuss?',
-            shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
-            valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
-              formatNumberForDatatable(
-                dataset.unternehmensfuehrungGovernance?.nominierungsausschuss?.anzahlVonFrauenImVerguetungsausschuss,
-                ''
-              ),
-          },
-        ],
-      },
-      {
-        type: 'section',
-        label: 'Prüfungsausschuss',
-        expandOnPageLoad: true,
-        shouldDisplay: (): boolean => true,
-        children: [
-          {
-            type: 'cell',
-            label: 'Anzahl der Mitglieder im Prüfungsausschuss',
-            explanation: 'Wieviele Mitglieder hat der Prüfungsausschuss?',
-            shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
-            valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
-              formatNumberForDatatable(
-                dataset.unternehmensfuehrungGovernance?.pruefungsausschuss?.anzahlDerMitgliederImPruefungsausschuss,
-                ''
-              ),
-          },
-          {
-            type: 'cell',
-            label: 'Anzahl unabhängiger Mitglieder im Prüfungsausschuss',
-            explanation: 'Wieviele unabhängige Mitglieder hat der Prüfungsausschuss?',
-            shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
-            valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
-              formatNumberForDatatable(
-                dataset.unternehmensfuehrungGovernance?.pruefungsausschuss
-                  ?.anzahlUnabhaengigerMitgliederImPruefungsausschuss,
-                ''
-              ),
-          },
-          {
-            type: 'cell',
-            label: 'Anzahl von Frauen im Prüfungsausschuss',
-            explanation: 'Wieviele Frauen sind im Prüfungsausschuss?',
-            shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
-            valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
-              formatNumberForDatatable(
-                dataset.unternehmensfuehrungGovernance?.pruefungsausschuss?.anzahlVonFrauenImPruefungsausschuss,
-                ''
-              ),
-          },
-        ],
-      },
-      {
-        type: 'section',
-        label: 'Nachhaltigkeitsausschuss',
-        expandOnPageLoad: true,
-        shouldDisplay: (): boolean => true,
-        children: [
-          {
-            type: 'cell',
-            label: 'Anzahl der Mitglieder im Nachhaltigkeitsausschuss',
-            explanation: 'Wieviele Mitglieder hat der Nachhaltigkeitsausschuss?',
-            shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
-            valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
-              formatNumberForDatatable(
-                dataset.unternehmensfuehrungGovernance?.nachhaltigkeitsausschuss
-                  ?.anzahlDerMitgliederImNachhaltigkeitsausschuss,
-                ''
-              ),
-          },
-          {
-            type: 'cell',
-            label: 'Anzahl unabhängiger Mitglieder im Nachhaltigkeitsausschuss',
-            explanation: 'Wieviele unabhängige Mitglieder hat der Nachhaltigkeitsausschuss?',
-            shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
-            valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
-              formatNumberForDatatable(
-                dataset.unternehmensfuehrungGovernance?.nachhaltigkeitsausschuss
-                  ?.anzahlUnabhaengigerMitgliederImNachhaltigkeitsausschuss,
-                ''
-              ),
-          },
-          {
-            type: 'cell',
-            label: 'Anzahl von Frauen im Nachhaltigkeitsausschuss',
-            explanation: 'Wieviele Frauen sind im Nachhaltigkeitsausschuss?',
-            shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
-            valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
-              formatNumberForDatatable(
-                dataset.unternehmensfuehrungGovernance?.nachhaltigkeitsausschuss
-                  ?.anzahlVonFrauenImNachhaltigkeitsausschuss,
-                ''
-              ),
-          },
-        ],
-      },
-      {
-        type: 'section',
-        label: 'Sonstige',
-        expandOnPageLoad: true,
-        shouldDisplay: (): boolean => true,
-        children: [
-          {
-            type: 'cell',
-            label: 'Wirtschaftsprüfer',
-
-            shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
-            valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.unternehmensfuehrungGovernance?.sonstige?.wirtschaftspruefer),
-          },
-          {
-            type: 'cell',
-            label: 'Trennung von CEO oder Vorsitzenden',
+            label: 'Kopplung von Vergütung des Top-Managements an Nachhaltigkeitsziele',
             explanation:
-              'Hat sich das Unternehmen im aktuellen Jahr der Berichterstattung von CEO/Vorsitzenden getrennt?',
+              'Ist die Vergütung des Top-Managements (auch) explizit an Nachhaltigkeitsziele gekoppelt (bspw. ESG-Rating)?',
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
               formatYesNoValueForDatatable(
-                dataset.unternehmensfuehrungGovernance?.sonstige?.trennungVonCeoOderVorsitzenden
+                dataset.governance?.vorstandsprofil?.kopplungVonVerguetungDesTopManagementsAnNachhaltigkeitsziele
               ),
           },
           {
             type: 'cell',
-            label: 'Amtszeit bis zur Trennung',
-            explanation: 'Wieviele Jahre war der/die CEO/Vorsitzende(r) im Amt?',
+            label: 'Kopplung von Vergütung des Top-Managements an Nachhaltigkeitsziele Erläuterung',
+            explanation: 'Skizze der bestehenden Regelung.',
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.unternehmensfuehrungGovernance?.sonstige?.trennungVonCeoOderVorsitzenden == 'Yes',
-            valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
-              formatNumberForDatatable(
-                dataset.unternehmensfuehrungGovernance?.sonstige?.amtszeitBisZurTrennung,
-                'Jahre'
-              ),
-          },
-        ],
-      },
-      {
-        type: 'section',
-        label: 'Stakeholder',
-        expandOnPageLoad: true,
-        shouldDisplay: (): boolean => true,
-        children: [
-          {
-            type: 'cell',
-            label: 'Einbeziehung von Stakeholdern',
-            explanation: 'Gibt es einen kontinuierlichen Prozess des Dialogs mit den Stakeholdern des Unternehmens?',
-            shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
-            valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
-              formatYesNoValueForDatatable(
-                dataset.unternehmensfuehrungGovernance?.stakeholder?.einbeziehungVonStakeholdern
-              ),
-          },
-          {
-            type: 'cell',
-            label: 'Prozess der Einbeziehung von Stakeholdern',
-            explanation: 'Einzelheiten zu einem solchen Prozess, und wichtigsten Schlussfolgerungen (falls zutreffend)',
-            shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.unternehmensfuehrungGovernance?.stakeholder?.einbeziehungVonStakeholdern == 'Yes',
-            valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
-              formatFreeTextForDatatable(
-                dataset.unternehmensfuehrungGovernance?.stakeholder?.prozessDerEinbeziehungVonStakeholdern
-              ),
-          },
-          {
-            type: 'cell',
-            label: 'Mechanismen zur Ausrichtung auf Stakeholder',
-            explanation:
-              'Welche Mechanismen gibt es derzeit, um sicherzustellen, dass die Stakeholder im besten Interesse des Unternehmens handeln?',
-            shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.unternehmensfuehrungGovernance?.stakeholder?.einbeziehungVonStakeholdern == 'Yes',
-            valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
-              formatFreeTextForDatatable(
-                dataset.unternehmensfuehrungGovernance?.stakeholder?.mechanismenZurAusrichtungAufStakeholder
-              ),
-          },
-        ],
-      },
-      {
-        type: 'section',
-        label: 'Unternehmensrichtlinien',
-        expandOnPageLoad: true,
-        shouldDisplay: (): boolean => true,
-        children: [
-          {
-            type: 'cell',
-            label: 'Veröffentlichte Unternehmensrichtlinien',
-            explanation: 'Welche Richtlinien sind im Unternehmen veröffentlicht?',
-            shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
-            valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes => {
-              const mappings = {
-                AntiKorruption: 'Anti-Korruption',
-                Verhaltenskodex: 'Verhaltenskodex',
-                Interessenkonflikte: 'Interessenkonflikte',
-                Datenschutz: 'Datenschutz',
-                DiversitaetAndInklusion: 'Diversität & Inklusion',
-                FaireBehandlungVonKunden: 'Faire Behandlung von Kunden',
-                Zwangsarbeit: 'Zwangsarbeit',
-                GesundheitUndSicherheit: 'Gesundheit und Sicherheit',
-                MgtVonUmweltgefahren: 'Mgt von Umweltgefahren',
-                VerantwortungsvollesMarketing: 'Verantwortungsvolles Marketing',
-                Whistleblowing: 'Whistleblowing',
-                Other: 'other',
-              };
-              return formatListOfStringsForDatatable(
-                dataset.unternehmensfuehrungGovernance?.unternehmensrichtlinien?.veroeffentlichteUnternehmensrichtlinien?.map(
-                  (it) => getOriginalNameFromTechnicalName(it, mappings)
-                ),
-                'Ver\u00F6ffentlichte Unternehmensrichtlinien'
-              );
-            },
-          },
-          {
-            type: 'cell',
-            label: 'Weitere veröffentliche Unternehmensrichtlinien',
-            explanation: 'Weitere Richtlinien',
-            shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
-            valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
-              formatFreeTextForDatatable(
-                dataset.unternehmensfuehrungGovernance?.unternehmensrichtlinien
-                  ?.weitereVeroeffentlicheUnternehmensrichtlinien
-              ),
-          },
-        ],
-      },
-      {
-        type: 'section',
-        label: 'Lieferantenauswahl',
-        expandOnPageLoad: true,
-        shouldDisplay: (): boolean => true,
-        children: [
-          {
-            type: 'cell',
-            label: 'ESG-Kriterien und Überwachung der Lieferanten',
-            explanation:
-              'Wendet das Unternehmen ESG-Kriterien bei der Auswahl seiner Lieferanten an, einschließlich einer Bestandsaufnahme der Lieferkette?',
-            shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
-            valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
-              formatYesNoValueForDatatable(
-                dataset.unternehmensfuehrungGovernance?.lieferantenauswahl?.esgKriterienUndUeberwachungDerLieferanten
-              ),
-          },
-          {
-            type: 'cell',
-            label: 'Auswahlkriterien',
-            explanation:
-              'Auswahlkriterien und wie diese Kriterien im Laufe der Zeit überwacht/geprüft werden. Bezieht das Unternehmen beispielsweise Rohstoffe aus Gebieten, in denen umstrittene Abholzungsaktivitäten stattfinden (z.B. Soja, Palmöl, Tropenholz, Holz oder industrielle Viehzucht)?',
-            shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.unternehmensfuehrungGovernance?.lieferantenauswahl?.esgKriterienUndUeberwachungDerLieferanten ==
+              dataset.governance?.vorstandsprofil?.kopplungVonVerguetungDesTopManagementsAnNachhaltigkeitsziele ==
               'Yes',
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
-              formatFreeTextForDatatable(dataset.unternehmensfuehrungGovernance?.lieferantenauswahl?.auswahlkriterien),
+              formatFreeTextForDatatable(
+                dataset.governance?.vorstandsprofil
+                  ?.kopplungVonVerguetungDesTopManagementsAnNachhaltigkeitszieleErlaeuterung
+              ),
+          },
+        ],
+      },
+      {
+        type: 'section',
+        label: 'Stakeholderdialog',
+        expandOnPageLoad: true,
+        shouldDisplay: (): boolean => true,
+        children: [
+          {
+            type: 'cell',
+            label: 'CSRD-konformer Prozess zur Berücksichtigung der Stakeholderinteressen',
+            explanation:
+              'Verfügt das Unternehmen über einen institutionalisierten, CSRD-konformen Prozess zur Berücksichtigung der Interessen der Stakeholder des Unternehmens?',
+            shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
+              formatYesNoValueForDatatable(
+                dataset.governance?.stakeholderdialog?.csrdKonformerProzessZurBeruecksichtigungDerStakeholderinteressen
+              ),
+          },
+          {
+            type: 'cell',
+            label: 'CSRD-konformer Prozess zur Berücksichtigung der Stakeholderinteressen Erläuterung',
+            explanation: 'Skizze des Prozesses und Darstellung der wichtigsten Schlussfolgerungen.',
+            shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
+              dataset.governance?.stakeholderdialog?.csrdKonformerProzessZurBeruecksichtigungDerStakeholderinteressen ==
+              'Yes',
+            valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
+              formatFreeTextForDatatable(
+                dataset.governance?.stakeholderdialog
+                  ?.csrdKonformerProzessZurBeruecksichtigungDerStakeholderinteressenErlaeuterung
+              ),
+          },
+        ],
+      },
+      {
+        type: 'section',
+        label: 'Risiken und Maßnahmen',
+        expandOnPageLoad: true,
+        shouldDisplay: (): boolean => true,
+        children: [
+          {
+            type: 'cell',
+            label: 'Weitere wesentliche Governance-Risiken',
+            explanation: 'Welchen weiteren wesentlichen governance-bezogenen Risiken ist das Unternehmen ausgesetzt?',
+            shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
+              formatFreeTextForDatatable(dataset.governance?.risikenUndMassnahmen?.weitereWesentlicheGovernanceRisiken),
+          },
+          {
+            type: 'cell',
+            label: 'Maßnahmen zur Reduzierung von Governance-Risiken',
+            explanation:
+              'Welche Maßnahmen hat das Unternehmen zur Reduzierung dieser governance-bezogenen Risiken getroffen, außer der in Frage 5.1 genannten Richtlinien?',
+            shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
+              formatFreeTextForDatatable(
+                dataset.governance?.risikenUndMassnahmen?.massnahmenZurReduzierungVonGovernanceRisiken
+              ),
           },
         ],
       },
