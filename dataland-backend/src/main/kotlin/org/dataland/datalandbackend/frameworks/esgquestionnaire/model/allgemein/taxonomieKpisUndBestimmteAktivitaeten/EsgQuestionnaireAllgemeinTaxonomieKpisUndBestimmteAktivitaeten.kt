@@ -2,6 +2,7 @@
 package org.dataland.datalandbackend.frameworks.esgquestionnaire.model.allgemein.taxonomieKpisUndBestimmteAktivitaeten
 
 import org.dataland.datalandbackend.model.enums.commons.YesNo
+import org.dataland.datalandbackend.validator.MinimumValue
 import java.math.BigDecimal
 
 /**
@@ -9,11 +10,17 @@ import java.math.BigDecimal
  */
 data class EsgQuestionnaireAllgemeinTaxonomieKpisUndBestimmteAktivitaeten(
     val wirtschaftszweige: List<String>? = null,
+    @field:MinimumValue(minimumValue = 0)
     val gesamtumsatz: BigDecimal? = null,
+    @field:MinimumValue(minimumValue = 0)
     val taxonomiefaehigerUmsatz: BigDecimal? = null,
+    @field:MinimumValue(minimumValue = 0)
     val taxonomiekonformerUmsatz: BigDecimal? = null,
+    @field:MinimumValue(minimumValue = 0)
     val gesamtCapex: BigDecimal? = null,
+    @field:MinimumValue(minimumValue = 0)
     val taxonomiefaehigeCapex: BigDecimal? = null,
+    @field:MinimumValue(minimumValue = 0)
     val taxonomiekonformeCapex: BigDecimal? = null,
     val taxonomiebezogeneCapexPlanungVorhanden: YesNo? = null,
     val geplanteTaxonomiefaehigeCapexIn5Jahren: BigDecimal? = null,

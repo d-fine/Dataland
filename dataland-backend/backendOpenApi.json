@@ -16094,6 +16094,18 @@
           "kopplungVonVerguetungDesTopManagementsAnNachhaltigkeitszieleErlaeuterung": {
             "type": "string",
             "nullable": true
+          },
+          "gesamtanzahlAufsichtsratMitglieder": {
+            "type": "integer",
+            "nullable": true
+          },
+          "anzahlUnabhaengigerAufsichtsratMitglieder": {
+            "type": "integer",
+            "nullable": true
+          },
+          "anzahlWeiblicherOderDiverserAufsichtsratMitglieder": {
+            "type": "integer",
+            "nullable": true
           }
         }
       },
@@ -17036,9 +17048,11 @@
         ],
         "type": "object",
         "properties": {
-          "lei": {
-            "type": "string",
-            "nullable": true
+          "companyName": {
+            "type": "string"
+          },
+          "companyId": {
+            "type": "string"
           },
           "countryCode": {
             "type": "string"
@@ -17046,13 +17060,11 @@
           "headquarters": {
             "type": "string"
           },
-          "companyName": {
-            "type": "string"
-          },
-          "companyId": {
-            "type": "string"
-          },
           "sector": {
+            "type": "string",
+            "nullable": true
+          },
+          "lei": {
             "type": "string",
             "nullable": true
           }

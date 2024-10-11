@@ -71,8 +71,8 @@ function modifyPreparedFixturesPartOne(newFixture: FixtureData<EsgQuestionnaireD
  * @param newFixture generated prepared fixture to modify
  */
 function modifyPreparedFixturesPartTwo(newFixture: FixtureData<EsgQuestionnaireData>): void {
-  if (newFixture.t.allgemein?.rechtsstreitigkeiten?.esgBezogeneRechtsstreitigkeitenInvolvierung) {
-    newFixture.t.allgemein.rechtsstreitigkeiten.esgBezogeneRechtsstreitigkeitenInvolvierung = YesNo.Yes;
+  if (newFixture.t.allgemein?.rechtsstreitigkeiten?.rechtsstreitigkeitenMitEsgBezug) {
+    newFixture.t.allgemein.rechtsstreitigkeiten.rechtsstreitigkeitenMitEsgBezug = YesNo.Yes;
   }
   if (
     newFixture.t.allgemein?.transaktionenMitNachhaltigkeitskomponenten

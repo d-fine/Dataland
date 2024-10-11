@@ -99,6 +99,7 @@ export const esgQuestionnaireDataModel = [
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
               dataset.allgemein?.generelleEsgStrategie?.massnahmenBezueglich15GradCelsiusZielVorhanden == 'Yes',
+            validation: 'min:0',
           },
           {
             name: 'zugewieseneBudgetsAb2031',
@@ -111,6 +112,7 @@ export const esgQuestionnaireDataModel = [
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
               dataset.allgemein?.generelleEsgStrategie?.massnahmenBezueglich15GradCelsiusZielVorhanden == 'Yes',
+            validation: 'min:0',
           },
           {
             name: 'erwarteterFinanzierungsbedarfBis2030',
@@ -123,6 +125,7 @@ export const esgQuestionnaireDataModel = [
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
               dataset.allgemein?.generelleEsgStrategie?.massnahmenBezueglich15GradCelsiusZielVorhanden == 'Yes',
+            validation: 'min:0',
           },
           {
             name: 'erwarteterFinanzierungsbedarfAb2031',
@@ -135,6 +138,7 @@ export const esgQuestionnaireDataModel = [
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
               dataset.allgemein?.generelleEsgStrategie?.massnahmenBezueglich15GradCelsiusZielVorhanden == 'Yes',
+            validation: 'min:0',
           },
           {
             name: 'geplanteVollzeitaequivalenteBis2023',
@@ -147,6 +151,7 @@ export const esgQuestionnaireDataModel = [
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
               dataset.allgemein?.generelleEsgStrategie?.massnahmenBezueglich15GradCelsiusZielVorhanden == 'Yes',
+            validation: 'min:0',
           },
           {
             name: 'geplanteVollzeitaequivalenteAb2031',
@@ -159,6 +164,7 @@ export const esgQuestionnaireDataModel = [
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
               dataset.allgemein?.generelleEsgStrategie?.massnahmenBezueglich15GradCelsiusZielVorhanden == 'Yes',
+            validation: 'min:0',
           },
           {
             name: 'chancenOderHindernisse',
@@ -198,6 +204,7 @@ export const esgQuestionnaireDataModel = [
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            validation: 'min:0',
           },
           {
             name: 'taxonomiefaehigerUmsatz',
@@ -209,6 +216,7 @@ export const esgQuestionnaireDataModel = [
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            validation: 'min:0',
           },
           {
             name: 'taxonomiekonformerUmsatz',
@@ -220,6 +228,7 @@ export const esgQuestionnaireDataModel = [
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            validation: 'min:0',
           },
           {
             name: 'gesamtCapex',
@@ -231,6 +240,7 @@ export const esgQuestionnaireDataModel = [
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            validation: 'min:0',
           },
           {
             name: 'taxonomiefaehigeCapex',
@@ -242,6 +252,7 @@ export const esgQuestionnaireDataModel = [
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            validation: 'min:0',
           },
           {
             name: 'taxonomiekonformeCapex',
@@ -253,6 +264,7 @@ export const esgQuestionnaireDataModel = [
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            validation: 'min:0',
           },
           {
             name: 'taxonomiebezogeneCapexPlanungVorhanden',
@@ -872,6 +884,7 @@ export const esgQuestionnaireDataModel = [
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            validation: 'min:0',
           },
           {
             name: 'scope2TreibhausgasemissionenMarktbasiert',
@@ -884,6 +897,7 @@ export const esgQuestionnaireDataModel = [
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            validation: 'min:0',
           },
           {
             name: 'scope2TreibhausgasemissionenStandortbasiert',
@@ -896,6 +910,7 @@ export const esgQuestionnaireDataModel = [
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            validation: 'min:0',
           },
           {
             name: 'scope3Treibhausgasemissionen',
@@ -908,6 +923,7 @@ export const esgQuestionnaireDataModel = [
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            validation: 'min:0',
           },
           {
             name: 'co2IntensitaetDesUnternehmens',
@@ -920,6 +936,7 @@ export const esgQuestionnaireDataModel = [
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            validation: 'min:0',
           },
           {
             name: 'luftschadstoffe',
@@ -932,6 +949,7 @@ export const esgQuestionnaireDataModel = [
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            validation: 'min:0',
           },
           {
             name: 'wassergefaehrdendeStoffe',
@@ -944,6 +962,7 @@ export const esgQuestionnaireDataModel = [
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            validation: 'min:0',
           },
           {
             name: 'bodenverschmutzendeStoffe',
@@ -956,6 +975,7 @@ export const esgQuestionnaireDataModel = [
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            validation: 'min:0',
           },
         ],
       },
@@ -974,6 +994,7 @@ export const esgQuestionnaireDataModel = [
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            validation: 'min:0',
           },
           {
             name: 'anteilErneuerbarerEnergienAmGesamtEnergieverbrauch',
@@ -998,6 +1019,7 @@ export const esgQuestionnaireDataModel = [
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            validation: 'min:0',
           },
         ],
       },
@@ -1015,6 +1037,7 @@ export const esgQuestionnaireDataModel = [
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            validation: 'min:0',
           },
           {
             name: 'anteilDesNichtRecycletenAbfallsAnDerGesamtAbfallmenge',
@@ -1040,6 +1063,7 @@ export const esgQuestionnaireDataModel = [
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            validation: 'min:0',
           },
         ],
       },
@@ -1540,7 +1564,7 @@ export const esgQuestionnaireDataModel = [
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
-            validation: 'integer',
+            validation: 'integer|min:0',
           },
           {
             name: 'anteilWeiblicherPersonenUnterDenBeschaeftigten',
@@ -1653,6 +1677,7 @@ export const esgQuestionnaireDataModel = [
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            validation: 'min:0',
           },
           {
             name: 'fluktuationsquote',
@@ -1742,6 +1767,7 @@ export const esgQuestionnaireDataModel = [
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            validation: 'min:0',
           },
         ],
       },
@@ -1871,6 +1897,42 @@ export const esgQuestionnaireDataModel = [
             showIf: (dataset: EsgQuestionnaireData): boolean =>
               dataset.governance?.vorstandsprofil?.kopplungVonVerguetungDesTopManagementsAnNachhaltigkeitsziele ==
               'Yes',
+          },
+          {
+            name: 'gesamtanzahlAufsichtsratMitglieder',
+            label: 'Gesamtanzahl Aufsichtsrat-Mitglieder',
+            description:
+              'Bitte geben Sie die Gesamtanzahl der Mitglieder des Aufsichtsrats an. Hinweise: Methodik analog zu ESRS 2 Governance; Definition Aufsichtsgremien aus ESRS S1-9;\nIn einigen Rechtsordnungen bestehen die Governance-Systeme aus zwei Ebenen, in denen Aufsicht und Management voneinander getrennt sind. Hier geht es nur um die Zusammensetzung des Aufsichtsrats.',
+
+            component: 'NumberFormField',
+            required: false,
+            showIf: (dataset: EsgQuestionnaireData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            validation: 'integer|min:0',
+          },
+          {
+            name: 'anzahlUnabhaengigerAufsichtsratMitglieder',
+            label: 'Anzahl unabhängiger Aufsichtsrat-Mitglieder',
+            description:
+              'Bitte geben Sie die Anzahl der unabhängigen Mitglieder des Aufsichtsrats an. Hinweise: Methodik analog zu ESRS 2 Governance; Definition Aufsichtsgremien aus ESRS S1-9;\nIn einigen Rechtsordnungen bestehen die Governance-Systeme aus zwei Ebenen, in denen Aufsicht und Management voneinander getrennt sind. Hier geht es nur um die Zusammensetzung des Aufsichtsrats.',
+
+            component: 'NumberFormField',
+            required: false,
+            showIf: (dataset: EsgQuestionnaireData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            validation: 'integer|min:0',
+          },
+          {
+            name: 'anzahlWeiblicherOderDiverserAufsichtsratMitglieder',
+            label: 'Anzahl weiblicher oder diverser Aufsichtsrat-Mitglieder',
+            description:
+              'Bitte geben Sie die Anzahl der  Mitglieder des Aufsichtsrats an, welche sich als weiblich oder divers identifizieren. Hinweise: Methodik analog zu ESRS 2 Governance; Definition Aufsichtsgremien aus ESRS S1-9;\nIn einigen Rechtsordnungen bestehen die Governance-Systeme aus zwei Ebenen, in denen Aufsicht und Management voneinander getrennt sind. Hier geht es nur um die Zusammensetzung des Aufsichtsrats.',
+
+            component: 'NumberFormField',
+            required: false,
+            showIf: (dataset: EsgQuestionnaireData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            validation: 'integer|min:0',
           },
         ],
       },

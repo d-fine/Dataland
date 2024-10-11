@@ -4,10 +4,10 @@ import { type MLDTConfig } from '@/components/resources/dataTable/MultiLayerData
 import { type AvailableMLDTDisplayObjectTypes } from '@/components/resources/dataTable/MultiLayerDataTableCellDisplayer';
 import { formatFreeTextForDatatable } from '@/components/resources/dataTable/conversion/FreeTextValueGetterFactory';
 import { formatYesNoValueForDatatable } from '@/components/resources/dataTable/conversion/YesNoValueGetterFactory';
+import { formatNumberForDatatable } from '@/components/resources/dataTable/conversion/NumberValueGetterFactory';
 import { formatPercentageForDatatable } from '@/components/resources/dataTable/conversion/PercentageValueGetterFactory';
 import { formatStringForDatatable } from '@/components/resources/dataTable/conversion/PlainStringValueGetterFactory';
 import { getOriginalNameFromTechnicalName } from '@/components/resources/dataTable/conversion/Utils';
-import { formatNumberForDatatable } from '@/components/resources/dataTable/conversion/NumberValueGetterFactory';
 import { formatListOfStringsForDatatable } from '@/components/resources/dataTable/conversion/MultiSelectValueGetterFactory';
 import { wrapDisplayValueWithDatapointInformation } from '@/components/resources/dataTable/conversion/DataPoints';
 import { formatListOfBaseDataPoint } from '@/components/resources/dataTable/conversion/ListOfBaseDataPointGetterFactory';
@@ -1909,6 +1909,42 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
               formatFreeTextForDatatable(
                 dataset.governance?.vorstandsprofil
                   ?.kopplungVonVerguetungDesTopManagementsAnNachhaltigkeitszieleErlaeuterung
+              ),
+          },
+          {
+            type: 'cell',
+            label: 'Gesamtanzahl Aufsichtsrat-Mitglieder',
+            explanation:
+              'Bitte geben Sie die Gesamtanzahl der Mitglieder des Aufsichtsrats an. Hinweise: Methodik analog zu ESRS 2 Governance; Definition Aufsichtsgremien aus ESRS S1-9;\nIn einigen Rechtsordnungen bestehen die Governance-Systeme aus zwei Ebenen, in denen Aufsicht und Management voneinander getrennt sind. Hier geht es nur um die Zusammensetzung des Aufsichtsrats.',
+            shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
+              formatNumberForDatatable(dataset.governance?.vorstandsprofil?.gesamtanzahlAufsichtsratMitglieder, ''),
+          },
+          {
+            type: 'cell',
+            label: 'Anzahl unabhängiger Aufsichtsrat-Mitglieder',
+            explanation:
+              'Bitte geben Sie die Anzahl der unabhängigen Mitglieder des Aufsichtsrats an. Hinweise: Methodik analog zu ESRS 2 Governance; Definition Aufsichtsgremien aus ESRS S1-9;\nIn einigen Rechtsordnungen bestehen die Governance-Systeme aus zwei Ebenen, in denen Aufsicht und Management voneinander getrennt sind. Hier geht es nur um die Zusammensetzung des Aufsichtsrats.',
+            shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
+              formatNumberForDatatable(
+                dataset.governance?.vorstandsprofil?.anzahlUnabhaengigerAufsichtsratMitglieder,
+                ''
+              ),
+          },
+          {
+            type: 'cell',
+            label: 'Anzahl weiblicher oder diverser Aufsichtsrat-Mitglieder',
+            explanation:
+              'Bitte geben Sie die Anzahl der  Mitglieder des Aufsichtsrats an, welche sich als weiblich oder divers identifizieren. Hinweise: Methodik analog zu ESRS 2 Governance; Definition Aufsichtsgremien aus ESRS S1-9;\nIn einigen Rechtsordnungen bestehen die Governance-Systeme aus zwei Ebenen, in denen Aufsicht und Management voneinander getrennt sind. Hier geht es nur um die Zusammensetzung des Aufsichtsrats.',
+            shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
+              formatNumberForDatatable(
+                dataset.governance?.vorstandsprofil?.anzahlWeiblicherOderDiverserAufsichtsratMitglieder,
+                ''
               ),
           },
         ],

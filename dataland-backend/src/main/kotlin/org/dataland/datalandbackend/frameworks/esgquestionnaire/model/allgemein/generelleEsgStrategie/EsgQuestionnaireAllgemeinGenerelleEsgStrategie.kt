@@ -4,6 +4,7 @@ package org.dataland.datalandbackend.frameworks.esgquestionnaire.model.allgemein
 import jakarta.validation.Valid
 import org.dataland.datalandbackend.model.datapoints.BaseDataPoint
 import org.dataland.datalandbackend.model.enums.commons.YesNo
+import org.dataland.datalandbackend.validator.MinimumValue
 import java.math.BigDecimal
 
 /**
@@ -15,11 +16,17 @@ data class EsgQuestionnaireAllgemeinGenerelleEsgStrategie(
     val dokumenteZurNachhaltigkeitsstrategie: List<BaseDataPoint<String>>? = null,
     val massnahmenBezueglich15GradCelsiusZielVorhanden: YesNo? = null,
     val beschreibungMassnahmenBezueglich15GradCelsiusZiel: String? = null,
+    @field:MinimumValue(minimumValue = 0)
     val zugewieseneBudgetsBis2030: BigDecimal? = null,
+    @field:MinimumValue(minimumValue = 0)
     val zugewieseneBudgetsAb2031: BigDecimal? = null,
+    @field:MinimumValue(minimumValue = 0)
     val erwarteterFinanzierungsbedarfBis2030: BigDecimal? = null,
+    @field:MinimumValue(minimumValue = 0)
     val erwarteterFinanzierungsbedarfAb2031: BigDecimal? = null,
+    @field:MinimumValue(minimumValue = 0)
     val geplanteVollzeitaequivalenteBis2023: BigDecimal? = null,
+    @field:MinimumValue(minimumValue = 0)
     val geplanteVollzeitaequivalenteAb2031: BigDecimal? = null,
     val chancenOderHindernisse: String? = null,
 )

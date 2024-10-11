@@ -2,7 +2,9 @@
 package org.dataland.datalandbackend.frameworks.esgquestionnaire.model.governance.vorstandsprofil
 
 import org.dataland.datalandbackend.model.enums.commons.YesNo
+import org.dataland.datalandbackend.validator.MinimumValue
 import java.math.BigDecimal
+import java.math.BigInteger
 
 /**
  * The data-model for the Vorstandsprofil section
@@ -14,4 +16,10 @@ data class EsgQuestionnaireGovernanceVorstandsprofil(
     val anteilDiverserPersonenImTopManagement: BigDecimal? = null,
     val kopplungVonVerguetungDesTopManagementsAnNachhaltigkeitsziele: YesNo? = null,
     val kopplungVonVerguetungDesTopManagementsAnNachhaltigkeitszieleErlaeuterung: String? = null,
+    @field:MinimumValue(minimumValue = 0)
+    val gesamtanzahlAufsichtsratMitglieder: BigInteger? = null,
+    @field:MinimumValue(minimumValue = 0)
+    val anzahlUnabhaengigerAufsichtsratMitglieder: BigInteger? = null,
+    @field:MinimumValue(minimumValue = 0)
+    val anzahlWeiblicherOderDiverserAufsichtsratMitglieder: BigInteger? = null,
 )
