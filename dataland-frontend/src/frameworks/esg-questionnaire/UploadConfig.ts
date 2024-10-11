@@ -779,8 +779,8 @@ export const esgQuestionnaireDataModel = [
         label: 'Rechtsstreitigkeiten',
         fields: [
           {
-            name: 'esgBezogeneRechtsstreitigkeitenInvolvierung',
-            label: 'ESG-bezogene Rechtsstreitigkeiten Involvierung',
+            name: 'rechtsstreitigkeitenMitEsgBezug',
+            label: 'Rechtsstreitigkeiten mit ESG-Bezug',
             description:
               'Ist das Unternehmen in laufende bzw. war das Unternehmen in den letzten 3 Jahren in rechtskräftig abgeschlossene Rechtsstreitigkeiten im Zusammenhang mit Nachhaltigkeit / ESG involviert? Im Vordergrund stehen vor Gericht bereits anhängige Verfahren.',
 
@@ -797,7 +797,7 @@ export const esgQuestionnaireDataModel = [
             component: 'FreeTextFormField',
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.allgemein?.rechtsstreitigkeiten?.esgBezogeneRechtsstreitigkeitenInvolvierung == 'Yes',
+              dataset.allgemein?.rechtsstreitigkeiten?.rechtsstreitigkeitenMitEsgBezug == 'Yes',
           },
         ],
       },

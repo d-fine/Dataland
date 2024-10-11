@@ -132,7 +132,7 @@ export function generateEsgQuestionnaireData(nullProbability = DEFAULT_PROBABILI
         beruecksichtigungVonNachhaltigkeitskriterienBeiDerLieferantenauswahl: dataGenerator.randomParagraphs(),
       },
       rechtsstreitigkeiten: {
-        esgBezogeneRechtsstreitigkeitenInvolvierung: dataGenerator.randomYesNo(),
+        rechtsstreitigkeitenMitEsgBezug: dataGenerator.randomYesNo(),
         einzelheitenZuEsgBezogenenRechtsstreitigkeiten: dataGenerator.randomParagraphs(),
       },
       transaktionenMitNachhaltigkeitskomponenten: {

@@ -20,21 +20,14 @@ import org.dataland.datalandbackend.frameworks.esgquestionnaire.model.umwelt.ver
 data class EsgQuestionnaireUmwelt(
     @field:Valid()
     val emissionen: EsgQuestionnaireUmweltEmissionen? = null,
-
     @field:Valid()
     val verbrauchsangaben: EsgQuestionnaireUmweltVerbrauchsangaben? = null,
-
     @field:Valid()
     val abfall: EsgQuestionnaireUmweltAbfall? = null,
-
     @field:Valid()
     val risikenUndMassnahmenKlima: EsgQuestionnaireUmweltRisikenUndMassnahmenKlima? = null,
-
     @field:Valid()
     val risikenUndMassnahmenKreislaufwirtschaft: EsgQuestionnaireUmweltRisikenUndMassnahmenKreislaufwirtschaft? = null,
-
     @field:Valid()
-    val risikenUndMassnahmenBiodiversitaetUndOekosysteme:
-    EsgQuestionnaireUmweltRisikenUndMassnahmenBiodiversitaetUndOekosysteme? = null,
-
+    val risikenUndMassnahmenBiodiversitaetUndOekosysteme: EsgQuestionnaireUmweltRisikenUndMassnahmenBiodiversitaetUndOekosysteme? = null,
 )

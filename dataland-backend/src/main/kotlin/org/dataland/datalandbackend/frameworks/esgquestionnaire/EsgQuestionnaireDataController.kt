@@ -27,11 +27,11 @@ class EsgQuestionnaireDataController(
     @Autowired var myMetaDataManager: DataMetaInformationManager,
     @Autowired var myObjectMapper: ObjectMapper,
 ) : DataController<EsgQuestionnaireData>(
-    myDataManager,
-    myMetaDataManager,
-    myObjectMapper,
-    EsgQuestionnaireData::class.java,
-) {
+        myDataManager,
+        myMetaDataManager,
+        myObjectMapper,
+        EsgQuestionnaireData::class.java,
+    ) {
     @Operation(operationId = "getCompanyAssociatedEsgQuestionnaireData")
     override fun getCompanyAssociatedData(dataId: String): ResponseEntity<CompanyAssociatedData<EsgQuestionnaireData>> =
         super.getCompanyAssociatedData(dataId)

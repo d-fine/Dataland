@@ -8,9 +8,6 @@ import java.math.BigDecimal
  */
 data class EsgQuestionnaireUmweltAbfall(
     val abfallmenge: BigDecimal? = null,
-
     val anteilDesNichtRecycletenAbfallsAnDerGesamtAbfallmenge: BigDecimal? = null,
-
     val mengeAnGefaehrlichenAbfaellen: BigDecimal? = null,
-
 )

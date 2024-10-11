@@ -6,7 +6,5 @@ package org.dataland.datalandbackend.frameworks.esgquestionnaire.model.governanc
  */
 data class EsgQuestionnaireGovernanceRisikenUndMassnahmen(
     val weitereWesentlicheGovernanceRisiken: String? = null,
-
     val massnahmenZurReduzierungVonGovernanceRisiken: String? = null,
-
 )

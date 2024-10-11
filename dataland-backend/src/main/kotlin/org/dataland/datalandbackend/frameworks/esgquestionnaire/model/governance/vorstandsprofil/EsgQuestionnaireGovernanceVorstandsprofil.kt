@@ -8,17 +8,10 @@ import java.math.BigDecimal
  * The data-model for the Vorstandsprofil section
  */
 data class EsgQuestionnaireGovernanceVorstandsprofil(
-    val umfangDesTopManagementImUnternehmen:
-    EsgQuestionnaireGovernanceVorstandsprofilUmfangDesTopManagementImUnternehmenOptions? = null,
-
+    val umfangDesTopManagementImUnternehmen: EsgQuestionnaireGovernanceVorstandsprofilUmfangDesTopManagementImUnternehmenOptions? = null,
     val anteilWeiblicherPersonenImTopManagement: BigDecimal? = null,
-
     val anteilMaennlicherPersonenImTopManagement: BigDecimal? = null,
-
     val anteilDiverserPersonenImTopManagement: BigDecimal? = null,
-
     val kopplungVonVerguetungDesTopManagementsAnNachhaltigkeitsziele: YesNo? = null,
-
     val kopplungVonVerguetungDesTopManagementsAnNachhaltigkeitszieleErlaeuterung: String? = null,
-
 )

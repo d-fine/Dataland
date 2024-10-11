@@ -11,26 +11,15 @@ import java.math.BigDecimal
  */
 data class EsgQuestionnaireAllgemeinGenerelleEsgStrategie(
     val nachhaltigkeitsstrategieVorhanden: YesNo? = null,
-
     @field:Valid()
     val dokumenteZurNachhaltigkeitsstrategie: List<BaseDataPoint<String>>? = null,
-
     val massnahmenBezueglich15GradCelsiusZielVorhanden: YesNo? = null,
-
     val beschreibungMassnahmenBezueglich15GradCelsiusZiel: String? = null,
-
     val zugewieseneBudgetsBis2030: BigDecimal? = null,
-
     val zugewieseneBudgetsAb2031: BigDecimal? = null,
-
     val erwarteterFinanzierungsbedarfBis2030: BigDecimal? = null,
-
     val erwarteterFinanzierungsbedarfAb2031: BigDecimal? = null,
-
     val geplanteVollzeitaequivalenteBis2023: BigDecimal? = null,
-
     val geplanteVollzeitaequivalenteAb2031: BigDecimal? = null,
-
     val chancenOderHindernisse: String? = null,
-
 )

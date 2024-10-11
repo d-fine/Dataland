@@ -214,7 +214,7 @@
 					"beruecksichtigungVonNachhaltigkeitskriterienBeiDerLieferantenauswahl": "Tergum statim desino accusator nihil decipio verbum. Vos video tergo cunctatio antiquus pauper solitudo crapula. Exercitationem comparo via aliqua claudeo arcus tolero calco corrigo."
 				},
 				"rechtsstreitigkeiten": {
-					"esgBezogeneRechtsstreitigkeitenInvolvierung": "No",
+					"rechtsstreitigkeitenMitEsgBezug": "No",
 					"einzelheitenZuEsgBezogenenRechtsstreitigkeiten": "Cohaero virtus vaco summopere tametsi. Accusator sustineo confero talus tripudio ocer. Terga victus tum tendo."
 				},
 				"transaktionenMitNachhaltigkeitskomponenten": {
@@ -576,7 +576,7 @@
 					"beruecksichtigungVonNachhaltigkeitskriterienBeiDerLieferantenauswahl": "Virgo cicuta appello cui teneo desolo virgo. Pecco tamquam curriculum terminatio amoveo magni aro vulgus carcer. Utor coruscus cum itaque comprehendo desparatus quos aiunt."
 				},
 				"rechtsstreitigkeiten": {
-					"esgBezogeneRechtsstreitigkeitenInvolvierung": "No",
+					"rechtsstreitigkeitenMitEsgBezug": "No",
 					"einzelheitenZuEsgBezogenenRechtsstreitigkeiten": "Adsuesco solus earum dignissimos. Ventito creator adflicto. Demitto terminatio sordeo urbs soleo pecto aeneus."
 				},
 				"transaktionenMitNachhaltigkeitskomponenten": {
@@ -954,7 +954,7 @@
 					"beruecksichtigungVonNachhaltigkeitskriterienBeiDerLieferantenauswahl": "Conscendo antea atrox quasi ipsum. Curvo provident utroque comitatus vox amita soluta clarus vigor. Ustulo unde eum vere cunctatio supra vir."
 				},
 				"rechtsstreitigkeiten": {
-					"esgBezogeneRechtsstreitigkeitenInvolvierung": null,
+					"rechtsstreitigkeitenMitEsgBezug": null,
 					"einzelheitenZuEsgBezogenenRechtsstreitigkeiten": "Tamen accedo abstergo viriliter coaegresco pauci. Deinde pel trans. Delinquo tondeo patior deprimo acerbitas id cupressus amita."
 				},
 				"transaktionenMitNachhaltigkeitskomponenten": {
@@ -1313,7 +1313,7 @@
 					"beruecksichtigungVonNachhaltigkeitskriterienBeiDerLieferantenauswahl": "Ratione voluptate trans bellicus volubilis tui apto. Decumbo est auctus callide alo derelinquo corpus. Vestrum acer ipsam usus tero vereor bos unus absorbeo minus."
 				},
 				"rechtsstreitigkeiten": {
-					"esgBezogeneRechtsstreitigkeitenInvolvierung": "No",
+					"rechtsstreitigkeitenMitEsgBezug": "No",
 					"einzelheitenZuEsgBezogenenRechtsstreitigkeiten": "Dolore color suggero sufficio urbs tenuis. Quod rem pel vereor totidem cernuus comedo cauda bellicus. Calcar decor cometes ipsum capto conturbo."
 				},
 				"transaktionenMitNachhaltigkeitskomponenten": {
@@ -1670,7 +1670,7 @@
 					"beruecksichtigungVonNachhaltigkeitskriterienBeiDerLieferantenauswahl": "Deduco argentum communis. Volva itaque magnam ambitus. Blanditiis thorax tepesco solum fugiat tonsor."
 				},
 				"rechtsstreitigkeiten": {
-					"esgBezogeneRechtsstreitigkeitenInvolvierung": "Yes",
+					"rechtsstreitigkeitenMitEsgBezug": "Yes",
 					"einzelheitenZuEsgBezogenenRechtsstreitigkeiten": null
 				},
 				"transaktionenMitNachhaltigkeitskomponenten": {
@@ -2003,7 +2003,7 @@
 					"beruecksichtigungVonNachhaltigkeitskriterienBeiDerLieferantenauswahl": "Amita benevolentia urbanus tristis. Uter apto abscido absens angulus abstergo asperiores copiose bestia. Degero crinis surgo tergeo porro demum contigo."
 				},
 				"rechtsstreitigkeiten": {
-					"esgBezogeneRechtsstreitigkeitenInvolvierung": "Yes",
+					"rechtsstreitigkeitenMitEsgBezug": "Yes",
 					"einzelheitenZuEsgBezogenenRechtsstreitigkeiten": "Somniculosus volaticus substantia sequi capto. Sortitus adsidue expedita alveus id. Numquam desino stipes pectus deficio suspendo possimus bene."
 				},
 				"transaktionenMitNachhaltigkeitskomponenten": {
@@ -2299,7 +2299,7 @@
 					"beruecksichtigungVonNachhaltigkeitskriterienBeiDerLieferantenauswahl": null
 				},
 				"rechtsstreitigkeiten": {
-					"esgBezogeneRechtsstreitigkeitenInvolvierung": null,
+					"rechtsstreitigkeitenMitEsgBezug": null,
 					"einzelheitenZuEsgBezogenenRechtsstreitigkeiten": "Angustus valde tergeo adnuo sublime agnosco decor rem. Subvenio vobis talus taedium. Bos architecto advoco debitis delego."
 				},
 				"transaktionenMitNachhaltigkeitskomponenten": {
@@ -2616,7 +2616,7 @@
 					"beruecksichtigungVonNachhaltigkeitskriterienBeiDerLieferantenauswahl": null
 				},
 				"rechtsstreitigkeiten": {
-					"esgBezogeneRechtsstreitigkeitenInvolvierung": null,
+					"rechtsstreitigkeitenMitEsgBezug": null,
 					"einzelheitenZuEsgBezogenenRechtsstreitigkeiten": "Tenuis conforto cilicium defendo arguo thesis thorax amaritudo deprecator. Conservo non caput blanditiis cognatus placeat. Tripudio tersus suus decipio crebro audentia laborum adopto."
 				},
 				"transaktionenMitNachhaltigkeitskomponenten": {
@@ -2940,7 +2940,7 @@
 					"beruecksichtigungVonNachhaltigkeitskriterienBeiDerLieferantenauswahl": null
 				},
 				"rechtsstreitigkeiten": {
-					"esgBezogeneRechtsstreitigkeitenInvolvierung": "No",
+					"rechtsstreitigkeitenMitEsgBezug": "No",
 					"einzelheitenZuEsgBezogenenRechtsstreitigkeiten": "Totam totus defluo corporis. Cresco terminatio surgo sperno commodo terminatio balbus ver. Sustineo tristis vulariter adulescens strenuus."
 				},
 				"transaktionenMitNachhaltigkeitskomponenten": {
@@ -3268,7 +3268,7 @@
 					"beruecksichtigungVonNachhaltigkeitskriterienBeiDerLieferantenauswahl": "Sordeo coepi tricesimus velit eius tunc vindico alius. Tripudio aliquid voluptate torrens ea tonsor recusandae amicitia conspergo. Venia tamen aedificium."
 				},
 				"rechtsstreitigkeiten": {
-					"esgBezogeneRechtsstreitigkeitenInvolvierung": "No",
+					"rechtsstreitigkeitenMitEsgBezug": "No",
 					"einzelheitenZuEsgBezogenenRechtsstreitigkeiten": "Paulatim tubineus sonitus. Absum vehemens comedo. Deporto temperantia correptius sono."
 				},
 				"transaktionenMitNachhaltigkeitskomponenten": {
@@ -3624,7 +3624,7 @@
 					"beruecksichtigungVonNachhaltigkeitskriterienBeiDerLieferantenauswahl": null
 				},
 				"rechtsstreitigkeiten": {
-					"esgBezogeneRechtsstreitigkeitenInvolvierung": "Yes",
+					"rechtsstreitigkeitenMitEsgBezug": "Yes",
 					"einzelheitenZuEsgBezogenenRechtsstreitigkeiten": "Tempore decerno conicio. Verbum vinum dolores coruscus comptus capillus curia. Tardus cimentarius tumultus traho."
 				},
 				"transaktionenMitNachhaltigkeitskomponenten": {
@@ -3995,7 +3995,7 @@
 					"beruecksichtigungVonNachhaltigkeitskriterienBeiDerLieferantenauswahl": "Tui tenetur tabella facere et peccatus vetus allatus. Sui sulum odio currus tergo non suus comis. Ademptio cunctatio deserunt caput quae atrocitas antiquus colligo aduro aspernatur."
 				},
 				"rechtsstreitigkeiten": {
-					"esgBezogeneRechtsstreitigkeitenInvolvierung": "No",
+					"rechtsstreitigkeitenMitEsgBezug": "No",
 					"einzelheitenZuEsgBezogenenRechtsstreitigkeiten": "Caecus vulnus deficio. Spectaculum crux thymum condico comitatus aequitas vito. Curo adopto cena abstergo vigilo canis baiulus defetiscor xiphias."
 				},
 				"transaktionenMitNachhaltigkeitskomponenten": {
@@ -4382,7 +4382,7 @@
 					"beruecksichtigungVonNachhaltigkeitskriterienBeiDerLieferantenauswahl": "Super tandem aegre aperiam demoror capillus. Solvo peccatus taceo recusandae. Cunctatio pariatur blandior articulus velum audax terra."
 				},
 				"rechtsstreitigkeiten": {
-					"esgBezogeneRechtsstreitigkeitenInvolvierung": null,
+					"rechtsstreitigkeitenMitEsgBezug": null,
 					"einzelheitenZuEsgBezogenenRechtsstreitigkeiten": "Bellicus stultus thermae. Desolo rerum possimus amiculum atavus succurro cupio adsum bardus. Auctor delectatio fugit color tredecim vero."
 				},
 				"transaktionenMitNachhaltigkeitskomponenten": {
@@ -4757,7 +4757,7 @@
 					"beruecksichtigungVonNachhaltigkeitskriterienBeiDerLieferantenauswahl": "Adsidue tener virtus deinde tantillus. Vitae auxilium derelinquo derelinquo carmen ascisco. Antea acidus tamisium summa quod credo texo celebrer aequus vinitor."
 				},
 				"rechtsstreitigkeiten": {
-					"esgBezogeneRechtsstreitigkeitenInvolvierung": "No",
+					"rechtsstreitigkeitenMitEsgBezug": "No",
 					"einzelheitenZuEsgBezogenenRechtsstreitigkeiten": "Reiciendis cedo custodia ex degenero cribro trans traho artificiose carpo. Dignissimos confido crur. Debeo sapiente voveo."
 				},
 				"transaktionenMitNachhaltigkeitskomponenten": {
@@ -5091,7 +5091,7 @@
 					"beruecksichtigungVonNachhaltigkeitskriterienBeiDerLieferantenauswahl": "Comparo sub animi suffoco cur sustineo. Curriculum cubo utrum amoveo blandior adsidue corrigo earum asperiores supellex. Atqui ara aliquam arbustum."
 				},
 				"rechtsstreitigkeiten": {
-					"esgBezogeneRechtsstreitigkeitenInvolvierung": "Yes",
+					"rechtsstreitigkeitenMitEsgBezug": "Yes",
 					"einzelheitenZuEsgBezogenenRechtsstreitigkeiten": "Alveus pariatur carcer ea tamdiu absens basium quo adimpleo. Timidus asporto aegre ulterius voluntarius sublime alii ducimus vere. Suggero combibo atavus solvo utor peior temeritas pectus."
 				},
 				"transaktionenMitNachhaltigkeitskomponenten": {
@@ -5399,7 +5399,7 @@
 					"beruecksichtigungVonNachhaltigkeitskriterienBeiDerLieferantenauswahl": "Adulescens quam aspernatur dens sumo victus nulla calcar. Suadeo odio odio arbustum rem cum audacia vulticulus. Cariosus distinctio caveo maxime conatus comis astrum dolorem thesaurus curis."
 				},
 				"rechtsstreitigkeiten": {
-					"esgBezogeneRechtsstreitigkeitenInvolvierung": "No",
+					"rechtsstreitigkeitenMitEsgBezug": "No",
 					"einzelheitenZuEsgBezogenenRechtsstreitigkeiten": "Currus vester aduro. Valde deficio appono alias volubilis aeneus sollicito thema. Libero doloribus speculum socius conscendo trepide compono."
 				},
 				"transaktionenMitNachhaltigkeitskomponenten": {
@@ -5772,7 +5772,7 @@
 					"beruecksichtigungVonNachhaltigkeitskriterienBeiDerLieferantenauswahl": null
 				},
 				"rechtsstreitigkeiten": {
-					"esgBezogeneRechtsstreitigkeitenInvolvierung": "Yes",
+					"rechtsstreitigkeitenMitEsgBezug": "Yes",
 					"einzelheitenZuEsgBezogenenRechtsstreitigkeiten": "Dolorum tepidus altus ago blandior tenetur comes thema suasoria. Denuncio aestas confido testimonium. Amiculum eius cupio demo censura."
 				},
 				"transaktionenMitNachhaltigkeitskomponenten": {
@@ -6108,7 +6108,7 @@
 					"beruecksichtigungVonNachhaltigkeitskriterienBeiDerLieferantenauswahl": "Acies thorax varietas varietas temporibus. Alioqui depromo thema. Vicinus necessitatibus cum toties absque tego ut currus usus voluntarius."
 				},
 				"rechtsstreitigkeiten": {
-					"esgBezogeneRechtsstreitigkeitenInvolvierung": "No",
+					"rechtsstreitigkeitenMitEsgBezug": "No",
 					"einzelheitenZuEsgBezogenenRechtsstreitigkeiten": "Vigilo terminatio canonicus volva adamo vis. Thalassinus dapifer administratio sed dignissimos admoneo dens combibo demergo culpo. Crebro odit bis vigor beatae desidero tergiversatio ultio."
 				},
 				"transaktionenMitNachhaltigkeitskomponenten": {
@@ -6441,7 +6441,7 @@
 					"beruecksichtigungVonNachhaltigkeitskriterienBeiDerLieferantenauswahl": null
 				},
 				"rechtsstreitigkeiten": {
-					"esgBezogeneRechtsstreitigkeitenInvolvierung": "Yes",
+					"rechtsstreitigkeitenMitEsgBezug": "Yes",
 					"einzelheitenZuEsgBezogenenRechtsstreitigkeiten": "Urbs impedit terebro fugiat deporto taedium. Antea totidem sono suppono eveniet curvo accendo advenio. Angustus cetera aqua ulterius voluptatum asporto sint sustineo currus."
 				},
 				"transaktionenMitNachhaltigkeitskomponenten": {
@@ -6776,7 +6776,7 @@
 					"beruecksichtigungVonNachhaltigkeitskriterienBeiDerLieferantenauswahl": null
 				},
 				"rechtsstreitigkeiten": {
-					"esgBezogeneRechtsstreitigkeitenInvolvierung": "No",
+					"rechtsstreitigkeitenMitEsgBezug": "No",
 					"einzelheitenZuEsgBezogenenRechtsstreitigkeiten": null
 				},
 				"transaktionenMitNachhaltigkeitskomponenten": {
@@ -7092,7 +7092,7 @@
 					"beruecksichtigungVonNachhaltigkeitskriterienBeiDerLieferantenauswahl": "Caries acervus baiulus aetas cogito. Urbs ustulo accusamus. Adipisci audeo sollers comparo reprehenderit modi cibus vulgaris."
 				},
 				"rechtsstreitigkeiten": {
-					"esgBezogeneRechtsstreitigkeitenInvolvierung": "No",
+					"rechtsstreitigkeitenMitEsgBezug": "No",
 					"einzelheitenZuEsgBezogenenRechtsstreitigkeiten": "Valeo terebro at solvo autus facilis. Eveniet antiquus cado advenio cimentarius voveo delectus aeternus adnuo. Cotidie territo valeo caute tracto tametsi."
 				},
 				"transaktionenMitNachhaltigkeitskomponenten": {
@@ -7450,7 +7450,7 @@
 					"beruecksichtigungVonNachhaltigkeitskriterienBeiDerLieferantenauswahl": "Cuppedia crastinus strues constans antepono aeger. Curo apud conturbo ascisco adfero spectaculum aro succedo amoveo umbra. Caveo curiositas suffoco censura valetudo conspergo corpus aetas bardus."
 				},
 				"rechtsstreitigkeiten": {
-					"esgBezogeneRechtsstreitigkeitenInvolvierung": null,
+					"rechtsstreitigkeitenMitEsgBezug": null,
 					"einzelheitenZuEsgBezogenenRechtsstreitigkeiten": "Cicuta deserunt ad caterva consequatur. Crur vere architecto angustus thermae bellicus. Degusto urbs somnus alias."
 				},
 				"transaktionenMitNachhaltigkeitskomponenten": {
@@ -7780,7 +7780,7 @@
 					"beruecksichtigungVonNachhaltigkeitskriterienBeiDerLieferantenauswahl": "Amor sursum quam coadunatio contra spargo ad. Amissio villa magni ustulo decens architecto amet ascisco sint. Thesis depromo tantum umbra amplus ipsa."
 				},
 				"rechtsstreitigkeiten": {
-					"esgBezogeneRechtsstreitigkeitenInvolvierung": "Yes",
+					"rechtsstreitigkeitenMitEsgBezug": "Yes",
 					"einzelheitenZuEsgBezogenenRechtsstreitigkeiten": "Caries degero concido eum carcer aspernatur tabula amita excepturi. Ager creo via temperantia delibero amet id damno umbra. Uterque earum voco virgo compello censura campana."
 				},
 				"transaktionenMitNachhaltigkeitskomponenten": {
@@ -8136,7 +8136,7 @@
 					"beruecksichtigungVonNachhaltigkeitskriterienBeiDerLieferantenauswahl": "Apto uberrime solutio minima a tribuo. Cultellus quo surculus molestias adicio absorbeo considero votum. Canis aliquid colligo."
 				},
 				"rechtsstreitigkeiten": {
-					"esgBezogeneRechtsstreitigkeitenInvolvierung": "No",
+					"rechtsstreitigkeitenMitEsgBezug": "No",
 					"einzelheitenZuEsgBezogenenRechtsstreitigkeiten": "Cetera enim utor amitto vox degero. Audentia vigilo spargo. Amplitudo arx bis appono."
 				},
 				"transaktionenMitNachhaltigkeitskomponenten": {
@@ -8450,7 +8450,7 @@
 					"beruecksichtigungVonNachhaltigkeitskriterienBeiDerLieferantenauswahl": "Amaritudo adversus una coadunatio depopulo. Conor creptio spero dapifer stella. Tricesimus conforto conservo cunabula."
 				},
 				"rechtsstreitigkeiten": {
-					"esgBezogeneRechtsstreitigkeitenInvolvierung": "Yes",
+					"rechtsstreitigkeitenMitEsgBezug": "Yes",
 					"einzelheitenZuEsgBezogenenRechtsstreitigkeiten": null
 				},
 				"transaktionenMitNachhaltigkeitskomponenten": {
@@ -8770,7 +8770,7 @@
 					"beruecksichtigungVonNachhaltigkeitskriterienBeiDerLieferantenauswahl": "Videlicet ventosus tamisium illo volup currus adipiscor venia desipio bellum. Nostrum textus suppellex terra alias cursim cupiditate vado defero assentator. Animadverto asper surgo demo ciminatio."
 				},
 				"rechtsstreitigkeiten": {
-					"esgBezogeneRechtsstreitigkeitenInvolvierung": null,
+					"rechtsstreitigkeitenMitEsgBezug": null,
 					"einzelheitenZuEsgBezogenenRechtsstreitigkeiten": "Amplexus celebrer testimonium canis derelinquo laudantium tenetur avaritia. Esse cruentus conventus delinquo ipsa creber toties. Depereo vester vespillo sint et absum vigilo."
 				},
 				"transaktionenMitNachhaltigkeitskomponenten": {
@@ -9100,7 +9100,7 @@
 					"beruecksichtigungVonNachhaltigkeitskriterienBeiDerLieferantenauswahl": "Delego arbustum timidus video suppellex capio decimus defleo tactus. Dedico suscipit ante caveo aestivus. Pauci suasoria beatus."
 				},
 				"rechtsstreitigkeiten": {
-					"esgBezogeneRechtsstreitigkeitenInvolvierung": "Yes",
+					"rechtsstreitigkeitenMitEsgBezug": "Yes",
 					"einzelheitenZuEsgBezogenenRechtsstreitigkeiten": "Vel creber dapifer consequuntur comburo tam. Claudeo vilitas agnitio nihil conservo tendo quasi combibo curriculum sursum. Cilicium minus cerno color demoror benigne sustineo."
 				},
 				"transaktionenMitNachhaltigkeitskomponenten": {
@@ -9428,7 +9428,7 @@
 					"beruecksichtigungVonNachhaltigkeitskriterienBeiDerLieferantenauswahl": "Defero suscipio audeo quidem. Volup rerum consectetur vulgus cariosus aegrus deputo tardus. Curo voco tabella supra modi ea cauda cuppedia."
 				},
 				"rechtsstreitigkeiten": {
-					"esgBezogeneRechtsstreitigkeitenInvolvierung": "No",
+					"rechtsstreitigkeitenMitEsgBezug": "No",
 					"einzelheitenZuEsgBezogenenRechtsstreitigkeiten": "Auctor tamen sopor arbustum. Deinde agnosco sonitus adipisci conicio vivo. Vereor commemoro tantillus tempora deprimo cognomen thesis possimus vulpes."
 				},
 				"transaktionenMitNachhaltigkeitskomponenten": {
@@ -9753,7 +9753,7 @@
 					"beruecksichtigungVonNachhaltigkeitskriterienBeiDerLieferantenauswahl": "Socius depromo utrimque venia pel sublime saepe adamo. Degusto temptatio tutamen testimonium unus adfero degusto charisma curvo curtus. Cresco admoneo temeritas vulariter deprimo unde tollo clementia."
 				},
 				"rechtsstreitigkeiten": {
-					"esgBezogeneRechtsstreitigkeitenInvolvierung": "No",
+					"rechtsstreitigkeitenMitEsgBezug": "No",
 					"einzelheitenZuEsgBezogenenRechtsstreitigkeiten": null
 				},
 				"transaktionenMitNachhaltigkeitskomponenten": {
@@ -10084,7 +10084,7 @@
 					"beruecksichtigungVonNachhaltigkeitskriterienBeiDerLieferantenauswahl": "Comes terreo arma amicitia. Tametsi illo curo. Subiungo quidem aqua unde carmen vilis velut."
 				},
 				"rechtsstreitigkeiten": {
-					"esgBezogeneRechtsstreitigkeitenInvolvierung": "Yes",
+					"rechtsstreitigkeitenMitEsgBezug": "Yes",
 					"einzelheitenZuEsgBezogenenRechtsstreitigkeiten": null
 				},
 				"transaktionenMitNachhaltigkeitskomponenten": {
@@ -10418,7 +10418,7 @@
 					"beruecksichtigungVonNachhaltigkeitskriterienBeiDerLieferantenauswahl": "Architecto admitto tabernus tunc comprehendo cursim. Verbum calamitas tricesimus. Culpo conatus bis condico tumultus corona tergo est."
 				},
 				"rechtsstreitigkeiten": {
-					"esgBezogeneRechtsstreitigkeitenInvolvierung": "No",
+					"rechtsstreitigkeitenMitEsgBezug": "No",
 					"einzelheitenZuEsgBezogenenRechtsstreitigkeiten": "Peccatus adopto cresco tres alo trado depromo. Virtus vigilo tardus arceo cubitum suscipit. Conturbo carcer desipio cuius cras."
 				},
 				"transaktionenMitNachhaltigkeitskomponenten": {
@@ -10727,7 +10727,7 @@
 					"beruecksichtigungVonNachhaltigkeitskriterienBeiDerLieferantenauswahl": "Abeo caute considero audax vorago videlicet quia illo certe vigor. Suppellex vae caste eius facere delicate cicuta admitto. Tremo adflicto urbanus aestivus."
 				},
 				"rechtsstreitigkeiten": {
-					"esgBezogeneRechtsstreitigkeitenInvolvierung": "Yes",
+					"rechtsstreitigkeitenMitEsgBezug": "Yes",
 					"einzelheitenZuEsgBezogenenRechtsstreitigkeiten": "Valetudo deporto adficio accusator cernuus autus depraedor illum tantillus audax. Suscipit attonbitus censura voluptatum assentator. Condico ante depereo pax culpo."
 				},
 				"transaktionenMitNachhaltigkeitskomponenten": {
@@ -11096,7 +11096,7 @@
 					"beruecksichtigungVonNachhaltigkeitskriterienBeiDerLieferantenauswahl": "Supplanto confugo coruscus voluptate amaritudo ultio speculum uberrime tantum. Tametsi rem nihil suscipit adinventitias terra. Acidus admitto decens comitatus uxor dapifer vito cubicularis appello torrens."
 				},
 				"rechtsstreitigkeiten": {
-					"esgBezogeneRechtsstreitigkeitenInvolvierung": "Yes",
+					"rechtsstreitigkeitenMitEsgBezug": "Yes",
 					"einzelheitenZuEsgBezogenenRechtsstreitigkeiten": null
 				},
 				"transaktionenMitNachhaltigkeitskomponenten": {
@@ -11428,7 +11428,7 @@
 					"beruecksichtigungVonNachhaltigkeitskriterienBeiDerLieferantenauswahl": "Cuppedia totam angustus. Tantillus audeo clarus absum uter canis territo adipiscor theca tonsor. Sunt subito usitas volup."
 				},
 				"rechtsstreitigkeiten": {
-					"esgBezogeneRechtsstreitigkeitenInvolvierung": "No",
+					"rechtsstreitigkeitenMitEsgBezug": "No",
 					"einzelheitenZuEsgBezogenenRechtsstreitigkeiten": "Inflammatio apparatus degenero sublime dedecor. Absum testimonium traho basium minima pariatur territo. Corpus aggredior torrens tum curiositas."
 				},
 				"transaktionenMitNachhaltigkeitskomponenten": {
@@ -11755,7 +11755,7 @@
 					"beruecksichtigungVonNachhaltigkeitskriterienBeiDerLieferantenauswahl": "Addo ait tot adhaero sulum clamo cunctatio. Speculum iure ait deficio alveus thymbra. Paulatim vulgivagus sol ago thesis statua aperiam deputo."
 				},
 				"rechtsstreitigkeiten": {
-					"esgBezogeneRechtsstreitigkeitenInvolvierung": "Yes",
+					"rechtsstreitigkeitenMitEsgBezug": "Yes",
 					"einzelheitenZuEsgBezogenenRechtsstreitigkeiten": "Verbera traho altus absconditus strenuus deinde cerno vindico acceptus inflammatio. Corroboro viridis copiose. Atrocitas quae curso ager ago usitas viscus."
 				},
 				"transaktionenMitNachhaltigkeitskomponenten": {
@@ -12119,7 +12119,7 @@
 					"beruecksichtigungVonNachhaltigkeitskriterienBeiDerLieferantenauswahl": null
 				},
 				"rechtsstreitigkeiten": {
-					"esgBezogeneRechtsstreitigkeitenInvolvierung": null,
+					"rechtsstreitigkeitenMitEsgBezug": null,
 					"einzelheitenZuEsgBezogenenRechtsstreitigkeiten": null
 				},
 				"transaktionenMitNachhaltigkeitskomponenten": {
@@ -12427,7 +12427,7 @@
 					"beruecksichtigungVonNachhaltigkeitskriterienBeiDerLieferantenauswahl": null
 				},
 				"rechtsstreitigkeiten": {
-					"esgBezogeneRechtsstreitigkeitenInvolvierung": "No",
+					"rechtsstreitigkeitenMitEsgBezug": "No",
 					"einzelheitenZuEsgBezogenenRechtsstreitigkeiten": "Calcar uter apud causa suscipit velum dignissimos. Peccatus aspernatur aiunt ratione thesis. Illum admoveo dedico suspendo iure deporto cauda."
 				},
 				"transaktionenMitNachhaltigkeitskomponenten": {
@@ -12745,7 +12745,7 @@
 					"beruecksichtigungVonNachhaltigkeitskriterienBeiDerLieferantenauswahl": "Tenuis curtus apto aequus. Deprimo amaritudo capto vobis ipsa. Cavus cado viduo curto arbitro vobis ventito tergeo."
 				},
 				"rechtsstreitigkeiten": {
-					"esgBezogeneRechtsstreitigkeitenInvolvierung": "Yes",
+					"rechtsstreitigkeitenMitEsgBezug": "Yes",
 					"einzelheitenZuEsgBezogenenRechtsstreitigkeiten": "Substantia astrum degenero tepidus voveo spoliatio bis decimus suadeo trepide. Alius vos curvo peior at desipio accusamus voluntarius optio. Autem nam adimpleo solutio carpo nemo doloremque pax itaque."
 				},
 				"transaktionenMitNachhaltigkeitskomponenten": {
@@ -13086,7 +13086,7 @@
 					"beruecksichtigungVonNachhaltigkeitskriterienBeiDerLieferantenauswahl": "Cauda tempus aestus. Artificiose debeo cenaculum vae sollicito cogo comburo. Sodalitas acerbitas decimus conatus sto."
 				},
 				"rechtsstreitigkeiten": {
-					"esgBezogeneRechtsstreitigkeitenInvolvierung": "Yes",
+					"rechtsstreitigkeitenMitEsgBezug": "Yes",
 					"einzelheitenZuEsgBezogenenRechtsstreitigkeiten": "Venia varius theologus. Dolor abscido unde stultus sophismata utroque amissio surgo vix. Ait accusamus soleo nihil vicissitudo acerbitas debilito."
 				},
 				"transaktionenMitNachhaltigkeitskomponenten": {
@@ -13436,7 +13436,7 @@
 					"beruecksichtigungVonNachhaltigkeitskriterienBeiDerLieferantenauswahl": "Nam tolero careo quasi totam aliquid aequitas civis audio. Torrens totidem ulterius. Verto vulticulus pel vito attonbitus pectus combibo attollo tricesimus."
 				},
 				"rechtsstreitigkeiten": {
-					"esgBezogeneRechtsstreitigkeitenInvolvierung": "Yes",
+					"rechtsstreitigkeitenMitEsgBezug": "Yes",
 					"einzelheitenZuEsgBezogenenRechtsstreitigkeiten": "Audacia terra censura basium admitto conventus bellicus uterque. Aiunt suscipio perspiciatis accendo culpo degusto. Demitto dolorem statua thesis cunctatio ocer vaco."
 				},
 				"transaktionenMitNachhaltigkeitskomponenten": {
@@ -13749,7 +13749,7 @@
 					"beruecksichtigungVonNachhaltigkeitskriterienBeiDerLieferantenauswahl": "Occaecati adflicto concido. Amissio uredo summisse considero absconditus rem supplanto. Acerbitas tergum acidus cibus accusator bardus."
 				},
 				"rechtsstreitigkeiten": {
-					"esgBezogeneRechtsstreitigkeitenInvolvierung": "Yes",
+					"rechtsstreitigkeitenMitEsgBezug": "Yes",
 					"einzelheitenZuEsgBezogenenRechtsstreitigkeiten": "Cattus exercitationem somnus denique desparatus aestus. Communis cupressus acidus approbo desino amplus cupio verus degusto candidus. Celebrer vulariter autem."
 				},
 				"transaktionenMitNachhaltigkeitskomponenten": {
@@ -14074,7 +14074,7 @@
 					"beruecksichtigungVonNachhaltigkeitskriterienBeiDerLieferantenauswahl": "Termes demens copiose nobis cogito. Tamquam theologus acsi testimonium cilicium cornu textilis corrigo demum. Allatus apto canonicus vivo termes ultra at utpote assentator absorbeo."
 				},
 				"rechtsstreitigkeiten": {
-					"esgBezogeneRechtsstreitigkeitenInvolvierung": "Yes",
+					"rechtsstreitigkeitenMitEsgBezug": "Yes",
 					"einzelheitenZuEsgBezogenenRechtsstreitigkeiten": "Aegrotatio molestias uter turba crustulum denuncio curtus beneficium sui. Cum corpus cetera. Tutamen tripudio video creber celo."
 				},
 				"transaktionenMitNachhaltigkeitskomponenten": {
@@ -14428,7 +14428,7 @@
 					"beruecksichtigungVonNachhaltigkeitskriterienBeiDerLieferantenauswahl": null
 				},
 				"rechtsstreitigkeiten": {
-					"esgBezogeneRechtsstreitigkeitenInvolvierung": "No",
+					"rechtsstreitigkeitenMitEsgBezug": "No",
 					"einzelheitenZuEsgBezogenenRechtsstreitigkeiten": "Sumo comitatus deludo desino solium absque saepe. Voluptates canis solvo odit astrum exercitationem. Curia dicta tepidus convoco cunctatio advenio thermae adulescens."
 				},
 				"transaktionenMitNachhaltigkeitskomponenten": {
@@ -14745,7 +14745,7 @@
 					"beruecksichtigungVonNachhaltigkeitskriterienBeiDerLieferantenauswahl": "Concido curtus ubi aro adflicto defungo verto vivo depulso cruciamentum. Alter vallum creta. Nesciunt cum aggredior."
 				},
 				"rechtsstreitigkeiten": {
-					"esgBezogeneRechtsstreitigkeitenInvolvierung": null,
+					"rechtsstreitigkeitenMitEsgBezug": null,
 					"einzelheitenZuEsgBezogenenRechtsstreitigkeiten": "Aperio solitudo cenaculum absconditus stultus viduo ulciscor verbera basium. Minus tribuo cultura totam cohaero depulso. Coruscus correptius eius."
 				},
 				"transaktionenMitNachhaltigkeitskomponenten": {
@@ -15114,7 +15114,7 @@
 					"beruecksichtigungVonNachhaltigkeitskriterienBeiDerLieferantenauswahl": "Aranea cohors vespillo ultio. Vulnus in repudiandae somniculosus compello quo audentia crepusculum cado. Verus velit iste adamo campana vetus depromo deludo casso desolo."
 				},
 				"rechtsstreitigkeiten": {
-					"esgBezogeneRechtsstreitigkeitenInvolvierung": "Yes",
+					"rechtsstreitigkeitenMitEsgBezug": "Yes",
 					"einzelheitenZuEsgBezogenenRechtsstreitigkeiten": "Molestiae appositus nostrum aliquid. Cenaculum aperte utrum esse uterque facilis tonsor tubineus. Causa annus tempora audio uxor beneficium defessus."
 				},
 				"transaktionenMitNachhaltigkeitskomponenten": {
@@ -15447,7 +15447,7 @@
 					"beruecksichtigungVonNachhaltigkeitskriterienBeiDerLieferantenauswahl": "Adipiscor aveho deludo versus. Corroboro compello cattus adopto assumenda. Amo validus tui accendo atrox ascisco."
 				},
 				"rechtsstreitigkeiten": {
-					"esgBezogeneRechtsstreitigkeitenInvolvierung": "Yes",
+					"rechtsstreitigkeitenMitEsgBezug": "Yes",
 					"einzelheitenZuEsgBezogenenRechtsstreitigkeiten": "Ulciscor delinquo uxor sub cimentarius sapiente adeptio minima verto defluo. Depromo adimpleo consectetur cohibeo tenuis tempore. Cuppedia damno iusto totidem."
 				},
 				"transaktionenMitNachhaltigkeitskomponenten": {
@@ -15791,7 +15791,7 @@
 					"beruecksichtigungVonNachhaltigkeitskriterienBeiDerLieferantenauswahl": "Vulgaris peior usitas cunctatio. Apostolus apud accusantium vallum. Clementia sulum admiratio cupio amplitudo suadeo audeo."
 				},
 				"rechtsstreitigkeiten": {
-					"esgBezogeneRechtsstreitigkeitenInvolvierung": "No",
+					"rechtsstreitigkeitenMitEsgBezug": "No",
 					"einzelheitenZuEsgBezogenenRechtsstreitigkeiten": "Sulum vacuus tot tui adsum communis curtus. Laudantium vesper eum caute totidem statim aperiam pariatur. Contego molestiae absque tactus verecundia autus."
 				},
 				"transaktionenMitNachhaltigkeitskomponenten": {
@@ -16101,7 +16101,7 @@
 					"beruecksichtigungVonNachhaltigkeitskriterienBeiDerLieferantenauswahl": null
 				},
 				"rechtsstreitigkeiten": {
-					"esgBezogeneRechtsstreitigkeitenInvolvierung": "Yes",
+					"rechtsstreitigkeitenMitEsgBezug": "Yes",
 					"einzelheitenZuEsgBezogenenRechtsstreitigkeiten": "Demum concedo degenero libero contabesco. Cresco cilicium thesis ademptio vomito quod socius adflicto suscipit. Animus agnitio anser corona pauci angustus tunc avarus."
 				},
 				"transaktionenMitNachhaltigkeitskomponenten": {
@@ -16428,7 +16428,7 @@
 					"beruecksichtigungVonNachhaltigkeitskriterienBeiDerLieferantenauswahl": null
 				},
 				"rechtsstreitigkeiten": {
-					"esgBezogeneRechtsstreitigkeitenInvolvierung": "No",
+					"rechtsstreitigkeitenMitEsgBezug": "No",
 					"einzelheitenZuEsgBezogenenRechtsstreitigkeiten": "Tenus congregatio celer. Saepe volaticus aggero ipsam validus. Censura tersus stultus valetudo sum apostolus."
 				},
 				"transaktionenMitNachhaltigkeitskomponenten": {
@@ -16728,7 +16728,7 @@
 					"beruecksichtigungVonNachhaltigkeitskriterienBeiDerLieferantenauswahl": "Tandem balbus auctor desino creator adversus summa. Creator vesco comburo corpus decumbo comedo. Cado aufero conforto caritas officia corrumpo subvenio bibo."
 				},
 				"rechtsstreitigkeiten": {
-					"esgBezogeneRechtsstreitigkeitenInvolvierung": "Yes",
+					"rechtsstreitigkeitenMitEsgBezug": "Yes",
 					"einzelheitenZuEsgBezogenenRechtsstreitigkeiten": "Celo tergum vis decens cavus suus audentia. Ipsam sufficio sponte veritatis desipio sordeo assumenda umerus angelus. Vinculum adipisci cumque umbra tepidus aureus."
 				},
 				"transaktionenMitNachhaltigkeitskomponenten": {

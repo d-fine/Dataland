@@ -8,7 +8,5 @@ import java.math.BigDecimal
  */
 data class EsgQuestionnaireSozialesArbeitsschutz(
     val massnahmenZumSchutzDerGesundheitUndVerbesserungDerSicherheit: String? = null,
-
     val anzahlDerArbeitsunfaelleProFuenfhundertVollzeitbeschaeftigte: BigDecimal? = null,
-
 )

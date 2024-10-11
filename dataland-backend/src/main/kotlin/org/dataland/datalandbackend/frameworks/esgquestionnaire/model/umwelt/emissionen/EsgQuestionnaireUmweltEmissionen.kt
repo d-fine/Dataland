@@ -8,19 +8,11 @@ import java.math.BigDecimal
  */
 data class EsgQuestionnaireUmweltEmissionen(
     val scope1Treibhausgasemissionen: BigDecimal? = null,
-
     val scope2TreibhausgasemissionenMarktbasiert: BigDecimal? = null,
-
     val scope2TreibhausgasemissionenStandortbasiert: BigDecimal? = null,
-
     val scope3Treibhausgasemissionen: BigDecimal? = null,
-
     val co2IntensitaetDesUnternehmens: BigDecimal? = null,
-
     val luftschadstoffe: BigDecimal? = null,
-
     val wassergefaehrdendeStoffe: BigDecimal? = null,
-
     val bodenverschmutzendeStoffe: BigDecimal? = null,
-
 )

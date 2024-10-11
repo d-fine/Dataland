@@ -26,30 +26,20 @@ import org.dataland.datalandbackend.frameworks.esgquestionnaire.model.allgemein.
 data class EsgQuestionnaireAllgemein(
     @field:Valid()
     val generelleEsgStrategie: EsgQuestionnaireAllgemeinGenerelleEsgStrategie? = null,
-
     @field:Valid()
     val taxonomieKpisUndBestimmteAktivitaeten: EsgQuestionnaireAllgemeinTaxonomieKpisUndBestimmteAktivitaeten? = null,
-
     @field:Valid()
     val esgRatingUndZertifizierung: EsgQuestionnaireAllgemeinEsgRatingUndZertifizierung? = null,
-
     @field:Valid()
     val unGlobalCompactPrinzipien: EsgQuestionnaireAllgemeinUnGlobalCompactPrinzipien? = null,
-
     @field:Valid()
     val oecdLeitsaetze: EsgQuestionnaireAllgemeinOecdLeitsaetze? = null,
-
     @field:Valid()
     val unSgds: EsgQuestionnaireAllgemeinUnSgds? = null,
-
     @field:Valid()
     val richtlinienDesUnternehmens: EsgQuestionnaireAllgemeinRichtlinienDesUnternehmens? = null,
-
     @field:Valid()
     val rechtsstreitigkeiten: EsgQuestionnaireAllgemeinRechtsstreitigkeiten? = null,
-
     @field:Valid()
-    val transaktionenMitNachhaltigkeitskomponenten:
-    EsgQuestionnaireAllgemeinTransaktionenMitNachhaltigkeitskomponenten? = null,
-
+    val transaktionenMitNachhaltigkeitskomponenten: EsgQuestionnaireAllgemeinTransaktionenMitNachhaltigkeitskomponenten? = null,
 )

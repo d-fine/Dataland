@@ -8,7 +8,5 @@ import org.dataland.datalandbackend.model.enums.commons.YesNo
  */
 data class EsgQuestionnaireGovernanceStakeholderdialog(
     val csrdKonformerProzessZurBeruecksichtigungDerStakeholderinteressen: YesNo? = null,
-
     val csrdKonformerProzessZurBeruecksichtigungDerStakeholderinteressenErlaeuterung: String? = null,
-
 )

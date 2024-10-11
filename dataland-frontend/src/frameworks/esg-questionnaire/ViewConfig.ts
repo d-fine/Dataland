@@ -821,22 +821,20 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
         children: [
           {
             type: 'cell',
-            label: 'ESG-bezogene Rechtsstreitigkeiten Involvierung',
+            label: 'Rechtsstreitigkeiten mit ESG-Bezug',
             explanation:
               'Ist das Unternehmen in laufende bzw. war das Unternehmen in den letzten 3 Jahren in rechtskräftig abgeschlossene Rechtsstreitigkeiten im Zusammenhang mit Nachhaltigkeit / ESG involviert? Im Vordergrund stehen vor Gericht bereits anhängige Verfahren.',
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
-              formatYesNoValueForDatatable(
-                dataset.allgemein?.rechtsstreitigkeiten?.esgBezogeneRechtsstreitigkeitenInvolvierung
-              ),
+              formatYesNoValueForDatatable(dataset.allgemein?.rechtsstreitigkeiten?.rechtsstreitigkeitenMitEsgBezug),
           },
           {
             type: 'cell',
             label: 'Einzelheiten zu ESG-bezogenen Rechtsstreitigkeiten',
             explanation: 'Bitte Einzelheiten zu den Verfahren angeben.',
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.allgemein?.rechtsstreitigkeiten?.esgBezogeneRechtsstreitigkeitenInvolvierung == 'Yes',
+              dataset.allgemein?.rechtsstreitigkeiten?.rechtsstreitigkeitenMitEsgBezug == 'Yes',
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
               formatFreeTextForDatatable(
                 dataset.allgemein?.rechtsstreitigkeiten?.einzelheitenZuEsgBezogenenRechtsstreitigkeiten

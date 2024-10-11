@@ -13,52 +13,28 @@ import java.util.EnumSet
  */
 data class EsgQuestionnaireUmweltRisikenUndMassnahmenKlima(
     val transitorischeKlimaUndUmweltrisiken: String? = null,
-
     val physischeKlimaUndUmweltrisiken: EnumSet<PhysischeKlimaUndUmweltrisikenOptions>? = null,
-
     val vonPhysischenKlimaUndUmweltrisikenBetroffeneStandorte: String? = null,
-
     val messungSteuerungUndUeberwachungDerKlimaUndUmweltrisiken: YesNo? = null,
-
     val beschreibungDerMessungSteuerungUndUeberwachungDerKlimaUndUmweltrisiken: String? = null,
-
     val nutzungVonSzenarioanalysen: YesNo? = null,
-
     val beschreibungDerNutzungVonSzenarioanalysen: String? = null,
-
     val beruecksichtigungVonKlimaUndUmweltrisiken: YesNo? = null,
-
     val zeithorizontDerBeruecksichtigungVonKlimaUndUmweltrisikenImGeschaeftsmodell: String? = null,
-
     @field:Valid()
     val transitionsplanVorhanden: BaseDataPoint<YesNo>? = null,
-
     val transitorischeRisiken: String? = null,
-
     val physischeRisiken: String? = null,
-
     val produkteZurReduzierungDerUmweltbelastung: YesNoNa? = null,
-
     val produkteZurReduzierungDerUmweltbelastungErlaeuterungen: String? = null,
-
     val zielReduzierungTreibhausgasemmissionen2030: BigDecimal? = null,
-
     val zielReduzierungTreibhausgasemmissionen2040: BigDecimal? = null,
-
     val zielReduzierungTreibhausgasemmissionen2050: BigDecimal? = null,
-
     val zielReduzierungTreibhausgasemmissionenErlaeuterungen: String? = null,
-
     val kompensationsinstrumenteTreibhausgasemissionen: YesNo? = null,
-
     val kompensationsinstrumenteTreibhausgasemissionenZertifizierungen: String? = null,
-
     val zielAnteilErneuerbarerEnergien2030: BigDecimal? = null,
-
     val zielAnteilErneuerbarerEnergien2040: BigDecimal? = null,
-
     val zielAnteilErneuerbarerEnergien2050: BigDecimal? = null,
-
     val zielAnteilErneuerbarerEnergienErlaeuterungen: String? = null,
-
 )

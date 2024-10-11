@@ -10,33 +10,22 @@ import org.dataland.datalandbackend.model.enums.commons.YesNo
  */
 data class EsgQuestionnaireAllgemeinEsgRatingUndZertifizierung(
     val esgRating: YesNo? = null,
-
     val ratingagentur: String? = null,
-
     val ergebnisDesEsgRatings: String? = null,
-
     @field:Valid()
     val ratingbericht: BaseDataPoint<YesNo>? = null,
-
     @field:Valid()
     val iso14001: BaseDataPoint<YesNo>? = null,
-
     @field:Valid()
     val iso45001: BaseDataPoint<YesNo>? = null,
-
     @field:Valid()
     val iso27001: BaseDataPoint<YesNo>? = null,
-
     @field:Valid()
     val iso50001: BaseDataPoint<YesNo>? = null,
-
     @field:Valid()
     val iso14040Ivm14044: BaseDataPoint<YesNo>? = null,
-
     @field:Valid()
     val iso14064: BaseDataPoint<YesNo>? = null,
-
     @field:Valid()
     val emas: BaseDataPoint<YesNo>? = null,
-
 )

@@ -6,5 +6,4 @@ package org.dataland.datalandbackend.frameworks.esgquestionnaire.model.allgemein
  */
 data class EsgQuestionnaireAllgemeinUnSgds(
     val ausrichtungNachDenUnSdgsUndAktivesVerfolgen: String? = null,
-
 )

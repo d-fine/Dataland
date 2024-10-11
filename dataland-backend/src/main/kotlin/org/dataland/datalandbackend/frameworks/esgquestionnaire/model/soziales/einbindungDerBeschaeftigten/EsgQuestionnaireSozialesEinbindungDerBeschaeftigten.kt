@@ -7,9 +7,6 @@ import java.util.EnumSet
  * The data-model for the EinbindungDerBeschaeftigten section
  */
 data class EsgQuestionnaireSozialesEinbindungDerBeschaeftigten(
-    val einbindungVonBeschaeftigtenInEntscheidungen:
-    EnumSet<EinbindungVonBeschaeftigtenInEntscheidungenOptions>? = null,
-
+    val einbindungVonBeschaeftigtenInEntscheidungen: EnumSet<EinbindungVonBeschaeftigtenInEntscheidungenOptions>? = null,
     val einbindungVonBeschaeftigtenInEntscheidungenErlaeuterungen: String? = null,
-
 )

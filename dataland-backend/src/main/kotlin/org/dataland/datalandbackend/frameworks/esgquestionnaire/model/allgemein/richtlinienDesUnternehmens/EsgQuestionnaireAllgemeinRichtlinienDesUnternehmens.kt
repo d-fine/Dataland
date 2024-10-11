@@ -8,7 +8,5 @@ import java.util.EnumSet
  */
 data class EsgQuestionnaireAllgemeinRichtlinienDesUnternehmens(
     val existenzVonRichtlinienZuSpezifischenThemen: EnumSet<ExistenzVonRichtlinienZuSpezifischenThemenOptions>? = null,
-
     val beruecksichtigungVonNachhaltigkeitskriterienBeiDerLieferantenauswahl: String? = null,
-
 )

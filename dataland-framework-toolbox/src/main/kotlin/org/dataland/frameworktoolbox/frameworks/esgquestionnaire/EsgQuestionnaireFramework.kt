@@ -18,17 +18,18 @@ import java.io.File
  * Definition of the Heimathafen framework
  */
 @Component
-class EsgQuestionnaireFramework : PavedRoadFramework(
-    identifier = "esg-questionnaire",
-    label = "ESG Questionnaire für Corporate Schuldscheindarlehen",
-    explanation = "Der ESG Questionnaire für Corporate Schuldscheindarlehen ist ein ESG-Fragebogen des " +
-        "Gesamtverbands der Versicherer und des Bundesverbands Öffentlicher Banken",
-    File("./dataland-framework-toolbox/inputs/esg-questionnaire/esg-questionnaire.xlsx"),
-    order = 7,
-    enabledFeatures =
-    FrameworkGenerationFeatures.allExcept(FrameworkGenerationFeatures.QaModel),
-) {
-
+class EsgQuestionnaireFramework :
+    PavedRoadFramework(
+        identifier = "esg-questionnaire",
+        label = "ESG Questionnaire für Corporate Schuldscheindarlehen",
+        explanation =
+            "Der ESG Questionnaire für Corporate Schuldscheindarlehen ist ein ESG-Fragebogen des " +
+                "Gesamtverbands der Versicherer und des Bundesverbands Öffentlicher Banken",
+        File("./dataland-framework-toolbox/inputs/esg-questionnaire/esg-questionnaire.xlsx"),
+        order = 7,
+        enabledFeatures =
+            FrameworkGenerationFeatures.allExcept(FrameworkGenerationFeatures.QaModel),
+    ) {
     /*override fun configureDiagnostics(diagnosticManager: DiagnosticManager) {
         diagnosticManager.suppress("IgnoredRow-38-3118f246")
     } TODO suppression is probably not needed anymore. remove at the every end*/
@@ -59,9 +60,8 @@ class EsgQuestionnaireFramework : PavedRoadFramework(
             }
         }
     }
-    private fun createRollingWindowComponentsInCategorySoziales(
-        framework: Framework,
-    ) {
+
+    private fun createRollingWindowComponentsInCategorySoziales(framework: Framework) {
         framework.root.edit<ComponentGroup>("soziales") {
             // val sozialesGroup = this TODO
             with(EsgQuestionnaireSozialesRollingWindowComponents) {
@@ -76,7 +76,6 @@ class EsgQuestionnaireFramework : PavedRoadFramework(
     private fun editListOfStringBaseDatapointComponents(framework: Framework) {
         framework.root.edit<ComponentGroup>("allgemein") {
             val componentGroupAllgemein = this
-            println(componentGroupAllgemein)
             with(EsgQuestionnaireListOfStringBaseDataPointComponents) {
                 dokumenteZurNachhaltigkeitsstrategie(componentGroupAllgemein)
                 richtlinienZurEinhaltungDerUngcp(componentGroupAllgemein)
@@ -100,9 +99,7 @@ class EsgQuestionnaireFramework : PavedRoadFramework(
         }
     }
 
-    override fun getComponentGenerationUtils(): ComponentGenerationUtils {
-        return ComponentGenerationUtilsForGermanFrameworks()
-    }
+    override fun getComponentGenerationUtils(): ComponentGenerationUtils = ComponentGenerationUtilsForGermanFrameworks()
 
     private fun customizeBerichtsPflicht(component: YesNoComponent) {
         component.uploadConfigGenerator = { sectionUploadConfigBuilder ->

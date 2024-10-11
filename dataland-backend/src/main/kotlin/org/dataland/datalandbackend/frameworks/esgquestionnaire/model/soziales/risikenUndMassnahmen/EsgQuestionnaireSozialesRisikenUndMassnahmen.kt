@@ -8,9 +8,6 @@ import org.dataland.datalandbackend.model.enums.commons.YesNo
  */
 data class EsgQuestionnaireSozialesRisikenUndMassnahmen(
     val weitereWesentlicheSozialeRisiken: YesNo? = null,
-
     val weitereWesentlicheSozialeRisikenErlaeuterung: String? = null,
-
     val massnahmenZurReduzierungVonSozialenRisiken: String? = null,
-
 )

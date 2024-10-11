@@ -15,11 +15,8 @@ import org.dataland.datalandbackend.frameworks.esgquestionnaire.model.governance
 data class EsgQuestionnaireGovernance(
     @field:Valid()
     val vorstandsprofil: EsgQuestionnaireGovernanceVorstandsprofil? = null,
-
     @field:Valid()
     val stakeholderdialog: EsgQuestionnaireGovernanceStakeholderdialog? = null,
-
     @field:Valid()
     val risikenUndMassnahmen: EsgQuestionnaireGovernanceRisikenUndMassnahmen? = null,
-
 )

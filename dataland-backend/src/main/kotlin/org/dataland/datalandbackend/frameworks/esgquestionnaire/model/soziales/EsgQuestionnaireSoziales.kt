@@ -17,14 +17,10 @@ import org.dataland.datalandbackend.frameworks.esgquestionnaire.model.soziales.r
 data class EsgQuestionnaireSoziales(
     @field:Valid()
     val beschaeftigtenprofilUndEntlohnung: EsgQuestionnaireSozialesBeschaeftigtenprofilUndEntlohnung? = null,
-
     @field:Valid()
     val einbindungDerBeschaeftigten: EsgQuestionnaireSozialesEinbindungDerBeschaeftigten? = null,
-
     @field:Valid()
     val arbeitsschutz: EsgQuestionnaireSozialesArbeitsschutz? = null,
-
     @field:Valid()
     val risikenUndMassnahmen: EsgQuestionnaireSozialesRisikenUndMassnahmen? = null,
-
 )

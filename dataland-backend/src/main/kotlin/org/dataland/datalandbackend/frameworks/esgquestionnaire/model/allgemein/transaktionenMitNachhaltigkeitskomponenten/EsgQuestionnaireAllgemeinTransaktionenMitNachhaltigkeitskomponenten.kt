@@ -8,11 +8,7 @@ import org.dataland.datalandbackend.model.enums.commons.YesNo
  */
 data class EsgQuestionnaireAllgemeinTransaktionenMitNachhaltigkeitskomponenten(
     val emissionGruenerSozialerUndOderNachhaltigerSchuldtitel: YesNo? = null,
-
     val detailsZuEmissionenGruenerSozialerUndOderNachhaltigerSchuldtitel: String? = null,
-
     val emissionVonSustainibilityLinkedDebt: YesNo? = null,
-
     val detailsZuEmissionenVonSustainibilityLinkedDebt: String? = null,
-
 )

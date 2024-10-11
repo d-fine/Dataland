@@ -9,25 +9,14 @@ import java.math.BigInteger
  */
 data class EsgQuestionnaireSozialesBeschaeftigtenprofilUndEntlohnung(
     val zahlDerBeschaeftigtenInsgesamt: BigInteger? = null,
-
     val anteilWeiblicherPersonenUnterDenBeschaeftigten: BigDecimal? = null,
-
     val anteilMaennlicherPersonenUnterDenBeschaeftigten: BigDecimal? = null,
-
     val anteilDiverserPersonenUnterDenBeschaeftigten: BigDecimal? = null,
-
     val geschlechtsspezifischesLohngefaelle: BigDecimal? = null,
-
     val jaehrlicheGesamtverguetungsquote: BigDecimal? = null,
-
     val anteilVonUnterDreissigjaehrigen: BigDecimal? = null,
-
     val anteilVonDreissigBisFuenfzigjaehrigen: BigDecimal? = null,
-
     val anteilVonUeberFuenfzigjaehrigen: BigDecimal? = null,
-
     val durchschnittlicheAnzahlAnTrainingsstunden: BigDecimal? = null,
-
     val fluktuationsquote: BigDecimal? = null,
-
 )

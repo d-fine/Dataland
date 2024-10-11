@@ -8,9 +8,6 @@ import java.math.BigDecimal
  */
 data class EsgQuestionnaireUmweltVerbrauchsangaben(
     val energieverbrauch: BigDecimal? = null,
-
     val anteilErneuerbarerEnergienAmGesamtEnergieverbrauch: BigDecimal? = null,
-
     val wasserverbrauch: BigDecimal? = null,
-
 )

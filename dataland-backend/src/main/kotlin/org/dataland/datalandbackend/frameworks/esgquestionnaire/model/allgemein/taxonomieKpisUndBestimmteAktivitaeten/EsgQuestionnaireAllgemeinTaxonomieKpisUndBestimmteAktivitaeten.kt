@@ -9,55 +9,29 @@ import java.math.BigDecimal
  */
 data class EsgQuestionnaireAllgemeinTaxonomieKpisUndBestimmteAktivitaeten(
     val wirtschaftszweige: List<String>? = null,
-
     val gesamtumsatz: BigDecimal? = null,
-
     val taxonomiefaehigerUmsatz: BigDecimal? = null,
-
     val taxonomiekonformerUmsatz: BigDecimal? = null,
-
     val gesamtCapex: BigDecimal? = null,
-
     val taxonomiefaehigeCapex: BigDecimal? = null,
-
     val taxonomiekonformeCapex: BigDecimal? = null,
-
     val taxonomiebezogeneCapexPlanungVorhanden: YesNo? = null,
-
     val geplanteTaxonomiefaehigeCapexIn5Jahren: BigDecimal? = null,
-
     val geplanteTaxonomiekonformeCapexIn5Jahren: BigDecimal? = null,
-
     val aktivitaetImSektorFossileBrennstoffe: YesNo? = null,
-
     val aktuellerProzentualerUmsatzanteilImSektorFossileBrennstoffe: BigDecimal? = null,
-
     val geplanterProzentualerUmsatzanteilImSektorFossileBrennstoffeIn2030: BigDecimal? = null,
-
     val geplanterProzentualerUmsatzanteilImSektorFossileBrennstoffeIn2040: BigDecimal? = null,
-
     val aktivitaetImSektorHerstellungVonChemikalien: YesNo? = null,
-
     val aktuellerProzentualerUmsatzanteilImSektorHerstellungVonChemikalien: BigDecimal? = null,
-
     val geplanterProzentualerUmsatzanteilImSektorHerstellungVonChemikalienIn2030: BigDecimal? = null,
-
     val geplanterProzentualerUmsatzanteilImSektorHerstellungVonChemikalienIn2040: BigDecimal? = null,
-
     val aktivitaetImSektorUmstritteneWaffen: YesNo? = null,
-
     val aktuellerProzentualerUmsatzanteilImSektorUmstritteneWaffen: BigDecimal? = null,
-
     val geplanterProzentualerUmsatzanteilImSektorUmstritteneWaffenIn2030: BigDecimal? = null,
-
     val geplanterProzentualerUmsatzanteilImSektorUmstritteneWaffenIn2040: BigDecimal? = null,
-
     val aktivitaetImSektorTabakanbauUndVerarbeitung: YesNo? = null,
-
     val aktuellerProzentualerUmsatzanteilImSektorTabakanbauUndVerarbeitung: BigDecimal? = null,
-
     val geplanterProzentualerUmsatzanteilImSektorTabakanbauUndVerarbeitungIn2030: BigDecimal? = null,
-
     val geplanterProzentualerUmsatzanteilImSektorTabakanbauUndVerarbeitungIn2040: BigDecimal? = null,
-
 )

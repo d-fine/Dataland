@@ -9,13 +9,8 @@ import java.math.BigDecimal
  */
 data class EsgQuestionnaireUmweltRisikenUndMassnahmenKreislaufwirtschaft(
     val abfallmanagementsystem: YesNoNa? = null,
-
     val abfallmanagementsystemErlaeuterungen: String? = null,
-
     val anteilWiederverwendeterOderRecycelterKomponentenProdukteUndMaterialienImProduktionsprozess: BigDecimal? = null,
-
     val geplanteErhoehungDesAnteilsVonRecyclaten: YesNoNa? = null,
-
     val geplanteErhoehungDesAnteilsVonRecyclatenErlaeuterungen: String? = null,
-
 )
