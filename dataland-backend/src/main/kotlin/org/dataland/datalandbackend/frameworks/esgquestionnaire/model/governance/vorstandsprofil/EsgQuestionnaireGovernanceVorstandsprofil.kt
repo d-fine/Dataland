@@ -15,7 +15,7 @@ data class EsgQuestionnaireGovernanceVorstandsprofil(
     val anteilMaennlicherPersonenImTopManagement: BigDecimal? = null,
     val anteilDiverserPersonenImTopManagement: BigDecimal? = null,
     val kopplungVonVerguetungDesTopManagementsAnNachhaltigkeitsziele: YesNo? = null,
-    val kopplungVonVerguetungDesTopManagementsAnNachhaltigkeitszieleErlaeuterung: String? = null,
+    val skizzierungDerRegelungZurKopplungVonVerguetungDesTopManagementsAnNachhaltigkeitsziele: String? = null,
     @field:MinimumValue(minimumValue = 0)
     val gesamtanzahlAufsichtsratMitglieder: BigInteger? = null,
     @field:MinimumValue(minimumValue = 0)

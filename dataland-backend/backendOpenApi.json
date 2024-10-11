@@ -15623,7 +15623,7 @@
       "EsgQuestionnaireAllgemeinGenerelleEsgStrategie": {
         "type": "object",
         "properties": {
-          "nachhaltigkeitsstrategieVorhanden": {
+          "nachhaltigkeitsstrategie": {
             "nullable": true,
             "allOf": [
               {
@@ -15638,7 +15638,7 @@
               "$ref": "#/components/schemas/BaseDataPointString"
             }
           },
-          "massnahmenBezueglich15GradCelsiusZielVorhanden": {
+          "massnahmenZurErreichungDes15GradCelsiusZiels": {
             "nullable": true,
             "allOf": [
               {
@@ -15646,7 +15646,7 @@
               }
             ]
           },
-          "beschreibungMassnahmenBezueglich15GradCelsiusZiel": {
+          "skizzierungVonMassnahmenZurErreichungDes15GradCelsiusZiels": {
             "type": "string",
             "nullable": true
           },
@@ -15715,7 +15715,7 @@
               }
             ]
           },
-          "einzelheitenZuEsgBezogenenRechtsstreitigkeiten": {
+          "einzelheitenZuRechtsstreitigkeitenMitEsgBezug": {
             "type": "string",
             "nullable": true
           }
@@ -15771,7 +15771,7 @@
             "type": "number",
             "nullable": true
           },
-          "taxonomiebezogeneCapexPlanungVorhanden": {
+          "taxonomiebezogeneCapexPlanung": {
             "nullable": true,
             "allOf": [
               {
@@ -16054,7 +16054,7 @@
               }
             ]
           },
-          "csrdKonformerProzessZurBeruecksichtigungDerStakeholderinteressenErlaeuterung": {
+          "skizzierungDesCsrdKonformenProzessesZurBeruecksichtigungDerStakeholderinteressen": {
             "type": "string",
             "nullable": true
           }
@@ -16091,7 +16091,7 @@
               }
             ]
           },
-          "kopplungVonVerguetungDesTopManagementsAnNachhaltigkeitszieleErlaeuterung": {
+          "skizzierungDerRegelungZurKopplungVonVerguetungDesTopManagementsAnNachhaltigkeitsziele": {
             "type": "string",
             "nullable": true
           },
@@ -16242,7 +16242,7 @@
               }
             ]
           },
-          "weitereWesentlicheSozialeRisikenErlaeuterung": {
+          "erlaeuterungZuWeiterenWesentlichenSozialenRisiken": {
             "type": "string",
             "nullable": true
           },
@@ -16370,7 +16370,7 @@
               }
             ]
           },
-          "negativeAuswirkungenAufBiodiversitaetUndOekosystemErlaeuterungen": {
+          "methodikZurErmittlungVonNegativenAuswirkungenAufBiodiversitaetUndOekosystem": {
             "type": "string",
             "nullable": true
           },
@@ -16382,7 +16382,7 @@
               }
             ]
           },
-          "positiveAuswirkungenAufBiodiversitaetUndOekosystemErlaeuterungen": {
+          "methodikZurErmittlungVonPositivenAuswirkungenAufBiodiversitaetUndOekosystem": {
             "type": "string",
             "nullable": true
           },
@@ -16398,7 +16398,7 @@
               }
             ]
           },
-          "planZurReduktionDesWasserverbrauchsErlaeuterung": {
+          "skizzierungDesPlansZurReduktionDesWasserverbrauchs": {
             "type": "string",
             "nullable": true
           }
@@ -16458,7 +16458,7 @@
             "type": "string",
             "nullable": true
           },
-          "transitionsplanVorhanden": {
+          "transitionsplan": {
             "nullable": true,
             "allOf": [
               {
@@ -16482,7 +16482,7 @@
               }
             ]
           },
-          "produkteZurReduzierungDerUmweltbelastungErlaeuterungen": {
+          "skizzierungDerProdukteZurReduzierungDerUmweltbelastung": {
             "type": "string",
             "nullable": true
           },
@@ -16510,7 +16510,7 @@
               }
             ]
           },
-          "kompensationsinstrumenteTreibhausgasemissionenZertifizierungen": {
+          "zertifizierungenBezueglichKompensationinstrumenten": {
             "type": "string",
             "nullable": true
           },
@@ -16543,7 +16543,7 @@
               }
             ]
           },
-          "abfallmanagementsystemErlaeuterungen": {
+          "skizzierungAbfallmanagementsystem": {
             "type": "string",
             "nullable": true
           },
@@ -16559,7 +16559,7 @@
               }
             ]
           },
-          "geplanteErhoehungDesAnteilsVonRecyclatenErlaeuterungen": {
+          "angabenZurGeplantenErhoehungDesAnteilsVonRecyclaten": {
             "type": "string",
             "nullable": true
           }
@@ -17048,16 +17048,16 @@
         ],
         "type": "object",
         "properties": {
-          "companyName": {
-            "type": "string"
-          },
           "companyId": {
             "type": "string"
           },
-          "countryCode": {
+          "companyName": {
             "type": "string"
           },
           "headquarters": {
+            "type": "string"
+          },
+          "countryCode": {
             "type": "string"
           },
           "sector": {
@@ -17089,10 +17089,10 @@
         ],
         "type": "object",
         "properties": {
-          "companyName": {
+          "companyId": {
             "type": "string"
           },
-          "companyId": {
+          "companyName": {
             "type": "string"
           }
         }

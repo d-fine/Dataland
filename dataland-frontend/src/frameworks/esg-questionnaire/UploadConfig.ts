@@ -48,8 +48,8 @@ export const esgQuestionnaireDataModel = [
         label: 'Generelle ESG-Strategie',
         fields: [
           {
-            name: 'nachhaltigkeitsstrategieVorhanden',
-            label: 'Nachhaltigkeitsstrategie vorhanden',
+            name: 'nachhaltigkeitsstrategie',
+            label: 'Nachhaltigkeitsstrategie',
             description: 'Verfügt das Unternehmen über eine Nachhaltigkeitsstrategie?',
 
             component: 'YesNoFormField',
@@ -66,27 +66,27 @@ export const esgQuestionnaireDataModel = [
             component: 'ListOfBaseDataPointsFormField',
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.allgemein?.generelleEsgStrategie?.nachhaltigkeitsstrategieVorhanden == 'Yes',
+              dataset.allgemein?.generelleEsgStrategie?.nachhaltigkeitsstrategie == 'Yes',
           },
           {
-            name: 'massnahmenBezueglich15GradCelsiusZielVorhanden',
-            label: 'Maßnahmen bezüglich 1,5 Grad Celsius Ziel vorhanden',
+            name: 'massnahmenZurErreichungDes15GradCelsiusZiels',
+            label: 'Maßnahmen zur Erreichung des 1,5 Grad Celsius Ziels',
             description: 'Werden spezielle Ziele / Maßnahmen ergriffen, um das 1,5 °C Ziel zu erreichen?',
 
             component: 'YesNoFormField',
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.allgemein?.generelleEsgStrategie?.nachhaltigkeitsstrategieVorhanden == 'Yes',
+              dataset.allgemein?.generelleEsgStrategie?.nachhaltigkeitsstrategie == 'Yes',
           },
           {
-            name: 'beschreibungMassnahmenBezueglich15GradCelsiusZiel',
-            label: 'Beschreibung Maßnahmen bezüglich 1,5 Grad Celsius Ziel',
-            description: 'Beschreiben Sie spezielle Ziele / Maßnahmen, um das 1,5°C Ziel zu erreichen.',
+            name: 'skizzierungVonMassnahmenZurErreichungDes15GradCelsiusZiels',
+            label: 'Skizzierung von Maßnahmen zur Erreichung des 1,5 Grad Celsius Ziels',
+            description: 'Skizzieren Sie spezielle Ziele / Maßnahmen, um das 1,5°C Ziel zu erreichen.',
 
             component: 'FreeTextFormField',
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.allgemein?.generelleEsgStrategie?.massnahmenBezueglich15GradCelsiusZielVorhanden == 'Yes',
+              dataset.allgemein?.generelleEsgStrategie?.massnahmenZurErreichungDes15GradCelsiusZiels == 'Yes',
           },
           {
             name: 'zugewieseneBudgetsBis2030',
@@ -98,7 +98,7 @@ export const esgQuestionnaireDataModel = [
             component: 'NumberFormField',
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.allgemein?.generelleEsgStrategie?.massnahmenBezueglich15GradCelsiusZielVorhanden == 'Yes',
+              dataset.allgemein?.generelleEsgStrategie?.massnahmenZurErreichungDes15GradCelsiusZiels == 'Yes',
             validation: 'min:0',
           },
           {
@@ -111,7 +111,7 @@ export const esgQuestionnaireDataModel = [
             component: 'NumberFormField',
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.allgemein?.generelleEsgStrategie?.massnahmenBezueglich15GradCelsiusZielVorhanden == 'Yes',
+              dataset.allgemein?.generelleEsgStrategie?.massnahmenZurErreichungDes15GradCelsiusZiels == 'Yes',
             validation: 'min:0',
           },
           {
@@ -124,7 +124,7 @@ export const esgQuestionnaireDataModel = [
             component: 'NumberFormField',
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.allgemein?.generelleEsgStrategie?.massnahmenBezueglich15GradCelsiusZielVorhanden == 'Yes',
+              dataset.allgemein?.generelleEsgStrategie?.massnahmenZurErreichungDes15GradCelsiusZiels == 'Yes',
             validation: 'min:0',
           },
           {
@@ -137,7 +137,7 @@ export const esgQuestionnaireDataModel = [
             component: 'NumberFormField',
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.allgemein?.generelleEsgStrategie?.massnahmenBezueglich15GradCelsiusZielVorhanden == 'Yes',
+              dataset.allgemein?.generelleEsgStrategie?.massnahmenZurErreichungDes15GradCelsiusZiels == 'Yes',
             validation: 'min:0',
           },
           {
@@ -150,7 +150,7 @@ export const esgQuestionnaireDataModel = [
             component: 'NumberFormField',
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.allgemein?.generelleEsgStrategie?.massnahmenBezueglich15GradCelsiusZielVorhanden == 'Yes',
+              dataset.allgemein?.generelleEsgStrategie?.massnahmenZurErreichungDes15GradCelsiusZiels == 'Yes',
             validation: 'min:0',
           },
           {
@@ -163,7 +163,7 @@ export const esgQuestionnaireDataModel = [
             component: 'NumberFormField',
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.allgemein?.generelleEsgStrategie?.massnahmenBezueglich15GradCelsiusZielVorhanden == 'Yes',
+              dataset.allgemein?.generelleEsgStrategie?.massnahmenZurErreichungDes15GradCelsiusZiels == 'Yes',
             validation: 'min:0',
           },
           {
@@ -267,8 +267,8 @@ export const esgQuestionnaireDataModel = [
             validation: 'min:0',
           },
           {
-            name: 'taxonomiebezogeneCapexPlanungVorhanden',
-            label: 'Taxonomiebezogene CapEx-Planung vorhanden',
+            name: 'taxonomiebezogeneCapexPlanung',
+            label: 'Taxonomiebezogene CapEx-Planung',
             description: 'Hat das Unternehmen eine taxonomiebezogene CapEx-Planung? ',
 
             component: 'YesNoFormField',
@@ -286,7 +286,7 @@ export const esgQuestionnaireDataModel = [
             component: 'NumberFormField',
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.allgemein?.taxonomieKpisUndBestimmteAktivitaeten?.taxonomiebezogeneCapexPlanungVorhanden == 'Yes',
+              dataset.allgemein?.taxonomieKpisUndBestimmteAktivitaeten?.taxonomiebezogeneCapexPlanung == 'Yes',
             validation: 'between:0,100',
           },
           {
@@ -299,7 +299,7 @@ export const esgQuestionnaireDataModel = [
             component: 'NumberFormField',
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.allgemein?.taxonomieKpisUndBestimmteAktivitaeten?.taxonomiebezogeneCapexPlanungVorhanden == 'Yes',
+              dataset.allgemein?.taxonomieKpisUndBestimmteAktivitaeten?.taxonomiebezogeneCapexPlanung == 'Yes',
             validation: 'between:0,100',
           },
           {
@@ -686,7 +686,7 @@ export const esgQuestionnaireDataModel = [
             name: 'richtlinienZurEinhaltungDerOecdLeitsaetze',
             label: 'Richtlinien zur Einhaltung der OECD-Leitsätze',
             description:
-              'Bitte teilen Sie die Richtlinien mit uns die beschreiben oder Informationen darüber liefern, wie das Unternehmen die Einhaltung der OECD-Leitsätze überwacht.',
+              'Bitte teilen Sie die Richtlinien mit uns, die beschreiben oder Informationen darüber liefern, wie das Unternehmen die Einhaltung der OECD-Leitsätze überwacht.',
 
             component: 'ListOfBaseDataPointsFormField',
             required: false,
@@ -802,8 +802,8 @@ export const esgQuestionnaireDataModel = [
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
           },
           {
-            name: 'einzelheitenZuEsgBezogenenRechtsstreitigkeiten',
-            label: 'Einzelheiten zu ESG-bezogenen Rechtsstreitigkeiten',
+            name: 'einzelheitenZuRechtsstreitigkeitenMitEsgBezug',
+            label: 'Einzelheiten zu Rechtsstreitigkeiten mit ESG-Bezug',
             description: 'Bitte Einzelheiten zu den Verfahren angeben.',
 
             component: 'FreeTextFormField',
@@ -1221,8 +1221,8 @@ export const esgQuestionnaireDataModel = [
               dataset.umwelt?.risikenUndMassnahmenKlima?.beruecksichtigungVonKlimaUndUmweltrisiken == 'Yes',
           },
           {
-            name: 'transitionsplanVorhanden',
-            label: 'Transitionsplan vorhanden',
+            name: 'transitionsplan',
+            label: 'Transitionsplan',
             description: 'Verfügt das Unternehmen über einen Transitionsplan?',
 
             component: 'YesNoBaseDataPointFormField',
@@ -1264,8 +1264,8 @@ export const esgQuestionnaireDataModel = [
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
           },
           {
-            name: 'produkteZurReduzierungDerUmweltbelastungErlaeuterungen',
-            label: 'Produkte zur Reduzierung der Umweltbelastung Erläuterungen',
+            name: 'skizzierungDerProdukteZurReduzierungDerUmweltbelastung',
+            label: 'Skizzierung der Produkte zur Reduzierung der Umweltbelastung',
             description: 'Bitte kurz skizzieren wie die Produkte die Umweltbelastung verringern.',
 
             component: 'FreeTextFormField',
@@ -1334,8 +1334,8 @@ export const esgQuestionnaireDataModel = [
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
           },
           {
-            name: 'kompensationsinstrumenteTreibhausgasemissionenZertifizierungen',
-            label: 'Kompensationsinstrumente Treibhausgasemissionen Zertifizierungen',
+            name: 'zertifizierungenBezueglichKompensationinstrumenten',
+            label: 'Zertifizierungen bezüglich Kompensationinstrumenten',
             description:
               'Bitte benennen Sie die der Kompensation für Treibhasgasemissionen zugrundeliegenden Zertifizierungen.',
 
@@ -1410,8 +1410,8 @@ export const esgQuestionnaireDataModel = [
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
           },
           {
-            name: 'abfallmanagementsystemErlaeuterungen',
-            label: 'Abfallmanagementsystem Erläuterungen',
+            name: 'skizzierungAbfallmanagementsystem',
+            label: 'Skizzierung Abfallmanagementsystem',
             description:
               'Bitte skizzieren sie kurz das vorhandene System, insbesondere zur Produktion von und Umgang mit gefährlichen Abfällen.',
 
@@ -1445,8 +1445,8 @@ export const esgQuestionnaireDataModel = [
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
           },
           {
-            name: 'geplanteErhoehungDesAnteilsVonRecyclatenErlaeuterungen',
-            label: 'Geplante Erhöhung des Anteils von Recyclaten Erläuterungen',
+            name: 'angabenZurGeplantenErhoehungDesAnteilsVonRecyclaten',
+            label: 'Angaben zur geplanten Erhöhung des Anteils von Recyclaten',
             description: 'Bitte Basisjahr / Basiswert und entsprechende Planwerte angeben.',
 
             component: 'FreeTextFormField',
@@ -1473,8 +1473,8 @@ export const esgQuestionnaireDataModel = [
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
           },
           {
-            name: 'negativeAuswirkungenAufBiodiversitaetUndOekosystemErlaeuterungen',
-            label: 'Negative Auswirkungen auf Biodiversität und Ökosystem Erläuterungen',
+            name: 'methodikZurErmittlungVonNegativenAuswirkungenAufBiodiversitaetUndOekosystem',
+            label: 'Methodik zur Ermittlung von negativen Auswirkungen auf Biodiversität und Ökosystem',
             description:
               'Soweit vorhanden, bitte verwendete Methodik benennen auf deren Basis das Ergebnis ermittelt wurde.',
 
@@ -1496,8 +1496,8 @@ export const esgQuestionnaireDataModel = [
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
           },
           {
-            name: 'positiveAuswirkungenAufBiodiversitaetUndOekosystemErlaeuterungen',
-            label: 'Positive Auswirkungen auf Biodiversität und Ökosystem Erläuterungen',
+            name: 'methodikZurErmittlungVonPositivenAuswirkungenAufBiodiversitaetUndOekosystem',
+            label: 'Methodik zur Ermittlung von positiven Auswirkungen auf Biodiversität und Ökosystem',
             description:
               'Soweit vorhanden, bitte verwendete Methodik benennen auf deren Basis das Ergebnis ermittelt wurde.',
 
@@ -1530,8 +1530,8 @@ export const esgQuestionnaireDataModel = [
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
           },
           {
-            name: 'planZurReduktionDesWasserverbrauchsErlaeuterung',
-            label: 'Plan zur Reduktion des Wasserverbrauchs Erläuterung',
+            name: 'skizzierungDesPlansZurReduktionDesWasserverbrauchs',
+            label: 'Skizzierung des Plans zur Reduktion des Wasserverbrauchs',
             description: 'Bitte skizzieren sie kurz, wie der Wasserverbrauch reduziert werden soll.',
 
             component: 'FreeTextFormField',
@@ -1786,8 +1786,8 @@ export const esgQuestionnaireDataModel = [
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
           },
           {
-            name: 'weitereWesentlicheSozialeRisikenErlaeuterung',
-            label: 'Weitere wesentliche soziale Risiken Erläuterung',
+            name: 'erlaeuterungZuWeiterenWesentlichenSozialenRisiken',
+            label: 'Erläuterung zu weiteren wesentlichen sozialen Risiken',
             description: 'Erläutern sie die weiteren wesentlichenn sozialen Risiken.',
 
             component: 'FreeTextFormField',
@@ -1888,8 +1888,8 @@ export const esgQuestionnaireDataModel = [
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
           },
           {
-            name: 'kopplungVonVerguetungDesTopManagementsAnNachhaltigkeitszieleErlaeuterung',
-            label: 'Kopplung von Vergütung des Top-Managements an Nachhaltigkeitsziele Erläuterung',
+            name: 'skizzierungDerRegelungZurKopplungVonVerguetungDesTopManagementsAnNachhaltigkeitsziele',
+            label: 'Skizzierung der Regelung zur Kopplung von Vergütung des Top-Managements an Nachhaltigkeitsziele',
             description: 'Bitte die bestehende Regelung skizzieren.',
 
             component: 'FreeTextFormField',
@@ -1952,8 +1952,8 @@ export const esgQuestionnaireDataModel = [
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
           },
           {
-            name: 'csrdKonformerProzessZurBeruecksichtigungDerStakeholderinteressenErlaeuterung',
-            label: 'CSRD-konformer Prozess zur Berücksichtigung der Stakeholderinteressen Erläuterung',
+            name: 'skizzierungDesCsrdKonformenProzessesZurBeruecksichtigungDerStakeholderinteressen',
+            label: 'Skizzierung des CSRD-konformen Prozesses zur Berücksichtigung der Stakeholderinteressen',
             description:
               'Bitte den Prozess in seiner Methodik skizzieren und wichtigste Schlussfolgerungen darstellen. ',
 

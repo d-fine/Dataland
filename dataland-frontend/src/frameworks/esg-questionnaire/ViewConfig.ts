@@ -62,12 +62,12 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
         children: [
           {
             type: 'cell',
-            label: 'Nachhaltigkeitsstrategie vorhanden',
+            label: 'Nachhaltigkeitsstrategie',
             explanation: 'Verfügt das Unternehmen über eine Nachhaltigkeitsstrategie?',
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
-              formatYesNoValueForDatatable(dataset.allgemein?.generelleEsgStrategie?.nachhaltigkeitsstrategieVorhanden),
+              formatYesNoValueForDatatable(dataset.allgemein?.generelleEsgStrategie?.nachhaltigkeitsstrategie),
           },
           {
             type: 'cell',
@@ -75,7 +75,7 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
             explanation:
               'Bitte hängen Sie Ihre Nachhaltigkeitsstrategie an. Nachhaltigkeit in diesem Sinne umfasst die Themen Umwelt (E), Soziales (S) und Unternehmensführung (G). Sie können mehrere Dokumente anhängen und pro Dokument eine Beschreibung angeben.',
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.allgemein?.generelleEsgStrategie?.nachhaltigkeitsstrategieVorhanden == 'Yes',
+              dataset.allgemein?.generelleEsgStrategie?.nachhaltigkeitsstrategie == 'Yes',
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes => {
               return formatListOfBaseDataPoint(
                 'Dokumente zur Nachhaltigkeitsstrategie',
@@ -87,24 +87,24 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
           },
           {
             type: 'cell',
-            label: 'Maßnahmen bezüglich 1,5 Grad Celsius Ziel vorhanden',
+            label: 'Maßnahmen zur Erreichung des 1,5 Grad Celsius Ziels',
             explanation: 'Werden spezielle Ziele / Maßnahmen ergriffen, um das 1,5 °C Ziel zu erreichen?',
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.allgemein?.generelleEsgStrategie?.nachhaltigkeitsstrategieVorhanden == 'Yes',
+              dataset.allgemein?.generelleEsgStrategie?.nachhaltigkeitsstrategie == 'Yes',
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
               formatYesNoValueForDatatable(
-                dataset.allgemein?.generelleEsgStrategie?.massnahmenBezueglich15GradCelsiusZielVorhanden
+                dataset.allgemein?.generelleEsgStrategie?.massnahmenZurErreichungDes15GradCelsiusZiels
               ),
           },
           {
             type: 'cell',
-            label: 'Beschreibung Maßnahmen bezüglich 1,5 Grad Celsius Ziel',
-            explanation: 'Beschreiben Sie spezielle Ziele / Maßnahmen, um das 1,5°C Ziel zu erreichen.',
+            label: 'Skizzierung von Maßnahmen zur Erreichung des 1,5 Grad Celsius Ziels',
+            explanation: 'Skizzieren Sie spezielle Ziele / Maßnahmen, um das 1,5°C Ziel zu erreichen.',
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.allgemein?.generelleEsgStrategie?.massnahmenBezueglich15GradCelsiusZielVorhanden == 'Yes',
+              dataset.allgemein?.generelleEsgStrategie?.massnahmenZurErreichungDes15GradCelsiusZiels == 'Yes',
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
               formatFreeTextForDatatable(
-                dataset.allgemein?.generelleEsgStrategie?.beschreibungMassnahmenBezueglich15GradCelsiusZiel
+                dataset.allgemein?.generelleEsgStrategie?.skizzierungVonMassnahmenZurErreichungDes15GradCelsiusZiels
               ),
           },
           {
@@ -113,7 +113,7 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
             explanation:
               'Bezüglich der angegebenen Maßnahmen: Bitte die zugewiesenen Budgets bis zum Jahr 2030 angeben.',
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.allgemein?.generelleEsgStrategie?.massnahmenBezueglich15GradCelsiusZielVorhanden == 'Yes',
+              dataset.allgemein?.generelleEsgStrategie?.massnahmenZurErreichungDes15GradCelsiusZiels == 'Yes',
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
               formatNumberForDatatable(dataset.allgemein?.generelleEsgStrategie?.zugewieseneBudgetsBis2030, 'Euro'),
           },
@@ -123,7 +123,7 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
             explanation:
               'Bezüglich der angegebenen Maßnahmen: Bitte die zugewiesenen Budgets ab dem Jahr 2031 angeben.',
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.allgemein?.generelleEsgStrategie?.massnahmenBezueglich15GradCelsiusZielVorhanden == 'Yes',
+              dataset.allgemein?.generelleEsgStrategie?.massnahmenZurErreichungDes15GradCelsiusZiels == 'Yes',
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
               formatNumberForDatatable(dataset.allgemein?.generelleEsgStrategie?.zugewieseneBudgetsAb2031, 'Euro'),
           },
@@ -133,7 +133,7 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
             explanation:
               'Bezüglich der angegebenen Maßnahmen: Bitte den erwarteten Finanzierungsbedarf bis zum Jahr 2030 angeben.',
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.allgemein?.generelleEsgStrategie?.massnahmenBezueglich15GradCelsiusZielVorhanden == 'Yes',
+              dataset.allgemein?.generelleEsgStrategie?.massnahmenZurErreichungDes15GradCelsiusZiels == 'Yes',
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
               formatNumberForDatatable(
                 dataset.allgemein?.generelleEsgStrategie?.erwarteterFinanzierungsbedarfBis2030,
@@ -146,7 +146,7 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
             explanation:
               'Bezüglich der angegebenen Maßnahmen: Bitte den erwarteten Finanzierungsbedarf ab dem Jahr 2031 angeben.',
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.allgemein?.generelleEsgStrategie?.massnahmenBezueglich15GradCelsiusZielVorhanden == 'Yes',
+              dataset.allgemein?.generelleEsgStrategie?.massnahmenZurErreichungDes15GradCelsiusZiels == 'Yes',
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
               formatNumberForDatatable(
                 dataset.allgemein?.generelleEsgStrategie?.erwarteterFinanzierungsbedarfAb2031,
@@ -159,7 +159,7 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
             explanation:
               'Bezüglich der angegebenen Maßnahmen: Bitte die geplanten Vollzeitäquivalente bis zum Jahr 2030 angeben.',
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.allgemein?.generelleEsgStrategie?.massnahmenBezueglich15GradCelsiusZielVorhanden == 'Yes',
+              dataset.allgemein?.generelleEsgStrategie?.massnahmenZurErreichungDes15GradCelsiusZiels == 'Yes',
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
               formatNumberForDatatable(
                 dataset.allgemein?.generelleEsgStrategie?.geplanteVollzeitaequivalenteBis2023,
@@ -172,7 +172,7 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
             explanation:
               'Bezüglich der angegebenen Maßnahmen: Bitte die geplanten Vollzeitäquivalente ab dem Jahr 2031 angeben.',
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.allgemein?.generelleEsgStrategie?.massnahmenBezueglich15GradCelsiusZielVorhanden == 'Yes',
+              dataset.allgemein?.generelleEsgStrategie?.massnahmenZurErreichungDes15GradCelsiusZiels == 'Yes',
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
               formatNumberForDatatable(
                 dataset.allgemein?.generelleEsgStrategie?.geplanteVollzeitaequivalenteAb2031,
@@ -278,13 +278,13 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
           },
           {
             type: 'cell',
-            label: 'Taxonomiebezogene CapEx-Planung vorhanden',
+            label: 'Taxonomiebezogene CapEx-Planung',
             explanation: 'Hat das Unternehmen eine taxonomiebezogene CapEx-Planung? ',
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
               formatYesNoValueForDatatable(
-                dataset.allgemein?.taxonomieKpisUndBestimmteAktivitaeten?.taxonomiebezogeneCapexPlanungVorhanden
+                dataset.allgemein?.taxonomieKpisUndBestimmteAktivitaeten?.taxonomiebezogeneCapexPlanung
               ),
           },
           {
@@ -293,7 +293,7 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
             explanation:
               'Welcher taxonomiefähige prozentuale Anteil an der Gesamt-CapEx wird im Rahmen der CapEx-Planung voraussichtlich in 5 Jahren erreicht werden? ',
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.allgemein?.taxonomieKpisUndBestimmteAktivitaeten?.taxonomiebezogeneCapexPlanungVorhanden == 'Yes',
+              dataset.allgemein?.taxonomieKpisUndBestimmteAktivitaeten?.taxonomiebezogeneCapexPlanung == 'Yes',
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
               formatPercentageForDatatable(
                 dataset.allgemein?.taxonomieKpisUndBestimmteAktivitaeten?.geplanteTaxonomiefaehigeCapexIn5Jahren
@@ -305,7 +305,7 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
             explanation:
               'Welcher taxonomiekonforme prozentuale Anteil an der Gesamt-CapEx wird im Rahmen der CapEx-Planung voraussichtlich in 5 Jahren erreicht werden? ',
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.allgemein?.taxonomieKpisUndBestimmteAktivitaeten?.taxonomiebezogeneCapexPlanungVorhanden == 'Yes',
+              dataset.allgemein?.taxonomieKpisUndBestimmteAktivitaeten?.taxonomiebezogeneCapexPlanung == 'Yes',
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
               formatPercentageForDatatable(
                 dataset.allgemein?.taxonomieKpisUndBestimmteAktivitaeten?.geplanteTaxonomiekonformeCapexIn5Jahren
@@ -831,13 +831,13 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
           },
           {
             type: 'cell',
-            label: 'Einzelheiten zu ESG-bezogenen Rechtsstreitigkeiten',
+            label: 'Einzelheiten zu Rechtsstreitigkeiten mit ESG-Bezug',
             explanation: 'Bitte Einzelheiten zu den Verfahren angeben.',
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
               dataset.allgemein?.rechtsstreitigkeiten?.rechtsstreitigkeitenMitEsgBezug == 'Yes',
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
               formatFreeTextForDatatable(
-                dataset.allgemein?.rechtsstreitigkeiten?.einzelheitenZuEsgBezogenenRechtsstreitigkeiten
+                dataset.allgemein?.rechtsstreitigkeiten?.einzelheitenZuRechtsstreitigkeitenMitEsgBezug
               ),
           },
         ],
@@ -1213,17 +1213,15 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
           },
           {
             type: 'cell',
-            label: 'Transitionsplan vorhanden',
+            label: 'Transitionsplan',
             explanation: 'Verfügt das Unternehmen über einen Transitionsplan?',
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
-                formatYesNoValueForDatatable(
-                  dataset.umwelt?.risikenUndMassnahmenKlima?.transitionsplanVorhanden?.value
-                ),
-                'Transitionsplan vorhanden',
-                dataset.umwelt?.risikenUndMassnahmenKlima?.transitionsplanVorhanden
+                formatYesNoValueForDatatable(dataset.umwelt?.risikenUndMassnahmenKlima?.transitionsplan?.value),
+                'Transitionsplan',
+                dataset.umwelt?.risikenUndMassnahmenKlima?.transitionsplan
               ),
           },
           {
@@ -1260,13 +1258,13 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
           },
           {
             type: 'cell',
-            label: 'Produkte zur Reduzierung der Umweltbelastung Erläuterungen',
+            label: 'Skizzierung der Produkte zur Reduzierung der Umweltbelastung',
             explanation: 'Bitte kurz skizzieren wie die Produkte die Umweltbelastung verringern.',
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
               dataset.umwelt?.risikenUndMassnahmenKlima?.produkteZurReduzierungDerUmweltbelastung == 'Yes',
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
               formatFreeTextForDatatable(
-                dataset.umwelt?.risikenUndMassnahmenKlima?.produkteZurReduzierungDerUmweltbelastungErlaeuterungen
+                dataset.umwelt?.risikenUndMassnahmenKlima?.skizzierungDerProdukteZurReduzierungDerUmweltbelastung
               ),
           },
           {
@@ -1330,15 +1328,14 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
           },
           {
             type: 'cell',
-            label: 'Kompensationsinstrumente Treibhausgasemissionen Zertifizierungen',
+            label: 'Zertifizierungen bezüglich Kompensationinstrumenten',
             explanation:
               'Bitte benennen Sie die der Kompensation für Treibhasgasemissionen zugrundeliegenden Zertifizierungen.',
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
               dataset.umwelt?.risikenUndMassnahmenKlima?.kompensationsinstrumenteTreibhausgasemissionen == 'Yes',
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
               formatFreeTextForDatatable(
-                dataset.umwelt?.risikenUndMassnahmenKlima
-                  ?.kompensationsinstrumenteTreibhausgasemissionenZertifizierungen
+                dataset.umwelt?.risikenUndMassnahmenKlima?.zertifizierungenBezueglichKompensationinstrumenten
               ),
           },
           {
@@ -1409,14 +1406,14 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
           },
           {
             type: 'cell',
-            label: 'Abfallmanagementsystem Erläuterungen',
+            label: 'Skizzierung Abfallmanagementsystem',
             explanation:
               'Bitte skizzieren sie kurz das vorhandene System, insbesondere zur Produktion von und Umgang mit gefährlichen Abfällen.',
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
               dataset.umwelt?.risikenUndMassnahmenKreislaufwirtschaft?.abfallmanagementsystem == 'Yes',
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
               formatFreeTextForDatatable(
-                dataset.umwelt?.risikenUndMassnahmenKreislaufwirtschaft?.abfallmanagementsystemErlaeuterungen
+                dataset.umwelt?.risikenUndMassnahmenKreislaufwirtschaft?.skizzierungAbfallmanagementsystem
               ),
           },
           {
@@ -1446,7 +1443,7 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
           },
           {
             type: 'cell',
-            label: 'Geplante Erhöhung des Anteils von Recyclaten Erläuterungen',
+            label: 'Angaben zur geplanten Erhöhung des Anteils von Recyclaten',
             explanation: 'Bitte Basisjahr / Basiswert und entsprechende Planwerte angeben.',
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
               dataset.umwelt?.risikenUndMassnahmenKreislaufwirtschaft?.geplanteErhoehungDesAnteilsVonRecyclaten ==
@@ -1454,7 +1451,7 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
               formatFreeTextForDatatable(
                 dataset.umwelt?.risikenUndMassnahmenKreislaufwirtschaft
-                  ?.geplanteErhoehungDesAnteilsVonRecyclatenErlaeuterungen
+                  ?.angabenZurGeplantenErhoehungDesAnteilsVonRecyclaten
               ),
           },
         ],
@@ -1480,7 +1477,7 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
           },
           {
             type: 'cell',
-            label: 'Negative Auswirkungen auf Biodiversität und Ökosystem Erläuterungen',
+            label: 'Methodik zur Ermittlung von negativen Auswirkungen auf Biodiversität und Ökosystem',
             explanation:
               'Soweit vorhanden, bitte verwendete Methodik benennen auf deren Basis das Ergebnis ermittelt wurde.',
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
@@ -1489,7 +1486,7 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
               formatFreeTextForDatatable(
                 dataset.umwelt?.risikenUndMassnahmenBiodiversitaetUndOekosysteme
-                  ?.negativeAuswirkungenAufBiodiversitaetUndOekosystemErlaeuterungen
+                  ?.methodikZurErmittlungVonNegativenAuswirkungenAufBiodiversitaetUndOekosystem
               ),
           },
           {
@@ -1507,7 +1504,7 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
           },
           {
             type: 'cell',
-            label: 'Positive Auswirkungen auf Biodiversität und Ökosystem Erläuterungen',
+            label: 'Methodik zur Ermittlung von positiven Auswirkungen auf Biodiversität und Ökosystem',
             explanation:
               'Soweit vorhanden, bitte verwendete Methodik benennen auf deren Basis das Ergebnis ermittelt wurde.',
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
@@ -1516,7 +1513,7 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
               formatFreeTextForDatatable(
                 dataset.umwelt?.risikenUndMassnahmenBiodiversitaetUndOekosysteme
-                  ?.positiveAuswirkungenAufBiodiversitaetUndOekosystemErlaeuterungen
+                  ?.methodikZurErmittlungVonPositivenAuswirkungenAufBiodiversitaetUndOekosystem
               ),
           },
           {
@@ -1546,7 +1543,7 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
           },
           {
             type: 'cell',
-            label: 'Plan zur Reduktion des Wasserverbrauchs Erläuterung',
+            label: 'Skizzierung des Plans zur Reduktion des Wasserverbrauchs',
             explanation: 'Bitte skizzieren sie kurz, wie der Wasserverbrauch reduziert werden soll.',
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
               dataset.umwelt?.risikenUndMassnahmenBiodiversitaetUndOekosysteme?.planZurReduktionDesWasserverbrauchs ==
@@ -1554,7 +1551,7 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
               formatFreeTextForDatatable(
                 dataset.umwelt?.risikenUndMassnahmenBiodiversitaetUndOekosysteme
-                  ?.planZurReduktionDesWasserverbrauchsErlaeuterung
+                  ?.skizzierungDesPlansZurReduktionDesWasserverbrauchs
               ),
           },
         ],
@@ -1796,13 +1793,13 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
           },
           {
             type: 'cell',
-            label: 'Weitere wesentliche soziale Risiken Erläuterung',
+            label: 'Erläuterung zu weiteren wesentlichen sozialen Risiken',
             explanation: 'Erläutern sie die weiteren wesentlichenn sozialen Risiken.',
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
               dataset.soziales?.risikenUndMassnahmen?.weitereWesentlicheSozialeRisiken == 'Yes',
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
               formatFreeTextForDatatable(
-                dataset.soziales?.risikenUndMassnahmen?.weitereWesentlicheSozialeRisikenErlaeuterung
+                dataset.soziales?.risikenUndMassnahmen?.erlaeuterungZuWeiterenWesentlichenSozialenRisiken
               ),
           },
           {
@@ -1900,7 +1897,7 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
           },
           {
             type: 'cell',
-            label: 'Kopplung von Vergütung des Top-Managements an Nachhaltigkeitsziele Erläuterung',
+            label: 'Skizzierung der Regelung zur Kopplung von Vergütung des Top-Managements an Nachhaltigkeitsziele',
             explanation: 'Skizze der bestehenden Regelung.',
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
               dataset.governance?.vorstandsprofil?.kopplungVonVerguetungDesTopManagementsAnNachhaltigkeitsziele ==
@@ -1908,7 +1905,7 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
               formatFreeTextForDatatable(
                 dataset.governance?.vorstandsprofil
-                  ?.kopplungVonVerguetungDesTopManagementsAnNachhaltigkeitszieleErlaeuterung
+                  ?.skizzierungDerRegelungZurKopplungVonVerguetungDesTopManagementsAnNachhaltigkeitsziele
               ),
           },
           {
@@ -1969,7 +1966,7 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
           },
           {
             type: 'cell',
-            label: 'CSRD-konformer Prozess zur Berücksichtigung der Stakeholderinteressen Erläuterung',
+            label: 'Skizzierung des CSRD-konformen Prozesses zur Berücksichtigung der Stakeholderinteressen',
             explanation: 'Skizze des Prozesses und Darstellung der wichtigsten Schlussfolgerungen.',
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
               dataset.governance?.stakeholderdialog?.csrdKonformerProzessZurBeruecksichtigungDerStakeholderinteressen ==
@@ -1977,7 +1974,7 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
               formatFreeTextForDatatable(
                 dataset.governance?.stakeholderdialog
-                  ?.csrdKonformerProzessZurBeruecksichtigungDerStakeholderinteressenErlaeuterung
+                  ?.skizzierungDesCsrdKonformenProzessesZurBeruecksichtigungDerStakeholderinteressen
               ),
           },
         ],

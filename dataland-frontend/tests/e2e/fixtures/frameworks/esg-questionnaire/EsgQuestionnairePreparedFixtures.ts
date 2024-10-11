@@ -35,8 +35,8 @@ function modifyPreparedFixturesPartOne(newFixture: FixtureData<EsgQuestionnaireD
   if (newFixture.t.general?.masterData) {
     newFixture.t.general.masterData.berichtspflichtUndEinwilligungZurVeroeffentlichung = YesNo.Yes;
   }
-  if (newFixture.t.allgemein?.taxonomieKpisUndBestimmteAktivitaeten?.taxonomiebezogeneCapexPlanungVorhanden) {
-    newFixture.t.allgemein.taxonomieKpisUndBestimmteAktivitaeten.taxonomiebezogeneCapexPlanungVorhanden = YesNo.Yes;
+  if (newFixture.t.allgemein?.taxonomieKpisUndBestimmteAktivitaeten?.taxonomiebezogeneCapexPlanung) {
+    newFixture.t.allgemein.taxonomieKpisUndBestimmteAktivitaeten.taxonomiebezogeneCapexPlanung = YesNo.Yes;
   }
   if (newFixture.t.allgemein?.taxonomieKpisUndBestimmteAktivitaeten?.aktivitaetImSektorFossileBrennstoffe) {
     newFixture.t.allgemein.taxonomieKpisUndBestimmteAktivitaeten.aktivitaetImSektorFossileBrennstoffe == YesNo.Yes;

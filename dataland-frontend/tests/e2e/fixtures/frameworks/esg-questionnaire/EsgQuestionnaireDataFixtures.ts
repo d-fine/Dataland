@@ -43,12 +43,12 @@ export function generateEsgQuestionnaireData(nullProbability = DEFAULT_PROBABILI
     },
     allgemein: {
       generelleEsgStrategie: {
-        nachhaltigkeitsstrategieVorhanden: dataGenerator.randomYesNo(),
+        nachhaltigkeitsstrategie: dataGenerator.randomYesNo(),
         dokumenteZurNachhaltigkeitsstrategie: dataGenerator.valueOrNull(
           generateArray(() => dataGenerator.guaranteedBaseDataPoint(dataGenerator.guaranteedShortString()), 1, 5, 0)
         ),
-        massnahmenBezueglich15GradCelsiusZielVorhanden: dataGenerator.randomYesNo(),
-        beschreibungMassnahmenBezueglich15GradCelsiusZiel: dataGenerator.randomParagraphs(),
+        massnahmenZurErreichungDes15GradCelsiusZiels: dataGenerator.randomYesNo(),
+        skizzierungVonMassnahmenZurErreichungDes15GradCelsiusZiels: dataGenerator.randomParagraphs(),
         zugewieseneBudgetsBis2030: dataGenerator.randomFloat(0),
         zugewieseneBudgetsAb2031: dataGenerator.randomFloat(0),
         erwarteterFinanzierungsbedarfBis2030: dataGenerator.randomFloat(0),
@@ -65,7 +65,7 @@ export function generateEsgQuestionnaireData(nullProbability = DEFAULT_PROBABILI
         gesamtCapex: dataGenerator.randomFloat(0),
         taxonomiefaehigeCapex: dataGenerator.randomFloat(0),
         taxonomiekonformeCapex: dataGenerator.randomFloat(0),
-        taxonomiebezogeneCapexPlanungVorhanden: dataGenerator.randomYesNo(),
+        taxonomiebezogeneCapexPlanung: dataGenerator.randomYesNo(),
         geplanteTaxonomiefaehigeCapexIn5Jahren: dataGenerator.randomPercentageValue(),
         geplanteTaxonomiekonformeCapexIn5Jahren: dataGenerator.randomPercentageValue(),
         aktivitaetImSektorFossileBrennstoffe: dataGenerator.randomYesNo(),
@@ -133,7 +133,7 @@ export function generateEsgQuestionnaireData(nullProbability = DEFAULT_PROBABILI
       },
       rechtsstreitigkeiten: {
         rechtsstreitigkeitenMitEsgBezug: dataGenerator.randomYesNo(),
-        einzelheitenZuEsgBezogenenRechtsstreitigkeiten: dataGenerator.randomParagraphs(),
+        einzelheitenZuRechtsstreitigkeitenMitEsgBezug: dataGenerator.randomParagraphs(),
       },
       transaktionenMitNachhaltigkeitskomponenten: {
         emissionGruenerSozialerUndOderNachhaltigerSchuldtitel: dataGenerator.randomYesNo(),
@@ -188,17 +188,17 @@ export function generateEsgQuestionnaireData(nullProbability = DEFAULT_PROBABILI
         beschreibungDerNutzungVonSzenarioanalysen: dataGenerator.randomParagraphs(),
         beruecksichtigungVonKlimaUndUmweltrisiken: dataGenerator.randomYesNo(),
         zeithorizontDerBeruecksichtigungVonKlimaUndUmweltrisikenImGeschaeftsmodell: dataGenerator.randomParagraphs(),
-        transitionsplanVorhanden: dataGenerator.randomBaseDataPoint(dataGenerator.guaranteedYesNo()),
+        transitionsplan: dataGenerator.randomBaseDataPoint(dataGenerator.guaranteedYesNo()),
         transitorischeRisiken: dataGenerator.randomParagraphs(),
         physischeRisiken: dataGenerator.randomParagraphs(),
         produkteZurReduzierungDerUmweltbelastung: dataGenerator.randomYesNoNa(),
-        produkteZurReduzierungDerUmweltbelastungErlaeuterungen: dataGenerator.randomParagraphs(),
+        skizzierungDerProdukteZurReduzierungDerUmweltbelastung: dataGenerator.randomParagraphs(),
         zielReduzierungTreibhausgasemmissionen2030: dataGenerator.randomPercentageValue(),
         zielReduzierungTreibhausgasemmissionen2040: dataGenerator.randomPercentageValue(),
         zielReduzierungTreibhausgasemmissionen2050: dataGenerator.randomPercentageValue(),
         zielReduzierungTreibhausgasemmissionenErlaeuterungen: dataGenerator.randomParagraphs(),
         kompensationsinstrumenteTreibhausgasemissionen: dataGenerator.randomYesNo(),
-        kompensationsinstrumenteTreibhausgasemissionenZertifizierungen: dataGenerator.randomParagraphs(),
+        zertifizierungenBezueglichKompensationinstrumenten: dataGenerator.randomParagraphs(),
         zielAnteilErneuerbarerEnergien2030: dataGenerator.randomPercentageValue(),
         zielAnteilErneuerbarerEnergien2040: dataGenerator.randomPercentageValue(),
         zielAnteilErneuerbarerEnergien2050: dataGenerator.randomPercentageValue(),
@@ -206,20 +206,20 @@ export function generateEsgQuestionnaireData(nullProbability = DEFAULT_PROBABILI
       },
       risikenUndMassnahmenKreislaufwirtschaft: {
         abfallmanagementsystem: dataGenerator.randomYesNoNa(),
-        abfallmanagementsystemErlaeuterungen: dataGenerator.randomParagraphs(),
+        skizzierungAbfallmanagementsystem: dataGenerator.randomParagraphs(),
         anteilWiederverwendeterOderRecycelterKomponentenProdukteUndMaterialienImProduktionsprozess:
           dataGenerator.randomPercentageValue(),
         geplanteErhoehungDesAnteilsVonRecyclaten: dataGenerator.randomYesNoNa(),
-        geplanteErhoehungDesAnteilsVonRecyclatenErlaeuterungen: dataGenerator.randomParagraphs(),
+        angabenZurGeplantenErhoehungDesAnteilsVonRecyclaten: dataGenerator.randomParagraphs(),
       },
       risikenUndMassnahmenBiodiversitaetUndOekosysteme: {
         negativeAuswirkungenAufBiodiversitaetUndOekosystem: dataGenerator.randomYesNoNa(),
-        negativeAuswirkungenAufBiodiversitaetUndOekosystemErlaeuterungen: dataGenerator.randomParagraphs(),
+        methodikZurErmittlungVonNegativenAuswirkungenAufBiodiversitaetUndOekosystem: dataGenerator.randomParagraphs(),
         positiveAuswirkungenAufBiodiversitaetUndOekosystem: dataGenerator.randomYesNoNa(),
-        positiveAuswirkungenAufBiodiversitaetUndOekosystemErlaeuterungen: dataGenerator.randomParagraphs(),
+        methodikZurErmittlungVonPositivenAuswirkungenAufBiodiversitaetUndOekosystem: dataGenerator.randomParagraphs(),
         gegenmassnahmenNegativeAuswirkungenAufBiodiversitaetUndOekosystem: dataGenerator.randomParagraphs(),
         planZurReduktionDesWasserverbrauchs: dataGenerator.randomYesNoNa(),
-        planZurReduktionDesWasserverbrauchsErlaeuterung: dataGenerator.randomParagraphs(),
+        skizzierungDesPlansZurReduktionDesWasserverbrauchs: dataGenerator.randomParagraphs(),
       },
     },
     soziales: {
@@ -254,7 +254,7 @@ export function generateEsgQuestionnaireData(nullProbability = DEFAULT_PROBABILI
       },
       risikenUndMassnahmen: {
         weitereWesentlicheSozialeRisiken: dataGenerator.randomYesNo(),
-        weitereWesentlicheSozialeRisikenErlaeuterung: dataGenerator.randomParagraphs(),
+        erlaeuterungZuWeiterenWesentlichenSozialenRisiken: dataGenerator.randomParagraphs(),
         massnahmenZurReduzierungVonSozialenRisiken: dataGenerator.randomParagraphs(),
       },
     },
@@ -269,14 +269,16 @@ export function generateEsgQuestionnaireData(nullProbability = DEFAULT_PROBABILI
         anteilMaennlicherPersonenImTopManagement: dataGenerator.randomPercentageValue(),
         anteilDiverserPersonenImTopManagement: dataGenerator.randomPercentageValue(),
         kopplungVonVerguetungDesTopManagementsAnNachhaltigkeitsziele: dataGenerator.randomYesNo(),
-        kopplungVonVerguetungDesTopManagementsAnNachhaltigkeitszieleErlaeuterung: dataGenerator.randomParagraphs(),
+        skizzierungDerRegelungZurKopplungVonVerguetungDesTopManagementsAnNachhaltigkeitsziele:
+          dataGenerator.randomParagraphs(),
         gesamtanzahlAufsichtsratMitglieder: dataGenerator.randomInt(0),
         anzahlUnabhaengigerAufsichtsratMitglieder: dataGenerator.randomInt(0),
         anzahlWeiblicherOderDiverserAufsichtsratMitglieder: dataGenerator.randomInt(0),
       },
       stakeholderdialog: {
         csrdKonformerProzessZurBeruecksichtigungDerStakeholderinteressen: dataGenerator.randomYesNo(),
-        csrdKonformerProzessZurBeruecksichtigungDerStakeholderinteressenErlaeuterung: dataGenerator.randomParagraphs(),
+        skizzierungDesCsrdKonformenProzessesZurBeruecksichtigungDerStakeholderinteressen:
+          dataGenerator.randomParagraphs(),
       },
       risikenUndMassnahmen: {
         weitereWesentlicheGovernanceRisiken: dataGenerator.randomParagraphs(),

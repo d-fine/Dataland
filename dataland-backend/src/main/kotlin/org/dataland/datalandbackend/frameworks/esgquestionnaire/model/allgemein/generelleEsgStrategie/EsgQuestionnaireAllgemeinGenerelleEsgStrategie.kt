@@ -11,11 +11,11 @@ import java.math.BigDecimal
  * The data-model for the GenerelleEsgStrategie section
  */
 data class EsgQuestionnaireAllgemeinGenerelleEsgStrategie(
-    val nachhaltigkeitsstrategieVorhanden: YesNo? = null,
+    val nachhaltigkeitsstrategie: YesNo? = null,
     @field:Valid()
     val dokumenteZurNachhaltigkeitsstrategie: List<BaseDataPoint<String>>? = null,
-    val massnahmenBezueglich15GradCelsiusZielVorhanden: YesNo? = null,
-    val beschreibungMassnahmenBezueglich15GradCelsiusZiel: String? = null,
+    val massnahmenZurErreichungDes15GradCelsiusZiels: YesNo? = null,
+    val skizzierungVonMassnahmenZurErreichungDes15GradCelsiusZiels: String? = null,
     @field:MinimumValue(minimumValue = 0)
     val zugewieseneBudgetsBis2030: BigDecimal? = null,
     @field:MinimumValue(minimumValue = 0)

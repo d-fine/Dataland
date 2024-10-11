@@ -22,7 +22,7 @@ data class EsgQuestionnaireAllgemeinTaxonomieKpisUndBestimmteAktivitaeten(
     val taxonomiefaehigeCapex: BigDecimal? = null,
     @field:MinimumValue(minimumValue = 0)
     val taxonomiekonformeCapex: BigDecimal? = null,
-    val taxonomiebezogeneCapexPlanungVorhanden: YesNo? = null,
+    val taxonomiebezogeneCapexPlanung: YesNo? = null,
     val geplanteTaxonomiefaehigeCapexIn5Jahren: BigDecimal? = null,
     val geplanteTaxonomiekonformeCapexIn5Jahren: BigDecimal? = null,
     val aktivitaetImSektorFossileBrennstoffe: YesNo? = null,

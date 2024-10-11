@@ -8,10 +8,10 @@ import org.dataland.datalandbackend.model.enums.commons.YesNoNa
  */
 data class EsgQuestionnaireUmweltRisikenUndMassnahmenBiodiversitaetUndOekosysteme(
     val negativeAuswirkungenAufBiodiversitaetUndOekosystem: YesNoNa? = null,
-    val negativeAuswirkungenAufBiodiversitaetUndOekosystemErlaeuterungen: String? = null,
+    val methodikZurErmittlungVonNegativenAuswirkungenAufBiodiversitaetUndOekosystem: String? = null,
     val positiveAuswirkungenAufBiodiversitaetUndOekosystem: YesNoNa? = null,
-    val positiveAuswirkungenAufBiodiversitaetUndOekosystemErlaeuterungen: String? = null,
+    val methodikZurErmittlungVonPositivenAuswirkungenAufBiodiversitaetUndOekosystem: String? = null,
     val gegenmassnahmenNegativeAuswirkungenAufBiodiversitaetUndOekosystem: String? = null,
     val planZurReduktionDesWasserverbrauchs: YesNoNa? = null,
-    val planZurReduktionDesWasserverbrauchsErlaeuterung: String? = null,
+    val skizzierungDesPlansZurReduktionDesWasserverbrauchs: String? = null,
 )
