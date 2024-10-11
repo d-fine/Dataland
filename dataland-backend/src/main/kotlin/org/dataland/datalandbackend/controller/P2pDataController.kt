@@ -25,11 +25,11 @@ class P2pDataController(
     @Autowired var myMetaDataManager: DataMetaInformationManager,
     @Autowired var myObjectMapper: ObjectMapper,
 ) : DataController<PathwaysToParisData>(
-    myDataManager,
-    myMetaDataManager,
-    myObjectMapper,
-    PathwaysToParisData::class.java,
-) {
+        myDataManager,
+        myMetaDataManager,
+        myObjectMapper,
+        PathwaysToParisData::class.java,
+    ) {
     @Operation(operationId = "getCompanyAssociatedP2pData")
     override fun getCompanyAssociatedData(dataId: String): ResponseEntity<CompanyAssociatedData<PathwaysToParisData>> =
         super.getCompanyAssociatedData(dataId)

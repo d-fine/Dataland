@@ -27,11 +27,11 @@ class AdditionalCompanyInformationDataController(
     @Autowired var myMetaDataManager: DataMetaInformationManager,
     @Autowired var myObjectMapper: ObjectMapper,
 ) : DataController<AdditionalCompanyInformationData>(
-    myDataManager,
-    myMetaDataManager,
-    myObjectMapper,
-    AdditionalCompanyInformationData::class.java,
-) {
+        myDataManager,
+        myMetaDataManager,
+        myObjectMapper,
+        AdditionalCompanyInformationData::class.java,
+    ) {
     @Operation(operationId = "getCompanyAssociatedAdditionalCompanyInformationData")
     override fun getCompanyAssociatedData(dataId: String): ResponseEntity<CompanyAssociatedData<AdditionalCompanyInformationData>> =
         super.getCompanyAssociatedData(dataId)

@@ -230,9 +230,9 @@ class CompanyManagerTest(
                 companyName = name,
                 companyAlternativeNames = alternativeNames,
                 identifiers =
-                mapOf(
-                    IdentifierType.Isin to listOf(identifier ?: UUID.randomUUID().toString()),
-                ),
+                    mapOf(
+                        IdentifierType.Isin to listOf(identifier ?: UUID.randomUUID().toString()),
+                    ),
             )
         return testCompanyAlterationManager.addCompany(companyInformation).companyId
     }

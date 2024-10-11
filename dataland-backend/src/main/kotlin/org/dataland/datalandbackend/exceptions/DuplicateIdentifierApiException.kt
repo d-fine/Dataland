@@ -21,12 +21,12 @@ class DuplicateIdentifierApiException(
             message = message,
             httpStatus = HttpStatus.BAD_REQUEST,
             metaInformation =
-            duplicateIdentifiers?.map {
-                mapOf(
-                    "companyId" to it.company!!.companyId,
-                    "identifierType" to it.identifierType,
-                    "identifierValue" to it.identifierValue,
-                )
-            },
+                duplicateIdentifiers?.map {
+                    mapOf(
+                        "companyId" to it.company!!.companyId,
+                        "identifierType" to it.identifierType,
+                        "identifierValue" to it.identifierValue,
+                    )
+                },
         )
 }

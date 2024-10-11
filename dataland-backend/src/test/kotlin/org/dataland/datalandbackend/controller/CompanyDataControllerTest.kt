@@ -48,9 +48,9 @@ internal class CompanyDataControllerTest(
             website = null,
             isTeaserCompany = null,
             identifiers =
-            mapOf(
-                IdentifierType.Lei to listOf(testLei),
-            ),
+                mapOf(
+                    IdentifierType.Lei to listOf(testLei),
+                ),
             parentCompanyLei = null,
         )
     val companyController =

@@ -36,8 +36,8 @@ interface VsmeDataApi {
     @Operation(
         summary = "Upload a new private vsme data set.",
         description =
-        "The uploaded private vsme data is added to the private data store, the generated data id is " +
-            "returned.",
+            "The uploaded private vsme data is added to the private data store, the generated data id is " +
+                "returned.",
     )
     @ApiResponses(
         value = [

@@ -64,8 +64,8 @@ interface MetaDataApi {
     @Operation(
         summary = "Look up meta info about a specific data set.",
         description =
-        "Meta info about a specific data set registered by Dataland " +
-            "and identified by its data ID is retrieved.",
+            "Meta info about a specific data set registered by Dataland " +
+                "and identified by its data ID is retrieved.",
     )
     @ApiResponses(
         value = [

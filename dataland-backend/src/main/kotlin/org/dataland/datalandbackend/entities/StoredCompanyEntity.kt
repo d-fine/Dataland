@@ -63,21 +63,21 @@ data class StoredCompanyEntity(
         return StoredCompany(
             companyId = companyId,
             companyInformation =
-            CompanyInformation(
-                companyName = companyName,
-                companyAlternativeNames = companyAlternativeNames,
-                companyLegalForm = companyLegalForm,
-                companyContactDetails = companyContactDetails,
-                headquarters = headquarters,
-                headquartersPostalCode = headquartersPostalCode,
-                sector = sector,
-                sectorCodeWz = sectorCodeWz,
-                identifiers = identifierMap,
-                countryCode = countryCode,
-                isTeaserCompany = isTeaserCompany,
-                website = website,
-                parentCompanyLei = parentCompanyLei,
-            ),
+                CompanyInformation(
+                    companyName = companyName,
+                    companyAlternativeNames = companyAlternativeNames,
+                    companyLegalForm = companyLegalForm,
+                    companyContactDetails = companyContactDetails,
+                    headquarters = headquarters,
+                    headquartersPostalCode = headquartersPostalCode,
+                    sector = sector,
+                    sectorCodeWz = sectorCodeWz,
+                    identifiers = identifierMap,
+                    countryCode = countryCode,
+                    isTeaserCompany = isTeaserCompany,
+                    website = website,
+                    parentCompanyLei = parentCompanyLei,
+                ),
             dataRegisteredByDataland = dataRegisteredByDataland.map { it.toApiModel(viewingUser) }.toMutableList(),
         )
     }

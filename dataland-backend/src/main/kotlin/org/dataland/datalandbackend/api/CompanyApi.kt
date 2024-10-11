@@ -72,10 +72,10 @@ interface CompanyApi {
     @Operation(
         summary = "Retrieve just the basic information about specific companies.",
         description =
-        "The basic information about companies" +
-            " via the provided company name/identifier" +
-            " are retrieved and filtered by countryCode, sector and available framework data." +
-            " Empty/Unspecified filters are ignored.",
+            "The basic information about companies" +
+                " via the provided company name/identifier" +
+                " are retrieved and filtered by countryCode, sector and available framework data." +
+                " Empty/Unspecified filters are ignored.",
     )
     @ApiResponses(
         value = [
@@ -108,13 +108,13 @@ interface CompanyApi {
      */
     @Operation(
         summary =
-        "Retrieve the number of companies" +
-            " satisfying different filters.",
+            "Retrieve the number of companies" +
+                " satisfying different filters.",
         description =
-        "The number of companies" +
-            " via the provided company name/identifier" +
-            " are retrieved and filtered by countryCode, sector and available framework data." +
-            " Empty/Unspecified filters are ignored.",
+            "The number of companies" +
+                " via the provided company name/identifier" +
+                " are retrieved and filtered by countryCode, sector and available framework data." +
+                " Empty/Unspecified filters are ignored.",
     )
     @ApiResponses(
         value = [
@@ -314,8 +314,8 @@ interface CompanyApi {
     @Operation(
         summary = "Get the company IDs of the teaser companies.",
         description =
-        "A list of all company IDs that are currently set as teaser companies (accessible without " +
-            "authentication).",
+            "A list of all company IDs that are currently set as teaser companies (accessible without " +
+                "authentication).",
     )
     @ApiResponses(
         value = [
@@ -385,8 +385,8 @@ interface CompanyApi {
             ApiResponse(
                 responseCode = "200",
                 description =
-                "Successfully checked that the companyId is known " +
-                    "by dataland.",
+                    "Successfully checked that the companyId is known " +
+                        "by dataland.",
             ),
             ApiResponse(
                 responseCode = "404",

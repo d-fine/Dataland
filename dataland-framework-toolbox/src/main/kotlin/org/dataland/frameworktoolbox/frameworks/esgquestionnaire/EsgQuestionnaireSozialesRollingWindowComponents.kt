@@ -5,7 +5,6 @@ package org.dataland.frameworktoolbox.frameworks.esgquestionnaire
  * Questionnaire framework
  */
 object EsgQuestionnaireSozialesRollingWindowComponents {
-
     /*
     fun auswirkungenAufAnteilBefristerVertraegeUndFluktuation(
         componentGroupSoziales: ComponentGroup,
@@ -26,9 +25,9 @@ object EsgQuestionnaireSozialesRollingWindowComponents {
                 )
             }
         }
-    } TODO */
+    }
 
-    /*
+
     fun budgetFuerSchulungAusbildung(componentGroupSoziales: ComponentGroup) {
         componentGroupSoziales.edit<ComponentGroup>("sicherheitUndWeiterbildung") {
             edit<EsgQuestionnaireYearlyDecimalTimeseriesDataComponent>(
@@ -61,9 +60,9 @@ object EsgQuestionnaireSozialesRollingWindowComponents {
             }
         }
     }
- TODO */
 
-    /*
+
+
     fun massnahmenZurVerbesserungDerEinkommensungleichheit(
         componentGroupSoziales: ComponentGroup,
     ) {

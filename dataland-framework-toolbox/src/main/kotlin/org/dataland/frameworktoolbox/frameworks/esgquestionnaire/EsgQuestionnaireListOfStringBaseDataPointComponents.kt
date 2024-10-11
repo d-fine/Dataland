@@ -9,12 +9,12 @@ import org.dataland.frameworktoolbox.intermediate.group.get
  * This object contains implementations for the list of base datapoint components of the ESG Questionnaire framework
  */
 object EsgQuestionnaireListOfStringBaseDataPointComponents {
-
     /**
      * Sets german headers for the "Dokumente zur Nachhaltigkeitsstrategie" component
      */
     fun dokumenteZurNachhaltigkeitsstrategie(componentGroupAllgemein: ComponentGroup) {
-        componentGroupAllgemein.get<ComponentGroup>("generelleEsgStrategie")
+        componentGroupAllgemein
+            .get<ComponentGroup>("generelleEsgStrategie")
             .edit<ListOfStringBaseDataPointComponent>("dokumenteZurNachhaltigkeitsstrategie") {
                 descriptionColumnHeader = "Beschreibung des Dokuments zur Nachhaltigkeitsstrategie"
                 documentColumnHeader = "Dokument"
@@ -24,10 +24,9 @@ object EsgQuestionnaireListOfStringBaseDataPointComponents {
     /**
      * Sets german headers for the "Richtlinien zur Einhaltung der UNGCP" component
      */
-    fun richtlinienZurEinhaltungDerUngcp(
-        componentGroupAllgemein: ComponentGroup,
-    ) {
-        componentGroupAllgemein.get<ComponentGroup>("unGlobalCompactPrinzipien")
+    fun richtlinienZurEinhaltungDerUngcp(componentGroupAllgemein: ComponentGroup) {
+        componentGroupAllgemein
+            .get<ComponentGroup>("unGlobalCompactPrinzipien")
             .edit<ListOfStringBaseDataPointComponent>("richtlinienZurEinhaltungDerUngcp") {
                 descriptionColumnHeader = "Beschreibung der Richtlinie"
                 documentColumnHeader = "Richtlinie"
@@ -37,10 +36,9 @@ object EsgQuestionnaireListOfStringBaseDataPointComponents {
     /**
      * Sets german headers for the "Richtlinien zur Einhaltung der OECD-Leitsätze" component
      */
-    fun richtlinienZurEinhaltungDerOecdLeitsaetze(
-        componentGroupAllgemein: ComponentGroup,
-    ) {
-        componentGroupAllgemein.get<ComponentGroup>("oecdLeitsaetze")
+    fun richtlinienZurEinhaltungDerOecdLeitsaetze(componentGroupAllgemein: ComponentGroup) {
+        componentGroupAllgemein
+            .get<ComponentGroup>("oecdLeitsaetze")
             .edit<ListOfStringBaseDataPointComponent>("richtlinienZurEinhaltungDerOecdLeitsaetze") {
                 descriptionColumnHeader = "Beschreibung der Richtlinie"
                 documentColumnHeader = "Richtlinie"
