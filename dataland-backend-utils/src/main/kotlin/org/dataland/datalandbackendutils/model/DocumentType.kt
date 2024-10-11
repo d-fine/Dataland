@@ -10,7 +10,10 @@ import org.springframework.util.MimeType
 @Schema(
     enumAsRef = true,
 )
-enum class DocumentType(val fileExtension: String, val mediaType: MediaType = MediaType.APPLICATION_OCTET_STREAM) {
+enum class DocumentType(
+    val fileExtension: String,
+    val mediaType: MediaType = MediaType.APPLICATION_OCTET_STREAM,
+) {
     Pdf("pdf", MediaType.APPLICATION_PDF),
     Xls("xls", MediaType.asMediaType(MimeType.valueOf("application/vnd.ms-excel"))),
     Xlsx(

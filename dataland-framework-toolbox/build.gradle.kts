@@ -20,7 +20,12 @@ tasks.test {
     useJUnitPlatform()
 
     extensions.configure(JacocoTaskExtension::class) {
-        setDestinationFile(layout.buildDirectory.dir("jacoco/jacoco.exec").get().asFile)
+        setDestinationFile(
+            layout.buildDirectory
+                .dir("jacoco/jacoco.exec")
+                .get()
+                .asFile,
+        )
     }
 }
 
@@ -47,7 +52,11 @@ tasks.register("runCreateFrameworkList", JavaExec::class) {
     group = "Verification"
     classpath = sourceSets["main"].runtimeClasspath
     mainClass = "org.dataland.frameworktoolbox.MainKt"
-    val outputFilePath = layout.buildDirectory.file("framework-list.json").get().asFile.path
+    val outputFilePath =
+        layout.buildDirectory
+            .file("framework-list.json")
+            .get()
+            .asFile.path
     args = listOf("list", outputFilePath)
     workingDir = rootDir
 }

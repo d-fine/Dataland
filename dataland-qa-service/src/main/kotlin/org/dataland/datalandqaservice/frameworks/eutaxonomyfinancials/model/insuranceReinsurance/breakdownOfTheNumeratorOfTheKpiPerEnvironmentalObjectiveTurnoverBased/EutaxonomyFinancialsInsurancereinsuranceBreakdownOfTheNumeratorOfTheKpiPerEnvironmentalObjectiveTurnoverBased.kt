@@ -12,54 +12,41 @@ import org.dataland.datalandqaservice.model.reports.QaReportDataPoint
 data class EutaxonomyFinancialsInsurancereinsuranceBreakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBased(
     @field:Valid()
     val shareOfTurnoverBasedKpiSubstantiallyContributingToClimateChangeMitigationInPercentAligned:
-    QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
-
+        QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
     @field:Valid()
     val shareOfTurnoverBasedKpiSubstantiallyContributingToClimateChangeMitigationInPercentOfWhichEnabling:
-    QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
-
+        QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
     @field:Valid()
     val shareOfTurnoverBasedKpiSubstantiallyContributingToClimateChangeMitigationInPercentOfWhichTransitional:
-    QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
-
+        QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
     @field:Valid()
     val shareOfTurnoverBasedKpiSubstantiallyContributingToClimateChangeAdaptationInPercentAligned:
-    QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
-
+        QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
     @field:Valid()
     val shareOfTurnoverBasedKpiSubstantiallyContributingToClimateChangeAdaptationInPercentOfWhichEnabling:
-    QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
-
+        QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
     @field:Valid()
     val shareOfTurnoverBasedKpiSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned:
-    QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
-
+        QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
     @field:Valid()
     val shareOfTurnoverBasedKpiSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentOfWhichEnabling:
-    QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
-
+        QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
     @field:Valid()
     val shareOfTurnoverBasedKpiSubstantiallyContributingToTransitionToACircularEconomyInPercentAligned:
-    QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
-
+        QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
     @field:Valid()
     val shareOfTurnoverBasedKpiSubstantiallyContributingToTransitionToACircularEconomyInPercentOfWhichEnabling:
-    QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
-
+        QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
     @field:Valid()
     val shareOfTurnoverBasedKpiSubstantiallyContributingToPollutionPreventionAndControlInPercentAligned:
-    QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
-
+        QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
     @field:Valid()
     val shareOfTurnoverBasedKpiSubstantiallyContributingToPollutionPreventionAndControlInPercentOfWhichEnabling:
-    QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
-
+        QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
     @field:Valid()
     val shareOfTurnoverBasedKpiSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned:
-    QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
-
+        QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
     @field:Valid()
     val shareOfTurnoverBasedKpiSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentOfWhichEnabling:
-    QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
-
+        QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
 )

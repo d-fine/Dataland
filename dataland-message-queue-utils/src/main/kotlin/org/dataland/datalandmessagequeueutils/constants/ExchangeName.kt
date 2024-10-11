@@ -5,13 +5,13 @@ package org.dataland.datalandmessagequeueutils.constants
  */
 
 object ExchangeName {
-    const val DataQualityAssured = "dataQualityAssured"
-    const val RequestReceived = "requestReceived"
-    const val ItemStored = "itemStored"
-    const val DocumentReceived = "documentReceived"
-    const val DeadLetter = "deadLetter"
-    const val ManualQaRequested = "manualQaRequested"
-    const val SendEmail = "sendEmail"
-    const val PrivateItemStored = "privateItemStored"
-    const val PrivateRequestReceived = "privateRequestReceived"
+    const val DATA_QUALITY_ASSURED = "dataQualityAssured"
+    const val REQUEST_RECEIVED = "requestReceived"
+    const val ITEM_STORED = "itemStored"
+    const val DOCUMENT_RECEIVED = "documentReceived"
+    const val DEAD_LETTER = "deadLetter"
+    const val MANUAL_QA_REQUESTED = "manualQaRequested"
+    const val SEND_EMAIL = "sendEmail"
+    const val PRIVATE_ITEM_STORED = "privateItemStored"
+    const val PRIVATE_REQUEST_RECEIVED = "privateRequestReceived"
 }

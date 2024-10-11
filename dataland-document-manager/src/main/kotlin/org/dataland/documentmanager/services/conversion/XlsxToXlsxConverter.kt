@@ -12,26 +12,36 @@ import org.springframework.web.multipart.MultipartFile
  * Validates the file content of an xlsx document
  */
 @Component
-class XlsxToXlsxConverter : FileConverter(
-    allowedMimeTypesPerFileExtension = mapOf(
-        "xlsx" to setOf(
-            "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-            "application/x-tika-ooxml",
-        ),
-    ),
-) {
+class XlsxToXlsxConverter :
+    FileConverter(
+        allowedMimeTypesPerFileExtension =
+            mapOf(
+                "xlsx" to
+                    setOf(
+                        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                        "application/x-tika-ooxml",
+                    ),
+            ),
+    ) {
     override val logger: Logger = LoggerFactory.getLogger(javaClass)
 
-    override fun validateFileContent(file: MultipartFile, correlationId: String) {
+    override fun validateFileContent(
+        file: MultipartFile,
+        correlationId: String,
+    ) {
         validateNoMacros(file, correlationId)
         validateFileNotEmpty(file, correlationId)
     }
 
-    private fun validateNoMacros(document: MultipartFile, correlationId: String) {
+    private fun validateNoMacros(
+        document: MultipartFile,
+        correlationId: String,
+    ) {
         logger.info("Validating that excel file has no macros. (correlation ID: $correlationId)")
-        val workbook = document.inputStream.use { inputStream ->
-            WorkbookFactory.create(inputStream)
-        }
+        val workbook =
+            document.inputStream.use { inputStream ->
+                WorkbookFactory.create(inputStream)
+            }
         if (workbook is XSSFWorkbook && workbook.isMacroEnabled) {
             throw InvalidInputApiException(
                 "No macros allowed.",
@@ -41,7 +51,10 @@ class XlsxToXlsxConverter : FileConverter(
         }
     }
 
-    private fun validateFileNotEmpty(file: MultipartFile, correlationId: String) {
+    private fun validateFileNotEmpty(
+        file: MultipartFile,
+        correlationId: String,
+    ) {
         logger.info("Validating that excel file is not empty. (correlation ID: $correlationId)")
         file.inputStream.use { inputStream ->
             XSSFWorkbook(inputStream).use { workbook ->
@@ -63,5 +76,8 @@ class XlsxToXlsxConverter : FileConverter(
         )
     }
 
-    override fun convert(file: MultipartFile, correlationId: String) = file.bytes
+    override fun convert(
+        file: MultipartFile,
+        correlationId: String,
+    ) = file.bytes
 }

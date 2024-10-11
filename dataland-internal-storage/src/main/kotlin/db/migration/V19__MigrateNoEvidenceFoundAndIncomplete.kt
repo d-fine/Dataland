@@ -11,8 +11,8 @@ import org.json.JSONObject
  * This migration script moves all SFDR Incomplete quality buckets to NoDataFound and removes the value NoEvidenceFound
  * by putting NoDataFound into the quality bucket and setting the value to null
  */
+@Suppress("ClassName")
 class V19__MigrateNoEvidenceFoundAndIncomplete : BaseJavaMigration() {
-
     /**
      * Apply the following two migrations:
      * 1. If value of the data point is "NoEvidenceFound", set value to null and the quality bucket to "NoDataFound"

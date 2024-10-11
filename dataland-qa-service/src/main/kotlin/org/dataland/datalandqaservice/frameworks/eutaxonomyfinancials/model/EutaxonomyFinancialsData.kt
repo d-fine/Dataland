@@ -19,17 +19,12 @@ import org.dataland.datalandqaservice.frameworks.eutaxonomyfinancials.model.inve
 data class EutaxonomyFinancialsData(
     @field:Valid()
     val general: EutaxonomyFinancialsGeneral? = null,
-
     @field:Valid()
     val creditInstitution: EutaxonomyFinancialsCreditInstitution? = null,
-
     @field:Valid()
     val assetManagement: EutaxonomyFinancialsAssetManagement? = null,
-
     @field:Valid()
     val insuranceReinsurance: EutaxonomyFinancialsInsuranceReinsurance? = null,
-
     @field:Valid()
     val investmentFirms: EutaxonomyFinancialsInvestmentFirms? = null,
-
 )

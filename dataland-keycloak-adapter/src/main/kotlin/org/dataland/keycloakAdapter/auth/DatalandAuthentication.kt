@@ -22,9 +22,7 @@ sealed class DatalandAuthentication : Authentication {
          * Builds a new DatalandAuthentication object from the Spring Boot Authentication
          * linked to the current thread
          */
-        fun fromContextOrNull(): DatalandAuthentication? {
-            return SecurityContextHolder.getContext().authentication as? DatalandAuthentication
-        }
+        fun fromContextOrNull(): DatalandAuthentication? = SecurityContextHolder.getContext().authentication as? DatalandAuthentication
     }
 
     abstract val userId: String
@@ -36,12 +34,16 @@ sealed class DatalandAuthentication : Authentication {
         }
 
     private var authenticated = false
+
     override fun setAuthenticated(isAuthenticated: Boolean) {
         authenticated = isAuthenticated
     }
 
     override fun getDetails(): Any? = null
+
     override fun getPrincipal(): String = userId
+
     override fun getName(): String = userId
+
     override fun isAuthenticated() = authenticated
 }

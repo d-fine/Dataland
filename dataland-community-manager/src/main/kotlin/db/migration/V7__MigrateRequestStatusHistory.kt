@@ -7,6 +7,7 @@ import java.util.UUID
 /**
  * This migration script migrates the request status history to a separate table
  */
+@Suppress("ClassName")
 class V7__MigrateRequestStatusHistory : BaseJavaMigration() {
     override fun migrate(context: Context?) {
         context!!
@@ -14,6 +15,7 @@ class V7__MigrateRequestStatusHistory : BaseJavaMigration() {
         insertStatusHistoryForExistingRequests(context)
         dropRequestStatusColumn(context)
     }
+
     private fun createStatusHistoryTable(context: Context) {
         context.connection.createStatement().execute(
             "CREATE TABLE request_status_history (" +
@@ -26,13 +28,16 @@ class V7__MigrateRequestStatusHistory : BaseJavaMigration() {
                 ")",
         )
     }
+
     private fun insertStatusHistoryForExistingRequests(context: Context) {
-        val oldRequests = context.connection.createStatement().executeQuery(
-            "SELECT data_request_id, last_modified_date, request_status FROM data_requests",
-        )
-        val insertQuery: String = "INSERT INTO request_status_history " +
-            "(status_history_id, data_request_id, request_status, creation_timestamp) " +
-            "VALUES (?, ?, ?, ?)"
+        val oldRequests =
+            context.connection.createStatement().executeQuery(
+                "SELECT data_request_id, last_modified_date, request_status FROM data_requests",
+            )
+        val insertQuery: String =
+            "INSERT INTO request_status_history " +
+                "(status_history_id, data_request_id, request_status, creation_timestamp) " +
+                "VALUES (?, ?, ?, ?)"
         val preparedStatement = context.connection.prepareStatement(insertQuery)
 
         while (oldRequests.next()) {

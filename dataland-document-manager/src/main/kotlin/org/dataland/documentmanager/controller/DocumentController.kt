@@ -20,9 +20,8 @@ import java.io.ByteArrayInputStream
 class DocumentController(
     @Autowired private val documentManager: DocumentManager,
 ) : DocumentApi {
-    override fun postDocument(document: MultipartFile): ResponseEntity<DocumentUploadResponse> {
-        return ResponseEntity.ok(documentManager.temporarilyStoreDocumentAndTriggerStorage(document))
-    }
+    override fun postDocument(document: MultipartFile): ResponseEntity<DocumentUploadResponse> =
+        ResponseEntity.ok(documentManager.temporarilyStoreDocumentAndTriggerStorage(document))
 
     override fun checkDocument(documentId: String) {
         if (!documentManager.checkIfDocumentExistsWithId(documentId)) {
@@ -38,13 +37,13 @@ class DocumentController(
         val documentBytes = document.content.inputStream.use { it.readBytes() }
         val contentLength = documentBytes.size
         val documentContent = InputStreamResource(ByteArrayInputStream(documentBytes))
-        return ResponseEntity.ok()
+        return ResponseEntity
+            .ok()
             .contentType(document.type.mediaType)
             .header(
                 HttpHeaders.CONTENT_DISPOSITION,
                 "attachment; filename=${document.documentId}.${document.type.fileExtension}",
-            )
-            .header(HttpHeaders.CONTENT_LENGTH, contentLength.toString())
+            ).header(HttpHeaders.CONTENT_LENGTH, contentLength.toString())
             .header(HttpHeaders.CONTENT_TYPE, "${document.type.mediaType}")
             .body(documentContent)
     }

@@ -3,8 +3,8 @@ package db.migration
 import db.migration.utils.TestUtils
 import org.junit.jupiter.api.Test
 
+@Suppress("ClassName")
 class V17__MigrateReferencedReportsTest {
-
     @Test
     fun `check migration script for SFDR `() {
         TestUtils().testMigrationOfSingleDataset(

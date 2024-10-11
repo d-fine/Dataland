@@ -14,11 +14,10 @@ class DatalandApiKeyAuthentication(
     override val userId: String
         get() = apiKeyMetaInformation.keycloakUserId!!
 
-    override fun getAuthorities(): List<GrantedAuthority> {
-        return apiKeyMetaInformation.keycloakRoles?.map { SimpleGrantedAuthority(it) } ?: emptyList()
-    }
+    override fun getAuthorities(): List<GrantedAuthority> =
+        apiKeyMetaInformation.keycloakRoles?.map {
+            SimpleGrantedAuthority(it)
+        } ?: emptyList()
 
-    override fun getCredentials(): String {
-        return apiKey
-    }
+    override fun getCredentials(): String = apiKey
 }

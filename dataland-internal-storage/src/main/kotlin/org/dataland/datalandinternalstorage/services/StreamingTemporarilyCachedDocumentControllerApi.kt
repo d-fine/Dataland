@@ -17,7 +17,6 @@ class StreamingTemporarilyCachedDocumentControllerApi(
     @Value("\${dataland.document-manager.base-url}")
     private val documentManagerBaseUrl: String,
 ) {
-
     private val client = OkHttpClient()
 
     /**
@@ -27,9 +26,12 @@ class StreamingTemporarilyCachedDocumentControllerApi(
      * @returns a stream of the blob
      */
     fun getReceivedData(blobId: String): InputStream {
-        val requestUrl = "$documentManagerBaseUrl/internal/cached".toHttpUrl()
-            .newBuilder().addPathSegment(blobId)
-            .build()
+        val requestUrl =
+            "$documentManagerBaseUrl/internal/cached"
+                .toHttpUrl()
+                .newBuilder()
+                .addPathSegment(blobId)
+                .build()
         val request = Request.Builder().url(requestUrl).build()
         val response = client.newCall(request).execute()
         if (!response.isSuccessful) {

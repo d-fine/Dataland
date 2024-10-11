@@ -33,7 +33,6 @@ import java.time.Instant
 import java.util.UUID
 
 class DataAccessManagerTest {
-
     private lateinit var dataAccessManager: DataAccessManager
 
     private lateinit var mockDataRequestRepository: DataRequestRepository
@@ -50,48 +49,55 @@ class DataAccessManagerTest {
     private val noRequestReportingYear = "2021"
 
     private fun setupVsmeRequestWithGrantedAccess(): List<DataRequestEntity> {
-        val dataRequest = DataRequestEntity(
-            userId = userId,
-            dataType = DataTypeEnum.vsme.toString(),
-            reportingPeriod = grantedAccessReportingYear,
-            creationTimestamp = 0,
-            datalandCompanyId = companyId,
-        )
+        val dataRequest =
+            DataRequestEntity(
+                userId = userId,
+                dataType = DataTypeEnum.vsme.toString(),
+                reportingPeriod = grantedAccessReportingYear,
+                creationTimestamp = 0,
+                datalandCompanyId = companyId,
+            )
 
-        val requestStatus1 = RequestStatusEntity(
-            statusHistoryId = UUID.randomUUID().toString(), requestStatus = RequestStatus.Answered,
-            accessStatus = AccessStatus.Pending, creationTimestamp = 0, dataRequest = dataRequest,
-        )
-        val requestStatus2 = RequestStatusEntity(
-            statusHistoryId = UUID.randomUUID().toString(), requestStatus = RequestStatus.Answered,
-            accessStatus = AccessStatus.Granted, creationTimestamp = 1, dataRequest = dataRequest,
-        )
+        val requestStatus1 =
+            RequestStatusEntity(
+                statusHistoryId = UUID.randomUUID().toString(), requestStatus = RequestStatus.Answered,
+                accessStatus = AccessStatus.Pending, creationTimestamp = 0, dataRequest = dataRequest,
+            )
+        val requestStatus2 =
+            RequestStatusEntity(
+                statusHistoryId = UUID.randomUUID().toString(), requestStatus = RequestStatus.Answered,
+                accessStatus = AccessStatus.Granted, creationTimestamp = 1, dataRequest = dataRequest,
+            )
         dataRequest.dataRequestStatusHistory = listOf(requestStatus1, requestStatus2).shuffled()
 
         return listOf(dataRequest)
     }
 
     private fun setupVsmeRequestWithRevokedAccess(): List<DataRequestEntity> {
-        val dataRequest = DataRequestEntity(
-            userId = userId,
-            dataType = DataTypeEnum.vsme.toString(),
-            reportingPeriod = revokedAccessReportingYear,
-            creationTimestamp = 0,
-            datalandCompanyId = companyId,
-        )
+        val dataRequest =
+            DataRequestEntity(
+                userId = userId,
+                dataType = DataTypeEnum.vsme.toString(),
+                reportingPeriod = revokedAccessReportingYear,
+                creationTimestamp = 0,
+                datalandCompanyId = companyId,
+            )
 
-        val requestStatus1 = RequestStatusEntity(
-            statusHistoryId = UUID.randomUUID().toString(), requestStatus = RequestStatus.Answered,
-            accessStatus = AccessStatus.Pending, creationTimestamp = 0, dataRequest = dataRequest,
-        )
-        val requestStatus2 = RequestStatusEntity(
-            statusHistoryId = UUID.randomUUID().toString(), requestStatus = RequestStatus.Answered,
-            accessStatus = AccessStatus.Granted, creationTimestamp = 1, dataRequest = dataRequest,
-        )
-        val requestStatus3 = RequestStatusEntity(
-            statusHistoryId = UUID.randomUUID().toString(), requestStatus = RequestStatus.Answered,
-            accessStatus = AccessStatus.Revoked, creationTimestamp = 2, dataRequest = dataRequest,
-        )
+        val requestStatus1 =
+            RequestStatusEntity(
+                statusHistoryId = UUID.randomUUID().toString(), requestStatus = RequestStatus.Answered,
+                accessStatus = AccessStatus.Pending, creationTimestamp = 0, dataRequest = dataRequest,
+            )
+        val requestStatus2 =
+            RequestStatusEntity(
+                statusHistoryId = UUID.randomUUID().toString(), requestStatus = RequestStatus.Answered,
+                accessStatus = AccessStatus.Granted, creationTimestamp = 1, dataRequest = dataRequest,
+            )
+        val requestStatus3 =
+            RequestStatusEntity(
+                statusHistoryId = UUID.randomUUID().toString(), requestStatus = RequestStatus.Answered,
+                accessStatus = AccessStatus.Revoked, creationTimestamp = 2, dataRequest = dataRequest,
+            )
         dataRequest.dataRequestStatusHistory = listOf(requestStatus1, requestStatus2, requestStatus3).shuffled()
 
         return listOf(dataRequest)
@@ -104,10 +110,11 @@ class DataAccessManagerTest {
         dataRequestLogger = mock(DataRequestLogger::class.java)
         mockDataRequestProcessingUtils = createRequestProcessingUtils()
 
-        dataAccessManager = DataAccessManager(
-            dataRequestRepository = mockDataRequestRepository, dataRequestLogger = dataRequestLogger,
-            dataRequestProcessingUtils = mockDataRequestProcessingUtils,
-        )
+        dataAccessManager =
+            DataAccessManager(
+                dataRequestRepository = mockDataRequestRepository, dataRequestLogger = dataRequestLogger,
+                dataRequestProcessingUtils = mockDataRequestProcessingUtils,
+            )
     }
 
     private fun createRequestProcessingUtils(): DataRequestProcessingUtils {
@@ -151,11 +158,12 @@ class DataAccessManagerTest {
     @BeforeEach
     fun setupSecurityMock() {
         val mockSecurityContext = mock(SecurityContext::class.java)
-        authenticationMock = AuthenticationMock.mockJwtAuthentication(
-            username = "user@example.com",
-            userId = "1234-221-1111elf",
-            roles = setOf(DatalandRealmRole.ROLE_USER),
-        )
+        authenticationMock =
+            AuthenticationMock.mockJwtAuthentication(
+                username = "user@example.com",
+                userId = "1234-221-1111elf",
+                roles = setOf(DatalandRealmRole.ROLE_USER),
+            )
         `when`(mockSecurityContext.authentication).thenReturn(authenticationMock)
         `when`(authenticationMock.credentials).thenReturn("")
         SecurityContextHolder.setContext(mockSecurityContext)
@@ -163,11 +171,12 @@ class DataAccessManagerTest {
 
     @Test
     fun `validate that public datasets are always accessible`() {
-        val dataTypes = listOf(
-            DataTypeEnum.lksg, DataTypeEnum.p2p, DataTypeEnum.sfdr,
-            DataTypeEnum.eutaxonomyMinusFinancials, DataTypeEnum.eutaxonomyMinusNonMinusFinancials,
-            DataTypeEnum.esgMinusQuestionnaire, DataTypeEnum.heimathafen,
-        )
+        val dataTypes =
+            listOf(
+                DataTypeEnum.lksg, DataTypeEnum.p2p, DataTypeEnum.sfdr,
+                DataTypeEnum.eutaxonomyMinusFinancials, DataTypeEnum.eutaxonomyMinusNonMinusFinancials,
+                DataTypeEnum.esgMinusQuestionnaire, DataTypeEnum.heimathafen,
+            )
 
         dataTypes.forEach {
             assertDoesNotThrow {

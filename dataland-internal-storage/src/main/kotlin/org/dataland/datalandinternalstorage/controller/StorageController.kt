@@ -25,16 +25,23 @@ class StorageController(
 ) : StorageAPI {
     private val logger = LoggerFactory.getLogger(javaClass)
 
-    override fun selectDataById(dataId: String, correlationId: String): ResponseEntity<String> {
+    override fun selectDataById(
+        dataId: String,
+        correlationId: String,
+    ): ResponseEntity<String> {
         logger.info("Selecting data from database with data ID: $dataId. Correlation ID: $correlationId.")
         return ResponseEntity.ok(stringDataStore.selectDataSet(dataId, correlationId))
     }
 
-    override fun selectBlobById(blobId: String, correlationId: String): ResponseEntity<InputStreamResource> {
+    override fun selectBlobById(
+        blobId: String,
+        correlationId: String,
+    ): ResponseEntity<InputStreamResource> {
         logger.info("Selecting blob from database with hash: $blobId. Correlation id: $correlationId.")
         val blob = blobDataStore.selectBlobById(blobId, correlationId)
         val stream = ByteArrayInputStream(blob)
-        return ResponseEntity.ok()
+        return ResponseEntity
+            .ok()
             .contentType(MediaType.APPLICATION_OCTET_STREAM)
             .body(InputStreamResource(stream))
     }

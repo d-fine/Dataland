@@ -19,12 +19,13 @@ class XlsToXlsConverterTest {
 
     @Test
     fun `verify that the converter validates a xls file but do not convert a xls file`() {
-        val testInput = MockMultipartFile(
-            testFileName,
-            testFileName,
-            "application/vnd.ms-excel",
-            TestUtils().loadFileBytes(testXls),
-        )
+        val testInput =
+            MockMultipartFile(
+                testFileName,
+                testFileName,
+                "application/vnd.ms-excel",
+                TestUtils().loadFileBytes(testXls),
+            )
         assertEquals(mimeType, Tika().detect(testInput.bytes))
         xlsToXlsConverter.validateFile(testInput, correlationId)
         val convertedDocument = xlsToXlsConverter.convertFile(testInput, correlationId)
@@ -34,16 +35,18 @@ class XlsToXlsConverterTest {
 
     @Test
     fun `check that an empty xls file is not validated`() {
-        val testInput = MockMultipartFile(
-            testFileName,
-            testFileName,
-            "application/vnd.ms-excel",
-            TestUtils().loadFileBytes(emptyXls),
-        )
+        val testInput =
+            MockMultipartFile(
+                testFileName,
+                testFileName,
+                "application/vnd.ms-excel",
+                TestUtils().loadFileBytes(emptyXls),
+            )
         assertEquals(mimeType, Tika().detect(testInput.bytes))
-        val exception = assertThrows<InvalidInputApiException> {
-            xlsToXlsConverter.validateFile(testInput, correlationId)
-        }
+        val exception =
+            assertThrows<InvalidInputApiException> {
+                xlsToXlsConverter.validateFile(testInput, correlationId)
+            }
         assertEquals("The file you uploaded seems to be empty.", exception.message)
     }
 }

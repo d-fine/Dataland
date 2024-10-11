@@ -34,27 +34,29 @@ class CompanyOwnershipRequestedEmailMessageSender(
         comment: String?,
         correlationId: String,
     ) {
-        val properties = mapOf(
-            "User" to userAuthentication.userDescription,
-            "E-Mail" to userAuthentication.username,
-            "Company (Dataland ID)" to datalandCompanyId,
-            "First Name" to userAuthentication.firstName,
-            "Last Name" to userAuthentication.lastName,
-            "Company Name" to companyName,
-            "Comment" to comment,
-        )
-        val message = InternalEmailMessage(
-            "Dataland Company Ownership Request",
-            "A company ownership request has been submitted",
-            "Company Ownership Request",
-            properties,
-        )
+        val properties =
+            mapOf(
+                "User" to userAuthentication.userDescription,
+                "E-Mail" to userAuthentication.username,
+                "Company (Dataland ID)" to datalandCompanyId,
+                "First Name" to userAuthentication.firstName,
+                "Last Name" to userAuthentication.lastName,
+                "Company Name" to companyName,
+                "Comment" to comment,
+            )
+        val message =
+            InternalEmailMessage(
+                "Dataland Company Ownership Request",
+                "A company ownership request has been submitted",
+                "Company Ownership Request",
+                properties,
+            )
         cloudEventMessageHandler.buildCEMessageAndSendToQueue(
             objectMapper.writeValueAsString(message),
-            MessageType.SendInternalEmail,
+            MessageType.SEND_INTERNAL_EMAIL,
             correlationId,
-            ExchangeName.SendEmail,
-            RoutingKeyNames.internalEmail,
+            ExchangeName.SEND_EMAIL,
+            RoutingKeyNames.INTERNAL_EMAIL,
         )
     }
 }

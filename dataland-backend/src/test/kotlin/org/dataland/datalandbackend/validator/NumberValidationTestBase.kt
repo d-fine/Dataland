@@ -15,30 +15,38 @@ abstract class NumberValidationTestBase {
 
     protected fun <T> dataPoint(value: T) = ExtendedDataPoint(value, QualityOptions.Reported)
 
-    protected fun doForAllValidNumberTypes(value: Number, function: (Number) -> Unit) {
+    protected fun doForAllValidNumberTypes(
+        value: Number,
+        function: (Number) -> Unit,
+    ) {
         function(value.toLong())
         function(BigDecimal.valueOf(value.toDouble()))
         function(BigInteger.valueOf(value.toLong()))
     }
 
-    protected fun doForAllInvalidNumberTypes(value: Number, function: (Number) -> Unit) {
+    protected fun doForAllInvalidNumberTypes(
+        value: Number,
+        function: (Number) -> Unit,
+    ) {
         function(value.toInt())
         function(value.toDouble())
         function(value.toFloat())
     }
 
     protected fun assertNonDataPointExceptionThrown(value: Any?) {
-        val exception = assertThrows<InvalidInputApiException> {
-            validate(value)
-        }
+        val exception =
+            assertThrows<InvalidInputApiException> {
+                validate(value)
+            }
         Assertions.assertTrue(exception.message.contains("is not handled by number validator"))
         Assertions.assertFalse(exception.message.contains("data point"))
     }
 
     protected fun assertDataPointExceptionThrown(dataPoint: BaseDataPoint<*>) {
-        val exception = assertThrows<InvalidInputApiException> {
-            validate(dataPoint)
-        }
+        val exception =
+            assertThrows<InvalidInputApiException> {
+                validate(dataPoint)
+            }
         Assertions.assertTrue(exception.message.contains("as data point value is not handled by number validator"))
     }
 
@@ -46,7 +54,10 @@ abstract class NumberValidationTestBase {
         assertNumberOfViolations(value, 0)
     }
 
-    protected fun assertNumberOfViolations(value: Any?, expectedNumberOfViolations: Int) {
+    protected fun assertNumberOfViolations(
+        value: Any?,
+        expectedNumberOfViolations: Int,
+    ) {
         val numValidations = validate(value)
         Assertions.assertEquals(expectedNumberOfViolations, numValidations)
     }

@@ -28,7 +28,10 @@ class QaReportManager(
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
 
-    private fun ensureDatalandDataExists(dataId: String, dataType: String) {
+    private fun ensureDatalandDataExists(
+        dataId: String,
+        dataType: String,
+    ) {
         try {
             val dataMetaInfo = metaDataControllerApi.getDataMetaInfo(dataId)
 
@@ -40,15 +43,16 @@ class QaReportManager(
                 )
             }
         } catch (ex: ClientException) {
-            val exceptionToThrow = if (ex.statusCode == HttpStatus.NOT_FOUND.value()) {
-                ResourceNotFoundApiException(
-                    "Dataset '$dataId' not found",
-                    "No data set with the id: $dataId could be found.",
-                    ex,
-                )
-            } else {
-                ex
-            }
+            val exceptionToThrow =
+                if (ex.statusCode == HttpStatus.NOT_FOUND.value()) {
+                    ResourceNotFoundApiException(
+                        "Dataset '$dataId' not found",
+                        "No data set with the id: $dataId could be found.",
+                        ex,
+                    )
+                } else {
+                    ex
+                }
             throw exceptionToThrow
         }
     }
@@ -119,13 +123,18 @@ class QaReportManager(
      * @param qaReportId filters the requested meta info to one specific QA report ID
      * @return meta info about QA report behind the qaReportId
      */
-    fun getQaReportById(dataId: String, dataType: String, qaReportId: String): QaReportEntity {
-        val dataEntity = qaReportRepository.findById(qaReportId).orElseThrow {
-            ResourceNotFoundApiException(
-                "QA report not found",
-                "No QA report with the id: $qaReportId could be found.",
-            )
-        }
+    fun getQaReportById(
+        dataId: String,
+        dataType: String,
+        qaReportId: String,
+    ): QaReportEntity {
+        val dataEntity =
+            qaReportRepository.findById(qaReportId).orElseThrow {
+                ResourceNotFoundApiException(
+                    "QA report not found",
+                    "No QA report with the id: $qaReportId could be found.",
+                )
+            }
         if (dataEntity.dataId != dataId) {
             throw InvalidInputApiException(
                 "QA report '$qaReportId' not associated with data '$dataId'",
@@ -149,9 +158,7 @@ class QaReportManager(
      * Deletes all QA reports for a specific dataId.
      */
     @Transactional
-    fun deleteAllQaReportsForDataId(
-        dataId: String,
-    ) {
+    fun deleteAllQaReportsForDataId(dataId: String) {
         qaReportRepository.deleteAllByDataId(dataId)
     }
 
@@ -166,11 +173,12 @@ class QaReportManager(
         showInactive: Boolean,
         reporterUserId: String?,
     ): List<QaReportEntity> {
-        val searchResults = qaReportRepository.searchQaReportMetaInformation(
-            dataId = dataId,
-            reporterUserId = reporterUserId,
-            showInactive = showInactive,
-        )
+        val searchResults =
+            qaReportRepository.searchQaReportMetaInformation(
+                dataId = dataId,
+                reporterUserId = reporterUserId,
+                showInactive = showInactive,
+            )
         val wrongDataType = searchResults.find { it.dataType != dataType }
         if (wrongDataType != null) {
             throw InvalidInputApiException(

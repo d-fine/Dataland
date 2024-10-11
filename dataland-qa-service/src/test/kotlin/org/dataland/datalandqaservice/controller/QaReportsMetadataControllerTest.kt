@@ -19,7 +19,6 @@ import java.time.LocalDate
 @WebMvcTest
 @ContextConfiguration(classes = [QaReportsMetadataController::class])
 class QaReportsMetadataControllerTest {
-
     @MockBean
     private lateinit var qaReportMetadataService: QaReportMetadataService
 
@@ -29,13 +28,14 @@ class QaReportsMetadataControllerTest {
     @Test
     @WithMockUser(username = "user", roles = ["USER"])
     fun whenValidLocalDatesThenNoBadRequest() {
-        mockMvc.perform(
-            MockMvcRequestBuilders.get("/data/reports/metadata")
-                .queryParam("minUploadDate", "2022-01-01")
-                .queryParam("maxUploadDate", "2022-12-31")
-                .contentType(MediaType.APPLICATION_JSON),
-        )
-            .andExpect(MockMvcResultMatchers.status().isOk())
+        mockMvc
+            .perform(
+                MockMvcRequestBuilders
+                    .get("/data/reports/metadata")
+                    .queryParam("minUploadDate", "2022-01-01")
+                    .queryParam("maxUploadDate", "2022-12-31")
+                    .contentType(MediaType.APPLICATION_JSON),
+            ).andExpect(MockMvcResultMatchers.status().isOk())
 
         Mockito.verify(qaReportMetadataService).searchDataAndQaReportMetadata(
             null, true, null,
@@ -46,13 +46,14 @@ class QaReportsMetadataControllerTest {
     @Test
     @WithMockUser(username = "user", roles = ["USER"])
     fun `check that an invalid date results in a bad request`() {
-        mockMvc.perform(
-            MockMvcRequestBuilders.get("/data/reports/metadata")
-                .queryParam("minUploadDate", "invalid-date")
-                .queryParam("maxUploadDate", "invalid-date")
-                .contentType(MediaType.APPLICATION_JSON),
-        )
-            .andExpect(MockMvcResultMatchers.status().isBadRequest)
+        mockMvc
+            .perform(
+                MockMvcRequestBuilders
+                    .get("/data/reports/metadata")
+                    .queryParam("minUploadDate", "invalid-date")
+                    .queryParam("maxUploadDate", "invalid-date")
+                    .contentType(MediaType.APPLICATION_JSON),
+            ).andExpect(MockMvcResultMatchers.status().isBadRequest)
 
         Mockito.verify(qaReportMetadataService, Mockito.never()).searchDataAndQaReportMetadata(
             any(), any(), any(),

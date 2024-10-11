@@ -12,20 +12,14 @@ import org.dataland.datalandqaservice.model.reports.QaReportDataPoint
 data class SfdrSocialHumanRights(
     @field:Valid()
     val humanRightsPolicy: QaReportDataPoint<ExtendedDataPointYesNo?>? = null,
-
     @field:Valid()
     val humanRightsDueDiligence: QaReportDataPoint<ExtendedDataPointYesNo?>? = null,
-
     @field:Valid()
     val traffickingInHumanBeingsPolicy: QaReportDataPoint<ExtendedDataPointYesNo?>? = null,
-
     @field:Valid()
     val reportedChildLabourIncidents: QaReportDataPoint<ExtendedDataPointYesNo?>? = null,
-
     @field:Valid()
     val reportedForcedOrCompulsoryLabourIncidents: QaReportDataPoint<ExtendedDataPointYesNo?>? = null,
-
     @field:Valid()
     val numberOfReportedIncidentsOfHumanRightsViolations: QaReportDataPoint<ExtendedDataPointBigInteger?>? = null,
-
 )

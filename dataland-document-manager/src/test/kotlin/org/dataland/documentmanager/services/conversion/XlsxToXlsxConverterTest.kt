@@ -19,12 +19,13 @@ class XlsxToXlsxConverterTest {
 
     @Test
     fun `verify that the converter validates a xlsx file but do not convert a xlsx file`() {
-        val testInput = MockMultipartFile(
-            testFileName,
-            testFileName,
-            "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-            TestUtils().loadFileBytes(testXlsx),
-        )
+        val testInput =
+            MockMultipartFile(
+                testFileName,
+                testFileName,
+                "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                TestUtils().loadFileBytes(testXlsx),
+            )
         assertEquals(mimeType, Tika().detect(testInput.bytes))
         xlsxToXlsxConverter.validateFile(testInput, correlationId)
         val convertedDocument = xlsxToXlsxConverter.convertFile(testInput, correlationId)
@@ -34,16 +35,18 @@ class XlsxToXlsxConverterTest {
 
     @Test
     fun `check that an empty xlsx file is not validated`() {
-        val testInput = MockMultipartFile(
-            testFileName,
-            testFileName,
-            "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-            TestUtils().loadFileBytes(emptyXlsx),
-        )
+        val testInput =
+            MockMultipartFile(
+                testFileName,
+                testFileName,
+                "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                TestUtils().loadFileBytes(emptyXlsx),
+            )
         assertEquals(mimeType, Tika().detect(testInput.bytes))
-        val exception = assertThrows<InvalidInputApiException> {
-            xlsxToXlsxConverter.validateFile(testInput, correlationId)
-        }
+        val exception =
+            assertThrows<InvalidInputApiException> {
+                xlsxToXlsxConverter.validateFile(testInput, correlationId)
+            }
         assertEquals("The file you uploaded seems to be empty.", exception.message)
     }
 }

@@ -25,11 +25,9 @@ data class CompanyRoleAssignmentEntity(
     @Column(name = "company_role")
     @Enumerated(EnumType.STRING)
     val companyRole: CompanyRole,
-
     @Id
     @Column(name = "company_id")
     val companyId: String,
-
     @Id
     @Column(name = "user_id")
     val userId: String,
@@ -38,11 +36,10 @@ data class CompanyRoleAssignmentEntity(
      * Converts the entity to an API model object
      * @returns the API model object
      */
-    fun toApiModel(): CompanyRoleAssignment {
-        return CompanyRoleAssignment(
+    fun toApiModel(): CompanyRoleAssignment =
+        CompanyRoleAssignment(
             companyRole = this.companyRole,
             companyId = this.companyId,
             userId = this.userId,
         )
-    }
 }

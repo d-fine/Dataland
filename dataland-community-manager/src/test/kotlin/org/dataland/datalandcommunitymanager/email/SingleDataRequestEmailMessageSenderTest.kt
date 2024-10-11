@@ -27,7 +27,7 @@ import org.mockito.Mockito.reset
 import org.mockito.Mockito.`when`
 import org.springframework.security.core.context.SecurityContext
 import org.springframework.security.core.context.SecurityContextHolder
-import java.util.*
+import java.util.UUID
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class SingleDataRequestEmailMessageSenderTest {
@@ -47,11 +47,12 @@ class SingleDataRequestEmailMessageSenderTest {
     @BeforeAll
     fun setup() {
         val mockSecurityContext = mock(SecurityContext::class.java)
-        authenticationMock = AuthenticationMock.mockJwtAuthentication(
-            "requester@example.com",
-            "1234-221-1111elf",
-            setOf(DatalandRealmRole.ROLE_USER),
-        )
+        authenticationMock =
+            AuthenticationMock.mockJwtAuthentication(
+                "requester@example.com",
+                "1234-221-1111elf",
+                setOf(DatalandRealmRole.ROLE_USER),
+            )
         `when`(mockSecurityContext.authentication).thenReturn(authenticationMock)
         `when`(authenticationMock.credentials).thenReturn("")
         SecurityContextHolder.setContext(mockSecurityContext)
@@ -60,12 +61,13 @@ class SingleDataRequestEmailMessageSenderTest {
         `when`(companyInfoMock.companyName).thenReturn(companyName)
         `when`(companyApiMock.getCompanyInfo(anyString())).thenReturn(companyInfoMock)
         companyRolesManager = mock(CompanyRolesManager::class.java)
-        singleDataRequestEmailMessageSender = SingleDataRequestEmailMessageSender(
-            cloudEventMessageHandler = cloudEventMessageHandlerMock,
-            objectMapper = objectMapper,
-            companyApi = companyApiMock,
-            companyRolesManager = companyRolesManager,
-        )
+        singleDataRequestEmailMessageSender =
+            SingleDataRequestEmailMessageSender(
+                cloudEventMessageHandler = cloudEventMessageHandlerMock,
+                objectMapper = objectMapper,
+                companyApi = companyApiMock,
+                companyRolesManager = companyRolesManager,
+            )
     }
 
     @BeforeEach
@@ -82,7 +84,7 @@ class SingleDataRequestEmailMessageSenderTest {
                 anyString(),
                 anyString(),
             ),
-        ).then() {
+        ).then {
             val arg1 = objectMapper.readValue(it.getArgument<String>(0), InternalEmailMessage::class.java)
             val arg2 = it.getArgument<String>(1)
             val arg3 = it.getArgument<String>(2)
@@ -97,10 +99,10 @@ class SingleDataRequestEmailMessageSenderTest {
             assertEquals(reportingPeriodsAsString, arg1.properties.getValue("Reporting Periods"))
             assertEquals(datalandCompanyId, arg1.properties.getValue("Dataland Company ID"))
             assertEquals(companyName, arg1.properties.getValue("Company Name"))
-            assertEquals(MessageType.SendInternalEmail, arg2)
+            assertEquals(MessageType.SEND_INTERNAL_EMAIL, arg2)
             assertEquals(correlationId, arg3)
-            assertEquals(ExchangeName.SendEmail, arg4)
-            assertEquals(RoutingKeyNames.internalEmail, arg5)
+            assertEquals(ExchangeName.SEND_EMAIL, arg4)
+            assertEquals(RoutingKeyNames.INTERNAL_EMAIL, arg5)
         }
     }
 
@@ -124,7 +126,7 @@ class SingleDataRequestEmailMessageSenderTest {
                 anyString(),
                 anyString(),
             ),
-        ).then() {
+        ).then {
             val arg1 = objectMapper.readValue(it.getArgument<String>(0), TemplateEmailMessage::class.java)
             val arg2 = it.getArgument<String>(1)
             val arg3 = it.getArgument<String>(2)
@@ -139,10 +141,10 @@ class SingleDataRequestEmailMessageSenderTest {
             assertEquals(readableFrameworkNameMapping.getValue(DataTypeEnum.p2p), arg1.properties.getValue("dataType"))
             assertEquals(reportingPeriodsAsString, arg1.properties.getValue("reportingPeriods"))
             assertEquals("ABCDEFGHIJKLMNOPQRSTUVWXYZ", arg1.properties.getValue("message"))
-            assertEquals(MessageType.SendTemplateEmail, arg2)
+            assertEquals(MessageType.SEND_TEMPLATE_EMAIL, arg2)
             assertEquals(correlationId, arg3)
-            assertEquals(ExchangeName.SendEmail, arg4)
-            assertEquals(RoutingKeyNames.templateEmail, arg5)
+            assertEquals(ExchangeName.SEND_EMAIL, arg4)
+            assertEquals(RoutingKeyNames.TEMPLATE_EMAIL, arg5)
         }
     }
 

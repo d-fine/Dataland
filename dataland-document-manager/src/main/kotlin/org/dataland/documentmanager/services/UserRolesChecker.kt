@@ -16,7 +16,6 @@ import java.util.UUID
 class UserRolesChecker(
     @Autowired private val companyRolesControllerApi: CompanyRolesControllerApi,
 ) {
-
     /**
      * Method to check whether the currently authenticated user is company owner or company uploader of any company and
      * therefore has document uploader rights
@@ -25,11 +24,13 @@ class UserRolesChecker(
     @Transactional(readOnly = true)
     fun isCurrentUserCompanyOwnerOrCompanyUploader(): Boolean {
         val userId = DatalandAuthentication.fromContext().userId
-        val roles = companyRolesControllerApi.getCompanyRoleAssignments(
-            null,
-            null,
-            UUID.fromString(userId),
-        ).map { it.companyRole }
+        val roles =
+            companyRolesControllerApi
+                .getCompanyRoleAssignments(
+                    null,
+                    null,
+                    UUID.fromString(userId),
+                ).map { it.companyRole }
         return roles.contains(CompanyRole.CompanyOwner) || roles.contains(CompanyRole.DataUploader)
     }
 }

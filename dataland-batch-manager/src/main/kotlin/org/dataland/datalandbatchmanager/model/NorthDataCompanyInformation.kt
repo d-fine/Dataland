@@ -13,34 +13,24 @@ import org.dataland.datalandbackend.openApiClient.model.IdentifierType
 data class NorthDataCompanyInformation(
     @JsonProperty("Name")
     val companyName: String,
-
     @JsonProperty("Ort")
     val headquarters: String,
-
     @JsonProperty("PLZ")
     val headquartersPostalCode: String,
-
     @JsonProperty("LEI")
     val lei: String,
-
     @JsonProperty("Land")
     val countryCode: String,
-
     @JsonProperty("Register ID")
     val registerId: String,
-
     @JsonProperty("Straße")
     val street: String?,
-
     @JsonProperty("USt.-Id.")
     val vatId: String,
-
     @JsonProperty("Status")
     val status: String,
-
     @JsonProperty("Branchencode")
     val sector: String?,
-
 ) : ExternalCompanyInformation {
     /**
      * function to transform a company information object from NorthData to the corresponding Dataland object.
@@ -102,8 +92,7 @@ data class NorthDataCompanyInformation(
         )
     }
 
-    override fun getNameAndIdentifier(): String {
-        return "$companyName " +
+    override fun getNameAndIdentifier(): String =
+        "$companyName " +
             " (RegisterID: $registerId, VatId: $vatId and LEI: $lei)"
-    }
 }

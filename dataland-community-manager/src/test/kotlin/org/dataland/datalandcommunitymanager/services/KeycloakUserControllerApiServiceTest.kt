@@ -19,7 +19,6 @@ import org.mockito.kotlin.mock
 import org.mockito.kotlin.whenever
 
 class KeycloakUserControllerApiServiceTest {
-
     private lateinit var objectMapper: ObjectMapper
     private lateinit var authenticatedOkHttpClient: OkHttpClient
     private lateinit var service: KeycloakUserControllerApiService
@@ -35,37 +34,41 @@ class KeycloakUserControllerApiServiceTest {
     }
 
     private val firstUser = KeycloakUserInfo("test@example.com", "1", "John", "Doe")
-    private val firstUserJson = """
+    private val firstUserJson =
+        """
         {
             "id": "${firstUser.userId}",
             "email": "${firstUser.email}",
             "firstName": "${firstUser.firstName}",
             "lastName": "${firstUser.lastName}"
         }
-    """.trimIndent()
+        """.trimIndent()
 
     private val secondUser = KeycloakUserInfo("example@test.com", "2", "Jane", "Doe")
 
-    private val secondUserJson = """
-    {
-        "id": "${secondUser.userId}",
-        "email": "${secondUser.email}",
-        "firstName": "${secondUser.firstName}",
-        "lastName": "${secondUser.lastName}"
-    }
-    """.trimIndent()
+    private val secondUserJson =
+        """
+        {
+            "id": "${secondUser.userId}",
+            "email": "${secondUser.email}",
+            "firstName": "${secondUser.firstName}",
+            "lastName": "${secondUser.lastName}"
+        }
+        """.trimIndent()
 
     @Test
     fun `getUser should return valid KeycloakUserInfo on successful parse`() {
         val expectedUrl = "$keycloakBaseUrl/admin/realms/datalandsecurity/users/${firstUser.userId}"
 
-        val response = Response.Builder()
-            .request(Request.Builder().url(expectedUrl).build())
-            .protocol(Protocol.HTTP_1_1)
-            .code(200)
-            .message("OK")
-            .body(firstUserJson.toResponseBody("application/json".toMediaTypeOrNull()))
-            .build()
+        val response =
+            Response
+                .Builder()
+                .request(Request.Builder().url(expectedUrl).build())
+                .protocol(Protocol.HTTP_1_1)
+                .code(200)
+                .message("OK")
+                .body(firstUserJson.toResponseBody("application/json".toMediaTypeOrNull()))
+                .build()
 
         val call = mock<Call>()
         whenever(call.execute()).thenReturn(response)
@@ -82,13 +85,15 @@ class KeycloakUserControllerApiServiceTest {
 
         val json = "[$firstUserJson, $secondUserJson]"
 
-        val response = Response.Builder()
-            .request(Request.Builder().url(expectedUrl).build())
-            .protocol(Protocol.HTTP_1_1)
-            .code(200)
-            .message("OK")
-            .body(json.toResponseBody("application/json".toMediaTypeOrNull()))
-            .build()
+        val response =
+            Response
+                .Builder()
+                .request(Request.Builder().url(expectedUrl).build())
+                .protocol(Protocol.HTTP_1_1)
+                .code(200)
+                .message("OK")
+                .body(json.toResponseBody("application/json".toMediaTypeOrNull()))
+                .build()
 
         val call = mock<Call>()
         whenever(call.execute()).thenReturn(response)

@@ -14,7 +14,6 @@ import org.springframework.stereotype.Service
 class CompanyIdValidator(
     @Autowired private val companyApi: CompanyDataControllerApi,
 ) {
-
     /**
      * Checks if a companyId exists on Dataland by trying to retrieve it in the backend.
      * If it does not exist the method catches the not-found-exception from the backend and throws a
@@ -31,7 +30,9 @@ class CompanyIdValidator(
                     "Company not found",
                     "Dataland does not know the company ID $companyId",
                 )
-            } else { throw e }
+            } else {
+                throw e
+            }
         }
     }
 
@@ -51,7 +52,9 @@ class CompanyIdValidator(
                     "Company not found",
                     "Dataland does not know the company ID $companyId",
                 )
-            } else { throw e }
+            } else {
+                throw e
+            }
         }
     }
 }

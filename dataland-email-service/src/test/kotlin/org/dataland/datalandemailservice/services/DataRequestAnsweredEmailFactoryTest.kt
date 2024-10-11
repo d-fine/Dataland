@@ -18,19 +18,18 @@ class DataRequestAnsweredEmailFactoryTest {
     private val senderName = "Dataland"
     private val receiverEmail = "user@testemail.com"
 
-    private fun buildTestEmail(
-        setOptionalProperties: Boolean,
-    ): Email {
+    private fun buildTestEmail(setOptionalProperties: Boolean): Email {
         val properties = getProperties(setOptionalProperties)
 
-        val email = DataRequestAnsweredEmailFactory(
-            proxyPrimaryUrl = proxyPrimaryUrl,
-            senderEmail = senderEmail,
-            senderName = senderName,
-        ).buildEmail(
-            receiverEmail = receiverEmail,
-            properties = properties,
-        )
+        val email =
+            DataRequestAnsweredEmailFactory(
+                proxyPrimaryUrl = proxyPrimaryUrl,
+                senderEmail = senderEmail,
+                senderName = senderName,
+            ).buildEmail(
+                receiverEmail = receiverEmail,
+                properties = properties,
+            )
         return email
     }
 

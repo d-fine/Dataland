@@ -39,9 +39,7 @@ class WebSecurityConfig(
      * Defines the Session Authentication Strategy
      */
     @Bean
-    fun sessionAuthenticationStrategy(): SessionAuthenticationStrategy {
-        return NullAuthenticatedSessionStrategy()
-    }
+    fun sessionAuthenticationStrategy(): SessionAuthenticationStrategy = NullAuthenticatedSessionStrategy()
 
     /**
      * Defines the default Security Filter Chain
@@ -80,23 +78,28 @@ class WebSecurityConfig(
         val linksList = listStringToList(publicLinks) + listStringToList(internalLinks)
         val linkMatchers = linksList.map { antMatcher(it) }.toTypedArray()
 
-        http.authorizeHttpRequests {
-            it.requestMatchers(*linkMatchers).permitAll()
-                .anyRequest().fullyAuthenticated()
-        }.logout {
-            it.disable()
-        }.csrf {
-            it.disable()
-        }.oauth2ResourceServer {
-            it.authenticationManagerResolver(tokenAuthenticationManagerResolver())
-        }
+        http
+            .authorizeHttpRequests {
+                it
+                    .requestMatchers(*linkMatchers)
+                    .permitAll()
+                    .anyRequest()
+                    .fullyAuthenticated()
+            }.logout {
+                it.disable()
+            }.csrf {
+                it.disable()
+            }.oauth2ResourceServer {
+                it.authenticationManagerResolver(tokenAuthenticationManagerResolver())
+            }
     }
 
-    private fun listStringToList(listString: String) = if (listString.isNotEmpty()) {
-        listString.split(",")
-    } else {
-        emptyList()
-    }
+    private fun listStringToList(listString: String) =
+        if (listString.isNotEmpty()) {
+            listString.split(",")
+        } else {
+            emptyList()
+        }
 
     private fun updatePolicies(http: HttpSecurity) {
         http.headers { contentSecurityPolicy ->

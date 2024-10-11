@@ -12,8 +12,8 @@ import org.json.JSONObject
  * This migration script updates the old version eutaxonomy for non financials datasets to the new version
  * and the new version is integrated into the old datatype
  */
+@Suppress("ClassName")
 class V5__MigrateToNewEuTaxonomyForNonFinancials : BaseJavaMigration() {
-
     override fun migrate(context: Context?) {
         migrateOldData(context)
         migrateNewData(context)
@@ -38,16 +38,17 @@ class V5__MigrateToNewEuTaxonomyForNonFinancials : BaseJavaMigration() {
 
     private fun migrateGeneralFields(dataObject: JSONObject) {
         val generalObject = JSONObject()
-        val keysToMove = listOf(
-            "fiscalYearDeviation",
-            "fiscalYearEnd",
-            "scopeOfEntities",
-            "nfrdMandatory",
-            "euTaxonomyActivityLevelReporting",
-            "assurance",
-            "numberOfEmployees",
-            "referencedReports",
-        )
+        val keysToMove =
+            listOf(
+                "fiscalYearDeviation",
+                "fiscalYearEnd",
+                "scopeOfEntities",
+                "nfrdMandatory",
+                "euTaxonomyActivityLevelReporting",
+                "assurance",
+                "numberOfEmployees",
+                "referencedReports",
+            )
         keysToMove.forEach {
             generalObject.put(it, dataObject.getOrJsonNull(it))
             dataObject.remove(it)
@@ -102,28 +103,37 @@ class V5__MigrateToNewEuTaxonomyForNonFinancials : BaseJavaMigration() {
 
     private fun isDataPointProvidingSourceInfo(dataPoint: JSONObject): Boolean {
         val hasCommentOrQuality = listOf("comment", "quality").any { dataPoint.getOrJavaNull(it) != null }
-        val hasPopulatedDataSource = dataPoint.getOrJavaNull("dataSource")?.let {
-            val itObject = it as JSONObject
-            itObject.keySet().any { itObject.getOrJavaNull(it) != null }
-        } ?: false
+        val hasPopulatedDataSource =
+            dataPoint.getOrJavaNull("dataSource")?.let {
+                val itObject = it as JSONObject
+                itObject.keySet().any { itObject.getOrJavaNull(it) != null }
+            } ?: false
 
         return hasCommentOrQuality || hasPopulatedDataSource
     }
 
-    private fun applyAlternativeSourceInfo(cashFlowDetails: JSONObject, dataPoint: JSONObject) {
+    private fun applyAlternativeSourceInfo(
+        cashFlowDetails: JSONObject,
+        dataPoint: JSONObject,
+    ) {
         val newTotalAmountObject = JSONObject()
         listOf("comment", "quality", "comment", "dataSource").forEach {
             newTotalAmountObject.put(it, dataPoint.getOrJsonNull(it))
         }
-        val totalAmountValueObject = cashFlowDetails
-            .getOrJavaNull("totalAmount")
-            ?.let { (it as JSONObject).getOrJsonNull("value") } ?: JSONObject.NULL
+        val totalAmountValueObject =
+            cashFlowDetails
+                .getOrJavaNull("totalAmount")
+                ?.let { (it as JSONObject).getOrJsonNull("value") } ?: JSONObject.NULL
 
         newTotalAmountObject.put("value", totalAmountValueObject)
         cashFlowDetails.put("totalAmount", newTotalAmountObject)
     }
 
-    private fun migrateDataPointToFinancialShare(cashFlowDetails: JSONObject, fromKey: String, toKey: String) {
+    private fun migrateDataPointToFinancialShare(
+        cashFlowDetails: JSONObject,
+        fromKey: String,
+        toKey: String,
+    ) {
         val financialShareObject = JSONObject()
         cashFlowDetails.getOrJavaNull(fromKey)?.also {
             financialShareObject.put(

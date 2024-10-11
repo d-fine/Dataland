@@ -9,11 +9,7 @@ import org.dataland.datalandqaservice.model.reports.QaReportDataPoint
  */
 data class AdditionalCompanyInformationGeneralFinancialInformation(
     val equity: QaReportDataPoint<CurrencyDataPoint?>? = null,
-
     val debt: QaReportDataPoint<CurrencyDataPoint?>? = null,
-
     val balanceSheetTotal: QaReportDataPoint<CurrencyDataPoint?>? = null,
-
     val evic: QaReportDataPoint<CurrencyDataPoint?>? = null,
-
 )

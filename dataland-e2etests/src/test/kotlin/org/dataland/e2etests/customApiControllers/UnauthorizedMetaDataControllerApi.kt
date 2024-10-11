@@ -12,7 +12,6 @@ import org.dataland.e2etests.BASE_PATH_TO_DATALAND_BACKEND
 import java.lang.reflect.ParameterizedType
 
 class UnauthorizedMetaDataControllerApi {
-
     private val client = OkHttpClient()
 
     private fun transferJsonToDataMetaInformation(inputString: String): DataMetaInformation {
@@ -27,21 +26,27 @@ class UnauthorizedMetaDataControllerApi {
         return jsonAdapter.fromJson(inputString)!!
     }
 
-    private fun buildGetDataMetaInfoRequest(dataId: String): Request {
-        return Request.Builder()
+    private fun buildGetDataMetaInfoRequest(dataId: String): Request =
+        Request
+            .Builder()
             .url("$BASE_PATH_TO_DATALAND_BACKEND/metadata/$dataId")
             .get()
             .build()
-    }
 
-    private fun buildGetListOfDataMetaInfoRequest(companyId: String, dataType: DataTypeEnum): Request {
-        val endpointUrl = BASE_PATH_TO_DATALAND_BACKEND
-            .toHttpUrl().newBuilder()
-            .addPathSegment("metadata")
-            .addQueryParameter("companyId", companyId)
-            .addQueryParameter("dataType", dataType.value)
-            .build()
-        return Request.Builder()
+    private fun buildGetListOfDataMetaInfoRequest(
+        companyId: String,
+        dataType: DataTypeEnum,
+    ): Request {
+        val endpointUrl =
+            BASE_PATH_TO_DATALAND_BACKEND
+                .toHttpUrl()
+                .newBuilder()
+                .addPathSegment("metadata")
+                .addQueryParameter("companyId", companyId)
+                .addQueryParameter("dataType", dataType.value)
+                .build()
+        return Request
+            .Builder()
             .url(endpointUrl)
             .get()
             .build()
@@ -54,7 +59,10 @@ class UnauthorizedMetaDataControllerApi {
         return transferJsonToDataMetaInformation(responseBodyAsString)
     }
 
-    fun getListOfDataMetaInfo(companyId: String, dataType: DataTypeEnum): List<DataMetaInformation> {
+    fun getListOfDataMetaInfo(
+        companyId: String,
+        dataType: DataTypeEnum,
+    ): List<DataMetaInformation> {
         val response = client.newCall(buildGetListOfDataMetaInfoRequest(companyId, dataType)).execute()
         require(response.isSuccessful) { "Unauthorized access failed, response is: $response" }
         val responseBodyAsString = response.body!!.string()

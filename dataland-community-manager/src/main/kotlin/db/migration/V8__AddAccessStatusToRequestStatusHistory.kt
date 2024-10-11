@@ -6,6 +6,7 @@ import org.flywaydb.core.api.migration.Context
 /**
  * This migration script migrates the request status history to a separate table
  */
+@Suppress("ClassName")
 class V8__AddAccessStatusToRequestStatusHistory : BaseJavaMigration() {
     override fun migrate(context: Context?) {
         context!!
@@ -21,12 +22,14 @@ class V8__AddAccessStatusToRequestStatusHistory : BaseJavaMigration() {
                 "ADD COLUMN access_status varchar(255) ",
         )
     }
+
     private fun makeAccessStatusRowNonNullable(context: Context) {
         context.connection.createStatement().execute(
             "ALTER TABLE request_status_history " +
                 "ALTER COLUMN access_status SET NOT NULL ",
         )
     }
+
     private fun migrateSmeToVsme(context: Context) {
         context.connection.createStatement().execute(
             "UPDATE data_requests " +
@@ -34,13 +37,16 @@ class V8__AddAccessStatusToRequestStatusHistory : BaseJavaMigration() {
                 "WHERE data_type = 'sme' ",
         )
     }
+
     private fun setInitialAccessStatusDependingOnDataType(context: Context) {
-        val requestsForNonVsmeDataType = context.connection.createStatement().executeQuery(
-            "SELECT data_request_id FROM data_requests WHERE data_type != 'vsme' ",
-        )
-        val requestsForVsmeDataType = context.connection.createStatement().executeQuery(
-            "SELECT data_request_id FROM data_requests WHERE data_type = 'vsme' ",
-        )
+        val requestsForNonVsmeDataType =
+            context.connection.createStatement().executeQuery(
+                "SELECT data_request_id FROM data_requests WHERE data_type != 'vsme' ",
+            )
+        val requestsForVsmeDataType =
+            context.connection.createStatement().executeQuery(
+                "SELECT data_request_id FROM data_requests WHERE data_type = 'vsme' ",
+            )
 
         val query = "UPDATE request_status_history SET access_status = ? WHERE data_request_id = ?"
 

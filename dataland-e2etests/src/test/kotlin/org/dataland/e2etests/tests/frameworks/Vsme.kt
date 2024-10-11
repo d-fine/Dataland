@@ -30,7 +30,6 @@ import java.util.UUID
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class Vsme {
-
     private val apiAccessor = ApiAccessor()
 
     private val vsmeDataControllerApi = VsmeDataControllerApi(BASE_PATH_TO_DATALAND_BACKEND)
@@ -88,9 +87,10 @@ class Vsme {
         val companyAssociatedVsmeData = CompanyAssociatedDataVsmeData(companyId, "2022", vsmeData)
         val dataMetaInfoInResponse =
             vsmeTestUtils.postVsmeDataset(companyAssociatedVsmeData, listOf(dummyFileAlpha), TechnicalUser.Uploader)
-        val persistedDataMetaInfo = executeDataRetrievalWithRetries(
-            apiAccessor.metaDataControllerApi::getDataMetaInfo, dataMetaInfoInResponse.dataId,
-        )
+        val persistedDataMetaInfo =
+            executeDataRetrievalWithRetries(
+                apiAccessor.metaDataControllerApi::getDataMetaInfo, dataMetaInfoInResponse.dataId,
+            )
         assertEquals(persistedDataMetaInfo, dataMetaInfoInResponse)
 
         val dataId = persistedDataMetaInfo!!.dataId
@@ -150,16 +150,18 @@ class Vsme {
     fun `post VSME data with documents and check if data and documents match the uploaded data and documents`() {
         val vsmeData = vsmeTestUtils.setReferencedReports(testVsmeData, FileInfos(hashAlpha, fileNameAlpha))
         val companyAssociatedDataVsmeData = CompanyAssociatedDataVsmeData(companyId, "2023", vsmeData)
-        val dataMetaInfoInResponse = vsmeTestUtils.postVsmeDataset(
-            companyAssociatedDataVsmeData,
-            listOf(dummyFileAlpha, dummyFileBeta),
-            TechnicalUser.Uploader,
-        )
+        val dataMetaInfoInResponse =
+            vsmeTestUtils.postVsmeDataset(
+                companyAssociatedDataVsmeData,
+                listOf(dummyFileAlpha, dummyFileBeta),
+                TechnicalUser.Uploader,
+            )
 
         apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Uploader)
-        val retrievedCompanyAssociatedVsmeData = executeDataRetrievalWithRetries(
-            vsmeDataControllerApi::getCompanyAssociatedVsmeData, dataMetaInfoInResponse.dataId,
-        )
+        val retrievedCompanyAssociatedVsmeData =
+            executeDataRetrievalWithRetries(
+                vsmeDataControllerApi::getCompanyAssociatedVsmeData, dataMetaInfoInResponse.dataId,
+            )
         assertEquals(companyAssociatedDataVsmeData, retrievedCompanyAssociatedVsmeData)
 
         val downloadedAlpha = vsmeDataControllerApi.getPrivateDocument(dataMetaInfoInResponse.dataId, hashAlpha)
@@ -174,16 +176,22 @@ class Vsme {
         var vsmeData = vsmeTestUtils.setReferencedReports(testVsmeData, null)
         val companyAssociatedVsmeDataAlpha =
             generateVsmeDataWithSetNumberOfEmployeesInHeadCount(companyId, "2022", vsmeData, BigDecimal(1))
-        val dataIdAlpha = vsmeTestUtils.postVsmeDataset(companyAssociatedVsmeDataAlpha, user = TechnicalUser.Uploader)
-            .dataId
+        val dataIdAlpha =
+            vsmeTestUtils
+                .postVsmeDataset(companyAssociatedVsmeDataAlpha, user = TechnicalUser.Uploader)
+                .dataId
 
         apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Uploader)
-        val retrievedCompanyAssociatedVsmeDataAlpha = executeDataRetrievalWithRetries(
-            vsmeDataControllerApi::getCompanyAssociatedVsmeData, dataIdAlpha,
-        )
+        val retrievedCompanyAssociatedVsmeDataAlpha =
+            executeDataRetrievalWithRetries(
+                vsmeDataControllerApi::getCompanyAssociatedVsmeData, dataIdAlpha,
+            )
         assertEquals(
             BigDecimal(1),
-            retrievedCompanyAssociatedVsmeDataAlpha?.data?.basic?.workforceGeneralCharacteristics
+            retrievedCompanyAssociatedVsmeDataAlpha
+                ?.data
+                ?.basic
+                ?.workforceGeneralCharacteristics
                 ?.numberOfEmployeesInHeadcount,
         )
 
@@ -192,31 +200,40 @@ class Vsme {
             generateVsmeDataWithSetNumberOfEmployeesInHeadCount(companyId, "2022", vsmeData, BigDecimal(2))
 
         val dataIdBeta =
-            vsmeTestUtils.postVsmeDataset(
-                companyAssociatedVsmeDataBeta, listOf(dummyFileAlpha, dummyFileBeta), TechnicalUser.Uploader,
-            )
-                .dataId
+            vsmeTestUtils
+                .postVsmeDataset(
+                    companyAssociatedVsmeDataBeta, listOf(dummyFileAlpha, dummyFileBeta), TechnicalUser.Uploader,
+                ).dataId
         checkValidity(dataIdAlpha, dataIdBeta)
     }
 
-    private fun checkValidity(dataIdAlpha: String, dataIdBeta: String) {
-        val retrievedCompanyAssociatedVsmeDataBeta = executeDataRetrievalWithRetries(
-            vsmeDataControllerApi::getCompanyAssociatedVsmeData, dataIdBeta,
-        )
+    private fun checkValidity(
+        dataIdAlpha: String,
+        dataIdBeta: String,
+    ) {
+        val retrievedCompanyAssociatedVsmeDataBeta =
+            executeDataRetrievalWithRetries(
+                vsmeDataControllerApi::getCompanyAssociatedVsmeData, dataIdBeta,
+            )
         assertEquals(
             BigDecimal(2),
-            retrievedCompanyAssociatedVsmeDataBeta?.data?.basic?.workforceGeneralCharacteristics
+            retrievedCompanyAssociatedVsmeDataBeta
+                ?.data
+                ?.basic
+                ?.workforceGeneralCharacteristics
                 ?.numberOfEmployeesInHeadcount,
         )
 
-        val persistedDataMetaInfoAlpha = executeDataRetrievalWithRetries(
-            apiAccessor.metaDataControllerApi::getDataMetaInfo, dataIdAlpha,
-        )
+        val persistedDataMetaInfoAlpha =
+            executeDataRetrievalWithRetries(
+                apiAccessor.metaDataControllerApi::getDataMetaInfo, dataIdAlpha,
+            )
         assertEquals(false, persistedDataMetaInfoAlpha?.currentlyActive)
 
-        val persistedDataMetaInfoBeta = executeDataRetrievalWithRetries(
-            apiAccessor.metaDataControllerApi::getDataMetaInfo, dataIdBeta,
-        )
+        val persistedDataMetaInfoBeta =
+            executeDataRetrievalWithRetries(
+                apiAccessor.metaDataControllerApi::getDataMetaInfo, dataIdBeta,
+            )
         assertEquals(true, persistedDataMetaInfoBeta?.currentlyActive)
     }
 
@@ -225,13 +242,15 @@ class Vsme {
         val vsmeData = vsmeTestUtils.setReferencedReports(testVsmeData, FileInfos(hashAlpha, fileNameAlpha))
         val companyAssociatedVsmeData = CompanyAssociatedDataVsmeData(companyId, "2022", vsmeData)
         val dataId =
-            vsmeTestUtils.postVsmeDataset(
-                companyAssociatedVsmeData, listOf(dummyFileAlpha, dummyFileAlpha), TechnicalUser.Uploader,
-            ).dataId
+            vsmeTestUtils
+                .postVsmeDataset(
+                    companyAssociatedVsmeData, listOf(dummyFileAlpha, dummyFileAlpha), TechnicalUser.Uploader,
+                ).dataId
 
-        val persistedDataMetaInfo = executeDataRetrievalWithRetries(
-            apiAccessor.metaDataControllerApi::getDataMetaInfo, dataId,
-        )
+        val persistedDataMetaInfo =
+            executeDataRetrievalWithRetries(
+                apiAccessor.metaDataControllerApi::getDataMetaInfo, dataId,
+            )
 
         apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Uploader)
         val downloadedFile = vsmeDataControllerApi.getPrivateDocument(persistedDataMetaInfo!!.dataId, hashAlpha)
@@ -243,9 +262,10 @@ class Vsme {
         val vsmeData = vsmeTestUtils.setReferencedReports(testVsmeData, FileInfos(hashAlpha, fileNameAlpha))
         val companyAssociatedDataVsmeData = CompanyAssociatedDataVsmeData(companyId, "2022", vsmeData)
         val dataId =
-            vsmeTestUtils.postVsmeDataset(
-                companyAssociatedDataVsmeData, listOf(dummyFileAlpha, dummyFileAlpha), TechnicalUser.Uploader,
-            ).dataId
+            vsmeTestUtils
+                .postVsmeDataset(
+                    companyAssociatedDataVsmeData, listOf(dummyFileAlpha, dummyFileAlpha), TechnicalUser.Uploader,
+                ).dataId
         apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.PremiumUser)
         val requestId = createSingleDataVsmeRequest()
         apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Uploader)
@@ -253,9 +273,10 @@ class Vsme {
             dataRequestId = UUID.fromString(requestId), accessStatus = AccessStatus.Granted,
         )
         apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.PremiumUser)
-        val retrievedCompanyAssociatedVsmeData = executeDataRetrievalWithRetries(
-            vsmeDataControllerApi::getCompanyAssociatedVsmeData, dataId,
-        )
+        val retrievedCompanyAssociatedVsmeData =
+            executeDataRetrievalWithRetries(
+                vsmeDataControllerApi::getCompanyAssociatedVsmeData, dataId,
+            )
 
         assertEquals(companyAssociatedDataVsmeData, retrievedCompanyAssociatedVsmeData)
         val downloadedFile = vsmeDataControllerApi.getPrivateDocument(dataId, hashAlpha)
@@ -276,11 +297,16 @@ class Vsme {
 
         requestControllerApi.postSingleDataRequest(vsmeDataRequest)
         Thread.sleep(1000)
-        return requestControllerApi.getDataRequestsForRequestingUser().maxByOrNull { it.creationTimestamp }
+        return requestControllerApi
+            .getDataRequestsForRequestingUser()
+            .maxByOrNull { it.creationTimestamp }
             ?.dataRequestId
     }
 
-    private fun <T>executeDataRetrievalWithRetries(action: (dataId: String) -> T, dataId: String): T? {
+    private fun <T> executeDataRetrievalWithRetries(
+        action: (dataId: String) -> T,
+        dataId: String,
+    ): T? {
         val maxAttempts = 20
         var attempt = 1
 
@@ -304,21 +330,22 @@ class Vsme {
         reportingPeriod: String,
         vsmeData: VsmeData,
         numberOfEmployeesInHeadCount: BigDecimal,
-    ): CompanyAssociatedDataVsmeData {
-        return CompanyAssociatedDataVsmeData(
+    ): CompanyAssociatedDataVsmeData =
+        CompanyAssociatedDataVsmeData(
             companyId,
             reportingPeriod,
             vsmeData.copy(
-                basic = vsmeData.basic?.let { basic ->
-                    basic.copy(
-                        workforceGeneralCharacteristics = basic.workforceGeneralCharacteristics?.copy(
-                            numberOfEmployeesInHeadcount = numberOfEmployeesInHeadCount,
-                        ),
-                    )
-                },
+                basic =
+                    vsmeData.basic?.let { basic ->
+                        basic.copy(
+                            workforceGeneralCharacteristics =
+                                basic.workforceGeneralCharacteristics?.copy(
+                                    numberOfEmployeesInHeadcount = numberOfEmployeesInHeadCount,
+                                ),
+                        )
+                    },
             ),
         )
-    }
 
     class FileInfos(
         val fileReference: String,

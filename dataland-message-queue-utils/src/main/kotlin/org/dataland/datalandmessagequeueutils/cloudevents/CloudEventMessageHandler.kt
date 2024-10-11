@@ -25,14 +25,19 @@ class CloudEventMessageHandler(
     var converter: MessagingMessageConverter = MessagingMessageConverter()
     private val logger = LoggerFactory.getLogger(javaClass)
 
-    private fun buildCEMessage(body: String, type: String, correlationId: String): MessageMQ {
+    private fun buildCEMessage(
+        body: String,
+        type: String,
+        correlationId: String,
+    ): MessageMQ {
         val bodyInBytes = body.toByteArray()
-        val message = CloudEventMessageBuilder
-            .withData(bodyInBytes)
-            .setId(correlationId)
-            .setType(type)
-            .setHeader(MessageHeaders.CONTENT_TYPE, MimeTypeUtils.APPLICATION_JSON)
-            .build(CloudEventMessageUtils.AMQP_ATTR_PREFIX)
+        val message =
+            CloudEventMessageBuilder
+                .withData(bodyInBytes)
+                .setId(correlationId)
+                .setType(type)
+                .setHeader(MessageHeaders.CONTENT_TYPE, MimeTypeUtils.APPLICATION_JSON)
+                .build(CloudEventMessageUtils.AMQP_ATTR_PREFIX)
         return convertMessage(message)
     }
 
@@ -54,14 +59,13 @@ class CloudEventMessageHandler(
         try {
             rabbitTemplate.send(exchange, routingKey, messageInput)
         } catch (exception: AmqpException) {
-            val internalMessage = "Error sending message to $exchange." +
-                " Received AmqpException with message: ${exception.message}. Correlation ID: $correlationId."
+            val internalMessage =
+                "Error sending message to $exchange." +
+                    " Received AmqpException with message: ${exception.message}. Correlation ID: $correlationId."
             logger.error(internalMessage)
             throw AmqpException(internalMessage, exception)
         }
     }
 
-    private fun convertMessage(message: MessageResult<ByteArray>): MessageMQ {
-        return converter.toMessage(message, AMQPMessageProperties())
-    }
+    private fun convertMessage(message: MessageResult<ByteArray>): MessageMQ = converter.toMessage(message, AMQPMessageProperties())
 }

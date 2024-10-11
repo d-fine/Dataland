@@ -34,34 +34,39 @@ internal class CompanyDataControllerTest(
     @Autowired val companyBaseManager: CompanyBaseManager,
 ) {
     private final val testLei = "testLei"
-    val companyWithTestLei = CompanyInformation(
-        companyName = "Test Company",
-        companyAlternativeNames = null,
-        companyContactDetails = null,
-        companyLegalForm = null,
-        countryCode = "DE",
-        headquarters = "Berlin",
-        headquartersPostalCode = "8",
-        sector = null,
-        sectorCodeWz = null,
-        website = null,
-        isTeaserCompany = null,
-        identifiers = mapOf(
-            IdentifierType.Lei to listOf(testLei),
-        ),
-        parentCompanyLei = null,
-    )
-    val companyController = CompanyDataController(
-        companyAlterationManager,
-        companyQueryManager,
-        companyIdentifierRepositoryInterface,
-        companyBaseManager,
-    )
-    fun postCompany(): String {
-        return companyController.postCompany(
-            companyWithTestLei,
-        ).body!!.companyId
-    }
+    val companyWithTestLei =
+        CompanyInformation(
+            companyName = "Test Company",
+            companyAlternativeNames = null,
+            companyContactDetails = null,
+            companyLegalForm = null,
+            countryCode = "DE",
+            headquarters = "Berlin",
+            headquartersPostalCode = "8",
+            sector = null,
+            sectorCodeWz = null,
+            website = null,
+            isTeaserCompany = null,
+            identifiers =
+            mapOf(
+                IdentifierType.Lei to listOf(testLei),
+            ),
+            parentCompanyLei = null,
+        )
+    val companyController =
+        CompanyDataController(
+            companyAlterationManager,
+            companyQueryManager,
+            companyIdentifierRepositoryInterface,
+            companyBaseManager,
+        )
+
+    fun postCompany(): String =
+        companyController
+            .postCompany(
+                companyWithTestLei,
+            ).body!!
+            .companyId
 
     @Test
     fun `check that the company id by identifier endpoint works as expected`() {
@@ -78,11 +83,12 @@ internal class CompanyDataControllerTest(
     }
 
     private fun mockSecurityContext() {
-        val mockAuthentication = AuthenticationMock.mockJwtAuthentication(
-            "mocked_uploader",
-            "dummy-id",
-            setOf(DatalandRealmRole.ROLE_USER, DatalandRealmRole.ROLE_UPLOADER),
-        )
+        val mockAuthentication =
+            AuthenticationMock.mockJwtAuthentication(
+                "mocked_uploader",
+                "dummy-id",
+                setOf(DatalandRealmRole.ROLE_USER, DatalandRealmRole.ROLE_UPLOADER),
+            )
         val mockSecurityContext = Mockito.mock(SecurityContext::class.java)
         `when`(mockSecurityContext.authentication).thenReturn(mockAuthentication)
         SecurityContextHolder.setContext(mockSecurityContext)

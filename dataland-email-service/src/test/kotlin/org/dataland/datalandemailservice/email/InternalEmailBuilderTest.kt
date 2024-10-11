@@ -17,19 +17,21 @@ class InternalEmailBuilderTest {
 
     @Test
     fun `validate that the internal email builder adds the environment property`() {
-        val message = InternalEmailMessage(
-            subject = "SUBJECT",
-            textTitle = "Text Title",
-            htmlTitle = "HTML Title",
-            properties = mapOf("Original" to originalProperty),
-        )
-        val email = InternalEmailBuilder(
-            proxyPrimaryUrl = environment,
-            senderEmail = senderEmail,
-            senderName = senderName,
-            semicolonSeparatedReceiverEmails = receiverEmails.joinToString(";"),
-            semicolonSeparatedCcEmails = ccEmails.joinToString(";"),
-        ).buildInternalEmail(message)
+        val message =
+            InternalEmailMessage(
+                subject = "SUBJECT",
+                textTitle = "Text Title",
+                htmlTitle = "HTML Title",
+                properties = mapOf("Original" to originalProperty),
+            )
+        val email =
+            InternalEmailBuilder(
+                proxyPrimaryUrl = environment,
+                senderEmail = senderEmail,
+                senderName = senderName,
+                semicolonSeparatedReceiverEmails = receiverEmails.joinToString(";"),
+                semicolonSeparatedCcEmails = ccEmails.joinToString(";"),
+            ).buildInternalEmail(message)
         assertEmailMatchesPattern(
             email,
             EmailMatchingPattern(

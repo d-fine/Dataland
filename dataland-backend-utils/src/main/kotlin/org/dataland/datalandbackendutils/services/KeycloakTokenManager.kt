@@ -16,7 +16,7 @@ import org.springframework.stereotype.Service
 import java.time.Duration
 import java.time.Instant
 import java.time.temporal.ChronoUnit
-import java.util.*
+import java.util.Base64
 
 /**
  * Class to manage the token retrieval from keycloak via service account
@@ -34,7 +34,6 @@ class KeycloakTokenManager(
     private data class KeycloakAccessTokenResponse(
         @JsonProperty("access_token")
         val accessToken: String,
-
         @JsonProperty("expires_in")
         val expiresIn: Int,
     )
@@ -42,6 +41,7 @@ class KeycloakTokenManager(
     companion object {
         private const val LIFETIME_THRESHOLD_IN_SECONDS = 30
     }
+
     private val logger = LoggerFactory.getLogger(javaClass)
 
     private var currentAccessToken: String? = null
@@ -66,17 +66,20 @@ class KeycloakTokenManager(
         val authorizationHeader = Base64.getEncoder().encodeToString(("$clientId:$clientSecret").toByteArray())
         val mediaType = "application/x-www-form-urlencoded".toMediaType()
         val body = "grant_type=client_credentials".toRequestBody(mediaType)
-        val request = Request.Builder()
-            .url("$keycloakBaseUrl/realms/datalandsecurity/protocol/openid-connect/token")
-            .post(body)
-            .addHeader("Content-Type", "application/x-www-form-urlencoded")
-            .addHeader("Authorization", "Basic $authorizationHeader")
-            .build()
+        val request =
+            Request
+                .Builder()
+                .url("$keycloakBaseUrl/realms/datalandsecurity/protocol/openid-connect/token")
+                .post(body)
+                .addHeader("Content-Type", "application/x-www-form-urlencoded")
+                .addHeader("Authorization", "Basic $authorizationHeader")
+                .build()
         val response = httpClient.newCall(request).execute()
-        val parsedResponseBody = objectMapper.readValue(
-            response.body!!.string(),
-            KeycloakAccessTokenResponse::class.java,
-        )
+        val parsedResponseBody =
+            objectMapper.readValue(
+                response.body!!.string(),
+                KeycloakAccessTokenResponse::class.java,
+            )
         currentAccessToken = parsedResponseBody.accessToken
         currentAccessTokenExpireTime = Instant.now() + Duration.ofSeconds(parsedResponseBody.expiresIn.toLong())
         logger.info("Acquired new access token!")

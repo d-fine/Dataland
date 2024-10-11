@@ -16,15 +16,17 @@ abstract class TemplateEmailFactory(
     senderEmail: String,
     senderName: String,
 ) : BaseEmailBuilder(
-    senderEmail = senderEmail,
-    senderName = senderName,
-) {
+        senderEmail = senderEmail,
+        senderName = senderName,
+    ) {
     abstract val builderForType: TemplateEmailMessage.Type
     protected abstract val requiredProperties: Set<String>
     protected abstract val optionalProperties: Set<String>
 
     protected abstract val templateFile: String
+
     protected abstract fun buildSubject(properties: Map<String, String?>): String
+
     protected abstract fun buildTextContent(properties: Map<String, String?>): String
 
     /**
@@ -37,11 +39,12 @@ abstract class TemplateEmailFactory(
         properties: Map<String, String?>,
     ): Email {
         validateProperties(properties)
-        val content = EmailContent(
-            subject = buildSubject(properties),
-            textContent = buildTextContent(properties),
-            htmlContent = buildHtmlContent(properties),
-        )
+        val content =
+            EmailContent(
+                subject = buildSubject(properties),
+                textContent = buildTextContent(properties),
+                htmlContent = buildHtmlContent(properties),
+            )
         return Email(
             sender = senderEmailContact,
             receivers = listOf(EmailContact(receiverEmail)),
@@ -76,13 +79,12 @@ abstract class TemplateEmailFactory(
     /**
      * Generates the HTML version of the email
      */
-    private fun buildHtmlContent(
-        properties: Map<String, String?>,
-    ): String {
+    private fun buildHtmlContent(properties: Map<String, String?>): String {
         val freeMarkerContext = properties + ("baseUrl" to "https://$proxyPrimaryUrl")
 
-        val freemarkerTemplate = FreeMarker.configuration
-            .getTemplate(templateFile)
+        val freemarkerTemplate =
+            FreeMarker.configuration
+                .getTemplate(templateFile)
 
         val writer = StringWriter()
         freemarkerTemplate.process(freeMarkerContext, writer)

@@ -13,28 +13,31 @@ import java.io.FileReader
 
 @ComponentScan(basePackages = ["org.dataland"])
 class GleifMappingTest {
-    private val expectedGleifCompanyInformation = GleifCompanyInformation(
-        companyName = "CompanyName",
-        countryCode = "CompanyCountry",
-        headquarters = "CompanyCity",
-        headquartersPostalCode = "CompanyPostalCode",
-        lei = "DummyLei",
-    )
+    private val expectedGleifCompanyInformation =
+        GleifCompanyInformation(
+            companyName = "CompanyName",
+            countryCode = "CompanyCountry",
+            headquarters = "CompanyCity",
+            headquartersPostalCode = "CompanyPostalCode",
+            lei = "DummyLei",
+        )
 
-    private val expectedCompanyInformation = CompanyInformation(
-        companyName = expectedGleifCompanyInformation.companyName,
-        companyContactDetails = null,
-        companyAlternativeNames = null,
-        companyLegalForm = null,
-        countryCode = expectedGleifCompanyInformation.countryCode,
-        headquarters = expectedGleifCompanyInformation.headquarters,
-        headquartersPostalCode = expectedGleifCompanyInformation.headquartersPostalCode,
-        sector = null,
-        website = null,
-        identifiers = mapOf(
-            IdentifierType.Lei.value to listOf(expectedGleifCompanyInformation.lei),
-        ),
-    )
+    private val expectedCompanyInformation =
+        CompanyInformation(
+            companyName = expectedGleifCompanyInformation.companyName,
+            companyContactDetails = null,
+            companyAlternativeNames = null,
+            companyLegalForm = null,
+            countryCode = expectedGleifCompanyInformation.countryCode,
+            headquarters = expectedGleifCompanyInformation.headquarters,
+            headquartersPostalCode = expectedGleifCompanyInformation.headquartersPostalCode,
+            sector = null,
+            website = null,
+            identifiers =
+                mapOf(
+                    IdentifierType.Lei.value to listOf(expectedGleifCompanyInformation.lei),
+                ),
+        )
 
     @Test
     fun `check that parsing the test file results in the expected company information objects`() {
@@ -42,10 +45,11 @@ class GleifMappingTest {
         var gleifCompanyInformation = GleifCompanyInformation("", "", "", "", "")
         val gleifIterable = CsvParser().readGleifCompanyDataFromBufferedReader(input)
         gleifIterable.forEach {
-            gleifCompanyInformation = GleifCompanyInformation(
-                it.companyName, it.headquarters,
-                it.headquartersPostalCode, it.lei, it.countryCode,
-            )
+            gleifCompanyInformation =
+                GleifCompanyInformation(
+                    it.companyName, it.headquarters,
+                    it.headquartersPostalCode, it.lei, it.countryCode,
+                )
         }
         println(gleifCompanyInformation.companyName)
         val companyInformation = GleifCompanyCombinedInformation(gleifCompanyInformation).toCompanyPost()

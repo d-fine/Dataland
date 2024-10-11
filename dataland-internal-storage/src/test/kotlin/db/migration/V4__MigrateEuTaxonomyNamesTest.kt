@@ -6,8 +6,8 @@ import org.json.JSONObject
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 
+@Suppress("ClassName")
 class V4__MigrateEuTaxonomyNamesTest {
-
     @Test
     fun `test that eu taxonomy for non financials migration script works as expected`() {
         testIfDataIsMaintained(YesNo.Yes, YesNo.No, "eutaxonomy-non-financials")
@@ -29,9 +29,10 @@ class V4__MigrateEuTaxonomyNamesTest {
         dataType: String,
     ) {
         val originalDataTableEntity = buildOriginalDatabaseEntry(activityLevelReporting, reportingObligation, dataType)
-        val expectedDataTableEntity = buildExpectedTransformedDatabaseEntry(
-            activityLevelReporting, reportingObligation, dataType,
-        )
+        val expectedDataTableEntity =
+            buildExpectedTransformedDatabaseEntry(
+                activityLevelReporting, reportingObligation, dataType,
+            )
         val migration = V4__MigrateEuTaxonomyNames()
         migration.migrateEuTaxonomyNames(originalDataTableEntity)
 
@@ -43,13 +44,14 @@ class V4__MigrateEuTaxonomyNamesTest {
         reportingObligation: YesNo?,
         dataType: String,
     ): DataTableEntity {
-        val simplifiedDataset = JSONObject(
-            "{" +
-                "\"activityLevelReporting\": ${convertYesNoToJsonValue(activityLevelReporting)}," +
-                "\"reportingObligation\": ${convertYesNoToJsonValue(reportingObligation)}," +
-                "\"somethingElse\": \"No\"" +
-                "}",
-        )
+        val simplifiedDataset =
+            JSONObject(
+                "{" +
+                    "\"activityLevelReporting\": ${convertYesNoToJsonValue(activityLevelReporting)}," +
+                    "\"reportingObligation\": ${convertYesNoToJsonValue(reportingObligation)}," +
+                    "\"somethingElse\": \"No\"" +
+                    "}",
+            )
         return DataTableEntity.fromJsonObject("mock-data-id", dataType, simplifiedDataset)
     }
 
@@ -58,13 +60,14 @@ class V4__MigrateEuTaxonomyNamesTest {
         nfrdMandatory: YesNo?,
         dataType: String,
     ): DataTableEntity {
-        val simplifiedDataset = JSONObject(
-            "{" +
-                "\"euTaxonomyActivityLevelReporting\": ${convertYesNoToJsonValue(euTaxonomyActivityLevelReporting)}," +
-                "\"nfrdMandatory\": ${convertYesNoToJsonValue(nfrdMandatory)}," +
-                "\"somethingElse\": \"No\"" +
-                "}",
-        )
+        val simplifiedDataset =
+            JSONObject(
+                "{" +
+                    "\"euTaxonomyActivityLevelReporting\": ${convertYesNoToJsonValue(euTaxonomyActivityLevelReporting)}," +
+                    "\"nfrdMandatory\": ${convertYesNoToJsonValue(nfrdMandatory)}," +
+                    "\"somethingElse\": \"No\"" +
+                    "}",
+            )
         return DataTableEntity.fromJsonObject("mock-data-id", dataType, simplifiedDataset)
     }
 

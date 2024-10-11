@@ -38,7 +38,6 @@ import org.dataland.e2etests.utils.testDataProvivders.FrameworkTestDataProvider
 import org.dataland.e2etests.utils.testDataProvivders.GeneralTestDataProvider
 
 class ApiAccessor {
-
     val companyDataControllerApi = CompanyDataControllerApi(BASE_PATH_TO_DATALAND_BACKEND)
     val unauthorizedCompanyDataControllerApi = UnauthorizedCompanyDataControllerApi()
 
@@ -61,6 +60,7 @@ class ApiAccessor {
     val testDataProviderForEuTaxonomyDataForNonFinancials =
         FrameworkTestDataProvider(EutaxonomyNonFinancialsData::class.java)
     val dataDeletionControllerApi = DataDeletionControllerApi(BASE_PATH_TO_DATALAND_BACKEND)
+
     fun euTaxonomyNonFinancialsUploaderFunction(
         companyId: String,
         euTaxonomyNonFinancialsData: EutaxonomyNonFinancialsData,
@@ -98,6 +98,7 @@ class ApiAccessor {
 
     val dataControllerApiForLksgData = LksgDataControllerApi(BASE_PATH_TO_DATALAND_BACKEND)
     val testDataProviderForLksgData = FrameworkTestDataProvider(LksgData::class.java)
+
     fun lksgUploaderFunction(
         companyId: String,
         lksgData: LksgData,
@@ -112,6 +113,7 @@ class ApiAccessor {
 
     val dataControllerApiForP2pData = P2pDataControllerApi(BASE_PATH_TO_DATALAND_BACKEND)
     val testDataProviderForP2pData = FrameworkTestDataProvider(PathwaysToParisData::class.java)
+
     fun p2pUploaderFunction(
         companyId: String,
         p2pData: PathwaysToParisData,
@@ -126,6 +128,7 @@ class ApiAccessor {
 
     val dataControllerApiForSfdrData = SfdrDataControllerApi(BASE_PATH_TO_DATALAND_BACKEND)
     val testDataProviderForSfdrData = FrameworkTestDataProvider(SfdrData::class.java)
+
     fun sfdrUploaderFunction(
         companyId: String,
         sfdrData: SfdrData,
@@ -163,9 +166,10 @@ class ApiAccessor {
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(uploadConfig.uploadingTechnicalUser)
         frameworkDatasets.forEach { frameworkDataSet ->
             companyInfo.zip(storedCompanyInfos).forEach { pair ->
-                val receivedDataMetaInformation = frameworkDataUploadFunction(
-                    pair.second.companyId, frameworkDataSet, reportingPeriod, uploadConfig.bypassQa,
-                )
+                val receivedDataMetaInformation =
+                    frameworkDataUploadFunction(
+                        pair.second.companyId, frameworkDataSet, reportingPeriod, uploadConfig.bypassQa,
+                    )
                 listOfUploadInfo.add(UploadInfo(pair.first, pair.second, receivedDataMetaInformation))
             }
             Thread.sleep(waitTimeBeforeNextUpload)
@@ -215,30 +219,35 @@ class ApiAccessor {
             ensureQaPassed = ensureQaPassed,
         )
         return when (dataType) {
-            DataTypeEnum.lksg -> uploadCompaniesAndDatasets(
-                testDataProvider = testDataProviderForLksgData,
-                frameworkDataUploadFunction = this::lksgUploaderFunction,
-            )
+            DataTypeEnum.lksg ->
+                uploadCompaniesAndDatasets(
+                    testDataProvider = testDataProviderForLksgData,
+                    frameworkDataUploadFunction = this::lksgUploaderFunction,
+                )
 
-            DataTypeEnum.sfdr -> uploadCompaniesAndDatasets(
-                testDataProvider = testDataProviderForSfdrData,
-                frameworkDataUploadFunction = this::sfdrUploaderFunction,
-            )
+            DataTypeEnum.sfdr ->
+                uploadCompaniesAndDatasets(
+                    testDataProvider = testDataProviderForSfdrData,
+                    frameworkDataUploadFunction = this::sfdrUploaderFunction,
+                )
 
-            DataTypeEnum.eutaxonomyMinusNonMinusFinancials -> uploadCompaniesAndDatasets(
-                testDataProvider = testDataProviderForEuTaxonomyDataForNonFinancials,
-                frameworkDataUploadFunction = this::euTaxonomyNonFinancialsUploaderFunction,
-            )
+            DataTypeEnum.eutaxonomyMinusNonMinusFinancials ->
+                uploadCompaniesAndDatasets(
+                    testDataProvider = testDataProviderForEuTaxonomyDataForNonFinancials,
+                    frameworkDataUploadFunction = this::euTaxonomyNonFinancialsUploaderFunction,
+                )
 
-            DataTypeEnum.eutaxonomyMinusFinancials -> uploadCompaniesAndDatasets(
-                testDataProvider = testDataProviderEuTaxonomyForFinancials,
-                frameworkDataUploadFunction = this::euTaxonomyFinancialsUploaderFunction,
-            )
+            DataTypeEnum.eutaxonomyMinusFinancials ->
+                uploadCompaniesAndDatasets(
+                    testDataProvider = testDataProviderEuTaxonomyForFinancials,
+                    frameworkDataUploadFunction = this::euTaxonomyFinancialsUploaderFunction,
+                )
 
-            DataTypeEnum.p2p -> uploadCompaniesAndDatasets(
-                testDataProvider = testDataProviderForP2pData,
-                frameworkDataUploadFunction = this::p2pUploaderFunction,
-            )
+            DataTypeEnum.p2p ->
+                uploadCompaniesAndDatasets(
+                    testDataProvider = testDataProviderForP2pData,
+                    frameworkDataUploadFunction = this::p2pUploaderFunction,
+                )
 
             else -> {
                 throw IllegalArgumentException("The datatype $dataType is not integrated into the ApiAccessor yet")
@@ -272,13 +281,13 @@ class ApiAccessor {
     fun uploadOneCompanyAndEuTaxonomyDataForNonFinancials(
         companyInformation: CompanyInformation,
         euTaxonomyDataForNonFinancials: EutaxonomyNonFinancialsData,
-    ):
-        Map<String, String> {
-        val listOfUploadInfo = uploadCompanyAndFrameworkDataForOneFramework(
-            listOf(companyInformation),
-            listOf(euTaxonomyDataForNonFinancials),
-            this::euTaxonomyNonFinancialsUploaderFunction,
-        )
+    ): Map<String, String> {
+        val listOfUploadInfo =
+            uploadCompanyAndFrameworkDataForOneFramework(
+                listOf(companyInformation),
+                listOf(euTaxonomyDataForNonFinancials),
+                this::euTaxonomyNonFinancialsUploaderFunction,
+            )
         val companyId = listOfUploadInfo[0].actualStoredCompany.companyId
         val dataId = listOfUploadInfo[0].actualStoredDataMetaInfo!!.dataId
         return mapOf("companyId" to companyId, "dataId" to dataId)
@@ -286,8 +295,9 @@ class ApiAccessor {
 
     fun uploadNCompaniesWithoutIdentifiers(numCompanies: Int): List<UploadInfo> {
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
-        val listOfCompanyInformation = testDataProviderEuTaxonomyForFinancials
-            .getCompanyInformationWithoutIdentifiers(numCompanies)
+        val listOfCompanyInformation =
+            testDataProviderEuTaxonomyForFinancials
+                .getCompanyInformationWithoutIdentifiers(numCompanies)
         val listOfUploadInfos = mutableListOf<UploadInfo>()
         listOfCompanyInformation.forEach { companyInformation ->
             listOfUploadInfos.add(
@@ -302,16 +312,19 @@ class ApiAccessor {
 
     fun uploadOneCompanyWithoutIdentifiersWithExplicitTeaserConfig(setAsTeaserCompany: Boolean): UploadInfo {
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
-        val testCompanyInformation = testDataProviderEuTaxonomyForFinancials
-            .getCompanyInformationWithoutIdentifiers(1).first()
-            .copy(isTeaserCompany = setAsTeaserCompany, companyContactDetails = emptyList())
+        val testCompanyInformation =
+            testDataProviderEuTaxonomyForFinancials
+                .getCompanyInformationWithoutIdentifiers(1)
+                .first()
+                .copy(isTeaserCompany = setAsTeaserCompany, companyContactDetails = emptyList())
         return UploadInfo(testCompanyInformation, companyDataControllerApi.postCompany(testCompanyInformation))
     }
 
     fun uploadOneCompanyWithRandomIdentifier(): UploadInfo {
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
-        val testCompanyInformation = generalTestDataProvider
-            .generateCompanyInformation("NameDoesNotMatter", "SectorDoesNotMatter")
+        val testCompanyInformation =
+            generalTestDataProvider
+                .generateCompanyInformation("NameDoesNotMatter", "SectorDoesNotMatter")
         return UploadInfo(testCompanyInformation, companyDataControllerApi.postCompany(testCompanyInformation))
     }
 
@@ -324,8 +337,9 @@ class ApiAccessor {
         if (lei.isNullOrEmpty() && isins.isNullOrEmpty() && permId.isNullOrEmpty()) {
             return null
         }
-        val testCompanyInformation = generalTestDataProvider
-            .generateCompanyInformationWithNameAndIdentifiers(lei, isins, permId)
+        val testCompanyInformation =
+            generalTestDataProvider
+                .generateCompanyInformationWithNameAndIdentifiers(lei, isins, permId)
         return UploadInfo(testCompanyInformation, companyDataControllerApi.postCompany(testCompanyInformation))
     }
 
@@ -348,12 +362,13 @@ class ApiAccessor {
         reportingPeriod: String? = null,
     ): Int {
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader)
-        return metaDataControllerApi.getListOfDataMetaInfo(
-            companyId,
-            dataType,
-            showOnlyActive,
-            reportingPeriod,
-        ).size
+        return metaDataControllerApi
+            .getListOfDataMetaInfo(
+                companyId,
+                dataType,
+                showOnlyActive,
+                reportingPeriod,
+            ).size
     }
 
     /**
@@ -369,16 +384,18 @@ class ApiAccessor {
         uploadFunction: (String, T, String) -> DataMetaInformation,
     ): DataMetaInformation {
         val waitTime = 1L
-        val uploadedMetaData = uploadSingleFrameworkDataSet(
-            companyId = companyId,
-            frameworkData = frameworkData,
-            frameworkDataUploadFunction = uploadFunction,
-            reportingPeriod = reportingPeriod,
-        )
+        val uploadedMetaData =
+            uploadSingleFrameworkDataSet(
+                companyId = companyId,
+                frameworkData = frameworkData,
+                frameworkDataUploadFunction = uploadFunction,
+                reportingPeriod = reportingPeriod,
+            )
         Thread.sleep(waitTime)
         return uploadedMetaData
     }
 }
+
 data class UploadInfo(
     val inputCompanyInformation: CompanyInformation,
     val actualStoredCompany: StoredCompany,

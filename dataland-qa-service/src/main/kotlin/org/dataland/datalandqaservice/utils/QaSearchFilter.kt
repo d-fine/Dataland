@@ -10,7 +10,6 @@ data class QaSearchFilter(
     val reportingPeriods: Set<String>?,
     val companyIds: Set<String>?,
     val companyName: String?,
-
 ) {
     val shouldFilterByDataType: Boolean
         get() = dataTypes?.isNotEmpty() ?: false

@@ -19,13 +19,16 @@ fun getEmailAddress(
     keycloakBaseUrl: String,
     userId: String,
 ): String {
-    val request = Request.Builder()
-        .url("$keycloakBaseUrl/admin/realms/datalandsecurity/users/$userId")
-        .build()
+    val request =
+        Request
+            .Builder()
+            .url("$keycloakBaseUrl/admin/realms/datalandsecurity/users/$userId")
+            .build()
     val response = okHttpClient.newCall(request).execute()
-    val parsedResponseBody = objectMapper.readValue(
-        response.body!!.string(),
-        KeycloakUserInfo::class.java,
-    )
+    val parsedResponseBody =
+        objectMapper.readValue(
+            response.body!!.string(),
+            KeycloakUserInfo::class.java,
+        )
     return parsedResponseBody.email ?: ""
 }

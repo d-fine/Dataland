@@ -30,8 +30,7 @@ class CompanyUploader(
     private val logger = LoggerFactory.getLogger(javaClass)
 
     @Suppress("ReturnCount")
-    private fun checkForDuplicateIdentifierAndGetConflictingCompanyId(exception: ClientException):
-        Pair<String?, Set<String?>?> {
+    private fun checkForDuplicateIdentifierAndGetConflictingCompanyId(exception: ClientException): Pair<String?, Set<String?>?> {
         if (exception.statusCode != HttpStatus.BAD_REQUEST.value()) {
             return Pair(null, null)
         }
@@ -89,9 +88,7 @@ class CompanyUploader(
      * If the company (identified by the LEI) already exists on dataland, it is patched instead.
      * This function absorbs errors and logs them.
      */
-    fun uploadOrPatchSingleCompany(
-        companyInformation: ExternalCompanyInformation,
-    ) {
+    fun uploadOrPatchSingleCompany(companyInformation: ExternalCompanyInformation) {
         var patchCompanyId: String? = null
         var allConflictingIdentifiers: Set<String?>? = null
         retryOnCommonApiErrors {
@@ -157,15 +154,16 @@ class CompanyUploader(
         var companyId: String? = null
         retryOnCommonApiErrors {
             logger.info("Searching for company with LEI: $lei")
-            companyId = try {
-                companyDataControllerApi.getCompanyIdByIdentifier(IdentifierType.Lei, lei).companyId
-            } catch (e: ClientException) {
-                if (e.statusCode == HttpStatus.NOT_FOUND.value()) {
-                    logger.error("Could not find company with LEI: $lei")
-                    return@retryOnCommonApiErrors
+            companyId =
+                try {
+                    companyDataControllerApi.getCompanyIdByIdentifier(IdentifierType.Lei, lei).companyId
+                } catch (e: ClientException) {
+                    if (e.statusCode == HttpStatus.NOT_FOUND.value()) {
+                        logger.error("Could not find company with LEI: $lei")
+                        return@retryOnCommonApiErrors
+                    }
+                    throw e
                 }
-                throw e
-            }
         }
         return companyId
     }
@@ -174,9 +172,7 @@ class CompanyUploader(
      * Updates the ISINs of all companies.
      * @param leiIsinMapping the delta-map with the format "LEI"->"ISIN1,ISIN2,..."
      */
-    fun updateIsins(
-        leiIsinMapping: Map<String, Set<String>>,
-    ) {
+    fun updateIsins(leiIsinMapping: Map<String, Set<String>>) {
         @Suppress("unused")
         for ((lei, newIsins) in leiIsinMapping) {
             val companyId = searchCompanyByLEI(lei) ?: continue
@@ -185,10 +181,14 @@ class CompanyUploader(
         }
     }
 
-    private fun updateIsinsOfCompany(isins: Set<String>, companyId: String) {
-        val updatedIdentifiers = mapOf(
-            IdentifierType.Isin.value to isins.toList(),
-        )
+    private fun updateIsinsOfCompany(
+        isins: Set<String>,
+        companyId: String,
+    ) {
+        val updatedIdentifiers =
+            mapOf(
+                IdentifierType.Isin.value to isins.toList(),
+            )
         val companyPatch = CompanyInformationPatch(identifiers = updatedIdentifiers)
         retryOnCommonApiErrors {
             companyDataControllerApi.patchCompanyById(

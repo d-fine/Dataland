@@ -18,10 +18,9 @@ import org.mockito.Mockito
 import org.mockito.Mockito.mock
 import org.springframework.security.core.context.SecurityContext
 import org.springframework.security.core.context.SecurityContextHolder
-import java.util.*
+import java.util.UUID
 
 class CompanyOwnershipAcceptedEmailMessageSenderTest {
-
     private val objectMapper = jacksonObjectMapper()
     private lateinit var authenticationMock: DatalandJwtAuthentication
     private val cloudEventMessageHandlerMock = mock(CloudEventMessageHandler::class.java)
@@ -34,11 +33,12 @@ class CompanyOwnershipAcceptedEmailMessageSenderTest {
     @BeforeEach
     fun setupAuthentication() {
         val mockSecurityContext = mock(SecurityContext::class.java)
-        authenticationMock = AuthenticationMock.mockJwtAuthentication(
-            "userEmail",
-            userId,
-            setOf(DatalandRealmRole.ROLE_USER),
-        )
+        authenticationMock =
+            AuthenticationMock.mockJwtAuthentication(
+                "userEmail",
+                userId,
+                setOf(DatalandRealmRole.ROLE_USER),
+            )
         Mockito.`when`(mockSecurityContext.authentication).thenReturn(authenticationMock)
         Mockito.`when`(authenticationMock.credentials).thenReturn("")
         SecurityContextHolder.setContext(mockSecurityContext)
@@ -66,30 +66,32 @@ class CompanyOwnershipAcceptedEmailMessageSenderTest {
     }
 
     private fun mockCloudEventMessageHandlerAndSetChecks() {
-        Mockito.`when`(
-            cloudEventMessageHandlerMock.buildCEMessageAndSendToQueue(
-                ArgumentMatchers.anyString(),
-                ArgumentMatchers.anyString(),
-                ArgumentMatchers.anyString(),
-                ArgumentMatchers.anyString(),
-                ArgumentMatchers.anyString(),
-            ),
-        ).then() {
-            val arg1 =
-                objectMapper.readValue(it.getArgument<String>(0), TemplateEmailMessage::class.java)
-            val arg2 = it.getArgument<String>(1)
-            val arg3 = it.getArgument<String>(2)
-            val arg4 = it.getArgument<String>(3)
-            val arg5 = it.getArgument<String>(4)
-            checkProperties(arg1.properties)
-            Assertions.assertEquals(TemplateEmailMessage.Type.SuccessfullyClaimedOwnership, arg1.emailTemplateType)
-            Assertions.assertEquals(TemplateEmailMessage.UserIdEmailRecipient(userId), arg1.receiver)
-            Assertions.assertEquals(MessageType.SendTemplateEmail, arg2)
-            Assertions.assertEquals(correlationId, arg3)
-            Assertions.assertEquals(ExchangeName.SendEmail, arg4)
-            Assertions.assertEquals(RoutingKeyNames.templateEmail, arg5)
-        }
+        Mockito
+            .`when`(
+                cloudEventMessageHandlerMock.buildCEMessageAndSendToQueue(
+                    ArgumentMatchers.anyString(),
+                    ArgumentMatchers.anyString(),
+                    ArgumentMatchers.anyString(),
+                    ArgumentMatchers.anyString(),
+                    ArgumentMatchers.anyString(),
+                ),
+            ).then {
+                val arg1 =
+                    objectMapper.readValue(it.getArgument<String>(0), TemplateEmailMessage::class.java)
+                val arg2 = it.getArgument<String>(1)
+                val arg3 = it.getArgument<String>(2)
+                val arg4 = it.getArgument<String>(3)
+                val arg5 = it.getArgument<String>(4)
+                checkProperties(arg1.properties)
+                Assertions.assertEquals(TemplateEmailMessage.Type.SuccessfullyClaimedOwnership, arg1.emailTemplateType)
+                Assertions.assertEquals(TemplateEmailMessage.UserIdEmailRecipient(userId), arg1.receiver)
+                Assertions.assertEquals(MessageType.SEND_TEMPLATE_EMAIL, arg2)
+                Assertions.assertEquals(correlationId, arg3)
+                Assertions.assertEquals(ExchangeName.SEND_EMAIL, arg4)
+                Assertions.assertEquals(RoutingKeyNames.TEMPLATE_EMAIL, arg5)
+            }
     }
+
     private fun checkProperties(properties: Map<String, String?>) {
         Assertions.assertEquals(companyId, properties.getValue("companyId"))
         Assertions.assertEquals(companyName, properties.getValue("companyName"))
@@ -98,5 +100,6 @@ class CompanyOwnershipAcceptedEmailMessageSenderTest {
             properties.getValue("numberOfOpenDataRequestsForCompany"),
         )
     }
+
     private fun <T> any(type: Class<T>): T = Mockito.any<T>(type)
 }

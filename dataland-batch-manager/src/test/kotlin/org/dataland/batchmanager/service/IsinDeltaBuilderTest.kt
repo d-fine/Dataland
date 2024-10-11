@@ -10,7 +10,6 @@ import java.io.PrintWriter
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class IsinDeltaBuilderTest {
-
     private lateinit var oldFile: File
     private lateinit var newFile: File
     private var deltaMap = mutableMapOf<String, Set<String>>()

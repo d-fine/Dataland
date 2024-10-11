@@ -9,6 +9,5 @@ package org.dataland.datalandbackendutils.apikey
  */
 data class ParsedApiKey(
     val keycloakUserId: String,
-
     val apiKeySecret: String,
 )

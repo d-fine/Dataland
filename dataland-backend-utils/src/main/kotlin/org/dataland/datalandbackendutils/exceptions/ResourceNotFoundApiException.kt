@@ -12,12 +12,11 @@ open class ResourceNotFoundApiException(
     override val message: String,
     cause: Throwable? = null,
 ) : SingleApiException(message, cause) {
-    override fun getErrorResponse(): ErrorDetails {
-        return ErrorDetails(
+    override fun getErrorResponse(): ErrorDetails =
+        ErrorDetails(
             errorType = "resource-not-found",
             summary = summary,
             message = message,
             httpStatus = HttpStatus.NOT_FOUND,
         )
-    }
 }

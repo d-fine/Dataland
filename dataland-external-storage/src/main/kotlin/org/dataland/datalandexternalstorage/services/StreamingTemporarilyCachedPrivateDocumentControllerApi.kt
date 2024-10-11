@@ -17,7 +17,6 @@ class StreamingTemporarilyCachedPrivateDocumentControllerApi(
     @Value("\${dataland.backend.base-url}")
     private val backendBaseUrl: String,
 ) {
-
     private val client = OkHttpClient()
 
     /**
@@ -27,9 +26,12 @@ class StreamingTemporarilyCachedPrivateDocumentControllerApi(
      * @returns a stream of the blob
      */
     fun getReceivedPrivateDocument(blobId: String): InputStream {
-        val requestUrl = "$backendBaseUrl/internal/cached/private/document".toHttpUrl()
-            .newBuilder().addPathSegment(blobId)
-            .build()
+        val requestUrl =
+            "$backendBaseUrl/internal/cached/private/document"
+                .toHttpUrl()
+                .newBuilder()
+                .addPathSegment(blobId)
+                .build()
         val request = Request.Builder().url(requestUrl).build()
         val response = client.newCall(request).execute()
         if (!response.isSuccessful) {

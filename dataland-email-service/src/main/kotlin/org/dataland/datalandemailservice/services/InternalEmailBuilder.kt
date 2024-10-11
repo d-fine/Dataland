@@ -17,22 +17,19 @@ class InternalEmailBuilder(
     @Value("\${dataland.notification.internal.receivers}") semicolonSeparatedReceiverEmails: String,
     @Value("\${dataland.notification.internal.cc}") semicolonSeparatedCcEmails: String,
 ) : PropertyStyleEmailBuilder(
-    senderEmail = senderEmail,
-    senderName = senderName,
-    semicolonSeparatedReceiverEmails = semicolonSeparatedReceiverEmails,
-    semicolonSeparatedCcEmails = semicolonSeparatedCcEmails,
-) {
+        senderEmail = senderEmail,
+        senderName = senderName,
+        semicolonSeparatedReceiverEmails = semicolonSeparatedReceiverEmails,
+        semicolonSeparatedCcEmails = semicolonSeparatedCcEmails,
+    ) {
     /**
      * Function that generates internal emails
      */
-    fun buildInternalEmail(
-        internalEmailMessage: InternalEmailMessage,
-    ): Email {
-        return buildPropertyStyleEmail(
+    fun buildInternalEmail(internalEmailMessage: InternalEmailMessage): Email =
+        buildPropertyStyleEmail(
             subject = internalEmailMessage.subject,
             textTitle = internalEmailMessage.textTitle,
             properties = mapOf("Environment" to proxyPrimaryUrl) + internalEmailMessage.properties,
             htmlTitle = internalEmailMessage.htmlTitle,
         )
-    }
 }

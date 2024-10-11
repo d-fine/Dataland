@@ -12,10 +12,7 @@ import org.dataland.datalandqaservice.model.reports.QaReportDataPoint
 data class SfdrSocialAntiCorruptionAndAntiBribery(
     @field:Valid()
     val casesOfInsufficientActionAgainstBriberyAndCorruption: QaReportDataPoint<ExtendedDataPointBigInteger?>? = null,
-
     @field:Valid()
     val reportedConvictionsOfBriberyAndCorruption: QaReportDataPoint<ExtendedDataPointBigInteger?>? = null,
-
     val totalAmountOfReportedFinesOfBriberyAndCorruption: QaReportDataPoint<CurrencyDataPoint?>? = null,
-
 )

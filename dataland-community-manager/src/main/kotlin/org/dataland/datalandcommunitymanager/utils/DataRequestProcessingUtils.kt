@@ -58,16 +58,17 @@ class DataRequestProcessingUtils(
     ): CompanyIdAndName? {
         val matchingCompanyIdsAndNamesOnDataland =
             companyApi.getCompaniesBySearchString(identifierValue)
-        val datalandCompanyIdAndName = if (matchingCompanyIdsAndNamesOnDataland.size == 1) {
-            matchingCompanyIdsAndNamesOnDataland.first()
-        } else if (matchingCompanyIdsAndNamesOnDataland.size > 1 && !returnOnlyUnique) {
-            throw InvalidInputApiException(
-                summary = "No unique identifier. Multiple companies could be found.",
-                message = "Multiple companies have been found for the identifier you specified.",
-            )
-        } else {
-            null
-        }
+        val datalandCompanyIdAndName =
+            if (matchingCompanyIdsAndNamesOnDataland.size == 1) {
+                matchingCompanyIdsAndNamesOnDataland.first()
+            } else if (matchingCompanyIdsAndNamesOnDataland.size > 1 && !returnOnlyUnique) {
+                throw InvalidInputApiException(
+                    summary = "No unique identifier. Multiple companies could be found.",
+                    message = "Multiple companies have been found for the identifier you specified.",
+                )
+            } else {
+                null
+            }
         dataRequestLogger
             .logMessageWhenCrossReferencingIdentifierValueWithDatalandCompanyId(
                 identifierValue,
@@ -93,19 +94,21 @@ class DataRequestProcessingUtils(
     ): DataRequestEntity {
         val creationTime = Instant.now().toEpochMilli()
 
-        val dataRequestEntity = DataRequestEntity(
-            DatalandAuthentication.fromContext().userId,
-            dataType.value,
-            reportingPeriod,
-            datalandCompanyId,
-            creationTime,
-        )
+        val dataRequestEntity =
+            DataRequestEntity(
+                DatalandAuthentication.fromContext().userId,
+                dataType.value,
+                reportingPeriod,
+                datalandCompanyId,
+                creationTime,
+            )
         dataRequestRepository.save(dataRequestEntity)
-        val accessStatus = if (dataType == DataTypeEnum.vsme) {
-            AccessStatus.Pending
-        } else {
-            AccessStatus.Public
-        }
+        val accessStatus =
+            if (dataType == DataTypeEnum.vsme) {
+                AccessStatus.Pending
+            } else {
+                AccessStatus.Public
+            }
         addNewRequestStatusToHistory(dataRequestEntity, RequestStatus.Open, accessStatus, creationTime)
 
         if (!contacts.isNullOrEmpty()) {
@@ -168,12 +171,13 @@ class DataRequestProcessingUtils(
         requestStatus: RequestStatus,
     ): List<DataRequestEntity>? {
         val requestingUserId = DatalandAuthentication.fromContext().userId
-        val foundRequests = dataRequestRepository
-            .findByUserIdAndDatalandCompanyIdAndDataTypeAndReportingPeriod(
-                requestingUserId, companyId, framework.name, reportingPeriod,
-            )?.filter {
-            it.requestStatus == requestStatus
-        }
+        val foundRequests =
+            dataRequestRepository
+                .findByUserIdAndDatalandCompanyIdAndDataTypeAndReportingPeriod(
+                    requestingUserId, companyId, framework.name, reportingPeriod,
+                )?.filter {
+                    it.requestStatus == requestStatus
+                }
         if (foundRequests != null) {
             dataRequestLogger.logMessageForCheckingIfDataRequestAlreadyExists(
                 companyId,
@@ -197,12 +201,14 @@ class DataRequestProcessingUtils(
         framework: DataTypeEnum,
         reportingPeriod: String,
     ): Boolean {
-        val openDataRequests = findAlreadyExistingDataRequestForCurrentUser(
-            companyId, framework, reportingPeriod, RequestStatus.Open,
-        )
-        val answeredDataRequests = findAlreadyExistingDataRequestForCurrentUser(
-            companyId, framework, reportingPeriod, RequestStatus.Answered,
-        )
+        val openDataRequests =
+            findAlreadyExistingDataRequestForCurrentUser(
+                companyId, framework, reportingPeriod, RequestStatus.Open,
+            )
+        val answeredDataRequests =
+            findAlreadyExistingDataRequestForCurrentUser(
+                companyId, framework, reportingPeriod, RequestStatus.Answered,
+            )
         return if (openDataRequests.isNullOrEmpty() && answeredDataRequests.isNullOrEmpty()) {
             false
         } else {
@@ -229,13 +235,18 @@ class DataRequestProcessingUtils(
      * @param dataType the framework dataType for which data is requested
      * @return true if matching datasets were found
      */
-    fun matchingDatasetExists(companyId: String, reportingPeriod: String, dataType: DataTypeEnum): Boolean {
-        val matchingDatasets = metaDataApi.getListOfDataMetaInfo(
-            companyId = companyId,
-            dataType = dataType,
-            showOnlyActive = true,
-            reportingPeriod = reportingPeriod,
-        )
+    fun matchingDatasetExists(
+        companyId: String,
+        reportingPeriod: String,
+        dataType: DataTypeEnum,
+    ): Boolean {
+        val matchingDatasets =
+            metaDataApi.getListOfDataMetaInfo(
+                companyId = companyId,
+                dataType = dataType,
+                showOnlyActive = true,
+                reportingPeriod = reportingPeriod,
+            )
         return matchingDatasets.isNotEmpty()
     }
 
@@ -244,7 +255,5 @@ class DataRequestProcessingUtils(
      * @param frameworkName the name of the framework
      * @return the corresponding enum entry
      */
-    fun getDataTypeEnumForFrameworkName(frameworkName: String): DataTypeEnum? {
-        return DataTypeEnum.entries.find { it.value == frameworkName }
-    }
+    fun getDataTypeEnumForFrameworkName(frameworkName: String): DataTypeEnum? = DataTypeEnum.entries.find { it.value == frameworkName }
 }

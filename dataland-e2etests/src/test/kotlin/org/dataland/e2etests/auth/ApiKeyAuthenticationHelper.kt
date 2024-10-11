@@ -10,13 +10,18 @@ class ApiKeyAuthenticationHelper {
     private val jwtHelper = JwtAuthenticationHelper()
     private val apiKeyManagerClient = ApiKeyControllerApi(BASE_PATH_TO_API_KEY_MANAGER)
 
-    fun obtainApikeyForTechnicalUser(technicalUser: TechnicalUser, daysValid: Int? = null): ApiKeyAndMetaInfo {
+    fun obtainApikeyForTechnicalUser(
+        technicalUser: TechnicalUser,
+        daysValid: Int? = null,
+    ): ApiKeyAndMetaInfo {
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(technicalUser)
         return apiKeyManagerClient.generateApiKey(daysValid)
     }
 
-    fun authenticateApiCallsWithApiKeyForTechnicalUser
-    (technicalUser: TechnicalUser, daysValid: Int? = null): ApiKeyAndMetaInfo {
+    fun authenticateApiCallsWithApiKeyForTechnicalUser(
+        technicalUser: TechnicalUser,
+        daysValid: Int? = null,
+    ): ApiKeyAndMetaInfo {
         val metaInformation = obtainApikeyForTechnicalUser(technicalUser, daysValid)
         GlobalAuth.setBearerToken(metaInformation.apiKey)
         return metaInformation

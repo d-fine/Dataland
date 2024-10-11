@@ -13,17 +13,18 @@ import org.springframework.stereotype.Service
 class UserAuthenticatedBackendClient(
     @Value("\${dataland.backend.base-url}") private val backendBaseUrl: String,
 ) {
-    private fun getUserAuthenticatedHttpClient(authentication: DatalandAuthentication): OkHttpClient {
-        return OkHttpClient()
+    private fun getUserAuthenticatedHttpClient(authentication: DatalandAuthentication): OkHttpClient =
+        OkHttpClient()
             .newBuilder()
             .addInterceptor {
                 val originalRequest = it.request()
-                val modifiedRequest = originalRequest.newBuilder()
-                    .header("Authorization", "Bearer ${authentication.credentials}")
-                    .build()
+                val modifiedRequest =
+                    originalRequest
+                        .newBuilder()
+                        .header("Authorization", "Bearer ${authentication.credentials}")
+                        .build()
                 it.proceed(modifiedRequest)
             }.build()
-    }
 
     /**
      * Builds a MetaDataControllerApi that is authenticated as the given Dataland User.

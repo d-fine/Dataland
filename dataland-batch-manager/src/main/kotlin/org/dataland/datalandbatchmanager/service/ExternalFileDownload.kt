@@ -12,6 +12,7 @@ import java.io.FileNotFoundException
 import java.io.IOException
 import java.net.SocketException
 import java.net.URL
+
 const val ZIP_BUFFER_SIZE = 8192
 
 /**
@@ -28,7 +29,10 @@ class ExternalFileDownload(
      * @param url: the target URL of the file
      * @param targetFile: the destination file name where the target file is copied to
      */
-    fun downloadFile(url: URL, targetFile: File) {
+    fun downloadFile(
+        url: URL,
+        targetFile: File,
+    ) {
         var counter = 0
         while (counter < MAX_RETRIES) {
             try {
@@ -50,17 +54,23 @@ class ExternalFileDownload(
      * @param url: the URL triggering the file download
      * @param targetFile: the destination file name where the target file is copied to
      */
-    fun downloadIndirectFile(url: URL, targetFile: File) {
+    fun downloadIndirectFile(
+        url: URL,
+        targetFile: File,
+    ) {
         var counter = 0
+
         fun handleDownloadError(exception: Exception) {
             logger.warn("Download attempt failed. Exception was: ${exception.message}.")
             counter++
         }
         while (counter < MAX_RETRIES) {
             try {
-                val request = Request.Builder()
-                    .url(url)
-                    .build()
+                val request =
+                    Request
+                        .Builder()
+                        .url(url)
+                        .build()
                 val response = httpClient.newCall(request).execute()
                 targetFile.writeBytes(response.body!!.bytes())
                 logger.info("Successfully saved local copy of the required file.")

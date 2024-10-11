@@ -24,11 +24,10 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
 import org.junit.jupiter.api.assertThrows
 import java.io.File
-import java.util.*
+import java.util.UUID
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class AccessRequestTest {
-
     val apiAccessor = ApiAccessor()
     val vsmeTestUtils = VsmeTestUtils()
     private val requestControllerApi = RequestControllerApi(BASE_PATH_TO_COMMUNITY_MANAGER)
@@ -46,13 +45,15 @@ class AccessRequestTest {
         companyId = apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId
         createVSMEDataAndPostAsAdminCompanyOwner(companyId)
 
-        val timestampBeforeSingleRequest = postVSMERequestWithTimestampForTechnicalUser(
-            TechnicalUser.PremiumUser, companyId, "2022",
-        )
+        val timestampBeforeSingleRequest =
+            postVSMERequestWithTimestampForTechnicalUser(
+                TechnicalUser.PremiumUser, companyId, "2022",
+            )
 
-        val dataRequestId = UUID.fromString(
-            getNewlyStoredRequestsAfterTimestamp(timestampBeforeSingleRequest)[0].dataRequestId,
-        )
+        val dataRequestId =
+            UUID.fromString(
+                getNewlyStoredRequestsAfterTimestamp(timestampBeforeSingleRequest)[0].dataRequestId,
+            )
 
         val timestampBeforeSingleRequestSecond = retrieveTimeAndWaitOneMillisecond()
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
@@ -62,10 +63,10 @@ class AccessRequestTest {
         )
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.PremiumUser)
 
-        val newlyStoredRequestsSecond = requestControllerApi.getDataRequestsForRequestingUser().filter {
-                storedDataRequest ->
-            storedDataRequest.lastModifiedDate > timestampBeforeSingleRequestSecond
-        }
+        val newlyStoredRequestsSecond =
+            requestControllerApi.getDataRequestsForRequestingUser().filter { storedDataRequest ->
+                storedDataRequest.lastModifiedDate > timestampBeforeSingleRequestSecond
+            }
         assertEquals(AccessStatus.Granted, newlyStoredRequestsSecond[0].accessStatus)
         assertTrue(dummyFileAlpha.delete())
     }
@@ -74,11 +75,13 @@ class AccessRequestTest {
     fun `premium user makes private request and has no access to active dataset and no matching dataset`() {
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.PremiumUser)
 
-        val singleDataRequest = vsmeTestUtils.setSingleDataVsmeRequest(
-            apiAccessor.uploadOneCompanyWithRandomIdentifier()
-                .actualStoredCompany.companyId,
-            setOf("2022"),
-        )
+        val singleDataRequest =
+            vsmeTestUtils.setSingleDataVsmeRequest(
+                apiAccessor
+                    .uploadOneCompanyWithRandomIdentifier()
+                    .actualStoredCompany.companyId,
+                setOf("2022"),
+            )
         val timestampBeforeSingleRequest = retrieveTimeAndWaitOneMillisecond()
         requestControllerApi.postSingleDataRequest(singleDataRequest)
 
@@ -92,9 +95,10 @@ class AccessRequestTest {
         companyId = apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId
         createVSMEDataAndPostAsAdminCompanyOwner(companyId)
 
-        val timestampBeforeSingleRequest = postVSMERequestWithTimestampForTechnicalUser(
-            TechnicalUser.PremiumUser, companyId, "2022",
-        )
+        val timestampBeforeSingleRequest =
+            postVSMERequestWithTimestampForTechnicalUser(
+                TechnicalUser.PremiumUser, companyId, "2022",
+            )
 
         val newlyStoredRequests = getNewlyStoredRequestsAfterTimestamp(timestampBeforeSingleRequest)
 
@@ -108,9 +112,10 @@ class AccessRequestTest {
     fun `company owner gets private request`() {
         companyId = apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId
 
-        val timestampBeforeSingleRequest = postVSMERequestWithTimestampForTechnicalUser(
-            TechnicalUser.PremiumUser, companyId, "2022",
-        )
+        val timestampBeforeSingleRequest =
+            postVSMERequestWithTimestampForTechnicalUser(
+                TechnicalUser.PremiumUser, companyId, "2022",
+            )
 
         val newlyStoredRequests = getNewlyStoredRequestsAfterTimestamp(timestampBeforeSingleRequest)
 
@@ -121,10 +126,10 @@ class AccessRequestTest {
 
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.PremiumUser)
         Thread.sleep(500)
-        val newlyStoredRequestsSecond = requestControllerApi.getDataRequestsForRequestingUser().filter {
-                storedDataRequest ->
-            storedDataRequest.lastModifiedDate > timestampBeforeSingleRequestSecond
-        }
+        val newlyStoredRequestsSecond =
+            requestControllerApi.getDataRequestsForRequestingUser().filter { storedDataRequest ->
+                storedDataRequest.lastModifiedDate > timestampBeforeSingleRequestSecond
+            }
         assertEquals(AccessStatus.Pending, newlyStoredRequestsSecond[0].accessStatus)
         assertEquals(RequestStatus.Answered, newlyStoredRequestsSecond[0].requestStatus)
 
@@ -136,28 +141,30 @@ class AccessRequestTest {
         companyId = apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId
         createVSMEDataAndPostAsAdminCompanyOwner(companyId)
 
-        val timestampBeforeSingleRequest = postVSMERequestWithTimestampForTechnicalUser(
-            TechnicalUser.PremiumUser, companyId, "2022",
-        )
+        val timestampBeforeSingleRequest =
+            postVSMERequestWithTimestampForTechnicalUser(
+                TechnicalUser.PremiumUser, companyId, "2022",
+            )
 
         val newlyStoredRequests = getNewlyStoredRequestsAfterTimestamp(timestampBeforeSingleRequest)
         assertEquals(AccessStatus.Pending, newlyStoredRequests[0].accessStatus)
 
         val timestampBeforeSingleRequestSecond = retrieveTimeAndWaitOneMillisecond()
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
-        val dataRequestId = UUID.fromString(
-            newlyStoredRequests[0].dataRequestId,
-        )
+        val dataRequestId =
+            UUID.fromString(
+                newlyStoredRequests[0].dataRequestId,
+            )
         requestControllerApi.patchDataRequest(
             dataRequestId,
             accessStatus = AccessStatus.Declined,
         )
 
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.PremiumUser)
-        val newlyStoredRequestsSecond = requestControllerApi.getDataRequestsForRequestingUser().filter {
-                storedDataRequest ->
-            storedDataRequest.lastModifiedDate > timestampBeforeSingleRequestSecond
-        }
+        val newlyStoredRequestsSecond =
+            requestControllerApi.getDataRequestsForRequestingUser().filter { storedDataRequest ->
+                storedDataRequest.lastModifiedDate > timestampBeforeSingleRequestSecond
+            }
 
         assertEquals(AccessStatus.Declined, newlyStoredRequestsSecond[0].accessStatus)
         assertTrue(dummyFileAlpha.delete())
@@ -168,25 +175,28 @@ class AccessRequestTest {
         companyId = apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId
         val listOfTechnicalUser = listOf(TechnicalUser.Admin, TechnicalUser.PremiumUser)
         listOfTechnicalUser.forEach { technicalUser ->
-            val timestampBeforeSingleRequest = postVSMERequestWithTimestampForTechnicalUser(
-                technicalUser, companyId, "2022",
-            )
+            val timestampBeforeSingleRequest =
+                postVSMERequestWithTimestampForTechnicalUser(
+                    technicalUser, companyId, "2022",
+                )
 
             val newlyStoredRequests = getNewlyStoredRequestsAfterTimestamp(timestampBeforeSingleRequest)
 
             if (technicalUser == TechnicalUser.Admin) {
-                val responseBody = requestControllerApi.patchDataRequest(
-                    dataRequestId = UUID.fromString(newlyStoredRequests[0].dataRequestId),
-                    accessStatus = AccessStatus.Declined,
-                )
-                assertEquals(AccessStatus.Declined, responseBody.accessStatus)
-            } else {
-                val responseException = assertThrows<ClientException> {
+                val responseBody =
                     requestControllerApi.patchDataRequest(
                         dataRequestId = UUID.fromString(newlyStoredRequests[0].dataRequestId),
                         accessStatus = AccessStatus.Declined,
                     )
-                }
+                assertEquals(AccessStatus.Declined, responseBody.accessStatus)
+            } else {
+                val responseException =
+                    assertThrows<ClientException> {
+                        requestControllerApi.patchDataRequest(
+                            dataRequestId = UUID.fromString(newlyStoredRequests[0].dataRequestId),
+                            accessStatus = AccessStatus.Declined,
+                        )
+                    }
                 assertAccessDeniedResponseBodyInCommunityManagerClientException(responseException)
             }
         }

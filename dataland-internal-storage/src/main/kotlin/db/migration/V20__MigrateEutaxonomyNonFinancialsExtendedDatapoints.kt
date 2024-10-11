@@ -12,35 +12,39 @@ import org.json.JSONObject
  * This migration script updates the existing EU taxonomy non-financials datasets and migrates all
  * existing BaseDataPoints to ExtendedDataPoints.
  */
+@Suppress("ClassName")
 class V20__MigrateEutaxonomyNonFinancialsExtendedDatapoints : BaseJavaMigration() {
-
-    private val relevantFields = listOf(
-        "scopeOfEntities",
-        "nfrdMandatory",
-        "euTaxonomyActivityLevelReporting",
-        "numberOfEmployees",
-        "enablingShareInPercent",
-        "transitionalShareInPercent",
-        "relativeShareInPercent",
-        "substantialContributionToClimateChangeMitigationInPercent",
-        "substantialContributionToClimateChangeAdaptationInPercent",
-        "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent",
-        "substantialContributionToTransitionToACircularEconomyInPercent",
-        "substantialContributionToPollutionPreventionAndControlInPercent",
-        "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent",
-        "absoluteShare",
-        "fiscalYearEnd",
-        "fiscalYearDeviation",
-        "alignedActivities",
-        "nonAlignedActivities",
-    )
+    private val relevantFields =
+        listOf(
+            "scopeOfEntities",
+            "nfrdMandatory",
+            "euTaxonomyActivityLevelReporting",
+            "numberOfEmployees",
+            "enablingShareInPercent",
+            "transitionalShareInPercent",
+            "relativeShareInPercent",
+            "substantialContributionToClimateChangeMitigationInPercent",
+            "substantialContributionToClimateChangeAdaptationInPercent",
+            "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent",
+            "substantialContributionToTransitionToACircularEconomyInPercent",
+            "substantialContributionToPollutionPreventionAndControlInPercent",
+            "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent",
+            "absoluteShare",
+            "fiscalYearEnd",
+            "fiscalYearDeviation",
+            "alignedActivities",
+            "nonAlignedActivities",
+        )
 
     /**
      * Move key: object to key: { "value": object }
      * @param jsonObject JSON object
      * @param key key corresponding to the JSON object
      */
-    private fun updateObjectBehindKeyInJsonObject(jsonObject: JSONObject, key: String) {
+    private fun updateObjectBehindKeyInJsonObject(
+        jsonObject: JSONObject,
+        key: String,
+    ) {
         val newValue = JSONObject()
         val oldValue = jsonObject[key]
         if (oldValue != JSONObject.NULL) {
@@ -88,7 +92,10 @@ class V20__MigrateEutaxonomyNonFinancialsExtendedDatapoints : BaseJavaMigration(
      * @param jsonObject JSON object
      * @param key key corresponding to the JSON object
      */
-    private fun checkRecursivelyForRelevantFieldKeysInJsonObject(jsonObject: JSONObject, key: String) {
+    private fun checkRecursivelyForRelevantFieldKeysInJsonObject(
+        jsonObject: JSONObject,
+        key: String,
+    ) {
         val obj = jsonObject.getOrJavaNull(key)
         if (obj !== null && obj is JSONObject) {
             checkForRelevantFieldsInJsonObjectKeys(obj)

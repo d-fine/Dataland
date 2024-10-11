@@ -52,20 +52,21 @@ class CompanyUploaderTest {
 
         companyUploader.updateIsins(deltaMap)
 
-        val compPatch = CompanyInformationPatch(
-            companyName = null,
-            companyContactDetails = null,
-            companyAlternativeNames = null,
-            companyLegalForm = null,
-            headquarters = null,
-            headquartersPostalCode = null,
-            sector = null,
-            sectorCodeWz = null,
-            identifiers = mapOf("Isin" to listOf("1111", "1112", "1113")),
-            countryCode = null,
-            website = null,
-            isTeaserCompany = null,
-        )
+        val compPatch =
+            CompanyInformationPatch(
+                companyName = null,
+                companyContactDetails = null,
+                companyAlternativeNames = null,
+                companyLegalForm = null,
+                headquarters = null,
+                headquartersPostalCode = null,
+                sector = null,
+                sectorCodeWz = null,
+                identifiers = mapOf("Isin" to listOf("1111", "1112", "1113")),
+                countryCode = null,
+                website = null,
+                isTeaserCompany = null,
+            )
 
         verify(mockCompanyDataControllerApi, times(1)).getCompanyIdByIdentifier(IdentifierType.Lei, "1000")
         verify(mockCompanyDataControllerApi, times(1)).patchCompanyById("testCompanyId", compPatch)
@@ -169,9 +170,10 @@ class CompanyUploaderTest {
         val exceptionBodyString = String(exceptionBodyContents)
         return ClientException(
             statusCode = HttpStatus.BAD_REQUEST.value(),
-            response = ClientError<Any>(
-                body = exceptionBodyString,
-            ),
+            response =
+                ClientError<Any>(
+                    body = exceptionBodyString,
+                ),
         )
     }
 
@@ -192,42 +194,45 @@ class CompanyUploaderTest {
     }
 
     companion object {
-        private val dummyGleifCompanyInformation1 = GleifCompanyCombinedInformation(
-            GleifCompanyInformation(
-                companyName = "CompanyName1",
+        private val dummyGleifCompanyInformation1 =
+            GleifCompanyCombinedInformation(
+                GleifCompanyInformation(
+                    companyName = "CompanyName1",
+                    countryCode = "CompanyCountry",
+                    headquarters = "CompanyCity",
+                    headquartersPostalCode = "CompanyPostalCode",
+                    lei = "DummyLei1",
+                ),
+            )
+
+        private val dummyGleifCompanyInformation2 =
+            GleifCompanyCombinedInformation(
+                GleifCompanyInformation(
+                    companyName = "CompanyName2",
+                    countryCode = "CompanyCountry",
+                    headquarters = "CompanyCity",
+                    headquartersPostalCode = "CompanyPostalCode",
+                    lei = "DummyLei2",
+                ),
+            )
+
+        private val dummyNorthDataCompanyInformation3 =
+            NorthDataCompanyInformation(
+                companyName = "CompanyName3",
                 countryCode = "CompanyCountry",
                 headquarters = "CompanyCity",
                 headquartersPostalCode = "CompanyPostalCode",
-                lei = "DummyLei1",
-            ),
-        )
-
-        private val dummyGleifCompanyInformation2 = GleifCompanyCombinedInformation(
-            GleifCompanyInformation(
-                companyName = "CompanyName2",
-                countryCode = "CompanyCountry",
-                headquarters = "CompanyCity",
-                headquartersPostalCode = "CompanyPostalCode",
-                lei = "DummyLei2",
-            ),
-        )
-
-        private val dummyNorthDataCompanyInformation3 = NorthDataCompanyInformation(
-            companyName = "CompanyName3",
-            countryCode = "CompanyCountry",
-            headquarters = "CompanyCity",
-            headquartersPostalCode = "CompanyPostalCode",
-            lei = "dummy-lei1234",
-            vatId = "",
-            registerId = "Dummy HRB 12356",
-            sector = "",
-            status = "active",
-            street = "Teststraße",
-        )
+                lei = "dummy-lei1234",
+                vatId = "",
+                registerId = "Dummy HRB 12356",
+                sector = "",
+                status = "active",
+                street = "Teststraße",
+            )
 
         @JvmStatic
-        fun provideInputForDuplicateIdentifiers(): Stream<Arguments> {
-            return Stream.of(
+        fun provideInputForDuplicateIdentifiers(): Stream<Arguments> =
+            Stream.of(
                 Arguments.of(
                     "/sampleResponseLeiIdentifierAlreadyExists.json",
                     1, dummyGleifCompanyInformation1,
@@ -254,6 +259,5 @@ class CompanyUploaderTest {
                     dummyNorthDataCompanyInformation3.toCompanyPatch(),
                 ),
             )
-        }
     }
 }

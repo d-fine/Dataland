@@ -12,15 +12,9 @@ import org.dataland.datalandqaservice.model.reports.QaReportDataPoint
 @Suppress("MaxLineLength")
 data class EutaxonomyFinancialsInsurancereinsuranceAverageValueOfTaxonomyAlignedUndertakings(
     @field:Valid()
-    val weightedAverageValueOfAllInvestmentsTurnoverBasedInPercent:
-    QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
-
+    val weightedAverageValueOfAllInvestmentsTurnoverBasedInPercent: QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
     @field:Valid()
-    val weightedAverageValueOfAllInvestmentsCapexBasedInPercent:
-    QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
-
+    val weightedAverageValueOfAllInvestmentsCapexBasedInPercent: QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
     val weightedAverageValueOfAllInvestmentsTurnoverBasedMonetaryAmount: QaReportDataPoint<CurrencyDataPoint?>? = null,
-
     val weightedAverageValueOfAllInvestmentsCapexBasedMonetaryAmount: QaReportDataPoint<CurrencyDataPoint?>? = null,
-
 )

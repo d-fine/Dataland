@@ -12,14 +12,10 @@ import org.dataland.datalandqaservice.model.reports.QaReportDataPoint
 data class SfdrEnvironmentalEmissions(
     @field:Valid()
     val emissionsOfInorganicPollutantsInTonnes: QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
-
     @field:Valid()
     val emissionsOfAirPollutantsInTonnes: QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
-
     @field:Valid()
     val emissionsOfOzoneDepletionSubstancesInTonnes: QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
-
     @field:Valid()
     val carbonReductionInitiatives: QaReportDataPoint<ExtendedDataPointYesNo?>? = null,
-
 )

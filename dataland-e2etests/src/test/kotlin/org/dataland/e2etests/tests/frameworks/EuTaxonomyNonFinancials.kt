@@ -12,14 +12,15 @@ import org.junit.jupiter.api.assertThrows
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class EuTaxonomyNonFinancials {
-
     private val apiAccessor = ApiAccessor()
     private val documentManagerAccessor = DocumentManagerAccessor()
 
-    private val listOfOneEuTaxonomyNonFinancialsDataSet = apiAccessor.testDataProviderForEuTaxonomyDataForNonFinancials
-        .getTData(1)
-    private val listOfOneCompanyInformation = apiAccessor.testDataProviderForEuTaxonomyDataForNonFinancials
-        .getCompanyInformationWithoutIdentifiers(1)
+    private val listOfOneEuTaxonomyNonFinancialsDataSet =
+        apiAccessor.testDataProviderForEuTaxonomyDataForNonFinancials
+            .getTData(1)
+    private val listOfOneCompanyInformation =
+        apiAccessor.testDataProviderForEuTaxonomyDataForNonFinancials
+            .getCompanyInformationWithoutIdentifiers(1)
 
     @BeforeAll
     fun postTestDocuments() {
@@ -28,15 +29,17 @@ class EuTaxonomyNonFinancials {
 
     @Test
     fun `post a dummy company and a dummy data set for it and check if data Id appears in the companys meta data`() {
-        val listOfUploadInfo = apiAccessor.uploadCompanyAndFrameworkDataForOneFramework(
-            listOfOneCompanyInformation, listOfOneEuTaxonomyNonFinancialsDataSet,
-            apiAccessor::euTaxonomyNonFinancialsUploaderFunction,
-        )
+        val listOfUploadInfo =
+            apiAccessor.uploadCompanyAndFrameworkDataForOneFramework(
+                listOfOneCompanyInformation, listOfOneEuTaxonomyNonFinancialsDataSet,
+                apiAccessor::euTaxonomyNonFinancialsUploaderFunction,
+            )
         val expectedDataMetaInformation = listOfUploadInfo[0].actualStoredDataMetaInfo
-        val listOfDataMetaInfoForTestCompany = apiAccessor.metaDataControllerApi.getListOfDataMetaInfo(
-            expectedDataMetaInformation?.companyId,
-            expectedDataMetaInformation?.dataType,
-        )
+        val listOfDataMetaInfoForTestCompany =
+            apiAccessor.metaDataControllerApi.getListOfDataMetaInfo(
+                expectedDataMetaInformation?.companyId,
+                expectedDataMetaInformation?.dataType,
+            )
         Assertions.assertTrue(
             listOfDataMetaInfoForTestCompany.contains(expectedDataMetaInformation),
             "The all-data-sets-list of the posted company does not contain the posted data set.",
@@ -45,16 +48,20 @@ class EuTaxonomyNonFinancials {
 
     @Test
     fun `post a company with EuTaxonomyForNonFinancials data and check if the data can be retrieved correctly`() {
-        val listOfUploadInfo = apiAccessor.uploadCompanyAndFrameworkDataForOneFramework(
-            listOfOneCompanyInformation,
-            listOfOneEuTaxonomyNonFinancialsDataSet,
-            apiAccessor::euTaxonomyNonFinancialsUploaderFunction,
-        )
+        val listOfUploadInfo =
+            apiAccessor.uploadCompanyAndFrameworkDataForOneFramework(
+                listOfOneCompanyInformation,
+                listOfOneEuTaxonomyNonFinancialsDataSet,
+                apiAccessor::euTaxonomyNonFinancialsUploaderFunction,
+            )
         val receivedDataMetaInformation = listOfUploadInfo[0].actualStoredDataMetaInfo
-        val downloadedAssociatedData = apiAccessor.dataControllerApiForEuTaxonomyNonFinancials
-            .getCompanyAssociatedEutaxonomyNonFinancialsData(receivedDataMetaInformation!!.dataId)
-        val downloadedAssociatedDataType = apiAccessor.metaDataControllerApi
-            .getDataMetaInfo(receivedDataMetaInformation.dataId).dataType
+        val downloadedAssociatedData =
+            apiAccessor.dataControllerApiForEuTaxonomyNonFinancials
+                .getCompanyAssociatedEutaxonomyNonFinancialsData(receivedDataMetaInformation!!.dataId)
+        val downloadedAssociatedDataType =
+            apiAccessor.metaDataControllerApi
+                .getDataMetaInfo(receivedDataMetaInformation.dataId)
+                .dataType
 
         Assertions.assertEquals(receivedDataMetaInformation.companyId, downloadedAssociatedData.companyId)
         Assertions.assertEquals(receivedDataMetaInformation.dataType, downloadedAssociatedDataType)
@@ -66,21 +73,23 @@ class EuTaxonomyNonFinancials {
         val companyId = apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId
         val companyName = "TestForIncompleteReferencedReport"
 
-        val companyInformation = apiAccessor.testDataProviderForEuTaxonomyDataForNonFinancials
-            .getSpecificCompanyByNameFromEuTaxonomyNonFinancialsPreparedFixtures(companyName)
+        val companyInformation =
+            apiAccessor.testDataProviderForEuTaxonomyDataForNonFinancials
+                .getSpecificCompanyByNameFromEuTaxonomyNonFinancialsPreparedFixtures(companyName)
 
         val dataSet = companyInformation!!.t
 
         val uploadPair = Pair(dataSet, "2024")
 
-        val exception = assertThrows<ClientException> {
-            apiAccessor.uploadWithWait(
-                companyId = companyId,
-                frameworkData = uploadPair.first,
-                reportingPeriod = uploadPair.second,
-                uploadFunction = apiAccessor::euTaxonomyNonFinancialsUploaderFunction,
-            )
-        }
+        val exception =
+            assertThrows<ClientException> {
+                apiAccessor.uploadWithWait(
+                    companyId = companyId,
+                    frameworkData = uploadPair.first,
+                    reportingPeriod = uploadPair.second,
+                    uploadFunction = apiAccessor::euTaxonomyNonFinancialsUploaderFunction,
+                )
+            }
 
         val testClientError = exception.response as ClientError<*>
 

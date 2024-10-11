@@ -5,8 +5,8 @@ import org.json.JSONObject
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 
+@Suppress("ClassName")
 class V2__MigrateEuTaxonomyNonFinancialsWithAbsoluteValuesTest {
-
     @Test
     fun `test that migration writes the expected results into the datatable`() {
         val origDatabaseEntry = buildOriginalDatabaseEntry()
@@ -19,6 +19,7 @@ class V2__MigrateEuTaxonomyNonFinancialsWithAbsoluteValuesTest {
 
     private val affectedFields = listOf("capex", "opex", "revenue")
     private val unaffectedFields = listOf("something")
+
     private fun buildOriginalDatabaseEntry(): DataTableEntity {
         val dataset = JSONObject()
         (affectedFields + unaffectedFields).forEach {
@@ -26,6 +27,7 @@ class V2__MigrateEuTaxonomyNonFinancialsWithAbsoluteValuesTest {
         }
         return DataTableEntity.fromJsonObject("mock-data-id", "eutaxonomy-non-financials", dataset)
     }
+
     private fun buildExpectedTransformedDatabaseEntry(): DataTableEntity {
         val dataset = JSONObject()
         (affectedFields).forEach {
@@ -38,12 +40,15 @@ class V2__MigrateEuTaxonomyNonFinancialsWithAbsoluteValuesTest {
     }
 
     private val unaffectedDetail = "totalAmount"
-    private val dummyDataPoint = JSONObject(
-        "{\"value\":0.1,\"dataSource\":{\"report\":\"some report\"},\"quality\":\"Estimated\"}",
-    )
-    private val dummyDataPointAbsoluteAndPercentage = JSONObject(
-        "{\"valueAsPercentage\":0.1,\"dataSource\":{\"report\":\"some report\"},\"quality\":\"Estimated\"}",
-    )
+    private val dummyDataPoint =
+        JSONObject(
+            "{\"value\":0.1,\"dataSource\":{\"report\":\"some report\"},\"quality\":\"Estimated\"}",
+        )
+    private val dummyDataPointAbsoluteAndPercentage =
+        JSONObject(
+            "{\"valueAsPercentage\":0.1,\"dataSource\":{\"report\":\"some report\"},\"quality\":\"Estimated\"}",
+        )
+
     private fun buildOldDetailsPerCashFlowType(): JSONObject {
         val cashFlowObject = JSONObject()
         listOf(unaffectedDetail, "alignedPercentage").forEach {

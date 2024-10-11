@@ -48,25 +48,26 @@ class MessageQueueListener(
     @RabbitListener(
         bindings = [
             QueueBinding(
-                value = Queue(
-                    "dataStoredDocumentManager",
-                    arguments = [
-                        Argument(name = "x-dead-letter-exchange", value = ExchangeName.DeadLetter),
-                        Argument(name = "x-dead-letter-routing-key", value = "deadLetterKey"),
-                        Argument(name = "defaultRequeueRejected", value = "false"),
-                    ],
-                ),
-                exchange = Exchange(ExchangeName.ItemStored, declare = "false"),
-                key = [RoutingKeyNames.document],
+                value =
+                    Queue(
+                        "dataStoredDocumentManager",
+                        arguments = [
+                            Argument(name = "x-dead-letter-exchange", value = ExchangeName.DEAD_LETTER),
+                            Argument(name = "x-dead-letter-routing-key", value = "deadLetterKey"),
+                            Argument(name = "defaultRequeueRejected", value = "false"),
+                        ],
+                    ),
+                exchange = Exchange(ExchangeName.ITEM_STORED, declare = "false"),
+                key = [RoutingKeyNames.DOCUMENT],
             ),
         ],
     )
     fun removeStoredDocumentFromTemporaryStore(
         @Payload documentId: String,
-        @Header(MessageHeaderKey.CorrelationId) correlationId: String,
-        @Header(MessageHeaderKey.Type) type: String,
+        @Header(MessageHeaderKey.CORRELATION_ID) correlationId: String,
+        @Header(MessageHeaderKey.TYPE) type: String,
     ) {
-        messageUtils.validateMessageType(type, MessageType.DocumentStored)
+        messageUtils.validateMessageType(type, MessageType.DOCUMENT_STORED)
         if (documentId.isEmpty()) {
             throw MessageQueueRejectException("Provided document ID is empty")
         }
@@ -88,26 +89,27 @@ class MessageQueueListener(
     @RabbitListener(
         bindings = [
             QueueBinding(
-                value = Queue(
-                    "documentQualityAssuredDocumentManager",
-                    arguments = [
-                        Argument(name = "x-dead-letter-exchange", value = ExchangeName.DeadLetter),
-                        Argument(name = "x-dead-letter-routing-key", value = "deadLetterKey"),
-                        Argument(name = "defaultRequeueRejected", value = "false"),
-                    ],
-                ),
-                exchange = Exchange(ExchangeName.DataQualityAssured, declare = "false"),
-                key = [RoutingKeyNames.document],
+                value =
+                    Queue(
+                        "documentQualityAssuredDocumentManager",
+                        arguments = [
+                            Argument(name = "x-dead-letter-exchange", value = ExchangeName.DEAD_LETTER),
+                            Argument(name = "x-dead-letter-routing-key", value = "deadLetterKey"),
+                            Argument(name = "defaultRequeueRejected", value = "false"),
+                        ],
+                    ),
+                exchange = Exchange(ExchangeName.DATA_QUALITY_ASSURED, declare = "false"),
+                key = [RoutingKeyNames.DOCUMENT],
             ),
         ],
     )
     @Transactional
     fun updateDocumentMetaData(
         @Payload jsonString: String,
-        @Header(MessageHeaderKey.CorrelationId) correlationId: String,
-        @Header(MessageHeaderKey.Type) type: String,
+        @Header(MessageHeaderKey.CORRELATION_ID) correlationId: String,
+        @Header(MessageHeaderKey.TYPE) type: String,
     ) {
-        messageUtils.validateMessageType(type, MessageType.QaCompleted)
+        messageUtils.validateMessageType(type, MessageType.QA_COMPLETED)
         val documentId = objectMapper.readValue(jsonString, QaCompletedMessage::class.java).identifier
         if (documentId.isEmpty()) {
             throw MessageQueueRejectException("Provided document ID is empty")

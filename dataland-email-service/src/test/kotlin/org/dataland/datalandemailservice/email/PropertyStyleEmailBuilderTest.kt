@@ -8,39 +8,42 @@ import org.junit.jupiter.api.Test
 class PropertyStyleEmailBuilderTest {
     private val senderEmail = "sender@example.com"
     private val senderName = "Test"
-    private val receiverEmails = listOf(
-        "receiver1@example.com",
-        "receiver2@example.com",
-    )
-    private val ccEmails = listOf(
-        "cc1@example.com",
-    )
+    private val receiverEmails =
+        listOf(
+            "receiver1@example.com",
+            "receiver2@example.com",
+        )
+    private val ccEmails =
+        listOf(
+            "cc1@example.com",
+        )
     private val subject = "The Subject"
     private val textTitle = "The Text Title"
     private val htmlTitle = "The HTML Title"
 
     @Test
     fun `validate that the output of the property style email builder is correctly formatted`() {
-        val properties = mapOf(
-            "first" to "1",
-            "leftOut" to null,
-            "second" to "2",
-        )
-        val email = object : PropertyStyleEmailBuilder(
-            senderEmail = senderEmail,
-            senderName = senderName,
-            semicolonSeparatedReceiverEmails = receiverEmails.joinToString(";"),
-            semicolonSeparatedCcEmails = ccEmails.joinToString(";"),
-        ) {
-            fun build(): Email {
-                return Email(
-                    senderEmailContact,
-                    receiverEmailContacts!!,
-                    ccEmailContacts,
-                    buildPropertyStyleEmailContent(subject, textTitle, htmlTitle, properties),
-                )
-            }
-        }.build()
+        val properties =
+            mapOf(
+                "first" to "1",
+                "leftOut" to null,
+                "second" to "2",
+            )
+        val email =
+            object : PropertyStyleEmailBuilder(
+                senderEmail = senderEmail,
+                senderName = senderName,
+                semicolonSeparatedReceiverEmails = receiverEmails.joinToString(";"),
+                semicolonSeparatedCcEmails = ccEmails.joinToString(";"),
+            ) {
+                fun build(): Email =
+                    Email(
+                        senderEmailContact,
+                        receiverEmailContacts!!,
+                        ccEmailContacts,
+                        buildPropertyStyleEmailContent(subject, textTitle, htmlTitle, properties),
+                    )
+            }.build()
         assertEmailContactInformationEquals(
             EmailContact(senderEmail, senderName),
             receiverEmails.toEmailContacts(),
@@ -63,7 +66,7 @@ class PropertyStyleEmailBuilderTest {
             assertTrue(
                 email.content.htmlContent.contains(
                     """
- <div class="section"> <span class="bold">${it.key}: </span> ${it.value} </div>
+                    <div class="section"> <span class="bold">${it.key}: </span> ${it.value} </div>
                     """.trimIndent(),
                 ),
             )

@@ -13,33 +13,26 @@ data class EmailContact(
     /**
      * Converts a Dataland EmailContact object into a SendContact object of the mailjet client library
      */
-    fun toMailjetSendContact(): SendContact {
-        return if (name == null) SendContact(emailAddress) else SendContact(emailAddress, name)
-    }
+    fun toMailjetSendContact(): SendContact = if (name == null) SendContact(emailAddress) else SendContact(emailAddress, name)
 }
 
 /**
  * Integrates the provided EmailContact object as sender into the build of a TransactionalEmail
  */
-fun TransactionalEmail.TransactionalEmailBuilder.integrateSenderIntoTransactionalEmailBuilder(sender: EmailContact):
-    TransactionalEmail.TransactionalEmailBuilder {
-    return this.from(sender.toMailjetSendContact())
-}
+fun TransactionalEmail.TransactionalEmailBuilder.integrateSenderIntoTransactionalEmailBuilder(
+    sender: EmailContact,
+): TransactionalEmail.TransactionalEmailBuilder = this.from(sender.toMailjetSendContact())
 
 /**
  * Integrates the provided list of EmailContact objects as receivers into the build of a TransactionalEmail
  */
-fun TransactionalEmail.TransactionalEmailBuilder
-    .integrateReceiversIntoTransactionalEmailBuilder(receivers: List<EmailContact>):
-    TransactionalEmail.TransactionalEmailBuilder {
-    return this.to(receivers.map { it.toMailjetSendContact() })
-}
+fun TransactionalEmail.TransactionalEmailBuilder.integrateReceiversIntoTransactionalEmailBuilder(
+    receivers: List<EmailContact>,
+): TransactionalEmail.TransactionalEmailBuilder = this.to(receivers.map { it.toMailjetSendContact() })
 
 /**
  * Integrates the provided list of EmailContact objects as cc receivers into the build of a TransactionalEmail
  */
-fun TransactionalEmail.TransactionalEmailBuilder
-    .integrateCcIntoTransactionalEmailBuilder(ccReceivers: List<EmailContact>):
-    TransactionalEmail.TransactionalEmailBuilder {
-    return this.cc(ccReceivers.map { it.toMailjetSendContact() })
-}
+fun TransactionalEmail.TransactionalEmailBuilder.integrateCcIntoTransactionalEmailBuilder(
+    ccReceivers: List<EmailContact>,
+): TransactionalEmail.TransactionalEmailBuilder = this.cc(ccReceivers.map { it.toMailjetSendContact() })

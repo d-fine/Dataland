@@ -7,8 +7,8 @@ import org.slf4j.LoggerFactory
  */
 
 object EurodatDataStoreUtils {
-    private const val maxRetries = 8
-    private const val millisecondsBetweenRetries = 15000
+    private const val MAX_RETRIES = 8
+    private const val MILLISECONDS_BETWEEN_RETRIES = 15000
     private val logger = LoggerFactory.getLogger(javaClass)
 
     /**
@@ -18,9 +18,12 @@ object EurodatDataStoreUtils {
      * @returns the value T of the input method
      */
     @Suppress("TooGenericExceptionCaught")
-    fun <T> retryWrapperMethod(descriptionOfOperation: String, block: () -> T): T {
+    fun <T> retryWrapperMethod(
+        descriptionOfOperation: String,
+        block: () -> T,
+    ): T {
         var retryCount = 0
-        while (retryCount <= maxRetries) {
+        while (retryCount <= MAX_RETRIES) {
             try {
                 logger.info("Trying to run: $descriptionOfOperation. Try number ${retryCount + 1}.")
                 return block()
@@ -29,7 +32,7 @@ object EurodatDataStoreUtils {
                     "An error occurred while trying to $descriptionOfOperation: ${e.message}. " +
                         "Trying again",
                 )
-                if (retryCount == maxRetries) {
+                if (retryCount == MAX_RETRIES) {
                     logger.error(
                         "An error occurred while trying to $descriptionOfOperation: ${e.message}. " +
                             "Process terminated",
@@ -38,7 +41,7 @@ object EurodatDataStoreUtils {
                 }
             }
             retryCount++
-            Thread.sleep(millisecondsBetweenRetries.toLong())
+            Thread.sleep(MILLISECONDS_BETWEEN_RETRIES.toLong())
         }
         return block()
     }

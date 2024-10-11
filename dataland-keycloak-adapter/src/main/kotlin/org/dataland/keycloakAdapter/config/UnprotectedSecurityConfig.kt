@@ -20,20 +20,19 @@ class UnprotectedSecurityConfig {
      * Defines the Session Authentication Strategy
      */
     @Bean
-    fun sessionAuthenticationStrategy(): SessionAuthenticationStrategy {
-        return NullAuthenticatedSessionStrategy()
-    }
+    fun sessionAuthenticationStrategy(): SessionAuthenticationStrategy = NullAuthenticatedSessionStrategy()
 
     /**
      * Defines the default Security Filter Chain
      */
     @Bean
     fun unprotectedFilterChain(http: HttpSecurity): DefaultSecurityFilterChain? {
-        http.authorizeHttpRequests {
-            it.anyRequest().permitAll()
-        }.csrf {
-            it.disable()
-        }
+        http
+            .authorizeHttpRequests {
+                it.anyRequest().permitAll()
+            }.csrf {
+                it.disable()
+            }
         return http.build()
     }
 }

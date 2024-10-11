@@ -13,10 +13,11 @@ import io.swagger.v3.oas.annotations.servers.Server
  * Basic configuration for the OpenAPI Swagger-UI available at /community/swagger-ui/index.html
  */
 @OpenAPIDefinition(
-    info = Info(
-        title = "Dataland Community Manager API documentation",
-        version = "1.0.0",
-    ),
+    info =
+        Info(
+            title = "Dataland Community Manager API documentation",
+            version = "1.0.0",
+        ),
     servers = [Server(url = "/community")],
 )
 @SecurityScheme(
@@ -28,11 +29,13 @@ import io.swagger.v3.oas.annotations.servers.Server
 @SecurityScheme(
     name = "default-oauth",
     type = SecuritySchemeType.OAUTH2,
-    flows = OAuthFlows(
-        authorizationCode = OAuthFlow(
-            authorizationUrl = "/keycloak/realms/datalandsecurity/protocol/openid-connect/auth",
-            tokenUrl = "/keycloak/realms/datalandsecurity/protocol/openid-connect/token",
+    flows =
+        OAuthFlows(
+            authorizationCode =
+                OAuthFlow(
+                    authorizationUrl = "/keycloak/realms/datalandsecurity/protocol/openid-connect/auth",
+                    tokenUrl = "/keycloak/realms/datalandsecurity/protocol/openid-connect/token",
+                ),
         ),
-    ),
 )
 interface OpenAPIConfiguration

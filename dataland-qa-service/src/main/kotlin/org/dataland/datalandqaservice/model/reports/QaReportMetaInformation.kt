@@ -1,7 +1,6 @@
 package org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.reports
 
 import com.fasterxml.jackson.annotation.JsonProperty
-import java.util.*
 
 /**
  * --- API model ---
@@ -14,19 +13,14 @@ import java.util.*
 data class QaReportMetaInformation(
     @field:JsonProperty(required = true)
     val dataId: String,
-
     @field:JsonProperty(required = true)
     val dataType: String,
-
     @field:JsonProperty(required = true)
     val qaReportId: String,
-
     @field:JsonProperty()
     val reporterUserId: String?,
-
     @field:JsonProperty(required = true)
     val uploadTime: Long,
-
     @field:JsonProperty(required = true)
     val active: Boolean,
 )

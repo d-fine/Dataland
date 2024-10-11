@@ -36,13 +36,14 @@ import org.junit.jupiter.api.TestInstance
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class BulkDataRequestsTest {
-
     val jwtHelper = JwtAuthenticationHelper()
     val apiAccessor = ApiAccessor()
     private val requestControllerApi = RequestControllerApi(BASE_PATH_TO_COMMUNITY_MANAGER)
 
     @BeforeAll
-    fun authenticateAsReader() { jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader) }
+    fun authenticateAsReader() {
+        jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader)
+    }
 
     @Test
     fun `post bulk data request for all frameworks and different valid identifiers and check stored requests`() {
@@ -52,9 +53,10 @@ class BulkDataRequestsTest {
         val reportingPeriods = setOf("2022", "2023")
         val timestampBeforeBulkRequest = retrieveTimeAndWaitOneMillisecond()
         generateCompaniesWithOneRandomValueForEachIdentifierType(uniqueIdentifiersMap)
-        val response = requestControllerApi.postBulkDataRequest(
-            BulkDataRequest(identifiers, dataTypes, reportingPeriods),
-        )
+        val response =
+            requestControllerApi.postBulkDataRequest(
+                BulkDataRequest(identifiers, dataTypes, reportingPeriods),
+            )
         checkThatAllIdentifiersWereAccepted(response, identifiers.size, 0)
         val newlyStoredRequests = getNewlyStoredRequestsAfterTimestamp(timestampBeforeBulkRequest)
         checkThatTheAmountOfNewlyStoredRequestsIsAsExpected(
@@ -73,18 +75,20 @@ class BulkDataRequestsTest {
     fun `post a bulk data request with at least one invalid identifier and check that this gives no stored request`() {
         val uniqueIdentifiersMap = generateMapWithOneRandomValueForEachIdentifierType()
         val validIdentifiers = uniqueIdentifiersMap.values.toSet()
-        val invalidIdentifiers = setOf(
-            generateRandomLei() + "F", generateRandomIsin() + "F", generateRandomPermId() + "F",
-        )
+        val invalidIdentifiers =
+            setOf(
+                generateRandomLei() + "F", generateRandomIsin() + "F", generateRandomPermId() + "F",
+            )
         val timestampBeforeBulkRequest = retrieveTimeAndWaitOneMillisecond()
         generateCompaniesWithOneRandomValueForEachIdentifierType(uniqueIdentifiersMap)
-        val response = requestControllerApi.postBulkDataRequest(
-            BulkDataRequest(
-                validIdentifiers + invalidIdentifiers,
-                setOf(BulkDataRequest.DataTypes.lksg),
-                setOf("2023"),
-            ),
-        )
+        val response =
+            requestControllerApi.postBulkDataRequest(
+                BulkDataRequest(
+                    validIdentifiers + invalidIdentifiers,
+                    setOf(BulkDataRequest.DataTypes.lksg),
+                    setOf("2023"),
+                ),
+            )
         checkThatTheNumberOfAcceptedIdentifiersIsAsExpected(response, validIdentifiers.size)
         checkThatTheNumberOfRejectedIdentifiersIsAsExpected(response, invalidIdentifiers.size)
         checkThatMessageIsAsExpected(response, validIdentifiers.size, invalidIdentifiers.size)
@@ -101,15 +105,17 @@ class BulkDataRequestsTest {
         val isinForCompany = generateRandomIsin()
         val companyId = getIdForUploadedCompanyWithIdentifiers(leiForCompany, listOf(isinForCompany))
         val identifierValueForUnknownCompany = generateRandomLei()
-        val identifiersForBulkRequest = setOf(
-            leiForCompany, isinForCompany, identifierValueForUnknownCompany,
-        )
+        val identifiersForBulkRequest =
+            setOf(
+                leiForCompany, isinForCompany, identifierValueForUnknownCompany,
+            )
         val frameworksForBulkRequest = listOf(BulkDataRequest.DataTypes.lksg)
         val reportingPeriod = "2023"
         val timestampBeforeBulkRequest = retrieveTimeAndWaitOneMillisecond()
-        val response = requestControllerApi.postBulkDataRequest(
-            BulkDataRequest(identifiersForBulkRequest, frameworksForBulkRequest.toSet(), setOf(reportingPeriod)),
-        )
+        val response =
+            requestControllerApi.postBulkDataRequest(
+                BulkDataRequest(identifiersForBulkRequest, frameworksForBulkRequest.toSet(), setOf(reportingPeriod)),
+            )
         checkThatAllIdentifiersWereAccepted(response, (identifiersForBulkRequest.size - 1), 1)
         val newlyStoredRequests = getNewlyStoredRequestsAfterTimestamp(timestampBeforeBulkRequest)
         checkThatTheAmountOfNewlyStoredRequestsIsAsExpected(
@@ -127,11 +133,12 @@ class BulkDataRequestsTest {
         val isinForCompany = generateRandomIsin()
         apiAccessor.uploadOneCompanyWithIdentifiers(lei = leiForCompany, isins = listOf(isinForCompany))
         val reportingPeriods = setOf("2021", "2022", "2023")
-        val bulkDataRequest = BulkDataRequest(
-            setOf(leiForCompany, isinForCompany),
-            setOf(BulkDataRequest.DataTypes.lksg),
-            reportingPeriods,
-        )
+        val bulkDataRequest =
+            BulkDataRequest(
+                setOf(leiForCompany, isinForCompany),
+                setOf(BulkDataRequest.DataTypes.lksg),
+                reportingPeriods,
+            )
         val timestampBeforeBulkRequest = retrieveTimeAndWaitOneMillisecond()
         val response = requestControllerApi.postBulkDataRequest(bulkDataRequest)
         checkThatAllIdentifiersWereAccepted(response, 2, 0)
@@ -163,9 +170,10 @@ class BulkDataRequestsTest {
         sendBulkRequestWithEmptyInputAndCheckErrorMessage(emptySet(), dataTypes, emptySet())
         sendBulkRequestWithEmptyInputAndCheckErrorMessage(emptySet(), emptySet(), reportingPeriods)
         sendBulkRequestWithEmptyInputAndCheckErrorMessage(emptySet(), emptySet(), emptySet())
-        val invalidIdentifiers = setOf(
-            generateRandomLei() + "F", generateRandomIsin() + "F", generateRandomPermId() + "F",
-        )
+        val invalidIdentifiers =
+            setOf(
+                generateRandomLei() + "F", generateRandomIsin() + "F", generateRandomPermId() + "F",
+            )
         val clientException = causeClientExceptionByBulkDataRequest(invalidIdentifiers, dataTypes, reportingPeriods)
         checkErrorMessageForInvalidIdentifiersInBulkRequest(clientException)
     }
@@ -174,27 +182,31 @@ class BulkDataRequestsTest {
     fun `post bulk data request and verify that only unique identifiers are accepted `() {
         val permId1 = generateRandomPermId(20)
         val permId2 = generateRandomPermId(20)
-        val companyOne = CompanyInformation(
-            companyName = "companyOne",
-            headquarters = "HQ",
-            identifiers = mapOf(IdentifierType.PermId.value to listOf(permId1)),
-            countryCode = "DE",
-        )
-        val companyTwo = companyOne.copy(
-            companyName = "companyTwo",
-            identifiers = mapOf(IdentifierType.Lei.value to listOf(permId1)),
-        )
-        val companyWithUniqueId = companyOne.copy(
-            companyName = "companyWithUniqueId",
-            identifiers = mapOf(IdentifierType.PermId.value to listOf(permId2)),
-        )
+        val companyOne =
+            CompanyInformation(
+                companyName = "companyOne",
+                headquarters = "HQ",
+                identifiers = mapOf(IdentifierType.PermId.value to listOf(permId1)),
+                countryCode = "DE",
+            )
+        val companyTwo =
+            companyOne.copy(
+                companyName = "companyTwo",
+                identifiers = mapOf(IdentifierType.Lei.value to listOf(permId1)),
+            )
+        val companyWithUniqueId =
+            companyOne.copy(
+                companyName = "companyWithUniqueId",
+                identifiers = mapOf(IdentifierType.PermId.value to listOf(permId2)),
+            )
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
         apiAccessor.companyDataControllerApi.postCompany(companyOne)
         apiAccessor.companyDataControllerApi.postCompany(companyTwo)
         apiAccessor.companyDataControllerApi.postCompany(companyWithUniqueId)
-        val response = requestControllerApi.postBulkDataRequest(
-            BulkDataRequest(setOf(permId1, permId2), setOf(BulkDataRequest.DataTypes.sfdr), setOf("2023")),
-        )
+        val response =
+            requestControllerApi.postBulkDataRequest(
+                BulkDataRequest(setOf(permId1, permId2), setOf(BulkDataRequest.DataTypes.sfdr), setOf("2023")),
+            )
         checkThatTheNumberOfAcceptedIdentifiersIsAsExpected(response, 1)
         checkThatTheNumberOfRejectedIdentifiersIsAsExpected(response, 1)
         checkThatMessageIsAsExpected(response, 1, 1)

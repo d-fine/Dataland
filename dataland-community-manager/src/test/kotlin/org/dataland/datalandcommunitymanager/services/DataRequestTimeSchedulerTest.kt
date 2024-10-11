@@ -30,33 +30,37 @@ class DataRequestTimeSchedulerTest {
     private val dummyDataRequestId = "dummyDataRequestId"
     private val staleDaysThreshold: Long = 10
     private val staleLastModified = Instant.now().minus(Duration.ofDays(staleDaysThreshold + 1)).toEpochMilli()
+
     private fun <T> any(type: Class<T>): T = Mockito.any<T>(type)
+
     private fun getDataRequestEntity(
         requestId: String,
         status: RequestStatus,
         accessStatus: AccessStatus,
         lastModifiedDate: Long,
     ): DataRequestEntity {
-        val dataRequestEntity = DataRequestEntity(
-            dataRequestId = requestId,
-            userId = "dummyUserId",
-            creationTimestamp = 0,
-            dataType = "dummyDataType",
-            reportingPeriod = "dummyReportingPeriod",
-            datalandCompanyId = "dummyCompanyId",
-            messageHistory = emptyList(),
-            dataRequestStatusHistory = emptyList(),
-            lastModifiedDate = lastModifiedDate,
-        )
-        dataRequestEntity.dataRequestStatusHistory = listOf(
-            RequestStatusEntity(
-                statusHistoryId = UUID.randomUUID().toString(),
-                requestStatus = status,
-                accessStatus = accessStatus,
+        val dataRequestEntity =
+            DataRequestEntity(
+                dataRequestId = requestId,
+                userId = "dummyUserId",
                 creationTimestamp = 0,
-                dataRequest = dataRequestEntity,
-            ),
-        )
+                dataType = "dummyDataType",
+                reportingPeriod = "dummyReportingPeriod",
+                datalandCompanyId = "dummyCompanyId",
+                messageHistory = emptyList(),
+                dataRequestStatusHistory = emptyList(),
+                lastModifiedDate = lastModifiedDate,
+            )
+        dataRequestEntity.dataRequestStatusHistory =
+            listOf(
+                RequestStatusEntity(
+                    statusHistoryId = UUID.randomUUID().toString(),
+                    requestStatus = status,
+                    accessStatus = accessStatus,
+                    creationTimestamp = 0,
+                    dataRequest = dataRequestEntity,
+                ),
+            )
         return dataRequestEntity
     }
 
@@ -108,10 +112,11 @@ class DataRequestTimeSchedulerTest {
         reset(dataRequestRepository)
         val dataRequestEntities = mutableListOf<DataRequestEntity>()
         for (status in RequestStatus.entries) {
-            val dataRequestEntity = getDataRequestEntity(
-                dummyDataRequestId, status, AccessStatus.Public,
-                Instant.now().toEpochMilli(),
-            )
+            val dataRequestEntity =
+                getDataRequestEntity(
+                    dummyDataRequestId, status, AccessStatus.Public,
+                    Instant.now().toEpochMilli(),
+                )
             dataRequestEntities.add(dataRequestEntity)
         }
         `when`(

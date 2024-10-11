@@ -11,6 +11,7 @@ import org.json.JSONObject
 /**
  * Performs the migration of the refactored data point classes for the eu taxonomy non fiancials framework
  */
+@Suppress("ClassName")
 class V11__MigrateRefactoredDataPointClassesEuTaxoFinancials : BaseJavaMigration() {
     /**
      * Performs the migration of the refactored data point classes for eu taxonomy financials data
@@ -22,17 +23,21 @@ class V11__MigrateRefactoredDataPointClassesEuTaxoFinancials : BaseJavaMigration
             this::migrateRefactoredDataPointClasses,
         )
     }
-    private val oldToNewFieldNamesForAssurance = mapOf(
-        "assurance" to "value",
-    )
 
-    private val oldToNewFieldNamesForReports = mapOf(
-        "reference" to "fileReference",
-    )
+    private val oldToNewFieldNamesForAssurance =
+        mapOf(
+            "assurance" to "value",
+        )
 
-    private val oldToNewFieldNamesForDocuments = mapOf(
-        "report" to "fileName",
-    )
+    private val oldToNewFieldNamesForReports =
+        mapOf(
+            "reference" to "fileReference",
+        )
+
+    private val oldToNewFieldNamesForDocuments =
+        mapOf(
+            "report" to "fileName",
+        )
 
     /**
      * Migrates the refactored Data Point Classes for the eu taxonomy non financials framework
@@ -115,8 +120,7 @@ class V11__MigrateRefactoredDataPointClassesEuTaxoFinancials : BaseJavaMigration
     private fun accessSecondOfThreeLayeredDataSourceForMultipleMigrations(
         secondLayerObject: JSONObject,
         dataObject: JSONObject,
-        migrationFieldNamesForDocuments:
-        Map<String, String>,
+        migrationFieldNamesForDocuments: Map<String, String>,
         migrationHelper: MigrationHelper,
     ) {
         val thirdLayerKeyList = secondLayerObject.keys()

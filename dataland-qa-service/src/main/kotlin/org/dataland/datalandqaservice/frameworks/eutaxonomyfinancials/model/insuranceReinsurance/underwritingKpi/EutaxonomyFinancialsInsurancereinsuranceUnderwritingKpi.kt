@@ -12,22 +12,13 @@ import org.dataland.datalandqaservice.model.reports.QaReportDataPoint
 @Suppress("MaxLineLength")
 data class EutaxonomyFinancialsInsurancereinsuranceUnderwritingKpi(
     val totalOfAbsolutePremiumsOfTaxonomyAlignedActivities: QaReportDataPoint<CurrencyDataPoint?>? = null,
-
-    val totalOfAbsolutePremiumsOfTaxonomyEligibleButTaxonomyNonAlignedActivities:
-    QaReportDataPoint<CurrencyDataPoint?>? = null,
-
+    val totalOfAbsolutePremiumsOfTaxonomyEligibleButTaxonomyNonAlignedActivities: QaReportDataPoint<CurrencyDataPoint?>? = null,
     val totalOfAbsolutePremiumsOfTaxonomyNonEligibleActivities: QaReportDataPoint<CurrencyDataPoint?>? = null,
-
     @field:Valid()
-    val proportionOfAbsolutePremiumsOfTaxonomyAlignedActivities:
-    QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
-
+    val proportionOfAbsolutePremiumsOfTaxonomyAlignedActivities: QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
     @field:Valid()
     val proportionOfAbsolutePremiumsOfTaxonomyEligibleButTaxonomyNonAlignedActivities:
-    QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
-
+        QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
     @field:Valid()
-    val proportionOfAbsolutePremiumsOfTaxonomyNonEligibleActivities:
-    QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
-
+    val proportionOfAbsolutePremiumsOfTaxonomyNonEligibleActivities: QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
 )

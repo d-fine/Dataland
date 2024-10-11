@@ -10,11 +10,8 @@ import com.fasterxml.jackson.annotation.JsonProperty
 data class GleifRelationshipInformation(
     @JsonProperty("Relationship.StartNode.NodeID")
     val startNode: String,
-
     @JsonProperty("Relationship.EndNode.NodeID")
     val endNode: String,
-
     @JsonProperty("Relationship.RelationshipType")
     val relationshipType: GleifRelationshipTypes,
-
 )

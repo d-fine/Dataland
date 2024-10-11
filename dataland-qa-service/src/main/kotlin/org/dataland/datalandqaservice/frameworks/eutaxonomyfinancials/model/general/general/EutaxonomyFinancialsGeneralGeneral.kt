@@ -16,21 +16,14 @@ import org.dataland.datalandqaservice.model.reports.QaReportDataPoint
 @Suppress("MaxLineLength")
 data class EutaxonomyFinancialsGeneralGeneral(
     @field:Valid()
-    val fiscalYearDeviation:
-    QaReportDataPoint<ExtendedDataPointEutaxonomyFinancialsGeneralGeneralFiscalYearDeviationOptions?>? = null,
-
+    val fiscalYearDeviation: QaReportDataPoint<ExtendedDataPointEutaxonomyFinancialsGeneralGeneralFiscalYearDeviationOptions?>? = null,
     @field:Valid()
     val fiscalYearEnd: QaReportDataPoint<ExtendedDataPointLocalDate?>? = null,
-
     val referencedReports: QaReportDataPoint<Map<String, CompanyReport>>? = null,
-
     @field:Valid()
     val areAllGroupEntitiesCovered: QaReportDataPoint<ExtendedDataPointYesNo?>? = null,
-
     @field:Valid()
     val numberOfEmployees: QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
-
     @field:Valid()
     val isNfrdMandatory: QaReportDataPoint<ExtendedDataPointYesNo?>? = null,
-
 )
