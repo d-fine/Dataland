@@ -22,24 +22,33 @@ function generateFixtureForNoNullFieldsAndOnlyYesAnswers(): FixtureData<EsgQuest
   const newFixture = generateEsgQuestionnaireFixtures(1, 0)[0];
   newFixture.companyInformation.companyName = 'EsgQuestionnaire-dataset-with-no-null-fields';
 
-  modifyPreparedFixturesPartOne(newFixture);
-  modifyPreparedFixturesPartTwo(newFixture);
+  setAllYesNoValuesToYesInCategoryAllgemein(newFixture);
+  setAllYesNoValuesToYesInCategoriesUmwelSozialsGovernance(newFixture);
   return newFixture;
 }
 
 /**
- * Modifies the prepared fixtures
+ * Sets the values of all "Yes/No" questions in the categories "General" and "Allgemein" to value "Yes"
  * @param newFixture generated prepared fixture to modify
  */
-function modifyPreparedFixturesPartOne(newFixture: FixtureData<EsgQuestionnaireData>): void {
+function setAllYesNoValuesToYesInCategoryAllgemein(newFixture: FixtureData<EsgQuestionnaireData>): void {
   if (newFixture.t.general?.masterData) {
     newFixture.t.general.masterData.berichtspflichtUndEinwilligungZurVeroeffentlichung = YesNo.Yes;
+  }
+  if (newFixture.t.allgemein?.generelleEsgStrategie?.dokumenteZurNachhaltigkeitsstrategie) {
+    newFixture.t.allgemein.generelleEsgStrategie.dokumenteZurNachhaltigkeitsstrategie.push({
+      value: 'Report with null data source',
+      dataSource: null,
+    });
+  }
+  if (newFixture.t.allgemein?.generelleEsgStrategie?.massnahmenZurErreichungDes15GradCelsiusZiels) {
+    newFixture.t.allgemein.generelleEsgStrategie.massnahmenZurErreichungDes15GradCelsiusZiels = YesNo.Yes;
   }
   if (newFixture.t.allgemein?.taxonomieKpisUndBestimmteAktivitaeten?.taxonomiebezogeneCapexPlanung) {
     newFixture.t.allgemein.taxonomieKpisUndBestimmteAktivitaeten.taxonomiebezogeneCapexPlanung = YesNo.Yes;
   }
   if (newFixture.t.allgemein?.taxonomieKpisUndBestimmteAktivitaeten?.aktivitaetImSektorFossileBrennstoffe) {
-    newFixture.t.allgemein.taxonomieKpisUndBestimmteAktivitaeten.aktivitaetImSektorFossileBrennstoffe == YesNo.Yes;
+    newFixture.t.allgemein.taxonomieKpisUndBestimmteAktivitaeten.aktivitaetImSektorFossileBrennstoffe = YesNo.Yes;
   }
   if (newFixture.t.allgemein?.taxonomieKpisUndBestimmteAktivitaeten?.aktivitaetImSektorHerstellungVonChemikalien) {
     newFixture.t.allgemein.taxonomieKpisUndBestimmteAktivitaeten.aktivitaetImSektorHerstellungVonChemikalien =
@@ -64,13 +73,6 @@ function modifyPreparedFixturesPartOne(newFixture: FixtureData<EsgQuestionnaireD
   if (newFixture.t.allgemein?.oecdLeitsaetze?.mechanismenZurUeberwachungDerEinhaltungDerOecdLeitsaetze) {
     newFixture.t.allgemein.oecdLeitsaetze.mechanismenZurUeberwachungDerEinhaltungDerOecdLeitsaetze = YesNo.Yes;
   }
-}
-
-/**
- * Modifies the prepared fixtures
- * @param newFixture generated prepared fixture to modify
- */
-function modifyPreparedFixturesPartTwo(newFixture: FixtureData<EsgQuestionnaireData>): void {
   if (newFixture.t.allgemein?.rechtsstreitigkeiten?.rechtsstreitigkeitenMitEsgBezug) {
     newFixture.t.allgemein.rechtsstreitigkeiten.rechtsstreitigkeitenMitEsgBezug = YesNo.Yes;
   }
@@ -84,6 +86,13 @@ function modifyPreparedFixturesPartTwo(newFixture: FixtureData<EsgQuestionnaireD
   if (newFixture.t.allgemein?.transaktionenMitNachhaltigkeitskomponenten?.emissionVonSustainibilityLinkedDebt) {
     newFixture.t.allgemein.transaktionenMitNachhaltigkeitskomponenten.emissionVonSustainibilityLinkedDebt = YesNo.Yes;
   }
+}
+
+/**
+ * Sets the values of all "Yes/No" questions in the categories "Umwelt", "Soziales" and "Governance" to value "Yes"
+ * @param newFixture generated prepared fixture to modify
+ */
+function setAllYesNoValuesToYesInCategoriesUmwelSozialsGovernance(newFixture: FixtureData<EsgQuestionnaireData>): void {
   if (newFixture.t.umwelt?.risikenUndMassnahmenKlima?.messungSteuerungUndUeberwachungDerKlimaUndUmweltrisiken) {
     newFixture.t.umwelt.risikenUndMassnahmenKlima.messungSteuerungUndUeberwachungDerKlimaUndUmweltrisiken = YesNo.Yes;
   }
@@ -93,15 +102,44 @@ function modifyPreparedFixturesPartTwo(newFixture: FixtureData<EsgQuestionnaireD
   if (newFixture.t.umwelt?.risikenUndMassnahmenKlima?.beruecksichtigungVonKlimaUndUmweltrisiken) {
     newFixture.t.umwelt.risikenUndMassnahmenKlima.beruecksichtigungVonKlimaUndUmweltrisiken = YesNo.Yes;
   }
-
-  // TODO wip
-
-  if (newFixture.t.allgemein?.generelleEsgStrategie?.dokumenteZurNachhaltigkeitsstrategie) {
-    newFixture.t.allgemein.generelleEsgStrategie.dokumenteZurNachhaltigkeitsstrategie.push({
-      value: 'Report with null data source',
-      dataSource: null,
-    });
+  if (newFixture.t.umwelt?.risikenUndMassnahmenKlima?.produkteZurReduzierungDerUmweltbelastung) {
+    newFixture.t.umwelt.risikenUndMassnahmenKlima.produkteZurReduzierungDerUmweltbelastung = YesNo.Yes;
   }
-  // TODO at the end we need to make sure that all yes-no-questions that are depended on are set to "Yes" to enforce a
-  //  TODO full dataset and upload page in the blanket test
+  if (newFixture.t.umwelt?.risikenUndMassnahmenKlima?.kompensationsinstrumenteTreibhausgasemissionen) {
+    newFixture.t.umwelt.risikenUndMassnahmenKlima.kompensationsinstrumenteTreibhausgasemissionen = YesNo.Yes;
+  }
+  if (newFixture.t.umwelt?.risikenUndMassnahmenKreislaufwirtschaft?.abfallmanagementsystem) {
+    newFixture.t.umwelt.risikenUndMassnahmenKreislaufwirtschaft.abfallmanagementsystem = YesNo.Yes;
+  }
+  if (newFixture.t.umwelt?.risikenUndMassnahmenKreislaufwirtschaft?.geplanteErhoehungDesAnteilsVonRecyclaten) {
+    newFixture.t.umwelt.risikenUndMassnahmenKreislaufwirtschaft.geplanteErhoehungDesAnteilsVonRecyclaten = YesNo.Yes;
+  }
+  if (
+    newFixture.t.umwelt?.risikenUndMassnahmenBiodiversitaetUndOekosysteme
+      ?.negativeAuswirkungenAufBiodiversitaetUndOekosystem
+  ) {
+    newFixture.t.umwelt.risikenUndMassnahmenBiodiversitaetUndOekosysteme.negativeAuswirkungenAufBiodiversitaetUndOekosystem =
+      YesNo.Yes;
+  }
+  if (
+    newFixture.t.umwelt?.risikenUndMassnahmenBiodiversitaetUndOekosysteme
+      ?.positiveAuswirkungenAufBiodiversitaetUndOekosystem
+  ) {
+    newFixture.t.umwelt.risikenUndMassnahmenBiodiversitaetUndOekosysteme.positiveAuswirkungenAufBiodiversitaetUndOekosystem =
+      YesNo.Yes;
+  }
+  if (newFixture.t.umwelt?.risikenUndMassnahmenBiodiversitaetUndOekosysteme?.planZurReduktionDesWasserverbrauchs) {
+    newFixture.t.umwelt.risikenUndMassnahmenBiodiversitaetUndOekosysteme.planZurReduktionDesWasserverbrauchs =
+      YesNo.Yes;
+  }
+  if (newFixture.t.soziales?.risikenUndMassnahmen?.weitereWesentlicheSozialeRisiken) {
+    newFixture.t.soziales.risikenUndMassnahmen.weitereWesentlicheSozialeRisiken = YesNo.Yes;
+  }
+  if (newFixture.t.governance?.vorstandsprofil?.kopplungVonVerguetungDesTopManagementsAnNachhaltigkeitsziele) {
+    newFixture.t.governance.vorstandsprofil.kopplungVonVerguetungDesTopManagementsAnNachhaltigkeitsziele = YesNo.Yes;
+  }
+  if (newFixture.t.governance?.stakeholderdialog?.csrdKonformerProzessZurBeruecksichtigungDerStakeholderinteressen) {
+    newFixture.t.governance.stakeholderdialog.csrdKonformerProzessZurBeruecksichtigungDerStakeholderinteressen =
+      YesNo.Yes;
+  }
 }

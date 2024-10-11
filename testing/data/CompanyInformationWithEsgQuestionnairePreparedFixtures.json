@@ -274,7 +274,7 @@
 					},
 					"transitorischeRisiken": "Debeo causa despecto spiritus cura enim corona sursum. Adeo victus nostrum. Considero catena textilis vulgaris copiose bellicus ustilo ustulo cui.",
 					"physischeRisiken": "Animadverto bellum ventito territo absconditus tabesco callide hic virtus. Delectus carpo curo delinquo. Autus convoco suggero aliquid approbo viriliter undique.",
-					"produkteZurReduzierungDerUmweltbelastung": "No",
+					"produkteZurReduzierungDerUmweltbelastung": "Yes",
 					"skizzierungDerProdukteZurReduzierungDerUmweltbelastung": "Claudeo aro eum. Vomica coerceo quas confido venustas cuppedia avaritia. Vivo voluptatibus vigor ab umquam bellicus fuga.",
 					"zielReduzierungTreibhausgasemmissionen2030": 91.34,
 					"zielReduzierungTreibhausgasemmissionen2040": 92.35,
@@ -288,19 +288,19 @@
 					"zielAnteilErneuerbarerEnergienErlaeuterungen": "Deserunt aqua tubineus tepidus cras aeneus animadverto beatae umquam vacuus. Verecundia atrocitas corona ceno utor timidus verus vigor adduco. Deporto theologus venia uxor laudantium sollicito tepidus tum impedit."
 				},
 				"risikenUndMassnahmenKreislaufwirtschaft": {
-					"abfallmanagementsystem": "NA",
+					"abfallmanagementsystem": "Yes",
 					"skizzierungAbfallmanagementsystem": "Tardus circumvenio saepe vulgo abutor nostrum solvo depraedor. Iste bene tabgo adfero vel corrigo odit surgo termes tergum. Cervus arcesso curiositas aduro depulso defungo antiquus terror.",
 					"anteilWiederverwendeterOderRecycelterKomponentenProdukteUndMaterialienImProduktionsprozess": 29.73,
-					"geplanteErhoehungDesAnteilsVonRecyclaten": "NA",
+					"geplanteErhoehungDesAnteilsVonRecyclaten": "Yes",
 					"angabenZurGeplantenErhoehungDesAnteilsVonRecyclaten": "Casus adeptio copiose vehemens. Cruciamentum atque curia adaugeo solium stabilis cornu certus. Subnecto absconditus admoneo ea."
 				},
 				"risikenUndMassnahmenBiodiversitaetUndOekosysteme": {
-					"negativeAuswirkungenAufBiodiversitaetUndOekosystem": "NA",
+					"negativeAuswirkungenAufBiodiversitaetUndOekosystem": "Yes",
 					"methodikZurErmittlungVonNegativenAuswirkungenAufBiodiversitaetUndOekosystem": "Admoneo accedo adamo. Tepesco aer claro desipio arbitro delicate animi. Cura abundans adfectus crur surgo amor avarus.",
 					"positiveAuswirkungenAufBiodiversitaetUndOekosystem": "Yes",
 					"methodikZurErmittlungVonPositivenAuswirkungenAufBiodiversitaetUndOekosystem": "Maxime distinctio voluptas utroque constans arcesso. Inflammatio correptius bardus. Defetiscor urbs arceo.",
 					"gegenmassnahmenNegativeAuswirkungenAufBiodiversitaetUndOekosystem": "Baiulus thema contego synagoga baiulus bene angulus communis. Conatus dolores civis. Pectus terreo compono adipisci terebro commemoro tolero benigne.",
-					"planZurReduktionDesWasserverbrauchs": "No",
+					"planZurReduktionDesWasserverbrauchs": "Yes",
 					"skizzierungDesPlansZurReduktionDesWasserverbrauchs": "Creo strenuus sursum. Ullam asper nulla uberrime tempore super spero repellendus. Sto copia aeternus dolores armarium tui temperantia bonus universe."
 				}
 			},
@@ -341,7 +341,7 @@
 					"anteilWeiblicherPersonenImTopManagement": 50.84,
 					"anteilMaennlicherPersonenImTopManagement": 46.83,
 					"anteilDiverserPersonenImTopManagement": 19.9,
-					"kopplungVonVerguetungDesTopManagementsAnNachhaltigkeitsziele": "No",
+					"kopplungVonVerguetungDesTopManagementsAnNachhaltigkeitsziele": "Yes",
 					"skizzierungDerRegelungZurKopplungVonVerguetungDesTopManagementsAnNachhaltigkeitsziele": "Ratione tero asporto viridis defleo ut voro causa. Crepusculum sum surculus valde ager tredecim accedo. Amo toties talus ratione dolores crur explicabo adhuc.",
 					"gesamtanzahlAufsichtsratMitglieder": 2508,
 					"anzahlUnabhaengigerAufsichtsratMitglieder": 5796,
