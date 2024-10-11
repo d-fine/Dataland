@@ -47,6 +47,13 @@
       "matchPackageNames": [
         "/cloudevents/"
       ]
+    },
+    {
+      "matchUpdateTypes": [
+        "digest",
+        "patch"
+      ],
+      "automerge": true
     }
   ]
 }
