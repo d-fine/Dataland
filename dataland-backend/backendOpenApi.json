@@ -907,10 +907,12 @@
           {
             "name": "searchString",
             "in": "query",
+            "description": "Search string used for substring matching. Must be at least 2 non-nullish characters long.",
             "required": false,
             "schema": {
               "type": "string"
-            }
+            },
+            "example": "Acme"
           },
           {
             "name": "dataTypes",
@@ -17599,10 +17601,6 @@
         ],
         "type": "object",
         "properties": {
-          "lei": {
-            "type": "string",
-            "nullable": true
-          },
           "sector": {
             "type": "string",
             "nullable": true
@@ -17618,6 +17616,10 @@
           },
           "headquarters": {
             "type": "string"
+          },
+          "lei": {
+            "type": "string",
+            "nullable": true
           }
         }
       },
