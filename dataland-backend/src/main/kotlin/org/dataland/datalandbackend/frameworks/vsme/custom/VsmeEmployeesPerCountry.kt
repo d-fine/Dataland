@@ -10,9 +10,6 @@ import java.math.BigDecimal
 data class VsmeEmployeesPerCountry(
     @field:JsonProperty(required = true)
     val country: String,
-
     val numberOfEmployeesInHeadCount: Int? = null,
-
     val numberOfEmployeesInFullTimeEquivalent: BigDecimal? = null,
-
 )

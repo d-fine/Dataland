@@ -18,15 +18,11 @@ import org.dataland.datalandbackend.frameworks.eutaxonomyfinancials.model.assetM
 @Suppress("MaxLineLength")
 data class EutaxonomyFinancialsAssetManagement(
     @field:Valid()
-    val averageValueOfTaxonomyAlignedUndertakings:
-    EutaxonomyFinancialsAssetmanagementAverageValueOfTaxonomyAlignedUndertakings? = null,
-
+    val averageValueOfTaxonomyAlignedUndertakings: EutaxonomyFinancialsAssetmanagementAverageValueOfTaxonomyAlignedUndertakings? = null,
     @field:Valid()
     val breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBased:
-    EutaxonomyFinancialsAssetmanagementBreakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBased? = null,
-
+        EutaxonomyFinancialsAssetmanagementBreakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBased? = null,
     @field:Valid()
     val breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBased:
-    EutaxonomyFinancialsAssetmanagementBreakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBased? = null,
-
+        EutaxonomyFinancialsAssetmanagementBreakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBased? = null,
 )

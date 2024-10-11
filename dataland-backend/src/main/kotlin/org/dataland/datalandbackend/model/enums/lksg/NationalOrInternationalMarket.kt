@@ -9,5 +9,7 @@ import io.swagger.v3.oas.annotations.media.Schema
     enumAsRef = true,
 )
 enum class NationalOrInternationalMarket {
-    National, International, Both
+    National,
+    International,
+    Both,
 }

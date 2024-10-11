@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 @Profile("development", "ci")
 class TestApiController : TestApi {
-    override fun getDummy500Response(): ResponseEntity<Unit> {
+    override fun getDummy500Response(): ResponseEntity<Unit> =
         throw InternalServerErrorApiException("This is a requested dummy 500 response")
-    }
 }

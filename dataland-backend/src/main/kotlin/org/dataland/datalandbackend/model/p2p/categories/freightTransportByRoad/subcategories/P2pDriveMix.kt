@@ -8,6 +8,5 @@ import java.math.BigDecimal
  */
 data class P2pDriveMix(
     val driveMixPerFleetSegmentInPercent: BigDecimal?,
-
     val totalAmountOfVehicles: BigDecimal?,
 )

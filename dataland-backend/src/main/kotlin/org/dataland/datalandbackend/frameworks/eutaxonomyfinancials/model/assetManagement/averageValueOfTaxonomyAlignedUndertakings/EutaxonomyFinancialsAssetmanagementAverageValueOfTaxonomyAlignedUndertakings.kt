@@ -14,16 +14,12 @@ import java.math.BigDecimal
 data class EutaxonomyFinancialsAssetmanagementAverageValueOfTaxonomyAlignedUndertakings(
     @field:Valid()
     val weightedAverageValueOfAllInvestmentsTurnoverBasedInPercent: ExtendedDataPoint<BigDecimal?>? = null,
-
     @field:Valid()
     val weightedAverageValueOfAllInvestmentsCapexBasedInPercent: ExtendedDataPoint<BigDecimal?>? = null,
-
     @field:MinimumValue(minimumValue = 0)
     @field:Valid()
     val weightedAverageValueOfAllInvestmentsTurnoverBasedMonetaryAmount: CurrencyDataPoint? = null,
-
     @field:MinimumValue(minimumValue = 0)
     @field:Valid()
     val weightedAverageValueOfAllInvestmentsCapexBasedMonetaryAmount: CurrencyDataPoint? = null,
-
 )

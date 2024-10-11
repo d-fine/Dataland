@@ -11,120 +11,79 @@ import org.dataland.datalandbackend.model.enums.commons.YesNo
 data class LksgGovernanceCertificationsPoliciesAndResponsibilities(
     @field:Valid()
     val codeOfConduct: BaseDataPoint<YesNo>? = null,
-
     val codeOfConductTraining: YesNo? = null,
-
     @field:Valid()
     val supplierCodeOfConduct: BaseDataPoint<YesNo>? = null,
-
     @field:Valid()
     val policyStatement: BaseDataPoint<YesNo>? = null,
-
     val humanRightsStrategy: String? = null,
-
     @field:Valid()
     val environmentalImpactPolicy: BaseDataPoint<YesNo>? = null,
-
     @field:Valid()
     val fairWorkingConditionsPolicy: BaseDataPoint<YesNo>? = null,
-
     val responsibilitiesForFairWorkingConditions: YesNo? = null,
-
     val responsibilitiesForTheEnvironment: YesNo? = null,
-
     val responsibilitiesForOccupationalSafety: YesNo? = null,
-
     @field:Valid()
     val amforiBsci: BaseDataPoint<YesNo>? = null,
-
     @field:Valid()
     val betterWorkProgram: BaseDataPoint<YesNo>? = null,
-
     @field:Valid()
     val ecoManagementAndAuditSchemeEmas: BaseDataPoint<YesNo>? = null,
-
     @field:Valid()
     val flaFairLaborCodeAndComplianceBenchmarksForAgriculture: BaseDataPoint<YesNo>? = null,
-
     @field:Valid()
     val flaFairLaborCodeAndComplianceBenchmarksForManufacturing: BaseDataPoint<YesNo>? = null,
-
     @field:Valid()
     val fairtradeTraderStandard: BaseDataPoint<YesNo>? = null,
-
     @field:Valid()
     val globalOrganicTextileStandardGots: BaseDataPoint<YesNo>? = null,
-
     @field:Valid()
     val gotsOrganicInConversion: BaseDataPoint<YesNo>? = null,
-
     @field:Valid()
     val iatf16949: BaseDataPoint<YesNo>? = null,
-
     @field:Valid()
     val iso10007: BaseDataPoint<YesNo>? = null,
-
     @field:Valid()
     val iso14001: BaseDataPoint<YesNo>? = null,
-
     @field:Valid()
     val iso20400: BaseDataPoint<YesNo>? = null,
-
     @field:Valid()
     val iso26000: BaseDataPoint<YesNo>? = null,
-
     @field:Valid()
     val iso31000: BaseDataPoint<YesNo>? = null,
-
     @field:Valid()
     val iso37001: BaseDataPoint<YesNo>? = null,
-
     @field:Valid()
     val iso37002: BaseDataPoint<YesNo>? = null,
-
     @field:Valid()
     val iso37301: BaseDataPoint<YesNo>? = null,
-
     @field:Valid()
     val iso44001: BaseDataPoint<YesNo>? = null,
-
     @field:Valid()
     val iso45001: BaseDataPoint<YesNo>? = null,
-
     @field:Valid()
     val iso50001: BaseDataPoint<YesNo>? = null,
-
     @field:Valid()
     val iso9001: BaseDataPoint<YesNo>? = null,
-
     @field:Valid()
     val isoIec27001: BaseDataPoint<YesNo>? = null,
-
     @field:Valid()
     val isoIecTs33061: BaseDataPoint<YesNo>? = null,
-
     @field:Valid()
     val isoIecIeee15288: BaseDataPoint<YesNo>? = null,
-
     @field:Valid()
     val naturlandStandards: BaseDataPoint<YesNo>? = null,
-
     @field:Valid()
     val responsibleBusinessAlliance: BaseDataPoint<YesNo>? = null,
-
     @field:Valid()
     val sa8000: BaseDataPoint<YesNo>? = null,
-
     @field:Valid()
     val sedexMembersEthicalTradeAuditSmeta: BaseDataPoint<YesNo>? = null,
-
     @field:Valid()
     val textileExchangeGlobalRecycledStandard: BaseDataPoint<YesNo>? = null,
-
     @field:Valid()
     val znuStandardNachhaltigerWirtschaften: BaseDataPoint<YesNo>? = null,
-
     @field:Valid()
     val additionalCertifications: BaseDataPoint<YesNo>? = null,
-
 )

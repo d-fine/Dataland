@@ -9,6 +9,5 @@ import org.dataland.datalandbackend.model.p2p.categories.ammonia.subcategories.P
 */
 data class P2pAmmonia(
     val decarbonisation: P2pAmmoniaDecarbonisation? = null,
-
     val defossilisation: P2pAmmoniaDefossilisation? = null,
 )

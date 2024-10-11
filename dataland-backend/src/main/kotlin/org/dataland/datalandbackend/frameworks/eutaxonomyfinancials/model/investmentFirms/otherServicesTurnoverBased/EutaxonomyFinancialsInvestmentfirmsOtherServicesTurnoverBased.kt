@@ -14,99 +14,67 @@ import java.math.BigDecimal
 data class EutaxonomyFinancialsInvestmentfirmsOtherServicesTurnoverBased(
     @field:MinimumValue(minimumValue = 0)
     @field:Valid()
-    val turnoverBasedTotalRevenueFromInvestmentsAndServicesAndActivitiesOtherThanDealingOnOwnAccount:
-    CurrencyDataPoint? = null,
-
+    val turnoverBasedTotalRevenueFromInvestmentsAndServicesAndActivitiesOtherThanDealingOnOwnAccount: CurrencyDataPoint? = null,
     @field:Valid()
-    val turnoverBasedProportionOfRevenueSubstantiallyContributingToClimateChangeMitigationEligible:
-    ExtendedDataPoint<BigDecimal?>? = null,
-
+    val turnoverBasedProportionOfRevenueSubstantiallyContributingToClimateChangeMitigationEligible: ExtendedDataPoint<BigDecimal?>? = null,
     @field:Valid()
-    val turnoverBasedProportionOfRevenueSubstantiallyContributingToClimateChangeMitigationAligned:
-    ExtendedDataPoint<BigDecimal?>? = null,
-
+    val turnoverBasedProportionOfRevenueSubstantiallyContributingToClimateChangeMitigationAligned: ExtendedDataPoint<BigDecimal?>? = null,
     @field:Valid()
     val turnoverBasedProportionOfRevenueSubstantiallyContributingToClimateChangeMitigationOfWhichTransitional:
-    ExtendedDataPoint<BigDecimal?>? = null,
-
+        ExtendedDataPoint<BigDecimal?>? = null,
     @field:Valid()
     val turnoverBasedProportionOfRevenueSubstantiallyContributingToClimateChangeMitigationOfWhichEnabling:
-    ExtendedDataPoint<BigDecimal?>? = null,
-
+        ExtendedDataPoint<BigDecimal?>? = null,
     @field:Valid()
-    val turnoverBasedProportionOfRevenueSubstantiallyContributingToClimateChangeAdaptationEligible:
-    ExtendedDataPoint<BigDecimal?>? = null,
-
+    val turnoverBasedProportionOfRevenueSubstantiallyContributingToClimateChangeAdaptationEligible: ExtendedDataPoint<BigDecimal?>? = null,
     @field:Valid()
-    val turnoverBasedProportionOfRevenueSubstantiallyContributingToClimateChangeAdaptationAligned:
-    ExtendedDataPoint<BigDecimal?>? = null,
-
+    val turnoverBasedProportionOfRevenueSubstantiallyContributingToClimateChangeAdaptationAligned: ExtendedDataPoint<BigDecimal?>? = null,
     @field:Valid()
     val turnoverBasedProportionOfRevenueSubstantiallyContributingToClimateChangeAdaptationOfWhichEnabling:
-    ExtendedDataPoint<BigDecimal?>? = null,
-
+        ExtendedDataPoint<BigDecimal?>? = null,
     @field:Valid()
     val turnoverBasedProportionOfRevenueSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesEligible:
-    ExtendedDataPoint<BigDecimal?>? = null,
-
+        ExtendedDataPoint<BigDecimal?>? = null,
     @field:Valid()
     val turnoverBasedProportionOfRevenueSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesAligned:
-    ExtendedDataPoint<BigDecimal?>? = null,
-
+        ExtendedDataPoint<BigDecimal?>? = null,
     @field:Valid()
     val turnoverBasedProportionOfRevenueSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesOfWhichEnabling:
-    ExtendedDataPoint<BigDecimal?>? = null,
-
+        ExtendedDataPoint<BigDecimal?>? = null,
     @field:Valid()
-    val turnoverBasedProportionOfRevenueSubstantiallyContributingToCircularEconomyEligible:
-    ExtendedDataPoint<BigDecimal?>? = null,
-
+    val turnoverBasedProportionOfRevenueSubstantiallyContributingToCircularEconomyEligible: ExtendedDataPoint<BigDecimal?>? = null,
     @field:Valid()
-    val turnoverBasedProportionOfRevenueSubstantiallyContributingToCircularEconomyAligned:
-    ExtendedDataPoint<BigDecimal?>? = null,
-
+    val turnoverBasedProportionOfRevenueSubstantiallyContributingToCircularEconomyAligned: ExtendedDataPoint<BigDecimal?>? = null,
     @field:Valid()
-    val turnoverBasedProportionOfRevenueSubstantiallyContributingToCircularEconomyOfWhichEnabling:
-    ExtendedDataPoint<BigDecimal?>? = null,
-
+    val turnoverBasedProportionOfRevenueSubstantiallyContributingToCircularEconomyOfWhichEnabling: ExtendedDataPoint<BigDecimal?>? = null,
     @field:Valid()
     val turnoverBasedProportionOfRevenueSubstantiallyContributingToPollutionPreventionAndControlEligible:
-    ExtendedDataPoint<BigDecimal?>? = null,
-
+        ExtendedDataPoint<BigDecimal?>? = null,
     @field:Valid()
     val turnoverBasedProportionOfRevenueSubstantiallyContributingToPollutionPreventionAndControlAligned:
-    ExtendedDataPoint<BigDecimal?>? = null,
-
+        ExtendedDataPoint<BigDecimal?>? = null,
     @field:Valid()
     val turnoverBasedProportionOfRevenueSubstantiallyContributingToPollutionPreventionAndControlOfWhichEnabling:
-    ExtendedDataPoint<BigDecimal?>? = null,
-
+        ExtendedDataPoint<BigDecimal?>? = null,
     @field:Valid()
     val turnoverBasedProportionOfRevenueSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsEligible:
-    ExtendedDataPoint<BigDecimal?>? = null,
-
+        ExtendedDataPoint<BigDecimal?>? = null,
     @field:Valid()
     val turnoverBasedProportionOfRevenueSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsAligned:
-    ExtendedDataPoint<BigDecimal?>? = null,
-
+        ExtendedDataPoint<BigDecimal?>? = null,
     @field:Valid()
     val turnoverBasedProportionOfRevenueSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsOfWhichEnabling:
-    ExtendedDataPoint<BigDecimal?>? = null,
-
+        ExtendedDataPoint<BigDecimal?>? = null,
     @field:Valid()
     val turnoverBasedProportionOfRevenueSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesEligible:
-    ExtendedDataPoint<BigDecimal?>? = null,
-
+        ExtendedDataPoint<BigDecimal?>? = null,
     @field:Valid()
     val turnoverBasedProportionOfRevenueSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesAligned:
-    ExtendedDataPoint<BigDecimal?>? = null,
-
+        ExtendedDataPoint<BigDecimal?>? = null,
     @field:Valid()
     val turnoverBasedProportionOfRevenueSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesOfWhichTransitional:
-    ExtendedDataPoint<BigDecimal?>? = null,
-
+        ExtendedDataPoint<BigDecimal?>? = null,
     @field:Valid()
     val turnoverBasedProportionOfRevenueSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesOfWhichEnabling:
-    ExtendedDataPoint<BigDecimal?>? = null,
-
+        ExtendedDataPoint<BigDecimal?>? = null,
 )

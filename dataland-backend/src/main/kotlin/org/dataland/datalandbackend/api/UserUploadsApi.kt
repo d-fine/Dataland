@@ -25,7 +25,8 @@ fun interface UserUploadsApi {
      */
     @Operation(
         summary = "Retrieve an augmented dataset meta information uploaded by a specific user.",
-        description = "Retrieve an augmented dataset meta information uploaded" +
+        description =
+        "Retrieve an augmented dataset meta information uploaded" +
             " by a specific user for the \"My Datasets\" page.",
     )
     @ApiResponses(

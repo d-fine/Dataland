@@ -10,10 +10,7 @@ import org.dataland.datalandbackend.model.enums.commons.YesNo
  */
 data class EsgQuestionnaireAllgemeinOecdLeitsaetze(
     val mechanismenZurUeberwachungDerEinhaltungDerOecdLeitsaetze: YesNo? = null,
-
     @field:Valid()
     val richtlinienZurEinhaltungDerOecdLeitsaetze: List<BaseDataPoint<String>>? = null,
-
     val erklaerungDerEinhaltungDerOecdLeitsaetze: String? = null,
-
 )

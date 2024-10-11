@@ -11,5 +11,4 @@ import org.dataland.datalandbackend.model.enums.commons.YesNo
 data class SfdrSocialGreenSecurities(
     @field:Valid()
     val securitiesNotCertifiedAsGreen: ExtendedDataPoint<YesNo?>? = null,
-
 )

@@ -56,11 +56,12 @@ open class VsmeSimpleCustomComponentBase(
 
     override fun generateDefaultFixtureGenerator(sectionBuilder: FixtureSectionBuilder) {
         requireDocumentSupportIn(setOf(NoDocumentSupport))
-        val fixtureExpression = if (isNullable && randomFixtureExpression != null) {
-            randomFixtureExpression
-        } else {
-            guaranteedFixtureExpression
-        }
+        val fixtureExpression =
+            if (isNullable && randomFixtureExpression != null) {
+                randomFixtureExpression
+            } else {
+                guaranteedFixtureExpression
+            }
         sectionBuilder.addAtomicExpression(
             identifier,
             fixtureExpression,

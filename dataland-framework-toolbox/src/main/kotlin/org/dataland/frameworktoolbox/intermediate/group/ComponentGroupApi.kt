@@ -24,25 +24,38 @@ interface ComponentGroupApi {
      * Edit an existing subcomponent. Throws an exception when the identifier is not existent or
      * the identified element has a different type than specified
      */
-    fun <T : ComponentBase> edit(identifier: String, clazz: KClass<T>, editFunction: T.() -> Unit): T
+    fun <T : ComponentBase> edit(
+        identifier: String,
+        clazz: KClass<T>,
+        editFunction: T.() -> Unit,
+    ): T
 
     /**
      * Get an existing subcomponent or null. Throws an exception when the identified element has a different type
      * than specified
      */
-    fun <T : ComponentBase> getOrNull(identifier: String, clazz: KClass<T>): T?
+    fun <T : ComponentBase> getOrNull(
+        identifier: String,
+        clazz: KClass<T>,
+    ): T?
 
     /**
      * Get an existing subcomponent. Throws an exception when the identified element has a different type
      * than specified or does not exist.
      */
-    fun <T : ComponentBase> get(identifier: String, clazz: KClass<T>): T
+    fun <T : ComponentBase> get(
+        identifier: String,
+        clazz: KClass<T>,
+    ): T
 
     /**
      * Delete an existing subcomponent. Throws an exception when the identifier is not existent or
      * the identified element has a different type than specified.
      */
-    fun <T : ComponentBase> delete(identifier: String, clazz: KClass<T>)
+    fun <T : ComponentBase> delete(
+        identifier: String,
+        clazz: KClass<T>,
+    )
 }
 
 /**
@@ -53,9 +66,7 @@ inline fun <reified T : ComponentBase> ComponentGroupApi.create(
     identifier: String,
     insertBeforeIdentifier: String? = null,
     noinline init: (T.() -> Unit)? = null,
-): T {
-    return this.create(identifier, insertBeforeIdentifier, T::class, init)
-}
+): T = this.create(identifier, insertBeforeIdentifier, T::class, init)
 
 /**
  * Edit an existing subcomponent. Throws an exception when the identifier is not existent or
@@ -64,30 +75,22 @@ inline fun <reified T : ComponentBase> ComponentGroupApi.create(
 inline fun <reified T : ComponentBase> ComponentGroupApi.edit(
     identifier: String,
     noinline editFunction: T.() -> Unit,
-): T {
-    return this.edit(identifier, T::class, editFunction)
-}
+): T = this.edit(identifier, T::class, editFunction)
 
 /**
  * Delete an existing subcomponent. Throws an exception when the identifier is not existent or
  * the identified element has a different type than specified.
  */
-inline fun <reified T : ComponentBase> ComponentGroupApi.delete(identifier: String) {
-    return this.delete(identifier, T::class)
-}
+inline fun <reified T : ComponentBase> ComponentGroupApi.delete(identifier: String) = this.delete(identifier, T::class)
 
 /**
  * Get an existing subcomponent or null. Throws an exception when the identified element has a different type
  * than specified
  */
-inline fun <reified T : ComponentBase> ComponentGroupApi.getOrNull(identifier: String): T? {
-    return this.getOrNull(identifier, T::class)
-}
+inline fun <reified T : ComponentBase> ComponentGroupApi.getOrNull(identifier: String): T? = this.getOrNull(identifier, T::class)
 
 /**
  * Get an existing subcomponent. Throws an exception when the identified element has a different type
  * than specified or does not exist.getOrNull
  */
-inline fun <reified T : ComponentBase> ComponentGroupApi.get(identifier: String): T {
-    return this.get(identifier, T::class)
-}
+inline fun <reified T : ComponentBase> ComponentGroupApi.get(identifier: String): T = this.get(identifier, T::class)

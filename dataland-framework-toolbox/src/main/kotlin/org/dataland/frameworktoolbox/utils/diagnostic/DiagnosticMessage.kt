@@ -9,7 +9,5 @@ data class DiagnosticMessage(
     val id: String,
     val summary: String,
 ) {
-    override fun toString(): String {
-        return "[${type.key}] [$id] - $summary"
-    }
+    override fun toString(): String = "[${type.key}] [$id] - $summary"
 }

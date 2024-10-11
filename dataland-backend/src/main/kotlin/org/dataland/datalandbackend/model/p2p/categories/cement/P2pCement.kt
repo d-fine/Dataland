@@ -10,8 +10,6 @@ import org.dataland.datalandbackend.model.p2p.categories.cement.subcategories.P2
 */
 data class P2pCement(
     val energy: P2pCementEnergy? = null,
-
     val technology: P2pCementTechnology? = null,
-
     val material: P2pCementMaterial? = null,
 )

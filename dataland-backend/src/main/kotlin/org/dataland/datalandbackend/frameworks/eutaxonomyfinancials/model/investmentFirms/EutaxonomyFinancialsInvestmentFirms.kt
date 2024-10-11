@@ -18,17 +18,11 @@ import org.dataland.datalandbackend.frameworks.eutaxonomyfinancials.model.invest
 @Suppress("MaxLineLength")
 data class EutaxonomyFinancialsInvestmentFirms(
     @field:Valid()
-    val dealingOnOwnAccountServicesTurnoverBased:
-    EutaxonomyFinancialsInvestmentfirmsDealingOnOwnAccountServicesTurnoverBased? = null,
-
+    val dealingOnOwnAccountServicesTurnoverBased: EutaxonomyFinancialsInvestmentfirmsDealingOnOwnAccountServicesTurnoverBased? = null,
     @field:Valid()
-    val dealingOnOwnAccountServicesCapexBased:
-    EutaxonomyFinancialsInvestmentfirmsDealingOnOwnAccountServicesCapexBased? = null,
-
+    val dealingOnOwnAccountServicesCapexBased: EutaxonomyFinancialsInvestmentfirmsDealingOnOwnAccountServicesCapexBased? = null,
     @field:Valid()
     val otherServicesTurnoverBased: EutaxonomyFinancialsInvestmentfirmsOtherServicesTurnoverBased? = null,
-
     @field:Valid()
     val otherServicesCapexBased: EutaxonomyFinancialsInvestmentfirmsOtherServicesCapexBased? = null,
-
 )

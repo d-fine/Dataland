@@ -21,7 +21,6 @@ class EuTaxonomyNonAlignedActivitiesComponent(
     identifier: String,
     parent: FieldNodeParent,
 ) : ComponentBase(identifier, parent) {
-
     override fun generateDefaultDataModel(dataClassBuilder: DataClassBuilder) {
         dataClassBuilder.addProperty(
             this.identifier,

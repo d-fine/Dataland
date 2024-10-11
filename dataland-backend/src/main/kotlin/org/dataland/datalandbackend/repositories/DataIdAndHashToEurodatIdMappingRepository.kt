@@ -10,5 +10,8 @@ interface DataIdAndHashToEurodatIdMappingRepository : JpaRepository<DataIdAndHas
     /**
      * Retrieves the eurodatId of a document, which is uniquely identified by the combination of dataId and hash
      */
-    fun findByDataIdAndHash(dataId: String, hash: String): DataIdAndHashToEurodatIdMappingEntity?
+    fun findByDataIdAndHash(
+        dataId: String,
+        hash: String,
+    ): DataIdAndHashToEurodatIdMappingEntity?
 }

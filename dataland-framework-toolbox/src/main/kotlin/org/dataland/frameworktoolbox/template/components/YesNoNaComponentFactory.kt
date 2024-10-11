@@ -13,7 +13,9 @@ import org.springframework.stereotype.Component
  * Generates YesNoNaComponents from rows with the component "Yes/No/NA"
  */
 @Component
-class YesNoNaComponentFactory(@Autowired val templateDiagnostic: TemplateDiagnostic) : TemplateComponentFactory {
+class YesNoNaComponentFactory(
+    @Autowired val templateDiagnostic: TemplateDiagnostic,
+) : TemplateComponentFactory {
     override fun canGenerateComponent(row: TemplateRow): Boolean = row.component == "Yes/No/NA"
 
     override fun generateComponent(

@@ -8,5 +8,4 @@ import org.dataland.datalandbackend.frameworks.vsme.custom.VsmePollutionEmission
  */
 data class VsmeBasicPollutionOfAirWaterSoil(
     val pollutionEmission: List<VsmePollutionEmission?>? = null,
-
 )

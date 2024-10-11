@@ -10,14 +10,9 @@ import org.dataland.datalandbackend.model.enums.commons.YesNo
  */
 data class HeimathafenGovernanceBestechungUndKorruption(
     val kontroversenImBereichDerBestechungUndKorruption: YesNo? = null,
-
     val wennNeinBitteBegruenden: String? = null,
-
     val verwendeteMetrikenUndMethodik: String? = null,
-
     @field:Valid()
     val verwendeteQuellen: List<BaseDataPoint<String>>? = null,
-
     val dieAktualitaetDerKontroversenImBereichBestechungUndKorruption: String? = null,
-
 )

@@ -33,26 +33,21 @@ class EsgQuestionnaireDataController(
     EsgQuestionnaireData::class.java,
 ) {
     @Operation(operationId = "getCompanyAssociatedEsgQuestionnaireData")
-    override fun getCompanyAssociatedData(dataId: String):
-        ResponseEntity<CompanyAssociatedData<EsgQuestionnaireData>> {
-        return super.getCompanyAssociatedData(dataId)
-    }
+    override fun getCompanyAssociatedData(dataId: String): ResponseEntity<CompanyAssociatedData<EsgQuestionnaireData>> =
+        super.getCompanyAssociatedData(dataId)
 
     @Operation(operationId = "postCompanyAssociatedEsgQuestionnaireData")
     override fun postCompanyAssociatedData(
         companyAssociatedData: CompanyAssociatedData<EsgQuestionnaireData>,
         bypassQa: Boolean,
-    ):
-        ResponseEntity<DataMetaInformation> {
-        return super.postCompanyAssociatedData(companyAssociatedData, bypassQa)
-    }
+    ): ResponseEntity<DataMetaInformation> = super.postCompanyAssociatedData(companyAssociatedData, bypassQa)
 
     @Operation(operationId = "getAllCompanyEsgQuestionnaireData")
     override fun getFrameworkDatasetsForCompany(
         companyId: String,
         showOnlyActive: Boolean,
         reportingPeriod: String?,
-    ): ResponseEntity<List<DataAndMetaInformation<EsgQuestionnaireData>>> {
-        return super.getFrameworkDatasetsForCompany(companyId, showOnlyActive, reportingPeriod)
-    }
+    ): ResponseEntity<List<DataAndMetaInformation<EsgQuestionnaireData>>> =
+        super
+            .getFrameworkDatasetsForCompany(companyId, showOnlyActive, reportingPeriod)
 }

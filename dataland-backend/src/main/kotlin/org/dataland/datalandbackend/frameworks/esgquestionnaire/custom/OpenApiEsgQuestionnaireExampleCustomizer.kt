@@ -14,10 +14,8 @@ class OpenApiEsgQuestionnaireExampleCustomizer(
     @Value("classpath:org/dataland/datalandbackend/frameworks/esgquestionnaire/EsgQuestionnaireExampleDataset.json")
     private val esgQuestionnaireExampleJsonResource: Resource,
 ) : OpenApiCustomizer {
+    private fun readEsgQuestionnaireOpenApiExample(): String = esgQuestionnaireExampleJsonResource.getContentAsString(Charsets.UTF_8)
 
-    private fun readEsgQuestionnaireOpenApiExample(): String {
-        return esgQuestionnaireExampleJsonResource.getContentAsString(Charsets.UTF_8)
-    }
     override fun customise(openApi: OpenAPI) {
         val companyAssociatedEsgQuestionnaireDataSchema =
             openApi.components.schemas["CompanyAssociatedDataEsgQuestionnaireData"]

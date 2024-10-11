@@ -27,32 +27,27 @@ class SfdrDataController(
     @Autowired var myMetaDataManager: DataMetaInformationManager,
     @Autowired var myObjectMapper: ObjectMapper,
 ) : DataController<SfdrData>(
-    myDataManager,
-    myMetaDataManager,
-    myObjectMapper,
-    SfdrData::class.java,
-) {
+        myDataManager,
+        myMetaDataManager,
+        myObjectMapper,
+        SfdrData::class.java,
+    ) {
     @Operation(operationId = "getCompanyAssociatedSfdrData")
-    override fun getCompanyAssociatedData(dataId: String):
-        ResponseEntity<CompanyAssociatedData<SfdrData>> {
-        return super.getCompanyAssociatedData(dataId)
-    }
+    override fun getCompanyAssociatedData(dataId: String): ResponseEntity<CompanyAssociatedData<SfdrData>> =
+        super.getCompanyAssociatedData(dataId)
 
     @Operation(operationId = "postCompanyAssociatedSfdrData")
     override fun postCompanyAssociatedData(
         companyAssociatedData: CompanyAssociatedData<SfdrData>,
         bypassQa: Boolean,
-    ):
-        ResponseEntity<DataMetaInformation> {
-        return super.postCompanyAssociatedData(companyAssociatedData, bypassQa)
-    }
+    ): ResponseEntity<DataMetaInformation> = super.postCompanyAssociatedData(companyAssociatedData, bypassQa)
 
     @Operation(operationId = "getAllCompanySfdrData")
     override fun getFrameworkDatasetsForCompany(
         companyId: String,
         showOnlyActive: Boolean,
         reportingPeriod: String?,
-    ): ResponseEntity<List<DataAndMetaInformation<SfdrData>>> {
-        return super.getFrameworkDatasetsForCompany(companyId, showOnlyActive, reportingPeriod)
-    }
+    ): ResponseEntity<List<DataAndMetaInformation<SfdrData>>> =
+        super
+            .getFrameworkDatasetsForCompany(companyId, showOnlyActive, reportingPeriod)
 }

@@ -13,14 +13,10 @@ import java.time.LocalDate
  */
 data class AdditionalCompanyInformationGeneralGeneral(
     @field:Valid()
-    val fiscalYearDeviation:
-    ExtendedDataPoint<AdditionalCompanyInformationGeneralGeneralFiscalYearDeviationOptions?>? = null,
-
+    val fiscalYearDeviation: ExtendedDataPoint<AdditionalCompanyInformationGeneralGeneralFiscalYearDeviationOptions?>? = null,
     @field:Valid()
     val fiscalYearEnd: ExtendedDataPoint<LocalDate?>? = null,
-
     @field:Schema(example = JsonExampleFormattingConstants.REFERENCED_REPORTS_DEFAULT_VALUE)
     @field:Valid()
     val referencedReports: Map<String, CompanyReport>? = null,
-
 )

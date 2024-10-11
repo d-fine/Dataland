@@ -27,32 +27,27 @@ class HeimathafenDataController(
     @Autowired var myMetaDataManager: DataMetaInformationManager,
     @Autowired var myObjectMapper: ObjectMapper,
 ) : DataController<HeimathafenData>(
-    myDataManager,
-    myMetaDataManager,
-    myObjectMapper,
-    HeimathafenData::class.java,
-) {
+        myDataManager,
+        myMetaDataManager,
+        myObjectMapper,
+        HeimathafenData::class.java,
+    ) {
     @Operation(operationId = "getCompanyAssociatedHeimathafenData")
-    override fun getCompanyAssociatedData(dataId: String):
-        ResponseEntity<CompanyAssociatedData<HeimathafenData>> {
-        return super.getCompanyAssociatedData(dataId)
-    }
+    override fun getCompanyAssociatedData(dataId: String): ResponseEntity<CompanyAssociatedData<HeimathafenData>> =
+        super.getCompanyAssociatedData(dataId)
 
     @Operation(operationId = "postCompanyAssociatedHeimathafenData")
     override fun postCompanyAssociatedData(
         companyAssociatedData: CompanyAssociatedData<HeimathafenData>,
         bypassQa: Boolean,
-    ):
-        ResponseEntity<DataMetaInformation> {
-        return super.postCompanyAssociatedData(companyAssociatedData, bypassQa)
-    }
+    ): ResponseEntity<DataMetaInformation> = super.postCompanyAssociatedData(companyAssociatedData, bypassQa)
 
     @Operation(operationId = "getAllCompanyHeimathafenData")
     override fun getFrameworkDatasetsForCompany(
         companyId: String,
         showOnlyActive: Boolean,
         reportingPeriod: String?,
-    ): ResponseEntity<List<DataAndMetaInformation<HeimathafenData>>> {
-        return super.getFrameworkDatasetsForCompany(companyId, showOnlyActive, reportingPeriod)
-    }
+    ): ResponseEntity<List<DataAndMetaInformation<HeimathafenData>>> =
+        super
+            .getFrameworkDatasetsForCompany(companyId, showOnlyActive, reportingPeriod)
 }

@@ -12,6 +12,5 @@ import java.time.LocalDate
 data class P2pFreightTransportByRoadTechnology(
     @field:Schema(example = JsonExampleFormattingConstants.DRIVE_MIX_DEFAULT_VALUE)
     val driveMixPerFleetSegment: Map<DriveMixType, P2pDriveMix>? = null,
-
     val icePhaseOut: LocalDate? = null,
 )

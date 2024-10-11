@@ -30,6 +30,7 @@ class UploadCellConfigBuilder(
     }
 
     override fun assertComplianceWithLegacyUploadPage() { /* BLANK */ }
+
     override val imports: Set<TypeScriptImport>
         get() = frameworkUploadOptions?.imports ?: emptySet()
 }

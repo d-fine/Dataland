@@ -35,7 +35,11 @@ class DataManagerUtils(
      * @param dataId the dataId for which a exception was thrown
      * @param correlationId the correlationId of the request which caused the exception to be thrown
      */
-    private fun handleStorageClientException(e: ClientException, dataId: String, correlationId: String) {
+    private fun handleStorageClientException(
+        e: ClientException,
+        dataId: String,
+        correlationId: String,
+    ) {
         if (e.statusCode == HttpStatus.NOT_FOUND.value()) {
             logger.info("Dataset with id $dataId could not be found. Correlation ID: $correlationId")
             throw ResourceNotFoundApiException(
@@ -117,8 +121,7 @@ class DataManagerUtils(
         correlationId: String,
         datasetJsonStringGetter: (String, String)
         -> String,
-    ):
-        StorableDataSet {
+    ): StorableDataSet {
         val dataMetaInformation = metaDataManager.getDataMetaInformationByDataId(dataId)
         assertActualAndExpectedDataTypeForIdMatch(dataId, dataType, dataMetaInformation, correlationId)
         lateinit var dataAsString: String
@@ -137,7 +140,5 @@ class DataManagerUtils(
      * This method returns the company for a given companyId
      * @param companyId the companyId of the company for which information should be retrieved
      */
-    fun getCompanyByCompanyId(companyId: String): StoredCompanyEntity {
-        return companyQueryManager.getCompanyById(companyId)
-    }
+    fun getCompanyByCompanyId(companyId: String): StoredCompanyEntity = companyQueryManager.getCompanyById(companyId)
 }

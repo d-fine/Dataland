@@ -14,10 +14,10 @@ import org.springframework.stereotype.Component
  * Generates SfdrHighImpactClimateSectors from rows with the component "Custom - SFDR High Impact Climate Sectors"
  */
 @Component
-class SfdrHighImpactClimateSectorsFactory(@Autowired val templateDiagnostic: TemplateDiagnostic) :
-    TemplateComponentFactory {
-    override fun canGenerateComponent(row: TemplateRow): Boolean =
-        row.component == "Custom - SFDR High Impact Climate Sectors"
+class SfdrHighImpactClimateSectorsFactory(
+    @Autowired val templateDiagnostic: TemplateDiagnostic,
+) : TemplateComponentFactory {
+    override fun canGenerateComponent(row: TemplateRow): Boolean = row.component == "Custom - SFDR High Impact Climate Sectors"
 
     override fun generateComponent(
         row: TemplateRow,

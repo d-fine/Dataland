@@ -31,25 +31,21 @@ class P2pDataController(
     PathwaysToParisData::class.java,
 ) {
     @Operation(operationId = "getCompanyAssociatedP2pData")
-    override fun getCompanyAssociatedData(dataId: String): ResponseEntity<CompanyAssociatedData<PathwaysToParisData>> {
-        return super.getCompanyAssociatedData(dataId)
-    }
+    override fun getCompanyAssociatedData(dataId: String): ResponseEntity<CompanyAssociatedData<PathwaysToParisData>> =
+        super.getCompanyAssociatedData(dataId)
 
     @Operation(operationId = "postCompanyAssociatedP2pData")
     override fun postCompanyAssociatedData(
         companyAssociatedData: CompanyAssociatedData<PathwaysToParisData>,
         bypassQa: Boolean,
-    ):
-        ResponseEntity<DataMetaInformation> {
-        return super.postCompanyAssociatedData(companyAssociatedData, bypassQa)
-    }
+    ): ResponseEntity<DataMetaInformation> = super.postCompanyAssociatedData(companyAssociatedData, bypassQa)
 
     @Operation(operationId = "getAllCompanyP2pData")
     override fun getFrameworkDatasetsForCompany(
         companyId: String,
         showOnlyActive: Boolean,
         reportingPeriod: String?,
-    ): ResponseEntity<List<DataAndMetaInformation<PathwaysToParisData>>> {
-        return super.getFrameworkDatasetsForCompany(companyId, showOnlyActive, reportingPeriod)
-    }
+    ): ResponseEntity<List<DataAndMetaInformation<PathwaysToParisData>>> =
+        super
+            .getFrameworkDatasetsForCompany(companyId, showOnlyActive, reportingPeriod)
 }

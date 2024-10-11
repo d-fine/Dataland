@@ -18,27 +18,19 @@ import java.time.LocalDate
 data class EutaxonomyNonFinancialsGeneral(
     @field:Valid()
     val fiscalYearDeviation: ExtendedDataPoint<EutaxonomyNonFinancialsGeneralFiscalYearDeviationOptions?>? = null,
-
     @field:Valid()
     val fiscalYearEnd: ExtendedDataPoint<LocalDate?>? = null,
-
     @field:Valid()
     val scopeOfEntities: ExtendedDataPoint<YesNoNa?>? = null,
-
     @field:Valid()
     val nfrdMandatory: ExtendedDataPoint<YesNo?>? = null,
-
     @field:Valid()
     val euTaxonomyActivityLevelReporting: ExtendedDataPoint<YesNo?>? = null,
-
     @field:Valid()
     val assurance: AssuranceDataPoint? = null,
-
     @field:Valid()
     val numberOfEmployees: ExtendedDataPoint<BigDecimal?>? = null,
-
     @field:Schema(example = JsonExampleFormattingConstants.REFERENCED_REPORTS_DEFAULT_VALUE)
     @field:Valid()
     val referencedReports: Map<String, CompanyReport>? = null,
-
 )

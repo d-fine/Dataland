@@ -10,22 +10,14 @@ import org.dataland.datalandbackend.model.enums.commons.YesNo
  */
 data class LksgSocialUnlawfulEvictionDeprivationOfLandForestAndWater(
     val unlawfulEvictionAndTakingOfLand: YesNo? = null,
-
     val unlawfulEvictionAndTakingOfLandRisk: String? = null,
-
     val unlawfulEvictionAndTakingOfLandMeasures: YesNo? = null,
-
     @field:Valid()
     val modelContractsForLandPurchaseOrLeasing: BaseDataPoint<YesNo>? = null,
-
     val involvementOfLocalsInDecisionMaking: YesNo? = null,
-
     @field:Valid()
     val governanceOfTenurePolicy: BaseDataPoint<YesNo>? = null,
-
     @field:Valid()
     val unlawfulEvictionAndTakingOfLandOtherMeasures: BaseDataPoint<YesNo>? = null,
-
     val unlawfulEvictionAndTakingOfLandOtherMeasuresDescription: String? = null,
-
 )

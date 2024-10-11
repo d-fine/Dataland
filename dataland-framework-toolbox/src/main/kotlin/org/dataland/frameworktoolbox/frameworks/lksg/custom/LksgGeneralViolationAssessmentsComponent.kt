@@ -5,6 +5,7 @@ import org.dataland.frameworktoolbox.intermediate.components.requireDocumentSupp
 import org.dataland.frameworktoolbox.intermediate.datapoints.NoDocumentSupport
 import org.dataland.frameworktoolbox.specific.datamodel.TypeReference
 import org.dataland.frameworktoolbox.specific.datamodel.elements.DataClassBuilder
+
 /**
  * Represents the Lksg general violations component
  */
@@ -12,15 +13,17 @@ class LksgGeneralViolationAssessmentsComponent(
     identifier: String,
     parent: FieldNodeParent,
 ) : LksgSimpleCustomComponentBase(
-    identifier = identifier,
-    parent = parent,
-    viewFormattingFunctionName = "formatLksgRisksOrViolationsForDisplay",
-    uploadComponentName = "GeneralViolationsAssessmentsFormField",
-    guaranteedFixtureExpression = "dataGenerator.guaranteedArray(() => " +
-        "dataGenerator.generateLksgRiskOrViolationAssessment(), 1, 5)",
-    randomFixtureExpression = "dataGenerator.randomArray(() => " +
-        "dataGenerator.generateLksgRiskOrViolationAssessment(), 1, 5)",
-) {
+        identifier = identifier,
+        parent = parent,
+        viewFormattingFunctionName = "formatLksgRisksOrViolationsForDisplay",
+        uploadComponentName = "GeneralViolationsAssessmentsFormField",
+        guaranteedFixtureExpression =
+            "dataGenerator.guaranteedArray(() => " +
+                "dataGenerator.generateLksgRiskOrViolationAssessment(), 1, 5)",
+        randomFixtureExpression =
+            "dataGenerator.randomArray(() => " +
+                "dataGenerator.generateLksgRiskOrViolationAssessment(), 1, 5)",
+    ) {
     override fun generateDefaultDataModel(dataClassBuilder: DataClassBuilder) {
         requireDocumentSupportIn(setOf(NoDocumentSupport))
         dataClassBuilder.addProperty(
@@ -32,10 +35,8 @@ class LksgGeneralViolationAssessmentsComponent(
                         "org.dataland.datalandbackend.frameworks.lksg.custom.LksgRiskOrViolationAssessment",
                         true,
                     ),
-
                 ),
             ),
-
         )
     }
 }

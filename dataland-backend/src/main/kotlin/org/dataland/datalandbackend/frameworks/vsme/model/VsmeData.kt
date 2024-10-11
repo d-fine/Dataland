@@ -15,5 +15,4 @@ import org.dataland.datalandbackend.frameworks.vsme.model.validator.ReferencedRe
 data class VsmeData(
     @field:Valid()
     val basic: VsmeBasic? = null,
-
 )

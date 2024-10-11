@@ -14,10 +14,10 @@ import org.springframework.stereotype.Component
  * Generates EuTaxonomyAlignedActivities from the corresponding component
  */
 @Component
-class EuTaxonomyAlignedActivitiesComponentFactory(@Autowired val templateDiagnostic: TemplateDiagnostic) :
-    TemplateComponentFactory {
-    override fun canGenerateComponent(row: TemplateRow): Boolean =
-        row.component.trim() == "Custom EuTaxonomyAlignedActivitiesComponent"
+class EuTaxonomyAlignedActivitiesComponentFactory(
+    @Autowired val templateDiagnostic: TemplateDiagnostic,
+) : TemplateComponentFactory {
+    override fun canGenerateComponent(row: TemplateRow): Boolean = row.component.trim() == "Custom EuTaxonomyAlignedActivitiesComponent"
 
     override fun generateComponent(
         row: TemplateRow,

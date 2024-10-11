@@ -24,13 +24,13 @@ class ExcelToCsvConverter(
 
     private fun useDockerContainerToConvertXlsx(imageHash: String) {
         logger.info("Converting XLSX file using docker container")
-        val dockerProcess = ProcessBuilder(
-            "docker", "run", "--rm", "-v", "${inputExcelFile.absoluteFile.canonicalPath}:/mount/excel.xlsx:ro",
-            imageHash, "excel-$sheetName.csv",
-        )
-            .redirectOutput(targetCsvFile)
-            .redirectError(ProcessBuilder.Redirect.INHERIT)
-            .start()
+        val dockerProcess =
+            ProcessBuilder(
+                "docker", "run", "--rm", "-v", "${inputExcelFile.absoluteFile.canonicalPath}:/mount/excel.xlsx:ro",
+                imageHash, "excel-$sheetName.csv",
+            ).redirectOutput(targetCsvFile)
+                .redirectError(ProcessBuilder.Redirect.INHERIT)
+                .start()
 
         dockerProcess.waitFor()
         require(dockerProcess.exitValue() == 0) { "Docker process should terminate successfully." }
@@ -38,11 +38,12 @@ class ExcelToCsvConverter(
 
     private fun buildConversionDockerContainerAndCaptureSha(): String {
         logger.info("Building docker container for a platform-independent XLSX -> CSV conversion")
-        val buildProcess = ProcessBuilder("docker", "build", "-q", ".")
-            .directory(conversionUtilsDirectory)
-            .redirectOutput(ProcessBuilder.Redirect.PIPE)
-            .redirectError(ProcessBuilder.Redirect.DISCARD)
-            .start()
+        val buildProcess =
+            ProcessBuilder("docker", "build", "-q", ".")
+                .directory(conversionUtilsDirectory)
+                .redirectOutput(ProcessBuilder.Redirect.PIPE)
+                .redirectError(ProcessBuilder.Redirect.DISCARD)
+                .start()
         buildProcess.waitFor()
         require(buildProcess.exitValue() == 0) { "Build process should terminate successfully." }
 

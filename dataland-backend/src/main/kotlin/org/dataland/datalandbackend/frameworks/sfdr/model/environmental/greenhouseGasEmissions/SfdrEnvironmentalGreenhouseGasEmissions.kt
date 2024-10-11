@@ -13,68 +13,46 @@ import java.math.BigDecimal
 data class SfdrEnvironmentalGreenhouseGasEmissions(
     @field:Valid()
     val scope1GhgEmissionsInTonnes: ExtendedDataPoint<BigDecimal?>? = null,
-
     @field:Valid()
     val scope2GhgEmissionsInTonnes: ExtendedDataPoint<BigDecimal?>? = null,
-
     @field:Valid()
     val scope2GhgEmissionsLocationBasedInTonnes: ExtendedDataPoint<BigDecimal?>? = null,
-
     @field:Valid()
     val scope2GhgEmissionsMarketBasedInTonnes: ExtendedDataPoint<BigDecimal?>? = null,
-
     @field:Valid()
     val scope1And2GhgEmissionsInTonnes: ExtendedDataPoint<BigDecimal?>? = null,
-
     @field:Valid()
     val scope1And2GhgEmissionsLocationBasedInTonnes: ExtendedDataPoint<BigDecimal?>? = null,
-
     @field:Valid()
     val scope1And2GhgEmissionsMarketBasedInTonnes: ExtendedDataPoint<BigDecimal?>? = null,
-
     @field:Valid()
     val scope3GhgEmissionsInTonnes: ExtendedDataPoint<BigDecimal?>? = null,
-
     @field:Valid()
     val scope3UpstreamGhgEmissionsInTonnes: ExtendedDataPoint<BigDecimal?>? = null,
-
     @field:Valid()
     val scope3DownstreamGhgEmissionsInTonnes: ExtendedDataPoint<BigDecimal?>? = null,
-
     @field:Valid()
     val scope1And2And3GhgEmissionsInTonnes: ExtendedDataPoint<BigDecimal?>? = null,
-
     @field:Valid()
     val scope1And2And3GhgEmissionsLocationBasedInTonnes: ExtendedDataPoint<BigDecimal?>? = null,
-
     @field:Valid()
     val scope1And2And3GhgEmissionsMarketBasedInTonnes: ExtendedDataPoint<BigDecimal?>? = null,
-
     @field:Valid()
     val enterpriseValue: CurrencyDataPoint? = null,
-
     @field:Valid()
     val totalRevenue: CurrencyDataPoint? = null,
-
     @field:Valid()
     val carbonFootprintInTonnesPerMillionEURRevenue: ExtendedDataPoint<BigDecimal?>? = null,
-
     @field:Valid()
     val ghgIntensityInTonnesPerMillionEURRevenue: ExtendedDataPoint<BigDecimal?>? = null,
-
     @field:Valid()
     val ghgIntensityScope1InTonnesPerMillionEURRevenue: ExtendedDataPoint<BigDecimal?>? = null,
-
     @field:Valid()
     val ghgIntensityScope2InTonnesPerMillionEURRevenue: ExtendedDataPoint<BigDecimal?>? = null,
-
     @field:Valid()
     val ghgIntensityScope3InTonnesPerMillionEURRevenue: ExtendedDataPoint<BigDecimal?>? = null,
-
     @field:Valid()
     val ghgIntensityScope4InTonnesPerMillionEURRevenue: ExtendedDataPoint<BigDecimal?>? = null,
-
     @field:Valid()
     val fossilFuelSectorExposure: ExtendedDataPoint<YesNo?>? = null,
-
 )

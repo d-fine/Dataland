@@ -15,11 +15,10 @@ import org.springframework.stereotype.Component
  */
 
 @Component
-class VsmeWasteClassificationObjectCustomComponentFactory(@Autowired val templateDiagnostic: TemplateDiagnostic) :
-    TemplateComponentFactory {
-
-    override fun canGenerateComponent(row: TemplateRow): Boolean =
-        row.component == "Waste Classification Component"
+class VsmeWasteClassificationObjectCustomComponentFactory(
+    @Autowired val templateDiagnostic: TemplateDiagnostic,
+) : TemplateComponentFactory {
+    override fun canGenerateComponent(row: TemplateRow): Boolean = row.component == "Waste Classification Component"
 
     override fun generateComponent(
         row: TemplateRow,

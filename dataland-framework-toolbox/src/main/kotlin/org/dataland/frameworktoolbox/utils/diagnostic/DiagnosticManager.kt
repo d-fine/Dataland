@@ -19,7 +19,8 @@ class DiagnosticManager {
     private val messageIdsThatShouldBeSuppressed = mutableSetOf<String>()
 
     private fun logMessageToSlf4j(message: DiagnosticMessage) {
-        logger.makeLoggingEventBuilder(message.type.logLevel)
+        logger
+            .makeLoggingEventBuilder(message.type.logLevel)
             .log(message.toString())
     }
 
@@ -101,14 +102,20 @@ class DiagnosticManager {
      * @param id A unique identifier for the diagnostic. Must be unique. Should be as stable as possible.
      * @param summary A short summary of the diagnostic.
      */
-    fun info(id: String, summary: String) = register(DiagnosticMessage(DiagnosticType.INFO, id, summary))
+    fun info(
+        id: String,
+        summary: String,
+    ) = register(DiagnosticMessage(DiagnosticType.INFO, id, summary))
 
     /**
      * Logs a warning diagnostic that appears in the log, and must be suppressed or causes an exception.
      * @param id A unique identifier for the diagnostic. Must be unique. Should be as stable as possible.
      * @param summary A short summary of the diagnostic.
      */
-    fun warning(id: String, summary: String) = register(DiagnosticMessage(DiagnosticType.WARNING, id, summary))
+    fun warning(
+        id: String,
+        summary: String,
+    ) = register(DiagnosticMessage(DiagnosticType.WARNING, id, summary))
 
     /**
      * Logs a warning diagnostic that appears in the log if the condition is true,
@@ -116,7 +123,11 @@ class DiagnosticManager {
      * @param id A unique identifier for the diagnostic. Must be unique. Should be as stable as possible.
      * @param summary A short summary of the diagnostic.
      */
-    fun warnIf(condition: Boolean, id: String, summary: String) {
+    fun warnIf(
+        condition: Boolean,
+        id: String,
+        summary: String,
+    ) {
         if (condition) {
             warning(id, summary)
         }
@@ -127,7 +138,10 @@ class DiagnosticManager {
      * @param id A unique identifier for the diagnostic. Must be unique. Should be as stable as possible.
      * @param summary A short summary of the diagnostic.
      */
-    fun critical(id: String, summary: String) = register(DiagnosticMessage(DiagnosticType.CRITICAL, id, summary))
+    fun critical(
+        id: String,
+        summary: String,
+    ) = register(DiagnosticMessage(DiagnosticType.CRITICAL, id, summary))
 
     /**
      * Finalizes the logging manager, resetting its state and printing a summary statistic.

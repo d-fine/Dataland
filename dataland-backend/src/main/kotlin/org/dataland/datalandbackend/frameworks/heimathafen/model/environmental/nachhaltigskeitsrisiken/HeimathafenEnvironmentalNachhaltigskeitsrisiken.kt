@@ -10,25 +10,14 @@ import org.dataland.datalandbackend.model.enums.commons.YesNo
  */
 data class HeimathafenEnvironmentalNachhaltigskeitsrisiken(
     val methodikFuerOekologischeNachhaltigkeitsrisiken: YesNo? = null,
-
     val wennNeinBitteBegruenden: String? = null,
-
     val kartierteRisikenFuerDieOekologischeNachhaltigkeit: String? = null,
-
-    val identifizierungDerWesentlichenRisikenFuerDieOekologischeNachhaltigkeitUndDerKonstruktionsmethodik:
-    String? = null,
-
+    val identifizierungDerWesentlichenRisikenFuerDieOekologischeNachhaltigkeitUndDerKonstruktionsmethodik: String? = null,
     val umweltbewertungUnterBeruecksichtigungVonNachhaltigkeitsrisiken: String? = null,
-
     val risikenFuerDieOekologischeNachhaltigkeitAbsichern: String? = null,
-
     @field:Valid()
     val quellen: List<BaseDataPoint<String>>? = null,
-
     val vierAugenPruefung: YesNo? = null,
-
     val wennKeineVierAugenPruefungBitteBegruenden: String? = null,
-
     val beschreibungDerVierAugenPruefung: String? = null,
-
 )

@@ -35,7 +35,8 @@ interface VsmeDataApi {
      */
     @Operation(
         summary = "Upload a new private vsme data set.",
-        description = "The uploaded private vsme data is added to the private data store, the generated data id is " +
+        description =
+        "The uploaded private vsme data is added to the private data store, the generated data id is " +
             "returned.",
     )
     @ApiResponses(
@@ -84,8 +85,9 @@ interface VsmeDataApi {
             "(@CompanyRoleChecker.hasCurrentUserAnyRoleForCompanyOfDataId(#dataId) or " +
             "@PrivateDataAccessChecker.hasUserAccessToPrivateResources(#dataId))",
     )
-    fun getCompanyAssociatedVsmeData(@PathVariable("dataId") dataId: String):
-        ResponseEntity<CompanyAssociatedData<VsmeData>>
+    fun getCompanyAssociatedVsmeData(
+        @PathVariable("dataId") dataId: String,
+    ): ResponseEntity<CompanyAssociatedData<VsmeData>>
 
     /**
      * Retrieve a document by its ID

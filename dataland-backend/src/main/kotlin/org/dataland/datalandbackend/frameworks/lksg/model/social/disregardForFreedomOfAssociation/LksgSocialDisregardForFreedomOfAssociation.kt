@@ -11,24 +11,15 @@ import java.math.BigDecimal
  */
 data class LksgSocialDisregardForFreedomOfAssociation(
     val freedomOfAssociation: YesNo? = null,
-
     val employeeRepresentation: BigDecimal? = null,
-
     val freedomOfAssociationDisregardPrevention: YesNo? = null,
-
     val discriminationForTradeUnionMembers: YesNo? = null,
-
     val freedomOfOperationForTradeUnion: YesNo? = null,
-
     @field:Valid()
     val freedomOfAssociationTraining: BaseDataPoint<YesNo>? = null,
-
     @field:Valid()
     val worksCouncil: BaseDataPoint<YesNo>? = null,
-
     @field:Valid()
     val freedomOfAssociationOtherMeasures: BaseDataPoint<YesNo>? = null,
-
     val freedomOfAssociationOtherMeasuresDescription: String? = null,
-
 )

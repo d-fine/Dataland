@@ -10,7 +10,7 @@ import org.dataland.keycloakAdapter.auth.DatalandRealmRole
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
-import java.util.*
+import java.util.UUID
 import kotlin.reflect.full.memberProperties
 
 /**
@@ -30,7 +30,10 @@ class CompanyRoleChecker(
      * @param role for which the check shall happen
      * @return a Boolean indicating whether the user has the role or not
      */
-    fun hasCurrentUserGivenRoleForCompany(companyId: String, role: CompanyRole): Boolean {
+    fun hasCurrentUserGivenRoleForCompany(
+        companyId: String,
+        role: CompanyRole,
+    ): Boolean {
         val userId = DatalandAuthentication.fromContext().userId
         return try {
             companyRolesControllerApi.hasUserCompanyRole(
@@ -54,10 +57,11 @@ class CompanyRoleChecker(
      */
     fun hasCurrentUserAnyRoleForCompany(companyId: String): Boolean {
         val userId = UUID.fromString(DatalandAuthentication.fromContext().userId)
-        val roles = companyRolesControllerApi.getCompanyRoleAssignments(
-            companyId = UUID.fromString(companyId),
-            userId = userId,
-        )
+        val roles =
+            companyRolesControllerApi.getCompanyRoleAssignments(
+                companyId = UUID.fromString(companyId),
+                userId = userId,
+            )
         return roles.isNotEmpty()
     }
 
@@ -68,7 +72,10 @@ class CompanyRoleChecker(
      * @param role to check for
      * @return a Boolean indicating whether the user has the role for the company associated with the dataset
      */
-    fun hasCurrentUserGivenRoleForCompanyOfDataId(dataId: String, role: CompanyRole): Boolean {
+    fun hasCurrentUserGivenRoleForCompanyOfDataId(
+        dataId: String,
+        role: CompanyRole,
+    ): Boolean {
         val companyId = dataMetaInformationManager.getDataMetaInformationByDataId(dataId).company.companyId
         return hasCurrentUserGivenRoleForCompany(companyId, role)
     }
@@ -88,8 +95,8 @@ class CompanyRoleChecker(
      * @param companyId the ID of the company
      * @return a Boolean indicating whether the company has at least one company owner
      */
-    fun isCompanyWithoutOwner(companyId: String): Boolean {
-        return try {
+    fun isCompanyWithoutOwner(companyId: String): Boolean =
+        try {
             companyRolesControllerApi.hasCompanyAtLeastOneOwner(UUID.fromString(companyId))
             false
         } catch (clientException: ClientException) {
@@ -99,7 +106,6 @@ class CompanyRoleChecker(
                 throw clientException
             }
         }
-    }
 
     /**
      * Checks whether the patch contains only fields that are allowed to be altered by a non-keycloak-admin-user and
@@ -108,13 +114,14 @@ class CompanyRoleChecker(
      * @return a Boolean indicating whether the patch complies with the access requirements
      */
     fun areOnlyAuthorizedFieldsPatched(patch: CompanyInformationPatch): Boolean {
-        val unauthorizedFields = CompanyInformationPatch::class.memberProperties
-            .filter { property ->
-                property.get(patch) != null &&
-                    property.name != "companyContactDetails" &&
-                    property.name != "website"
-            }
-            .map { it.name }
+        val unauthorizedFields =
+            CompanyInformationPatch::class
+                .memberProperties
+                .filter { property ->
+                    property.get(patch) != null &&
+                        property.name != "companyContactDetails" &&
+                        property.name != "website"
+                }.map { it.name }
 
         if (unauthorizedFields.isNotEmpty()) {
             throw InsufficientRightsApiException(
@@ -143,7 +150,8 @@ class CompanyRoleChecker(
 
         val isUserReviewer = authContext.roles.contains(DatalandRealmRole.ROLE_REVIEWER)
         val isUserCompanyOwnerOrUploader =
-            companyRolesControllerApi.getCompanyRoleAssignments(null, companyUUID, userUUID)
+            companyRolesControllerApi
+                .getCompanyRoleAssignments(null, companyUUID, userUUID)
                 .any { it.companyRole == CompanyRole.CompanyOwner || it.companyRole == CompanyRole.DataUploader }
 
         return isUserReviewer || isUserCompanyOwnerOrUploader
@@ -155,7 +163,10 @@ class CompanyRoleChecker(
      * @param companyId defines the company that will be patched
      * @returns a boolean that states if the user is allowed to do the patch or not
      */
-    fun canUserPatchFieldsForCompany(companyInformationPatch: CompanyInformationPatch, companyId: String): Boolean {
+    fun canUserPatchFieldsForCompany(
+        companyInformationPatch: CompanyInformationPatch,
+        companyId: String,
+    ): Boolean {
         companyQueryManager.verifyCompanyIdExists(companyId)
         val companyUUID = UUID.fromString(companyId)
         val authContext = DatalandAuthentication.fromContext()
@@ -166,8 +177,10 @@ class CompanyRoleChecker(
             return true
         }
 
-        val companyRoles = companyRolesControllerApi.getCompanyRoleAssignments(null, companyUUID, userUUID)
-            .map { it.companyRole }
+        val companyRoles =
+            companyRolesControllerApi
+                .getCompanyRoleAssignments(null, companyUUID, userUUID)
+                .map { it.companyRole }
 
         return if (companyRoles.contains(CompanyRole.CompanyOwner)) {
             areOnlyAuthorizedFieldsPatched(companyInformationPatch)

@@ -45,7 +45,7 @@ class SfdrHighImpactClimateSectors(
                 Annotation(
                     fullyQualifiedName = "io.swagger.v3.oas.annotations.media.Schema",
                     rawParameterSpec =
-                    "example = JsonExampleFormattingConstants.HIGH_IMPACT_CLIMATE_SECTORS_DEFAULT_VALUE",
+                        "example = JsonExampleFormattingConstants.HIGH_IMPACT_CLIMATE_SECTORS_DEFAULT_VALUE",
                     applicationTargetPrefix = "field",
                     additionalImports = setOf("org.dataland.datalandbackend.utils.JsonExampleFormattingConstants"),
                 ),

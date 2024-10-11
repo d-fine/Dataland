@@ -9,21 +9,12 @@ import java.math.BigInteger
  */
 data class VsmeBasicWorkforceHealthAndSafety(
     val totalHours: BigDecimal? = null,
-
     val numberOfAccidents: BigInteger? = null,
-
     val accidentLevel: BigDecimal? = null,
-
     val numberOfTotalFatalitiesInFte: BigInteger? = null,
-
     val numberOfTotalFatalitiesInHeadcount: BigInteger? = null,
-
     val numberOfFatalitiesOfAccidentsInFte: BigInteger? = null,
-
     val numberOfFatalitiesOfAccidentsInHeadcount: BigInteger? = null,
-
     val numberOfHealthFatalitiesInFte: BigInteger? = null,
-
     val numberOfHealthFatalitiesInHeadcount: BigInteger? = null,
-
 )

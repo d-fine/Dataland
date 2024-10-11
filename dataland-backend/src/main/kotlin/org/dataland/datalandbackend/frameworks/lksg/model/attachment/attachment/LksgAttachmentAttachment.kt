@@ -11,5 +11,4 @@ import org.dataland.datalandbackend.model.enums.commons.YesNo
 data class LksgAttachmentAttachment(
     @field:Valid()
     val attachment: BaseDataPoint<YesNo>? = null,
-
 )

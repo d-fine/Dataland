@@ -10,25 +10,15 @@ import org.dataland.datalandbackend.model.enums.commons.YesNo
  */
 data class LksgEnvironmentalUseOfMercuryMercuryWasteMinamataConvention(
     val mercuryAndMercuryWasteHandling: YesNo? = null,
-
     val mercuryAddedProductsHandling: YesNo? = null,
-
     val mercuryAddedProductsHandlingRiskOfExposure: YesNo? = null,
-
     val mercuryAddedProductsHandlingRiskOfDisposal: YesNo? = null,
-
     val mercuryAndMercuryCompoundsProductionAndUse: YesNo? = null,
-
     val mercuryAndMercuryCompoundsProductionAndUseRiskOfExposure: YesNo? = null,
-
     val mercuryAndMercuryWasteUsePreventionMeasures: YesNo? = null,
-
     @field:Valid()
     val mercuryAndMercuryWasteHandlingPolicy: BaseDataPoint<YesNo>? = null,
-
     @field:Valid()
     val mercuryAndMercuryWasteUsePreventionOtherMeasures: BaseDataPoint<YesNo>? = null,
-
     val mercuryAndMercuryWasteUsePreventionOtherMeasuresDescription: String? = null,
-
 )
