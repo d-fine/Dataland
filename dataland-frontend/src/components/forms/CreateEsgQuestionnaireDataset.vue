@@ -60,6 +60,7 @@
                             :reportingPeriod="yearOfDataDate"
                             :data-test="field.name"
                             :unit="field.unit"
+                            :shouldDisableCheckboxes="true"
                             @field-specific-documents-updated="
                               updateDocumentList(`${category.name}.${subcategory.name}.${field.name}`, $event)
                             "
