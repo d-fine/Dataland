@@ -4,7 +4,7 @@
 
 com-github-jk1-dependency-license-report = { id = "com.github.jk1.dependency-license-report", version = "2.8" }
 
-io-gitlab-arturbosch-detekt = { id = "io.gitlab.arturbosch.detekt", version = "1.23.6" }
+io-gitlab-arturbosch-detekt = { id = "io.gitlab.arturbosch.detekt", version = "1.23.7" }
 
 com-github-node-gradle-node = { id = "com.github.node-gradle.node", version = "7.0.2" }
 
