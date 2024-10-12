@@ -34,7 +34,7 @@ org-jetbrains-kotlin-kapt = { id = "org.jetbrains.kotlin.kapt", version.ref = "k
 
 [versions]
 
-kotlin = "1.9.23"
+kotlin = "1.9.25"
 
 okhttp3 = "4.12.0"
 
