@@ -2,29 +2,28 @@
 package org.dataland.datalandbackend.frameworks.nuclearandgas.model.general
 
 import jakarta.validation.Valid
-import org.dataland.datalandbackend.model.datapoints.ExtendedDataPoint
-import org.dataland.datalandbackend.model.enums.commons.YesNo
+import org.dataland.datalandbackend.frameworks.nuclearandgas.model.general.general.NuclearAndGasGeneralGeneral
+import org.dataland.datalandbackend.frameworks.nuclearandgas.model.general.taxonomyAlignedDenominator
+    .NuclearAndGasGeneralTaxonomyAlignedDenominator
+import org.dataland.datalandbackend.frameworks.nuclearandgas.model.general.taxonomyAlignedNumerator
+    .NuclearAndGasGeneralTaxonomyAlignedNumerator
+import org.dataland.datalandbackend.frameworks.nuclearandgas.model.general.taxonomyEligibleButNotAligned
+    .NuclearAndGasGeneralTaxonomyEligibleButNotAligned
+import org.dataland.datalandbackend.frameworks.nuclearandgas.model.general.taxonomyNonEligible
+    .NuclearAndGasGeneralTaxonomyNonEligible
 
 /**
  * The data-model for the General section
  */
 data class NuclearAndGasGeneral(
     @field:Valid()
-    val nuclearEnergyRelatedActivitiesSection426: ExtendedDataPoint<YesNo?>? = null,
-
+    val general: NuclearAndGasGeneralGeneral? = null,
     @field:Valid()
-    val nuclearEnergyRelatedActivitiesSection427: ExtendedDataPoint<YesNo?>? = null,
-
+    val taxonomyAlignedDenominator: NuclearAndGasGeneralTaxonomyAlignedDenominator? = null,
     @field:Valid()
-    val nuclearEnergyRelatedActivitiesSection428: ExtendedDataPoint<YesNo?>? = null,
-
+    val taxonomyAlignedNumerator: NuclearAndGasGeneralTaxonomyAlignedNumerator? = null,
     @field:Valid()
-    val fossilGasRelatedActivitiesSection429: ExtendedDataPoint<YesNo?>? = null,
-
+    val taxonomyEligibleButNotAligned: NuclearAndGasGeneralTaxonomyEligibleButNotAligned? = null,
     @field:Valid()
-    val fossilGasRelatedActivitiesSection430: ExtendedDataPoint<YesNo?>? = null,
-
-    @field:Valid()
-    val fossilGasRelatedActivitiesSection431: ExtendedDataPoint<YesNo?>? = null,
-
+    val taxonomyNonEligible: NuclearAndGasGeneralTaxonomyNonEligible? = null,
 )

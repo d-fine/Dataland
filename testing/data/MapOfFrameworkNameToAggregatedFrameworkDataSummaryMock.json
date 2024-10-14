@@ -23,7 +23,10 @@
 	"heimathafen": {
 		"numberOfProvidedReportingPeriods": 15
 	},
-	"additional-company-information": {
+	"nuclear-and-gas": {
 		"numberOfProvidedReportingPeriods": 14
+	},
+	"additional-company-information": {
+		"numberOfProvidedReportingPeriods": 3
 	}
 }

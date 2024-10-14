@@ -8,7 +8,7 @@ import java.io.File
  */
 class ExcelToCsvConverter(
     private val inputExcelFile: File,
-    private val sheetName: String = "Framework Data Model",
+    private val sheetName: String,
     private val targetCsvFile: File,
 ) {
     private val conversionUtilsDirectory = File("./dataland-framework-toolbox/excel-to-csv/")

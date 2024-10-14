@@ -1,60 +1,34 @@
-package org.dataland.datalandbackend.frameworks.nuclearandgas.model.custom
+package org.dataland.datalandbackend.frameworks.nuclearandgas.custom
 
-import jakarta.validation.Valid
-import org.dataland.datalandbackend.model.datapoints.ExtendedDataPoint
 import java.math.BigDecimal
 
 /**
  * --- API model ---
  * Custom Component for the EU-Taxonomy Nuclear and Gas Template Aligned (Denominator)
  */
-data class NuclearAndGasalignedDenominator(
-    @field:Valid()
-    val TaxonomyAlignedShareDenominatorClimateChangeMitigationAndClimateChangeAdaptationNAndG426: ExtendedDataPoint<BigDecimal?>? = null,
-    @field:Valid()
-    val TaxonomyAlignedShareDenominatorSubstantiallyContributingToClimateChangeMitigationNAndG426: ExtendedDataPoint<BigDecimal?>? = null,
-    @field:Valid()
-    val TaxonomyAlignedShareDenominatorSubstantiallyContributingToClimateChangeAdaptationNAndG426: ExtendedDataPoint<BigDecimal?>? = null,
-    @field:Valid()
-    val TaxonomyAlignedShareDenominatorClimateChangeMitigationAndClimateChangeAdaptationNAndG427: ExtendedDataPoint<BigDecimal?>? = null,
-    @field:Valid()
-    val TaxonomyAlignedShareDenominatorSubstantiallyContributingToClimateChangeMitigationNAndG427: ExtendedDataPoint<BigDecimal?>? = null,
-    @field:Valid()
-    val TaxonomyAlignedShareDenominatorSubstantiallyContributingToClimateChangeAdaptationNAndG427: ExtendedDataPoint<BigDecimal?>? = null,
-    @field:Valid()
-    val TaxonomyAlignedShareDenominatorClimateChangeMitigationAndClimateChangeAdaptationNAndG428: ExtendedDataPoint<BigDecimal?>? = null,
-    @field:Valid()
-    val TaxonomyAlignedShareDenominatorSubstantiallyContributingToClimateChangeMitigationNAndG428: ExtendedDataPoint<BigDecimal?>? = null,
-    @field:Valid()
-    val TaxonomyAlignedShareDenominatorSubstantiallyContributingToClimateChangeAdaptationNAndG428: ExtendedDataPoint<BigDecimal?>? = null,
-    @field:Valid()
-    val TaxonomyAlignedShareDenominatorClimateChangeMitigationAndClimateChangeAdaptationNAndG429: ExtendedDataPoint<BigDecimal?>? = null,
-    @field:Valid()
-    val TaxonomyAlignedShareDenominatorSubstantiallyContributingToClimateChangeMitigationNAndG429: ExtendedDataPoint<BigDecimal?>? = null,
-    @field:Valid()
-    val TaxonomyAlignedShareDenominatorSubstantiallyContributingToClimateChangeAdaptationNAndG429: ExtendedDataPoint<BigDecimal?>? = null,
-    @field:Valid()
-    val TaxonomyAlignedShareDenominatorClimateChangeMitigationAndClimateChangeAdaptationNAndG430: ExtendedDataPoint<BigDecimal?>? = null,
-    @field:Valid()
-    val TaxonomyAlignedShareDenominatorSubstantiallyContributingToClimateChangeMitigationNAndG430: ExtendedDataPoint<BigDecimal?>? = null,
-    @field:Valid()
-    val TaxonomyAlignedShareDenominatorSubstantiallyContributingToClimateChangeAdaptationNAndG430: ExtendedDataPoint<BigDecimal?>? = null,
-    @field:Valid()
-    val TaxonomyAlignedShareDenominatorClimateChangeMitigationAndClimateChangeAdaptationNAndG431: ExtendedDataPoint<BigDecimal?>? = null,
-    @field:Valid()
-    val TaxonomyAlignedShareDenominatorSubstantiallyContributingToClimateChangeMitigationNAndG431: ExtendedDataPoint<BigDecimal?>? = null,
-    @field:Valid()
-    val TaxonomyAlignedShareDenominatorSubstantiallyContributingToClimateChangeAdaptationNAndG431: ExtendedDataPoint<BigDecimal?>? = null,
-    @field:Valid()
-    val TaxonomyAlignedShareDenominatorClimateChangeMitigationAndClimateChangeAdaptationOtherActivities: ExtendedDataPoint<BigDecimal?>? = null,
-    @field:Valid()
-    val TaxonomyAlignedShareDenominatorSubstantiallyContributingToClimateChangeMitigationOtherActivities: ExtendedDataPoint<BigDecimal?>? = null,
-    @field:Valid()
-    val TaxonomyAlignedShareDenominatorSubstantiallyContributingToClimateChangeAdaptationOtherActivities: ExtendedDataPoint<BigDecimal?>? = null,
-    @field:Valid()
-    val TaxonomyAlignedShareDenominatorClimateChangeMitigationAndClimateChangeAdaptation: ExtendedDataPoint<BigDecimal?>? = null,
-    @field:Valid()
-    val TaxonomyAlignedShareDenominatorSubstantiallyContributingToClimateChangeMitigation: ExtendedDataPoint<BigDecimal?>? = null,
-    @field:Valid()
-    val TaxonomyAlignedShareDenominatorSubstantiallyContributingToClimateChangeAdaptation: ExtendedDataPoint<BigDecimal?>? = null,
+data class NuclearAndGasAlignedDenominator(
+    val taxonomyAlignedShareDenominatorClimateChangeMitigationAndClimateChangeAdaptationNAndG426: BigDecimal? = null,
+    val taxonomyAlignedShareDenominatorSubstantiallyContributingToClimateChangeMitigationNAndG426: BigDecimal? = null,
+    val taxonomyAlignedShareDenominatorSubstantiallyContributingToClimateChangeAdaptationNAndG426: BigDecimal? = null,
+    val taxonomyAlignedShareDenominatorClimateChangeMitigationAndClimateChangeAdaptationNAndG427: BigDecimal? = null,
+    val taxonomyAlignedShareDenominatorSubstantiallyContributingToClimateChangeMitigationNAndG427: BigDecimal? = null,
+    val taxonomyAlignedShareDenominatorSubstantiallyContributingToClimateChangeAdaptationNAndG427: BigDecimal? = null,
+    val taxonomyAlignedShareDenominatorClimateChangeMitigationAndClimateChangeAdaptationNAndG428: BigDecimal? = null,
+    val taxonomyAlignedShareDenominatorSubstantiallyContributingToClimateChangeMitigationNAndG428: BigDecimal? = null,
+    val taxonomyAlignedShareDenominatorSubstantiallyContributingToClimateChangeAdaptationNAndG428: BigDecimal? = null,
+    val taxonomyAlignedShareDenominatorClimateChangeMitigationAndClimateChangeAdaptationNAndG429: BigDecimal? = null,
+    val taxonomyAlignedShareDenominatorSubstantiallyContributingToClimateChangeMitigationNAndG429: BigDecimal? = null,
+    val taxonomyAlignedShareDenominatorSubstantiallyContributingToClimateChangeAdaptationNAndG429: BigDecimal? = null,
+    val taxonomyAlignedShareDenominatorClimateChangeMitigationAndClimateChangeAdaptationNAndG430: BigDecimal? = null,
+    val taxonomyAlignedShareDenominatorSubstantiallyContributingToClimateChangeMitigationNAndG430: BigDecimal? = null,
+    val taxonomyAlignedShareDenominatorSubstantiallyContributingToClimateChangeAdaptationNAndG430: BigDecimal? = null,
+    val taxonomyAlignedShareDenominatorClimateChangeMitigationAndClimateChangeAdaptationNAndG431: BigDecimal? = null,
+    val taxonomyAlignedShareDenominatorSubstantiallyContributingToClimateChangeMitigationNAndG431: BigDecimal? = null,
+    val taxonomyAlignedShareDenominatorSubstantiallyContributingToClimateChangeAdaptationNAndG431: BigDecimal? = null,
+    val taxonomyAlignedShareDenominatorClimateChangeMitigationAndClimateChangeAdaptationOtherActivities: BigDecimal? = null,
+    val taxonomyAlignedShareDenominatorSubstantiallyContributingToClimateChangeMitigationOtherActivities: BigDecimal? = null,
+    val taxonomyAlignedShareDenominatorSubstantiallyContributingToClimateChangeAdaptationOtherActivities: BigDecimal? = null,
+    val taxonomyAlignedShareDenominatorClimateChangeMitigationAndClimateChangeAdaptation: BigDecimal? = null,
+    val taxonomyAlignedShareDenominatorSubstantiallyContributingToClimateChangeMitigation: BigDecimal? = null,
+    val taxonomyAlignedShareDenominatorSubstantiallyContributingToClimateChangeAdaptation: BigDecimal? = null,
 )

@@ -25,30 +25,30 @@ class NuclearAndGasDataQaReportController(
     @Autowired qaReportManager: QaReportManager,
     @Autowired qaReportSecurityPolicy: QaReportSecurityPolicy,
 ) : QaReportController<NuclearAndGasData>(
-    objectMapper = objectMapper,
-    qaReportManager = qaReportManager,
-    qaReportSecurityPolicy = qaReportSecurityPolicy,
-    clazz = NuclearAndGasData::class.java,
-    dataType = "nuclear-and-gas",
-) {
+        objectMapper = objectMapper,
+        qaReportManager = qaReportManager,
+        qaReportSecurityPolicy = qaReportSecurityPolicy,
+        clazz = NuclearAndGasData::class.java,
+        dataType = "nuclear-and-gas",
+    ) {
     @Operation(operationId = "postNuclearAndGasDataQaReport")
     override fun postQaReport(
         dataId: String,
         qaReport: NuclearAndGasData,
-    ): ResponseEntity<QaReportMetaInformation> {
-        return super.postQaReport(dataId, qaReport)
-    }
+    ): ResponseEntity<QaReportMetaInformation> = super.postQaReport(dataId, qaReport)
 
     @Operation(operationId = "getNuclearAndGasDataQaReport")
     override fun getQaReport(
         dataId: String,
         qaReportId: String,
-    ): ResponseEntity<QaReportWithMetaInformation<NuclearAndGasData>> {
-        return super.getQaReport(dataId, qaReportId)
-    }
+    ): ResponseEntity<QaReportWithMetaInformation<NuclearAndGasData>> = super.getQaReport(dataId, qaReportId)
 
     @Operation(operationId = "setNuclearAndGasDataQaReportStatus")
-    override fun setQaReportStatus(dataId: String, qaReportId: String, statusPatch: QaReportStatusPatch) {
+    override fun setQaReportStatus(
+        dataId: String,
+        qaReportId: String,
+        statusPatch: QaReportStatusPatch,
+    ) {
         super.setQaReportStatus(dataId, qaReportId, statusPatch)
     }
 
@@ -57,7 +57,7 @@ class NuclearAndGasDataQaReportController(
         dataId: String,
         showInactive: Boolean?,
         reporterUserId: String?,
-    ): ResponseEntity<List<QaReportWithMetaInformation<NuclearAndGasData>>> {
-        return super.getAllQaReportsForDataset(dataId, showInactive, reporterUserId)
-    }
+    ): ResponseEntity<List<QaReportWithMetaInformation<NuclearAndGasData>>> =
+        super
+            .getAllQaReportsForDataset(dataId, showInactive, reporterUserId)
 }

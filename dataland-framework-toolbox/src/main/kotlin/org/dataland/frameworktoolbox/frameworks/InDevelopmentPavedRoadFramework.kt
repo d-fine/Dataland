@@ -8,7 +8,6 @@ import org.dataland.frameworktoolbox.specific.datamodel.elements.ReferencedRepor
 import org.dataland.frameworktoolbox.specific.frameworkregistryimports.FrameworkRegistryImportsUpdater
 import org.dataland.frameworktoolbox.specific.viewconfig.elements.getKotlinFieldAccessor
 import org.dataland.frameworktoolbox.template.ExcelTemplate
-import org.dataland.frameworktoolbox.template.model.TemplateRow
 import org.dataland.frameworktoolbox.utils.DatalandRepository
 import org.dataland.frameworktoolbox.utils.diagnostic.DiagnosticManager
 import org.springframework.beans.factory.getBean
@@ -154,7 +153,7 @@ abstract class InDevelopmentPavedRoadFramework(
         val diagnostics = context.getBean<DiagnosticManager>()
 
         configureDiagnostics(diagnostics)
-        val excelTemplate = ExcelTemplate.fromFile<TemplateRow>(frameworkTemplateCsvFile)
+        val excelTemplate = ExcelTemplate.fromFile(frameworkTemplateCsvFile)
         customizeExcelTemplate(excelTemplate)
 
         val frameworkIntermediateRepresentation =

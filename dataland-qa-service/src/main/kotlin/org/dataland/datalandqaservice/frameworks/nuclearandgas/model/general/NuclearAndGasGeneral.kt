@@ -2,29 +2,28 @@
 package org.dataland.datalandqaservice.frameworks.nuclearandgas.model.general
 
 import jakarta.validation.Valid
-import org.dataland.datalandbackend.openApiClient.model.ExtendedDataPointYesNo
-import org.dataland.datalandqaservice.model.reports.QaReportDataPoint
+import org.dataland.datalandqaservice.frameworks.nuclearandgas.model.general.general.NuclearAndGasGeneralGeneral
+import org.dataland.datalandqaservice.frameworks.nuclearandgas.model.general.taxonomyAlignedDenominator
+    .NuclearAndGasGeneralTaxonomyAlignedDenominator
+import org.dataland.datalandqaservice.frameworks.nuclearandgas.model.general.taxonomyAlignedNumerator
+    .NuclearAndGasGeneralTaxonomyAlignedNumerator
+import org.dataland.datalandqaservice.frameworks.nuclearandgas.model.general.taxonomyEligibleButNotAligned
+    .NuclearAndGasGeneralTaxonomyEligibleButNotAligned
+import org.dataland.datalandqaservice.frameworks.nuclearandgas.model.general.taxonomyNonEligible
+    .NuclearAndGasGeneralTaxonomyNonEligible
 
 /**
  * The QA-model for the General section
  */
 data class NuclearAndGasGeneral(
     @field:Valid()
-    val nuclearEnergyRelatedActivitiesSection426: QaReportDataPoint<ExtendedDataPointYesNo?>? = null,
-
+    val general: NuclearAndGasGeneralGeneral? = null,
     @field:Valid()
-    val nuclearEnergyRelatedActivitiesSection427: QaReportDataPoint<ExtendedDataPointYesNo?>? = null,
-
+    val taxonomyAlignedDenominator: NuclearAndGasGeneralTaxonomyAlignedDenominator? = null,
     @field:Valid()
-    val nuclearEnergyRelatedActivitiesSection428: QaReportDataPoint<ExtendedDataPointYesNo?>? = null,
-
+    val taxonomyAlignedNumerator: NuclearAndGasGeneralTaxonomyAlignedNumerator? = null,
     @field:Valid()
-    val fossilGasRelatedActivitiesSection429: QaReportDataPoint<ExtendedDataPointYesNo?>? = null,
-
+    val taxonomyEligibleButNotAligned: NuclearAndGasGeneralTaxonomyEligibleButNotAligned? = null,
     @field:Valid()
-    val fossilGasRelatedActivitiesSection430: QaReportDataPoint<ExtendedDataPointYesNo?>? = null,
-
-    @field:Valid()
-    val fossilGasRelatedActivitiesSection431: QaReportDataPoint<ExtendedDataPointYesNo?>? = null,
-
+    val taxonomyNonEligible: NuclearAndGasGeneralTaxonomyNonEligible? = null,
 )

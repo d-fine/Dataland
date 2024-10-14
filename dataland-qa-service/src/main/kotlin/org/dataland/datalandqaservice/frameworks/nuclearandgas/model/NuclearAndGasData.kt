@@ -3,14 +3,6 @@ package org.dataland.datalandqaservice.frameworks.nuclearandgas.model
 
 import jakarta.validation.Valid
 import org.dataland.datalandqaservice.frameworks.nuclearandgas.model.general.NuclearAndGasGeneral
-import org.dataland.datalandqaservice.frameworks.nuclearandgas.model.taxonomyAlignedDenominator
-    .NuclearAndGasTaxonomyAlignedDenominator
-import org.dataland.datalandqaservice.frameworks.nuclearandgas.model.taxonomyAlignedNumerator
-    .NuclearAndGasTaxonomyAlignedNumerator
-import org.dataland.datalandqaservice.frameworks.nuclearandgas.model.taxonomyEligibleButNotAligned
-    .NuclearAndGasTaxonomyEligibleButNotAligned
-import org.dataland.datalandqaservice.frameworks.nuclearandgas.model.taxonomyNonEligible
-    .NuclearAndGasTaxonomyNonEligible
 
 /**
  * The root QA data-model for the Nuclear-and-gas Framework
@@ -18,17 +10,4 @@ import org.dataland.datalandqaservice.frameworks.nuclearandgas.model.taxonomyNon
 data class NuclearAndGasData(
     @field:Valid()
     val general: NuclearAndGasGeneral? = null,
-
-    @field:Valid()
-    val taxonomyAlignedDenominator: NuclearAndGasTaxonomyAlignedDenominator? = null,
-
-    @field:Valid()
-    val taxonomyAlignedNumerator: NuclearAndGasTaxonomyAlignedNumerator? = null,
-
-    @field:Valid()
-    val taxonomyEligibleButNotAligned: NuclearAndGasTaxonomyEligibleButNotAligned? = null,
-
-    @field:Valid()
-    val taxonomyNonEligible: NuclearAndGasTaxonomyNonEligible? = null,
-
 )

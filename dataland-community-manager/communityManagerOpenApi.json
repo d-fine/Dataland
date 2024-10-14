@@ -682,6 +682,7 @@
                   "vsme",
                   "esg-questionnaire",
                   "heimathafen",
+                  "nuclear-and-gas",
                   "additional-company-information"
                 ]
               }
@@ -950,6 +951,7 @@
                   "vsme",
                   "esg-questionnaire",
                   "heimathafen",
+                  "nuclear-and-gas",
                   "additional-company-information"
                 ]
               }
@@ -1090,6 +1092,7 @@
                   "vsme",
                   "esg-questionnaire",
                   "heimathafen",
+                  "nuclear-and-gas",
                   "additional-company-information"
                 ]
               }
@@ -1500,6 +1503,7 @@
               "vsme",
               "esg-questionnaire",
               "heimathafen",
+              "nuclear-and-gas",
               "additional-company-information"
             ]
           },
@@ -1597,6 +1601,7 @@
                 "vsme",
                 "esg-questionnaire",
                 "heimathafen",
+                "nuclear-and-gas",
                 "additional-company-information"
               ]
             }
@@ -1863,6 +1868,7 @@
               "vsme",
               "esg-questionnaire",
               "heimathafen",
+              "nuclear-and-gas",
               "additional-company-information"
             ]
           },

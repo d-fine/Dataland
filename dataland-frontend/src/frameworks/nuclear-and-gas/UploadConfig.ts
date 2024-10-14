@@ -9,63 +9,91 @@ export const nuclearAndGasDataModel = [
     showIf: (): boolean => true,
     subcategories: [
       {
-        name: 'nuclearEnergyRelatedActivitiesSection426',
-        label: 'Nuclear Energy related Activities (Section 4.26)',
+        name: 'general',
+        label: 'General',
+        fields: [
+          {
+            name: 'nuclearEnergyRelatedActivitiesSection426',
+            label: 'Nuclear Energy related Activities (Section 4.26)',
+            description:
+              'The undertaking carries out, funds, or has exposures to research, development, demonstration and deployment of innovative electricity generation facilities that produce energy from nuclear processes with minimal waste from the fuel cycle.',
+
+            component: 'YesNoExtendedDataPointFormField',
+            required: false,
+            showIf: (): boolean => true,
+          },
+          {
+            name: 'nuclearEnergyRelatedActivitiesSection427',
+            label: 'Nuclear Energy related Activities (Section 4.27)',
+            description:
+              'The undertaking carries out, funds, or has exposures to construction and safe operation of new nuclear installations to produce electricity or process heat, including for the purposes of district heating or industrial processes such as hydrogen production, as well as their safety upgrades, using best available technologies.',
+
+            component: 'YesNoExtendedDataPointFormField',
+            required: false,
+            showIf: (): boolean => true,
+          },
+          {
+            name: 'nuclearEnergyRelatedActivitiesSection428',
+            label: 'Nuclear Energy related Activities (Section 4.28)',
+            description:
+              'The undertaking carries out, funds, or has exposures to safe operation of existing nuclear installations that produce electricity or process heat, including for the purposes of district heating or industrial processes such as hydrogen production from nuclear energy, as well as their safety upgrades.',
+
+            component: 'YesNoExtendedDataPointFormField',
+            required: false,
+            showIf: (): boolean => true,
+          },
+          {
+            name: 'fossilGasRelatedActivitiesSection429',
+            label: 'Fossil Gas related Activities (Section 4.29)',
+            description:
+              'The undertaking carries out, funds, or has exposures to construction or operation of electricity generation facilities that produce electricity using fossil gaseous fuels.',
+
+            component: 'YesNoExtendedDataPointFormField',
+            required: false,
+            showIf: (): boolean => true,
+          },
+          {
+            name: 'fossilGasRelatedActivitiesSection430',
+            label: 'Fossil Gas related Activities (Section 4.30)',
+            description:
+              'The undertaking carries out, funds, or has exposures to construction, refurbishment, and operation of combined heat/cool and power generation facilities using fossil gaseous fuels.',
+
+            component: 'YesNoExtendedDataPointFormField',
+            required: false,
+            showIf: (): boolean => true,
+          },
+          {
+            name: 'fossilGasRelatedActivitiesSection431',
+            label: 'Fossil Gas related Activities (Section 4.31)',
+            description:
+              'The undertaking carries out, funds, or has exposures to construction, refurbishment and operation of heat generation facilities that produce heat/cool using fossil gaseous fuels.',
+
+            component: 'YesNoExtendedDataPointFormField',
+            required: false,
+            showIf: (): boolean => true,
+          },
+        ],
+      },
+      {
+        name: 'taxonomyAlignedDenominator',
+        label: 'Taxonomy-aligned (denominator)',
         fields: [],
       },
       {
-        name: 'nuclearEnergyRelatedActivitiesSection427',
-        label: 'Nuclear Energy related Activities (Section 4.27)',
+        name: 'taxonomyAlignedNumerator',
+        label: 'Taxonomy-aligned (numerator)',
         fields: [],
       },
       {
-        name: 'nuclearEnergyRelatedActivitiesSection428',
-        label: 'Nuclear Energy related Activities (Section 4.28)',
+        name: 'taxonomyEligibleButNotAligned',
+        label: 'Taxonomy-eligible but not aligned',
         fields: [],
       },
       {
-        name: 'fossilGasRelatedActivitiesSection429',
-        label: 'Fossil Gas related Activities (Section 4.29)',
-        fields: [],
-      },
-      {
-        name: 'fossilGasRelatedActivitiesSection430',
-        label: 'Fossil Gas related Activities (Section 4.30)',
-        fields: [],
-      },
-      {
-        name: 'fossilGasRelatedActivitiesSection431',
-        label: 'Fossil Gas related Activities (Section 4.31)',
+        name: 'taxonomyNonEligible',
+        label: 'Taxonomy-non-eligible',
         fields: [],
       },
     ],
-  },
-  {
-    name: 'taxonomyAlignedDenominator',
-    label: 'Taxonomy-aligned (denominator)',
-    color: '',
-    showIf: (): boolean => true,
-    subcategories: [],
-  },
-  {
-    name: 'taxonomyAlignedNumerator',
-    label: 'Taxonomy-aligned (numerator)',
-    color: '',
-    showIf: (): boolean => true,
-    subcategories: [],
-  },
-  {
-    name: 'taxonomyEligibleButNotAligned',
-    label: 'Taxonomy-eligible but not aligned',
-    color: '',
-    showIf: (): boolean => true,
-    subcategories: [],
-  },
-  {
-    name: 'taxonomyNonEligible',
-    label: 'Taxonomy-non-eligible',
-    color: '',
-    showIf: (): boolean => true,
-    subcategories: [],
   },
 ] as Category[];

@@ -481,6 +481,75 @@
         ]
       }
     },
+    "/data/nuclear-and-gas": {
+      "post": {
+        "tags": [
+          "nuclear-and-gas-data-controller"
+        ],
+        "operationId": "postCompanyAssociatedNuclearAndGasData",
+        "parameters": [
+          {
+            "name": "bypassQa",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": false
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CompanyAssociatedDataNuclearAndGasData"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully added data to the data store.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DataMetaInformation"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
     "/data/lksg": {
       "post": {
         "tags": [
@@ -2095,6 +2164,142 @@
                   "type": "array",
                   "items": {
                     "$ref": "#/components/schemas/DataAndMetaInformationPathwaysToParisData"
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
+    "/data/nuclear-and-gas/{dataId}": {
+      "get": {
+        "tags": [
+          "nuclear-and-gas-data-controller"
+        ],
+        "operationId": "getCompanyAssociatedNuclearAndGasData",
+        "parameters": [
+          {
+            "name": "dataId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved data set.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CompanyAssociatedDataNuclearAndGasData"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
+    "/data/nuclear-and-gas/companies/{companyId}": {
+      "get": {
+        "tags": [
+          "nuclear-and-gas-data-controller"
+        ],
+        "operationId": "getAllCompanyNuclearAndGasData",
+        "parameters": [
+          {
+            "name": "companyId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "showOnlyActive",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": true
+            }
+          },
+          {
+            "name": "reportingPeriod",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved framework datasets with meta info.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/DataAndMetaInformationNuclearAndGasData"
                   }
                 }
               }
@@ -7392,6 +7597,692 @@
                 "$ref": "#/components/schemas/P2pCement"
               }
             ]
+          }
+        }
+      },
+      "CompanyAssociatedDataNuclearAndGasData": {
+        "required": [
+          "companyId",
+          "data",
+          "reportingPeriod"
+        ],
+        "type": "object",
+        "properties": {
+          "companyId": {
+            "type": "string"
+          },
+          "reportingPeriod": {
+            "type": "string"
+          },
+          "data": {
+            "$ref": "#/components/schemas/NuclearAndGasData"
+          }
+        }
+      },
+      "ExtendedDataPointNuclearAndGasAlignedDenominator": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/NuclearAndGasAlignedDenominator"
+              }
+            ]
+          },
+          "quality": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/QualityOptions"
+              }
+            ]
+          },
+          "comment": {
+            "type": "string",
+            "nullable": true
+          },
+          "dataSource": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDocumentReference"
+              }
+            ]
+          }
+        }
+      },
+      "ExtendedDataPointNuclearAndGasAlignedNumerator": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/NuclearAndGasAlignedNumerator"
+              }
+            ]
+          },
+          "quality": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/QualityOptions"
+              }
+            ]
+          },
+          "comment": {
+            "type": "string",
+            "nullable": true
+          },
+          "dataSource": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDocumentReference"
+              }
+            ]
+          }
+        }
+      },
+      "ExtendedDataPointNuclearAndGasEligibleButNotAligned": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/NuclearAndGasEligibleButNotAligned"
+              }
+            ]
+          },
+          "quality": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/QualityOptions"
+              }
+            ]
+          },
+          "comment": {
+            "type": "string",
+            "nullable": true
+          },
+          "dataSource": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDocumentReference"
+              }
+            ]
+          }
+        }
+      },
+      "ExtendedDataPointNuclearAndGasNonEligible": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/NuclearAndGasNonEligible"
+              }
+            ]
+          },
+          "quality": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/QualityOptions"
+              }
+            ]
+          },
+          "comment": {
+            "type": "string",
+            "nullable": true
+          },
+          "dataSource": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDocumentReference"
+              }
+            ]
+          }
+        }
+      },
+      "NuclearAndGasAlignedDenominator": {
+        "type": "object",
+        "properties": {
+          "taxonomyAlignedShareDenominatorClimateChangeMitigationAndClimateChangeAdaptationNAndG426": {
+            "type": "number",
+            "nullable": true
+          },
+          "taxonomyAlignedShareDenominatorSubstantiallyContributingToClimateChangeMitigationNAndG426": {
+            "type": "number",
+            "nullable": true
+          },
+          "taxonomyAlignedShareDenominatorSubstantiallyContributingToClimateChangeAdaptationNAndG426": {
+            "type": "number",
+            "nullable": true
+          },
+          "taxonomyAlignedShareDenominatorClimateChangeMitigationAndClimateChangeAdaptationNAndG427": {
+            "type": "number",
+            "nullable": true
+          },
+          "taxonomyAlignedShareDenominatorSubstantiallyContributingToClimateChangeMitigationNAndG427": {
+            "type": "number",
+            "nullable": true
+          },
+          "taxonomyAlignedShareDenominatorSubstantiallyContributingToClimateChangeAdaptationNAndG427": {
+            "type": "number",
+            "nullable": true
+          },
+          "taxonomyAlignedShareDenominatorClimateChangeMitigationAndClimateChangeAdaptationNAndG428": {
+            "type": "number",
+            "nullable": true
+          },
+          "taxonomyAlignedShareDenominatorSubstantiallyContributingToClimateChangeMitigationNAndG428": {
+            "type": "number",
+            "nullable": true
+          },
+          "taxonomyAlignedShareDenominatorSubstantiallyContributingToClimateChangeAdaptationNAndG428": {
+            "type": "number",
+            "nullable": true
+          },
+          "taxonomyAlignedShareDenominatorClimateChangeMitigationAndClimateChangeAdaptationNAndG429": {
+            "type": "number",
+            "nullable": true
+          },
+          "taxonomyAlignedShareDenominatorSubstantiallyContributingToClimateChangeMitigationNAndG429": {
+            "type": "number",
+            "nullable": true
+          },
+          "taxonomyAlignedShareDenominatorSubstantiallyContributingToClimateChangeAdaptationNAndG429": {
+            "type": "number",
+            "nullable": true
+          },
+          "taxonomyAlignedShareDenominatorClimateChangeMitigationAndClimateChangeAdaptationNAndG430": {
+            "type": "number",
+            "nullable": true
+          },
+          "taxonomyAlignedShareDenominatorSubstantiallyContributingToClimateChangeMitigationNAndG430": {
+            "type": "number",
+            "nullable": true
+          },
+          "taxonomyAlignedShareDenominatorSubstantiallyContributingToClimateChangeAdaptationNAndG430": {
+            "type": "number",
+            "nullable": true
+          },
+          "taxonomyAlignedShareDenominatorClimateChangeMitigationAndClimateChangeAdaptationNAndG431": {
+            "type": "number",
+            "nullable": true
+          },
+          "taxonomyAlignedShareDenominatorSubstantiallyContributingToClimateChangeMitigationNAndG431": {
+            "type": "number",
+            "nullable": true
+          },
+          "taxonomyAlignedShareDenominatorSubstantiallyContributingToClimateChangeAdaptationNAndG431": {
+            "type": "number",
+            "nullable": true
+          },
+          "taxonomyAlignedShareDenominatorClimateChangeMitigationAndClimateChangeAdaptationOtherActivities": {
+            "type": "number",
+            "nullable": true
+          },
+          "taxonomyAlignedShareDenominatorSubstantiallyContributingToClimateChangeMitigationOtherActivities": {
+            "type": "number",
+            "nullable": true
+          },
+          "taxonomyAlignedShareDenominatorSubstantiallyContributingToClimateChangeAdaptationOtherActivities": {
+            "type": "number",
+            "nullable": true
+          },
+          "taxonomyAlignedShareDenominatorClimateChangeMitigationAndClimateChangeAdaptation": {
+            "type": "number",
+            "nullable": true
+          },
+          "taxonomyAlignedShareDenominatorSubstantiallyContributingToClimateChangeMitigation": {
+            "type": "number",
+            "nullable": true
+          },
+          "taxonomyAlignedShareDenominatorSubstantiallyContributingToClimateChangeAdaptation": {
+            "type": "number",
+            "nullable": true
+          }
+        }
+      },
+      "NuclearAndGasAlignedNumerator": {
+        "type": "object",
+        "properties": {
+          "taxonomyAlignedShareNumeratorClimateChangeMitigationAndClimateChangeAdaptationNAndG426": {
+            "type": "number",
+            "nullable": true
+          },
+          "taxonomyAlignedShareNumeratorSubstantiallyContributingToClimateChangeMitigationNAndG426": {
+            "type": "number",
+            "nullable": true
+          },
+          "taxonomyAlignedShareNumeratorSubstantiallyContributingToClimateChangeAdaptationNAndG426": {
+            "type": "number",
+            "nullable": true
+          },
+          "taxonomyAlignedShareNumeratorClimateChangeMitigationAndClimateChangeAdaptationNAndG427": {
+            "type": "number",
+            "nullable": true
+          },
+          "taxonomyAlignedShareNumeratorSubstantiallyContributingToClimateChangeMitigationNAndG427": {
+            "type": "number",
+            "nullable": true
+          },
+          "taxonomyAlignedShareNumeratorSubstantiallyContributingToClimateChangeAdaptationNAndG427": {
+            "type": "number",
+            "nullable": true
+          },
+          "taxonomyAlignedShareNumeratorClimateChangeMitigationAndClimateChangeAdaptationNAndG428": {
+            "type": "number",
+            "nullable": true
+          },
+          "taxonomyAlignedShareNumeratorSubstantiallyContributingToClimateChangeMitigationNAndG428": {
+            "type": "number",
+            "nullable": true
+          },
+          "taxonomyAlignedShareNumeratorSubstantiallyContributingToClimateChangeAdaptationNAndG428": {
+            "type": "number",
+            "nullable": true
+          },
+          "taxonomyAlignedShareNumeratorClimateChangeMitigationAndClimateChangeAdaptationNAndG429": {
+            "type": "number",
+            "nullable": true
+          },
+          "taxonomyAlignedShareNumeratorSubstantiallyContributingToClimateChangeMitigationNAndG429": {
+            "type": "number",
+            "nullable": true
+          },
+          "taxonomyAlignedShareNumeratorSubstantiallyContributingToClimateChangeAdaptationNAndG429": {
+            "type": "number",
+            "nullable": true
+          },
+          "taxonomyAlignedShareNumeratorClimateChangeMitigationAndClimateChangeAdaptationNAndG430": {
+            "type": "number",
+            "nullable": true
+          },
+          "taxonomyAlignedShareNumeratorSubstantiallyContributingToClimateChangeMitigationNAndG430": {
+            "type": "number",
+            "nullable": true
+          },
+          "taxonomyAlignedShareNumeratorSubstantiallyContributingToClimateChangeAdaptationNAndG430": {
+            "type": "number",
+            "nullable": true
+          },
+          "taxonomyAlignedShareNumeratorClimateChangeMitigationAndClimateChangeAdaptationNAndG431": {
+            "type": "number",
+            "nullable": true
+          },
+          "taxonomyAlignedShareNumeratorSubstantiallyContributingToClimateChangeMitigationNAndG431": {
+            "type": "number",
+            "nullable": true
+          },
+          "taxonomyAlignedShareNumeratorSubstantiallyContributingToClimateChangeAdaptationNAndG431": {
+            "type": "number",
+            "nullable": true
+          },
+          "taxonomyAlignedShareNumeratorClimateChangeMitigationAndClimateChangeAdaptationOtherActivities": {
+            "type": "number",
+            "nullable": true
+          },
+          "taxonomyAlignedShareNumeratorSubstantiallyContributingToClimateChangeMitigationOtherActivities": {
+            "type": "number",
+            "nullable": true
+          },
+          "taxonomyAlignedShareNumeratorSubstantiallyContributingToClimateChangeAdaptationOtherActivities": {
+            "type": "number",
+            "nullable": true
+          },
+          "taxonomyAlignedShareNumeratorClimateChangeMitigationAndClimateChangeAdaptation": {
+            "type": "number",
+            "nullable": true
+          },
+          "taxonomyAlignedShareNumeratorSubstantiallyContributingToClimateChangeMitigation": {
+            "type": "number",
+            "nullable": true
+          },
+          "taxonomyAlignedShareNumeratorSubstantiallyContributingToClimateChangeAdaptation": {
+            "type": "number",
+            "nullable": true
+          }
+        }
+      },
+      "NuclearAndGasData": {
+        "type": "object",
+        "properties": {
+          "general": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/NuclearAndGasGeneral"
+              }
+            ]
+          }
+        }
+      },
+      "NuclearAndGasEligibleButNotAligned": {
+        "type": "object",
+        "properties": {
+          "taxonomyEligibleButNotAlignedShareClimateChangeMitigationAndClimateChangeAdaptationNAndG426": {
+            "type": "number",
+            "nullable": true
+          },
+          "taxonomyEligibleButNotAlignedShareSubstantiallyContributingToClimateChangeMitigationNAndG426": {
+            "type": "number",
+            "nullable": true
+          },
+          "taxonomyEligibleButNotAlignedShareSubstantiallyContributingToClimateChangeAdaptationNAndG426": {
+            "type": "number",
+            "nullable": true
+          },
+          "taxonomyEligibleButNotAlignedShareClimateChangeMitigationAndClimateChangeAdaptationNAndG427": {
+            "type": "number",
+            "nullable": true
+          },
+          "taxonomyEligibleButNotAlignedShareSubstantiallyContributingToClimateChangeMitigationNAndG427": {
+            "type": "number",
+            "nullable": true
+          },
+          "taxonomyEligibleButNotAlignedShareSubstantiallyContributingToClimateChangeAdaptationNAndG427": {
+            "type": "number",
+            "nullable": true
+          },
+          "taxonomyEligibleButNotAlignedShareClimateChangeMitigationAndClimateChangeAdaptationNAndG428": {
+            "type": "number",
+            "nullable": true
+          },
+          "taxonomyEligibleButNotAlignedShareSubstantiallyContributingToClimateChangeMitigationNAndG428": {
+            "type": "number",
+            "nullable": true
+          },
+          "taxonomyEligibleButNotAlignedShareSubstantiallyContributingToClimateChangeAdaptationNAndG428": {
+            "type": "number",
+            "nullable": true
+          },
+          "taxonomyEligibleButNotAlignedShareClimateChangeMitigationAndClimateChangeAdaptationNAndG429": {
+            "type": "number",
+            "nullable": true
+          },
+          "taxonomyEligibleButNotAlignedShareSubstantiallyContributingToClimateChangeMitigationNAndG429": {
+            "type": "number",
+            "nullable": true
+          },
+          "taxonomyEligibleButNotAlignedShareSubstantiallyContributingToClimateChangeAdaptationNAndG429": {
+            "type": "number",
+            "nullable": true
+          },
+          "taxonomyEligibleButNotAlignedShareClimateChangeMitigationAndClimateChangeAdaptationNAndG430": {
+            "type": "number",
+            "nullable": true
+          },
+          "taxonomyEligibleButNotAlignedShareSubstantiallyContributingToClimateChangeMitigationNAndG430": {
+            "type": "number",
+            "nullable": true
+          },
+          "taxonomyEligibleButNotAlignedShareSubstantiallyContributingToClimateChangeAdaptationNAndG430": {
+            "type": "number",
+            "nullable": true
+          },
+          "taxonomyEligibleButNotAlignedShareClimateChangeMitigationAndClimateChangeAdaptationNAndG431": {
+            "type": "number",
+            "nullable": true
+          },
+          "taxonomyEligibleButNotAlignedShareSubstantiallyContributingToClimateChangeMitigationNAndG431": {
+            "type": "number",
+            "nullable": true
+          },
+          "taxonomyEligibleButNotAlignedShareSubstantiallyContributingToClimateChangeAdaptationNAndG431": {
+            "type": "number",
+            "nullable": true
+          },
+          "taxonomyEligibleButNotAlignedShareClimateChangeMitigationAndClimateChangeAdaptationOtherActivities": {
+            "type": "number",
+            "nullable": true
+          },
+          "taxonomyEligibleButNotAlignedShareSubstantiallyContributingToClimateChangeMitigationOtherActivities": {
+            "type": "number",
+            "nullable": true
+          },
+          "taxonomyEligibleButNotAlignedShareSubstantiallyContributingToClimateChangeAdaptationOtherActivities": {
+            "type": "number",
+            "nullable": true
+          },
+          "taxonomyEligibleButNotAlignedShareClimateChangeMitigationAndClimateChangeAdaptation": {
+            "type": "number",
+            "nullable": true
+          },
+          "taxonomyEligibleButNotAlignedShareSubstantiallyContributingToClimateChangeMitigation": {
+            "type": "number",
+            "nullable": true
+          },
+          "taxonomyEligibleButNotAlignedShareSubstantiallyContributingToClimateChangeAdaptation": {
+            "type": "number",
+            "nullable": true
+          }
+        }
+      },
+      "NuclearAndGasGeneral": {
+        "type": "object",
+        "properties": {
+          "general": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/NuclearAndGasGeneralGeneral"
+              }
+            ]
+          },
+          "taxonomyAlignedDenominator": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/NuclearAndGasGeneralTaxonomyAlignedDenominator"
+              }
+            ]
+          },
+          "taxonomyAlignedNumerator": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/NuclearAndGasGeneralTaxonomyAlignedNumerator"
+              }
+            ]
+          },
+          "taxonomyEligibleButNotAligned": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/NuclearAndGasGeneralTaxonomyEligibleButNotAligned"
+              }
+            ]
+          },
+          "taxonomyNonEligible": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/NuclearAndGasGeneralTaxonomyNonEligible"
+              }
+            ]
+          }
+        }
+      },
+      "NuclearAndGasGeneralGeneral": {
+        "type": "object",
+        "properties": {
+          "nuclearEnergyRelatedActivitiesSection426": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointYesNo"
+              }
+            ]
+          },
+          "nuclearEnergyRelatedActivitiesSection427": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointYesNo"
+              }
+            ]
+          },
+          "nuclearEnergyRelatedActivitiesSection428": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointYesNo"
+              }
+            ]
+          },
+          "fossilGasRelatedActivitiesSection429": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointYesNo"
+              }
+            ]
+          },
+          "fossilGasRelatedActivitiesSection430": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointYesNo"
+              }
+            ]
+          },
+          "fossilGasRelatedActivitiesSection431": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointYesNo"
+              }
+            ]
+          }
+        }
+      },
+      "NuclearAndGasGeneralTaxonomyAlignedDenominator": {
+        "type": "object",
+        "properties": {
+          "nuclearAndGasTaxonomyAlignedRevenueDenominator": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointNuclearAndGasAlignedDenominator"
+              }
+            ]
+          },
+          "nuclearAndGasTaxonomyAlignedCapexDenominator": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointNuclearAndGasAlignedDenominator"
+              }
+            ]
+          }
+        }
+      },
+      "NuclearAndGasGeneralTaxonomyAlignedNumerator": {
+        "type": "object",
+        "properties": {
+          "nuclearAndGasTaxonomyAlignedRevenueNumerator": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointNuclearAndGasAlignedNumerator"
+              }
+            ]
+          },
+          "nuclearAndGasTaxonomyAlignedCapexNumerator": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointNuclearAndGasAlignedNumerator"
+              }
+            ]
+          }
+        }
+      },
+      "NuclearAndGasGeneralTaxonomyEligibleButNotAligned": {
+        "type": "object",
+        "properties": {
+          "nuclearAndGasTaxonomyEligibleButNotAlignedRevenue": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointNuclearAndGasEligibleButNotAligned"
+              }
+            ]
+          },
+          "nuclearAndGasTaxonomyEligibleButNotAlignedCapex": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointNuclearAndGasEligibleButNotAligned"
+              }
+            ]
+          }
+        }
+      },
+      "NuclearAndGasGeneralTaxonomyNonEligible": {
+        "type": "object",
+        "properties": {
+          "nuclearAndGasTaxonomyNonEligibleRevenue": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointNuclearAndGasNonEligible"
+              }
+            ]
+          },
+          "nuclearAndGasTaxonomyNonEligibleCapex": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointNuclearAndGasNonEligible"
+              }
+            ]
+          }
+        }
+      },
+      "NuclearAndGasNonEligible": {
+        "type": "object",
+        "properties": {
+          "taxonomyNonEligibleShareNAndG426": {
+            "type": "number",
+            "nullable": true
+          },
+          "taxonomyNonEligibleShareNAndG427": {
+            "type": "number",
+            "nullable": true
+          },
+          "taxonomyNonEligibleShareNAndG428": {
+            "type": "number",
+            "nullable": true
+          },
+          "taxonomyNonEligibleShareNAndG429": {
+            "type": "number",
+            "nullable": true
+          },
+          "taxonomyNonEligibleShareNAndG430": {
+            "type": "number",
+            "nullable": true
+          },
+          "taxonomyNonEligibleShareNAndG431": {
+            "type": "number",
+            "nullable": true
+          },
+          "taxonomyNonEligibleShareOtherActivities": {
+            "type": "number",
+            "nullable": true
+          },
+          "taxonomyNonEligibleShare": {
+            "type": "number",
+            "nullable": true
           }
         }
       },
@@ -17500,6 +18391,21 @@
           }
         }
       },
+      "DataAndMetaInformationNuclearAndGasData": {
+        "required": [
+          "data",
+          "metaInfo"
+        ],
+        "type": "object",
+        "properties": {
+          "metaInfo": {
+            "$ref": "#/components/schemas/DataMetaInformation"
+          },
+          "data": {
+            "$ref": "#/components/schemas/NuclearAndGasData"
+          }
+        }
+      },
       "DataAndMetaInformationLksgData": {
         "required": [
           "data",
@@ -17599,25 +18505,25 @@
         ],
         "type": "object",
         "properties": {
-          "lei": {
-            "type": "string",
-            "nullable": true
+          "companyName": {
+            "type": "string"
           },
           "sector": {
             "type": "string",
             "nullable": true
           },
-          "companyName": {
+          "companyId": {
             "type": "string"
           },
-          "companyId": {
+          "headquarters": {
             "type": "string"
           },
           "countryCode": {
             "type": "string"
           },
-          "headquarters": {
-            "type": "string"
+          "lei": {
+            "type": "string",
+            "nullable": true
           }
         }
       },
@@ -17706,6 +18612,7 @@
           "vsme",
           "esg-questionnaire",
           "heimathafen",
+          "nuclear-and-gas",
           "additional-company-information"
         ]
       },

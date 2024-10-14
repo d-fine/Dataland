@@ -27,44 +27,18 @@ export function generateNuclearAndGasData(nullProbability = DEFAULT_PROBABILITY)
   const dataGenerator = new NuclearAndGasGenerator(nullProbability);
   return {
     general: {
-      nuclearEnergyRelatedActivitiesSection426: dataGenerator.randomExtendedDataPoint(dataGenerator.randomYesNo()),
-      nuclearEnergyRelatedActivitiesSection427: dataGenerator.randomExtendedDataPoint(dataGenerator.randomYesNo()),
-      nuclearEnergyRelatedActivitiesSection428: dataGenerator.randomExtendedDataPoint(dataGenerator.randomYesNo()),
-      fossilGasRelatedActivitiesSection429: dataGenerator.randomExtendedDataPoint(dataGenerator.randomYesNo()),
-      fossilGasRelatedActivitiesSection430: dataGenerator.randomExtendedDataPoint(dataGenerator.randomYesNo()),
-      fossilGasRelatedActivitiesSection431: dataGenerator.randomExtendedDataPoint(dataGenerator.randomYesNo()),
-    },
-    taxonomyAlignedDenominator: {
-      nuclearAndGasTaxonomyAlignedRevenueDenominator: dataGenerator.randomExtendedDataPoint(
-        dataGenerator.randomNuclearAndGasAlignedDenominator()
-      ),
-      nuclearAndGasTaxonomyAlignedCapexDenominator: dataGenerator.randomExtendedDataPoint(
-        dataGenerator.randomNuclearAndGasAlignedDenominator()
-      ),
-    },
-    taxonomyAlignedNumerator: {
-      nuclearAndGasTaxonomyAlignedRevenueNumerator: dataGenerator.randomExtendedDataPoint(
-        dataGenerator.randomNuclearAndGasAlignedNumerator()
-      ),
-      nuclearAndGasTaxonomyAlignedCapexNumerator: dataGenerator.randomExtendedDataPoint(
-        dataGenerator.randomNuclearAndGasAlignedNumerator()
-      ),
-    },
-    taxonomyEligibleButNotAligned: {
-      nuclearAndGasTaxonomyEligibleButNotAlignedRevenue: dataGenerator.randomExtendedDataPoint(
-        dataGenerator.randomNuclearAndGasEligibleButNotAligned()
-      ),
-      nuclearAndGasTaxonomyEligibleButNotAlignedCapex: dataGenerator.randomExtendedDataPoint(
-        dataGenerator.randomNuclearAndGasEligibleButNotAligned()
-      ),
-    },
-    taxonomyNonEligible: {
-      nuclearAndGasTaxonomyNonEligibleRevenue: dataGenerator.randomExtendedDataPoint(
-        dataGenerator.randomNuclearAndGasNonEligible()
-      ),
-      nuclearAndGasTaxonomyNonEligibleCapex: dataGenerator.randomExtendedDataPoint(
-        dataGenerator.randomNuclearAndGasNonEligible()
-      ),
+      general: {
+        nuclearEnergyRelatedActivitiesSection426: dataGenerator.randomExtendedDataPoint(dataGenerator.randomYesNo()),
+        nuclearEnergyRelatedActivitiesSection427: dataGenerator.randomExtendedDataPoint(dataGenerator.randomYesNo()),
+        nuclearEnergyRelatedActivitiesSection428: dataGenerator.randomExtendedDataPoint(dataGenerator.randomYesNo()),
+        fossilGasRelatedActivitiesSection429: dataGenerator.randomExtendedDataPoint(dataGenerator.randomYesNo()),
+        fossilGasRelatedActivitiesSection430: dataGenerator.randomExtendedDataPoint(dataGenerator.randomYesNo()),
+        fossilGasRelatedActivitiesSection431: dataGenerator.randomExtendedDataPoint(dataGenerator.randomYesNo()),
+      },
+      taxonomyAlignedDenominator: {},
+      taxonomyAlignedNumerator: {},
+      taxonomyEligibleButNotAligned: {},
+      taxonomyNonEligible: {},
     },
   };
 }

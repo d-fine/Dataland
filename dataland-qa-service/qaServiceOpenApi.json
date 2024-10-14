@@ -301,6 +301,149 @@
         ]
       }
     },
+    "/data/nuclear-and-gas/{dataId}/reports": {
+      "get": {
+        "tags": [
+          "nuclear-and-gas-data-qa-report-controller"
+        ],
+        "operationId": "getNuclearAndGasDataAllQaReportsForDataset",
+        "parameters": [
+          {
+            "name": "dataId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "showInactive",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "reporterUserId",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved all QA reports.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/QaReportWithMetaInformationNuclearAndGasData"
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      },
+      "post": {
+        "tags": [
+          "nuclear-and-gas-data-qa-report-controller"
+        ],
+        "operationId": "postNuclearAndGasDataQaReport",
+        "parameters": [
+          {
+            "name": "dataId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NuclearAndGasData"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully added QA report to dataland.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/QaReportMetaInformation"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
     "/data/eutaxonomy-non-financials/{dataId}/reports": {
       "get": {
         "tags": [
@@ -799,6 +942,75 @@
         ]
       }
     },
+    "/data/nuclear-and-gas/{dataId}/reports/{qaReportId}/status": {
+      "patch": {
+        "tags": [
+          "nuclear-and-gas-data-qa-report-controller"
+        ],
+        "operationId": "setNuclearAndGasDataQaReportStatus",
+        "parameters": [
+          {
+            "name": "dataId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "qaReportId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/QaReportStatusPatch"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully marked QA report as active or inactive."
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
     "/data/eutaxonomy-non-financials/{dataId}/reports/{qaReportId}/status": {
       "patch": {
         "tags": [
@@ -1033,6 +1245,7 @@
                   "vsme",
                   "esg-questionnaire",
                   "heimathafen",
+                  "nuclear-and-gas",
                   "additional-company-information"
                 ]
               }
@@ -1129,6 +1342,7 @@
                   "vsme",
                   "esg-questionnaire",
                   "heimathafen",
+                  "nuclear-and-gas",
                   "additional-company-information"
                 ]
               }
@@ -1367,6 +1581,72 @@
                   "items": {
                     "$ref": "#/components/schemas/DataAndQaReportMetadata"
                   }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
+    "/data/nuclear-and-gas/{dataId}/reports/{qaReportId}": {
+      "get": {
+        "tags": [
+          "nuclear-and-gas-data-qa-report-controller"
+        ],
+        "operationId": "getNuclearAndGasDataQaReport",
+        "parameters": [
+          {
+            "name": "dataId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "qaReportId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved QA report.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/QaReportWithMetaInformationNuclearAndGasData"
                 }
               }
             }
@@ -2565,6 +2845,533 @@
           },
           "active": {
             "type": "boolean"
+          }
+        }
+      },
+      "ExtendedDataPointNuclearAndGasAlignedDenominator": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "$ref": "#/components/schemas/NuclearAndGasAlignedDenominator"
+          },
+          "quality": {
+            "type": "string",
+            "enum": [
+              "Audited",
+              "Reported",
+              "Estimated",
+              "Incomplete",
+              "NoDataFound"
+            ]
+          },
+          "comment": {
+            "type": "string"
+          },
+          "dataSource": {
+            "$ref": "#/components/schemas/ExtendedDocumentReference"
+          }
+        }
+      },
+      "ExtendedDataPointNuclearAndGasAlignedNumerator": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "$ref": "#/components/schemas/NuclearAndGasAlignedNumerator"
+          },
+          "quality": {
+            "type": "string",
+            "enum": [
+              "Audited",
+              "Reported",
+              "Estimated",
+              "Incomplete",
+              "NoDataFound"
+            ]
+          },
+          "comment": {
+            "type": "string"
+          },
+          "dataSource": {
+            "$ref": "#/components/schemas/ExtendedDocumentReference"
+          }
+        }
+      },
+      "ExtendedDataPointNuclearAndGasEligibleButNotAligned": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "$ref": "#/components/schemas/NuclearAndGasEligibleButNotAligned"
+          },
+          "quality": {
+            "type": "string",
+            "enum": [
+              "Audited",
+              "Reported",
+              "Estimated",
+              "Incomplete",
+              "NoDataFound"
+            ]
+          },
+          "comment": {
+            "type": "string"
+          },
+          "dataSource": {
+            "$ref": "#/components/schemas/ExtendedDocumentReference"
+          }
+        }
+      },
+      "ExtendedDataPointNuclearAndGasNonEligible": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "$ref": "#/components/schemas/NuclearAndGasNonEligible"
+          },
+          "quality": {
+            "type": "string",
+            "enum": [
+              "Audited",
+              "Reported",
+              "Estimated",
+              "Incomplete",
+              "NoDataFound"
+            ]
+          },
+          "comment": {
+            "type": "string"
+          },
+          "dataSource": {
+            "$ref": "#/components/schemas/ExtendedDocumentReference"
+          }
+        }
+      },
+      "NuclearAndGasAlignedDenominator": {
+        "type": "object",
+        "properties": {
+          "taxonomyAlignedShareDenominatorClimateChangeMitigationAndClimateChangeAdaptationNAndG426": {
+            "type": "number"
+          },
+          "taxonomyAlignedShareDenominatorSubstantiallyContributingToClimateChangeMitigationNAndG426": {
+            "type": "number"
+          },
+          "taxonomyAlignedShareDenominatorSubstantiallyContributingToClimateChangeAdaptationNAndG426": {
+            "type": "number"
+          },
+          "taxonomyAlignedShareDenominatorClimateChangeMitigationAndClimateChangeAdaptationNAndG427": {
+            "type": "number"
+          },
+          "taxonomyAlignedShareDenominatorSubstantiallyContributingToClimateChangeMitigationNAndG427": {
+            "type": "number"
+          },
+          "taxonomyAlignedShareDenominatorSubstantiallyContributingToClimateChangeAdaptationNAndG427": {
+            "type": "number"
+          },
+          "taxonomyAlignedShareDenominatorClimateChangeMitigationAndClimateChangeAdaptationNAndG428": {
+            "type": "number"
+          },
+          "taxonomyAlignedShareDenominatorSubstantiallyContributingToClimateChangeMitigationNAndG428": {
+            "type": "number"
+          },
+          "taxonomyAlignedShareDenominatorSubstantiallyContributingToClimateChangeAdaptationNAndG428": {
+            "type": "number"
+          },
+          "taxonomyAlignedShareDenominatorClimateChangeMitigationAndClimateChangeAdaptationNAndG429": {
+            "type": "number"
+          },
+          "taxonomyAlignedShareDenominatorSubstantiallyContributingToClimateChangeMitigationNAndG429": {
+            "type": "number"
+          },
+          "taxonomyAlignedShareDenominatorSubstantiallyContributingToClimateChangeAdaptationNAndG429": {
+            "type": "number"
+          },
+          "taxonomyAlignedShareDenominatorClimateChangeMitigationAndClimateChangeAdaptationNAndG430": {
+            "type": "number"
+          },
+          "taxonomyAlignedShareDenominatorSubstantiallyContributingToClimateChangeMitigationNAndG430": {
+            "type": "number"
+          },
+          "taxonomyAlignedShareDenominatorSubstantiallyContributingToClimateChangeAdaptationNAndG430": {
+            "type": "number"
+          },
+          "taxonomyAlignedShareDenominatorClimateChangeMitigationAndClimateChangeAdaptationNAndG431": {
+            "type": "number"
+          },
+          "taxonomyAlignedShareDenominatorSubstantiallyContributingToClimateChangeMitigationNAndG431": {
+            "type": "number"
+          },
+          "taxonomyAlignedShareDenominatorSubstantiallyContributingToClimateChangeAdaptationNAndG431": {
+            "type": "number"
+          },
+          "taxonomyAlignedShareDenominatorClimateChangeMitigationAndClimateChangeAdaptationOtherActivities": {
+            "type": "number"
+          },
+          "taxonomyAlignedShareDenominatorSubstantiallyContributingToClimateChangeMitigationOtherActivities": {
+            "type": "number"
+          },
+          "taxonomyAlignedShareDenominatorSubstantiallyContributingToClimateChangeAdaptationOtherActivities": {
+            "type": "number"
+          },
+          "taxonomyAlignedShareDenominatorClimateChangeMitigationAndClimateChangeAdaptation": {
+            "type": "number"
+          },
+          "taxonomyAlignedShareDenominatorSubstantiallyContributingToClimateChangeMitigation": {
+            "type": "number"
+          },
+          "taxonomyAlignedShareDenominatorSubstantiallyContributingToClimateChangeAdaptation": {
+            "type": "number"
+          }
+        }
+      },
+      "NuclearAndGasAlignedNumerator": {
+        "type": "object",
+        "properties": {
+          "taxonomyAlignedShareNumeratorClimateChangeMitigationAndClimateChangeAdaptationNAndG426": {
+            "type": "number"
+          },
+          "taxonomyAlignedShareNumeratorSubstantiallyContributingToClimateChangeMitigationNAndG426": {
+            "type": "number"
+          },
+          "taxonomyAlignedShareNumeratorSubstantiallyContributingToClimateChangeAdaptationNAndG426": {
+            "type": "number"
+          },
+          "taxonomyAlignedShareNumeratorClimateChangeMitigationAndClimateChangeAdaptationNAndG427": {
+            "type": "number"
+          },
+          "taxonomyAlignedShareNumeratorSubstantiallyContributingToClimateChangeMitigationNAndG427": {
+            "type": "number"
+          },
+          "taxonomyAlignedShareNumeratorSubstantiallyContributingToClimateChangeAdaptationNAndG427": {
+            "type": "number"
+          },
+          "taxonomyAlignedShareNumeratorClimateChangeMitigationAndClimateChangeAdaptationNAndG428": {
+            "type": "number"
+          },
+          "taxonomyAlignedShareNumeratorSubstantiallyContributingToClimateChangeMitigationNAndG428": {
+            "type": "number"
+          },
+          "taxonomyAlignedShareNumeratorSubstantiallyContributingToClimateChangeAdaptationNAndG428": {
+            "type": "number"
+          },
+          "taxonomyAlignedShareNumeratorClimateChangeMitigationAndClimateChangeAdaptationNAndG429": {
+            "type": "number"
+          },
+          "taxonomyAlignedShareNumeratorSubstantiallyContributingToClimateChangeMitigationNAndG429": {
+            "type": "number"
+          },
+          "taxonomyAlignedShareNumeratorSubstantiallyContributingToClimateChangeAdaptationNAndG429": {
+            "type": "number"
+          },
+          "taxonomyAlignedShareNumeratorClimateChangeMitigationAndClimateChangeAdaptationNAndG430": {
+            "type": "number"
+          },
+          "taxonomyAlignedShareNumeratorSubstantiallyContributingToClimateChangeMitigationNAndG430": {
+            "type": "number"
+          },
+          "taxonomyAlignedShareNumeratorSubstantiallyContributingToClimateChangeAdaptationNAndG430": {
+            "type": "number"
+          },
+          "taxonomyAlignedShareNumeratorClimateChangeMitigationAndClimateChangeAdaptationNAndG431": {
+            "type": "number"
+          },
+          "taxonomyAlignedShareNumeratorSubstantiallyContributingToClimateChangeMitigationNAndG431": {
+            "type": "number"
+          },
+          "taxonomyAlignedShareNumeratorSubstantiallyContributingToClimateChangeAdaptationNAndG431": {
+            "type": "number"
+          },
+          "taxonomyAlignedShareNumeratorClimateChangeMitigationAndClimateChangeAdaptationOtherActivities": {
+            "type": "number"
+          },
+          "taxonomyAlignedShareNumeratorSubstantiallyContributingToClimateChangeMitigationOtherActivities": {
+            "type": "number"
+          },
+          "taxonomyAlignedShareNumeratorSubstantiallyContributingToClimateChangeAdaptationOtherActivities": {
+            "type": "number"
+          },
+          "taxonomyAlignedShareNumeratorClimateChangeMitigationAndClimateChangeAdaptation": {
+            "type": "number"
+          },
+          "taxonomyAlignedShareNumeratorSubstantiallyContributingToClimateChangeMitigation": {
+            "type": "number"
+          },
+          "taxonomyAlignedShareNumeratorSubstantiallyContributingToClimateChangeAdaptation": {
+            "type": "number"
+          }
+        }
+      },
+      "NuclearAndGasData": {
+        "type": "object",
+        "properties": {
+          "general": {
+            "$ref": "#/components/schemas/NuclearAndGasGeneral"
+          }
+        }
+      },
+      "NuclearAndGasEligibleButNotAligned": {
+        "type": "object",
+        "properties": {
+          "taxonomyEligibleButNotAlignedShareClimateChangeMitigationAndClimateChangeAdaptationNAndG426": {
+            "type": "number"
+          },
+          "taxonomyEligibleButNotAlignedShareSubstantiallyContributingToClimateChangeMitigationNAndG426": {
+            "type": "number"
+          },
+          "taxonomyEligibleButNotAlignedShareSubstantiallyContributingToClimateChangeAdaptationNAndG426": {
+            "type": "number"
+          },
+          "taxonomyEligibleButNotAlignedShareClimateChangeMitigationAndClimateChangeAdaptationNAndG427": {
+            "type": "number"
+          },
+          "taxonomyEligibleButNotAlignedShareSubstantiallyContributingToClimateChangeMitigationNAndG427": {
+            "type": "number"
+          },
+          "taxonomyEligibleButNotAlignedShareSubstantiallyContributingToClimateChangeAdaptationNAndG427": {
+            "type": "number"
+          },
+          "taxonomyEligibleButNotAlignedShareClimateChangeMitigationAndClimateChangeAdaptationNAndG428": {
+            "type": "number"
+          },
+          "taxonomyEligibleButNotAlignedShareSubstantiallyContributingToClimateChangeMitigationNAndG428": {
+            "type": "number"
+          },
+          "taxonomyEligibleButNotAlignedShareSubstantiallyContributingToClimateChangeAdaptationNAndG428": {
+            "type": "number"
+          },
+          "taxonomyEligibleButNotAlignedShareClimateChangeMitigationAndClimateChangeAdaptationNAndG429": {
+            "type": "number"
+          },
+          "taxonomyEligibleButNotAlignedShareSubstantiallyContributingToClimateChangeMitigationNAndG429": {
+            "type": "number"
+          },
+          "taxonomyEligibleButNotAlignedShareSubstantiallyContributingToClimateChangeAdaptationNAndG429": {
+            "type": "number"
+          },
+          "taxonomyEligibleButNotAlignedShareClimateChangeMitigationAndClimateChangeAdaptationNAndG430": {
+            "type": "number"
+          },
+          "taxonomyEligibleButNotAlignedShareSubstantiallyContributingToClimateChangeMitigationNAndG430": {
+            "type": "number"
+          },
+          "taxonomyEligibleButNotAlignedShareSubstantiallyContributingToClimateChangeAdaptationNAndG430": {
+            "type": "number"
+          },
+          "taxonomyEligibleButNotAlignedShareClimateChangeMitigationAndClimateChangeAdaptationNAndG431": {
+            "type": "number"
+          },
+          "taxonomyEligibleButNotAlignedShareSubstantiallyContributingToClimateChangeMitigationNAndG431": {
+            "type": "number"
+          },
+          "taxonomyEligibleButNotAlignedShareSubstantiallyContributingToClimateChangeAdaptationNAndG431": {
+            "type": "number"
+          },
+          "taxonomyEligibleButNotAlignedShareClimateChangeMitigationAndClimateChangeAdaptationOtherActivities": {
+            "type": "number"
+          },
+          "taxonomyEligibleButNotAlignedShareSubstantiallyContributingToClimateChangeMitigationOtherActivities": {
+            "type": "number"
+          },
+          "taxonomyEligibleButNotAlignedShareSubstantiallyContributingToClimateChangeAdaptationOtherActivities": {
+            "type": "number"
+          },
+          "taxonomyEligibleButNotAlignedShareClimateChangeMitigationAndClimateChangeAdaptation": {
+            "type": "number"
+          },
+          "taxonomyEligibleButNotAlignedShareSubstantiallyContributingToClimateChangeMitigation": {
+            "type": "number"
+          },
+          "taxonomyEligibleButNotAlignedShareSubstantiallyContributingToClimateChangeAdaptation": {
+            "type": "number"
+          }
+        }
+      },
+      "NuclearAndGasGeneral": {
+        "type": "object",
+        "properties": {
+          "general": {
+            "$ref": "#/components/schemas/NuclearAndGasGeneralGeneral"
+          },
+          "taxonomyAlignedDenominator": {
+            "$ref": "#/components/schemas/NuclearAndGasGeneralTaxonomyAlignedDenominator"
+          },
+          "taxonomyAlignedNumerator": {
+            "$ref": "#/components/schemas/NuclearAndGasGeneralTaxonomyAlignedNumerator"
+          },
+          "taxonomyEligibleButNotAligned": {
+            "$ref": "#/components/schemas/NuclearAndGasGeneralTaxonomyEligibleButNotAligned"
+          },
+          "taxonomyNonEligible": {
+            "$ref": "#/components/schemas/NuclearAndGasGeneralTaxonomyNonEligible"
+          }
+        }
+      },
+      "NuclearAndGasGeneralGeneral": {
+        "type": "object",
+        "properties": {
+          "nuclearEnergyRelatedActivitiesSection426": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointYesNo"
+          },
+          "nuclearEnergyRelatedActivitiesSection427": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointYesNo"
+          },
+          "nuclearEnergyRelatedActivitiesSection428": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointYesNo"
+          },
+          "fossilGasRelatedActivitiesSection429": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointYesNo"
+          },
+          "fossilGasRelatedActivitiesSection430": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointYesNo"
+          },
+          "fossilGasRelatedActivitiesSection431": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointYesNo"
+          }
+        }
+      },
+      "NuclearAndGasGeneralTaxonomyAlignedDenominator": {
+        "type": "object",
+        "properties": {
+          "nuclearAndGasTaxonomyAlignedRevenueDenominator": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointNuclearAndGasAlignedDenominator"
+          },
+          "nuclearAndGasTaxonomyAlignedCapexDenominator": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointNuclearAndGasAlignedDenominator"
+          }
+        }
+      },
+      "NuclearAndGasGeneralTaxonomyAlignedNumerator": {
+        "type": "object",
+        "properties": {
+          "nuclearAndGasTaxonomyAlignedRevenueNumerator": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointNuclearAndGasAlignedNumerator"
+          },
+          "nuclearAndGasTaxonomyAlignedCapexNumerator": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointNuclearAndGasAlignedNumerator"
+          }
+        }
+      },
+      "NuclearAndGasGeneralTaxonomyEligibleButNotAligned": {
+        "type": "object",
+        "properties": {
+          "nuclearAndGasTaxonomyEligibleButNotAlignedRevenue": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointNuclearAndGasEligibleButNotAligned"
+          },
+          "nuclearAndGasTaxonomyEligibleButNotAlignedCapex": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointNuclearAndGasEligibleButNotAligned"
+          }
+        }
+      },
+      "NuclearAndGasGeneralTaxonomyNonEligible": {
+        "type": "object",
+        "properties": {
+          "nuclearAndGasTaxonomyNonEligibleRevenue": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointNuclearAndGasNonEligible"
+          },
+          "nuclearAndGasTaxonomyNonEligibleCapex": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointNuclearAndGasNonEligible"
+          }
+        }
+      },
+      "NuclearAndGasNonEligible": {
+        "type": "object",
+        "properties": {
+          "taxonomyNonEligibleShareNAndG426": {
+            "type": "number"
+          },
+          "taxonomyNonEligibleShareNAndG427": {
+            "type": "number"
+          },
+          "taxonomyNonEligibleShareNAndG428": {
+            "type": "number"
+          },
+          "taxonomyNonEligibleShareNAndG429": {
+            "type": "number"
+          },
+          "taxonomyNonEligibleShareNAndG430": {
+            "type": "number"
+          },
+          "taxonomyNonEligibleShareNAndG431": {
+            "type": "number"
+          },
+          "taxonomyNonEligibleShareOtherActivities": {
+            "type": "number"
+          },
+          "taxonomyNonEligibleShare": {
+            "type": "number"
+          }
+        }
+      },
+      "QaReportDataPointExtendedDataPointNuclearAndGasAlignedDenominator": {
+        "required": [
+          "comment",
+          "correctedData",
+          "verdict"
+        ],
+        "type": "object",
+        "properties": {
+          "comment": {
+            "type": "string"
+          },
+          "verdict": {
+            "$ref": "#/components/schemas/QaReportDataPointVerdict"
+          },
+          "correctedData": {
+            "$ref": "#/components/schemas/ExtendedDataPointNuclearAndGasAlignedDenominator"
+          }
+        }
+      },
+      "QaReportDataPointExtendedDataPointNuclearAndGasAlignedNumerator": {
+        "required": [
+          "comment",
+          "correctedData",
+          "verdict"
+        ],
+        "type": "object",
+        "properties": {
+          "comment": {
+            "type": "string"
+          },
+          "verdict": {
+            "$ref": "#/components/schemas/QaReportDataPointVerdict"
+          },
+          "correctedData": {
+            "$ref": "#/components/schemas/ExtendedDataPointNuclearAndGasAlignedNumerator"
+          }
+        }
+      },
+      "QaReportDataPointExtendedDataPointNuclearAndGasEligibleButNotAligned": {
+        "required": [
+          "comment",
+          "correctedData",
+          "verdict"
+        ],
+        "type": "object",
+        "properties": {
+          "comment": {
+            "type": "string"
+          },
+          "verdict": {
+            "$ref": "#/components/schemas/QaReportDataPointVerdict"
+          },
+          "correctedData": {
+            "$ref": "#/components/schemas/ExtendedDataPointNuclearAndGasEligibleButNotAligned"
+          }
+        }
+      },
+      "QaReportDataPointExtendedDataPointNuclearAndGasNonEligible": {
+        "required": [
+          "comment",
+          "correctedData",
+          "verdict"
+        ],
+        "type": "object",
+        "properties": {
+          "comment": {
+            "type": "string"
+          },
+          "verdict": {
+            "$ref": "#/components/schemas/QaReportDataPointVerdict"
+          },
+          "correctedData": {
+            "$ref": "#/components/schemas/ExtendedDataPointNuclearAndGasNonEligible"
           }
         }
       },
@@ -4725,23 +5532,23 @@
           "message": {
             "type": "string"
           },
+          "dataId": {
+            "type": "string"
+          },
           "receptionTime": {
             "type": "integer",
             "format": "int64"
           },
-          "companyId": {
-            "type": "string"
-          },
           "companyName": {
             "type": "string"
           },
-          "dataId": {
-            "type": "string"
-          },
-          "reportingPeriod": {
+          "companyId": {
             "type": "string"
           },
           "framework": {
+            "type": "string"
+          },
+          "reportingPeriod": {
             "type": "string"
           }
         }
@@ -4831,6 +5638,7 @@
               "vsme",
               "esg-questionnaire",
               "heimathafen",
+              "nuclear-and-gas",
               "additional-company-information"
             ]
           },
@@ -4854,6 +5662,21 @@
           },
           "uploaderUserId": {
             "type": "string"
+          }
+        }
+      },
+      "QaReportWithMetaInformationNuclearAndGasData": {
+        "required": [
+          "metaInfo",
+          "report"
+        ],
+        "type": "object",
+        "properties": {
+          "metaInfo": {
+            "$ref": "#/components/schemas/QaReportMetaInformation"
+          },
+          "report": {
+            "$ref": "#/components/schemas/NuclearAndGasData"
           }
         }
       },
