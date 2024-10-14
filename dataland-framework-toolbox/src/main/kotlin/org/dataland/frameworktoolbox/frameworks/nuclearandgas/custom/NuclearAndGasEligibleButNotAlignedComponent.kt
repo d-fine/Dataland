@@ -64,6 +64,11 @@ class NuclearAndGasEligibleButNotAlignedComponent(
     }
 
     override fun generateDefaultFixtureGenerator(sectionBuilder: FixtureSectionBuilder) {
-        return // TODO: fill with code
+        requireDocumentSupportIn(setOf(NoDocumentSupport))
+        sectionBuilder.addAtomicExpression(
+            identifier,
+            "dataGenerator.randomExtendedDataPoint(" +
+                "dataGenerator.generateNuclearAndGasEligibleButNotAligned())",
+        )
     }
 }

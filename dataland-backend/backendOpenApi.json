@@ -18505,12 +18505,12 @@
         ],
         "type": "object",
         "properties": {
-          "companyName": {
-            "type": "string"
-          },
           "sector": {
             "type": "string",
             "nullable": true
+          },
+          "companyName": {
+            "type": "string"
           },
           "companyId": {
             "type": "string"

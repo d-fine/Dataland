@@ -35,10 +35,38 @@ export function generateNuclearAndGasData(nullProbability = DEFAULT_PROBABILITY)
         fossilGasRelatedActivitiesSection430: dataGenerator.randomExtendedDataPoint(dataGenerator.randomYesNo()),
         fossilGasRelatedActivitiesSection431: dataGenerator.randomExtendedDataPoint(dataGenerator.randomYesNo()),
       },
-      taxonomyAlignedDenominator: {},
-      taxonomyAlignedNumerator: {},
-      taxonomyEligibleButNotAligned: {},
-      taxonomyNonEligible: {},
+      taxonomyAlignedDenominator: {
+        nuclearAndGasTaxonomyAlignedRevenueDenominator: dataGenerator.randomExtendedDataPoint(
+          dataGenerator.generateNuclearAndGasAlignedDenominator()
+        ),
+        nuclearAndGasTaxonomyAlignedCapexDenominator: dataGenerator.randomExtendedDataPoint(
+          dataGenerator.generateNuclearAndGasAlignedDenominator()
+        ),
+      },
+      taxonomyAlignedNumerator: {
+        nuclearAndGasTaxonomyAlignedRevenueNumerator: dataGenerator.randomExtendedDataPoint(
+          dataGenerator.generateNuclearAndGasAlignedNumerator()
+        ),
+        nuclearAndGasTaxonomyAlignedCapexNumerator: dataGenerator.randomExtendedDataPoint(
+          dataGenerator.generateNuclearAndGasAlignedNumerator()
+        ),
+      },
+      taxonomyEligibleButNotAligned: {
+        nuclearAndGasTaxonomyEligibleButNotAlignedRevenue: dataGenerator.randomExtendedDataPoint(
+          dataGenerator.generateNuclearAndGasEligibleButNotAligned()
+        ),
+        nuclearAndGasTaxonomyEligibleButNotAlignedCapex: dataGenerator.randomExtendedDataPoint(
+          dataGenerator.generateNuclearAndGasEligibleButNotAligned()
+        ),
+      },
+      taxonomyNonEligible: {
+        nuclearAndGasTaxonomyNonEligibleRevenue: dataGenerator.randomExtendedDataPoint(
+          dataGenerator.generateNuclearAndGasNonEligible()
+        ),
+        nuclearAndGasTaxonomyNonEligibleCapex: dataGenerator.randomExtendedDataPoint(
+          dataGenerator.generateNuclearAndGasNonEligible()
+        ),
+      },
     },
   };
 }

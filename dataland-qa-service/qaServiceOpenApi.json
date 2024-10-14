@@ -5532,24 +5532,24 @@
           "message": {
             "type": "string"
           },
-          "dataId": {
-            "type": "string"
-          },
-          "receptionTime": {
-            "type": "integer",
-            "format": "int64"
-          },
           "companyName": {
             "type": "string"
           },
-          "companyId": {
+          "dataId": {
+            "type": "string"
+          },
+          "reportingPeriod": {
             "type": "string"
           },
           "framework": {
             "type": "string"
           },
-          "reportingPeriod": {
+          "companyId": {
             "type": "string"
+          },
+          "receptionTime": {
+            "type": "integer",
+            "format": "int64"
           }
         }
       },

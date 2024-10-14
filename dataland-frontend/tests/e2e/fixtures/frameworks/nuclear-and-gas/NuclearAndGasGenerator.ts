@@ -11,57 +11,56 @@ export class NuclearAndGasGenerator extends Generator {
    * Generates random NuclearAndGasAlignedDenominator data
    * @returns random NuclearAndGasAlignedDenominator data
    */
-  randomNuclearAndGasAlignedDenominator(): NuclearAndGasAlignedDenominator {
-    const dataGenerator = this;
+  generateNuclearAndGasAlignedDenominator(): NuclearAndGasAlignedDenominator {
     return {
       taxonomyAlignedShareDenominatorClimateChangeMitigationAndClimateChangeAdaptationNAndG426:
-        dataGenerator.randomPercentageValue(),
+        this.randomPercentageValue(),
       taxonomyAlignedShareDenominatorSubstantiallyContributingToClimateChangeMitigationNAndG426:
-        dataGenerator.randomPercentageValue(),
+        this.randomPercentageValue(),
       taxonomyAlignedShareDenominatorSubstantiallyContributingToClimateChangeAdaptationNAndG426:
-        dataGenerator.randomPercentageValue(),
+        this.randomPercentageValue(),
       taxonomyAlignedShareDenominatorClimateChangeMitigationAndClimateChangeAdaptationNAndG427:
-        dataGenerator.randomPercentageValue(),
+        this.randomPercentageValue(),
       taxonomyAlignedShareDenominatorSubstantiallyContributingToClimateChangeMitigationNAndG427:
-        dataGenerator.randomPercentageValue(),
+        this.randomPercentageValue(),
       taxonomyAlignedShareDenominatorSubstantiallyContributingToClimateChangeAdaptationNAndG427:
-        dataGenerator.randomPercentageValue(),
+        this.randomPercentageValue(),
       taxonomyAlignedShareDenominatorClimateChangeMitigationAndClimateChangeAdaptationNAndG428:
-        dataGenerator.randomPercentageValue(),
+        this.randomPercentageValue(),
       taxonomyAlignedShareDenominatorSubstantiallyContributingToClimateChangeMitigationNAndG428:
-        dataGenerator.randomPercentageValue(),
+        this.randomPercentageValue(),
       taxonomyAlignedShareDenominatorSubstantiallyContributingToClimateChangeAdaptationNAndG428:
-        dataGenerator.randomPercentageValue(),
+        this.randomPercentageValue(),
       taxonomyAlignedShareDenominatorClimateChangeMitigationAndClimateChangeAdaptationNAndG429:
-        dataGenerator.randomPercentageValue(),
+        this.randomPercentageValue(),
       taxonomyAlignedShareDenominatorSubstantiallyContributingToClimateChangeMitigationNAndG429:
-        dataGenerator.randomPercentageValue(),
+        this.randomPercentageValue(),
       taxonomyAlignedShareDenominatorSubstantiallyContributingToClimateChangeAdaptationNAndG429:
-        dataGenerator.randomPercentageValue(),
+        this.randomPercentageValue(),
       taxonomyAlignedShareDenominatorClimateChangeMitigationAndClimateChangeAdaptationNAndG430:
-        dataGenerator.randomPercentageValue(),
+        this.randomPercentageValue(),
       taxonomyAlignedShareDenominatorSubstantiallyContributingToClimateChangeMitigationNAndG430:
-        dataGenerator.randomPercentageValue(),
+        this.randomPercentageValue(),
       taxonomyAlignedShareDenominatorSubstantiallyContributingToClimateChangeAdaptationNAndG430:
-        dataGenerator.randomPercentageValue(),
+        this.randomPercentageValue(),
       taxonomyAlignedShareDenominatorClimateChangeMitigationAndClimateChangeAdaptationNAndG431:
-        dataGenerator.randomPercentageValue(),
+        this.randomPercentageValue(),
       taxonomyAlignedShareDenominatorSubstantiallyContributingToClimateChangeMitigationNAndG431:
-        dataGenerator.randomPercentageValue(),
+        this.randomPercentageValue(),
       taxonomyAlignedShareDenominatorSubstantiallyContributingToClimateChangeAdaptationNAndG431:
-        dataGenerator.randomPercentageValue(),
+        this.randomPercentageValue(),
       taxonomyAlignedShareDenominatorClimateChangeMitigationAndClimateChangeAdaptationOtherActivities:
-        dataGenerator.randomPercentageValue(),
+        this.randomPercentageValue(),
       taxonomyAlignedShareDenominatorSubstantiallyContributingToClimateChangeMitigationOtherActivities:
-        dataGenerator.randomPercentageValue(),
+        this.randomPercentageValue(),
       taxonomyAlignedShareDenominatorSubstantiallyContributingToClimateChangeAdaptationOtherActivities:
-        dataGenerator.randomPercentageValue(),
+        this.randomPercentageValue(),
       taxonomyAlignedShareDenominatorClimateChangeMitigationAndClimateChangeAdaptation:
-        dataGenerator.randomPercentageValue(),
+        this.randomPercentageValue(),
       taxonomyAlignedShareDenominatorSubstantiallyContributingToClimateChangeMitigation:
-        dataGenerator.randomPercentageValue(),
+        this.randomPercentageValue(),
       taxonomyAlignedShareDenominatorSubstantiallyContributingToClimateChangeAdaptation:
-        dataGenerator.randomPercentageValue(),
+        this.randomPercentageValue(),
     };
   }
 
@@ -69,57 +68,56 @@ export class NuclearAndGasGenerator extends Generator {
    * Generates random NuclearAndGasAlignedNumerator data
    * @returns random NuclearAndGasAlignedNumerator data
    */
-  randomNuclearAndGasAlignedNumerator(): NuclearAndGasAlignedNumerator {
-    const dataGenerator = this;
+  generateNuclearAndGasAlignedNumerator(): NuclearAndGasAlignedNumerator {
     return {
       taxonomyAlignedShareNumeratorClimateChangeMitigationAndClimateChangeAdaptationNAndG426:
-        dataGenerator.randomPercentageValue(),
+        this.randomPercentageValue(),
       taxonomyAlignedShareNumeratorSubstantiallyContributingToClimateChangeMitigationNAndG426:
-        dataGenerator.randomPercentageValue(),
+        this.randomPercentageValue(),
       taxonomyAlignedShareNumeratorSubstantiallyContributingToClimateChangeAdaptationNAndG426:
-        dataGenerator.randomPercentageValue(),
+        this.randomPercentageValue(),
       taxonomyAlignedShareNumeratorClimateChangeMitigationAndClimateChangeAdaptationNAndG427:
-        dataGenerator.randomPercentageValue(),
+        this.randomPercentageValue(),
       taxonomyAlignedShareNumeratorSubstantiallyContributingToClimateChangeMitigationNAndG427:
-        dataGenerator.randomPercentageValue(),
+        this.randomPercentageValue(),
       taxonomyAlignedShareNumeratorSubstantiallyContributingToClimateChangeAdaptationNAndG427:
-        dataGenerator.randomPercentageValue(),
+        this.randomPercentageValue(),
       taxonomyAlignedShareNumeratorClimateChangeMitigationAndClimateChangeAdaptationNAndG428:
-        dataGenerator.randomPercentageValue(),
+        this.randomPercentageValue(),
       taxonomyAlignedShareNumeratorSubstantiallyContributingToClimateChangeMitigationNAndG428:
-        dataGenerator.randomPercentageValue(),
+        this.randomPercentageValue(),
       taxonomyAlignedShareNumeratorSubstantiallyContributingToClimateChangeAdaptationNAndG428:
-        dataGenerator.randomPercentageValue(),
+        this.randomPercentageValue(),
       taxonomyAlignedShareNumeratorClimateChangeMitigationAndClimateChangeAdaptationNAndG429:
-        dataGenerator.randomPercentageValue(),
+        this.randomPercentageValue(),
       taxonomyAlignedShareNumeratorSubstantiallyContributingToClimateChangeMitigationNAndG429:
-        dataGenerator.randomPercentageValue(),
+        this.randomPercentageValue(),
       taxonomyAlignedShareNumeratorSubstantiallyContributingToClimateChangeAdaptationNAndG429:
-        dataGenerator.randomPercentageValue(),
+        this.randomPercentageValue(),
       taxonomyAlignedShareNumeratorClimateChangeMitigationAndClimateChangeAdaptationNAndG430:
-        dataGenerator.randomPercentageValue(),
+        this.randomPercentageValue(),
       taxonomyAlignedShareNumeratorSubstantiallyContributingToClimateChangeMitigationNAndG430:
-        dataGenerator.randomPercentageValue(),
+        this.randomPercentageValue(),
       taxonomyAlignedShareNumeratorSubstantiallyContributingToClimateChangeAdaptationNAndG430:
-        dataGenerator.randomPercentageValue(),
+        this.randomPercentageValue(),
       taxonomyAlignedShareNumeratorClimateChangeMitigationAndClimateChangeAdaptationNAndG431:
-        dataGenerator.randomPercentageValue(),
+        this.randomPercentageValue(),
       taxonomyAlignedShareNumeratorSubstantiallyContributingToClimateChangeMitigationNAndG431:
-        dataGenerator.randomPercentageValue(),
+        this.randomPercentageValue(),
       taxonomyAlignedShareNumeratorSubstantiallyContributingToClimateChangeAdaptationNAndG431:
-        dataGenerator.randomPercentageValue(),
+        this.randomPercentageValue(),
       taxonomyAlignedShareNumeratorClimateChangeMitigationAndClimateChangeAdaptationOtherActivities:
-        dataGenerator.randomPercentageValue(),
+        this.randomPercentageValue(),
       taxonomyAlignedShareNumeratorSubstantiallyContributingToClimateChangeMitigationOtherActivities:
-        dataGenerator.randomPercentageValue(),
+        this.randomPercentageValue(),
       taxonomyAlignedShareNumeratorSubstantiallyContributingToClimateChangeAdaptationOtherActivities:
-        dataGenerator.randomPercentageValue(),
+        this.randomPercentageValue(),
       taxonomyAlignedShareNumeratorClimateChangeMitigationAndClimateChangeAdaptation:
-        dataGenerator.randomPercentageValue(),
+        this.randomPercentageValue(),
       taxonomyAlignedShareNumeratorSubstantiallyContributingToClimateChangeMitigation:
-        dataGenerator.randomPercentageValue(),
+        this.randomPercentageValue(),
       taxonomyAlignedShareNumeratorSubstantiallyContributingToClimateChangeAdaptation:
-        dataGenerator.randomPercentageValue(),
+        this.randomPercentageValue(),
     };
   }
 
@@ -127,57 +125,56 @@ export class NuclearAndGasGenerator extends Generator {
    * Generates random NuclearAndGasEligibleButNotAligned data
    * @returns random NuclearAndGasEligibleButNotAligned data
    */
-  randomNuclearAndGasEligibleButNotAligned(): NuclearAndGasEligibleButNotAligned {
-    const dataGenerator = this;
+  generateNuclearAndGasEligibleButNotAligned(): NuclearAndGasEligibleButNotAligned {
     return {
       taxonomyEligibleButNotAlignedShareClimateChangeMitigationAndClimateChangeAdaptationNAndG426:
-        dataGenerator.randomPercentageValue(),
+        this.randomPercentageValue(),
       taxonomyEligibleButNotAlignedShareSubstantiallyContributingToClimateChangeMitigationNAndG426:
-        dataGenerator.randomPercentageValue(),
+        this.randomPercentageValue(),
       taxonomyEligibleButNotAlignedShareSubstantiallyContributingToClimateChangeAdaptationNAndG426:
-        dataGenerator.randomPercentageValue(),
+        this.randomPercentageValue(),
       taxonomyEligibleButNotAlignedShareClimateChangeMitigationAndClimateChangeAdaptationNAndG427:
-        dataGenerator.randomPercentageValue(),
+        this.randomPercentageValue(),
       taxonomyEligibleButNotAlignedShareSubstantiallyContributingToClimateChangeMitigationNAndG427:
-        dataGenerator.randomPercentageValue(),
+        this.randomPercentageValue(),
       taxonomyEligibleButNotAlignedShareSubstantiallyContributingToClimateChangeAdaptationNAndG427:
-        dataGenerator.randomPercentageValue(),
+        this.randomPercentageValue(),
       taxonomyEligibleButNotAlignedShareClimateChangeMitigationAndClimateChangeAdaptationNAndG428:
-        dataGenerator.randomPercentageValue(),
+        this.randomPercentageValue(),
       taxonomyEligibleButNotAlignedShareSubstantiallyContributingToClimateChangeMitigationNAndG428:
-        dataGenerator.randomPercentageValue(),
+        this.randomPercentageValue(),
       taxonomyEligibleButNotAlignedShareSubstantiallyContributingToClimateChangeAdaptationNAndG428:
-        dataGenerator.randomPercentageValue(),
+        this.randomPercentageValue(),
       taxonomyEligibleButNotAlignedShareClimateChangeMitigationAndClimateChangeAdaptationNAndG429:
-        dataGenerator.randomPercentageValue(),
+        this.randomPercentageValue(),
       taxonomyEligibleButNotAlignedShareSubstantiallyContributingToClimateChangeMitigationNAndG429:
-        dataGenerator.randomPercentageValue(),
+        this.randomPercentageValue(),
       taxonomyEligibleButNotAlignedShareSubstantiallyContributingToClimateChangeAdaptationNAndG429:
-        dataGenerator.randomPercentageValue(),
+        this.randomPercentageValue(),
       taxonomyEligibleButNotAlignedShareClimateChangeMitigationAndClimateChangeAdaptationNAndG430:
-        dataGenerator.randomPercentageValue(),
+        this.randomPercentageValue(),
       taxonomyEligibleButNotAlignedShareSubstantiallyContributingToClimateChangeMitigationNAndG430:
-        dataGenerator.randomPercentageValue(),
+        this.randomPercentageValue(),
       taxonomyEligibleButNotAlignedShareSubstantiallyContributingToClimateChangeAdaptationNAndG430:
-        dataGenerator.randomPercentageValue(),
+        this.randomPercentageValue(),
       taxonomyEligibleButNotAlignedShareClimateChangeMitigationAndClimateChangeAdaptationNAndG431:
-        dataGenerator.randomPercentageValue(),
+        this.randomPercentageValue(),
       taxonomyEligibleButNotAlignedShareSubstantiallyContributingToClimateChangeMitigationNAndG431:
-        dataGenerator.randomPercentageValue(),
+        this.randomPercentageValue(),
       taxonomyEligibleButNotAlignedShareSubstantiallyContributingToClimateChangeAdaptationNAndG431:
-        dataGenerator.randomPercentageValue(),
+        this.randomPercentageValue(),
       taxonomyEligibleButNotAlignedShareClimateChangeMitigationAndClimateChangeAdaptationOtherActivities:
-        dataGenerator.randomPercentageValue(),
+        this.randomPercentageValue(),
       taxonomyEligibleButNotAlignedShareSubstantiallyContributingToClimateChangeMitigationOtherActivities:
-        dataGenerator.randomPercentageValue(),
+        this.randomPercentageValue(),
       taxonomyEligibleButNotAlignedShareSubstantiallyContributingToClimateChangeAdaptationOtherActivities:
-        dataGenerator.randomPercentageValue(),
+        this.randomPercentageValue(),
       taxonomyEligibleButNotAlignedShareClimateChangeMitigationAndClimateChangeAdaptation:
-        dataGenerator.randomPercentageValue(),
+        this.randomPercentageValue(),
       taxonomyEligibleButNotAlignedShareSubstantiallyContributingToClimateChangeMitigation:
-        dataGenerator.randomPercentageValue(),
+        this.randomPercentageValue(),
       taxonomyEligibleButNotAlignedShareSubstantiallyContributingToClimateChangeAdaptation:
-        dataGenerator.randomPercentageValue(),
+        this.randomPercentageValue(),
     };
   }
 
@@ -185,17 +182,16 @@ export class NuclearAndGasGenerator extends Generator {
    * Generates random NuclearAndGasNonEligible data
    * @returns random NuclearAndGasNonEligible data
    */
-  randomNuclearAndGasNonEligible(): NuclearAndGasNonEligible {
-    const dataGenerator = this;
+  generateNuclearAndGasNonEligible(): NuclearAndGasNonEligible {
     return {
-      taxonomyNonEligibleShareNAndG426: dataGenerator.randomPercentageValue(),
-      taxonomyNonEligibleShareNAndG427: dataGenerator.randomPercentageValue(),
-      taxonomyNonEligibleShareNAndG428: dataGenerator.randomPercentageValue(),
-      taxonomyNonEligibleShareNAndG429: dataGenerator.randomPercentageValue(),
-      taxonomyNonEligibleShareNAndG430: dataGenerator.randomPercentageValue(),
-      taxonomyNonEligibleShareNAndG431: dataGenerator.randomPercentageValue(),
-      taxonomyNonEligibleShareOtherActivities: dataGenerator.randomPercentageValue(),
-      taxonomyNonEligibleShare: dataGenerator.randomPercentageValue(),
+      taxonomyNonEligibleShareNAndG426: this.randomPercentageValue(),
+      taxonomyNonEligibleShareNAndG427: this.randomPercentageValue(),
+      taxonomyNonEligibleShareNAndG428: this.randomPercentageValue(),
+      taxonomyNonEligibleShareNAndG429: this.randomPercentageValue(),
+      taxonomyNonEligibleShareNAndG430: this.randomPercentageValue(),
+      taxonomyNonEligibleShareNAndG431: this.randomPercentageValue(),
+      taxonomyNonEligibleShareOtherActivities: this.randomPercentageValue(),
+      taxonomyNonEligibleShare: this.randomPercentageValue(),
     };
   }
 }

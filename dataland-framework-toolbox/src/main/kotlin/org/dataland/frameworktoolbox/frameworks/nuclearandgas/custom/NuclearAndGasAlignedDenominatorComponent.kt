@@ -64,6 +64,11 @@ class NuclearAndGasAlignedDenominatorComponent(
     }
 
     override fun generateDefaultFixtureGenerator(sectionBuilder: FixtureSectionBuilder) {
-        return // TODO: fill with code
+        requireDocumentSupportIn(setOf(NoDocumentSupport))
+        sectionBuilder.addAtomicExpression(
+            identifier,
+            "dataGenerator.randomExtendedDataPoint(" +
+                "dataGenerator.generateNuclearAndGasAlignedDenominator())",
+        )
     }
 }
