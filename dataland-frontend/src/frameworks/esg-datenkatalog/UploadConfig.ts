@@ -14,17 +14,6 @@ export const esgDatenkatalogDataModel = [
         label: 'Master Data',
         fields: [
           {
-            name: 'berichtspflichtUndEinwilligungZurVeroeffentlichung',
-            label: 'Berichtspflicht und Einwilligung zur Veröffentlichung',
-            description:
-              'Ist das Unternehmen berichtspflichtig im Rahmen der CSRD-Richtlinie bzw. ist es gemäß den Offenlegungspflichten der Artikel 19a und 29a der Richtilinie 2023/34/EU zur Nachhaltigkeitsberichtserstattung verpflichtet? Ist das Unternehmen außerdem mit einer Veröffentlichung des Datensatzes auf Dataland einverstanden? Anderenfalls ist eine Dateneineingabe nicht möglich.',
-
-            component: 'YesNoFormField',
-            required: true,
-            showIf: (): boolean => true,
-            validation: 'required|is:Yes',
-          },
-          {
             name: 'gueltigkeitsDatum',
             label: '(Gültigkeits) Datum',
             description: 'Datum bis wann die Information gültig ist',
@@ -54,8 +43,7 @@ export const esgDatenkatalogDataModel = [
 
             component: 'YesNoFormField',
             required: false,
-            showIf: (dataset: EsgDatenkatalogData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            showIf: (): boolean => true,
           },
           {
             name: 'dokumenteZurNachhaltigkeitsstrategie',
@@ -174,8 +162,7 @@ export const esgDatenkatalogDataModel = [
 
             component: 'FreeTextFormField',
             required: false,
-            showIf: (dataset: EsgDatenkatalogData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            showIf: (): boolean => true,
           },
         ],
       },
@@ -191,8 +178,7 @@ export const esgDatenkatalogDataModel = [
 
             component: 'NaceCodeFormField',
             required: false,
-            showIf: (dataset: EsgDatenkatalogData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            showIf: (): boolean => true,
           },
           {
             name: 'gesamtumsatz',
@@ -202,8 +188,7 @@ export const esgDatenkatalogDataModel = [
             unit: 'Euro',
             component: 'NumberFormField',
             required: false,
-            showIf: (dataset: EsgDatenkatalogData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            showIf: (): boolean => true,
             validation: 'min:0',
           },
           {
@@ -214,8 +199,7 @@ export const esgDatenkatalogDataModel = [
             unit: 'Euro',
             component: 'NumberFormField',
             required: false,
-            showIf: (dataset: EsgDatenkatalogData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            showIf: (): boolean => true,
             validation: 'min:0',
           },
           {
@@ -226,9 +210,30 @@ export const esgDatenkatalogDataModel = [
             unit: 'Euro',
             component: 'NumberFormField',
             required: false,
-            showIf: (dataset: EsgDatenkatalogData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            showIf: (): boolean => true,
             validation: 'min:0',
+          },
+          {
+            name: 'anteilTaxonomiefaehigerUmsatz',
+            label: 'Anteil Taxonomiefähiger Umsatz',
+            description: 'Geben Sie den prozentualen Anteil der taxonomiefähigen Umsätze an.',
+
+            unit: '%',
+            component: 'NumberFormField',
+            required: false,
+            showIf: (): boolean => true,
+            validation: 'between:0,100',
+          },
+          {
+            name: 'anteilTaxonomiekonformerUmsatz',
+            label: 'Anteil Taxonomiekonformer Umsatz',
+            description: 'Geben Sie den prozentualen Anteil der taxonomiekonformen Umsätze an.',
+
+            unit: '%',
+            component: 'NumberFormField',
+            required: false,
+            showIf: (): boolean => true,
+            validation: 'between:0,100',
           },
           {
             name: 'gesamtCapex',
@@ -238,8 +243,7 @@ export const esgDatenkatalogDataModel = [
             unit: 'Euro',
             component: 'NumberFormField',
             required: false,
-            showIf: (dataset: EsgDatenkatalogData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            showIf: (): boolean => true,
             validation: 'min:0',
           },
           {
@@ -250,8 +254,7 @@ export const esgDatenkatalogDataModel = [
             unit: 'Euro',
             component: 'NumberFormField',
             required: false,
-            showIf: (dataset: EsgDatenkatalogData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            showIf: (): boolean => true,
             validation: 'min:0',
           },
           {
@@ -262,9 +265,30 @@ export const esgDatenkatalogDataModel = [
             unit: 'Euro',
             component: 'NumberFormField',
             required: false,
-            showIf: (dataset: EsgDatenkatalogData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            showIf: (): boolean => true,
             validation: 'min:0',
+          },
+          {
+            name: 'anteilTaxonomiefaehigerCapex',
+            label: 'Anteil Taxonomiefähiger CapEx',
+            description: 'Geben Sie den prozentualen Anteil der taxonomiefähigen Umsätze an.',
+
+            unit: '%',
+            component: 'NumberFormField',
+            required: false,
+            showIf: (): boolean => true,
+            validation: 'between:0,100',
+          },
+          {
+            name: 'anteilTaxonomiekonformerCapex',
+            label: 'Anteil Taxonomiekonformer CapEx',
+            description: 'Geben Sie den prozentualen Anteil der taxonomiekonformen Umsätze an.',
+
+            unit: '%',
+            component: 'NumberFormField',
+            required: false,
+            showIf: (): boolean => true,
+            validation: 'between:0,100',
           },
           {
             name: 'taxonomiebezogeneCapexPlanung',
@@ -273,8 +297,7 @@ export const esgDatenkatalogDataModel = [
 
             component: 'YesNoFormField',
             required: false,
-            showIf: (dataset: EsgDatenkatalogData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            showIf: (): boolean => true,
           },
           {
             name: 'geplanteTaxonomiefaehigeCapexIn5Jahren',
@@ -309,8 +332,7 @@ export const esgDatenkatalogDataModel = [
 
             component: 'YesNoFormField',
             required: false,
-            showIf: (dataset: EsgDatenkatalogData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            showIf: (): boolean => true,
           },
           {
             name: 'aktuellerProzentualerUmsatzanteilImSektorFossileBrennstoffe',
@@ -358,8 +380,7 @@ export const esgDatenkatalogDataModel = [
 
             component: 'YesNoFormField',
             required: false,
-            showIf: (dataset: EsgDatenkatalogData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            showIf: (): boolean => true,
           },
           {
             name: 'aktuellerProzentualerUmsatzanteilImSektorHerstellungVonChemikalien',
@@ -410,8 +431,7 @@ export const esgDatenkatalogDataModel = [
 
             component: 'YesNoFormField',
             required: false,
-            showIf: (dataset: EsgDatenkatalogData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            showIf: (): boolean => true,
           },
           {
             name: 'aktuellerProzentualerUmsatzanteilImSektorUmstritteneWaffen',
@@ -459,8 +479,7 @@ export const esgDatenkatalogDataModel = [
 
             component: 'YesNoFormField',
             required: false,
-            showIf: (dataset: EsgDatenkatalogData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            showIf: (): boolean => true,
           },
           {
             name: 'aktuellerProzentualerUmsatzanteilImSektorTabakanbauUndVerarbeitung',
@@ -517,8 +536,7 @@ export const esgDatenkatalogDataModel = [
 
             component: 'YesNoFormField',
             required: false,
-            showIf: (dataset: EsgDatenkatalogData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            showIf: (): boolean => true,
           },
           {
             name: 'ratingagentur',
@@ -554,78 +572,71 @@ export const esgDatenkatalogDataModel = [
             name: 'iso14001',
             label: 'ISO 14001',
             description:
-              'Hat das Unternehmen oder seine wesentlichen Produktionsstandorte eine ISO 14001 Zertifizierung? Bitte teilen Sie das entsprechende Zertifikat mit uns.',
+              'Hat das Unternehmen oder seine wesentlichen Produktionsstandorte eine ISO 14001 Zertifizierung (Internationaler Standard für betriebliches Umweltmanagement)? Optional: Bitte teilen Sie das entsprechende Zertifikat mit uns.',
 
             component: 'YesNoBaseDataPointFormField',
             required: false,
-            showIf: (dataset: EsgDatenkatalogData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            showIf: (): boolean => true,
           },
           {
             name: 'iso45001',
             label: 'ISO 45001',
             description:
-              'Hat das Unternehmen oder seine wesentlichen Produktionsstandorte eine ISO 45001 Zertifizierung? Bitte teilen Sie das entsprechende Zertifikat mit uns.',
+              'Hat das Unternehmen oder seine wesentlichen Produktionsstandorte eine ISO 45001 Zertifizierung (Internationaler Standard für Arbeitssicherheit)? Optional: Bitte teilen Sie das entsprechende Zertifikat mit uns.',
 
             component: 'YesNoBaseDataPointFormField',
             required: false,
-            showIf: (dataset: EsgDatenkatalogData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            showIf: (): boolean => true,
           },
           {
             name: 'iso27001',
             label: 'ISO 27001',
             description:
-              'Hat das Unternehmen oder seine wesentlichen Produktionsstandorte eine ISO 27001 Zertifizierung? Bitte teilen Sie das entsprechende Zertifikat mit uns.',
+              'Hat das Unternehmen oder seine wesentlichen Produktionsstandorte eine ISO 27001 Zertifizierung (Internationaler Standard für Datensicherheit)? Optional: Bitte teilen Sie das entsprechende Zertifikat mit uns.',
 
             component: 'YesNoBaseDataPointFormField',
             required: false,
-            showIf: (dataset: EsgDatenkatalogData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            showIf: (): boolean => true,
           },
           {
             name: 'iso50001',
             label: 'ISO 50001',
             description:
-              'Hat das Unternehmen oder seine wesentlichen Produktionsstandorte eine ISO 50001 Zertifizierung? Bitte teilen Sie das entsprechende Zertifikat mit uns.',
+              'Hat das Unternehmen oder seine wesentlichen Produktionsstandorte eine ISO 50001 Zertifizierung (Energiemanagementsystem)? Optional: Bitte teilen Sie das entsprechende Zertifikat mit uns.',
 
             component: 'YesNoBaseDataPointFormField',
             required: false,
-            showIf: (dataset: EsgDatenkatalogData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            showIf: (): boolean => true,
           },
           {
             name: 'iso14040Ivm14044',
             label: 'ISO 14040 (i.V.m. 14044)',
             description:
-              'Hat das Unternehmen oder seine wesentlichen Produktionsstandorte eine ISO 14040 Zertifizierung in Verbindung mit einer ISO 14044 Zertifizierung? Bitte teilen Sie das entsprechende Zertifikat mit uns.',
+              'Hat das Unternehmen oder seine wesentlichen Produktionsstandorte eine ISO 14040 Zertifizierung in Verbindung mit einer ISO 14044 Zertifizierung (ISO 14040 i.V.m. 14044 Internationaler Standard für Ökobilanzierung)? Optional: Bitte teilen Sie das entsprechende Zertifikat mit uns.',
 
             component: 'YesNoBaseDataPointFormField',
             required: false,
-            showIf: (dataset: EsgDatenkatalogData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            showIf: (): boolean => true,
           },
           {
             name: 'iso14064',
             label: 'ISO 14064',
             description:
-              'Hat das Unternehmen oder seine wesentlichen Produktionsstandorte eine ISO 14064 Zertifizierung? Bitte teilen Sie das entsprechende Zertifikat mit uns.',
+              'Hat das Unternehmen oder seine wesentlichen Produktionsstandorte eine ISO 14064 Zertifizierung (Internationaler Standard für Treibhausgasbilanzierung und Verifizierung)? Optional: Bitte teilen Sie das entsprechende Zertifikat mit uns.',
 
             component: 'YesNoBaseDataPointFormField',
             required: false,
-            showIf: (dataset: EsgDatenkatalogData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            showIf: (): boolean => true,
           },
           {
             name: 'emas',
             label: 'EMAS',
             description:
-              'Hat das Unternehmen oder seine wesentlichen Produktionsstandorte eine EMAS Zertifizierung? Bitte teilen Sie das entsprechende Zertifikat mit uns.',
+              'Hat das Unternehmen oder seine wesentlichen Produktionsstandorte eine EMAS Zertifizierung (Eco-Management and Audit Scheme, Europäisches Umweltmanagementsystem)? Optional: Bitte teilen Sie das entsprechende Zertifikat mit uns.',
 
             component: 'YesNoBaseDataPointFormField',
             required: false,
-            showIf: (dataset: EsgDatenkatalogData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            showIf: (): boolean => true,
           },
         ],
       },
@@ -641,8 +652,7 @@ export const esgDatenkatalogDataModel = [
 
             component: 'YesNoFormField',
             required: false,
-            showIf: (dataset: EsgDatenkatalogData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            showIf: (): boolean => true,
           },
           {
             name: 'richtlinienZurEinhaltungDerUngcp',
@@ -679,8 +689,7 @@ export const esgDatenkatalogDataModel = [
 
             component: 'YesNoFormField',
             required: false,
-            showIf: (dataset: EsgDatenkatalogData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            showIf: (): boolean => true,
           },
           {
             name: 'richtlinienZurEinhaltungDerOecdLeitsaetze',
@@ -706,8 +715,8 @@ export const esgDatenkatalogDataModel = [
         ],
       },
       {
-        name: 'unSgds',
-        label: 'UN SGDs',
+        name: 'unSdgs',
+        label: 'UN SDGs',
         fields: [
           {
             name: 'ausrichtungNachDenUnSdgsUndAktivesVerfolgen',
@@ -717,8 +726,7 @@ export const esgDatenkatalogDataModel = [
 
             component: 'FreeTextFormField',
             required: false,
-            showIf: (dataset: EsgDatenkatalogData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            showIf: (): boolean => true,
           },
         ],
       },
@@ -771,8 +779,7 @@ export const esgDatenkatalogDataModel = [
 
             component: 'MultiSelectFormField',
             required: false,
-            showIf: (dataset: EsgDatenkatalogData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            showIf: (): boolean => true,
           },
           {
             name: 'beruecksichtigungVonNachhaltigkeitskriterienBeiDerLieferantenauswahl',
@@ -781,8 +788,7 @@ export const esgDatenkatalogDataModel = [
 
             component: 'FreeTextFormField',
             required: false,
-            showIf: (dataset: EsgDatenkatalogData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            showIf: (): boolean => true,
           },
         ],
       },
@@ -798,8 +804,7 @@ export const esgDatenkatalogDataModel = [
 
             component: 'YesNoFormField',
             required: false,
-            showIf: (dataset: EsgDatenkatalogData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            showIf: (): boolean => true,
           },
           {
             name: 'einzelheitenZuRechtsstreitigkeitenMitEsgBezug',
@@ -822,10 +827,9 @@ export const esgDatenkatalogDataModel = [
             label: 'Emission grüner, sozialer und/oder nachhaltiger Schuldtitel',
             description: 'Hat das Unternehmen „grüne“, „soziale“ und/oder „nachhaltige“ Schuldtitel begeben?',
 
-            component: 'YesNoFormField',
+            component: 'YesNoNaFormField',
             required: false,
-            showIf: (dataset: EsgDatenkatalogData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            showIf: (): boolean => true,
           },
           {
             name: 'detailsZuEmissionenGruenerSozialerUndOderNachhaltigerSchuldtitel',
@@ -843,10 +847,9 @@ export const esgDatenkatalogDataModel = [
             label: 'Emission von Sustainibility Linked Debt',
             description: 'Hat das Unternehmen Sustainability Linked Debt („SLD“) emittiert?',
 
-            component: 'YesNoFormField',
+            component: 'YesNoNaFormField',
             required: false,
-            showIf: (dataset: EsgDatenkatalogData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            showIf: (): boolean => true,
           },
           {
             name: 'detailsZuEmissionenVonSustainibilityLinkedDebt',
@@ -882,8 +885,7 @@ export const esgDatenkatalogDataModel = [
             unit: 'tCO²eq',
             component: 'NumberFormField',
             required: false,
-            showIf: (dataset: EsgDatenkatalogData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            showIf: (): boolean => true,
             validation: 'min:0',
           },
           {
@@ -895,8 +897,7 @@ export const esgDatenkatalogDataModel = [
             unit: 'tCO²eq',
             component: 'NumberFormField',
             required: false,
-            showIf: (dataset: EsgDatenkatalogData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            showIf: (): boolean => true,
             validation: 'min:0',
           },
           {
@@ -908,8 +909,7 @@ export const esgDatenkatalogDataModel = [
             unit: 'tCO²eq',
             component: 'NumberFormField',
             required: false,
-            showIf: (dataset: EsgDatenkatalogData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            showIf: (): boolean => true,
             validation: 'min:0',
           },
           {
@@ -921,8 +921,7 @@ export const esgDatenkatalogDataModel = [
             unit: 'tCO²eq',
             component: 'NumberFormField',
             required: false,
-            showIf: (dataset: EsgDatenkatalogData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            showIf: (): boolean => true,
             validation: 'min:0',
           },
           {
@@ -934,8 +933,7 @@ export const esgDatenkatalogDataModel = [
             unit: 'tCO²eq/€',
             component: 'NumberFormField',
             required: false,
-            showIf: (dataset: EsgDatenkatalogData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            showIf: (): boolean => true,
             validation: 'min:0',
           },
           {
@@ -947,8 +945,7 @@ export const esgDatenkatalogDataModel = [
             unit: 't',
             component: 'NumberFormField',
             required: false,
-            showIf: (dataset: EsgDatenkatalogData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            showIf: (): boolean => true,
             validation: 'min:0',
           },
           {
@@ -960,8 +957,7 @@ export const esgDatenkatalogDataModel = [
             unit: 't',
             component: 'NumberFormField',
             required: false,
-            showIf: (dataset: EsgDatenkatalogData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            showIf: (): boolean => true,
             validation: 'min:0',
           },
           {
@@ -973,8 +969,7 @@ export const esgDatenkatalogDataModel = [
             unit: 't',
             component: 'NumberFormField',
             required: false,
-            showIf: (dataset: EsgDatenkatalogData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            showIf: (): boolean => true,
             validation: 'min:0',
           },
         ],
@@ -992,8 +987,7 @@ export const esgDatenkatalogDataModel = [
             unit: 'Mwh',
             component: 'NumberFormField',
             required: false,
-            showIf: (dataset: EsgDatenkatalogData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            showIf: (): boolean => true,
             validation: 'min:0',
           },
           {
@@ -1004,8 +998,7 @@ export const esgDatenkatalogDataModel = [
             unit: '%',
             component: 'NumberFormField',
             required: false,
-            showIf: (dataset: EsgDatenkatalogData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            showIf: (): boolean => true,
             validation: 'between:0,100',
           },
           {
@@ -1017,8 +1010,7 @@ export const esgDatenkatalogDataModel = [
             unit: 'm³',
             component: 'NumberFormField',
             required: false,
-            showIf: (dataset: EsgDatenkatalogData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            showIf: (): boolean => true,
             validation: 'min:0',
           },
         ],
@@ -1035,8 +1027,7 @@ export const esgDatenkatalogDataModel = [
             unit: 't',
             component: 'NumberFormField',
             required: false,
-            showIf: (dataset: EsgDatenkatalogData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            showIf: (): boolean => true,
             validation: 'min:0',
           },
           {
@@ -1048,8 +1039,7 @@ export const esgDatenkatalogDataModel = [
             unit: '%',
             component: 'NumberFormField',
             required: false,
-            showIf: (dataset: EsgDatenkatalogData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            showIf: (): boolean => true,
             validation: 'between:0,100',
           },
           {
@@ -1061,8 +1051,7 @@ export const esgDatenkatalogDataModel = [
             unit: 't',
             component: 'NumberFormField',
             required: false,
-            showIf: (dataset: EsgDatenkatalogData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            showIf: (): boolean => true,
             validation: 'min:0',
           },
         ],
@@ -1079,8 +1068,7 @@ export const esgDatenkatalogDataModel = [
 
             component: 'FreeTextFormField',
             required: false,
-            showIf: (dataset: EsgDatenkatalogData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            showIf: (): boolean => true,
           },
           {
             name: 'physischeKlimaUndUmweltrisiken',
@@ -1139,8 +1127,7 @@ export const esgDatenkatalogDataModel = [
 
             component: 'MultiSelectFormField',
             required: false,
-            showIf: (dataset: EsgDatenkatalogData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            showIf: (): boolean => true,
           },
           {
             name: 'vonPhysischenKlimaUndUmweltrisikenBetroffeneStandorte',
@@ -1150,18 +1137,16 @@ export const esgDatenkatalogDataModel = [
 
             component: 'FreeTextFormField',
             required: false,
-            showIf: (dataset: EsgDatenkatalogData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            showIf: (): boolean => true,
           },
           {
             name: 'messungSteuerungUndUeberwachungDerKlimaUndUmweltrisiken',
             label: 'Messung, Steuerung und Überwachung der Klima- und Umweltrisiken',
             description: 'Misst, steuert und überwacht das Unternehmen diese Klima- und Umweltrisiken?',
 
-            component: 'YesNoFormField',
+            component: 'YesNoNaFormField',
             required: false,
-            showIf: (dataset: EsgDatenkatalogData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            showIf: (): boolean => true,
           },
           {
             name: 'beschreibungDerMessungSteuerungUndUeberwachungDerKlimaUndUmweltrisiken',
@@ -1181,7 +1166,7 @@ export const esgDatenkatalogDataModel = [
             description:
               'Werden bei der Messung, Steuerung und Überwachung der Klima- und Umweltrisiken Szenarioanalysen genutzt?',
 
-            component: 'YesNoFormField',
+            component: 'YesNoNaFormField',
             required: false,
             showIf: (dataset: EsgDatenkatalogData): boolean =>
               dataset.umwelt?.risikenUndMassnahmenKlima?.messungSteuerungUndUeberwachungDerKlimaUndUmweltrisiken ==
@@ -1206,8 +1191,7 @@ export const esgDatenkatalogDataModel = [
 
             component: 'YesNoFormField',
             required: false,
-            showIf: (dataset: EsgDatenkatalogData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            showIf: (): boolean => true,
           },
           {
             name: 'zeithorizontDerBeruecksichtigungVonKlimaUndUmweltrisikenImGeschaeftsmodell',
@@ -1227,8 +1211,7 @@ export const esgDatenkatalogDataModel = [
 
             component: 'YesNoBaseDataPointFormField',
             required: false,
-            showIf: (dataset: EsgDatenkatalogData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            showIf: (): boolean => true,
           },
           {
             name: 'transitorischeRisiken',
@@ -1238,8 +1221,7 @@ export const esgDatenkatalogDataModel = [
 
             component: 'FreeTextFormField',
             required: false,
-            showIf: (dataset: EsgDatenkatalogData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            showIf: (): boolean => true,
           },
           {
             name: 'physischeRisiken',
@@ -1249,8 +1231,7 @@ export const esgDatenkatalogDataModel = [
 
             component: 'FreeTextFormField',
             required: false,
-            showIf: (dataset: EsgDatenkatalogData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            showIf: (): boolean => true,
           },
           {
             name: 'produkteZurReduzierungDerUmweltbelastung',
@@ -1260,8 +1241,7 @@ export const esgDatenkatalogDataModel = [
 
             component: 'YesNoNaFormField',
             required: false,
-            showIf: (dataset: EsgDatenkatalogData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            showIf: (): boolean => true,
           },
           {
             name: 'skizzierungDerProdukteZurReduzierungDerUmweltbelastung',
@@ -1282,8 +1262,7 @@ export const esgDatenkatalogDataModel = [
             unit: '%',
             component: 'NumberFormField',
             required: false,
-            showIf: (dataset: EsgDatenkatalogData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            showIf: (): boolean => true,
             validation: 'between:0,100',
           },
           {
@@ -1295,8 +1274,7 @@ export const esgDatenkatalogDataModel = [
             unit: '%',
             component: 'NumberFormField',
             required: false,
-            showIf: (dataset: EsgDatenkatalogData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            showIf: (): boolean => true,
             validation: 'between:0,100',
           },
           {
@@ -1308,8 +1286,7 @@ export const esgDatenkatalogDataModel = [
             unit: '%',
             component: 'NumberFormField',
             required: false,
-            showIf: (dataset: EsgDatenkatalogData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            showIf: (): boolean => true,
             validation: 'between:0,100',
           },
           {
@@ -1320,8 +1297,7 @@ export const esgDatenkatalogDataModel = [
 
             component: 'FreeTextFormField',
             required: false,
-            showIf: (dataset: EsgDatenkatalogData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            showIf: (): boolean => true,
           },
           {
             name: 'kompensationsinstrumenteTreibhausgasemissionen',
@@ -1330,8 +1306,7 @@ export const esgDatenkatalogDataModel = [
 
             component: 'YesNoFormField',
             required: false,
-            showIf: (dataset: EsgDatenkatalogData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            showIf: (): boolean => true,
           },
           {
             name: 'zertifizierungenBezueglichKompensationinstrumenten',
@@ -1353,8 +1328,7 @@ export const esgDatenkatalogDataModel = [
             unit: '%',
             component: 'NumberFormField',
             required: false,
-            showIf: (dataset: EsgDatenkatalogData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            showIf: (): boolean => true,
             validation: 'between:0,100',
           },
           {
@@ -1366,8 +1340,7 @@ export const esgDatenkatalogDataModel = [
             unit: '%',
             component: 'NumberFormField',
             required: false,
-            showIf: (dataset: EsgDatenkatalogData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            showIf: (): boolean => true,
             validation: 'between:0,100',
           },
           {
@@ -1379,8 +1352,7 @@ export const esgDatenkatalogDataModel = [
             unit: '%',
             component: 'NumberFormField',
             required: false,
-            showIf: (dataset: EsgDatenkatalogData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            showIf: (): boolean => true,
             validation: 'between:0,100',
           },
           {
@@ -1390,8 +1362,7 @@ export const esgDatenkatalogDataModel = [
 
             component: 'FreeTextFormField',
             required: false,
-            showIf: (dataset: EsgDatenkatalogData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            showIf: (): boolean => true,
           },
         ],
       },
@@ -1406,8 +1377,7 @@ export const esgDatenkatalogDataModel = [
 
             component: 'YesNoNaFormField',
             required: false,
-            showIf: (dataset: EsgDatenkatalogData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            showIf: (): boolean => true,
           },
           {
             name: 'skizzierungAbfallmanagementsystem',
@@ -1430,8 +1400,7 @@ export const esgDatenkatalogDataModel = [
             unit: '%',
             component: 'NumberFormField',
             required: false,
-            showIf: (dataset: EsgDatenkatalogData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            showIf: (): boolean => true,
             validation: 'between:0,100',
           },
           {
@@ -1441,8 +1410,7 @@ export const esgDatenkatalogDataModel = [
 
             component: 'YesNoNaFormField',
             required: false,
-            showIf: (dataset: EsgDatenkatalogData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            showIf: (): boolean => true,
           },
           {
             name: 'angabenZurGeplantenErhoehungDesAnteilsVonRecyclaten',
@@ -1469,8 +1437,7 @@ export const esgDatenkatalogDataModel = [
 
             component: 'YesNoNaFormField',
             required: false,
-            showIf: (dataset: EsgDatenkatalogData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            showIf: (): boolean => true,
           },
           {
             name: 'methodikZurErmittlungVonNegativenAuswirkungenAufBiodiversitaetUndOekosystem',
@@ -1492,8 +1459,7 @@ export const esgDatenkatalogDataModel = [
 
             component: 'YesNoNaFormField',
             required: false,
-            showIf: (dataset: EsgDatenkatalogData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            showIf: (): boolean => true,
           },
           {
             name: 'methodikZurErmittlungVonPositivenAuswirkungenAufBiodiversitaetUndOekosystem',
@@ -1526,8 +1492,7 @@ export const esgDatenkatalogDataModel = [
 
             component: 'YesNoNaFormField',
             required: false,
-            showIf: (dataset: EsgDatenkatalogData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            showIf: (): boolean => true,
           },
           {
             name: 'skizzierungDesPlansZurReduktionDesWasserverbrauchs',
@@ -1562,8 +1527,7 @@ export const esgDatenkatalogDataModel = [
 
             component: 'NumberFormField',
             required: false,
-            showIf: (dataset: EsgDatenkatalogData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            showIf: (): boolean => true,
             validation: 'integer|min:0',
           },
           {
@@ -1574,8 +1538,7 @@ export const esgDatenkatalogDataModel = [
             unit: '%',
             component: 'NumberFormField',
             required: false,
-            showIf: (dataset: EsgDatenkatalogData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            showIf: (): boolean => true,
             validation: 'between:0,100',
           },
           {
@@ -1586,8 +1549,7 @@ export const esgDatenkatalogDataModel = [
             unit: '%',
             component: 'NumberFormField',
             required: false,
-            showIf: (dataset: EsgDatenkatalogData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            showIf: (): boolean => true,
             validation: 'between:0,100',
           },
           {
@@ -1598,8 +1560,7 @@ export const esgDatenkatalogDataModel = [
             unit: '%',
             component: 'NumberFormField',
             required: false,
-            showIf: (dataset: EsgDatenkatalogData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            showIf: (): boolean => true,
             validation: 'between:0,100',
           },
           {
@@ -1611,8 +1572,7 @@ export const esgDatenkatalogDataModel = [
             unit: '%',
             component: 'NumberFormField',
             required: false,
-            showIf: (dataset: EsgDatenkatalogData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            showIf: (): boolean => true,
             validation: 'between:0,100',
           },
           {
@@ -1624,8 +1584,7 @@ export const esgDatenkatalogDataModel = [
             unit: '%',
             component: 'NumberFormField',
             required: false,
-            showIf: (dataset: EsgDatenkatalogData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            showIf: (): boolean => true,
             validation: 'between:0,100',
           },
           {
@@ -1637,8 +1596,7 @@ export const esgDatenkatalogDataModel = [
             unit: '%',
             component: 'NumberFormField',
             required: false,
-            showIf: (dataset: EsgDatenkatalogData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            showIf: (): boolean => true,
             validation: 'between:0,100',
           },
           {
@@ -1650,8 +1608,7 @@ export const esgDatenkatalogDataModel = [
             unit: '%',
             component: 'NumberFormField',
             required: false,
-            showIf: (dataset: EsgDatenkatalogData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            showIf: (): boolean => true,
             validation: 'between:0,100',
           },
           {
@@ -1663,8 +1620,7 @@ export const esgDatenkatalogDataModel = [
             unit: '%',
             component: 'NumberFormField',
             required: false,
-            showIf: (dataset: EsgDatenkatalogData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            showIf: (): boolean => true,
             validation: 'between:0,100',
           },
           {
@@ -1675,8 +1631,7 @@ export const esgDatenkatalogDataModel = [
 
             component: 'NumberFormField',
             required: false,
-            showIf: (dataset: EsgDatenkatalogData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            showIf: (): boolean => true,
             validation: 'min:0',
           },
           {
@@ -1687,8 +1642,7 @@ export const esgDatenkatalogDataModel = [
             unit: '%',
             component: 'NumberFormField',
             required: false,
-            showIf: (dataset: EsgDatenkatalogData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            showIf: (): boolean => true,
             validation: 'between:0,100',
           },
         ],
@@ -1726,8 +1680,7 @@ export const esgDatenkatalogDataModel = [
 
             component: 'MultiSelectFormField',
             required: false,
-            showIf: (dataset: EsgDatenkatalogData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            showIf: (): boolean => true,
           },
           {
             name: 'einbindungVonBeschaeftigtenInEntscheidungenErlaeuterungen',
@@ -1737,8 +1690,7 @@ export const esgDatenkatalogDataModel = [
 
             component: 'FreeTextFormField',
             required: false,
-            showIf: (dataset: EsgDatenkatalogData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            showIf: (): boolean => true,
           },
         ],
       },
@@ -1754,8 +1706,7 @@ export const esgDatenkatalogDataModel = [
 
             component: 'FreeTextFormField',
             required: false,
-            showIf: (dataset: EsgDatenkatalogData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            showIf: (): boolean => true,
           },
           {
             name: 'anzahlDerArbeitsunfaelleProFuenfhundertVollzeitbeschaeftigte',
@@ -1765,8 +1716,7 @@ export const esgDatenkatalogDataModel = [
 
             component: 'NumberFormField',
             required: false,
-            showIf: (dataset: EsgDatenkatalogData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            showIf: (): boolean => true,
             validation: 'min:0',
           },
         ],
@@ -1782,8 +1732,7 @@ export const esgDatenkatalogDataModel = [
 
             component: 'YesNoFormField',
             required: false,
-            showIf: (dataset: EsgDatenkatalogData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            showIf: (): boolean => true,
           },
           {
             name: 'erlaeuterungZuWeiterenWesentlichenSozialenRisiken',
@@ -1799,12 +1748,11 @@ export const esgDatenkatalogDataModel = [
             name: 'massnahmenZurReduzierungVonSozialenRisiken',
             label: 'Maßnahmen zur Reduzierung von sozialen Risiken',
             description:
-              'Welche Maßnahmen hat das Unternehmen zur Reduzierung dieser sozialen Risiken getroffen, außer der in Frage 5.1 genannten Richtlinien?',
+              'Welche Maßnahmen hat das Unternehmen zur Reduzierung dieser sozialen Risiken getroffen, außer der bereits zuvor abgefragten Richtlinien?',
 
             component: 'FreeTextFormField',
             required: false,
-            showIf: (dataset: EsgDatenkatalogData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            showIf: (): boolean => true,
           },
         ],
       },
@@ -1837,8 +1785,7 @@ export const esgDatenkatalogDataModel = [
 
             component: 'SingleSelectFormField',
             required: false,
-            showIf: (dataset: EsgDatenkatalogData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            showIf: (): boolean => true,
           },
           {
             name: 'anteilWeiblicherPersonenImTopManagement',
@@ -1848,8 +1795,7 @@ export const esgDatenkatalogDataModel = [
             unit: '%',
             component: 'NumberFormField',
             required: false,
-            showIf: (dataset: EsgDatenkatalogData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            showIf: (): boolean => true,
             validation: 'between:0,100',
           },
           {
@@ -1860,8 +1806,7 @@ export const esgDatenkatalogDataModel = [
             unit: '%',
             component: 'NumberFormField',
             required: false,
-            showIf: (dataset: EsgDatenkatalogData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            showIf: (): boolean => true,
             validation: 'between:0,100',
           },
           {
@@ -1872,8 +1817,7 @@ export const esgDatenkatalogDataModel = [
             unit: '%',
             component: 'NumberFormField',
             required: false,
-            showIf: (dataset: EsgDatenkatalogData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            showIf: (): boolean => true,
             validation: 'between:0,100',
           },
           {
@@ -1884,8 +1828,7 @@ export const esgDatenkatalogDataModel = [
 
             component: 'YesNoFormField',
             required: false,
-            showIf: (dataset: EsgDatenkatalogData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            showIf: (): boolean => true,
           },
           {
             name: 'skizzierungDerRegelungZurKopplungVonVerguetungDesTopManagementsAnNachhaltigkeitsziele',
@@ -1906,8 +1849,7 @@ export const esgDatenkatalogDataModel = [
 
             component: 'NumberFormField',
             required: false,
-            showIf: (dataset: EsgDatenkatalogData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            showIf: (): boolean => true,
             validation: 'integer|min:0',
           },
           {
@@ -1918,8 +1860,7 @@ export const esgDatenkatalogDataModel = [
 
             component: 'NumberFormField',
             required: false,
-            showIf: (dataset: EsgDatenkatalogData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            showIf: (): boolean => true,
             validation: 'integer|min:0',
           },
           {
@@ -1930,8 +1871,7 @@ export const esgDatenkatalogDataModel = [
 
             component: 'NumberFormField',
             required: false,
-            showIf: (dataset: EsgDatenkatalogData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            showIf: (): boolean => true,
             validation: 'integer|min:0',
           },
         ],
@@ -1948,8 +1888,7 @@ export const esgDatenkatalogDataModel = [
 
             component: 'YesNoFormField',
             required: false,
-            showIf: (dataset: EsgDatenkatalogData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            showIf: (): boolean => true,
           },
           {
             name: 'skizzierungDesCsrdKonformenProzessesZurBeruecksichtigungDerStakeholderinteressen',
@@ -1976,19 +1915,17 @@ export const esgDatenkatalogDataModel = [
 
             component: 'FreeTextFormField',
             required: false,
-            showIf: (dataset: EsgDatenkatalogData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            showIf: (): boolean => true,
           },
           {
             name: 'massnahmenZurReduzierungVonGovernanceRisiken',
             label: 'Maßnahmen zur Reduzierung von Governance-Risiken',
             description:
-              'Welche Maßnahmen hat das Unternehmen zur Reduzierung dieser governance-bezogenen Risiken getroffen, außer der in Frage 5.1 genannten Richtlinien?',
+              'Welche Maßnahmen hat das Unternehmen zur Reduzierung dieser governance-bezogenen Risiken getroffen, außer der bereits zuvor abgefragten Richtlinien?',
 
             component: 'FreeTextFormField',
             required: false,
-            showIf: (dataset: EsgDatenkatalogData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            showIf: (): boolean => true,
           },
         ],
       },

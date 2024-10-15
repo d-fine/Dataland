@@ -89,13 +89,6 @@ class EsgDatenkatalogFramework :
 
         createRollingWindowComponentsInCategorySoziales(framework)
         editListOfStringBaseDatapointComponents(framework)
-        framework.root.edit<ComponentGroup>("general") {
-            edit<ComponentGroup>("masterData") {
-                edit<YesNoComponent>("berichtspflichtUndEinwilligungZurVeroeffentlichung") {
-                    customizeBerichtsPflicht(this)
-                }
-            }
-        }
     }
 
     override fun getComponentGenerationUtils(): ComponentGenerationUtils = ComponentGenerationUtilsForGermanFrameworks()

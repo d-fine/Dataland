@@ -18,7 +18,7 @@ import org.dataland.datalandbackend.frameworks.esgdatenkatalog.model.allgemein
     .transaktionenMitNachhaltigkeitskomponenten.EsgDatenkatalogAllgemeinTransaktionenMitNachhaltigkeitskomponenten
 import org.dataland.datalandbackend.frameworks.esgdatenkatalog.model.allgemein.unGlobalCompactPrinzipien
     .EsgDatenkatalogAllgemeinUnGlobalCompactPrinzipien
-import org.dataland.datalandbackend.frameworks.esgdatenkatalog.model.allgemein.unSgds.EsgDatenkatalogAllgemeinUnSgds
+import org.dataland.datalandbackend.frameworks.esgdatenkatalog.model.allgemein.unSdgs.EsgDatenkatalogAllgemeinUnSdgs
 
 /**
  * The data-model for the Allgemein section
@@ -35,7 +35,7 @@ data class EsgDatenkatalogAllgemein(
     @field:Valid()
     val oecdLeitsaetze: EsgDatenkatalogAllgemeinOecdLeitsaetze? = null,
     @field:Valid()
-    val unSgds: EsgDatenkatalogAllgemeinUnSgds? = null,
+    val unSdgs: EsgDatenkatalogAllgemeinUnSdgs? = null,
     @field:Valid()
     val richtlinienDesUnternehmens: EsgDatenkatalogAllgemeinRichtlinienDesUnternehmens? = null,
     @field:Valid()

@@ -37,7 +37,6 @@ export function generateEsgDatenkatalogData(nullProbability = DEFAULT_PROBABILIT
   return {
     general: {
       masterData: {
-        berichtspflichtUndEinwilligungZurVeroeffentlichung: dataGenerator.guaranteedYesNo(),
         gueltigkeitsDatum: dataGenerator.dataDate,
       },
     },
@@ -62,9 +61,13 @@ export function generateEsgDatenkatalogData(nullProbability = DEFAULT_PROBABILIT
         gesamtumsatz: dataGenerator.randomFloat(0),
         taxonomiefaehigerUmsatz: dataGenerator.randomFloat(0),
         taxonomiekonformerUmsatz: dataGenerator.randomFloat(0),
+        anteilTaxonomiefaehigerUmsatz: dataGenerator.randomPercentageValue(),
+        anteilTaxonomiekonformerUmsatz: dataGenerator.randomPercentageValue(),
         gesamtCapex: dataGenerator.randomFloat(0),
         taxonomiefaehigeCapex: dataGenerator.randomFloat(0),
         taxonomiekonformeCapex: dataGenerator.randomFloat(0),
+        anteilTaxonomiefaehigerCapex: dataGenerator.randomPercentageValue(),
+        anteilTaxonomiekonformerCapex: dataGenerator.randomPercentageValue(),
         taxonomiebezogeneCapexPlanung: dataGenerator.randomYesNo(),
         geplanteTaxonomiefaehigeCapexIn5Jahren: dataGenerator.randomPercentageValue(),
         geplanteTaxonomiekonformeCapexIn5Jahren: dataGenerator.randomPercentageValue(),
@@ -112,7 +115,7 @@ export function generateEsgDatenkatalogData(nullProbability = DEFAULT_PROBABILIT
         ),
         erklaerungDerEinhaltungDerOecdLeitsaetze: dataGenerator.randomParagraphs(),
       },
-      unSgds: {
+      unSdgs: {
         ausrichtungNachDenUnSdgsUndAktivesVerfolgen: dataGenerator.randomParagraphs(),
       },
       richtlinienDesUnternehmens: {
@@ -136,9 +139,9 @@ export function generateEsgDatenkatalogData(nullProbability = DEFAULT_PROBABILIT
         einzelheitenZuRechtsstreitigkeitenMitEsgBezug: dataGenerator.randomParagraphs(),
       },
       transaktionenMitNachhaltigkeitskomponenten: {
-        emissionGruenerSozialerUndOderNachhaltigerSchuldtitel: dataGenerator.randomYesNo(),
+        emissionGruenerSozialerUndOderNachhaltigerSchuldtitel: dataGenerator.randomYesNoNa(),
         detailsZuEmissionenGruenerSozialerUndOderNachhaltigerSchuldtitel: dataGenerator.randomParagraphs(),
-        emissionVonSustainibilityLinkedDebt: dataGenerator.randomYesNo(),
+        emissionVonSustainibilityLinkedDebt: dataGenerator.randomYesNoNa(),
         detailsZuEmissionenVonSustainibilityLinkedDebt: dataGenerator.randomParagraphs(),
       },
     },
@@ -182,9 +185,9 @@ export function generateEsgDatenkatalogData(nullProbability = DEFAULT_PROBABILIT
           ])
         ),
         vonPhysischenKlimaUndUmweltrisikenBetroffeneStandorte: dataGenerator.randomParagraphs(),
-        messungSteuerungUndUeberwachungDerKlimaUndUmweltrisiken: dataGenerator.randomYesNo(),
+        messungSteuerungUndUeberwachungDerKlimaUndUmweltrisiken: dataGenerator.randomYesNoNa(),
         beschreibungDerMessungSteuerungUndUeberwachungDerKlimaUndUmweltrisiken: dataGenerator.randomParagraphs(),
-        nutzungVonSzenarioanalysen: dataGenerator.randomYesNo(),
+        nutzungVonSzenarioanalysen: dataGenerator.randomYesNoNa(),
         beschreibungDerNutzungVonSzenarioanalysen: dataGenerator.randomParagraphs(),
         beruecksichtigungVonKlimaUndUmweltrisiken: dataGenerator.randomYesNo(),
         zeithorizontDerBeruecksichtigungVonKlimaUndUmweltrisikenImGeschaeftsmodell: dataGenerator.randomParagraphs(),

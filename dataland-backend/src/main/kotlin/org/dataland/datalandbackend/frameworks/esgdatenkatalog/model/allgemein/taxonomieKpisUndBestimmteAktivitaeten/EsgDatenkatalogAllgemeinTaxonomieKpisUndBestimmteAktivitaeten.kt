@@ -16,12 +16,16 @@ data class EsgDatenkatalogAllgemeinTaxonomieKpisUndBestimmteAktivitaeten(
     val taxonomiefaehigerUmsatz: BigDecimal? = null,
     @field:MinimumValue(minimumValue = 0)
     val taxonomiekonformerUmsatz: BigDecimal? = null,
+    val anteilTaxonomiefaehigerUmsatz: BigDecimal? = null,
+    val anteilTaxonomiekonformerUmsatz: BigDecimal? = null,
     @field:MinimumValue(minimumValue = 0)
     val gesamtCapex: BigDecimal? = null,
     @field:MinimumValue(minimumValue = 0)
     val taxonomiefaehigeCapex: BigDecimal? = null,
     @field:MinimumValue(minimumValue = 0)
     val taxonomiekonformeCapex: BigDecimal? = null,
+    val anteilTaxonomiefaehigerCapex: BigDecimal? = null,
+    val anteilTaxonomiekonformerCapex: BigDecimal? = null,
     val taxonomiebezogeneCapexPlanung: YesNo? = null,
     val geplanteTaxonomiefaehigeCapexIn5Jahren: BigDecimal? = null,
     val geplanteTaxonomiekonformeCapexIn5Jahren: BigDecimal? = null,

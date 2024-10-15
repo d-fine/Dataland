@@ -32,9 +32,6 @@ function generateFixtureForNoNullFieldsAndOnlyYesAnswers(): FixtureData<EsgDaten
  * @param newFixture generated prepared fixture to modify
  */
 function setAllYesNoValuesToYesInCategoryAllgemein(newFixture: FixtureData<EsgDatenkatalogData>): void {
-  if (newFixture.t.general?.masterData) {
-    newFixture.t.general.masterData.berichtspflichtUndEinwilligungZurVeroeffentlichung = YesNo.Yes;
-  }
   if (newFixture.t.allgemein?.generelleEsgStrategie?.dokumenteZurNachhaltigkeitsstrategie) {
     newFixture.t.allgemein.generelleEsgStrategie.dokumenteZurNachhaltigkeitsstrategie.push({
       value: 'Report with null data source',

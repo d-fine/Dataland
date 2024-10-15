@@ -16,7 +16,7 @@ import org.dataland.datalandbackend.frameworks.esgdatenkatalog.model.umwelt.EsgD
 @DataType("esg-datenkatalog", 7)
 data class EsgDatenkatalogData(
     @field:Valid()
-    val general: EsgDatenkatalogGeneral,
+    val general: EsgDatenkatalogGeneral? = null,
     @field:Valid()
     val allgemein: EsgDatenkatalogAllgemein? = null,
     @field:Valid()

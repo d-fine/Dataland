@@ -27,17 +27,6 @@ export const esgDatenkatalogViewConfiguration: MLDTConfig<EsgDatenkatalogData> =
         children: [
           {
             type: 'cell',
-            label: 'Berichtspflicht und Einwilligung zur Veröffentlichung',
-            explanation:
-              'Ist das Unternehmen berichtspflichtig im Rahmen der CSRD-Richtlinie bzw. ist es gemäß den Offenlegungspflichten der Artikel 19a und 29a der Richtilinie 2023/34/EU zur Nachhaltigkeitsberichtserstattung verpflichtet? Ist das Unternehmen außerdem mit einer Veröffentlichung des Datensatzes auf Dataland einverstanden? Anderenfalls ist eine Dateneineingabe nicht möglich.',
-            shouldDisplay: (): boolean => true,
-            valueGetter: (dataset: EsgDatenkatalogData): AvailableMLDTDisplayObjectTypes =>
-              formatYesNoValueForDatatable(
-                dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung
-              ),
-          },
-          {
-            type: 'cell',
             label: '(Gültigkeits) Datum',
             explanation: 'Datum bis wann die Information gültig ist',
             shouldDisplay: (): boolean => true,
@@ -64,8 +53,7 @@ export const esgDatenkatalogViewConfiguration: MLDTConfig<EsgDatenkatalogData> =
             type: 'cell',
             label: 'Nachhaltigkeitsstrategie',
             explanation: 'Verfügt das Unternehmen über eine Nachhaltigkeitsstrategie?',
-            shouldDisplay: (dataset: EsgDatenkatalogData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EsgDatenkatalogData): AvailableMLDTDisplayObjectTypes =>
               formatYesNoValueForDatatable(dataset.allgemein?.generelleEsgStrategie?.nachhaltigkeitsstrategie),
           },
@@ -184,8 +172,7 @@ export const esgDatenkatalogViewConfiguration: MLDTConfig<EsgDatenkatalogData> =
             label: 'Chancen oder Hindernisse',
             explanation:
               'Welche grundsätzlichen Chancen oder Hindernisse bestehen für das Unternehmen bei der Berücksichtigung von ESG-Belangen?',
-            shouldDisplay: (dataset: EsgDatenkatalogData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EsgDatenkatalogData): AvailableMLDTDisplayObjectTypes =>
               formatFreeTextForDatatable(dataset.allgemein?.generelleEsgStrategie?.chancenOderHindernisse),
           },
@@ -202,8 +189,7 @@ export const esgDatenkatalogViewConfiguration: MLDTConfig<EsgDatenkatalogData> =
             label: 'Wirtschaftszweige',
             explanation:
               'In welchen Wirtschaftszweigen ist das Unternehmen primär aktiv? Bitte Angabe des primären NACE-Codes (4-stellig).',
-            shouldDisplay: (dataset: EsgDatenkatalogData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EsgDatenkatalogData): AvailableMLDTDisplayObjectTypes =>
               formatNaceCodesForDatatable(
                 dataset.allgemein?.taxonomieKpisUndBestimmteAktivitaeten?.wirtschaftszweige,
@@ -214,8 +200,7 @@ export const esgDatenkatalogViewConfiguration: MLDTConfig<EsgDatenkatalogData> =
             type: 'cell',
             label: 'Gesamtumsatz',
             explanation: 'Geben Sie den Gesamtumsatz des Unternehmens in € an.',
-            shouldDisplay: (dataset: EsgDatenkatalogData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EsgDatenkatalogData): AvailableMLDTDisplayObjectTypes =>
               formatNumberForDatatable(dataset.allgemein?.taxonomieKpisUndBestimmteAktivitaeten?.gesamtumsatz, 'Euro'),
           },
@@ -223,8 +208,7 @@ export const esgDatenkatalogViewConfiguration: MLDTConfig<EsgDatenkatalogData> =
             type: 'cell',
             label: 'Taxonomiefähiger Umsatz',
             explanation: 'Geben Sie den taxonomiefähigen Teilbetrag des Gesamtumsatzes in € an.',
-            shouldDisplay: (dataset: EsgDatenkatalogData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EsgDatenkatalogData): AvailableMLDTDisplayObjectTypes =>
               formatNumberForDatatable(
                 dataset.allgemein?.taxonomieKpisUndBestimmteAktivitaeten?.taxonomiefaehigerUmsatz,
@@ -235,8 +219,7 @@ export const esgDatenkatalogViewConfiguration: MLDTConfig<EsgDatenkatalogData> =
             type: 'cell',
             label: 'Taxonomiekonformer Umsatz',
             explanation: 'Geben Sie den taxonomiekonformen Teilbetrag des taxonomiefähigen Betrags in € an.',
-            shouldDisplay: (dataset: EsgDatenkatalogData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EsgDatenkatalogData): AvailableMLDTDisplayObjectTypes =>
               formatNumberForDatatable(
                 dataset.allgemein?.taxonomieKpisUndBestimmteAktivitaeten?.taxonomiekonformerUmsatz,
@@ -245,10 +228,29 @@ export const esgDatenkatalogViewConfiguration: MLDTConfig<EsgDatenkatalogData> =
           },
           {
             type: 'cell',
+            label: 'Anteil Taxonomiefähiger Umsatz',
+            explanation: 'Geben Sie den prozentualen Anteil der taxonomiefähigen Umsätze an.',
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: EsgDatenkatalogData): AvailableMLDTDisplayObjectTypes =>
+              formatPercentageForDatatable(
+                dataset.allgemein?.taxonomieKpisUndBestimmteAktivitaeten?.anteilTaxonomiefaehigerUmsatz
+              ),
+          },
+          {
+            type: 'cell',
+            label: 'Anteil Taxonomiekonformer Umsatz',
+            explanation: 'Geben Sie den prozentualen Anteil der taxonomiekonformen Umsätze an.',
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: EsgDatenkatalogData): AvailableMLDTDisplayObjectTypes =>
+              formatPercentageForDatatable(
+                dataset.allgemein?.taxonomieKpisUndBestimmteAktivitaeten?.anteilTaxonomiekonformerUmsatz
+              ),
+          },
+          {
+            type: 'cell',
             label: 'Gesamt-CapEx',
             explanation: 'Geben Sie die CapEx des Unternehmens in € an.',
-            shouldDisplay: (dataset: EsgDatenkatalogData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EsgDatenkatalogData): AvailableMLDTDisplayObjectTypes =>
               formatNumberForDatatable(dataset.allgemein?.taxonomieKpisUndBestimmteAktivitaeten?.gesamtCapex, 'Euro'),
           },
@@ -256,8 +258,7 @@ export const esgDatenkatalogViewConfiguration: MLDTConfig<EsgDatenkatalogData> =
             type: 'cell',
             label: 'Taxonomiefähige CapEx',
             explanation: 'Geben Sie den taxonomiefähigen Teilbetrag der Gesamt-CapEx in € an.',
-            shouldDisplay: (dataset: EsgDatenkatalogData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EsgDatenkatalogData): AvailableMLDTDisplayObjectTypes =>
               formatNumberForDatatable(
                 dataset.allgemein?.taxonomieKpisUndBestimmteAktivitaeten?.taxonomiefaehigeCapex,
@@ -268,8 +269,7 @@ export const esgDatenkatalogViewConfiguration: MLDTConfig<EsgDatenkatalogData> =
             type: 'cell',
             label: 'Taxonomiekonforme CapEx',
             explanation: 'Geben Sie den taxonomiekonformen Teilbetrag der taxonomiefähigen CapEx in € an.',
-            shouldDisplay: (dataset: EsgDatenkatalogData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EsgDatenkatalogData): AvailableMLDTDisplayObjectTypes =>
               formatNumberForDatatable(
                 dataset.allgemein?.taxonomieKpisUndBestimmteAktivitaeten?.taxonomiekonformeCapex,
@@ -278,10 +278,29 @@ export const esgDatenkatalogViewConfiguration: MLDTConfig<EsgDatenkatalogData> =
           },
           {
             type: 'cell',
+            label: 'Anteil Taxonomiefähiger CapEx',
+            explanation: 'Geben Sie den prozentualen Anteil der taxonomiefähigen Umsätze an.',
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: EsgDatenkatalogData): AvailableMLDTDisplayObjectTypes =>
+              formatPercentageForDatatable(
+                dataset.allgemein?.taxonomieKpisUndBestimmteAktivitaeten?.anteilTaxonomiefaehigerCapex
+              ),
+          },
+          {
+            type: 'cell',
+            label: 'Anteil Taxonomiekonformer CapEx',
+            explanation: 'Geben Sie den prozentualen Anteil der taxonomiekonformen Umsätze an.',
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: EsgDatenkatalogData): AvailableMLDTDisplayObjectTypes =>
+              formatPercentageForDatatable(
+                dataset.allgemein?.taxonomieKpisUndBestimmteAktivitaeten?.anteilTaxonomiekonformerCapex
+              ),
+          },
+          {
+            type: 'cell',
             label: 'Taxonomiebezogene CapEx-Planung',
             explanation: 'Hat das Unternehmen eine taxonomiebezogene CapEx-Planung? ',
-            shouldDisplay: (dataset: EsgDatenkatalogData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EsgDatenkatalogData): AvailableMLDTDisplayObjectTypes =>
               formatYesNoValueForDatatable(
                 dataset.allgemein?.taxonomieKpisUndBestimmteAktivitaeten?.taxonomiebezogeneCapexPlanung
@@ -315,8 +334,7 @@ export const esgDatenkatalogViewConfiguration: MLDTConfig<EsgDatenkatalogData> =
             type: 'cell',
             label: 'Aktivität im Sektor "Fossile Brennstoffe"',
             explanation: 'Ist das Unternehmen im Sektor "Fossile Brennstoffe (Kohle, Gas, Öl)" aktiv?',
-            shouldDisplay: (dataset: EsgDatenkatalogData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EsgDatenkatalogData): AvailableMLDTDisplayObjectTypes =>
               formatYesNoValueForDatatable(
                 dataset.allgemein?.taxonomieKpisUndBestimmteAktivitaeten?.aktivitaetImSektorFossileBrennstoffe
@@ -365,8 +383,7 @@ export const esgDatenkatalogViewConfiguration: MLDTConfig<EsgDatenkatalogData> =
             type: 'cell',
             label: 'Aktivität im Sektor "Herstellung von Chemikalien"',
             explanation: 'Ist das Unternehmen im Sektor "Herstellung von Chemikalien" aktiv?',
-            shouldDisplay: (dataset: EsgDatenkatalogData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EsgDatenkatalogData): AvailableMLDTDisplayObjectTypes =>
               formatYesNoValueForDatatable(
                 dataset.allgemein?.taxonomieKpisUndBestimmteAktivitaeten?.aktivitaetImSektorHerstellungVonChemikalien
@@ -418,8 +435,7 @@ export const esgDatenkatalogViewConfiguration: MLDTConfig<EsgDatenkatalogData> =
             type: 'cell',
             label: 'Aktivität im Sektor "Umstrittene Waffen"',
             explanation: 'Ist das Unternehmen im Sektor "Umstrittene Waffen" aktiv?',
-            shouldDisplay: (dataset: EsgDatenkatalogData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EsgDatenkatalogData): AvailableMLDTDisplayObjectTypes =>
               formatYesNoValueForDatatable(
                 dataset.allgemein?.taxonomieKpisUndBestimmteAktivitaeten?.aktivitaetImSektorUmstritteneWaffen
@@ -468,8 +484,7 @@ export const esgDatenkatalogViewConfiguration: MLDTConfig<EsgDatenkatalogData> =
             type: 'cell',
             label: 'Aktivität im Sektor "Tabakanbau und -verarbeitung"',
             explanation: 'Ist das Unternehmen im Sektor "Tabakanbau und -verarbeitung" aktiv?',
-            shouldDisplay: (dataset: EsgDatenkatalogData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EsgDatenkatalogData): AvailableMLDTDisplayObjectTypes =>
               formatYesNoValueForDatatable(
                 dataset.allgemein?.taxonomieKpisUndBestimmteAktivitaeten?.aktivitaetImSektorTabakanbauUndVerarbeitung
@@ -529,8 +544,7 @@ export const esgDatenkatalogViewConfiguration: MLDTConfig<EsgDatenkatalogData> =
             type: 'cell',
             label: 'ESG-Rating',
             explanation: 'Hat das Unternehmen bereits ein ESG-Rating einer anerkannten Ratingagentur?',
-            shouldDisplay: (dataset: EsgDatenkatalogData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EsgDatenkatalogData): AvailableMLDTDisplayObjectTypes =>
               formatYesNoValueForDatatable(dataset.allgemein?.esgRatingUndZertifizierung?.esgRating),
           },
@@ -569,8 +583,7 @@ export const esgDatenkatalogViewConfiguration: MLDTConfig<EsgDatenkatalogData> =
             type: 'cell',
             label: 'ISO 14001',
             explanation: 'Hat das Unternehmen eine ISO 14001 Zertifizierung?',
-            shouldDisplay: (dataset: EsgDatenkatalogData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EsgDatenkatalogData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
                 formatYesNoValueForDatatable(dataset.allgemein?.esgRatingUndZertifizierung?.iso14001?.value),
@@ -582,8 +595,7 @@ export const esgDatenkatalogViewConfiguration: MLDTConfig<EsgDatenkatalogData> =
             type: 'cell',
             label: 'ISO 45001',
             explanation: 'Hat das Unternehmen eine ISO 45001 Zertifizierung?',
-            shouldDisplay: (dataset: EsgDatenkatalogData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EsgDatenkatalogData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
                 formatYesNoValueForDatatable(dataset.allgemein?.esgRatingUndZertifizierung?.iso45001?.value),
@@ -595,8 +607,7 @@ export const esgDatenkatalogViewConfiguration: MLDTConfig<EsgDatenkatalogData> =
             type: 'cell',
             label: 'ISO 27001',
             explanation: 'Hat das Unternehmen eine ISO 27001 Zertifizierung?',
-            shouldDisplay: (dataset: EsgDatenkatalogData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EsgDatenkatalogData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
                 formatYesNoValueForDatatable(dataset.allgemein?.esgRatingUndZertifizierung?.iso27001?.value),
@@ -608,8 +619,7 @@ export const esgDatenkatalogViewConfiguration: MLDTConfig<EsgDatenkatalogData> =
             type: 'cell',
             label: 'ISO 50001',
             explanation: 'Hat das Unternehmen eine ISO 50001 Zertifizierung?',
-            shouldDisplay: (dataset: EsgDatenkatalogData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EsgDatenkatalogData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
                 formatYesNoValueForDatatable(dataset.allgemein?.esgRatingUndZertifizierung?.iso50001?.value),
@@ -622,8 +632,7 @@ export const esgDatenkatalogViewConfiguration: MLDTConfig<EsgDatenkatalogData> =
             label: 'ISO 14040 (i.V.m. 14044)',
             explanation:
               'Hat das Unternehmen eine ISO 14040 Zertifizierung in Verbindung mit einer ISO 14044 Zertifizierung?',
-            shouldDisplay: (dataset: EsgDatenkatalogData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EsgDatenkatalogData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
                 formatYesNoValueForDatatable(dataset.allgemein?.esgRatingUndZertifizierung?.iso14040Ivm14044?.value),
@@ -635,8 +644,7 @@ export const esgDatenkatalogViewConfiguration: MLDTConfig<EsgDatenkatalogData> =
             type: 'cell',
             label: 'ISO 14064',
             explanation: 'Hat das Unternehmen eine ISO 14064 Zertifizierung?',
-            shouldDisplay: (dataset: EsgDatenkatalogData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EsgDatenkatalogData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
                 formatYesNoValueForDatatable(dataset.allgemein?.esgRatingUndZertifizierung?.iso14064?.value),
@@ -648,8 +656,7 @@ export const esgDatenkatalogViewConfiguration: MLDTConfig<EsgDatenkatalogData> =
             type: 'cell',
             label: 'EMAS',
             explanation: 'Hat das Unternehmen eine EMAS Zertifizierung?',
-            shouldDisplay: (dataset: EsgDatenkatalogData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EsgDatenkatalogData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
                 formatYesNoValueForDatatable(dataset.allgemein?.esgRatingUndZertifizierung?.emas?.value),
@@ -670,8 +677,7 @@ export const esgDatenkatalogViewConfiguration: MLDTConfig<EsgDatenkatalogData> =
             label: 'Mechanismen zur Überwachung der Einhaltung der UNGCP',
             explanation:
               'Verfügt das Unternehmen über Prozesse und Compliance-Mechanismen, um die Einhaltung der Prinzipien des UN Global Compact zu überwachen?',
-            shouldDisplay: (dataset: EsgDatenkatalogData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EsgDatenkatalogData): AvailableMLDTDisplayObjectTypes =>
               formatYesNoValueForDatatable(
                 dataset.allgemein?.unGlobalCompactPrinzipien?.mechanismenZurUeberwachungDerEinhaltungDerUngcp
@@ -715,8 +721,7 @@ export const esgDatenkatalogViewConfiguration: MLDTConfig<EsgDatenkatalogData> =
             label: 'Mechanismen zur Überwachung der Einhaltung der OECD-Leitsätze',
             explanation:
               'Verfügt das Unternehmen über Prozesse und Compliance-Mechanismen, um die Einhaltung der OECD-Leitsätze für multinationale Unternehmen (OECD MNE Guidelines) zu überwachen?',
-            shouldDisplay: (dataset: EsgDatenkatalogData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EsgDatenkatalogData): AvailableMLDTDisplayObjectTypes =>
               formatYesNoValueForDatatable(
                 dataset.allgemein?.oecdLeitsaetze?.mechanismenZurUeberwachungDerEinhaltungDerOecdLeitsaetze
@@ -751,7 +756,7 @@ export const esgDatenkatalogViewConfiguration: MLDTConfig<EsgDatenkatalogData> =
       },
       {
         type: 'section',
-        label: 'UN SGDs',
+        label: 'UN SDGs',
         expandOnPageLoad: true,
         shouldDisplay: (): boolean => true,
         children: [
@@ -760,10 +765,9 @@ export const esgDatenkatalogViewConfiguration: MLDTConfig<EsgDatenkatalogData> =
             label: 'Ausrichtung nach den UN SDGs und aktives Verfolgen',
             explanation:
               'Wie steht das Unternehmen in Einklang mit den 17 UN-Zielen für nachhaltige Entwicklung? Welche dieser Ziele verfolgt das Unternehmen aktiv, entweder durch ihre Geschäftstätigkeit oder durch die Unternehmensführung?',
-            shouldDisplay: (dataset: EsgDatenkatalogData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EsgDatenkatalogData): AvailableMLDTDisplayObjectTypes =>
-              formatFreeTextForDatatable(dataset.allgemein?.unSgds?.ausrichtungNachDenUnSdgsUndAktivesVerfolgen),
+              formatFreeTextForDatatable(dataset.allgemein?.unSdgs?.ausrichtungNachDenUnSdgsUndAktivesVerfolgen),
           },
         ],
       },
@@ -777,8 +781,7 @@ export const esgDatenkatalogViewConfiguration: MLDTConfig<EsgDatenkatalogData> =
             type: 'cell',
             label: 'Existenz von Richtlinien zu spezifischen Themen',
             explanation: 'Zu welchen der genannten Themen verfügt das Unternehmen über Richtlinien?',
-            shouldDisplay: (dataset: EsgDatenkatalogData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EsgDatenkatalogData): AvailableMLDTDisplayObjectTypes => {
               const mappings = {
                 DiversitaetAndInklusion: 'Diversität & Inklusion',
@@ -803,8 +806,7 @@ export const esgDatenkatalogViewConfiguration: MLDTConfig<EsgDatenkatalogData> =
             type: 'cell',
             label: 'Berücksichtigung von Nachhaltigkeitskriterien bei der Lieferantenauswahl',
             explanation: 'Wie berücksichtigt das Unternehmen Nachhaltigkeitskriterien bei der Auswahl der Lieferanten?',
-            shouldDisplay: (dataset: EsgDatenkatalogData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EsgDatenkatalogData): AvailableMLDTDisplayObjectTypes =>
               formatFreeTextForDatatable(
                 dataset.allgemein?.richtlinienDesUnternehmens
@@ -824,8 +826,7 @@ export const esgDatenkatalogViewConfiguration: MLDTConfig<EsgDatenkatalogData> =
             label: 'Rechtsstreitigkeiten mit ESG-Bezug',
             explanation:
               'Ist das Unternehmen in laufende bzw. war das Unternehmen in den letzten 3 Jahren in rechtskräftig abgeschlossene Rechtsstreitigkeiten im Zusammenhang mit Nachhaltigkeit / ESG involviert? Im Vordergrund stehen vor Gericht bereits anhängige Verfahren.',
-            shouldDisplay: (dataset: EsgDatenkatalogData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EsgDatenkatalogData): AvailableMLDTDisplayObjectTypes =>
               formatYesNoValueForDatatable(dataset.allgemein?.rechtsstreitigkeiten?.rechtsstreitigkeitenMitEsgBezug),
           },
@@ -852,8 +853,7 @@ export const esgDatenkatalogViewConfiguration: MLDTConfig<EsgDatenkatalogData> =
             type: 'cell',
             label: 'Emission grüner, sozialer und/oder nachhaltiger Schuldtitel',
             explanation: 'Hat das Unternehmen „grüne“, „soziale“ und/oder „nachhaltige“ Schuldtitel begeben?',
-            shouldDisplay: (dataset: EsgDatenkatalogData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EsgDatenkatalogData): AvailableMLDTDisplayObjectTypes =>
               formatYesNoValueForDatatable(
                 dataset.allgemein?.transaktionenMitNachhaltigkeitskomponenten
@@ -877,8 +877,7 @@ export const esgDatenkatalogViewConfiguration: MLDTConfig<EsgDatenkatalogData> =
             type: 'cell',
             label: 'Emission von Sustainibility Linked Debt',
             explanation: 'Hat das Unternehmen Sustainability Linked Debt („SLD“) emittiert?',
-            shouldDisplay: (dataset: EsgDatenkatalogData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EsgDatenkatalogData): AvailableMLDTDisplayObjectTypes =>
               formatYesNoValueForDatatable(
                 dataset.allgemein?.transaktionenMitNachhaltigkeitskomponenten?.emissionVonSustainibilityLinkedDebt
@@ -918,8 +917,7 @@ export const esgDatenkatalogViewConfiguration: MLDTConfig<EsgDatenkatalogData> =
             label: 'Scope 1 Treibhausgasemissionen',
             explanation:
               'Wie hoch waren die Scope 1 Treibhausgasemissionen des Unternehmens im letzten abgeschlossenen Geschäftsjahr (in tCO2eq)? Der Scope 1 umfasst alle direkten Treibhausgasemissionen aus eigenen Anlagen des Unternehmens sowie von ihm kontrollierten Anlagen.',
-            shouldDisplay: (dataset: EsgDatenkatalogData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EsgDatenkatalogData): AvailableMLDTDisplayObjectTypes =>
               formatNumberForDatatable(dataset.umwelt?.emissionen?.scope1Treibhausgasemissionen, 'tCO\u00B2eq'),
           },
@@ -928,8 +926,7 @@ export const esgDatenkatalogViewConfiguration: MLDTConfig<EsgDatenkatalogData> =
             label: 'Scope 2 Treibhausgasemissionen (marktbasiert)',
             explanation:
               'Wie hoch waren die marktbasiert berechneten Scope 2 Treibhausgasemissionen des Unternehmens im letzten abgeschlossenen Geschäftsjahr (in tCO2eq)? Der Scope 2 umfasst indirekte Treibhausgasemissionen, die im Rahmen der Erzeugung des vom Unternehmen verbrauchten Stroms, Dampf, Wärme und Kälte entstehen.',
-            shouldDisplay: (dataset: EsgDatenkatalogData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EsgDatenkatalogData): AvailableMLDTDisplayObjectTypes =>
               formatNumberForDatatable(
                 dataset.umwelt?.emissionen?.scope2TreibhausgasemissionenMarktbasiert,
@@ -941,8 +938,7 @@ export const esgDatenkatalogViewConfiguration: MLDTConfig<EsgDatenkatalogData> =
             label: 'Scope 2 Treibhausgasemissionen (standortbasiert)',
             explanation:
               'Wie hoch waren die standortbasiert berechneten Scope 2 Treibhausgasemissionen des Unternehmens im letzten abgeschlossenen Geschäftsjahr (in tCO2eq)? Der Scope 2 umfasst indirekte Treibhausgasemissionen, die im Rahmen der Erzeugung des vom Unternehmen verbrauchten Stroms, Dampf, Wärme und Kälte entstehen.',
-            shouldDisplay: (dataset: EsgDatenkatalogData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EsgDatenkatalogData): AvailableMLDTDisplayObjectTypes =>
               formatNumberForDatatable(
                 dataset.umwelt?.emissionen?.scope2TreibhausgasemissionenStandortbasiert,
@@ -954,8 +950,7 @@ export const esgDatenkatalogViewConfiguration: MLDTConfig<EsgDatenkatalogData> =
             label: 'Scope 3 Treibhausgasemissionen',
             explanation:
               'Wie hoch waren die Scope 3 Treibhausgasemissionen des Unternehmens im letzten abgeschlossenen Geschäftsjahr (in tCO2eq)? Der Scope 3 umfasst alle sonstigen indirekten Treibhausgasemissionen, bspw. Emissionen die in der Herstellung und im Transport zugekaufter Güter (einschließlich Immobilien), in der Distribution oder Nutzung eigener Produkte oder in der Abfallentsorgung entstehen. Es ist die vor- und nachgelagerte Wertschöpfungskette zu betrachten. ',
-            shouldDisplay: (dataset: EsgDatenkatalogData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EsgDatenkatalogData): AvailableMLDTDisplayObjectTypes =>
               formatNumberForDatatable(dataset.umwelt?.emissionen?.scope3Treibhausgasemissionen, 'tCO\u00B2eq'),
           },
@@ -964,8 +959,7 @@ export const esgDatenkatalogViewConfiguration: MLDTConfig<EsgDatenkatalogData> =
             label: 'CO2-Intensität des Unternehmens',
             explanation:
               'Welche CO²-Intensität berechnet sich für das Unternehmen? Hierzu die Treibhausgasemissionen nach Scope 1 bis 3 addieren und durch den Gesamtumsatz des Unternehmens teilen. Daraus ergibt sich die CO²-Intensität in der Einheit tCO²eq pro Euro Umsatz.',
-            shouldDisplay: (dataset: EsgDatenkatalogData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EsgDatenkatalogData): AvailableMLDTDisplayObjectTypes =>
               formatNumberForDatatable(dataset.umwelt?.emissionen?.co2IntensitaetDesUnternehmens, 'tCO\u00B2eq/\u20AC'),
           },
@@ -974,8 +968,7 @@ export const esgDatenkatalogViewConfiguration: MLDTConfig<EsgDatenkatalogData> =
             label: 'Luftschadstoffe',
             explanation:
               'Wie hoch waren die Emissionen von Luftschadstoffen im letzten abgeschlossenen Geschäftsjahr? Analog zu ESRS E2-4 sind hier die Emissionen von Schadstoffen, die in Annex II der Verordnung (EG) Nr. 166/2006 des Europäischen Parlaments und des Rates (Europäisches Schadstofffreisetzungs- und -verbringungsregister, E-PRTR) aufgeführt sind, relevant. Treibhausgasemissionen gemäß ESRS E1 sind für diese Angaben nicht relevant.',
-            shouldDisplay: (dataset: EsgDatenkatalogData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EsgDatenkatalogData): AvailableMLDTDisplayObjectTypes =>
               formatNumberForDatatable(dataset.umwelt?.emissionen?.luftschadstoffe, 't'),
           },
@@ -984,8 +977,7 @@ export const esgDatenkatalogViewConfiguration: MLDTConfig<EsgDatenkatalogData> =
             label: 'Wassergefährdende Stoffe',
             explanation:
               'Wie hoch waren die Emissionen von wassergefährdenden Stoffen im letzten abgeschlossenen Geschäftsjahr? Analog zu ESRS E2-4 sind hier die Emissionen von Schadstoffen, die in Annex II der Verordnung (EG) Nr. 166/2006 des Europäischen Parlaments und des Rates (Europäisches Schadstofffreisetzungs- und -verbringungsregister, E-PRTR) aufgeführt sind, relevant. Treibhausgasemissionen gemäß ESRS E1 sind für diese Angaben nicht relevant.',
-            shouldDisplay: (dataset: EsgDatenkatalogData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EsgDatenkatalogData): AvailableMLDTDisplayObjectTypes =>
               formatNumberForDatatable(dataset.umwelt?.emissionen?.wassergefaehrdendeStoffe, 't'),
           },
@@ -994,8 +986,7 @@ export const esgDatenkatalogViewConfiguration: MLDTConfig<EsgDatenkatalogData> =
             label: 'Bodenverschmutzende Stoffe',
             explanation:
               'Wie hoch waren die Emissionen von bodenverschmutzenden Stoffen im letzten abgeschlossenen Geschäftsjahr? Analog zu ESRS E2-4 sind hier die Emissionen von Schadstoffen, die in Annex II der Verordnung (EG) Nr. 166/2006 des Europäischen Parlaments und des Rates (Europäisches Schadstofffreisetzungs- und -verbringungsregister, E-PRTR) aufgeführt sind, relevant. Treibhausgasemissionen gemäß ESRS E1 sind für diese Angaben nicht relevant.',
-            shouldDisplay: (dataset: EsgDatenkatalogData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EsgDatenkatalogData): AvailableMLDTDisplayObjectTypes =>
               formatNumberForDatatable(dataset.umwelt?.emissionen?.bodenverschmutzendeStoffe, 't'),
           },
@@ -1012,8 +1003,7 @@ export const esgDatenkatalogViewConfiguration: MLDTConfig<EsgDatenkatalogData> =
             label: 'Energieverbrauch',
             explanation:
               'Wie hoch war der Energieverbrauch des Unternehmens im letzten abgeschlossenen Geschäftsjahr (in MWh)? Die Methodik analog zu ESRS E1-5.',
-            shouldDisplay: (dataset: EsgDatenkatalogData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EsgDatenkatalogData): AvailableMLDTDisplayObjectTypes =>
               formatNumberForDatatable(dataset.umwelt?.verbrauchsangaben?.energieverbrauch, 'Mwh'),
           },
@@ -1021,8 +1011,7 @@ export const esgDatenkatalogViewConfiguration: MLDTConfig<EsgDatenkatalogData> =
             type: 'cell',
             label: 'Anteil erneuerbarer Energien am Gesamt-Energieverbrauch',
             explanation: 'Welcher Anteil der bezogenen Energie stammte aus erneuerbaren Energiequellen (in %)?',
-            shouldDisplay: (dataset: EsgDatenkatalogData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EsgDatenkatalogData): AvailableMLDTDisplayObjectTypes =>
               formatPercentageForDatatable(
                 dataset.umwelt?.verbrauchsangaben?.anteilErneuerbarerEnergienAmGesamtEnergieverbrauch
@@ -1033,8 +1022,7 @@ export const esgDatenkatalogViewConfiguration: MLDTConfig<EsgDatenkatalogData> =
             label: 'Wasserverbrauch',
             explanation:
               'Wie hoch war der Wasserverbrauch des Unternehmens im letzten abgeschlossenen Geschäftsjahr (in m³)?',
-            shouldDisplay: (dataset: EsgDatenkatalogData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EsgDatenkatalogData): AvailableMLDTDisplayObjectTypes =>
               formatNumberForDatatable(dataset.umwelt?.verbrauchsangaben?.wasserverbrauch, 'm\u00B3'),
           },
@@ -1050,8 +1038,7 @@ export const esgDatenkatalogViewConfiguration: MLDTConfig<EsgDatenkatalogData> =
             type: 'cell',
             label: 'Abfallmenge',
             explanation: 'Welche Abfallmenge fiel im Unternehmen im letzten abgeschlossenen Geschäftsjahr an (in t)?',
-            shouldDisplay: (dataset: EsgDatenkatalogData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EsgDatenkatalogData): AvailableMLDTDisplayObjectTypes =>
               formatNumberForDatatable(dataset.umwelt?.abfall?.abfallmenge, 't'),
           },
@@ -1060,8 +1047,7 @@ export const esgDatenkatalogViewConfiguration: MLDTConfig<EsgDatenkatalogData> =
             label: 'Anteil des nicht recycleten Abfalls an der Gesamt-Abfallmenge',
             explanation:
               'Welcher Anteil der Abfälle des Unternehmens wurden im letzten abgeschlossenen Geschäftsjahr nicht recycelt (in %)?',
-            shouldDisplay: (dataset: EsgDatenkatalogData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EsgDatenkatalogData): AvailableMLDTDisplayObjectTypes =>
               formatPercentageForDatatable(
                 dataset.umwelt?.abfall?.anteilDesNichtRecycletenAbfallsAnDerGesamtAbfallmenge
@@ -1072,8 +1058,7 @@ export const esgDatenkatalogViewConfiguration: MLDTConfig<EsgDatenkatalogData> =
             label: 'Menge an gefährlichen Abfällen',
             explanation:
               'Welche Menge an gefährlichen Abfällen fielen im Unternehmen im letzten abgeschlossenen Geschäftsjahr (in t) an? Gefährliche Abfälle umfassen Abfälle, die bspw. eine der folgenden Eigenschaften aufweisen: explosiv, brandfördernden, entzündbar, reizend oder toxisch.',
-            shouldDisplay: (dataset: EsgDatenkatalogData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EsgDatenkatalogData): AvailableMLDTDisplayObjectTypes =>
               formatNumberForDatatable(dataset.umwelt?.abfall?.mengeAnGefaehrlichenAbfaellen, 't'),
           },
@@ -1090,8 +1075,7 @@ export const esgDatenkatalogViewConfiguration: MLDTConfig<EsgDatenkatalogData> =
             label: 'Transitorische Klima- und Umweltrisiken',
             explanation:
               'Welchen wesentlichen transitorischen Klima- und Umweltrisiken ist das Unternehmen ausgesetzt? Transitorische Risiken sind Übergangsrisiken, die sich aus einer unzureichenden Anpassung des Unternehmens an Maßnahmen zum Schutz, zur Wiederherstellung und/oder zur Verringerung negativer Auswirkungen auf die Natur ergeben. Diese Risiken können z. B. durch Änderungen in der Gesetzgebung und Politik, Präzedenzfälle, Technologien, die Stimmung der Investoren und Verbraucherpräferenzen, Haftungsrisiken oder Reputationsrisiken ausgelöst werden. Sie können auch aus Aktivitäten entstehen, die auf die Wiederherstellung der Natur abzielen, aber beispielsweise nicht mehr mit der geänderten Politik übereinstimmen.',
-            shouldDisplay: (dataset: EsgDatenkatalogData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EsgDatenkatalogData): AvailableMLDTDisplayObjectTypes =>
               formatFreeTextForDatatable(
                 dataset.umwelt?.risikenUndMassnahmenKlima?.transitorischeKlimaUndUmweltrisiken
@@ -1101,8 +1085,7 @@ export const esgDatenkatalogViewConfiguration: MLDTConfig<EsgDatenkatalogData> =
             type: 'cell',
             label: 'Physische Klima- und Umweltrisiken',
             explanation: 'Welchen physischen Klima- und Umweltrisiken ist das Unternehmen ausgesetzt?',
-            shouldDisplay: (dataset: EsgDatenkatalogData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EsgDatenkatalogData): AvailableMLDTDisplayObjectTypes => {
               const mappings = {
                 DuerrenAndHitzewellen: 'Dürren & Hitzewellen',
@@ -1131,8 +1114,7 @@ export const esgDatenkatalogViewConfiguration: MLDTConfig<EsgDatenkatalogData> =
             label: 'Von physischen Klima- und Umweltrisiken betroffene Standorte',
             explanation:
               'Bitte geben Sie zu jedem relevanten Klima-/Umweltrisiko jene Standorte des Unternehmens an, welche dem jeweiligen Risiko ausgesetzt sind.',
-            shouldDisplay: (dataset: EsgDatenkatalogData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EsgDatenkatalogData): AvailableMLDTDisplayObjectTypes =>
               formatFreeTextForDatatable(
                 dataset.umwelt?.risikenUndMassnahmenKlima?.vonPhysischenKlimaUndUmweltrisikenBetroffeneStandorte
@@ -1142,8 +1124,7 @@ export const esgDatenkatalogViewConfiguration: MLDTConfig<EsgDatenkatalogData> =
             type: 'cell',
             label: 'Messung, Steuerung und Überwachung der Klima- und Umweltrisiken',
             explanation: 'Misst, steuert und überwacht das Unternehmen diese Klima- und Umweltrisiken?',
-            shouldDisplay: (dataset: EsgDatenkatalogData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EsgDatenkatalogData): AvailableMLDTDisplayObjectTypes =>
               formatYesNoValueForDatatable(
                 dataset.umwelt?.risikenUndMassnahmenKlima?.messungSteuerungUndUeberwachungDerKlimaUndUmweltrisiken
@@ -1191,8 +1172,7 @@ export const esgDatenkatalogViewConfiguration: MLDTConfig<EsgDatenkatalogData> =
             label: 'Berücksichtigung von Klima- und Umweltrisiken',
             explanation:
               'Werden Klima- und Umweltrisiken in der Geschäftsstrategie und/oder im Geschäftsmodell des Unternehmens thematisiert?',
-            shouldDisplay: (dataset: EsgDatenkatalogData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EsgDatenkatalogData): AvailableMLDTDisplayObjectTypes =>
               formatYesNoValueForDatatable(
                 dataset.umwelt?.risikenUndMassnahmenKlima?.beruecksichtigungVonKlimaUndUmweltrisiken
@@ -1215,8 +1195,7 @@ export const esgDatenkatalogViewConfiguration: MLDTConfig<EsgDatenkatalogData> =
             type: 'cell',
             label: 'Transitionsplan',
             explanation: 'Verfügt das Unternehmen über einen Transitionsplan?',
-            shouldDisplay: (dataset: EsgDatenkatalogData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EsgDatenkatalogData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
                 formatYesNoValueForDatatable(dataset.umwelt?.risikenUndMassnahmenKlima?.transitionsplan?.value),
@@ -1229,8 +1208,7 @@ export const esgDatenkatalogViewConfiguration: MLDTConfig<EsgDatenkatalogData> =
             label: 'Transitorische Risiken',
             explanation:
               'Welche Maßnahmen hat das Unternehmen zur Reduzierung transitorischer Risiken getroffen bzw. geplant? Bitte zudem darstellen, ob das Unternehmen über interne Richtlinien verfügt, die einen ökologischen Mindeststandard im Produktionsprozess sicherstellen.',
-            shouldDisplay: (dataset: EsgDatenkatalogData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EsgDatenkatalogData): AvailableMLDTDisplayObjectTypes =>
               formatFreeTextForDatatable(dataset.umwelt?.risikenUndMassnahmenKlima?.transitorischeRisiken),
           },
@@ -1239,8 +1217,7 @@ export const esgDatenkatalogViewConfiguration: MLDTConfig<EsgDatenkatalogData> =
             label: 'Physische Risiken',
             explanation:
               'Welche Maßnahmen hat das Unternehmen zur Reduzierung physischer Risiken getroffen bzw. geplant? Bitte zudem darstellen, ob das Unternehmen über interne Richtlinien verfügt, die einen ökologischen Mindeststandard im Produktionsprozess sicherstellen.',
-            shouldDisplay: (dataset: EsgDatenkatalogData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EsgDatenkatalogData): AvailableMLDTDisplayObjectTypes =>
               formatFreeTextForDatatable(dataset.umwelt?.risikenUndMassnahmenKlima?.physischeRisiken),
           },
@@ -1249,8 +1226,7 @@ export const esgDatenkatalogViewConfiguration: MLDTConfig<EsgDatenkatalogData> =
             label: 'Produkte zur Reduzierung der Umweltbelastung',
             explanation:
               'Entwickelt, produziert oder vertreibt das Unternehmen Produkte, die die Umweltbelastung verringern? ',
-            shouldDisplay: (dataset: EsgDatenkatalogData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EsgDatenkatalogData): AvailableMLDTDisplayObjectTypes =>
               formatYesNoValueForDatatable(
                 dataset.umwelt?.risikenUndMassnahmenKlima?.produkteZurReduzierungDerUmweltbelastung
@@ -1272,8 +1248,7 @@ export const esgDatenkatalogViewConfiguration: MLDTConfig<EsgDatenkatalogData> =
             label: 'Ziel Reduzierung Treibhausgasemmissionen 2030',
             explanation:
               'Welche Zielsetzung verfolgt das Unternehmen bei der Reduzierung seiner Treibhausgasemissionen für 2030?',
-            shouldDisplay: (dataset: EsgDatenkatalogData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EsgDatenkatalogData): AvailableMLDTDisplayObjectTypes =>
               formatPercentageForDatatable(
                 dataset.umwelt?.risikenUndMassnahmenKlima?.zielReduzierungTreibhausgasemmissionen2030
@@ -1284,8 +1259,7 @@ export const esgDatenkatalogViewConfiguration: MLDTConfig<EsgDatenkatalogData> =
             label: 'Ziel Reduzierung Treibhausgasemmissionen 2040',
             explanation:
               'Welche Zielsetzung verfolgt das Unternehmen bei der Reduzierung seiner Treibhausgasemissionen für 2040?',
-            shouldDisplay: (dataset: EsgDatenkatalogData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EsgDatenkatalogData): AvailableMLDTDisplayObjectTypes =>
               formatPercentageForDatatable(
                 dataset.umwelt?.risikenUndMassnahmenKlima?.zielReduzierungTreibhausgasemmissionen2040
@@ -1296,8 +1270,7 @@ export const esgDatenkatalogViewConfiguration: MLDTConfig<EsgDatenkatalogData> =
             label: 'Ziel Reduzierung Treibhausgasemmissionen 2050',
             explanation:
               'Welche Zielsetzung verfolgt das Unternehmen bei der Reduzierung seiner Treibhausgasemissionen für 2050?',
-            shouldDisplay: (dataset: EsgDatenkatalogData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EsgDatenkatalogData): AvailableMLDTDisplayObjectTypes =>
               formatPercentageForDatatable(
                 dataset.umwelt?.risikenUndMassnahmenKlima?.zielReduzierungTreibhausgasemmissionen2050
@@ -1308,8 +1281,7 @@ export const esgDatenkatalogViewConfiguration: MLDTConfig<EsgDatenkatalogData> =
             label: 'Ziel Reduzierung Treibhausgasemmissionen Erläuterungen',
             explanation:
               'Bitte die Zielsetzung konkretisieren, inkl. Zielwerte, Zwischenziele und zugrundeliegendem Scope der Treibhausgas-Emissionen. Soweit eine dezidierte Planung Planung zu Scope 1, 2, 3 besteht, bitte diese kurz darstellen. Bitte zudem kurze Darstellung, ob Reduktion konstant erfolgt oder von Einzelmaßnahmen abhängt sowie ob Pläne mit den Zielen des Pariser Klimaabkommens kompatibel sind.',
-            shouldDisplay: (dataset: EsgDatenkatalogData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EsgDatenkatalogData): AvailableMLDTDisplayObjectTypes =>
               formatFreeTextForDatatable(
                 dataset.umwelt?.risikenUndMassnahmenKlima?.zielReduzierungTreibhausgasemmissionenErlaeuterungen
@@ -1319,8 +1291,7 @@ export const esgDatenkatalogViewConfiguration: MLDTConfig<EsgDatenkatalogData> =
             type: 'cell',
             label: 'Kompensationsinstrumente Treibhausgasemissionen',
             explanation: 'Nutzt das Unternehmen Kompensationsinstrumente in Bezug auf Treibhausgasemissionen?',
-            shouldDisplay: (dataset: EsgDatenkatalogData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EsgDatenkatalogData): AvailableMLDTDisplayObjectTypes =>
               formatYesNoValueForDatatable(
                 dataset.umwelt?.risikenUndMassnahmenKlima?.kompensationsinstrumenteTreibhausgasemissionen
@@ -1343,8 +1314,7 @@ export const esgDatenkatalogViewConfiguration: MLDTConfig<EsgDatenkatalogData> =
             label: 'Ziel Anteil erneuerbarer Energien 2030',
             explanation:
               'Welche Zielsetzung verfolgt das Unternehmen bzgl. des Anteils erneuerbarer Energien am gesamten Energieverbrauch für 2030?',
-            shouldDisplay: (dataset: EsgDatenkatalogData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EsgDatenkatalogData): AvailableMLDTDisplayObjectTypes =>
               formatPercentageForDatatable(
                 dataset.umwelt?.risikenUndMassnahmenKlima?.zielAnteilErneuerbarerEnergien2030
@@ -1355,8 +1325,7 @@ export const esgDatenkatalogViewConfiguration: MLDTConfig<EsgDatenkatalogData> =
             label: 'Ziel Anteil erneuerbarer Energien 2040',
             explanation:
               'Welche Zielsetzung verfolgt das Unternehmen bzgl. des Anteils erneuerbarer Energien am gesamten Energieverbrauch für 2040?',
-            shouldDisplay: (dataset: EsgDatenkatalogData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EsgDatenkatalogData): AvailableMLDTDisplayObjectTypes =>
               formatPercentageForDatatable(
                 dataset.umwelt?.risikenUndMassnahmenKlima?.zielAnteilErneuerbarerEnergien2040
@@ -1367,8 +1336,7 @@ export const esgDatenkatalogViewConfiguration: MLDTConfig<EsgDatenkatalogData> =
             label: 'Ziel Anteil erneuerbarer Energien 2050',
             explanation:
               'Welche Zielsetzung verfolgt das Unternehmen bzgl. des Anteils erneuerbarer Energien am gesamten Energieverbrauch für 2050?',
-            shouldDisplay: (dataset: EsgDatenkatalogData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EsgDatenkatalogData): AvailableMLDTDisplayObjectTypes =>
               formatPercentageForDatatable(
                 dataset.umwelt?.risikenUndMassnahmenKlima?.zielAnteilErneuerbarerEnergien2050
@@ -1378,8 +1346,7 @@ export const esgDatenkatalogViewConfiguration: MLDTConfig<EsgDatenkatalogData> =
             type: 'cell',
             label: 'Ziel Anteil erneuerbarer Energien Erläuterungen',
             explanation: 'Bitte erläutern sie Ihren Plan für den Anteil erneuerbarer Energien, falls erforderlich.',
-            shouldDisplay: (dataset: EsgDatenkatalogData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EsgDatenkatalogData): AvailableMLDTDisplayObjectTypes =>
               formatFreeTextForDatatable(
                 dataset.umwelt?.risikenUndMassnahmenKlima?.zielAnteilErneuerbarerEnergienErlaeuterungen
@@ -1397,8 +1364,7 @@ export const esgDatenkatalogViewConfiguration: MLDTConfig<EsgDatenkatalogData> =
             type: 'cell',
             label: 'Abfallmanagementsystem',
             explanation: 'Verfügt das Unternehmen über ein Abfallmanagementsystem?',
-            shouldDisplay: (dataset: EsgDatenkatalogData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EsgDatenkatalogData): AvailableMLDTDisplayObjectTypes =>
               formatYesNoValueForDatatable(
                 dataset.umwelt?.risikenUndMassnahmenKreislaufwirtschaft?.abfallmanagementsystem
@@ -1422,8 +1388,7 @@ export const esgDatenkatalogViewConfiguration: MLDTConfig<EsgDatenkatalogData> =
               'Anteil wiederverwendeter oder recycelter Komponenten, Produkte und Materialien im Produktionsprozess',
             explanation:
               'Wie hoch ist der Anteil von wiederverwendeten oder recycelten sekundären Komponenten, Produkten und Materialien, der im Produktionsprozess des Unternehmens verwendet wird?',
-            shouldDisplay: (dataset: EsgDatenkatalogData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EsgDatenkatalogData): AvailableMLDTDisplayObjectTypes =>
               formatPercentageForDatatable(
                 dataset.umwelt?.risikenUndMassnahmenKreislaufwirtschaft
@@ -1434,8 +1399,7 @@ export const esgDatenkatalogViewConfiguration: MLDTConfig<EsgDatenkatalogData> =
             type: 'cell',
             label: 'Geplante Erhöhung des Anteils von Recyclaten',
             explanation: 'Plant das Unternehmen den Anteil von Recyclaten im Produktionsprozess zu erhöhen?',
-            shouldDisplay: (dataset: EsgDatenkatalogData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EsgDatenkatalogData): AvailableMLDTDisplayObjectTypes =>
               formatYesNoValueForDatatable(
                 dataset.umwelt?.risikenUndMassnahmenKreislaufwirtschaft?.geplanteErhoehungDesAnteilsVonRecyclaten
@@ -1467,8 +1431,7 @@ export const esgDatenkatalogViewConfiguration: MLDTConfig<EsgDatenkatalogData> =
             label: 'Negative Auswirkungen auf Biodiversität und Ökosystem',
             explanation:
               'Wirken sich die Geschäftsaktivitäten des Unternehmens negativ auf die Biodiversität oder das Ökosystem aus?',
-            shouldDisplay: (dataset: EsgDatenkatalogData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EsgDatenkatalogData): AvailableMLDTDisplayObjectTypes =>
               formatYesNoValueForDatatable(
                 dataset.umwelt?.risikenUndMassnahmenBiodiversitaetUndOekosysteme
@@ -1494,8 +1457,7 @@ export const esgDatenkatalogViewConfiguration: MLDTConfig<EsgDatenkatalogData> =
             label: 'Positive Auswirkungen auf Biodiversität und Ökosystem',
             explanation:
               'Wirken sich die Geschäftsaktivitäten des Unternehmens positiv auf die Biodiversität oder das Ökosystem aus?',
-            shouldDisplay: (dataset: EsgDatenkatalogData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EsgDatenkatalogData): AvailableMLDTDisplayObjectTypes =>
               formatYesNoValueForDatatable(
                 dataset.umwelt?.risikenUndMassnahmenBiodiversitaetUndOekosysteme
@@ -1534,8 +1496,7 @@ export const esgDatenkatalogViewConfiguration: MLDTConfig<EsgDatenkatalogData> =
             type: 'cell',
             label: 'Plan zur Reduktion des Wasserverbrauchs',
             explanation: 'Plant das Unternehmen seinen Wasserverbrauch zu reduzieren?',
-            shouldDisplay: (dataset: EsgDatenkatalogData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EsgDatenkatalogData): AvailableMLDTDisplayObjectTypes =>
               formatYesNoValueForDatatable(
                 dataset.umwelt?.risikenUndMassnahmenBiodiversitaetUndOekosysteme?.planZurReduktionDesWasserverbrauchs
@@ -1574,8 +1535,7 @@ export const esgDatenkatalogViewConfiguration: MLDTConfig<EsgDatenkatalogData> =
             type: 'cell',
             label: 'Zahl der Beschäftigten insgesamt',
             explanation: 'Die Zahl der im Unternehmen beschäftigten Personen.',
-            shouldDisplay: (dataset: EsgDatenkatalogData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EsgDatenkatalogData): AvailableMLDTDisplayObjectTypes =>
               formatNumberForDatatable(
                 dataset.soziales?.beschaeftigtenprofilUndEntlohnung?.zahlDerBeschaeftigtenInsgesamt,
@@ -1586,8 +1546,7 @@ export const esgDatenkatalogViewConfiguration: MLDTConfig<EsgDatenkatalogData> =
             type: 'cell',
             label: 'Anteil weiblicher Personen unter den Beschäftigten',
             explanation: 'Der prozentuale Anteil weiblicher Personen unter den Beschäftigten',
-            shouldDisplay: (dataset: EsgDatenkatalogData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EsgDatenkatalogData): AvailableMLDTDisplayObjectTypes =>
               formatPercentageForDatatable(
                 dataset.soziales?.beschaeftigtenprofilUndEntlohnung?.anteilWeiblicherPersonenUnterDenBeschaeftigten
@@ -1597,8 +1556,7 @@ export const esgDatenkatalogViewConfiguration: MLDTConfig<EsgDatenkatalogData> =
             type: 'cell',
             label: 'Anteil männlicher Personen unter den Beschäftigten',
             explanation: 'Der prozentuale Anteil männlicher Personen unter den Beschäftigten',
-            shouldDisplay: (dataset: EsgDatenkatalogData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EsgDatenkatalogData): AvailableMLDTDisplayObjectTypes =>
               formatPercentageForDatatable(
                 dataset.soziales?.beschaeftigtenprofilUndEntlohnung?.anteilMaennlicherPersonenUnterDenBeschaeftigten
@@ -1608,8 +1566,7 @@ export const esgDatenkatalogViewConfiguration: MLDTConfig<EsgDatenkatalogData> =
             type: 'cell',
             label: 'Anteil diverser Personen unter den Beschäftigten',
             explanation: 'Der prozentuale Anteil diverser Personen unter den Beschäftigten',
-            shouldDisplay: (dataset: EsgDatenkatalogData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EsgDatenkatalogData): AvailableMLDTDisplayObjectTypes =>
               formatPercentageForDatatable(
                 dataset.soziales?.beschaeftigtenprofilUndEntlohnung?.anteilDiverserPersonenUnterDenBeschaeftigten
@@ -1620,8 +1577,7 @@ export const esgDatenkatalogViewConfiguration: MLDTConfig<EsgDatenkatalogData> =
             label: 'Geschlechtsspezifisches Lohngefälle',
             explanation:
               'Besteht im Unternehmen bei gleicher Tätigkeit ein signifikanter Unterschied in der Vergütung weiblicher und männlicher Personen? Methodik analog zu ESRS S1-16.',
-            shouldDisplay: (dataset: EsgDatenkatalogData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EsgDatenkatalogData): AvailableMLDTDisplayObjectTypes =>
               formatPercentageForDatatable(
                 dataset.soziales?.beschaeftigtenprofilUndEntlohnung?.geschlechtsspezifischesLohngefaelle
@@ -1632,8 +1588,7 @@ export const esgDatenkatalogViewConfiguration: MLDTConfig<EsgDatenkatalogData> =
             label: 'Jährliche Gesamtvergütungsquote',
             explanation:
               'In welchem Verhältnis steht die Vergütung der höchstbezahlten Person des Unternehmens zum Median der jährlichen Gesamtvergütung aller Beschäftigen? Methodik analog zu ESRS S1-16.',
-            shouldDisplay: (dataset: EsgDatenkatalogData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EsgDatenkatalogData): AvailableMLDTDisplayObjectTypes =>
               formatPercentageForDatatable(
                 dataset.soziales?.beschaeftigtenprofilUndEntlohnung?.jaehrlicheGesamtverguetungsquote
@@ -1644,8 +1599,7 @@ export const esgDatenkatalogViewConfiguration: MLDTConfig<EsgDatenkatalogData> =
             label: 'Anteil von unter Dreißigjährigen',
             explanation:
               'Wie hoch ist der Anteil der unter 30-Jährigen an der Beschäftigtenzahl in Prozent? Methodik analog zu ESRS S1-9.',
-            shouldDisplay: (dataset: EsgDatenkatalogData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EsgDatenkatalogData): AvailableMLDTDisplayObjectTypes =>
               formatPercentageForDatatable(
                 dataset.soziales?.beschaeftigtenprofilUndEntlohnung?.anteilVonUnterDreissigjaehrigen
@@ -1656,8 +1610,7 @@ export const esgDatenkatalogViewConfiguration: MLDTConfig<EsgDatenkatalogData> =
             label: 'Anteil von Dreißig- bis Fünfzigjährigen',
             explanation:
               'Wie hoch ist der Anteil der 30- bis 50-Jährigen an der Beschäftigtenzahl in Prozent? Methodik analog zu ESRS S1-9.',
-            shouldDisplay: (dataset: EsgDatenkatalogData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EsgDatenkatalogData): AvailableMLDTDisplayObjectTypes =>
               formatPercentageForDatatable(
                 dataset.soziales?.beschaeftigtenprofilUndEntlohnung?.anteilVonDreissigBisFuenfzigjaehrigen
@@ -1668,8 +1621,7 @@ export const esgDatenkatalogViewConfiguration: MLDTConfig<EsgDatenkatalogData> =
             label: 'Anteil von über Fünfzigjährigen',
             explanation:
               'Wie hoch ist der Anteil der über 50-Jährigen an der Beschäftigtenzahl in Prozent? Methodik analog zu ESRS S1-9.',
-            shouldDisplay: (dataset: EsgDatenkatalogData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EsgDatenkatalogData): AvailableMLDTDisplayObjectTypes =>
               formatPercentageForDatatable(
                 dataset.soziales?.beschaeftigtenprofilUndEntlohnung?.anteilVonUeberFuenfzigjaehrigen
@@ -1680,8 +1632,7 @@ export const esgDatenkatalogViewConfiguration: MLDTConfig<EsgDatenkatalogData> =
             label: 'Durchschnittliche Anzahl an Trainingsstunden',
             explanation:
               'Wieviele Tranings- und Fortbildungsstunden erhielten Beschäftigte im letzten abgeschlossenen Geschäftsjahr?',
-            shouldDisplay: (dataset: EsgDatenkatalogData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EsgDatenkatalogData): AvailableMLDTDisplayObjectTypes =>
               formatNumberForDatatable(
                 dataset.soziales?.beschaeftigtenprofilUndEntlohnung?.durchschnittlicheAnzahlAnTrainingsstunden,
@@ -1692,8 +1643,7 @@ export const esgDatenkatalogViewConfiguration: MLDTConfig<EsgDatenkatalogData> =
             type: 'cell',
             label: 'Fluktuationsquote',
             explanation: 'Wie hoch war die Fluktuationsquote im Unternehmen im letzten abgeschlossenen Geschäftsjahr?',
-            shouldDisplay: (dataset: EsgDatenkatalogData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EsgDatenkatalogData): AvailableMLDTDisplayObjectTypes =>
               formatPercentageForDatatable(dataset.soziales?.beschaeftigtenprofilUndEntlohnung?.fluktuationsquote),
           },
@@ -1709,8 +1659,7 @@ export const esgDatenkatalogViewConfiguration: MLDTConfig<EsgDatenkatalogData> =
             type: 'cell',
             label: 'Einbindung von Beschäftigten in Entscheidungen',
             explanation: 'Sind Beschäftigte in betriebliche Entscheidungen des Unternehmens eingebunden?',
-            shouldDisplay: (dataset: EsgDatenkatalogData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EsgDatenkatalogData): AvailableMLDTDisplayObjectTypes => {
               const mappings = {
                 EinbindungInBetriebsratGesetzlicheVertretungsorgane:
@@ -1734,8 +1683,7 @@ export const esgDatenkatalogViewConfiguration: MLDTConfig<EsgDatenkatalogData> =
             label: 'Einbindung von Beschäftigten in Entscheidungen Erläuterungen',
             explanation:
               'Bei Unternehmen, die aufgrund länderspezifischer Besonderheiten nicht zu einer eindeutigen Antwort kommen, bitte hier erläutern.',
-            shouldDisplay: (dataset: EsgDatenkatalogData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EsgDatenkatalogData): AvailableMLDTDisplayObjectTypes =>
               formatFreeTextForDatatable(
                 dataset.soziales?.einbindungDerBeschaeftigten?.einbindungVonBeschaeftigtenInEntscheidungenErlaeuterungen
@@ -1754,8 +1702,7 @@ export const esgDatenkatalogViewConfiguration: MLDTConfig<EsgDatenkatalogData> =
             label: 'Maßnahmen zum Schutz der Gesundheit und Verbesserung der Sicherheit',
             explanation:
               'Welche Maßnahmen hat das Unternehmen ergriffen, um die rechtlichen Vorgaben zum Schutz der Gesundheit und Verbesserung der Sicherheit von Beschäftigten umzusetzen?',
-            shouldDisplay: (dataset: EsgDatenkatalogData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EsgDatenkatalogData): AvailableMLDTDisplayObjectTypes =>
               formatFreeTextForDatatable(
                 dataset.soziales?.arbeitsschutz?.massnahmenZumSchutzDerGesundheitUndVerbesserungDerSicherheit
@@ -1766,8 +1713,7 @@ export const esgDatenkatalogViewConfiguration: MLDTConfig<EsgDatenkatalogData> =
             label: 'Anzahl der Arbeitsunfälle pro fünfhundert Vollzeitbeschäftigte',
             explanation:
               'Wie hoch ist die Häufigkeitsrate von Arbeitsunfällen des Unternehmens pro 500 Vollzeitbeschäftigte?',
-            shouldDisplay: (dataset: EsgDatenkatalogData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EsgDatenkatalogData): AvailableMLDTDisplayObjectTypes =>
               formatNumberForDatatable(
                 dataset.soziales?.arbeitsschutz?.anzahlDerArbeitsunfaelleProFuenfhundertVollzeitbeschaeftigte,
@@ -1786,8 +1732,7 @@ export const esgDatenkatalogViewConfiguration: MLDTConfig<EsgDatenkatalogData> =
             type: 'cell',
             label: 'Weitere wesentliche soziale Risiken',
             explanation: 'Gibt es weitere wesentliche soziale Risiken für das Unternehmen?',
-            shouldDisplay: (dataset: EsgDatenkatalogData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EsgDatenkatalogData): AvailableMLDTDisplayObjectTypes =>
               formatYesNoValueForDatatable(dataset.soziales?.risikenUndMassnahmen?.weitereWesentlicheSozialeRisiken),
           },
@@ -1806,9 +1751,8 @@ export const esgDatenkatalogViewConfiguration: MLDTConfig<EsgDatenkatalogData> =
             type: 'cell',
             label: 'Maßnahmen zur Reduzierung von sozialen Risiken',
             explanation:
-              'Welche Maßnahmen hat das Unternehmen zur Reduzierung dieser sozialen Risiken getroffen, außer der in Frage 5.1 genannten Richtlinien?',
-            shouldDisplay: (dataset: EsgDatenkatalogData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+              'Welche Maßnahmen hat das Unternehmen zur Reduzierung dieser sozialen Risiken getroffen, außer der bereits zuvor abgefragten Richtlinien?',
+            shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EsgDatenkatalogData): AvailableMLDTDisplayObjectTypes =>
               formatFreeTextForDatatable(
                 dataset.soziales?.risikenUndMassnahmen?.massnahmenZurReduzierungVonSozialenRisiken
@@ -1834,8 +1778,7 @@ export const esgDatenkatalogViewConfiguration: MLDTConfig<EsgDatenkatalogData> =
             type: 'cell',
             label: 'Umfang des Top-Management im Unternehmen',
             explanation: 'Die Ebenen des Top-Managements im Unternehmen.',
-            shouldDisplay: (dataset: EsgDatenkatalogData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EsgDatenkatalogData): AvailableMLDTDisplayObjectTypes =>
               ((): AvailableMLDTDisplayObjectTypes => {
                 const mappings = {
@@ -1856,8 +1799,7 @@ export const esgDatenkatalogViewConfiguration: MLDTConfig<EsgDatenkatalogData> =
             type: 'cell',
             label: 'Anteil weiblicher Personen im Top-Management',
             explanation: 'Anteil weiblicher Personen im Top-Management in Prozent.',
-            shouldDisplay: (dataset: EsgDatenkatalogData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EsgDatenkatalogData): AvailableMLDTDisplayObjectTypes =>
               formatPercentageForDatatable(
                 dataset.governance?.vorstandsprofil?.anteilWeiblicherPersonenImTopManagement
@@ -1867,8 +1809,7 @@ export const esgDatenkatalogViewConfiguration: MLDTConfig<EsgDatenkatalogData> =
             type: 'cell',
             label: 'Anteil männlicher Personen im Top-Management',
             explanation: 'Anteil männlicher Personen im Top-Management in Prozent.',
-            shouldDisplay: (dataset: EsgDatenkatalogData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EsgDatenkatalogData): AvailableMLDTDisplayObjectTypes =>
               formatPercentageForDatatable(
                 dataset.governance?.vorstandsprofil?.anteilMaennlicherPersonenImTopManagement
@@ -1878,8 +1819,7 @@ export const esgDatenkatalogViewConfiguration: MLDTConfig<EsgDatenkatalogData> =
             type: 'cell',
             label: 'Anteil diverser Personen im Top-Management',
             explanation: 'Anteil diverser Personen im Top-Management in Prozent.',
-            shouldDisplay: (dataset: EsgDatenkatalogData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EsgDatenkatalogData): AvailableMLDTDisplayObjectTypes =>
               formatPercentageForDatatable(dataset.governance?.vorstandsprofil?.anteilDiverserPersonenImTopManagement),
           },
@@ -1888,8 +1828,7 @@ export const esgDatenkatalogViewConfiguration: MLDTConfig<EsgDatenkatalogData> =
             label: 'Kopplung von Vergütung des Top-Managements an Nachhaltigkeitsziele',
             explanation:
               'Ist die Vergütung des Top-Managements (auch) explizit an Nachhaltigkeitsziele gekoppelt (bspw. ESG-Rating)?',
-            shouldDisplay: (dataset: EsgDatenkatalogData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EsgDatenkatalogData): AvailableMLDTDisplayObjectTypes =>
               formatYesNoValueForDatatable(
                 dataset.governance?.vorstandsprofil?.kopplungVonVerguetungDesTopManagementsAnNachhaltigkeitsziele
@@ -1913,8 +1852,7 @@ export const esgDatenkatalogViewConfiguration: MLDTConfig<EsgDatenkatalogData> =
             label: 'Gesamtanzahl Aufsichtsrat-Mitglieder',
             explanation:
               'Bitte geben Sie die Gesamtanzahl der Mitglieder des Aufsichtsrats an. Hinweise: Methodik analog zu ESRS 2 Governance; Definition Aufsichtsgremien aus ESRS S1-9;\nIn einigen Rechtsordnungen bestehen die Governance-Systeme aus zwei Ebenen, in denen Aufsicht und Management voneinander getrennt sind. Hier geht es nur um die Zusammensetzung des Aufsichtsrats.',
-            shouldDisplay: (dataset: EsgDatenkatalogData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EsgDatenkatalogData): AvailableMLDTDisplayObjectTypes =>
               formatNumberForDatatable(dataset.governance?.vorstandsprofil?.gesamtanzahlAufsichtsratMitglieder, ''),
           },
@@ -1923,8 +1861,7 @@ export const esgDatenkatalogViewConfiguration: MLDTConfig<EsgDatenkatalogData> =
             label: 'Anzahl unabhängiger Aufsichtsrat-Mitglieder',
             explanation:
               'Bitte geben Sie die Anzahl der unabhängigen Mitglieder des Aufsichtsrats an. Hinweise: Methodik analog zu ESRS 2 Governance; Definition Aufsichtsgremien aus ESRS S1-9;\nIn einigen Rechtsordnungen bestehen die Governance-Systeme aus zwei Ebenen, in denen Aufsicht und Management voneinander getrennt sind. Hier geht es nur um die Zusammensetzung des Aufsichtsrats.',
-            shouldDisplay: (dataset: EsgDatenkatalogData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EsgDatenkatalogData): AvailableMLDTDisplayObjectTypes =>
               formatNumberForDatatable(
                 dataset.governance?.vorstandsprofil?.anzahlUnabhaengigerAufsichtsratMitglieder,
@@ -1936,8 +1873,7 @@ export const esgDatenkatalogViewConfiguration: MLDTConfig<EsgDatenkatalogData> =
             label: 'Anzahl weiblicher oder diverser Aufsichtsrat-Mitglieder',
             explanation:
               'Bitte geben Sie die Anzahl der  Mitglieder des Aufsichtsrats an, welche sich als weiblich oder divers identifizieren. Hinweise: Methodik analog zu ESRS 2 Governance; Definition Aufsichtsgremien aus ESRS S1-9;\nIn einigen Rechtsordnungen bestehen die Governance-Systeme aus zwei Ebenen, in denen Aufsicht und Management voneinander getrennt sind. Hier geht es nur um die Zusammensetzung des Aufsichtsrats.',
-            shouldDisplay: (dataset: EsgDatenkatalogData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EsgDatenkatalogData): AvailableMLDTDisplayObjectTypes =>
               formatNumberForDatatable(
                 dataset.governance?.vorstandsprofil?.anzahlWeiblicherOderDiverserAufsichtsratMitglieder,
@@ -1957,8 +1893,7 @@ export const esgDatenkatalogViewConfiguration: MLDTConfig<EsgDatenkatalogData> =
             label: 'CSRD-konformer Prozess zur Berücksichtigung der Stakeholderinteressen',
             explanation:
               'Verfügt das Unternehmen über einen institutionalisierten, CSRD-konformen Prozess zur Berücksichtigung der Interessen der Stakeholder des Unternehmens?',
-            shouldDisplay: (dataset: EsgDatenkatalogData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EsgDatenkatalogData): AvailableMLDTDisplayObjectTypes =>
               formatYesNoValueForDatatable(
                 dataset.governance?.stakeholderdialog?.csrdKonformerProzessZurBeruecksichtigungDerStakeholderinteressen
@@ -1989,8 +1924,7 @@ export const esgDatenkatalogViewConfiguration: MLDTConfig<EsgDatenkatalogData> =
             type: 'cell',
             label: 'Weitere wesentliche Governance-Risiken',
             explanation: 'Welchen weiteren wesentlichen governance-bezogenen Risiken ist das Unternehmen ausgesetzt?',
-            shouldDisplay: (dataset: EsgDatenkatalogData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+            shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EsgDatenkatalogData): AvailableMLDTDisplayObjectTypes =>
               formatFreeTextForDatatable(dataset.governance?.risikenUndMassnahmen?.weitereWesentlicheGovernanceRisiken),
           },
@@ -1998,9 +1932,8 @@ export const esgDatenkatalogViewConfiguration: MLDTConfig<EsgDatenkatalogData> =
             type: 'cell',
             label: 'Maßnahmen zur Reduzierung von Governance-Risiken',
             explanation:
-              'Welche Maßnahmen hat das Unternehmen zur Reduzierung dieser governance-bezogenen Risiken getroffen, außer der in Frage 5.1 genannten Richtlinien?',
-            shouldDisplay: (dataset: EsgDatenkatalogData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+              'Welche Maßnahmen hat das Unternehmen zur Reduzierung dieser governance-bezogenen Risiken getroffen, außer der bereits zuvor abgefragten Richtlinien?',
+            shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EsgDatenkatalogData): AvailableMLDTDisplayObjectTypes =>
               formatFreeTextForDatatable(
                 dataset.governance?.risikenUndMassnahmen?.massnahmenZurReduzierungVonGovernanceRisiken

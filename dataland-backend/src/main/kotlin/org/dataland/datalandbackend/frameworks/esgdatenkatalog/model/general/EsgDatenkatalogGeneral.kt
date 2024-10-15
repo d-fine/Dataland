@@ -9,5 +9,5 @@ import org.dataland.datalandbackend.frameworks.esgdatenkatalog.model.general.mas
  */
 data class EsgDatenkatalogGeneral(
     @field:Valid()
-    val masterData: EsgDatenkatalogGeneralMasterData,
+    val masterData: EsgDatenkatalogGeneralMasterData? = null,
 )
