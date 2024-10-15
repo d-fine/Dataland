@@ -45,8 +45,7 @@
             </div>
 
             <FormKit type="group" name="data" label="data">
-              <FormKit
-                  type="group"
+              <div
                   v-for="category in nuclearAndGasDataModel"
                   :key="category.name"
                   :label="category.label"
@@ -63,7 +62,6 @@
                         <span>{{ category.label.toUpperCase() }}</span>
                       </div>
                     </div>
-
                     <div class="col-9 formFields">
                       <FormKit
                           v-for="field in subcategory.fields"
@@ -84,14 +82,14 @@
                             :validation-label="field.validationLabel"
                             :data-test="field.name"
                             :unit="field.unit"
-                            @reports-updated="updateDocumentsList"
+                            @reportsUpdated="updateReportsSelection"
                             :ref="field.name"
                         />
                       </FormKit>
                     </div>
                   </template>
                 </div>
-              </FormKit>
+              </div>
             </FormKit>
           </FormKit>
         </div>
@@ -138,11 +136,11 @@ import SuccessMessage from '@/components/messages/SuccessMessage.vue';
 import FailMessage from '@/components/messages/FailMessage.vue';
 import { nuclearAndGasDataModel } from '@/frameworks/nuclear-and-gas/UploadConfig';
 import {
-  CompanyAssociatedDataNuclearAndGasData,
+  CompanyAssociatedDataNuclearAndGasData, type CompanyReport,
   DataTypeEnum, NuclearAndGasData,
 } from '@clients/backend';
 import { useRoute } from 'vue-router';
-import { checkCustomInputs } from '@/utils/ValidationUtils';
+import {checkCustomInputs, checkIfAllUploadedReportsAreReferencedInDataModel} from '@/utils/ValidationUtils';
 import NaceCodeFormField from '@/components/forms/parts/fields/NaceCodeFormField.vue';
 import InputTextFormField from '@/components/forms/parts/fields/InputTextFormField.vue';
 import FreeTextFormField from '@/components/forms/parts/fields/FreeTextFormField.vue';
@@ -177,6 +175,7 @@ import { getFilledKpis } from '@/utils/DataPoint';
 import { type PublicFrameworkDataApi } from '@/utils/api/UnifiedFrameworkDataApi';
 import { getBasePublicFrameworkDefinition } from '@/frameworks/BasePublicFrameworkRegistry';
 import { hasUserCompanyOwnerOrDataUploaderRole } from '@/utils/CompanyRolesUtils';
+import {DocumentToUpload, uploadFiles} from "@/utils/FileUploadUtils";
 
 export default defineComponent({
   setup() {
@@ -238,6 +237,9 @@ export default defineComponent({
       postNuclearAndGasDataProcessed: false,
       messageCounter: 0,
       checkCustomInputs,
+      documentsToUpload: [] as DocumentToUpload[],
+      referencedReportsForPrefill: {} as { [key: string]: CompanyReport },
+      namesAndReferencesOfAllCompanyReportsForTheDataset: {},
       reportingPeriod: undefined as undefined | Date,
       listOfFilledKpis: [] as Array<string>,
     };
@@ -308,7 +310,14 @@ export default defineComponent({
     async postNuclearandGasData(): Promise<void> {
       this.messageCounter++;
       try {
+        if (this.documentsToUpload.length > 0) {
+          checkIfAllUploadedReportsAreReferencedInDataModel(
+              this.companyAssociatedNuclearAndGasData.data as ObjectType,
+              Object.keys(this.namesAndReferencesOfAllCompanyReportsForTheDataset)
+          );
 
+          await uploadFiles(this.documentsToUpload, assertDefined(this.getKeycloakPromise));
+        }
         const NuclearAndGasDataControllerApi = this.buildNuclearAndGasDataApi();
 
         const isCompanyOwnerOrDataUploader = await hasUserCompanyOwnerOrDataUploaderRole(
@@ -316,7 +325,9 @@ export default defineComponent({
             this.getKeycloakPromise
         );
 
-        await NuclearAndGasDataControllerApi.postFrameworkData(this.companyAssociatedNuclearAndGasData, isCompanyOwnerOrDataUploader);
+        await NuclearAndGasDataControllerApi.postFrameworkData(
+            this.companyAssociatedNuclearAndGasData,
+            isCompanyOwnerOrDataUploader);
 
         this.$emit('datasetCreated');
         this.dataDate = undefined;
@@ -335,40 +346,26 @@ export default defineComponent({
         this.postNuclearAndGasDataProcessed = true;
       }
     },
-/*   /!**
-    * updates the list of documents that were uploaded
-    * @param reportsNamesAndReferences repots names and references
-    * @param reportsToUpload reports to upload
-    *!/
-   updateDocumentsList(reportsNamesAndReferences: object, reportsToUpload: DocumentToUpload[]) {
-     this.namesAndReferencesOfAllCompanyReportsForTheDataset = reportsNamesAndReferences;
-     if (reportsToUpload.length) {
-       this.fieldSpecificDocuments.set(referenceableReportsFieldId, reportsToUpload);
-     } else {
-       this.fieldSpecificDocuments.delete(referenceableReportsFieldId);
-     }
-   },
-   /!**
-    * Updates the referenced document for a specific field
-    * @param fieldId an identifier for the field
-    * @param referencedDocument the documen that is referenced
-    *!/
-   updateDocumentsOnField(fieldId: string, referencedDocument: DocumentToUpload | undefined) {
-     if (referencedDocument) {
-       this.fieldSpecificDocuments.set(fieldId, [referencedDocument]);
-     } else {
-       this.fieldSpecificDocuments.delete(fieldId);
-     }
-   },*/
+    /**
+     * Sets the object containing the names of all stored and to-be-uploaded reports as keys, and their respective
+     * fileReferences as values, and then sets the selection of reports that are to be uploaded.
+     * @param reportsNamesAndReferences contains the names of all stored and to-be-uploaded reports as keys,
+     * and their respective fileReferences as values
+     * @param reportsToUpload contains the actual selection of reports that are to be uploaded
+     */
+    updateReportsSelection(reportsNamesAndReferences: object, reportsToUpload: DocumentToUpload[]) {
+      this.namesAndReferencesOfAllCompanyReportsForTheDataset = reportsNamesAndReferences;
+      this.documentsToUpload = [...reportsToUpload];
+    },
   },
   provide() {
     return {
-      /*  namesAndReferencesOfAllCompanyReportsForTheDataset: computed(() => {
+        namesAndReferencesOfAllCompanyReportsForTheDataset: computed(() => {
           return this.namesAndReferencesOfAllCompanyReportsForTheDataset;
         }),
         referencedReportsForPrefill: computed(() => {
           return this.referencedReportsForPrefill;
-        }),*/
+        }),
         listOfFilledKpis: computed(() => {
           return this.listOfFilledKpis;
         }),

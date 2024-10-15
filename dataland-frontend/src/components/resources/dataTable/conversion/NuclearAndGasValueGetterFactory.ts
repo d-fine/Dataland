@@ -6,5 +6,5 @@
  */
 
 //ToDo: write a funtion which fits to the given spec
-export function formatEuTaxonomyNonFinancialsAlignedActivitiesDataForTable(){
+export function formatNuclearAndGasTaxonomyShareDataForTable(){
 }
