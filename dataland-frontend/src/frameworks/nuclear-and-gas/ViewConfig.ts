@@ -2,6 +2,7 @@
 import { type NuclearAndGasData } from '@clients/backend';
 import { type MLDTConfig } from '@/components/resources/dataTable/MultiLayerDataTableConfiguration';
 import { type AvailableMLDTDisplayObjectTypes } from '@/components/resources/dataTable/MultiLayerDataTableCellDisplayer';
+import { formatNuclearAndGasTaxonomyShareDataForTable } from '@/components/resources/dataTable/conversion/NuclearAndGasValueGetterFactory';
 import { formatYesNoValueForDatatable } from '@/components/resources/dataTable/conversion/YesNoValueGetterFactory';
 import { wrapDisplayValueWithDatapointInformation } from '@/components/resources/dataTable/conversion/DataPoints';
 export const nuclearAndGasViewConfiguration: MLDTConfig<NuclearAndGasData> = [
@@ -102,7 +103,32 @@ export const nuclearAndGasViewConfiguration: MLDTConfig<NuclearAndGasData> = [
         label: 'Taxonomy-aligned (denominator)',
         expandOnPageLoad: true,
         shouldDisplay: (): boolean => true,
-        children: [],
+        children: [
+          {
+            type: 'cell',
+            label: 'Nuclear and Gas Taxonomy-aligned Revenue (denominator)',
+            explanation:
+              'Proportion of Taxonomy-aligned Economic Activity referred to in Sections 4.26 to 4.31 of Annexes I and II to Delegated Regulation 2021/2139 in the Denominator of the applicable KPI - Revenue-based',
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: NuclearAndGasData): AvailableMLDTDisplayObjectTypes =>
+              formatNuclearAndGasTaxonomyShareDataForTable(
+                dataset.general?.taxonomyAlignedDenominator?.nuclearAndGasTaxonomyAlignedRevenueDenominator,
+                'Nuclear and Gas Taxonomy-aligned Revenue (denominator)'
+              ),
+          },
+          {
+            type: 'cell',
+            label: 'Nuclear and Gas Taxonomy-aligned CapEx (denominator)',
+            explanation:
+              'Proportion of Taxonomy-aligned Economic Activity referred to in Sections 4.26 to 4.31 of Annexes I and II to Delegated Regulation 2021/2139 in the Denominator of the applicable KPI - CapEx-based',
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: NuclearAndGasData): AvailableMLDTDisplayObjectTypes =>
+              formatNuclearAndGasTaxonomyShareDataForTable(
+                dataset.general?.taxonomyAlignedDenominator?.nuclearAndGasTaxonomyAlignedCapexDenominator,
+                'Nuclear and Gas Taxonomy-aligned CapEx (denominator)'
+              ),
+          },
+        ],
       },
       {
         type: 'section',

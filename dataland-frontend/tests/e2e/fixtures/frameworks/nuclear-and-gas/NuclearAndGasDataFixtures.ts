@@ -28,6 +28,7 @@ export function generateNuclearAndGasData(nullProbability = DEFAULT_PROBABILITY)
   return {
     general: {
       general: {
+        referencedReports: dataGenerator.reports,
         nuclearEnergyRelatedActivitiesSection426: dataGenerator.randomExtendedDataPoint(dataGenerator.randomYesNo()),
         nuclearEnergyRelatedActivitiesSection427: dataGenerator.randomExtendedDataPoint(dataGenerator.randomYesNo()),
         nuclearEnergyRelatedActivitiesSection428: dataGenerator.randomExtendedDataPoint(dataGenerator.randomYesNo()),

@@ -2947,154 +2947,58 @@
       "NuclearAndGasAlignedDenominator": {
         "type": "object",
         "properties": {
-          "taxonomyAlignedShareDenominatorClimateChangeMitigationAndClimateChangeAdaptationNAndG426": {
-            "type": "number"
+          "taxonomyAlignedShareDenominatorNAndG426": {
+            "$ref": "#/components/schemas/NuclearAndGasEnvironmentalObjective"
           },
-          "taxonomyAlignedShareDenominatorSubstantiallyContributingToClimateChangeMitigationNAndG426": {
-            "type": "number"
+          "taxonomyAlignedShareDenominatorNAndG427": {
+            "$ref": "#/components/schemas/NuclearAndGasEnvironmentalObjective"
           },
-          "taxonomyAlignedShareDenominatorSubstantiallyContributingToClimateChangeAdaptationNAndG426": {
-            "type": "number"
+          "taxonomyAlignedShareDenominatorNAndG428": {
+            "$ref": "#/components/schemas/NuclearAndGasEnvironmentalObjective"
           },
-          "taxonomyAlignedShareDenominatorClimateChangeMitigationAndClimateChangeAdaptationNAndG427": {
-            "type": "number"
+          "taxonomyAlignedShareDenominatorNAndG429": {
+            "$ref": "#/components/schemas/NuclearAndGasEnvironmentalObjective"
           },
-          "taxonomyAlignedShareDenominatorSubstantiallyContributingToClimateChangeMitigationNAndG427": {
-            "type": "number"
+          "taxonomyAlignedShareDenominatorNAndG430": {
+            "$ref": "#/components/schemas/NuclearAndGasEnvironmentalObjective"
           },
-          "taxonomyAlignedShareDenominatorSubstantiallyContributingToClimateChangeAdaptationNAndG427": {
-            "type": "number"
+          "taxonomyAlignedShareDenominatorNAndG431": {
+            "$ref": "#/components/schemas/NuclearAndGasEnvironmentalObjective"
           },
-          "taxonomyAlignedShareDenominatorClimateChangeMitigationAndClimateChangeAdaptationNAndG428": {
-            "type": "number"
+          "taxonomyAlignedShareDenominatorOtherActivities": {
+            "$ref": "#/components/schemas/NuclearAndGasEnvironmentalObjective"
           },
-          "taxonomyAlignedShareDenominatorSubstantiallyContributingToClimateChangeMitigationNAndG428": {
-            "type": "number"
-          },
-          "taxonomyAlignedShareDenominatorSubstantiallyContributingToClimateChangeAdaptationNAndG428": {
-            "type": "number"
-          },
-          "taxonomyAlignedShareDenominatorClimateChangeMitigationAndClimateChangeAdaptationNAndG429": {
-            "type": "number"
-          },
-          "taxonomyAlignedShareDenominatorSubstantiallyContributingToClimateChangeMitigationNAndG429": {
-            "type": "number"
-          },
-          "taxonomyAlignedShareDenominatorSubstantiallyContributingToClimateChangeAdaptationNAndG429": {
-            "type": "number"
-          },
-          "taxonomyAlignedShareDenominatorClimateChangeMitigationAndClimateChangeAdaptationNAndG430": {
-            "type": "number"
-          },
-          "taxonomyAlignedShareDenominatorSubstantiallyContributingToClimateChangeMitigationNAndG430": {
-            "type": "number"
-          },
-          "taxonomyAlignedShareDenominatorSubstantiallyContributingToClimateChangeAdaptationNAndG430": {
-            "type": "number"
-          },
-          "taxonomyAlignedShareDenominatorClimateChangeMitigationAndClimateChangeAdaptationNAndG431": {
-            "type": "number"
-          },
-          "taxonomyAlignedShareDenominatorSubstantiallyContributingToClimateChangeMitigationNAndG431": {
-            "type": "number"
-          },
-          "taxonomyAlignedShareDenominatorSubstantiallyContributingToClimateChangeAdaptationNAndG431": {
-            "type": "number"
-          },
-          "taxonomyAlignedShareDenominatorClimateChangeMitigationAndClimateChangeAdaptationOtherActivities": {
-            "type": "number"
-          },
-          "taxonomyAlignedShareDenominatorSubstantiallyContributingToClimateChangeMitigationOtherActivities": {
-            "type": "number"
-          },
-          "taxonomyAlignedShareDenominatorSubstantiallyContributingToClimateChangeAdaptationOtherActivities": {
-            "type": "number"
-          },
-          "taxonomyAlignedShareDenominatorClimateChangeMitigationAndClimateChangeAdaptation": {
-            "type": "number"
-          },
-          "taxonomyAlignedShareDenominatorSubstantiallyContributingToClimateChangeMitigation": {
-            "type": "number"
-          },
-          "taxonomyAlignedShareDenominatorSubstantiallyContributingToClimateChangeAdaptation": {
-            "type": "number"
+          "taxonomyAlignedShareDenominator": {
+            "$ref": "#/components/schemas/NuclearAndGasEnvironmentalObjective"
           }
         }
       },
       "NuclearAndGasAlignedNumerator": {
         "type": "object",
         "properties": {
-          "taxonomyAlignedShareNumeratorClimateChangeMitigationAndClimateChangeAdaptationNAndG426": {
-            "type": "number"
+          "taxonomyAlignedShareNumeratorNAndG426": {
+            "$ref": "#/components/schemas/NuclearAndGasEnvironmentalObjective"
           },
-          "taxonomyAlignedShareNumeratorSubstantiallyContributingToClimateChangeMitigationNAndG426": {
-            "type": "number"
+          "taxonomyAlignedShareNumeratorNAndG427": {
+            "$ref": "#/components/schemas/NuclearAndGasEnvironmentalObjective"
           },
-          "taxonomyAlignedShareNumeratorSubstantiallyContributingToClimateChangeAdaptationNAndG426": {
-            "type": "number"
+          "taxonomyAlignedShareNumeratorNAndG428": {
+            "$ref": "#/components/schemas/NuclearAndGasEnvironmentalObjective"
           },
-          "taxonomyAlignedShareNumeratorClimateChangeMitigationAndClimateChangeAdaptationNAndG427": {
-            "type": "number"
+          "taxonomyAlignedShareNumeratorNAndG429": {
+            "$ref": "#/components/schemas/NuclearAndGasEnvironmentalObjective"
           },
-          "taxonomyAlignedShareNumeratorSubstantiallyContributingToClimateChangeMitigationNAndG427": {
-            "type": "number"
+          "taxonomyAlignedShareNumeratorNAndG430": {
+            "$ref": "#/components/schemas/NuclearAndGasEnvironmentalObjective"
           },
-          "taxonomyAlignedShareNumeratorSubstantiallyContributingToClimateChangeAdaptationNAndG427": {
-            "type": "number"
+          "taxonomyAlignedShareNumeratorNAndG431": {
+            "$ref": "#/components/schemas/NuclearAndGasEnvironmentalObjective"
           },
-          "taxonomyAlignedShareNumeratorClimateChangeMitigationAndClimateChangeAdaptationNAndG428": {
-            "type": "number"
+          "taxonomyAlignedShareNumeratorOtherActivities": {
+            "$ref": "#/components/schemas/NuclearAndGasEnvironmentalObjective"
           },
-          "taxonomyAlignedShareNumeratorSubstantiallyContributingToClimateChangeMitigationNAndG428": {
-            "type": "number"
-          },
-          "taxonomyAlignedShareNumeratorSubstantiallyContributingToClimateChangeAdaptationNAndG428": {
-            "type": "number"
-          },
-          "taxonomyAlignedShareNumeratorClimateChangeMitigationAndClimateChangeAdaptationNAndG429": {
-            "type": "number"
-          },
-          "taxonomyAlignedShareNumeratorSubstantiallyContributingToClimateChangeMitigationNAndG429": {
-            "type": "number"
-          },
-          "taxonomyAlignedShareNumeratorSubstantiallyContributingToClimateChangeAdaptationNAndG429": {
-            "type": "number"
-          },
-          "taxonomyAlignedShareNumeratorClimateChangeMitigationAndClimateChangeAdaptationNAndG430": {
-            "type": "number"
-          },
-          "taxonomyAlignedShareNumeratorSubstantiallyContributingToClimateChangeMitigationNAndG430": {
-            "type": "number"
-          },
-          "taxonomyAlignedShareNumeratorSubstantiallyContributingToClimateChangeAdaptationNAndG430": {
-            "type": "number"
-          },
-          "taxonomyAlignedShareNumeratorClimateChangeMitigationAndClimateChangeAdaptationNAndG431": {
-            "type": "number"
-          },
-          "taxonomyAlignedShareNumeratorSubstantiallyContributingToClimateChangeMitigationNAndG431": {
-            "type": "number"
-          },
-          "taxonomyAlignedShareNumeratorSubstantiallyContributingToClimateChangeAdaptationNAndG431": {
-            "type": "number"
-          },
-          "taxonomyAlignedShareNumeratorClimateChangeMitigationAndClimateChangeAdaptationOtherActivities": {
-            "type": "number"
-          },
-          "taxonomyAlignedShareNumeratorSubstantiallyContributingToClimateChangeMitigationOtherActivities": {
-            "type": "number"
-          },
-          "taxonomyAlignedShareNumeratorSubstantiallyContributingToClimateChangeAdaptationOtherActivities": {
-            "type": "number"
-          },
-          "taxonomyAlignedShareNumeratorClimateChangeMitigationAndClimateChangeAdaptation": {
-            "type": "number"
-          },
-          "taxonomyAlignedShareNumeratorSubstantiallyContributingToClimateChangeMitigation": {
-            "type": "number"
-          },
-          "taxonomyAlignedShareNumeratorSubstantiallyContributingToClimateChangeAdaptation": {
-            "type": "number"
+          "taxonomyAlignedShareNumerator": {
+            "$ref": "#/components/schemas/NuclearAndGasEnvironmentalObjective"
           }
         }
       },
@@ -3109,76 +3013,42 @@
       "NuclearAndGasEligibleButNotAligned": {
         "type": "object",
         "properties": {
-          "taxonomyEligibleButNotAlignedShareClimateChangeMitigationAndClimateChangeAdaptationNAndG426": {
+          "taxonomyEligibleButNotAlignedShareNAndG426": {
+            "$ref": "#/components/schemas/NuclearAndGasEnvironmentalObjective"
+          },
+          "taxonomyEligibleButNotAlignedShareNAndG427": {
+            "$ref": "#/components/schemas/NuclearAndGasEnvironmentalObjective"
+          },
+          "taxonomyEligibleButNotAlignedShareNAndG428": {
+            "$ref": "#/components/schemas/NuclearAndGasEnvironmentalObjective"
+          },
+          "taxonomyEligibleButNotAlignedShareNAndG429": {
+            "$ref": "#/components/schemas/NuclearAndGasEnvironmentalObjective"
+          },
+          "taxonomyEligibleButNotAlignedShareNAndG430": {
+            "$ref": "#/components/schemas/NuclearAndGasEnvironmentalObjective"
+          },
+          "taxonomyEligibleButNotAlignedShareNAndG431": {
+            "$ref": "#/components/schemas/NuclearAndGasEnvironmentalObjective"
+          },
+          "taxonomyEligibleButNotAlignedShareOtherActivities": {
+            "$ref": "#/components/schemas/NuclearAndGasEnvironmentalObjective"
+          },
+          "taxonomyEligibleButNotAlignedShare": {
+            "$ref": "#/components/schemas/NuclearAndGasEnvironmentalObjective"
+          }
+        }
+      },
+      "NuclearAndGasEnvironmentalObjective": {
+        "type": "object",
+        "properties": {
+          "mitigationAndAdaption": {
             "type": "number"
           },
-          "taxonomyEligibleButNotAlignedShareSubstantiallyContributingToClimateChangeMitigationNAndG426": {
+          "mitigation": {
             "type": "number"
           },
-          "taxonomyEligibleButNotAlignedShareSubstantiallyContributingToClimateChangeAdaptationNAndG426": {
-            "type": "number"
-          },
-          "taxonomyEligibleButNotAlignedShareClimateChangeMitigationAndClimateChangeAdaptationNAndG427": {
-            "type": "number"
-          },
-          "taxonomyEligibleButNotAlignedShareSubstantiallyContributingToClimateChangeMitigationNAndG427": {
-            "type": "number"
-          },
-          "taxonomyEligibleButNotAlignedShareSubstantiallyContributingToClimateChangeAdaptationNAndG427": {
-            "type": "number"
-          },
-          "taxonomyEligibleButNotAlignedShareClimateChangeMitigationAndClimateChangeAdaptationNAndG428": {
-            "type": "number"
-          },
-          "taxonomyEligibleButNotAlignedShareSubstantiallyContributingToClimateChangeMitigationNAndG428": {
-            "type": "number"
-          },
-          "taxonomyEligibleButNotAlignedShareSubstantiallyContributingToClimateChangeAdaptationNAndG428": {
-            "type": "number"
-          },
-          "taxonomyEligibleButNotAlignedShareClimateChangeMitigationAndClimateChangeAdaptationNAndG429": {
-            "type": "number"
-          },
-          "taxonomyEligibleButNotAlignedShareSubstantiallyContributingToClimateChangeMitigationNAndG429": {
-            "type": "number"
-          },
-          "taxonomyEligibleButNotAlignedShareSubstantiallyContributingToClimateChangeAdaptationNAndG429": {
-            "type": "number"
-          },
-          "taxonomyEligibleButNotAlignedShareClimateChangeMitigationAndClimateChangeAdaptationNAndG430": {
-            "type": "number"
-          },
-          "taxonomyEligibleButNotAlignedShareSubstantiallyContributingToClimateChangeMitigationNAndG430": {
-            "type": "number"
-          },
-          "taxonomyEligibleButNotAlignedShareSubstantiallyContributingToClimateChangeAdaptationNAndG430": {
-            "type": "number"
-          },
-          "taxonomyEligibleButNotAlignedShareClimateChangeMitigationAndClimateChangeAdaptationNAndG431": {
-            "type": "number"
-          },
-          "taxonomyEligibleButNotAlignedShareSubstantiallyContributingToClimateChangeMitigationNAndG431": {
-            "type": "number"
-          },
-          "taxonomyEligibleButNotAlignedShareSubstantiallyContributingToClimateChangeAdaptationNAndG431": {
-            "type": "number"
-          },
-          "taxonomyEligibleButNotAlignedShareClimateChangeMitigationAndClimateChangeAdaptationOtherActivities": {
-            "type": "number"
-          },
-          "taxonomyEligibleButNotAlignedShareSubstantiallyContributingToClimateChangeMitigationOtherActivities": {
-            "type": "number"
-          },
-          "taxonomyEligibleButNotAlignedShareSubstantiallyContributingToClimateChangeAdaptationOtherActivities": {
-            "type": "number"
-          },
-          "taxonomyEligibleButNotAlignedShareClimateChangeMitigationAndClimateChangeAdaptation": {
-            "type": "number"
-          },
-          "taxonomyEligibleButNotAlignedShareSubstantiallyContributingToClimateChangeMitigation": {
-            "type": "number"
-          },
-          "taxonomyEligibleButNotAlignedShareSubstantiallyContributingToClimateChangeAdaptation": {
+          "adaption": {
             "type": "number"
           }
         }
@@ -3206,6 +3076,9 @@
       "NuclearAndGasGeneralGeneral": {
         "type": "object",
         "properties": {
+          "referencedReports": {
+            "$ref": "#/components/schemas/QaReportDataPointMapStringCompanyReport"
+          },
           "nuclearEnergyRelatedActivitiesSection426": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointYesNo"
           },
@@ -5532,10 +5405,14 @@
           "message": {
             "type": "string"
           },
-          "companyName": {
+          "dataId": {
             "type": "string"
           },
-          "dataId": {
+          "receptionTime": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "companyId": {
             "type": "string"
           },
           "reportingPeriod": {
@@ -5544,12 +5421,8 @@
           "framework": {
             "type": "string"
           },
-          "companyId": {
+          "companyName": {
             "type": "string"
-          },
-          "receptionTime": {
-            "type": "integer",
-            "format": "int64"
           }
         }
       },

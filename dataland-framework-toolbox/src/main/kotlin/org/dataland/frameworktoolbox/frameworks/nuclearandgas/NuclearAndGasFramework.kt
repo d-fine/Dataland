@@ -19,35 +19,4 @@ class NuclearAndGasFramework :
         File("./dataland-framework-toolbox/inputs/nuclear-and-gas/nuclear-and-gas.xlsx"),
         order = 9,
         enabledFeatures = FrameworkGenerationFeatures.ENTRY_SET,
-    ) {
-//    private lateinit var nuclearAndGasTemplateComponentFactories: List<NuclearAndGasTemplateComponentFactory>
-//
-//    override fun getComponentFactoriesForIntermediateRepresentation(context: ApplicationContext): List<TemplateComponentFactory> {
-//        val allComponentFactories = super.getComponentFactoriesForIntermediateRepresentation(context)
-//
-//        val templateDiagnostic = context.getBean<TemplateDiagnostic>()
-//
-//        nuclearAndGasTemplateComponentFactories =
-//            NuclearAndGasTemplateComponentFactory.fromExcel(
-//                frameworkTemplateCsvFile,
-//                templateDiagnostic,
-//                "Nuclear and Gas",
-//            )
-// //        nuclearAndGasTemplateComponentFactories.forEach { it.buildInternalFramework(superFactories) }
-// //        nuclearAndGasTemplateComponentFactories.forEach { it.printTooltips() }
-//        return nuclearAndGasTemplateComponentFactories + allComponentFactories
-//    }
-//
-//    override fun customizeDataModel(dataModel: FrameworkDataModelBuilder) {
-//        val customPackage = dataModel.rootPackageBuilder.addPackage(NuclearAndGasTemplateComponentFactory.PACKAGE_NAME)
-//        nuclearAndGasTemplateComponentFactories.forEach {
-//            it.addClassToPackageBuilder(customPackage)
-//        }
-//    }
-//
-//    override fun customizeFixtureGenerator(fixtureGenerator: FrameworkFixtureGeneratorBuilder) {
-//        nuclearAndGasTemplateComponentFactories.forEach {
-//            it.addGeneratorToFixtureGeneratorBuilder(fixtureGenerator)
-//        }
-//    }
-}
+    )

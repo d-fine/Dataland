@@ -2,6 +2,7 @@
 package org.dataland.datalandqaservice.frameworks.nuclearandgas.model.general.general
 
 import jakarta.validation.Valid
+import org.dataland.datalandbackend.openApiClient.model.CompanyReport
 import org.dataland.datalandbackend.openApiClient.model.ExtendedDataPointYesNo
 import org.dataland.datalandqaservice.model.reports.QaReportDataPoint
 
@@ -9,6 +10,7 @@ import org.dataland.datalandqaservice.model.reports.QaReportDataPoint
  * The QA-model for the General section
  */
 data class NuclearAndGasGeneralGeneral(
+    val referencedReports: QaReportDataPoint<Map<String, CompanyReport>>? = null,
     @field:Valid()
     val nuclearEnergyRelatedActivitiesSection426: QaReportDataPoint<ExtendedDataPointYesNo?>? = null,
     @field:Valid()

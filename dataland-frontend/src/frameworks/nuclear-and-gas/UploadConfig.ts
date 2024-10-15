@@ -13,6 +13,15 @@ export const nuclearAndGasDataModel = [
         label: 'General',
         fields: [
           {
+            name: 'referencedReports',
+            label: 'Referenced Reports',
+            description: 'Please upload all relevant reports for this dataset in the PDF format.',
+
+            component: 'UploadReports',
+            required: false,
+            showIf: (): boolean => true,
+          },
+          {
             name: 'nuclearEnergyRelatedActivitiesSection426',
             label: 'Nuclear Energy related Activities (Section 4.26)',
             description:

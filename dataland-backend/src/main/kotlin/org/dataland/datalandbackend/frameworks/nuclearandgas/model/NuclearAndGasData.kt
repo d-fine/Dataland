@@ -4,12 +4,14 @@ package org.dataland.datalandbackend.frameworks.nuclearandgas.model
 import jakarta.validation.Valid
 import org.dataland.datalandbackend.annotations.DataType
 import org.dataland.datalandbackend.frameworks.nuclearandgas.model.general.NuclearAndGasGeneral
+import org.dataland.datalandbackend.frameworks.nuclearandgas.model.validator.ReferencedReportsListValidator
 
 /**
  * The root data-model for the Nuclear-and-gas Framework
  */
 @Suppress("MagicNumber")
 @DataType("nuclear-and-gas", 9)
+@ReferencedReportsListValidator()
 data class NuclearAndGasData(
     @field:Valid()
     val general: NuclearAndGasGeneral? = null,

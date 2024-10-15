@@ -37,6 +37,28 @@
 		"t": {
 			"general": {
 				"general": {
+					"referencedReports": {
+						"SustainabilityReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "SustainabilityReport",
+							"publicationDate": "2023-08-29"
+						},
+						"AnnualReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "AnnualReport",
+							"publicationDate": "2023-06-09"
+						},
+						"IntegratedReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "IntegratedReport",
+							"publicationDate": "2023-11-17"
+						},
+						"ESEFReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "ESEFReport",
+							"publicationDate": "2023-05-15"
+						}
+					},
 					"nuclearEnergyRelatedActivitiesSection426": {
 						"value": "No",
 						"dataSource": {
@@ -107,30 +129,46 @@
 				"taxonomyAlignedDenominator": {
 					"nuclearAndGasTaxonomyAlignedRevenueDenominator": {
 						"value": {
-							"taxonomyAlignedShareDenominatorClimateChangeMitigationAndClimateChangeAdaptationNAndG426": 53.18,
-							"taxonomyAlignedShareDenominatorSubstantiallyContributingToClimateChangeMitigationNAndG426": 47.97,
-							"taxonomyAlignedShareDenominatorSubstantiallyContributingToClimateChangeAdaptationNAndG426": 67.01,
-							"taxonomyAlignedShareDenominatorClimateChangeMitigationAndClimateChangeAdaptationNAndG427": 32.26,
-							"taxonomyAlignedShareDenominatorSubstantiallyContributingToClimateChangeMitigationNAndG427": 22.48,
-							"taxonomyAlignedShareDenominatorSubstantiallyContributingToClimateChangeAdaptationNAndG427": 30.74,
-							"taxonomyAlignedShareDenominatorClimateChangeMitigationAndClimateChangeAdaptationNAndG428": 52.93,
-							"taxonomyAlignedShareDenominatorSubstantiallyContributingToClimateChangeMitigationNAndG428": 29.95,
-							"taxonomyAlignedShareDenominatorSubstantiallyContributingToClimateChangeAdaptationNAndG428": 81.15,
-							"taxonomyAlignedShareDenominatorClimateChangeMitigationAndClimateChangeAdaptationNAndG429": 13.44,
-							"taxonomyAlignedShareDenominatorSubstantiallyContributingToClimateChangeMitigationNAndG429": 80.72,
-							"taxonomyAlignedShareDenominatorSubstantiallyContributingToClimateChangeAdaptationNAndG429": 71.73,
-							"taxonomyAlignedShareDenominatorClimateChangeMitigationAndClimateChangeAdaptationNAndG430": 87.53,
-							"taxonomyAlignedShareDenominatorSubstantiallyContributingToClimateChangeMitigationNAndG430": 11.85,
-							"taxonomyAlignedShareDenominatorSubstantiallyContributingToClimateChangeAdaptationNAndG430": 57.87,
-							"taxonomyAlignedShareDenominatorClimateChangeMitigationAndClimateChangeAdaptationNAndG431": 97.63,
-							"taxonomyAlignedShareDenominatorSubstantiallyContributingToClimateChangeMitigationNAndG431": 35.72,
-							"taxonomyAlignedShareDenominatorSubstantiallyContributingToClimateChangeAdaptationNAndG431": 18.41,
-							"taxonomyAlignedShareDenominatorClimateChangeMitigationAndClimateChangeAdaptationOtherActivities": 61.09,
-							"taxonomyAlignedShareDenominatorSubstantiallyContributingToClimateChangeMitigationOtherActivities": 91.53,
-							"taxonomyAlignedShareDenominatorSubstantiallyContributingToClimateChangeAdaptationOtherActivities": 24.73,
-							"taxonomyAlignedShareDenominatorClimateChangeMitigationAndClimateChangeAdaptation": 5.67,
-							"taxonomyAlignedShareDenominatorSubstantiallyContributingToClimateChangeMitigation": 57.63,
-							"taxonomyAlignedShareDenominatorSubstantiallyContributingToClimateChangeAdaptation": 93.97
+							"taxonomyAlignedShareDenominatorNAndG426": {
+								"mitigationAndAdaption": 53.18,
+								"mitigation": 47.97,
+								"adaption": 67.01
+							},
+							"taxonomyAlignedShareDenominatorNAndG427": {
+								"mitigationAndAdaption": 32.26,
+								"mitigation": 22.48,
+								"adaption": 30.74
+							},
+							"taxonomyAlignedShareDenominatorNAndG428": {
+								"mitigationAndAdaption": 52.93,
+								"mitigation": 29.95,
+								"adaption": 81.15
+							},
+							"taxonomyAlignedShareDenominatorNAndG429": {
+								"mitigationAndAdaption": 13.44,
+								"mitigation": 80.72,
+								"adaption": 71.73
+							},
+							"taxonomyAlignedShareDenominatorNAndG430": {
+								"mitigationAndAdaption": 87.53,
+								"mitigation": 11.85,
+								"adaption": 57.87
+							},
+							"taxonomyAlignedShareDenominatorNAndG431": {
+								"mitigationAndAdaption": 97.63,
+								"mitigation": 35.72,
+								"adaption": 18.41
+							},
+							"taxonomyAlignedShareDenominatorOtherActivities": {
+								"mitigationAndAdaption": 61.09,
+								"mitigation": 91.53,
+								"adaption": 24.73
+							},
+							"taxonomyAlignedShareDenominator": {
+								"mitigationAndAdaption": 5.67,
+								"mitigation": 57.63,
+								"adaption": 93.97
+							}
 						},
 						"dataSource": {
 							"page": "673-1029",
@@ -143,30 +181,46 @@
 					},
 					"nuclearAndGasTaxonomyAlignedCapexDenominator": {
 						"value": {
-							"taxonomyAlignedShareDenominatorClimateChangeMitigationAndClimateChangeAdaptationNAndG426": 11.02,
-							"taxonomyAlignedShareDenominatorSubstantiallyContributingToClimateChangeMitigationNAndG426": 18.13,
-							"taxonomyAlignedShareDenominatorSubstantiallyContributingToClimateChangeAdaptationNAndG426": 31.14,
-							"taxonomyAlignedShareDenominatorClimateChangeMitigationAndClimateChangeAdaptationNAndG427": 84.6,
-							"taxonomyAlignedShareDenominatorSubstantiallyContributingToClimateChangeMitigationNAndG427": 51.77,
-							"taxonomyAlignedShareDenominatorSubstantiallyContributingToClimateChangeAdaptationNAndG427": 45.86,
-							"taxonomyAlignedShareDenominatorClimateChangeMitigationAndClimateChangeAdaptationNAndG428": 46.92,
-							"taxonomyAlignedShareDenominatorSubstantiallyContributingToClimateChangeMitigationNAndG428": 55.8,
-							"taxonomyAlignedShareDenominatorSubstantiallyContributingToClimateChangeAdaptationNAndG428": 59.11,
-							"taxonomyAlignedShareDenominatorClimateChangeMitigationAndClimateChangeAdaptationNAndG429": 67.17,
-							"taxonomyAlignedShareDenominatorSubstantiallyContributingToClimateChangeMitigationNAndG429": 74.71,
-							"taxonomyAlignedShareDenominatorSubstantiallyContributingToClimateChangeAdaptationNAndG429": 52.02,
-							"taxonomyAlignedShareDenominatorClimateChangeMitigationAndClimateChangeAdaptationNAndG430": 99.07,
-							"taxonomyAlignedShareDenominatorSubstantiallyContributingToClimateChangeMitigationNAndG430": 82.77,
-							"taxonomyAlignedShareDenominatorSubstantiallyContributingToClimateChangeAdaptationNAndG430": 7.14,
-							"taxonomyAlignedShareDenominatorClimateChangeMitigationAndClimateChangeAdaptationNAndG431": 17.49,
-							"taxonomyAlignedShareDenominatorSubstantiallyContributingToClimateChangeMitigationNAndG431": 97.98,
-							"taxonomyAlignedShareDenominatorSubstantiallyContributingToClimateChangeAdaptationNAndG431": 69.04,
-							"taxonomyAlignedShareDenominatorClimateChangeMitigationAndClimateChangeAdaptationOtherActivities": 52.25,
-							"taxonomyAlignedShareDenominatorSubstantiallyContributingToClimateChangeMitigationOtherActivities": 11.72,
-							"taxonomyAlignedShareDenominatorSubstantiallyContributingToClimateChangeAdaptationOtherActivities": 8.1,
-							"taxonomyAlignedShareDenominatorClimateChangeMitigationAndClimateChangeAdaptation": 7.7,
-							"taxonomyAlignedShareDenominatorSubstantiallyContributingToClimateChangeMitigation": 13.35,
-							"taxonomyAlignedShareDenominatorSubstantiallyContributingToClimateChangeAdaptation": 99.08
+							"taxonomyAlignedShareDenominatorNAndG426": {
+								"mitigationAndAdaption": 11.02,
+								"mitigation": 18.13,
+								"adaption": 31.14
+							},
+							"taxonomyAlignedShareDenominatorNAndG427": {
+								"mitigationAndAdaption": 84.6,
+								"mitigation": 51.77,
+								"adaption": 45.86
+							},
+							"taxonomyAlignedShareDenominatorNAndG428": {
+								"mitigationAndAdaption": 46.92,
+								"mitigation": 55.8,
+								"adaption": 59.11
+							},
+							"taxonomyAlignedShareDenominatorNAndG429": {
+								"mitigationAndAdaption": 67.17,
+								"mitigation": 74.71,
+								"adaption": 52.02
+							},
+							"taxonomyAlignedShareDenominatorNAndG430": {
+								"mitigationAndAdaption": 99.07,
+								"mitigation": 82.77,
+								"adaption": 7.14
+							},
+							"taxonomyAlignedShareDenominatorNAndG431": {
+								"mitigationAndAdaption": 17.49,
+								"mitigation": 97.98,
+								"adaption": 69.04
+							},
+							"taxonomyAlignedShareDenominatorOtherActivities": {
+								"mitigationAndAdaption": 52.25,
+								"mitigation": 11.72,
+								"adaption": 8.1
+							},
+							"taxonomyAlignedShareDenominator": {
+								"mitigationAndAdaption": 7.7,
+								"mitigation": 13.35,
+								"adaption": 99.08
+							}
 						},
 						"dataSource": {
 							"page": "587",
@@ -181,30 +235,46 @@
 				"taxonomyAlignedNumerator": {
 					"nuclearAndGasTaxonomyAlignedRevenueNumerator": {
 						"value": {
-							"taxonomyAlignedShareNumeratorClimateChangeMitigationAndClimateChangeAdaptationNAndG426": 31.85,
-							"taxonomyAlignedShareNumeratorSubstantiallyContributingToClimateChangeMitigationNAndG426": 56.26,
-							"taxonomyAlignedShareNumeratorSubstantiallyContributingToClimateChangeAdaptationNAndG426": 70.06,
-							"taxonomyAlignedShareNumeratorClimateChangeMitigationAndClimateChangeAdaptationNAndG427": 97.87,
-							"taxonomyAlignedShareNumeratorSubstantiallyContributingToClimateChangeMitigationNAndG427": 82.73,
-							"taxonomyAlignedShareNumeratorSubstantiallyContributingToClimateChangeAdaptationNAndG427": 87.58,
-							"taxonomyAlignedShareNumeratorClimateChangeMitigationAndClimateChangeAdaptationNAndG428": 62.54,
-							"taxonomyAlignedShareNumeratorSubstantiallyContributingToClimateChangeMitigationNAndG428": 60.19,
-							"taxonomyAlignedShareNumeratorSubstantiallyContributingToClimateChangeAdaptationNAndG428": 7.69,
-							"taxonomyAlignedShareNumeratorClimateChangeMitigationAndClimateChangeAdaptationNAndG429": 69.96,
-							"taxonomyAlignedShareNumeratorSubstantiallyContributingToClimateChangeMitigationNAndG429": 65.03,
-							"taxonomyAlignedShareNumeratorSubstantiallyContributingToClimateChangeAdaptationNAndG429": 4.01,
-							"taxonomyAlignedShareNumeratorClimateChangeMitigationAndClimateChangeAdaptationNAndG430": 42.41,
-							"taxonomyAlignedShareNumeratorSubstantiallyContributingToClimateChangeMitigationNAndG430": 27.64,
-							"taxonomyAlignedShareNumeratorSubstantiallyContributingToClimateChangeAdaptationNAndG430": 42.43,
-							"taxonomyAlignedShareNumeratorClimateChangeMitigationAndClimateChangeAdaptationNAndG431": 12.01,
-							"taxonomyAlignedShareNumeratorSubstantiallyContributingToClimateChangeMitigationNAndG431": 67.39,
-							"taxonomyAlignedShareNumeratorSubstantiallyContributingToClimateChangeAdaptationNAndG431": 70.24,
-							"taxonomyAlignedShareNumeratorClimateChangeMitigationAndClimateChangeAdaptationOtherActivities": 49.75,
-							"taxonomyAlignedShareNumeratorSubstantiallyContributingToClimateChangeMitigationOtherActivities": 56.76,
-							"taxonomyAlignedShareNumeratorSubstantiallyContributingToClimateChangeAdaptationOtherActivities": 62.99,
-							"taxonomyAlignedShareNumeratorClimateChangeMitigationAndClimateChangeAdaptation": 45.39,
-							"taxonomyAlignedShareNumeratorSubstantiallyContributingToClimateChangeMitigation": 31.51,
-							"taxonomyAlignedShareNumeratorSubstantiallyContributingToClimateChangeAdaptation": 88.13
+							"taxonomyAlignedShareNumeratorNAndG426": {
+								"mitigationAndAdaption": 31.85,
+								"mitigation": 56.26,
+								"adaption": 70.06
+							},
+							"taxonomyAlignedShareNumeratorNAndG427": {
+								"mitigationAndAdaption": 97.87,
+								"mitigation": 82.73,
+								"adaption": 87.58
+							},
+							"taxonomyAlignedShareNumeratorNAndG428": {
+								"mitigationAndAdaption": 62.54,
+								"mitigation": 60.19,
+								"adaption": 7.69
+							},
+							"taxonomyAlignedShareNumeratorNAndG429": {
+								"mitigationAndAdaption": 69.96,
+								"mitigation": 65.03,
+								"adaption": 4.01
+							},
+							"taxonomyAlignedShareNumeratorNAndG430": {
+								"mitigationAndAdaption": 42.41,
+								"mitigation": 27.64,
+								"adaption": 42.43
+							},
+							"taxonomyAlignedShareNumeratorNAndG431": {
+								"mitigationAndAdaption": 12.01,
+								"mitigation": 67.39,
+								"adaption": 70.24
+							},
+							"taxonomyAlignedShareNumeratorOtherActivities": {
+								"mitigationAndAdaption": 49.75,
+								"mitigation": 56.76,
+								"adaption": 62.99
+							},
+							"taxonomyAlignedShareNumerator": {
+								"mitigationAndAdaption": 45.39,
+								"mitigation": 31.51,
+								"adaption": 88.13
+							}
 						},
 						"dataSource": {
 							"page": "94",
@@ -217,30 +287,46 @@
 					},
 					"nuclearAndGasTaxonomyAlignedCapexNumerator": {
 						"value": {
-							"taxonomyAlignedShareNumeratorClimateChangeMitigationAndClimateChangeAdaptationNAndG426": 81.24,
-							"taxonomyAlignedShareNumeratorSubstantiallyContributingToClimateChangeMitigationNAndG426": 57.54,
-							"taxonomyAlignedShareNumeratorSubstantiallyContributingToClimateChangeAdaptationNAndG426": 24.24,
-							"taxonomyAlignedShareNumeratorClimateChangeMitigationAndClimateChangeAdaptationNAndG427": 52.43,
-							"taxonomyAlignedShareNumeratorSubstantiallyContributingToClimateChangeMitigationNAndG427": 73.08,
-							"taxonomyAlignedShareNumeratorSubstantiallyContributingToClimateChangeAdaptationNAndG427": 18.92,
-							"taxonomyAlignedShareNumeratorClimateChangeMitigationAndClimateChangeAdaptationNAndG428": 7.92,
-							"taxonomyAlignedShareNumeratorSubstantiallyContributingToClimateChangeMitigationNAndG428": 54,
-							"taxonomyAlignedShareNumeratorSubstantiallyContributingToClimateChangeAdaptationNAndG428": 54.05,
-							"taxonomyAlignedShareNumeratorClimateChangeMitigationAndClimateChangeAdaptationNAndG429": 2.99,
-							"taxonomyAlignedShareNumeratorSubstantiallyContributingToClimateChangeMitigationNAndG429": 61.1,
-							"taxonomyAlignedShareNumeratorSubstantiallyContributingToClimateChangeAdaptationNAndG429": 82.81,
-							"taxonomyAlignedShareNumeratorClimateChangeMitigationAndClimateChangeAdaptationNAndG430": 64.84,
-							"taxonomyAlignedShareNumeratorSubstantiallyContributingToClimateChangeMitigationNAndG430": 64.79,
-							"taxonomyAlignedShareNumeratorSubstantiallyContributingToClimateChangeAdaptationNAndG430": 72.86,
-							"taxonomyAlignedShareNumeratorClimateChangeMitigationAndClimateChangeAdaptationNAndG431": 69.1,
-							"taxonomyAlignedShareNumeratorSubstantiallyContributingToClimateChangeMitigationNAndG431": 74.01,
-							"taxonomyAlignedShareNumeratorSubstantiallyContributingToClimateChangeAdaptationNAndG431": 58.02,
-							"taxonomyAlignedShareNumeratorClimateChangeMitigationAndClimateChangeAdaptationOtherActivities": 84.36,
-							"taxonomyAlignedShareNumeratorSubstantiallyContributingToClimateChangeMitigationOtherActivities": 29.52,
-							"taxonomyAlignedShareNumeratorSubstantiallyContributingToClimateChangeAdaptationOtherActivities": 73.46,
-							"taxonomyAlignedShareNumeratorClimateChangeMitigationAndClimateChangeAdaptation": 91.6,
-							"taxonomyAlignedShareNumeratorSubstantiallyContributingToClimateChangeMitigation": 43.2,
-							"taxonomyAlignedShareNumeratorSubstantiallyContributingToClimateChangeAdaptation": 33.45
+							"taxonomyAlignedShareNumeratorNAndG426": {
+								"mitigationAndAdaption": 81.24,
+								"mitigation": 57.54,
+								"adaption": 24.24
+							},
+							"taxonomyAlignedShareNumeratorNAndG427": {
+								"mitigationAndAdaption": 52.43,
+								"mitigation": 73.08,
+								"adaption": 18.92
+							},
+							"taxonomyAlignedShareNumeratorNAndG428": {
+								"mitigationAndAdaption": 7.92,
+								"mitigation": 54,
+								"adaption": 54.05
+							},
+							"taxonomyAlignedShareNumeratorNAndG429": {
+								"mitigationAndAdaption": 2.99,
+								"mitigation": 61.1,
+								"adaption": 82.81
+							},
+							"taxonomyAlignedShareNumeratorNAndG430": {
+								"mitigationAndAdaption": 64.84,
+								"mitigation": 64.79,
+								"adaption": 72.86
+							},
+							"taxonomyAlignedShareNumeratorNAndG431": {
+								"mitigationAndAdaption": 69.1,
+								"mitigation": 74.01,
+								"adaption": 58.02
+							},
+							"taxonomyAlignedShareNumeratorOtherActivities": {
+								"mitigationAndAdaption": 84.36,
+								"mitigation": 29.52,
+								"adaption": 73.46
+							},
+							"taxonomyAlignedShareNumerator": {
+								"mitigationAndAdaption": 91.6,
+								"mitigation": 43.2,
+								"adaption": 33.45
+							}
 						},
 						"dataSource": {
 							"page": "1184-1300",
@@ -255,30 +341,46 @@
 				"taxonomyEligibleButNotAligned": {
 					"nuclearAndGasTaxonomyEligibleButNotAlignedRevenue": {
 						"value": {
-							"taxonomyEligibleButNotAlignedShareClimateChangeMitigationAndClimateChangeAdaptationNAndG426": 14.28,
-							"taxonomyEligibleButNotAlignedShareSubstantiallyContributingToClimateChangeMitigationNAndG426": 41.04,
-							"taxonomyEligibleButNotAlignedShareSubstantiallyContributingToClimateChangeAdaptationNAndG426": 47,
-							"taxonomyEligibleButNotAlignedShareClimateChangeMitigationAndClimateChangeAdaptationNAndG427": 50.8,
-							"taxonomyEligibleButNotAlignedShareSubstantiallyContributingToClimateChangeMitigationNAndG427": 86.28,
-							"taxonomyEligibleButNotAlignedShareSubstantiallyContributingToClimateChangeAdaptationNAndG427": 69.77,
-							"taxonomyEligibleButNotAlignedShareClimateChangeMitigationAndClimateChangeAdaptationNAndG428": 49.02,
-							"taxonomyEligibleButNotAlignedShareSubstantiallyContributingToClimateChangeMitigationNAndG428": 20.95,
-							"taxonomyEligibleButNotAlignedShareSubstantiallyContributingToClimateChangeAdaptationNAndG428": 20.22,
-							"taxonomyEligibleButNotAlignedShareClimateChangeMitigationAndClimateChangeAdaptationNAndG429": 59.02,
-							"taxonomyEligibleButNotAlignedShareSubstantiallyContributingToClimateChangeMitigationNAndG429": 40.41,
-							"taxonomyEligibleButNotAlignedShareSubstantiallyContributingToClimateChangeAdaptationNAndG429": 80.53,
-							"taxonomyEligibleButNotAlignedShareClimateChangeMitigationAndClimateChangeAdaptationNAndG430": 5.3,
-							"taxonomyEligibleButNotAlignedShareSubstantiallyContributingToClimateChangeMitigationNAndG430": 64.63,
-							"taxonomyEligibleButNotAlignedShareSubstantiallyContributingToClimateChangeAdaptationNAndG430": 44.84,
-							"taxonomyEligibleButNotAlignedShareClimateChangeMitigationAndClimateChangeAdaptationNAndG431": 14.68,
-							"taxonomyEligibleButNotAlignedShareSubstantiallyContributingToClimateChangeMitigationNAndG431": 57.48,
-							"taxonomyEligibleButNotAlignedShareSubstantiallyContributingToClimateChangeAdaptationNAndG431": 45.28,
-							"taxonomyEligibleButNotAlignedShareClimateChangeMitigationAndClimateChangeAdaptationOtherActivities": 47.06,
-							"taxonomyEligibleButNotAlignedShareSubstantiallyContributingToClimateChangeMitigationOtherActivities": 88.37,
-							"taxonomyEligibleButNotAlignedShareSubstantiallyContributingToClimateChangeAdaptationOtherActivities": 69.81,
-							"taxonomyEligibleButNotAlignedShareClimateChangeMitigationAndClimateChangeAdaptation": 17.01,
-							"taxonomyEligibleButNotAlignedShareSubstantiallyContributingToClimateChangeMitigation": 9.97,
-							"taxonomyEligibleButNotAlignedShareSubstantiallyContributingToClimateChangeAdaptation": 21.26
+							"taxonomyEligibleButNotAlignedShareNAndG426": {
+								"mitigationAndAdaption": 14.28,
+								"mitigation": 41.04,
+								"adaption": 47
+							},
+							"taxonomyEligibleButNotAlignedShareNAndG427": {
+								"mitigationAndAdaption": 50.8,
+								"mitigation": 86.28,
+								"adaption": 69.77
+							},
+							"taxonomyEligibleButNotAlignedShareNAndG428": {
+								"mitigationAndAdaption": 49.02,
+								"mitigation": 20.95,
+								"adaption": 20.22
+							},
+							"taxonomyEligibleButNotAlignedShareNAndG429": {
+								"mitigationAndAdaption": 59.02,
+								"mitigation": 40.41,
+								"adaption": 80.53
+							},
+							"taxonomyEligibleButNotAlignedShareNAndG430": {
+								"mitigationAndAdaption": 5.3,
+								"mitigation": 64.63,
+								"adaption": 44.84
+							},
+							"taxonomyEligibleButNotAlignedShareNAndG431": {
+								"mitigationAndAdaption": 14.68,
+								"mitigation": 57.48,
+								"adaption": 45.28
+							},
+							"taxonomyEligibleButNotAlignedShareOtherActivities": {
+								"mitigationAndAdaption": 47.06,
+								"mitigation": 88.37,
+								"adaption": 69.81
+							},
+							"taxonomyEligibleButNotAlignedShare": {
+								"mitigationAndAdaption": 17.01,
+								"mitigation": 9.97,
+								"adaption": 21.26
+							}
 						},
 						"dataSource": {
 							"page": "1113",
@@ -291,30 +393,46 @@
 					},
 					"nuclearAndGasTaxonomyEligibleButNotAlignedCapex": {
 						"value": {
-							"taxonomyEligibleButNotAlignedShareClimateChangeMitigationAndClimateChangeAdaptationNAndG426": 16.73,
-							"taxonomyEligibleButNotAlignedShareSubstantiallyContributingToClimateChangeMitigationNAndG426": 65.56,
-							"taxonomyEligibleButNotAlignedShareSubstantiallyContributingToClimateChangeAdaptationNAndG426": 73.88,
-							"taxonomyEligibleButNotAlignedShareClimateChangeMitigationAndClimateChangeAdaptationNAndG427": 91.6,
-							"taxonomyEligibleButNotAlignedShareSubstantiallyContributingToClimateChangeMitigationNAndG427": 91.31,
-							"taxonomyEligibleButNotAlignedShareSubstantiallyContributingToClimateChangeAdaptationNAndG427": 0.25,
-							"taxonomyEligibleButNotAlignedShareClimateChangeMitigationAndClimateChangeAdaptationNAndG428": 21.88,
-							"taxonomyEligibleButNotAlignedShareSubstantiallyContributingToClimateChangeMitigationNAndG428": 90.24,
-							"taxonomyEligibleButNotAlignedShareSubstantiallyContributingToClimateChangeAdaptationNAndG428": 0.92,
-							"taxonomyEligibleButNotAlignedShareClimateChangeMitigationAndClimateChangeAdaptationNAndG429": 9.59,
-							"taxonomyEligibleButNotAlignedShareSubstantiallyContributingToClimateChangeMitigationNAndG429": 8.02,
-							"taxonomyEligibleButNotAlignedShareSubstantiallyContributingToClimateChangeAdaptationNAndG429": 79.35,
-							"taxonomyEligibleButNotAlignedShareClimateChangeMitigationAndClimateChangeAdaptationNAndG430": 55.32,
-							"taxonomyEligibleButNotAlignedShareSubstantiallyContributingToClimateChangeMitigationNAndG430": 34.17,
-							"taxonomyEligibleButNotAlignedShareSubstantiallyContributingToClimateChangeAdaptationNAndG430": 76.51,
-							"taxonomyEligibleButNotAlignedShareClimateChangeMitigationAndClimateChangeAdaptationNAndG431": 8.92,
-							"taxonomyEligibleButNotAlignedShareSubstantiallyContributingToClimateChangeMitigationNAndG431": 56.35,
-							"taxonomyEligibleButNotAlignedShareSubstantiallyContributingToClimateChangeAdaptationNAndG431": 95.65,
-							"taxonomyEligibleButNotAlignedShareClimateChangeMitigationAndClimateChangeAdaptationOtherActivities": 50.15,
-							"taxonomyEligibleButNotAlignedShareSubstantiallyContributingToClimateChangeMitigationOtherActivities": 78.6,
-							"taxonomyEligibleButNotAlignedShareSubstantiallyContributingToClimateChangeAdaptationOtherActivities": 34.95,
-							"taxonomyEligibleButNotAlignedShareClimateChangeMitigationAndClimateChangeAdaptation": 12.24,
-							"taxonomyEligibleButNotAlignedShareSubstantiallyContributingToClimateChangeMitigation": 69.07,
-							"taxonomyEligibleButNotAlignedShareSubstantiallyContributingToClimateChangeAdaptation": 25.64
+							"taxonomyEligibleButNotAlignedShareNAndG426": {
+								"mitigationAndAdaption": 16.73,
+								"mitigation": 65.56,
+								"adaption": 73.88
+							},
+							"taxonomyEligibleButNotAlignedShareNAndG427": {
+								"mitigationAndAdaption": 91.6,
+								"mitigation": 91.31,
+								"adaption": 0.25
+							},
+							"taxonomyEligibleButNotAlignedShareNAndG428": {
+								"mitigationAndAdaption": 21.88,
+								"mitigation": 90.24,
+								"adaption": 0.92
+							},
+							"taxonomyEligibleButNotAlignedShareNAndG429": {
+								"mitigationAndAdaption": 9.59,
+								"mitigation": 8.02,
+								"adaption": 79.35
+							},
+							"taxonomyEligibleButNotAlignedShareNAndG430": {
+								"mitigationAndAdaption": 55.32,
+								"mitigation": 34.17,
+								"adaption": 76.51
+							},
+							"taxonomyEligibleButNotAlignedShareNAndG431": {
+								"mitigationAndAdaption": 8.92,
+								"mitigation": 56.35,
+								"adaption": 95.65
+							},
+							"taxonomyEligibleButNotAlignedShareOtherActivities": {
+								"mitigationAndAdaption": 50.15,
+								"mitigation": 78.6,
+								"adaption": 34.95
+							},
+							"taxonomyEligibleButNotAlignedShare": {
+								"mitigationAndAdaption": 12.24,
+								"mitigation": 69.07,
+								"adaption": 25.64
+							}
 						},
 						"dataSource": {
 							"page": "1153-1266",
