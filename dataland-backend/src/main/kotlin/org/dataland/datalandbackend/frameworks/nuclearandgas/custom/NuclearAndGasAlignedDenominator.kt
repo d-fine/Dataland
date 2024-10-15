@@ -1,34 +1,16 @@
 package org.dataland.datalandbackend.frameworks.nuclearandgas.custom
 
-import java.math.BigDecimal
-
 /**
  * --- API model ---
  * Custom Component for the EU-Taxonomy Nuclear and Gas Template Aligned (Denominator)
  */
 data class NuclearAndGasAlignedDenominator(
-    val taxonomyAlignedShareDenominatorClimateChangeMitigationAndClimateChangeAdaptationNAndG426: BigDecimal? = null,
-    val taxonomyAlignedShareDenominatorSubstantiallyContributingToClimateChangeMitigationNAndG426: BigDecimal? = null,
-    val taxonomyAlignedShareDenominatorSubstantiallyContributingToClimateChangeAdaptationNAndG426: BigDecimal? = null,
-    val taxonomyAlignedShareDenominatorClimateChangeMitigationAndClimateChangeAdaptationNAndG427: BigDecimal? = null,
-    val taxonomyAlignedShareDenominatorSubstantiallyContributingToClimateChangeMitigationNAndG427: BigDecimal? = null,
-    val taxonomyAlignedShareDenominatorSubstantiallyContributingToClimateChangeAdaptationNAndG427: BigDecimal? = null,
-    val taxonomyAlignedShareDenominatorClimateChangeMitigationAndClimateChangeAdaptationNAndG428: BigDecimal? = null,
-    val taxonomyAlignedShareDenominatorSubstantiallyContributingToClimateChangeMitigationNAndG428: BigDecimal? = null,
-    val taxonomyAlignedShareDenominatorSubstantiallyContributingToClimateChangeAdaptationNAndG428: BigDecimal? = null,
-    val taxonomyAlignedShareDenominatorClimateChangeMitigationAndClimateChangeAdaptationNAndG429: BigDecimal? = null,
-    val taxonomyAlignedShareDenominatorSubstantiallyContributingToClimateChangeMitigationNAndG429: BigDecimal? = null,
-    val taxonomyAlignedShareDenominatorSubstantiallyContributingToClimateChangeAdaptationNAndG429: BigDecimal? = null,
-    val taxonomyAlignedShareDenominatorClimateChangeMitigationAndClimateChangeAdaptationNAndG430: BigDecimal? = null,
-    val taxonomyAlignedShareDenominatorSubstantiallyContributingToClimateChangeMitigationNAndG430: BigDecimal? = null,
-    val taxonomyAlignedShareDenominatorSubstantiallyContributingToClimateChangeAdaptationNAndG430: BigDecimal? = null,
-    val taxonomyAlignedShareDenominatorClimateChangeMitigationAndClimateChangeAdaptationNAndG431: BigDecimal? = null,
-    val taxonomyAlignedShareDenominatorSubstantiallyContributingToClimateChangeMitigationNAndG431: BigDecimal? = null,
-    val taxonomyAlignedShareDenominatorSubstantiallyContributingToClimateChangeAdaptationNAndG431: BigDecimal? = null,
-    val taxonomyAlignedShareDenominatorClimateChangeMitigationAndClimateChangeAdaptationOtherActivities: BigDecimal? = null,
-    val taxonomyAlignedShareDenominatorSubstantiallyContributingToClimateChangeMitigationOtherActivities: BigDecimal? = null,
-    val taxonomyAlignedShareDenominatorSubstantiallyContributingToClimateChangeAdaptationOtherActivities: BigDecimal? = null,
-    val taxonomyAlignedShareDenominatorClimateChangeMitigationAndClimateChangeAdaptation: BigDecimal? = null,
-    val taxonomyAlignedShareDenominatorSubstantiallyContributingToClimateChangeMitigation: BigDecimal? = null,
-    val taxonomyAlignedShareDenominatorSubstantiallyContributingToClimateChangeAdaptation: BigDecimal? = null,
+    val taxonomyAlignedShareDenominatorNAndG426: NuclearAndGasEnvironmentalObjective? = null,
+    val taxonomyAlignedShareDenominatorNAndG427: NuclearAndGasEnvironmentalObjective? = null,
+    val taxonomyAlignedShareDenominatorNAndG428: NuclearAndGasEnvironmentalObjective? = null,
+    val taxonomyAlignedShareDenominatorNAndG429: NuclearAndGasEnvironmentalObjective? = null,
+    val taxonomyAlignedShareDenominatorNAndG430: NuclearAndGasEnvironmentalObjective? = null,
+    val taxonomyAlignedShareDenominatorNAndG431: NuclearAndGasEnvironmentalObjective? = null,
+    val taxonomyAlignedShareDenominatorOtherActivities: NuclearAndGasEnvironmentalObjective? = null,
+    val taxonomyAlignedShareDenominator: NuclearAndGasEnvironmentalObjective? = null,
 )
