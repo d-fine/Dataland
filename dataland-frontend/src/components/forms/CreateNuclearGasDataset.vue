@@ -176,6 +176,8 @@ import { type PublicFrameworkDataApi } from '@/utils/api/UnifiedFrameworkDataApi
 import { getBasePublicFrameworkDefinition } from '@/frameworks/BasePublicFrameworkRegistry';
 import { hasUserCompanyOwnerOrDataUploaderRole } from '@/utils/CompanyRolesUtils';
 import {DocumentToUpload, uploadFiles} from "@/utils/FileUploadUtils";
+import NuclearAndGasFormElement from "@/components/forms/parts/elements/derived/NuclearAndGasFormElement.vue";
+import NuclearAndGasActivityField from "@/components/forms/parts/fields/NuclearAndGasActivityField.vue";
 
 export default defineComponent({
   setup() {
@@ -208,6 +210,8 @@ export default defineComponent({
     ProductionSitesFormField,
     MostImportantProductsFormField,
     ProcurementCategoriesFormField,
+    NuclearAndGasFormElement,
+    NuclearAndGasActivityField,
     UploadReports,
     HighImpactClimateSectorsFormField,
     IntegerExtendedDataPointFormField,
