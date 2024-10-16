@@ -1,26 +1,28 @@
 <template>
-  <DataTable :value="listOfRowContents" class="activities-data-table">
-    <Column field="activity" header="Activity">
-      <template #body="{ data }">
-        {{ data.activity }}
-      </template>
-    </Column>
-    <Column field="ccmCca" header="CCM + CCA">
-      <template #body="{ data }">
-        {{ data.ccmCca || '' }}
-      </template>
-    </Column>
-    <Column field="ccm" header="CCM">
-      <template #body="{ data }">
-        {{ data.ccm || '' }}
-      </template>
-    </Column>
-    <Column field="cca" header="CCA">
-      <template #body="{ data }">
-        {{ data.cca || '' }}
-      </template>
-    </Column>
-  </DataTable>
+  <div v-if="listOfRowContents.length > 0">
+    <DataTable :value="listOfRowContents" class="activities-data-table">
+      <Column field="activity" header="Activity">
+        <template #body="{ data }">
+          {{ data.activity }}
+        </template>
+      </Column>
+      <Column field="ccmCca" header="CCM + CCA">
+        <template #body="{ data }">
+          {{ data.ccmCca || '' }}
+        </template>
+      </Column>
+      <Column field="ccm" header="CCM">
+        <template #body="{ data }">
+          {{ data.ccm || '' }}
+        </template>
+      </Column>
+      <Column field="cca" header="CCA">
+        <template #body="{ data }">
+          {{ data.cca || '' }}
+        </template>
+      </Column>
+    </DataTable>
+  </div>
 </template>
 
 <script lang="ts">
@@ -50,6 +52,7 @@ export default defineComponent({
     },
     listOfRowContents() {
       const rawData = this.dialogRefData.values;
+
       return this.generateRowContents(rawData);
     },
   },
@@ -62,10 +65,11 @@ export default defineComponent({
       return Object.keys(ActivityName)
       .map((key) => {
         const fieldName = key as keyof typeof ActivityName;
-        const activityName = ActivityName[fieldName] as string;
         const objective = rawData[fieldName as keyof NuclearAndGasAlignedDenominator];
 
         if (!objective) return null;
+
+        const activityName = ActivityName[fieldName] as string;
 
         return {
           activity: activityName,

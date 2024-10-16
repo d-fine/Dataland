@@ -28,7 +28,7 @@ export function formatNuclearAndGasTaxonomyShareDataForTable(
     | undefined,
   fieldLabel: string
 ): AvailableMLDTDisplayObjectTypes {
-  if (!nuclearAndGasData) {
+  if (!nuclearAndGasData || !nuclearAndGasData.value) {
     return MLDTDisplayObjectForEmptyString;
   } else {
     //ToDo: What text should be displayed at the frontend?
