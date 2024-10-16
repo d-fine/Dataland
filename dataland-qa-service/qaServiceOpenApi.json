@@ -5402,27 +5402,27 @@
         ],
         "type": "object",
         "properties": {
-          "message": {
-            "type": "string"
-          },
-          "framework": {
-            "type": "string"
-          },
-          "reportingPeriod": {
-            "type": "string"
+          "receptionTime": {
+            "type": "integer",
+            "format": "int64"
           },
           "dataId": {
-            "type": "string"
-          },
-          "companyName": {
             "type": "string"
           },
           "companyId": {
             "type": "string"
           },
-          "receptionTime": {
-            "type": "integer",
-            "format": "int64"
+          "companyName": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          },
+          "reportingPeriod": {
+            "type": "string"
+          },
+          "framework": {
+            "type": "string"
           }
         }
       },

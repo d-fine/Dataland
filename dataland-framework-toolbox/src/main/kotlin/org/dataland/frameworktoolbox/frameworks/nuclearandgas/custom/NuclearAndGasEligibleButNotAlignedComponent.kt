@@ -74,16 +74,16 @@ class NuclearAndGasEligibleButNotAlignedComponent(
             this,
             FrameworkDisplayValueLambda(
                 "formatNuclearAndGasTaxonomyShareDataForTable(" +
-                        "${getTypescriptFieldAccessor(true)}, \"${
-                            StringEscapeUtils.escapeEcmaScript(
-                                label,
-                            )
-                        }\")",
+                    "${getTypescriptFieldAccessor(true)}, \"${
+                        StringEscapeUtils.escapeEcmaScript(
+                            label,
+                        )
+                    }\")",
                 setOf(
                     TypeScriptImport(
                         "formatNuclearAndGasTaxonomyShareDataForTable",
                         "@/components/resources/dataTable/conversion/" +
-                                "NuclearAndGasValueGetterFactory",
+                            "NuclearAndGasValueGetterFactory",
                     ),
                 ),
             ),
