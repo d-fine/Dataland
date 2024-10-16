@@ -109,8 +109,8 @@ export function getFrameworkTitle(framework: string): string {
       return 'EU Taxonomy';
     case DataTypeEnum.P2p:
       return 'WWF';
-    case DataTypeEnum.EsgQuestionnaire:
-      return 'ESG Questionnaire';
+    case DataTypeEnum.EsgDatenkatalog:
+      return 'ESG Datenkatalog';
     default:
       return humanizeStringOrNumber(framework);
   }
@@ -125,7 +125,7 @@ export function frameworkHasSubTitle(framework: string): boolean {
     framework == DataTypeEnum.P2p ||
     framework == DataTypeEnum.EutaxonomyFinancials ||
     framework == DataTypeEnum.EutaxonomyNonFinancials ||
-    framework == DataTypeEnum.EsgQuestionnaire
+    framework == DataTypeEnum.EsgDatenkatalog
   );
 }
 /**
@@ -141,7 +141,7 @@ export function getFrameworkSubtitle(framework: string): string {
       return 'for non-financial companies';
     case DataTypeEnum.P2p:
       return 'Pathways to Paris';
-    case DataTypeEnum.EsgQuestionnaire:
+    case DataTypeEnum.EsgDatenkatalog:
       return 'für Corporate Schuldscheindarlehen';
     default:
       return '';

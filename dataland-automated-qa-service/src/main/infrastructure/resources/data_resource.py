@@ -31,8 +31,8 @@ from dataland_backend_api_documentation_client.models.company_associated_data_pa
 from dataland_backend_api_documentation_client.models.company_associated_data_vsme_data import (
     CompanyAssociatedDataVsmeData,
 )
-from dataland_backend_api_documentation_client.models.company_associated_data_esg_questionnaire_data import (
-    CompanyAssociatedDataEsgQuestionnaireData,
+from dataland_backend_api_documentation_client.models.company_associated_data_esg_datenkatalog_data import (
+    CompanyAssociatedDataEsgDatenkatalogData,
 )
 from dataland_backend_api_documentation_client.models.company_associated_data_heimathafen_data import (
     CompanyAssociatedDataHeimathafenData,
@@ -70,7 +70,7 @@ def _get_data(data_type: DataTypeEnum, data_id: str, client: AuthenticatedClient
         DataTypeEnum.SFDR: CompanyAssociatedDataSfdrData,
         DataTypeEnum.P2P: CompanyAssociatedDataPathwaysToParisData,
         DataTypeEnum.VSME: CompanyAssociatedDataVsmeData,
-        DataTypeEnum.ESG_QUESTIONNAIRE: CompanyAssociatedDataEsgQuestionnaireData,
+        DataTypeEnum.ESG_DATENKATALOG: CompanyAssociatedDataEsgDatenkatalogData,
         DataTypeEnum.HEIMATHAFEN: CompanyAssociatedDataHeimathafenData,
         DataTypeEnum.ADDITIONAL_COMPANY_INFORMATION: CompanyAssociatedDataAdditionalCompanyInformationData
     }
