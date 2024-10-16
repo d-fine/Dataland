@@ -907,7 +907,7 @@
           {
             "name": "searchString",
             "in": "query",
-            "description": "Search string used for substring matching. Must be at least 2 non-nullish characters long.",
+            "description": "Search string used for substring matching. Must be at least 3 characters after trimming.",
             "required": false,
             "schema": {
               "type": "string"
@@ -17601,9 +17601,11 @@
         ],
         "type": "object",
         "properties": {
-          "sector": {
-            "type": "string",
-            "nullable": true
+          "headquarters": {
+            "type": "string"
+          },
+          "countryCode": {
+            "type": "string"
           },
           "companyName": {
             "type": "string"
@@ -17611,13 +17613,11 @@
           "companyId": {
             "type": "string"
           },
-          "countryCode": {
-            "type": "string"
-          },
-          "headquarters": {
-            "type": "string"
-          },
           "lei": {
+            "type": "string",
+            "nullable": true
+          },
+          "sector": {
             "type": "string",
             "nullable": true
           }

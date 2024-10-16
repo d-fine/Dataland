@@ -20,31 +20,29 @@ import kotlin.reflect.KClass
 @Target(AnnotationTarget.VALUE_PARAMETER, AnnotationTarget.FIELD)
 @Retention(AnnotationRetention.RUNTIME)
 @Constraint(validatedBy = [TrimmedSizeValidator::class])
-annotation class TrimmedSize(
+annotation class MinimumTrimmedSize(
     val min: Int = 0,
-    val max: Int = Int.MAX_VALUE,
-    val message: String = "Length must be between {min} and {max} characters after trimming.",
+    val message: String = "Length must be at least {min} characters after trimming.",
     val groups: Array<KClass<*>> = [],
     val payload: Array<KClass<out Payload>> = [],
 )
 
 /**
- * A validator that implements the validation logic for the [TrimmedSize] annotation.
+ * A validator that implements the validation logic for the [MinimumTrimmedSize] annotation.
  *
  * Checks if the trimmed string length is within the specified [min] and [max] bounds.
  */
-class TrimmedSizeValidator : ConstraintValidator<TrimmedSize, String?> {
+class TrimmedSizeValidator : ConstraintValidator<MinimumTrimmedSize, String?> {
     private var min: Int = 0
     private var max: Int = Int.MAX_VALUE
 
     /**
      * Initializes the validator with the annotation parameters.
      *
-     * @param constraintAnnotation The [TrimmedSize] annotation instance.
+     * @param constraintAnnotation The [MinimumTrimmedSize] annotation instance.
      */
-    override fun initialize(constraintAnnotation: TrimmedSize) {
+    override fun initialize(constraintAnnotation: MinimumTrimmedSize) {
         min = constraintAnnotation.min
-        max = constraintAnnotation.max
     }
 
     /**

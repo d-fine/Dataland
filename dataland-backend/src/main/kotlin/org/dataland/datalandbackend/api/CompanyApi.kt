@@ -16,7 +16,7 @@ import org.dataland.datalandbackend.model.companies.CompanyId
 import org.dataland.datalandbackend.model.companies.CompanyInformation
 import org.dataland.datalandbackend.model.companies.CompanyInformationPatch
 import org.dataland.datalandbackend.model.enums.company.IdentifierType
-import org.dataland.datalandbackend.validator.TrimmedSize
+import org.dataland.datalandbackend.validator.MinimumTrimmedSize
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.GetMapping
@@ -99,7 +99,7 @@ interface CompanyApi {
             required = false,
             example = "Acme",
         )
-        @TrimmedSize(min = COMPANY_SEARCH_STRING_MIN_LENGTH)
+        @MinimumTrimmedSize(min = COMPANY_SEARCH_STRING_MIN_LENGTH)
         searchString: String? = null,
         @RequestParam dataTypes: Set<DataType>? = null,
         @RequestParam countryCodes: Set<String>? = null,
