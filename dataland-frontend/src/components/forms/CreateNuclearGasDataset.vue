@@ -65,7 +65,7 @@
                     <div class="col-9 formFields">
                       <FormKit
                           v-for="field in subcategory.fields"
-                          :key="field"
+                          :key="field.name"
                           type="group"
                           :name="subcategory.name"
                       >
@@ -120,7 +120,7 @@
   </Card>
 </template>
 <script lang="ts">
-// @ts-nocheck
+
 import { FormKit } from '@formkit/vue';
 import { ApiClientProvider } from '@/services/ApiClients';
 import Card from 'primevue/card';
@@ -281,7 +281,7 @@ export default defineComponent({
      * Builds an api to get and upload Nuclear and Gas data
      * @returns the api
      */
-    buildNuclearAndGasDataApi(): PublicFrameworkDataApi<NuclearAndGasData> {
+    buildNuclearAndGasDataApi(): PublicFrameworkDataApi<NuclearAndGasData> | undefined  {
       console.log('bin in buildNuclearAndGasDataApi')
       const apiClientProvider = new ApiClientProvider(assertDefined(this.getKeycloakPromise)());
       const frameworkDefinition = getBasePublicFrameworkDefinition(DataTypeEnum.NuclearAndGas);
@@ -299,13 +299,13 @@ export default defineComponent({
       console.log('bin in loadNuclearAndGasData')
       this.waitingForData = true;
       const NuclearAndGasDataControllerApi = this.buildNuclearAndGasDataApi();
-      const dataResponse = await NuclearAndGasDataControllerApi.getFrameworkData(dataId);
+      const dataResponse = await NuclearAndGasDataControllerApi!.getFrameworkData(dataId);
       const NuclearAndGasResponseData = dataResponse.data;
       this.listOfFilledKpis = getFilledKpis(NuclearAndGasResponseData);
       if (NuclearAndGasResponseData?.reportingPeriod) {
         this.reportingPeriod = new Date(NuclearAndGasResponseData.reportingPeriod);
       }
-      this.companyAssociatedNuclearAndGasData = objectDropNull(NuclearAndGasResponseData as ObjectType) as CompanyAssociatedDataNuclearAndGasResponseData;
+      this.companyAssociatedNuclearAndGasData = objectDropNull(NuclearAndGasResponseData);
       this.waitingForData = false;
     },
     /**
@@ -329,7 +329,7 @@ export default defineComponent({
             this.getKeycloakPromise
         );
 
-        await NuclearAndGasDataControllerApi.postFrameworkData(
+        await NuclearAndGasDataControllerApi!.postFrameworkData(
             this.companyAssociatedNuclearAndGasData,
             isCompanyOwnerOrDataUploader);
 
@@ -339,7 +339,7 @@ export default defineComponent({
         this.uploadSucceded = true;
       } catch (error) {
         console.error(error);
-        if (error.message) {
+        if ((error as Error).message) {
           this.message = formatAxiosErrorMessage(error as Error);
         } else {
           this.message =

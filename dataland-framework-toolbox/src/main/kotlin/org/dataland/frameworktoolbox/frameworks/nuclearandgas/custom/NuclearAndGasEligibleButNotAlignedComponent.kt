@@ -4,6 +4,7 @@ import org.apache.commons.text.StringEscapeUtils
 import org.dataland.frameworktoolbox.intermediate.FieldNodeParent
 import org.dataland.frameworktoolbox.intermediate.components.ComponentBase
 import org.dataland.frameworktoolbox.intermediate.components.addStandardCellWithValueGetterFactory
+import org.dataland.frameworktoolbox.intermediate.components.addStandardUploadConfigCell
 import org.dataland.frameworktoolbox.intermediate.components.requireDocumentSupportIn
 import org.dataland.frameworktoolbox.intermediate.datapoints.NoDocumentSupport
 import org.dataland.frameworktoolbox.specific.datamodel.TypeReference
@@ -61,7 +62,11 @@ class NuclearAndGasEligibleButNotAlignedComponent(
     }
 
     override fun generateDefaultUploadConfig(uploadCategoryBuilder: UploadCategoryBuilder) {
-        return // TODO: fill with code
+        requireDocumentSupportIn(setOf(NoDocumentSupport))
+        uploadCategoryBuilder.addStandardUploadConfigCell(
+            component = this,
+            uploadComponentName = "NuclearAndGasFormElement",
+        )
     }
 
     override fun generateDefaultViewConfig(sectionConfigBuilder: SectionConfigBuilder) {
@@ -69,16 +74,16 @@ class NuclearAndGasEligibleButNotAlignedComponent(
             this,
             FrameworkDisplayValueLambda(
                 "formatNuclearAndGasTaxonomyShareDataForTable(" +
-                        "${getTypescriptFieldAccessor(true)}, \"${
-                            StringEscapeUtils.escapeEcmaScript(
-                                label,
-                            )
-                        }\")",
+                    "${getTypescriptFieldAccessor(true)}, \"${
+                        StringEscapeUtils.escapeEcmaScript(
+                            label,
+                        )
+                    }\")",
                 setOf(
                     TypeScriptImport(
                         "formatNuclearAndGasTaxonomyShareDataForTable",
                         "@/components/resources/dataTable/conversion/" +
-                                "NuclearAndGasValueGetterFactory",
+                            "NuclearAndGasValueGetterFactory",
                     ),
                 ),
             ),

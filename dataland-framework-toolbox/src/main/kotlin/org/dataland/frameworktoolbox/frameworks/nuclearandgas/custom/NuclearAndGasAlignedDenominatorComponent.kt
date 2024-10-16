@@ -65,7 +65,7 @@ class NuclearAndGasAlignedDenominatorComponent(
         requireDocumentSupportIn(setOf(NoDocumentSupport))
         uploadCategoryBuilder.addStandardUploadConfigCell(
             component = this,
-            uploadComponentName = "AssuranceFormField",
+            uploadComponentName = "NuclearAndGasFormElement",
         )
     }
 

@@ -64,31 +64,26 @@ class NuclearAndGasNonEligibleComponent(
         return // TODO: fill with code
     }
 
-
-
     override fun generateDefaultViewConfig(sectionConfigBuilder: SectionConfigBuilder) {
         sectionConfigBuilder.addStandardCellWithValueGetterFactory(
             this,
             FrameworkDisplayValueLambda(
                 "formatNuclearAndGasTaxonomyShareDataForTable(" +
-                        "${getTypescriptFieldAccessor(true)}, \"${
-                            StringEscapeUtils.escapeEcmaScript(
-                                label,
-                            )
-                        }\")",
+                    "${getTypescriptFieldAccessor(true)}, \"${
+                        StringEscapeUtils.escapeEcmaScript(
+                            label,
+                        )
+                    }\")",
                 setOf(
                     TypeScriptImport(
                         "formatNuclearAndGasTaxonomyShareDataForTable",
                         "@/components/resources/dataTable/conversion/" +
-                                "NuclearAndGasValueGetterFactory",
+                            "NuclearAndGasValueGetterFactory",
                     ),
                 ),
             ),
         )
     }
-
-
-
 
     override fun generateDefaultFixtureGenerator(sectionBuilder: FixtureSectionBuilder) {
         requireDocumentSupportIn(setOf(NoDocumentSupport))
