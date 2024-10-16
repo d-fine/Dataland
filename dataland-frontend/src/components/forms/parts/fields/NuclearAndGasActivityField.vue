@@ -10,7 +10,7 @@
           validation-label="Relative Value"
           validation="number|between:0,100"
           placeholder="CCM and CCA"
-          class="col"
+          input-class="col"
         />
         <PercentageFormField
           label="Climate Change Mitigation"

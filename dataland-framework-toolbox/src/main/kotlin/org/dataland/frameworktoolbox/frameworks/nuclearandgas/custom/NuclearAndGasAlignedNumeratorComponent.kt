@@ -2,6 +2,7 @@ package org.dataland.frameworktoolbox.frameworks.nuclearandgas.custom
 
 import org.dataland.frameworktoolbox.intermediate.FieldNodeParent
 import org.dataland.frameworktoolbox.intermediate.components.ComponentBase
+import org.dataland.frameworktoolbox.intermediate.components.addStandardUploadConfigCell
 import org.dataland.frameworktoolbox.intermediate.components.requireDocumentSupportIn
 import org.dataland.frameworktoolbox.intermediate.datapoints.NoDocumentSupport
 import org.dataland.frameworktoolbox.specific.datamodel.TypeReference
@@ -56,7 +57,11 @@ class NuclearAndGasAlignedNumeratorComponent(
     }
 
     override fun generateDefaultUploadConfig(uploadCategoryBuilder: UploadCategoryBuilder) {
-        return // TODO: fill with code
+        requireDocumentSupportIn(setOf(NoDocumentSupport))
+        uploadCategoryBuilder.addStandardUploadConfigCell(
+            component = this,
+            uploadComponentName = "NuclearAndGasFormElement",
+        )
     }
 
     override fun generateDefaultViewConfig(sectionConfigBuilder: SectionConfigBuilder) {
