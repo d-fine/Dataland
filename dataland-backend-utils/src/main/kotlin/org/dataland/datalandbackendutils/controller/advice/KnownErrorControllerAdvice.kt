@@ -167,62 +167,44 @@ class KnownErrorControllerAdvice(
                 override fun cookieValue(
                     cookieValue: CookieValue,
                     result: ParameterValidationResult,
-                ) {
-                    errorList.add(result.toString())
-                }
+                ) = errorList.addLast(result.toString())
 
                 override fun matrixVariable(
                     matrixVariable: MatrixVariable,
                     result: ParameterValidationResult,
-                ) {
-                    errorList.add(result.toString())
-                }
+                ) = errorList.addLast(result.toString())
 
                 override fun modelAttribute(
                     modelAttribute: ModelAttribute?,
                     errors: ParameterErrors,
-                ) {
-                    errorList.add(errors.toString())
-                }
+                ) = errorList.addLast(errors.toString())
 
                 override fun pathVariable(
                     pathVariable: PathVariable,
                     result: ParameterValidationResult,
-                ) {
-                    errorList.add(result.toString())
-                }
+                ) = errorList.addLast(result.toString())
 
                 override fun requestBody(
                     requestBody: RequestBody,
                     errors: ParameterErrors,
-                ) {
-                    errorList.add(errors.toString())
-                }
+                ) = errorList.addLast(errors.toString())
 
                 override fun requestHeader(
                     requestHeader: RequestHeader,
                     result: ParameterValidationResult,
-                ) {
-                    errorList.add(result.toString())
-                }
+                ) = errorList.addLast(result.toString())
 
                 override fun requestParam(
                     requestParam: RequestParam?,
                     result: ParameterValidationResult,
-                ) {
-                    errorList.add(result.toString())
-                }
+                ) = errorList.addLast(result.toString())
 
                 override fun requestPart(
                     requestPart: RequestPart,
                     errors: ParameterErrors,
-                ) {
-                    errorList.add(errors.toString())
-                }
+                ) = errorList.addLast(errors.toString())
 
-                override fun other(result: ParameterValidationResult) {
-                    errorList.add(result.toString())
-                }
+                override fun other(result: ParameterValidationResult) = errorList.addLast(result.toString())
             }
 
         ex.visitResults(visitor)

@@ -907,12 +907,10 @@
           {
             "name": "searchString",
             "in": "query",
-            "description": "Search string used for substring matching. Must be at least 3 characters after trimming.",
             "required": false,
             "schema": {
               "type": "string"
-            },
-            "example": "Acme"
+            }
           },
           {
             "name": "dataTypes",
@@ -3234,10 +3232,12 @@
           {
             "name": "searchString",
             "in": "query",
+            "description": "Search string used for substring matching. Must be at least 3 characters after trimming.",
             "required": true,
             "schema": {
               "type": "string"
-            }
+            },
+            "example": "Int"
           },
           {
             "name": "resultLimit",
@@ -17601,23 +17601,23 @@
         ],
         "type": "object",
         "properties": {
-          "headquarters": {
-            "type": "string"
-          },
-          "countryCode": {
-            "type": "string"
-          },
           "companyName": {
             "type": "string"
           },
           "companyId": {
             "type": "string"
           },
-          "lei": {
+          "countryCode": {
+            "type": "string"
+          },
+          "headquarters": {
+            "type": "string"
+          },
+          "sector": {
             "type": "string",
             "nullable": true
           },
-          "sector": {
+          "lei": {
             "type": "string",
             "nullable": true
           }

@@ -92,14 +92,6 @@ interface CompanyApi {
     @PreAuthorize("hasRole('ROLE_USER')")
     fun getCompanies(
         @RequestParam
-        @Parameter(
-            description =
-                "Search string used for substring matching. " +
-                    "Must be at least $COMPANY_SEARCH_STRING_MIN_LENGTH characters after trimming.",
-            required = false,
-            example = "Acme",
-        )
-        @MinimumTrimmedSize(min = COMPANY_SEARCH_STRING_MIN_LENGTH)
         searchString: String? = null,
         @RequestParam dataTypes: Set<DataType>? = null,
         @RequestParam countryCodes: Set<String>? = null,
@@ -166,7 +158,16 @@ interface CompanyApi {
         produces = ["application/json"],
     )
     fun getCompaniesBySearchString(
-        @RequestParam searchString: String,
+        @RequestParam
+        @Parameter(
+            description =
+                "Search string used for substring matching. " +
+                    "Must be at least $COMPANY_SEARCH_STRING_MIN_LENGTH characters after trimming.",
+            required = false,
+            example = "Int",
+        )
+        @MinimumTrimmedSize(min = COMPANY_SEARCH_STRING_MIN_LENGTH)
+        searchString: String,
         @RequestParam(defaultValue = "100") resultLimit: Int,
     ): ResponseEntity<List<CompanyIdAndName>>
 
