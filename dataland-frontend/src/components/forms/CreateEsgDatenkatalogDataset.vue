@@ -56,8 +56,6 @@
                             :required="field.required"
                             :validation="field.validation"
                             :validation-label="field.validationLabel"
-                            :validationMessages="getValidationMessageForFirstQuestion(field)"
-                            :reportingPeriod="yearOfDataDate"
                             :data-test="field.name"
                             :unit="field.unit"
                             :shouldDisableCheckboxes="true"
@@ -141,7 +139,7 @@ import { objectDropNull } from '@/utils/UpdateObjectUtils';
 import { smoothScroll } from '@/utils/SmoothScroll';
 import { type DocumentToUpload, uploadFiles } from '@/utils/FileUploadUtils';
 import MostImportantProductsFormField from '@/components/forms/parts/fields/MostImportantProductsFormField.vue';
-import { type Field, type Subcategory } from '@/utils/GenericFrameworkTypes';
+import { type Subcategory } from '@/utils/GenericFrameworkTypes';
 import ProcurementCategoriesFormField from '@/components/forms/parts/fields/ProcurementCategoriesFormField.vue';
 import { createSubcategoryVisibilityMap } from '@/utils/UploadFormUtils';
 import HighImpactClimateSectorsFormField from '@/components/forms/parts/fields/HighImpactClimateSectorsFormField.vue';
@@ -152,8 +150,6 @@ import CurrencyDataPointFormField from '@/components/forms/parts/fields/Currency
 import YesNoExtendedDataPointFormField from '@/components/forms/parts/fields/YesNoExtendedDataPointFormField.vue';
 import YesNoBaseDataPointFormField from '@/components/forms/parts/fields/YesNoBaseDataPointFormField.vue';
 import YesNoNaBaseDataPointFormField from '@/components/forms/parts/fields/YesNoNaBaseDataPointFormField.vue';
-import EsgDatenkatalogYearlyDecimalTimeseriesThreeYearDeltaDataFormField from '@/components/forms/parts/fields/EsgDatenkatalogYearlyDecimalTimeseriesThreeYearDeltaDataFormField.vue';
-import EsgDatenkatalogYearlyDecimalTimeseriesThreeYearPastDataFormField from '@/components/forms/parts/fields/EsgDatenkatalogYearlyDecimalTimeseriesThreeYearPastDataFormField.vue';
 import { esgDatenkatalogDataModel } from '@/frameworks/esg-datenkatalog/UploadConfig';
 import ListOfBaseDataPointsFormField from '@/components/forms/parts/fields/ListOfBaseDataPointsFormField.vue';
 import { getFilledKpis } from '@/utils/DataPoint';
@@ -201,8 +197,6 @@ export default defineComponent({
     YesNoBaseDataPointFormField,
     YesNoNaBaseDataPointFormField,
     YesNoExtendedDataPointFormField,
-    EsgDatenkatalogYearlyDecimalTimeseriesThreeYearDeltaDataFormField,
-    EsgDatenkatalogYearlyDecimalTimeseriesThreeYearPastDataFormField,
     ListOfBaseDataPointsFormField,
   },
   directives: {
@@ -342,17 +336,6 @@ export default defineComponent({
         this.fieldSpecificDocuments.set(fieldName, document);
       } else {
         this.fieldSpecificDocuments.delete(fieldName);
-      }
-    },
-    /**
-     * If the passed field is the first field of the esg datenkatalog frameworks first category and subcategory, a custom
-     * validation message is returned for the "is"-validation for that field.
-     * @param field that potentially could be the first field of the esg datenkatalog framework
-     * @returns an object expected by FormKit in order to customize the validation message of a field
-     */
-    getValidationMessageForFirstQuestion(field: Field): { is: string } | undefined {
-      if (field.name === esgDatenkatalogDataModel[0].subcategories[0].fields[0].name) {
-        return { is: 'Sie müssen "Ja" wählen, um den Datensatz abschicken zu können.' };
       }
     },
   },

@@ -5,8 +5,6 @@ import org.dataland.frameworktoolbox.frameworks.FrameworkGenerationFeatures
 import org.dataland.frameworktoolbox.frameworks.PavedRoadFramework
 import org.dataland.frameworktoolbox.intermediate.Framework
 import org.dataland.frameworktoolbox.intermediate.components.DateComponent
-import org.dataland.frameworktoolbox.intermediate.components.YesNoComponent
-import org.dataland.frameworktoolbox.intermediate.components.addStandardUploadConfigCell
 import org.dataland.frameworktoolbox.intermediate.group.ComponentGroup
 import org.dataland.frameworktoolbox.intermediate.group.edit
 import org.dataland.frameworktoolbox.template.components.ComponentGenerationUtils
@@ -29,10 +27,6 @@ class EsgDatenkatalogFramework :
         enabledFeatures =
             FrameworkGenerationFeatures.allExcept(FrameworkGenerationFeatures.QaModel),
     ) {
-    /*override fun configureDiagnostics(diagnosticManager: DiagnosticManager) {
-        diagnosticManager.suppress("IgnoredRow-38-3118f246")
-    } TODO suppression is probably not needed anymore. remove at the every end*/
-
     private fun setGroupsThatAreExpandedOnPageLoad(framework: Framework) {
         framework.root.edit<ComponentGroup>("allgemein") {
             viewPageExpandOnPageLoad = true
@@ -60,18 +54,6 @@ class EsgDatenkatalogFramework :
         }
     }
 
-    private fun createRollingWindowComponentsInCategorySoziales(framework: Framework) {
-        framework.root.edit<ComponentGroup>("soziales") {
-            // val sozialesGroup = this TODO
-            with(EsgDatenkatalogSozialesRollingWindowComponents) {
-                //  auswirkungenAufAnteilBefristerVertraegeUndFluktuation(sozialesGroup) TODO
-                // budgetFuerSchulungAusbildung(sozialesGroup) TODO
-                // unfallrate(sozialesGroup) TODO
-                // massnahmenZurVerbesserungDerEinkommensungleichheit(sozialesGroup) TODO
-            }
-        }
-    }
-
     private fun editListOfStringBaseDatapointComponents(framework: Framework) {
         framework.root.edit<ComponentGroup>("allgemein") {
             val componentGroupAllgemein = this
@@ -87,20 +69,8 @@ class EsgDatenkatalogFramework :
         setGroupsThatAreExpandedOnPageLoad(framework)
         overwriteFakeFixtureGenerationForDataDate(framework)
 
-        createRollingWindowComponentsInCategorySoziales(framework)
         editListOfStringBaseDatapointComponents(framework)
     }
 
     override fun getComponentGenerationUtils(): ComponentGenerationUtils = ComponentGenerationUtilsForGermanFrameworks()
-
-    private fun customizeBerichtsPflicht(component: YesNoComponent) {
-        component.uploadConfigGenerator = { sectionUploadConfigBuilder ->
-            sectionUploadConfigBuilder.addStandardUploadConfigCell(
-                frameworkUploadOptions = null,
-                component = component,
-                uploadComponentName = "YesNoFormField",
-                validation = "is:Yes",
-            )
-        }
-    }
 }
