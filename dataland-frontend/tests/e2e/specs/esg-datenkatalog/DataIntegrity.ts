@@ -86,13 +86,8 @@ describeIf(
                       .getCompanyAssociatedEsgDatenkatalogData(dataMetaInformationOfReuploadedDataset.dataId)
                       .then((axiosResponse) => {
                         const frontendSubmittedEsgDatenkatalogDataset = axiosResponse.data.data;
-
-                        // esgDatenkatalogFixtureForTest.t.allgemein?.sektoren?.auflistungDerSektoren?.sort(); TODO deactivate for now
-                        // esgDatenkatalogFixtureForTest.t.unternehmensfuehrungGovernance?.unternehmensrichtlinien?.veroeffentlichteUnternehmensrichtlinien?.sort(); TODO
-
-                        // frontendSubmittedEsgDatenkatalogDataset.allgemein?.sektoren?.auflistungDerSektoren?.sort(); TODO deactivate for now
-                        // frontendSubmittedEsgDatenkatalogDataset.unternehmensfuehrungGovernance?.unternehmensrichtlinien?.veroeffentlichteUnternehmensrichtlinien?.sort(); TODO
-
+                        esgDatenkatalogFixtureForTest.t.allgemein?.richtlinienDesUnternehmens?.existenzVonRichtlinienZuSpezifischenThemen?.sort();
+                        frontendSubmittedEsgDatenkatalogDataset.allgemein?.richtlinienDesUnternehmens?.existenzVonRichtlinienZuSpezifischenThemen?.sort();
                         compareObjectKeysAndValuesDeep(
                           esgDatenkatalogFixtureForTest.t as unknown as Record<string, object>,
                           frontendSubmittedEsgDatenkatalogDataset as unknown as Record<string, object>
