@@ -19,7 +19,6 @@ import org.dataland.datalandbackend.model.enums.company.IdentifierType
 import org.dataland.datalandbackend.validator.TrimmedSize
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
-import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PatchMapping
 import org.springframework.web.bind.annotation.PathVariable
@@ -30,13 +29,14 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestMethod
 import org.springframework.web.bind.annotation.RequestParam
 
+const val COMPANY_SEARCH_STRING_MIN_LENGTH = 3
+
 /**
  * Defines the restful dataland-backend API regarding company data.
  */
 @RequestMapping("/companies")
 @SecurityRequirement(name = "default-bearer-auth")
 @SecurityRequirement(name = "default-oauth")
-@Validated
 interface CompanyApi {
     /**
      * A method to create a new company entry in dataland
@@ -92,12 +92,14 @@ interface CompanyApi {
     @PreAuthorize("hasRole('ROLE_USER')")
     fun getCompanies(
         @RequestParam
-        @TrimmedSize(min = 2, message = "Search string must be at least 2 non-nullish characters long.")
         @Parameter(
-            description = "Search string used for substring matching. Must be at least 2 non-nullish characters long.",
+            description =
+                "Search string used for substring matching. " +
+                    "Must be at least $COMPANY_SEARCH_STRING_MIN_LENGTH characters after trimming.",
             required = false,
             example = "Acme",
         )
+        @TrimmedSize(min = COMPANY_SEARCH_STRING_MIN_LENGTH)
         searchString: String? = null,
         @RequestParam dataTypes: Set<DataType>? = null,
         @RequestParam countryCodes: Set<String>? = null,

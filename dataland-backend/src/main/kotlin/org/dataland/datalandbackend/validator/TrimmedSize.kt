@@ -58,12 +58,7 @@ class TrimmedSizeValidator : ConstraintValidator<TrimmedSize, String?> {
         value: String?,
         context: ConstraintValidatorContext,
     ): Boolean {
-        val trimmedValue = value?.trim()
-        if (trimmedValue.isNullOrEmpty()) {
-            // Return true if null or empty; adjust as needed based on validation requirements
-            return true
-        }
-        val length = trimmedValue.length
-        return length in min..max
+        if (value.isNullOrEmpty()) return true
+        return value.trim().length in min..max
     }
 }
