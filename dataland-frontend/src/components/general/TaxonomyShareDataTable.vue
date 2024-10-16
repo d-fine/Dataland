@@ -29,38 +29,43 @@ import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
 import { type DynamicDialogInstance } from 'primevue/dynamicdialogoptions';
 import { ActivityName } from '@/components/resources/frameworkDataSearch/nuclearAndGas/NuclearAndGasActivityNames';
-import { NuclearAndGasAlignedDenominator } from '@clients/backend/org/dataland/datalandfrontend/openApiClient/backend/model';
+import { NuclearAndGasAlignedDenominator, NuclearAndGasAlignedNumerator, NuclearAndGasEligibleButNotAligned, NuclearAndGasNonEligible } from '@clients/backend/org/dataland/datalandfrontend/openApiClient/backend/model';
 
 interface DialogRefData {
   header: string;
-  values: NuclearAndGasAlignedDenominator;
+  values: NuclearAndGasAlignedDenominator
+      | NuclearAndGasAlignedNumerator
+      | NuclearAndGasEligibleButNotAligned
+      | NuclearAndGasNonEligible
 }
 
 export default defineComponent({
   name: 'TaxonomyShareDataTable',
-  components: { DataTable, Column },
+  components: {DataTable, Column},
   inject: ['dialogRef'],
   computed: {
     dialogRefData(): DialogRefData {
       const dialogRefToDisplay = this.dialogRef as DynamicDialogInstance;
       return dialogRefToDisplay.data as DialogRefData;
     },
-    listOfRowContents(): Array<{
-      activity: string;
-      ccmCca: number | null;
-      ccm: number | null;
-      cca: number | null;
-    }> {
-      const rawData = this.dialogRefData.values; // Hier verwenden wir die Werte aus dem Dialog
+    listOfRowContents() {
+      const rawData = this.dialogRefData.values;
+      return this.generateRowContents(rawData);
+    },
+  },
+  methods: {
+    generateRowContents(rawData: any) {
+      if (!rawData) {
+        return [];
+      }
 
-      return Object.keys(ActivityName).map((key) => {
+      return Object.keys(ActivityName)
+      .map((key) => {
         const fieldName = key as keyof typeof ActivityName;
         const activityName = ActivityName[fieldName] as string;
-        const objective = rawData[fieldName as keyof NuclearAndGasAlignedDenominator] || {
-          mitigationAndAdaption: null,
-          mitigation: null,
-          adaption: null,
-        };
+        const objective = rawData[fieldName as keyof NuclearAndGasAlignedDenominator];
+
+        if (!objective) return null;
 
         return {
           activity: activityName,
@@ -68,7 +73,8 @@ export default defineComponent({
           ccm: objective.mitigation ?? null,
           cca: objective.adaption ?? null,
         };
-      });
+      })
+      .filter((row) => row !== null);
     },
   },
 });
