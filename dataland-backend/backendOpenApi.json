@@ -15451,16 +15451,31 @@
       "EinbindungVonBeschaeftigtenInEntscheidungenOptions": {
         "type": "string",
         "enum": [
-          "EinbindungInBetriebsratGesetzlicheVertretungsorgane",
+          "Ja",
+          "NeinBeschaeftigteNichtInEntscheidungsgremienEingebunden",
+          "NeinArbeitnehmervertretungNichtGesetzlichVorgeschrieben"
+        ]
+      },
+      "EinbindungVonBeschaeftigtenInGremienOptions": {
+        "type": "string",
+        "enum": [
+          "BetriebsratGesetzlicheVertretungsorgane",
           "Aufsichtsrat",
           "Verwaltungsrat",
-          "KeineEinbindungInEntscheidungsgremien",
-          "KeinArbeitnehmervertretungGesetzlichVorgeschrieben"
+          "Keine"
         ]
       },
       "EsgDatenkatalogAllgemein": {
         "type": "object",
         "properties": {
+          "datum": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/EsgDatenkatalogAllgemeinDatum"
+              }
+            ]
+          },
           "generelleEsgStrategie": {
             "nullable": true,
             "allOf": [
@@ -15532,6 +15547,16 @@
                 "$ref": "#/components/schemas/EsgDatenkatalogAllgemeinTransaktionenMitNachhaltigkeitskomponenten"
               }
             ]
+          }
+        }
+      },
+      "EsgDatenkatalogAllgemeinDatum": {
+        "type": "object",
+        "properties": {
+          "gueltigkeitsDatum": {
+            "type": "string",
+            "format": "date",
+            "nullable": true
           }
         }
       },
@@ -15950,14 +15975,6 @@
       "EsgDatenkatalogData": {
         "type": "object",
         "properties": {
-          "general": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/EsgDatenkatalogGeneral"
-              }
-            ]
-          },
           "allgemein": {
             "nullable": true,
             "allOf": [
@@ -15989,29 +16006,6 @@
                 "$ref": "#/components/schemas/EsgDatenkatalogGovernance"
               }
             ]
-          }
-        }
-      },
-      "EsgDatenkatalogGeneral": {
-        "type": "object",
-        "properties": {
-          "masterData": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/EsgDatenkatalogGeneralMasterData"
-              }
-            ]
-          }
-        }
-      },
-      "EsgDatenkatalogGeneralMasterData": {
-        "type": "object",
-        "properties": {
-          "gueltigkeitsDatum": {
-            "type": "string",
-            "format": "date",
-            "nullable": true
           }
         }
       },
@@ -16237,6 +16231,13 @@
             "nullable": true,
             "items": {
               "$ref": "#/components/schemas/EinbindungVonBeschaeftigtenInEntscheidungenOptions"
+            }
+          },
+          "einbindungVonBeschaeftigtenInGremien": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/EinbindungVonBeschaeftigtenInGremienOptions"
             }
           },
           "einbindungVonBeschaeftigtenInEntscheidungenErlaeuterungen": {
@@ -17062,13 +17063,11 @@
         ],
         "type": "object",
         "properties": {
-          "lei": {
-            "type": "string",
-            "nullable": true
+          "headquarters": {
+            "type": "string"
           },
-          "sector": {
-            "type": "string",
-            "nullable": true
+          "countryCode": {
+            "type": "string"
           },
           "companyName": {
             "type": "string"
@@ -17076,11 +17075,13 @@
           "companyId": {
             "type": "string"
           },
-          "headquarters": {
-            "type": "string"
+          "sector": {
+            "type": "string",
+            "nullable": true
           },
-          "countryCode": {
-            "type": "string"
+          "lei": {
+            "type": "string",
+            "nullable": true
           }
         }
       },

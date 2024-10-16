@@ -35,12 +35,10 @@ export function generateEsgDatenkatalogFixtures(
 export function generateEsgDatenkatalogData(nullProbability = DEFAULT_PROBABILITY): EsgDatenkatalogData {
   const dataGenerator = new EsgDatenkatalogGenerator(nullProbability);
   return {
-    general: {
-      masterData: {
+    allgemein: {
+      datum: {
         gueltigkeitsDatum: dataGenerator.dataDate,
       },
-    },
-    allgemein: {
       generelleEsgStrategie: {
         nachhaltigkeitsstrategie: dataGenerator.randomYesNo(),
         dokumenteZurNachhaltigkeitsstrategie: dataGenerator.valueOrNull(
@@ -242,12 +240,13 @@ export function generateEsgDatenkatalogData(nullProbability = DEFAULT_PROBABILIT
       einbindungDerBeschaeftigten: {
         einbindungVonBeschaeftigtenInEntscheidungen: dataGenerator.valueOrNull(
           pickSubsetOfElements([
-            'EinbindungInBetriebsratGesetzlicheVertretungsorgane',
-            'Aufsichtsrat',
-            'Verwaltungsrat',
-            'KeineEinbindungInEntscheidungsgremien',
-            'KeinArbeitnehmervertretungGesetzlichVorgeschrieben',
+            'Ja',
+            'NeinBeschaeftigteNichtInEntscheidungsgremienEingebunden',
+            'NeinArbeitnehmervertretungNichtGesetzlichVorgeschrieben',
           ])
+        ),
+        einbindungVonBeschaeftigtenInGremien: dataGenerator.valueOrNull(
+          pickSubsetOfElements(['BetriebsratGesetzlicheVertretungsorgane', 'Aufsichtsrat', 'Verwaltungsrat', 'Keine'])
         ),
         einbindungVonBeschaeftigtenInEntscheidungenErlaeuterungen: dataGenerator.randomParagraphs(),
       },

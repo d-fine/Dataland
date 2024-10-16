@@ -5,6 +5,7 @@ import { submitButton } from '@sharedUtils/components/SubmitButton';
 
 describe('Component tests for the esg datenkatalog upload page', () => {
   it('Ensure that the customized validation message appears if a user selects No in the first question ', () => {
+    //ToDo Test und die dazugehörige Logik entfernen
     cy.mountWithPlugins(CreateEsgDatenkatalogDataset, {
       keycloak: minimalKeycloakMock({}),
     }).then(() => {

@@ -4,14 +4,14 @@ import { type EsgDatenkatalogData } from '@clients/backend';
 
 export const esgDatenkatalogDataModel = [
   {
-    name: 'general',
-    label: 'General',
+    name: 'allgemein',
+    label: 'Allgemein',
     color: '',
     showIf: (): boolean => true,
     subcategories: [
       {
-        name: 'masterData',
-        label: 'Master Data',
+        name: 'datum',
+        label: 'Datum',
         fields: [
           {
             name: 'gueltigkeitsDatum',
@@ -24,14 +24,6 @@ export const esgDatenkatalogDataModel = [
           },
         ],
       },
-    ],
-  },
-  {
-    name: 'allgemein',
-    label: 'Allgemein',
-    color: '',
-    showIf: (): boolean => true,
-    subcategories: [
       {
         name: 'generelleEsgStrategie',
         label: 'Generelle ESG-Strategie',
@@ -1657,8 +1649,32 @@ export const esgDatenkatalogDataModel = [
             description: 'Sind Beschäftigte in betriebliche Entscheidungen des Unternehmens eingebunden?',
             options: [
               {
-                label: 'Einbindung in Betriebsrat / gesetzliche Vertretungsorgane',
-                value: 'EinbindungInBetriebsratGesetzlicheVertretungsorgane',
+                label: 'Ja',
+                value: 'Ja',
+              },
+              {
+                label: 'Nein, Beschäftigte nicht in Entscheidungsgremien eingebunden',
+                value: 'NeinBeschaeftigteNichtInEntscheidungsgremienEingebunden',
+              },
+              {
+                label: 'Nein, Arbeitnehmervertretung nicht gesetzlich vorgeschrieben',
+                value: 'NeinArbeitnehmervertretungNichtGesetzlichVorgeschrieben',
+              },
+            ],
+
+            component: 'MultiSelectFormField',
+            required: false,
+            showIf: (): boolean => true,
+          },
+          {
+            name: 'einbindungVonBeschaeftigtenInGremien',
+            label: 'Einbindung von Beschäftigten in Gremien',
+            description:
+              'In welche Gremien sind Beschäftigte bei betrieblichen Entscheidungen des Unternehmens eingebunden?',
+            options: [
+              {
+                label: 'Betriebsrat / gesetzliche Vertretungsorgane',
+                value: 'BetriebsratGesetzlicheVertretungsorgane',
               },
               {
                 label: 'Aufsichtsrat',
@@ -1669,12 +1685,8 @@ export const esgDatenkatalogDataModel = [
                 value: 'Verwaltungsrat',
               },
               {
-                label: 'Keine Einbindung in Entscheidungsgremien',
-                value: 'KeineEinbindungInEntscheidungsgremien',
-              },
-              {
-                label: 'Kein Arbeitnehmervertretung gesetzlich vorgeschrieben',
-                value: 'KeinArbeitnehmervertretungGesetzlichVorgeschrieben',
+                label: 'Keine',
+                value: 'Keine',
               },
             ],
 

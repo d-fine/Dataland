@@ -37,17 +37,17 @@ class EsgDatenkatalogFramework :
         framework.root.edit<ComponentGroup>("allgemein") {
             viewPageExpandOnPageLoad = true
         }
-        framework.root.edit<ComponentGroup>("general") {
+        framework.root.edit<ComponentGroup>("allgemein") {
             viewPageExpandOnPageLoad = true
-            edit<ComponentGroup>("masterData") {
+            edit<ComponentGroup>("datum") {
                 viewPageExpandOnPageLoad = true
             }
         }
     }
 
     private fun overwriteFakeFixtureGenerationForDataDate(framework: Framework) {
-        framework.root.edit<ComponentGroup>("general") {
-            edit<ComponentGroup>("masterData") {
+        framework.root.edit<ComponentGroup>("allgemein") {
+            edit<ComponentGroup>("datum") {
                 edit<DateComponent>("gueltigkeitsDatum") {
                     fixtureGeneratorGenerator = {
                         it.addAtomicExpression(

@@ -8,5 +8,6 @@ import java.util.EnumSet
  */
 data class EsgDatenkatalogSozialesEinbindungDerBeschaeftigten(
     val einbindungVonBeschaeftigtenInEntscheidungen: EnumSet<EinbindungVonBeschaeftigtenInEntscheidungenOptions>? = null,
+    val einbindungVonBeschaeftigtenInGremien: EnumSet<EinbindungVonBeschaeftigtenInGremienOptions>? = null,
     val einbindungVonBeschaeftigtenInEntscheidungenErlaeuterungen: String? = null,
 )

@@ -2,6 +2,7 @@
 package org.dataland.datalandbackend.frameworks.esgdatenkatalog.model.allgemein
 
 import jakarta.validation.Valid
+import org.dataland.datalandbackend.frameworks.esgdatenkatalog.model.allgemein.datum.EsgDatenkatalogAllgemeinDatum
 import org.dataland.datalandbackend.frameworks.esgdatenkatalog.model.allgemein.esgRatingUndZertifizierung
     .EsgDatenkatalogAllgemeinEsgRatingUndZertifizierung
 import org.dataland.datalandbackend.frameworks.esgdatenkatalog.model.allgemein.generelleEsgStrategie
@@ -24,6 +25,8 @@ import org.dataland.datalandbackend.frameworks.esgdatenkatalog.model.allgemein.u
  * The data-model for the Allgemein section
  */
 data class EsgDatenkatalogAllgemein(
+    @field:Valid()
+    val datum: EsgDatenkatalogAllgemeinDatum? = null,
     @field:Valid()
     val generelleEsgStrategie: EsgDatenkatalogAllgemeinGenerelleEsgStrategie? = null,
     @field:Valid()

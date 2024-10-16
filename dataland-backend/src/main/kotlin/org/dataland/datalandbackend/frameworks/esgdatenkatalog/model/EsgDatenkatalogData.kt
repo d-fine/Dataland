@@ -4,7 +4,6 @@ package org.dataland.datalandbackend.frameworks.esgdatenkatalog.model
 import jakarta.validation.Valid
 import org.dataland.datalandbackend.annotations.DataType
 import org.dataland.datalandbackend.frameworks.esgdatenkatalog.model.allgemein.EsgDatenkatalogAllgemein
-import org.dataland.datalandbackend.frameworks.esgdatenkatalog.model.general.EsgDatenkatalogGeneral
 import org.dataland.datalandbackend.frameworks.esgdatenkatalog.model.governance.EsgDatenkatalogGovernance
 import org.dataland.datalandbackend.frameworks.esgdatenkatalog.model.soziales.EsgDatenkatalogSoziales
 import org.dataland.datalandbackend.frameworks.esgdatenkatalog.model.umwelt.EsgDatenkatalogUmwelt
@@ -15,8 +14,6 @@ import org.dataland.datalandbackend.frameworks.esgdatenkatalog.model.umwelt.EsgD
 @Suppress("MagicNumber")
 @DataType("esg-datenkatalog", 7)
 data class EsgDatenkatalogData(
-    @field:Valid()
-    val general: EsgDatenkatalogGeneral? = null,
     @field:Valid()
     val allgemein: EsgDatenkatalogAllgemein? = null,
     @field:Valid()

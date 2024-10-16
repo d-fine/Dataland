@@ -15,13 +15,13 @@ import { formatNaceCodesForDatatable } from '@/components/resources/dataTable/co
 export const esgDatenkatalogViewConfiguration: MLDTConfig<EsgDatenkatalogData> = [
   {
     type: 'section',
-    label: 'General',
+    label: 'Allgemein',
     expandOnPageLoad: true,
     shouldDisplay: (): boolean => true,
     children: [
       {
         type: 'section',
-        label: 'Master Data',
+        label: 'Datum',
         expandOnPageLoad: true,
         shouldDisplay: (): boolean => true,
         children: [
@@ -31,18 +31,10 @@ export const esgDatenkatalogViewConfiguration: MLDTConfig<EsgDatenkatalogData> =
             explanation: 'Datum bis wann die Information gültig ist',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EsgDatenkatalogData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.general?.masterData?.gueltigkeitsDatum),
+              formatStringForDatatable(dataset.allgemein?.datum?.gueltigkeitsDatum),
           },
         ],
       },
-    ],
-  },
-  {
-    type: 'section',
-    label: 'Allgemein',
-    expandOnPageLoad: true,
-    shouldDisplay: (): boolean => true,
-    children: [
       {
         type: 'section',
         label: 'Generelle ESG-Strategie',
@@ -1662,19 +1654,38 @@ export const esgDatenkatalogViewConfiguration: MLDTConfig<EsgDatenkatalogData> =
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EsgDatenkatalogData): AvailableMLDTDisplayObjectTypes => {
               const mappings = {
-                EinbindungInBetriebsratGesetzlicheVertretungsorgane:
-                  'Einbindung in Betriebsrat / gesetzliche Vertretungsorgane',
-                Aufsichtsrat: 'Aufsichtsrat',
-                Verwaltungsrat: 'Verwaltungsrat',
-                KeineEinbindungInEntscheidungsgremien: 'Keine Einbindung in Entscheidungsgremien',
-                KeinArbeitnehmervertretungGesetzlichVorgeschrieben:
-                  'Kein Arbeitnehmervertretung gesetzlich vorgeschrieben',
+                Ja: 'Ja',
+                NeinBeschaeftigteNichtInEntscheidungsgremienEingebunden:
+                  'Nein, Beschäftigte nicht in Entscheidungsgremien eingebunden',
+                NeinArbeitnehmervertretungNichtGesetzlichVorgeschrieben:
+                  'Nein, Arbeitnehmervertretung nicht gesetzlich vorgeschrieben',
               };
               return formatListOfStringsForDatatable(
                 dataset.soziales?.einbindungDerBeschaeftigten?.einbindungVonBeschaeftigtenInEntscheidungen?.map((it) =>
                   getOriginalNameFromTechnicalName(it, mappings)
                 ),
                 'Einbindung von Besch\u00E4ftigten in Entscheidungen'
+              );
+            },
+          },
+          {
+            type: 'cell',
+            label: 'Einbindung von Beschäftigten in Gremien',
+            explanation:
+              'In welche Gremien sind Beschäftigte bei betrieblichen Entscheidungen des Unternehmens eingebunden?',
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: EsgDatenkatalogData): AvailableMLDTDisplayObjectTypes => {
+              const mappings = {
+                BetriebsratGesetzlicheVertretungsorgane: 'Betriebsrat / gesetzliche Vertretungsorgane',
+                Aufsichtsrat: 'Aufsichtsrat',
+                Verwaltungsrat: 'Verwaltungsrat',
+                Keine: 'Keine',
+              };
+              return formatListOfStringsForDatatable(
+                dataset.soziales?.einbindungDerBeschaeftigten?.einbindungVonBeschaeftigtenInGremien?.map((it) =>
+                  getOriginalNameFromTechnicalName(it, mappings)
+                ),
+                'Einbindung von Besch\u00E4ftigten in Gremien'
               );
             },
           },
