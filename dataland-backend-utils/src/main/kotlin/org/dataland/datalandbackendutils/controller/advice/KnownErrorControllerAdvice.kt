@@ -12,20 +12,10 @@ import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
 import org.springframework.http.converter.HttpMessageNotReadableException
 import org.springframework.validation.FieldError
-import org.springframework.validation.method.ParameterErrors
-import org.springframework.validation.method.ParameterValidationResult
 import org.springframework.web.HttpRequestMethodNotSupportedException
 import org.springframework.web.bind.MethodArgumentNotValidException
 import org.springframework.web.bind.annotation.ControllerAdvice
-import org.springframework.web.bind.annotation.CookieValue
 import org.springframework.web.bind.annotation.ExceptionHandler
-import org.springframework.web.bind.annotation.MatrixVariable
-import org.springframework.web.bind.annotation.ModelAttribute
-import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RequestHeader
-import org.springframework.web.bind.annotation.RequestParam
-import org.springframework.web.bind.annotation.RequestPart
 import org.springframework.web.method.annotation.HandlerMethodValidationException
 import org.springframework.web.servlet.NoHandlerFoundException
 import java.lang.StringBuilder
@@ -160,55 +150,7 @@ class KnownErrorControllerAdvice(
      */
     @ExceptionHandler(HandlerMethodValidationException::class)
     fun handleMethodValidationException(ex: HandlerMethodValidationException): ResponseEntity<ErrorResponse> {
-        val errorList = mutableListOf<String>()
-
-        val visitor =
-            object : HandlerMethodValidationException.Visitor {
-                override fun cookieValue(
-                    cookieValue: CookieValue,
-                    result: ParameterValidationResult,
-                ) = errorList.addLast(result.toString())
-
-                override fun matrixVariable(
-                    matrixVariable: MatrixVariable,
-                    result: ParameterValidationResult,
-                ) = errorList.addLast(result.toString())
-
-                override fun modelAttribute(
-                    modelAttribute: ModelAttribute?,
-                    errors: ParameterErrors,
-                ) = errorList.addLast(errors.toString())
-
-                override fun pathVariable(
-                    pathVariable: PathVariable,
-                    result: ParameterValidationResult,
-                ) = errorList.addLast(result.toString())
-
-                override fun requestBody(
-                    requestBody: RequestBody,
-                    errors: ParameterErrors,
-                ) = errorList.addLast(errors.toString())
-
-                override fun requestHeader(
-                    requestHeader: RequestHeader,
-                    result: ParameterValidationResult,
-                ) = errorList.addLast(result.toString())
-
-                override fun requestParam(
-                    requestParam: RequestParam?,
-                    result: ParameterValidationResult,
-                ) = errorList.addLast(result.toString())
-
-                override fun requestPart(
-                    requestPart: RequestPart,
-                    errors: ParameterErrors,
-                ) = errorList.addLast(errors.toString())
-
-                override fun other(result: ParameterValidationResult) = errorList.addLast(result.toString())
-            }
-
-        ex.visitResults(visitor)
-
+        val errorList = ex.allValidationResults.map { it.toString() }
         return prepareResponse(
             ErrorDetails(
                 errorType = "bad-input",
