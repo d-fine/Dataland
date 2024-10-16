@@ -135,21 +135,96 @@ export const nuclearAndGasViewConfiguration: MLDTConfig<NuclearAndGasData> = [
         label: 'Taxonomy-aligned (numerator)',
         expandOnPageLoad: true,
         shouldDisplay: (): boolean => true,
-        children: [],
+        children: [
+          {
+            type: 'cell',
+            label: 'Nuclear and Gas Taxonomy-aligned Revenue (numerator)',
+            explanation:
+              'Proportion of Taxonomy-aligned Economic Activity referred to in Sections 4.26 to 4.31 of Annexes I and II to Delegated Regulation 2021/2139 in the Numerator of the applicable KPI - Revenue-based',
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: NuclearAndGasData): AvailableMLDTDisplayObjectTypes =>
+              formatNuclearAndGasTaxonomyShareDataForTable(
+                dataset.general?.taxonomyAlignedNumerator?.nuclearAndGasTaxonomyAlignedRevenueNumerator,
+                'Nuclear and Gas Taxonomy-aligned Revenue (numerator)'
+              ),
+          },
+          {
+            type: 'cell',
+            label: 'Nuclear and Gas Taxonomy-aligned CapEx (numerator)',
+            explanation:
+              'Proportion of Taxonomy-aligned Economic Activity referred to in Sections 4.26 to 4.31 of Annexes I and II to Delegated Regulation 2021/2139 in the Numerator of the applicable KPI - CapEx-based',
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: NuclearAndGasData): AvailableMLDTDisplayObjectTypes =>
+              formatNuclearAndGasTaxonomyShareDataForTable(
+                dataset.general?.taxonomyAlignedNumerator?.nuclearAndGasTaxonomyAlignedCapexNumerator,
+                'Nuclear and Gas Taxonomy-aligned CapEx (numerator)'
+              ),
+          },
+        ],
       },
       {
         type: 'section',
         label: 'Taxonomy-eligible but not aligned',
         expandOnPageLoad: true,
         shouldDisplay: (): boolean => true,
-        children: [],
+        children: [
+          {
+            type: 'cell',
+            label: 'Nuclear and Gas Taxonomy-eligible but not aligned Revenue',
+            explanation:
+              'Proportion of Taxonomy-eligible but not Taxonomy-aligned Economic Activity referred to in Sections 4.26 to 4.31 of Annexes I and II to Delegated Regulation 2021/2139 in the denominator of the applicable KPI - Revenue-based',
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: NuclearAndGasData): AvailableMLDTDisplayObjectTypes =>
+              formatNuclearAndGasTaxonomyShareDataForTable(
+                dataset.general?.taxonomyEligibleButNotAligned?.nuclearAndGasTaxonomyEligibleButNotAlignedRevenue,
+                'Nuclear and Gas Taxonomy-eligible but not aligned Revenue'
+              ),
+          },
+          {
+            type: 'cell',
+            label: 'Nuclear and Gas Taxonomy-eligible but not aligned CapEx',
+            explanation:
+              'Proportion of Taxonomy-eligible but not Taxonomy-aligned Economic Activity referred to in Sections 4.26 to 4.31 of Annexes I and II to Delegated Regulation 2021/2139 in the denominator of the applicable KPI - CapEx-based',
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: NuclearAndGasData): AvailableMLDTDisplayObjectTypes =>
+              formatNuclearAndGasTaxonomyShareDataForTable(
+                dataset.general?.taxonomyEligibleButNotAligned?.nuclearAndGasTaxonomyEligibleButNotAlignedCapex,
+                'Nuclear and Gas Taxonomy-eligible but not aligned CapEx'
+              ),
+          },
+        ],
       },
       {
         type: 'section',
         label: 'Taxonomy-non-eligible',
         expandOnPageLoad: true,
         shouldDisplay: (): boolean => true,
-        children: [],
+        children: [
+          {
+            type: 'cell',
+            label: 'Nuclear and Gas Taxonomy-non-eligible Revenue',
+            explanation:
+              'Proportion of Taxonomy-non-eligible Economic Activity referred to in Sections 4.26 to 4.31 of Annexes I and II to Delegated Regulation 2021/2139 in the denominator of the applicable KPI - Revenue-based',
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: NuclearAndGasData): AvailableMLDTDisplayObjectTypes =>
+              formatNuclearAndGasTaxonomyShareDataForTable(
+                dataset.general?.taxonomyNonEligible?.nuclearAndGasTaxonomyNonEligibleRevenue,
+                'Nuclear and Gas Taxonomy-non-eligible Revenue'
+              ),
+          },
+          {
+            type: 'cell',
+            label: 'Nuclear and Gas Taxonomy-non-eligible CapEx',
+            explanation:
+              'Proportion of Taxonomy-non-eligible Economic Activity referred to in Sections 4.26 to 4.31 of Annexes I and II to Delegated Regulation 2021/2139 in the denominator of the applicable KPI - CapEx-based',
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: NuclearAndGasData): AvailableMLDTDisplayObjectTypes =>
+              formatNuclearAndGasTaxonomyShareDataForTable(
+                dataset.general?.taxonomyNonEligible?.nuclearAndGasTaxonomyNonEligibleCapex,
+                'Nuclear and Gas Taxonomy-non-eligible CapEx'
+              ),
+          },
+        ],
       },
     ],
   },

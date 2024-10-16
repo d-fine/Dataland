@@ -1,7 +1,9 @@
 package org.dataland.frameworktoolbox.frameworks.nuclearandgas.custom
 
+import org.apache.commons.text.StringEscapeUtils
 import org.dataland.frameworktoolbox.intermediate.FieldNodeParent
 import org.dataland.frameworktoolbox.intermediate.components.ComponentBase
+import org.dataland.frameworktoolbox.intermediate.components.addStandardCellWithValueGetterFactory
 import org.dataland.frameworktoolbox.intermediate.components.addStandardUploadConfigCell
 import org.dataland.frameworktoolbox.intermediate.components.requireDocumentSupportIn
 import org.dataland.frameworktoolbox.intermediate.datapoints.NoDocumentSupport
@@ -10,6 +12,9 @@ import org.dataland.frameworktoolbox.specific.datamodel.elements.DataClassBuilde
 import org.dataland.frameworktoolbox.specific.fixturegenerator.elements.FixtureSectionBuilder
 import org.dataland.frameworktoolbox.specific.uploadconfig.elements.UploadCategoryBuilder
 import org.dataland.frameworktoolbox.specific.viewconfig.elements.SectionConfigBuilder
+import org.dataland.frameworktoolbox.specific.viewconfig.elements.getTypescriptFieldAccessor
+import org.dataland.frameworktoolbox.specific.viewconfig.functional.FrameworkDisplayValueLambda
+import org.dataland.frameworktoolbox.utils.typescript.TypeScriptImport
 
 /**
  * Represents the EuTaxonomy-specific "NuclearAndGasEligibleButNotAligned" component
@@ -65,7 +70,24 @@ class NuclearAndGasEligibleButNotAlignedComponent(
     }
 
     override fun generateDefaultViewConfig(sectionConfigBuilder: SectionConfigBuilder) {
-        return // TODO: fill with code
+        sectionConfigBuilder.addStandardCellWithValueGetterFactory(
+            this,
+            FrameworkDisplayValueLambda(
+                "formatNuclearAndGasTaxonomyShareDataForTable(" +
+                        "${getTypescriptFieldAccessor(true)}, \"${
+                            StringEscapeUtils.escapeEcmaScript(
+                                label,
+                            )
+                        }\")",
+                setOf(
+                    TypeScriptImport(
+                        "formatNuclearAndGasTaxonomyShareDataForTable",
+                        "@/components/resources/dataTable/conversion/" +
+                                "NuclearAndGasValueGetterFactory",
+                    ),
+                ),
+            ),
+        )
     }
 
     override fun generateDefaultFixtureGenerator(sectionBuilder: FixtureSectionBuilder) {
