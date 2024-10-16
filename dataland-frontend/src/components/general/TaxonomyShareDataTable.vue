@@ -11,12 +11,12 @@
           {{ data.ccmCca || '' }}
         </template>
       </Column>
-      <Column field="ccm" header="CCM">
+      <Column v-if="!isNonEligible" field="ccm" header="CCM">
         <template #body="{ data }">
           {{ data.ccm || '' }}
         </template>
       </Column>
-      <Column field="cca" header="CCA">
+      <Column v-if="!isNonEligible" field="cca" header="CCA">
         <template #body="{ data }">
           {{ data.cca || '' }}
         </template>
@@ -43,16 +43,18 @@ interface DialogRefData {
 
 export default defineComponent({
   name: 'TaxonomyShareDataTable',
-  components: {DataTable, Column},
+  components: { DataTable, Column },
   inject: ['dialogRef'],
   computed: {
     dialogRefData(): DialogRefData {
       const dialogRefToDisplay = this.dialogRef as DynamicDialogInstance;
       return dialogRefToDisplay.data as DialogRefData;
     },
+    isNonEligible() {
+      return this.dialogRefData.values && 'taxonomyNonEligibleShare' in this.dialogRefData.values;
+    },
     listOfRowContents() {
       const rawData = this.dialogRefData.values;
-
       return this.generateRowContents(rawData);
     },
   },
@@ -65,7 +67,7 @@ export default defineComponent({
       return Object.keys(ActivityName)
       .map((key) => {
         const fieldName = key as keyof typeof ActivityName;
-        const objective = rawData[fieldName as keyof NuclearAndGasAlignedDenominator];
+        const objective = rawData[fieldName as keyof NuclearAndGasAlignedDenominator | keyof NuclearAndGasNonEligible];
 
         if (!objective) return null;
 
@@ -73,9 +75,9 @@ export default defineComponent({
 
         return {
           activity: activityName,
-          ccmCca: objective.mitigationAndAdaption ?? null,
-          ccm: objective.mitigation ?? null,
-          cca: objective.adaption ?? null,
+          ccmCca: this.isNonEligible ? objective : objective?.mitigationAndAdaption ?? null,
+          ccm: objective?.mitigation ?? null,
+          cca: objective?.adaption ?? null,
         };
       })
       .filter((row) => row !== null);
