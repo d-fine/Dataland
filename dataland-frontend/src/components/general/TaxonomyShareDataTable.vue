@@ -26,12 +26,19 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import {defineComponent} from 'vue';
 import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
-import { type DynamicDialogInstance } from 'primevue/dynamicdialogoptions';
-import { ActivityName } from '@/components/resources/frameworkDataSearch/nuclearAndGas/NuclearAndGasActivityNames';
-import { NuclearAndGasAlignedDenominator, NuclearAndGasAlignedNumerator, NuclearAndGasEligibleButNotAligned, NuclearAndGasNonEligible } from '@clients/backend/org/dataland/datalandfrontend/openApiClient/backend/model';
+import {type DynamicDialogInstance} from 'primevue/dynamicdialogoptions';
+import {
+  ActivityName
+} from '@/components/resources/frameworkDataSearch/nuclearAndGas/NuclearAndGasActivityNames';
+import {
+  NuclearAndGasAlignedDenominator,
+  NuclearAndGasAlignedNumerator,
+  NuclearAndGasEligibleButNotAligned,
+  NuclearAndGasNonEligible
+} from '@clients/backend/org/dataland/datalandfrontend/openApiClient/backend/model';
 
 interface DialogRefData {
   header: string;
@@ -43,7 +50,7 @@ interface DialogRefData {
 
 export default defineComponent({
   name: 'TaxonomyShareDataTable',
-  components: { DataTable, Column },
+  components: {DataTable, Column},
   inject: ['dialogRef'],
   computed: {
     dialogRefData(): DialogRefData {
