@@ -5402,26 +5402,26 @@
         ],
         "type": "object",
         "properties": {
-          "message": {
-            "type": "string"
-          },
-          "dataId": {
-            "type": "string"
-          },
           "receptionTime": {
             "type": "integer",
             "format": "int64"
           },
+          "dataId": {
+            "type": "string"
+          },
           "companyId": {
+            "type": "string"
+          },
+          "companyName": {
+            "type": "string"
+          },
+          "message": {
             "type": "string"
           },
           "reportingPeriod": {
             "type": "string"
           },
           "framework": {
-            "type": "string"
-          },
-          "companyName": {
             "type": "string"
           }
         }

@@ -102,7 +102,7 @@ export const nuclearAndGasTooltipMapping = {
       'Proportion of taxonomy-aligned economic activity referred to in Section 4.26 of Annexes I and II to Delegated Regulation 2021/2139 in the numerator of the applicable KPI.',
     objectiveTooltips: {
       mitigationAndAdaptation:
-        'Proportion of taxonomy-aligned economic activity referred to in Section 4.26 of Annexes I and II to Delegated Regulation 2021/2139 in the numerator of the applicable KPI to Climate Change Mitigation and Climate Change Adaptation.',
+        'Proportion of taxonomy-aligned economic activity referred to in Section 4.26 of Annexes I and II to Delegated Regulation 2021/2139 in the numerator of the applicable KPI substantially contributing to Climate Change Mitigation and Climate Change Adaptation.',
       mitigation:
         'Proportion of taxonomy-aligned economic activity referred to in Section 4.26 of Annexes I and II to Delegated Regulation 2021/2139 in the numerator of the applicable KPI substantially contributing to Climate Change Mitigation.',
       adaptation:
@@ -114,7 +114,7 @@ export const nuclearAndGasTooltipMapping = {
       'Proportion of taxonomy-aligned economic activity referred to in Section 4.27 of Annexes I and II to Delegated Regulation 2021/2139 in the numerator of the applicable KPI.',
     objectiveTooltips: {
       mitigationAndAdaptation:
-        'Proportion of taxonomy-aligned economic activity referred to in Section 4.27 of Annexes I and II to Delegated Regulation 2021/2139 in the numerator of the applicable KPI to Climate Change Mitigation and Climate Change Adaptation.',
+        'Proportion of taxonomy-aligned economic activity referred to in Section 4.27 of Annexes I and II to Delegated Regulation 2021/2139 in the numerator of the applicable KPI substantially contributing to Climate Change Mitigation and Climate Change Adaptation.',
       mitigation:
         'Proportion of taxonomy-aligned economic activity referred to in Section 4.27 of Annexes I and II to Delegated Regulation 2021/2139 in the numerator of the applicable KPI substantially contributing to Climate Change Mitigation.',
       adaptation:
@@ -126,7 +126,7 @@ export const nuclearAndGasTooltipMapping = {
       'Proportion of taxonomy-aligned economic activity referred to in Section 4.28 of Annexes I and II to Delegated Regulation 2021/2139 in the numerator of the applicable KPI.',
     objectiveTooltips: {
       mitigationAndAdaptation:
-        'Proportion of taxonomy-aligned economic activity referred to in Section 4.28 of Annexes I and II to Delegated Regulation 2021/2139 in the numerator of the applicable KPI to Climate Change Mitigation and Climate Change Adaptation.',
+        'Proportion of taxonomy-aligned economic activity referred to in Section 4.28 of Annexes I and II to Delegated Regulation 2021/2139 in the numerator of the applicable KPI substantially contributing to Climate Change Mitigation and Climate Change Adaptation.',
       mitigation:
         'Proportion of taxonomy-aligned economic activity referred to in Section 4.28 of Annexes I and II to Delegated Regulation 2021/2139 in the numerator of the applicable KPI substantially contributing to Climate Change Mitigation.',
       adaptation:
@@ -138,7 +138,7 @@ export const nuclearAndGasTooltipMapping = {
       'Proportion of taxonomy-aligned economic activity referred to in Section 4.29 of Annexes I and II to Delegated Regulation 2021/2139 in the numerator of the applicable KPI.',
     objectiveTooltips: {
       mitigationAndAdaptation:
-        'Proportion of taxonomy-aligned economic activity referred to in Section 4.29 of Annexes I and II to Delegated Regulation 2021/2139 in the numerator of the applicable KPI to Climate Change Mitigation and Climate Change Adaptation.',
+        'Proportion of taxonomy-aligned economic activity referred to in Section 4.29 of Annexes I and II to Delegated Regulation 2021/2139 in the numerator of the applicable KPI substantially contributing to Climate Change Mitigation and Climate Change Adaptation.',
       mitigation:
         'Proportion of taxonomy-aligned economic activity referred to in Section 4.29 of Annexes I and II to Delegated Regulation 2021/2139 in the numerator of the applicable KPI substantially contributing to Climate Change Mitigation.',
       adaptation:
@@ -150,7 +150,7 @@ export const nuclearAndGasTooltipMapping = {
       'Proportion of taxonomy-aligned economic activity referred to in Section 4.30 of Annexes I and II to Delegated Regulation 2021/2139 in the numerator of the applicable KPI.',
     objectiveTooltips: {
       mitigationAndAdaptation:
-        'Proportion of taxonomy-aligned economic activity referred to in Section 4.30 of Annexes I and II to Delegated Regulation 2021/2139 in the numerator of the applicable KPI to Climate Change Mitigation and Climate Change Adaptation.',
+        'Proportion of taxonomy-aligned economic activity referred to in Section 4.30 of Annexes I and II to Delegated Regulation 2021/2139 in the numerator of the applicable KPI substantially contributing to Climate Change Mitigation and Climate Change Adaptation.',
       mitigation:
         'Proportion of taxonomy-aligned economic activity referred to in Section 4.30 of Annexes I and II to Delegated Regulation 2021/2139 in the numerator of the applicable KPI substantially contributing to Climate Change Mitigation.',
       adaptation:
@@ -162,7 +162,7 @@ export const nuclearAndGasTooltipMapping = {
       'Proportion of taxonomy-aligned economic activity referred to in Section 4.31 of Annexes I and II to Delegated Regulation 2021/2139 in the numerator of the applicable KPI.',
     objectiveTooltips: {
       mitigationAndAdaptation:
-        'Proportion of taxonomy-aligned economic activity referred to in Section 4.31 of Annexes I and II to Delegated Regulation 2021/2139 in the numerator of the applicable KPI to Climate Change Mitigation and Climate Change Adaptation.',
+        'Proportion of taxonomy-aligned economic activity referred to in Section 4.31 of Annexes I and II to Delegated Regulation 2021/2139 in the numerator of the applicable KPI substantially contributing to Climate Change Mitigation and Climate Change Adaptation.',
       mitigation:
         'Proportion of taxonomy-aligned economic activity referred to in Section 4.31 of Annexes I and II to Delegated Regulation 2021/2139 in the numerator of the applicable KPI substantially contributing to Climate Change Mitigation.',
       adaptation:
@@ -171,7 +171,7 @@ export const nuclearAndGasTooltipMapping = {
   },
   taxonomyAlignedShareNumeratorOtherActivities: {
     tooltip:
-      'Proportion of other taxonomy-aligned economic activities not referred to in rows 1 to 6 above in the numerator of the applicable KPI - other activities.',
+      'Proportion of other taxonomy-aligned economic activities not referred to in Sections 4.26-4.31 of Annexes I and II to Delegated Regulation 2021/2139 in the numerator of the applicable KPI.',
     objectiveTooltips: {
       mitigationAndAdaptation:
         'Proportion of other taxonomy-aligned economic activities not referred to in Sections 4.26-4.31 of Annexes I and II to Delegated Regulation 2021/2139 in the numerator of the applicable KPI substantially contributing to Climate Change Mitigation and Climate Change Adaptation.',
@@ -228,7 +228,6 @@ export const nuclearAndGasTooltipMapping = {
         'Proportion of taxonomy-eligible but not taxonomy-aligned economic activity referred to in Section 4.28 of Annexes I and II to Delegated Regulation 2021/2139 in the denominator of the applicable KPI substantially contributing to Climate Change Adaptation.',
     },
   },
-
   taxonomyEligibleButNotAlignedShareNAndG429: {
     tooltip:
       'Proportion of taxonomy-eligible but not taxonomy-aligned economic activity referred to in Section 4.29 of Annexes I and II to Delegated Regulation 2021/2139 in the denominator of the applicable KPI.',
