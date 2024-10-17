@@ -181,7 +181,6 @@ export default defineComponent({
     Card,
     PrimeButton,
     Calendar,
-    DateFormField,
     NuclearAndGasFormElement,
     UploadReports,
     YesNoExtendedDataPointFormField

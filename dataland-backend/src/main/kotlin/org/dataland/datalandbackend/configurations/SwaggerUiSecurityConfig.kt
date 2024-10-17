@@ -4,7 +4,6 @@ import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.core.annotation.Order
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
-import org.springframework.security.config.annotation.web.invoke
 import org.springframework.security.web.SecurityFilterChain
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher
 
@@ -23,18 +22,15 @@ class SwaggerUiSecurityConfig {
      */
     @Bean
     fun swaggerUiFilterChain(http: HttpSecurity): SecurityFilterChain {
-        http.invoke {
-            securityMatcher(AntPathRequestMatcher.antMatcher("/swagger-ui/**"))
+        http
+            .securityMatcher(AntPathRequestMatcher.antMatcher("/swagger-ui/**"))
             // The provided hash is for the OAuth2 Redirect of the Swagger UI Login
-            headers {
-                contentSecurityPolicy {
-                    "default-src 'self'; script-src 'self' 'sha256-4IiDsMH+GkJlxivIDNfi6qk0O5HPtzyvNwVT3Wt8TIw=';" +
-                        " style-src 'self'; frame-ancestors 'self'; form-action 'self'; font-src 'self' data:;" +
-                        " img-src 'self' data:"
-                }
-            }
-        }
-
+            .headers()
+            .contentSecurityPolicy(
+                "default-src 'self'; script-src 'self' 'sha256-4IiDsMH+GkJlxivIDNfi6qk0O5HPtzyvNwVT3Wt8TIw=';" +
+                    " style-src 'self'; frame-ancestors 'self'; form-action 'self'; font-src 'self' data:;" +
+                    " img-src 'self' data:",
+            )
         return http.build()
     }
 }
