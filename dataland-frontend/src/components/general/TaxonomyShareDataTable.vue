@@ -1,12 +1,12 @@
 <template>
   <div v-if="listOfRowContents.length > 0">
     <DataTable :value="listOfRowContents" class="activities-data-table">
-      <Column field="activity" header="Economic activities">
+      <Column field="activity" header="Economic activitiy">
         <template #body="{ data }">
           {{ data.activity }}
         </template>
       </Column>
-      <Column field="ccmCca" header="CCM + CCA">
+      <Column field="ccmCca" :header="isNonEligible ? 'Proportion' : 'CCM + CCA'">
         <template #body="{ data }">
           {{ data.ccmCca || '' }}
         </template>
@@ -39,6 +39,7 @@ import {
   NuclearAndGasEligibleButNotAligned,
   NuclearAndGasNonEligible
 } from '@clients/backend/org/dataland/datalandfrontend/openApiClient/backend/model';
+import {formatPercentageNumberAsString} from "@/utils/Formatter";
 
 interface DialogRefData {
   header: string;
@@ -58,7 +59,7 @@ export default defineComponent({
       return dialogRefToDisplay.data as DialogRefData;
     },
     isNonEligible() {
-      return this.dialogRefData.values && 'taxonomyNonEligibleShare' in this.dialogRefData.values;
+      return this.dialogRefData.values && 'taxonomyNonEligibleShareNAndG426' in this.dialogRefData.values;
     },
     listOfRowContents() {
       const rawData = this.dialogRefData.values;
@@ -79,12 +80,19 @@ export default defineComponent({
         if (!objective) return null;
 
         const activityName = ActivityName[fieldName] as string;
+        const ccmCca = formatPercentageNumberAsString(this.isNonEligible ? objective : objective?.mitigationAndAdaption ?? null);
+        const ccm = formatPercentageNumberAsString(objective?.mitigation ?? null);
+        const cca = formatPercentageNumberAsString(objective?.adaption ?? null);
+
+        if (!ccmCca && !ccm && !cca) {
+          return null;
+        }
 
         return {
           activity: activityName,
-          ccmCca: this.isNonEligible ? objective : objective?.mitigationAndAdaption ?? null,
-          ccm: objective?.mitigation ?? null,
-          cca: objective?.adaption ?? null,
+          ccmCca,
+          ccm,
+          cca
         };
       })
       .filter((row) => row !== null);
