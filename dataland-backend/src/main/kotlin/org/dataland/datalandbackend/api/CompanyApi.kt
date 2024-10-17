@@ -30,6 +30,8 @@ import org.springframework.web.bind.annotation.RequestMethod
 import org.springframework.web.bind.annotation.RequestParam
 
 const val COMPANY_SEARCH_STRING_MIN_LENGTH = 3
+const val COMPANY_SEARCH_STRING_DESCRIPTION =
+    "Search string used for substring matching. Must be at least $COMPANY_SEARCH_STRING_MIN_LENGTH characters after trimming."
 
 /**
  * Defines the restful dataland-backend API regarding company data.
@@ -76,10 +78,8 @@ interface CompanyApi {
     @Operation(
         summary = "Retrieve just the basic information about specific companies.",
         description =
-            "The basic information about companies" +
-                " via the provided company name/identifier" +
-                " are retrieved and filtered by countryCode, sector and available framework data." +
-                " Empty/Unspecified filters are ignored.",
+            "The basic information about companies via the provided company name/identifier are retrieved and filtered " +
+                "by countryCode, sector and available framework data. Empty/Unspecified filters are ignored.",
     )
     @ApiResponses(
         value = [
@@ -91,7 +91,10 @@ interface CompanyApi {
     )
     @PreAuthorize("hasRole('ROLE_USER')")
     fun getCompanies(
-        @RequestParam searchString: String? = null,
+        @RequestParam
+        @Parameter(description = COMPANY_SEARCH_STRING_DESCRIPTION, required = false, example = "Int")
+        @MinimumTrimmedSize(min = COMPANY_SEARCH_STRING_MIN_LENGTH)
+        searchString: String? = null,
         @RequestParam dataTypes: Set<DataType>? = null,
         @RequestParam countryCodes: Set<String>? = null,
         @RequestParam sectors: Set<String>? = null,
@@ -111,14 +114,10 @@ interface CompanyApi {
      * @return the number of companies matching the search criteria
      */
     @Operation(
-        summary =
-            "Retrieve the number of companies" +
-                " satisfying different filters.",
+        summary = "Retrieve the number of companies satisfying different filters.",
         description =
-            "The number of companies" +
-                " via the provided company name/identifier" +
-                " are retrieved and filtered by countryCode, sector and available framework data." +
-                " Empty/Unspecified filters are ignored.",
+            "The number of companies via the provided company name/identifier are retrieved and filtered by countryCode, " +
+                "sector and available framework data. Empty/Unspecified filters are ignored.",
     )
     @ApiResponses(
         value = [
@@ -131,7 +130,10 @@ interface CompanyApi {
     )
     @PreAuthorize("hasRole('ROLE_USER')")
     fun getNumberOfCompanies(
-        @RequestParam searchString: String? = null,
+        @RequestParam
+        @Parameter(description = COMPANY_SEARCH_STRING_DESCRIPTION, required = false, example = "Int")
+        @MinimumTrimmedSize(min = COMPANY_SEARCH_STRING_MIN_LENGTH)
+        searchString: String? = null,
         @RequestParam dataTypes: Set<DataType>? = null,
         @RequestParam countryCodes: Set<String>? = null,
         @RequestParam sectors: Set<String>? = null,
@@ -158,13 +160,7 @@ interface CompanyApi {
     )
     fun getCompaniesBySearchString(
         @RequestParam
-        @Parameter(
-            description =
-                "Search string used for substring matching. " +
-                    "Must be at least $COMPANY_SEARCH_STRING_MIN_LENGTH characters after trimming.",
-            required = false,
-            example = "Int",
-        )
+        @Parameter(description = COMPANY_SEARCH_STRING_DESCRIPTION, required = false, example = "Int")
         @MinimumTrimmedSize(min = COMPANY_SEARCH_STRING_MIN_LENGTH)
         searchString: String,
         @RequestParam(defaultValue = "100") resultLimit: Int,
@@ -326,9 +322,7 @@ interface CompanyApi {
      */
     @Operation(
         summary = "Get the company IDs of the teaser companies.",
-        description =
-            "A list of all company IDs that are currently set as teaser companies (accessible without " +
-                "authentication).",
+        description = "A list of all company IDs that are currently set as teaser companies (accessible without authentication).",
     )
     @ApiResponses(
         value = [
@@ -397,9 +391,7 @@ interface CompanyApi {
         value = [
             ApiResponse(
                 responseCode = "200",
-                description =
-                    "Successfully checked that the companyId is known " +
-                        "by dataland.",
+                description = "Successfully checked that the companyId is known by dataland.",
             ),
             ApiResponse(
                 responseCode = "404",
