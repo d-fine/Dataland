@@ -44,7 +44,6 @@ class NuclearAndGasAlignedDenominatorComponent(
     }
 
     override fun generateDefaultQaModel(dataClassBuilder: DataClassBuilder) {
-        requireDocumentSupportIn(setOf(NoDocumentSupport))
         dataClassBuilder.addProperty(
             identifier,
             TypeReference(

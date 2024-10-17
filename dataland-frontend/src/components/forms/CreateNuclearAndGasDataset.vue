@@ -143,7 +143,6 @@ import {
 } from '@clients/backend';
 import {useRoute} from 'vue-router';
 import {checkCustomInputs, checkIfAllUploadedReportsAreReferencedInDataModel} from '@/utils/ValidationUtils';
-import DateFormField from '@/components/forms/parts/fields/DateFormField.vue';
 import SubmitButton from '@/components/forms/parts/SubmitButton.vue';
 import SubmitSideBar from '@/components/forms/parts/SubmitSideBar.vue';
 import UploadReports from '@/components/forms/parts/UploadReports.vue';

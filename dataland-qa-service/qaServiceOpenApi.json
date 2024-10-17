@@ -5405,24 +5405,24 @@
           "message": {
             "type": "string"
           },
-          "receptionTime": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "companyName": {
-            "type": "string"
-          },
           "companyId": {
             "type": "string"
           },
-          "reportingPeriod": {
+          "companyName": {
             "type": "string"
           },
           "framework": {
             "type": "string"
           },
+          "reportingPeriod": {
+            "type": "string"
+          },
           "dataId": {
             "type": "string"
+          },
+          "receptionTime": {
+            "type": "integer",
+            "format": "int64"
           }
         }
       },
