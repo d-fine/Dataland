@@ -1,7 +1,7 @@
 <template>
   <div v-if="listOfRowContents.length > 0">
     <DataTable :value="listOfRowContents" class="activities-data-table">
-      <Column field="activity" header="Activity">
+      <Column field="activity" header="Economic activities">
         <template #body="{ data }">
           {{ data.activity }}
         </template>
