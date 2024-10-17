@@ -88,7 +88,7 @@ internal class DataControllerTest(
         `when`(mockDataMetaInformationManager.getDataMetaInformationByDataId(otherUserAcceptedDataId)).thenReturn(
             otherUserAcceptedDataMetaInformationEntity,
         )
-        `when`(mockDataMetaInformationManager.searchDataMetaInfo("", testDataType, false, "")).thenReturn(
+        `when`(mockDataMetaInformationManager.searchDataMetaInfo("", testDataType.name, false, "")).thenReturn(
             listOf(
                 testUserPendingDataMetaInformationEntity,
                 otherUserPendingDataMetaInformationEntity,

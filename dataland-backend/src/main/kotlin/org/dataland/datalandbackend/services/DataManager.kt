@@ -24,6 +24,7 @@ import org.springframework.transaction.annotation.Propagation
 import org.springframework.transaction.annotation.Transactional
 import java.util.concurrent.ConcurrentHashMap
 import org.dataland.datalandbackend.model.datapoints.DataPoint
+import org.dataland.datalandinternalstorage.openApiClient.infrastructure.ClientException
 
 /**
  * Implementation of a data manager for Dataland including metadata storages
@@ -67,16 +68,40 @@ constructor(
             val fields = jsonNode.fields()
             while (fields.hasNext()) {
                 val jsonField = fields.next()
-                identifyDatapointsInDataset(jsonField.value, "$fieldName.${jsonField.key}", results)
+                val nextFieldName = if (fieldName.isEmpty()) jsonField.key else "$fieldName.${jsonField.key}"
+                identifyDatapointsInDataset(jsonField.value, nextFieldName, results)
             }
         } else {
             if (jsonNode.toString() == "null" || jsonNode.toString() == "[]") {
                 logger.info("Ignore leave $fieldName with null value.")
             } else {
                 logger.info("Found leaf node $fieldName with value $jsonNode")
-                results[fieldName] = jsonNode.toString()
+                results[fieldName] = jsonNode.textValue()
             }
         }
+    }
+
+    /**
+     * Method to make the data manager add data to a data store, store metadata in Dataland and sending messages to the
+     * relevant message queues
+     * @param storableDataSet contains all the inputs needed by Dataland
+     * @param bypassQa whether the data should be sent to QA or not
+     * @param correlationId the correlationId of the request
+     * @return ID of the newly stored data in the data store
+     */
+    fun originalProcessDataStorageRequest(
+        storableDataSet: StorableDataSet,
+        bypassQa: Boolean,
+        correlationId: String,
+    ):
+            String {
+        if (bypassQa && !companyRoleChecker.canUserBypassQa(storableDataSet.companyId)) {
+            throw AccessDeniedException(logMessageBuilder.bypassQaDeniedExceptionMessage)
+        }
+        val dataId = IdUtils.generateUUID()
+        storeMetaDataFrom(dataId, storableDataSet.dataType.toString(), storableDataSet.uploaderUserId, storableDataSet.uploadTime, storableDataSet.reportingPeriod, storableDataSet.companyId, correlationId)
+        storeDataSetInTemporaryStoreAndSendMessage(dataId, objectMapper.writeValueAsString(storableDataSet), storableDataSet.dataType.toString(), storableDataSet.companyId, bypassQa, correlationId)
+        return dataId
     }
 
     /**
@@ -96,42 +121,51 @@ constructor(
         if (bypassQa && !companyRoleChecker.canUserBypassQa(storableDataSet.companyId)) {
             throw AccessDeniedException(logMessageBuilder.bypassQaDeniedExceptionMessage)
         }
-        val reportingPeriod = storableDataSet.reportingPeriod
-        val companyId = storableDataSet.companyId
-        val userId = storableDataSet.uploaderUserId
-        val uploadTime = storableDataSet.uploadTime
 
-        logger.info(storableDataSet.toString())
-        val json = readJsonFile("${storableDataSet.dataType}.json")
-        logger.info(json)
-        val testJson = getJsonNodeFromString(json)
-        logger.info("Search for definition leaves")
-        val definition = mutableMapOf<String, String>()
-        identifyDatapointsInDataset(testJson, storableDataSet.dataType.toString(), definition)
-        logger.info(definition.toString())
-        val dataJson = getJsonNodeFromString(storableDataSet.data)
-        logger.info("Search for data leaves")
-        val data = mutableMapOf<String, String>()
-        identifyDatapointsInDataset(dataJson, storableDataSet.dataType.toString(), data)
-        logger.info(data.toString())
+        if (storableDataSet.dataType.name == "lksgmini" || storableDataSet.dataType.name == "lksgmedium") {
+            logger.info("Processing data storage request for ${storableDataSet.dataType} with new logic")
 
-        var dataId = "dummy"
-        data.forEach {
-            if (definition.containsKey(it.key)) {
-                logger.info("Created storable data point")
-                val storableDataPoint =
-                    DataPoint(it.value, definition.getValue(it.key), reportingPeriod, companyId, userId, uploadTime)
-                logger.info(storableDataPoint.toString())
-                dataId = IdUtils.generateUUID()
-                storeMetaDataFrom(dataId, storableDataPoint, correlationId)
-                storeDataSetInTemporaryStoreAndSendMessage(dataId, storableDataPoint, bypassQa, correlationId)
-            } else {
-                logger.error("No ID found for ${it.value} in the framework definition.")
+
+            val reportingPeriod = storableDataSet.reportingPeriod
+            val companyId = storableDataSet.companyId
+            val userId = storableDataSet.uploaderUserId
+            val uploadTime = storableDataSet.uploadTime
+
+            logger.info(storableDataSet.toString())
+            val json = readJsonFile("${storableDataSet.dataType}.json")
+            logger.info(json)
+            val testJson = getJsonNodeFromString(json)
+            logger.info("Search for definition leaves")
+            val definition = mutableMapOf<String, String>()
+            identifyDatapointsInDataset(testJson, storableDataSet.dataType.toString(), definition)
+            logger.info(definition.toString())
+            val dataJson = getJsonNodeFromString(storableDataSet.data)
+            logger.info("Search for data leaves")
+            val data = mutableMapOf<String, String>()
+            identifyDatapointsInDataset(dataJson, storableDataSet.dataType.toString(), data)
+            logger.info(data.toString())
+
+            var dataId = "dummy"
+            data.forEach {
+                if (definition.containsKey(it.key)) {
+                    logger.info("Created storable data point")
+                    val storableDataPoint =
+                        DataPoint(it.value, definition.getValue(it.key), reportingPeriod, companyId, userId, uploadTime)
+                    logger.info(storableDataPoint.toString())
+                    dataId = IdUtils.generateUUID()
+                    storeMetaDataFrom(dataId, storableDataPoint.dataPointId, storableDataPoint.uploaderUserId, storableDataPoint.uploadTime, storableDataPoint.reportingPeriod, storableDataPoint.companyId, correlationId)
+                    storeDataSetInTemporaryStoreAndSendMessage(dataId, objectMapper.writeValueAsString(storableDataPoint), storableDataPoint.dataPointId, storableDataPoint.companyId, bypassQa, correlationId)
+                } else {
+                    logger.error("No ID found for ${it.value} in the framework definition.")
+                }
+
             }
 
+            return dataId
+        } else {
+            logger.info("Processing data storage request for ${storableDataSet.dataType} with original logic")
+            return originalProcessDataStorageRequest(storableDataSet, bypassQa, correlationId)
         }
-
-        return dataId
     }
 
     /**
@@ -142,21 +176,21 @@ constructor(
      * @param correlationId the correlation id of the insertion process
      */
     @Transactional(propagation = Propagation.NEVER)
-    fun storeMetaDataFrom(dataId: String, storableDataPoint: DataPoint, correlationId: String) {
-        val company = dataManagerUtils.getCompanyByCompanyId(storableDataPoint.companyId)
+    fun storeMetaDataFrom(dataId: String, dataType: String, uploaderUserId: String, uploadTime: Long, reportingPeriod: String, companyId: String, correlationId: String) {
+        val company = dataManagerUtils.getCompanyByCompanyId(companyId)
         logger.info(
-            "Sending StorableDataSet of type ${storableDataPoint.dataPointId} for company ID " +
-                "'${storableDataPoint.companyId}', Company Name ${company.companyName} to storage Interface. " +
+            "Sending StorableDataSet of type ${dataType} for company ID " +
+                "'${companyId}', Company Name ${company.companyName} to storage Interface. " +
                 "Correlation ID: $correlationId",
         )
 
         val metaData = DataMetaInformationEntity(
             dataId,
             company,
-            storableDataPoint.dataPointId,
-            storableDataPoint.uploaderUserId,
-            storableDataPoint.uploadTime,
-            storableDataPoint.reportingPeriod,
+            dataType,
+            uploaderUserId,
+            uploadTime,
+            reportingPeriod,
             null,
             QaStatus.Pending,
         )
@@ -188,11 +222,13 @@ constructor(
      */
     fun storeDataSetInTemporaryStoreAndSendMessage(
         dataId: String,
-        storableDataPoint: DataPoint,
+        value: String,
+        dataType: String,
+        companyId: String,
         bypassQa: Boolean,
         correlationId: String,
     ) {
-        publicDataInMemoryStorage[dataId] = objectMapper.writeValueAsString(storableDataPoint)
+        publicDataInMemoryStorage[dataId] = value
         val payload = JSONObject(
             mapOf(
                 "dataId" to dataId, "bypassQa" to bypassQa,
@@ -205,10 +241,65 @@ constructor(
             ExchangeName.RequestReceived,
         )
         logger.info(
-            "Stored StorableDataSet of type '${storableDataPoint.dataPointId}' " +
-                "for company ID '${storableDataPoint.companyId}' in temporary storage. " +
+            "Stored StorableDataSet of type '${dataType}' " +
+                "for company ID '${companyId}' in temporary storage. " +
                 "Data ID '$dataId'. Correlation ID: '$correlationId'.",
         )
+    }
+
+    fun getDataPoint(dataId: String, correlationId: String): DataPoint {
+        return getStoredDataPoint(dataId, correlationId)
+    }
+
+    fun getStoredDataPoint(dataId: String, correlationId: String): DataPoint {
+        //val dataMetaInformation = metaDataManager.getDataMetaInformationByDataId(dataId)
+
+        lateinit var dataAsString: String
+        try {
+            dataAsString = storageClient.selectDataById(dataId, correlationId)
+        } catch (e: ClientException) {
+            logger.error("Error requesting data. Received ClientException with Message: ${e.message}. Correlation ID: $correlationId")
+        }
+        logger.info("Received Dataset of length ${dataAsString.length}. Correlation ID: $correlationId")
+        val dataAsDataPoint = objectMapper.readValue(dataAsString, DataPoint::class.java)
+
+        return dataAsDataPoint
+    }
+
+    fun assembleDataSetFromDataPoints(framework: String, companyId: String, reportingPeriod: String, correlationId: String): String {
+        var frameworkData = ""
+        val jsonFrameworkSpec = readJsonFile("${framework.lowercase().dropLast(4)}.json")
+        logger.info("Identifying blocks.")
+        val frameworkSpecJsonNode = getJsonNodeFromString(jsonFrameworkSpec)
+        val relevantFields = mutableMapOf<String, String>()
+        identifyDatapointsInDataset(frameworkSpecJsonNode, "", relevantFields)
+        logger.info(relevantFields.toString())
+        relevantFields.forEach() {
+            logger.info("Processing field name ${it.key} with value ${it.value}")
+            logger.info("companyID: $companyId")
+            logger.info("reportingPeriod: $reportingPeriod")
+            val test = metaDataManager.searchDataMetaInfo(companyId, null, showOnlyActive = false, reportingPeriod)
+            logger.info(test.toString())
+            logger.info(test.first().dataId)
+            logger.info(test.size.toString())
+        }
+
+
+        /*relevantFields.forEach {
+            var replacementValue = getJsonNodeFromString("")
+
+            val key = "$reportingPeriod:$companyId:$it"
+            if (dataInMemoryStorage.containsKey(key)) {
+                replacementValue = getJsonNodeFromString(dataInMemoryStorage[key]!!)
+            }
+            populateSchemaNodes(schemaProperties, it, replacementValue)
+        }*/
+
+
+
+        //get all dataIDs for the framework and reporting period and company
+        //get all data points for the framework
+        return frameworkData
     }
 
     /**

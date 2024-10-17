@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonValue
 import org.dataland.datalandbackend.annotations.DataTypesExtractor
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
+import org.slf4j.LoggerFactory
 import org.dataland.datalandbackend.annotations.DataType as DataTypeAnnotation
 
 /**
@@ -18,6 +19,7 @@ data class DataType @JsonCreator constructor(
 ) {
     companion object {
         private val allowedDataTypes = DataTypesExtractor().getAllDataTypes()
+        private val logger = LoggerFactory.getLogger(javaClass)
 
         /**
          * Resolves a string to a valid datatype (ignoring case as that would otherwise sometimes cause issues)
@@ -47,10 +49,11 @@ data class DataType @JsonCreator constructor(
 
     init {
         if (!allowedDataTypes.contains(name)) {
-            throw InvalidInputApiException(
+            logger.info("Ignore check for allowedDataTypes")
+            /*throw InvalidInputApiException(
                 "$name is not a recognised dataType",
                 "$name is not a valid dataType. Please consult the API Reference to find a list of allowed values",
-            )
+            )*/
         }
     }
 

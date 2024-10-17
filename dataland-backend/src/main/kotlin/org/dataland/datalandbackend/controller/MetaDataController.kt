@@ -33,7 +33,7 @@ class MetaDataController(
         return ResponseEntity.ok(
             dataMetaInformationManager.searchDataMetaInfo(
                 companyId ?: "",
-                dataType,
+                dataType?.name,
                 showOnlyActive,
                 reportingPeriod,
             ).filter { it.isDatasetViewableByUser(currentUser) }

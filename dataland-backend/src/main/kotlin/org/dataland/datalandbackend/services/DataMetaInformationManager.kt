@@ -6,6 +6,7 @@ import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.repositories.DataMetaInformationRepository
 import org.dataland.datalandbackend.repositories.utils.DataMetaInformationSearchFilter
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
+import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 
@@ -17,6 +18,7 @@ class DataMetaInformationManager(
     @Autowired private val dataMetaInformationRepositoryInterface: DataMetaInformationRepository,
     @Autowired private val companyQueryManager: CompanyQueryManager,
 ) {
+    private val logger = LoggerFactory.getLogger(javaClass)
 
     /**
      * Method to associate data information with a specific company
@@ -80,14 +82,15 @@ class DataMetaInformationManager(
      */
     fun searchDataMetaInfo(
         companyId: String,
-        dataType: DataType?,
+        dataType: String?,
         showOnlyActive: Boolean,
         reportingPeriod: String?,
     ): List<DataMetaInformationEntity> {
         if (companyId != "") {
             companyQueryManager.verifyCompanyIdExists(companyId)
         }
-        val dataTypeFilter = dataType?.name ?: ""
+        val dataTypeFilter = dataType ?: ""
+        logger.info("dataTypeFilter: $dataTypeFilter")
         val reportingPeriodFilter = reportingPeriod ?: ""
         val filter = DataMetaInformationSearchFilter(
             companyIdFilter = companyId,

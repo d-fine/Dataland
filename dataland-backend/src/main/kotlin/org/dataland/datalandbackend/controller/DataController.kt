@@ -80,10 +80,19 @@ abstract class DataController<T>(
         val companyId = metaInfo.company.companyId
         val correlationId = generateCorrelationId(companyId = companyId, dataId = dataId)
         logger.info(logMessageBuilder.getCompanyAssociatedDataMessage(dataId, companyId))
+        logger.info(metaInfo.dataType)
+        logger.info(clazz.simpleName)
+        var data: T? = null
+        data = if (clazz.simpleName == "LksgminiData" || clazz.simpleName == "LksgmediumData") {
+            objectMapper.readValue(dataManager.assembleDataSetFromDataPoints(clazz.simpleName, companyId, metaInfo.reportingPeriod, correlationId), clazz)
+        } else {
+            objectMapper.readValue(dataManager.getPublicDataSet(dataId, dataType, correlationId).data, clazz)
+        }
+
         val companyAssociatedData = CompanyAssociatedData(
             companyId = companyId,
             reportingPeriod = metaInfo.reportingPeriod,
-            data = objectMapper.readValue(dataManager.getPublicDataSet(dataId, dataType, correlationId).data, clazz),
+            data = data
         )
         logger.info(
             logMessageBuilder.getCompanyAssociatedDataSuccessMessage(dataId, companyId, correlationId),
@@ -99,7 +108,7 @@ abstract class DataController<T>(
         val reportingPeriodInLog = reportingPeriod ?: "all reporting periods"
         logger.info(logMessageBuilder.getFrameworkDatasetsForCompanyMessage(dataType, companyId, reportingPeriodInLog))
         val metaInfos = dataMetaInformationManager.searchDataMetaInfo(
-            companyId, dataType, showOnlyActive, reportingPeriod,
+            companyId, dataType.name, showOnlyActive, reportingPeriod,
         )
         val authentication = DatalandAuthentication.fromContextOrNull()
         val listOfFrameworkDataAndMetaInfo = mutableListOf<DataAndMetaInformation<T>>()
