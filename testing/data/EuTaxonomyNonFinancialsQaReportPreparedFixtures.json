@@ -2,36 +2,34 @@
 	{
 		"companyInformation": {
 			"companyName": "eutaxonomy-non-financials-qa-report-with-one-correction",
-			"headquarters": "Port Penelope",
-			"headquartersPostalCode": "85870-8109",
-			"sector": null,
+			"headquarters": "North Wallaceworth",
+			"headquartersPostalCode": "97416-7205",
+			"sector": "metrics",
 			"identifiers": {
-				"Lei": [
-					"5FYj862KJ1egBw0FAvyn"
-				],
+				"Lei": [],
 				"Isin": [
-					"NPQon9hEXd5u"
+					"Q3CoERJfyoUh"
 				],
 				"PermId": [
-					"aP6737HGeU"
+					"hWr3EB4NVC"
 				],
-				"Ticker": [
-					"SWEsdSp"
+				"Ticker": [],
+				"Duns": [],
+				"VatNumber": [
+					"Y0KbP18Xg"
 				],
-				"Duns": [
-					"DbTmfgMyu"
-				],
-				"VatNumber": [],
-				"CompanyRegistrationNumber": []
+				"CompanyRegistrationNumber": [
+					"2ZvCn2oatj9aSG1"
+				]
 			},
-			"countryCode": "GI",
-			"companyContactDetails": null,
+			"countryCode": "GU",
+			"companyContactDetails": [],
 			"companyAlternativeNames": [
-				"Hettinger - Smith",
-				"Huels Inc"
+				"Hilll - Corkery",
+				"Rodriguez Inc"
 			],
-			"companyLegalForm": "Sole Trader",
-			"website": "https://naughty-sheath.biz/",
+			"companyLegalForm": "Limited Liability Partnership (LLP)",
+			"website": null,
 			"isTeaserCompany": false
 		},
 		"t": {
@@ -99,6 +97,6 @@
 				}
 			}
 		},
-		"reportingPeriod": "2022"
+		"reportingPeriod": "2024"
 	}
 ]
