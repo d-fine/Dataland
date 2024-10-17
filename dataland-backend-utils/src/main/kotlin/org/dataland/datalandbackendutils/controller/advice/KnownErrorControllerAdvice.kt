@@ -16,6 +16,7 @@ import org.springframework.web.HttpRequestMethodNotSupportedException
 import org.springframework.web.bind.MethodArgumentNotValidException
 import org.springframework.web.bind.annotation.ControllerAdvice
 import org.springframework.web.bind.annotation.ExceptionHandler
+import org.springframework.web.method.annotation.HandlerMethodValidationException
 import org.springframework.web.servlet.NoHandlerFoundException
 import java.lang.StringBuilder
 
@@ -138,6 +139,23 @@ class KnownErrorControllerAdvice(
                 errorType = "bad-input",
                 summary = "Invalid input",
                 message = stringBuilder.toString(),
+                httpStatus = HttpStatus.BAD_REQUEST,
+            ),
+            ex,
+        )
+    }
+
+    /**
+     * Handles HandlerMethodValidationExceptions. These occur whenever the input of a method is not valid
+     */
+    @ExceptionHandler(HandlerMethodValidationException::class)
+    fun handleMethodValidationException(ex: HandlerMethodValidationException): ResponseEntity<ErrorResponse> {
+        val errorList = ex.allValidationResults.map { it.toString() }
+        return prepareResponse(
+            ErrorDetails(
+                errorType = "bad-input",
+                summary = "Invalid input",
+                message = errorList.takeIf { it.isNotEmpty() }?.joinToString(separator = "; ") ?: "No detailed error message retrieved.",
                 httpStatus = HttpStatus.BAD_REQUEST,
             ),
             ex,

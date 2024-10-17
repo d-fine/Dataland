@@ -907,10 +907,12 @@
           {
             "name": "searchString",
             "in": "query",
+            "description": "Search string used for substring matching. Must be at least 3 characters after trimming.",
             "required": false,
             "schema": {
               "type": "string"
-            }
+            },
+            "example": "Int"
           },
           {
             "name": "dataTypes",
@@ -3135,10 +3137,12 @@
           {
             "name": "searchString",
             "in": "query",
+            "description": "Search string used for substring matching. Must be at least 3 characters after trimming.",
             "required": false,
             "schema": {
               "type": "string"
-            }
+            },
+            "example": "Int"
           },
           {
             "name": "dataTypes",
@@ -3232,10 +3236,12 @@
           {
             "name": "searchString",
             "in": "query",
+            "description": "Search string used for substring matching. Must be at least 3 characters after trimming.",
             "required": true,
             "schema": {
               "type": "string"
-            }
+            },
+            "example": "Int"
           },
           {
             "name": "resultLimit",
@@ -17599,25 +17605,25 @@
         ],
         "type": "object",
         "properties": {
-          "lei": {
-            "type": "string",
-            "nullable": true
-          },
-          "sector": {
-            "type": "string",
-            "nullable": true
-          },
-          "companyName": {
-            "type": "string"
-          },
-          "companyId": {
+          "headquarters": {
             "type": "string"
           },
           "countryCode": {
             "type": "string"
           },
-          "headquarters": {
+          "sector": {
+            "type": "string",
+            "nullable": true
+          },
+          "companyId": {
             "type": "string"
+          },
+          "companyName": {
+            "type": "string"
+          },
+          "lei": {
+            "type": "string",
+            "nullable": true
           }
         }
       },
@@ -17640,10 +17646,10 @@
         ],
         "type": "object",
         "properties": {
-          "companyName": {
+          "companyId": {
             "type": "string"
           },
-          "companyId": {
+          "companyName": {
             "type": "string"
           }
         }
