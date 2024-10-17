@@ -7,9 +7,9 @@
     :required="required"
     :input-class="inputClass"
   >
-    <FormKit type="group" :name="name">
+    <FormKit type="group" name="value">
       <div v-for="activity in activities" :key="activity.key">
-        <NuclearAndGasActivityField :name="name + '.value.' + activity.key" :label="activity.label" :description="activity.description"/>
+        <NuclearAndGasActivityField :name="activity.key" :label="activity.label" :description="activity.description"/>
       </div>
     </FormKit>
   </ExtendedDataPointFormField>

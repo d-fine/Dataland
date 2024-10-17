@@ -1,11 +1,11 @@
 <template>
-  <FormKit type="group" :name="name" :label="label" :description="description">
-    <div class="mb-3">
+  <FormKit type="group" :name="name">
+    <div>
       <UploadFormHeader :label="label !== '' ? `${label} (%)` : ''" :description="description" :is-required="required"/>
       <div class="grid grid-nogutter">
         <PercentageFormField
           :is-required="false"
-          :name="name + '.mitigation'"
+          name="mitigation"
           validation-label="Relative Value"
           validation="number|between:0,100"
           placeholder="Climate Change Mitigation"
@@ -14,7 +14,7 @@
         />
         <PercentageFormField
           :is-required="false"
-          :name="name + '.adaptation'"
+          name="adaptation"
           validation-label="Relative Value"
           validation="number|between:0,100"
           placeholder="Climate Change Adaptation"
@@ -23,7 +23,7 @@
         />
         <PercentageFormField
           :is-required="false"
-          :name="name + 'mitigationAndAdaptation'"
+          name="mitigationAndAdaptation"
           validation-label="Relative Value"
           validation="number|between:0,100"
           placeholder="CCM and CCA"

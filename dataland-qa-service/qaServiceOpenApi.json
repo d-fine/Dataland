@@ -5409,9 +5409,6 @@
             "type": "integer",
             "format": "int64"
           },
-          "dataId": {
-            "type": "string"
-          },
           "companyName": {
             "type": "string"
           },
@@ -5422,6 +5419,9 @@
             "type": "string"
           },
           "framework": {
+            "type": "string"
+          },
+          "dataId": {
             "type": "string"
           }
         }
