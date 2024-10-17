@@ -16,7 +16,7 @@
 </template>
 
 <script lang="ts">
-import {defineComponent} from 'vue'
+import {defineComponent, inject} from 'vue'
 import NuclearAndGasActivityField from "@/components/forms/parts/fields/NuclearAndGasActivityField.vue";
 import ExtendedDataPointFormField from "@/components/forms/parts/elements/basic/ExtendedDataPointFormField.vue";
 import {BaseFormFieldProps} from "@/components/forms/parts/fields/FormFieldProps";

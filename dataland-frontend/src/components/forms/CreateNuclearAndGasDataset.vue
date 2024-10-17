@@ -25,7 +25,7 @@
               <div class="col-9 form-field formFields uploaded-files">
                 <UploadFormHeader
                   :label="'Reporting Period'"
-                  :description="'The reporting period the dataset belongs to (e.g. a fiscal year).'"
+                  :description="'The year for which the data is reported.'"
                   :is-required="true"
                 />
                 <div class="lg:col-4 md:col-6 col-12 pl-0">
@@ -39,13 +39,13 @@
                     validation="required"
                   />
                 </div>
-
                 <FormKit type="hidden" :modelValue="reportingPeriodYear.toString()" name="reportingPeriod"/>
               </div>
             </div>
 
             <FormKit type="group" name="data" label="data">
-              <div
+              <FormKit
+                type="group"
                 v-for="category in nuclearAndGasDataModel"
                 :key="category.name"
                 :label="category.label"
@@ -70,7 +70,7 @@
                         :name="subcategory.name"
                       >
                         <component
-                          v-if="field.showIf(companyAssociatedNuclearAndGasData.data)"
+                          v-if="field.showIf(companyAssociatedNuclearAndGasData.data as NuclearAndGasData)"
                           :is="field.component"
                           :label="field.label"
                           :placeholder="field.placeholder"
@@ -91,7 +91,7 @@
                     </div>
                   </template>
                 </div>
-              </div>
+              </FormKit>
             </FormKit>
           </FormKit>
         </div>
@@ -122,7 +122,6 @@
   </Card>
 </template>
 <script lang="ts">
-
 import {FormKit} from '@formkit/vue';
 import {ApiClientProvider} from '@/services/ApiClients';
 import Card from 'primevue/card';
@@ -132,7 +131,6 @@ import {assertDefined} from '@/utils/TypeScriptUtils';
 import Tooltip from 'primevue/tooltip';
 import PrimeButton from 'primevue/button';
 import UploadFormHeader from '@/components/forms/parts/elements/basic/UploadFormHeader.vue';
-import YesNoFormField from '@/components/forms/parts/fields/YesNoFormField.vue';
 import Calendar from 'primevue/calendar';
 import SuccessMessage from '@/components/messages/SuccessMessage.vue';
 import FailMessage from '@/components/messages/FailMessage.vue';
@@ -145,44 +143,23 @@ import {
 } from '@clients/backend';
 import {useRoute} from 'vue-router';
 import {checkCustomInputs, checkIfAllUploadedReportsAreReferencedInDataModel} from '@/utils/ValidationUtils';
-import NaceCodeFormField from '@/components/forms/parts/fields/NaceCodeFormField.vue';
-import InputTextFormField from '@/components/forms/parts/fields/InputTextFormField.vue';
-import FreeTextFormField from '@/components/forms/parts/fields/FreeTextFormField.vue';
-import NumberFormField from '@/components/forms/parts/fields/NumberFormField.vue';
 import DateFormField from '@/components/forms/parts/fields/DateFormField.vue';
-import SingleSelectFormField from '@/components/forms/parts/fields/SingleSelectFormField.vue';
-import MultiSelectFormField from '@/components/forms/parts/fields/MultiSelectFormField.vue';
-import AddressFormField from '@/components/forms/parts/fields/AddressFormField.vue';
-import RadioButtonsFormField from '@/components/forms/parts/fields/RadioButtonsFormField.vue';
 import SubmitButton from '@/components/forms/parts/SubmitButton.vue';
 import SubmitSideBar from '@/components/forms/parts/SubmitSideBar.vue';
-import YesNoNaFormField from '@/components/forms/parts/fields/YesNoNaFormField.vue';
 import UploadReports from '@/components/forms/parts/UploadReports.vue';
-import PercentageFormField from '@/components/forms/parts/fields/PercentageFormField.vue';
-import ProductionSitesFormField from '@/components/forms/parts/fields/ProductionSitesFormField.vue';
 import {objectDropNull, type ObjectType} from '@/utils/UpdateObjectUtils';
 import {smoothScroll} from '@/utils/SmoothScroll';
-import MostImportantProductsFormField from '@/components/forms/parts/fields/MostImportantProductsFormField.vue';
-import {type Subcategory} from '@/utils/GenericFrameworkTypes';
-import ProcurementCategoriesFormField from '@/components/forms/parts/fields/ProcurementCategoriesFormField.vue';
+import type {FrameworkData, Subcategory} from '@/utils/GenericFrameworkTypes';
 import {createSubcategoryVisibilityMap} from '@/utils/UploadFormUtils';
-import HighImpactClimateSectorsFormField from '@/components/forms/parts/fields/HighImpactClimateSectorsFormField.vue';
 import {formatAxiosErrorMessage} from '@/utils/AxiosErrorMessageFormatter';
-import IntegerExtendedDataPointFormField from '@/components/forms/parts/fields/IntegerExtendedDataPointFormField.vue';
-import BigDecimalExtendedDataPointFormField
-  from '@/components/forms/parts/fields/BigDecimalExtendedDataPointFormField.vue';
-import CurrencyDataPointFormField from '@/components/forms/parts/fields/CurrencyDataPointFormField.vue';
 import YesNoExtendedDataPointFormField from '@/components/forms/parts/fields/YesNoExtendedDataPointFormField.vue';
-import YesNoBaseDataPointFormField from '@/components/forms/parts/fields/YesNoBaseDataPointFormField.vue';
-import YesNoNaBaseDataPointFormField from '@/components/forms/parts/fields/YesNoNaBaseDataPointFormField.vue';
 import BaseDataPointFormField from '@/components/forms/parts/elements/basic/BaseDataPointFormField.vue';
 import {getFilledKpis} from '@/utils/DataPoint';
 import {type PublicFrameworkDataApi} from '@/utils/api/UnifiedFrameworkDataApi';
 import {getBasePublicFrameworkDefinition} from '@/frameworks/BasePublicFrameworkRegistry';
 import {hasUserCompanyOwnerOrDataUploaderRole} from '@/utils/CompanyRolesUtils';
-import {type DocumentToUpload, uploadFiles} from "@/utils/FileUploadUtils";
+import {type DocumentToUpload, getAvailableFileNames, uploadFiles} from "@/utils/FileUploadUtils";
 import NuclearAndGasFormElement from "@/components/forms/parts/elements/derived/NuclearAndGasFormElement.vue";
-import NuclearAndGasActivityField from "@/components/forms/parts/fields/NuclearAndGasActivityField.vue";
 
 const referenceableReportsFieldId = 'referenceableReports';
 
@@ -204,31 +181,10 @@ export default defineComponent({
     Card,
     PrimeButton,
     Calendar,
-    InputTextFormField,
-    FreeTextFormField,
-    NumberFormField,
     DateFormField,
-    SingleSelectFormField,
-    MultiSelectFormField,
-    NaceCodeFormField,
-    AddressFormField,
-    RadioButtonsFormField,
-    PercentageFormField,
-    ProductionSitesFormField,
-    MostImportantProductsFormField,
-    ProcurementCategoriesFormField,
     NuclearAndGasFormElement,
-    NuclearAndGasActivityField,
     UploadReports,
-    HighImpactClimateSectorsFormField,
-    IntegerExtendedDataPointFormField,
-    BigDecimalExtendedDataPointFormField,
-    CurrencyDataPointFormField,
-    YesNoFormField,
-    YesNoNaFormField,
-    YesNoBaseDataPointFormField,
-    YesNoNaBaseDataPointFormField,
-    YesNoExtendedDataPointFormField,
+    YesNoExtendedDataPointFormField
   },
   directives: {
     tooltip: Tooltip,
@@ -238,7 +194,6 @@ export default defineComponent({
     return {
       formId: 'createNuclearAndGasForm',
       waitingForData: true,
-      dataDate: undefined as Date | undefined,
       companyAssociatedNuclearAndGasData: {} as CompanyAssociatedDataNuclearAndGasData,
       nuclearAndGasDataModel,
       route: useRoute(),
@@ -248,14 +203,13 @@ export default defineComponent({
       postNuclearAndGasDataProcessed: false,
       messageCounter: 0,
       checkCustomInputs,
-      documentsToUpload: [] as DocumentToUpload[],
       referencedReportsForPrefill: {} as { [key: string]: CompanyReport },
       namesAndReferencesOfAllCompanyReportsForTheDataset: {},
       reportingPeriod: undefined as undefined | Date,
       listOfFilledKpis: [] as Array<string>,
       fieldSpecificDocuments: new Map<string, DocumentToUpload[]>(),
 
-    };
+    }
   },
   computed: {
     reportingPeriodYear(): number {
@@ -264,8 +218,13 @@ export default defineComponent({
       }
       return 0;
     },
+    namesOfAllCompanyReportsForTheDataset(): string[] {
+      return getAvailableFileNames(this.namesAndReferencesOfAllCompanyReportsForTheDataset);
+    },
     subcategoryVisibility(): Map<Subcategory, boolean> {
-      return createSubcategoryVisibilityMap(this.nuclearAndGasDataModel, this.companyAssociatedNuclearAndGasData.data);
+      return createSubcategoryVisibilityMap(this.nuclearAndGasDataModel,
+        this.companyAssociatedNuclearAndGasData.data as FrameworkData
+      );
     },
   },
   props: {
@@ -277,7 +236,7 @@ export default defineComponent({
   created() {
     const dataId = this.route.query.templateDataId;
     if (dataId && typeof dataId === 'string') {
-      void this.loadNuclearAndGasData(dataId);
+      this.loadNuclearAndGasData(dataId);
     } else {
       this.waitingForData = false;
     }
@@ -291,13 +250,13 @@ export default defineComponent({
      * Builds an api to get and upload Nuclear and Gas data
      * @returns the api
      */
-    buildNuclearAndGasDataApi(): PublicFrameworkDataApi<NuclearAndGasData> | undefined {
-      console.log('bin in buildNuclearAndGasDataApi')
+    buildNuclearAndGasDataApi(): PublicFrameworkDataApi<NuclearAndGasData> | null {
       const apiClientProvider = new ApiClientProvider(assertDefined(this.getKeycloakPromise)());
       const frameworkDefinition = getBasePublicFrameworkDefinition(DataTypeEnum.NuclearAndGas);
       if (frameworkDefinition) {
         return frameworkDefinition.getPublicFrameworkApiClient(undefined, apiClientProvider.axiosInstance);
       }
+      return null;
     },
 
     /**
@@ -306,17 +265,16 @@ export default defineComponent({
      * @param dataId the id of the dataset to load
      */
     async loadNuclearAndGasData(dataId: string): Promise<void> {
-      console.log('bin in loadNuclearAndGasData')
       this.waitingForData = true;
-      const NuclearAndGasDataControllerApi = this.buildNuclearAndGasDataApi();
-      const dataResponse = await NuclearAndGasDataControllerApi!.getFrameworkData(dataId);
-      const NuclearAndGasResponseData = dataResponse.data;
-      this.listOfFilledKpis = getFilledKpis(NuclearAndGasResponseData);
-      if (NuclearAndGasResponseData?.reportingPeriod) {
-        this.reportingPeriod = new Date(NuclearAndGasResponseData.reportingPeriod);
+      const nuclearAndGasDataControllerApi = this.buildNuclearAndGasDataApi();
+      if (nuclearAndGasDataControllerApi) {
+        const dataResponse = await nuclearAndGasDataControllerApi.getFrameworkData(dataId);
+        const nuclearAndGasResponseData = dataResponse.data;
+        this.listOfFilledKpis = getFilledKpis(nuclearAndGasResponseData.data);
+        this.referencedReportsForPrefill = nuclearAndGasResponseData.data?.general?.general?.referencedReports ?? {};
+        this.companyAssociatedNuclearAndGasData = objectDropNull(nuclearAndGasResponseData) as CompanyAssociatedDataNuclearAndGasData;
+        this.waitingForData = false;
       }
-      this.companyAssociatedNuclearAndGasData = objectDropNull(NuclearAndGasResponseData);
-      this.waitingForData = false;
     },
     /**
      * Sends data to add NuclearAndGas data
@@ -324,27 +282,28 @@ export default defineComponent({
     async postNuclearAndGasData(): Promise<void> {
       this.messageCounter++;
       try {
-        if (this.documentsToUpload.length > 0) {
+        if (this.fieldSpecificDocuments.get(referenceableReportsFieldId)?.length) {
           checkIfAllUploadedReportsAreReferencedInDataModel(
             this.companyAssociatedNuclearAndGasData.data as ObjectType,
-            Object.keys(this.namesAndReferencesOfAllCompanyReportsForTheDataset)
+            this.namesOfAllCompanyReportsForTheDataset
           );
-
-          await uploadFiles(this.documentsToUpload, assertDefined(this.getKeycloakPromise));
         }
-        const NuclearAndGasDataControllerApi = this.buildNuclearAndGasDataApi();
+        const documentsToUpload = Array.from(this.fieldSpecificDocuments.values()).flat();
+        await uploadFiles(documentsToUpload, assertDefined(this.getKeycloakPromise));
+
+        const nuclearAndGasDataControllerApi = this.buildNuclearAndGasDataApi();
 
         const isCompanyOwnerOrDataUploader = await hasUserCompanyOwnerOrDataUploaderRole(
           this.companyAssociatedNuclearAndGasData.companyId,
           this.getKeycloakPromise
         );
 
-        await NuclearAndGasDataControllerApi!.postFrameworkData(
+        await nuclearAndGasDataControllerApi?.postFrameworkData(
           this.companyAssociatedNuclearAndGasData,
-          isCompanyOwnerOrDataUploader);
+          isCompanyOwnerOrDataUploader
+        );
 
         this.$emit('datasetCreated');
-        this.dataDate = undefined;
         this.message = 'Upload successfully executed.';
         this.uploadSucceded = true;
       } catch (error) {
