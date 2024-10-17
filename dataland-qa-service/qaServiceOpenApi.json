@@ -5402,6 +5402,9 @@
         ],
         "type": "object",
         "properties": {
+          "message": {
+            "type": "string"
+          },
           "receptionTime": {
             "type": "integer",
             "format": "int64"
@@ -5409,13 +5412,10 @@
           "dataId": {
             "type": "string"
           },
-          "companyId": {
-            "type": "string"
-          },
           "companyName": {
             "type": "string"
           },
-          "message": {
+          "companyId": {
             "type": "string"
           },
           "reportingPeriod": {

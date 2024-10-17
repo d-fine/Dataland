@@ -112,7 +112,28 @@ export const nuclearAndGasDataModel = [
       {
         name: 'taxonomyAlignedNumerator',
         label: 'Taxonomy-aligned (numerator)',
-        fields: [],
+        fields: [
+          {
+            name: 'nuclearAndGasTaxonomyAlignedRevenueNumerator',
+            label: 'Nuclear and Gas Taxonomy-aligned Revenue (numerator)',
+            description:
+              'Proportion of Taxonomy-aligned Economic Activity referred to in Sections 4.26 to 4.31 of Annexes I and II to Delegated Regulation 2021/2139 in the Numerator of the applicable KPI - Revenue-based',
+
+            component: 'NuclearAndGasFormElement',
+            required: false,
+            showIf: (): boolean => true,
+          },
+          {
+            name: 'nuclearAndGasTaxonomyAlignedCapexNumerator',
+            label: 'Nuclear and Gas Taxonomy-aligned CapEx (numerator)',
+            description:
+              'Proportion of Taxonomy-aligned Economic Activity referred to in Sections 4.26 to 4.31 of Annexes I and II to Delegated Regulation 2021/2139 in the Numerator of the applicable KPI - CapEx-based',
+
+            component: 'NuclearAndGasFormElement',
+            required: false,
+            showIf: (): boolean => true,
+          },
+        ],
       },
       {
         name: 'taxonomyEligibleButNotAligned',
