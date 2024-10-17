@@ -260,7 +260,7 @@ interface CompanyApi {
     ): ResponseEntity<StoredCompany>
 
     /**
-     * A method to update company informtion for one specific company identified by its company Id
+     * A method to update company information for one specific company identified by its company Id
      * @param companyId identifier of the company in dataland
      * @param companyInformationPatch includes the company information
      * @return updated information about the company
