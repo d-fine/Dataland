@@ -9,10 +9,9 @@ import kotlin.reflect.KClass
 /**
  * A custom validation annotation that checks the length of a string after trimming whitespace.
  *
- * Validates that the trimmed string's length is between [min] and [max] inclusive.
+ * Validates that the trimmed string's length is at least [min].
  *
  * @property min The minimum allowed length of the trimmed string.
- * @property max The maximum allowed length of the trimmed string.
  * @property message The error message to display if validation fails.
  * @property groups Allows specification of validation groups.
  * @property payload Can be used by clients to assign custom payload objects to a constraint.
@@ -30,11 +29,10 @@ annotation class MinimumTrimmedSize(
 /**
  * A validator that implements the validation logic for the [MinimumTrimmedSize] annotation.
  *
- * Checks if the trimmed string length is within the specified [min] and [max] bounds.
+ * Checks if the trimmed string length is at least [min].
  */
 class TrimmedSizeValidator : ConstraintValidator<MinimumTrimmedSize, String?> {
     private var min: Int = 0
-    private var max: Int = Int.MAX_VALUE
 
     /**
      * Initializes the validator with the annotation parameters.
@@ -57,6 +55,6 @@ class TrimmedSizeValidator : ConstraintValidator<MinimumTrimmedSize, String?> {
         context: ConstraintValidatorContext,
     ): Boolean {
         if (value.isNullOrEmpty()) return true
-        return value.trim().length in min..max
+        return value.trim().length >= min
     }
 }

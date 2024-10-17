@@ -153,4 +153,21 @@ internal class CompanyDataControllerTest(
 
         assertTrue(violations.isEmpty())
     }
+
+    @Test
+    fun `getCompanies should pass validation when searchString null or empty`() {
+        val method = CompanyDataController::getCompaniesBySearchString.javaMethod!!
+        val parametersList = arrayOf(arrayOf("", 100), arrayOf(null, 100))
+
+        for (parameters in parametersList) {
+            val violations =
+                validator.forExecutables().validateParameters(
+                    companyController,
+                    method,
+                    parameters,
+                )
+
+            assertTrue(violations.isEmpty())
+        }
+    }
 }
