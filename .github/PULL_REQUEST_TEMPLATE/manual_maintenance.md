@@ -23,15 +23,18 @@ consult the internal Dataland Wiki.
   3. Execute the following snippet of code (requires python): `curl http://localhost:8080/api/v1/client-controller/openapi | sed 's/\(example: \)\([^ ]*\)/\1"\2"/g' | python -c 'import sys, yaml, json; print(json.dumps(yaml.safe_load(sys.stdin.read()), indent=2))' > ./eurodatClientOpenApi.json`
   4. If there are changes to `eurodatClientOpenApi.json`, discuss with the team how to proceed
 
-## Server updates
+## Server maintenance
 
 Note: Before applying any update to any server make sure that a backup exists. In case of prod, create a fresh backup just
 before applying any changes and align with the team when to apply them.
 
-Start the update with one of the dev servers (preferably dev2 or dev3) and deploy to it afterwards. If everything was
-fine, proceed with other servers.
+On all servers to the following:
+- Execute `sudo apt-get update && sudo apt-get upgrade` to update the server
+- Execute `sudo docker system prune -a` to clean up unused docker components and liberate disk space
+- Check for new ubuntu releases and install them if available with `sudo do-release-upgrade` (see internal documentation for details) 
 
-Execute `sudo apt-get update && sudo apt-get upgrade` on
+Start the process with one of the dev servers (preferably dev2 or dev3) and deploy to it afterwards. If everything was
+fine, proceed with other servers.
 
 - [ ] dev1.dataland.com
 - [ ] dev2.dataland.com
@@ -41,7 +44,7 @@ Execute `sudo apt-get update && sudo apt-get upgrade` on
 - [ ] dataland.com (align beforehand)
 
 If the updates require a reboot (for e.g. a kernel update), you can restart the machine with `sudo reboot`.
-However, for dataland.com, you may want to avoid any interruption and schedule the reboot at the night with `sudo shutdown -r 02:00`.
+However, for dataland.com, you may want to avoid any interruption and schedule the reboot during the night with `sudo shutdown -r 02:00`.
 
 ## ssh-keys maintenance
 
