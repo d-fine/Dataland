@@ -2,7 +2,8 @@
  * Formats a NuclearAndGas component for display in the multi-layer-data-table.
  * @param input the list of nuclear and gas economic activities
  * @param fieldLabel the label of the respective field in the framework
- * @returns the display object for the multi-layer-data-table to render a modal to display the non-aligned activities
+ * @returns the display object for the multi-layer-data-table to render a modal to display the
+ * nuclear and gas economic activities.
  */
 import {
   AvailableMLDTDisplayObjectTypes,
@@ -10,7 +11,7 @@ import {
   type MLDTDisplayObject,
   MLDTDisplayObjectForEmptyString,
 } from '@/components/resources/dataTable/MultiLayerDataTableCellDisplayer';
-import TaxonomyShareDataTable from '@/components/general/TaxonomyShareDataTable.vue';
+import NuclearAndGasDataTable from '@/components/general/NuclearAndGasDataTable.vue';
 import type {
   ExtendedDataPointNuclearAndGasAlignedDenominator,
   ExtendedDataPointNuclearAndGasAlignedNumerator,
@@ -51,11 +52,11 @@ export function formatNuclearAndGasTaxonomyShareDataForTable(
       ).length;
     }
 
-    return <MLDTDisplayObject<MLDTDisplayComponentName.ModalLinkDisplayComponent>>{
-      displayComponentName: MLDTDisplayComponentName.ModalLinkDisplayComponent,
+    return <MLDTDisplayObject<MLDTDisplayComponentName.ModalLinkWithDataSourceDisplayComponent>>{
+      displayComponentName: MLDTDisplayComponentName.ModalLinkWithDataSourceDisplayComponent,
       displayValue: {
         label: `Show ${activityCount} activit${activityCount > 1 ? 'ies' : 'y'}`,
-        modalComponent: TaxonomyShareDataTable,
+        modalComponent: NuclearAndGasDataTable,
         modalOptions: {
           props: {
             header: fieldLabel,
@@ -65,6 +66,11 @@ export function formatNuclearAndGasTaxonomyShareDataForTable(
           data: {
             label: fieldLabel,
             input: nuclearAndGasData.value,
+            dataPointDisplay: {
+              dataSource: nuclearAndGasData.dataSource,
+              comment: nuclearAndGasData.comment,
+              quality: nuclearAndGasData.quality,
+            },
           },
         },
       },
