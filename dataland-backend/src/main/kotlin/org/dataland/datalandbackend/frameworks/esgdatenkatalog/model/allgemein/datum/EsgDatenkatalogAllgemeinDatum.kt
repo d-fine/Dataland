@@ -7,5 +7,5 @@ import java.time.LocalDate
  * The data-model for the Datum section
  */
 data class EsgDatenkatalogAllgemeinDatum(
-    val gueltigkeitsDatum: LocalDate? = null,
+    val gueltigkeitsdatum: LocalDate? = null,
 )

@@ -15545,7 +15545,7 @@
       "EsgDatenkatalogAllgemeinDatum": {
         "type": "object",
         "properties": {
-          "gueltigkeitsDatum": {
+          "gueltigkeitsdatum": {
             "type": "string",
             "format": "date",
             "nullable": true
@@ -15632,7 +15632,7 @@
       "EsgDatenkatalogAllgemeinGenerelleEsgStrategie": {
         "type": "object",
         "properties": {
-          "nachhaltigkeitsstrategie": {
+          "nachhaltigkeitsstrategieVorhanden": {
             "nullable": true,
             "allOf": [
               {
@@ -16494,19 +16494,19 @@
             "type": "string",
             "nullable": true
           },
-          "zielReduzierungTreibhausgasemmissionen2030": {
+          "zielReduzierungTreibhausgasemissionen2030": {
             "type": "number",
             "nullable": true
           },
-          "zielReduzierungTreibhausgasemmissionen2040": {
+          "zielReduzierungTreibhausgasemissionen2040": {
             "type": "number",
             "nullable": true
           },
-          "zielReduzierungTreibhausgasemmissionen2050": {
+          "zielReduzierungTreibhausgasemissionen2050": {
             "type": "number",
             "nullable": true
           },
-          "zielReduzierungTreibhausgasemmissionenErlaeuterungen": {
+          "zielReduzierungTreibhausgasemissionenErlaeuterungen": {
             "type": "string",
             "nullable": true
           },

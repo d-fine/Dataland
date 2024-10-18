@@ -42,7 +42,7 @@ class EsgDatenkatalogFramework :
     private fun overwriteFakeFixtureGenerationForDataDate(framework: Framework) {
         framework.root.edit<ComponentGroup>("allgemein") {
             edit<ComponentGroup>("datum") {
-                edit<DateComponent>("gueltigkeitsDatum") {
+                edit<DateComponent>("gueltigkeitsdatum") {
                     fixtureGeneratorGenerator = {
                         it.addAtomicExpression(
                             identifier,

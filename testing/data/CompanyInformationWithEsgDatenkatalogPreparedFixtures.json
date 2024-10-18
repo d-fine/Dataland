@@ -36,10 +36,10 @@
 		"t": {
 			"allgemein": {
 				"datum": {
-					"gueltigkeitsDatum": "2024-08-19"
+					"gueltigkeitsdatum": "2024-08-19"
 				},
 				"generelleEsgStrategie": {
-					"nachhaltigkeitsstrategie": "Yes",
+					"nachhaltigkeitsstrategieVorhanden": "Yes",
 					"dokumenteZurNachhaltigkeitsstrategie": [
 						{
 							"value": "mindshare",
@@ -288,10 +288,10 @@
 					"physischeRisiken": "Quasi adipiscor caecus adfero tunc. Solio cerno ocer aqua. Demum cibus asporto supra.",
 					"produkteZurReduzierungDerUmweltbelastung": "Yes",
 					"skizzierungDerProdukteZurReduzierungDerUmweltbelastung": "Apto caritas sumptus tricesimus advoco speculum spiritus sollicito corporis tricesimus. Articulus appositus vita crebro certe pax uterque error. Umbra derelinquo damnatio spectaculum triduana adulescens ascit thalassinus tribuo dedecor.",
-					"zielReduzierungTreibhausgasemmissionen2030": 36.35,
-					"zielReduzierungTreibhausgasemmissionen2040": 70.57,
-					"zielReduzierungTreibhausgasemmissionen2050": 99.79,
-					"zielReduzierungTreibhausgasemmissionenErlaeuterungen": "Absconditus amicitia confero comitatus tertius comitatus dens cubicularis utique coniecto. Angustus dolore timidus corona ex virtus velit derelinquo. Vociferor ancilla calculus tutis.",
+					"zielReduzierungTreibhausgasemissionen2030": 36.35,
+					"zielReduzierungTreibhausgasemissionen2040": 70.57,
+					"zielReduzierungTreibhausgasemissionen2050": 99.79,
+					"zielReduzierungTreibhausgasemissionenErlaeuterungen": "Absconditus amicitia confero comitatus tertius comitatus dens cubicularis utique coniecto. Angustus dolore timidus corona ex virtus velit derelinquo. Vociferor ancilla calculus tutis.",
 					"kompensationsinstrumenteTreibhausgasemissionen": "Yes",
 					"zertifizierungenBezueglichKompensationinstrumenten": "Textilis arma utilis. Aggredior anser textus conturbo ante comparo spiculum. Bos concido dolor ambitus desolo.",
 					"zielAnteilErneuerbarerEnergien2030": 51.04,

@@ -14,9 +14,9 @@ export const esgDatenkatalogDataModel = [
         label: 'Datum',
         fields: [
           {
-            name: 'gueltigkeitsDatum',
-            label: '(Gültigkeits) Datum',
-            description: 'Datum bis wann die Information gültig ist',
+            name: 'gueltigkeitsdatum',
+            label: 'Gültigkeitsdatum',
+            description: 'Datum, bis wann die Information gültig ist.',
 
             component: 'DateFormField',
             required: false,
@@ -29,8 +29,8 @@ export const esgDatenkatalogDataModel = [
         label: 'Generelle ESG-Strategie',
         fields: [
           {
-            name: 'nachhaltigkeitsstrategie',
-            label: 'Nachhaltigkeitsstrategie',
+            name: 'nachhaltigkeitsstrategieVorhanden',
+            label: 'Nachhaltigkeitsstrategie vorhanden',
             description: 'Verfügt das Unternehmen über eine Nachhaltigkeitsstrategie?',
 
             component: 'YesNoFormField',
@@ -46,22 +46,22 @@ export const esgDatenkatalogDataModel = [
             component: 'ListOfBaseDataPointsFormField',
             required: false,
             showIf: (dataset: EsgDatenkatalogData): boolean =>
-              dataset.allgemein?.generelleEsgStrategie?.nachhaltigkeitsstrategie == 'Yes',
+              dataset.allgemein?.generelleEsgStrategie?.nachhaltigkeitsstrategieVorhanden == 'Yes',
           },
           {
             name: 'massnahmenZurErreichungDes15GradCelsiusZiels',
             label: 'Maßnahmen zur Erreichung des 1,5 Grad Celsius Ziels',
-            description: 'Werden spezielle Ziele / Maßnahmen ergriffen, um das 1,5 °C Ziel zu erreichen?',
+            description: 'Werden spezielle Ziele/Maßnahmen ergriffen, um das 1,5 °C Ziel zu erreichen?',
 
             component: 'YesNoFormField',
             required: false,
             showIf: (dataset: EsgDatenkatalogData): boolean =>
-              dataset.allgemein?.generelleEsgStrategie?.nachhaltigkeitsstrategie == 'Yes',
+              dataset.allgemein?.generelleEsgStrategie?.nachhaltigkeitsstrategieVorhanden == 'Yes',
           },
           {
             name: 'skizzierungVonMassnahmenZurErreichungDes15GradCelsiusZiels',
             label: 'Skizzierung von Maßnahmen zur Erreichung des 1,5 Grad Celsius Ziels',
-            description: 'Skizzieren Sie spezielle Ziele / Maßnahmen, um das 1,5°C Ziel zu erreichen.',
+            description: 'Skizzieren Sie spezielle Ziele / Maßnahmen, um das 1,5 °C Ziel zu erreichen.',
 
             component: 'FreeTextFormField',
             required: false,
@@ -207,7 +207,7 @@ export const esgDatenkatalogDataModel = [
           },
           {
             name: 'anteilTaxonomiefaehigerUmsatz',
-            label: 'Anteil Taxonomiefähiger Umsatz',
+            label: 'Anteil taxonomiefähiger Umsatz',
             description: 'Geben Sie den prozentualen Anteil der taxonomiefähigen Umsätze an.',
 
             unit: '%',
@@ -218,7 +218,7 @@ export const esgDatenkatalogDataModel = [
           },
           {
             name: 'anteilTaxonomiekonformerUmsatz',
-            label: 'Anteil Taxonomiekonformer Umsatz',
+            label: 'Anteil taxonomiekonformer Umsatz',
             description: 'Geben Sie den prozentualen Anteil der taxonomiekonformen Umsätze an.',
 
             unit: '%',
@@ -262,7 +262,7 @@ export const esgDatenkatalogDataModel = [
           },
           {
             name: 'anteilTaxonomiefaehigerCapex',
-            label: 'Anteil Taxonomiefähiger CapEx',
+            label: 'Anteil taxonomiefähiger CapEx',
             description: 'Geben Sie den prozentualen Anteil der taxonomiefähigen Umsätze an.',
 
             unit: '%',
@@ -273,7 +273,7 @@ export const esgDatenkatalogDataModel = [
           },
           {
             name: 'anteilTaxonomiekonformerCapex',
-            label: 'Anteil Taxonomiekonformer CapEx',
+            label: 'Anteil taxonomiekonformer CapEx',
             description: 'Geben Sie den prozentualen Anteil der taxonomiekonformen Umsätze an.',
 
             unit: '%',
@@ -865,7 +865,7 @@ export const esgDatenkatalogDataModel = [
             description:
               'Wie hoch waren die Scope 1 Treibhausgasemissionen des Unternehmens im letzten abgeschlossenen Geschäftsjahr (in tCO2eq)? Der Scope 1 umfasst alle direkten Treibhausgasemissionen aus eigenen Anlagen des Unternehmens sowie von ihm kontrollierten Anlagen.',
 
-            unit: 'tCO²eq',
+            unit: 'tCO2eq',
             component: 'NumberFormField',
             required: false,
             showIf: (): boolean => true,
@@ -877,7 +877,7 @@ export const esgDatenkatalogDataModel = [
             description:
               'Wie hoch waren die marktbasiert berechneten Scope 2 Treibhausgasemissionen des Unternehmens im letzten abgeschlossenen Geschäftsjahr (in tCO2eq)? Der Scope 2 umfasst indirekte Treibhausgasemissionen, die im Rahmen der Erzeugung des vom Unternehmen verbrauchten Stroms, Dampf, Wärme und Kälte entstehen.',
 
-            unit: 'tCO²eq',
+            unit: 'tCO2eq',
             component: 'NumberFormField',
             required: false,
             showIf: (): boolean => true,
@@ -889,7 +889,7 @@ export const esgDatenkatalogDataModel = [
             description:
               'Wie hoch waren die standortbasiert berechneten Scope 2 Treibhausgasemissionen des Unternehmens im letzten abgeschlossenen Geschäftsjahr (in tCO2eq)? Der Scope 2 umfasst indirekte Treibhausgasemissionen, die im Rahmen der Erzeugung des vom Unternehmen verbrauchten Stroms, Dampf, Wärme und Kälte entstehen.',
 
-            unit: 'tCO²eq',
+            unit: 'tCO2eq',
             component: 'NumberFormField',
             required: false,
             showIf: (): boolean => true,
@@ -901,7 +901,7 @@ export const esgDatenkatalogDataModel = [
             description:
               'Wie hoch waren die Scope 3 Treibhausgasemissionen des Unternehmens im letzten abgeschlossenen Geschäftsjahr (in tCO2eq)? Der Scope 3 umfasst alle sonstigen indirekten Treibhausgasemissionen, bspw. Emissionen die in der Herstellung und im Transport zugekaufter Güter (einschließlich Immobilien), in der Distribution oder Nutzung eigener Produkte oder in der Abfallentsorgung entstehen. Es ist die vor- und nachgelagerte Wertschöpfungskette zu betrachten. ',
 
-            unit: 'tCO²eq',
+            unit: 'tCO2eq',
             component: 'NumberFormField',
             required: false,
             showIf: (): boolean => true,
@@ -913,7 +913,7 @@ export const esgDatenkatalogDataModel = [
             description:
               'Welche CO²-Intensität berechnet sich für das Unternehmen? Hierzu die Treibhausgasemissionen nach Scope 1 bis 3 addieren und durch den Gesamtumsatz des Unternehmens teilen. Daraus ergibt sich die CO²-Intensität in der Einheit tCO²eq pro Euro Umsatz.',
 
-            unit: 'tCO²eq/€',
+            unit: 'tCO2eq/€',
             component: 'NumberFormField',
             required: false,
             showIf: (): boolean => true,
@@ -1237,8 +1237,8 @@ export const esgDatenkatalogDataModel = [
               dataset.umwelt?.risikenUndMassnahmenKlima?.produkteZurReduzierungDerUmweltbelastung == 'Yes',
           },
           {
-            name: 'zielReduzierungTreibhausgasemmissionen2030',
-            label: 'Ziel Reduzierung Treibhausgasemmissionen 2030',
+            name: 'zielReduzierungTreibhausgasemissionen2030',
+            label: 'Ziel Reduzierung Treibhausgasemissionen 2030',
             description:
               'Welche Zielsetzung verfolgt das Unternehmen bei der Reduzierung seiner Treibhausgasemissionen für 2030?',
 
@@ -1249,8 +1249,8 @@ export const esgDatenkatalogDataModel = [
             validation: 'between:0,100',
           },
           {
-            name: 'zielReduzierungTreibhausgasemmissionen2040',
-            label: 'Ziel Reduzierung Treibhausgasemmissionen 2040',
+            name: 'zielReduzierungTreibhausgasemissionen2040',
+            label: 'Ziel Reduzierung Treibhausgasemissionen 2040',
             description:
               'Welche Zielsetzung verfolgt das Unternehmen bei der Reduzierung seiner Treibhausgasemissionen für 2040? Optionale Angabe.',
 
@@ -1261,8 +1261,8 @@ export const esgDatenkatalogDataModel = [
             validation: 'between:0,100',
           },
           {
-            name: 'zielReduzierungTreibhausgasemmissionen2050',
-            label: 'Ziel Reduzierung Treibhausgasemmissionen 2050',
+            name: 'zielReduzierungTreibhausgasemissionen2050',
+            label: 'Ziel Reduzierung Treibhausgasemissionen 2050',
             description:
               'Welche Zielsetzung verfolgt das Unternehmen bei der Reduzierung seiner Treibhausgasemissionen für 2050? Optionale Angabe.',
 
@@ -1273,8 +1273,8 @@ export const esgDatenkatalogDataModel = [
             validation: 'between:0,100',
           },
           {
-            name: 'zielReduzierungTreibhausgasemmissionenErlaeuterungen',
-            label: 'Ziel Reduzierung Treibhausgasemmissionen Erläuterungen',
+            name: 'zielReduzierungTreibhausgasemissionenErlaeuterungen',
+            label: 'Ziel Reduzierung Treibhausgasemissionen Erläuterungen',
             description:
               'Bitte die Zielsetzung konkretisieren, inkl. Zielwerte, Zwischenziele und zugrundeliegendem Scope der Treibhausgas-Emissionen. Soweit eine dezidierte Planung Planung zu Scope 1, 2, 3 besteht, bitte diese kurz darstellen. Bitte zudem kurze Darstellung, ob Reduktion konstant erfolgt oder von Einzelmaßnahmen abhängt sowie ob Pläne mit den Zielen des Pariser Klimaabkommens kompatibel sind.',
 

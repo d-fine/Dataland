@@ -27,11 +27,11 @@ export const esgDatenkatalogViewConfiguration: MLDTConfig<EsgDatenkatalogData> =
         children: [
           {
             type: 'cell',
-            label: '(Gültigkeits) Datum',
-            explanation: 'Datum bis wann die Information gültig ist',
+            label: 'Gültigkeitsdatum',
+            explanation: 'Datum, bis wann die Information gültig ist.',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EsgDatenkatalogData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.allgemein?.datum?.gueltigkeitsDatum),
+              formatStringForDatatable(dataset.allgemein?.datum?.gueltigkeitsdatum),
           },
         ],
       },
@@ -43,11 +43,11 @@ export const esgDatenkatalogViewConfiguration: MLDTConfig<EsgDatenkatalogData> =
         children: [
           {
             type: 'cell',
-            label: 'Nachhaltigkeitsstrategie',
+            label: 'Nachhaltigkeitsstrategie vorhanden',
             explanation: 'Verfügt das Unternehmen über eine Nachhaltigkeitsstrategie?',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EsgDatenkatalogData): AvailableMLDTDisplayObjectTypes =>
-              formatYesNoValueForDatatable(dataset.allgemein?.generelleEsgStrategie?.nachhaltigkeitsstrategie),
+              formatYesNoValueForDatatable(dataset.allgemein?.generelleEsgStrategie?.nachhaltigkeitsstrategieVorhanden),
           },
           {
             type: 'cell',
@@ -55,7 +55,7 @@ export const esgDatenkatalogViewConfiguration: MLDTConfig<EsgDatenkatalogData> =
             explanation:
               'Bitte hängen Sie Ihre Nachhaltigkeitsstrategie an. Nachhaltigkeit in diesem Sinne umfasst die Themen Umwelt (E), Soziales (S) und Unternehmensführung (G). Sie können mehrere Dokumente anhängen und pro Dokument eine Beschreibung angeben.',
             shouldDisplay: (dataset: EsgDatenkatalogData): boolean =>
-              dataset.allgemein?.generelleEsgStrategie?.nachhaltigkeitsstrategie == 'Yes',
+              dataset.allgemein?.generelleEsgStrategie?.nachhaltigkeitsstrategieVorhanden == 'Yes',
             valueGetter: (dataset: EsgDatenkatalogData): AvailableMLDTDisplayObjectTypes => {
               return formatListOfBaseDataPoint(
                 'Dokumente zur Nachhaltigkeitsstrategie',
@@ -68,9 +68,9 @@ export const esgDatenkatalogViewConfiguration: MLDTConfig<EsgDatenkatalogData> =
           {
             type: 'cell',
             label: 'Maßnahmen zur Erreichung des 1,5 Grad Celsius Ziels',
-            explanation: 'Werden spezielle Ziele / Maßnahmen ergriffen, um das 1,5 °C Ziel zu erreichen?',
+            explanation: 'Werden spezielle Ziele/Maßnahmen ergriffen, um das 1,5 °C Ziel zu erreichen?',
             shouldDisplay: (dataset: EsgDatenkatalogData): boolean =>
-              dataset.allgemein?.generelleEsgStrategie?.nachhaltigkeitsstrategie == 'Yes',
+              dataset.allgemein?.generelleEsgStrategie?.nachhaltigkeitsstrategieVorhanden == 'Yes',
             valueGetter: (dataset: EsgDatenkatalogData): AvailableMLDTDisplayObjectTypes =>
               formatYesNoValueForDatatable(
                 dataset.allgemein?.generelleEsgStrategie?.massnahmenZurErreichungDes15GradCelsiusZiels
@@ -79,7 +79,7 @@ export const esgDatenkatalogViewConfiguration: MLDTConfig<EsgDatenkatalogData> =
           {
             type: 'cell',
             label: 'Skizzierung von Maßnahmen zur Erreichung des 1,5 Grad Celsius Ziels',
-            explanation: 'Skizzieren Sie spezielle Ziele / Maßnahmen, um das 1,5°C Ziel zu erreichen.',
+            explanation: 'Skizzieren Sie spezielle Ziele / Maßnahmen, um das 1,5 °C Ziel zu erreichen.',
             shouldDisplay: (dataset: EsgDatenkatalogData): boolean =>
               dataset.allgemein?.generelleEsgStrategie?.massnahmenZurErreichungDes15GradCelsiusZiels == 'Yes',
             valueGetter: (dataset: EsgDatenkatalogData): AvailableMLDTDisplayObjectTypes =>
@@ -220,7 +220,7 @@ export const esgDatenkatalogViewConfiguration: MLDTConfig<EsgDatenkatalogData> =
           },
           {
             type: 'cell',
-            label: 'Anteil Taxonomiefähiger Umsatz',
+            label: 'Anteil taxonomiefähiger Umsatz',
             explanation: 'Geben Sie den prozentualen Anteil der taxonomiefähigen Umsätze an.',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EsgDatenkatalogData): AvailableMLDTDisplayObjectTypes =>
@@ -230,7 +230,7 @@ export const esgDatenkatalogViewConfiguration: MLDTConfig<EsgDatenkatalogData> =
           },
           {
             type: 'cell',
-            label: 'Anteil Taxonomiekonformer Umsatz',
+            label: 'Anteil taxonomiekonformer Umsatz',
             explanation: 'Geben Sie den prozentualen Anteil der taxonomiekonformen Umsätze an.',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EsgDatenkatalogData): AvailableMLDTDisplayObjectTypes =>
@@ -270,7 +270,7 @@ export const esgDatenkatalogViewConfiguration: MLDTConfig<EsgDatenkatalogData> =
           },
           {
             type: 'cell',
-            label: 'Anteil Taxonomiefähiger CapEx',
+            label: 'Anteil taxonomiefähiger CapEx',
             explanation: 'Geben Sie den prozentualen Anteil der taxonomiefähigen Umsätze an.',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EsgDatenkatalogData): AvailableMLDTDisplayObjectTypes =>
@@ -280,7 +280,7 @@ export const esgDatenkatalogViewConfiguration: MLDTConfig<EsgDatenkatalogData> =
           },
           {
             type: 'cell',
-            label: 'Anteil Taxonomiekonformer CapEx',
+            label: 'Anteil taxonomiekonformer CapEx',
             explanation: 'Geben Sie den prozentualen Anteil der taxonomiekonformen Umsätze an.',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EsgDatenkatalogData): AvailableMLDTDisplayObjectTypes =>
@@ -903,7 +903,7 @@ export const esgDatenkatalogViewConfiguration: MLDTConfig<EsgDatenkatalogData> =
               'Wie hoch waren die Scope 1 Treibhausgasemissionen des Unternehmens im letzten abgeschlossenen Geschäftsjahr (in tCO2eq)? Der Scope 1 umfasst alle direkten Treibhausgasemissionen aus eigenen Anlagen des Unternehmens sowie von ihm kontrollierten Anlagen.',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EsgDatenkatalogData): AvailableMLDTDisplayObjectTypes =>
-              formatNumberForDatatable(dataset.umwelt?.emissionen?.scope1Treibhausgasemissionen, 'tCO\u00B2eq'),
+              formatNumberForDatatable(dataset.umwelt?.emissionen?.scope1Treibhausgasemissionen, 'tCO2eq'),
           },
           {
             type: 'cell',
@@ -912,10 +912,7 @@ export const esgDatenkatalogViewConfiguration: MLDTConfig<EsgDatenkatalogData> =
               'Wie hoch waren die marktbasiert berechneten Scope 2 Treibhausgasemissionen des Unternehmens im letzten abgeschlossenen Geschäftsjahr (in tCO2eq)? Der Scope 2 umfasst indirekte Treibhausgasemissionen, die im Rahmen der Erzeugung des vom Unternehmen verbrauchten Stroms, Dampf, Wärme und Kälte entstehen.',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EsgDatenkatalogData): AvailableMLDTDisplayObjectTypes =>
-              formatNumberForDatatable(
-                dataset.umwelt?.emissionen?.scope2TreibhausgasemissionenMarktbasiert,
-                'tCO\u00B2eq'
-              ),
+              formatNumberForDatatable(dataset.umwelt?.emissionen?.scope2TreibhausgasemissionenMarktbasiert, 'tCO2eq'),
           },
           {
             type: 'cell',
@@ -926,7 +923,7 @@ export const esgDatenkatalogViewConfiguration: MLDTConfig<EsgDatenkatalogData> =
             valueGetter: (dataset: EsgDatenkatalogData): AvailableMLDTDisplayObjectTypes =>
               formatNumberForDatatable(
                 dataset.umwelt?.emissionen?.scope2TreibhausgasemissionenStandortbasiert,
-                'tCO\u00B2eq'
+                'tCO2eq'
               ),
           },
           {
@@ -936,7 +933,7 @@ export const esgDatenkatalogViewConfiguration: MLDTConfig<EsgDatenkatalogData> =
               'Wie hoch waren die Scope 3 Treibhausgasemissionen des Unternehmens im letzten abgeschlossenen Geschäftsjahr (in tCO2eq)? Der Scope 3 umfasst alle sonstigen indirekten Treibhausgasemissionen, bspw. Emissionen die in der Herstellung und im Transport zugekaufter Güter (einschließlich Immobilien), in der Distribution oder Nutzung eigener Produkte oder in der Abfallentsorgung entstehen. Es ist die vor- und nachgelagerte Wertschöpfungskette zu betrachten. ',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EsgDatenkatalogData): AvailableMLDTDisplayObjectTypes =>
-              formatNumberForDatatable(dataset.umwelt?.emissionen?.scope3Treibhausgasemissionen, 'tCO\u00B2eq'),
+              formatNumberForDatatable(dataset.umwelt?.emissionen?.scope3Treibhausgasemissionen, 'tCO2eq'),
           },
           {
             type: 'cell',
@@ -945,7 +942,7 @@ export const esgDatenkatalogViewConfiguration: MLDTConfig<EsgDatenkatalogData> =
               'Welche CO²-Intensität berechnet sich für das Unternehmen? Hierzu die Treibhausgasemissionen nach Scope 1 bis 3 addieren und durch den Gesamtumsatz des Unternehmens teilen. Daraus ergibt sich die CO²-Intensität in der Einheit tCO²eq pro Euro Umsatz.',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EsgDatenkatalogData): AvailableMLDTDisplayObjectTypes =>
-              formatNumberForDatatable(dataset.umwelt?.emissionen?.co2IntensitaetDesUnternehmens, 'tCO\u00B2eq/\u20AC'),
+              formatNumberForDatatable(dataset.umwelt?.emissionen?.co2IntensitaetDesUnternehmens, 'tCO2eq/\u20AC'),
           },
           {
             type: 'cell',
@@ -1229,46 +1226,46 @@ export const esgDatenkatalogViewConfiguration: MLDTConfig<EsgDatenkatalogData> =
           },
           {
             type: 'cell',
-            label: 'Ziel Reduzierung Treibhausgasemmissionen 2030',
+            label: 'Ziel Reduzierung Treibhausgasemissionen 2030',
             explanation:
               'Welche Zielsetzung verfolgt das Unternehmen bei der Reduzierung seiner Treibhausgasemissionen für 2030?',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EsgDatenkatalogData): AvailableMLDTDisplayObjectTypes =>
               formatPercentageForDatatable(
-                dataset.umwelt?.risikenUndMassnahmenKlima?.zielReduzierungTreibhausgasemmissionen2030
+                dataset.umwelt?.risikenUndMassnahmenKlima?.zielReduzierungTreibhausgasemissionen2030
               ),
           },
           {
             type: 'cell',
-            label: 'Ziel Reduzierung Treibhausgasemmissionen 2040',
+            label: 'Ziel Reduzierung Treibhausgasemissionen 2040',
             explanation:
               'Welche Zielsetzung verfolgt das Unternehmen bei der Reduzierung seiner Treibhausgasemissionen für 2040? Optionale Angabe.',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EsgDatenkatalogData): AvailableMLDTDisplayObjectTypes =>
               formatPercentageForDatatable(
-                dataset.umwelt?.risikenUndMassnahmenKlima?.zielReduzierungTreibhausgasemmissionen2040
+                dataset.umwelt?.risikenUndMassnahmenKlima?.zielReduzierungTreibhausgasemissionen2040
               ),
           },
           {
             type: 'cell',
-            label: 'Ziel Reduzierung Treibhausgasemmissionen 2050',
+            label: 'Ziel Reduzierung Treibhausgasemissionen 2050',
             explanation:
               'Welche Zielsetzung verfolgt das Unternehmen bei der Reduzierung seiner Treibhausgasemissionen für 2050? Optionale Angabe.',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EsgDatenkatalogData): AvailableMLDTDisplayObjectTypes =>
               formatPercentageForDatatable(
-                dataset.umwelt?.risikenUndMassnahmenKlima?.zielReduzierungTreibhausgasemmissionen2050
+                dataset.umwelt?.risikenUndMassnahmenKlima?.zielReduzierungTreibhausgasemissionen2050
               ),
           },
           {
             type: 'cell',
-            label: 'Ziel Reduzierung Treibhausgasemmissionen Erläuterungen',
+            label: 'Ziel Reduzierung Treibhausgasemissionen Erläuterungen',
             explanation:
               'Bitte die Zielsetzung konkretisieren, inkl. Zielwerte, Zwischenziele und zugrundeliegendem Scope der Treibhausgas-Emissionen. Soweit eine dezidierte Planung Planung zu Scope 1, 2, 3 besteht, bitte diese kurz darstellen. Bitte zudem kurze Darstellung, ob Reduktion konstant erfolgt oder von Einzelmaßnahmen abhängt sowie ob Pläne mit den Zielen des Pariser Klimaabkommens kompatibel sind.',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EsgDatenkatalogData): AvailableMLDTDisplayObjectTypes =>
               formatFreeTextForDatatable(
-                dataset.umwelt?.risikenUndMassnahmenKlima?.zielReduzierungTreibhausgasemmissionenErlaeuterungen
+                dataset.umwelt?.risikenUndMassnahmenKlima?.zielReduzierungTreibhausgasemissionenErlaeuterungen
               ),
           },
           {

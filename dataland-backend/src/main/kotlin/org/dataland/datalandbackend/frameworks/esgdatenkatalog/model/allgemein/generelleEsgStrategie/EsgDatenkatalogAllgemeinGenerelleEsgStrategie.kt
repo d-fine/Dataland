@@ -11,7 +11,7 @@ import java.math.BigDecimal
  * The data-model for the GenerelleEsgStrategie section
  */
 data class EsgDatenkatalogAllgemeinGenerelleEsgStrategie(
-    val nachhaltigkeitsstrategie: YesNo? = null,
+    val nachhaltigkeitsstrategieVorhanden: YesNo? = null,
     @field:Valid()
     val dokumenteZurNachhaltigkeitsstrategie: List<BaseDataPoint<String>>? = null,
     val massnahmenZurErreichungDes15GradCelsiusZiels: YesNo? = null,

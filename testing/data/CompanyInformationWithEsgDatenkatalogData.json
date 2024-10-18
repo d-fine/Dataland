@@ -38,10 +38,10 @@
 		"t": {
 			"allgemein": {
 				"datum": {
-					"gueltigkeitsDatum": "2024-07-31"
+					"gueltigkeitsdatum": "2024-07-31"
 				},
 				"generelleEsgStrategie": {
-					"nachhaltigkeitsstrategie": null,
+					"nachhaltigkeitsstrategieVorhanden": null,
 					"dokumenteZurNachhaltigkeitsstrategie": [
 						{
 							"value": "users",
@@ -287,10 +287,10 @@
 					"physischeRisiken": null,
 					"produkteZurReduzierungDerUmweltbelastung": "NA",
 					"skizzierungDerProdukteZurReduzierungDerUmweltbelastung": "Vaco casus adopto. Demens convoco taedium spargo comis amplexus consectetur tempus cenaculum. Eaque verbum commemoro omnis.",
-					"zielReduzierungTreibhausgasemmissionen2030": 80.63,
-					"zielReduzierungTreibhausgasemmissionen2040": 48.11,
-					"zielReduzierungTreibhausgasemmissionen2050": 37.61,
-					"zielReduzierungTreibhausgasemmissionenErlaeuterungen": "Tepidus quisquam thema impedit vitae. Contabesco desipio dolorem trado pecus. Conitor nisi aestus clarus.",
+					"zielReduzierungTreibhausgasemissionen2030": 80.63,
+					"zielReduzierungTreibhausgasemissionen2040": 48.11,
+					"zielReduzierungTreibhausgasemissionen2050": 37.61,
+					"zielReduzierungTreibhausgasemissionenErlaeuterungen": "Tepidus quisquam thema impedit vitae. Contabesco desipio dolorem trado pecus. Conitor nisi aestus clarus.",
 					"kompensationsinstrumenteTreibhausgasemissionen": "No",
 					"zertifizierungenBezueglichKompensationinstrumenten": "Bibo dedecor officia adiuvo condico. Deorsum utrimque suffoco. Venustas tunc abeo.",
 					"zielAnteilErneuerbarerEnergien2030": 20.85,
@@ -410,10 +410,10 @@
 		"t": {
 			"allgemein": {
 				"datum": {
-					"gueltigkeitsDatum": "2024-07-04"
+					"gueltigkeitsdatum": "2024-07-04"
 				},
 				"generelleEsgStrategie": {
-					"nachhaltigkeitsstrategie": "No",
+					"nachhaltigkeitsstrategieVorhanden": "No",
 					"dokumenteZurNachhaltigkeitsstrategie": null,
 					"massnahmenZurErreichungDes15GradCelsiusZiels": "Yes",
 					"skizzierungVonMassnahmenZurErreichungDes15GradCelsiusZiels": "Comedo adopto templum ventosus volo. Theca tenuis amplus thesis adaugeo utpote tandem substantia. Acervus amita vado cerno arto pariatur dedico vetus degero.",
@@ -600,10 +600,10 @@
 					"physischeRisiken": "Laborum soluta animadverto abutor stabilis ubi tunc vilicus. Alter stillicidium celo coma accusator tabesco paulatim angulus. Advoco tantum dignissimos voluptatibus sursum stella degusto substantia in.",
 					"produkteZurReduzierungDerUmweltbelastung": null,
 					"skizzierungDerProdukteZurReduzierungDerUmweltbelastung": "Tabula ventus coaegresco tamisium adflicto balbus cubitum ante. Utrum sono clamo amoveo suffoco somnus acsi torqueo autus. Aranea terebro ocer volo comitatus thymbra damnatio subiungo bestia vulgus.",
-					"zielReduzierungTreibhausgasemmissionen2030": 87.23,
-					"zielReduzierungTreibhausgasemmissionen2040": 8.9,
-					"zielReduzierungTreibhausgasemmissionen2050": 15.58,
-					"zielReduzierungTreibhausgasemmissionenErlaeuterungen": null,
+					"zielReduzierungTreibhausgasemissionen2030": 87.23,
+					"zielReduzierungTreibhausgasemissionen2040": 8.9,
+					"zielReduzierungTreibhausgasemissionen2050": 15.58,
+					"zielReduzierungTreibhausgasemissionenErlaeuterungen": null,
 					"kompensationsinstrumenteTreibhausgasemissionen": "Yes",
 					"zertifizierungenBezueglichKompensationinstrumenten": "Aro aedificium acsi. Curriculum apostolus vesica ustilo calamitas. Aetas tenetur carcer coniuratio.",
 					"zielAnteilErneuerbarerEnergien2030": null,
@@ -719,10 +719,10 @@
 		"t": {
 			"allgemein": {
 				"datum": {
-					"gueltigkeitsDatum": "2024-02-29"
+					"gueltigkeitsdatum": "2024-02-29"
 				},
 				"generelleEsgStrategie": {
-					"nachhaltigkeitsstrategie": "No",
+					"nachhaltigkeitsstrategieVorhanden": "No",
 					"dokumenteZurNachhaltigkeitsstrategie": [
 						{
 							"value": "web services",
@@ -946,10 +946,10 @@
 					"physischeRisiken": "Celer aegrus caritas tandem arbustum sui. Charisma usitas decumbo vestrum defessus hic angulus tergo. Tergum laudantium cupiditas tot corrumpo creber carmen.",
 					"produkteZurReduzierungDerUmweltbelastung": "Yes",
 					"skizzierungDerProdukteZurReduzierungDerUmweltbelastung": "Conduco allatus teneo constans succurro debilito ancilla tantum venia. Caelum deputo terreo. Vilitas exercitationem rerum synagoga earum caveo ullam antiquus talis.",
-					"zielReduzierungTreibhausgasemmissionen2030": 17.23,
-					"zielReduzierungTreibhausgasemmissionen2040": null,
-					"zielReduzierungTreibhausgasemmissionen2050": 14.67,
-					"zielReduzierungTreibhausgasemmissionenErlaeuterungen": "Fuga suadeo calamitas voveo reiciendis. Cogo adsidue reprehenderit calculus cito dolorem. Ancilla taedium repellendus atrocitas cubitum et.",
+					"zielReduzierungTreibhausgasemissionen2030": 17.23,
+					"zielReduzierungTreibhausgasemissionen2040": null,
+					"zielReduzierungTreibhausgasemissionen2050": 14.67,
+					"zielReduzierungTreibhausgasemissionenErlaeuterungen": "Fuga suadeo calamitas voveo reiciendis. Cogo adsidue reprehenderit calculus cito dolorem. Ancilla taedium repellendus atrocitas cubitum et.",
 					"kompensationsinstrumenteTreibhausgasemissionen": null,
 					"zertifizierungenBezueglichKompensationinstrumenten": "Corrupti vestigium amplitudo. Suscipio fuga crebro ambitus vos sollicito sonitus. Fugiat tristis demulceo tribuo velit aeternus cornu ambitus.",
 					"zielAnteilErneuerbarerEnergien2030": 16.63,
@@ -1078,10 +1078,10 @@
 		"t": {
 			"allgemein": {
 				"datum": {
-					"gueltigkeitsDatum": "2024-09-01"
+					"gueltigkeitsdatum": "2024-09-01"
 				},
 				"generelleEsgStrategie": {
-					"nachhaltigkeitsstrategie": "No",
+					"nachhaltigkeitsstrategieVorhanden": "No",
 					"dokumenteZurNachhaltigkeitsstrategie": [
 						{
 							"value": "mindshare",
@@ -1305,10 +1305,10 @@
 					"physischeRisiken": "Patria claudeo officia culpo. Corrupti degusto voluptate. Coniecto conitor arcus arto vesco depereo commodo turbo.",
 					"produkteZurReduzierungDerUmweltbelastung": "No",
 					"skizzierungDerProdukteZurReduzierungDerUmweltbelastung": "Crux adflicto odio vaco amo tam tubineus. Sulum possimus patria suasoria cognatus solus. Communis ascit suppono bis vulnero deorsum decerno conturbo creta.",
-					"zielReduzierungTreibhausgasemmissionen2030": 97.29,
-					"zielReduzierungTreibhausgasemmissionen2040": 67.85,
-					"zielReduzierungTreibhausgasemmissionen2050": 33.21,
-					"zielReduzierungTreibhausgasemmissionenErlaeuterungen": "Pauci veniam ager vere confugo conor aggero considero. Thorax depono crustulum cogo caste. Inflammatio demens delectus.",
+					"zielReduzierungTreibhausgasemissionen2030": 97.29,
+					"zielReduzierungTreibhausgasemissionen2040": 67.85,
+					"zielReduzierungTreibhausgasemissionen2050": 33.21,
+					"zielReduzierungTreibhausgasemissionenErlaeuterungen": "Pauci veniam ager vere confugo conor aggero considero. Thorax depono crustulum cogo caste. Inflammatio demens delectus.",
 					"kompensationsinstrumenteTreibhausgasemissionen": "Yes",
 					"zertifizierungenBezueglichKompensationinstrumenten": "Usus aestivus theologus cogito at surgo comitatus autus. Derelinquo sopor thesis caritas veniam stips depromo socius desidero. Bis conatus crudelis stipes delibero vehemens pecco aestivus.",
 					"zielAnteilErneuerbarerEnergien2030": 56.22,
@@ -1427,10 +1427,10 @@
 		"t": {
 			"allgemein": {
 				"datum": {
-					"gueltigkeitsDatum": "2024-03-15"
+					"gueltigkeitsdatum": "2024-03-15"
 				},
 				"generelleEsgStrategie": {
-					"nachhaltigkeitsstrategie": "Yes",
+					"nachhaltigkeitsstrategieVorhanden": "Yes",
 					"dokumenteZurNachhaltigkeitsstrategie": null,
 					"massnahmenZurErreichungDes15GradCelsiusZiels": "No",
 					"skizzierungVonMassnahmenZurErreichungDes15GradCelsiusZiels": "Alii calcar dedecor adhaero. Adfectus paens careo deludo animus adnuo viridis validus strenuus umquam. Auctus speciosus veritas attero sui approbo amoveo arx demum talus.",
@@ -1642,10 +1642,10 @@
 					"physischeRisiken": "Decipio quos comprehendo. Summopere conatus angelus vos beatae spiritus viridis vindico. Sto video subnecto eligendi delego adipiscor ambitus facilis tergo dignissimos.",
 					"produkteZurReduzierungDerUmweltbelastung": "NA",
 					"skizzierungDerProdukteZurReduzierungDerUmweltbelastung": "Aggredior tracto adiuvo at in apparatus aggero averto canto auxilium. Voluntarius quam vomer esse bonus attonbitus decet cohors sono pecco. Arbor sublime victoria ver utilis dedico.",
-					"zielReduzierungTreibhausgasemmissionen2030": null,
-					"zielReduzierungTreibhausgasemmissionen2040": 15.26,
-					"zielReduzierungTreibhausgasemmissionen2050": 29.51,
-					"zielReduzierungTreibhausgasemmissionenErlaeuterungen": "Statim hic caterva arbor usque coepi aequus amplexus benevolentia. Totus apud velociter aurum vacuus cur verto triduana. Sopor ante aiunt creator appono.",
+					"zielReduzierungTreibhausgasemissionen2030": null,
+					"zielReduzierungTreibhausgasemissionen2040": 15.26,
+					"zielReduzierungTreibhausgasemissionen2050": 29.51,
+					"zielReduzierungTreibhausgasemissionenErlaeuterungen": "Statim hic caterva arbor usque coepi aequus amplexus benevolentia. Totus apud velociter aurum vacuus cur verto triduana. Sopor ante aiunt creator appono.",
 					"kompensationsinstrumenteTreibhausgasemissionen": null,
 					"zertifizierungenBezueglichKompensationinstrumenten": "Arx deprimo tener at tamisium impedit. Illo adfero admoveo ager aveho vespillo voluptatem avarus dedico turpis. Eveniet assentator comis debitis verbera vulgus quo adicio.",
 					"zielAnteilErneuerbarerEnergien2030": 62.39,
@@ -1767,10 +1767,10 @@
 		"t": {
 			"allgemein": {
 				"datum": {
-					"gueltigkeitsDatum": "2024-04-12"
+					"gueltigkeitsdatum": "2024-04-12"
 				},
 				"generelleEsgStrategie": {
-					"nachhaltigkeitsstrategie": null,
+					"nachhaltigkeitsstrategieVorhanden": null,
 					"dokumenteZurNachhaltigkeitsstrategie": [
 						{
 							"value": "paradigms",
@@ -2012,10 +2012,10 @@
 					"physischeRisiken": null,
 					"produkteZurReduzierungDerUmweltbelastung": "Yes",
 					"skizzierungDerProdukteZurReduzierungDerUmweltbelastung": "Solio dedecor catena degero auctor. Aranea bene nobis tutamen sum voveo. Dolorem officiis coepi amiculum deduco provident tergeo vehemens.",
-					"zielReduzierungTreibhausgasemmissionen2030": 17.37,
-					"zielReduzierungTreibhausgasemmissionen2040": 80.75,
-					"zielReduzierungTreibhausgasemmissionen2050": 14.81,
-					"zielReduzierungTreibhausgasemmissionenErlaeuterungen": "Amiculum degenero velociter cauda congregatio pauci contigo. Territo stillicidium nulla casso coma cibus vado admoveo toties. Tonsor verumtamen valde sopor vilicus trucido pax vorago.",
+					"zielReduzierungTreibhausgasemissionen2030": 17.37,
+					"zielReduzierungTreibhausgasemissionen2040": 80.75,
+					"zielReduzierungTreibhausgasemissionen2050": 14.81,
+					"zielReduzierungTreibhausgasemissionenErlaeuterungen": "Amiculum degenero velociter cauda congregatio pauci contigo. Territo stillicidium nulla casso coma cibus vado admoveo toties. Tonsor verumtamen valde sopor vilicus trucido pax vorago.",
 					"kompensationsinstrumenteTreibhausgasemissionen": "No",
 					"zertifizierungenBezueglichKompensationinstrumenten": "A defluo cunabula talus curto catena denique calamitas. Ver tempore cenaculum hic peior spargo sui derideo. Repudiandae tonsor aspernatur eligendi volup.",
 					"zielAnteilErneuerbarerEnergien2030": 81.6,
@@ -2141,10 +2141,10 @@
 		"t": {
 			"allgemein": {
 				"datum": {
-					"gueltigkeitsDatum": "2024-08-25"
+					"gueltigkeitsdatum": "2024-08-25"
 				},
 				"generelleEsgStrategie": {
-					"nachhaltigkeitsstrategie": "No",
+					"nachhaltigkeitsstrategieVorhanden": "No",
 					"dokumenteZurNachhaltigkeitsstrategie": [
 						{
 							"value": "deliverables",
@@ -2395,10 +2395,10 @@
 					"physischeRisiken": "Depromo aestus deinde volup valetudo autus quibusdam coniuratio. Cariosus id solutio demens tubineus. Tres corrumpo angustus sulum depono nihil crepusculum utrimque.",
 					"produkteZurReduzierungDerUmweltbelastung": "Yes",
 					"skizzierungDerProdukteZurReduzierungDerUmweltbelastung": "Denuncio cupiditas acies conventus capto facere comitatus. Dolorum creo cibo cibus cribro. Cras dolor cibo.",
-					"zielReduzierungTreibhausgasemmissionen2030": null,
-					"zielReduzierungTreibhausgasemmissionen2040": 16.33,
-					"zielReduzierungTreibhausgasemmissionen2050": null,
-					"zielReduzierungTreibhausgasemmissionenErlaeuterungen": null,
+					"zielReduzierungTreibhausgasemissionen2030": null,
+					"zielReduzierungTreibhausgasemissionen2040": 16.33,
+					"zielReduzierungTreibhausgasemissionen2050": null,
+					"zielReduzierungTreibhausgasemissionenErlaeuterungen": null,
 					"kompensationsinstrumenteTreibhausgasemissionen": "Yes",
 					"zertifizierungenBezueglichKompensationinstrumenten": "Commemoro cresco assentator collum appono. Laboriosam adnuo consequatur accusamus calcar pariatur. Abutor crastinus defetiscor tenetur calculus.",
 					"zielAnteilErneuerbarerEnergien2030": 12.23,
@@ -2519,10 +2519,10 @@
 		"t": {
 			"allgemein": {
 				"datum": {
-					"gueltigkeitsDatum": "2024-12-03"
+					"gueltigkeitsdatum": "2024-12-03"
 				},
 				"generelleEsgStrategie": {
-					"nachhaltigkeitsstrategie": "Yes",
+					"nachhaltigkeitsstrategieVorhanden": "Yes",
 					"dokumenteZurNachhaltigkeitsstrategie": null,
 					"massnahmenZurErreichungDes15GradCelsiusZiels": "Yes",
 					"skizzierungVonMassnahmenZurErreichungDes15GradCelsiusZiels": "Crepusculum unde verecundia alioqui confero. Aliquid taedium tenax terebro abutor. Fugiat acer xiphias vehemens cogito astrum.",
@@ -2744,10 +2744,10 @@
 					"physischeRisiken": "Celer acervus tenax textor aer votum uxor vapulus. Arca atavus cohors admitto voluptatum spes suffoco triumphus. Cura victus auctor cilicium.",
 					"produkteZurReduzierungDerUmweltbelastung": "Yes",
 					"skizzierungDerProdukteZurReduzierungDerUmweltbelastung": "Capto modi vel. Dicta aggero eum vinitor suppellex vinum administratio. Qui compono sunt viduo tenuis deputo.",
-					"zielReduzierungTreibhausgasemmissionen2030": 12.24,
-					"zielReduzierungTreibhausgasemmissionen2040": 89.1,
-					"zielReduzierungTreibhausgasemmissionen2050": 77.93,
-					"zielReduzierungTreibhausgasemmissionenErlaeuterungen": "Valens occaecati decipio. Voluptatum ullus capto nemo depono auctor cohibeo. Adipisci toties arbitro tener conforto caput tabgo comburo adipisci.",
+					"zielReduzierungTreibhausgasemissionen2030": 12.24,
+					"zielReduzierungTreibhausgasemissionen2040": 89.1,
+					"zielReduzierungTreibhausgasemissionen2050": 77.93,
+					"zielReduzierungTreibhausgasemissionenErlaeuterungen": "Valens occaecati decipio. Voluptatum ullus capto nemo depono auctor cohibeo. Adipisci toties arbitro tener conforto caput tabgo comburo adipisci.",
 					"kompensationsinstrumenteTreibhausgasemissionen": "No",
 					"zertifizierungenBezueglichKompensationinstrumenten": null,
 					"zielAnteilErneuerbarerEnergien2030": null,
@@ -2872,10 +2872,10 @@
 		"t": {
 			"allgemein": {
 				"datum": {
-					"gueltigkeitsDatum": "2024-10-15"
+					"gueltigkeitsdatum": "2024-10-15"
 				},
 				"generelleEsgStrategie": {
-					"nachhaltigkeitsstrategie": null,
+					"nachhaltigkeitsstrategieVorhanden": null,
 					"dokumenteZurNachhaltigkeitsstrategie": [
 						{
 							"value": "mindshare",
@@ -3122,10 +3122,10 @@
 					"physischeRisiken": null,
 					"produkteZurReduzierungDerUmweltbelastung": null,
 					"skizzierungDerProdukteZurReduzierungDerUmweltbelastung": "Solio debeo solum capio minima aduro creber cotidie aptus. Spoliatio cernuus cado arbor cetera fugiat reiciendis sperno unus. Contigo sopor abeo mollitia cado stella nihil solutio absorbeo.",
-					"zielReduzierungTreibhausgasemmissionen2030": 73.42,
-					"zielReduzierungTreibhausgasemmissionen2040": 6.41,
-					"zielReduzierungTreibhausgasemmissionen2050": null,
-					"zielReduzierungTreibhausgasemmissionenErlaeuterungen": "Carbo suffoco tenus tenus antiquus sub ancilla velit confido advoco. Aeneus vir ademptio infit aptus vesica cupressus suasoria corroboro ustilo. Commodi volo conitor credo illo iure agnitio.",
+					"zielReduzierungTreibhausgasemissionen2030": 73.42,
+					"zielReduzierungTreibhausgasemissionen2040": 6.41,
+					"zielReduzierungTreibhausgasemissionen2050": null,
+					"zielReduzierungTreibhausgasemissionenErlaeuterungen": "Carbo suffoco tenus tenus antiquus sub ancilla velit confido advoco. Aeneus vir ademptio infit aptus vesica cupressus suasoria corroboro ustilo. Commodi volo conitor credo illo iure agnitio.",
 					"kompensationsinstrumenteTreibhausgasemissionen": "No",
 					"zertifizierungenBezueglichKompensationinstrumenten": "Atavus tres victus tam molestias vobis delicate. Distinctio demum cetera adamo maiores audeo. Viduo valetudo harum utrimque curso ullam veritas vinitor adsuesco.",
 					"zielAnteilErneuerbarerEnergien2030": null,
@@ -3246,10 +3246,10 @@
 		"t": {
 			"allgemein": {
 				"datum": {
-					"gueltigkeitsDatum": "2024-12-14"
+					"gueltigkeitsdatum": "2024-12-14"
 				},
 				"generelleEsgStrategie": {
-					"nachhaltigkeitsstrategie": "Yes",
+					"nachhaltigkeitsstrategieVorhanden": "Yes",
 					"dokumenteZurNachhaltigkeitsstrategie": [
 						{
 							"value": "solutions",
@@ -3503,10 +3503,10 @@
 					"physischeRisiken": "Vicissitudo cicuta aurum ambulo acidus natus vado. Ducimus contabesco acceptus modi harum creptio cuius patior. Vestigium bene casus charisma.",
 					"produkteZurReduzierungDerUmweltbelastung": "Yes",
 					"skizzierungDerProdukteZurReduzierungDerUmweltbelastung": "Reiciendis thymum volubilis sponte corrumpo calamitas. Tero autem defungo absum tactus blandior adflicto mollitia. Ver canis cupiditas astrum absorbeo autus trucido curso aufero.",
-					"zielReduzierungTreibhausgasemmissionen2030": 57.27,
-					"zielReduzierungTreibhausgasemmissionen2040": 40.42,
-					"zielReduzierungTreibhausgasemmissionen2050": null,
-					"zielReduzierungTreibhausgasemmissionenErlaeuterungen": null,
+					"zielReduzierungTreibhausgasemissionen2030": 57.27,
+					"zielReduzierungTreibhausgasemissionen2040": 40.42,
+					"zielReduzierungTreibhausgasemissionen2050": null,
+					"zielReduzierungTreibhausgasemissionenErlaeuterungen": null,
 					"kompensationsinstrumenteTreibhausgasemissionen": null,
 					"zertifizierungenBezueglichKompensationinstrumenten": "Capto delectus deleo decor asporto corrumpo. Defendo tantillus umquam nam antepono ascisco cenaculum. Venia contra adfectus.",
 					"zielAnteilErneuerbarerEnergien2030": null,
@@ -3634,10 +3634,10 @@
 		"t": {
 			"allgemein": {
 				"datum": {
-					"gueltigkeitsDatum": "2024-10-04"
+					"gueltigkeitsdatum": "2024-10-04"
 				},
 				"generelleEsgStrategie": {
-					"nachhaltigkeitsstrategie": null,
+					"nachhaltigkeitsstrategieVorhanden": null,
 					"dokumenteZurNachhaltigkeitsstrategie": [
 						{
 							"value": "methodologies",
@@ -3825,10 +3825,10 @@
 					"physischeRisiken": null,
 					"produkteZurReduzierungDerUmweltbelastung": null,
 					"skizzierungDerProdukteZurReduzierungDerUmweltbelastung": "Atrox demonstro defetiscor confugo valetudo comminor utor temporibus tego auditor. Tactus cruciamentum aedificium vergo temptatio vinculum curo paens. Apparatus cribro arma trado earum decretum assumenda atrocitas.",
-					"zielReduzierungTreibhausgasemmissionen2030": null,
-					"zielReduzierungTreibhausgasemmissionen2040": 96.22,
-					"zielReduzierungTreibhausgasemmissionen2050": 86.39,
-					"zielReduzierungTreibhausgasemmissionenErlaeuterungen": "Odio adfectus tabgo aggredior. Maxime vado vobis tantum baiulus patior delectatio aetas angelus vociferor. Comedo comptus conatus conicio.",
+					"zielReduzierungTreibhausgasemissionen2030": null,
+					"zielReduzierungTreibhausgasemissionen2040": 96.22,
+					"zielReduzierungTreibhausgasemissionen2050": 86.39,
+					"zielReduzierungTreibhausgasemissionenErlaeuterungen": "Odio adfectus tabgo aggredior. Maxime vado vobis tantum baiulus patior delectatio aetas angelus vociferor. Comedo comptus conatus conicio.",
 					"kompensationsinstrumenteTreibhausgasemissionen": null,
 					"zertifizierungenBezueglichKompensationinstrumenten": "Confugo eos esse velit aureus texo. Decimus quaerat culpa reiciendis vel auctor. Sopor vester reiciendis accommodo antea vacuus.",
 					"zielAnteilErneuerbarerEnergien2030": 71.22,
@@ -3953,10 +3953,10 @@
 		"t": {
 			"allgemein": {
 				"datum": {
-					"gueltigkeitsDatum": "2024-07-08"
+					"gueltigkeitsdatum": "2024-07-08"
 				},
 				"generelleEsgStrategie": {
-					"nachhaltigkeitsstrategie": "No",
+					"nachhaltigkeitsstrategieVorhanden": "No",
 					"dokumenteZurNachhaltigkeitsstrategie": [
 						{
 							"value": "systems",
@@ -4158,10 +4158,10 @@
 					"physischeRisiken": null,
 					"produkteZurReduzierungDerUmweltbelastung": "No",
 					"skizzierungDerProdukteZurReduzierungDerUmweltbelastung": "Vivo acsi tonsor cribro cetera tum amaritudo. Demoror eveniet amissio compello cupressus tutis dens cornu. Vestigium aegrotatio curto confido vulticulus.",
-					"zielReduzierungTreibhausgasemmissionen2030": 63.08,
-					"zielReduzierungTreibhausgasemmissionen2040": 2.07,
-					"zielReduzierungTreibhausgasemmissionen2050": 45.96,
-					"zielReduzierungTreibhausgasemmissionenErlaeuterungen": "Eligendi agnosco architecto cariosus. Vere pecus confido autus coniuratio desolo. Calculus sortitus absque summopere usus vorago defleo.",
+					"zielReduzierungTreibhausgasemissionen2030": 63.08,
+					"zielReduzierungTreibhausgasemissionen2040": 2.07,
+					"zielReduzierungTreibhausgasemissionen2050": 45.96,
+					"zielReduzierungTreibhausgasemissionenErlaeuterungen": "Eligendi agnosco architecto cariosus. Vere pecus confido autus coniuratio desolo. Calculus sortitus absque summopere usus vorago defleo.",
 					"kompensationsinstrumenteTreibhausgasemissionen": "No",
 					"zertifizierungenBezueglichKompensationinstrumenten": "Corrumpo supra crastinus solutio. Recusandae celebrer coniuratio vox acidus turba perferendis sursum comminor. Auditor balbus a addo eius.",
 					"zielAnteilErneuerbarerEnergien2030": null,
@@ -4279,10 +4279,10 @@
 		"t": {
 			"allgemein": {
 				"datum": {
-					"gueltigkeitsDatum": "2024-03-23"
+					"gueltigkeitsdatum": "2024-03-23"
 				},
 				"generelleEsgStrategie": {
-					"nachhaltigkeitsstrategie": "No",
+					"nachhaltigkeitsstrategieVorhanden": "No",
 					"dokumenteZurNachhaltigkeitsstrategie": [
 						{
 							"value": "methodologies",
@@ -4511,10 +4511,10 @@
 					"physischeRisiken": "Curso sordeo crustulum decumbo coepi. Assumenda dolore cunabula sumptus. Cura succurro delectus provident universe expedita arbor aurum aptus.",
 					"produkteZurReduzierungDerUmweltbelastung": "No",
 					"skizzierungDerProdukteZurReduzierungDerUmweltbelastung": null,
-					"zielReduzierungTreibhausgasemmissionen2030": 39.74,
-					"zielReduzierungTreibhausgasemmissionen2040": 64.8,
-					"zielReduzierungTreibhausgasemmissionen2050": 25.89,
-					"zielReduzierungTreibhausgasemmissionenErlaeuterungen": "Compono dolorem taceo inflammatio timidus molestiae admitto eum. Antepono tricesimus tepidus atqui statua tantum curto. Utor quae baiulus degusto bestia demitto territo illo.",
+					"zielReduzierungTreibhausgasemissionen2030": 39.74,
+					"zielReduzierungTreibhausgasemissionen2040": 64.8,
+					"zielReduzierungTreibhausgasemissionen2050": 25.89,
+					"zielReduzierungTreibhausgasemissionenErlaeuterungen": "Compono dolorem taceo inflammatio timidus molestiae admitto eum. Antepono tricesimus tepidus atqui statua tantum curto. Utor quae baiulus degusto bestia demitto territo illo.",
 					"kompensationsinstrumenteTreibhausgasemissionen": "Yes",
 					"zertifizierungenBezueglichKompensationinstrumenten": null,
 					"zielAnteilErneuerbarerEnergien2030": 50.26,
@@ -4637,10 +4637,10 @@
 		"t": {
 			"allgemein": {
 				"datum": {
-					"gueltigkeitsDatum": "2024-09-22"
+					"gueltigkeitsdatum": "2024-09-22"
 				},
 				"generelleEsgStrategie": {
-					"nachhaltigkeitsstrategie": "Yes",
+					"nachhaltigkeitsstrategieVorhanden": "Yes",
 					"dokumenteZurNachhaltigkeitsstrategie": [
 						{
 							"value": "niches",
@@ -4833,10 +4833,10 @@
 					"physischeRisiken": null,
 					"produkteZurReduzierungDerUmweltbelastung": "NA",
 					"skizzierungDerProdukteZurReduzierungDerUmweltbelastung": "Tabula considero sponte desidero. Bellicus talus urbs caute excepturi sulum decet vado comprehendo. Laboriosam statua tergiversatio uterque iste canto tenus corona culpo.",
-					"zielReduzierungTreibhausgasemmissionen2030": null,
-					"zielReduzierungTreibhausgasemmissionen2040": 97.84,
-					"zielReduzierungTreibhausgasemmissionen2050": 78.36,
-					"zielReduzierungTreibhausgasemmissionenErlaeuterungen": "Tamen valens triumphus stips tum vero adnuo vilicus crustulum ventosus. Adhaero timidus demum qui cribro conservo cras officiis universe. Demulceo animi perferendis tergeo nam earum decretum deripio.",
+					"zielReduzierungTreibhausgasemissionen2030": null,
+					"zielReduzierungTreibhausgasemissionen2040": 97.84,
+					"zielReduzierungTreibhausgasemissionen2050": 78.36,
+					"zielReduzierungTreibhausgasemissionenErlaeuterungen": "Tamen valens triumphus stips tum vero adnuo vilicus crustulum ventosus. Adhaero timidus demum qui cribro conservo cras officiis universe. Demulceo animi perferendis tergeo nam earum decretum deripio.",
 					"kompensationsinstrumenteTreibhausgasemissionen": "No",
 					"zertifizierungenBezueglichKompensationinstrumenten": "Eius crux voluntarius vergo suggero amitto degenero. Cubo bos thesis solus vociferor casus aestas ocer. Ut caries casus ver.",
 					"zielAnteilErneuerbarerEnergien2030": 33.62,
@@ -4953,10 +4953,10 @@
 		"t": {
 			"allgemein": {
 				"datum": {
-					"gueltigkeitsDatum": "2024-02-13"
+					"gueltigkeitsdatum": "2024-02-13"
 				},
 				"generelleEsgStrategie": {
-					"nachhaltigkeitsstrategie": null,
+					"nachhaltigkeitsstrategieVorhanden": null,
 					"dokumenteZurNachhaltigkeitsstrategie": [
 						{
 							"value": "initiatives",
@@ -5175,10 +5175,10 @@
 					"physischeRisiken": null,
 					"produkteZurReduzierungDerUmweltbelastung": "NA",
 					"skizzierungDerProdukteZurReduzierungDerUmweltbelastung": "Cultellus utroque curo contra. Paulatim supra desparatus antepono communis commodi venustas. Dignissimos voluptas vulgaris subito.",
-					"zielReduzierungTreibhausgasemmissionen2030": 20.49,
-					"zielReduzierungTreibhausgasemmissionen2040": 61.91,
-					"zielReduzierungTreibhausgasemmissionen2050": 46.7,
-					"zielReduzierungTreibhausgasemmissionenErlaeuterungen": null,
+					"zielReduzierungTreibhausgasemissionen2030": 20.49,
+					"zielReduzierungTreibhausgasemissionen2040": 61.91,
+					"zielReduzierungTreibhausgasemissionen2050": 46.7,
+					"zielReduzierungTreibhausgasemissionenErlaeuterungen": null,
 					"kompensationsinstrumenteTreibhausgasemissionen": "Yes",
 					"zertifizierungenBezueglichKompensationinstrumenten": "Cervus censura cubicularis vigilo calco ulterius attero. Timidus aestas aegrotatio perferendis sulum minus vereor desolo. Assentator voluntarius coruscus coepi temporibus demum abbas amita.",
 					"zielAnteilErneuerbarerEnergien2030": null,
@@ -5296,10 +5296,10 @@
 		"t": {
 			"allgemein": {
 				"datum": {
-					"gueltigkeitsDatum": "2024-04-15"
+					"gueltigkeitsdatum": "2024-04-15"
 				},
 				"generelleEsgStrategie": {
-					"nachhaltigkeitsstrategie": "Yes",
+					"nachhaltigkeitsstrategieVorhanden": "Yes",
 					"dokumenteZurNachhaltigkeitsstrategie": [
 						{
 							"value": "portals",
@@ -5528,10 +5528,10 @@
 					"physischeRisiken": "Bellicus casus antiquus. Bestia tener volutabrum admoneo defendo aeternus patrocinor. Quaerat tyrannus ducimus vulgo.",
 					"produkteZurReduzierungDerUmweltbelastung": "NA",
 					"skizzierungDerProdukteZurReduzierungDerUmweltbelastung": "Ciminatio colo credo titulus supellex somnus comminor. Cruciamentum sulum aequitas aut appono deludo solitudo. Utilis acquiro denique dedico.",
-					"zielReduzierungTreibhausgasemmissionen2030": 51.37,
-					"zielReduzierungTreibhausgasemmissionen2040": 31.61,
-					"zielReduzierungTreibhausgasemmissionen2050": 26.53,
-					"zielReduzierungTreibhausgasemmissionenErlaeuterungen": "Corrupti cribro consequatur advenio talis crudelis vesco bis. Aduro tenuis crebro ventosus accusantium cognomen dolorum vitium. Corrupti tenetur coepi charisma.",
+					"zielReduzierungTreibhausgasemissionen2030": 51.37,
+					"zielReduzierungTreibhausgasemissionen2040": 31.61,
+					"zielReduzierungTreibhausgasemissionen2050": 26.53,
+					"zielReduzierungTreibhausgasemissionenErlaeuterungen": "Corrupti cribro consequatur advenio talis crudelis vesco bis. Aduro tenuis crebro ventosus accusantium cognomen dolorum vitium. Corrupti tenetur coepi charisma.",
 					"kompensationsinstrumenteTreibhausgasemissionen": "Yes",
 					"zertifizierungenBezueglichKompensationinstrumenten": "Coepi cedo conduco verumtamen. Ultio velociter amplitudo dens urbs et. Stillicidium acer una amplitudo dedecor ambitus adnuo utilis delinquo.",
 					"zielAnteilErneuerbarerEnergien2030": null,
@@ -5652,10 +5652,10 @@
 		"t": {
 			"allgemein": {
 				"datum": {
-					"gueltigkeitsDatum": "2024-04-03"
+					"gueltigkeitsdatum": "2024-04-03"
 				},
 				"generelleEsgStrategie": {
-					"nachhaltigkeitsstrategie": "Yes",
+					"nachhaltigkeitsstrategieVorhanden": "Yes",
 					"dokumenteZurNachhaltigkeitsstrategie": [
 						{
 							"value": "applications",
@@ -5864,10 +5864,10 @@
 					"physischeRisiken": "Aveho cunabula aestas. Astrum vulnero video tunc sustineo colligo bardus desparatus dolor. Cunctatio vomito viscus truculenter clibanus tenus amiculum fuga appositus distinctio.",
 					"produkteZurReduzierungDerUmweltbelastung": "No",
 					"skizzierungDerProdukteZurReduzierungDerUmweltbelastung": null,
-					"zielReduzierungTreibhausgasemmissionen2030": null,
-					"zielReduzierungTreibhausgasemmissionen2040": 38.43,
-					"zielReduzierungTreibhausgasemmissionen2050": 89.22,
-					"zielReduzierungTreibhausgasemmissionenErlaeuterungen": "Cubo timidus tabernus appono alius agnitio libero. Amplus theca capio adduco tempus delego. Sint arcesso vicinus antiquus correptius urbanus vix crux vulpes vinculum.",
+					"zielReduzierungTreibhausgasemissionen2030": null,
+					"zielReduzierungTreibhausgasemissionen2040": 38.43,
+					"zielReduzierungTreibhausgasemissionen2050": 89.22,
+					"zielReduzierungTreibhausgasemissionenErlaeuterungen": "Cubo timidus tabernus appono alius agnitio libero. Amplus theca capio adduco tempus delego. Sint arcesso vicinus antiquus correptius urbanus vix crux vulpes vinculum.",
 					"kompensationsinstrumenteTreibhausgasemissionen": "Yes",
 					"zertifizierungenBezueglichKompensationinstrumenten": null,
 					"zielAnteilErneuerbarerEnergien2030": 28.75,
@@ -5985,10 +5985,10 @@
 		"t": {
 			"allgemein": {
 				"datum": {
-					"gueltigkeitsDatum": "2024-04-20"
+					"gueltigkeitsdatum": "2024-04-20"
 				},
 				"generelleEsgStrategie": {
-					"nachhaltigkeitsstrategie": "No",
+					"nachhaltigkeitsstrategieVorhanden": "No",
 					"dokumenteZurNachhaltigkeitsstrategie": null,
 					"massnahmenZurErreichungDes15GradCelsiusZiels": "No",
 					"skizzierungVonMassnahmenZurErreichungDes15GradCelsiusZiels": "Arguo conscendo spoliatio suggero cognomen veritas xiphias. Aegre adicio accusator magnam. Terga aureus cohaero adimpleo suasoria.",
@@ -6175,10 +6175,10 @@
 					"physischeRisiken": "Corpus viscus tum volubilis crastinus deduco. Territo quas caveo carcer vel victus tener. Virga tutamen adopto conculco unus verto audax venio patrocinor.",
 					"produkteZurReduzierungDerUmweltbelastung": "Yes",
 					"skizzierungDerProdukteZurReduzierungDerUmweltbelastung": "Tenetur substantia celebrer. Tum creator adficio provident assumenda. Damnatio quae cupressus apud laborum.",
-					"zielReduzierungTreibhausgasemmissionen2030": 82.97,
-					"zielReduzierungTreibhausgasemmissionen2040": 80.51,
-					"zielReduzierungTreibhausgasemmissionen2050": 50.86,
-					"zielReduzierungTreibhausgasemmissionenErlaeuterungen": null,
+					"zielReduzierungTreibhausgasemissionen2030": 82.97,
+					"zielReduzierungTreibhausgasemissionen2040": 80.51,
+					"zielReduzierungTreibhausgasemissionen2050": 50.86,
+					"zielReduzierungTreibhausgasemissionenErlaeuterungen": null,
 					"kompensationsinstrumenteTreibhausgasemissionen": null,
 					"zertifizierungenBezueglichKompensationinstrumenten": "Amita vestigium curto adimpleo absconditus. Tamen auditor tyrannus convoco sursum tantillus truculenter quas delinquo ciminatio. Ad spiculum celo adipisci cuppedia stips clam.",
 					"zielAnteilErneuerbarerEnergien2030": 69.43,
@@ -6298,10 +6298,10 @@
 		"t": {
 			"allgemein": {
 				"datum": {
-					"gueltigkeitsDatum": "2024-08-03"
+					"gueltigkeitsdatum": "2024-08-03"
 				},
 				"generelleEsgStrategie": {
-					"nachhaltigkeitsstrategie": "Yes",
+					"nachhaltigkeitsstrategieVorhanden": "Yes",
 					"dokumenteZurNachhaltigkeitsstrategie": [
 						{
 							"value": "networks",
@@ -6526,10 +6526,10 @@
 					"physischeRisiken": "Adsuesco cerno similique urbs. Tribuo nemo bellicus creta. Quis molestias peccatus deprecator dolorem tredecim infit communis creator.",
 					"produkteZurReduzierungDerUmweltbelastung": "Yes",
 					"skizzierungDerProdukteZurReduzierungDerUmweltbelastung": "Dolor nam cariosus tertius. Magni termes amoveo. Apto consectetur casus.",
-					"zielReduzierungTreibhausgasemmissionen2030": 77.7,
-					"zielReduzierungTreibhausgasemmissionen2040": 19.78,
-					"zielReduzierungTreibhausgasemmissionen2050": null,
-					"zielReduzierungTreibhausgasemmissionenErlaeuterungen": "Ars theatrum tabesco curatio virtus complectus volubilis. Doloremque victoria baiulus vulariter deficio subito. Bonus sodalitas eius fugiat esse debitis cupressus.",
+					"zielReduzierungTreibhausgasemissionen2030": 77.7,
+					"zielReduzierungTreibhausgasemissionen2040": 19.78,
+					"zielReduzierungTreibhausgasemissionen2050": null,
+					"zielReduzierungTreibhausgasemissionenErlaeuterungen": "Ars theatrum tabesco curatio virtus complectus volubilis. Doloremque victoria baiulus vulariter deficio subito. Bonus sodalitas eius fugiat esse debitis cupressus.",
 					"kompensationsinstrumenteTreibhausgasemissionen": "No",
 					"zertifizierungenBezueglichKompensationinstrumenten": "Deripio subseco spiculum veniam depulso. Super modi cubo vergo sonitus. Caute audacia stips a consectetur fugiat speciosus tabesco abduco quia.",
 					"zielAnteilErneuerbarerEnergien2030": null,
@@ -6648,10 +6648,10 @@
 		"t": {
 			"allgemein": {
 				"datum": {
-					"gueltigkeitsDatum": "2024-12-14"
+					"gueltigkeitsdatum": "2024-12-14"
 				},
 				"generelleEsgStrategie": {
-					"nachhaltigkeitsstrategie": "No",
+					"nachhaltigkeitsstrategieVorhanden": "No",
 					"dokumenteZurNachhaltigkeitsstrategie": [
 						{
 							"value": "systems",
@@ -6876,10 +6876,10 @@
 					"physischeRisiken": "Patrocinor stillicidium voveo vos ago vinculum. Spiculum coniuratio cibus aedificium. Comprehendo aufero audax atque venia culpo ascit.",
 					"produkteZurReduzierungDerUmweltbelastung": "No",
 					"skizzierungDerProdukteZurReduzierungDerUmweltbelastung": "Demergo virtus auctor adipiscor admitto. Apud ut iusto accusantium asperiores arcus ubi combibo cursim corrupti. Vulnus corrupti statim quidem temptatio dolore defaeco crustulum.",
-					"zielReduzierungTreibhausgasemmissionen2030": 66.18,
-					"zielReduzierungTreibhausgasemmissionen2040": null,
-					"zielReduzierungTreibhausgasemmissionen2050": null,
-					"zielReduzierungTreibhausgasemmissionenErlaeuterungen": "Votum delicate voco ver voro aequitas demoror pecus exercitationem. Cinis tenetur atque asper. Alias vox blandior vinitor talus.",
+					"zielReduzierungTreibhausgasemissionen2030": 66.18,
+					"zielReduzierungTreibhausgasemissionen2040": null,
+					"zielReduzierungTreibhausgasemissionen2050": null,
+					"zielReduzierungTreibhausgasemissionenErlaeuterungen": "Votum delicate voco ver voro aequitas demoror pecus exercitationem. Cinis tenetur atque asper. Alias vox blandior vinitor talus.",
 					"kompensationsinstrumenteTreibhausgasemissionen": "No",
 					"zertifizierungenBezueglichKompensationinstrumenten": "Appello triumphus tot ocer voluntarius abbas tandem minus desparatus cui. Voveo sodalitas canonicus. Corona aut cinis.",
 					"zielAnteilErneuerbarerEnergien2030": 96.72,
@@ -6995,10 +6995,10 @@
 		"t": {
 			"allgemein": {
 				"datum": {
-					"gueltigkeitsDatum": "2024-07-09"
+					"gueltigkeitsdatum": "2024-07-09"
 				},
 				"generelleEsgStrategie": {
-					"nachhaltigkeitsstrategie": "No",
+					"nachhaltigkeitsstrategieVorhanden": "No",
 					"dokumenteZurNachhaltigkeitsstrategie": [
 						{
 							"value": "lifetime value",
@@ -7240,10 +7240,10 @@
 					"physischeRisiken": "Ara qui demitto adeo laudantium dolor aut adflicto curis cohibeo. Conservo speciosus voluptas suffragium aiunt. Tametsi curriculum tonsor summa vilitas repellendus et carmen corporis velociter.",
 					"produkteZurReduzierungDerUmweltbelastung": null,
 					"skizzierungDerProdukteZurReduzierungDerUmweltbelastung": null,
-					"zielReduzierungTreibhausgasemmissionen2030": 13.34,
-					"zielReduzierungTreibhausgasemmissionen2040": 17.1,
-					"zielReduzierungTreibhausgasemmissionen2050": 22.35,
-					"zielReduzierungTreibhausgasemmissionenErlaeuterungen": "Cupio adeo ascisco tergiversatio volubilis alii vita spiritus. Peior astrum ventus quisquam toties repellat autem conatus supra. Asporto necessitatibus adeptio tibi ambitus utpote tonsor adulescens dolore.",
+					"zielReduzierungTreibhausgasemissionen2030": 13.34,
+					"zielReduzierungTreibhausgasemissionen2040": 17.1,
+					"zielReduzierungTreibhausgasemissionen2050": 22.35,
+					"zielReduzierungTreibhausgasemissionenErlaeuterungen": "Cupio adeo ascisco tergiversatio volubilis alii vita spiritus. Peior astrum ventus quisquam toties repellat autem conatus supra. Asporto necessitatibus adeptio tibi ambitus utpote tonsor adulescens dolore.",
 					"kompensationsinstrumenteTreibhausgasemissionen": "Yes",
 					"zertifizierungenBezueglichKompensationinstrumenten": "Usque magni thema confero comprehendo asper speculum. Ustulo torqueo pauper ipsum delectus culpo tondeo tutis quisquam vester. Arbustum animus suscipio curia.",
 					"zielAnteilErneuerbarerEnergien2030": null,
@@ -7362,10 +7362,10 @@
 		"t": {
 			"allgemein": {
 				"datum": {
-					"gueltigkeitsDatum": "2024-12-30"
+					"gueltigkeitsdatum": "2024-12-30"
 				},
 				"generelleEsgStrategie": {
-					"nachhaltigkeitsstrategie": "Yes",
+					"nachhaltigkeitsstrategieVorhanden": "Yes",
 					"dokumenteZurNachhaltigkeitsstrategie": [
 						{
 							"value": "web services",
@@ -7604,10 +7604,10 @@
 					"physischeRisiken": "Veritas terreo condico. Quas textus est copia aliquam necessitatibus sui summisse. Capillus pel vis desolo tui aegrotatio.",
 					"produkteZurReduzierungDerUmweltbelastung": "No",
 					"skizzierungDerProdukteZurReduzierungDerUmweltbelastung": "Tempus acidus voro truculenter crebro abbas solvo comprehendo. Caelum vesper valeo. Timidus utpote cupio defessus vespillo certus urbs uter tutamen deporto.",
-					"zielReduzierungTreibhausgasemmissionen2030": 98.24,
-					"zielReduzierungTreibhausgasemmissionen2040": 37.07,
-					"zielReduzierungTreibhausgasemmissionen2050": 82.5,
-					"zielReduzierungTreibhausgasemmissionenErlaeuterungen": "Titulus confero possimus deprecator abscido. Vespillo pecus porro auctus amo odio vivo. Alioqui constans uter socius vergo confugo verbum.",
+					"zielReduzierungTreibhausgasemissionen2030": 98.24,
+					"zielReduzierungTreibhausgasemissionen2040": 37.07,
+					"zielReduzierungTreibhausgasemissionen2050": 82.5,
+					"zielReduzierungTreibhausgasemissionenErlaeuterungen": "Titulus confero possimus deprecator abscido. Vespillo pecus porro auctus amo odio vivo. Alioqui constans uter socius vergo confugo verbum.",
 					"kompensationsinstrumenteTreibhausgasemissionen": "No",
 					"zertifizierungenBezueglichKompensationinstrumenten": "Debilito sapiente capio demoror natus ad canis calculus voluptatum. Defleo culpo arbustum derideo temperantia umerus articulus debeo cuppedia. Adeo carpo vereor amoveo tametsi sint contigo.",
 					"zielAnteilErneuerbarerEnergien2030": null,
@@ -7724,10 +7724,10 @@
 		"t": {
 			"allgemein": {
 				"datum": {
-					"gueltigkeitsDatum": "2025-01-08"
+					"gueltigkeitsdatum": "2025-01-08"
 				},
 				"generelleEsgStrategie": {
-					"nachhaltigkeitsstrategie": null,
+					"nachhaltigkeitsstrategieVorhanden": null,
 					"dokumenteZurNachhaltigkeitsstrategie": null,
 					"massnahmenZurErreichungDes15GradCelsiusZiels": null,
 					"skizzierungVonMassnahmenZurErreichungDes15GradCelsiusZiels": "Ut pariatur desparatus tristis careo conor vox trepide cunae acer. Utpote ipsa deduco appositus labore ipsum quos. Vallum conscendo necessitatibus contabesco vulgus votum suffragium perferendis stips claustrum.",
@@ -7939,10 +7939,10 @@
 					"physischeRisiken": "Atrocitas deripio sollicito sortitus corporis super impedit. Asperiores cogo acquiro arto tum claro vinitor calco colligo accommodo. Summopere caterva antea strenuus utor esse tunc.",
 					"produkteZurReduzierungDerUmweltbelastung": null,
 					"skizzierungDerProdukteZurReduzierungDerUmweltbelastung": "Eos distinctio necessitatibus non centum. Aurum currus textor neque error. Acsi thesis quam civitas defendo deprimo.",
-					"zielReduzierungTreibhausgasemmissionen2030": null,
-					"zielReduzierungTreibhausgasemmissionen2040": 71.37,
-					"zielReduzierungTreibhausgasemmissionen2050": null,
-					"zielReduzierungTreibhausgasemmissionenErlaeuterungen": "Consequatur acquiro vir tabernus aggero. Absens alias vigilo deprecator viduo summa. Cribro uxor tot abbas causa.",
+					"zielReduzierungTreibhausgasemissionen2030": null,
+					"zielReduzierungTreibhausgasemissionen2040": 71.37,
+					"zielReduzierungTreibhausgasemissionen2050": null,
+					"zielReduzierungTreibhausgasemissionenErlaeuterungen": "Consequatur acquiro vir tabernus aggero. Absens alias vigilo deprecator viduo summa. Cribro uxor tot abbas causa.",
 					"kompensationsinstrumenteTreibhausgasemissionen": null,
 					"zertifizierungenBezueglichKompensationinstrumenten": "Beatus sto volutabrum ceno soluta thalassinus vilis universe. Tabula annus versus curis tot decerno acies arbitro. Vinum thermae cetera at ultra comparo denuo trado.",
 					"zielAnteilErneuerbarerEnergien2030": 55.32,
@@ -8062,10 +8062,10 @@
 		"t": {
 			"allgemein": {
 				"datum": {
-					"gueltigkeitsDatum": "2024-04-12"
+					"gueltigkeitsdatum": "2024-04-12"
 				},
 				"generelleEsgStrategie": {
-					"nachhaltigkeitsstrategie": null,
+					"nachhaltigkeitsstrategieVorhanden": null,
 					"dokumenteZurNachhaltigkeitsstrategie": [
 						{
 							"value": "synergies",
@@ -8284,10 +8284,10 @@
 					"physischeRisiken": "Synagoga laudantium quaerat adimpleo vehemens arca angulus adhaero veniam atqui. Terra rerum vesper tunc distinctio soleo adulatio absconditus verto versus. Conscendo cogo cubicularis acervus suscipio deprecator defleo amet.",
 					"produkteZurReduzierungDerUmweltbelastung": "Yes",
 					"skizzierungDerProdukteZurReduzierungDerUmweltbelastung": "Anser asper carmen curo anser. Canonicus summisse volaticus cubicularis abutor aranea. Architecto crebro denuo acsi deprimo cupiditas inventore.",
-					"zielReduzierungTreibhausgasemmissionen2030": 68.89,
-					"zielReduzierungTreibhausgasemmissionen2040": 6.87,
-					"zielReduzierungTreibhausgasemmissionen2050": null,
-					"zielReduzierungTreibhausgasemmissionenErlaeuterungen": null,
+					"zielReduzierungTreibhausgasemissionen2030": 68.89,
+					"zielReduzierungTreibhausgasemissionen2040": 6.87,
+					"zielReduzierungTreibhausgasemissionen2050": null,
+					"zielReduzierungTreibhausgasemissionenErlaeuterungen": null,
 					"kompensationsinstrumenteTreibhausgasemissionen": "Yes",
 					"zertifizierungenBezueglichKompensationinstrumenten": "Benigne approbo substantia numquam creo. Spiculum trans debilito. Bellum sol carpo traho quod vetus denego aestas.",
 					"zielAnteilErneuerbarerEnergien2030": 40.07,
@@ -8411,10 +8411,10 @@
 		"t": {
 			"allgemein": {
 				"datum": {
-					"gueltigkeitsDatum": "2024-07-04"
+					"gueltigkeitsdatum": "2024-07-04"
 				},
 				"generelleEsgStrategie": {
-					"nachhaltigkeitsstrategie": "Yes",
+					"nachhaltigkeitsstrategieVorhanden": "Yes",
 					"dokumenteZurNachhaltigkeitsstrategie": null,
 					"massnahmenZurErreichungDes15GradCelsiusZiels": "No",
 					"skizzierungVonMassnahmenZurErreichungDes15GradCelsiusZiels": "Degusto tubineus conor doloremque uxor tergiversatio defaeco. Cervus amoveo civitas aeneus callide decens. Quisquam synagoga aperio sol aranea cui vox adficio.",
@@ -8659,10 +8659,10 @@
 					"physischeRisiken": "Demitto dolores dens commodi illum summisse. Viduo articulus aer veritatis taceo curo claudeo alii. Spargo terreo nemo.",
 					"produkteZurReduzierungDerUmweltbelastung": null,
 					"skizzierungDerProdukteZurReduzierungDerUmweltbelastung": "Cubo delectus ultio non. Itaque terror defendo colo tero acsi depereo angulus canis. Adsum voro abscido astrum auditor molestias consectetur praesentium comparo decumbo.",
-					"zielReduzierungTreibhausgasemmissionen2030": null,
-					"zielReduzierungTreibhausgasemmissionen2040": 12.77,
-					"zielReduzierungTreibhausgasemmissionen2050": 2.41,
-					"zielReduzierungTreibhausgasemmissionenErlaeuterungen": "Tenus urbs denuncio demulceo tristis solvo porro quaerat adinventitias vicissitudo. Decimus avarus denego curto vivo terebro cruciamentum campana uberrime quod. Urbs cupiditate cicuta despecto xiphias valeo accusamus adflicto.",
+					"zielReduzierungTreibhausgasemissionen2030": null,
+					"zielReduzierungTreibhausgasemissionen2040": 12.77,
+					"zielReduzierungTreibhausgasemissionen2050": 2.41,
+					"zielReduzierungTreibhausgasemissionenErlaeuterungen": "Tenus urbs denuncio demulceo tristis solvo porro quaerat adinventitias vicissitudo. Decimus avarus denego curto vivo terebro cruciamentum campana uberrime quod. Urbs cupiditate cicuta despecto xiphias valeo accusamus adflicto.",
 					"kompensationsinstrumenteTreibhausgasemissionen": "No",
 					"zertifizierungenBezueglichKompensationinstrumenten": "Terror tres audacia summisse. Cornu voco accusamus confido denique vestrum cibus ipsa articulus. Sub crudelis triumphus illo aestivus aro valens deporto cavus armarium.",
 					"zielAnteilErneuerbarerEnergien2030": null,
@@ -8785,10 +8785,10 @@
 		"t": {
 			"allgemein": {
 				"datum": {
-					"gueltigkeitsDatum": "2024-08-14"
+					"gueltigkeitsdatum": "2024-08-14"
 				},
 				"generelleEsgStrategie": {
-					"nachhaltigkeitsstrategie": "No",
+					"nachhaltigkeitsstrategieVorhanden": "No",
 					"dokumenteZurNachhaltigkeitsstrategie": [
 						{
 							"value": "architectures",
@@ -8988,10 +8988,10 @@
 					"physischeRisiken": null,
 					"produkteZurReduzierungDerUmweltbelastung": "NA",
 					"skizzierungDerProdukteZurReduzierungDerUmweltbelastung": null,
-					"zielReduzierungTreibhausgasemmissionen2030": null,
-					"zielReduzierungTreibhausgasemmissionen2040": 49.93,
-					"zielReduzierungTreibhausgasemmissionen2050": 62.69,
-					"zielReduzierungTreibhausgasemmissionenErlaeuterungen": "Celebrer vomica doloremque vindico aliqua urbs. Vinum ab provident ad spes sumptus quae altus corrupti. Nemo amoveo similique esse.",
+					"zielReduzierungTreibhausgasemissionen2030": null,
+					"zielReduzierungTreibhausgasemissionen2040": 49.93,
+					"zielReduzierungTreibhausgasemissionen2050": 62.69,
+					"zielReduzierungTreibhausgasemissionenErlaeuterungen": "Celebrer vomica doloremque vindico aliqua urbs. Vinum ab provident ad spes sumptus quae altus corrupti. Nemo amoveo similique esse.",
 					"kompensationsinstrumenteTreibhausgasemissionen": "Yes",
 					"zertifizierungenBezueglichKompensationinstrumenten": null,
 					"zielAnteilErneuerbarerEnergien2030": 66.3,
@@ -9110,10 +9110,10 @@
 		"t": {
 			"allgemein": {
 				"datum": {
-					"gueltigkeitsDatum": "2024-02-22"
+					"gueltigkeitsdatum": "2024-02-22"
 				},
 				"generelleEsgStrategie": {
-					"nachhaltigkeitsstrategie": "No",
+					"nachhaltigkeitsstrategieVorhanden": "No",
 					"dokumenteZurNachhaltigkeitsstrategie": [
 						{
 							"value": "initiatives",
@@ -9329,10 +9329,10 @@
 					"physischeRisiken": "Aequitas centum condico excepturi tero. Demum adversus ascit uterque sui ullus quos saepe. Aeternus exercitationem amiculum tabesco accusantium cado eius architecto aliqua debitis.",
 					"produkteZurReduzierungDerUmweltbelastung": "Yes",
 					"skizzierungDerProdukteZurReduzierungDerUmweltbelastung": null,
-					"zielReduzierungTreibhausgasemmissionen2030": 2.32,
-					"zielReduzierungTreibhausgasemmissionen2040": 37.24,
-					"zielReduzierungTreibhausgasemmissionen2050": 77.9,
-					"zielReduzierungTreibhausgasemmissionenErlaeuterungen": "Curriculum villa calamitas ab studio claudeo vomito annus arcesso amaritudo. Voluptas curo certe reiciendis currus appositus consequatur. Sophismata crastinus venio.",
+					"zielReduzierungTreibhausgasemissionen2030": 2.32,
+					"zielReduzierungTreibhausgasemissionen2040": 37.24,
+					"zielReduzierungTreibhausgasemissionen2050": 77.9,
+					"zielReduzierungTreibhausgasemissionenErlaeuterungen": "Curriculum villa calamitas ab studio claudeo vomito annus arcesso amaritudo. Voluptas curo certe reiciendis currus appositus consequatur. Sophismata crastinus venio.",
 					"kompensationsinstrumenteTreibhausgasemissionen": "Yes",
 					"zertifizierungenBezueglichKompensationinstrumenten": null,
 					"zielAnteilErneuerbarerEnergien2030": 37.98,
@@ -9458,10 +9458,10 @@
 		"t": {
 			"allgemein": {
 				"datum": {
-					"gueltigkeitsDatum": "2024-02-16"
+					"gueltigkeitsdatum": "2024-02-16"
 				},
 				"generelleEsgStrategie": {
-					"nachhaltigkeitsstrategie": "No",
+					"nachhaltigkeitsstrategieVorhanden": "No",
 					"dokumenteZurNachhaltigkeitsstrategie": [
 						{
 							"value": "technologies",
@@ -9673,10 +9673,10 @@
 					"physischeRisiken": "Tollo tempore speciosus balbus sit. Adipisci velut sint deprimo caecus vitium vos tempus. Eligendi vomito modi uter derelinquo decor corrumpo corona.",
 					"produkteZurReduzierungDerUmweltbelastung": "No",
 					"skizzierungDerProdukteZurReduzierungDerUmweltbelastung": "Uterque compono usus causa. Error thesis numquam voco vae crepusculum soleo cumque. Nam quidem pariatur aestas valde.",
-					"zielReduzierungTreibhausgasemmissionen2030": 7.87,
-					"zielReduzierungTreibhausgasemmissionen2040": 96.64,
-					"zielReduzierungTreibhausgasemmissionen2050": null,
-					"zielReduzierungTreibhausgasemmissionenErlaeuterungen": "Pecco aurum magnam tergiversatio excepturi. Ascit alveus tremo aptus absconditus quam. Animus vado virtus magni arx reiciendis barba.",
+					"zielReduzierungTreibhausgasemissionen2030": 7.87,
+					"zielReduzierungTreibhausgasemissionen2040": 96.64,
+					"zielReduzierungTreibhausgasemissionen2050": null,
+					"zielReduzierungTreibhausgasemissionenErlaeuterungen": "Pecco aurum magnam tergiversatio excepturi. Ascit alveus tremo aptus absconditus quam. Animus vado virtus magni arx reiciendis barba.",
 					"kompensationsinstrumenteTreibhausgasemissionen": "No",
 					"zertifizierungenBezueglichKompensationinstrumenten": "Decens caute aduro velociter vulgivagus spiritus iste. Venustas peior adsidue vulgivagus vomito. Torrens sequi culpo.",
 					"zielAnteilErneuerbarerEnergien2030": 8.67,
@@ -9799,10 +9799,10 @@
 		"t": {
 			"allgemein": {
 				"datum": {
-					"gueltigkeitsDatum": "2024-04-27"
+					"gueltigkeitsdatum": "2024-04-27"
 				},
 				"generelleEsgStrategie": {
-					"nachhaltigkeitsstrategie": "Yes",
+					"nachhaltigkeitsstrategieVorhanden": "Yes",
 					"dokumenteZurNachhaltigkeitsstrategie": [
 						{
 							"value": "niches",
@@ -10025,10 +10025,10 @@
 					"physischeRisiken": null,
 					"produkteZurReduzierungDerUmweltbelastung": "NA",
 					"skizzierungDerProdukteZurReduzierungDerUmweltbelastung": "Abscido adflicto depono traho pel calculus. Sub approbo angulus bellum abutor curo collum temperantia. Acsi caecus vesco.",
-					"zielReduzierungTreibhausgasemmissionen2030": null,
-					"zielReduzierungTreibhausgasemmissionen2040": null,
-					"zielReduzierungTreibhausgasemmissionen2050": null,
-					"zielReduzierungTreibhausgasemmissionenErlaeuterungen": "Trucido nam suggero cunabula voluptates decipio. Una suscipio vulgo amplitudo. Terra pecco corpus deduco aegrus adflicto adversus nihil ullus depulso.",
+					"zielReduzierungTreibhausgasemissionen2030": null,
+					"zielReduzierungTreibhausgasemissionen2040": null,
+					"zielReduzierungTreibhausgasemissionen2050": null,
+					"zielReduzierungTreibhausgasemissionenErlaeuterungen": "Trucido nam suggero cunabula voluptates decipio. Una suscipio vulgo amplitudo. Terra pecco corpus deduco aegrus adflicto adversus nihil ullus depulso.",
 					"kompensationsinstrumenteTreibhausgasemissionen": "Yes",
 					"zertifizierungenBezueglichKompensationinstrumenten": "Complectus voluptatibus infit conforto. Suppono tredecim degero aestivus laboriosam. Uter accedo tamen ustulo cicuta demergo vapulus argumentum deleniti.",
 					"zielAnteilErneuerbarerEnergien2030": 97.99,
@@ -10148,10 +10148,10 @@
 		"t": {
 			"allgemein": {
 				"datum": {
-					"gueltigkeitsDatum": "2024-08-27"
+					"gueltigkeitsdatum": "2024-08-27"
 				},
 				"generelleEsgStrategie": {
-					"nachhaltigkeitsstrategie": "No",
+					"nachhaltigkeitsstrategieVorhanden": "No",
 					"dokumenteZurNachhaltigkeitsstrategie": [
 						{
 							"value": "ROI",
@@ -10347,10 +10347,10 @@
 					"physischeRisiken": "Odit deinde ago ocer praesentium suppono atrox copiose. Demergo thesaurus cultellus a et. Arbor tubineus tergiversatio benigne amplexus depulso amor aestas architecto.",
 					"produkteZurReduzierungDerUmweltbelastung": "NA",
 					"skizzierungDerProdukteZurReduzierungDerUmweltbelastung": "Adflicto uterque eaque cras dens custodia acceptus complectus. Nihil venio consequatur decumbo aufero temperantia. Certe maiores absque vitiosus speciosus commodo cerno tamisium avaritia.",
-					"zielReduzierungTreibhausgasemmissionen2030": 93.18,
-					"zielReduzierungTreibhausgasemmissionen2040": 89.61,
-					"zielReduzierungTreibhausgasemmissionen2050": 84.08,
-					"zielReduzierungTreibhausgasemmissionenErlaeuterungen": "Somnus bardus auditor tutis quod arceo ustilo tabula sopor. Necessitatibus aperiam tenuis demulceo autus trucido. Desipio cognomen validus aeneus ascit sumo arca est.",
+					"zielReduzierungTreibhausgasemissionen2030": 93.18,
+					"zielReduzierungTreibhausgasemissionen2040": 89.61,
+					"zielReduzierungTreibhausgasemissionen2050": 84.08,
+					"zielReduzierungTreibhausgasemissionenErlaeuterungen": "Somnus bardus auditor tutis quod arceo ustilo tabula sopor. Necessitatibus aperiam tenuis demulceo autus trucido. Desipio cognomen validus aeneus ascit sumo arca est.",
 					"kompensationsinstrumenteTreibhausgasemissionen": null,
 					"zertifizierungenBezueglichKompensationinstrumenten": "Tum abundans tamen spero caritas. Aedificium victoria solvo. Repudiandae optio deinde ara desolo ratione tricesimus demo adinventitias.",
 					"zielAnteilErneuerbarerEnergien2030": 59.59,
@@ -10469,10 +10469,10 @@
 		"t": {
 			"allgemein": {
 				"datum": {
-					"gueltigkeitsDatum": "2024-02-21"
+					"gueltigkeitsdatum": "2024-02-21"
 				},
 				"generelleEsgStrategie": {
-					"nachhaltigkeitsstrategie": "Yes",
+					"nachhaltigkeitsstrategieVorhanden": "Yes",
 					"dokumenteZurNachhaltigkeitsstrategie": [
 						{
 							"value": "e-business",
@@ -10719,10 +10719,10 @@
 					"physischeRisiken": "Baiulus sophismata creptio dolores contabesco asporto alioqui. Cunctatio voluptatem adhuc succedo atque versus uxor totus ante suppono. Coniuratio sum conicio averto distinctio animadverto cupiditate tactus.",
 					"produkteZurReduzierungDerUmweltbelastung": "NA",
 					"skizzierungDerProdukteZurReduzierungDerUmweltbelastung": "Averto vallum atavus creator textilis vaco cohaero. Solitudo textor ter vestigium argentum turba abutor. Talis a vindico dolor tum totam.",
-					"zielReduzierungTreibhausgasemmissionen2030": 17.16,
-					"zielReduzierungTreibhausgasemmissionen2040": 28.98,
-					"zielReduzierungTreibhausgasemmissionen2050": 83.43,
-					"zielReduzierungTreibhausgasemmissionenErlaeuterungen": "Defero ager itaque suggero vulgus deorsum advoco culpo beatus certe. Brevis velum apud. Suggero conitor copia utroque barba inflammatio summopere.",
+					"zielReduzierungTreibhausgasemissionen2030": 17.16,
+					"zielReduzierungTreibhausgasemissionen2040": 28.98,
+					"zielReduzierungTreibhausgasemissionen2050": 83.43,
+					"zielReduzierungTreibhausgasemissionenErlaeuterungen": "Defero ager itaque suggero vulgus deorsum advoco culpo beatus certe. Brevis velum apud. Suggero conitor copia utroque barba inflammatio summopere.",
 					"kompensationsinstrumenteTreibhausgasemissionen": "Yes",
 					"zertifizierungenBezueglichKompensationinstrumenten": "Temptatio xiphias laboriosam comparo spiculum suscipit summopere vero. Aranea solum terebro benevolentia vito vilitas delibero cubo. Doloremque aiunt aequus vacuus eius.",
 					"zielAnteilErneuerbarerEnergien2030": null,
@@ -10837,10 +10837,10 @@
 		"t": {
 			"allgemein": {
 				"datum": {
-					"gueltigkeitsDatum": "2024-08-28"
+					"gueltigkeitsdatum": "2024-08-28"
 				},
 				"generelleEsgStrategie": {
-					"nachhaltigkeitsstrategie": "No",
+					"nachhaltigkeitsstrategieVorhanden": "No",
 					"dokumenteZurNachhaltigkeitsstrategie": [
 						{
 							"value": "channels",
@@ -11064,10 +11064,10 @@
 					"physischeRisiken": "Thesaurus careo carbo volup utpote angelus necessitatibus. Deserunt tracto solutio certe velut. Defleo aliquid dedecor vado angelus toties.",
 					"produkteZurReduzierungDerUmweltbelastung": "No",
 					"skizzierungDerProdukteZurReduzierungDerUmweltbelastung": "Demulceo curo caveo expedita sollers deludo cenaculum commemoro summisse tonsor. Adicio vorax distinctio stipes aureus sperno degusto carpo utique conqueror. Coaegresco earum ultra synagoga solium dolores dolor calcar demulceo.",
-					"zielReduzierungTreibhausgasemmissionen2030": 50.37,
-					"zielReduzierungTreibhausgasemmissionen2040": null,
-					"zielReduzierungTreibhausgasemmissionen2050": 83.66,
-					"zielReduzierungTreibhausgasemmissionenErlaeuterungen": null,
+					"zielReduzierungTreibhausgasemissionen2030": 50.37,
+					"zielReduzierungTreibhausgasemissionen2040": null,
+					"zielReduzierungTreibhausgasemissionen2050": 83.66,
+					"zielReduzierungTreibhausgasemissionenErlaeuterungen": null,
 					"kompensationsinstrumenteTreibhausgasemissionen": "Yes",
 					"zertifizierungenBezueglichKompensationinstrumenten": "Vivo umerus caritas totidem catena civitas solio. Super cohaero textor soleo venio voluptatem bellicus vinum studio undique. Crebro subnecto umbra asporto voro alias peccatus vereor termes ipsum.",
 					"zielAnteilErneuerbarerEnergien2030": 35.47,
@@ -11188,10 +11188,10 @@
 		"t": {
 			"allgemein": {
 				"datum": {
-					"gueltigkeitsDatum": "2024-08-21"
+					"gueltigkeitsdatum": "2024-08-21"
 				},
 				"generelleEsgStrategie": {
-					"nachhaltigkeitsstrategie": "No",
+					"nachhaltigkeitsstrategieVorhanden": "No",
 					"dokumenteZurNachhaltigkeitsstrategie": [
 						{
 							"value": "action-items",
@@ -11441,10 +11441,10 @@
 					"physischeRisiken": null,
 					"produkteZurReduzierungDerUmweltbelastung": "Yes",
 					"skizzierungDerProdukteZurReduzierungDerUmweltbelastung": null,
-					"zielReduzierungTreibhausgasemmissionen2030": null,
-					"zielReduzierungTreibhausgasemmissionen2040": 40.17,
-					"zielReduzierungTreibhausgasemmissionen2050": 40.21,
-					"zielReduzierungTreibhausgasemmissionenErlaeuterungen": "Aegrotatio sumptus paulatim cumque talus angulus congregatio custodia vestrum. Appositus pax confido. Subiungo suadeo aegre caritas conforto ceno.",
+					"zielReduzierungTreibhausgasemissionen2030": null,
+					"zielReduzierungTreibhausgasemissionen2040": 40.17,
+					"zielReduzierungTreibhausgasemissionen2050": 40.21,
+					"zielReduzierungTreibhausgasemissionenErlaeuterungen": "Aegrotatio sumptus paulatim cumque talus angulus congregatio custodia vestrum. Appositus pax confido. Subiungo suadeo aegre caritas conforto ceno.",
 					"kompensationsinstrumenteTreibhausgasemissionen": null,
 					"zertifizierungenBezueglichKompensationinstrumenten": "Alienus talis triumphus apud animi. Vis subnecto itaque usus cur excepturi conduco ea ipsa. Spiritus subiungo aegrus adiuvo capto varietas decerno.",
 					"zielAnteilErneuerbarerEnergien2030": 72.37,
@@ -11562,10 +11562,10 @@
 		"t": {
 			"allgemein": {
 				"datum": {
-					"gueltigkeitsDatum": "2024-10-29"
+					"gueltigkeitsdatum": "2024-10-29"
 				},
 				"generelleEsgStrategie": {
-					"nachhaltigkeitsstrategie": null,
+					"nachhaltigkeitsstrategieVorhanden": null,
 					"dokumenteZurNachhaltigkeitsstrategie": [
 						{
 							"value": "e-business",
@@ -11789,10 +11789,10 @@
 					"physischeRisiken": "Audeo aequus eveniet vallum voco contra civis textus. Defero vestrum studio nostrum baiulus allatus delectus numquam. Voluptate decumbo vesica vorax vorax adsuesco pauci adhuc terror careo.",
 					"produkteZurReduzierungDerUmweltbelastung": "Yes",
 					"skizzierungDerProdukteZurReduzierungDerUmweltbelastung": null,
-					"zielReduzierungTreibhausgasemmissionen2030": 18.3,
-					"zielReduzierungTreibhausgasemmissionen2040": 19.11,
-					"zielReduzierungTreibhausgasemmissionen2050": 4.95,
-					"zielReduzierungTreibhausgasemmissionenErlaeuterungen": "Surculus una totus tenax. Aut alienus contabesco rerum ab acer spargo delibero quam. Tribuo vae cunabula tabella.",
+					"zielReduzierungTreibhausgasemissionen2030": 18.3,
+					"zielReduzierungTreibhausgasemissionen2040": 19.11,
+					"zielReduzierungTreibhausgasemissionen2050": 4.95,
+					"zielReduzierungTreibhausgasemissionenErlaeuterungen": "Surculus una totus tenax. Aut alienus contabesco rerum ab acer spargo delibero quam. Tribuo vae cunabula tabella.",
 					"kompensationsinstrumenteTreibhausgasemissionen": "Yes",
 					"zertifizierungenBezueglichKompensationinstrumenten": "Acsi vapulus fugit carbo varius molestias suscipio velit timor abstergo. Cauda tripudio tempore excepturi ciminatio cupressus catena. Magni peior aestas ullus sophismata catena ago laudantium via.",
 					"zielAnteilErneuerbarerEnergien2030": 61.21,
@@ -11917,10 +11917,10 @@
 		"t": {
 			"allgemein": {
 				"datum": {
-					"gueltigkeitsDatum": "2024-01-27"
+					"gueltigkeitsdatum": "2024-01-27"
 				},
 				"generelleEsgStrategie": {
-					"nachhaltigkeitsstrategie": "Yes",
+					"nachhaltigkeitsstrategieVorhanden": "Yes",
 					"dokumenteZurNachhaltigkeitsstrategie": [
 						{
 							"value": "web services",
@@ -12147,10 +12147,10 @@
 					"physischeRisiken": "Itaque enim umbra taedium cubicularis angustus thymum fuga. Synagoga audio bos vergo. Corona ullam minus universe nostrum inflammatio terror.",
 					"produkteZurReduzierungDerUmweltbelastung": "Yes",
 					"skizzierungDerProdukteZurReduzierungDerUmweltbelastung": "Ex absconditus aptus asporto benigne aeneus cena vulgivagus explicabo deripio. Theca vomica omnis defessus damno alioqui subnecto. Aliquid cultura corpus conatus adnuo.",
-					"zielReduzierungTreibhausgasemmissionen2030": 94.47,
-					"zielReduzierungTreibhausgasemmissionen2040": 75.44,
-					"zielReduzierungTreibhausgasemmissionen2050": 32.97,
-					"zielReduzierungTreibhausgasemmissionenErlaeuterungen": "Nihil articulus sursum sum. Denuo contra tui defleo trepide bene atqui caecus. Alo inflammatio aufero.",
+					"zielReduzierungTreibhausgasemissionen2030": 94.47,
+					"zielReduzierungTreibhausgasemissionen2040": 75.44,
+					"zielReduzierungTreibhausgasemissionen2050": 32.97,
+					"zielReduzierungTreibhausgasemissionenErlaeuterungen": "Nihil articulus sursum sum. Denuo contra tui defleo trepide bene atqui caecus. Alo inflammatio aufero.",
 					"kompensationsinstrumenteTreibhausgasemissionen": "Yes",
 					"zertifizierungenBezueglichKompensationinstrumenten": null,
 					"zielAnteilErneuerbarerEnergien2030": 54.32,
@@ -12273,10 +12273,10 @@
 		"t": {
 			"allgemein": {
 				"datum": {
-					"gueltigkeitsDatum": "2024-08-06"
+					"gueltigkeitsdatum": "2024-08-06"
 				},
 				"generelleEsgStrategie": {
-					"nachhaltigkeitsstrategie": "Yes",
+					"nachhaltigkeitsstrategieVorhanden": "Yes",
 					"dokumenteZurNachhaltigkeitsstrategie": [
 						{
 							"value": "lifetime value",
@@ -12503,10 +12503,10 @@
 					"physischeRisiken": "Vesica ultio quibusdam ocer blanditiis. Demens paens adamo thesis odio torrens voluptatibus audentia summisse. Neque adamo ago ventosus correptius.",
 					"produkteZurReduzierungDerUmweltbelastung": "No",
 					"skizzierungDerProdukteZurReduzierungDerUmweltbelastung": "Amitto itaque audentia itaque animi vita vero tremo tergeo quia. Conor vindico amita turpis. Adiuvo vesco caste decerno cupiditas triumphus stillicidium vespillo carus vulnus.",
-					"zielReduzierungTreibhausgasemmissionen2030": 4.74,
-					"zielReduzierungTreibhausgasemmissionen2040": 77.59,
-					"zielReduzierungTreibhausgasemmissionen2050": 1.78,
-					"zielReduzierungTreibhausgasemmissionenErlaeuterungen": null,
+					"zielReduzierungTreibhausgasemissionen2030": 4.74,
+					"zielReduzierungTreibhausgasemissionen2040": 77.59,
+					"zielReduzierungTreibhausgasemissionen2050": 1.78,
+					"zielReduzierungTreibhausgasemissionenErlaeuterungen": null,
 					"kompensationsinstrumenteTreibhausgasemissionen": "Yes",
 					"zertifizierungenBezueglichKompensationinstrumenten": "Iste comminor mollitia argentum iusto sumo. Paens cicuta bonus. Blanditiis armarium aegrotatio fugiat tonsor virtus corrupti numquam strues teneo.",
 					"zielAnteilErneuerbarerEnergien2030": 14.12,
@@ -12625,10 +12625,10 @@
 		"t": {
 			"allgemein": {
 				"datum": {
-					"gueltigkeitsDatum": "2024-07-23"
+					"gueltigkeitsdatum": "2024-07-23"
 				},
 				"generelleEsgStrategie": {
-					"nachhaltigkeitsstrategie": "No",
+					"nachhaltigkeitsstrategieVorhanden": "No",
 					"dokumenteZurNachhaltigkeitsstrategie": [
 						{
 							"value": "communities",
@@ -12843,10 +12843,10 @@
 					"physischeRisiken": "Alii taceo tui claustrum calamitas audeo a. Aliqua dolorum allatus contabesco aperte. Utpote suppellex vel cura ter delinquo aranea amet.",
 					"produkteZurReduzierungDerUmweltbelastung": "NA",
 					"skizzierungDerProdukteZurReduzierungDerUmweltbelastung": "Cena cruentus bonus tergeo. Mollitia harum dolorem tamen timidus. Arcus cura temporibus.",
-					"zielReduzierungTreibhausgasemmissionen2030": null,
-					"zielReduzierungTreibhausgasemmissionen2040": 60.97,
-					"zielReduzierungTreibhausgasemmissionen2050": 45.43,
-					"zielReduzierungTreibhausgasemmissionenErlaeuterungen": null,
+					"zielReduzierungTreibhausgasemissionen2030": null,
+					"zielReduzierungTreibhausgasemissionen2040": 60.97,
+					"zielReduzierungTreibhausgasemissionen2050": 45.43,
+					"zielReduzierungTreibhausgasemissionenErlaeuterungen": null,
 					"kompensationsinstrumenteTreibhausgasemissionen": null,
 					"zertifizierungenBezueglichKompensationinstrumenten": "Dolorem solium tenax tertius volaticus auctor deputo ipsum thorax deputo. Sui caelum stabilis super aduro enim. Vergo repellendus sonitus sit contabesco eos.",
 					"zielAnteilErneuerbarerEnergien2030": null,
@@ -12958,10 +12958,10 @@
 		"t": {
 			"allgemein": {
 				"datum": {
-					"gueltigkeitsDatum": "2024-10-16"
+					"gueltigkeitsdatum": "2024-10-16"
 				},
 				"generelleEsgStrategie": {
-					"nachhaltigkeitsstrategie": null,
+					"nachhaltigkeitsstrategieVorhanden": null,
 					"dokumenteZurNachhaltigkeitsstrategie": [
 						{
 							"value": "web services",
@@ -13184,10 +13184,10 @@
 					"physischeRisiken": "Atrox timidus creptio. Audacia via calcar paulatim. Barba sol auditor conturbo quam vallum laboriosam solvo accendo.",
 					"produkteZurReduzierungDerUmweltbelastung": "NA",
 					"skizzierungDerProdukteZurReduzierungDerUmweltbelastung": null,
-					"zielReduzierungTreibhausgasemmissionen2030": 94.99,
-					"zielReduzierungTreibhausgasemmissionen2040": 95.3,
-					"zielReduzierungTreibhausgasemmissionen2050": 76.9,
-					"zielReduzierungTreibhausgasemmissionenErlaeuterungen": null,
+					"zielReduzierungTreibhausgasemissionen2030": 94.99,
+					"zielReduzierungTreibhausgasemissionen2040": 95.3,
+					"zielReduzierungTreibhausgasemissionen2050": 76.9,
+					"zielReduzierungTreibhausgasemissionenErlaeuterungen": null,
 					"kompensationsinstrumenteTreibhausgasemissionen": "Yes",
 					"zertifizierungenBezueglichKompensationinstrumenten": "Acervus tenus auxilium eveniet spargo velit rem utilis terminatio deduco. Bellicus vulgo adiuvo deludo acervus vicissitudo cupio supra thema. Cur pecto quisquam adamo.",
 					"zielAnteilErneuerbarerEnergien2030": 38.78,
@@ -13312,10 +13312,10 @@
 		"t": {
 			"allgemein": {
 				"datum": {
-					"gueltigkeitsDatum": "2024-07-06"
+					"gueltigkeitsdatum": "2024-07-06"
 				},
 				"generelleEsgStrategie": {
-					"nachhaltigkeitsstrategie": "Yes",
+					"nachhaltigkeitsstrategieVorhanden": "Yes",
 					"dokumenteZurNachhaltigkeitsstrategie": [
 						{
 							"value": "convergence",
@@ -13556,10 +13556,10 @@
 					"physischeRisiken": "Statua cubicularis vere laudantium condico tersus adaugeo sumo infit. Aedificium adicio cauda utrimque delectatio utilis stipes administratio. Chirographum vehemens capio consequuntur curatio vetus tot.",
 					"produkteZurReduzierungDerUmweltbelastung": "NA",
 					"skizzierungDerProdukteZurReduzierungDerUmweltbelastung": "Candidus voluptates solio usque cupressus. Soluta tenus conatus amiculum. Tepidus ipsa assumenda cum crustulum.",
-					"zielReduzierungTreibhausgasemmissionen2030": 82.27,
-					"zielReduzierungTreibhausgasemmissionen2040": 4.28,
-					"zielReduzierungTreibhausgasemmissionen2050": 29.85,
-					"zielReduzierungTreibhausgasemmissionenErlaeuterungen": "Stultus tum vulariter antiquus coniuratio degusto arcesso callide. Coerceo via speciosus vulariter carmen traho vomito solus. Tui tandem bellum.",
+					"zielReduzierungTreibhausgasemissionen2030": 82.27,
+					"zielReduzierungTreibhausgasemissionen2040": 4.28,
+					"zielReduzierungTreibhausgasemissionen2050": 29.85,
+					"zielReduzierungTreibhausgasemissionenErlaeuterungen": "Stultus tum vulariter antiquus coniuratio degusto arcesso callide. Coerceo via speciosus vulariter carmen traho vomito solus. Tui tandem bellum.",
 					"kompensationsinstrumenteTreibhausgasemissionen": "No",
 					"zertifizierungenBezueglichKompensationinstrumenten": "Curto defleo claro adicio conscendo a aranea victus amoveo. Damnatio textilis tonsor curatio vacuus ceno coniuratio coruscus modi abbas. Sumo sublime volva agnosco thymum.",
 					"zielAnteilErneuerbarerEnergien2030": null,
@@ -13672,10 +13672,10 @@
 		"t": {
 			"allgemein": {
 				"datum": {
-					"gueltigkeitsDatum": "2024-02-13"
+					"gueltigkeitsdatum": "2024-02-13"
 				},
 				"generelleEsgStrategie": {
-					"nachhaltigkeitsstrategie": null,
+					"nachhaltigkeitsstrategieVorhanden": null,
 					"dokumenteZurNachhaltigkeitsstrategie": [
 						{
 							"value": "e-business",
@@ -13863,10 +13863,10 @@
 					"physischeRisiken": "Vos labore aqua conspergo audacia assentator. Aperio ex confero conspergo terra tertius cur quidem atqui. Vobis aegre comptus fugiat.",
 					"produkteZurReduzierungDerUmweltbelastung": null,
 					"skizzierungDerProdukteZurReduzierungDerUmweltbelastung": null,
-					"zielReduzierungTreibhausgasemmissionen2030": 97.07,
-					"zielReduzierungTreibhausgasemmissionen2040": 13.9,
-					"zielReduzierungTreibhausgasemmissionen2050": 79.23,
-					"zielReduzierungTreibhausgasemmissionenErlaeuterungen": null,
+					"zielReduzierungTreibhausgasemissionen2030": 97.07,
+					"zielReduzierungTreibhausgasemissionen2040": 13.9,
+					"zielReduzierungTreibhausgasemissionen2050": 79.23,
+					"zielReduzierungTreibhausgasemissionenErlaeuterungen": null,
 					"kompensationsinstrumenteTreibhausgasemissionen": "Yes",
 					"zertifizierungenBezueglichKompensationinstrumenten": "Vorax deputo brevis utique audio solutio spes aggero. Decipio adhaero summisse spargo. Arca talio atavus.",
 					"zielAnteilErneuerbarerEnergien2030": 64.59,
@@ -13982,10 +13982,10 @@
 		"t": {
 			"allgemein": {
 				"datum": {
-					"gueltigkeitsDatum": "2025-01-19"
+					"gueltigkeitsdatum": "2025-01-19"
 				},
 				"generelleEsgStrategie": {
-					"nachhaltigkeitsstrategie": "Yes",
+					"nachhaltigkeitsstrategieVorhanden": "Yes",
 					"dokumenteZurNachhaltigkeitsstrategie": [
 						{
 							"value": "niches",
@@ -14198,10 +14198,10 @@
 					"physischeRisiken": "Aer capillus adversus optio strenuus thermae derelinquo minus vobis. Crustulum adopto dedico valde terreo clamo sed desino repellendus convoco. Tempore audio decerno animi cui venio volutabrum ea aptus.",
 					"produkteZurReduzierungDerUmweltbelastung": null,
 					"skizzierungDerProdukteZurReduzierungDerUmweltbelastung": "Beatus atque neque viscus amet aduro viriliter demens ratione. Cuius ulciscor audeo. Addo tardus vetus torrens artificiose tepesco sui conscendo enim aedificium.",
-					"zielReduzierungTreibhausgasemmissionen2030": 6.8,
-					"zielReduzierungTreibhausgasemmissionen2040": 25.14,
-					"zielReduzierungTreibhausgasemmissionen2050": 38.03,
-					"zielReduzierungTreibhausgasemmissionenErlaeuterungen": "Civis officiis stillicidium. Sit paens ventus dedecor adeptio aeger viridis demo claustrum. Antea culpa debitis aer.",
+					"zielReduzierungTreibhausgasemissionen2030": 6.8,
+					"zielReduzierungTreibhausgasemissionen2040": 25.14,
+					"zielReduzierungTreibhausgasemissionen2050": 38.03,
+					"zielReduzierungTreibhausgasemissionenErlaeuterungen": "Civis officiis stillicidium. Sit paens ventus dedecor adeptio aeger viridis demo claustrum. Antea culpa debitis aer.",
 					"kompensationsinstrumenteTreibhausgasemissionen": "Yes",
 					"zertifizierungenBezueglichKompensationinstrumenten": "Tondeo nesciunt annus inflammatio tendo crustulum antea. Suspendo denique sollers adhaero cibo vicissitudo audax in absum. Enim crapula canis asperiores defessus comedo maxime appositus.",
 					"zielAnteilErneuerbarerEnergien2030": 5.81,
@@ -14325,10 +14325,10 @@
 		"t": {
 			"allgemein": {
 				"datum": {
-					"gueltigkeitsDatum": "2024-03-12"
+					"gueltigkeitsdatum": "2024-03-12"
 				},
 				"generelleEsgStrategie": {
-					"nachhaltigkeitsstrategie": "Yes",
+					"nachhaltigkeitsstrategieVorhanden": "Yes",
 					"dokumenteZurNachhaltigkeitsstrategie": [
 						{
 							"value": "schemas",
@@ -14516,10 +14516,10 @@
 					"physischeRisiken": "Callide defluo cruciamentum adhuc turbo ipsam. Valeo delinquo animi accommodo. Vicinus cariosus antiquus vis.",
 					"produkteZurReduzierungDerUmweltbelastung": "Yes",
 					"skizzierungDerProdukteZurReduzierungDerUmweltbelastung": null,
-					"zielReduzierungTreibhausgasemmissionen2030": 41.33,
-					"zielReduzierungTreibhausgasemmissionen2040": 93.58,
-					"zielReduzierungTreibhausgasemmissionen2050": 59.02,
-					"zielReduzierungTreibhausgasemmissionenErlaeuterungen": "Suscipio vigor sustineo alii aqua explicabo atque tres caterva pectus. Adfectus tantum aliquid. Complectus tamen somniculosus tondeo corrigo sopor aranea depopulo ventosus.",
+					"zielReduzierungTreibhausgasemissionen2030": 41.33,
+					"zielReduzierungTreibhausgasemissionen2040": 93.58,
+					"zielReduzierungTreibhausgasemissionen2050": 59.02,
+					"zielReduzierungTreibhausgasemissionenErlaeuterungen": "Suscipio vigor sustineo alii aqua explicabo atque tres caterva pectus. Adfectus tantum aliquid. Complectus tamen somniculosus tondeo corrigo sopor aranea depopulo ventosus.",
 					"kompensationsinstrumenteTreibhausgasemissionen": "Yes",
 					"zertifizierungenBezueglichKompensationinstrumenten": "Patria alter decimus. Cavus tempore somnus substantia bellum. Voveo articulus comes.",
 					"zielAnteilErneuerbarerEnergien2030": 24.24,
@@ -14647,10 +14647,10 @@
 		"t": {
 			"allgemein": {
 				"datum": {
-					"gueltigkeitsDatum": "2024-10-06"
+					"gueltigkeitsdatum": "2024-10-06"
 				},
 				"generelleEsgStrategie": {
-					"nachhaltigkeitsstrategie": "Yes",
+					"nachhaltigkeitsstrategieVorhanden": "Yes",
 					"dokumenteZurNachhaltigkeitsstrategie": [
 						{
 							"value": "web services",
@@ -14852,10 +14852,10 @@
 					"physischeRisiken": "Adicio vel accusator. Corporis talus caries laudantium stips suscipit possimus coepi caelestis. Tribuo subvenio cerno viridis id vita.",
 					"produkteZurReduzierungDerUmweltbelastung": "Yes",
 					"skizzierungDerProdukteZurReduzierungDerUmweltbelastung": "Tibi sublime possimus acer adsum denuo delectatio undique pax. Nemo carmen vinitor. Copia capio tabula summisse aegrus vehemens antea.",
-					"zielReduzierungTreibhausgasemmissionen2030": 6.81,
-					"zielReduzierungTreibhausgasemmissionen2040": 80.28,
-					"zielReduzierungTreibhausgasemmissionen2050": null,
-					"zielReduzierungTreibhausgasemmissionenErlaeuterungen": null,
+					"zielReduzierungTreibhausgasemissionen2030": 6.81,
+					"zielReduzierungTreibhausgasemissionen2040": 80.28,
+					"zielReduzierungTreibhausgasemissionen2050": null,
+					"zielReduzierungTreibhausgasemissionenErlaeuterungen": null,
 					"kompensationsinstrumenteTreibhausgasemissionen": "No",
 					"zertifizierungenBezueglichKompensationinstrumenten": "Capitulus talio ducimus temptatio. Cenaculum caecus suffragium cauda dedico auxilium admoneo temptatio toties xiphias. Depraedor terra tui derideo terminatio temperantia.",
 					"zielAnteilErneuerbarerEnergien2030": null,
@@ -14981,10 +14981,10 @@
 		"t": {
 			"allgemein": {
 				"datum": {
-					"gueltigkeitsDatum": "2024-07-18"
+					"gueltigkeitsdatum": "2024-07-18"
 				},
 				"generelleEsgStrategie": {
-					"nachhaltigkeitsstrategie": "Yes",
+					"nachhaltigkeitsstrategieVorhanden": "Yes",
 					"dokumenteZurNachhaltigkeitsstrategie": [
 						{
 							"value": "portals",
@@ -15231,10 +15231,10 @@
 					"physischeRisiken": null,
 					"produkteZurReduzierungDerUmweltbelastung": null,
 					"skizzierungDerProdukteZurReduzierungDerUmweltbelastung": null,
-					"zielReduzierungTreibhausgasemmissionen2030": 95.43,
-					"zielReduzierungTreibhausgasemmissionen2040": 20.05,
-					"zielReduzierungTreibhausgasemmissionen2050": 45.14,
-					"zielReduzierungTreibhausgasemmissionenErlaeuterungen": "Brevis cum venio sum tactus pariatur ventito arbitro. Careo terreo quos demonstro venio cuius testimonium. Amor tepesco altus arceo soluta perferendis ultio ullam.",
+					"zielReduzierungTreibhausgasemissionen2030": 95.43,
+					"zielReduzierungTreibhausgasemissionen2040": 20.05,
+					"zielReduzierungTreibhausgasemissionen2050": 45.14,
+					"zielReduzierungTreibhausgasemissionenErlaeuterungen": "Brevis cum venio sum tactus pariatur ventito arbitro. Careo terreo quos demonstro venio cuius testimonium. Amor tepesco altus arceo soluta perferendis ultio ullam.",
 					"kompensationsinstrumenteTreibhausgasemissionen": "Yes",
 					"zertifizierungenBezueglichKompensationinstrumenten": "Esse xiphias desino cimentarius vacuus odio statim beneficium. Absque illo vehemens quam. Vindico amo tamisium stipes altus.",
 					"zielAnteilErneuerbarerEnergien2030": 69.65,
@@ -15354,10 +15354,10 @@
 		"t": {
 			"allgemein": {
 				"datum": {
-					"gueltigkeitsDatum": "2024-10-02"
+					"gueltigkeitsdatum": "2024-10-02"
 				},
 				"generelleEsgStrategie": {
-					"nachhaltigkeitsstrategie": "Yes",
+					"nachhaltigkeitsstrategieVorhanden": "Yes",
 					"dokumenteZurNachhaltigkeitsstrategie": [
 						{
 							"value": "convergence",
@@ -15586,10 +15586,10 @@
 					"physischeRisiken": "Conduco summisse cado saepe coruscus colo comminor consequatur cogo curatio. Desidero doloribus ventus communis vitae ocer. Adficio sufficio corrupti ambitus depraedor certus officiis vester.",
 					"produkteZurReduzierungDerUmweltbelastung": "Yes",
 					"skizzierungDerProdukteZurReduzierungDerUmweltbelastung": "Quidem aperiam cognomen coruscus. Depopulo terebro ago aestivus. Minima defluo tui.",
-					"zielReduzierungTreibhausgasemmissionen2030": 57.79,
-					"zielReduzierungTreibhausgasemmissionen2040": 42.42,
-					"zielReduzierungTreibhausgasemmissionen2050": 91.4,
-					"zielReduzierungTreibhausgasemmissionenErlaeuterungen": "Tristis desparatus vilis depulso canto demulceo stips charisma. Valde iste solvo viridis. Sui acquiro ad aequitas alter.",
+					"zielReduzierungTreibhausgasemissionen2030": 57.79,
+					"zielReduzierungTreibhausgasemissionen2040": 42.42,
+					"zielReduzierungTreibhausgasemissionen2050": 91.4,
+					"zielReduzierungTreibhausgasemissionenErlaeuterungen": "Tristis desparatus vilis depulso canto demulceo stips charisma. Valde iste solvo viridis. Sui acquiro ad aequitas alter.",
 					"kompensationsinstrumenteTreibhausgasemissionen": "No",
 					"zertifizierungenBezueglichKompensationinstrumenten": null,
 					"zielAnteilErneuerbarerEnergien2030": 0.33,
@@ -15714,10 +15714,10 @@
 		"t": {
 			"allgemein": {
 				"datum": {
-					"gueltigkeitsDatum": "2024-10-19"
+					"gueltigkeitsdatum": "2024-10-19"
 				},
 				"generelleEsgStrategie": {
-					"nachhaltigkeitsstrategie": "No",
+					"nachhaltigkeitsstrategieVorhanden": "No",
 					"dokumenteZurNachhaltigkeitsstrategie": [
 						{
 							"value": "action-items",
@@ -15959,10 +15959,10 @@
 					"physischeRisiken": null,
 					"produkteZurReduzierungDerUmweltbelastung": "Yes",
 					"skizzierungDerProdukteZurReduzierungDerUmweltbelastung": "Admoveo suggero soleo. Ocer adflicto rem. Ventosus appono aggero deludo vicinus omnis.",
-					"zielReduzierungTreibhausgasemmissionen2030": 76.86,
-					"zielReduzierungTreibhausgasemmissionen2040": 62.56,
-					"zielReduzierungTreibhausgasemmissionen2050": 16.48,
-					"zielReduzierungTreibhausgasemmissionenErlaeuterungen": null,
+					"zielReduzierungTreibhausgasemissionen2030": 76.86,
+					"zielReduzierungTreibhausgasemissionen2040": 62.56,
+					"zielReduzierungTreibhausgasemissionen2050": 16.48,
+					"zielReduzierungTreibhausgasemissionenErlaeuterungen": null,
 					"kompensationsinstrumenteTreibhausgasemissionen": "Yes",
 					"zertifizierungenBezueglichKompensationinstrumenten": "Rerum earum caput umerus vestigium super. Ipsam magnam cuius. Demoror vox caute.",
 					"zielAnteilErneuerbarerEnergien2030": 22.07,
@@ -16084,10 +16084,10 @@
 		"t": {
 			"allgemein": {
 				"datum": {
-					"gueltigkeitsDatum": "2024-02-19"
+					"gueltigkeitsdatum": "2024-02-19"
 				},
 				"generelleEsgStrategie": {
-					"nachhaltigkeitsstrategie": "Yes",
+					"nachhaltigkeitsstrategieVorhanden": "Yes",
 					"dokumenteZurNachhaltigkeitsstrategie": [
 						{
 							"value": "eyeballs",
@@ -16316,10 +16316,10 @@
 					"physischeRisiken": "Tumultus caterva cui stella defessus aufero accusator asporto vilis termes. Deleniti blanditiis conscendo cognatus arca sublime adamo thorax dens. Subnecto credo sollers tunc patior dens iure.",
 					"produkteZurReduzierungDerUmweltbelastung": "NA",
 					"skizzierungDerProdukteZurReduzierungDerUmweltbelastung": "Amplexus amicitia tendo confero utrum creptio debilito tempore. Valens anser certe tunc laudantium spargo dedico. Arbitro apparatus sumptus optio tantum articulus summisse cupiditas basium.",
-					"zielReduzierungTreibhausgasemmissionen2030": 70.23,
-					"zielReduzierungTreibhausgasemmissionen2040": null,
-					"zielReduzierungTreibhausgasemmissionen2050": null,
-					"zielReduzierungTreibhausgasemmissionenErlaeuterungen": null,
+					"zielReduzierungTreibhausgasemissionen2030": 70.23,
+					"zielReduzierungTreibhausgasemissionen2040": null,
+					"zielReduzierungTreibhausgasemissionen2050": null,
+					"zielReduzierungTreibhausgasemissionenErlaeuterungen": null,
 					"kompensationsinstrumenteTreibhausgasemissionen": "Yes",
 					"zertifizierungenBezueglichKompensationinstrumenten": "Culpo bibo callide cupiditas agnosco iste convoco facere sui. Adsum virgo culpo carpo. Desidero aestivus curto adhuc.",
 					"zielAnteilErneuerbarerEnergien2030": 1.44,
@@ -16435,10 +16435,10 @@
 		"t": {
 			"allgemein": {
 				"datum": {
-					"gueltigkeitsDatum": "2024-07-05"
+					"gueltigkeitsdatum": "2024-07-05"
 				},
 				"generelleEsgStrategie": {
-					"nachhaltigkeitsstrategie": null,
+					"nachhaltigkeitsstrategieVorhanden": null,
 					"dokumenteZurNachhaltigkeitsstrategie": [
 						{
 							"value": "blockchains",
@@ -16661,10 +16661,10 @@
 					"physischeRisiken": "Sub somnus blanditiis. Cunae velut ea neque corporis sint custodia agnitio terminatio eum. Ustilo abutor paens arcesso ager urbanus tamquam excepturi cilicium caveo.",
 					"produkteZurReduzierungDerUmweltbelastung": "No",
 					"skizzierungDerProdukteZurReduzierungDerUmweltbelastung": "Animadverto decor taedium paulatim textus civitas absorbeo demergo. Et defluo vergo acerbitas. Defleo capio canonicus aequitas amplitudo vis demergo iusto canonicus.",
-					"zielReduzierungTreibhausgasemmissionen2030": 39.56,
-					"zielReduzierungTreibhausgasemmissionen2040": 83.03,
-					"zielReduzierungTreibhausgasemmissionen2050": 14.61,
-					"zielReduzierungTreibhausgasemmissionenErlaeuterungen": null,
+					"zielReduzierungTreibhausgasemissionen2030": 39.56,
+					"zielReduzierungTreibhausgasemissionen2040": 83.03,
+					"zielReduzierungTreibhausgasemissionen2050": 14.61,
+					"zielReduzierungTreibhausgasemissionenErlaeuterungen": null,
 					"kompensationsinstrumenteTreibhausgasemissionen": null,
 					"zertifizierungenBezueglichKompensationinstrumenten": "Voluptas abutor censura paulatim. Callide depraedor vomica claro quam occaecati tactus vapulus vulpes decerno. Balbus soleo consequuntur colo vito natus.",
 					"zielAnteilErneuerbarerEnergien2030": 70.26,
@@ -16779,10 +16779,10 @@
 		"t": {
 			"allgemein": {
 				"datum": {
-					"gueltigkeitsDatum": "2025-01-01"
+					"gueltigkeitsdatum": "2025-01-01"
 				},
 				"generelleEsgStrategie": {
-					"nachhaltigkeitsstrategie": "No",
+					"nachhaltigkeitsstrategieVorhanden": "No",
 					"dokumenteZurNachhaltigkeitsstrategie": [
 						{
 							"value": "initiatives",
@@ -16985,10 +16985,10 @@
 					"physischeRisiken": "Aufero repellat voco vomer voluptatem decipio. Caritas concido cogo reiciendis optio labore. Addo capillus auditor centum paens tredecim titulus ratione creator curiositas.",
 					"produkteZurReduzierungDerUmweltbelastung": "No",
 					"skizzierungDerProdukteZurReduzierungDerUmweltbelastung": "Aggredior adfectus video curo. Umbra speciosus repellendus vitiosus taceo. Error conor convoco talio.",
-					"zielReduzierungTreibhausgasemmissionen2030": 69.52,
-					"zielReduzierungTreibhausgasemmissionen2040": 23.77,
-					"zielReduzierungTreibhausgasemmissionen2050": 99.92,
-					"zielReduzierungTreibhausgasemmissionenErlaeuterungen": "Aeternus ab tres tametsi. Adipiscor ipsum arca ventus. Vergo suadeo capio aer tracto coadunatio suppono mollitia.",
+					"zielReduzierungTreibhausgasemissionen2030": 69.52,
+					"zielReduzierungTreibhausgasemissionen2040": 23.77,
+					"zielReduzierungTreibhausgasemissionen2050": 99.92,
+					"zielReduzierungTreibhausgasemissionenErlaeuterungen": "Aeternus ab tres tametsi. Adipiscor ipsum arca ventus. Vergo suadeo capio aer tracto coadunatio suppono mollitia.",
 					"kompensationsinstrumenteTreibhausgasemissionen": "Yes",
 					"zertifizierungenBezueglichKompensationinstrumenten": "Iure tredecim solio minus cilicium acer tabella bellum excepturi caute. Venio cauda cometes conscendo amplexus. Mollitia optio appello tricesimus usitas.",
 					"zielAnteilErneuerbarerEnergien2030": 31.58,
@@ -17111,10 +17111,10 @@
 		"t": {
 			"allgemein": {
 				"datum": {
-					"gueltigkeitsDatum": "2024-10-05"
+					"gueltigkeitsdatum": "2024-10-05"
 				},
 				"generelleEsgStrategie": {
-					"nachhaltigkeitsstrategie": "Yes",
+					"nachhaltigkeitsstrategieVorhanden": "Yes",
 					"dokumenteZurNachhaltigkeitsstrategie": [
 						{
 							"value": "partnerships",
@@ -17358,10 +17358,10 @@
 					"physischeRisiken": "Sed terga annus libero necessitatibus. Uxor cunctatio tametsi timor tabesco. Antea adimpleo tumultus adipiscor.",
 					"produkteZurReduzierungDerUmweltbelastung": "NA",
 					"skizzierungDerProdukteZurReduzierungDerUmweltbelastung": null,
-					"zielReduzierungTreibhausgasemmissionen2030": 50.44,
-					"zielReduzierungTreibhausgasemmissionen2040": null,
-					"zielReduzierungTreibhausgasemmissionen2050": 0.13,
-					"zielReduzierungTreibhausgasemmissionenErlaeuterungen": "Ullam comis stillicidium cumque surgo nulla sordeo caelum. Vulnero verumtamen odit adimpleo eius. Uredo mollitia cras annus.",
+					"zielReduzierungTreibhausgasemissionen2030": 50.44,
+					"zielReduzierungTreibhausgasemissionen2040": null,
+					"zielReduzierungTreibhausgasemissionen2050": 0.13,
+					"zielReduzierungTreibhausgasemissionenErlaeuterungen": "Ullam comis stillicidium cumque surgo nulla sordeo caelum. Vulnero verumtamen odit adimpleo eius. Uredo mollitia cras annus.",
 					"kompensationsinstrumenteTreibhausgasemissionen": "Yes",
 					"zertifizierungenBezueglichKompensationinstrumenten": "Aspicio allatus tepidus voluptas ventito theologus optio atrocitas autus peccatus. Tempus vulnus natus reiciendis. Ullus addo denique iste perferendis.",
 					"zielAnteilErneuerbarerEnergien2030": 96.73,

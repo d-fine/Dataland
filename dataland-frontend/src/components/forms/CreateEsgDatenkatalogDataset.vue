@@ -224,7 +224,7 @@ export default defineComponent({
   computed: {
     yearOfDataDate: {
       get(): string {
-        const currentDate = this.companyAssociatedEsgDatenkatalogData.data?.allgemein?.datum?.gueltigkeitsDatum;
+        const currentDate = this.companyAssociatedEsgDatenkatalogData.data?.allgemein?.datum?.gueltigkeitsdatum;
         if (currentDate === undefined) {
           return '';
         } else {

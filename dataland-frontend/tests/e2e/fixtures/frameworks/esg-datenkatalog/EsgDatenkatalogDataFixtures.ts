@@ -38,10 +38,10 @@ export function generateEsgDatenkatalogData(nullProbability = DEFAULT_PROBABILIT
   return {
     allgemein: {
       datum: {
-        gueltigkeitsDatum: dataGenerator.dataDate,
+        gueltigkeitsdatum: dataGenerator.dataDate,
       },
       generelleEsgStrategie: {
-        nachhaltigkeitsstrategie: dataGenerator.randomYesNo(),
+        nachhaltigkeitsstrategieVorhanden: dataGenerator.randomYesNo(),
         dokumenteZurNachhaltigkeitsstrategie: dataGenerator.valueOrNull(
           generateArray(() => dataGenerator.guaranteedBaseDataPoint(dataGenerator.guaranteedShortString()), 1, 5, 0)
         ),
@@ -194,10 +194,10 @@ export function generateEsgDatenkatalogData(nullProbability = DEFAULT_PROBABILIT
         physischeRisiken: dataGenerator.randomParagraphs(),
         produkteZurReduzierungDerUmweltbelastung: dataGenerator.randomYesNoNa(),
         skizzierungDerProdukteZurReduzierungDerUmweltbelastung: dataGenerator.randomParagraphs(),
-        zielReduzierungTreibhausgasemmissionen2030: dataGenerator.randomPercentageValue(),
-        zielReduzierungTreibhausgasemmissionen2040: dataGenerator.randomPercentageValue(),
-        zielReduzierungTreibhausgasemmissionen2050: dataGenerator.randomPercentageValue(),
-        zielReduzierungTreibhausgasemmissionenErlaeuterungen: dataGenerator.randomParagraphs(),
+        zielReduzierungTreibhausgasemissionen2030: dataGenerator.randomPercentageValue(),
+        zielReduzierungTreibhausgasemissionen2040: dataGenerator.randomPercentageValue(),
+        zielReduzierungTreibhausgasemissionen2050: dataGenerator.randomPercentageValue(),
+        zielReduzierungTreibhausgasemissionenErlaeuterungen: dataGenerator.randomParagraphs(),
         kompensationsinstrumenteTreibhausgasemissionen: dataGenerator.randomYesNo(),
         zertifizierungenBezueglichKompensationinstrumenten: dataGenerator.randomParagraphs(),
         zielAnteilErneuerbarerEnergien2030: dataGenerator.randomPercentageValue(),
