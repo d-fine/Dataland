@@ -64,7 +64,7 @@ export function formatNuclearAndGasTaxonomyShareDataForTable(
           },
           data: {
             label: fieldLabel,
-            values: nuclearAndGasData.value,
+            input: nuclearAndGasData.value,
           },
         },
       },

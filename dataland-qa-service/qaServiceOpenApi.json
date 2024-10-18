@@ -3042,13 +3042,13 @@
       "NuclearAndGasEnvironmentalObjective": {
         "type": "object",
         "properties": {
-          "mitigationAndAdaption": {
+          "mitigationAndAdaptation": {
             "type": "number"
           },
           "mitigation": {
             "type": "number"
           },
-          "adaption": {
+          "adaptation": {
             "type": "number"
           }
         }
@@ -5405,10 +5405,14 @@
           "message": {
             "type": "string"
           },
-          "companyId": {
+          "companyName": {
             "type": "string"
           },
-          "companyName": {
+          "receptionTime": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "dataId": {
             "type": "string"
           },
           "framework": {
@@ -5417,12 +5421,8 @@
           "reportingPeriod": {
             "type": "string"
           },
-          "dataId": {
+          "companyId": {
             "type": "string"
-          },
-          "receptionTime": {
-            "type": "integer",
-            "format": "int64"
           }
         }
       },

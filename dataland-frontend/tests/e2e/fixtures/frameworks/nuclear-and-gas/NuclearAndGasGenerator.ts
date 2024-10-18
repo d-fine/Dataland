@@ -9,9 +9,9 @@ import {
 export class NuclearAndGasGenerator extends Generator {
     generateNuclearAndGasEnvironmentalObjective(): NuclearAndGasEnvironmentalObjective {
         return {
-            mitigationAndAdaption: this.randomPercentageValue(),
+            mitigationAndAdaptation: this.randomPercentageValue(),
             mitigation: this.randomPercentageValue(),
-            adaption: this.randomPercentageValue(),
+            adaptation: this.randomPercentageValue(),
         }
     }
 

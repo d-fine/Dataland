@@ -38,6 +38,9 @@ export default defineComponent({
       },
     },
   },
+  created() {
+      console.log(`PercentageFormField with ${this.name} created.`)
+  },
   props: {
     ...BaseFormFieldProps,
     percentageFieldValueBind: {

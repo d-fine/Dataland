@@ -7974,7 +7974,7 @@
       "NuclearAndGasEnvironmentalObjective": {
         "type": "object",
         "properties": {
-          "mitigationAndAdaption": {
+          "mitigationAndAdaptation": {
             "type": "number",
             "nullable": true
           },
@@ -7982,7 +7982,7 @@
             "type": "number",
             "nullable": true
           },
-          "adaption": {
+          "adaptation": {
             "type": "number",
             "nullable": true
           }
@@ -18438,9 +18438,11 @@
             "type": "string",
             "nullable": true
           },
-          "lei": {
-            "type": "string",
-            "nullable": true
+          "companyName": {
+            "type": "string"
+          },
+          "companyId": {
+            "type": "string"
           },
           "headquarters": {
             "type": "string"
@@ -18448,11 +18450,9 @@
           "countryCode": {
             "type": "string"
           },
-          "companyId": {
-            "type": "string"
-          },
-          "companyName": {
-            "type": "string"
+          "lei": {
+            "type": "string",
+            "nullable": true
           }
         }
       },
@@ -18475,10 +18475,10 @@
         ],
         "type": "object",
         "properties": {
-          "companyId": {
+          "companyName": {
             "type": "string"
           },
-          "companyName": {
+          "companyId": {
             "type": "string"
           }
         }

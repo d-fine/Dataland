@@ -1,7 +1,7 @@
 <template>
   <div v-if="listOfRowContents.length > 0">
     <DataTable :value="listOfRowContents" class="activities-data-table">
-      <Column field="activity" header="Economic activitiy">
+      <Column field="activity" header="Economic activitiy" style="max-width:50%">
         <template #body="{ data }">
           {{ data.activity }}
         </template>
@@ -33,7 +33,7 @@ import {type DynamicDialogInstance} from 'primevue/dynamicdialogoptions';
 import {
   ActivityName
 } from '@/components/resources/frameworkDataSearch/nuclearAndGas/NuclearAndGasActivityNames';
-import {
+import type {
   NuclearAndGasAlignedDenominator,
   NuclearAndGasAlignedNumerator,
   NuclearAndGasEligibleButNotAligned,
@@ -43,7 +43,7 @@ import {formatPercentageNumberAsString} from "@/utils/Formatter";
 
 interface DialogRefData {
   header: string;
-  values: NuclearAndGasAlignedDenominator
+  input: NuclearAndGasAlignedDenominator
       | NuclearAndGasAlignedNumerator
       | NuclearAndGasEligibleButNotAligned
       | NuclearAndGasNonEligible
@@ -59,10 +59,10 @@ export default defineComponent({
       return dialogRefToDisplay.data as DialogRefData;
     },
     isNonEligible() {
-      return this.dialogRefData.values && 'taxonomyNonEligibleShareNAndG426' in this.dialogRefData.values;
+      return this.dialogRefData.input && 'taxonomyNonEligibleShareNAndG426' in this.dialogRefData.input;
     },
     listOfRowContents() {
-      const rawData = this.dialogRefData.values;
+      const rawData = this.dialogRefData.input;
       return this.generateRowContents(rawData);
     },
   },
