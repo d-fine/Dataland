@@ -80,9 +80,9 @@ export default defineComponent({
         if (!objective) return null;
 
         const activityName = ActivityName[fieldName] as string;
-        const ccmCca = formatPercentageNumberAsString(this.isNonEligible ? objective : objective?.mitigationAndAdaption ?? null);
+        const ccmCca = formatPercentageNumberAsString(this.isNonEligible ? objective : objective?.mitigationAndAdaptation ?? null);
         const ccm = formatPercentageNumberAsString(objective?.mitigation ?? null);
-        const cca = formatPercentageNumberAsString(objective?.adaption ?? null);
+        const cca = formatPercentageNumberAsString(objective?.adaptation ?? null);
 
         if (!ccmCca && !ccm && !cca) {
           return null;
