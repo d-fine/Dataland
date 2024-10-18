@@ -175,7 +175,7 @@ class DataAccessManagerTest {
             listOf(
                 DataTypeEnum.lksg, DataTypeEnum.p2p, DataTypeEnum.sfdr,
                 DataTypeEnum.eutaxonomyMinusFinancials, DataTypeEnum.eutaxonomyMinusNonMinusFinancials,
-                DataTypeEnum.esgMinusQuestionnaire, DataTypeEnum.heimathafen,
+                DataTypeEnum.esgMinusDatenkatalog, DataTypeEnum.heimathafen,
             )
 
         dataTypes.forEach {

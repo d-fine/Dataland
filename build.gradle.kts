@@ -117,10 +117,10 @@ sonar {
                 "dataland-frontend/src/components/resources/frameworkDataSearch/euTaxonomy/configMLDT/" +
                 "configForEutaxonomyFinancialsMLDT.ts," +
                 "dataland-frontend/src/frameworks/additional-company-information/ViewConfig.ts," +
-                "dataland-frontend/src/frameworks/esg-questionnaire/ViewConfig.ts," +
+                "dataland-frontend/src/frameworks/esg-datenkatalog/ViewConfig.ts," +
                 "dataland-frontend/src/frameworks/lksg/ViewConfig.ts," +
                 "dataland-frontend/src/frameworks/sfdr/ViewConfig.ts," +
-                "dataland-frontend/src/frameworks/esg-questionnaire/UploadConfig.ts," +
+                "dataland-frontend/src/frameworks/esg-datenkatalog/UploadConfig.ts," +
                 "dataland-frontend/src/frameworks/heimathafen/UploadConfig.ts," +
                 "dataland-frontend/src/frameworks/sfdr/UploadConfig.ts," +
                 "dataland-frontend/src/frameworks/vsme/UploadConfig.ts," +

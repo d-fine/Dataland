@@ -1031,7 +1031,7 @@
                   "p2p",
                   "sfdr",
                   "vsme",
-                  "esg-questionnaire",
+                  "esg-datenkatalog",
                   "heimathafen",
                   "additional-company-information"
                 ]
@@ -1127,7 +1127,7 @@
                   "p2p",
                   "sfdr",
                   "vsme",
-                  "esg-questionnaire",
+                  "esg-datenkatalog",
                   "heimathafen",
                   "additional-company-information"
                 ]
@@ -4829,7 +4829,7 @@
               "p2p",
               "sfdr",
               "vsme",
-              "esg-questionnaire",
+              "esg-datenkatalog",
               "heimathafen",
               "additional-company-information"
             ]
