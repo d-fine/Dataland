@@ -46,6 +46,10 @@ fine, proceed with other servers.
 If the updates require a reboot (for e.g. a kernel update), you can restart the machine with `sudo reboot`.
 However, for dataland.com, you may want to avoid any interruption and schedule the reboot during the night with `sudo shutdown -r 02:00`.
 
+## Cloud maintenance
+
+Check the cloud provider's dashboard for manually created backups and images. Delete them if they are not needed anymore.
+
 ## ssh-keys maintenance
 
 - [ ] Make sure the ssh-keys file reflects the current team composition. Execute the update script as described in the 
